@@ -1,0 +1,185 @@
+.alertify,
+.alertify-show,
+.alertify-log {
+  transition: all 500ms cubic-bezier(0.175, 0.885, 0.320, 1.275); /* easeOutBack */
+}
+
+.alertify-hide {
+  transition: all 250ms cubic-bezier(0.600, -0.280, 0.735, 0.045); /* easeInBack */
+}
+
+.alertify-log-hide {
+  transition: all 500ms cubic-bezier(0.600, -0.280, 0.735, 0.045); /* easeInBack */
+}
+
+.alertify-cover {
+  position: fixed;
+  z-index: 99999;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: white;
+  opacity: 0.5;
+}
+
+.alertify-cover-hidden {
+  display: none;
+}
+
+.alertify {
+  position: fixed;
+  z-index: 99999;
+  top: 45%;
+  left: 50%;
+  width: 550px;
+  opacity: 1;
+  transform: translate(-50%,-50%);
+}
+
+.alertify-hidden {
+  opacity: 0;
+  display: none;
+}
+
+/* overwrite display: none; for everything except IE6-8 */
+:root * > .alertify-hidden {
+  display: block;
+  visibility: hidden;
+}
+
+.alertify-logs {
+  position: fixed;
+  z-index: 50;
+  bottom: 3em;
+  right: 0;
+  width: 20em;
+}
+
+.alertify-logs-hidden {
+  display: none;
+}
+
+.alertify-log {
+  display: block;
+  margin-top: 10px;
+  position: relative;
+  right: -300px;
+  opacity: 0;
+}
+
+.alertify-log-show {
+  right: 0;
+  opacity: 1;
+}
+
+.alertify-log-hide {
+  transform: translate(300px, 0);
+  opacity: 0;
+}
+
+.alertify-dialog {
+  padding: 25px;
+}
+
+.alertify-resetFocus {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+.alertify-inner {
+  text-align: center;
+}
+
+.alertify-text {
+  margin-bottom: 15px;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 100%;
+}
+
+.alertify-buttons {
+}
+
+.alertify-button,
+.alertify-button:hover,
+.alertify-button:active,
+.alertify-button:visited {
+  display: inline-block;
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 680px) {
+  .alertify,
+  .alertify-logs {
+    width: 90%;
+    box-sizing: border-box;
+  }
+
+  .alertify {
+    left: 5%;
+    margin: 0;
+  }
+}
+
+/**
+ * Default Look and Feel
+ */
+
+.alertify {
+  background: white;
+  border: 1px solid bd;
+  border-radius: br;
+}
+.alertify-text {
+  border: 1px solid #CCC;
+  padding: 10px;
+  border-radius: br;
+}
+
+.alertify-log {
+  background: white;
+  border: 1px solid bd;
+  border-bottom: 3px solid act;
+  padding: 0.3em 1em;
+  cursor: pointer;
+  font-size: 90%;
+  line-height: 1.6em;
+  position: relative;
+  padding-left: 4em;
+  min-height: 3.3em;
+}
+
+.alertify-log-error {
+  border-bottom: 3px solid error;
+}
+
+.alertify-log::before {
+  content: "";
+  color: act;
+  font-family: helium;
+  font-size: 3.5em;
+  line-height: 1;
+  position: absolute;
+  left: 0.08em;
+  top: 0.08em;
+}
+
+.alertify-log-error::before {
+  content: "";
+  color: error;
+}
+
+.alertify-log-success {
+  border-bottom: 3px solid success;
+}
+.alertify-log-success::before {
+  content: "";
+  color: success;
+}

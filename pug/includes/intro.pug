@@ -1,0 +1,26 @@
+#intr
+	#bg.stretch
+	#intro.modal
+		div
+			#previewProject.pt40
+			.pt60
+				h3.center #{intro.latest}
+				ul.menu#recent
+				label.file
+					button.wide.inline
+						i.icon.icon-folder
+						span #{intro.browse}
+					input#findProject(type="file" accept=".ict" data-event="openProjectFind")
+		#newProject.inset
+			.pt40.center.nopadding
+				h3#text #{intro.newProject.text}
+			.pt60.nopadding
+				//- may be a typo... #id
+				input#id( 
+					type='text'
+					placeholder='#{intro.newProject.input}'
+					data-apattern='SymbolDigitUnderscore'
+					data-required
+				)
+				button#newproj.inline(data-event="newProject" data-check="#id") #{intro.newProject.button}
+			.clear

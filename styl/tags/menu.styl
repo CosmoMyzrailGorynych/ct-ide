@@ -1,0 +1,51 @@
+#mainnav
+	position fixed
+	top 0
+	left 0
+	right 48px
+	border-top 0 none
+
+body.maximized #mainnav
+	@media (max-width 1000px)
+		right 0
+		flex-wrap wrap
+
+#app
+	position fixed
+	top 0
+	width 48px
+	right 0
+	border-top-width 0
+
+body.restored
+	#mainnav
+		right 0
+	#app
+		display none
+
+#mainnav, #app
+	border-radius 0
+
+#ctlogo
+	line-height 0
+	img
+		height 34px /* why? */
+
+@media (max-width 1000px)
+	.it30
+		flex-basis 30.5% !important
+
+	#app
+		top auto
+		bottom 0
+		border-top-width 1px
+		border-bottom-width 0
+		z-index 2
+
+
+@media (max-width: 750px)
+	#mainnav span
+		display none
+
+	#mainnav .iconfirst-child
+		margin-right 0

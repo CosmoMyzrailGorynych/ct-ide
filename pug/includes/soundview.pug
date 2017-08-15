@@ -1,0 +1,23 @@
+#soundview.panel.view
+    .modal
+        b #{soundview.name}
+        br
+        input#soundname.wide(type="text" data-input="currentSound.name")
+        br
+        br
+        label.file
+            button.inline
+                i.icon.icon-plus
+                span #{soundview.import}
+            input#inputsound(type="file" accept=".mp3,.ogg,.wav")
+        audio#soundaudio(controls loop)
+        //-
+            button#playsound.inline(data-event="soundPlay")
+                i.icon.icon-play
+            #listen.progressbar
+                div
+        br
+        br
+        button.wide(data-event="soundSave")
+            i.icon.icon-confirm
+            span #{soundview.save}

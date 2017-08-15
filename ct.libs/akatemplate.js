@@ -1,0 +1,1 @@
+ct.libs += ' akatemplate';

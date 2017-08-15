@@ -1,0 +1,39 @@
+#typeview.panel.view
+	.pt20.tall
+		#typegraph.panel(data-event="typeChangeSprite")
+			img.ohchangeme
+			div #{typeview.change}
+		b #{typeview.name}
+		input#typename.wide(type="text" data-input="currentType.name")
+		br
+		b #{typeview.depth}
+		input#typedepth.wide(type="number" data-input="currentType.depth")
+		br
+		br
+		button#typedone.wide(data-event="typeSave")
+			i.icon.icon-confirm
+			span #{typeview.done}
+	.pt80.tall.borderleft
+		.tabwrap.tall(style="position: relative")
+			ul.tabs.nav.nogrow.noshrink
+				li(data-tab="#typeoncreate" data-event="typeoncreate" data-tab-default title="#{typeview.create}")
+					i.icon.icon-lamp
+					span #{typeview.create}
+				li(data-tab="#typeonstep" data-event="typeonstep" title="#{typeview.step}")
+					i.icon.icon-timer
+					span #{typeview.step}
+				li(data-tab="#typeondraw" data-event="typeondraw" title="#{typeview.draw}")
+					i.icon.icon-brush
+					span #{typeview.draw}
+				li(data-tab="#typeondestroy" data-event="typeondestroy" title="#{typeview.destroy}")
+					i.icon.icon-trash
+					span #{typeview.destroy}
+			div
+				#typeoncreate.tabbed
+					.acer(data-mode="javascript" data-acervar="typeoncreate")
+				#typeonstep.tabbed
+					.acer(data-mode="javascript" data-acervar="typeonstep")
+				#typeondraw.tabbed
+					.acer(data-mode="javascript" data-acervar="typeondraw")
+				#typeondestroy.tabbed
+					.acer(data-mode="javascript" data-acervar="typeondestroy")

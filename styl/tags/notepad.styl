@@ -1,0 +1,56 @@
+#notepad
+    height 80%
+    width 80%
+    z-index 20
+    transition 0.35s ease left
+    & > div
+        flex 1 1 auto
+        position relative
+
+    & > div > div
+        position absolute
+        left 0
+        top 0
+        right 0
+        bottom 0
+
+    .nav
+        flex 1 1 auto
+        border-bottom-left-radius 0
+        border-bottom-right-radius 0
+        border-top-right-radius 0
+
+    display flex
+    flex-direction column
+    box-shadow 0 2px 1px
+    position fixed !important
+
+
+.dockleft
+    position absolute
+    right 100%
+    top 50%
+    transform translate(0, -50%)
+    margin 0
+    border-top-right-radius 0
+    border-bottom-right-radius 0
+    border-right 0 none
+
+.dockright
+    position absolute
+    left 100%
+    top 50%
+    margin 0
+    transform translate(0, -50%)
+    border-top-right-radius 0
+    border-bottom-right-radius 0
+    border-right 0 none
+
+
+#helppages iframe
+    position absolute
+    left 0
+    top 0
+    width 100%
+    height 100%
+    border 0 none

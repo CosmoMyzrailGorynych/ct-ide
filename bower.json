@@ -1,0 +1,14 @@
+{
+  "name": "ctjsbuildenvironment",
+  "description": "",
+  "main": "gulpfile.js",
+  "authors": [
+    "Cosmo Myzrail Gorynych <admin@nersta.ru>"
+  ],
+  "license": "All rights reserved",
+  "homepage": "",
+  "private": true,
+  "dependencies": {
+    "closure-compiler": "http://dl.google.com/closure-compiler/compiler-latest.zip"
+  }
+}

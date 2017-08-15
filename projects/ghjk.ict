@@ -1,0 +1,19 @@
+{
+  "notes": "/* empty */",
+  "libs": {},
+  "graphs": [],
+  "types": [],
+  "sounds": [],
+  "styles": [],
+  "rooms": [],
+  "graphtick": 0,
+  "soundtick": 0,
+  "roomtick": 0,
+  "typetick": 0,
+  "styletick": 0,
+  "starting": 0,
+  "settings": {
+    "minifyhtmlcss": false,
+    "minifyjs": false
+  }
+}

@@ -1,0 +1,132 @@
+pad = 0.5em
+
+#roomview
+    display flex
+    flex-direction row
+    .toolbar
+        display flex
+        flex-direction column
+        padding 0.5em
+        width 17em
+        box-sizing border-box
+        flex 1 1 auto
+        flex-grow 0
+        .settings, .palette, .done
+            flex 1 1 auto
+        .settings button
+            margin 0.5em 0
+        .nav
+            border-bottom-right-radius 0
+            border-bottom-left-radius 0
+    .palette
+        position relative
+        .tabwrap
+            position absolute
+            left 0
+            right 0
+            top 0
+            bottom 0
+    .editor
+        display flex
+        position relative
+        flex 1 1 auto
+        .shift
+            position absolute
+            top pad
+            left pad
+            i
+                position relative
+                top 0.08em // она криво стояла. правда!
+        .zoom
+            position absolute
+            top pad
+            right pad
+        .grid
+            position absolute
+            bottom pad
+            right pad
+        .center
+            position absolute
+            bottom pad
+            left pad
+        canvas
+            width 100%
+            height 100%
+
+#roomcopies
+    overflow-y scroll
+    padding 0
+    position absolute
+    width 100%
+    li
+        list-style none
+        border 1px solid bl
+        width 76px
+        display inline-block
+        box-sizing border-box
+        text-align center
+        margin 1px
+        border-radius br
+        cursor pointer
+        padding 0 0.4em
+        font-size 80%
+        line-height 1.7
+        trans
+        &:hover
+            border-color act
+            transshort
+    img
+        height 64px
+        width 64px
+    span
+        display block
+        text-overflow ellipsis
+        overflow hidden
+    .selected
+        border-color accent1
+
+#roombackgrounds
+    padding 0.5em
+#roombgstack
+    img
+        float right
+        width 64px
+        height 64px
+        border-radius br
+        cursor pointer
+    .bg
+        list-style none
+        height 64px
+        padding 0.3em 0.8em
+        border-radius br
+        border 1px solid bl
+        line-height 64px
+        margin-bottom 0.2em
+    span
+        cursor t\ext
+        border-bottom 1px dotted bl
+        width 6em
+        line-height 1
+        display inline-block
+        vertical-align middle
+        margin-top 1em
+
+#roomevents
+    border-top 0 none
+    display flex
+    flex-direction column
+    .tabs, button
+        border-radius 0
+    button
+        margin-top 1px
+    .tabwrap, button
+        flex 1 1 auto
+    .tabbed
+        padding 0
+        height 100%
+        position absolute
+        left 0
+        right 0
+        top 0
+        bottom 0
+        border-radius 0

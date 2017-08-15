@@ -1,0 +1,196 @@
+input[type="text"],
+input[type="number"],
+input[type="url"],
+input[type="password"],
+select,
+textarea
+    padding 0.1em 0.8em
+    background white
+    border 1px solid bl
+    border-radius br
+    font inherit
+    color inherit
+    trans
+    &:hover
+        border-color bd
+    &:focus
+        border-color acttext
+
+input[type="number"]
+    padding-right 0
+input.color
+    transition 0
+
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+.button,
+.selectbox
+    padding 0.5em 1em
+    margin 0 0.3em
+    border 1px solid act
+    color acttext
+    font inherit
+    border-radius br
+    background white
+    display inline-block
+    cursor pointer
+    trans
+    &:hover
+        background acttext
+        color white
+        border-color accent1
+        .icon
+            color white
+    &:active, &.selected
+        transshort
+        border-color accent1
+        background accent1
+        color white
+        .icon
+            color white
+    &.inline
+        padding 0.2em 0.8em
+    &.vertical
+        padding 1em 0
+    &.square
+        padding 0.7em
+        line-height 1
+    &.square.inline
+        padding 0.3em
+        margin-left 0
+
+/* Большой переключатель */
+siz = 4em;
+.bigpower
+    cursor pointer
+    display block
+    float left
+    width siz
+    height siz
+    border-radius 50% 10% 50% 50%
+    background -webkit-linear-gradient(top, white 0, bl 100%)
+    box-shadow 0 0 0.2em snow inset
+    border 1px solid bd
+    text-align center
+    position relative
+    &:after
+        display block
+        width 7px
+        height 7px
+        position absolute
+        top 4px
+        right 4px
+        border-radius 100%
+        content " "
+        background accent2
+    i
+        font-size 2em
+        line-height 1.5
+        display block
+        width 80%
+        height 80%
+        margin 10%
+        position relativ
+        border-radius 100%
+        border 1px solid
+        box-sizing border-box
+        background -webkit-linear-gradient(top, bl 0, white 100%)
+        color success
+    span
+        position absolute
+        left 50%
+        top 50%
+        -webkit-animation rotate 1s infinite linear
+        animation rotate 1s infinite linear
+        &:after
+            display block
+            width 0.2em
+            height 0.2em
+            position absolute
+            left 50%
+            border-radius 100%
+            top 50%
+            margin -0.05em
+            margin-left -1.7em
+            content " "
+            background success
+    &.off
+        span
+            display none
+        span:after
+            background error
+        i
+            color error
+            &:before
+                content "" /* icon-cross */
+        &:after
+            background error
+
+.button-stack
+    display inline-block
+    margin 0 0.5em
+    button, .button
+        margin 0
+        border-radius 0
+        border-right-width 0
+        &:first-child
+            border-top-left-radius br
+            border-bottom-left-radius br
+        &:last-child
+            border-top-right-radius br
+            border-bottom-right-radius br
+            border-right-width 1px
+
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+.button,
+.nav
+    .icon
+        trans
+        color act
+        vertical-align sub // выглядит более отцентрованно
+        &:first-child
+            margin-right 0.25em
+        &:only-child
+            margin-right 0
+
+select, label
+    cursor pointer
+.selectbox
+    width 10em
+    position relative
+    li
+        list-style none
+    & > ul
+        position absolute
+        left -1px // why?
+        right -1px
+        top 100%
+        background white
+        color text
+        border 1px solid bd
+        border-radius 0 0 br br
+        border-bottom 0
+        border-top 1px solid act
+    ul
+        display none
+        margin 0
+        padding 0
+    &.focus
+        border-bottom-left-radius 0
+        border-bottom-right-radius 0
+        ul
+            display block
+.selectbox > .icon
+    transform rotate(90deg) translate(-50%, 0)
+    position absolute
+    right 0.5em
+    top 50%
+
+// выбор файла
+label.file [type="file"]
+    display none

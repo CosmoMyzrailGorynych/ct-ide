@@ -1,0 +1,40 @@
+#settings.panel.view
+    //-.pt60.tall
+    .tall
+        h1 #{settings.settings}
+        h2 #{settings.authoring}
+        b #{settings.title}
+        br
+        input#gametitle(type="text" data-input="currentProject.settings.title")
+        br
+        b #{settings.author}
+        br
+        input#gameauthor(type="text" data-input="currentProject.settings.author")
+        br
+        b #{settings.site}
+        br
+        input#gamesite(type="text" data-input="currentProject.settings.site")
+
+        h2 #{settings.exportparams}
+        label.blocky(style="margin-right: 2.5em;")
+            input(type="checkbox" value="true" data-input="currentProject.settings.minifyhtmlcss")
+            span #{settings.minifyhtmlcss}
+        label.blocky
+            input(type="checkbox" value="true" data-input="currentProject.settings.minifyjs")
+            span #{settings.minifyjs}
+
+        //-span
+            h2 #{settings.preloader}
+            select#gamepreloader.select(data-input="currentProject.preloader")
+                option(value="0") #{settings.preloaders.circular}
+                option(value="1") #{settings.preloaders.bar}
+                option(value="-1") #{settings.preloaders.no}
+            br
+            br
+            b #{settings.cover}
+            label.file
+                button.inline
+                    i.icon.icon-folder
+                    span #{settings.getfile}
+                input#gamepreloaderfile(type="file" accept=".png, .jpg, .gif")
+            #preloaderpreview.pt40.tall

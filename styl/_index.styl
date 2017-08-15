@@ -1,0 +1,78 @@
+@charset "utf-8"
+
+// минимальная ширина шаблона - 380 пикс
+
+/* частотники */
+trans =
+    transition 0.35s ease all
+transshort =
+    transition 0.15s ease all
+shad =
+    box-shadow 0 0.1em 0.2em rgba(0, 0, 0, 0.5)
+shadamb =
+    box-shadow 0 0 0.35em rgba(0, 0, 0, 0.5)
+
+/* шрифты */
+fonts = Open Sans, serif
+font-mono = Consolas, monospace
+
+br = 3px
+iconsize = 24px
+
+/* цвета */
+act = #449cdb
+acttext = #446adb
+accent1 = #5144db
+accent2 = #44dbb5
+error = #d44f57
+success = #4ab660
+warning = #ff9748
+
+.error
+    color error
+.success
+    color success
+.warning
+    color warning
+
+bl = #e1e2e5
+bd = #c8cdd1
+
+text = #666
+snow = #fafafa
+
+/* анимации */
+@keyframes rotate
+    100%
+        transform rotate(360deg)
+
+
+@require '3rdParty/colorpicker.styl'
+@require '3rdParty/helium.styl'
+@require '3rdParty/jquery.nouislider.styl'
+@require '3rdParty/fonts.styl'
+@require '3rdParty/alertify.styl'
+
+@require 'common.styl'
+@require 'inputs.styl'
+@require 'typography.styl'
+@require 'modals.styl'
+
+@require 'tags/menu.styl'
+@require 'tags/nav.styl'
+@require 'tags/tabs.styl'
+@require 'tags/intro.styl'
+@require 'tags/settings.styl'
+@require 'tags/notepad.styl'
+@require 'tags/modules.styl'
+@require 'tags/graphic.styl'
+@require 'tags/graphview.styl'
+@require 'tags/sounds.styl'
+@require 'tags/soundview.styl'
+@require 'tags/styles.styl'
+@require 'tags/styleview.styl'
+@require 'tags/types.styl'
+@require 'tags/typeview.styl'
+@require 'tags/rooms.styl'
+@require 'tags/roomview.styl'
+@require 'tags/hello.styl'

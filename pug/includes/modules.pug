@@ -1,0 +1,37 @@
+#modules.panel.view
+	.pt20.borderright.tall
+		ul#moduleincluded
+		ul#modulelist
+	.pt80.tall
+		ul.nav.tabs
+			li#modinfo(data-tab="#moduleinfo" data-tab-default)
+				i.icon.icon-message
+				span #{modules.info}
+			li#modsettings(data-tab="#modulesettings")
+				i.icon.icon-settings
+				span #{modules.settings}
+			li#modhelp(data-tab="#modulehelp")
+				i.icon.icon-document
+				span #{modules.help}
+			li#modlogs(data-tab="#modulelogs")
+				i.icon.icon-coding
+				span #{modules.logs}
+		div
+			#moduleinfo.tabbed
+				label.bigpower(data-event="toggleModule")
+					i.icon.icon-confirm
+					span
+				h1#modname
+					span
+					span.version
+				a#modsite.external(title="#{modules.author}")
+					i.icon.icon-boy
+					span#modauthor
+				i#modinjects.icon.icon-flash.warning(title="#{modules.hasinjects}")
+				i#modconfigurable.icon.icon-settings.success(title="#{modules.hasfields}")
+				#modinfohtml
+			#modulesettings.tabbed
+			#modulehelp.tabbed
+				h1 #{modules.help}
+			#modulelogs.tabbed
+				h1 #{modules.logs2}

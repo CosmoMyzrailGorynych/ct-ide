@@ -1,0 +1,21 @@
+div#notepad.panel.dockright
+    ul.nav.tabs.nogrow
+        li(data-tab="#notepadlocal" data-tab-default)
+            i.icon.icon-edit
+            span #{notepad.local}
+        li(data-tab="#notepaglobal")
+            i.icon.icon-notepad
+            span #{notepad.global}
+        li(data-tab="#helppages")
+            i.icon.icon-message
+            span #{notepad.helppages}
+    div
+        div#notepadlocal
+            #acernotepadlocal.acer(data-mode="javascript" data-acervar="notepadlocal")
+        div#notepaglobal
+            #acernotepaglobal.acer(data-mode="javascript" data-acervar="notepadglobal")
+        div#helppages
+            iframe(nwdisable nwfaketop)
+
+    button.vertical.dockleft(data-event="notepadToggle")
+        i.icon.icon-back
