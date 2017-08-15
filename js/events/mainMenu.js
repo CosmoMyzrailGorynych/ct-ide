@@ -1,4 +1,4 @@
-events = events || {};
+window.events = window.events || {};
 //-------------- events -------------------
 
 events.fullscreen = function() {
@@ -85,7 +85,7 @@ catMenu.append(new gui.MenuItem({
     }
 }));
 
-//------------ UI links ------------------- 
+//------------ UI links -------------------
 $(function () {
     $('#mainnav [data-tab]').click(function () {
         events.checkSave();

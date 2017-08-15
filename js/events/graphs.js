@@ -1,4 +1,4 @@
-events = events || {};
+window.events = window.events || {};
 //-------------- events -------------------
 events.fillGraphs = function() {
     $('#graphic ul').empty();
@@ -156,15 +156,15 @@ events.openGraph = function(graph) {
 
     $('#graphcols').val(currentGraphic.grid[0] ? currentGraphic.grid[0] : 1);
     $('#graphrows').val(currentGraphic.grid[1] ? currentGraphic.grid[1] : 1);
-    
+
     $('#graphframes').val(currentGraphic.frames ? currentGraphic.frames : 0);
-    
+
     $('#graphrad').val(currentGraphic.r ? currentGraphic.r : 0);
     $('#graphtop').val(currentGraphic.top ? currentGraphic.top : 0);
     $('#graphleft').val(currentGraphic.left ? currentGraphic.left : 0);
     $('#graphright').val(currentGraphic.right ? currentGraphic.right : 0);
     $('#graphbottom').val(currentGraphic.bottom ? currentGraphic.bottom : 0);
-    
+
     $('#graphmarginx').val(currentGraphic.grid[0] ? currentGraphic.margin[0] : 0);
     $('#graphmarginy').val(currentGraphic.grid[1] ? currentGraphic.margin[1] : 0);
     $('#graphoffx').val(currentGraphic.grid[0] ? currentGraphic.offset[0] : 0);
@@ -449,10 +449,10 @@ events.graphGenPreview = function(replace, nam, size) {
         0,
         0,
         graphCanvas.img.width / currentGraphic.grid[0],
-        graphCanvas.img.height / currentGraphic.grid[1], 
-        (size - graphCanvas.img.width*k)/2, 
-        (size - graphCanvas.img.height*k)/2, 
-        graphCanvas.img.width*k, 
+        graphCanvas.img.height / currentGraphic.grid[1],
+        (size - graphCanvas.img.width*k)/2,
+        (size - graphCanvas.img.height*k)/2,
+        graphCanvas.img.width*k,
         graphCanvas.img.height*k
     );
     var data = c.toDataURL().replace(/^data:image\/\w+;base64,/, "");

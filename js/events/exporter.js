@@ -1,4 +1,4 @@
-events = events || {};
+window.events = window.events || {};
 
 events.parsekeys = function(data, str, lib) {
     var str2 = str;
@@ -254,8 +254,8 @@ events.run = function() {
             g: i
         };
     }
-    blocks.sort(function(a,b) { 
-        return (Math.max(b.height,b.width) > Math.max(a.height,a.width)); 
+    blocks.sort(function(a,b) {
+        return (Math.max(b.height,b.width) > Math.max(a.height,a.width));
     });
     var atlasses = 0;
     res = '';
@@ -279,14 +279,14 @@ events.run = function() {
                         me.width - 2,
                         me.height - 2,
                         currentProject.graphs[me.g].axis[0],
-                        currentProject.graphs[me.g].axis[1], //5 
+                        currentProject.graphs[me.g].axis[1], //5
                         currentProject.graphs[me.g].grid[0],
                         currentProject.graphs[me.g].grid[1],
                         currentProject.graphs[me.g].untill,
                         me.fit.x + 1,
                         me.fit.y + 1, // 10
-                        currentProject.graphs[me.g].shape == 
-                            'rect' ? 
+                        currentProject.graphs[me.g].shape ==
+                            'rect' ?
                                 '{"type": "rect", "top":{0},"bottom":{1},"left":{2},"right":{3}}'.f(
                                     currentProject.graphs[me.g].top,
                                     currentProject.graphs[me.g].bottom,
@@ -315,12 +315,12 @@ events.run = function() {
                     me.width - 2,
                     me.height - 2,
                     currentProject.graphs[me.g].axis[0],
-                    currentProject.graphs[me.g].axis[1], //5 
+                    currentProject.graphs[me.g].axis[1], //5
                     currentProject.graphs[me.g].grid[0],
                     currentProject.graphs[me.g].grid[1],
                     currentProject.graphs[me.g].untill,
-                    currentProject.graphs[me.g].shape == 
-                        'rect' ? 
+                    currentProject.graphs[me.g].shape ==
+                        'rect' ?
                             '{"type": "rect", "top":{0},"bottom":{1},"left":{2},"right":{3}}'.f(
                                 currentProject.graphs[me.g].top,
                                 currentProject.graphs[me.g].bottom,

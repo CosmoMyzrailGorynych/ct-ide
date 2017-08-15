@@ -1,4 +1,4 @@
-events = events || {};
+window.events = window.events || {};
 //-------------- events -------------------
 
 events.fillRooms = function() {
@@ -131,7 +131,7 @@ events.refreshRoomCanvas = function () {
 
 
     var i, j, l, c, w, h, xx, yy, hybrid = [];
-    
+
     hybrid = currentRoom.layers.concat(currentRoom.backgrounds);
     hybrid.sort(function (a,b) {
         if (a.depth - b.depth != 0) {
@@ -180,8 +180,8 @@ events.refreshRoomCanvas = function () {
             }
         }
     }
-    
-    roomCanvas.x.lineJoin = "round"; 
+
+    roomCanvas.x.lineJoin = "round";
     roomCanvas.x.strokeStyle = "#446adb";
     roomCanvas.x.lineWidth = 3;
     roomCanvas.x.strokeRect(-1.5,-1.5,currentRoom.width+3,currentRoom.height+3);
@@ -275,10 +275,10 @@ events.roomGenSplash = function() {
         0,
         0,
         roomCanvas.width,
-        roomCanvas.height, 
-        (size - roomCanvas.width*k)/2, 
-        (size - roomCanvas.height*k)/2, 
-        roomCanvas.width*k, 
+        roomCanvas.height,
+        (size - roomCanvas.width*k)/2,
+        (size - roomCanvas.height*k)/2,
+        roomCanvas.width*k,
         roomCanvas.height*k
     );
     var data = c.toDataURL().replace(/^data:image\/\w+;base64,/, "");
@@ -362,7 +362,7 @@ $(function () {$(function () {
         } else {
             if (currentTypePick != -1) {
                 var graph, w, h, grax, gray;
-                // превью вставки 
+                // превью вставки
                 events.refreshRoomCanvas();
                 roomCanvas.x.globalAlpha = 0.5;
                 ct = currentProject.types[currentTypePick];
@@ -427,7 +427,7 @@ $(function () {$(function () {
         glob.roomclosesttype = type.name;
 
         // рисовка выделения
-        roomCanvas.x.lineJoin = "round"; 
+        roomCanvas.x.lineJoin = "round";
         roomCanvas.x.strokeStyle = "#446adb";
         roomCanvas.x.lineWidth = 3;
         var left = copy.x - graph.axis[0] - 1.5,

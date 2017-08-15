@@ -1,4 +1,4 @@
-events = events || {};
+window.events = window.events || {};
 //-------------- events -------------------
 
 events.fillModuleList = function() {
@@ -173,7 +173,7 @@ events.renderMod = function(name) {
 
 //------------ menus ----------------------
 
-// copyme 
+// copyme
 copymeMenu = new gui.Menu();
 copymeMenu.append(new gui.MenuItem({
     label: languageJSON.common.copy,

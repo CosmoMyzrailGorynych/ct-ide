@@ -1,4 +1,4 @@
-events = events || {};
+window.events = window.events || {};
 //-------------- events -------------------
 
 events.fillStyles = function() {

@@ -1,4 +1,4 @@
-events = events || {};
+window.events = window.events || {};
 // trololo
 glob = {
     prev: {},
@@ -31,17 +31,3 @@ String.prototype.format = String.prototype.f = function () {
         return args[n];
     });
 };
-
-
-//@prepros-append events/_main.js
-//@prepros-append events/exporter.js
-//@prepros-append events/graphs.js
-//@prepros-append events/intro.js
-//@prepros-append events/mainMenu.js
-//@prepros-append events/modules.js
-//@prepros-append events/notepad.js
-//@prepros-append events/rooms.js
-//@prepros-append events/settings.js
-//@prepros-append events/sounds.js
-//@prepros-append events/styles.js
-//@prepros-append events/types.js

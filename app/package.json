@@ -36,12 +36,11 @@
     "plugin": false
   },
   "dependencies": {
-    "csswring": "^3.0.1",
-    "ffmpeg-node": "0.0.1",
-    "fs-extra": "^0.15.0",
-    "html-minifier": "^0.7.0",
-    "jade": "^1.10.0",
-    "markdown-it": "^3.0.4",
-    "uglify-js": "^2.4.16"
+    "csswring": "3.0.7",
+    "ffmpeg-node": "git://github.com/xonecas/ffmpeg-node.git",
+    "fs-extra": "0.18.4",
+    "html-minifier": "0.7.2",
+    "markdown-it": "3.1.0",
+    "uglify-js": "2.8.29"
   }
 }
