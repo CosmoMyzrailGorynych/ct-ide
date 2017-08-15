@@ -28,6 +28,7 @@
   "author": "",
   "license": "UNLICENSED",
   "devDependencies": {
+    "fs-extra": "^4.0.1",
     "gulp": "^3.9.1",
     "gulp-append-prepend": "^1.0.4",
     "gulp-closure-compiler": "^0.4.0",

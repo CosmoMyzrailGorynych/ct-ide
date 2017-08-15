@@ -1,71 +1,24 @@
 doctype html
-html
-    head
-        meta(charset="utf-8")
-        title Loading...
-        meta(name="description", content="IDE")
-        meta(name="viewport", content="width=device-width, initial-scale=1")
-
-        link(href="./bundle.css", rel="stylesheet")
-    body
-        div#hello.
-            Hello! Our cats are preparing locale files...
-        div#hell
-            p.
-                Oh, hell. We can't determine your system language. Please, select the one suitable for you:
-            ul.languages-index
-            a(href="http://ctjs.ru/pages/translate.html") Can't find your language? Help us make it appear here!
-
-        script(src="./bundle.js" type="text/javascript")
-        script(type="text/javascript").
-            var fs = require('fs-extra'),
-                jade = require('jade'),
-                path = require('path');
-
-            // get and normalize assets folder (usually unzipped app.nw)
-            assets = process.cwd().replace(/\\/g,'/'); 
-            // get and normalize .exe path
-            exec = path.dirname(process.execPath).replace(/\\/g,'/');
-            // get default folder for projects
-
-            String.prototype.format = String.prototype.f = function () {
-                var args = arguments;
-                return this.replace(/\{\{|\}\}|\{(\d+)\}/g, function (m, n) {
-                    if (m == "{{") { return "{"; }
-                    if (m == "}}") { return "}"; }
-                    return args[n];
-                });
-            };
-
-            function make_locals () {
-                var locales = JSON.parse(fs.readFileSync(exec + '/locales/' + localStorage.language + '.json'));
-                locales.filename = assets + "/jade/index.jade";
-                document.write(jade.renderFile(assets + "/jade/index.jade", locales));
-            }
-
-            if (!localStorage.language) {
-                fs.readdir(exec + '/locales/', function (err, dir) {
-                    if (err)
-                        throw err;
-                    else {
-                        for (var i = 0; i < dir.length; i++) {
-                            if (path.extname(dir[i]) == '.json') {
-                                $('#hell ul').append('\
-                                    <li data-lang="{0}" title="{0}"><img src="{1}/locales/{0}.png" /></li>\
-                                    '.f(path.basename(dir[i], '.json'), exec));
-                            }
-                        }
-                        $('#hello').fadeOut(350)
-                        $('#hell').fadeIn(350)
-                        .delegate('li', 'click', function() {
-                            var me = $(this);
-                            localStorage.language = me.attr('data-lang');
-                            $('#hello').fadeIn(350);
-                            $('#hell').fadeOut(350);
-                            make_locals();
-                        });
-                    }
-                })
-            } else {
-                make_locals();
-            }
+html(lang="ru")
+    include includes/head.pug
+    body.maximized(data-lang="#{me.id}")
+        include includes/menu.pug
+        div
+            include includes/settings.pug
+            include includes/modules.pug
+            include includes/graphic.pug
+            include includes/graphview.pug
+            include includes/sounds.pug
+            include includes/soundview.pug
+            include includes/styles.pug
+            include includes/styleview.pug
+            include includes/types.pug
+            include includes/typeview.pug
+            include includes/rooms.pug
+            include includes/roomview.pug
+        include includes/notepad.pug
+        include includes/footer.pug
+        include includes/intro.pug
+        audio#scream(src="girlyscream_01.ogg")
+        audio#notify(src="notification.ogg")
+        audio#alliluya(src="alliluya.ogg")

@@ -1,5 +1,5 @@
 (function () {
-    'use strict'
+    'use strict';
 
     const notifier = require('node-notifier'),
         path = require('path'),
@@ -8,7 +8,8 @@
         stylus = require('gulp-stylus'),
         pug = require('gulp-pug'),
         streamQueue = require('streamqueue'),
-        closureCompiler = require('gulp-closure-compiler');
+        closureCompiler = require('gulp-closure-compiler'),
+        fs = require('fs-extra');
 
     var fileChangeNotifier = e => {
         notifier.notify({
@@ -106,8 +107,10 @@
         .pipe(gulp.dest('./app/'));
     });
     gulp.task('pug', function () {
+        var locales = JSON.parse(fs.readFileSync('./app/i18n/Ru.json'));
         return gulp.src('./pug/*.pug')
         .pipe(pug({
+            locals: locales,
             pretty: false
         }))
         .on('error', err => {
