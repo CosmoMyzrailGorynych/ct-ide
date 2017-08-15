@@ -231,7 +231,7 @@
     "require-await": "error",
     "require-jsdoc": "off",
     "rest-spread-spacing": "error",
-    "semi": ["error", "never"],
+    "semi": ["error", "always"],
     "semi-spacing": "error",
     "sort-imports": "error",
     "sort-keys": "off",
