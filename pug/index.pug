@@ -6,7 +6,7 @@ html
         meta(name="description", content="IDE")
         meta(name="viewport", content="width=device-width, initial-scale=1")
 
-        link(href="./css/main.css", rel="stylesheet")
+        link(href="./bundle.css", rel="stylesheet")
     body
         div#hello.
             Hello! Our cats are preparing locale files...
@@ -16,7 +16,7 @@ html
             ul.languages-index
             a(href="http://ctjs.ru/pages/translate.html") Can't find your language? Help us make it appear here!
 
-        script(src="./js/jquery.js" type="text/javascript")
+        script(src="./bundle.js" type="text/javascript")
         script(type="text/javascript").
             var fs = require('fs-extra'),
                 jade = require('jade'),

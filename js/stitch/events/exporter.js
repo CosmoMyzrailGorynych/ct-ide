@@ -1,3 +1,5 @@
+events = events || {};
+
 events.parsekeys = function(data, str, lib) {
     var str2 = str;
     if (data.fields) {

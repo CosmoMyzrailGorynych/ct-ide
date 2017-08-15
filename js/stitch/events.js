@@ -1,4 +1,4 @@
-events = {};
+events = events || {};
 // trololo
 glob = {
     prev: {},

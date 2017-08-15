@@ -1,4 +1,4 @@
-
+events = events || {};
 //-------------- events -------------------
 
 events.notepadToggle = function() {
