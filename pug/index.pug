@@ -16,9 +16,11 @@ html(lang="ru")
             include includes/typeview.pug
             include includes/rooms.pug
             include includes/roomview.pug
-        include includes/notepad.pug
+        notepad-panel
         include includes/footer.pug
         include includes/intro.pug
         audio#scream(src="girlyscream_01.ogg")
         audio#notify(src="notification.ogg")
         audio#alliluya(src="alliluya.ogg")
+        script.
+            riot.mount('*');

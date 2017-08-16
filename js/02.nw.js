@@ -35,6 +35,7 @@ fs.mkdirs(way, function (e) {
 //        events.js --> openProject
 
 // language pack
+// 2017: не удалять, нужно для динамической локализации
 window.languageJSON = JSON.parse(fs.readFileSync(assets+'/i18n/Ru.json'));
 
 // OS type vars

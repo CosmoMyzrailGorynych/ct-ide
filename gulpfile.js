@@ -6,6 +6,7 @@
         gulp = require('gulp'),
         concat = require('gulp-concat'),
         stylus = require('gulp-stylus'),
+        riot = require('gulp-riot'),
         pug = require('gulp-pug'),
         streamQueue = require('streamqueue'),
         closureCompiler = require('gulp-closure-compiler'),
@@ -21,9 +22,36 @@
         });
     };
 
-    gulp.task('scripts', [], function () {
+
+    gulp.task('riot', function() {
+        return gulp.src('./tags/**')
+        .pipe(riot({
+            compact: false,
+            template: 'pug'
+        }))
+        .pipe(concat('riot.js'))
+        .pipe(gulp.dest('./temp'));
+    });
+    gulp.task('watchRiot', function() {
+        return gulp.watch('./tags/**', ['scripts'])
+        .on('error', err => {
+            notifier.notify({
+                title: 'Ошибка Riot',
+                message: err.toString(),
+                icon: path.join(__dirname, 'error.png'),
+                sound: true,
+                wait: true
+            });
+            console.error('[pug error]', err);
+        })
+        .on('change', fileChangeNotifier);
+    });
+
+
+    gulp.task('scripts', ['riot'], function () {
         streamQueue({objectMode: true},
-            gulp.src('./js/**')
+            gulp.src('./js/**'),
+            gulp.src('./temp/riot.js')
         )
         .pipe(concat('bundle.js'))
         .pipe(gulp.dest('./app/'))
@@ -126,5 +154,5 @@
         .pipe(gulp.dest('./app/'));
     });
 
-    gulp.task('default', ['pug', 'stylus', 'watchScripts', 'watchStyl', 'watchPug', 'scripts']);
+    gulp.task('default', ['pug', 'stylus', 'watchScripts', 'watchStyl', 'watchPug', 'scripts', 'watchRiot']);
 })();

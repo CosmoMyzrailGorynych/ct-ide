@@ -1,9 +1,9 @@
 
-//    __  __        _       
-//   |  \/  | __ _ (_) _ _  
-//   | |\/| |/ _` || || ' \ 
+//    __  __        _
+//   |  \/  | __ _ (_) _ _
+//   | |\/| |/ _` || || ' \
 //   |_|  |_|\__,_||_||_||_|
-//                          
+//
 
 /*******************************************
 
@@ -53,7 +53,7 @@
 
 *******************************************/
 
-/* 
+/*
    String.f (String.format - alias)
    Super-duper basic templating function.
    "I have {0} apples".f(3)
@@ -84,41 +84,6 @@ if (!localStorage.fontSize) {
     localStorage.notes = '';
 }
 
-
-
-// ace hotkeys
-// decrease and increase font size
-function extend_hotkeys (editor) {
-    editor.commands.addCommand({
-        name: 'increaseFontSize',
-        bindKey: {win: 'Ctrl-+',  mac: 'Command-+'},
-        exec: function(editor) {
-            var num = Number(localStorage.fontSize);
-            if (num < 48) {
-                num ++;
-                localStorage.fontSize = num;
-                editor.style.fontSize = num+'px';
-            }
-            return false;
-        },
-        readOnly: true
-    });
-    editor.commands.addCommand({
-        name: 'decreaseFontSize',
-        bindKey: {win: 'Ctrl-minus',  mac: 'Command-minus'},
-        exec: function(editor) {
-            var num = Number(localStorage.fontSize);
-            if (num > 6) {
-                num --;
-                localStorage.fontSize = num;
-                editor.style.fontSize = num+'px';
-            }
-            return false;
-        },
-        readOnly: true
-    });
-}
-
 // bind f1
 key('f1', function () {
     gui.Shell.openItem(exec + '/docs/index.html')
@@ -138,30 +103,6 @@ $(function () {
     roomCanvas.x = roomCanvas.getContext('2d');
     roomCanvas.x.imageSmoothingEnabled = false;
 
-    // ace
-    acers = []; // скрытая реклама хохо
-    langTools = ace.require("ace/ext/language_tools");
-    $('.acer').each(function () {
-        // [ace] == textarea/editor wrap
-        // [ace].acer == ace instance (`editor`)
-        // [ace].acer.sess == ace session
-        jq = $(this);
-        var me = ace.edit(this);
-        extend_hotkeys(me);
-        me.setTheme('ace/theme/tomorrow');
-        this.acer = me;
-        me.sess = me.getSession();
-        this.style.fontSize = localStorage.fontSize + 'px';
-        window[jq.attr('data-acervar')] = me;
-        me.sess.setMode("ace/mode/" + jq.attr('data-mode'));
-        me.setOptions({
-            enableBasicAutocompletion: true,
-            enableSnippets: true,
-            enableLiveAutocompletion: true
-        });
-        acers.push(me);
-    });
-
     // intro
     if (localStorage.lastProjects != '') {
         glob.lastProjects = localStorage.lastProjects.split(';');
@@ -178,11 +119,11 @@ $(function () {
     }
 
 
-    alertify.set({ 
+    alertify.set({
         labels: {
             ok: languageJSON.common.ok,
             cancel: languageJSON.common.cancel
-        } 
+        }
     });
 
     // Run IDE
