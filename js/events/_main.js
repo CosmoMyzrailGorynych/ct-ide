@@ -1,5 +1,5 @@
 /*
-    ___                 _       
+    ___                 _
    | __|__ __ ___  _ _ | |_  ___
    | _| \ V // -_)| ' \|  _|(_-<
    |___| \_/ \___||_||_|\__|/__/
@@ -68,7 +68,7 @@ patterns = {
 
 /*
     temporary global objects for editing:
-    
+
     currentGraphic = {};
     currentType = {};
     currentSound = {};
@@ -99,20 +99,6 @@ function checkPattern() {
 }
 
 $(function() {
-    // update check
-    $.get('http://ctjs.ru/version.json',{},function (e,a,u) {
-        if (a == 'success') {
-            if (e.release > RELEASE) {
-                $('#alliluya')[0].volume = 0.7;
-                $('#alliluya')[0].play();
-                alertify.confirm(md.render(languageJSON.common.newversion + e.desc), function (blurp) {
-                    if (blurp) {
-                        gui.Shell.openExternal(e.download);
-                    }
-                });
-            }
-        }
-    });
 
     // init events
     $('[data-event]:not([type="file"])').click(function(e) {
