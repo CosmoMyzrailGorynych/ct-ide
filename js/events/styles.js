@@ -6,7 +6,7 @@ events.fillStyles = function() {
     for (var i = 0; i < currentProject.styles.length; i++) {
         $('#styles ul').append(tmpl.style.f(
             currentProject.styles[i].name,
-            projdir + '/img/s' + currentProject.styles[i].uid + '.png',
+            sessionStorage.projdir + '/img/s' + currentProject.styles[i].uid + '.png',
             i
         ));
     }
@@ -233,7 +233,7 @@ events.styleSet = function (cx) {
                 for (var i = 0; i < currentProject.graphs.length; i++) {
                     if (currentProject.graphs[i].name == currentStyle.fill.patname) {
                         cx.img = imga;
-                        imga.src = projdir + '/img/' + currentProject.graphs[i].origname;
+                        imga.src = sessionStorage.projdir + '/img/' + currentProject.graphs[i].origname;
                         break;
                     }
                 }
@@ -320,13 +320,13 @@ events.styleGenPreview = function () {
     }
     var data = c.toDataURL().replace(/^data:image\/\w+;base64,/, "");
     var buf = new Buffer(data, 'base64');
-    fs.writeFile(projdir + '/img/s' + currentStyle.uid + '.png', buf, function(err) {
+    fs.writeFile(sessionStorage.projdir + '/img/s' + currentStyle.uid + '.png', buf, function(err) {
         if (err) {
             console.log(err);
         }
-        console.log('new thumbnail', projdir + '/img/s' + currentStyle.uid + '.png');
+        console.log('new thumbnail', sessionStorage.projdir + '/img/s' + currentStyle.uid + '.png');
         $('#styles .cards li[data-style="{0}"] img'.f(currentStyleId)).attr('src', '')
-        .attr('src', projdir + '/img/s' + currentProject.styles[currentStyleId].uid + '.png?{0}'.f(Math.random()));
+        .attr('src', sessionStorage.projdir + '/img/s' + currentProject.styles[currentStyleId].uid + '.png?{0}'.f(Math.random()));
     });
     $(c).remove(); // is needed?
 };

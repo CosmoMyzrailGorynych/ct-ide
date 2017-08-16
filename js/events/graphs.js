@@ -5,7 +5,7 @@ events.fillGraphs = function() {
     for (var i = 0; i < currentProject.graphs.length; i++) {
         $('#graphic ul').append(tmpl.graph.f(
             currentProject.graphs[i].name,
-            projdir + '/img/' + currentProject.graphs[i].origname + '_prev.png',
+            sessionStorage.projdir + '/img/' + currentProject.graphs[i].origname + '_prev.png',
             i
         ));
     }
@@ -18,7 +18,7 @@ events.fillGraphMap = function () {
         var img = document.createElement('img');
         glob.graphmap[a.origname] = img;
         img.g = a;
-        img.src = projdir + '/img/' + a.origname;
+        img.src = sessionStorage.projdir + '/img/' + a.origname;
     });
     var img = document.createElement('img');
     glob.graphmap[-1] = img;
@@ -178,7 +178,7 @@ events.openGraph = function(graph) {
 
     if (!currentGraphic.frames) {
         var img = document.createElement('img');
-        img.src = projdir + '/img/' + currentGraphic.origname;
+        img.src = sessionStorage.projdir + '/img/' + currentGraphic.origname;
         img.onload = function() {
             events.splitImage(img,currentGraphic.grid[0],grid[1],0,0,0,0,currentGraphic.untill, currentGraphic.origname);
             currentGraphic.frames = currentGraphic.grid[0],grid[1];
@@ -243,8 +243,8 @@ events.graphicCenter = function() {
     events.refreshGraphCanvas();
 };
 events.graphicSave = function() {
-    events.graphGenPreview(true, projdir + '/img/' + currentProject.graphs[currentGraphicId].origname + '_prev.png', 64);
-    events.graphGenPreview(false, projdir + '/img/' + currentProject.graphs[currentGraphicId].origname + '_prev@2.png', 128);
+    events.graphGenPreview(true, sessionStorage.projdir + '/img/' + currentProject.graphs[currentGraphicId].origname + '_prev.png', 64);
+    events.graphGenPreview(false, sessionStorage.projdir + '/img/' + currentProject.graphs[currentGraphicId].origname + '_prev@2.png', 128);
     events.fillGraphs();
     glob.modified = true;
     $('#graphview').hide();
@@ -308,7 +308,7 @@ events.graphicImport = function(me) { // input[type="file"]
             events.loadImg(
                 i,
                 files[i],
-                projdir + '/img/i' + currentProject.graphtick + path.extname(files[i]),
+                sessionStorage.projdir + '/img/i' + currentProject.graphtick + path.extname(files[i]),
                 true
             );
         } else {
@@ -322,7 +322,7 @@ events.graphReplace = function (me) {
         events.loadImg(
             0,
             me.val(),
-            projdir + '/img/i' + parseInt(currentGraphic.origname.slice(1)) + path.extname(me.val()),
+            sessionStorage.projdir + '/img/i' + parseInt(currentGraphic.origname.slice(1)) + path.extname(me.val()),
             false
         );
     } else {
@@ -352,7 +352,7 @@ events.loadImg = function(myi, filename, dest, imprt) {
                 };
                 $('#graphic .cards').append(tmpl.graph.f(
                     obj.name,
-                    projdir + '/img/' + obj.origname + '?' + Math.random(),
+                    sessionStorage.projdir + '/img/' + obj.origname + '?' + Math.random(),
                     currentProject.graphs.length
                 ));
                 this.id = currentProject.graphs.length;
@@ -432,7 +432,7 @@ events.imgGenPreview = function(source, name, size, cb) {
     imga.src = source;
 };
 events.graphGenPreview = function(replace, nam, size) {
-    // nam = projdir + '/img/' + currentProject.graphs[currentGraphicId].origname + '_prev.png'
+    // nam = sessionStorage.projdir + '/img/' + currentProject.graphs[currentGraphicId].origname + '_prev.png'
     var c = document.createElement('canvas'), w, h, k;
     c.x = c.getContext('2d');
     c.width = c.height = size;
@@ -533,7 +533,7 @@ graphMenu.append(new gui.MenuItem({
                     gr.name = nam;
                     currentProject.graphtick ++;
                     gr.origname = 'i' + currentProject.graphtick + path.extname(currentGraphic.origname);
-                    megacopy(projdir + '/img/' + currentGraphic.origname, projdir + '/img/i' + currentProject.graphtick + path.extname(currentGraphic.origname), function () {
+                    megacopy(sessionStorage.projdir + '/img/' + currentGraphic.origname, sessionStorage.projdir + '/img/i' + currentProject.graphtick + path.extname(currentGraphic.origname), function () {
                         currentProject.graphs.push(gr);
                         events.fillGraphs();
                     });

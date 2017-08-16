@@ -10,7 +10,7 @@ events.ct = function(e) {
     catMenu.popup(e.clientX, e.clientY);
 };
 events.save = function() {
-    fs.outputJSON(projdir + '.ict', currentProject, function(e) {
+    fs.outputJSON(sessionStorage.projdir + '.ict', currentProject, function(e) {
         if (e) {
             throw e;
         }

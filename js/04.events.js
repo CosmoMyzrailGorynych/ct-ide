@@ -1,9 +1,11 @@
 window.events = window.events || {};
 // trololo
-glob = {
+var gui = require('nw.gui');
+var win = gui.Window.get();
+var glob = {
     prev: {},
-    findmylayer: function (a) {
-        if (a.depth == currentProject.types[currentTypePick].depth) {
+    findmylayer(a) {
+        if (a.depth === window.currentProject.types[currentTypePick].depth) {
             glob.layer = a;
             return true;
         }
@@ -16,9 +18,9 @@ glob = {
     },
     set modified (v) {
         if (v) {
-            win.title = 'ct.ide — ' + projname + ' •';
+            win.title = 'ct.ide — ' + sessionStorage.projname + ' •';
         } else {
-            win.title = 'ct.ide — ' + projname;
+            win.title = 'ct.ide — ' + sessionStorage.projname;
         }
         return this.mmodified = v;
     }

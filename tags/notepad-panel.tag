@@ -31,6 +31,10 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
             this.tab = tab;
         };
         
+        this.on('update', () => {
+            this.notepadlocal.setValue(window.currentProject.notes || '');
+        });
+        
         this.on('mount', () => {
             setTimeout(() => {
                 this.notepadlocal = window.setupAceEditor(this.refs.notepadlocal, {
@@ -47,7 +51,6 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
                 this.notepadglobal.getSession().on('change', function(e) {
                     localStorage.notes = this.notepadglobal.getValue();
                 });
-                
                 this.notepadglobal.setValue(localStorage.notes);
             }, 0);
         });

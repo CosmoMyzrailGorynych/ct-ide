@@ -6,7 +6,7 @@ events.fillSounds = function() {
     for (var i = 0; i < currentProject.sounds.length; i++) {
         $('#sounds ul').append(tmpl.sound.f(
             currentProject.sounds[i].name,
-            //projdir + '/sounds/s' + currentProject.sounds[i].uid + '.png',
+            //sessionStorage.projdir + '/sounds/s' + currentProject.sounds[i].uid + '.png',
             assets + '/img/wave.png',
             i
         ));
@@ -32,7 +32,7 @@ events.openSound = function (sound) {
     $('#soundname').val(currentSound.name);
     $('#soundview').show();
     if (currentSound.origname) {
-        $('#soundaudio').attr('src', projdir + '/snd/' + currentSound.origname);
+        $('#soundaudio').attr('src', sessionStorage.projdir + '/snd/' + currentSound.origname);
     }
 };
 events.soundPlay = function () {
@@ -110,8 +110,8 @@ $(function () {
     $('#inputsound').change(function () {
         me = $(this);
         currentSound.origname = 's' + currentSound.uid + path.extname(me.val());
-        megacopy(me.val(),projdir + '/snd/' + currentSound.origname, function () {
-            $('#soundaudio').attr('src', projdir + '/snd/' + currentSound.origname);
+        megacopy(me.val(),sessionStorage.projdir + '/snd/' + currentSound.origname, function () {
+            $('#soundaudio').attr('src', sessionStorage.projdir + '/snd/' + currentSound.origname);
         });
         me.val('');
     });

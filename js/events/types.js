@@ -9,7 +9,7 @@ events.fillTypes = function() {
         if (currentProject.types[i].graph != -1) {
             for (var j = 0; j < currentProject.graphs.length; j++) {
                 if (currentProject.graphs[j].origname == currentProject.types[i].graph) {
-                    erm = projdir + '/img/' + currentProject.types[i].graph + '_prev.png';
+                    erm = sessionStorage.projdir + '/img/' + currentProject.types[i].graph + '_prev.png';
                     break;
                 }
             }

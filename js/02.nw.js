@@ -30,7 +30,7 @@ fs.mkdirs(way, function (e) {
         throw e;
     }
 });
-// projdir = way + '/' + currentProject.codename
+// sessionStorage.projdir = way + '/' + currentProject.codename
 // see in events.js --> newProject
 //        events.js --> openProject
 

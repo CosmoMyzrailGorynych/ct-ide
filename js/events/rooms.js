@@ -6,7 +6,7 @@ events.fillRooms = function() {
     for (var i = 0; i < currentProject.rooms.length; i++) {
         $('#rooms ul').append(tmpl.room.f(
             currentProject.rooms[i].name,
-            projdir + '/img/r' + currentProject.rooms[i].uid + '.png',
+            sessionStorage.projdir + '/img/r' + currentProject.rooms[i].uid + '.png',
             i
         ));
     }
@@ -103,7 +103,7 @@ events.roomToggleZoom = function () {
 events.roomRefillBg = function () {
     $('#roombgstack').children().remove();
     for (var i = 0; i < currentRoom.backgrounds.length; i++) {
-        $('#roombgstack').append(tmpl.background.f(projdir + '/img/' + currentRoom.backgrounds[i].graph,currentRoom.backgrounds[i].depth,i));
+        $('#roombgstack').append(tmpl.background.f(sessionStorage.projdir + '/img/' + currentRoom.backgrounds[i].graph,currentRoom.backgrounds[i].depth,i));
     }
 };
 events.roomEvents = function () {
@@ -283,7 +283,7 @@ events.roomGenSplash = function() {
     );
     var data = c.toDataURL().replace(/^data:image\/\w+;base64,/, "");
     var buf = new Buffer(data, 'base64');
-    nam = projdir + '/img/r' + currentRoom.uid + '.png';
+    nam = sessionStorage.projdir + '/img/r' + currentRoom.uid + '.png';
     fs.writeFile(nam, buf, function(err) {
         if (err) {
             console.log(err);
@@ -292,7 +292,7 @@ events.roomGenSplash = function() {
             $('#rooms .cards li[data-room="{0}"] img'.f(currentRoomId)).attr('src', '').attr('src', nam + '?{0}'.f(Math.random()));
         }
     });
-    nam2 = projdir + '/img/splash.png';
+    nam2 = sessionStorage.projdir + '/img/splash.png';
     fs.writeFile(nam2, buf, function(err) {
         if (err) {
             console.log(err);
@@ -536,7 +536,7 @@ $(function () {
         $('#tempgraphic .cards').delegate('li','click', function () {
             var me = $(this);
             currentRoom.backgrounds[currentBackground].graph = currentProject.graphs[me.attr('data-graph')].origname;
-            $('#roombgstack li:eq({0}) img'.f(currentBackground)).attr('src', projdir + '/img/' + currentProject.graphs[me.attr('data-graph')].origname);
+            $('#roombgstack li:eq({0}) img'.f(currentBackground)).attr('src', sessionStorage.projdir + '/img/' + currentProject.graphs[me.attr('data-graph')].origname);
             $('#tempgraphic').hide();
             events.refreshRoomCanvas();
         });
@@ -612,7 +612,7 @@ roomMenu.append(new gui.MenuItem({
                     currentProject.rooms.push(rm);
                     currentRoomId = currentProject.rooms.length - 1;
                     currentRoom = currentProject.rooms[currentRoomId];
-                    fs.linkSync(projdir + '/img/r' + rm.uid + '.png', projdir + '/img/r' + currentProject.roomtick + '.png')
+                    fs.linkSync(sessionStorage.projdir + '/img/r' + rm.uid + '.png', sessionStorage.projdir + '/img/r' + currentProject.roomtick + '.png')
                     rm.uid = currentProject.roomtick;
                     events.fillRooms();
                 }

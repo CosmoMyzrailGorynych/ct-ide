@@ -330,7 +330,7 @@ events.run = function() {
                         :
                             '{"type":"circle","r":{0}}'.f(currentProject.graphs[me.g].r)
                 );
-                fs.copySync(projdir + '/img/' + currentProject.graphs[me.g].origname, exec + '/export/img/' + currentProject.graphs[me.g].origname);
+                fs.copySync(sessionStorage.projdir + '/img/' + currentProject.graphs[me.g].origname, exec + '/export/img/' + currentProject.graphs[me.g].origname);
                 graphurls += '"img/' + currentProject.graphs[me.g].origname + '",';
                 graphtotal ++;
             }
@@ -389,8 +389,8 @@ events.run = function() {
     .replace('@sound@', sounds);
 
     /* инклюды */
-    if (fs.existsSync(projdir + '/include/')) {
-        fs.copySync(projdir + '/include/', exec + '/export/');
+    if (fs.existsSync(sessionStorage.projdir + '/include/')) {
+        fs.copySync(sessionStorage.projdir + '/include/', exec + '/export/');
     }
 
     /* финализация скрипта */
@@ -431,20 +431,20 @@ events.run = function() {
         }).css));
     }
     for (k in currentProject.sounds) {
-        fs.copySync(projdir + '/snd/' + currentProject.sounds[k].origname, exec + '/export/snd/' + currentProject.sounds[k].uid + '.mp3');
-        fs.copySync(projdir + '/snd/' + currentProject.sounds[k].origname, exec + '/export/snd/' + currentProject.sounds[k].uid + '.ogg');
+        fs.copySync(sessionStorage.projdir + '/snd/' + currentProject.sounds[k].origname, exec + '/export/snd/' + currentProject.sounds[k].uid + '.mp3');
+        fs.copySync(sessionStorage.projdir + '/snd/' + currentProject.sounds[k].origname, exec + '/export/snd/' + currentProject.sounds[k].uid + '.ogg');
     }
     /*
     glob.soundstoget = currentProject.sounds.length * 2;
     for (k in currentProject.sounds) {
-        ffmpeg.mp3(projdir + '/sound/' + currentProject.sounds[k].origname, function (err, out, code) {
+        ffmpeg.mp3(sessionStorage.projdir + '/sound/' + currentProject.sounds[k].origname, function (err, out, code) {
             if (err) {
                 console.log(err, out, code);
                 throw err;
             }
             events.compileAudio();
         });
-        ffmpeg.ogg(projdir + '/sound/' + currentProject.sounds[k].origname, function (err, out, code) {
+        ffmpeg.ogg(sessionStorage.projdir + '/sound/' + currentProject.sounds[k].origname, function (err, out, code) {
             if (err) {
                 console.log(err, out, code);
                 throw err;
