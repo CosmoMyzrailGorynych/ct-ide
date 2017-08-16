@@ -269,8 +269,8 @@
         for (let i = 0; i < window.currentProject.graphs.length; i++) {
             blocks[i] = {
                 origname: window.currentProject.graphs[i].origname,
-                width: window.currentProject.graphs[i].width + 2, // margin
-                height: window.currentProject.graphs[i].height + 2,
+                width: window.currentProject.graphs[i].width,
+                height: window.currentProject.graphs[i].height,
                 g: i
             };
         }
@@ -281,82 +281,53 @@
         var res = '';
         var graphurls = '';
         var graphtotal = 0;
-        while (true) {
-            const bin = new Packer(1024, 1024); // TODO: make configurable
-            bins.push(bin);
-            bin.fit(blocks);
-            if (bin.root.used) {
-                const canv = document.createElement('canvas');
-                canv.width = canv.height = 1024; // TODO
-                canv.x = canv.getContext('2d');
-                for (var i = 0; i < blocks.length; i++) {
-                    const me = blocks[i];
-                    if (me.fit) {
-                        canv.x.drawImage(glob.graphmap[me.origname],me.fit.x+1,me.fit.y+1) // margins
-                        res += 'ct.res.makesprite("{0}","img/{1}",{9},{10},{2},{3},{4},{5},{6},{7},{8},{11});\n'.f(
-                            window.currentProject.graphs[me.g].name, // 0
-                            'a{0}.png'.f(atlasses+1),
-                            me.width - 2,
-                            me.height - 2,
-                            window.currentProject.graphs[me.g].axis[0],
-                            window.currentProject.graphs[me.g].axis[1], // 5
-                            window.currentProject.graphs[me.g].grid[0],
-                            window.currentProject.graphs[me.g].grid[1],
-                            window.currentProject.graphs[me.g].untill,
-                            me.fit.x + 1,
-                            me.fit.y + 1, // 10
-                            window.currentProject.graphs[me.g].shape ===
-                                'rect' ?
-                                    '{"type": "rect", "top":{0},"bottom":{1},"left":{2},"right":{3}}'.f(
-                                        window.currentProject.graphs[me.g].top,
-                                        window.currentProject.graphs[me.g].bottom,
-                                        window.currentProject.graphs[me.g].left,
-                                        window.currentProject.graphs[me.g].right
-                                    )
-                                :
-                                    '{"type":"circle","r":{0}}'.f(window.currentProject.graphs[me.g].r)
-                        );
-                        blocks.splice(i,1);
-                        i--;
-                    }
-                }
-                atlasses++;
-                var data = canv.toDataURL().replace(/^data:image\/\w+;base64,/, '');
-                var buf = new Buffer(data, 'base64');
-                fs.writeFileSync(exec + '/export/img/a{0}.png'.f(atlasses), buf); // TODO
-                graphurls += '"img/a{0}.png",'.f(atlasses);
-                graphtotal++;
-            } else {
-                for (let k = 0; k < blocks.length; k++) {
-                    const me = blocks[k];
-                    res += 'ct.res.makesprite("{0}","img/{1}",0,0,{2},{3},{4},{5},{6},{7},{8},{9});\n'.f(
-                        window.currentProject.graphs[me.g].name, // 0
-                        me.origname,
-                        me.width - 2,
-                        me.height - 2,
-                        window.currentProject.graphs[me.g].axis[0],
-                        window.currentProject.graphs[me.g].axis[1], // 5
-                        window.currentProject.graphs[me.g].grid[0],
-                        window.currentProject.graphs[me.g].grid[1],
-                        window.currentProject.graphs[me.g].untill,
-                        window.currentProject.graphs[me.g].shape ==
-                            'rect' ?
-                                '{"type": "rect", "top":{0},"bottom":{1},"left":{2},"right":{3}}'.f(
-                                    window.currentProject.graphs[me.g].top,
-                                    window.currentProject.graphs[me.g].bottom,
-                                    window.currentProject.graphs[me.g].left,
-                                    window.currentProject.graphs[me.g].right
-                                )
-                            :
-                                '{"type":"circle","r":{0}}'.f(window.currentProject.graphs[me.g].r)
-                    );
-                    fs.copySync(sessionStorage.projdir + '/img/' + window.currentProject.graphs[me.g].origname, exec + '/export/img/' + window.currentProject.graphs[me.g].origname);
-                    graphurls += '"img/' + window.currentProject.graphs[me.g].origname + '",';
-                    graphtotal ++;
-                }
-                break;
+        const Packer = require('maxrects-packer');
+        const atlasWidth = 1024,
+              atlasHeight = 1024; // TODO: make configurable
+        const pack = new Packer(atlasWidth, atlasHeight, 1);
+        pack.addArray(blocks);
+        var atlasses = pack.bins.length;
+        pack.bins.forEach((bin, binInd) => {
+            const atlas = document.createElement('canvas');
+            atlas.width = bin.width;
+            atlas.height = bin.height;
+            atlas.x = atlas.getContext('2d');
+            for (var i = 0; i < bin.rects.length; i++) {
+                const block = bin.rects[i];
+                atlas.x.drawImage(glob.graphmap[block.origname], block.fit.x, block.fit.y);
+                res += 'ct.res.makesprite("{0}","img/{1}",{9},{10},{2},{3},{4},{5},{6},{7},{8},{11});\n'.f(
+                    window.currentProject.graphs[block.g].nablock, // 0
+                    'a{0}.png'.f(binInd),
+                    block.width - 2,
+                    block.height - 2,
+                    window.currentProject.graphs[block.g].axis[0],
+                    window.currentProject.graphs[block.g].axis[1], // 5
+                    window.currentProject.graphs[block.g].grid[0],
+                    window.currentProject.graphs[block.g].grid[1],
+                    window.currentProject.graphs[block.g].untill,
+                    block.fit.x + 1,
+                    block.fit.y + 1, // 10
+                    window.currentProject.graphs[block.g].shape ===
+                        'rect' ?
+                            '{"type": "rect", "top":{0},"bottom":{1},"left":{2},"right":{3}}'.f(
+                                window.currentProject.graphs[block.g].top,
+                                window.currentProject.graphs[block.g].bottom,
+                                window.currentProject.graphs[block.g].left,
+                                window.currentProject.graphs[block.g].right
+                            )
+                        :
+                            '{"type":"circle","r":{0}}'.f(window.currentProject.graphs[block.g].r)
+                );
+                blocks.splice(i,1);
+                i--;
             }
-        }
+            var data = atlas.toDataURL().replace(/^data:image\/\w+;base64,/, '');
+            var buf = new Buffer(data, 'base64');
+            fs.writeFileSync(exec + '/export/img/a{0}.png'.f(binInd), buf);
+            graphurls += '"img/a{0}.png",'.f(binInd);
+            graphtotal++;
+        });
+
         graphurls = graphurls.slice(0, -1);
         buffer += fs.readFileSync('/ct.release/res.js', {
             'encoding': 'utf8'
