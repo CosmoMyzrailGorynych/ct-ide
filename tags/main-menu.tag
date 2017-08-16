@@ -34,7 +34,7 @@ main-menu
                 i.icon.icon-room
                 span {voc.rooms}
     div
-        include ./../pug/includes/settings.pug
+        settings-panel
         include ./../pug/includes/modules.pug
         include ./../pug/includes/graphic.pug
         include ./../pug/includes/graphview.pug
