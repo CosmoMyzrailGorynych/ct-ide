@@ -7,8 +7,7 @@
         } else {
             root = window;
         }
-        if (e.target.type === 'checkbox' ||
-            e.target.type === 'radio') {
+        if (e.target.type === 'checkbox') {
             val = e.target.checked;
         } else {
             val = e.target.value;

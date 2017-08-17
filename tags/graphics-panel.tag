@@ -15,7 +15,7 @@ graphics-panel.panel.view
         )
             span {graphic.name}
             img(src="{sessionStorage.projdir + '/img/' + graphic.origname + '_prev.png'}")
-    graphic-editor(if="editing" graphic="{currentGraphic}")
+    graphic-editor(if="{editing}" graphic="{currentGraphic}")
 
     #tempgraphic.panel.view
         ul.cards
@@ -30,6 +30,23 @@ graphics-panel.panel.view
               gui = require('nw.gui');
         this.voc = window.languageJSON.graphic;
         this.editing = false;
+        
+        
+        this.fillGraphMap = function () {
+            glob.graphmap = {};
+            window.currentProject.graphs.forEach(function (graph) {
+                var img = document.createElement('img');
+                glob.graphmap[graph.origname] = img;
+                img.g = graph;
+                img.src = sessionStorage.projdir + '/img/' + graph.origname;
+            });
+            var img = document.createElement('img');
+            glob.graphmap[-1] = img;
+            img.src = assets + '/img/unknown.png';
+        };
+        this.on('mount' => {
+            this.fillGraphMap();
+        })
         
         /**
          * Событие добавления файлов через проводник
