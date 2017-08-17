@@ -112,7 +112,7 @@ project-selector(show="{visible}")
                 this.loadProject(projectData);
             });
             return false;
-        });
+        };
         
         /**
          * Открывает проект и вызывает обновление всего приложения

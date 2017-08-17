@@ -36,16 +36,17 @@ main-menu
     div
         settings-panel
         modules-panel
-        include ./../pug/includes/graphic.pug
-        include ./../pug/includes/graphview.pug
-        include ./../pug/includes/sounds.pug
-        include ./../pug/includes/soundview.pug
-        include ./../pug/includes/styles.pug
-        include ./../pug/includes/styleview.pug
-        include ./../pug/includes/types.pug
-        include ./../pug/includes/typeview.pug
-        include ./../pug/includes/rooms.pug
-        include ./../pug/includes/roomview.pug
+        //
+            include ./../pug/includes/graphic.pug
+            include ./../pug/includes/graphview.pug
+            include ./../pug/includes/sounds.pug
+            include ./../pug/includes/soundview.pug
+            include ./../pug/includes/styles.pug
+            include ./../pug/includes/styleview.pug
+            include ./../pug/includes/types.pug
+            include ./../pug/includes/typeview.pug
+            include ./../pug/includes/rooms.pug
+            include ./../pug/includes/roomview.pug
     script.
         this.voc = window.languageJSON.menu;
         this.tab = 'settings';
@@ -91,7 +92,7 @@ main-menu
         catMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.save,
             icon: assets + (isMac ? '/img/black/' : '/img/blue/') + 'save.png',
-            click: this.save
+            click: this.saveProject
         }));
         catMenu.append(new gui.MenuItem({
             label: window.languageJSON.intro.newProject.text,

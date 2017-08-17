@@ -72,20 +72,19 @@ modules-panel.panel.view
             #modulehelp.tabbed(show="{tab === 'modulehelp'}" if="{currentModule.methods || currentModule.params}")
                 h1 {voc.methods}
                 virtual(each="{method, name in currentModule.methods}")
-                    h2(oncontextmenu="{showCopyMenu}" ct.{currentModuleName}.{name}
+                    h2(oncontextmenu="{showCopyMenu}") ct.{currentModuleName}.{name}
+                    //- Это тоже хреновая затея!!!
                     span(if="{method.exp}") {{md.render(method.exp)}}
-                }
                 p(if="{!currentModule.methods}") {voc.nomethods}
                 
                 h1 {voc.parameters}
                 virtual(each="{parameter, name in currentModule.params}")
-                    h2(oncontextmenu="{showCopyMenu}" ct.{currentModuleName}.{name}
+                    h2(oncontextmenu="{showCopyMenu}") ct.{currentModuleName}.{name}
                     span(if="{method.exp}") {{md.render(parameter.exp)}}
-                }
                 p(if="{!currentModule.parameters}") {voc.noparameters}
             #modulelogs.tabbed(show="{tab === 'modulelogs'}")
                 h1 {voc.logs2}
-                {{currentModuleLogs}}
+                span {{currentModuleLogs}}
     script.
         const path = require('path'),
               fs = require('fs-extra');
@@ -170,7 +169,7 @@ modules-panel.panel.view
         copymeMenu.append(new gui.MenuItem({
             label: languageJSON.common.copy,
             click: function (e) {
-                clipboard.set(currentFragment,'text');
+                clipboard.set(currentFragment, 'text');
             }
         }));
         copymeMenu.append(new gui.MenuItem({

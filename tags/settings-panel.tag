@@ -17,10 +17,10 @@ settings-panel.panel.view
 
         h2 {voc.exportparams}
         label.blocky(style="margin-right: 2.5rem;")
-            input(type="checkbox" value="true" value="{currentProject.settings.minifyhtmlcss}" onchange="{wire('currentProject.settings.minifyhtmlcss')}")
+            input(type="checkbox" value="{currentProject.settings.minifyhtmlcss}" onchange="{wire('currentProject.settings.minifyhtmlcss')}")
             span {voc.minifyhtmlcss}
         label.blocky
-            input(type="checkbox" value="true" value="{currentProject.settings.minifyjs}" onchange="{wire('currentProject.settings.minifyjs')}")
+            input(type="checkbox" value="{currentProject.settings.minifyjs}" onchange="{wire('currentProject.settings.minifyjs')}")
             span {voc.minifyjs}
 
         //-span
