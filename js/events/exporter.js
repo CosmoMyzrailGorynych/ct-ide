@@ -2,7 +2,8 @@
     'use strict';
 
     const fs = require('fs-extra'),
-          path = require('path');
+          path = require('path'),
+          gui = require('nw.gui');
     const exec = path.dirname(process.execPath).replace(/\\/g,'/');
 
     var ctlibs, compiledAudio, targetAudio;
@@ -40,13 +41,13 @@
     var compileAudio = () => {
         compiledAudio++;
         if (compiledAudio === targetAudio) {
-            if (currentProject.settings.minifyhtml) {
+            if (window.currentProject.settings.minifyhtml) {
                 gui.Shell.openItem(exec + '/export/index.min.html');
             } else {
                 gui.Shell.openItem(exec + '/export/index.html');
             }
         }
-    }
+    };
 
     window.runCtProject = function () {
         // glob.compileAudio = 0;
@@ -173,7 +174,7 @@
             for (var layer in roomCopy) {
                 for (var copy in roomCopy[layer].copies) {
                     if (roomCopy[layer].copies[copy]) {
-                        roomCopy[layer].copies[copy].type = window.currentProject.types[glob.typemap[roomCopy[layer].copies[copy].uid]].name;
+                        roomCopy[layer].copies[copy].type = window.currentProject.types[window.glob.typemap[roomCopy[layer].copies[copy].uid]].name;
                         delete roomCopy[layer].copies[copy].uid;
                         objs.push(roomCopy[layer].copies[copy]);
                     }
@@ -181,7 +182,7 @@
             }
             var bgsCopy = JSON.parse(JSON.stringify(window.currentProject.rooms[k].backgrounds));
             for (var bg in bgsCopy) {
-                bgsCopy[bg].graph = glob.graphmap[bgsCopy[bg].graph].g.name;
+                bgsCopy[bg].graph = window.glob.graphmap[bgsCopy[bg].graph].g.name;
                 bgsCopy[bg].depth = Number(bgsCopy[bg].depth);
             }
             roomCode += '    "objs":' + JSON.stringify(objs) + ',\n';
@@ -264,7 +265,6 @@
 
         /* ресурсный котэ */
         /* pack images */
-        var bins = [];
         var blocks = [];
         for (let i = 0; i < window.currentProject.graphs.length; i++) {
             blocks[i] = {
@@ -277,7 +277,6 @@
         blocks.sort(function(a,b) {
             return (Math.max(b.height,b.width) > Math.max(a.height,a.width));
         });
-        var atlasses = 0;
         var res = '';
         var graphurls = '';
         var graphtotal = 0;
@@ -286,7 +285,6 @@
               atlasHeight = 1024; // TODO: make configurable
         const pack = new Packer(atlasWidth, atlasHeight, 1);
         pack.addArray(blocks);
-        var atlasses = pack.bins.length;
         pack.bins.forEach((bin, binInd) => {
             const atlas = document.createElement('canvas');
             atlas.width = bin.width;
@@ -294,7 +292,7 @@
             atlas.x = atlas.getContext('2d');
             for (var i = 0; i < bin.rects.length; i++) {
                 const block = bin.rects[i];
-                atlas.x.drawImage(glob.graphmap[block.origname], block.fit.x, block.fit.y);
+                atlas.x.drawImage(window.glob.graphmap[block.origname], block.fit.x, block.fit.y);
                 res += 'ct.res.makesprite("{0}","img/{1}",{9},{10},{2},{3},{4},{5},{6},{7},{8},{11});\n'.f(
                     window.currentProject.graphs[block.g].nablock, // 0
                     'a{0}.png'.f(binInd),
@@ -348,7 +346,7 @@
             types += '    "depth":' + type.depth + ',\n';
 
             if (type.graph !== -1) {
-                types += '    "graph": "' + glob.graphmap[type.graph].g.name + '",\n';
+                types += '    "graph": "' + window.glob.graphmap[type.graph].g.name + '",\n';
             }
             types += '    "onstep": function () {\n' + type.onstep + '\n    },\n';
             types += '    "ondraw": function () {\n' + type.ondraw + '\n    },\n';
