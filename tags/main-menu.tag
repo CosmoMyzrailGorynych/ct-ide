@@ -35,7 +35,7 @@ main-menu
                 span {voc.rooms}
     div
         settings-panel
-        include ./../pug/includes/modules.pug
+        modules-panel
         include ./../pug/includes/graphic.pug
         include ./../pug/includes/graphview.pug
         include ./../pug/includes/sounds.pug
