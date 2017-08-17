@@ -87,7 +87,8 @@ modules-panel.panel.view
                 span {{currentModuleLogs}}
     script.
         const path = require('path'),
-              fs = require('fs-extra');
+              fs = require('fs-extra'),
+              gui = require('nw.gui');
         const md = require('markdown-it')({
             html: false,
             linkify: true
@@ -165,15 +166,16 @@ modules-panel.panel.view
             this.tab = 'moduleinfo';
         };
         
+        var clipboard = nw.Clipboard.get();
         var copymeMenu = new gui.Menu();
         copymeMenu.append(new gui.MenuItem({
-            label: languageJSON.common.copy,
+            label: window.languageJSON.common.copy,
             click: function (e) {
                 clipboard.set(currentFragment, 'text');
             }
         }));
         copymeMenu.append(new gui.MenuItem({
-            label: languageJSON.common.addtonotes,
+            label: window.languageJSON.common.addtonotes,
             click: function (e) {
                 var editor = $('#notepaglobal .acer')[0].acer;
                 editor.setValue(editor.getValue() + '\n' + currentFragment);

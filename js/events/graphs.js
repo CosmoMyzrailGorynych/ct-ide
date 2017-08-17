@@ -1,16 +1,6 @@
 window.events = window.events || {};
 //-------------- events -------------------
-events.fillGraphs = function() {
-    $('#graphic ul').empty();
-    for (var i = 0; i < currentProject.graphs.length; i++) {
-        $('#graphic ul').append(tmpl.graph.f(
-            currentProject.graphs[i].name,
-            sessionStorage.projdir + '/img/' + currentProject.graphs[i].origname + '_prev.png',
-            i
-        ));
-    }
-    events.fillGraphMap();
-};
+
 events.fillGraphMap = function () {
     delete glob.graphmap;
     glob.graphmap = {};
@@ -298,24 +288,6 @@ events.refreshGraphCanvas = function() {
 
     events.launchGraphPreview();
 };
-events.graphicImport = function(me) { // input[type="file"]
-    var i;
-    files = me.val().split(';');
-    for (i = 0; i < files.length; i++) {
-        if (/\.(jpg|gif|png|jpeg)/gi.test(files[i])) {
-            console.log(i, files[i], 'passed');
-            currentProject.graphtick++;
-            events.loadImg(
-                i,
-                files[i],
-                sessionStorage.projdir + '/img/i' + currentProject.graphtick + path.extname(files[i]),
-                true
-            );
-        } else {
-            console.log(i, files[i], 'NOT passed');
-        }
-    }
-};
 events.graphReplace = function (me) {
     if (/\.(jpg|gif|png|jpeg)/gi.test(me.val())) {
         console.log(me.val(), 'passed');
@@ -330,107 +302,7 @@ events.graphReplace = function (me) {
         console.log(me.val(), 'NOT passed');
     }
 };
-events.loadImg = function(myi, filename, dest, imprt) {
-    console.log(myi, filename, 'copying');
-    megacopy(filename, dest, function(e) {
-        console.log(myi, filename, 'copy finished');
-        if (e) throw e;
-        imga = document.createElement('img');
-        if (imprt) {
-            imga.onload = function() {
-                var obj = {
-                    name: path.basename(filename).replace(patterns.images, '').replace(/\s/g, '_'),
-                    untill: 0,
-                    grid: [1, 1],
-                    axis: [0, 0],
-                    origname: path.basename(dest),
-                    shape: "rect",
-                    left: 0,
-                    right: this.width,
-                    top: 0,
-                    bottom: this.height
-                };
-                $('#graphic .cards').append(tmpl.graph.f(
-                    obj.name,
-                    sessionStorage.projdir + '/img/' + obj.origname + '?' + Math.random(),
-                    currentProject.graphs.length
-                ));
-                this.id = currentProject.graphs.length;
-                currentProject.graphs.push(obj);
-                events.imgGenPreview(dest, dest + '_prev.png', 64, function() {
-                    console.log(myi, filename, 'preview generated');
-                    $('#graphic .cards li[data-graph="{0}"] img'.f(this.id)).attr('src', dest + '_prev.png?{0}'.f(Math.random()));
-                });
-                events.imgGenPreview(dest, dest + '_prev@2.png', 128, function() {
-                    console.log(myi, filename, 'hdpi preview generated');
-                });
-            }
-        } else {
-            imga.onload = function() {
-                currentGraphic.width = this.width;
-                currentGraphic.height = this.height;
-                currentGraphic.origname = path.basename(dest);
-                graphCanvas.img = this;
-                events.refreshGraphCanvas();
-                events.imgGenPreview(dest, dest + '_prev.png', 64, function() {
-                    console.log(myi, filename, 'preview generated');
-                    $('#graphic .cards li[data-graph="{0}"] img'.f(this.id)).attr('src', dest + '_prev.png?{0}'.f(Math.random()));
-                });
-                events.imgGenPreview(dest, dest + '_prev@2.png', 128, function() {
-                    console.log(myi, filename, 'hdpi preview generated');
-                });
-            }
-        }
-        imga.onerror = function(e) {
-            console.log('ERROR');
-        }
-        imga.src = dest + '?' + Math.random();
-    });
-};
-events.imgGenPreview = function(source, name, size, cb) {
-    var imga = document.createElement('img');
-    imga.onload = function() {
-        var c = document.createElement('canvas'), w, h, k;
-        c.x = c.getContext('2d');
-        c.width = c.height = size;
-        c.x.clearRect(0, 0, size, size);
-        w = size, this.width;
-        h = size, this.height;
-        if (w > h) {
-            k = size / w;
-        } else {
-            k = size / h;
-        }
-        if (k > 1) k = 1;
-        c.x.drawImage(
-            this,
-            (size - this.width*k)/2,
-            (size - this.height*k)/2,
-            this.width*k,
-            this.height*k
-        );
-        console.log(
-            this,
-            (size - this.width*k)/2,
-            (size - this.height*k)/2,
-            this.width*k,
-            this.height*k,
-            size, this.width, this.height, k
-        );
-        // strip off the data: url prefix to get just the base64-encoded bytes
-        var data = c.toDataURL().replace(/^data:image\/\w+;base64,/, "");
-        var buf = new Buffer(data, 'base64');
-        fs.writeFile(name, buf, function(err) {
-            if (err) {
-                console.log(err);
-            } else {
-                cb();
-            }
-        });
-        $(c).remove(); // is needed?
-    }
-    imga.src = source;
-};
+
 events.graphGenPreview = function(replace, nam, size) {
     // nam = sessionStorage.projdir + '/img/' + currentProject.graphs[currentGraphicId].origname + '_prev.png'
     var c = document.createElement('canvas'), w, h, k;
@@ -474,115 +346,9 @@ events.currentGraphicPreviewColor = function () {
     $('#previewbgcolor').focus();
 };
 
-
-
-
-/********************* editing ***************************/
-events.graphReplace = function () {
-
-};
-events.graphicDeleteFrame = function () {
-
-};
-events.graphicDuplicateFrame = function () {
-
-};
-events.graphicAddFrame = function () {
-
-};
-events.graphicShift = function () {
-
-};
-events.graphicFlipVertical = function () {
-
-};
-events.graphicFlipHorizontal = function () {
-
-};
-events.graphicRotate = function () {
-
-};
-events.graphicResize = function () {
-
-};
-events.graphicCrop = function () {
-
-};
-//------------ menus ----------------------
-
-
-
-
-graphMenu = new gui.Menu();
-graphMenu.append(new gui.MenuItem({
-    label: languageJSON.common.open,
-    icon: assets + (isMac ? '/img/black/' : '/img/blue/') + 'folder.png',
-    click: function (e) {
-        $('#graphic .cards li[data-graph="{0}"]'.f(currentGraphicId)).click();
-    }
-}));
-graphMenu.append(new gui.MenuItem({
-    label: languageJSON.common.duplicate,
-    icon: assets + (isMac ? '/img/black/' : '/img/blue/') + 'plus.png',
-    click: function (e) {
-        alertify.prompt(languageJSON.common.newname, function (e, r) {
-            if (e) {
-                if (r != '') {
-                    var nam = r;
-                    var gr = JSON.parse(JSON.stringify(currentGraphic));
-                    gr.name = nam;
-                    currentProject.graphtick ++;
-                    gr.origname = 'i' + currentProject.graphtick + path.extname(currentGraphic.origname);
-                    megacopy(sessionStorage.projdir + '/img/' + currentGraphic.origname, sessionStorage.projdir + '/img/i' + currentProject.graphtick + path.extname(currentGraphic.origname), function () {
-                        currentProject.graphs.push(gr);
-                        events.fillGraphs();
-                    });
-                }
-            }
-        }, currentGraphic.name + '_dup');
-    }
-}));
-graphMenu.append(new gui.MenuItem({
-    label: languageJSON.common.rename,
-    icon: assets + (isMac ? '/img/black/' : '/img/blue/') + 'edit.png',
-    click: function (e) {
-        alertify.prompt(languageJSON.common.newname, function (e, r) {
-            if (e) {
-                if (r != '') {
-                    var nam = r;
-                    currentGraphic.name = nam;
-                    events.fillGraphs();
-                }
-            }
-        }, currentGraphic.name);
-    }
-}));
-graphMenu.append(new gui.MenuItem({
-    label: languageJSON.common.delete,
-    icon: assets + (isMac ? '/img/black/' : '/img/blue/') + 'delete.png',
-    click: function (e) {
-        alertify.confirm(languageJSON.common.confirmDelete.f(currentGraphic.name), function (e) {
-            if (e) {
-                currentProject.graphs.splice(currentGraphicId,1);
-                events.fillGraphs();
-            }
-        });
-    }
-}));
-
 //-------------- UI links -----------------
 
 $(function () {
-    // delegate events on graph cards
-    $('#graphic .cards').delegate('li', 'click', function() {
-        events.openGraph($(this).attr('data-graph'));
-    }).delegate('li', 'contextmenu', function(e) {
-        console.log(e);
-        var me = $(this);
-        currentGraphicId = me.attr('data-graph');
-        currentGraphic = currentProject.graphs[me.attr('data-graph')];
-        graphMenu.popup(e.clientX, e.clientY);
-    });
 
     // frames
     $('#graphviewframes > ul').delegate('img', 'click', function () {

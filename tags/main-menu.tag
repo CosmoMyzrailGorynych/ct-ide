@@ -36,9 +36,7 @@ main-menu
     div
         settings-panel
         modules-panel
-        //
-            include ./../pug/includes/graphic.pug
-            include ./../pug/includes/graphview.pug
+        graphics-panel
             include ./../pug/includes/sounds.pug
             include ./../pug/includes/soundview.pug
             include ./../pug/includes/styles.pug
