@@ -61,18 +61,6 @@
    use double curly braces to get single ones
 */
 
-preparetext = function(selector) {
-    $(selector + ' a').click(function() {
-        gui.Shell.openExternal($(this).attr('href'));
-        return false;
-    });
-    $(selector).undelegate('contextmenu','.copyme')
-    .delegate('contextmenu','.copyme', function (e) {
-        currentFragment = $(this).text();
-        copymeMenu.popup(e.clientX, e.clientY);
-    });
-    initdatainput(selector);
-};
 
 
 /********************************/
@@ -93,32 +81,6 @@ key('ctrl + S', function () {
 });
 
 $(function () {
-    graphCanvas = $('#atlas canvas')[0];
-    graphCanvas.x = graphCanvas.getContext('2d');
-    grprCanvas = $('#preview canvas')[0];
-    grprCanvas.x = grprCanvas.getContext('2d');
-    styleCanvas = $('#stylepreview canvas')[0];
-    styleCanvas.x = styleCanvas.getContext('2d');
-    roomCanvas = $('#roomview .editor canvas')[0];
-    roomCanvas.x = roomCanvas.getContext('2d');
-    roomCanvas.x.imageSmoothingEnabled = false;
-
-    // intro
-    if (localStorage.lastProjects != '') {
-        glob.lastProjects = localStorage.lastProjects.split(';');
-    } else {
-        glob.lastProjects = [];
-    }
-    if (glob.lastProjects[0] != '') {
-        for (var i = 0; i < glob.lastProjects.length; i++) {
-            $('#recent').append('<li data-name="{1}"><span>{0}</span></li>'.f(
-                glob.lastProjects[i],
-                path.basename(glob.lastProjects[i],'.json')
-            ));
-        }
-    }
-
-
     alertify.set({
         labels: {
             ok: languageJSON.common.ok,
@@ -131,7 +93,7 @@ $(function () {
         $('#loading').fadeOut(200);
     })});
 
-    // catch exir
+    // catch exit
     win.on('close', function () {
         if (glob.modified) {
             if (!confirm(languageJSON.common.reallyexit)) {
