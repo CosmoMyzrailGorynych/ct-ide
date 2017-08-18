@@ -37,7 +37,8 @@ main-menu
         settings-panel
         modules-panel
         graphics-panel
-            include ./../pug/includes/sounds.pug
+        sounds-panel
+        //-
             include ./../pug/includes/soundview.pug
             include ./../pug/includes/styles.pug
             include ./../pug/includes/styleview.pug
