@@ -53,4 +53,4 @@ sound-editor.panel.view
                 console.error(e);
             });
             this.refs.inputsound.value = '';
-        }
+        };

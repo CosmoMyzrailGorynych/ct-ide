@@ -38,13 +38,12 @@ main-menu
         modules-panel
         graphics-panel
         sounds-panel
+        rooms-panel
         //-
-            include ./../pug/includes/soundview.pug
             include ./../pug/includes/styles.pug
             include ./../pug/includes/styleview.pug
             include ./../pug/includes/types.pug
             include ./../pug/includes/typeview.pug
-            include ./../pug/includes/rooms.pug
             include ./../pug/includes/roomview.pug
     script.
         this.voc = window.languageJSON.menu;

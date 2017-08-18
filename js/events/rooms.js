@@ -1,42 +1,6 @@
 window.events = window.events || {};
 //-------------- events -------------------
 
-events.fillRooms = function() {
-    $('#rooms ul').empty();
-    for (var i = 0; i < currentProject.rooms.length; i++) {
-        $('#rooms ul').append(tmpl.room.f(
-            currentProject.rooms[i].name,
-            sessionStorage.projdir + '/img/r' + currentProject.rooms[i].uid + '.png',
-            i
-        ));
-    }
-};
-events.roomCreate = function () {
-    currentProject.roomtick ++;
-    var obj = {
-        name: "room" + currentProject.roomtick,
-        oncreate: '',
-        onstep: '',
-        ondraw: '',
-        onleave: '',
-        width: 800,
-        height: 600,
-        backgrounds: [],
-        layers: [],
-        uid: currentProject.roomtick
-    };
-    $('#rooms .cards').append(tmpl.room.f(
-        obj.name,
-        assets + '/img/nograph.png',
-        currentProject.rooms.length
-    ));
-    currentProject.rooms.push(obj);
-    if (currentProject.rooms.length == 1) {
-        currentProject.startroom = obj.uid;
-        $('#rooms .cards li:last').addClass('starting');
-    }
-    $('#rooms .cards li:last').click();
-};
 events.openRoom = function (num) {
     currentRoomId = num;
     currentRoom = currentProject.rooms[num];
@@ -504,16 +468,6 @@ $(function () {$(function() {
 //-------------- UI links -----------------
 
 $(function () {
-    // delegate events on room cards
-    $('#rooms .cards').delegate('li', 'click', function() {
-        events.openRoom($(this).attr('data-room'));
-    }).delegate('li', 'contextmenu', function(e) {
-        console.log(e);
-        var me = $(this);
-        currentRoom = currentProject.rooms[me.attr('data-room')];
-        currentRoomId = me.attr('data-room');
-        roomMenu.popup(e.clientX, e.clientY);
-    });
 
     // types palette
     $('#roomcopies').delegate('li','click', function () {
