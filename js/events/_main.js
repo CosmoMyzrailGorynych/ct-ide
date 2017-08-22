@@ -51,7 +51,6 @@ $(function() {
 tmpl = {
     type: '<li data-type="{2}" data-graph="{3}"><span>{0}</span><img src="{1}"/></li>',
     style: '<li data-style="{2}"><span>{0}</span><img src="{1}"/></li>',
-    background: '<li class="bg" data-background="{2}"><img src="{0}" /><span>{1}</span></li>'
 };
 
 

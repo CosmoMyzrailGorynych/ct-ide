@@ -16,14 +16,6 @@ graphics-panel.panel.view
             span {graphic.name}
             img(src="{sessionStorage.projdir + '/img/' + graphic.origname + '_prev.png'}")
     graphic-editor(if="{editing}" graphic="{currentGraphic}")
-
-    #tempgraphic.panel.view
-        ul.cards
-            li(
-                each="{graphic in window.currentProject.graphs}"
-            )
-                span {graphic.name}
-                img(src="{sessionStorage.projdir + '/img/' + graphic.origname + '_prev.png'}")
     script.
         const fs = require('fs-extra'),
               path = require('path'),

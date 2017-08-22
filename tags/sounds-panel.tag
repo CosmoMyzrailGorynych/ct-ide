@@ -27,9 +27,6 @@ sounds-panel.panel.view
             this.editedSound = sound;
             this.editing = true;
         };
-        this.fillSounds = () => {
-            
-        };
         
         // Контекстное меню, вызываемое при клике ПКМ по карточке звука 
         var soundMenu = new gui.Menu();
@@ -48,7 +45,6 @@ sounds-panel.panel.view
                     if (e) {
                         if (newName != '') {
                             this.editedSound.name = newName;
-                            this.fillSounds();
                         }
                     }
                 }, this.editedSound.name);
@@ -62,7 +58,6 @@ sounds-panel.panel.view
                     if (e) {
                         var ind = window.currentProject.sounds.indexOf(this.editedSound);
                         window.currentProject.sounds.splice(ind, 1);
-                        this.fillSounds();
                     }
                 });
             }

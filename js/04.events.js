@@ -4,13 +4,6 @@ var gui = require('nw.gui');
 var win = gui.Window.get();
 var glob = {
     prev: {},
-    findmylayer(a) {
-        if (a.depth === window.currentProject.types[currentTypePick].depth) {
-            glob.layer = a;
-            return true;
-        }
-        return false;
-    },
     grid: 0,
     mmodified: false,
     get modified () {
