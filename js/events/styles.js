@@ -1,16 +1,6 @@
 window.events = window.events || {};
 //-------------- events -------------------
 
-events.fillStyles = function() {
-    $('#styles ul').empty();
-    for (var i = 0; i < currentProject.styles.length; i++) {
-        $('#styles ul').append(tmpl.style.f(
-            currentProject.styles[i].name,
-            sessionStorage.projdir + '/img/s' + currentProject.styles[i].uid + '.png',
-            i
-        ));
-    }
-};
 events.openStyle = function(style) {
     currentStyle = currentProject.styles[style];
     currentStyleId = style;
@@ -277,24 +267,6 @@ events.styleRedrawPreview = function () {
     }
 };
 
-events.styleCreate = function() {
-    currentProject.styletick ++;
-    var obj = {
-        name: "style" + currentProject.styletick,
-        shadow: false,
-        stroke: false,
-        fill: false,
-        font: false,
-        uid: currentProject.styletick
-    };
-    $('#styles .cards').append(tmpl.style.f(
-        obj.name,
-        assets + '/img/nograph.png',
-        currentProject.styles.length
-    ));
-    currentProject.styles.push(obj);
-    $('#styles .cards li:last').click();
-};
 events.styleSave = function() {
     events.styleGenPreview();
     events.fillStyles();
