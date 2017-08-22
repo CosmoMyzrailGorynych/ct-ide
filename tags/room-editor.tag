@@ -72,7 +72,7 @@ room-editor.panel.view
                 span {voc[grid > 0? 'gridoff' : 'grid']}
         .center
             button#roomcenter(data-event="roomToCenter") {voc.tocenter}
-    room-events-editor(show="{editingCode}")
+    room-events-editor(show="{editingCode}" room="{room}")
     graphic-selector(ref="graphPicker" if="{pickingBackground}")
     script.
         this.editingCode = false;
