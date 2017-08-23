@@ -3,16 +3,16 @@ room-events-editor.view.panel
         ul.tabs.nav.nogrow.noshrink
             li(onclick="{changeTab('roomcreate')}" class="{active: tab === 'roomcreate'}")
                 i.icon.icon-lamp
-                span #{roomview.create}
+                span {voc.create}
             li(onclick="{changeTab('roomstep')}" class="{active: tab === 'roomstep'}")
                 i.icon.icon-timer
-                span #{roomview.step}
+                span {voc.step}
             li(onclick="{changeTab('roomdraw')}" class="{active: tab === 'roomdraw'}")
                 i.icon.icon-brush
-                span #{roomview.draw}
+                span {voc.draw}
             li(onclick="{changeTab('roomleave')}" class="{active: tab === 'roomleave'}")
                 i.icon.icon-exit
-                span #{roomview.leave}
+                span {voc.leave}
         div(style="position: relative;")
             .tabbed(show="{tab === 'roomcreate'}")
                 .acer(ref="roomoncreate")
@@ -24,8 +24,9 @@ room-events-editor.view.panel
                 .acer(ref="roomonleave")
     button.wide.nogrow.noshrink(data-event="roomSaveEvents")
         i.icon.icon-confirm
-        span #{roomview.done}
+        span {voc.done}
     script.
+        this.voc = window.languageJSON.roomview;
         this.tab = 'roomcreate';
         this.switchTab = tab => e => {
             this.tab = tab;

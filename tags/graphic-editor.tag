@@ -110,12 +110,12 @@ graphic-editor.panel.view
         #graphviewrect(if="{opts.graphic.shape === 'rect'}")
             .center
             input#graphtop.short(type="number" value="{opts.graphic.top}" onchange="{wire('this.opts.graphic.top')}")
-                br
-                input#graphleft.short(type="number" value="{opts.graphic.left}" onchange="{wire('this.opts.graphic.left')}")
-                | ×
-                input#graphright.short(type="number" value="{opts.graphic.right}" onchange="{wire('this.opts.graphic.right')}")
-                br
-                input#graphbottom.short(type="number" value="{opts.graphic.bottom}" onchange="{wire('this.opts.graphic.bottom')}")
+            br
+            input#graphleft.short(type="number" value="{opts.graphic.left}" onchange="{wire('this.opts.graphic.left')}")
+            | ×
+            input#graphright.short(type="number" value="{opts.graphic.right}" onchange="{wire('this.opts.graphic.right')}")
+            br
+            input#graphbottom.short(type="number" value="{opts.graphic.bottom}" onchange="{wire('this.opts.graphic.bottom')}")
             br
             button.wide(onclick="{graphicFillRect}")
                 i.icon.icon-maximize
@@ -141,8 +141,8 @@ graphic-editor.panel.view
         br
         input(checked="{prevShowMask}" onchange="{wire('this.prevShowMask')}" type="checkbox")
         span {voc.showmask}
-    button(onclick="{graphicSave}")
-        {voc.save}
+    button(onclick="{graphicSave}") 
+        span {voc.save}
     script.
         const path = require('path'),
               fs = require('fs-extra');
