@@ -37,14 +37,10 @@ main-menu
         settings-panel(if="{tab === 'settings'}")
         modules-panel(if="{tab === 'modules'}")
         graphics-panel(if="{tab === 'graphic'}")
-        sounds-panel(if="{tab === 'sounds'}")
-        rooms-panel(if="{tab === 'rooms'}")
         styles-panel(if="{tab === 'styles'}")
-        //-
-            include ./../pug/includes/styleview.pug
-            include ./../pug/includes/types.pug
-            include ./../pug/includes/typeview.pug
-            include ./../pug/includes/roomview.pug
+        sounds-panel(if="{tab === 'sounds'}")
+        types-panel(if="{tab === 'types'}")
+        rooms-panel(if="{tab === 'rooms'}")
     script.
         this.voc = window.languageJSON.menu;
         this.tab = 'settings';

@@ -6,53 +6,6 @@
 
 */
 
-function initdatainput (selector) {
-    return $(selector + ' [data-input]').change(function() {
-        try {
-            // won't work with arrays...
-            /*
-            var me = $(this),
-                arr = me.attr('data-input').split('.');
-            context = window;
-            for (var i = 0; i < arr.length - 1; i++) {
-                context = context[arr[i]];
-            }
-            context[arr[arr.length - 1]] = me.val();
-            */
-            var me = $(this);
-            if (me.attr('type') == 'text' || !me.attr('type') || me[0].tagName.toUpperCase() == 'TEXTAREA') {
-                eval(me.attr('data-input') + ' = "' + me.val().replace(/\"/g, '\\"') + '"');
-            } else {
-                eval(me.attr('data-input') + ' = ' + me.val());
-            }
-
-            // bind events on graphview inputs
-            me.filter('#graphx, #graphy, \
-               #graphviewshaperound, \
-               #graphviewshaperectangle, \
-               #graphrad, \
-               #graphtop, #graphleft, #graphright, #graphbottom, \
-               #graphcols, #graphrows, \
-               #graphframes')
-            .change(events.refreshGraphCanvas);
-            glob.modified = true;
-        } catch (err) {
-            console.error(err);
-            document.getElementById('scream').play();
-        }
-    });
-}
-$(function() {
-    initdatainput('body');
-});
-
-/* templates */
-
-tmpl = {
-    type: '<li data-type="{2}" data-graph="{3}"><span>{0}</span><img src="{1}"/></li>',
-};
-
-
 /* some patterns */
 apatterns = {
     SymbolDigitUnderscore: /[^qwertyuiopasdfghjklzxcvbnm1234567890_]/gi
