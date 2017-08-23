@@ -37,6 +37,7 @@ sound-editor.panel.view
                 this.togglePlay();
             }
             this.parent.editing = false;
+            this.parent.update();
         };
         this.togglePlay = function () {
             if (this.playing) {
