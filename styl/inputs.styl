@@ -10,7 +10,7 @@ textarea
     border-radius br
     font inherit
     color inherit
-    trans
+    {trans}
     &:hover
         border-color bd
     &:focus
@@ -36,7 +36,8 @@ input[type="reset"],
     background white
     display inline-block
     cursor pointer
-    trans
+    text-align center
+    {trans}
     &:hover
         background acttext
         color white
@@ -44,7 +45,7 @@ input[type="reset"],
         .icon
             color white
     &:active, &.selected
-        transshort
+        {transshort}
         border-color accent1
         background accent1
         color white
@@ -150,7 +151,7 @@ input[type="reset"],
 .button,
 .nav
     .icon
-        trans
+        {trans}
         color act
         vertical-align sub // выглядит более отцентрованно
         &:first-child
@@ -192,5 +193,8 @@ select, label
         top 50%
 
 // выбор файла
-label.file [type="file"]
-    display none
+label.file
+    display block
+    position relative
+    [type="file"]
+        display none

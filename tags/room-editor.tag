@@ -124,7 +124,6 @@ room-editor.panel.view
                     if (e) {
                         if (Number(input) > 1) {
                             this.grid = Number(r);
-                            languageJSON.roomview.gridoff);
                         }
                     }
                 });
@@ -180,7 +179,7 @@ room-editor.panel.view
             }
 
             if (this.grid == 0) {
-                targetLayer.copies.push({this.currentType
+                targetLayer.copies.push({
                     x: ~~((e.offsetX - (this.refs.canvas.width - this.room.width) / 2 + this.roomx) / this.zoomFactor),
                     y: ~~((e.offsetY - (this.refs.canvas.height - this.room.height) / 2 + this.roomy) / this.zoomFactor),
                     uid: this.currentType.uid
@@ -337,14 +336,14 @@ room-editor.panel.view
         // Позволяет переместить сразу все копии в комнате
         this.roomShift = e => {
             window.alertify.custom(`
-                {0} <br/><br/>
+                ${window.languageJSON.roomview.shifttext} <br/><br/>
                 <label>X: 
                     <input id="roomshiftx" type="number" value="32" />
                 </label>
                 <label>Y: 
                     <input id="roomshifty" type="number" value="32" />
                 </label>
-            `).f(window.languageJSON.roomview.shifttext), e => {
+            `, e => {
                 if (e) {
                     var dx = Number($('#roomshiftx').val()) || 0,
                         dy = Number($('#roomshifty').val()) || 0;

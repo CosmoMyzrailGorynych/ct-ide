@@ -1,36 +1,38 @@
-project-selector(show="{visible}")
+project-selector
     #bg.stretch
     #intro.modal
-        div
-            #previewProject.pt40
+        div.flexrow
+            .c4.np
+            .c8.npt.npb
+                h2 {voc.latest}
+        div.flexrow
+            .c4.npl.npt.project-selector-aPreview.center
                 img(src="{projectSplash}")
-            .pt60
-                h3.center {voc.latest}
+            .c8.npr.npt.npl
                 ul.menu
                     li(
                         each="{project in lastProjects}" title="{requirePath.basename(project,'.json')}"
                         onclick="{updatePreview(project)}"
-                        ondblclick="{loadRecentProject(project)}"
+                        ondblclick="{loadRecentProject}"
                     ) {project}
                 label.file
-                    button.wide.inline
+                    input(type="file" ref="fileexternal" accept=".ict" onchange="{openProjectFind}")
+                    .button.wide.inline
                         i.icon.icon-folder
                         span {voc.browse}
-                    input(type="file" ref="fileexternal" accept=".ict" onchange="{openProjectFind}")
-        #newProject.inset
-            .pt40.center.nopadding
-                h3 {voc.newProject.text}
-            .pt60.nopadding
+        #newProject.inset.flexrow.flexmiddle
+            .c4.npl.npt.npb
+                h3.nm.right {voc.newProject.text}
+            .c5.np
                 input( 
                     type='text'
                     placeholder='{voc.newProject.input}'
-                    pattern='[a-zA-Z_0-9]{1,}'
+                    pattern='[a-zA-Z_0-9]\\{1,\\}'
                     ref="projectname"
-                )
-                button#newproj.inline(onclick="{newProject}") {voc.newProject.button}
-            .clear
+                ).wide
+            .c3.npr.npt.npb
+                button.nm.wide.inline(onclick="{newProject}") {voc.newProject.button}
     script.
-        'use strict';
         const fs = require('fs-extra'),
               path = require('path');
         this.requirePath = path;
@@ -50,7 +52,7 @@ project-selector(show="{visible}")
          * При нажатии на проект в списке последних проектов обновляет сплэш проекта
          */
         this.updatePreview = projectPath => e => {
-            this.projectSplash = path.dirname(projectPath) + '/' + path.basename(projectPath, '.ict') + '/img/splash.png'
+            this.projectSplash = path.dirname(projectPath) + '/' + path.basename(projectPath, '.ict') + '/img/splash.png';
         };
         
         /**
@@ -99,19 +101,17 @@ project-selector(show="{visible}")
         /**
          * Открывает проект из списка последних проектов при двойном щелчке
          */
-        this.loadRecentProject = projectPath => {
-            var me = $(this);
-            fs.readFile(projectPath, function(err, data) {
+        this.loadRecentProject = e => {
+            var projectPath = e.item.project;
+            fs.readJSON(projectPath, (err, projectData) => {
                 if (err) {
                     alertify.error(languageJSON.common.notfoundorunknown);
-                    return false;
+                    return;
                 }
                 sessionStorage.projdir = path.dirname(projectPath) + path.sep + path.basename(projectPath, '.ict');
                 sessionStorage.projname = path.basename(projectPath);
-                var projectData = JSON.parse(data);
                 this.loadProject(projectData);
             });
-            return false;
         };
         
         /**
@@ -133,31 +133,36 @@ project-selector(show="{visible}")
             localStorage.lastProjects = this.lastProjects.join(';');
             glob.modified = false;
             
-            this.visible = false;
-            riot.update();
+            this.parent.selectorVisible = false;
+            setTimeout(() => {
+                riot.update();
+                this.parent.update();
+            }, 0);
         };
         
         /**
          * Событие открытия файла через проводник
          */
         this.openProjectFind = e => {
-            var fe = this.refs.fileexternal;
-            if (path.extname(fe.value).toLowerCase() == '.ict') {
-                fs.readFile(fe.value, function(err, data) {
+            var fe = this.refs.fileexternal,
+                proj = fe.value;
+            if (path.extname(proj).toLowerCase() === '.ict') {
+                fs.readJSON(proj, (err, projectData) => {
                     if (err) {
-                        throw err;
+                        window.alertify.error(err);
+                        return;
                     }
-                    sessionStorage.projname = path.basename(fe.value);
-                    sessionStorage.projdir = path.dirname(fe.value) + path.sep + path.basename(fe.value, '.ict');
-                    fe.value = '';
-                    var projectData = JSON.parse(data) || '';
-                    if (projectData) {
-                        this.loadProject(projectData);
-                    } else {
-                        alertify.error(languageJSON.common.wrongFormat);
+                    if (!projectData) {
+                        window.alertify.error(languageJSON.common.wrongFormat);
+                        return;
                     }
+                    console.log(projectData);
+                    sessionStorage.projname = path.basename(proj);
+                    sessionStorage.projdir = path.dirname(proj) + path.sep + path.basename(proj, '.ict');
+                    this.loadProject(projectData);
                 });
             } else {
-                alertify.error(languageJSON.common.wrongFormat);
+                window.alertify.error(languageJSON.common.wrongFormat);
             }
+            fe.value = '';
         };

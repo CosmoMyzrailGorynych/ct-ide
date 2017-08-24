@@ -1,5 +1,5 @@
 main-menu
-    nav
+    nav(if="{window.currentProject}")
         ul#app.nav
             li#fullscreen(onclick="{toggleFullscreen}" title="{voc.min}")
                 i.icon(class="{fullscreen? 'minimize' : 'maximize'}")
@@ -33,7 +33,7 @@ main-menu
             li(onclick="{changeTab('rooms')}")
                 i.icon.icon-room
                 span {voc.rooms}
-    div
+    div(if="{window.currentProject}")
         settings-panel(if="{tab === 'settings'}")
         modules-panel(if="{tab === 'modules'}")
         graphics-panel(if="{tab === 'graphic'}")
@@ -78,19 +78,19 @@ main-menu
         var catMenu = new gui.Menu();
         catMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.open,
-            icon: assets + (isMac ? '/img/black/' : '/img/blue/') + 'folder.png',
+            icon: (window.isMac ? './img/black/' : './img/blue/') + 'folder.png',
             click: function (e) {
                 $('#findProject').click();
             }
         }));
         catMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.save,
-            icon: assets + (isMac ? '/img/black/' : '/img/blue/') + 'save.png',
+            icon: (window.isMac ? './img/black/' : './img/blue/') + 'save.png',
             click: this.saveProject
         }));
         catMenu.append(new gui.MenuItem({
             label: window.languageJSON.intro.newProject.text,
-            icon: assets + (isMac ? '/img/black/' : '/img/blue/') + 'star.png',
+            icon: (window.isMac ? './img/black/' : './img/blue/') + 'star.png',
             click: function (e) {
                 alertify.prompt(window.languageJSON.intro.newProject.input, function (e,r) {
                     if (e) {
@@ -110,7 +110,7 @@ main-menu
         
         catMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.ctsite,
-            icon: assets + (isMac ? '/img/black/' : '/img/blue/') + 'arrow.png',
+            icon: (window.isMac ? './img/black/' : './img/blue/') + 'arrow.png',
             click: function () {
                 gui.Shell.openExternal('http://ctjs.ru/');
             }
@@ -120,7 +120,7 @@ main-menu
         
         catMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.exit,
-            icon: assets + (isMac ? '/img/black/' : '/img/blue/') + 'exit.png',
+            icon: (window.isMac ? './img/black/' : './img/blue/') + 'exit.png',
             click: function (e) {
                 window.alertify.confirm(window.languageJSON.common.exitconfirm, function (e) {
                     if (e) {

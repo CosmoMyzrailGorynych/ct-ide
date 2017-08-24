@@ -1,17 +1,26 @@
 project-selector
-    padding 0.5em
-    width 40em
-    max-width 100%
+    display block
+    position absolute
+    padding 1rem
+    left 0
+    right 0
+    top 0
+    bottom 0
     z-index 30
-    background rgba(white, 0.9)
     label.file
         margin 1em 0
-    h3
-        margin 0
+    .modal
+        width 48rem
+        top 8rem
+        transform translate(-50%, 0)
+        padding 1rem
+        background rgba(white, 0.9)
+        flex-flow column nowrap
+        z-index 35
+    .inset
+        margin 0 -1rem -1rem
 
-#previewProject
-    text-align center
-    img
+.project-selector-aPreview img
         max-width 100%
         max-height 20em
 
@@ -24,15 +33,11 @@ project-selector
         display block
         text-overflow ellipsis
 
-
 #bg
     background url('../img/bg.png')
     background-size cover
     background-position center center
     z-index 25
-
-#newProject
-    margin 0 -0.5em -0.5em
 
 #id
     width 14.75em

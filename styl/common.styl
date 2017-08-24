@@ -4,11 +4,12 @@ html, body
     margin 0
     padding 0
     -webkit-user-select none
+    position relative
+    height 100%
 body
     font 16px/34px fonts
     color text
     background white
-    min-height 100vh
     cursor default
     overflow hidden
 
@@ -28,67 +29,22 @@ body
         right 0
         bottom 0
         position absolute
-.nopadding
-    padding 0 !important
 
-/* компоненты */
-// колонки и всё такое
-.fifty
-    display inline-block
-    width 100%
-
-.pt20, .pt25, .pt40, .pt50, .pt60, .pt75, .pt80
-    display inline-block
-    box-sizing border-box
-    vertical-align top
-    padding 0.5em
-
-.pt20
-    width 20%
-
-for n in 25 40 50 60 75 80
-    p = n - 1
-    .ptn
-        width p+"%"
-
-.nogrow
-    flex-grow 0 !important
-
-.noshrink
-    flex-shrink 0 !important
-
-// утилиты
 .borderall
     border 1px solid bd
-
 .borderleft
     border-left 1px solid bd
-
 .borderright
     border-right 1px solid bd
-
 .bordertop
     border-top 1px solid bd
-
 .borderbottom
     border-bottom 1px solid bd
-
-.wide
-    width 100%
-    box-sizing border-box
-    margin-left 0
-    margin-right 0
 
 .tall
     height 100%
     overflow auto
     box-sizing border-box
-
-.center
-    text-align center
-
-.blocky
-    display inline-block
 
 // перекрытие
 .stretch
@@ -97,31 +53,6 @@ for n in 25 40 50 60 75 80
     left 0
     right 0
     bottom 0
-
-// Меню выбора - список
-.menu
-    padding 0
-    overflow auto
-    font-weight 400
-    ul
-        margin 0
-        padding 0
-    li
-        list-style none
-        padding 0.2em 0.8em
-        margin 0
-        border-bottom 1px solid bl
-        cursor pointer
-        trans
-        &:hover
-            transshort
-            border-bottom-color bd
-            color acttext
-            padding 0.2em 0.5em 0.2em 1.1em
-        &:active
-            background act
-            border-bottom-color transparent
-            color white
 
 // Иконки
 .icon
@@ -132,19 +63,6 @@ for n in 25 40 50 60 75 80
     padding 0.2em 0.3em !important
     line-height 1 !important
 
-// панельки
-.panel
-    position relative
-
-.view
-    position fixed
-    overflow auto
-    top 1em
-    left 0
-    right 0
-    bottom 0
-    margin-top iconsize + 2
-    background snow
 
 body.maximized .view
     @media (max-width 1000px)
@@ -189,49 +107,6 @@ div#loading
     background white
     font-size 4vw
     font-weight 300
-
-// resource cards
-.cards
-    list-style none
-    padding 0
-    li
-        background white
-        padding 0.8em
-        margin 0.3em
-        border 1px solid bl
-        border-radius 3px
-        display inline-block
-        vertical-align top
-        cursor pointer
-        width 15em
-        transition 0.35s ease all
-        &:hover
-            border-color acttext
-        &:active
-            border-color accent1
-            background act
-            color white
-        span
-            font-family consolas, monospace
-            width calc(15em - 64px)
-            display inline-block
-            text-overflow ellipsis
-            white-space nowrap
-            overflow hidden
-        img
-            float right
-            height 64px
-            width 64px
-            margin -0.5em -0.5em -0.5em 0.5em
-            border-radius br
-
-pre
-    background snow
-    border 1px solid bd
-    border-radius br
-    padding 0.4em 0.8em
-    font-family font-mono
-
 
 /******** Ace *********/
 .ace_editor

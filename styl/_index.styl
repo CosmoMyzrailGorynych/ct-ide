@@ -8,9 +8,9 @@ trans =
 transshort =
     transition 0.15s ease all
 shad =
-    box-shadow 0 0.1em 0.2em rgba(0, 0, 0, 0.5)
+    box-shadow 0 0.1rem 0.2rem rgba(0, 0, 0, 0.5)
 shadamb =
-    box-shadow 0 0 0.35em rgba(0, 0, 0, 0.5)
+    box-shadow 0 0 0.35rem rgba(0, 0, 0, 0.5)
 
 /* шрифты */
 fonts = Open Sans, serif
@@ -20,7 +20,7 @@ br = 3px
 iconsize = 24px
 
 /* цвета */
-act = #449cdb
+act = #446adb
 acttext = #446adb
 accent1 = #5144db
 accent2 = #44dbb5
@@ -45,7 +45,17 @@ snow = #fafafa
 @keyframes rotate
     100%
         transform rotate(360deg)
+@keyframes fadeOut
+    0%
+        opacity 1
+        visibility visible
+    100%
+        opacity 0
+        visibility hidden
+.fadeout
+    animation forwards .5s linear fadeOut
 
+@require 'hvost.styl'
 
 @require '3rdParty/colorpicker.styl'
 @require '3rdParty/helium.styl'
@@ -56,14 +66,13 @@ snow = #fafafa
 @require 'common.styl'
 @require 'inputs.styl'
 @require 'typography.styl'
-@require 'modals.styl'
+@require 'buildingBlocks.styl'
 
 @require 'tags/graphics-panel.styl'
 @require 'tags/graphic-editor.styl'
 @require 'tags/hello.styl'
 @require 'tags/main-menu.styl'
 @require 'tags/modules-panel.styl'
-@require 'tags/nav.styl'
 @require 'tags/notepad-panel.styl'
 @require 'tags/project-selector.styl'
 @require 'tags/room-editor.styl'

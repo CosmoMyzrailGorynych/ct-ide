@@ -5,7 +5,7 @@
 //   |_|  |_|\__,_||_||_||_|
 //
 
-/*******************************************
+/**
 
  [data-event] --> onClick events. Declared in events.js
  This schecks some other attributes:
@@ -51,7 +51,7 @@
  glob.graphmap: origname --> image
                              .g --> graph object
 
-*******************************************/
+*/
 
 /*
    String.f (String.format - alias)
@@ -60,10 +60,6 @@
    ==> 'I have 3 apples'
    use double curly braces to get single ones
 */
-
-
-
-/********************************/
 
 // first-launch setup
 if (!localStorage.fontSize) {
@@ -80,126 +76,11 @@ key('ctrl + S', function () {
     events.save();
 });
 
-$(function () {
-    alertify.set({
+setTimeout(() => {
+    window.alertify.set({
         labels: {
-            ok: languageJSON.common.ok,
-            cancel: languageJSON.common.cancel
-        }
-    });
-
-    // Run IDE
-    $(function () { $(function () {
-        $('#loading').fadeOut(200);
-    })});
-
-    // catch exit
-    win.on('close', function () {
-        if (glob.modified) {
-            if (!confirm(languageJSON.common.reallyexit)) {
-                return false;
-            } else {
-                this.close(true);
-            }
-        } else {
-            this.close(true);
-        }
-    });
-});
-
-//setup ui components
-$(function () {
-    // styleview sliders
-    $('#shadowblurslider').noUiSlider({
-        start: [0],
-        connect: "lower",
-        range: {
-            'min': [0,1],
-            '20%': [10,1],
-            '50%': [50,1],
-            'max': [300,1]
-        },
-        step: 1
-    }).on(function () {
-        $('#shadowblur').change();
-    }).Link('lower').to($('#shadowblur'));
-
-    $('#strokeweightslider').noUiSlider({
-        start: [0],
-        connect: "lower",
-        range: {
-            'min': [1],
-            'max': [30]
-        },
-        step: 1
-    }).on('change',function () {
-        $('#strokeweight').change();
-    }).Link('lower').to($('#strokeweight'));
-
-    $('#gradsizeslider').noUiSlider({
-        start: [0],
-        connect: "lower",
-        range: {
-            'min': [0,1],
-            '5%': [10,1],
-            '40%': [50,1],
-            '80%': [300,1],
-            'max': [1024,1]
-        },
-        step: 1
-    }).on('change',function () {
-        $('#fillgradsize').change();
-    }).Link('lower').to($('#fillgradsize'));
-
-    $('#fontsizeslider').noUiSlider({
-        start: [0],
-        connect: "lower",
-        range: {
-            'min': [6,1],
-            '70%': [72,1],
-            'max': [300,1]
-        },
-        step: 1
-    }).on('change', function () {
-        $('#fontsize').change();
-    }).Link('lower').to($('#fontsize'));
-
-    // colorpickers
-    $('input.color:not(.rgb):not(#previewbgcolor)').val('#000').colorPicker({
-        actionCallback: function (e,a) {
-            var me = $(this.input);
-            //console.log(e,a,this,this.input);
-            if (me.attr('data-input')) {
-                if (me.attr('type') == 'text' || !me.attr('type') || me[0].tagName.toUpperCase() == 'TEXTAREA') {
-                    eval(me.attr('data-input') + ' = "' + me.val().replace(/\"/g, '\\"') + '"');
-                } else {
-                    eval(me.attr('data-input') + ' = ' + me.val());
-                }
-            }
-            me.change();
-        }
-    });
-    $('input.color.rgb:not(#previewbgcolor)').val('#000').colorPicker({
-        noAlpha: true,
-        customBG: '#222',
-        actionCallback: function (e,a) {
-            var me = $(this);
-            console.log(e,a,this);
-            if (me.attr('data-input')) {
-                if (me.attr('type') == 'text' || !me.attr('type') || me[0].tagName.toUpperCase() == 'TEXTAREA') {
-                    eval(me.attr('data-input') + ' = "' + me.val().replace(/\"/g, '\\"') + '"');
-                } else {
-                    eval(me.attr('data-input') + ' = ' + me.val());
-                }
-            }
-            me.change();
-        }
-    });
-    $('#previewbgcolor').val('#000').colorPicker({
-        noAlpha: true,
-        customBG: '#222',
-        actionCallback: function () {
-            $('#preview').css('background',$('#previewbgcolor').val());
+            ok: window.languageJSON.common.ok,
+            cancel: window.languageJSON.common.cancel
         }
     });
 });

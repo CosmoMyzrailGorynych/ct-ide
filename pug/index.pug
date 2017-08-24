@@ -2,14 +2,16 @@ doctype html
 html(lang="ru")
     include includes/head.pug
     body.maximized(data-lang="#{me.id}")
-        main-menu
-        notepad-panel
+        root-tag
         include includes/footer.pug
-        project-selector
         audio#scream(src="girlyscream_01.ogg")
         audio#notify(src="notification.ogg")
         audio#alliluya(src="alliluya.ogg")
         script.
+            'use strict';
             window.signals = {};
             riot.observable(window.signals);
             riot.mount('*');
+            setTimeout(() => {
+                document.getElementById('loading').classList.add('fadeout');
+            }, 0)

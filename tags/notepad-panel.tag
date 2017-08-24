@@ -15,10 +15,10 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
         div(show="{tab === 'notepaglobal'}")
             .acer(ref="notepadglobal")
         div(show="{tab === 'helppages'}")
-            iframe(src="/docs/index.html" nwdisable nwfaketop)
+            iframe(src="docs/index.html" nwdisable nwfaketop)
 
     button.vertical.dockleft(onclick="{notepadToggle}")
-        i.icon(class="icon-{opened? 'back' : 'next'}")
+        i.icon(class="icon-{opened? 'next' : 'back'}")
     script.
         this.opened = false;
         this.voc = window.languageJSON.notepad;
@@ -44,11 +44,11 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
                     mode: 'javascript'
                 });
                 
-                this.notepadlocal.getSession().on('change', function(e) {
+                this.notepadlocal.getSession().on('change', (e) => {
                     window.currentProject.notes = this.notepadlocal.getValue();
                     window.glob.modified = true;
                 });
-                this.notepadglobal.getSession().on('change', function(e) {
+                this.notepadglobal.getSession().on('change', (e) => {
                     localStorage.notes = this.notepadglobal.getValue();
                 });
                 this.notepadglobal.setValue(localStorage.notes);

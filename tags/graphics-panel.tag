@@ -23,10 +23,9 @@ graphics-panel.panel.view
         this.voc = window.languageJSON.graphic;
         this.editing = false;
         
-        
-        this.fillGraphMap = function () {
+        this.fillGraphMap = () => {
             glob.graphmap = {};
-            window.currentProject.graphs.forEach(function (graph) {
+            window.currentProject.graphs.forEach(graph => {
                 var img = document.createElement('img');
                 glob.graphmap[graph.origname] = img;
                 img.g = graph;
@@ -34,11 +33,11 @@ graphics-panel.panel.view
             });
             var img = document.createElement('img');
             glob.graphmap[-1] = img;
-            img.src = assets + '/img/unknown.png';
+            img.src = '/img/unknown.png';
         };
-        this.on('mount' => {
+        this.on('mount', () => {
             this.fillGraphMap();
-        })
+        });
         
         /**
          * Событие добавления файлов через проводник

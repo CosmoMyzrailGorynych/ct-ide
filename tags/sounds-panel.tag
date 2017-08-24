@@ -23,7 +23,7 @@ sounds-panel.panel.view
             window.currentProject.sounds.push(newSound);
             this.openSound(newSound);
         };
-        this.openSound => sound => e {
+        this.openSound = sound => e => {
             this.editedSound = sound;
             this.editing = true;
         };

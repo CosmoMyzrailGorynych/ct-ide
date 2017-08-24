@@ -1,0 +1,136 @@
+.view
+    position fixed
+    overflow auto
+    top 1em
+    left 0
+    right 0
+    bottom 0
+    margin-top iconsize + 2
+    background snow
+
+.modal, .panel
+    box-sizing border-box
+    background white
+    border 1px solid bl
+    border-radius br
+    position relative
+
+.modal
+    position fixed
+    left 50%
+    top 50%
+    transform translate(-50%, -50%) translateZ(0)
+    filter blur(0px)
+    backface-visibility hidden
+
+.inset
+    background bl
+    padding 1rem
+    margin 0 -1rem
+    border-top 1px solid bd
+
+// Меню выбора - список
+.menu
+    padding 0
+    overflow auto
+    font-weight 400
+    ul
+        margin 0
+        padding 0
+    li
+        list-style none
+        padding 0.2em 0.8em
+        margin 0
+        border-bottom 1px solid bl
+        cursor pointer
+        overflow hidden
+        text-overflow ellipsis
+        white-space nowrap
+        {trans}
+        &:hover
+            {transshort}
+            border-bottom-color bd
+            color acttext
+            padding 0.2em 0.5em 0.2em 1.1em
+        &:active
+            background act
+            border-bottom-color transparent
+            color white
+
+// панели управления
+.nav
+    background white
+    border-radius br
+    border-top 1px solid bl
+    border-left 1px solid bl
+    padding 0
+    margin 0
+    display flex
+    flex-direction row
+    li
+        text-align center
+        cursor pointer
+        border-right 1px solid bl
+        border-bottom 1px solid bl
+        flex auto
+        list-style none
+        padding 0.25em
+        margin 0
+        display inline-block
+        {trans}
+        box-shadow 0 0 white inset
+        &:hover, &.active
+            {transshort}
+            color acttext
+            .icon
+                {transshort}
+                color accent1
+            box-shadow 0 -2px accent1 inset
+        &:active
+            background acttext
+            color white
+            box-shadow 0 -2px acttext inset
+            .icon
+                color white
+        &:first-child
+            border-top-left-radius inherit
+            border-bottom-left-radius inherit
+        &:last-child
+            border-top-right-radius inherit
+            border-bottom-right-radius inherit
+
+
+// resource cards
+.cards
+    list-style none
+    padding 0
+    li
+        background white
+        padding 0.8em
+        margin 0.3em
+        border 1px solid bl
+        border-radius 3px
+        display inline-block
+        vertical-align top
+        cursor pointer
+        width 15em
+        transition 0.35s ease all
+        &:hover
+            border-color acttext
+        &:active
+            border-color accent1
+            background act
+            color white
+        span
+            font-family consolas, monospace
+            width calc(15em - 64px)
+            display inline-block
+            text-overflow ellipsis
+            white-space nowrap
+            overflow hidden
+        img
+            float right
+            height 64px
+            width 64px
+            margin -0.5em -0.5em -0.5em 0.5em
+            border-radius br

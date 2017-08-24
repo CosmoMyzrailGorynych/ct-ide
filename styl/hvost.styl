@@ -1,0 +1,332 @@
+/*html, body
+    height 100% /* uncomment for hero screens
+*/
+
+button::-moz-focus-inner
+  border 0
+button
+    box-sizing border-box /* Mac VS Win */
+input, textarea, select, button
+    &:focus
+        outline 0 /* fuck chrome */
+
+img, a
+    border 0
+img
+    max-width 100%
+    box-sizing border-box
+
+
+body
+    margin 0
+    padding 0
+    font-family ff
+    color ctext
+    background-color bgcolor
+    line-height 1.5rem
+    overflow-x hidden
+    min-height 100vh
+    position relative
+
+.big
+    font-size 125%
+.small
+    font-size 87.5% // 14px от 16-и
+.tiny
+    font-size 75% // 12px
+.rem
+    font-size 1rem !important
+
+.wide
+    width 100% !important
+    margin-left 0
+    margin-right 0
+    box-sizing border-box
+.flexrow
+    display flex
+    flex-flow row nowrap
+    & > *
+        flex 1 1 auto
+.crop
+    overflow hidden
+    text-overflow ellipsis
+    white-space nowrap
+    display inline-block
+    max-width 15em
+    vertical-align text-bottom
+
+.toright
+    float right !important
+.toleft
+    float left !important
+.nofloat
+    float none
+
+.sticky
+    position sticky
+    top 0
+
+.center
+    text-align center
+.right
+    text-align right
+.left
+    text-align left
+
+.placecenter
+    margin-left auto
+    margin-right auto
+
+.middle
+    &:before /* для IE8+ */
+        content ""
+        display inline-block
+        min-height inherit
+        height 100%
+        vertical-align middle
+.middleinner
+    display inline-block !important
+    vertical-align middle !important
+.positionmiddle
+    position absolute
+    left 50%
+    right 50%
+    transform translate(-50%, -50%)
+.flexmiddle
+    align-items center
+textarea
+    resize vertical
+
+.round
+    border-radius 100%
+
+/* display modifiers */
+.block
+    display block
+.inline
+    display inline
+.inlineblock
+    display inline-block
+/* color modifiers */
+.red
+    color red
+.green
+    color green
+.blue
+    color blue
+.orange
+    color orange
+.grey, .gray
+    color grey
+.ctext
+    color ctext
+
+.bold
+    font-weight 600
+
+noblah = {
+    l: 'left',
+    r: 'right',
+    t: 'top',
+    b: 'bottom'
+}
+shortNames = {
+    m: 'margin',
+    p: 'padding'
+}
+for key, val in shortNames
+    for skey, sval in noblah
+        .n{key}{skey}, .no{val}{sval}
+            {val}-{sval} 0 !important
+    .n{key}, .no{val}
+        {val} 0 !important
+
+.column
+    padding 1rem
+    box-sizing border-box
+    float left
+    vertical-align top
+
+for i in 1 2 3 4 5 6 7 8 9 10 11
+    .c{i}
+        width ((100% / 12 * i))
+        @extend .column
+/*
+for i in 1 2 3 4 5 6 7 8 9
+    .ci-10
+        width ((100% / 10 * i))
+        @extend .column
+
+for i in 1 2 3 4 5 6 7 8
+    .ci-9
+        width ((100% / 9 * i))
+        @extend .column
+
+.c12
+    padding 10px
+    box-sizing border-box
+
+*/
+
+.fifty
+    width 50%
+.fourty
+    width 40%
+.sixty
+    width 60%
+.fifty, .fourty, .sixty
+    float left
+    padding 1em
+    box-sizing border-box
+    @media (max-width 640px)
+        float none
+        padding 0
+        width 100%
+
+.clear
+    clear both
+
+/*
+.inner
+    min-width 960px
+    max-width 1400px
+    width 80%
+    margin 0 auto
+    box-sizing border-box
+    position relative
+*/
+
+.loading
+    cursor wait
+
+
+.container-video
+    width 100%
+    position relative
+    padding-top 56.25%
+    iframe, object, embed
+        position absolute
+        top 0
+        left 0
+        width 100%
+        height 100%
+
+/* misc */
+.alignmiddle
+    vertical-align middle !important
+
+/* utilities */
+.scrollbar-measure
+    width 100px
+    height 100px
+    overflow scroll
+    position absolute
+    top -9999px
+    /*
+    function testScrollWidth ()
+        var scrollDiv = document.createElement("div"),
+            scrollbarWidth
+        scrollDiv.className = "scrollbar-measure"
+        document.body.appendChild(scrollDiv)
+        scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth
+        document.body.removeChild(scrollDiv)
+        return scrollbarWidth
+
+    */
+
+/* common animations */
+@keyframes rotate
+    from
+        transform rotate(0deg)
+    to
+        transform rotate(360deg)
+@keyframes wiggle
+    25%
+        left 0.1em
+    50%
+        top 0.1em
+    75%
+        left -0.1em
+    from, to
+        top -0.1em
+@keyframes fade-in
+    from
+        opacity 0
+    to
+        opacity 100%
+@keyframes pop-in
+    from
+        transform scale(0, 0)
+    to
+        transform scale(1, 1)
+@keyframes appear
+    from
+        opacity 0
+        transform scale(0.9, 0.9) translate(0, 2rem)
+    to
+        opacity 1
+        transform scale(1, 1) translate(0, 0)
+@keyframes pop-out
+    from
+        transform scale(1, 1)
+    50%, to
+        transform scale(0, 0)
+@keyframes shake
+    from, to
+        transform translate3d(0, 0, 0)
+    10%, 30%, 50%, 70%, 90%
+        transform translate3d(-10px, 0, 0)
+    20%, 40%, 60%, 80%
+        transform translate3d(10px, 0, 0)
+.rotate
+    animation rotate linear 1s infinite
+.wiggle
+    position relative
+    top 0
+    left 0
+    display inline-block
+    animation wiggle cubic-bezier(0.45, 0.05, 0.55, 0.95) 1s infinite
+.shake
+    animation shake 1s ease 1
+.popout
+    animation pop-out cubic-bezier(0.13, -0.1, 0.65, -0.51) 0.75s 1
+    z-index 50
+.appear
+    animation 0.35s cubic-bezier(0.39, 0.58, 0.57, 1) appear
+/* flexfix */
+.flexfix
+    display flex
+    flex-direction column
+.flexfix-header, .flexfix-footer, .nogrow
+    flex 0 1 auto
+.flexfix-body
+    .modal &
+        margin 0 -2em
+        padding 0 2em
+    flex 1 1 auto
+    overflow auto
+    overflow-x visible
+    overflow-y auto
+    position relative
+
+/* viewport control */
+.hide
+    display none
+for size in 640 480
+    @media (max-width (size)px)
+        .hide{size}
+            display none
+        .show{size}
+            display initial
+        .breakon{size}
+            display block !important
+            float none
+            width 100%
+            box-sizing border-box
+
+/* Placeholder unification and input font inheritance */
+input
+    font inherit
+::-moz-placeholder, ::-webkit-input-placeholder, :-ms-input-placeholder
+    color inherit
+    opacity 0.5

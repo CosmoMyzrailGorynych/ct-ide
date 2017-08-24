@@ -129,7 +129,7 @@
     gulp.task('stylus', function () {
         return gulp.src('./styl/_index.styl')
         .pipe(stylus({
-            compress: true
+            compress: false
         }))
         .pipe(concat('bundle.css'))
         .pipe(gulp.dest('./app/'));
