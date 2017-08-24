@@ -8,7 +8,7 @@ modules-panel.panel.view
             li(each="{module in allModules}" onclick="{renderModule(module)}")
                 i.icon(class="icon-{(module in enabledModules)? 'confirm on' : 'share off'}")
                 span module
-    .pt80.tall
+    .pt80.tall(if="{currentModule}")
         ul.nav.tabs
             li#modinfo(onclick="{changeTab('moduleinfo')}" class="{active: tab === 'moduleinfo'}")
                 i.icon.icon-message
@@ -36,9 +36,10 @@ modules-panel.panel.view
                 i#modinjects.icon.icon-flash.warning(title="{voc.hasinjects}" show="{currentModule.injects}")
                 i#modconfigurable.icon.icon-settings.success(title="{voc.hasfields}" show="{currentModule.fields}")
                 
-                #modinfohtml {{currentModuleHelp}}
+                #modinfohtml 
+                    raw(content="{currentModuleHelp}")
                 h1(if="{currentModule.main.license}") {voc.license}
-                span(if="{currentModule.main.license}") {{currentModuleLicense}}
+                raw(if="{currentModule.main.license}" content="{currentModuleLicense}")
                 
             #modulesettings.tabbed(show="{tab === 'modulesettings'}" if="{currentModule.fields && currentModuleName in currentProject.libs}")
                 dl(each="{field in currentModule.fields}")
@@ -68,13 +69,15 @@ modules-panel.panel.view
                             onchange="{wire('window.currentProject.libs.' + currentModuleName + '.' + field)}"
                         )
                         //- Это хреновая затея!!!
-                        div(class="desc" if="{field.help}") {{md.render(field.help)}}
+                        div(class="desc" if="{field.help}")
+                            raw(content="{md.render(field.help)}")
             #modulehelp.tabbed(show="{tab === 'modulehelp'}" if="{currentModule.methods || currentModule.params}")
                 h1 {voc.methods}
                 virtual(each="{method, name in currentModule.methods}")
                     h2(oncontextmenu="{showCopyMenu}") ct.{currentModuleName}.{name}
                     //- Это тоже хреновая затея!!!
-                    span(if="{method.exp}") {{md.render(method.exp)}}
+                    span(if="{method.exp}")
+                        raw(content="{md.render(method.exp)}")
                 p(if="{!currentModule.methods}") {voc.nomethods}
                 
                 h1 {voc.parameters}
@@ -84,7 +87,7 @@ modules-panel.panel.view
                 p(if="{!currentModule.parameters}") {voc.noparameters}
             #modulelogs.tabbed(show="{tab === 'modulelogs'}")
                 h1 {voc.logs2}
-                span {{currentModuleLogs}}
+                raw(content="currentModuleLogs}")
     script.
         const path = require('path'),
               fs = require('fs-extra'),
@@ -98,7 +101,9 @@ modules-panel.panel.view
         var exec = path.dirname(process.execPath).replace(/\\/g,'/');
         
         this.voc = window.languageJSON.modules;
-        window.events = window.events || {};
+        this.currentModule = {};
+        this.currentModuleHelp = '';
+        this.currentModuleLicense = '';
         
         this.tab = 'moduleinfo';
         this.changeTab = tab => e => {
@@ -109,7 +114,6 @@ modules-panel.panel.view
         this.on('update', () => {
             this.enabledModules = window.currentProject.libs;
         });
-        this.currentModule = {};
         
         fs.readdir(exec + '/ct.libs', function(err, files) {
             if (err) {
@@ -120,6 +124,9 @@ modules-panel.panel.view
                     this.allModules.push(path.basename(files[i], '.json'));
                 }
             }
+            this.currentModuleHelp = '';
+            this.currentModuleLicense = '';
+            this.toggleModule(this.allModules[0]);
             this.update();
         });
         this.toggleModule = module => e => {
@@ -128,18 +135,18 @@ modules-panel.panel.view
             } else {
                 window.currentProject.libs[module] = {};
                 // 'Settings' page
-                if (currentModule.fields && currentProject.libs[name]) {
-                    for (var k in currentModule.fields) {
-                        if (!currentProject.libs[name][currentModule.fields[k].key]) {
-                            if (currentModule.fields[k].default) {
-                                currentProject.libs[name][currentModule.fields[k].key] = currentModule.fields[k].default;
+                if (this.currentModule.fields && currentProject.libs[name]) {
+                    for (var k in this.currentModule.fields) {
+                        if (!currentProject.libs[name][this.currentModule.fields[k].key]) {
+                            if (this.currentModule.fields[k].default) {
+                                currentProject.libs[name][this.currentModule.fields[k].key] = this.currentModule.fields[k].default;
                             } else {
-                                if (currentModule.fields[k].type == 'number') {
-                                    currentProject.libs[name][currentModule.fields[k].key] = 0;
-                                } else if (currentModule.fields[k].type == 'checkbox') {
-                                    currentProject.libs[name][currentModule.fields[k].key] = false;
+                                if (this.currentModule.fields[k].type == 'number') {
+                                    currentProject.libs[name][this.currentModule.fields[k].key] = 0;
+                                } else if (this.currentModule.fields[k].type == 'checkbox') {
+                                    currentProject.libs[name][this.currentModule.fields[k].key] = false;
                                 } else {
-                                    currentProject.libs[name][currentModule.fields[k].key] = '';
+                                    currentProject.libs[name][this.currentModule.fields[k].key] = '';
                                 }
                             }
                         }
