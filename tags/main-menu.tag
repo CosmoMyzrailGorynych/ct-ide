@@ -12,25 +12,25 @@ main-menu
             li.it30(data-event="run" title="{voc.launch}")
                 i.icon.icon-play
 
-            li(onclick="{changeTab('settings')}")
+            li(onclick="{changeTab('settings')}" class="{active: tab === 'settings'}")
                 i.icon.icon-settings
                 span {voc.settings}
-            li(onclick="{changeTab('modules')}")
+            li(onclick="{changeTab('modules')}" class="{active: tab === 'modules'}")
                 i.icon.icon-share
                 span {voc.modules}
-            li(onclick="{changeTab('graphic')}")
+            li(onclick="{changeTab('graphic')}" class="{active: tab === 'graphic'}")
                 i.icon.icon-picture
                 span {voc.graphic}
-            li(onclick="{changeTab('styles')}")
+            li(onclick="{changeTab('styles')}" class="{active: tab === 'styles'}")
                 i.icon.icon-brush
                 span {voc.styles}
-            li(onclick="{changeTab('sounds')}")
+            li(onclick="{changeTab('sounds')}" class="{active: tab === 'sounds'}")
                 i.icon.icon-music
                 span {voc.sounds}
-            li(onclick="{changeTab('types')}")
+            li(onclick="{changeTab('types')}" class="{active: tab === 'types'}")
                 i.icon.icon-smile
                 span {voc.types}
-            li(onclick="{changeTab('rooms')}")
+            li(onclick="{changeTab('rooms')}" class="{active: tab === 'rooms'}")
                 i.icon.icon-room
                 span {voc.rooms}
     div(if="{window.currentProject}")
@@ -48,10 +48,6 @@ main-menu
         this.tab = 'settings';
         this.changeTab = tab => e => {
             this.tab = tab;
-            if (tab === 'modules') {
-                this.openModules(e);
-            }
-            this.checkSave();
             window.signals.trigger('globalTabChanged');
         };
         var gui = require('nw.gui'),

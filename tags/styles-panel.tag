@@ -83,7 +83,7 @@ styles-panel
         }));
         styleMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.delete,
-            icon: (wwindow.isMac ? '/img/black/' : '/img/blue/') + 'delete.png',
+            icon: (window.isMac ? '/img/black/' : '/img/blue/') + 'delete.png',
             click: e => {
                 window.alertify.confirm(window.languageJSON.common.confirmDelete.f(this.editedStyle.name), confirmed => {
                     if (confirmed) {
