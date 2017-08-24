@@ -5,6 +5,7 @@
         path = require('path'),
         gulp = require('gulp'),
         concat = require('gulp-concat'),
+        sourcemaps = require('gulp-sourcemaps'),
         stylus = require('gulp-stylus'),
         riot = require('gulp-riot'),
         pug = require('gulp-pug'),
@@ -53,7 +54,9 @@
             gulp.src('./js/**'),
             gulp.src('./temp/riot.js')
         )
+        .pipe(sourcemaps.init())
         .pipe(concat('bundle.js'))
+        .pipe(sourcemaps.write())
         .pipe(gulp.dest('./app/'))
         /* .pipe(closureCompiler({
             compilerPath: 'bower_components/closure-compiler/closure-compiler-v20170626.jar',
@@ -77,7 +80,7 @@
                 icon: path.join(__dirname, 'error.png'),
                 sound: true,
                 wait: true
-        });
+            });
             console.error('[scripts error]', err);
         })
         .on('change', fileChangeNotifier);

@@ -35,6 +35,7 @@
     "gulp-concat": "2.6.1",
     "gulp-pug": "3.3.0",
     "gulp-riot": "1.1.1",
+    "gulp-sourcemaps": "2.6.1",
     "gulp-stylus": "2.6.0",
     "node-notifier": "5.1.2",
     "pug": "^2.0.0-rc.3",
