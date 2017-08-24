@@ -14,9 +14,10 @@
         }
         while (way.length > 1) {
             root = root[way[0]];
-            root.shift();
+            way.shift();
         }
         root[way[0]] = val;
+        window.glob.modified = true;
     };
     window.riotWired = {
         init() {

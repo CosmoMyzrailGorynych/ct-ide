@@ -8,15 +8,16 @@
         },
         set modified (v) {
             if (v) {
-                win.title = 'ct.ide — ' + sessionStorage.projname + ' •';
+                window.title = 'ctjs — ' + sessionStorage.projname + ' •';
             } else {
-                win.title = 'ct.ide — ' + sessionStorage.projname;
+                window.title = 'ctjs — ' + sessionStorage.projname;
             }
             this.mmodified = v;
             return this.mmodified;
         }
     };
 
+    // Не исправлять жалобы eslint. nw.js-специфично.
     win.on('close', function () {
         if (window.glob.modified) {
             if (!confirm(window.languageJSON.common.reallyexit)) {

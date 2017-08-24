@@ -43,6 +43,8 @@ main-menu
         rooms-panel(if="{tab === 'rooms'}")
     script.
         this.voc = window.languageJSON.menu;
+        const fs = require('fs-extra');
+
         this.tab = 'settings';
         this.changeTab = tab => e => {
             this.tab = tab;

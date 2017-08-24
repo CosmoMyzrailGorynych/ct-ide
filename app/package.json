@@ -1,7 +1,7 @@
 {
   "main": "index.html",
-  "name": "ct.IDE",
-  "description": "ct.IDE",
+  "name": "ctjs",
+  "description": "ctjs",
   "version": "0.0.1",
   "homepage": "http://ctjs.ru",
   "window": {
@@ -15,7 +15,7 @@
     "min_height": 380,
     "resizable": true,
     "fullscreen": false,
-    "title": "ct.IDE"
+    "title": "ctjs"
   },
   "repository": {
     "type": "git",
