@@ -2,7 +2,7 @@ main-menu
     nav(if="{window.currentProject}")
         ul#app.nav
             li#fullscreen(onclick="{toggleFullscreen}" title="{voc.min}")
-                i.icon(class="{fullscreen? 'minimize' : 'maximize'}")
+                i.icon(class="icon-{fullscreen? 'minimize' : 'maximize'}")
 
         ul#mainnav.nav.tabs
             li.it30#ctlogo(onclick="{ctClick}" title="{voc.ctIDE}")
