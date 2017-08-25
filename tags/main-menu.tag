@@ -9,7 +9,7 @@ main-menu
                 img(src="img/ct.ide.svg")
             li.it30(onclick="{saveProject}" title="{voc.save}")
                 i.icon.icon-save
-            li.it30(data-event="run" title="{voc.launch}")
+            li.it30(onclick="{runProject}" title="{voc.launch}")
                 i.icon.icon-play
 
             li(onclick="{changeTab('settings')}" class="{active: tab === 'settings'}")
@@ -34,13 +34,13 @@ main-menu
                 i.icon.icon-room
                 span {voc.rooms}
     div(if="{window.currentProject}")
-        settings-panel(if="{tab === 'settings'}")
-        modules-panel(if="{tab === 'modules'}")
-        graphics-panel(if="{tab === 'graphic'}")
-        styles-panel(if="{tab === 'styles'}")
-        sounds-panel(if="{tab === 'sounds'}")
-        types-panel(if="{tab === 'types'}")
-        rooms-panel(if="{tab === 'rooms'}")
+        settings-panel(show="{tab === 'settings'}")
+        modules-panel(show="{tab === 'modules'}")
+        graphics-panel(show="{tab === 'graphic'}")
+        styles-panel(show="{tab === 'styles'}")
+        sounds-panel(show="{tab === 'sounds'}")
+        types-panel(show="{tab === 'types'}")
+        rooms-panel(show="{tab === 'rooms'}")
     script.
         this.voc = window.languageJSON.menu;
         const fs = require('fs-extra');
@@ -59,17 +59,20 @@ main-menu
             this.fullscreen = !this.fullscreen;
         };
         
-        this.ctClick = function(e) {
+        this.ctClick = (e) => {
             catMenu.popup(e.clientX, e.clientY);
         };
-        this.saveProject = function() {
-            fs.outputJSON(sessionStorage.projdir + '.ict', currentProject, function(e) {
+        this.saveProject = () => {
+            fs.outputJSON(sessionStorage.projdir + '.ict', currentProject, (e) => {
                 if (e) {
-                    throw e;
+                    alertify.error(e);
                 }
                 alertify.log(languageJSON.common.savedcomm, "success", 3000);
                 glob.modified = false;
             })
+        };
+        this.runProject = e => {
+            window.runCtProject();
         };
         
         var gui = require('nw.gui');

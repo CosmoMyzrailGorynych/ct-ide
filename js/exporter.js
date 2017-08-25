@@ -25,7 +25,7 @@
     var injectModules = (injects) => {
         for (const lib in window.currentProject.libs) {
             ctlibs += ' ' + lib;
-            var libData = fs.readJSONSync(exec + '/ct.libs/' + lib + '.json', {
+            var libData = fs.readJSONSync('./ct.libs/' + lib + '.json', {
                 'encoding': 'utf8'
             });
             if (libData.injects) {
@@ -49,7 +49,7 @@
         }
     };
 
-    window.runCtProject = function () {
+    window.runCtProject = () => {
         // glob.compileAudio = 0;
         if (window.currentProject.rooms.length < 1) {
             window.alertify.error(window.languageJSON.common.norooms);
@@ -59,8 +59,9 @@
 
         ctlibs = 'CORE';
         fs.removeSync(exec + '/export/');
-        fs.ensureDirSync(exec + '/export/img');
-        fs.ensureDirSync(exec + '/export/snd');
+        fs.ensureDirSync(exec + '/export/');
+        fs.ensureDirSync(exec + '/export/img/');
+        fs.ensureDirSync(exec + '/export/snd/');
         var injects = {
             load: '',
             start: '',
@@ -101,7 +102,7 @@
                 break;
             }
         }
-        var buffer = fs.readFileSync('/ct.release/main.js', {
+        var buffer = fs.readFileSync('./ct.release/main.js', {
             'encoding': 'utf8'
         });
 
@@ -138,14 +139,14 @@
         buffer += '\n';
 
         /* котэ-художник */
-        buffer += fs.readFileSync('/ct.release/draw.js', {
+        buffer += fs.readFileSync('./ct.release/draw.js', {
             'encoding': 'utf8'
         });
 
         buffer += '\n';
 
         /* котомышь */
-        buffer += fs.readFileSync('/ct.release/mouse.js', {
+        buffer += fs.readFileSync('./ct.release/mouse.js', {
             'encoding': 'utf8'
         });
 
@@ -154,10 +155,10 @@
         /* балласт */
         for (var lib in window.currentProject.libs) {
             ctlibs += ' ' + lib;
-            const data = fs.readJSONSync(exec + '/ct.libs/' + lib + '.json', {
+            const data = fs.readJSONSync('./ct.libs/' + lib + '.json', {
                 'encoding': 'utf8'
             });
-            buffer += parseKeys(data, fs.readFileSync(exec + '/ct.libs/' + lib + '.js', {
+            buffer += parseKeys(data, fs.readFileSync('./ct.libs/' + lib + '.js', {
                 'encoding': 'utf8'
             }), lib);
             buffer += '\n';
@@ -185,16 +186,16 @@
                 bgsCopy[bg].graph = window.glob.graphmap[bgsCopy[bg].graph].g.name;
                 bgsCopy[bg].depth = Number(bgsCopy[bg].depth);
             }
-            roomCode += '    "objs":' + JSON.stringify(objs) + ',\n';
-            roomCode += '    "bgs":' + JSON.stringify(bgsCopy) + ',\n';
-            roomCode += '    "onstep": function () {\n' + window.currentProject.rooms[k].onstep + '\n    },\n';
-            roomCode += '    "ondraw": function () {\n' + window.currentProject.rooms[k].ondraw + '\n    },\n';
-            roomCode += '    "onleave": function () {\n' + window.currentProject.rooms[k].onleave + '\n    },\n';
-            roomCode += '    "oncreate": function () {\n' + window.currentProject.rooms[k].oncreate + '\n    }\n';
+            roomCode += '    objects:' + JSON.stringify(objs) + ',\n';
+            roomCode += '    bgs:' + JSON.stringify(bgsCopy) + ',\n';
+            roomCode += '    onStep: function () {\n' + window.currentProject.rooms[k].onstep + '\n    },\n';
+            roomCode += '    onDraw: function () {\n' + window.currentProject.rooms[k].ondraw + '\n    },\n';
+            roomCode += '    onLeave: function () {\n' + window.currentProject.rooms[k].onleave + '\n    },\n';
+            roomCode += '    onCreate: function () {\n' + window.currentProject.rooms[k].oncreate + '\n    }\n';
             roomCode += '};';
         }
 
-        buffer += fs.readFileSync('/ct.release/rooms.js', {
+        buffer += fs.readFileSync('./ct.release/rooms.js', {
             'encoding': 'utf8'
         })
         .replace('@startroom@', window.currentProject.rooms[window.currentProject.starting].name)
@@ -256,7 +257,7 @@
             o.shadow = s.shadow;
             styles += 'ct.styles.new(\n    "' + s.name + '",\n    ' + JSON.stringify(o.fill,'    ') + ',\n    ' + JSON.stringify(o.border,'    ') + ',\n    ' + JSON.stringify(o.text,'    ') + ',\n    ' + JSON.stringify(o.shadow,'    ') + '\n);\n';
         }
-        buffer += fs.readFileSync('/ct.release/styles.js', {
+        buffer += fs.readFileSync('./ct.release/styles.js', {
             'encoding': 'utf8'
         })
         .replace('@styles@', styles)
@@ -327,12 +328,12 @@
         });
 
         graphurls = graphurls.slice(0, -1);
-        buffer += fs.readFileSync('/ct.release/res.js', {
+        buffer += fs.readFileSync('./ct.release/res.js', {
             'encoding': 'utf8'
         })
-        .replace('@graphtotal@', graphtotal)
+        .replace('@graphsTotal@', graphtotal)
         .replace('@sndtotal@', window.currentProject.sounds.length)
-        .replace('@graphurls@', graphurls)
+        .replace('@graphUrls@', graphurls)
         .replace('@res@', res)
         .replace(/%resload%/, injects.resload)
         .replace(/%res%/, injects.res);
@@ -343,18 +344,18 @@
         for (const k in window.currentProject.types) {
             var type = window.currentProject.types[k];
             types += 'ct.types["' + type.name + '"] = {\n';
-            types += '    "depth":' + type.depth + ',\n';
+            types += '    depth:' + type.depth + ',\n';
 
             if (type.graph !== -1) {
-                types += '    "graph": "' + window.glob.graphmap[type.graph].g.name + '",\n';
+                types += '    graph: "' + window.glob.graphmap[type.graph].g.name + '",\n';
             }
-            types += '    "onstep": function () {\n' + type.onstep + '\n    },\n';
-            types += '    "ondraw": function () {\n' + type.ondraw + '\n    },\n';
-            types += '    "ondestroy": function () {\n' + type.ondestroy + '\n    },\n';
-            types += '    "oncreate": function () {\n' + type.oncreate + '\n    }\n';
+            types += '    onStep: function () {\n' + type.onstep + '\n    },\n';
+            types += '    onDraw: function () {\n' + type.ondraw + '\n    },\n';
+            types += '    onDestroy: function () {\n' + type.ondestroy + '\n    },\n';
+            types += '    onCreate: function () {\n' + type.oncreate + '\n    }\n';
             types += '};\n';
         }
-        buffer += fs.readFileSync('/ct.release/types.js', {
+        buffer += fs.readFileSync('./ct.release/types.js', {
             'encoding': 'utf8'
         })
         .replace(/%oncreate%/, injects.oncreate)
@@ -374,7 +375,7 @@
                 ''
             );
         }
-        buffer += fs.readFileSync('/ct.release/sound.js', {
+        buffer += fs.readFileSync('./ct.release/sound.js', {
             'encoding': 'utf8'
         })
         .replace('@sound@', sounds);
@@ -397,13 +398,13 @@
         // here goes madness
 
         /* HTML & CSS */
-        fs.writeFileSync(exec + '/export/index.html', fs.readFileSync('/ct.release/index.html', {
+        fs.writeFileSync(exec + '/export/index.html', fs.readFileSync('./ct.release/index.html', {
             'encoding': 'utf8'
         })
         .replace(/%htmltop%/, injects.htmltop)
         .replace(/%htmlbottom%/, injects.htmlbottom));
 
-        fs.writeFileSync(exec + '/export/ct.css', fs.readFileSync('/ct.release/ct.css', {
+        fs.writeFileSync(exec + '/export/ct.css', fs.readFileSync('./ct.release/ct.css', {
             'encoding': 'utf8'
         })
         .replace(/%css%/, injects.css));
@@ -411,7 +412,7 @@
         if (window.currentProject.settings.minifyhtml) {
             const csswring = require('csswring'),
                   htmlMinify = require('html-minifier');
-            fs.writeFileSync(exec + '/export/index.min.html', htmlMinify(fs.readFileSync('/ct.release/index.min.html', {
+            fs.writeFileSync(exec + '/export/index.min.html', htmlMinify(fs.readFileSync('./ct.release/index.min.html', {
                 'encoding': 'utf8'
             })
             .replace(/%htmltop%/, injects.htmltop)
@@ -454,6 +455,6 @@
         } else {
             gui.Shell.openItem(exec + '/export/index.html');
         }
-        $('body').css('cursor', 'default');
+        document.body.style.cursor = 'default';
     };
 })(this);

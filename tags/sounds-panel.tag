@@ -14,6 +14,8 @@ sounds-panel.panel.view
     sound-editor(if="{editing}" sound="{editedSound}")
     script.
         this.voc = window.languageJSON.sounds;
+        const gui = require('nw.gui');
+        
         this.soundNew = e => {
             var newSound = {
                 name: 'sound' + currentProject.soundtick,

@@ -226,13 +226,13 @@ ct.loop = function() {
                 }
                 for (var i = 0; i < ct.stack.length; i++) {
                     ct.types.beforeDraw.apply(ct.stack[i]);
-                    ct.stack[i].ondraw.apply(ct.stack[i]);
+                    ct.stack[i].onDraw.apply(ct.stack[i]);
                     ct.stack[i].frame += ct.stack[i].imgspd; 
                     ct.types.afterDraw.apply(ct.stack[i]);
                 }
 
                 ct.rooms.beforeDraw.apply(ct.room);
-                ct.room.ondraw.apply(ct.room); 
+                ct.room.onDraw.apply(ct.room); 
                 ct.rooms.afterDraw.apply(ct.room);
                 
                 ct.mouse.pressed = false;

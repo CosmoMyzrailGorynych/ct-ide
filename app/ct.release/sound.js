@@ -68,8 +68,8 @@ ct.sound = {
 };
 
 // define sound types we can support
-ct.sound.wav = ct.sound.detect('audio/wav; codecs="1"'),
-ct.sound.ogg = ct.sound.detect('audio/ogg; codecs="vorbis"'),
-ct.sound.mp3 = ct.sound.detect('audio/mpeg;'),
+ct.sound.wav = ct.sound.detect('audio/wav; codecs="1"');
+ct.sound.ogg = ct.sound.detect('audio/ogg; codecs="vorbis"');
+ct.sound.mp3 = ct.sound.detect('audio/mpeg;');
 
 @sound@

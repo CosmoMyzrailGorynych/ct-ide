@@ -12,15 +12,18 @@ types-panel.panel.view
         const gui = require('nw.gui');
         this.editingType = false;
         
+        this.on('mount', () => {
+            this.fillTypeMap();
+        });
+
         this.fillTypeMap = () => {
-            delete glob.typemap;
-            glob.typemap = {};
+            delete window.glob.typemap;
+            window.glob.typemap = {};
             for (let i = 0; i < window.currentProject.types.length; i++) {
-                glob.typemap[currentProject.types[i].uid] = i;
+                window.glob.typemap[currentProject.types[i].uid] = i;
             }
         };
-        
-        events.typeCreate = e => {
+        this.typeCreate = e => {
             window.currentProject.typetick ++;
             var obj = {
                 name: 'type' + window.currentProject.typetick,
