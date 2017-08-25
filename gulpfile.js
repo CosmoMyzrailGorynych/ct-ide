@@ -131,10 +131,12 @@
 
     gulp.task('stylus', function () {
         return gulp.src('./styl/_index.styl')
+        .pipe(sourcemaps.init())
         .pipe(stylus({
             compress: false
         }))
         .pipe(concat('bundle.css'))
+        .pipe(sourcemaps.write())
         .pipe(gulp.dest('./app/'));
     });
     gulp.task('pug', function () {
