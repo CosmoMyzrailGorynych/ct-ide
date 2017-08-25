@@ -4,9 +4,9 @@
 ****************************************/
 
 ct.place = {
-    'm':1, // direction modifier in ct.place.go
+    'm': 1, // direction modifier in ct.place.go
     'check' : {
-        'rect.rect': function (x1,y1,x2,y2,xx1,yy1,xx2,yy2) {
+        'rect.rect': function (x1, y1, x2, y2, xx1, yy1, xx2, yy2) {
             //
             // (x1,y1)._____       (xx1,yy1).___
             //        |     |               |   |
@@ -15,51 +15,52 @@ ct.place = {
             //
             // TODO: normalize points (if it matters)
             
-            var sx=x1<xx1?x1:xx1,
-                sy=y1<yy1?y1:yy1,
-                ex=x2>xx2?x2:xx2,
-                ey=y1>yy2?y2:yy2;
-            return ex-sx<x2-x1+xx2-xx1 && ey-sy<y2-y1+yy2-yy1;
+            var sx = x1 < xx1? x1 : xx1,
+                sy = y1 < yy1? y1 : yy1,
+                ex = x2 > xx2? x2 : xx2,
+                ey = y1 > yy2? y2 : yy2;
+            return ex - sx < x2 - x1 + xx2 - xx1 && ey - sy<y2 - y1 + yy2 - yy1;
         },
-        'line.line': function (x1,y1,x2,y2,x3,y3,x4,y4) {
+        'line.line': function (x1, y1, x2, y2, x3, y3, x4, y4) {
             // x1 y1, x2 y2 - first line
             // x3 y3, x4 y4 - second line 
             return(
-                ((x3-x1)*(y2-y1)-(y3-y1)*(x2-x1))*((x4-x1)*(y2-y1)-(y4-y1)*(x2-x1))<=0)
+                ((x3-x1) * (y2-y1) - (y3-y1) * (x2-x1)) * ((x4-x1) * (y2-y1) - (y4-y1) * (x2-x1)) <= 0)
             &&
-                (((x1-x3)*(y4-y3)-(y1-y3)*(x4-x3))*((x2-x3)*(y4-y3)-(y2-y3)*(x4-x3))<=0);
+                (((x1-x3) * (y4-y3) - (y1-y3) * (x4-x3)) * ((x2-x3) * (y4-y3) - (y2-y3) * (x4-x3) )<= 0);
         },
-        'circle.circle': function (x1,y1,r1,x2,y2,r2) {
+        'circle.circle': function (x1, y1, r1, x2, y2, r2) {
             // detect collision by comparison of distance between centers and sum of circle's radius
-            return((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1)<=(r1+r2)*(r1+r2));
+            return((x2-x1) * (x2-x1) + (y2-y1) * (y2-y1) <= (r1+r2) * (r1+r2));
         },
-        'circle.point': function (x1,y1,r1,x2,y2) {
+        'circle.point': function (x1, y1, r1, x2, y2) {
             // the same as above
-            return((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1)<=r1*r1);
+            return((x2-x1) * (x2-x1) + (y2-y1) *(y2-y1) <= r1 *r1);
         },
-        'circle.rect': function (x1,y1,r1,x2,y2,x3,y3) {
+        'circle.rect': function (x1, y1, r1, x2, y2, x3, y3) {
             // must be buggy
             return(
                 // if we touch borders
-                (x2-x1)*(x2-x1)+(y2-y1)*(y2-y1)<=r1*r1
+                (x2-x1) * (x2-x1) + (y2-y1) * (y2-y1)<=r1 * r1
             ||
-                (x2-x1)*(x2-x1)+(y3-y1)*(y3-y1)<=r1*r1
+                (x2-x1) * (x2-x1) + (y3-y1) * (y3-y1)<=r1 * r1
             ||
-                (x3-x1)*(x3-x1)+(y2-y1)*(y2-y1)<=r1*r1
+                (x3-x1) * (x3-x1) + (y2-y1) * (y2-y1)<=r1 * r1
             ||
-                (x3-x1)*(x3-x1)+(y3-y1)*(y3-y1)<=r1*r1
+                (x3-x1) * (x3-x1) + (y3-y1) * (y3-y1)<=r1 * r1
             || // if we touch corners
-                ct.place.check['rect.point'](x2,y2,x3,y3,x1+r1,y1)
+               // is it even needed?
+                ct.place.check['rect.point'](x2, y2, x3, y3, x1+r1, y1)
             ||
-                ct.place.check['rect.point'](x2,y2,x3,y3,x1,y1+r1)
+                ct.place.check['rect.point'](x2, y2, x3, y3, x1, y1+r1)
             ||
-                ct.place.check['rect.point'](x2,y2,x3,y3,x1,y1-r1)
+                ct.place.check['rect.point'](x2, y2, x3, y3, x1, y1-r1)
             ||
-                ct.place.check['rect.point'](x2,y2,x3,y3,x1-r1,y1)
+                ct.place.check['rect.point'](x2, y2, x3, y3, x1-r1, y1)
             // TODO: react if circle is placed inside rectangle
             );
         },
-        'rect.point': function (x1,y1,x2,y2,x3,y3) {
+        'rect.point': function (x1, y1, x2, y2, x3, y3) {
             // x1 y1, x2 y2 - rect
             // x3 y3 - point
             // *might* be buggy
@@ -198,15 +199,15 @@ ct.place = {
         } else
                 return false;
     },
-    'furthest': function (x,y,type) {
+    'furthest': function (x, y, type) {
         // ct.place.furthest(<x: Number, y: Number, type: Type>)
         if (ct.types.list[type].length > 0) {
-                var dist = Math.sqrt(Math.abs((x-ct.types.list[type][0].y)*(y-ct.types.list[type][0].y)));
+                var dist = Math.sqrt(Math.abs((x-ct.types.list[type][0].y) * (y-ct.types.list[type][0].y)));
                 var inst = ct.types.list[type][0];
                 var i;
                 for (i in ct.types.list[type]) {
-                        if (Math.sqrt(Math.abs((x-ct.types.list[type][i].y)*(y-ct.types.list[type][i].y))) > dist) {
-                                dist = Math.sqrt(Math.abs((x-ct.types.list[type][i].y)*(y-ct.types.list[type][i].y)));
+                        if (Math.sqrt(Math.abs((x - ct.types.list[type][i].y) * (y-ct.types.list[type][i].y))) > dist) {
+                                dist = Math.sqrt(Math.abs((x - ct.types.list[type][i].y) * (y - ct.types.list[type][i].y)));
                                 inst = ct.types.list[type][i];
                         }
                 }
@@ -215,51 +216,51 @@ ct.place = {
         } else
                 return false;
     },
-    'go': function (me,x,y,speed,type) {
+    'go': function (me, x, y, speed, type) {
         // ct.place.go(<me: Copy, x: Number, y: Number, speed: Number>[, type: String])
         // tries to reach the target with simple obstackle avoidance algorithm
 
         // if we are too close to the destination, exit
-        if (ct.pdc(me.x,me.y,x,y)<speed) return;
-        var dir = ct.pdn(me.x,me.y,x,y);
+        if (ct.pdc(me.x, me.y, x, y)<speed) return;
+        var dir = ct.pdn(me.x, me.y, x, y);
         if (type) {
             //if there are no obstackles in front of us, go forward
-            if (ct.place.free(me,me.x+ct.ldx(speed,dir),me.y+ct.ldy(speed,dir),type)) {
-                    me.x += ct.ldx(speed,dir);
-                    me.y += ct.ldy(speed,dir);
+            if (ct.place.free(me, me.x+ct.ldx(speed, dir), me.y+ct.ldy(speed, dir), type)) {
+                    me.x += ct.ldx(speed, dir);
+                    me.y += ct.ldy(speed, dir);
                     me.dir = dir;
             // otherwise, try to change direction by 30...60...90 degrees. 
             // Direction changes over time (ct.place.m).
-            } else if (ct.place.free(me,me.x+ct.ldx(speed,dir+30*ct.place.m),me.y+ct.ldy(speed,dir+30*ct.place.m),type)) {
-                    me.x += ct.ldx(speed,dir+30*ct.place.m);
-                    me.y += ct.ldy(speed,dir+30*ct.place.m);
-                    me.dir = dir+30*ct.place.m;
-            } else if (ct.place.free(me,me.x+ct.ldx(speed,dir+60*ct.place.m),me.y+ct.ldy(speed,dir+60*ct.place.m),type)) {
-                    me.x += ct.ldx(speed,dir+60*ct.place.m);
-                    me.y += ct.ldy(speed,dir+60*ct.place.m);
-                    me.dir = dir+60*ct.place.m;
-            } else if (ct.place.free(me,me.x+ct.ldx(speed,dir+90*ct.place.m),me.y+ct.ldy(speed,dir+90*ct.place.m),type)) {
-                    me.x += ct.ldx(speed,dir+90*ct.place.m);
-                    me.y += ct.ldy(speed,dir+90*ct.place.m);
-                    me.dir = dir+90*ct.place.m;
+            } else if (ct.place.free(me, me.x+ct.ldx(speed, dir+30 * ct.place.m), me.y+ct.ldy(speed, dir+30 * ct.place.m), type)) {
+                    me.x += ct.ldx(speed, dir+30 * ct.place.m);
+                    me.y += ct.ldy(speed, dir+30 * ct.place.m);
+                    me.dir = dir+30 * ct.place.m;
+            } else if (ct.place.free(me, me.x+ct.ldx(speed, dir+60 * ct.place.m), me.y+ct.ldy(speed, dir+60 * ct.place.m), type)) {
+                    me.x += ct.ldx(speed, dir+60 * ct.place.m);
+                    me.y += ct.ldy(speed, dir+60 * ct.place.m);
+                    me.dir = dir+60 * ct.place.m;
+            } else if (ct.place.free(me, me.x+ct.ldx(speed, dir+90 * ct.place.m), me.y+ct.ldy(speed, dir+90 * ct.place.m), type)) {
+                    me.x += ct.ldx(speed, dir+90 * ct.place.m);
+                    me.y += ct.ldy(speed, dir+90 * ct.place.m);
+                    me.dir = dir+90 * ct.place.m;
             }
         } else {
-            if (ct.place.free(me,me.x+ct.ldx(speed,dir),me.y+ct.ldy(speed,dir))) {
-                    me.x += ct.ldx(speed,dir);
-                    me.y += ct.ldy(speed,dir);
+            if (ct.place.free(me, me.x+ct.ldx(speed, dir), me.y+ct.ldy(speed, dir))) {
+                    me.x += ct.ldx(speed, dir);
+                    me.y += ct.ldy(speed, dir);
                     me.dir = dir;
-            } else if (ct.place.free(me,me.x+ct.ldx(speed,dir+30*ct.place.m),me.y+ct.ldy(speed,dir+30*ct.place.m))) {
-                    me.x += ct.ldx(speed,dir+30*ct.place.m);
-                    me.y += ct.ldy(speed,dir+30*ct.place.m);
-                    me.dir = dir+30*ct.place.m;
-            } else if (ct.place.free(me,me.x+ct.ldx(speed,dir+60*ct.place.m),me.y+ct.ldy(speed,dir+6*ct.place.m))) {
-                    me.x += ct.ldx(speed,dir+60*ct.place.m);
-                    me.y += ct.ldy(speed,dir+60*ct.place.m);
-                    me.dir = dir+60*ct.place.m;
-            } else if (ct.place.free(me,me.x+ct.ldx(speed,dir+90*ct.place.m),me.y+ct.ldy(speed,dir+90*ct.place.m))) {
-                    me.x += ct.ldx(speed,dir+90*ct.place.m);
-                    me.y += ct.ldy(speed,dir+90*ct.place.m);
-                    me.dir = dir+90*ct.place.m;
+            } else if (ct.place.free(me, me.x+ct.ldx(speed, dir+30 * ct.place.m), me.y+ct.ldy(speed, dir+30 * ct.place.m))) {
+                    me.x += ct.ldx(speed, dir+30 * ct.place.m);
+                    me.y += ct.ldy(speed, dir+30 * ct.place.m);
+                    me.dir = dir+30 * ct.place.m;
+            } else if (ct.place.free(me, me.x+ct.ldx(speed, dir+60 * ct.place.m), me.y+ct.ldy(speed, dir+6 * ct.place.m))) {
+                    me.x += ct.ldx(speed, dir+60 * ct.place.m);
+                    me.y += ct.ldy(speed, dir+60 * ct.place.m);
+                    me.dir = dir+60 * ct.place.m;
+            } else if (ct.place.free(me, me.x+ct.ldx(speed, dir+90 * ct.place.m), me.y+ct.ldy(speed, dir+90 * ct.place.m))) {
+                    me.x += ct.ldx(speed, dir+90 * ct.place.m);
+                    me.y += ct.ldy(speed, dir+90 * ct.place.m);
+                    me.dir = dir+90 * ct.place.m;
             }
         }
     }
@@ -271,5 +272,5 @@ ct.place.check['point.rect'] = ct.place.check['rect.point'];
 // a magic procedure which tells 'go' function to change its direction
 setInterval(function() {
     ct.place.m*=-1;
-},489);
+}, 489);
 ct.libs += ' place';
