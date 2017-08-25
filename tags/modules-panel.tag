@@ -25,7 +25,7 @@ modules-panel.panel.view
                     span {voc.logs}
             div
                 #moduleinfo.tabbed(show="{tab === 'moduleinfo'}")
-                    label.bigpower(onclick="{toggleModule}" class="{red: !(currentModuleName in currentProject.libs)}")
+                    label.bigpower(onclick="{toggleModule(currentModuleName)}" class="{off: !(currentModuleName in currentProject.libs)}")
                         i.icon(class="icon-{currentModuleName in currentProject.libs? 'confirm' : 'delete'}")
                         span
                     h1#modname
@@ -38,9 +38,9 @@ modules-panel.panel.view
                     i#modconfigurable.icon.icon-settings.success(title="{voc.hasfields}" show="{currentModule.fields}")
                     
                     #modinfohtml 
-                        raw(content="{currentModuleHelp}")
+                        raw(ref="raw" content="{currentModuleHelp}")
                     h1(if="{currentModule.main.license}") {voc.license}
-                    raw(if="{currentModule.main.license}" content="{currentModuleLicense}")
+                    raw(ref="raw" if="{currentModule.main.license}" content="{currentModuleLicense}")
                     
                 #modulesettings.tabbed(show="{tab === 'modulesettings'}" if="{currentModule.fields && currentModuleName in currentProject.libs}")
                     dl(each="{field in currentModule.fields}")
@@ -48,48 +48,48 @@ modules-panel.panel.view
                         dd
                             textarea(
                                 if="{field.type === 'textfield'}" 
-                                value="{window.currentProject.libs[currentModule][field]}" 
-                                onchange="{wire('window.currentProject.libs.' + currentModuleName + '.' + field)}"
+                                value="{window.currentProject.libs[currentModuleName][field.id]}" 
+                                onchange="{wire('window.currentProject.libs.' + currentModuleName + '.' + field.id)}"
                             )
                             input(
                                 if="{field.type === 'number'}" 
                                 type="number"
-                                value="{window.currentProject.libs[currentModule][field]}" 
-                                onchange="{wire('window.currentProject.libs.' + currentModuleName + '.' + field)}"
+                                value="{window.currentProject.libs[currentModuleName][field.id]}" 
+                                onchange="{wire('window.currentProject.libs.' + currentModuleName + '.' + field.id)}"
                             )
                             input(
                                 if="{field.type === 'checkbox'}" 
                                 type="checkbox"
-                                checked="{window.currentProject.libs[currentModule][field]}"
-                                onchange="{wire('window.currentProject.libs.' + currentModuleName + '.' + field)}"
+                                checked="{window.currentProject.libs[currentModuleName][field.id]}"
+                                onchange="{wire('window.currentProject.libs.' + currentModuleName + '.' + field.id)}"
                             )
                             input(
                                 if="{['checkbox', 'number', 'textfield'].indexOf(field.type) === -1}" 
                                 type="text"
-                                value="{window.currentProject.libs[currentModule][field]}" 
-                                onchange="{wire('window.currentProject.libs.' + currentModuleName + '.' + field)}"
+                                value="{window.currentProject.libs[currentModuleName][field.id]}" 
+                                onchange="{wire('window.currentProject.libs.' + currentModuleName + '.' + field.id)}"
                             )
                             //- Это хреновая затея!!!
                             div(class="desc" if="{field.help}")
-                                raw(content="{md.render(field.help)}")
+                                raw(ref="raw" content="{md.render(field.help)}")
                 #modulehelp.tabbed(show="{tab === 'modulehelp'}" if="{currentModule.methods || currentModule.params}")
                     h1 {voc.methods}
                     virtual(each="{method, name in currentModule.methods}")
                         h2(oncontextmenu="{showCopyMenu}") ct.{currentModuleName}.{name}
                         //- Это тоже хреновая затея!!!
                         span(if="{method.exp}")
-                            raw(content="{md.render(method.exp)}")
-                    p(if="{!currentModule.methods}") {voc.nomethods}
+                            raw(ref="raw" content="{md.render(method.exp)}")
+                    p(if="{!currentModule.methods || !Object.keys(currentModule.methods).length}") {voc.nomethods}
                     
                     h1 {voc.parameters}
                     virtual(each="{parameter, name in currentModule.params}")
                         h2(oncontextmenu="{showCopyMenu}") ct.{currentModuleName}.{name}
                         span(if="{parameter.exp}")
-                            raw(content="{md.render(parameter.exp)}")
-                    p(if="{!currentModule.parameters}") {voc.noparameters}
+                            raw(ref="raw" content="{md.render(parameter.exp)}")
+                    p(if="{!currentModule.params || !Object.keys(currentModule.params).length}") {voc.noparameters}
                 #modulelogs.tabbed(show="{tab === 'modulelogs'}")
                     h1 {voc.logs2}
-                    raw(content="{currentModuleLogs}")
+                    raw(ref="raw" content="{currentModuleLogs}")
     script.
         const path = require('path'),
               fs = require('fs-extra'),
@@ -134,11 +134,11 @@ modules-panel.panel.view
             this.renderModule(this.allModules[0])();
             this.update();
         });
-        this.toggleModule = module => e => {
-            if (window.currentProject.libs[module]) {
-                delete window.currentProject.libs[module];
+        this.toggleModule = moduleName => e => {
+            if (window.currentProject.libs[moduleName]) {
+                delete window.currentProject.libs[moduleName];
             } else {
-                window.currentProject.libs[module] = {};
+                window.currentProject.libs[moduleName] = {};
                 // 'Settings' page
                 if (this.currentModule.fields && currentProject.libs[name]) {
                     for (var k in this.currentModule.fields) {
@@ -158,7 +158,7 @@ modules-panel.panel.view
                     }
                 }
             }
-            this.renderModule(module)(e);
+            this.renderModule(moduleName)(e);
             window.glob.modified = true;
         };
         this.renderModule = name => e => {
@@ -170,9 +170,7 @@ modules-panel.panel.view
                 this.currentModuleName = name;
                 
                 this.currentModuleHelp = md.render(this.currentModule.main.help || '');
-                if (this.currentModule.main.license) {
-                    this.currentModuleLicense = md.render(this.currentModule.main.license);
-                }
+                this.currentModuleLicense = md.render(this.currentModule.main.license || '');
                 this.currentModuleLogs = md.render(this.currentModule.main.logs || '');
                 console.log(data);
                 this.update();
