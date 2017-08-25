@@ -21,7 +21,7 @@ key('f1', function () {
     gui.Shell.openItem(exec + '/docs/index.html')
 });
 key('ctrl + S', function () {
-    events.save();
+    window.signals.trigger('saveProject');
 });
 
 setTimeout(() => {

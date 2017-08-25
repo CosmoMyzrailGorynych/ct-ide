@@ -71,6 +71,9 @@ main-menu
                 glob.modified = false;
             })
         };
+        window.signals.on('saveProject', () => {
+            this.saveProject();
+        });
         this.runProject = e => {
             window.runCtProject();
         };
