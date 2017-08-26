@@ -8,14 +8,14 @@ project-selector
         div.flexrow
             .c4.npl.npt.project-selector-aPreview.center
                 img(src="{projectSplash}")
-            .c8.npr.npt.npl
-                ul.menu
+            .c8.npr.npt.npl.flexfix
+                ul.menu.flexfix-body
                     li(
                         each="{project in lastProjects}" title="{requirePath.basename(project,'.json')}"
                         onclick="{updatePreview(project)}"
                         ondblclick="{loadRecentProject}"
                     ) {project}
-                label.file
+                label.file.flexfix-footer
                     input(type="file" ref="fileexternal" accept=".ict" onchange="{openProjectFind}")
                     .button.wide.inline
                         i.icon.icon-folder
@@ -61,6 +61,7 @@ project-selector
          * и делает основные директории.
          */
         this.newProject = function() {
+            const way = path.dirname(process.execPath).replace(/\\/g,'/') + '/projects';
             var codename = this.refs.projectname.value;
             var projectData = {
                 notes: '/* empty */',
@@ -81,12 +82,12 @@ project-selector
                     minifyjs: false
                 }
             };
-            fs.writeJSON(way + '/' + codename + '.ict', currentProject, function(e) {
+            fs.writeJSON(path.join(way, codename + '.ict'), projectData, function(e) {
                 if (e) {
                     throw e;
                 }
             });
-            sessionStorage.projdir = way + '/' + codename;
+            sessionStorage.projdir = path.join(way, codename);
             sessionStorage.projname = codename + '.ict';
             fs.ensureDir(sessionStorage.projdir);
             fs.ensureDir(sessionStorage.projdir + '/img');
