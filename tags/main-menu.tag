@@ -81,37 +81,21 @@ main-menu
         var gui = require('nw.gui');
         var catMenu = new gui.Menu();
         catMenu.append(new gui.MenuItem({
-            label: window.languageJSON.common.open,
-            icon: (window.isMac ? './img/black/' : './img/blue/') + 'folder.png',
-            click: function (e) {
-                $('#findProject').click();
-            }
-        }));
-        catMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.save,
             icon: (window.isMac ? './img/black/' : './img/blue/') + 'save.png',
             click: this.saveProject
         }));
         catMenu.append(new gui.MenuItem({
-            label: window.languageJSON.intro.newProject.text,
-            icon: (window.isMac ? './img/black/' : './img/blue/') + 'star.png',
-            click: function (e) {
-                alertify.prompt(window.languageJSON.intro.newProject.input, function (e,r) {
-                    if (e) {
-                        console.log(e,r);
-                        if (!apatterns.SymbolDigitUnderscore.test(r)) {
-                            $('#id').val(r);
-                            this.newProject();
-                        } else {
-                            alertify.error(window.languageJSON.intro.newProject.nameerr);
-                        }
-                    }
-                });
+            label: window.languageJSON.menu.startscreen,
+            icon: (window.isMac ? './img/black/' : './img/blue/') + 'folder.png',
+            click: (e) => {
+                if (!confirm(window.languageJSON.common.reallyexit)) {
+                    return false;
+                }
+                window.signals.trigger('resetAll');
             }
         }));
-        
         catMenu.append(new gui.MenuItem({type: 'separator'}));
-        
         catMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.ctsite,
             icon: (window.isMac ? './img/black/' : './img/blue/') + 'arrow.png',
@@ -119,9 +103,7 @@ main-menu
                 gui.Shell.openExternal('http://ctjs.ru/');
             }
         }));
-        
         catMenu.append(new gui.MenuItem({type: 'separator'}));
-        
         catMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.exit,
             icon: (window.isMac ? './img/black/' : './img/blue/') + 'exit.png',
