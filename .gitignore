@@ -60,3 +60,6 @@ reports/
 /export
 /docs
 /app/docs
+
+# editor-specific
+/.vscode
