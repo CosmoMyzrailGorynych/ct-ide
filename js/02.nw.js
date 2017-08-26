@@ -14,14 +14,14 @@
     window.languageJSON = JSON.parse(fs.readFileSync('./i18n/Ru.json'));
 
     // OS type vars
-    window.isMac = false;
     window.isWin = (/win[0-9]+/).test(os.platform());
-    window.isX = os.platform() === 'linux';
+    window.isLinux = os.platform() === 'linux';
+    window.isMac = !(window.isWin || window.isLinux);
 
     // better copy
-    window.megacopy = function(sf,df,callback) {
-        var is = fs.createReadStream(sf);
-        var os = fs.createWriteStream(df);
+    window.megacopy = function(sourcePath, destinationPath, callback) {
+        var is = fs.createReadStream(sourcePath);
+        var os = fs.createWriteStream(destinationPath);
         is.on('end', callback);
         is.pipe(os);
     };
