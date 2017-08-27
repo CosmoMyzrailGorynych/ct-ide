@@ -1,9 +1,9 @@
 graphics-panel.panel.view
     label.file
-        button
+        input#inputgraphic(ref="importer" type="file" multiple accept=".png,.jpg,.jpeg,.bmp,.gif" onchange="{graphicImport}")
+        .button
             i.icon.icon-plus
             span {voc.import}
-        input#inputgraphic(ref="importer" type="file" multiple accept=".png,.jpg,.jpeg,.bmp,.gif" onchange="{graphicImport}")
     //-    button#graphiccreate(data-event="graphicCreate")
     //-        i.icon.icon-lamp
     //-        span {voc.create}
@@ -69,50 +69,37 @@ graphics-panel.panel.view
          */
         this.loadImg = (uid, filename, dest, imprt) => {
             console.log(uid, filename, 'copying');
-            window.megacopy(filename, dest, function(e) {
+            window.megacopy(filename, dest, e => {
                 console.log(uid, filename, 'copy finished');
                 if (e) throw e;
                 image = document.createElement('img');
-                if (imprt) {
-                    image.onload = () => {
-                        var obj = {
-                            name: path.basename(filename).replace(/\.(jpg|gif|png|jpeg)/gi, '').replace(/\s/g, '_'),
-                            untill: 0,
-                            grid: [1, 1],
-                            axis: [0, 0],
-                            origname: path.basename(dest),
-                            shape: "rect",
-                            left: 0,
-                            right: this.width,
-                            top: 0,
-                            bottom: this.height
-                        };
-                        this.id = currentProject.graphs.length;
-                        window.currentProject.graphs.push(obj);
-                        this.imgGenPreview(dest, dest + '_prev.png', 64, function() {
-                            console.log(uid, filename, 'preview generated');
-                        });
-                        this.imgGenPreview(dest, dest + '_prev@2.png', 128, function() {
-                            console.log(uid, filename, 'hdpi preview generated');
-                        });
-                    }
-                } else {
-                    image.onload = function() {
-                        this.currentGraphic.width = this.width;
-                        this.currentGraphic.height = this.height;
-                        this.currentGraphic.origname = path.basename(dest);
-                        graphCanvas.img = this;
-                        events.refreshGraphCanvas();
-                        this.imgGenPreview(dest, dest + '_prev.png', 64, function() {
-                            console.log(uid, filename, 'preview generated');
-                        });
-                        this.imgGenPreview(dest, dest + '_prev@2.png', 128, function() {
-                            console.log(uid, filename, 'hdpi preview generated');
-                        });
-                    }
+                image.onload = () => {
+                    var obj = {
+                        name: path.basename(filename).replace(/\.(jpg|gif|png|jpeg)/gi, '').replace(/\s/g, '_'),
+                        untill: 0,
+                        grid: [1, 1],
+                        axis: [0, 0],
+                        origname: path.basename(dest),
+                        shape: "rect",
+                        left: 0,
+                        right: this.width,
+                        top: 0,
+                        bottom: this.height
+                    };
+                    this.id = currentProject.graphs.length;
+                    window.currentProject.graphs.push(obj);
+                    this.imgGenPreview(dest, dest + '_prev.png', 64)
+                    .then(dataUrl => {
+                        console.log(uid, filename, 'preview generated');
+                        this.update();
+                    });
+                    this.imgGenPreview(dest, dest + '_prev@2.png', 128)
+                    .then(dataUrl => {
+                        console.log(uid, filename, 'hdpi preview generated');
+                    });
                 }
-                image.onerror = function(e) {
-                    console.log('ERROR');
+                image.onerror = e => {
+                    window.alertify.error(e);
                 }
                 image.src = dest + '?' + Math.random();
             });
@@ -124,17 +111,17 @@ graphics-panel.panel.view
          * @param {Number} size Размер стороны квадрата в пикселах
          * @returns {Promise} Промис по завершению создания превью. При успехе передаёт data-url полученного превью
          */
-        this.imgGenPreview = function(source, destFile, size) {
+        this.imgGenPreview = (source, destFile, size) => {
             var thumbnail = document.createElement('img');
             return new Promise((accept, reject) => {
-                thumbnail.onload = function() {
+                thumbnail.onload = () => {
                     var c = document.createElement('canvas'), 
                     w, h, k;
                     c.x = c.getContext('2d');
                     c.width = c.height = size;
                     c.x.clearRect(0, 0, size, size);
-                    w = size, this.width;
-                    h = size, this.height;
+                    w = size, thumbnail.width;
+                    h = size, thumbnail.height;
                     if (w > h) {
                         k = size / w;
                     } else {
@@ -152,7 +139,7 @@ graphics-panel.panel.view
                     var dataURL = c.toDataURL();
                     var data = dataURL.replace(/^data:image\/\w+;base64,/, "");
                     var buf = new Buffer(data, 'base64');
-                    fs.writeFile(destFile, buf, function(err) {
+                    fs.writeFile(destFile, buf, err => {
                         if (err) {
                             reject(err);
                         } else {
@@ -235,7 +222,7 @@ graphics-panel.panel.view
         /**
          * Открывает редактор для указанного объекта графики
          */
-        this.openGraphic = graphic => {
+        this.openGraphic = graphic => e => {
             this.currentGraphic = graphic;
             this.currentGraphicId = window.currentProject.graphs.indexOf(graphic);
             this.editing = true;
