@@ -93,8 +93,13 @@ project-selector
             fs.ensureDir(sessionStorage.projdir + '/img');
             fs.ensureDir(sessionStorage.projdir + '/snd');
             fs.ensureDir(sessionStorage.projdir + '/include');
-            window.megacopy('/img/nograph.png', sessionStorage.projdir + '/img/splash.png', function (e) {
-                if (e) throw (e);
+            setTimeout(() => { // почему-то это нужно делать через setTimeout, иначе функция просто не выполняется.
+                window.megacopy('./img/nograph.png', path.join(sessionStorage.projdir + '/img/splash.png'), e => {
+                    if (e) {
+                        window.alertify.error(e);
+                        console.error(e);
+                    }
+                });
             });
             this.loadProject(projectData);
         };
