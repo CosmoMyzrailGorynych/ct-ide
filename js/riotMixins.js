@@ -1,14 +1,17 @@
 (window => {
-    var wire = field => e => {
+    var wire = (that, field) => e => {
         var way = field.split('.'),
             root, val;
         if (way[0] === 'this') {
-            root = this;
+            root = that;
         } else {
             root = window;
         }
+        way.shift();
         if (e.target.type === 'checkbox') {
             val = e.target.checked;
+        } else if (e.target.type === 'number') {
+            val = Number(e.target.value);
         } else {
             val = e.target.value;
         }
@@ -21,7 +24,7 @@
     };
     window.riotWired = {
         init() {
-            this.wire = wire;
+            this.wire = wire.bind(this, this);
         }
     };
 })(this);
