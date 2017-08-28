@@ -79,12 +79,16 @@ graphics-panel.panel.view
                         untill: 0,
                         grid: [1, 1],
                         axis: [0, 0],
+                        marginx: 0,
+                        marginy: 0,
+                        offx: 0,
+                        offy: 0,
                         origname: path.basename(dest),
-                        shape: "rect",
+                        shape: 'rect',
                         left: 0,
-                        right: this.width,
+                        right: image.width,
                         top: 0,
-                        bottom: this.height
+                        bottom: image.height
                     };
                     this.id = currentProject.graphs.length;
                     window.currentProject.graphs.push(obj);

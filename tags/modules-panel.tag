@@ -172,7 +172,6 @@ modules-panel.panel.view
                 this.currentModuleHelp = md.render(this.currentModule.main.help || '');
                 this.currentModuleLicense = md.render(this.currentModule.main.license || '');
                 this.currentModuleLogs = md.render(this.currentModule.main.logs || '');
-                console.log(data);
                 this.update();
             });
             this.tab = 'moduleinfo';

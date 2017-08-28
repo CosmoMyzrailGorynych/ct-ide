@@ -1,0 +1,56 @@
+{
+  "notes": "/* empty */",
+  "libs": {
+    "place": {},
+    "akatemplate": {
+      "csscss": "canvas {\n  margin: 2rem auto;\n}\nbody {\n  background: black;\n}"
+    },
+    "random": {},
+    "keyboard": {}
+  },
+  "graphs": [
+    {
+      "name": "playerShip2_blue",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        56,
+        37
+      ],
+      "origname": "i1.png",
+      "shape": "circle",
+      "left": 56,
+      "top": 37,
+      "frames": 1,
+      "width": 112,
+      "height": 75,
+      "marginx": 0,
+      "marginy": 0,
+      "offy": 0,
+      "offx": 0,
+      "right": 56,
+      "bottom": 38,
+      "r": 12
+    }
+  ],
+  "types": [],
+  "sounds": [],
+  "styles": [],
+  "rooms": [],
+  "graphtick": 1,
+  "soundtick": 0,
+  "roomtick": 0,
+  "typetick": 0,
+  "styletick": 0,
+  "starting": 0,
+  "settings": {
+    "minifyhtmlcss": false,
+    "minifyjs": false,
+    "title": "Catsteroids",
+    "author": "CoMiGo Games",
+    "site": "http://comigogames.ru/"
+  }
+}
