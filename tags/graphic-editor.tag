@@ -16,11 +16,11 @@ graphic-editor.panel.view
             b {voc.form}
             br
             label
-                input(type="radio" name="collisionform" checked="{graphic.shape === 'circle'}" onclick="{graphicSelectCircle}")
+                input(type="radio" name="collisionform" checked="{opts.graphic.shape === 'circle'}" onclick="{graphicSelectCircle}")
                 span {voc.round}
             br
             label
-                input(type="radio" name="collisionform" checked="{graphic.shape === 'rect'}" onclick="{graphicSelectRect}")
+                input(type="radio" name="collisionform" checked="{opts.graphic.shape === 'rect'}" onclick="{graphicSelectRect}")
                 span {voc.rectangle}
             br
             div(if="{opts.graphic.shape === 'circle'}")
@@ -42,6 +42,7 @@ graphic-editor.panel.view
                     span {voc.fill}
         .flexfix-footer
             button.wide(onclick="{graphicSave}") 
+                i.icon.icon-save
                 span {window.languageJSON.common.save}
     .column.column2.borderleft.tall.flexfix(if="{!opts.graphic.frames || opts.graphic.frames === 1}")
         .flexfix-body
@@ -94,7 +95,7 @@ graphic-editor.panel.view
                     i.icon.icon-back
                 button#graphviewnext.square.inline(onclick="{currentGraphicPreviewNext}")
                     i.icon.icon-next
-                span#graphviewframe {prevPos} / undef
+                span(ref="graphviewframe") 0 / 1
                 br
                 b {voc.speed}
                 input#grahpspeed.short(type="number" value="{prevSpeed}" onchange="{wire(this.prevSpeed)}")
@@ -147,7 +148,7 @@ graphic-editor.panel.view
         this.voc = window.languageJSON.graphview;
         this.mixin(window.riotWired);
         
-        this.prevPlaying = false;
+        this.prevPlaying = true;
         this.prevPos = 0;
         this.prevSpeed = 10;
         this.prevShowMask = false;
@@ -181,6 +182,11 @@ graphic-editor.panel.view
         });
         this.on('updated', () => {
             this.refreshGraphCanvas();
+        });
+        this.on('unmount', () => {
+            if (this.prevPlaying) { // вырубаем анимацию превью, если редактор был закрыт
+                this.stopGraphPreview();
+            }
         });
         
         this.graphReplace = e => {
@@ -322,7 +328,6 @@ graphic-editor.panel.view
                 y = this.graphic.offy + yy * (this.graphic.marginy + this.graphic.height),
                 w = this.graphic.width,
                 h = this.graphic.height;
-            console.log(xx, yy, x, y, w, h);
             grprCanvas.width = w;
             grprCanvas.height = h;
 
@@ -379,13 +384,13 @@ graphic-editor.panel.view
         this.stepGraphPreview = () => {
             var graphic = this.graphic;
             this.prevTime = window.setTimeout(() => {
-                var total = Math.min(graphic.untill === 0 ? graphic.grid[0] * graphic.grid[1] : graphic.untill, graphic.grid[0] * graphic.grid[1]);
+                var total = Math.min(graphic.untill === 0 ? Infinity : graphic.untill, graphic.grid[0] * graphic.grid[1]);
                 this.prevPos++;
                 if (this.prevPos >= total) {
                     this.prevPos = 0;
                 }
+                this.refs.graphviewframe.innerHTML = `${this.prevPos} / ${total}`;
                 this.refreshPreviewCanvas();
-                this.update();
                 this.stepGraphPreview();
             }, ~~(1000 / this.prevSpeed));
         };
@@ -395,9 +400,11 @@ graphic-editor.panel.view
          */
         this.graphicSelectCircle = function() {
             this.graphic.shape = 'circle';
-            if (this.graphic.r == 0 || !this.graphic.r) {
-                r = Math.min(Math.floor(this.graphic.width / this.graphic.grid[0] / 2),
-                    Math.floor(this.graphic.height / this.graphic.grid[1] / 2));
+            if (!('r' in this.graphic) || this.graphic.r === 0) {
+                this.graphic.r = Math.min(
+                    Math.floor(this.graphic.width / 2),
+                    Math.floor(this.graphic.height / 2)
+                );
             }
         };
         /**
@@ -428,6 +435,19 @@ graphic-editor.panel.view
                     h = this.graphic.height;
                 graphCanvas.x.strokeRect(x, y, w, h);
             }
+            graphCanvas.x.fillStyle = '#ff0';
+            if (this.graphic.shape == 'rect') {
+                graphCanvas.x.fillRect(
+                    this.graphic.axis[0] - this.graphic.left,
+                    this.graphic.axis[1] - this.graphic.top,
+                    this.graphic.right + this.graphic.left,
+                    this.graphic.bottom + this.graphic.top
+                );
+            } else {
+                graphCanvas.x.beginPath();
+                graphCanvas.x.arc(this.graphic.axis[0], this.graphic.axis[1], this.graphic.r, 0, 2 * Math.PI);
+                graphCanvas.x.fill();
+            }
         };
         
         /**
@@ -447,13 +467,14 @@ graphic-editor.panel.view
          */
         this.graphGenPreview = function(replace, destination, size) {
             // destination = sessionStorage.projdir + '/img/' + this.graphic.destinatione + '_prev.png'
-            var c = document.createElement('canvas'), 
-                w, h, k;
+            var c = document.createElement('canvas');
+            let x = this.graphic.offx,
+                y = this.graphic.offy,
+                w = this.graphic.width,
+                h = this.graphic.height;
             c.x = c.getContext('2d');
             c.width = c.height = size;
             c.x.clearRect(0, 0, size, size);
-            w = graphCanvas.img.width / this.graphic.grid[0];
-            h = graphCanvas.img.height / this.graphic.grid[1];
             if (w > h) {
                 k = size / w;
             } else {
@@ -461,16 +482,11 @@ graphic-editor.panel.view
             }
             if (k > 1) k = 1;
             c.x.drawImage(graphCanvas.img,
-                0,
-                0,
-                graphCanvas.img.width / this.graphic.grid[0],
-                graphCanvas.img.height / this.graphic.grid[1],
-                (size - graphCanvas.img.width*k)/2,
-                (size - graphCanvas.img.height*k)/2,
-                graphCanvas.img.width*k,
-                graphCanvas.img.height*k
+                x, y, w, h,
+                (size - w*k) / 2, (size - h*k) / 2,
+                w*k, h*k
             );
-            var data = c.toDataURL().replace(/^data:image\/\w+;base64,/, "");
+            var data = c.toDataURL().replace(/^data:image\/\w+;base64,/, '');
             var buf = new Buffer(data, 'base64');
             fs.writeFile(destination, buf, function(err) {
                 if (err) {
