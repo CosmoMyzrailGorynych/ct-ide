@@ -52,7 +52,7 @@ project-selector
          * При нажатии на проект в списке последних проектов обновляет сплэш проекта
          */
         this.updatePreview = projectPath => e => {
-            this.projectSplash = path.dirname(projectPath) + '/' + path.basename(projectPath, '.ict') + '/img/splash.png';
+            this.projectSplash = 'file://' + path.dirname(projectPath) + '/' + path.basename(projectPath, '.ict') + '/img/splash.png';
         };
         
         /**
@@ -100,7 +100,7 @@ project-selector
                         console.error(e);
                     }
                 });
-            });
+            }, 0);
             this.loadProject(projectData);
         };
         

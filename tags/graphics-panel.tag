@@ -14,7 +14,7 @@ graphics-panel.panel.view
             onclick="{openGraphic(graphic)}"
         )
             span {graphic.name}
-            img(src="{sessionStorage.projdir + '/img/' + graphic.origname + '_prev.png'}")
+            img(src="file://{sessionStorage.projdir + '/img/' + graphic.origname + '_prev.png'}")
     graphic-editor(if="{editing}" graphic="{currentGraphic}")
     script.
         const fs = require('fs-extra'),
@@ -29,7 +29,7 @@ graphics-panel.panel.view
                 var img = document.createElement('img');
                 glob.graphmap[graph.origname] = img;
                 img.g = graph;
-                img.src = sessionStorage.projdir + '/img/' + graph.origname;
+                img.src = 'file://' + sessionStorage.projdir + '/img/' + graph.origname;
             });
             var img = document.createElement('img');
             glob.graphmap[-1] = img;
