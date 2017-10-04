@@ -44,12 +44,22 @@ app/fonts/style\.css
 # nw
 /*.dll
 /*.exe
+/*.nexe
 /*.pak
 /*.dat
+/*.bin
 /credits.html
-/locales
-CHANGELOG\.md
 /pnacl
+/locales
+/nw
+/chromedriver
+/minidump_stackwalk
+/nacl_*
+/nwjc
+/payload
+/snapshot_blob.bin
+/lib
+/swiftshader
 
 
 # tests
