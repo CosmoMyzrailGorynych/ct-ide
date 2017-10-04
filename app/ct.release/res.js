@@ -13,7 +13,7 @@ ct.res = {
     images: {},
     sounds: {},
     graphs: {},
-    fetchImage: function (url,callback) {
+    fetchImage: function (url, callback) {
         // Load an image. When comlete, put it in resource object or execute a callback
         // If failed, replace an image with an empty one
         img = document.createElement('img');
@@ -44,7 +44,7 @@ ct.res = {
             this.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVQIW2NkAAIAAAoAAggA9GkAAAAASUVORK5CYII=";
         }
     },
-    'makeSprite': function (name,url,x,y,w,h,xo,yo,cols,rows,untill,shape) {
+    makeSprite: function (name, url, x, y, w, h, xo, yo, cols, rows, untill, shape) {
         // extracts sprite from atlas
         var o = {},
             i = ct.res.images[url];
@@ -72,7 +72,7 @@ ct.res = {
         }
         ct.res.graphs[name] = o;
     },
-    'parseImages': function () {
+    parseImages: function () {
         // filled by IDE and catmods. Usually atlases are splitted here.
 
         @res@

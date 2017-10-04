@@ -3,28 +3,28 @@
 ***************************************/
 
 ct.rooms = {
-    'addBg': function (graph,depth) {
+    addBg: function (graph,depth) {
         var canv = document.createElement('canvas'),
             g = ct.graphs[graph];
         canv.width = g.width * g.cols;
         canv.height = g.height * g.rows;
         canv.x = canv.getContext('2d');
-        canv.x.drawImage(g.atlas,g.ax,g.ay,g.width * g.cols, g.height * g.rows,0,0,g.width * g.cols, g.height * g.rows);
-        var pat = ct.x.createPattern(canv,"repeat");
+        canv.x.drawImage(g.atlas, g.ax, g.ay, g.width * g.cols,  g.height * g.rows, 0, 0, g.width * g.cols, g.height * g.rows);
+        var pat = ct.x.createPattern(canv, 'repeat');
         var copy = ct.types.Copy('BACKGROUND');
         copy.pattern = pat;
         ct.room.backgrounds.push(copy);
         ct.stack.push(copy);
     },
-    'make': function () { // utility: not for use
+    make: function () { // utility: not for use
         for (var i = 0; i < this.bgs.length; i++) {
-            ct.rooms.addBg(this.bgs[i].graph,this.bgs[i].depth);
+            ct.rooms.addBg(this.bgs[i].graph, this.bgs[i].depth);
         }
         for (var i = 0; i < this.objects.length; i++) {
-            ct.types.make(this.objects[i].type,this.objects[i].x,this.objects[i].y);
+            ct.types.make(this.objects[i].type, this.objects[i].x, this.objects[i].y);
         }
     },
-    'clear': function () {
+    clear: function () {
         ct.stack = [];
         ct.types.list = { };
     },
@@ -56,5 +56,5 @@ ct.rooms = {
     starting: '@startroom@'
 }
 
-/********************** комнаты **************************/
+/** rooms */
 @rooms@

@@ -17,10 +17,10 @@ if (!localStorage.fontSize) {
 }
 
 // bind f1
-key('f1', function () {
+window.key('f1', function () {
     gui.Shell.openItem(exec + '/docs/index.html')
 });
-key('ctrl + S', function () {
+window.key('ctrl + S', function () {
     window.signals.trigger('saveProject');
 });
 

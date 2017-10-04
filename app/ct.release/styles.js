@@ -3,26 +3,26 @@
 ***************************************/
 
 ct.styles = {
-    'types': { },
-    'new': function (name,fill,stroke,text,shadow) {
+    types: { },
+    new: function (name,fill,stroke,text,shadow) {
         // style constructor. Returns Style
         var style = {};
         if (fill) {
-            if (fill.type == 'solid') {
+            if (fill.type === 'solid') {
                 style.fillStyle = fill.color;
-            } else if (fill.type == 'radgrad') {
+            } else if (fill.type === 'radgrad') {
                 var grad = ct.x.createRadialGradient(fill.r,fill.r,0,0,0,fill.r);
                 for (k in fill.colors) {
                     grad.addColorStop(fill.colors[k].pos,fill.colors[k].color);
                 };
                 style.fillStyle = grad;
-            } else if (fill.type == 'grad') {
+            } else if (fill.type === 'grad') {
                 var grad = ct.x.createLinearGradient(fill.x1,fill.y1,fill.x2,fill.y2);
                 for (k in fill.colors) {
                     grad.addColorStop(fill.colors[k].pos,fill.colors[k].color);
                 };
                 style.fillStyle = grad;
-            } else if (fill.type == 'pattern') {
+            } else if (fill.type === 'pattern') {
                 style.fillStyle = ct.background.types[name];
             }
         }
@@ -44,13 +44,13 @@ ct.styles = {
         ct.styles.types[name] = style;
         return style;
     },
-    'set': function (name) {
+    set: function (name) {
         // sets style
         for (k in ct.styles.types[name]) {
             ct.x[k] = ct.styles.types[name][k];
         }
     },
-    'reset': function () {
+    reset: function () {
         // sets canvas settings to default
         ct.x.strokeStyle = '#000000';
         ct.x.globalAlpha = 1;

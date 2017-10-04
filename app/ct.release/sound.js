@@ -5,11 +5,11 @@
 ***************************************/
 
 ct.sound = {
-    'detect': function (type){
+    detect: function (type){
         var au = document.createElement('audio');
         return !!(au.canPlayType && au.canPlayType(type).replace(/no/, ''));
     },
-    'init': function(name, wav, mp3, ogg) {
+    init: function(name, wav, mp3, ogg) {
     // Creates a new Sound object and puts it in resource object
         var src = '',
             type = 'none';
@@ -43,26 +43,26 @@ ct.sound = {
         ct.res.sounds[name] = audio;
         document.body.appendChild(audio);
     },
-    'play': function (name) {
+    play: function (name) {
         ct.res.sounds[name].loop = false;
         ct.res.sounds[name].play();
     },
-    'loop': function (name) {
+    loop: function (name) {
         ct.res.sounds[name].loop = true;
         ct.res.sounds[name].play();
     },
-    'pause': function (name) {
+    pause: function (name) {
         ct.res.sounds[name].pause();
     },
-    'volume': function (name,power) {
+    volume: function (name, power) {
         if (power == undefined) return ct.res.sounds[name].volume;
         return ct.res.sounds[name].volume = power;
     },
-    'time': function (name,time) {
+    time: function (name, time) {
         if (time == undefined) return ct.res.sounds[name].currentTime;
         return ct.res.sounds[name].currentTime = time;
     },
-    'duration': function (name) {
+    duration: function (name) {
         return ct.res.sounds[name].duration;
     }
 };
