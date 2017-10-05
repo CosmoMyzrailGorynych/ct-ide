@@ -2,7 +2,7 @@ graphics-panel.panel.view
     label.file
         input#inputgraphic(ref="importer" type="file" multiple accept=".png,.jpg,.jpeg,.bmp,.gif" onchange="{graphicImport}")
         .button
-            i.icon.icon-plus
+            i.icon.icon-import
             span {voc.import}
     //-    button#graphiccreate(data-event="graphicCreate")
     //-        i.icon.icon-lamp

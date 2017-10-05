@@ -4,10 +4,10 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
             i.icon.icon-edit
             span {voc.local}
         li(onclick="{changeTab('notepaglobal')}")
-            i.icon.icon-notepad
+            i.icon.icon-clipboard
             span {voc.global}
         li(onclick="{changeTab('helppages')}")
-            i.icon.icon-message
+            i.icon.icon-life-buoy
             span {voc.helppages}
     div
         div(show="{tab === 'notepadlocal'}")
@@ -18,7 +18,7 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
             iframe(src="docs/index.html" nwdisable nwfaketop)
 
     button.vertical.dockleft(onclick="{notepadToggle}")
-        i.icon(class="icon-{opened? 'next' : 'back'}")
+        i.icon(class="icon-{opened? 'chevron-right' : 'chevron-left'}")
     script.
         this.opened = false;
         this.voc = window.languageJSON.notepad;

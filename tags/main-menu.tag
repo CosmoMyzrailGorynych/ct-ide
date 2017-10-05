@@ -1,39 +1,40 @@
-main-menu
-    nav(if="{window.currentProject}")
-        ul#app.nav
-            li#fullscreen(onclick="{toggleFullscreen}" title="{voc.min}")
-                i.icon(class="icon-{fullscreen? 'minimize' : 'maximize'}")
+main-menu.flexcol
+    nav.nogrow.flexrow(if="{window.currentProject}")
+        ul#fullscreen.nav
+            li(onclick="{toggleFullscreen}" title="{voc.min}")
+                i(class="icon-{fullscreen? 'minimize-2' : 'maximize-2'}")
 
-        ul#mainnav.nav.tabs
+        ul#app.nav.tabs
             li.it30#ctlogo(onclick="{ctClick}" title="{voc.ctIDE}")
                 img(src="img/ct.ide.svg")
             li.it30(onclick="{saveProject}" title="{voc.save}")
-                i.icon.icon-save
+                i.icon-save
             li.it30(onclick="{runProject}" title="{voc.launch}")
-                i.icon.icon-play
+                i.icon-play
 
+        ul#mainnav.nav.tabs
             li(onclick="{changeTab('settings')}" class="{active: tab === 'settings'}")
-                i.icon.icon-settings
+                i.icon-settings
                 span {voc.settings}
             li(onclick="{changeTab('modules')}" class="{active: tab === 'modules'}")
-                i.icon.icon-share
+                i.icon-mod
                 span {voc.modules}
             li(onclick="{changeTab('graphic')}" class="{active: tab === 'graphic'}")
-                i.icon.icon-picture
+                i.icon-picture
                 span {voc.graphic}
             li(onclick="{changeTab('styles')}" class="{active: tab === 'styles'}")
-                i.icon.icon-brush
+                i.icon-droplet
                 span {voc.styles}
             li(onclick="{changeTab('sounds')}" class="{active: tab === 'sounds'}")
-                i.icon.icon-music
+                i.icon-headphones
                 span {voc.sounds}
             li(onclick="{changeTab('types')}" class="{active: tab === 'types'}")
-                i.icon.icon-smile
+                i.icon-user
                 span {voc.types}
             li(onclick="{changeTab('rooms')}" class="{active: tab === 'rooms'}")
-                i.icon.icon-room
+                i.icon-map
                 span {voc.rooms}
-    div(if="{window.currentProject}")
+    div.flexitem.relative(if="{window.currentProject}")
         settings-panel(show="{tab === 'settings'}")
         modules-panel(show="{tab === 'modules'}")
         graphics-panel(show="{tab === 'graphic'}")

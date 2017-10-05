@@ -42,11 +42,13 @@ body
     margin-left 0
     margin-right 0
     box-sizing border-box
-.flexrow
+.flexrow, .flexcol
     display flex
     flex-flow row nowrap
     & > *
         flex 1 1 auto
+.flexcol
+    flex-flow column nowrap
 .crop
     overflow hidden
     text-overflow ellipsis

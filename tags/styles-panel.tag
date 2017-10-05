@@ -1,6 +1,6 @@
-styles-panel
+styles-panel.panel.view
     button#stylecreate(onclick="styleCreate")
-        i.icon.icon-lamp
+        i.icon.icon-add
         span {voc.create}
     ul.cards
         li(each="{style in window.currentProject.styles}" onclick="{openStyle(style)}" oncontextmenu="{onStyleContextMenu}")

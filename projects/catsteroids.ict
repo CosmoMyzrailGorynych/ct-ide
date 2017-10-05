@@ -10,7 +10,7 @@
   },
   "graphs": [
     {
-      "name": "playerShip2_blue",
+      "name": "PlayerShip_Blue",
       "untill": 0,
       "grid": [
         1,
@@ -21,9 +21,9 @@
         37
       ],
       "origname": "i1.png",
-      "shape": "circle",
-      "left": 56,
-      "top": 37,
+      "shape": "rect",
+      "left": 48,
+      "top": 10,
       "frames": 1,
       "width": 112,
       "height": 75,
@@ -31,19 +31,132 @@
       "marginy": 0,
       "offy": 0,
       "offx": 0,
-      "right": 56,
-      "bottom": 38,
-      "r": 12
+      "right": 48,
+      "bottom": 34,
+      "r": 20
+    },
+    {
+      "name": "Background_Blue",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        0,
+        0
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i2.png",
+      "shape": "circle",
+      "left": 0,
+      "right": 256,
+      "top": 0,
+      "bottom": 256,
+      "frames": 1,
+      "width": 256,
+      "height": 256,
+      "r": 1
+    },
+    {
+      "name": "Laser_Simple_Blue",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        4,
+        27
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i3.png",
+      "shape": "rect",
+      "left": 4,
+      "right": 5,
+      "top": 27,
+      "bottom": 27,
+      "frames": 1,
+      "width": 9,
+      "height": 54
+    },
+    {
+      "name": "Laser_X_Blue",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        19,
+        18
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i4.png",
+      "shape": "circle",
+      "left": 19,
+      "right": 19,
+      "top": 18,
+      "bottom": 19,
+      "frames": 1,
+      "width": 38,
+      "height": 37,
+      "r": 21
+    },
+    {
+      "name": "Laser_Bolt_Blue",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        6,
+        28
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i5.png",
+      "shape": "rect",
+      "left": 6,
+      "right": 7,
+      "top": 28,
+      "bottom": 29,
+      "frames": 1,
+      "width": 13,
+      "height": 57
     }
   ],
-  "types": [],
+  "types": [
+    {
+      "name": "Player_Blue",
+      "depth": 0,
+      "oncreate": "",
+      "onstep": "",
+      "ondraw": "ct.draw(this);",
+      "ondestroy": "",
+      "uid": 1,
+      "graph": -1
+    }
+  ],
   "sounds": [],
   "styles": [],
   "rooms": [],
-  "graphtick": 1,
+  "graphtick": 8,
   "soundtick": 0,
   "roomtick": 0,
-  "typetick": 0,
+  "typetick": 1,
   "styletick": 0,
   "starting": 0,
   "settings": {
@@ -52,5 +165,10 @@
     "title": "Catsteroids",
     "author": "CoMiGo Games",
     "site": "http://comigogames.ru/"
-  }
+  },
+  "palette": [
+    "#FFFFFF",
+    "#B48FFF",
+    "#10102E"
+  ]
 }

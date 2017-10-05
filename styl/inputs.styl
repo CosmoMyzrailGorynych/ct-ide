@@ -32,6 +32,7 @@ input[type="reset"],
     border 1px solid act
     color acttext
     font inherit
+    font-weight 500
     border-radius br
     background white
     display inline-block
@@ -42,14 +43,14 @@ input[type="reset"],
         background acttext
         color white
         border-color accent1
-        .icon
+        i
             color white
     &:active, &.selected
         {transshort}
         border-color accent1
         background accent1
         color white
-        .icon
+        i
             color white
     &.inline
         padding 0.2em 0.8em
@@ -124,8 +125,6 @@ siz = 4em
             background error
         i
             color error
-            &:before
-                content "" /* icon-cross */
         &:after
             background error
 
@@ -150,7 +149,7 @@ input[type="submit"],
 input[type="reset"],
 .button,
 .nav
-    .icon
+    i
         {trans}
         color act
         vertical-align sub // выглядит более отцентрованно
@@ -186,7 +185,7 @@ select, label
         border-bottom-right-radius 0
         ul
             display block
-    .icon
+    i
         transform rotate(90deg) translate(-50%, 0)
         position absolute
         right 0.5em

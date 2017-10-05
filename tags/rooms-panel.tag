@@ -1,6 +1,6 @@
 rooms-panel.panel.view
     button#roomcreate(onclick="{roomCreate}")
-        i.icon.icon-lamp
+        i.icon.icon-add
         span {voc.create}
     ul.cards.rooms
         li(

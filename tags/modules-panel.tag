@@ -3,39 +3,39 @@ modules-panel.panel.view
         .c3.borderright.tall
             ul#moduleincluded
                 li(each="{module in enabledModules}" onclick="{renderModule(module)}")
-                    i.icon.icon-confirm
+                    i.icon-confirm
                     span {module}
             ul#modulelist
                 li(each="{module in allModules}" onclick="{renderModule(module)}")
-                    i.icon(class="icon-{(module in window.currentProject.libs)? 'confirm on' : 'share off'}")
+                    i.icon(class="icon-{(module in window.currentProject.libs)? 'confirm on' : 'mod off'}")
                     span {module}
         .c9.tall(if="{currentModule}")
             ul.nav.tabs
                 li#modinfo(onclick="{changeTab('moduleinfo')}" class="{active: tab === 'moduleinfo'}")
-                    i.icon.icon-message
+                    i.icon-info
                     span {voc.info}
                 li#modsettings(onclick="{changeTab('modulesettings')}" class="{active: tab === 'modulesettings'}" if="{currentModule.fields && currentModuleName in currentProject.libs}")
-                    i.icon.icon-settings
+                    i.icon-settings
                     span {voc.settings}
                 li#modhelp(onclick="{changeTab('modulehelp')}" class="{active: tab === 'modulehelp'}" if="{currentModule.methods || currentModule.params}")
-                    i.icon.icon-document
+                    i.icon-document
                     span {voc.help}
                 li#modlogs(onclick="{changeTab('modulelogs')}" class="{active: tab === 'modulelogs'}")
-                    i.icon.icon-coding
+                    i.icon-list
                     span {voc.logs}
             div
                 #moduleinfo.tabbed(show="{tab === 'moduleinfo'}")
                     label.bigpower(onclick="{toggleModule(currentModuleName)}" class="{off: !(currentModuleName in currentProject.libs)}")
-                        i.icon(class="icon-{currentModuleName in currentProject.libs? 'confirm' : 'delete'}")
+                        i(class="icon-{currentModuleName in currentProject.libs? 'confirm' : 'delete'}")
                         span
                     h1#modname
                         span {currentModule.main.name}
                         span.version {currentModule.main.version}
                     a#modsite.external(title="{voc.author}" href="{currentModule.info.site}")
-                        i.icon.icon-boy
+                        i.icon-user
                         span#modauthor {currentModule.info.author}
-                    i#modinjects.icon.icon-flash.warning(title="{voc.hasinjects}" show="{currentModule.injects}")
-                    i#modconfigurable.icon.icon-settings.success(title="{voc.hasfields}" show="{currentModule.fields}")
+                    i#modinjects.icon-zap.warning(title="{voc.hasinjects}" show="{currentModule.injects}")
+                    i#modconfigurable.icon-settings.success(title="{voc.hasfields}" show="{currentModule.fields}")
                     
                     #modinfohtml 
                         raw(ref="raw" content="{currentModuleHelp}")

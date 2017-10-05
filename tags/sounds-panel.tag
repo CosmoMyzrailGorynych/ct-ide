@@ -1,6 +1,6 @@
 sounds-panel.panel.view
     button#soundcreate(onclick="{soundNew}")
-        i.icon.icon-lamp
+        i.icon.icon-add
         span {voc.create}
     ul.cards
         li(

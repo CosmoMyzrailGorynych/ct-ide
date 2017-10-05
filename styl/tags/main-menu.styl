@@ -1,21 +1,21 @@
-#mainnav
+main-menu
 	position fixed
 	top 0
 	left 0
-	right 48px
-	border-top 0 none
+	right 0
+	bottom 0
+	& > .flexrow > nav 
+		flex-flow row wrap
+#fullscreen
+	flex 0 0 3rem
+#app
+	flex 1 1 12rem
+#mainnav
+	flex 1 1 60rem
 
 body.maximized #mainnav
 	@media (max-width 1000px)
-		right 0
 		flex-wrap wrap
-
-#app
-	position fixed
-	top 0
-	width 48px
-	right 0
-	border-top-width 0
 
 body.restored
 	#mainnav
@@ -31,21 +31,9 @@ body.restored
 	img
 		height 34px /* why? */
 
+
 @media (max-width 1000px)
-	.it30
-		flex-basis 30.5% !important
-
-	#app
-		top auto
-		bottom 0
-		border-top-width 1px
-		border-bottom-width 0
-		z-index 2
-
-
-@media (max-width 750px)
 	#mainnav span
 		display none
-
-	#mainnav .iconfirst-child
+	#mainnav i:first-child
 		margin-right 0

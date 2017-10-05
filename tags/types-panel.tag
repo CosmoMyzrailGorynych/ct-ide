@@ -1,6 +1,6 @@
 types-panel.panel.view
     button#typecreate(onclick="{typeCreate}")
-        i.icon.icon-lamp
+        i.icon.icon-add
         span {voc.create}
     ul.cards
         li(each="{type in window.currentProject.types}" onclick="{openType(type)}" oncontextmenu="{onTypeContextMenu}")

@@ -11,7 +11,9 @@ graphic-editor.panel.view
                 span.center   ×  
                 input.short(type="number" value="{opts.graphic.axis[1]}" onchange="{wire('this.graphic.axis.1')}")
             br
-            button.wide(onclick="{graphicCenter}") {voc.setcenter}
+            button.wide(onclick="{graphicCenter}") 
+                i.icon-target
+                span   {voc.setcenter}
             br
             b {voc.form}
             br
@@ -38,11 +40,11 @@ graphic-editor.panel.view
                     input.short(type="number" value="{opts.graphic.bottom}" onchange="{wire('this.graphic.bottom')}")
                 br
                 button.wide(onclick="{graphicFillRect}")
-                    i.icon.icon-maximize
+                    i.icon-maximize
                     span {voc.fill}
         .flexfix-footer
             button.wide(onclick="{graphicSave}") 
-                i.icon.icon-save
+                i.icon-save
                 span {window.languageJSON.common.save}
     .column.column2.borderleft.tall.flexfix(if="{!opts.graphic.frames || opts.graphic.frames === 1}")
         .flexfix-body
@@ -90,18 +92,18 @@ graphic-editor.panel.view
                 canvas(ref="grprCanvas")
             div
                 button#graphplay.square.inline(onclick="{currentGraphicPreviewPlay}")
-                    i.icon(class="icon-{this.prevPlaying? 'pause' : 'play'}")
+                    i(class="icon-{this.prevPlaying? 'pause' : 'play'}")
                 button#graphviewback.square.inline(onclick="{currentGraphicPreviewBack}")
-                    i.icon.icon-back
+                    i.icon-back
                 button#graphviewnext.square.inline(onclick="{currentGraphicPreviewNext}")
-                    i.icon.icon-next
+                    i.icon-next
                 span(ref="graphviewframe") 0 / 1
                 br
                 b {voc.speed}
                 input#grahpspeed.short(type="number" value="{prevSpeed}" onchange="{wire(this.prevSpeed)}")
             .relative
                 button#graphcolor.inline.wide(onclick="{changeGraphicPreviewColor}")
-                    i.icon.icon-brush
+                    i.icon-drop
                     span {voc.bgcolor}
             input.color.rgb#previewbgcolor
             br
@@ -109,7 +111,7 @@ graphic-editor.panel.view
             span {voc.showmask}
     //-
         button#graphsplicedone.wide(onclick="graphicFinishSplit")
-            i.icon.icon-confirm
+            i.icon-confirm
             span {voc.done}
 
     color-picker(
@@ -121,31 +123,31 @@ graphic-editor.panel.view
             label.toright.file(title="{voc.replacegraph}")
                 input(type="file" ref="graphReplacer" accept=".png,.jpg,.jpeg,.bmp,.gif" onchange="{graphReplace}")
                 button.inline
-                    i.icon.icon-folder
+                    i.icon-folder
                     span {voc.replacegraph}
             //- TODO
             //-
                 .button-stack
                     button.inline(title="#graphview.tools.deleteframe" onclick="{graphicDeleteFrame}")
-                        i.icon.icon-delete
+                        i.icon-delete
                     button.inline(title="#graphview.tools.duplicateframe" onclick="{graphicDuplicateFrame}")
-                        i.icon.icon-duplicate
+                        i.icon-duplicate
                     button.inline(title="#graphview.tools.addframe" onclick="{graphicAddFrame}")
-                        i.icon.icon-plus
+                        i.icon-plus
                 .button-stack
                     button.inline(title="#graphview.tools.shift" onclick="{graphicShift}")
-                        i.icon.icon-move-view
+                        i.icon-move-view
                     button.inline(title="#graphview.tools.flipvertical" onclick="{graphicFlipVertical}")
-                        i.icon.icon-flip-vertical
+                        i.icon-flip-vertical
                     button.inline(title="#graphview.tools.fliphorizontal" onclick="{graphicFlipHorizontal}")
-                        i.icon.icon-flip-horisontal
+                        i.icon-flip-horisontal
                     button.inline(title="#graphview.tools.rotate" onclick="{graphicRotate}")
-                        i.icon.icon-refresh
+                        i.icon-refresh
                 .button-stack
                     button.inline(title="#graphview.tools.resize" onclick="{graphicResize}")
-                        i.icon.icon-maximize
+                        i.icon-maximize
                     button.inline(title="#graphview.tools.crop" onclick="{graphicCrop}")
-                        i.icon.icon-crop
+                        i.icon-crop
         canvas(ref="graphCanvas")
     script.
         const path = require('path'),
