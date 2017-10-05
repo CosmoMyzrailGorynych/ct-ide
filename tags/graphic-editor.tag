@@ -86,7 +86,7 @@ graphic-editor.panel.view
             br
             input#graphframes.wide(type="number" value="{opts.graphic.untill}" onchange="{wire('this.graphic.untill')}")
         .preview.bordertop.flexfix-footer
-            #preview(ref="preview")
+            #preview(ref="preview" style="background-color: {previewColor};")
                 canvas(ref="grprCanvas")
             div
                 button#graphplay.square.inline(onclick="{currentGraphicPreviewPlay}")
@@ -99,9 +99,10 @@ graphic-editor.panel.view
                 br
                 b {voc.speed}
                 input#grahpspeed.short(type="number" value="{prevSpeed}" onchange="{wire(this.prevSpeed)}")
-            button#graphcolor.inline.wide(onclick="{currentGraphicPreviewColor}")
-                i.icon.icon-brush
-                span {voc.bgcolor}
+            .relative
+                button#graphcolor.inline.wide(onclick="{changeGraphicPreviewColor}")
+                    i.icon.icon-brush
+                    span {voc.bgcolor}
             input.color.rgb#previewbgcolor
             br
             input(checked="{prevShowMask}" onchange="{wire('this.prevShowMask')}" type="checkbox")
@@ -111,7 +112,11 @@ graphic-editor.panel.view
             i.icon.icon-confirm
             span {voc.done}
 
-    #atlas
+    color-picker(
+        ref="previewBackgroundColor" if="{changingGraphicPreviewColor}"
+        color="{previewColor}" onapply="{updatePreviewColor}" onchanged="{updatePreviewColor}" oncancel="{cancelPreviewColor}"
+    )
+    .graphic-editor-anAtlas(style="background-color: {previewColor};")
         .graphview-tools
             label.toright.file(title="{voc.replacegraph}")
                 input(type="file" ref="graphReplacer" accept=".png,.jpg,.jpeg,.bmp,.gif" onchange="{graphReplace}")
@@ -152,6 +157,7 @@ graphic-editor.panel.view
         this.prevPos = 0;
         this.prevSpeed = 10;
         this.prevShowMask = false;
+        this.previewColor = '#ffffff';
         
         var graphCanvas, grprCanvas;
         
@@ -161,7 +167,7 @@ graphic-editor.panel.view
             graphCanvas.x = graphCanvas.getContext('2d');
             grprCanvas.x = grprCanvas.getContext('2d');
             var graphic = this.graphic = this.opts.graphic;
-            console.log(graphic);
+            // console.log(graphic);
             var img = document.createElement('img');
             img.onload = () => {
                 graphic.frames = graphic.grid[0] * graphic.grid[1];
@@ -178,7 +184,7 @@ graphic-editor.panel.view
                 console.error(e);
                 this.graphicSave();
             };
-            img.src = path.join(sessionStorage.projdir, '/img/', graphic.origname);
+            img.src = path.join('file://', sessionStorage.projdir, '/img/', graphic.origname);
         });
         this.on('updated', () => {
             this.refreshGraphCanvas();
@@ -356,12 +362,6 @@ graphic-editor.panel.view
             }
         };
         /**
-         * Открыть колорпикер для выбора цвета фона предпросмотра анимации
-         */
-        this.currentGraphicPreviewColor = e => {
-            $('#previewbgcolor').focus();
-        };
-        /**
          * Остановить предпросмотр анимации
          */
         this.stopGraphPreview = () => {
@@ -493,4 +493,23 @@ graphic-editor.panel.view
                     console.log(err);
                 }
             });
+        };
+
+        this.changeGraphicPreviewColor = e => {
+            this.changingGraphicPreviewColor = !this.changingGraphicPreviewColor;
+            if (this.changingGraphicPreviewColor) {
+                this.oldPreviewColor = this.previewColor;
+            }
+        };
+        this.updatePreviewColor = (color, evtype) => {
+            this.previewColor = color;
+            if (evtype === 'onapply') {
+                this.changingGraphicPreviewColor = false;
+            }
+            this.update();
+        };
+        this.cancelPreviewColor = () => {
+            this.changingGraphicPreviewColor = false;
+            this.previewColor = this.oldPreviewColor;
+            this.update();
         };

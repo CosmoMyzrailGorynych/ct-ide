@@ -1,0 +1,67 @@
+color-picker
+    position fixed
+    z-index 10
+    width 40rem
+    left 50%
+    margin-left -20rem
+    top 10rem
+    .panel
+        padding 1rem
+        box-shadow 0 1rem 2rem rgba(black, 0.35)
+    .aRangePipeStack
+        width 15rem
+        margin-right 0.5rem
+    .flexrow
+        margin-bottom 0.5rem
+    .anAddSwatchButton
+        width 1.5rem
+        height @width
+        box-sizing border-box
+        padding 0
+        line-height 1.5rem
+        vertical-align middle
+        margin 0 0.5rem 0.5rem 0
+.huebar
+    background: linear-gradient(to right, hsl(0, 100%, 50%) 0, hsl(18, 100%, 50%) 5%, hsl(36, 100%, 50%) 10%, hsl(54, 100%, 50%) 15%, hsl(60, 100%, 50%) 16.667%, hsl(72, 100%, 50%) 20%, hsl(90, 100%, 50%) 25%, hsl(108, 100%, 50%) 30%, hsl(108, 100%, 50%) 35%, hsl(144, 100%, 50%) 40%, hsl(162, 100%, 50%) 45%, hsl(180, 100%, 50%) 50%, hsl(198, 100%, 50%) 55%, hsl(216, 100%, 50%) 60%, hsl(240, 100%, 50%) 66%, hsl(257, 100%, 50%) 70%, hsl(270, 100%, 50%) 75%, hsl(288, 100%, 50%) 80%, hsl(300, 100%, 50%) 83.333%, hsl(306, 100%, 50%) 85%, hsl(324, 100%, 50%) 90%, hsl(342, 100%, 50%) 95%, hsl(0, 100%, 50%) 100%)
+.alphabar
+    background linear-gradient(to bottom right, white 0, white 24%, text 25%, text 49%, white 50%, white 74%, text 75%, text 99%, white 100%)
+    background-size 0.5rem 0.5rem
+
+.color-picker-aBackgroundToggler
+    float right
+    border 0.15rem bl solid
+    width 1rem
+    height 1rem
+    box-sizing border-box
+    background black
+    cursor pointer
+    border-radius 100%
+    position absolute
+    right 0.5rem
+    top 0.5rem
+    &:hover
+        background white
+.color-picker-aBackgoundWell
+    padding 1rem
+    margin -1rem -1rem 1rem
+    background white
+    border-radius br
+    :hover + &
+        background black
+    .c6
+        border-radius br
+        text-align center
+        padding 1.5rem 1rem
+.color-picker-Buttons
+    margin-top 1.5rem
+
+.aSwatch
+    width 1.5rem
+    height @width
+    border-radius br
+    display inline-block
+    margin 0 0.5rem 0.5rem 0
+    border 1px bd solid
+    box-sizing border-box
+    vertical-align middle
+    cursor pointer
