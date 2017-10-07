@@ -48,10 +48,11 @@ ct.types = {
         obj.x = obj.xprev = obj.xstart = x;
         obj.y = obj.yprev = obj.ystart = y;
         
-        if (ct.types.list[type])
+        if (ct.types.list[type]) {
             ct.types.list[type].push(obj);
-        else
+        } else {
             ct.types.list[type] = [obj];
+        }
         ct.stack.push(obj);
         
         ct.types[type].onCreate.apply(obj);
@@ -62,15 +63,29 @@ ct.types = {
     },
     move: function (o) {
         // performs movement step with Copy `o`
-        var xprev = o.x;
-        var yprev = o.y;
+        var xprev = o.x,
+            yprev = o.y,
+            hspd, vspd;
         if (!o.grav) { o.grav = 0; o.gravdir = 0; }
         hspd = o.spd * Math.cos(o.dir*Math.PI/-180) + o.grav * Math.cos(o.gravdir*Math.PI/-180);
         vspd = o.spd * Math.sin(o.dir*Math.PI/-180) + o.grav * Math.sin(o.gravdir*Math.PI/-180);
         o.x += hspd;
         o.y += vspd;
+        if (o.grav) {
+            o.spd = Math.sqrt(hspd*hspd + vspd*vspd);
+        }
+        if (o.spd > 0) {
+            o.dir = ct.u.pdn(xprev, yprev, o.x, o.y);
+        }
+    },
+    addSpeed: function(o, spd, dir) {
+        var hspd, vspd;
+        hspd = o.spd * Math.cos(o.dir*Math.PI/-180) + spd * Math.cos(dir*Math.PI/-180);
+        vspd = o.spd * Math.sin(o.dir*Math.PI/-180) + spd * Math.sin(dir*Math.PI/-180);
         o.spd = Math.sqrt(hspd*hspd + vspd*vspd);
-        if (o.spd > 0) o.dir = ct.u.pdn(xprev, yprev, o.x, o.y);
+        if (o.spd > 0) {
+            o.dir = ct.u.pdn(xprev, yprev, o.x, o.y);
+        }
     },
     each: function (func) {
         var other = this;
