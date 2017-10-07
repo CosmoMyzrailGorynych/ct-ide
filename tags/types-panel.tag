@@ -5,7 +5,7 @@ types-panel.panel.view
     ul.cards
         li(each="{type in window.currentProject.types}" onclick="{openType(type)}" oncontextmenu="{onTypeContextMenu}")
             span {type.name}
-            img(src="{type.graph !== -1 ? sessionStorage.projdir + '/img/' + type.graph + '_prev.png' : '/img/nograph.png'}")
+            img(src="{type.graph !== -1 ? 'file://' + sessionStorage.projdir + '/img/' + type.graph + '_prev.png' : '/img/nograph.png'}")
     type-editor(if="{editingType}" type="{editedType}")
     script.
         this.voc = window.languageJSON.types;

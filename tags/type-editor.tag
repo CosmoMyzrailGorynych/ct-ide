@@ -1,29 +1,29 @@
-type-editor.panel.view
-    .pt20.tall
+type-editor.panel.view.flexrow
+    .c3.tall
         #typegraph.panel(onclick="{changeSprite}")
-            img.ohchangeme
+            img.ohchangeme(src="{type.graph === -1? '/img/nograph.png' : 'file://' + sessionStorage.projdir + '/img/' + type.graph + '_prev@2.png'}")
             div {voc.change}
         b {voc.name}
-        input#typename.wide(type="text" onchange="{wire('this.type.name')}")
+        input#typename.wide(type="text" onchange="{wire('this.type.name')}" value="{type.name}")
         br
         b {voc.depth}
-        input#typedepth.wide(type="number" onchange="{wire('this.type.depth')}")
+        input#typedepth.wide(type="number" onchange="{wire('this.type.depth')}" value="{type.depth}")
         br
         br
         button#typedone.wide(onclick="{typeSave}")
             i.icon.icon-confirm
             span {voc.done}
-    .pt80.tall.borderleft
+    .c9.tall.borderleft
         .tabwrap.tall(style="position: relative")
             ul.tabs.nav.nogrow.noshrink
                 li(onclick="{changeTab('typeoncreate')}" class="{active: tab === 'typeoncreate'}" title="{voc.create}")
-                    i.icon.icon-lamp
+                    i.icon.icon-sun
                     span {voc.create}
                 li(onclick="{changeTab('typeonstep')}" class="{active: tab === 'typeonstep'}" title="{voc.step}")
-                    i.icon.icon-timer
+                    i.icon.icon-next
                     span {voc.step}
                 li(onclick="{changeTab('typeondraw')}" class="{active: tab === 'typeondraw'}" title="{voc.draw}")
-                    i.icon.icon-brush
+                    i.icon.icon-edit-2
                     span {voc.draw}
                 li(onclick="{changeTab('typeondestroy')}" class="{active: tab === 'typeondestroy'}" title="{voc.destroy}")
                     i.icon.icon-trash
@@ -37,11 +37,12 @@ type-editor.panel.view
                     .acer(ref="typeondraw")
                 #typeondestroy.tabbed(show="{tab === 'typeondestroy'}")
                     .acer(ref="typeondestroy")
-    graphic-selector(if="{selectingGraphic}" ref="graphicselector" showempty)
+    graphic-selector(if="{selectingGraphic}" onselected="{applyGraphic}" ref="graphicselector" showempty="sure")
     script.
         this.voc = window.languageJSON.typeview;
         this.mixin(window.riotWired);
         
+        this.type = this.opts.type;
         this.tab = 'typeoncreate';
         this.changeTab = tab => e => {
             this.tab = tab;
@@ -65,26 +66,30 @@ type-editor.panel.view
         };
         
         this.on('mount', () => {
-            this.type = this.opts.type;
             var editorOptions = {
                 mode: 'javascript'
             };
             setTimeout(() => {
-                this.typeoncreate = window.setupAce(this.refs.typeoncreate, editorOptions);
-                this.typeonstep = window.setupAce(this.refs.typeonstep, editorOptions);
-                this.typeondraw = window.setupAce(this.refs.typeondraw, editorOptions);
-                this.typeondestroy = window.setupAce(this.refs.typeondestroy, editorOptions);
+                this.typeoncreate = window.setupAceEditor(this.refs.typeoncreate, editorOptions);
+                this.typeonstep = window.setupAceEditor(this.refs.typeonstep, editorOptions);
+                this.typeondraw = window.setupAceEditor(this.refs.typeondraw, editorOptions);
+                this.typeondestroy = window.setupAceEditor(this.refs.typeondestroy, editorOptions);
                 
-                this.typeoncreate.sess.on('change', (e) => {
+                this.typeoncreate.setValue(this.type.oncreate);
+                this.typeonstep.setValue(this.type.onstep);
+                this.typeondraw.setValue(this.type.ondraw);
+                this.typeondestroy.setValue(this.type.ondestroy);
+
+                this.typeoncreate.getSession().on('change', (e) => {
                     this.type.oncreate = this.typeoncreate.getValue();
                 });
-                this.typeonstep.sess.on('change', (e) => {
+                this.typeonstep.getSession().on('change', (e) => {
                     this.type.onstep = this.typeonstep.getValue();
                 });
-                this.typeondraw.sess.on('change', (e) => {
+                this.typeondraw.getSession().on('change', (e) => {
                     this.type.ondraw = this.typeondraw.getValue();
                 });
-                this.typeondestroy.sess.on('change', (e) => {
+                this.typeondestroy.getSession().on('change', (e) => {
                     this.type.ondestroy = this.typeondestroy.getValue();
                 });
                 this.typeoncreate.moveCursorTo(0,0);
@@ -94,18 +99,19 @@ type-editor.panel.view
         });
         this.changeSprite = e => {
             this.selectingGraphic = true;
+        };
+        this.applyGraphic = graph => e => {
+            if (graph === -1) {
+                this.type.graph = -1;
+            } else {
+                this.type.graph = graph.origname;
+            }
+            this.selectingGraphic = false;
             this.update();
-            this.refs.graphicselector.onselect = graph => {
-                if (graph !== -1) {
-                    this.type.graph = -1;
-                } else {
-                    this.type.graph = graph.origname;
-                }
-            };
         };
         this.typeSave = e => {
             window.glob.modified = true;
-            this.parent.editing = false;
+            this.parent.editingType = false;
             this.parent.fillTypeMap();
             this.parent.update();
         };

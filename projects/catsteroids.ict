@@ -141,14 +141,14 @@
   ],
   "types": [
     {
-      "name": "Player_Blue",
+      "name": "bluePlayer",
       "depth": 0,
-      "oncreate": "",
-      "onstep": "",
+      "oncreate": "this.friction = 0.1;\nthis.flyspeed = 1;\n\nthis.shootTimer = 0;",
+      "onstep": "/* Movement */\n\nif (ct.keyboard.down['down']) {\n    ct.types.addSpeed(this, this.flyspeed, 270);\n}\nif (ct.keyboard.down['up']) {\n    ct.types.addSpeed(this, this.flyspeed, 90);\n}\nif (ct.keyboard.down['left']) {\n    ct.types.addSpeed(this, this.flyspeed, 180);\n}\nif (ct.keyboard.down['right']) {\n    ct.types.addSpeed(this, this.flyspeed, 0);\n}\nthis.spd = Math.max(this.spd, this.spd - this.friction);\nct.types.move(this);\n\n/* Shooting */\n\nthis.shootTimer++;\nif (ct.keyboard.down['space'] && this.shootTimer > ct.room.speed * 0.5) {\n    ct.types.copy('blueBullet', this.x, this.y);\n    this.shootTimer = 0;\n}",
       "ondraw": "ct.draw(this);",
       "ondestroy": "",
       "uid": 1,
-      "graph": -1
+      "graph": "i1.png"
     }
   ],
   "sounds": [],
