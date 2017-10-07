@@ -11,8 +11,7 @@ graphic-editor.panel.view
                 span.center   ×  
                 input.short(type="number" value="{opts.graphic.axis[1]}" onchange="{wire('this.graphic.axis.1')}")
             br
-            button.wide(onclick="{graphicCenter}") 
-                i.icon-target
+            button.wide(onclick="{graphicCenter}")
                 span   {voc.setcenter}
             br
             b {voc.form}
@@ -107,8 +106,9 @@ graphic-editor.panel.view
                     span {voc.bgcolor}
             input.color.rgb#previewbgcolor
             br
-            input(checked="{prevShowMask}" onchange="{wire('this.prevShowMask')}" type="checkbox")
-            span {voc.showmask}
+            label
+                input(checked="{prevShowMask}" onchange="{wire('this.prevShowMask')}" type="checkbox")
+                span   {voc.showmask}
     //-
         button#graphsplicedone.wide(onclick="graphicFinishSplit")
             i.icon-confirm
@@ -122,7 +122,7 @@ graphic-editor.panel.view
         .graphview-tools
             label.toright.file(title="{voc.replacegraph}")
                 input(type="file" ref="graphReplacer" accept=".png,.jpg,.jpeg,.bmp,.gif" onchange="{graphReplace}")
-                button.inline
+                .button.inline
                     i.icon-folder
                     span {voc.replacegraph}
             //- TODO
@@ -158,7 +158,7 @@ graphic-editor.panel.view
         this.prevPlaying = true;
         this.prevPos = 0;
         this.prevSpeed = 10;
-        this.prevShowMask = false;
+        this.prevShowMask = true;
         this.previewColor = '#ffffff';
         
         var graphCanvas, grprCanvas;
@@ -186,7 +186,7 @@ graphic-editor.panel.view
                 console.error(e);
                 this.graphicSave();
             };
-            img.src = path.join('file://', sessionStorage.projdir, '/img/', graphic.origname);
+            img.src = path.join('file://', sessionStorage.projdir, '/img/', graphic.origname) + '?' + Math.random();
         });
         this.on('updated', () => {
             this.refreshGraphCanvas();
@@ -201,9 +201,9 @@ graphic-editor.panel.view
             if (/\.(jpg|gif|png|jpeg)/gi.test(this.refs.graphReplacer.value)) {
                 console.log(this.refs.graphReplacer.value, 'passed');
                 this.loadImg(
-                    0,
+                    parseInt(this.graphic.origname.slice(1)),
                     this.refs.graphReplacer.value,
-                    sessionStorage.projdir + '/img/i' + parseInt(currentGraphic.origname.slice(1)) + path.extname(this.refs.graphReplacer.value)
+                    sessionStorage.projdir + '/img/i' + parseInt(this.graphic.origname.slice(1)) + path.extname(this.refs.graphReplacer.value)
                 );
             } else {
                 window.alertify.error(window.languageJSON.common.wrongFormat);
@@ -212,11 +212,10 @@ graphic-editor.panel.view
             this.refs.graphReplacer.value = '';
         };
         /**
-         * Генерирует квадратную превьюху из исходного изображения
-         * @param {String} source Путь к исходному изображению
-         * @param {String} destFile Путь к создаваемой превью
-         * @param {Number} size Размер стороны квадрата в пикселах
-         * @returns {Promise} Промис по завершению создания превью. При успехе передаёт data-url полученного превью
+         * Загружает изображение в редактор и генерирует квадратную превьюху из исходного изображения
+         * @param {Number} uid Идентификатор изображения
+         * @param {String} filename Путь к исходному изображению
+         * @param {Sting} dest Путь к изображению в папке проекта
          */
         this.loadImg = (uid, filename, dest) => {
             console.log(uid, filename, 'copying');
@@ -225,10 +224,11 @@ graphic-editor.panel.view
                 if (e) throw e;
                 image = document.createElement('img');
                 image.onload = () => {
-                    this.currentGraphic.width = this.width;
-                    this.currentGraphic.height = this.height;
-                    this.currentGraphic.origname = path.basename(dest);
-                    graphCanvas.img = this;
+                    this.graphic.width = image.width;
+                    this.graphic.height = image.height;
+                    this.graphic.origname = path.basename(dest);
+                    graphCanvas.img = image;
+                    this.graphic.lastmod = +(new Date());
                     this.parent.imgGenPreview(dest, dest + '_prev.png', 64, () => {
                         console.log(uid, filename, 'preview generated');
                         this.update();
@@ -237,13 +237,14 @@ graphic-editor.panel.view
                         console.log(uid, filename, 'hdpi preview generated');
                     });
                     setTimeout(() => {
+                        this.refreshGraphCanvas();
                         this.launchGraphPreview();
                     }, 0);
-                }
+                };
                 image.onerror = e => {
                     window.alertify.error(e);
-                }
-                image.src = dest + '?' + Math.random();
+                };
+                image.src = 'file://' + dest + '?' + Math.random();
             });
         };
         
@@ -437,18 +438,20 @@ graphic-editor.panel.view
                     h = this.graphic.height;
                 graphCanvas.x.strokeRect(x, y, w, h);
             }
-            graphCanvas.x.fillStyle = '#ff0';
-            if (this.graphic.shape == 'rect') {
-                graphCanvas.x.fillRect(
-                    this.graphic.axis[0] - this.graphic.left,
-                    this.graphic.axis[1] - this.graphic.top,
-                    this.graphic.right + this.graphic.left,
-                    this.graphic.bottom + this.graphic.top
-                );
-            } else {
-                graphCanvas.x.beginPath();
-                graphCanvas.x.arc(this.graphic.axis[0], this.graphic.axis[1], this.graphic.r, 0, 2 * Math.PI);
-                graphCanvas.x.fill();
+            if (this.prevShowMask) {
+                graphCanvas.x.fillStyle = '#ff0';
+                if (this.graphic.shape == 'rect') {
+                    graphCanvas.x.fillRect(
+                        this.graphic.axis[0] - this.graphic.left,
+                        this.graphic.axis[1] - this.graphic.top,
+                        this.graphic.right + this.graphic.left,
+                        this.graphic.bottom + this.graphic.top
+                    );
+                } else {
+                    graphCanvas.x.beginPath();
+                    graphCanvas.x.arc(this.graphic.axis[0], this.graphic.axis[1], this.graphic.r, 0, 2 * Math.PI);
+                    graphCanvas.x.fill();
+                }
             }
         };
         
@@ -456,44 +459,53 @@ graphic-editor.panel.view
          * Событие сохранения графики
          */
         this.graphicSave = () => {
-            this.graphGenPreview(true, sessionStorage.projdir + '/img/' + this.graphic.origname + '_prev.png', 64);
-            this.graphGenPreview(false, sessionStorage.projdir + '/img/' + this.graphic.origname + '_prev@2.png', 128);
             this.parent.fillGraphMap();
             window.glob.modified = true;
-            this.parent.editing = false;
-            this.parent.update();
+            this.graphic.lastmod = +(new Date());
+            this.graphGenPreview(sessionStorage.projdir + '/img/' + this.graphic.origname + '_prev@2.png', 128);
+            this.graphGenPreview(sessionStorage.projdir + '/img/' + this.graphic.origname + '_prev.png', 64)
+            .then(() => {
+                this.parent.editing = false;
+                this.parent.update();
+            });
         };
         
         /**
          * Генерирует превьюху первого кадра графики
+         * @returns {Promise} Промис
          */
-        this.graphGenPreview = function(replace, destination, size) {
-            // destination = sessionStorage.projdir + '/img/' + this.graphic.destinatione + '_prev.png'
-            var c = document.createElement('canvas');
-            let x = this.graphic.offx,
-                y = this.graphic.offy,
-                w = this.graphic.width,
-                h = this.graphic.height;
-            c.x = c.getContext('2d');
-            c.width = c.height = size;
-            c.x.clearRect(0, 0, size, size);
-            if (w > h) {
-                k = size / w;
-            } else {
-                k = size / h;
-            }
-            if (k > 1) k = 1;
-            c.x.drawImage(graphCanvas.img,
-                x, y, w, h,
-                (size - w*k) / 2, (size - h*k) / 2,
-                w*k, h*k
-            );
-            var data = c.toDataURL().replace(/^data:image\/\w+;base64,/, '');
-            var buf = new Buffer(data, 'base64');
-            fs.writeFile(destination, buf, function(err) {
-                if (err) {
-                    console.log(err);
+        this.graphGenPreview = function(destination, size) {
+            return new Promise((accept, decline) => {
+                // destination = sessionStorage.projdir + '/img/' + this.graphic.destinatione + '_prev.png'
+                var c = document.createElement('canvas');
+                let x = this.graphic.offx,
+                    y = this.graphic.offy,
+                    w = this.graphic.width,
+                    h = this.graphic.height;
+                c.x = c.getContext('2d');
+                c.width = c.height = size;
+                c.x.clearRect(0, 0, size, size);
+                if (w > h) {
+                    k = size / w;
+                } else {
+                    k = size / h;
                 }
+                if (k > 1) k = 1;
+                c.x.drawImage(graphCanvas.img,
+                    x, y, w, h,
+                    (size - w*k) / 2, (size - h*k) / 2,
+                    w*k, h*k
+                );
+                var data = c.toDataURL().replace(/^data:image\/\w+;base64,/, '');
+                var buf = new Buffer(data, 'base64');
+                fs.writeFile(destination, buf, function(err) {
+                    if (err) {
+                        console.log(err);
+                        decline(err);
+                    } else {
+                        accept(destination);
+                    }
+                });
             });
         };
 

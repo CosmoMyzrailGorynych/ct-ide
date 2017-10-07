@@ -14,7 +14,7 @@ graphics-panel.panel.view
             onclick="{openGraphic(graphic)}"
         )
             span {graphic.name}
-            img(src="file://{sessionStorage.projdir + '/img/' + graphic.origname + '_prev.png'}")
+            img(src="file://{sessionStorage.projdir + '/img/' + graphic.origname + '_prev.png?' + graphic.lastmod}")
     graphic-editor(if="{editing}" graphic="{currentGraphic}")
     script.
         const fs = require('fs-extra'),
@@ -151,7 +151,7 @@ graphics-panel.panel.view
                         }
                     });
                 }
-                thumbnail.src = source;
+                thumbnail.src = 'file://' + source;
             });
         };
         
