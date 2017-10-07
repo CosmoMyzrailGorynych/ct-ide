@@ -99,6 +99,7 @@ ct.types = {
     }
 };
 ct.types.copy = ct.types.make;
+ct.types.addSpd = ct.types.addSpeed;
 /******************* типы *************/
 
 @types@
