@@ -512,7 +512,7 @@ room-editor.panel.view
                         for (let j = 0, lj = layer.copies.length; j < lj; j++) {
                             let copy = layer.copies[j],
                                 type = window.currentProject.types[glob.typemap[copy.uid]];
-                            let graph, w, h, 
+                            let graph, w, h,
                                 grax, gray; // Центр рисовки графики
                             if (copy.graph != -1) {
                                 graph = glob.graphmap[window.currentProject.types[glob.typemap[copy.uid]].graph];

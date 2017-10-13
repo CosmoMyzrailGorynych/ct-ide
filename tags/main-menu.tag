@@ -6,7 +6,7 @@ main-menu.flexcol
 
         ul#app.nav.tabs
             li.it30#ctlogo(onclick="{ctClick}" title="{voc.ctIDE}")
-                img(src="img/ct.ide.svg")
+                i.icon-menu
             li.it30(onclick="{saveProject}" title="{voc.save}")
                 i.icon-save
             li.it30(onclick="{runProject}" title="{voc.launch}")
