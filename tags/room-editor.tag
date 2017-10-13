@@ -271,19 +271,18 @@ room-editor.panel.view
                         this.refs.canvas.x.drawImage(
                             graph,
                             0, 0, w, h,
-                            e.offsetX / this.zoomFactor - grax, e.offsetY / this.zoomFactor - gray, w, h
-                        );
+                            e.offsetX / this.zoomFactor - grax, e.offsetY / this.zoomFactor - gray, w, h);
                     } else {
                         // если есть сетка, то координаты предварительной копии нужно отснэпить по сетке
-                        dx = (e.offsetX / this.zoomFactor + this.roomx);
-                        dy = (e.offsetY / this.zoomFactor + this.roomy);
-                        w = graph.width / graph.g.grid[0];
-                        h = graph.height / graph.g.grid[1];
+                        dx = this.xToRoom(e.offsetX);
+                        dy = this.yToRoom(e.offsetY);
+                        w = graph.width;
+                        h = graph.height;
                         this.refs.canvas.x.drawImage(
-                            graph,
-                            0, 0, w, h,
-                            dx - dx % this.grid - grax - this.roomx, dy - dy % this.grid - gray - this.roomy, w, h
-                        );
+                            graph, 0, 0, w, h,
+                            this.xToCanvas(dx - dx % this.grid) / this.zoomFactor - grax, 
+                            this.yToCanvas(dy - dy % this.grid) / this.zoomFactor - gray, 
+                            w, h);
                     }
                 }
             }
