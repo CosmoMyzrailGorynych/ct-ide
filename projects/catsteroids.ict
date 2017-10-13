@@ -153,10 +153,49 @@
   ],
   "sounds": [],
   "styles": [],
-  "rooms": [],
+  "rooms": [
+    {
+      "name": "room1",
+      "oncreate": "",
+      "onstep": "",
+      "ondraw": "",
+      "onleave": "",
+      "width": 800,
+      "height": 600,
+      "backgrounds": [],
+      "layers": [
+        {
+          "depth": 0,
+          "copies": [
+            {
+              "x": 192,
+              "y": 640,
+              "uid": 1
+            },
+            {
+              "x": 128,
+              "y": 768,
+              "uid": 1
+            },
+            {
+              "x": 256,
+              "y": 832,
+              "uid": 1
+            },
+            {
+              "x": 320,
+              "y": 704,
+              "uid": 1
+            }
+          ]
+        }
+      ],
+      "uid": 1
+    }
+  ],
   "graphtick": 8,
   "soundtick": 0,
-  "roomtick": 0,
+  "roomtick": 1,
   "typetick": 1,
   "styletick": 0,
   "starting": 0,

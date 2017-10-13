@@ -109,11 +109,12 @@ room-editor.panel.view
             this.refs.canvas.x = this.refs.canvas.getContext('2d');
             this.gridCanvas = document.createElement('canvas');
             this.gridCanvas.x = this.gridCanvas.getContext('2d');
+            this.redrawGrid();
             win.on('resize', updateCanvasSize);
             updateCanvasSize();
         });
         this.on('unmount', () => {
-            win.off('resize', updateCanvasSize);
+            win.removeAllListeners('resize');
         });
         
         this.openRoomEvents = e => {
@@ -486,6 +487,7 @@ room-editor.panel.view
             canvas.x.translate(~~(canvas.width / 2), ~~(canvas.height / 2));
             canvas.x.scale(this.zoomFactor,this.zoomFactor);
             canvas.x.translate(-this.roomx, -this.roomy);
+            canvas.x.imageSmoothingEnabled = !currentProject.settings.pixelatedrender;
             
             // Сделаем массив слоёв и фонов, и копий. У копий приоритет
             var hybrid = [];
