@@ -8,29 +8,33 @@ rooms-panel.panel.view
             class="{starting: window.currentProject.startroom === room.uid}"
             onclick="{openRoom(room)}"
         )
-            img(src="{sessionStorage.projdir + '/img/r' + room.uid + '.png'}")
+            img(src="file://{sessionStorage.projdir + '/img/r' + room.uid + '.png'}")
             span {room.name}
     room-editor(if="{editing}" room="{editingRoom}")
     script.
         this.voc = window.languageJSON.rooms;
         this.editing = false;
         const gui = require('nw.gui'),
-              fs = require('fs-extra');
+              fs = require('fs-extra'),
+              path = require('path');
         this.roomCreate = function () {
-            currentProject.roomtick ++;
-            var newRoom = {
-                name: 'room' + currentProject.roomtick,
-                oncreate: '',
-                onstep: '',
-                ondraw: '',
-                onleave: '',
-                width: 800,
-                height: 600,
-                backgrounds: [],
-                layers: [],
-                uid: window.currentProject.roomtick
-            };
-            window.currentProject.rooms.push(newRoom);
+            fs.copy('./img/nograph.png', path.join(sessionStorage.projdir + '/img/r' + (currentProject.roomtick + 1) + '.png'), () => {
+                currentProject.roomtick ++;
+                var newRoom = {
+                    name: 'room' + currentProject.roomtick,
+                    oncreate: '',
+                    onstep: '',
+                    ondraw: '',
+                    onleave: '',
+                    width: 800,
+                    height: 600,
+                    backgrounds: [],
+                    layers: [],
+                    uid: window.currentProject.roomtick
+                };
+                window.currentProject.rooms.push(newRoom);
+                this.update();
+            });
         };
         this.openRoom = room => e => {
             this.editingRoom = room;

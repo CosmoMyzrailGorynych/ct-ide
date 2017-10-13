@@ -3,17 +3,17 @@ room-editor.panel.view
         .settings.nogrow.noshrink
             b {voc.name}
             br
-            input#roomname.wide(type="text" value="{room.name}" onchange="{wire('this.room.name')}")
+            input.wide(type="text" value="{room.name}" onchange="{wire('this.room.name')}")
             br
             b {voc.width}
             br
-            input#roomwidth.wide(type="number" value="{room.width}" onchange="{wire('this.room.width')}")
+            input.wide(type="number" value="{room.width}" onchange="{wire('this.room.width')}")
             br
             b {voc.height}
             br
-            input#roomheight.wide(type="number" value="{room.height}" onchange="{wire('this.room.height')}")
+            input.wide(type="number" value="{room.height}" onchange="{wire('this.room.height')}")
             br
-            button.wide(data-event="openRoomEvents")
+            button.wide(onclick="{openRoomEvents}")
                 i.icon.icon-code
                 span {voc.events}
         .palette
@@ -21,18 +21,19 @@ room-editor.panel.view
                 ul.tabs.nav.noshrink.nogrow
                     li(onclick="{changeTab('roomcopies')}" class="{active: tab === 'roomcopies'}") {voc.copies}
                     li(onclick="{changeTab('roombackgrounds')}" class="{active: tab === 'roombackgrounds'}") {voc.backgrounds}
-                    //-li(data-tab="#roomtiles") {voc.tiles}
-                div(style="position: relative;")
-                    #roomcopies.tabbed.tall(show="{tab === 'roomcopies'}")
-                        span#roomnotype(onclick="{roomUnpickType}")
+                    //-li( ) {voc.tiles}
+                .relative
+                    .room-editor-TypeSwatches.tabbed.tall(show="{tab === 'roomcopies'}")
+                        .room-editor-aTypeSwatch(onclick="{roomUnpickType}" class="{active: currentType === -1}")
                             span {window.languageJSON.common.none}
-                        div(each="{type in window.currentProject.types}" onclick="{selectType(type))}" class="{active: type === currentType}")
+                            img(src="/img/nograph.png")
+                        .room-editor-aTypeSwatch(each="{type in window.currentProject.types}" onclick="{selectType(type)}" class="{active: type === currentType}")
                             span {type.name}
-                            img(src="{type.graph === -1? '/img/nograph.png' : sessionStorage.projdir + '/img/' + type.graph + '_prev.png'}")
-                    #roombackgrounds.tabbed(show="{tab === 'roombackgrounds'}")
-                        ul#roombgstack
+                            img(src="{type.graph === -1? '/img/nograph.png' : 'file://' + sessionStorage.projdir + '/img/' + type.graph + '_prev.png'}")
+                    .room-editor-Backgrounds.tabbed(show="{tab === 'roombackgrounds'}")
+                        ul
                             li.bg(each="{background, ind in room.backgrounds}" oncontextmenu="{onBgContextMenu}")
-                                img(src="{sessionStorage.projdir + '/img/' + background.graph}" onclick="{onChangeBgGraphic}")
+                                img(src="file://{sessionStorage.projdir + '/img/' + background.graph}" onclick="{onChangeBgGraphic}")
                                 span {background.depth}
 
                         button.inline.wide(onclick="{roomAddBg}")
@@ -46,7 +47,7 @@ room-editor.panel.view
             button.wide#roomviewdone(onclick="{roomSave}")
                 i.icon.icon-confirm
                 span {voc.done}
-    .editor
+    .editor(ref="canvaswrap")
         canvas(
             ref="canvas"
             onclick="{onCanvasClick}"
@@ -59,7 +60,7 @@ room-editor.panel.view
         )
         .shift
             button.inline.square(title="{voc.shift}" onclick="{roomShift}")
-                i.icon.icon-move-view
+                i.icon.icon-move
         .zoom
             b {voc.zoom}
             div.button-stack
@@ -71,8 +72,8 @@ room-editor.panel.view
             button#roomgrid(onclick="{roomToggleGrid}" class="{active: grid > 0}") 
                 span {voc[grid > 0? 'gridoff' : 'grid']}
         .center
-            button#roomcenter(data-event="roomToCenter") {voc.tocenter}
-    room-events-editor(show="{editingCode}" room="{room}")
+            button#roomcenter(onclick="{roomToCenter}") {voc.tocenter}
+    room-events-editor(if="{editingCode}" room="{room}")
     graphic-selector(ref="graphPicker" if="{pickingBackground}")
     script.
         this.editingCode = false;
@@ -83,21 +84,31 @@ room-editor.panel.view
         const win = gui.Window.get();
         this.mixin(window.riotWired);
         
-        this.roomx = 0;
-        this.roomy = 0;
+        this.room = this.opts.room;
+
+        this.roomx = this.room.width / 2
+            this.roomx = this.room.width / 2;
+            this.roomy = this.room.height / 2;
         this.zoomFactor = 1;
         this.grid = 64;
         this.currentType = -1;
         this.dragging = false;
+        this.tab = 'roomcopies';
         
         var updateCanvasSize = (newWidth, newHeight) => {
-            this.refs.canvas.width = newWidth - $('room-editor .toolbar').width();
-            this.refs.canvas.height = newHeight - $('main-nav').height();
+            var canvas = this.refs.canvas,
+                sizes = this.refs.canvaswrap.getBoundingClientRect();
+            if (canvas.width != sizes.width || canvas.height != sizes.height) {
+                canvas.width = sizes.width;
+                canvas.height = sizes.height;
+            }
             this.refreshRoomCanvas();
         };
         this.on('mount', () => {
             this.room = this.opts.room;
             this.refs.canvas.x = this.refs.canvas.getContext('2d');
+            this.gridCanvas = document.createElement('canvas');
+            this.gridCanvas.x = this.gridCanvas.getContext('2d');
             win.on('resize', updateCanvasSize);
             updateCanvasSize();
         });
@@ -115,27 +126,43 @@ room-editor.panel.view
             this.refreshRoomCanvas();
         };
         this.roomToCenter = e => {
-            this.roomx = this.roomy = 0;
+            this.roomx = this.room.width / 2;
+            this.roomy = this.room.height / 2;
             this.refreshRoomCanvas();
         };
-        this.roomToggleGrid = function () {
+        this.redrawGrid = () => {
+            this.gridCanvas.width = this.gridCanvas.height = this.grid;
+            this.gridCanvas.x.clearRect(0, 0, this.grid, this.grid);
+            this.gridCanvas.x.globalAlpha = 0.3;
+            this.gridCanvas.x.strokeStyle = "#446adb";
+            this.gridCanvas.x.lineWidth = 1;
+            this.gridCanvas.x.moveTo(0.5, 0.5);
+            this.gridCanvas.x.moveTo(this.grid - 0.5, 0);
+            this.gridCanvas.x.lineTo(this.grid - 0.5, this.grid - 0.5);
+            this.gridCanvas.x.lineTo(0, this.grid - 0.5);
+            this.gridCanvas.x.stroke();
+        }
+        this.roomToggleGrid = () => {
             if (this.grid === 0) {
-                alertify.prompt(this.voc.gridsize, function (e, input) {
+                alertify.prompt(this.voc.gridsize, (e, input) => {
                     if (e) {
                         if (Number(input) > 1) {
-                            this.grid = Number(r);
+                            this.grid = Number(input);
                         }
                     }
+                    this.redrawGrid();
+                    this.refreshRoomCanvas();
+                    this.update();
                 });
             } else {
-                glob.grid = 0;
-                $('#roomgrid').text(languageJSON.roomview.grid);
+                this.refreshRoomCanvas();
+                this.grid = 0;
             }
         };
         
         // Работа с копиями
         this.tab = 'roomcopies';
-        this.changeTab = tab = e => {
+        this.changeTab = tab => e => {
             this.tab = tab;
             if (tab === 'roombackgrounds') {
                 this.roomUnpickType();
@@ -148,18 +175,27 @@ room-editor.panel.view
             this.currentType = type;
         };
         var lastTypeLayer;
-        var findTypeLayer = type => {
+        var findTypeLayer = a => {
             if (a.depth === this.currentType.depth) {
                 lastTypeLayer = a;
                 return true;
             }
             return false;
         };
+
+        /** Преобразовать x на канвасе в x на комнате */
+        this.xToRoom = x => (x - ~~(this.refs.canvas.width / 2)) / this.zoomFactor + this.roomx;
+        /** Преобразовать y на канвасе в y на комнате */
+        this.yToRoom = y => (y - ~~(this.refs.canvas.height / 2)) / this.zoomFactor + this.roomy;
+        /** Преобразовать x в комнате в x на канвасе */
+        this.xToCanvas = x => (x - this.roomx) * this.zoomFactor + ~~(this.refs.canvas.width / 2);
+        /** Преобразовать y в комнате в y на канвасе */
+        this.yToCanvas = y => (y - this.roomy) * this.zoomFactor + ~~(this.refs.canvas.height / 2);
         
         // При клике на канвас помещает копию на соответствующий слой
         this.onCanvasClick = e => {
             // Если не выбран тип создаваемой копии, то ничего не делаем
-            if (currentTypePick === -1) {
+            if (this.currentType === -1) {
                 return;
             }
             var targetLayer;
@@ -180,48 +216,49 @@ room-editor.panel.view
 
             if (this.grid == 0) {
                 targetLayer.copies.push({
-                    x: ~~((e.offsetX - (this.refs.canvas.width - this.room.width) / 2 + this.roomx) / this.zoomFactor),
-                    y: ~~((e.offsetY - (this.refs.canvas.height - this.room.height) / 2 + this.roomy) / this.zoomFactor),
+                    x: ~~(this.xToRoom(e.offsetX)),
+                    y: ~~(this.yToRoom(e.offsetY)),
                     uid: this.currentType.uid
                 });
             } else {
-                var x = ~~((e.offsetX - (this.refs.canvas.width - this.room.width) / 2 + this.roomx) / this.zoomFactor),
-                    y = ~~((e.offsetY - (this.refs.canvas.height - this.room.height) / 2 + this.roomy) / this.zoomFactor);
+                var x = ~~(this.xToRoom(e.offsetX)),
+                    y = ~~(this.yToRoom(e.offsetY));
                 targetLayer.copies.push({
-                    x: x - (x % glob.grid),
-                    y: y - (y % glob.grid),
+                    x: x - (x % this.grid),
+                    y: y - (y % this.grid),
                     uid: this.currentType.uid
                 });
             }
             this.refreshRoomCanvas();
         };
-        // При нажатии на канвас, если не выбрана копия, то начинаем перемещение
+        /** При нажатии на канвас, если не выбрана копия, то начинаем перемещение */
         this.onCanvasPress = e => {
-            if (currentTypePick === -1) {
+            if (this.currentType === -1) {
                 this.dragging = true;
             }
         }
-        // и безусловно прекращаем перемещение при отпускании мыши
+        /** и безусловно прекращаем перемещение при отпускании мыши */
         this.onCanvasMouseUp = e => {
             this.dragging = false;
         };
-        // Начинаем перемещение, или же показываем предварительное расположение новой копии
+        /** Начинаем перемещение, или же показываем предварительное расположение новой копии */
         this.onCanvasMove = e => {
             if (this.dragging) {
                 // перетаскивание
-                this.roomx -= e.movementX;
-                this.roomy -= e.movementY;
+                this.roomx -= ~~(e.movementX / this.zoomFactor);
+                this.roomy -= ~~(e.movementY / this.zoomFactor);
                 this.refreshRoomCanvas();
             } else {
-                if (this.currentType != -1) {
+                if (this.currentType !== -1) {
                     let graph, w, h, grax, gray;
                     // превью вставки
                     this.refreshRoomCanvas();
+                    this.refs.canvas.x.setTransform(this.zoomFactor, 0, 0, this.zoomFactor, 0, 0);
                     this.refs.canvas.x.globalAlpha = 0.5;
                     if (this.currentType.graph != -1) {
                         graph = window.glob.graphmap[this.currentType.graph];
-                        w = graph.width / graph.g.grid[0];
-                        h = graph.height / graph.g.grid[1];
+                        w = graph.width;
+                        h = graph.height;
                         grax = graph.g.axis[0];
                         gray = graph.g.axis[1];
                     } else {
@@ -229,52 +266,57 @@ room-editor.panel.view
                         w = h = 32;
                         grax = gray = 16;
                     }
-                    if (glob.grid == 0) {
-                        this.refs.canvas.x.setTransform(this.zoomFactor,0,0,this.zoomFactor,0,0);
-                        this.refs.canvas.x.drawImage(graph,
-                                               0,0,w,h,
-                                               e.offsetX / this.zoomFactor - grax/this.zoomFactor, e.offsetY / this.zoomFactor - gray / this.zoomFactor,w,h);
+                    if (this.grid === 0) {
+                        this.refs.canvas.x.drawImage(
+                            graph,
+                            0, 0, w, h,
+                            e.offsetX / this.zoomFactor - grax, e.offsetY / this.zoomFactor - gray, w, h
+                        );
                     } else {
                         // если есть сетка, то координаты предварительной копии нужно отснэпить по сетке
-                        dx = (e.offsetX + this.roomx - (this.refs.canvas.width - this.room.width) / 2) / this.zoomFactor;
-                        dy = (e.offsetY + this.roomy - (this.refs.canvas.height - this.room.height) / 2) / this.zoomFactor;
-                        w = glob.graphmap[ct.graph].width / glob.graphmap[ct.graph].g.grid[0];
-                        h = glob.graphmap[ct.graph].height / glob.graphmap[ct.graph].g.grid[1];
-                        this.refs.canvas.x.drawImage(graph,
-                                               0,0,w,h,
-                                               dx - dx % glob.grid - grax, dy - dy % glob.grid - gray,w,h);
+                        dx = (e.offsetX / this.zoomFactor + this.roomx);
+                        dy = (e.offsetY / this.zoomFactor + this.roomy);
+                        w = graph.width / graph.g.grid[0];
+                        h = graph.height / graph.g.grid[1];
+                        this.refs.canvas.x.drawImage(
+                            graph,
+                            0, 0, w, h,
+                            dx - dx % this.grid - grax - this.roomx, dy - dy % this.grid - gray - this.roomy, w, h
+                        );
                     }
                 }
             }
         };
         
-        // При прокрутке колёсиком меняем фактор зума
+        /** При прокрутке колёсиком меняем фактор зума */
         this.onCanvasWheel = e => {
             if (e.wheelDelta > 0) {
                 // in
                 if (this.zoomFactor === 1) {
-                    this.roomToggleZoom(1);
+                    this.zoomFactor = 2;
                 } else if (this.zoomFactor === 0.5) {
-                    this.roomToggleZoom(0.5);
+                    this.zoomFactor = 1;
                 }  else if (this.zoomFactor === 0.25) {
-                    this.roomToggleZoom(0.25);
+                    this.zoomFactor = 0.5;
                 }
             } else {
                 // out
                 if (this.zoomFactor === 2) {
-                    this.roomToggleZoom(2);
+                    this.zoomFactor = 1;
                 } else if (this.zoomFactor === 1) {
-                    this.roomToggleZoom(1);
+                    this.zoomFactor = 0.5;
                 }  else if (this.zoomFactor === 0.5) {
-                    this.roomToggleZoom(0.5);
+                    this.zoomFactor = 0.25;
                 }
             }
+            this.refreshRoomCanvas();
+            this.update();
         };
         this.onCanvasContextMenu = e => {
             // Сначала ищется ближайшая к курсору копия. Если слоёв в комнате нет, то всё отменяется
             if (this.room.layers.length == 0) return false;
             var closest = this.room.layers[0].copies[0],
-                layer = 0,
+                layer,
                 pos = 0,
                 length = Infinity,
                 l;
@@ -313,7 +355,7 @@ room-editor.panel.view
             this.refs.canvas.x.lineWidth = 1;
             this.refs.canvas.x.strokeRect(left, top, height, width);
     
-            roomСanvasMenu.items[0].label = window.languageJSON.roomview.deletecopy.f(type.name);
+            roomСanvasMenu.items[0].label = window.languageJSON.roomview.deletecopy.replace('{0}', type.name);
             roomСanvasMenu.popup(e.clientX, e.clientY);
             e.preventDefault();
         };
@@ -321,7 +363,7 @@ room-editor.panel.view
         // Контекстное меню по нажатию на холст
         roomСanvasMenu = new gui.Menu();
         roomСanvasMenu.append(new gui.MenuItem({
-            label: window.languageJSON.roomview.deletecopy.f(this.closestType),
+            label: window.languageJSON.roomview.deletecopy.replace('{0}', this.closestType),
             icon: (isMac ? '/img/black/' : '/img/blue/') + 'delete.png',
             click: () => {
                 console.log(this.closestLayer, this.closestPos);
@@ -345,8 +387,8 @@ room-editor.panel.view
                 </label>
             `, e => {
                 if (e) {
-                    var dx = Number($('#roomshiftx').val()) || 0,
-                        dy = Number($('#roomshifty').val()) || 0;
+                    var dx = Number(document.getElementById('roomshiftx').value) || 0,
+                        dy = Number(document.getElementById('roomshifty').value) || 0;
                     for (let i = 0, l = this.room.layers.length; i < l; i++) {
                         let layer = this.room.layers[i];
                         for (let j = 0, lj = layer.copies.length; j < lj; j++) {
@@ -417,20 +459,21 @@ room-editor.panel.view
         };
         
         
-        // Сохранение комнаты (по факту, лишь помечает проект как несохранённый и закрывает редактор)
+        /** Сохранение комнаты (по факту, лишь помечает проект как несохранённый и закрывает редактор) */
         this.roomSave = e => {
             window.glob.modified = true;
             this.parent.editing = false;
             this.parent.update();
         };
         
-        // Прорисовка холста
-        this.refreshRoomCanvas = function () {
-            var canvas = this.refs.canvas;
+        /** Прорисовка холста */
+        this.refreshRoomCanvas = () => {
+            var canvas = this.refs.canvas,
+                sizes = this.refs.canvaswrap.getBoundingClientRect();
             // Перед рисовкой проверим, нормального ли размера наш холст
-            if (canvas.width != $('room-editor .editor').width() || canvas.height != $('room-editor .editor').height()) {
-                canvas.width = $('room-editor .editor').width();
-                canvas.height = $('room-editor .editor').height();
+            if (canvas.width != sizes.width || canvas.height != sizes.height) {
+                canvas.width = sizes.width;
+                canvas.height = sizes.height;
             }
             
             // Сбросим базовые настройки рисования
@@ -440,15 +483,14 @@ room-editor.panel.view
             canvas.x.clearRect(0,0,canvas.width,canvas.height);
             
             // Выполним перемещение с учётом зума
-            canvas.x.translate(-this.roomx,-this.roomy);
-            canvas.x.translate(~~(canvas.width / 2),~~(canvas.height / 2));
-            canvas.x.translate(~~(-this.room.width / 2), ~~(-this.room.height / 2));
+            canvas.x.translate(~~(canvas.width / 2), ~~(canvas.height / 2));
             canvas.x.scale(this.zoomFactor,this.zoomFactor);
+            canvas.x.translate(-this.roomx, -this.roomy);
             
             // Сделаем массив слоёв и фонов, и копий. У копий приоритет
             var hybrid = [];
             hybrid = this.room.layers.concat(this.room.backgrounds);
-            hybrid.sort((a,b) => {
+            hybrid.sort((a, b) => {
                 if (a.depth - b.depth != 0) {
                     return a.depth - b.depth;
                 } else {
@@ -470,7 +512,7 @@ room-editor.panel.view
                                 type = window.currentProject.types[glob.typemap[copy.uid]];
                             let graph, w, h, 
                                 grax, gray; // Центр рисовки графики
-                            if (ct.graph != -1) {
+                            if (copy.graph != -1) {
                                 graph = glob.graphmap[window.currentProject.types[glob.typemap[copy.uid]].graph];
                                 w = glob.graphmap[type.graph].width / glob.graphmap[type.graph].g.grid[0];
                                 h = glob.graphmap[type.graph].height / glob.graphmap[type.graph].g.grid[1];
@@ -498,6 +540,16 @@ room-editor.panel.view
                     }
                 }
             }
+            if (this.grid > 1) {
+                canvas.x.globalCompositeOperation = 'exclusion';
+                canvas.x.fillStyle = canvas.x.createPattern(this.gridCanvas, 'repeat');
+                canvas.x.fillRect(
+                    this.xToRoom(0) - ((this.grid + this.xToRoom(0)) % this.grid),
+                    this.yToRoom(0) - ((this.grid + this.yToRoom(0)) % this.grid),
+                    (canvas.width + this.grid) / this.zoomFactor,
+                    (canvas.height + this.grid) / this.zoomFactor);
+                canvas.x.globalCompositeOperation = 'source-over';
+            }
             
             // Обводка границ комнаты
             canvas.x.lineJoin = "round";
@@ -507,6 +559,7 @@ room-editor.panel.view
             canvas.x.strokeStyle = "#fff";
             canvas.x.lineWidth = 1;
             canvas.x.strokeRect(-1.5,-1.5,this.room.width+3,this.room.height+3);
+            
         };
 
         /**

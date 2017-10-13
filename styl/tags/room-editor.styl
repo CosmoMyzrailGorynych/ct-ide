@@ -9,7 +9,7 @@ room-editor
         box-sizing border-box
         flex 1 1 auto
         flex-grow 0
-        .settings, .palette, .done
+        .palette
             flex 1 1 auto
         .settings button
             margin 0.5em 0
@@ -51,47 +51,40 @@ room-editor
             width 100%
             height 100%
 
-#roomcopies
+.room-editor-TypeSwatches
     overflow-y scroll
     padding 0
     position absolute
     width 100%
-    li
-        list-style none
-        border 1px solid bl
-        width 76px
-        display inline-block
-        box-sizing border-box
-        text-align center
-        margin 1px
-        border-radius br
-        cursor pointer
-        padding 0 0.4em
-        font-size 80%
-        line-height 1.7
-        trans
-        &:hover
-            border-color act
-            transshort
-    img
-        height 64px
-        width 64px
+.room-editor-aTypeSwatch
+    list-style none
+    border 1px solid bl
+    width 76px
+    display inline-block
+    box-sizing border-box
+    text-align center
+    margin 1px
+    border-radius br
+    cursor pointer
+    padding 0 0.4em
+    font-size 80%
+    line-height 1.7
+    {trans}
     span
         display block
         text-overflow ellipsis
         overflow hidden
-    .selected
+    &:hover
+        border-color act
+        {transshort}
+    &.active
         border-color accent1
-
-#roombackgrounds
-    padding 0.5em
-#roombgstack
     img
-        float right
-        width 64px
         height 64px
-        border-radius br
-        cursor pointer
+        width 64px
+
+.room-editor-Backgrounds
+    padding 0.5em
     .bg
         list-style none
         height 64px
@@ -100,11 +93,17 @@ room-editor
         border 1px solid bl
         line-height 64px
         margin-bottom 0.2em
-    span
-        cursor t\ext
-        border-bottom 1px dotted bl
-        width 6em
-        line-height 1
-        display inline-block
-        vertical-align middle
-        margin-top 1em
+        img
+            float right
+            width 64px
+            height 64px
+            border-radius br
+            cursor pointer
+        span
+            cursor text
+            border-bottom 1px dotted bl
+            width 6em
+            line-height 1
+            display inline-block
+            vertical-align middle
+            margin-top 1em

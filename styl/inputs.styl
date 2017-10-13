@@ -39,7 +39,7 @@ input[type="reset"],
     cursor pointer
     text-align center
     {trans}
-    &:hover
+    &:hover, &.active
         background acttext
         color white
         border-color accent1
@@ -54,6 +54,7 @@ input[type="reset"],
             color white
     &.inline
         padding 0.2em 0.8em
+        display inline-block
     &.vertical
         padding 1em 0
     &.square
@@ -129,7 +130,7 @@ siz = 4em
             background error
 
 .button-stack
-    display inline-block
+    display inline-flex
     margin 0 0.5em
     button, .button
         margin 0
