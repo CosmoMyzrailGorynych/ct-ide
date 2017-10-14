@@ -124,6 +124,7 @@ room-editor.panel.view
         // Навигация по комнате, настройки вида
         this.roomToggleZoom = zoomFactor => e => {
             this.zoomFactor = zoomFactor;
+            this.redrawGrid();
             this.refreshRoomCanvas();
         };
         this.roomToCenter = e => {
@@ -136,12 +137,8 @@ room-editor.panel.view
             this.gridCanvas.x.clearRect(0, 0, this.grid, this.grid);
             this.gridCanvas.x.globalAlpha = 0.3;
             this.gridCanvas.x.strokeStyle = "#446adb";
-            this.gridCanvas.x.lineWidth = 1;
-            this.gridCanvas.x.moveTo(0.5, 0.5);
-            this.gridCanvas.x.moveTo(this.grid - 0.5, 0);
-            this.gridCanvas.x.lineTo(this.grid - 0.5, this.grid - 0.5);
-            this.gridCanvas.x.lineTo(0, this.grid - 0.5);
-            this.gridCanvas.x.stroke();
+            this.gridCanvas.x.lineWidth = 1 / this.zoomFactor;
+            this.gridCanvas.x.strokeRect(0.5 / this.zoomFactor, 0.5 / this.zoomFactor, this.grid, this.grid);
         }
         this.roomToggleGrid = () => {
             if (this.grid === 0) {
@@ -309,6 +306,7 @@ room-editor.panel.view
                     this.zoomFactor = 0.25;
                 }
             }
+            this.redrawGrid();
             this.refreshRoomCanvas();
             this.update();
         };
