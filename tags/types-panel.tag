@@ -5,7 +5,7 @@ types-panel.panel.view
     ul.cards
         li(each="{type in window.currentProject.types}" onclick="{openType(type)}" oncontextmenu="{onTypeContextMenu}")
             span {type.name}
-            img(src="{type.graph !== -1 ? 'file://' + sessionStorage.projdir + '/img/' + type.graph + '_prev.png' : '/img/nograph.png'}")
+            img(src="{type.graph !== -1 ? 'file://' + sessionStorage.projdir + '/img/' + type.graph + '_prev.png?' + getTypeGraphRevision(type) : '/img/nograph.png'}")
     type-editor(if="{editingType}" type="{editedType}")
     script.
         this.voc = window.languageJSON.types;
@@ -15,6 +15,8 @@ types-panel.panel.view
         this.on('mount', () => {
             this.fillTypeMap();
         });
+
+        this.getTypeGraphRevision = type => window.glob.graphmap[type.graph].g.lastmod;
 
         this.fillTypeMap = () => {
             delete window.glob.typemap;

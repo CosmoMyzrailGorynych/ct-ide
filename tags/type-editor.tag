@@ -1,7 +1,7 @@
 type-editor.panel.view.flexrow
     .c3.tall
         #typegraph.panel(onclick="{changeSprite}")
-            img.ohchangeme(src="{type.graph === -1? '/img/nograph.png' : 'file://' + sessionStorage.projdir + '/img/' + type.graph + '_prev@2.png'}")
+            img.ohchangeme(src="{type.graph === -1? '/img/nograph.png' : 'file://' + sessionStorage.projdir + '/img/' + type.graph + '_prev@2.png?' + getTypeGraphRevision(type)}")
             div {voc.change}
         b {voc.name}
         input#typename.wide(type="text" onchange="{wire('this.type.name')}" value="{type.name}")
@@ -41,6 +41,8 @@ type-editor.panel.view.flexrow
     script.
         this.voc = window.languageJSON.typeview;
         this.mixin(window.riotWired);
+
+        this.getTypeGraphRevision = type => window.glob.graphmap[type.graph].g.lastmod;
         
         this.type = this.opts.type;
         this.tab = 'typeoncreate';

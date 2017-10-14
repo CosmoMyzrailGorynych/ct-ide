@@ -29,7 +29,7 @@ room-editor.panel.view
                             img(src="/img/nograph.png")
                         .room-editor-aTypeSwatch(each="{type in window.currentProject.types}" onclick="{selectType(type)}" class="{active: type === currentType}")
                             span {type.name}
-                            img(src="{type.graph === -1? '/img/nograph.png' : 'file://' + sessionStorage.projdir + '/img/' + type.graph + '_prev.png'}")
+                            img(src="{type.graph === -1? '/img/nograph.png' : 'file://' + sessionStorage.projdir + '/img/' + type.graph + '_prev.png?' + getTypeGraphRevision(type)}")
                     .room-editor-Backgrounds.tabbed(show="{tab === 'roombackgrounds'}")
                         ul
                             li.bg(each="{background, ind in room.backgrounds}" oncontextmenu="{onBgContextMenu}")
@@ -94,6 +94,8 @@ room-editor.panel.view
         this.currentType = -1;
         this.dragging = false;
         this.tab = 'roomcopies';
+        
+        this.getTypeGraphRevision = type => window.glob.graphmap[type.graph].g.lastmod;
         
         var updateCanvasSize = (newWidth, newHeight) => {
             var canvas = this.refs.canvas,
@@ -459,9 +461,19 @@ room-editor.panel.view
         
         /** Сохранение комнаты (по факту, лишь помечает проект как несохранённый и закрывает редактор) */
         this.roomSave = e => {
-            window.glob.modified = true;
-            this.parent.editing = false;
-            this.parent.update();
+            this.room.lastmod = +(new Date());
+            this.roomGenSplash()
+            .then(() => {
+                window.glob.modified = true;
+                this.parent.editing = false;
+                this.parent.update();
+            })
+            .catch(err => {
+                console.error(err);
+                window.glob.modified = true;
+                this.parent.editing = false;
+                this.parent.update();
+            })
         };
         
         /** Прорисовка холста */
@@ -565,38 +577,42 @@ room-editor.panel.view
          * Генерирует миниатюру комнаты
          */
         this.roomGenSplash = function() {
-            var c = document.createElement('canvas'), 
-                w, h, k, size;
-            c.x = c.getContext('2d');
-            c.width = c.height = size = 256;
-            c.x.clearRect(0, 0, size, size);
-            w = this.canvas.width;
-            h = this.canvas.height;
-            if (w > h) {
-                k = size / w;
-            } else {
-                k = size / h;
-            }
-            if (k > 1) k = 1;
-            c.x.drawImage(
-                this.canvas,
-                0, 0, this.canvas.width, this.canvas.height,
-                (size - this.canvas.width*k)/2, (size - this.canvas.height*k)/2,
-                this.canvas.width*k,
-                this.canvas.height*k
-            );
-            var data = c.toDataURL().replace(/^data:image\/\w+;base64,/, "");
-            var buf = new Buffer(data, 'base64');
-            nam = sessionStorage.projdir + '/img/r' + this.room.uid + '.png';
-            fs.writeFile(nam, buf, function(err) {
-                if (err) {
-                    console.log(err);
+            return new Promise((accept, decline) => {
+                var c = document.createElement('canvas'), 
+                    w, h, k, size;
+                c.x = c.getContext('2d');
+                c.width = c.height = size = 256;
+                c.x.clearRect(0, 0, size, size);
+                w = this.refs.canvas.width;
+                h = this.refs.canvas.height;
+                if (w > h) {
+                    k = size / w;
+                } else {
+                    k = size / h;
                 }
-            });
-            nam2 = sessionStorage.projdir + '/img/splash.png';
-            fs.writeFile(nam2, buf, function(err) {
-                if (err) {
-                    console.log(err);
-                }
+                if (k > 1) k = 1;
+                c.x.drawImage(
+                    this.refs.canvas,
+                    0, 0, this.refs.canvas.width, this.refs.canvas.height,
+                    (size - this.refs.canvas.width*k)/2, (size - this.refs.canvas.height*k)/2,
+                    this.refs.canvas.width*k,
+                    this.refs.canvas.height*k
+                );
+                var data = c.toDataURL().replace(/^data:image\/\w+;base64,/, "");
+                var buf = new Buffer(data, 'base64');
+                var nam = sessionStorage.projdir + '/img/r' + this.room.uid + '.png';
+                fs.writeFile(nam, buf, function(err) {
+                    if (err) {
+                        decline(err);
+                    } else {
+                        accept(nam);
+                    }
+                });
+                var nam2 = sessionStorage.projdir + '/img/splash.png';
+                fs.writeFile(nam2, buf, function(err) {
+                    if (err) {
+                        decline(err);
+                    }
+                });
             });
         };

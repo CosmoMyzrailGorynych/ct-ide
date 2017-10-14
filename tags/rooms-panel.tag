@@ -8,7 +8,7 @@ rooms-panel.panel.view
             class="{starting: window.currentProject.startroom === room.uid}"
             onclick="{openRoom(room)}"
         )
-            img(src="file://{sessionStorage.projdir + '/img/r' + room.uid + '.png'}")
+            img(src="file://{sessionStorage.projdir + '/img/r' + room.uid + '.png?' + room.lastmod}")
             span {room.name}
     room-editor(if="{editing}" room="{editingRoom}")
     script.
