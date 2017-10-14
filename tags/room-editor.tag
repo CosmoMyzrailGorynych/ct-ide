@@ -78,6 +78,7 @@ room-editor.panel.view
     script.
         this.editingCode = false;
         this.pickingBackground = false;
+        this.forbidDrawing = false;
         this.voc = window.languageJSON.roomview;
         const fs = require('fs-extra'),
               gui = require('nw.gui');
@@ -233,7 +234,7 @@ room-editor.panel.view
         };
         /** При нажатии на канвас, если не выбрана копия, то начинаем перемещение */
         this.onCanvasPress = e => {
-            if (this.currentType === -1) {
+            if (this.currentType === -1 && e.button === 0) {
                 this.dragging = true;
             }
         }
@@ -316,17 +317,17 @@ room-editor.panel.view
             // Сначала ищется ближайшая к курсору копия. Если слоёв в комнате нет, то всё отменяется
             if (this.room.layers.length == 0) return false;
             var closest = this.room.layers[0].copies[0],
-                layer,
                 pos = 0,
                 length = Infinity,
-                l;
+                layer, l, 
+                fromx = this.xToRoom(e.offsetX),
+                fromy = this.yToRoom(e.offsetY);
             for (let i = 0, li = this.room.layers.length; i < li; i++) {
-                let layer = this.room.layers[i];
-                for (let j = 0, lj = layer.copies.length; j < lj; j++) {
-                    let xp = layer.copies[j].x * this.zoomFactor + (this.refs.canvas.width - this.room.width) / 2 - this.roomx - e.offsetX,
-                        yp = layer.copies[j].y * this.zoomFactor + (this.refs.canvas.height - this.room.height) / 2 - this.roomy - e.offsetY;
+                let layerCopies = this.room.layers[i].copies;
+                for (let j = 0, lj = layerCopies.length; j < lj; j++) {
+                    let xp = layerCopies[j].x - fromx,
+                        yp = layerCopies[j].y - fromy;
                     l = Math.sqrt(xp * xp + yp * yp);
-                    console.log(xp, yp, l, length);
                     if (l < length) {
                         length = l;
                         layer = i;
@@ -341,8 +342,9 @@ room-editor.panel.view
             this.closestType = type;
             this.closestLayer = layer;
             this.closestPos = pos;
-    
+
             // рисовка выделения копии
+            this.refreshRoomCanvas();
             this.refs.canvas.x.lineJoin = 'round';
             this.refs.canvas.x.strokeStyle = '#446adb';
             this.refs.canvas.x.lineWidth = 3;
@@ -355,6 +357,10 @@ room-editor.panel.view
             this.refs.canvas.x.lineWidth = 1;
             this.refs.canvas.x.strokeRect(left, top, height, width);
     
+            this.forbidDrawing = true;
+            setTimeout(() => {
+                this.forbidDrawing = false;
+            }, 500);
             roomСanvasMenu.items[0].label = window.languageJSON.roomview.deletecopy.replace('{0}', type.name);
             roomСanvasMenu.popup(e.clientX, e.clientY);
             e.preventDefault();
@@ -372,7 +378,8 @@ room-editor.panel.view
                     this.room.layers.splice(this.closestLayer,1);
                 }
                 this.refreshRoomCanvas();
-            }
+            },
+            key: 'Delete'
         }));
         
         // Позволяет переместить сразу все копии в комнате
@@ -478,6 +485,7 @@ room-editor.panel.view
         
         /** Прорисовка холста */
         this.refreshRoomCanvas = () => {
+            if (this.forbidDrawing) {return;}
             var canvas = this.refs.canvas,
                 sizes = this.refs.canvaswrap.getBoundingClientRect();
             // Перед рисовкой проверим, нормального ли размера наш холст
