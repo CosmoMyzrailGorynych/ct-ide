@@ -47,7 +47,7 @@ graphics-panel.panel.view
             files = this.refs.importer.value.split(';');
             for (i = 0; i < files.length; i++) {
                 if (/\.(jpg|gif|png|jpeg)/gi.test(files[i])) {
-                    console.log(i, files[i], 'passed');
+                    
                     currentProject.graphtick++;
                     this.loadImg(
                         i,
@@ -56,7 +56,7 @@ graphics-panel.panel.view
                         true
                     );
                 } else {
-                    console.log(i, files[i], 'NOT passed');
+                    
                 }
             }
         };
@@ -68,9 +68,9 @@ graphics-panel.panel.view
          * @param {Boolean} imprt Если истинно, то создаёт новую графику в проекте; иначе обновляет текущую открытую графику
          */
         this.loadImg = (uid, filename, dest, imprt) => {
-            console.log(uid, filename, 'copying');
+            
             window.megacopy(filename, dest, e => {
-                console.log(uid, filename, 'copy finished');
+                
                 if (e) throw e;
                 image = document.createElement('img');
                 image.onload = () => {
@@ -94,16 +94,12 @@ graphics-panel.panel.view
                     window.currentProject.graphs.push(obj);
                     this.imgGenPreview(dest, dest + '_prev.png', 64)
                     .then(dataUrl => {
-                        console.log(uid, filename, 'preview generated');
                         this.update();
                     });
-                    this.imgGenPreview(dest, dest + '_prev@2.png', 128)
-                    .then(dataUrl => {
-                        console.log(uid, filename, 'hdpi preview generated');
-                    });
+                    this.imgGenPreview(dest, dest + '_prev@2.png', 128);
                 }
                 image.onerror = e => {
-                    window.alertify.error(e);
+                    alertify.error(e);
                 }
                 image.src = dest + '?' + Math.random();
             });
@@ -163,6 +159,7 @@ graphics-panel.panel.view
             icon: (isMac ? '/img/black/' : '/img/blue/') + 'folder.png',
             click: e => {
                 this.openGraphic(this.currentGraphic);
+                this.update();
             }
         }));
         // пункт "Создать дубликат"
@@ -170,20 +167,21 @@ graphics-panel.panel.view
             label: window.languageJSON.common.duplicate,
             icon: (isMac ? '/img/black/' : '/img/blue/') + 'plus.png',
             click: e => {
-                window.alertify.prompt(window.languageJSON.common.newname, (e, newName) => {
-                    if (e) {
-                        if (newName != '') {
-                            var newGraphic = JSON.parse(JSON.stringify(currentGraphic));
-                            newGraphic.name = newName;
-                            window.currentProject.graphtick ++;
-                            newGraphic.origname = 'i' + currentProject.graphtick + path.extname(currentGraphic.origname);
-                            window.megacopy(sessionStorage.projdir + '/img/' + currentGraphic.origname, sessionStorage.projdir + '/img/i' + currentProject.graphtick + path.extname(this.currentGraphic.origname), () => {
-                                window.currentProject.graphs.push(gr);
-                                this.update();
-                            });
-                        }
+                alertify
+                .defaultValue(currentGraphic.name + '_dup')
+                .prompt(window.languageJSON.common.newnam)
+                .then(e => {
+                    if (e.inputValue != '') {
+                        var newGraphic = JSON.parse(JSON.stringify(currentGraphic));
+                        newGraphic.name = e.inputValue;
+                        window.currentProject.graphtick ++;
+                        newGraphic.origname = 'i' + currentProject.graphtick + path.extname(currentGraphic.origname);
+                        window.megacopy(sessionStorage.projdir + '/img/' + currentGraphic.origname, sessionStorage.projdir + '/img/i' + currentProject.graphtick + path.extname(this.currentGraphic.origname), () => {
+                            window.currentProject.graphs.push(gr);
+                            this.update();
+                        });
                     }
-                }, currentGraphic.name + '_dup');
+                });
             }
         }));
         // пункт "Переименовать"
@@ -191,14 +189,15 @@ graphics-panel.panel.view
             label: window.languageJSON.common.rename,
             icon: (isMac ? '/img/black/' : '/img/blue/') + 'edit.png',
             click: e => {
-                window.alertify.prompt(window.languageJSON.common.newname, function (e, newName) {
-                    if (e) {
-                        if (newName != '') {
-                            currentGraphic.name = newName;
-                            this.update();
-                        }
+                alertify
+                .defaultValue(currentGraphic.name)
+                .prompt(window.languageJSON.common.newname)
+                .then(e => {
+                    if (e.inputValue != '') {
+                        currentGraphic.name = e.inputValue;
+                        this.update();
                     }
-                }, currentGraphic.name);
+                });
             }
         }));
         // Пункт "Удалить"
@@ -206,18 +205,24 @@ graphics-panel.panel.view
             label: window.languageJSON.common.delete,
             icon: (isMac ? '/img/black/' : '/img/blue/') + 'delete.png',
             click: e => {
-                window.alertify.confirm(window.languageJSON.common.confirmDelete.f(this.currentGraphic.name), response => {
-                    if (response) {
+                alertify
+                .okBtn(window.languageJSON.common.delete)
+                .cancelBtn(window.languageJSON.common.cancel)
+                .confirm(window.languageJSON.common.confirmDelete.f(this.currentGraphic.name))
+                .then(e => {
+                    if (e.buttonClicked === 'ok') {
                         window.currentProject.graphs.splice(this.currentGraphicId,1);
                         this.update();
                     }
-                });
+                })
+                .reset();
             }
         }));
         /**
          * Отобразить контекстное меню
          */
         this.showGraphicPopup = graphic => e => {
+            e.preventDefault();
             this.currentGraphicId = currentProject.graphs.indexOf(graphic);
             this.currentGraphic = graphic; 
             graphMenu.popup(e.clientX, e.clientY);

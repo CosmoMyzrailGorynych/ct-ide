@@ -50,43 +50,47 @@ styles-panel.panel.view
             label: window.languageJSON.common.duplicate,
             icon: (window.isMac ? '/img/black/' : '/img/blue/') + 'plus.png',
             click: () => {
-                window.alertify.prompt(window.languageJSON.common.newname, (e, newName) => {
-                    if (e) {
-                        if (newName !== '') {
-                            var newStyle = JSON.parse(JSON.stringify(this.editedStyle));
-                            window.currentProject.styletick ++;
-                            newStyle.name = newName;
-                            newStyle.uid = window.currentProject.styletick;
-                            window.currentProject.styles.push(newStyle);
-                            this.editedStyleId = window.currentProject.styles.length - 1;
-                            this.editedStyle = newStyle;
-                            this.styleGenPreview();
-                            this.update();
-                        }
+                alertify
+                .defaultValue(this.editedStyle.name + '_dup')
+                .prompt(window.languageJSON.common.newname)
+                .then(e => {
+                    if (e.inputValue !== '') {
+                        var newStyle = JSON.parse(JSON.stringify(this.editedStyle));
+                        window.currentProject.styletick ++;
+                        newStyle.name = e.inputValue;
+                        newStyle.uid = window.currentProject.styletick;
+                        window.currentProject.styles.push(newStyle);
+                        this.editedStyleId = window.currentProject.styles.length - 1;
+                        this.editedStyle = newStyle;
+                        this.styleGenPreview();
+                        this.update();
                     }
-                }, this.editedStyle.name + '_dup');
+                });
             }
         }));
         styleMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.rename,
             icon: (window.isMac ? '/img/black/' : '/img/blue/') + 'edit.png',
-            click: function () {
-                alertify.prompt(window.languageJSON.common.newname, (e, newName) => {
-                    if (e) {
-                        if (newName !== '') {
-                            this.editedStyle.name = newName;
-                            this.update();
-                        }
+            click: () => {
+                alertify
+                .defaultValue(this.editedStyle.name)
+                .prompt(window.languageJSON.common.newname)
+                .then(e => {
+                    if (e.inputValue !== '') {
+                        this.editedStyle.name = e.inputValue;
+                        this.update();
                     }
-                }, this.editedStyle.name);
+                });
             }
         }));
         styleMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.delete,
             icon: (window.isMac ? '/img/black/' : '/img/blue/') + 'delete.png',
-            click: e => {
-                window.alertify.confirm(window.languageJSON.common.confirmDelete.f(this.editedStyle.name), confirmed => {
-                    if (confirmed) {
+            click: () => {
+                alertify
+                .confirm(window.languageJSON.common.confirmDelete.f(this.editedStyle.name))
+                .then(e => {
+                    if (e.buttonClicked === 'ok') {
                         const ind = window.currentProject.styles.indexOf(this.editedStyle);
                         window.currentProject.styles.splice(ind, 1);
                         this.update();

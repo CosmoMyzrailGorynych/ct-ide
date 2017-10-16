@@ -43,21 +43,24 @@ sounds-panel.panel.view
             label: window.languageJSON.common.rename,
             icon: (isMac ? '/img/black/' : '/img/blue/') + 'edit.png',
             click: function () {
-                alertify.prompt(window.languageJSON.common.newname, function (e, newName) {
-                    if (e) {
-                        if (newName != '') {
-                            this.editedSound.name = newName;
-                        }
+                alertify
+                .defaultValue(this.editedSound.name)
+                .prompt(window.languageJSON.common.newname)
+                .then(e => {
+                    if (e.inputValue) {
+                        this.editedSound.name = e.inputValue;
                     }
-                }, this.editedSound.name);
+                });
             }
         }));
         soundMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.delete,
             icon: (isMac ? '/img/black/' : '/img/blue/') + 'delete.png',
             click: function () {
-                alertify.confirm(window.languageJSON.common.confirmDelete.f(this.editedSound.name), e => {
-                    if (e) {
+                alertify
+                .confirm(window.languageJSON.common.confirmDelete.f(this.editedSound.name))
+                .then(e => {
+                    if (e.buttonClicked === 'ok') {
                         var ind = window.currentProject.sounds.indexOf(this.editedSound);
                         window.currentProject.sounds.splice(ind, 1);
                     }

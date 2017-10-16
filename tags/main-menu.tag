@@ -109,8 +109,10 @@ main-menu.flexcol
             label: window.languageJSON.common.exit,
             icon: (window.isMac ? './img/black/' : './img/blue/') + 'exit.png',
             click: function (e) {
-                window.alertify.confirm(window.languageJSON.common.exitconfirm, function (e) {
-                    if (e) {
+                alertify
+                .confirm(window.languageJSON.common.exitconfirm)
+                .then(e => {
+                    if (e.buttonClicked === 'ok') {
                         gui.App.quit();
                     }
                 });

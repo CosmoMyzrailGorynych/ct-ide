@@ -23,12 +23,3 @@ window.key('f1', function () {
 window.key('ctrl + S', function () {
     window.signals.trigger('saveProject');
 });
-
-setTimeout(() => {
-    window.alertify.set({
-        labels: {
-            ok: window.languageJSON.common.ok,
-            cancel: window.languageJSON.common.cancel
-        }
-    });
-});

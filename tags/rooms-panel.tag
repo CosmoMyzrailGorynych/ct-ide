@@ -52,44 +52,48 @@ rooms-panel.panel.view
             label: window.languageJSON.common.duplicate,
             icon: (isMac ? '/img/black/' : '/img/blue/') + 'plus.png',
             click: function () {
-                alertify.prompt(window.languageJSON.common.newname, (e, newName) => {
-                    if (e) {
-                        if (newName != '') {
-                            var newRoom = JSON.parse(JSON.stringify(currentRoom));
-                            window.currentProject.roomtick ++;
-                            newRoom.name = newName;
-                            window.currentProject.rooms.push(newRoom);
-                            currentRoomId = window.currentProject.rooms.length - 1;
-                            this.editingRoom = window.currentProject.rooms[currentRoomId];
-                            fs.linkSync(sessionStorage.projdir + '/img/r' + newRoom.uid + '.png', sessionStorage.projdir + '/img/r' + window.currentProject.roomtick + '.png')
-                            newRoom.uid = window.currentProject.roomtick;
-                            this.update();
-                        }
+                alertify
+                .defaultValue(this.editingRoom.name + '_dup')
+                .prompt(window.languageJSON.common.newname)
+                .then(e => {
+                    if (e.inputValue != '') {
+                        var newRoom = JSON.parse(JSON.stringify(currentRoom));
+                        window.currentProject.roomtick ++;
+                        newRoom.name = e.inputValue;
+                        window.currentProject.rooms.push(newRoom);
+                        currentRoomId = window.currentProject.rooms.length - 1;
+                        this.editingRoom = window.currentProject.rooms[currentRoomId];
+                        fs.linkSync(sessionStorage.projdir + '/img/r' + newRoom.uid + '.png', sessionStorage.projdir + '/img/r' + window.currentProject.roomtick + '.png')
+                        newRoom.uid = window.currentProject.roomtick;
+                        this.update();
                     }
-                }, this.editingRoom.name + '_dup');
+                });
             }
         }));
         roomMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.rename,
             icon: (isMac ? '/img/black/' : '/img/blue/') + 'edit.png',
             click: function () {
-                alertify.prompt(window.languageJSON.common.newname, function (e, r) {
-                    if (e) {
-                        if (r != '') {
-                            var nam = r;
-                            currentRoom.name = nam;
-                            this.update();
-                        }
+                alertify
+                .defaultValue(currentRoom.name)
+                .prompt(window.languageJSON.common.newname)
+                .then(e => {
+                    if (e.inputValue != '') {
+                        var nam = e.inputValue;
+                        currentRoom.name = nam;
+                        this.update();
                     }
-                }, currentRoom.name);
+                });
             }
         }));
         roomMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.delete,
             icon: (isMac ? '/img/black/' : '/img/blue/') + 'delete.png',
             click: function () {
-                alertify.confirm(window.languageJSON.common.confirmDelete.f(currentRoom.name), function (e) {
-                    if (e) {
+                alertify
+                .confirm(window.languageJSON.common.confirmDelete.f(currentRoom.name))
+                .then(e => {
+                    if (e.buttonClicked === 'ok') {
                         var ind = window.currentProject.rooms.indexOf(this.editingRoom);
                         window.currentProject.rooms.splice(ind, 1);
                         this.update();

@@ -61,42 +61,46 @@ types-panel.panel.view
             label: window.languageJSON.common.duplicate,
             icon: (window.isMac ? '/img/black/' : '/img/blue/') + 'plus.png',
             click: function () {
-                alertify.prompt(window.languageJSON.common.newname, function (e, newName) {
-                    if (e) {
-                        if (newName != '') {
-                            var tp = JSON.parse(JSON.stringify(currentType));
-                            currentProject.typetick ++;
-                            tp.name = newName;
-                            tp.uid = currentProject.typetick;
-                            currentProject.types.push(tp);
-                            this.currentType = currentProject.types[currentTypeId];
-                            this.fillTypeMap();
-                            this.update();
-                        }
+                alertify
+                .defaultValue(this.editedType.name + '_dup')
+                .prompt(window.languageJSON.common.newname)
+                .then(e => {
+                    if (e.inputValue != '') {
+                        var tp = JSON.parse(JSON.stringify(currentType));
+                        currentProject.typetick ++;
+                        tp.name = e.inputValue;
+                        tp.uid = currentProject.typetick;
+                        currentProject.types.push(tp);
+                        this.currentType = currentProject.types[currentTypeId];
+                        this.fillTypeMap();
+                        this.update();
                     }
-                }, this.editedType.name + '_dup');
+                });
             }
         }));
         typeMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.rename,
             icon: (window.isMac ? '/img/black/' : '/img/blue/') + 'edit.png',
             click: function () {
-                alertify.prompt(window.languageJSON.common.newname, function (e, newName) {
-                    if (e) {
-                        if (newName != '') {
-                            this.editedType.name = newName;
-                            this.update();
-                        }
+                alertify
+                .defaultValue(this.editedType.name)
+                .prompt(window.languageJSON.common.newname)
+                .then(e => {
+                    if (e.inputValue != '') {
+                        this.editedType.name = e.inputValue;
+                        this.update();
                     }
-                }, this.editedType.name);
+                });
             }
         }));
         typeMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.delete,
             icon: (window.isMac ? '/img/black/' : '/img/blue/') + 'delete.png',
             click: function () {
-                alertify.confirm(window.languageJSON.common.confirmDelete.f(this.editedType.name), function (e) {
-                    if (e) {
+                alertify
+                .confirm(window.languageJSON.common.confirmDelete.f(this.editedType.name))
+                .then(e => {
+                    if (e.buttonClicked === 'ok') {
                         let ind = window.currentProject.types.indexOf(this.editedType);
                         window.currentProject.types.splice(ind, 1);
                         this.fillTypeMap();

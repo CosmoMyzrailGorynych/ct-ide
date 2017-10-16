@@ -164,7 +164,7 @@ modules-panel.panel.view
         this.renderModule = name => e => {
             fs.readJSON('./ct.libs/' + name + '.json', (err, data) => {
                 if (err) {
-                    window.alertify.error(err);
+                    alertify.error(err);
                 }
                 this.currentModule = data;
                 this.currentModuleName = name;

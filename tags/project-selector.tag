@@ -96,7 +96,7 @@ project-selector
             setTimeout(() => { // почему-то это нужно делать через setTimeout, иначе функция просто не выполняется.
                 window.megacopy('./img/nograph.png', path.join(sessionStorage.projdir + '/img/splash.png'), e => {
                     if (e) {
-                        window.alertify.error(e);
+                        alertify.error(e);
                         console.error(e);
                     }
                 });
@@ -155,11 +155,11 @@ project-selector
             if (path.extname(proj).toLowerCase() === '.ict') {
                 fs.readJSON(proj, (err, projectData) => {
                     if (err) {
-                        window.alertify.error(err);
+                        alertify.error(err);
                         return;
                     }
                     if (!projectData) {
-                        window.alertify.error(languageJSON.common.wrongFormat);
+                        alertify.error(languageJSON.common.wrongFormat);
                         return;
                     }
                     console.log(projectData);
@@ -168,7 +168,7 @@ project-selector
                     this.loadProject(projectData);
                 });
             } else {
-                window.alertify.error(languageJSON.common.wrongFormat);
+                alertify.error(languageJSON.common.wrongFormat);
             }
             fe.value = '';
         };

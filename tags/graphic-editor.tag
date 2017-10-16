@@ -206,7 +206,7 @@ graphic-editor.panel.view
                     sessionStorage.projdir + '/img/i' + parseInt(this.graphic.origname.slice(1)) + path.extname(this.refs.graphReplacer.value)
                 );
             } else {
-                window.alertify.error(window.languageJSON.common.wrongFormat);
+                alertify.error(window.languageJSON.common.wrongFormat);
                 console.log(this.refs.graphReplacer.value, 'NOT passed');
             }
             this.refs.graphReplacer.value = '';
@@ -242,7 +242,7 @@ graphic-editor.panel.view
                     }, 0);
                 };
                 image.onerror = e => {
-                    window.alertify.error(e);
+                    alertify.error(e);
                 };
                 image.src = 'file://' + dest + '?' + Math.random();
             });
