@@ -68,7 +68,7 @@ main-menu.flexcol
                 if (e) {
                     alertify.error(e);
                 }
-                alertify.log(languageJSON.common.savedcomm, "success", 3000);
+                alertify.success(languageJSON.common.savedcomm, "success", 3000);
                 glob.modified = false;
             })
         };

@@ -32,9 +32,6 @@ room-editor
             position absolute
             top 0.5rem
             left 0.5rem
-            i
-                position relative
-                top 0.08em // она криво стояла. правда!
         .zoom
             position absolute
             top 0.5rem
@@ -51,7 +48,7 @@ room-editor
             width 100%
             height 100%
 
-.room-editor-TypeSwatches
+.room-editor-TypeSwatches, .room-editor-Backgrounds
     overflow-y scroll
     padding 0
     position absolute
@@ -85,6 +82,9 @@ room-editor
 
 .room-editor-Backgrounds
     padding 0.5em
+    ul
+        margin 0
+        padding 0
     .bg
         list-style none
         height 64px
@@ -100,7 +100,7 @@ room-editor
             border-radius br
             cursor pointer
         span
-            cursor text
+            cursor pointer
             border-bottom 1px dotted bl
             width 6em
             line-height 1

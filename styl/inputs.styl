@@ -193,11 +193,14 @@ select, label
         top 50%
 
 // выбор файла
-label.file
-    display block
-    position relative
-    [type="file"]
-        display none
+label
+    & + &
+        margin-top 0.5rem
+    &.file
+        display block
+        position relative
+        [type="file"]
+            display none
 
 input[type="range"]
     -webkit-appearance none

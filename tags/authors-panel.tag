@@ -13,7 +13,7 @@ license-notice
         };
 
 authors-panel
-    license-notice(name="alertify.js (alertifyjs.org, github.com/servocoder/alertify.js)").
+    license-notice(name="alertify.js (alertifyjs.org)").
         The MIT License
         ===============
 

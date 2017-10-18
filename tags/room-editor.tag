@@ -30,11 +30,11 @@ room-editor.panel.view
                         .room-editor-aTypeSwatch(each="{type in window.currentProject.types}" onclick="{selectType(type)}" class="{active: type === currentType}")
                             span {type.name}
                             img(src="{type.graph === -1? '/img/nograph.png' : 'file://' + sessionStorage.projdir + '/img/' + type.graph + '_prev.png?' + getTypeGraphRevision(type)}")
-                    .room-editor-Backgrounds.tabbed(show="{tab === 'roombackgrounds'}")
+                    .room-editor-Backgrounds.tabbed.tall(show="{tab === 'roombackgrounds'}")
                         ul
                             li.bg(each="{background, ind in room.backgrounds}" oncontextmenu="{onBgContextMenu}")
-                                img(src="file://{sessionStorage.projdir + '/img/' + background.graph}" onclick="{onChangeBgGraphic}")
-                                span {background.depth}
+                                img(src="{background.graph === -1? '/img/nograph.png' : 'file://' + sessionStorage.projdir + '/img/' + background.graph}" onclick="{onChangeBgGraphic}")
+                                span(onclick="{onChangeBgDepth}") {background.depth}
 
                         button.inline.wide(onclick="{roomAddBg}")
                             i.icon.icon-plus
@@ -69,12 +69,12 @@ room-editor.panel.view
                 button#roomzoom100.inline(onclick="{roomToggleZoom(1)}" class="{active: zoomFactor === 1}") 100%
                 button#roomzoom200.inline(onclick="{roomToggleZoom(2)}" class="{active: zoomFactor === 2}") 200%
         .grid
-            button#roomgrid(onclick="{roomToggleGrid}" class="{active: grid > 0}") 
-                span {voc[grid > 0? 'gridoff' : 'grid']}
+            button#roomgrid(onclick="{roomToggleGrid}" class="{active: room.grid > 0}") 
+                span {voc[room.grid > 0? 'gridoff' : 'grid']}
         .center
             button#roomcenter(onclick="{roomToCenter}") {voc.tocenter}
     room-events-editor(if="{editingCode}" room="{room}")
-    graphic-selector(ref="graphPicker" if="{pickingBackground}")
+    graphic-selector(ref="graphPicker" if="{pickingBackground}" onselected="{onBackgroundGraphSelected}")
     script.
         this.editingCode = false;
         this.pickingBackground = false;
@@ -91,7 +91,7 @@ room-editor.panel.view
             this.roomx = this.room.width / 2;
             this.roomy = this.room.height / 2;
         this.zoomFactor = 1;
-        this.grid = 64;
+        this.room.grid = this.room.grid || 64;
         this.currentType = -1;
         this.dragging = false;
         this.tab = 'roomcopies';
@@ -136,19 +136,21 @@ room-editor.panel.view
             this.refreshRoomCanvas();
         };
         this.redrawGrid = () => {
-            this.gridCanvas.width = this.gridCanvas.height = this.grid;
-            this.gridCanvas.x.clearRect(0, 0, this.grid, this.grid);
+            this.gridCanvas.width = this.gridCanvas.height = this.room.grid;
+            this.gridCanvas.x.clearRect(0, 0, this.room.grid, this.room.grid);
             this.gridCanvas.x.globalAlpha = 0.3;
             this.gridCanvas.x.strokeStyle = "#446adb";
             this.gridCanvas.x.lineWidth = 1 / this.zoomFactor;
-            this.gridCanvas.x.strokeRect(0.5 / this.zoomFactor, 0.5 / this.zoomFactor, this.grid, this.grid);
+            this.gridCanvas.x.strokeRect(0.5 / this.zoomFactor, 0.5 / this.zoomFactor, this.room.grid, this.room.grid);
         }
         this.roomToggleGrid = () => {
-            if (this.grid === 0) {
-                alertify.prompt(this.voc.gridsize, (e, input) => {
-                    if (e) {
-                        if (Number(input) > 1) {
-                            this.grid = Number(input);
+            if (this.room.grid === 0) {
+                alertify
+                .prompt(this.voc.gridsize)
+                .then(e => {
+                    if (e.inputValue) {
+                        if (Number(e.inputValue) > 1) {
+                            this.room.grid = Number(e.inputValue);
                         }
                     }
                     this.redrawGrid();
@@ -157,7 +159,7 @@ room-editor.panel.view
                 });
             } else {
                 this.refreshRoomCanvas();
-                this.grid = 0;
+                this.room.grid = 0;
             }
         };
         
@@ -215,7 +217,7 @@ room-editor.panel.view
                 targetLayer = lastTypeLayer;
             }
 
-            if (this.grid == 0) {
+            if (this.room.grid == 0) {
                 targetLayer.copies.push({
                     x: ~~(this.xToRoom(e.offsetX)),
                     y: ~~(this.yToRoom(e.offsetY)),
@@ -225,8 +227,8 @@ room-editor.panel.view
                 var x = ~~(this.xToRoom(e.offsetX)),
                     y = ~~(this.yToRoom(e.offsetY));
                 targetLayer.copies.push({
-                    x: x - (x % this.grid),
-                    y: y - (y % this.grid),
+                    x: x - (x % this.room.grid),
+                    y: y - (y % this.room.grid),
                     uid: this.currentType.uid
                 });
             }
@@ -267,7 +269,7 @@ room-editor.panel.view
                         w = h = 32;
                         grax = gray = 16;
                     }
-                    if (this.grid === 0) {
+                    if (this.room.grid === 0) {
                         this.refs.canvas.x.drawImage(
                             graph,
                             0, 0, w, h,
@@ -280,8 +282,8 @@ room-editor.panel.view
                         h = graph.height;
                         this.refs.canvas.x.drawImage(
                             graph, 0, 0, w, h,
-                            this.xToCanvas(dx - dx % this.grid) / this.zoomFactor - grax, 
-                            this.yToCanvas(dy - dy % this.grid) / this.zoomFactor - gray, 
+                            this.xToCanvas(dx - dx % this.room.grid) / this.zoomFactor - grax, 
+                            this.yToCanvas(dy - dy % this.room.grid) / this.zoomFactor - gray, 
                             w, h);
                     }
                 }
@@ -372,7 +374,6 @@ room-editor.panel.view
             label: window.languageJSON.roomview.deletecopy.replace('{0}', this.closestType),
             icon: (isMac ? '/img/black/' : '/img/blue/') + 'delete.png',
             click: () => {
-                console.log(this.closestLayer, this.closestPos);
                 this.room.layers[this.closestLayer].copies.splice(this.closestPos, 1);
                 if (this.room.layers[this.closestLayer].copies.length == 0) {
                     this.room.layers.splice(this.closestLayer,1);
@@ -384,18 +385,21 @@ room-editor.panel.view
         
         // Позволяет переместить сразу все копии в комнате
         this.roomShift = e => {
-            window.alertify.custom(`
-                ${window.languageJSON.roomview.shifttext} <br/><br/>
-                <label>X: 
-                    <input id="roomshiftx" type="number" value="32" />
+            window.alertify.confirm(`
+                ${window.languageJSON.roomview.shifttext}
+                <label class="block">X: 
+                    <input id="roomshiftx" type="number" value="${this.room.grid}" />
                 </label>
-                <label>Y: 
-                    <input id="roomshifty" type="number" value="32" />
+                <label class="block">Y: 
+                    <input id="roomshifty" type="number" value="${this.room.grid}" />
                 </label>
-            `, e => {
-                if (e) {
+            `)
+            .then((e, a) => {
+                console.log(e, a);
+                if (e.buttonClicked === 'ok') {
                     var dx = Number(document.getElementById('roomshiftx').value) || 0,
                         dy = Number(document.getElementById('roomshifty').value) || 0;
+                    console.log(document.getElementById('roomshiftx').value, dx, dy)
                     for (let i = 0, l = this.room.layers.length; i < l; i++) {
                         let layer = this.room.layers[i];
                         for (let j = 0, lj = layer.copies.length; j < lj; j++) {
@@ -403,36 +407,40 @@ room-editor.panel.view
                             layer.copies[j].y += dy;
                         }
                     }
+                    this.refreshRoomCanvas();
                 }
             });
         };
+
+        
         
         // Работа с фонами
+        this.onBackgroundGraphSelected = graph => e => {
+            this.editingBackground.graph = graph.origname;
+            this.pickingBackground = false;
+            this.update();
+            this.refreshRoomCanvas();
+        };
         this.roomAddBg = function () {
             var newBg = {
                 depth: 0,
                 graph: -1
             };
             this.room.backgrounds.push(newBg);
+            this.editingBackground = newBg;
             this.pickingBackground = true;
+            this.room.backgrounds.sort(function (a, b) {
+                return a.depth - b.depth;
+            });
             this.update();
-            this.refs.graphPicker.onselected = graph => {
-                newBg.graph = graph;
-                this.pickingBackground = false;
-                this.room.backgrounds.sort(function (a, b) {
-                    return a.depth - b.depth;
-                });
-                this.update();
-                this.refreshRoomCanvas();
-            };
         };
         this.onBgContextMenu = e => {
-            console.log(e);
             this.editedBg = Number(e.item.ind);
             roomBgMenu.popup(e.clientX, e.clientY);
+            e.preventDefault();
         };
-        var roombgMenu = new gui.Menu();
-        roombgMenu.append(new gui.MenuItem({
+        var roomBgMenu = new gui.Menu();
+        roomBgMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.delete,
             icon: (isMac ? '/img/black/' : '/img/blue/') + 'delete.png',
             click: () => {
@@ -443,24 +451,20 @@ room-editor.panel.view
         }));
         this.onChangeBgGraphic = e => {
             this.pickingBackground = true;
+            this.editingBackground = e.item.background;
             this.update();
-            this.refs.graphPicker.onselected = graph => {
-                e.item.background.graph = graph;
-                this.pickingBackground = false;
-                this.update();
-                this.refreshRoomCanvas();
-            };
         };
-        this.onChangeBgName = e => {
-            alertify.prompt(window.languageJSON.roomview.newdepth, (ok, response) => {
-                if (ok) {
-                    if (Number(response)) {
-                        e.item.backgrounds[currentBackground].depth = response;
-                        e.item.backgrounds.sort(function (a, b) {
-                            return a.depth - b.depth;
-                        });
-                        events.roomRefillBg();
-                    }
+        this.onChangeBgDepth = e => {
+            alertify
+            .defaultValue(e.item.background.depth)
+            .prompt(window.languageJSON.roomview.newdepth)
+            .then(e => {
+                if (e.inputValue && Number(e.inputValue)) {
+                    e.item.background.depth = e.inputValue;
+                    this.room.backgrounds.sort(function (a, b) {
+                        return a.depth - b.depth;
+                    });
+                    events.roomRefillBg();
                 }
             });
         };
@@ -549,24 +553,22 @@ room-editor.panel.view
                             );
                         }
                     } else { // это слой-фон
-                        canvas.x.fillStyle = canvas.x.createPattern(glob.graphmap[hybrid[i].graph], 'repeat');
-                        canvas.x.fillRect(
-                            this.roomx/this.zoomFactor + ((~~(this.room.width - canvas.width) / 2)/this.zoomFactor),
-                            this.roomy/this.zoomFactor + ((~~(this.room.height - canvas.height) / 2)/this.zoomFactor),
-                            canvas.width / this.zoomFactor,
-                            canvas.height / this.zoomFactor
-                        );
+                        if (hybrid[i].graph !== -1) {
+                            canvas.x.fillStyle = canvas.x.createPattern(glob.graphmap[hybrid[i].graph], 'repeat');
+                            canvas.x.fillRect(
+                                this.xToRoom(0), this.yToRoom(0),
+                                canvas.width / this.zoomFactor, canvas.height / this.zoomFactor
+                            );
+                        }
                     }
                 }
             }
-            if (this.grid > 1) {
+            if (this.room.grid > 1) {
                 canvas.x.globalCompositeOperation = 'exclusion';
                 canvas.x.fillStyle = canvas.x.createPattern(this.gridCanvas, 'repeat');
                 canvas.x.fillRect(
-                    this.xToRoom(0) - ((this.grid + this.xToRoom(0)) % this.grid),
-                    this.yToRoom(0) - ((this.grid + this.yToRoom(0)) % this.grid),
-                    (canvas.width + this.grid) / this.zoomFactor,
-                    (canvas.height + this.grid) / this.zoomFactor);
+                    this.xToRoom(0), this.yToRoom(0),
+                    canvas.width / this.zoomFactor, canvas.height / this.zoomFactor);
                 canvas.x.globalCompositeOperation = 'source-over';
             }
             

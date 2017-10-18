@@ -162,36 +162,27 @@
       "onleave": "",
       "width": 800,
       "height": 600,
-      "backgrounds": [],
+      "backgrounds": [
+        {
+          "depth": 0,
+          "graph": "i2.png"
+        }
+      ],
       "layers": [
         {
           "depth": 0,
           "copies": [
             {
-              "x": 192,
-              "y": 640,
-              "uid": 1
-            },
-            {
-              "x": 128,
-              "y": 768,
-              "uid": 1
-            },
-            {
-              "x": 256,
-              "y": 832,
-              "uid": 1
-            },
-            {
-              "x": 320,
-              "y": 704,
+              "x": 400,
+              "y": 500,
               "uid": 1
             }
           ]
         }
       ],
       "uid": 1,
-      "lastmod": 1507962693556
+      "lastmod": 1508323046608,
+      "grid": 50
     }
   ],
   "graphtick": 8,
