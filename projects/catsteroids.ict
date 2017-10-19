@@ -151,7 +151,26 @@
       "graph": "i1.png"
     }
   ],
-  "sounds": [],
+  "sounds": [
+    {
+      "name": "LaserSmall",
+      "uid": 0,
+      "origname": "s0.mp3",
+      "lastmod": 1508402385413
+    },
+    {
+      "name": "LaserMedium",
+      "uid": 1,
+      "origname": "s1.mp3",
+      "lastmod": 1508402408072
+    },
+    {
+      "name": "LaserBig",
+      "uid": 2,
+      "origname": "s2.mp3",
+      "lastmod": 1508402430765
+    }
+  ],
   "styles": [],
   "rooms": [
     {
@@ -186,7 +205,7 @@
     }
   ],
   "graphtick": 8,
-  "soundtick": 0,
+  "soundtick": 3,
   "roomtick": 1,
   "typetick": 1,
   "styletick": 0,

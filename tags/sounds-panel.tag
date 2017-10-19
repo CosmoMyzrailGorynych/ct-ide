@@ -4,8 +4,7 @@ sounds-panel.panel.view
         span {voc.create}
     ul.cards
         li(
-            each="{sound in window.currentProject.sound}"
-            style="background-image: url('/img/wave.png');"
+            each="{sound in window.currentProject.sounds}"
             onclick="{openSound(sound)}"
             oncontextmenu="{popupMenu(sound)}"
         )
@@ -28,6 +27,7 @@ sounds-panel.panel.view
         this.openSound = sound => e => {
             this.editedSound = sound;
             this.editing = true;
+            this.update();
         };
         
         // Контекстное меню, вызываемое при клике ПКМ по карточке звука 
@@ -71,4 +71,5 @@ sounds-panel.panel.view
         this.popupMenu = sound => e => {
             this.editedSound = sound;
             soundMenu.popup(e.clientX, e.clientY);
+            e.preventDefault();
         };
