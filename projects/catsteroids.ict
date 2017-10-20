@@ -136,15 +136,15 @@
       "frames": 1,
       "width": 13,
       "height": 57,
-      "lastmod": 1507363211151
+      "lastmod": 1508497007651
     }
   ],
   "types": [
     {
       "name": "Player_Blue",
       "depth": 0,
-      "oncreate": "this.friction = 0.1;\nthis.flyspeed = 1;\n\nthis.shootTimer = 0;",
-      "onstep": "/* Movement */\n\nif (ct.keyboard.down['down']) {\n    ct.types.addSpeed(this, this.flyspeed, 270);\n}\nif (ct.keyboard.down['up']) {\n    ct.types.addSpeed(this, this.flyspeed, 90);\n}\nif (ct.keyboard.down['left']) {\n    ct.types.addSpeed(this, this.flyspeed, 180);\n}\nif (ct.keyboard.down['right']) {\n    ct.types.addSpeed(this, this.flyspeed, 0);\n}\nthis.spd = Math.max(this.spd, this.spd - this.friction);\nct.types.move(this);\n\n/* Shooting */\n\nthis.shootTimer++;\nif (ct.keyboard.down['space'] && this.shootTimer > ct.room.speed * 0.5) {\n    ct.types.copy('Laser_Simple_Blue', this.x, this.y);\n    ct.sounds.play('Laser_Small');\n    this.shootTimer = 0;\n}",
+      "oncreate": "this.friction = 0.5;\nthis.flyspeed = 2;\n\nthis.shootTimer = 0;",
+      "onstep": "/* Movement */\n\nif (ct.keyboard.down['down']) {\n    ct.types.addSpeed(this, this.flyspeed, 270);\n}\nif (ct.keyboard.down['up']) {\n    ct.types.addSpeed(this, this.flyspeed, 90);\n}\nif (ct.keyboard.down['left']) {\n    ct.types.addSpeed(this, this.flyspeed, 180);\n}\nif (ct.keyboard.down['right']) {\n    ct.types.addSpeed(this, this.flyspeed, 0);\n}\nthis.spd = Math.max(Math.min(this.spd, this.spd - this.friction), 0);\nct.types.move(this);\n\nif (this.x < 0 || this.x > ct.room.width ||\n    this.y < 0 || this.y > ct.room.height) {\n    this.spd = 0;\n    this.x = Math.max(Math.min(this.x, ct.room.width), 0);\n    this.y = Math.max(Math.min(this.y, ct.room.height), 0);\n}\n\n/* Shooting */\n\nthis.shootTimer++;\nif (ct.keyboard.down['space'] && this.shootTimer > ct.speed * 0.25) {\n    ct.types.copy('Laser_Simple_Blue', this.x, this.y);\n    ct.sound.spawn('Laser_Small');\n    this.shootTimer = 0;\n}",
       "ondraw": "ct.draw(this);",
       "ondestroy": "",
       "uid": 1,
@@ -152,9 +152,9 @@
     },
     {
       "name": "Laser_Simple_Blue",
-      "depth": 1,
-      "oncreate": "this.spd = 20;\nthis.dir = 90;",
-      "onstep": "if (this.y < -48) {\n    this.kill = true;\n}",
+      "depth": -1,
+      "oncreate": "this.spd = 30;\nthis.dir = 90;",
+      "onstep": "if (this.y < -48) {\n    this.kill = true;\n}\nct.types.move(this);",
       "ondraw": "ct.draw(this);",
       "ondestroy": "",
       "uid": 2,
@@ -190,10 +190,10 @@
       "ondraw": "",
       "onleave": "",
       "width": 800,
-      "height": 600,
+      "height": 800,
       "backgrounds": [
         {
-          "depth": 0,
+          "depth": "-20",
           "graph": "i2.png"
         }
       ],
@@ -203,18 +203,18 @@
           "copies": [
             {
               "x": 400,
-              "y": 500,
+              "y": 700,
               "uid": 1
             }
           ]
         }
       ],
       "uid": 1,
-      "lastmod": 1508464937132,
+      "lastmod": 1508496901241,
       "grid": 50
     }
   ],
-  "graphtick": 8,
+  "graphtick": 9,
   "soundtick": 3,
   "roomtick": 1,
   "typetick": 2,
