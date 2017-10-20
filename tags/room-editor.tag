@@ -350,10 +350,17 @@ room-editor.panel.view
             this.refs.canvas.x.lineJoin = 'round';
             this.refs.canvas.x.strokeStyle = '#446adb';
             this.refs.canvas.x.lineWidth = 3;
-            var left = copy.x - graph.axis[0] - 1.5,
-                top = copy.y - graph.axis[1] - 1.5,
-                height = graph.width / graph.grid[0] + 3,
-                width = + graph.height / graph.grid[1] + 3;
+            if (type.graph !== -1) {
+                var left = copy.x - graph.axis[0] - 1.5,
+                    top = copy.y - graph.axis[1] - 1.5,
+                    height = graph.width + 3,
+                    width = + graph.height + 3;
+            } else {
+                var left = copy.x - 16 - 1.5,
+                    top = copy.y - 16 - 1.5,
+                    height = 32 + 3,
+                    width = 32 + 3;
+            }
             this.refs.canvas.x.strokeRect(left, top, height, width);
             this.refs.canvas.x.strokeStyle = '#fff';
             this.refs.canvas.x.lineWidth = 1;
@@ -535,8 +542,8 @@ room-editor.panel.view
                                 type = window.currentProject.types[glob.typemap[copy.uid]];
                             let graph, w, h,
                                 grax, gray; // Центр рисовки графики
-                            if (copy.graph != -1) {
-                                graph = glob.graphmap[window.currentProject.types[glob.typemap[copy.uid]].graph];
+                            if (type.graph != -1) {
+                                graph = glob.graphmap[type.graph];
                                 w = glob.graphmap[type.graph].width / glob.graphmap[type.graph].g.grid[0];
                                 h = glob.graphmap[type.graph].height / glob.graphmap[type.graph].g.grid[1];
                                 grax = glob.graphmap[type.graph].g.axis[0];
