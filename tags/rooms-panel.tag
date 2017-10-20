@@ -7,6 +7,7 @@ rooms-panel.panel.view
             each="{room in window.currentProject.rooms}"
             class="{starting: window.currentProject.startroom === room.uid}"
             onclick="{openRoom(room)}"
+            oncontextmenu="{menuPopup(room)}"
         )
             img(src="file://{sessionStorage.projdir + '/img/r' + room.uid + '.png?' + room.lastmod}")
             span {room.name}
@@ -40,18 +41,24 @@ rooms-panel.panel.view
             this.editingRoom = room;
             this.editing = true;
         };
+
         var roomMenu = new gui.Menu();
         roomMenu.append(new gui.MenuItem({
+            label: this.voc.makestarting,
+            click: () => {
+                window.currentProject.startroom = this.editingRoom.uid;
+                this.update();
+            }
+        }));
+        roomMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.open,
-            icon: (isMac ? '/img/black/' : '/img/blue/') + 'folder.png',
-            click: function () {
+            click: () => {
                 this.openRoom(this.editingRoom);
             }
         }));
         roomMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.duplicate,
-            icon: (isMac ? '/img/black/' : '/img/blue/') + 'plus.png',
-            click: function () {
+            click: () => {
                 alertify
                 .defaultValue(this.editingRoom.name + '_dup')
                 .prompt(window.languageJSON.common.newname)
@@ -72,8 +79,7 @@ rooms-panel.panel.view
         }));
         roomMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.rename,
-            icon: (isMac ? '/img/black/' : '/img/blue/') + 'edit.png',
-            click: function () {
+            click: () => {
                 alertify
                 .defaultValue(currentRoom.name)
                 .prompt(window.languageJSON.common.newname)
@@ -87,9 +93,11 @@ rooms-panel.panel.view
             }
         }));
         roomMenu.append(new gui.MenuItem({
+            type: 'separator'
+        }));
+        roomMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.delete,
-            icon: (isMac ? '/img/black/' : '/img/blue/') + 'delete.png',
-            click: function () {
+            click: () => {
                 alertify
                 .confirm(window.languageJSON.common.confirmDelete.f(currentRoom.name))
                 .then(e => {
@@ -105,4 +113,5 @@ rooms-panel.panel.view
         this.menuPopup = room => e => {
             this.editingRoom = room;
             roomMenu.popup(e.clientX, e.clientY);
+            e.preventDefault();
         };
