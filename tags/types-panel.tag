@@ -31,7 +31,7 @@ types-panel.panel.view
                 name: 'type' + window.currentProject.typetick,
                 depth: 0,
                 oncreate: '',
-                onstep: '',
+                onstep: 'ct.types.move(this);',
                 ondraw: 'ct.draw(this);',
                 ondestroy: '',
                 uid: currentProject.typetick,
