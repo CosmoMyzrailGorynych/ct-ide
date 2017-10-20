@@ -82,9 +82,7 @@ graphics-panel.panel.view
          * @param {Boolean} imprt Если истинно, то создаёт новую графику в проекте; иначе обновляет текущую открытую графику
          */
         this.loadImg = (uid, filename, dest, imprt) => {
-            
             window.megacopy(filename, dest, e => {
-                
                 if (e) throw e;
                 image = document.createElement('img');
                 image.onload = () => {
@@ -115,7 +113,7 @@ graphics-panel.panel.view
                 image.onerror = e => {
                     alertify.error(e);
                 }
-                image.src = dest + '?' + Math.random();
+                image.src = 'file://' + dest + '?' + Math.random();
             });
         };
         /**
