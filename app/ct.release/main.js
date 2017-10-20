@@ -162,7 +162,7 @@ ct.loop = function() {
                     for (let k = 0, lk = ct.types.list[i].length; k < lk; k++) {
                         if (ct.types.list[i][k].kill) {
                             ct.types.list[i].splice(k, 1);
-                            k--;
+                            k--; lk--;
                         }
                     }
                 }
@@ -179,7 +179,7 @@ ct.loop = function() {
                         ct.types.onDestroy.apply(ct.stack[i]);
                         ct.stack[i].onDestroy.apply(ct.stack[i]);
                         ct.stack.splice(i, 1);
-                        i--;
+                        i--; li--;
                     }
                 }
 
