@@ -3,13 +3,11 @@ ct.sound = {
         var au = document.createElement('audio');
         return Boolean(au.canPlayType && au.canPlayType(type).replace(/no/, ''));
     },
-    init(name, wav, mp3, ogg) {
+    init(name, wav, mp3) {
         // Creates a new Sound object and puts it in resource object
         var src = '';
-        if (ct.sound.ogg && ogg) {
-            src = ogg;
-        } else if (ct.sound.mp3 && mp3) {
-         src = mp3;
+        if (ct.sound.mp3 && mp3) {
+            src = mp3;
         } else if (ct.sound.wav && wav) {
             src = wav;
         }
@@ -61,7 +59,6 @@ ct.sound = {
 
 // define sound types we can support
 ct.sound.wav = ct.sound.detect('audio/wav; codecs="1"');
-ct.sound.ogg = ct.sound.detect('audio/ogg; codecs="vorbis"');
 ct.sound.mp3 = ct.sound.detect('audio/mpeg;');
 
 /*@sound@*/

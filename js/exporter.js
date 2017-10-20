@@ -170,9 +170,8 @@ ct.styles.new(
     var stringifySounds = () => {
         var sounds = '';
         for (const k in window.currentProject.sounds) {
-            // TODO
             const s = window.currentProject.sounds[k];
-            sounds += `ct.sound.init('${s.name}','snd/${s.uid}.wav','snd/${s.uid}.mp3','');\n`;
+            sounds += `ct.sound.init('${s.name}','snd/${s.uid}.wav','snd/${s.uid}.mp3');\n`;
         }
         return sounds;
     };
@@ -436,20 +435,12 @@ ct.rooms['${r.name}'] = {
             }
             for (const k in window.currentProject.sounds) {
                 fs.copySync(sessionStorage.projdir + '/snd/' + window.currentProject.sounds[k].origname, exec + '/export/snd/' + window.currentProject.sounds[k].uid + '.mp3');
-                fs.copySync(sessionStorage.projdir + '/snd/' + window.currentProject.sounds[k].origname, exec + '/export/snd/' + window.currentProject.sounds[k].uid + '.ogg');
             }
 
             /*
             glob.targetAudio = window.currentProject.sounds.length * 2;
             for (k in window.currentProject.sounds) {
                 ffmpeg.mp3(sessionStorage.projdir + '/sound/' + window.currentProject.sounds[k].origname, function (err, out, code) {
-                    if (err) {
-                        console.log(err, out, code);
-                        throw err;
-                    }
-                    events.compileAudio();
-                });
-                ffmpeg.ogg(sessionStorage.projdir + '/sound/' + window.currentProject.sounds[k].origname, function (err, out, code) {
                     if (err) {
                         console.log(err, out, code);
                         throw err;
