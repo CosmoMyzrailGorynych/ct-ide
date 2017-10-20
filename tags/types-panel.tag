@@ -49,6 +49,7 @@ types-panel.panel.view
         this.onTypeContextMenu = e => {
             this.currentType = e.item.type;
             typeMenu.popup(e.clientX, e.clientY);
+            e.preventDefault();
         };
         typeMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.open,
@@ -60,7 +61,7 @@ types-panel.panel.view
         typeMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.duplicate,
             icon: (window.isMac ? '/img/black/' : '/img/blue/') + 'plus.png',
-            click: function () {
+            click: () => {
                 alertify
                 .defaultValue(this.editedType.name + '_dup')
                 .prompt(window.languageJSON.common.newname)
@@ -81,7 +82,7 @@ types-panel.panel.view
         typeMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.rename,
             icon: (window.isMac ? '/img/black/' : '/img/blue/') + 'edit.png',
-            click: function () {
+            click:  () => {
                 alertify
                 .defaultValue(this.editedType.name)
                 .prompt(window.languageJSON.common.newname)
@@ -96,7 +97,7 @@ types-panel.panel.view
         typeMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.delete,
             icon: (window.isMac ? '/img/black/' : '/img/blue/') + 'delete.png',
-            click: function () {
+            click: () => {
                 alertify
                 .confirm(window.languageJSON.common.confirmDelete.f(this.editedType.name))
                 .then(e => {
