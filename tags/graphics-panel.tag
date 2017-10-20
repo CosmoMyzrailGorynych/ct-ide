@@ -1,6 +1,8 @@
 graphics-panel.panel.view
     label.file
-        input#inputgraphic(ref="importer" type="file" multiple accept=".png,.jpg,.jpeg,.bmp,.gif" onchange="{graphicImport}")
+        input(type="file" multiple 
+            accept=".png,.jpg,.jpeg,.bmp,.gif" 
+            onchange="{graphicImport}")
         .button
             i.icon.icon-import
             span {voc.import}
@@ -15,6 +17,15 @@ graphics-panel.panel.view
         )
             span {graphic.name}
             img(src="file://{sessionStorage.projdir + '/img/' + graphic.origname + '_prev.png?' + graphic.lastmod}")
+    
+    .aDropzone(if="{dropping}")
+        .middleinner
+            i.icon-import
+            h2 {languageJSON.common.fastimport}
+            input(type="file" multiple 
+                accept=".png,.jpg,.jpeg,.bmp,.gif" 
+                onchange="{graphicImport}")
+    
     graphic-editor(if="{editing}" graphic="{currentGraphic}")
     script.
         const fs = require('fs-extra'),
@@ -22,6 +33,7 @@ graphics-panel.panel.view
               gui = require('nw.gui');
         this.voc = window.languageJSON.graphic;
         this.editing = false;
+        this.dropping = false;
         
         this.fillGraphMap = () => {
             glob.graphmap = {};
@@ -44,7 +56,7 @@ graphics-panel.panel.view
          */
         this.graphicImport = e => { // input[type="file"]
             var i;
-            files = this.refs.importer.value.split(';');
+            files = e.target.value.split(';');
             for (i = 0; i < files.length; i++) {
                 if (/\.(jpg|gif|png|jpeg)/gi.test(files[i])) {
                     
@@ -59,6 +71,8 @@ graphics-panel.panel.view
                     
                 }
             }
+            this.dropping = false;
+            e.preventDefault();
         };
         /**
          * Делает попытку загрузить изображение и сделать его миниатюру
@@ -222,10 +236,10 @@ graphics-panel.panel.view
          * Отобразить контекстное меню
          */
         this.showGraphicPopup = graphic => e => {
-            e.preventDefault();
             this.currentGraphicId = currentProject.graphs.indexOf(graphic);
             this.currentGraphic = graphic; 
             graphMenu.popup(e.clientX, e.clientY);
+            e.preventDefault();
         };
         
         /**
@@ -236,3 +250,34 @@ graphics-panel.panel.view
             this.currentGraphicId = window.currentProject.graphs.indexOf(graphic);
             this.editing = true;
         };
+
+        /*
+         * Дополнения для drag-n-drop
+         */
+        var dragTimer;
+        this.onDragOver = e => {
+            var dt = e.dataTransfer;
+            if (dt.types && (dt.types.indexOf ? dt.types.indexOf('Files') != -1 : dt.types.contains('Files'))) {
+                this.dropping = true;
+                this.update();
+                window.clearTimeout(dragTimer);
+            }
+            e.preventDefault();
+            e.stopPropagation();
+        };
+        this.onDragLeave = e => {
+            dragTimer = window.setTimeout(() => {
+                this.dropping = false;
+                this.update()
+            }, 25);
+            e.preventDefault();
+            e.stopPropagation();
+        };
+        this.on('mount', () => {
+            document.addEventListener('dragover', this.onDragOver);
+            document.addEventListener('dragleave', this.onDragLeave);
+        });
+        this.on('unmount', () => {
+            document.removeEventListener('dragover', this.onDragOver);
+            document.removeEventListener('dragleave', this.onDragLeave);
+        });
