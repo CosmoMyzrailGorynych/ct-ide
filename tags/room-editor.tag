@@ -458,9 +458,9 @@ room-editor.panel.view
             alertify
             .defaultValue(e.item.background.depth)
             .prompt(window.languageJSON.roomview.newdepth)
-            .then(e => {
-                if (e.inputValue && Number(e.inputValue)) {
-                    e.item.background.depth = e.inputValue;
+            .then(ee => {
+                if (ee.inputValue && Number(ee.inputValue)) {
+                    e.item.background.depth = ee.inputValue;
                     this.room.backgrounds.sort(function (a, b) {
                         return a.depth - b.depth;
                     });
