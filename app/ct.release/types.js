@@ -1,7 +1,3 @@
-/***************************************
-            [ types cotomod ]
-***************************************/
-
 ct.types = {
     Copy(type) {
     // basic constructor. Returns Copy
@@ -35,7 +31,7 @@ ct.types = {
                 onDraw: ct.types[type].onDraw,
                 onCreate: ct.types[type].onCreate,
                 onDestroy: ct.types[type].onDestroy,
-                shape: ct.types[type].graph ? ct.graphs[ct.types[type].graph].shape : {}
+                shape: ct.types[type].graph ? ct.res.graphs[ct.types[type].graph].shape : {}
             });
         }
         ct.rooms.current.uid++;
@@ -98,7 +94,6 @@ ct.types = {
 };
 ct.types.copy = ct.types.make;
 ct.types.addSpd = ct.types.addSpeed;
-/******************* типы *************/
 
 /*@types@*/
 /*%types%*/
@@ -107,14 +102,11 @@ ct.types.BACKGROUND = {
     onDraw() {
         var m = ct.x.fillStyle;
         ct.x.fillStyle = this.pattern;
-        ct.x.save();
-        ct.x.translate(-ct.rooms.current.x, -ct.rooms.current.y);
         ct.x.fillRect(ct.rooms.current.x, ct.rooms.current.y, ct.width, ct.height);
-        ct.x.restore();
         ct.x.fillStyle = m;
     },
     onCreate() {
-        this.uid *= -1;
+        this.uid = -1;
     },
     onDestroy() {void 0;}
 };

@@ -50,8 +50,8 @@ ct.res = {
             untill = cols*rows;
             o.untill = untill;
         }
-        o.width = w / cols;
-        o.height = h / rows;
+        o.width = w;
+        o.height = h;
         for (var yy = 0; yy < rows; yy++) {
             for (var xx = 0; xx < cols; xx++) {
                 o.frames.push([x + xx * o.width,y + yy * o.height]);

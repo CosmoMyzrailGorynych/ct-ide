@@ -2,10 +2,10 @@ ct.rooms = {
     addBg(graph, depth) {
         var canv = document.createElement('canvas'),
             g = ct.res.graphs[graph];
-        canv.width = g.width * g.cols;
-        canv.height = g.height * g.rows;
+        canv.width = g.width;
+        canv.height = g.height;
         canv.x = canv.getContext('2d');
-        canv.x.drawImage(g.atlas, g.ax, g.ay, g.width * g.cols, g.height * g.rows, 0, 0, g.width * g.cols, g.height * g.rows);
+        canv.x.drawImage(g.atlas, g.frames[0][0], g.frames[0][1], g.width, g.height, 0, 0, g.width, g.height);
         var pat = ct.x.createPattern(canv, 'repeat');
         var copy = ct.types.Copy('BACKGROUND');
         copy.pattern = pat;
