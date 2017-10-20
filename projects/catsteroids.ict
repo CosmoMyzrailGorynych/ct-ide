@@ -141,31 +141,41 @@
   ],
   "types": [
     {
-      "name": "bluePlayer",
+      "name": "Player_Blue",
       "depth": 0,
       "oncreate": "this.friction = 0.1;\nthis.flyspeed = 1;\n\nthis.shootTimer = 0;",
-      "onstep": "/* Movement */\n\nif (ct.keyboard.down['down']) {\n    ct.types.addSpeed(this, this.flyspeed, 270);\n}\nif (ct.keyboard.down['up']) {\n    ct.types.addSpeed(this, this.flyspeed, 90);\n}\nif (ct.keyboard.down['left']) {\n    ct.types.addSpeed(this, this.flyspeed, 180);\n}\nif (ct.keyboard.down['right']) {\n    ct.types.addSpeed(this, this.flyspeed, 0);\n}\nthis.spd = Math.max(this.spd, this.spd - this.friction);\nct.types.move(this);\n\n/* Shooting */\n\nthis.shootTimer++;\nif (ct.keyboard.down['space'] && this.shootTimer > ct.room.speed * 0.5) {\n    ct.types.copy('blueBullet', this.x, this.y);\n    this.shootTimer = 0;\n}",
+      "onstep": "/* Movement */\n\nif (ct.keyboard.down['down']) {\n    ct.types.addSpeed(this, this.flyspeed, 270);\n}\nif (ct.keyboard.down['up']) {\n    ct.types.addSpeed(this, this.flyspeed, 90);\n}\nif (ct.keyboard.down['left']) {\n    ct.types.addSpeed(this, this.flyspeed, 180);\n}\nif (ct.keyboard.down['right']) {\n    ct.types.addSpeed(this, this.flyspeed, 0);\n}\nthis.spd = Math.max(this.spd, this.spd - this.friction);\nct.types.move(this);\n\n/* Shooting */\n\nthis.shootTimer++;\nif (ct.keyboard.down['space'] && this.shootTimer > ct.room.speed * 0.5) {\n    ct.types.copy('Laser_Simple_Blue', this.x, this.y);\n    ct.sounds.play('Laser_Small');\n    this.shootTimer = 0;\n}",
       "ondraw": "ct.draw(this);",
       "ondestroy": "",
       "uid": 1,
       "graph": "i1.png"
+    },
+    {
+      "name": "Laser_Simple_Blue",
+      "depth": 1,
+      "oncreate": "this.spd = 20;\nthis.dir = 90;",
+      "onstep": "if (this.y < -48) {\n    this.kill = true;\n}",
+      "ondraw": "ct.draw(this);",
+      "ondestroy": "",
+      "uid": 2,
+      "graph": "i3.png"
     }
   ],
   "sounds": [
     {
-      "name": "LaserSmall",
+      "name": "Laser_Small",
       "uid": 0,
       "origname": "s0.mp3",
       "lastmod": 1508402385413
     },
     {
-      "name": "LaserMedium",
+      "name": "Laser_Medium",
       "uid": 1,
       "origname": "s1.mp3",
       "lastmod": 1508402408072
     },
     {
-      "name": "LaserBig",
+      "name": "Laser_Big",
       "uid": 2,
       "origname": "s2.mp3",
       "lastmod": 1508402430765
@@ -174,7 +184,7 @@
   "styles": [],
   "rooms": [
     {
-      "name": "room1",
+      "name": "inGame",
       "oncreate": "",
       "onstep": "",
       "ondraw": "",
@@ -200,14 +210,14 @@
         }
       ],
       "uid": 1,
-      "lastmod": 1508323046608,
+      "lastmod": 1508464937132,
       "grid": 50
     }
   ],
   "graphtick": 8,
   "soundtick": 3,
   "roomtick": 1,
-  "typetick": 1,
+  "typetick": 2,
   "styletick": 0,
   "starting": 0,
   "settings": {
@@ -221,5 +231,6 @@
     "#FFFFFF",
     "#B48FFF",
     "#10102E"
-  ]
+  ],
+  "startroom": 1
 }

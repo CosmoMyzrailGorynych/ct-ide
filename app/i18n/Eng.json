@@ -23,6 +23,7 @@
         "duplicate": "Duplicate",
         "exit": "Exit",
         "exitconfirm": "Are you sure you want to exit?<br/>All the unsaved changes will be lost!",
+        "fastimport": "Fast Import",
         "newname": "New name:",
         "newversion": "# New version is avaliable\n",
         "no": "No",
@@ -186,7 +187,8 @@
         "step": "Step"
     },
     "rooms": {
-        "create": "Add new"
+        "create": "Add new",
+        "makestarting": "Set as starting room"
     },
     "roomview": {
         "name": "Name:",
