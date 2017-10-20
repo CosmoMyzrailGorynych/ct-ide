@@ -32,7 +32,7 @@
         "allowSingleLine": true
       }
     ],
-    "callback-return": "error",
+    "callback-return": "off",
     "camelcase": "error",
     "capitalized-comments": [
       "off",
