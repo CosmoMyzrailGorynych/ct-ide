@@ -99,7 +99,7 @@ rooms-panel.panel.view
             label: window.languageJSON.common.delete,
             click: () => {
                 alertify
-                .confirm(window.languageJSON.common.confirmDelete.f(currentRoom.name))
+                .confirm(window.languageJSON.common.confirmDelete.replace('{0}', currentRoom.name))
                 .then(e => {
                     if (e.buttonClicked === 'ok') {
                         var ind = window.currentProject.rooms.indexOf(this.editingRoom);

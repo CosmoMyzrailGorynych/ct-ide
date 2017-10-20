@@ -95,11 +95,14 @@ types-panel.panel.view
             }
         }));
         typeMenu.append(new gui.MenuItem({
+            type: 'separator'
+        }));
+        typeMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.delete,
             icon: (window.isMac ? '/img/black/' : '/img/blue/') + 'delete.png',
             click: () => {
                 alertify
-                .confirm(window.languageJSON.common.confirmDelete.f(this.editedType.name))
+                .confirm(window.languageJSON.common.confirmDelete.replace('{0}', this.editedType.name))
                 .then(e => {
                     if (e.buttonClicked === 'ok') {
                         let ind = window.currentProject.types.indexOf(this.editedType);

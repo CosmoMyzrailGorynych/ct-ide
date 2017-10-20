@@ -212,6 +212,9 @@ graphics-panel.panel.view
                 });
             }
         }));
+        graphMenu.append(new gui.MenuItem({
+            type: 'separator'
+        }));
         // Пункт "Удалить"
         graphMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.delete,
@@ -220,7 +223,7 @@ graphics-panel.panel.view
                 alertify
                 .okBtn(window.languageJSON.common.delete)
                 .cancelBtn(window.languageJSON.common.cancel)
-                .confirm(window.languageJSON.common.confirmDelete.f(this.currentGraphic.name))
+                .confirm(window.languageJSON.common.confirmDelete.replace('{0}', this.currentGraphic.name))
                 .then(e => {
                     if (e.buttonClicked === 'ok') {
                         window.currentProject.graphs.splice(this.currentGraphicId,1);

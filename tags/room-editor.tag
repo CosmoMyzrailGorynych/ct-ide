@@ -27,7 +27,7 @@ room-editor.panel.view
                         .room-editor-aTypeSwatch(onclick="{roomUnpickType}" class="{active: currentType === -1}")
                             span {window.languageJSON.common.none}
                             img(src="/img/nograph.png")
-                        .room-editor-aTypeSwatch(each="{type in window.currentProject.types}" onclick="{selectType(type)}" class="{active: type === currentType}")
+                        .room-editor-aTypeSwatch(each="{type in window.currentProject.types}" title="{type.name}" onclick="{selectType(type)}" class="{active: type === currentType}")
                             span {type.name}
                             img(src="{type.graph === -1? '/img/nograph.png' : 'file://' + sessionStorage.projdir + '/img/' + type.graph + '_prev.png?' + getTypeGraphRevision(type)}")
                     .room-editor-Backgrounds.tabbed.tall(show="{tab === 'roombackgrounds'}")

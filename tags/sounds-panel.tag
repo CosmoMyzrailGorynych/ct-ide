@@ -42,7 +42,7 @@ sounds-panel.panel.view
         soundMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.rename,
             icon: (isMac ? '/img/black/' : '/img/blue/') + 'edit.png',
-            click: function () {
+            click: () => {
                 alertify
                 .defaultValue(this.editedSound.name)
                 .prompt(window.languageJSON.common.newname)
@@ -54,11 +54,14 @@ sounds-panel.panel.view
             }
         }));
         soundMenu.append(new gui.MenuItem({
+            type: 'separator'
+        }));
+        soundMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.delete,
             icon: (isMac ? '/img/black/' : '/img/blue/') + 'delete.png',
-            click: function () {
+            click: () => {
                 alertify
-                .confirm(window.languageJSON.common.confirmDelete.f(this.editedSound.name))
+                .confirm(window.languageJSON.common.confirmDelete.replace('{0}', this.editedSound.name))
                 .then(e => {
                     if (e.buttonClicked === 'ok') {
                         var ind = window.currentProject.sounds.indexOf(this.editedSound);

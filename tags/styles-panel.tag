@@ -84,11 +84,14 @@ styles-panel.panel.view
             }
         }));
         styleMenu.append(new gui.MenuItem({
+            type: 'separator'
+        }));
+        styleMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.delete,
             icon: (window.isMac ? '/img/black/' : '/img/blue/') + 'delete.png',
             click: () => {
                 alertify
-                .confirm(window.languageJSON.common.confirmDelete.f(this.editedStyle.name))
+                .confirm(window.languageJSON.common.confirmDelete.replace('{0}', this.editedStyle.name))
                 .then(e => {
                     if (e.buttonClicked === 'ok') {
                         const ind = window.currentProject.styles.indexOf(this.editedStyle);
