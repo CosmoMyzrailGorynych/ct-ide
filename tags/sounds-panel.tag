@@ -66,6 +66,7 @@ sounds-panel.panel.view
                     if (e.buttonClicked === 'ok') {
                         var ind = window.currentProject.sounds.indexOf(this.editedSound);
                         window.currentProject.sounds.splice(ind, 1);
+                        this.update();
                     }
                 });
             }
