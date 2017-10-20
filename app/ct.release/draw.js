@@ -3,10 +3,12 @@
  */
 
 ct.draw = function (t) {
-    if (t.transform) {
-        ct.draw.imgext(t.graph, Math.floor(t.frame) % ct.res.graphs[t.graph].frames.length, t.x, t.y, t.tx, t.ty, t.tr, t.ta);
-    } else {
-        ct.draw.image(t.graph, Math.floor(t.frame) % ct.res.graphs[t.graph].frames.length, t.x, t.y);
+    if (t.graph) {
+        if (t.transform) {
+            ct.draw.imgext(t.graph, Math.floor(t.frame) % ct.res.graphs[t.graph].frames.length, t.x, t.y, t.tx, t.ty, t.tr, t.ta);
+        } else {
+            ct.draw.image(t.graph, Math.floor(t.frame) % ct.res.graphs[t.graph].frames.length, t.x, t.y);
+        }
     }
 };
 ct.u.ext(ct.draw, {
