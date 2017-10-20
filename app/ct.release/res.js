@@ -1,50 +1,44 @@
-/***************************************
-            [ res cotomod ]
-***************************************/
-
 ct.res = {
     graphsLoaded: 0,
-    graphsTotal: @graphsTotal@,
+    graphsTotal: [/*@graphsTotal@*/][0],
     graphsError: 0,
     soundsLoaded: 0,
-    soundsTotal: @sndtotal@,
+    soundsTotal: [/*@sndtotal@*/][0],
     soundsError: 0,
-    graphUrls: [@graphUrls@ %resload%],
+    graphUrls: [/*@graphUrls@*//*%resload%*/],
     images: {},
     sounds: {},
     graphs: {},
-    fetchImage: function (url, callback) {
+    fetchImage(url, callback) {
         // Load an image. When comlete, put it in resource object or execute a callback
         // If failed, replace an image with an empty one
-        img = document.createElement('img');
+        var img = document.createElement('img');
         img.src = url;
         img.onload = function () {
-            ct.res.images[url] = this;
-            ct.res.graphsLoaded ++;
-            if (callback)
-                callback();
-            else {
-                if (ct.res.graphsLoaded + ct.res.graphsError == ct.res.graphsTotal) {
-                    ct.res.parseImages();
-                }
-            } 
+            ct.res.images[url] = img;
+            ct.res.graphsLoaded++;
+            if (callback) {
+                return callback();
+            } else if (ct.res.graphsLoaded + ct.res.graphsError === ct.res.graphsTotal) {
+                ct.res.parseImages();
+            }
+            return void 0;
         };
         img.onerror = img.onabort = function () { 
-            ct.res.images[url] = this;
-            ct.res.graphsError ++;
-            if (callback)
-                callback(true);
-            else {
-                console.log('[ct.res] Изображение с url ' + this.src + ' не удалось загрузить :( Возможно, обновление страницы решит эту проблему.');
-                console.log('[ct.res] An image from ' + this.src + ' wasn\'t loaded :( Maybe refreshing the page will solve this problem…');
-                if (ct.res.graphsLoaded + ct.res.graphsError == ct.res.graphsTotal) {
-                    ct.res.parseImages();
-                }
-            };
-            this.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVQIW2NkAAIAAAoAAggA9GkAAAAASUVORK5CYII=";
-        }
+            ct.res.images[url] = img;
+            ct.res.graphsError++;
+            img.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVQIW2NkAAIAAAoAAggA9GkAAAAASUVORK5CYII=';
+            if (callback) {
+                return callback(true);
+            }
+            console.error('[ct.res] An image from ' + img.src + ' wasn\'t loaded :( Maybe refreshing the page will solve this problem…');
+            if (ct.res.graphsLoaded + ct.res.graphsError === ct.res.graphsTotal) {
+                ct.res.parseImages();
+            }
+            return void 0;
+        };
     },
-    makeSprite: function (name, url, x, y, w, h, xo, yo, cols, rows, untill, shape) {
+    makeSprite(name, url, x, y, w, h, xo, yo, cols, rows, untill, shape) {
         // extracts sprite from atlas
         var o = {},
             i = ct.res.images[url];
@@ -59,11 +53,12 @@ ct.res = {
         o.width = w / cols;
         o.height = h / rows;
         for (var yy = 0; yy < rows; yy++) {
-            for (var xx = 0; xx < cols; xx ++) {
+            for (var xx = 0; xx < cols; xx++) {
                 o.frames.push([x + xx * o.width,y + yy * o.height]);
-                if (yy * cols + xx >= untill) break;
+                if (yy * cols + xx >= untill) {
+                    break;
+                }
             }
-            if (yy * cols + xx >= untill) break;
         }
         if (shape) {
             o.shape = shape;
@@ -72,15 +67,14 @@ ct.res = {
         }
         ct.res.graphs[name] = o;
     },
-    parseImages: function () {
-        // filled by IDE and catmods. Usually atlases are splitted here.
-
-        @res@
-        %res%
+    parseImages() {
+        // filled by IDE and catmods. As usual, atlases are splitted here.
+        /*@res@*/
+        /*%res%*/
     }
 };
 
 // start loading images
-for (i in ct.res.graphUrls) {
+for (const i in ct.res.graphUrls) {
     ct.res.fetchImage(ct.res.graphUrls[i]);
-};
+}

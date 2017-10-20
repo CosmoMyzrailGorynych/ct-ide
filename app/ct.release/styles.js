@@ -1,26 +1,22 @@
-/***************************************
-         [ styles cotomod ]
-***************************************/
-
 ct.styles = {
     types: { },
-    new: function (name,fill,stroke,text,shadow) {
+    new(name, fill, stroke, text, shadow) {
         // style constructor. Returns Style
         var style = {};
         if (fill) {
             if (fill.type === 'solid') {
                 style.fillStyle = fill.color;
             } else if (fill.type === 'radgrad') {
-                var grad = ct.x.createRadialGradient(fill.r,fill.r,0,0,0,fill.r);
-                for (k in fill.colors) {
-                    grad.addColorStop(fill.colors[k].pos,fill.colors[k].color);
-                };
+                const grad = ct.x.createRadialGradient(fill.r, fill.r, 0, 0, 0, fill.r);
+                for (const k in fill.colors) {
+                    grad.addColorStop(fill.colors[k].pos, fill.colors[k].color);
+                }
                 style.fillStyle = grad;
             } else if (fill.type === 'grad') {
-                var grad = ct.x.createLinearGradient(fill.x1,fill.y1,fill.x2,fill.y2);
-                for (k in fill.colors) {
-                    grad.addColorStop(fill.colors[k].pos,fill.colors[k].color);
-                };
+                const grad = ct.x.createLinearGradient(fill.x1, fill.y1, fill.x2, fill.y2);
+                for (const k in fill.colors) {
+                    grad.addColorStop(fill.colors[k].pos, fill.colors[k].color);
+                }
                 style.fillStyle = grad;
             } else if (fill.type === 'pattern') {
                 style.fillStyle = ct.background.types[name];
@@ -32,8 +28,12 @@ ct.styles = {
         }
         if (text) {
             style.font = text.size + 'px ' + text.family;
-            if (text.valign) style.textBaseline = text.valign;
-            if (text.halign) style.textAlign = text.halign;
+            if (text.valign) {
+                style.textBaseline = text.valign;
+            }
+            if (text.halign) {
+                style.textAlign = text.halign;
+            }
         }
         if (shadow) {
             style.shadowColor = shadow.color;
@@ -44,13 +44,13 @@ ct.styles = {
         ct.styles.types[name] = style;
         return style;
     },
-    set: function (name) {
+    set(name) {
         // sets style
-        for (k in ct.styles.types[name]) {
+        for (const k in ct.styles.types[name]) {
             ct.x[k] = ct.styles.types[name][k];
         }
     },
-    reset: function () {
+    reset() {
         // sets canvas settings to default
         ct.x.strokeStyle = '#000000';
         ct.x.globalAlpha = 1;
@@ -65,7 +65,7 @@ ct.styles = {
         ct.x.textAlign = 'left'; 
     }
 };
-@styles@
-%styles%
+/*@styles@*/
+/*%styles%*/
 
-ct.libs += " styles";
+ct.libs += ' styles';

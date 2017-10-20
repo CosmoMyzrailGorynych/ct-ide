@@ -1,16 +1,11 @@
-/***************************************
-
-             [ main cotomod ]
-
-***************************************/
-ct = document.createElement("canvas");
+const ct = document.createElement('canvas');
 document.getElementById('ct').appendChild(ct);
 ct.setAttribute('id', 'ctcanvas');
-ct.setAttribute('width', @startwidth@);
-ct.setAttribute('height', @startheight@);
-ct.x = ct.getContext("2d");
+ct.setAttribute('width', [/*@startwidth@*/][0]);
+ct.setAttribute('height', [/*@startheight@*/][0]);
+ct.x = ct.getContext('2d');
 
-ct.libs = '@libs@';
+ct.libs = '/*@libs@*/';
 
 ct.speed = 30;
 ct.stack = [];
@@ -22,71 +17,67 @@ ct.version = [2,0,0];
 ct.main = {
     fpstick: 0,
     pi: 0
-}
-if (window.webkitRequestAnimationFrame)
-    window.requestAnimFrame = function(callback) {
-        window.webkitRequestAnimationFrame(callback, ct);
-    };
-else {
-    window.requestAnimFrame = window.requestAnimationFrame 
-                           || window.mozRequestAnimationFrame 
-                           || window.msRequestAnimationFrame 
-                           || function(callback) {
-                                callback();
-                              };
 };
+
+const requestFrame = window.requestAnimationFrame ||
+    window.mozRequestAnimationFrame ||
+    window.webkitRequestAnimationFrame ||
+    window.msRequestAnimationFrame ||
+    function(callback) {
+        callback();
+    };
 ct.u = {
-    ldx: function(l, d) {
+    ldx(l, d) {
     // lengthdir_x
         return l * Math.cos(d * Math.PI / -180);
     },
-    ldy: function(l, d) {
+    ldy(l, d) {
     // lengthdir_y
         return l * Math.sin(d * Math.PI / -180);
     },
     // Point-point DirectioN
-    pdn: function(x1, y1, x2, y2) {
+    pdn(x1, y1, x2, y2) {
         return (Math.atan2(y2 - y1, x2 - x1) * -180 / Math.PI + 360) % 360;
     },
-    pdc: function(x1, y1, x2, y2) {
+    pdc(x1, y1, x2, y2) {
     // Point-point DistanCe
         return Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
     },
-    prect: function(x, y, arg) {
+    prect(x, y, arg) {
     // point-rectangle intersection
         if (arg.splice) {
-            return(
+            return (
                 (x >= arg[0] && x <= arg[2] && y >= arg[1] && y <= arg[3])
             ||
                 (x <= arg[0] && x >= arg[2] && y <= arg[1] && y >= arg[3])
             );
-        } else {
-            var graph = ct.graphs[arg.graph];
-            return(
-                (x >= arg.x - graph.ax && x <= arg.x + graph.width - graph.ax && y >= arg.y - graph.ay && y <= arg.y + graph.width - graph.ay)
-            ||
-                (x <= arg.x - graph.ax && x >= arg.x + graph.width - graph.ax && y <= arg.y - graph.ay && y >= arg.y + graph.width - graph.ay)
-            );
         }
+        var graph = ct.graphs[arg.graph];
+        return (
+            (x >= arg.x - graph.ax && x <= arg.x + graph.width - graph.ax && y >= arg.y - graph.ay && y <= arg.y + graph.width - graph.ay)
+        ||
+            (x <= arg.x - graph.ax && x >= arg.x + graph.width - graph.ax && y <= arg.y - graph.ay && y >= arg.y + graph.width - graph.ay)
+        );
     },
-    ext: function (o1, o2, arr) {
+    ext (o1, o2, arr) {
         if (arr) {
-            for (var i in arr) {
+            for (const i in arr) {
                 if (o2[arr[i]]) {
                     o1[arr[i]] = o2[arr[i]];
                 }
             }
         } else {
-            for (var i in o2) {
+            for (const i in o2) {
                 o1[i] = o2[i];
             }
         }
     },
-    load: function(url, callback) {
+    load(url, callback) {
         var script = document.createElement('script');
         script.src = url;
-        if (callback)
+        if (callback) {
             script.onload = callback;
+        }
         document.getElementsByTagName('head')[0].appendChild(script);
     }
 };
@@ -121,39 +112,37 @@ ct.loop = function() {
             ct.x.font = '28px verdana, sans-serif';
             ct.x.fillText(Math.floor((ct.res.graphsLoaded + ct.res.soundsLoaded) / (ct.res.graphsTotal + ct.res.soundsTotal) * 100) + '%', ct.width / 2, ct.height / 2 + 15);
         } else { 
-            /*****/
-            %start%
-            /*****/
+            /*%start%*/
             ct.types.beforeStep = function () {
-                %beforestep%
+                /*%beforestep%*/
             };
             ct.types.afterStep = function () {
-                %afterstep%
+                /*%afterstep%*/
             };
             ct.types.beforeDraw = function () {
-                %beforedraw%
+                /*%beforedraw%*/
             };
             ct.types.afterDraw = function () {
-                %afterdraw%
+                /*%afterdraw%*/
             };
             ct.types.onDestroy = function () {
-                %ondestroy%
+                /*%ondestroy%*/
             };
             ct.rooms.beforeStep = function () {
-                %beforeroomstep%
+                /*%beforeroomstep%*/
             };
             ct.rooms.afterStep = function () {
-                %afterroomstep%
+                /*%afterroomstep%*/
             };
             ct.rooms.beforeDraw = function () {
-                %beforeroomdraw%
+                /*%beforeroomdraw%*/
             };
             ct.rooms.afterDraw = function () {
-                %afterroomdraw%
+                /*%afterroomdraw%*/
             };
             ct.rooms.switch(ct.rooms.starting);
             ct.loop = function() {
-                for (var i = 0; i < ct.stack.length; i++) {
+                for (let i = 0, li = ct.stack.length; i < li; i++) {
                     
                     ct.types.beforeStep.apply(ct.stack[i]);
                     
@@ -169,8 +158,8 @@ ct.loop = function() {
                 ct.rooms.afterStep.apply(ct.room);
 
                 // ct.types.list[type: String]
-                for (i in ct.types.list) {
-                    for (var k = 0; k < ct.types.list[i].length; k++) {
+                for (const i in ct.types.list) {
+                    for (let k = 0, lk = ct.types.list[i].length; k < lk; k++) {
                         if (ct.types.list[i][k].kill) {
                             ct.types.list[i].splice(k, 1);
                             k--;
@@ -178,16 +167,16 @@ ct.loop = function() {
                     }
                 }
                 // bgs
-                for (i in ct.room.backgrounds) {
+                for (let i in ct.room.backgrounds) {
                     if (ct.room.backgrounds[i].kill) {
                         ct.room.backgrounds.splice(i, 1);
                         i--;
                     }
                 }
                 // copies
-                for (var i = 0; i < ct.stack.length; i++) {
+                for (let i = 0, li = ct.stack.length; i < li; i++) {
                     if (ct.stack[i].kill) {
-                        ct.types.onDestroy.apply(obj);
+                        ct.types.onDestroy.apply(ct.stack[i]);
                         ct.stack[i].onDestroy.apply(ct.stack[i]);
                         ct.stack.splice(i, 1);
                         i--;
@@ -198,33 +187,40 @@ ct.loop = function() {
                 ct.stack.sort(function(a, b) {
                     if (a.depth !== b.depth) {
                         return a.depth - b.depth;
-                    } else {
-                        return a.uid - b.uid;
                     }
+                    return a.uid - b.uid;
                 });
 
                 if (ct.room.follow) {
                     if (ct.room.follow.kill) {
                         delete ct.room.follow;
                     } else if (ct.room.center) {
-                        var cx, cy, i, k;
-                        cx = ct.room.follow.x - ct.room.x - ct.width / 2;
-                        cy = ct.room.follow.y - ct.room.y - ct.height / 2;
-                        ct.room.x += cx;
-                        ct.room.y += cy;
+                        ct.room.x += ct.room.follow.x - ct.room.x - ct.width / 2;
+                        ct.room.y += ct.room.follow.y - ct.room.y - ct.height / 2;
                     } else {
-                        var cx = cy = i = k = w = h = 0;
+                        let cx = 0,
+                            cy = 0,
+                            w = 0,
+                            h = 0;
                         w = Math.min(ct.room.borderX, ct.width / 2);
                         h = Math.min(ct.room.borderY, ct.height / 2);
-                        if (ct.room.follow.x - ct.room.x < w) cx = ct.room.follow.x - ct.room.x - w;
-                        if (ct.room.follow.y - ct.room.y < h) cy = ct.room.follow.y - ct.room.y - h;
-                        if (ct.room.follow.x - ct.room.x > ct.width - w) cx = ct.room.follow.x - ct.room.x - ct.width + w;
-                        if (ct.room.follow.y - ct.room.y > ct.height - h) cy = ct.room.follow.y - ct.room.y - ct.height + h;
+                        if (ct.room.follow.x - ct.room.x < w) {
+                            cx = ct.room.follow.x - ct.room.x - w;
+                        }
+                        if (ct.room.follow.y - ct.room.y < h) {
+                            cy = ct.room.follow.y - ct.room.y - h;
+                        }
+                        if (ct.room.follow.x - ct.room.x > ct.width - w) {
+                            cx = ct.room.follow.x - ct.room.x - ct.width + w;
+                        }
+                        if (ct.room.follow.y - ct.room.y > ct.height - h) {
+                            cy = ct.room.follow.y - ct.room.y - ct.height + h;
+                        }
                         ct.room.x = Math.floor(ct.room.x + cx);
                         ct.room.y = Math.floor(ct.room.y + cy);
                     }
                 }
-                for (var i = 0; i < ct.stack.length; i++) {
+                for (let i = 0, li = ct.stack.length; i < li; i++) {
                     ct.types.beforeDraw.apply(ct.stack[i]);
                     ct.stack[i].onDraw.apply(ct.stack[i]);
                     ct.stack[i].frame += ct.stack[i].imgspd; 
@@ -240,7 +236,7 @@ ct.loop = function() {
                 ct.mouse.xprev = ct.mouse.x;
                 ct.mouse.yprev = ct.mouse.y;
                 ct.main.fpstick++;
-            }
+            };
         }
     }
 };
@@ -252,11 +248,11 @@ setInterval(function () {
 
 ct.tick = function() {
     ct.loop.tick = setTimeout(function() {
-        requestAnimFrame(ct.loop);
+        requestFrame(ct.loop);
         ct.tick();
     }, 1000 / ct.speed);
-}
+};
 
-%load%
+/*%load%*/
 
 ct.tick(); // launch

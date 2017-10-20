@@ -3,7 +3,7 @@
 ***************************************/
 
 ct.types = {
-    Copy: function (type) {
+    Copy(type) {
     // basic constructor. Returns Copy
         var obj = {
             x: 0,
@@ -28,7 +28,7 @@ ct.types = {
         };
         if (type) {
             ct.u.ext(obj, {
-                type: type,
+                type,
                 depth: ct.types[type].depth, 
                 graph: ct.types[type].graph,
                 onStep: ct.types[type].onStep,
@@ -36,15 +36,15 @@ ct.types = {
                 onCreate: ct.types[type].onCreate,
                 onDestroy: ct.types[type].onDestroy,
                 shape: ct.types[type].graph ? ct.graphs[ct.types[type].graph].shape : {}
-            })
+            });
         }
         ct.rooms.current.uid++;
         return obj;
     },
     list: { },
-    make: function (type, x, y) {
+    make(type, x, y) {
         //advanced constructor. Returns Copy
-        obj = ct.types.Copy(type);
+        const obj = ct.types.Copy(type);
         obj.x = obj.xprev = obj.xstart = x;
         obj.y = obj.yprev = obj.ystart = y;
         
@@ -57,11 +57,11 @@ ct.types = {
         
         ct.types[type].onCreate.apply(obj);
         (function () {
-            %oncreate%
+            /*%oncreate%*/
         }).apply(obj);
         return obj;
     },
-    move: function (o) {
+    move(o) {
         // performs movement step with Copy `o`
         var xprev = o.x,
             yprev = o.y,
@@ -78,45 +78,43 @@ ct.types = {
             o.dir = ct.u.pdn(xprev, yprev, o.x, o.y);
         }
     },
-    addSpeed: function(o, spd, dir) {
+    addSpeed(o, spd, dir) {
         var hspd, vspd;
         hspd = o.spd * Math.cos(o.dir*Math.PI/-180) + spd * Math.cos(dir*Math.PI/-180);
         vspd = o.spd * Math.sin(o.dir*Math.PI/-180) + spd * Math.sin(dir*Math.PI/-180);
         o.spd = Math.sqrt(hspd*hspd + vspd*vspd);
         if (o.spd > 0) {
-            o.dir = ct.u.pdn(xprev, yprev, o.x, o.y);
+            o.dir = ct.u.pdn(o.xprev, o.yprev, o.xprev + hspd, o.yprev + vspd);
         }
     },
-    each: function (func) {
-        var other = this;
-        for (i in ct.stack) {
-            func.apply(ct.stack[i], other);
+    each(func) {
+        for (const i in ct.stack) {
+            func.apply(ct.stack[i], this);
         }
     },
-    'with': function (obj, func) {
-        var other = this;
-        func.apply(obj, other);
+    'with'(obj, func) {
+        func.apply(obj, this);
     }
 };
 ct.types.copy = ct.types.make;
 ct.types.addSpd = ct.types.addSpeed;
 /******************* типы *************/
 
-@types@
-%types%
+/*@types@*/
+/*%types%*/
 ct.types.BACKGROUND = {
-    onStep: function () { },
-    onDraw: function () {
+    onStep() {void 0;},
+    onDraw() {
         var m = ct.x.fillStyle;
         ct.x.fillStyle = this.pattern;
         ct.x.save();
-        ct.x.translate(-ct.rooms.current.x, -ct.rooms.current.y)
+        ct.x.translate(-ct.rooms.current.x, -ct.rooms.current.y);
         ct.x.fillRect(ct.rooms.current.x, ct.rooms.current.y, ct.width, ct.height);
         ct.x.restore();
         ct.x.fillStyle = m;
     },
-    onCreate: function () {
+    onCreate() {
         this.uid *= -1;
     },
-    onDestroy: function () { }
-}
+    onDestroy() {void 0;}
+};

@@ -1,5 +1,3 @@
-/** mouse catmod */
-
 ct.mouse = {
     x: 0,
     y: 0,
@@ -8,7 +6,7 @@ ct.mouse = {
     down: false,
     released: false,
     button: 0,
-    clear: function () {
+    clear() {
         ct.mouse.pressed = false;
         ct.mouse.down = false;
         ct.mouse.released = false;
