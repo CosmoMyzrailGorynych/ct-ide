@@ -91,13 +91,13 @@
       "off",
       "unix"
     ],
-    "lines-around-comment": "error",
+    "lines-around-comment": "off",
     "lines-around-directive": "off",
     "max-depth": "error",
     "max-len": "off",
     "max-lines": "off",
     "max-nested-callbacks": "error",
-    "max-params": "error",
+    "max-params": "off",
     "max-statements": "off",
     "max-statements-per-line": "off",
     "multiline-ternary": "off",
@@ -144,7 +144,7 @@
     "no-lonely-if": "error",
     "no-loop-func": "error",
     "no-magic-numbers": "off",
-    "no-mixed-operators": "error",
+    "no-mixed-operators": "off",
     "no-mixed-requires": "error",
     "no-mixed-spaces-and-tabs": "error",
     "no-multi-spaces": "error",
@@ -244,10 +244,7 @@
     ],
     "space-infix-ops": "off",
     "space-unary-ops": "error",
-    "spaced-comment": [
-      "error",
-      "always"
-    ],
+    "spaced-comment": "off",
     "strict": "off",
     "symbol-description": "error",
     "template-curly-spacing": [
