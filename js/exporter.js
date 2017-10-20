@@ -81,23 +81,16 @@
             atlas.height = bin.height;
             atlas.x = atlas.getContext('2d');
             for (let i = 0, li = bin.rects.length; i < li; i++) {
-                const block = bin.rects[i];
-                console.log(block, i, li);
+                const block = bin.rects[i],
+                      g = window.currentProject.graphs[block.data.g];
                 atlas.x.drawImage(window.glob.graphmap[block.data.origname], block.x, block.y);
                 res += `
         ct.res.makeSprite(
-            '${window.currentProject.graphs[block.data.g].name}',
-            'img/a${binInd}.png',
-            ${block.x + 1},
-            ${block.y + 1},
-            ${block.width - 2},
-            ${block.height - 2},
-            ${window.currentProject.graphs[block.data.g].axis[0]},
-            ${window.currentProject.graphs[block.data.g].axis[1]},
-            ${window.currentProject.graphs[block.data.g].grid[0]},
-            ${window.currentProject.graphs[block.data.g].grid[1]},
-            ${window.currentProject.graphs[block.data.g].untill},
-            ${getGraphicShape(window.currentProject.graphs[block.data.g])});`;
+            '${window.currentProject.graphs[block.data.g].name}', 'img/a${binInd}.png',
+            ${block.x + 1}, ${block.y + 1}, ${block.width - 2}, ${block.height - 2},
+            ${g.axis[0]}, ${g.axis[1]}, ${g.grid[0]}, ${g.grid[1]}, ${g.untill},
+            ${getGraphicShape(g)});`;
+
             }
             var data = atlas.toDataURL().replace(/^data:image\/\w+;base64,/, '');
             var buf = new Buffer(data, 'base64');
@@ -187,10 +180,9 @@ ct.styles.new(
     var stringifyRooms = () => {
         var roomsCode = '';
         for (const k in window.currentProject.rooms) {
-            roomsCode += 'ct.rooms["' + window.currentProject.rooms[k].name + '"] = {\n';
-            roomsCode += '    "width":' + window.currentProject.rooms[k].width + ',\n';
-            roomsCode += '    "height":' + window.currentProject.rooms[k].height + ',\n';
-            var roomCopy = JSON.parse(JSON.stringify(window.currentProject.rooms[k].layers));
+            const r = window.currentProject.rooms[k];
+            
+            var roomCopy = JSON.parse(JSON.stringify(r.layers));
             var objs = [];
             for (var layer in roomCopy) {
                 for (var copy in roomCopy[layer].copies) {
@@ -201,18 +193,31 @@ ct.styles.new(
                     }
                 }
             }
-            var bgsCopy = JSON.parse(JSON.stringify(window.currentProject.rooms[k].backgrounds));
+            var bgsCopy = JSON.parse(JSON.stringify(r.backgrounds));
             for (var bg in bgsCopy) {
                 bgsCopy[bg].graph = window.glob.graphmap[bgsCopy[bg].graph].g.name;
                 bgsCopy[bg].depth = Number(bgsCopy[bg].depth);
             }
-            roomsCode += '    objects:' + JSON.stringify(objs) + ',\n';
-            roomsCode += '    bgs:' + JSON.stringify(bgsCopy) + ',\n';
-            roomsCode += '    onStep: function () {\n' + window.currentProject.rooms[k].onstep + '\n    },\n';
-            roomsCode += '    onDraw: function () {\n' + window.currentProject.rooms[k].ondraw + '\n    },\n';
-            roomsCode += '    onLeave: function () {\n' + window.currentProject.rooms[k].onleave + '\n    },\n';
-            roomsCode += '    onCreate: function () {\n' + window.currentProject.rooms[k].oncreate + '\n    }\n';
-            roomsCode += '};';
+            
+            roomsCode += `
+ct.rooms['${r.name}'] = {
+    width: '${r.width}',
+    height: '${r.height}',
+    objects: ${JSON.stringify(objs)},
+    bgs: ${JSON.stringify(bgsCopy)},
+    onStep() {
+        ${window.currentProject.rooms[k].onstep}
+    },
+    onDraw() {
+        ${window.currentProject.rooms[k].ondraw}
+    },
+    onLeave() {
+        ${window.currentProject.rooms[k].onleave}
+    },
+    onCreate() {
+        ${window.currentProject.rooms[k].oncreate}
+    }
+}`;
         }
         return roomsCode;
     };
@@ -275,31 +280,6 @@ ct.styles.new(
                 'encoding': 'utf8'
             });
 
-            var inj = [
-                'start',
-
-                'oncreate',
-                'ondestroy',
-
-                'beforedraw',
-                'beforestep',
-                'afterdraw',
-                'afterstep',
-
-                'roomoncreate',
-                'roomonleave',
-
-                'beforeroomdraw',
-                'beforeroomstep',
-                'afterroomdraw',
-                'afterroomcreate',
-                'afterroomleave',
-                'afterroomstep',
-                'load'
-            ];
-            for (let i = 0; i < inj.length; i++) {
-                buffer = buffer.replace(RegExp('/*%'+ inj[i] +'%*/', 'g'), injects[inj[i]]);
-            }
             buffer = buffer
             .replace('/*@startwidth@*/', startroom.width)
             .replace('/*@startheight@*/', startroom.height)
@@ -411,6 +391,11 @@ ct.styles.new(
                 fs.copySync(sessionStorage.projdir + '/include/', exec + '/export/');
             }
 
+            /* инъекции */
+            for (const i in injects) {
+                buffer = buffer.replace(`/*%${i}%*/`, injects[i]);
+            }
+
             /* финализация скрипта */
             const UglifyJS = require('uglify-js');
             fs.writeFileSync(exec + '/export/ct.js', buffer);
@@ -421,19 +406,17 @@ ct.styles.new(
                 fs.writeFileSync(exec + '/export/ct.min.js', mini);
             }
 
-            // here goes madness
-
             /* HTML & CSS */
             fs.writeFileSync(exec + '/export/index.html', fs.readFileSync('./ct.release/index.html', {
                 'encoding': 'utf8'
             })
-            .replace(/%htmltop%/, injects.htmltop)
-            .replace(/%htmlbottom%/, injects.htmlbottom));
+            .replace('<!-- %htmltop% -->', injects.htmltop)
+            .replace('<!-- %htmlbottom% -->', injects.htmlbottom));
 
             fs.writeFileSync(exec + '/export/ct.css', fs.readFileSync('./ct.release/ct.css', {
                 'encoding': 'utf8'
             })
-            .replace(/%css%/, injects.css));
+            .replace('/*%css%*/', injects.css));
 
             if (window.currentProject.settings.minifyhtml) {
                 const csswring = require('csswring'),
