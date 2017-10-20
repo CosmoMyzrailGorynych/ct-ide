@@ -10,18 +10,22 @@ ct.draw = function (t) {
     }
 };
 ct.u.ext(ct.draw, {
-    circle: function (x, y, r, o) {
+    circle(x, y, r, o) {
         ct.x.beginPath();
         ct.x.arc(x - ct.rooms.current.x, y - ct.rooms.current.y, r, 0, 2*Math.PI);
-        if (o) {ct.x.stroke(); } else { ct.x.fill(); }
+        if (o) {
+            ct.x.stroke();
+        } else {
+            ct.x.fill();
+        }
     },
-    line: function (x, y, xx, yy) {
+    line(x, y, xx, yy) {
         ct.x.beginPath();
         ct.x.moveTo(x - ct.rooms.current.x, y - ct.rooms.current.y);
         ct.x.lineTo(xx - ct.rooms.current.x, yy - ct.rooms.current.y);
         ct.x.stroke();
     },
-    image: function (img, imgindex, x, y) {
+    image(img, imgindex, x, y) {
         ct.x.drawImage(
             ct.res.graphs[img].atlas,
             ct.res.graphs[img].frames[imgindex][0],
@@ -34,7 +38,7 @@ ct.u.ext(ct.draw, {
             ct.res.graphs[img].height
         );
     },
-    imgext: function (img, imgindex, x, y, hs, vs, r, a) {
+    imgext(img, imgindex, x, y, hs, vs, r, a) {
         ct.x.save();
         ct.x.globalAlpha = a;
         ct.x.translate(x - ct.rooms.current.x, y - ct.rooms.current.y);
@@ -53,28 +57,28 @@ ct.u.ext(ct.draw, {
         );
         ct.x.restore();
     },
-    copy: function (copy,x,y) {
+    copy(copy,x,y) {
         if (copy.transform) {
             ct.draw.imgext(copy.graph, Math.floor(copy.frame) % ct.res.graphs[copy.graph].frames.length, x, y, copy.tx, copy.ty, copy.tr, copy.ta);
         } else {
             ct.draw.image(copy.graph, Math.floor(copy.frame) % ct.res.graphs[copy.graph].frames.length, x, y);
         }
     },
-    text: function (str, x, y, o) {
+    text(str, x, y, o) {
         if (o) {
             ct.x.strokeText(str,x-ct.rooms.current.x,y-ct.rooms.current.y);
         } else {
             ct.x.fillText(str,x-ct.rooms.current.x,y-ct.rooms.current.y);
         }
     },
-    rectangle: function (x, y, w, h, o) {
+    rectangle(x, y, w, h, o) {
         if (o) {
             ct.x.strokeRect(x - ct.rooms.current.x, y-ct.rooms.current.y, w, h);
         } else {
             ct.x.fillRect(x - ct.rooms.current.x, y-ct.rooms.current.y, w, h);
         }
     },
-    rect: function (x, y, xx, yy, o) {
+    rect(x, y, xx, yy, o) {
         ct.x.beginPath();
         ct.x.moveTo(x - ct.rooms.current.x,y - ct.rooms.current.y);
         ct.x.lineTo(xx - ct.rooms.current.x,y - ct.rooms.current.y);
@@ -87,12 +91,12 @@ ct.u.ext(ct.draw, {
             ct.x.fill();
         }
     },
-    fix: function (x, y) {
+    fix(x, y) {
         ct.x.save();
         ct.x.translate(x, y);
     },
     unfix: ct.x.restore,
-    polygon: function (points, close, outline) {
+    polygon(points, close, outline) {
         ct.x.beginPath();
         ct.x.moveTo(points[0][0] - ct.rooms.current.x, ct.rooms.current.y - points[0][1]);
         for (var i = 1; i < points.length; i++) {
@@ -109,14 +113,14 @@ ct.u.ext(ct.draw, {
     }
 });
 ct.u.ext(ct.draw.polygon, {
-    begin: function (x, y) {
+    begin(x, y) {
         ct.x.beginPath();
         ct.x.moveTo(x - ct.rooms.current.x,y - ct.rooms.current.y);
     },
-    move: function (x,y) {
+    move(x,y) {
         ct.x.moveTo(x - ct.rooms.current.x,y - ct.rooms.current.y);
     },
-    line: function (x,y) {
+    line(x,y) {
         ct.x.lineTo(x - ct.rooms.current.x,y - ct.rooms.current.y);
     },
     close: ct.x.closePath,
