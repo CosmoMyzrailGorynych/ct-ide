@@ -1,5 +1,4 @@
-before_script:
-  - apt-get install -y -qq nodejs
+image: node:8.7.0
 
 build:
   script: 
