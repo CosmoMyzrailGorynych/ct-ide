@@ -1,0 +1,11 @@
+before_script:
+  - apt-get install -y -qq nodejs
+
+build:
+  script: 
+    - mv ./package2.json ./package.json
+    - npm install
+    - mv ./package.json ./package2.json
+    - gulp
+    - cd ./app
+    - npm install
