@@ -2,12 +2,12 @@ style-editor.panel.view
     #styleleft.tall
         .tabwrap.tall
             ul.nav.tabs.nogrow.noshrink
-                li(onclick="changeTab('stylefont')" class="{active: tab === 'stylefont'}") {voc.font}
-                li(onclick="changeTab('stylefill')" class="{active: tab === 'stylefill'}") {voc.fill}
-                li(onclick="changeTab('stylestroke')" class="{active: tab === 'stylestroke'}") {voc.stroke}
-                li(onclick="changeTab('styleshadow')" class="{active: tab === 'styleshadow'}") {voc.shadow}
+                li(onclick="{changeTab('stylefont')}" class="{active: tab === 'stylefont'}") {voc.font}
+                li(onclick="{changeTab('stylefill')}" class="{active: tab === 'stylefill'}") {voc.fill}
+                li(onclick="{changeTab('stylestroke')}" class="{active: tab === 'stylestroke'}") {voc.stroke}
+                li(onclick="{changeTab('styleshadow')}" class="{active: tab === 'styleshadow'}") {voc.shadow}
             div(style="overflow: auto;")
-                #stylefont.tabbed
+                #stylefont.tabbed(show="{tab === 'stylefont'}")
                     label
                         input#iftochangefont(type="checkbox" onchange="{styleToggleFont}")
                         span {voc.active}
@@ -22,27 +22,27 @@ style-editor.panel.view
                         br
                         b {voc.alignment}
                         .align.buttonselect
-                            button#topleft.inline(onclick="{styleSetAlign('top left')}" class="{active: styleobj.font.align === 'top left'}")
-                                i.icon.icon-menu
-                            button#topcenter.inline(onclick="{styleSetAlign('top center')}" class="{active: styleobj.font.align === 'top center'}")
-                                i.icon.icon-text-center
-                            button#topright.inline(onclick="{styleSetAlign('top right')}" class="{active: styleobj.font.align === 'top right'}")
-                                i.icon.icon-menu-right
+                            button#topleft.inline(onclick="{styleSetAlign('top left')}" class="{active: `${this.styleobj.font.valign} ${this.styleobj.font.halign}` === 'top left'}")
+                                i.icon.icon-align-left
+                            button#topcenter.inline(onclick="{styleSetAlign('top center')}" class="{active: `${this.styleobj.font.valign} ${this.styleobj.font.halign}` === 'top center'}")
+                                i.icon.icon-align-center
+                            button#topright.inline(onclick="{styleSetAlign('top right')}" class="{active: `${this.styleobj.font.valign} ${this.styleobj.font.halign}` === 'top right'}")
+                                i.icon.icon-align-right
                         .align.buttonselect
-                            button#middleleft.inline(onclick="{styleSetAlign('middle left')}" class="{active: styleobj.font.align === 'middle left'}")
-                                i.icon.icon-menu
-                            button#middlecenter.inline(onclick="{styleSetAlign('middle center')}" class="{active: styleobj.font.align === 'middle center'}")
-                                i.icon.icon-text-center
-                            button#middleright.inline(onclick="{styleSetAlign('middle right')}" class="{active: styleobj.font.align === 'middle right'}")
-                                i.icon.icon-menu-right
+                            button#middleleft.inline(onclick="{styleSetAlign('middle left')}" class="{active: `${this.styleobj.font.valign} ${this.styleobj.font.halign}` === 'middle left'}")
+                                i.icon.icon-align-left
+                            button#middlecenter.inline(onclick="{styleSetAlign('middle center')}" class="{active: `${this.styleobj.font.valign} ${this.styleobj.font.halign}` === 'middle center'}")
+                                i.icon.icon-align-center
+                            button#middleright.inline(onclick="{styleSetAlign('middle right')}" class="{active: `${this.styleobj.font.valign} ${this.styleobj.font.halign}` === 'middle right'}")
+                                i.icon.icon-align-right
                         .align.buttonselect
-                            button#bottomleft.inline(onclick="{styleSetAlign('bottom left')}" class="{active: styleobj.font.align === 'bottom left'}")
-                                i.icon.icon-menu
-                            button#bottomcenter.inline(onclick="{styleSetAlign('bottom center')}" class="{active: styleobj.font.align === 'bottom center'}")
-                                i.icon.icon-text-center
-                            button#bottomright.inline(onclick="{styleSetAlign('bottom right')}" class="{active: styleobj.font.align === 'bottom right'}")
-                                i.icon.icon-menu-right
-                #stylefill.tabbed
+                            button#bottomleft.inline(onclick="{styleSetAlign('bottom left')}" class="{active: `${this.styleobj.font.valign} ${this.styleobj.font.halign}` === 'bottom left'}")
+                                i.icon.icon-align-left
+                            button#bottomcenter.inline(onclick="{styleSetAlign('bottom center')}" class="{active: `${this.styleobj.font.valign} ${this.styleobj.font.halign}` === 'bottom center'}")
+                                i.icon.icon-align-center
+                            button#bottomright.inline(onclick="{styleSetAlign('bottom right')}" class="{active: `${this.styleobj.font.valign} ${this.styleobj.font.halign}` === 'bottom right'}")
+                                i.icon.icon-align-right
+                #stylefill.tabbed(show="{tab === 'stylefill'}")
                     label
                         input#iftochangefill(type="checkbox" checked="{styleobj.fill}" onchange="{styleToggleFill}")
                         span {voc.active}
@@ -103,7 +103,7 @@ style-editor.panel.view
                             button.inline(data-event="styleFindPattern")
                                 i.icon.icon-search
                                 span {voc.findpat}
-                #stylestroke.tabbed
+                #stylestroke.tabbed(show="{tab === 'stylestroke'}")
                     label
                         input#iftochangestroke(type="checkbox" checked="{styleobj.stroke}" onchange="{styleToggleStroke}")
                         span {voc.active}
@@ -117,7 +117,7 @@ style-editor.panel.view
                         br
                         input#strokeweight(type="number" value="{styleobj.stroke.weight}" onchange="{wire('this.styleobj.stroke.weight')}")
                         #strokeweightslider
-                #styleshadow.tabbed
+                #styleshadow.tabbed(show="{tab === 'styleshadow'}")
                     label
                         input#iftochangeshadow(type="checkbox" onchange="{styleToggleShadow}")
                         span {voc.active}
@@ -147,6 +147,7 @@ style-editor.panel.view
     script.
         this.mixin(window.riotWired);
         this.voc = window.languageJSON.styleview;
+        this.styleobj = this.opts.styleobj;
         
         this.tab = 'stylefont';
         this.changeTab = tab => e => {
@@ -173,8 +174,8 @@ style-editor.panel.view
         };
         this.styleSetAlign = align => e => {
             var arr = align.split(' ');
-            this.style.font.valign = arr[0];
-            this.style.font.halign = arr[1];
+            this.styleobj.font.valign = arr[0];
+            this.styleobj.font.halign = arr[1];
         };
         this.styleToggleFill = () => {
             if (this.styleobj.fill) {
@@ -323,30 +324,30 @@ style-editor.panel.view
             canv.x.beginPath();
             canv.x.rect(100, 100, 100, 100);
             canv.x.fill();
-            if (this.style.stroke) {
+            if (this.styleobj.stroke) {
                 canv.x.stroke();
             }
             canv.x.beginPath();
             canv.x.arc(350, 150, 50, 0, 2 * Math.PI);
             canv.x.closePath();
             canv.x.fill();
-            if (this.style.stroke) {
+            if (this.styleobj.stroke) {
                 canv.x.stroke();
             }
             canv.x.fillText(window.languageJSON.styleview.testtext, canv.width / 2, 300);
-            if (this.style.stroke) {
+            if (this.styleobj.stroke) {
                 canv.x.strokeText(window.languageJSON.styleview.testtext, canv.width / 2, 300);
             }
         };
         this.styleSave = function() {
-            this.styleGenPreview();
+            this.styleRedrawPreview();
             this.fillStyles();
         };
         this.styleFindPattern = e => {
             this.selectingGraphic = true;
             this.update();
             this.refs.graphicselector.onselect = graph => {
-                this.style.fill.patname = graph.name;
+                this.styleobj.fill.patname = graph.name;
                 this.selectingGraphic = false;
                 this.update();
             };
