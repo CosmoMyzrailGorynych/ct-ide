@@ -1,10 +1,11 @@
-image: node:8.7.0
+image: node:8.7
 
 build:
   script: 
     - mv ./package2.json ./package.json
     - npm install
+    - npm install gulp -g
     - mv ./package.json ./package2.json
-    - gulp
+    - gulp --release
     - cd ./app
     - npm install

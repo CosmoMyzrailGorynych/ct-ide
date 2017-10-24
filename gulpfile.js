@@ -13,6 +13,9 @@
         closureCompiler = require('gulp-closure-compiler'),
         fs = require('fs-extra');
 
+    var args = require('get-gulp-args')();
+    var isMakingAReselase = args.indexOf('release') !== -1;
+
     var fileChangeNotifier = e => {
         notifier.notify({
             title: `Обновляем ${path.basename(e.path)}`,
@@ -159,5 +162,8 @@
         .pipe(gulp.dest('./app/'));
     });
 
-    gulp.task('default', ['pug', 'stylus', 'watchScripts', 'watchStyl', 'watchPug', 'scripts', 'watchRiot']);
+    gulp.task('default', isMakingAReselase?
+        ['pug', 'stylus', 'scripts'] :
+        ['pug', 'stylus', 'watchScripts', 'watchStyl', 'watchPug', 'scripts', 'watchRiot']
+    );
 })();
