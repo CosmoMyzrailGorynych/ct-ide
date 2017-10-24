@@ -8,13 +8,12 @@
 npm install gulp -g
 npm install
 bower install
-gulp
+gulp --release
 ```
 
-4. После того, как процесс gulp закончит свою работу, можно будет его прекратить.
-5. Переименовываем обратно `package.json` в `package2.json`
-6. В папке `/app` выполняем `npm install`
-7. Всё, можно разрабатывать.
+4. Переименовываем обратно `package.json` в `package2.json`
+5. В папке `/app` выполняем `npm install`
+6. Всё, можно запускать.
 
 # Как запустить
 
