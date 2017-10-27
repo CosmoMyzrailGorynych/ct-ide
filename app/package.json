@@ -43,5 +43,37 @@
     "markdown-it": "3.1.0",
     "maxrects-packer": "^1.0.2",
     "uglify-js": "2.8.29"
+  },
+  "build": {
+    "appId": "rocks.ctjs",
+    "nwVersion": "0.26.0",
+    "output": "./../builds/",
+    "packed": false,
+    "strippedProperties": [
+      "scripts",
+      "devDependencies",
+      "build",
+      "stylintrc"
+    ],
+    "targets": [
+      "7z"
+    ],
+    "win": {
+      "icon": "./ct.ide.ico",
+      "companyName": "Cosmo Myzrail Gorynych",
+      "copyright": "© Cosmo Myzrail Gorynych 2016-2017"
+    },
+    "mac": {
+      "icon": "./ct.ide.icns",
+      "copyright": "© Cosmo Myzrail Gorynych 2016-2017"
+    },
+    "linux": {}
+  },
+  "scripts": {
+    "dist": "build --tasks win-x64,linux-x64,mac-x64 --mirror https://dl.nwjs.io/ .",
+    "start": "run --x86 --mirror https://dl.nwjs.io/ ."
+  },
+  "devDependencies": {
+    "nwjs-builder-phoenix": "^1.14.3"
   }
 }
