@@ -3,6 +3,7 @@ variables:
 
 build:
   image: node:8.8
+  stage: build
   script: 
     - mv ./package2.json ./package.json
     - npm install
@@ -19,7 +20,13 @@ deploy:
     - master
   stage: deploy
   script:
+    - mv ./package2.json ./package.json
+    - npm install
+    - npm install gulp -g
+    - mv ./package.json ./package2.json
+    - gulp --release
     - cd ./app
+    - npm install
     - npm run dist
     - cd ./../
-    - aws s3 cp ./ s3://$S3_BUCKET_NAME/ --recursive
+    - aws s3 cp ./builds/ s3://$S3_BUCKET_NAME/ --recursive --exclude "*" --include "*.7z"
