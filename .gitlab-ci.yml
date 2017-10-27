@@ -1,6 +1,8 @@
-image: node:8.7
+variables:
+  S3_BUCKET_NAME: ctjsrocks
 
 build:
+  image: node:8.8
   script: 
     - mv ./package2.json ./package.json
     - npm install
@@ -9,3 +11,15 @@ build:
     - gulp --release
     - cd ./app
     - npm install
+
+deploy:
+  when: manual
+  image: jacobcovington/node-awscli
+  only: 
+    - master
+  stage: deploy
+  script:
+    - cd ./app
+    - npm run dist
+    - cd ./../
+    - aws s3 cp ./ s3://$S3_BUCKET_NAME/ --recursive
