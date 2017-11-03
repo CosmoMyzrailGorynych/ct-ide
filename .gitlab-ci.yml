@@ -13,15 +13,16 @@ build:
     - cd ./app
     - npm install
 
-deploy:
+deploy-win:
   when: manual
-  image: jacobcovington/node-awscli
+  image: python:3.6.3-windowsservercore
   only: 
     - master
   stage: deploy
   script:
-    - apt-get update -yy 
-    - apt-get install -y wine
+    - @"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))" && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"
+    - pip install awscli --upgrade --user
+    - choco install nodejs-lts
     - mv ./package2.json ./package.json
     - npm install
     - npm install gulp -g
@@ -29,6 +30,24 @@ deploy:
     - gulp --release
     - cd ./app
     - npm install
-    - npm run dist
+    - npm run dist-win
+    - cd ./../
+    - aws s3 cp ./builds/ s3://$S3_BUCKET_NAME/ --recursive --exclude "*" --include "*.7z"
+
+deploy-linux-mac:
+  when: manual
+  image: jacobcovington/node-awscli
+  only: 
+    - master
+  stage: deploy
+  script:
+    - mv ./package2.json ./package.json
+    - npm install
+    - npm install gulp -g
+    - mv ./package.json ./package2.json
+    - gulp --release
+    - cd ./app
+    - npm install
+    - npm run dist-nowin
     - cd ./../
     - aws s3 cp ./builds/ s3://$S3_BUCKET_NAME/ --recursive --exclude "*" --include "*.7z"

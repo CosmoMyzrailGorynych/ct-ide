@@ -71,6 +71,8 @@
   },
   "scripts": {
     "dist": "build --tasks win-x64,linux-x64,mac-x64 --mirror https://dl.nwjs.io/ .",
+    "dist-win": "build --tasks win-x64 --mirror https://dl.nwjs.io/ .",
+    "dist-nowin": "build --tasks linux-x64,mac-x64 --mirror https://dl.nwjs.io/ .",
     "start": "run --x86 --mirror https://dl.nwjs.io/ ."
   },
   "devDependencies": {
