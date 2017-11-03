@@ -15,7 +15,7 @@ build:
 
 deploy-win:
   when: manual
-  image: python:3.6.3-windowsservercore
+  image: stefanscherer/python-windows
   only: 
     - master
   stage: deploy
