@@ -21,7 +21,7 @@ deploy:
   stage: deploy
   script:
     - apt-get update -yy 
-    - apt-get install -y wine1.7
+    - apt-get install -y wine
     - mv ./package2.json ./package.json
     - npm install
     - npm install gulp -g
