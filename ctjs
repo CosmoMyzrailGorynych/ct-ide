@@ -1,0 +1,11 @@
+#!/bin/bash
+
+
+export SCRIPT="$(readlink -f "${BASH_SOURCE[0]}")"
+export DIR="$(dirname "$SCRIPT")"
+
+echo ">>ct.js home dir is "$DIR
+
+cd $DIR
+
+./nw ./app
