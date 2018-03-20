@@ -32,11 +32,11 @@
     };
 
     var voc = tag => {
-        tag.vocGlob = window.languageJSON.global;
+        tag.vocGlob = window.languageJSON.common;
         tag.voc = window.languageJSON[tag.namespace];
         window.signals.on('updateLocales', () => {
             tag.voc = window.languageJSON[tag.namespace];
-            tag.vocGlob = window.languageJSON.global;
+            tag.vocGlob = window.languageJSON.common;
         });
     };
     window.riotVoc = {
