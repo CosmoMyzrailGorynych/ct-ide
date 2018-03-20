@@ -2,10 +2,10 @@
 
 1. Скачиваем из [nwjs.io](https://nwjs.io/downloads/) пакет с sdk для своей платформы и распаковываем в корень репозитория.
 2. Переименовываем `package2.json` в `package.json`
-3. Выполняем:
+3. Выполняем (для Windows убираем `sudo`):
 
 ```
-npm install gulp -g
+sudo npm install gulp bower -g
 npm install
 bower install
 gulp --release
