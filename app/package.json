@@ -38,7 +38,7 @@
   "dependencies": {
     "csswring": "3.0.7",
     "ffmpeg-node": "git://github.com/xonecas/ffmpeg-node.git",
-    "fs-extra": "0.18.4",
+    "fs-extra": "5.0.0",
     "html-minifier": "0.7.2",
     "markdown-it": "3.1.0",
     "maxrects-packer": "^1.0.2",
