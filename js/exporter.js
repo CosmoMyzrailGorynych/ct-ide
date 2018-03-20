@@ -112,56 +112,49 @@
             var o = {},
                 s = window.currentProject.styles[styl];
             if (s.fill) {
+                console.log(s.fill);
                 o.fill = {};
-                if (s.fill.type === 0) {
+                if (s.fill.type == 0) {
                     o.fill.type = 'solid';
                     o.fill.color = s.fill.color;
-                }
-                if (s.fill.type === 2) {
+                } else if (s.fill.type == 2) {
                     o.fill.type = 'pattern';
                     o.fill.name = s.fill.patname;
-                }
-                if (s.fill.type === 1) {
-                    if (s.fill.gradtype > 1) {
+                } else if (s.fill.type == 1) {
+                    o.fill.colors = [{
+                        pos: 0,
+                        color: s.fill.color1
+                    }, {
+                        pos: 1,
+                        color: s.fill.color2
+                    }];
+                    if (s.fill.gradtype != 0) {
                         o.fill.type = 'grad';
-                        o.fill.colors = [{
-                            pos: 0,
-                            color: s.fill.color1
-                        }, {
-                            pos: 1,
-                            color: s.fill.color2
-                        }];
                         o.fill.x1 = o.fill.y1 = o.fill.x2 = o.fill.y2 = 0;
-                        if (s.fill.gradtype === 2) {
+                        if (s.fill.gradtype == 2) {
                             o.fill.x2 = s.fill.gradsize;
                         } else {
                             o.fill.y2 = s.fill.gradsize;
                         }
                     } else {
                         o.fill.type = 'radgrad';
-                        o.fill.colors = [{
-                            pos: 0,
-                            color: s.fill.color1
-                        }, {
-                            pos: 1,
-                            color: s.fill.color2
-                        }];
                         o.fill.r = s.fill.gradsize;
                     }
                 }
             } else {
                 o.fill = false;
             }
+            console.log(o.fill);
             o.border = s.stroke; // TODO: fix catmods
             o.text = s.font;
             o.shadow = s.shadow;
             styles += `
 ct.styles.new(
     "${s.name}",
-    ${JSON.stringify(o.fill,'    ')},
-    ${JSON.stringify(o.border,'    ')},
-    ${JSON.stringify(o.text,'    ')},
-    ${JSON.stringify(o.shadow,'    ')});
+    ${JSON.stringify(o.fill, null, '    ')},
+    ${JSON.stringify(o.border, null, '    ')},
+    ${JSON.stringify(o.text, null, '    ')},
+    ${JSON.stringify(o.shadow, null, '    ')});
 `;
         }
         return styles;
@@ -202,8 +195,8 @@ ct.styles.new(
 ct.rooms['${r.name}'] = {
     width: '${r.width}',
     height: '${r.height}',
-    objects: ${JSON.stringify(objs)},
-    bgs: ${JSON.stringify(bgsCopy)},
+    objects: ${JSON.stringify(objs, null, '    ')},
+    bgs: ${JSON.stringify(bgsCopy, null, '    ')},
     onStep() {
         ${window.currentProject.rooms[k].onstep}
     },
