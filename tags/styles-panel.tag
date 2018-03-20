@@ -3,7 +3,9 @@ styles-panel.panel.view
         i.icon.icon-add
         span {voc.create}
     ul.cards
-        li(each="{style in window.currentProject.styles}" onclick="{openStyle(style)}" oncontextmenu="{onStyleContextMenu}")
+        li(each="{style in window.currentProject.styles}" 
+           onclick="{openStyle(style)}" 
+           oncontextmenu="{onStyleContextMenu(style)}")
             span {style.name}
             img(src="file://{window.sessionStorage.projdir + '/img/s' + style.uid}_prev.png")
     style-editor(if="{editingStyle}" styleobj="{editedStyle}")
@@ -37,9 +39,10 @@ styles-panel.panel.view
         
         // Контекстное меню для управления стилями по нажатию ПКМ по карточкам
         var styleMenu = new gui.Menu();
-        this.onStyleContextMenu = e => {
+        this.onStyleContextMenu = style => e => {
             this.editedStyle = e.item.style;
             styleMenu.popup(e.clientX, e.clientY);
+            e.preventDefault();
         };
         styleMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.open,
