@@ -1,7 +1,7 @@
 ct.styles = {
     types: { },
     new(name, fill, stroke, text, shadow) {
-        // style constructor. Returns Style
+        // style factory. Returns Style
         var style = {};
         if (fill) {
             if (fill.type === 'solid') {
@@ -27,7 +27,7 @@ ct.styles = {
             style.lineWidth = stroke.width;
         }
         if (text) {
-            style.font = text.size + 'px ' + text.family;
+            style.font = (text.italic? 'italic ' : '') + (text.weight || 400) + ' ' + text.size + 'px ' + text.family;
             if (text.valign) {
                 style.textBaseline = text.valign;
             }
