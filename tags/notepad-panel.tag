@@ -21,7 +21,8 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
         i.icon(class="icon-{opened? 'chevron-right' : 'chevron-left'}")
     script.
         this.opened = false;
-        this.voc = window.languageJSON.notepad;
+        this.namespace = 'notepad';
+        this.mixin(window.riotVoc);
         this.notepadToggle = function() {
             this.opened = !this.opened;
         };

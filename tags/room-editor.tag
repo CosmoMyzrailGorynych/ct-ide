@@ -79,10 +79,11 @@ room-editor.panel.view
         this.editingCode = false;
         this.pickingBackground = false;
         this.forbidDrawing = false;
-        this.voc = window.languageJSON.roomview;
         const fs = require('fs-extra'),
               gui = require('nw.gui');
         const win = gui.Window.get();
+        this.namespace = 'roomview';
+        this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
         
         this.room = this.opts.room;

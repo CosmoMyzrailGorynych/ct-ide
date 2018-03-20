@@ -1,5 +1,4 @@
 (function () {
-
     /* global nw */
     document.body.addEventListener('click',function(e) {
         if (e.target && e.target.matches('a')) {

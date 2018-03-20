@@ -8,7 +8,8 @@ types-panel.panel.view
             img(src="{type.graph !== -1 ? 'file://' + sessionStorage.projdir + '/img/' + type.graph + '_prev.png?' + getTypeGraphRevision(type) : '/img/nograph.png'}")
     type-editor(if="{editingType}" type="{editedType}")
     script.
-        this.voc = window.languageJSON.types;
+        this.namespace = 'types';
+        this.mixin(window.riotVoc);
         const gui = require('nw.gui');
         this.editingType = false;
         

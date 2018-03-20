@@ -150,8 +150,9 @@ style-editor.panel.view
     script.
         const fs = require('fs-extra');
 
+        this.namespace = 'styleview';
+        this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
-        this.voc = window.languageJSON.styleview;
         this.styleobj = this.opts.styleobj;
         
         this.changingAnyColor = false;

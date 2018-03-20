@@ -54,8 +54,8 @@ color-picker
                 span  {vocGlob.apply}
     script.
         const Color = net.brehaut.Color;
-        this.voc = window.languageJSON.colorPicker;
-        this.vocGlob = window.languageJSON.common;
+        this.namespace = 'colorPicker';
+        this.mixin(window.riotVoc);
 
         this.loadColor = color => {
             this.color = Color(color);

@@ -43,8 +43,11 @@ main-menu.flexcol
         types-panel(show="{tab === 'types'}")
         rooms-panel(show="{tab === 'rooms'}")
     script.
-        this.voc = window.languageJSON.menu;
-        const fs = require('fs-extra');
+        const fs = require('fs-extra'),
+              path = require('path');
+
+        this.namespace = 'menu';
+        this.mixin(window.riotVoc);
 
         this.tab = 'settings';
         this.changeTab = tab => e => {
@@ -95,6 +98,11 @@ main-menu.flexcol
             }
         }));
         catMenu.append(new gui.MenuItem({type: 'separator'}));
+        var languageSubmenu = new nw.Menu();
+        catMenu.append(new gui.MenuItem({
+            label: window.languageJSON.common.language,
+            submenu: languageSubmenu
+        }))
         catMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.ctsite,
             click: function () {
@@ -114,3 +122,36 @@ main-menu.flexcol
                 });
             }
         }));
+
+        this.switchLanguage = filename => {
+            try {
+                const vocDefault = fs.readJSONSync('./i18n/English.json');
+                const voc = fs.readJSONSync(`./i18n/${filename}.json`);
+                console.log('loaded');
+                window.languageJSON = window.___extend(vocDefault, voc);
+                localStorage.appLanguage = filename;
+                window.signals.trigger('updateLocales');
+                window.riot.update();
+                console.log('changed');
+            } catch(e) {
+                alert('Could not open a language file: ' + e);
+            }
+        };
+        var switchLanguage = this.switchLanguage;
+
+        fs.readdir('./i18n/')
+        .then(files => {
+            files.forEach(filename => {
+                var file = filename.slice(0, -5);
+                languageSubmenu.append(new nw.MenuItem({
+                    label: file,
+                    click: function() {
+                        console.log('clicked');
+                        switchLanguage(file);
+                    }
+                }));
+            });
+        })
+        .catch(e => {
+            alert('Could not get i18n files: ' + e);
+        });

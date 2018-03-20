@@ -26,7 +26,8 @@ room-events-editor.view.panel
         i.icon.icon-confirm
         span {voc.done}
     script.
-        this.voc = window.languageJSON.roomview;
+        this.namespace = 'roomview';
+        this.mixin(window.riotVoc);
         this.tab = 'roomcreate';
         this.switchTab = tab => e => {
             this.tab = tab;

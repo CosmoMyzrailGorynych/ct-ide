@@ -30,4 +30,18 @@
             this.wire = wire.bind(this, this);
         }
     };
+
+    var voc = tag => {
+        tag.vocGlob = window.languageJSON.global;
+        tag.voc = window.languageJSON[tag.namespace];
+        window.signals.on('updateLocales', () => {
+            tag.voc = window.languageJSON[tag.namespace];
+            tag.vocGlob = window.languageJSON.global;
+        });
+    };
+    window.riotVoc = {
+        init() {
+            voc(this);
+        }
+    };
 })(this);

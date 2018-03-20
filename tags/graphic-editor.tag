@@ -152,7 +152,8 @@ graphic-editor.panel.view
     script.
         const path = require('path'),
               fs = require('fs-extra');
-        this.voc = window.languageJSON.graphview;
+        this.namespace = 'graphview';
+        this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
         
         this.prevPlaying = true;

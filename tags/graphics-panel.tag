@@ -31,7 +31,8 @@ graphics-panel.panel.view
         const fs = require('fs-extra'),
               path = require('path'),
               gui = require('nw.gui');
-        this.voc = window.languageJSON.graphic;
+        this.namespace = 'graphic';
+        this.mixin(window.riotVoc);
         this.editing = false;
         this.dropping = false;
         

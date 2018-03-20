@@ -13,7 +13,8 @@ rooms-panel.panel.view
             span {room.name}
     room-editor(if="{editing}" room="{editingRoom}")
     script.
-        this.voc = window.languageJSON.rooms;
+        this.namespace = 'rooms';
+        this.mixin(window.riotVoc);
         this.editing = false;
         const gui = require('nw.gui'),
               fs = require('fs-extra'),

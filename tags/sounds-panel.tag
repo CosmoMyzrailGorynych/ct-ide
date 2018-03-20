@@ -12,7 +12,8 @@ sounds-panel.panel.view
             img(src="/img/wave.png")
     sound-editor(if="{editing}" sound="{editedSound}")
     script.
-        this.voc = window.languageJSON.sounds;
+        this.namespace = 'sounds';
+        this.mixin(window.riotVoc);
         const gui = require('nw.gui');
         
         this.soundNew = e => {

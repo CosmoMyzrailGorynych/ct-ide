@@ -23,7 +23,8 @@ sound-editor.panel.view
             span {voc.save}
     script.
         const path = require('path');
-        this.voc = window.languageJSON.soundview;
+        this.namespace = 'soundview';
+        this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
         this.playing = false;
         this.sound = this.opts.sound;

@@ -46,7 +46,7 @@
                 sound: true,
                 wait: true
             });
-            console.error('[pug error]', err);
+            console.error('[riot error]', err);
         })
         .on('change', fileChangeNotifier);
     });
@@ -143,10 +143,8 @@
         .pipe(gulp.dest('./app/'));
     });
     gulp.task('pug', function () {
-        var locales = JSON.parse(fs.readFileSync('./app/i18n/Ru.json'));
         return gulp.src('./pug/*.pug')
         .pipe(pug({
-            locals: locales,
             pretty: false
         }))
         .on('error', err => {

@@ -100,9 +100,10 @@ modules-panel.panel.view
         });
         this.md = md;
         this.mixin(window.riotWired);
+        this.namespace = 'modules';
+        this.mixin(window.riotVoc);
         var exec = path.dirname(process.execPath).replace(/\\/g,'/');
         
-        this.voc = window.languageJSON.modules;
         this.currentModule = false;
         this.currentModuleHelp = '';
         this.currentModuleLicense = '';

@@ -36,7 +36,8 @@ project-selector
         const fs = require('fs-extra'),
               path = require('path');
         this.requirePath = path;
-        this.voc = window.languageJSON.intro;
+        this.namespace = 'intro';
+        this.mixin(window.riotVoc);
         this.visible = true;
         this.projectSplash = '/img/nograph.png';
         

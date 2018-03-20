@@ -9,7 +9,9 @@ styles-panel.panel.view
     style-editor(if="{editingStyle}" styleobj="{editedStyle}")
     script.
         this.editingStyle = false;
-        this.voc = window.languageJSON.styles;
+        
+        this.namespace = 'styles';
+        this.mixin(window.riotVoc);
         
         const gui = require('nw.gui');
         

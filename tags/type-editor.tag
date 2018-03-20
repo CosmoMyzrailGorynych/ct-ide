@@ -39,7 +39,8 @@ type-editor.panel.view.flexrow
                     .acer(ref="typeondestroy")
     graphic-selector(if="{selectingGraphic}" onselected="{applyGraphic}" ref="graphicselector" showempty="sure")
     script.
-        this.voc = window.languageJSON.typeview;
+        this.namespace = 'typeview';
+        this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
 
         this.getTypeGraphRevision = type => window.glob.graphmap[type.graph].g.lastmod;

@@ -11,7 +11,7 @@
     const os = require('os'),
         fs = require('fs-extra');
 
-    window.languageJSON = JSON.parse(fs.readFileSync('./i18n/Ru.json'));
+    window.languageJSON = JSON.parse(fs.readFileSync(`./i18n/${localStorage.appLanguage || 'English'}.json`));
 
     // OS type vars
     window.isWin = (/win[0-9]+/).test(os.platform());

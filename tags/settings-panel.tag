@@ -43,6 +43,7 @@ settings-panel.panel.view
                 input#gamepreloaderfile(type="file" accept=".png, .jpg, .gif")
             #preloaderpreview.pt40.tall
     script.
-        this.voc = window.languageJSON.settings;
+        this.namespace = 'settings';
+        this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
         this.currentProject = window.currentProject;

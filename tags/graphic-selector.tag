@@ -10,3 +10,5 @@ graphic-selector.panel.view
             img(src="file://{sessionStorage.projdir + '/img/' + graphic.origname + '_prev.png'}")
     script.
         this.onselected = this.opts.onselected;
+        this.namespace = 'common';
+        this.mixin(window.riotVoc);
