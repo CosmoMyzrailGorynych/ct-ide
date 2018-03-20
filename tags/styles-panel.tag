@@ -5,7 +5,7 @@ styles-panel.panel.view
     ul.cards
         li(each="{style in window.currentProject.styles}" onclick="{openStyle(style)}" oncontextmenu="{onStyleContextMenu}")
             span {style.name}
-            img(src="{window.sessionStorage.projdir + '/img/s' + style.uid + '_prev.png'}")
+            img(src="file://{window.sessionStorage.projdir + '/img/s' + style.uid}_prev.png")
     style-editor(if="{editingStyle}" styleobj="{editedStyle}")
     script.
         this.editingStyle = false;
