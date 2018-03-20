@@ -23,7 +23,7 @@ color-picker
                 .aRangePipeStack
                     .pipe.huebar
                     .pipe(style="background-color: rgba(255, 255, 255, {1 - color.getSaturation()});")
-                    .pipe(style="background-color: rgba(0, 0, 0, {1 - color.getLightness()});")
+                    .pipe(style="background-color: rgba(0, 0, 0, {1 - color.getValue()});")
                     input.transparent(type="range" value="{color.getHue()}" min="0" max="359" oninput="{updateHue}")
                 input.short(type="number" min="0" max="359" value="{color.getHue()}" onchange="{updateHue}")
             .flexrow
@@ -46,10 +46,10 @@ color-picker
             input.wide(type="text" ref="colorValue" value="{color.toString()}" onchange="{tryInputColor}")
         .clear
         .flexrow.color-picker-Buttons
-            button(onclick="{cancelColor}")
+            button.nml(onclick="{cancelColor}")
                 i.icon-times
                 span  {vocGlob.cancel}
-            button(onclick="{applyColor}")
+            button.nmr(onclick="{applyColor}")
                 i.icon-apply
                 span  {vocGlob.apply}
     script.
@@ -62,7 +62,7 @@ color-picker
             this.color = this.color.setValue(this.color.getValue());
             this.oldColor = Color(color);
         };
-        this.loadColor(this.opts.color);
+        this.loadColor(this.opts.color || '#ffffff');
 
         if (!('palette' in window.currentProject)) {
             window.currentProject.palette = [];
@@ -119,11 +119,13 @@ color-picker
         };
 
         this.notifyUpdates = () => {
+            this.dark = this.color.getLuminance() < 0.5;
             if (this.opts.onchanged) {
                 this.opts.onchanged(this.color.toString(), 'onchanged');
             }
         };
         this.applyColor = e => {
+            this.dark = this.color.getLuminance() < 0.5;
             if (this.opts.onapply) {
                 this.opts.onapply(this.color.toString(), 'onapply');
             }
