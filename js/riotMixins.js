@@ -1,5 +1,5 @@
 (window => {
-    var wire = (that, field) => e => {
+    var wire = (that, field, update) => e => {
         var way = field.split('.'),
             root, val;
         if (way[0] === 'this') {
@@ -21,6 +21,9 @@
         }
         root[way[0]] = val;
         window.glob.modified = true;
+        if (update && ('update' in that)) {
+            that.update();
+        }
     };
     window.riotWired = {
         init() {
