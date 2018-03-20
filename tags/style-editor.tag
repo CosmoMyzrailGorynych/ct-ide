@@ -65,16 +65,13 @@ style-editor.panel.view
                         .solidfill(if="{styleobj.fill.type == 0}")
                             b {voc.fillcolor}
                             br
-                            input#fillcolor.color(type="text" onchange="{wire('this.styleobj.fill.color')}")
+                            color-input(onchange="{wire('this.styleobj.fill.color', true)}" value="{styleobj.fill.color}")
                         .gradientfill(if="{styleobj.fill.type == 1}")
                             b {voc.fillcolor1}
-                            br
-                            input#fillcolor1.color(type="text" onchange="{wire('this.styleobj.fill.color1')}")
-                            br
+                            color-input(onchange="{wire('this.styleobj.fill.color1', true)}" value="{styleobj.fill.color1}")
                             br
                             b {voc.fillcolor2}
-                            br
-                            input#fillcolor2.color(type="text" onchange="{wire('this.styleobj.fill.color2')}")
+                            color-input(onchange="{wire('this.styleobj.fill.color2', true)}" value="{styleobj.fill.color2}")
                             br
                             br
                             b {voc.fillgradtype}
@@ -109,9 +106,7 @@ style-editor.panel.view
                         span {voc.active}
                     #stylestrokeinner(disabled="{!styleobj.stroke}")
                         b {voc.strokecolor}
-                        br
-                        input#strokecolor.color(type="text" value="{styleobj.stroke.color}" onchange="{wire('this.styleobj.stroke.color')}")
-                        br
+                        color-input(onchange="{wire('this.styleobj.stroke.color', true)}" value="{styleobj.stroke.color}")
                         br
                         b {voc.strokeweight}
                         br
@@ -123,9 +118,7 @@ style-editor.panel.view
                         span {voc.active}
                     #styleshadowinner
                         b {voc.shadowcolor}
-                        br
-                        input#shadowcolor.color(type="text" value="{styleobj.shadow.color}" onchange="{wire('this.styleobj.shadow.color')}")
-                        br
+                        color-input(onchange="{wire('this.styleobj.shadow.color', true)}" value="{styleobj.shadow.color}")
                         br
                         b {voc.shadowshift}
                         br
@@ -149,6 +142,7 @@ style-editor.panel.view
         this.voc = window.languageJSON.styleview;
         this.styleobj = this.opts.styleobj;
         
+        this.changingAnyColor = false;
         this.tab = 'stylefont';
         this.changeTab = tab => e => {
             this.tab = tab;
@@ -273,7 +267,7 @@ style-editor.panel.view
                         this.styleobj.fill.color2 = '#000';
                     }
                     if (this.styleobj.fill.gradtype == 0) {
-                        grad = canv.x.createRadialGradient(
+                        grad = cx.createRadialGradient(
                             this.styleobj.fill.gradsize,
                             this.styleobj.fill.gradsize,
                             0,
@@ -281,7 +275,7 @@ style-editor.panel.view
                             this.styleobj.fill.gradsize,
                             this.styleobj.fill.gradsize);
                     } else if (this.styleobj.fill.gradtype == 1) {
-                        grad = canv.x.createLinearGradient(0, 0, 0, this.styleobj.fill.gradsize);
+                        grad = cx.createLinearGradient(0, 0, 0, this.styleobj.fill.gradsize);
                     } else {
                         grad = cx.createLinearGradient(0, 0, this.styleobj.fill.gradsize, 0);
                     }

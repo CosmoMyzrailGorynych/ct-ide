@@ -1,5 +1,5 @@
 styles-panel.panel.view
-    button#stylecreate(onclick="styleCreate")
+    button#stylecreate(onclick="{styleCreate}")
         i.icon.icon-add
         span {voc.create}
     ul.cards
