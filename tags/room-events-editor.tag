@@ -1,17 +1,17 @@
 room-events-editor.view.panel
     .tabwrap
         ul.tabs.nav.nogrow.noshrink
-            li(onclick="{changeTab('roomcreate')}" class="{active: tab === 'roomcreate'}")
-                i.icon.icon-lamp
+            li(onclick="{switchTab('roomcreate')}" class="{active: tab === 'roomcreate'}")
+                i.icon.icon-sun
                 span {voc.create}
-            li(onclick="{changeTab('roomstep')}" class="{active: tab === 'roomstep'}")
-                i.icon.icon-timer
+            li(onclick="{switchTab('roomstep')}" class="{active: tab === 'roomstep'}")
+                i.icon.icon-next
                 span {voc.step}
-            li(onclick="{changeTab('roomdraw')}" class="{active: tab === 'roomdraw'}")
-                i.icon.icon-brush
+            li(onclick="{switchTab('roomdraw')}" class="{active: tab === 'roomdraw'}")
+                i.icon.icon-edit-2
                 span {voc.draw}
-            li(onclick="{changeTab('roomleave')}" class="{active: tab === 'roomleave'}")
-                i.icon.icon-exit
+            li(onclick="{switchTab('roomleave')}" class="{active: tab === 'roomleave'}")
+                i.icon.icon-trash
                 span {voc.leave}
         div(style="position: relative;")
             .tabbed(show="{tab === 'roomcreate'}")
@@ -22,7 +22,7 @@ room-events-editor.view.panel
                 .acer(ref="roomondraw")
             .tabbed(show="{tab === 'roomleave'}")
                 .acer(ref="roomonleave")
-    button.wide.nogrow.noshrink(data-event="roomSaveEvents")
+    button.wide.nogrow.noshrink(onclick="{roomSaveEvents}")
         i.icon.icon-confirm
         span {voc.done}
     script.
@@ -59,17 +59,26 @@ room-events-editor.view.panel
                 this.roomonstep = window.setupAceEditor(this.refs.roomonstep, editorOptions);
                 this.roomondraw = window.setupAceEditor(this.refs.roomondraw, editorOptions);
                 this.roomonleave = window.setupAceEditor(this.refs.roomonleave, editorOptions);
-                this.roomoncreate.session.on('change', function(e) {
+                this.roomoncreate.session.on('change', e => {
                     this.room.oncreate = this.roomoncreate.getValue();
                 });
-                this.roomonstep.session.on('change', function(e) {
+                this.roomonstep.session.on('change', e => {
                     this.room.onstep = this.roomonstep.getValue();
                 });
-                this.roomondraw.session.on('change', function(e) {
+                this.roomondraw.session.on('change', e => {
                     this.room.ondraw = this.roomondraw.getValue();
                 });
-                this.roomonleave.session.on('change', function(e) {
+                this.roomonleave.session.on('change', e => {
                     this.room.onleave = this.roomonleave.getValue();
                 });
+                this.roomoncreate.setValue(this.room.oncreate);
+                this.roomonstep.setValue(this.room.onstep);
+                this.roomondraw.setValue(this.room.ondraw);
+                this.roomonleave.setValue(this.room.onleave);
+
             }, 0);
         });
+        this.roomSaveEvents = e => {
+            this.parent.editingCode = false;
+            this.parent.update();
+        };
