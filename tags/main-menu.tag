@@ -83,12 +83,10 @@ main-menu.flexcol
         var catMenu = new gui.Menu();
         catMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.save,
-            icon: (window.isMac ? './img/black/' : './img/blue/') + 'save.png',
             click: this.saveProject
         }));
         catMenu.append(new gui.MenuItem({
             label: window.languageJSON.menu.startscreen,
-            icon: (window.isMac ? './img/black/' : './img/blue/') + 'folder.png',
             click: (e) => {
                 if (!confirm(window.languageJSON.common.reallyexit)) {
                     return false;
@@ -99,15 +97,13 @@ main-menu.flexcol
         catMenu.append(new gui.MenuItem({type: 'separator'}));
         catMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.ctsite,
-            icon: (window.isMac ? './img/black/' : './img/blue/') + 'arrow.png',
             click: function () {
-                gui.Shell.openExternal('http://ctjs.ru/');
+                gui.Shell.openExternal('https://ctjs.rocks/');
             }
         }));
         catMenu.append(new gui.MenuItem({type: 'separator'}));
         catMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.exit,
-            icon: (window.isMac ? './img/black/' : './img/blue/') + 'exit.png',
             click: function (e) {
                 alertify
                 .confirm(window.languageJSON.common.exitconfirm)
