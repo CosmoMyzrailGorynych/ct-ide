@@ -374,7 +374,33 @@
       "lastmod": 1508402430765
     }
   ],
-  "styles": [],
+  "styles": [
+    {
+      "name": "style1",
+      "shadow": false,
+      "fill": {
+        "type": "1",
+        "gradsize": 28,
+        "color1": "#7DFFF8",
+        "color2": "#0044FF",
+        "gradtype": "1"
+      },
+      "font": {
+        "family": "sans-serif",
+        "size": 24,
+        "weight": "900",
+        "italic": true,
+        "valign": "top",
+        "halign": "left"
+      },
+      "uid": 1,
+      "origname": "s1",
+      "stroke": {
+        "color": "#4583FF",
+        "weight": 1
+      }
+    }
+  ],
   "rooms": [
     {
       "name": "inGame",
@@ -416,7 +442,7 @@
   "soundtick": 4,
   "roomtick": 1,
   "typetick": 5,
-  "styletick": 0,
+  "styletick": 1,
   "starting": 0,
   "settings": {
     "minifyhtmlcss": false,

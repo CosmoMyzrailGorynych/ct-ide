@@ -7,10 +7,10 @@ color-input
     )
     script.
         this.opened = false;
+        this.value = this.lastValue = this.opts.color || '#FFFFFF'; 
         this.openPicker = e => {
             this.opened = !this.opened;
         };
-        this.value = this.lastValue = this.opts.value || '#FFFFFF'; 
         this.applyColor = color => {
             this.value = color;
             this.dark = this.refs.colorPicker.dark;
@@ -30,7 +30,7 @@ color-input
             this.update();
         };
         this.on('update', () => {
-            if (this.lastValue != this.opts.value) {
-                this.value = this.lastValue = this.opts.value;
+            if (this.lastValue != this.opts.color) {
+                this.value = this.lastValue = this.opts.color || '#FFFFFF';
             }
         });

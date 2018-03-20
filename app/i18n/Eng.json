@@ -162,6 +162,8 @@
         "fillvertical": "Vertical",
         "findpat": "Find...",
         "font": "Font",
+        "fontweight": "Weight:",
+        "italic": "Italic",
         "fontfamily": "Font family:",
         "fontsize": "Font size:",
         "shadow": "Shadow",

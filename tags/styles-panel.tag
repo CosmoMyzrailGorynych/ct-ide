@@ -5,11 +5,11 @@ styles-panel.panel.view
     ul.cards
         li(each="{style in window.currentProject.styles}" onclick="{openStyle(style)}" oncontextmenu="{onStyleContextMenu}")
             span {style.name}
-            img(src="{window.sessionStorage.projdir + '/img/s' + style.uid + '.png'}")
+            img(src="{window.sessionStorage.projdir + '/img/s' + style.uid + '_prev.png'}")
     style-editor(if="{editingStyle}" styleobj="{editedStyle}")
     script.
         this.editingStyle = false;
-        this.voc = window.languageJSON.styles
+        this.voc = window.languageJSON.styles;
         
         const gui = require('nw.gui');
         
@@ -21,7 +21,8 @@ styles-panel.panel.view
                 stroke: false,
                 fill: false,
                 font: false,
-                uid: window.currentProject.styletick
+                uid: window.currentProject.styletick,
+                origname: 's' + window.currentProject.styletick
             };
             window.currentProject.styles.push(obj);
             this.editedStyle = obj;

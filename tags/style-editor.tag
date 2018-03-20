@@ -9,9 +9,9 @@ style-editor.panel.view
             div(style="overflow: auto;")
                 #stylefont.tabbed(show="{tab === 'stylefont'}")
                     label
-                        input#iftochangefont(type="checkbox" onchange="{styleToggleFont}")
+                        input#iftochangefont(type="checkbox" onchange="{styleToggleFont}" checked="{'font' in styleobj}")
                         span {voc.active}
-                    #stylefontinner(disabled="{!styleobj.font}")
+                    #stylefontinner(if="{styleobj.font}")
                         b {voc.fontfamily}
                         input#fontfamily.wide(type="text" value="{styleobj.font.family || 'sans-serif'}" onchange="{wire('this.styleobj.font.family')}")
                         br
@@ -19,6 +19,17 @@ style-editor.panel.view
                         br
                         input#fontsize.short(type="number" value="{styleobj.font.size || '12'}" onchange="{wire('this.styleobj.font.size')}" step="1")
                         #fontsizeslider
+                        label
+                            b {voc.fontweight}
+                            br
+                            select(value="{styleobj.font.weight}" onchange="{wire('this.styleobj.font.weight')}")
+                                each val in [100, 200, 300, 400, 500, 600, 700, 800, 900]
+                                    option(value=val)= val
+                        br
+                        label
+                            input(type="checkbox" checked="{styleobj.font.italic}" onchange="{wire('this.styleobj.font.italic')}")
+                            span   {voc.italic}
+                        br
                         br
                         b {voc.alignment}
                         .align.buttonselect
@@ -44,35 +55,34 @@ style-editor.panel.view
                                 i.icon.icon-align-right
                 #stylefill.tabbed(show="{tab === 'stylefill'}")
                     label
-                        input#iftochangefill(type="checkbox" checked="{styleobj.fill}" onchange="{styleToggleFill}")
+                        input#iftochangefill(type="checkbox" checked="{'fill' in styleobj}" onchange="{styleToggleFill}")
                         span {voc.active}
-                    #stylefillinner(disabled="{!styleobj.fill}")
+                    #stylefillinner(if="{styleobj.fill}")
                         b {voc.filltype}
                         br
                         label
-                            input(type="radio" value="0" name="filltype" onchange="{wire('this.styleobj.fill.type')}")
+                            input(type="radio" value="0" name="filltype" checked="{styleobj.fill.type == 0}" onchange="{wire('this.styleobj.fill.type')}")
                             span {voc.fillsolid}
                         br
                         label
-                            input(type="radio" value="1" name="filltype" onchange="{wire('this.styleobj.fill.type')}")
+                            input(type="radio" value="1" name="filltype" checked="{styleobj.fill.type == 1}" onchange="{wire('this.styleobj.fill.type')}")
                             span {voc.fillgrad}
                         br
                         label
-                            input(type="radio" value="2" name="filltype" onchange="{wire('this.styleobj.fill.type')}")
+                            input(type="radio" value="2" name="filltype" checked="{styleobj.fill.type == 2}" onchange="{wire('this.styleobj.fill.type')}")
                             span {voc.fillpattern}
                         br
                         br
                         .solidfill(if="{styleobj.fill.type == 0}")
                             b {voc.fillcolor}
                             br
-                            color-input(onchange="{wire('this.styleobj.fill.color', true)}" value="{styleobj.fill.color}")
+                            color-input(onchange="{wire('this.styleobj.fill.color', true)}" color="{styleobj.fill.color}")
                         .gradientfill(if="{styleobj.fill.type == 1}")
                             b {voc.fillcolor1}
-                            color-input(onchange="{wire('this.styleobj.fill.color1', true)}" value="{styleobj.fill.color1}")
+                            color-input(onchange="{wire('this.styleobj.fill.color1', true)}" color="{styleobj.fill.color1}")
                             br
                             b {voc.fillcolor2}
-                            color-input(onchange="{wire('this.styleobj.fill.color2', true)}" value="{styleobj.fill.color2}")
-                            br
+                            color-input(onchange="{wire('this.styleobj.fill.color2', true)}" color="{styleobj.fill.color2}")
                             br
                             b {voc.fillgradtype}
                             br
@@ -102,11 +112,11 @@ style-editor.panel.view
                                 span {voc.findpat}
                 #stylestroke.tabbed(show="{tab === 'stylestroke'}")
                     label
-                        input#iftochangestroke(type="checkbox" checked="{styleobj.stroke}" onchange="{styleToggleStroke}")
+                        input#iftochangestroke(type="checkbox" checked="{'stroke' in styleobj}" onchange="{styleToggleStroke}")
                         span {voc.active}
-                    #stylestrokeinner(disabled="{!styleobj.stroke}")
+                    #stylestrokeinner(if="{styleobj.stroke}")
                         b {voc.strokecolor}
-                        color-input(onchange="{wire('this.styleobj.stroke.color', true)}" value="{styleobj.stroke.color}")
+                        color-input(onchange="{wire('this.styleobj.stroke.color', true)}" color="{styleobj.stroke.color}")
                         br
                         b {voc.strokeweight}
                         br
@@ -114,11 +124,11 @@ style-editor.panel.view
                         #strokeweightslider
                 #styleshadow.tabbed(show="{tab === 'styleshadow'}")
                     label
-                        input#iftochangeshadow(type="checkbox" onchange="{styleToggleShadow}")
+                        input#iftochangeshadow(type="checkbox" checked="{'shadow' in styleobj}" onchange="{styleToggleShadow}")
                         span {voc.active}
-                    #styleshadowinner
+                    #styleshadowinner(if="{styleobj.shadow}")
                         b {voc.shadowcolor}
-                        color-input(onchange="{wire('this.styleobj.shadow.color', true)}" value="{styleobj.shadow.color}")
+                        color-input(onchange="{wire('this.styleobj.shadow.color', true)}" color="{styleobj.shadow.color}")
                         br
                         b {voc.shadowshift}
                         br
@@ -138,6 +148,8 @@ style-editor.panel.view
         canvas(width="550" height="400" ref="canvas")
     graphic-selector(if="{selectingGraphic}" ref="graphicselector")
     script.
+        const fs = require('fs-extra');
+
         this.mixin(window.riotWired);
         this.voc = window.languageJSON.styleview;
         this.styleobj = this.opts.styleobj;
@@ -160,10 +172,12 @@ style-editor.panel.view
             if (!this.styleobj.font) {
                 this.styleobj.font = {
                     family: 'sans-serif',
-                    size: 12
+                    size: 12,
+                    weight: 400,
+                    italic: false
                 };
             } else {
-                this.styleobj.font = false;
+                delete this.styleobj.font;
             }
         };
         this.styleSetAlign = align => e => {
@@ -173,7 +187,7 @@ style-editor.panel.view
         };
         this.styleToggleFill = () => {
             if (this.styleobj.fill) {
-                this.styleobj.fill = false;
+                delete this.styleobj.fill;
             } else {
                 this.styleobj.fill = {
                     
@@ -182,7 +196,7 @@ style-editor.panel.view
         };
         this.styleToggleStroke = function() {
             if (this.styleobj.stroke) {
-                this.styleobj.stroke = false;
+                delete this.styleobj.stroke;
             } else {
                 this.styleobj.stroke = {
                     color: '#000000',
@@ -192,7 +206,7 @@ style-editor.panel.view
         };
         this.styleToggleShadow = function() {
             if (this.styleobj.shadow) {
-                this.styleobj.shadow = false;
+                delete this.styleobj.shadow;
             } else {
                 this.styleobj.shadow = {
                     color: '#000000',
@@ -252,7 +266,7 @@ style-editor.panel.view
         };
         this.styleSet = function (cx) {
             if (this.styleobj.font) {
-                cx.font = this.styleobj.font.size + 'px ' + this.styleobj.font.family;
+                cx.font = (this.styleobj.font.italic? 'italic ' :'') + this.styleobj.font.weight + ' '+this.styleobj.font.size + 'px ' + this.styleobj.font.family;
                 cx.textBaseline = this.styleobj.font.valign;
                 cx.textAlign = this.styleobj.font.halign;
             }
@@ -313,7 +327,9 @@ style-editor.panel.view
         // генерация превьюхи стиля
         this.styleRedrawPreview = () => {
             var canv = this.refs.canvas;
-            canv.x.fillStyle = canv.x.createPattern(canv.x.img, 'repeat');
+            if (canv.x.img) {
+                canv.x.fillStyle = canv.x.createPattern(canv.x.img, 'repeat');
+            }
             canv.x.clearRect(0, 0, canv.width, canv.height);
             canv.x.beginPath();
             canv.x.rect(100, 100, 100, 100);
@@ -333,9 +349,50 @@ style-editor.panel.view
                 canv.x.strokeText(window.languageJSON.styleview.testtext, canv.width / 2, 300);
             }
         };
-        this.styleSave = function() {
+        setTimeout(() => {
+            this.styleSet(this.refs.canvas.x);
             this.styleRedrawPreview();
-            this.fillStyles();
+        }, 0);
+        this.styleSave = function() {
+            this.styleGenPreview(sessionStorage.projdir + '/img/' + this.styleobj.origname + '_prev@2.png', 128);
+            this.styleGenPreview(sessionStorage.projdir + '/img/' + this.styleobj.origname + '_prev.png', 64).then(() => {
+                this.parent.editingStyle = false;
+                this.parent.update();
+            });
+        };
+        
+        /**
+         * Generates a thumbnail for the current style
+         * @returns {Promise}
+         */
+        this.styleGenPreview = function(destination, size) {
+            return new Promise((accept, decline) => {
+                var c = document.createElement('canvas'),
+                    canv = this.refs.canvas;
+                c.x = c.getContext('2d');
+                c.width = c.height = size;
+                c.x.clearRect(0, 0, size, size);
+                var transferKeys = ['lineWidth', 'fillStyle', 'strokeStyle', 'shadowColor', 'shadowBlur', 'shadowOffsetX', 'shadowOffsetY']
+                for (let i = 0, l = transferKeys.length; i < l; i++) {
+                    c.x[transferKeys[i]] = canv.x[transferKeys[i]];
+                }
+                var font = this.styleobj.font;
+                c.x.font = `${font.italic? 'italic ' : ''}${font.weight || 400} ${~~(size * 0.75)}px ${font.family || 'sans-serif'}`;
+                c.x.fillText('Aa', size*0.05, size*0.75);
+                if (this.styleobj.stroke) {
+                    c.x.strokeText('Aa', size*0.05, size*0.75);
+                }
+                var data = c.toDataURL().replace(/^data:image\/\w+;base64,/, '');
+                var buf = new Buffer(data, 'base64');
+                fs.writeFile(destination, buf, function(err) {
+                    if (err) {
+                        console.log(err);
+                        decline(err);
+                    } else {
+                        accept(destination);
+                    }
+                });
+            });
         };
         this.styleFindPattern = e => {
             this.selectingGraphic = true;

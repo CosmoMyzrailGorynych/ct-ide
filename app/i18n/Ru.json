@@ -164,6 +164,8 @@
         "font": "Шрифт",
         "fontfamily": "Семейство шрифтов:",
         "fontsize": "Размер шрифта:",
+        "fontweight": "Толщина:",
+        "italic": "Наклонный",
         "shadow": "Тень",
         "shadowblur": "Размытие:",
         "shadowcolor": "Цвет тени:",
