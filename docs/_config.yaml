@@ -1,0 +1,26 @@
+# Hexo Configuration
+## Docs: https://hexo.io/docs/configuration.html
+## Source: https://github.com/hexojs/hexo/
+
+# Site
+title: ct.js Docs
+author: Cosmo Myzrail Gorynych
+timezone: UTC
+
+# URL
+## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
+# root: /
+
+# Writing
+relative_link: true
+
+# Extensions
+## Plugins: https://hexo.io/plugins/
+## Themes: https://hexo.io/themes/
+theme: doc
+
+theme_config:
+  favicon: images/favicon.ico 
+ignore:
+  - '**/themes/**/*(target|node_modules|packages|lib)'
+  - '**/.+(*)' # ignoring all dirs and files starting with dot (.git, .idea, ...)
