@@ -68,8 +68,12 @@ reports/
 
 # ct specific
 /export
-/docs
 /app/docs
 
 # editor-specific
 /.vscode
+
+# docs
+docs/db.json
+docs/node_modules
+docs/public
