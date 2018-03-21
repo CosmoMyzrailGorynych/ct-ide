@@ -14,22 +14,22 @@ ct.res = {
         // If failed, replace an image with an empty one
         var img = document.createElement('img');
         img.src = url;
-        img.onload = function () {
+        img.onload = function() {
             ct.res.images[url] = img;
             ct.res.graphsLoaded++;
             if (callback) {
-                return callback();
+                return callback(null, img);
             } else if (ct.res.graphsLoaded + ct.res.graphsError === ct.res.graphsTotal) {
                 ct.res.parseImages();
             }
             return void 0;
         };
-        img.onerror = img.onabort = function () { 
+        img.onerror = img.onabort = function(e) { 
             ct.res.images[url] = img;
             ct.res.graphsError++;
             img.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVQIW2NkAAIAAAoAAggA9GkAAAAASUVORK5CYII=';
             if (callback) {
-                return callback(true);
+                return callback(e);
             }
             console.error('[ct.res] An image from ' + img.src + ' wasn\'t loaded :( Maybe refreshing the page will solve this problem…');
             if (ct.res.graphsLoaded + ct.res.graphsError === ct.res.graphsTotal) {
