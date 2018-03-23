@@ -52,18 +52,17 @@ ct.u = {
                 (x <= arg[0] && x >= arg[2] && y <= arg[1] && y >= arg[3])
             );
         }
-        var graph = ct.graphs[arg.graph];
         return (
-            (x >= arg.x - graph.ax && x <= arg.x + graph.width - graph.ax && y >= arg.y - graph.ay && y <= arg.y + graph.width - graph.ay)
+            (x >= arg.x - arg.shape.left && x <= arg.x + arg.shape.right && y >= arg.y - arg.shape.top && y <= arg.y + arg.shape.bottom)
         ||
-            (x <= arg.x - graph.ax && x >= arg.x + graph.width - graph.ax && y <= arg.y - graph.ay && y >= arg.y + graph.width - graph.ay)
+            (x <= arg.x - arg.shape.left && x >= arg.x + arg.shape.right && y <= arg.y - arg.shape.top && y >= arg.y + arg.shape.bottom)
         );
     },
     pcircle(x, y, arg) {
         if (arg.splice) {
             return ct.u.pdc(x, y, arg[0], arg[1]) < arg[2];
         }
-        return ct.u.pdc(x, y, arg.x, arg.y) < ct.graphs[arg.graph].r;
+        return ct.u.pdc(x, y, arg.x, arg.y) < arg.shape.r;
     },
     ext (o1, o2, arr) {
         if (arr) {
