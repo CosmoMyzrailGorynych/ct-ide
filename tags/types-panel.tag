@@ -57,6 +57,7 @@ types-panel.panel.view
             icon: (window.isMac ? '/img/black/' : '/img/blue/') + 'folder.png',
             click: () => {
                 this.openType(this.currentType)();
+                this.update();
             }
         }));
         typeMenu.append(new gui.MenuItem({
@@ -64,16 +65,15 @@ types-panel.panel.view
             icon: (window.isMac ? '/img/black/' : '/img/blue/') + 'plus.png',
             click: () => {
                 alertify
-                .defaultValue(this.editedType.name + '_dup')
+                .defaultValue(this.currentType.name + '_dup')
                 .prompt(window.languageJSON.common.newname)
                 .then(e => {
                     if (e.inputValue != '') {
-                        var tp = JSON.parse(JSON.stringify(currentType));
+                        var tp = JSON.parse(JSON.stringify(this.currentType));
                         currentProject.typetick ++;
                         tp.name = e.inputValue;
                         tp.uid = currentProject.typetick;
                         currentProject.types.push(tp);
-                        this.currentType = currentProject.types[currentTypeId];
                         this.fillTypeMap();
                         this.update();
                     }
@@ -85,11 +85,11 @@ types-panel.panel.view
             icon: (window.isMac ? '/img/black/' : '/img/blue/') + 'edit.png',
             click:  () => {
                 alertify
-                .defaultValue(this.editedType.name)
+                .defaultValue(this.currentType.name)
                 .prompt(window.languageJSON.common.newname)
                 .then(e => {
                     if (e.inputValue != '') {
-                        this.editedType.name = e.inputValue;
+                        this.currentType.name = e.inputValue;
                         this.update();
                     }
                 });
@@ -103,10 +103,10 @@ types-panel.panel.view
             icon: (window.isMac ? '/img/black/' : '/img/blue/') + 'delete.png',
             click: () => {
                 alertify
-                .confirm(window.languageJSON.common.confirmDelete.replace('{0}', this.editedType.name))
+                .confirm(window.languageJSON.common.confirmDelete.replace('{0}', this.currentType.name))
                 .then(e => {
                     if (e.buttonClicked === 'ok') {
-                        let ind = window.currentProject.types.indexOf(this.editedType);
+                        let ind = window.currentProject.types.indexOf(this.currentType);
                         window.currentProject.types.splice(ind, 1);
                         this.fillTypeMap();
                         this.update();
