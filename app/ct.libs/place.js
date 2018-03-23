@@ -16,13 +16,12 @@ ct.place = {
             //        |_____!               |___!
             //               (x2,y2)             (xx2,yy2)
             //
-            // TODO: normalize points (if it matters)
             
             var sx = x1 < xx1? x1 : xx1,
                 sy = y1 < yy1? y1 : yy1,
                 ex = x2 > xx2? x2 : xx2,
-                ey = y1 > yy2? y2 : yy2;
-            return ex - sx < x2 - x1 + xx2 - xx1 && ey - sy<y2 - y1 + yy2 - yy1;
+                ey = y2 > yy2? y2 : yy2;
+            return ex - sx < x2 - x1 + xx2 - xx1 && ey - sy < y2 - y1 + yy2 - yy1;
         },
         'line.line'(x1, y1, x2, y2, x3, y3, x4, y4) {
             // x1 y1, x2 y2 - first line
@@ -41,9 +40,8 @@ ct.place = {
             return ((x2-x1) * (x2-x1) + (y2-y1) *(y2-y1) <= r1 *r1);
         },
         'circle.rect'(x1, y1, r1, x2, y2, x3, y3) {
-            // must be buggy
             return (
-                // if we touch borders
+                // if we touch corners
                 (x2-x1) * (x2-x1) + (y2-y1) * (y2-y1)<=r1 * r1
             ||
                 (x2-x1) * (x2-x1) + (y3-y1) * (y3-y1)<=r1 * r1
@@ -51,8 +49,7 @@ ct.place = {
                 (x3-x1) * (x3-x1) + (y2-y1) * (y2-y1)<=r1 * r1
             ||
                 (x3-x1) * (x3-x1) + (y3-y1) * (y3-y1)<=r1 * r1
-            || // if we touch corners
-               // is it even needed?
+            || // if we touch borders
                 ct.place.check['rect.point'](x2, y2, x3, y3, x1+r1, y1)
             ||
                 ct.place.check['rect.point'](x2, y2, x3, y3, x1, y1+r1)
@@ -60,7 +57,6 @@ ct.place = {
                 ct.place.check['rect.point'](x2, y2, x3, y3, x1, y1-r1)
             ||
                 ct.place.check['rect.point'](x2, y2, x3, y3, x1-r1, y1)
-            // TODO: react if circle is placed inside rectangle
             );
         },
         'rect.point'(x1, y1, x2, y2, x3, y3) {
