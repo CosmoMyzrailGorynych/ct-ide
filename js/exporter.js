@@ -11,7 +11,6 @@
     var parseKeys = function(data, str, lib) {
         var str2 = str;
         if (data.fields) {
-            // console.log(data, data.fields, str, lib);
             for (const field in data.fields) {
                 str2 = str2.replace(
                     RegExp('%' + data.fields[field].key + '%', 'g'),
@@ -112,7 +111,6 @@
             var o = {},
                 s = window.currentProject.styles[styl];
             if (s.fill) {
-                console.log(s.fill);
                 o.fill = {};
                 if (s.fill.type == 0) {
                     o.fill.type = 'solid';
@@ -144,7 +142,6 @@
             } else {
                 o.fill = false;
             }
-            console.log(o.fill);
             o.border = s.stroke; // TODO: fix catmods
             o.text = s.font;
             o.shadow = s.shadow;
