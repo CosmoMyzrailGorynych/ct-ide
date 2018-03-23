@@ -14,7 +14,7 @@ room-editor.panel.view
             input.wide(type="number" value="{room.height}" onchange="{wire('this.room.height')}")
             br
             button.wide(onclick="{openRoomEvents}")
-                i.icon.icon-code
+                i.icon.icon-confirm(if="{room.oncreate || room.onstep || room.ondestroy || room.ondraw}")
                 span {voc.events}
         .palette
             .tabwrap
