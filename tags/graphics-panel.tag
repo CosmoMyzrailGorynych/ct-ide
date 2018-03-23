@@ -267,6 +267,9 @@ graphics-panel.panel.view
             e.preventDefault();
             e.stopPropagation();
         };
+        this.onDrop = e => {
+             e.stopPropagation();
+        };
         this.onDragLeave = e => {
             dragTimer = window.setTimeout(() => {
                 this.dropping = false;
@@ -278,8 +281,10 @@ graphics-panel.panel.view
         this.on('mount', () => {
             document.addEventListener('dragover', this.onDragOver);
             document.addEventListener('dragleave', this.onDragLeave);
+            document.addEventListener('drop', this.onDrop);
         });
         this.on('unmount', () => {
             document.removeEventListener('dragover', this.onDragOver);
             document.removeEventListener('dragleave', this.onDragLeave);
+            document.removeEventListener('drop', this.onDrop);
         });
