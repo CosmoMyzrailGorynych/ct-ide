@@ -97,7 +97,7 @@ ct.u.ext(ct.draw, {
         ct.x.save();
         ct.x.translate(x, y);
     },
-    unfix: ct.x.restore,
+    unfix: ct.x.restore.bind(ct.x),
     polygon(points, close, outline) {
         ct.x.beginPath();
         ct.x.moveTo(points[0][0] - ct.rooms.current.x, ct.rooms.current.y - points[0][1]);
