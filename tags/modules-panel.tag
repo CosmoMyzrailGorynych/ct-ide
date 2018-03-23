@@ -182,17 +182,18 @@ modules-panel.panel.view
         var copymeMenu = new gui.Menu();
         copymeMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.copy,
-            click: function (e) {
-                clipboard.set(currentFragment, 'text');
+            click: e => {
+                clipboard.set(this.currentFragment, 'text');
             }
         }));
         copymeMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.addtonotes,
-            click: function (e) {
-                var editor = $('#notepaglobal .acer')[0].acer;
-                editor.setValue(editor.getValue() + '\n' + currentFragment);
+            click: e => {
+                currentProject.notes += '\n' + this.currentFragment;
             }
         }));
         this.showCopyMenu = e => {
+            this.currentFragment = `ct.${this.currentModuleName}.${e.item.name || e.item.parameter || e.item.method}`;
             copymeMenu.popup(e.pageX, e.pageY);
+            e.preventDefault();
         };
