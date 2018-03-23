@@ -59,6 +59,12 @@ ct.u = {
             (x <= arg.x - graph.ax && x >= arg.x + graph.width - graph.ax && y <= arg.y - graph.ay && y >= arg.y + graph.width - graph.ay)
         );
     },
+    pcircle(x, y, arg) {
+        if (arg.splice) {
+            return ct.u.pdc(x, y, arg[0], arg[1]) < arg[2];
+        }
+        return ct.u.pdc(x, y, arg.x, arg.y) < ct.graphs[arg.graph].r;
+    },
     ext (o1, o2, arr) {
         if (arr) {
             for (const i in arr) {
@@ -86,7 +92,8 @@ ct.u.ext(ct.u, { // make aliases
     lengthDirY: ct.u.ldy,
     pointDirection: ct.u.pdn,
     pointDistance: ct.u.pdc,
-    pontRectangle: ct.u.prect,
+    pointRectangle: ct.u.prect,
+    pointCircle: ct.u.pcircle,
     extend: ct.u.ext
 });
 ct.loop = function() {
