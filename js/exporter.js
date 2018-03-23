@@ -308,10 +308,11 @@ ct.rooms['${r.name}'] = {
             /* комнатный котэ */
             var roomsCode = stringifyRooms();
 
+            var cp = window.currentProject;
             buffer += fs.readFileSync('./ct.release/rooms.js', {
                 'encoding': 'utf8'
             })
-            .replace('@startroom@', window.currentProject.rooms[window.currentProject.starting].name)
+            .replace('@startroom@', cp.rooms.find(room => cp.startroom === room.uid).name)
             .replace('/*@rooms@*/', roomsCode)
             .replace('/*%switch%*/', injects.switch)
             .replace('/*%roomoncreate%*/', injects.roomoncreate)
