@@ -1,25 +1,34 @@
+/* global ct */
+
 ct.canvas = {
-    'create': function (w,h) {
-        var canv = document.createElement("canvas");
+    create(w, h) {
+        var canv = document.createElement('canvas');
         canv.setAttribute('width', w);
         canv.setAttribute('height', h);
-        canv.x = canv.getContext("2d");
+        canv.x = canv.getContext('2d');
         return canv;
     },
-    'drawTile': function (canv, img,imgindex, x, y) {
-        canv.x.drawImage(ct.graphs[img].atlas,ct.graphs[img]['frames'][imgindex][0],ct.graphs[img]['frames'][imgindex][1],ct.graphs[img].width,ct.graphs[img].height,x-ct.graphs[img].x,y-ct.graphs[img].y,ct.graphs[img].width,ct.graphs[img].height);
+    drawTile(canv, img, imgindex, x, y) {
+        var graph = ct.graphs[img],
+            frame = graph.frames[imgindex];
+        canv.x.drawImage(
+            graph.atlas,
+            frame[0], frame[1], graph.width, graph.height,
+            x-graph.x, y-graph.y, graph.width, graph.height);
     },
-    'drawTileExt': function (canv,img,imgindex,x,y,hs,vs,r,a) {
+    drawTileExt(canv, img, imgindex, x, y, hs, vs, r, a) {
         canv.x.save();
         canv.x.globalAlpha = a;
         canv.x.translate(x-ct.rooms.current.x,y-ct.rooms.current.y);
         canv.x.rotate(r*Math.PI/180);
         canv.x.scale(hs,vs);
-        canv.x.drawImage(ct.graphs[img].atlas,ct.graphs[img]['frames'][imgindex][0],ct.graphs[img]['frames'][imgindex][1],ct.graphs[img].width,ct.graphs[img].height,-ct.graphs[img].x,-ct.graphs[img].y,ct.graphs[img].width,ct.graphs[img].height);
+        ct.canvas.drawTile(canv, img, imgindex, x, y);
         canv.x.restore();
     },
-    'appendTo': function (canv,id) {
+    appendTo(canv, id) {
         document.getElementById(id).appendChild(canv);
+    },
+    draw(canv, x, y) {
+        ct.x.drawImage(canv, x, y);
     }
 };
-ct.libs += "canvas";
