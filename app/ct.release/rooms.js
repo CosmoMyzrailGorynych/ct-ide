@@ -28,7 +28,6 @@ ct.rooms = {
     'switch'(room) {
         /*%switch%*/
         if (ct.room) {
-            // ct.room.onLeave.apply(ct.room); // wha?
             ct.room.onLeave();
             ct.rooms.onLeave.apply(ct.room);
         }
