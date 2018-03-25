@@ -14,13 +14,13 @@ modules-panel.panel.view
                 li#modinfo(onclick="{changeTab('moduleinfo')}" class="{active: tab === 'moduleinfo'}")
                     i.icon-info
                     span {voc.info}
-                li#modsettings(onclick="{changeTab('modulesettings')}" class="{active: tab === 'modulesettings'}" if="{currentModule.fields && currentModuleName in currentProject.libs}")
+                li#modsettings(if="{currentModule.fields && currentModuleName in currentProject.libs}" onclick="{changeTab('modulesettings')}" class="{active: tab === 'modulesettings'}")
                     i.icon-settings
                     span {voc.settings}
-                li#modhelp(onclick="{changeTab('modulehelp')}" class="{active: tab === 'modulehelp'}" if="{currentModule.methods || currentModule.params}")
+                li#modhelp( if="{currentModuleDocs}" onclick="{changeTab('modulehelp')}" class="{active: tab === 'modulehelp'}")
                     i.icon-document
                     span {voc.help}
-                li#modlogs(onclick="{changeTab('modulelogs')}" class="{active: tab === 'modulelogs'}")
+                li#modlogs(if="{currentModuleLogs}" onclick="{changeTab('modulelogs')}" class="{active: tab === 'modulelogs'}")
                     i.icon-list
                     span {voc.logs}
             div
@@ -31,16 +31,17 @@ modules-panel.panel.view
                     h1#modname
                         span {currentModule.main.name}
                         span.version {currentModule.main.version}
-                    a#modsite.external(title="{voc.author}" href="{currentModule.info.site}")
+                    a.external(each="{author in currentModule.main.authors}" title="{voc.author}" href="{author.site || 'mailto:'+author.mail}")
                         i.icon-user
-                        span#modauthor {currentModule.info.author}
+                        span#modauthor {author.name}
                     i#modinjects.icon-zap.warning(title="{voc.hasinjects}" show="{currentModule.injects}")
                     i#modconfigurable.icon-settings.success(title="{voc.hasfields}" show="{currentModule.fields}")
                     
-                    #modinfohtml 
+                    #modinfohtml(if="{currentModuleHelp}")
                         raw(ref="raw" content="{currentModuleHelp}")
                     h1(if="{currentModule.main.license}") {voc.license}
-                    raw(ref="raw" if="{currentModule.main.license}" content="{currentModuleLicense}")
+                    pre(if="{currentModule.main.license}")
+                        code {currentModuleLicense}
                     
                 #modulesettings.tabbed(show="{tab === 'modulesettings'}" if="{currentModule.fields && currentModuleName in currentProject.libs}")
                     dl(each="{field in currentModule.fields}")
@@ -72,22 +73,9 @@ modules-panel.panel.view
                             //- Это хреновая затея!!!
                             div(class="desc" if="{field.help}")
                                 raw(ref="raw" content="{md.render(field.help)}")
-                #modulehelp.tabbed(show="{tab === 'modulehelp'}" if="{currentModule.methods || currentModule.params}")
-                    h1 {voc.methods}
-                    virtual(each="{method, name in currentModule.methods}")
-                        h2(oncontextmenu="{showCopyMenu}") ct.{currentModuleName}.{name}
-                        //- Это тоже хреновая затея!!!
-                        span(if="{method.exp}")
-                            raw(ref="raw" content="{md.render(method.exp)}")
-                    p(if="{!currentModule.methods || !Object.keys(currentModule.methods).length}") {voc.nomethods}
-                    
-                    h1 {voc.parameters}
-                    virtual(each="{parameter, name in currentModule.params}")
-                        h2(oncontextmenu="{showCopyMenu}") ct.{currentModuleName}.{name}
-                        span(if="{parameter.exp}")
-                            raw(ref="raw" content="{md.render(parameter.exp)}")
-                    p(if="{!currentModule.params || !Object.keys(currentModule.params).length}") {voc.noparameters}
-                #modulelogs.tabbed(show="{tab === 'modulelogs'}")
+                #modulehelp.tabbed(show="{tab === 'modulehelp'}" if="{currentModuleDocs}")
+                    raw(ref="raw" content="{currentModuleDocs}")
+                #modulelogs.tabbed(show="{tab === 'modulelogs'}" if="{currentModuleLogs}")
                     h1 {voc.logs2}
                     raw(ref="raw" content="{currentModuleLogs}")
     script.
@@ -106,6 +94,7 @@ modules-panel.panel.view
         
         this.currentModule = false;
         this.currentModuleHelp = '';
+        this.currentModuleDocs = '';
         this.currentModuleLicense = '';
         
         this.tab = 'moduleinfo';
@@ -126,11 +115,12 @@ modules-panel.panel.view
                 throw err;
             }
             for (var i = 0; i < files.length; i++) {
-                if (path.extname(files[i]) === '.json') {
-                    this.allModules.push(path.basename(files[i], '.json'));
+                if (fs.pathExistsSync(path.join('./ct.libs', files[i], 'module.json'))) {
+                    this.allModules.push(files[i]);
                 }
             }
             this.currentModuleHelp = '';
+            this.currentModuleDocs = '';
             this.currentModuleLicense = '';
             this.renderModule(this.allModules[0])();
             this.update();
@@ -163,16 +153,43 @@ modules-panel.panel.view
             window.glob.modified = true;
         };
         this.renderModule = name => e => {
-            fs.readJSON('./ct.libs/' + name + '.json', (err, data) => {
+            fs.readJSON(path.join('./ct.libs', name, 'module.json'), (err, data) => {
                 if (err) {
                     alertify.error(err);
+                    return;
                 }
                 this.currentModule = data;
                 this.currentModuleName = name;
                 
-                this.currentModuleHelp = md.render(this.currentModule.main.help || '');
-                this.currentModuleLicense = md.render(this.currentModule.main.license || '');
-                this.currentModuleLogs = md.render(this.currentModule.main.logs || '');
+                if (fs.pathExistsSync(path.join('./ct.libs', name, 'README.md'))) {
+                    this.currentModuleHelp = md.render(fs.readFileSync(path.join('./ct.libs', name, 'README.md'), {
+                        encoding: 'utf8'
+                    }) || '');
+                } else {
+                    this.currentModuleHelp = false;
+                }
+                if (fs.pathExistsSync(path.join('./ct.libs', name, 'DOCS.md'))) {
+                    this.currentModuleDocs = md.render(fs.readFileSync(path.join('./ct.libs', name, 'DOCS.md'), {
+                        encoding: 'utf8'
+                    }) || '');
+                } else {
+                    this.currentModuleDocs = false;
+                }
+                if (fs.pathExistsSync(path.join('./ct.libs', name, 'CHANGELOG.md'))) {
+                    this.currentModuleLogs = md.render(fs.readFileSync(path.join('./ct.libs', name, 'CHANGELOG.md'), {
+                        encoding: 'utf8'
+                    }) || '');
+                } else {
+                    this.currentModuleLogs = false;
+                }
+                if (fs.pathExistsSync(path.join('./ct.libs', name, 'LICENSE'))) {
+                    this.currentModuleLicense = fs.readFileSync(path.join('./ct.libs', name, 'LICENSE'), {
+                        encoding: 'utf8'
+                    }) || '';
+                } else {
+                    this.currentModuleLicense = false;
+                }
+                this.currentModule.injects = fs.pathExistsSync(path.join('./ct.libs', name, 'injects'));
                 this.update();
             });
             this.tab = 'moduleinfo';
