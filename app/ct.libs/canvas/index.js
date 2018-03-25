@@ -26,7 +26,7 @@ ct.canvas = {
         canv.x.restore();
     },
     appendTo(canv, id) {
-        document.getElementById(id).appendChild(canv);
+        (id.appendChild || document.getElementById(id).appendChild)(canv);
     },
     draw(canv, x, y) {
         ct.x.drawImage(canv, x, y);

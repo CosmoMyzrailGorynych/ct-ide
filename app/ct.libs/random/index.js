@@ -1,7 +1,4 @@
-/*
-   [ random cotomod ]
-   [ (c) Cosmo Myzrail Gorynych 2013, 2017 ]
-*/
+/* global ct */
 
 ct.random = function (x) {
     return Math.random()*x;
@@ -10,7 +7,7 @@ ct.u.ext(ct.random,{
     dice() {
         return arguments[Math.floor(Math.random() * arguments.length)];
     },
-    range(x1,x2) {
+    range(x1, x2) {
         return x1 + Math.random() * (x2-x1);
     },
     deg() {
@@ -19,7 +16,7 @@ ct.u.ext(ct.random,{
     coord() {
         return [Math.floor(Math.random()*ct.width),Math.floor(Math.random()*ct.height)];
     },
-    chance(x,y) {
+    chance(x, y) {
         if (y) {
             return (Math.random()*y < x);
         }
@@ -29,5 +26,3 @@ ct.u.ext(ct.random,{
         return arr[Math.floor(Math.random() * arr.length)];
     }
 });
-
-ct.libs += ' random';

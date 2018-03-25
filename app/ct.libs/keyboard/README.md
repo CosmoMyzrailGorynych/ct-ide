@@ -1,0 +1,1 @@
+This module registers all the keyboard events in the game and allows your code to listen button presses and handle inputed strings.

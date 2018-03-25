@@ -1,0 +1,10 @@
+{
+    "main": {
+        "name": "ct.place",
+        "version": "1.0.1",
+        "authors": [{
+            "name": "Cosmo Myzrail Gorynych",
+            "mail": "admin@nersta.ru"
+        }]
+    }
+}

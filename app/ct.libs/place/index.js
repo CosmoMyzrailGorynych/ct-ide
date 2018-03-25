@@ -1,11 +1,6 @@
 /* global ct */
 /* eslint prefer-destructuring: 0 */
 
-/****************************************
-         [ place cotomod ]
-[ (c) Cosmo Myzrail Gorynych 2013, 2015 ]
-****************************************/
-
 ct.place = {
     m: 1, // direction modifier in ct.place.go
     check: {

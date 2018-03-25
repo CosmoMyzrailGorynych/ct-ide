@@ -1,0 +1,10 @@
+{
+    "main": {
+        "name": "Canvas",
+        "version": "1.0.0",
+        "authors": [{
+            "author": "Cosmo Myzrail Gorynych",
+            "mail": "admin@nersta.ru"
+        }]
+    }
+}

@@ -1,0 +1,39 @@
+{
+    "main": {
+        "name": "Basic Template",
+        "version": "1.0.0",
+        "authors": [{
+            "name": "Cosmo Myzrail Gorynych",
+            "mail": "admin@nersta.ru"
+        }]
+    },
+    "fields": [
+        {
+            "name": "HTML top",
+            "key": "toptop",
+            "id": "toptop",
+            "desc": "",
+            "desceng": "",
+            "default": " ",
+            "type": "textfield"
+        },
+        {
+            "name": "HTML bottom",
+            "key": "botbot",
+            "id": "botbot",
+            "desc": "",
+            "desceng": "",
+            "default": " ",
+            "type": "textfield"
+        },
+        {
+            "name": "CSS",
+            "key": "csscss",
+            "id": "csscss",
+            "desc": "",
+            "desceng": "",
+            "default": " ",
+            "type": "textfield"
+        }
+    ]
+}
