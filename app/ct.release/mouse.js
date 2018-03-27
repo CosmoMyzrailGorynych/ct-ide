@@ -21,17 +21,20 @@ ct.mouse.listenermove = function(e) {
     } else {
         ct.mouse.inside = false;
     }
+    window.focus();
 };
 ct.mouse.listenerdown = function (e) {
     ct.mouse.pressed = true;
     ct.mouse.down = true;
     ct.mouse.button = e.button;
+    window.focus();
     e.preventDefault();
 };
 ct.mouse.listenerup = function (e) {
     ct.mouse.released = true;
     ct.mouse.down = false;
     ct.mouse.button = e.button;
+    window.focus();
     e.preventDefault();
 };
 
