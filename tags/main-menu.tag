@@ -67,7 +67,9 @@ main-menu.flexcol
             catMenu.popup(e.clientX, e.clientY);
         };
         this.saveProject = () => {
-            fs.outputJSON(sessionStorage.projdir + '.ict', currentProject, (e) => {
+            fs.outputJSON(sessionStorage.projdir + '.ict', currentProject, {
+                spaces: 2  
+            }, e => {
                 if (e) {
                     alertify.error(e);
                 }
