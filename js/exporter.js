@@ -14,7 +14,7 @@
             for (const field in data.fields) {
                 str2 = str2.replace(
                     RegExp('%' + data.fields[field].key + '%', 'g'),
-                    window.currentProject.libs[lib][data.fields[field].key]
+                    window.currentProject.libs[lib][data.fields[field].key] || ''
                 );
             }
         }
@@ -23,14 +23,18 @@
 
     var injectModules = (injects) => {
         for (const lib in window.currentProject.libs) {
-            ctlibs += ' ' + lib;
-            var libData = fs.readJSONSync('./ct.libs/' + lib + '.json', {
+            const libData = fs.readJSONSync(path.join('./ct.libs/', lib, 'module.json'), {
                 'encoding': 'utf8'
             });
-            if (libData.injects) {
-                for (var inj in libData.injects) {
-                    if (inj in injects) {
-                        injects[inj] += parseKeys(libData, libData.injects[inj], lib);
+            ctlibs[lib] = libData.main;
+            if (fs.pathExistsSync(path.join('./ct.libs/', lib, 'injects'))) {
+                const injectFiles = fs.readdirSync(path.join('./ct.libs/', lib, 'injects')),
+                      injectKeys = injectFiles.map(fname => path.basename(fname, path.extname(fname)));
+                for (var inj in injectKeys) {
+                    if (injectKeys[inj] in injects) {
+                        injects[injectKeys[inj]] += parseKeys(libData, fs.readFileSync(path.join('./ct.libs/', lib, 'injects', injectFiles[inj]), {
+                            encoding: 'utf8'
+                        }), lib);
                     }
                 }
             }
@@ -220,7 +224,16 @@ ct.rooms['${r.name}'] = {
             }
             document.body.style.cursor = 'wait';
 
-            ctlibs = 'CORE';
+            ctlibs = {
+                CORE: {
+                    name: 'ct.js Game Framework',
+                    info: 'A game made with ct.js game framework and ct.IDE. Create your 2D games for free!',
+                    authors: [{
+                        name: 'Cosmo Myzrail Gorynych',
+                        site: 'https://ctjs.rocks/'
+                    }]
+                }
+            };
             fs.removeSync(exec + '/export/');
             fs.ensureDirSync(exec + '/export/');
             fs.ensureDirSync(exec + '/export/img/');
@@ -256,6 +269,7 @@ ct.rooms['${r.name}'] = {
 
             /* инъекции */
             injectModules(injects);
+            console.log(injects);
 
             /* главный котэ */
             var startroom;
@@ -272,7 +286,7 @@ ct.rooms['${r.name}'] = {
             buffer = buffer
             .replace('/*@startwidth@*/', startroom.width)
             .replace('/*@startheight@*/', startroom.height)
-            .replace('/*@libs@*/', ctlibs);
+            .replace('/*@libs@*/', JSON.stringify(ctlibs, null, '    '));
 
             buffer += '\n';
 
@@ -292,13 +306,14 @@ ct.rooms['${r.name}'] = {
 
             /* балласт */
             for (var lib in window.currentProject.libs) {
-                ctlibs += ' ' + lib;
-                const data = fs.readJSONSync('./ct.libs/' + lib + '.json', {
+                const data = fs.readJSONSync(path.join('./ct.libs/', lib, 'module.json'), {
                     'encoding': 'utf8'
                 });
-                buffer += parseKeys(data, fs.readFileSync('./ct.libs/' + lib + '.js', {
-                    'encoding': 'utf8'
-                }), lib);
+                if (fs.pathExistsSync(path.join('./ct.libs/', lib, 'index.js'))) {
+                    buffer += parseKeys(data, fs.readFileSync(path.join('./ct.libs/', lib, 'index.js'), {
+                        'encoding': 'utf8'
+                    }), lib);
+                }
                 buffer += '\n';
             }
 

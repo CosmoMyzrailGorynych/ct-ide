@@ -5,7 +5,7 @@ ct.setAttribute('width', [/*@startwidth@*/][0]);
 ct.setAttribute('height', [/*@startheight@*/][0]);
 ct.x = ct.getContext('2d');
 
-ct.libs = [/*@libs@*/];
+ct.libs = [/*@libs@*/][0];
 
 ct.speed = 30;
 ct.stack = [];
