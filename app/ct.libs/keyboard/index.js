@@ -72,7 +72,7 @@ ct.keyboard = {
             ct.keyboard.string = ct.keyboard.string.slice(0,-1);
         } else if (k === 32) { 
             ct.keyboard.string += ' ';
-        } else {
+        } else if (ct.keyboard.key === 'unknown') {
             ct.keyboard.key = String.fromCharCode(k);
             if (ct.keyboard.shift) {
                 ct.keyboard.string += shiftchar[k] || String.fromCharCode(k);
