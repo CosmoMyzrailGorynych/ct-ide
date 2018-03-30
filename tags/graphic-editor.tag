@@ -45,7 +45,7 @@ graphic-editor.panel.view
             button.wide(onclick="{graphicSave}") 
                 i.icon-save
                 span {window.languageJSON.common.save}
-    .column.column2.borderleft.tall.flexfix(if="{!opts.graphic.frames || opts.graphic.frames === 1}")
+    .column.column2.borderleft.tall.flexfix
         .flexfix-body
             .fifty.np
                 b {voc.cols}
@@ -170,12 +170,8 @@ graphic-editor.panel.view
             graphCanvas.x = graphCanvas.getContext('2d');
             grprCanvas.x = grprCanvas.getContext('2d');
             var graphic = this.graphic = this.opts.graphic;
-            // console.log(graphic);
             var img = document.createElement('img');
             img.onload = () => {
-                graphic.frames = graphic.grid[0] * graphic.grid[1];
-                graphic.width = img.width / graphic.grid[0];
-                graphic.height = img.height / graphic.grid[0];
                 graphCanvas.img = img;
                 this.update();
                 setTimeout(() => {

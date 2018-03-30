@@ -254,25 +254,26 @@ room-editor.panel.view
                 this.refreshRoomCanvas();
             } else {
                 if (this.currentType !== -1) {
-                    let graph, w, h, grax, gray;
+                    let img, graph, w, h, grax, gray;
                     // превью вставки
                     this.refreshRoomCanvas();
                     this.refs.canvas.x.setTransform(this.zoomFactor, 0, 0, this.zoomFactor, 0, 0);
                     this.refs.canvas.x.globalAlpha = 0.5;
                     if (this.currentType.graph != -1) {
-                        graph = window.glob.graphmap[this.currentType.graph];
+                        img = window.glob.graphmap[this.currentType.graph];
+                        graph = img.g;
                         w = graph.width;
                         h = graph.height;
-                        grax = graph.g.axis[0];
-                        gray = graph.g.axis[1];
+                        grax = graph.axis[0] - graph.offx;
+                        gray = graph.axis[1] - graph.offy;
                     } else {
-                        graph = window.glob.graphmap[-1];
+                        img = window.glob.graphmap[-1];
                         w = h = 32;
                         grax = gray = 16;
                     }
                     if (this.room.grid === 0) {
                         this.refs.canvas.x.drawImage(
-                            graph,
+                            img,
                             0, 0, w, h,
                             e.offsetX / this.zoomFactor - grax, e.offsetY / this.zoomFactor - gray, w, h);
                     } else {
@@ -282,7 +283,7 @@ room-editor.panel.view
                         w = graph.width;
                         h = graph.height;
                         this.refs.canvas.x.drawImage(
-                            graph, 0, 0, w, h,
+                            img, 0, 0, w, h,
                             this.xToCanvas(dx - dx % this.room.grid) / this.zoomFactor - grax, 
                             this.yToCanvas(dy - dy % this.room.grid) / this.zoomFactor - gray, 
                             w, h);
