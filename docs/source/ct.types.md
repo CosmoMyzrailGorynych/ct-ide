@@ -99,3 +99,7 @@ for (var i = 0, l = ct.types.list['Bonus'].length; i < l; i++) {
     ct.types.list['Bonus'][i].kill = true;
 }
 ```
+
+### `ct.types.addSpeed(o: Copy, spd, dir)`
+
+Adds a speed vector to a given Copy.
