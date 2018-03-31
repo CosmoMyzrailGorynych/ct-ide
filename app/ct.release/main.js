@@ -208,8 +208,8 @@ ct.loop = function() {
                             cy = 0,
                             w = 0,
                             h = 0;
-                        w = Math.min(ct.room.borderX, ct.width / 2);
-                        h = Math.min(ct.room.borderY, ct.height / 2);
+                        w = Math.min(ct.room.borderx, ct.width / 2);
+                        h = Math.min(ct.room.bordery, ct.height / 2);
                         if (ct.room.follow.x - ct.room.x < w) {
                             cx = ct.room.follow.x - ct.room.x - w;
                         }
