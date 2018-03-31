@@ -1,0 +1,932 @@
+{
+  "notes": "/* empty */",
+  "libs": {
+    "place": {},
+    "keyboard": {}
+  },
+  "graphs": [
+    {
+      "name": "boxAlt",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        0,
+        0
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i1.png",
+      "shape": "rect",
+      "left": 0,
+      "right": 70,
+      "top": 0,
+      "bottom": 70,
+      "frames": 1,
+      "width": 70,
+      "height": 70,
+      "lastmod": 1522416805275,
+      "imgWidth": 70,
+      "imgHeight": 70
+    },
+    {
+      "name": "bridgeLogs",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        0,
+        44
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i2.png",
+      "shape": "rect",
+      "left": 0,
+      "right": 70,
+      "top": 0,
+      "bottom": 44,
+      "frames": 1,
+      "width": 70,
+      "height": 70,
+      "imgWidth": 70,
+      "imgHeight": 70,
+      "lastmod": 1522391613623
+    },
+    {
+      "name": "fence",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        0,
+        0
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i3.png",
+      "shape": "rect",
+      "left": 0,
+      "right": 70,
+      "top": 0,
+      "bottom": 70,
+      "frames": 1,
+      "width": 70,
+      "height": 70,
+      "imgWidth": 70,
+      "imgHeight": 70,
+      "lastmod": 1522391164491
+    },
+    {
+      "name": "grass",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        0,
+        0
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i4.png",
+      "shape": "rect",
+      "left": 0,
+      "right": 70,
+      "top": 0,
+      "bottom": 70,
+      "frames": 1,
+      "width": 70,
+      "height": 70,
+      "imgWidth": 70,
+      "imgHeight": 70,
+      "lastmod": 1522391159603
+    },
+    {
+      "name": "Spikes",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        0,
+        0
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i5.png",
+      "shape": "rect",
+      "left": 0,
+      "right": 70,
+      "top": -36,
+      "bottom": 70,
+      "frames": 1,
+      "width": 70,
+      "height": 70,
+      "imgWidth": 70,
+      "imgHeight": 70,
+      "lastmod": 1522391498568
+    },
+    {
+      "name": "coinGold",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        35,
+        36
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i6.png",
+      "shape": "circle",
+      "left": 0,
+      "right": 70,
+      "top": 0,
+      "width": 70,
+      "height": 70,
+      "imgWidth": 70,
+      "imgHeight": 70,
+      "bottom": 70,
+      "r": 17,
+      "lastmod": 1522422329142
+    },
+    {
+      "name": "bg",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        0,
+        0
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i7.png",
+      "shape": "rect",
+      "left": 0,
+      "right": 256,
+      "top": 0,
+      "bottom": 256,
+      "frames": 1,
+      "width": 256,
+      "height": 256,
+      "imgWidth": 256,
+      "imgHeight": 256,
+      "lastmod": 1522391871116
+    },
+    {
+      "name": "Player",
+      "untill": 14,
+      "grid": [
+        5,
+        3
+      ],
+      "axis": [
+        36,
+        96
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i9.png",
+      "shape": "rect",
+      "left": 32,
+      "right": 32,
+      "top": 96,
+      "bottom": 1,
+      "frames": 15,
+      "width": 72,
+      "height": 97,
+      "imgWidth": 360,
+      "imgHeight": 291,
+      "lastmod": 1522422096306
+    }
+  ],
+  "types": [
+    {
+      "name": "Box",
+      "depth": 0,
+      "oncreate": "this.ctype = 'Solid';",
+      "onstep": "ct.types.move(this);",
+      "ondraw": "ct.draw(this);",
+      "ondestroy": "",
+      "uid": 1,
+      "graph": "i1.png"
+    },
+    {
+      "name": "Logs",
+      "depth": 0,
+      "oncreate": "this.ctype = 'Solid';",
+      "onstep": "ct.types.move(this);",
+      "ondraw": "ct.draw(this);",
+      "ondestroy": "",
+      "uid": 2,
+      "graph": "i2.png"
+    },
+    {
+      "name": "Fence",
+      "depth": -1,
+      "oncreate": "",
+      "onstep": "ct.types.move(this);",
+      "ondraw": "ct.draw(this);",
+      "ondestroy": "",
+      "uid": 3,
+      "graph": "i3.png"
+    },
+    {
+      "name": "Grass",
+      "depth": 0,
+      "oncreate": "this.ctype = 'Solid';",
+      "onstep": "ct.types.move(this);",
+      "ondraw": "ct.draw(this);",
+      "ondestroy": "",
+      "uid": 4,
+      "graph": "i4.png"
+    },
+    {
+      "name": "Spikes",
+      "depth": 0,
+      "oncreate": "this.ctype = 'Enemy';",
+      "onstep": "ct.types.move(this);",
+      "ondraw": "ct.draw(this);",
+      "ondestroy": "",
+      "uid": 5,
+      "graph": "i5.png"
+    },
+    {
+      "name": "Player",
+      "depth": 0,
+      "oncreate": "this.transform = true;\nthis.imgspd = 0.5;\n\nthis.maxspd = 10;\nthis.speed = 2;\nthis.jumpPower = 18;\n\nthis.ctype = 'Player';",
+      "onstep": "if (ct.keyboard.down['right']) {\n    if (ct.u.ldx(this.spd, this.dir) < this.maxspd) {\n        ct.types.addSpeed(this, this.speed, 0);\n    }\n} else if (ct.keyboard.down['left']) {\n    if (ct.u.ldx(this.spd, this.dir) > -this.maxspd) {\n        ct.types.addSpeed(this, this.speed, 180);\n    }\n} else {\n    if (ct.place.occupied(this, this.x, this.y + 1, 'Solid')) {\n        this.spd = Math.max(0, this.spd - this.maxspd);\n    }\n}\nif (ct.keyboard.down['up'] || ct.keyboard.down['space']) {\n    if (ct.place.occupied(this, this.x, this.y + 1, 'Solid')) {\n        ct.types.addSpeed(this, this.jumpPower, 90);\n    }\n}\n\nif (ct.place.free(this, this.x, this.y + 1, 'Solid')) {\n    ct.types.addSpeed(this, 1, 270);\n}\n\nvar hspeed = Math.round(ct.u.ldx(this.spd, this.dir)),\n    vspeed = Math.round(ct.u.ldy(this.spd, this.dir));\n\nfor (var i = 0; i < Math.abs(hspeed); i++) {\n    if (ct.place.free(this, this.x + Math.sign(hspeed), this.y, 'Solid')) {\n        this.x += Math.sign(hspeed);\n    } else {\n        this.spd = 0;\n        break;\n    }\n}\nfor (var i = 0; i < Math.abs(vspeed); i++) {\n    if (ct.place.free(this, this.x, this.y + Math.sign(vspeed), 'Solid')) {\n        this.y += Math.sign(vspeed);\n    } else {\n        this.spd = 0;\n        break;\n    }\n}",
+      "ondraw": "if (ct.u.ldx(this.spd, this.dir) < 0) {\n    this.tx = -1;\n} else {\n    this.tx = 1;\n}\n\nif (!ct.place.occupied(this, this.x, this.y + 1, 'Solid')) {\n    this.imgspd = 0;\n    this.frame = 12;\n} else if (this.spd <= 0.1) {\n    this.imgspd = 0;\n    this.frame = 13;\n} else {\n    this.imgspd = 0.5;\n    if (this.frame > 10) {\n        this.frame -= 10;\n    }\n}\n\nct.draw(this);",
+      "ondestroy": "",
+      "uid": 6,
+      "graph": "i9.png"
+    },
+    {
+      "name": "Coin",
+      "depth": 0,
+      "oncreate": "",
+      "onstep": "if (ct.place.meet(this, this.x, this.y, 'Player')) {\n    this.kill = true;\n    ct.room.coins ++;\n}",
+      "ondraw": "ct.draw(this);",
+      "ondestroy": "",
+      "uid": 7,
+      "graph": "i6.png"
+    }
+  ],
+  "sounds": [],
+  "styles": [
+    {
+      "name": "CoinText",
+      "shadow": false,
+      "uid": 1,
+      "origname": "s1",
+      "font": {
+        "family": "sans-serif",
+        "size": 24,
+        "weight": "900",
+        "italic": false,
+        "valign": "middle",
+        "halign": "left"
+      },
+      "fill": {
+        "type": "0",
+        "color": "#FFCC40"
+      },
+      "stroke": {
+        "color": "#CF7500",
+        "weight": 1
+      }
+    }
+  ],
+  "rooms": [
+    {
+      "name": "Main",
+      "oncreate": "this.coins = 0;\n\nthis.follow = ct.types.list['Player'][0];\nthis.borderx = 400;\nthis.bordery = 300;",
+      "onstep": "",
+      "ondraw": "ct.styles.set('CoinText');\n\nct.draw.image('coinGold', 0, this.x + ct.width - 100, this.y + 35);\nct.draw.text(this.coins, this.x + ct.width - 70, this.y + 35);\nct.draw.text(this.coins, this.x + ct.width - 70, this.y + 35, true);\n\nct.styles.reset();",
+      "onleave": "",
+      "width": 1024,
+      "height": 700,
+      "backgrounds": [
+        {
+          "depth": "-50",
+          "graph": "i7.png"
+        }
+      ],
+      "layers": [
+        {
+          "depth": -1,
+          "copies": [
+            {
+              "x": 210,
+              "y": 420,
+              "uid": 3
+            },
+            {
+              "x": 140,
+              "y": 420,
+              "uid": 3
+            },
+            {
+              "x": 140,
+              "y": 420,
+              "uid": 3
+            },
+            {
+              "x": 70,
+              "y": 420,
+              "uid": 3
+            }
+          ]
+        },
+        {
+          "depth": 0,
+          "copies": [
+            {
+              "x": 0,
+              "y": 490,
+              "uid": 4
+            },
+            {
+              "x": 70,
+              "y": 490,
+              "uid": 4
+            },
+            {
+              "x": 140,
+              "y": 490,
+              "uid": 4
+            },
+            {
+              "x": 210,
+              "y": 490,
+              "uid": 4
+            },
+            {
+              "x": 280,
+              "y": 490,
+              "uid": 4
+            },
+            {
+              "x": 560,
+              "y": 490,
+              "uid": 4
+            },
+            {
+              "x": 630,
+              "y": 490,
+              "uid": 4
+            },
+            {
+              "x": 700,
+              "y": 490,
+              "uid": 4
+            },
+            {
+              "x": 770,
+              "y": 490,
+              "uid": 4
+            },
+            {
+              "x": 840,
+              "y": 490,
+              "uid": 4
+            },
+            {
+              "x": 910,
+              "y": 420,
+              "uid": 4
+            },
+            {
+              "x": 910,
+              "y": 490,
+              "uid": 4
+            },
+            {
+              "x": 980,
+              "y": 350,
+              "uid": 4
+            },
+            {
+              "x": 910,
+              "y": 350,
+              "uid": 4
+            },
+            {
+              "x": 490,
+              "y": 210,
+              "uid": 4
+            },
+            {
+              "x": 420,
+              "y": 210,
+              "uid": 4
+            },
+            {
+              "x": 350,
+              "y": 210,
+              "uid": 4
+            },
+            {
+              "x": 980,
+              "y": 280,
+              "uid": 1
+            },
+            {
+              "x": 1050,
+              "y": 350,
+              "uid": 4
+            },
+            {
+              "x": 1120,
+              "y": 350,
+              "uid": 4
+            },
+            {
+              "x": 1190,
+              "y": 350,
+              "uid": 4
+            },
+            {
+              "x": 1260,
+              "y": 770,
+              "uid": 5
+            },
+            {
+              "x": 1190,
+              "y": 770,
+              "uid": 5
+            },
+            {
+              "x": 1330,
+              "y": 770,
+              "uid": 5
+            },
+            {
+              "x": 1050,
+              "y": 840,
+              "uid": 4
+            },
+            {
+              "x": 1190,
+              "y": 840,
+              "uid": 4
+            },
+            {
+              "x": 1120,
+              "y": 840,
+              "uid": 4
+            },
+            {
+              "x": 1260,
+              "y": 840,
+              "uid": 4
+            },
+            {
+              "x": 1330,
+              "y": 840,
+              "uid": 4
+            },
+            {
+              "x": 1400,
+              "y": 840,
+              "uid": 4
+            },
+            {
+              "x": 1400,
+              "y": 770,
+              "uid": 4
+            },
+            {
+              "x": 1400,
+              "y": 700,
+              "uid": 4
+            },
+            {
+              "x": 1400,
+              "y": 630,
+              "uid": 4
+            },
+            {
+              "x": 1400,
+              "y": 560,
+              "uid": 4
+            },
+            {
+              "x": 1400,
+              "y": 490,
+              "uid": 4
+            },
+            {
+              "x": 1400,
+              "y": 420,
+              "uid": 4
+            },
+            {
+              "x": 1400,
+              "y": 350,
+              "uid": 4
+            },
+            {
+              "x": 1330,
+              "y": 350,
+              "uid": 4
+            },
+            {
+              "x": 1540,
+              "y": 350,
+              "uid": 4
+            },
+            {
+              "x": 1470,
+              "y": 350,
+              "uid": 4
+            },
+            {
+              "x": 1610,
+              "y": 350,
+              "uid": 4
+            },
+            {
+              "x": 1680,
+              "y": 140,
+              "uid": 4
+            },
+            {
+              "x": 1680,
+              "y": 280,
+              "uid": 4
+            },
+            {
+              "x": 1680,
+              "y": 210,
+              "uid": 4
+            },
+            {
+              "x": 1680,
+              "y": 350,
+              "uid": 4
+            },
+            {
+              "x": 1680,
+              "y": 70,
+              "uid": 4
+            },
+            {
+              "x": 1470,
+              "y": 280,
+              "uid": 1
+            },
+            {
+              "x": 350,
+              "y": 490,
+              "uid": 2
+            },
+            {
+              "x": 420,
+              "y": 490,
+              "uid": 2
+            },
+            {
+              "x": 490,
+              "y": 490,
+              "uid": 2
+            },
+            {
+              "x": 0,
+              "y": 560,
+              "uid": 4
+            },
+            {
+              "x": 0,
+              "y": 630,
+              "uid": 4
+            },
+            {
+              "x": 0,
+              "y": 700,
+              "uid": 4
+            },
+            {
+              "x": 0,
+              "y": 770,
+              "uid": 4
+            },
+            {
+              "x": 0,
+              "y": 840,
+              "uid": 4
+            },
+            {
+              "x": 70,
+              "y": 840,
+              "uid": 4
+            },
+            {
+              "x": 140,
+              "y": 840,
+              "uid": 4
+            },
+            {
+              "x": 210,
+              "y": 840,
+              "uid": 4
+            },
+            {
+              "x": 350,
+              "y": 840,
+              "uid": 4
+            },
+            {
+              "x": 280,
+              "y": 840,
+              "uid": 4
+            },
+            {
+              "x": 560,
+              "y": 840,
+              "uid": 4
+            },
+            {
+              "x": 630,
+              "y": 840,
+              "uid": 4
+            },
+            {
+              "x": 700,
+              "y": 840,
+              "uid": 4
+            },
+            {
+              "x": 770,
+              "y": 840,
+              "uid": 4
+            },
+            {
+              "x": 840,
+              "y": 840,
+              "uid": 4
+            },
+            {
+              "x": 350,
+              "y": 910,
+              "uid": 4
+            },
+            {
+              "x": 420,
+              "y": 910,
+              "uid": 4
+            },
+            {
+              "x": 490,
+              "y": 910,
+              "uid": 4
+            },
+            {
+              "x": 560,
+              "y": 910,
+              "uid": 4
+            },
+            {
+              "x": 840,
+              "y": 910,
+              "uid": 4
+            },
+            {
+              "x": 910,
+              "y": 910,
+              "uid": 4
+            },
+            {
+              "x": 980,
+              "y": 910,
+              "uid": 4
+            },
+            {
+              "x": 1050,
+              "y": 910,
+              "uid": 4
+            },
+            {
+              "x": 420,
+              "y": 840,
+              "uid": 5
+            },
+            {
+              "x": 490,
+              "y": 840,
+              "uid": 5
+            },
+            {
+              "x": 910,
+              "y": 840,
+              "uid": 5
+            },
+            {
+              "x": 980,
+              "y": 840,
+              "uid": 5
+            },
+            {
+              "x": -70,
+              "y": 490,
+              "uid": 4
+            },
+            {
+              "x": -140,
+              "y": 490,
+              "uid": 4
+            },
+            {
+              "x": -140,
+              "y": 420,
+              "uid": 4
+            },
+            {
+              "x": -140,
+              "y": 350,
+              "uid": 4
+            },
+            {
+              "x": -140,
+              "y": 280,
+              "uid": 4
+            },
+            {
+              "x": -140,
+              "y": 210,
+              "uid": 4
+            },
+            {
+              "x": 70,
+              "y": 350,
+              "uid": 6
+            },
+            {
+              "x": 385,
+              "y": 175,
+              "uid": 7
+            },
+            {
+              "x": 455,
+              "y": 175,
+              "uid": 7
+            },
+            {
+              "x": 525,
+              "y": 175,
+              "uid": 7
+            },
+            {
+              "x": 420,
+              "y": 350,
+              "uid": 7
+            },
+            {
+              "x": 490,
+              "y": 350,
+              "uid": 7
+            },
+            {
+              "x": 1645,
+              "y": 245,
+              "uid": 7
+            },
+            {
+              "x": 1645,
+              "y": 175,
+              "uid": 7
+            },
+            {
+              "x": 1645,
+              "y": 105,
+              "uid": 7
+            },
+            {
+              "x": 1295,
+              "y": 385,
+              "uid": 7
+            },
+            {
+              "x": 1295,
+              "y": 490,
+              "uid": 7
+            },
+            {
+              "x": 1295,
+              "y": 595,
+              "uid": 7
+            },
+            {
+              "x": 1295,
+              "y": 700,
+              "uid": 7
+            },
+            {
+              "x": 1120,
+              "y": 770,
+              "uid": 7
+            },
+            {
+              "x": 980,
+              "y": 700,
+              "uid": 7
+            },
+            {
+              "x": 840,
+              "y": 770,
+              "uid": 7
+            },
+            {
+              "x": 595,
+              "y": 770,
+              "uid": 7
+            },
+            {
+              "x": 490,
+              "y": 700,
+              "uid": 7
+            },
+            {
+              "x": 385,
+              "y": 770,
+              "uid": 7
+            },
+            {
+              "x": 175,
+              "y": 770,
+              "uid": 7
+            },
+            {
+              "x": 140,
+              "y": 735,
+              "uid": 7
+            },
+            {
+              "x": 175,
+              "y": 700,
+              "uid": 7
+            },
+            {
+              "x": 210,
+              "y": 735,
+              "uid": 7
+            },
+            {
+              "x": 175,
+              "y": 735,
+              "uid": 7
+            }
+          ]
+        }
+      ],
+      "uid": 1,
+      "grid": 35,
+      "lastmod": 1522422091848
+    }
+  ],
+  "graphtick": 9,
+  "soundtick": 0,
+  "roomtick": 1,
+  "typetick": 7,
+  "styletick": 1,
+  "starting": 0,
+  "settings": {
+    "minifyhtmlcss": false,
+    "minifyjs": false,
+    "title": "Catformer",
+    "author": "Cosmo Myzrail Gorynych",
+    "site": "https://ctjs.rocks"
+  },
+  "palette": [],
+  "startroom": 1
+}
