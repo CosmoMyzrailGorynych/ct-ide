@@ -60,11 +60,12 @@ styles-panel.panel.view
                         var newStyle = JSON.parse(JSON.stringify(this.editedStyle));
                         window.currentProject.styletick ++;
                         newStyle.name = e.inputValue;
+                        newStyle.origname = 's' + window.currentProject.styletick;
                         newStyle.uid = window.currentProject.styletick;
                         window.currentProject.styles.push(newStyle);
                         this.editedStyleId = window.currentProject.styles.length - 1;
                         this.editedStyle = newStyle;
-                        this.styleGenPreview();
+                        this.editingStyle = true;
                         this.update();
                     }
                 });
