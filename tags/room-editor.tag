@@ -473,7 +473,8 @@ room-editor.panel.view
                     this.room.backgrounds.sort(function (a, b) {
                         return a.depth - b.depth;
                     });
-                    events.roomRefillBg();
+                    this.refreshRoomCanvas();
+                    this.update();
                 }
             });
         };
