@@ -221,8 +221,8 @@ graphic-editor.panel.view
                 if (e) throw e;
                 image = document.createElement('img');
                 image.onload = () => {
-                    this.graphic.width = image.width;
-                    this.graphic.height = image.height;
+                    this.graphic.width = this.graphic.imgWidth = image.width;
+                    this.graphic.height = this.graphic.imgHeight = image.height;
                     this.graphic.origname = path.basename(dest);
                     graphCanvas.img = image;
                     this.graphic.lastmod = +(new Date());
