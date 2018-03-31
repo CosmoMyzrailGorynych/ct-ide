@@ -355,6 +355,7 @@ style-editor.panel.view
             this.styleRedrawPreview();
         }, 0);
         this.styleSave = function() {
+            this.styleobj.lastmod = +(new Date());
             this.styleGenPreview(sessionStorage.projdir + '/img/' + this.styleobj.origname + '_prev@2.png', 128);
             this.styleGenPreview(sessionStorage.projdir + '/img/' + this.styleobj.origname + '_prev.png', 64).then(() => {
                 this.parent.editingStyle = false;

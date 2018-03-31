@@ -7,7 +7,7 @@ styles-panel.panel.view
            onclick="{openStyle(style)}" 
            oncontextmenu="{onStyleContextMenu(style)}")
             span {style.name}
-            img(src="file://{window.sessionStorage.projdir + '/img/s' + style.uid}_prev.png")
+            img(src="file://{window.sessionStorage.projdir + '/img/s' + style.uid}_prev.png?{style.lastmod}")
     style-editor(if="{editingStyle}" styleobj="{editedStyle}")
     script.
         this.editingStyle = false;
@@ -21,10 +21,6 @@ styles-panel.panel.view
             window.currentProject.styletick ++;
             var obj = {
                 name: "style" + window.currentProject.styletick,
-                shadow: false,
-                stroke: false,
-                fill: false,
-                font: false,
                 uid: window.currentProject.styletick,
                 origname: 's' + window.currentProject.styletick
             };
