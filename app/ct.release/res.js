@@ -38,30 +38,39 @@ ct.res = {
             return void 0;
         };
     },
-    makeSprite(name, url, x, y, w, h, xo, yo, cols, rows, untill, shape) {
+    makeSprite(name, url, opts) {
+        var i, o;
+        opts.cols = opts.cols || 1;
+        opts.rows = opts.rows || 1;
+        opts.x = opts.x || 0;
+        opts.y = opts.y || 0;
+        opts.marginx = opts.marginx || 0;
+        opts.marginy = opts.marginy || 0;
+        opts.shiftx = opts.shiftx || 0;
+        opts.shifty = opts.shifty || 0;
         // extracts sprite from atlas
-        var o = {},
-            i = ct.res.images[url];
+        o = {};
+        i = ct.res.images[url];
         o.atlas = i;
         o.frames = [];
-        o.x = xo;
-        o.y = yo;
-        if (untill === 0) {
-            untill = cols*rows;
-            o.untill = untill;
+        o.x = opts.xo || 0;
+        o.y = opts.yo || 0;
+        if (!opts.untill) {
+            opts.untill = opts.cols*opts.rows;
+            o.untill = opts.untill;
         }
-        o.width = w;
-        o.height = h;
-        for (var yy = 0; yy < rows; yy++) {
-            for (var xx = 0; xx < cols; xx++) {
-                o.frames.push([x + xx * o.width,y + yy * o.height]);
-                if (yy * cols + xx >= untill) {
+        o.width = opts.w || 1;
+        o.height = opts.h || 1;
+        for (var yy = 0; yy < (opts.rows || 1); yy++) {
+            for (var xx = 0; xx < opts.cols; xx++) {
+                o.frames.push([opts.shiftx + opts.x + xx * (o.width + opts.marginx), opts.shifty + opts.y + yy * (o.height + opts.marginy)]);
+                if (yy * opts.cols + xx >= opts.untill) {
                     break;
                 }
             }
         }
-        if (shape) {
-            o.shape = shape;
+        if (opts.shape) {
+            o.shape = opts.shape;
         } else {
             o.shape = {type: 'point'};
         }

@@ -53,9 +53,18 @@
     };
     var getGraphicShape = graphic => {
         if (graphic.shape === 'rect') {
-            return `{type: 'rect', top: ${graphic.top}, bottom: ${graphic.bottom}, left: ${graphic.left}, right: ${graphic.right}}`;
+            return {
+                type: 'rect',
+                top: graphic.top,
+                bottom: graphic.bottom,
+                left: graphic.left,
+                right: graphic.right
+            };
         }
-        return `{type: 'circle', r:${graphic.r}}`;
+        return {
+            type: 'circle',
+            r: graphic.r
+        };
     };
     var packImages = () => {
         var blocks = [];
@@ -65,8 +74,8 @@
                     origname: window.currentProject.graphs[i].origname,
                     g: i
                 },
-                width: window.currentProject.graphs[i].width,
-                height: window.currentProject.graphs[i].height,
+                width: window.currentProject.graphs[i].imgWidth+2,
+                height: window.currentProject.graphs[i].imgHeight+2,
             };
         }
         blocks.sort((a, b) => Math.max(b.height, b.width) > Math.max(a.height, a.width));
@@ -86,14 +95,25 @@
             for (let i = 0, li = bin.rects.length; i < li; i++) {
                 const block = bin.rects[i],
                       g = window.currentProject.graphs[block.data.g];
-                atlas.x.drawImage(window.glob.graphmap[block.data.origname], block.x, block.y);
+                atlas.x.drawImage(window.glob.graphmap[block.data.origname], block.x+1, block.y+1);
+            var opts = {
+                x: block.x + 1,
+                y: block.y + 1,
+                w: g.width,
+                h: g.height,
+                xo: g.axis[0],
+                yo: g.axis[1],
+                cols: g.grid[0],
+                rows: g.grid[1],
+                untill: g.untill,
+                shape: getGraphicShape(g),
+                marginx: g.marginx,
+                marginy: g.marginy,
+                shiftx: g.offx,
+                shifty: g.offy
+            };
                 res += `
-        ct.res.makeSprite(
-            '${window.currentProject.graphs[block.data.g].name}', 'img/a${binInd}.png',
-            ${block.x + 1}, ${block.y + 1}, ${block.width - 2}, ${block.height - 2},
-            ${g.axis[0]}, ${g.axis[1]}, ${g.grid[0]}, ${g.grid[1]}, ${g.untill},
-            ${getGraphicShape(g)});`;
-
+                ct.res.makeSprite('${window.currentProject.graphs[block.data.g].name}', 'img/a${binInd}.png', ${JSON.stringify(opts, null, '    ')});`;
             }
             var data = atlas.toDataURL().replace(/^data:image\/\w+;base64,/, '');
             var buf = new Buffer(data, 'base64');
