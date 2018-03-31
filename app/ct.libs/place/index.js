@@ -113,13 +113,21 @@ ct.place = {
         // ct.place.occupied(<me: Copy, x: Number, y: Number>[, ctype: String])
         // Determines if the place in (x,y) is occupied. 
         // Optionally can take 'ctype' as a filter for obstackles' collision group (not shape type)
+        var oldx = me.x, 
+            oldy = me.y;
+        me.x = x;
+        me.y = y; 
         for (var i in ct.stack) {
             if (ct.stack[i] !== me && (ct.stack[i].ctype === ctype || !ctype)) {
                 if (ct.place.collide(me, ct.stack[i])) {
+                    me.x = oldx;
+                    me.y = oldy;
                     return ct.stack[i];
                 }
             }
         }
+        me.x = oldx;
+        me.y = oldy;
         return false;
     },
     free(me, x, y, ctype) {
