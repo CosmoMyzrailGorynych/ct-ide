@@ -102,7 +102,9 @@ ct.types.BACKGROUND = {
     onDraw() {
         var m = ct.x.fillStyle;
         ct.x.fillStyle = this.pattern;
+        ct.draw.fix(-ct.rooms.current.x, -ct.rooms.current.y);
         ct.x.fillRect(ct.rooms.current.x, ct.rooms.current.y, ct.width, ct.height);
+        ct.draw.unfix();
         ct.x.fillStyle = m;
     },
     onCreate() {
