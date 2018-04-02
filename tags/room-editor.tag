@@ -198,8 +198,8 @@ room-editor.panel.view
         
         // При клике на канвас помещает копию на соответствующий слой
         this.onCanvasClick = e => {
-            // Если не выбран тип создаваемой копии, то ничего не делаем
-            if (this.currentType === -1) {
+            // Если не выбран тип создаваемой копии, или идёт удаление копий, то ничего не делаем
+            if (this.currentType === -1 || e.ctrlKey) {
                 return;
             }
             var targetLayer;
@@ -218,7 +218,7 @@ room-editor.panel.view
                 targetLayer = lastTypeLayer;
             }
 
-            if (this.room.grid == 0) {
+            if (this.room.grid == 0 || e.altKey) {
                 targetLayer.copies.push({
                     x: ~~(this.xToRoom(e.offsetX)),
                     y: ~~(this.yToRoom(e.offsetY)),
@@ -237,12 +237,14 @@ room-editor.panel.view
         };
         /** При нажатии на канвас, если не выбрана копия, то начинаем перемещение */
         this.onCanvasPress = e => {
-            if (this.currentType === -1 && e.button === 0) {
+            this.mouseDown = true;
+            if (this.currentType === -1 && e.button === 0 && !e.ctrlKey) {
                 this.dragging = true;
             }
         }
         /** и безусловно прекращаем перемещение при отпускании мыши */
         this.onCanvasMouseUp = e => {
+            this.mouseDown = false;
             this.dragging = false;
         };
         /** Начинаем перемещение, или же показываем предварительное расположение новой копии */
@@ -251,43 +253,85 @@ room-editor.panel.view
                 // перетаскивание
                 this.roomx -= ~~(e.movementX / this.zoomFactor);
                 this.roomy -= ~~(e.movementY / this.zoomFactor);
-                this.refreshRoomCanvas();
-            } else {
-                if (this.currentType !== -1) {
-                    let img, graph, w, h, grax, gray;
-                    // превью вставки
-                    this.refreshRoomCanvas();
-                    this.refs.canvas.x.setTransform(this.zoomFactor, 0, 0, this.zoomFactor, 0, 0);
-                    this.refs.canvas.x.globalAlpha = 0.5;
-                    if (this.currentType.graph != -1) {
-                        img = window.glob.graphmap[this.currentType.graph];
-                        graph = img.g;
-                        w = graph.width;
-                        h = graph.height;
-                        grax = graph.axis[0] - graph.offx;
-                        gray = graph.axis[1] - graph.offy;
-                    } else {
-                        img = window.glob.graphmap[-1];
-                        w = h = 32;
-                        grax = gray = 16;
+                this.refreshRoomCanvas(e);
+            } else if (e.ctrlKey) {
+                // При нажатии кнопки Ctrl удаляем копии под курсором
+                var maxdist = this.room.grid || 64;
+                if (this.mouseDown && this.room.layers.length !== 0) {
+                    var type = this.room.layers[0].copies[0],
+                        pos = 0,
+                        layer, l,
+                        done = false, 
+                        fromx = this.xToRoom(e.offsetX),
+                        fromy = this.yToRoom(e.offsetY);
+                    for (let i = 0, li = this.room.layers.length; i < li; i++) {
+                        let layerCopies = this.room.layers[i].copies;
+                        for (let j = 0, lj = layerCopies.length; j < lj; j++) {
+                            let xp = layerCopies[j].x - fromx,
+                                yp = layerCopies[j].y - fromy;
+                            l = Math.sqrt(xp * xp + yp * yp);
+                            if (l < maxdist) {
+                                layer = i;
+                                pos = j;
+                                done = true;
+                                break;
+                            }
+                        }
+                        if (done) {
+                            break;
+                        }
                     }
-                    if (this.room.grid === 0) {
-                        this.refs.canvas.x.drawImage(
-                            img,
-                            0, 0, w, h,
-                            e.offsetX / this.zoomFactor - grax, e.offsetY / this.zoomFactor - gray, w, h);
-                    } else {
-                        // если есть сетка, то координаты предварительной копии нужно отснэпить по сетке
-                        dx = this.xToRoom(e.offsetX);
-                        dy = this.yToRoom(e.offsetY);
-                        w = graph.width;
-                        h = graph.height;
-                        this.refs.canvas.x.drawImage(
-                            img, 0, 0, w, h,
-                            this.xToCanvas(dx - dx % this.room.grid) / this.zoomFactor - grax, 
-                            this.yToCanvas(dy - dy % this.room.grid) / this.zoomFactor - gray, 
-                            w, h);
+                    if (done) {
+                        this.room.layers[layer].copies.splice(pos, 1);
+                        if (this.room.layers[layer].copies.length == 0) {
+                            this.room.layers.splice(layer,1);
+                        }
                     }
+                }
+                // Рисовка кружка для удаления копий
+                this.refreshRoomCanvas(e);
+                var x = this.refs.canvas.x;
+                x.fillStyle = '#F00';
+                x.strokeStyle = '#000';
+                x.globalAlpha = 0.5;
+                x.beginPath();
+                x.arc(this.xToRoom(e.offsetX), this.yToRoom(e.offsetY), maxdist, 0, 2 * Math.PI);
+                x.fill();
+                x.stroke();
+            } else if (this.currentType !== -1) {
+                let img, graph, w, h, grax, gray;
+                // превью вставки
+                this.refreshRoomCanvas(e);
+                this.refs.canvas.x.setTransform(this.zoomFactor, 0, 0, this.zoomFactor, 0, 0);
+                this.refs.canvas.x.globalAlpha = 0.5;
+                if (this.currentType.graph != -1) {
+                    img = window.glob.graphmap[this.currentType.graph];
+                    graph = img.g;
+                    w = graph.width;
+                    h = graph.height;
+                    grax = graph.axis[0] - graph.offx;
+                    gray = graph.axis[1] - graph.offy;
+                } else {
+                    img = window.glob.graphmap[-1];
+                    w = h = 32;
+                    grax = gray = 16;
+                }
+                if (this.room.grid === 0 || e.altKey) {
+                    this.refs.canvas.x.drawImage(
+                        img,
+                        0, 0, w, h,
+                        e.offsetX / this.zoomFactor - grax, e.offsetY / this.zoomFactor - gray, w, h);
+                } else {
+                    // если есть сетка, то координаты предварительной копии нужно отснэпить по сетке
+                    dx = this.xToRoom(e.offsetX);
+                    dy = this.yToRoom(e.offsetY);
+                    w = graph.width;
+                    h = graph.height;
+                    this.refs.canvas.x.drawImage(
+                        img, 0, 0, w, h,
+                        this.xToCanvas(dx - dx % this.room.grid) / this.zoomFactor - grax, 
+                        this.yToCanvas(dy - dy % this.room.grid) / this.zoomFactor - gray, 
+                        w, h);
                 }
             }
         };
@@ -314,7 +358,7 @@ room-editor.panel.view
                 }
             }
             this.redrawGrid();
-            this.refreshRoomCanvas();
+            this.refreshRoomCanvas(e);
             this.update();
         };
         this.onCanvasContextMenu = e => {
@@ -573,6 +617,8 @@ room-editor.panel.view
                     }
                 }
             }
+
+            // Это рисовка сетки
             if (this.room.grid > 1) {
                 canvas.x.globalCompositeOperation = 'exclusion';
                 canvas.x.fillStyle = canvas.x.createPattern(this.gridCanvas, 'repeat');
