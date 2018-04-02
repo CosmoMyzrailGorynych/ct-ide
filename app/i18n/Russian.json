@@ -66,7 +66,9 @@
         "settings": "Настройки",
         "sounds": "Звуки",
         "styles": "Стили",
-        "types": "Типы"
+        "types": "Типы",
+        "zipExport": "Экспорт в .zip",
+        "zipProject": "Упаковать проект в .zip"
     },
     "settings": {
         "author": "Автор:",
@@ -208,6 +210,7 @@
         "grid": "Включить сетку",
         "gridoff": "Выключить сетку",
         "gridsize": "Размер сетки:",
+        "hotkeysNotice": "Ctrl = Удалить, Alt = Без сетки",
         "tocenter": "В центр",
         "selectbg": "Выбрать тайлсет",
         "shift": "Сместить вид",

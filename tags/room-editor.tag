@@ -61,6 +61,7 @@ room-editor.panel.view
         .shift
             button.inline.square(title="{voc.shift}" onclick="{roomShift}")
                 i.icon.icon-move
+            span {voc.hotkeysNotice}
         .zoom
             b {voc.zoom}
             div.button-stack
