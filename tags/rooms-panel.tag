@@ -65,11 +65,11 @@ rooms-panel.panel.view
                 .prompt(window.languageJSON.common.newname)
                 .then(e => {
                     if (e.inputValue != '') {
-                        var newRoom = JSON.parse(JSON.stringify(currentRoom));
+                        var newRoom = JSON.parse(JSON.stringify(this.editingRoom));
                         window.currentProject.roomtick ++;
                         newRoom.name = e.inputValue;
                         window.currentProject.rooms.push(newRoom);
-                        currentRoomId = window.currentProject.rooms.length - 1;
+                        this.currentRoomId = window.currentProject.rooms.length - 1;
                         this.editingRoom = window.currentProject.rooms[currentRoomId];
                         fs.linkSync(sessionStorage.projdir + '/img/r' + newRoom.uid + '.png', sessionStorage.projdir + '/img/r' + window.currentProject.roomtick + '.png')
                         newRoom.uid = window.currentProject.roomtick;
@@ -82,12 +82,12 @@ rooms-panel.panel.view
             label: window.languageJSON.common.rename,
             click: () => {
                 alertify
-                .defaultValue(currentRoom.name)
+                .defaultValue(this.editingRoom.name)
                 .prompt(window.languageJSON.common.newname)
                 .then(e => {
                     if (e.inputValue != '') {
                         var nam = e.inputValue;
-                        currentRoom.name = nam;
+                        this.editingRoom.name = nam;
                         this.update();
                     }
                 });
