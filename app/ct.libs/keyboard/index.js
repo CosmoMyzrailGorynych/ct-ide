@@ -59,6 +59,7 @@ ct.keyboard = {
     shift: false,
     ctrl: false,
     clear() {
+        delete ct.keyboard.key;
         ct.keyboard.pressed = [];
         ct.keyboard.released = [];
         ct.keyboard.alt = false;
