@@ -61,6 +61,16 @@
     },
 
     {
+      "text": "EXTENDING CT.JS",
+      "type": "label"
+    },
+    {
+      "text": "Making your own mods",
+      "type": "link",
+      "path": "making-mods.html"
+    },
+
+    {
       "text": "SUPPORT AND COMMUNITY",
       "type": "label"
     },
