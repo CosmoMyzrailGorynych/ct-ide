@@ -798,7 +798,7 @@
       "name": "AbstractBonus",
       "depth": 3,
       "oncreate": "// get the player\nvar player = ct.types.list['Player_Blue'][0];\nconsole.log(this.graph);\nif (player.lives < 3) {\n    // add a chance to spawn a life bonus if there is 2 or less lives\n    this.graph = ct.random.dice('Bonus_Lives', 'Bonus_Spread', 'Bonus_Bolt', 'Bonus_Cross');\n} else {\n    this.graph = ct.random.dice('Bonus_Spread', 'Bonus_Bolt', 'Bonus_Cross');\n}\n\nthis.spd = 3;\nthis.dir = 270;\nconsole.log(this.graph);",
-      "onstep": "ct.types.move(this);\n\nvar player = ct.place.meet(this, this.x, this.y, 'Player_Blue');\nif (player) {\n    console.log(this.graph);\n    if (this.graph === 'Bonus_Lives') {\n        player.lives ++;\n    } else {\n        var graphToWeaponMap = {\n            'Bonus_Spread': 'spread',\n            'Bonus_Bolt': 'bolt',\n            'Bonus_Cross': 'cross'\n        };\n        player.weapon = graphToWeaponMap[this.graph];\n    }\n    // Consume bonus\n    this.kill = true;\n}\n\n// Destroy bonus if it fell off the screen\nif (this.y > ct.room.height + 48) {\n    this.kill = true;\n}",
+      "onstep": "ct.types.move(this);\n\nvar player = ct.place.meet(this, this.x, this.y, 'Player_Blue');\nif (player) {\n    ct.sound.spawn('Bonus');\n    if (this.graph === 'Bonus_Lives') {\n        player.lives ++;\n    } else {\n        var graphToWeaponMap = {\n            'Bonus_Spread': 'spread',\n            'Bonus_Bolt': 'bolt',\n            'Bonus_Cross': 'cross'\n        };\n        player.weapon = graphToWeaponMap[this.graph];\n    }\n    // Consume bonus\n    this.kill = true;\n}\n\n// Destroy bonus if it fell off the screen\nif (this.y > ct.room.height + 48) {\n    this.kill = true;\n}",
       "ondraw": "ct.draw(this);",
       "ondestroy": "",
       "uid": 8,
@@ -827,7 +827,7 @@
     {
       "name": "Explosion",
       "depth": 0,
-      "oncreate": "this.transform = true;\nthis.tr = ct.random.deg();",
+      "oncreate": "ct.sound.spawn(ct.random.dice('Explosion_01', 'Explosion_02', 'Explosion_03'));\n\nthis.transform = true;\nthis.tr = ct.random.deg();",
       "onstep": "ct.types.move(this);",
       "ondraw": "ct.draw(this);\n\nthis.ta -= 0.1;\nif (this.ta < 0) {\n    this.kill = true;\n}",
       "ondestroy": "",
@@ -913,6 +913,30 @@
       "uid": 2,
       "origname": "s2.mp3",
       "lastmod": 1508402430765
+    },
+    {
+      "name": "Bonus",
+      "uid": 4,
+      "origname": "s4.wav",
+      "lastmod": 1522761957688
+    },
+    {
+      "name": "Explosion_01",
+      "uid": 5,
+      "origname": "s5.wav",
+      "lastmod": 1522761980782
+    },
+    {
+      "name": "Explosion_02",
+      "uid": 6,
+      "origname": "s6.wav",
+      "lastmod": 1522762005209
+    },
+    {
+      "name": "Explosion_03",
+      "uid": 7,
+      "origname": "s7.wav",
+      "lastmod": 1522762020572
     }
   ],
   "styles": [
@@ -1069,7 +1093,7 @@
     }
   ],
   "graphtick": 32,
-  "soundtick": 4,
+  "soundtick": 8,
   "roomtick": 3,
   "typetick": 19,
   "styletick": 2,
