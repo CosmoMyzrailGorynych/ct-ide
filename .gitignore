@@ -40,6 +40,7 @@ app/temp
 app/temp
 /user
 app/fonts/style\.css
+builds
 
 # nw
 /*.dll
