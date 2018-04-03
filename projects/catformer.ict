@@ -2,7 +2,8 @@
   "notes": "/* empty */",
   "libs": {
     "place": {},
-    "keyboard": {}
+    "keyboard": {},
+    "random": {}
   },
   "graphs": [
     {
@@ -29,7 +30,7 @@
       "frames": 1,
       "width": 70,
       "height": 70,
-      "lastmod": 1522416805275,
+      "lastmod": 1522470828541,
       "imgWidth": 70,
       "imgHeight": 70
     },
@@ -53,13 +54,13 @@
       "left": 0,
       "right": 70,
       "top": 0,
-      "bottom": 44,
+      "bottom": 25,
       "frames": 1,
       "width": 70,
       "height": 70,
       "imgWidth": 70,
       "imgHeight": 70,
-      "lastmod": 1522391613623
+      "lastmod": 1522470741411
     },
     {
       "name": "fence",
@@ -218,8 +219,8 @@
       "offy": 0,
       "origname": "i9.png",
       "shape": "rect",
-      "left": 32,
-      "right": 32,
+      "left": 24,
+      "right": 24,
       "top": 96,
       "bottom": 1,
       "frames": 15,
@@ -227,7 +228,88 @@
       "height": 97,
       "imgWidth": 360,
       "imgHeight": 291,
-      "lastmod": 1522422096306
+      "lastmod": 1522470474349
+    },
+    {
+      "name": "greedyDeath",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        218,
+        217
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 436,
+      "imgHeight": 434,
+      "width": 436,
+      "height": 434,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i10.png",
+      "shape": "rect",
+      "left": 218,
+      "right": 218,
+      "top": 217,
+      "bottom": 217,
+      "lastmod": 1522466266334
+    },
+    {
+      "name": "Slime",
+      "untill": 0,
+      "grid": [
+        1,
+        2
+      ],
+      "axis": [
+        25,
+        27
+      ],
+      "marginx": 0,
+      "marginy": 1,
+      "imgWidth": 51,
+      "imgHeight": 55,
+      "width": 51,
+      "height": 27,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i11.png",
+      "shape": "rect",
+      "left": 25,
+      "right": 26,
+      "top": 27,
+      "bottom": 0,
+      "lastmod": 1522470234257
+    },
+    {
+      "name": "Rich",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        149,
+        232
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 298,
+      "imgHeight": 464,
+      "width": 298,
+      "height": 464,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i12.png",
+      "shape": "rect",
+      "left": 149,
+      "right": 149,
+      "top": 232,
+      "bottom": 232,
+      "lastmod": 1522476036664
     }
   ],
   "types": [
@@ -235,7 +317,7 @@
       "name": "Box",
       "depth": 0,
       "oncreate": "this.ctype = 'Solid';",
-      "onstep": "ct.types.move(this);",
+      "onstep": "if (ct.place.meet(this, this.x + 5, this.y, 'Player') &&\n    ct.place.free(this, this.x - 10, this.y, 'Solid')) {\n    this.x -= 10;\n}\nif (ct.place.meet(this, this.x - 5, this.y, 'Player') &&\n    ct.place.free(this, this.x + 10, this.y, 'Solid')) {\n    this.x += 10;\n}\nif (ct.place.free(this, this.x, this.y + 10, 'Solid')) {\n    this.y += 10;\n}",
       "ondraw": "ct.draw(this);",
       "ondestroy": "",
       "uid": 1,
@@ -284,8 +366,8 @@
     {
       "name": "Player",
       "depth": 0,
-      "oncreate": "this.transform = true;\nthis.imgspd = 0.5;\n\nthis.maxspd = 10;\nthis.speed = 2;\nthis.jumpPower = 18;\n\nthis.ctype = 'Player';",
-      "onstep": "if (ct.keyboard.down['right']) {\n    if (ct.u.ldx(this.spd, this.dir) < this.maxspd) {\n        ct.types.addSpeed(this, this.speed, 0);\n    }\n} else if (ct.keyboard.down['left']) {\n    if (ct.u.ldx(this.spd, this.dir) > -this.maxspd) {\n        ct.types.addSpeed(this, this.speed, 180);\n    }\n} else {\n    if (ct.place.occupied(this, this.x, this.y + 1, 'Solid')) {\n        this.spd = Math.max(0, this.spd - this.maxspd);\n    }\n}\nif (ct.keyboard.down['up'] || ct.keyboard.down['space']) {\n    if (ct.place.occupied(this, this.x, this.y + 1, 'Solid')) {\n        ct.types.addSpeed(this, this.jumpPower, 90);\n    }\n}\n\nif (ct.place.free(this, this.x, this.y + 1, 'Solid')) {\n    ct.types.addSpeed(this, 1, 270);\n}\n\nvar hspeed = Math.round(ct.u.ldx(this.spd, this.dir)),\n    vspeed = Math.round(ct.u.ldy(this.spd, this.dir));\n\nfor (var i = 0; i < Math.abs(hspeed); i++) {\n    if (ct.place.free(this, this.x + Math.sign(hspeed), this.y, 'Solid')) {\n        this.x += Math.sign(hspeed);\n    } else {\n        this.spd = 0;\n        break;\n    }\n}\nfor (var i = 0; i < Math.abs(vspeed); i++) {\n    if (ct.place.free(this, this.x, this.y + Math.sign(vspeed), 'Solid')) {\n        this.y += Math.sign(vspeed);\n    } else {\n        this.spd = 0;\n        break;\n    }\n}",
+      "oncreate": "this.transform = true;\nthis.imgspd = 0.5;\n\n// Traditional speed/dir movement system works badly with platformers.\n// We will set up our own variables and write own movement code.\n\nthis.maxspd = 10; // this will be our max horizontal speed\nthis.speed = 2; // this is walking acceleration\nthis.jumpPower = 18; // this is our jumping velocity\n\nthis.ctype = 'Player';",
+      "onstep": "// ct.u.ldx(this.spd, this.dir) returns the X component of our speed vector,\n// or our horizontal speed. Y component is vertical speed.\n// We need these components to limit our horizontal velocity and to make\n// pixel-perfect collisions/\n\n\n// Move right or left\nif (ct.keyboard.down['right']) {\n    if (ct.u.ldx(this.spd, this.dir) < this.maxspd) {\n        ct.types.addSpeed(this, this.speed, 0);\n    }\n} else if (ct.keyboard.down['left']) {\n    if (ct.u.ldx(this.spd, this.dir) > -this.maxspd) {\n        ct.types.addSpeed(this, this.speed, 180);\n    }\n} else { // Slow down if we are on the ground and we don't move.\n    if (ct.place.occupied(this, this.x, this.y + 1, 'Solid')) {\n        this.spd = Math.max(0, this.spd - this.maxspd);\n    }\n}\n\n// Jumping\nif (ct.keyboard.down['up'] || ct.keyboard.down['space']) {\n    // Jump only if we stay on the ground\n    if (ct.place.occupied(this, this.x, this.y + 1, 'Solid')) {\n        ct.types.addSpeed(this, this.jumpPower, 90);\n    }\n}\n\n// If we are not on the ground, add gravity\nif (ct.place.free(this, this.x, this.y + 1, 'Solid')) {\n    ct.types.addSpeed(this, 1, 270);\n}\n\n// Again, get X and Y components of our velocity vector. \n// Math.round removes the fractional part.\nvar hspeed = Math.round(ct.u.ldx(this.spd, this.dir)),\n    vspeed = Math.round(ct.u.ldy(this.spd, this.dir));\n\n// Move pixel by pixel until we meet a colliding object next to us\n// Math.sign returns -1 if a number is negative, 1 if positive and 0 if it is 0.\nfor (var i = 0; i < Math.abs(hspeed); i++) {\n    if (ct.place.free(this, this.x + Math.sign(hspeed), this.y, 'Solid')) {\n        this.x += Math.sign(hspeed);\n    } else {\n        this.spd = 0;\n        break;\n    }\n}\n\n// Do the same for vertical speed\nfor (var i = 0; i < Math.abs(vspeed); i++) {\n    if (ct.place.free(this, this.x, this.y + Math.sign(vspeed), 'Solid')) {\n        this.y += Math.sign(vspeed);\n    } else {\n        this.spd = 0;\n        break;\n    }\n}\n\n// Check if we collide with spikes\nif (ct.place.occupied(this, this.x, this.y, 'Enemy')) {\n    ct.sound.spawn('BodyFall');\n    // move to a 'death' screen\n    ct.rooms.switch('DeadScreen');\n}",
       "ondraw": "if (ct.u.ldx(this.spd, this.dir) < 0) {\n    this.tx = -1;\n} else {\n    this.tx = 1;\n}\n\nif (!ct.place.occupied(this, this.x, this.y + 1, 'Solid')) {\n    this.imgspd = 0;\n    this.frame = 12;\n} else if (this.spd <= 0.1) {\n    this.imgspd = 0;\n    this.frame = 13;\n} else {\n    this.imgspd = 0.5;\n    if (this.frame > 10) {\n        this.frame -= 10;\n    }\n}\n\nct.draw(this);",
       "ondestroy": "",
       "uid": 6,
@@ -295,14 +377,81 @@
       "name": "Coin",
       "depth": 0,
       "oncreate": "",
-      "onstep": "if (ct.place.meet(this, this.x, this.y, 'Player')) {\n    this.kill = true;\n    ct.room.coins ++;\n}",
+      "onstep": "if (ct.place.meet(this, this.x, this.y, 'Player')) {\n    this.kill = true;\n    ct.sound.spawn(ct.random.dice('Coin_01', 'Coin_02', 'Coin_03'));\n    ct.room.coins ++;\n}",
       "ondraw": "ct.draw(this);",
       "ondestroy": "",
       "uid": 7,
       "graph": "i6.png"
+    },
+    {
+      "name": "Greed",
+      "depth": 0,
+      "oncreate": "",
+      "onstep": "ct.types.move(this);",
+      "ondraw": "ct.draw(this);",
+      "ondestroy": "",
+      "uid": 8,
+      "graph": "i10.png"
+    },
+    {
+      "name": "Slime",
+      "depth": 0,
+      "oncreate": "this.spd = 2;\nthis.dir = 180;\n\nthis.imgspd = 4 / 30;\n\nthis.transform = true;\nthis.ctype = 'Enemy';",
+      "onstep": "if (ct.place.free(this, this.x + ct.u.ldx(70, this.dir), this.y + 35, 'Solid') ||\n    ct.place.occupied(this, this.x + ct.u.ldx(10, this.dir), this.y, 'Solid')) {\n    if (this.dir === 180) {\n        this.dir = 0;\n    } else {\n        this.dir = 180;\n    }\n}\n\n\nct.types.move(this);",
+      "ondraw": "if (this.dir === 180) {\n    this.tx = 1;\n} else {\n    this.tx = -1;\n}\n\nct.draw(this);",
+      "ondestroy": "",
+      "uid": 9,
+      "graph": "i11.png"
+    },
+    {
+      "name": "Rich",
+      "depth": 0,
+      "oncreate": "",
+      "onstep": "ct.types.move(this);",
+      "ondraw": "ct.draw(this);",
+      "ondestroy": "",
+      "uid": 10,
+      "graph": "i12.png"
     }
   ],
-  "sounds": [],
+  "sounds": [
+    {
+      "name": "BodyFall",
+      "uid": 0,
+      "origname": "s0.wav",
+      "lastmod": 1522761534690
+    },
+    {
+      "name": "Failure",
+      "uid": 1,
+      "origname": "s1.wav",
+      "lastmod": 1522761553815
+    },
+    {
+      "name": "Victory",
+      "uid": 2,
+      "origname": "s2.wav",
+      "lastmod": 1522761569514
+    },
+    {
+      "name": "Coin_01",
+      "uid": 3,
+      "origname": "s3.wav",
+      "lastmod": 1522761582110
+    },
+    {
+      "name": "Coin_02",
+      "uid": 4,
+      "origname": "s4.wav",
+      "lastmod": 1522761594384
+    },
+    {
+      "name": "Coin_03",
+      "uid": 5,
+      "origname": "s5.wav",
+      "lastmod": 1522761606687
+    }
+  ],
   "styles": [
     {
       "name": "CoinText",
@@ -325,13 +474,49 @@
         "color": "#CF7500",
         "weight": 1
       }
+    },
+    {
+      "name": "OhNo",
+      "uid": 2,
+      "origname": "s2",
+      "font": {
+        "family": "sans-serif",
+        "size": 48,
+        "weight": "800",
+        "italic": true,
+        "valign": "middle",
+        "halign": "center"
+      },
+      "fill": {
+        "type": "0",
+        "color": "#257073"
+      },
+      "lastmod": 1522467947101
+    },
+    {
+      "name": "OhNo_Small",
+      "uid": 4,
+      "origname": "s4",
+      "font": {
+        "family": "sans-serif",
+        "size": 24,
+        "weight": "800",
+        "italic": true,
+        "valign": "middle",
+        "halign": "center"
+      },
+      "fill": {
+        "type": "0",
+        "color": "#257073"
+      },
+      "lastmod": 1522468322151
     }
   ],
   "rooms": [
     {
-      "name": "Main",
+      "name": "InGame",
       "oncreate": "this.coins = 0;\n\nthis.follow = ct.types.list['Player'][0];\nthis.borderx = 400;\nthis.bordery = 300;",
-      "onstep": "",
+      "onstep": "if (this.coins >= 33) {\n    ct.rooms.switch('RichScreen');\n}",
       "ondraw": "ct.styles.set('CoinText');\n\nct.draw.image('coinGold', 0, this.x + ct.width - 100, this.y + 35);\nct.draw.text(this.coins, this.x + ct.width - 70, this.y + 35);\nct.draw.text(this.coins, this.x + ct.width - 70, this.y + 35, true);\n\nct.styles.reset();",
       "onleave": "",
       "width": 1024,
@@ -417,41 +602,6 @@
               "uid": 4
             },
             {
-              "x": 840,
-              "y": 490,
-              "uid": 4
-            },
-            {
-              "x": 910,
-              "y": 420,
-              "uid": 4
-            },
-            {
-              "x": 910,
-              "y": 490,
-              "uid": 4
-            },
-            {
-              "x": 980,
-              "y": 350,
-              "uid": 4
-            },
-            {
-              "x": 910,
-              "y": 350,
-              "uid": 4
-            },
-            {
-              "x": 490,
-              "y": 210,
-              "uid": 4
-            },
-            {
-              "x": 420,
-              "y": 210,
-              "uid": 4
-            },
-            {
               "x": 350,
               "y": 210,
               "uid": 4
@@ -460,16 +610,6 @@
               "x": 980,
               "y": 280,
               "uid": 1
-            },
-            {
-              "x": 1050,
-              "y": 350,
-              "uid": 4
-            },
-            {
-              "x": 1120,
-              "y": 350,
-              "uid": 4
             },
             {
               "x": 1190,
@@ -539,16 +679,6 @@
             {
               "x": 1400,
               "y": 560,
-              "uid": 4
-            },
-            {
-              "x": 1400,
-              "y": 490,
-              "uid": 4
-            },
-            {
-              "x": 1400,
-              "y": 420,
               "uid": 4
             },
             {
@@ -797,16 +927,6 @@
               "uid": 7
             },
             {
-              "x": 455,
-              "y": 175,
-              "uid": 7
-            },
-            {
-              "x": 525,
-              "y": 175,
-              "uid": 7
-            },
-            {
               "x": 420,
               "y": 350,
               "uid": 7
@@ -905,20 +1025,405 @@
               "x": 175,
               "y": 735,
               "uid": 7
+            },
+            {
+              "x": -140,
+              "y": 140,
+              "uid": 4
+            },
+            {
+              "x": -140,
+              "y": 70,
+              "uid": 4
+            },
+            {
+              "x": -140,
+              "y": 0,
+              "uid": 4
+            },
+            {
+              "x": -140,
+              "y": -70,
+              "uid": 4
+            },
+            {
+              "x": -70,
+              "y": -70,
+              "uid": 4
+            },
+            {
+              "x": 0,
+              "y": -70,
+              "uid": 4
+            },
+            {
+              "x": 70,
+              "y": -70,
+              "uid": 4
+            },
+            {
+              "x": 140,
+              "y": -70,
+              "uid": 4
+            },
+            {
+              "x": 210,
+              "y": -70,
+              "uid": 4
+            },
+            {
+              "x": 280,
+              "y": -70,
+              "uid": 4
+            },
+            {
+              "x": 350,
+              "y": -70,
+              "uid": 4
+            },
+            {
+              "x": 420,
+              "y": -70,
+              "uid": 4
+            },
+            {
+              "x": 490,
+              "y": -70,
+              "uid": 4
+            },
+            {
+              "x": 560,
+              "y": -70,
+              "uid": 4
+            },
+            {
+              "x": 630,
+              "y": -70,
+              "uid": 4
+            },
+            {
+              "x": 700,
+              "y": -70,
+              "uid": 4
+            },
+            {
+              "x": 770,
+              "y": -70,
+              "uid": 4
+            },
+            {
+              "x": 840,
+              "y": -70,
+              "uid": 4
+            },
+            {
+              "x": 910,
+              "y": -70,
+              "uid": 4
+            },
+            {
+              "x": 980,
+              "y": -70,
+              "uid": 4
+            },
+            {
+              "x": 1050,
+              "y": -70,
+              "uid": 4
+            },
+            {
+              "x": 1120,
+              "y": -70,
+              "uid": 4
+            },
+            {
+              "x": 1190,
+              "y": -70,
+              "uid": 4
+            },
+            {
+              "x": 1260,
+              "y": -70,
+              "uid": 4
+            },
+            {
+              "x": 1330,
+              "y": -70,
+              "uid": 4
+            },
+            {
+              "x": 1400,
+              "y": -70,
+              "uid": 4
+            },
+            {
+              "x": 1470,
+              "y": -70,
+              "uid": 4
+            },
+            {
+              "x": 1540,
+              "y": -70,
+              "uid": 4
+            },
+            {
+              "x": 1610,
+              "y": -70,
+              "uid": 4
+            },
+            {
+              "x": 1680,
+              "y": -70,
+              "uid": 4
+            },
+            {
+              "x": 1680,
+              "y": 0,
+              "uid": 4
+            },
+            {
+              "x": 385,
+              "y": 560,
+              "uid": 7
+            },
+            {
+              "x": 455,
+              "y": 560,
+              "uid": 7
+            },
+            {
+              "x": 525,
+              "y": 560,
+              "uid": 7
+            },
+            {
+              "x": 1645,
+              "y": 35,
+              "uid": 7
+            },
+            {
+              "x": 280,
+              "y": 210,
+              "uid": 4
+            },
+            {
+              "x": 315,
+              "y": 175,
+              "uid": 7
+            },
+            {
+              "x": 350,
+              "y": 140,
+              "uid": 7
+            },
+            {
+              "x": 700,
+              "y": 840,
+              "uid": 9
+            },
+            {
+              "x": 1190,
+              "y": 490,
+              "uid": 4
+            },
+            {
+              "x": 1190,
+              "y": 420,
+              "uid": 4
+            },
+            {
+              "x": 1120,
+              "y": 560,
+              "uid": 4
+            },
+            {
+              "x": 1190,
+              "y": 560,
+              "uid": 4
+            },
+            {
+              "x": 1050,
+              "y": 560,
+              "uid": 4
+            },
+            {
+              "x": 980,
+              "y": 560,
+              "uid": 4
+            },
+            {
+              "x": 1015,
+              "y": 490,
+              "uid": 7
+            },
+            {
+              "x": 1015,
+              "y": 455,
+              "uid": 7
+            },
+            {
+              "x": 1050,
+              "y": 455,
+              "uid": 7
+            },
+            {
+              "x": 1050,
+              "y": 490,
+              "uid": 7
+            },
+            {
+              "x": 1330,
+              "y": 420,
+              "uid": 4
+            },
+            {
+              "x": 1330,
+              "y": 490,
+              "uid": 4
+            },
+            {
+              "x": 1330,
+              "y": 560,
+              "uid": 4
+            },
+            {
+              "x": 840,
+              "y": 350,
+              "uid": 2
+            },
+            {
+              "x": 840,
+              "y": 560,
+              "uid": 4
+            },
+            {
+              "x": 910,
+              "y": 350,
+              "uid": 2
+            },
+            {
+              "x": 980,
+              "y": 350,
+              "uid": 2
+            },
+            {
+              "x": 1050,
+              "y": 350,
+              "uid": 2
+            },
+            {
+              "x": 210,
+              "y": 210,
+              "uid": 4
+            },
+            {
+              "x": 280,
+              "y": 140,
+              "uid": 7
+            },
+            {
+              "x": 245,
+              "y": 175,
+              "uid": 7
+            },
+            {
+              "x": 315,
+              "y": 210,
+              "uid": 9
+            },
+            {
+              "x": 910,
+              "y": 560,
+              "uid": 4
+            },
+            {
+              "x": 840,
+              "y": 490,
+              "uid": 4
+            },
+            {
+              "x": 1120,
+              "y": 560,
+              "uid": 9
+            },
+            {
+              "x": -70,
+              "y": 280,
+              "uid": 2
             }
           ]
         }
       ],
       "uid": 1,
       "grid": 35,
-      "lastmod": 1522422091848
+      "lastmod": 1522476448337
+    },
+    {
+      "name": "DeadScreen",
+      "oncreate": "ct.sound.spawn('Failure');\n\nthis.wait = 30;\nct.keyboard.clear();",
+      "onstep": "this.wait --;\nif (ct.keyboard.key && this.wait < 0) {\n    ct.rooms.switch('InGame');\n}",
+      "ondraw": "ct.styles.set('OhNo');\n\nct.draw.text('Oh no!', this.width / 2, 540);\n\nct.styles.set('OhNo_Small');\n\nct.draw.text('You were too greeedy for that game!', this.width / 2, 600);\nct.draw.text('Press any button to try again.', this.width / 2, 632);\n\nct.styles.reset();",
+      "onleave": "",
+      "width": 1024,
+      "height": 700,
+      "backgrounds": [
+        {
+          "depth": "-10",
+          "graph": "i7.png"
+        }
+      ],
+      "layers": [
+        {
+          "depth": 0,
+          "copies": [
+            {
+              "x": 512,
+              "y": 256,
+              "uid": 8
+            }
+          ]
+        }
+      ],
+      "uid": 2,
+      "grid": 64,
+      "lastmod": 1522761730950
+    },
+    {
+      "name": "RichScreen",
+      "oncreate": "ct.sound.spawn('Victory');\n\nct.keyboard.clear();",
+      "onstep": "",
+      "ondraw": "ct.styles.set('OhNo');\n\nct.draw.text('You got them all!', this.width / 2, 540);\n\nct.styles.set('OhNo_Small');\n\nct.draw.text('You\\'ve found all the 33 coins. Congrats!', this.width / 2, 600);\nct.draw.text('This was a stupid demo of ct.js game engine. Thank you for playing!', this.width / 2, 632);\n\nct.styles.reset();",
+      "onleave": "",
+      "width": 1024,
+      "height": 700,
+      "backgrounds": [
+        {
+          "depth": "-10",
+          "graph": "i7.png"
+        }
+      ],
+      "layers": [
+        {
+          "depth": 0,
+          "copies": [
+            {
+              "x": 512,
+              "y": 256,
+              "uid": 10
+            }
+          ]
+        }
+      ],
+      "uid": 2,
+      "grid": 64,
+      "lastmod": 1522761843454
     }
   ],
-  "graphtick": 9,
-  "soundtick": 0,
-  "roomtick": 1,
-  "typetick": 7,
-  "styletick": 1,
+  "graphtick": 12,
+  "soundtick": 6,
+  "roomtick": 3,
+  "typetick": 10,
+  "styletick": 4,
   "starting": 0,
   "settings": {
     "minifyhtmlcss": false,
@@ -927,6 +1432,8 @@
     "author": "Cosmo Myzrail Gorynych",
     "site": "https://ctjs.rocks"
   },
-  "palette": [],
+  "palette": [
+    "#257073"
+  ],
   "startroom": 1
 }

@@ -45,6 +45,7 @@ main-menu.flexcol
     script.
         const fs = require('fs-extra'),
               path = require('path');
+        const zip = require('cross-zip');
 
         this.namespace = 'menu';
         this.mixin(window.riotVoc);
@@ -54,8 +55,8 @@ main-menu.flexcol
             this.tab = tab;
             window.signals.trigger('globalTabChanged');
         };
-        var gui = require('nw.gui'),
-            win = gui.Window.get();
+        const gui = require('nw.gui'),
+              win = gui.Window.get();
         
         this.fullscreen = false;
         this.toggleFullscreen = function() {
@@ -67,28 +68,75 @@ main-menu.flexcol
             catMenu.popup(e.clientX, e.clientY);
         };
         this.saveProject = () => {
-            fs.outputJSON(sessionStorage.projdir + '.ict', currentProject, {
+            return fs.outputJSON(sessionStorage.projdir + '.ict', currentProject, {
                 spaces: 2  
-            }, e => {
-                if (e) {
-                    alertify.error(e);
-                }
+            }).then(() => {
                 alertify.success(languageJSON.common.savedcomm, "success", 3000);
                 glob.modified = false;
             })
+            .catch(alertify.error);
         };
         window.signals.on('saveProject', () => {
             this.saveProject();
         });
         this.runProject = e => {
-            window.runCtProject();
+            window.runCtProject()
+            .then(path => {
+                gui.Shell.openItem(path);
+            })
+            .catch(e => {
+                window.alertify.error(e);
+                console.error(e);
+            });
+        };
+        this.zipProject = e => {
+            this.saveProject()
+            .then(() => fs.remove('./zipexport'))
+            .then(() => fs.copy(sessionStorage.projdir, path.join('./zipexport', sessionStorage.projname)))
+            .then(() => fs.copy(sessionStorage.projdir + '.ict', path.join('./zipexport', sessionStorage.projname + '.ict')))
+            .then(() => {
+                zip.zip('./zipexport/', `./${sessionStorage.projname}.zip`, err => {
+                    if (err) {
+                        alertify.error(err);
+                        console.error(err);
+                        return;
+                    }
+                    nw.Shell.showItemInFolder(`./${sessionStorage.projname}.zip`);
+                });
+            })
+            .catch(alertify.error);
+        };
+        this.zipExport = e => {
+            fs.remove('./export.zip')
+            .then(() => window.runCtProject())
+            .then(() => {
+                zip.zip('./export/', './export.zip', err => {
+                    if (err) {
+                        window.fuck = err;
+                        console.error(err);
+                        if (err.code !== 12) {
+                            alertify.error(err);
+                            return;
+                        }
+                    }
+                    nw.Shell.showItemInFolder('./export.zip');
+                });
+            })
+            .catch(alertify.error);
         };
         
-        var gui = require('nw.gui');
         var catMenu = new gui.Menu();
         catMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.save,
             click: this.saveProject
+        }));
+        catMenu.append(new gui.MenuItem({
+            label: this.voc.zipProject,
+            click: this.zipProject
+        }));
+        catMenu.append(new gui.MenuItem({
+            label: this.voc.zipExport,
+            click: this.zipExport
         }));
         catMenu.append(new gui.MenuItem({
             label: window.languageJSON.menu.startscreen,
