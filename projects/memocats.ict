@@ -1,0 +1,414 @@
+{
+  "notes": "/* empty */",
+  "libs": {
+    "random": {}
+  },
+  "graphs": [
+    {
+      "name": "Memocats",
+      "untill": 0,
+      "grid": [
+        7,
+        3
+      ],
+      "axis": [
+        64,
+        98
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 896,
+      "imgHeight": 588,
+      "width": 128,
+      "height": 196,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i1.png",
+      "shape": "rect",
+      "left": 64,
+      "right": 64,
+      "top": 98,
+      "bottom": 98,
+      "lastmod": 1522644078614
+    },
+    {
+      "name": "Bg",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        0,
+        0
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 980,
+      "imgHeight": 700,
+      "width": 980,
+      "height": 700,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i2.png",
+      "shape": "rect",
+      "left": 0,
+      "right": 980,
+      "top": 0,
+      "bottom": 700,
+      "lastmod": 1522741667520
+    }
+  ],
+  "types": [
+    {
+      "name": "Card",
+      "depth": 0,
+      "oncreate": "this.rotationSpeed = ct.random.range(-25, 25);\nthis.drop = false;\nthis.block = false;\nthis.flipped = false;\n\n// These variables will be used only when a card is dropped. See OnStep for that\n// A card will jump above and then fall down\n// 90° = move to top, but we will create a 30° spread around it.\nthis.dir = ct.random.range(60, 120);\nthis.spd = 15;\nthis.grav = 3;\nthis.gravdir = 270;",
+      "onstep": "/*\n    Scenario:\n        Select a card;\n        Select another card.\n            If cards match, block them and drop after 0.5 seconds\n            If they don't, block them, but unblock and flip after 0.5 seconds.\n            \n    Blocked cards may not be selected.\n    If we select the same card twice, it flips back.\n*/\n\n// If mouse was clicked and the card isn't blocked…\nif (ct.mouse.pressed && !this.block) {\n    // …if player clicked exactly this card…\n    if (ct.u.pointRectangle(ct.mouse.x, ct.mouse.y, this)) {\n        // Flip a card\n        this.flipped = !this.flipped;\n        ct.sound.spawn('Paper');\n        if (this.flipped) { // Is a picture visible now?\n            if (ct.room.card) { // Is another card was already selected?\n                // remember our cards\n                var card1 = this,\n                    card2 = ct.room.card;\n                // Block them\n                card1.block = true;\n                card2.block = true;\n                // Allow new cards to be selected\n                ct.room.card = false;\n                \n                // Do the cards match?\n                if (card1.backFrame === card2.backFrame) {\n                    if (ct.types.list['Card'].length > 2) {\n                        ct.sound.spawn('Match');\n                    } else {\n                        ct.sound.spawn('Victory');\n                    }\n                    setTimeout(function() {\n                        ct.sound.spawn('Swoosh');\n                        card1.drop = true;\n                        card2.drop = true;\n                    }, 500);\n                } else {\n                    setTimeout(function() {\n                        ct.sound.spawn('Rollback');\n                        card1.block = false;\n                        card2.block = false;\n                        \n                        card1.flipped = false;\n                        card2.flipped = false;\n                    }, 500);\n                }\n            } else {\n                ct.room.card = this;\n            }\n        } else {\n            ct.room.card = false;\n        }\n    }\n}\n\nif (this.drop) {\n    ct.types.move(this);\n    this.transform = true;\n    this.tr += this.rotationSpeed;\n    if (this.y > ct.height + 160) {\n        this.kill = true;\n    }\n}",
+      "ondraw": "if (this.flipped) {\n    this.frame = this.backFrame;\n} else {\n    this.frame = 0;\n}\n\nct.draw(this);",
+      "ondestroy": "",
+      "uid": 1,
+      "graph": "i1.png"
+    }
+  ],
+  "sounds": [
+    {
+      "name": "Match",
+      "uid": 0,
+      "origname": "s0.wav",
+      "lastmod": 1522740214929
+    },
+    {
+      "name": "Swoosh",
+      "uid": 1,
+      "origname": "s1.wav",
+      "lastmod": 1522740231845
+    },
+    {
+      "name": "Rollback",
+      "uid": 2,
+      "origname": "s2.wav",
+      "lastmod": 1522740243655
+    },
+    {
+      "name": "Paper",
+      "uid": 3,
+      "origname": "s3.wav",
+      "lastmod": 1522740287935
+    },
+    {
+      "name": "Victory",
+      "uid": 4,
+      "origname": "s4.wav",
+      "lastmod": 1522740953176
+    },
+    {
+      "name": "NewLevel",
+      "uid": 5,
+      "origname": "s5.wav",
+      "lastmod": 1522740963586
+    }
+  ],
+  "styles": [],
+  "rooms": [
+    {
+      "name": "Room1",
+      "oncreate": "// Grabbed from this: https://stackoverflow.com/a/6274381 (community wiki)\nvar shuffle = function(a) {\n    var j, x, i;\n    for (i = a.length - 1; i > 0; i--) {\n        j = Math.floor(Math.random() * (i + 1));\n        x = a[i];\n        a[i] = a[j];\n        a[j] = x;\n    }\n};\n\n// This will be an array of all the possible pictures from Memocats asset\nthis.pictures = [];\nfor (var i = 1; i < 21; i++) {\n    this.pictures.push(i);\n}\nshuffle(this.pictures);\n\n// Get a list of all the Cards in the room and make a copy of that\nthis.cards = ct.types.list['Card'].slice(0);\nshuffle(this.cards);\n\n// Now, select cards by pairs and set them a unique picture.\nfor (var i = 0; i < this.cards.length; i += 2) {\n    this.cards[i].backFrame = this.pictures[0];\n    this.cards[i+1].backFrame = this.pictures[0];\n    // Remove a picture at this.pictures[0]\n    this.pictures.shift();\n}",
+      "onstep": "if (ct.types.list['Card'].length === 0) {\n    ct.rooms.switch('Room2');\n}",
+      "ondraw": "",
+      "onleave": "",
+      "width": 980,
+      "height": 700,
+      "backgrounds": [
+        {
+          "depth": "-10",
+          "graph": "i2.png"
+        }
+      ],
+      "layers": [
+        {
+          "depth": 0,
+          "copies": [
+            {
+              "x": 490,
+              "y": 210,
+              "uid": 1
+            },
+            {
+              "x": 350,
+              "y": 210,
+              "uid": 1
+            },
+            {
+              "x": 210,
+              "y": 210,
+              "uid": 1
+            },
+            {
+              "x": 630,
+              "y": 210,
+              "uid": 1
+            },
+            {
+              "x": 770,
+              "y": 210,
+              "uid": 1
+            },
+            {
+              "x": 210,
+              "y": 420,
+              "uid": 1
+            },
+            {
+              "x": 350,
+              "y": 420,
+              "uid": 1
+            },
+            {
+              "x": 490,
+              "y": 420,
+              "uid": 1
+            },
+            {
+              "x": 630,
+              "y": 420,
+              "uid": 1
+            },
+            {
+              "x": 770,
+              "y": 420,
+              "uid": 1
+            }
+          ]
+        }
+      ],
+      "uid": 1,
+      "grid": 70,
+      "lastmod": 1522741617797
+    },
+    {
+      "name": "Room2",
+      "oncreate": "ct.sound.spawn('NewLevel');\n\n// Grabbed from this: https://stackoverflow.com/a/6274381 (community wiki)\nvar shuffle = function(a) {\n    var j, x, i;\n    for (i = a.length - 1; i > 0; i--) {\n        j = Math.floor(Math.random() * (i + 1));\n        x = a[i];\n        a[i] = a[j];\n        a[j] = x;\n    }\n};\n\n// This will be an array of all the possible pictures from Memocats asset\nthis.pictures = [];\nfor (var i = 1; i < 21; i++) {\n    this.pictures.push(i);\n}\nshuffle(this.pictures);\n\n// Get a list of all the Cards in the room and make a copy of that\nthis.cards = ct.types.list['Card'].slice(0);\nshuffle(this.cards);\n\n// Now, select cards by pairs and set them a unique picture.\nfor (var i = 0; i < this.cards.length; i += 2) {\n    this.cards[i].backFrame = this.pictures[0];\n    this.cards[i+1].backFrame = this.pictures[0];\n    // Remove a picture at this.pictures[0]\n    this.pictures.shift();\n}",
+      "onstep": "if (ct.types.list['Card'].length === 0) {\n    ct.rooms.switch('Room3');\n}",
+      "ondraw": "",
+      "onleave": "",
+      "width": 980,
+      "height": 700,
+      "backgrounds": [
+        {
+          "depth": "-10",
+          "graph": "i2.png"
+        }
+      ],
+      "layers": [
+        {
+          "depth": 0,
+          "copies": [
+            {
+              "x": 560,
+              "y": 140,
+              "uid": 1
+            },
+            {
+              "x": 420,
+              "y": 140,
+              "uid": 1
+            },
+            {
+              "x": 280,
+              "y": 140,
+              "uid": 1
+            },
+            {
+              "x": 700,
+              "y": 140,
+              "uid": 1
+            },
+            {
+              "x": 840,
+              "y": 140,
+              "uid": 1
+            },
+            {
+              "x": 140,
+              "y": 140,
+              "uid": 1
+            },
+            {
+              "x": 140,
+              "y": 350,
+              "uid": 1
+            },
+            {
+              "x": 280,
+              "y": 350,
+              "uid": 1
+            },
+            {
+              "x": 420,
+              "y": 350,
+              "uid": 1
+            },
+            {
+              "x": 560,
+              "y": 350,
+              "uid": 1
+            },
+            {
+              "x": 700,
+              "y": 350,
+              "uid": 1
+            },
+            {
+              "x": 840,
+              "y": 350,
+              "uid": 1
+            },
+            {
+              "x": 420,
+              "y": 560,
+              "uid": 1
+            },
+            {
+              "x": 560,
+              "y": 560,
+              "uid": 1
+            }
+          ]
+        }
+      ],
+      "uid": 2,
+      "grid": 70,
+      "lastmod": 1522741609956
+    },
+    {
+      "name": "Room3",
+      "oncreate": "ct.sound.spawn('NewLevel');\n\n// Grabbed from this: https://stackoverflow.com/a/6274381 (community wiki)\nvar shuffle = function(a) {\n    var j, x, i;\n    for (i = a.length - 1; i > 0; i--) {\n        j = Math.floor(Math.random() * (i + 1));\n        x = a[i];\n        a[i] = a[j];\n        a[j] = x;\n    }\n};\n\n// This will be an array of all the possible pictures from Memocats asset\nthis.pictures = [];\nfor (var i = 1; i < 21; i++) {\n    this.pictures.push(i);\n}\nshuffle(this.pictures);\n\n// Get a list of all the Cards in the room and make a copy of that\nthis.cards = ct.types.list['Card'].slice(0);\nshuffle(this.cards);\n\n// Now, select cards by pairs and set them a unique picture.\nfor (var i = 0; i < this.cards.length; i += 2) {\n    this.cards[i].backFrame = this.pictures[0];\n    this.cards[i+1].backFrame = this.pictures[0];\n    // Remove a picture at this.pictures[0]\n    this.pictures.shift();\n}",
+      "onstep": "if (ct.types.list['Card'].length === 0) {\n    ct.rooms.switch('Room3');\n}",
+      "ondraw": "",
+      "onleave": "",
+      "width": 980,
+      "height": 700,
+      "backgrounds": [
+        {
+          "depth": "-10",
+          "graph": "i2.png"
+        }
+      ],
+      "layers": [
+        {
+          "depth": 0,
+          "copies": [
+            {
+              "x": 420,
+              "y": 140,
+              "uid": 1
+            },
+            {
+              "x": 560,
+              "y": 140,
+              "uid": 1
+            },
+            {
+              "x": 700,
+              "y": 140,
+              "uid": 1
+            },
+            {
+              "x": 840,
+              "y": 140,
+              "uid": 1
+            },
+            {
+              "x": 280,
+              "y": 140,
+              "uid": 1
+            },
+            {
+              "x": 140,
+              "y": 140,
+              "uid": 1
+            },
+            {
+              "x": 140,
+              "y": 350,
+              "uid": 1
+            },
+            {
+              "x": 280,
+              "y": 350,
+              "uid": 1
+            },
+            {
+              "x": 420,
+              "y": 350,
+              "uid": 1
+            },
+            {
+              "x": 560,
+              "y": 350,
+              "uid": 1
+            },
+            {
+              "x": 700,
+              "y": 350,
+              "uid": 1
+            },
+            {
+              "x": 840,
+              "y": 350,
+              "uid": 1
+            },
+            {
+              "x": 840,
+              "y": 560,
+              "uid": 1
+            },
+            {
+              "x": 700,
+              "y": 560,
+              "uid": 1
+            },
+            {
+              "x": 560,
+              "y": 560,
+              "uid": 1
+            },
+            {
+              "x": 420,
+              "y": 560,
+              "uid": 1
+            },
+            {
+              "x": 280,
+              "y": 560,
+              "uid": 1
+            },
+            {
+              "x": 140,
+              "y": 560,
+              "uid": 1
+            }
+          ]
+        }
+      ],
+      "uid": 3,
+      "grid": 70,
+      "lastmod": 1522741558307
+    }
+  ],
+  "graphtick": 2,
+  "soundtick": 6,
+  "roomtick": 3,
+  "typetick": 1,
+  "styletick": 0,
+  "starting": 0,
+  "settings": {
+    "minifyhtmlcss": false,
+    "minifyjs": false,
+    "title": "Memocats",
+    "author": "Cosmo Myzrail Gorynych",
+    "site": "https://ctjs.rocks"
+  },
+  "startroom": 1
+}
