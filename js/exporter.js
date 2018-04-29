@@ -236,7 +236,7 @@ ct.rooms['${r.name}'] = {
     };
 
     window.runCtProject = () => {
-        try {
+        return new Promise((resolve, reject) => {
             // glob.compileAudio = 0;
             if (window.currentProject.rooms.length < 1) {
                 window.alertify.error(window.languageJSON.common.norooms);
@@ -289,10 +289,10 @@ ct.rooms['${r.name}'] = {
 
             /* инъекции */
             injectModules(injects);
-            console.log(injects);
+            // console.log(injects);
 
             /* главный котэ */
-            var startroom;
+            var startroom = window.currentProject.rooms[0];
             for (let i = 0; i < window.currentProject.rooms.length; i++) {
                 if (window.currentProject.rooms[i].uid === window.currentProject.startroom) {
                     startroom = window.currentProject.rooms[i];
@@ -475,16 +475,8 @@ ct.rooms['${r.name}'] = {
                 });
             }
             */
-            const gui = require('nw.gui');
-            if (window.currentProject.settings.minifyhtml) {
-                gui.Shell.openItem(exec + '/export/index.min.html');
-            } else {
-                gui.Shell.openItem(exec + '/export/index.html');
-            }
             document.body.style.cursor = 'default';
-        } catch (e) {
-            window.alertify.error(e);
-            console.error(e);
-        }
+            resolve(exec + `/export/index.${window.currentProject.settings.minifyhtml? 'min.': ''}html`);
+        });
     };
 })(this);
