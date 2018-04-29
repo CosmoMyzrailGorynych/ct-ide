@@ -11,6 +11,15 @@
       "path": "index.html"
     },
     {
+      "text": "INTRODUCTION TO JS",
+      "type": "label"
+    },
+    {
+      "text": "Part I",
+      "type": "link",
+      "path": "jsIntro_pt1.html"
+    },
+    {
       "text": "THE CORE LIBRARY",
       "type": "label"
     },
