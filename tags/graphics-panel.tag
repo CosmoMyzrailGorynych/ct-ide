@@ -42,7 +42,7 @@ graphics-panel.panel.view
                 var img = document.createElement('img');
                 glob.graphmap[graph.origname] = img;
                 img.g = graph;
-                img.src = 'file://' + sessionStorage.projdir + '/img/' + graph.origname;
+                img.src = 'file://' + sessionStorage.projdir + '/img/' + graph.origname + '?' + graph.lastmod;
             });
             var img = document.createElement('img');
             glob.graphmap[-1] = img;
@@ -114,6 +114,7 @@ graphics-panel.panel.view
                         this.update();
                     });
                     this.imgGenPreview(dest, dest + '_prev@2.png', 128);
+                    this.fillGraphMap();
                 }
                 image.onerror = e => {
                     alertify.error(e);
