@@ -9,7 +9,7 @@ ct.canvas = {
         return canv;
     },
     drawTile(canv, img, imgindex, x, y) {
-        var graph = ct.graphs[img],
+        var graph = ct.res.graphs[img],
             frame = graph.frames[imgindex];
         canv.x.drawImage(
             graph.atlas,
