@@ -7,28 +7,28 @@ This object allows you to create new Copies and manipulate them.
 
 ---
 
-## Copies' attributes
+## Copies' parameters
 
 Each Copy has these parameters:
 
-- `x`, `y` – its location;
-- `xprev`, `yprev` – location of a Copy in a previous frame;
-- `xstart`, `ystart` – coordinates at which a copy was created;
-- `uid` – unique identifier for the current room;
-- `spd` – movement speed;
-- `dir` – movement direction (from 0 to 360);
-- `grav` – gravity force;
-- `gravdir` – gravity direction (from 0 to 360);
-- `depth` – drawing layer;
-- `type` – the name of the Type from which a Copy was created;
-- `frame` – current drawing frame number;
-- `imgspd` – animation speed (frames per room frame, 0 by default);
-- `transform` – can be either `true` or `false`. Tells whether a Copy should be transformed while drawing. The actual transformation is set by these parameters:
-    - `tx` – horizontal stretch;
-    - `ty` – vertical stretch;
-    - `tr` – rotation (from 0 to 360);
-    - `ta` – opacity (from 0 to 1).
-- `graph` – the name of graphic asset to use.
+- `x`, `y` — its location;
+- `xprev`, `yprev` — location of a Copy in a previous frame;
+- `xstart`, `ystart` — coordinates at which a copy was created;
+- `uid` — unique identifier for the current room;
+- `spd` — movement speed;
+- `dir` — movement direction (from 0 to 360);
+- `grav` — gravity force;
+- `gravdir` — gravity direction (from 0 to 360);
+- `depth` — drawing layer;
+- `type` — the name of the Type from which a Copy was created;
+- `frame` — current drawing frame number;
+- `imgspd` — animation speed (frames per room frame, 0 by default);
+- `transform` — can be either `true` or `false`. Tells whether a Copy should be transformed while drawing. The actual transformation is set by these parameters:
+    - `tx` — horizontal stretch;
+    - `ty` — vertical stretch;
+    - `tr` — rotation (from 0 to 360);
+    - `ta` — opacity (from 0 to 1).
+- `graph` — the name of graphic asset to use.
 
 ---
 
@@ -42,7 +42,7 @@ if (this.health <= 0) {
 }
 ```
 
-> Note: onstep code [will still be executed](ct.html#Event-sequence) until the drawing phase.
+> Note: OnStep code [will still be executed](ct.html#Event-sequence) until the drawing phase.
 
 ---
 

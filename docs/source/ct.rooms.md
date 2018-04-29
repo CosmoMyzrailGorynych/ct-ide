@@ -46,7 +46,7 @@ You can set a copy to follow here, so the camera moves to it automatically.
 Horizontal and vertical padding from the edges of the canvas, within which the camera moves.
 
 ```js Example: following a copy
-// Place this code, e.g, to your hero's `oncreate` code
+// Place this code, e.g, to your hero's `OnCreate` code
 var room = ct.rooms.current;
 room.follow = this;
 
