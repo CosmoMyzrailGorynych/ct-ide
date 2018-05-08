@@ -15,7 +15,12 @@ settings-panel.panel.view
         input#gamesite(type="text" value="{currentProject.settings.site}" onchange="{wire('this.currentProject.settings.site')}")
 
         h2 {voc.renderoptions}
-        label.blocky
+        label.block
+            span {voc.framerate}
+            br
+            input(type="number" min="1" max="180" value="{currentProject.settings.fps}" onchange="{wire('this.currentProject.settings.fps')}")
+            br
+        label.block
             input(type="checkbox" value="{currentProject.settings.pixelatedrender}" onchange="{wire('this.currentProject.settings.pixelatedrender')}")
             span {voc.pixelatedrender}
 
@@ -27,7 +32,7 @@ settings-panel.panel.view
             input(type="checkbox" value="{currentProject.settings.minifyjs}" onchange="{wire('this.currentProject.settings.minifyjs')}")
             span {voc.minifyjs}
 
-        //-span
+        //span
             h2 {voc.preloader}
             select#gamepreloader.select(value="{currentProject.preloader}" onchange="{wire('this.currentProject.preloader')}")
                 option(value="0") {voc.preloaders.circular}
@@ -47,3 +52,4 @@ settings-panel.panel.view
         this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
         this.currentProject = window.currentProject;
+        this.currentProject.settings.fps = this.currentProject.settings.fps || 30;
