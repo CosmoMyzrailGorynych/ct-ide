@@ -292,7 +292,7 @@ ct.rooms['${r.name}'] = {
             // console.log(injects);
 
             /* главный котэ */
-            var startroom = window.currentProject.rooms[0];
+            var [startroom] = window.currentProject.rooms;
             for (let i = 0; i < window.currentProject.rooms.length; i++) {
                 if (window.currentProject.rooms[i].uid === window.currentProject.startroom) {
                     startroom = window.currentProject.rooms[i];
@@ -304,6 +304,7 @@ ct.rooms['${r.name}'] = {
             });
 
             buffer = buffer
+            .replace('/*@fps@*/', window.currentProject.settings.fps)
             .replace('/*@startwidth@*/', startroom.width)
             .replace('/*@startheight@*/', startroom.height)
             .replace('/*@libs@*/', JSON.stringify(ctlibs, null, '    '));

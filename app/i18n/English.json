@@ -75,6 +75,7 @@
         "authoring": "Authoring",
         "cover": "Cover:",
         "exportparams": "Export parameters",
+        "framerate": "Framerate:",
         "getfile": "Choose",
         "minifyhtmlcss": "Compress HTML and CSS",
         "minifyjs": "Compress JavaScript",

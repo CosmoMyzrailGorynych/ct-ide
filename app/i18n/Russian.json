@@ -75,6 +75,7 @@
         "authoring": "Авторство",
         "cover": "Обложка:",
         "exportparams": "Настройки экспорта",
+        "framerate": "Кадров в секунду:",
         "getfile": "Выбрать",
         "minifyhtmlcss": "Сжать HTML и CSS",
         "minifyjs": "Сжать JavaScript",

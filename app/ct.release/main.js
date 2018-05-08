@@ -7,7 +7,7 @@ ct.x = ct.getContext('2d');
 
 ct.libs = [/*@libs@*/][0];
 
-ct.speed = 30;
+ct.speed = [/*@fps@*/][0];
 ct.stack = [];
 ct.types = {};
 ct.snd = {};
