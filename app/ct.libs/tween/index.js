@@ -21,7 +21,6 @@ ct.tween = {
             fields: options.fields || {},
             curve: options.curve || ct.tween.ease,
             duration: options.duration || 1000,
-            curtime: 0,
             registered: (Number(new Date()))
         };
         var promise = new Promise((resolve, reject) => {
@@ -112,6 +111,11 @@ ct.tween = {
         a -= 2;
         return d/2 * (Math.sqrt(1 - a*a) + 1) + s;
     },
-    tweens: []
+    tweens: [],
+    wait(milliseconds) {
+        return new Promise(resolve => {
+            setTimeout(resolve, milliseconds);
+        });
+    }
 };
 ct.tween.easeInOutQuad = ct.tween.ease;
