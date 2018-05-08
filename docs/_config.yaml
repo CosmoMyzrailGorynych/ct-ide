@@ -21,6 +21,9 @@ theme: doc
 
 theme_config:
   favicon: images/favicon.ico 
+node_sass:
+  includePaths:
+   - node_modules
 ignore:
   - '**/themes/**/*(target|node_modules|packages|lib)'
   - '**/.+(*)' # ignoring all dirs and files starting with dot (.git, .idea, ...)
