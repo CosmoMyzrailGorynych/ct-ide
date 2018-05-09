@@ -85,36 +85,38 @@ graphics-panel.panel.view
         this.loadImg = (uid, filename, dest, imprt) => {
             window.megacopy(filename, dest, e => {
                 if (e) throw e;
-                image = document.createElement('img');
+                var image = document.createElement('img');
                 image.onload = () => {
-                    var obj = {
-                        name: path.basename(filename).replace(/\.(jpg|gif|png|jpeg)/gi, '').replace(/\s/g, '_'),
-                        untill: 0,
-                        grid: [1, 1],
-                        axis: [0, 0],
-                        marginx: 0,
-                        marginy: 0,
-                        imgWidth: image.width,
-                        imgHeight: image.height,
-                        width: image.width,
-                        height: image.height,
-                        offx: 0,
-                        offy: 0,
-                        origname: path.basename(dest),
-                        shape: 'rect',
-                        left: 0,
-                        right: image.width,
-                        top: 0,
-                        bottom: image.height
-                    };
-                    this.id = currentProject.graphs.length;
-                    window.currentProject.graphs.push(obj);
-                    this.imgGenPreview(dest, dest + '_prev.png', 64)
-                    .then(dataUrl => {
-                        this.update();
-                    });
-                    this.imgGenPreview(dest, dest + '_prev@2.png', 128);
-                    this.fillGraphMap();
+                    setTimeout(() => {
+                        var obj = {
+                            name: path.basename(filename).replace(/\.(jpg|gif|png|jpeg)/gi, '').replace(/\s/g, '_'),
+                            untill: 0,
+                            grid: [1, 1],
+                            axis: [0, 0],
+                            marginx: 0,
+                            marginy: 0,
+                            imgWidth: image.width,
+                            imgHeight: image.height,
+                            width: image.width,
+                            height: image.height,
+                            offx: 0,
+                            offy: 0,
+                            origname: path.basename(dest),
+                            shape: 'rect',
+                            left: 0,
+                            right: image.width,
+                            top: 0,
+                            bottom: image.height
+                        };
+                        this.id = currentProject.graphs.length;
+                        window.currentProject.graphs.push(obj);
+                        this.imgGenPreview(dest, dest + '_prev.png', 64)
+                        .then(dataUrl => {
+                            this.update();
+                        });
+                        this.imgGenPreview(dest, dest + '_prev@2.png', 128);
+                        this.fillGraphMap();
+                    }, 0);
                 }
                 image.onerror = e => {
                     alertify.error(e);
