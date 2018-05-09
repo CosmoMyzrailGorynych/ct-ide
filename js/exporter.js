@@ -345,7 +345,7 @@ ct.rooms['${r.name}'] = {
             buffer += fs.readFileSync('./ct.release/rooms.js', {
                 'encoding': 'utf8'
             })
-            .replace('@startroom@', cp.rooms.find(room => cp.startroom === room.uid).name)
+            .replace('@startroom@', startroom.name)
             .replace('/*@rooms@*/', roomsCode)
             .replace('/*%switch%*/', injects.switch)
             .replace('/*%roomoncreate%*/', injects.roomoncreate)
