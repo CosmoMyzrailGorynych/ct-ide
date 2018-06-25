@@ -1,167 +1,212 @@
-(function () {
-    'use strict';
+'use strict';
 
-    const notifier = require('node-notifier'),
-        path = require('path'),
-        gulp = require('gulp'),
-        concat = require('gulp-concat'),
-        sourcemaps = require('gulp-sourcemaps'),
-        stylus = require('gulp-stylus'),
-        riot = require('gulp-riot'),
-        pug = require('gulp-pug'),
-        streamQueue = require('streamqueue'),
-        closureCompiler = require('gulp-closure-compiler'),
-        fs = require('fs-extra');
+const notifier = require('node-notifier'),
+      path = require('path'),
+      {spawn} = require('child_process'),
+      gulp = require('gulp'),
+      concat = require('gulp-concat'),
+      sourcemaps = require('gulp-sourcemaps'),
+      stylus = require('gulp-stylus'),
+      riot = require('gulp-riot'),
+      pug = require('gulp-pug'),
+      streamQueue = require('streamqueue'),
+      closureCompiler = require('gulp-closure-compiler'),
+      fs = require('fs-extra'),
+      eslint = require('gulp-eslint'),
+      stylint = require('gulp-stylint'),
+      NwBuilder = require('nw-builder');
 
-    var args = require('get-gulp-args')();
-    var isMakingAReselase = args.indexOf('release') !== -1;
+const makeErrorObj = (title, err) => ({
+    title,
+    message: err.toString(),
+    icon: path.join(__dirname, 'error.png'),
+    sound: true,
+    wait: true
+});
 
-    var fileChangeNotifier = e => {
+const fileChangeNotifier = p => {
+    notifier.notify({
+        title: `Updating ${path.basename(p)}`,
+        message: `${p}`,
+        icon: path.join(__dirname, 'cat.png'),
+        sound: false,
+        wait: false
+    });
+};
+
+const compileStylus = () =>
+    gulp.src('./src/styl/_index.styl')
+    .pipe(sourcemaps.init())
+    .pipe(stylus({
+        compress: true
+    }))
+    .pipe(concat('bundle.css'))
+    .pipe(sourcemaps.write())
+    .pipe(gulp.dest('./app/'));
+
+const compilePug = () => 
+    gulp.src('./src/pug/*.pug')
+    .pipe(sourcemaps.init())
+    .pipe(pug({
+        pretty: false
+    }))
+    .on('error', err => {
+        notifier.notify(makeErrorObj('Pug failure', err));
+        console.error('[pug error]', err);
+    })
+    .pipe(sourcemaps.write())
+    .pipe(gulp.dest('./app/'));
+
+const compileRiot = () =>
+    gulp.src('./src/riotTags/**')
+    .pipe(riot({
+        compact: false,
+        template: 'pug'
+    }))
+    .pipe(concat('riot.js'))
+    .pipe(gulp.dest('./temp/'));
+
+const compileScripts = gulp.series(compileRiot, () =>
+    streamQueue({objectMode: true},
+        gulp.src('./src/js/**'),
+        gulp.src('./temp/riot.js')
+    )
+    .pipe(sourcemaps.init())
+    .pipe(concat('bundle.js'))
+    .pipe(sourcemaps.write())
+    .pipe(gulp.dest('./app/'))
+    /* .pipe(closureCompiler({
+        compilerPath: 'bower_components/closure-compiler/closure-compiler-v20170626.jar',
+        maxBuffer: 100500,
+        continueWithWarnings: true,
+        compilerFlags: {
+            'language_in': 'ECMASCRIPT6',
+            // 'third_party': 'true',
+            'warning_level': 'QUIET'
+        },
+        define: [
+            'goog.DEBUG=false'
+        ],
+        fileName: 'bundle.js'
+    }))
+    .pipe(gulp.dest('./app/'))*/
+    .on('error', err => {
         notifier.notify({
-            title: `Обновляем ${path.basename(e.path)}`,
-            message: `${e.path}`,
-            icon: path.join(__dirname, 'cat.png'),
-            sound: false,
-            wait: false
+            title: 'Ошибка скриптов',
+            message: err.toString(),
+            icon: path.join(__dirname, 'error.png'),
+            sound: true,
+            wait: true
         });
-    };
+        console.error('[scripts error]', err);
+    })
+    .on('change', fileChangeNotifier)
+);
 
-
-    gulp.task('riot', function() {
-        return gulp.src('./tags/**')
-        .pipe(riot({
-            compact: false,
-            template: 'pug'
-        }))
-        .pipe(concat('riot.js'))
-        .pipe(gulp.dest('./temp'));
+const watchScripts = () => {
+    gulp.watch('./src/js/**/*', gulp.series(compileScripts))
+    .on('error', err => {
+        notifier.notify(makeErrorObj('General scripts error', err));
+        console.error('[scripts error]', err);
+    })
+    .on('change', fileChangeNotifier);
+};
+const watchRiot = () => {
+    gulp.watch('./src/riotTags/**/*', gulp.series(compileScripts))
+    .on('error', err => {
+        notifier.notify(makeErrorObj('Riot failure', err));
+        console.error('[pug error]', err);
+    })
+    .on('change', fileChangeNotifier);
+};
+const watchStylus = () => {
+    gulp.watch('./src/styl/**/*', compileStylus)
+    .on('error', err => {
+        notifier.notify(makeErrorObj('Stylus failure', err));
+        console.error('[styl error]', err);
+    })
+    .on('change', fileChangeNotifier);
+};
+const watchPug = () => {
+    gulp.watch('./src/pug/*.pug', compilePug)
+    .on('change', fileChangeNotifier)
+    .on('error', err => {
+        notifier.notify(makeErrorObj('Pug failure', err));
+        console.error('[pug error]', err);
     });
-    gulp.task('watchRiot', function() {
-        return gulp.watch('./tags/**', ['scripts'])
-        .on('error', err => {
-            notifier.notify({
-                title: 'Ошибка Riot',
-                message: err.toString(),
-                icon: path.join(__dirname, 'error.png'),
-                sound: true,
-                wait: true
-            });
-            console.error('[riot error]', err);
+};
+
+const watch = () => {
+    watchScripts();
+    watchStylus();
+    watchPug();
+    watchRiot();
+};
+
+const build = gulp.parallel([compilePug, compileStylus, compileScripts]);
+
+const lintStylus = () => gulp.src('./src/styl/**/*.styl')
+    .pipe(stylint())
+    .pipe(stylint.reporter())
+    .pipe(stylint.reporter('fail'));
+
+const lintJS = () => gulp.src(['./src/js/**/*.js', '!./src/js/3rdparty/**/*.js'])
+    .pipe(eslint())
+    .pipe(eslint.format())
+    .pipe(eslint.failAfterError());
+
+const lint = gulp.series(lintJS, lintStylus);
+
+const launchNw = () => {
+    var nw = new NwBuilder({
+        files: './app/**',
+        version: '0.31.2',
+        platforms: ['osx64', 'win32', 'win64', 'linux32', 'linux64'],
+        flavor: 'sdk'
+    });
+    return nw.run().catch(function (error) {
+        console.error(error);
+    })
+    .then(launchNw);
+};
+
+const docs = done => {
+    spawn('hexo', 'generate').on('close', () => {
+        fs.copy('./docs/public/', './app/docs/', {
+            overwrite: true,
+            recursive: true
         })
-        .on('change', fileChangeNotifier);
-    });
-
-
-    gulp.task('scripts', ['riot'], function () {
-        streamQueue({objectMode: true},
-            gulp.src('./js/**'),
-            gulp.src('./temp/riot.js')
-        )
-        .pipe(sourcemaps.init())
-        .pipe(concat('bundle.js'))
-        .pipe(sourcemaps.write())
-        .pipe(gulp.dest('./app/'))
-        /* .pipe(closureCompiler({
-            compilerPath: 'bower_components/closure-compiler/closure-compiler-v20170626.jar',
-            maxBuffer: 100500,
-            continueWithWarnings: true,
-            compilerFlags: {
-                'language_in': 'ECMASCRIPT6',
-                // 'third_party': 'true',
-                'warning_level': 'QUIET'
-            },
-            define: [
-                'goog.DEBUG=false'
-            ],
-            fileName: 'bundle.js'
+        .then(fs.copy('./docs/jquery-3.2.1.min.js', './app/docs/', {
+            overwrite: true
         }))
-        .pipe(gulp.dest('./app/'))*/
-        .on('error', err => {
-            notifier.notify({
-                title: 'Ошибка скриптов',
-                message: err.toString(),
-                icon: path.join(__dirname, 'error.png'),
-                sound: true,
-                wait: true
-            });
-            console.error('[scripts error]', err);
-        })
-        .on('change', fileChangeNotifier);
+        .then(fs.copy('./docs/lunr.min.js', './app/docs/'))
+        .then(done);
     });
+};
 
-    gulp.task('watchScripts', function() {
-        return gulp.watch('./js/**', ['scripts'])
-            .on('error', err => {
-                notifier.notify({
-                    title: 'Общая ошибка скриптов',
-                    message: err.toString(),
-                    icon: path.join(__dirname, 'error.png'),
-                    sound: true,
-                    wait: true
-                });
-                console.error('[scripts error]', err);
-            })
-            .on('change', fileChangeNotifier);
+const release = gulp.series([build, lint, docs, done => {
+    var nw = new NwBuilder({
+        files: './app/**',
+        platforms: ['osx64', 'win32', 'win64', 'linux32', 'linux64'],
+        version: '0.31.2',
+        flavor: 'normal',
+        buildType: 'versioned'
     });
-    gulp.task('watchStyl', function() {
-        return gulp.watch('./styl/**', ['stylus'])
-            .on('error', err => {
-                notifier.notify({
-                    title: 'Ошибка Stylus',
-                    message: err.toString(),
-                    icon: path.join(__dirname, 'error.png'),
-                    sound: true,
-                    wait: true
-                });
-                console.error('[styl error]', err);
-            })
-            .on('change', fileChangeNotifier);
+    nw.build().then(done)
+    .catch(function (error) {
+        console.error(error);
     });
-    gulp.task('watchPug', function() {
-        return gulp.watch('./pug/**/*.pug', ['pug'])
-            .on('change', fileChangeNotifier)
-            .on('error', err => {
-                notifier.notify({
-                    title: 'Ошибка Pug',
-                    message: err.toString(),
-                    icon: path.join(__dirname, 'error.png'),
-                    sound: true,
-                    wait: true
-                });
-                console.error('[pug error]', err);
-            });
-    });
+}]);
 
-    gulp.task('stylus', function () {
-        return gulp.src('./styl/_index.styl')
-        .pipe(sourcemaps.init())
-        .pipe(stylus({
-            compress: false
-        }))
-        .pipe(concat('bundle.css'))
-        .pipe(sourcemaps.write())
-        .pipe(gulp.dest('./app/'));
-    });
-    gulp.task('pug', function () {
-        return gulp.src('./pug/*.pug')
-        .pipe(pug({
-            pretty: false
-        }))
-        .on('error', err => {
-            notifier.notify({
-                title: 'Ошибка pug',
-                message: err.toString(),
-                icon: path.join(__dirname, 'error.png'),
-                sound: true,
-                wait: true
-            });
-            console.error('[pug error]', err);
-        })
-        .pipe(gulp.dest('./app/'));
-    });
 
-    gulp.task('default', isMakingAReselase?
-        ['pug', 'stylus', 'scripts'] :
-        ['pug', 'stylus', 'watchScripts', 'watchStyl', 'watchPug', 'scripts', 'watchRiot']
-    );
-})();
+const defaultTask = gulp.series(build, done => {
+    watch();
+    launchNw();
+    done();
+});
+
+
+gulp.task('lint', lint);
+gulp.task('release', release);
+gulp.task('docs', docs);
+gulp.task('default', defaultTask);

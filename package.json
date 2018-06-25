@@ -1,0 +1,33 @@
+{
+  "name": "ctjsbuildenvironment",
+  "version": "0.0.0",
+  "description": "",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Cosmo Myzrail Gorynych",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "fs-extra": "4.0.2",
+    "gulp": "^4.0.0",
+    "gulp-append-prepend": "^1.0.4",
+    "gulp-closure-compiler": "0.4.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-eslint": "^4.0.2",
+    "gulp-pug": "^3.3.0",
+    "gulp-riot": "^1.1.1",
+    "gulp-sourcemaps": "^2.6.4",
+    "gulp-stylint": "^4.0.2",
+    "gulp-stylus": "^2.6.0",
+    "node-notifier": "^5.1.2",
+    "nw-builder": "^3.5.4",
+    "pug": "^2.0.0-rc.3",
+    "pug-lint-config-clock": "^2.0.0",
+    "riot": "^3.10.3",
+    "streamqueue": "^1.1.1",
+    "stylus": "^0.54.5"
+  }
+}

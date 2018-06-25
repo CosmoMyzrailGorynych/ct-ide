@@ -36,32 +36,10 @@ app/bundle.js
 app/bundle.css
 app/index.html
 app/temp
-/.bin
-app/temp
-/user
-app/fonts/style\.css
+/temp
+app/fonts/style/.css
 builds
-
-# nw
-/*.dll
-/*.exe
-/*.nexe
-/*.pak
-/*.dat
-/*.bin
-/credits.html
-/pnacl
-/locales
-/nw
-/chromedriver
-/minidump_stackwalk
-/nacl_*
-/nwjc
-/payload
-/snapshot_blob.bin
-/lib
-/swiftshader
-
+cache
 
 # tests
 error_screenshots/

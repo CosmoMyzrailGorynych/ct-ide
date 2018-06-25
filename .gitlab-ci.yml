@@ -1,6 +1,10 @@
 variables:
   S3_BUCKET_NAME: ctjsrocks
 
+stages:
+  - build
+  - deploy
+
 build:
   image: node:8.8
   stage: build

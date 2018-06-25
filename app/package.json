@@ -36,6 +36,7 @@
     "plugin": false
   },
   "dependencies": {
+    "cross-zip": "^2.1.5",
     "csswring": "3.0.7",
     "ffmpeg-node": "git://github.com/xonecas/ffmpeg-node.git",
     "fs-extra": "5.0.0",
