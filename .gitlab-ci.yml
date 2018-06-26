@@ -3,6 +3,8 @@ variables:
 
 stages:
   - build
+  - test
+  - docs
   - deploy
 
 build:
@@ -22,7 +24,7 @@ build:
 
 lint:
   image: node:10.5
-  stage: build
+  stage: test
   when: on_success
   dependencies: 
     - build
@@ -31,7 +33,7 @@ lint:
 
 docs:
   image: node:10.5
-  stage: build
+  stage: docs
   when: on_success
   dependencies: 
     - build
