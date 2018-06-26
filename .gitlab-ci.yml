@@ -6,52 +6,38 @@ stages:
   - deploy
 
 build:
-  image: node:8.8
+  image: node:10.5
   stage: build
   script: 
-    - mv ./package2.json ./package.json
     - npm install
-    - npm install gulp -g
-    - mv ./package.json ./package2.json
-    - gulp --release
+    - npm install gulp-cli -g
+    - gulp build
     - cd ./app
     - npm install
+    - cd ./..
 
-deploy-win:
+lint:
+  image: node:10.5
+  stage: build
+  script: 
+    - gulp lint
+
+docs:
+  image: node:10.5
+  stage: build
+  script: 
+    - gulp lint
+
+release:
   when: manual
-  image: stefanscherer/python-windows
+  image: node:10.5
   only: 
     - master
   stage: deploy
   script:
-    - '@"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString(''https://chocolatey.org/install.ps1''))" && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"'
-    - pip install awscli --upgrade --user
-    - choco install nodejs-lts
-    - mv ./package2.json ./package.json
     - npm install
-    - npm install gulp -g
-    - mv ./package.json ./package2.json
-    - gulp --release
+    - npm install gulp-cli -g
     - cd ./app
     - npm install
-    - npm run dist-win
-    - cd ./../
-    - aws s3 cp ./builds/ s3://$S3_BUCKET_NAME/ --recursive --exclude "*" --include "*.7z"
-
-deploy-linux-mac:
-  when: manual
-  image: jacobcovington/node-awscli
-  only: 
-    - master
-  stage: deploy
-  script:
-    - mv ./package2.json ./package.json
-    - npm install
-    - npm install gulp -g
-    - mv ./package.json ./package2.json
-    - gulp --release
-    - cd ./app
-    - npm install
-    - npm run dist-nowin
-    - cd ./../
-    - aws s3 cp ./builds/ s3://$S3_BUCKET_NAME/ --recursive --exclude "*" --include "*.7z"
+    - cd ./..
+    - gulp release
