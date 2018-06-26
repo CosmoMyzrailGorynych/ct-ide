@@ -15,18 +15,26 @@ build:
     - cd ./app
     - npm install
     - cd ./..
+  artifacts:
+    paths: 
+      - node_modules
+      - app
 
 lint:
   image: node:10.5
   stage: build
+  when: on_success
+  dependencies: build
   script: 
     - gulp lint
 
 docs:
   image: node:10.5
   stage: build
+  when: on_success
+  dependencies: build
   script: 
-    - gulp lint
+    - gulp docs
 
 release:
   when: manual
