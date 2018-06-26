@@ -209,4 +209,5 @@ const defaultTask = gulp.series(build, done => {
 gulp.task('lint', lint);
 gulp.task('release', release);
 gulp.task('docs', docs);
+gulp.task('build', build);
 gulp.task('default', defaultTask);
