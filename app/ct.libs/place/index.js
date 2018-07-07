@@ -224,7 +224,7 @@ ct.place = {
             me.x += ct.u.ldx(speed, dir+30 * ct.place.m);
             me.y += ct.u.ldy(speed, dir+30 * ct.place.m);
             me.dir = dir+30 * ct.place.m;
-        } else if (ct.place.free(me, me.x+ct.u.ldx(speed, dir+60 * ct.place.m), me.y+ct.u.ldy(speed, dir+6 * ct.place.m))) {
+        } else if (ct.place.free(me, me.x+ct.u.ldx(speed, dir+60 * ct.place.m), me.y+ct.u.ldy(speed, dir+60 * ct.place.m))) {
             me.x += ct.u.ldx(speed, dir+60 * ct.place.m);
             me.y += ct.u.ldy(speed, dir+60 * ct.place.m);
             me.dir = dir+60 * ct.place.m;
