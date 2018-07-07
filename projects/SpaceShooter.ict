@@ -59,7 +59,7 @@
       "right": 48,
       "top": 0,
       "bottom": 46,
-      "lastmod": 1525838449847,
+      "lastmod": 1530925105354,
       "r": 23
     },
     {
@@ -87,7 +87,7 @@
       "right": 5,
       "top": 27,
       "bottom": 27,
-      "lastmod": 1525838519202
+      "lastmod": 1530922400318
     },
     {
       "name": "EnemyShip",
@@ -114,7 +114,7 @@
       "right": 52,
       "top": 42,
       "bottom": 42,
-      "lastmod": 1525838624740,
+      "lastmod": 1530922397691,
       "r": 42
     },
     {
@@ -206,7 +206,7 @@
       "name": "PlayerShip",
       "depth": 0,
       "oncreate": "",
-      "onstep": "/**\n * Move the ship\n */\n\nif (ct.keyboard.down['left']) { // Is the left arrow key pressed?\n    this.x -= 8; // Move to the left by X axis\n}\nif (ct.keyboard.down['right']) { // Is the right arrow key pressed?\n    this.x += 8; // Move to the right by X axis\n}\n\nif (ct.keyboard.down['up']) { // Is the up arrow key pressed?\n    this.y -= 8; // Move up by Y axis\n}\nif (ct.keyboard.down['down']) { // Is the right arrow key pressed?\n    this.y += 8; // Move down by Y axis\n}\n\n/**\n * Check whether the ship fell off the viewport\n */\nif (this.x < 0) { // Have the ship crossed the left border?\n    this.x = 0; // Go back to the left border\n}\nif (this.x > ct.width) { // Have the ship crossed the right border?\n    this.x = ct.width; // Go back to the right border\n}\nif (this.y < ct.height / 2) { // Have the ship crossed the middle line?\n    this.y = 400; // Go back to the middle line\n}\nif (this.y > ct.height) { // Have the ship crossed the bottom border?\n    this.x = ct.height; // Go back to the bottom border\n}\n\nif (ct.keyboard.pressed['space']) {\n    ct.types.copy('Laser_Blue', this.x, this.y);\n}\n\nct.types.move(this);",
+      "onstep": "/**\n * Move the ship\n */\n\nif (ct.keyboard.down['left']) { // Is the left arrow key pressed?\n    this.x -= 8; // Move to the left by X axis\n}\nif (ct.keyboard.down['right']) { // Is the right arrow key pressed?\n    this.x += 8; // Move to the right by X axis\n}\n\nif (ct.keyboard.down['up']) { // Is the up arrow key pressed?\n    this.y -= 8; // Move up by Y axis\n}\nif (ct.keyboard.down['down']) { // Is the right arrow key pressed?\n    this.y += 8; // Move down by Y axis\n}\n\n/**\n * Check whether the ship fell off the viewport\n */\nif (this.x < 0) { // Have the ship crossed the left border?\n    this.x = 0; // Go back to the left border\n}\nif (this.x > ct.width) { // Have the ship crossed the right border?\n    this.x = ct.width; // Go back to the right border\n}\nif (this.y < ct.height / 2) { // Have the ship crossed the middle line?\n    this.y = 400; // Go back to the middle line\n}\nif (this.y > ct.height) { // Have the ship crossed the bottom border?\n    this.y = ct.height; // Go back to the bottom border\n}\n\nif (ct.keyboard.pressed['space']) {\n    ct.types.copy('Laser_Blue', this.x, this.y);\n}\n\nvar hostile = ct.place.occupied(this, this.x, this.y, 'Hostile');\nif (hostile) {\n    hostile.kill = true;\n    ct.room.lives --;\n    if (ct.room.lives <= 0) {\n        this.kill = true;\n        setTimeout(function() {\n            ct.rooms.switch('Main');\n        }, 1000);\n    }\n}\n\nct.types.move(this);",
       "ondraw": "ct.draw(this);",
       "ondestroy": "",
       "uid": 1,
@@ -215,8 +215,8 @@
     {
       "name": "Laser_Red",
       "depth": 0,
-      "oncreate": "",
-      "onstep": "ct.types.move(this);",
+      "oncreate": "this.spd = 8;\nthis.dir = 270;\n\nthis.transform = true;\nthis.tr = ct.random.deg();\n\nthis.ctype = 'Hostile';",
+      "onstep": "if (this.y > ct.height + 40) {\n    this.kill = true;\n}\n\nct.types.move(this);\n\nthis.tr += 10;",
       "ondraw": "ct.draw(this);",
       "ondestroy": "",
       "uid": 2,
@@ -235,8 +235,8 @@
     {
       "name": "EnemyShip",
       "depth": 0,
-      "oncreate": "this.spd = 3;\nthis.dir = 270;",
-      "onstep": "ct.types.move(this);\n\nif (this.y > ct.height + 80) {\n    this.kill = true;\n}",
+      "oncreate": "this.spd = 3;\nthis.dir = 270;\n\nthis.bulletTimer = 30;\nthis.ctype = 'Hostile';",
+      "onstep": "ct.types.move(this);\n\nif (this.y > ct.height + 80) {\n    this.kill = true;\n}\n\nvar collided = ct.place.meet(this, this.x, this.y, 'Laser_Blue');\nif (collided) {\n    collided.kill = true;\n    this.kill = true;\n    ct.room.score += 100;\n}\n\nthis.bulletTimer--;\nif (this.bulletTimer <= 0) {\n    this.bulletTimer = 90;\n    ct.types.copy('Laser_Red', this.x, this.y + 32);\n}",
       "ondraw": "ct.draw(this);",
       "ondestroy": "",
       "uid": 4,
@@ -245,8 +245,8 @@
     {
       "name": "Asteroid_Medium",
       "depth": 0,
-      "oncreate": "this.spd = ct.random.range(1, 3);\nthis.dir = ct.random.range(270 - 30, 270 + 30);",
-      "onstep": "ct.types.move(this);\n\nif (this.y > ct.height + 80) {\n    this.kill = true;\n}",
+      "oncreate": "this.spd = ct.random.range(1, 3);\nthis.dir = ct.random.range(270 - 30, 270 + 30);\nthis.ctype = 'Hostile';",
+      "onstep": "ct.types.move(this);\n\nif (this.y > ct.height + 80) {\n    this.kill = true;\n}\n\nvar collided = ct.place.meet(this, this.x, this.y, 'Laser_Blue');\nif (collided) {\n    collided.kill = true;\n    this.kill = true;\n    ct.room.score += 10;\n}",
       "ondraw": "ct.draw(this);",
       "ondestroy": "",
       "uid": 5,
@@ -255,8 +255,8 @@
     {
       "name": "Asteroid_Big",
       "depth": 0,
-      "oncreate": "this.spd = ct.random.range(1, 3);\nthis.dir = ct.random.range(270 - 30, 270 + 30);",
-      "onstep": "ct.types.move(this);\n\nif (this.y > ct.height + 80) {\n    this.kill = true;\n}",
+      "oncreate": "this.spd = ct.random.range(1, 3);\nthis.dir = ct.random.range(270 - 30, 270 + 30);\nthis.ctype = 'Hostile';",
+      "onstep": "ct.types.move(this);\n\nif (this.y > ct.height + 80) {\n    this.kill = true;\n}\n\nvar collided = ct.place.meet(this, this.x, this.y, 'Laser_Blue');\nif (collided) {\n    collided.kill = true;\n    this.kill = true;\n    ct.types.copy('Asteroid_Medium', this.x, this.y);\n    ct.types.copy('Asteroid_Medium', this.x, this.y);\n    ct.room.score += 25;\n}",
       "ondraw": "ct.draw(this);",
       "ondestroy": "",
       "uid": 6,
@@ -264,13 +264,62 @@
     }
   ],
   "sounds": [],
-  "styles": [],
+  "styles": [
+    {
+      "name": "ScoreText",
+      "uid": 1,
+      "origname": "s1",
+      "font": {
+        "family": "sans-serif",
+        "size": 32,
+        "weight": "800",
+        "italic": true,
+        "valign": "top",
+        "halign": "left"
+      },
+      "lastmod": 1530936120694,
+      "fill": {
+        "type": "0",
+        "color": "#54BEFF"
+      },
+      "shadow": {
+        "color": "rgba(0,0,0,0.61)",
+        "x": -2,
+        "y": 2,
+        "blur": 3
+      }
+    },
+    {
+      "name": "LivesText",
+      "uid": 3,
+      "origname": "s3",
+      "font": {
+        "family": "sans-serif",
+        "size": 32,
+        "weight": "800",
+        "italic": true,
+        "valign": "top",
+        "halign": "left"
+      },
+      "lastmod": 1530942253367,
+      "fill": {
+        "type": "0",
+        "color": "#FF7388"
+      },
+      "shadow": {
+        "color": "rgba(0,0,0,0.61)",
+        "x": -2,
+        "y": 2,
+        "blur": 3
+      }
+    }
+  ],
   "rooms": [
     {
       "name": "Main",
-      "oncreate": "",
-      "onstep": "",
-      "ondraw": "",
+      "oncreate": "this.asteroidTimer = 10;\nthis.enemyTimer = 90;\n\nthis.score = 0;\nthis.lives = 3;",
+      "onstep": "this.asteroidTimer--;\nif (this.asteroidTimer <= 0) {\n    this.asteroidTimer = ct.random.range(10, 100);\n    ct.types.copy(ct.random.dice('Asteroid_Big', 'Asteroid_Medium'), ct.random(ct.width), -100);\n}\n\nthis.enemyTimer--;\nif (this.enemyTimer <= 0) {\n    this.enemyTimer = ct.random.range(90, 200);\n    ct.types.copy('EnemyShip', ct.random(ct.width), -100);\n}",
+      "ondraw": "ct.styles.set('ScoreText');\nct.draw.text('Score: ' + this.score, 30, 30);\n\nct.styles.set('LivesText');\nct.draw.text('Lives: ' + this.lives, ct.width - 200, 30);\nct.styles.reset();",
       "onleave": "",
       "width": 800,
       "height": 800,
@@ -285,57 +334,28 @@
           "depth": 0,
           "copies": [
             {
-              "x": 240,
-              "y": 160,
-              "uid": 4
-            },
-            {
-              "x": 560,
-              "y": 80,
-              "uid": 6
-            },
-            {
-              "x": 640,
-              "y": 240,
-              "uid": 5
-            },
-            {
               "x": 400,
               "y": 720,
               "uid": 1
-            },
-            {
-              "x": 400,
-              "y": 160,
-              "uid": 6
-            },
-            {
-              "x": 80,
-              "y": 240,
-              "uid": 5
-            },
-            {
-              "x": 80,
-              "y": 160,
-              "uid": 5
             }
           ]
         }
       ],
       "uid": 1,
       "grid": 80,
-      "lastmod": 1525851755427
+      "lastmod": 1530939493481
     }
   ],
   "graphtick": 7,
   "soundtick": 0,
   "roomtick": 1,
   "typetick": 6,
-  "styletick": 0,
+  "styletick": 3,
   "starting": 0,
   "settings": {
     "minifyhtmlcss": false,
     "minifyjs": false,
     "fps": 30
-  }
+  },
+  "palette": []
 }
