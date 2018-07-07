@@ -190,7 +190,7 @@
         "done": "Done",
         "draw": "Draw",
         "name": "Name:",
-        "step": "Step"
+        "step": "On Step"
     },
     "rooms": {
         "create": "Add new",
@@ -216,7 +216,7 @@
         "selectbg": "Select tileset",
         "shift": "Shift the view",
         "shifttext": "Shift by:",
-        "step": "Step",
+        "step": "On Step",
         "create": "On Create",
         "leave": "On Leave",
         "draw": "Draw",
