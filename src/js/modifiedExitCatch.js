@@ -17,16 +17,12 @@
         }
     };
 
-    // Не исправлять жалобы eslint. nw.js-специфично.
     win.on('close', function () {
-        if (window.glob.modified) {
-            if (!confirm(window.languageJSON.common.reallyexit)) {
-                return false;
-            } else {
-                this.close(true);
-            }
-        } else {
-            this.close(true);
+        /* nw.js Requires synchronous calls here */
+        /* eslint "no-alert": "off" */
+        if (window.glob.modified && !confirm(window.languageJSON.common.reallyexit)) {
+            return false;
         }
+        return this.close(true);
     });
 })(this);

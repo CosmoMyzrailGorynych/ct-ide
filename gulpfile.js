@@ -145,7 +145,7 @@ const watch = () => {
 
 const build = gulp.parallel([compilePug, compileStylus, compileScripts]);
 
-const lintStylus = () => gulp.src('./src/styl/**/*.styl')
+const lintStylus = () => gulp.src(['./src/styl/**/*.styl', '!./src/styl/3rdParty/**/*.styl'])
     .pipe(stylint())
     .pipe(stylint.reporter())
     .pipe(stylint.reporter('fail'));
@@ -171,17 +171,17 @@ const launchNw = () => {
 };
 
 const docs = done => {
-    spawn('hexo', 'generate').on('close', () => {
-        fs.copy('./docs/public/', './app/docs/', {
-            overwrite: true,
-            recursive: true
+    fs.remove('./app/docs/')
+    .then(spawn('hexo', ['generate']).on('close', () => {
+            fs.copy('./docs/public/', './app/docs/', {
+                overwrite: true,
+                recursive: true
+            })
+            .then(fs.copy('./docs/jquery-3.2.1.min.js', './app/docs/jquery-3.2.1.min.js'))
+            .then(fs.copy('./docs/lunr.min.js', './app/docs/lunr.min.js'))
+            .then(done);
         })
-        .then(fs.copy('./docs/jquery-3.2.1.min.js', './app/docs/', {
-            overwrite: true
-        }))
-        .then(fs.copy('./docs/lunr.min.js', './app/docs/'))
-        .then(done);
-    });
+    );
 };
 
 const release = gulp.series([build, lint, docs, done => {
