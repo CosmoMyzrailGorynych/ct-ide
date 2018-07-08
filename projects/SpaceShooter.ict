@@ -31,7 +31,7 @@
       "right": 50,
       "top": 12,
       "bottom": 32,
-      "lastmod": 1525838317101,
+      "lastmod": 1530951344688,
       "r": 37
     },
     {
@@ -170,7 +170,7 @@
       "right": 101,
       "top": 0,
       "bottom": 84,
-      "lastmod": 1525838633827,
+      "lastmod": 1530951347561,
       "r": 42
     },
     {
@@ -355,7 +355,10 @@
   "settings": {
     "minifyhtmlcss": false,
     "minifyjs": false,
-    "fps": 30
+    "fps": 30,
+    "title": "Space Shooter (tutorial)",
+    "author": "Cosmo Myzrail Gorynych",
+    "site": "https://ctjs.rocks/"
   },
   "palette": []
 }

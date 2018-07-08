@@ -6,7 +6,7 @@ Let's make a small space shooting game with asteroids, lasers and hostile gunshi
 
 Open ct.js and create a new project with a name "SpaceShooter".
 
-(picture)
+![](images/tutSpaceShooter_01.png)
 
 Next, [download an asset pack](http://www.kenney.nl/assets/space-shooter-redux) from Kenney's site. It is free to use and is great for prototyping, learning or just testing things out.
 
@@ -14,7 +14,7 @@ You can also use assets placed inside a `ct.js/docs/SpaceShooterAssets` folder.
 
 These are all the assets we will need today:
 
-(picture)
+![](images/tutSpaceShooter_02.png)
 
 Now open the "Graphic" tab on the top of the ct.IDE window, and drag & drop these assets inside the ct.IDE window. You can also press an "Input" button to find them manually.
 
@@ -22,21 +22,20 @@ A card for each of the images will appear. Let's open the `PlayerShip` and confi
 
 Firstly, press a button "Image's center", so its axis is placed at the ship's center. Next, modify the four values above the "Fill" button. Each one defines how far should the rectangular shape extend from the image's center. I chose `12` to the top, `50` on sides and `32` to the bottom. 
 
-(picture)
+![](images/tutSpaceShooter_03.png)
 
 Press "Save" and move to the next graphic asset — "LaserRed". As with the ship, let's set its axis to center by clicking "Image's Center". Then, select a **Circle** collision shape right beneath this button. Now a yellow collision shape is drawn as a circle.
 
 The next graphic asset, `Laser_Blue`, should be centered too, and since the collision shape should cover all the image, we can click the "Fill" button to automate it.
 
-(picture)
+![](images/tutSpaceShooter_04.png)
 
-The `EnemyShip`'s shape can be treated either as a **Circle** or as a **Rectangle**. Select the one you think is better.
-
-(picture)
 
 Both asteroids are definitely more circular by their shapes. Set their collision shape to **Circle**, and don't forget to set their axis to center.
 
-(picture)
+![](images/tutSpaceShooter_05.png)
+
+The `EnemyShip`'s shape can be treated either as a **Circle** or as a **Rectangle**. Select the one you think is better.
 
 The background image may be left as is, because it won't collide with other things in the game.
 
@@ -46,19 +45,17 @@ The background image may be left as is, because it won't collide with other thin
 
 Press the "Types" tab on top of the screen, and create a new Type for the player. After clicking the "Create" button, click on the big ghostly cat in the left column. It will show you all your graphic assets. Press the card with your ship. It should now appear in the left column of the editor.
 
-(picture)
-
 Now, change the Type's name to `PlayerShip` so we won't need to remember these numbers while coding.
 
-(picture)
+![](images/tutSpaceShooter_06.png)
 
 Create Types for all the other graphic assets but the background image. Background images don't move or interact with anything, and is often tiled, so it is not a Type. We will add it later in a **Room**.
 
-(picture)
+![](images/tutSpaceShooter_07.png)
 
 Let's place created Types somewhere on the map. To create this map, or Room, press the "Rooms" tab on top of the ct.IDE windows, and click an "Add new" button. Then, open the newly created room by clicking it.
 
-(picture)
+![](images/tutSpaceShooter_08.png)
 
 Here we will stop a bit to explain how to use the Room editor. Firstly, we can set up a Room's name and its viewport size. 
 
@@ -76,19 +73,19 @@ Lastly, you can move all the copies in the room at once by clicking a button wit
 
 For now, let's place a player's ship, a hostile one and a couple of asteroids.
 
-(picture)
+![](images/tutSpaceShooter_10.png)
 
 Then add a background. Click the "Backgrounds" tab and press "Add", then select our `BG`. It will appear as a tiled texture in the main view.
 
-(picture)
+![](images/tutSpaceShooter_09.png)
 
 Though backgrounds are always drawn before Copies of the same depth level (`0` by default), it is better to change their Depth level. Click on the zero on the left to the background's icon in the left column and input `-5`. By doing this, we tell the engine that this background is placed lower than other Copies and backgrounds. Depth represents a third coordinate axis that goes upwards, when X and Y go to the sides.
 
 ![](images/tutSpaceShooter_Depth.png)
 
-After that, save the project and click an export button. At this point, you will have a game project with immovable ships and asteroids.
+After that, save the project and click a 'play' button. At this point, you will have a game project with immovable ships and asteroids.
 
-(picture)
+![](images/tutSpaceShooter_11.png)
 
 ## Adding Player's Movement
 
@@ -96,11 +93,11 @@ Handling user's input is the most important task. In this section we will make t
 
 In order to handle keyboard inputs, we need to enable keyboard module. Press the "Catmods" tab, find a `keyboard` module on the left, select it, and then push the big red button to enable it. Then add `random` and `place` modules, as we will need them later too.
 
-(picture)
+![](images/tutSpaceShooter_12.png)
 
-Open the "Types" tab on the top, next move to "Step" event.
+Open the "Types" tab on the top, next move to `On Step` event.
 
-> `Step` event occurs every frame before drawing, `Draw` happens after all the `Step` events in the room while drawing a new frame. `On create` happens when you spawn a new Copy, and  `On Destroy` occurs before the `Draw` event if a Copy is killed.
+> `On Step` event occurs every frame before drawing, while `Draw` happens after all the `On Step` events in the room to draw a new frame. `On create` happens when you spawn a new Copy, and  `On Destroy` occurs before the `Draw` event if a Copy is killed.
 
 Write the following code:
 
@@ -424,13 +421,13 @@ Text, shapes, lines, polygons can be drawn with pre-defined styles that declare 
 
 Each tab should be activated in order to affect the result. Styles can be combined by applying ones on top of others, so every tab is optional.
 
-Let's make the font bigger and bolder. Change its size and set its weight to 800. Then align it to be drawn from a top left corner. Your image might look as follows:
+Let's make the font bigger and bolder. Change its size and set its weight to 800. Then align it to be drawn from a top left corner.
 
-(picture)
+![](images/tutSpaceShooter_13.png)
 
 Click the `Fill` tab, activate it, and then select the "Diffuse" fill type. Select an appropriate color; I chose something similar to the player's ship's colors.
 
-(picture)
+![](images/tutSpaceShooter_14.png)
 
 Add shadow, or border, or both! Then save the changes by clicking the "Apply" button in the bottom-left corner.
 
