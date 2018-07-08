@@ -30,6 +30,7 @@ bower_components
 
 temp/
 desktop\.ini
+*.png~
 
 # Generated files
 app/bundle.js
