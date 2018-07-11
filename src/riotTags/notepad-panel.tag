@@ -15,7 +15,7 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
         div(show="{tab === 'notepaglobal'}")
             .acer(ref="notepadglobal")
         div(show="{tab === 'helppages'}")
-            iframe(src="docs/index.html" nwdisable nwfaketop)
+            iframe(src="https://docs.ctjs.rocks/" nwdisable nwfaketop)
 
     button.vertical.dockleft(onclick="{notepadToggle}")
         i.icon(class="icon-{opened? 'chevron-right' : 'chevron-left'}")
