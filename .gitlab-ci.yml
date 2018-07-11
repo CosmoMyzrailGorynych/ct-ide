@@ -37,12 +37,11 @@ docs:
   image: node:10.5
   stage: docs
   when: on_success
-  dependencies: 
-    - build
   script: 
-    - npm install
-    - npm install gulp-cli -g
-    - gulp docs
+    - npm run docs:build
+  artifacts:
+    paths: 
+      - app/docs
 
 release:
   when: manual
@@ -50,6 +49,9 @@ release:
   only: 
     - master
   stage: deploy
+  dependencies:
+    - build
+    - docs
   script:
     - npm install
     - npm install gulp-cli -g

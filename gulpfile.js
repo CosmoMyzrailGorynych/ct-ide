@@ -172,16 +172,8 @@ const launchNw = () => {
 
 const docs = done => {
     fs.remove('./app/docs/')
-    .then(spawn('hexo', ['generate']).on('close', () => {
-            fs.copy('./docs/public/', './app/docs/', {
-                overwrite: true,
-                recursive: true
-            })
-            .then(fs.copy('./docs/jquery-3.2.1.min.js', './app/docs/jquery-3.2.1.min.js'))
-            .then(fs.copy('./docs/lunr.min.js', './app/docs/lunr.min.js'))
-            .then(done);
-        })
-    );
+    .then(spawn('npm', ['docs:build']))
+    .then(done);
 };
 
 const release = gulp.series([build, lint, docs, done => {
