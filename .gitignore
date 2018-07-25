@@ -37,6 +37,7 @@ app/bundle.js
 app/bundle.css
 app/index.html
 app/temp
+app/zipexport
 /temp
 app/fonts/style/.css
 builds
