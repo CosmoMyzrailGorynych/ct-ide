@@ -37,8 +37,6 @@ app/bundle.js
 app/bundle.css
 app/index.html
 app/temp
-app/zipexport
-app/*.ict.zip
 /temp
 app/fonts/style/.css
 builds
@@ -51,6 +49,10 @@ reports/
 # ct specific
 /export
 /app/docs
+app/zipexport
+app/*.ict.zip
+app/export.zip
+app/export
 
 # editor-specific
 /.vscode
