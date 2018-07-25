@@ -429,13 +429,14 @@ ct.rooms['${r.name}'] = {
 
         if (window.currentProject.settings.minifyhtml) {
             const csswring = require('csswring'),
-                htmlMinify = require('html-minifier');
-            fs.writeFileSync(exec + '/export/index.min.html', htmlMinify(fs.readFileSync('./ct.release/index.min.html', {
-                'encoding': 'utf8'
-            })
-            .replace(/%htmltop%/, injects.htmltop)
-            .replace(/%htmlbottom%/, injects.htmlbottom), {
-                removeAttributeQuotes: true,
+                htmlMinify = require('html-minifier').minify;
+            fs.writeFileSync(exec + '/export/index.min.html', htmlMinify(
+                fs.readFileSync('./ct.release/index.min.html', {
+                    'encoding': 'utf8'
+                })
+                .replace(/%htmltop%/, injects.htmltop)
+                .replace(/%htmlbottom%/, injects.htmlbottom)
+            , {
                 removeComments: true,
                 collapseWhitespace: true
             }));
