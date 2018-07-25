@@ -38,6 +38,7 @@ app/bundle.css
 app/index.html
 app/temp
 app/zipexport
+app/*.ict.zip
 /temp
 app/fonts/style/.css
 builds
