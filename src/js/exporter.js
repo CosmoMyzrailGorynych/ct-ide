@@ -296,6 +296,7 @@ ct.rooms['${r.name}'] = {
         .replace('/*@fps@*/', window.currentProject.settings.fps)
         .replace('/*@startwidth@*/', startroom.width)
         .replace('/*@startheight@*/', startroom.height)
+        .replace('/*@pixelatedrender@*/', window.currentProject.settings.pixelatedrender? 'ct.x.imageSmoothingEnabled = false;' : '')
         .replace('/*@libs@*/', JSON.stringify(ctlibs, null, '    '));
 
         buffer += '\n';
@@ -425,6 +426,7 @@ ct.rooms['${r.name}'] = {
         fs.writeFileSync(exec + '/export/ct.css', fs.readFileSync('./ct.release/ct.css', {
             'encoding': 'utf8'
         })
+        .replace('/*@pixelatedrender@*/', window.currentProject.settings.pixelatedrender? 'canvas,img{image-rendering:optimizeSpeed;image-rendering:-moz-crisp-edges;image-rendering:-webkit-optimize-contrast;image-rendering:optimize-contrast;image-rendering:pixelated;ms-interpolation-mode:nearest-neighbor}' : '')
         .replace('/*%css%*/', injects.css));
 
         if (window.currentProject.settings.minifyhtml) {
