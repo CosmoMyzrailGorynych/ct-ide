@@ -32,6 +32,9 @@ project-selector
                 ).wide
             .c3.npr.npt.npb
                 button.nm.wide.inline(onclick="{newProject}") {voc.newProject.button}
+    .aVersionNumber 
+        | v{nw.App.manifest.version}.  
+        a(href="https://ctjs.rocks/") {voc.newProject.homepage}
     script.
         const fs = require('fs-extra'),
               path = require('path');
