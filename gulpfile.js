@@ -184,9 +184,13 @@ const release = gulp.series([build, lint, docs, done => {
         flavor: 'normal',
         buildType: 'versioned'
     });
-    nw.build().then(done)
+    nw.build()
+    .then(() => {
+        done();
+    })
     .catch(function (error) {
         console.error(error);
+        done(error);
     });
 }]);
 
