@@ -1,8 +1,6 @@
 module.exports = {
     title: 'ct.js Documentation',
     description: 'Docs, tutorials, guides',
-
-    base: '/',
     dest: './app/docs',
     
     themeConfig: {
