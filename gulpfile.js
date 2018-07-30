@@ -40,6 +40,23 @@ const fileChangeNotifier = p => {
     });
 };
 
+const spawnise = (app, attrs) => new Promise((resolve, reject) => {
+    var process = spawn(app, attrs);
+    process.on('exit', code => {
+        if (!code) {
+            resolve();
+        } else {
+            reject(code);
+        }
+    });
+    process.stderr.on('data', data => {
+        console.error(data.toString());
+    });
+    process.stdout.on('data', data => {
+        console.log(data.toString());
+    });
+});
+
 const compileStylus = () =>
     gulp.src('./src/styl/_index.styl')
     .pipe(sourcemaps.init())
@@ -86,7 +103,7 @@ const compileScripts = gulp.series(compileRiot, () =>
         language_out: 'ECMASCRIPT6_STRICT',
         js_output_file: 'bundle.js',
         output_wrapper: '(function(){\n%output%\n}).call(this)',
-        //warning_level: 'QUIET',
+        warning_level: 'QUIET'
         //error_format: 'JSON'
     }, {
         platform: ['native', 'java', 'javascript']
@@ -201,6 +218,21 @@ const release = gulp.series([done => {
     });
 }]);
 
+const deployOnly = done => {
+    var pack = require('./app/package.json');
+    spawnise('./butler', ['push', `./build/ctjs - v${pack.version}/linux32`, 'comigo/ct:linux32', '--userversion', pack.version])
+    .then(() => spawnise('./butler', ['push', `./build/ctjs - v${pack.version}/linux64`, 'comigo/ct:linux64', '--userversion', pack.version]))
+    .then(() => spawnise('./butler', ['push', `./build/ctjs - v${pack.version}/osx64`, 'comigo/ct:osx64', '--userversion', pack.version]))
+    .then(() => spawnise('./butler', ['push', `./build/ctjs - v${pack.version}/win32`, 'comigo/ct:win32', '--userversion', pack.version]))
+    .then(() => spawnise('./butler', ['push', `./build/ctjs - v${pack.version}/win64`, 'comigo/ct:win64', '--userversion', pack.version]))
+    .then(() => {
+        done();
+    })
+    .catch(done);
+};
+
+const deploy = gulp.series([release, deployOnly]);
+
 
 const defaultTask = gulp.series(build, done => {
     watch();
@@ -213,4 +245,6 @@ gulp.task('lint', lint);
 gulp.task('release', release);
 gulp.task('docs', docs);
 gulp.task('build', build);
+gulp.task('deploy', deploy);
+gulp.task('deployOnly', deployOnly);
 gulp.task('default', defaultTask);
