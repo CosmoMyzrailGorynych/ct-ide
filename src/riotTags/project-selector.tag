@@ -34,7 +34,8 @@ project-selector
                 button.nm.wide.inline(onclick="{newProject}") {voc.newProject.button}
     .aVersionNumber 
         | v{nw.App.manifest.version}.  
-        a(href="https://ctjs.rocks/") {voc.newProject.homepage}
+        a(href="https://ctjs.rocks/") {voc.homepage}.  
+        span(if="{newVersion}") {newVersion}
     script.
         const fs = require('fs-extra'),
               path = require('path');
@@ -43,6 +44,7 @@ project-selector
         this.mixin(window.riotVoc);
         this.visible = true;
         this.projectSplash = '/img/nograph.png';
+        this.newVersion = false;
         
         // Загрузка списка последних проектов из локального хранилища
         if (('lastProjects' in localStorage) && 
@@ -176,3 +178,17 @@ project-selector
             }
             fe.value = '';
         };
+
+        // Checking for updates
+        setTimeout(() => {
+            fetch('https://itch.io/api/1/x/wharf/latest?target=comigo/ct&channel_name=linux32')
+            .then(data => data.json)
+            .then(json => {
+                if (!json.errors) {
+                    if (nw.App.manifest.version != json.latest) {
+                        this.newVersion = this.voc.latestVersion.replace('$1', json.latest);
+                        this.update();
+                    }
+                }
+            });
+        }, 0);

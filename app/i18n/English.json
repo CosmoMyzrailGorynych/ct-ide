@@ -49,9 +49,10 @@
             "button": "Create",
             "input": "Project's name (letters and digits)",
             "text": "Create new",
-            "nameerr": "Wrong project name.",
-            "homepage": "Homepage"
+            "nameerr": "Wrong project name."
         },
+        "homepage": "Homepage",
+        "latestVersion": "Version $1 is available",
         "browse": "Browse",
         "latest": "Latest projects"
     },
