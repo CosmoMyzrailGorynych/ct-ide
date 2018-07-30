@@ -417,14 +417,14 @@ room-editor.panel.view
             setTimeout(() => {
                 this.forbidDrawing = false;
             }, 500);
-            roomСanvasMenu.items[0].label = window.languageJSON.roomview.deletecopy.replace('{0}', type.name);
-            roomСanvasMenu.popup(e.clientX, e.clientY);
+            roomCanvasMenu.items[0].label = window.languageJSON.roomview.deletecopy.replace('{0}', type.name);
+            roomCanvasMenu.popup(e.clientX, e.clientY);
             e.preventDefault();
         };
         
         // Контекстное меню по нажатию на холст
-        roomСanvasMenu = new gui.Menu();
-        roomСanvasMenu.append(new gui.MenuItem({
+        roomCanvasMenu = new gui.Menu();
+        roomCanvasMenu.append(new gui.MenuItem({
             label: window.languageJSON.roomview.deletecopy.replace('{0}', this.closestType),
             icon: (isMac ? '/img/black/' : '/img/blue/') + 'delete.png',
             click: () => {

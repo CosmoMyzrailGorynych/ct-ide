@@ -9,6 +9,6 @@
                 nw.App.quit();
             }
         };
-        gulp.watch(['./bundle.css', './index.html', './js/**.js'], reload);
+        gulp.watch(['./bundle.css', './index.html', './bundle.js', './js/**.js'], reload);
     } catch (e) { void 0; }
 })();

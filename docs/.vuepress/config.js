@@ -1,8 +1,6 @@
 module.exports = {
     title: 'ct.js Documentation',
     description: 'Docs, tutorials, guides',
-
-    base: '/',
     dest: './app/docs',
     
     themeConfig: {
@@ -13,8 +11,8 @@ module.exports = {
             text: "Official website",
             link: "https://ctjs.rocks"
         }, {
-            text: 'Discord Server',
-            link: 'https://discord.gg/rC2AnYw'
+            text: 'Community',
+            link: 'https://comigo.itch.io/ct/community'
         }],
         sidebar: [
             [

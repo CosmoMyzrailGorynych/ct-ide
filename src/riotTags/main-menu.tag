@@ -90,27 +90,37 @@ main-menu.flexcol
             });
         };
         this.zipProject = e => {
+            var inDir = path.resolve('./zipexport/'),
+                outName = path.resolve(`./${sessionStorage.projname}.zip`);
             this.saveProject()
-            .then(() => fs.remove('./zipexport'))
-            .then(() => fs.copy(sessionStorage.projdir, path.join('./zipexport', sessionStorage.projname)))
-            .then(() => fs.copy(sessionStorage.projdir + '.ict', path.join('./zipexport', sessionStorage.projname + '.ict')))
+            .then(fs.remove(outName))
+            .then(fs.emptyDir(inDir))
+            .then(() => new Promise(resolve => {
+                setTimeout(resolve, 100);
+            }))
+            .then(fs.copy(sessionStorage.projdir + '.ict', path.join(inDir, sessionStorage.projname + '.ict')))
+            .then(fs.copy(sessionStorage.projdir, path.join(inDir, sessionStorage.projname)))
+            .then(() => new Promise(resolve => {
+                setTimeout(resolve, 100);
+            }))
             .then(() => {
-                zip.zip('./zipexport/', `./${sessionStorage.projname}.zip`, err => {
+                zip.zip('./zipexport/.', outName, err => {
                     if (err) {
                         alertify.error(err);
                         console.error(err);
                         return;
                     }
-                    nw.Shell.showItemInFolder(`./${sessionStorage.projname}.zip`);
+                    nw.Shell.showItemInFolder(outName);
                 });
             })
             .catch(alertify.error);
         };
         this.zipExport = e => {
-            fs.remove('./export.zip')
+            var exportFile = path.resolve('./export.zip');
+            fs.remove(exportFile)
             .then(() => window.runCtProject())
             .then(() => {
-                zip.zip('./export/', './export.zip', err => {
+                zip.zip('./export/.', exportFile, err => {
                     if (err) {
                         window.fuck = err;
                         console.error(err);
@@ -119,7 +129,7 @@ main-menu.flexcol
                             return;
                         }
                     }
-                    nw.Shell.showItemInFolder('./export.zip');
+                    nw.Shell.showItemInFolder(exportFile);
                 });
             })
             .catch(alertify.error);

@@ -40,6 +40,7 @@ app/temp
 /temp
 app/fonts/style/.css
 builds
+build
 cache
 
 # tests
@@ -49,6 +50,10 @@ reports/
 # ct specific
 /export
 /app/docs
+app/zipexport
+app/*.ict.zip
+app/export.zip
+app/export
 
 # editor-specific
 /.vscode
