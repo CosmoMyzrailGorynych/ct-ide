@@ -1,20 +1,26 @@
 'use strict';
 
-const notifier = require('node-notifier'),
-      path = require('path'),
+const path = require('path'),
       {spawn} = require('child_process'),
+      
       gulp = require('gulp'),
       concat = require('gulp-concat'),
       sourcemaps = require('gulp-sourcemaps'),
       stylus = require('gulp-stylus'),
       riot = require('gulp-riot'),
       pug = require('gulp-pug'),
-      streamQueue = require('streamqueue'),
-//      closureCompiler = require('gulp-closure-compiler'),
-      fs = require('fs-extra'),
+      gulpif = require('gulp-if'),
       eslint = require('gulp-eslint'),
       stylint = require('gulp-stylint'),
+      
+      streamQueue = require('streamqueue'),
+      notifier = require('node-notifier'),
+      fs = require('fs-extra'),
       NwBuilder = require('nw-builder');
+
+const closureCompiler = require('google-closure-compiler-js').gulp();
+
+var releasing = false;
 
 const makeErrorObj = (title, err) => ({
     title,
@@ -71,25 +77,21 @@ const compileScripts = gulp.series(compileRiot, () =>
         gulp.src('./src/js/**'),
         gulp.src('./temp/riot.js')
     )
-    .pipe(sourcemaps.init())
+    .pipe(gulpif(releasing, sourcemaps.init()))
     .pipe(concat('bundle.js'))
-    .pipe(sourcemaps.write())
+    .pipe(gulpif(releasing, sourcemaps.write()))
+    .pipe(gulpif(releasing, closureCompiler({
+        compilation_level: 'SIMPLE',
+        language_in: 'ECMASCRIPT6_STRICT',
+        language_out: 'ECMASCRIPT6_STRICT',
+        js_output_file: 'bundle.js',
+        output_wrapper: '(function(){\n%output%\n}).call(this)',
+        //warning_level: 'QUIET',
+        //error_format: 'JSON'
+    }, {
+        platform: ['native', 'java', 'javascript']
+    })))
     .pipe(gulp.dest('./app/'))
-    /* .pipe(closureCompiler({
-        compilerPath: 'bower_components/closure-compiler/closure-compiler-v20170626.jar',
-        maxBuffer: 100500,
-        continueWithWarnings: true,
-        compilerFlags: {
-            'language_in': 'ECMASCRIPT6',
-            // 'third_party': 'true',
-            'warning_level': 'QUIET'
-        },
-        define: [
-            'goog.DEBUG=false'
-        ],
-        fileName: 'bundle.js'
-    }))
-    .pipe(gulp.dest('./app/'))*/
     .on('error', err => {
         notifier.notify({
             title: 'Ошибка скриптов',
@@ -176,13 +178,18 @@ const docs = done => {
     .then(done);
 };
 
-const release = gulp.series([build, lint, docs, done => {
+const release = gulp.series([done => {
+    releasing = true;
+    done();
+}, build, lint, docs, done => {
     var nw = new NwBuilder({
-        files: './app/**',
+        files: ['./app/**', '!./app/export'],
         platforms: ['osx64', 'win32', 'win64', 'linux32', 'linux64'],
         version: '0.31.2',
         flavor: 'normal',
-        buildType: 'versioned'
+        buildType: 'versioned',
+        zip: false,
+        macIcns: './app/ct.ide.icns'
     });
     nw.build()
     .then(() => {
