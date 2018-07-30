@@ -1,20 +1,26 @@
 'use strict';
 
-const notifier = require('node-notifier'),
-      path = require('path'),
+const path = require('path'),
       {spawn} = require('child_process'),
+      
       gulp = require('gulp'),
       concat = require('gulp-concat'),
       sourcemaps = require('gulp-sourcemaps'),
       stylus = require('gulp-stylus'),
       riot = require('gulp-riot'),
       pug = require('gulp-pug'),
-      streamQueue = require('streamqueue'),
-//      closureCompiler = require('gulp-closure-compiler'),
-      fs = require('fs-extra'),
+      gulpif = require('gulp-if'),
       eslint = require('gulp-eslint'),
       stylint = require('gulp-stylint'),
+      
+      streamQueue = require('streamqueue'),
+      notifier = require('node-notifier'),
+      fs = require('fs-extra'),
       NwBuilder = require('nw-builder');
+
+const closureCompiler = require('google-closure-compiler-js').gulp();
+
+var releasing = false;
 
 const makeErrorObj = (title, err) => ({
     title,
@@ -33,6 +39,23 @@ const fileChangeNotifier = p => {
         wait: false
     });
 };
+
+const spawnise = (app, attrs) => new Promise((resolve, reject) => {
+    var process = spawn(app, attrs);
+    process.on('exit', code => {
+        if (!code) {
+            resolve();
+        } else {
+            reject(code);
+        }
+    });
+    process.stderr.on('data', data => {
+        console.error(data.toString());
+    });
+    process.stdout.on('data', data => {
+        console.log(data.toString());
+    });
+});
 
 const compileStylus = () =>
     gulp.src('./src/styl/_index.styl')
@@ -71,25 +94,21 @@ const compileScripts = gulp.series(compileRiot, () =>
         gulp.src('./src/js/**'),
         gulp.src('./temp/riot.js')
     )
-    .pipe(sourcemaps.init())
+    .pipe(gulpif(releasing, sourcemaps.init()))
     .pipe(concat('bundle.js'))
-    .pipe(sourcemaps.write())
+    .pipe(gulpif(releasing, sourcemaps.write()))
+    .pipe(gulpif(releasing, closureCompiler({
+        compilation_level: 'SIMPLE',
+        language_in: 'ECMASCRIPT6_STRICT',
+        language_out: 'ECMASCRIPT6_STRICT',
+        js_output_file: 'bundle.js',
+        output_wrapper: '(function(){\n%output%\n}).call(this)',
+        warning_level: 'QUIET'
+        //error_format: 'JSON'
+    }, {
+        platform: ['native', 'java', 'javascript']
+    })))
     .pipe(gulp.dest('./app/'))
-    /* .pipe(closureCompiler({
-        compilerPath: 'bower_components/closure-compiler/closure-compiler-v20170626.jar',
-        maxBuffer: 100500,
-        continueWithWarnings: true,
-        compilerFlags: {
-            'language_in': 'ECMASCRIPT6',
-            // 'third_party': 'true',
-            'warning_level': 'QUIET'
-        },
-        define: [
-            'goog.DEBUG=false'
-        ],
-        fileName: 'bundle.js'
-    }))
-    .pipe(gulp.dest('./app/'))*/
     .on('error', err => {
         notifier.notify({
             title: 'Ошибка скриптов',
@@ -176,13 +195,18 @@ const docs = done => {
     .then(done);
 };
 
-const release = gulp.series([build, lint, docs, done => {
+const release = gulp.series([done => {
+    releasing = true;
+    done();
+}, build, lint, docs, done => {
     var nw = new NwBuilder({
-        files: './app/**',
+        files: ['./app/**', '!./app/export'],
         platforms: ['osx64', 'win32', 'win64', 'linux32', 'linux64'],
         version: '0.31.2',
         flavor: 'normal',
-        buildType: 'versioned'
+        buildType: 'versioned',
+        zip: false,
+        macIcns: './app/ct.ide.icns'
     });
     nw.build()
     .then(() => {
@@ -193,6 +217,21 @@ const release = gulp.series([build, lint, docs, done => {
         done(error);
     });
 }]);
+
+const deployOnly = done => {
+    var pack = require('./app/package.json');
+    spawnise('./butler', ['push', `./build/ctjs - v${pack.version}/linux32`, 'comigo/ct:linux32', '--userversion', pack.version])
+    .then(() => spawnise('./butler', ['push', `./build/ctjs - v${pack.version}/linux64`, 'comigo/ct:linux64', '--userversion', pack.version]))
+    .then(() => spawnise('./butler', ['push', `./build/ctjs - v${pack.version}/osx64`, 'comigo/ct:osx64', '--userversion', pack.version]))
+    .then(() => spawnise('./butler', ['push', `./build/ctjs - v${pack.version}/win32`, 'comigo/ct:win32', '--userversion', pack.version]))
+    .then(() => spawnise('./butler', ['push', `./build/ctjs - v${pack.version}/win64`, 'comigo/ct:win64', '--userversion', pack.version]))
+    .then(() => {
+        done();
+    })
+    .catch(done);
+};
+
+const deploy = gulp.series([release, deployOnly]);
 
 
 const defaultTask = gulp.series(build, done => {
@@ -206,4 +245,6 @@ gulp.task('lint', lint);
 gulp.task('release', release);
 gulp.task('docs', docs);
 gulp.task('build', build);
+gulp.task('deploy', deploy);
+gulp.task('deployOnly', deployOnly);
 gulp.task('default', defaultTask);
