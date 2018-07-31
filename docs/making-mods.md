@@ -75,8 +75,8 @@ The `injects` folder contains files which code should be injected while exportin
 
 **Copy-specific events**:
 
-* `oncreate` – applied to a newly created Copy, right *after* its own OnCreate event.
-* `ondestroy` – applied to a Copy before it gets deleted. This code is called *before* a Copy's OnDestroy event.
+* `oncreate.js` – applied to a newly created Copy, right *after* its own OnCreate event.
+* `ondestroy.js` – applied to a Copy before it gets deleted. This code is called *before* a Copy's OnDestroy event.
 * `beforedraw.js`
 * `beforestep.js`
 * `afterdraw.js`
@@ -90,7 +90,7 @@ The `injects` folder contains files which code should be injected while exportin
 * `types.js` – here you can place your own Types.
 * `styles.js` – here you can place your own drawing styles. 
 * `htmltop.html` – this code is placed right before the drawing canvas. 
-* `htmlbottom` – this code is placed right after the drawing canvas.
+* `htmlbottom.html` – this code is placed right after the drawing canvas.
 
 ### Adding fields
 
