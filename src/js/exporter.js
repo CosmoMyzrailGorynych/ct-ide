@@ -400,6 +400,11 @@ ct.rooms['${r.name}'] = {
         if (fs.existsSync(sessionStorage.projdir + '/include/')) {
             fs.copySync(sessionStorage.projdir + '/include/', exec + '/export/');
         }
+        for (const lib in window.currentProject.libs) {
+            if (fs.existsSync(`./ct.libs/${lib}/includes/`)) {
+                fs.copySync(`./ct.libs/${lib}/includes/`, exec + `/export/${lib}/`);
+            }
+        }
 
         /* инъекции */
         for (const i in injects) {
