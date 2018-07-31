@@ -317,7 +317,7 @@ ct.rooms['${r.name}'] = {
 
         buffer += '\n';
 
-        /* балласт */
+        /* Модули */
         for (var lib in window.currentProject.libs) {
             const data = fs.readJSONSync(path.join('./ct.libs/', lib, 'module.json'), {
                 'encoding': 'utf8'
@@ -328,6 +328,11 @@ ct.rooms['${r.name}'] = {
                 }), lib);
             }
             buffer += '\n';
+        }
+
+        /* Пользовательские скрипты */
+        for (const script of window.currentProject.scripts) {
+            buffer += script.code + ';\n';
         }
 
         /* комнатный котэ */

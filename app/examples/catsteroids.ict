@@ -788,7 +788,7 @@
       "name": "StartButton",
       "depth": 0,
       "oncreate": "",
-      "onstep": "if (ct.mouse.pressed) {\n    console.log('pressed');\n    console.log(ct.mouse.x, ct.mouse.y, this, ct.u.prect);\n    if (ct.u.prect(ct.mouse.x, ct.mouse.y, this)) {\n        console.log('hi');\n        ct.rooms.switch('InGame');\n    }\n}",
+      "onstep": "if (ct.mouse.pressed) {\n    if (ct.u.prect(ct.mouse.x, ct.mouse.y, this)) {\n        ct.rooms.switch('InGame');\n    }\n}",
       "ondraw": "ct.draw(this);",
       "ondestroy": "",
       "uid": 7,
@@ -1103,12 +1103,14 @@
     "minifyjs": false,
     "title": "Catsteroids",
     "author": "CoMiGo Games",
-    "site": "http://comigogames.ru/"
+    "site": "http://comigogames.ru/",
+    "fps": 30
   },
   "palette": [
     "#FFFFFF",
     "#B48FFF",
     "#10102E"
   ],
-  "startroom": 2
+  "startroom": 2,
+  "scripts": []
 }
