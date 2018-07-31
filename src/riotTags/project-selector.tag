@@ -182,7 +182,7 @@ project-selector
         // Checking for updates
         setTimeout(() => {
             fetch('https://itch.io/api/1/x/wharf/latest?target=comigo/ct&channel_name=linux32')
-            .then(data => data.json)
+            .then(data => data.json())
             .then(json => {
                 if (!json.errors) {
                     if (nw.App.manifest.version != json.latest) {

@@ -99,8 +99,8 @@ const compileScripts = gulp.series(compileRiot, () =>
     .pipe(gulpif(releasing, sourcemaps.write()))
     .pipe(gulpif(releasing, closureCompiler({
         compilation_level: 'SIMPLE',
-        language_in: 'ECMASCRIPT6_STRICT',
-        language_out: 'ECMASCRIPT6_STRICT',
+        language_in: 'ECMASCRIPT_NEXT',
+        language_out: 'ECMASCRIPT5',
         js_output_file: 'bundle.js',
         output_wrapper: '(function(){\n%output%\n}).call(this)',
         warning_level: 'QUIET'
