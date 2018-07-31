@@ -235,6 +235,7 @@
     "notepad" : {
         "local": "Project's notepad",
         "global": "Global notepad",
-        "helppages": "Help"
+        "helppages": "Help",
+        "backToHome": "Back to docs' homepage"
     }
 }

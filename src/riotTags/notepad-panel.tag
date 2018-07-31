@@ -15,7 +15,9 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
         div(show="{tab === 'notepaglobal'}")
             .acer(ref="notepadglobal")
         div(show="{tab === 'helppages'}")
-            iframe(src="https://docs.ctjs.rocks/" nwdisable nwfaketop)
+            iframe(src="https://docs.ctjs.rocks/" ref="helpIframe" nwdisable nwfaketop)
+            button.aHomeButton(title="{voc.backToHome}" onclick="{backToHome}")
+                i.icon-home
 
     button.vertical.dockleft(onclick="{notepadToggle}")
         i.icon(class="icon-{opened? 'chevron-right' : 'chevron-left'}")
@@ -30,6 +32,10 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
         this.tab = 'notepadlocal';
         this.changeTab = tab => e => {
             this.tab = tab;
+        };
+        
+        this.backToHome = e => {
+            this.refs.helpIframe.contentWindow.location = 'https://docs.ctjs.rocks/';
         };
         
         this.on('update', () => {
