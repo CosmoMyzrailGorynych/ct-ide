@@ -175,7 +175,9 @@ ct.styles.new(
         var sounds = '';
         for (const k in window.currentProject.sounds) {
             const s = window.currentProject.sounds[k];
-            sounds += `ct.sound.init('${s.name}','snd/${s.uid}.wav','snd/${s.uid}.mp3');\n`;
+            var wav = s.origname.slice(-4) === '.wav',
+                mp3 = s.origname.slice(-4) === '.mp3';
+            sounds += `ct.sound.init('${s.name}', ${wav? `'snd/${s.uid}.wav'` : 'null'}, ${mp3? `'snd/${s.uid}.mp3'` : 'null'});\n`;
         }
         return sounds;
     };
@@ -452,7 +454,9 @@ ct.rooms['${r.name}'] = {
             }).css));
         }
         for (const k in window.currentProject.sounds) {
-            fs.copySync(sessionStorage.projdir + '/snd/' + window.currentProject.sounds[k].origname, exec + '/export/snd/' + window.currentProject.sounds[k].uid + '.mp3');
+            var sound = window.currentProject.sounds[k],
+                ext = sound.origname.slice(-4);
+            fs.copySync(sessionStorage.projdir + '/snd/' + sound.origname, exec + '/export/snd/' + sound.uid + ext);
         }
 
         /*
