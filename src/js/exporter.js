@@ -177,7 +177,10 @@ ct.styles.new(
             const s = window.currentProject.sounds[k];
             var wav = s.origname.slice(-4) === '.wav',
                 mp3 = s.origname.slice(-4) === '.mp3';
-            sounds += `ct.sound.init('${s.name}', ${wav? `'snd/${s.uid}.wav'` : 'null'}, ${mp3? `'snd/${s.uid}.mp3'` : 'null'});\n`;
+            sounds += `ct.sound.init('${s.name}', ${wav? `'snd/${s.uid}.wav'` : 'null'}, ${mp3? `'snd/${s.uid}.mp3'` : 'null'}, {
+                poolSize: ${s.poolSize || 5},
+                music: ${Boolean(s.isMusic)}
+            });\n`;
         }
         return sounds;
     };
