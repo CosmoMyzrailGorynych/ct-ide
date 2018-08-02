@@ -15,25 +15,27 @@ if (!ct.sound) {
          * @param {String} name Sound's name
          * @param {String} wav Local path to the sound in wav format
          * @param {String} mp3 Local path to the sound in mp3 format
-         * @param {Number} [poolSize=5] Max number of concurrent sounds playing
+         * @param {Number} [options] An options object
          * 
          * @returns {Object} Sound's object
          */
-        init(name, wav, mp3, poolSize) {
+        init(name, wav, mp3, options) {
             var src = '';
             if (ct.sound.mp3 && mp3) {
                 src = mp3;
             } else if (ct.sound.wav && wav) {
                 src = wav;
             }
+            options = options || {};
             var audio = {
                 src,
                 direct: document.createElement('audio'),
                 pool: [],
-                poolSize: poolSize || 5
+                poolSize: options.poolSize || 5
             };
             if (src !== '') {
                 ct.res.soundsLoaded++;
+                audio.direct.preload = options.music? 'metadata' : 'auto';
                 audio.direct.onerror = audio.direct.onabort = function () {
                     console.error('[ct.sound] Oh no! We couldn\'t load ' + src + '!');
                     audio.buggy = true;
@@ -59,9 +61,9 @@ if (!ct.sound) {
          * @returns {HTMLTagAudio|Boolean} The created audio or `false` (if a sound wasn't created)
          */
         spawn(name, opts, cb) {
+            opts = opts || {};
             if (typeof opts === 'function') {
                 cb = opts;
-                opts = void 0;
             }
             var s = ct.res.sounds[name];
             if (s.pool.length < s.poolSize) {
@@ -79,6 +81,7 @@ if (!ct.sound) {
                 });
 
                 a.play();
+                return a;
             } else if (cb) {
                 cb(false);
             }
