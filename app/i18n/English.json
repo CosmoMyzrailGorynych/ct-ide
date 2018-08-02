@@ -150,7 +150,9 @@
     "soundview": {
         "import": "Import",
         "name": "Name:",
-        "save": "Save"
+        "save": "Save",
+        "isMusicFile": "This is a musical track",
+        "poolSize": "Pool size:"
     },
     "styles": {
         "create": "Create"

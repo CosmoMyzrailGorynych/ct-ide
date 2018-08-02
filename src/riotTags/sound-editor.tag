@@ -4,23 +4,29 @@ sound-editor.panel.view
         br
         input.wide(type="text" value="{sound.name}" onchange="{wire('this.sound.name')}")
         br
-        br
-        label.file
-            .button.inline
-                i.icon.icon-plus
-                span {voc.import}
-            input(type="file" ref="inputsound" accept=".mp3,.ogg,.wav" onchange="{changeSoundFile}")
+        p 
+            label
+                b {voc.poolSize}   
+                input(type="number" min="1" max="32" value="{sound.poolSize || 5}" onchange="{wire('this.sound.poolSize')}")
         audio(
             if="{sound && sound.origname}" 
             ref="audio" controls loop 
             src="file://{sessionStorage.projdir + '/snd/' + sound.origname + '?' + sound.lastmod}"
             onplay="{notifyPlayerPlays}"
         )
-        br
-        br
-        button.wide(onclick="{soundSave}")
-            i.icon.icon-confirm
-            span {voc.save}
+        p
+            label.checkbox
+                input(type="checkbox" checked="{sound.isMusic}" onchange="{wire('this.sound.isMusic')}") 
+                span   {voc.isMusicFile}
+        label.file
+            .button.wide.nml
+                i.icon.icon-plus
+                span {voc.import}
+            input(type="file" ref="inputsound" accept=".mp3,.ogg,.wav" onchange="{changeSoundFile}")
+        p.nmb
+            button.wide(onclick="{soundSave}")
+                i.icon.icon-confirm
+                span {voc.save}
     script.
         const path = require('path');
         this.namespace = 'soundview';

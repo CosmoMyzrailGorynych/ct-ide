@@ -901,13 +901,15 @@
       "name": "Laser_Small",
       "uid": 0,
       "origname": "s0.mp3",
-      "lastmod": 1508402385413
+      "lastmod": 1508402385413,
+      "poolSize": 10
     },
     {
       "name": "Laser_Medium",
       "uid": 1,
       "origname": "s1.mp3",
-      "lastmod": 1508402408072
+      "lastmod": 1508402408072,
+      "poolSize": 10
     },
     {
       "name": "Laser_Big",
@@ -919,7 +921,8 @@
       "name": "Bonus",
       "uid": 4,
       "origname": "s4.wav",
-      "lastmod": 1522761957688
+      "lastmod": 1522761957688,
+      "poolSize": 3
     },
     {
       "name": "Explosion_01",
@@ -943,7 +946,9 @@
       "name": "Music",
       "uid": 8,
       "origname": "s8.mp3",
-      "lastmod": 1533189183845
+      "lastmod": 1533189183845,
+      "isMusic": true,
+      "poolSize": 1
     }
   ],
   "styles": [
@@ -1025,12 +1030,12 @@
         }
       ],
       "uid": 1,
-      "lastmod": 1521798751543,
+      "lastmod": 1533197800992,
       "grid": 50
     },
     {
       "name": "MainMenu",
-      "oncreate": "window.musicId = ct.sound.spawn('Music', {\n    loop: true,\n    volume: 0.5\n});",
+      "oncreate": "ct.sound.spawn('Music', {\n    loop: true,\n    volume: 0.5\n});",
       "onstep": "",
       "ondraw": "ct.styles.set('Blue12');\nct.draw.text('Make Great Games in a Free Game Editor!!!', ct.room.width / 2, ct.room.height - 50);\nct.draw.text('https://ctjs.rocks/', ct.room.width / 2, ct.room.height - 30);\nct.styles.reset();",
       "onleave": "",

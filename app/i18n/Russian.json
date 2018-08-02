@@ -150,7 +150,9 @@
     "soundview": {
         "import": "Импорт",
         "name": "Имя:",
-        "save": "Сохранить"
+        "save": "Сохранить",
+        "isMusicFile": "Это музыкальный трек",
+        "poolSize": "Размер пула:"
     },
     "styles": {
         "create": "Создать"
