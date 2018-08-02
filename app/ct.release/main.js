@@ -46,18 +46,19 @@ ct.u = {
     },
     prect(x, y, arg) {
     // point-rectangle intersection
+        var xmin, xmax, ymin, ymax;
         if (arg.splice) {
-            return (
-                (x >= arg[0] && x <= arg[2] && y >= arg[1] && y <= arg[3])
-            ||
-                (x <= arg[0] && x >= arg[2] && y <= arg[1] && y >= arg[3])
-            );
+            xmin = Math.min(arg[0], arg[2]);
+            xmax = Math.max(arg[0], arg[2]);
+            ymin = Math.min(arg[1], arg[3]);
+            ymax = Math.max(arg[1], arg[3]);
+        } else {
+            xmin = arg.x - arg.shape.left;
+            xmax = arg.x + arg.shape.right;
+            ymin = arg.y - arg.shape.top;
+            ymax = arg.y + arg.shape.bottom;
         }
-        return (
-            (x >= arg.x - arg.shape.left && x <= arg.x + arg.shape.right && y >= arg.y - arg.shape.top && y <= arg.y + arg.shape.bottom)
-        ||
-            (x <= arg.x - arg.shape.left && x >= arg.x + arg.shape.right && y <= arg.y - arg.shape.top && y >= arg.y + arg.shape.bottom)
-        );
+        return x >= xmin && y >= ymin && x <= xmax && y <= ymax;
     },
     pcircle(x, y, arg) {
         if (arg.splice) {
