@@ -7,7 +7,8 @@
       "toptop": "<link href=\"https://fonts.googleapis.com/css?family=Press+Start+2P\" rel=\"stylesheet\">"
     },
     "random": {},
-    "keyboard": {}
+    "keyboard": {},
+    "sound.howler": {}
   },
   "graphs": [
     {
@@ -937,6 +938,12 @@
       "uid": 7,
       "origname": "s7.wav",
       "lastmod": 1522762020572
+    },
+    {
+      "name": "Music",
+      "uid": 8,
+      "origname": "s8.mp3",
+      "lastmod": 1533189183845
     }
   ],
   "styles": [
@@ -1023,7 +1030,7 @@
     },
     {
       "name": "MainMenu",
-      "oncreate": "",
+      "oncreate": "window.musicId = ct.sound.spawn('Music', {\n    loop: true,\n    volume: 0.5\n});",
       "onstep": "",
       "ondraw": "ct.styles.set('Blue12');\nct.draw.text('Make Great Games in a Free Game Editor!!!', ct.room.width / 2, ct.room.height - 50);\nct.draw.text('https://ctjs.rocks/', ct.room.width / 2, ct.room.height - 30);\nct.styles.reset();",
       "onleave": "",
@@ -1054,13 +1061,13 @@
       ],
       "uid": 2,
       "grid": 64,
-      "lastmod": 1521799501077
+      "lastmod": 1533193419531
     },
     {
       "name": "RetryScreen",
       "oncreate": "this.score = Number(localStorage.score);\nthis.highscore = Number(localStorage.highscore || 0);\n\nlocalStorage.highscore = Math.max(this.highscore, this.score);",
       "onstep": "",
-      "ondraw": "ct.styles.set('ScoreText');\nct.draw.text('Score: '+ this.score, 200, ct.room.height / 2 - 20);\nct.draw.text('Highscore: '+ this.score, 200, ct.room.height / 2 + 20);\nct.styles.reset();\n\nct.styles.set('Blue12');\nct.draw.text('This demo was made in ct.IDE editor with ct.js framework', ct.room.width / 2, ct.room.height - 50);\nct.draw.text('https://ctjs.rocks/', ct.room.width / 2, ct.room.height - 30);\nct.styles.reset();",
+      "ondraw": "ct.styles.set('ScoreText');\nct.draw.text('Score: '+ this.score, 200, ct.room.height / 2 - 20);\nct.draw.text('Highscore: '+ this.score, 200, ct.room.height / 2 + 20);\nct.styles.reset();\n\nct.styles.set('Blue12');\nct.draw.text('This demo was made in ct.js editor: more at https://ctjs.rocks/', ct.room.width / 2, ct.room.height - 50);\nct.draw.text('Music by Jukedeck: www.jukedeck.com', ct.room.width / 2, ct.room.height - 20);\nct.styles.reset();",
       "onleave": "",
       "width": 800,
       "height": 800,
@@ -1093,7 +1100,7 @@
     }
   ],
   "graphtick": 32,
-  "soundtick": 8,
+  "soundtick": 9,
   "roomtick": 3,
   "typetick": 19,
   "styletick": 2,
