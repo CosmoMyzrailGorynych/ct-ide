@@ -34,7 +34,7 @@ ct.sound.init = function (name, wav, mp3, options) {
         src: sounds,
         autoplay: false,
         preload: !options.music,
-        html5: options.music,
+        html5: Boolean(options.music),
         loop: options.loop,
         pool: options.poolSize || 5,
 
