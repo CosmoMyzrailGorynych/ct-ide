@@ -191,7 +191,7 @@ const launchNw = () => {
 
 const docs = done => {
     fs.remove('./app/docs/')
-    .then(spawn('npm', ['docs:build']))
+    .then(spawnise('npm', ['run', 'docs:build']))
     .then(done);
 };
 
