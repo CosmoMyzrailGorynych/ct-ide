@@ -12,10 +12,12 @@
         var str2 = str;
         if (data.fields) {
             for (const field in data.fields) {
-                str2 = str2.replace(
-                    RegExp('%' + data.fields[field].key + '%', 'g'),
-                    window.currentProject.libs[lib][data.fields[field].key] || ''
-                );
+                const val = window.currentProject.libs[lib][data.fields[field].key];
+                if (data.fields[field].type === 'checkbox' && !val) {
+                    str2 = str2.replace(RegExp('%' + data.fields[field].key + '%', 'g'), 'false');
+                } else {
+                    str2 = str2.replace(RegExp('%' + data.fields[field].key + '%', 'g'), val || '');
+                }
             }
         }
         return str2;
