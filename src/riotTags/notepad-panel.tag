@@ -15,7 +15,7 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
         div(show="{tab === 'notepaglobal'}")
             .acer(ref="notepadglobal")
         div(show="{tab === 'helppages'}")
-            iframe(src="https://docs.ctjs.rocks/" ref="helpIframe" nwdisable nwfaketop)
+            iframe(src="http://localhost:{server.address().port}/" ref="helpIframe" nwdisable nwfaketop)
             button.aHomeButton(title="{voc.backToHome}" onclick="{backToHome}")
                 i.icon-home
 
@@ -35,7 +35,7 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
         };
         
         this.backToHome = e => {
-            this.refs.helpIframe.contentWindow.location = 'https://docs.ctjs.rocks/';
+            this.refs.helpIframe.contentWindow.location = `http://localhost:${this.server.address().port}/`;
         };
         
         this.on('update', () => {
@@ -61,3 +61,16 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
                 this.notepadglobal.setValue(localStorage.notes);
             }, 0);
         });
+
+        const static = require('node-static');
+        const fileServer = new static.Server('docs/', {
+            cache: false,
+            serverInfo: 'ctjsgameeditor'
+        });
+
+        this.server = require('http').createServer(function (request, response) {
+            request.addListener('end', function () {
+                fileServer.serve(request, response);
+            }).resume();
+        });
+        this.server.listen(0);
