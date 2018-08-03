@@ -3,7 +3,10 @@
   "libs": {
     "place": {},
     "keyboard": {},
-    "random": {}
+    "random": {},
+    "fittoscreen": {
+      "manageViewport": true
+    }
   },
   "graphs": [
     {
@@ -310,6 +313,33 @@
       "top": 232,
       "bottom": 232,
       "lastmod": 1522476036664
+    },
+    {
+      "name": "MaximiseMinimise",
+      "untill": 0,
+      "grid": [
+        2,
+        1
+      ],
+      "axis": [
+        24,
+        24
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 96,
+      "imgHeight": 48,
+      "width": 48,
+      "height": 48,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i15.png",
+      "shape": "rect",
+      "left": 24,
+      "right": 24,
+      "top": 24,
+      "bottom": 24,
+      "lastmod": 1533291065468
     }
   ],
   "types": [
@@ -412,6 +442,16 @@
       "ondestroy": "",
       "uid": 10,
       "graph": "i12.png"
+    },
+    {
+      "name": "ToggleFullscreen",
+      "depth": 100,
+      "oncreate": "this.imgspd = 0;",
+      "onstep": "this.x = ct.width + ct.room.x - 32;\nthis.y = ct.height + ct.room.y - 32;\n\nif (ct.mouse.pressed) {\n    if (ct.u.prect(ct.mouse.x, ct.mouse.y, this)) {\n        ct.fittoscreen.toggleFullscreen();\n    }\n}",
+      "ondraw": "this.frame = ct.fittoscreen.getIsFullscreen()? 1 : 0;\n\nct.draw(this);",
+      "ondestroy": "",
+      "uid": 11,
+      "graph": "i15.png"
     }
   ],
   "sounds": [
@@ -1352,17 +1392,27 @@
               "uid": 2
             }
           ]
+        },
+        {
+          "depth": 100,
+          "copies": [
+            {
+              "x": 595,
+              "y": 175,
+              "uid": 11
+            }
+          ]
         }
       ],
       "uid": 1,
       "grid": 35,
-      "lastmod": 1522476448337
+      "lastmod": 1533291340150
     },
     {
       "name": "DeadScreen",
       "oncreate": "ct.sound.spawn('Failure');\n\nthis.wait = 30;\nct.keyboard.clear();",
       "onstep": "this.wait --;\nif (ct.keyboard.key && this.wait < 0) {\n    ct.rooms.switch('InGame');\n}",
-      "ondraw": "ct.styles.set('OhNo');\n\nct.draw.text('Oh no!', this.width / 2, 540);\n\nct.styles.set('OhNo_Small');\n\nct.draw.text('You were too greeedy for that game!', this.width / 2, 600);\nct.draw.text('Press any button to try again.', this.width / 2, 632);\n\nct.styles.reset();",
+      "ondraw": "var center = this.width / 2 + this.x;\n\nct.styles.set('OhNo');\n\nct.draw.text('Oh no!', center, 540);\n\nct.styles.set('OhNo_Small');\n\nct.draw.text('You were too greeedy for that game!', center, 600);\nct.draw.text('Press any button to try again.', center, 632);\n\nct.styles.reset();",
       "onleave": "",
       "width": 1024,
       "height": 700,
@@ -1382,17 +1432,27 @@
               "uid": 8
             }
           ]
+        },
+        {
+          "depth": 100,
+          "copies": [
+            {
+              "x": 384,
+              "y": 576,
+              "uid": 11
+            }
+          ]
         }
       ],
       "uid": 2,
       "grid": 64,
-      "lastmod": 1522761730950
+      "lastmod": 1533292295802
     },
     {
       "name": "RichScreen",
       "oncreate": "ct.sound.spawn('Victory');\n\nct.keyboard.clear();",
       "onstep": "",
-      "ondraw": "ct.styles.set('OhNo');\n\nct.draw.text('You got them all!', this.width / 2, 540);\n\nct.styles.set('OhNo_Small');\n\nct.draw.text('You\\'ve found all the 33 coins. Congrats!', this.width / 2, 600);\nct.draw.text('This was a stupid demo of ct.js game engine. Thank you for playing!', this.width / 2, 632);\n\nct.styles.reset();",
+      "ondraw": "var center = this.width / 2 + this.x;\n\nct.styles.set('OhNo');\n\nct.draw.text('You got them all!', center, 540);\n\nct.styles.set('OhNo_Small');\n\nct.draw.text('You\\'ve found all the 33 coins. Congrats!', center, 600);\nct.draw.text('This was a stupid demo of ct.js game engine. Thank you for playing!', center, 632);\n\nct.styles.reset();",
       "onleave": "",
       "width": 1024,
       "height": 700,
@@ -1412,17 +1472,27 @@
               "uid": 10
             }
           ]
+        },
+        {
+          "depth": 100,
+          "copies": [
+            {
+              "x": 192,
+              "y": 448,
+              "uid": 11
+            }
+          ]
         }
       ],
       "uid": 2,
       "grid": 64,
-      "lastmod": 1522761843454
+      "lastmod": 1533291203014
     }
   ],
-  "graphtick": 12,
+  "graphtick": 15,
   "soundtick": 6,
   "roomtick": 3,
-  "typetick": 10,
+  "typetick": 11,
   "styletick": 4,
   "starting": 0,
   "settings": {
@@ -1430,10 +1500,12 @@
     "minifyjs": false,
     "title": "Catformer",
     "author": "Cosmo Myzrail Gorynych",
-    "site": "https://ctjs.rocks"
+    "site": "https://ctjs.rocks",
+    "fps": 30
   },
   "palette": [
     "#257073"
   ],
-  "startroom": 1
+  "startroom": 1,
+  "scripts": []
 }
