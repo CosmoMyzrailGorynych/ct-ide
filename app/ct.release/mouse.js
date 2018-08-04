@@ -14,8 +14,9 @@ ct.mouse = {
 };
 
 ct.mouse.listenermove = function(e) {
-    ct.mouse.x = e.clientX - ct.offsetLeft + ct.rooms.current.x;
-    ct.mouse.y = e.clientY - ct.offsetTop + ct.rooms.current.y;
+    var rect = ct.getBoundingClientRect();
+    ct.mouse.x = (e.clientX - rect.left) * ct.width / rect.width + ct.rooms.current.x;
+    ct.mouse.y = (e.clientY - rect.top) * ct.height / rect.height + ct.rooms.current.y;
     if (ct.mouse.x > 0 && ct.mouse.y > 0 && ct.mouse.y < ct.height && ct.mouse.x < ct.width) {
         ct.mouse.inside = true;
     } else {
