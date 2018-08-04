@@ -17,6 +17,7 @@ Besides the `shape` parameter, each Copy can have a `ctype` parameter. It is use
 
 # Collision shapes
 
-* `'point'` – does not require any additional parameters;
-* `'circle'` – defined by a radius `r`;
-* `'rect'` – defined by `left`, `right`, `top`, `bottom`, which mean padding from the center of an object to create a rectangular mask. Usually, all the numbers are positive.
+* `'point'` — does not require any additional parameters;
+* `'circle'` — defined by a radius `r`;
+* `'rect'` — defined by `left`, `right`, `top`, `bottom`, which mean padding from the center of an object to create a rectangular mask. Usually, all the numbers are positive.
+* `'line'` — a line **segment** defined by `x1`, `y1`, `x2` and `y2` coordinates, relative to the copy.

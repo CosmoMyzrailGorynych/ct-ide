@@ -295,58 +295,133 @@
             }
             return false;
         },
-        go(me, x, y, speed, type) {
-            // ct.place.go(<me: Copy, x: Number, y: Number, speed: Number>[, type: String])
-            // tries to reach the target with simple obstackle avoidance algorithm
+        go(me, x, y, speed, ctype) {
+            // ct.place.go(<me: Copy, x: Number, y: Number, speed: Number>[, ctype: String])
+            // tries to reach the target with a simple obstacle avoidance algorithm
 
             // if we are too close to the destination, exit
-            if (ct.pdc(me.x, me.y, x, y) < speed) {
+            if (ct.u.pdc(me.x, me.y, x, y) < speed) {
+                if (ct.place.free(me, x, y, ctype)) {
+                    me.x = x;
+                    me.y = y;
+                }
                 return;
             }
-            var dir = ct.pdn(me.x, me.y, x, y);
-            if (type) {
-                //if there are no obstackles in front of us, go forward
-                if (ct.place.free(me, me.x+ct.u.ldx(speed, dir), me.y+ct.u.ldy(speed, dir), type)) {
-                    me.x += ct.u.ldx(speed, dir);
-                    me.y += ct.u.ldy(speed, dir);
-                    me.dir = dir;
-                // otherwise, try to change direction by 30...60...90 degrees. 
-                // Direction changes over time (ct.place.m).
-                } else if (ct.place.free(me, me.x+ct.u.ldx(speed, dir+30 * ct.place.m), me.y+ct.u.ldy(speed, dir+30 * ct.place.m), type)) {
-                    me.x += ct.u.ldx(speed, dir+30 * ct.place.m);
-                    me.y += ct.u.ldy(speed, dir+30 * ct.place.m);
-                    me.dir = dir+30 * ct.place.m;
-                } else if (ct.place.free(me, me.x+ct.u.ldx(speed, dir+60 * ct.place.m), me.y+ct.u.ldy(speed, dir+60 * ct.place.m), type)) {
-                    me.x += ct.u.ldx(speed, dir+60 * ct.place.m);
-                    me.y += ct.u.ldy(speed, dir+60 * ct.place.m);
-                    me.dir = dir+60 * ct.place.m;
-                } else if (ct.place.free(me, me.x+ct.u.ldx(speed, dir+90 * ct.place.m), me.y+ct.u.ldy(speed, dir+90 * ct.place.m), type)) {
-                    me.x += ct.u.ldx(speed, dir+90 * ct.place.m);
-                    me.y += ct.u.ldy(speed, dir+90 * ct.place.m);
-                    me.dir = dir+90 * ct.place.m;
-                }
-            } else if (ct.place.free(me, me.x+ct.u.ldx(speed, dir), me.y+ct.u.ldy(speed, dir))) {
+            var dir = ct.u.pdn(me.x, me.y, x, y);
+
+            
+            //if there are no obstackles in front of us, go forward
+            if (ct.place.free(me, me.x+ct.u.ldx(speed, dir), me.y+ct.u.ldy(speed, dir), ctype)) {
                 me.x += ct.u.ldx(speed, dir);
                 me.y += ct.u.ldy(speed, dir);
                 me.dir = dir;
-            } else if (ct.place.free(me, me.x+ct.u.ldx(speed, dir+30 * ct.place.m), me.y+ct.u.ldy(speed, dir+30 * ct.place.m))) {
-                me.x += ct.u.ldx(speed, dir+30 * ct.place.m);
-                me.y += ct.u.ldy(speed, dir+30 * ct.place.m);
-                me.dir = dir+30 * ct.place.m;
-            } else if (ct.place.free(me, me.x+ct.u.ldx(speed, dir+60 * ct.place.m), me.y+ct.u.ldy(speed, dir+60 * ct.place.m))) {
-                me.x += ct.u.ldx(speed, dir+60 * ct.place.m);
-                me.y += ct.u.ldy(speed, dir+60 * ct.place.m);
-                me.dir = dir+60 * ct.place.m;
-            } else if (ct.place.free(me, me.x+ct.u.ldx(speed, dir+90 * ct.place.m), me.y+ct.u.ldy(speed, dir+90 * ct.place.m))) {
-                me.x += ct.u.ldx(speed, dir+90 * ct.place.m);
-                me.y += ct.u.ldy(speed, dir+90 * ct.place.m);
-                me.dir = dir+90 * ct.place.m;
+            // otherwise, try to change direction by 30...60...90 degrees. 
+            // Direction changes over time (ct.place.m).
+            } else {
+                for (var i = -1; i <= 1; i+= 2) {
+                    for (var j = 30; j < 150; j += 30) {
+                        if (ct.place.free(me, me.x+ct.u.ldx(speed, dir+j * ct.place.m*i), me.y+ct.u.ldy(speed, dir+j * ct.place.m*i), ctype)) {
+                            me.x += ct.u.ldx(speed, dir+j * ct.place.m*i);
+                            me.y += ct.u.ldy(speed, dir+j * ct.place.m*i);
+                            me.dir = dir+j * ct.place.m*i;
+                            return;
+                        }
+                    }
+                }
             }
+        },
+        /**
+         * Throws a ray from point (x1, y1) to (x2, y2), returning all the instances that touched the ray.
+         * The first copy in the returned array is the closest copy, the last one is the furthest. 
+         * 
+         * @param {Number} x1 A horizontal coordinate of the starting point of the ray.
+         * @param {Number} y1 A vertical coordinate of the starting point of the ray.
+         * @param {Number} x2 A horizontal coordinate of the ending point of the ray.
+         * @param {Number} y2 A vertical coordinate of the ending point of the ray.
+         * @param {String} [ctype] An optional collision group to trace against. If omitted, will trace through all the copies in the current room.
+         * 
+         * @returns {Array<Copy>} Array of all the copies that touched the ray
+         */
+        trace(x1, y1, x2, y2, ctype) {
+            var copies = [],
+                ray = {
+                    x: 0,
+                    y: 0,
+                    shape: {
+                        type: 'line',
+                        x1: x1,
+                        y1: y1,
+                        x2: x2,
+                        y2: y2
+                    }
+                };
+            for (var i in ct.stack) {
+                if (!ctype || ct.stack[i].ctype === ctype) {
+                    if (ct.place.collide(ray, ct.stack[i])) {
+                        copies.push(ct.stack[i]);
+                    }
+                }
+            }
+            if (copies.length > 1) {
+                copies.sort(function (a, b) {
+                    var dist1, dist2;
+                    dist1 = ct.u.pdc(x1, y1, a.x, a.y);
+                    dist2 = ct.u.pdc(x1, y1, b.x, b.y);
+                    if (a.shape.type === 'circle') {
+                        if (dist1 > a.shape.r) {
+                            dist1 -= a.shape.r;
+                        } else {
+                            // if a starting point is *IN* the circle, 
+                            // then this point itself is a hit point
+                            dist1 = 0;
+                        }
+                    }
+                    if (b.shape.type === 'circle') {
+                        if (dist2 > b.shape.r) {
+                            dist2 -= b.shape.r;
+                        } else {
+                            // if a starting point is *IN* the circle, 
+                            // then this point itself is a hit point
+                            dist2 = 0;
+                        }
+                    }
+
+                    if (a.shape.type === 'rect') {
+                        if (ct.u.prect(x1, y1, a)) {
+                            dist1 = 0;
+                        } else {
+                            /* These are quick and dirty approximations;
+                               they should be improved on par with `line.*` checks later
+                               to get actual intersection points. */
+                            dist1 = Math.min(dist1,
+                                ct.u.pdc(x1, y1, a.x - a.shape.left, a.y - a.shape.top),
+                                ct.u.pdc(x1, y1, a.x + a.shape.right, a.y - a.shape.top),
+                                ct.u.pdc(x1, y1, a.x - a.shape.left, a.y + a.shape.bottom),
+                                ct.u.pdc(x1, y1, a.x + a.shape.right, a.y + a.shape.bottom)
+                            );
+                        }
+                    }
+                    if (b.shape.type === 'rect') {
+                        if (ct.u.prect(x1, y1, b)) {
+                            dist2 = 0;
+                        } else {
+                            dist2 = Math.min(dist2,
+                                ct.u.pdc(x1, y1, b.x - b.shape.left, b.y - b.shape.top),
+                                ct.u.pdc(x1, y1, b.x + b.shape.right, b.y - b.shape.top),
+                                ct.u.pdc(x1, y1, b.x - b.shape.left, b.y + b.shape.bottom),
+                                ct.u.pdc(x1, y1, b.x + b.shape.right, b.y + b.shape.bottom)
+                            );
+                        }
+                    }
+                    return dist1 - dist2;
+                });
+            }
+            return copies;
         }
     };
     // a magic procedure which tells 'go' function to change its direction
     setInterval(function() {
         ct.place.m *= -1;
-    }, 489);
+    }, 789);
     ct.libs += ' place';
 })(ct);
