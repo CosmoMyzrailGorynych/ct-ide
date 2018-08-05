@@ -80,9 +80,9 @@ main-menu.flexcol
             this.saveProject();
         });
 
-        const static = require('node-static');
+        const nstatic = require('node-static');
         const exec = path.dirname(process.execPath).replace(/\\/g,'/');
-        const fileServer = new static.Server(path.join(exec, '/export/'), {
+        const fileServer = new nstatic.Server(path.join(exec, '/export/'), {
             cache: false,
             serverInfo: 'ctjsgameeditor'
         });
