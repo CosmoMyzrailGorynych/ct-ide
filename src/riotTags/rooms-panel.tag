@@ -1,16 +1,18 @@
 rooms-panel.panel.view
-    button#roomcreate(onclick="{roomCreate}")
-        i.icon.icon-add
-        span {voc.create}
-    ul.cards.rooms
-        li(
-            each="{room in window.currentProject.rooms}"
-            class="{starting: window.currentProject.startroom === room.uid}"
-            onclick="{openRoom(room)}"
-            oncontextmenu="{menuPopup(room)}"
-        )
-            img(src="file://{sessionStorage.projdir + '/img/r' + room.uid + '.png?' + room.lastmod}")
-            span {room.name}
+    .flexfix.tall
+        .flexfix-header
+            button#roomcreate(onclick="{roomCreate}")
+                i.icon.icon-add
+                span {voc.create}
+        ul.cards.rooms.flexfix-body
+            li(
+                each="{room in window.currentProject.rooms}"
+                class="{starting: window.currentProject.startroom === room.uid}"
+                onclick="{openRoom(room)}"
+                oncontextmenu="{menuPopup(room)}"
+            )
+                img(src="file://{sessionStorage.projdir + '/img/r' + room.uid + '.png?' + room.lastmod}")
+                span {room.name}
     room-editor(if="{editing}" room="{editingRoom}")
     script.
         this.namespace = 'rooms';
