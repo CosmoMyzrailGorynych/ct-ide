@@ -19,10 +19,13 @@
     
     const fs = require('fs-extra');
     // better copy
+    /*
     window.megacopy = function(sourcePath, destinationPath, callback) {
         var is = fs.createReadStream(sourcePath);
         var os = fs.createWriteStream(destinationPath);
         is.on('end', callback);
         is.pipe(os);
     };
+    */
+   window.megacopy = fs.copy;
 })(this);
