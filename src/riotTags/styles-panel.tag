@@ -1,13 +1,15 @@
 styles-panel.panel.view
-    button#stylecreate(onclick="{styleCreate}")
-        i.icon.icon-add
-        span {voc.create}
-    ul.cards
-        li(each="{style in window.currentProject.styles}" 
-           onclick="{openStyle(style)}" 
-           oncontextmenu="{onStyleContextMenu(style)}")
-            span {style.name}
-            img(src="file://{window.sessionStorage.projdir + '/img/s' + style.uid}_prev.png?{style.lastmod}")
+    .flexfix.tall
+        div.flexfix-header
+            button#stylecreate(onclick="{styleCreate}")
+                i.icon.icon-add
+                span {voc.create}
+        ul.cards.flexfix-body
+            li(each="{style in window.currentProject.styles}" 
+            onclick="{openStyle(style)}" 
+            oncontextmenu="{onStyleContextMenu(style)}")
+                span {style.name}
+                img(src="file://{window.sessionStorage.projdir + '/img/s' + style.uid}_prev.png?{style.lastmod}")
     style-editor(if="{editingStyle}" styleobj="{editedStyle}")
     script.
         this.editingStyle = false;

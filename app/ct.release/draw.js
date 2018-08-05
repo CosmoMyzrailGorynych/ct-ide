@@ -125,9 +125,15 @@ ct.u.ext(ct.draw.polygon, {
     line(x,y) {
         ct.x.lineTo(x - ct.rooms.current.x,y - ct.rooms.current.y);
     },
-    close: ct.x.closePath,
-    fill: ct.x.fill,
-    stroke: ct.x.stroke
+    close() {
+        ct.x.closePath();
+    },
+    fill() {
+        ct.x.fill();
+    },
+    stroke() {
+        ct.x.stroke();
+    }
 });
 
 ct.libs += ' draw';

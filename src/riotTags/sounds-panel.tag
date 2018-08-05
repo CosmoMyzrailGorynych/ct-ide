@@ -1,15 +1,17 @@
 sounds-panel.panel.view
-    button#soundcreate(onclick="{soundNew}")
-        i.icon.icon-add
-        span {voc.create}
-    ul.cards
-        li(
-            each="{sound in window.currentProject.sounds}"
-            onclick="{openSound(sound)}"
-            oncontextmenu="{popupMenu(sound)}"
-        )
-            span {sound.name}
-            img(src="/img/wave.png")
+    .flexfix.tall
+        .flexfix-header
+            button#soundcreate(onclick="{soundNew}")
+                i.icon.icon-add
+                span {voc.create}
+        ul.cards.flexfix-body
+            li(
+                each="{sound in window.currentProject.sounds}"
+                onclick="{openSound(sound)}"
+                oncontextmenu="{popupMenu(sound)}"
+            )
+                span {sound.name}
+                img(src="/img/{sound.isMusic? 'music' : 'wave'}.png")
     sound-editor(if="{editing}" sound="{editedSound}")
     script.
         this.namespace = 'sounds';

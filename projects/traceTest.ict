@@ -1,0 +1,560 @@
+{
+  "notes": "/* empty */",
+  "libs": {
+    "keyboard": {},
+    "place": {}
+  },
+  "graphs": [
+    {
+      "name": "Ellipse_3",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        32,
+        32
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 65,
+      "imgHeight": 65,
+      "width": 65,
+      "height": 65,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i1.png",
+      "shape": "circle",
+      "left": 0,
+      "right": 65,
+      "top": 0,
+      "bottom": 65,
+      "r": 32,
+      "lastmod": 1533367772639
+    },
+    {
+      "name": "Rectangle_5",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        33,
+        33
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 67,
+      "imgHeight": 67,
+      "width": 67,
+      "height": 67,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i2.png",
+      "shape": "rect",
+      "left": 33,
+      "right": 34,
+      "top": 33,
+      "bottom": 34,
+      "lastmod": 1533367778180
+    },
+    {
+      "name": "Rectangle_4",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        7,
+        39
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 14,
+      "imgHeight": 79,
+      "width": 14,
+      "height": 79,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i3.png",
+      "shape": "rect",
+      "left": 7,
+      "right": 7,
+      "top": 39,
+      "bottom": 40,
+      "lastmod": 1533367782328
+    },
+    {
+      "name": "Rectangle_3",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        38,
+        10
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 77,
+      "imgHeight": 21,
+      "width": 77,
+      "height": 21,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i4.png",
+      "shape": "rect",
+      "left": 38,
+      "right": 39,
+      "top": 10,
+      "bottom": 11,
+      "lastmod": 1533367785943
+    },
+    {
+      "name": "Rectangle_2",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        19,
+        44
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 39,
+      "imgHeight": 88,
+      "width": 39,
+      "height": 88,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i5.png",
+      "shape": "rect",
+      "left": 19,
+      "right": 20,
+      "top": 44,
+      "bottom": 44,
+      "lastmod": 1533367789697
+    },
+    {
+      "name": "Ellipse_2",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        24,
+        24
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 49,
+      "imgHeight": 49,
+      "width": 49,
+      "height": 49,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i7.png",
+      "shape": "circle",
+      "left": 0,
+      "right": 49,
+      "top": 0,
+      "bottom": 49,
+      "r": 24,
+      "lastmod": 1533367795104
+    },
+    {
+      "name": "Ellipse_1",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        48,
+        48
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 97,
+      "imgHeight": 97,
+      "width": 97,
+      "height": 97,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i9.png",
+      "shape": "circle",
+      "left": 0,
+      "right": 97,
+      "top": 0,
+      "bottom": 97,
+      "r": 48,
+      "lastmod": 1533367814687
+    },
+    {
+      "name": "Rectangle_1",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        75,
+        27
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 150,
+      "imgHeight": 55,
+      "width": 150,
+      "height": 55,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i10.png",
+      "shape": "rect",
+      "left": 75,
+      "right": 75,
+      "top": 27,
+      "bottom": 28,
+      "lastmod": 1533367824515
+    },
+    {
+      "name": "Smiley",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        20,
+        18
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 40,
+      "imgHeight": 36,
+      "width": 40,
+      "height": 36,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i11.png",
+      "shape": "circle",
+      "left": 0,
+      "right": 40,
+      "top": 0,
+      "bottom": 36,
+      "r": 18,
+      "lastmod": 1533371193300
+    }
+  ],
+  "types": [
+    {
+      "name": "Ellipse_3",
+      "depth": 0,
+      "oncreate": "this.ctype = 'warm';",
+      "onstep": "ct.types.move(this);",
+      "ondraw": "ct.draw(this);",
+      "ondestroy": "",
+      "uid": 1,
+      "graph": "i1.png"
+    },
+    {
+      "name": "Rectangle_5",
+      "depth": 0,
+      "oncreate": "this.ctype = 'cold';",
+      "onstep": "ct.types.move(this);",
+      "ondraw": "ct.draw(this);",
+      "ondestroy": "",
+      "uid": 2,
+      "graph": "i2.png"
+    },
+    {
+      "name": "Rectangle_4",
+      "depth": 0,
+      "oncreate": "this.ctype = 'cold';",
+      "onstep": "ct.types.move(this);",
+      "ondraw": "ct.draw(this);",
+      "ondestroy": "",
+      "uid": 3,
+      "graph": "i3.png"
+    },
+    {
+      "name": "Rectangle_3",
+      "depth": 0,
+      "oncreate": "this.ctype = 'cold';",
+      "onstep": "ct.types.move(this);",
+      "ondraw": "ct.draw(this);",
+      "ondestroy": "",
+      "uid": 4,
+      "graph": "i4.png"
+    },
+    {
+      "name": "Rectangle_2",
+      "depth": 0,
+      "oncreate": "this.ctype = 'cold';",
+      "onstep": "ct.types.move(this);",
+      "ondraw": "ct.draw(this);",
+      "ondestroy": "",
+      "uid": 5,
+      "graph": "i5.png"
+    },
+    {
+      "name": "Rectangle_1",
+      "depth": 0,
+      "oncreate": "this.ctype = 'warm';",
+      "onstep": "ct.types.move(this);",
+      "ondraw": "ct.draw(this);",
+      "ondestroy": "",
+      "uid": 6,
+      "graph": "i10.png"
+    },
+    {
+      "name": "Ellipse_2",
+      "depth": 0,
+      "oncreate": "this.ctype = 'warm';",
+      "onstep": "ct.types.move(this);",
+      "ondraw": "ct.draw(this);",
+      "ondestroy": "",
+      "uid": 7,
+      "graph": "i7.png"
+    },
+    {
+      "name": "Ellipse_1",
+      "depth": 0,
+      "oncreate": "this.ctype = 'warm';",
+      "onstep": "ct.types.move(this);",
+      "ondraw": "ct.draw(this);",
+      "ondestroy": "",
+      "uid": 8,
+      "graph": "i9.png"
+    },
+    {
+      "name": "Smiley",
+      "depth": 0,
+      "oncreate": "",
+      "onstep": "ct.place.go(this, ct.mouse.x, ct.mouse.y, 10);",
+      "ondraw": "ct.draw(this);",
+      "ondestroy": "",
+      "uid": 9,
+      "graph": "i11.png"
+    }
+  ],
+  "sounds": [],
+  "styles": [
+    {
+      "name": "Numbers",
+      "uid": 1,
+      "origname": "s1",
+      "font": {
+        "family": "sans-serif",
+        "size": 18,
+        "weight": "800",
+        "italic": false,
+        "valign": "middle",
+        "halign": "center"
+      },
+      "fill": {
+        "type": "0",
+        "color": "#FFFFFF"
+      },
+      "shadow": {
+        "color": "#000000",
+        "x": 0,
+        "y": 2,
+        "blur": 3
+      },
+      "lastmod": 1533368072752
+    }
+  ],
+  "rooms": [
+    {
+      "name": "room1",
+      "oncreate": "this.rayx = this.width / 2;\nthis.rayy = this.height / 2;\n\nthis.ctype = false;",
+      "onstep": "if (ct.keyboard.down['left']) {\n    this.rayx -= 10;\n}\nif (ct.keyboard.down['right']) {\n    this.rayx += 10;\n}\nif (ct.keyboard.down['up']) {\n    this.rayy -= 10;\n}\nif (ct.keyboard.down['down']) {\n    this.rayy += 10;\n}\n\nif (ct.keyboard.pressed['space']) {\n    if (!this.ctype) {\n        this.ctype = 'warm';\n    } else if (this.ctype === 'warm') {\n        this.ctype = 'cold';\n    } else {\n        this.ctype = false;\n    }\n}",
+      "ondraw": "var copies = ct.place.trace(this.rayx, this.rayy, ct.mouse.x, ct.mouse.y, this.ctype);\n\nct.draw.polygon.begin(this.rayx, this.rayy);\nct.draw.polygon.line(ct.mouse.x, ct.mouse.y);\nct.draw.polygon.stroke();\n\nct.styles.set('Numbers');\nfor (var i = 0, l = copies.length; i < l; i++) {\n    ct.draw.text(i, copies[i].x, copies[i].y);\n}\n\nct.draw.text(this.ctype, 50, 20);\n\nct.styles.reset();",
+      "onleave": "",
+      "width": 1024,
+      "height": 600,
+      "backgrounds": [],
+      "layers": [
+        {
+          "depth": 0,
+          "copies": [
+            {
+              "x": 661,
+              "y": 155,
+              "uid": 1
+            },
+            {
+              "x": 268,
+              "y": 232,
+              "uid": 2
+            },
+            {
+              "x": 322,
+              "y": 350,
+              "uid": 2
+            },
+            {
+              "x": 825,
+              "y": 342,
+              "uid": 2
+            },
+            {
+              "x": 859,
+              "y": 206,
+              "uid": 2
+            },
+            {
+              "x": 442,
+              "y": 133,
+              "uid": 5
+            },
+            {
+              "x": 45,
+              "y": 326,
+              "uid": 5
+            },
+            {
+              "x": 233,
+              "y": 422,
+              "uid": 5
+            },
+            {
+              "x": 267,
+              "y": 252,
+              "uid": 5
+            },
+            {
+              "x": 443,
+              "y": 138,
+              "uid": 4
+            },
+            {
+              "x": 666,
+              "y": 151,
+              "uid": 4
+            },
+            {
+              "x": 825,
+              "y": 351,
+              "uid": 4
+            },
+            {
+              "x": 223,
+              "y": 135,
+              "uid": 7
+            },
+            {
+              "x": 576,
+              "y": 310,
+              "uid": 7
+            },
+            {
+              "x": 547,
+              "y": 329,
+              "uid": 7
+            },
+            {
+              "x": 568,
+              "y": 350,
+              "uid": 7
+            },
+            {
+              "x": 205,
+              "y": 128,
+              "uid": 8
+            },
+            {
+              "x": 471,
+              "y": 518,
+              "uid": 6
+            },
+            {
+              "x": 729,
+              "y": 454,
+              "uid": 6
+            },
+            {
+              "x": 178,
+              "y": 419,
+              "uid": 6
+            },
+            {
+              "x": 572,
+              "y": 392,
+              "uid": 3
+            },
+            {
+              "x": 584,
+              "y": 69,
+              "uid": 7
+            },
+            {
+              "x": 679,
+              "y": 276,
+              "uid": 7
+            },
+            {
+              "x": 759,
+              "y": 127,
+              "uid": 7
+            },
+            {
+              "x": 208,
+              "y": 258,
+              "uid": 1
+            },
+            {
+              "x": 942,
+              "y": 286,
+              "uid": 1
+            },
+            {
+              "x": 953,
+              "y": 121,
+              "uid": 1
+            },
+            {
+              "x": 789,
+              "y": 537,
+              "uid": 1
+            },
+            {
+              "x": 883,
+              "y": 466,
+              "uid": 1
+            },
+            {
+              "x": 64,
+              "y": 192,
+              "uid": 9
+            }
+          ]
+        }
+      ],
+      "uid": 1,
+      "grid": 64,
+      "lastmod": 1533371842662
+    }
+  ],
+  "graphtick": 11,
+  "soundtick": 0,
+  "roomtick": 1,
+  "typetick": 9,
+  "styletick": 1,
+  "starting": 0,
+  "settings": {
+    "minifyhtmlcss": false,
+    "minifyjs": false,
+    "fps": 30
+  },
+  "scripts": [],
+  "palette": []
+}

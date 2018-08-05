@@ -12,10 +12,12 @@
         var str2 = str;
         if (data.fields) {
             for (const field in data.fields) {
-                str2 = str2.replace(
-                    RegExp('%' + data.fields[field].key + '%', 'g'),
-                    window.currentProject.libs[lib][data.fields[field].key] || ''
-                );
+                const val = window.currentProject.libs[lib][data.fields[field].key];
+                if (data.fields[field].type === 'checkbox' && !val) {
+                    str2 = str2.replace(RegExp('%' + data.fields[field].key + '%', 'g'), 'false');
+                } else {
+                    str2 = str2.replace(RegExp('%' + data.fields[field].key + '%', 'g'), val || '');
+                }
             }
         }
         return str2;
@@ -175,7 +177,12 @@ ct.styles.new(
         var sounds = '';
         for (const k in window.currentProject.sounds) {
             const s = window.currentProject.sounds[k];
-            sounds += `ct.sound.init('${s.name}','snd/${s.uid}.wav','snd/${s.uid}.mp3');\n`;
+            var wav = s.origname.slice(-4) === '.wav',
+                mp3 = s.origname.slice(-4) === '.mp3';
+            sounds += `ct.sound.init('${s.name}', ${wav? `'snd/${s.uid}.wav'` : 'null'}, ${mp3? `'snd/${s.uid}.mp3'` : 'null'}, {
+                poolSize: ${s.poolSize || 5},
+                music: ${Boolean(s.isMusic)}
+            });\n`;
         }
         return sounds;
     };
@@ -315,7 +322,7 @@ ct.rooms['${r.name}'] = {
 
         buffer += '\n';
 
-        /* балласт */
+        /* Модули */
         for (var lib in window.currentProject.libs) {
             const data = fs.readJSONSync(path.join('./ct.libs/', lib, 'module.json'), {
                 'encoding': 'utf8'
@@ -326,6 +333,11 @@ ct.rooms['${r.name}'] = {
                 }), lib);
             }
             buffer += '\n';
+        }
+
+        /* Пользовательские скрипты */
+        for (const script of window.currentProject.scripts) {
+            buffer += script.code + ';\n';
         }
 
         /* комнатный котэ */
@@ -400,6 +412,11 @@ ct.rooms['${r.name}'] = {
         if (fs.existsSync(sessionStorage.projdir + '/include/')) {
             fs.copySync(sessionStorage.projdir + '/include/', exec + '/export/');
         }
+        for (const lib in window.currentProject.libs) {
+            if (fs.existsSync(`./ct.libs/${lib}/includes/`)) {
+                fs.copySync(`./ct.libs/${lib}/includes/`, exec + `/export/${lib}/`);
+            }
+        }
 
         /* инъекции */
         for (const i in injects) {
@@ -447,7 +464,9 @@ ct.rooms['${r.name}'] = {
             }).css));
         }
         for (const k in window.currentProject.sounds) {
-            fs.copySync(sessionStorage.projdir + '/snd/' + window.currentProject.sounds[k].origname, exec + '/export/snd/' + window.currentProject.sounds[k].uid + '.mp3');
+            var sound = window.currentProject.sounds[k],
+                ext = sound.origname.slice(-4);
+            fs.copySync(sessionStorage.projdir + '/snd/' + sound.origname, exec + '/export/snd/' + sound.uid + ext);
         }
 
         /*

@@ -79,16 +79,32 @@ main-menu.flexcol
         window.signals.on('saveProject', () => {
             this.saveProject();
         });
+
+        const static = require('node-static');
+        const exec = path.dirname(process.execPath).replace(/\\/g,'/');
+        const fileServer = new static.Server(path.join(exec, '/export/'), {
+            cache: false,
+            serverInfo: 'ctjsgameeditor'
+        });
+
+        const server = require('http').createServer(function (request, response) {
+            request.addListener('end', function () {
+                fileServer.serve(request, response);
+            }).resume();
+        });
+        server.listen(0);
+        
         this.runProject = e => {
             window.runCtProject()
             .then(path => {
-                gui.Shell.openItem(path);
+                gui.Shell.openExternal(`http://localhost:${server.address().port}/`);
             })
             .catch(e => {
                 window.alertify.error(e);
                 console.error(e);
             });
         };
+
         this.zipProject = e => {
             var inDir = path.resolve('./zipexport/'),
                 outName = path.resolve(`./${sessionStorage.projname}.zip`);

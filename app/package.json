@@ -2,7 +2,7 @@
   "main": "index.html",
   "name": "ctjs",
   "description": "ctjs",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "homepage": "https://ctjs.rocks/",
   "window": {
     "icon": "ct_ide.png",
@@ -43,6 +43,7 @@
     "html-minifier": "^3.5.19",
     "markdown-it": "3.1.0",
     "maxrects-packer": "^1.2.0",
+    "node-static": "^0.7.10",
     "uglify-js": "2.8.29"
   }
 }

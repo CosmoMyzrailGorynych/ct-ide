@@ -1,0 +1,25 @@
+{
+    "main": {
+        "name": "Fit to Screen",
+        "version": "1.0.0",
+        "authors": [{
+            "name": "Cosmo Myzrail Gorynych",
+            "mail": "admin@nersta.ru"
+        }]
+    },
+    "fields": [{
+        "name": "Just scale, no canvas resize",
+        "help": "This will not change variables `ct.width` and `ct.height` and will try to fit the drawing canvas to the screen. This may result in blank stripes around the canvas (aka letterboxing), or in blurry image. You can disable image smoothing in your project's settigs to mitigate the latter issue.",
+        "key": "scaleOnly",
+        "id": "scaleOnly",
+        "default": false,
+        "type": "checkbox"
+    }, {
+        "name": "Manage the view",
+        "help": "Whether to move the viewport so that the central point always stays in the center of the drawing canvas. Works only if \"Just scale\" is turned off.",
+        "key": "manageViewport",
+        "id": "manageViewport",
+        "default": false,
+        "type": "checkbox"
+    }]
+}

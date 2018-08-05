@@ -75,8 +75,8 @@ The `injects` folder contains files which code should be injected while exportin
 
 **Copy-specific events**:
 
-* `oncreate` – applied to a newly created Copy, right *after* its own OnCreate event.
-* `ondestroy` – applied to a Copy before it gets deleted. This code is called *before* a Copy's OnDestroy event.
+* `oncreate.js` – applied to a newly created Copy, right *after* its own OnCreate event.
+* `ondestroy.js` – applied to a Copy before it gets deleted. This code is called *before* a Copy's OnDestroy event.
 * `beforedraw.js`
 * `beforestep.js`
 * `afterdraw.js`
@@ -90,7 +90,7 @@ The `injects` folder contains files which code should be injected while exportin
 * `types.js` – here you can place your own Types.
 * `styles.js` – here you can place your own drawing styles. 
 * `htmltop.html` – this code is placed right before the drawing canvas. 
-* `htmlbottom` – this code is placed right after the drawing canvas.
+* `htmlbottom.html` – this code is placed right after the drawing canvas.
 
 ### Adding fields
 
@@ -103,7 +103,7 @@ Fields are described in `module.json`, and can be one of these types:
 * `number` – an input field for integers;
 * `checkbox` – a checkbox for Boolean variables.
 
-A field's `id` must be unique for a module. A `key` determines which parts of code should be replaced  with the field's value. If you have a field with a key `'enabled'`, then all matches with `%enabled%` will be replaced by a field's value.
+A field's `id` must be unique for a module. A `key` determines which parts of code should be replaced  with the field's value. If you have a field with a key `'enabled'`, then all matches with `%enabled%` will be replaced by a field's value. There can also be a `help` field, that will be shown below the input field and can contain some hints or an expanded explanation of what your field does.
 
 ```json Example from default akatemplate module
 {
@@ -120,8 +120,6 @@ A field's `id` must be unique for a module. A `key` determines which parts of co
             "name": "HTML top",
             "key": "toptop",
             "id": "toptop",
-            "desc": "",
-            "desceng": "",
             "default": " ",
             "type": "textfield"
         },
@@ -129,8 +127,6 @@ A field's `id` must be unique for a module. A `key` determines which parts of co
             "name": "HTML bottom",
             "key": "botbot",
             "id": "botbot",
-            "desc": "",
-            "desceng": "",
             "default": " ",
             "type": "textfield"
         },
@@ -138,8 +134,6 @@ A field's `id` must be unique for a module. A `key` determines which parts of co
             "name": "CSS",
             "key": "csscss",
             "id": "csscss",
-            "desc": "",
-            "desceng": "",
             "default": " ",
             "type": "textfield"
         }

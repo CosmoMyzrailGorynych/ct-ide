@@ -25,6 +25,7 @@
         "exitconfirm": "Are you sure you want to exit?<br/>All the unsaved changes will be lost!",
         "fastimport": "Fast Import",
         "language": "Language",
+        "name": "Name:",
         "newname": "New name:",
         "newversion": "# New version is avaliable\n",
         "no": "No",
@@ -91,6 +92,12 @@
             "circular": "Circular",
             "bar": "Progress bar",
             "no": "No preloader"
+        },
+        "scripts": {
+            "addNew": "Add a New Script",
+            "deleteScript": "Delete the script",
+            "header": "Scripts",
+            "newScriptComment": "Use scripts to define frequent functions and import small libraries"
         }
     },
     "modules": {
@@ -143,7 +150,9 @@
     "soundview": {
         "import": "Import",
         "name": "Name:",
-        "save": "Save"
+        "save": "Save",
+        "isMusicFile": "This is a musical track",
+        "poolSize": "Pool size:"
     },
     "styles": {
         "create": "Create"
@@ -228,6 +237,7 @@
     "notepad" : {
         "local": "Project's notepad",
         "global": "Global notepad",
-        "helppages": "Help"
+        "helppages": "Help",
+        "backToHome": "Back to docs' homepage"
     }
 }

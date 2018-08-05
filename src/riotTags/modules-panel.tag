@@ -45,7 +45,14 @@ modules-panel.panel.view
                     
                 #modulesettings.tabbed(show="{tab === 'modulesettings'}" if="{currentModule.fields && currentModuleName in currentProject.libs}")
                     dl(each="{field in currentModule.fields}")
-                        dt {field.name}
+                        dt
+                            input(
+                                if="{field.type === 'checkbox'}" 
+                                type="checkbox"
+                                checked="{window.currentProject.libs[currentModuleName][field.id]}"
+                                onchange="{wire('window.currentProject.libs.' + currentModuleName + '.' + field.id)}"
+                            )
+                            |   {field.name}
                         dd
                             textarea(
                                 if="{field.type === 'textfield'}" 
@@ -56,12 +63,6 @@ modules-panel.panel.view
                                 if="{field.type === 'number'}" 
                                 type="number"
                                 value="{window.currentProject.libs[currentModuleName][field.id]}" 
-                                onchange="{wire('window.currentProject.libs.' + currentModuleName + '.' + field.id)}"
-                            )
-                            input(
-                                if="{field.type === 'checkbox'}" 
-                                type="checkbox"
-                                checked="{window.currentProject.libs[currentModuleName][field.id]}"
                                 onchange="{wire('window.currentProject.libs.' + currentModuleName + '.' + field.id)}"
                             )
                             input(

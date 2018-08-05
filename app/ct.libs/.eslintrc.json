@@ -1,0 +1,8 @@
+{
+    "globals": {
+        "ct": false
+    },
+    "rules": {
+        "object-shorthand": 0
+    }
+}

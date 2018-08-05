@@ -39,7 +39,7 @@ ct.rooms = {
         ct.rooms.make.apply(ct.room);
         ct.setAttribute('width', ct.room.width);
         ct.setAttribute('height', ct.room.height);
-        ct.room.x = ct.room.y = ct.room.follow = ct.room.borderX = ct.room.borderY = 0;
+        ct.room.x = ct.room.y = ct.room.follow = ct.room.borderx = ct.room.bordery = 0;
         ct.room.onCreate();
         ct.rooms.onCreate.apply(ct.room);
     },

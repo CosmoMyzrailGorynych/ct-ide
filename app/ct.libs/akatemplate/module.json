@@ -12,8 +12,6 @@
             "name": "HTML top",
             "key": "toptop",
             "id": "toptop",
-            "desc": "",
-            "desceng": "",
             "default": " ",
             "type": "textfield"
         },
@@ -21,8 +19,6 @@
             "name": "HTML bottom",
             "key": "botbot",
             "id": "botbot",
-            "desc": "",
-            "desceng": "",
             "default": " ",
             "type": "textfield"
         },
@@ -30,8 +26,6 @@
             "name": "CSS",
             "key": "csscss",
             "id": "csscss",
-            "desc": "",
-            "desceng": "",
             "default": " ",
             "type": "textfield"
         }

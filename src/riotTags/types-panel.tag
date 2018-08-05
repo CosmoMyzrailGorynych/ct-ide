@@ -1,11 +1,13 @@
 types-panel.panel.view
-    button#typecreate(onclick="{typeCreate}")
-        i.icon.icon-add
-        span {voc.create}
-    ul.cards
-        li(each="{type in window.currentProject.types}" onclick="{openType(type)}" oncontextmenu="{onTypeContextMenu}")
-            span {type.name}
-            img(src="{type.graph !== -1 ? 'file://' + sessionStorage.projdir + '/img/' + type.graph + '_prev.png?' + getTypeGraphRevision(type) : '/img/nograph.png'}")
+    .flexfix.tall
+        .flexfix-header
+            button#typecreate(onclick="{typeCreate}")
+                i.icon.icon-add
+                span {voc.create}
+        ul.cards.flexfix-body
+            li(each="{type in window.currentProject.types}" onclick="{openType(type)}" oncontextmenu="{onTypeContextMenu}")
+                span {type.name}
+                img(src="{type.graph !== -1 ? 'file://' + sessionStorage.projdir + '/img/' + type.graph + '_prev.png?' + getTypeGraphRevision(type) : '/img/nograph.png'}")
     type-editor(if="{editingType}" type="{editedType}")
     script.
         this.namespace = 'types';

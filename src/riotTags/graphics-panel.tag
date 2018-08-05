@@ -1,23 +1,24 @@
 graphics-panel.panel.view
-    label.file
-        input(type="file" multiple 
-            accept=".png,.jpg,.jpeg,.bmp,.gif" 
-            onchange="{graphicImport}")
-        .button
-            i.icon.icon-import
-            span {voc.import}
-    //-    button#graphiccreate(data-event="graphicCreate")
-    //-        i.icon.icon-lamp
-    //-        span {voc.create}
-    ul.cards
-        li(
-            each="{graphic in window.currentProject.graphs}"
-            oncontextmenu="{showGraphicPopup(graphic)}"
-            onclick="{openGraphic(graphic)}"
-        )
-            span {graphic.name}
-            img(src="file://{sessionStorage.projdir + '/img/' + graphic.origname + '_prev.png?' + graphic.lastmod}")
-    
+    .flexfix.tall
+        label.file.flexfix-header
+            input(type="file" multiple 
+                accept=".png,.jpg,.jpeg,.bmp,.gif" 
+                onchange="{graphicImport}")
+            .button
+                i.icon.icon-import
+                span {voc.import}
+        //-    button#graphiccreate(data-event="graphicCreate")
+        //-        i.icon.icon-lamp
+        //-        span {voc.create}
+        ul.cards.flexfix-body
+            li(
+                each="{graphic in window.currentProject.graphs}"
+                oncontextmenu="{showGraphicPopup(graphic)}"
+                onclick="{openGraphic(graphic)}"
+            )
+                span {graphic.name}
+                img(src="file://{sessionStorage.projdir + '/img/' + graphic.origname + '_prev.png?' + graphic.lastmod}")
+        
     .aDropzone(if="{dropping}")
         .middleinner
             i.icon-import
@@ -157,15 +158,18 @@ graphics-panel.panel.view
                     );
                     // strip off the data:image url prefix to get just the base64-encoded bytes
                     var dataURL = c.toDataURL();
-                    var data = dataURL.replace(/^data:image\/\w+;base64,/, "");
+                    var data = dataURL.replace(/^data:image\/\w+;base64,/, '');
                     var buf = new Buffer(data, 'base64');
-                    fs.writeFile(destFile, buf, err => {
-                        if (err) {
-                            reject(err);
-                        } else {
-                            accept(dataURL);
-                        }
+                    var stream = fs.createWriteStream(destFile);
+                    stream.on('finish', () => {
+                        setTimeout(() => { // WHY THE HECK I EVER NEED THIS?!
+                            accept(destFile);
+                        }, 100);
                     });
+                    stream.on('error', err => {
+                        reject(err);
+                    });
+                    stream.end(buf);
                 }
                 thumbnail.src = 'file://' + source;
             });
