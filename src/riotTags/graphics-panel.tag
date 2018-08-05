@@ -158,15 +158,18 @@ graphics-panel.panel.view
                     );
                     // strip off the data:image url prefix to get just the base64-encoded bytes
                     var dataURL = c.toDataURL();
-                    var data = dataURL.replace(/^data:image\/\w+;base64,/, "");
+                    var data = dataURL.replace(/^data:image\/\w+;base64,/, '');
                     var buf = new Buffer(data, 'base64');
-                    fs.writeFile(destFile, buf, err => {
-                        if (err) {
-                        reject(err);
-                        } else {
-                            accept(dataURL);
-                        }
+                    var stream = fs.createWriteStream(destFile);
+                    stream.on('finish', () => {
+                        setTimeout(() => { // WHY THE HECK I EVER NEED THIS?!
+                            accept(destFile);
+                        }, 100);
                     });
+                    stream.on('error', err => {
+                        reject(err);
+                    });
+                    stream.end(buf);
                 }
                 thumbnail.src = 'file://' + source;
             });
