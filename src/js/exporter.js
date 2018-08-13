@@ -391,6 +391,7 @@ ct.rooms['${r.name}'] = {
             types += '    onDestroy: function () {\n' + type.ondestroy + '\n    },\n';
             types += '    onCreate: function () {\n' + type.oncreate + '\n    }\n';
             types += '};\n';
+            types += `ct.types.list['${type.name}'] = [];\n`;
         }
         buffer += fs.readFileSync('./ct.release/types.js', {
             'encoding': 'utf8'
