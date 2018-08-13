@@ -59,7 +59,7 @@ ct.types.move(this);
 
 ### `ct.types.copy(type: String, x, y)` and `ct.types.make(type: String, x, y)`
 
-Creates a Copy of a given Type.
+Creates a Copy of a given Type. If x or y is omitted, they are set to 0.
 
 ### `ct.types.each(func: Function)`
 

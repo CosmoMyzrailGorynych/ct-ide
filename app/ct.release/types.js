@@ -41,6 +41,8 @@ ct.types = {
     make(type, x, y) {
         //advanced constructor. Returns Copy
         const obj = ct.types.Copy(type);
+        x = x || 0;
+        y = y || 0;
         obj.x = obj.xprev = obj.xstart = x;
         obj.y = obj.yprev = obj.ystart = y;
         
