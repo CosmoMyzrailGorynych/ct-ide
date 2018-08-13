@@ -235,6 +235,7 @@ graphic-editor.panel.view
                     });
                     setTimeout(() => {
                         this.refreshGraphCanvas();
+                        this.parent.fillGraphMap();
                         this.launchGraphPreview();
                     }, 0);
                 };
