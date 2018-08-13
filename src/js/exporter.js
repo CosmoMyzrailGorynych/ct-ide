@@ -303,7 +303,6 @@ ct.rooms['${r.name}'] = {
         .replace('/*@fps@*/', window.currentProject.settings.fps)
         .replace('/*@startwidth@*/', startroom.width)
         .replace('/*@startheight@*/', startroom.height)
-        .replace('/*@pixelatedrender@*/', window.currentProject.settings.pixelatedrender? 'ct.x.imageSmoothingEnabled = false;' : '')
         .replace('/*@libs@*/', JSON.stringify(ctlibs, null, '    '));
 
         buffer += '\n';
@@ -350,7 +349,8 @@ ct.rooms['${r.name}'] = {
         .replace('/*@rooms@*/', roomsCode)
         .replace('/*%switch%*/', injects.switch)
         .replace('/*%roomoncreate%*/', injects.roomoncreate)
-        .replace('/*%roomonleave%*/', injects.roomoncreate);
+        .replace('/*@pixelatedrender@*/', window.currentProject.settings.pixelatedrender? 'ct.x.mozImageSmoothingEnabled = false; ct.x.imageSmoothingEnabled = false;' : '')
+        .replace('/*%roomonleave%*/', injects.roomonleave);
         buffer += '\n';
 
         /* стильный котэ */

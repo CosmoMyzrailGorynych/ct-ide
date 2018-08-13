@@ -42,6 +42,7 @@ ct.rooms = {
         ct.setAttribute('width', ct.room.width);
         ct.setAttribute('height', ct.room.height);
         ct.room.x = ct.room.y = ct.room.follow = ct.room.borderx = ct.room.bordery = 0;
+        /*@pixelatedrender@*/
         ct.room.onCreate();
         ct.rooms.onCreate.apply(ct.room);
     },
