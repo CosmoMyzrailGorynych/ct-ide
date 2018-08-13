@@ -2,12 +2,12 @@
  * draw cotomod
  */
 
-ct.draw = function (t) {
+ct.draw = function (t, x, y) {
     if (t.graph) {
         if (t.transform) {
-            ct.draw.imgext(t.graph, Math.floor(t.frame) % ct.res.graphs[t.graph].frames.length, t.x, t.y, t.tx, t.ty, t.tr, t.ta);
+            ct.draw.imgext(t.graph, Math.floor(t.frame) % ct.res.graphs[t.graph].frames.length, x || t.x, y || t.y, t.tx, t.ty, t.tr, t.ta);
         } else {
-            ct.draw.image(t.graph, Math.floor(t.frame) % ct.res.graphs[t.graph].frames.length, t.x, t.y);
+            ct.draw.image(t.graph, Math.floor(t.frame) % ct.res.graphs[t.graph].frames.length, x || t.x, y || t.y);
         }
     }
 };
