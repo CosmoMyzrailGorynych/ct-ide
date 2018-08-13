@@ -44,7 +44,7 @@ ct.u.ext(ct.draw, {
         ct.x.save();
         ct.x.globalAlpha = a;
         ct.x.translate(x - ct.rooms.current.x, y - ct.rooms.current.y);
-        ct.x.rotate(r * Math.PI/180);
+        ct.x.rotate(-r * Math.PI/180);
         ct.x.scale(hs,vs);
         ct.x.drawImage(
             ct.res.graphs[img].atlas,
