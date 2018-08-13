@@ -114,6 +114,7 @@ type-editor.panel.view.flexrow
         };
         this.typeSave = e => {
             window.glob.modified = true;
+            this.type.lastmod = +(new Date());
             this.parent.editingType = false;
             this.parent.fillTypeMap();
             this.parent.update();

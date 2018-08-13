@@ -1,11 +1,21 @@
 types-panel.panel.view
     .flexfix.tall
         .flexfix-header
-            button#typecreate(onclick="{typeCreate}")
-                i.icon.icon-add
-                span {voc.create}
+            div
+                .toright
+                    b {vocGlob.sort}   
+                    button.inline.square(onclick="{switchSort('date')}" class="{selected: sort === 'date' && !searchResults}")
+                        i.icon-clock
+                    button.inline.square(onclick="{switchSort('name')}" class="{selected: sort === 'name' && !searchResults}")
+                        i.icon-sort-alphabetically
+                    .aSearchWrap
+                        input.inline(type="text" onkeyup="{fuseSearch}")
+                .toleft
+                    button#typecreate(onclick="{typeCreate}")
+                        i.icon.icon-add
+                        span {voc.create}
         ul.cards.flexfix-body
-            li(each="{type in window.currentProject.types}" onclick="{openType(type)}" oncontextmenu="{onTypeContextMenu}")
+            li(each="{type in (searchResults? searchResults : types)}" onclick="{openType(type)}" oncontextmenu="{onTypeContextMenu}")
                 span {type.name}
                 img(src="{type.graph !== -1 ? 'file://' + sessionStorage.projdir + '/img/' + type.graph + '_prev.png?' + getTypeGraphRevision(type) : '/img/nograph.png'}")
     type-editor(if="{editingType}" type="{editedType}")
@@ -14,9 +24,56 @@ types-panel.panel.view
         this.mixin(window.riotVoc);
         const gui = require('nw.gui');
         this.editingType = false;
+        this.sort = 'name';
+        this.sortReverse = false;
+
+        this.updateList = () => {
+            this.types = [...window.currentProject.types];
+            if (this.sort === 'name') {
+                this.types.sort((a, b) => {
+                    return a.name.localeCompare(b.name);
+                });
+            } else {
+                this.types.sort((a, b) => {
+                    return b.lastmod - a.lastmod;
+                });
+            }
+            if (this.sortReverse) {
+                this.types.reverse();
+            }
+        };
+        this.switchSort = sort => e => {
+            if (this.sort === sort) {
+                this.sortReverse = !this.sortReverse;
+            } else {
+                this.sort = sort;
+                this.sortReverse = false;
+            }
+            this.updateList();
+        };
+        const fuseOptions = {
+            shouldSort: true,
+            tokenize: true,
+            threshold: 0.5,
+            location: 0,
+            distance: 100,
+            maxPatternLength: 32,
+            minMatchCharLength: 1,
+            keys: ['name']
+        };
+        const Fuse = require('fuse.js');
+        this.fuseSearch = e => {
+            if (e.target.value.trim()) {
+                var fuse = new Fuse(this.types, fuseOptions);
+                this.searchResults = fuse.search(e.target.value.trim());
+            } else {
+                this.searchResults = null;
+            }
+        };
         
         this.on('mount', () => {
             this.fillTypeMap();
+            this.updateList();
         });
 
         this.getTypeGraphRevision = type => window.glob.graphmap[type.graph].g.lastmod;
@@ -41,6 +98,7 @@ types-panel.panel.view
                 graph: -1
             };
             window.currentProject.types.push(obj);
+            this.updateList();
             this.openType(obj)(e);
         };
         this.openType = type => e => {
@@ -77,6 +135,7 @@ types-panel.panel.view
                         tp.uid = currentProject.typetick;
                         currentProject.types.push(tp);
                         this.fillTypeMap();
+                        this.updateList();
                         this.update();
                     }
                 });
@@ -110,6 +169,7 @@ types-panel.panel.view
                     if (e.buttonClicked === 'ok') {
                         let ind = window.currentProject.types.indexOf(this.currentType);
                         window.currentProject.types.splice(ind, 1);
+                        this.updateList();
                         this.fillTypeMap();
                         this.update();
                     }

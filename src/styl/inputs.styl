@@ -64,6 +64,24 @@ input[type="reset"],
         padding 0.3em
         margin-left 0
 
+.aSearchWrap
+    position relative
+    display inline-block
+    &::after
+        @extends .icon-search:before
+        font-family 'icomoon' !important
+        speak none
+        font-style normal
+        font-weight normal
+        font-variant normal
+        text-transform none
+        line-height 1
+        font-size 24px
+        position absolute
+        right 0.5rem
+        top 50%
+        transform translate(0, -50%)
+
 /* Большой переключатель */
 siz = 4em
 .bigpower

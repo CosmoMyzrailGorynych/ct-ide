@@ -1,20 +1,31 @@
 graphics-panel.panel.view
     .flexfix.tall
-        label.file.flexfix-header
-            input(type="file" multiple 
-                accept=".png,.jpg,.jpeg,.bmp,.gif" 
-                onchange="{graphicImport}")
-            .button
-                i.icon.icon-import
-                span {voc.import}
+        div
+            .toright
+                b {vocGlob.sort}   
+                button.inline.square(onclick="{switchSort('date')}" class="{selected: sort === 'date' && !searchResults}")
+                    i.icon-clock
+                button.inline.square(onclick="{switchSort('name')}" class="{selected: sort === 'name' && !searchResults}")
+                    i.icon-sort-alphabetically
+                .aSearchWrap
+                    input.inline(type="text" onkeyup="{fuseSearch}")
+            .toleft
+                label.file.flexfix-header
+                    input(type="file" multiple 
+                        accept=".png,.jpg,.jpeg,.bmp,.gif" 
+                        onchange="{graphicImport}")
+                    .button
+                        i.icon.icon-import
+                        span {voc.import}
         //-    button#graphiccreate(data-event="graphicCreate")
         //-        i.icon.icon-lamp
         //-        span {voc.create}
         ul.cards.flexfix-body
             li(
-                each="{graphic in window.currentProject.graphs}"
+                each="{graphic in (searchResults? searchResults : graphs)}"
                 oncontextmenu="{showGraphicPopup(graphic)}"
                 onclick="{openGraphic(graphic)}"
+                no-reorder
             )
                 span {graphic.name}
                 img(src="file://{sessionStorage.projdir + '/img/' + graphic.origname + '_prev.png?' + graphic.lastmod}")
@@ -36,7 +47,53 @@ graphics-panel.panel.view
         this.mixin(window.riotVoc);
         this.editing = false;
         this.dropping = false;
-        
+        this.sort = 'name';
+        this.sortReverse = false;
+
+        this.updateList = () => {
+            this.graphs = [...window.currentProject.graphs];
+            if (this.sort === 'name') {
+                this.graphs.sort((a, b) => {
+                    return a.name.localeCompare(b.name);
+                });
+            } else {
+                this.graphs.sort((a, b) => {
+                    return b.lastmod - a.lastmod;
+                });
+            }
+            if (this.sortReverse) {
+                this.graphs.reverse();
+            }
+        };
+        this.switchSort = sort => e => {
+            if (this.sort === sort) {
+                this.sortReverse = !this.sortReverse;
+            } else {
+                this.sort = sort;
+                this.sortReverse = false;
+            }
+            this.updateList();
+        };
+        const fuseOptions = {
+            shouldSort: true,
+            tokenize: true,
+            threshold: 0.5,
+            location: 0,
+            distance: 100,
+            maxPatternLength: 32,
+            minMatchCharLength: 1,
+            keys: ['name']
+        };
+        const Fuse = require('fuse.js');
+        this.fuseSearch = e => {
+            if (e.target.value.trim()) {
+                var fuse = new Fuse(this.graphs, fuseOptions);
+                this.searchResults = fuse.search(e.target.value.trim());
+            } else {
+                this.searchResults = null;
+            }
+        };
+
         this.fillGraphMap = () => {
             glob.graphmap = {};
             window.currentProject.graphs.forEach(graph => {
@@ -50,6 +107,7 @@ graphics-panel.panel.view
             img.src = '/img/unknown.png';
         };
         this.on('mount', () => {
+            this.updateList();
             this.fillGraphMap();
         });
         
@@ -113,6 +171,7 @@ graphics-panel.panel.view
                         window.currentProject.graphs.push(obj);
                         this.imgGenPreview(dest, dest + '_prev.png', 64)
                         .then(dataUrl => {
+                            this.updateList();
                             this.update();
                         });
                         this.imgGenPreview(dest, dest + '_prev@2.png', 128);
@@ -195,13 +254,14 @@ graphics-panel.panel.view
                 .defaultValue(currentGraphic.name + '_dup')
                 .prompt(window.languageJSON.common.newnam)
                 .then(e => {
-                    if (e.inputValue != '') {
+                    if (e.inputValue && e.inputValue != '') {
                         var newGraphic = JSON.parse(JSON.stringify(currentGraphic));
                         newGraphic.name = e.inputValue;
                         window.currentProject.graphtick ++;
                         newGraphic.origname = 'i' + currentProject.graphtick + path.extname(currentGraphic.origname);
                         window.megacopy(sessionStorage.projdir + '/img/' + currentGraphic.origname, sessionStorage.projdir + '/img/i' + currentProject.graphtick + path.extname(this.currentGraphic.origname), () => {
                             window.currentProject.graphs.push(gr);
+                            this.updateList();
                             this.update();
                         });
                     }
@@ -217,7 +277,7 @@ graphics-panel.panel.view
                 .defaultValue(currentGraphic.name)
                 .prompt(window.languageJSON.common.newname)
                 .then(e => {
-                    if (e.inputValue != '') {
+                    if (e.inputValue && e.inputValue != '') {
                         currentGraphic.name = e.inputValue;
                         this.update();
                     }
