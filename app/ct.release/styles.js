@@ -24,7 +24,7 @@ ct.styles = {
         }
         if (stroke) {
             style.strokeStyle = stroke.color;
-            style.lineWidth = stroke.width;
+            style.lineWidth = stroke.width || stroke.weight;
         }
         if (text) {
             style.font = (text.italic? 'italic ' : '') + (text.weight || 400) + ' ' + text.size + 'px ' + text.family;
