@@ -211,8 +211,8 @@ ct.styles.new(
             
             roomsCode += `
 ct.rooms['${r.name}'] = {
-    width: '${r.width}',
-    height: '${r.height}',
+    width: ${r.width},
+    height: ${r.height},
     objects: ${JSON.stringify(objs, null, '    ')},
     bgs: ${JSON.stringify(bgsCopy, null, '    ')},
     onStep() {
