@@ -34,7 +34,7 @@
 - Better presentation of ‘checkbox’ options of catmods
 - Fix list overflow if there are too many resources
 
-### 📝Docs
+### 📝 Docs
 
 - Add missing file extensions in “Creating your own mods” page
 - Remove unexisting config fields of catmods, document the "help" field
