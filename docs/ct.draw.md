@@ -32,11 +32,11 @@ You can also quickly set color presets with [pre-defined styles](ct.styles.html)
 
 Draws a `copy` where it is placed. `ct.draw(this);` is a default drawing code for all types.
 
-### `ct.draw.copy(copy: Copy, x, y)`
+### `ct.draw(copy: Copy, x, y)` or `ct.draw.copy(copy: Copy, x, y)`
 
 Draws a `copy` in given coordinates.
 
-### `ct.draw.image(image: String, index: Number, x, y)`
+### `ct.draw.image(image: String, index: Number, x, y)` or `ct.draw.img(image: String, index: Number, x, y)`
 
 Draws a frame from a graphic asset called `image` with its frame at `index`.
 
