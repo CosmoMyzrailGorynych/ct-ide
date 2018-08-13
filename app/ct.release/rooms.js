@@ -32,7 +32,9 @@ ct.rooms = {
             ct.rooms.onLeave.apply(ct.room);
         }
         ct.stack = [];
-        ct.types.list = { };
+        for (var i in ct.types.list) {
+            ct.types.list[i] = [];
+        }
         ct.rooms.current = ct.room = ct.rooms[room];
         ct.room.backgrounds = [];
         ct.room.uid = 0;
