@@ -302,13 +302,15 @@ for i in 1 2 3 4 5 6 7 8
     display flex
     flex-direction column
 .flexfix-header, .flexfix-footer, .nogrow.nogrow
-    flex 0 1 auto
+    flex-grow 0
 .flexfix-body
     flex 1 1 auto
     overflow auto
     overflow-x visible
     overflow-y auto
     position relative
+.noshrink.noshrink
+    flex-shrink 0
 
 /* viewport control */
 .hide

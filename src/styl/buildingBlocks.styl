@@ -4,6 +4,8 @@
     border 1px solid bl
     border-radius br
     position relative
+    &.pad
+        padding 1rem
 
 .modal
     position fixed
@@ -133,3 +135,8 @@
             width 64px
             margin -0.5em -0.5em -0.5em 0.5em
             border-radius br
+            &:hover
+                background rgba(act, 0.35)
+sounds-panel, rooms-panel
+    .cards li img:hover
+        background none
