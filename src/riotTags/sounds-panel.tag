@@ -103,6 +103,14 @@ sounds-panel.panel.view
                 this.openSound(this.editedSound);
             }
         }));
+        // Пункт "Скопировать название"
+        soundMenu.append(new gui.MenuItem({
+            label: languageJSON.common.copyName,
+            click: e => {
+                var clipboard = nw.Clipboard.get();
+                clipboard.set(this.editedSound.name, 'text');
+            }
+        }));
         soundMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.rename,
             icon: (isMac ? '/img/black/' : '/img/blue/') + 'edit.png',

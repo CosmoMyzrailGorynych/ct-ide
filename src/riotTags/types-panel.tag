@@ -120,6 +120,14 @@ types-panel.panel.view
                 this.update();
             }
         }));
+        // Пункт "Скопировать название"
+        typeMenu.append(new gui.MenuItem({
+            label: languageJSON.common.copyName,
+            click: e => {
+                var clipboard = nw.Clipboard.get();
+                clipboard.set(this.currentType.name, 'text');
+            }
+        }));
         typeMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.duplicate,
             icon: (window.isMac ? '/img/black/' : '/img/blue/') + 'plus.png',

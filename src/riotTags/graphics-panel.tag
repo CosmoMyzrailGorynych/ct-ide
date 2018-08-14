@@ -235,43 +235,25 @@ graphics-panel.panel.view
         };
         
         // Создание контекстного меню, появляющегося при жмаке на карточку
-        // Пункт "Открыть"
         var graphMenu = new gui.Menu();
         graphMenu.append(new gui.MenuItem({
             label: languageJSON.common.open,
-            icon: (isMac ? '/img/black/' : '/img/blue/') + 'folder.png',
             click: e => {
                 this.openGraphic(this.currentGraphic);
                 this.update();
             }
         }));
-        // пункт "Создать дубликат"
+        // Пункт "Скопировать название"
         graphMenu.append(new gui.MenuItem({
-            label: window.languageJSON.common.duplicate,
-            icon: (isMac ? '/img/black/' : '/img/blue/') + 'plus.png',
+            label: languageJSON.common.copyName,
             click: e => {
-                alertify
-                .defaultValue(currentGraphic.name + '_dup')
-                .prompt(window.languageJSON.common.newnam)
-                .then(e => {
-                    if (e.inputValue && e.inputValue != '') {
-                        var newGraphic = JSON.parse(JSON.stringify(currentGraphic));
-                        newGraphic.name = e.inputValue;
-                        window.currentProject.graphtick ++;
-                        newGraphic.origname = 'i' + currentProject.graphtick + path.extname(currentGraphic.origname);
-                        window.megacopy(sessionStorage.projdir + '/img/' + currentGraphic.origname, sessionStorage.projdir + '/img/i' + currentProject.graphtick + path.extname(this.currentGraphic.origname), () => {
-                            window.currentProject.graphs.push(gr);
-                            this.updateList();
-                            this.update();
-                        });
-                    }
-                });
+                var clipboard = nw.Clipboard.get();
+                clipboard.set(this.currentGraphic.name, 'text');
             }
         }));
         // пункт "Переименовать"
         graphMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.rename,
-            icon: (isMac ? '/img/black/' : '/img/blue/') + 'edit.png',
             click: e => {
                 alertify
                 .defaultValue(currentGraphic.name)
@@ -290,7 +272,6 @@ graphics-panel.panel.view
         // Пункт "Удалить"
         graphMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.delete,
-            icon: (isMac ? '/img/black/' : '/img/blue/') + 'delete.png',
             click: e => {
                 alertify
                 .okBtn(window.languageJSON.common.delete)

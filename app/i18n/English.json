@@ -16,6 +16,7 @@
         "cancel": "Cancel",
         "confirmDelete": "Are you sure you want to delete {0}? It cannot be undone.",
         "copy": "Copy",
+        "copyName": "Copy the name",
         "ctsite": "ct.js homepage",
         "cut": "Cut",
         "delete": "Delete",

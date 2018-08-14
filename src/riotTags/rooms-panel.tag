@@ -120,6 +120,14 @@ rooms-panel.panel.view
                 this.openRoom(this.editingRoom);
             }
         }));
+        // Пункт "Скопировать название"
+        roomMenu.append(new gui.MenuItem({
+            label: languageJSON.common.copyName,
+            click: e => {
+                var clipboard = nw.Clipboard.get();
+                clipboard.set(this.editingRoom.name, 'text');
+            }
+        }));
         roomMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.duplicate,
             click: () => {
