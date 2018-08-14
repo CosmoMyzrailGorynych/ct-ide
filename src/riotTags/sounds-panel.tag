@@ -98,7 +98,6 @@ sounds-panel.panel.view
         var soundMenu = new gui.Menu();
         soundMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.open,
-            icon: (isMac ? '/img/black/' : '/img/blue/') + 'folder.png',
             click: () => {
                 this.openSound(this.editedSound);
             }
@@ -113,13 +112,12 @@ sounds-panel.panel.view
         }));
         soundMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.rename,
-            icon: (isMac ? '/img/black/' : '/img/blue/') + 'edit.png',
             click: () => {
                 alertify
                 .defaultValue(this.editedSound.name)
                 .prompt(window.languageJSON.common.newname)
                 .then(e => {
-                    if (e.inputValue) {
+                    if (e.inputValue && e.buttonClicked !== 'cancel') {
                         this.editedSound.name = e.inputValue;
                     }
                 });
@@ -130,7 +128,6 @@ sounds-panel.panel.view
         }));
         soundMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.delete,
-            icon: (isMac ? '/img/black/' : '/img/blue/') + 'delete.png',
             click: () => {
                 alertify
                 .confirm(window.languageJSON.common.confirmDelete.replace('{0}', this.editedSound.name))

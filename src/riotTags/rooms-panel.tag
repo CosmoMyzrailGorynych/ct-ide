@@ -135,7 +135,7 @@ rooms-panel.panel.view
                 .defaultValue(this.editingRoom.name + '_dup')
                 .prompt(window.languageJSON.common.newname)
                 .then(e => {
-                    if (e.inputValue != '') {
+                    if (e.inputValue != '' && e.buttonClicked !== 'cancel') {
                         var newRoom = JSON.parse(JSON.stringify(this.editingRoom));
                         window.currentProject.roomtick ++;
                         newRoom.name = e.inputValue;
@@ -157,7 +157,7 @@ rooms-panel.panel.view
                 .defaultValue(this.editingRoom.name)
                 .prompt(window.languageJSON.common.newname)
                 .then(e => {
-                    if (e.inputValue != '') {
+                    if (e.inputValue != '' && e.buttonClicked !== 'cancel') {
                         var nam = e.inputValue;
                         this.editingRoom.name = nam;
                         this.update();

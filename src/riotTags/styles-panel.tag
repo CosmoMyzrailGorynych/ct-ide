@@ -104,7 +104,6 @@ styles-panel.panel.view
         };
         styleMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.open,
-            icon: (window.isMac ? '/img/black/' : '/img/blue/') + 'folder.png',
             click: e => {
                 this.editingStyle = true;
                 this.update();
@@ -120,13 +119,12 @@ styles-panel.panel.view
         }));
         styleMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.duplicate,
-            icon: (window.isMac ? '/img/black/' : '/img/blue/') + 'plus.png',
             click: () => {
                 alertify
                 .defaultValue(this.editedStyle.name + '_dup')
                 .prompt(window.languageJSON.common.newname)
                 .then(e => {
-                    if (e.inputValue !== '') {
+                    if (e.inputValue !== '' && e.buttonClicked !== 'cancel') {
                         var newStyle = JSON.parse(JSON.stringify(this.editedStyle));
                         window.currentProject.styletick ++;
                         newStyle.name = e.inputValue;
@@ -144,13 +142,12 @@ styles-panel.panel.view
         }));
         styleMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.rename,
-            icon: (window.isMac ? '/img/black/' : '/img/blue/') + 'edit.png',
             click: () => {
                 alertify
                 .defaultValue(this.editedStyle.name)
                 .prompt(window.languageJSON.common.newname)
                 .then(e => {
-                    if (e.inputValue !== '') {
+                    if (e.inputValue !== '' && e.buttonClicked !== 'cancel') {
                         this.editedStyle.name = e.inputValue;
                         this.update();
                     }
@@ -162,7 +159,6 @@ styles-panel.panel.view
         }));
         styleMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.delete,
-            icon: (window.isMac ? '/img/black/' : '/img/blue/') + 'delete.png',
             click: () => {
                 alertify
                 .confirm(window.languageJSON.common.confirmDelete.replace('{0}', this.editedStyle.name))

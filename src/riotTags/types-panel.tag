@@ -136,7 +136,7 @@ types-panel.panel.view
                 .defaultValue(this.currentType.name + '_dup')
                 .prompt(window.languageJSON.common.newname)
                 .then(e => {
-                    if (e.inputValue != '') {
+                    if (e.inputValue != '' && e.buttonClicked !== 'cancel') {
                         var tp = JSON.parse(JSON.stringify(this.currentType));
                         currentProject.typetick ++;
                         tp.name = e.inputValue;
@@ -157,7 +157,7 @@ types-panel.panel.view
                 .defaultValue(this.currentType.name)
                 .prompt(window.languageJSON.common.newname)
                 .then(e => {
-                    if (e.inputValue != '') {
+                    if (e.inputValue != '' && e.buttonClicked !== 'cancel') {
                         this.currentType.name = e.inputValue;
                         this.update();
                     }

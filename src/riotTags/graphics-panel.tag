@@ -256,11 +256,12 @@ graphics-panel.panel.view
             label: window.languageJSON.common.rename,
             click: e => {
                 alertify
-                .defaultValue(currentGraphic.name)
+                .defaultValue(this.currentGraphic.name)
                 .prompt(window.languageJSON.common.newname)
                 .then(e => {
-                    if (e.inputValue && e.inputValue != '') {
-                        currentGraphic.name = e.inputValue;
+                    console.log(e);
+                    if (e.inputValue && e.inputValue != '' && e.buttonClicked !== 'cancel') {
+                        this.currentGraphic.name = e.inputValue;
                         this.update();
                     }
                 });
