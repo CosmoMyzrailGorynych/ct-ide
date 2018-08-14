@@ -21,7 +21,7 @@ rooms-panel.panel.view
                 onclick="{openRoom(room)}"
                 oncontextmenu="{menuPopup(room)}"
             )
-                img(src="file://{sessionStorage.projdir + '/img/r' + room.uid + '.png?' + room.lastmod}")
+                img(src="file://{sessionStorage.projdir + '/img/r' + room.thumbnail + '.png?' + room.lastmod}")
                 span {room.name}
     room-editor(if="{editing}" room="{editingRoom}")
     script.
@@ -82,10 +82,11 @@ rooms-panel.panel.view
               fs = require('fs-extra'),
               path = require('path');
         this.roomCreate = function () {
-            fs.copy('./img/nograph.png', path.join(sessionStorage.projdir + '/img/r' + (currentProject.roomtick + 1) + '.png'), () => {
-                currentProject.roomtick ++;
+            var guid = window.generateGUID(),
+                thumbnail = guid.split('-').pop();
+            fs.copy('./img/nograph.png', path.join(sessionStorage.projdir, '/img/r' + thumbnail + '.png'), () => {
                 var newRoom = {
-                    name: 'room' + currentProject.roomtick,
+                    name: 'Room_' + thumbnail,
                     oncreate: '',
                     onstep: '',
                     ondraw: '',
@@ -94,9 +95,11 @@ rooms-panel.panel.view
                     height: 600,
                     backgrounds: [],
                     layers: [],
-                    uid: window.currentProject.roomtick
+                    uid: guid,
+                    thumbnail: thumbnail
                 };
                 window.currentProject.rooms.push(newRoom);
+                this.openRoom(newRoom)();
                 this.updateList();
                 this.update();
             });

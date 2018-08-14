@@ -79,11 +79,12 @@ sounds-panel.panel.view
         const gui = require('nw.gui');
         
         this.soundNew = e => {
+            var id = window.generateGUID(),
+                slice = id.split('-').pop();
             var newSound = {
-                name: 'sound' + currentProject.soundtick,
-                uid: currentProject.soundtick
+                name: 'Sound_' + slice,
+                uid: id
             };
-            window.currentProject.soundtick++;
             window.currentProject.sounds.push(newSound);
             this.updateList();
             this.openSound(newSound)();

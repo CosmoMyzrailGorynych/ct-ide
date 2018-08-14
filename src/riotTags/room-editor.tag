@@ -29,11 +29,11 @@ room-editor.panel.view
                             img(src="/img/nograph.png")
                         .room-editor-aTypeSwatch(each="{type in window.currentProject.types}" title="{type.name}" onclick="{selectType(type)}" class="{active: type === currentType}")
                             span {type.name}
-                            img(src="{type.graph === -1? '/img/nograph.png' : 'file://' + sessionStorage.projdir + '/img/' + type.graph + '_prev.png?' + getTypeGraphRevision(type)}")
+                            img(src="{type.graph === -1? '/img/nograph.png' : (glob.graphmap[type.graph].src.split('?')[0] + '_prev.png?' + getTypeGraphRevision(type))}")
                     .room-editor-Backgrounds.tabbed.tall(show="{tab === 'roombackgrounds'}")
                         ul
                             li.bg(each="{background, ind in room.backgrounds}" oncontextmenu="{onBgContextMenu}")
-                                img(src="{background.graph === -1? '/img/nograph.png' : 'file://' + sessionStorage.projdir + '/img/' + background.graph}" onclick="{onChangeBgGraphic}")
+                                img(src="{background.graph === -1? '/img/nograph.png' : (glob.graphmap[background.graph].src.split('?')[0] + '_prev.png?' + Math.random())}" onclick="{onChangeBgGraphic}")
                                 span(onclick="{onChangeBgDepth}") {background.depth}
 
                         button.inline.wide(onclick="{roomAddBg}")
@@ -668,7 +668,7 @@ room-editor.panel.view
                 );
                 var data = c.toDataURL().replace(/^data:image\/\w+;base64,/, "");
                 var buf = new Buffer(data, 'base64');
-                var nam = sessionStorage.projdir + '/img/r' + this.room.uid + '.png';
+                var nam = sessionStorage.projdir + '/img/r' + this.room.thumbnail + '.png';
                 fs.writeFile(nam, buf, function(err) {
                     if (err) {
                         decline(err);

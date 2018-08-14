@@ -1,12 +1,17 @@
 style-editor.panel.view
-    #styleleft.tall
-        .tabwrap.tall
+    #styleleft.tall.flexfix
+        .flexfix-header
+            .panel.pad
+                b {vocGlob.name}
+                br
+                input.wide(type="text" value="{styleobj.name}" onchange="{wire('this.styleobj.name')}")
+        .tabwrap.flexfix-body
             ul.nav.tabs.nogrow.noshrink
                 li(onclick="{changeTab('stylefont')}" class="{active: tab === 'stylefont'}") {voc.font}
                 li(onclick="{changeTab('stylefill')}" class="{active: tab === 'stylefill'}") {voc.fill}
                 li(onclick="{changeTab('stylestroke')}" class="{active: tab === 'stylestroke'}") {voc.stroke}
                 li(onclick="{changeTab('styleshadow')}" class="{active: tab === 'styleshadow'}") {voc.shadow}
-            div(style="overflow: auto;")
+            div
                 #stylefont.tabbed(show="{tab === 'stylefont'}")
                     label
                         input#iftochangefont(type="checkbox" onchange="{styleToggleFont}" checked="{'font' in styleobj}")
@@ -72,17 +77,17 @@ style-editor.panel.view
                             input(type="radio" value="2" name="filltype" checked="{styleobj.fill.type == 2}" onchange="{wire('this.styleobj.fill.type')}")
                             span {voc.fillpattern}
                         br
-                        br
                         .solidfill(if="{styleobj.fill.type == 0}")
                             b {voc.fillcolor}
                             br
                             color-input(onchange="{wire('this.styleobj.fill.color', true)}" color="{styleobj.fill.color}")
                         .gradientfill(if="{styleobj.fill.type == 1}")
-                            b {voc.fillcolor1}
-                            color-input(onchange="{wire('this.styleobj.fill.color1', true)}" color="{styleobj.fill.color1}")
-                            br
-                            b {voc.fillcolor2}
-                            color-input(onchange="{wire('this.styleobj.fill.color2', true)}" color="{styleobj.fill.color2}")
+                            .fifty.npl
+                                b {voc.fillcolor1}
+                                color-input(onchange="{wire('this.styleobj.fill.color1', true)}" color="{styleobj.fill.color1}")
+                            .fifty.npr
+                                b {voc.fillcolor2}
+                                color-input(onchange="{wire('this.styleobj.fill.color2', true)}" color="{styleobj.fill.color2}")
                             br
                             b {voc.fillgradtype}
                             br
@@ -104,12 +109,10 @@ style-editor.panel.view
                             input#fillgradsize(type="number" name="fillgradsize" value="{styleobj.fill.gradsize}" onchange="{wire('this.styleobj.fill.gradsize')}")
                             #gradsizeslider
                         .pattern(if="{styleobj.fill.type == 2}")
-                            b {voc.fillpatname}
-                            br
-                            input#fillpatname(type="text" name="fillpatname" value="{styleobj.fill.patname}" onchange="{wire('this.styleobj.fill.patname')}")
-                            button.inline(data-event="styleFindPattern")
-                                i.icon.icon-search
-                                span {voc.findpat}
+                            .fifty.npr
+                                button.inline(onclick="{styleFindPattern}")
+                                    i.icon.icon-search
+                                    span {voc.findpat}
                 #stylestroke.tabbed(show="{tab === 'stylestroke'}")
                     label
                         input#iftochangestroke(type="checkbox" checked="{'stroke' in styleobj}" onchange="{styleToggleStroke}")
@@ -141,6 +144,7 @@ style-editor.panel.view
                         br
                         input#shadowblur(type="number" value="{styleobj.shadow.blur}" onchange="{wire('this.styleobj.shadow.blur')}")
                         #shadowblurslider
+        .flexfix-footer
             button.wide.nogrow.noshrink(onclick="{styleSave}")
                 i.icon.icon-confirm
                 span {voc.apply}
@@ -164,6 +168,7 @@ style-editor.panel.view
             this.refs.canvas.x = this.refs.canvas.getContext('2d');
         });
         this.on('updated', e => {
+            this.styleSet(this.refs.canvas.x);
             this.refreshStyleGraphic();
         });
         
@@ -301,7 +306,7 @@ style-editor.panel.view
                     if (this.styleobj.fill.patname != '') {
                         var imga = document.createElement('img');
                         imga.onload = function () {
-                            this.styleRedrawPreview();
+                            this.refreshStyleGraphic();
                         }
                         for (var i = 0; i < currentProject.graphs.length; i++) {
                             if (currentProject.graphs[i].name == this.styleobj.fill.patname) {
@@ -325,34 +330,9 @@ style-editor.panel.view
                 cx.shadowOffsetY = this.styleobj.shadow.y;
             }
         };
-        // генерация превьюхи стиля
-        this.styleRedrawPreview = () => {
-            var canv = this.refs.canvas;
-            if (canv.x.img) {
-                canv.x.fillStyle = canv.x.createPattern(canv.x.img, 'repeat');
-            }
-            canv.x.clearRect(0, 0, canv.width, canv.height);
-            canv.x.beginPath();
-            canv.x.rect(100, 100, 100, 100);
-            canv.x.fill();
-            if (this.styleobj.stroke) {
-                canv.x.stroke();
-            }
-            canv.x.beginPath();
-            canv.x.arc(350, 150, 50, 0, 2 * Math.PI);
-            canv.x.closePath();
-            canv.x.fill();
-            if (this.styleobj.stroke) {
-                canv.x.stroke();
-            }
-            canv.x.fillText(window.languageJSON.styleview.testtext, canv.width / 2, 300);
-            if (this.styleobj.stroke) {
-                canv.x.strokeText(window.languageJSON.styleview.testtext, canv.width / 2, 300);
-            }
-        };
         setTimeout(() => {
             this.styleSet(this.refs.canvas.x);
-            this.styleRedrawPreview();
+            this.refreshStyleGraphic();
         }, 0);
         this.styleSave = function() {
             this.styleobj.lastmod = +(new Date());
@@ -379,7 +359,7 @@ style-editor.panel.view
                     c.x[transferKeys[i]] = canv.x[transferKeys[i]];
                 }
                 var font = this.styleobj.font;
-                c.x.font = `${font.italic? 'italic ' : ''}${font.weight || 400} ${~~(size * 0.75)}px ${font.family || 'sans-serif'}`;
+                c.x.font = `${(font && font.italic)? 'italic ' : ''}${(font && font.weight) || 400} ${~~(size * 0.75)}px ${(font && font.family) || 'sans-serif'}`;
                 c.x.fillText('Aa', size*0.05, size*0.75);
                 if (this.styleobj.stroke) {
                     c.x.strokeText('Aa', size*0.05, size*0.75);
@@ -400,7 +380,7 @@ style-editor.panel.view
             this.selectingGraphic = true;
             this.update();
             this.refs.graphicselector.onselect = graph => {
-                this.styleobj.fill.patname = graph.name;
+                this.styleobj.fill.patId = graph.uid;
                 this.selectingGraphic = false;
                 this.update();
             };

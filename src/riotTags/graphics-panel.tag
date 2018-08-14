@@ -98,7 +98,7 @@ graphics-panel.panel.view
             glob.graphmap = {};
             window.currentProject.graphs.forEach(graph => {
                 var img = document.createElement('img');
-                glob.graphmap[graph.origname] = img;
+                glob.graphmap[graph.uid] = img;
                 img.g = graph;
                 img.src = 'file://' + sessionStorage.projdir + '/img/' + graph.origname + '?' + graph.lastmod;
             });
@@ -119,12 +119,11 @@ graphics-panel.panel.view
             files = e.target.value.split(';');
             for (i = 0; i < files.length; i++) {
                 if (/\.(jpg|gif|png|jpeg)/gi.test(files[i])) {
-                    
-                    currentProject.graphtick++;
+                    let id = window.generateGUID();
                     this.loadImg(
-                        i,
+                        id,
                         files[i],
-                        sessionStorage.projdir + '/img/i' + currentProject.graphtick + path.extname(files[i]),
+                        sessionStorage.projdir + '/img/i' + id + path.extname(files[i]),
                         true
                     );
                 } else {
@@ -135,7 +134,7 @@ graphics-panel.panel.view
             e.preventDefault();
         };
         /**
-         * Делает попытку загрузить изображение и сделать его миниатюру
+         * Делает попытку загрузить изображение, добавить в проект и сделать его миниатюру
          * @param {Number} uid Счётчик. Должно быть уникально для каждого загружаемого изображения
          * @param {String} filename Путь к исходному изображению
          * @param {String} dest Папка, в которую нужно поместить изображение и миниатюру
@@ -165,9 +164,9 @@ graphics-panel.panel.view
                             left: 0,
                             right: image.width,
                             top: 0,
-                            bottom: image.height
+                            bottom: image.height,
+                            uid: uid
                         };
-                        this.id = currentProject.graphs.length;
                         window.currentProject.graphs.push(obj);
                         this.imgGenPreview(dest, dest + '_prev.png', 64)
                         .then(dataUrl => {

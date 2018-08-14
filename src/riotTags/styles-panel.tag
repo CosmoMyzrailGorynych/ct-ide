@@ -19,7 +19,7 @@ styles-panel.panel.view
             onclick="{openStyle(style)}" 
             oncontextmenu="{onStyleContextMenu(style)}")
                 span {style.name}
-                img(src="file://{window.sessionStorage.projdir + '/img/s' + style.uid}_prev.png?{style.lastmod}")
+                img(src="file://{window.sessionStorage.projdir + '/img/' + style.origname}_prev.png?{style.lastmod}")
     style-editor(if="{editingStyle}" styleobj="{editedStyle}")
     script.
         this.editingStyle = false;
@@ -76,11 +76,13 @@ styles-panel.panel.view
         const gui = require('nw.gui');
         
         this.styleCreate = () => {
+            var id = window.generateGUID(),
+                slice = id.split('-').pop();
             window.currentProject.styletick ++;
             var obj = {
-                name: "style" + window.currentProject.styletick,
-                uid: window.currentProject.styletick,
-                origname: 's' + window.currentProject.styletick
+                name: "Style_" + slice,
+                uid: id,
+                origname: 's' + slice
             };
             window.currentProject.styles.push(obj);
             this.editedStyle = obj;

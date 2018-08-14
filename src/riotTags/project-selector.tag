@@ -70,6 +70,7 @@ project-selector
             const way = path.dirname(process.execPath).replace(/\\/g,'/') + '/projects';
             var codename = this.refs.projectname.value;
             var projectData = {
+                ctjsVersion: nw.App.manifest.version,
                 notes: '/* empty */',
                 libs: {},
                 graphs: [],
@@ -77,11 +78,6 @@ project-selector
                 sounds: [],
                 styles: [],
                 rooms: [],
-                graphtick: 0,
-                soundtick: 0,
-                roomtick: 0,
-                typetick: 0,
-                styletick: 0,
                 starting: 0,
                 settings: {
                     minifyhtmlcss: false,
@@ -125,12 +121,71 @@ project-selector
                 this.loadProject(projectData);
             });
         };
+        this.adapter = project => {
+            var version = project.ctjsVersion || '0.2.0';
+            version = version.split('.').map(string => Number(string));
+            if (version[0] < 1) {
+                if (version[1] < 3) {
+                    /* replace numerical IDs with RFC4122 version 4 UIDs */
+                    let startingRoom,
+                        graphmap = {},
+                        typemap = {};
+                    for (var graph of project.graphs) {
+                        var oldId = graph.uid;
+                        graph.uid = window.generateGUID();
+                        graphmap[graph.origname] = graph.uid;
+                    }
+                    for (var sound of project.sounds) {
+                        sound.uid = window.generateGUID();
+                    }
+                    for (var style of project.styles) {
+                        style.uid = window.generateGUID();
+                        if (style.fill && style.fill.type == 2) {
+                            style.fill.pattern = project.graphs.find(gr => gr.name === style.fill.patname).uid;
+                        }
+                    }
+                    for (var type of project.types) {
+                        var oldId = type.uid;
+                        type.uid = window.generateGUID();
+                        typemap[oldId] = type.uid;
+                        type.graph = graphmap[type.graph] || -1;
+                    }
+                    for (var room of project.rooms) {
+                        var oldId = room.uid; 
+                        room.thumbnail = room.uid;
+                        room.uid = window.generateGUID();
+                        if (project.startroom === oldId) {
+                            startingRoom = room.uid;
+                        }
+                        if (room.layers && room.layers.length) {
+                            for (var layer of room.layers) {
+                                for (var i = 0, l = layer.copies.length; i < l; i++) {
+                                    layer.copies[i].uid = typemap[layer.copies[i].uid];
+                                }
+                            }
+                        }
+                        if (room.backgrounds && room.backgrounds.length) {
+                            for (bg of room.backgrounds) {
+                                bg.graph = graphmap[bg.graph];
+                            }
+                        }
+                    }
+                    if (!startingRoom) {
+                        startingRoom = project.rooms[0].uid;
+                    }
+                    project.startroom = startingRoom;
+                }
+            }
+            project.ctjsVersion = nw.App.manifest.version;
+        };
         
         /**
          * Открывает проект и вызывает обновление всего приложения
          */
         this.loadProject = projectData => {
             window.currentProject = projectData;
+            this.adapter(projectData);
+
             fs.ensureDir(sessionStorage.projdir);
             fs.ensureDir(sessionStorage.projdir + '/img');
             fs.ensureDir(sessionStorage.projdir + '/snd');

@@ -17,7 +17,7 @@ types-panel.panel.view
         ul.cards.flexfix-body
             li(each="{type in (searchResults? searchResults : types)}" onclick="{openType(type)}" oncontextmenu="{onTypeContextMenu}")
                 span {type.name}
-                img(src="{type.graph !== -1 ? 'file://' + sessionStorage.projdir + '/img/' + type.graph + '_prev.png?' + getTypeGraphRevision(type) : '/img/nograph.png'}")
+                img(src="{type.graph !== -1 ? (glob.graphmap[type.graph].src.split('?')[0] + '_prev.png?' + getTypeGraphRevision(type)) : '/img/nograph.png'}")
     type-editor(if="{editingType}" type="{editedType}")
     script.
         this.namespace = 'types';
@@ -86,15 +86,17 @@ types-panel.panel.view
             }
         };
         this.typeCreate = e => {
+            var id = window.generateGUID(),
+                slice = id.split('-').pop();
             window.currentProject.typetick ++;
             var obj = {
-                name: 'type' + window.currentProject.typetick,
+                name: 'Type_' + slice,
                 depth: 0,
                 oncreate: '',
                 onstep: 'ct.types.move(this);',
                 ondraw: 'ct.draw(this);',
                 ondestroy: '',
-                uid: currentProject.typetick,
+                uid: id,
                 graph: -1
             };
             window.currentProject.types.push(obj);
