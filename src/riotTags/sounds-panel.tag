@@ -86,7 +86,7 @@ sounds-panel.panel.view
             window.currentProject.soundtick++;
             window.currentProject.sounds.push(newSound);
             this.updateList();
-            this.openSound(newSound);
+            this.openSound(newSound)();
         };
         this.openSound = sound => e => {
             this.editedSound = sound;
