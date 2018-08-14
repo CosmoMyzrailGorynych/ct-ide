@@ -32,7 +32,7 @@
     &, & *
         box-sizing border-box
     .dialog
-        padding 12px
+        padding 1rem
     .dialog, .alert
         width 100%
         margin 0 auto
@@ -40,18 +40,16 @@
         top 50%
         transform translateY(-50%)
         & > *
-            width 400px
+            width 25rem
             max-width 95%
             margin 0 auto
-            text-align center
-            padding 12px
+            padding 1rem 1.5rem
             background white
-            box-shadow 0 2px 4px -1px rgba(0, 0, 0, 0.14), 0 4px 5px 0 rgba(0, 0, 0, 0.098), 0 1px 10px 0 rgba(0, 0, 0, 0.084)
+            border-radius br
+            border 1px solid bd
+            {shadamb}
         .msg
-            padding 12px
-            margin-bottom 12px
             margin 0
-            text-align left
         button:not(.btn):not(.pure-button):not(.md-button):not(.mdl-button)
             box-sizing border-box
             position relative
@@ -60,17 +58,21 @@
             align-items center
             white-space nowrap
             text-align center
+            padding 0.2em 0.8em
         nav
+            margin 1.5rem -1.5rem -1rem
+            padding 1rem
             text-align right
-        button.btn
-            margin 6px 4px
+            background bl
+            border-top 1px solid bd
+            border-radius 0 0 br br
 .alertify-logs
     position fixed
     z-index 99999
     &.bottom, &:not(.top)
-        bottom 16px
+        bottom 1rem
     &.left, &:not(.right)
-        left 16px
+        left 1rem
     &.left > *, &:not(.right) > *
         float left
         transform translate3d(0, 0, 0)
@@ -80,7 +82,7 @@
         & > *, & > *.hide
             left -110%
     &.right
-        right 16px
+        right 1rem
         & > *
             float right
             transform translate3d(0, 0, 0)
