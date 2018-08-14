@@ -5,6 +5,7 @@
      * @returns {void}
      */
     var extendHotkeys = editor => {
+        editor.$blockScrolling = Infinity;
         editor.commands.addCommand({
             name: 'increaseFontSize',
             bindKey: {
