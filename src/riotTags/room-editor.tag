@@ -646,22 +646,23 @@ room-editor.panel.view
         this.roomGenSplash = function() {
             return new Promise((accept, decline) => {
                 var c = document.createElement('canvas'), 
-                    w, h, k, size;
+                    w, h, k;
                 c.x = c.getContext('2d');
-                c.width = c.height = size = 256;
-                c.x.clearRect(0, 0, size, size);
+                c.width = 340;
+                c.height = 256;
+                c.x.clearRect(0, 0, c.width, c.height);
                 w = this.refs.canvas.width;
                 h = this.refs.canvas.height;
-                if (w > h) {
-                    k = size / w;
+                if (w / c.width > h / c.height) {
+                    k = c.width / w;
                 } else {
-                    k = size / h;
+                    k = c.height / h;
                 }
                 if (k > 1) k = 1;
                 c.x.drawImage(
                     this.refs.canvas,
                     0, 0, this.refs.canvas.width, this.refs.canvas.height,
-                    (size - this.refs.canvas.width*k)/2, (size - this.refs.canvas.height*k)/2,
+                    (c.width - this.refs.canvas.width*k)/2, (c.height - this.refs.canvas.height*k)/2,
                     this.refs.canvas.width*k,
                     this.refs.canvas.height*k
                 );
