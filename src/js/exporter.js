@@ -64,7 +64,7 @@
             blocks[i] = {
                 data: {
                     origname: window.currentProject.graphs[i].origname,
-                    g: i
+                    g: window.currentProject.graphs[i]
                 },
                 width: window.currentProject.graphs[i].imgWidth+2,
                 height: window.currentProject.graphs[i].imgHeight+2,
@@ -86,26 +86,26 @@
             atlas.x = atlas.getContext('2d');
             for (let i = 0, li = bin.rects.length; i < li; i++) {
                 const block = bin.rects[i],
-                      g = window.currentProject.graphs[block.data.g];
-                atlas.x.drawImage(window.glob.graphmap[block.data.origname], block.x+1, block.y+1);
-            var opts = {
-                x: block.x + 1,
-                y: block.y + 1,
-                w: g.width,
-                h: g.height,
-                xo: g.axis[0],
-                yo: g.axis[1],
-                cols: g.grid[0],
-                rows: g.grid[1],
-                untill: g.untill,
-                shape: getGraphicShape(g),
-                marginx: g.marginx,
-                marginy: g.marginy,
-                shiftx: g.offx,
-                shifty: g.offy
-            };
+                      {g} = block.data;
+                atlas.x.drawImage(window.glob.graphmap[g.uid], block.x+1, block.y+1);
+                var opts = {
+                    x: block.x + 1,
+                    y: block.y + 1,
+                    w: g.width,
+                    h: g.height,
+                    xo: g.axis[0],
+                    yo: g.axis[1],
+                    cols: g.grid[0],
+                    rows: g.grid[1],
+                    untill: g.untill,
+                    shape: getGraphicShape(g),
+                    marginx: g.marginx,
+                    marginy: g.marginy,
+                    shiftx: g.offx,
+                    shifty: g.offy
+                };
                 res += `
-                ct.res.makeSprite('${window.currentProject.graphs[block.data.g].name}', 'img/a${binInd}.png', ${JSON.stringify(opts, null, '    ')});`;
+                ct.res.makeSprite('${g.name}', 'img/a${binInd}.png', ${JSON.stringify(opts, null, '    ')});`;
             }
             var data = atlas.toDataURL().replace(/^data:image\/\w+;base64,/, '');
             var buf = new Buffer(data, 'base64');
@@ -133,7 +133,7 @@
                     o.fill.color = s.fill.color;
                 } else if (Number(s.fill.type) === 2) {
                     o.fill.type = 'pattern';
-                    o.fill.name = s.fill.patname;
+                    o.fill.name = s.fill.patId;
                 } else if (Number(s.fill.type) === 1) {
                     o.fill.colors = [{
                         pos: 0,
@@ -158,7 +158,7 @@
             } else {
                 o.fill = false;
             }
-            o.border = s.stroke; // TODO: fix catmods
+            o.border = s.stroke;
             o.text = s.font;
             o.shadow = s.shadow;
             styles += `

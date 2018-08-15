@@ -301,14 +301,17 @@ style-editor.panel.view
                     grad.addColorStop(1, this.styleobj.fill.color2);
                     cx.fillStyle = grad;
                 } else if (this.styleobj.fill.type == 2) {
-                    var img;
-                    if (this.styleobj.fill.patId) {
-                        img = glob.graphmap[this.styleobj.fill.patId];
-                    }
-                    else {
-                        img = glob.graphmap[-1];
-                    }
-                    cx.fillStyle = cx.createPattern(img, 'repeat');
+                    var img,
+                        c = document.createElement('canvas'),
+                        x = c.getContext('2d'),
+                        img = glob.graphmap[this.styleobj.fill.patId || -1],
+                        g = currentProject.graphs.find(graph => graph.uid === this.styleobj.fill.patId);
+                    var w = g.width;
+                        h = g.height;
+                    c.width = w;
+                    c.height = h;
+                    x.drawImage(img, 0, 0, w, h, 0, 0, w, h);
+                    cx.fillStyle = cx.createPattern(c, 'repeat');
                 }
             }
             if (this.styleobj.stroke) {

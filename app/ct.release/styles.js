@@ -19,7 +19,22 @@ ct.styles = {
                 }
                 style.fillStyle = grad;
             } else if (fill.type === 'pattern') {
-                style.fillStyle = ct.background.types[name];
+                var canv = document.createElement('canvas'),
+                    x = canv.getContext('2d'),
+                    graph = ct.res.graphs[fill.name];
+                canv.width = graph.width;
+                canv.height = graph.height;
+                x.drawImage(
+                    graph.atlas,
+                    graph.frames[0][0],
+                    graph.frames[0][1],
+                    graph.width,
+                    graph.height,
+                    x - graph.x - ct.rooms.current.x,
+                    y - graph.y - ct.rooms.current.y,
+                    graph.width,
+                    graph.height);
+                style.fillStyle = ct.x.createPattern(canv, 'repeat');
             }
         }
         if (stroke) {
