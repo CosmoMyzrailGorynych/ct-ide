@@ -42,6 +42,7 @@ main-menu.flexcol
         sounds-panel(show="{tab === 'sounds'}")
         types-panel(show="{tab === 'types'}")
         rooms-panel(show="{tab === 'rooms'}")
+        license-panel(if="{showLicense}")
     script.
         const fs = require('fs-extra'),
               path = require('path');
@@ -178,11 +179,18 @@ main-menu.flexcol
         catMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.language,
             submenu: languageSubmenu
-        }))
+        }));
         catMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.ctsite,
             click: function () {
                 gui.Shell.openExternal('https://ctjs.rocks/');
+            }
+        }));
+        catMenu.append(new gui.MenuItem({
+            label: window.languageJSON.menu.license,
+            click: () => {
+                this.showLicense = true;
+                this.update();
             }
         }));
         catMenu.append(new gui.MenuItem({type: 'separator'}));

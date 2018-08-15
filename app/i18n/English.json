@@ -59,10 +59,19 @@
         "browse": "Browse",
         "latest": "Latest projects"
     },
+    "licensepanel": {
+        "tldr": [
+            "You own your assets, projects, catmods;",
+            "You can use the app for commercial use (and other uses too);",
+            "You must not modify the ct.js in any ways that were not intended for it by the Author;",
+            "We do not give any guarantees and are not responsible for any damage."
+        ]
+    },
     "menu": {
         "ctIDE": "ct.IDE",
         "graphic": "Graphic",
         "launch": "Compile",
+        "license": "License",
         "min": "Windowed",
         "modules": "Catmods",
         "rooms": "Rooms",
