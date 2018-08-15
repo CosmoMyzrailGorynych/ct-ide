@@ -59,7 +59,7 @@
         options = options || defaultOptions;
         var aceEditor = window.ace.edit(tag);
         extendHotkeys(aceEditor);
-        aceEditor.setTheme('ace/theme/tomorrow');
+        aceEditor.setTheme('ace/theme/' + (localStorage.UItheme === 'Night'? 'ambiance': 'tomorrow'));
         tag.aceEditor = aceEditor;
         aceEditor.session = aceEditor.getSession();
         tag.style.fontSize = localStorage.fontSize + 'px';

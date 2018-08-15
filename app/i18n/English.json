@@ -80,6 +80,9 @@
         "settings": "Settings",
         "sounds": "Sounds",
         "styles": "Styles",
+        "theme": "Theme",
+        "themeday": "Light",
+        "themenight": "Dark",
         "types": "Types",
         "zipExport": "Export to .zip",
         "zipProject": "Pack project to .zip"

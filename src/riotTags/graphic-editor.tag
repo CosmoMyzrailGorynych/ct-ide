@@ -160,7 +160,7 @@ graphic-editor.panel.view
         this.prevPos = 0;
         this.prevSpeed = 10;
         this.prevShowMask = true;
-        this.previewColor = '#ffffff';
+        this.previewColor = localStorage.UItheme === 'Day'? '#ffffff' : '#08080D';
         
         var graphCanvas, grprCanvas;
         

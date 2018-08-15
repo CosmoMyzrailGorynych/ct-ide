@@ -80,6 +80,9 @@
         "settings": "Настройки",
         "sounds": "Звуки",
         "styles": "Стили",
+        "theme": "Тема",
+        "themeday": "Светлая",
+        "themenight": "Тёмная",
         "types": "Типы",
         "zipExport": "Экспорт в .zip",
         "zipProject": "Упаковать проект в .zip"

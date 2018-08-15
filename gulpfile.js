@@ -58,12 +58,11 @@ const spawnise = (app, attrs) => new Promise((resolve, reject) => {
 });
 
 const compileStylus = () =>
-    gulp.src('./src/styl/_index.styl')
+    gulp.src('./src/styl/theme*.styl')
     .pipe(sourcemaps.init())
     .pipe(stylus({
         compress: true
     }))
-    .pipe(concat('bundle.css'))
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('./app/'));
 

@@ -175,11 +175,41 @@ main-menu.flexcol
             }
         }));
         catMenu.append(new gui.MenuItem({type: 'separator'}));
+
         var languageSubmenu = new nw.Menu();
         catMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.language,
             submenu: languageSubmenu
         }));
+        
+        var themeSubmenu = new nw.Menu();
+        themeSubmenu.append(new gui.MenuItem({
+            label: window.languageJSON.menu.themeday,
+            click: () => {
+                this.switchTheme('Day');
+            }
+        }));
+        themeSubmenu.append(new gui.MenuItem({
+            label: window.languageJSON.menu.themenight,
+            click: () => {
+                this.switchTheme('Night');
+            }
+        }));
+        catMenu.append(new gui.MenuItem({
+            label: window.languageJSON.menu.theme,
+            submenu: themeSubmenu
+        }));
+        this.switchTheme = theme => {
+            localStorage.UItheme = theme;
+            document.getElementById('themeCSS').href = `./theme${theme}.css`;
+            var acers = document.getElementsByClassName('acer');
+            for (var acer of acers) {
+                acer.aceEditor.setTheme('ace/theme/' + (theme === 'Night'? 'ambiance': 'tomorrow'));
+            }
+        };
+        localStorage.UItheme = localStorage.UItheme || 'Day';
+        
+        
         catMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.ctsite,
             click: function () {
