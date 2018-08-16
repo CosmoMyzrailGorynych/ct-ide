@@ -140,9 +140,8 @@ types-panel.panel.view
                 .then(e => {
                     if (e.inputValue != '' && e.buttonClicked !== 'cancel') {
                         var tp = JSON.parse(JSON.stringify(this.currentType));
-                        currentProject.typetick ++;
                         tp.name = e.inputValue;
-                        tp.uid = currentProject.typetick;
+                        tp.uid = window.generateGUID();
                         currentProject.types.push(tp);
                         this.fillTypeMap();
                         this.updateList();
