@@ -209,6 +209,7 @@ const release = gulp.series([done => {
     });
     nw.build()
     .then(() => {
+        console.log('Binaries done');
         done();
     })
     .catch(function (error) {
