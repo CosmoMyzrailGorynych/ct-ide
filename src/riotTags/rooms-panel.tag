@@ -139,14 +139,14 @@ rooms-panel.panel.view
                 .prompt(window.languageJSON.common.newname)
                 .then(e => {
                     if (e.inputValue != '' && e.buttonClicked !== 'cancel') {
+                        var guid = window.generateGUID(),
+                            thumbnail = guid.split('-').pop();
                         var newRoom = JSON.parse(JSON.stringify(this.editingRoom));
-                        window.currentProject.roomtick ++;
                         newRoom.name = e.inputValue;
                         window.currentProject.rooms.push(newRoom);
-                        this.currentRoomId = window.currentProject.rooms.length - 1;
-                        this.editingRoom = window.currentProject.rooms[currentRoomId];
-                        fs.linkSync(sessionStorage.projdir + '/img/r' + newRoom.uid + '.png', sessionStorage.projdir + '/img/r' + window.currentProject.roomtick + '.png')
-                        newRoom.uid = window.currentProject.roomtick;
+                        newRoom.uid = guid;
+                        newRoom.thumbnail = thumbnail;
+                        fs.linkSync(sessionStorage.projdir + '/img/r' + this.editingRoom.thumbnail + '.png', sessionStorage.projdir + '/img/r' + thumbnail + '.png')
                         this.updateList();
                         this.update();
                     }

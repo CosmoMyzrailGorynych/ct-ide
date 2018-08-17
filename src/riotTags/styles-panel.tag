@@ -127,13 +127,14 @@ styles-panel.panel.view
                 .prompt(window.languageJSON.common.newname)
                 .then(e => {
                     if (e.inputValue !== '' && e.buttonClicked !== 'cancel') {
+                        var id = window.generateGUID(),
+                            slice = id.split('-').pop();
                         var newStyle = JSON.parse(JSON.stringify(this.editedStyle));
-                        window.currentProject.styletick ++;
                         newStyle.name = e.inputValue;
-                        newStyle.origname = 's' + window.currentProject.styletick;
-                        newStyle.uid = window.currentProject.styletick;
+                        newStyle.origname = 's' + slice;
+                        newStyle.uid = id;
                         window.currentProject.styles.push(newStyle);
-                        this.editedStyleId = window.currentProject.styles.length - 1;
+                        this.editedStyleId = id;
                         this.editedStyle = newStyle;
                         this.editingStyle = true;
                         this.updateList();
