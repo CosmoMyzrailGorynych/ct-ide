@@ -1,3 +1,22 @@
+::-webkit-scrollbar
+    width 0.75rem
+    height 0.75rem
+::-webkit-scrollbar-track
+    background rgba(text, 0.17)
+    border-radius br
+::-webkit-scrollbar-thumb
+    border-radius br
+    background: rgba(text, 0.27)
+    {trans}
+    &:hover
+        background rgba(text, 0.5)
+    &:active
+        background rgba(text, 0.35)
+::-webkit-scrollbar-track:window-inactive
+    background rgba(text, 0.1)
+::-webkit-scrollbar-corner
+    background transparent
+
 input[type="text"],
 input[type="number"],
 input[type="url"],
@@ -7,6 +26,8 @@ textarea
     padding 0.1em 0.8em
     background white
     border 1px solid bl
+    if (theme == 'Night')
+        border 1px solid bd
     border-radius br
     font inherit
     color inherit
@@ -35,6 +56,8 @@ input[type="reset"],
     font-weight 400
     border-radius br
     background white
+    if (theme == 'Night')
+        background transparent
     display inline-block
     cursor pointer
     text-align center
@@ -42,9 +65,16 @@ input[type="reset"],
     &:hover, &.active
         background acttext
         color white
-        border-color accent1
+        if (theme == 'Night')
+            color black
+        if (theme == 'Day')
+            border-color accent1
         i
             color white
+        if (theme == 'Night')
+            color black
+            i
+                color black
     &:active, &.selected
         {transshort}
         border-color accent1
@@ -52,6 +82,10 @@ input[type="reset"],
         color white
         i
             color white
+        if (theme == 'Night')
+            color black
+            i
+                color black
     &.inline
         padding 0.2em 0.8em
         display inline-block
@@ -63,6 +97,24 @@ input[type="reset"],
     &.square.inline
         padding 0.3em
         margin-left 0
+
+.aSearchWrap
+    position relative
+    display inline-block
+    &::after
+        @extends .icon-search:before
+        font-family 'icomoon' !important
+        speak none
+        font-style normal
+        font-weight normal
+        font-variant normal
+        text-transform none
+        line-height 1
+        font-size 24px
+        position absolute
+        right 0.5rem
+        top 50%
+        transform translate(0, -50%)
 
 /* Большой переключатель */
 siz = 4em
@@ -76,6 +128,8 @@ siz = 4em
     background -webkit-linear-gradient(top, white 0, bl 100%)
     box-shadow 0 0 0.2em snow inset
     border 1px solid bd
+    if (theme == 'Night')
+        border-color act
     text-align center
     position relative
     &:after
@@ -120,6 +174,8 @@ siz = 4em
             content " "
             background success
     &.off
+        if (theme == 'Night')
+            border-color error
         span
             display none
         span:after

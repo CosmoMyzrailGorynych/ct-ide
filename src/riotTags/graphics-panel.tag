@@ -1,20 +1,31 @@
 graphics-panel.panel.view
     .flexfix.tall
-        label.file.flexfix-header
-            input(type="file" multiple 
-                accept=".png,.jpg,.jpeg,.bmp,.gif" 
-                onchange="{graphicImport}")
-            .button
-                i.icon.icon-import
-                span {voc.import}
+        div
+            .toright
+                b {vocGlob.sort}   
+                button.inline.square(onclick="{switchSort('date')}" class="{selected: sort === 'date' && !searchResults}")
+                    i.icon-clock
+                button.inline.square(onclick="{switchSort('name')}" class="{selected: sort === 'name' && !searchResults}")
+                    i.icon-sort-alphabetically
+                .aSearchWrap
+                    input.inline(type="text" onkeyup="{fuseSearch}")
+            .toleft
+                label.file.flexfix-header
+                    input(type="file" multiple 
+                        accept=".png,.jpg,.jpeg,.bmp,.gif" 
+                        onchange="{graphicImport}")
+                    .button
+                        i.icon.icon-import
+                        span {voc.import}
         //-    button#graphiccreate(data-event="graphicCreate")
         //-        i.icon.icon-lamp
         //-        span {voc.create}
         ul.cards.flexfix-body
             li(
-                each="{graphic in window.currentProject.graphs}"
+                each="{graphic in (searchResults? searchResults : graphs)}"
                 oncontextmenu="{showGraphicPopup(graphic)}"
                 onclick="{openGraphic(graphic)}"
+                no-reorder
             )
                 span {graphic.name}
                 img(src="file://{sessionStorage.projdir + '/img/' + graphic.origname + '_prev.png?' + graphic.lastmod}")
@@ -36,12 +47,58 @@ graphics-panel.panel.view
         this.mixin(window.riotVoc);
         this.editing = false;
         this.dropping = false;
-        
+        this.sort = 'name';
+        this.sortReverse = false;
+
+        this.updateList = () => {
+            this.graphs = [...window.currentProject.graphs];
+            if (this.sort === 'name') {
+                this.graphs.sort((a, b) => {
+                    return a.name.localeCompare(b.name);
+                });
+            } else {
+                this.graphs.sort((a, b) => {
+                    return b.lastmod - a.lastmod;
+                });
+            }
+            if (this.sortReverse) {
+                this.graphs.reverse();
+            }
+        };
+        this.switchSort = sort => e => {
+            if (this.sort === sort) {
+                this.sortReverse = !this.sortReverse;
+            } else {
+                this.sort = sort;
+                this.sortReverse = false;
+            }
+            this.updateList();
+        };
+        const fuseOptions = {
+            shouldSort: true,
+            tokenize: true,
+            threshold: 0.5,
+            location: 0,
+            distance: 100,
+            maxPatternLength: 32,
+            minMatchCharLength: 1,
+            keys: ['name']
+        };
+        const Fuse = require('fuse.js');
+        this.fuseSearch = e => {
+            if (e.target.value.trim()) {
+                var fuse = new Fuse(this.graphs, fuseOptions);
+                this.searchResults = fuse.search(e.target.value.trim());
+            } else {
+                this.searchResults = null;
+            }
+        };
+
         this.fillGraphMap = () => {
             glob.graphmap = {};
             window.currentProject.graphs.forEach(graph => {
                 var img = document.createElement('img');
-                glob.graphmap[graph.origname] = img;
+                glob.graphmap[graph.uid] = img;
                 img.g = graph;
                 img.src = 'file://' + sessionStorage.projdir + '/img/' + graph.origname + '?' + graph.lastmod;
             });
@@ -50,6 +107,7 @@ graphics-panel.panel.view
             img.src = '/img/unknown.png';
         };
         this.on('mount', () => {
+            this.updateList();
             this.fillGraphMap();
         });
         
@@ -61,12 +119,11 @@ graphics-panel.panel.view
             files = e.target.value.split(';');
             for (i = 0; i < files.length; i++) {
                 if (/\.(jpg|gif|png|jpeg)/gi.test(files[i])) {
-                    
-                    currentProject.graphtick++;
+                    let id = window.generateGUID();
                     this.loadImg(
-                        i,
+                        id,
                         files[i],
-                        sessionStorage.projdir + '/img/i' + currentProject.graphtick + path.extname(files[i]),
+                        sessionStorage.projdir + '/img/i' + id + path.extname(files[i]),
                         true
                     );
                 } else {
@@ -77,7 +134,7 @@ graphics-panel.panel.view
             e.preventDefault();
         };
         /**
-         * Делает попытку загрузить изображение и сделать его миниатюру
+         * Делает попытку загрузить изображение, добавить в проект и сделать его миниатюру
          * @param {Number} uid Счётчик. Должно быть уникально для каждого загружаемого изображения
          * @param {String} filename Путь к исходному изображению
          * @param {String} dest Папка, в которую нужно поместить изображение и миниатюру
@@ -107,12 +164,13 @@ graphics-panel.panel.view
                             left: 0,
                             right: image.width,
                             top: 0,
-                            bottom: image.height
+                            bottom: image.height,
+                            uid: uid
                         };
-                        this.id = currentProject.graphs.length;
                         window.currentProject.graphs.push(obj);
                         this.imgGenPreview(dest, dest + '_prev.png', 64)
                         .then(dataUrl => {
+                            this.updateList();
                             this.update();
                         });
                         this.imgGenPreview(dest, dest + '_prev@2.png', 128);
@@ -176,49 +234,33 @@ graphics-panel.panel.view
         };
         
         // Создание контекстного меню, появляющегося при жмаке на карточку
-        // Пункт "Открыть"
         var graphMenu = new gui.Menu();
         graphMenu.append(new gui.MenuItem({
             label: languageJSON.common.open,
-            icon: (isMac ? '/img/black/' : '/img/blue/') + 'folder.png',
             click: e => {
                 this.openGraphic(this.currentGraphic);
                 this.update();
             }
         }));
-        // пункт "Создать дубликат"
+        // Пункт "Скопировать название"
         graphMenu.append(new gui.MenuItem({
-            label: window.languageJSON.common.duplicate,
-            icon: (isMac ? '/img/black/' : '/img/blue/') + 'plus.png',
+            label: languageJSON.common.copyName,
             click: e => {
-                alertify
-                .defaultValue(currentGraphic.name + '_dup')
-                .prompt(window.languageJSON.common.newnam)
-                .then(e => {
-                    if (e.inputValue != '') {
-                        var newGraphic = JSON.parse(JSON.stringify(currentGraphic));
-                        newGraphic.name = e.inputValue;
-                        window.currentProject.graphtick ++;
-                        newGraphic.origname = 'i' + currentProject.graphtick + path.extname(currentGraphic.origname);
-                        window.megacopy(sessionStorage.projdir + '/img/' + currentGraphic.origname, sessionStorage.projdir + '/img/i' + currentProject.graphtick + path.extname(this.currentGraphic.origname), () => {
-                            window.currentProject.graphs.push(gr);
-                            this.update();
-                        });
-                    }
-                });
+                var clipboard = nw.Clipboard.get();
+                clipboard.set(this.currentGraphic.name, 'text');
             }
         }));
         // пункт "Переименовать"
         graphMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.rename,
-            icon: (isMac ? '/img/black/' : '/img/blue/') + 'edit.png',
             click: e => {
                 alertify
-                .defaultValue(currentGraphic.name)
+                .defaultValue(this.currentGraphic.name)
                 .prompt(window.languageJSON.common.newname)
                 .then(e => {
-                    if (e.inputValue != '') {
-                        currentGraphic.name = e.inputValue;
+                    console.log(e);
+                    if (e.inputValue && e.inputValue != '' && e.buttonClicked !== 'cancel') {
+                        this.currentGraphic.name = e.inputValue;
                         this.update();
                     }
                 });
@@ -230,7 +272,6 @@ graphics-panel.panel.view
         // Пункт "Удалить"
         graphMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.delete,
-            icon: (isMac ? '/img/black/' : '/img/blue/') + 'delete.png',
             click: e => {
                 alertify
                 .okBtn(window.languageJSON.common.delete)

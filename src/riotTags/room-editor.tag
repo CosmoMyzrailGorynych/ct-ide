@@ -29,11 +29,11 @@ room-editor.panel.view
                             img(src="/img/nograph.png")
                         .room-editor-aTypeSwatch(each="{type in window.currentProject.types}" title="{type.name}" onclick="{selectType(type)}" class="{active: type === currentType}")
                             span {type.name}
-                            img(src="{type.graph === -1? '/img/nograph.png' : 'file://' + sessionStorage.projdir + '/img/' + type.graph + '_prev.png?' + getTypeGraphRevision(type)}")
+                            img(src="{type.graph === -1? '/img/nograph.png' : (glob.graphmap[type.graph].src.split('?')[0] + '_prev.png?' + getTypeGraphRevision(type))}")
                     .room-editor-Backgrounds.tabbed.tall(show="{tab === 'roombackgrounds'}")
                         ul
                             li.bg(each="{background, ind in room.backgrounds}" oncontextmenu="{onBgContextMenu}")
-                                img(src="{background.graph === -1? '/img/nograph.png' : 'file://' + sessionStorage.projdir + '/img/' + background.graph}" onclick="{onChangeBgGraphic}")
+                                img(src="{background.graph === -1? '/img/nograph.png' : (glob.graphmap[background.graph].src.split('?')[0] + '_prev.png?' + Math.random())}" onclick="{onChangeBgGraphic}")
                                 span(onclick="{onChangeBgDepth}") {background.depth}
 
                         button.inline.wide(onclick="{roomAddBg}")
@@ -646,28 +646,29 @@ room-editor.panel.view
         this.roomGenSplash = function() {
             return new Promise((accept, decline) => {
                 var c = document.createElement('canvas'), 
-                    w, h, k, size;
+                    w, h, k;
                 c.x = c.getContext('2d');
-                c.width = c.height = size = 256;
-                c.x.clearRect(0, 0, size, size);
+                c.width = 340;
+                c.height = 256;
+                c.x.clearRect(0, 0, c.width, c.height);
                 w = this.refs.canvas.width;
                 h = this.refs.canvas.height;
-                if (w > h) {
-                    k = size / w;
+                if (w / c.width > h / c.height) {
+                    k = c.width / w;
                 } else {
-                    k = size / h;
+                    k = c.height / h;
                 }
                 if (k > 1) k = 1;
                 c.x.drawImage(
                     this.refs.canvas,
                     0, 0, this.refs.canvas.width, this.refs.canvas.height,
-                    (size - this.refs.canvas.width*k)/2, (size - this.refs.canvas.height*k)/2,
+                    (c.width - this.refs.canvas.width*k)/2, (c.height - this.refs.canvas.height*k)/2,
                     this.refs.canvas.width*k,
                     this.refs.canvas.height*k
                 );
                 var data = c.toDataURL().replace(/^data:image\/\w+;base64,/, "");
                 var buf = new Buffer(data, 'base64');
-                var nam = sessionStorage.projdir + '/img/r' + this.room.uid + '.png';
+                var nam = sessionStorage.projdir + '/img/r' + this.room.thumbnail + '.png';
                 fs.writeFile(nam, buf, function(err) {
                     if (err) {
                         decline(err);

@@ -1,0 +1,18 @@
+{
+    "main": {
+        "name": "Sprite Composer",
+        "version": "1.0.0",
+        "authors": [{
+            "name": "Cosmo Myzrail Gorynych",
+            "mail": "admin@nersta.ru"
+        }]
+    },
+    "fields": [{
+        "name": "Sprite definitions",
+        "key": "spritedef",
+        "id": "spritedef",
+        "desc": "Place your `ct.sprite` calls here",
+        "default": "",
+        "type": "textfield"
+    }]
+}

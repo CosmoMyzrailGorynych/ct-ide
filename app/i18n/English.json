@@ -16,6 +16,7 @@
         "cancel": "Cancel",
         "confirmDelete": "Are you sure you want to delete {0}? It cannot be undone.",
         "copy": "Copy",
+        "copyName": "Copy the name",
         "ctsite": "ct.js homepage",
         "cut": "Cut",
         "delete": "Delete",
@@ -41,6 +42,7 @@
         "save": "Save",
         "savedcomm": "Your project was succesfully saved.",
         "saveproject": "Save project",
+        "sort": "Sort:",
         "wrongFormat": "Wrong file format",
         "yes": "Yes"
     },
@@ -57,10 +59,19 @@
         "browse": "Browse",
         "latest": "Latest projects"
     },
+    "licensepanel": {
+        "tldr": [
+            "You own your assets, projects, catmods;",
+            "You can use the app for commercial use (and other uses too);",
+            "You must not modify the ct.js in any ways that were not intended for it by the Author;",
+            "We do not give any guarantees and are not responsible for any damage."
+        ]
+    },
     "menu": {
         "ctIDE": "ct.IDE",
         "graphic": "Graphic",
         "launch": "Compile",
+        "license": "License",
         "min": "Windowed",
         "modules": "Catmods",
         "rooms": "Rooms",
@@ -69,6 +80,9 @@
         "settings": "Settings",
         "sounds": "Sounds",
         "styles": "Styles",
+        "theme": "Theme",
+        "themeday": "Light",
+        "themenight": "Dark",
         "types": "Types",
         "zipExport": "Export to .zip",
         "zipProject": "Pack project to .zip"
@@ -169,7 +183,6 @@
         "fillgradsize": "Size:",
         "fillgradtype": "Gradient type:",
         "fillhorisontal": "Horisontal",
-        "fillpatname": "Texture name:",
         "fillpattern": "Texture",
         "fillradial": "Radial",
         "fillsolid": "Diffuse",

@@ -59,25 +59,25 @@ ct.types.move(this);
 
 ### `ct.types.copy(type: String, x, y)` and `ct.types.make(type: String, x, y)`
 
-Creates a Copy of a given Type.
+Creates a Copy of a given Type. If x or y is omitted, they are set to 0.
 
 ### `ct.types.each(func: Function)`
 
-Applies a function to all active copies. The function is passed a Copy, which called this method (which called `ct.types.each`).
+Applies a function to all the active copies.
 
 ```js Example: destroy all the copies within a 150px radius
-ct.types.each(function (other) {
-    if (this !== other) { // aren't we trying to destroy ourselves?
-        if (ct.u.pdc(this.x, this.y, other.x, other.y) <= 150) {
+var me = this;
+ct.types.each(function () {
+    if (this !== me) { // aren't we trying to destroy ourselves?
+        if (ct.u.pdc(this.x, this.y, me.x, me.y) <= 150) {
             this.kill = true;
         }
     }
 });
 ```
 
-{% pullquote %}
-`ct.u.pdc` computes distance between two points. This and other similar functions can be found [here](ct.u.html).
-{% endpullquote %}
+> `ct.u.pdc` computes distance between two points. This and other similar functions can be found [here](ct.u.html).
+
 
 ### `ct.types.with(copy: Copy, func: Function)`
 

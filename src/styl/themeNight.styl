@@ -1,0 +1,74 @@
+@charset "utf-8"
+
+// минимальная ширина шаблона - 380 пикс
+
+/* частотники */
+trans =
+    transition 0.35s ease all
+transshort =
+    transition 0.15s ease all
+shad =
+    box-shadow 0 0.1rem 0.2rem rgba(0, 0, 0, 0.5)
+shadamb =
+    box-shadow 0 0 0.35rem rgba(0, 0, 0, 0.5)
+
+/* шрифты */
+fonts = font = 'Open Sans', sans-serif, serif
+font-mono = mono = Consolas, monospace
+
+br = 0.2rem
+iconsize = 1.5rem
+
+/* цвета */
+black = #fff
+white = #08080D
+act = #44dbb5
+acttext = act
+accent1 = #44dbb5
+accent2 = #446adb 
+error = #d44f57
+red = error
+success = #58E875
+green = success
+warning = #FFA968
+orange = warning
+
+theme = 'Night'
+
+.error
+    color error
+.success
+    color success
+.warning
+    color warning
+
+bl = #121822
+bd = #1C2B42
+
+text = #C8CECD
+snow = mix(white, bl, 50%)
+
+/* анимации */
+@keyframes rotate
+    100%
+        transform rotate(360deg)
+@keyframes fadeOut
+    from
+        opacity 1
+        visibility visible
+    to
+        opacity 0
+        visibility hidden
+.fadeout
+    animation forwards 0.5s linear fadeOut
+
+@require 'hvost.styl'
+
+@require '3rdParty/*.styl'
+
+@require 'common.styl'
+@require 'inputs.styl'
+@require 'typography.styl'
+@require 'buildingBlocks.styl'
+
+@require 'tags/*.styl'

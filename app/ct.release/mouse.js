@@ -15,9 +15,11 @@ ct.mouse = {
 
 ct.mouse.listenermove = function(e) {
     var rect = ct.getBoundingClientRect();
-    ct.mouse.x = (e.clientX - rect.left) * ct.width / rect.width + ct.rooms.current.x;
-    ct.mouse.y = (e.clientY - rect.top) * ct.height / rect.height + ct.rooms.current.y;
-    if (ct.mouse.x > 0 && ct.mouse.y > 0 && ct.mouse.y < ct.height && ct.mouse.x < ct.width) {
+    ct.mouse.rx = (e.clientX - rect.left) * ct.width / rect.width;
+    ct.mouse.ry = (e.clientY - rect.top) * ct.height / rect.height;
+    ct.mouse.x = ct.mouse.rx + ct.rooms.current.x;
+    ct.mouse.y = ct.mouse.ry + ct.rooms.current.y;
+    if (ct.mouse.rx > 0 && ct.mouse.ry > 0 && ct.mouse.ry < ct.height && ct.mouse.rx < ct.width) {
         ct.mouse.inside = true;
     } else {
         ct.mouse.inside = false;

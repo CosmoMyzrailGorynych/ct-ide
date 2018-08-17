@@ -5,8 +5,6 @@ ct.setAttribute('width', [/*@startwidth@*/][0]);
 ct.setAttribute('height', [/*@startheight@*/][0]);
 ct.x = ct.getContext('2d');
 
-/*@pixelatedrender@*/
-
 ct.libs = [/*@libs@*/][0];
 ct.speed = [/*@fps@*/][0];
 ct.stack = [];
@@ -228,6 +226,10 @@ ct.loop = function() {
                         ct.room.y = Math.floor(ct.room.y + cy);
                     }
                 }
+                ct.mouse.x = ct.mouse.rx + ct.room.x || 0;
+                ct.mouse.y = ct.mouse.ry + ct.room.y || 0;
+                ct.room.x = ct.room.x || 0;
+                ct.room.y = ct.room.y || 0;
                 for (let i = 0, li = ct.stack.length; i < li; i++) {
                     ct.types.beforeDraw.apply(ct.stack[i]);
                     ct.stack[i].onDraw.apply(ct.stack[i]);

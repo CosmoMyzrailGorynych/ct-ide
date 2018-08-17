@@ -1,7 +1,7 @@
 type-editor.panel.view.flexrow
     .c3.tall
         #typegraph.panel(onclick="{changeSprite}")
-            img.ohchangeme(src="{type.graph === -1? '/img/nograph.png' : 'file://' + sessionStorage.projdir + '/img/' + type.graph + '_prev@2.png?' + getTypeGraphRevision(type)}")
+            img.ohchangeme(src="{type.graph === -1? '/img/nograph.png' : (glob.graphmap[type.graph].src.split('?')[0] + '_prev@2.png?' + getTypeGraphRevision(type)) + getTypeGraphRevision(type)}")
             div {voc.change}
         b {voc.name}
         input#typename.wide(type="text" onchange="{wire('this.type.name')}" value="{type.name}")
@@ -107,13 +107,14 @@ type-editor.panel.view.flexrow
             if (graph === -1) {
                 this.type.graph = -1;
             } else {
-                this.type.graph = graph.origname;
+                this.type.graph = graph.uid;
             }
             this.selectingGraphic = false;
             this.update();
         };
         this.typeSave = e => {
             window.glob.modified = true;
+            this.type.lastmod = +(new Date());
             this.parent.editingType = false;
             this.parent.fillTypeMap();
             this.parent.update();

@@ -4,7 +4,7 @@ Clears all the keyboard events for this frame. This can be used e.g. to consume 
 
 ## ct.keyboard.key
 
-Tells the last pressed button. It can be either one of `shift`, `space`, `control`, `alt`, `escape`, `pageup`, `pagedown`, `end`, `home`, `left`, `up`, `right`, `down`, `insert`, `delete`, `backspace`, or a digit, or an uppercase english letter.
+Tells the last pressed button. It can be either one of `shift`, `space`, `control`, `alt`, `escape`, `pageup`, `pagedown`, `end`, `home`, `left`, `up`, `right`, `down`, `insert`, `delete`, `backspace`, or a digit, or an uppercase english letter. If the browser supports KeyboardEvent.key (which is supported by all modern browsers), it can also be one of the [pre-defined key values](https://developer.mozilla.org/docs/Web/API/KeyboardEvent/key/Key_Values), in lower case.
 
 ## ct.keyboard.string
 

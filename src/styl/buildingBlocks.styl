@@ -1,9 +1,15 @@
 .modal, .panel
     box-sizing border-box
     background white
+    if (theme == 'Night')
+        background bl
     border 1px solid bl
+    if (theme == 'Night')
+        border 1px solid bd
     border-radius br
     position relative
+    &.pad
+        padding 1rem
 
 .modal
     position fixed
@@ -16,6 +22,8 @@
 .view
     overflow auto
     background snow
+    if (theme == 'Night')
+        background white
     position absolute
     left 0
     right 0
@@ -59,9 +67,11 @@
 // панели управления
 .nav
     background white
+    if (theme == 'Night')
+        background bl
     border-radius br
-    border-top 1px solid bl
-    border-left 1px solid bl
+    border-top 1px solid bd
+    border-left 1px solid bd
     padding 0
     margin 0
     display flex
@@ -69,8 +79,8 @@
     li
         text-align center
         cursor pointer
-        border-right 1px solid bl
-        border-bottom 1px solid bl
+        border-right 1px solid bd
+        border-bottom 1px solid bd
         flex auto
         list-style none
         padding 0.25em
@@ -78,6 +88,8 @@
         display inline-block
         {trans}
         box-shadow 0 0 white inset
+        if (theme == 'Night')
+            background bl
         &:hover, &.active
             {transshort}
             color acttext
@@ -133,3 +145,8 @@
             width 64px
             margin -0.5em -0.5em -0.5em 0.5em
             border-radius br
+            &:hover
+                background rgba(act, 0.35)
+sounds-panel, rooms-panel
+    .cards li img:hover
+        background none

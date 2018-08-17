@@ -1,10 +1,10 @@
 (window => {
     var gui = require('nw.gui');
     var win = gui.Window.get();
+    var modified = false;
     window.glob = {
-        mmodified: false,
         get modified () {
-            return this.mmodified;
+            return modified;
         },
         set modified (v) {
             if (v) {
@@ -12,8 +12,8 @@
             } else {
                 window.title = 'ctjs — ' + sessionStorage.projname;
             }
-            this.mmodified = v;
-            return this.mmodified;
+            modified = v;
+            return modified;
         }
     };
 
