@@ -4,14 +4,14 @@ room-editor.panel.view
             b {voc.name}
             br
             input.wide(type="text" value="{room.name}" onchange="{wire('this.room.name')}")
-            br
-            b {voc.width}
-            br
-            input.wide(type="number" value="{room.width}" onchange="{wire('this.room.width')}")
-            br
-            b {voc.height}
-            br
-            input.wide(type="number" value="{room.height}" onchange="{wire('this.room.height')}")
+            .fifty.npt.npb.npl
+                b {voc.width}
+                br
+                input.wide(type="number" value="{room.width}" onchange="{wire('this.room.width')}")
+            .fifty.npt.npb.npr
+                b {voc.height}
+                br
+                input.wide(type="number" value="{room.height}" onchange="{wire('this.room.height')}")
             br
             button.wide(onclick="{openRoomEvents}")
                 i.icon.icon-confirm(if="{room.oncreate || room.onstep || room.ondestroy || room.ondraw}")
@@ -24,12 +24,16 @@ room-editor.panel.view
                     //-li( ) {voc.tiles}
                 .relative
                     .room-editor-TypeSwatches.tabbed.tall(show="{tab === 'roomcopies'}")
-                        .room-editor-aTypeSwatch(onclick="{roomUnpickType}" class="{active: currentType === -1}")
+                        .aSearchWrap
+                            input.inline(type="text" onkeyup="{fuseSearch}")
+                        .room-editor-aTypeSwatch(if="{!searchResults}" onclick="{roomUnpickType}" class="{active: currentType === -1}")
                             span {window.languageJSON.common.none}
                             img(src="/img/nograph.png")
-                        .room-editor-aTypeSwatch(each="{type in window.currentProject.types}" title="{type.name}" onclick="{selectType(type)}" class="{active: type === currentType}")
+                        .room-editor-aTypeSwatch(each="{type in (searchResults? searchResults : types)}" title="{type.name}" onclick="{selectType(type)}" class="{active: type === currentType}")
                             span {type.name}
                             img(src="{type.graph === -1? '/img/nograph.png' : (glob.graphmap[type.graph].src.split('?')[0] + '_prev.png?' + getTypeGraphRevision(type))}")
+                        .room-editor-aTypeSwatch.filler
+                        .room-editor-aTypeSwatch.filler
                     .room-editor-Backgrounds.tabbed.tall(show="{tab === 'roombackgrounds'}")
                         ul
                             li.bg(each="{background, ind in room.backgrounds}" oncontextmenu="{onBgContextMenu}")
@@ -86,6 +90,31 @@ room-editor.panel.view
         this.namespace = 'roomview';
         this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
+        this.updateTypeList = () => {
+            this.types = [...window.currentProject.types];
+            this.types.sort((a, b) => {
+                return a.name.localeCompare(b.name);
+            });
+        };
+        const fuseOptions = {
+            shouldSort: true,
+            tokenize: true,
+            threshold: 0.5,
+            location: 0,
+            distance: 100,
+            maxPatternLength: 32,
+            minMatchCharLength: 1,
+            keys: ['name']
+        };
+        const Fuse = require('fuse.js');
+        this.fuseSearch = e => {
+            if (e.target.value.trim()) {
+                var fuse = new Fuse(this.types, fuseOptions);
+                this.searchResults = fuse.search(e.target.value.trim());
+            } else {
+                this.searchResults = null;
+            }
+        };
         
         this.room = this.opts.room;
 
@@ -109,6 +138,7 @@ room-editor.panel.view
             }
             this.refreshRoomCanvas();
         };
+        this.updateTypeList();
         this.on('mount', () => {
             this.room = this.opts.room;
             this.refs.canvas.x = this.refs.canvas.getContext('2d');
@@ -171,6 +201,8 @@ room-editor.panel.view
             this.tab = tab;
             if (tab === 'roombackgrounds') {
                 this.roomUnpickType();
+            } else {
+                this.updateTypeList();
             }
         };
         this.roomUnpickType = e => {

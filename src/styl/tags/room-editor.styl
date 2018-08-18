@@ -1,6 +1,15 @@
 room-editor
     display flex
     flex-direction row
+    .aSearchWrap
+        display block
+        flex 1 1 100%
+        margin 0 0 3px 0
+        input
+            box-sizing border-box
+            width 100%
+            font-size 90%
+            border-radius 0
     .toolbar
         display flex
         flex-direction column
@@ -9,6 +18,8 @@ room-editor
         box-sizing border-box
         flex 1 1 auto
         flex-grow 0
+        .settings .fifty
+            padding 0.5rem
         .palette
             flex 1 1 auto
         .settings button
@@ -65,29 +76,36 @@ room-editor
 .room-editor-aTypeSwatch
     list-style none
     border 1px solid bl
-    width 76px
+    flex 1 1 30%
     display inline-block
     box-sizing border-box
     text-align center
-    margin 1px
-    border-radius br
+    margin -1px -1px 0 0
     cursor pointer
     padding 0 0.4em
     font-size 80%
     line-height 1.7
     {trans}
+    position: relative
+    max-width calc(33.333333% + 0.75px)
+    z-index 1
     span
         display block
         text-overflow ellipsis
         overflow hidden
     &:hover
         border-color act
+        z-index 10
         {transshort}
     &.active
         border-color accent1
+        z-index 10
     img
         height 64px
         width 64px
+    &.filler
+        height 0px
+        visibility hidden
 
 .room-editor-Backgrounds
     padding 0.5em
