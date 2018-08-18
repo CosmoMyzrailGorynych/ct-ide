@@ -74,8 +74,8 @@ room-editor.panel.view
                 button#roomzoom100.inline(onclick="{roomToggleZoom(1)}" class="{active: zoomFactor === 1}") 100%
                 button#roomzoom200.inline(onclick="{roomToggleZoom(2)}" class="{active: zoomFactor === 2}") 200%
         .grid
-            button#roomgrid(onclick="{roomToggleGrid}" class="{active: room.grid > 0}") 
-                span {voc[room.grid > 0? 'gridoff' : 'grid']}
+            button#roomgrid(onclick="{roomToggleGrid}" class="{active: room.gridX > 0}") 
+                span {voc[room.gridX > 0? 'gridoff' : 'grid']}
         .center
             button#roomcenter(onclick="{roomToCenter}") {voc.tocenter}
     room-events-editor(if="{editingCode}" room="{room}")
@@ -122,7 +122,8 @@ room-editor.panel.view
             this.roomx = this.room.width / 2;
             this.roomy = this.room.height / 2;
         this.zoomFactor = 1;
-        this.room.grid = this.room.grid || 64;
+        this.room.gridX = this.room.gridX || this.room.grid || 64;
+        this.room.gridY = this.room.gridY || this.room.grid || 64;
         this.currentType = -1;
         this.dragging = false;
         this.tab = 'roomcopies';
@@ -168,22 +169,22 @@ room-editor.panel.view
             this.refreshRoomCanvas();
         };
         this.redrawGrid = () => {
-            this.gridCanvas.width = this.gridCanvas.height = this.room.grid;
-            this.gridCanvas.x.clearRect(0, 0, this.room.grid, this.room.grid);
+            this.gridCanvas.width = this.room.gridX;
+            this.gridCanvas.height = this.room.gridY;
+            this.gridCanvas.x.clearRect(0, 0, this.room.gridX, this.room.gridY);
             this.gridCanvas.x.globalAlpha = 0.3;
-            this.gridCanvas.x.strokeStyle = "#446adb";
+            this.gridCanvas.x.strokeStyle = localStorage.UItheme === 'Night'? '#44dbb5' : '#446adb';
             this.gridCanvas.x.lineWidth = 1 / this.zoomFactor;
-            this.gridCanvas.x.strokeRect(0.5 / this.zoomFactor, 0.5 / this.zoomFactor, this.room.grid, this.room.grid);
+            this.gridCanvas.x.strokeRect(0.5 / this.zoomFactor, 0.5 / this.zoomFactor, this.room.gridX, this.room.gridY);
         }
         this.roomToggleGrid = () => {
-            if (this.room.grid === 0) {
+            if (this.room.gridX === 0) {
                 alertify
-                .prompt(this.voc.gridsize)
+                .confirm(this.voc.gridsize + `<br/><input type="number" value="64" style="width: 6rem;" min=2 id="theGridSizeX"> x <input type="number" value="64" style="width: 6rem;" min=2 id="theGridSizeY">`)
                 .then(e => {
-                    if (e.inputValue) {
-                        if (Number(e.inputValue) > 1) {
-                            this.room.grid = Number(e.inputValue);
-                        }
+                    if (e.buttonClicked === 'ok') {
+                        this.room.gridX = Number(document.getElementById('theGridSizeX').value);
+                        this.room.gridY = Number(document.getElementById('theGridSizeY').value);
                     }
                     this.redrawGrid();
                     this.refreshRoomCanvas();
@@ -191,7 +192,8 @@ room-editor.panel.view
                 });
             } else {
                 this.refreshRoomCanvas();
-                this.room.grid = 0;
+                this.room.gridX = 0;
+                this.room.gridY = 0;
             }
         };
         
@@ -251,7 +253,7 @@ room-editor.panel.view
                 targetLayer = lastTypeLayer;
             }
 
-            if (this.room.grid == 0 || e.altKey) {
+            if (this.room.gridX == 0 || e.altKey) {
                 targetLayer.copies.push({
                     x: ~~(this.xToRoom(e.offsetX)),
                     y: ~~(this.yToRoom(e.offsetY)),
@@ -261,8 +263,8 @@ room-editor.panel.view
                 var x = ~~(this.xToRoom(e.offsetX)),
                     y = ~~(this.yToRoom(e.offsetY));
                 targetLayer.copies.push({
-                    x: x - (x % this.room.grid),
-                    y: y - (y % this.room.grid),
+                    x: x - (x % this.room.gridX),
+                    y: y - (y % this.room.gridY),
                     uid: this.currentType.uid
                 });
             }
@@ -289,7 +291,7 @@ room-editor.panel.view
                 this.refreshRoomCanvas(e);
             } else if (e.ctrlKey) {
                 // При нажатии кнопки Ctrl удаляем копии под курсором
-                var maxdist = this.room.grid || 64;
+                var maxdist = this.room.gridX || 64;
                 if (this.mouseDown && this.room.layers.length !== 0) {
                     var type = this.room.layers[0].copies[0],
                         pos = 0,
@@ -349,7 +351,7 @@ room-editor.panel.view
                     w = h = 32;
                     grax = gray = 16;
                 }
-                if (this.room.grid === 0 || e.altKey) {
+                if (this.room.gridX === 0 || e.altKey) {
                     this.refs.canvas.x.drawImage(
                         img,
                         0, 0, w, h,
@@ -362,8 +364,8 @@ room-editor.panel.view
                     h = graph.height;
                     this.refs.canvas.x.drawImage(
                         img, 0, 0, w, h,
-                        this.xToCanvas(dx - dx % this.room.grid) / this.zoomFactor - grax, 
-                        this.yToCanvas(dy - dy % this.room.grid) / this.zoomFactor - gray, 
+                        this.xToCanvas(dx - dx % this.room.gridX) / this.zoomFactor - grax, 
+                        this.yToCanvas(dy - dy % this.room.gridY) / this.zoomFactor - gray, 
                         w, h);
                 }
             }
@@ -427,7 +429,7 @@ room-editor.panel.view
             // рисовка выделения копии
             this.refreshRoomCanvas();
             this.refs.canvas.x.lineJoin = 'round';
-            this.refs.canvas.x.strokeStyle = '#446adb';
+            this.refs.canvas.x.strokeStyle = localStorage.UItheme === 'Night'? '#44dbb5' : '#446adb';
             this.refs.canvas.x.lineWidth = 3;
             if (type.graph !== -1) {
                 var left = copy.x - graph.axis[0] - 1.5,
@@ -441,7 +443,7 @@ room-editor.panel.view
                     width = 32 + 3;
             }
             this.refs.canvas.x.strokeRect(left, top, height, width);
-            this.refs.canvas.x.strokeStyle = '#fff';
+            this.refs.canvas.x.strokeStyle = localStorage.UItheme === 'Night'? '#1C2B42' : '#fff';
             this.refs.canvas.x.lineWidth = 1;
             this.refs.canvas.x.strokeRect(left, top, height, width);
     
@@ -474,10 +476,10 @@ room-editor.panel.view
             window.alertify.confirm(`
                 ${window.languageJSON.roomview.shifttext}
                 <label class="block">X: 
-                    <input id="roomshiftx" type="number" value="${this.room.grid}" />
+                    <input id="roomshiftx" type="number" value="${this.room.gridX}" />
                 </label>
                 <label class="block">Y: 
-                    <input id="roomshifty" type="number" value="${this.room.grid}" />
+                    <input id="roomshifty" type="number" value="${this.room.gridY}" />
                 </label>
             `)
             .then((e, a) => {
@@ -652,7 +654,7 @@ room-editor.panel.view
             }
 
             // Это рисовка сетки
-            if (this.room.grid > 1) {
+            if (this.room.gridX > 1) {
                 canvas.x.globalCompositeOperation = 'exclusion';
                 canvas.x.fillStyle = canvas.x.createPattern(this.gridCanvas, 'repeat');
                 canvas.x.fillRect(
@@ -662,11 +664,11 @@ room-editor.panel.view
             }
             
             // Обводка границ комнаты
-            canvas.x.lineJoin = "round";
-            canvas.x.strokeStyle = "#446adb";
+            canvas.x.lineJoin = 'round';
+            canvas.x.strokeStyle = localStorage.UItheme === 'Night'? '#44dbb5' : '#446adb';
             canvas.x.lineWidth = 3;
             canvas.x.strokeRect(-1.5,-1.5,this.room.width+3,this.room.height+3);
-            canvas.x.strokeStyle = "#fff";
+            canvas.x.strokeStyle = localStorage.UItheme === 'Night'? '#1C2B42' : '#fff';
             canvas.x.lineWidth = 1;
             canvas.x.strokeRect(-1.5,-1.5,this.room.width+3,this.room.height+3);
             
