@@ -4,6 +4,7 @@ graphic-editor.panel.view
             b {voc.name}
             br
             input.wide(type="text" value="{opts.graphic.name}" onchange="{wire('this.graphic.name')}")
+            .anErrorNotice(if="{nameTaken}") {vocGlob.nametaken}
             br
             b {voc.center}
             .flexrow
@@ -155,7 +156,8 @@ graphic-editor.panel.view
         this.namespace = 'graphview';
         this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
-        
+
+        this.nameTaken = false;
         this.prevPlaying = true;
         this.prevPos = 0;
         this.prevSpeed = 10;
@@ -184,6 +186,15 @@ graphic-editor.panel.view
                 this.graphicSave();
             };
             img.src = path.join('file://', sessionStorage.projdir, '/img/', graphic.origname) + '?' + Math.random();
+        });
+        this.on('update', () => {
+            if (window.currentProject.graphs.find(graph => 
+                this.graphic.name === graph.name && this.graphic !== graph
+            )) {
+                this.nameTaken = true;
+            } else {
+                this.nameTaken = false;
+            }
         });
         this.on('updated', () => {
             this.refreshGraphCanvas();

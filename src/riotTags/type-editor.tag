@@ -5,6 +5,7 @@ type-editor.panel.view.flexrow
             div {voc.change}
         b {voc.name}
         input#typename.wide(type="text" onchange="{wire('this.type.name')}" value="{type.name}")
+        .anErrorNotice(if="{nameTaken}") {vocGlob.nametaken}
         br
         b {voc.depth}
         input#typedepth.wide(type="number" onchange="{wire('this.type.depth')}" value="{type.depth}")
@@ -100,6 +101,15 @@ type-editor.panel.view.flexrow
                 this.typeoncreate.focus();
             }, 0);
         });
+        this.on('update', () => {
+            if (window.currentProject.types.find(type => 
+                this.type.name === type.name && this.type !== type
+            )) {
+                this.nameTaken = true;
+            } else {
+                this.nameTaken = false;
+            }
+        })
         this.changeSprite = e => {
             this.selectingGraphic = true;
         };

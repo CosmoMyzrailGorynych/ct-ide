@@ -27,6 +27,7 @@
         "fastimport": "Fast Import",
         "language": "Language",
         "name": "Name:",
+        "nametaken": "This name is already taken",
         "newname": "New name:",
         "newversion": "# New version is avaliable\n",
         "no": "No",

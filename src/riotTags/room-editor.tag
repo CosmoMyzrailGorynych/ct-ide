@@ -4,6 +4,7 @@ room-editor.panel.view
             b {voc.name}
             br
             input.wide(type="text" value="{room.name}" onchange="{wire('this.room.name')}")
+            .anErrorNotice(if="{nameTaken}") {vocGlob.nametaken}
             .fifty.npt.npb.npl
                 b {voc.width}
                 br
@@ -140,6 +141,15 @@ room-editor.panel.view
             this.refreshRoomCanvas();
         };
         this.updateTypeList();
+        this.on('update', () => {
+            if (window.currentProject.rooms.find(room => 
+                this.room.name === room.name && this.room !== room
+            )) {
+                this.nameTaken = true;
+            } else {
+                this.nameTaken = false;
+            }
+        });
         this.on('mount', () => {
             this.room = this.opts.room;
             this.refs.canvas.x = this.refs.canvas.getContext('2d');

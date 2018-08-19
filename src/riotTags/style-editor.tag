@@ -5,6 +5,7 @@ style-editor.panel.view
                 b {vocGlob.name}
                 br
                 input.wide(type="text" value="{styleobj.name}" onchange="{wire('this.styleobj.name')}")
+                .anErrorNotice(if="{nameTaken}") {vocGlob.nametaken}
         .tabwrap.flexfix-body
             ul.nav.tabs.nogrow.noshrink
                 li(onclick="{changeTab('stylefont')}" class="{active: tab === 'stylefont'}") {voc.font}
@@ -164,6 +165,15 @@ style-editor.panel.view
         };
         this.on('mount', e => {
             this.refs.canvas.x = this.refs.canvas.getContext('2d');
+        });
+        this.on('update', () => {
+            if (window.currentProject.styles.find(style => 
+                this.styleobj.name === style.name && this.styleobj !== style
+            )) {
+                this.nameTaken = true;
+            } else {
+                this.nameTaken = false;
+            }
         });
         this.on('updated', e => {
             this.styleSet(this.refs.canvas.x);

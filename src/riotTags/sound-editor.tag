@@ -3,6 +3,7 @@ sound-editor.panel.view
         b {voc.name}
         br
         input.wide(type="text" value="{sound.name}" onchange="{wire('this.sound.name')}")
+        .anErrorNotice(if="{nameTaken}") {vocGlob.nametaken}
         br
         p 
             label
@@ -34,6 +35,15 @@ sound-editor.panel.view
         this.mixin(window.riotWired);
         this.playing = false;
         this.sound = this.opts.sound;
+        this.on('update', () => {
+            if (window.currentProject.sounds.find(sound => 
+                this.sound.name === sound.name && this.sound !== sound
+            )) {
+                this.nameTaken = true;
+            } else {
+                this.nameTaken = false;
+            }
+        })
         this.notifyPlayerPlays = e => {
             this.playing = true;
         };
