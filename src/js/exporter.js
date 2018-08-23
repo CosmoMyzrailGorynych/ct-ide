@@ -232,7 +232,7 @@ ct.rooms['${r.name}'] = {
         return roomsCode;
     };
 
-    window.runCtProject = () => new Promise(resolve => {
+    window.runCtProject = () => new Promise((resolve, reject) => {
         // glob.compileAudio = 0;
         if (window.currentProject.rooms.length < 1) {
             window.alertify.error(window.languageJSON.common.norooms);
@@ -425,15 +425,26 @@ ct.rooms['${r.name}'] = {
         }
 
         /* финализация скрипта */
-        const UglifyJS = require('uglify-js');
-        fs.writeFileSync(exec + '/export/ct.js', buffer);
+        const terser = require('terser');
         if (window.currentProject.settings.minifyjs) {
-            var mini = UglifyJS.minify(exec + '/export/ct.js', {
-                mangle: false
+            var mini = terser.minify(buffer, {
+                mangle: true,
+                output: {
+                    beautify: false,
+                    preamble: '/* Made with ct.js http://ctjs.rocks/ */\n',
+                    webkit: true
+                }
             });
-            fs.writeFileSync(exec + '/export/ct.min.js', mini);
+            if (mini.error) {
+                console.error(mini.error);
+                reject(mini.error);
+            } else {
+                fs.writeFileSync(exec + '/export/ct.js', mini.code);
+            }
+        } else {
+            fs.writeFileSync(exec + '/export/ct.js', buffer);
         }
-
+        
         /* HTML & CSS */
         fs.writeFileSync(exec + '/export/index.html', fs.readFileSync('./ct.release/index.html', {
             'encoding': 'utf8'
