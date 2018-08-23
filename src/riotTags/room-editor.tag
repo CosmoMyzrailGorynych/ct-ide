@@ -15,13 +15,14 @@ room-editor.panel.view
                 input.wide(type="number" value="{room.height}" onchange="{wire('this.room.height')}")
             br
             button.wide(onclick="{openRoomEvents}")
-                i.icon.icon-confirm(if="{room.oncreate || room.onstep || room.ondestroy || room.ondraw}")
+                i.icon-confirm(if="{room.oncreate || room.onstep || room.ondestroy || room.ondraw}")
                 span {voc.events}
         .palette
             .tabwrap
                 ul.tabs.nav.noshrink.nogrow
                     li(onclick="{changeTab('roomcopies')}" class="{active: tab === 'roomcopies'}") {voc.copies}
                     li(onclick="{changeTab('roombackgrounds')}" class="{active: tab === 'roombackgrounds'}") {voc.backgrounds}
+                    li(onclick="{changeTab('roomtiles')}" class="{active: tab === 'roomtiles'}") {voc.tiles}
                     //-li( ) {voc.tiles}
                 .relative
                     .room-editor-TypeSwatches.tabbed.tall(show="{tab === 'roomcopies'}")
@@ -35,6 +36,11 @@ room-editor.panel.view
                             img(src="{type.graph === -1? '/img/nograph.png' : (glob.graphmap[type.graph].src.split('?')[0] + '_prev.png?' + getTypeGraphRevision(type))}")
                         .room-editor-aTypeSwatch.filler
                         .room-editor-aTypeSwatch.filler
+                        .room-editor-aTypeSwatch.filler
+                        .room-editor-aTypeSwatch.filler
+                        .room-editor-aTypeSwatch.filler
+                        .room-editor-aTypeSwatch.filler
+                        .room-editor-aTypeSwatch.filler
                     .room-editor-Backgrounds.tabbed.tall(show="{tab === 'roombackgrounds'}")
                         ul
                             li.bg(each="{background, ind in room.backgrounds}" oncontextmenu="{onBgContextMenu}")
@@ -42,15 +48,33 @@ room-editor.panel.view
                                 span(onclick="{onChangeBgDepth}") {background.depth}
 
                         button.inline.wide(onclick="{roomAddBg}")
-                            i.icon.icon-plus
+                            i.icon-plus
                             span {voc.add}
-                    //-
-                        #roomtiles.tabbed
-                            select#roomtilesselect.select
-                                option(disabled selected) {voc.selectbg}
+                    .room-editor-Tiles.tabbed.tall.flexfix(show="{tab === 'roomtiles'}")
+                        .flexfix-body
+                            canvas(
+                                ref="tiledImage"
+                                onmousedown="{startTileSelection}"
+                                onmouseup="{stopTileSelection}"
+                                onmousemove="{moveTileSelection}"
+                            )
+                        .flexfix-footer
+                            button.inline.wide(onclick="{switchTiledImage}")
+                                i.icon-search
+                                span {voc.findTileset}
+                            .flexrow
+                                select.wide(onchange="{changeTileLayer}" value="{currentTileLayerId}")
+                                    option(each="{layer, ind in room.tiles}" value="{ind}") {layer.depth}
+                                
+                                span.act(title="{vocGlob.delete}" onclick="{deleteTileLayer}")
+                                    i.icon-trash
+                                span.act(title="{voc.moveTileLayer}" onclick="{moveTileLayer}")
+                                    i.icon-shuffle
+                                span.act(title="{vocGlob.add}" onclick="{addTileLayer}")
+                                    i.icon-plus
         .done.nogrow
             button.wide#roomviewdone(onclick="{roomSave}")
-                i.icon.icon-confirm
+                i.icon-confirm
                 span {voc.done}
     .editor(ref="canvaswrap")
         canvas(
@@ -65,7 +89,7 @@ room-editor.panel.view
         )
         .shift
             button.inline.square(title="{voc.shift}" onclick="{roomShift}")
-                i.icon.icon-move
+                i.icon-move
             span {voc.hotkeysNotice}
         .zoom
             b {voc.zoom}
@@ -81,6 +105,7 @@ room-editor.panel.view
             button#roomcenter(onclick="{roomToCenter}") {voc.tocenter}
     room-events-editor(if="{editingCode}" room="{room}")
     graphic-selector(ref="graphPicker" if="{pickingBackground}" onselected="{onBackgroundGraphSelected}")
+    graphic-selector(ref="tilesetPicker" if="{pickingTileset}" onselected="{onTilesetSelected}")
     script.
         this.editingCode = false;
         this.pickingBackground = false;
@@ -93,9 +118,7 @@ room-editor.panel.view
         this.mixin(window.riotWired);
         this.updateTypeList = () => {
             this.types = [...window.currentProject.types];
-            this.types.sort((a, b) => {
-                return a.name.localeCompare(b.name);
-            });
+            this.types.sort((a, b) => a.name.localeCompare(b.name));
         };
         const fuseOptions = {
             shouldSort: true,
@@ -118,10 +141,17 @@ room-editor.panel.view
         };
         
         this.room = this.opts.room;
+        if (!('tiles' in this.room) || !this.room.tiles.length) {
+            this.room.tiles = [{
+                depth: 100,
+                tiles: []
+            }];
+        }
+        this.currentTileLayer = this.room.tiles[0];
+        this.currentTileLayerId = 0;
 
-        this.roomx = this.room.width / 2
-            this.roomx = this.room.width / 2;
-            this.roomy = this.room.height / 2;
+        this.roomx = this.room.width / 2;
+        this.roomy = this.room.height / 2;
         this.zoomFactor = 1;
         this.room.gridX = this.room.gridX || this.room.grid || 64;
         this.room.gridY = this.room.gridY || this.room.grid || 64;
@@ -186,7 +216,7 @@ room-editor.panel.view
             this.gridCanvas.x.strokeStyle = localStorage.UItheme === 'Night'? '#44dbb5' : '#446adb';
             this.gridCanvas.x.lineWidth = 1 / this.zoomFactor;
             this.gridCanvas.x.strokeRect(0.5 / this.zoomFactor, 0.5 / this.zoomFactor, this.room.gridX, this.room.gridY);
-        }
+        };
         this.roomToggleGrid = () => {
             if (this.room.gridX === 0) {
                 alertify
@@ -242,9 +272,9 @@ room-editor.panel.view
         this.yToCanvas = y => (y - this.roomy) * this.zoomFactor + ~~(this.refs.canvas.height / 2);
         
         // При клике на канвас помещает копию на соответствующий слой
-        this.onCanvasClick = e => {
+        this.onCanvasClickCopies = e => {
             // Если не выбран тип создаваемой копии, или идёт удаление копий, то ничего не делаем
-            if (this.currentType === -1 || e.ctrlKey) {
+            if ((this.currentType === -1 || e.ctrlKey) && e.button === 0) {
                 return;
             }
             var targetLayer;
@@ -280,13 +310,20 @@ room-editor.panel.view
             }
             this.refreshRoomCanvas();
         };
+        this.onCanvasClick = e => {
+            if (this.tab === 'roomcopies') {
+                this.onCanvasClickCopies(e);
+            } else if (this.tab === 'roomtiles') {
+                this.onCanvasClickTiles(e);
+            }
+        };
         /** При нажатии на канвас, если не выбрана копия, то начинаем перемещение */
         this.onCanvasPress = e => {
             this.mouseDown = true;
-            if (this.currentType === -1 && e.button === 0 && !e.ctrlKey) {
+            if ((this.currentType === -1 && e.button === 0 && !e.ctrlKey) || e.button === 1) {
                 this.dragging = true;
             }
-        }
+        };
         /** и безусловно прекращаем перемещение при отпускании мыши */
         this.onCanvasMouseUp = e => {
             this.mouseDown = false;
@@ -302,34 +339,55 @@ room-editor.panel.view
             } else if (e.ctrlKey) {
                 // При нажатии кнопки Ctrl удаляем копии под курсором
                 var maxdist = this.room.gridX || 64;
-                if (this.mouseDown && this.room.layers.length !== 0) {
-                    var type = this.room.layers[0].copies[0],
-                        pos = 0,
-                        layer, l,
-                        done = false, 
-                        fromx = this.xToRoom(e.offsetX),
-                        fromy = this.yToRoom(e.offsetY);
-                    for (let i = 0, li = this.room.layers.length; i < li; i++) {
-                        let layerCopies = this.room.layers[i].copies;
-                        for (let j = 0, lj = layerCopies.length; j < lj; j++) {
-                            let xp = layerCopies[j].x - fromx,
-                                yp = layerCopies[j].y - fromy;
+                if (this.mouseDown) {
+                    if (this.tab === 'roomcopies' && this.room.layers.length !== 0) {
+                        var type = this.room.layers[0].copies[0],
+                            pos = 0,
+                            layer, l,
+                            done = false, 
+                            fromx = this.xToRoom(e.offsetX),
+                            fromy = this.yToRoom(e.offsetY);
+                        for (let i = 0, li = this.room.layers.length; i < li; i++) {
+                            let layerCopies = this.room.layers[i].copies;
+                            for (let j = 0, lj = layerCopies.length; j < lj; j++) {
+                                let xp = layerCopies[j].x - fromx,
+                                    yp = layerCopies[j].y - fromy;
+                                l = Math.sqrt(xp * xp + yp * yp);
+                                if (l < maxdist) {
+                                    layer = i;
+                                    pos = j;
+                                    done = true;
+                                    break;
+                                }
+                            }
+                            if (done) {
+                                break;
+                            }
+                        }
+                        if (done) {
+                            this.room.layers[layer].copies.splice(pos, 1);
+                            if (this.room.layers[layer].copies.length == 0) {
+                                this.room.layers.splice(layer,1);
+                            }
+                        }
+                    } else if (this.tab === 'roomtiles' && this.currentTileLayer) {
+                        var pos = 0,
+                            l,
+                            done = false, 
+                            fromx = this.xToRoom(e.offsetX),
+                            fromy = this.yToRoom(e.offsetY);
+                        for (let j = 0, lj = this.currentTileLayer.tiles.length; j < lj; j++) {
+                            let xp = this.currentTileLayer.tiles[j].x - fromx,
+                                yp = this.currentTileLayer.tiles[j].y - fromy;
                             l = Math.sqrt(xp * xp + yp * yp);
                             if (l < maxdist) {
-                                layer = i;
                                 pos = j;
                                 done = true;
                                 break;
                             }
                         }
                         if (done) {
-                            break;
-                        }
-                    }
-                    if (done) {
-                        this.room.layers[layer].copies.splice(pos, 1);
-                        if (this.room.layers[layer].copies.length == 0) {
-                            this.room.layers.splice(layer,1);
+                            this.currentTileLayer.tiles.splice(pos, 1);
                         }
                     }
                 }
@@ -343,7 +401,7 @@ room-editor.panel.view
                 x.arc(this.xToRoom(e.offsetX), this.yToRoom(e.offsetY), maxdist, 0, 2 * Math.PI);
                 x.fill();
                 x.stroke();
-            } else if (this.currentType !== -1) {
+            } else if (this.currentType !== -1 && this.tab === 'roomcopies') {
                 let img, graph, w, h, grax, gray;
                 // превью вставки
                 this.refreshRoomCanvas(e);
@@ -368,14 +426,44 @@ room-editor.panel.view
                         e.offsetX / this.zoomFactor - grax, e.offsetY / this.zoomFactor - gray, w, h);
                 } else {
                     // если есть сетка, то координаты предварительной копии нужно отснэпить по сетке
-                    dx = this.xToRoom(e.offsetX);
-                    dy = this.yToRoom(e.offsetY);
+                    var dx = this.xToRoom(e.offsetX),
+                        dy = this.yToRoom(e.offsetY);
                     w = graph.width;
                     h = graph.height;
                     this.refs.canvas.x.drawImage(
                         img, 0, 0, w, h,
                         this.xToCanvas(dx - dx % this.room.gridX) / this.zoomFactor - grax, 
                         this.yToCanvas(dy - dy % this.room.gridY) / this.zoomFactor - gray, 
+                        w, h);
+                }
+            } else if (this.currentTileset && this.tab === 'roomtiles') {
+                // превью вставки
+                this.refreshRoomCanvas(e);
+                this.refs.canvas.x.setTransform(this.zoomFactor, 0, 0, this.zoomFactor, 0, 0);
+                this.refs.canvas.x.globalAlpha = 0.5;
+                let w, h, sx, sy,
+                    img = glob.graphmap[this.currentTileset.uid],
+                    graph = this.currentTileset;
+                sx = graph.offx + (graph.width + graph.marginx) * this.tileX - graph.marginx;
+                sy = graph.offy + (graph.height + graph.marginy) * this.tileY - graph.marginy;
+                w = (graph.width + graph.marginx) * this.tileSpanX - graph.marginx;
+                h = (graph.height + graph.marginy) * this.tileSpanY - graph.marginy;
+                if (this.room.gridX === 0 || e.altKey) {
+                    this.refs.canvas.x.drawImage(
+                        img,
+                        sx, sy, w, h,
+                        e.offsetX / this.zoomFactor,
+                        e.offsetY / this.zoomFactor,
+                        w, h);
+                } else {
+                    // если есть сетка, то координаты предварительного тайла нужно отснэпить по сетке
+                    dx = this.xToRoom(e.offsetX);
+                    dy = this.yToRoom(e.offsetY);
+                    this.refs.canvas.x.drawImage(
+                        img,
+                        sx, sy, w, h,
+                        this.xToCanvas(dx - dx % this.room.gridX) / this.zoomFactor, 
+                        this.yToCanvas(dy - dy % this.room.gridY) / this.zoomFactor, 
                         w, h);
                 }
             }
@@ -389,7 +477,7 @@ room-editor.panel.view
                     this.zoomFactor = 2;
                 } else if (this.zoomFactor === 0.5) {
                     this.zoomFactor = 1;
-                }  else if (this.zoomFactor === 0.25) {
+                } else if (this.zoomFactor === 0.25) {
                     this.zoomFactor = 0.5;
                 }
             } else {
@@ -398,7 +486,7 @@ room-editor.panel.view
                     this.zoomFactor = 1;
                 } else if (this.zoomFactor === 1) {
                     this.zoomFactor = 0.5;
-                }  else if (this.zoomFactor === 0.5) {
+                } else if (this.zoomFactor === 0.5) {
                     this.zoomFactor = 0.25;
                 }
             }
@@ -406,9 +494,9 @@ room-editor.panel.view
             this.refreshRoomCanvas(e);
             this.update();
         };
-        this.onCanvasContextMenu = e => {
+        this.onCanvasContextMenuCopies = e => {
             // Сначала ищется ближайшая к курсору копия. Если слоёв в комнате нет, то всё отменяется
-            if (this.room.layers.length == 0) return false;
+            if (!this.room.layers.length) {return false;}
             var closest = this.room.layers[0].copies[0],
                 pos = 0,
                 length = Infinity,
@@ -441,16 +529,17 @@ room-editor.panel.view
             this.refs.canvas.x.lineJoin = 'round';
             this.refs.canvas.x.strokeStyle = localStorage.UItheme === 'Night'? '#44dbb5' : '#446adb';
             this.refs.canvas.x.lineWidth = 3;
+            var left, top, height, width;
             if (type.graph !== -1) {
-                var left = copy.x - graph.axis[0] - 1.5,
-                    top = copy.y - graph.axis[1] - 1.5,
-                    height = graph.width + 3,
-                    width = + graph.height + 3;
+                left = copy.x - graph.axis[0] - 1.5;
+                top = copy.y - graph.axis[1] - 1.5;
+                height = graph.width + 3;
+                width = graph.height + 3;
             } else {
-                var left = copy.x - 16 - 1.5,
-                    top = copy.y - 16 - 1.5,
-                    height = 32 + 3,
-                    width = 32 + 3;
+                left = copy.x - 16 - 1.5;
+                top = copy.y - 16 - 1.5;
+                height = 32 + 3;
+                width = 32 + 3;
             }
             this.refs.canvas.x.strokeRect(left, top, height, width);
             this.refs.canvas.x.strokeStyle = localStorage.UItheme === 'Night'? '#1C2B42' : '#fff';
@@ -461,16 +550,22 @@ room-editor.panel.view
             setTimeout(() => {
                 this.forbidDrawing = false;
             }, 500);
-            roomCanvasMenu.items[0].label = window.languageJSON.roomview.deletecopy.replace('{0}', type.name);
-            roomCanvasMenu.popup(e.clientX, e.clientY);
+            this.roomCanvasMenu.items[0].label = window.languageJSON.roomview.deletecopy.replace('{0}', type.name);
+            this.roomCanvasMenu.popup(e.clientX, e.clientY);
             e.preventDefault();
+        };
+        this.onCanvasContextMenu = e => {
+            if (this.tab === 'roomcopies') {
+                this.onCanvasContextMenuCopies(e);
+            } else if (this.tab === 'roomtiles') {
+                this.onCanvasContextMenuTiles(e);
+            }
         };
         
         // Контекстное меню по нажатию на холст
-        roomCanvasMenu = new gui.Menu();
-        roomCanvasMenu.append(new gui.MenuItem({
+        this.roomCanvasMenu = new gui.Menu();
+        this.roomCanvasMenu.append(new gui.MenuItem({
             label: window.languageJSON.roomview.deletecopy.replace('{0}', this.closestType),
-            icon: (isMac ? '/img/black/' : '/img/blue/') + 'delete.png',
             click: () => {
                 this.room.layers[this.closestLayer].copies.splice(this.closestPos, 1);
                 if (this.room.layers[this.closestLayer].copies.length == 0) {
@@ -493,11 +588,9 @@ room-editor.panel.view
                 </label>
             `)
             .then((e, a) => {
-                console.log(e, a);
                 if (e.buttonClicked === 'ok') {
                     var dx = Number(document.getElementById('roomshiftx').value) || 0,
                         dy = Number(document.getElementById('roomshifty').value) || 0;
-                    console.log(document.getElementById('roomshiftx').value, dx, dy)
                     for (let i = 0, l = this.room.layers.length; i < l; i++) {
                         let layer = this.room.layers[i];
                         for (let j = 0, lj = layer.copies.length; j < lj; j++) {
@@ -509,8 +602,6 @@ room-editor.panel.view
                 }
             });
         };
-
-        
         
         // Работа с фонами
         this.onBackgroundGraphSelected = graph => e => {
@@ -540,7 +631,6 @@ room-editor.panel.view
         var roomBgMenu = new gui.Menu();
         roomBgMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.delete,
-            icon: (isMac ? '/img/black/' : '/img/blue/') + 'delete.png',
             click: () => {
                 this.room.backgrounds.splice(this.editedBg, 1);
                 this.refreshRoomCanvas();
@@ -567,7 +657,213 @@ room-editor.panel.view
                 }
             });
         };
+
+        // Работа с тайлами
+
+        this.tileX = 0;
+        this.tileY = 0;
+        this.tileSpanX = 1;
+        this.tileSpanY = 1;
+        this.deleteTileLayer = e => {
+            var index = this.room.tiles.indexOf(this.currentTileLayer);
+            this.room.tiles.splice(index, 1);
+            if (this.room.tiles.length) {
+                this.currentTileLayer = this.room.tiles[0];
+                this.currentTileLayerId = 0;
+            } else {
+                this.currentTileLayer = false;
+            }
+            this.refreshRoomCanvas();
+            this.update();
+        };
+        this.moveTileLayer = e => {
+            alertify
+            .defaultValue(this.currentTileLayer.depth)
+            .prompt(window.languageJSON.roomview.newdepth)
+            .then(ee => {
+                if (ee.inputValue && Number(ee.inputValue)) {
+                    this.currentTileLayer.depth = Number(ee.inputValue);
+                    this.refreshRoomCanvas();
+                    this.update();
+                }
+            });
+        };
+        this.addTileLayer = e => {
+            alertify
+            .defaultValue(100)
+            .prompt(window.languageJSON.roomview.newdepth)
+            .then(ee => {
+                if (ee.inputValue && Number(ee.inputValue)) {
+                    var layer = {
+                        depth: Number(ee.inputValue),
+                        tiles: []
+                    };
+                    this.room.tiles.push(layer);
+                    this.currentTileLayer = layer;
+                    this.currentTileLayerId = this.room.tiles.length - 1;
+                    this.update();
+                }
+            });
+        };
+        this.changeTileLayer = e => {
+            this.currentTileLayer = e.item.layer;
+            this.currentTileLayerId = e.item.ind;
+        };
+        this.switchTiledImage = e => {
+            this.pickingTileset = true;
+        };
+        this.onTilesetSelected = graph => e => {
+            this.currentTileset = graph;
+            this.pickingTileset = false;
+            this.redrawTileset();
+            this.update();
+        };
+
+        this.redrawTileset = e => {
+            var c = this.refs.tiledImage,
+                cx = c.getContext('2d'),
+                g = this.currentTileset,
+                i = glob.graphmap[g.uid];
+            c.width = i.width;
+            c.height = i.height;
+            cx.globalAlpha = 1;
+            cx.drawImage(i, 0, 0);
+            cx.strokeStyle = '#0ff';
+            cx.lineWidth = 1;
+            cx.globalAlpha = 0.5;
+            cx.globalCompositeOperation = 'exclusion';
+            for (let i = 0, l = Math.min(g.grid[0] * g.grid[1], g.untill || Infinity); i < l; i++) {
+                let xx = i % g.grid[0],
+                    yy = Math.floor(i / g.grid[0]),
+                    x = g.offx + xx * (g.marginx + g.width),
+                    y = g.offy + yy * (g.marginy + g.height),
+                    w = g.width,
+                    h = g.height;
+                cx.strokeRect(x, y, w, h);
+            }
+            cx.globalCompositeOperation = 'source-over';
+            cx.globalAlpha = 1;
+            cx.lineJoin = 'round';
+            cx.strokeStyle = localStorage.UItheme === 'Night'? '#44dbb5' : '#446adb';
+            cx.lineWidth = 3;
+            let selX = g.offx + this.tileX*(g.width + g.marginx),
+                selY = g.offy + this.tileY*(g.height + g.marginy),
+                selW = g.width * this.tileSpanX + g.marginx * (this.tileSpanX - 1),
+                selH = g.height * this.tileSpanY + g.marginy * (this.tileSpanY - 1);
+            cx.strokeRect(-0.5 + selX, -0.5 + selY, selW + 1, selH + 1);
+            cx.strokeStyle = localStorage.UItheme === 'Night'? '#1C2B42' : '#fff';
+            cx.lineWidth = 1;
+            cx.strokeRect(-0.5 + selX, -0.5 + selY, selW + 1, selH + 1);
+        };
         
+        this.startTileSelection = e => {
+            if (!this.currentTileset) {return;}
+            var g = this.currentTileset;
+            this.tileSpanX = 1;
+            this.tileSpanY = 1;
+            this.selectingTile = true;
+            this.tileStartX = Math.round((e.layerX - g.offx - g.width*0.5) / (g.width+g.marginx)); 
+            this.tileStartX = Math.max(0, Math.min(g.grid[0], this.tileStartX));
+            this.tileStartY = Math.round((e.layerY - g.offy - g.height*0.5) / (g.height+g.marginy)); 
+            this.tileStartY = Math.max(0, Math.min(g.grid[1], this.tileStartY));
+            this.tileX = this.tileStartX;
+            this.tileY = this.tileStartY;
+            this.redrawTileset();
+        };
+        this.moveTileSelection = e => {
+            if (!this.selectingTile) {return;}
+            var g = this.currentTileset;
+            this.tileEndX = Math.round((e.layerX - g.offx - g.width*0.5) / (g.width+g.marginx)); 
+            this.tileEndX = Math.max(0, Math.min(g.grid[0], this.tileEndX));
+            this.tileEndY = Math.round((e.layerY - g.offy - g.height*0.5) / (g.height+g.marginy)); 
+            this.tileEndY = Math.max(0, Math.min(g.grid[1], this.tileEndY));
+            this.tileSpanX = 1 + Math.abs(this.tileStartX - this.tileEndX);
+            this.tileSpanY = 1 + Math.abs(this.tileStartY - this.tileEndY);
+            this.tileX = Math.min(this.tileStartX, this.tileEndX);
+            this.tileY = Math.min(this.tileStartY, this.tileEndY);
+            this.redrawTileset();
+        };
+        this.stopTileSelection = e => {
+            if (!this.selectingTile) {return;}
+            this.moveTileSelection(e);
+            this.selectingTile = false;
+        };
+        this.onCanvasClickTiles = e => {
+            if ((!this.currentTileset || e.ctrlKey) && e.button === 0) {
+                return;
+            }
+            if (this.room.gridX == 0 || e.altKey) {
+                this.currentTileLayer.tiles.push({
+                    x: ~~(this.xToRoom(e.offsetX)),
+                    y: ~~(this.yToRoom(e.offsetY)),
+                    graph: this.currentTileset.uid,
+                    grid: [this.tileX, this.tileY, this.tileSpanX, this.tileSpanY]
+                });
+            } else {
+                var x = ~~(this.xToRoom(e.offsetX)),
+                    y = ~~(this.yToRoom(e.offsetY));
+                this.currentTileLayer.tiles.push({
+                    x: x - (x % this.room.gridX),
+                    y: y - (y % this.room.gridY),
+                    graph: this.currentTileset.uid,
+                    grid: [this.tileX, this.tileY, this.tileSpanX, this.tileSpanY]
+                });
+            }
+            this.refreshRoomCanvas();
+        };
+        
+        // Контекстное меню по нажатию на холст
+        this.roomCanvasTileMenu = new gui.Menu();
+        this.roomCanvasTileMenu.append(new gui.MenuItem({
+            label: window.languageJSON.roomview.deletetile,
+            click: () => {
+                this.currentTileLayer.tiles.splice(this.closestPos, 1);
+                this.refreshRoomCanvas();
+            },
+            key: 'Delete'
+        }));
+        this.onCanvasContextMenuTiles = e => {
+            // Сначала ищется ближайшая к курсору копия. Если слоёв в комнате нет, то всё отменяется
+            if (!this.room.tiles.length || !this.currentTileLayer.tiles.length) {return false;}
+            var pos = 0,
+                length = Infinity,
+                l,
+                fromx = this.xToRoom(e.offsetX),
+                fromy = this.yToRoom(e.offsetY);
+            for (let i = 0, li = this.currentTileLayer.tiles.length; i < li; i++) {
+                let xp = this.currentTileLayer.tiles[i].x - fromx,
+                    yp = this.currentTileLayer.tiles[i].y - fromy;
+                l = Math.sqrt(xp * xp + yp * yp);
+                if (l < length) {
+                    length = l;
+                    pos = i;
+                }
+            }
+            var tile = this.currentTileLayer.tiles[pos],
+                graph = glob.graphmap[tile.graph].g;
+            this.closestPos = pos;
+            // рисовка выделения тайла
+            this.refreshRoomCanvas();
+            this.refs.canvas.x.lineJoin = 'round';
+            this.refs.canvas.x.strokeStyle = localStorage.UItheme === 'Night'? '#44dbb5' : '#446adb';
+            this.refs.canvas.x.lineWidth = 3;
+            var left = tile.x - 1.5,
+                top = tile.y - 1.5,
+                height = ((graph.width + graph.marginx) * tile.grid[2]) - graph.marginx + 3,
+                width = ((graph.height + graph.marginy) * tile.grid[3]) - graph.marginy + 3;
+            this.refs.canvas.x.strokeRect(left, top, height, width);
+            this.refs.canvas.x.strokeStyle = localStorage.UItheme === 'Night'? '#1C2B42' : '#fff';
+            this.refs.canvas.x.lineWidth = 1;
+            this.refs.canvas.x.strokeRect(left, top, height, width);
+    
+            this.forbidDrawing = true;
+            setTimeout(() => {
+                this.forbidDrawing = false;
+            }, 500);
+            this.roomCanvasTileMenu.items[0].label = window.languageJSON.roomview.deletetile;
+            this.roomCanvasTileMenu.popup(e.clientX, e.clientY);
+            e.preventDefault();
+        };
         
         /** Сохранение комнаты (по факту, лишь помечает проект как несохранённый и закрывает редактор) */
         this.roomSave = e => {
@@ -583,7 +879,7 @@ room-editor.panel.view
                 window.glob.modified = true;
                 this.parent.editing = false;
                 this.parent.update();
-            })
+            });
         };
         
         /** Прорисовка холста */
@@ -609,25 +905,25 @@ room-editor.panel.view
             canvas.x.translate(-this.roomx, -this.roomy);
             canvas.x.imageSmoothingEnabled = !currentProject.settings.pixelatedrender;
             
-            // Сделаем массив слоёв и фонов, и копий. У копий приоритет
+            // Сделаем массив слоёв фонов, тайлов и копий. У копий приоритет
             var hybrid = [];
-            hybrid = this.room.layers.concat(this.room.backgrounds);
+            hybrid = this.room.layers.concat(this.room.backgrounds).concat(this.room.tiles);
             hybrid.sort((a, b) => {
                 if (a.depth - b.depth != 0) {
                     return a.depth - b.depth;
-                } else {
-                    if (a.copies) {
-                        return 1;
-                    } else {
-                        return -1;
-                    }
+                } 
+                if (a.copies) {
+                    return 1;
                 }
-                return 0;
+                if (a.tiles) {
+                    return -0.5;
+                }
+                return -1;
             });
-            if (hybrid.length > 0) { //есть слои вообще?
+            if (hybrid.length > 0) { // есть слои вообще?
                 // копии
                 for (let i = 0, li = hybrid.length; i < li; i++) {
-                    if (hybrid[i].copies) { // Если есть поле с копиями, то это не слой-фон
+                    if (hybrid[i].copies) { // Если есть поле с копиями, то это не слой-фон и не тайлы
                         let layer = hybrid[i];
                         for (let j = 0, lj = layer.copies.length; j < lj; j++) {
                             let copy = layer.copies[j],
@@ -651,14 +947,28 @@ room-editor.panel.view
                                 copy.x - grax, copy.y - gray, w, h
                             );
                         }
-                    } else { // это слой-фон
-                        if (hybrid[i].graph !== -1) {
-                            canvas.x.fillStyle = canvas.x.createPattern(glob.graphmap[hybrid[i].graph], 'repeat');
-                            canvas.x.fillRect(
-                                this.xToRoom(0), this.yToRoom(0),
-                                canvas.width / this.zoomFactor, canvas.height / this.zoomFactor
+                    } else if (hybrid[i].tiles) { // это слой с тайлами
+                        let layer = hybrid[i];
+                        for (let tile of layer.tiles) {
+                            let w, h, x, y,
+                                img = glob.graphmap[tile.graph],
+                                graph = img.g;
+                            x = graph.offx + (graph.width + graph.marginx) * tile.grid[0] - graph.marginx;
+                            y = graph.offy + (graph.height + graph.marginy) * tile.grid[1] - graph.marginy;
+                            w = (graph.width + graph.marginx) * tile.grid[2] - graph.marginx;
+                            h = (graph.height + graph.marginy) * tile.grid[3] - graph.marginy;
+                            canvas.x.drawImage(
+                                img,
+                                x, y, w, h,
+                                tile.x, tile.y, w, h
                             );
                         }
+                    } else if (hybrid[i].graph !== -1) { // это слой-фон
+                        canvas.x.fillStyle = canvas.x.createPattern(glob.graphmap[hybrid[i].graph], 'repeat');
+                        canvas.x.fillRect(
+                            this.xToRoom(0), this.yToRoom(0),
+                            canvas.width / this.zoomFactor, canvas.height / this.zoomFactor
+                        );
                     }
                 }
             }
@@ -710,7 +1020,7 @@ room-editor.panel.view
                     this.refs.canvas.width*k,
                     this.refs.canvas.height*k
                 );
-                var data = c.toDataURL().replace(/^data:image\/\w+;base64,/, "");
+                var data = c.toDataURL().replace(/^data:image\/\w+;base64,/, '');
                 var buf = new Buffer(data, 'base64');
                 var nam = sessionStorage.projdir + '/img/r' + this.room.thumbnail + '.png';
                 fs.writeFile(nam, buf, function(err) {
