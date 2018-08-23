@@ -30,8 +30,8 @@ ct.styles = {
                     graph.frames[0][1],
                     graph.width,
                     graph.height,
-                    x - graph.x - ct.rooms.current.x,
-                    y - graph.y - ct.rooms.current.y,
+                    0,
+                    0,
                     graph.width,
                     graph.height);
                 style.fillStyle = ct.x.createPattern(canv, 'repeat');
