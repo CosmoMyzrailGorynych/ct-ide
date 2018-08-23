@@ -100,7 +100,7 @@ graphic-editor.panel.view
                 span(ref="graphviewframe") 0 / 1
                 br
                 b {voc.speed}
-                input#grahpspeed.short(type="number" value="{prevSpeed}" onchange="{wire(this.prevSpeed)}")
+                input#grahpspeed.short(type="number" value="{prevSpeed}" onchange="{wire('this.prevSpeed')}")
             .relative
                 button#graphcolor.inline.wide(onclick="{changeGraphicPreviewColor}")
                     i.icon-drop
