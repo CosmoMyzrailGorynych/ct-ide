@@ -22,7 +22,7 @@ style-editor.panel.view
                     br
                     b {voc.fontsize}
                     br
-                    input#fontsize.short(type="number" value="{styleobj.font.size || '12'}" onchange="{wire('this.styleobj.font.size')}" step="1")
+                    input#fontsize.short(type="number" value="{styleobj.font.size || '12'}" onchange="{wire('this.styleobj.font.size')}" oninput="{wire('this.styleobj.font.size')}" step="1")
                     #fontsizeslider
                     label
                         b {voc.fontweight}
@@ -106,7 +106,7 @@ style-editor.panel.view
                         br
                         b {voc.fillgradsize}
                         br
-                        input#fillgradsize(type="number" name="fillgradsize" value="{styleobj.fill.gradsize}" onchange="{wire('this.styleobj.fill.gradsize')}")
+                        input#fillgradsize(type="number" name="fillgradsize" value="{styleobj.fill.gradsize}" onchange="{wire('this.styleobj.fill.gradsize')}" oninput="{wire('this.styleobj.fill.gradsize')}")
                         #gradsizeslider
                     .pattern(if="{styleobj.fill.type == 2}")
                         button.nml.inline(onclick="{styleFindPattern}")
@@ -122,7 +122,7 @@ style-editor.panel.view
                     br
                     b {voc.strokeweight}
                     br
-                    input#strokeweight(type="number" value="{styleobj.stroke.weight}" onchange="{wire('this.styleobj.stroke.weight')}")
+                    input#strokeweight(type="number" value="{styleobj.stroke.weight}" onchange="{wire('this.styleobj.stroke.weight')}" oninput="{wire('this.styleobj.stroke.weight')}")
                     #strokeweightslider
             #styleshadow.tabbed(show="{tab === 'styleshadow'}")
                 label
@@ -134,14 +134,14 @@ style-editor.panel.view
                     br
                     b {voc.shadowshift}
                     br
-                    input#shadowx.short(type="number" value="{styleobj.shadow.x}" onchange="{wire('this.styleobj.shadow.x')}")
+                    input#shadowx.short(type="number" value="{styleobj.shadow.x}" onchange="{wire('this.styleobj.shadow.x')}" oninput="{wire('this.styleobj.shadow.x')}")
                     | ×
-                    input#shadowy.short(type="number" value="{styleobj.shadow.y}" onchange="{wire('this.styleobj.shadow.y')}")
+                    input#shadowy.short(type="number" value="{styleobj.shadow.y}" onchange="{wire('this.styleobj.shadow.y')}" oninput="{wire('this.styleobj.shadow.y')}")
                     br
                     br
                     b {voc.shadowblur}
                     br
-                    input#shadowblur(type="number" value="{styleobj.shadow.blur}" onchange="{wire('this.styleobj.shadow.blur')}")
+                    input#shadowblur(type="number" value="{styleobj.shadow.blur}" min="0" onchange="{wire('this.styleobj.shadow.blur')}" oninput="{wire('this.styleobj.shadow.blur')}")
                     #shadowblurslider
         .flexfix-footer
             button.wide.nogrow.noshrink(onclick="{styleSave}")
