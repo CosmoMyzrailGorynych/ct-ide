@@ -194,8 +194,8 @@ ct.styles.new(
             
             var roomCopy = JSON.parse(JSON.stringify(r.layers));
             var objs = [];
-            for (var layer in roomCopy) {
-                for (var copy in roomCopy[layer].copies) {
+            for (const layer in roomCopy) {
+                for (const copy in roomCopy[layer].copies) {
                     if (roomCopy[layer].copies[copy]) {
                         roomCopy[layer].copies[copy].type = window.currentProject.types[window.glob.typemap[roomCopy[layer].copies[copy].uid]].name;
                         delete roomCopy[layer].copies[copy].uid;
@@ -208,6 +208,31 @@ ct.styles.new(
                 bgsCopy[bg].graph = window.glob.graphmap[bgsCopy[bg].graph].g.name;
                 bgsCopy[bg].depth = Number(bgsCopy[bg].depth);
             }
+
+            var tileLayers = [];
+            /* eslint {max-depth: off} */
+            if (r.tiles) {
+                for (const tileLayer of r.tiles) {
+                    const layer = {
+                        depth: tileLayer.depth,
+                        tiles: []
+                    };
+                    for (const tile of tileLayer.tiles) {
+                        for (let x = 0; x < tile.grid[2]; x++) {
+                            for (let y = 0; y < tile.grid[3]; y++) {
+                                const graph = window.glob.graphmap[tile.graph].g;
+                                layer.tiles.push({
+                                    graph: graph.name,
+                                    frame: tile.grid[0] + x + (y+tile.grid[1])*graph.grid[0],
+                                    x: tile.x + x*(graph.width + graph.marginx),
+                                    y: tile.y + y*(graph.width + graph.marginy)
+                                });
+                            }
+                        }
+                    }
+                    tileLayers.push(layer);
+                }
+            }
             
             roomsCode += `
 ct.rooms['${r.name}'] = {
@@ -215,6 +240,7 @@ ct.rooms['${r.name}'] = {
     height: ${r.height},
     objects: ${JSON.stringify(objs, null, '    ')},
     bgs: ${JSON.stringify(bgsCopy, null, '    ')},
+    tiles: ${JSON.stringify(tileLayers, null, '    ')},
     onStep() {
         ${window.currentProject.rooms[k].onstep}
     },
@@ -232,7 +258,7 @@ ct.rooms['${r.name}'] = {
         return roomsCode;
     };
 
-    window.runCtProject = () => new Promise(resolve => {
+    window.runCtProject = () => new Promise((resolve, reject) => {
         // glob.compileAudio = 0;
         if (window.currentProject.rooms.length < 1) {
             window.alertify.error(window.languageJSON.common.norooms);
@@ -425,15 +451,26 @@ ct.rooms['${r.name}'] = {
         }
 
         /* финализация скрипта */
-        const UglifyJS = require('uglify-js');
-        fs.writeFileSync(exec + '/export/ct.js', buffer);
+        const terser = require('terser');
         if (window.currentProject.settings.minifyjs) {
-            var mini = UglifyJS.minify(exec + '/export/ct.js', {
-                mangle: false
+            var mini = terser.minify(buffer, {
+                mangle: true,
+                output: {
+                    beautify: false,
+                    preamble: '/* Made with ct.js http://ctjs.rocks/ */\n',
+                    webkit: true
+                }
             });
-            fs.writeFileSync(exec + '/export/ct.min.js', mini);
+            if (mini.error) {
+                console.error(mini.error);
+                reject(mini.error);
+            } else {
+                fs.writeFileSync(exec + '/export/ct.js', mini.code);
+            }
+        } else {
+            fs.writeFileSync(exec + '/export/ct.js', buffer);
         }
-
+        
         /* HTML & CSS */
         fs.writeFileSync(exec + '/export/index.html', fs.readFileSync('./ct.release/index.html', {
             'encoding': 'utf8'

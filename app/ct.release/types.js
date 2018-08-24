@@ -114,3 +114,16 @@ ct.types.BACKGROUND = {
     },
     onDestroy() {void 0;}
 };
+ct.types.TILELAYER = {
+    onStep() {void 0;},
+    onDraw() {
+        for (let i = 0, l = this.tiles.length; i < l; i++) {
+            //console.log('I try to draw');
+            ct.draw.image(this.tiles[i].graph, this.tiles[i].frame, this.tiles[i].x, this.tiles[i].y);
+        }
+    },
+    onCreate() {
+        this.uid = -1;
+    },
+    onDestroy() {void 0;}
+};

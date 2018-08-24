@@ -4,12 +4,13 @@ graphic-editor.panel.view
             b {voc.name}
             br
             input.wide(type="text" value="{opts.graphic.name}" onchange="{wire('this.graphic.name')}")
+            .anErrorNotice(if="{nameTaken}") {vocGlob.nametaken}
             br
             b {voc.center}
             .flexrow
-                input.short(type="number" value="{opts.graphic.axis[0]}" onchange="{wire('this.graphic.axis.0')}")
+                input.short(type="number" value="{opts.graphic.axis[0]}" onchange="{wire('this.graphic.axis.0')}" oninput="{wire('this.graphic.axis.0')}")
                 span.center   ×  
-                input.short(type="number" value="{opts.graphic.axis[1]}" onchange="{wire('this.graphic.axis.1')}")
+                input.short(type="number" value="{opts.graphic.axis[1]}" onchange="{wire('this.graphic.axis.1')}" oninput="{wire('this.graphic.axis.1')}")
             br
             button.wide(onclick="{graphicCenter}")
                 span   {voc.setcenter}
@@ -27,16 +28,16 @@ graphic-editor.panel.view
             div(if="{opts.graphic.shape === 'circle'}")
                 b {voc.radius}
                 br
-                input.wide(type="number" value="{opts.graphic.r}" onchange="{wire('this.graphic.r')}")
+                input.wide(type="number" value="{opts.graphic.r}" onchange="{wire('this.graphic.r')}" oninput="{wire('this.graphic.r')}")
             div(if="{opts.graphic.shape === 'rect'}")
                 .center
-                    input.short(type="number" value="{opts.graphic.top}" onchange="{wire('this.graphic.top')}")
+                    input.short(type="number" value="{opts.graphic.top}" onchange="{wire('this.graphic.top')}" oninput="{wire('this.graphic.top')}")
                     br
-                    input.short(type="number" value="{opts.graphic.left}" onchange="{wire('this.graphic.left')}")
+                    input.short(type="number" value="{opts.graphic.left}" onchange="{wire('this.graphic.left')}" oninput="{wire('this.graphic.left')}")
                     span   ×  
-                    input.short(type="number" value="{opts.graphic.right}" onchange="{wire('this.graphic.right')}")
+                    input.short(type="number" value="{opts.graphic.right}" onchange="{wire('this.graphic.right')}" oninput="{wire('this.graphic.right')}")
                     br
-                    input.short(type="number" value="{opts.graphic.bottom}" onchange="{wire('this.graphic.bottom')}")
+                    input.short(type="number" value="{opts.graphic.bottom}" onchange="{wire('this.graphic.bottom')}" oninput="{wire('this.graphic.bottom')}")
                 br
                 button.wide(onclick="{graphicFillRect}")
                     i.icon-maximize
@@ -50,42 +51,42 @@ graphic-editor.panel.view
             .fifty.np
                 b {voc.cols}
                 br
-                input.wide(type="number" value="{opts.graphic.grid[0]}" onchange="{wire('this.graphic.grid.0')}")
+                input.wide(type="number" value="{opts.graphic.grid[0]}" onchange="{wire('this.graphic.grid.0')}" oninput="{wire('this.graphic.grid.0')}")
             .fifty.np
                 b {voc.rows}
                 br
-                input.wide(type="number" value="{opts.graphic.grid[1]}" onchange="{wire('this.graphic.grid.1')}")
+                input.wide(type="number" value="{opts.graphic.grid[1]}" onchange="{wire('this.graphic.grid.1')}" oninput="{wire('this.graphic.grid.1')}")
             .clear
             .fifty.np
                 b {voc.width}
                 br
-                input.wide(type="number" value="{opts.graphic.width}" onchange="{wire('this.graphic.width')}")
+                input.wide(type="number" value="{opts.graphic.width}" onchange="{wire('this.graphic.width')}" oninput="{wire('this.graphic.width')}")
             .fifty.np
                 b {voc.height}
                 br
-                input.wide(type="number" value="{opts.graphic.height}" onchange="{wire('this.graphic.height')}")
+                input.wide(type="number" value="{opts.graphic.height}" onchange="{wire('this.graphic.height')}" oninput="{wire('this.graphic.height')}")
             .clear
             .fifty.np
                 b {voc.marginx}
                 br
-                input.wide(type="number" value="{opts.graphic.marginx}" onchange="{wire('this.graphic.marginx')}")
+                input.wide(type="number" value="{opts.graphic.marginx}" onchange="{wire('this.graphic.marginx')}" oninput="{wire('this.graphic.marginx')}")
             .fifty.np
                 b {voc.marginy}
                 br
-                input.wide(type="number" value="{opts.graphic.marginy}" onchange="{wire('this.graphic.marginy')}")
+                input.wide(type="number" value="{opts.graphic.marginy}" onchange="{wire('this.graphic.marginy')}" oninput="{wire('this.graphic.marginy')}")
             .clear
             .fifty.np
                 b {voc.offx}
                 br
-                input.wide(type="number" value="{opts.graphic.offx}" onchange="{wire('this.graphic.offx')}")
+                input.wide(type="number" value="{opts.graphic.offx}" onchange="{wire('this.graphic.offx')}" oninput="{wire('this.graphic.offx')}")
             .fifty.np
                 b {voc.offy}
                 br
-                input.wide(type="number" value="{opts.graphic.offy}" onchange="{wire('this.graphic.offy')}")
+                input.wide(type="number" value="{opts.graphic.offy}" onchange="{wire('this.graphic.offy')}" oninput="{wire('this.graphic.offy')}")
             .clear
             b {voc.frames}
             br
-            input#graphframes.wide(type="number" value="{opts.graphic.untill}" onchange="{wire('this.graphic.untill')}")
+            input#graphframes.wide(type="number" value="{opts.graphic.untill}" onchange="{wire('this.graphic.untill')}" oninput="{wire('this.graphic.untill')}")
         .preview.bordertop.flexfix-footer
             #preview(ref="preview" style="background-color: {previewColor};")
                 canvas(ref="grprCanvas")
@@ -99,7 +100,7 @@ graphic-editor.panel.view
                 span(ref="graphviewframe") 0 / 1
                 br
                 b {voc.speed}
-                input#grahpspeed.short(type="number" value="{prevSpeed}" onchange="{wire(this.prevSpeed)}")
+                input#grahpspeed.short(type="number" min="1" value="{prevSpeed}" onchange="{wire('this.prevSpeed')}" oninput="{wire('this.prevSpeed')}")
             .relative
                 button#graphcolor.inline.wide(onclick="{changeGraphicPreviewColor}")
                     i.icon-drop
@@ -155,7 +156,8 @@ graphic-editor.panel.view
         this.namespace = 'graphview';
         this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
-        
+
+        this.nameTaken = false;
         this.prevPlaying = true;
         this.prevPos = 0;
         this.prevSpeed = 10;
@@ -184,6 +186,15 @@ graphic-editor.panel.view
                 this.graphicSave();
             };
             img.src = path.join('file://', sessionStorage.projdir, '/img/', graphic.origname) + '?' + Math.random();
+        });
+        this.on('update', () => {
+            if (window.currentProject.graphs.find(graph => 
+                this.graphic.name === graph.name && this.graphic !== graph
+            )) {
+                this.nameTaken = true;
+            } else {
+                this.nameTaken = false;
+            }
         });
         this.on('updated', () => {
             this.refreshGraphCanvas();

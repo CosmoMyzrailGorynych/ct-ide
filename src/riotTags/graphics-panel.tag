@@ -280,10 +280,13 @@ graphics-panel.panel.view
                 .then(e => {
                     if (e.buttonClicked === 'ok') {
                         window.currentProject.graphs.splice(this.currentGraphicId,1);
+                        this.updateList();
                         this.update();
+                        alertify
+                        .okBtn(window.languageJSON.common.ok)
+                        .cancelBtn(window.languageJSON.common.cancel);
                     }
-                })
-                .reset();
+                });
             }
         }));
         /**

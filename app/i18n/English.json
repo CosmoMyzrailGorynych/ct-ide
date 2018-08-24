@@ -11,6 +11,7 @@
         "projectPalette": "Project's Palette"
     },
     "common": {
+        "add": "Add",
         "addtonotes": "Add to notes",
         "apply": "Apply",
         "cancel": "Cancel",
@@ -27,6 +28,7 @@
         "fastimport": "Fast Import",
         "language": "Language",
         "name": "Name:",
+        "nametaken": "This name is already taken",
         "newname": "New name:",
         "newversion": "# New version is avaliable\n",
         "no": "No",
@@ -245,7 +247,9 @@
         "leave": "On Leave",
         "draw": "Draw",
         "newdepth": "New depth:",
-        "deletecopy": "Delete copy {0}"
+        "deletecopy": "Delete copy {0}",
+        "deletetile": "Delete a tile",
+        "findTileset": "Find a Tileset"
     },
     "notepad" : {
         "local": "Project's notepad",

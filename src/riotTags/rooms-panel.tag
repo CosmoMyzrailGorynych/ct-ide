@@ -175,13 +175,16 @@ rooms-panel.panel.view
             label: window.languageJSON.common.delete,
             click: () => {
                 alertify
-                .confirm(window.languageJSON.common.confirmDelete.replace('{0}', currentRoom.name))
+                .confirm(window.languageJSON.common.confirmDelete.replace('{0}', this.editingRoom.name))
                 .then(e => {
                     if (e.buttonClicked === 'ok') {
                         var ind = window.currentProject.rooms.indexOf(this.editingRoom);
                         window.currentProject.rooms.splice(ind, 1);
                         this.updateList();
                         this.update();
+                        alertify
+                        .okBtn(window.languageJSON.common.ok)
+                        .cancelBtn(window.languageJSON.common.cancel);
                     }
                 });
             }

@@ -1,6 +1,15 @@
 room-editor
     display flex
     flex-direction row
+    .aSearchWrap
+        display block
+        flex 1 1 100%
+        margin 0 0 3px 0
+        input
+            box-sizing border-box
+            width 100%
+            font-size 90%
+            border-radius 0
     .toolbar
         display flex
         flex-direction column
@@ -9,6 +18,9 @@ room-editor
         box-sizing border-box
         flex 1 1 auto
         flex-grow 0
+        resize horizontal
+        .settings .fifty
+            padding 0.5rem
         .palette
             flex 1 1 auto
         .settings button
@@ -52,12 +64,12 @@ room-editor
             width 100%
             height 100%
 
-.room-editor-TypeSwatches, .room-editor-Backgrounds
+.room-editor-TypeSwatches, .room-editor-Backgrounds, .room-editor-Tiles
     overflow-y scroll
     position absolute
     width 100%
 .room-editor-TypeSwatches
-    padding 0 !important
+    padding 0 0 0 1px !important
     display flex
     flex-flow row wrap
     align-content start
@@ -65,29 +77,40 @@ room-editor
 .room-editor-aTypeSwatch
     list-style none
     border 1px solid bl
-    width 76px
+    flex 1 0 5rem
     display inline-block
     box-sizing border-box
     text-align center
-    margin 1px
-    border-radius br
+    margin -1px 0 0 -1px
     cursor pointer
-    padding 0 0.4em
+    padding 1.75rem .4em 0
     font-size 80%
     line-height 1.7
     {trans}
-    span
+    position: relative
+    z-index 1
+    span    
         display block
         text-overflow ellipsis
         overflow hidden
+        width auto
+        position absolute
+        left 0.5rem
+        top 0.25rem
+        right 0.5rem
     &:hover
         border-color act
+        z-index 10
         {transshort}
     &.active
         border-color accent1
+        z-index 10
     img
         height 64px
         width 64px
+    &.filler
+        height 0px
+        visibility hidden
 
 .room-editor-Backgrounds
     padding 0.5em
@@ -116,3 +139,7 @@ room-editor
             display inline-block
             vertical-align middle
             margin-top 1em
+
+.room-editor-Tiles
+    canvas
+        cursor pointer

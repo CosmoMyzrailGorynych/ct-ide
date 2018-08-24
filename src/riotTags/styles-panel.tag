@@ -164,6 +164,8 @@ styles-panel.panel.view
             label: window.languageJSON.common.delete,
             click: () => {
                 alertify
+                .okBtn(window.languageJSON.common.delete)
+                .cancelBtn(window.languageJSON.common.cancel)
                 .confirm(window.languageJSON.common.confirmDelete.replace('{0}', this.editedStyle.name))
                 .then(e => {
                     if (e.buttonClicked === 'ok') {
@@ -171,6 +173,9 @@ styles-panel.panel.view
                         window.currentProject.styles.splice(ind, 1);
                         this.updateList();
                         this.update();
+                        alertify
+                        .okBtn(window.languageJSON.common.ok)
+                        .cancelBtn(window.languageJSON.common.cancel);
                     }
                 });
             }

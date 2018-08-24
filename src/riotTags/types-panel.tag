@@ -173,6 +173,8 @@ types-panel.panel.view
             icon: (window.isMac ? '/img/black/' : '/img/blue/') + 'delete.png',
             click: () => {
                 alertify
+                .okBtn(window.languageJSON.common.delete)
+                .cancelBtn(window.languageJSON.common.cancel)
                 .confirm(window.languageJSON.common.confirmDelete.replace('{0}', this.currentType.name))
                 .then(e => {
                     if (e.buttonClicked === 'ok') {
@@ -181,6 +183,9 @@ types-panel.panel.view
                         this.updateList();
                         this.fillTypeMap();
                         this.update();
+                        alertify
+                        .okBtn(window.languageJSON.common.ok)
+                        .cancelBtn(window.languageJSON.common.cancel);
                     }
                 });
             }

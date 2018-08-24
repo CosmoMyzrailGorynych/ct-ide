@@ -150,3 +150,25 @@
 sounds-panel, rooms-panel
     .cards li img:hover
         background none
+
+.anErrorNotice
+    background mix(error, white, 10%)
+    border 1px solid error
+    border-radius br
+    padding 0.5rem 1rem
+    line-height 1.5
+    position absolute
+    margin-top 0.5rem
+    color error
+    z-index 100
+    &::before
+        background mix(error, white, 10%)
+        content ''
+        left 0.5rem
+        top -0.33rem
+        position absolute
+        width 0.5rem
+        height 0.5rem
+        border-left 1px solid error
+        border-top 1px solid error
+        transform rotate(45deg)

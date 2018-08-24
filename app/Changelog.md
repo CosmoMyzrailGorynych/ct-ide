@@ -1,3 +1,86 @@
+
+## v0.3.1
+
+*24 August 2018*
+
+### ⚡ General Improvements
+
+* Rectangular grids in room editor
+
+### ✨ New Features
+
+* Support for tilesets! **An early version, EXPERIMENTAL**
+
+### 🐛 Bug Fixes
+
+* Fix a bug preventing picking a background
+* Fix a bug preventing to delete a room with a context menu
+* Fix FPS input in graph editor not working
+* Fix modal dialogues with 'Delete' labels instead of 'Ok'
+* Replace JS minifier to support ES6
+
+### 💄 UI Improvements
+
+* Changes to number fields in style and graphic editors now affect preview panes instantly
+* Search and sorting for room editor with minor UI improvements
+* Show a warning when using duplicate names in assets
+
+## v0.3.0
+
+*17 August 2018*
+
+### ⚡ General Improvements
+
+- Add ct.draw.img as an alias to ct.draw.image
+- Add optional x and y parameters to ct.draw()
+- Git-friendly asset identifiers
+- Make x and y in ct.types.copy optional
+- Pre-initialize ct.types.list with empty arrays for each type
+- Support new Keyboard API standard
+- Update mouse position each frame
+- Update mouse position each frame; better ct.mouse.imside resolution
+
+### ✨ New Features
+
+- 💄 Dark theme!
+- Add a ct.sprite catmod
+
+### 🐛 Bug Fixes
+
+- Enable code checking in editors
+- Fix an error in module.json of ct.canvas module
+- Fix bugs when cancelling the an asset's duplicate creation
+- Fix flipped orientation in ct.draw.imgext
+- Fix pattern drawing with styles
+- Fix pixelated render not fully working
+- Fix styles' line width not exported correctly
+- Fix texture selection in the styles editor
+- Room size must be exported as numerical values
+- Update the graphic asset in the editor's memory after replacing its source
+
+### 💄 UI Improvements
+
+- Add a "Copy the name" option to assets' context menus
+- Better modal dialogues
+- Custom Scrollbars
+- Different minor UI improvements
+- Open the sound after its creation
+- Sort and search fields in resource views
+- Wider room thumbnails
+
+### 📄 License
+
+Added license. TL;DR:
+
+- You own your assets, projects, catmods;
+- You can use the app for commercial use (and other uses too);
+- You must not modify the ct.js in any ways that were not intended for it by the Author;
+- We do not give any guarantees and are not responsible for any damage.
+
+### 📝 Docs
+
+- 🐛 Fix minor mistakes in ct.types docs
+
 ## v0.2.0
 
 *05 August 2018*
