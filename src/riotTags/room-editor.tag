@@ -605,7 +605,7 @@ room-editor.panel.view
         
         // Работа с фонами
         this.onBackgroundGraphSelected = graph => e => {
-            this.editingBackground.graph = graph.origname;
+            this.editingBackground.graph = graph.uid;
             this.pickingBackground = false;
             this.update();
             this.refreshRoomCanvas();
