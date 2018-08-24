@@ -1,8 +1,35 @@
+
+## v0.3.1
+
+*24 August 2018*
+
+### ⚡ General Improvements
+
+* Rectangular grids in room editor
+
+### ✨ New Features
+
+* Support for tilesets! **An early version, EXPERIMENTAL**
+
+### 🐛 Bug Fixes
+
+* Fix a bug preventing picking a background
+* Fix a bug preventing to delete a room with a context menu
+* Fix FPS input in graph editor not working
+* Fix modal dialogues with 'Delete' labels instead of 'Ok'
+* Replace JS minifier to support ES6
+
+### 💄 UI Improvements
+
+* Changes to number fields in style and graphic editors now affect preview panes instantly
+* Search and sorting for room editor with minor UI improvements
+* Show a warning when using duplicate names in assets
+
 ## v0.3.0
 
 *17 August 2018*
 
-## ⚡ General Improvements
+### ⚡ General Improvements
 
 - Add ct.draw.img as an alias to ct.draw.image
 - Add optional x and y parameters to ct.draw()
