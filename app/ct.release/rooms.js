@@ -13,9 +13,19 @@ ct.rooms = {
         ct.room.backgrounds.push(copy);
         ct.stack.push(copy);
     },
+    addTileLayer(layer) {
+        var copy = ct.types.Copy('TILELAYER');
+        copy.depth = layer.depth;
+        copy.tiles = layer.tiles;
+        ct.room.tileLayers.push(copy);
+        ct.stack.push(copy);
+    },
     make() { // utility: not for regular use
         for (let i = 0, li = this.bgs.length; i < li; i++) {
             ct.rooms.addBg(this.bgs[i].graph, this.bgs[i].depth);
+        }
+        for (let i = 0, li = this.tiles.length; i < li; i++) {
+            ct.rooms.addTileLayer(this.tiles[i]);
         }
         for (let i = 0, li = this.objects.length; i < li; i++) {
             ct.types.make(this.objects[i].type, this.objects[i].x, this.objects[i].y);
@@ -37,6 +47,7 @@ ct.rooms = {
         }
         ct.rooms.current = ct.room = ct.rooms[room];
         ct.room.backgrounds = [];
+        ct.room.tileLayers = [];
         ct.room.uid = 0;
         ct.rooms.make.apply(ct.room);
         ct.setAttribute('width', ct.room.width);

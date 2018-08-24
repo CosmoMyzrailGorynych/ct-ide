@@ -320,7 +320,7 @@ room-editor.panel.view
         /** При нажатии на канвас, если не выбрана копия, то начинаем перемещение */
         this.onCanvasPress = e => {
             this.mouseDown = true;
-            if ((this.currentType === -1 && e.button === 0 && !e.ctrlKey) || e.button === 1) {
+            if ((this.currentType === -1 && this.tab !== 'roomtiles' && e.button === 0 && !e.ctrlKey) || e.button === 1) {
                 this.dragging = true;
             }
         };

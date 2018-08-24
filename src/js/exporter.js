@@ -194,8 +194,8 @@ ct.styles.new(
             
             var roomCopy = JSON.parse(JSON.stringify(r.layers));
             var objs = [];
-            for (var layer in roomCopy) {
-                for (var copy in roomCopy[layer].copies) {
+            for (const layer in roomCopy) {
+                for (const copy in roomCopy[layer].copies) {
                     if (roomCopy[layer].copies[copy]) {
                         roomCopy[layer].copies[copy].type = window.currentProject.types[window.glob.typemap[roomCopy[layer].copies[copy].uid]].name;
                         delete roomCopy[layer].copies[copy].uid;
@@ -208,6 +208,30 @@ ct.styles.new(
                 bgsCopy[bg].graph = window.glob.graphmap[bgsCopy[bg].graph].g.name;
                 bgsCopy[bg].depth = Number(bgsCopy[bg].depth);
             }
+
+            var tileLayers = [];
+            /* eslint {max-depth: off} */
+            for (const tileLayer of r.tiles) {
+                const layer = {
+                    depth: tileLayer.depth,
+                    tiles: []
+                };
+                for (const tile of tileLayer.tiles) {
+                    for (let x = 0; x < tile.grid[2]; x++) {
+                        for (let y = 0; y < tile.grid[3]; y++) {
+                            const graph = window.glob.graphmap[tile.graph].g;
+                            layer.tiles.push({
+                                graph: graph.name,
+                                frame: tile.grid[0] + x + (y+tile.grid[1])*graph.grid[0],
+                                x: tile.x + x*(graph.width + graph.marginx),
+                                y: tile.y + y*(graph.width + graph.marginy)
+                            });
+                        }
+                    }
+                }
+                tileLayers.push(layer);
+            }
+            console.log(tileLayers);
             
             roomsCode += `
 ct.rooms['${r.name}'] = {
@@ -215,6 +239,7 @@ ct.rooms['${r.name}'] = {
     height: ${r.height},
     objects: ${JSON.stringify(objs, null, '    ')},
     bgs: ${JSON.stringify(bgsCopy, null, '    ')},
+    tiles: ${JSON.stringify(tileLayers, null, '    ')},
     onStep() {
         ${window.currentProject.rooms[k].onstep}
     },
