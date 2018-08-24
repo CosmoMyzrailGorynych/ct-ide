@@ -182,6 +182,9 @@ rooms-panel.panel.view
                         window.currentProject.rooms.splice(ind, 1);
                         this.updateList();
                         this.update();
+                        alertify
+                        .okBtn(window.languageJSON.common.ok)
+                        .cancelBtn(window.languageJSON.common.cancel);
                     }
                 });
             }
