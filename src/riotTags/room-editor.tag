@@ -143,7 +143,7 @@ room-editor.panel.view
         this.room = this.opts.room;
         if (!('tiles' in this.room) || !this.room.tiles.length) {
             this.room.tiles = [{
-                depth: 100,
+                depth: -10,
                 tiles: []
             }];
         }
@@ -690,7 +690,7 @@ room-editor.panel.view
         };
         this.addTileLayer = e => {
             alertify
-            .defaultValue(100)
+            .defaultValue(-10)
             .prompt(window.languageJSON.roomview.newdepth)
             .then(ee => {
                 if (ee.inputValue && Number(ee.inputValue)) {
