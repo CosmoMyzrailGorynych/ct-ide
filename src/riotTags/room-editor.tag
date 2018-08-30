@@ -303,8 +303,8 @@ room-editor.panel.view
                 var x = ~~(this.xToRoom(e.offsetX)),
                     y = ~~(this.yToRoom(e.offsetY));
                 targetLayer.copies.push({
-                    x: x - (x % this.room.gridX),
-                    y: y - (y % this.room.gridY),
+                    x: Math.round(x / this.room.gridX) * this.room.gridX,
+                    y: Math.round(y / this.room.gridY) * this.room.gridY,
                     uid: this.currentType.uid
                 });
             }
@@ -432,12 +432,12 @@ room-editor.panel.view
                     h = graph.height;
                     this.refs.canvas.x.drawImage(
                         img, 0, 0, w, h,
-                        this.xToCanvas(dx - dx % this.room.gridX) / this.zoomFactor - grax, 
-                        this.yToCanvas(dy - dy % this.room.gridY) / this.zoomFactor - gray, 
+                        this.xToCanvas(Math.round(dx / this.room.gridX) * this.room.gridX) / this.zoomFactor - grax, 
+                        this.yToCanvas(Math.round(dy / this.room.gridY) * this.room.gridY) / this.zoomFactor - gray, 
                         w, h);
                 }
             } else if (this.currentTileset && this.tab === 'roomtiles') {
-                // превью вставки
+                // превью вставки тайла
                 this.refreshRoomCanvas(e);
                 this.refs.canvas.x.setTransform(this.zoomFactor, 0, 0, this.zoomFactor, 0, 0);
                 this.refs.canvas.x.globalAlpha = 0.5;
@@ -462,8 +462,8 @@ room-editor.panel.view
                     this.refs.canvas.x.drawImage(
                         img,
                         sx, sy, w, h,
-                        this.xToCanvas(dx - dx % this.room.gridX) / this.zoomFactor, 
-                        this.yToCanvas(dy - dy % this.room.gridY) / this.zoomFactor, 
+                        this.xToCanvas(Math.round(dx / this.room.gridX) * this.room.gridX) / this.zoomFactor, 
+                        this.yToCanvas(Math.round(dy / this.room.gridY) * this.room.gridY) / this.zoomFactor, 
                         w, h);
                 }
             }
@@ -803,8 +803,8 @@ room-editor.panel.view
                 var x = ~~(this.xToRoom(e.offsetX)),
                     y = ~~(this.yToRoom(e.offsetY));
                 this.currentTileLayer.tiles.push({
-                    x: x - (x % this.room.gridX),
-                    y: y - (y % this.room.gridY),
+                    x: Math.round(x / this.room.gridX) * this.room.gridX,
+                    y: Math.round(y / this.room.gridY) * this.room.gridY,
                     graph: this.currentTileset.uid,
                     grid: [this.tileX, this.tileY, this.tileSpanX, this.tileSpanY]
                 });
