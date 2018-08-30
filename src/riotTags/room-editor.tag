@@ -23,7 +23,6 @@ room-editor.panel.view
                     li(onclick="{changeTab('roomcopies')}" class="{active: tab === 'roomcopies'}") {voc.copies}
                     li(onclick="{changeTab('roombackgrounds')}" class="{active: tab === 'roombackgrounds'}") {voc.backgrounds}
                     li(onclick="{changeTab('roomtiles')}" class="{active: tab === 'roomtiles'}") {voc.tiles}
-                    //-li( ) {voc.tiles}
                 .relative
                     .room-editor-TypeSwatches.tabbed.tall(show="{tab === 'roomcopies'}")
                         .aSearchWrap
@@ -64,7 +63,7 @@ room-editor.panel.view
                                 span {voc.findTileset}
                             .flexrow
                                 select.wide(onchange="{changeTileLayer}" value="{currentTileLayerId}")
-                                    option(each="{layer, ind in room.tiles}" value="{ind}") {layer.depth}
+                                    option(each="{layer, ind in room.tiles}" selected="{currentTileLayerId === ind}" value="{ind}") {layer.depth}
                                 
                                 span.act(title="{vocGlob.delete}" onclick="{deleteTileLayer}")
                                     i.icon-trash
@@ -665,16 +664,27 @@ room-editor.panel.view
         this.tileSpanX = 1;
         this.tileSpanY = 1;
         this.deleteTileLayer = e => {
-            var index = this.room.tiles.indexOf(this.currentTileLayer);
-            this.room.tiles.splice(index, 1);
-            if (this.room.tiles.length) {
-                this.currentTileLayer = this.room.tiles[0];
-                this.currentTileLayerId = 0;
-            } else {
-                this.currentTileLayer = false;
-            }
-            this.refreshRoomCanvas();
-            this.update();
+            alertify
+            .okBtn(window.languageJSON.common.delete)
+            .cancelBtn(window.languageJSON.common.cancel)
+            .confirm(window.languageJSON.common.confirmDelete.replace('{0}', window.languageJSON.common.tilelayer))
+            .then(e => {
+                if (e.buttonClicked === 'ok') {
+                    var index = this.room.tiles.indexOf(this.currentTileLayer);
+                    this.room.tiles.splice(index, 1);
+                    if (this.room.tiles.length) {
+                        this.currentTileLayer = this.room.tiles[0];
+                        this.currentTileLayerId = 0;
+                    } else {
+                        this.currentTileLayer = false;
+                    }
+                    this.refreshRoomCanvas();
+                    this.update();
+                    alertify
+                    .okBtn(window.languageJSON.common.ok)
+                    .cancelBtn(window.languageJSON.common.cancel);
+                }
+            });
         };
         this.moveTileLayer = e => {
             alertify
@@ -701,6 +711,7 @@ room-editor.panel.view
                     this.room.tiles.push(layer);
                     this.currentTileLayer = layer;
                     this.currentTileLayerId = this.room.tiles.length - 1;
+                    console.log(this.currentTileLayerId, this.currentTileLayer, this.room.tiles);
                     this.update();
                 }
             });

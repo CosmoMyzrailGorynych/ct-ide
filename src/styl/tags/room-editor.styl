@@ -87,7 +87,7 @@ room-editor
     font-size 80%
     line-height 1.7
     {trans}
-    position: relative
+    position relative
     z-index 1
     span    
         display block
@@ -143,3 +143,16 @@ room-editor
 .room-editor-Tiles
     canvas
         cursor pointer
+    .act
+        color text
+        cursor pointer
+        display inline-block
+        padding 0.35rem 0
+        line-height 1
+        margin-left 0.5rem
+        {trans}
+        &:hover
+            color act
+            {transshort}
+    .flexfix-footer button 
+        margin-bottom 0.25rem
