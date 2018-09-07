@@ -279,6 +279,36 @@ graphics-panel.panel.view
                 .confirm(window.languageJSON.common.confirmDelete.replace('{0}', this.currentGraphic.name))
                 .then(e => {
                     if (e.buttonClicked === 'ok') {
+                        for (const type of window.currentProject.types) {
+                            if (type.graph === this.currentGraphic.uid) {
+                                type.graph = -1;
+                            }
+                        }
+                        for (const room of window.currentProject.rooms) {
+                            if ('tiles' in room) {
+                                for (const layer of room.tiles) {
+                                    let i = 0;
+                                    while (i < layer.tiles.length) {
+                                        if (layer.tiles[i].graph === this.currentGraphic.uid) {
+                                            layer.tiles.splice(i, 1);
+                                        } else {
+                                            i++;
+                                        }
+                                    }
+                                } 
+                            }
+                            if ('backgrounds' in room) {
+                                let i = 0;
+                                while (i < room.backgrounds.length) {
+                                    if (room.backgrounds[i].graph === this.currentGraphic.uid) {
+                                        room.backgrounds.splice(i, 1);
+                                    } else {
+                                        i++;
+                                    }
+                                }
+                            }
+                        }
+
                         window.currentProject.graphs.splice(this.currentGraphicId,1);
                         this.updateList();
                         this.update();

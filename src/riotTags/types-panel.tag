@@ -177,6 +177,19 @@ types-panel.panel.view
                 .confirm(window.languageJSON.common.confirmDelete.replace('{0}', this.currentType.name))
                 .then(e => {
                     if (e.buttonClicked === 'ok') {
+                        for (const room of window.currentProject.rooms) {
+                            for (const layer of room.layers) {
+                                let i = 0;
+                                while (i < layer.copies.length) {
+                                    if (layer.copies[i].uid === this.currentType.uid) {
+                                        layer.copies.splice(i, 1);
+                                    } else {
+                                        i++;
+                                    }
+                                }
+                            }
+                        }
+
                         let ind = window.currentProject.types.indexOf(this.currentType);
                         window.currentProject.types.splice(ind, 1);
                         this.updateList();
