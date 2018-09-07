@@ -1,0 +1,13 @@
+# This file is a self-modifying .desktop file
+# mainly copied from Tor project.
+# I hope I won't be damned for that =)
+
+[Desktop Entry]
+Type=Application
+Name=ct.js
+GenericName=Game Editor
+Comment=Create 2D games with a free game editor
+Comment[ru]=Создайте свои 2D игры с этим бесплатным редактором
+Categories=Development;
+Exec=sh -c '"$(dirname "$*")"/ctjs || ([ ! -x "$(dirname "$*")"/ctjs ] && "$(dirname "$*")"/ctjs )' dummy %k
+Icon=ct_ide.png
