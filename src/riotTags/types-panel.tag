@@ -88,7 +88,6 @@ types-panel.panel.view
         this.typeCreate = e => {
             var id = window.generateGUID(),
                 slice = id.split('-').pop();
-            window.currentProject.typetick ++;
             var obj = {
                 name: 'Type_' + slice,
                 depth: 0,
