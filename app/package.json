@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "cross-zip": "^2.1.5",
-    "csswring": "3.0.7",
+    "csswring": "7.0.0",
     "ffmpeg-node": "git://github.com/xonecas/ffmpeg-node.git",
     "fs-extra": "^7.0.0",
     "fuse.js": "^3.2.1",

@@ -260,7 +260,7 @@ ct.rooms['${r.name}'] = {
         return roomsCode;
     };
 
-    window.runCtProject = () => new Promise((resolve, reject) => {
+    window.runCtProject = () => new Promise((resolve) => {
         // glob.compileAudio = 0;
         if (window.currentProject.rooms.length < 1) {
             window.alertify.error(window.languageJSON.common.norooms);
@@ -479,22 +479,22 @@ ct.rooms['${r.name}'] = {
         .replace('/*@pixelatedrender@*/', window.currentProject.settings.pixelatedrender? 'canvas,img{image-rendering:optimizeSpeed;image-rendering:-moz-crisp-edges;image-rendering:-webkit-optimize-contrast;image-rendering:optimize-contrast;image-rendering:pixelated;ms-interpolation-mode:nearest-neighbor}' : '')
         .replace('/*%css%*/', injects.css));
 
-        if (window.currentProject.settings.minifyhtml) {
+        if (window.currentProject.settings.minifyhtmlcss) {
             const csswring = require('csswring'),
                 htmlMinify = require('html-minifier').minify;
-            fs.writeFileSync(exec + '/export/index.min.html', htmlMinify(
-                fs.readFileSync('./ct.release/index.min.html', {
+            fs.writeFileSync(exec + '/export/index.html', htmlMinify(
+                fs.readFileSync('./ct.release/index.html', {
                     'encoding': 'utf8'
                 })
-                .replace(/%htmltop%/, injects.htmltop)
-                .replace(/%htmlbottom%/, injects.htmlbottom)
             , {
                 removeComments: true,
                 collapseWhitespace: true
             }));
-            fs.writeFileSync(exec + '/export/ct.min.css', csswring.wring(fs.readFileSync(exec + '/export/ct.css', {
-                'encoding': 'utf8'
-            }).css));
+            fs.writeFileSync(exec + '/export/ct.css', csswring.wring(
+                fs.readFileSync(exec + '/export/ct.css', {
+                    'encoding': 'utf8'
+                })
+            ).css);
         }
         for (const k in window.currentProject.sounds) {
             var sound = window.currentProject.sounds[k],
