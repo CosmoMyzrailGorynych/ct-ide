@@ -238,7 +238,7 @@
         "grid": "Включить сетку",
         "gridoff": "Выключить сетку",
         "gridsize": "Размер сетки:",
-        "hotkeysNotice": "Ctrl = Удалить, Alt = Без сетки",
+        "hotkeysNotice": "Ctrl = Удалить, Alt = Без сетки, Shift = Много",
         "tocenter": "В центр",
         "selectbg": "Выбрать тайлсет",
         "shift": "Сместить вид",

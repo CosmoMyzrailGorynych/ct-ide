@@ -238,7 +238,7 @@
         "grid": "Set grid",
         "gridoff": "Disable grid",
         "gridsize": "Grid size:",
-        "hotkeysNotice": "Ctrl = Delete, Alt = No grid",
+        "hotkeysNotice": "Ctrl = Delete, Alt = No grid, Shift = Multiple",
         "tocenter": "To center",
         "selectbg": "Select tileset",
         "shift": "Shift the view",
