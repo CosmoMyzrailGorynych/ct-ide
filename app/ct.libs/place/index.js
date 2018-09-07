@@ -225,13 +225,13 @@
             var oldx = me.x, 
                 oldy = me.y;
             me.x = x;
-            me.y = y; 
-            for (var i in ct.stack) {
-                if (ct.stack[i] !== me && (ct.stack[i].ctype === ctype || !ctype)) {
-                    if (ct.place.collide(me, ct.stack[i])) {
+            me.y = y;
+            for (var copy of ct.stack) {
+                if (copy !== me && (copy.ctype === ctype || !ctype)) {
+                    if (ct.place.collide(me, copy)) {
                         me.x = oldx;
                         me.y = oldy;
-                        return ct.stack[i];
+                        return copy;
                     }
                 }
             }
@@ -249,11 +249,54 @@
                 oldy = me.y;
             me.x = x;
             me.y = y; 
-            for (var i in ct.types.list[type]) {
-                if (ct.types.list[type][i] !== me && ct.place.collide(me, ct.types.list[type][i])) {
+            for (var copy of ct.types.list[type]) {
+                if (copy !== me && ct.place.collide(me, copy)) {
                     me.x = oldx;
                     me.y = oldy;
-                    return ct.types.list[type][i];
+                    return copy;
+                }
+            }
+            me.x = oldx;
+            me.y = oldy;
+            return false;
+        },
+        tile(me, x, y, depth) {
+            if (!me.shape) {
+                return false;
+            }
+            var oldx = me.x, 
+                oldy = me.y;
+            me.x = x;
+            me.y = y;
+            var layer = ct.room.tiles.find(layer => layer.depth === depth);
+            for (var tile of layer.tiles) {
+                if (me.shape.type === 'rect' && 
+                    ct.place.check['rect.rect'](me.x - me.shape.left, me.y - me.shape.top, me.x + me.shape.right,me.y + me.shape.bottom, tile.x, tile.y, tile.x + tile.width, tile.y + tile.height)
+                ) {
+                    me.x = oldx;
+                    me.y = oldy;
+                    return true;
+                }
+                if (me.shape.type === 'circle' &&
+                    ct.place.check['circle.rect'](me.x, me.y, me.shape.r, tile.x, tile.y, tile.x + tile.width, tile.y + tile.width)
+                ) {
+                    me.x = oldx;
+                    me.y = oldy;
+                    return true;
+                }
+                if (me.shape.type === 'point' &&
+                    ct.place.check['rect.point'](tile.x, tile.y, tile.x + tile.width, tile.y + tile.height, me.x, me.y)
+                ) {
+                    me.x = oldx;
+                    me.y = oldy;
+                    return true;
+                }
+                if (me.shape.type === 'line' &&
+                    ct.place.check['line.rect'](me.x + me.shape.x1, me.y + me.shape.y1, me.x + me.shape.x2, me.y + me.shape.y2, tile.x, tile.y, tile.x + tile.width, tile.y + tile.height)
+                ) {
+                    me.x = oldx;
+                    me.y = oldy;
+                    return true;
                 }
             }
             me.x = oldx;
@@ -283,11 +326,11 @@
             if (ct.types.list[type].length > 0) {
                 var dist = Math.sqrt(Math.abs((x-ct.types.list[type][0].y) * (y-ct.types.list[type][0].y)));
                 var inst = ct.types.list[type][0];
-                var i;
-                for (i in ct.types.list[type]) {
-                    if (Math.sqrt(Math.abs((x - ct.types.list[type][i].y) * (y-ct.types.list[type][i].y))) > dist) {
-                        dist = Math.sqrt(Math.abs((x - ct.types.list[type][i].y) * (y - ct.types.list[type][i].y)));
-                        inst = ct.types.list[type][i];
+                var copy;
+                for (copy in ct.types.list[type]) {
+                    if (Math.sqrt(Math.abs((x - copy.y) * (y-copy.y))) > dist) {
+                        dist = Math.sqrt(Math.abs((x - copy.y) * (y - copy.y)));
+                        inst = copy;
                     }
                 }
                 ct.place.lastdist = dist;
