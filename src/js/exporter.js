@@ -483,7 +483,7 @@ ct.rooms['${r.name}'] = {
             const csswring = require('csswring'),
                 htmlMinify = require('html-minifier').minify;
             fs.writeFileSync(exec + '/export/index.html', htmlMinify(
-                fs.readFileSync('./ct.release/index.html', {
+                fs.readFileSync(exec + '/export/index.html', {
                     'encoding': 'utf8'
                 })
             , {
