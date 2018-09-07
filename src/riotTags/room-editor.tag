@@ -63,10 +63,12 @@ room-editor.panel.view
                                 span {voc.findTileset}
                             .flexrow
                                 select.wide(onchange="{changeTileLayer}" value="{currentTileLayerId}")
-                                    option(each="{layer, ind in room.tiles}" selected="{currentTileLayerId === ind}" value="{ind}") {layer.depth}
+                                    option(each="{layer, ind in room.tiles}" selected="{currentTileLayerId === ind}" value="{ind}") {layer.hidden? '❌' : '✅'} {layer.depth}
                                 
                                 span.act(title="{vocGlob.delete}" onclick="{deleteTileLayer}")
                                     i.icon-trash
+                                span.act(title="{currentTileLayer.hidden? voc.show: voc.hide}" onclick="{toggleTileLayerVisibility}")
+                                    i(class="icon-{currentTileLayer.hidden? 'eye' : 'eye-off'}")
                                 span.act(title="{voc.moveTileLayer}" onclick="{moveTileLayer}")
                                     i.icon-shuffle
                                 span.act(title="{vocGlob.add}" onclick="{addTileLayer}")
@@ -160,14 +162,14 @@ room-editor.panel.view
         
         this.getTypeGraphRevision = type => window.glob.graphmap[type.graph].g.lastmod;
         
-        var updateCanvasSize = (newWidth, newHeight) => {
+        var updateCanvasSize = e => {
             var canvas = this.refs.canvas,
                 sizes = this.refs.canvaswrap.getBoundingClientRect();
             if (canvas.width != sizes.width || canvas.height != sizes.height) {
                 canvas.width = sizes.width;
                 canvas.height = sizes.height;
             }
-            this.refreshRoomCanvas();
+            setTimeout(this.refreshRoomCanvas, 10);
         };
         this.updateTypeList();
         this.on('update', () => {
@@ -735,9 +737,13 @@ room-editor.panel.view
                 }
             });
         };
+        this.toggleTileLayerVisibility = e => {
+            this.currentTileLayer.hidden = !this.currentTileLayer.hidden;
+            this.refreshRoomCanvas();
+        };
         this.changeTileLayer = e => {
-            this.currentTileLayer = e.item.layer;
-            this.currentTileLayerId = e.item.ind;
+            this.currentTileLayer = this.room.tiles[Number(e.target.value)];
+            this.currentTileLayerId = Number(e.target.value);
         };
         this.switchTiledImage = e => {
             this.pickingTileset = true;
@@ -992,19 +998,21 @@ room-editor.panel.view
                         }
                     } else if (hybrid[i].tiles) { // это слой с тайлами
                         let layer = hybrid[i];
-                        for (let tile of layer.tiles) {
-                            let w, h, x, y,
-                                img = glob.graphmap[tile.graph],
-                                graph = img.g;
-                            x = graph.offx + (graph.width + graph.marginx) * tile.grid[0] - graph.marginx;
-                            y = graph.offy + (graph.height + graph.marginy) * tile.grid[1] - graph.marginy;
-                            w = (graph.width + graph.marginx) * tile.grid[2] - graph.marginx;
-                            h = (graph.height + graph.marginy) * tile.grid[3] - graph.marginy;
-                            canvas.x.drawImage(
-                                img,
-                                x, y, w, h,
-                                tile.x, tile.y, w, h
-                            );
+                        if (!layer.hidden) {
+                            for (let tile of layer.tiles) {
+                                let w, h, x, y,
+                                    img = glob.graphmap[tile.graph],
+                                    graph = img.g;
+                                x = graph.offx + (graph.width + graph.marginx) * tile.grid[0] - graph.marginx;
+                                y = graph.offy + (graph.height + graph.marginy) * tile.grid[1] - graph.marginy;
+                                w = (graph.width + graph.marginx) * tile.grid[2] - graph.marginx;
+                                h = (graph.height + graph.marginy) * tile.grid[3] - graph.marginy;
+                                canvas.x.drawImage(
+                                    img,
+                                    x, y, w, h,
+                                    tile.x, tile.y, w, h
+                                );
+                            }
                         }
                     } else if (hybrid[i].graph !== -1) { // это слой-фон
                         canvas.x.fillStyle = canvas.x.createPattern(glob.graphmap[hybrid[i].graph], 'repeat');
