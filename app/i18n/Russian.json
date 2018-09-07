@@ -98,7 +98,7 @@
         "framerate": "Кадров в секунду:",
         "getfile": "Выбрать",
         "minifyhtmlcss": "Сжать HTML и CSS",
-        "minifyjs": "Сжать JavaScript",
+        "minifyjs": "Сжать JavaScript и преобразовать в ES5 (медленная операция, используйте для релиза)",
         "pixelatedrender": "Здесь и в проекте отключать сглаживание (сохранять пиксели)",
         "preloader": "Прелоадер",
         "renderoptions": "Настройки графики",

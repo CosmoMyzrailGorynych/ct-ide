@@ -98,7 +98,7 @@
         "framerate": "Framerate:",
         "getfile": "Choose",
         "minifyhtmlcss": "Compress HTML and CSS",
-        "minifyjs": "Compress JavaScript",
+        "minifyjs": "Compress JavaScript and convert it to ES5 (slow; use for releases)",
         "pixelatedrender": "Disable image smoothing here and in exported project (preserve crisp pixels)",
         "preloader": "Preloader",
         "renderoptions": "Render Options",

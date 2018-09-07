@@ -1,3 +1,5 @@
+/* Made with ct.js http://ctjs.rocks/ */
+
 const ct = document.createElement('canvas');
 document.getElementById('ct').appendChild(ct);
 ct.setAttribute('id', 'ctcanvas');

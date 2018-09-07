@@ -453,22 +453,15 @@ ct.rooms['${r.name}'] = {
         }
 
         /* финализация скрипта */
-        const terser = require('terser');
         if (window.currentProject.settings.minifyjs) {
-            var mini = terser.minify(buffer, {
-                mangle: true,
-                output: {
-                    beautify: false,
-                    preamble: '/* Made with ct.js http://ctjs.rocks/ */\n',
-                    webkit: true
-                }
-            });
-            if (mini.error) {
-                console.error(mini.error);
-                reject(mini.error);
-            } else {
-                fs.writeFileSync(exec + '/export/ct.js', mini.code);
-            }
+            const preamble = '/* Made with ct.js http://ctjs.rocks/ */\n';
+            const compile = require('google-closure-compiler-js').compile;
+
+            const flags = {
+                jsCode: [{src: buffer}],
+            };
+            const out = compile(flags);
+            fs.writeFileSync(exec + '/export/ct.js', preamble + out.compiledCode);
         } else {
             fs.writeFileSync(exec + '/export/ct.js', buffer);
         }

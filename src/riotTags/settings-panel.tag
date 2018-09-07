@@ -25,10 +25,10 @@ settings-panel.panel.view
             span {voc.pixelatedrender}
 
         h2 {voc.exportparams}
-        label.blocky(style="margin-right: 2.5rem;")
+        label.block(style="margin-right: 2.5rem;")
             input(type="checkbox" value="{currentProject.settings.minifyhtmlcss}" checked="{currentProject.settings.minifyhtmlcss}" onchange="{wire('this.currentProject.settings.minifyhtmlcss')}")
             span {voc.minifyhtmlcss}
-        label.blocky
+        label.block
             input(type="checkbox" value="{currentProject.settings.minifyjs}" checked="{currentProject.settings.minifyjs}" onchange="{wire('this.currentProject.settings.minifyjs')}")
             span {voc.minifyjs}
 
