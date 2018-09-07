@@ -120,8 +120,8 @@ ct.types.TILELAYER = {
         for (const t of this.tiles) {
             if (t.x <= ct.room.x + ct.room.width &&
                 t.y <= ct.room.y + ct.room.height &&
-                t.x - ct.res.graphs[t.graph].width >= ct.room.x &&
-                t.y - ct.res.graphs[t.graph].height >= ct.room.y
+                t.x + t.width >= ct.room.x &&
+                t.y + t.height >= ct.room.y
             ) {
                 ct.draw.image(t.graph, t.frame, t.x, t.y);
             }

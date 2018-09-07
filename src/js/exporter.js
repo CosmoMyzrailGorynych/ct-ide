@@ -225,7 +225,9 @@ ct.styles.new(
                                     graph: graph.name,
                                     frame: tile.grid[0] + x + (y+tile.grid[1])*graph.grid[0],
                                     x: tile.x + x*(graph.width + graph.marginx),
-                                    y: tile.y + y*(graph.width + graph.marginy)
+                                    y: tile.y + y*(graph.width + graph.marginy),
+                                    width: graph.width,
+                                    height: graph.height
                                 });
                             }
                         }
