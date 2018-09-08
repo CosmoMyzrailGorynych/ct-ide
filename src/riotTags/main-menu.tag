@@ -95,10 +95,38 @@ main-menu.flexcol
         });
         server.listen(0);
         
+        var previewWindow;
         this.runProject = e => {
             window.runCtProject()
             .then(path => {
-                gui.Shell.openExternal(`http://localhost:${server.address().port}/`);
+                console.log(previewWindow);
+                if (previewWindow) {
+                    console.log('reload!');
+                    var nwWin = nw.Window.get(previewWindow);
+                    nwWin.show();
+                    nwWin.focus();
+                    previewWindow.document.getElementById('thePreview').reload();
+                    return;
+                }
+                nw.Window.open('preview.html', {
+                    new_instance: false,
+                    id: 'ctPreview'
+                }, function(newWin) {
+                    var wind = newWin.window;
+                    previewWindow = wind;
+                    console.log(previewWindow);
+                    newWin.once('loaded', e => {
+                        newWin.title = 'ct.IDE Debugger';
+                        const win = newWin.window;
+                        newWin.maximize();
+                        var game = win.document.getElementById('thePreview');
+                        game.src = `http://localhost:${server.address().port}/`;
+                    });
+                    newWin.once('closed', e => {
+                        previewWindow = null;
+                        console.log('cleaned!');
+                    })
+                });
             })
             .catch(e => {
                 window.alertify.error(e);

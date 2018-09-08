@@ -2300,7 +2300,7 @@
   "starting": 0,
   "settings": {
     "minifyhtmlcss": true,
-    "minifyjs": true,
+    "minifyjs": false,
     "title": "Catformer",
     "author": "Cosmo Myzrail Gorynych",
     "site": "https://ctjs.rocks",

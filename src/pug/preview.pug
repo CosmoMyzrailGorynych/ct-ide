@@ -1,0 +1,28 @@
+doctype html
+html
+    include includes/head.pug
+    body.tall
+        .flexrow.tall
+            webview.tall#thePreview(autosize partition="persist:trusted" src="empty.html" style="border: 0; flex: 1 1 100%; line-height: 0; overflow: hidden;")
+            .flexfix(style="width: 500px;")
+                webview.tall.flexfix-body#theDebugger(autosize partition="persist:trusted" src="empty.html" style="width: 500px; border: 0; line-height: 0; overflow: hidden;")
+                .flexrow.flexfix-footer
+                    button#theReloadButton 
+                        span Restart
+                    button#theExternal 
+                        span Open in Browser
+            script.
+                var game = document.getElementById('thePreview'),
+                    devTools = document.getElementById('theDebugger'),
+                    reloader = document.getElementById('theReloadButton'),
+                    external = document.getElementById('theExternal');
+                console.log(devTools, game);
+                game.addEventListener('contentload', e => {
+                    game.showDevTools(true, devTools);
+                });
+                reloader.addEventListener('click', e => {
+                    game.reload();
+                });
+                external.addEventListener('click', e => {
+                    nw.Shell.openExternal(game.src);
+                });

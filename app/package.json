@@ -31,6 +31,14 @@
   "webkit": {
     "plugin": false
   },
+  "webview": {
+     "partitions": [
+        {
+          "name": "trusted",
+          "accessible_resources": [ "<all_urls>" ]
+        }
+     ]
+  },
   "dependencies": {
     "cross-zip": "^2.1.5",
     "csswring": "7.0.0",
