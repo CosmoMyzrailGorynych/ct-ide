@@ -34,10 +34,10 @@ license-panel.modal.pad
             the Software (including, but not limited to, designs, text, graphics,
             pictures, video, information, applications, software, music, sound
             and other files, and their selection and arrangement), except for
-            Your Content and program output that is based on Your Content, are,
-            as between the Author and you, owned by the Author and/or its third party
-            licensors. You acknowledge and agree that you shall not acquire any ownership
-            rights whatsoever by downloading the Software.
+            Your Content, program output that is based on Your Content, and 3rd party
+            libraries bundled with the Software are, as between the Author and you,
+            owned by the Author. You acknowledge and agree that you shall not acquire
+            any ownership rights whatsoever by downloading the Software.
 
             Any data, source code, graphics, sounds and their selection and arrangement,
             and any other materials added to the Software by you is “Your Content.”
