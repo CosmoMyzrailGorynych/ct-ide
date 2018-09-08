@@ -455,7 +455,7 @@ ct.rooms['${r.name}'] = {
         /* финализация скрипта */
         if (window.currentProject.settings.minifyjs) {
             const preamble = '/* Made with ct.js http://ctjs.rocks/ */\n';
-            const compile = require('google-closure-compiler-js').compile;
+            const {compile} = require('google-closure-compiler-js');
 
             const flags = {
                 jsCode: [{src: buffer}],
