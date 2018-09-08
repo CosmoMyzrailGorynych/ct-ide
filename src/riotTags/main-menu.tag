@@ -135,21 +135,21 @@ main-menu.flexcol
         };
 
         this.zipProject = e => {
-            var inDir = path.resolve('./zipexport/'),
-                outName = path.resolve(`./${sessionStorage.projname}.zip`);
+            var inDir = exec + '/zipppedProject/',
+                outName = exec + `/${sessionStorage.projname}.zip`;
             this.saveProject()
             .then(fs.remove(outName))
             .then(fs.emptyDir(inDir))
             .then(() => new Promise(resolve => {
                 setTimeout(resolve, 100);
             }))
-            .then(fs.copy(sessionStorage.projdir + '.ict', path.join(inDir, sessionStorage.projname + '.ict')))
-            .then(fs.copy(sessionStorage.projdir, path.join(inDir, sessionStorage.projname)))
+            .then(fs.copy(sessionStorage.projdir + '.ict', path.join(inDir, sessionStorage.projname)))
+            .then(fs.copy(sessionStorage.projdir, path.join(inDir, sessionStorage.projname.slice(0, -4))))
             .then(() => new Promise(resolve => {
                 setTimeout(resolve, 100);
             }))
             .then(() => {
-                zip.zip('./zipexport/.', outName, err => {
+                zip.zip(inDir + '.', outName, err => {
                     if (err) {
                         alertify.error(err);
                         console.error(err);
@@ -161,11 +161,11 @@ main-menu.flexcol
             .catch(alertify.error);
         };
         this.zipExport = e => {
-            var exportFile = path.resolve('./export.zip');
+            var exportFile = exec + '/export.zip';
             fs.remove(exportFile)
             .then(() => window.runCtProject())
             .then(() => {
-                zip.zip('./export/.', exportFile, err => {
+                zip.zip(exec + '/export/.', exportFile, err => {
                     if (err) {
                         window.fuck = err;
                         console.error(err);
