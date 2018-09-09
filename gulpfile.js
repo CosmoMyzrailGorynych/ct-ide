@@ -202,7 +202,7 @@ const release = gulp.series([done => {
         files: ['./app/**', '!./app/export'],
         platforms: ['osx64', 'win32', 'win64', 'linux32', 'linux64'],
         version: '0.31.2',
-        flavor: 'normal',
+        flavor: 'sdk',
         buildType: 'versioned',
         zip: false,
         macIcns: './app/ct.ide.icns'
