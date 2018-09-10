@@ -28,7 +28,8 @@ module.exports = {
                 collapsable: false,
                 title: "Tutorials",
                 children: [
-                    'tutMakingShooter'
+                    'tutMakingShooter',
+                    'tutMakingPlatformer'
                 ],
             }, {
                 title: 'The `core` library',
