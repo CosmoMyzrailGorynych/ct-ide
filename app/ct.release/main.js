@@ -99,7 +99,7 @@ ct.u.ext(ct.u, { // make aliases
 });
 ct.loop = function() {
     if (ct.res) {
-        if (ct.res.graphsLoaded + ct.res.graphsError + ct.res.soundsLoaded + ct.soundsError < ct.res.graphsTotal + ct.res.soundsTotal) {
+        if (ct.res.graphsLoaded + ct.res.graphsError + ct.res.soundsLoaded + ct.res.soundsError < ct.res.graphsTotal + ct.res.soundsTotal) {
             ct.x.clearRect(0, 0, ct.width, ct.height);
             ct.x.strokeStyle = '#ffffff';
             ct.x.globalAlpha = 1;
@@ -116,7 +116,7 @@ ct.loop = function() {
             ct.main.pi += 0.15;
             ct.x.arc(ct.width / 2, ct.height / 2, 64, ct.main.pi, 0.5 * Math.PI + ct.main.pi);
             ct.x.stroke();
-            ct.x.fillText('Грузимcя!', ct.width / 2, ct.height / 2 - 15);
+            ct.x.fillText('Loading…', ct.width / 2, ct.height / 2 - 15);
             ct.x.font = '28px verdana, sans-serif';
             ct.x.fillText(Math.floor((ct.res.graphsLoaded + ct.res.soundsLoaded) / (ct.res.graphsTotal + ct.res.soundsTotal) * 100) + '%', ct.width / 2, ct.height / 2 + 15);
         } else { 
@@ -249,6 +249,7 @@ ct.loop = function() {
                 ct.mouse.yprev = ct.mouse.y;
                 ct.main.fpstick++;
             };
+            ct.mouse.setupListeners();
         }
     }
 };

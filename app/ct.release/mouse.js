@@ -41,14 +41,16 @@ ct.mouse.listenerup = function (e) {
     e.preventDefault();
 };
 
-if (document.addEventListener) {
-    document.addEventListener('mousemove', ct.mouse.listenermove, false);
-    document.addEventListener('mouseup', ct.mouse.listenerup, false);
-    document.addEventListener('mousedown', ct.mouse.listenerdown, false);
-} else { // IE?
-    document.attachEvent('onmousemove', ct.mouse.listenermove);
-    document.attachEvent('onmouseup', ct.mouse.listenerup);
-    document.attachEvent('onmousedown', ct.mouse.listenerdown);
-}
+ct.mouse.setupListeners = function () {
+    if (document.addEventListener) {
+        document.addEventListener('mousemove', ct.mouse.listenermove, false);
+        document.addEventListener('mouseup', ct.mouse.listenerup, false);
+        document.addEventListener('mousedown', ct.mouse.listenerdown, false);
+    } else { // IE?
+        document.attachEvent('onmousemove', ct.mouse.listenermove);
+        document.attachEvent('onmouseup', ct.mouse.listenerup);
+        document.attachEvent('onmousedown', ct.mouse.listenerdown);
+    }
+};
 
 ct.libs += ' mouse';
