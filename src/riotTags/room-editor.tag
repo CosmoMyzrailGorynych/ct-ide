@@ -575,6 +575,8 @@ room-editor.panel.view
             e.preventDefault();
         };
         this.onCanvasContextMenu = e => {
+            this.dragging = false;
+            this.mouseDown = false;
             if (this.tab === 'roomcopies') {
                 this.onCanvasContextMenuCopies(e);
             } else if (this.tab === 'roomtiles') {
