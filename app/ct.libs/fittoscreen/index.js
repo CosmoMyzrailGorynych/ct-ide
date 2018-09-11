@@ -23,20 +23,22 @@
             } else {
                 room = exactRoom || ct.rooms.current;
             }
+            if (!room) {
+                return;
+            }
             oldWidth = room.width;
             oldHeight = room.height;
             ct.width = room.width = width;
             ct.height = room.height = height;
-            if (domResize) {
+            if (doManageViewport) {
                 manageViewport(room);
             }
         }
     };
     var manageViewport = function (room) {
-        if (doManageViewport) {
-            room.x -= (room.width - oldWidth) / 2;
-            room.y -= (room.height - oldHeight) / 2;
-        }
+        room = room || ct.room;
+        room.x -= (room.width - oldWidth) / 2;
+        room.y -= (room.height - oldHeight) / 2;
     };
     var queuedFullscreen = function () {
         toggleFullscreen();

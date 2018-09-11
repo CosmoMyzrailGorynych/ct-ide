@@ -148,10 +148,9 @@ ct.loop = function() {
             ct.rooms.afterDraw = function () {
                 /*%afterroomdraw%*/
             };
-            ct.rooms.switch(ct.rooms.starting);
+            ct.rooms.forceSwitch(ct.rooms.starting);
             ct.loop = function() {
                 for (let i = 0, li = ct.stack.length; i < li; i++) {
-                    
                     ct.types.beforeStep.apply(ct.stack[i]);
                     
                     ct.stack[i].xprev = ct.stack[i].x;
@@ -172,13 +171,6 @@ ct.loop = function() {
                             ct.types.list[i].splice(k, 1);
                             k--; lk--;
                         }
-                    }
-                }
-                // bgs
-                for (let i in ct.room.backgrounds) {
-                    if (ct.room.backgrounds[i].kill) {
-                        ct.room.backgrounds.splice(i, 1);
-                        i--;
                     }
                 }
                 // copies
@@ -248,6 +240,9 @@ ct.loop = function() {
                 ct.mouse.xprev = ct.mouse.x;
                 ct.mouse.yprev = ct.mouse.y;
                 ct.main.fpstick++;
+                if (ct.rooms.switching) {
+                    ct.rooms.forceSwitch();
+                }
             };
             ct.mouse.setupListeners();
         }
