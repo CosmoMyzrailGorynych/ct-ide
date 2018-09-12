@@ -99,9 +99,7 @@ main-menu.flexcol
         this.runProject = e => {
             window.runCtProject()
             .then(path => {
-                console.log(previewWindow);
                 if (previewWindow) {
-                    console.log('reload!');
                     var nwWin = nw.Window.get(previewWindow);
                     nwWin.show();
                     nwWin.focus();
@@ -114,7 +112,6 @@ main-menu.flexcol
                 }, function(newWin) {
                     var wind = newWin.window;
                     previewWindow = wind;
-                    console.log(previewWindow);
                     newWin.once('loaded', e => {
                         newWin.title = 'ct.IDE Debugger';
                         const win = newWin.window;
@@ -124,7 +121,6 @@ main-menu.flexcol
                     });
                     newWin.once('closed', e => {
                         previewWindow = null;
-                        console.log('cleaned!');
                     })
                 });
             })

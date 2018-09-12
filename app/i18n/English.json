@@ -252,10 +252,16 @@
         "deletetile": "Delete a tile",
         "findTileset": "Find a Tileset"
     },
-    "notepad" : {
+    "notepad": {
         "local": "Project's notepad",
         "global": "Global notepad",
         "helppages": "Help",
         "backToHome": "Back to docs' homepage"
+    },
+    "preview": {
+        "reload": "Reload",
+        "roomRestart": "Restart the room",
+        "openExternal": "Open in browser",
+        "getQR": "QR codes and local server URL"
     }
 }

@@ -1,6 +1,8 @@
 ct.mouse = {
     x: 0,
     y: 0,
+    xprev: 0,
+    yprev: 0,
     inside: false,
     pressed: false,
     down: false,
