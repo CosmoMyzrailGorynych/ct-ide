@@ -72,7 +72,7 @@
     },
     "menu": {
         "ctIDE": "ct.IDE",
-        "graphic": "Graphic",
+        "graphic": "Graphics",
         "launch": "Compile",
         "license": "License",
         "min": "Windowed",
