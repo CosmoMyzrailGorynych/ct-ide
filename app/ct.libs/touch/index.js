@@ -1,6 +1,6 @@
 (function (ct) {
     var copyTouch = e => {
-        var rect = ct.getBoundingClientRect();
+        var rect = ct.HTMLCanvas.getBoundingClientRect();
         var touch = {
             id: e.identifier,
             x: (e.clientX - rect.left) * ct.width / rect.width + ct.rooms.current.x,
@@ -43,7 +43,7 @@
             const touch = e.changedTouches[i],
                   upd = findTouch(e.changedTouches[i].identifier);
             if (upd) {
-                const rect = ct.getBoundingClientRect();
+                const rect = ct.HTMLCanvas.getBoundingClientRect();
                 upd.x = (touch.clientX - rect.left) * ct.width / rect.width + ct.rooms.current.x;
                 upd.y = (touch.clientY - rect.top) * ct.height / rect.height + ct.rooms.current.y;
                 upd.r = touch.radiusX? Math.max(touch.radiusX, touch.radiusY) : 0;
@@ -64,7 +64,7 @@
         }
     };
     var mouseDown = function (e) {
-        const rect = ct.getBoundingClientRect();
+        const rect = ct.HTMLCanvas.getBoundingClientRect();
         var touch = {
             id: -1,
             x: (e.clientX - rect.left) * ct.width / rect.width + ct.rooms.current.x,
@@ -77,7 +77,7 @@
         ct.touch.y = touch.y;
     };
     var mouseMove = function (e) {
-        const rect = ct.getBoundingClientRect(),
+        const rect = ct.HTMLCanvas.getBoundingClientRect(),
               touch = findTouch(-1);
         if (touch) {
             touch.x = (e.clientX - rect.left) * ct.width / rect.width + ct.rooms.current.x;
@@ -95,10 +95,10 @@
     };
     ct.touch = {
         setupListeners() {
-            ct.addEventListener('touchstart', handleStart, false);
-            ct.addEventListener('touchend', handleRelease, false);
-            ct.addEventListener('touchcancel', handleRelease, false);
-            ct.addEventListener('touchmove', handleMove, false);
+            document.addEventListener('touchstart', handleStart, false);
+            document.addEventListener('touchend', handleRelease, false);
+            document.addEventListener('touchcancel', handleRelease, false);
+            document.addEventListener('touchmove', handleMove, false);
         },
         setupMouseListeners() {
             document.addEventListener('mousemove', mouseMove, false);

@@ -10,11 +10,12 @@
         if (scaleOnly) {
             var kw = width / ct.width,
                 kh = height / ct.height,
-                k = Math.min(kw, kh);
-            ct.style.transform = 'scale(' + k + ')';
-            ct.style.position = 'absolute';
-            ct.style.left = (width - ct.width) / 2 + 'px';
-            ct.style.top = (height - ct.height) / 2 + 'px';
+                k = Math.min(kw, kh),
+                canv = ct.HTMLCanvas;
+            canv.style.transform = 'scale(' + k + ')';
+            canv.style.position = 'absolute';
+            canv.style.left = (width - ct.width) / 2 + 'px';
+            canv.style.top = (height - ct.height) / 2 + 'px';
         } else {
             var room, domResize = false;
             if (exactRoom && exactRoom.toString().indexOf('Event') !== -1) {

@@ -1,24 +1,39 @@
 /* Made with ct.js http://ctjs.rocks/ */
 
-const ct = document.createElement('canvas');
-document.getElementById('ct').appendChild(ct);
-ct.setAttribute('id', 'ctcanvas');
-ct.setAttribute('width', [/*@startwidth@*/][0]);
-ct.setAttribute('height', [/*@startheight@*/][0]);
-ct.x = ct.getContext('2d');
-
-ct.libs = [/*@libs@*/][0];
-ct.speed = [/*@fps@*/][0];
-ct.stack = [];
-ct.types = {};
-ct.snd = {};
-ct.fps = 0;
-ct.dt = 0;
-ct.version = [2,0,0];
-ct.main = {
-    fpstick: 0,
-    pi: 0
+const ct = {
+    libs: [/*@libs@*/][0],
+    speed: [/*@fps@*/][0],
+    stack: [],
+    types: {},
+    snd: {},
+    fps: 0,
+    dt: 0,
+    version: [2,0,0],
+    main: {
+        fpstick: 0,
+        pi: 0
+    },
+    get width() {
+        return ct.HTMLCanvas.width;
+    },
+    set width(value) {
+        ct.HTMLCanvas.width = value;
+        return value;
+    },
+    get height() {
+        return ct.HTMLCanvas.height;
+    },
+    set height(value) {
+        ct.HTMLCanvas.height = value;
+        return value;
+    }
 };
+ct.HTMLCanvas = document.createElement('canvas');
+document.getElementById('ct').appendChild(ct.HTMLCanvas);
+ct.HTMLCanvas.setAttribute('id', 'ctcanvas');
+ct.HTMLCanvas.setAttribute('width', [/*@startwidth@*/][0]);
+ct.HTMLCanvas.setAttribute('height', [/*@startheight@*/][0]);
+ct.x = ct.HTMLCanvas.getContext('2d');
 
 const requestFrame = window.requestAnimationFrame ||
     window.mozRequestAnimationFrame ||

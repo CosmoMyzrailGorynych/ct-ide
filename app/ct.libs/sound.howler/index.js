@@ -39,7 +39,9 @@ ct.sound.init = function (name, wav, mp3, options) {
         pool: options.poolSize || 5,
 
         onload: function () {
-            ct.res.soundsLoaded++;
+            if (!options.music) {
+                ct.res.soundsLoaded++;
+            }
         },
         onloaderror: function () {
             ct.res.soundsError++;
@@ -47,6 +49,9 @@ ct.sound.init = function (name, wav, mp3, options) {
             console.error('[ct.sound.howler] Oh no! We couldn\'t load ' + (wav || mp3) + '!');
         }
     });
+    if (options.music) {
+        ct.res.soundsLoaded++;
+    }
     ct.res.sounds[name] = howl;
 };
 

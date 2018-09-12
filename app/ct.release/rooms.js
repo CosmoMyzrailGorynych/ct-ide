@@ -58,8 +58,8 @@
             ct.room.uid = 0;
             ct.room.x = ct.room.y = ct.room.follow = ct.room.borderx = ct.room.bordery = 0;
             ct.rooms.make.apply(ct.room);
-            ct.setAttribute('width', ct.room.width);
-            ct.setAttribute('height', ct.room.height);
+            ct.width = ct.room.width;
+            ct.height = ct.room.height;
             /*@pixelatedrender@*/
             ct.room.onCreate();
             ct.rooms.onCreate.apply(ct.room);

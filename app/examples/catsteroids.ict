@@ -1140,7 +1140,7 @@
   "starting": 0,
   "settings": {
     "minifyhtmlcss": true,
-    "minifyjs": true,
+    "minifyjs": false,
     "title": "Catsteroids",
     "author": "CoMiGo Games",
     "site": "http://comigogames.ru/",
