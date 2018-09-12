@@ -1,6 +1,7 @@
 (function () {
     var nextRoom;
     ct.rooms = {
+        templates: {},
         addBg(graph, depth) {
             var canv = document.createElement('canvas'),
                 g = ct.res.graphs[graph];
@@ -52,7 +53,7 @@
             for (var i in ct.types.list) {
                 ct.types.list[i] = [];
             }
-            ct.rooms.current = ct.room = ct.rooms[room];
+            ct.rooms.current = ct.room = ct.rooms.templates[room];
             ct.room.backgrounds = [];
             ct.room.tileLayers = [];
             ct.room.uid = 0;

@@ -237,7 +237,7 @@ ct.styles.new(
             }
             
             roomsCode += `
-ct.rooms['${r.name}'] = {
+ct.rooms.templates['${r.name}'] = {
     name: '${r.name}',
     width: ${r.width},
     height: ${r.height},
