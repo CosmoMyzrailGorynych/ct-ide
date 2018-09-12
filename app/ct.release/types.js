@@ -117,9 +117,14 @@ ct.types.BACKGROUND = {
 ct.types.TILELAYER = {
     onStep() {void 0;},
     onDraw() {
-        for (let i = 0, l = this.tiles.length; i < l; i++) {
-            //console.log('I try to draw');
-            ct.draw.image(this.tiles[i].graph, this.tiles[i].frame, this.tiles[i].x, this.tiles[i].y);
+        for (const t of this.tiles) {
+            if (t.x <= ct.room.x + ct.room.width &&
+                t.y <= ct.room.y + ct.room.height &&
+                t.x + t.width >= ct.room.x &&
+                t.y + t.height >= ct.room.y
+            ) {
+                ct.draw.image(t.graph, t.frame, t.x, t.y);
+            }
         }
     },
     onCreate() {

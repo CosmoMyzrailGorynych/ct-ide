@@ -1,6 +1,8 @@
 ct.mouse = {
     x: 0,
     y: 0,
+    xprev: 0,
+    yprev: 0,
     inside: false,
     pressed: false,
     down: false,
@@ -14,7 +16,7 @@ ct.mouse = {
 };
 
 ct.mouse.listenermove = function(e) {
-    var rect = ct.getBoundingClientRect();
+    var rect = ct.HTMLCanvas.getBoundingClientRect();
     ct.mouse.rx = (e.clientX - rect.left) * ct.width / rect.width;
     ct.mouse.ry = (e.clientY - rect.top) * ct.height / rect.height;
     ct.mouse.x = ct.mouse.rx + ct.rooms.current.x;
@@ -41,14 +43,16 @@ ct.mouse.listenerup = function (e) {
     e.preventDefault();
 };
 
-if (document.addEventListener) {
-    document.addEventListener('mousemove', ct.mouse.listenermove, false);
-    document.addEventListener('mouseup', ct.mouse.listenerup, false);
-    document.addEventListener('mousedown', ct.mouse.listenerdown, false);
-} else { // IE?
-    document.attachEvent('onmousemove', ct.mouse.listenermove);
-    document.attachEvent('onmouseup', ct.mouse.listenerup);
-    document.attachEvent('onmousedown', ct.mouse.listenerdown);
-}
+ct.mouse.setupListeners = function () {
+    if (document.addEventListener) {
+        document.addEventListener('mousemove', ct.mouse.listenermove, false);
+        document.addEventListener('mouseup', ct.mouse.listenerup, false);
+        document.addEventListener('mousedown', ct.mouse.listenerdown, false);
+    } else { // IE?
+        document.attachEvent('onmousemove', ct.mouse.listenermove);
+        document.attachEvent('onmouseup', ct.mouse.listenerup);
+        document.attachEvent('onmousedown', ct.mouse.listenerdown);
+    }
+};
 
 ct.libs += ' mouse';

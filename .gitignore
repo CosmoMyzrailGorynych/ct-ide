@@ -36,6 +36,8 @@ desktop\.ini
 app/bundle.js
 app/bundle.css
 app/index.html
+app/preview.html
+app/empty.html
 app/themeDay.css
 app/themeNight.css
 app/temp

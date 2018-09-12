@@ -42,6 +42,10 @@ graphic-editor.panel.view
                 button.wide(onclick="{graphicFillRect}")
                     i.icon-maximize
                     span {voc.fill}
+            br
+            label
+                input(checked="{prevShowMask}" onchange="{wire('this.prevShowMask')}" type="checkbox")
+                span   {voc.showmask}
         .flexfix-footer
             button.wide(onclick="{graphicSave}") 
                 i.icon-save
@@ -106,10 +110,6 @@ graphic-editor.panel.view
                     i.icon-drop
                     span {voc.bgcolor}
             input.color.rgb#previewbgcolor
-            br
-            label
-                input(checked="{prevShowMask}" onchange="{wire('this.prevShowMask')}" type="checkbox")
-                span   {voc.showmask}
     //-
         button#graphsplicedone.wide(onclick="graphicFinishSplit")
             i.icon-confirm

@@ -225,7 +225,9 @@ ct.styles.new(
                                     graph: graph.name,
                                     frame: tile.grid[0] + x + (y+tile.grid[1])*graph.grid[0],
                                     x: tile.x + x*(graph.width + graph.marginx),
-                                    y: tile.y + y*(graph.width + graph.marginy)
+                                    y: tile.y + y*(graph.width + graph.marginy),
+                                    width: graph.width,
+                                    height: graph.height
                                 });
                             }
                         }
@@ -235,7 +237,8 @@ ct.styles.new(
             }
             
             roomsCode += `
-ct.rooms['${r.name}'] = {
+ct.rooms.templates['${r.name}'] = {
+    name: '${r.name}',
     width: ${r.width},
     height: ${r.height},
     objects: ${JSON.stringify(objs, null, '    ')},
@@ -258,7 +261,7 @@ ct.rooms['${r.name}'] = {
         return roomsCode;
     };
 
-    window.runCtProject = () => new Promise((resolve, reject) => {
+    window.runCtProject = () => new Promise((resolve) => {
         // glob.compileAudio = 0;
         if (window.currentProject.rooms.length < 1) {
             window.alertify.error(window.languageJSON.common.norooms);
@@ -451,22 +454,15 @@ ct.rooms['${r.name}'] = {
         }
 
         /* финализация скрипта */
-        const terser = require('terser');
         if (window.currentProject.settings.minifyjs) {
-            var mini = terser.minify(buffer, {
-                mangle: true,
-                output: {
-                    beautify: false,
-                    preamble: '/* Made with ct.js http://ctjs.rocks/ */\n',
-                    webkit: true
-                }
-            });
-            if (mini.error) {
-                console.error(mini.error);
-                reject(mini.error);
-            } else {
-                fs.writeFileSync(exec + '/export/ct.js', mini.code);
-            }
+            const preamble = '/* Made with ct.js http://ctjs.rocks/ */\n';
+            const {compile} = require('google-closure-compiler-js');
+
+            const flags = {
+                jsCode: [{src: buffer}],
+            };
+            const out = compile(flags);
+            fs.writeFileSync(exec + '/export/ct.js', preamble + out.compiledCode);
         } else {
             fs.writeFileSync(exec + '/export/ct.js', buffer);
         }
@@ -484,22 +480,22 @@ ct.rooms['${r.name}'] = {
         .replace('/*@pixelatedrender@*/', window.currentProject.settings.pixelatedrender? 'canvas,img{image-rendering:optimizeSpeed;image-rendering:-moz-crisp-edges;image-rendering:-webkit-optimize-contrast;image-rendering:optimize-contrast;image-rendering:pixelated;ms-interpolation-mode:nearest-neighbor}' : '')
         .replace('/*%css%*/', injects.css));
 
-        if (window.currentProject.settings.minifyhtml) {
+        if (window.currentProject.settings.minifyhtmlcss) {
             const csswring = require('csswring'),
                 htmlMinify = require('html-minifier').minify;
-            fs.writeFileSync(exec + '/export/index.min.html', htmlMinify(
-                fs.readFileSync('./ct.release/index.min.html', {
+            fs.writeFileSync(exec + '/export/index.html', htmlMinify(
+                fs.readFileSync(exec + '/export/index.html', {
                     'encoding': 'utf8'
                 })
-                .replace(/%htmltop%/, injects.htmltop)
-                .replace(/%htmlbottom%/, injects.htmlbottom)
             , {
                 removeComments: true,
                 collapseWhitespace: true
             }));
-            fs.writeFileSync(exec + '/export/ct.min.css', csswring.wring(fs.readFileSync(exec + '/export/ct.css', {
-                'encoding': 'utf8'
-            }).css));
+            fs.writeFileSync(exec + '/export/ct.css', csswring.wring(
+                fs.readFileSync(exec + '/export/ct.css', {
+                    'encoding': 'utf8'
+                })
+            ).css);
         }
         for (const k in window.currentProject.sounds) {
             var sound = window.currentProject.sounds[k],

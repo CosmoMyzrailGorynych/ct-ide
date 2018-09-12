@@ -1,0 +1,22 @@
+doctype html
+html
+    include includes/head.pug
+    body.tall
+        preview-screen.flexrow.tall
+            webview.tall#thePreview(autosize partition="persist:trusted" src="empty.html" style="border: 0; flex: 1 1 100%; line-height: 0; overflow: hidden;")
+            .flexfix(style="width: 500px;")
+                webview.tall.flexfix-body#theDebugger(autosize partition="persist:trusted" src="empty.html" style="width: 500px; border: 0; line-height: 0; overflow: hidden;")
+                .flexfix-footer
+                    preview-bottom-panel
+        script(src="./bundle.js")
+        script.
+            var game = document.getElementById('thePreview'),
+                devTools = document.getElementById('theDebugger');
+            console.log(devTools, game);
+            game.addEventListener('contentload', e => {
+                game.showDevTools(true, devTools);
+                game.focus();
+            });
+            window.signals = {};
+            riot.observable(window.signals);
+            riot.mount('*');

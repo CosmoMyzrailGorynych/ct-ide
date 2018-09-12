@@ -21,6 +21,12 @@ Checks whether there is a collision between a Copy `me` and any of the Copies of
 
 Returns `false` or the first Copy which blocked `me`.
 
+## ct.place.tile(me, x, y, depth)
+
+Checks for a collision between a copy `me` and a tile layer of a given `depth`. Depth of a tile layer is equal to what you set in the room editor. Each tile is considered a rectangle, and a possible collision mask defined in the graphics asset (in the tileset) is ignored.
+
+This method returns either `true` (a copy collides with a tile layer) or `false` (no collision).
+
 
 ## ct.place.nearest(x, y, type)
 

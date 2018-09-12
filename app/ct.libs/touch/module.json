@@ -1,0 +1,17 @@
+{
+    "main": {
+        "name": "Touch",
+        "version": "1.0.0",
+        "authors": [{
+            "name": "Cosmo Myzrail Gorynych",
+            "mail": "admin@nersta.ru"
+        }]
+    },
+    "fields": [{
+        "name": "Detect mouse events as touch events",
+        "key": "mousetouch",
+        "id": "mousetouch",
+        "default": true,
+        "type": "checkbox"
+    }]
+}

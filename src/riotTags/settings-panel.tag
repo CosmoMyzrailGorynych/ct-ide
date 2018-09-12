@@ -21,15 +21,15 @@ settings-panel.panel.view
             input(type="number" min="1" max="180" value="{currentProject.settings.fps}" onchange="{wire('this.currentProject.settings.fps')}")
             br
         label.block
-            input(type="checkbox" value="{currentProject.settings.pixelatedrender}" onchange="{wire('this.currentProject.settings.pixelatedrender')}")
+            input(type="checkbox" value="{currentProject.settings.pixelatedrender}" checked="{currentProject.settings.pixelatedrender}" onchange="{wire('this.currentProject.settings.pixelatedrender')}")
             span {voc.pixelatedrender}
 
         h2 {voc.exportparams}
-        label.blocky(style="margin-right: 2.5rem;")
-            input(type="checkbox" value="{currentProject.settings.minifyhtmlcss}" onchange="{wire('this.currentProject.settings.minifyhtmlcss')}")
+        label.block(style="margin-right: 2.5rem;")
+            input(type="checkbox" value="{currentProject.settings.minifyhtmlcss}" checked="{currentProject.settings.minifyhtmlcss}" onchange="{wire('this.currentProject.settings.minifyhtmlcss')}")
             span {voc.minifyhtmlcss}
-        label.blocky
-            input(type="checkbox" value="{currentProject.settings.minifyjs}" onchange="{wire('this.currentProject.settings.minifyjs')}")
+        label.block
+            input(type="checkbox" value="{currentProject.settings.minifyjs}" checked="{currentProject.settings.minifyjs}" onchange="{wire('this.currentProject.settings.minifyjs')}")
             span {voc.minifyjs}
 
         //span

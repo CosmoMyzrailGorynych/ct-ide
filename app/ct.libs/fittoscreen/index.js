@@ -10,11 +10,12 @@
         if (scaleOnly) {
             var kw = width / ct.width,
                 kh = height / ct.height,
-                k = Math.min(kw, kh);
-            ct.style.transform = 'scale(' + k + ')';
-            ct.style.position = 'absolute';
-            ct.style.left = (width - ct.width) / 2 + 'px';
-            ct.style.top = (height - ct.height) / 2 + 'px';
+                k = Math.min(kw, kh),
+                canv = ct.HTMLCanvas;
+            canv.style.transform = 'scale(' + k + ')';
+            canv.style.position = 'absolute';
+            canv.style.left = (width - ct.width) / 2 + 'px';
+            canv.style.top = (height - ct.height) / 2 + 'px';
         } else {
             var room, domResize = false;
             if (exactRoom && exactRoom.toString().indexOf('Event') !== -1) {
@@ -23,20 +24,22 @@
             } else {
                 room = exactRoom || ct.rooms.current;
             }
+            if (!room) {
+                return;
+            }
             oldWidth = room.width;
             oldHeight = room.height;
             ct.width = room.width = width;
             ct.height = room.height = height;
-            if (domResize) {
+            if (doManageViewport) {
                 manageViewport(room);
             }
         }
     };
     var manageViewport = function (room) {
-        if (doManageViewport) {
-            room.x -= (room.width - oldWidth) / 2;
-            room.y -= (room.height - oldHeight) / 2;
-        }
+        room = room || ct.room;
+        room.x -= (room.width - oldWidth) / 2;
+        room.y -= (room.height - oldHeight) / 2;
     };
     var queuedFullscreen = function () {
         toggleFullscreen();

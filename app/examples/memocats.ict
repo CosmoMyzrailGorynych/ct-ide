@@ -29,7 +29,8 @@
       "right": 64,
       "top": 98,
       "bottom": 98,
-      "lastmod": 1522644078614
+      "lastmod": 1522644078614,
+      "uid": "366c01b5-4ed5-4ca5-bf01-8731a04be2c4"
     },
     {
       "name": "Bg",
@@ -56,7 +57,8 @@
       "right": 980,
       "top": 0,
       "bottom": 700,
-      "lastmod": 1522741667520
+      "lastmod": 1522741667520,
+      "uid": "c1b1284b-8dba-4886-9bf7-52b66cc08911"
     }
   ],
   "types": [
@@ -67,44 +69,44 @@
       "onstep": "/*\n    Scenario:\n        Select a card;\n        Select another card.\n            If cards match, block them and drop after 0.5 seconds\n            If they don't, block them, but unblock and flip after 0.5 seconds.\n            \n    Blocked cards may not be selected.\n    If we select the same card twice, it flips back.\n*/\n\n// If mouse was clicked and the card isn't blocked…\nif (ct.mouse.pressed && !this.block) {\n    // …if player clicked exactly this card…\n    if (ct.u.pointRectangle(ct.mouse.x, ct.mouse.y, this)) {\n        // Flip a card\n        this.flipped = !this.flipped;\n        ct.sound.spawn('Paper');\n        if (this.flipped) { // Is a picture visible now?\n            if (ct.room.card) { // Is another card was already selected?\n                // remember our cards\n                var card1 = this,\n                    card2 = ct.room.card;\n                // Block them\n                card1.block = true;\n                card2.block = true;\n                // Allow new cards to be selected\n                ct.room.card = false;\n                \n                // Do the cards match?\n                if (card1.backFrame === card2.backFrame) {\n                    if (ct.types.list['Card'].length > 2) {\n                        ct.sound.spawn('Match');\n                    } else {\n                        ct.sound.spawn('Victory');\n                    }\n                    setTimeout(function() {\n                        ct.sound.spawn('Swoosh');\n                        card1.drop = true;\n                        card2.drop = true;\n                    }, 500);\n                } else {\n                    setTimeout(function() {\n                        ct.sound.spawn('Rollback');\n                        card1.block = false;\n                        card2.block = false;\n                        \n                        card1.flipped = false;\n                        card2.flipped = false;\n                    }, 500);\n                }\n            } else {\n                ct.room.card = this;\n            }\n        } else {\n            ct.room.card = false;\n        }\n    }\n}\n\nif (this.drop) {\n    ct.types.move(this);\n    this.transform = true;\n    this.tr += this.rotationSpeed;\n    if (this.y > ct.height + 160) {\n        this.kill = true;\n    }\n}",
       "ondraw": "if (this.flipped) {\n    this.frame = this.backFrame;\n} else {\n    this.frame = 0;\n}\n\nct.draw(this);",
       "ondestroy": "",
-      "uid": 1,
-      "graph": "i1.png"
+      "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c",
+      "graph": "366c01b5-4ed5-4ca5-bf01-8731a04be2c4"
     }
   ],
   "sounds": [
     {
       "name": "Match",
-      "uid": 0,
+      "uid": "96dbce18-a291-41b6-9707-ff2dc2bb5b77",
       "origname": "s0.wav",
       "lastmod": 1522740214929
     },
     {
       "name": "Swoosh",
-      "uid": 1,
+      "uid": "1385f5fc-28ce-4b52-b668-12e3c75ff3b8",
       "origname": "s1.wav",
       "lastmod": 1522740231845
     },
     {
       "name": "Rollback",
-      "uid": 2,
+      "uid": "af72e78c-ff23-4016-8179-ca7b5f66d11e",
       "origname": "s2.wav",
       "lastmod": 1522740243655
     },
     {
       "name": "Paper",
-      "uid": 3,
+      "uid": "efe16fbe-0baf-40af-be62-5138085a2682",
       "origname": "s3.wav",
       "lastmod": 1522740287935
     },
     {
       "name": "Victory",
-      "uid": 4,
+      "uid": "a1a8f820-66b3-4849-9a22-a81b31e32605",
       "origname": "s4.wav",
       "lastmod": 1522740953176
     },
     {
       "name": "NewLevel",
-      "uid": 5,
+      "uid": "4adfa410-6689-4594-8c9e-d8cde988894d",
       "origname": "s5.wav",
       "lastmod": 1522740963586
     }
@@ -122,7 +124,7 @@
       "backgrounds": [
         {
           "depth": "-10",
-          "graph": "i2.png"
+          "graph": "c1b1284b-8dba-4886-9bf7-52b66cc08911"
         }
       ],
       "layers": [
@@ -132,59 +134,60 @@
             {
               "x": 490,
               "y": 210,
-              "uid": 1
+              "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
             },
             {
               "x": 350,
               "y": 210,
-              "uid": 1
+              "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
             },
             {
               "x": 210,
               "y": 210,
-              "uid": 1
+              "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
             },
             {
               "x": 630,
               "y": 210,
-              "uid": 1
+              "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
             },
             {
               "x": 770,
               "y": 210,
-              "uid": 1
+              "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
             },
             {
               "x": 210,
               "y": 420,
-              "uid": 1
+              "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
             },
             {
               "x": 350,
               "y": 420,
-              "uid": 1
+              "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
             },
             {
               "x": 490,
               "y": 420,
-              "uid": 1
+              "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
             },
             {
               "x": 630,
               "y": 420,
-              "uid": 1
+              "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
             },
             {
               "x": 770,
               "y": 420,
-              "uid": 1
+              "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
             }
           ]
         }
       ],
-      "uid": 1,
+      "uid": "3827e721-5331-49b2-a37a-f868e15cae0d",
       "grid": 70,
-      "lastmod": 1522741617797
+      "lastmod": 1522741617797,
+      "thumbnail": 1
     },
     {
       "name": "Room2",
@@ -197,7 +200,7 @@
       "backgrounds": [
         {
           "depth": "-10",
-          "graph": "i2.png"
+          "graph": "c1b1284b-8dba-4886-9bf7-52b66cc08911"
         }
       ],
       "layers": [
@@ -207,79 +210,80 @@
             {
               "x": 560,
               "y": 140,
-              "uid": 1
+              "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
             },
             {
               "x": 420,
               "y": 140,
-              "uid": 1
+              "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
             },
             {
               "x": 280,
               "y": 140,
-              "uid": 1
+              "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
             },
             {
               "x": 700,
               "y": 140,
-              "uid": 1
+              "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
             },
             {
               "x": 840,
               "y": 140,
-              "uid": 1
+              "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
             },
             {
               "x": 140,
               "y": 140,
-              "uid": 1
+              "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
             },
             {
               "x": 140,
               "y": 350,
-              "uid": 1
+              "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
             },
             {
               "x": 280,
               "y": 350,
-              "uid": 1
+              "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
             },
             {
               "x": 420,
               "y": 350,
-              "uid": 1
+              "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
             },
             {
               "x": 560,
               "y": 350,
-              "uid": 1
+              "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
             },
             {
               "x": 700,
               "y": 350,
-              "uid": 1
+              "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
             },
             {
               "x": 840,
               "y": 350,
-              "uid": 1
+              "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
             },
             {
               "x": 420,
               "y": 560,
-              "uid": 1
+              "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
             },
             {
               "x": 560,
               "y": 560,
-              "uid": 1
+              "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
             }
           ]
         }
       ],
-      "uid": 2,
+      "uid": "a751fef2-0632-4105-b90b-51ffba3f38f5",
       "grid": 70,
-      "lastmod": 1522741609956
+      "lastmod": 1522741609956,
+      "thumbnail": 2
     },
     {
       "name": "Room3",
@@ -292,7 +296,7 @@
       "backgrounds": [
         {
           "depth": "-10",
-          "graph": "i2.png"
+          "graph": "c1b1284b-8dba-4886-9bf7-52b66cc08911"
         }
       ],
       "layers": [
@@ -302,99 +306,100 @@
             {
               "x": 420,
               "y": 140,
-              "uid": 1
+              "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
             },
             {
               "x": 560,
               "y": 140,
-              "uid": 1
+              "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
             },
             {
               "x": 700,
               "y": 140,
-              "uid": 1
+              "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
             },
             {
               "x": 840,
               "y": 140,
-              "uid": 1
+              "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
             },
             {
               "x": 280,
               "y": 140,
-              "uid": 1
+              "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
             },
             {
               "x": 140,
               "y": 140,
-              "uid": 1
+              "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
             },
             {
               "x": 140,
               "y": 350,
-              "uid": 1
+              "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
             },
             {
               "x": 280,
               "y": 350,
-              "uid": 1
+              "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
             },
             {
               "x": 420,
               "y": 350,
-              "uid": 1
+              "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
             },
             {
               "x": 560,
               "y": 350,
-              "uid": 1
+              "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
             },
             {
               "x": 700,
               "y": 350,
-              "uid": 1
+              "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
             },
             {
               "x": 840,
               "y": 350,
-              "uid": 1
+              "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
             },
             {
               "x": 840,
               "y": 560,
-              "uid": 1
+              "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
             },
             {
               "x": 700,
               "y": 560,
-              "uid": 1
+              "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
             },
             {
               "x": 560,
               "y": 560,
-              "uid": 1
+              "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
             },
             {
               "x": 420,
               "y": 560,
-              "uid": 1
+              "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
             },
             {
               "x": 280,
               "y": 560,
-              "uid": 1
+              "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
             },
             {
               "x": 140,
               "y": 560,
-              "uid": 1
+              "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
             }
           ]
         }
       ],
-      "uid": 3,
+      "uid": "4cd06702-30ed-4d80-8609-c1128f14f6a8",
       "grid": 70,
-      "lastmod": 1522741558307
+      "lastmod": 1522741558307,
+      "thumbnail": 3
     }
   ],
   "graphtick": 2,
@@ -408,7 +413,10 @@
     "minifyjs": false,
     "title": "Memocats",
     "author": "Cosmo Myzrail Gorynych",
-    "site": "https://ctjs.rocks"
+    "site": "https://ctjs.rocks",
+    "fps": 30
   },
-  "startroom": 1
+  "startroom": "3827e721-5331-49b2-a37a-f868e15cae0d",
+  "ctjsVersion": "0.3.1",
+  "scripts": []
 }

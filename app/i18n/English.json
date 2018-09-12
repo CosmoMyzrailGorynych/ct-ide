@@ -45,6 +45,7 @@
         "savedcomm": "Your project was succesfully saved.",
         "saveproject": "Save project",
         "sort": "Sort:",
+        "tilelayer": "tile layer",
         "wrongFormat": "Wrong file format",
         "yes": "Yes"
     },
@@ -71,7 +72,7 @@
     },
     "menu": {
         "ctIDE": "ct.IDE",
-        "graphic": "Graphic",
+        "graphic": "Graphics",
         "launch": "Compile",
         "license": "License",
         "min": "Windowed",
@@ -97,7 +98,7 @@
         "framerate": "Framerate:",
         "getfile": "Choose",
         "minifyhtmlcss": "Compress HTML and CSS",
-        "minifyjs": "Compress JavaScript",
+        "minifyjs": "Compress JavaScript and convert it to ES5 (slow; use for releases)",
         "pixelatedrender": "Disable image smoothing here and in exported project (preserve crisp pixels)",
         "preloader": "Preloader",
         "renderoptions": "Render Options",
@@ -237,7 +238,7 @@
         "grid": "Set grid",
         "gridoff": "Disable grid",
         "gridsize": "Grid size:",
-        "hotkeysNotice": "Ctrl = Delete, Alt = No grid",
+        "hotkeysNotice": "Ctrl = Delete, Alt = No grid, Shift = Multiple",
         "tocenter": "To center",
         "selectbg": "Select tileset",
         "shift": "Shift the view",
@@ -251,10 +252,16 @@
         "deletetile": "Delete a tile",
         "findTileset": "Find a Tileset"
     },
-    "notepad" : {
+    "notepad": {
         "local": "Project's notepad",
         "global": "Global notepad",
         "helppages": "Help",
         "backToHome": "Back to docs' homepage"
+    },
+    "preview": {
+        "reload": "Reload",
+        "roomRestart": "Restart the room",
+        "openExternal": "Open in browser",
+        "getQR": "QR codes and local server URL"
     }
 }

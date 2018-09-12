@@ -34,10 +34,10 @@ license-panel.modal.pad
             the Software (including, but not limited to, designs, text, graphics,
             pictures, video, information, applications, software, music, sound
             and other files, and their selection and arrangement), except for
-            Your Content and program output that is based on Your Content, are,
-            as between the Author and you, owned by the Author and/or its third party
-            licensors. You acknowledge and agree that you shall not acquire any ownership
-            rights whatsoever by downloading the Software.
+            Your Content, program output that is based on Your Content, and 3rd party
+            libraries bundled with the Software are, as between the Author and you,
+            owned by the Author. You acknowledge and agree that you shall not acquire
+            any ownership rights whatsoever by downloading the Software.
 
             Any data, source code, graphics, sounds and their selection and arrangement,
             and any other materials added to the Software by you is “Your Content.”
@@ -461,6 +461,23 @@ license-panel.modal.pad
             ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
             (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
             SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+    h2 QRCode.js
+    pre 
+        code.
+            The MIT License (MIT)
+            ---------------------
+            Copyright (c) 2012 davidshimjs
+
+            Permission is hereby granted, free of charge,
+            to any person obtaining a copy of this software and associated documentation files (the "Software"),
+            to deal in the Software without restriction,
+            including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+            and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+            subject to the following conditions:
+
+            The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+            THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     script.
         this.namespace = 'licensepanel';
         this.mixin(window.riotVoc);

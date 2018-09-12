@@ -1,22 +1,39 @@
-const ct = document.createElement('canvas');
-document.getElementById('ct').appendChild(ct);
-ct.setAttribute('id', 'ctcanvas');
-ct.setAttribute('width', [/*@startwidth@*/][0]);
-ct.setAttribute('height', [/*@startheight@*/][0]);
-ct.x = ct.getContext('2d');
+/* Made with ct.js http://ctjs.rocks/ */
 
-ct.libs = [/*@libs@*/][0];
-ct.speed = [/*@fps@*/][0];
-ct.stack = [];
-ct.types = {};
-ct.snd = {};
-ct.fps = 0;
-ct.dt = 0;
-ct.version = [2,0,0];
-ct.main = {
-    fpstick: 0,
-    pi: 0
+const ct = {
+    libs: [/*@libs@*/][0],
+    speed: [/*@fps@*/][0],
+    stack: [],
+    types: {},
+    snd: {},
+    fps: 0,
+    dt: 0,
+    version: [2,0,0],
+    main: {
+        fpstick: 0,
+        pi: 0
+    },
+    get width() {
+        return ct.HTMLCanvas.width;
+    },
+    set width(value) {
+        ct.HTMLCanvas.width = value;
+        return value;
+    },
+    get height() {
+        return ct.HTMLCanvas.height;
+    },
+    set height(value) {
+        ct.HTMLCanvas.height = value;
+        return value;
+    }
 };
+ct.HTMLCanvas = document.createElement('canvas');
+document.getElementById('ct').appendChild(ct.HTMLCanvas);
+ct.HTMLCanvas.setAttribute('id', 'ctcanvas');
+ct.HTMLCanvas.setAttribute('width', [/*@startwidth@*/][0]);
+ct.HTMLCanvas.setAttribute('height', [/*@startheight@*/][0]);
+ct.x = ct.HTMLCanvas.getContext('2d');
 
 const requestFrame = window.requestAnimationFrame ||
     window.mozRequestAnimationFrame ||
@@ -97,7 +114,7 @@ ct.u.ext(ct.u, { // make aliases
 });
 ct.loop = function() {
     if (ct.res) {
-        if (ct.res.graphsLoaded + ct.res.graphsError + ct.res.soundsLoaded + ct.soundsError < ct.res.graphsTotal + ct.res.soundsTotal) {
+        if (ct.res.graphsLoaded + ct.res.graphsError + ct.res.soundsLoaded + ct.res.soundsError < ct.res.graphsTotal + ct.res.soundsTotal) {
             ct.x.clearRect(0, 0, ct.width, ct.height);
             ct.x.strokeStyle = '#ffffff';
             ct.x.globalAlpha = 1;
@@ -114,7 +131,7 @@ ct.loop = function() {
             ct.main.pi += 0.15;
             ct.x.arc(ct.width / 2, ct.height / 2, 64, ct.main.pi, 0.5 * Math.PI + ct.main.pi);
             ct.x.stroke();
-            ct.x.fillText('Грузимcя!', ct.width / 2, ct.height / 2 - 15);
+            ct.x.fillText('Loading…', ct.width / 2, ct.height / 2 - 15);
             ct.x.font = '28px verdana, sans-serif';
             ct.x.fillText(Math.floor((ct.res.graphsLoaded + ct.res.soundsLoaded) / (ct.res.graphsTotal + ct.res.soundsTotal) * 100) + '%', ct.width / 2, ct.height / 2 + 15);
         } else { 
@@ -146,10 +163,9 @@ ct.loop = function() {
             ct.rooms.afterDraw = function () {
                 /*%afterroomdraw%*/
             };
-            ct.rooms.switch(ct.rooms.starting);
+            ct.rooms.forceSwitch(ct.rooms.starting);
             ct.loop = function() {
                 for (let i = 0, li = ct.stack.length; i < li; i++) {
-                    
                     ct.types.beforeStep.apply(ct.stack[i]);
                     
                     ct.stack[i].xprev = ct.stack[i].x;
@@ -170,13 +186,6 @@ ct.loop = function() {
                             ct.types.list[i].splice(k, 1);
                             k--; lk--;
                         }
-                    }
-                }
-                // bgs
-                for (let i in ct.room.backgrounds) {
-                    if (ct.room.backgrounds[i].kill) {
-                        ct.room.backgrounds.splice(i, 1);
-                        i--;
                     }
                 }
                 // copies
@@ -246,7 +255,11 @@ ct.loop = function() {
                 ct.mouse.xprev = ct.mouse.x;
                 ct.mouse.yprev = ct.mouse.y;
                 ct.main.fpstick++;
+                if (ct.rooms.switching) {
+                    ct.rooms.forceSwitch();
+                }
             };
+            ct.mouse.setupListeners();
         }
     }
 };

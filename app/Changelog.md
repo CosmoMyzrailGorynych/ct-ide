@@ -1,3 +1,63 @@
+## v 0.4.0
+
+*13 September 2018*
+
+### ⚡ General Improvements
+
+* Add a room's name to its properties in the exported project
+* Add a Shift modifier to place multiple copies or tiles at a room at once
+* Add conversion to ES5
+* Add QR codes and local addresses to the preview window
+* Add tile culling
+* Disable scaling and set proper width on mobile devices. Combine it with ct.fittoscreen to make your games mobile-ready (graphically)
+* More consistent and intuitive tile and copy placement on grids in room editor
+* More consistent behavior of ct.fittoscreen
+* Move room templates to a JS object ct.rooms.templates
+* Reorder room creation process to allow modifying room's view by copies' On Create code
+* Set ct as a JavaScript object, move the canvas tag and all its properties to ct.HTMLCanvas
+
+### ✨ New features
+
+* Add `ct.touch` module
+* Handling of copy-tile collisions with `ct.place.tile`
+* Integrated debugger
+* Show/hide certain tile layers
+
+### 🍱 Demos
+
+* Add a Platformer tutorial example project and its assets
+* Update Catformer demo
+* Update Catsteroids demo
+
+### 🐛 Bugs Fixed
+
+* Clean up logical assets after deleting a type or a graphical asset
+* Fix checkboxes on the Settings tab not showing their saved state
+* Fix HTML / CSS minification not working
+* Fix preloader and random startup errors
+* Room editor: Fix Shift and Ctrl modifiers working after a context menu was called.
+
+### 💄 UI Improvements
+
+* A bit better buttons
+* Fix copy palette being visible on room's events screen
+* Prevent clipping of sprite sheet settings at graphics editor on smaller screens. Move collision shape show/hide control to the left column.
+* Tile editor improvements
+
+### 📝 Docs
+
+* Add a Platformer tutorial
+* Add info about ct.js engine to docs' homepage
+* Document ct.place.tile
+
+### Other
+
+* 📄 License: Remove edit prohibition for 3rd party libraries
+* 💬 Rename 'Graphic' to 'Graphics'
+* 🔖 Bump ct.fittoscreen version
+* 🚚 🍱 Move SpaceShooter demo to a better location
+* 🍱 Add a simple .desktop file for linux
+
 
 ## v0.3.1
 

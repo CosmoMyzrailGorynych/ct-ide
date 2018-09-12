@@ -37,7 +37,8 @@
       "offx": 0,
       "right": 48,
       "bottom": 34,
-      "r": 20
+      "r": 20,
+      "uid": "e1452137-8cfa-4eec-b54a-0f2660326b48"
     },
     {
       "name": "Background_Blue",
@@ -65,7 +66,8 @@
       "height": 256,
       "imgWidth": 256,
       "imgHeight": 256,
-      "r": 1
+      "r": 1,
+      "uid": "3935eebf-4e66-456f-9ca8-e2dc1d6a9383"
     },
     {
       "name": "Laser_Simple_Blue",
@@ -93,7 +95,8 @@
       "height": 54,
       "imgWidth": 9,
       "imgHeight": 54,
-      "lastmod": 1508500558054
+      "lastmod": 1508500558054,
+      "uid": "e6148099-65e7-4d2b-acf1-3e6b3a8fc033"
     },
     {
       "name": "Laser_X_Blue",
@@ -121,7 +124,8 @@
       "height": 37,
       "imgWidth": 38,
       "imgHeight": 37,
-      "r": 21
+      "r": 21,
+      "uid": "4b86d5c4-ae3c-4edf-90d7-79a6778e9a29"
     },
     {
       "name": "Laser_Bolt_Blue",
@@ -149,7 +153,8 @@
       "height": 57,
       "imgWidth": 13,
       "imgHeight": 57,
-      "lastmod": 1508497007651
+      "lastmod": 1508497007651,
+      "uid": "c12edc06-ad3f-49f4-b9d4-3d33226e9ecc"
     },
     {
       "name": "Meteor_Small_1",
@@ -178,7 +183,8 @@
       "imgWidth": 28,
       "imgHeight": 28,
       "r": 13,
-      "lastmod": 1508497578339
+      "lastmod": 1508497578339,
+      "uid": "60d054c0-0a52-4236-8791-11a9a358f9a1"
     },
     {
       "name": "Meteor_Small_2",
@@ -207,7 +213,8 @@
       "imgWidth": 29,
       "imgHeight": 26,
       "r": 13,
-      "lastmod": 1508497573411
+      "lastmod": 1508497573411,
+      "uid": "2a9cb9c1-d6c7-401b-abce-a35ad4d148d2"
     },
     {
       "name": "Meteor_Medium_1",
@@ -236,7 +243,8 @@
       "imgWidth": 43,
       "imgHeight": 43,
       "r": 21,
-      "lastmod": 1508497609983
+      "lastmod": 1508497609983,
+      "uid": "51520da0-9beb-4b8f-9048-1f9b0c526ec8"
     },
     {
       "name": "Meteor_Medium_2",
@@ -265,7 +273,8 @@
       "imgWidth": 45,
       "imgHeight": 40,
       "r": 20,
-      "lastmod": 1508497627007
+      "lastmod": 1508497627007,
+      "uid": "313f3868-5dbd-44fb-9518-ee04a9ff57ed"
     },
     {
       "name": "Meteor_Big_1",
@@ -294,7 +303,8 @@
       "imgWidth": 89,
       "imgHeight": 82,
       "r": 40,
-      "lastmod": 1508497681131
+      "lastmod": 1508497681131,
+      "uid": "90112561-c6c4-4f67-8d0f-fdfb7ae47d3b"
     },
     {
       "name": "Meteor_Big_2",
@@ -323,7 +333,8 @@
       "imgWidth": 98,
       "imgHeight": 96,
       "r": 46,
-      "lastmod": 1508497704244
+      "lastmod": 1508497704244,
+      "uid": "ca15e5c0-b32a-425b-ab24-07d681a8ad8f"
     },
     {
       "name": "StartButton",
@@ -352,7 +363,8 @@
       "imgWidth": 382,
       "imgHeight": 162,
       "r": 81,
-      "lastmod": 1521782180242
+      "lastmod": 1521782180242,
+      "uid": "2a454e11-3441-4f57-bfb6-ce837acd7881"
     },
     {
       "name": "CatsteroidsLogo",
@@ -380,7 +392,8 @@
       "height": 252,
       "imgWidth": 638,
       "imgHeight": 252,
-      "lastmod": 1521696185869
+      "lastmod": 1521696185869,
+      "uid": "968baf79-5ff3-443b-8834-fa3b55638500"
     },
     {
       "name": "Bonus_Lives",
@@ -408,7 +421,8 @@
       "height": 52,
       "imgWidth": 52,
       "imgHeight": 52,
-      "lastmod": 1521786316435
+      "lastmod": 1521786316435,
+      "uid": "25fb712b-0aca-4b18-8e10-7c545d4bca8d"
     },
     {
       "name": "Bonus_Spread",
@@ -436,7 +450,8 @@
       "height": 52,
       "imgWidth": 52,
       "imgHeight": 52,
-      "lastmod": 1521786327821
+      "lastmod": 1521786327821,
+      "uid": "5180fa6f-778b-44ac-883f-0f55a294292f"
     },
     {
       "name": "Bonus_Bolt",
@@ -464,7 +479,8 @@
       "height": 55,
       "imgWidth": 52,
       "imgHeight": 55,
-      "lastmod": 1521786348095
+      "lastmod": 1521786348095,
+      "uid": "c7305cd4-3a22-4f4d-b42e-adbd8651ffe0"
     },
     {
       "name": "Bonus_Cross",
@@ -492,7 +508,8 @@
       "height": 52,
       "imgWidth": 52,
       "imgHeight": 52,
-      "lastmod": 1521786359659
+      "lastmod": 1521786359659,
+      "uid": "3d364ae5-40e9-4c13-b1c7-9e0415273865"
     },
     {
       "name": "Enemy_Shooter",
@@ -521,7 +538,8 @@
       "imgWidth": 93,
       "imgHeight": 84,
       "r": 42,
-      "lastmod": 1521789170242
+      "lastmod": 1521789170242,
+      "uid": "16c209a9-25b2-41e4-b0d5-21cb22fd1421"
     },
     {
       "name": "Enemy_Wiggler",
@@ -550,7 +568,8 @@
       "imgWidth": 104,
       "imgHeight": 84,
       "r": 42,
-      "lastmod": 1521789187123
+      "lastmod": 1521789187123,
+      "uid": "048b77d3-e7e3-4817-99ee-8b7c0a6da8bf"
     },
     {
       "name": "Laser_Red",
@@ -578,7 +597,8 @@
       "height": 37,
       "imgWidth": 9,
       "imgHeight": 37,
-      "lastmod": 1521789393030
+      "lastmod": 1521789393030,
+      "uid": "fc3e2f9b-61af-4ae4-9375-dcfae65f6a34"
     },
     {
       "name": "Explosion",
@@ -607,7 +627,8 @@
       "imgWidth": 140,
       "imgHeight": 105,
       "r": 52,
-      "lastmod": 1521789649001
+      "lastmod": 1521789649001,
+      "uid": "9de002e9-c9cf-44ee-b87a-022ae3dddca3"
     },
     {
       "name": "Ufo_Red",
@@ -636,7 +657,8 @@
       "imgWidth": 91,
       "imgHeight": 91,
       "r": 45,
-      "lastmod": 1521795757737
+      "lastmod": 1521795757737,
+      "uid": "3a21a3d8-30ed-4e5b-8ccf-0019a503d6b9"
     },
     {
       "name": "Laser_Cross_Red",
@@ -665,7 +687,8 @@
       "imgWidth": 37,
       "imgHeight": 36,
       "r": 18,
-      "lastmod": 1521797622884
+      "lastmod": 1521797622884,
+      "uid": "dc0d71ec-6da8-40e8-afe8-90c81f7f269a"
     },
     {
       "name": "RetryButton",
@@ -693,7 +716,8 @@
       "height": 146,
       "imgWidth": 340,
       "imgHeight": 146,
-      "lastmod": 1521798557721
+      "lastmod": 1521798557721,
+      "uid": "071162b9-d836-4145-9515-586ce289ef14"
     },
     {
       "name": "OhNo",
@@ -721,7 +745,8 @@
       "height": 319,
       "imgWidth": 596,
       "imgHeight": 319,
-      "lastmod": 1521799064360
+      "lastmod": 1521799064360,
+      "uid": "e81fc53e-4f0a-443d-a4fb-e5e11a4a98d2"
     }
   ],
   "types": [
@@ -732,8 +757,8 @@
       "onstep": "/* Movement \n   Add acceleration when arrows are being pressed\n*/\n\nif (ct.keyboard.down['down']) {\n    ct.types.addSpeed(this, this.flyspeed, 270);\n}\nif (ct.keyboard.down['up']) {\n    ct.types.addSpeed(this, this.flyspeed, 90);\n}\nif (ct.keyboard.down['left']) {\n    ct.types.addSpeed(this, this.flyspeed, 180);\n}\nif (ct.keyboard.down['right']) {\n    ct.types.addSpeed(this, this.flyspeed, 0);\n}\n\n// Limit speed\nthis.spd = Math.max(Math.min(this.spd, this.spd - this.friction, this.maxspeed), 0);\nct.types.move(this);\n\n// Check if the ship is out of the room\nif (this.x < 0 || this.x > ct.room.width ||\n    this.y < 0 || this.y > ct.room.height) {\n    // Return back if the ship is outside the room\n    this.spd = 0;\n    this.x = Math.max(Math.min(this.x, ct.room.width), 0);\n    this.y = Math.max(Math.min(this.y, ct.room.height), 0);\n}\n\n/* Shooting */\n\nthis.shootTimer++;\n\n// If the spacebar is pressed and at least a quarter of second has passed, \n// create a new laser bullet depending on a weapon type\nif (ct.keyboard.down['space']) {\n    if (this.weapon === 'simple' && this.shootTimer > ct.speed * 0.25) {\n        ct.types.copy('Laser_Simple_Blue', this.x, this.y);\n        ct.sound.spawn('Laser_Small');\n        // Reset shooting delay\n        this.shootTimer = 0;\n    }\n    if (this.weapon === 'spread' && this.shootTimer > ct.speed * 0.25) {\n        // create three laser bolts\n        ct.types.copy('Laser_Simple_Blue', this.x-40, this.y);\n        ct.types.copy('Laser_Simple_Blue', this.x, this.y - 20);\n        ct.types.copy('Laser_Simple_Blue', this.x+40, this.y);\n        ct.sound.spawn('Laser_Small');\n        // Reset shooting delay\n        this.shootTimer = 0;\n    }\n    if (this.weapon === 'bolt' && this.shootTimer > ct.speed * 1.5) {\n        // slow, but powerful\n        ct.types.copy('Laser_Bolt_Blue', this.x, this.y);\n        ct.sound.spawn('Laser_Medium');\n        // Reset shooting delay\n        this.shootTimer = 0;\n    }\n    if (this.weapon === 'cross' && this.shootTimer > ct.speed * 0.15) {\n        // this one shoots much faster\n        ct.types.copy('Laser_Cross_Blue', this.x, this.y);\n        ct.sound.spawn('Laser_Medium');\n        // Reset shooting delay\n        this.shootTimer = 0;\n    }\n}\n\n/* Damage on collision */\nvar obstacle = ct.place.occupied(this, this.x, this.y, 'Enemy') \n            || ct.place.occupied(this, this.x, this.y, 'EnemyBullet');\nif (obstacle && this.invulnerable < 0) {\n    this.lives--;\n    obstacle.kill = true;\n    \n    // Are we completely, like, dead?\n    if (this.lives < 0) {\n        this.kill = true;\n    } else {\n        // Set invulnerability for 3 seconds\n        this.invulnerable = ct.speed * 3;\n    }\n}\n// Deplete invulnerability\nthis.invulnerable --;",
       "ondraw": "// If we are invulnerable, alternate between full and partial opacity each 10 frames\n// `this.invulnerable % 20` means 'get a fraction remainder when dividing by 20'\n// `statement? 0.5 : 1` means that we pick 0.5 if the statement is true, or 1 otherwise\nif (this.invulnerable > 0) {\n    ct.x.globalAlpha = this.invulnerable % 20 > 10? 0.5 : 1;\n}\nct.draw(this);\n\n// Always return to a previous drawing state\nct.x.globalAlpha = 1;\n\n// Draw small ship icons in a top-right corner\nfor (var i = 0; i < this.lives; i++) {\n    ct.draw.imgext(this.graph, 0, ct.room.width - 32 - i*48, 32, 0.3, 0.3, 0, 1)\n}",
       "ondestroy": "ct.types.copy('Explosion', this.x, this.y);\nlocalStorage.score = ct.room.score;\nsetTimeout(function() {\n    ct.rooms.switch('RetryScreen');\n}, 3000);",
-      "uid": 1,
-      "graph": "i1.png"
+      "uid": "1fab434d-0976-4b65-8390-d013695aba8c",
+      "graph": "e1452137-8cfa-4eec-b54a-0f2660326b48"
     },
     {
       "name": "Laser_Simple_Blue",
@@ -742,8 +767,8 @@
       "onstep": "if (this.y < -48) {\n    this.kill = true;\n}\n\nct.types.move(this);",
       "ondraw": "ct.draw(this);",
       "ondestroy": "",
-      "uid": 2,
-      "graph": "i3.png"
+      "uid": "92e6ec14-1de0-483a-84b8-a8669ac65937",
+      "graph": "e6148099-65e7-4d2b-acf1-3e6b3a8fc033"
     },
     {
       "name": "AbstractMeteor",
@@ -752,8 +777,8 @@
       "onstep": "ct.types.move(this);\n\nthis.tr += this.rotateSpeed; \n\nvar obstacle = ct.place.occupied(this, this.x, this.y, 'BulletsHeroes');\nif (obstacle) {\n    this.kill = true;\n    if (obstacle.type !== 'Laser_Bolt_Blue') { // Bolts will dash through enemies\n        obstacle.kill = true;\n    }\n    \n    // Add some score points\n    ct.rooms.current.score += 5;\n}\n\nif (this.x < -100 || this.x > ct.room.width + 100 || this.y < -120 || this.y > ct.room.height + 100) {\n    this.kill = true;\n}",
       "ondraw": "ct.draw(this);",
       "ondestroy": "var deathMap = {\n    'Big': 'Medium',\n    'Medium': 'Small'\n};\n\nfor (var i in deathMap) {\n    if (this.graph.indexOf(i) !== -1) {\n        var copy1 = ct.types.copy('AbstractMeteor', this.x, this.y);\n        copy1.graph = 'Meteor_' + deathMap[i] + '_' + ct.random.dice(1, 2);\n        copy1.dir = ct.random.deg();\n        \n        var copy2 = ct.types.copy('AbstractMeteor', this.x, this.y);\n        copy2.graph = 'Meteor_' + deathMap[i] + '_' + ct.random.dice(1, 2);\n        copy2.dir = 180 + copy1.dir + ct.random.range(-10, 10);\n    }\n}",
-      "uid": 3,
-      "graph": "i15.png"
+      "uid": "1fa16a0f-e9a0-4117-9c28-87fa72b33d2b",
+      "graph": "ca15e5c0-b32a-425b-ab24-07d681a8ad8f"
     },
     {
       "name": "Laser_Cross_Blue",
@@ -762,8 +787,8 @@
       "onstep": "if (this.y < -48) {\n    this.kill = true;\n}\nct.types.move(this);",
       "ondraw": "this.tr += 15;\nct.draw(this);",
       "ondestroy": "",
-      "uid": 4,
-      "graph": "i4.png"
+      "uid": "140f8bde-bd06-4b2d-a5f2-87427848252e",
+      "graph": "4b86d5c4-ae3c-4edf-90d7-79a6778e9a29"
     },
     {
       "name": "GameController",
@@ -772,7 +797,7 @@
       "onstep": "this.asteroidTimer --;\nif (this.asteroidTimer <= 0) {\n    this.asteroidTimer = ct.random.range(ct.speed * 0.5, ct.speed * 3);\n    ct.types.copy('AbstractMeteor', ct.random(ct.room.width), -100);\n}\n\nthis.encounterTimer --;\nif (this.encounterTimer <= 0) {\n    this.encounterTimer = ct.random.range(ct.speed * 4, ct.speed * 7);\n    ct.types.copy('Enemy_Shooter', ct.random(ct.room.width), -100);\n}\n\nthis.waveTimer --;\nif (this.waveTimer <= 0) {\n    this.waveTimer = ct.random.range(ct.speed * 20, ct.speed * 45);\n    \n    // create 5 enemies, one by one in 1.4 seconds\n    ct.types.copy('Enemy_Wiggler', 0, -100);\n    setTimeout(function() {\n        ct.types.copy('Enemy_Wiggler', 0, -100);\n    }, 350);\n    setTimeout(function() {\n        ct.types.copy('Enemy_Wiggler', 0, -100);\n    }, 700);\n    setTimeout(function() {\n        ct.types.copy('Enemy_Wiggler', 0, -100);\n    }, 1050);\n    setTimeout(function() {\n        ct.types.copy('Enemy_Wiggler', 0, -100);\n    }, 1400);\n}\n\nthis.UfoTimer --;\nif (this.UfoTimer <= 0) {\n    this.UfoTimer = ct.random.range(ct.speed * 60, ct.speed * 90);\n    ct.types.copy('Enemy_Ufo', ct.random(ct.room.width), -100);\n}",
       "ondraw": "ct.draw(this);",
       "ondestroy": "",
-      "uid": 5,
+      "uid": "ca579f27-f97b-4ca2-98f6-c1c3e13acad5",
       "graph": -1
     },
     {
@@ -782,8 +807,8 @@
       "onstep": "",
       "ondraw": "this.phase += 2.5 / ct.speed;\nif (this.phase > Math.PI * 2) {\n    this.phase -= Math.PI * 2;\n}\n\nct.draw.copy(this, this.x, this.y + Math.sin(this.phase) * 8);",
       "ondestroy": "",
-      "uid": 6,
-      "graph": "i19.png"
+      "uid": "319c6995-59f3-4267-a1de-cf58f77614d3",
+      "graph": "968baf79-5ff3-443b-8834-fa3b55638500"
     },
     {
       "name": "StartButton",
@@ -792,8 +817,8 @@
       "onstep": "if (ct.mouse.pressed) {\n    if (ct.u.prect(ct.mouse.x, ct.mouse.y, this)) {\n        ct.rooms.switch('InGame');\n    }\n}",
       "ondraw": "ct.draw(this);",
       "ondestroy": "",
-      "uid": 7,
-      "graph": "i18.png"
+      "uid": "972bb4d9-7cfc-4dbe-bc30-883562271057",
+      "graph": "2a454e11-3441-4f57-bfb6-ce837acd7881"
     },
     {
       "name": "AbstractBonus",
@@ -802,8 +827,8 @@
       "onstep": "ct.types.move(this);\n\nvar player = ct.place.meet(this, this.x, this.y, 'Player_Blue');\nif (player) {\n    ct.sound.spawn('Bonus');\n    if (this.graph === 'Bonus_Lives') {\n        player.lives ++;\n    } else {\n        var graphToWeaponMap = {\n            'Bonus_Spread': 'spread',\n            'Bonus_Bolt': 'bolt',\n            'Bonus_Cross': 'cross'\n        };\n        player.weapon = graphToWeaponMap[this.graph];\n    }\n    // Consume bonus\n    this.kill = true;\n}\n\n// Destroy bonus if it fell off the screen\nif (this.y > ct.room.height + 48) {\n    this.kill = true;\n}",
       "ondraw": "ct.draw(this);",
       "ondestroy": "",
-      "uid": 8,
-      "graph": "i20.png"
+      "uid": "bc01cee1-1b8b-4418-aeb9-a7c5eac2cd51",
+      "graph": "25fb712b-0aca-4b18-8e10-7c545d4bca8d"
     },
     {
       "name": "Enemy_Shooter",
@@ -812,8 +837,8 @@
       "onstep": "ct.types.move(this);\n\nthis.shootTimer --;\nif (this.shootTimer < 0) {\n    ct.types.copy('EnemyBullet', this.x, this.y);\n    this.shootTimer = 3 * ct.speed;\n}\n\nvar obstacle = ct.place.occupied(this, this.x, this.y, 'BulletsHeroes');\nif (obstacle) {\n    this.kill = true;\n    if (obstacle.type !== 'Laser_Bolt_Blue') { // Bolts will dash through enemies\n        obstacle.kill = true;\n    }\n    \n    // Add some score points\n    ct.rooms.current.score += 25;\n}\n\nif (this.y > ct.room.height + 100) {\n    this.kill = true;\n}",
       "ondraw": "ct.draw(this);",
       "ondestroy": "ct.types.copy('Explosion', this.x, this.y);\n\nif (ct.random.chance(10)) {\n    ct.types.copy('AbstractBonus', this.x, this.y);\n}",
-      "uid": 9,
-      "graph": "i24.png"
+      "uid": "500fd472-19aa-41a0-9504-123c37540702",
+      "graph": "16c209a9-25b2-41e4-b0d5-21cb22fd1421"
     },
     {
       "name": "EnemyBullet",
@@ -822,8 +847,8 @@
       "onstep": "ct.types.move(this);\n\n// Destroy a bullet if it fell off the screen\nif (this.y > ct.room.height + 32) {\n    this.kill = true;\n}",
       "ondraw": "ct.draw(this);",
       "ondestroy": "",
-      "uid": 10,
-      "graph": "i26.png"
+      "uid": "65a71d76-039a-4e20-8433-d20277dd2402",
+      "graph": "fc3e2f9b-61af-4ae4-9375-dcfae65f6a34"
     },
     {
       "name": "Explosion",
@@ -832,8 +857,8 @@
       "onstep": "ct.types.move(this);",
       "ondraw": "ct.draw(this);\n\nthis.ta -= 0.1;\nif (this.ta < 0) {\n    this.kill = true;\n}",
       "ondestroy": "",
-      "uid": 12,
-      "graph": "i27.png"
+      "uid": "f938cbd9-1a72-45a4-a7ec-27a0841073ef",
+      "graph": "9de002e9-c9cf-44ee-b87a-022ae3dddca3"
     },
     {
       "name": "Enemy_Wiggler",
@@ -842,8 +867,8 @@
       "onstep": "this.phase += 2 / ct.speed;\n\nthis.y += 5;\nthis.x = Math.sin(this.phase) * (ct.room.width * 0.4) + ct.room.width / 2;\n\n\nthis.shootTimer --;\nif (this.shootTimer < 0) {\n    ct.types.copy('EnemyBullet', this.x, this.y);\n    this.shootTimer = ct.random.dice(2, 3, 4) * ct.speed;\n}\n\nvar obstacle = ct.place.occupied(this, this.x, this.y, 'BulletsHeroes');\nif (obstacle) {\n    this.kill = true;\n    if (obstacle.type !== 'Laser_Bolt_Blue') { // Bolts will dash through enemies\n        obstacle.kill = true;\n    }\n    \n    // Add some score points\n    ct.rooms.current.score += 30;\n}\n\nif (this.y > ct.room.height + 100) {\n    this.kill = true;\n}",
       "ondraw": "ct.draw(this);",
       "ondestroy": "ct.types.copy('Explosion', this.x, this.y);\n\nif (ct.random.chance(10)) {\n    ct.types.copy('AbstractBonus', this.x, this.y);\n}",
-      "uid": 13,
-      "graph": "i25.png"
+      "uid": "9d0992a4-d0ef-4c5e-9d17-2e5167f26598",
+      "graph": "048b77d3-e7e3-4817-99ee-8b7c0a6da8bf"
     },
     {
       "name": "Laser_Bolt_Blue",
@@ -852,8 +877,8 @@
       "onstep": "if (this.y < -48) {\n    this.kill = true;\n}\n\nct.types.move(this);",
       "ondraw": "ct.draw(this);",
       "ondestroy": "",
-      "uid": 14,
-      "graph": "i5.png"
+      "uid": "912af24f-1569-46a3-9194-fbf0384f3b0e",
+      "graph": "c12edc06-ad3f-49f4-b9d4-3d33226e9ecc"
     },
     {
       "name": "Enemy_Ufo",
@@ -862,8 +887,8 @@
       "onstep": "// Simple interpolation between two points through time\nthis.x += (this.targetx - this.x) * 0.1;\nthis.y += (this.targety - this.y) * 0.1;\n\nthis.shootTimer --;\nif (this.shootTimer < 0) {\n    ct.types.copy('Laser_Cross_Red', this.x, this.y);\n    this.shootTimer = ct.speed * 0.5;\n}\n\nthis.jumpTimer --;\nif (this.jumpTimer < 0) {\n    // Start jumping to a new location  \n    this.jumpTimer = ct.speed * 2;\n    this.targetx = ct.random.range(75, ct.room.width - 150);\n    this.targety = ct.random.range(75, 300);\n}\n\nvar obstacle = ct.place.occupied(this, this.x, this.y, 'BulletsHeroes');\nif (obstacle) {\n    if (obstacle.type === 'Laser_Bolt_Blue') { // Bolts will do additional damage\n        this.health -= 5;\n    } else {\n        this.health -= 1;\n    }\n    obstacle.kill = true;\n    if (this.health <= 0) {\n        this.kill = true;\n        // Add some score points\n        ct.rooms.current.score += 125;\n    }    \n}",
       "ondraw": "this.tr += 5;\nct.draw(this);",
       "ondestroy": "ct.types.copy('Explosion', this.x, this.y);\nct.types.copy('AbstractBonus', this.x, this.y);",
-      "uid": 15,
-      "graph": "i28.png"
+      "uid": "ebfeaaab-f16a-48fa-b97c-687945f99668",
+      "graph": "3a21a3d8-30ed-4e5b-8ccf-0019a503d6b9"
     },
     {
       "name": "Laser_Cross_Red",
@@ -872,8 +897,8 @@
       "onstep": "this.tr -= 9;\nct.types.move(this);\n\n// Destroy a bullet if it fell off the screen\nif (this.y > ct.room.height + 32) {\n    this.kill = true;\n}",
       "ondraw": "ct.draw(this);",
       "ondestroy": "",
-      "uid": 16,
-      "graph": "i29.png"
+      "uid": "45f606db-1ce3-4b21-bc14-b84e35543509",
+      "graph": "dc0d71ec-6da8-40e8-afe8-90c81f7f269a"
     },
     {
       "name": "OhNo",
@@ -882,8 +907,8 @@
       "onstep": "ct.types.move(this);",
       "ondraw": "ct.draw(this);",
       "ondestroy": "",
-      "uid": 17,
-      "graph": "i31.png"
+      "uid": "a6d37145-b35c-42d2-95c6-765069857ada",
+      "graph": "e81fc53e-4f0a-443d-a4fb-e5e11a4a98d2"
     },
     {
       "name": "RetryButton",
@@ -892,59 +917,59 @@
       "onstep": "if (ct.mouse.pressed) {\n    console.log('pressed');\n    console.log(ct.mouse.x, ct.mouse.y, this, ct.u.prect);\n    if (ct.u.prect(ct.mouse.x, ct.mouse.y, this)) {\n        console.log('hi');\n        ct.rooms.switch('InGame');\n    }\n}",
       "ondraw": "ct.draw(this);",
       "ondestroy": "",
-      "uid": 18,
-      "graph": "i30.png"
+      "uid": "73759c16-fba4-4134-b048-e53aa4d2f34b",
+      "graph": "071162b9-d836-4145-9515-586ce289ef14"
     }
   ],
   "sounds": [
     {
       "name": "Laser_Small",
-      "uid": 0,
+      "uid": "684d983f-9827-4ac8-9915-bd498154c5f4",
       "origname": "s0.mp3",
       "lastmod": 1508402385413,
       "poolSize": 10
     },
     {
       "name": "Laser_Medium",
-      "uid": 1,
+      "uid": "1abe65bd-fd7f-4101-803d-28fa73e21732",
       "origname": "s1.mp3",
       "lastmod": 1508402408072,
       "poolSize": 10
     },
     {
       "name": "Laser_Big",
-      "uid": 2,
+      "uid": "fe3a3bb6-74ac-4835-b9f3-6c03cf8fd0b0",
       "origname": "s2.mp3",
       "lastmod": 1508402430765
     },
     {
       "name": "Bonus",
-      "uid": 4,
+      "uid": "c55e02d8-e533-4126-b0d8-b5164416d0d5",
       "origname": "s4.wav",
       "lastmod": 1522761957688,
       "poolSize": 3
     },
     {
       "name": "Explosion_01",
-      "uid": 5,
+      "uid": "17ef15ea-b246-474e-9e50-a9211c3281d6",
       "origname": "s5.wav",
       "lastmod": 1522761980782
     },
     {
       "name": "Explosion_02",
-      "uid": 6,
+      "uid": "ba1c4845-8f8e-4326-a3c4-5c7d979d0a98",
       "origname": "s6.wav",
       "lastmod": 1522762005209
     },
     {
       "name": "Explosion_03",
-      "uid": 7,
+      "uid": "8104f996-d422-4157-921f-76e2ffff3b49",
       "origname": "s7.wav",
       "lastmod": 1522762020572
     },
     {
       "name": "Music",
-      "uid": 8,
+      "uid": "c5397f40-b674-4bfe-a500-91f32466e49b",
       "origname": "s8.mp3",
       "lastmod": 1533189183845,
       "isMusic": true,
@@ -970,7 +995,7 @@
         "valign": "top",
         "halign": "left"
       },
-      "uid": 1,
+      "uid": "7da08700-988f-456d-b753-89dd1f74e741",
       "origname": "s1",
       "shadow": {
         "color": "#005E3A",
@@ -981,7 +1006,7 @@
     },
     {
       "name": "Blue12",
-      "uid": 2,
+      "uid": "dea27cc4-bf65-4501-b855-06cbfc835321",
       "origname": "s2",
       "font": {
         "family": "'Press Start 2P', sans-serif",
@@ -1009,7 +1034,7 @@
       "backgrounds": [
         {
           "depth": "-20",
-          "graph": "i2.png"
+          "graph": "3935eebf-4e66-456f-9ca8-e2dc1d6a9383"
         }
       ],
       "layers": [
@@ -1019,19 +1044,20 @@
             {
               "x": 400,
               "y": 700,
-              "uid": 1
+              "uid": "1fab434d-0976-4b65-8390-d013695aba8c"
             },
             {
               "x": 400,
               "y": 250,
-              "uid": 5
+              "uid": "ca579f27-f97b-4ca2-98f6-c1c3e13acad5"
             }
           ]
         }
       ],
-      "uid": 1,
+      "uid": "2e5bf702-9eac-4fef-8282-07d2dd0a9bac",
       "lastmod": 1533197800992,
-      "grid": 50
+      "grid": 50,
+      "thumbnail": 1
     },
     {
       "name": "MainMenu",
@@ -1044,7 +1070,7 @@
       "backgrounds": [
         {
           "depth": 0,
-          "graph": "i2.png"
+          "graph": "3935eebf-4e66-456f-9ca8-e2dc1d6a9383"
         }
       ],
       "layers": [
@@ -1054,19 +1080,20 @@
             {
               "x": 384,
               "y": 192,
-              "uid": 6
+              "uid": "319c6995-59f3-4267-a1de-cf58f77614d3"
             },
             {
               "x": 384,
               "y": 512,
-              "uid": 7
+              "uid": "972bb4d9-7cfc-4dbe-bc30-883562271057"
             }
           ]
         }
       ],
-      "uid": 2,
+      "uid": "6c75cdb8-cfb4-4dcc-887a-f76ae98b5499",
       "grid": 64,
-      "lastmod": 1533193419531
+      "lastmod": 1533193419531,
+      "thumbnail": 2
     },
     {
       "name": "RetryScreen",
@@ -1079,7 +1106,7 @@
       "backgrounds": [
         {
           "depth": 0,
-          "graph": "i2.png"
+          "graph": "3935eebf-4e66-456f-9ca8-e2dc1d6a9383"
         }
       ],
       "layers": [
@@ -1089,19 +1116,20 @@
             {
               "x": 384,
               "y": 192,
-              "uid": 17
+              "uid": "a6d37145-b35c-42d2-95c6-765069857ada"
             },
             {
               "x": 384,
               "y": 576,
-              "uid": 18
+              "uid": "73759c16-fba4-4134-b048-e53aa4d2f34b"
             }
           ]
         }
       ],
-      "uid": 3,
+      "uid": "cc1e53b3-f7e6-48fe-9716-b05877538e52",
       "grid": 64,
-      "lastmod": 1521799524443
+      "lastmod": 1521799524443,
+      "thumbnail": 3
     }
   ],
   "graphtick": 32,
@@ -1111,7 +1139,7 @@
   "styletick": 2,
   "starting": 0,
   "settings": {
-    "minifyhtmlcss": false,
+    "minifyhtmlcss": true,
     "minifyjs": false,
     "title": "Catsteroids",
     "author": "CoMiGo Games",
@@ -1123,6 +1151,7 @@
     "#B48FFF",
     "#10102E"
   ],
-  "startroom": 2,
-  "scripts": []
+  "startroom": "6c75cdb8-cfb4-4dcc-887a-f76ae98b5499",
+  "scripts": [],
+  "ctjsVersion": "0.3.1"
 }

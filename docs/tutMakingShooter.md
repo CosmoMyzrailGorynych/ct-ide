@@ -1,4 +1,4 @@
-# Making Your First Game: Space Shooter
+# Making Games: Space Shooter
 
 Let's make a small space shooting game with asteroids, lasers and hostile gunships! This tutorial will teach you how to import assets, handle user input, move things around and respond to collisions.
 
@@ -10,7 +10,7 @@ Open ct.js and create a new project with a name "SpaceShooter".
 
 Next, [download an asset pack](http://www.kenney.nl/assets/space-shooter-redux) from Kenney's site. It is free to use and is great for prototyping, learning or just testing things out.
 
-You can also use assets placed inside a `ct.js/docs/SpaceShooterAssets` folder.
+You can also use assets placed inside a `ct.js/examples/SpaceShooter_assets` folder.
 
 These are all the assets we will need today:
 
