@@ -204,6 +204,7 @@ const release = gulp.series([done => {
         version: '0.31.2',
         flavor: 'sdk',
         buildType: 'versioned',
+        forceDownload: true,
         zip: false,
         macIcns: './app/ct.ide.icns'
     });
