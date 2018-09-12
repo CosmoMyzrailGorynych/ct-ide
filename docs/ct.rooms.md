@@ -18,6 +18,9 @@ Destroys all the existing copies in the room.
 
 The current room's object.
 
+### `ct.rooms.templates`
+
+Existing rooms to switch to.
 
 ## Managing current viewport
 
