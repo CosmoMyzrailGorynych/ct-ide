@@ -197,7 +197,7 @@ const docs = done => {
 const release = gulp.series([done => {
     releasing = true;
     done();
-}, build, lint, docs, done => {
+}, build, lint, done => {
     var nw = new NwBuilder({
         files: ['./app/**', '!./app/export'],
         platforms: ['osx64', 'win32', 'win64', 'linux32', 'linux64'],

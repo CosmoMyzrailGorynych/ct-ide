@@ -24,16 +24,16 @@ module.exports = {
                 title: 'Introduction to JS',
                 collapsable: false,
                 children: [
-                    'jsIntro_pt1',
-                    'jsIntro_pt2'
+                    'jsintro_pt1',
+                    'jsintro_pt2'
                 ],
             }, {
                 collapsable: false,
                 title: "Tutorials",
                 children: [
-                    'tutMakingShooter',
-                    'tutMakingPlatformer',
-                    'localStorage'
+                    'tut-making-shooter',
+                    'tut-making-platformer',
+                    'localstorage'
                 ],
             }, {
                 title: 'The `core` library',
