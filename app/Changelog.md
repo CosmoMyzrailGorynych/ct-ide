@@ -1,3 +1,36 @@
+## v 0.4.1
+
+*25 September 2018*
+
+### ⚡ General Improvements
+
+* A better error message from ct.tween when switching to a new room.
+* Add a search/sort panel to the graphic selector
+* Add an option to ct.touch to disable default events prevention on touches,…
+* ct.rooms.make now returns an array of created copies.
+
+### ✨ New Features
+
+* Add a ct.draw.patch module
+* Add an 'Isometrify' button to the graphics editor
+* Add ct.u.wait method
+* Resize copies and set their precise coords while in room editor
+
+### 🐛 Bug Fixes
+
+* Fix ct.canvas.drawTileExt
+* Fix graphics sometimes unavailable at room editor
+
+### 💄 UI Improvements
+
+* Better QR code legibility on dark themes
+* Move all thumbnails to the left side
+
+### 📝 Docs
+
+* Add a link to the Discord server to the docs
+* Add a tutorial about localStorage and game saves
+
 ## v 0.4.0
 
 *13 September 2018*
