@@ -1,7 +1,7 @@
 {
     "main": {
         "name": "Touch",
-        "version": "1.0.0",
+        "version": "1.0.1",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",
             "mail": "admin@nersta.ru"
@@ -12,6 +12,13 @@
         "key": "mousetouch",
         "id": "mousetouch",
         "default": true,
+        "type": "checkbox"
+    }, {
+        "name": "Do not cancel standard events",
+        "key": "preventdefault",
+        "id": "preventdefault",
+        "help": "This may help those apps that were designed for mouse from the beginning.",
+        "default": false,
         "type": "checkbox"
     }]
 }
