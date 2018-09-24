@@ -101,6 +101,19 @@ ct.u = {
             script.onload = callback;
         }
         document.getElementsByTagName('head')[0].appendChild(script);
+    },
+    wait: time => {
+        var room = ct.room.name;
+        return new Promise((resolve, reject) => setTimeout(() => {
+            if (ct.room.name === room) {
+                resolve();
+            } else {
+                reject({
+                    info: 'Room switch',
+                    from: 'ct.u.wait'
+                });
+            }
+        }, time));
     }
 };
 ct.u.ext(ct.u, { // make aliases
