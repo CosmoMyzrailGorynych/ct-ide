@@ -144,6 +144,7 @@
         "fill": "Fill",
         "form": "Collision shape:",
         "frames": "Frame count:",
+        "isometrify": "Isometrify: Move the axis to the middle bottom point, fill the whole sprite with a collision mask",
         "name": "Name:",
         "radius": "Radius:",
         "rectangle": "Rectangle",

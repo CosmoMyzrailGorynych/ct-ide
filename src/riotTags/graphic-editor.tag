@@ -12,8 +12,11 @@ graphic-editor.panel.view
                 span.center   ×  
                 input.short(type="number" value="{opts.graphic.axis[1]}" onchange="{wire('this.graphic.axis.1')}" oninput="{wire('this.graphic.axis.1')}")
             br
-            button.wide(onclick="{graphicCenter}")
-                span   {voc.setcenter}
+            .flexrow
+                button.wide(onclick="{graphicCenter}")
+                    span   {voc.setcenter}
+                button.square(onclick="{graphicIsometrify}" title="{voc.isometrify}")
+                    i.icon-map-pin
             br
             b {voc.form}
             br
@@ -209,9 +212,9 @@ graphic-editor.panel.view
             if (/\.(jpg|gif|png|jpeg)/gi.test(this.refs.graphReplacer.value)) {
                 console.log(this.refs.graphReplacer.value, 'passed');
                 this.loadImg(
-                    parseInt(this.graphic.origname.slice(1)),
+                    this.graphic.uid,
                     this.refs.graphReplacer.value,
-                    sessionStorage.projdir + '/img/i' + parseInt(this.graphic.origname.slice(1)) + path.extname(this.refs.graphReplacer.value)
+                    sessionStorage.projdir + '/img/i' + this.graphic.uid + path.extname(this.refs.graphReplacer.value)
                 );
             } else {
                 alertify.error(window.languageJSON.common.wrongFormat);
@@ -303,6 +306,12 @@ graphic-editor.panel.view
             graphic.top = ~~(graphic.axis[1]);
             graphic.right = ~~(graphic.width - graphic.axis[0]);
             graphic.bottom = ~~(graphic.height - graphic.axis[1]);
+        };
+        this.graphicIsometrify = e => {
+            var graphic = this.graphic;
+            graphic.axis[0] = Math.floor(graphic.width / 2);
+            graphic.axis[1] = graphic.height;
+            this.graphicFillRect();
         };
         /**
          * Запустить предпросмотр анимации
