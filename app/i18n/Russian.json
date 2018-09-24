@@ -249,6 +249,8 @@
         "draw": "Прорисовка",
         "newdepth": "Новая глубина:",
         "deletecopy": "Удалить копию {0}",
+        "changecopyscale": "Изменить размер",
+        "shiftcopy": "Указать координаты",
         "deletetile": "Удалить тайл",
         "findTileset": "Найти тайлсет"
     },

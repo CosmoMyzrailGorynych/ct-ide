@@ -249,6 +249,8 @@
         "draw": "Draw",
         "newdepth": "New depth:",
         "deletecopy": "Delete copy {0}",
+        "changecopyscale": "Change scale",
+        "shiftcopy": "Set coordinates",
         "deletetile": "Delete a tile",
         "findTileset": "Find a Tileset"
     },
