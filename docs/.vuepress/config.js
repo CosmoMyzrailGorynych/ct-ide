@@ -11,7 +11,10 @@ module.exports = {
             text: "Official website",
             link: "https://ctjs.rocks"
         }, {
-            text: 'Community',
+            text: 'Discord',
+            link: 'https://discord.gg/CggbPkb'
+        }, {
+            text: 'Forum',
             link: 'https://comigo.itch.io/ct/community'
         }],
         sidebar: [
