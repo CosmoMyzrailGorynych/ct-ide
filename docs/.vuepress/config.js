@@ -32,7 +32,8 @@ module.exports = {
                 title: "Tutorials",
                 children: [
                     'tutMakingShooter',
-                    'tutMakingPlatformer'
+                    'tutMakingPlatformer',
+                    'localStorage'
                 ],
             }, {
                 title: 'The `core` library',
