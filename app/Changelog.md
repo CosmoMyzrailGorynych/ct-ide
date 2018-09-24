@@ -6,7 +6,7 @@
 
 * A better error message from ct.tween when switching to a new room.
 * Add a search/sort panel to the graphic selector
-* Add an option to ct.touch to disable default events prevention on touches,…
+* Add an option to ct.touch to disable default events prevention on touches, allowing to use ct.mouse on mobile devices, too.
 * ct.rooms.make now returns an array of created copies.
 
 ### ✨ New Features
