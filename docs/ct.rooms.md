@@ -22,6 +22,14 @@ The current room's object.
 
 Existing rooms to switch to.
 
+### `ct.rooms.make`
+
+A function that is called by a room to create its copies, backgrounds and tiles on load. It is mostly an internal function that is not intended for use in ct.IDE, but you still can use this method to add copies from one room to existing one. The method returns an array of all the created copies, including tile layers and backgrounds. Example:
+
+```js
+this.interfaceCopies = ct.rooms.make.apply(ct.rooms.templates.MainInterface);
+```
+
 ## Managing current viewport
 
 You can manage the viewport anytime by editing properties listed below of `ct.rooms.current` object. You can also use `this` keyword in room's events.

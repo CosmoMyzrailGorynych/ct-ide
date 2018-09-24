@@ -19,10 +19,10 @@ ct.canvas = {
     drawTileExt(canv, img, imgindex, x, y, hs, vs, r, a) {
         canv.x.save();
         canv.x.globalAlpha = a;
-        canv.x.translate(x-ct.rooms.current.x,y-ct.rooms.current.y);
+        canv.x.translate(x, y);
         canv.x.rotate(r*Math.PI/180);
-        canv.x.scale(hs,vs);
-        ct.canvas.drawTile(canv, img, imgindex, x, y);
+        canv.x.scale(hs, vs);
+        ct.canvas.drawTile(canv, img, imgindex, 0, 0);
         canv.x.restore();
     },
     appendTo(canv, id) {

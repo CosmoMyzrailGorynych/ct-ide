@@ -28,7 +28,9 @@
         return -1;
     };
     var handleStart = function(e) {
-        e.preventDefault();
+        if (!%preventdefault%) {
+            e.preventDefault();
+        }
         for (let i = 0, l = e.changedTouches.length; i < l; i++) {
             var touch = copyTouch(e.changedTouches[i]);
             ct.touch.down.push(touch);
@@ -38,7 +40,9 @@
         }
     };
     var handleMove = function(e) {
-        e.preventDefault();
+        if (!%preventdefault%) {
+            e.preventDefault();
+        }
         for (let i = 0, l = e.changedTouches.length; i < l; i++) {
             const touch = e.changedTouches[i],
                   upd = findTouch(e.changedTouches[i].identifier);
@@ -53,7 +57,9 @@
         }
     };
     var handleRelease = function(e) {
-        e.preventDefault();
+        if (!%preventdefault%) {
+            e.preventDefault();
+        }
         var touches = e.changedTouches;
         for (let i = 0; i < touches.length; i++) {
             const ind = findTouchId(touches[i].identifier);

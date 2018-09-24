@@ -553,8 +553,8 @@ room-editor.panel.view
             if (type.graph !== -1) {
                 left = copy.x - graph.axis[0] - 1.5;
                 top = copy.y - graph.axis[1] - 1.5;
-                height = graph.width + 3;
-                width = graph.height + 3;
+                height = graph.width * (copy.tx || 1) + 3;
+                width = graph.height * (copy.ty || 1) + 3;
             } else {
                 left = copy.x - 16 - 1.5;
                 top = copy.y - 16 - 1.5;
@@ -596,6 +596,50 @@ room-editor.panel.view
                 this.refreshRoomCanvas();
             },
             key: 'Delete'
+        }));
+        this.roomCanvasMenu.append(new gui.MenuItem({
+            label: window.languageJSON.roomview.changecopyscale,
+            click: () => {
+                var copy = this.room.layers[this.closestLayer].copies[this.closestPos];
+                window.alertify.confirm(`
+                    ${window.languageJSON.roomview.changecopyscale}
+                    <label class="block">X: 
+                        <input id="copyscalex" type="number" value="${copy.tx || 1}" />
+                    </label>
+                    <label class="block">Y: 
+                        <input id="copyscaley" type="number" value="${copy.ty || 1}" />
+                    </label>
+                `)
+                .then((e, a) => {
+                    if (e.buttonClicked === 'ok') {
+                        copy.tx = Number(document.getElementById('copyscalex').value) || 1,
+                        copy.ty = Number(document.getElementById('copyscaley').value) || 1;
+                        this.refreshRoomCanvas();
+                    }
+                });
+            }
+        }));
+        this.roomCanvasMenu.append(new gui.MenuItem({
+            label: window.languageJSON.roomview.shiftcopy,
+            click: () => {
+                var copy = this.room.layers[this.closestLayer].copies[this.closestPos];
+                window.alertify.confirm(`
+                    ${window.languageJSON.roomview.shiftcopy}
+                    <label class="block">X: 
+                        <input id="copypositionx" type="number" value="${copy.x}" />
+                    </label>
+                    <label class="block">Y: 
+                        <input id="copypositiony" type="number" value="${copy.y}" />
+                    </label>
+                `)
+                .then((e, a) => {
+                    if (e.buttonClicked === 'ok') {
+                        copy.x = Number(document.getElementById('copypositionx').value) || 0,
+                        copy.y = Number(document.getElementById('copypositiony').value) || 0;
+                        this.refreshRoomCanvas();
+                    }
+                });
+            }
         }));
         
         // Позволяет переместить сразу все копии в комнате
@@ -992,11 +1036,24 @@ room-editor.panel.view
                                 w = h = 32;
                                 grax = gray = 16;
                             }
-                            canvas.x.drawImage(
-                                graph,
-                                0, 0, w, h,
-                                copy.x - grax, copy.y - gray, w, h
-                            );
+                            if (copy.tx || copy.ty) {
+                                canvas.x.save();
+                                canvas.x.translate(copy.x - grax * (copy.tx || 1), copy.y - gray * (copy.ty || 1));
+                                canvas.x.scale(copy.tx || 1, copy.ty || 1);
+                                canvas.x.drawImage(
+                                    graph,
+                                    0, 0, w, h,
+                                    0, 0, w, h
+                                );
+                                canvas.x.restore();
+                            } else {
+                                canvas.x.drawImage(
+                                    graph,
+                                    0, 0, w, h,
+                                    copy.x - grax, copy.y - gray, w, h
+                                );
+                            }
+                                
                         }
                     } else if (hybrid[i].tiles) { // это слой с тайлами
                         let layer = hybrid[i];

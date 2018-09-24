@@ -35,7 +35,8 @@ ct.tween = {
         promise.stop = function () {
             tween.reject({
                 code: 0,
-                info: 'Stopped by game logic'
+                info: 'Stopped by game logic',
+                from: 'ct.tween'
             });
         };
         return promise;

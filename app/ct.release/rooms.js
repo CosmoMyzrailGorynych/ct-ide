@@ -15,6 +15,7 @@
             copy.depth = depth;
             ct.room.backgrounds.push(copy);
             ct.stack.push(copy);
+            return copy;
         },
         addTileLayer(layer) {
             var copy = ct.types.Copy('TILELAYER');
@@ -22,17 +23,27 @@
             copy.tiles = layer.tiles;
             ct.room.tileLayers.push(copy);
             ct.stack.push(copy);
+            return copy;
         },
         make() { // utility: not for regular use
+            const created = [];
             for (let i = 0, li = this.bgs.length; i < li; i++) {
-                ct.rooms.addBg(this.bgs[i].graph, this.bgs[i].depth);
+                created.push(ct.rooms.addBg(this.bgs[i].graph, this.bgs[i].depth));
             }
             for (let i = 0, li = this.tiles.length; i < li; i++) {
-                ct.rooms.addTileLayer(this.tiles[i]);
+                created.push(ct.rooms.addTileLayer(this.tiles[i]));
             }
             for (let i = 0, li = this.objects.length; i < li; i++) {
-                ct.types.make(this.objects[i].type, this.objects[i].x, this.objects[i].y);
+                var copy = ct.types.make(this.objects[i].type, this.objects[i].x, this.objects[i].y);
+                if (this.objects[i].tx) {
+                    copy.tx = this.objects[i].tx;
+                }
+                if (this.objects[i].ty) {
+                    copy.ty = this.objects[i].ty;
+                }
+                created.push(copy);
             }
+            return created;
         },
         clear() {
             ct.stack = [];

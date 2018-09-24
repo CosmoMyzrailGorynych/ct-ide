@@ -120,6 +120,7 @@ type-editor.panel.view.flexrow
                 this.type.graph = graph.uid;
             }
             this.selectingGraphic = false;
+            this.parent.fillTypeMap();
             this.update();
         };
         this.typeSave = e => {
