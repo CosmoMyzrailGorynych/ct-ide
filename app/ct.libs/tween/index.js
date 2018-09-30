@@ -113,10 +113,6 @@ ct.tween = {
         return d/2 * (Math.sqrt(1 - a*a) + 1) + s;
     },
     tweens: [],
-    wait(milliseconds) {
-        return new Promise(resolve => {
-            setTimeout(resolve, milliseconds);
-        });
-    }
+    wait: ct.u.wait
 };
 ct.tween.easeInOutQuad = ct.tween.ease;

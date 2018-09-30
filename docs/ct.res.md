@@ -8,11 +8,11 @@ This object manages all the resources needed for your game, including images and
 
 An object with all the loaded images.
 
-### `ct.res.fetchimg(url: String, callback: Function)`
+### `ct.res.fetchImage(url: String, callback: Function)`
 
 Loads an image and adds it to the current image collection (`ct.res.imgs`). When provided with a callback, it sends a string
 
-### `ct.res.makesprite(name: String, img: HTMLImageElement, opts: Object)`
+### `ct.res.makeSprite(name: String, img: HTMLImageElement, opts: Object)`
 Creates a graphic asset from a given image.
 
 - `name` – graphic asset name to be used in code (e.g. with `ct.draw.image`;

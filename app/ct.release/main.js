@@ -265,6 +265,7 @@ ct.loop = function() {
                 
                 ct.mouse.pressed = false;
                 ct.mouse.released = false;
+                ct.mouse.wheel = 0;
                 ct.mouse.xprev = ct.mouse.x;
                 ct.mouse.yprev = ct.mouse.y;
                 ct.main.fpstick++;

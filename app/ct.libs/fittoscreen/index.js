@@ -54,11 +54,11 @@
     };
     var toggleFullscreen = function () {
         var element = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement,
-            requester = ct,
+            requester = document.getElementById('ct'),
             request = requester.requestFullscreen || requester.webkitRequestFullscreen || requester.mozRequestFullScreen || requester.msRequestFullscreen,
             exit = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
         if (!element) {
-            var promise = request.call(ct);
+            var promise = request.call(requester);
             if (promise) {
                 promise
                 .catch(function (err) {

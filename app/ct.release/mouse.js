@@ -8,10 +8,27 @@ ct.mouse = {
     down: false,
     released: false,
     button: 0,
+    wheel: 0,
     clear() {
         ct.mouse.pressed = false;
         ct.mouse.down = false;
         ct.mouse.released = false;
+        ct.mouse.wheel = 0;
+    },
+    hovers(copy) {
+        if (!copy.shape) {
+            return false;
+        }
+        if (copy.shape.type === 'rect') {
+            return ct.u.prect(ct.mouse.x, ct.mouse.y, copy);
+        }
+        if (copy.shape.type === 'circle') {
+            return ct.u.pcircle(ct.mouse.x, ct.mouse.y, copy);
+        }
+        if (copy.shape.type === 'point') {
+            return ct.mouse.x === copy.x && ct.mouse.y === copy.y;
+        }
+        return false;
     }
 };
 
@@ -42,16 +59,23 @@ ct.mouse.listenerup = function (e) {
     window.focus();
     e.preventDefault();
 };
+ct.mouse.listenerwheel = function (e) {
+    ct.mouse.wheel = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
+    e.preventDefault();
+};
 
 ct.mouse.setupListeners = function () {
     if (document.addEventListener) {
         document.addEventListener('mousemove', ct.mouse.listenermove, false);
         document.addEventListener('mouseup', ct.mouse.listenerup, false);
         document.addEventListener('mousedown', ct.mouse.listenerdown, false);
+        document.addEventListener('mousewheel', ct.mouse.listenerwheel, false);
+        document.addEventListener('DOMMouseScroll', ct.mouse.listenerwheel, false);
     } else { // IE?
         document.attachEvent('onmousemove', ct.mouse.listenermove);
         document.attachEvent('onmouseup', ct.mouse.listenerup);
         document.attachEvent('onmousedown', ct.mouse.listenerdown);
+        document.attachEvent('onmousewheel', ct.mouse.listenerwheel);
     }
 };
 

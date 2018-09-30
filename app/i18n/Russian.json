@@ -82,7 +82,7 @@
         "startscreen": "К стартовому экрану",
         "settings": "Настройки",
         "sounds": "Звуки",
-        "styles": "Стили",
+        "ui": "Интерфейс",
         "theme": "Тема",
         "themeday": "Светлая",
         "themenight": "Тёмная",
@@ -173,7 +173,8 @@
         "poolSize": "Размер пула:"
     },
     "styles": {
-        "create": "Создать"
+        "create": "Создать",
+        "styles": "Стили"
     },
     "styleview": {
         "active": "Активно?",
@@ -206,6 +207,17 @@
         "strokecolor": "Цвет обводки",
         "strokeweight": "Толщина обводки:",
         "testtext" : "Тест Test 0123 +"
+    },
+    "fonts": {
+        "fonts": "Шрифты",
+        "import": "Импорт TTF",
+        "italic": "Наклонный"
+    },
+    "fontview": {
+        "typefacename": "Название семейства:",
+        "fontweight": "Жирность:",
+        "italic": "Наклонный стиль?",
+        "reimport": "Заменить"
     },
     "types": {
         "create": "Создать"

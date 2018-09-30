@@ -32,12 +32,14 @@
     "plugin": false
   },
   "webview": {
-     "partitions": [
-        {
-          "name": "trusted",
-          "accessible_resources": [ "<all_urls>" ]
-        }
-     ]
+    "partitions": [
+      {
+        "name": "trusted",
+        "accessible_resources": [
+          "<all_urls>"
+        ]
+      }
+    ]
   },
   "dependencies": {
     "cross-zip": "^2.1.5",
@@ -49,6 +51,7 @@
     "html-minifier": "^3.5.19",
     "markdown-it": "3.1.0",
     "maxrects-packer": "^1.2.0",
-    "node-static": "^0.7.10"
+    "node-static": "^0.7.10",
+    "ttf2woff": "^2.0.1"
   }
 }

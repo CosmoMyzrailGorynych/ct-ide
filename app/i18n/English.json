@@ -82,7 +82,7 @@
         "startscreen": "Return to start screen",
         "settings": "Settings",
         "sounds": "Sounds",
-        "styles": "Styles",
+        "ui": "UI",
         "theme": "Theme",
         "themeday": "Light",
         "themenight": "Dark",
@@ -173,7 +173,8 @@
         "poolSize": "Pool size:"
     },
     "styles": {
-        "create": "Create"
+        "create": "Create",
+        "styles": "Styles"
     },
     "styleview": {
         "active": "Active",
@@ -206,6 +207,17 @@
         "strokecolor": "Stroke color:",
         "strokeweight": "Line weight:",
         "testtext" : "Test text 0123 +"
+    },
+    "fonts": {
+        "fonts": "Fonts",
+        "import": "Import TTF",
+        "italic": "Italic"
+    },
+    "fontview": {
+        "typefacename": "Typeface name:",
+        "fontweight": "Font weight:",
+        "italic": "Is italic?",
+        "reimport": "Reimport"
     },
     "types": {
         "create": "Create"
