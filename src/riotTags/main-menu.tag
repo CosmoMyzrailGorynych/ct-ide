@@ -22,9 +22,9 @@ main-menu.flexcol
             li(onclick="{changeTab('graphic')}" class="{active: tab === 'graphic'}")
                 i.icon-picture
                 span {voc.graphic}
-            li(onclick="{changeTab('styles')}" class="{active: tab === 'styles'}")
+            li(onclick="{changeTab('ui')}" class="{active: tab === 'ui'}")
                 i.icon-droplet
-                span {voc.styles}
+                span {voc.ui}
             li(onclick="{changeTab('sounds')}" class="{active: tab === 'sounds'}")
                 i.icon-headphones
                 span {voc.sounds}
@@ -38,7 +38,7 @@ main-menu.flexcol
         settings-panel(show="{tab === 'settings'}")
         modules-panel(show="{tab === 'modules'}")
         graphics-panel(show="{tab === 'graphic'}")
-        styles-panel(show="{tab === 'styles'}")
+        ui-panel(show="{tab === 'ui'}")
         sounds-panel(show="{tab === 'sounds'}")
         types-panel(show="{tab === 'types'}")
         rooms-panel(show="{tab === 'rooms'}")

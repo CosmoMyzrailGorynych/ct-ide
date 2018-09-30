@@ -1,33 +1,32 @@
-styles-panel.panel.view
-    .flexfix.tall
-        div.flexfix-header
-            div
-                .toright
-                    b {vocGlob.sort}   
-                    button.inline.square(onclick="{switchSort('date')}" class="{selected: sort === 'date' && !searchResults}")
-                        i.icon-clock
-                    button.inline.square(onclick="{switchSort('name')}" class="{selected: sort === 'name' && !searchResults}")
-                        i.icon-sort-alphabetically
-                    .aSearchWrap
-                        input.inline(type="text" onkeyup="{fuseSearch}")
-                .toleft
-                    button#stylecreate(onclick="{styleCreate}")
-                        i.icon.icon-add
-                        span {voc.create}
-        ul.cards.flexfix-body
-            li(each="{style in (searchResults? searchResults : styles)}" 
-            onclick="{openStyle(style)}" 
-            oncontextmenu="{onStyleContextMenu(style)}")
-                span {style.name}
-                img(src="file://{window.sessionStorage.projdir + '/img/' + style.origname}_prev.png?{style.lastmod}")
+styles-panel.flexfix.tall.fifty
+    div.flexfix-header
+        .toright
+            b {vocGlob.sort}   
+            button.inline.square(onclick="{switchSort('date')}" class="{selected: sort === 'date' && !searchResults}")
+                i.icon-clock
+            button.inline.square(onclick="{switchSort('name')}" class="{selected: sort === 'name' && !searchResults}")
+                i.icon-sort-alphabetically
+            .aSearchWrap
+                input.inline(type="text" onkeyup="{fuseSearch}")
+        h1.nmt {voc.styles}
+        .clear
+        .toleft
+            button#stylecreate(onclick="{styleCreate}")
+                i.icon.icon-add
+                span {voc.create}
+        .clear
+    ul.cards.flexfix-body
+        li(each="{style in (searchResults? searchResults : styles)}" 
+        onclick="{openStyle(style)}" 
+        oncontextmenu="{onStyleContextMenu(style)}")
+            span {style.name}
+            img(src="file://{window.sessionStorage.projdir + '/img/' + style.origname}_prev.png?{style.lastmod}")
     style-editor(if="{editingStyle}" styleobj="{editedStyle}")
     script.
         this.editingStyle = false;
         
         this.namespace = 'styles';
         this.mixin(window.riotVoc);
-        this.sort = 'name';
-        this.sortReverse = false;
 
         this.updateList = () => {
             this.styles = [...window.currentProject.styles];

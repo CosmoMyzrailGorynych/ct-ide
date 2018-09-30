@@ -261,6 +261,35 @@ ct.rooms.templates['${r.name}'] = {
         return roomsCode;
     };
 
+    var bundleFonts = function() {
+        var css = '',
+            js = '';
+        if (window.currentProject.fonts) {
+            fs.ensureDirSync(exec + '/export/fonts');
+            const ttf2woff = require('ttf2woff');
+            for (const font of window.currentProject.fonts) {
+                fs.copySync(`${sessionStorage.projdir}/fonts/${font.origname}` , exec + '/export/fonts/' + font.origname);
+                const fontData = fs.readFileSync(`${sessionStorage.projdir}/fonts/${font.origname}`);
+                var ttf = new Uint8Array(fontData);
+                var woff = new Buffer(ttf2woff(ttf).buffer);
+                fs.writeFileSync(exec + '/export/fonts/' + font.origname + '.woff', woff);
+                css += `
+@font-face {
+    font-family: '${font.typefaceName}';
+    src: url('fonts/${font.origname}.woff') format('woff'),
+         url('fonts/${font.origname}') format('truetype');
+    font-weight: ${font.weight};
+    font-style: ${font.italic? 'italic' : 'normal'};
+}`;
+            }
+            js += 'if (document.fonts) { for (const font of document.fonts) { font.load(); }}';
+        }
+        return {
+            css,
+            js
+        };
+    };
+
     window.runCtProject = () => new Promise((resolve) => {
         // glob.compileAudio = 0;
         if (window.currentProject.rooms.length < 1) {
@@ -283,6 +312,12 @@ ct.rooms.templates['${r.name}'] = {
         fs.ensureDirSync(exec + '/export/');
         fs.ensureDirSync(exec + '/export/img/');
         fs.ensureDirSync(exec + '/export/snd/');
+        var css = fs.readFileSync('./ct.release/ct.css', {
+                'encoding': 'utf8'
+            }),
+            html = fs.readFileSync('./ct.release/index.html', {
+                'encoding': 'utf8'
+            });
         var injects = {
             load: '',
             start: '',
@@ -438,6 +473,11 @@ ct.rooms.templates['${r.name}'] = {
         })
         .replace('/*@sound@*/', sounds);
 
+        /* Шрифты */
+        var fonts = bundleFonts(css); 
+        css += fonts.css;
+        buffer += fonts.js;
+
         /* инклюды */
         if (fs.existsSync(sessionStorage.projdir + '/include/')) {
             fs.copySync(sessionStorage.projdir + '/include/', exec + '/export/');
@@ -468,15 +508,11 @@ ct.rooms.templates['${r.name}'] = {
         }
         
         /* HTML & CSS */
-        fs.writeFileSync(exec + '/export/index.html', fs.readFileSync('./ct.release/index.html', {
-            'encoding': 'utf8'
-        })
+        fs.writeFileSync(exec + '/export/index.html', html
         .replace('<!-- %htmltop% -->', injects.htmltop)
         .replace('<!-- %htmlbottom% -->', injects.htmlbottom));
 
-        fs.writeFileSync(exec + '/export/ct.css', fs.readFileSync('./ct.release/ct.css', {
-            'encoding': 'utf8'
-        })
+        fs.writeFileSync(exec + '/export/ct.css', css
         .replace('/*@pixelatedrender@*/', window.currentProject.settings.pixelatedrender? 'canvas,img{image-rendering:optimizeSpeed;image-rendering:-moz-crisp-edges;image-rendering:-webkit-optimize-contrast;image-rendering:optimize-contrast;image-rendering:pixelated;ms-interpolation-mode:nearest-neighbor}' : '')
         .replace('/*%css%*/', injects.css));
 
