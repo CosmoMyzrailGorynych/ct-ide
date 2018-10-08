@@ -432,19 +432,22 @@ room-editor.panel.view
                 if (this.currentType.graph != -1) {
                     img = window.glob.graphmap[this.currentType.graph];
                     graph = img.g;
+                    ox = graph.offx;
+                    oy = graph.offy;
                     w = graph.width;
                     h = graph.height;
-                    grax = graph.axis[0] - graph.offx;
-                    gray = graph.axis[1] - graph.offy;
+                    grax = graph.axis[0];
+                    gray = graph.axis[1];
                 } else {
                     img = window.glob.graphmap[-1];
                     w = h = 32;
+                    ox = oy = 0;
                     grax = gray = 16;
                 }
                 if (this.room.gridX === 0 || e.altKey) {
                     this.refs.canvas.x.drawImage(
                         img,
-                        0, 0, w, h,
+                        ox, oy, w, h,
                         e.offsetX / this.zoomFactor - grax, e.offsetY / this.zoomFactor - gray, w, h);
                 } else {
                     // если есть сетка, то координаты предварительной копии нужно отснэпить по сетке
@@ -453,7 +456,7 @@ room-editor.panel.view
                     w = graph.width;
                     h = graph.height;
                     this.refs.canvas.x.drawImage(
-                        img, 0, 0, w, h,
+                        img, ox, oy, w, h,
                         this.xToCanvas(Math.round(dx / this.room.gridX) * this.room.gridX) / this.zoomFactor - grax, 
                         this.yToCanvas(Math.round(dy / this.room.gridY) * this.room.gridY) / this.zoomFactor - gray, 
                         w, h);
@@ -1033,18 +1036,22 @@ room-editor.panel.view
                         for (let j = 0, lj = layer.copies.length; j < lj; j++) {
                             let copy = layer.copies[j],
                                 type = window.currentProject.types[glob.typemap[copy.uid]];
-                            let graph, w, h,
+                            let graph, gra, w, h, ox, oy,
                                 grax, gray; // Центр рисовки графики
                             if (type.graph != -1) {
                                 graph = glob.graphmap[type.graph];
-                                w = glob.graphmap[type.graph].width / glob.graphmap[type.graph].g.grid[0];
-                                h = glob.graphmap[type.graph].height / glob.graphmap[type.graph].g.grid[1];
-                                grax = glob.graphmap[type.graph].g.axis[0];
-                                gray = glob.graphmap[type.graph].g.axis[1];
+                                gra = glob.graphmap[type.graph].g;
+                                w = gra.width;
+                                h = gra.height;
+                                ox = gra.offx;
+                                oy = gra.offy;
+                                grax = gra.axis[0];
+                                gray = gra.axis[1];
                             } else {
                                 graph = glob.graphmap[-1];
                                 w = h = 32;
                                 grax = gray = 16;
+                                ox = oy = 0;
                             }
                             if (copy.tx || copy.ty) {
                                 canvas.x.save();
@@ -1052,18 +1059,17 @@ room-editor.panel.view
                                 canvas.x.scale(copy.tx || 1, copy.ty || 1);
                                 canvas.x.drawImage(
                                     graph,
-                                    0, 0, w, h,
+                                    ox, oy, w, h,
                                     0, 0, w, h
                                 );
                                 canvas.x.restore();
                             } else {
                                 canvas.x.drawImage(
                                     graph,
-                                    0, 0, w, h,
+                                    glob.graphmap[type.graph].g.offx, glob.graphmap[type.graph].g.offy, w, h,
                                     copy.x - grax, copy.y - gray, w, h
                                 );
                             }
-                                
                         }
                     } else if (hybrid[i].tiles) { // это слой с тайлами
                         let layer = hybrid[i];
