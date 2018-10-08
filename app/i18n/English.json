@@ -148,6 +148,7 @@
         "name": "Name:",
         "radius": "Radius:",
         "rectangle": "Rectangle",
+        "reimport": "Reimport",
         "round": "Circle",
         "rows": "Rows:",
         "setcenter": "Image's center",
@@ -265,6 +266,9 @@
         "changecopyscale": "Change scale",
         "shiftcopy": "Set coordinates",
         "deletetile": "Delete a tile",
+        "deletetiles": "Delete tiles",
+        "movetilestolayer": "Move to layer",
+        "shifttiles": "Shift tiles",
         "findTileset": "Find a Tileset"
     },
     "notepad": {
