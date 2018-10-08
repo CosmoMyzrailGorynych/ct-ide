@@ -59,6 +59,29 @@ ct.u = {
     // Point-point DistanCe
         return Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
     },
+    deltaDir(dir1, dir2) {
+        dir1 = ((dir1 % 360) + 360) % 360;
+        dir2 = ((dir2 % 360) + 360) % 360;
+        var t = dir1,
+            h = dir2,
+            ta = h - t;
+        if (ta > 180) {
+            ta -= 360;
+        }
+        if (ta < -180) {
+            ta += 360;
+        }
+        return ta;
+    },
+    clamp(min, val, max) {
+        return Math.max(min, Math.min(max, val));
+    },
+    lerp(a, b, alpha) {
+        return a + (b-a)*alpha;
+    },
+    unlerp(a, b, val) {
+        return (val - a) / (b - a);
+    },
     prect(x, y, arg) {
     // point-rectangle intersection
         var xmin, xmax, ymin, ymax;
@@ -92,6 +115,18 @@ ct.u = {
             for (const i in o2) {
                 o1[i] = o2[i];
             }
+        }
+    },
+    inspect(copy, fields) {
+        ct.x.font = '10px sans-serif';
+        var line = 0;
+        for (const field of fields) {
+            if (typeof copy[field] === 'object') {
+                ct.draw.text(`${field}: ${JSON.stringify(copy[field])}`, copy.x, copy.y + 12 * line);
+            } else {
+                ct.draw.text(`${field}: ${copy[field]}`, copy.x, copy.y + 12 * line);
+            }
+            line++;
         }
     },
     load(url, callback) {
