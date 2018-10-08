@@ -95,10 +95,12 @@ room-editor.panel.view
         .zoom
             b {voc.zoom}
             div.button-stack
+                button#roomzoom12.inline(onclick="{roomToggleZoom(0.125)}" class="{active: zoomFactor === 0.125}") 12%
                 button#roomzoom25.inline(onclick="{roomToggleZoom(0.25)}" class="{active: zoomFactor === 0.25}") 25%
                 button#roomzoom50.inline(onclick="{roomToggleZoom(0.5)}" class="{active: zoomFactor === 0.5}") 50%
                 button#roomzoom100.inline(onclick="{roomToggleZoom(1)}" class="{active: zoomFactor === 1}") 100%
                 button#roomzoom200.inline(onclick="{roomToggleZoom(2)}" class="{active: zoomFactor === 2}") 200%
+                button#roomzoom400.inline(onclick="{roomToggleZoom(4)}" class="{active: zoomFactor === 4}") 400%
         .grid
             button#roomgrid(onclick="{roomToggleGrid}" class="{active: room.gridX > 0}") 
                 span {voc[room.gridX > 0? 'gridoff' : 'grid']}
@@ -493,21 +495,29 @@ room-editor.panel.view
         this.onCanvasWheel = e => {
             if (e.wheelDelta > 0) {
                 // in
-                if (this.zoomFactor === 1) {
+                if (this.zoomFactor === 2) {
+                    this.zoomFactor = 4;
+                } else if (this.zoomFactor === 1) {
                     this.zoomFactor = 2;
                 } else if (this.zoomFactor === 0.5) {
                     this.zoomFactor = 1;
                 } else if (this.zoomFactor === 0.25) {
                     this.zoomFactor = 0.5;
+                } else if (this.zoomFactor === 0.125) {
+                    this.zoomFactor = 0.25;
                 }
             } else {
                 // out
-                if (this.zoomFactor === 2) {
+                if (this.zoomFactor === 4) {
+                    this.zoomFactor = 2;
+                } else if (this.zoomFactor === 2) {
                     this.zoomFactor = 1;
                 } else if (this.zoomFactor === 1) {
                     this.zoomFactor = 0.5;
                 } else if (this.zoomFactor === 0.5) {
                     this.zoomFactor = 0.25;
+                } else if (this.zoomFactor === 0.25) {
+                    this.zoomFactor = 0.125;
                 }
             }
             this.redrawGrid();
