@@ -307,13 +307,12 @@
         nearest(x, y, type) {
             // ct.place.nearest(<x: Number, y: Number, type: Type>)
             if (ct.types.list[type].length > 0) {
-                var dist = Math.sqrt(Math.abs((x-ct.types.list[type][0].y)*(y-ct.types.list[type][0].y)));
+                var dist = Math.hypot(x-ct.types.list[type][0].x, y-ct.types.list[type][0].y);
                 var inst = ct.types.list[type][0];
-                var i;
-                for (i in ct.types.list[type]) {
-                    if (Math.sqrt(Math.abs((x-ct.types.list[type][i].y)*(y-ct.types.list[type][i].y))) < dist) {
-                        dist = Math.sqrt(Math.abs((x-ct.types.list[type][i].y)*(y-ct.types.list[type][i].y)));
-                        inst = ct.types.list[type][i];
+                for (const copy of ct.types.list[type]) {
+                    if (Math.hypot(x-copy.x, y-copy.y) < dist) {
+                        dist = Math.hypot(x-copy.x, y-copy.y);
+                        inst = copy;
                     }
                 }
                 ct.place.lastdist = dist;
@@ -324,12 +323,12 @@
         furthest(x, y, type) {
             // ct.place.furthest(<x: Number, y: Number, type: Type>)
             if (ct.types.list[type].length > 0) {
-                var dist = Math.sqrt(Math.abs((x-ct.types.list[type][0].y) * (y-ct.types.list[type][0].y)));
+
+                var dist = Math.hypot(x-ct.types.list[type][0].x, y-ct.types.list[type][0].y);
                 var inst = ct.types.list[type][0];
-                var copy;
-                for (copy in ct.types.list[type]) {
-                    if (Math.sqrt(Math.abs((x - copy.y) * (y-copy.y))) > dist) {
-                        dist = Math.sqrt(Math.abs((x - copy.y) * (y - copy.y)));
+                for (const copy of ct.types.list[type]) {
+                    if (Math.hypot(x - copy.x, y - copy.y) > dist) {
+                        dist = Math.hypot(x - copy.x, y - copy.y);
                         inst = copy;
                     }
                 }
