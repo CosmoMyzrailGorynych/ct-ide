@@ -129,6 +129,8 @@ graphic-editor.panel.view
                 .button.inline
                     i.icon-folder
                     span {voc.replacegraph}
+            .button.inline.toright(title="{voc.reimport}" if="{opts.graphic.source}" onclick="{reimport}")
+                i.icon-refresh-ccw
             //- TODO
             //-
                 .button-stack
@@ -210,18 +212,26 @@ graphic-editor.panel.view
         
         this.graphReplace = e => {
             if (/\.(jpg|gif|png|jpeg)/gi.test(this.refs.graphReplacer.value)) {
-                console.log(this.refs.graphReplacer.value, 'passed');
                 this.loadImg(
                     this.graphic.uid,
                     this.refs.graphReplacer.value,
                     sessionStorage.projdir + '/img/i' + this.graphic.uid + path.extname(this.refs.graphReplacer.value)
                 );
+                this.graphic.source = this.refs.graphReplacer.value;
             } else {
                 alertify.error(window.languageJSON.common.wrongFormat);
                 console.log(this.refs.graphReplacer.value, 'NOT passed');
             }
             this.refs.graphReplacer.value = '';
         };
+        this.reimport = e => {
+            this.loadImg(
+                this.graphic.uid,
+                this.graphic.source,
+                sessionStorage.projdir + '/img/i' + this.graphic.uid + path.extname(this.refs.graphReplacer.value)
+            );
+        }
+
         /**
          * Загружает изображение в редактор и генерирует квадратную превьюху из исходного изображения
          * @param {Number} uid Идентификатор изображения
@@ -229,23 +239,20 @@ graphic-editor.panel.view
          * @param {Sting} dest Путь к изображению в папке проекта
          */
         this.loadImg = (uid, filename, dest) => {
-            console.log(uid, filename, 'copying');
             window.megacopy(filename, dest, e => {
-                console.log(uid, filename, 'copy finished');
                 if (e) throw e;
                 image = document.createElement('img');
                 image.onload = () => {
-                    this.graphic.width = this.graphic.imgWidth = image.width;
-                    this.graphic.height = this.graphic.imgHeight = image.height;
+                    this.graphic.imgWidth = image.width;
+                    this.graphic.imgHeight = image.height;
                     this.graphic.origname = path.basename(dest);
                     graphCanvas.img = image;
                     this.graphic.lastmod = +(new Date());
                     this.parent.imgGenPreview(dest, dest + '_prev.png', 64, () => {
-                        console.log(uid, filename, 'preview generated');
                         this.update();
                     });
                     this.parent.imgGenPreview(dest, dest + '_prev@2.png', 128, () => {
-                        console.log(uid, filename, 'hdpi preview generated');
+                        
                     });
                     setTimeout(() => {
                         this.refreshGraphCanvas();

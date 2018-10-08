@@ -160,6 +160,7 @@ graphics-panel.panel.view
                             offx: 0,
                             offy: 0,
                             origname: path.basename(dest),
+                            source: filename,
                             shape: 'rect',
                             left: 0,
                             right: image.width,
@@ -199,8 +200,8 @@ graphics-panel.panel.view
                     c.x = c.getContext('2d');
                     c.width = c.height = size;
                     c.x.clearRect(0, 0, size, size);
-                    w = size, thumbnail.width;
-                    h = size, thumbnail.height;
+                    w = thumbnail.width;
+                    h = thumbnail.height;
                     if (w > h) {
                         k = size / w;
                     } else {
