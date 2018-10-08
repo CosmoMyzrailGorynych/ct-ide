@@ -3,13 +3,7 @@
  */
 
 ct.draw = function (t, x, y) {
-    if (t.graph) {
-        if (t.transform) {
-            ct.draw.imgext(t.graph, Math.floor(t.frame) % ct.res.graphs[t.graph].frames.length, x || t.x, y || t.y, t.tx, t.ty, t.tr, t.ta);
-        } else {
-            ct.draw.image(t.graph, Math.floor(t.frame) % ct.res.graphs[t.graph].frames.length, x || t.x, y || t.y);
-        }
-    }
+    t.draw(x, y);
 };
 ct.u.ext(ct.draw, {
     circle(x, y, r, o) {

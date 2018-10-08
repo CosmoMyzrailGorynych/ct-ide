@@ -92,8 +92,8 @@ types-panel.panel.view
                 name: 'Type_' + slice,
                 depth: 0,
                 oncreate: '',
-                onstep: 'ct.types.move(this);',
-                ondraw: 'ct.draw(this);',
+                onstep: 'this.move();',
+                ondraw: 'this.draw();',
                 ondestroy: '',
                 uid: id,
                 graph: -1

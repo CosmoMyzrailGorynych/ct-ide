@@ -1,3 +1,5 @@
+/* global Copy */
+
 (function () {
     var nextRoom;
     ct.rooms = {
@@ -10,7 +12,7 @@
             canv.x = canv.getContext('2d');
             canv.x.drawImage(g.atlas, g.frames[0][0], g.frames[0][1], g.width, g.height, 0, 0, g.width, g.height);
             var pat = ct.x.createPattern(canv, 'repeat');
-            var copy = ct.types.Copy('BACKGROUND');
+            var copy = new Copy('BACKGROUND');
             copy.pattern = pat;
             copy.depth = depth;
             ct.room.backgrounds.push(copy);
@@ -18,7 +20,7 @@
             return copy;
         },
         addTileLayer(layer) {
-            var copy = ct.types.Copy('TILELAYER');
+            var copy = new Copy('TILELAYER');
             copy.depth = layer.depth;
             copy.tiles = layer.tiles;
             ct.room.tileLayers.push(copy);

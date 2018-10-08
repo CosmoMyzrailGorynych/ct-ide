@@ -1,29 +1,26 @@
-ct.types = {
-    Copy(type) {
-    // basic constructor. Returns Copy
-        var obj = {
-            x: 0,
-            y: 0,
-            xprev: 0,
-            yprev: 0,
-            xstart: 0,
-            ystart: 0,
-            spd: 0,
-            dir: 0,
-            grav: 0,
-            gravdir: 0,
-            depth: 0,
-            frame: 0,
-            imgspd: 1,
-            transform: false,
-            tx: 1,
-            ty: 1,
-            tr: 0,
-            ta: 1,
-            uid: ct.rooms.current.uid
-        };
+class Copy {
+    constructor(type) {
+        this.x = 0;
+        this.y = 0;
+        this.xprev = 0;
+        this.yprev = 0;
+        this.xstart = 0;
+        this.ystart = 0;
+        this.spd = 0;
+        this.dir = 0;
+        this.grav = 0;
+        this.gravdir = 0;
+        this.depth = 0;
+        this.frame = 0;
+        this.imgspd = 1;
+        this.transform = false;
+        this.tx = 1;
+        this.ty = 1;
+        this.tr = 0;
+        this.ta = 1;
+        this.uid = ct.rooms.current.uid;
         if (type) {
-            ct.u.ext(obj, {
+            ct.u.ext(this, {
                 type,
                 depth: ct.types[type].depth, 
                 graph: ct.types[type].graph,
@@ -35,12 +32,49 @@ ct.types = {
             });
         }
         ct.rooms.current.uid++;
-        return obj;
-    },
+        return this;
+    }
+    move() {
+        // performs movement step with Copy `o`
+        var xprev = this.x,
+            yprev = this.y,
+            hspd, vspd;
+        if (!this.grav) { this.grav = 0; this.gravdir = 0; }
+        hspd = this.spd * Math.cos(this.dir*Math.PI/-180) + this.grav * Math.cos(this.gravdir*Math.PI/-180);
+        vspd = this.spd * Math.sin(this.dir*Math.PI/-180) + this.grav * Math.sin(this.gravdir*Math.PI/-180);
+        this.x += hspd;
+        this.y += vspd;
+        if (this.grav) {
+            this.spd = Math.sqrt(hspd*hspd + vspd*vspd);
+        }
+        if (this.spd > 0) {
+            this.dir = ct.u.pdn(xprev, yprev, this.x, this.y);
+        }
+    }
+    draw(x, y) {
+        if (this.transform) {
+            ct.draw.imgext(this.graph, Math.floor(this.frame) % ct.res.graphs[this.graph].frames.length, x || this.x, y || this.y, this.tx, this.ty, this.tr, this.ta);
+        } else {
+            ct.draw.image(this.graph, Math.floor(this.frame) % ct.res.graphs[this.graph].frames.length, x || this.x, y || this.y);
+        }
+    }
+    addSpeed(spd, dir) {
+        var hspd, vspd;
+        hspd = this.spd * Math.cos(this.dir*Math.PI/-180) + spd * Math.cos(dir*Math.PI/-180);
+        vspd = this.spd * Math.sin(this.dir*Math.PI/-180) + spd * Math.sin(dir*Math.PI/-180);
+        this.spd = Math.sqrt(hspd*hspd + vspd*vspd);
+        if (this.spd > 0) {
+            this.dir = ct.u.pdn(this.xprev, this.yprev, this.xprev + hspd, this.yprev + vspd);
+        }
+    }
+}
+
+ct.types = {
+    Copy,
     list: { },
     make(type, x, y) {
-        //advanced constructor. Returns Copy
-        const obj = ct.types.Copy(type);
+        // An advanced constructor. Returns a Copy
+        const obj = new Copy(type);
         x = x || 0;
         y = y || 0;
         obj.x = obj.xprev = obj.xstart = x;
@@ -60,30 +94,10 @@ ct.types = {
         return obj;
     },
     move(o) {
-        // performs movement step with Copy `o`
-        var xprev = o.x,
-            yprev = o.y,
-            hspd, vspd;
-        if (!o.grav) { o.grav = 0; o.gravdir = 0; }
-        hspd = o.spd * Math.cos(o.dir*Math.PI/-180) + o.grav * Math.cos(o.gravdir*Math.PI/-180);
-        vspd = o.spd * Math.sin(o.dir*Math.PI/-180) + o.grav * Math.sin(o.gravdir*Math.PI/-180);
-        o.x += hspd;
-        o.y += vspd;
-        if (o.grav) {
-            o.spd = Math.sqrt(hspd*hspd + vspd*vspd);
-        }
-        if (o.spd > 0) {
-            o.dir = ct.u.pdn(xprev, yprev, o.x, o.y);
-        }
+        o.move();
     },
     addSpeed(o, spd, dir) {
-        var hspd, vspd;
-        hspd = o.spd * Math.cos(o.dir*Math.PI/-180) + spd * Math.cos(dir*Math.PI/-180);
-        vspd = o.spd * Math.sin(o.dir*Math.PI/-180) + spd * Math.sin(dir*Math.PI/-180);
-        o.spd = Math.sqrt(hspd*hspd + vspd*vspd);
-        if (o.spd > 0) {
-            o.dir = ct.u.pdn(o.xprev, o.yprev, o.xprev + hspd, o.yprev + vspd);
-        }
+        o.addSpeed(spd, dir);
     },
     each(func) {
         for (const i in ct.stack) {

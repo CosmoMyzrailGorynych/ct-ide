@@ -31,7 +31,9 @@ Each Copy has these parameters:
 
 To delete a Copy, simply set its `kill` parameter to `true`.
 
-```js Example: delete Copy, if its health is depleted
+**Example:** delete a Copy, if its health is depleted
+
+```js 
 if (this.health <= 0) {
     this.kill = true;
 }
@@ -40,20 +42,31 @@ if (this.health <= 0) {
 > Note: OnStep code [will still be executed](ct.html#Event-sequence) until the drawing phase.
 
 
-## Common procedures with Copies
+## Copies' methods
 
-```js Draw the current Copy in its place
-ct.draw(this);
+Draw the current Copy in its place
+
+```js
+this.draw();
 ```
 
-```js Draw a Copy in a specified location
-ct.draw.copy(copy, x, y);
+Draw a Copy in a specified location
+
+```js 
+this.draw(x, y);
 ```
 
-```js Move a Copy according to its 'spd' and 'grav' parameters
-ct.types.move(this);
+Move a Copy according to its 'spd' and 'grav' parameters
+
+```js 
+this.move();
 ```
 
+Add speed vector to a Copy in a given direction.
+
+```js 
+this.addSpeed(speed, dir);
+```
 
 ## Methods and properties of ct.types
 
@@ -65,7 +78,9 @@ Creates a Copy of a given Type. If x or y is omitted, they are set to 0.
 
 Applies a function to all the active copies.
 
-```js Example: destroy all the copies within a 150px radius
+**Example:** destroy all the copies within a 150px radius
+
+```js 
 var me = this;
 ct.types.each(function () {
     if (this !== me) { // aren't we trying to destroy ourselves?
@@ -87,12 +102,14 @@ Works like `ct.types.each`, but only for the specified Copy.
 
 Returns an array with all the existing copies of the specified type.
 
-```js Example: make an order to destroy all the 'Bonus' Copies
-for (var i = 0, l = ct.types.list['Bonus'].length; i < l; i++) {
-    ct.types.list['Bonus'][i].kill = true;
+**Example:** make an order to destroy all the 'Bonus' Copies
+
+```js 
+for (var bonus of ct.types.list['Bonus']) {
+    bonus.kill = true;
 }
 ```
 
 ### `ct.types.addSpeed(o: Copy, spd, dir)`
 
-Adds a speed vector to a given Copy.
+Adds a speed vector to a given Copy. This is the same as calling `o.addSpeed(spd, dir)`;
