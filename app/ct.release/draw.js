@@ -22,16 +22,17 @@ ct.u.ext(ct.draw, {
         ct.x.stroke();
     },
     image(img, imgindex, x, y) {
+        const graphic = ct.res.graphs[img];
         ct.x.drawImage(
-            ct.res.graphs[img].atlas,
-            ct.res.graphs[img].frames[imgindex][0],
-            ct.res.graphs[img].frames[imgindex][1],
-            ct.res.graphs[img].width,
-            ct.res.graphs[img].height,
-            x - ct.res.graphs[img].x - ct.rooms.current.x,
-            y - ct.res.graphs[img].y - ct.rooms.current.y,
-            ct.res.graphs[img].width,
-            ct.res.graphs[img].height
+            graphic.atlas,
+            graphic.frames[imgindex][0],
+            graphic.frames[imgindex][1],
+            graphic.width,
+            graphic.height,
+            x - graphic.x - ct.rooms.current.x,
+            y - graphic.y - ct.rooms.current.y,
+            graphic.width,
+            graphic.height
         );
     },
     imgext(img, imgindex, x, y, hs, vs, r, a) {
@@ -40,16 +41,17 @@ ct.u.ext(ct.draw, {
         ct.x.translate(x - ct.rooms.current.x, y - ct.rooms.current.y);
         ct.x.rotate(-r * Math.PI/180);
         ct.x.scale(hs,vs);
+        const graphic = ct.res.graphs[img];
         ct.x.drawImage(
-            ct.res.graphs[img].atlas,
-            ct.res.graphs[img].frames[imgindex][0],
-            ct.res.graphs[img].frames[imgindex][1],
-            ct.res.graphs[img].width,
-            ct.res.graphs[img].height,
-            -ct.res.graphs[img].x,
-            -ct.res.graphs[img].y,
-            ct.res.graphs[img].width,
-            ct.res.graphs[img].height
+            graphic.atlas,
+            graphic.frames[imgindex][0],
+            graphic.frames[imgindex][1],
+            graphic.width,
+            graphic.height,
+            -graphic.x,
+            -graphic.y,
+            graphic.width,
+            graphic.height
         );
         ct.x.restore();
     },
