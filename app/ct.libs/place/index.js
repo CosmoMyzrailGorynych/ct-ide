@@ -17,6 +17,7 @@
     var getLineSide = function(x, y, x1, y1, x2, y2) {
         return (y2-y1)*x + (x1-x2)*y + (x2*y1-x1*y2);
     };
+
     ct.place = {
         m: 1, // direction modifier in ct.place.go
         check: {
@@ -226,12 +227,13 @@
                 oldy = me.y;
             me.x = x;
             me.y = y;
-            for (var copy of ct.stack) {
-                if (copy !== me && (copy.ctype === ctype || !ctype)) {
-                    if (ct.place.collide(me, copy)) {
+            var array = ctype? (ct.place.ctypeCollections[ctype] || []) : ct.stack;
+            for (let i = 0, l = array.length; i < l; i++) {
+                if (array[i] !== me) {
+                    if (ct.place.collide(me, array[i])) {
                         me.x = oldx;
                         me.y = oldy;
-                        return copy;
+                        return array[i];
                     }
                 }
             }
@@ -264,43 +266,29 @@
             if (!me.shape) {
                 return false;
             }
-            var oldx = me.x, 
-                oldy = me.y;
-            me.x = x;
-            me.y = y;
             var layer = ct.room.tiles.find(layer => layer.depth === depth);
-            for (var tile of layer.tiles) {
+            for (const tile of layer.tiles) {
                 if (me.shape.type === 'rect' && 
-                    ct.place.check['rect.rect'](me.x - me.shape.left, me.y - me.shape.top, me.x + me.shape.right,me.y + me.shape.bottom, tile.x, tile.y, tile.x + tile.width, tile.y + tile.height)
+                    ct.place.check['rect.rect'](x - me.shape.left, y - me.shape.top, x + me.shape.right,y + me.shape.bottom, tile.x, tile.y, tile.x + tile.width, tile.y + tile.height)
                 ) {
-                    me.x = oldx;
-                    me.y = oldy;
                     return true;
                 }
                 if (me.shape.type === 'circle' &&
-                    ct.place.check['circle.rect'](me.x, me.y, me.shape.r, tile.x, tile.y, tile.x + tile.width, tile.y + tile.width)
+                    ct.place.check['circle.rect'](x, y, me.shape.r, tile.x, tile.y, tile.x + tile.width, tile.y + tile.width)
                 ) {
-                    me.x = oldx;
-                    me.y = oldy;
                     return true;
                 }
                 if (me.shape.type === 'point' &&
-                    ct.place.check['rect.point'](tile.x, tile.y, tile.x + tile.width, tile.y + tile.height, me.x, me.y)
+                    ct.place.check['rect.point'](tile.x, tile.y, tile.x + tile.width, tile.y + tile.height, x, y)
                 ) {
-                    me.x = oldx;
-                    me.y = oldy;
                     return true;
                 }
                 if (me.shape.type === 'line' &&
-                    ct.place.check['line.rect'](me.x + me.shape.x1, me.y + me.shape.y1, me.x + me.shape.x2, me.y + me.shape.y2, tile.x, tile.y, tile.x + tile.width, tile.y + tile.height)
+                    ct.place.check['line.rect'](x + me.shape.x1, y + me.shape.y1, x + me.shape.x2, y + me.shape.y2, tile.x, tile.y, tile.x + tile.width, tile.y + tile.height)
                 ) {
-                    me.x = oldx;
-                    me.y = oldy;
                     return true;
                 }
             }
-            me.x = oldx;
-            me.y = oldy;
             return false;
         },
         lastdist: null,
