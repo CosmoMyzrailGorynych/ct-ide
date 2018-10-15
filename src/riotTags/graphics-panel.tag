@@ -104,6 +104,18 @@ graphics-panel.panel.view
             });
             var img = document.createElement('img');
             glob.graphmap[-1] = img;
+            img.g = {
+                width: 32,
+                height: 32,
+                offx: 0,
+                offy: 0,
+                grid: [1, 1],
+                axis: [16, 16],
+                marginx: 0,
+                marginy: 0,
+                imgWidth: 32,
+                imgHeight: 32,
+            }
             img.src = '/img/unknown.png';
         };
         this.on('mount', () => {
