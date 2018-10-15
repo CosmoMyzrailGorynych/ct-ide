@@ -32,7 +32,9 @@ Now let's edit its collision mask. It determines which areas of an image are cou
 
 Firstly, shift its axis so it is placed at the bottom middle point.
 
-> As we have a 96x96 pixels image, we need 48 pixels on the horizontal axis and 96 at a vertical one. Pixels are measured from the top-left corner, and the first value of a point is usually its horizontal component, or its X value, and the second is referred to as an Y component.
+::: tip Explanation
+As we have a 96x96 pixels image, we need 48 pixels on the horizontal axis and 96 at a vertical one. Pixels are measured from the top-left corner, and the first value of a point is usually its horizontal component, or its X value, and the second is referred to as an Y component.
+:::
 
 The robot has a nice rectangular shape so it will be wiser to mark it up as a rectangle. Make sure you have a rectangular shape selected, click the 'Fill' button and calibrate the offsets so the robot's body is covered with a yellow rectangle.
 
@@ -44,7 +46,9 @@ Click the "Save" button in the bottom-left corner.
 
 We now need to set collision masks for `Robot_Idle` and `Robot_Jump` too. Make sure that you shift the axis to 48x96 and calibrate collision masks for both of them.
 
-> It is also good to make collision offsets same for each of the three sprites, so the robot doesn't clip into the surface when switching its animations and suddenly getting bigger.
+::: tip
+It is also good to make collision offsets same for each of the three sprites, so the robot doesn't clip into the surface when switching its animations and suddenly getting bigger.
+:::
 
 Now let's set the collision shapes of our crystals and heart bonuses. These can be defined as circles. Open the `GreenCrystal`, set its collision shape as a "Circle", then click a button called "Image's center" so the axis automatically snaps to needed values, and calibrate the collision shape's radius.
 
@@ -65,7 +69,9 @@ Open the "Types" tab and create a new type. Call it "Robot", set its sprite to `
 
 ![Editing a type](./images/tutPlatformer_09.png)
 
-> Types are like templates, from which copies are created. We fill our levels (also often named as rooms) with copies, and they are the things that interact with each other on the screen, but each copy was created from a certain type.
+::: tip
+Types are like templates, from which copies are created. We fill our levels (also often named as rooms) with copies, and they are the things that interact with each other on the screen, but each copy was created from a certain type.
+:::
 
 Create additional types in the same way:
 
@@ -99,7 +105,9 @@ We will need to listen to keyboard events and to detect collisions between the R
 
 ![Enabling a module in ct.js](./images/tutPlatformer_13.png)
 
-> **✨ Pro tip:** Enable the catmod called `fittoscreen`, then go to its settings tab and enable the option called "Just scale, no canvas resize" for an automagical full-screen view.
+::: tip PRO TIP ✨
+Enable the catmod called `fittoscreen`, then go to its settings tab and enable the option called "Just scale, no canvas resize" for an automagical full-screen view.
+:::
 
 Each module has its own documentation on the "Reference" tab. We will highlight some of its parts later.
 
@@ -132,7 +140,9 @@ this.hspeed = 0; // Horizontal speed
 this.vspeed = 0; // Vertical speed
 ```
 
-> `this` is a copy that is executing the written code. In this case, it is a `Robot` copy.
+::: tip
+`this` is a copy that is executing the written code. In this case, it is a `Robot` copy.
+:::
 
 Now move to the "On Step" tab and add this code:
 
@@ -164,11 +174,15 @@ if (ct.place.occupied(this, this.x, this.y + 1, 'Solid')) {
 }
 ```
 
-> "On Step" code is executed each frame for each copy. Movement and other game logic usually go here.
+::: tip
+"On Step" code is executed each frame for each copy. Movement and other game logic usually go here.
+:::
 
-> `ct.keyboart.down['key']` checks whether a given `key` is currently held down. Note the square brackets here! There are also `ct.keyboard.pressed['key']` and `ct.keyboard.released['key']`.
+::: tip
+`ct.keyboart.down['key']` checks whether a given `key` is currently held down. Note the square brackets here! There are also `ct.keyboard.pressed['key']` and `ct.keyboard.released['key']`.
 
-> `ct.place.occupied(copy, x, y, group)` checks whether a given copy has any collisions in given coordinates with a specific group. You can omit the group if you don't need it. This method returns either `false` (no collision) or a copy which was the first to collide with.
+`ct.place.occupied(copy, x, y, group)` checks whether a given copy has any collisions in given coordinates with a specific group. You can omit the group if you don't need it. This method returns either `false` (no collision) or a copy which was the first to collide with.
+:::
 
 This will set variables `hspeed` and `vspeed`, but they won't do anything as is. Add more code to actually move the Robot around:
 
@@ -191,15 +205,21 @@ for (var i = 0; i < Math.abs(this.vspeed); i++) {
 }
 ```
 
-> `ct.place.free` is an opposite equivalent of `ct.place.occupied`. It has the same parameters and returns either `true` or `false`.
+::: tip
+`ct.place.free` is an opposite equivalent of `ct.place.occupied`. It has the same parameters and returns either `true` or `false`.
 
-> `Math.abs` returns the absolute value of a given number, meaning that negative numbers will become positive. `Math.sign` returns -1 if the given value is negative, 1 if it is positive, and 0 if it is 0. Combined together, they create a `for` loop which works in both directions and checks collisions pixel by pixel.
+`Math.abs` returns the absolute value of a given number, meaning that negative numbers will become positive. `Math.sign` returns -1 if the given value is negative, 1 if it is positive, and 0 if it is 0. Combined together, they create a `for` loop which works in both directions and checks collisions pixel by pixel.
+:::
 
 We can now move our Robot around!
 
-> **Note:** Your character may ignore holes which are one grid cell wide. Test it. If it occurs, you need to make the Robot's collision shapes a bit slimmer.
+::: warning
+Your character may ignore holes which are one grid cell wide. Test it. If it occurs, you need to make the Robot's collision shapes a bit slimmer.
+:::
 
-> **On your own:** Modify the code so that the player can control it with arrows, too.
+::: tip On your own!
+Modify the code so that the player can control it with arrows, too.
+:::
 
 ### Making Camera Follow the Robot
 
@@ -243,9 +263,11 @@ if (robot) {
 }
 ```
 
-> The line `ct.types.move(this);` is responsible for moving copies that use standard ct variables around. In this case, the checkpoint shouldn't move at all. 😉
+::: tip
+The line `ct.types.move(this);` is responsible for moving copies that use standard ct variables around. In this case, the checkpoint shouldn't move at all. 😉
 
-> `ct.place.meet` is almost the same as ct.place.occupied, but it checks against copies' types, not their collision group. This is also the fastest method if compared to `ct.place.free` and `ct.place.occupied`.
+`ct.place.meet` is almost the same as ct.place.occupied, but it checks against copies' types, not their collision group. This is also the fastest method if compared to `ct.place.free` and `ct.place.occupied`.
+:::
 
 Here we also shift the stored point by 32x32 pixels, because the checkpoint's axis is placed in its top-left corner, but the Robot's axis is placed at the middle bottom point. Because of that, the Robot would respawn a bit left and above the desired central point.
 
@@ -271,7 +293,9 @@ if (ct.place.occupied(this, this.x, this.y, 'Deadly')) {
 }
 ```
 
-> Here, the `return;` statement stops the execution of a function. We won't need movement and other checks if we need to respawn the Robot at some other position.
+::: tip
+Here, the `return;` statement stops the execution of a function. We won't need movement and other checks if we need to respawn the Robot at some other position.
+:::
 
 We should also write this code to "On Create" code so that respawn point will be at creation location by default, in case something ever goes wrong:
 
@@ -297,23 +321,23 @@ this.imgspd = 8 / ct.speed;
 
 Open the `Robot`'s "On Step" code and modify the moving section so it changes the drawn graphics asset depending on user inputs and the robot's position in space:
 
-```diff 
+```js{4,5,6,10,11,12,16,31,32}
 if (ct.keyboard.down['A']) {
     // If the A key on keyboard is down, then move to left
     this.hspeed = -this.speed;
-+    // Set the walking animation and transform the robot to the left
-+    this.graph = 'Robot_Walking';
-+    this.tx = -1;
+    // Set the walking animation and transform the robot to the left
+    this.graph = 'Robot_Walking';
+    this.tx = -1;
 } else if (ct.keyboard.down['D']) {
     // If the D key on keyboard is down, then move to right
     this.hspeed = this.speed;
-+    // Set the walking animation and transform the robot to the right
-+    this.graph = 'Robot_Walking';
-+    this.tx = 1;
+    // Set the walking animation and transform the robot to the right
+    this.graph = 'Robot_Walking';
+    this.tx = 1;
 } else {
     // Don't move horizontally if no input
     this.hspeed = 0;
-+    this.graph = 'Robot_Idle';
+    this.graph = 'Robot_Idle';
 }
 
 // If there is ground underneath the Robot…
@@ -329,8 +353,8 @@ if (ct.place.occupied(this, this.x, this.y + 1, 'Solid')) {
 } else {
     // If there is no ground  
     this.vspeed += this.gravity;
-+    // Set jumping animation!
-+    this.graph = 'Robot_Jump';
+    // Set jumping animation!
+    this.graph = 'Robot_Jump';
 }
 ```
 
@@ -361,7 +385,9 @@ if (ct.room.nextRoom) {
 }
 ```
 
-> Here `ct.room` points to the current room. `ct.rooms.switch` exits the current room and opens another room with a given name.
+::: tip
+Here `ct.room` points to the current room. `ct.rooms.switch` exits the current room and opens another room with a given name.
+:::
 
 Now go to the "Rooms" tab at the top, open the `Level_01`, click the button called "Room's events" and write the following to its "On Create" code:
 
@@ -373,7 +399,9 @@ Place an exit to the room.
 
 Now save the room, mark the `Level_01` as a starting room by right-clicking it and test whether there is a transition.
 
-> **On your own**: Create additional exits leading to secret sublevels and back. Get [more graphics assets from here](https://www.kenney.nl/assets/simplified-platformer-pack), if you need such.
+::: tip On your own!
+Create additional exits leading to secret sublevels and back. Get [more graphics assets from here](https://www.kenney.nl/assets/simplified-platformer-pack), if you need such.
+:::
 
 ## Collectibles: Counting and Drawing
 
@@ -388,7 +416,9 @@ if (ct.place.meet(this, this.x, this.y, 'Robot')) {
 }
 ```
 
-> `this.kill = true;` tells that the current copy should be removed from the current room. It will happen after any "On Step" events but before the "Draw" event.
+::: tip
+`this.kill = true;` tells that the current copy should be removed from the current room. It will happen after any "On Step" events but before the "Draw" event.
+:::
 
 As you may already guess, the number of gathered crystals will be stored in the room.
 
@@ -409,7 +439,9 @@ var inGameRoomStart = function (room) {
 };
 ```
 
-> `ct.types.list['TypeName']` returns an array of all the copies of the given type in the room. `length` returns the size of an array.
+::: tip
+`ct.types.list['TypeName']` returns an array of all the copies of the given type in the room. `length` returns the size of an array.
+:::
 
 ![Creating a reusable script](./images/tutPlatformer_21.png)
 
@@ -460,7 +492,9 @@ This is mostly similar to gathering crystals, though there are some changes:
 * We will have no more than 3 lives at once.
 * If we lost the last life, the level restarts.
 
-> **On your own:** Try making it all by yourself! If you get lost, just look for instructions below. Now, stop scrolling! 😃
+::: tip On your own!
+Try making it all by yourself! If you get lost, just look for instructions below. Now, stop scrolling! 😃
+:::
 
 Create a new type called `Heart` and set a corresponding sprite. Add this code to its "On Step" tab:
 
@@ -589,7 +623,9 @@ if (ct.place.occupied(this, this.x + this.speed, this.y, 'Solid')) {
 }
 ```
 
-> **On your own:** Add vertically moving platforms! And make sure they don't squash the Robot. 😉 
+::: tip On your own!
+Add vertically moving platforms! And make sure they don't squash the Robot. 😉 
+:::
 
 ## That's it!
 
@@ -604,7 +640,9 @@ Here is how you can make this game better:
 * Make sure that the Robot is respawned if it occasionally falls out of a level.
 * Just add more levels. 😉 Decorate them with plants, create worlds of different colors.
 
-> A side note: look how new features in your code gradually appear in your levels! This is a good way to introduce new things to a player, too. Afford them one new concept at a time, but preserve previous ones with escalating difficulty. *That was a pro-tip on level design by Comigo* 😎
+::: tip A side note
+Look how new features in your code gradually appear in your levels! This is a good way to introduce new things to a player, too. Afford them one new concept at a time, but preserve previous ones with escalating difficulty. *That was a pro-tip on level design by Comigo* 😎
+:::
 
 **Happy coding!**  
 Comigo
