@@ -237,6 +237,9 @@
         "create": "Add new",
         "makestarting": "Set as starting room"
     },
+    "roombackgrounds": {
+        "add": "Add a Background"
+    },
     "roomview": {
         "name": "Name:",
         "width": "View width:",

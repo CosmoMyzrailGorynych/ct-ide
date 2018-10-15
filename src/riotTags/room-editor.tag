@@ -40,15 +40,7 @@ room-editor.panel.view
                         .room-editor-aTypeSwatch.filler
                         .room-editor-aTypeSwatch.filler
                         .room-editor-aTypeSwatch.filler
-                    .room-editor-Backgrounds.tabbed.tall(show="{tab === 'roombackgrounds'}")
-                        ul
-                            li.bg(each="{background, ind in room.backgrounds}" oncontextmenu="{onBgContextMenu}")
-                                img(src="{background.graph === -1? '/img/nograph.png' : (glob.graphmap[background.graph].src.split('?')[0] + '_prev.png?' + Math.random())}" onclick="{onChangeBgGraphic}")
-                                span(onclick="{onChangeBgDepth}") {background.depth}
-
-                        button.inline.wide(onclick="{roomAddBg}")
-                            i.icon-plus
-                            span {voc.add}
+                    room-backgrounds-editor(show="{tab === 'roombackgrounds'}" room="{room}")
                     .room-editor-Tiles.tabbed.tall.flexfix(show="{tab === 'roomtiles'}")
                         .flexfix-body
                             canvas(
@@ -107,11 +99,9 @@ room-editor.panel.view
         .center
             button#roomcenter(onclick="{roomToCenter}") {voc.tocenter}
     room-events-editor(if="{editingCode}" room="{room}")
-    graphic-selector(ref="graphPicker" if="{pickingBackground}" onselected="{onBackgroundGraphSelected}")
     graphic-selector(ref="tilesetPicker" if="{pickingTileset}" onselected="{onTilesetSelected}")
     script.
         this.editingCode = false;
-        this.pickingBackground = false;
         this.forbidDrawing = false;
         const fs = require('fs-extra'),
               gui = require('nw.gui');
@@ -734,61 +724,6 @@ room-editor.panel.view
                         }
                     }
                     this.refreshRoomCanvas();
-                }
-            });
-        };
-        
-        // Работа с фонами
-        this.onBackgroundGraphSelected = graph => e => {
-            this.editingBackground.graph = graph.uid;
-            this.pickingBackground = false;
-            this.update();
-            this.refreshRoomCanvas();
-        };
-        this.roomAddBg = function () {
-            var newBg = {
-                depth: 0,
-                graph: -1
-            };
-            this.room.backgrounds.push(newBg);
-            this.editingBackground = newBg;
-            this.pickingBackground = true;
-            this.room.backgrounds.sort(function (a, b) {
-                return a.depth - b.depth;
-            });
-            this.update();
-        };
-        this.onBgContextMenu = e => {
-            this.editedBg = Number(e.item.ind);
-            roomBgMenu.popup(e.clientX, e.clientY);
-            e.preventDefault();
-        };
-        var roomBgMenu = new gui.Menu();
-        roomBgMenu.append(new gui.MenuItem({
-            label: window.languageJSON.common.delete,
-            click: () => {
-                this.room.backgrounds.splice(this.editedBg, 1);
-                this.refreshRoomCanvas();
-                this.update();
-            }
-        }));
-        this.onChangeBgGraphic = e => {
-            this.pickingBackground = true;
-            this.editingBackground = e.item.background;
-            this.update();
-        };
-        this.onChangeBgDepth = e => {
-            alertify
-            .defaultValue(e.item.background.depth)
-            .prompt(window.languageJSON.roomview.newdepth)
-            .then(ee => {
-                if (ee.inputValue && Number(ee.inputValue)) {
-                    e.item.background.depth = ee.inputValue;
-                    this.room.backgrounds.sort(function (a, b) {
-                        return a.depth - b.depth;
-                    });
-                    this.refreshRoomCanvas();
-                    this.update();
                 }
             });
         };
