@@ -1,9 +1,14 @@
 (function (ct) {
     var width,
         height,
-        scaleOnly = %scaleOnly%,
-        doManageViewport = %manageViewport%;
+        [scaleOnly] = [/*%scaleOnly%*/],
+        [doManageViewport] = [/*%manageViewport%*/];
     var oldWidth, oldHeight;
+    var manageViewport = function (room) {
+        room = room || ct.room;
+        room.x -= (room.width - oldWidth) / 2;
+        room.y -= (room.height - oldHeight) / 2;
+    };
     var resize = function(exactRoom) {
         width = window.innerWidth;
         height = window.innerHeight;
@@ -17,10 +22,9 @@
             canv.style.left = (width - ct.width) / 2 + 'px';
             canv.style.top = (height - ct.height) / 2 + 'px';
         } else {
-            var room, domResize = false;
+            var room;
             if (exactRoom && exactRoom.toString().indexOf('Event') !== -1) {
                 room = ct.rooms.current;
-                domResize = true;
             } else {
                 room = exactRoom || ct.rooms.current;
             }
@@ -36,22 +40,6 @@
             }
         }
     };
-    var manageViewport = function (room) {
-        room = room || ct.room;
-        room.x -= (room.width - oldWidth) / 2;
-        room.y -= (room.height - oldHeight) / 2;
-    };
-    var queuedFullscreen = function () {
-        toggleFullscreen();
-        document.removeEventListener('mouseup', queuedFullscreen);
-        document.removeEventListener('keyup', queuedFullscreen);
-        document.removeEventListener('click', queuedFullscreen);
-    };
-    var queueFullscreen = function() {
-        document.addEventListener('mouseup', queuedFullscreen);
-        document.addEventListener('keyup', queuedFullscreen);
-        document.addEventListener('click', queuedFullscreen);
-    };
     var toggleFullscreen = function () {
         var element = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement,
             requester = document.getElementById('ct'),
@@ -65,11 +53,20 @@
                     console.error('[ct.fittoscreen]', err);
                 });
             }
-        } else {
-            if (exit) {
-                exit.call(document); 
-            }
+        } else if (exit) {
+            exit.call(document); 
         }
+    };
+    var queuedFullscreen = function () {
+        toggleFullscreen();
+        document.removeEventListener('mouseup', queuedFullscreen);
+        document.removeEventListener('keyup', queuedFullscreen);
+        document.removeEventListener('click', queuedFullscreen);
+    };
+    var queueFullscreen = function() {
+        document.addEventListener('mouseup', queuedFullscreen);
+        document.addEventListener('keyup', queuedFullscreen);
+        document.addEventListener('click', queuedFullscreen);
     };
     width = window.innerWidth;
     height = window.innerHeight;
