@@ -71,6 +71,7 @@ room-editor.panel.view
         this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
         this.mixin(window.roomCopyTools);
+        this.mixin(window.roomTileTools);
         
         this.room = this.opts.room;
 
@@ -79,10 +80,8 @@ room-editor.panel.view
         this.zoomFactor = 1;
         this.room.gridX = this.room.gridX || this.room.grid || 64;
         this.room.gridY = this.room.gridY || this.room.grid || 64;
-        this.currentType = -1;
         this.dragging = false;
         this.tab = 'roomcopies';
-        
         
         var updateCanvasSize = e => {
             var canvas = this.refs.canvas,
@@ -196,31 +195,6 @@ room-editor.panel.view
             this.startx = e.offsetX;
             this.starty = e.offsetY;
         };
-        this.onCanvasMouseUpTiles = e => {
-            if (e.button === 0 && this.currentTileLayer && Math.hypot(e.offsetX - this.startx, e.offsetY - this.starty) > 16) {
-                // Было прямоугольное выделение
-                this.selectedTiles = [];
-                var x1 = this.xToRoom(this.startx),
-                    y1 = this.yToRoom(this.starty),
-                    x2 = this.xToRoom(e.offsetX),
-                    y2 = this.yToRoom(e.offsetY),
-                    xmin = Math.min(x1, x2),
-                    xmax = Math.max(x1, x2),
-                    ymin = Math.min(y1, y2),
-                    ymax = Math.max(y1, y2);
-                for (const tile of this.currentTileLayer.tiles) {
-                    let g = glob.graphmap[tile.graph].g;
-                    if (tile.x > xmin && tile.x + g.width < xmax &&
-                        tile.y > ymin && tile.y + g.height < ymax) {
-                        this.selectedTiles.push(tile);
-                    }
-                }
-                this.refreshRoomCanvas();
-            } else if (this.currentTileLayer) {
-                this.selectedTiles = [];
-                this.refreshRoomCanvas();
-            }
-        };
         /** и безусловно прекращаем перемещение при отпускании мыши */
         this.onCanvasMouseUp = e => {
             this.mouseDown = false;
@@ -250,71 +224,6 @@ room-editor.panel.view
             x.stroke();
         };
 
-        this.onCanvasMoveTiles = e => {
-            if (e.ctrlKey) {
-                if (this.mouseDown && this.currentTileLayer) {
-                    var pos = 0,
-                        l,
-                        done = false, 
-                        fromx = this.xToRoom(e.offsetX),
-                        fromy = this.yToRoom(e.offsetY);
-                    var maxdist = Math.max(this.room.gridX, this.room.gridY);
-                    for (let j = 0, lj = this.currentTileLayer.tiles.length; j < lj; j++) {
-                        let xp = this.currentTileLayer.tiles[j].x - fromx,
-                            yp = this.currentTileLayer.tiles[j].y - fromy;
-                        l = Math.sqrt(xp * xp + yp * yp);
-                        if (l < maxdist) {
-                            pos = j;
-                            done = true;
-                            break;
-                        }
-                    }
-                    if (done) {
-                        this.currentTileLayer.tiles.splice(pos, 1);
-                    }
-                }
-                this.drawDeleteCircle(e);
-            } else if (this.mouseDown && Math.hypot(e.offsetX - this.startx, e.offsetY - this.starty) > 16) {
-                this.refreshRoomCanvas(e);
-                // рисовка прямоугольного выделения
-                let x1 = this.xToRoom(this.startx),
-                    x2 = this.xToRoom(e.offsetX),
-                    y1 = this.yToRoom(this.starty),
-                    y2 = this.yToRoom(e.offsetY);
-                this.drawSelection(x1, y1, x2, y2);
-                return;
-            } else if (this.currentTileset) {
-                // превью вставки тайла
-                this.refreshRoomCanvas(e);
-                this.refs.canvas.x.setTransform(this.zoomFactor, 0, 0, this.zoomFactor, 0, 0);
-                this.refs.canvas.x.globalAlpha = 0.5;
-                let w, h, sx, sy,
-                    img = glob.graphmap[this.currentTileset.uid],
-                    graph = this.currentTileset;
-                sx = graph.offx + (graph.width + graph.marginx) * this.tileX - graph.marginx;
-                sy = graph.offy + (graph.height + graph.marginy) * this.tileY - graph.marginy;
-                w = (graph.width + graph.marginx) * this.tileSpanX - graph.marginx;
-                h = (graph.height + graph.marginy) * this.tileSpanY - graph.marginy;
-                if (this.room.gridX === 0 || e.altKey) {
-                    this.refs.canvas.x.drawImage(
-                        img,
-                        sx, sy, w, h,
-                        e.offsetX / this.zoomFactor,
-                        e.offsetY / this.zoomFactor,
-                        w, h);
-                } else {
-                    // если есть сетка, то координаты предварительного тайла нужно отснэпить по сетке
-                    dx = this.xToRoom(e.offsetX);
-                    dy = this.yToRoom(e.offsetY);
-                    this.refs.canvas.x.drawImage(
-                        img,
-                        sx, sy, w, h,
-                        this.xToCanvas(Math.round(dx / this.room.gridX) * this.room.gridX) / this.zoomFactor, 
-                        this.yToCanvas(Math.round(dy / this.room.gridY) * this.room.gridY) / this.zoomFactor, 
-                        w, h);
-                }
-            }
-        };
         /** Начинаем перемещение, или же показываем предварительное расположение новой копии */
         this.onCanvasMove = e => {
             if (this.dragging) {
@@ -403,172 +312,6 @@ room-editor.panel.view
                     this.refreshRoomCanvas();
                 }
             });
-        };
-        
-        this.onCanvasClickTiles = e => {
-            if ((!this.currentTileset || e.ctrlKey) && e.button === 0) {
-                return;
-            }
-            // Отмена выделения тайлов, если таковые были
-            if (this.selectedTiles) {
-                this.selectedTiles = false;
-            }
-            // Вставка тайлов
-            if (this.room.gridX == 0 || e.altKey) {
-                if (this.lastTileX !== ~~(this.xToRoom(e.offsetX)) ||
-                    this.lastTileY !== ~~(this.yToRoom(e.offsetY))
-                ) {
-                    this.lastTileX = ~~(this.xToRoom(e.offsetX));
-                    this.lastTileY = ~~(this.yToRoom(e.offsetY));
-                    this.currentTileLayer.tiles.push({
-                        x: this.lastTileX,
-                        y: this.lastTileY,
-                        graph: this.currentTileset.uid,
-                        grid: [this.tileX, this.tileY, this.tileSpanX, this.tileSpanY]
-                    });
-                }
-            } else {
-                var x = ~~(this.xToRoom(e.offsetX)),
-                    y = ~~(this.yToRoom(e.offsetY));
-                if (this.lastTileX !== Math.round(x / this.room.gridX) * this.room.gridX ||
-                    this.lastTileY !== Math.round(y / this.room.gridY) * this.room.gridY
-                ) {
-                    this.lastTileX = Math.round(x / this.room.gridX) * this.room.gridX;
-                    this.lastTileY = Math.round(y / this.room.gridY) * this.room.gridY;
-                    this.currentTileLayer.tiles.push({
-                        x: this.lastTileX,
-                        y: this.lastTileY,
-                        graph: this.currentTileset.uid,
-                        grid: [this.tileX, this.tileY, this.tileSpanX, this.tileSpanY]
-                    });
-                }
-            }
-            this.refreshRoomCanvas();
-        };
-        
-        // Контекстное меню по нажатию на холст
-        this.roomCanvasTileMenu = new gui.Menu();
-        this.roomCanvasTileMenu.append(new gui.MenuItem({
-            label: window.languageJSON.roomview.deletetile,
-            click: () => {
-                this.currentTileLayer.tiles.splice(this.closestPos, 1);
-                this.refreshRoomCanvas();
-            },
-            key: 'Delete'
-        }));
-        this.onCanvasContextMenuTiles = e => {
-            // Сначала ищется ближайшая к курсору копия. Если слоёв в комнате нет, то всё отменяется
-            if (!this.room.tiles.length || !this.currentTileLayer.tiles.length) {return false;}
-            var pos = 0,
-                length = Infinity,
-                l,
-                fromx = this.xToRoom(e.offsetX),
-                fromy = this.yToRoom(e.offsetY);
-            for (let i = 0, li = this.currentTileLayer.tiles.length; i < li; i++) {
-                let xp = this.currentTileLayer.tiles[i].x - fromx,
-                    yp = this.currentTileLayer.tiles[i].y - fromy;
-                l = Math.sqrt(xp * xp + yp * yp);
-                if (l < length) {
-                    length = l;
-                    pos = i;
-                }
-            }
-            var tile = this.currentTileLayer.tiles[pos],
-                graph = glob.graphmap[tile.graph].g;
-            this.closestPos = pos;
-            // рисовка выделения тайла
-            this.refreshRoomCanvas();
-            var left = tile.x - 1.5,
-                top = tile.y - 1.5,
-                width = ((graph.width + graph.marginx) * tile.grid[2]) - graph.marginx + 3,
-                height = ((graph.height + graph.marginy) * tile.grid[3]) - graph.marginy + 3;
-            this.drawSelection(left, top, left+width, top+height);
-    
-            this.forbidDrawing = true;
-            setTimeout(() => {
-                this.forbidDrawing = false;
-            }, 500);
-            this.roomCanvasTileMenu.items[0].label = window.languageJSON.roomview.deletetile;
-            this.roomCanvasTileMenu.popup(e.clientX, e.clientY);
-            e.preventDefault();
-        };
-        // Контекстное меню при нескольких выделенных тайлах
-        this.roomCanvasTilesMenu = new gui.Menu();
-        this.roomCanvasTilesMenu.append(new gui.MenuItem({
-            label: window.languageJSON.roomview.deletetiles,
-            click: () => {
-                for (const tile of this.selectedTiles) {
-                    this.currentTileLayer.tiles.splice(this.currentTileLayer.tiles.indexOf(tile), 1);
-                }
-                this.selectedTiles = false;
-                this.refreshRoomCanvas();
-            },
-            key: 'Delete'
-        }));
-        this.roomCanvasTilesMenu.append(new gui.MenuItem({
-            label: window.languageJSON.roomview.movetilestolayer,
-            click: () => {
-                window.alertify.confirm(`
-                    ${window.languageJSON.roomview.movetilestolayer}
-                    <label class="block">
-                        <input id="tilesnewdepth" type="number" value="${this.currentTileLayer.depth}" />
-                    </label>
-                `)
-                .then((e, a) => {
-                    if (e.buttonClicked === 'ok') {
-                        var depth = Number(document.getElementById('tilesnewdepth').value) || 0,
-                            layer = this.room.tiles.find(layer => layer.depth === depth);
-                        if (!layer) {
-                            layer = {
-                                depth,
-                                tiles: [],
-                                hidden: false
-                            };
-                            this.room.tiles.push(layer);
-                        }
-                        for (const tile of this.selectedTiles) {
-                            this.currentTileLayer.tiles.splice(this.currentTileLayer.tiles.indexOf(tile), 1);
-                            layer.tiles.push(tile);
-                        }
-                        this.selectedTiles = false;
-                        this.refreshRoomCanvas();
-                    }
-                });
-            }
-        }));
-        this.roomCanvasTilesMenu.append(new gui.MenuItem({
-            label: window.languageJSON.roomview.shifttiles,
-            click: () => {
-                window.alertify.confirm(`
-                    ${window.languageJSON.roomview.shifttiles}
-                    <label class="block">X: 
-                        <input id="tilespositionx" type="number" value="${this.room.gridX}" />
-                    </label>
-                    <label class="block">Y: 
-                        <input id="tilespositiony" type="number" value="${this.room.gridY}" />
-                    </label>
-                `)
-                .then((e, a) => {
-                    if (e.buttonClicked === 'ok') {
-                        var x = Number(document.getElementById('tilespositionx').value) || 0,
-                            y = Number(document.getElementById('tilespositiony').value) || 0;
-                        for (const tile of this.selectedTiles) {
-                            tile.x += x;
-                            tile.y += y;
-                        }
-                        this.selectedTiles = false;
-                        this.refreshRoomCanvas();
-                    }
-                });
-            }
-        }));
-        this.onCanvasContextMenuMultipleTiles = e => {
-            this.forbidDrawing = true;
-            setTimeout(() => {
-                this.forbidDrawing = false;
-            }, 500);
-            this.roomCanvasTilesMenu.popup(e.clientX, e.clientY);
-            e.preventDefault();
         };
         
         /** Сохранение комнаты (по факту, лишь помечает проект как несохранённый и закрывает редактор) */

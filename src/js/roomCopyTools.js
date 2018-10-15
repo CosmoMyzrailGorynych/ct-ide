@@ -3,6 +3,7 @@
     /* global glob */
     window.roomCopyTools = {
         init() {
+            this.currentType = -1;
             var lastTypeLayer;
             var findTypeLayer = a => {
                 if (a.depth === this.currentType.depth) {
