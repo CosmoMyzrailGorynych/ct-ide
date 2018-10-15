@@ -343,7 +343,7 @@ room-editor.panel.view
             this.starty = e.offsetY;
         };
         this.onCanvasMouseUpTiles = e => {
-            if (this.currentTileLayer && Math.hypot(e.offsetX - this.startx, e.offsetY - this.starty) > 16) {
+            if (e.button === 0 && this.currentTileLayer && Math.hypot(e.offsetX - this.startx, e.offsetY - this.starty) > 16) {
                 // Было прямоугольное выделение
                 this.selectedTiles = [];
                 var x1 = this.xToRoom(this.startx),
@@ -364,6 +364,7 @@ room-editor.panel.view
                 this.refreshRoomCanvas();
             } else if (this.currentTileLayer) {
                 this.selectedTiles = [];
+                this.refreshRoomCanvas();
             }
         };
         /** и безусловно прекращаем перемещение при отпускании мыши */
@@ -959,7 +960,6 @@ room-editor.panel.view
                         graph: this.currentTileset.uid,
                         grid: [this.tileX, this.tileY, this.tileSpanX, this.tileSpanY]
                     });
-                    this.refreshRoomCanvas();
                 }
             } else {
                 var x = ~~(this.xToRoom(e.offsetX)),
@@ -975,9 +975,9 @@ room-editor.panel.view
                         graph: this.currentTileset.uid,
                         grid: [this.tileX, this.tileY, this.tileSpanX, this.tileSpanY]
                     });
-                    this.refreshRoomCanvas();
                 }
             }
+            this.refreshRoomCanvas();
         };
         
         // Контекстное меню по нажатию на холст
