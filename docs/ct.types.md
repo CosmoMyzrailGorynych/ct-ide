@@ -110,6 +110,14 @@ for (var bonus of ct.types.list['Bonus']) {
 }
 ```
 
+This can be also written as following:
+
+```js 
+for (var bonus of ct.types.list.Bonus) {
+    bonus.kill = true;
+}
+```
+
 ### `ct.types.addSpeed(o: Copy, spd, dir)`
 
 Adds a speed vector to a given Copy. This is the same as calling `o.addSpeed(spd, dir)`;
