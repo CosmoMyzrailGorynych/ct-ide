@@ -52,6 +52,9 @@ class Copy {
         }
     }
     draw(x, y) {
+        if (!this.graph) {
+            return;
+        }
         if (this.transform) {
             ct.draw.imgext(this.graph, Math.floor(this.frame) % ct.res.graphs[this.graph].frames.length, x || this.x, y || this.y, this.tx, this.ty, this.tr, this.ta);
         } else {
