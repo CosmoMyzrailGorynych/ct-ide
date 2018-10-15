@@ -354,15 +354,14 @@ room-editor.panel.view
                     xmax = Math.max(x1, x2),
                     ymin = Math.min(y1, y2),
                     ymax = Math.max(y1, y2);
-                this.refreshRoomCanvas();
                 for (const tile of this.currentTileLayer.tiles) {
                     let g = glob.graphmap[tile.graph].g;
-                    if (tile.x > xmin && tile.x < xmax &&
-                        tile.y > ymin && tile.y < ymax) {
+                    if (tile.x > xmin && tile.x + g.width < xmax &&
+                        tile.y > ymin && tile.y + g.height < ymax) {
                         this.selectedTiles.push(tile);
-                        this.drawSelection(tile.x, tile.y, tile.x + g.width*tile.grid[2], tile.y + g.height*tile.grid[3]);
                     }
                 }
+                this.refreshRoomCanvas();
             } else if (this.currentTileLayer) {
                 this.selectedTiles = [];
             }
@@ -370,13 +369,16 @@ room-editor.panel.view
         /** и безусловно прекращаем перемещение при отпускании мыши */
         this.onCanvasMouseUp = e => {
             this.mouseDown = false;
-            this.dragging = false;
             this.lastCopyX = null;
             this.lastCopyY = null;
             this.lastTileX = null;
             this.lastTileY = null;
-            if (this.tab === 'roomtiles') {
-                this.onCanvasMouseUpTiles(e);
+            if (this.dragging) {
+                this.dragging = false;
+            } else {
+                if (this.tab === 'roomtiles') {
+                    this.onCanvasMouseUpTiles(e);
+                }
             }
         };
         this.drawDeleteCircle = e => {
@@ -940,6 +942,11 @@ room-editor.panel.view
             if ((!this.currentTileset || e.ctrlKey) && e.button === 0) {
                 return;
             }
+            // Отмена выделения тайлов, если таковые были
+            if (this.selectedTiles) {
+                this.selectedTiles = false;
+            }
+            // Вставка тайлов
             if (this.room.gridX == 0 || e.altKey) {
                 if (this.lastTileX !== ~~(this.xToRoom(e.offsetX)) ||
                     this.lastTileY !== ~~(this.yToRoom(e.offsetY))
@@ -1195,7 +1202,6 @@ room-editor.panel.view
                                     copy.x - grax, copy.y - gray, w, h
                                 );
                             }
-                                
                         }
                     } else if (hybrid[i].tiles) { // это слой с тайлами
                         let layer = hybrid[i];
@@ -1234,6 +1240,15 @@ room-editor.panel.view
                     canvas.width / this.zoomFactor, canvas.height / this.zoomFactor);
                 canvas.x.globalCompositeOperation = 'source-over';
             }
+
+            // Обводка выделенных тайлов
+            if (this.tab === 'roomtiles' && this.selectedTiles && this.selectedTiles.length) {
+                for (const tile of this.selectedTiles) {
+                    let g = glob.graphmap[tile.graph].g;
+                    this.drawSelection(tile.x, tile.y, tile.x + g.width*tile.grid[2], tile.y + g.height*tile.grid[3]);
+                }
+            }
+
             
             // Обводка границ комнаты
             this.drawSelection(-1.5, -1.5, this.room.width+1.5, this.room.height+1.5);

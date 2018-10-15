@@ -1,11 +1,9 @@
 class Copy {
-    constructor(type) {
-        this.x = 0;
-        this.y = 0;
-        this.xprev = 0;
-        this.yprev = 0;
-        this.xstart = 0;
-        this.ystart = 0;
+    constructor(type, x, y) {
+        this.x = x || 0;
+        this.y = y || 0;
+        this.xprev = this.xstart = this.x;
+        this.yprev = this.ystart = this.y;
         this.spd = 0;
         this.dir = 0;
         this.grav = 0;
@@ -20,16 +18,23 @@ class Copy {
         this.ta = 1;
         this.uid = ct.rooms.current.uid;
         if (type) {
+            var t = ct.types.templates[type];
             ct.u.ext(this, {
                 type,
-                depth: ct.types[type].depth, 
-                graph: ct.types[type].graph,
-                onStep: ct.types[type].onStep,
-                onDraw: ct.types[type].onDraw,
-                onCreate: ct.types[type].onCreate,
-                onDestroy: ct.types[type].onDestroy,
-                shape: ct.types[type].graph ? ct.res.graphs[ct.types[type].graph].shape : {}
+                depth: t.depth, 
+                graph: t.graph,
+                onStep: t.onStep,
+                onDraw: t.onDraw,
+                onCreate: t.onCreate,
+                onDestroy: t.onDestroy,
+                shape: t.graph ? ct.res.graphs[t.graph].shape : {}
             });
+            if (ct.types.list[type]) {
+                ct.types.list[type].push(this);
+            } else {
+                ct.types.list[type] = [this];
+            }
+            ct.types.templates[type].onCreate.apply(this);
         }
         ct.rooms.current.uid++;
         return this;
@@ -75,22 +80,12 @@ class Copy {
 ct.types = {
     Copy,
     list: { },
+    templates: { },
     make(type, x, y) {
         // An advanced constructor. Returns a Copy
-        const obj = new Copy(type);
-        x = x || 0;
-        y = y || 0;
-        obj.x = obj.xprev = obj.xstart = x;
-        obj.y = obj.yprev = obj.ystart = y;
+        const obj = new Copy(type, x, y);
         
-        if (ct.types.list[type]) {
-            ct.types.list[type].push(obj);
-        } else {
-            ct.types.list[type] = [obj];
-        }
         ct.stack.push(obj);
-        
-        ct.types[type].onCreate.apply(obj);
         (function () {
             /*%oncreate%*/
         }).apply(obj);
@@ -116,22 +111,25 @@ ct.types.addSpd = ct.types.addSpeed;
 
 /*@types@*/
 /*%types%*/
-ct.types.BACKGROUND = {
+ct.types.templates.BACKGROUND = {
     onStep() {void 0;},
     onDraw() {
         var m = ct.x.fillStyle;
         ct.x.fillStyle = this.pattern;
-        ct.draw.fix(-ct.rooms.current.x, -ct.rooms.current.y);
-        ct.x.fillRect(ct.rooms.current.x, ct.rooms.current.y, ct.width, ct.height);
+        var x = ct.rooms.current.x * this.parallaxX + this.x,
+            y = ct.rooms.current.y * this.parallaxY + this.y;
+        ct.draw.fix(-x, -y);
+        ct.x.fillRect(x, y, ct.width, ct.height);
         ct.draw.unfix();
         ct.x.fillStyle = m;
     },
     onCreate() {
         this.uid = -1;
+        this.parallaxX = this.parallaxY = 1;
     },
     onDestroy() {void 0;}
 };
-ct.types.TILELAYER = {
+ct.types.templates.TILELAYER = {
     onStep() {void 0;},
     onDraw() {
         for (const t of this.tiles) {
