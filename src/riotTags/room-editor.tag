@@ -26,30 +26,7 @@ room-editor.panel.view
                 .relative
                     room-type-picker(show="{tab === 'roomcopies'}" current="{currentType}")
                     room-backgrounds-editor(show="{tab === 'roombackgrounds'}" room="{room}")
-                    .room-editor-Tiles.tabbed.tall.flexfix(show="{tab === 'roomtiles'}")
-                        .flexfix-body
-                            canvas(
-                                ref="tiledImage"
-                                onmousedown="{startTileSelection}"
-                                onmouseup="{stopTileSelection}"
-                                onmousemove="{moveTileSelection}"
-                            )
-                        .flexfix-footer
-                            button.inline.wide(onclick="{switchTiledImage}")
-                                i.icon-search
-                                span {voc.findTileset}
-                            .flexrow
-                                select.wide(onchange="{changeTileLayer}" value="{currentTileLayerId}")
-                                    option(each="{layer, ind in room.tiles}" selected="{currentTileLayerId === ind}" value="{ind}") {layer.hidden? '❌' : '✅'} {layer.depth}
-                                
-                                span.act(title="{vocGlob.delete}" onclick="{deleteTileLayer}")
-                                    i.icon-trash
-                                span.act(title="{currentTileLayer.hidden? voc.show: voc.hide}" onclick="{toggleTileLayerVisibility}")
-                                    i(class="icon-{currentTileLayer.hidden? 'eye' : 'eye-off'}")
-                                span.act(title="{voc.moveTileLayer}" onclick="{moveTileLayer}")
-                                    i.icon-shuffle
-                                span.act(title="{vocGlob.add}" onclick="{addTileLayer}")
-                                    i.icon-plus
+                    room-tile-editor(show="{tab === 'roomtiles'}" room="{room}")
         .done.nogrow
             button.wide#roomviewdone(onclick="{roomSave}")
                 i.icon-confirm
@@ -84,7 +61,6 @@ room-editor.panel.view
         .center
             button#roomcenter(onclick="{roomToCenter}") {voc.tocenter}
     room-events-editor(if="{editingCode}" room="{room}")
-    graphic-selector(ref="tilesetPicker" if="{pickingTileset}" onselected="{onTilesetSelected}")
     script.
         this.editingCode = false;
         this.forbidDrawing = false;
@@ -96,14 +72,6 @@ room-editor.panel.view
         this.mixin(window.riotWired);
         
         this.room = this.opts.room;
-        if (!('tiles' in this.room) || !this.room.tiles.length) {
-            this.room.tiles = [{
-                depth: -10,
-                tiles: []
-            }];
-        }
-        this.currentTileLayer = this.room.tiles[0];
-        this.currentTileLayerId = 0;
 
         this.roomx = this.room.width / 2;
         this.roomy = this.room.height / 2;
@@ -196,8 +164,6 @@ room-editor.panel.view
             this.tab = tab;
             if (tab === 'roombackgrounds') {
                 this.roomUnpickType();
-            } else {
-                this.updateTypeList();
             }
         };
         this.roomUnpickType = e => {
@@ -684,153 +650,7 @@ room-editor.panel.view
                 }
             });
         };
-
-        // Работа с тайлами
-
-        this.tileX = 0;
-        this.tileY = 0;
-        this.tileSpanX = 1;
-        this.tileSpanY = 1;
-        this.deleteTileLayer = e => {
-            alertify
-            .okBtn(window.languageJSON.common.delete)
-            .cancelBtn(window.languageJSON.common.cancel)
-            .confirm(window.languageJSON.common.confirmDelete.replace('{0}', window.languageJSON.common.tilelayer))
-            .then(e => {
-                if (e.buttonClicked === 'ok') {
-                    var index = this.room.tiles.indexOf(this.currentTileLayer);
-                    this.room.tiles.splice(index, 1);
-                    if (this.room.tiles.length) {
-                        this.currentTileLayer = this.room.tiles[0];
-                        this.currentTileLayerId = 0;
-                    } else {
-                        this.currentTileLayer = false;
-                    }
-                    this.refreshRoomCanvas();
-                    this.update();
-                    alertify
-                    .okBtn(window.languageJSON.common.ok)
-                    .cancelBtn(window.languageJSON.common.cancel);
-                }
-            });
-        };
-        this.moveTileLayer = e => {
-            alertify
-            .defaultValue(this.currentTileLayer.depth)
-            .prompt(window.languageJSON.roomview.newdepth)
-            .then(ee => {
-                if (ee.inputValue && Number(ee.inputValue)) {
-                    this.currentTileLayer.depth = Number(ee.inputValue);
-                    this.refreshRoomCanvas();
-                    this.update();
-                }
-            });
-        };
-        this.addTileLayer = e => {
-            alertify
-            .defaultValue(-10)
-            .prompt(window.languageJSON.roomview.newdepth)
-            .then(ee => {
-                if (ee.inputValue && Number(ee.inputValue)) {
-                    var layer = {
-                        depth: Number(ee.inputValue),
-                        tiles: []
-                    };
-                    this.room.tiles.push(layer);
-                    this.currentTileLayer = layer;
-                    this.currentTileLayerId = this.room.tiles.length - 1;
-                    console.log(this.currentTileLayerId, this.currentTileLayer, this.room.tiles);
-                    this.update();
-                }
-            });
-        };
-        this.toggleTileLayerVisibility = e => {
-            this.currentTileLayer.hidden = !this.currentTileLayer.hidden;
-            this.refreshRoomCanvas();
-        };
-        this.changeTileLayer = e => {
-            this.currentTileLayer = this.room.tiles[Number(e.target.value)];
-            this.currentTileLayerId = Number(e.target.value);
-        };
-        this.switchTiledImage = e => {
-            this.pickingTileset = true;
-        };
-        this.onTilesetSelected = graph => e => {
-            this.currentTileset = graph;
-            this.pickingTileset = false;
-            this.redrawTileset();
-            this.update();
-        };
-
-        this.redrawTileset = e => {
-            var c = this.refs.tiledImage,
-                cx = c.getContext('2d'),
-                g = this.currentTileset,
-                i = glob.graphmap[g.uid];
-            c.width = i.width;
-            c.height = i.height;
-            cx.globalAlpha = 1;
-            cx.drawImage(i, 0, 0);
-            cx.strokeStyle = '#0ff';
-            cx.lineWidth = 1;
-            cx.globalAlpha = 0.5;
-            cx.globalCompositeOperation = 'exclusion';
-            for (let i = 0, l = Math.min(g.grid[0] * g.grid[1], g.untill || Infinity); i < l; i++) {
-                let xx = i % g.grid[0],
-                    yy = Math.floor(i / g.grid[0]),
-                    x = g.offx + xx * (g.marginx + g.width),
-                    y = g.offy + yy * (g.marginy + g.height),
-                    w = g.width,
-                    h = g.height;
-                cx.strokeRect(x, y, w, h);
-            }
-            cx.globalCompositeOperation = 'source-over';
-            cx.globalAlpha = 1;
-            cx.lineJoin = 'round';
-            cx.strokeStyle = localStorage.UItheme === 'Night'? '#44dbb5' : '#446adb';
-            cx.lineWidth = 3;
-            let selX = g.offx + this.tileX*(g.width + g.marginx),
-                selY = g.offy + this.tileY*(g.height + g.marginy),
-                selW = g.width * this.tileSpanX + g.marginx * (this.tileSpanX - 1),
-                selH = g.height * this.tileSpanY + g.marginy * (this.tileSpanY - 1);
-            cx.strokeRect(-0.5 + selX, -0.5 + selY, selW + 1, selH + 1);
-            cx.strokeStyle = localStorage.UItheme === 'Night'? '#1C2B42' : '#fff';
-            cx.lineWidth = 1;
-            cx.strokeRect(-0.5 + selX, -0.5 + selY, selW + 1, selH + 1);
-        };
         
-        this.startTileSelection = e => {
-            if (!this.currentTileset) {return;}
-            var g = this.currentTileset;
-            this.tileSpanX = 1;
-            this.tileSpanY = 1;
-            this.selectingTile = true;
-            this.tileStartX = Math.round((e.layerX - g.offx - g.width*0.5) / (g.width+g.marginx)); 
-            this.tileStartX = Math.max(0, Math.min(g.grid[0], this.tileStartX));
-            this.tileStartY = Math.round((e.layerY - g.offy - g.height*0.5) / (g.height+g.marginy)); 
-            this.tileStartY = Math.max(0, Math.min(g.grid[1], this.tileStartY));
-            this.tileX = this.tileStartX;
-            this.tileY = this.tileStartY;
-            this.redrawTileset();
-        };
-        this.moveTileSelection = e => {
-            if (!this.selectingTile) {return;}
-            var g = this.currentTileset;
-            this.tileEndX = Math.round((e.layerX - g.offx - g.width*0.5) / (g.width+g.marginx)); 
-            this.tileEndX = Math.max(0, Math.min(g.grid[0], this.tileEndX));
-            this.tileEndY = Math.round((e.layerY - g.offy - g.height*0.5) / (g.height+g.marginy)); 
-            this.tileEndY = Math.max(0, Math.min(g.grid[1], this.tileEndY));
-            this.tileSpanX = 1 + Math.abs(this.tileStartX - this.tileEndX);
-            this.tileSpanY = 1 + Math.abs(this.tileStartY - this.tileEndY);
-            this.tileX = Math.min(this.tileStartX, this.tileEndX);
-            this.tileY = Math.min(this.tileStartY, this.tileEndY);
-            this.redrawTileset();
-        };
-        this.stopTileSelection = e => {
-            if (!this.selectingTile) {return;}
-            this.moveTileSelection(e);
-            this.selectingTile = false;
-        };
         this.onCanvasClickTiles = e => {
             if ((!this.currentTileset || e.ctrlKey) && e.button === 0) {
                 return;

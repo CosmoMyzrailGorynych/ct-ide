@@ -240,6 +240,12 @@
     "roombackgrounds": {
         "add": "Add a Background"
     },
+    "roomtiles": {
+        "moveTileLayer": "Move to a new depth",
+        "show": "Show the layer",
+        "hide": "Hide the layer",
+        "findTileset": "Find a Tileset"
+    },
     "roomview": {
         "name": "Name:",
         "width": "View width:",
@@ -271,8 +277,7 @@
         "deletetile": "Delete a tile",
         "deletetiles": "Delete tiles",
         "movetilestolayer": "Move to layer",
-        "shifttiles": "Shift tiles",
-        "findTileset": "Find a Tileset"
+        "shifttiles": "Shift tiles"
     },
     "notepad": {
         "local": "Project's notepad",
