@@ -103,7 +103,7 @@ Fields are described in `module.json`, and can be one of these types:
 * `number` – an input field for integers;
 * `checkbox` – a checkbox for Boolean variables.
 
-A field's `id` must be unique for a module. A `key` determines which parts of code should be replaced  with the field's value. If you have a field with a key `'enabled'`, then all matches with `%enabled%` will be replaced by a field's value. There can also be a `help` field, that will be shown below the input field and can contain some hints or an expanded explanation of what your field does.
+A field's `id` must be unique for a module. A `key` determines which parts of code should be replaced  with the field's value. If you have a field with a key `'enabled'`, then all matches with `/*%enabled%*/` or `%enabled%` will be replaced by a field's value. There can also be a `help` field, that will be shown below the input field and can contain some hints or an expanded explanation of what your field does.
 
 ```json Example from default akatemplate module
 {

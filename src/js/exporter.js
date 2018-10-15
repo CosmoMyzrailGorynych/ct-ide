@@ -14,9 +14,9 @@
             for (const field in data.fields) {
                 const val = window.currentProject.libs[lib][data.fields[field].key];
                 if (data.fields[field].type === 'checkbox' && !val) {
-                    str2 = str2.replace(RegExp('%' + data.fields[field].key + '%', 'g'), 'false');
+                    str2 = str2.replace(RegExp('(/\\*)?%' + data.fields[field].key + '%(\\*/)?', 'g'), 'false');
                 } else {
-                    str2 = str2.replace(RegExp('%' + data.fields[field].key + '%', 'g'), val || '');
+                    str2 = str2.replace(RegExp('(/\\*)?%' + data.fields[field].key + '%(\\*/)?', 'g'), val || '');
                 }
             }
         }
@@ -444,7 +444,7 @@ ct.rooms.templates['${r.name}'] = {
         var types = '';
         for (const k in window.currentProject.types) {
             var type = window.currentProject.types[k];
-            types += 'ct.types["' + type.name + '"] = {\n';
+            types += 'ct.types.templates["' + type.name + '"] = {\n';
             types += '    depth:' + type.depth + ',\n';
 
             if (type.graph !== -1) {
