@@ -19,7 +19,29 @@
     };
 
     ct.place = {
-        m: 1, // direction modifier in ct.place.go
+        m: 1, // direction modifier in ct.place.go,
+        gridX: [/*%gridX%*/][0],
+        gridY: [/*%gridY%*/][0],
+        grid: {},
+        tileGrid: {},
+        getHashes(copy) {
+            var hashes = [];
+            var x = Math.round(copy.x / ct.place.gridX),
+                y = Math.round(copy.y / ct.place.gridY),
+                dx = Math.sign(copy.x - ct.place.gridX * x),
+                dy = Math.sign(copy.y - ct.place.gridY * y);
+            hashes.push(`${x}:${y}`);
+            if (dx) {
+                hashes.push(`${x+dx}:${y}`);
+                if (dy) {
+                    hashes.push(`${x+dx}:${y+dx}`);
+                }
+            }
+            if (dy) {
+                hashes.push(`${x}:${y+dx}`);
+            }
+            return hashes;
+        },
         check: {
             'rect.rect'(x1, y1, x2, y2, xx1, yy1, xx2, yy2) {
                 //
@@ -165,7 +187,7 @@
         collide(c1, c2) {
             // ct.place.collide(<c1: Copy, c2: Copy>)
             // Test collision between two copies
-            if (!c1.shape || !c2.shape) {
+            if (!c1.shape || !c2.shape || !c1.shape.type || !c2.shape.type) {
                 return false;
             }
             var cType = c1.shape.type + '.' + c2.shape.type;
@@ -225,15 +247,29 @@
             // Optionally can take 'ctype' as a filter for obstackles' collision group (not shape type)
             var oldx = me.x, 
                 oldy = me.y;
-            me.x = x;
-            me.y = y;
-            var array = ctype? (ct.place.ctypeCollections[ctype] || []) : ct.stack;
-            for (let i = 0, l = array.length; i < l; i++) {
-                if (array[i] !== me) {
-                    if (ct.place.collide(me, array[i])) {
-                        me.x = oldx;
-                        me.y = oldy;
-                        return array[i];
+            let hashes;
+            if (y !== void 0) {
+                me.x = x;
+                me.y = y;
+                hashes = ct.place.getHashes(me);
+            } else {
+                hashes = me.$chashes || ct.place.getHashes(me);
+                ctype = x;
+                x = me.x;
+                y = me.y;
+            }
+            for (const hash of hashes) {
+                const array = ct.place.grid[hash];
+                if (!array) {
+                    continue;
+                }
+                for (let i = 0, l = array.length; i < l; i++) {
+                    if (array[i] !== me && (!ctype || array[i].$ctype === ctype)) {
+                        if (ct.place.collide(me, array[i])) {
+                            me.x = oldx;
+                            me.y = oldy;
+                            return array[i];
+                        }
                     }
                 }
             }
@@ -249,13 +285,28 @@
             // detects collision between a given copy and a copy of a certain type
             var oldx = me.x, 
                 oldy = me.y;
-            me.x = x;
-            me.y = y; 
-            for (var copy of ct.types.list[type]) {
-                if (copy !== me && ct.place.collide(me, copy)) {
-                    me.x = oldx;
-                    me.y = oldy;
-                    return copy;
+            let hashes;
+            if (y !== void 0) {
+                me.x = x;
+                me.y = y;
+                hashes = ct.place.getHashes(me);
+            } else {
+                hashes = me.$chashes || ct.place.getHashes(me);
+                type = x;
+                x = me.x;
+                y = me.y;
+            }
+            for (const hash of hashes) {
+                const array = ct.place.grid[hash];
+                if (!array) {
+                    continue;
+                }
+                for (let i = 0, l = array.length; i < l; i++) {
+                    if (array[i].type === type && array[i] !== me && ct.place.collide(me, array[i])) {
+                        me.x = oldx;
+                        me.y = oldy;
+                        return array[i];
+                    }
                 }
             }
             me.x = oldx;
@@ -263,30 +314,50 @@
             return false;
         },
         tile(me, x, y, depth) {
-            if (!me.shape) {
+            if (!me.shape || !me.shape.type) {
                 return false;
             }
-            var layer = ct.room.tiles.find(layer => layer.depth === depth);
-            for (const tile of layer.tiles) {
-                if (me.shape.type === 'rect' && 
-                    ct.place.check['rect.rect'](x - me.shape.left, y - me.shape.top, x + me.shape.right,y + me.shape.bottom, tile.x, tile.y, tile.x + tile.width, tile.y + tile.height)
-                ) {
-                    return true;
+            let hashes;
+            if (y !== void 0) {
+                me.x = x;
+                me.y = y;
+                hashes = ct.place.getHashes(me);
+            } else {
+                hashes = me.$chashes || ct.place.getHashes(me);
+                depth = x;
+                x = me.x;
+                y = me.y;
+            }
+            for (const hash of hashes) {
+                const array = ct.place.tileGrid[hash];
+                if (!array) {
+                    continue;
                 }
-                if (me.shape.type === 'circle' &&
-                    ct.place.check['circle.rect'](x, y, me.shape.r, tile.x, tile.y, tile.x + tile.width, tile.y + tile.width)
-                ) {
-                    return true;
-                }
-                if (me.shape.type === 'point' &&
-                    ct.place.check['rect.point'](tile.x, tile.y, tile.x + tile.width, tile.y + tile.height, x, y)
-                ) {
-                    return true;
-                }
-                if (me.shape.type === 'line' &&
-                    ct.place.check['line.rect'](x + me.shape.x1, y + me.shape.y1, x + me.shape.x2, y + me.shape.y2, tile.x, tile.y, tile.x + tile.width, tile.y + tile.height)
-                ) {
-                    return true;
+                for (let i = 0, l = array.length; i < l; i++) {
+                    const tile = array[i];
+                    if (!depth || tile.depth === depth) {
+                        /* eslint {max-depth: off} */
+                        if (me.shape.type === 'rect' && 
+                            ct.place.check['rect.rect'](x - me.shape.left, y - me.shape.top, x + me.shape.right, y + me.shape.bottom, tile.x, tile.y, tile.x + tile.width, tile.y + tile.height)
+                        ) {
+                            return true;
+                        }
+                        if (me.shape.type === 'circle' &&
+                            ct.place.check['circle.rect'](x, y, me.shape.r, tile.x, tile.y, tile.x + tile.width, tile.y + tile.width)
+                        ) {
+                            return true;
+                        }
+                        if (me.shape.type === 'point' &&
+                            ct.place.check['rect.point'](tile.x, tile.y, tile.x + tile.width, tile.y + tile.height, x, y)
+                        ) {
+                            return true;
+                        }
+                        if (me.shape.type === 'line' &&
+                            ct.place.check['line.rect'](x + me.shape.x1, y + me.shape.y1, x + me.shape.x2, y + me.shape.y2, tile.x, tile.y, tile.x + tile.width, tile.y + tile.height)
+                        ) {
+                            return true;
+                        }
+                    }
                 }
             }
             return false;

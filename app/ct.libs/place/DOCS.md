@@ -1,13 +1,13 @@
-## ct.place.free(me, x, y, [ctype])
+## ct.place.free(me, [x, y, ctype])
 
-Checks whether there is a free place at (x;y) for a copy `me`. `ctype` is optional and filters collision by using `ctype` parameter).
+Checks whether there is a free place at (x;y) for a copy `me`. `ctype` is optional and filters collision by using `ctype` parameter). If `x` and `y` are skipped, the current coordinates of `me` will be used.
 
 Returns `true` if a place is free, and `false` otherwise.
 
 
-## ct.place.occupied(me, x, y, [ctype])
+## ct.place.occupied(me, [x, y, ctype])
 
-The opposite for `ct.place.free`, but it also returns a Copy which blocks `me` at given coordinates.
+The opposite for `ct.place.free`, but it also returns a Copy which blocks `me` at given coordinates. If `x` and `y` are skipped, the current coordinates of `me` will be used.
 
 
 ## ct.place.collide(c1, c2)
@@ -15,15 +15,15 @@ The opposite for `ct.place.free`, but it also returns a Copy which blocks `me` a
 Returns `true` if there is a collision between `c1` and `c2` Copies.
 
 
-## ct.place.meet(me, x, y, type)
+## ct.place.meet(me, [x, y,] type)
 
-Checks whether there is a collision between a Copy `me` and any of the Copies of a given `type`. 
+Checks whether there is a collision between a Copy `me` and any of the Copies of a given `type`. If `x` and `y` are skipped, the current coordinates of `me` will be used.
 
 Returns `false` or the first Copy which blocked `me`.
 
-## ct.place.tile(me, x, y, depth)
+## ct.place.tile(me, [x, y, depth])
 
-Checks for a collision between a copy `me` and a tile layer of a given `depth`. Depth of a tile layer is equal to what you set in the room editor. Each tile is considered a rectangle, and a possible collision mask defined in the graphics asset (in the tileset) is ignored.
+Checks for a collision between a copy `me` and a tile layer of a given `depth`. Depth of a tile layer is equal to what you set in the room editor. Each tile is considered a rectangle, and a possible collision mask defined in the graphics asset (in the tileset) is ignored. If `x` and `y` are skipped, the current coordinates of `me` will be used.
 
 This method returns either `true` (a copy collides with a tile layer) or `false` (no collision).
 
@@ -57,3 +57,5 @@ Throws a ray from point (x1, y1) to (x2, y2), returning all the copies that touc
 The first copy in the returned array is the closest copy, the last one is the furthest. The order is not always exact, especially with overlapping shapes.
 
 `ctype` is an optional collision group to trace against. If omitted, ct.place will trace through all the copies in the current room.
+
+**This is an expensive operation.**
