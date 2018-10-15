@@ -101,6 +101,7 @@ types-panel.panel.view
             window.currentProject.types.push(obj);
             this.updateList();
             this.openType(obj)(e);
+            window.signals.trigger('typesChanged');
         };
         this.openType = type => e => {
             this.editingType = true;

@@ -24,22 +24,7 @@ room-editor.panel.view
                     li(onclick="{changeTab('roombackgrounds')}" class="{active: tab === 'roombackgrounds'}") {voc.backgrounds}
                     li(onclick="{changeTab('roomtiles')}" class="{active: tab === 'roomtiles'}") {voc.tiles}
                 .relative
-                    .room-editor-TypeSwatches.tabbed.tall(show="{tab === 'roomcopies'}")
-                        .aSearchWrap
-                            input.inline(type="text" onkeyup="{fuseSearch}")
-                        .room-editor-aTypeSwatch(if="{!searchResults}" onclick="{roomUnpickType}" class="{active: currentType === -1}")
-                            span {window.languageJSON.common.none}
-                            img(src="/img/nograph.png")
-                        .room-editor-aTypeSwatch(each="{type in (searchResults? searchResults : types)}" title="{type.name}" onclick="{selectType(type)}" class="{active: type === currentType}")
-                            span {type.name}
-                            img(src="{type.graph === -1? '/img/nograph.png' : (glob.graphmap[type.graph].src.split('?')[0] + '_prev.png?' + getTypeGraphRevision(type))}")
-                        .room-editor-aTypeSwatch.filler
-                        .room-editor-aTypeSwatch.filler
-                        .room-editor-aTypeSwatch.filler
-                        .room-editor-aTypeSwatch.filler
-                        .room-editor-aTypeSwatch.filler
-                        .room-editor-aTypeSwatch.filler
-                        .room-editor-aTypeSwatch.filler
+                    room-type-picker(show="{tab === 'roomcopies'}" current="{currentType}")
                     room-backgrounds-editor(show="{tab === 'roombackgrounds'}" room="{room}")
                     .room-editor-Tiles.tabbed.tall.flexfix(show="{tab === 'roomtiles'}")
                         .flexfix-body
@@ -109,29 +94,6 @@ room-editor.panel.view
         this.namespace = 'roomview';
         this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
-        this.updateTypeList = () => {
-            this.types = [...window.currentProject.types];
-            this.types.sort((a, b) => a.name.localeCompare(b.name));
-        };
-        const fuseOptions = {
-            shouldSort: true,
-            tokenize: true,
-            threshold: 0.5,
-            location: 0,
-            distance: 100,
-            maxPatternLength: 32,
-            minMatchCharLength: 1,
-            keys: ['name']
-        };
-        const Fuse = require('fuse.js');
-        this.fuseSearch = e => {
-            if (e.target.value.trim()) {
-                var fuse = new Fuse(this.types, fuseOptions);
-                this.searchResults = fuse.search(e.target.value.trim());
-            } else {
-                this.searchResults = null;
-            }
-        };
         
         this.room = this.opts.room;
         if (!('tiles' in this.room) || !this.room.tiles.length) {
@@ -152,7 +114,6 @@ room-editor.panel.view
         this.dragging = false;
         this.tab = 'roomcopies';
         
-        this.getTypeGraphRevision = type => window.glob.graphmap[type.graph].g.lastmod;
         
         var updateCanvasSize = e => {
             var canvas = this.refs.canvas,
@@ -163,7 +124,6 @@ room-editor.panel.view
             }
             setTimeout(this.refreshRoomCanvas, 10);
         };
-        this.updateTypeList();
         this.on('update', () => {
             if (window.currentProject.rooms.find(room => 
                 this.room.name === room.name && this.room !== room
@@ -242,9 +202,6 @@ room-editor.panel.view
         };
         this.roomUnpickType = e => {
             this.currentType = -1;
-        };
-        this.selectType = type => e => {
-            this.currentType = type;
         };
         var lastTypeLayer;
         var findTypeLayer = a => {

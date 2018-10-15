@@ -129,4 +129,5 @@ type-editor.panel.view.flexrow
             this.parent.editingType = false;
             this.parent.fillTypeMap();
             this.parent.update();
+            window.signals.trigger('typesChanged');
         };
