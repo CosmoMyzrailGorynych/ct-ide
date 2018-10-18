@@ -1,3 +1,4 @@
+ct.place.tileGrid = {};
 for (const layer of ct.types.list.TILELAYER) {
     for (let i = 0, l = layer.tiles.length; i < l; i++) {
         const t = layer.tiles[i];
