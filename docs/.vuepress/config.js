@@ -47,7 +47,8 @@ module.exports = {
                     'ct.sound',
                     'ct.styles',
                     'ct.types',
-                    ['ct.u', 'ct.u (utilities)']
+                    ['ct.u', 'ct.u (utilities)'],
+                    ['catmoddocs.md', 'Where are the other ct.* docs?']
                 ]
             }, {
                 title: 'Extending ct.js',
