@@ -132,5 +132,3 @@ ct.u.ext(ct.draw.polygon, {
     }
 });
 ct.draw.img = ct.draw.image;
-
-ct.libs += ' draw';

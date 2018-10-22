@@ -78,5 +78,3 @@ ct.mouse.setupListeners = function () {
         document.attachEvent('onmousewheel', ct.mouse.listenerwheel);
     }
 };
-
-ct.libs += ' mouse';

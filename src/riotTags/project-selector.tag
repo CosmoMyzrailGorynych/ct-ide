@@ -175,6 +175,15 @@ project-selector
                     }
                     project.startroom = startingRoom;
                 }
+                if (version[1] < 5) {
+                    // Модуль ct.place теперь с конфигами
+                    if ('place' in project.libs) {
+                        project.libs.place.gridX = project.libs.place.gridY = 512;
+                    }
+                    // Появилась настройка версии
+                    project.settings.version = [0, 0, 0];
+                    project.settings.versionPostfix = '';
+                }
             }
             project.ctjsVersion = nw.App.manifest.version;
         };
@@ -201,6 +210,11 @@ project-selector
             glob.modified = false;
             
             this.parent.selectorVisible = false;
+
+            if (currentProject.settings.title) {
+                document.title = currentProject.settings.title + ' — ct.js';
+            }
+
             setTimeout(() => {
                 riot.update();
                 this.parent.update();

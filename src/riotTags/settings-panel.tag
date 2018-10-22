@@ -4,7 +4,7 @@ settings-panel.panel.view
         h2 {voc.authoring}
         b {voc.title}
         br
-        input#gametitle(type="text" value="{currentProject.settings.title}" onchange="{wire('this.currentProject.settings.title')}")
+        input#gametitle(type="text" value="{currentProject.settings.title}" onchange="{changeTitle}")
         br
         b {voc.author}
         br
@@ -13,6 +13,17 @@ settings-panel.panel.view
         b {voc.site}
         br
         input#gamesite(type="text" value="{currentProject.settings.site}" onchange="{wire('this.currentProject.settings.site')}")
+        br
+        b {voc.version}
+        br
+        input(type="number" style="width: 1.5rem;" value="{currentProject.settings.version[0]}" length="3" min="0" onchange="{wire('this.currentProject.settings.version.0')}")
+        |  .
+        input(type="number" style="width: 1.5rem;" value="{currentProject.settings.version[1]}" length="3" min="0" onchange="{wire('this.currentProject.settings.version.1')}")
+        |  .
+        input(type="number" style="width: 1.5rem;" value="{currentProject.settings.version[2]}" length="3" min="0" onchange="{wire('this.currentProject.settings.version.2')}")
+        |   {voc.versionpostfix}  
+        input(type="text" style="width: 3rem;" value="{currentProject.settings.versionPostfix}" length="5" onchange="{wire('this.currentProject.settings.versionPostfix')}")
+        
 
         h2 {voc.renderoptions}
         label.block
@@ -82,4 +93,10 @@ settings-panel.panel.view
                 ind = this.currentProject.scripts.indexOf(script);
             this.currentProject.scripts.splice(ind, 1);
             e.stopPropagation();
+        };
+        this.changeTitle = e => {
+            currentProject.settings.title = e.target.value.trim();
+            if (currentProject.settings.title) {
+                document.title = currentProject.settings.title + ' — ct.js';
+            }
         };

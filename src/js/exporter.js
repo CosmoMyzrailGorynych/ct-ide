@@ -362,12 +362,19 @@ ct.rooms.templates['${r.name}'] = {
         var buffer = fs.readFileSync('./ct.release/main.js', {
             'encoding': 'utf8'
         });
-
+        /* global nw */
         buffer = buffer
         .replace('/*@fps@*/', window.currentProject.settings.fps)
         .replace('/*@startwidth@*/', startroom.width)
         .replace('/*@startheight@*/', startroom.height)
-        .replace('/*@libs@*/', JSON.stringify(ctlibs, null, '    '));
+        .replace('/*@libs@*/', JSON.stringify(ctlibs, null, '    '))
+        .replace('/*@ctversion@*/', nw.App.manifest.version)
+        .replace('/*@projectmeta@*/', JSON.stringify({
+            name: window.currentProject.settings.title,
+            author: window.currentProject.settings.author,
+            site: window.currentProject.settings.site,
+            version: window.currentProject.settings.version.join('.') + window.currentProject.settings.versionPostfix
+        }));
 
         buffer += '\n';
 
@@ -509,12 +516,13 @@ ct.rooms.templates['${r.name}'] = {
         
         /* HTML & CSS */
         fs.writeFileSync(exec + '/export/index.html', html
-        .replace('<!-- %htmltop% -->', injects.htmltop)
-        .replace('<!-- %htmlbottom% -->', injects.htmlbottom));
+            .replace('<!-- %htmltop% -->', injects.htmltop)
+            .replace('<!-- %htmlbottom% -->', injects.htmlbottom)
+            .replace('<!-- %gametitle% -->', window.currentProject.settings.title || 'ct.js game'));
 
         fs.writeFileSync(exec + '/export/ct.css', css
-        .replace('/*@pixelatedrender@*/', window.currentProject.settings.pixelatedrender? 'canvas,img{image-rendering:optimizeSpeed;image-rendering:-moz-crisp-edges;image-rendering:-webkit-optimize-contrast;image-rendering:optimize-contrast;image-rendering:pixelated;ms-interpolation-mode:nearest-neighbor}' : '')
-        .replace('/*%css%*/', injects.css));
+            .replace('/*@pixelatedrender@*/', window.currentProject.settings.pixelatedrender? 'canvas,img{image-rendering:optimizeSpeed;image-rendering:-moz-crisp-edges;image-rendering:-webkit-optimize-contrast;image-rendering:optimize-contrast;image-rendering:pixelated;ms-interpolation-mode:nearest-neighbor}' : '')
+            .replace('/*%css%*/', injects.css));
 
         if (window.currentProject.settings.minifyhtmlcss) {
             const csswring = require('csswring'),

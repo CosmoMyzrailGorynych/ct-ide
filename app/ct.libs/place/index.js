@@ -524,5 +524,4 @@
     setInterval(function() {
         ct.place.m *= -1;
     }, 789);
-    ct.libs += ' place';
 })(ct);

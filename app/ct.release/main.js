@@ -8,7 +8,8 @@ const ct = {
     snd: {},
     fps: 0,
     dt: 0,
-    version: [2,0,0],
+    version: '/*@ctversion@*/',
+    meta: [/*@projectmeta@*/][0],
     main: {
         fpstick: 0,
         pi: 0

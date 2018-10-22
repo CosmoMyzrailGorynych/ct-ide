@@ -105,6 +105,8 @@
         "settings": "Project settings",
         "site": "Homepage:",
         "title": "Name:",
+        "version": "Version:",
+        "versionpostfix": "Postfix:",
         "preloaders": {
             "circular": "Circular",
             "bar": "Progress bar",

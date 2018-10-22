@@ -82,5 +82,3 @@ ct.styles = {
 };
 /*@styles@*/
 /*%styles%*/
-
-ct.libs += ' styles';

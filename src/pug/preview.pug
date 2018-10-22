@@ -10,9 +10,10 @@ html
                     preview-bottom-panel
         script(src="./bundle.js")
         script.
+            var title = /\?title=([\s\S]+)/g.exec(location.search)[1] || 'ct.js Game';
+            document.title = title + ' — ct.js debugger';
             var game = document.getElementById('thePreview'),
                 devTools = document.getElementById('theDebugger');
-            console.log(devTools, game);
             game.addEventListener('contentload', e => {
                 game.showDevTools(true, devTools);
                 game.focus();
