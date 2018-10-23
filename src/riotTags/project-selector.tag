@@ -33,9 +33,15 @@ project-selector
             .c3.npr.npt.npb
                 button.nm.wide.inline(onclick="{newProject}") {voc.newProject.button}
     .aVersionNumber 
-        | v{nw.App.manifest.version}.  
-        a(href="https://ctjs.rocks/") {voc.homepage}.  
-        span(if="{newVersion}") {newVersion}
+        a(href="https://discord.gg/CggbPkb" title="{voc.discord}" onclick="{openExternal('https://discord.gg/CggbPkb')}")
+            i.icon-discord
+        a(href="https://twitter.com/ctjsrocks" title="{voc.twitter}" onclick="{openExternal('https://twitter.com/ctjsrocks')}")
+            i.icon-twitter
+        a(href="https://vk.com/ctjseditor" title="{voc.vkontakte}" onclick="{openExternal('https://vk.com/ctjseditor')}")
+            i.icon-vkontakte
+        .inlineblock v{nw.App.manifest.version}.  
+        a(href="https://ctjs.rocks/" onclick="{openExternal}")   {voc.homepage}.  
+        .inlineblock(if="{newVersion}")   {newVersion}
     script.
         const fs = require('fs-extra'),
               path = require('path');
@@ -176,13 +182,22 @@ project-selector
                     project.startroom = startingRoom;
                 }
                 if (version[1] < 5) {
+                    let ps = project.settings;
                     // Модуль ct.place теперь с конфигами
                     if ('place' in project.libs) {
                         project.libs.place.gridX = project.libs.place.gridY = 512;
                     }
                     // Появилась настройка версии
-                    project.settings.version = [0, 0, 0];
-                    project.settings.versionPostfix = '';
+                    ps.version = [0, 0, 0];
+                    ps.versionPostfix = '';
+                    // Появились настройки экспорта
+                    ps.export = {
+                        windows64: true,
+                        windows32: true,
+                        linux64: true,
+                        linux32: true,
+                        mac64: true
+                    };
                 }
             }
             project.ctjsVersion = nw.App.manifest.version;
@@ -261,3 +276,9 @@ project-selector
                 }
             });
         }, 0);
+
+        this.openExternal = link => e => {
+            nw.Shell.openExternal(link);
+            e.stopPropagation();
+            e.preventDefault();
+        };

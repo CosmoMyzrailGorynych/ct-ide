@@ -61,7 +61,10 @@
         "homepage": "Homepage",
         "latestVersion": "Version $1 is available",
         "browse": "Browse",
-        "latest": "Latest projects"
+        "latest": "Latest projects",
+        "twitter": "Twitter channel",
+        "discord": "Discord community",
+        "vkontakte": "Vkontakte page"
     },
     "licensepanel": {
         "tldr": [
