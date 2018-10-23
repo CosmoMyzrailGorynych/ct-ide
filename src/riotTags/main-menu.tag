@@ -234,6 +234,14 @@ main-menu.flexcol
         localStorage.UItheme = localStorage.UItheme || 'Day';
         
         
+        catMenu.append(new gui.MenuItem({type: 'separator'}));
+        
+        catMenu.append(new gui.MenuItem({
+            label: window.languageJSON.common.donate,
+            click: function () {
+                gui.Shell.openExternal('https://www.patreon.com/comigo');
+            }
+        }));
         catMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.ctsite,
             click: function () {
