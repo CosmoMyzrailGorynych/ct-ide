@@ -196,7 +196,8 @@ project-selector
                         windows32: true,
                         linux64: true,
                         linux32: true,
-                        mac64: true
+                        mac64: true,
+                        debug: false
                     };
                 }
             }

@@ -41,6 +41,7 @@ app/empty.html
 app/themeDay.css
 app/themeNight.css
 app/temp
+app/exportDesktop
 /temp
 app/fonts/style/.css
 builds

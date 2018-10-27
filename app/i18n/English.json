@@ -50,6 +50,15 @@
         "wrongFormat": "Wrong file format",
         "yes": "Yes"
     },
+    "exportPanel": {
+        "hide": "Hide",
+        "working": "Working…",
+        "debug": "Debug version",
+        "export": "Export",
+        "exportPanel": "Export the Project",
+        "firstrunnotice": "The first run for each platform will be slow as ct.js will download and save additional libraries needed for packing. It will take some time, but next times will be almost instant.",
+        "log": "Message Log"
+    },
     "intro": {
         "loading": "Please wait: kittens are gathering speed of light!",
         "newProject": {
@@ -76,6 +85,7 @@
     },
     "menu": {
         "ctIDE": "ct.IDE",
+        "exportDesktop": "Export for desktop",
         "graphic": "Graphics",
         "launch": "Compile",
         "license": "License",
@@ -83,13 +93,13 @@
         "modules": "Catmods",
         "rooms": "Rooms",
         "save": "Save project",
-        "startscreen": "Return to start screen",
+        "startScreen": "Return to start screen",
         "settings": "Settings",
         "sounds": "Sounds",
         "ui": "UI",
         "theme": "Theme",
-        "themeday": "Light",
-        "themenight": "Dark",
+        "themeDay": "Light",
+        "themeNight": "Dark",
         "types": "Types",
         "zipExport": "Export to .zip",
         "zipProject": "Pack project to .zip"

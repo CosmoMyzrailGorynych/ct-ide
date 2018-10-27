@@ -43,6 +43,7 @@ main-menu.flexcol
         types-panel(show="{tab === 'types'}")
         rooms-panel(show="{tab === 'rooms'}")
         license-panel(if="{showLicense}")
+        export-panel(show="{showExporter}")
     script.
         const fs = require('fs-extra'),
               path = require('path');
@@ -190,7 +191,14 @@ main-menu.flexcol
             click: this.zipExport
         }));
         catMenu.append(new gui.MenuItem({
-            label: window.languageJSON.menu.startscreen,
+            label: this.voc.exportDesktop,
+            click: e => {
+                this.showExporter = true;
+                this.update();
+            }
+        }));
+        catMenu.append(new gui.MenuItem({
+            label: window.languageJSON.menu.startScreen,
             click: (e) => {
                 if (!confirm(window.languageJSON.common.reallyexit)) {
                     return false;
@@ -208,13 +216,13 @@ main-menu.flexcol
         
         var themeSubmenu = new nw.Menu();
         themeSubmenu.append(new gui.MenuItem({
-            label: window.languageJSON.menu.themeday,
+            label: window.languageJSON.menu.themeDay,
             click: () => {
                 this.switchTheme('Day');
             }
         }));
         themeSubmenu.append(new gui.MenuItem({
-            label: window.languageJSON.menu.themenight,
+            label: window.languageJSON.menu.themeNight,
             click: () => {
                 this.switchTheme('Night');
             }
