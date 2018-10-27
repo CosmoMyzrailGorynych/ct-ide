@@ -43,7 +43,7 @@ export-panel
             .flexrow
                 button(onclick="{close}") {voc.hide}
                 button(onclick="{export}") 
-                    span.inlineblock.rotate(if="{working}")
+                    span.inlineblock.rotateccw(if="{working}")
                         i.icon-refresh-ccw
                     i.icon-upload(if="{!working}")
                     span(if="{working}")   {voc.working}
@@ -74,16 +74,16 @@ export-panel
             window.runCtProject()
             .then(() => fs.copy('./ct.release/nwPack/', `${exec}/export/`))
             .then(() => {
-                const package = fs.readJSONSync('./ct.release/nwPack/package.json');
-                package.version = version;
+                const json = fs.readJSONSync('./ct.release/nwPack/package.json');
+                json.version = version;
                 if (currentProject.settings.title) {
-                    package.name = currentProject.settings.title;
-                    package.window.title = currentProject.settings.title;
+                    json.name = currentProject.settings.title;
+                    json.window.title = currentProject.settings.title;
                 }
                 const startingRoom = currentProject.rooms.find(room => room.uid === currentProject.startroom);
-                package.window.width = startingRoom.width;
-                package.window.height = startingRoom.height;
-                return fs.outputJSON(`${exec}/export/package.json`, package);
+                json.window.width = startingRoom.width;
+                json.window.height = startingRoom.height;
+                return fs.outputJSON(`${exec}/export/package.json`, json);
             })
             .then(() => {
                 const NwBuilder = require('nw-builder');
