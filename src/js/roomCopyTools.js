@@ -64,6 +64,7 @@
                     }
                 }
             };
+            /* eslint max-depth: 0 */
             this.onCanvasMoveCopies = e => {
                 if (e.ctrlKey) {
                     if (this.mouseDown && this.room.layers.length !== 0) {
