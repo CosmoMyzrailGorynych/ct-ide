@@ -2,7 +2,6 @@
 
 `ct` represents the drawing canvas itself, extended with modules and core libraries. But let's talk a bit about how it all works.
 
-
 ## Event sequence
 
 These events are always executed in the following order:
@@ -31,3 +30,12 @@ A read-only variable representing the current max FPS.
 ### `ct.x`
 
 The [drawing context](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D) of the main canvas.
+
+### `ct.HTMLCanvas`
+
+The [drawing canvas](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement) of the game.
+
+### `ct.meta`
+
+Returns the metadata that you supplied inside the ct.js editor, such as `author`, `site`, `version` and `name`.
+
