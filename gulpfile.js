@@ -18,6 +18,9 @@ const path = require('path'),
       fs = require('fs-extra'),
       NwBuilder = require('nw-builder');
 
+const nwVersion = '0.34.1',
+      nwFiles = ['./app/**', '!./app/export/**', '!./app/exportDesktop/**', '!./app/cache/**', '!./app/.vscode/**', '!./app/JamGames/**'];
+
 const closureCompiler = require('google-closure-compiler-js').gulp();
 
 var releasing = false;
@@ -177,8 +180,8 @@ const lint = gulp.series(lintJS, lintStylus);
 
 const launchNw = () => {
     var nw = new NwBuilder({
-        files: './app/**',
-        version: '0.31.2',
+        files: nwFiles,
+        version: nwVersion,
         platforms: ['osx64', 'win32', 'win64', 'linux32', 'linux64'],
         flavor: 'sdk'
     });
@@ -199,12 +202,12 @@ const release = gulp.series([done => {
     done();
 }, build, lint, done => {
     var nw = new NwBuilder({
-        files: ['./app/**', '!./app/export'],
-        platforms: [/*'osx64', 'win32', */'win64'/*, 'linux32', 'linux64'*/],
-        version: '0.33.4',
+        files: nwFiles,
+        platforms: ['osx64', 'win32', 'win64', 'linux32', 'linux64'],
+        version: nwVersion,
         flavor: 'sdk',
         buildType: 'versioned',
-        forceDownload: true,
+        // forceDownload: true,
         zip: false,
         macIcns: './app/ct.ide.icns'
     });
