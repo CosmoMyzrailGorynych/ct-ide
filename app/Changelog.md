@@ -1,3 +1,47 @@
+## v 0.5.0
+
+*27 October 2018*
+
+### ⚡ General Improvements
+
+*  Add a /\*%commented%\*/ format for modules' configurable fields, as an alternative to the %standard% one.
+*  Improvements to ct.place: greatly improve speed for ct.place.occupied, ct.place.free, ct.place.meet, ct.place.tile. Make x and y parameters in most functions optional. The new variant is now preferred (e.g. ct.place.occupied(this, 'Solid'); )
+* Little optimizatons of ct.place
+* Little performance optimizations for drawing
+*  Make a small transition to a prototype-based system. Introduce `this.draw`, `this.move` and `this.addSpeed` calls on copies.
+* More zoom levels in the room editor
+* Refactor ct.types, move actual types to ct.types.templates
+* Reuse of metadata in ct.js and exported projects
+
+### ✨ New Features
+
+* Add a font manager
+* Add a Reimport button to imported graphics assets
+* Add ct.js autocompletions for code editors
+* Add ct.u.deltaDir, ct.u.lerp, ct.u.unlerp, ct.u.clamp, and ct.u.inspect
+* Add multi-selection for tiles
+
+### 🐛 Bug Fixes
+
+* Fix ct.place.nearest and ct.place.furthest
+* Fix drawing copies with graphics offsets in the room editor
+* Fix incorrect export of tilesets with non-square grids
+
+
+### 📝 Docs
+* Add a notice about location of catmods' docs
+* Visually better tips in tutorials and minor changes
+
+### ⚗ Experimental
+
+* Add ct.eqs and ct.victoria catmods
+* Project exporter
+
+### 💬 Misc
+
+* Add a link to Patreon
+* Add links to Twitter, Discord and VK to the starting screen
+
 ## v 0.4.1
 
 *25 September 2018*

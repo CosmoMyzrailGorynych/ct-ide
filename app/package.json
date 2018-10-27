@@ -2,7 +2,7 @@
   "main": "index.html",
   "name": "ctjs",
   "description": "ctjs",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "homepage": "https://ctjs.rocks/",
   "window": {
     "icon": "ct_ide.png",
