@@ -87,7 +87,18 @@ project-selector
                 starting: 0,
                 settings: {
                     minifyhtmlcss: false,
-                    minifyjs: false
+                    minifyjs: false,
+                    fps: 30,
+                    version: [0, 0, 0],
+                    versionPostfix: '',
+                    export: {
+                        windows64: true,
+                        windows32: true,
+                        linux64: true,
+                        linux32: true,
+                        mac64: true,
+                        debug: false
+                    }
                 }
             };
             fs.writeJSON(path.join(way, codename + '.ict'), projectData, function(e) {
@@ -187,6 +198,8 @@ project-selector
                     if ('place' in project.libs) {
                         project.libs.place.gridX = project.libs.place.gridY = 512;
                     }
+                }
+                if (version[1] < 5 || (version[0] > 5 && !ps.version)) {
                     // Появилась настройка версии
                     ps.version = [0, 0, 0];
                     ps.versionPostfix = '';

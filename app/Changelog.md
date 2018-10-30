@@ -1,3 +1,12 @@
+## v 0.5.1
+
+*30 October 2018*
+
+### 🐛 Bug Fixes
+
+* Fix missing fields in newly created projects.
+
+
 ## v 0.5.0
 
 *27 October 2018*
@@ -6,7 +15,6 @@
 
 *  Add a /\*%commented%\*/ format for modules' configurable fields, as an alternative to the %standard% one.
 *  Improvements to ct.place: greatly improve speed for ct.place.occupied, ct.place.free, ct.place.meet, ct.place.tile. Make x and y parameters in most functions optional. The new variant is now preferred (e.g. ct.place.occupied(this, 'Solid'); )
-* Little optimizatons of ct.place
 * Little performance optimizations for drawing
 *  Make a small transition to a prototype-based system. Introduce `this.draw`, `this.move` and `this.addSpeed` calls on copies.
 * More zoom levels in the room editor
@@ -27,8 +35,8 @@
 * Fix drawing copies with graphics offsets in the room editor
 * Fix incorrect export of tilesets with non-square grids
 
-
 ### 📝 Docs
+
 * Add a notice about location of catmods' docs
 * Visually better tips in tutorials and minor changes
 
