@@ -1,5 +1,19 @@
 ## v 0.5.1
 
+*7 November 2018*
+
+### 🐛 Bug Fixes
+
+* Fix autocompletion being triggered on `;` and line end
+* Fix project update for older versions not working
+* Fix ct.place.tile moving copies around by itself
+
+### 🍱 Demos
+
+* Update tutorials' project version
+
+## v 0.5.1
+
 *30 October 2018*
 
 ### 🐛 Bug Fixes
