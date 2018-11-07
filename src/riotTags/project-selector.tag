@@ -192,8 +192,8 @@ project-selector
                     }
                     project.startroom = startingRoom;
                 }
+                let ps = project.settings;
                 if (version[1] < 5) {
-                    let ps = project.settings;
                     // Модуль ct.place теперь с конфигами
                     if ('place' in project.libs) {
                         project.libs.place.gridX = project.libs.place.gridY = 512;
