@@ -319,9 +319,13 @@
             }
             let hashes;
             if (y !== void 0) {
+                var oldx = me.x,
+                    oldy = me.y;
                 me.x = x;
                 me.y = y;
                 hashes = ct.place.getHashes(me);
+                me.x = oldx;
+                me.y = oldy;
             } else {
                 hashes = me.$chashes || ct.place.getHashes(me);
                 depth = x;
