@@ -414,9 +414,24 @@
     "title": "Memocats",
     "author": "Cosmo Myzrail Gorynych",
     "site": "https://ctjs.rocks",
-    "fps": 30
+    "fps": 30,
+    "version": [
+      0,
+      0,
+      0
+    ],
+    "versionPostfix": "",
+    "export": {
+      "windows64": true,
+      "windows32": true,
+      "linux64": true,
+      "linux32": true,
+      "mac64": true,
+      "debug": false
+    }
   },
   "startroom": "3827e721-5331-49b2-a37a-f868e15cae0d",
-  "ctjsVersion": "0.3.1",
-  "scripts": []
+  "ctjsVersion": "0.5.1",
+  "scripts": [],
+  "fonts": []
 }

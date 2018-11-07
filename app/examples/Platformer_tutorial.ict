@@ -1,8 +1,11 @@
 {
-  "ctjsVersion": "0.3.1",
+  "ctjsVersion": "0.5.1",
   "notes": "/* empty */",
   "libs": {
-    "place": {},
+    "place": {
+      "gridY": 512,
+      "gridX": 512
+    },
     "fittoscreen": {
       "scaleOnly": true
     },
@@ -6600,7 +6603,21 @@
     "fps": 30,
     "title": "Platformer complete tutorial",
     "author": "Cosmo Myzrail Gorynych",
-    "site": "https://ctjs.rocks/"
+    "site": "https://ctjs.rocks/",
+    "version": [
+      0,
+      0,
+      0
+    ],
+    "versionPostfix": "",
+    "export": {
+      "windows64": true,
+      "windows32": true,
+      "linux64": true,
+      "linux32": true,
+      "mac64": true,
+      "debug": false
+    }
   },
   "scripts": [
     {
@@ -6612,7 +6629,8 @@
       "code": "var inGameRoomOnDraw = function(room) {\n    ct.draw.image('GreenCrystal', 0, room.x + 24, room.y + 24);\n    ct.styles.set('CrystalCounter');\n    ct.draw.text(room.crystals + ' / ' + room.crystalsTotal, room.x + 50, room.y + 24);\n    ct.styles.reset();\n    \n    ct.draw.image('Heart', 0, room.x + room.width - 50, room.y + 24);\n    ct.styles.set('HeartCounter');\n    ct.draw.text(room.lives , room.x + room.width - 25, room.y + 24);\n    ct.styles.reset();\n};"
     }
   ],
-  "startroom": "ff1cd956-0c2f-403e-83be-1c4d6e821597",
+  "startroom": "184045cc-2e0e-47be-8a20-411cb6f9c751",
   "styletick": null,
-  "palette": []
+  "palette": [],
+  "fonts": []
 }

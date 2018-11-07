@@ -1,7 +1,10 @@
 {
   "notes": "/* empty */",
   "libs": {
-    "place": {},
+    "place": {
+      "gridY": 512,
+      "gridX": 512
+    },
     "keyboard": {},
     "random": {},
     "fittoscreen": {
@@ -446,7 +449,8 @@
       "ondraw": "ct.draw(this);",
       "ondestroy": "",
       "uid": "b658efa2-360e-4a62-8640-3e3281156f4e",
-      "graph": "1da28af4-53f1-4958-82b2-a696778f910f"
+      "graph": "1da28af4-53f1-4958-82b2-a696778f910f",
+      "lastmod": 1541552205487
     },
     {
       "name": "ToggleFullscreen",
@@ -2304,12 +2308,27 @@
     "title": "Catformer",
     "author": "Cosmo Myzrail Gorynych",
     "site": "https://ctjs.rocks",
-    "fps": 30
+    "fps": 30,
+    "version": [
+      0,
+      0,
+      0
+    ],
+    "versionPostfix": "",
+    "export": {
+      "windows64": true,
+      "windows32": true,
+      "linux64": true,
+      "linux32": true,
+      "mac64": true,
+      "debug": false
+    }
   },
   "palette": [
     "#257073"
   ],
   "startroom": "b0f0ff4d-a155-4d68-a86e-5bb7ed8973ab",
   "scripts": [],
-  "ctjsVersion": "0.3.1"
+  "ctjsVersion": "0.5.1",
+  "fonts": []
 }

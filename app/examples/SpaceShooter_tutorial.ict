@@ -3,7 +3,10 @@
   "libs": {
     "keyboard": {},
     "random": {},
-    "place": {}
+    "place": {
+      "gridY": 512,
+      "gridX": 512
+    }
   },
   "graphs": [
     {
@@ -32,7 +35,8 @@
       "top": 12,
       "bottom": 32,
       "lastmod": 1530951344688,
-      "r": 37
+      "r": 37,
+      "uid": "a82335b3-69b6-4de0-bec1-da2dea358142"
     },
     {
       "name": "LaserRed",
@@ -60,7 +64,8 @@
       "top": 0,
       "bottom": 46,
       "lastmod": 1530925105354,
-      "r": 23
+      "r": 23,
+      "uid": "083c3d39-1a4a-44f2-9fae-e4043e45f28e"
     },
     {
       "name": "Laser_Blue",
@@ -87,7 +92,8 @@
       "right": 5,
       "top": 27,
       "bottom": 27,
-      "lastmod": 1530922400318
+      "lastmod": 1530922400318,
+      "uid": "3dde237d-ec51-4153-8b31-58279ece7c55"
     },
     {
       "name": "EnemyShip",
@@ -115,7 +121,8 @@
       "top": 42,
       "bottom": 42,
       "lastmod": 1530922397691,
-      "r": 42
+      "r": 42,
+      "uid": "feb33556-81c7-4794-a806-da5ddea5be81"
     },
     {
       "name": "Asteroid_Medium",
@@ -143,7 +150,8 @@
       "top": 0,
       "bottom": 43,
       "lastmod": 1525838629483,
-      "r": 21
+      "r": 21,
+      "uid": "aa5664f9-a2c3-47b2-8f0f-2dfead9c67c9"
     },
     {
       "name": "Asteroid_Big",
@@ -171,7 +179,8 @@
       "top": 0,
       "bottom": 84,
       "lastmod": 1530951347561,
-      "r": 42
+      "r": 42,
+      "uid": "4e5cb233-48f8-4f20-abaf-384f4551e1e9"
     },
     {
       "name": "BG",
@@ -198,7 +207,8 @@
       "right": 256,
       "top": 0,
       "bottom": 256,
-      "lastmod": 1525839332366
+      "lastmod": 1525839332366,
+      "uid": "004e6497-a9f8-4a44-8b43-346ee79e6514"
     }
   ],
   "types": [
@@ -209,8 +219,8 @@
       "onstep": "/**\n * Move the ship\n */\n\nif (ct.keyboard.down['left']) { // Is the left arrow key pressed?\n    this.x -= 8; // Move to the left by X axis\n}\nif (ct.keyboard.down['right']) { // Is the right arrow key pressed?\n    this.x += 8; // Move to the right by X axis\n}\n\nif (ct.keyboard.down['up']) { // Is the up arrow key pressed?\n    this.y -= 8; // Move up by Y axis\n}\nif (ct.keyboard.down['down']) { // Is the right arrow key pressed?\n    this.y += 8; // Move down by Y axis\n}\n\n/**\n * Check whether the ship fell off the viewport\n */\nif (this.x < 0) { // Have the ship crossed the left border?\n    this.x = 0; // Go back to the left border\n}\nif (this.x > ct.width) { // Have the ship crossed the right border?\n    this.x = ct.width; // Go back to the right border\n}\nif (this.y < ct.height / 2) { // Have the ship crossed the middle line?\n    this.y = 400; // Go back to the middle line\n}\nif (this.y > ct.height) { // Have the ship crossed the bottom border?\n    this.y = ct.height; // Go back to the bottom border\n}\n\nif (ct.keyboard.pressed['space']) {\n    ct.types.copy('Laser_Blue', this.x, this.y);\n}\n\nvar hostile = ct.place.occupied(this, this.x, this.y, 'Hostile');\nif (hostile) {\n    hostile.kill = true;\n    ct.room.lives --;\n    if (ct.room.lives <= 0) {\n        this.kill = true;\n        setTimeout(function() {\n            ct.rooms.switch('Main');\n        }, 1000);\n    }\n}\n\nct.types.move(this);",
       "ondraw": "ct.draw(this);",
       "ondestroy": "",
-      "uid": 1,
-      "graph": "i1.png"
+      "uid": "f5832845-7841-408b-bae7-a72aaffcae6c",
+      "graph": "a82335b3-69b6-4de0-bec1-da2dea358142"
     },
     {
       "name": "Laser_Red",
@@ -219,8 +229,8 @@
       "onstep": "if (this.y > ct.height + 40) {\n    this.kill = true;\n}\n\nct.types.move(this);\n\nthis.tr += 10;",
       "ondraw": "ct.draw(this);",
       "ondestroy": "",
-      "uid": 2,
-      "graph": "i2.png"
+      "uid": "ebe33c0f-6f27-4123-ac8a-3029404dbc7a",
+      "graph": "083c3d39-1a4a-44f2-9fae-e4043e45f28e"
     },
     {
       "name": "Laser_Blue",
@@ -229,8 +239,8 @@
       "onstep": "if (this.y < -40) {\n    this.kill = true;\n}\n\nct.types.move(this);",
       "ondraw": "ct.draw(this);",
       "ondestroy": "",
-      "uid": 3,
-      "graph": "i3.png"
+      "uid": "cd732ad2-d2ae-4745-b6d8-07a57a9d3a2e",
+      "graph": "3dde237d-ec51-4153-8b31-58279ece7c55"
     },
     {
       "name": "EnemyShip",
@@ -239,8 +249,8 @@
       "onstep": "ct.types.move(this);\n\nif (this.y > ct.height + 80) {\n    this.kill = true;\n}\n\nvar collided = ct.place.meet(this, this.x, this.y, 'Laser_Blue');\nif (collided) {\n    collided.kill = true;\n    this.kill = true;\n    ct.room.score += 100;\n}\n\nthis.bulletTimer--;\nif (this.bulletTimer <= 0) {\n    this.bulletTimer = 90;\n    ct.types.copy('Laser_Red', this.x, this.y + 32);\n}",
       "ondraw": "ct.draw(this);",
       "ondestroy": "",
-      "uid": 4,
-      "graph": "i4.png"
+      "uid": "5d3e8a47-30e6-45b1-8b36-d445fdcb8e14",
+      "graph": "feb33556-81c7-4794-a806-da5ddea5be81"
     },
     {
       "name": "Asteroid_Medium",
@@ -249,8 +259,8 @@
       "onstep": "ct.types.move(this);\n\nif (this.y > ct.height + 80) {\n    this.kill = true;\n}\n\nvar collided = ct.place.meet(this, this.x, this.y, 'Laser_Blue');\nif (collided) {\n    collided.kill = true;\n    this.kill = true;\n    ct.room.score += 10;\n}",
       "ondraw": "ct.draw(this);",
       "ondestroy": "",
-      "uid": 5,
-      "graph": "i5.png"
+      "uid": "f829b135-ac68-4193-9980-d367e90448a1",
+      "graph": "aa5664f9-a2c3-47b2-8f0f-2dfead9c67c9"
     },
     {
       "name": "Asteroid_Big",
@@ -259,15 +269,15 @@
       "onstep": "ct.types.move(this);\n\nif (this.y > ct.height + 80) {\n    this.kill = true;\n}\n\nvar collided = ct.place.meet(this, this.x, this.y, 'Laser_Blue');\nif (collided) {\n    collided.kill = true;\n    this.kill = true;\n    ct.types.copy('Asteroid_Medium', this.x, this.y);\n    ct.types.copy('Asteroid_Medium', this.x, this.y);\n    ct.room.score += 25;\n}",
       "ondraw": "ct.draw(this);",
       "ondestroy": "",
-      "uid": 6,
-      "graph": "i6.png"
+      "uid": "41fbc5fe-0f41-4151-b7bf-26acefce80ae",
+      "graph": "4e5cb233-48f8-4f20-abaf-384f4551e1e9"
     }
   ],
   "sounds": [],
   "styles": [
     {
       "name": "ScoreText",
-      "uid": 1,
+      "uid": "4f2f6d4b-a339-4e30-98f3-80db10aafc4f",
       "origname": "s1",
       "font": {
         "family": "sans-serif",
@@ -291,7 +301,7 @@
     },
     {
       "name": "LivesText",
-      "uid": 3,
+      "uid": "b1e32885-9439-412d-9220-7d18fae8bf91",
       "origname": "s3",
       "font": {
         "family": "sans-serif",
@@ -326,7 +336,7 @@
       "backgrounds": [
         {
           "depth": "-5",
-          "graph": "i7.png"
+          "graph": "004e6497-a9f8-4a44-8b43-346ee79e6514"
         }
       ],
       "layers": [
@@ -336,14 +346,15 @@
             {
               "x": 400,
               "y": 720,
-              "uid": 1
+              "uid": "f5832845-7841-408b-bae7-a72aaffcae6c"
             }
           ]
         }
       ],
-      "uid": 1,
+      "uid": "8eced6ed-b52a-4344-8266-3fa909005671",
       "grid": 80,
-      "lastmod": 1530939493481
+      "lastmod": 1530939493481,
+      "thumbnail": 1
     }
   ],
   "graphtick": 7,
@@ -358,7 +369,25 @@
     "fps": 30,
     "title": "Space Shooter (tutorial)",
     "author": "Cosmo Myzrail Gorynych",
-    "site": "https://ctjs.rocks/"
+    "site": "https://ctjs.rocks/",
+    "version": [
+      0,
+      0,
+      0
+    ],
+    "versionPostfix": "",
+    "export": {
+      "windows64": true,
+      "windows32": true,
+      "linux64": true,
+      "linux32": true,
+      "mac64": true,
+      "debug": false
+    }
   },
-  "palette": []
+  "palette": [],
+  "startroom": "8eced6ed-b52a-4344-8266-3fa909005671",
+  "ctjsVersion": "0.5.1",
+  "scripts": [],
+  "fonts": []
 }

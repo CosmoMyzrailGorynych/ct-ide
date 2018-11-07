@@ -1,7 +1,10 @@
 {
   "notes": "ct.types.move(this);\n\nthis.shootTimer --;\nif (this.shootTimer < 0) {\n    ct.types.copy('EnemyBullet', this.x, this.y);\n    this.shootTimer = 3 * ct.speed;\n}\n\nvar obstacle = ct.place.occupied(this, this.x, this.y, 'BulletsHeroes');\nif (obstacle) {\n    this.kill = true;\n    obstacle.kill = true;\n    \n    // Add some score points\n    ct.rooms.current.score += 25;\n}\n\nif (this.y > ct.room.height + 100) {\n    this.kill = true;\n}",
   "libs": {
-    "place": {},
+    "place": {
+      "gridY": 512,
+      "gridX": 512
+    },
     "akatemplate": {
       "csscss": "canvas {\n  margin: 0 auto;\n  display: block;\n}\nbody {\n  background: #1b1f26;\n}",
       "toptop": "<link href=\"https://fonts.googleapis.com/css?family=Press+Start+2P\" rel=\"stylesheet\">"
@@ -1144,7 +1147,21 @@
     "title": "Catsteroids",
     "author": "CoMiGo Games",
     "site": "http://comigogames.ru/",
-    "fps": 30
+    "fps": 30,
+    "version": [
+      0,
+      0,
+      0
+    ],
+    "versionPostfix": "",
+    "export": {
+      "windows64": true,
+      "windows32": true,
+      "linux64": true,
+      "linux32": true,
+      "mac64": true,
+      "debug": false
+    }
   },
   "palette": [
     "#FFFFFF",
@@ -1153,5 +1170,6 @@
   ],
   "startroom": "6c75cdb8-cfb4-4dcc-887a-f76ae98b5499",
   "scripts": [],
-  "ctjsVersion": "0.3.1"
+  "ctjsVersion": "0.5.1",
+  "fonts": []
 }
