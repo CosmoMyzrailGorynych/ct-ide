@@ -14,7 +14,7 @@ graphic-selector.panel.view
     ul.cards
         li(if="{opts.showempty}" onclick="{onselected(-1)}")
             span {window.languageJSON.common.none}
-            img(src="/img/nograph.png")
+            img(src="/data/img/nograph.png")
         li(
             each="{graphic in (searchResults? searchResults : graphs)}"
             onclick="{onselected(graphic)}"

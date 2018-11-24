@@ -1,7 +1,7 @@
 module.exports = {
     title: 'ct.js Documentation',
     description: 'Docs, tutorials, guides',
-    dest: './app/docs',
+    dest: './app/data/docs',
     
     themeConfig: {
         nav: [{
@@ -40,7 +40,6 @@ module.exports = {
                 collapsable: false,
                 children: [
                     'ct',
-                    'ct.draw',
                     'ct.mouse',
                     'ct.res',
                     'ct.rooms',

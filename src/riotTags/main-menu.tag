@@ -279,8 +279,8 @@ main-menu.flexcol
 
         this.switchLanguage = filename => {
             try {
-                const vocDefault = fs.readJSONSync('./i18n/English.json');
-                const voc = fs.readJSONSync(`./i18n/${filename}.json`);
+                const vocDefault = fs.readJSONSync('./data/i18n/English.json');
+                const voc = fs.readJSONSync(`./data/i18n/${filename}.json`);
                 console.log('loaded');
                 window.languageJSON = window.___extend(vocDefault, voc);
                 localStorage.appLanguage = filename;
@@ -293,7 +293,7 @@ main-menu.flexcol
         };
         var switchLanguage = this.switchLanguage;
 
-        fs.readdir('./i18n/')
+        fs.readdir('./data/i18n/')
         .then(files => {
             files.forEach(filename => {
                 var file = filename.slice(0, -5);

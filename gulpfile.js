@@ -67,7 +67,7 @@ const compileStylus = () =>
         compress: true
     }))
     .pipe(sourcemaps.write())
-    .pipe(gulp.dest('./app/'));
+    .pipe(gulp.dest('./app/data/'));
 
 const compilePug = () => 
     gulp.src('./src/pug/*.pug')
@@ -110,7 +110,7 @@ const compileScripts = gulp.series(compileRiot, () =>
     }, {
         platform: ['native', 'java', 'javascript']
     })))
-    .pipe(gulp.dest('./app/'))
+    .pipe(gulp.dest('./app/data/'))
     .on('error', err => {
         notifier.notify({
             title: 'Ошибка скриптов',

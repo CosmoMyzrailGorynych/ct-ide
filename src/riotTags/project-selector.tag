@@ -49,7 +49,7 @@ project-selector
         this.namespace = 'intro';
         this.mixin(window.riotVoc);
         this.visible = true;
-        this.projectSplash = '/img/nograph.png';
+        this.projectSplash = '/data/img/nograph.png';
         this.newVersion = false;
         
         // Загрузка списка последних проектов из локального хранилища
@@ -113,7 +113,7 @@ project-selector
             fs.ensureDir(sessionStorage.projdir + '/snd');
             fs.ensureDir(sessionStorage.projdir + '/include');
             setTimeout(() => { // почему-то это нужно делать через setTimeout, иначе функция просто не выполняется.
-                window.megacopy('./img/nograph.png', path.join(sessionStorage.projdir + '/img/splash.png'), e => {
+                window.megacopy('./data/img/nograph.png', path.join(sessionStorage.projdir + '/img/splash.png'), e => {
                     if (e) {
                         alertify.error(e);
                         console.error(e);

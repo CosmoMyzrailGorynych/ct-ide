@@ -7,7 +7,7 @@ room-type-picker.room-editor-TypeSwatches.tabbed.tall
         class="{active: opts.current === -1}"
     )
         span {window.languageJSON.common.none}
-        img(src="/img/nograph.png")
+        img(src="/data/img/nograph.png")
     .room-editor-aTypeSwatch(
         each="{type in (searchResults? searchResults : types)}"
         title="{type.name}"
@@ -15,7 +15,7 @@ room-type-picker.room-editor-TypeSwatches.tabbed.tall
         class="{active: parent.opts.current === type}"
     )
         span {type.name}
-        img(src="{type.graph === -1? '/img/nograph.png' : (glob.graphmap[type.graph].src.split('?')[0] + '_prev.png?' + getTypeGraphRevision(type))}")
+        img(src="{type.graph === -1? '/data/img/nograph.png' : (glob.graphmap[type.graph].src.split('?')[0] + '_prev.png?' + getTypeGraphRevision(type))}")
     .room-editor-aTypeSwatch.filler
     .room-editor-aTypeSwatch.filler
     .room-editor-aTypeSwatch.filler

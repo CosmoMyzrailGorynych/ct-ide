@@ -1,15 +1,17 @@
 {
-  "ctjsVersion": "0.5.1",
+  "ctjsVersion": "0.5.2",
   "notes": "/* empty */",
   "libs": {
     "place": {
-      "gridY": 512,
-      "gridX": 512
+      "gridY": 500,
+      "gridX": 500
     },
     "fittoscreen": {
       "scaleOnly": true
     },
-    "keyboard": {}
+    "keyboard": {},
+    "tween": {},
+    "random": {}
   },
   "graphs": [
     {
@@ -429,141 +431,176 @@
       "right": 256,
       "top": 0,
       "bottom": 256,
-      "uid": "92d2ca65-d3a1-45c9-bbd5-5674c6596f98"
+      "uid": "92d2ca65-d3a1-45c9-bbd5-5674c6596f98",
+      "tiled": true,
+      "lastmod": 1542096768616
     }
   ],
   "types": [
     {
       "name": "Robot",
       "depth": 0,
-      "oncreate": "this.speed = 8; // Max horizontal speed\nthis.jumpSpeed = -12;\nthis.gravity = 1;\n\nthis.hspeed = 0; // Horizontal speed\nthis.vspeed = 0; // Vertical speed\n\nct.room.follow = this;\nct.room.borderx = 450;\nct.room.bordery = 200;\n\n// Enable image transforms on this copy\nthis.transform = true;\n// Play 8 frames per second\nthis.imgspd = 8 / ct.speed;",
-      "onstep": "if (ct.place.occupied(this, this.x, this.y, 'Deadly')) {\n    this.x = this.savedX;\n    this.y = this.savedY;\n    this.hspeed = 0;\n    this.vspeed = 0;\n    ct.room.lives --;\n    if (ct.room.lives <= 0) {\n        ct.rooms.switch(ct.room.name);\n    }\n    return;\n}\n\nif (ct.keyboard.down['A']) {\n    // If the A key on keyboard is down, then move to left\n    this.hspeed = -this.speed;\n    // Set the walking animation and transform the robot to the left\n    this.graph = 'Robot_Walking';\n    this.tx = -1;\n} else if (ct.keyboard.down['D']) {\n    // If the D key on keyboard is down, then move to right\n    this.hspeed = this.speed;\n    // Set the walking animation and transform the robot to the right\n    this.graph = 'Robot_Walking';\n    this.tx = 1;\n} else {\n    // Don't move horizontally if no input\n    this.hspeed = 0;\n    this.graph = 'Robot_Idle';\n}\n\n// If there is ground underneath the Robot…\nif (ct.place.occupied(this, this.x, this.y + 1, 'Solid')) {\n    // …and the W key or the spacebar is down…\n    if (ct.keyboard.down['W'] || ct.keyboard.down['space']) {\n        // …then jump!\n        this.vspeed = this.jumpSpeed;\n    } else {\n        // Reset our vspeed. We don't want to be buried underground!\n        this.vspeed = 0;\n    }\n} else {\n    // If there is no ground  \n    this.vspeed += this.gravity;\n    // Set jumping animation!\n    this.graph = 'Robot_Jump';\n}\n\n// Move by horizontal axis, pixel by pixel\nfor (var i = 0; i < Math.abs(this.hspeed); i++) {\n    if (ct.place.free(this, this.x + Math.sign(this.hspeed), this.y, 'Solid')) {\n        this.x += Math.sign(this.hspeed);\n    } else {\n        break;\n    }\n}\n// Do the same for vertical speed\nfor (var i = 0; i < Math.abs(this.vspeed); i++) {\n    if (ct.place.free(this, this.x, this.y + Math.sign(this.vspeed), 'Solid')) {\n        this.y += Math.sign(this.vspeed);\n    } else {\n        break;\n    }\n}",
-      "ondraw": "ct.draw(this);",
+      "oncreate": "this.jumpSpeed = -9;\nthis.gravity = 0.5;\n\nthis.hspd = 0; // Horizontal speed\nthis.vspd = 0; // Vertical speed\n\nct.room.follow = this;\nct.room.borderx = 450;\nct.room.bordery = 200;\n\nthis.animationSpeed = 0.2;\nthis.tint = 0x00FFFF;\n\n// Play 8 frames per second",
+      "onstep": "this.speed = 4 * ct.delta; // Max horizontal speed\n\nif (ct.place.occupied(this, this.x, this.y, 'Deadly')) {\n    this.x = this.savedX;\n    this.y = this.savedY;\n    this.hspd = 0;\n    this.vspd = 0;\n    ct.room.lives --;\n    if (ct.room.lives <= 0) {\n        ct.rooms.switch(ct.room.name);\n    }\n    return;\n}\nif (ct.keyboard.down['A']) {\n    // If the A key on keyboard is down, then move to left\n    this.hspd = -this.speed;\n    // Set the walking animation and transform the robot to the left\n    if (this.graph !== 'Robot_Walking') {\n        this.graph = 'Robot_Walking';\n        this.play();\n    }\n    this.scale.x = -1;\n} else if (ct.keyboard.down['D']) {\n    // If the D key on keyboard is down, then move to right\n    this.hspd = this.speed;\n    // Set the walking animation and transform the robot to the right\n    if (this.graph !== 'Robot_Walking') {\n        this.graph = 'Robot_Walking';\n        this.play();\n    }\n    this.scale.x = 1;\n} else {\n    // Don't move horizontally if no input\n    this.hspd = 0;\n    this.graph = 'Robot_Idle';\n}\n\n// If there is ground underneath the Robot…\nif (ct.place.occupied(this, this.x, this.y + 1, 'Solid')) {\n    // …and the W key or the spacebar is down…\n    if (ct.keyboard.down['W'] || ct.keyboard.down['space']) {\n        // …then jump!\n        this.vspd = this.jumpSpeed;\n        ct.types.copy('FunnyText', this.x, this.y - 48);\n    } else {\n        // Reset our vspeed. We don't want to be buried underground!\n        this.vspd = 0;\n    }\n} else {\n    // If there is no ground  \n    this.vspd += this.gravity;\n    // Set jumping animation!\n    this.graph = 'Robot_Jump';\n}\n\n// Move by horizontal axis, pixel by pixel\nfor (var i = 0; i < Math.abs(this.hspd); i++) {\n    if (ct.place.free(this, this.x + Math.sign(this.hspd), this.y, 'Solid')) {\n        this.x += Math.sign(this.hspd);\n    } else {\n        break;\n    }\n}\n// Do the same for vertical speed\nfor (var i = 0; i < Math.abs(this.vspd); i++) {\n    if (ct.place.free(this, this.x, this.y + Math.sign(this.vspd), 'Solid')) {\n        this.y += Math.sign(this.vspd);\n    } else {\n        break;\n    }\n}",
+      "ondraw": "",
       "ondestroy": "",
       "uid": "2d07d12b-9798-418c-a420-3a1ef4dc3ae2",
       "graph": "6deb1d77-24d2-48d6-82ec-045dcbd9eea5",
-      "lastmod": 1536500781202
+      "lastmod": 1542283121375
     },
     {
       "name": "Rocks",
       "depth": 0,
       "oncreate": "this.ctype = 'Solid';",
       "onstep": "ct.types.move(this);",
-      "ondraw": "ct.draw(this);",
+      "ondraw": "",
       "ondestroy": "",
       "uid": "07e424c6-78c2-42c9-b720-df0af00ab44d",
       "graph": "9a6d05c0-477d-47f6-85fe-6c0c8d813df3",
-      "lastmod": 1536480974319
+      "lastmod": 1542089969676
     },
     {
       "name": "Rocks_Top",
       "depth": 0,
       "oncreate": "this.ctype = 'Solid';",
       "onstep": "ct.types.move(this);",
-      "ondraw": "ct.draw(this);",
+      "ondraw": "",
       "ondestroy": "",
       "uid": "f1f632f7-ecd9-4724-8a7a-c5136d48520e",
       "graph": "05db3522-55d5-4358-bf09-5e9a6126ed95",
-      "lastmod": 1536487650359
+      "lastmod": 1542089975200
     },
     {
       "name": "Rocks_Platform",
       "depth": 0,
       "oncreate": "this.ctype = 'Solid';",
       "onstep": "ct.types.move(this);",
-      "ondraw": "ct.draw(this);",
+      "ondraw": "",
       "ondestroy": "",
       "uid": "bf44c3c8-a683-43cd-8925-c5b7e771e152",
       "graph": "60688c59-ff1e-4550-8525-0fc28c4a3d77",
-      "lastmod": 1536480976708
+      "lastmod": 1542089972638
     },
     {
       "name": "Spikes",
       "depth": 0,
       "oncreate": "this.ctype = 'Deadly';",
       "onstep": "ct.types.move(this);",
-      "ondraw": "ct.draw(this);",
+      "ondraw": "",
       "ondestroy": "",
       "uid": "cfa730fa-a010-44af-8e02-d5ad0c86f224",
       "graph": "699ff925-9b32-403f-a292-68ea10034788",
-      "lastmod": 1536487727355
+      "lastmod": 1542090499953
     },
     {
       "name": "Water",
       "depth": 0,
       "oncreate": "this.ctype = 'Deadly';",
       "onstep": "ct.types.move(this);",
-      "ondraw": "ct.draw(this);",
+      "ondraw": "",
       "ondestroy": "",
       "uid": "c1aaae5f-3e4c-4e41-8e24-4c2dfe4d43b6",
       "graph": "9fdb39bb-1685-4ca2-b750-ccb15ca765d2",
-      "lastmod": 1536487730144
+      "lastmod": 1542090503493
     },
     {
       "name": "Water_Top",
       "depth": 0,
       "oncreate": "this.ctype = 'Deadly';",
       "onstep": "ct.types.move(this);",
-      "ondraw": "ct.draw(this);",
+      "ondraw": "",
       "ondestroy": "",
       "uid": "807691ae-10c5-4cf6-ba0f-6f53d83367ff",
       "graph": "5749074a-4d92-4aa7-bbde-afb57f1ec4a0",
-      "lastmod": 1536487769273
+      "lastmod": 1542089985954
     },
     {
       "name": "Checkpoint",
       "depth": 0,
-      "oncreate": "",
+      "oncreate": "this.visible = false;",
       "onstep": "var robot = ct.place.meet(this, this.x, this.y, 'Robot');\nif (robot) {\n    robot.savedX = this.x + 32;\n    robot.savedY = this.y + 32;\n}",
       "ondraw": "",
       "ondestroy": "",
       "uid": "53848ac8-d852-45c1-a0e2-c38e76094e4b",
       "graph": "e15a4451-c77c-4347-a99f-436731aff19d",
-      "lastmod": 1536490263546
+      "lastmod": 1542089948687
     },
     {
       "name": "Exit",
       "depth": 0,
       "oncreate": "",
       "onstep": "// Are there next rooms defined?\nif (ct.room.nextRoom) {\n    // Do we collide with the Robot?\n    if (ct.place.meet(this, this.x, this.y, 'Robot')) {\n        // Switch to the next room\n        ct.rooms.switch(ct.room.nextRoom);\n    }\n}",
-      "ondraw": "ct.draw(this);",
+      "ondraw": "",
       "ondestroy": "",
       "uid": "0fd7f61f-2f06-47e2-b9e3-2782fcd02415",
       "graph": "e086f16a-24fd-4f73-b44a-e3e22766ca62",
-      "lastmod": 1536500725434
+      "lastmod": 1542089952114
     },
     {
       "name": "GreenCrystal",
       "depth": 0,
       "oncreate": "",
-      "onstep": "if (ct.place.meet(this, this.x, this.y, 'Robot')) {\n    ct.room.crystals ++;\n    this.kill = true;\n}",
-      "ondraw": "ct.draw(this);",
+      "onstep": "var col = ct.place.meet(this, 'Robot');\nif (col) {\n    ct.room.crystals ++;\n    this.kill = true;\n}",
+      "ondraw": "",
       "ondestroy": "",
       "uid": "54f82143-5c80-4566-8bc9-8c240c1d97a1",
       "graph": "f39895d1-731d-4487-9d01-18841158729c",
-      "lastmod": 1536494622081
+      "lastmod": 1542091709217
     },
     {
       "name": "Heart",
       "depth": 0,
       "oncreate": "",
       "onstep": "if (ct.place.meet(this, this.x, this.y, 'Robot')) {\n    if (ct.room.lives < 3) {\n        ct.room.lives++;\n        this.kill = true;\n    }\n}",
-      "ondraw": "ct.draw(this);",
+      "ondraw": "",
       "ondestroy": "",
       "uid": "3fe668cd-30ee-49ba-8a45-e772bf8832a9",
       "graph": "334d338b-4fe4-4168-901e-2315494d37d4",
-      "lastmod": 1536500821537
+      "lastmod": 1542089959130
     },
     {
       "name": "Platform",
       "depth": 0,
-      "oncreate": "this.speed = 4;\nthis.ctype = 'Solid';",
-      "onstep": "var robot = ct.place.meet(this, this.x, this.y, 'Robot');\nif (robot) {\n    this.ctype = undefined;\n} else {\n    this.ctype = 'Solid';\n    robot = ct.place.meet(this, this.x, this.y - 1, 'Robot');\n    if (robot) {\n        robot.x += this.speed;\n    }\n}\n\nthis.x += this.speed;\nif (ct.place.occupied(this, this.x + this.speed, this.y, 'Solid')) {\n    // Flip the speed direction\n    this.speed *= -1;\n}",
-      "ondraw": "ct.draw(this);",
+      "oncreate": "this.speed = 2;\nthis.ctype = 'Solid';",
+      "onstep": "var robot = ct.place.meet(this, this.x, this.y, 'Robot');\nif (robot) {\n    this.ctype = undefined;\n} else {\n    this.ctype = 'Solid';\n    robot = ct.place.meet(this, this.x, this.y - 1, 'Robot');\n    if (robot) {\n        robot.x += this.speed * ct.delta;\n    }\n}\n\nthis.x += this.speed * ct.delta;\nif (ct.place.occupied(this, this.x + this.speed * ct.delta, this.y, 'Solid')) {\n    // Flip the speed direction\n    this.speed *= -1;\n}",
+      "ondraw": "",
       "ondestroy": "",
       "uid": "1ae52dda-689d-4780-97ce-c87886fb581a",
       "graph": "3f19a8ef-4dba-4550-b516-0bcaca131ba6",
-      "lastmod": 1536504143407
+      "lastmod": 1542171471009
+    },
+    {
+      "name": "CrystalsWidget",
+      "depth": 0,
+      "oncreate": "var style = new PIXI.TextStyle({\n    fontSize: 24,\n    fontWeight: 'bold',\n    fill: '#00cc33',\n    stroke: '#ffffff',\n    strokeThickness: 5\n});\n\nthis.text = new PIXI.Text(`0 / ${ct.room.crystalsTotal}`, style);\nthis.text.x = 32;\nthis.text.anchor.y = 0.5;\n\nthis.addChild(this.text);",
+      "onstep": "",
+      "ondraw": "this.x = ct.room.x + 24;\nthis.y = ct.room.y + 24;\n\nthis.text.text = `${ct.room.crystals} / ${ct.room.crystalsTotal}`;",
+      "ondestroy": "",
+      "uid": "d582eca9-7676-4764-8aa6-9b10895a9b73",
+      "graph": "f39895d1-731d-4487-9d01-18841158729c",
+      "lastmod": 1542091987020
+    },
+    {
+      "name": "HeartsWidget",
+      "depth": 0,
+      "oncreate": "var style = new PIXI.TextStyle({\n    fontSize: 24,\n    fontWeight: 'bold',\n    fill: '#cc3300',\n    stroke: '#ffffff',\n    strokeThickness: 5\n});\n\nthis.text = new PIXI.Text(ct.room.lives, style);\nthis.text.x = -32;\nthis.text.anchor.y = 0.5;\nthis.text.anchor.x = 1;\n\nthis.addChild(this.text);",
+      "onstep": "",
+      "ondraw": "this.x = ct.room.x + ct.width - 24;\nthis.y = ct.room.y + 24;\n\nthis.text.text = ct.room.lives;",
+      "ondestroy": "",
+      "uid": "3dc14b8e-592f-45a3-9785-52da1b6dbeb8",
+      "graph": "334d338b-4fe4-4168-901e-2315494d37d4",
+      "lastmod": 1542282781565
+    },
+    {
+      "name": "FunnyText",
+      "depth": 0,
+      "oncreate": "var style = new PIXI.TextStyle({\n    fontSize: 24,\n    fontWeight: 'bold',\n    fill: '#0033cc',\n    stroke: '#ffffff',\n    strokeThickness: 5\n});\n\nthis.text = new PIXI.Text(ct.random.dice('Hell yeah!', 'WebGL!', 'Oh hell yeah!', 'No teared backgrounds!'), style);\nthis.text.pivot.y = 1;\nthis.text.alpha = 0;\nthis.addChild(this.text);\nct.tween.add({\n    obj: this.text,\n    fields: {\n        y: -16,\n        alpha: 1\n    },\n    duration: 350\n})\n.then(() => ct.u.wait(1000))\n.then(() => ct.tween.add({\n    obj: this.text,\n    fields: {\n        y: -32,\n        alpha: 0\n    },\n    duration: 350\n}))\n.then(() => this.kill = true);",
+      "onstep": "this.move();",
+      "ondraw": "",
+      "ondestroy": "",
+      "uid": "3ac516f6-67b8-42b6-89cc-fac01922685f",
+      "graph": -1,
+      "lastmod": 1542283138150
     }
   ],
   "sounds": [],
@@ -610,7 +647,7 @@
       "name": "Level_01",
       "oncreate": "this.nextRoom = 'Level_02';\ninGameRoomStart(this);",
       "onstep": "",
-      "ondraw": "inGameRoomOnDraw(this);",
+      "ondraw": "",
       "onleave": "",
       "width": 1024,
       "height": 576,
@@ -1370,11 +1407,6 @@
               "uid": "f1f632f7-ecd9-4724-8a7a-c5136d48520e"
             },
             {
-              "x": 1280,
-              "y": 192,
-              "uid": "f1f632f7-ecd9-4724-8a7a-c5136d48520e"
-            },
-            {
               "x": 1344,
               "y": 192,
               "uid": "f1f632f7-ecd9-4724-8a7a-c5136d48520e"
@@ -2008,6 +2040,11 @@
               "x": 1504,
               "y": 384,
               "uid": "3fe668cd-30ee-49ba-8a45-e772bf8832a9"
+            },
+            {
+              "x": 1280,
+              "y": 192,
+              "uid": "f1f632f7-ecd9-4724-8a7a-c5136d48520e"
             }
           ]
         }
@@ -2022,13 +2059,13 @@
       ],
       "gridX": 32,
       "gridY": 32,
-      "lastmod": 1536504162276
+      "lastmod": 1542090011275
     },
     {
       "name": "Level_02",
       "oncreate": "this.nextRoom = 'Level_03';\ninGameRoomStart(this);",
       "onstep": "",
-      "ondraw": "inGameRoomOnDraw(this);",
+      "ondraw": "",
       "onleave": "",
       "width": 1024,
       "height": 576,
@@ -4220,13 +4257,13 @@
       ],
       "gridX": 32,
       "gridY": 32,
-      "lastmod": 1536504197698
+      "lastmod": 1542090017356
     },
     {
       "name": "Level_03",
       "oncreate": "inGameRoomStart(this);",
       "onstep": "",
-      "ondraw": "inGameRoomOnDraw(this);",
+      "ondraw": "",
       "onleave": "",
       "width": 1024,
       "height": 576,
@@ -6593,7 +6630,7 @@
       ],
       "gridX": 32,
       "gridY": 32,
-      "lastmod": 1536504186795
+      "lastmod": 1542090479263
     }
   ],
   "starting": 0,
@@ -6622,11 +6659,7 @@
   "scripts": [
     {
       "name": "inGameRoomStart",
-      "code": "var inGameRoomStart = function (room) {\n    room.crystals = 0;\n    room.crystalsTotal = ct.types.list['GreenCrystal'].length;\n    room.lives = 3;\n};"
-    },
-    {
-      "name": "inGameRoomOnDraw",
-      "code": "var inGameRoomOnDraw = function(room) {\n    ct.draw.image('GreenCrystal', 0, room.x + 24, room.y + 24);\n    ct.styles.set('CrystalCounter');\n    ct.draw.text(room.crystals + ' / ' + room.crystalsTotal, room.x + 50, room.y + 24);\n    ct.styles.reset();\n    \n    ct.draw.image('Heart', 0, room.x + room.width - 50, room.y + 24);\n    ct.styles.set('HeartCounter');\n    ct.draw.text(room.lives , room.x + room.width - 25, room.y + 24);\n    ct.styles.reset();\n};"
+      "code": "var inGameRoomStart = function (room) {\n    room.crystals = 0;\n    room.crystalsTotal = ct.types.list['GreenCrystal'].length;\n    ct.types.copy('CrystalsWidget', 0, 0);\n    ct.types.copy('HeartsWidget', 0, 0);\n    room.lives = 3;\n};"
     }
   ],
   "startroom": "184045cc-2e0e-47be-8a20-411cb6f9c751",

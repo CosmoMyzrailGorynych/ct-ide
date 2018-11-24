@@ -16,7 +16,7 @@
             var kw = width / ct.width,
                 kh = height / ct.height,
                 k = Math.min(kw, kh),
-                canv = ct.HTMLCanvas;
+                canv = ct.pixiApp.view;
             canv.style.transform = 'scale(' + k + ')';
             canv.style.position = 'absolute';
             canv.style.left = (width - ct.width) / 2 + 'px';

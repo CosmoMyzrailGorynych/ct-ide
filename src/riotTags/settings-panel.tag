@@ -27,11 +27,6 @@ settings-panel.panel.view
 
         h2 {voc.renderoptions}
         label.block
-            span {voc.framerate}
-            br
-            input(type="number" min="1" max="180" value="{currentProject.settings.fps}" onchange="{wire('this.currentProject.settings.fps')}")
-            br
-        label.block
             input(type="checkbox" value="{currentProject.settings.pixelatedrender}" checked="{currentProject.settings.pixelatedrender}" onchange="{wire('this.currentProject.settings.pixelatedrender')}")
             span {voc.pixelatedrender}
 

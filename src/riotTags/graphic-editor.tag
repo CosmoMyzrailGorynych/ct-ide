@@ -94,6 +94,10 @@ graphic-editor.panel.view
             b {voc.frames}
             br
             input#graphframes.wide(type="number" value="{opts.graphic.untill}" onchange="{wire('this.graphic.untill')}" oninput="{wire('this.graphic.untill')}")
+            br
+            label
+                input#graphtiled(type="checkbox" checked="{opts.graphic.tiled}" onchange="{wire('this.graphic.tiled')}")
+                span   {voc.tiled}
         .preview.bordertop.flexfix-footer
             #preview(ref="preview" style="background-color: {previewColor};")
                 canvas(ref="grprCanvas")

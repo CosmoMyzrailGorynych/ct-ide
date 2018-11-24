@@ -3,6 +3,7 @@
 
     const fs = require('fs-extra'),
           path = require('path');
+    const basePath = './data/';
 
     const exec = path.dirname(process.execPath).replace(/\\/g,'/');
 
@@ -25,16 +26,16 @@
 
     var injectModules = (injects) => {
         for (const lib in window.currentProject.libs) {
-            const libData = fs.readJSONSync(path.join('./ct.libs/', lib, 'module.json'), {
+            const libData = fs.readJSONSync(path.join(basePath + 'ct.libs/', lib, 'module.json'), {
                 'encoding': 'utf8'
             });
             ctlibs[lib] = libData.main;
-            if (fs.pathExistsSync(path.join('./ct.libs/', lib, 'injects'))) {
-                const injectFiles = fs.readdirSync(path.join('./ct.libs/', lib, 'injects')),
+            if (fs.pathExistsSync(path.join(basePath + 'ct.libs/', lib, 'injects'))) {
+                const injectFiles = fs.readdirSync(path.join(basePath + 'ct.libs/', lib, 'injects')),
                       injectKeys = injectFiles.map(fname => path.basename(fname, path.extname(fname)));
                 for (var inj in injectKeys) {
                     if (injectKeys[inj] in injects) {
-                        injects[injectKeys[inj]] += parseKeys(libData, fs.readFileSync(path.join('./ct.libs/', lib, 'injects', injectFiles[inj]), {
+                        injects[injectKeys[inj]] += parseKeys(libData, fs.readFileSync(path.join(basePath + 'ct.libs/', lib, 'injects', injectFiles[inj]), {
                             encoding: 'utf8'
                         }), lib);
                     }
@@ -59,21 +60,28 @@
         };
     };
     var packImages = () => {
-        var blocks = [];
+        var blocks = [],
+            tiledImages = [];
         for (let i = 0, li = window.currentProject.graphs.length; i < li; i++) {
-            blocks[i] = {
-                data: {
+            if (!window.currentProject.graphs[i].tiled) {
+                blocks.push({
+                    data: {
+                        origname: window.currentProject.graphs[i].origname,
+                        g: window.currentProject.graphs[i]
+                    },
+                    width: window.currentProject.graphs[i].imgWidth+2,
+                    height: window.currentProject.graphs[i].imgHeight+2,
+                });
+            } else {
+                tiledImages.push({
                     origname: window.currentProject.graphs[i].origname,
                     g: window.currentProject.graphs[i]
-                },
-                width: window.currentProject.graphs[i].imgWidth+2,
-                height: window.currentProject.graphs[i].imgHeight+2,
-            };
+                });
+            }
         }
         blocks.sort((a, b) => Math.max(b.height, b.width) > Math.max(a.height, a.width));
-        var res = '',
-            graphurls = '',
-            graphtotal = 0;
+        let res = 'PIXI.loader';
+        let registry = {};
         const Packer = require('maxrects-packer');
         const atlasWidth = 1024,
             atlasHeight = 1024; // TODO: make configurable
@@ -84,40 +92,119 @@
             atlas.width = bin.width;
             atlas.height = bin.height;
             atlas.x = atlas.getContext('2d');
+            
+            const atlasJSON = {
+                meta: {
+                    app: 'http://ctjs.rocks/',
+                    version: nw.App.manifest.version,
+                    image: `a${binInd}.png`,
+                    format: 'RGBA8888',
+                    size: {
+                        w: bin.width,
+                        h: bin.height
+                    },
+                    scale: '1'
+                },
+                frames: {},
+                animations: {}
+            };
             for (let i = 0, li = bin.rects.length; i < li; i++) {
                 const block = bin.rects[i],
-                      {g} = block.data;
-                atlas.x.drawImage(window.glob.graphmap[g.uid], block.x+1, block.y+1);
-                var opts = {
-                    x: block.x + 1,
-                    y: block.y + 1,
-                    w: g.width,
-                    h: g.height,
-                    xo: g.axis[0],
-                    yo: g.axis[1],
-                    cols: g.grid[0],
-                    rows: g.grid[1],
-                    untill: g.untill,
-                    shape: getGraphicShape(g),
-                    marginx: g.marginx,
-                    marginy: g.marginy,
-                    shiftx: g.offx,
-                    shifty: g.offy
-                };
-                res += `
-                ct.res.makeSprite('${g.name}', 'img/a${binInd}.png', ${JSON.stringify(opts, null, '    ')});`;
+                      {g} = block.data,
+                      img = window.glob.graphmap[g.uid];
+                    atlas.x.drawImage(img, block.x+1, block.y+1);
+                /* if (g.tiled) {
+                    atlas.x.drawImage(img,
+                        0, 0, 1, img.height,
+                        block.x, block.y+1, 1, img.height); // vertical lines + corners
+                    atlas.x.drawImage(img, 
+                        img.width - 1, 0, 1, img.height,
+                        block.x + img.width + 1, block.y+1, 1, img.height);
+                    atlas.x.drawImage(img, 
+                        0, 0, img.width, 1,
+                        block.x + 1, block.y, img.width, 1); // horizontal lines
+                    atlas.x.drawImage(img, 
+                        0, img.height - 1, img.width, 1,
+                        block.x + 1, block.y + img.height + 1, img.width, 1);
+                }*/
+                // A multi-frame sprite
+                const keys = [];
+                for (var yy = 0; yy < g.grid[1]; yy++) {
+                    for (var xx = 0; xx < g.grid[0]; xx++) {
+                        const key = `${g.name}_frame${g.grid[0] * yy + xx}`;
+                        keys.push(key);
+                        atlasJSON.frames[key] = {
+                            frame: {
+                                x: block.x+1 + g.offx + xx * (g.width + g.marginx),
+                                y: block.y+1 + g.offy + yy * (g.height + g.marginy),
+                                w: g.width,
+                                h: g.height
+                            },
+                            rotated: false,
+                            trimmed: false,
+                            spriteSourceSize: {
+                                x: 0,
+                                y: 0,
+                                w: g.width,
+                                h: g.height
+                            },
+                            sourceSize: {
+                                w: g.width,
+                                h: g.height
+                            },
+                            anchor: {
+                                x: g.axis[0] / g.width,
+                                y: g.axis[1] / g.height
+                            }
+                        };
+                        if (yy * g.grid[0] + xx >= g.grid.untill && g.grid.untill > 0) {
+                            break;
+                        }
+                    }
+                    registry[g.name] = {
+                        atlas: `img/a${binInd}.json`,
+                        frames: g.grid.untill > 0? Math.min(g.grid.untill, g.grid[0]*g.grid[1]) : g.grid[0]*g.grid[1],
+                        shape: getGraphicShape(g),
+                        anchor: {
+                            x: g.axis[0] / g.width,
+                            y: g.axis[1] / g.height
+                        }
+                    };
+                    atlasJSON.animations[g.name] = keys;
+                }
             }
+            fs.outputJSON(`${exec}/export/img/a${binInd}.json`, atlasJSON);
+            res += `\n.add('img/a${binInd}.json')`;
             var data = atlas.toDataURL().replace(/^data:image\/\w+;base64,/, '');
             var buf = new Buffer(data, 'base64');
             fs.writeFileSync(`${exec}/export/img/a${binInd}.png`, buf);
-            graphurls += `'img/a${binInd}.png',`;
-            graphtotal++;
         });
-        graphurls = graphurls.slice(0, -1);
+        for (let i = 0, l = tiledImages.length; i < l; i++) {
+            const atlas = document.createElement('canvas'),
+                  {g} = tiledImages[i],
+                  img = window.glob.graphmap[g.uid];
+            atlas.x = atlas.getContext('2d');
+            atlas.width = g.width;
+            atlas.height = g.height;
+            atlas.x.drawImage(img, 0, 0);
+            var buf = new Buffer(atlas.toDataURL().replace(/^data:image\/\w+;base64,/, ''), 'base64');
+            fs.writeFileSync(`${exec}/export/img/t${i}.png`, buf);
+            registry[g.name] = {
+                atlas: `img/t${i}.png`,
+                frames: 0,
+                shape: getGraphicShape(g),
+                anchor: {
+                    x: g.axis[0] / g.width,
+                    y: g.axis[1] / g.height
+                }
+            };
+            res += `\n.add('img/t${i}.png')`;
+        }
+        res += '\n.load();';
+        registry = JSON.stringify(registry);
         return {
             res,
-            graphurls,
-            graphtotal
+            registry
         };
     };
 
@@ -241,9 +328,9 @@ ct.rooms.templates['${r.name}'] = {
     name: '${r.name}',
     width: ${r.width},
     height: ${r.height},
-    objects: ${JSON.stringify(objs, null, '    ')},
-    bgs: ${JSON.stringify(bgsCopy, null, '    ')},
-    tiles: ${JSON.stringify(tileLayers, null, '    ')},
+    objects: ${JSON.stringify(objs)},
+    bgs: ${JSON.stringify(bgsCopy)},
+    tiles: ${JSON.stringify(tileLayers)},
     onStep() {
         ${window.currentProject.rooms[k].onstep}
     },
@@ -312,10 +399,10 @@ ct.rooms.templates['${r.name}'] = {
         fs.ensureDirSync(exec + '/export/');
         fs.ensureDirSync(exec + '/export/img/');
         fs.ensureDirSync(exec + '/export/snd/');
-        var css = fs.readFileSync('./ct.release/ct.css', {
+        var css = fs.readFileSync(basePath + 'ct.release/ct.css', {
                 'encoding': 'utf8'
             }),
-            html = fs.readFileSync('./ct.release/index.html', {
+            html = fs.readFileSync(basePath + 'ct.release/index.html', {
                 'encoding': 'utf8'
             });
         var injects = {
@@ -351,6 +438,9 @@ ct.rooms.templates['${r.name}'] = {
         injectModules(injects);
         // console.log(injects);
 
+        /* Pixi.js */
+        fs.copyFileSync(basePath + 'ct.release/pixi.min.js', exec + '/export/pixi.min.js');
+
         /* главный котэ */
         var [startroom] = window.currentProject.rooms;
         for (let i = 0; i < window.currentProject.rooms.length; i++) {
@@ -359,17 +449,16 @@ ct.rooms.templates['${r.name}'] = {
                 break;
             }
         }
-        var buffer = fs.readFileSync('./ct.release/main.js', {
-            'encoding': 'utf8'
-        });
         /* global nw */
-        buffer = buffer
-        .replace('/*@fps@*/', window.currentProject.settings.fps)
-        .replace('/*@startwidth@*/', startroom.width)
-        .replace('/*@startheight@*/', startroom.height)
-        .replace('/*@libs@*/', JSON.stringify(ctlibs, null, '    '))
-        .replace('/*@ctversion@*/', nw.App.manifest.version)
-        .replace('/*@projectmeta@*/', JSON.stringify({
+        var buffer = fs.readFileSync(basePath + 'ct.release/main.js', {
+            'encoding': 'utf8'
+        })
+        .replace(/\/\*@startwidth@\*\//g, startroom.width)
+        .replace(/\/\*@startheight@\*\//g, startroom.height)
+        .replace(/\/\*@pixelatedrender@\*\//g, Boolean(window.currentProject.settings.pixelatedrender))
+        .replace(/\/\*@libs@\*\//g, JSON.stringify(ctlibs, null, '    '))
+        .replace(/\/\*@ctversion@\*\//g, nw.App.manifest.version)
+        .replace(/\/\*@projectmeta@\*\//g, JSON.stringify({
             name: window.currentProject.settings.title,
             author: window.currentProject.settings.author,
             site: window.currentProject.settings.site,
@@ -378,15 +467,8 @@ ct.rooms.templates['${r.name}'] = {
 
         buffer += '\n';
 
-        /* котэ-художник */
-        buffer += fs.readFileSync('./ct.release/draw.js', {
-            'encoding': 'utf8'
-        });
-
-        buffer += '\n';
-
         /* котомышь */
-        buffer += fs.readFileSync('./ct.release/mouse.js', {
+        buffer += fs.readFileSync(basePath + 'ct.release/mouse.js', {
             'encoding': 'utf8'
         });
 
@@ -394,11 +476,11 @@ ct.rooms.templates['${r.name}'] = {
 
         /* Модули */
         for (var lib in window.currentProject.libs) {
-            const data = fs.readJSONSync(path.join('./ct.libs/', lib, 'module.json'), {
+            const data = fs.readJSONSync(path.join(basePath + 'ct.libs/', lib, 'module.json'), {
                 'encoding': 'utf8'
             });
-            if (fs.pathExistsSync(path.join('./ct.libs/', lib, 'index.js'))) {
-                buffer += parseKeys(data, fs.readFileSync(path.join('./ct.libs/', lib, 'index.js'), {
+            if (fs.pathExistsSync(path.join(basePath + 'ct.libs/', lib, 'index.js'))) {
+                buffer += parseKeys(data, fs.readFileSync(path.join(basePath + 'ct.libs/', lib, 'index.js'), {
                     'encoding': 'utf8'
                 }), lib);
             }
@@ -413,20 +495,19 @@ ct.rooms.templates['${r.name}'] = {
         /* комнатный котэ */
         var roomsCode = stringifyRooms();
 
-        buffer += fs.readFileSync('./ct.release/rooms.js', {
+        buffer += fs.readFileSync(basePath + 'ct.release/rooms.js', {
             'encoding': 'utf8'
         })
         .replace('@startroom@', startroom.name)
         .replace('/*@rooms@*/', roomsCode)
         .replace('/*%switch%*/', injects.switch)
         .replace('/*%roomoncreate%*/', injects.roomoncreate)
-        .replace('/*@pixelatedrender@*/', window.currentProject.settings.pixelatedrender? 'ct.x.mozImageSmoothingEnabled = false; ct.x.imageSmoothingEnabled = false;' : '')
         .replace('/*%roomonleave%*/', injects.roomonleave);
         buffer += '\n';
 
         /* стильный котэ */
         var styles = stringifyStyles();
-        buffer += fs.readFileSync('./ct.release/styles.js', {
+        buffer += fs.readFileSync(basePath + 'ct.release/styles.js', {
             'encoding': 'utf8'
         })
         .replace('/*@styles@*/', styles)
@@ -436,13 +517,12 @@ ct.rooms.templates['${r.name}'] = {
         /* ресурсный котэ */
         var graphics = packImages();
 
-        buffer += fs.readFileSync('./ct.release/res.js', {
+        buffer += fs.readFileSync(basePath + 'ct.release/res.js', {
             'encoding': 'utf8'
         })
-        .replace('/*@graphsTotal@*/', graphics.graphtotal)
         .replace('/*@sndtotal@*/', window.currentProject.sounds.length)
-        .replace('/*@graphUrls@*/', graphics.graphurls)
         .replace('/*@res@*/', graphics.res)
+        .replace('/*@graphregistry@*/', graphics.registry)
         .replace('/*%resload%*/', injects.resload)
         .replace('/*%res%*/', injects.res);
         buffer += '\n';
@@ -464,7 +544,7 @@ ct.rooms.templates['${r.name}'] = {
             types += '};\n';
             types += `ct.types.list['${type.name}'] = [];\n`;
         }
-        buffer += fs.readFileSync('./ct.release/types.js', {
+        buffer += fs.readFileSync(basePath + 'ct.release/types.js', {
             'encoding': 'utf8'
         })
         .replace('/*%oncreate%*/', injects.oncreate)
@@ -475,7 +555,7 @@ ct.rooms.templates['${r.name}'] = {
 
         /* музыкальный котэ */
         var sounds = stringifySounds();
-        buffer += fs.readFileSync('./ct.release/sound.js', {
+        buffer += fs.readFileSync(basePath + 'ct.release/sound.js', {
             'encoding': 'utf8'
         })
         .replace('/*@sound@*/', sounds);
@@ -490,8 +570,8 @@ ct.rooms.templates['${r.name}'] = {
             fs.copySync(sessionStorage.projdir + '/include/', exec + '/export/');
         }
         for (const lib in window.currentProject.libs) {
-            if (fs.existsSync(`./ct.libs/${lib}/includes/`)) {
-                fs.copySync(`./ct.libs/${lib}/includes/`, exec + `/export/${lib}/`);
+            if (fs.existsSync(path.join(basePath, `./ct.libs/${lib}/includes/`))) {
+                fs.copySync(path.join(basePath, `./ct.libs/${lib}/includes/`), exec + `/export/${lib}/`);
             }
         }
 

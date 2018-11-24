@@ -33,7 +33,7 @@ ct.mouse = {
 };
 
 ct.mouse.listenermove = function(e) {
-    var rect = ct.HTMLCanvas.getBoundingClientRect();
+    var rect = ct.pixiApp.view.getBoundingClientRect();
     ct.mouse.rx = (e.clientX - rect.left) * ct.width / rect.width;
     ct.mouse.ry = (e.clientY - rect.top) * ct.height / rect.height;
     ct.mouse.x = ct.mouse.rx + ct.rooms.current.x;

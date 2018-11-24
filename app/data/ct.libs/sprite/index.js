@@ -1,28 +1,29 @@
 ct.sprite = function (source, name, frames) {
-    var gr = ct.res.graphs[source];
+    var gr = ct.res.registry[source];
     if (!gr) {
         console.error('[ct.sprite] Graphic asset does not exist: ' + source);
         return false;
     }
-    if (ct.res.graphs[name]) {
+    if (ct.res.registry[name]) {
         console.error('[ct.sprite] Graphic asset with this name already exists: ' + name);
         return false;
     }
     var spr = {
+        anchor: {
+            x: gr.anchor.x,
+            y: gr.anchor.y
+        },
         atlas: gr.atlas,
-        frames: frames.map(function (id) {
-            if (gr.frames[id]) {
-                return gr.frames[id];
+        frames: frames.length,
+        shape: gr.shape,
+        textures: frames.map(function (id) {
+            if (gr.textures[id]) {
+                return gr.textures[id];
             }
             console.error('[ct.sprite] Frame '+ id + ' does not exist in the asset: '+ source);
-            return gr.frames[0];
+            return gr.textures[0];
         }),
-        width: gr.width,
-        height: gr.height,
-        shape: gr.shape,
-        x: gr.x,
-        y: gr.y
     };
-    ct.res.graphs[name] = spr;
+    ct.res.registry[name] = spr;
     return true;
 };

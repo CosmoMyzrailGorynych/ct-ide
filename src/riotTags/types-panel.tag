@@ -17,7 +17,7 @@ types-panel.panel.view
         ul.cards.flexfix-body
             li(each="{type in (searchResults? searchResults : types)}" onclick="{openType(type)}" oncontextmenu="{onTypeContextMenu}")
                 span {type.name}
-                img(src="{type.graph !== -1 ? (glob.graphmap[type.graph].src.split('?')[0] + '_prev.png?' + getTypeGraphRevision(type)) : '/img/nograph.png'}")
+                img(src="{type.graph !== -1 ? (glob.graphmap[type.graph].src.split('?')[0] + '_prev.png?' + getTypeGraphRevision(type)) : '/data/img/nograph.png'}")
     type-editor(if="{editingType}" type="{editedType}")
     script.
         this.namespace = 'types';
@@ -93,7 +93,7 @@ types-panel.panel.view
                 depth: 0,
                 oncreate: '',
                 onstep: 'this.move();',
-                ondraw: 'this.draw();',
+                ondraw: '',
                 ondestroy: '',
                 uid: id,
                 graph: -1

@@ -116,7 +116,7 @@ graphics-panel.panel.view
                 imgWidth: 32,
                 imgHeight: 32,
             }
-            img.src = '/img/unknown.png';
+            img.src = '/data/img/unknown.png';
         };
         this.on('mount', () => {
             this.updateList();

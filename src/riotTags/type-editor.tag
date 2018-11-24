@@ -1,7 +1,7 @@
 type-editor.panel.view.flexrow
     .c3.tall
         #typegraph.panel(onclick="{changeSprite}")
-            img.ohchangeme(src="{type.graph === -1? '/img/nograph.png' : (glob.graphmap[type.graph].src.split('?')[0] + '_prev@2.png?' + getTypeGraphRevision(type)) + getTypeGraphRevision(type)}")
+            img.ohchangeme(src="{type.graph === -1? '/data/img/nograph.png' : (glob.graphmap[type.graph].src.split('?')[0] + '_prev@2.png?' + getTypeGraphRevision(type)) + getTypeGraphRevision(type)}")
             div {voc.change}
         b {voc.name}
         input#typename.wide(type="text" onchange="{wire('this.type.name')}" value="{type.name}")

@@ -33,20 +33,21 @@ desktop\.ini
 *.png~
 
 # Generated files
-app/bundle.js
-app/bundle.css
+app/data/bundle.js
+app/data/bundle.css
 app/index.html
 app/preview.html
 app/empty.html
-app/themeDay.css
-app/themeNight.css
+app/data/themeDay.css
+app/data/themeNight.css
 app/temp
 app/exportDesktop
 /temp
-app/fonts/style/.css
+app/data/fonts/style/.css
 builds
 build
 cache
+/app/data/docs
 
 # tests
 error_screenshots/
@@ -54,7 +55,6 @@ reports/
 
 # ct specific
 /export
-/app/docs
 app/zipexport
 app/*.ict.zip
 app/export.zip

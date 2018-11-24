@@ -1,5 +1,6 @@
 (window => {
     var ctjsCoreCompletions = [
+        'ct.pixiApp',
         'ct.libs',
         'ct.speed',
         'ct.stack',
@@ -55,9 +56,6 @@
         'ct.rooms.make.apply(room)',
         'ct.rooms.clear()',
         'ct.rooms.switch(\'NewRoom\')',
-        'ct.styles.new(\'Name\', fill, stroke, text, shadow)',
-        'ct.styles.set(\'Style\')',
-        'ct.styles.reset()',
         'ct.res.fetchImage(url, function(error, image) {})',
         'ct.res.makeSprite(\'SpriteName\', url, opts)',
         'ct.sound.spawn(\'Name\', options)',
@@ -70,19 +68,13 @@
         'ct.room.follow',
         'ct.room.y',
         'ct.room.x',
-        'this.draw()',
-        'this.move()',
-        'ct.draw.circle(x, y, radius, outline)',
-        'ct.draw.line(x1, y1, x2, y2)',
-        'ct.draw.image(\'Asset\', frame, x, y)',
-        'ct.draw.imgext(\'Asset\', frame, x, y, hs, vs, rot, alpha)',
-        'ct.draw.copy(copy, x, y)',
-        'ct.draw.text(\'Text\', x, y, outline)',
-        'ct.draw.rectangle(x, y, w, h, outline)',
-        'ct.draw.rect(x1, y1, x2, y2, outline)',
-        'ct.draw.fix(x, y)',
-        'ct.draw.unfix()',
-        'ct.draw.polygon(points, close, outline)'
+        'this.speed',
+        'this.direction',
+        'this.gravity',
+        'this.gravityDir',
+        'this.hspeed',
+        'this.vspeed',
+        'this.move()'
     ];
     var prepareCompletions = array => array.map(function(word) {
         return {
