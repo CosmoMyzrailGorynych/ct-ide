@@ -182,6 +182,11 @@ ct.loop = function(delta) {
             }
         }
     }
+    for (const cont of ct.stage.children) {
+        cont.children.sort((a, b) => {
+            return a.depth - b.depth;
+        })
+    }
     // copies
     for (let i = 0, li = ct.stack.length; i < li; i++) {
         if (ct.stack[i].kill) {
