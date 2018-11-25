@@ -211,50 +211,41 @@
     var stringifyStyles = () => {
         var styles = '';
         for (const styl in window.currentProject.styles) {
-            var o = {},
-                s = window.currentProject.styles[styl];
+            var s = window.currentProject.styles[styl],
+            o = {
+                fontFamily: s.font.family,
+                fontSize: s.font.size,
+                fontStyle: s.font.italic? 'italic' : 'normal',
+                fontWeight: s.font.weight,
+                align: s.font.halign
+            };
             if (s.fill) {
-                o.fill = {};
                 if (Number(s.fill.type) === 0) {
-                    o.fill.type = 'solid';
-                    o.fill.color = s.fill.color;
-                } else if (Number(s.fill.type) === 2) {
-                    o.fill.type = 'pattern';
-                    o.fill.name = s.fill.patId;
+                    o.fill = s.fill.color;
                 } else if (Number(s.fill.type) === 1) {
-                    o.fill.colors = [{
-                        pos: 0,
-                        color: s.fill.color1
-                    }, {
-                        pos: 1,
-                        color: s.fill.color2
-                    }];
+                    o.fill = [s.fill.color1, s.fill.color2];
                     if (Number(s.fill.gradtype) === 1) {
-                        o.fill.type = 'grad';
-                        o.fill.x1 = o.fill.y1 = o.fill.x2 = 0;
-                        o.fill.y2 = s.fill.gradsize;
+                        o.fillGradientType = 0;
                     } else if (Number(s.fill.gradtype) === 2) {
-                        o.fill.type = 'grad';
-                        o.fill.x1 = o.fill.y1 = o.fill.y2 = 0;
-                        o.fill.x2 = s.fill.gradsize;
-                    } else {
-                        o.fill.type = 'radgrad';
-                        o.fill.r = s.fill.gradsize;
+                        o.fillGradientType = 1;
                     }
                 }
-            } else {
-                o.fill = false;
             }
-            o.border = s.stroke;
-            o.text = s.font;
-            o.shadow = s.shadow;
+            if (s.stroke) {
+                o.strokeThickness = s.stroke.weight;
+                o.stroke = s.stroke.color;
+            }
+            if (s.shadow) {
+                o.dropShadow = true;
+                o.dropShadowBlur = s.shadow.blur;
+                o.dropShadowColor = s.shadow.color;
+                o.dropShadowAngle = Math.atan2(s.shadow.y, s.shadow.x);
+                o.dropShadowDistance = Math.hypot(s.shadow.x, s.shadow.y);
+            }
             styles += `
 ct.styles.new(
     "${s.name}",
-    ${JSON.stringify(o.fill, null, '    ')},
-    ${JSON.stringify(o.border, null, '    ')},
-    ${JSON.stringify(o.text, null, '    ')},
-    ${JSON.stringify(o.shadow, null, '    ')});
+    ${JSON.stringify(o, null, '    ')});
 `;
         }
         return styles;
