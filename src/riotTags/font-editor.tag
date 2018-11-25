@@ -20,7 +20,7 @@ font-editor.panel.view
                 span {vocGlob.apply}
     .right.tall(style="font-weight: {fontobj.weight}; font-style: {fontobj.italic? 'italic' : 'normal'}")
         each val in [8, 9, 10, 11, 12, 14, 16, 21, 24, 32, 48, 60, 72]
-            p(style=`font-size: ${val}px; line-height: ${val}px; font-family: {fontobj.typefaceName};` data-size=val) The quick blue cat jumps over the lazy frog. 0123456789
+            p(style=`font-size: ${val}px; line-height: ${val}px; font-family: {fontobj.typefaceName};` data-size=val) A quick blue cat jumps over the lazy frog. 0123456789
     script.
         this.namespace = 'fontview';
         this.mixin(window.riotVoc);
