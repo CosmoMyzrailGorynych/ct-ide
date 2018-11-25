@@ -2,11 +2,11 @@
 
 const ct = {
     libs: [/*@libs@*/][0],
-    speed: [/*@fps@*/][0],
+    speed: 60,
     types: {},
     snd: {},
     stack: [],
-    fps: 0,
+    fps: 60,
     dt: 0,
     version: '/*@ctversion@*/',
     meta: [/*@projectmeta@*/][0],
