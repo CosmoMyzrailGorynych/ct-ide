@@ -102,7 +102,6 @@ style-editor.panel.view
                 #stylestrokeinner(if="{styleobj.stroke}")
                     b {voc.strokecolor}
                     color-input(onchange="{wire('this.styleobj.stroke.color', true)}" color="{styleobj.stroke.color}")
-                    br
                     b {voc.strokeweight}
                     br
                     input#strokeweight(type="number" value="{styleobj.stroke.weight}" onchange="{wire('this.styleobj.stroke.weight')}" oninput="{wire('this.styleobj.stroke.weight')}")
@@ -229,6 +228,7 @@ style-editor.panel.view
         };
         // Рендер превью в редакторе
         this.refreshStyleGraphic = e => {
+            this.pixiStyle.reset();
             window.___extend(this.pixiStyle, window.styleToTextStyle(this.styleobj));
             for (const label of this.labels) {
                 label.text = label.text;
