@@ -3,7 +3,7 @@ color-input
         span(style="color: {dark? '#fff' : '#000'};") {value}
     color-picker(
         ref="colorPicker" if="{opened}"
-        color="{value}" onapply="{applyColor}" oncancel="{cancelColor}"
+        color="{value}" onapply="{applyColor}" onchanged="{changeColor}" oncancel="{cancelColor}"
     )
     script.
         this.opened = false;
@@ -11,11 +11,23 @@ color-input
         this.openPicker = e => {
             this.opened = !this.opened;
         };
+        this.changeColor = color => {
+            this.value = color;
+            this.dark = this.refs.colorPicker.dark;
+            if (this.opts.onchange) {
+                this.opts.onchange({
+                    target: this
+                }, this.value);
+            }
+            this.update();
+        };
         this.applyColor = color => {
             this.value = color;
             this.dark = this.refs.colorPicker.dark;
             if (this.opts.onapply) {
-                this.opts.onapply(value);
+                this.opts.onapply({
+                    target: this
+                }, this.value);
             }
             if (this.opts.onchange) {
                 this.opts.onchange({
