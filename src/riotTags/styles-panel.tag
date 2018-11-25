@@ -20,7 +20,8 @@ styles-panel.flexfix.tall.fifty
         onclick="{openStyle(style)}" 
         oncontextmenu="{onStyleContextMenu(style)}")
             span {style.name}
-            img(src="file://{window.sessionStorage.projdir + '/img/' + style.origname}_prev.png?{style.lastmod}")
+            .aStyleIcon
+                img(src="file://{window.sessionStorage.projdir + '/img/' + style.origname}_prev.png?{style.lastmod}")
     style-editor(if="{editingStyle}" styleobj="{editedStyle}")
     script.
         this.editingStyle = false;

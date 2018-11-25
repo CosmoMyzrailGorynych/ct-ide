@@ -440,8 +440,8 @@
     {
       "name": "Robot",
       "depth": 0,
-      "oncreate": "this.jumpSpeed = -9;\nthis.gravity = 0.5;\n\nthis.hspd = 0; // Horizontal speed\nthis.vspd = 0; // Vertical speed\n\nct.room.follow = this;\nct.room.borderx = 450;\nct.room.bordery = 200;\n\nthis.animationSpeed = 0.2;\nthis.tint = 0x00FFFF;\n\n// Play 8 frames per second",
-      "onstep": "this.speed = 4 * ct.delta; // Max horizontal speed\n\nif (ct.place.occupied(this, this.x, this.y, 'Deadly')) {\n    this.x = this.savedX;\n    this.y = this.savedY;\n    this.hspd = 0;\n    this.vspd = 0;\n    ct.room.lives --;\n    if (ct.room.lives <= 0) {\n        ct.rooms.switch(ct.room.name);\n    }\n    return;\n}\nif (ct.keyboard.down['A']) {\n    // If the A key on keyboard is down, then move to left\n    this.hspd = -this.speed;\n    // Set the walking animation and transform the robot to the left\n    if (this.graph !== 'Robot_Walking') {\n        this.graph = 'Robot_Walking';\n        this.play();\n    }\n    this.scale.x = -1;\n} else if (ct.keyboard.down['D']) {\n    // If the D key on keyboard is down, then move to right\n    this.hspd = this.speed;\n    // Set the walking animation and transform the robot to the right\n    if (this.graph !== 'Robot_Walking') {\n        this.graph = 'Robot_Walking';\n        this.play();\n    }\n    this.scale.x = 1;\n} else {\n    // Don't move horizontally if no input\n    this.hspd = 0;\n    this.graph = 'Robot_Idle';\n}\n\n// If there is ground underneath the Robot…\nif (ct.place.occupied(this, this.x, this.y + 1, 'Solid')) {\n    // …and the W key or the spacebar is down…\n    if (ct.keyboard.down['W'] || ct.keyboard.down['space']) {\n        // …then jump!\n        this.vspd = this.jumpSpeed;\n        ct.types.copy('FunnyText', this.x, this.y - 48);\n    } else {\n        // Reset our vspeed. We don't want to be buried underground!\n        this.vspd = 0;\n    }\n} else {\n    // If there is no ground  \n    this.vspd += this.gravity;\n    // Set jumping animation!\n    this.graph = 'Robot_Jump';\n}\n\n// Move by horizontal axis, pixel by pixel\nfor (var i = 0; i < Math.abs(this.hspd); i++) {\n    if (ct.place.free(this, this.x + Math.sign(this.hspd), this.y, 'Solid')) {\n        this.x += Math.sign(this.hspd);\n    } else {\n        break;\n    }\n}\n// Do the same for vertical speed\nfor (var i = 0; i < Math.abs(this.vspd); i++) {\n    if (ct.place.free(this, this.x, this.y + Math.sign(this.vspd), 'Solid')) {\n        this.y += Math.sign(this.vspd);\n    } else {\n        break;\n    }\n}",
+      "oncreate": "this.jumpSpeed = -10;\nthis.gravity = 0.5;\n\nthis.hspd = 0; // Horizontal speed\nthis.vspd = 0; // Vertical speed\n\nct.room.follow = this;\nct.room.borderx = 450;\nct.room.bordery = 200;\n\nthis.savedX = this.x;\nthis.savedY = this.y;\n\nthis.animationSpeed = 0.2;\n",
+      "onstep": "this.speed = 4 * ct.delta; // Max horizontal speed\n\nif (ct.place.occupied(this, this.x, this.y, 'Deadly')) {\n    this.x = this.savedX;\n    this.y = this.savedY;\n    this.hspd = 0;\n    this.vspd = 0;\n    ct.room.lives --;\n    if (ct.room.lives <= 0) {\n        ct.rooms.switch(ct.room.name);\n    }\n    return;\n}\nif (ct.keyboard.down['A']) {\n    // If the A key on keyboard is down, then move to left\n    this.hspd = -this.speed;\n    // Set the walking animation and transform the robot to the left\n    if (this.graph !== 'Robot_Walking') {\n        this.graph = 'Robot_Walking';\n        this.play();\n    }\n    this.scale.x = -1;\n} else if (ct.keyboard.down['D']) {\n    // If the D key on keyboard is down, then move to right\n    this.hspd = this.speed;\n    // Set the walking animation and transform the robot to the right\n    if (this.graph !== 'Robot_Walking') {\n        this.graph = 'Robot_Walking';\n        this.play();\n    }\n    this.scale.x = 1;\n} else {\n    // Don't move horizontally if no input\n    this.hspd = 0;\n    this.graph = 'Robot_Idle';\n}\n\n// If there is ground underneath the Robot…\nif (ct.place.occupied(this, this.x, this.y + 1, 'Solid')) {\n    // …and the W key or the spacebar is down…\n    if (ct.keyboard.down['W'] || ct.keyboard.down['space']) {\n        // …then jump!\n        this.vspd = this.jumpSpeed;\n        ct.types.copy('FunnyText', this.x, this.y - 48);\n    } else {\n        // Reset our vspeed. We don't want to be buried underground!\n        this.vspd = 0;\n    }\n} else {\n    // If there is no ground  \n    this.vspd += this.gravity * ct.delta;\n    // Set jumping animation!\n    this.graph = 'Robot_Jump';\n}\n\n// Move by horizontal axis, pixel by pixel\nfor (var i = 0; i < Math.abs(this.hspd); i++) {\n    if (ct.place.free(this, this.x + Math.sign(this.hspd), this.y, 'Solid')) {\n        this.x += Math.sign(this.hspd);\n    } else {\n        break;\n    }\n}\n// Do the same for vertical speed\nfor (var i = 0; i < Math.abs(this.vspd); i++) {\n    if (ct.place.free(this, this.x, this.y + Math.sign(this.vspd), 'Solid')) {\n        this.y += Math.sign(this.vspd);\n    } else {\n        break;\n    }\n}",
       "ondraw": "",
       "ondestroy": "",
       "uid": "2d07d12b-9798-418c-a420-3a1ef4dc3ae2",
@@ -611,17 +611,30 @@
       "origname": "s1ceaedd3eb21",
       "font": {
         "family": "sans-serif",
-        "size": 21,
-        "weight": "900",
+        "size": 24,
+        "weight": "600",
         "italic": false,
         "valign": "middle",
-        "halign": "left"
+        "halign": "left",
+        "wrap": true,
+        "wrapPosition": 420,
+        "lineHeight": 32
       },
       "fill": {
         "type": "0",
-        "color": "#33E27D"
+        "color": "#00A847"
       },
-      "lastmod": 1536494714830
+      "lastmod": 1543158125190,
+      "stroke": {
+        "color": "#FFFFFF",
+        "weight": 5
+      },
+      "shadow": {
+        "color": "rgba(0,0,0,0.19)",
+        "x": 2,
+        "y": 2,
+        "blur": 1
+      }
     },
     {
       "name": "HeartCounter",
@@ -629,8 +642,8 @@
       "origname": "s1195aa80b3bc",
       "font": {
         "family": "sans-serif",
-        "size": 21,
-        "weight": "900",
+        "size": 24,
+        "weight": "600",
         "italic": false,
         "valign": "middle",
         "halign": "left"
@@ -639,7 +652,11 @@
         "type": "0",
         "color": "#E85017"
       },
-      "lastmod": 1536499244848
+      "lastmod": 1536499244848,
+      "stroke": {
+        "color": "#FFFFFF",
+        "weight": 5
+      }
     }
   ],
   "rooms": [
