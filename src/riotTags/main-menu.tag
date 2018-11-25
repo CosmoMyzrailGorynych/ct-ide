@@ -233,7 +233,7 @@ main-menu.flexcol
         }));
         this.switchTheme = theme => {
             localStorage.UItheme = theme;
-            document.getElementById('themeCSS').href = `./theme${theme}.css`;
+            document.getElementById('themeCSS').href = `./data/theme${theme}.css`;
             var acers = document.getElementsByClassName('acer');
             for (var acer of acers) {
                 acer.aceEditor.setTheme('ace/theme/' + (theme === 'Night'? 'ambiance': 'tomorrow'));
