@@ -545,7 +545,7 @@
       "ondestroy": "",
       "uid": "54f82143-5c80-4566-8bc9-8c240c1d97a1",
       "graph": "f39895d1-731d-4487-9d01-18841158729c",
-      "lastmod": 1542091709217
+      "lastmod": 1543160213242
     },
     {
       "name": "Heart",
@@ -567,29 +567,29 @@
       "ondestroy": "",
       "uid": "1ae52dda-689d-4780-97ce-c87886fb581a",
       "graph": "3f19a8ef-4dba-4550-b516-0bcaca131ba6",
-      "lastmod": 1542171471009
+      "lastmod": 1543160784996
     },
     {
       "name": "CrystalsWidget",
       "depth": 0,
-      "oncreate": "var style = new PIXI.TextStyle({\n    fontSize: 24,\n    fontWeight: 'bold',\n    fill: '#00cc33',\n    stroke: '#ffffff',\n    strokeThickness: 5\n});\n\nthis.text = new PIXI.Text(`0 / ${ct.room.crystalsTotal}`, style);\nthis.text.x = 32;\nthis.text.anchor.y = 0.5;\n\nthis.addChild(this.text);",
+      "oncreate": "this.text = new PIXI.Text(`0 / ${ct.room.crystalsTotal}`, ct.styles.get('CrystalCounter'));\nthis.text.x = 32;\nthis.text.anchor.y = 0.5;\n\nthis.addChild(this.text);",
       "onstep": "",
       "ondraw": "this.x = ct.room.x + 24;\nthis.y = ct.room.y + 24;\n\nthis.text.text = `${ct.room.crystals} / ${ct.room.crystalsTotal}`;",
       "ondestroy": "",
       "uid": "d582eca9-7676-4764-8aa6-9b10895a9b73",
       "graph": "f39895d1-731d-4487-9d01-18841158729c",
-      "lastmod": 1542091987020
+      "lastmod": 1543160399377
     },
     {
       "name": "HeartsWidget",
       "depth": 0,
-      "oncreate": "var style = new PIXI.TextStyle({\n    fontSize: 24,\n    fontWeight: 'bold',\n    fill: '#cc3300',\n    stroke: '#ffffff',\n    strokeThickness: 5\n});\n\nthis.text = new PIXI.Text(ct.room.lives, style);\nthis.text.x = -32;\nthis.text.anchor.y = 0.5;\nthis.text.anchor.x = 1;\n\nthis.addChild(this.text);",
+      "oncreate": "this.text = new PIXI.Text(ct.room.lives, ct.styles.get('HeartCounter'));\nthis.text.x = -32;\nthis.text.anchor.y = 0.5;\nthis.text.anchor.x = 1;\n\nthis.addChild(this.text);",
       "onstep": "",
       "ondraw": "this.x = ct.room.x + ct.width - 24;\nthis.y = ct.room.y + 24;\n\nthis.text.text = ct.room.lives;",
       "ondestroy": "",
       "uid": "3dc14b8e-592f-45a3-9785-52da1b6dbeb8",
       "graph": "334d338b-4fe4-4168-901e-2315494d37d4",
-      "lastmod": 1542282781565
+      "lastmod": 1543160689028
     },
     {
       "name": "FunnyText",
@@ -616,7 +616,7 @@
         "italic": false,
         "valign": "middle",
         "halign": "left",
-        "wrap": true,
+        "wrap": false,
         "wrapPosition": 420,
         "lineHeight": 32
       },
@@ -624,16 +624,10 @@
         "type": "0",
         "color": "#00A847"
       },
-      "lastmod": 1543158125190,
+      "lastmod": 1543160205161,
       "stroke": {
         "color": "#FFFFFF",
         "weight": 5
-      },
-      "shadow": {
-        "color": "rgba(0,0,0,0.19)",
-        "x": 2,
-        "y": 2,
-        "blur": 1
       }
     },
     {
