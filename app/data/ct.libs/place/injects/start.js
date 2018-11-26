@@ -1,4 +1,3 @@
-
 ct.place.ctypeCollections = {};
 Object.defineProperty(ct.types.Copy.prototype, 'ctype', {
     set: function(value) {
