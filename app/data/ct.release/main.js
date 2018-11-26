@@ -172,6 +172,20 @@ ct.loop = function(delta) {
     ct.rooms.beforeStep.apply(ct.room);
     ct.room.onStep.apply(ct.room); 
     ct.rooms.afterStep.apply(ct.room);
+    // copies
+    for (let i = 0, li = ct.stack.length; i < li;) {
+        if (ct.stack[i].kill) {
+            ct.types.onDestroy.apply(ct.stack[i]);
+            ct.stack[i].onDestroy.apply(ct.stack[i]);
+            ct.stack[i].destroy({
+                children: true
+            });
+            ct.stack.splice(i, 1);
+            li--;
+        } else {
+            i++;
+        }
+    }
 
     // ct.types.list[type: String]
     for (const i in ct.types.list) {
@@ -182,31 +196,12 @@ ct.loop = function(delta) {
             }
         }
     }
+
     for (const cont of ct.stage.children) {
         cont.children.sort((a, b) => {
-            return a.depth - b.depth;
+                return ((a.depth || 0) - (b.depth || 0)) || ((a.uid || 0) - (b.uid || 0)) || 0;
         })
     }
-    // copies
-    for (let i = 0, li = ct.stack.length; i < li; i++) {
-        if (ct.stack[i].kill) {
-            ct.types.onDestroy.apply(ct.stack[i]);
-            ct.stack[i].onDestroy.apply(ct.stack[i]);
-            ct.stack[i].destroy({
-                children: true
-            });
-            ct.stack.splice(i, 1);
-            i--; li--;
-        }
-    }
-    /*
-    ct.stack.sort(function(a, b) {
-        if (a.depth !== b.depth) {
-            return a.depth - b.depth;
-        }
-        return a.uid - b.uid;
-    });
-    */
 
     if (ct.room.follow) {
         if (ct.room.follow.kill) {
