@@ -55,6 +55,12 @@ module.exports = {
                 children: [
                     ['making-mods', 'Making your own mods']
                 ]
+            }, {
+                title: 'Troubleshooting',
+                collapsable: false,
+                children: [
+                    ['troubleshooting-teared-backgrounds', 'Background splits into squares!']
+                ]
             }
         ],
         lastUpdated: 'Last Updated'
