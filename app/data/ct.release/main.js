@@ -37,7 +37,7 @@ ct.pixiApp = new PIXI.Application({
 });
 ct.stage = ct.pixiApp.stage;
 ct.pixiApp.renderer.autoResize = false;
-document.body.appendChild(ct.pixiApp.view);
+document.getElementById('ct').appendChild(ct.pixiApp.view);
 
 ct.u = {
     ldx(l, d) {

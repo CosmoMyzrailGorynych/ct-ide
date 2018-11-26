@@ -33,8 +33,11 @@
             }
             oldWidth = room.width;
             oldHeight = room.height;
-            ct.width = room.width = width;
-            ct.height = room.height = height;
+            ct.pixiApp.renderer.resize(width, height);
+            for (const bg of ct.types.list.BACKGROUND) {
+                bg.width = width;
+                bg.height = height;
+            }
             if (doManageViewport) {
                 manageViewport(room);
             }
