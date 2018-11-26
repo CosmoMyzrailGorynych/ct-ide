@@ -24,6 +24,7 @@
             this.speed = this.direction = this.gravity = this.hspeed = this.vspeed = 0;
             this.gravityDir = 270;
             this.depth = 0;
+            this.uid = ++ct.room.uid;
             if (type) {
                 ct.u.ext(this, {
                     type,
@@ -88,6 +89,13 @@
             var speed = this.speed;
             this.hspeed = speed * Math.cos(value*Math.PI/-180);
             this.vspeed = speed * Math.sin(value*Math.PI/-180);
+            return value;
+        }
+        get rotation() {
+            return this.transform.rotation / Math.PI * -180;
+        }
+        set rotation(value) {
+            this.transform.rotation = value * Math.PI / -180;
             return value;
         }
         get graph() {
