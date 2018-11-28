@@ -124,7 +124,7 @@
       "top": 69,
       "bottom": 0,
       "uid": "fa8a3c12-0e43-47b0-a27e-e9d9814f8bf5",
-      "lastmod": 1536487993491
+      "lastmod": 1543390370590
     },
     {
       "name": "Robot_Idle",
@@ -266,7 +266,7 @@
       "top": 0,
       "bottom": 64,
       "uid": "9a6d05c0-477d-47f6-85fe-6c0c8d813df3",
-      "lastmod": 1536478248310
+      "lastmod": 1543390367720
     },
     {
       "name": "Checkpoint",
@@ -446,7 +446,7 @@
       "ondestroy": "",
       "uid": "2d07d12b-9798-418c-a420-3a1ef4dc3ae2",
       "graph": "6deb1d77-24d2-48d6-82ec-045dcbd9eea5",
-      "lastmod": 1542283121375
+      "lastmod": 1543390939552
     },
     {
       "name": "Rocks",
@@ -562,12 +562,12 @@
       "name": "Platform",
       "depth": 0,
       "oncreate": "this.speed = 2;\nthis.ctype = 'Solid';",
-      "onstep": "var robot = ct.place.meet(this, this.x, this.y, 'Robot');\nif (robot) {\n    this.ctype = undefined;\n} else {\n    this.ctype = 'Solid';\n    robot = ct.place.meet(this, this.x, this.y - 1, 'Robot');\n    if (robot) {\n        robot.x += this.speed * ct.delta;\n    }\n}\n\nthis.x += this.speed * ct.delta;\nif (ct.place.occupied(this, this.x + this.speed * ct.delta, this.y, 'Solid')) {\n    // Flip the speed direction\n    this.speed *= -1;\n}",
+      "onstep": "var robot = ct.place.meet(this, this.x, this.y, 'Robot');\nif (robot) {\n    this.ctype = undefined;\n} else {\n    this.ctype = 'Solid';\n    robot = ct.place.meet(this, this.x, this.y - 1, 'Robot');\n    if (robot) {\n        robot.x += ct.u.ldx(this.speed, this.direction);\n    }\n}\n\nif (ct.place.occupied(this, this.x + this.speed * ct.delta, this.y, 'Solid')) {\n    // Flip direction\n    this.direction += 180;\n}\nthis.move();",
       "ondraw": "",
       "ondestroy": "",
       "uid": "1ae52dda-689d-4780-97ce-c87886fb581a",
       "graph": "3f19a8ef-4dba-4550-b516-0bcaca131ba6",
-      "lastmod": 1543160784996
+      "lastmod": 1543393536533
     },
     {
       "name": "CrystalsWidget",
@@ -594,13 +594,13 @@
     {
       "name": "FunnyText",
       "depth": 0,
-      "oncreate": "var style = new PIXI.TextStyle({\n    fontSize: 24,\n    fontWeight: 'bold',\n    fill: '#0033cc',\n    stroke: '#ffffff',\n    strokeThickness: 5\n});\n\nthis.text = new PIXI.Text(ct.random.dice('Hell yeah!', 'WebGL!', 'Oh hell yeah!', 'No teared backgrounds!'), style);\nthis.text.pivot.y = 1;\nthis.text.alpha = 0;\nthis.addChild(this.text);\nct.tween.add({\n    obj: this.text,\n    fields: {\n        y: -16,\n        alpha: 1\n    },\n    duration: 350\n})\n.then(() => ct.u.wait(1000))\n.then(() => ct.tween.add({\n    obj: this.text,\n    fields: {\n        y: -32,\n        alpha: 0\n    },\n    duration: 350\n}))\n.then(() => this.kill = true);",
+      "oncreate": "this.text = new PIXI.Text(\n    ct.random.dice('Hell yeah!', 'WebGL!', 'Oh hell yeah!', 'No teared backgrounds!'),\n    ct.styles.get('CrystalCounter'));\nthis.text.pivot.y = 1;\nthis.text.alpha = 0;\nthis.addChild(this.text);\nct.tween.add({\n    obj: this.text,\n    fields: {\n        y: -16,\n        alpha: 1\n    },\n    duration: 350\n})\n.then(() => ct.u.wait(1000))\n.then(() => ct.tween.add({\n    obj: this.text,\n    fields: {\n        y: -32,\n        alpha: 0\n    },\n    duration: 350\n}))\n.then(() => this.kill = true);",
       "onstep": "this.move();",
       "ondraw": "",
       "ondestroy": "",
       "uid": "3ac516f6-67b8-42b6-89cc-fac01922685f",
       "graph": -1,
-      "lastmod": 1542283138150
+      "lastmod": 1543390168219
     }
   ],
   "sounds": [],
@@ -624,7 +624,7 @@
         "type": "0",
         "color": "#00A847"
       },
-      "lastmod": 1543160205161,
+      "lastmod": 1543390063846,
       "stroke": {
         "color": "#FFFFFF",
         "weight": 5

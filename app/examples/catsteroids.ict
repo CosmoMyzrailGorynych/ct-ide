@@ -11,7 +11,10 @@
     },
     "random": {},
     "keyboard": {},
-    "sound.howler": {}
+    "sound.howler": {},
+    "fittoscreen": {
+      "scaleOnly": true
+    }
   },
   "graphs": [
     {
@@ -756,172 +759,189 @@
     {
       "name": "Player_Blue",
       "depth": 5,
-      "oncreate": "// Set movement friction, acceleration and speed limit\nthis.friction = 0.5;\nthis.flyspeed = 5;\nthis.maxspeed = 15;\n\n// This will help us to shoot continuously\nthis.shootTimer = 0;\n\nthis.lives = 3;\nthis.invulnerable = -1;\n\nthis.weapon = 'simple';",
-      "onstep": "/* Movement \n   Add acceleration when arrows are being pressed\n*/\n\nif (ct.keyboard.down['down']) {\n    ct.types.addSpeed(this, this.flyspeed, 270);\n}\nif (ct.keyboard.down['up']) {\n    ct.types.addSpeed(this, this.flyspeed, 90);\n}\nif (ct.keyboard.down['left']) {\n    ct.types.addSpeed(this, this.flyspeed, 180);\n}\nif (ct.keyboard.down['right']) {\n    ct.types.addSpeed(this, this.flyspeed, 0);\n}\n\n// Limit speed\nthis.spd = Math.max(Math.min(this.spd, this.spd - this.friction, this.maxspeed), 0);\nct.types.move(this);\n\n// Check if the ship is out of the room\nif (this.x < 0 || this.x > ct.room.width ||\n    this.y < 0 || this.y > ct.room.height) {\n    // Return back if the ship is outside the room\n    this.spd = 0;\n    this.x = Math.max(Math.min(this.x, ct.room.width), 0);\n    this.y = Math.max(Math.min(this.y, ct.room.height), 0);\n}\n\n/* Shooting */\n\nthis.shootTimer++;\n\n// If the spacebar is pressed and at least a quarter of second has passed, \n// create a new laser bullet depending on a weapon type\nif (ct.keyboard.down['space']) {\n    if (this.weapon === 'simple' && this.shootTimer > ct.speed * 0.25) {\n        ct.types.copy('Laser_Simple_Blue', this.x, this.y);\n        ct.sound.spawn('Laser_Small');\n        // Reset shooting delay\n        this.shootTimer = 0;\n    }\n    if (this.weapon === 'spread' && this.shootTimer > ct.speed * 0.25) {\n        // create three laser bolts\n        ct.types.copy('Laser_Simple_Blue', this.x-40, this.y);\n        ct.types.copy('Laser_Simple_Blue', this.x, this.y - 20);\n        ct.types.copy('Laser_Simple_Blue', this.x+40, this.y);\n        ct.sound.spawn('Laser_Small');\n        // Reset shooting delay\n        this.shootTimer = 0;\n    }\n    if (this.weapon === 'bolt' && this.shootTimer > ct.speed * 1.5) {\n        // slow, but powerful\n        ct.types.copy('Laser_Bolt_Blue', this.x, this.y);\n        ct.sound.spawn('Laser_Medium');\n        // Reset shooting delay\n        this.shootTimer = 0;\n    }\n    if (this.weapon === 'cross' && this.shootTimer > ct.speed * 0.15) {\n        // this one shoots much faster\n        ct.types.copy('Laser_Cross_Blue', this.x, this.y);\n        ct.sound.spawn('Laser_Medium');\n        // Reset shooting delay\n        this.shootTimer = 0;\n    }\n}\n\n/* Damage on collision */\nvar obstacle = ct.place.occupied(this, this.x, this.y, 'Enemy') \n            || ct.place.occupied(this, this.x, this.y, 'EnemyBullet');\nif (obstacle && this.invulnerable < 0) {\n    this.lives--;\n    obstacle.kill = true;\n    \n    // Are we completely, like, dead?\n    if (this.lives < 0) {\n        this.kill = true;\n    } else {\n        // Set invulnerability for 3 seconds\n        this.invulnerable = ct.speed * 3;\n    }\n}\n// Deplete invulnerability\nthis.invulnerable --;",
-      "ondraw": "// If we are invulnerable, alternate between full and partial opacity each 10 frames\n// `this.invulnerable % 20` means 'get a fraction remainder when dividing by 20'\n// `statement? 0.5 : 1` means that we pick 0.5 if the statement is true, or 1 otherwise\nif (this.invulnerable > 0) {\n    ct.x.globalAlpha = this.invulnerable % 20 > 10? 0.5 : 1;\n}\nct.draw(this);\n\n// Always return to a previous drawing state\nct.x.globalAlpha = 1;\n\n// Draw small ship icons in a top-right corner\nfor (var i = 0; i < this.lives; i++) {\n    ct.draw.imgext(this.graph, 0, ct.room.width - 32 - i*48, 32, 0.3, 0.3, 0, 1)\n}",
+      "oncreate": "// Set movement friction, acceleration and speed limit\nthis.friction = 0.25;\nthis.flyspeed = 2.5;\nthis.maxspeed = 7.5;\n\n// This will help us to shoot continuously\nthis.shootTimer = 0;\n\nthis.lives = 3;\nthis.invulnerable = -1;\n\nthis.weapon = 'simple';",
+      "onstep": "/* Movement \n   Add acceleration when arrows are being pressed\n*/\n\nif (ct.keyboard.down.down || ct.keyboard.down.S) {\n    ct.types.addSpeed(this, this.flyspeed * ct.delta, 270);\n}\nif (ct.keyboard.down.up || ct.keyboard.down.W) {\n    ct.types.addSpeed(this, this.flyspeed * ct.delta, 90);\n}\nif (ct.keyboard.down.left || ct.keyboard.down.A) {\n    ct.types.addSpeed(this, this.flyspeed * ct.delta, 180);\n}\nif (ct.keyboard.down.right || ct.keyboard.down.D) {\n    ct.types.addSpeed(this, this.flyspeed * ct.delta, 0);\n}\n\n// Limit speed\nthis.speed = Math.max(Math.min(this.speed, this.speed - this.friction, this.maxspeed), 0);\nct.types.move(this);\n\n// Check if the ship is out of the room\nif (this.x < 0 || this.x > ct.room.width ||\n    this.y < 0 || this.y > ct.room.height) {\n    // Return back if the ship is outside the room\n    this.speed = 0;\n    this.x = Math.max(Math.min(this.x, ct.room.width), 0);\n    this.y = Math.max(Math.min(this.y, ct.room.height), 0);\n}\n\n/* Shooting */\n\nthis.shootTimer += ct.delta;\n\n// If the spacebar is pressed and at least a quarter of second has passed, \n// create a new laser bullet depending on a weapon type\nif (ct.keyboard.down['space']) {\n    if (this.weapon === 'simple' && this.shootTimer > 15) {\n        ct.types.copy('Laser_Simple_Blue', this.x, this.y);\n        ct.sound.spawn('Laser_Small');\n        // Reset shooting delay\n        this.shootTimer = 0;\n    }\n    if (this.weapon === 'spread' && this.shootTimer > 15) {\n        // create three laser bolts\n        ct.types.copy('Laser_Simple_Blue', this.x-40, this.y);\n        ct.types.copy('Laser_Simple_Blue', this.x, this.y - 20);\n        ct.types.copy('Laser_Simple_Blue', this.x+40, this.y);\n        ct.sound.spawn('Laser_Small');\n        // Reset shooting delay\n        this.shootTimer = 0;\n    }\n    if (this.weapon === 'bolt' && this.shootTimer > 60) {\n        // slow, but powerful\n        ct.types.copy('Laser_Bolt_Blue', this.x, this.y);\n        ct.sound.spawn('Laser_Medium');\n        // Reset shooting delay\n        this.shootTimer = 0;\n    }\n    if (this.weapon === 'cross' && this.shootTimer > 10) {\n        // this one shoots much faster\n        ct.types.copy('Laser_Cross_Blue', this.x, this.y);\n        ct.sound.spawn('Laser_Medium');\n        // Reset shooting delay\n        this.shootTimer = 0;\n    }\n}\n\n/* Damage on collision */\nvar obstacle = ct.place.occupied(this, this.x, this.y, 'Enemy') \n            || ct.place.occupied(this, this.x, this.y, 'EnemyBullet');\nif (obstacle && this.invulnerable < 0) {\n    this.lives--;\n    obstacle.kill = true;\n    \n    // Are we completely, like, dead?\n    if (this.lives < 0) {\n        this.kill = true;\n    } else {\n        // Set invulnerability for 3 seconds\n        this.invulnerable = 60 * 3;\n    }\n}\n// Deplete invulnerability\nthis.invulnerable -= ct.delta;",
+      "ondraw": "// If we are invulnerable, alternate between full and partial opacity each 10 frames\n// `this.invulnerable % 20` means 'get a fraction remainder when dividing by 20'\n// `statement? 0.5 : 1` means that we pick 0.5 if the statement is true, or 1 otherwise\nif (this.invulnerable > 0) {\n    var damaged = this.invulnerable % 20 > 10; \n    this.alpha = damaged? 0.5 : 1;\n    this.tint = damaged? 0xFF9999 : 0xFFFFFF;\n} else {\n    this.alpha = 1;\n}",
       "ondestroy": "ct.types.copy('Explosion', this.x, this.y);\nlocalStorage.score = ct.room.score;\nsetTimeout(function() {\n    ct.rooms.switch('RetryScreen');\n}, 3000);",
       "uid": "1fab434d-0976-4b65-8390-d013695aba8c",
-      "graph": "e1452137-8cfa-4eec-b54a-0f2660326b48"
+      "graph": "e1452137-8cfa-4eec-b54a-0f2660326b48",
+      "lastmod": 1543408011729
     },
     {
       "name": "Laser_Simple_Blue",
       "depth": -1,
-      "oncreate": "this.spd = 30;\nthis.dir = 90;\nthis.ctype = 'BulletsHeroes';",
+      "oncreate": "this.speed = 15;\nthis.direction = 90;\nthis.ctype = 'BulletsHeroes';",
       "onstep": "if (this.y < -48) {\n    this.kill = true;\n}\n\nct.types.move(this);",
-      "ondraw": "ct.draw(this);",
+      "ondraw": "",
       "ondestroy": "",
       "uid": "92e6ec14-1de0-483a-84b8-a8669ac65937",
-      "graph": "e6148099-65e7-4d2b-acf1-3e6b3a8fc033"
+      "graph": "e6148099-65e7-4d2b-acf1-3e6b3a8fc033",
+      "lastmod": 1543398567006
     },
     {
       "name": "AbstractMeteor",
       "depth": 1,
-      "oncreate": "this.spd = ct.random.range(1, 3);\nthis.dir = 270 + ct.random.range(-3, 3);\n\nthis.graph = 'Meteor_' + ct.random.dice('Big', 'Medium', 'Small') + '_' + ct.random.dice(1, 2);\n\nthis.transform = true;\nthis.rotateSpeed = ct.random.range(-1, 1);\nthis.tr = ct.random.deg();\n\nthis.ctype = 'Enemy';",
-      "onstep": "ct.types.move(this);\n\nthis.tr += this.rotateSpeed; \n\nvar obstacle = ct.place.occupied(this, this.x, this.y, 'BulletsHeroes');\nif (obstacle) {\n    this.kill = true;\n    if (obstacle.type !== 'Laser_Bolt_Blue') { // Bolts will dash through enemies\n        obstacle.kill = true;\n    }\n    \n    // Add some score points\n    ct.rooms.current.score += 5;\n}\n\nif (this.x < -100 || this.x > ct.room.width + 100 || this.y < -120 || this.y > ct.room.height + 100) {\n    this.kill = true;\n}",
-      "ondraw": "ct.draw(this);",
+      "oncreate": "this.speed = ct.random.range(1, 3);\nthis.direction = 270 + ct.random.range(-3, 3);\n\nthis.graph = 'Meteor_' + ct.random.dice('Big', 'Medium', 'Small') + '_' + ct.random.dice(1, 2);\n\nthis.rotateSpeed = ct.random.range(-1, 1);\nthis.rotation = ct.random.deg();\n\nthis.ctype = 'Enemy';",
+      "onstep": "ct.types.move(this);\n\nthis.rotation += this.rotateSpeed * ct.delta; \n\nvar obstacle = ct.place.occupied(this, this.x, this.y, 'BulletsHeroes');\nif (obstacle) {\n    this.kill = true;\n    if (obstacle.type !== 'Laser_Bolt_Blue') { // Bolts will dash through enemies\n        obstacle.kill = true;\n    }\n    \n    // Add some score points\n    ct.rooms.current.score += 5;\n}\n\nif (this.x < -100 || this.x > ct.room.width + 100 || this.y < -120 || this.y > ct.room.height + 100) {\n    this.kill = true;\n}",
+      "ondraw": "",
       "ondestroy": "var deathMap = {\n    'Big': 'Medium',\n    'Medium': 'Small'\n};\n\nfor (var i in deathMap) {\n    if (this.graph.indexOf(i) !== -1) {\n        var copy1 = ct.types.copy('AbstractMeteor', this.x, this.y);\n        copy1.graph = 'Meteor_' + deathMap[i] + '_' + ct.random.dice(1, 2);\n        copy1.dir = ct.random.deg();\n        \n        var copy2 = ct.types.copy('AbstractMeteor', this.x, this.y);\n        copy2.graph = 'Meteor_' + deathMap[i] + '_' + ct.random.dice(1, 2);\n        copy2.dir = 180 + copy1.dir + ct.random.range(-10, 10);\n    }\n}",
       "uid": "1fa16a0f-e9a0-4117-9c28-87fa72b33d2b",
-      "graph": "ca15e5c0-b32a-425b-ab24-07d681a8ad8f"
+      "graph": "ca15e5c0-b32a-425b-ab24-07d681a8ad8f",
+      "lastmod": 1543395743995
     },
     {
       "name": "Laser_Cross_Blue",
       "depth": -1,
-      "oncreate": "this.spd = 15;\nthis.dir = ct.random.range(60, 120);\nthis.ctype = 'BulletsHeroes';\n\nthis.transform = true;\nthis.tr = ct.random.deg();",
+      "oncreate": "this.speed = 15;\nthis.direction = ct.random.range(60, 120);\nthis.ctype = 'BulletsHeroes';\n\nthis.rotation = ct.random.deg();",
       "onstep": "if (this.y < -48) {\n    this.kill = true;\n}\nct.types.move(this);",
-      "ondraw": "this.tr += 15;\nct.draw(this);",
+      "ondraw": "this.rotation += 7 * ct.delta;",
       "ondestroy": "",
       "uid": "140f8bde-bd06-4b2d-a5f2-87427848252e",
-      "graph": "4b86d5c4-ae3c-4edf-90d7-79a6778e9a29"
+      "graph": "4b86d5c4-ae3c-4edf-90d7-79a6778e9a29",
+      "lastmod": 1543397129800
     },
     {
       "name": "GameController",
       "depth": 0,
       "oncreate": "this.asteroidTimer = ct.speed * 3;\n\nthis.encounterTimer = ct.speed * 10;\n\nthis.waveTimer = ct.speed * 30;\n\nthis.UfoTimer = ct.speed * 75;",
-      "onstep": "this.asteroidTimer --;\nif (this.asteroidTimer <= 0) {\n    this.asteroidTimer = ct.random.range(ct.speed * 0.5, ct.speed * 3);\n    ct.types.copy('AbstractMeteor', ct.random(ct.room.width), -100);\n}\n\nthis.encounterTimer --;\nif (this.encounterTimer <= 0) {\n    this.encounterTimer = ct.random.range(ct.speed * 4, ct.speed * 7);\n    ct.types.copy('Enemy_Shooter', ct.random(ct.room.width), -100);\n}\n\nthis.waveTimer --;\nif (this.waveTimer <= 0) {\n    this.waveTimer = ct.random.range(ct.speed * 20, ct.speed * 45);\n    \n    // create 5 enemies, one by one in 1.4 seconds\n    ct.types.copy('Enemy_Wiggler', 0, -100);\n    setTimeout(function() {\n        ct.types.copy('Enemy_Wiggler', 0, -100);\n    }, 350);\n    setTimeout(function() {\n        ct.types.copy('Enemy_Wiggler', 0, -100);\n    }, 700);\n    setTimeout(function() {\n        ct.types.copy('Enemy_Wiggler', 0, -100);\n    }, 1050);\n    setTimeout(function() {\n        ct.types.copy('Enemy_Wiggler', 0, -100);\n    }, 1400);\n}\n\nthis.UfoTimer --;\nif (this.UfoTimer <= 0) {\n    this.UfoTimer = ct.random.range(ct.speed * 60, ct.speed * 90);\n    ct.types.copy('Enemy_Ufo', ct.random(ct.room.width), -100);\n}",
-      "ondraw": "ct.draw(this);",
+      "onstep": "this.asteroidTimer -= ct.delta;\nif (this.asteroidTimer <= 0) {\n    this.asteroidTimer = ct.random.range(ct.speed * 0.5, ct.speed * 3);\n    ct.types.copy('AbstractMeteor', ct.random(ct.width), -100);\n}\n\nthis.encounterTimer -= ct.delta;\nif (this.encounterTimer <= 0) {\n    this.encounterTimer = ct.random.range(ct.speed * 4, ct.speed * 7);\n    ct.types.copy('Enemy_Shooter', ct.random(ct.width), -100);\n}\n\nthis.waveTimer -= ct.delta;\nif (this.waveTimer <= 0) {\n    this.waveTimer = ct.random.range(ct.speed * 20, ct.speed * 45);\n    \n    // create 5 enemies, one by one in 1.4 seconds\n    ct.types.copy('Enemy_Wiggler', 0, -100);\n    ct.u.wait(350)\n    .then(() => {\n        ct.types.copy('Enemy_Wiggler', 0, -100);\n    })\n    .then(() => ct.u.wait(350))\n    .then(() => {\n        ct.types.copy('Enemy_Wiggler', 0, -100);\n    })\n    .then(() => ct.u.wait(350))\n    .then(() => {\n        ct.types.copy('Enemy_Wiggler', 0, -100);\n    })\n    .then(() => ct.u.wait(350))\n    .then(() => {\n        ct.types.copy('Enemy_Wiggler', 0, -100);\n    });\n}\n\nthis.UfoTimer -= ct.delta;\nif (this.UfoTimer <= 0) {\n    this.UfoTimer = ct.random.range(ct.speed * 60, ct.speed * 90);\n    ct.types.copy('Enemy_Ufo', ct.random(ct.width), -100);\n}",
+      "ondraw": "",
       "ondestroy": "",
       "uid": "ca579f27-f97b-4ca2-98f6-c1c3e13acad5",
-      "graph": -1
+      "graph": -1,
+      "lastmod": 1543397470770
     },
     {
       "name": "Logo",
       "depth": 0,
       "oncreate": "// The logo floats vertically. Let's use a sine function for that. \n// We will need a variable to change its phase\n\nthis.phase = 0;",
       "onstep": "",
-      "ondraw": "this.phase += 2.5 / ct.speed;\nif (this.phase > Math.PI * 2) {\n    this.phase -= Math.PI * 2;\n}\n\nct.draw.copy(this, this.x, this.y + Math.sin(this.phase) * 8);",
+      "ondraw": "this.phase += 2.5 / 60 * ct.delta;\nif (this.phase > Math.PI * 2) {\n    this.phase -= Math.PI * 2;\n}\n\nthis.y = this.ystart + Math.sin(this.phase) * 8;",
       "ondestroy": "",
       "uid": "319c6995-59f3-4267-a1de-cf58f77614d3",
-      "graph": "968baf79-5ff3-443b-8834-fa3b55638500"
+      "graph": "968baf79-5ff3-443b-8834-fa3b55638500",
+      "lastmod": 1543395253559
     },
     {
       "name": "StartButton",
       "depth": 0,
       "oncreate": "",
       "onstep": "if (ct.mouse.pressed) {\n    if (ct.u.prect(ct.mouse.x, ct.mouse.y, this)) {\n        ct.rooms.switch('InGame');\n    }\n}",
-      "ondraw": "ct.draw(this);",
+      "ondraw": "",
       "ondestroy": "",
       "uid": "972bb4d9-7cfc-4dbe-bc30-883562271057",
-      "graph": "2a454e11-3441-4f57-bfb6-ce837acd7881"
+      "graph": "2a454e11-3441-4f57-bfb6-ce837acd7881",
+      "lastmod": 1543397141776
     },
     {
       "name": "AbstractBonus",
       "depth": 3,
       "oncreate": "// get the player\nvar player = ct.types.list['Player_Blue'][0];\nconsole.log(this.graph);\nif (player.lives < 3) {\n    // add a chance to spawn a life bonus if there is 2 or less lives\n    this.graph = ct.random.dice('Bonus_Lives', 'Bonus_Spread', 'Bonus_Bolt', 'Bonus_Cross');\n} else {\n    this.graph = ct.random.dice('Bonus_Spread', 'Bonus_Bolt', 'Bonus_Cross');\n}\n\nthis.spd = 3;\nthis.dir = 270;\nconsole.log(this.graph);",
       "onstep": "ct.types.move(this);\n\nvar player = ct.place.meet(this, this.x, this.y, 'Player_Blue');\nif (player) {\n    ct.sound.spawn('Bonus');\n    if (this.graph === 'Bonus_Lives') {\n        player.lives ++;\n    } else {\n        var graphToWeaponMap = {\n            'Bonus_Spread': 'spread',\n            'Bonus_Bolt': 'bolt',\n            'Bonus_Cross': 'cross'\n        };\n        player.weapon = graphToWeaponMap[this.graph];\n    }\n    // Consume bonus\n    this.kill = true;\n}\n\n// Destroy bonus if it fell off the screen\nif (this.y > ct.room.height + 48) {\n    this.kill = true;\n}",
-      "ondraw": "ct.draw(this);",
+      "ondraw": "",
       "ondestroy": "",
       "uid": "bc01cee1-1b8b-4418-aeb9-a7c5eac2cd51",
-      "graph": "25fb712b-0aca-4b18-8e10-7c545d4bca8d"
+      "graph": "25fb712b-0aca-4b18-8e10-7c545d4bca8d",
+      "lastmod": 1543407126584
     },
     {
       "name": "Enemy_Shooter",
       "depth": 2,
-      "oncreate": "// This mob will slowly move to the bottom of the screen, shooting projectiles \n// from time to time\n\nthis.spd = 3;\nthis.dir = 270;\n\nthis.ctype = 'Enemy';\n\nthis.shootTimer = 2 * ct.speed;",
-      "onstep": "ct.types.move(this);\n\nthis.shootTimer --;\nif (this.shootTimer < 0) {\n    ct.types.copy('EnemyBullet', this.x, this.y);\n    this.shootTimer = 3 * ct.speed;\n}\n\nvar obstacle = ct.place.occupied(this, this.x, this.y, 'BulletsHeroes');\nif (obstacle) {\n    this.kill = true;\n    if (obstacle.type !== 'Laser_Bolt_Blue') { // Bolts will dash through enemies\n        obstacle.kill = true;\n    }\n    \n    // Add some score points\n    ct.rooms.current.score += 25;\n}\n\nif (this.y > ct.room.height + 100) {\n    this.kill = true;\n}",
-      "ondraw": "ct.draw(this);",
+      "oncreate": "// This mob will slowly move to the bottom of the screen, shooting projectiles \n// from time to time\n\nthis.speed = 3;\nthis.direction = 270;\n\nthis.ctype = 'Enemy';\n\nthis.shootTimer = 2 * ct.speed;",
+      "onstep": "ct.types.move(this);\n\nthis.shootTimer -= ct.delta;\nif (this.shootTimer < 0) {\n    ct.types.copy('EnemyBullet', this.x, this.y);\n    this.shootTimer = 3 * ct.speed;\n}\n\nvar obstacle = ct.place.occupied(this, this.x, this.y, 'BulletsHeroes');\nif (obstacle) {\n    this.kill = true;\n    if (obstacle.type !== 'Laser_Bolt_Blue') { // Bolts will dash through enemies\n        obstacle.kill = true;\n    }\n    \n    // Add some score points\n    ct.rooms.current.score += 25;\n}\n\nif (this.y > ct.room.height + 100) {\n    this.kill = true;\n}",
+      "ondraw": "",
       "ondestroy": "ct.types.copy('Explosion', this.x, this.y);\n\nif (ct.random.chance(10)) {\n    ct.types.copy('AbstractBonus', this.x, this.y);\n}",
       "uid": "500fd472-19aa-41a0-9504-123c37540702",
-      "graph": "16c209a9-25b2-41e4-b0d5-21cb22fd1421"
+      "graph": "16c209a9-25b2-41e4-b0d5-21cb22fd1421",
+      "lastmod": 1543397369216
     },
     {
       "name": "EnemyBullet",
       "depth": -1,
-      "oncreate": "this.spd = 10;\nthis.dir = 270;\nthis.ctype = 'EnemyBullet';\nct.sound.spawn('Laser_Big');",
+      "oncreate": "this.speed = 10;\nthis.direction = 270;\nthis.ctype = 'EnemyBullet';\nct.sound.spawn('Laser_Big');",
       "onstep": "ct.types.move(this);\n\n// Destroy a bullet if it fell off the screen\nif (this.y > ct.room.height + 32) {\n    this.kill = true;\n}",
-      "ondraw": "ct.draw(this);",
+      "ondraw": "",
       "ondestroy": "",
       "uid": "65a71d76-039a-4e20-8433-d20277dd2402",
-      "graph": "fc3e2f9b-61af-4ae4-9375-dcfae65f6a34"
+      "graph": "fc3e2f9b-61af-4ae4-9375-dcfae65f6a34",
+      "lastmod": 1543397118440
     },
     {
       "name": "Explosion",
       "depth": 0,
-      "oncreate": "ct.sound.spawn(ct.random.dice('Explosion_01', 'Explosion_02', 'Explosion_03'));\n\nthis.transform = true;\nthis.tr = ct.random.deg();",
+      "oncreate": "ct.sound.spawn(ct.random.dice('Explosion_01', 'Explosion_02', 'Explosion_03'));\n\nthis.rotation = ct.random.deg();",
       "onstep": "ct.types.move(this);",
-      "ondraw": "ct.draw(this);\n\nthis.ta -= 0.1;\nif (this.ta < 0) {\n    this.kill = true;\n}",
+      "ondraw": "this.alpha -= 0.05 * ct.delta;\nif (this.alpha < 0) {\n    this.kill = true;\n}",
       "ondestroy": "",
       "uid": "f938cbd9-1a72-45a4-a7ec-27a0841073ef",
-      "graph": "9de002e9-c9cf-44ee-b87a-022ae3dddca3"
+      "graph": "9de002e9-c9cf-44ee-b87a-022ae3dddca3",
+      "lastmod": 1543395235678
     },
     {
       "name": "Enemy_Wiggler",
       "depth": 2,
       "oncreate": "    // This mob will move in a sine wave and emit projectiles randomly\nthis.phase = 0;\n\nthis.ctype = 'Enemy';\n\nthis.shootTimer = ct.random.dice(2, 3, 4) * ct.speed;",
-      "onstep": "this.phase += 2 / ct.speed;\n\nthis.y += 5;\nthis.x = Math.sin(this.phase) * (ct.room.width * 0.4) + ct.room.width / 2;\n\n\nthis.shootTimer --;\nif (this.shootTimer < 0) {\n    ct.types.copy('EnemyBullet', this.x, this.y);\n    this.shootTimer = ct.random.dice(2, 3, 4) * ct.speed;\n}\n\nvar obstacle = ct.place.occupied(this, this.x, this.y, 'BulletsHeroes');\nif (obstacle) {\n    this.kill = true;\n    if (obstacle.type !== 'Laser_Bolt_Blue') { // Bolts will dash through enemies\n        obstacle.kill = true;\n    }\n    \n    // Add some score points\n    ct.rooms.current.score += 30;\n}\n\nif (this.y > ct.room.height + 100) {\n    this.kill = true;\n}",
-      "ondraw": "ct.draw(this);",
+      "onstep": "this.phase += 2 / 60 * ct.delta;\n\nthis.y += 5 * ct.delta;\nthis.x = Math.sin(this.phase) * (ct.width * 0.4) + ct.width / 2;\n\n\nthis.shootTimer -= ct.delta;\nif (this.shootTimer < 0) {\n    ct.types.copy('EnemyBullet', this.x, this.y);\n    this.shootTimer = ct.random.dice(2, 3, 4) * ct.speed;\n}\n\nvar obstacle = ct.place.occupied(this, this.x, this.y, 'BulletsHeroes');\nif (obstacle) {\n    this.kill = true;\n    if (obstacle.type !== 'Laser_Bolt_Blue') { // Bolts will dash through enemies\n        obstacle.kill = true;\n    }\n    \n    // Add some score points\n    ct.rooms.current.score += 30;\n}\n\nif (this.y > ct.room.height + 100) {\n    this.kill = true;\n}",
+      "ondraw": "",
       "ondestroy": "ct.types.copy('Explosion', this.x, this.y);\n\nif (ct.random.chance(10)) {\n    ct.types.copy('AbstractBonus', this.x, this.y);\n}",
       "uid": "9d0992a4-d0ef-4c5e-9d17-2e5167f26598",
-      "graph": "048b77d3-e7e3-4817-99ee-8b7c0a6da8bf"
+      "graph": "048b77d3-e7e3-4817-99ee-8b7c0a6da8bf",
+      "lastmod": 1543397378842
     },
     {
       "name": "Laser_Bolt_Blue",
       "depth": 0,
-      "oncreate": "this.spd = 25;\nthis.dir = 90;\nthis.ctype = 'BulletsHeroes';",
+      "oncreate": "this.speed = 25;\nthis.direction = 90;\nthis.ctype = 'BulletsHeroes';",
       "onstep": "if (this.y < -48) {\n    this.kill = true;\n}\n\nct.types.move(this);",
-      "ondraw": "ct.draw(this);",
+      "ondraw": "",
       "ondestroy": "",
       "uid": "912af24f-1569-46a3-9194-fbf0384f3b0e",
-      "graph": "c12edc06-ad3f-49f4-b9d4-3d33226e9ecc"
+      "graph": "c12edc06-ad3f-49f4-b9d4-3d33226e9ecc",
+      "lastmod": 1543397090016
     },
     {
       "name": "Enemy_Ufo",
       "depth": 3,
-      "oncreate": "this.targetx = ct.random.range(75, ct.room.width - 150);\nthis.targety = ct.random.range(75, 300);\n\nthis.transform = true;\n\n// this mob will be quite sturdy\nthis.health = 30;\n\nthis.jumpTimer = ct.speed;\nthis.shootTimer = ct.speed;",
-      "onstep": "// Simple interpolation between two points through time\nthis.x += (this.targetx - this.x) * 0.1;\nthis.y += (this.targety - this.y) * 0.1;\n\nthis.shootTimer --;\nif (this.shootTimer < 0) {\n    ct.types.copy('Laser_Cross_Red', this.x, this.y);\n    this.shootTimer = ct.speed * 0.5;\n}\n\nthis.jumpTimer --;\nif (this.jumpTimer < 0) {\n    // Start jumping to a new location  \n    this.jumpTimer = ct.speed * 2;\n    this.targetx = ct.random.range(75, ct.room.width - 150);\n    this.targety = ct.random.range(75, 300);\n}\n\nvar obstacle = ct.place.occupied(this, this.x, this.y, 'BulletsHeroes');\nif (obstacle) {\n    if (obstacle.type === 'Laser_Bolt_Blue') { // Bolts will do additional damage\n        this.health -= 5;\n    } else {\n        this.health -= 1;\n    }\n    obstacle.kill = true;\n    if (this.health <= 0) {\n        this.kill = true;\n        // Add some score points\n        ct.rooms.current.score += 125;\n    }    \n}",
-      "ondraw": "this.tr += 5;\nct.draw(this);",
+      "oncreate": "this.targetx = ct.random.range(75, ct.room.width - 150);\nthis.targety = ct.random.range(75, 300);\n\n\n// this mob will be quite sturdy\nthis.health = 30;\n\nthis.jumpTimer = ct.speed;\nthis.shootTimer = ct.speed;",
+      "onstep": "// Simple interpolation between two points through time\nthis.x += (this.targetx - this.x) * 0.1;\nthis.y += (this.targety - this.y) * 0.1;\n\nthis.shootTimer -= ct.delta;\nif (this.shootTimer < 0) {\n    ct.types.copy('Laser_Cross_Red', this.x, this.y);\n    this.shootTimer = ct.speed * 0.5;\n}\n\nthis.jumpTimer -= ct.delta;\nif (this.jumpTimer < 0) {\n    // Start jumping to a new location  \n    this.jumpTimer = ct.speed * 2;\n    this.targetx = ct.random.range(75, ct.width - 150);\n    this.targety = ct.random.range(75, 300);\n}\n\nvar obstacle = ct.place.occupied(this, this.x, this.y, 'BulletsHeroes');\nif (obstacle) {\n    if (obstacle.type === 'Laser_Bolt_Blue') { // Bolts will do additional damage\n        this.health -= 5;\n    } else {\n        this.health -= 1;\n    }\n    obstacle.kill = true;\n    if (this.health <= 0) {\n        this.kill = true;\n        // Add some score points\n        ct.rooms.current.score += 125;\n    }    \n}",
+      "ondraw": "this.rotation += 2.5 * ct.delta;",
       "ondestroy": "ct.types.copy('Explosion', this.x, this.y);\nct.types.copy('AbstractBonus', this.x, this.y);",
       "uid": "ebfeaaab-f16a-48fa-b97c-687945f99668",
-      "graph": "3a21a3d8-30ed-4e5b-8ccf-0019a503d6b9"
+      "graph": "3a21a3d8-30ed-4e5b-8ccf-0019a503d6b9",
+      "lastmod": 1543397366296
     },
     {
       "name": "Laser_Cross_Red",
       "depth": 0,
-      "oncreate": "this.spd = 10;\nthis.dir = ct.random.range(270-45, 270+45);\n\nthis.ctype = 'EnemyBullet';\nct.sound.spawn('Laser_Big');\n\nthis.transform = true;\nthis.tr = ct.random.deg();",
-      "onstep": "this.tr -= 9;\nct.types.move(this);\n\n// Destroy a bullet if it fell off the screen\nif (this.y > ct.room.height + 32) {\n    this.kill = true;\n}",
-      "ondraw": "ct.draw(this);",
+      "oncreate": "this.speed = 10;\nthis.direction = ct.random.range(270-45, 270+45);\n\nthis.ctype = 'EnemyBullet';\nct.sound.spawn('Laser_Big');\n\nthis.rotation = ct.random.deg();",
+      "onstep": "this.rotation -= 4.5 * ct.delta;\nct.types.move(this);\n\n// Destroy a bullet if it fell off the screen\nif (this.y > ct.room.height + 32) {\n    this.kill = true;\n}",
+      "ondraw": "",
       "ondestroy": "",
       "uid": "45f606db-1ce3-4b21-bc14-b84e35543509",
-      "graph": "dc0d71ec-6da8-40e8-afe8-90c81f7f269a"
+      "graph": "dc0d71ec-6da8-40e8-afe8-90c81f7f269a",
+      "lastmod": 1543397132303
     },
     {
       "name": "OhNo",
       "depth": 0,
       "oncreate": "",
       "onstep": "ct.types.move(this);",
-      "ondraw": "ct.draw(this);",
+      "ondraw": "",
       "ondestroy": "",
       "uid": "a6d37145-b35c-42d2-95c6-765069857ada",
-      "graph": "e81fc53e-4f0a-443d-a4fb-e5e11a4a98d2"
+      "graph": "e81fc53e-4f0a-443d-a4fb-e5e11a4a98d2",
+      "lastmod": 1543397136519
     },
     {
       "name": "RetryButton",
       "depth": 0,
       "oncreate": "",
       "onstep": "if (ct.mouse.pressed) {\n    console.log('pressed');\n    console.log(ct.mouse.x, ct.mouse.y, this, ct.u.prect);\n    if (ct.u.prect(ct.mouse.x, ct.mouse.y, this)) {\n        console.log('hi');\n        ct.rooms.switch('InGame');\n    }\n}",
-      "ondraw": "ct.draw(this);",
+      "ondraw": "",
       "ondestroy": "",
       "uid": "73759c16-fba4-4134-b048-e53aa4d2f34b",
-      "graph": "071162b9-d836-4145-9515-586ce289ef14"
+      "graph": "071162b9-d836-4145-9515-586ce289ef14",
+      "lastmod": 1543397139792
     }
   ],
   "sounds": [
@@ -996,7 +1016,7 @@
         "weight": "900",
         "italic": true,
         "valign": "top",
-        "halign": "left"
+        "halign": "center"
       },
       "uid": "7da08700-988f-456d-b753-89dd1f74e741",
       "origname": "s1",
@@ -1005,7 +1025,8 @@
         "x": -3,
         "y": -2,
         "blur": 0
-      }
+      },
+      "lastmod": 1543395034300
     },
     {
       "name": "Blue12",
@@ -1022,15 +1043,16 @@
       "fill": {
         "type": "0",
         "color": "#446ADB"
-      }
+      },
+      "lastmod": 1543395030461
     }
   ],
   "rooms": [
     {
       "name": "InGame",
-      "oncreate": "this.score = 0;",
+      "oncreate": "this.score = 0;\n\nthis.scoreLabel = new PIXI.Text('Score: ' + this.score, ct.styles.get('ScoreText'));\nthis.scoreLabel.x = this.scoreLabel.y = 20;\nthis.addChild(this.scoreLabel);\n\nthis.shipIcons = [];\n// Draw small ship icons in a top-right corner\nfor (var i = 0; i < 3; i++) {\n    var icon = new PIXI.Sprite(ct.res.getTexture('PlayerShip_Blue', 0));\n    icon.x = ct.width - 32 - i*48;\n    icon.y = 32;\n    icon.scale.x = icon.scale.y = 0.3;\n    this.addChild(icon);\n    this.shipIcons.push(icon);\n}",
       "onstep": "",
-      "ondraw": "ct.styles.set('ScoreText');\nct.draw.fix(20, 20);\n\nct.draw.text('Score: ' + this.score, 0, 0);\n\nct.draw.unfix();\nct.styles.reset();",
+      "ondraw": "this.scoreLabel.text = 'Score: ' + this.score;\n\nif (ct.types.list.Player_Blue.length) {\n    for (var i = 0; i < 3; i++) {\n        this.shipIcons[i].visible = ct.types.list.Player_Blue[0].lives > i;\n    }\n}",
       "onleave": "",
       "width": 800,
       "height": 800,
@@ -1058,15 +1080,23 @@
         }
       ],
       "uid": "2e5bf702-9eac-4fef-8282-07d2dd0a9bac",
-      "lastmod": 1533197800992,
+      "lastmod": 1543395456360,
       "grid": 50,
-      "thumbnail": 1
+      "thumbnail": 1,
+      "gridX": 50,
+      "gridY": 50,
+      "tiles": [
+        {
+          "depth": -10,
+          "tiles": []
+        }
+      ]
     },
     {
       "name": "MainMenu",
-      "oncreate": "ct.sound.spawn('Music', {\n    loop: true,\n    volume: 0.5\n});",
+      "oncreate": "ct.sound.spawn('Music', {\n    loop: true,\n    volume: 0.5\n});\n\nthis.ctjsNotice = new PIXI.Text('Make Great Games in a Free Game Editor!!!\\nhttps://ctjs.rocks/', ct.styles.get('Blue12'));\nthis.addChild(this.ctjsNotice);\nthis.ctjsNotice.x = ct.room.width / 2;\nthis.ctjsNotice.y = ct.room.height - 32;\nthis.ctjsNotice.anchor.x = 0.5;\nthis.ctjsNotice.anchor.y = 0.5;",
       "onstep": "",
-      "ondraw": "ct.styles.set('Blue12');\nct.draw.text('Make Great Games in a Free Game Editor!!!', ct.room.width / 2, ct.room.height - 50);\nct.draw.text('https://ctjs.rocks/', ct.room.width / 2, ct.room.height - 30);\nct.styles.reset();",
+      "ondraw": "",
       "onleave": "",
       "width": 800,
       "height": 800,
@@ -1095,14 +1125,22 @@
       ],
       "uid": "6c75cdb8-cfb4-4dcc-887a-f76ae98b5499",
       "grid": 64,
-      "lastmod": 1533193419531,
-      "thumbnail": 2
+      "lastmod": 1543397766946,
+      "thumbnail": 2,
+      "gridX": 64,
+      "gridY": 64,
+      "tiles": [
+        {
+          "depth": -10,
+          "tiles": []
+        }
+      ]
     },
     {
       "name": "RetryScreen",
-      "oncreate": "this.score = Number(localStorage.score);\nthis.highscore = Number(localStorage.highscore || 0);\n\nlocalStorage.highscore = Math.max(this.highscore, this.score);",
+      "oncreate": "this.score = Number(localStorage.score);\nthis.highscore = Number(localStorage.highscore || 0);\n\nlocalStorage.highscore = Math.max(this.highscore, this.score);\n\nthis.scoreText = new PIXI.Text('Score: '+ this.score + '\\n' + 'Highscore: '+ this.highscore, ct.styles.get('ScoreText'));\nthis.addChild(this.scoreText);\nthis.scoreText.x = ct.width / 2;\nthis.scoreText.y = ct.height / 2;\nthis.scoreText.anchor.x = 0.5;\nthis.scoreText.anchor.y = 0.5;\n\nthis.authorsNotice = new PIXI.Text('This demo was made in ct.js editor: more at https://ctjs.rocks/\\n'+ \n    'Music by Jukedeck: www.jukedeck.com', ct.styles.get('Blue12'));\nthis.addChild(this.authorsNotice);\nthis.authorsNotice.x = ct.width / 2;\nthis.authorsNotice.y = ct.height - 50;\nthis.authorsNotice.anchor.x = 0.5;\nthis.authorsNotice.anchor.y = 0.5;",
       "onstep": "",
-      "ondraw": "ct.styles.set('ScoreText');\nct.draw.text('Score: '+ this.score, 200, ct.room.height / 2 - 20);\nct.draw.text('Highscore: '+ this.score, 200, ct.room.height / 2 + 20);\nct.styles.reset();\n\nct.styles.set('Blue12');\nct.draw.text('This demo was made in ct.js editor: more at https://ctjs.rocks/', ct.room.width / 2, ct.room.height - 50);\nct.draw.text('Music by Jukedeck: www.jukedeck.com', ct.room.width / 2, ct.room.height - 20);\nct.styles.reset();",
+      "ondraw": "",
       "onleave": "",
       "width": 800,
       "height": 800,
@@ -1131,8 +1169,16 @@
       ],
       "uid": "cc1e53b3-f7e6-48fe-9716-b05877538e52",
       "grid": 64,
-      "lastmod": 1521799524443,
-      "thumbnail": 3
+      "lastmod": 1543398180413,
+      "thumbnail": 3,
+      "gridX": 64,
+      "gridY": 64,
+      "tiles": [
+        {
+          "depth": -10,
+          "tiles": []
+        }
+      ]
     }
   ],
   "graphtick": 32,
@@ -1161,7 +1207,8 @@
       "linux32": true,
       "mac64": true,
       "debug": false
-    }
+    },
+    "pixelatedrender": false
   },
   "palette": [
     "#FFFFFF",
@@ -1170,6 +1217,6 @@
   ],
   "startroom": "6c75cdb8-cfb4-4dcc-887a-f76ae98b5499",
   "scripts": [],
-  "ctjsVersion": "0.5.1",
+  "ctjsVersion": "0.5.2",
   "fonts": []
 }
