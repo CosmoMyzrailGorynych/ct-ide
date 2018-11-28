@@ -38,7 +38,7 @@ type-editor.panel.view.flexrow
                     .acer(ref="typeondraw")
                 #typeondestroy.tabbed(show="{tab === 'typeondestroy'}")
                     .acer(ref="typeondestroy")
-    graphic-selector(if="{selectingGraphic}" onselected="{applyGraphic}" ref="graphicselector" showempty="sure")
+    graphic-selector(if="{selectingGraphic}" onselected="{applyGraphic}" oncancelled="{cancelGraphic}" ref="graphicselector" showempty="sure")
     script.
         this.namespace = 'typeview';
         this.mixin(window.riotVoc);
@@ -121,6 +121,10 @@ type-editor.panel.view.flexrow
             }
             this.selectingGraphic = false;
             this.parent.fillTypeMap();
+            this.update();
+        };
+        this.cancelGraphic = e => {
+            this.selectingGraphic = false;
             this.update();
         };
         this.typeSave = e => {

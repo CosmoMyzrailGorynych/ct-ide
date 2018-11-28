@@ -7,7 +7,7 @@ room-backgrounds-editor.room-editor-Backgrounds.tabbed.tall
     button.inline.wide(onclick="{addBg}")
         i.icon-plus
         span {voc.add}
-    graphic-selector(ref="graphPicker" if="{pickingBackground}" onselected="{onGraphSelected}")
+    graphic-selector(ref="graphPicker" if="{pickingBackground}" oncancelled="{onGraphCancel}" onselected="{onGraphSelected}")
     script.
         const gui = require('nw.gui');
         this.pickingBackground = false;
@@ -17,8 +17,18 @@ room-backgrounds-editor.room-editor-Backgrounds.tabbed.tall
         this.onGraphSelected = graph => e => {
             this.editingBackground.graph = graph.uid;
             this.pickingBackground = false;
+            this.creatingBackground = false;
             this.update();
             this.parent.refreshRoomCanvas();
+        };
+        this.onGraphCancel = e => {
+            this.pickingBackground = false;
+            if (this.creatingBackground) {
+                let bgs = this.opts.room.backgrounds;
+                bgs.splice(bgs.indexOf(this.editingBackground), 1);
+                this.creatingBackground = false;
+            }
+            this.update();
         };
         this.addBg = function () {
             var newBg = {
@@ -28,6 +38,7 @@ room-backgrounds-editor.room-editor-Backgrounds.tabbed.tall
             this.opts.room.backgrounds.push(newBg);
             this.editingBackground = newBg;
             this.pickingBackground = true;
+            this.creatingBackground = true;
             this.opts.room.backgrounds.sort(function (a, b) {
                 return a.depth - b.depth;
             });
