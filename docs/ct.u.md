@@ -68,13 +68,3 @@ Loads the specified script and calls the callback when it was loaded.
 Transfers objects' properties from `o2` to `o1`. You can specify an array of properties' names you want to transfer; otherwise everything is transferred.
 
 > Note: this doesn't create a deep copy.
-
-### `ct.u.inspect(copy, fields)`
-
-Draws a list of specified fields (`fields` is an array of strings). Note that properties that are a type of `Object` are converted to strings with `JSON.stringify`, which may be a slow operation for bigger objects.
-
-Example:
-
-```js
-ct.u.inspect(this, ['health', 'healthmax', 'state']);
-````

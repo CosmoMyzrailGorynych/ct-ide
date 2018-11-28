@@ -1,6 +1,6 @@
 (function (ct) {
     var copyTouch = e => {
-        var rect = ct.HTMLCanvas.getBoundingClientRect();
+        var rect = ct.pixiApp.view.getBoundingClientRect();
         var touch = {
             id: e.identifier,
             x: (e.clientX - rect.left) * ct.width / rect.width + ct.rooms.current.x,
@@ -28,7 +28,7 @@
         return -1;
     };
     var handleStart = function(e) {
-        if (!%preventdefault%) {
+        if (![/*%preventdefault%*/][0]) {
             e.preventDefault();
         }
         for (let i = 0, l = e.changedTouches.length; i < l; i++) {
@@ -40,14 +40,14 @@
         }
     };
     var handleMove = function(e) {
-        if (!%preventdefault%) {
+        if (![/*%preventdefault%*/][0]) {
             e.preventDefault();
         }
         for (let i = 0, l = e.changedTouches.length; i < l; i++) {
             const touch = e.changedTouches[i],
                   upd = findTouch(e.changedTouches[i].identifier);
             if (upd) {
-                const rect = ct.HTMLCanvas.getBoundingClientRect();
+                const rect = ct.pixiApp.view.getBoundingClientRect();
                 upd.x = (touch.clientX - rect.left) * ct.width / rect.width + ct.rooms.current.x;
                 upd.y = (touch.clientY - rect.top) * ct.height / rect.height + ct.rooms.current.y;
                 upd.r = touch.radiusX? Math.max(touch.radiusX, touch.radiusY) : 0;
@@ -57,7 +57,7 @@
         }
     };
     var handleRelease = function(e) {
-        if (!%preventdefault%) {
+        if (![/*%preventdefault%*/][0]) {
             e.preventDefault();
         }
         var touches = e.changedTouches;
@@ -70,7 +70,7 @@
         }
     };
     var mouseDown = function (e) {
-        const rect = ct.HTMLCanvas.getBoundingClientRect();
+        const rect = ct.pixiApp.view.getBoundingClientRect();
         var touch = {
             id: -1,
             x: (e.clientX - rect.left) * ct.width / rect.width + ct.rooms.current.x,
@@ -83,7 +83,7 @@
         ct.touch.y = touch.y;
     };
     var mouseMove = function (e) {
-        const rect = ct.HTMLCanvas.getBoundingClientRect(),
+        const rect = ct.pixiApp.view.getBoundingClientRect(),
               touch = findTouch(-1);
         if (touch) {
             touch.x = (e.clientX - rect.left) * ct.width / rect.width + ct.rooms.current.x;

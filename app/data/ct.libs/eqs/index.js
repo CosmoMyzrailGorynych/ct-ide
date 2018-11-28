@@ -146,12 +146,12 @@
             return this;
         }
         /* Utilities */
-        draw() {
+        /*draw() {
             for (const point of this.points) {
                 ct.x.fillStyle = `rgb(${(1-point.score) * 255}, ${point.score * 255}, 0)`;
                 ct.draw.circle(point.x, point.y, 2);
             }
-        }
+        }*/
         concat(eq) {
             return new EQSQuery(this.points.concat(eq.points));
         }

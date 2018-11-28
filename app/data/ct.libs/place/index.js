@@ -20,8 +20,8 @@
 
     ct.place = {
         m: 1, // direction modifier in ct.place.go,
-        gridX: [/*%gridX%*/][0],
-        gridY: [/*%gridY%*/][0],
+        gridX: [/*%gridX%*/][0] || 512,
+        gridY: [/*%gridY%*/][0] || 512,
         grid: {},
         tileGrid: {},
         getHashes(copy) {

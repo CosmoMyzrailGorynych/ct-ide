@@ -49,10 +49,12 @@
                 reg.textures.push(texture);
             }
         }
-        /*%start%*/
-        ct.pixiApp.ticker.add(ct.loop);
-        ct.rooms.forceSwitch(ct.rooms.starting);
-        ct.mouse.setupListeners();
+        setTimeout(() => {
+            /*%start%*/
+            ct.pixiApp.ticker.add(ct.loop);
+            ct.rooms.forceSwitch(ct.rooms.starting);
+            ct.mouse.setupListeners();
+        }, 0);
     });
     ct.res.parseImages();
 })(ct);

@@ -27,9 +27,6 @@
             ct.room.x = ct.room.x * (1-power) + (ct.room.follow.x - ct.room.width/2)*power;
             ct.room.y = ct.room.y * (1-power) + (ct.room.follow.y - ct.room.height/2)*power;
         },
-        draw(copy) {
-            ct.draw(copy, Math.floor(copy.x), Math.floor(copy.y));
-        },
         move8(me, x, y, speed) {
             speed = speed || 1;
             if (me.x < x) {

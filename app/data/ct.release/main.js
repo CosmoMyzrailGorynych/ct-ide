@@ -114,18 +114,6 @@ ct.u = {
             }
         }
     },
-    inspect(copy, fields) {
-        ct.x.font = '10px sans-serif';
-        var line = 0;
-        for (const field of fields) {
-            if (typeof copy[field] === 'object') {
-                ct.draw.text(`${field}: ${JSON.stringify(copy[field])}`, copy.x, copy.y + 12 * line);
-            } else {
-                ct.draw.text(`${field}: ${copy[field]}`, copy.x, copy.y + 12 * line);
-            }
-            line++;
-        }
-    },
     load(url, callback) {
         var script = document.createElement('script');
         script.src = url;

@@ -1,4 +1,4 @@
 ct.touch.setupListeners();
-if (%mousetouch%) {
+if ([/*%mousetouch%*/][0]) {
     ct.touch.setupMouseListeners();
 }

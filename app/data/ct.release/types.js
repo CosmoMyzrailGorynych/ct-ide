@@ -44,6 +44,7 @@
             }
             return this;
         }
+
         set grav(value) {
             this.gravity = value;
             return value;
@@ -65,6 +66,14 @@
         get dir() {
             return this.direction;
         }
+        set spd(value) {
+            this.speed = value;
+            return value;
+        }
+        get spd() {
+            return this.speed;
+        }
+
         set graph(value) {
             this.textures = ct.res.getTexture(value);
             this[graphAccessor] = value;
@@ -107,12 +116,15 @@
                 this.hspeed += this.gravity * ct.delta * Math.cos(this.gravityDir*Math.PI/-180);
                 this.vspeed += this.gravity * ct.delta * Math.sin(this.gravityDir*Math.PI/-180);
             }
-            this.x += this.hspeed;
-            this.y += this.vspeed;
+            this.x += this.hspeed * ct.delta;
+            this.y += this.vspeed * ct.delta;
         }
         addSpeed(spd, dir) {
             this.hspeed += spd * Math.cos(dir*Math.PI/-180);
             this.vspeed += spd * Math.sin(dir*Math.PI/-180);
+        }
+        static draw() {
+            console.warn('this.draw() call is not used in ct.js 1.0 and above, as all objects are now rendered by default. Please use this.visible to hide objects.');
         }
     }
     class Background extends PIXI.extras.TilingSprite {
@@ -201,7 +213,6 @@
                 this.addChild(this.cells[i]);
                 this.cells[i].cacheAsBitmap = true;
             }
-            console.log(this.cells);
         }
     }
 

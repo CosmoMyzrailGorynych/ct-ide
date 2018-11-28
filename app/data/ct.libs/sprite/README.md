@@ -4,7 +4,7 @@ This module composes new graphic assets out of existing ones. Say, you have a pi
 
 The workflow of this module is simple: you add a one function call, giving an existing graphic asset name, a new one, and a set of frames to play, and you can use this new graphic asset in the way you use it with default ones. You can add these function calls in the "Settings" tab of this mod to make sure that your code is in the right place.
 
-# ![Source strip](./ct.libs/sprite/SlimeExample.png)
+# ![Source strip](./data/ct.libs/sprite/SlimeExample.png)
 # +
 ```js
 ct.sprite(
@@ -15,7 +15,7 @@ ct.sprite(
 this.graph = 'Slime_Idle';
 ```
 # =
-![Gif result](./ct.libs/sprite/SlimeExample_Result.gif)
+![Gif result](./data/ct.libs/sprite/SlimeExample_Result.gif)
 
 ---
 
@@ -34,4 +34,4 @@ ct.sprite(
 this.graph = ct.random.dice('Slime_Blink', 'Slime_Wiggle);
 ```
 # =
-# ![Gif result](./ct.libs/sprite/SlimeExample_Blink.gif) or ![Gif result](./ct.libs/sprite/SlimeExample_Wiggle.gif)
+# ![Gif result](./data/ct.libs/sprite/SlimeExample_Blink.gif) or ![Gif result](./data/ct.libs/sprite/SlimeExample_Wiggle.gif)
