@@ -26,6 +26,7 @@
     "gulp-sourcemaps": "^2.6.4",
     "gulp-stylint": "^4.0.2",
     "gulp-stylus": "^2.7.0",
+    "minimist": "^1.2.0",
     "node-notifier": "^5.2.1",
     "nw-builder": "^3.5.4",
     "pug": "^2.0.3",

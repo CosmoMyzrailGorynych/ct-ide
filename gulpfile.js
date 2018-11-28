@@ -6,6 +6,7 @@ const path = require('path'),
       gulp = require('gulp'),
       concat = require('gulp-concat'),
       sourcemaps = require('gulp-sourcemaps'),
+      minimist = require('minimist'),
       stylus = require('gulp-stylus'),
       riot = require('gulp-riot'),
       pug = require('gulp-pug'),
@@ -18,8 +19,12 @@ const path = require('path'),
       fs = require('fs-extra'),
       NwBuilder = require('nw-builder');
 
+const argv = minimist(process.argv.slice(2));
+
 const nwVersion = '0.34.1',
       nwFiles = ['./app/**', '!./app/export/**', '!./app/exportDesktop/**', '!./app/cache/**', '!./app/.vscode/**', '!./app/JamGames/**'];
+
+var channelPostfix = argv.channel || false;
 
 const closureCompiler = require('google-closure-compiler-js').gulp();
 
@@ -224,11 +229,11 @@ const release = gulp.series([done => {
 
 const deployOnly = done => {
     var pack = require('./app/package.json');
-    spawnise('./butler', ['push', `./build/ctjs - v${pack.version}/linux32`, 'comigo/ct:linux32', '--userversion', pack.version])
-    .then(() => spawnise('./butler', ['push', `./build/ctjs - v${pack.version}/linux64`, 'comigo/ct:linux64', '--userversion', pack.version]))
-    .then(() => spawnise('./butler', ['push', `./build/ctjs - v${pack.version}/osx64`, 'comigo/ct:osx64', '--userversion', pack.version]))
-    .then(() => spawnise('./butler', ['push', `./build/ctjs - v${pack.version}/win32`, 'comigo/ct:win32', '--userversion', pack.version]))
-    .then(() => spawnise('./butler', ['push', `./build/ctjs - v${pack.version}/win64`, 'comigo/ct:win64', '--userversion', pack.version]))
+    spawnise('./butler', ['push', `./build/ctjs - v${pack.version}/linux32`, `comigo/ct:linux32${channelPostfix? '-' + channelPostfix: ''}`, '--userversion', pack.version])
+    .then(() => spawnise('./butler', ['push', `./build/ctjs - v${pack.version}/linux64`, `comigo/ct:linux64${channelPostfix? '-' + channelPostfix: ''}`, '--userversion', pack.version]))
+    .then(() => spawnise('./butler', ['push', `./build/ctjs - v${pack.version}/osx64`, `comigo/ct:osx64${channelPostfix? '-' + channelPostfix: ''}`, '--userversion', pack.version]))
+    .then(() => spawnise('./butler', ['push', `./build/ctjs - v${pack.version}/win32`, `comigo/ct:win32${channelPostfix? '-' + channelPostfix: ''}`, '--userversion', pack.version]))
+    .then(() => spawnise('./butler', ['push', `./build/ctjs - v${pack.version}/win64`, `comigo/ct:win64${channelPostfix? '-' + channelPostfix: ''}`, '--userversion', pack.version]))
     .then(() => {
         done();
     })
