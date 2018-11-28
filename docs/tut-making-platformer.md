@@ -621,11 +621,11 @@ if (robot) {
 
 And the movement logic:
 ```js
-this.x += this.speed * ct.delta;
-if (ct.place.occupied(this, this.x + this.speed, this.y, 'Solid')) {
-    // Flip the speed direction
-    this.speed *= -1;
+if (ct.place.occupied(this, this.x + this.speed * ct.delta, this.y, 'Solid')) {
+    // Flip direction
+    this.direction += 180;
 }
+this.move();
 ```
 
 Looks simple! Maybe even too simple. And here is the issue: if the Robot touches the left or right side of a platform, it gets stuck forever! We need to make platforms solid only when they don't overlap.
@@ -642,15 +642,15 @@ if (robot) {
     this.ctype = 'Solid';
     robot = ct.place.meet(this, this.x, this.y - 1, 'Robot');
     if (robot) {
-        robot.x += this.speed * ct.delta;
+        robot.x += ct.u.ldx(this.speed, this.direction);
     }
 }
 
-this.x += this.speed * ct.delta;
 if (ct.place.occupied(this, this.x + this.speed * ct.delta, this.y, 'Solid')) {
-    // Flip the speed direction
-    this.speed *= -1;
+    // Flip direction
+    this.direction += 180;
 }
+this.move();
 ```
 
 ::: tip On your own!
