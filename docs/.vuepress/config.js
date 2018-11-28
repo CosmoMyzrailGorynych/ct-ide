@@ -59,7 +59,8 @@ module.exports = {
                 title: 'Troubleshooting',
                 collapsable: false,
                 children: [
-                    ['troubleshooting-teared-backgrounds', 'Background splits into squares!']
+                    ['migration-0to1', 'Migration from 0.x to 1.x'],
+                    ['troubleshooting-teared-background', 'Background splits into squares!']
                 ]
             }
         ],
