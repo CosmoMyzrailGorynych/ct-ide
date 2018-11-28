@@ -83,7 +83,7 @@
             this.vspeed *= multiplier;
         }
         get direction() {
-            return (Math.atan2(this.hspeed, this.vspeed) * -180 / Math.PI + 360) % 360;
+            return (Math.atan2(this.vspeed, this.hspeed) * -180 / Math.PI + 360) % 360;
         }
         set direction(value) {
             var speed = this.speed;
@@ -103,8 +103,6 @@
         }
         move() {
             // performs movement step with Copy `o`
-            this.xprev = this.x;
-            this.yprev = this.y;
             if (this.gravity) {
                 this.hspeed += this.gravity * ct.delta * Math.cos(this.gravityDir*Math.PI/-180);
                 this.vspeed += this.gravity * ct.delta * Math.sin(this.gravityDir*Math.PI/-180);
