@@ -34,11 +34,11 @@
             if (dx) {
                 hashes.push(`${x+dx}:${y}`);
                 if (dy) {
-                    hashes.push(`${x+dx}:${y+dx}`);
+                    hashes.push(`${x+dx}:${y+dy}`);
                 }
             }
             if (dy) {
-                hashes.push(`${x}:${y+dx}`);
+                hashes.push(`${x}:${y+dy}`);
             }
             return hashes;
         },
@@ -264,12 +264,6 @@
                     continue;
                 }
                 for (let i = 0, l = array.length; i < l; i++) {
-                    if (array[i].kill || array[i]._destroyed) {
-                        // what are you and how did u get there? go away
-                        array.splice(i, 1);
-                        l--;
-                        continue;
-                    }
                     if (array[i] !== me && (!ctype || array[i].$ctype === ctype)) {
                         if (ct.place.collide(me, array[i])) {
                             me.x = oldx;
@@ -308,12 +302,6 @@
                     continue;
                 }
                 for (let i = 0, l = array.length; i < l; i++) {
-                    if (array[i].kill || array[i]._destroyed) {
-                        // what are you and how did u get there? go away
-                        array.splice(i, 1);
-                        l--;
-                        continue;
-                    }
                     if (array[i].type === type && array[i] !== me && ct.place.collide(me, array[i])) {
                         me.x = oldx;
                         me.y = oldy;
