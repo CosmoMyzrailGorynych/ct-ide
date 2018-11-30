@@ -74,14 +74,32 @@ main-menu.flexcol
                 spaces: 2  
             }).then(() => {
                 alertify.success(languageJSON.common.savedcomm, "success", 3000);
+                this.saveRecoveryDebounce();
+                fs.remove(sessionStorage.projdir + '.ict.recovery')
+                .then(() => console.log())
+                .catch(console.error);
                 glob.modified = false;
             })
             .catch(alertify.error);
         };
+        this.saveRecovery = () => {
+            fs.outputJSON(sessionStorage.projdir + '.ict.recovery', currentProject, {
+                spaces: 2
+            });
+            this.saveRecoveryDebounce();
+        };
+        this.saveRecoveryDebounce = debounce(this.saveRecovery, 1000 * 60 * 5);
         window.signals.on('saveProject', () => {
             this.saveProject();
         });
-
+        this.saveRecoveryDebounce();
+        this.on('mount', () => {
+            keymage('ctrl-s', this.saveProject);
+        });
+        this.on('unmount', () => {
+            keymage.unbind('ctrl-s', this.saveProject);
+        });
+ 
         const nstatic = require('node-static');
         const exec = path.dirname(process.execPath).replace(/\\/g,'/');
         const fileServer = new nstatic.Server(path.join(exec, '/export/'), {

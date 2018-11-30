@@ -128,15 +128,7 @@ project-selector
          */
         this.loadRecentProject = e => {
             var projectPath = e.item.project;
-            fs.readJSON(projectPath, (err, projectData) => {
-                if (err) {
-                    alertify.error(languageJSON.common.notfoundorunknown);
-                    return;
-                }
-                sessionStorage.projdir = path.dirname(projectPath) + path.sep + path.basename(projectPath, '.ict');
-                sessionStorage.projname = path.basename(projectPath);
-                this.loadProject(projectData);
-            });
+            this.checkRecoveryAndLoad(projectPath);
         };
         this.adapter = project => {
             var version = project.ctjsVersion || '0.2.0';
@@ -251,30 +243,71 @@ project-selector
         };
         
         /**
+         * Checks file format and loads it
+         */
+        this.loadProjectFile = proj => {
+            fs.readJSON(proj, (err, projectData) => {
+                if (err) {
+                    alertify.error(err);
+                    return;
+                }
+                if (!projectData) {
+                    alertify.error(languageJSON.common.wrongFormat);
+                    return;
+                }
+                this.loadProject(projectData);
+            });
+        };
+        /**
          * Событие открытия файла через проводник
          */
         this.openProjectFind = e => {
             var fe = this.refs.fileexternal,
                 proj = fe.value;
             if (path.extname(proj).toLowerCase() === '.ict') {
-                fs.readJSON(proj, (err, projectData) => {
-                    if (err) {
-                        alertify.error(err);
-                        return;
-                    }
-                    if (!projectData) {
-                        alertify.error(languageJSON.common.wrongFormat);
-                        return;
-                    }
-                    console.log(projectData);
-                    sessionStorage.projname = path.basename(proj);
-                    sessionStorage.projdir = path.dirname(proj) + path.sep + path.basename(proj, '.ict');
-                    this.loadProject(projectData);
-                });
+                this.checkRecoveryAndLoad(proj);
+                sessionStorage.projname = path.basename(proj);
+                sessionStorage.projdir = path.dirname(proj) + path.sep + path.basename(proj, '.ict');
             } else {
                 alertify.error(languageJSON.common.wrongFormat);
             }
             fe.value = '';
+        };
+        this.checkRecoveryAndLoad = proj => {
+            sessionStorage.projname = path.basename(proj);
+            sessionStorage.projdir = path.dirname(proj) + path.sep + path.basename(proj, '.ict');
+                    
+            fs.stat(proj + '.recovery', (err, stat) => {
+                if (!err && stat.isFile()) {
+                    var targetStat = fs.statSync(proj);
+                    alertify
+                    .okBtn(this.voc.recovery.loadRecovery)
+                    .cancelBtn(this.voc.recovery.loadTarget)
+                    /* {0} — target file date
+                       {1} — target file state (newer/older)
+                       {2} — recovery file date
+                       {3} — recovery file state (newer/older)
+                    */
+                    .confirm(this.voc.recovery.message
+                        .replace('{0}', targetStat.mtime.toLocaleString())
+                        .replace('{1}', targetStat.mtime < stat.mtime? this.voc.recovery.older : this.voc.recovery.newer)
+                        .replace('{2}', stat.mtime.toLocaleString())
+                        .replace('{3}', stat.mtime < targetStat.mtime? this.voc.recovery.older : this.voc.recovery.newer)
+                    )
+                    .then(e => {
+                        if (e.buttonClicked === 'ok') {
+                            this.loadProjectFile(proj + '.recovery');
+                        } else {
+                            this.loadProjectFile(proj);
+                        }
+                        alertify
+                        .okBtn(window.languageJSON.common.ok)
+                        .cancelBtn(window.languageJSON.common.cancel);
+                    });
+                } else {
+                    this.loadProjectFile(proj);
+                }
+            });
         };
 
         // Checking for updates
