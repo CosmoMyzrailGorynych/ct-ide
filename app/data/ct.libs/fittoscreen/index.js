@@ -6,10 +6,10 @@
     var oldWidth, oldHeight;
     var manageViewport = function (room) {
         room = room || ct.room;
-        room.x -= (room.width - oldWidth) / 2;
-        room.y -= (room.height - oldHeight) / 2;
+        room.x -= (width - oldWidth) / 2;
+        room.y -= (height - oldHeight) / 2;
     };
-    var resize = function(exactRoom) {
+    var resize = function() {
         width = window.innerWidth;
         height = window.innerHeight;
         if (scaleOnly) {
@@ -22,22 +22,17 @@
             canv.style.left = (width - ct.width) / 2 + 'px';
             canv.style.top = (height - ct.height) / 2 + 'px';
         } else {
-            var room;
-            if (exactRoom && exactRoom.toString().indexOf('Event') !== -1) {
-                room = ct.rooms.current;
-            } else {
-                room = exactRoom || ct.rooms.current;
-            }
+            var {room} = ct;
             if (!room) {
                 return;
             }
-            oldWidth = room.width;
-            oldHeight = room.height;
-            ct.pixiApp.renderer.resize(width, height);
+            oldWidth = ct.width;
+            oldHeight = ct.height;
             for (const bg of ct.types.list.BACKGROUND) {
                 bg.width = width;
                 bg.height = height;
             }
+            ct.pixiApp.renderer.resize(width, height);
             if (doManageViewport) {
                 manageViewport(room);
             }

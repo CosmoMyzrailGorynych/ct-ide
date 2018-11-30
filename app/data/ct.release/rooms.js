@@ -1,9 +1,8 @@
-/* global Copy */
-
 (function () {
     class Room extends PIXI.Container {
         constructor(template) {
             super();
+            this.x = this.y = 0;
             this.uid = 0;
             this.follow = this.borderx = this.bordery = 0;
             this.tileLayers = [];
