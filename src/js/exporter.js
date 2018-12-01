@@ -83,8 +83,8 @@
         let res = 'PIXI.loader';
         let registry = {};
         const Packer = require('maxrects-packer');
-        const atlasWidth = 1024,
-            atlasHeight = 1024; // TODO: make configurable
+        const atlasWidth = 2048,
+            atlasHeight = 2048;
         const pack = new Packer(atlasWidth, atlasHeight, 1);
         pack.addArray(blocks);
         pack.bins.forEach((bin, binInd) => {
