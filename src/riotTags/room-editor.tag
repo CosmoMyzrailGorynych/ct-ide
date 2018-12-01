@@ -431,11 +431,23 @@ room-editor.panel.view
                             }
                         }
                     } else if (hybrid[i].graph !== -1) { // это слой-фон
+                        if (!('extends' in hybrid[i])) {
+                            hybrid[i].extends = {};
+                        }
+                        let scx = hybrid[i].extends.scaleX || 1,
+                            scy = hybrid[i].extends.scaleY || 1,
+                            shx = hybrid[i].extends.shiftX || 0,
+                            shy =  hybrid[i].extends.shiftY || 0;
+                        canvas.x.save();
                         canvas.x.fillStyle = canvas.x.createPattern(glob.graphmap[hybrid[i].graph], 'repeat');
+                        canvas.x.scale(scx, scy);
+                        canvas.x.translate(shx, shy);
                         canvas.x.fillRect(
-                            this.xToRoom(0), this.yToRoom(0),
-                            canvas.width / this.zoomFactor, canvas.height / this.zoomFactor
+                            this.xToRoom(0) / scx, this.yToRoom(0) / scy,
+                            canvas.width / scx / this.zoomFactor - shx / scx,
+                            canvas.height / scy / this.zoomFactor - shy / scy
                         );
+                        canvas.x.restore();
                     }
                 }
             }

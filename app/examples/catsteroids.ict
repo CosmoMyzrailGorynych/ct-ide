@@ -73,7 +73,9 @@
       "imgWidth": 256,
       "imgHeight": 256,
       "r": 1,
-      "uid": "3935eebf-4e66-456f-9ca8-e2dc1d6a9383"
+      "uid": "3935eebf-4e66-456f-9ca8-e2dc1d6a9383",
+      "tiled": true,
+      "lastmod": 1543633813674
     },
     {
       "name": "Laser_Simple_Blue",
@@ -1050,7 +1052,7 @@
   "rooms": [
     {
       "name": "InGame",
-      "oncreate": "this.score = 0;\n\nthis.scoreLabel = new PIXI.Text('Score: ' + this.score, ct.styles.get('ScoreText'));\nthis.scoreLabel.x = this.scoreLabel.y = 20;\nthis.addChild(this.scoreLabel);\n\nthis.shipIcons = [];\n// Draw small ship icons in a top-right corner\nfor (var i = 0; i < 3; i++) {\n    var icon = new PIXI.Sprite(ct.res.getTexture('PlayerShip_Blue', 0));\n    icon.x = ct.width - 32 - i*48;\n    icon.y = 32;\n    icon.scale.x = icon.scale.y = 0.3;\n    this.addChild(icon);\n    this.shipIcons.push(icon);\n}",
+      "oncreate": "this.score = 0;\n\nthis.scoreLabel = new PIXI.Text('Score: ' + this.score, ct.styles.get('ScoreText'));\nthis.scoreLabel.x = this.scoreLabel.y = 20;\nthis.scoreLabel.depth = 100;\nthis.addChild(this.scoreLabel);\n\nthis.shipIcons = [];\n// Draw small ship icons in a top-right corner\nfor (var i = 0; i < 3; i++) {\n    var icon = new PIXI.Sprite(ct.res.getTexture('PlayerShip_Blue', 0));\n    icon.x = ct.width - 32 - i*48;\n    icon.y = 32;\n    icon.scale.x = icon.scale.y = 0.3;\n    icon.depth = 100;\n    this.addChild(icon);\n    this.shipIcons.push(icon);\n}",
       "onstep": "",
       "ondraw": "this.scoreLabel.text = 'Score: ' + this.score;\n\nif (ct.types.list.Player_Blue.length) {\n    for (var i = 0; i < 3; i++) {\n        this.shipIcons[i].visible = ct.types.list.Player_Blue[0].lives > i;\n    }\n}",
       "onleave": "",
@@ -1059,7 +1061,10 @@
       "backgrounds": [
         {
           "depth": "-20",
-          "graph": "3935eebf-4e66-456f-9ca8-e2dc1d6a9383"
+          "graph": "3935eebf-4e66-456f-9ca8-e2dc1d6a9383",
+          "extends": {
+            "movementY": 1
+          }
         }
       ],
       "layers": [
@@ -1080,7 +1085,7 @@
         }
       ],
       "uid": "2e5bf702-9eac-4fef-8282-07d2dd0a9bac",
-      "lastmod": 1543395456360,
+      "lastmod": 1543633616853,
       "grid": 50,
       "thumbnail": 1,
       "gridX": 50,
@@ -1103,7 +1108,10 @@
       "backgrounds": [
         {
           "depth": 0,
-          "graph": "3935eebf-4e66-456f-9ca8-e2dc1d6a9383"
+          "graph": "3935eebf-4e66-456f-9ca8-e2dc1d6a9383",
+          "extends": {
+            "movementY": 1
+          }
         }
       ],
       "layers": [
@@ -1125,7 +1133,7 @@
       ],
       "uid": "6c75cdb8-cfb4-4dcc-887a-f76ae98b5499",
       "grid": 64,
-      "lastmod": 1543397766946,
+      "lastmod": 1543633624126,
       "thumbnail": 2,
       "gridX": 64,
       "gridY": 64,
@@ -1147,7 +1155,10 @@
       "backgrounds": [
         {
           "depth": 0,
-          "graph": "3935eebf-4e66-456f-9ca8-e2dc1d6a9383"
+          "graph": "3935eebf-4e66-456f-9ca8-e2dc1d6a9383",
+          "extends": {
+            "movementY": 1
+          }
         }
       ],
       "layers": [
@@ -1169,7 +1180,7 @@
       ],
       "uid": "cc1e53b3-f7e6-48fe-9716-b05877538e52",
       "grid": 64,
-      "lastmod": 1543398180413,
+      "lastmod": 1543633820470,
       "thumbnail": 3,
       "gridX": 64,
       "gridY": 64,

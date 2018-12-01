@@ -128,21 +128,31 @@
         }
     }
     class Background extends PIXI.extras.TilingSprite {
-        constructor(bgName, frame, depth) {
+        constructor(bgName, frame, depth, exts) {
             super(ct.res.getTexture(bgName, frame || 0), ct.width, ct.height);
             ct.types.list.BACKGROUND.push(this);
             this.depth = depth;
-            this.uvTransform.clampMargin = 1;
-            this.uvTransform.update(true);
+            this.shiftX = this.shiftY = this.movementX = this.movementY = 0;
+            this.parallaxX = this.parallaxY = 1;
+            if (exts) {
+                ct.u.extend(this, exts);
+            }
+            if (this.scaleX) {
+                this.tileScale.x = Number(this.scaleX);
+            }
+            if (this.scaleY) {
+                this.tileScale.y = Number(this.scaleY);
+            }
         }
         onStep() {
-            void 0;
+            this.shiftX += ct.delta * this.movementX;
+            this.shiftY += ct.delta * this.movementY;
         }
         onDraw() {
             this.x = ct.room.x;
             this.y = ct.room.y;
-            this.tilePosition.x = -this.x;
-            this.tilePosition.y = -this.y;
+            this.tilePosition.x = -this.x*this.parallaxX + this.shiftX;
+            this.tilePosition.y = -this.y*this.parallaxY + this.shiftY;
         }
         static onCreate() {
             void 0;

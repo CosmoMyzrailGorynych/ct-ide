@@ -259,6 +259,20 @@
         "create": "Добавить",
         "makestarting": "Сделать стартовой комнатой"
     },
+    "roombackgrounds": {
+        "add": "Добавить фон",
+        "depth": "Глубина:",
+        "movement": "Скорость перемещения (по X, Y):",
+        "parallax": "Параллакс (по X, Y):",
+        "scale": "Размер (по X, Y):",
+        "shift": "Сдвиг (по X, Y):"
+    },
+    "roomtiles": {
+        "moveTileLayer": "Переместить на другую глубину",
+        "show": "Показать слой",
+        "hide": "Спрятать слой",
+        "findTileset": "Найти тайлсет"
+    },
     "roomview": {
         "name": "Имя:",
         "width": "Ширина вида:",
@@ -285,10 +299,13 @@
         "draw": "Прорисовка",
         "newdepth": "Новая глубина:",
         "deletecopy": "Удалить копию {0}",
+        "deletetile": "Удалить плитку",
+        "deletetiles": "Удалить плитки",
         "changecopyscale": "Изменить размер",
         "shiftcopy": "Указать координаты",
-        "deletetile": "Удалить тайл",
-        "findTileset": "Найти тайлсет"
+        "findTileset": "Найти тайлсет",
+        "movetilestolayer": "Переместить в другой слой",
+        "shifttiles": "Сместить плитки"
     },
     "notepad" : {
         "local": "Блокнот проекта",

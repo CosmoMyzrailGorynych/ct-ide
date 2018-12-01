@@ -261,7 +261,12 @@
         "makestarting": "Set as starting room"
     },
     "roombackgrounds": {
-        "add": "Add a Background"
+        "add": "Add a Background",
+        "depth": "Depth:",
+        "movement": "Movement speed (X, Y):",
+        "parallax": "Parallax (X, Y):",
+        "scale": "Scaling (X, Y):",
+        "shift": "Shift (X, Y):"
     },
     "roomtiles": {
         "moveTileLayer": "Move to a new depth",

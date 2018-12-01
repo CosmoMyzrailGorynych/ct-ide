@@ -113,32 +113,39 @@ room-editor
         visibility hidden
 
 .room-editor-Backgrounds
-    padding 0.5em
+    &.tabbed
+        padding 0.5rem
     ul
         margin 0
         padding 0
     .bg
         list-style none
-        height 64px
         padding 0.3em 0.8em
         border-radius br
-        border 1px solid bl
-        line-height 64px
+        border 1px solid bd
         margin-bottom 0.2em
         img
-            float right
+            float left
             width 64px
             height 64px
             border-radius br
             cursor pointer
-        span
-            cursor pointer
-            border-bottom 1px dotted bl
-            width 6em
-            line-height 1
-            display inline-block
+            margin-right 1rem
+        & > span
+            display block
             vertical-align middle
             margin-top 1em
+            span
+                cursor pointer
+                {trans}
+                float right
+                margin-left 0.5rem
+            .active
+                color act
+        label + label
+            margin-top 0
+        .fifty
+            padding 0.5rem 0.25rem
 
 .room-editor-Tiles
     canvas
