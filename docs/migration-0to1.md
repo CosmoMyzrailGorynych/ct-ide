@@ -2,7 +2,9 @@
 
 Version 1.0 is slightly different from 0.5.2 and earlier versions of ct.js. These changes include movement and, at its bigger part, drawing. Here are some tips and examples on how to update your 0.x project to 1.x.
 
-## Movement
+## General changes
+
+### Movement
 
 Movement is generally the same, though you should note, that some variables are now renamed, and their older variants are deprecated and work a bit slower:
 
@@ -49,8 +51,9 @@ It is not necessary, yet recommended, as it helps to provide consistent movement
 
 `this.move();` utilizes `ct.delta`, so the default movement system will be consistent on every framerate by default.
 
-## Transformations
-Writing `this.transform = true;` will break your game now (C`annot create property '_parentID' on boolean 'true'`), as `transform` is now an object.
+### Transformations (`Cannot create property '_parentID' on boolean 'true'`)
+
+Writing `this.transform = true;` will break your game now, as `transform` is now an object.
 
 Instead of writing this:
 
@@ -71,11 +74,30 @@ this.rotation = 45;
 this.alpha = 0.5;
 ```
 
-## Drawing text labels
+### View boundaries
 
-First off: you can't directly draw in the Draw event now. Instead, you should create an object to draw (e.g. in the On Create event), and add it to your room or attach to an object.
+Instead of `ct.room.width` and `ct.room.height` use `ct.width` and `ct.height` only. These are different concepts now, and `ct.room.width` and `ct.room.height` changes over time.
 
-So, instead of:
+### Timers
+Instead of:
+
+```js
+this.shootTimer--;
+```
+
+Better write:
+
+```js
+this.shootTimer -= ct.delta;
+```
+
+## Drawing
+
+First off: you can't directly draw in the Draw event now. Instead, you should create an object to draw (e.g. in the On Create event), and add it to your room or attach to an object, forming some kind of a widget.
+
+### Drawing text labels
+
+Instead of:
 
 ```js
 ct.styles.set('ScoreText');
@@ -97,19 +119,64 @@ And update the label in the Draw event:
 this.scoreLabel.text = 'Score: ' + this.score;
 ```
 
-## Timers
-Instead of:
+### Drawing geometry
+
+For this, use [PIXI.Graphics](https://pixijs.download/release/docs/PIXI.Graphics.html). Its API is similar to HTMLCanvas API, and one PIXI.Graphics object can contain more than one shape.
+
+Example (On Create event):
 
 ```js
-this.shootTimer--;
+var overlay = new PIXI.Graphics();
+overlay.beginFill(0x5FCDE4);
+overlay.drawRect(0, 0, 59, 48);
+overlay.endFill();
+overlay.alpha = 0.65;
+
+this.addChild(overlay);
 ```
 
-Better write:
+### Drawing Healthbars, Mana Bars, etc.
+
+For these, consider using built-in [9-slice scaling](https://en.wikipedia.org/wiki/9-slice_scaling). You should use an image that can be stretched horizontally and/or vertically, like this:
+
+![](./images/migrationBarSource.png)
+
+Add this to your On Create code:
 
 ```js
-this.shootTimer -= ct.delta;
+this.healthBar = new PIXI.mesh.NineSlicePlane(
+    ct.res.getTexture('Healthbar', 0),
+    8, 8, 8, 16); /* this can be also written in one line */
+this.addChild(this.healthBar);
+this.healthBar.x = this.healthBar.y = 32; /* where to place this bar */
+this.healthBar.height = 64;
+this.healthBar.width = ct.game.health * 2; // Assuming that the max health is 100 and you want 100×2 = 200px wide bar
 ```
 
-## View boundaries
+And update it each step with this code:	
 
-Instead of `ct.room.width` and `ct.room.height` use `ct.width` and `ct.height` only. These are different concepts now, and `ct.room.width` and `ct.room.height` changes over time.
+```js
+this.healthBar.width = ct.game.health * 2;
+```
+
+![](./images/migrationBars.gif)
+
+Constants `8, 8, 8, 16` tell which areas should not be stretched, in this order: on the left side, on the top, on the right and on the bottom.
+
+Backgrounds for these bars can be made in the same way.
+
+### Drawing Static Images
+
+Two ways to do that exist:
+
+1. Creating a new type that will display the needed image;
+2. Or creating a PIXI.Sprite and adding it to the room (or to the object).
+
+The second approach can be made in this way:
+
+```js
+this.coinIcon = new PIXI.Sprite(ct.res.getTexture('coinGold', 0));
+this.coinIcon.x = 20;
+this.coinIcon.y = this.y + 35;
+this.addChild(this.coinIcon);
+```
