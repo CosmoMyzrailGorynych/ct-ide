@@ -201,20 +201,21 @@
       "marginy": 0,
       "offx": 0,
       "offy": 0,
-      "origname": "i7.png",
+      "origname": "ifd9d7012-6826-4368-8fe5-0385b72bc902.png",
       "shape": "rect",
       "left": 0,
-      "right": 256,
+      "right": 2048,
       "top": 0,
-      "bottom": 256,
+      "bottom": 2048,
       "frames": 1,
       "width": 256,
       "height": 256,
       "imgWidth": 256,
       "imgHeight": 256,
-      "lastmod": 1522391871116,
+      "lastmod": 1543637685498,
       "uid": "fd9d7012-6826-4368-8fe5-0385b72bc902",
-      "tiled": true
+      "tiled": true,
+      "source": "/home/comigo/Загрузки/platformer-art-complete-pack-0/Base pack/bg.png"
     },
     {
       "name": "Player",
@@ -418,7 +419,7 @@
       "name": "Coin",
       "depth": 0,
       "oncreate": "",
-      "onstep": "if (ct.place.meet(this, this.x, this.y, 'Player')) {\n    this.kill = true;\n    ct.sound.spawn(ct.random.dice('Coin_01', 'Coin_02', 'Coin_03'));\n    ct.room.coins ++;\n}",
+      "onstep": "if (ct.place.meet(this, this.x, this.y, 'Player')) {\n    this.kill = true;\n    ct.sound.spawn(ct.random.dice('Coin_01', 'Coin_02', 'Coin_03'));\n    ct.room.coins ++;\n    ct.room.coinsCounter.text = ct.room.coins;\n}",
       "ondraw": "",
       "ondestroy": "",
       "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2",
@@ -520,7 +521,8 @@
         "weight": "900",
         "italic": false,
         "valign": "middle",
-        "halign": "left"
+        "halign": "left",
+        "lineHeight": 24
       },
       "fill": {
         "type": "0",
@@ -528,8 +530,9 @@
       },
       "stroke": {
         "color": "#CF7500",
-        "weight": 1
-      }
+        "weight": 2
+      },
+      "lastmod": 1543637142188
     },
     {
       "name": "OhNo",
@@ -547,7 +550,7 @@
         "type": "0",
         "color": "#257073"
       },
-      "lastmod": 1522467947101
+      "lastmod": 1543636698269
     },
     {
       "name": "OhNo_Small",
@@ -565,22 +568,23 @@
         "type": "0",
         "color": "#257073"
       },
-      "lastmod": 1522468322151
+      "lastmod": 1543636696741
     }
   ],
   "rooms": [
     {
       "name": "InGame",
-      "oncreate": "this.coins = 0;\n\nthis.follow = ct.types.list['Player'][0];\nthis.borderx = 400;\nthis.bordery = 300;",
+      "oncreate": "this.coins = 0;\n\nthis.follow = ct.types.list['Player'][0];\nthis.borderx = 400;\nthis.bordery = 300;\n\nthis.coinsCounter = new PIXI.Text(this.coins, ct.styles.get('CoinText'));\nthis.coinsCounter.depth = 100;\nthis.coinsCounter.x = this.x + ct.width - 70;\nthis.coinsCounter.y = this.y + 35;\nthis.coinsCounter.anchor.y = 0.5;\nthis.addChild(this.coinsCounter);\n\nthis.coinIcon = new PIXI.Sprite(ct.res.getTexture('coinGold', 0));\nthis.coinIcon.x = this.x + ct.width - 100;\nthis.coinIcon.y = this.y + 35;\nthis.addChild(this.coinIcon);",
       "onstep": "if (this.coins >= 33) {\n    ct.rooms.switch('RichScreen');\n}",
-      "ondraw": "/*ct.styles.set('CoinText');\n\nct.draw.image('coinGold', 0, this.x + ct.width - 100, this.y + 35);\nct.draw.text(this.coins, this.x + ct.width - 70, this.y + 35);\nct.draw.text(this.coins, this.x + ct.width - 70, this.y + 35, true);\n\nct.styles.reset();*/",
+      "ondraw": "this.coinsCounter.x = this.x + ct.width - 70;\nthis.coinsCounter.y = this.y + 35;\n\nthis.coinIcon.x = this.x + ct.width - 100;\nthis.coinIcon.y = this.y + 35;",
       "onleave": "",
       "width": 1024,
       "height": 700,
       "backgrounds": [
         {
           "depth": "-50",
-          "graph": "fd9d7012-6826-4368-8fe5-0385b72bc902"
+          "graph": "fd9d7012-6826-4368-8fe5-0385b72bc902",
+          "extends": {}
         }
       ],
       "layers": [
