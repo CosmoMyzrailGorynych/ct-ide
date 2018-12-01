@@ -1,3 +1,51 @@
+## v 1.0-next-1
+
+*1 December 2018*
+
+### ✨ New Features
+
+* ⚡ WebGL Renderer
+* ⚡ Ctrl+S and autosave/recovery feature
+* ⚡ Additional fields for backgrounds: movement, shifting, parallax and scaling
+
+### 💄 UI Improvements
+
+* ⚡ Show axis in graph editor
+* ⚡ Make graphic selection in type and room editors for backgrounds cancellable
+
+### 🐛 Bug Fixes
+
+* Fix memory leak when updating room with opened backgrounds tab
+* Fix memory leak on room switch in ct.place
+* Fix color pickers not returing their intermediate values to editors
+
+### 🍱 Demos and Stuff
+
+* Update example projects to v1.0-next-1
+
+### 🔥 Removed
+
+* Remove ct.draw.patch, ct.canvas
+
+### 📝 Docs
+
+* Add a migration guide
+* Add a note about tearing backgrounds when they are not marked as "Tiled"
+* Update Space Shooter tutorial
+* Update Platformer tutorial
+* 💥 Write docs for new ct.styles
+
+### 📄 License
+
+* Add nw-builder license notice (3rd party)
+
+### 👽 Misc
+
+* ✏️ Add 'A' to the font editor
+* ✏️ Fixing minor issues in Russian localization file
+* 💥 Changing ct.styles API to work with Pixi.js
+* 💥 Repurpose styles editor to making pixi's TextStyle
+
 ## v 0.5.1
 
 *7 November 2018*
