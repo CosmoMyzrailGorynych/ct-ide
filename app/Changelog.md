@@ -17,7 +17,7 @@
 
 * Fix memory leak when updating room with opened backgrounds tab
 * Fix memory leak on room switch in ct.place
-* Fix color pickers not returing their intermediate values to editors
+* Fix color pickers not returning their intermediate values to editors
 
 ### 🍱 Demos and Stuff
 
