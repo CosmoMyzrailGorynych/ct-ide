@@ -25,6 +25,8 @@ license-panel.modal.pad
                 (b) if you are below the age of majority in your jurisdiction,
                     that your legal guardian has reviewed and agrees to these Terms.
 
+            PERMISSION & CONDITIONS
+            -----------------------
             You are granted a world-wide, non-exclusive, perpetual (for the duration
             of the applicable copyright) license to use this software.
 
@@ -33,12 +35,21 @@ license-panel.modal.pad
             All rights, title and interest in and to all materials that are part of
             the Software (including, but not limited to, designs, text, graphics,
             pictures, video, information, applications, software, music, sound
-            and other files, and their selection and arrangement), except for
-            Your Content, program output that is based on Your Content, and 3rd party
-            libraries bundled with the Software are, as between the Author and you,
-            owned by the Author. You acknowledge and agree that you shall not acquire
-            any ownership rights whatsoever by downloading the Software.
+            and other files, and their selection and arrangement) are, as between
+            the Author and you, owned by the Author, except for:
+                (a) Your Content,
+                (b) program output that is based on Your Content, and
+                (c) 3rd party libraries bundled with the Software.
 
+            You acknowledge and agree that you shall not acquire
+            any Software ownership rights whatsoever by downloading the Software.
+
+            Nothing in this License constitutes or may be construed as permission to assert
+            or imply that You are, or that Your use of the Software is, connected with,
+            or sponsored, endorsed, or granted official status by, the Author.
+
+            YOUR CONTENT
+            ------------
             Any data, source code, graphics, sounds and their selection and arrangement,
             and any other materials added to the Software by you is “Your Content.”
             You represent and warrant that Your Content is original to you and that you
@@ -46,10 +57,13 @@ license-panel.modal.pad
             and the Author is not responsible for any material that you upload, post,
             or otherwise make available.
 
-            Nothing in this License constitutes or may be construed as permission to assert
-            or imply that You are, or that Your use of the Software is, connected with,
-            or sponsored, endorsed, or granted official status by, the Author.
+            TERMINATION
+            -----------
+            This license becomes null and void if any of the above conditions are
+            not met.
 
+            DISCLAIMER
+            ----------
             THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
             IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
             FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
