@@ -154,7 +154,7 @@ this.direction = 270;
 Here, we use built-in variables for moving. Manually editing coordinates is good for handling player's input, but for most tasks it is better to use these vars as they automate most of the things. Here, `this.speed` means the speed of the Copy, and `this.direction` refers to its direction.
 
 ::: tip
-In ct.js, direction is measured in degrees, moving from the left side counter-clockwise. 0° means left, 90° means up, 180° is for right, and 270° points to the bottom.
+In ct.js, direction is measured in degrees, moving from the left side counter-clockwise. 0° means right, 90° means up, 180° is for left, and 270° points to the bottom.
 
 ![](./images/tutSpaceShooter_Direction.png)
 :::
