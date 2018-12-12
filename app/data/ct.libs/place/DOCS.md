@@ -5,21 +5,21 @@ Checks whether there is a free place at (x;y) for a copy `me`. `ctype` is option
 Returns `true` if a place is free, and `false` otherwise.
 
 
-## ct.place.occupied(me, [x, y, ctype])
+## ct.place.occupied(me, [x, y, ctype], [multiple])
 
 The opposite for `ct.place.free`, but it also returns a Copy which blocks `me` at given coordinates. If `x` and `y` are skipped, the current coordinates of `me` will be used.
 
+If `multiple` is `true`, the function will find all the possible collisions, and will always return an array, which is either empty or filled with collided copies. Otherwise, it returns `false` or the first Copy which blocked `me`.
+
+## ct.place.meet(me, [x, y,] type, [multiple])
+
+Checks whether there is a collision between a Copy `me` and any of the Copies of a given `type`. If `x` and `y` are skipped, the current coordinates of `me` will be used.
+
+If `multiple` is `true`, the function will find all the possible collisions, and will always return an array, which is either empty or filled with collided copies. Otherwise, it returns `false` or the first Copy which blocked `me`.
 
 ## ct.place.collide(c1, c2)
 
 Returns `true` if there is a collision between `c1` and `c2` Copies.
-
-
-## ct.place.meet(me, [x, y,] type)
-
-Checks whether there is a collision between a Copy `me` and any of the Copies of a given `type`. If `x` and `y` are skipped, the current coordinates of `me` will be used.
-
-Returns `false` or the first Copy which blocked `me`.
 
 ## ct.place.tile(me, [x, y, depth])
 

@@ -241,22 +241,39 @@
             }
             return false;
         },
-        occupied(me, x, y, ctype) {
-            // ct.place.occupied(<me: Copy, x: Number, y: Number>[, ctype: String])
-            // Determines if the place in (x,y) is occupied. 
-            // Optionally can take 'ctype' as a filter for obstackles' collision group (not shape type)
+        /**
+         * Determines if the place in (x,y) is occupied. 
+         * Optionally can take 'ctype' as a filter for obstackles' collision group (not shape type)
+         * 
+         * @param {Copy} me The object to check collisions on
+         * @param {Number} [x] The x coordinate to check, as if `me` was placed there.
+         * @param {Number} [y] The y coordinate to check, as if `me` was placed there.
+         * @param {String} [ctype] The collision group to check against
+         * @param {Boolean} [multiple=false] If it is true, the function will return an array of all the collided objects.
+         *                                   If it is false (default), it will return a copy with the first collision
+         * @returns {Copy|Array<Copy>} The collided copy, or an array of all the detected collisions (if `multiple` is `true`)
+         */
+        occupied(me, x, y, ctype, multiple) {
             var oldx = me.x, 
                 oldy = me.y;
             let hashes;
-            if (y !== void 0) {
+            var results;
+            if (typeof y === 'number') {
                 me.x = x;
                 me.y = y;
                 hashes = ct.place.getHashes(me);
             } else {
                 hashes = me.$chashes || ct.place.getHashes(me);
                 ctype = x;
+                multiple = y;
+                if (typeof ctype === 'boolean') {
+                    multiple = ctype;
+                }
                 x = me.x;
                 y = me.y;
+            }
+            if (multiple) {
+                results = [];
             }
             for (const hash of hashes) {
                 const array = ct.place.grid[hash];
@@ -268,33 +285,47 @@
                         if (ct.place.collide(me, array[i])) {
                             me.x = oldx;
                             me.y = oldy;
-                            return array[i];
+                            if (!multiple) {
+                                return array[i];
+                            }
+                            results.push(array[i]);
                         }
                     }
                 }
             }
             me.x = oldx;
             me.y = oldy;
-            return false;
+            if (!multiple) {
+                return false;
+            }
+            return results;
         },
         free(me, x, y, ctype) {
             return !ct.place.occupied(me, x, y, ctype);
         },
-        meet(me, x, y, type) {
+        meet(me, x, y, type, multiple) {
             // ct.place.meet(<me: Copy, x: Number, y: Number>[, type: Type])
             // detects collision between a given copy and a copy of a certain type
             var oldx = me.x, 
                 oldy = me.y;
             let hashes;
-            if (y !== void 0) {
+            var results;
+            if (typeof y === 'number') {
                 me.x = x;
                 me.y = y;
                 hashes = ct.place.getHashes(me);
             } else {
                 hashes = me.$chashes || ct.place.getHashes(me);
                 type = x;
+                multiple = y;
+                if (typeof type === 'boolean') {
+                    multiple = type;
+                }
                 x = me.x;
                 y = me.y;
+            }
+            if (multiple) {
+                results = [];
             }
             for (const hash of hashes) {
                 const array = ct.place.grid[hash];
@@ -305,13 +336,19 @@
                     if (array[i].type === type && array[i] !== me && ct.place.collide(me, array[i])) {
                         me.x = oldx;
                         me.y = oldy;
-                        return array[i];
+                        if (!multiple) {
+                            return array[i];
+                        }
+                        results.push(array[i]);
                     }
                 }
             }
             me.x = oldx;
             me.y = oldy;
-            return false;
+            if (!multiple) {
+                return false;
+            }
+            return results;
         },
         tile(me, x, y, depth) {
             if (!me.shape || !me.shape.type) {
