@@ -27,6 +27,10 @@ Checks for a collision between a copy `me` and a tile layer of a given `depth`. 
 
 This method returns either `true` (a copy collides with a tile layer) or `false` (no collision).
 
+## ct.place.moveAlong(me, direction, maxLength, [ctype, stepSize])
+
+Moves a copy by `stepSize` in a given `direction` untill a `maxLength` is reached or a copy is next to another colliding copy. You can filter collided copies with `ctype`, and set precision with `stepSize` (default is `1`, which means pixel-by-pixel movement). This function is especially useful for side-view games and any fast-moving copies, as it allows precise movement without clipping or passing through surfaces.
+
 
 ## ct.place.nearest(x, y, type)
 

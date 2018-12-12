@@ -437,6 +437,29 @@
             }
             return false;
         },
+        moveAlong(me, dir, length, ctype, precision) {
+            if (typeof ctype === 'number') {
+                precision = ctype;
+                ctype = void 0;
+            }
+            precision = precision || 1;
+            if (precision < 0) {
+                precision *= -1;
+                dir += 180;
+            }
+            var dx = Math.cos(dir*Math.PI/-180) * precision,
+                dy = Math.sin(dir*Math.PI/-180) * precision;
+            for (let i = 0; i < length; i+= precision) {
+                const occupied = ct.place.occupied(me, me.x + dx, me.y + dy, ctype);
+                if (!occupied) {
+                    me.x += dx;
+                    me.y += dy;
+                } else {
+                    return occupied;
+                }
+            }
+            return false;
+        },
         go(me, x, y, speed, ctype) {
             // ct.place.go(<me: Copy, x: Number, y: Number, speed: Number>[, ctype: String])
             // tries to reach the target with a simple obstacle avoidance algorithm
