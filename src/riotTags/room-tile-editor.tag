@@ -22,7 +22,7 @@ room-tile-editor.room-editor-Tiles.tabbed.tall.flexfix
                 i.icon-shuffle
             span.act(title="{vocGlob.add}" onclick="{addTileLayer}")
                 i.icon-plus
-    graphic-selector(ref="tilesetPicker" if="{pickingTileset}" onselected="{onTilesetSelected}")
+    graphic-selector(ref="tilesetPicker" if="{pickingTileset}" oncancelled="{onTilesetCancel}" onselected="{onTilesetSelected}")
     script.
         this.parent.tileX = 0;
         this.parent.tileY = 0;
@@ -105,6 +105,10 @@ room-tile-editor.room-editor-Tiles.tabbed.tall.flexfix
         };
         this.switchTiledImage = e => {
             this.pickingTileset = true;
+        };
+        this.onTilesetCancel = e => {
+            this.pickingTileset = false;
+            this.update();
         };
         this.onTilesetSelected = graph => e => {
             this.parent.currentTileset = graph;
