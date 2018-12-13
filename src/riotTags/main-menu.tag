@@ -56,6 +56,7 @@ main-menu.flexcol
         this.changeTab = tab => e => {
             this.tab = tab;
             window.signals.trigger('globalTabChanged');
+            window.signals.trigger(`${tab}Focus`);
         };
         const gui = require('nw.gui'),
               win = gui.Window.get();

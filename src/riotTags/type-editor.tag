@@ -50,24 +50,35 @@ type-editor.panel.view.flexrow
         this.tab = 'typeoncreate';
         this.changeTab = tab => e => {
             this.tab = tab;
+            var editor;
             if (this.tab === 'typeonstep') {
-                this.typeonstep.moveCursorTo(0, 0);
-                this.typeonstep.clearSelection();
+                editor = this.typeonstep;
+            } else if (this.tab === 'typeondraw') {
+                editor = this.typeondraw;
+            } else if (this.tab === 'typeondestroy') {
+                editor = this.typeondestroy;
+            } else if (this.tab === 'typeoncreate') {
+                editor = this.typeoncreate;
+            }
+            editor.moveCursorTo(0,0);
+            editor.clearSelection();
+            this.focusEditor();
+        };
+        this.focusEditor = () => {
+            if (this.tab === 'typeonstep') {
                 this.typeonstep.focus();
             } else if (this.tab === 'typeondraw') {
-                this.typeondraw.moveCursorTo(0, 0);
-                this.typeondraw.clearSelection();
                 this.typeondraw.focus();
             } else if (this.tab === 'typeondestroy') {
-                this.typeondestroy.moveCursorTo(0, 0);
-                this.typeondestroy.clearSelection();
                 this.typeondestroy.focus();
             } else if (this.tab === 'typeoncreate') {
-                this.typeoncreate.moveCursorTo(0, 0);
-                this.typeoncreate.clearSelection();
                 this.typeoncreate.focus();
             }
         };
+        window.signals.on('typesFocus', this.focusEditor);
+        this.on('unmount', () => {
+            window.signals.off('typesFocus', this.focusEditor); 
+        });
         
         this.on('mount', () => {
             var editorOptions = {
