@@ -1,3 +1,7 @@
+Version 2.0.0
+
+- Support new KeyboardAPI
+
 Version 1.1.2
 
 - refactoring.
