@@ -37,8 +37,6 @@ project-selector
             i.icon-discord
         a(href="https://twitter.com/ctjsrocks" title="{voc.twitter}" onclick="{openExternal('https://twitter.com/ctjsrocks')}")
             i.icon-twitter
-        a(href="https://vk.com/ctjseditor" title="{voc.vkontakte}" onclick="{openExternal('https://vk.com/ctjseditor')}")
-            i.icon-vkontakte
         .inlineblock v{nw.App.manifest.version}.  
         a(href="https://ctjs.rocks/" onclick="{openExternal}")   {voc.homepage}.  
         .inlineblock(if="{newVersion}")   {newVersion}
