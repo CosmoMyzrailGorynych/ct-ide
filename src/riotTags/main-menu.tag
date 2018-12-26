@@ -67,7 +67,32 @@ main-menu.flexcol
             this.fullscreen = !this.fullscreen;
         };
         
+        this.refreshLatestProject = function() {
+            while (recentProjectsSubmenu.items.length) {
+                recentProjectsSubmenu.removeAt(0);
+            }
+            var lastProjects;
+            if (('lastProjects' in localStorage) && 
+                (localStorage.lastProjects !== '')) {
+                lastProjects = localStorage.lastProjects.split(';');
+            } else {
+                lastProjects = [];
+            }
+            for (const project of lastProjects) {
+                recentProjectsSubmenu.append(new gui.MenuItem({
+                    label: project,
+                    click: function () {
+                        if (!confirm(window.languageJSON.common.reallyexit)) {
+                            return false;
+                        }
+                        window.signals.trigger('resetAll');
+                        window.loadProject(project);
+                    }
+                }))
+            }
+        };
         this.ctClick = (e) => {
+            this.refreshLatestProject();
             catMenu.popup(e.clientX, e.clientY);
         };
         this.saveProject = () => {
@@ -225,6 +250,12 @@ main-menu.flexcol
                 window.signals.trigger('resetAll');
             }
         }));
+        var recentProjectsSubmenu = new nw.Menu();
+        catMenu.append(new gui.MenuItem({
+            label: window.languageJSON.intro.latest,
+            submenu: recentProjectsSubmenu
+        }));
+
         catMenu.append(new gui.MenuItem({type: 'separator'}));
 
         var languageSubmenu = new nw.Menu();

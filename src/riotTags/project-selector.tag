@@ -47,6 +47,11 @@ project-selector
         this.namespace = 'intro';
         this.mixin(window.riotVoc);
         this.visible = true;
+        window.signals.on('hideProjectSelector', () => {
+            this.visible = false;
+            this.parent.selectorVisible = false;
+            this.update();
+        })
         this.projectSplash = '/data/img/nograph.png';
         this.newVersion = false;
         
@@ -126,135 +131,7 @@ project-selector
          */
         this.loadRecentProject = e => {
             var projectPath = e.item.project;
-            this.checkRecoveryAndLoad(projectPath);
-        };
-        this.adapter = project => {
-            var version = project.ctjsVersion || '0.2.0';
-            version = version.split('.').map(string => Number(string));
-            if (version[0] < 1) {
-                if (version[1] < 3) {
-                    /* replace numerical IDs with RFC4122 version 4 UIDs */
-                    let startingRoom,
-                        graphmap = {},
-                        typemap = {};
-                    for (var graph of project.graphs) {
-                        var oldId = graph.uid;
-                        graph.uid = window.generateGUID();
-                        graphmap[graph.origname] = graph.uid;
-                    }
-                    for (var sound of project.sounds) {
-                        sound.uid = window.generateGUID();
-                    }
-                    for (var style of project.styles) {
-                        style.uid = window.generateGUID();
-                        if (style.fill && style.fill.type == 2) {
-                            style.fill.pattern = project.graphs.find(gr => gr.name === style.fill.patname).uid;
-                        }
-                    }
-                    for (var type of project.types) {
-                        var oldId = type.uid;
-                        type.uid = window.generateGUID();
-                        typemap[oldId] = type.uid;
-                        type.graph = graphmap[type.graph] || -1;
-                    }
-                    for (var room of project.rooms) {
-                        var oldId = room.uid; 
-                        room.thumbnail = room.uid;
-                        room.uid = window.generateGUID();
-                        if (project.startroom === oldId) {
-                            startingRoom = room.uid;
-                        }
-                        if (room.layers && room.layers.length) {
-                            for (var layer of room.layers) {
-                                for (var i = 0, l = layer.copies.length; i < l; i++) {
-                                    layer.copies[i].uid = typemap[layer.copies[i].uid];
-                                }
-                            }
-                        }
-                        if (room.backgrounds && room.backgrounds.length) {
-                            for (bg of room.backgrounds) {
-                                bg.graph = graphmap[bg.graph];
-                            }
-                        }
-                    }
-                    if (!startingRoom) {
-                        startingRoom = project.rooms[0].uid;
-                    }
-                    project.startroom = startingRoom;
-                }
-                let ps = project.settings;
-                if (version[1] < 5) {
-                    // Модуль ct.place теперь с конфигами
-                    if ('place' in project.libs) {
-                        project.libs.place.gridX = project.libs.place.gridY = 512;
-                    }
-                }
-                if (version[1] < 5 || (version[0] > 5 && !ps.version)) {
-                    // Появилась настройка версии
-                    ps.version = [0, 0, 0];
-                    ps.versionPostfix = '';
-                    // Появились настройки экспорта
-                    ps.export = {
-                        windows64: true,
-                        windows32: true,
-                        linux64: true,
-                        linux32: true,
-                        mac64: true,
-                        debug: false
-                    };
-                }
-            }
-            project.ctjsVersion = nw.App.manifest.version;
-        };
-        
-        /**
-         * Открывает проект и вызывает обновление всего приложения
-         */
-        this.loadProject = projectData => {
-            window.currentProject = projectData;
-            this.adapter(projectData);
-
-            fs.ensureDir(sessionStorage.projdir);
-            fs.ensureDir(sessionStorage.projdir + '/img');
-            fs.ensureDir(sessionStorage.projdir + '/snd');
-
-            if (this.lastProjects.indexOf(path.normalize(sessionStorage.projdir + '.ict')) !== -1) {
-                this.lastProjects.splice(this.lastProjects.indexOf(path.normalize(sessionStorage.projdir + '.ict')), 1);
-            }
-            this.lastProjects.unshift(path.normalize(sessionStorage.projdir + '.ict'));
-            if (this.lastProjects.length > 15) {
-                this.lastProjects.pop();
-            }
-            localStorage.lastProjects = this.lastProjects.join(';');
-            glob.modified = false;
-            
-            this.parent.selectorVisible = false;
-
-            if (currentProject.settings.title) {
-                document.title = currentProject.settings.title + ' — ct.js';
-            }
-
-            setTimeout(() => {
-                riot.update();
-                this.parent.update();
-            }, 0);
-        };
-        
-        /**
-         * Checks file format and loads it
-         */
-        this.loadProjectFile = proj => {
-            fs.readJSON(proj, (err, projectData) => {
-                if (err) {
-                    alertify.error(err);
-                    return;
-                }
-                if (!projectData) {
-                    alertify.error(languageJSON.common.wrongFormat);
-                    return;
-                }
-                this.loadProject(projectData);
-            });
+            window.loadProject(projectPath);
         };
         /**
          * Событие открытия файла через проводник
@@ -263,49 +140,13 @@ project-selector
             var fe = this.refs.fileexternal,
                 proj = fe.value;
             if (path.extname(proj).toLowerCase() === '.ict') {
-                this.checkRecoveryAndLoad(proj);
+                window.loadProject(proj);
                 sessionStorage.projname = path.basename(proj);
                 sessionStorage.projdir = path.dirname(proj) + path.sep + path.basename(proj, '.ict');
             } else {
                 alertify.error(languageJSON.common.wrongFormat);
             }
             fe.value = '';
-        };
-        this.checkRecoveryAndLoad = proj => {
-            sessionStorage.projname = path.basename(proj);
-            sessionStorage.projdir = path.dirname(proj) + path.sep + path.basename(proj, '.ict');
-                    
-            fs.stat(proj + '.recovery', (err, stat) => {
-                if (!err && stat.isFile()) {
-                    var targetStat = fs.statSync(proj);
-                    alertify
-                    .okBtn(this.voc.recovery.loadRecovery)
-                    .cancelBtn(this.voc.recovery.loadTarget)
-                    /* {0} — target file date
-                       {1} — target file state (newer/older)
-                       {2} — recovery file date
-                       {3} — recovery file state (newer/older)
-                    */
-                    .confirm(this.voc.recovery.message
-                        .replace('{0}', targetStat.mtime.toLocaleString())
-                        .replace('{1}', targetStat.mtime < stat.mtime? this.voc.recovery.older : this.voc.recovery.newer)
-                        .replace('{2}', stat.mtime.toLocaleString())
-                        .replace('{3}', stat.mtime < targetStat.mtime? this.voc.recovery.older : this.voc.recovery.newer)
-                    )
-                    .then(e => {
-                        if (e.buttonClicked === 'ok') {
-                            this.loadProjectFile(proj + '.recovery');
-                        } else {
-                            this.loadProjectFile(proj);
-                        }
-                        alertify
-                        .okBtn(window.languageJSON.common.ok)
-                        .cancelBtn(window.languageJSON.common.cancel);
-                    });
-                } else {
-                    this.loadProjectFile(proj);
-                }
-            });
         };
 
         // Checking for updates
