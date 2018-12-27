@@ -60,6 +60,7 @@ room-editor.panel.view
                 span {voc[room.gridX > 0? 'gridoff' : 'grid']}
         .center
             button#roomcenter(onclick="{roomToCenter}") {voc.tocenter}
+            span.aMouseCoord ({mouseX}:{mouseY})
     room-events-editor(if="{editingCode}" room="{room}")
     script.
         this.editingCode = false;
@@ -75,6 +76,7 @@ room-editor.panel.view
         
         this.room = this.opts.room;
 
+        this.mouseX = this.mouseY = 0;
         this.roomx = this.room.width / 2;
         this.roomy = this.room.height / 2;
         this.zoomFactor = 1;
@@ -224,6 +226,21 @@ room-editor.panel.view
             x.stroke();
         };
 
+        /**
+         * Updating mouse coordinates display at the bottom-left corner
+         */
+        this.updateMouseCoords = function (e) {
+            var dx = Math.floor(this.xToRoom(e.offsetX)),
+                dy = Math.floor(this.yToRoom(e.offsetY));
+            if (this.room.gridX === 0 || e.altKey) {
+                this.mouseX = dx;
+                this.mouseY = dy;
+            } else {
+                this.mouseX = Math.round(dx / this.room.gridX) * this.room.gridX;
+                this.mouseY = Math.round(dy / this.room.gridY) * this.room.gridY;
+            }
+        };
+
         /** Начинаем перемещение, или же показываем предварительное расположение новой копии */
         this.onCanvasMove = e => {
             if (this.dragging) {
@@ -238,6 +255,7 @@ room-editor.panel.view
             } else if (this.tab === 'roomtiles') {
                 this.onCanvasMoveTiles(e);
             }
+            this.updateMouseCoords(e);
         };
         
         /** При прокрутке колёсиком меняем фактор зума */
@@ -271,7 +289,8 @@ room-editor.panel.view
             }
             this.redrawGrid();
             this.refreshRoomCanvas(e);
-            this.update();
+            this.updateMouseCoords(e);
+            // this.update();
         };
         this.onCanvasContextMenu = e => {
             this.dragging = false;
