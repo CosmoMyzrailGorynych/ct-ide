@@ -76,11 +76,11 @@
         },
         "homepage": "Официальный сайт",
         "latestVersion": "Доступна версия $1",
+        "forgetProject": "Забыть этот проект",
         "browse": "Обзор…",
         "latest": "Последние проекты",
         "twitter": "Канал в Twitter",
-        "discord": "Сообщество в Discord",
-        "vkontakte": "Паблик во Вконтакте"
+        "discord": "Сообщество в Discord"
     },
     "licensepanel": {
         "tldr": [

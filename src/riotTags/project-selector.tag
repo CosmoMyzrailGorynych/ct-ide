@@ -14,7 +14,10 @@ project-selector
                         each="{project in lastProjects}" title="{requirePath.basename(project,'.json')}"
                         onclick="{updatePreview(project)}"
                         ondblclick="{loadRecentProject}"
-                    ) {project}
+                    ) 
+                        .toright
+                            i.icon-x(onclick="{forgetProject}" title="{voc.forgetProject}")
+                        span {project}
                 label.file.flexfix-footer
                     input(type="file" ref="fileexternal" accept=".ict" onchange="{openProjectFind}")
                     .button.wide.inline
@@ -127,12 +130,21 @@ project-selector
         };
         
         /**
-         * Открывает проект из списка последних проектов при двойном щелчке
+         * Opens a recent project when an item in the Recent Project list is double-clicked
          */
         this.loadRecentProject = e => {
             var projectPath = e.item.project;
             window.loadProject(projectPath);
         };
+        /**
+         * Removes a project from the recents list
+         */
+        this.forgetProject = e => {
+            var project = e.item.project;
+            this.lastProjects.splice(this.lastProjects.indexOf(project), 1);
+            localStorage.lastProjects = this.lastProjects.join(';');
+            e.stopPropagation();
+        }
         /**
          * Событие открытия файла через проводник
          */

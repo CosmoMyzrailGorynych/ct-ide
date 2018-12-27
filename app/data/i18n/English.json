@@ -76,11 +76,11 @@
         },
         "homepage": "Homepage",
         "latestVersion": "Version $1 is available",
+        "forgetProject": "Forget this project",
         "browse": "Browse",
         "latest": "Latest projects",
         "twitter": "Twitter channel",
-        "discord": "Discord community",
-        "vkontakte": "Vkontakte page"
+        "discord": "Discord community"
     },
     "licensepanel": {
         "tldr": [
