@@ -1,5 +1,7 @@
 (function (ct) {
     const loader = new PIXI.loaders.Loader();
+    const loadingLabel = ct.pixiApp.view.previousSibling,
+          loadingBar = loadingLabel.querySelector('.ct-aLoadingBar');
     ct.res = {
         graphsLoaded: 0,
         graphsError: 0,
@@ -34,6 +36,10 @@
         }
     };
     
+    PIXI.loader.onLoad.add(e => {
+        loadingLabel.setAttribute('data-progress', e.progress);
+        loadingBar.style.width = e.progress + '%';
+    });
     PIXI.loader.onComplete.add(() => {
         for (const graph in ct.res.registry) {
             const reg = ct.res.registry[graph];
@@ -49,6 +55,7 @@
                 reg.textures.push(texture);
             }
         }
+        loadingLabel.classList.add('hidden');
         setTimeout(() => {
             /*%start%*/
             ct.pixiApp.ticker.add(ct.loop);
