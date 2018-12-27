@@ -2235,7 +2235,8 @@
       "backgrounds": [
         {
           "depth": "-10",
-          "graph": "fd9d7012-6826-4368-8fe5-0385b72bc902"
+          "graph": "fd9d7012-6826-4368-8fe5-0385b72bc902",
+          "extends": {}
         }
       ],
       "layers": [
@@ -2356,6 +2357,6 @@
   ],
   "startroom": "b0f0ff4d-a155-4d68-a86e-5bb7ed8973ab",
   "scripts": [],
-  "ctjsVersion": "0.5.2",
+  "ctjsVersion": "1.0.0-next-1",
   "fonts": []
 }

@@ -16,3 +16,12 @@ Object.defineProperty(ct.types.Copy.prototype, 'ctype', {
         return this.$ctype;
     }
 });
+Object.defineProperty(ct.types.Copy.prototype, 'moveContinuous', {
+    value: function (ctype, precision) {
+        if (this.gravity) {
+            this.hspeed += this.gravity * ct.delta * Math.cos(this.gravityDir*Math.PI/-180);
+            this.vspeed += this.gravity * ct.delta * Math.sin(this.gravityDir*Math.PI/-180);
+        }
+        return ct.place.moveAlong(this, this.direction, this.speed, ctype, precision);
+    }
+});
