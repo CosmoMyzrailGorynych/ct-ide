@@ -431,10 +431,12 @@
             },
             success(message, click) {
                 _alertify.log(message, 'success', click);
+                soundbox.play('Success');
                 return this;
             },
             error(message, click) {
                 _alertify.log(message, 'error', click);
+                soundbox.play('Failure');
                 return this;
             },
             cancelBtn(label) {
