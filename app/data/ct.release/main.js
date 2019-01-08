@@ -35,6 +35,9 @@ ct.pixiApp = new PIXI.Application({
     antialias: ![/*@pixelatedrender@*/][0],
     roundPixels: [/*@pixelatedrender@*/][0]
 });
+if (!ct.pixiApp.renderer.options.antialias) {
+    PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
+}
 ct.stage = ct.pixiApp.stage;
 ct.pixiApp.renderer.autoResize = false;
 document.getElementById('ct').appendChild(ct.pixiApp.view);
