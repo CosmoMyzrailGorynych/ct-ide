@@ -57,7 +57,5 @@ room-type-picker.room-editor-TypeSwatches.tabbed.tall
             }
         };
         this.selectType = type => e => {
-            console.log(this.opts, type);
             this.parent.currentType = type;
-            //this.parent.update();
         };
