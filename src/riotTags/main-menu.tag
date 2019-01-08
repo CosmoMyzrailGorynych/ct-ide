@@ -109,9 +109,11 @@ main-menu.flexcol
             .catch(alertify.error);
         };
         this.saveRecovery = () => {
-            fs.outputJSON(sessionStorage.projdir + '.ict.recovery', currentProject, {
-                spaces: 2
-            });
+            if (currentProject) {
+                fs.outputJSON(sessionStorage.projdir + '.ict.recovery', currentProject, {
+                    spaces: 2
+                });
+            }
             this.saveRecoveryDebounce();
         };
         this.saveRecoveryDebounce = debounce(this.saveRecovery, 1000 * 60 * 5);
