@@ -15,6 +15,9 @@
                     super([PIXI.Texture.EMPTY]);
                 }
                 this.type = type;
+                if (t.extends) {
+                    ct.u.ext(this, t.extends);
+                }
             } else {
                 super();
             }

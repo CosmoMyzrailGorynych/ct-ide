@@ -152,6 +152,7 @@ modules-panel.panel.view
                 }
             }
             this.renderModule(moduleName)(e);
+            window.signals.trigger('modulesChanged');
             window.glob.modified = true;
         };
         this.renderModule = name => e => {

@@ -113,20 +113,6 @@
                       {g} = block.data,
                       img = window.glob.graphmap[g.uid];
                     atlas.x.drawImage(img, block.x+1, block.y+1);
-                /* if (g.tiled) {
-                    atlas.x.drawImage(img,
-                        0, 0, 1, img.height,
-                        block.x, block.y+1, 1, img.height); // vertical lines + corners
-                    atlas.x.drawImage(img, 
-                        img.width - 1, 0, 1, img.height,
-                        block.x + img.width + 1, block.y+1, 1, img.height);
-                    atlas.x.drawImage(img, 
-                        0, 0, img.width, 1,
-                        block.x + 1, block.y, img.width, 1); // horizontal lines
-                    atlas.x.drawImage(img, 
-                        0, img.height - 1, img.width, 1,
-                        block.x + 1, block.y + img.height + 1, img.width, 1);
-                }*/
                 // A multi-frame sprite
                 const keys = [];
                 for (var yy = 0; yy < g.grid[1]; yy++) {
@@ -498,7 +484,8 @@ ct.rooms.templates['${r.name}'] = {
             types += '    onStep: function () {\n' + type.onstep + '\n    },\n';
             types += '    onDraw: function () {\n' + type.ondraw + '\n    },\n';
             types += '    onDestroy: function () {\n' + type.ondestroy + '\n    },\n';
-            types += '    onCreate: function () {\n' + type.oncreate + '\n    }\n';
+            types += '    onCreate: function () {\n' + type.oncreate + '\n    },\n';
+            types += '    extends: ' + JSON.stringify(type.extends || {});
             types += '};\n';
             types += `ct.types.list['${type.name}'] = [];\n`;
         }
