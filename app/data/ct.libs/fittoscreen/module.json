@@ -1,25 +1,38 @@
 {
     "main": {
         "name": "Fit to Screen",
-        "version": "1.1.1",
+        "version": "2.0.0",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",
             "mail": "admin@nersta.ru"
         }]
     },
     "fields": [{
-        "name": "Just scale, no canvas resize",
-        "help": "This will not change variables `ct.width` and `ct.height` and will try to fit the drawing canvas to the screen. This may result in blank stripes around the canvas (aka letterboxing), or in blurry image. You can disable image smoothing in your project's settigs to mitigate the latter issue.",
-        "key": "scaleOnly",
-        "id": "scaleOnly",
-        "default": false,
-        "type": "checkbox"
-    }, {
-        "name": "Manage the view",
-        "help": "Whether to move the viewport so that the central point always stays in the center of the drawing canvas. Works only if \"Just scale\" is turned off.",
-        "key": "manageViewport",
-        "id": "manageViewport",
-        "default": false,
-        "type": "checkbox"
+        "name": "Mode",
+        "options": [{
+            "value": "fastScale",
+            "name": "Fast scaling with letterboxing",
+            "help": "This will not change variables `ct.width` and `ct.height` and will try to fit the drawing canvas to the screen. This may result in a blurry image, but you can disable image smoothing in your project's settigs."
+        }, {
+            "value": "expand",
+            "name": "Expand",
+            "help": "Expands the viewport, remaining the scale of the copies untouched"
+        }, {
+            "value": "expandViewport",
+            "name": "Expand, manage viewport",
+            "help": "Additionally moves the viewport so that the central point always stays in the center of the drawing canvas."
+        }, {
+            "value": "scaleFit",
+            "name": "Scaling with letterboxing",
+            "help": "Changes `ct.width` and `ct.height`, but also scales the room proportionally, ensuring maximum quality with the same look."
+        }, {
+            "value": "scaleFill",
+            "name": "Scaling without letterboxing",
+            "help": "The viewport will be fit into the resulting resolution and will take all the available space, but otherwise this mode mostly repeats the previous one."
+        }],
+        "key": "mode",
+        "id": "mode",
+        "default": "scaleCover",
+        "type": "radio"
     }]
 }

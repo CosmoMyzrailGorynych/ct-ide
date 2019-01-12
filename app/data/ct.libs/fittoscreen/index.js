@@ -1,9 +1,9 @@
 (function (ct) {
     var width,
         height,
-        [scaleOnly] = [/*%scaleOnly%*/],
-        [doManageViewport] = [/*%manageViewport%*/];
+        mode = '/*%mode%*/';
     var oldWidth, oldHeight;
+    var canv = ct.pixiApp.view;
     var manageViewport = function (room) {
         room = room || ct.room;
         room.x -= (width - oldWidth) / 2;
@@ -12,11 +12,10 @@
     var resize = function() {
         width = window.innerWidth;
         height = window.innerHeight;
-        if (scaleOnly) {
-            var kw = width / ct.width,
-                kh = height / ct.height,
-                k = Math.min(kw, kh),
-                canv = ct.pixiApp.view;
+        var kw = width / ct.viewWidth,
+            kh = height / ct.viewHeight,
+            k = Math.min(kw, kh);
+        if (mode === 'fastScale') {
             canv.style.transform = 'scale(' + k + ')';
             canv.style.position = 'absolute';
             canv.style.left = (width - ct.width) / 2 + 'px';
@@ -28,12 +27,31 @@
             }
             oldWidth = ct.width;
             oldHeight = ct.height;
-            for (const bg of ct.types.list.BACKGROUND) {
-                bg.width = width;
-                bg.height = height;
+            if (mode === 'expandViewport' || mode === 'expand') {
+                for (const bg of ct.types.list.BACKGROUND) {
+                    bg.width = width;
+                    bg.height = height;
+                }
             }
-            ct.pixiApp.renderer.resize(width, height);
-            if (doManageViewport) {
+            if (mode !== 'scaleFit') {
+                ct.pixiApp.renderer.resize(width, height);
+                if (mode === 'scaleFill') {
+                    for (const bg of ct.types.list.BACKGROUND) {
+                        bg.width = Math.ceil(ct.viewWidth * k);
+                        bg.height = Math.ceil(ct.viewHeight * k);
+                    }
+                }
+            } else {
+                ct.pixiApp.renderer.resize(Math.floor(ct.viewWidth * k), Math.floor(ct.viewHeight * k));
+                canv.style.position = 'absolute';
+                canv.style.left = (width - ct.width) / 2 + 'px';
+                canv.style.top = (height - ct.height) / 2 + 'px';
+            }
+            if (mode === 'scaleFill' || mode === 'scaleFit') {
+                room.scale.x = k;
+                room.scale.y = k;
+            }
+            if (mode === 'expandViewport') {
                 manageViewport(room);
             }
         }
