@@ -126,7 +126,7 @@ project-selector
                     }
                 });
             }, 0);
-            this.loadProject(projectData);
+            window.loadProject(path.join(way, codename + '.ict'));
         };
         
         /**

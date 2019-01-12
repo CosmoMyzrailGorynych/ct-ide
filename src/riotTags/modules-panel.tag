@@ -65,8 +65,18 @@ modules-panel.panel.view
                                 value="{window.currentProject.libs[currentModuleName][field.id]}" 
                                 onchange="{wire('window.currentProject.libs.' + currentModuleName + '.' + field.id)}"
                             )
+                            label.block(if="{field.type === 'radio'}" each="{option in field.options}")
+                                input(
+                                    type="radio"
+                                    value="{option.value}"
+                                    checked="{window.currentProject.libs[currentModuleName][field.id] === option.value}" 
+                                    onchange="{wire('window.currentProject.libs.' + currentModuleName + '.' + field.id)}"
+                                )
+                                |   {option.name}
+                                div(class="desc" if="{option.help}")
+                                    raw(ref="raw" content="{md.render(option.help)}")
                             input(
-                                if="{['checkbox', 'number', 'textfield'].indexOf(field.type) === -1}" 
+                                if="{['checkbox', 'number', 'textfield', 'radio'].indexOf(field.type) === -1}" 
                                 type="text"
                                 value="{window.currentProject.libs[currentModuleName][field.id]}" 
                                 onchange="{wire('window.currentProject.libs.' + currentModuleName + '.' + field.id)}"
