@@ -34,7 +34,6 @@
                         copy.scale.set(template.objects[i].tx || 1, template.objects[i].ty || 1);
                     }
                 }
-                ct.pixiApp.renderer.resize(template.width, template.height);
             }
             return this;
         }
@@ -91,7 +90,11 @@
                 ct.room = void 0;
             }
             ct.rooms.clear();
-            ct.rooms.current = ct.room = new Room(ct.rooms.templates[roomName]);
+            var template = ct.rooms.templates[roomName];
+            ct.viewWidth = template.width;
+            ct.viewHeight = template.height;
+            ct.pixiApp.renderer.resize(template.width, template.height);
+            ct.rooms.current = ct.room = new Room(template);
             ct.room.onCreate();
             ct.rooms.onCreate.apply(ct.room);
             /*%switch%*/

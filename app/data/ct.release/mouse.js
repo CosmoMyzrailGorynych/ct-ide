@@ -34,11 +34,11 @@ ct.mouse = {
 
 ct.mouse.listenermove = function(e) {
     var rect = ct.pixiApp.view.getBoundingClientRect();
-    ct.mouse.rx = (e.clientX - rect.left) * ct.width / rect.width;
-    ct.mouse.ry = (e.clientY - rect.top) * ct.height / rect.height;
+    ct.mouse.rx = (e.clientX - rect.left) * ct.viewWidth / rect.width;
+    ct.mouse.ry = (e.clientY - rect.top) * ct.viewHeight / rect.height;
     ct.mouse.x = ct.mouse.rx + ct.rooms.current.x;
     ct.mouse.y = ct.mouse.ry + ct.rooms.current.y;
-    if (ct.mouse.rx > 0 && ct.mouse.ry > 0 && ct.mouse.ry < ct.height && ct.mouse.rx < ct.width) {
+    if (ct.mouse.rx > 0 && ct.mouse.ry > 0 && ct.mouse.ry < ct.viewHeight && ct.mouse.rx < ct.viewWidth) {
         ct.mouse.inside = true;
     } else {
         ct.mouse.inside = false;

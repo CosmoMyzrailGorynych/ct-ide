@@ -91,10 +91,10 @@ ct.u = {
             ymin = Math.min(arg[1], arg[3]);
             ymax = Math.max(arg[1], arg[3]);
         } else {
-            xmin = arg.x - arg.shape.left;
-            xmax = arg.x + arg.shape.right;
-            ymin = arg.y - arg.shape.top;
-            ymax = arg.y + arg.shape.bottom;
+            xmin = arg.x - arg.shape.left * arg.scale.x;
+            xmax = arg.x + arg.shape.right * arg.scale.x;
+            ymin = arg.y - arg.shape.top * arg.scale.y;
+            ymax = arg.y + arg.shape.bottom * arg.scale.y;
         }
         return x >= xmin && y >= ymin && x <= xmax && y <= ymax;
     },
@@ -102,7 +102,7 @@ ct.u = {
         if (arg.splice) {
             return ct.u.pdc(x, y, arg[0], arg[1]) < arg[2];
         }
-        return ct.u.pdc(x, y, arg.x, arg.y) < arg.shape.r;
+        return ct.u.pdc(0, 0, (arg.x - x) / arg.scale.x, (arg.y - y) / arg.scale.y) < arg.shape.r;
     },
     ext (o1, o2, arr) {
         if (arr) {
