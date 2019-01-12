@@ -84,7 +84,20 @@ project-selector
             var projectData = {
                 ctjsVersion: nw.App.manifest.version,
                 notes: '/* empty */',
-                libs: {},
+                libs: {
+                    place: {
+                        gridX: 512,
+                        gridY: 512
+                    },
+                    fittoscreen: {
+                        mode: "scaleFit"
+                    },
+                    keyboard: {},
+                    'sound.howler': {},
+                    akatemplate: {
+                        csscss: "body {\n    background: #000;\n}"
+                    }
+                },
                 graphs: [],
                 types: [],
                 sounds: [],
