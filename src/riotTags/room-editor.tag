@@ -191,11 +191,16 @@ room-editor.panel.view
         /** При нажатии на канвас, если не выбрана копия, то начинаем перемещение */
         this.onCanvasPress = e => {
             this.mouseDown = true;
-            if ((this.currentType === -1 && this.tab !== 'roomtiles' && e.button === 0 && !e.ctrlKey) || e.button === 1) {
-                this.dragging = true;
-            }
             this.startx = e.offsetX;
             this.starty = e.offsetY;
+
+            if (this.tab === 'roomcopies' && this.onCanvasPressCopies(e)) {
+                return;
+            }
+            if ((this.currentType === -1 && !e.shiftKey && this.tab !== 'roomtiles' && e.button === 0 && !e.ctrlKey)
+            ||  e.button === 1) {
+                this.dragging = true;
+            }
         };
         /** и безусловно прекращаем перемещение при отпускании мыши */
         this.onCanvasMouseUp = e => {
@@ -209,8 +214,13 @@ room-editor.panel.view
             } else {
                 if (this.tab === 'roomtiles') {
                     this.onCanvasMouseUpTiles(e);
+                } else if (this.tab === 'roomcopies') {
+                    this.onCanvasMouseUpCopies(e);
                 }
             }
+            setTimeout(() => {
+                this.movingStuff = false;
+            }, 0);
         };
         this.drawDeleteCircle = e => {
             // Рисовка кружка для удаления копий
@@ -243,12 +253,12 @@ room-editor.panel.view
 
         /** Начинаем перемещение, или же показываем предварительное расположение новой копии */
         this.onCanvasMove = e => {
-            if (this.dragging) {
+            if (this.dragging && !this.movingStuff) {
                 // перетаскивание
                 this.roomx -= ~~(e.movementX / this.zoomFactor);
                 this.roomy -= ~~(e.movementY / this.zoomFactor);
                 this.refreshRoomCanvas(e);
-            } else if (e.shiftKey && this.mouseDown) { // если зажата мышь и клавиша Shift, то создавать больше копий/тайлов
+            } else if (e.shiftKey && this.mouseDown && (this.tab !== 'roomcopies' || this.currentType !== -1)) { // если зажата мышь и клавиша Shift, то создавать больше копий/тайлов
                 this.onCanvasClick(e);
             } else if (this.tab === 'roomcopies') {
                 this.onCanvasMoveCopies(e);
@@ -296,7 +306,11 @@ room-editor.panel.view
             this.dragging = false;
             this.mouseDown = false;
             if (this.tab === 'roomcopies') {
-                this.onCanvasContextMenuCopies(e);
+                if (this.selectedCopies && this.selectedCopies.length) {
+                    this.onCanvasContextMenuMultipleCopies(e);
+                } else {
+                    this.onCanvasContextMenuCopies(e);
+                }
             } else if (this.tab === 'roomtiles') {
                 if (this.selectedTiles && this.selectedTiles.length) {
                     this.onCanvasContextMenuMultipleTiles(e);
@@ -304,6 +318,8 @@ room-editor.panel.view
                     this.onCanvasContextMenuTiles(e);
                 }
             }
+            e.preventDefault();
+            return true;
         };
         
         // Позволяет переместить сразу все копии в комнате
@@ -350,6 +366,16 @@ room-editor.panel.view
             });
         };
         
+        this.resortRoom = () => {
+            // Сделаем массив слоёв фонов, тайлов и копий.
+            this.stack = this.room.copies.concat(this.room.backgrounds).concat(this.room.tiles);
+            this.stack.sort((a, b) => {
+                let depthA = a.depth || window.currentProject.types[glob.typemap[a.uid]].depth,
+                    depthB = b.depth || window.currentProject.types[glob.typemap[b.uid]].depth;
+                return depthA - depthB;
+            });
+        };
+        this.resortRoom();
         /** Прорисовка холста */
         this.refreshRoomCanvas = () => {
             if (this.forbidDrawing) {return;}
@@ -373,66 +399,11 @@ room-editor.panel.view
             canvas.x.translate(-this.roomx, -this.roomy);
             canvas.x.imageSmoothingEnabled = !currentProject.settings.pixelatedrender;
             
-            // Сделаем массив слоёв фонов, тайлов и копий. У копий приоритет
-            var hybrid = [];
-            hybrid = this.room.layers.concat(this.room.backgrounds).concat(this.room.tiles);
-            hybrid.sort((a, b) => {
-                if (a.depth - b.depth != 0) {
-                    return a.depth - b.depth;
-                } 
-                if (a.copies) {
-                    return 1;
-                }
-                if (a.tiles) {
-                    return -0.5;
-                }
-                return -1;
-            });
-            if (hybrid.length > 0) { // есть слои вообще?
+            if (this.stack.length > 0) { // есть слои вообще?
                 // копии
-                for (let i = 0, li = hybrid.length; i < li; i++) {
-                    if (hybrid[i].copies) { // Если есть поле с копиями, то это не слой-фон и не тайлы
-                        let layer = hybrid[i];
-                        for (let j = 0, lj = layer.copies.length; j < lj; j++) {
-                            let copy = layer.copies[j],
-                                type = window.currentProject.types[glob.typemap[copy.uid]];
-                            let graph, gra, w, h, ox, oy,
-                                grax, gray; // Центр рисовки графики
-                            if (type.graph != -1) {
-                                graph = glob.graphmap[type.graph];
-                                gra = glob.graphmap[type.graph].g;
-                                w = gra.width;
-                                h = gra.height;
-                                ox = gra.offx;
-                                oy = gra.offy;
-                                grax = gra.axis[0];
-                                gray = gra.axis[1];
-                            } else {
-                                graph = glob.graphmap[-1];
-                                w = h = 32;
-                                grax = gray = 16;
-                                ox = oy = 0;
-                            }
-                            if (copy.tx || copy.ty) {
-                                canvas.x.save();
-                                canvas.x.translate(copy.x - grax * (copy.tx || 1), copy.y - gray * (copy.ty || 1));
-                                canvas.x.scale(copy.tx || 1, copy.ty || 1);
-                                canvas.x.drawImage(
-                                    graph,
-                                    ox, oy, w, h,
-                                    0, 0, w, h
-                                );
-                                canvas.x.restore();
-                            } else {
-                                canvas.x.drawImage(
-                                    graph,
-                                    glob.graphmap[type.graph].g.offx, glob.graphmap[type.graph].g.offy, w, h,
-                                    copy.x - grax, copy.y - gray, w, h
-                                );
-                            }
-                        }
-                    } else if (hybrid[i].tiles) { // это слой с тайлами
-                        let layer = hybrid[i];
+                for (let i = 0, li = this.stack.length; i < li; i++) {
+                    if (this.stack[i].tiles) { // это слой с тайлами
+                        let layer = this.stack[i];
                         if (!layer.hidden) {
                             for (let tile of layer.tiles) {
                                 let w, h, x, y,
@@ -449,16 +420,16 @@ room-editor.panel.view
                                 );
                             }
                         }
-                    } else if (hybrid[i].graph !== -1) { // это слой-фон
-                        if (!('extends' in hybrid[i])) {
-                            hybrid[i].extends = {};
+                    } else if (this.stack[i].graph && this.stack[i].graph !== -1) { // это слой-фон
+                        if (!('extends' in this.stack[i])) {
+                            this.stack[i].extends = {};
                         }
-                        let scx = hybrid[i].extends.scaleX || 1,
-                            scy = hybrid[i].extends.scaleY || 1,
-                            shx = hybrid[i].extends.shiftX || 0,
-                            shy =  hybrid[i].extends.shiftY || 0;
+                        let scx = this.stack[i].extends.scaleX || 1,
+                            scy = this.stack[i].extends.scaleY || 1,
+                            shx = this.stack[i].extends.shiftX || 0,
+                            shy =  this.stack[i].extends.shiftY || 0;
                         canvas.x.save();
-                        canvas.x.fillStyle = canvas.x.createPattern(glob.graphmap[hybrid[i].graph], 'repeat');
+                        canvas.x.fillStyle = canvas.x.createPattern(glob.graphmap[this.stack[i].graph], 'repeat');
                         canvas.x.scale(scx, scy);
                         canvas.x.translate(shx, shy);
                         canvas.x.fillRect(
@@ -467,6 +438,43 @@ room-editor.panel.view
                             canvas.height / scy / this.zoomFactor - shy / scy
                         );
                         canvas.x.restore();
+                    } else { // Это копия
+                        let copy = this.stack[i],
+                            type = window.currentProject.types[glob.typemap[copy.uid]];
+                        let graph, gra, w, h, ox, oy,
+                            grax, gray; // Центр рисовки графики
+                        if (type.graph != -1) {
+                            graph = glob.graphmap[type.graph];
+                            gra = glob.graphmap[type.graph].g;
+                            w = gra.width;
+                            h = gra.height;
+                            ox = gra.offx;
+                            oy = gra.offy;
+                            grax = gra.axis[0];
+                            gray = gra.axis[1];
+                        } else {
+                            graph = glob.graphmap[-1];
+                            w = h = 32;
+                            grax = gray = 16;
+                            ox = oy = 0;
+                        }
+                        if (copy.tx || copy.ty) {
+                            canvas.x.save();
+                            canvas.x.translate(copy.x - grax * (copy.tx || 1), copy.y - gray * (copy.ty || 1));
+                            canvas.x.scale(copy.tx || 1, copy.ty || 1);
+                            canvas.x.drawImage(
+                                graph,
+                                ox, oy, w, h,
+                                0, 0, w, h
+                            );
+                            canvas.x.restore();
+                        } else {
+                            canvas.x.drawImage(
+                                graph,
+                                glob.graphmap[type.graph].g.offx, glob.graphmap[type.graph].g.offy, w, h,
+                                copy.x - grax, copy.y - gray, w, h
+                            );
+                        }
                     }
                 }
             }
@@ -486,6 +494,14 @@ room-editor.panel.view
                 for (const tile of this.selectedTiles) {
                     let g = glob.graphmap[tile.graph].g;
                     this.drawSelection(tile.x, tile.y, tile.x + g.width*tile.grid[2], tile.y + g.height*tile.grid[3]);
+                }
+            }
+            // Обводка выделенных копий
+            if (this.tab === 'roomcopies' && this.selectedCopies && this.selectedCopies.length) {
+                for (const copy of this.selectedCopies) {
+                    const {g} = glob.graphmap[window.currentProject.types[glob.typemap[copy.uid]].graph];
+                    this.drawSelection(copy.x - g.axis[0], copy.y - g.axis[1],
+                                       copy.x - g.axis[0] + g.width, copy.y - g.axis[1] + g.height);
                 }
             }
 

@@ -241,16 +241,12 @@ ct.styles.new(
         for (const k in window.currentProject.rooms) {
             const r = window.currentProject.rooms[k];
             
-            var roomCopy = JSON.parse(JSON.stringify(r.layers));
+            var roomCopy = JSON.parse(JSON.stringify(r.copies));
             var objs = [];
-            for (const layer in roomCopy) {
-                for (const copy in roomCopy[layer].copies) {
-                    if (roomCopy[layer].copies[copy]) {
-                        roomCopy[layer].copies[copy].type = window.currentProject.types[window.glob.typemap[roomCopy[layer].copies[copy].uid]].name;
-                        delete roomCopy[layer].copies[copy].uid;
-                        objs.push(roomCopy[layer].copies[copy]);
-                    }
-                }
+            for (const copy of roomCopy) {
+                copy.type = window.currentProject.types[window.glob.typemap[copy.uid]].name;
+                delete copy.uid;
+                objs.push(copy);
             }
             var bgsCopy = JSON.parse(JSON.stringify(r.backgrounds));
             for (var bg in bgsCopy) {

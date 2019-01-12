@@ -82,6 +82,19 @@
                 };
             }
         }
+        if (version[0] < 2) {
+            if (version[1] < 1) {
+                for (const room of project.rooms) {
+                    if ('layers' in room) {
+                        room.copies = [];
+                        for (const layer of room.layers) {
+                            room.copies.push(...layer.copies);
+                        }
+                        delete room.layers;
+                    }
+                }
+            }
+        }
         project.ctjsVersion = nw.App.manifest.version;
     };
 

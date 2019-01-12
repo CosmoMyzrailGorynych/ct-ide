@@ -96,6 +96,7 @@
                 // Отмена выделения тайлов, если таковые были, при клике
                 if (this.selectedTiles && Math.hypot(e.offsetX - this.startx, e.offsetY - this.starty) <= clickThreshold) {
                     this.selectedTiles = false;
+                    this.refreshRoomCanvas();
                     return;
                 }
                 // Было выделение и по клику больше ничего делать не нужно
@@ -250,7 +251,6 @@
                                 tile.x += x;
                                 tile.y += y;
                             }
-                            this.selectedTiles = false;
                             this.refreshRoomCanvas();
                         }
                     });

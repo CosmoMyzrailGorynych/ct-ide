@@ -6,8 +6,8 @@ room-type-picker.room-editor-TypeSwatches.tabbed.tall
         onclick="{parent.roomUnpickType}"
         class="{active: opts.current === -1}"
     )
-        span {window.languageJSON.common.none}
-        img(src="/data/img/nograph.png")
+        span {voc.selectAndMove}
+        i.icon-move
     .room-editor-aTypeSwatch(
         each="{type in (searchResults? searchResults : types)}"
         title="{type.name}"
@@ -58,4 +58,5 @@ room-type-picker.room-editor-TypeSwatches.tabbed.tall
         };
         this.selectType = type => e => {
             this.parent.currentType = type;
+            this.parent.selectedCopies = [];
         };
