@@ -45,9 +45,15 @@ Any module is a directory with a following structure:
         "id": "field",
         "desc": "Field's description",
         "default": "default value",
-        "type": "textfield"
+        "type": "text"
     }, {
         ...
+    }],
+    "typeExtends": [{
+        "name": "Field's name",
+        "type": "text",
+        "default": "default value",
+        "key": "ctype"
     }]
 }
 ```
@@ -101,7 +107,8 @@ Fields are described in `module.json`, and can be one of these types:
 * `input` – a simple text input for short strings;
 * `textfield` – a large textarea for a long input;
 * `number` – an input field for integers;
-* `checkbox` – a checkbox for Boolean variables.
+* `checkbox` – a checkbox for Boolean variables;
+* `radio` – a list of predefined values to choose from.
 
 A field's `id` must be unique for a module. A `key` determines which parts of code should be replaced  with the field's value. If you have a field with a key `'enabled'`, then all matches with `/*%enabled%*/` or `%enabled%` will be replaced by a field's value. There can also be a `help` field, that will be shown below the input field and can contain some hints or an expanded explanation of what your field does.
 
@@ -141,3 +148,57 @@ A field's `id` must be unique for a module. A `key` determines which parts of co
 }
 ```
 
+#### Adding radio inputs (example)
+
+```json
+{
+    "main": {
+        ...
+    },
+    "fields": [{
+        "name": "List name",
+        "type": "radio",
+        "key": "variable",
+        "id": "variable",
+        "default": "value1",
+        "options": [{
+            "value": "value1",
+            "name": "First value",
+            "help": "A little hint that will go right after the first variant"
+        }, {
+            "value": "value2",
+            "name": "Second value",
+            "help": "A little hint that will go right after the second variant"
+        }, {
+            ...
+        }]
+    }]
+}
+```
+
+## Adding extensions to the type editor
+
+You can define additional fields that will be available in the type editor. They will be displayed in the left column:
+
+![](images/modsFields.png)
+
+That's how you define them inside the `module.json`:
+
+```json
+{
+    "main": {
+        ...
+    },
+    "typeExtends": [{
+        "name": "Field name in the UI",
+        "type": "text",
+        "key": "varName"
+    }]
+}
+```
+
+For now, supported values are:
+
+* `text` that will yield `String`s;
+* `number` that will yield `Number`s;
+* `checkbox` that will yield `Boolean`s.
