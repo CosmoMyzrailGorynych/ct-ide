@@ -266,6 +266,7 @@
         "depth": "Depth:",
         "movement": "Movement speed (X, Y):",
         "parallax": "Parallax (X, Y):",
+        "repeat": "Repeat:",
         "scale": "Scaling (X, Y):",
         "shift": "Shift (X, Y):"
     },

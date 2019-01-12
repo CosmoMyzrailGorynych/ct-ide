@@ -52,6 +52,22 @@
         }
         project.startroom = startingRoom;
     };
+    const adapter10x = project => {
+        for (const room of project.rooms) {
+            if ('layers' in room) {
+                room.copies = [];
+                for (const layer of room.layers) {
+                    room.copies.push(...layer.copies);
+                }
+                delete room.layers;
+            }
+        }
+        for (const type of project.types) {
+            if (!('extends' in type)) {
+                type.extends = {};
+            }
+        }
+    };
     
     var adapter = project => {
         var version = project.ctjsVersion || '0.2.0';
@@ -84,15 +100,7 @@
         }
         if (version[0] < 2) {
             if (version[1] < 1) {
-                for (const room of project.rooms) {
-                    if ('layers' in room) {
-                        room.copies = [];
-                        for (const layer of room.layers) {
-                            room.copies.push(...layer.copies);
-                        }
-                        delete room.layers;
-                    }
-                }
+                adapter10x(project);
             }
         }
         project.ctjsVersion = nw.App.manifest.version;

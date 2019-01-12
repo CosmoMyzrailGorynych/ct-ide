@@ -42,6 +42,12 @@ room-backgrounds-editor.room-editor-Backgrounds.tabbed.tall
                     input.wide(type="number" value="{background.extends.parallaxY || 1}" step="0.01" oninput="{wire('this.detailedBackground.extends.parallaxY')}")
                 .clear
 
+                b {voc.repeat}
+                select(onchange="{wire('this.detailedBackground.extends.repeat')}")
+                    option(value="repeat" selected="{detailedBackground.extends.repeat === 'repeat'}") repeat
+                    option(value="repeat-x" selected="{detailedBackground.extends.repeat === 'repeat-x'}") repeat-x
+                    option(value="repeat-y" selected="{detailedBackground.extends.repeat === 'repeat-y'}") repeat-y
+                    option(value="no-repeat" selected="{detailedBackground.extends.repeat === 'no-repeat'}") no-repeat
 
     button.inline.wide(onclick="{addBg}")
         i.icon-plus
@@ -53,18 +59,21 @@ room-backgrounds-editor.room-editor-Backgrounds.tabbed.tall
         this.namespace = 'roombackgrounds';
         this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
+        this.on('update', () => { 
+            this.parent.refreshRoomCanvas();
+        });
         this.onGraphSelected = graph => e => {
             this.editingBackground.graph = graph.uid;
             this.pickingBackground = false;
             this.creatingBackground = false;
             this.update();
-            this.parent.refreshRoomCanvas();
         };
         this.onGraphCancel = e => {
             this.pickingBackground = false;
             if (this.creatingBackground) {
                 let bgs = this.opts.room.backgrounds;
                 bgs.splice(bgs.indexOf(this.editingBackground), 1);
+                this.parent.resortRoom();
                 this.creatingBackground = false;
             }
             this.update();
@@ -82,6 +91,7 @@ room-backgrounds-editor.room-editor-Backgrounds.tabbed.tall
             this.opts.room.backgrounds.sort(function (a, b) {
                 return a.depth - b.depth;
             });
+            this.parent.resortRoom();
             this.update();
         };
         this.onContextMenu = e => {
@@ -94,7 +104,7 @@ room-backgrounds-editor.room-editor-Backgrounds.tabbed.tall
             label: window.languageJSON.common.delete,
             click: () => {
                 this.opts.room.backgrounds.splice(this.editedBg, 1);
-                this.parent.refreshRoomCanvas();
+                this.parent.resortRoom();
                 this.update();
             }
         }));
@@ -108,7 +118,7 @@ room-backgrounds-editor.room-editor-Backgrounds.tabbed.tall
             this.opts.room.backgrounds.sort(function (a, b) {
                 return a.depth - b.depth;
             });
-            this.parent.refreshRoomCanvas();
+            this.parent.resortRoom();
         };
 
         this.editBackground = e => {

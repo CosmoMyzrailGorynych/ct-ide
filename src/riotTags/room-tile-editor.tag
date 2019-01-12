@@ -57,6 +57,7 @@ room-tile-editor.room-editor-Tiles.tabbed.tall.flexfix
                     } else {
                         this.parent.currentTileLayer = false;
                     }
+                    this.parent.resortRoom();
                     this.parent.refreshRoomCanvas();
                     this.update();
                     alertify
@@ -72,6 +73,7 @@ room-tile-editor.room-editor-Tiles.tabbed.tall.flexfix
             .then(ee => {
                 if (ee.inputValue && Number(ee.inputValue)) {
                     this.parent.currentTileLayer.depth = Number(ee.inputValue);
+                    this.parent.resortRoom();
                     this.parent.refreshRoomCanvas();
                     this.update();
                 }
@@ -90,6 +92,7 @@ room-tile-editor.room-editor-Tiles.tabbed.tall.flexfix
                     this.opts.room.tiles.push(layer);
                     this.parent.currentTileLayer = layer;
                     this.parent.currentTileLayerId = this.opts.room.tiles.length - 1;
+                    this.parent.resortRoom();
                     console.log(this.parent.currentTileLayerId, this.parent.currentTileLayer, this.opts.room.tiles);
                     this.update();
                 }

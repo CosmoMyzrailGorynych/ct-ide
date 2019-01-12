@@ -94,7 +94,8 @@ rooms-panel.panel.view
                     width: 800,
                     height: 600,
                     backgrounds: [],
-                    layers: [],
+                    copies: [],
+                    tiles: [],
                     uid: guid,
                     thumbnail: thumbnail
                 };

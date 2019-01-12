@@ -370,8 +370,8 @@ room-editor.panel.view
             // Сделаем массив слоёв фонов, тайлов и копий.
             this.stack = this.room.copies.concat(this.room.backgrounds).concat(this.room.tiles);
             this.stack.sort((a, b) => {
-                let depthA = a.depth || window.currentProject.types[glob.typemap[a.uid]].depth,
-                    depthB = b.depth || window.currentProject.types[glob.typemap[b.uid]].depth;
+                let depthA = a.depth !== void 0? a.depth : window.currentProject.types[glob.typemap[a.uid]].depth,
+                    depthB = b.depth !== void 0? b.depth : window.currentProject.types[glob.typemap[b.uid]].depth;
                 return depthA - depthB;
             });
         };
@@ -420,24 +420,26 @@ room-editor.panel.view
                                 );
                             }
                         }
-                    } else if (this.stack[i].graph && this.stack[i].graph !== -1) { // это слой-фон
-                        if (!('extends' in this.stack[i])) {
-                            this.stack[i].extends = {};
+                    } else if (this.stack[i].graph) { // это слой-фон
+                        if (this.stack[i].graph !== -1) {
+                            if (!('extends' in this.stack[i])) {
+                                this.stack[i].extends = {};
+                            }
+                            let scx = this.stack[i].extends.scaleX || 1,
+                                scy = this.stack[i].extends.scaleY || 1,
+                                shx = this.stack[i].extends.shiftX || 0,
+                                shy =  this.stack[i].extends.shiftY || 0;
+                            canvas.x.save();
+                            canvas.x.fillStyle = canvas.x.createPattern(glob.graphmap[this.stack[i].graph], this.stack[i].extends.repeat || 'repeat');
+                            canvas.x.scale(scx, scy);
+                            canvas.x.translate(shx, shy);
+                            canvas.x.fillRect(
+                                this.xToRoom(0) / scx - shx, this.yToRoom(0) / scy - shy,
+                                canvas.width / scx / this.zoomFactor,
+                                canvas.height / scy / this.zoomFactor
+                            );
+                            canvas.x.restore();
                         }
-                        let scx = this.stack[i].extends.scaleX || 1,
-                            scy = this.stack[i].extends.scaleY || 1,
-                            shx = this.stack[i].extends.shiftX || 0,
-                            shy =  this.stack[i].extends.shiftY || 0;
-                        canvas.x.save();
-                        canvas.x.fillStyle = canvas.x.createPattern(glob.graphmap[this.stack[i].graph], 'repeat');
-                        canvas.x.scale(scx, scy);
-                        canvas.x.translate(shx, shy);
-                        canvas.x.fillRect(
-                            this.xToRoom(0) / scx, this.yToRoom(0) / scy,
-                            canvas.width / scx / this.zoomFactor - shx / scx,
-                            canvas.height / scy / this.zoomFactor - shy / scy
-                        );
-                        canvas.x.restore();
                     } else { // Это копия
                         let copy = this.stack[i],
                             type = window.currentProject.types[glob.typemap[copy.uid]];

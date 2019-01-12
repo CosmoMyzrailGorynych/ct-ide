@@ -152,10 +152,18 @@
             this.shiftY += ct.delta * this.movementY;
         }
         onDraw() {
-            this.x = ct.room.x;
-            this.y = ct.room.y;
-            this.tilePosition.x = -this.x*this.parallaxX + this.shiftX;
-            this.tilePosition.y = -this.y*this.parallaxY + this.shiftY;
+            if (this.repeat !== 'repeat-x' && this.repeat !== 'no-repeat') {
+                this.y = ct.room.y;
+                this.tilePosition.y = -this.y*this.parallaxY + this.shiftY;
+            } else {
+                this.y = this.shiftY;
+            }
+            if (this.repeat !== 'repeat-y' && this.repeat !== 'no-repeat') {
+                this.x = ct.room.x;
+                this.tilePosition.x = -this.x*this.parallaxX + this.shiftX;
+            } else {
+                this.x = this.shiftX;
+            }
         }
         static onCreate() {
             void 0;
