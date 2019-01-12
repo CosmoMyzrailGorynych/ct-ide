@@ -1,0 +1,3 @@
+[submodule "DragonBonesJS"]
+	path = DragonBonesJS
+	url = https://github.com/DragonBones/DragonBonesJS.git
