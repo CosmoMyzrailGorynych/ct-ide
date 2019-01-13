@@ -24,6 +24,22 @@
         return str2;
     };
 
+    const addModules = buffer => {
+        /* Модули */
+        for (var lib in window.currentProject.libs) {
+            const data = fs.readJSONSync(path.join(basePath + 'ct.libs/', lib, 'module.json'), {
+                'encoding': 'utf8'
+            });
+            if (fs.pathExistsSync(path.join(basePath + 'ct.libs/', lib, 'index.js'))) {
+                buffer += parseKeys(data, fs.readFileSync(path.join(basePath + 'ct.libs/', lib, 'index.js'), {
+                    'encoding': 'utf8'
+                }), lib);
+            }
+            buffer += '\n';
+        }
+        return buffer;
+    };
+
     var injectModules = (injects) => {
         for (const lib in window.currentProject.libs) {
             const libData = fs.readJSONSync(path.join(basePath + 'ct.libs/', lib, 'module.json'), {
@@ -453,18 +469,7 @@ ct.rooms.templates['${r.name}'] = {
 
         buffer += '\n';
 
-        /* Модули */
-        for (var lib in window.currentProject.libs) {
-            const data = fs.readJSONSync(path.join(basePath + 'ct.libs/', lib, 'module.json'), {
-                'encoding': 'utf8'
-            });
-            if (fs.pathExistsSync(path.join(basePath + 'ct.libs/', lib, 'index.js'))) {
-                buffer += parseKeys(data, fs.readFileSync(path.join(basePath + 'ct.libs/', lib, 'index.js'), {
-                    'encoding': 'utf8'
-                }), lib);
-            }
-            buffer += '\n';
-        }
+        buffer = addModules(buffer);
 
         /* Пользовательские скрипты */
         for (const script of window.currentProject.scripts) {
