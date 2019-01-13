@@ -2,10 +2,10 @@
     const gui = require('nw.gui');
     const clickThreshold = 16;
 
-    const drawInsertPreview = function(e) {
+    const drawInsertPreview = function (e) {
         let img, graph, w, h, grax, gray, ox, oy;
         // превью вставки
-        this.refreshRoomCanvas(e);
+        this.refreshRoomCanvas();
         this.refs.canvas.x.setTransform(this.zoomFactor, 0, 0, this.zoomFactor, 0, 0);
         this.refs.canvas.x.globalAlpha = 0.5;
         if (this.currentType.graph !== -1) {
@@ -106,6 +106,9 @@
                                     this.selectedCopies.push(copy);
                                 }
                             }
+                        }
+                        if (!this.selectedCopies.length) {
+                            this.selectedCopies = false;
                         }
                     } else {
                         // Был единичный выбор
@@ -212,6 +215,10 @@
                         dy = Math.round(dy / this.room.gridY) * this.room.gridY;
                     }
                     for (const copy of this.selectedCopies) {
+                        if (!('lastX' in copy)) {
+                            copy.lastX = copy.x;
+                            copy.lastY = copy.y;
+                        }
                         copy.x = copy.lastX + dx;
                         copy.y = copy.lastY + dy;
                     }
