@@ -1,5 +1,6 @@
 /* Made with ct.js http://ctjs.rocks/ */
 
+
 const ct = {
     libs: [/*@libs@*/][0],
     speed: 60,

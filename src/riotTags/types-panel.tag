@@ -96,7 +96,8 @@ types-panel.panel.view
                 ondraw: '',
                 ondestroy: '',
                 uid: id,
-                graph: -1
+                graph: -1,
+                extends: {}
             };
             window.currentProject.types.push(obj);
             this.updateList();
