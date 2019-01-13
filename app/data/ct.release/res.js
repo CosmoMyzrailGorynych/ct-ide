@@ -28,6 +28,12 @@
             /*%res%*/
         },
         getTexture(name, frame) {
+            if (name === -1) {
+                if (frame !== void 0) {
+                    return PIXI.Texture.EMPTY;
+                }
+                return [PIXI.Texture.EMPTY];
+            }
             const reg = ct.res.registry[name];
             if (frame !== void 0) {
                 return reg.textures[frame];
