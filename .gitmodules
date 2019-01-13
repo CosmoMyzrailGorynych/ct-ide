@@ -1,3 +1,6 @@
 [submodule "DragonBonesJS"]
 	path = DragonBonesJS
 	url = https://github.com/DragonBones/DragonBonesJS.git
+[submodule "SSCD.js"]
+	path = SSCD.js
+	url = https://github.com/CosmoMyzrailGorynych/SSCD.js.git
