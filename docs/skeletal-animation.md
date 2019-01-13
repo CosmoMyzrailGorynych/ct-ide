@@ -6,15 +6,15 @@ ct.js supports importing DragonBones animations. It was tested with DragonBones 
 
 To import animations with their textures, you should first open your DragonBones project. Make sure that your armature is called exactly as `Armature`.
 
-![](./images/skeletalAnimationsDB_03.PNG)
+![](./images/skeletalAnimationsDB_03.png)
 
 Select File — Export…
 
-![](./images/skeletalAnimationsDB_01.PNG)
+![](./images/skeletalAnimationsDB_01.png)
 
 You should then open the tab "Animation Data + Texture". Make sure that you export DragonBones **JSON** (not the binary format!) and that your background is transparent. You can set other parameters as you like. Then, smash the "Finish" button.
 
-![](./images/skeletalAnimationsDB_02.PNG)
+![](./images/skeletalAnimationsDB_02.png)
 
 You will get three files in the output directory:
 
@@ -44,52 +44,13 @@ These are some useful functions to manipulate the skeleton:
 * `skel.animation.fadeIn('NewAnimation', durationInSecs);`
 * `skel.armature.getSlot("SlotName").display = false;`
 
-Example of adding movement with skeletal animation:
-
-```js
-if (ct.keyboard.down['right']) {
-    this.scale.x = Math.abs(this.scale.x);
-    this.hspeed = 10;
-    if (this.skel.animation.lastAnimationName !== 'Run') {
-        this.skel.animation.fadeIn('Run', 0.3);
-    }
-} else if (ct.keyboard.down['left']) {
-    this.scale.x = -Math.abs(this.scale.x);   
-    this.hspeed = -10;
-    if (this.skel.animation.lastAnimationName !== 'Run') {
-        this.skel.animation.fadeIn('Run', 0.3);
-    }
-} else {
-    if (this.skel.animation.lastAnimationName !== 'Stand') {
-        this.skel.animation.fadeIn('Stand', 0.2);
-    }
-}
-```
-
-A better decision is to split animation and movement logic:
-
-```js
-/* On Step event */
-
-if (ct.keyboard.down['right']) {
-    this.scale.x = Math.abs(this.scale.x);
-    this.hspeed = 10;
-} else if (ct.keyboard.down['left']) {
-    this.scale.x = -Math.abs(this.scale.x);   
-    this.hspeed = -10;
-} else {
-    this.hspeed = 0;
-}
-if (ct.keyboard.down['up']) {
-    this.vspeed = 30;
-}
-```
+Example of adding dynamic skeletal animation with blends:
 
 ```js
 /* Draw event */
 var anim = this.skel.animation;
 
-if (this.onGround) {
+if (this.onGround) { // should be defined before
     if (this.hspeed === 0) {
         if (anim.lastAnimationName !== 'Stand') {
             anim.fadeIn('Stand', 0.2);
