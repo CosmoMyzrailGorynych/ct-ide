@@ -48,8 +48,8 @@
                 canv.style.top = (height - ct.height) / 2 + 'px';
             }
             if (mode === 'scaleFill' || mode === 'scaleFit') {
-                room.scale.x = k;
-                room.scale.y = k;
+                ct.pixiApp.stage.scale.x = k;
+                ct.pixiApp.stage.scale.y = k;
             }
             if (mode === 'expandViewport') {
                 manageViewport(room);
