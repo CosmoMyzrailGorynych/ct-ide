@@ -29,6 +29,9 @@ const ct = {
         return value;
     }
 };
+
+console.log(`😺 ct.js v${ct.version} 😽
+😻 Website: https://ctjs.rocks/ 🙀`);
 ct.pixiApp = new PIXI.Application({
     width: [/*@startwidth@*/][0],
     height: [/*@startheight@*/][0],
