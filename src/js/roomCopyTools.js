@@ -241,8 +241,8 @@
                 this.refreshRoomCanvas();
                 var left, top, height, width;
                 if (type.graph !== -1) {
-                    left = copy.x - graph.axis[0] - 1.5;
-                    top = copy.y - graph.axis[1] - 1.5;
+                    left = copy.x - graph.axis[0] * (copy.tx || 1) - 1.5;
+                    top = copy.y - graph.axis[1] * (copy.ty || 1) - 1.5;
                     width = graph.width * (copy.tx || 1) + 3;
                     height = graph.height * (copy.ty || 1) + 3;
                 } else {
