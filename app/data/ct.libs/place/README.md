@@ -1,6 +1,14 @@
-Checks collisions between copies
+Checks collisions between copies.
+
+# Additions to copies
+
+You can call `this.moveContinuous('CollisionGroup');` at any copy to perform precise movement with collision checks. It takes gravity into account, too, and uses the `ct.place.moveAlong` method.
+
+Additional field in the type editor "Collision group" defines the `ctype` property used in most ct.place methods.
 
 # Preparing types
+
+> This is useful only when you are going to create copies of different shapes dynamically. In other cases, refer to the Docs tab, as ct.IDE defines these shapes itself.
 
 Only these Copies which have a `shape` parameter can collide. Usually these parameters are filled by ct.IDE, but you can change them in-game. For examle, this code will represent a Copy as a circle-shaped object with a 50px radius:
 
