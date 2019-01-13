@@ -186,12 +186,47 @@
             };
             res += `\n.add('img/t${i}.png')`;
         }
-        res += '\n.load();';
+        res += ';';
         registry = JSON.stringify(registry);
         return {
             res,
             registry
         };
+    };
+    var packSkeletons = () => {
+        const data = {
+            loaderScript: 'PIXI.loader',
+            startScript: 'const dbf = dragonBones.PixiFactory.factory;',
+            registry: {},
+            requiresDB: false
+        };
+        for (const skeleton of window.currentProject.skeletons) {
+            const slice = skeleton.origname.replace('_ske.json', '');
+            fs.copySync(`${sessionStorage.projdir}/img/${slice}_ske.json`, `${exec}/export/img/${slice}_ske.json`);
+            fs.copySync(`${sessionStorage.projdir}/img/${slice}_tex.json`, `${exec}/export/img/${slice}_tex.json`);
+            fs.copySync(`${sessionStorage.projdir}/img/${slice}_tex.png`, `${exec}/export/img/${slice}_tex.png`);
+
+            data.loaderScript += `.add('${slice}_ske.json', 'img/${slice}_ske.json')`;
+            data.loaderScript += `.add('${slice}_tex.json', 'img/${slice}_tex.json')`;
+            data.loaderScript += `.add('${slice}_tex.png', 'img/${slice}_tex.png')`;
+
+            data.startScript += `dbf.parseDragonBonesData(PIXI.loader.resources['${slice}_ske.json'].data);\n`;
+            data.startScript += `dbf.parseTextureAtlasData(PIXI.loader.resources['${slice}_tex.json'].data, PIXI.loader.resources['${slice}_tex.png'].texture);\n`;
+
+            data.registry[skeleton.name] = {
+                origname: slice,
+                type: skeleton.from
+            };
+            if (skeleton.from === 'dragonbones') {
+                data.requiresDB = true;
+            }
+        }
+        data.loaderScript += ';';
+        if (data.requiresDB) {
+            fs.copyFileSync(basePath + 'ct.release/DragonBones.min.js', exec + '/export/DragonBones.min.js');
+        }
+        data.registry = JSON.stringify(data.registry);
+        return data;
     };
 
     var stringifyStyles = () => {
@@ -460,14 +495,16 @@ ct.rooms.templates['${r.name}'] = {
 
         /* ресурсный котэ */
         var graphics = packImages();
+        var skeletons = packSkeletons();
 
         buffer += fs.readFileSync(basePath + 'ct.release/res.js', {
             'encoding': 'utf8'
         })
         .replace('/*@sndtotal@*/', window.currentProject.sounds.length)
-        .replace('/*@res@*/', graphics.res)
+        .replace('/*@res@*/', graphics.res + '\n' + skeletons.loaderScript)
         .replace('/*@graphregistry@*/', graphics.registry)
-        .replace('/*%resload%*/', injects.resload)
+        .replace('/*@skeletonregistry@*/', skeletons.registry)
+        .replace('/*%resload%*/', injects.resload + '\n' + skeletons.startScript)
         .replace('/*%res%*/', injects.res);
         buffer += '\n';
 
@@ -543,7 +580,8 @@ ct.rooms.templates['${r.name}'] = {
         fs.writeFileSync(exec + '/export/index.html', html
             .replace('<!-- %htmltop% -->', injects.htmltop)
             .replace('<!-- %htmlbottom% -->', injects.htmlbottom)
-            .replace('<!-- %gametitle% -->', window.currentProject.settings.title || 'ct.js game'));
+            .replace('<!-- %gametitle% -->', window.currentProject.settings.title || 'ct.js game')
+            .replace('<!-- %dragonbones% -->', skeletons.requiresDB? '<script src="DragonBones.min.js"></script>' : ''));
 
         fs.writeFileSync(exec + '/export/ct.css', css
             .replace('/*@pixelatedrender@*/', window.currentProject.settings.pixelatedrender? 'canvas,img{image-rendering:optimizeSpeed;image-rendering:-moz-crisp-edges;image-rendering:-webkit-optimize-contrast;image-rendering:optimize-contrast;image-rendering:pixelated;ms-interpolation-mode:nearest-neighbor}' : '')

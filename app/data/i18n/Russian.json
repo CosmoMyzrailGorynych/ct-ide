@@ -158,7 +158,8 @@
     },
     "graphic": {
         "create": "Создать",
-        "import": "Импорт"
+        "import": "Импорт",
+        "skeletons": "Скелетная анимация"
     },
     "graphview": {
         "bgcolor": "Сменить цвет фона",

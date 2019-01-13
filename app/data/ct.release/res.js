@@ -2,6 +2,8 @@
     const loader = new PIXI.loaders.Loader();
     const loadingLabel = ct.pixiApp.view.previousSibling,
           loadingBar = loadingLabel.querySelector('.ct-aLoadingBar');
+    /* global dragonBones */
+    const dbFactory = dragonBones? dragonBones.PixiFactory.factory : null;
     ct.res = {
         graphsLoaded: 0,
         graphsError: 0,
@@ -11,6 +13,7 @@
         images: {},
         sounds: {},
         registry: [/*@graphregistry@*/][0],
+        skelRegistry: [/*@skeletonregistry@*/][0],
         fetchImage(url, callback) {
             loader.add(url, url);
             loader.load((loader, resources) => {
@@ -26,6 +29,7 @@
             // filled by IDE and catmods. As usual, atlases are splitted here.
             /*@res@*/
             /*%res%*/
+            PIXI.loader.load();
         },
         getTexture(name, frame) {
             if (name === -1) {
@@ -39,6 +43,10 @@
                 return reg.textures[frame];
             }
             return reg.textures;
+        },
+        makeSkeleton(name) {
+            const r = ct.res.skelRegistry[name];
+            return dbFactory.buildArmatureDisplay('Armature', r.data.name);
         }
     };
     
@@ -61,6 +69,10 @@
                 reg.textures.push(texture);
             }
         }
+        for (const skel in ct.res.skelRegistry) {
+            ct.res.skelRegistry[skel].data = PIXI.loader.resources[ct.res.skelRegistry[skel].origname + '_ske.json'].data;
+        }
+        /*%resload%*/
         loadingLabel.classList.add('hidden');
         setTimeout(() => {
             /*%start%*/

@@ -158,7 +158,8 @@
     },
     "graphic": {
         "create": "Create",
-        "import": "Import"
+        "import": "Import",
+        "skeletons": "Skeletal Animation"
     },
     "graphview": {
         "bgcolor": "Change bg color",

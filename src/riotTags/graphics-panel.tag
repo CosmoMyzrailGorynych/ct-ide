@@ -12,7 +12,7 @@ graphics-panel.panel.view
             .toleft
                 label.file.flexfix-header
                     input(type="file" multiple 
-                        accept=".png,.jpg,.jpeg,.bmp,.gif" 
+                        accept=".png,.jpg,.jpeg,.bmp,.gif,.json" 
                         onchange="{graphicImport}")
                     .button
                         i.icon.icon-import
@@ -20,22 +20,33 @@ graphics-panel.panel.view
         //-    button#graphiccreate(data-event="graphicCreate")
         //-        i.icon.icon-lamp
         //-        span {voc.create}
-        ul.cards.flexfix-body
-            li(
-                each="{graphic in (searchResults? searchResults : graphs)}"
-                oncontextmenu="{showGraphicPopup(graphic)}"
-                onclick="{openGraphic(graphic)}"
-                no-reorder
-            )
-                span {graphic.name}
-                img(src="file://{sessionStorage.projdir + '/img/' + graphic.origname + '_prev.png?' + graphic.lastmod}")
+        .flexfix-body
+            ul.cards
+                li(
+                    each="{graphic in (searchResults? searchResults : graphs)}"
+                    oncontextmenu="{showGraphicPopup(graphic)}"
+                    onclick="{openGraphic(graphic, false)}"
+                    no-reorder
+                )
+                    span {graphic.name}
+                    img(src="file://{sessionStorage.projdir + '/img/' + graphic.origname + '_prev.png?' + graphic.lastmod}")
+            h2(if="{currentProject.skeletons.length}") {voc.skeletons}
+            ul.cards
+                li(
+                    each="{skeleton in (searchResultsSkel? searchResultsSkel : skeletons)}"
+                    oncontextmenu="{showGraphicPopup(skeleton, true)}"
+                    onclick="{openSkeleton(graphic)}"
+                    no-reorder
+                )
+                    span {skeleton.name}
+                    img(src="file://{sessionStorage.projdir + '/img/' + skeleton.origname + '_prev.png?' + skeleton.lastmod}")
         
     .aDropzone(if="{dropping}")
         .middleinner
             i.icon-import
             h2 {languageJSON.common.fastimport}
             input(type="file" multiple 
-                accept=".png,.jpg,.jpeg,.bmp,.gif" 
+                accept=".png,.jpg,.jpeg,.bmp,.gif,.json" 
                 onchange="{graphicImport}")
     
     graphic-editor(if="{editing}" graphic="{currentGraphic}")
@@ -52,17 +63,25 @@ graphics-panel.panel.view
 
         this.updateList = () => {
             this.graphs = [...window.currentProject.graphs];
+            this.skeletons = [...window.currentProject.skeletons];
             if (this.sort === 'name') {
                 this.graphs.sort((a, b) => {
+                    return a.name.localeCompare(b.name);
+                });
+                this.skeletons.sort((a, b) => {
                     return a.name.localeCompare(b.name);
                 });
             } else {
                 this.graphs.sort((a, b) => {
                     return b.lastmod - a.lastmod;
                 });
+                this.skeletons.sort((a, b) => {
+                    return b.lastmod - a.lastmod;
+                });
             }
             if (this.sortReverse) {
                 this.graphs.reverse();
+                this.skeletons.reverse();
             }
         };
         this.switchSort = sort => e => {
@@ -88,7 +107,9 @@ graphics-panel.panel.view
         this.fuseSearch = e => {
             if (e.target.value.trim()) {
                 var fuse = new Fuse(this.graphs, fuseOptions);
+                var fuseSkel = new Fuse(this.skeletons, fuseOptions);
                 this.searchResults = fuse.search(e.target.value.trim());
+                this.searchResultsSkel = fuse.search(e.target.value.trim());
             } else {
                 this.searchResults = null;
             }
@@ -138,8 +159,13 @@ graphics-panel.panel.view
                         sessionStorage.projdir + '/img/i' + id + path.extname(files[i]),
                         true
                     );
-                } else {
-                    
+                } else if (/_ske\.json/i.test(files[i])) {
+                    let id = window.generateGUID();
+                    this.loadSkeleton(
+                        id,
+                        files[i],
+                        sessionStorage.projdir + '/img/skdb' + id + '_ske.json'
+                    )
                 }
             }
             this.dropping = false;
@@ -196,6 +222,25 @@ graphics-panel.panel.view
                 image.src = 'file://' + dest + '?' + Math.random();
             });
         };
+        this.loadSkeleton = (uid, filename, dest) => {
+            fs.copy(filename, dest)
+            .then(() => fs.copy(filename.replace('_ske.json', '_tex.json'), dest.replace('_ske.json', '_tex.json')))
+            .then(() => fs.copy(filename.replace('_ske.json', '_tex.png'), dest.replace('_ske.json', '_tex.png')))
+            .then(() => {
+                currentProject.skeletons.push({
+                    name: path.basename(filename).replace('_ske.json', ''),
+                    origname: path.basename(dest),
+                    from: 'dragonbones',
+                    uid: uid
+                })
+                this.skelGenPreview(dest, dest + '_prev.png', 64)
+                .then(dataUrl => {
+                    this.updateList();
+                    this.update();
+                });
+                this.skelGenPreview(dest, dest + '_prev@2.png', 128);
+            });
+        };
         /**
          * Генерирует квадратную превьюху из исходного изображения
          * @param {String} source Путь к исходному изображению
@@ -245,13 +290,53 @@ graphics-panel.panel.view
                 thumbnail.src = 'file://' + source;
             });
         };
+        /**
+         * Генерирует квадратную превьюху из исходного изображения
+         * @param {String} source Путь к исходному _ske.json файлу
+         * @param {String} destFile Путь к создаваемой превью
+         * @param {Number} size Размер стороны квадрата в пикселах
+         * @returns {Promise} Промис по завершению создания превью. При успехе передаёт data-url полученного превью
+         */
+        this.skelGenPreview = (source, destFile, size) => {
+            const loader = new PIXI.loaders.Loader(),
+                  dbf = dragonBones.PixiFactory.factory;
+            const slice = source.replace('_ske.json', '');
+            return new Promise((resolve, reject) => {
+                loader.add(`${slice}_ske.json`, `${slice}_ske.json`)
+                    .add(`${slice}_tex.json`, `${slice}_tex.json`)
+                    .add(`${slice}_tex.png`, `${slice}_tex.png`);
+                loader.load(() => {
+                    const app = new PIXI.Application();
+                    dbf.parseDragonBonesData(loader.resources[`${slice}_ske.json`].data);
+                    dbf.parseTextureAtlasData(loader.resources[`${slice}_tex.json`].data, loader.resources[`${slice}_tex.png`].texture);
+                    const skel = dbf.buildArmatureDisplay('Armature', loader.resources[`${slice}_ske.json`].data.name);
+                    const base64 = app.renderer.plugins.extract.base64(skel)
+                    var data = base64.replace(/^data:image\/\w+;base64,/, '');;
+                    var buf = new Buffer(data, 'base64');
+                    var stream = fs.createWriteStream(destFile);
+                    stream.on('finish', () => {
+                        setTimeout(() => { // WHY THE HECK I EVER NEED THIS?!
+                            resolve(destFile);
+                        }, 100);
+                    });
+                    stream.on('error', err => {
+                        reject(err);
+                    });
+                    stream.end(buf);
+                });
+            });
+        };
         
         // Создание контекстного меню, появляющегося при жмаке на карточку
         var graphMenu = new gui.Menu();
         graphMenu.append(new gui.MenuItem({
             label: languageJSON.common.open,
             click: e => {
-                this.openGraphic(this.currentGraphic);
+                if (this.currentGraphicType === 'skeleton') {
+                    this.openSkeleton(this.currentGraphic);
+                } else {
+                    this.openGraphic(this.currentGraphic);
+                }
                 this.update();
             }
         }));
@@ -292,42 +377,45 @@ graphics-panel.panel.view
                 .confirm(window.languageJSON.common.confirmDelete.replace('{0}', this.currentGraphic.name))
                 .then(e => {
                     if (e.buttonClicked === 'ok') {
-                        for (const type of window.currentProject.types) {
-                            if (type.graph === this.currentGraphic.uid) {
-                                type.graph = -1;
+                        if (this.currentGraphicType === 'skeleton') {
+                            window.currentProject.skeletons.splice(this.currentGraphicId, 1);
+                        } else {
+                            for (const type of window.currentProject.types) {
+                                if (type.graph === this.currentGraphic.uid) {
+                                    type.graph = -1;
+                                }
                             }
-                        }
-                        for (const room of window.currentProject.rooms) {
-                            if ('tiles' in room) {
-                                for (const layer of room.tiles) {
+                            for (const room of window.currentProject.rooms) {
+                                if ('tiles' in room) {
+                                    for (const layer of room.tiles) {
+                                        let i = 0;
+                                        while (i < layer.tiles.length) {
+                                            if (layer.tiles[i].graph === this.currentGraphic.uid) {
+                                                layer.tiles.splice(i, 1);
+                                            } else {
+                                                i++;
+                                            }
+                                        }
+                                    } 
+                                }
+                                if ('backgrounds' in room) {
                                     let i = 0;
-                                    while (i < layer.tiles.length) {
-                                        if (layer.tiles[i].graph === this.currentGraphic.uid) {
-                                            layer.tiles.splice(i, 1);
+                                    while (i < room.backgrounds.length) {
+                                        if (room.backgrounds[i].graph === this.currentGraphic.uid) {
+                                            room.backgrounds.splice(i, 1);
                                         } else {
                                             i++;
                                         }
                                     }
-                                } 
-                            }
-                            if ('backgrounds' in room) {
-                                let i = 0;
-                                while (i < room.backgrounds.length) {
-                                    if (room.backgrounds[i].graph === this.currentGraphic.uid) {
-                                        room.backgrounds.splice(i, 1);
-                                    } else {
-                                        i++;
-                                    }
                                 }
                             }
+                            window.currentProject.graphs.splice(this.currentGraphicId, 1);
                         }
-
-                        window.currentProject.graphs.splice(this.currentGraphicId,1);
                         this.updateList();
                         this.update();
                         alertify
-                        .okBtn(window.languageJSON.common.ok)
-                        .cancelBtn(window.languageJSON.common.cancel);
+                            .okBtn(window.languageJSON.common.ok)
+                            .cancelBtn(window.languageJSON.common.cancel);
                     }
                 });
             }
@@ -335,8 +423,13 @@ graphics-panel.panel.view
         /**
          * Отобразить контекстное меню
          */
-        this.showGraphicPopup = graphic => e => {
-            this.currentGraphicId = currentProject.graphs.indexOf(graphic);
+        this.showGraphicPopup = (graphic, isSkeleton) => e => {
+            this.currentGraphicType = isSkeleton? 'skeleton' : 'graphic';
+            if (isSkeleton) {
+                this.currentGraphicId = currentProject.skeletons.indexOf(graphic);
+            } else {
+                this.currentGraphicId = currentProject.graphs.indexOf(graphic);
+            }
             this.currentGraphic = graphic; 
             graphMenu.popup(e.clientX, e.clientY);
             e.preventDefault();
@@ -349,6 +442,9 @@ graphics-panel.panel.view
             this.currentGraphic = graphic;
             this.currentGraphicId = window.currentProject.graphs.indexOf(graphic);
             this.editing = true;
+        };
+        this.openSkeleton = skel => e => {
+
         };
 
         /*
