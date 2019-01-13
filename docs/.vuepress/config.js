@@ -50,6 +50,12 @@ module.exports = {
                     ['catmoddocs.md', 'Where are the other ct.* docs?']
                 ]
             }, {
+                title: 'Working with assets',
+                collapsable: false,
+                children: [
+                    ['skeletal-animation.md', 'Using skeletal animation']
+                ]
+            }, {
                 title: 'Extending ct.js',
                 collapsable: false,
                 children: [
