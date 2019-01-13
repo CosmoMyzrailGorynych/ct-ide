@@ -201,26 +201,26 @@ ct.loop = function(delta) {
         if (ct.room.follow.kill) {
             delete ct.room.follow;
         } else if (ct.room.center) {
-            ct.room.x += ct.room.follow.x - ct.room.x - ct.width / 2;
-            ct.room.y += ct.room.follow.y - ct.room.y - ct.height / 2;
+            ct.room.x += ct.room.follow.x + ct.room.followShiftX - ct.room.x - ct.width / 2;
+            ct.room.y += ct.room.follow.y + ct.room.followShiftY - ct.room.y - ct.height / 2;
         } else {
             let cx = 0,
                 cy = 0,
                 w = 0,
                 h = 0;
-            w = Math.min(ct.room.borderx, ct.width / 2);
-            h = Math.min(ct.room.bordery, ct.height / 2);
-            if (ct.room.follow.x - ct.room.x < w) {
-                cx = ct.room.follow.x - ct.room.x - w;
+            w = Math.min(ct.room.borderX, ct.viewWidth / 2);
+            h = Math.min(ct.room.borderY, ct.viewHeight / 2);
+            if (ct.room.follow.x + ct.room.followShiftX - ct.room.x < w) {
+                cx = ct.room.follow.x + ct.room.followShiftX - ct.room.x - w;
             }
-            if (ct.room.follow.y - ct.room.y < h) {
-                cy = ct.room.follow.y - ct.room.y - h;
+            if (ct.room.follow.y + ct.room.followShiftY - ct.room.y < h) {
+                cy = ct.room.follow.y + ct.room.followShiftY - ct.room.y - h;
             }
-            if (ct.room.follow.x - ct.room.x > ct.width - w) {
-                cx = ct.room.follow.x - ct.room.x - ct.width + w;
+            if (ct.room.follow.x + ct.room.followShiftX - ct.room.x > ct.viewWidth - w) {
+                cx = ct.room.follow.x + ct.room.followShiftX - ct.room.x - ct.viewWidth + w;
             }
-            if (ct.room.follow.y - ct.room.y > ct.height - h) {
-                cy = ct.room.follow.y - ct.room.y - ct.height + h;
+            if (ct.room.follow.y + ct.room.followShiftY - ct.room.y > ct.viewHeight - h) {
+                cy = ct.room.follow.y + ct.room.followShiftY - ct.room.y - ct.viewHeight + h;
             }
             ct.room.x = Math.floor(ct.room.x + cx);
             ct.room.y = Math.floor(ct.room.y + cy);

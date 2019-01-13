@@ -4,7 +4,7 @@
             super();
             this.x = this.y = 0;
             this.uid = 0;
-            this.follow = this.borderx = this.bordery = 0;
+            this.follow = this.borderX = this.borderY = this.followShiftX = this.followShiftX = 0;
             this.tileLayers = [];
             this.backgrounds = [];
             if (!ct.room) {
