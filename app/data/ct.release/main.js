@@ -63,6 +63,26 @@ ct.u = {
     // Point-point DistanCe
         return Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
     },
+    /**
+     * Rotates a vector (x; y) by deg around (0; 0)
+     * @param {Number} x The x component
+     * @param {Number} y The y component
+     * @param {Number} deg The degree to rotate by
+     * @returns {Array} A pair of new `x` and `y` parameters.
+     */
+    rotate(x, y, deg) {
+        const rad = deg * Math.PI / -180;
+        return [
+            Math.cos(rad) * x - Math.sin(rad) * y,
+            Math.sin(rad) * x - Math.cos(rad) * y
+        ];
+    },
+    rotateRad(x, y, rad) {
+        return [
+            Math.cos(rad) * x - Math.sin(rad) * y,
+            Math.sin(rad) * x - Math.cos(rad) * y
+        ];
+    },
     deltaDir(dir1, dir2) {
         dir1 = ((dir1 % 360) + 360) % 360;
         dir2 = ((dir2 % 360) + 360) % 360;

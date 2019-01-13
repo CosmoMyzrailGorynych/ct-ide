@@ -70,9 +70,20 @@
                 right: graphic.right
             };
         }
+        if (graphic.shape === 'circle') {
+            return {
+                type: 'circle',
+                r: graphic.r
+            };
+        }
+        if (graphic.shape === 'strip') {
+            return {
+                type: 'strip',
+                points: graphic.stripPoints
+            };
+        }
         return {
-            type: 'circle',
-            r: graphic.r
+            type: 'point'
         };
     };
     var packImages = () => {

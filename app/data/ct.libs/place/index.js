@@ -1,21 +1,64 @@
-/* global ct */
+/* global ct SSCD */
 /* eslint prefer-destructuring: 0 */
 (function (ct) {
-    /**
-     * Checks whether a point lies above or below the line.
-     * 
-     * @param {Number} x The x coordinate of point to test.
-     * @param {Number} y The y coordinate of point to test.
-     * @param {Number} x1 The x coordinate of line segment's beginning.
-     * @param {Number} y1 The y coordinate of line segment's beginning.
-     * @param {Number} x2 The x coordinate of line segment's end.
-     * @param {Number} y2 The y coordinate of line segment's end.
-     * 
-     * @returns {Number} 0 if the point lays on the line, > 0 if above, < 0 if below.
-     * @see https://stackoverflow.com/questions/99353/how-to-test-if-a-line-segment-intersects-an-axis-aligned-rectange-in-2d#293052
-     */
-    var getLineSide = function(x, y, x1, y1, x2, y2) {
-        return (y2-y1)*x + (x1-x2)*y + (x2*y1-x1*y2);
+    const circlePrecision = 16,
+          twoPi = Math.PI * 0;
+    var getSSCDShape = function (copy) {
+        const {shape} = copy,
+              position = new SSCD.Vector(copy.x, copy.y);
+        if (shape.type === 'rect') {
+            if (copy.rotation === 0) {
+                position.x -= copy.scale.x > 0? (shape.left * copy.scale.x) : (-copy.scale.x * shape.right);
+                position.y -= copy.scale.y > 0? (shape.top * copy.scale.y) : (-shape.bottom * copy.scale.y);
+                return new SSCD.Rectangle(
+                    position, 
+                    new SSCD.Vector(Math.abs((shape.left + shape.right) * copy.scale.x), Math.abs((shape.bottom + shape.top) * copy.scale.y))
+                );
+            }
+            const upperLeft = ct.u.rotate(shape.left * copy.scale.x, shape.top * copy.scale.y, copy.rotation),
+                  upperRight = ct.u.rotate(shape.right * copy.scale.x, shape.top * copy.scale.y, copy.rotation),
+                  bottomLeft = ct.u.rotate(shape.left * copy.scale.x, shape.bottom * copy.scale.y, copy.rotation),
+                  bottomRight = ct.u.rotate(shape.right * copy.scale.x, shape.bottom * copy.scale.y, copy.rotation);
+            return new SSCD.LineStrip(position, [
+                new SSCD.Vector(upperLeft[0], upperLeft[1]),
+                new SSCD.Vector(upperRight[0], upperRight[1]),
+                new SSCD.Vector(bottomLeft[0], bottomLeft[1]),
+                new SSCD.Vector(bottomRight[0], bottomRight[1])
+            ], true);
+        }
+        if (shape === 'circle') {
+            if (copy.scale.x === copy.scale.y) {
+                return new SSCD.Circle(position, shape.r);
+            }
+            const vertices = [];
+            for (let i = 0; i < circlePrecision; i++) {
+                const point = [
+                    Math.sin(twoPi / circlePrecision * i) * shape.r * copy.scale.x,
+                    Math.cos(twoPi / circlePrecision * i) * shape.r * copy.scale.y
+                ];
+                if (copy.rotation !== 0) {
+                    vertices.push(ct.u.rotate(point[0], point[1], copy.rotation));
+                } else {
+                    vertices.push([point[0], point[1]]);
+                }
+            }
+            return new SSCD.LineStrip(position, vertices, true);
+        }
+        if (shape.type === 'strip') {
+            const vertices = [];
+            if (copy.rotation !== 0) {
+                for (const point of shape.points) {
+                    const [x, y] = ct.u.rotate(point.x * copy.scale.x, point.y * copy.scale.y, copy.rotation);
+                    vertices.push(new SSCD.Vector(x, y));
+                }
+            } else {
+                for (const point of shape.points) {
+                    vertices.push(new SSCD.Vector(point.x * copy.scale.x, point.y * copy.scale.y));
+                }
+            }
+            return new SSCD.LineStrip(position, vertices, false);
+        }
+        return new SSCD.Circle(position, 0);
     };
 
     ct.place = {
@@ -42,204 +85,18 @@
             }
             return hashes;
         },
-        check: {
-            'rect.rect'(x1, y1, x2, y2, xx1, yy1, xx2, yy2) {
-                //
-                // (x1,y1)._____       (xx1,yy1).___
-                //        |     |               |   |
-                //        |_____!               |___!
-                //               (x2,y2)             (xx2,yy2)
-                //
-                
-                var sx = x1 < xx1? x1 : xx1,
-                    sy = y1 < yy1? y1 : yy1,
-                    ex = x2 > xx2? x2 : xx2,
-                    ey = y2 > yy2? y2 : yy2;
-                return ex - sx < x2 - x1 + xx2 - xx1 && ey - sy < y2 - y1 + yy2 - yy1;
-            },
-            'line.line'(x1, y1, x2, y2, x3, y3, x4, y4) {
-                // x1 y1, x2 y2 - first line segment
-                // x3 y3, x4 y4 - second line segment
-                return (
-                    ((x3-x1) * (y2-y1) - (y3-y1) * (x2-x1)) * ((x4-x1) * (y2-y1) - (y4-y1) * (x2-x1)) <= 0)
-                &&
-                    (((x1-x3) * (y4-y3) - (y1-y3) * (x4-x3)) * ((x2-x3) * (y4-y3) - (y2-y3) * (x4-x3)) <= 0);
-            },
-            'circle.circle'(x1, y1, r1, x2, y2, r2) {
-                // detect collision by comparison of distance between centers and sum of circle's radius
-                return ((x2-x1) * (x2-x1) + (y2-y1) * (y2-y1) <= (r1+r2) * (r1+r2));
-            },
-            'circle.point'(x1, y1, r1, x2, y2) {
-                // the same as above
-                return ((x2-x1) * (x2-x1) + (y2-y1) *(y2-y1) <= r1 *r1);
-            },
-            'circle.rect'(x1, y1, r1, x2, y2, x3, y3) {
-                return (
-                    // if we touch corners
-                    (x2-x1) * (x2-x1) + (y2-y1) * (y2-y1)<=r1 * r1
-                ||
-                    (x2-x1) * (x2-x1) + (y3-y1) * (y3-y1)<=r1 * r1
-                ||
-                    (x3-x1) * (x3-x1) + (y2-y1) * (y2-y1)<=r1 * r1
-                ||
-                    (x3-x1) * (x3-x1) + (y3-y1) * (y3-y1)<=r1 * r1
-                || // if we touch borders
-                    ct.place.check['rect.point'](x2, y2, x3, y3, x1+r1, y1)
-                ||
-                    ct.place.check['rect.point'](x2, y2, x3, y3, x1, y1+r1)
-                ||
-                    ct.place.check['rect.point'](x2, y2, x3, y3, x1, y1-r1)
-                ||
-                    ct.place.check['rect.point'](x2, y2, x3, y3, x1-r1, y1)
-                );
-            },
-            'rect.point'(x1, y1, x2, y2, x3, y3) {
-                // x1 y1, x2 y2 - rect
-                // x3 y3 - point
-                // *might* be buggy
-                return (
-                    (x3 >= x1 && x3 <= x2 && y3 >= y1 && y3 <= y2)
-                ||
-                    (x3 <= x1 && x3 >= x2 && y3 <= y1 && y3 >= y2)
-                );
-            },
-            'line.circle'(x1, y1, x2, y2, x3, y3, r) {
-                // x1 y1, x2 y2 - line segment
-                // x3 y3 - circle
-
-                // If the circle touches one of the segments' ends, return true
-                if (ct.place.check['circle.point'](x3, y3, r, x1, y1)
-                || ct.place.check['circle.point'](x3, y3, r, x2, y2)) {
-                    return true;
-                }
-
-                // Get the area with Heron formula and then use the basic formula `S = ah / 2`
-                var a = ct.u.pdc(x1, y1, x2, y2),
-                    b = ct.u.pdc(x1, y1, x3, y3),
-                    c = ct.u.pdc(x2, y2, x3, y3),
-                    s = (a + b + c) / 2,
-                    S = Math.sqrt(s * (s-a)*(s-b)*(s-c)),
-                    l = 2 * S / a,
-                    intersects = l <= r;
-                if (!intersects) {
-                    return false;
-                }
-                // now compute the projection point on `a` and check if it lies on the segment
-                var a1 = Math.atan2(y2 - y1, x2 - x1),
-                    a2 = Math.atan2(y3 - y1, x3 - x1),
-                    d = ct.u.pdn(x1, y1, x2, y2) + (a1 - a2 > 0? -90 : 90),
-                    x4 = ct.u.ldx(l, d) + x3,
-                    y4 = ct.u.ldy(l, d) + y3;
-                // vertical lines are bastards. Pad them.
-                if (a1 === -1.5707963267948966 || a1 === 1.5707963267948966) {
-                    return ct.u.prect(x4, y4, [x1-1, y1, x2+1, y2]);
-                }
-                return ct.u.prect(x4, y4, [x1, y1, x2, y2]);
-            },
-            'line.rect'(x1, y1, x2, y2, x3, y3, x4, y4) {
-                // x1, y1, x2, y2 — line segment
-                // x3, y3, x4, y4 — rect
-                var xmin = Math.min(x3, x4),
-                    xmax = Math.max(x3, x4),
-                    ymin = Math.min(y3, y4),
-                    ymax = Math.max(y3, y4);
-                var points = [
-                    [xmin, ymin],
-                    [xmin, ymax],
-                    [xmax, ymin],
-                    [xmax, ymax]
-                ];
-                var prev = null,
-                    pass = false;
-                for (var pair of points) {
-                    var q = getLineSide(pair[0], pair[1], x1, y1, x2, y2);
-                    if (q === 0) {
-                        pass = true;
-                        break;
-                    }
-                    if (prev !== null && prev * q < 0) {
-                        pass = true;
-                        break;
-                    } 
-                    prev = q;
-                }
-                if (pass) {
-                    if (x1 > xmax && x2 > xmax) {
-                        return false;
-                    }
-                    if (x1 < xmin && x2 < xmin) {
-                        return false;
-                    }
-                    if (y1 > ymax && y2 > ymax) {
-                        return false;
-                    }
-                    if (y1 < ymin && y2 < ymin) {
-                        return false;
-                    }
-                    return true;
-                }
-                return false;
-            },
-            'line.point'(x1, y1, x2, y2, x, y) {
-                return getLineSide(x1, y1, x2, y2, x, y) === 0;
-            }
-        },
-        collide(c1, c2) {
+        collide(c1, c2, forceRecreation) {
             // ct.place.collide(<c1: Copy, c2: Copy>)
             // Test collision between two copies
             if (!c1.shape || !c2.shape || !c1.shape.type || !c2.shape.type) {
                 return false;
             }
-            var cType = c1.shape.type + '.' + c2.shape.type;
-            if (cType === 'rect.rect') {
-                return ct.place.check['rect.rect'](c1.x - c1.shape.left, c1.y - c1.shape.top,c1.x + c1.shape.right,c1.y + c1.shape.bottom, c2.x - c2.shape.left, c2.y - c2.shape.top, c2.x + c2.shape.right, c2.y + c2.shape.bottom);
-            }
-            if (cType === 'circle.circle') {
-                return ct.place.check['circle.circle'](c1.x,c1.y,c1.shape.r,c2.x,c2.y,c2.shape.r);
-            }
-            if (cType === 'circle.rect') {
-                return ct.place.check['circle.rect'](c1.x,c1.y,c1.shape.r,c2.x - c2.shape.left, c2.y - c2.shape.top,c2.x + c2.shape.right, c2.y + c2.shape.bottom);
-            }
-            if (cType === 'rect.circle') {
-                return ct.place.check['circle.rect'](c2.x ,c2.y ,c2.shape.r,c1.x - c1.shape.left, c1.y - c1.shape.top,c1.x + c1.shape.right,c1.y + c1.shape.bottom);
-            }
-            if (cType === 'circle.point') {
-                return ct.place.check['circle.point'](c1.x,c1.y,c1.shape.r, c2.x, c2.y);
-            }
-            if (cType === 'point.circle') {
-                return ct.place.check['circle.point'](c2.x, c2.y, c2.shape.r,c1.x,c1.y);
-            }
-            if (cType === 'point.point') {
-                return c1.y === c2.y && c1.x === c2.x;
-            }
-            if (cType === 'point.rect') {
-                return ct.place.check['rect.point'](c2.x - c2.shape.left, c2.y - c2.shape.top, c2.x + c2.shape.right, c2.y + c2.shape.bottom,c1.x,c1.y);
-            }
-            if (cType === 'rect.point') {
-                return ct.place.check['rect.point'](c1.x - c1.shape.left, c1.y - c1.shape.top,c1.x + c1.shape.right,c1.y + c1.shape.bottom, c2.x, c2.y);
-            }
-            if (cType === 'line.circle') {
-                return ct.place.check['line.circle'](c1.x + c1.shape.x1, c1.y + c1.shape.y1, c1.x + c1.shape.x2, c1.y + c1.shape.y2, c2.x, c2.y, c2.shape.r);
-            }
-            if (cType === 'circle.line') {
-                return ct.place.check['line.circle'](c2.x + c2.shape.x1, c2.y + c2.shape.y1, c2.x + c2.shape.x2, c2.y + c2.shape.y2, c1.x, c1.y, c1.shape.r);
-            }
-            if (cType === 'line.line') {
-                return ct.place.check['line.line'](c1.x + c1.shape.x1, c1.y + c1.shape.y1, c1.x + c1.shape.x2, c1.y + c1.shape.y2, c2.x + c2.shape.x1, c2.y + c2.shape.y1, c2.x + c2.shape.x2, c2.y + c2.shape.y2);
-            }
-            if (cType === 'line.rect') {
-                return ct.place.check['line.rect'](c1.x + c1.shape.x1, c1.y + c1.shape.y1, c1.x + c1.shape.x2, c1.y + c1.shape.y2, c2.x - c2.shape.left, c2.y - c2.shape.top, c2.x + c2.shape.right, c2.y + c2.shape.bottom);
-            }
-            if (cType === 'rect.line') {
-                return ct.place.check['line.rect'](c2.x + c2.shape.x1, c2.y + c2.shape.y1, c2.x + c2.shape.x2, c2.y + c2.shape.y2, c1.x - c1.shape.left, c1.y - c1.shape.top, c1.x + c1.shape.right, c1.y + c1.shape.bottom);
-            }
-            if (cType === 'line.point') {
-                return ct.place.check['line.point'](c1.x + c1.shape.x1, c1.y + c1.shape.y1, c1.x + c1.shape.x2, c1.y + c1.shape.y2, c2.x, c2.y);
-            }
-            if (cType === 'point.line') {
-                return ct.place.check['line.point'](c2.x + c2.shape.x1, c2.y + c2.shape.y1, c2.x + c2.shape.x2, c2.y + c2.shape.y2, c1.x, c1.y);
-            }
-            return false;
+            const sh1 = c1._shape || getSSCDShape(c1),
+                  sh2 = c2._shape || getSSCDShape(c2);
+            c1._shape = sh1;
+            c2._shape = sh2;
+            const q = SSCD.CollisionManager.test_collision(sh1, sh2);
+            return q;
         },
         /**
          * Determines if the place in (x,y) is occupied. 
@@ -261,6 +118,7 @@
             if (typeof y === 'number') {
                 me.x = x;
                 me.y = y;
+                delete me._shape;
                 hashes = ct.place.getHashes(me);
             } else {
                 hashes = me.$chashes || ct.place.getHashes(me);
@@ -442,22 +300,25 @@
                 precision = ctype;
                 ctype = void 0;
             }
-            precision = precision || 1;
-            if (precision < 0) {
-                precision *= -1;
+            precision = Math.abs(precision || 1);
+            if (length < 0) {
+                length *= -1;
                 dir += 180;
             }
             var dx = Math.cos(dir*Math.PI/-180) * precision,
                 dy = Math.sin(dir*Math.PI/-180) * precision;
             for (let i = 0; i < length; i+= precision) {
+                delete me._shape;
                 const occupied = ct.place.occupied(me, me.x + dx, me.y + dy, ctype);
                 if (!occupied) {
                     me.x += dx;
                     me.y += dy;
                 } else {
+                    delete me._shape;
                     return occupied;
                 }
             }
+            delete me._shape;
             return false;
         },
         go(me, x, y, speed, ctype) {
@@ -469,6 +330,7 @@
                 if (ct.place.free(me, x, y, ctype)) {
                     me.x = x;
                     me.y = y;
+                    delete me._shape;
                 }
                 return;
             }

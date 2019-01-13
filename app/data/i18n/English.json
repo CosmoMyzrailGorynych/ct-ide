@@ -187,7 +187,13 @@
         "marginx": "Margin X:",
         "marginy": "Margin Y:",
         "offx": "Offset X:",
-        "offy": "Offset Y:"
+        "offy": "Offset Y:",
+        "strip": "Line Strip / Polygon",
+        "removePoint": "Remove the point",
+        "closeShape": "Close the shape",
+        "addPoint": "Add a point",
+        "moveCenter": "Move axis",
+        "movePoint": "Move this point"
     },
     "sounds": {
         "create": "Create"

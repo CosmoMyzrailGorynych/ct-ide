@@ -180,14 +180,12 @@ types-panel.panel.view
                 .then(e => {
                     if (e.buttonClicked === 'ok') {
                         for (const room of window.currentProject.rooms) {
-                            for (const layer of room.layers) {
-                                let i = 0;
-                                while (i < layer.copies.length) {
-                                    if (layer.copies[i].uid === this.currentType.uid) {
-                                        layer.copies.splice(i, 1);
-                                    } else {
-                                        i++;
-                                    }
+                            let i = 0;
+                            while (i < room.copies.length) {
+                                if (room.copies[i].uid === this.currentType.uid) {
+                                    room.copies.splice(i, 1);
+                                } else {
+                                    i++;
                                 }
                             }
                         }

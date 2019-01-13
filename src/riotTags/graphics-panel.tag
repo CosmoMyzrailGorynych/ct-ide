@@ -136,6 +136,7 @@ graphics-panel.panel.view
                 marginy: 0,
                 imgWidth: 32,
                 imgHeight: 32,
+                closedStrip: true
             }
             img.src = '/data/img/unknown.png';
         };

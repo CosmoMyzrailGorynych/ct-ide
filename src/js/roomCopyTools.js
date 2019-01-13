@@ -130,6 +130,7 @@
                         delete copy.lastX;
                         delete copy.lastY;
                     }
+                    this.movingStuff = false;
                 }
                 this.refreshRoomCanvas();
             };
@@ -202,9 +203,9 @@
                         this.refreshRoomCanvas(e);
                         // рисовка прямоугольного выделения
                         const x1 = this.xToRoom(this.startx),
-                            x2 = this.xToRoom(e.offsetX),
-                            y1 = this.yToRoom(this.starty),
-                            y2 = this.yToRoom(e.offsetY);
+                              x2 = this.xToRoom(e.offsetX),
+                              y1 = this.yToRoom(this.starty),
+                              y2 = this.yToRoom(e.offsetY);
                         this.drawSelection(x1, y1, x2, y2);
                     } 
                 } else if (this.movingStuff) {

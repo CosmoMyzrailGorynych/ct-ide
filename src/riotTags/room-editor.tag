@@ -431,10 +431,10 @@ room-editor.panel.view
                                 shy =  this.stack[i].extends.shiftY || 0;
                             canvas.x.save();
                             canvas.x.fillStyle = canvas.x.createPattern(glob.graphmap[this.stack[i].graph], this.stack[i].extends.repeat || 'repeat');
-                            canvas.x.scale(scx, scy);
                             canvas.x.translate(shx, shy);
+                            canvas.x.scale(scx, scy);
                             canvas.x.fillRect(
-                                this.xToRoom(0) / scx - shx, this.yToRoom(0) / scy - shy,
+                                (this.xToRoom(0) - shx) / scx, (this.yToRoom(0) - shy) / scy,
                                 canvas.width / scx / this.zoomFactor,
                                 canvas.height / scy / this.zoomFactor
                             );

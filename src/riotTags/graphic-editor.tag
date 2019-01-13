@@ -28,6 +28,10 @@ graphic-editor.panel.view
                 input(type="radio" name="collisionform" checked="{opts.graphic.shape === 'rect'}" onclick="{graphicSelectRect}")
                 span {voc.rectangle}
             br
+            label
+                input(type="radio" name="collisionform" checked="{opts.graphic.shape === 'strip'}" onclick="{graphicSelectStrip}")
+                span {voc.strip}
+            br
             div(if="{opts.graphic.shape === 'circle'}")
                 b {voc.radius}
                 br
@@ -45,6 +49,18 @@ graphic-editor.panel.view
                 button.wide(onclick="{graphicFillRect}")
                     i.icon-maximize
                     span {voc.fill}
+            div(if="{opts.graphic.shape === 'strip'}")
+                .flexrow(each="{point, ind in opts.graphic.stripPoints}")
+                    input.short(type="number" value="{point.x}" oninput="{wire('this.graphic.stripPoints.'+ ind + '.x')}")
+                    span   ×  
+                    input.short(type="number" value="{point.y}" oninput="{wire('this.graphic.stripPoints.'+ ind + '.y')}")
+                    button.square.inline(title="{voc.removePoint}" onclick="{removeStripPoint}")
+                        i.icon-minus
+                input(type="checkbox" checked="{opts.graphic.closedStrip}")
+                span   {voc.closeShape}
+                button.wide(onclick="{addStripPoint}")
+                    i.icon-plus
+                    span   {voc.addPoint}
             br
             label
                 input(checked="{prevShowMask}" onchange="{wire('this.prevShowMask')}" type="checkbox")
@@ -117,10 +133,6 @@ graphic-editor.panel.view
                     i.icon-drop
                     span {voc.bgcolor}
             input.color.rgb#previewbgcolor
-    //-
-        button#graphsplicedone.wide(onclick="graphicFinishSplit")
-            i.icon-confirm
-            span {voc.done}
 
     color-picker(
         ref="previewBackgroundColor" if="{changingGraphicPreviewColor}"
@@ -138,27 +150,25 @@ graphic-editor.panel.view
             //- TODO
             //-
                 .button-stack
-                    button.inline(title="#graphview.tools.deleteframe" onclick="{graphicDeleteFrame}")
-                        i.icon-delete
-                    button.inline(title="#graphview.tools.duplicateframe" onclick="{graphicDuplicateFrame}")
-                        i.icon-duplicate
-                    button.inline(title="#graphview.tools.addframe" onclick="{graphicAddFrame}")
-                        i.icon-plus
-                .button-stack
-                    button.inline(title="#graphview.tools.shift" onclick="{graphicShift}")
-                        i.icon-move-view
                     button.inline(title="#graphview.tools.flipvertical" onclick="{graphicFlipVertical}")
                         i.icon-flip-vertical
                     button.inline(title="#graphview.tools.fliphorizontal" onclick="{graphicFlipHorizontal}")
                         i.icon-flip-horisontal
-                    button.inline(title="#graphview.tools.rotate" onclick="{graphicRotate}")
-                        i.icon-refresh
-                .button-stack
                     button.inline(title="#graphview.tools.resize" onclick="{graphicResize}")
                         i.icon-maximize
-                    button.inline(title="#graphview.tools.crop" onclick="{graphicCrop}")
-                        i.icon-crop
         canvas(ref="graphCanvas")
+        .aDragger(
+            style="left: {opts.graphic.axis[0]}px; top: {opts.graphic.axis[1]}px;"
+            title="{voc.moveCenter}"
+            onmousedown="{startMoving('axis')}"
+        )
+        .aDragger(
+            if="{opts.graphic.shape === 'strip'}"
+            each="{point, ind in opts.graphic.stripPoints}"
+            style="left: {point.x + graphic.axis[0]}px; top: {point.y + graphic.axis[1]}px;"
+            title="{voc.movePoint}"
+            onmousedown="{startMoving('point')}"
+        )
     script.
         const path = require('path'),
               fs = require('fs-extra');
@@ -386,10 +396,22 @@ graphic-editor.panel.view
                         this.graphic.right + this.graphic.left,
                         this.graphic.bottom + this.graphic.top
                     );
-                } else {
+                } else if (this.graphic.shape === 'circle') {
                     grprCanvas.x.beginPath();
                     grprCanvas.x.arc(this.graphic.axis[0], this.graphic.axis[1], this.graphic.r, 0, 2 * Math.PI);
                     grprCanvas.x.fill();
+                } else if (this.graphic.shape === 'strip' && this.graphic.stripPoints.length) {
+                    grprCanvas.x.strokeStyle = '#ff0';
+                    grprCanvas.x.lineWidth = 3;
+                    grprCanvas.x.beginPath();
+                    grprCanvas.x.moveTo(this.graphic.stripPoints[0].x + this.graphic.axis[0], this.graphic.stripPoints[0].y + this.graphic.axis[1]);
+                    for (let i = 1, l = this.graphic.stripPoints.length; i < l; i++) {
+                        grprCanvas.x.lineTo(this.graphic.stripPoints[i].x + this.graphic.axis[0], this.graphic.stripPoints[i].y + this.graphic.axis[1]);
+                    }
+                    if (this.graphic.closedStrip) {
+                        grprCanvas.x.closePath();
+                    }
+                    grprCanvas.x.stroke();
                 }
                 grprCanvas.x.globalAlpha = 1;
                 grprCanvas.x.fillStyle = '#f33';
@@ -452,6 +474,65 @@ graphic-editor.panel.view
             this.graphicFillRect();
         };
         /**
+         * Переключает тип маски на ломаную/многоугольник и выставляет начальные параметры
+         */
+        this.graphicSelectStrip = function () {
+            this.graphic.shape = 'strip';
+            this.graphic.stripPoints = this.graphic.stripPoints || [];
+            if (!this.graphic.stripPoints.length) {
+                const twoPi = Math.PI * 2;
+                this.graphic.closedStrip = true;
+                for (let i = 0; i < 5; i++) {
+                    this.graphic.stripPoints.push({
+                        x: Math.round(Math.sin(twoPi / 5 * i) * this.graphic.width / 2),
+                        y: -Math.round(Math.cos(twoPi / 5 * i) * this.graphic.height / 2)
+                    });
+                }
+                console.log(this.graphic);
+            }
+        };
+        this.removeStripPoint = function (e) {
+            this.graphic.stripPoints.splice(e.item.ind, 1);
+        };
+        this.addStripPoint = function () {
+            this.graphic.stripPoints.push({
+                x: 0,
+                y: 16
+            });
+        };
+        this.startMoving = which => e => {
+            const startX = e.screenX,
+                  startY = e.screenY;
+            if (which === 'axis') {
+                const oldX = this.graphic.axis[0],
+                      oldY = this.graphic.axis[1];
+                const func = e => {
+                    this.graphic.axis[0] = e.screenX - startX + oldX;
+                    this.graphic.axis[1] = e.screenY - startY + oldY;
+                    this.update();
+                }, func2 = () => {
+                    document.removeEventListener('mousemove', func);
+                    document.removeEventListener('mouseup', func2);
+                };
+                document.addEventListener('mousemove', func);
+                document.addEventListener('mouseup', func2);
+            } else if (which === 'point') {
+                const point = e.item.point,
+                      oldX = point.x,
+                      oldY = point.y;
+                const func = e => {
+                    point.x = e.screenX - startX + oldX;
+                    point.y = e.screenY - startY + oldY;
+                    this.update();
+                }, func2 = () => {
+                    document.removeEventListener('mousemove', func);
+                    document.removeEventListener('mouseup', func2);
+                };
+                document.addEventListener('mousemove', func);
+                document.addEventListener('mouseup', func2);
+            }
+        };
+        /**
          * Перерисовывает канвас со спрайтом со всеми масками и делениями
          */
         this.refreshGraphCanvas = () => {
@@ -474,17 +555,29 @@ graphic-editor.panel.view
             }
             if (this.prevShowMask) {
                 graphCanvas.x.fillStyle = '#ff0';
-                if (this.graphic.shape == 'rect') {
+                if (this.graphic.shape === 'rect') {
                     graphCanvas.x.fillRect(
                         this.graphic.axis[0] - this.graphic.left,
                         this.graphic.axis[1] - this.graphic.top,
                         this.graphic.right + this.graphic.left,
                         this.graphic.bottom + this.graphic.top
                     );
-                } else {
+                } else if (this.graphic.shape === 'circle') {
                     graphCanvas.x.beginPath();
                     graphCanvas.x.arc(this.graphic.axis[0], this.graphic.axis[1], this.graphic.r, 0, 2 * Math.PI);
                     graphCanvas.x.fill();
+                } else if (this.graphic.shape === 'strip' && this.graphic.stripPoints.length) {
+                    graphCanvas.x.strokeStyle = '#ff0';
+                    graphCanvas.x.lineWidth = 3;
+                    graphCanvas.x.beginPath();
+                    graphCanvas.x.moveTo(this.graphic.stripPoints[0].x + this.graphic.axis[0], this.graphic.stripPoints[0].y + this.graphic.axis[1]);
+                    for (let i = 1, l = this.graphic.stripPoints.length; i < l; i++) {
+                        graphCanvas.x.lineTo(this.graphic.stripPoints[i].x + this.graphic.axis[0], this.graphic.stripPoints[i].y + this.graphic.axis[1]);
+                    }
+                    if (this.graphic.closedStrip) {
+                        graphCanvas.x.closePath();
+                    }
+                    graphCanvas.x.stroke();
                 }
                 graphCanvas.x.globalAlpha = 1;
                 graphCanvas.x.fillStyle = '#f33';
@@ -515,7 +608,6 @@ graphic-editor.panel.view
          */
         this.graphGenPreview = function(destination, size) {
             return new Promise((accept, decline) => {
-                // destination = sessionStorage.projdir + '/img/' + this.graphic.destinatione + '_prev.png'
                 var c = document.createElement('canvas');
                 let x = this.graphic.offx,
                     y = this.graphic.offy,
