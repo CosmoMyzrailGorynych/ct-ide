@@ -18,6 +18,7 @@
         for (var style of project.styles) {
             style.uid = window.generateGUID();
             if (style.fill && Number(style.fill.type) === 2) {
+                /* eslint no-loop-func: off */
                 style.fill.pattern = project.graphs.find(gr => gr.name === style.fill.patname).uid;
             }
         }
@@ -66,6 +67,9 @@
             if (!('extends' in type)) {
                 type.extends = {};
             }
+        }
+        if (!('skeletons' in project)) {
+            project.skeletons = [];
         }
     };
     
