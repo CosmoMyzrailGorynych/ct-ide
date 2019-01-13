@@ -132,7 +132,15 @@
     }
     class Background extends PIXI.extras.TilingSprite {
         constructor(bgName, frame, depth, exts) {
-            super(ct.res.getTexture(bgName, frame || 0), ct.width, ct.height);
+            var width = ct.viewWidth,
+                height = ct.viewHeight;
+            if (exts.repeat === 'no-repeat' || exts.repeat === 'repeat-x') {
+                height = ct.res.getTexture(bgName, frame || 0).orig.height * (exts.scaleY || 1);
+            }
+            if (exts.repeat === 'no-repeat' || exts.repeat === 'repeat-y') {
+                width = ct.res.getTexture(bgName, frame || 0).orig.width * (exts.scaleX || 1);
+            }
+            super(ct.res.getTexture(bgName, frame || 0), width, height);
             ct.types.list.BACKGROUND.push(this);
             this.depth = depth;
             this.shiftX = this.shiftY = this.movementX = this.movementY = 0;
