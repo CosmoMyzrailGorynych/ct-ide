@@ -163,3 +163,7 @@ ct.sound.fade = function(name, newVolume, duration, id) {
  * @returns {Number} The current volume.
  */
 ct.sound.globalVolume = Howler.volume;
+
+ct.sound.exists = function(name) {
+    return (name in ct.res.sounds);
+};

@@ -86,6 +86,9 @@ if (!ct.sound) {
                 cb(false);
             }
             return false;
+        },
+        exists(name) {
+            return (name in ct.res.sounds);
         }
     };
 
