@@ -175,7 +175,7 @@
                         }
                     }
                     registry[g.name] = {
-                        atlas: `img/a${binInd}.json`,
+                        atlas: `./img/a${binInd}.json`,
                         frames: g.grid.untill > 0? Math.min(g.grid.untill, g.grid[0]*g.grid[1]) : g.grid[0]*g.grid[1],
                         shape: getGraphicShape(g),
                         anchor: {
@@ -186,8 +186,8 @@
                     atlasJSON.animations[g.name] = keys;
                 }
             }
-            fs.outputJSON(`${exec}/export/img/a${binInd}.json`, atlasJSON);
-            res += `\n.add('img/a${binInd}.json')`;
+            fs.outputJSONSync(`${exec}/export/img/a${binInd}.json`, atlasJSON);
+            res += `\n.add('./img/a${binInd}.json')`;
             var data = atlas.toDataURL().replace(/^data:image\/\w+;base64,/, '');
             var buf = new Buffer(data, 'base64');
             fs.writeFileSync(`${exec}/export/img/a${binInd}.png`, buf);
@@ -203,7 +203,7 @@
             var buf = new Buffer(atlas.toDataURL().replace(/^data:image\/\w+;base64,/, ''), 'base64');
             fs.writeFileSync(`${exec}/export/img/t${i}.png`, buf);
             registry[g.name] = {
-                atlas: `img/t${i}.png`,
+                atlas: `./img/t${i}.png`,
                 frames: 0,
                 shape: getGraphicShape(g),
                 anchor: {
@@ -211,7 +211,7 @@
                     y: g.axis[1] / g.height
                 }
             };
-            res += `\n.add('img/t${i}.png')`;
+            res += `\n.add('./img/t${i}.png')`;
         }
         res += ';';
         registry = JSON.stringify(registry);
@@ -233,9 +233,9 @@
             fs.copySync(`${sessionStorage.projdir}/img/${slice}_tex.json`, `${exec}/export/img/${slice}_tex.json`);
             fs.copySync(`${sessionStorage.projdir}/img/${slice}_tex.png`, `${exec}/export/img/${slice}_tex.png`);
 
-            data.loaderScript += `.add('${slice}_ske.json', 'img/${slice}_ske.json')`;
-            data.loaderScript += `.add('${slice}_tex.json', 'img/${slice}_tex.json')`;
-            data.loaderScript += `.add('${slice}_tex.png', 'img/${slice}_tex.png')`;
+            data.loaderScript += `.add('${slice}_ske.json', './img/${slice}_ske.json')`;
+            data.loaderScript += `.add('${slice}_tex.json', './img/${slice}_tex.json')`;
+            data.loaderScript += `.add('${slice}_tex.png', './img/${slice}_tex.png')`;
 
             data.startScript += `dbf.parseDragonBonesData(PIXI.loader.resources['${slice}_ske.json'].data);\n`;
             data.startScript += `dbf.parseTextureAtlasData(PIXI.loader.resources['${slice}_tex.json'].data, PIXI.loader.resources['${slice}_tex.png'].texture);\n`;
@@ -276,7 +276,7 @@ ct.styles.new(
             const s = window.currentProject.sounds[k];
             var wav = s.origname.slice(-4) === '.wav',
                 mp3 = s.origname.slice(-4) === '.mp3';
-            sounds += `ct.sound.init('${s.name}', ${wav? `'snd/${s.uid}.wav'` : 'null'}, ${mp3? `'snd/${s.uid}.mp3'` : 'null'}, {
+            sounds += `ct.sound.init('${s.name}', ${wav? `'./snd/${s.uid}.wav'` : 'null'}, ${mp3? `'./snd/${s.uid}.mp3'` : 'null'}, {
                 poolSize: ${s.poolSize || 5},
                 music: ${Boolean(s.isMusic)}
             });\n`;
