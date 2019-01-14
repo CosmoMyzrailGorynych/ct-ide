@@ -47,11 +47,11 @@ Gets the furthest Copy of a given `type`.
 Returns the latest distance after calling `ct.place.furthest` or `ct.place.nearest`.
 
 
-## ct.place.go(me, x, y, speed, [ctype])
+## ct.place.go(me, x, y, length, [ctype])
 
 Tries to reach the target with a simple obstacle avoidance algorithm.
 
-`me` is a copy to move around, `x` and `y` is a target point; `speed` is the maximum amount of pixels to move in one step. `ctype` is an option parameter that tells to test collisions against a certain collision group.
+`me` is a copy to move around, `x` and `y` is a target point; `length` is the maximum amount of pixels to move in one step. `ctype` is an option parameter that tells to test collisions against a certain collision group.
 
 This function doesn't require the `ct.types.move(this);` call.
 
