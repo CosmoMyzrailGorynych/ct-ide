@@ -66,3 +66,19 @@ if (this.onGround) { // should be defined before
     }
 }
 ```
+
+## Responding to Animation Events
+
+ct.js will automatically listen for sound events inside DragonBones skeleton. The names you define in the DragonBones project should be named in the same way as ct.js' sounds.
+
+For listening for custom events, add such code right after attachment of a skeleton to a sprite:
+
+```js
+this.skel.on(dragonBones.EventObject.FRAME_EVENT, event => {
+    if (event.name === 'Shoot') {
+        /* Define logic for shooting here */
+    } else if (event.name === '...') {
+        /* ... */
+    }
+});
+```
