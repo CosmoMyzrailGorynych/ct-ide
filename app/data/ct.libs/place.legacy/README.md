@@ -1,5 +1,7 @@
 Checks collisions between copies.
 
+**This is a deprecated version. It does not support polygons and may have other differences with the current version of ct.place.**
+
 # Additions to copies
 
 You can call `this.moveContinuous('CollisionGroup');` at any copy to perform precise movement with collision checks. It takes gravity into account, too, and uses the `ct.place.moveAlong` method.
