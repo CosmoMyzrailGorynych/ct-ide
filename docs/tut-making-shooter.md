@@ -123,14 +123,14 @@ if (ct.keyboard.down['right']) { // Is the right arrow key pressed?
 if (this.x < 0) { // Have the ship crossed the left border?
     this.x = 0; // Go back to the left border
 }
-if (this.x > ct.width) { // Have the ship crossed the right border?
-    this.x = ct.width; // Go back to the right border
+if (this.x > ct.viewWidth) { // Have the ship crossed the right border?
+    this.x = ct.viewWidth; // Go back to the right border
 }
 
 this.move();
 ```
 
-First, we move the ship if arrow keys were pressed, then we check whether its X coordinate fell off the viewport. Here `0` means the left side of the room and `ct.width` means the horizontal size of the viewport, which forms the right side.
+First, we move the ship if arrow keys were pressed, then we check whether its X coordinate fell off the viewport. Here `0` means the left side of the room and `ct.viewWidth` means the horizontal size of the viewport, which forms the right side.
 
 All the methods starting with `ct.keyboard` come from the enabled module. You can read its documentation on the "Catmods" tab, "Reference" section.
 
@@ -363,13 +363,13 @@ Then add this code to generate enemies through time:
 this.asteroidTimer -= ct.delta;
 if (this.asteroidTimer <= 0) {
     this.asteroidTimer = ct.random.range(20, 200);
-    ct.types.copy(ct.random.dice('Asteroid_Big', 'Asteroid_Medium'), ct.random(ct.width), -100);
+    ct.types.copy(ct.random.dice('Asteroid_Big', 'Asteroid_Medium'), ct.random(ct.viewWidth), -100);
 }
 
 this.enemyTimer -= ct.delta;
 if (this.enemyTimer <= 0) {
     this.enemyTimer = ct.random.range(180, 400);
-    ct.types.copy('EnemyShip', ct.random(ct.width), -100);
+    ct.types.copy('EnemyShip', ct.random(ct.viewWidth), -100);
 }
 ```
 
@@ -480,7 +480,7 @@ Managing lives is similar to managing score points. Add this code to the room's 
 this.lives = 3;
 this.livesLabel = new PIXI.Text('Lives: ' + this.lives, ct.styles.get('ScoreText'));
 this.addChild(this.livesLabel);
-this.livesLabel.x = ct.width - 200;
+this.livesLabel.x = ct.viewWidth - 200;
 this.livesLabel.y = 30;
 ```
 

@@ -231,14 +231,14 @@ Modify the code so that the player can control it with arrows, too.
 
 If we launch the game now, we will be able to move the Robot around. There is an issue, though: the camera isn't moving!
 
-It is not a hard issue, though. If we dig into the ct.js docs and read the ct.rooms section, we will find that there are properties `ct.rooms.current.follow`, `ct.rooms.current.borderx` and `ct.rooms.current.bordery` exactly for following a copy.
+It is not a hard issue, though. If we dig into the ct.js docs and read the ct.rooms section, we will find that there are properties `ct.rooms.current.follow`, `ct.rooms.current.borderX` and `ct.rooms.current.borderY` exactly for following a copy.
 
 Open the `Robot` type and its "On Create" Code. Add this code to the end:
 
 ```js
 ct.room.follow = this;
-ct.room.borderx = 450;
-ct.room.bordery = 200;
+ct.room.borderX = 450;
+ct.room.borderY = 200;
 ```
 
 The camera will now follow the Robot.
@@ -563,13 +563,13 @@ this.addChild(this.text);
 And in the "Draw" event:
 
 ```js
-this.x = ct.room.x + ct.width - 24;
+this.x = ct.room.x + ct.viewWidth - 24;
 this.y = ct.room.y + 24;
 
 this.text.text = ct.room.lives;
 ```
 
-Note how we use the property `room.width` to position the widget on the right side of the screen.
+Note how we use the property `room.viewWidth` to position the widget on the right side of the screen.
 
 Now modify the respawn code of the `Robot` so it loses one heart at each respawn:
 
