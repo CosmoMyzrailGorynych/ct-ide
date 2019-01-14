@@ -52,6 +52,7 @@
             startingRoom = project.rooms[0].uid;
         }
         project.startroom = startingRoom;
+        return project;
     };
     const adapter10x = project => {
         for (const room of project.rooms) {
@@ -80,7 +81,7 @@
             if (version[1] < 3) {
                 project = adapter03x(project);
             }
-            const ps = project.settings;
+            const ps = project.settings || {};
             if (version[1] < 5) {
                 // Модуль ct.place теперь с конфигами
                 if ('place' in project.libs) {
@@ -103,7 +104,7 @@
             }
         }
         if (version[0] < 2) {
-            if (version[1] < 1) {
+            if (version[0] === 1 && version[1] < 1 || version[0] < 1) {
                 adapter10x(project);
             }
         }
@@ -161,7 +162,12 @@
                 window.alertify.error(window.languageJSON.common.wrongFormat);
                 return;
             }
-            loadProject(projectData);
+            try {
+                loadProject(projectData);
+            } catch (e) {
+                window.alertify.error(e);
+                console.error(e);
+            }
         });
     };
 
