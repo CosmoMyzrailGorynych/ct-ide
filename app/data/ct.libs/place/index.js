@@ -28,7 +28,7 @@
         }
         if (shape === 'circle') {
             if (copy.scale.x === copy.scale.y) {
-                return new SSCD.Circle(position, shape.r);
+                return new SSCD.Circle(position, shape.r * copy.scale.x);
             }
             const vertices = [];
             for (let i = 0; i < circlePrecision; i++) {
@@ -171,6 +171,7 @@
             if (typeof y === 'number') {
                 me.x = x;
                 me.y = y;
+                delete me._shape;
                 hashes = ct.place.getHashes(me);
             } else {
                 hashes = me.$chashes || ct.place.getHashes(me);
@@ -181,6 +182,7 @@
                 }
                 x = me.x;
                 y = me.y;
+                delete me._shape;
             }
             if (multiple) {
                 results = [];
