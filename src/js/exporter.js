@@ -227,6 +227,12 @@
             registry: {},
             requiresDB: false
         };
+        if (!window.currentProject.skeletons.length) {
+            data.startScript = '';
+            data.loaderScript = '';
+            data.registry = JSON.stringify(data.registry);
+            return data;
+        }
         for (const skeleton of window.currentProject.skeletons) {
             const slice = skeleton.origname.replace('_ske.json', '');
             fs.copySync(`${sessionStorage.projdir}/img/${slice}_ske.json`, `${exec}/export/img/${slice}_ske.json`);

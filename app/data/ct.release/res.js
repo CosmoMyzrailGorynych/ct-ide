@@ -3,7 +3,7 @@
     const loadingLabel = ct.pixiApp.view.previousSibling,
           loadingBar = loadingLabel.querySelector('.ct-aLoadingBar');
     /* global dragonBones */
-    const dbFactory = dragonBones? dragonBones.PixiFactory.factory : null;
+    const dbFactory = window.dragonBones? dragonBones.PixiFactory.factory : null;
     ct.res = {
         graphsLoaded: 0,
         graphsError: 0,
