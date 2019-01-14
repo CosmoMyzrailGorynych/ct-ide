@@ -132,6 +132,7 @@
     }
     class Background extends PIXI.extras.TilingSprite {
         constructor(bgName, frame, depth, exts) {
+            exts = exts || {};
             var width = ct.viewWidth,
                 height = ct.viewHeight;
             if (exts.repeat === 'no-repeat' || exts.repeat === 'repeat-x') {
