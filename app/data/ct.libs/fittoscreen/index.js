@@ -12,9 +12,10 @@
     var resize = function() {
         width = window.innerWidth;
         height = window.innerHeight;
-        var kw = width / ct.viewWidth,
-            kh = height / ct.viewHeight,
-            k = Math.min(kw, kh);
+        var kw = width / ct.roomWidth,
+            kh = height / ct.roomHeight,
+            minorWidth = kw > kh;
+        var k = Math.min(kw, kh);
         if (mode === 'fastScale') {
             canv.style.transform = 'scale(' + k + ')';
             canv.style.position = 'absolute';
@@ -32,13 +33,20 @@
                     bg.width = width;
                     bg.height = height;
                 }
+                ct.viewWidth = width;
+                ct.viewHeight = height;
             }
             if (mode !== 'scaleFit') {
                 ct.pixiApp.renderer.resize(width, height);
                 if (mode === 'scaleFill') {
+                    if (minorWidth) {
+                        ct.viewWidth = Math.ceil(width / k);
+                    } else {
+                        ct.viewHeight = Math.ceil(height / k);
+                    }
                     for (const bg of ct.types.list.BACKGROUND) {
-                        bg.width = Math.ceil(ct.viewWidth * k);
-                        bg.height = Math.ceil(ct.viewHeight * k);
+                        bg.width = ct.viewWidth;
+                        bg.height = ct.viewHeight;
                     }
                 }
             } else {
