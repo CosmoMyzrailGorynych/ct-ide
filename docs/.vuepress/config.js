@@ -32,8 +32,7 @@ module.exports = {
                 title: "Tutorials",
                 children: [
                     'tut-making-shooter',
-                    'tut-making-platformer',
-                    'localstorage'
+                    'tut-making-platformer'
                 ],
             }, {
                 title: 'The `core` library',
@@ -48,6 +47,13 @@ module.exports = {
                     'ct.types',
                     ['ct.u', 'ct.u (utilities)'],
                     ['catmoddocs.md', 'Where are the other ct.* docs?']
+                ]
+            }, {
+                title: 'Tips & tricks',
+                collapsable: false,
+                children: [
+                    'localstorage',
+                    'viewport-management'
                 ]
             }, {
                 title: 'Working with assets',
