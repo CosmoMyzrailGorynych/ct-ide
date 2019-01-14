@@ -14,7 +14,7 @@ Destroys all the existing copies and moves to a new room.
 
 Destroys all the existing copies in the room.
 
-### `ct.rooms.current`
+### `ct.room`
 
 The current room's object.
 
@@ -32,30 +32,38 @@ this.interfaceCopies = ct.rooms.make.apply(ct.rooms.templates.MainInterface);
 
 ## Managing current viewport
 
-You can manage the viewport anytime by editing properties listed below of `ct.rooms.current` object. You can also use `this` keyword in room's events.
+You can manage the viewport anytime by editing properties listed below of `ct.room` object. You can also use `this` keyword in room's events.
 
-### `ct.rooms.current.x`, `ct.rooms.current.y`
+### `ct.room.x`, `ct.room.y`
 
 Current horizontal and vertical shift of the view.
 
-### `ct.rooms.current.width`, `ct.rooms.current.height`
-
-The size of current room.
-
-### `ct.rooms.current.follow`
+### `ct.room.follow`
 
 You can set a copy to follow here, so the camera moves to it automatically.
 
-### `ct.rooms.current.borderx`, `ct.rooms.current.bordery`
+### `ct.room.borderX`, `ct.room.borderY`
 
 Horizontal and vertical padding from the edges of the canvas, within which the camera moves.
 
 ```js Example: following a copy
 // Place this code, e.g, to your hero's `OnCreate` code
-var room = ct.rooms.current;
+var room = ct.room;
 room.follow = this;
 
 // Follow the hero so it is always at the center of the screen
-room.borderx = room.width / 2;
-room.bordery = room.height / 2;
+room.borderX = room.viewWidth / 2;
+room.borderY = room.viewHeight / 2;
 ```
+
+### `ct.room.center`
+
+When set to `true`, the followed copy will always stay in the middle of the viewport. This parameter has a higher priority over `ct.room.borderX`, `ct.room.borderY`.
+
+### `ct.room.followDrift`
+
+A value between 0 and 1. Defines how fast a room reacts to a followed copy's movement. `0` means instant camera movement, higher values mean a more smooth movement.
+
+### `ct.room.followShiftX`, `ct.room.followShiftY`
+
+Shifts the camera so that it stays above/below/etc the followed copy.

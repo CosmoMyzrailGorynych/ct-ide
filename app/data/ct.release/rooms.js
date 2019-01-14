@@ -4,7 +4,7 @@
             super();
             this.x = this.y = 0;
             this.uid = 0;
-            this.follow = this.borderX = this.borderY = this.followShiftX = this.followShiftX = 0;
+            this.follow = this.borderX = this.borderY = this.followShiftX = this.followShiftY = this.followDrift = 0;
             this.tileLayers = [];
             this.backgrounds = [];
             if (!ct.room) {
@@ -91,8 +91,8 @@
             }
             ct.rooms.clear();
             var template = ct.rooms.templates[roomName];
-            ct.viewWidth = template.width;
-            ct.viewHeight = template.height;
+            ct.viewWidth = ct.roomWidth = template.width;
+            ct.viewHeight = ct.roomHeight = template.height;
             ct.pixiApp.renderer.resize(template.width, template.height);
             ct.rooms.current = ct.room = new Room(template);
             ct.room.onCreate();

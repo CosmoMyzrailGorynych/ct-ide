@@ -31,7 +31,7 @@ const ct = {
     }
 };
 
-console.log(`😺 ct.js v${ct.version} 😽
+console.log(`😺 ct.js game editor v${ct.version} 😽
 😻 Website: https://ctjs.rocks/ 🙀`);
 ct.pixiApp = new PIXI.Application({
     width: [/*@startwidth@*/][0],
@@ -217,43 +217,44 @@ ct.loop = function(delta) {
                 return ((a.depth || 0) - (b.depth || 0)) || ((a.uid || 0) - (b.uid || 0)) || 0;
         })
     }
-
-    if (ct.room.follow) {
-        if (ct.room.follow.kill) {
-            delete ct.room.follow;
-        } else if (ct.room.center) {
-            ct.room.x += ct.room.follow.x + ct.room.followShiftX - ct.room.x - ct.width / 2;
-            ct.room.y += ct.room.follow.y + ct.room.followShiftY - ct.room.y - ct.height / 2;
+    const r = ct.room;
+    if (r.follow) {
+        const speed = (1-r.followDrift)*ct.delta;
+        if (r.follow.kill) {
+            delete r.follow;
+        } else if (r.center) {
+            r.x += speed * (r.follow.x + r.followShiftX - r.x - ct.viewWidth / 2);
+            r.y += speed * (r.follow.y + r.followShiftY - r.y - ct.viewHeight / 2);
         } else {
             let cx = 0,
                 cy = 0,
                 w = 0,
                 h = 0;
-            w = Math.min(ct.room.borderX, ct.viewWidth / 2);
-            h = Math.min(ct.room.borderY, ct.viewHeight / 2);
-            if (ct.room.follow.x + ct.room.followShiftX - ct.room.x < w) {
-                cx = ct.room.follow.x + ct.room.followShiftX - ct.room.x - w;
+            w = Math.min(r.borderX, ct.viewWidth / 2);
+            h = Math.min(r.borderY, ct.viewHeight / 2);
+            if (r.follow.x + r.followShiftX - r.x < w) {
+                cx = r.follow.x + r.followShiftX - r.x - w;
             }
-            if (ct.room.follow.y + ct.room.followShiftY - ct.room.y < h) {
-                cy = ct.room.follow.y + ct.room.followShiftY - ct.room.y - h;
+            if (r.follow.y + r.followShiftY - r.y < h) {
+                cy = r.follow.y + r.followShiftY - r.y - h;
             }
-            if (ct.room.follow.x + ct.room.followShiftX - ct.room.x > ct.viewWidth - w) {
-                cx = ct.room.follow.x + ct.room.followShiftX - ct.room.x - ct.viewWidth + w;
+            if (r.follow.x + r.followShiftX - r.x > ct.viewWidth - w) {
+                cx = r.follow.x + r.followShiftX - r.x - ct.viewWidth + w;
             }
-            if (ct.room.follow.y + ct.room.followShiftY - ct.room.y > ct.viewHeight - h) {
-                cy = ct.room.follow.y + ct.room.followShiftY - ct.room.y - ct.viewHeight + h;
+            if (r.follow.y + r.followShiftY - r.y > ct.viewHeight - h) {
+                cy = r.follow.y + r.followShiftY - r.y - ct.viewHeight + h;
             }
-            ct.room.x = Math.floor(ct.room.x + cx);
-            ct.room.y = Math.floor(ct.room.y + cy);
+            r.x = Math.floor(r.x + speed * cx);
+            r.y = Math.floor(r.y + speed * cy);
         }
     }
-    ct.room.x = Math.round(ct.room.x);
-    ct.room.y = Math.round(ct.room.y);
+    r.x = Math.round(r.x);
+    r.y = Math.round(r.y);
     
-    ct.mouse.x = ct.mouse.rx + ct.room.x || 0;
-    ct.mouse.y = ct.mouse.ry + ct.room.y || 0;
-    ct.room.x = ct.room.x || 0;
-    ct.room.y = ct.room.y || 0;
+    ct.mouse.x = ct.mouse.rx + r.x || 0;
+    ct.mouse.y = ct.mouse.ry + r.y || 0;
+    r.x = r.x || 0;
+    r.y = r.y || 0;
 
     for (let i = 0, li = ct.stack.length; i < li; i++) {
         ct.types.beforeDraw.apply(ct.stack[i]);
@@ -261,9 +262,9 @@ ct.loop = function(delta) {
         ct.types.afterDraw.apply(ct.stack[i]);
     }
 
-    ct.rooms.beforeDraw.apply(ct.room);
-    ct.room.onDraw.apply(ct.room); 
-    ct.rooms.afterDraw.apply(ct.room);
+    ct.rooms.beforeDraw.apply(r);
+    ct.room.onDraw.apply(r); 
+    ct.rooms.afterDraw.apply(r);
     
 
     ct.mouse.pressed = false;
