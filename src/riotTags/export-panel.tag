@@ -72,9 +72,9 @@ export-panel
             this.update();
             const version = currentProject.settings.version.join('.') + currentProject.settings.versionPostfix;
             window.runCtProject()
-            .then(() => fs.copy('./ct.release/nwPack/', `${exec}/export/`))
+            .then(() => fs.copy('./data/ct.release/nwPack/', `${exec}/export/`))
             .then(() => {
-                const json = fs.readJSONSync('./ct.release/nwPack/package.json');
+                const json = fs.readJSONSync('./data/ct.release/nwPack/package.json');
                 json.version = version;
                 if (currentProject.settings.title) {
                     json.name = currentProject.settings.title;
@@ -128,6 +128,11 @@ export-panel
                 this.builder.on('log', log => {
                     this.log.push(log);
                     this.update();
+                })
+                .on('error', err => {
+                    console.error(err);
+                    this.log.push(err);
+                    this.update();
                 });
                 return this.builder.build();
             })
@@ -140,6 +145,8 @@ export-panel
             })
             .catch(error => {
                 this.log.push(error);
+                alertyfy.error(error);
+                console.error(error);
                 this.working = false;
                 this.update();
             });
