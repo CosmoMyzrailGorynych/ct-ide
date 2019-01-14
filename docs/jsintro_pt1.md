@@ -1,4 +1,4 @@
-# Introduction to JavaScript, part I
+# Introduction to JavaScript, part I: Variables, Properties, Operations
 
 JavaScript is a great programming language that powers websites, games, apps like ct.js, and even robots! It is easy to learn, though infinitely deep, and is similar to other programming languages like C#, C++ or Java.
 
