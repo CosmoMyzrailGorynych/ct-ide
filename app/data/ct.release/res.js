@@ -45,8 +45,17 @@
             return reg.textures;
         },
         makeSkeleton(name) {
-            const r = ct.res.skelRegistry[name];
-            return dbFactory.buildArmatureDisplay('Armature', r.data.name);
+            const r = ct.res.skelRegistry[name],
+                  skel = dbFactory.buildArmatureDisplay('Armature', r.data.name);
+            skel.ctName = name;
+            skel.on(dragonBones.EventObject.SOUND_EVENT, function (event) {
+                if (ct.sound.exists(event.name)) {
+                    ct.sound.spawn(event.name);
+                } else {
+                    console.warn(`Skeleton ${skel.ctName} tries to play a non-existing sound ${event.name} at animation ${skel.animation.lastAnimationName}`);
+                }
+            });
+            return skel;
         }
     };
     
