@@ -80,7 +80,7 @@ export-panel
                     json.name = currentProject.settings.title;
                     json.window.title = currentProject.settings.title;
                 }
-                const startingRoom = currentProject.rooms.find(room => room.uid === currentProject.startroom);
+                const startingRoom = currentProject.rooms.find(room => room.uid === currentProject.startroom) || currentProject.rooms[0];
                 json.window.width = startingRoom.width;
                 json.window.height = startingRoom.height;
                 return fs.outputJSON(`${exec}/export/package.json`, json);
