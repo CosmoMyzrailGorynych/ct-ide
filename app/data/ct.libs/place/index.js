@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* global ct SSCD */
 /* eslint prefer-destructuring: 0 */
 (function (ct) {
@@ -26,7 +27,7 @@
                 new SSCD.Vector(bottomRight[0], bottomRight[1])
             ], true);
         }
-        if (shape === 'circle') {
+        if (shape.type === 'circle') {
             if (copy.scale.x === copy.scale.y) {
                 return new SSCD.Circle(position, shape.r * copy.scale.x);
             }
@@ -58,6 +59,12 @@
             }
             return new SSCD.LineStrip(position, vertices, false);
         }
+        if (shape.type === 'line') {
+            return new SSCD.Line(
+                new SSCD.Vector(copy.x + shape.x1 * copy.scale.x, copy.y + shape.y1 * copy.scale.y),
+                new SSCD.Vector(copy.x + (shape.x2 - shape.x1) * copy.scale.x, copy.y + (shape.y2 - shape.y1) * copy.scale.y)
+            );
+        }
         return new SSCD.Circle(position, 0);
     };
 
@@ -85,7 +92,7 @@
             }
             return hashes;
         },
-        collide(c1, c2, forceRecreation) {
+        collide(c1, c2) {
             // ct.place.collide(<c1: Copy, c2: Copy>)
             // Test collision between two copies
             if (!c1.shape || !c2.shape || !c1.shape.type || !c2.shape.type) {
@@ -153,6 +160,9 @@
             }
             me.x = oldx;
             me.y = oldy;
+            if (typeof y === 'number') {
+                delete me._shape;
+            }
             if (!multiple) {
                 return false;
             }
@@ -182,7 +192,6 @@
                 }
                 x = me.x;
                 y = me.y;
-                delete me._shape;
             }
             if (multiple) {
                 results = [];
@@ -194,9 +203,10 @@
                 }
                 for (let i = 0, l = array.length; i < l; i++) {
                     if (array[i].type === type && array[i] !== me && ct.place.collide(me, array[i])) {
-                        me.x = oldx;
-                        me.y = oldy;
                         if (!multiple) {
+                            delete me._shape;
+                            me.x = oldx;
+                            me.y = oldy;
                             return array[i];
                         }
                         results.push(array[i]);
@@ -205,6 +215,7 @@
             }
             me.x = oldx;
             me.y = oldy;
+            delete me._shape;
             if (!multiple) {
                 return false;
             }
@@ -310,48 +321,43 @@
             var dx = Math.cos(dir*Math.PI/-180) * precision,
                 dy = Math.sin(dir*Math.PI/-180) * precision;
             for (let i = 0; i < length; i+= precision) {
-                delete me._shape;
                 const occupied = ct.place.occupied(me, me.x + dx, me.y + dy, ctype);
                 if (!occupied) {
                     me.x += dx;
                     me.y += dy;
                 } else {
-                    delete me._shape;
                     return occupied;
                 }
             }
-            delete me._shape;
             return false;
         },
-        go(me, x, y, speed, ctype) {
-            // ct.place.go(<me: Copy, x: Number, y: Number, speed: Number>[, ctype: String])
+        go(me, x, y, length, ctype) {
+            // ct.place.go(<me: Copy, x: Number, y: Number, length: Number>[, ctype: String])
             // tries to reach the target with a simple obstacle avoidance algorithm
 
             // if we are too close to the destination, exit
-            if (ct.u.pdc(me.x, me.y, x, y) < speed) {
+            if (ct.u.pdc(me.x, me.y, x, y) < length) {
                 if (ct.place.free(me, x, y, ctype)) {
                     me.x = x;
                     me.y = y;
-                    delete me._shape;
                 }
                 return;
             }
             var dir = ct.u.pdn(me.x, me.y, x, y);
 
-            
             //if there are no obstackles in front of us, go forward
-            if (ct.place.free(me, me.x+ct.u.ldx(speed, dir), me.y+ct.u.ldy(speed, dir), ctype)) {
-                me.x += ct.u.ldx(speed, dir);
-                me.y += ct.u.ldy(speed, dir);
+            if (ct.place.free(me, me.x+ct.u.ldx(length, dir), me.y+ct.u.ldy(length, dir), ctype)) {
+                me.x += ct.u.ldx(length, dir);
+                me.y += ct.u.ldy(length, dir);
                 me.dir = dir;
             // otherwise, try to change direction by 30...60...90 degrees. 
             // Direction changes over time (ct.place.m).
             } else {
                 for (var i = -1; i <= 1; i+= 2) {
                     for (var j = 30; j < 150; j += 30) {
-                        if (ct.place.free(me, me.x+ct.u.ldx(speed, dir+j * ct.place.m*i), me.y+ct.u.ldy(speed, dir+j * ct.place.m*i), ctype)) {
-                            me.x += ct.u.ldx(speed, dir+j * ct.place.m*i);
-                            me.y += ct.u.ldy(speed, dir+j * ct.place.m*i);
+                        if (ct.place.free(me, me.x+ct.u.ldx(length, dir+j * ct.place.m*i), me.y+ct.u.ldy(length, dir+j * ct.place.m*i), ctype)) {
+                            me.x += ct.u.ldx(length, dir+j * ct.place.m*i);
+                            me.y += ct.u.ldy(length, dir+j * ct.place.m*i);
                             me.dir = dir+j * ct.place.m*i;
                             return;
                         }
@@ -376,6 +382,11 @@
                 ray = {
                     x: 0,
                     y: 0,
+                    scale: {
+                        x: 1,
+                        y: 1
+                    },
+                    rotation: 0,
                     shape: {
                         type: 'line',
                         x1: x1,
@@ -396,52 +407,6 @@
                     var dist1, dist2;
                     dist1 = ct.u.pdc(x1, y1, a.x, a.y);
                     dist2 = ct.u.pdc(x1, y1, b.x, b.y);
-                    if (a.shape.type === 'circle') {
-                        if (dist1 > a.shape.r) {
-                            dist1 -= a.shape.r;
-                        } else {
-                            // if a starting point is *IN* the circle, 
-                            // then this point itself is a hit point
-                            dist1 = 0;
-                        }
-                    }
-                    if (b.shape.type === 'circle') {
-                        if (dist2 > b.shape.r) {
-                            dist2 -= b.shape.r;
-                        } else {
-                            // if a starting point is *IN* the circle, 
-                            // then this point itself is a hit point
-                            dist2 = 0;
-                        }
-                    }
-
-                    if (a.shape.type === 'rect') {
-                        if (ct.u.prect(x1, y1, a)) {
-                            dist1 = 0;
-                        } else {
-                            /* These are quick and dirty approximations;
-                               they should be improved on par with `line.*` checks later
-                               to get actual intersection points. */
-                            dist1 = Math.min(dist1,
-                                ct.u.pdc(x1, y1, a.x - a.shape.left, a.y - a.shape.top),
-                                ct.u.pdc(x1, y1, a.x + a.shape.right, a.y - a.shape.top),
-                                ct.u.pdc(x1, y1, a.x - a.shape.left, a.y + a.shape.bottom),
-                                ct.u.pdc(x1, y1, a.x + a.shape.right, a.y + a.shape.bottom)
-                            );
-                        }
-                    }
-                    if (b.shape.type === 'rect') {
-                        if (ct.u.prect(x1, y1, b)) {
-                            dist2 = 0;
-                        } else {
-                            dist2 = Math.min(dist2,
-                                ct.u.pdc(x1, y1, b.x - b.shape.left, b.y - b.shape.top),
-                                ct.u.pdc(x1, y1, b.x + b.shape.right, b.y - b.shape.top),
-                                ct.u.pdc(x1, y1, b.x - b.shape.left, b.y + b.shape.bottom),
-                                ct.u.pdc(x1, y1, b.x + b.shape.right, b.y + b.shape.bottom)
-                            );
-                        }
-                    }
                     return dist1 - dist2;
                 });
             }
