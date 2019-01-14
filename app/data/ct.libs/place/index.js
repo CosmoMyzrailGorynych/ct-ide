@@ -95,9 +95,6 @@
         collide(c1, c2) {
             // ct.place.collide(<c1: Copy, c2: Copy>)
             // Test collision between two copies
-            if (!c1.shape || !c2.shape || !c1.shape.type || !c2.shape.type) {
-                return false;
-            }
             const sh1 = c1._shape || getSSCDShape(c1),
                   sh2 = c2._shape || getSSCDShape(c2);
             c1._shape = sh1;
@@ -247,28 +244,8 @@
                 }
                 for (let i = 0, l = array.length; i < l; i++) {
                     const tile = array[i];
-                    if (!depth || tile.depth === depth) {
-                        /* eslint {max-depth: off} */
-                        if (me.shape.type === 'rect' && 
-                            ct.place.check['rect.rect'](x - me.shape.left, y - me.shape.top, x + me.shape.right, y + me.shape.bottom, tile.x, tile.y, tile.x + tile.width, tile.y + tile.height)
-                        ) {
-                            return true;
-                        }
-                        if (me.shape.type === 'circle' &&
-                            ct.place.check['circle.rect'](x, y, me.shape.r, tile.x, tile.y, tile.x + tile.width, tile.y + tile.width)
-                        ) {
-                            return true;
-                        }
-                        if (me.shape.type === 'point' &&
-                            ct.place.check['rect.point'](tile.x, tile.y, tile.x + tile.width, tile.y + tile.height, x, y)
-                        ) {
-                            return true;
-                        }
-                        if (me.shape.type === 'line' &&
-                            ct.place.check['line.rect'](x + me.shape.x1, y + me.shape.y1, x + me.shape.x2, y + me.shape.y2, tile.x, tile.y, tile.x + tile.width, tile.y + tile.height)
-                        ) {
-                            return true;
-                        }
+                    if (!depth || tile.depth === depth && ct.place.collide(tile, me)) {
+                        return true;
                     }
                 }
             }
