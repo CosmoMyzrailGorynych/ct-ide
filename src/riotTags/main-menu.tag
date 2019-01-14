@@ -199,6 +199,7 @@ main-menu.flexcol
                         return;
                     }
                     nw.Shell.showItemInFolder(outName);
+                    alertify.success(this.voc.successZipProject.replace('{0}', outName));
                 });
             })
             .catch(alertify.error);
@@ -218,6 +219,7 @@ main-menu.flexcol
                         }
                     }
                     nw.Shell.showItemInFolder(exportFile);
+                    alertify.success(this.voc.successZipExport.replace('{0}', outName));
                 });
             })
             .catch(alertify.error);

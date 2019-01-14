@@ -104,6 +104,8 @@
         "startScreen": "К стартовому экрану",
         "settings": "Настройки",
         "sounds": "Звуки",
+        "successZipExport": "Успешно экспортировано в {0}.",
+        "successZipProject": "Проект успешно упакован в {0}.",
         "ui": "Интерфейс",
         "theme": "Тема",
         "themeDay": "Светлая",

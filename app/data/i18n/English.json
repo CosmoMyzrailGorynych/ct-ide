@@ -104,6 +104,8 @@
         "startScreen": "Return to the starting screen",
         "settings": "Settings",
         "sounds": "Sounds",
+        "successZipExport": "Successfully exported to {0}.",
+        "successZipProject": "Successfully zipped the project to {0}.",
         "ui": "UI",
         "theme": "Theme",
         "themeDay": "Light",
