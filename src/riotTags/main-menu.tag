@@ -219,7 +219,7 @@ main-menu.flexcol
                         }
                     }
                     nw.Shell.showItemInFolder(exportFile);
-                    alertify.success(this.voc.successZipExport.replace('{0}', outName));
+                    alertify.success(this.voc.successZipExport.replace('{0}', exportFile));
                 });
             })
             .catch(alertify.error);
