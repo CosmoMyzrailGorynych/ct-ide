@@ -147,6 +147,7 @@
                         if (ct.place.collide(me, array[i])) {
                             me.x = oldx;
                             me.y = oldy;
+                            // eslint-disable-next-line max-depth
                             if (!multiple) {
                                 return array[i];
                             }
@@ -222,15 +223,14 @@
             if (!me.shape || !me.shape.type) {
                 return false;
             }
+            var oldx = me.x,
+                oldy = me.y;
             let hashes;
             if (y !== void 0) {
-                var oldx = me.x,
-                    oldy = me.y;
+                delete me._shape;
                 me.x = x;
                 me.y = y;
                 hashes = ct.place.getHashes(me);
-                me.x = oldx;
-                me.y = oldy;
             } else {
                 hashes = me.$chashes || ct.place.getHashes(me);
                 depth = x;
@@ -245,10 +245,14 @@
                 for (let i = 0, l = array.length; i < l; i++) {
                     const tile = array[i];
                     if (!depth || tile.depth === depth && ct.place.collide(tile, me)) {
+                        me.x = oldx;
+                        me.y = oldy;
                         return true;
                     }
                 }
             }
+            me.x = oldx;
+            me.y = oldy;
             return false;
         },
         lastdist: null,
