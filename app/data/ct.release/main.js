@@ -265,7 +265,6 @@ ct.loop = function(delta) {
     ct.rooms.beforeDraw.apply(r);
     ct.room.onDraw.apply(r); 
     ct.rooms.afterDraw.apply(r);
-    
 
     ct.mouse.pressed = false;
     ct.mouse.released = false;

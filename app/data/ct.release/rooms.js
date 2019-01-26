@@ -29,10 +29,10 @@
                     this.addChild(tl);
                 }
                 for (let i = 0, li = template.objects.length; i < li; i++) {
-                    const copy = ct.types.make(template.objects[i].type, template.objects[i].x, template.objects[i].y, this);
-                    if (template.objects[i].tx || template.objects[i].ty) {
-                        copy.scale.set(template.objects[i].tx || 1, template.objects[i].ty || 1);
-                    }
+                    ct.types.make(template.objects[i].type, template.objects[i].x, template.objects[i].y, {
+                        tx: template.objects[i].tx,
+                        ty: template.objects[i].ty
+                    }, this);
                 }
             }
             return this;

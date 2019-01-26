@@ -1,7 +1,10 @@
 (function (ct) {
+    const onCreateModifier = function () {
+        /*%oncreate%*/
+    };
     const graphAccessor = Symbol('graph');
     class Copy extends PIXI.extras.AnimatedSprite {
-        constructor(type, x, y) {
+        constructor(type, x, y, exts) {
             var t;
             if (type) {
                 t = ct.types.templates[type];
@@ -19,7 +22,14 @@
                     ct.u.ext(this, t.extends);
                 }
             } else {
-                super();
+                super([PIXI.Texture.EMPTY]);
+            }
+            if (exts) {
+                ct.u.ext(this, exts);
+                if (exts.tx) {
+                    this.scale.x = exts.tx;
+                    this.scale.y = exts.ty;
+                }
             }
             this.position.set(x || 0, y || 0);
             this.xprev = this.xstart = this.x;
@@ -255,18 +265,20 @@
             TILELAYER: []
         },
         templates: { },
-        make(type, x, y, container) {
+        make(type, x, y, exts, container) {
             // An advanced constructor. Returns a Copy
-            const obj = new Copy(type, x, y);
+            if (exts instanceof PIXI.Container) {
+                container = exts;
+                exts = void 0;
+            }
+            const obj = new Copy(type, x, y, exts);
             if (container) {
                 container.addChild(obj);
             } else {
                 ct.room.addChild(obj);
             }
             ct.stack.push(obj);
-            (function () {
-                /*%oncreate%*/
-            }).apply(obj);
+            onCreateModifier.apply(obj);
             return obj;
         },
         move(o) {
