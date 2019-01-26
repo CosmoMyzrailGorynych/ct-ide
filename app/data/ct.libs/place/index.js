@@ -95,12 +95,17 @@
         collide(c1, c2) {
             // ct.place.collide(<c1: Copy, c2: Copy>)
             // Test collision between two copies
-            const sh1 = c1._shape || getSSCDShape(c1),
-                  sh2 = c2._shape || getSSCDShape(c2);
-            c1._shape = sh1;
-            c2._shape = sh2;
-            const q = SSCD.CollisionManager.test_collision(sh1, sh2);
-            return q;
+            c1._shape = c1._shape || getSSCDShape(c1);
+            c2._shape = c2._shape || getSSCDShape(c2);
+            if (c1._shape.__type === 'complex' || c2._shape.__type === 'strip'
+            || c2._shape.__type === 'complex' || c2._shape.__type === 'strip') {
+                const aabb1 = c1._shape.get_aabb(),
+                      aabb2 = c2._shape.get_aabb();
+                if (!aabb1.intersects(aabb2)) {
+                    return false;
+                }
+            }
+            return SSCD.CollisionManager.test_collision(c1._shape, c2._shape);
         },
         /**
          * Determines if the place in (x,y) is occupied. 
@@ -116,23 +121,27 @@
          */
         occupied(me, x, y, ctype, multiple) {
             var oldx = me.x, 
-                oldy = me.y;
+                oldy = me.y,
+                shapeCashed = me._shape;
             let hashes;
             var results;
             if (typeof y === 'number') {
                 me.x = x;
                 me.y = y;
-                delete me._shape;
+            } else {
+                ctype = x;
+                multiple = y;
+                x = me.x;
+                y = me.y;
+            }
+            if (typeof ctype === 'boolean') {
+                multiple = ctype;
+            }
+            if (oldx !== me.x || oldy !== me.y) {
+                me._shape = getSSCDShape(me);
                 hashes = ct.place.getHashes(me);
             } else {
                 hashes = me.$chashes || ct.place.getHashes(me);
-                ctype = x;
-                multiple = y;
-                if (typeof ctype === 'boolean') {
-                    multiple = ctype;
-                }
-                x = me.x;
-                y = me.y;
             }
             if (multiple) {
                 results = [];
@@ -145,10 +154,13 @@
                 for (let i = 0, l = array.length; i < l; i++) {
                     if (array[i] !== me && (!ctype || array[i].$ctype === ctype)) {
                         if (ct.place.collide(me, array[i])) {
-                            me.x = oldx;
-                            me.y = oldy;
-                            // eslint-disable-next-line max-depth
+                            /* eslint {"max-depth": "off"} */
                             if (!multiple) {
+                                if (oldx !== me.x || oldy !== me.y) {
+                                    me.x = oldx;
+                                    me.y = oldy;
+                                    me._shape = shapeCashed;
+                                }
                                 return array[i];
                             }
                             results.push(array[i]);
@@ -156,10 +168,10 @@
                     }
                 }
             }
-            me.x = oldx;
-            me.y = oldy;
-            if (typeof y === 'number') {
-                delete me._shape;
+            if (oldx !== me.x || oldy !== me.y) {
+                me.x = oldx;
+                me.y = oldy;
+                me._shape = shapeCashed;
             }
             if (!multiple) {
                 return false;
@@ -173,23 +185,27 @@
             // ct.place.meet(<me: Copy, x: Number, y: Number>[, type: Type])
             // detects collision between a given copy and a copy of a certain type
             var oldx = me.x, 
-                oldy = me.y;
+                oldy = me.y,
+                shapeCashed = me._shape;
             let hashes;
             var results;
             if (typeof y === 'number') {
                 me.x = x;
                 me.y = y;
-                delete me._shape;
+            } else {
+                type = x;
+                multiple = y;
+                x = me.x;
+                y = me.y;
+            }
+            if (typeof type === 'boolean') {
+                multiple = type;
+            }
+            if (oldx !== me.x || oldy !== me.y) {
+                me._shape = getSSCDShape(me);
                 hashes = ct.place.getHashes(me);
             } else {
                 hashes = me.$chashes || ct.place.getHashes(me);
-                type = x;
-                multiple = y;
-                if (typeof type === 'boolean') {
-                    multiple = type;
-                }
-                x = me.x;
-                y = me.y;
             }
             if (multiple) {
                 results = [];
@@ -202,18 +218,22 @@
                 for (let i = 0, l = array.length; i < l; i++) {
                     if (array[i].type === type && array[i] !== me && ct.place.collide(me, array[i])) {
                         if (!multiple) {
-                            delete me._shape;
-                            me.x = oldx;
-                            me.y = oldy;
+                            if (oldx !== me.x || oldy !== me.y) {
+                                me._shape = shapeCashed;
+                                me.x = oldx;
+                                me.y = oldy;
+                            }
                             return array[i];
                         }
                         results.push(array[i]);
                     }
                 }
             }
-            me.x = oldx;
-            me.y = oldy;
-            delete me._shape;
+            if (oldx !== me.x || oldy !== me.y) {
+                me.x = oldx;
+                me.y = oldy;
+                me._shape = shapeCashed;
+            }
             if (!multiple) {
                 return false;
             }
@@ -224,18 +244,22 @@
                 return false;
             }
             var oldx = me.x,
-                oldy = me.y;
+                oldy = me.y,
+                shapeCashed = me._shape;
             let hashes;
             if (y !== void 0) {
-                delete me._shape;
                 me.x = x;
                 me.y = y;
-                hashes = ct.place.getHashes(me);
             } else {
-                hashes = me.$chashes || ct.place.getHashes(me);
                 depth = x;
                 x = me.x;
                 y = me.y;
+            }
+            if (oldx !== me.x || oldy !== me.y) {
+                me._shape = getSSCDShape(me);
+                hashes = ct.place.getHashes(me);
+            } else {
+                hashes = me.$chashes || ct.place.getHashes(me);
             }
             for (const hash of hashes) {
                 const array = ct.place.tileGrid[hash];
@@ -245,14 +269,20 @@
                 for (let i = 0, l = array.length; i < l; i++) {
                     const tile = array[i];
                     if (!depth || tile.depth === depth && ct.place.collide(tile, me)) {
-                        me.x = oldx;
-                        me.y = oldy;
+                        if (oldx !== me.x || oldy !== me.y) {
+                            me.x = oldx;
+                            me.y = oldy;
+                            me._shape = shapeCashed;
+                        }
                         return true;
                     }
                 }
             }
-            me.x = oldx;
-            me.y = oldy;
+            if (oldx !== me.x || oldy !== me.y) {
+                me.x = oldx;
+                me.y = oldy;
+                me._shape = shapeCashed;
+            }
             return false;
         },
         lastdist: null,
@@ -306,6 +336,7 @@
                 if (!occupied) {
                     me.x += dx;
                     me.y += dy;
+                    delete me._shape;
                 } else {
                     return occupied;
                 }
@@ -321,6 +352,7 @@
                 if (ct.place.free(me, x, y, ctype)) {
                     me.x = x;
                     me.y = y;
+                    delete me._shape;
                 }
                 return;
             }
@@ -330,6 +362,7 @@
             if (ct.place.free(me, me.x+ct.u.ldx(length, dir), me.y+ct.u.ldy(length, dir), ctype)) {
                 me.x += ct.u.ldx(length, dir);
                 me.y += ct.u.ldy(length, dir);
+                delete me._shape;
                 me.dir = dir;
             // otherwise, try to change direction by 30...60...90 degrees. 
             // Direction changes over time (ct.place.m).
@@ -339,6 +372,7 @@
                         if (ct.place.free(me, me.x+ct.u.ldx(length, dir+j * ct.place.m*i), me.y+ct.u.ldy(length, dir+j * ct.place.m*i), ctype)) {
                             me.x += ct.u.ldx(length, dir+j * ct.place.m*i);
                             me.y += ct.u.ldy(length, dir+j * ct.place.m*i);
+                            delete me._shape;
                             me.dir = dir+j * ct.place.m*i;
                             return;
                         }
