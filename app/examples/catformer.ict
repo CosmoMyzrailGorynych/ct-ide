@@ -27,10 +27,10 @@
       "offy": 0,
       "origname": "i1.png",
       "shape": "rect",
-      "left": -1,
-      "right": 69,
+      "left": 0,
+      "right": 70,
       "top": 0,
-      "bottom": 69,
+      "bottom": 70,
       "frames": 1,
       "width": 70,
       "height": 70,
@@ -224,7 +224,7 @@
       ],
       "axis": [
         36,
-        95
+        96
       ],
       "marginx": 0,
       "marginy": 0,
@@ -2251,7 +2251,7 @@
       ],
       "uid": "1ee751d0-24cc-43af-b91d-1a91a9aa48f5",
       "grid": 64,
-      "lastmod": 1547471602197,
+      "lastmod": 1547546306396,
       "thumbnail": 2,
       "gridX": 64,
       "gridY": 64,
@@ -2348,7 +2348,7 @@
   ],
   "startroom": "b0f0ff4d-a155-4d68-a86e-5bb7ed8973ab",
   "scripts": [],
-  "ctjsVersion": "1.0.0-next-1",
+  "ctjsVersion": "1.0.0-next-2",
   "fonts": [],
   "skeletons": []
 }

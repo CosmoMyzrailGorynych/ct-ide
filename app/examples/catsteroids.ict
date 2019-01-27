@@ -13,7 +13,8 @@
     "keyboard": {},
     "sound.howler": {},
     "fittoscreen": {
-      "scaleOnly": true
+      "scaleOnly": true,
+      "mode": "scaleFit"
     }
   },
   "graphs": [
@@ -29,7 +30,7 @@
         37
       ],
       "origname": "i1.png",
-      "shape": "rect",
+      "shape": "strip",
       "left": 48,
       "top": 10,
       "frames": 1,
@@ -44,7 +45,39 @@
       "right": 48,
       "bottom": 34,
       "r": 20,
-      "uid": "e1452137-8cfa-4eec-b54a-0f2660326b48"
+      "uid": "e1452137-8cfa-4eec-b54a-0f2660326b48",
+      "stripPoints": [
+        {
+          "x": 13,
+          "y": -13
+        },
+        {
+          "x": 53,
+          "y": 6
+        },
+        {
+          "x": 40,
+          "y": 35
+        },
+        {
+          "x": -38,
+          "y": 36
+        },
+        {
+          "x": -53,
+          "y": 4
+        },
+        {
+          "x": -12,
+          "y": -12
+        },
+        {
+          "x": -2,
+          "y": -36
+        }
+      ],
+      "closedStrip": true,
+      "lastmod": 1548596456002
     },
     {
       "name": "Background_Blue",
@@ -251,7 +284,7 @@
       "imgWidth": 43,
       "imgHeight": 43,
       "r": 21,
-      "lastmod": 1508497609983,
+      "lastmod": 1548596418433,
       "uid": "51520da0-9beb-4b8f-9048-1f9b0c526ec8"
     },
     {
@@ -300,7 +333,7 @@
       "offx": 0,
       "offy": 0,
       "origname": "i14.png",
-      "shape": "circle",
+      "shape": "strip",
       "left": 0,
       "right": 0,
       "top": 0,
@@ -311,8 +344,39 @@
       "imgWidth": 89,
       "imgHeight": 82,
       "r": 40,
-      "lastmod": 1508497681131,
-      "uid": "90112561-c6c4-4f67-8d0f-fdfb7ae47d3b"
+      "lastmod": 1548596394601,
+      "uid": "90112561-c6c4-4f67-8d0f-fdfb7ae47d3b",
+      "stripPoints": [
+        {
+          "x": 28,
+          "y": -30
+        },
+        {
+          "x": 45,
+          "y": -2
+        },
+        {
+          "x": 20,
+          "y": 39
+        },
+        {
+          "x": -29,
+          "y": 32
+        },
+        {
+          "x": -40,
+          "y": 13
+        },
+        {
+          "x": -42,
+          "y": -23
+        },
+        {
+          "x": -9,
+          "y": -43
+        }
+      ],
+      "closedStrip": true
     },
     {
       "name": "Meteor_Big_2",
@@ -330,7 +394,7 @@
       "offx": 0,
       "offy": 0,
       "origname": "i15.png",
-      "shape": "circle",
+      "shape": "strip",
       "left": 0,
       "right": 98,
       "top": 0,
@@ -341,8 +405,35 @@
       "imgWidth": 98,
       "imgHeight": 96,
       "r": 46,
-      "lastmod": 1508497704244,
-      "uid": "ca15e5c0-b32a-425b-ab24-07d681a8ad8f"
+      "lastmod": 1548596414890,
+      "uid": "ca15e5c0-b32a-425b-ab24-07d681a8ad8f",
+      "stripPoints": [
+        {
+          "x": 17,
+          "y": -49
+        },
+        {
+          "x": 48,
+          "y": -15
+        },
+        {
+          "x": 29,
+          "y": 39
+        },
+        {
+          "x": -15,
+          "y": 48
+        },
+        {
+          "x": -48,
+          "y": 7
+        },
+        {
+          "x": -33,
+          "y": -36
+        }
+      ],
+      "closedStrip": true
     },
     {
       "name": "StartButton",
@@ -535,7 +626,7 @@
       "offx": 0,
       "offy": 0,
       "origname": "i24.png",
-      "shape": "circle",
+      "shape": "strip",
       "left": 0,
       "right": 0,
       "top": 0,
@@ -546,8 +637,35 @@
       "imgWidth": 93,
       "imgHeight": 84,
       "r": 42,
-      "lastmod": 1521789170242,
-      "uid": "16c209a9-25b2-41e4-b0d5-21cb22fd1421"
+      "lastmod": 1548596333338,
+      "uid": "16c209a9-25b2-41e4-b0d5-21cb22fd1421",
+      "stripPoints": [
+        {
+          "x": 30,
+          "y": -41
+        },
+        {
+          "x": 46,
+          "y": -17
+        },
+        {
+          "x": 26,
+          "y": 40
+        },
+        {
+          "x": -25,
+          "y": 41
+        },
+        {
+          "x": -44,
+          "y": -14
+        },
+        {
+          "x": -28,
+          "y": -41
+        }
+      ],
+      "closedStrip": true
     },
     {
       "name": "Enemy_Wiggler",
@@ -565,7 +683,7 @@
       "offx": 0,
       "offy": 0,
       "origname": "i25.png",
-      "shape": "circle",
+      "shape": "strip",
       "left": 0,
       "right": 104,
       "top": 0,
@@ -576,8 +694,31 @@
       "imgWidth": 104,
       "imgHeight": 84,
       "r": 42,
-      "lastmod": 1521789187123,
-      "uid": "048b77d3-e7e3-4817-99ee-8b7c0a6da8bf"
+      "lastmod": 1548596356121,
+      "uid": "048b77d3-e7e3-4817-99ee-8b7c0a6da8bf",
+      "stripPoints": [
+        {
+          "x": 0,
+          "y": -42
+        },
+        {
+          "x": 53,
+          "y": -15
+        },
+        {
+          "x": 23,
+          "y": 41
+        },
+        {
+          "x": -25,
+          "y": 40
+        },
+        {
+          "x": -52,
+          "y": -13
+        }
+      ],
+      "closedStrip": true
     },
     {
       "name": "Laser_Red",
@@ -635,7 +776,7 @@
       "imgWidth": 140,
       "imgHeight": 105,
       "r": 52,
-      "lastmod": 1521789649001,
+      "lastmod": 1548596360248,
       "uid": "9de002e9-c9cf-44ee-b87a-022ae3dddca3"
     },
     {
@@ -767,7 +908,8 @@
       "ondestroy": "ct.types.copy('Explosion', this.x, this.y);\nlocalStorage.score = ct.room.score;\nsetTimeout(function() {\n    ct.rooms.switch('RetryScreen');\n}, 3000);",
       "uid": "1fab434d-0976-4b65-8390-d013695aba8c",
       "graph": "e1452137-8cfa-4eec-b54a-0f2660326b48",
-      "lastmod": 1543408011729
+      "lastmod": 1543408011729,
+      "extends": {}
     },
     {
       "name": "Laser_Simple_Blue",
@@ -778,7 +920,8 @@
       "ondestroy": "",
       "uid": "92e6ec14-1de0-483a-84b8-a8669ac65937",
       "graph": "e6148099-65e7-4d2b-acf1-3e6b3a8fc033",
-      "lastmod": 1543398567006
+      "lastmod": 1543398567006,
+      "extends": {}
     },
     {
       "name": "AbstractMeteor",
@@ -789,7 +932,8 @@
       "ondestroy": "var deathMap = {\n    'Big': 'Medium',\n    'Medium': 'Small'\n};\n\nfor (var i in deathMap) {\n    if (this.graph.indexOf(i) !== -1) {\n        var copy1 = ct.types.copy('AbstractMeteor', this.x, this.y);\n        copy1.graph = 'Meteor_' + deathMap[i] + '_' + ct.random.dice(1, 2);\n        copy1.dir = ct.random.deg();\n        \n        var copy2 = ct.types.copy('AbstractMeteor', this.x, this.y);\n        copy2.graph = 'Meteor_' + deathMap[i] + '_' + ct.random.dice(1, 2);\n        copy2.dir = 180 + copy1.dir + ct.random.range(-10, 10);\n    }\n}",
       "uid": "1fa16a0f-e9a0-4117-9c28-87fa72b33d2b",
       "graph": "ca15e5c0-b32a-425b-ab24-07d681a8ad8f",
-      "lastmod": 1543395743995
+      "lastmod": 1543395743995,
+      "extends": {}
     },
     {
       "name": "Laser_Cross_Blue",
@@ -800,7 +944,8 @@
       "ondestroy": "",
       "uid": "140f8bde-bd06-4b2d-a5f2-87427848252e",
       "graph": "4b86d5c4-ae3c-4edf-90d7-79a6778e9a29",
-      "lastmod": 1543397129800
+      "lastmod": 1543397129800,
+      "extends": {}
     },
     {
       "name": "GameController",
@@ -811,7 +956,8 @@
       "ondestroy": "",
       "uid": "ca579f27-f97b-4ca2-98f6-c1c3e13acad5",
       "graph": -1,
-      "lastmod": 1543397470770
+      "lastmod": 1543397470770,
+      "extends": {}
     },
     {
       "name": "Logo",
@@ -822,7 +968,8 @@
       "ondestroy": "",
       "uid": "319c6995-59f3-4267-a1de-cf58f77614d3",
       "graph": "968baf79-5ff3-443b-8834-fa3b55638500",
-      "lastmod": 1543395253559
+      "lastmod": 1543395253559,
+      "extends": {}
     },
     {
       "name": "StartButton",
@@ -833,7 +980,8 @@
       "ondestroy": "",
       "uid": "972bb4d9-7cfc-4dbe-bc30-883562271057",
       "graph": "2a454e11-3441-4f57-bfb6-ce837acd7881",
-      "lastmod": 1543397141776
+      "lastmod": 1543397141776,
+      "extends": {}
     },
     {
       "name": "AbstractBonus",
@@ -844,7 +992,8 @@
       "ondestroy": "",
       "uid": "bc01cee1-1b8b-4418-aeb9-a7c5eac2cd51",
       "graph": "25fb712b-0aca-4b18-8e10-7c545d4bca8d",
-      "lastmod": 1543407126584
+      "lastmod": 1543407126584,
+      "extends": {}
     },
     {
       "name": "Enemy_Shooter",
@@ -855,7 +1004,8 @@
       "ondestroy": "ct.types.copy('Explosion', this.x, this.y);\n\nif (ct.random.chance(10)) {\n    ct.types.copy('AbstractBonus', this.x, this.y);\n}",
       "uid": "500fd472-19aa-41a0-9504-123c37540702",
       "graph": "16c209a9-25b2-41e4-b0d5-21cb22fd1421",
-      "lastmod": 1543397369216
+      "lastmod": 1543397369216,
+      "extends": {}
     },
     {
       "name": "EnemyBullet",
@@ -866,7 +1016,8 @@
       "ondestroy": "",
       "uid": "65a71d76-039a-4e20-8433-d20277dd2402",
       "graph": "fc3e2f9b-61af-4ae4-9375-dcfae65f6a34",
-      "lastmod": 1543397118440
+      "lastmod": 1543397118440,
+      "extends": {}
     },
     {
       "name": "Explosion",
@@ -877,7 +1028,8 @@
       "ondestroy": "",
       "uid": "f938cbd9-1a72-45a4-a7ec-27a0841073ef",
       "graph": "9de002e9-c9cf-44ee-b87a-022ae3dddca3",
-      "lastmod": 1543395235678
+      "lastmod": 1543395235678,
+      "extends": {}
     },
     {
       "name": "Enemy_Wiggler",
@@ -888,7 +1040,8 @@
       "ondestroy": "ct.types.copy('Explosion', this.x, this.y);\n\nif (ct.random.chance(10)) {\n    ct.types.copy('AbstractBonus', this.x, this.y);\n}",
       "uid": "9d0992a4-d0ef-4c5e-9d17-2e5167f26598",
       "graph": "048b77d3-e7e3-4817-99ee-8b7c0a6da8bf",
-      "lastmod": 1543397378842
+      "lastmod": 1543397378842,
+      "extends": {}
     },
     {
       "name": "Laser_Bolt_Blue",
@@ -899,7 +1052,8 @@
       "ondestroy": "",
       "uid": "912af24f-1569-46a3-9194-fbf0384f3b0e",
       "graph": "c12edc06-ad3f-49f4-b9d4-3d33226e9ecc",
-      "lastmod": 1543397090016
+      "lastmod": 1543397090016,
+      "extends": {}
     },
     {
       "name": "Enemy_Ufo",
@@ -910,7 +1064,8 @@
       "ondestroy": "ct.types.copy('Explosion', this.x, this.y);\nct.types.copy('AbstractBonus', this.x, this.y);",
       "uid": "ebfeaaab-f16a-48fa-b97c-687945f99668",
       "graph": "3a21a3d8-30ed-4e5b-8ccf-0019a503d6b9",
-      "lastmod": 1543397366296
+      "lastmod": 1543397366296,
+      "extends": {}
     },
     {
       "name": "Laser_Cross_Red",
@@ -921,7 +1076,8 @@
       "ondestroy": "",
       "uid": "45f606db-1ce3-4b21-bc14-b84e35543509",
       "graph": "dc0d71ec-6da8-40e8-afe8-90c81f7f269a",
-      "lastmod": 1543397132303
+      "lastmod": 1543397132303,
+      "extends": {}
     },
     {
       "name": "OhNo",
@@ -932,7 +1088,8 @@
       "ondestroy": "",
       "uid": "a6d37145-b35c-42d2-95c6-765069857ada",
       "graph": "e81fc53e-4f0a-443d-a4fb-e5e11a4a98d2",
-      "lastmod": 1543397136519
+      "lastmod": 1543397136519,
+      "extends": {}
     },
     {
       "name": "RetryButton",
@@ -943,7 +1100,8 @@
       "ondestroy": "",
       "uid": "73759c16-fba4-4134-b048-e53aa4d2f34b",
       "graph": "071162b9-d836-4145-9515-586ce289ef14",
-      "lastmod": 1543397139792
+      "lastmod": 1543397139792,
+      "extends": {}
     }
   ],
   "sounds": [
@@ -1067,23 +1225,6 @@
           }
         }
       ],
-      "layers": [
-        {
-          "depth": 0,
-          "copies": [
-            {
-              "x": 400,
-              "y": 700,
-              "uid": "1fab434d-0976-4b65-8390-d013695aba8c"
-            },
-            {
-              "x": 400,
-              "y": 250,
-              "uid": "ca579f27-f97b-4ca2-98f6-c1c3e13acad5"
-            }
-          ]
-        }
-      ],
       "uid": "2e5bf702-9eac-4fef-8282-07d2dd0a9bac",
       "lastmod": 1543633616853,
       "grid": 50,
@@ -1094,6 +1235,18 @@
         {
           "depth": -10,
           "tiles": []
+        }
+      ],
+      "copies": [
+        {
+          "x": 400,
+          "y": 700,
+          "uid": "1fab434d-0976-4b65-8390-d013695aba8c"
+        },
+        {
+          "x": 400,
+          "y": 250,
+          "uid": "ca579f27-f97b-4ca2-98f6-c1c3e13acad5"
         }
       ]
     },
@@ -1114,23 +1267,6 @@
           }
         }
       ],
-      "layers": [
-        {
-          "depth": 0,
-          "copies": [
-            {
-              "x": 384,
-              "y": 192,
-              "uid": "319c6995-59f3-4267-a1de-cf58f77614d3"
-            },
-            {
-              "x": 384,
-              "y": 512,
-              "uid": "972bb4d9-7cfc-4dbe-bc30-883562271057"
-            }
-          ]
-        }
-      ],
       "uid": "6c75cdb8-cfb4-4dcc-887a-f76ae98b5499",
       "grid": 64,
       "lastmod": 1543633624126,
@@ -1141,6 +1277,18 @@
         {
           "depth": -10,
           "tiles": []
+        }
+      ],
+      "copies": [
+        {
+          "x": 384,
+          "y": 192,
+          "uid": "319c6995-59f3-4267-a1de-cf58f77614d3"
+        },
+        {
+          "x": 384,
+          "y": 512,
+          "uid": "972bb4d9-7cfc-4dbe-bc30-883562271057"
         }
       ]
     },
@@ -1161,23 +1309,6 @@
           }
         }
       ],
-      "layers": [
-        {
-          "depth": 0,
-          "copies": [
-            {
-              "x": 384,
-              "y": 192,
-              "uid": "a6d37145-b35c-42d2-95c6-765069857ada"
-            },
-            {
-              "x": 384,
-              "y": 576,
-              "uid": "73759c16-fba4-4134-b048-e53aa4d2f34b"
-            }
-          ]
-        }
-      ],
       "uid": "cc1e53b3-f7e6-48fe-9716-b05877538e52",
       "grid": 64,
       "lastmod": 1543633820470,
@@ -1188,6 +1319,18 @@
         {
           "depth": -10,
           "tiles": []
+        }
+      ],
+      "copies": [
+        {
+          "x": 384,
+          "y": 192,
+          "uid": "a6d37145-b35c-42d2-95c6-765069857ada"
+        },
+        {
+          "x": 384,
+          "y": 576,
+          "uid": "73759c16-fba4-4134-b048-e53aa4d2f34b"
         }
       ]
     }
@@ -1228,6 +1371,7 @@
   ],
   "startroom": "6c75cdb8-cfb4-4dcc-887a-f76ae98b5499",
   "scripts": [],
-  "ctjsVersion": "0.5.2",
-  "fonts": []
+  "ctjsVersion": "1.0.0-next-2",
+  "fonts": [],
+  "skeletons": []
 }
