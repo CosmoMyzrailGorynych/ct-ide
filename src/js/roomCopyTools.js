@@ -64,7 +64,7 @@
         init() {
             this.currentType = -1;
             this.onCanvasPressCopies = e => {
-                if (this.selectedCopies && !e.shiftKey) {
+                if (this.selectedCopies && !e.shiftKey && e.button === 0) {
                     for (const copy of this.selectedCopies) {
                         var x = this.xToRoom(this.startx),
                             y = this.yToRoom(this.starty);
@@ -82,6 +82,34 @@
                 }
                 return false;
             };
+            const selectCopies = e => {
+                var x1 = this.xToRoom(this.startx),
+                    y1 = this.yToRoom(this.starty),
+                    x2 = this.xToRoom(e.offsetX),
+                    y2 = this.yToRoom(e.offsetY),
+                    xmin = Math.min(x1, x2),
+                    xmax = Math.max(x1, x2),
+                    ymin = Math.min(y1, y2),
+                    ymax = Math.max(y1, y2);
+                for (const copy of this.room.copies) {
+                    const {g} = glob.graphmap[window.currentProject.types[glob.typemap[copy.uid]].graph];
+                    const x1 = copy.x - g.axis[0] * (copy.tx || 1),
+                          x2 = copy.x - (g.axis[0] - g.width) * (copy.tx || 1),
+                          y1 = copy.y - g.axis[1] * (copy.ty || 1),
+                          y2 = copy.y - (g.axis[1] - g.height) * (copy.ty || 1),
+                          xcmin = Math.min(x1, x2),
+                          ycmin = Math.min(y1, y2),
+                          xcmax = Math.max(x1, x2),
+                          ycmax = Math.max(y1, y2);
+                    if (xcmin > xmin && xcmax < xmax &&
+                        ycmin > ymin && ycmax < ymax) {
+                        const ind = this.selectedCopies.indexOf(copy);
+                        if (ind === -1) {
+                            this.selectedCopies.push(copy);
+                        }
+                    }
+                }
+            };
             this.onCanvasMouseUpCopies = e => {
                 if (e.button === 0 && this.currentType === -1 && e.shiftKey) {
                     if (Math.hypot(e.offsetX - this.startx, e.offsetY - this.starty) > clickThreshold) {
@@ -89,24 +117,7 @@
                         if (!this.selectedCopies) {
                             this.selectedCopies = [];
                         }
-                        var x1 = this.xToRoom(this.startx),
-                            y1 = this.yToRoom(this.starty),
-                            x2 = this.xToRoom(e.offsetX),
-                            y2 = this.yToRoom(e.offsetY),
-                            xmin = Math.min(x1, x2),
-                            xmax = Math.max(x1, x2),
-                            ymin = Math.min(y1, y2),
-                            ymax = Math.max(y1, y2);
-                        for (const copy of this.room.copies) {
-                            const {g} = glob.graphmap[window.currentProject.types[glob.typemap[copy.uid]].graph];
-                            if (copy.x - g.axis[0] > xmin && copy.x - g.axis[0] + g.width < xmax &&
-                                copy.y - g.axis[1] > ymin && copy.y - g.axis[1] + g.height < ymax) {
-                                const ind = this.selectedCopies.indexOf(copy);
-                                if (ind === -1) {
-                                    this.selectedCopies.push(copy);
-                                }
-                            }
-                        }
+                        selectCopies(e);
                         if (!this.selectedCopies.length) {
                             this.selectedCopies = false;
                         }
@@ -240,26 +251,13 @@
                 // Сначала ищется ближайшая к курсору копия. Если слоёв в комнате нет, то всё отменяется
                 if (!this.room.copies.length) { return; }
                 var copy = selectACopyAt.apply(this, [e]),
-                    type = window.currentProject.types[glob.typemap[copy.uid]],
-                    graph = glob.graphmap[type.graph].g;
+                    type = window.currentProject.types[glob.typemap[copy.uid]];
                 this.closestType = type;
                 this.closestPos = this.room.copies.indexOf(copy);
 
                 // рисовка выделения копии
                 this.refreshRoomCanvas();
-                var left, top, height, width;
-                if (type.graph !== -1) {
-                    left = copy.x - graph.axis[0] * (copy.tx || 1) - 1.5;
-                    top = copy.y - graph.axis[1] * (copy.ty || 1) - 1.5;
-                    width = graph.width * (copy.tx || 1) + 3;
-                    height = graph.height * (copy.ty || 1) + 3;
-                } else {
-                    left = copy.x - 16 - 1.5;
-                    top = copy.y - 16 - 1.5;
-                    height = 32 + 3;
-                    width = 32 + 3;
-                }
-                this.drawSelection(left, top, left + width, top + height);
+                this.drawSelection(copy);
 
                 this.forbidDrawing = true;
                 setTimeout(() => {

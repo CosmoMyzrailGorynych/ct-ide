@@ -501,17 +501,35 @@ room-editor.panel.view
             // Обводка выделенных копий
             if (this.tab === 'roomcopies' && this.selectedCopies && this.selectedCopies.length) {
                 for (const copy of this.selectedCopies) {
-                    const {g} = glob.graphmap[window.currentProject.types[glob.typemap[copy.uid]].graph];
-                    this.drawSelection(copy.x - g.axis[0], copy.y - g.axis[1],
-                                       copy.x - g.axis[0] + g.width, copy.y - g.axis[1] + g.height);
+                    this.drawSelection(copy);
                 }
             }
-
             
             // Обводка границ комнаты
             this.drawSelection(-1.5, -1.5, this.room.width+1.5, this.room.height+1.5);
         };
         this.drawSelection = (x1, y1, x2, y2) => {
+            if (typeof x1 !== 'number') {
+                const copy = x1,
+                      type = window.currentProject.types[glob.typemap[copy.uid]],
+                      graph = glob.graphmap[type.graph].g;
+                var left, top, height, width;
+                if (type.graph !== -1) {
+                    left = copy.x - graph.axis[0] * (copy.tx || 1) - 1.5;
+                    top = copy.y - graph.axis[1] * (copy.ty || 1) - 1.5;
+                    width = graph.width * (copy.tx || 1) + 3;
+                    height = graph.height * (copy.ty || 1) + 3;
+                } else {
+                    left = copy.x - 16 - 1.5;
+                    top = copy.y - 16 - 1.5;
+                    height = 32 + 3;
+                    width = 32 + 3;
+                }
+                x1 = left;
+                y1 = top;
+                x2 = left + width;
+                y2 = top + height;
+            }
             this.refs.canvas.x.lineJoin = 'round';
             this.refs.canvas.x.strokeStyle = localStorage.UItheme === 'Night'? '#44dbb5' : '#446adb';
             this.refs.canvas.x.lineWidth = 3;
