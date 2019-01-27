@@ -1,19 +1,43 @@
 type-editor.panel.view.flexrow
-    .c3.tall
-        #typegraph.panel(onclick="{changeSprite}")
-            img.ohchangeme(src="{type.graph === -1? '/img/nograph.png' : (glob.graphmap[type.graph].src.split('?')[0] + '_prev@2.png?' + getTypeGraphRevision(type)) + getTypeGraphRevision(type)}")
-            div {voc.change}
-        b {voc.name}
-        input#typename.wide(type="text" onchange="{wire('this.type.name')}" value="{type.name}")
-        .anErrorNotice(if="{nameTaken}") {vocGlob.nametaken}
-        br
-        b {voc.depth}
-        input#typedepth.wide(type="number" onchange="{wire('this.type.depth')}" value="{type.depth}")
-        br
-        br
-        button#typedone.wide(onclick="{typeSave}")
-            i.icon.icon-confirm
-            span {voc.done}
+    .c3.tall.flexfix
+        .flexfix-header
+            #typegraph.panel(onclick="{changeSprite}")
+                img.ohchangeme(src="{type.graph === -1? '/data/img/nograph.png' : (glob.graphmap[type.graph].src.split('?')[0] + '_prev@2.png?' + getTypeGraphRevision(type)) + getTypeGraphRevision(type)}")
+                div {voc.change}
+            b {voc.name}
+            input#typename.wide(type="text" onchange="{wire('this.type.name')}" value="{type.name}")
+            .anErrorNotice(if="{nameTaken}") {vocGlob.nametaken}
+            br
+            b {voc.depth}
+            input#typedepth.wide(type="number" onchange="{wire('this.type.depth')}" value="{type.depth}")
+        .flexfix-body
+            virtual(each="{extend in libExtends}")
+                label.block
+                    input.wide(
+                        type="checkbox"
+                        value="{type.extends[extend.key] || extend.default}"
+                        onchange="{wire('this.type.extends.'+ extend.key)}"
+                        if="{extend.type === 'checkbox'}"
+                    )
+                    b {extend.name}
+                    span(if="{extend.type !== 'checkbox'}") :
+                    input.wide(
+                        type="text"
+                        value="{type.extends[extend.key] || extend.default}"
+                        onchange="{wire('this.type.extends.'+ extend.key)}"
+                        if="{extend.type === 'text'}"
+                    )
+                    input.wide(
+                        type="number"
+                        value="{type.extends[extend.key] || extend.default}"
+                        onchange="{wire('this.type.extends.'+ extend.key)}"
+                        if="{extend.type === 'number'}"
+                    )
+                    .dim(if="{extend.help}") {extend.help}
+        .flexfix-footer
+            button#typedone.wide(onclick="{typeSave}")
+                i.icon.icon-confirm
+                span {voc.done}
     .c9.tall.borderleft
         .tabwrap.tall(style="position: relative")
             ul.tabs.nav.nogrow.noshrink
@@ -38,7 +62,7 @@ type-editor.panel.view.flexrow
                     .acer(ref="typeondraw")
                 #typeondestroy.tabbed(show="{tab === 'typeondestroy'}")
                     .acer(ref="typeondestroy")
-    graphic-selector(if="{selectingGraphic}" onselected="{applyGraphic}" ref="graphicselector" showempty="sure")
+    graphic-selector(if="{selectingGraphic}" onselected="{applyGraphic}" oncancelled="{cancelGraphic}" ref="graphicselector" showempty="sure")
     script.
         this.namespace = 'typeview';
         this.mixin(window.riotVoc);
@@ -46,28 +70,62 @@ type-editor.panel.view.flexrow
 
         this.getTypeGraphRevision = type => window.glob.graphmap[type.graph].g.lastmod;
         
+        const libsDir = './data/ct.libs';
+        const fs = require('fs-extra'),
+              path = require('path');
+        this.libExtends = [];
+        this.refreshExtends = () => {
+            this.libExtends = [];
+            for (const lib in currentProject.libs) {
+                fs.readJSON(path.join(libsDir, lib, 'module.json'), (err, data) => {
+                    if (err) {
+                        return;
+                    }
+                    if (data.typeExtends) {
+                        this.libExtends.push(...data.typeExtends);
+                    }
+                    this.update();
+                });
+            }
+        };
+        window.signals.on('modulesChanged', () => {
+            this.refreshExtends();
+        });
+        this.refreshExtends();
+
         this.type = this.opts.type;
         this.tab = 'typeoncreate';
         this.changeTab = tab => e => {
             this.tab = tab;
+            var editor;
             if (this.tab === 'typeonstep') {
-                this.typeonstep.moveCursorTo(0, 0);
-                this.typeonstep.clearSelection();
+                editor = this.typeonstep;
+            } else if (this.tab === 'typeondraw') {
+                editor = this.typeondraw;
+            } else if (this.tab === 'typeondestroy') {
+                editor = this.typeondestroy;
+            } else if (this.tab === 'typeoncreate') {
+                editor = this.typeoncreate;
+            }
+            editor.moveCursorTo(0,0);
+            editor.clearSelection();
+            this.focusEditor();
+        };
+        this.focusEditor = () => {
+            if (this.tab === 'typeonstep') {
                 this.typeonstep.focus();
             } else if (this.tab === 'typeondraw') {
-                this.typeondraw.moveCursorTo(0, 0);
-                this.typeondraw.clearSelection();
                 this.typeondraw.focus();
             } else if (this.tab === 'typeondestroy') {
-                this.typeondestroy.moveCursorTo(0, 0);
-                this.typeondestroy.clearSelection();
                 this.typeondestroy.focus();
             } else if (this.tab === 'typeoncreate') {
-                this.typeoncreate.moveCursorTo(0, 0);
-                this.typeoncreate.clearSelection();
                 this.typeoncreate.focus();
             }
         };
+        window.signals.on('typesFocus', this.focusEditor);
+        this.on('unmount', () => {
+            window.signals.off('typesFocus', this.focusEditor); 
+        });
         
         this.on('mount', () => {
             var editorOptions = {
@@ -123,10 +181,15 @@ type-editor.panel.view.flexrow
             this.parent.fillTypeMap();
             this.update();
         };
+        this.cancelGraphic = e => {
+            this.selectingGraphic = false;
+            this.update();
+        };
         this.typeSave = e => {
             window.glob.modified = true;
             this.type.lastmod = +(new Date());
             this.parent.editingType = false;
             this.parent.fillTypeMap();
             this.parent.update();
+            window.signals.trigger('typesChanged');
         };

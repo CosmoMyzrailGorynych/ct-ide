@@ -6,6 +6,7 @@ const path = require('path'),
       gulp = require('gulp'),
       concat = require('gulp-concat'),
       sourcemaps = require('gulp-sourcemaps'),
+      minimist = require('minimist'),
       stylus = require('gulp-stylus'),
       riot = require('gulp-riot'),
       pug = require('gulp-pug'),
@@ -17,6 +18,13 @@ const path = require('path'),
       notifier = require('node-notifier'),
       fs = require('fs-extra'),
       NwBuilder = require('nw-builder');
+
+const argv = minimist(process.argv.slice(2));
+
+const nwVersion = '0.34.1',
+      nwFiles = ['./app/**', '!./app/export/**', '!./app/exportDesktop/**', '!./app/cache/**', '!./app/.vscode/**', '!./app/JamGames/**'];
+
+var channelPostfix = argv.channel || false;
 
 const closureCompiler = require('google-closure-compiler-js').gulp();
 
@@ -64,7 +72,7 @@ const compileStylus = () =>
         compress: true
     }))
     .pipe(sourcemaps.write())
-    .pipe(gulp.dest('./app/'));
+    .pipe(gulp.dest('./app/data/'));
 
 const compilePug = () => 
     gulp.src('./src/pug/*.pug')
@@ -107,7 +115,7 @@ const compileScripts = gulp.series(compileRiot, () =>
     }, {
         platform: ['native', 'java', 'javascript']
     })))
-    .pipe(gulp.dest('./app/'))
+    .pipe(gulp.dest('./app/data/'))
     .on('error', err => {
         notifier.notify({
             title: 'Ошибка скриптов',
@@ -177,8 +185,8 @@ const lint = gulp.series(lintJS, lintStylus);
 
 const launchNw = () => {
     var nw = new NwBuilder({
-        files: './app/**',
-        version: '0.31.2',
+        files: nwFiles,
+        version: nwVersion,
         platforms: ['osx64', 'win32', 'win64', 'linux32', 'linux64'],
         flavor: 'sdk'
     });
@@ -199,12 +207,12 @@ const release = gulp.series([done => {
     done();
 }, build, lint, done => {
     var nw = new NwBuilder({
-        files: ['./app/**', '!./app/export'],
+        files: nwFiles,
         platforms: ['osx64', 'win32', 'win64', 'linux32', 'linux64'],
-        version: '0.31.2',
+        version: nwVersion,
         flavor: 'sdk',
         buildType: 'versioned',
-        forceDownload: true,
+        // forceDownload: true,
         zip: false,
         macIcns: './app/ct.ide.icns'
     });
@@ -221,11 +229,11 @@ const release = gulp.series([done => {
 
 const deployOnly = done => {
     var pack = require('./app/package.json');
-    spawnise('./butler', ['push', `./build/ctjs - v${pack.version}/linux32`, 'comigo/ct:linux32', '--userversion', pack.version])
-    .then(() => spawnise('./butler', ['push', `./build/ctjs - v${pack.version}/linux64`, 'comigo/ct:linux64', '--userversion', pack.version]))
-    .then(() => spawnise('./butler', ['push', `./build/ctjs - v${pack.version}/osx64`, 'comigo/ct:osx64', '--userversion', pack.version]))
-    .then(() => spawnise('./butler', ['push', `./build/ctjs - v${pack.version}/win32`, 'comigo/ct:win32', '--userversion', pack.version]))
-    .then(() => spawnise('./butler', ['push', `./build/ctjs - v${pack.version}/win64`, 'comigo/ct:win64', '--userversion', pack.version]))
+    spawnise('./butler', ['push', `./build/ctjs - v${pack.version}/linux32`, `comigo/ct:linux32${channelPostfix? '-' + channelPostfix: ''}`, '--userversion', pack.version])
+    .then(() => spawnise('./butler', ['push', `./build/ctjs - v${pack.version}/linux64`, `comigo/ct:linux64${channelPostfix? '-' + channelPostfix: ''}`, '--userversion', pack.version]))
+    .then(() => spawnise('./butler', ['push', `./build/ctjs - v${pack.version}/osx64`, `comigo/ct:osx64${channelPostfix? '-' + channelPostfix: ''}`, '--userversion', pack.version]))
+    .then(() => spawnise('./butler', ['push', `./build/ctjs - v${pack.version}/win32`, `comigo/ct:win32${channelPostfix? '-' + channelPostfix: ''}`, '--userversion', pack.version]))
+    .then(() => spawnise('./butler', ['push', `./build/ctjs - v${pack.version}/win64`, `comigo/ct:win64${channelPostfix? '-' + channelPostfix: ''}`, '--userversion', pack.version]))
     .then(() => {
         done();
     })

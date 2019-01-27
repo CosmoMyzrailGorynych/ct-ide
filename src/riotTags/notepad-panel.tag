@@ -63,7 +63,7 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
         });
 
         const nstatic = require('node-static');
-        const fileServer = new nstatic.Server('docs/', {
+        const fileServer = new nstatic.Server('data/docs/', {
             cache: false,
             serverInfo: 'ctjsgameeditor'
         });

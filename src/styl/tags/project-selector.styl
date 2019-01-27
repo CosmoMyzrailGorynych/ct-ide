@@ -21,6 +21,10 @@ project-selector
         margin 0 -1rem -1rem
     .menu
         max-height 15rem
+        li
+            direction rtl
+        .icon-x
+            margin-left 1rem
     .aVersionNumber
         position absolute
         bottom 0
@@ -29,6 +33,10 @@ project-selector
         text-align center
         z-index 100
         color #fff
+        *
+            vertical-align text-bottom
+        i
+            margin-right 0.5rem
 
 .project-selector-aPreview img
         max-width 100%
@@ -42,9 +50,8 @@ project-selector
         width 100%
         display block
         text-overflow ellipsis
-
 #bg
-    background url('../img/bg.png')
+    background url('../data/img/bg.png')
     background-size cover
     background-position center center
     z-index 25

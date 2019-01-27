@@ -2,6 +2,8 @@
 
 Let's make a small space shooting game with asteroids, lasers and hostile gunships! This tutorial will teach you how to import assets, handle user input, move things around and respond to collisions.
 
+![](./images/tutSpaceShooter_Result.gif)
+
 ## Importing Graphic Assets 
 
 Open ct.js and create a new project with a name "SpaceShooter".
@@ -97,7 +99,9 @@ In order to handle keyboard inputs, we need to enable keyboard module. Press the
 
 Open the "Types" tab on the top, next move to `On Step` event.
 
-> `On Step` event occurs every frame before drawing, while `Draw` happens after all the `On Step` events in the room to draw a new frame. `On create` happens when you spawn a new Copy, and  `On Destroy` occurs before the `Draw` event if a Copy is killed.
+::: tip
+`On Step` event occurs every frame before drawing, while `Draw` happens after all the `On Step` events in the room to draw a new frame. `On create` happens when you spawn a new Copy, and  `On Destroy` occurs before the `Draw` event if a Copy is killed.
+:::
 
 Write the following code:
 
@@ -107,10 +111,10 @@ Write the following code:
  */
 
 if (ct.keyboard.down['left']) { // Is the left arrow key pressed?
-    this.x -= 8; // Move to the left by X axis
+    this.x -= 8 * ct.delta; // Move to the left by X axis
 }
 if (ct.keyboard.down['right']) { // Is the right arrow key pressed?
-    this.x += 8; // Move to the right by X axis
+    this.x += 8 * ct.delta; // Move to the right by X axis
 }
 
 /**
@@ -119,18 +123,20 @@ if (ct.keyboard.down['right']) { // Is the right arrow key pressed?
 if (this.x < 0) { // Have the ship crossed the left border?
     this.x = 0; // Go back to the left border
 }
-if (this.x > ct.width) { // Have the ship crossed the right border?
-    this.x = ct.width; // Go back to the right border
+if (this.x > ct.viewWidth) { // Have the ship crossed the right border?
+    this.x = ct.viewWidth; // Go back to the right border
 }
 
-ct.types.move(this);
+this.move();
 ```
 
-First, we move the ship if arrow keys were pressed, then we check whether its X coordinate fell off the viewport. Here `0` means the left side of the room and `ct.width` means the horizontal size of the viewport, which forms the right side.
+First, we move the ship if arrow keys were pressed, then we check whether its X coordinate fell off the viewport. Here `0` means the left side of the room and `ct.viewWidth` means the horizontal size of the viewport, which forms the right side.
 
 All the methods starting with `ct.keyboard` come from the enabled module. You can read its documentation on the "Catmods" tab, "Reference" section.
 
-> **On your own:** add a vertical movement to the player. Then, try to limit its movement so the ship can't fly above the middle of the viewport.
+::: tip On your own!
+Add a vertical movement to the player. Then, try to limit its movement so the ship can't fly above the middle of the viewport.
+:::
 
 ## Moving Hostiles and Asteroids
 
@@ -141,37 +147,41 @@ Enemies should move, too. For this tutorial, our hostile ship will move from top
 Open the "Types" tab, then click on the `EnemyShip`. Navigate to the `On Create` event and add this code:
 
 ```js
-this.spd = 3;
-this.dir = 270;
+this.speed = 3;
+this.direction = 270;
 ```
 
-Here, we use built-in variables for moving. Manually editing coordinates is good for handling player's input, but for most tasks it is better to use these vars as they automate most of the things. Here, `this.spd` means the speed of the Copy, and `this.dir` refers to its direction.
+Here, we use built-in variables for moving. Manually editing coordinates is good for handling player's input, but for most tasks it is better to use these vars as they automate most of the things. Here, `this.speed` means the speed of the Copy, and `this.direction` refers to its direction.
 
-> In ct.js, direction is measured in degrees, moving from the left side counter-clockwise. 0° means left, 90° means up, 180° is for right, and 270° points to the bottom.
->
-> ![](./images/tutSpaceShooter_Direction.png)
+::: tip
+In ct.js, direction is measured in degrees, moving from the left side counter-clockwise. 0° means right, 90° means up, 180° is for left, and 270° points to the bottom.
+
+![](./images/tutSpaceShooter_Direction.png)
+:::
 
 If we navigate to the `Step` event, we will see this little code:
 
 ```js
-ct.types.move(this);
+this.move();
 ```
 
-This line reads built-in variables and moves the Copy according to them. Without it, `this.spd` and `this.dir` will be meaningless.
+This line reads built-in variables and moves the Copy according to them. Without it, `this.speed` and `this.direction` will be meaningless.
 
 There are more built-in variables, which you can find on the [`ct.types` page](ct.types.html).
 
 We will modify the `Step` code so enemies will destroy themselves if they fall off the screen.
 
 ```js
-ct.types.move(this);
+this.move();
 
 if (this.y > ct.height + 80) {
     this.kill = true;
 }
 ```
 
-> **On your own:** what if enemy ships could move diagonally, zig-zagging?
+::: tip On your own!
+What if enemy ships could move diagonally, zig-zagging?
+:::
 
 ### Asteroids
 
@@ -180,14 +190,14 @@ Asteroids will contain the same `Step` code, but their `dir` variable will be se
 Open the `Asteroid_Medium` in the "Types" tab, then write the code below in the `On Create` event. 
 
 ```js On Create event
-this.spd = ct.random.range(1, 3);
-this.dir = ct.random.range(270 - 30, 270 + 30);
+this.speed = ct.random.range(1, 3);
+this.direction = ct.random.range(270 - 30, 270 + 30);
 ```
 
 The `Step` event will be the same as in `EnemyShip`.
 
 ```js Step event
-ct.types.move(this);
+this.move();
 
 if (this.y > ct.height + 80) {
     this.kill = true;
@@ -214,15 +224,17 @@ if (ct.keyboard.pressed['space']) {
 
 This is the first time we add new copies programmatically. Hooray!
 
-> `ct.types.copy` is a very important function that spawns a new Copy in the current room. Firstly, we write an enquoted Type's name to copy. Then, we write coordinates at which we should create it, by horizontal and vertical axes accordingly. `this.x` means a horizontal location of current copy, and `this.y` means a vertical one.
+::: tip
+`ct.types.copy` is a very important function that spawns a new Copy in the current room. Firstly, we write an enquoted Type's name to copy. Then, we write coordinates at which we should create it, by horizontal and vertical axes accordingly. `this.x` means a horizontal location of current copy, and `this.y` means a vertical one.
+:::
 
 With all the data combined, we make a laser bullet right under our ship. Bullets will spawn when the Space key is pressed.
 
 Now let's move to the `Laser_Blue` itself. We will define its movement with default variables.
 
 ```js On Create code
-this.spd = 18;
-this.dir = 90;
+this.speed = 18;
+this.direction = 90;
 ```
 
 Next, let's make that these laser bullets will disappear after they flew out the view. As they always fly to top, we may write a condition for the upper border only.
@@ -232,7 +244,7 @@ if (this.y < -40) {
     this.kill = true;
 }
 
-ct.types.move(this);
+this.move();
 ```
 
 The next thing is handling collisions. It is better to write all the collision logic in enemy ships' and asteroids' code because they will respond differently, making no clutter in the bullet's code.
@@ -249,7 +261,9 @@ if (collided) {
 
 The method `ct.place.meet` checks whether a given copy collides with other copies of a certain type like if it was placed in the given coordinates. For this example, we need to check whether our current Copy (`this`) of enemy ships collides in its current position (`this.x, this.y`) with laser bullets (`'Laser_Blue'`). The method returns either a collided copy or `false`, so we need to check whether it returned a valid value.
 
-> There are even more methods in the `ct.place` module. Open the 'Catmods' sections, and then click the `place` module on the left. Open the documentation by clicking the 'Reference' tab on the right.
+::: tip
+There are even more methods in the `ct.place` module. Open the 'Catmods' sections, and then click the `place` module on the left. Open the documentation by clicking the 'Reference' tab on the right.
+:::
 
 If a ship collides with a laser bullet, then both the bullet and the ship should be destroyed.
 
@@ -272,39 +286,38 @@ If you run the game, you will be able to destroy enemy ships and asteroids. Bigg
 Enemy ships should be able to shoot, too. Add the following code to `EnemyShip`'s On Create code:
 
 ``` js
-this.bulletTimer = 30;
+this.bulletTimer = 60;
 ```
-With this, we will set up our timer so that the enemy ship will shoot with precise intervals. We will decrease the value of `this.bulletTimer` each step and reset it after shooting. `30` means that we will wait for 30 frames before shooting the first bullet.
+With this, we will set up our timer so that the enemy ship will shoot with precise intervals. We will decrease the value of `this.bulletTimer` each step and reset it after shooting. `60` means that we will wait for 1 second (60 frames) before shooting the first bullet.
 
 Add this code to `On Step` section:
 
 ```js
-this.bulletTimer--;
+this.bulletTimer -= ct.delta;
 if (this.bulletTimer <= 0) {
-    this.bulletTimer = 90;
+    this.bulletTimer = 180;
     ct.types.copy('Laser_Red', this.x, this.y + 32);
 }
 ```
 
-`this.bulletTimer--;` means that we lower the value of `this.bulletTimer` by 1. It is the same code as `this.bulletTime -= 1;`. There is also a `++` operator which adds 1 to the given value.
+`this.bulletTimer -= ct.delta;` means that we lower the value of `this.bulletTimer` by one frame. `ct.delta` is usually equal to `1`, but on low framerate it will be larger to balance game speed and make things move uniformly with any FPS value.
 
 When the timer variable goes down to zero, we wind it up by setting `this.bulletTimer` to a new number and create a red laser bullet. As you can see, by writing `this.y + 32` we spawn it a bit lower than the ship.
 
 Let's write some code to red bullets. Add this code to `On Create` section of Laser_Red:
 
 ```js
-this.spd = 8;
-this.dir = 270;
+this.speed = 8;
+this.direction = 270;
 
-this.transform = true;
-this.tr = ct.random.deg();
+this.rotation = ct.random.deg();
 ```
 
-By writing `this.transform = true;`, we tell the engine that this exact copy should render with some transformations. In this case, we will rotate the bullet each step, making a smooth animation.
+`this.rotation` stands for transform rotation. `ct.random.deg()` returns a random value between 0 and 360, which is handy while defining angular values.
 
-`this.tr` stands for transform rotation. `ct.random.deg()` returns a random value between 0 and 360, which is handy while defining angular values.
-
-> There is also `this.tx` and `this.ty`, which sets a copy's horizontal and vertical scale accordingly, and `this.ta` which manipulates its opacity (0 means fully transparent, 1 — fully opaque).
+::: tip
+There is also `this.scale.x` and `this.scale.y`, which sets a copy's horizontal and vertical scale accordingly, and `this.alpha` which manipulates its opacity (0 means fully transparent, 1 — fully opaque).
+:::
 
 The code of On Step section will look as following:
 
@@ -313,12 +326,12 @@ if (this.y > ct.height + 40) {
     this.kill = true;
 }
 
-ct.types.move(this);
+this.move();
 
-this.tr += 10;
+this.rotation += 4 * ct.delta;
 ```
 
-`this.tr += 10;` means that we will rotate a Copy by 10 degrees at each step.
+`this.rotation += 4 * ct.delta;` means that we will rotate a Copy by approximately 4 degrees at each step.
 
 We will define logic for destroying player's ship later. For now, it's time to add enemy and asteroid generation during the playtime.
 
@@ -332,7 +345,7 @@ Rooms have all the same events like Copies have.
 
 * `On Create` is called when you launch the game or move to this room programmatically;
 * `Step` is called each frame, after Copies' `On Step`;
-* `Draw` is called after drawing all the level. It is useful for drawing some basic UI;
+* `Draw` is called after drawing all the level. It is useful for updating UI;
 * `On Leave` is called before moving to another room.
 
 We will generate enemies in almost the same way as enemy ships generate their bullets. We will have a couple of timers and will place copies above the player's view.
@@ -340,33 +353,35 @@ We will generate enemies in almost the same way as enemy ships generate their bu
 To do this, setup two timers in the `On Create` code:
 
 ```js
-this.asteroidTimer = 10;
-this.enemyTimer = 90;
+this.asteroidTimer = 20;
+this.enemyTimer = 180;
 ```
 
 Then add this code to generate enemies through time:
 
 ```js
-this.asteroidTimer--;
+this.asteroidTimer -= ct.delta;
 if (this.asteroidTimer <= 0) {
-    this.asteroidTimer = ct.random.range(10, 100);
-    ct.types.copy(ct.random.dice('Asteroid_Big', 'Asteroid_Medium'), ct.random(ct.width), -100);
+    this.asteroidTimer = ct.random.range(20, 200);
+    ct.types.copy(ct.random.dice('Asteroid_Big', 'Asteroid_Medium'), ct.random(ct.viewWidth), -100);
 }
 
-this.enemyTimer--;
+this.enemyTimer -= ct.delta;
 if (this.enemyTimer <= 0) {
-    this.enemyTimer = ct.random.range(90, 200);
-    ct.types.copy('EnemyShip', ct.random(ct.width), -100);
+    this.enemyTimer = ct.random.range(180, 400);
+    ct.types.copy('EnemyShip', ct.random(ct.viewWidth), -100);
 }
 ```
 
 That's all what you need for generating asteroids and enemies!
 
-> `ct.random.dice` returns one of the provided values. You can put any value here, including Numbers, Strings, complex objects. Here, there is a 50% chance that `'Asteroid_Big'` will be returned and a 50% chance that it will be `'Asteroid_Medium'`.
+::: tip
+`ct.random.dice` returns one of the provided values. You can put any value here, including Numbers, Strings, complex objects. Here, there is a 50% chance that `'Asteroid_Big'` will be returned and a 50% chance that it will be `'Asteroid_Medium'`.
 
-> `ct.random.range(a, b)` returns a random numerical value between `a` and `b`.
+`ct.random.range(a, b)` returns a random numerical value between `a` and `b`.
 
-> `ct.random(b)` is the same as `ct.random.range(0, b)`.
+`ct.random(b)` is the same as `ct.random.range(0, b)`.
+:::
 
 ## Lives, score and GUI
 
@@ -378,20 +393,19 @@ Score is a numerical variable that is stored globally. In our case it is better 
 
 ```js
 this.score = 0;
+
+this.scoreLabel = new PIXI.Text('Score: ' + this.score);
+this.addChild(this.scoreLabel);
+this.scoreLabel.x = 30;
+this.scoreLabel.y = 30;
 ```
 
-Add this line to the `Draw` section:
+Here, we create a variable called `score`. Then, we construct a text label with `new PIXI.Text('Some text')`, save it `this.scoreLabel` and add it to the room with `this.addChild(this.scoreLabel);`. Later, we position it so that it shows at the top-left corner, with 30px padding on each side.
+
+Now, move to `EnemyShip`'s `On Step` code, and add `ct.room.score += 100;` to a place where a ship is destroyed after colliding with a bullet, so the whole code looks like this:
 
 ```js
-ct.draw.text(this.score, 30, 30);
-```
-
-This will draw the number of score points to the player's view.
-
-Then move to `EnemyShip`'s `On Step` code, and add `ct.room.score += 100;` to a place where a ship is destroyed after colliding with a bullet, so the whole code looks like this:
-
-```js
-ct.types.move(this);
+this.move();
 
 if (this.y > ct.height + 80) {
     this.kill = true;
@@ -404,22 +418,22 @@ if (collided) {
     ct.room.score += 100;
 }
 
-this.bulletTimer--;
+this.bulletTimer -= ct.delta;
 if (this.bulletTimer <= 0) {
-    this.bulletTimer = 90;
+    this.bulletTimer = 180;
     ct.types.copy('Laser_Red', this.x, this.y + 32);
 }
 ```
 
-> `ct.room` points to the current room object.
+::: tip
+`ct.room` points to the current room object.
+:::
 
 Do the same to asteroids, too. Change the number of given score points as you wish.
 
 If you launch the game, you may notice a small black number in the top-left corner which changes as asteroids and enemy ships get destroyed. But this doesn't look nice, so it is a good time to make some styling.
 
-Text, shapes, lines, polygons can be drawn with pre-defined styles that declare fill color, line style, font settings, shadow. They are created in the `Styles` section in the top bar. Create one by clicking on the `Create` button. You will see a style editor, which has a left bar with tabs for setting properties and a preview image on the right.
-
-Each tab should be activated in order to affect the result. Styles can be combined by applying ones on top of others, so every tab is optional.
+Text can be drawn with pre-defined styles that declare fill color, line style, font settings, shadow. They are created in the `UI` section in the top bar. Create one by clicking on the `Create` button. You will see a style editor, which has a left bar with tabs for setting properties and a preview image on the right.
 
 Let's make the font bigger and bolder. Change its size and set its weight to 800. Then align it to be drawn from a top left corner.
 
@@ -433,32 +447,52 @@ Add shadow, or border, or both! Then save the changes by clicking the "Apply" bu
 
 Name the created style as `ScoreText`. You can rename it by right-clicking it in the list view.
 
-Now let's return to the room's events. Open the `Draw` tab, and modify the code so it looks like this:
+Now let's return to the room's events. Open the `On Create` tab, and modify the code to apply the created style:
 
-```js
-ct.styles.set('ScoreText');
-ct.draw.text('Score: ' + this.score, 30, 30);
-ct.styles.reset();
+```js{5}
+this.asteroidTimer = 20;
+this.enemyTimer = 180;
+
+this.score = 0;
+this.scoreLabel = new PIXI.Text('Score: ' + this.score, ct.styles.get('ScoreText'));
+this.addChild(this.scoreLabel);
+this.scoreLabel.x = 30;
+this.scoreLabel.y = 30;
 ```
 
-> `ct.styles.set('Style');` applies the given style to the current drawing settings.
+We should also add this line to the `Draw` tab so that the label is updated each frame: 
 
-> `ct.styles.reset();` changes current drawing settings back to default ones (no border or shadows, small black text). It is important to execute this method after you finish drawing with styles; otherwise, any shadows will leak to every Copy in the room, making the game lag, and other styles may look not as expected.
+```js
+this.scoreLabel.text = 'Score: ' + this.score;
+```
+
+::: tip
+`ct.styles.get('Style');` loads the given style. You can use it inside PIXI.Text constructor to style the created label.
+:::
 
 If you launch the game, the score will be drawn in your created style. Hooray!
 
 ### Drawing and managing lives
 
-Managing lives is similar to managing score points. Add line `this.lives = 3;` to the room's `On Create` code. Then modify the `Draw` code so that it draws the number of lives, too:
+Managing lives is similar to managing score points. Add this code to the room's `On Create` code so that it stores and draws the number of lives, too:
 
 ```js
-ct.styles.set('ScoreText');
-ct.draw.text('Score: ' + this.score, 30, 30);
-ct.draw.text('Lives: ' + this.lives, ct.width - 200, 30);
-ct.styles.reset();
+this.lives = 3;
+this.livesLabel = new PIXI.Text('Lives: ' + this.lives, ct.styles.get('ScoreText'));
+this.addChild(this.livesLabel);
+this.livesLabel.x = ct.viewWidth - 200;
+this.livesLabel.y = 30;
 ```
 
-> **On your own:** create a new style and apply it to the 'Lives' label.
+And we need this code to keep the label up-to-date:
+
+```js
+this.livesLabel.text = 'Lives: ' + this.lives;
+```
+
+::: tip On your own!
+Create a new style and apply it to the 'Lives' label.
+:::
 
 Then we should add logic so that player's ship removes one life on collision. We could use `ct.place.meet` as we used it in asteroids' and enemies' code, but let's group them into one _collision group_. It will allow us to write less code and won't require any changes if we add more enemies, missiles or asteroids of different size.
 
@@ -492,9 +526,11 @@ if (hostile) {
 
 `setTimeout` is a standard browser's function that executes a function after a given number of milliseconds. Here we wait one second (1000 milliseconds) and then restart the room.
 
-> `setTimeout` may seem like a better way to work with delayed events than writing timers. The difference is that timers exist while its owner does, but `setTimeout` will happen in any circumstances, even if the copy that called it was removed from a room (actually, there _is_ a way to cancel a `setTimeout`, but it isn't that handy when working with different copies).
->
-> In our case, we want the room to be restarted though there aren't any player ships on the screen, so we use `setTimeout`. We use timers for shooting and spawning enemies because we don't want bullets to randomly appear after enemies were destroyed.
+::: tip
+`setTimeout` may seem like a better way to work with delayed events than writing timers. The difference is that timers exist while its owner does, but `setTimeout` will happen in any circumstances, even if the copy that called it was removed from a room (actually, there _is_ a way to cancel a `setTimeout`, but it isn't that handy when working with different copies).
+
+In our case, we want the room to be restarted though there aren't any player ships on the screen, so we use `setTimeout`. We use timers for shooting and spawning enemies because we don't want bullets to randomly appear after enemies were destroyed.
+:::
 
 Save your project and test it out. Now you have a small, but fully working space shooter! There is a lot of ways to improve this game further:
 

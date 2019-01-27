@@ -31,24 +31,35 @@ room-events-editor.view.panel
         this.tab = 'roomcreate';
         this.switchTab = tab => e => {
             this.tab = tab;
+            var editor;
             if (tab === 'roomcreate') {
-                this.roomoncreate.moveCursorTo(0,0);
-                this.roomoncreate.clearSelection();
-                this.roomoncreate.focus();
+                editor = this.roomoncreate;
             } else if (tab === 'roomstep') {
-                this.roomonstep.moveCursorTo(0,0);
-                this.roomonstep.clearSelection();
-                this.roomonstep.focus();
+                editor = this.roomonstep;
             } else if (tab === 'roomdraw') {
-                this.roomondraw.moveCursorTo(0,0);
-                this.roomondraw.clearSelection();
-                this.roomondraw.focus();
+                editor = this.roomondraw;
             } else if (tab === 'roomleave') {
-                this.roomonleave.moveCursorTo(0,0);
-                this.roomonleave.clearSelection();
+                editor = this.roomonleave;
+            }
+            editor.moveCursorTo(0,0);
+            editor.clearSelection();
+            this.focusEditor();
+        };
+        this.focusEditor = () => {
+            if (this.tab === 'roomcreate') {
+                this.roomoncreate.focus();
+            } else if (this.tab === 'roomstep') {
+                this.roomonstep.focus();
+            } else if (this.tab === 'roomdraw') {
+                this.roomondraw.focus();
+            } else if (this.tab === 'roomleave') {
                 this.roomonleave.focus();
             }
         };
+        window.signals.on('roomsFocus', this.focusEditor);
+        this.on('unmount', () => {
+            window.signals.off('roomsFocus', this.focusEditor); 
+        });
         this.on('mount', e => {
             this.room = this.opts.room;
             setTimeout(() => {

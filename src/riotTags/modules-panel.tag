@@ -65,8 +65,18 @@ modules-panel.panel.view
                                 value="{window.currentProject.libs[currentModuleName][field.id]}" 
                                 onchange="{wire('window.currentProject.libs.' + currentModuleName + '.' + field.id)}"
                             )
+                            label.block(if="{field.type === 'radio'}" each="{option in field.options}")
+                                input(
+                                    type="radio"
+                                    value="{option.value}"
+                                    checked="{window.currentProject.libs[currentModuleName][field.id] === option.value}" 
+                                    onchange="{wire('window.currentProject.libs.' + currentModuleName + '.' + field.id)}"
+                                )
+                                |   {option.name}
+                                div(class="desc" if="{option.help}")
+                                    raw(ref="raw" content="{md.render(option.help)}")
                             input(
-                                if="{['checkbox', 'number', 'textfield'].indexOf(field.type) === -1}" 
+                                if="{['checkbox', 'number', 'textfield', 'radio'].indexOf(field.type) === -1}" 
                                 type="text"
                                 value="{window.currentProject.libs[currentModuleName][field.id]}" 
                                 onchange="{wire('window.currentProject.libs.' + currentModuleName + '.' + field.id)}"
@@ -87,6 +97,7 @@ modules-panel.panel.view
             html: false,
             linkify: true
         });
+        const libsDir = './data/ct.libs';
         this.md = md;
         this.mixin(window.riotWired);
         this.namespace = 'modules';
@@ -111,12 +122,12 @@ modules-panel.panel.view
             }
         });
         
-        fs.readdir('./ct.libs', (err, files) => {
+        fs.readdir(libsDir, (err, files) => {
             if (err) {
                 throw err;
             }
             for (var i = 0; i < files.length; i++) {
-                if (fs.pathExistsSync(path.join('./ct.libs', files[i], 'module.json'))) {
+                if (fs.pathExistsSync(path.join(libsDir, files[i], 'module.json'))) {
                     this.allModules.push(files[i]);
                 }
             }
@@ -151,10 +162,11 @@ modules-panel.panel.view
                 }
             }
             this.renderModule(moduleName)(e);
+            window.signals.trigger('modulesChanged');
             window.glob.modified = true;
         };
         this.renderModule = name => e => {
-            fs.readJSON(path.join('./ct.libs', name, 'module.json'), (err, data) => {
+            fs.readJSON(path.join(libsDir, name, 'module.json'), (err, data) => {
                 if (err) {
                     alertify.error(err);
                     return;
@@ -162,35 +174,35 @@ modules-panel.panel.view
                 this.currentModule = data;
                 this.currentModuleName = name;
                 
-                if (fs.pathExistsSync(path.join('./ct.libs', name, 'README.md'))) {
-                    this.currentModuleHelp = md.render(fs.readFileSync(path.join('./ct.libs', name, 'README.md'), {
+                if (fs.pathExistsSync(path.join(libsDir, name, 'README.md'))) {
+                    this.currentModuleHelp = md.render(fs.readFileSync(path.join(libsDir, name, 'README.md'), {
                         encoding: 'utf8'
                     }) || '');
                 } else {
                     this.currentModuleHelp = false;
                 }
-                if (fs.pathExistsSync(path.join('./ct.libs', name, 'DOCS.md'))) {
-                    this.currentModuleDocs = md.render(fs.readFileSync(path.join('./ct.libs', name, 'DOCS.md'), {
+                if (fs.pathExistsSync(path.join(libsDir, name, 'DOCS.md'))) {
+                    this.currentModuleDocs = md.render(fs.readFileSync(path.join(libsDir, name, 'DOCS.md'), {
                         encoding: 'utf8'
                     }) || '');
                 } else {
                     this.currentModuleDocs = false;
                 }
-                if (fs.pathExistsSync(path.join('./ct.libs', name, 'CHANGELOG.md'))) {
-                    this.currentModuleLogs = md.render(fs.readFileSync(path.join('./ct.libs', name, 'CHANGELOG.md'), {
+                if (fs.pathExistsSync(path.join(libsDir, name, 'CHANGELOG.md'))) {
+                    this.currentModuleLogs = md.render(fs.readFileSync(path.join(libsDir, name, 'CHANGELOG.md'), {
                         encoding: 'utf8'
                     }) || '');
                 } else {
                     this.currentModuleLogs = false;
                 }
-                if (fs.pathExistsSync(path.join('./ct.libs', name, 'LICENSE'))) {
-                    this.currentModuleLicense = fs.readFileSync(path.join('./ct.libs', name, 'LICENSE'), {
+                if (fs.pathExistsSync(path.join(libsDir, name, 'LICENSE'))) {
+                    this.currentModuleLicense = fs.readFileSync(path.join(libsDir, name, 'LICENSE'), {
                         encoding: 'utf8'
                     }) || '';
                 } else {
                     this.currentModuleLicense = false;
                 }
-                this.currentModule.injects = fs.pathExistsSync(path.join('./ct.libs', name, 'injects'));
+                this.currentModule.injects = fs.pathExistsSync(path.join(libsDir, name, 'injects'));
                 this.update();
             });
             this.tab = 'moduleinfo';

@@ -22,9 +22,9 @@ main-menu.flexcol
             li(onclick="{changeTab('graphic')}" class="{active: tab === 'graphic'}")
                 i.icon-picture
                 span {voc.graphic}
-            li(onclick="{changeTab('styles')}" class="{active: tab === 'styles'}")
+            li(onclick="{changeTab('ui')}" class="{active: tab === 'ui'}")
                 i.icon-droplet
-                span {voc.styles}
+                span {voc.ui}
             li(onclick="{changeTab('sounds')}" class="{active: tab === 'sounds'}")
                 i.icon-headphones
                 span {voc.sounds}
@@ -38,11 +38,12 @@ main-menu.flexcol
         settings-panel(show="{tab === 'settings'}")
         modules-panel(show="{tab === 'modules'}")
         graphics-panel(show="{tab === 'graphic'}")
-        styles-panel(show="{tab === 'styles'}")
+        ui-panel(show="{tab === 'ui'}")
         sounds-panel(show="{tab === 'sounds'}")
         types-panel(show="{tab === 'types'}")
         rooms-panel(show="{tab === 'rooms'}")
         license-panel(if="{showLicense}")
+        export-panel(show="{showExporter}")
     script.
         const fs = require('fs-extra'),
               path = require('path');
@@ -55,6 +56,7 @@ main-menu.flexcol
         this.changeTab = tab => e => {
             this.tab = tab;
             window.signals.trigger('globalTabChanged');
+            window.signals.trigger(`${tab}Focus`);
         };
         const gui = require('nw.gui'),
               win = gui.Window.get();
@@ -65,7 +67,32 @@ main-menu.flexcol
             this.fullscreen = !this.fullscreen;
         };
         
+        this.refreshLatestProject = function() {
+            while (recentProjectsSubmenu.items.length) {
+                recentProjectsSubmenu.removeAt(0);
+            }
+            var lastProjects;
+            if (('lastProjects' in localStorage) && 
+                (localStorage.lastProjects !== '')) {
+                lastProjects = localStorage.lastProjects.split(';');
+            } else {
+                lastProjects = [];
+            }
+            for (const project of lastProjects) {
+                recentProjectsSubmenu.append(new gui.MenuItem({
+                    label: project,
+                    click: function () {
+                        if (!confirm(window.languageJSON.common.reallyexit)) {
+                            return false;
+                        }
+                        window.signals.trigger('resetAll');
+                        window.loadProject(project);
+                    }
+                }))
+            }
+        };
         this.ctClick = (e) => {
+            this.refreshLatestProject();
             catMenu.popup(e.clientX, e.clientY);
         };
         this.saveProject = () => {
@@ -73,14 +100,34 @@ main-menu.flexcol
                 spaces: 2  
             }).then(() => {
                 alertify.success(languageJSON.common.savedcomm, "success", 3000);
+                this.saveRecoveryDebounce();
+                fs.remove(sessionStorage.projdir + '.ict.recovery')
+                .then(() => console.log())
+                .catch(console.error);
                 glob.modified = false;
             })
             .catch(alertify.error);
         };
+        this.saveRecovery = () => {
+            if (currentProject) {
+                fs.outputJSON(sessionStorage.projdir + '.ict.recovery', currentProject, {
+                    spaces: 2
+                });
+            }
+            this.saveRecoveryDebounce();
+        };
+        this.saveRecoveryDebounce = debounce(this.saveRecovery, 1000 * 60 * 5);
         window.signals.on('saveProject', () => {
             this.saveProject();
         });
-
+        this.saveRecoveryDebounce();
+        this.on('mount', () => {
+            keymage('ctrl-s', this.saveProject);
+        });
+        this.on('unmount', () => {
+            keymage.unbind('ctrl-s', this.saveProject);
+        });
+ 
         const nstatic = require('node-static');
         const exec = path.dirname(process.execPath).replace(/\\/g,'/');
         const fileServer = new nstatic.Server(path.join(exec, '/export/'), {
@@ -106,7 +153,7 @@ main-menu.flexcol
                     previewWindow.document.getElementById('thePreview').reload();
                     return;
                 }
-                nw.Window.open('preview.html', {
+                nw.Window.open(`preview.html?title=${encodeURIComponent(currentProject.settings.title || 'ct.js game')}`, {
                     new_instance: false,
                     id: 'ctPreview'
                 }, function(newWin) {
@@ -152,6 +199,7 @@ main-menu.flexcol
                         return;
                     }
                     nw.Shell.showItemInFolder(outName);
+                    alertify.success(this.voc.successZipProject.replace('{0}', outName));
                 });
             })
             .catch(alertify.error);
@@ -171,6 +219,7 @@ main-menu.flexcol
                         }
                     }
                     nw.Shell.showItemInFolder(exportFile);
+                    alertify.success(this.voc.successZipExport.replace('{0}', exportFile));
                 });
             })
             .catch(alertify.error);
@@ -190,7 +239,14 @@ main-menu.flexcol
             click: this.zipExport
         }));
         catMenu.append(new gui.MenuItem({
-            label: window.languageJSON.menu.startscreen,
+            label: this.voc.exportDesktop,
+            click: e => {
+                this.showExporter = true;
+                this.update();
+            }
+        }));
+        catMenu.append(new gui.MenuItem({
+            label: window.languageJSON.menu.startScreen,
             click: (e) => {
                 if (!confirm(window.languageJSON.common.reallyexit)) {
                     return false;
@@ -198,6 +254,12 @@ main-menu.flexcol
                 window.signals.trigger('resetAll');
             }
         }));
+        var recentProjectsSubmenu = new nw.Menu();
+        catMenu.append(new gui.MenuItem({
+            label: window.languageJSON.intro.latest,
+            submenu: recentProjectsSubmenu
+        }));
+
         catMenu.append(new gui.MenuItem({type: 'separator'}));
 
         var languageSubmenu = new nw.Menu();
@@ -208,13 +270,13 @@ main-menu.flexcol
         
         var themeSubmenu = new nw.Menu();
         themeSubmenu.append(new gui.MenuItem({
-            label: window.languageJSON.menu.themeday,
+            label: window.languageJSON.menu.themeDay,
             click: () => {
                 this.switchTheme('Day');
             }
         }));
         themeSubmenu.append(new gui.MenuItem({
-            label: window.languageJSON.menu.themenight,
+            label: window.languageJSON.menu.themeNight,
             click: () => {
                 this.switchTheme('Night');
             }
@@ -225,7 +287,7 @@ main-menu.flexcol
         }));
         this.switchTheme = theme => {
             localStorage.UItheme = theme;
-            document.getElementById('themeCSS').href = `./theme${theme}.css`;
+            document.getElementById('themeCSS').href = `./data/theme${theme}.css`;
             var acers = document.getElementsByClassName('acer');
             for (var acer of acers) {
                 acer.aceEditor.setTheme('ace/theme/' + (theme === 'Night'? 'ambiance': 'tomorrow'));
@@ -234,6 +296,14 @@ main-menu.flexcol
         localStorage.UItheme = localStorage.UItheme || 'Day';
         
         
+        catMenu.append(new gui.MenuItem({type: 'separator'}));
+        
+        catMenu.append(new gui.MenuItem({
+            label: window.languageJSON.common.donate,
+            click: function () {
+                gui.Shell.openExternal('https://www.patreon.com/comigo');
+            }
+        }));
         catMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.ctsite,
             click: function () {
@@ -263,8 +333,8 @@ main-menu.flexcol
 
         this.switchLanguage = filename => {
             try {
-                const vocDefault = fs.readJSONSync('./i18n/English.json');
-                const voc = fs.readJSONSync(`./i18n/${filename}.json`);
+                const vocDefault = fs.readJSONSync('./data/i18n/English.json');
+                const voc = fs.readJSONSync(`./data/i18n/${filename}.json`);
                 console.log('loaded');
                 window.languageJSON = window.___extend(vocDefault, voc);
                 localStorage.appLanguage = filename;
@@ -277,7 +347,7 @@ main-menu.flexcol
         };
         var switchLanguage = this.switchLanguage;
 
-        fs.readdir('./i18n/')
+        fs.readdir('./data/i18n/')
         .then(files => {
             files.forEach(filename => {
                 var file = filename.slice(0, -5);

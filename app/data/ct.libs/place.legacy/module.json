@@ -1,0 +1,31 @@
+{
+    "main": {
+        "name": "ct.place",
+        "version": "2.1.0",
+        "authors": [{
+            "name": "Cosmo Myzrail Gorynych",
+            "mail": "admin@nersta.ru"
+        }]
+    },
+    "fields": [{
+        "name": "Grid size X",
+        "help": "Tells ct.place how to spacially group copies. This should be at least as large as the horizontal side of the biggest colliding sprite of your game.",
+        "key": "gridX",
+        "id": "gridX",
+        "default": 512,
+        "type": "number"
+    }, {
+        "name": "Grid size Y",
+        "help": "Tells ct.place how to spacially group copies. This should be at least as large as the vertical size of the biggest colliding sprite of your game.",
+        "key": "gridY",
+        "id": "gridY",
+        "default": 512,
+        "type": "number"
+    }],
+    "typeExtends": [{
+        "name": "Collision group",
+        "type": "text",
+        "collect": true,
+        "key": "ctype"
+    }]
+}

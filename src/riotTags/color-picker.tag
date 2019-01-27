@@ -24,23 +24,23 @@ color-picker
                     .pipe.huebar
                     .pipe(style="background-color: rgba(255, 255, 255, {1 - color.getSaturation()});")
                     .pipe(style="background-color: rgba(0, 0, 0, {1 - color.getValue()});")
-                    input.transparent(type="range" value="{color.getHue()}" min="0" max="359" oninput="{updateHue}")
+                    input.transparent(type="range" value="{color.getHue()}" min="0" max="359" onchange="{updateHue}" oninput="{updateHue}")
                 input.short(type="number" min="0" max="359" value="{color.getHue()}" onchange="{updateHue}")
             .flexrow
                 .aRangePipeStack
                     .pipe(style="background: linear-gradient(to right, {color.setAlpha(1).desaturateByRatio(1).toCSS()} 0%, {color.setAlpha(1).saturateByAmount(1).toCSS()} 100%)")
-                    input.transparent(type="range" value="{~~(color.getSaturation() * 100)}" min="0" max="100" oninput="{updateSaturation}")
+                    input.transparent(type="range" value="{~~(color.getSaturation() * 100)}" min="0" max="100" onchange="{updateSaturation}" oninput="{updateSaturation}")
                 input.short(type="number" min="0" max="100" value="{~~(color.getSaturation() * 100)}" onchange="{updateSaturation}")
             .flexrow
                 .aRangePipeStack
                     .pipe(style="background: linear-gradient(to right, {color.setAlpha(1).devalueByRatio(1).toCSS()} 0%, {color.setAlpha(1).valueByAmount(1).toCSS()} 100%)")
-                    input.transparent(type="range" value="{~~(color.getValue() * 100)}" min="0" max="100" oninput="{updateValue}")
+                    input.transparent(type="range" value="{~~(color.getValue() * 100)}" min="0" max="100" onchange="{updateValue}" oninput="{updateValue}")
                 input.short(type="number" min="0" max="100" value="{~~(color.getValue() * 100)}" onchange="{updateValue}")
             .flexrow
                 .aRangePipeStack(hide="{opts.hidealpha}")
                     .pipe.alphabar
                     .pipe(style="background: linear-gradient(to right, transparent 0%, {color.setAlpha(1).toCSS()} 100%)")
-                    input.transparent(type="range" value="{~~(color.getAlpha() * 100)}" min="0" max="100" oninput="{updateAlpha}")
+                    input.transparent(type="range" value="{~~(color.getAlpha() * 100)}" min="0" max="100" onchange="{updateAlpha}" oninput="{updateAlpha}")
                 input.short(type="number" min="0" max="100" value="{~~(color.getAlpha() * 100)}" onchange="{updateAlpha}")
 
             input.wide(type="text" ref="colorValue" value="{color.toString()}" onchange="{tryInputColor}")
@@ -79,22 +79,27 @@ color-picker
         this.updateHue = e => {
             this.color = this.color.setHue(e.target.value);
             this.notifyUpdates();
+            e.stopPropagation();
         };
         this.updateSaturation = e => {
             this.color = this.color.setSaturation(e.target.value / 100);
             this.notifyUpdates();
+            e.stopPropagation();
         };
         this.updateValue = e => {
             this.color = this.color.setValue(e.target.value / 100);
             this.notifyUpdates();
+            e.stopPropagation();
         };
         this.updateAlpha = e => {
             this.color = this.color.setAlpha(e.target.value / 100);
             this.notifyUpdates();
+            e.stopPropagation();
         };
         this.tryInputColor = e => {
             this.color = Color(e.target.value);
             this.notifyUpdates();
+            e.stopPropagation();
         };
 
         this.onSwatchClick = e => {

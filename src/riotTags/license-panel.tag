@@ -25,6 +25,8 @@ license-panel.modal.pad
                 (b) if you are below the age of majority in your jurisdiction,
                     that your legal guardian has reviewed and agrees to these Terms.
 
+            PERMISSION & CONDITIONS
+            -----------------------
             You are granted a world-wide, non-exclusive, perpetual (for the duration
             of the applicable copyright) license to use this software.
 
@@ -33,12 +35,21 @@ license-panel.modal.pad
             All rights, title and interest in and to all materials that are part of
             the Software (including, but not limited to, designs, text, graphics,
             pictures, video, information, applications, software, music, sound
-            and other files, and their selection and arrangement), except for
-            Your Content, program output that is based on Your Content, and 3rd party
-            libraries bundled with the Software are, as between the Author and you,
-            owned by the Author. You acknowledge and agree that you shall not acquire
-            any ownership rights whatsoever by downloading the Software.
+            and other files, and their selection and arrangement) are, as between
+            the Author and you, owned by the Author, except for:
+                (a) Your Content,
+                (b) program output that is based on Your Content, and
+                (c) 3rd party libraries bundled with the Software.
+            
+            You acknowledge and agree that you shall not acquire
+            any Software ownership rights whatsoever by downloading the Software.
 
+            Nothing in this License constitutes or may be construed as permission to assert
+            or imply that You are, or that Your use of the Software is, connected with,
+            or sponsored, endorsed, or granted official status by, the Author.
+
+            YOUR CONTENT
+            ------------
             Any data, source code, graphics, sounds and their selection and arrangement,
             and any other materials added to the Software by you is “Your Content.”
             You represent and warrant that Your Content is original to you and that you
@@ -46,10 +57,13 @@ license-panel.modal.pad
             and the Author is not responsible for any material that you upload, post,
             or otherwise make available.
 
-            Nothing in this License constitutes or may be construed as permission to assert
-            or imply that You are, or that Your use of the Software is, connected with,
-            or sponsored, endorsed, or granted official status by, the Author.
+            TERMINATION
+            -----------
+            This license becomes null and void if any of the above conditions are
+            not met.
 
+            DISCLAIMER
+            ----------
             THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
             IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
             FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -59,6 +73,34 @@ license-panel.modal.pad
             THE SOFTWARE.
     
     h1 3rd-party
+
+    h2 ace.js
+    pre
+        code.
+            Copyright (c) 2010, Ajax.org B.V.
+            All rights reserved.
+
+            Redistribution and use in source and binary forms, with or without
+            modification, are permitted provided that the following conditions are met:
+                * Redistributions of source code must retain the above copyright
+                notice, this list of conditions and the following disclaimer.
+                * Redistributions in binary form must reproduce the above copyright
+                notice, this list of conditions and the following disclaimer in the
+                documentation and/or other materials provided with the distribution.
+                * Neither the name of Ajax.org B.V. nor the
+                names of its contributors may be used to endorse or promote products
+                derived from this software without specific prior written permission.
+
+            THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+            ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+            WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+            DISCLAIMED. IN NO EVENT SHALL AJAX.ORG B.V. BE LIABLE FOR ANY
+            DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+            (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+            LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+            ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+            (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+            SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     
     h2 alertify.js (alertifyjs.org)
     pre 
@@ -110,6 +152,52 @@ license-panel.modal.pad
             CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
             OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
             OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+    h2 DragonBonesJS
+    pre 
+        code.
+            The MIT License (MIT)
+
+            Copyright (c) 2012-2018 The DragonBones team and other contributors.
+
+            Permission is hereby granted, free of charge, to any person obtaining a copy of
+            this software and associated documentation files (the "Software"), to deal in
+            the Software without restriction, including without limitation the rights to
+            use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+            the Software, and to permit persons to whom the Software is furnished to do so,
+            subject to the following conditions:
+
+            The above copyright notice and this permission notice shall be included in all
+            copies or substantial portions of the Software.
+
+            THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+            IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+            FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+            COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+            IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+            CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+    h2 keymaster.js
+    pre
+        code.
+            Copyright (c) 2011-2013 Thomas Fuchs
+
+            Permission is hereby granted, free of charge, to any person obtaining
+            a copy of this software and associated documentation files (the
+            "Software"), to deal in the Software without restriction, including
+            without limitation the rights to use, copy, modify, merge, publish,
+            distribute, sublicense, and/or sell copies of the Software, and to
+            permit persons to whom the Software is furnished to do so, subject to
+            the following conditions:
+
+            The above copyright notice and this permission notice shall be
+            included in all copies or substantial portions of the Software.
+
+            THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+            EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+            MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+            NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+            LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+            OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+            WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     h2 Lato Font by Łukasz Dziedzic
     pre 
         code.
@@ -207,6 +295,31 @@ license-panel.modal.pad
             DAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
             FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM
             OTHER DEALINGS IN THE FONT SOFTWARE.
+
+    h2 nw-builder
+    pre
+        code.
+                    The MIT License (MIT)
+
+            Copyright (c) 2014 Steffen Müller
+
+            Permission is hereby granted, free of charge, to any person obtaining a copy of
+            this software and associated documentation files (the "Software"), to deal in
+            the Software without restriction, including without limitation the rights to
+            use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+            the Software, and to permit persons to whom the Software is furnished to do so,
+            subject to the following conditions:
+
+            The above copyright notice and this permission notice shall be included in all
+            copies or substantial portions of the Software.
+
+            THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+            IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+            FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+            COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+            IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+            CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
     h2 OpenSans Font
     pre 
         code.
@@ -411,56 +524,30 @@ license-panel.modal.pad
             WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
             See the License for the specific language governing permissions and
             limitations under the License.
-    h2 keymaster.js
+    h2 Pixi.js
     pre
         code.
-            Copyright (c) 2011-2013 Thomas Fuchs
+            The MIT License
 
-            Permission is hereby granted, free of charge, to any person obtaining
-            a copy of this software and associated documentation files (the
-            "Software"), to deal in the Software without restriction, including
-            without limitation the rights to use, copy, modify, merge, publish,
-            distribute, sublicense, and/or sell copies of the Software, and to
-            permit persons to whom the Software is furnished to do so, subject to
-            the following conditions:
+            Copyright (c) 2013-2017 Mathew Groves, Chad Engler
 
-            The above copyright notice and this permission notice shall be
-            included in all copies or substantial portions of the Software.
+            Permission is hereby granted, free of charge, to any person obtaining a copy
+            of this software and associated documentation files (the "Software"), to deal
+            in the Software without restriction, including without limitation the rights
+            to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+            copies of the Software, and to permit persons to whom the Software is
+            furnished to do so, subject to the following conditions:
 
-            THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-            EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-            MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-            NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-            LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-            OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-            WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-    h2 ace.js
-    pre
-        code.
-            Copyright (c) 2010, Ajax.org B.V.
-            All rights reserved.
+            The above copyright notice and this permission notice shall be included in
+            all copies or substantial portions of the Software.
 
-            Redistribution and use in source and binary forms, with or without
-            modification, are permitted provided that the following conditions are met:
-                * Redistributions of source code must retain the above copyright
-                notice, this list of conditions and the following disclaimer.
-                * Redistributions in binary form must reproduce the above copyright
-                notice, this list of conditions and the following disclaimer in the
-                documentation and/or other materials provided with the distribution.
-                * Neither the name of Ajax.org B.V. nor the
-                names of its contributors may be used to endorse or promote products
-                derived from this software without specific prior written permission.
-
-            THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-            ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-            WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-            DISCLAIMED. IN NO EVENT SHALL AJAX.ORG B.V. BE LIABLE FOR ANY
-            DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-            (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-            LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-            ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-            (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-            SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+            THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+            IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+            FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+            AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+            LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+            OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+            THE SOFTWARE.
     h2 QRCode.js
     pre 
         code.
@@ -478,6 +565,35 @@ license-panel.modal.pad
             The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
             THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+    h2 SSCD by Ronen Ness, modified by CoMiGo Games
+    pre
+        code.
+            SSCD (Super Simple Collision Detection) is distributed with the zlib-license:
+
+            /* 
+            This software is provided 'as-is', without any express or implied
+            warranty.  In no event will the authors be held liable for any damages
+            arising from the use of this software.
+
+            Permission is granted to anyone to use this software for any purpose,
+            including commercial applications, and to alter it and redistribute it
+            freely, subject to the following restrictions:
+
+            1. The origin of this software must not be misrepresented; you must not
+                claim that you wrote the original software. If you use this software
+                in a product, an acknowledgment in the product documentation would be
+                appreciated but is not required.
+            2. Altered source versions must be plainly marked as such, and must not be
+                misrepresented as being the original software.
+            3. This notice may not be removed or altered from any source distribution.
+
+            Made by Ronen Ness
+            ronenness@gmail.com
+
+            Modified by CoMiGo Games
+            admin@nersta.ru
+
+            */
     script.
         this.namespace = 'licensepanel';
         this.mixin(window.riotVoc);

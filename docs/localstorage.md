@@ -65,7 +65,7 @@ this.hardcoreMode = localStorage.hardcoreMode === 'true';
 
 ## Storing Complex Objects
 
-For anything beyound simple strings and numbers we need special encoding and decoding functions. Thankfully, there is such functions in JavaScript! They are `JSON.parse(encodedString)` and `JSON.stringify(complexObject)`.
+For anything beyound simple strings and numbers we need special encoding and decoding functions. Thankfully, there are such functions in JavaScript! They are `JSON.parse(encodedString)` and `JSON.stringify(complexObject)`.
 
 ```js
 var inventory = [{
@@ -102,4 +102,4 @@ this.inventory = JSON.parse(localStorage.heroInventory);
 
 This is quite a complex thing! Here we encode an array, but you can pass both arrays and objects to `JSON.stringify`.
 
-What can't be encoded, though, are functions, Date objects as-is, circular references. But in most cases you won't even save such data from your games!
+What can't be encoded, though, are functions, Date objects as-is, circular references. But in most cases you won't even save such data in your games!

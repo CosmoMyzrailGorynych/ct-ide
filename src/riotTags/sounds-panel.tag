@@ -21,7 +21,7 @@ sounds-panel.panel.view
                 oncontextmenu="{popupMenu(sound)}"
             )
                 span {sound.name}
-                img(src="/img/{sound.isMusic? 'music' : 'wave'}.png")
+                img(src="/data/img/{sound.isMusic? 'music' : 'wave'}.png")
     sound-editor(if="{editing}" sound="{editedSound}")
     script.
         this.namespace = 'sounds';

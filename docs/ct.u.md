@@ -20,6 +20,22 @@ Gets the direction of vector which is pointing from (x1;y1) to (x2;y2).
 
 Gets the distance between points (x1;y1) and (x2;y2).
 
+### `ct.u.deltaDir(dir1, dir2)`
+
+Retuns a difference between two directions, in degrees.
+
+### `ct.u.clamp(min, val, max)`
+
+Returns a clamped value `val`.
+
+### `ct.u.lerp(a, b, alpha)`
+
+Linearly interpolates a value from `a` to `b`, returning `a` if `alpha` = 0 and `b` if `alpha` = 1.
+
+### `ct.u.unlerp(a, b, val)`
+
+An opposite of `ct.u.lerp`.
+
 ### `ct.u.prect(x1, y1, arg: Array|Copy)` and `ct.u.pointRectangle(x1, y1, arg: Array|Copy)`
 
 Checks if a given point (x1;y1) is inside a rectangle. `arg` can be either an array of coordinates ([x1, y1, x2, y2]) or a Copy with a rectangular shape.

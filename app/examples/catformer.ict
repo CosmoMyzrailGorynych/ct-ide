@@ -1,12 +1,13 @@
 {
   "notes": "/* empty */",
   "libs": {
-    "place": {},
     "keyboard": {},
     "random": {},
     "fittoscreen": {
-      "manageViewport": true
-    }
+      "manageViewport": true,
+      "mode": "scaleFill"
+    },
+    "place": {}
   },
   "graphs": [
     {
@@ -33,7 +34,7 @@
       "frames": 1,
       "width": 70,
       "height": 70,
-      "lastmod": 1522470828541,
+      "lastmod": 1547481770116,
       "imgWidth": 70,
       "imgHeight": 70,
       "uid": "d8dd2bfd-0f9d-495a-bbfd-0e65b80153b9"
@@ -47,7 +48,7 @@
       ],
       "axis": [
         0,
-        44
+        45
       ],
       "marginx": 0,
       "marginy": 0,
@@ -58,13 +59,13 @@
       "left": 0,
       "right": 70,
       "top": 0,
-      "bottom": 25,
+      "bottom": 24,
       "frames": 1,
       "width": 70,
       "height": 70,
       "imgWidth": 70,
       "imgHeight": 70,
-      "lastmod": 1522470741411,
+      "lastmod": 1543409370189,
       "uid": "f3de5077-0e66-43de-93f2-d3a75184aa2e"
     },
     {
@@ -93,7 +94,7 @@
       "height": 70,
       "imgWidth": 70,
       "imgHeight": 70,
-      "lastmod": 1522391164491,
+      "lastmod": 1543409082603,
       "uid": "21a0f13c-5806-43d4-929b-c1bcb5213d9b"
     },
     {
@@ -198,19 +199,21 @@
       "marginy": 0,
       "offx": 0,
       "offy": 0,
-      "origname": "i7.png",
+      "origname": "ifd9d7012-6826-4368-8fe5-0385b72bc902.png",
       "shape": "rect",
       "left": 0,
-      "right": 256,
+      "right": 2048,
       "top": 0,
-      "bottom": 256,
+      "bottom": 2048,
       "frames": 1,
       "width": 256,
       "height": 256,
       "imgWidth": 256,
       "imgHeight": 256,
-      "lastmod": 1522391871116,
-      "uid": "fd9d7012-6826-4368-8fe5-0385b72bc902"
+      "lastmod": 1543637685498,
+      "uid": "fd9d7012-6826-4368-8fe5-0385b72bc902",
+      "tiled": true,
+      "source": "/home/comigo/Загрузки/platformer-art-complete-pack-0/Base pack/bg.png"
     },
     {
       "name": "Player",
@@ -231,14 +234,14 @@
       "shape": "rect",
       "left": 24,
       "right": 24,
-      "top": 96,
-      "bottom": 1,
+      "top": 94,
+      "bottom": 0,
       "frames": 15,
       "width": 72,
       "height": 97,
       "imgWidth": 360,
       "imgHeight": 291,
-      "lastmod": 1522470474349,
+      "lastmod": 1547481548132,
       "uid": "ad390b6e-4c2c-412f-8143-1c70b9c16fc0"
     },
     {
@@ -266,7 +269,7 @@
       "right": 218,
       "top": 217,
       "bottom": 217,
-      "lastmod": 1522466266334,
+      "lastmod": 1543409206474,
       "uid": "e90eb23b-547a-4d96-a203-ffe63c00cf9b"
     },
     {
@@ -292,9 +295,9 @@
       "shape": "rect",
       "left": 25,
       "right": 26,
-      "top": 27,
-      "bottom": 0,
-      "lastmod": 1522470234257,
+      "top": 28,
+      "bottom": -1,
+      "lastmod": 1547481652579,
       "uid": "703fb5d5-cf20-4450-b760-0b1cd037a5ad"
     },
     {
@@ -358,105 +361,134 @@
     {
       "name": "Box",
       "depth": 0,
-      "oncreate": "this.ctype = 'Solid';",
+      "oncreate": "",
       "onstep": "if (ct.place.meet(this, this.x + 5, this.y, 'Player') &&\n    !ct.place.tile(this, this.x - 10, this.y, -10) &&\n    ct.place.free(this, this.x - 10, this.y, 'Solid')) {\n    this.x -= 10;\n}\nif (ct.place.meet(this, this.x - 5, this.y, 'Player') &&\n    !ct.place.tile(this, this.x + 10, this.y, -10) &&\n    ct.place.free(this, this.x + 10, this.y, 'Solid')) {\n    this.x += 10;\n}\nif (!ct.place.tile(this, this.x, this.y + 10, -10) &&\n    ct.place.free(this, this.x, this.y + 10, 'Solid')\n) {\n    this.y += 10;\n}",
-      "ondraw": "ct.draw(this);",
+      "ondraw": "",
       "ondestroy": "",
       "uid": "b7a528f8-655c-4920-900f-f191533f411d",
       "graph": "d8dd2bfd-0f9d-495a-bbfd-0e65b80153b9",
-      "lastmod": 1536297499842
+      "lastmod": 1547470593124,
+      "extends": {
+        "ctype": "Solid"
+      }
     },
     {
       "name": "Logs",
       "depth": 0,
-      "oncreate": "this.ctype = 'Solid';",
+      "oncreate": "",
       "onstep": "ct.types.move(this);",
-      "ondraw": "ct.draw(this);",
+      "ondraw": "",
       "ondestroy": "",
       "uid": "1026c1c8-90e4-4b93-bb6a-568f53918097",
-      "graph": "f3de5077-0e66-43de-93f2-d3a75184aa2e"
+      "graph": "f3de5077-0e66-43de-93f2-d3a75184aa2e",
+      "lastmod": 1547476749007,
+      "extends": {
+        "ctype": "Solid"
+      }
     },
     {
       "name": "Grass",
       "depth": 0,
-      "oncreate": "this.ctype = 'Solid';",
+      "oncreate": "",
       "onstep": "ct.types.move(this);",
-      "ondraw": "ct.draw(this);",
+      "ondraw": "",
       "ondestroy": "",
       "uid": "5ff42cc3-0b4a-47e9-b6f1-06d3b3b91bb0",
-      "graph": "9968de05-f39d-4455-aaed-175c03728bb1"
+      "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
+      "lastmod": 1547470587709,
+      "extends": {
+        "ctype": "Solid"
+      }
     },
     {
       "name": "Spikes",
       "depth": 0,
-      "oncreate": "this.ctype = 'Enemy';",
+      "oncreate": "",
       "onstep": "ct.types.move(this);",
-      "ondraw": "ct.draw(this);",
+      "ondraw": "",
       "ondestroy": "",
       "uid": "036a2de1-89b0-48e3-b26f-d608ce2079fd",
-      "graph": "eed6bb2f-301f-460a-8d91-93396d103b4e"
+      "graph": "eed6bb2f-301f-460a-8d91-93396d103b4e",
+      "lastmod": 1547470605572,
+      "extends": {
+        "ctype": "Enemy"
+      }
     },
     {
       "name": "Player",
       "depth": 0,
-      "oncreate": "this.transform = true;\nthis.imgspd = 0.5;\n\n// Traditional speed/dir movement system works badly with platformers.\n// We will set up our own variables and write own movement code.\n\nthis.maxspd = 10; // this will be our max horizontal speed\nthis.speed = 2; // this is walking acceleration\nthis.jumpPower = 18; // this is our jumping velocity\n\nthis.ctype = 'Player';",
-      "onstep": "// ct.u.ldx(this.spd, this.dir) returns the X component of our speed vector,\n// or our horizontal speed. Y component is vertical speed.\n// We need these components to limit our horizontal velocity and to make\n// pixel-perfect collisions/\n\n\n// Move right or left\nif (ct.keyboard.down['right']) {\n    if (ct.u.ldx(this.spd, this.dir) < this.maxspd) {\n        ct.types.addSpeed(this, this.speed, 0);\n    }\n} else if (ct.keyboard.down['left']) {\n    if (ct.u.ldx(this.spd, this.dir) > -this.maxspd) {\n        ct.types.addSpeed(this, this.speed, 180);\n    }\n} else { // Slow down if we are on the ground and we don't move.\n         // here and below we check for both collisions with tiles and copies.\n         // -10 is the depth of the colliding tile layer. We ignore the decorative\n         // layer at -20.\n    if (ct.place.occupied(this, this.x, this.y + 1, 'Solid') ||\n        ct.place.tile(this, this.x, this.y + 1, -10)\n    ) {\n        this.spd = Math.max(0, this.spd - this.maxspd);\n    }\n}\n\n// Jumping\nif (ct.keyboard.down['up'] || ct.keyboard.down['space']) {\n    // Jump only if we stay on the ground\n    if (ct.place.occupied(this, this.x, this.y + 1, 'Solid') ||\n        ct.place.tile(this, this.x, this.y + 1, -10)\n    ) {\n        ct.types.addSpeed(this, this.jumpPower, 90);\n    }\n}\n\n// If we are not on the ground, add gravity\nif (ct.place.free(this, this.x, this.y + 1, 'Solid') &&\n    !ct.place.tile(this, this.x, this.y + 1, -10)\n) {\n    ct.types.addSpeed(this, 1, 270);\n}\n\n// Again, get X and Y components of our velocity vector. \n// Math.round removes the fractional part.\nvar hspeed = Math.round(ct.u.ldx(this.spd, this.dir)),\n    vspeed = Math.round(ct.u.ldy(this.spd, this.dir));\n\n// Move pixel by pixel until we meet a colliding object next to us\n// Math.sign returns -1 if a number is negative, 1 if positive and 0 if it is 0.\nfor (var i = 0; i < Math.abs(hspeed); i++) {\n    if (ct.place.free(this, this.x + Math.sign(hspeed), this.y, 'Solid') &&\n        !ct.place.tile(this, this.x + Math.sign(hspeed), this.y, -10)\n    ) {\n        this.x += Math.sign(hspeed);\n    } else {\n        this.spd = 0;\n        break;\n    }\n}\n\n// Do the same for vertical speed\nfor (var i = 0; i < Math.abs(vspeed); i++) {\n    if (ct.place.free(this, this.x, this.y + Math.sign(vspeed), 'Solid') &&\n        !ct.place.tile(this, this.x, this.y + Math.sign(vspeed), -10)\n    ) {\n        this.y += Math.sign(vspeed);\n    } else {\n        this.spd = 0;\n        break;\n    }\n}\n\n// Check if we collide with spikes\nif (ct.place.occupied(this, this.x, this.y, 'Enemy')) {\n    ct.sound.spawn('BodyFall');\n    // move to a 'death' screen\n    ct.rooms.switch('DeadScreen');\n}",
-      "ondraw": "if (ct.u.ldx(this.spd, this.dir) < 0) {\n    this.tx = -1;\n} else {\n    this.tx = 1;\n}\n\nif (!ct.place.occupied(this, this.x, this.y + 1, 'Solid') &&\n    !ct.place.tile(this, this.x, this.y + 1, -10)\n) {\n    this.imgspd = 0;\n    this.frame = 12;\n} else if (this.spd <= 0.1) {\n    this.imgspd = 0;\n    this.frame = 13;\n} else {\n    this.imgspd = 0.5;\n    if (this.frame > 10) {\n        this.frame -= 10;\n    }\n}\n\nct.draw(this);",
+      "oncreate": "this.animationSpeed = 15 / 60;\n\n// Traditional speed/dir movement system works badly with platformers.\n// We will set up our own variables and write own movement code.\n\nthis.maxspeed = 5; // this will be our max horizontal speed\nthis.acceleration = 1; // this is walking acceleration\nthis.jumpPower = 12; // this is our jumping velocity\nthis.gravity = 0.5;",
+      "onstep": "// here and below we check for both collisions with tiles and copies.\n// -10 is the depth of the colliding tile layer. We ignore the decorative\n// layer at -20.\nvar onGround = ct.place.occupied(this, this.x, this.y + 1, 'Solid') ||\n               ct.place.tile(this, this.x, this.y + 1, -10);\n\n// Move right or left\nif (ct.keyboard.down.right || ct.keyboard.down.D) {\n    if (this.hspeed < this.maxspeed) {\n        this.hspeed += this.acceleration * ct.delta;\n    }\n    if ((this.currentFrame > 10 || !this.playing) && onGround) {\n        this.gotoAndPlay(0);\n    }\n} else if (ct.keyboard.down.left || ct.keyboard.down.A) {\n    if (this.hspeed > -this.maxspeed) {\n        this.hspeed -= this.acceleration * ct.delta;\n    }\n    if ((this.currentFrame > 10 || !this.playing) && onGround) {\n        this.gotoAndPlay(0);\n    }\n} else { // Slow down if we are on the ground and we don't move.\n    if (onGround) {\n        this.speed = Math.max(0, this.speed - this.maxspeed);\n        this.gotoAndStop(9);\n    }\n}\n\n// Jumping\nif (ct.keyboard.down.up || ct.keyboard.down.space || ct.keyboard.down.W) {\n    // Jump only if we stay on the ground\n    if (onGround) {\n        this.vspeed = -this.jumpPower;\n        this.gotoAndStop(12);\n    }\n}\n\n// If we are not on the ground, add gravity\nif (!onGround) {\n    this.vspeed += this.gravity * ct.delta;\n}\n\n// Move pixel by pixel until we meet a colliding object next to us\n// Math.sign returns -1 if a number is negative, 1 if positive and 0 if it is 0.\nfor (var i = 0; i < Math.abs(this.hspeed); i++) {\n    if (ct.place.free(this, this.x + Math.sign(this.hspeed), this.y, 'Solid') &&\n        !ct.place.tile(this, this.x + Math.sign(this.hspeed), this.y, -10)\n    ) {\n        this.x += Math.sign(this.hspeed);\n    } else {\n        this.hspeed = 0;\n        break;\n    }\n}\n\n// Do the same for vertical speed\nfor (var i = 0; i < Math.abs(this.vspeed); i++) {\n    if (ct.place.free(this, this.x, this.y + Math.sign(this.vspeed), 'Solid') &&\n        !ct.place.tile(this, this.x, this.y + Math.sign(this.vspeed), -10)\n    ) {\n        this.y += Math.sign(this.vspeed);\n    } else {\n        this.vspeed = 0;\n        break;\n    }\n}\n\n// Check if we collide with spikes\nif (ct.place.occupied(this, this.x, this.y, 'Enemy')) {\n    ct.sound.spawn('BodyFall');\n    // move to a 'death' screen\n    ct.rooms.switch('DeadScreen');\n}",
+      "ondraw": "if (this.hspeed < 0) {\n    this.scale.x = -1;\n} else if (this.hspeed > 0) {\n    this.scale.x = 1;\n}\n\nct.room.followShiftX = this.scale.x * 150;",
       "ondestroy": "",
       "uid": "00664f77-21c6-4b06-b310-88640b1beaf9",
       "graph": "ad390b6e-4c2c-412f-8143-1c70b9c16fc0",
-      "lastmod": 1536297388659
+      "lastmod": 1547481308172,
+      "extends": {
+        "ctype": "Player"
+      }
     },
     {
       "name": "Coin",
       "depth": 0,
       "oncreate": "",
-      "onstep": "if (ct.place.meet(this, this.x, this.y, 'Player')) {\n    this.kill = true;\n    ct.sound.spawn(ct.random.dice('Coin_01', 'Coin_02', 'Coin_03'));\n    ct.room.coins ++;\n}",
-      "ondraw": "ct.draw(this);",
+      "onstep": "if (ct.place.meet(this, this.x, this.y, 'Player')) {\n    this.kill = true;\n    ct.sound.spawn(ct.random.dice('Coin_01', 'Coin_02', 'Coin_03'));\n    ct.room.coins ++;\n    ct.room.coinsCounter.text = ct.room.coins;\n}",
+      "ondraw": "",
       "ondestroy": "",
       "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2",
-      "graph": "62be2903-9782-49fc-b551-ef2e641091c9"
+      "graph": "62be2903-9782-49fc-b551-ef2e641091c9",
+      "lastmod": 1547470614124,
+      "extends": {}
     },
     {
       "name": "Greed",
       "depth": 0,
       "oncreate": "",
       "onstep": "ct.types.move(this);",
-      "ondraw": "ct.draw(this);",
+      "ondraw": "",
       "ondestroy": "",
       "uid": "2d29a0d5-d88d-493d-bece-8d52ed476273",
-      "graph": "e90eb23b-547a-4d96-a203-ffe63c00cf9b"
+      "graph": "e90eb23b-547a-4d96-a203-ffe63c00cf9b",
+      "lastmod": 1543241921120,
+      "extends": {}
     },
     {
       "name": "Slime",
       "depth": 0,
-      "oncreate": "this.spd = 2;\nthis.dir = 180;\n\nthis.imgspd = 4 / 30;\n\nthis.transform = true;\nthis.ctype = 'Enemy';",
-      "onstep": "var freeBelow = !ct.place.tile(this, this.x + ct.u.ldx(70, this.dir), this.y + 35, -10) &&\n                ct.place.free(this, this.x + ct.u.ldx(70, this.dir), this.y + 35, 'Solid');\n                \nvar occupiedInFront = ct.place.tile(this, this.x + ct.u.ldx(10, this.dir), this.y, -10) || \n                      ct.place.occupied(this, this.x + ct.u.ldx(10, this.dir), this.y, 'Solid');\n\nif (freeBelow || occupiedInFront) {\n    if (this.dir === 180) {\n        this.dir = 0;\n    } else {\n        this.dir = 180;\n    }\n}\n\nct.types.move(this);",
-      "ondraw": "if (this.dir === 180) {\n    this.tx = 1;\n} else {\n    this.tx = -1;\n}\n\nct.draw(this);",
+      "oncreate": "this.speed = 1;\nthis.direction = 180;\n\nthis.animationSpeed = 4 / 60;\nthis.play();",
+      "onstep": "var freeBelow = !ct.place.tile(this, this.x + ct.u.ldx(70, this.dir), this.y + 35, -10) &&\n                ct.place.free(this, this.x + ct.u.ldx(70, this.dir), this.y + 35, 'Solid');\n                \nvar occupiedInFront = ct.place.tile(this, this.x + ct.u.ldx(10, this.dir), this.y, -10) || \n                      ct.place.occupied(this, this.x + ct.u.ldx(10, this.dir), this.y, 'Solid');\n\nif (freeBelow || occupiedInFront) {\n    if (this.direction === 180) {\n        this.direction = 0;\n        this.scale.x = -1;\n    } else {\n        this.direction = 180;\n        this.scale.x = 1;\n    }\n}\n\nct.types.move(this);",
+      "ondraw": "",
       "ondestroy": "",
       "uid": "1f91fd7d-2d6c-4542-aead-78b8010b835b",
       "graph": "703fb5d5-cf20-4450-b760-0b1cd037a5ad",
-      "lastmod": 1536297659729
+      "lastmod": 1547481500671,
+      "extends": {
+        "ctype": "Enemy"
+      }
     },
     {
       "name": "Rich",
       "depth": 0,
       "oncreate": "",
       "onstep": "ct.types.move(this);",
-      "ondraw": "ct.draw(this);",
+      "ondraw": "",
       "ondestroy": "",
       "uid": "b658efa2-360e-4a62-8640-3e3281156f4e",
-      "graph": "1da28af4-53f1-4958-82b2-a696778f910f"
+      "graph": "1da28af4-53f1-4958-82b2-a696778f910f",
+      "lastmod": 1543241928025,
+      "extends": {}
     },
     {
       "name": "ToggleFullscreen",
       "depth": 100,
-      "oncreate": "this.imgspd = 0;",
-      "onstep": "this.x = ct.width + ct.room.x - 32;\nthis.y = ct.height + ct.room.y - 32;\n\nif (ct.mouse.pressed) {\n    if (ct.u.prect(ct.mouse.x, ct.mouse.y, this)) {\n        ct.fittoscreen.toggleFullscreen();\n    }\n}",
-      "ondraw": "this.frame = ct.fittoscreen.getIsFullscreen()? 1 : 0;\n\nct.draw(this);",
+      "oncreate": "",
+      "onstep": "if (ct.mouse.pressed) {\n    if (ct.u.prect(ct.mouse.x, ct.mouse.y, this)) {\n        ct.fittoscreen.toggleFullscreen();\n    }\n}",
+      "ondraw": "this.x = ct.viewWidth + ct.room.x - 32;\nthis.y = ct.viewHeight + ct.room.y - 32;\nthis.gotoAndStop(ct.fittoscreen.getIsFullscreen()? 1 : 0);",
       "ondestroy": "",
       "uid": "8a4b8de4-7729-4936-bc7b-bc277a512975",
-      "graph": "d161a39a-203e-4099-99e2-41385d94f975"
+      "graph": "d161a39a-203e-4099-99e2-41385d94f975",
+      "lastmod": 1547470581588,
+      "extends": {}
     }
   ],
   "sounds": [
@@ -509,7 +541,8 @@
         "weight": "900",
         "italic": false,
         "valign": "middle",
-        "halign": "left"
+        "halign": "left",
+        "lineHeight": 24
       },
       "fill": {
         "type": "0",
@@ -517,8 +550,9 @@
       },
       "stroke": {
         "color": "#CF7500",
-        "weight": 1
-      }
+        "weight": 2
+      },
+      "lastmod": 1543637142188
     },
     {
       "name": "OhNo",
@@ -536,7 +570,7 @@
         "type": "0",
         "color": "#257073"
       },
-      "lastmod": 1522467947101
+      "lastmod": 1543636698269
     },
     {
       "name": "OhNo_Small",
@@ -554,314 +588,28 @@
         "type": "0",
         "color": "#257073"
       },
-      "lastmod": 1522468322151
+      "lastmod": 1543636696741
     }
   ],
   "rooms": [
     {
       "name": "InGame",
-      "oncreate": "this.coins = 0;\n\nthis.follow = ct.types.list['Player'][0];\nthis.borderx = 400;\nthis.bordery = 300;",
+      "oncreate": "this.coins = 0;\n\nthis.follow = ct.types.list['Player'][0];\nthis.borderX = 400;\nthis.borderY = 300;\nthis.followDrift = 0.9;\n\nthis.coinsCounter = new PIXI.Text(this.coins, ct.styles.get('CoinText'));\nthis.coinsCounter.depth = 100;\nthis.coinsCounter.x = this.x + ct.viewWidth - 70;\nthis.coinsCounter.y = this.y + 35;\nthis.coinsCounter.anchor.y = 0.5;\nthis.addChild(this.coinsCounter);\n\nthis.coinIcon = new PIXI.Sprite(ct.res.getTexture('coinGold', 0));\nthis.coinIcon.x = this.x + ct.viewWidth - 100;\nthis.coinIcon.y = this.y + 35;\nthis.coinIcon.depth = 100;\nthis.addChild(this.coinIcon);",
       "onstep": "if (this.coins >= 33) {\n    ct.rooms.switch('RichScreen');\n}",
-      "ondraw": "ct.styles.set('CoinText');\n\nct.draw.image('coinGold', 0, this.x + ct.width - 100, this.y + 35);\nct.draw.text(this.coins, this.x + ct.width - 70, this.y + 35);\nct.draw.text(this.coins, this.x + ct.width - 70, this.y + 35, true);\n\nct.styles.reset();",
+      "ondraw": "this.coinsCounter.x = this.x + ct.viewWidth - 70;\nthis.coinsCounter.y = this.y + 35;\n\nthis.coinIcon.x = this.x + ct.viewWidth - 100;\nthis.coinIcon.y = this.y + 35;",
       "onleave": "",
       "width": 1024,
       "height": 700,
       "backgrounds": [
         {
           "depth": "-50",
-          "graph": "fd9d7012-6826-4368-8fe5-0385b72bc902"
-        }
-      ],
-      "layers": [
-        {
-          "depth": 0,
-          "copies": [
-            {
-              "x": 980,
-              "y": 280,
-              "uid": "b7a528f8-655c-4920-900f-f191533f411d"
-            },
-            {
-              "x": 1260,
-              "y": 770,
-              "uid": "036a2de1-89b0-48e3-b26f-d608ce2079fd"
-            },
-            {
-              "x": 1190,
-              "y": 770,
-              "uid": "036a2de1-89b0-48e3-b26f-d608ce2079fd"
-            },
-            {
-              "x": 1330,
-              "y": 770,
-              "uid": "036a2de1-89b0-48e3-b26f-d608ce2079fd"
-            },
-            {
-              "x": 1470,
-              "y": 280,
-              "uid": "b7a528f8-655c-4920-900f-f191533f411d"
-            },
-            {
-              "x": 350,
-              "y": 490,
-              "uid": "1026c1c8-90e4-4b93-bb6a-568f53918097"
-            },
-            {
-              "x": 420,
-              "y": 490,
-              "uid": "1026c1c8-90e4-4b93-bb6a-568f53918097"
-            },
-            {
-              "x": 490,
-              "y": 490,
-              "uid": "1026c1c8-90e4-4b93-bb6a-568f53918097"
-            },
-            {
-              "x": 420,
-              "y": 840,
-              "uid": "036a2de1-89b0-48e3-b26f-d608ce2079fd"
-            },
-            {
-              "x": 490,
-              "y": 840,
-              "uid": "036a2de1-89b0-48e3-b26f-d608ce2079fd"
-            },
-            {
-              "x": 910,
-              "y": 840,
-              "uid": "036a2de1-89b0-48e3-b26f-d608ce2079fd"
-            },
-            {
-              "x": 980,
-              "y": 840,
-              "uid": "036a2de1-89b0-48e3-b26f-d608ce2079fd"
-            },
-            {
-              "x": 70,
-              "y": 350,
-              "uid": "00664f77-21c6-4b06-b310-88640b1beaf9"
-            },
-            {
-              "x": 385,
-              "y": 175,
-              "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-            },
-            {
-              "x": 420,
-              "y": 350,
-              "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-            },
-            {
-              "x": 490,
-              "y": 350,
-              "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-            },
-            {
-              "x": 1645,
-              "y": 245,
-              "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-            },
-            {
-              "x": 1645,
-              "y": 175,
-              "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-            },
-            {
-              "x": 1645,
-              "y": 105,
-              "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-            },
-            {
-              "x": 1295,
-              "y": 385,
-              "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-            },
-            {
-              "x": 1295,
-              "y": 490,
-              "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-            },
-            {
-              "x": 1295,
-              "y": 595,
-              "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-            },
-            {
-              "x": 1295,
-              "y": 700,
-              "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-            },
-            {
-              "x": 1120,
-              "y": 770,
-              "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-            },
-            {
-              "x": 980,
-              "y": 700,
-              "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-            },
-            {
-              "x": 840,
-              "y": 770,
-              "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-            },
-            {
-              "x": 595,
-              "y": 770,
-              "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-            },
-            {
-              "x": 490,
-              "y": 700,
-              "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-            },
-            {
-              "x": 385,
-              "y": 770,
-              "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-            },
-            {
-              "x": 175,
-              "y": 770,
-              "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-            },
-            {
-              "x": 140,
-              "y": 735,
-              "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-            },
-            {
-              "x": 175,
-              "y": 700,
-              "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-            },
-            {
-              "x": 210,
-              "y": 735,
-              "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-            },
-            {
-              "x": 175,
-              "y": 735,
-              "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-            },
-            {
-              "x": 385,
-              "y": 560,
-              "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-            },
-            {
-              "x": 455,
-              "y": 560,
-              "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-            },
-            {
-              "x": 525,
-              "y": 560,
-              "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-            },
-            {
-              "x": 1645,
-              "y": 35,
-              "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-            },
-            {
-              "x": 315,
-              "y": 175,
-              "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-            },
-            {
-              "x": 350,
-              "y": 140,
-              "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-            },
-            {
-              "x": 700,
-              "y": 840,
-              "uid": "1f91fd7d-2d6c-4542-aead-78b8010b835b"
-            },
-            {
-              "x": 1015,
-              "y": 490,
-              "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-            },
-            {
-              "x": 1015,
-              "y": 455,
-              "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-            },
-            {
-              "x": 1050,
-              "y": 455,
-              "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-            },
-            {
-              "x": 1050,
-              "y": 490,
-              "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-            },
-            {
-              "x": 840,
-              "y": 350,
-              "uid": "1026c1c8-90e4-4b93-bb6a-568f53918097"
-            },
-            {
-              "x": 910,
-              "y": 350,
-              "uid": "1026c1c8-90e4-4b93-bb6a-568f53918097"
-            },
-            {
-              "x": 980,
-              "y": 350,
-              "uid": "1026c1c8-90e4-4b93-bb6a-568f53918097"
-            },
-            {
-              "x": 1050,
-              "y": 350,
-              "uid": "1026c1c8-90e4-4b93-bb6a-568f53918097"
-            },
-            {
-              "x": 280,
-              "y": 140,
-              "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-            },
-            {
-              "x": 245,
-              "y": 175,
-              "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-            },
-            {
-              "x": 315,
-              "y": 210,
-              "uid": "1f91fd7d-2d6c-4542-aead-78b8010b835b"
-            },
-            {
-              "x": 1120,
-              "y": 560,
-              "uid": "1f91fd7d-2d6c-4542-aead-78b8010b835b"
-            },
-            {
-              "x": -70,
-              "y": 280,
-              "uid": "1026c1c8-90e4-4b93-bb6a-568f53918097"
-            }
-          ]
-        },
-        {
-          "depth": 100,
-          "copies": [
-            {
-              "x": 595,
-              "y": 175,
-              "uid": "8a4b8de4-7729-4936-bc7b-bc277a512975"
-            }
-          ]
+          "graph": "fd9d7012-6826-4368-8fe5-0385b72bc902",
+          "extends": {}
         }
       ],
       "uid": "b0f0ff4d-a155-4d68-a86e-5bb7ed8973ab",
       "grid": 35,
-      "lastmod": 1536293803870,
+      "lastmod": 1547471597586,
       "thumbnail": 1,
       "tiles": [
         {
@@ -2207,89 +1955,364 @@
         }
       ],
       "gridX": 35,
-      "gridY": 70
+      "gridY": 35,
+      "copies": [
+        {
+          "x": 980,
+          "y": 280,
+          "uid": "b7a528f8-655c-4920-900f-f191533f411d"
+        },
+        {
+          "x": 1225,
+          "y": 770,
+          "uid": "036a2de1-89b0-48e3-b26f-d608ce2079fd"
+        },
+        {
+          "x": 1295,
+          "y": 770,
+          "uid": "036a2de1-89b0-48e3-b26f-d608ce2079fd"
+        },
+        {
+          "x": 1470,
+          "y": 280,
+          "uid": "b7a528f8-655c-4920-900f-f191533f411d"
+        },
+        {
+          "x": 350,
+          "y": 490,
+          "uid": "1026c1c8-90e4-4b93-bb6a-568f53918097"
+        },
+        {
+          "x": 420,
+          "y": 490,
+          "uid": "1026c1c8-90e4-4b93-bb6a-568f53918097"
+        },
+        {
+          "x": 490,
+          "y": 490,
+          "uid": "1026c1c8-90e4-4b93-bb6a-568f53918097"
+        },
+        {
+          "x": 420,
+          "y": 840,
+          "uid": "036a2de1-89b0-48e3-b26f-d608ce2079fd"
+        },
+        {
+          "x": 490,
+          "y": 840,
+          "uid": "036a2de1-89b0-48e3-b26f-d608ce2079fd"
+        },
+        {
+          "x": 910,
+          "y": 840,
+          "uid": "036a2de1-89b0-48e3-b26f-d608ce2079fd"
+        },
+        {
+          "x": 980,
+          "y": 840,
+          "uid": "036a2de1-89b0-48e3-b26f-d608ce2079fd"
+        },
+        {
+          "x": 70,
+          "y": 350,
+          "uid": "00664f77-21c6-4b06-b310-88640b1beaf9"
+        },
+        {
+          "x": 385,
+          "y": 140,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 420,
+          "y": 420,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 490,
+          "y": 420,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 1645,
+          "y": 245,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 1645,
+          "y": 175,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 1645,
+          "y": 105,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 1295,
+          "y": 385,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 1295,
+          "y": 490,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 1295,
+          "y": 595,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 1295,
+          "y": 700,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 1120,
+          "y": 770,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 980,
+          "y": 700,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 840,
+          "y": 770,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 595,
+          "y": 770,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 490,
+          "y": 700,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 385,
+          "y": 770,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 175,
+          "y": 770,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 140,
+          "y": 735,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 175,
+          "y": 700,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 210,
+          "y": 735,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 175,
+          "y": 735,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 385,
+          "y": 560,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 455,
+          "y": 560,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 525,
+          "y": 560,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 1645,
+          "y": 35,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 315,
+          "y": 140,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 350,
+          "y": 105,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 700,
+          "y": 840,
+          "uid": "1f91fd7d-2d6c-4542-aead-78b8010b835b"
+        },
+        {
+          "x": 1015,
+          "y": 490,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 1015,
+          "y": 455,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 1050,
+          "y": 455,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 1050,
+          "y": 490,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 840,
+          "y": 350,
+          "uid": "1026c1c8-90e4-4b93-bb6a-568f53918097"
+        },
+        {
+          "x": 910,
+          "y": 350,
+          "uid": "1026c1c8-90e4-4b93-bb6a-568f53918097"
+        },
+        {
+          "x": 980,
+          "y": 350,
+          "uid": "1026c1c8-90e4-4b93-bb6a-568f53918097"
+        },
+        {
+          "x": 1050,
+          "y": 350,
+          "uid": "1026c1c8-90e4-4b93-bb6a-568f53918097"
+        },
+        {
+          "x": 280,
+          "y": 105,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 245,
+          "y": 140,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 315,
+          "y": 210,
+          "uid": "1f91fd7d-2d6c-4542-aead-78b8010b835b"
+        },
+        {
+          "x": 1120,
+          "y": 560,
+          "uid": "1f91fd7d-2d6c-4542-aead-78b8010b835b"
+        },
+        {
+          "x": -70,
+          "y": 280,
+          "uid": "1026c1c8-90e4-4b93-bb6a-568f53918097"
+        },
+        {
+          "x": 245,
+          "y": 770,
+          "uid": "b7a528f8-655c-4920-900f-f191533f411d"
+        },
+        {
+          "x": 595,
+          "y": 175,
+          "uid": "8a4b8de4-7729-4936-bc7b-bc277a512975"
+        }
+      ]
     },
     {
       "name": "DeadScreen",
-      "oncreate": "ct.sound.spawn('Failure');\n\nthis.wait = 30;\nct.keyboard.clear();",
-      "onstep": "this.wait --;\nif (ct.keyboard.key && this.wait < 0) {\n    ct.rooms.switch('InGame');\n}",
-      "ondraw": "var center = this.width / 2 + this.x;\n\nct.styles.set('OhNo');\n\nct.draw.text('Oh no!', center, 540);\n\nct.styles.set('OhNo_Small');\n\nct.draw.text('You were too greeedy for that game!', center, 600);\nct.draw.text('Press any button to try again.', center, 632);\n\nct.styles.reset();",
+      "oncreate": "ct.sound.spawn('Failure');\n\nthis.wait = 30;\nct.keyboard.clear();\n\nthis.ohNoLabel = new PIXI.Text('Oh no!', ct.styles.get('OhNo'));\nthis.ohNoLabel.x = ct.width / 2;\nthis.ohNoLabel.y = 540;\nthis.ohNoLabel.anchor.x = this.ohNoLabel.anchor.y = 0.5;\nthis.addChild(this.ohNoLabel);\n\nthis.subLabel = new PIXI.Text('You were too greeedy for that game!\\nPress any button to try again.', ct.styles.get('OhNo_Small'));\nthis.subLabel.x = ct.width / 2;\nthis.subLabel.y = 600;\nthis.subLabel.anchor.x = this.subLabel.anchor.y = 0.5;\nthis.addChild(this.subLabel);",
+      "onstep": "this.wait -= ct.delta;\nif (ct.keyboard.key && this.wait < 0) {\n    ct.rooms.switch('InGame');\n}",
+      "ondraw": "",
       "onleave": "",
       "width": 1024,
       "height": 700,
       "backgrounds": [
         {
           "depth": "-10",
-          "graph": "fd9d7012-6826-4368-8fe5-0385b72bc902"
-        }
-      ],
-      "layers": [
-        {
-          "depth": 0,
-          "copies": [
-            {
-              "x": 512,
-              "y": 256,
-              "uid": "2d29a0d5-d88d-493d-bece-8d52ed476273"
-            }
-          ]
-        },
-        {
-          "depth": 100,
-          "copies": [
-            {
-              "x": 384,
-              "y": 576,
-              "uid": "8a4b8de4-7729-4936-bc7b-bc277a512975"
-            }
-          ]
+          "graph": "fd9d7012-6826-4368-8fe5-0385b72bc902",
+          "extends": {}
         }
       ],
       "uid": "1ee751d0-24cc-43af-b91d-1a91a9aa48f5",
       "grid": 64,
-      "lastmod": 1533292295802,
-      "thumbnail": 2
+      "lastmod": 1547546306396,
+      "thumbnail": 2,
+      "gridX": 64,
+      "gridY": 64,
+      "tiles": [
+        {
+          "depth": -10,
+          "tiles": []
+        }
+      ],
+      "copies": [
+        {
+          "x": 512,
+          "y": 256,
+          "uid": "2d29a0d5-d88d-493d-bece-8d52ed476273"
+        },
+        {
+          "x": 384,
+          "y": 576,
+          "uid": "8a4b8de4-7729-4936-bc7b-bc277a512975"
+        }
+      ]
     },
     {
       "name": "RichScreen",
-      "oncreate": "ct.sound.spawn('Victory');\n\nct.keyboard.clear();",
+      "oncreate": "ct.sound.spawn('Victory');\n\nct.keyboard.clear();\n\nthis.ohNoLabel = new PIXI.Text('You got them all!', ct.styles.get('OhNo'));\nthis.ohNoLabel.x = ct.width / 2;\nthis.ohNoLabel.y = 540;\nthis.ohNoLabel.anchor.x = this.ohNoLabel.anchor.y = 0.5;\nthis.addChild(this.ohNoLabel);\n\nthis.subLabel = new PIXI.Text('You\\'ve found all the 33 coins. Congrats!\\nThis was a stupid demo of ct.js game engine. Thank you for playing!', ct.styles.get('OhNo_Small'));\nthis.subLabel.x = ct.width / 2;\nthis.subLabel.y = 600;\nthis.subLabel.anchor.x = this.subLabel.anchor.y = 0.5;\nthis.addChild(this.subLabel);",
       "onstep": "",
-      "ondraw": "var center = this.width / 2 + this.x;\n\nct.styles.set('OhNo');\n\nct.draw.text('You got them all!', center, 540);\n\nct.styles.set('OhNo_Small');\n\nct.draw.text('You\\'ve found all the 33 coins. Congrats!', center, 600);\nct.draw.text('This was a stupid demo of ct.js game engine. Thank you for playing!', center, 632);\n\nct.styles.reset();",
+      "ondraw": "",
       "onleave": "",
       "width": 1024,
       "height": 700,
       "backgrounds": [
         {
           "depth": "-10",
-          "graph": "fd9d7012-6826-4368-8fe5-0385b72bc902"
-        }
-      ],
-      "layers": [
-        {
-          "depth": 0,
-          "copies": [
-            {
-              "x": 512,
-              "y": 256,
-              "uid": "b658efa2-360e-4a62-8640-3e3281156f4e"
-            }
-          ]
-        },
-        {
-          "depth": 100,
-          "copies": [
-            {
-              "x": 192,
-              "y": 448,
-              "uid": "8a4b8de4-7729-4936-bc7b-bc277a512975"
-            }
-          ]
+          "graph": "fd9d7012-6826-4368-8fe5-0385b72bc902",
+          "extends": {}
         }
       ],
       "uid": "1a5a64c6-5a4b-4f57-aa99-371ae3c158a3",
       "grid": 64,
-      "lastmod": 1533291203014,
-      "thumbnail": 2
+      "lastmod": 1547471604234,
+      "thumbnail": 2,
+      "gridX": 64,
+      "gridY": 64,
+      "tiles": [
+        {
+          "depth": -10,
+          "tiles": []
+        }
+      ],
+      "copies": [
+        {
+          "x": 512,
+          "y": 256,
+          "uid": "b658efa2-360e-4a62-8640-3e3281156f4e"
+        },
+        {
+          "x": 192,
+          "y": 448,
+          "uid": "8a4b8de4-7729-4936-bc7b-bc277a512975"
+        }
+      ]
     }
   ],
   "graphtick": 15,
@@ -2304,12 +2327,28 @@
     "title": "Catformer",
     "author": "Cosmo Myzrail Gorynych",
     "site": "https://ctjs.rocks",
-    "fps": 30
+    "fps": 30,
+    "version": [
+      0,
+      0,
+      0
+    ],
+    "versionPostfix": "",
+    "export": {
+      "windows64": true,
+      "windows32": true,
+      "linux64": true,
+      "linux32": true,
+      "mac64": true,
+      "debug": false
+    }
   },
   "palette": [
     "#257073"
   ],
   "startroom": "b0f0ff4d-a155-4d68-a86e-5bb7ed8973ab",
   "scripts": [],
-  "ctjsVersion": "0.3.1"
+  "ctjsVersion": "1.0.0-next-2",
+  "fonts": [],
+  "skeletons": []
 }

@@ -22,3 +22,7 @@ Spawns a new sound and plays it.
 - `cb` is a callback, which is called when the sound finishes playing.
 
 This method returns `HTMLTagAudio` – the created audio, or `false` in case a sound wasn't created.
+
+### `ct.sound.exists(name: String)`
+
+Returns whether or not a given sound exists in the game.

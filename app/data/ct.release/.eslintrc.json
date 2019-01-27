@@ -1,0 +1,9 @@
+{
+    "globals": {
+        "ct": false,
+        "PIXI": false
+    },
+    "rules": {
+        "prefer-destructuring": "off"
+    }
+}

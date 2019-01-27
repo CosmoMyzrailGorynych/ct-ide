@@ -32,7 +32,9 @@ Now let's edit its collision mask. It determines which areas of an image are cou
 
 Firstly, shift its axis so it is placed at the bottom middle point.
 
-> As we have a 96x96 pixels image, we need 48 pixels on the horizontal axis and 96 at a vertical one. Pixels are measured from the top-left corner, and the first value of a point is usually its horizontal component, or its X value, and the second is referred to as an Y component.
+::: tip Explanation
+As we have a 96x96 pixels image, we need 48 pixels on the horizontal axis and 96 at a vertical one. Pixels are measured from the top-left corner, and the first value of a point is usually its horizontal component, or its X value, and the second is referred to as an Y component.
+:::
 
 The robot has a nice rectangular shape so it will be wiser to mark it up as a rectangle. Make sure you have a rectangular shape selected, click the 'Fill' button and calibrate the offsets so the robot's body is covered with a yellow rectangle.
 
@@ -44,7 +46,9 @@ Click the "Save" button in the bottom-left corner.
 
 We now need to set collision masks for `Robot_Idle` and `Robot_Jump` too. Make sure that you shift the axis to 48x96 and calibrate collision masks for both of them.
 
-> It is also good to make collision offsets same for each of the three sprites, so the robot doesn't clip into the surface when switching its animations and suddenly getting bigger.
+::: tip
+It is also good to make collision offsets same for each of the three sprites, so the robot doesn't clip into the surface when switching its animations and suddenly getting bigger.
+:::
 
 Now let's set the collision shapes of our crystals and heart bonuses. These can be defined as circles. Open the `GreenCrystal`, set its collision shape as a "Circle", then click a button called "Image's center" so the axis automatically snaps to needed values, and calibrate the collision shape's radius.
 
@@ -65,7 +69,9 @@ Open the "Types" tab and create a new type. Call it "Robot", set its sprite to `
 
 ![Editing a type](./images/tutPlatformer_09.png)
 
-> Types are like templates, from which copies are created. We fill our levels (also often named as rooms) with copies, and they are the things that interact with each other on the screen, but each copy was created from a certain type.
+::: tip
+Types are like templates, from which copies are created. We fill our levels (also often named as rooms) with copies, and they are the things that interact with each other on the screen, but each copy was created from a certain type.
+:::
 
 Create additional types in the same way:
 
@@ -99,7 +105,9 @@ We will need to listen to keyboard events and to detect collisions between the R
 
 ![Enabling a module in ct.js](./images/tutPlatformer_13.png)
 
-> **✨ Pro tip:** Enable the catmod called `fittoscreen`, then go to its settings tab and enable the option called "Just scale, no canvas resize" for an automagical full-screen view.
+::: tip PRO TIP ✨
+Enable the catmod called `fittoscreen`, then go to its settings tab and enable the option called "Just scale, no canvas resize" for an automagical full-screen view.
+:::
 
 Each module has its own documentation on the "Reference" tab. We will highlight some of its parts later.
 
@@ -124,28 +132,30 @@ The idea of a side-view movement is that we will have a value on which we would 
 Let's set up some variables on the "On Create" tab:
 
 ```js
-this.speed = 8; // Max horizontal speed
-this.jumpSpeed = -10;
-this.gravity = 1;
+this.jumpSpeed = -9;
+this.gravity = 0.5;
 
-this.hspeed = 0; // Horizontal speed
-this.vspeed = 0; // Vertical speed
+this.hspd = 0; // Horizontal speed
+this.vspd = 0; // Vertical speed
 ```
 
-> `this` is a copy that is executing the written code. In this case, it is a `Robot` copy.
+::: tip
+`this` is a copy that is executing the written code. In this case, it is a `Robot` copy.
+:::
 
 Now move to the "On Step" tab and add this code:
 
 ```js
+this.speed = 4 * ct.delta; // Max horizontal speed
 if (ct.keyboard.down['A']) {
     // If the A key on keyboard is down, then move to left
-    this.hspeed = -this.speed;
+    this.hspd = -this.speed;
 } else if (ct.keyboard.down['D']) {
     // If the D key on keyboard is down, then move to right
-    this.hspeed = this.speed;
+    this.hspd = this.speed;
 } else {
     // Don't move horizontally if no input
-    this.hspeed = 0;
+    this.hspd = 0;
 }
 
 // If there is ground underneath the Robot…
@@ -153,66 +163,82 @@ if (ct.place.occupied(this, this.x, this.y + 1, 'Solid')) {
     // …and the W key or the spacebar is down…
     if (ct.keyboard.down['W'] || ct.keyboard.down['space']) {
         // …then jump!
-        this.vspeed = this.jumpSpeed;
+        this.vspd = this.jumpSpeed;
     } else {
         // Reset our vspeed. We don't want to be buried underground!
-        this.vspeed = 0;
+        this.vspd = 0;
     }
 } else {
     // If there is no ground  
-    this.vspeed += this.gravity;
+    this.vspd += this.gravity * ct.delta;
 }
 ```
 
-> "On Step" code is executed each frame for each copy. Movement and other game logic usually go here.
+::: tip
+"On Step" code is executed each frame for each copy. Movement and other game logic usually go here.
+:::
 
-> `ct.keyboart.down['key']` checks whether a given `key` is currently held down. Note the square brackets here! There are also `ct.keyboard.pressed['key']` and `ct.keyboard.released['key']`.
+::: tip
+`ct.keyboart.down['key']` checks whether a given `key` is currently held down. Note the square brackets here! There are also `ct.keyboard.pressed['key']` and `ct.keyboard.released['key']`.
 
-> `ct.place.occupied(copy, x, y, group)` checks whether a given copy has any collisions in given coordinates with a specific group. You can omit the group if you don't need it. This method returns either `false` (no collision) or a copy which was the first to collide with.
+`ct.place.occupied(copy, x, y, group)` checks whether a given copy has any collisions in given coordinates with a specific group. You can omit the group if you don't need it. This method returns either `false` (no collision) or a copy which was the first to collide with.
+:::
 
-This will set variables `hspeed` and `vspeed`, but they won't do anything as is. Add more code to actually move the Robot around:
+::: tip
+`ct.delta` describes how much the previous frame took time to process. If everything is ok and game performs at smooth FPS, it is eqal to `1`, and is larger if a game can't reach the target FPS value.
+
+By multiplying values to `ct.delta`, we make sure that everything moves uniformly at any framerate.
+:::
+
+This will set variables `hspd` and `vspd`, but they won't do anything as is. Add more code to actually move the Robot around:
 
 ```js
 // Move by horizontal axis, pixel by pixel
-for (var i = 0; i < Math.abs(this.hspeed); i++) {
-    if (ct.place.free(this, this.x + Math.sign(this.hspeed), this.y, 'Solid')) {
-        this.x += Math.sign(this.hspeed);
+for (var i = 0; i < Math.abs(this.hspd); i++) {
+    if (ct.place.free(this, this.x + Math.sign(this.hspd), this.y, 'Solid')) {
+        this.x += Math.sign(this.hspd);
     } else {
         break;
     }
 }
 // Do the same for vertical speed
-for (var i = 0; i < Math.abs(this.vspeed); i++) {
-    if (ct.place.free(this, this.x, this.y + Math.sign(this.vspeed), 'Solid')) {
-        this.y += Math.sign(this.vspeed);
+for (var i = 0; i < Math.abs(this.vspd); i++) {
+    if (ct.place.free(this, this.x, this.y + Math.sign(this.vspd), 'Solid')) {
+        this.y += Math.sign(this.vspd);
     } else {
         break;
     }
 }
 ```
 
-> `ct.place.free` is an opposite equivalent of `ct.place.occupied`. It has the same parameters and returns either `true` or `false`.
+::: tip
+`ct.place.free` is an opposite equivalent of `ct.place.occupied`. It has the same parameters and returns either `true` or `false`.
 
-> `Math.abs` returns the absolute value of a given number, meaning that negative numbers will become positive. `Math.sign` returns -1 if the given value is negative, 1 if it is positive, and 0 if it is 0. Combined together, they create a `for` loop which works in both directions and checks collisions pixel by pixel.
+`Math.abs` returns the absolute value of a given number, meaning that negative numbers will become positive. `Math.sign` returns -1 if the given value is negative, 1 if it is positive, and 0 if it is 0. Combined together, they create a `for` loop which works in both directions and checks collisions pixel by pixel.
+:::
 
 We can now move our Robot around!
 
-> **Note:** Your character may ignore holes which are one grid cell wide. Test it. If it occurs, you need to make the Robot's collision shapes a bit slimmer.
+::: warning
+Your character may ignore holes which are one grid cell wide. Test it. If it occurs, you need to make the Robot's collision shapes a bit slimmer.
+:::
 
-> **On your own:** Modify the code so that the player can control it with arrows, too.
+::: tip On your own!
+Modify the code so that the player can control it with arrows, too.
+:::
 
 ### Making Camera Follow the Robot
 
 If we launch the game now, we will be able to move the Robot around. There is an issue, though: the camera isn't moving!
 
-It is not a hard issue, though. If we dig into the ct.js docs and read the ct.rooms section, we will find that there are properties `ct.rooms.current.follow`, `ct.rooms.current.borderx` and `ct.rooms.current.bordery` exactly for following a copy.
+It is not a hard issue, though. If we dig into the ct.js docs and read the ct.rooms section, we will find that there are properties `ct.rooms.current.follow`, `ct.rooms.current.borderX` and `ct.rooms.current.borderY` exactly for following a copy.
 
 Open the `Robot` type and its "On Create" Code. Add this code to the end:
 
 ```js
 ct.room.follow = this;
-ct.room.borderx = 450;
-ct.room.bordery = 200;
+ct.room.borderX = 450;
+ct.room.borderY = 200;
 ```
 
 The camera will now follow the Robot.
@@ -243,9 +269,11 @@ if (robot) {
 }
 ```
 
-> The line `ct.types.move(this);` is responsible for moving copies that use standard ct variables around. In this case, the checkpoint shouldn't move at all. 😉
+::: tip
+The line `ct.types.move(this);` is responsible for moving copies that use standard ct variables around. In this case, the checkpoint shouldn't move at all. 😉
 
-> `ct.place.meet` is almost the same as ct.place.occupied, but it checks against copies' types, not their collision group. This is also the fastest method if compared to `ct.place.free` and `ct.place.occupied`.
+`ct.place.meet` is almost the same as ct.place.occupied, but it checks against copies' types, not their collision group. This is also the fastest method if compared to `ct.place.free` and `ct.place.occupied`.
+:::
 
 Here we also shift the stored point by 32x32 pixels, because the checkpoint's axis is placed in its top-left corner, but the Robot's axis is placed at the middle bottom point. Because of that, the Robot would respawn a bit left and above the desired central point.
 
@@ -265,13 +293,15 @@ Now open the `Robot` type again, and add this code to the top of its `On Step` c
 if (ct.place.occupied(this, this.x, this.y, 'Deadly')) {
     this.x = this.savedX;
     this.y = this.savedY;
-    this.hspeed = 0;
-    this.vspeed = 0;
+    this.hspd = 0;
+    this.vspd = 0;
     return;
 }
 ```
 
-> Here, the `return;` statement stops the execution of a function. We won't need movement and other checks if we need to respawn the Robot at some other position.
+::: tip
+Here, the `return;` statement stops the execution of a function. We won't need movement and other checks if we need to respawn the Robot at some other position.
+:::
 
 We should also write this code to "On Create" code so that respawn point will be at creation location by default, in case something ever goes wrong:
 
@@ -286,34 +316,39 @@ To test a specific room, open the "Rooms" tab at the top, then right-click the d
 
 At this point, it will be wise to add little animations to our robot. As you remember, we have three different assets called `Robot_Idle`, `Robot_Jump`, and `Robot_Walking`.
 
-Add this code to `Robot`'s "On Create" code:
+Add this line to `Robot`'s "On Create" code:
 
 ```js
-// Enable image transforms on this copy
-this.transform = true;
-// Play 8 frames per second
-this.imgspd = 8 / ct.speed;
+this.animationSpeed = 0.2;
 ```
+
+`0.2` means that we want to play 0.2×60 (which is 12) frames per second. For more readability, we could also write it as `12/60`.
 
 Open the `Robot`'s "On Step" code and modify the moving section so it changes the drawn graphics asset depending on user inputs and the robot's position in space:
 
-```diff 
+```js{4,5,6,7,8,9,13,14,15,16,17,18,22,38,39}
 if (ct.keyboard.down['A']) {
     // If the A key on keyboard is down, then move to left
-    this.hspeed = -this.speed;
-+    // Set the walking animation and transform the robot to the left
-+    this.graph = 'Robot_Walking';
-+    this.tx = -1;
+    this.hspd = -this.speed;
+    // Set the walking animation and transform the robot to the left
+    if (this.graph !== 'Robot_Walking') {
+        this.graph = 'Robot_Walking';
+        this.play();
+    }
+    this.scale.x = -1;
 } else if (ct.keyboard.down['D']) {
     // If the D key on keyboard is down, then move to right
-    this.hspeed = this.speed;
-+    // Set the walking animation and transform the robot to the right
-+    this.graph = 'Robot_Walking';
-+    this.tx = 1;
+    this.hspd = this.speed;
+    // Set the walking animation and transform the robot to the right
+    if (this.graph !== 'Robot_Walking') {
+        this.graph = 'Robot_Walking';
+        this.play();
+    }
+    this.scale.x = 1;
 } else {
     // Don't move horizontally if no input
-    this.hspeed = 0;
-+    this.graph = 'Robot_Idle';
+    this.hspd = 0;
+    this.graph = 'Robot_Idle';
 }
 
 // If there is ground underneath the Robot…
@@ -321,16 +356,16 @@ if (ct.place.occupied(this, this.x, this.y + 1, 'Solid')) {
     // …and the W key or the spacebar is down…
     if (ct.keyboard.down['W'] || ct.keyboard.down['space']) {
         // …then jump!
-        this.vspeed = this.jumpSpeed;
+        this.vspd = this.jumpSpeed;
     } else {
         // Reset our vspeed. We don't want to be buried underground!
-        this.vspeed = 0;
+        this.vspd = 0;
     }
 } else {
     // If there is no ground  
-    this.vspeed += this.gravity;
-+    // Set jumping animation!
-+    this.graph = 'Robot_Jump';
+    this.vspd += this.gravity;
+    // Set jumping animation!
+    this.graph = 'Robot_Jump';
 }
 ```
 
@@ -361,7 +396,9 @@ if (ct.room.nextRoom) {
 }
 ```
 
-> Here `ct.room` points to the current room. `ct.rooms.switch` exits the current room and opens another room with a given name.
+::: tip
+Here `ct.room` points to the current room. `ct.rooms.switch` exits the current room and opens another room with a given name.
+:::
 
 Now go to the "Rooms" tab at the top, open the `Level_01`, click the button called "Room's events" and write the following to its "On Create" code:
 
@@ -373,7 +410,9 @@ Place an exit to the room.
 
 Now save the room, mark the `Level_01` as a starting room by right-clicking it and test whether there is a transition.
 
-> **On your own**: Create additional exits leading to secret sublevels and back. Get [more graphics assets from here](https://www.kenney.nl/assets/simplified-platformer-pack), if you need such.
+::: tip On your own!
+Create additional exits leading to secret sublevels and back. Get [more graphics assets from here](https://www.kenney.nl/assets/simplified-platformer-pack), if you need such.
+:::
 
 ## Collectibles: Counting and Drawing
 
@@ -388,7 +427,9 @@ if (ct.place.meet(this, this.x, this.y, 'Robot')) {
 }
 ```
 
-> `this.kill = true;` tells that the current copy should be removed from the current room. It will happen after any "On Step" events but before the "Draw" event.
+::: tip
+`this.kill = true;` tells that the current copy should be removed from the current room. It will happen after any "On Step" events but before the "Draw" event.
+:::
 
 As you may already guess, the number of gathered crystals will be stored in the room.
 
@@ -406,10 +447,13 @@ Call a new script as `inGameRoomStart`. Write this code:
 var inGameRoomStart = function (room) {
     room.crystals = 0;
     room.crystalsTotal = ct.types.list['GreenCrystal'].length;
+    ct.types.copy('CrystalsWidget', 0, 0);
 };
 ```
 
-> `ct.types.list['TypeName']` returns an array of all the copies of the given type in the room. `length` returns the size of an array.
+::: tip
+`ct.types.list['TypeName']` returns an array of all the copies of the given type in the room. `length` returns the size of an array.
+:::
 
 ![Creating a reusable script](./images/tutPlatformer_21.png)
 
@@ -425,28 +469,42 @@ When `inGameRoomStart(this);` is called it will set `crystals` and `crystalsTota
 
 So that's how we gather and count the crystals, but we also need to draw their count and do it with *style*. ✨
 
-Gladly, there is a tool for designing nifty styles inside the ct.js. Open the "Styles" tab at the top of the screen and create a new style. Call it as a `CrystalCounter`.
+Gladly, there is a tool for designing nifty text styles inside the ct.js. Open the "Styles" tab at the top of the screen and create a new style. Call it as a `CrystalCounter`.
 
-Activate the "Font" section and set the font size to 20 and its weight to 900. Align it to the middle left.
+Then activate the "Font" section, set the font size to 24 and its weight to 600. Align it to the left.
 
 ![Setting a style's font](./images/tutPlatformer_17.png)
 
-Then open the "Fill" tab, activate it and set its fill color to green. I chose `#33E27D` as it is the main color of the crystal. There are also darker shades like `#2ECC71` and `#28B463`.
+Then open the "Fill" tab, activate it and set its fill color to green. I chose `#00A847`. Other good choices include main colors of the crystal, like `#2ECC71` and `#28B463`.
 
 ![Setting a style's fill color](./images/tutPlatformer_18.png)
 
-Now save the style and open the "Settings" tab. We will need to create another reusable function. Let's call it `inGameRoomOnDraw`. Write the following:
+We can also add a thich white line to our text. Open the "Stroke" tab, then set the color to white and line's width to 5. If you can't see the result on the right, try switching to a dark UI theme for a while by clicking the hamburger menu at the top.
+
+![Setting a style's line style](./images/tutPlatformer_23.png)
+
+We should now create a new type that will display a crystal icon and a counter called `CrystalCounter`. Set its sprite to `GreenCrystal`, and write the following in its OnCreate code:
 
 ```js
-var inGameRoomOnDraw = function(room) {
-    ct.draw.image('GreenCrystal', 0, room.x + 24, room.y + 24);
-    ct.styles.set('CrystalCounter');
-    ct.draw.text(room.crystals + ' / ' + room.crystalsTotal, room.x + 50, room.y + 24);
-    ct.styles.reset();
-};
+this.text = new PIXI.Text('0 / ' + ct.room.crystalsTotal, ct.styles.get('CrystalCounter'));
+this.text.x = 32;
+this.text.anchor.y = 0.5;
+
+this.addChild(this.text);
 ```
 
-Now save the script and add a line `inGameRoomOnDraw(this);` to the "Draw" event of both rooms.
+Here we create a new text label and attach it to our icon. `this.text.anchor.y = 0.5;` tells that the vertical axis of the label should be aligned to the middle of our icon.
+
+Now open the "Draw" tab and add this code:
+
+```js
+this.x = ct.room.x + 24;
+this.y = ct.room.y + 24;
+
+this.text.text = ct.room.crystals + ' / ' + ct.room.crystalsTotal;
+```
+
+Here we snap our widget to the top-left corner, and update its label.
 
 We will now have a crystal counter at the top-left corner of our screen.
 
@@ -460,7 +518,9 @@ This is mostly similar to gathering crystals, though there are some changes:
 * We will have no more than 3 lives at once.
 * If we lost the last life, the level restarts.
 
-> **On your own:** Try making it all by yourself! If you get lost, just look for instructions below. Now, stop scrolling! 😃
+::: tip On your own!
+Try making it all by yourself! If you get lost, just look for instructions below. Now, stop scrolling! 😃
+:::
 
 Create a new type called `Heart` and set a corresponding sprite. Add this code to its "On Step" tab:
 
@@ -479,33 +539,37 @@ Then go to the "Settings" tab and modify the `inGameRoomStart` script:
 var inGameRoomStart = function (room) {
     room.crystals = 0;
     room.crystalsTotal = ct.types.list['GreenCrystal'].length;
+    ct.types.copy('CrystalsWidget', 0, 0);
++    ct.types.copy('HeartsWidget', 0, 0);
 +    room.lives = 3;
 };
 ```
 
 Don't forget to place actual heart bonuses on your levels!
 
-We will also need a style for a counter. The process is the same, and the suitable color is `#E85017`. We can even duplicate the existing style! Let's call this style a HeartCounter.
+We will also need a style for a counter. The process is the same, and the suitable color is `#E85017`. We can even duplicate the existing style! Let's call this style a `HeartCounter`.
 
-Then edit the `inGameRoomOnDraw` script in the "Settings" tab, adding a code for drawing the lives portion:
+We will need another widget for health, too. Create a new type called `HeartsWidget`, set its sprite to the `Heart`, and set its OnCreate code to this:
 
 ```js
-var inGameRoomOnDraw = function(room) {
-    // Draw a crystal counter
-    ct.draw.image('GreenCrystal', 0, room.x + 24, room.y + 24);
-    ct.styles.set('CrystalCounter');
-    ct.draw.text(room.crystals + ' / ' + room.crystalsTotal, room.x + 50, room.y + 24);
-    ct.styles.reset();
-    
-    // Draw lives
-    ct.draw.image('Heart', 0, room.x + room.width - 50, room.y + 24);
-    ct.styles.set('HeartCounter');
-    ct.draw.text(room.lives , room.x + room.width - 25, room.y + 24);
-    ct.styles.reset();
-};
+this.text = new PIXI.Text(ct.room.lives, ct.styles.get('HeartCounter'));
+this.text.x = -32;
+this.text.anchor.y = 0.5;
+this.text.anchor.x = 1;
+
+this.addChild(this.text);
 ```
 
-Note how we use the property `room.width` to draw an image and a label on the right side of the screen.
+And in the "Draw" event:
+
+```js
+this.x = ct.room.x + ct.viewWidth - 24;
+this.y = ct.room.y + 24;
+
+this.text.text = ct.room.lives;
+```
+
+Note how we use the property `room.viewWidth` to position the widget on the right side of the screen.
 
 Now modify the respawn code of the `Robot` so it loses one heart at each respawn:
 
@@ -513,8 +577,8 @@ Now modify the respawn code of the `Robot` so it loses one heart at each respawn
 if (ct.place.occupied(this, this.x, this.y, 'Deadly')) {
     this.x = this.savedX;
     this.y = this.savedY;
-    this.hspeed = 0;
-    this.vspeed = 0;
+    this.hspd = 0;
+    this.vspd = 0;
     // remove one life
     ct.room.lives --;
     if (ct.room.lives <= 0) {
@@ -542,7 +606,7 @@ The moving platforms will act in this way:
 Let's open a `Platform`'s type and initialize its speed and collision group:
 
 ```js
-this.speed = 4;
+this.speed = 2;
 this.ctype = 'Solid';
 ```
 
@@ -557,11 +621,11 @@ if (robot) {
 
 And the movement logic:
 ```js
-this.x += this.speed;
-if (ct.place.occupied(this, this.x + this.speed, this.y, 'Solid')) {
-    // Flip the speed direction
-    this.speed *= -1;
+if (ct.place.occupied(this, this.x + this.speed * ct.delta, this.y, 'Solid')) {
+    // Flip direction
+    this.direction += 180;
 }
+this.move();
 ```
 
 Looks simple! Maybe even too simple. And here is the issue: if the Robot touches the left or right side of a platform, it gets stuck forever! We need to make platforms solid only when they don't overlap.
@@ -578,18 +642,20 @@ if (robot) {
     this.ctype = 'Solid';
     robot = ct.place.meet(this, this.x, this.y - 1, 'Robot');
     if (robot) {
-        robot.x += this.speed;
+        robot.x += ct.u.ldx(this.speed, this.direction);
     }
 }
 
-this.x += this.speed;
-if (ct.place.occupied(this, this.x + this.speed, this.y, 'Solid')) {
-    // Flip the speed direction
-    this.speed *= -1;
+if (ct.place.occupied(this, this.x + this.speed * ct.delta, this.y, 'Solid')) {
+    // Flip direction
+    this.direction += 180;
 }
+this.move();
 ```
 
-> **On your own:** Add vertically moving platforms! And make sure they don't squash the Robot. 😉 
+::: tip On your own!
+Add vertically moving platforms! And make sure they don't squash the Robot. 😉 
+:::
 
 ## That's it!
 
@@ -604,7 +670,9 @@ Here is how you can make this game better:
 * Make sure that the Robot is respawned if it occasionally falls out of a level.
 * Just add more levels. 😉 Decorate them with plants, create worlds of different colors.
 
-> A side note: look how new features in your code gradually appear in your levels! This is a good way to introduce new things to a player, too. Afford them one new concept at a time, but preserve previous ones with escalating difficulty. *That was a pro-tip on level design by Comigo* 😎
+::: tip A side note
+Look how new features in your code gradually appear in your levels! This is a good way to introduce new things to a player, too. Afford them one new concept at a time, but preserve previous ones with escalating difficulty. *That was a pro-tip on level design by Comigo* 😎
+:::
 
 **Happy coding!**  
 Comigo

@@ -17,7 +17,7 @@ types-panel.panel.view
         ul.cards.flexfix-body
             li(each="{type in (searchResults? searchResults : types)}" onclick="{openType(type)}" oncontextmenu="{onTypeContextMenu}")
                 span {type.name}
-                img(src="{type.graph !== -1 ? (glob.graphmap[type.graph].src.split('?')[0] + '_prev.png?' + getTypeGraphRevision(type)) : '/img/nograph.png'}")
+                img(src="{type.graph !== -1 ? (glob.graphmap[type.graph].src.split('?')[0] + '_prev.png?' + getTypeGraphRevision(type)) : '/data/img/nograph.png'}")
     type-editor(if="{editingType}" type="{editedType}")
     script.
         this.namespace = 'types';
@@ -92,15 +92,17 @@ types-panel.panel.view
                 name: 'Type_' + slice,
                 depth: 0,
                 oncreate: '',
-                onstep: 'ct.types.move(this);',
-                ondraw: 'ct.draw(this);',
+                onstep: 'this.move();',
+                ondraw: '',
                 ondestroy: '',
                 uid: id,
-                graph: -1
+                graph: -1,
+                extends: {}
             };
             window.currentProject.types.push(obj);
             this.updateList();
             this.openType(obj)(e);
+            window.signals.trigger('typesChanged');
         };
         this.openType = type => e => {
             this.editingType = true;
@@ -178,14 +180,12 @@ types-panel.panel.view
                 .then(e => {
                     if (e.buttonClicked === 'ok') {
                         for (const room of window.currentProject.rooms) {
-                            for (const layer of room.layers) {
-                                let i = 0;
-                                while (i < layer.copies.length) {
-                                    if (layer.copies[i].uid === this.currentType.uid) {
-                                        layer.copies.splice(i, 1);
-                                    } else {
-                                        i++;
-                                    }
+                            let i = 0;
+                            while (i < room.copies.length) {
+                                if (room.copies[i].uid === this.currentType.uid) {
+                                    room.copies.splice(i, 1);
+                                } else {
+                                    i++;
                                 }
                             }
                         }

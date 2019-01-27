@@ -244,6 +244,11 @@ for i in 1 2 3 4 5 6 7 8
         transform rotate(0deg)
     to
         transform rotate(360deg)
+@keyframes rotateccw
+    from
+        transform rotate(0deg)
+    to
+        transform rotate(-360deg)
 @keyframes wiggle
     25%
         left 0.1em
@@ -284,6 +289,8 @@ for i in 1 2 3 4 5 6 7 8
         transform translate3d(10px, 0, 0)
 .rotate
     animation rotate linear 1s infinite
+.rotateccw
+    animation rotateccw linear 1s infinite
 .wiggle
     position relative
     top 0

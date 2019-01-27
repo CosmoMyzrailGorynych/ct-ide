@@ -1,29 +1,34 @@
 graphic-selector.panel.view
     //- Возвращает объект выбранной графики или -1, если была выбрана пустая графика.
     //- Пустую графику можно выбрать только при наличии атрибута showempty
-    div
-        .toright
-            b {vocGlob.sort}   
-            button.inline.square(onclick="{switchSort('date')}" class="{selected: sort === 'date' && !searchResults}")
-                i.icon-clock
-            button.inline.square(onclick="{switchSort('name')}" class="{selected: sort === 'name' && !searchResults}")
-                i.icon-sort-alphabetically
-            .aSearchWrap
-                input.inline(type="text" onkeyup="{fuseSearch}")
-    .clear
-    ul.cards
-        li(if="{opts.showempty}" onclick="{onselected(-1)}")
-            span {window.languageJSON.common.none}
-            img(src="/img/nograph.png")
-        li(
-            each="{graphic in (searchResults? searchResults : graphs)}"
-            onclick="{onselected(graphic)}"
-            no-reorder
-        )
-            span {graphic.name}
-            img(src="file://{sessionStorage.projdir + '/img/' + graphic.origname + '_prev.png'}")
+    .flexfix.tall
+        .flexfix-header
+            .toright
+                b {vocGlob.sort}   
+                button.inline.square(onclick="{switchSort('date')}" class="{selected: sort === 'date' && !searchResults}")
+                    i.icon-clock
+                button.inline.square(onclick="{switchSort('name')}" class="{selected: sort === 'name' && !searchResults}")
+                    i.icon-sort-alphabetically
+                .aSearchWrap
+                    input.inline(type="text" onkeyup="{fuseSearch}")
+            .clear
+        .flexfix-body
+            ul.cards
+                li(if="{opts.showempty}" onclick="{onselected(-1)}")
+                    span {window.languageJSON.common.none}
+                    img(src="/data/img/nograph.png")
+                li(
+                    each="{graphic in (searchResults? searchResults : graphs)}"
+                    onclick="{onselected(graphic)}"
+                    no-reorder
+                )
+                    span {graphic.name}
+                    img(src="file://{sessionStorage.projdir + '/img/' + graphic.origname + '_prev.png'}")
+        .flexfix-footer(if="{oncancelled}")
+            button(onclick="{oncancelled}") {window.languageJSON.common.cancel}
     script.
         this.onselected = this.opts.onselected;
+        this.oncancelled = this.opts.oncancelled;
         this.namespace = 'common';
         this.mixin(window.riotVoc);
         this.sort = 'name';

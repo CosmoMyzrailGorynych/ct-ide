@@ -8,11 +8,12 @@ html
                 webview.tall.flexfix-body#theDebugger(autosize partition="persist:trusted" src="empty.html" style="width: 500px; border: 0; line-height: 0; overflow: hidden;")
                 .flexfix-footer
                     preview-bottom-panel
-        script(src="./bundle.js")
+        script(src="./data/bundle.js")
         script.
+            var title = /\?title=([\s\S]+)/g.exec(location.search)[1] || 'ct.js Game';
+            document.title = title + ' — ct.js debugger';
             var game = document.getElementById('thePreview'),
                 devTools = document.getElementById('theDebugger');
-            console.log(devTools, game);
             game.addEventListener('contentload', e => {
                 game.showDevTools(true, devTools);
                 game.focus();

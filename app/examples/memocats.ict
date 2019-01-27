@@ -29,7 +29,7 @@
       "right": 64,
       "top": 98,
       "bottom": 98,
-      "lastmod": 1522644078614,
+      "lastmod": 1543394164568,
       "uid": "366c01b5-4ed5-4ca5-bf01-8731a04be2c4"
     },
     {
@@ -65,12 +65,13 @@
     {
       "name": "Card",
       "depth": 0,
-      "oncreate": "this.rotationSpeed = ct.random.range(-25, 25);\nthis.drop = false;\nthis.block = false;\nthis.flipped = false;\n\n// These variables will be used only when a card is dropped. See OnStep for that\n// A card will jump above and then fall down\n// 90° = move to top, but we will create a 30° spread around it.\nthis.dir = ct.random.range(60, 120);\nthis.spd = 15;\nthis.grav = 3;\nthis.gravdir = 270;",
-      "onstep": "/*\n    Scenario:\n        Select a card;\n        Select another card.\n            If cards match, block them and drop after 0.5 seconds\n            If they don't, block them, but unblock and flip after 0.5 seconds.\n            \n    Blocked cards may not be selected.\n    If we select the same card twice, it flips back.\n*/\n\n// If mouse was clicked and the card isn't blocked…\nif (ct.mouse.pressed && !this.block) {\n    // …if player clicked exactly this card…\n    if (ct.u.pointRectangle(ct.mouse.x, ct.mouse.y, this)) {\n        // Flip a card\n        this.flipped = !this.flipped;\n        ct.sound.spawn('Paper');\n        if (this.flipped) { // Is a picture visible now?\n            if (ct.room.card) { // Is another card was already selected?\n                // remember our cards\n                var card1 = this,\n                    card2 = ct.room.card;\n                // Block them\n                card1.block = true;\n                card2.block = true;\n                // Allow new cards to be selected\n                ct.room.card = false;\n                \n                // Do the cards match?\n                if (card1.backFrame === card2.backFrame) {\n                    if (ct.types.list['Card'].length > 2) {\n                        ct.sound.spawn('Match');\n                    } else {\n                        ct.sound.spawn('Victory');\n                    }\n                    setTimeout(function() {\n                        ct.sound.spawn('Swoosh');\n                        card1.drop = true;\n                        card2.drop = true;\n                    }, 500);\n                } else {\n                    setTimeout(function() {\n                        ct.sound.spawn('Rollback');\n                        card1.block = false;\n                        card2.block = false;\n                        \n                        card1.flipped = false;\n                        card2.flipped = false;\n                    }, 500);\n                }\n            } else {\n                ct.room.card = this;\n            }\n        } else {\n            ct.room.card = false;\n        }\n    }\n}\n\nif (this.drop) {\n    ct.types.move(this);\n    this.transform = true;\n    this.tr += this.rotationSpeed;\n    if (this.y > ct.height + 160) {\n        this.kill = true;\n    }\n}",
-      "ondraw": "if (this.flipped) {\n    this.frame = this.backFrame;\n} else {\n    this.frame = 0;\n}\n\nct.draw(this);",
+      "oncreate": "this.drop = false;\nthis.block = false;\nthis.flipped = false;\n\n// These variables will be used only when a card is dropped. See OnStep for that\n// A card will jump above and then fall down\n// 90° = move to top, but we will create a 30° spread around it.\nthis.rotationSpeed = ct.random.range(-12, 12);\nthis.speed = 25;\nthis.direction = ct.random.range(60, 120);\nthis.gravity = 1.5;\nthis.gravityDir = 270;",
+      "onstep": "/*\n    Scenario:\n        Select a card;\n        Select another card.\n            If the cards match, block them and drop after 0.5 seconds\n            If they don't, block them, but unblock and flip after 0.5 seconds.\n            \n    Blocked cards may not be selected.\n    If we select the same card twice, it flips back.\n*/\n\n// If mouse was clicked and the card isn't blocked…\nif (ct.mouse.pressed && !this.block) {\n    // …if player clicked exactly this card…\n    if (ct.u.pointRectangle(ct.mouse.x, ct.mouse.y, this)) {\n        // Flip a card\n        this.flipped = !this.flipped;\n        ct.sound.spawn('Paper');\n        if (this.flipped) { // Is a picture visible now?\n            if (ct.room.card) { // Is another card was already selected?\n                // remember our cards\n                var card1 = this,\n                    card2 = ct.room.card;\n                // Block them\n                card1.block = true;\n                card2.block = true;\n                // Allow new cards to be selected\n                ct.room.card = false;\n                \n                // Do the cards match?\n                if (card1.backFrame === card2.backFrame) {\n                    if (ct.types.list['Card'].length > 2) {\n                        ct.sound.spawn('Match');\n                    } else {\n                        ct.sound.spawn('Victory');\n                    }\n                    ct.u.wait(500)\n                    .then(() => {\n                        ct.sound.spawn('Swoosh');\n                        card1.drop = true;\n                        card2.drop = true;\n                    });\n                } else {\n                    ct.u.wait(500)\n                    .then(() => {\n                        ct.sound.spawn('Rollback');\n                        card1.block = false;\n                        card2.block = false;\n                        \n                        card1.flipped = false;\n                        card2.flipped = false;\n                    });\n                }\n            } else {\n                ct.room.card = this;\n            }\n        } else {\n            ct.room.card = false;\n        }\n    }\n}\n\nif (this.drop) {\n    ct.types.move(this);\n    this.rotation += this.rotationSpeed * ct.delta;\n    if (this.y > ct.height + 160) {\n        this.kill = true;\n    }\n}",
+      "ondraw": "if (this.flipped) {\n    this.gotoAndStop(this.backFrame);\n} else {\n    this.gotoAndStop(0);\n}",
       "ondestroy": "",
       "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c",
-      "graph": "366c01b5-4ed5-4ca5-bf01-8731a04be2c4"
+      "graph": "366c01b5-4ed5-4ca5-bf01-8731a04be2c4",
+      "lastmod": 1543394492644
     }
   ],
   "sounds": [
@@ -187,7 +188,15 @@
       "uid": "3827e721-5331-49b2-a37a-f868e15cae0d",
       "grid": 70,
       "lastmod": 1522741617797,
-      "thumbnail": 1
+      "thumbnail": 1,
+      "gridX": 70,
+      "gridY": 70,
+      "tiles": [
+        {
+          "depth": -10,
+          "tiles": []
+        }
+      ]
     },
     {
       "name": "Room2",
@@ -414,9 +423,24 @@
     "title": "Memocats",
     "author": "Cosmo Myzrail Gorynych",
     "site": "https://ctjs.rocks",
-    "fps": 30
+    "fps": 30,
+    "version": [
+      0,
+      0,
+      0
+    ],
+    "versionPostfix": "",
+    "export": {
+      "windows64": true,
+      "windows32": true,
+      "linux64": true,
+      "linux32": true,
+      "mac64": true,
+      "debug": false
+    }
   },
   "startroom": "3827e721-5331-49b2-a37a-f868e15cae0d",
-  "ctjsVersion": "0.3.1",
-  "scripts": []
+  "ctjsVersion": "0.5.2",
+  "scripts": [],
+  "fonts": []
 }

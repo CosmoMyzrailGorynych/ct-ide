@@ -1,0 +1,39 @@
+* {
+    margin:0;
+    padding:0;
+    border:0;
+}
+body {
+    background: #fafafa;
+    font-family: sans-serif;
+}
+#ct {
+    position: relative;
+    display: inline-block;
+}
+.ct-aLoadingProgress {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.5rem;
+    color: #446adb;
+    font-style: italic;
+    padding: 1rem 2rem;
+}
+.ct-aLoadingBar {
+    content: '';
+    height: 0.2rem;
+    border-radius: 1rem;
+    position: absolute;
+    background: #446adb;
+    left: 0;
+    bottom: 0;
+    transition: 1s cubic-bezier(0.31, 0.59, 0.29, 1) width;
+}
+.ct-aLoadingProgress.hidden {
+    visibility: hidden;
+}
+
+/*@pixelatedrender@*/
+/*%css%*/
