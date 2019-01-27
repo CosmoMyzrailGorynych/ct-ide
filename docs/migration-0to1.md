@@ -76,7 +76,7 @@ this.alpha = 0.5;
 
 ### View boundaries
 
-Instead of `ct.room.width` and `ct.room.height` use `ct.width` and `ct.height` only. These are different concepts now, and `ct.room.width` and `ct.room.height` changes over time.
+Instead of `ct.room.width` and `ct.room.height` use `ct.viewWidth` and `ct.viewHeight` only. These are different concepts now, and `ct.room.width` and `ct.room.height` changes over time.
 
 ### Timers
 Instead of:
@@ -180,3 +180,7 @@ this.coinIcon.x = 20;
 this.coinIcon.y = this.y + 35;
 this.addChild(this.coinIcon);
 ```
+
+## Changes from 1.0.0-next-1 to 1.0.0-next-2
+
+For working with different resolutions, you should now use `ct.viewWidth` and `ct.viewHeight` instead of `ct.width` and `ct.height`. The latter now mean the size of a drawing canvas, which doesn't always match with your viewport, especially when using new sizing modes of `ct.fittoscreen`.
