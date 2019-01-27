@@ -59,6 +59,7 @@ app/zipexport
 app/*.ict.zip
 app/export.zip
 app/export
+*.ict.recovery
 
 # editor-specific
 /.vscode
