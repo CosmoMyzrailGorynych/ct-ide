@@ -354,11 +354,19 @@ main-menu.flexcol
                 languageSubmenu.append(new nw.MenuItem({
                     label: file,
                     click: function() {
-                        console.log('clicked');
                         switchLanguage(file);
                     }
                 }));
             });
+            languageSubmenu.append(new nw.MenuItem({
+                type: 'separator'
+            }));
+            languageSubmenu.append(new nw.MenuItem({
+                label: window.languageJSON.common.translateToYourLanguage,
+                click: function() {
+                    gui.Shell.openExternal('https://translate.zanata.org/iteration/view/ct-js/v1/documents?docId=English.json&dswid=8629');
+                }
+            }));
         })
         .catch(e => {
             alert('Could not get i18n files: ' + e);

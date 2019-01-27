@@ -1,4 +1,94 @@
-## v 1.0-next-1
+## v 1.0.0-next-2
+
+*28 January 2019*
+
+### ✨ New Features
+
+* Add `ct.room.followShiftY`, `ct.room.followShiftX`
+* Add a `ct.place.moveAlong` method that allows for continuous movement in a given direction.
+* Add horizontally and non-repeating backgrounds to rooms
+* Add support for complex collision shapes
+* Add support for DragonBones skeletal animation
+* Catmods: add a 'radio' input type
+* Catmods: define additional fields in the type editor
+* ct.place: Add `this.moveContinuous` to all copies
+* Multiple copy editing in room editor
+* Repeat-x, repeat-y and no-repeat options for backgrounds
+
+### ⚡ General Improvements
+
+* Add a `multiple` flag to ct.place.occupied, ct.place.meet that allows to get all the copies that participated in collision.
+* 💄 (x,y) position of the mouse in the room editor.
+* 💄 Add an HTML/CSS preloader to exported games
+* 💄 Add "Recent Projects" to the hamburger menu
+* 💄 Add an ability to forget projects in the "Recent Projects" list
+* Add `ct.place`, `ct.fittoscreen`, `ct.keyboard`, `ct.sound.howler` and `ct.akatemplate` by default to all the new projects
+* Add `ct.sound.exists` method
+* Add support for sound events in DragonBones skeletons
+* Allow to set an empty sprite to a copy by changing `this.graph = -1;`
+* `ct.place`: add a ctype input to type editors
+* Introduce `ct.viewWidth`, `ct.viewHeight`.
+* Make backgrounds resilient to missing extends
+* Remember window position on load (ct.IDE)
+* Update `ct.place`
+* Update fittoscreen to v2.0: add more scaling methods for fine quality at a wide variety of resolutions
+* ⬆ Update Pixi.js to v4.8.5
+
+### 💄 UI Improvements
+
+* ⚡ Autofocus code editors on tab change
+* ⚡ Make text and code in module panel selectable
+* Add nifty sounds to notifications
+* Crop long paths to recent projects on the left side
+* Show a message about where the project and the exported version were zipped, because some systems (e.g. Windows 10) don't show the files in file managers
+
+### 🐛 Bug Fixes
+
+🐛 💄 Add a "cancel" button while selecting a tileset
+🐛 Fix desktop exporter not picking the first room as the starting one if no room was marked as such
+🐛 Fix exporter for desktop platforms
+🐛 Fix parallax + non-repeat background behaviour
+🐛 Fix project loader not loading the most old ct.js projects
+🐛 Fix unwanted interpolation on stretched sprites if "Disable image smoothing..." is checked
+🐛 Remove autosave errors in dev console that appeared while no project was loaded
+
+### 🍱 Demos and Stuff
+
+🍱 Update catformer demo to v1.0.0-next-2
+🍱 Update demos and examples
+
+### 📝 Docs
+
+* Add a deprecation notice to `ct.place.legacy`
+* Add a notice about dragonBones animation events
+* Add tips & tricks for effective viewport management
+* Document new catmods' capabilities
+* Document the import process and usage of skeletal animations
+* Document `this.moveContinuous` at ct.place readme
+* Finish JS Intro, pt 2
+* Fix flipped directions in a tip at https://docs.ctjs.rocks/tut-making-shooter.html#moving-hostiles-and-asteroids
+* Rename `ct.place.go` attribute `speed` to `length`
+* Update tutorials to v1.0.0-next-2
+
+### 📄 License
+
+* Add a ct.js version with website link to console output
+* Add SSCD license
+* Adding a Pixi.js license (3rd-party)
+* Formatting license, adding a Termination section
+* License: Add DragonBonesJS license (3rdparty)
+
+### 👽 Misc
+
+* 🌐 Add a link for crowd-sourced translations
+* 🌐 Add a partial French translations by Vactro
+* ⁉ Add `./` to all resource paths to load, because itch.io
+* 💩 Bump ct.keyboard version to v2.0.0, because it should have beeen bumped before.
+* 🔥 Remove ffmpeg-node for now
+* 🔥 Remove vkontakte link in the starting screen, because I no longer use vkontakte
+* 🚚 Rename old `place` module to `place.legacy`
+
+## v 1.0.0-next-1
 
 *1 December 2018*
 
