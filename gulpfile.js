@@ -48,8 +48,8 @@ const fileChangeNotifier = p => {
     });
 };
 
-const spawnise = (app, attrs) => new Promise((resolve, reject) => {
-    var process = spawn(app, attrs);
+const spawnise = (app, attrs, opts) => new Promise((resolve, reject) => {
+    var process = spawn(app, attrs, opts);
     process.on('exit', code => {
         if (!code) {
             resolve();
@@ -197,8 +197,11 @@ const launchNw = () => {
 };
 
 const docs = done => {
-    fs.remove('./app/docs/')
-    .then(spawnise('npm', ['run', 'docs:build']))
+    fs.remove('./app/data/docs/')
+    .then(() => spawnise('npm', ['run', 'build'], {
+        cwd: './docs'
+    }))
+    .then(() => fs.copy('./docs/docs/.vuepress/dist', './app/data/docs/'))
     .then(done);
 };
 
@@ -228,6 +231,7 @@ const release = gulp.series([done => {
 }]);
 
 const deployOnly = done => {
+    console.log(`For channel ${channelPostfix}`);
     var pack = require('./app/package.json');
     spawnise('./butler', ['push', `./build/ctjs - v${pack.version}/linux32`, `comigo/ct:linux32${channelPostfix? '-' + channelPostfix: ''}`, '--userversion', pack.version])
     .then(() => spawnise('./butler', ['push', `./build/ctjs - v${pack.version}/linux64`, `comigo/ct:linux64${channelPostfix? '-' + channelPostfix: ''}`, '--userversion', pack.version]))
