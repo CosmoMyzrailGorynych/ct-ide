@@ -25,7 +25,7 @@ gulp
 gulp docs # to build docs site and add it to ct.js app
 gulp release # to recompile source files, bundle docs, and to make binaries
 gulp deployOnly # publishes prebuilt binaries to itch.io
-gulp deploy # combines `gulp build` and `gulp deployOnly`
+gulp deploy # combines `gulp release` and `gulp deployOnly`
 gulp deployOnly --channel next # deploy to a specific itch.io channel
 ```
 
