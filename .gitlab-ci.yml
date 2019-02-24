@@ -40,7 +40,6 @@ release:
   stage: deploy
   dependencies:
     - build
-    - docs
   script:
     - npm install
     - npm install gulp-cli -g
