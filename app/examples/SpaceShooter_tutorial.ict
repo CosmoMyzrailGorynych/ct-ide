@@ -8,7 +8,8 @@
       "gridX": 512
     },
     "fittoscreen": {
-      "scaleOnly": true
+      "scaleOnly": true,
+      "mode": "fastScale"
     }
   },
   "graphs": [
@@ -37,7 +38,7 @@
       "right": 50,
       "top": 12,
       "bottom": 32,
-      "lastmod": 1530951344688,
+      "lastmod": 1551001509208,
       "r": 37,
       "uid": "a82335b3-69b6-4de0-bec1-da2dea358142"
     },
@@ -148,11 +149,11 @@
       "offy": 0,
       "origname": "i5.png",
       "shape": "circle",
-      "left": 0,
-      "right": 43,
-      "top": 0,
-      "bottom": 43,
-      "lastmod": 1525838629483,
+      "left": 21,
+      "right": 22,
+      "top": 21,
+      "bottom": 22,
+      "lastmod": 1551001857218,
       "r": 21,
       "uid": "aa5664f9-a2c3-47b2-8f0f-2dfead9c67c9"
     },
@@ -177,13 +178,36 @@
       "offy": 0,
       "origname": "i6.png",
       "shape": "circle",
-      "left": 0,
-      "right": 101,
-      "top": 0,
-      "bottom": 84,
-      "lastmod": 1530951347561,
+      "left": 50,
+      "right": 51,
+      "top": 42,
+      "bottom": 42,
+      "lastmod": 1551001852807,
       "r": 42,
-      "uid": "4e5cb233-48f8-4f20-abaf-384f4551e1e9"
+      "uid": "4e5cb233-48f8-4f20-abaf-384f4551e1e9",
+      "stripPoints": [
+        {
+          "x": 0,
+          "y": -42
+        },
+        {
+          "x": 48,
+          "y": -13
+        },
+        {
+          "x": 30,
+          "y": 34
+        },
+        {
+          "x": -30,
+          "y": 34
+        },
+        {
+          "x": -48,
+          "y": -13
+        }
+      ],
+      "closedStrip": true
     },
     {
       "name": "BG",
@@ -224,7 +248,8 @@
       "ondestroy": "",
       "uid": "f5832845-7841-408b-bae7-a72aaffcae6c",
       "graph": "a82335b3-69b6-4de0-bec1-da2dea358142",
-      "lastmod": 1543236963175
+      "lastmod": 1543236963175,
+      "extends": {}
     },
     {
       "name": "Laser_Red",
@@ -235,7 +260,8 @@
       "ondestroy": "",
       "uid": "ebe33c0f-6f27-4123-ac8a-3029404dbc7a",
       "graph": "083c3d39-1a4a-44f2-9fae-e4043e45f28e",
-      "lastmod": 1543239422636
+      "lastmod": 1543239422636,
+      "extends": {}
     },
     {
       "name": "Laser_Blue",
@@ -246,7 +272,8 @@
       "ondestroy": "",
       "uid": "cd732ad2-d2ae-4745-b6d8-07a57a9d3a2e",
       "graph": "3dde237d-ec51-4153-8b31-58279ece7c55",
-      "lastmod": 1543238733913
+      "lastmod": 1543238733913,
+      "extends": {}
     },
     {
       "name": "EnemyShip",
@@ -257,7 +284,8 @@
       "ondestroy": "",
       "uid": "5d3e8a47-30e6-45b1-8b36-d445fdcb8e14",
       "graph": "feb33556-81c7-4794-a806-da5ddea5be81",
-      "lastmod": 1543239378885
+      "lastmod": 1551001690335,
+      "extends": {}
     },
     {
       "name": "Asteroid_Medium",
@@ -268,7 +296,8 @@
       "ondestroy": "",
       "uid": "f829b135-ac68-4193-9980-d367e90448a1",
       "graph": "aa5664f9-a2c3-47b2-8f0f-2dfead9c67c9",
-      "lastmod": 1543239426596
+      "lastmod": 1551001692415,
+      "extends": {}
     },
     {
       "name": "Asteroid_Big",
@@ -279,7 +308,8 @@
       "ondestroy": "",
       "uid": "41fbc5fe-0f41-4151-b7bf-26acefce80ae",
       "graph": "4e5cb233-48f8-4f20-abaf-384f4551e1e9",
-      "lastmod": 1543240521177
+      "lastmod": 1551001837218,
+      "extends": {}
     }
   ],
   "sounds": [],
@@ -339,7 +369,7 @@
     {
       "name": "Main",
       "oncreate": "this.asteroidTimer = 20;\nthis.enemyTimer = 180;\n\nthis.score = 0;\nthis.scoreLabel = new PIXI.Text('Score: ' + this.score, ct.styles.get('ScoreText'));\nthis.addChild(this.scoreLabel);\nthis.scoreLabel.x = 30;\nthis.scoreLabel.y = 30;\n\nthis.lives = 3;\nthis.livesLabel = new PIXI.Text('Lives: ' + this.lives, ct.styles.get('LivesText'));\nthis.addChild(this.livesLabel);\nthis.livesLabel.x = ct.width - 200;\nthis.livesLabel.y = 30;",
-      "onstep": "this.asteroidTimer -= ct.delta;\nif (this.asteroidTimer <= 0) {\n    this.asteroidTimer = ct.random.range(20, 200);\n    ct.types.copy(ct.random.dice('Asteroid_Big', 'Asteroid_Medium'), ct.random(ct.width), -100);\n}\n\nthis.enemyTimer -= ct.delta;\nif (this.enemyTimer <= 0) {\n    this.enemyTimer = ct.random.range(180, 400);\n    ct.types.copy('EnemyShip', ct.random(ct.width), -100);\n}",
+      "onstep": "this.asteroidTimer -= ct.delta;\nif (this.asteroidTimer <= 0) {\n    this.asteroidTimer = ct.random.range(20, 200);\n    ct.types.copy(ct.random.dice('Asteroid_Big', 'Asteroid_Medium'), ct.random(ct.viewWidth), -100);\n}\n\nthis.enemyTimer -= ct.delta;\nif (this.enemyTimer <= 0) {\n    this.enemyTimer = ct.random.range(180, 400);\n    ct.types.copy('EnemyShip', ct.random(ct.viewWidth), -100);\n}",
       "ondraw": "this.scoreLabel.text = 'Score: ' + this.score;\n\nthis.livesLabel.text = 'Lives: ' + this.lives;",
       "onleave": "",
       "width": 800,
@@ -347,19 +377,8 @@
       "backgrounds": [
         {
           "depth": "-5",
-          "graph": "004e6497-a9f8-4a44-8b43-346ee79e6514"
-        }
-      ],
-      "layers": [
-        {
-          "depth": 0,
-          "copies": [
-            {
-              "x": 400,
-              "y": 720,
-              "uid": "f5832845-7841-408b-bae7-a72aaffcae6c"
-            }
-          ]
+          "graph": "004e6497-a9f8-4a44-8b43-346ee79e6514",
+          "extends": {}
         }
       ],
       "uid": "8eced6ed-b52a-4344-8266-3fa909005671",
@@ -372,6 +391,13 @@
         {
           "depth": -10,
           "tiles": []
+        }
+      ],
+      "copies": [
+        {
+          "x": 400,
+          "y": 720,
+          "uid": "f5832845-7841-408b-bae7-a72aaffcae6c"
         }
       ]
     }
@@ -406,7 +432,8 @@
   },
   "palette": [],
   "startroom": "8eced6ed-b52a-4344-8266-3fa909005671",
-  "ctjsVersion": "0.5.2",
+  "ctjsVersion": "1.0.0-next-2",
   "scripts": [],
-  "fonts": []
+  "fonts": [],
+  "skeletons": []
 }
