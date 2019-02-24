@@ -33,6 +33,8 @@
     "pug-lint-config-clock": "^2.0.0",
     "riot": "^3.13.2",
     "streamqueue": "^1.1.2",
-    "stylus": "^0.54.5"
+    "stylus": "^0.54.5",
+    "node-static": "^0.7.11",
+    "cross-zip": "^2.1.5"
   }
 }
