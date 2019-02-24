@@ -1,3 +1,7 @@
+Master | v0.x | Develop
+-|-|-
+[![pipeline status](https://gitlab.com/CoMiGo/ctjs/badges/master/pipeline.svg)](https://gitlab.com/CoMiGo/ctjs/commits/master)|[![pipeline status](https://gitlab.com/CoMiGo/ctjs/badges/v0.x/pipeline.svg)](https://gitlab.com/CoMiGo/ctjs/commits/v0.x)|[![pipeline status](https://gitlab.com/CoMiGo/ctjs/badges/develop/pipeline.svg)](https://gitlab.com/CoMiGo/ctjs/commits/develop)
+
 # How to set up
 
 ```sh
