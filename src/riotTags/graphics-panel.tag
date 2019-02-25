@@ -140,11 +140,22 @@ graphics-panel.panel.view
             }
             img.src = '/data/img/unknown.png';
         };
-        this.on('mount', () => {
+
+        this.setUpPanel = e => {
             this.updateList();
             this.fillGraphMap();
+            this.searchResults = null;
+            this.editing = false;
+            this.dropping = false;
+            this.currentGraphic = null;
+            this.update();
+        };
+        window.signals.on('projectLoaded', this.setUpPanel);
+        this.on('mount', this.setUpPanel);
+        this.on('unmount', () => {
+            window.signals.off('projectLoaded', this.setUpPanel);
         });
-        
+
         /**
          * Событие добавления файлов через проводник
          */

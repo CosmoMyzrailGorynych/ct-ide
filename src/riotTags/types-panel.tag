@@ -71,9 +71,18 @@ types-panel.panel.view
             }
         };
         
-        this.on('mount', () => {
+        this.setUpPanel = e => {
             this.fillTypeMap();
             this.updateList();
+            this.searchResults = null;
+            this.editingType = false;
+            this.editedType = null;
+            this.update();
+        };
+        window.signals.on('projectLoaded', this.setUpPanel);
+        this.on('mount', this.setUpPanel);
+        this.on('unmount', () => {
+            window.signals.off('projectLoaded', this.setUpPanel);
         });
 
         this.getTypeGraphRevision = type => window.glob.graphmap[type.graph].g.lastmod;

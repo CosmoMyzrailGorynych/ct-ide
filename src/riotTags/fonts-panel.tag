@@ -30,18 +30,28 @@ fonts-panel.flexfix.tall.fifty
         this.fonts = window.currentProject.fonts;
         this.namespace = 'fonts';
         this.mixin(window.riotVoc);
-        this.sort = 'name';
-        this.sortReverse = false;
         const fs = require('fs-extra'),
               path = require('path'),
               gui = require('nw.gui');
+
+        this.setUpPanel = e => {
+            window.currentProject.fonts = window.currentProject.fonts || [];
+            this.fonts = window.currentProject.fonts;
+            this.editingFont = false;
+            this.editedFont = null;
+            this.update();
+        };
+        window.signals.on('projectLoaded', this.setUpPanel);
+        this.on('unmount', () => {
+            window.signals.off('projectLoaded', this.setUpPanel);
+        });
 
         this.openFont = font => e => {
             this.editingFont = true;
             this.editedFont = font;
         };
         
-        // Контекстное меню для управления стилями по нажатию ПКМ по карточкам
+        // Context menu for manipulating fonts with RMB
         var fontMenu = new gui.Menu();
         this.onFontContextMenu = font => e => {
             this.editedFont = e.item.font;
@@ -55,7 +65,6 @@ fonts-panel.flexfix.tall.fifty
                 this.update();
             }
         }));
-        // Пункт "Скопировать название"
         fontMenu.append(new gui.MenuItem({
             label: languageJSON.common.copyName,
             click: e => {
@@ -102,9 +111,9 @@ fonts-panel.flexfix.tall.fifty
         }));
 
         /**
-         * Событие добавления файлов через проводник
+         * The event of importing a font through a file manager
          */
-        this.fontImport = e => { // input[type="file"]
+        this.fontImport = e => { // e.target:input[type="file"]
             var i;
             files = e.target.value.split(';');
             for (i = 0; i < files.length; i++) {
@@ -186,7 +195,7 @@ fonts-panel.flexfix.tall.fifty
             .catch(reject);
         });
         /*
-         * Дополнения для drag-n-drop
+         * Additions for drag-n-drop
          */
         var dragTimer;
         this.onDragOver = e => {

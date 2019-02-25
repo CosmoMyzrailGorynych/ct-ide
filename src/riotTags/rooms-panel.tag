@@ -74,8 +74,17 @@ rooms-panel.panel.view
                 this.searchResults = null;
             }
         };
-        this.on('mount', () => {
+        this.setUpPanel = e => {
             this.updateList();
+            this.searchResults = null;
+            this.editing = false;
+            this.editingRoom = null;
+            this.update();
+        };
+        window.signals.on('projectLoaded', this.setUpPanel);
+        this.on('mount', this.setUpPanel);
+        this.on('unmount', () => {
+            window.signals.off('projectLoaded', this.setUpPanel);
         });
 
         const gui = require('nw.gui'),

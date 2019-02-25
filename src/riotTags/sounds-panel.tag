@@ -72,8 +72,17 @@ sounds-panel.panel.view
                 this.searchResults = null;
             }
         };
-        this.on('mount', () => {
+        this.setUpPanel = e => {
             this.updateList();
+            this.searchResults = null;
+            this.editing = false;
+            this.editedSound = null;
+            this.update();
+        };
+        window.signals.on('projectLoaded', this.setUpPanel);
+        this.on('mount', this.setUpPanel);
+        this.on('unmount', () => {
+            window.signals.off('projectLoaded', this.setUpPanel);
         });
         
         const gui = require('nw.gui');
@@ -95,7 +104,7 @@ sounds-panel.panel.view
             this.update();
         };
         
-        // Контекстное меню, вызываемое при клике ПКМ по карточке звука 
+        // A context menu called by clicking on a sound card with RMB
         var soundMenu = new gui.Menu();
         soundMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.open,
@@ -103,7 +112,6 @@ sounds-panel.panel.view
                 this.openSound(this.editedSound);
             }
         }));
-        // Пункт "Скопировать название"
         soundMenu.append(new gui.MenuItem({
             label: languageJSON.common.copyName,
             click: e => {
