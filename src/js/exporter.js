@@ -479,8 +479,7 @@ ct.rooms.templates['${r.name}'] = {
 
         buffer += '\n';
 
-        /* котомышь */
-        buffer += fs.readFileSync(basePath + 'ct.release/mouse.js', {
+        buffer += fs.readFileSync(basePath + 'ct.release/inputs.js', {
             'encoding': 'utf8'
         });
 
@@ -488,7 +487,7 @@ ct.rooms.templates['${r.name}'] = {
 
         buffer = addModules(buffer);
 
-        /* Пользовательские скрипты */
+        /* User-defined scripts */
         for (const script of window.currentProject.scripts) {
             buffer += script.code + ';\n';
         }
