@@ -136,6 +136,7 @@
         localStorage.lastProjects = lastProjects.join(';');
         window.glob.modified = false;
         window.signals.trigger('hideProjectSelector');
+        window.signals.trigger('projectLoaded');
 
         if (window.currentProject.settings.title) {
             document.title = window.currentProject.settings.title + ' — ct.js';

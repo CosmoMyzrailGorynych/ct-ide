@@ -93,9 +93,18 @@ styles-panel.flexfix.tall.fifty
             this.editingStyle = true;
             this.editedStyle = style;
         };
-        this.on('mount', () => {
+        this.setUpPanel = e => {
             this.updateList();
-        })
+            this.searchResults = null;
+            this.editingStyle = false;
+            this.editedStyle = null;
+            this.update();
+        };
+        window.signals.on('projectLoaded', this.setUpPanel);
+        this.on('mount', this.setUpPanel);
+        this.on('unmount', () => {
+            window.signals.off('projectLoaded', this.setUpPanel);
+        });
         
         // Контекстное меню для управления стилями по нажатию ПКМ по карточкам
         var styleMenu = new gui.Menu();
