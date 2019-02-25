@@ -70,7 +70,8 @@ sound-editor.panel.view
                     console.log(e);
                     alertify.error(e);
                 } else {
-                    if (!this.sound.lastmod) {
+                    console.log(this.sound);
+                    if (!this.sound.lastmod && this.sound.name === 'Sound_' + this.sound.uid.split('-').pop()) {
                         this.sound.name = path.basename(val, path.extname(val));
                     }
                     this.sound.origname = 's' + this.sound.uid + path.extname(val);
