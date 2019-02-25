@@ -169,6 +169,7 @@ graphics-panel.panel.view
                     )
                 }
             }
+            e.srcElement.value = "";
             this.dropping = false;
             e.preventDefault();
         };
