@@ -87,7 +87,6 @@
             /*%start%*/
             ct.pixiApp.ticker.add(ct.loop);
             ct.rooms.forceSwitch(ct.rooms.starting);
-            ct.mouse.setupListeners();
         }, 0);
     });
     ct.res.parseImages();

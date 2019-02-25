@@ -36,8 +36,8 @@ class CtAction {
     update() {
         this.prevValue = this.value;
         this.value = 0;
-        for (const method of this.methods) {
-            this.value += ct.inputs.registry[method.code];
+        for (let i = 0, l = this.methodCodes.length; i < l; i++) {
+            this.value += (ct.inputs.registry[this.methodCodes[i]] || 0) * this.methodMultipliers[i];
         }
         this.value = Math.max(-1, Math.min(this.value, 1));
     }
@@ -55,7 +55,7 @@ class CtAction {
 ct.actions = {};
 ct.inputs = {
     registry: {},
-    addEvent(name, methods) {
+    addAction(name, methods) {
         if (name in ct.actions) {
             throw new Error(`[ct.inputs] An action "${name}" already exists, can't add a new one with the same name.`);
         }
@@ -66,7 +66,7 @@ ct.inputs = {
         ct.actions[name] = action;
         return action;
     },
-    removeEvent(name) {
+    removeAction(name) {
         delete ct.actions[name];
     },
     updateActions() {

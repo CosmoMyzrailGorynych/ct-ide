@@ -174,6 +174,7 @@ ct.u.ext(ct.u, { // make aliases
 });
 ct.loop = function(delta) {
     ct.delta = delta;
+    ct.inputs.updateActions();
     for (let i = 0, li = ct.stack.length; i < li; i++) {
         ct.types.beforeStep.apply(ct.stack[i]);
         
@@ -213,9 +214,9 @@ ct.loop = function(delta) {
     }
 
     for (const cont of ct.stage.children) {
-        cont.children.sort((a, b) => {
-                return ((a.depth || 0) - (b.depth || 0)) || ((a.uid || 0) - (b.uid || 0)) || 0;
-        })
+        cont.children.sort((a, b) => 
+            ((a.depth || 0) - (b.depth || 0)) || ((a.uid || 0) - (b.uid || 0)) || 0
+        );
     }
     const r = ct.room;
     if (r.follow) {
@@ -248,13 +249,10 @@ ct.loop = function(delta) {
             r.y = Math.floor(r.y + speed * cy);
         }
     }
-    r.x = Math.round(r.x);
-    r.y = Math.round(r.y);
-    
-    ct.mouse.x = ct.mouse.rx + r.x || 0;
-    ct.mouse.y = ct.mouse.ry + r.y || 0;
     r.x = r.x || 0;
     r.y = r.y || 0;
+    r.x = Math.round(r.x);
+    r.y = Math.round(r.y);
 
     for (let i = 0, li = ct.stack.length; i < li; i++) {
         ct.types.beforeDraw.apply(ct.stack[i]);
@@ -266,11 +264,6 @@ ct.loop = function(delta) {
     ct.room.onDraw.apply(r); 
     ct.rooms.afterDraw.apply(r);
 
-    ct.mouse.pressed = false;
-    ct.mouse.released = false;
-    ct.mouse.wheel = 0;
-    ct.mouse.xprev = ct.mouse.x;
-    ct.mouse.yprev = ct.mouse.y;
     ct.main.fpstick++;
     if (ct.rooms.switching) {
         ct.rooms.forceSwitch();
