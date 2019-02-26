@@ -1,3 +1,9 @@
+Version 3.0.0
+
+- Add support for `ct.actions` API;
+- Remove `ct.keyboard.pressed`, `ct.keyboard.released`, `ct.keyboard.down`, `ct.keyboard.e`;
+- Add `ct.keyboard.lastCode`, `ct.keyboard.lastKey`.
+
 Version 2.0.0
 
 - Support new KeyboardAPI
