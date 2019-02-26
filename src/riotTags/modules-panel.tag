@@ -39,8 +39,8 @@ modules-panel.panel.view
                     
                     #modinfohtml(if="{currentModuleHelp}")
                         raw(ref="raw" content="{currentModuleHelp}")
-                    h1(if="{currentModule.main.license}") {voc.license}
-                    pre(if="{currentModule.main.license}")
+                    h1(if="{currentModuleLicense}") {voc.license}
+                    pre(if="{currentModuleLicense}")
                         code {currentModuleLicense}
                     
                 #modulesettings.tabbed(show="{tab === 'modulesettings'}" if="{currentModule.fields && currentModuleName in currentProject.libs}")
