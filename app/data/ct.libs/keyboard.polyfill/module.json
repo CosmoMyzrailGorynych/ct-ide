@@ -1,0 +1,12 @@
+{
+    "main": {
+        "name": "Keyboard Polyfill",
+        "version": "1.0.0",
+        "authors": [{
+            "name": "Cosmo Myzrail Gorynych",
+            "mail": "admin@nersta.ru"
+        }, {
+            "name": "Joshua Bell"
+        }]
+    }
+}

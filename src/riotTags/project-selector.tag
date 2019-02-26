@@ -93,6 +93,7 @@ project-selector
                         mode: "scaleFit"
                     },
                     keyboard: {},
+                    'keyboard.polyfill': {},
                     'sound.howler': {},
                     akatemplate: {
                         csscss: "body {\n    background: #000;\n}"
