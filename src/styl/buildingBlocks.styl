@@ -1,3 +1,18 @@
+.spacer
+    width 1rem
+    height @width
+
+.dimmer
+    position fixed
+    background-color rgba(0, 0, 0, 0.3)
+    left 0
+    right 0
+    top 0
+    bottom 0
+    width 100%
+    height 100%
+    z-index 20
+
 .modal, .panel
     box-sizing border-box
     background white
@@ -39,30 +54,35 @@
     margin 0 -1rem
     border-top 1px solid bd
 
-// Меню выбора - список
-.menu
+.aStrippedList
+    margin 0.5rem 0
     padding 0
-    overflow auto
-    font-weight 400
-    ul
-        margin 0
-        padding 0
     li
         list-style none
         padding 0.2em 0.8em
         margin 0
         border-bottom 1px solid bl
+        if theme == 'Night'
+            border-bottom 1px solid bd
+    
+
+// Меню выбора - список
+.menu
+    @extends .aStrippedList
+    overflow auto
+    font-weight 400
+    li
         cursor pointer
         overflow hidden
         text-overflow ellipsis
         white-space nowrap
         {trans}
-        &:hover
+        &:hover, &.hover
             {transshort}
             border-bottom-color bd
             color acttext
             padding 0.2em 0.5em 0.2em 1.1em
-        &:active
+        &:active, &.active
             background act
             border-bottom-color transparent
             color white

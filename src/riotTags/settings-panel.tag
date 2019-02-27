@@ -24,6 +24,12 @@ settings-panel.panel.view
         |   {voc.versionpostfix}  
         input(type="text" style="width: 3rem;" value="{currentProject.settings.versionPostfix}" length="5" onchange="{wire('this.currentProject.settings.versionPostfix')}")
         
+        h2 {voc.actions}
+        p
+            button.nml(onclick="{openActionsEditor}")
+                i.icon-airplay
+                span   {voc.editActions}
+        actions-editor(if="{editingActions}")
 
         h2 {voc.renderoptions}
         label.block
@@ -94,4 +100,7 @@ settings-panel.panel.view
             if (currentProject.settings.title) {
                 document.title = currentProject.settings.title + ' — ct.js';
             }
+        };
+        this.openActionsEditor = e => {
+            this.editingActions = true;
         };
