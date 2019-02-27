@@ -479,9 +479,13 @@ ct.rooms.templates['${r.name}'] = {
 
         buffer += '\n';
 
+        var actionsSetup = '';
+        for (const action of window.currentProject.actions) {
+            actionsSetup += `ct.inputs.addAction('${action.name}', ${JSON.stringify(action.methods)});\n`;
+        }
         buffer += fs.readFileSync(basePath + 'ct.release/inputs.js', {
             'encoding': 'utf8'
-        });
+        }).replace('/*@actions@*/', actionsSetup);
 
         buffer += '\n';
 
