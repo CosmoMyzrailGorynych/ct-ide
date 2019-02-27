@@ -36,6 +36,7 @@ modules-panel.panel.view
                         span#modauthor {author.name}
                     i#modinjects.icon-zap.warning(title="{voc.hasinjects}" show="{currentModule.injects}")
                     i#modconfigurable.icon-settings.success(title="{voc.hasfields}" show="{currentModule.fields}")
+                    i#modinputmethods.icon-airplay.success(title="{voc.hasinputmethods}" show="{currentModule.inputMethods}")
                     
                     #modinfohtml(if="{currentModuleHelp}")
                         raw(ref="raw" content="{currentModuleHelp}")
