@@ -34,6 +34,8 @@ type-editor.panel.view.flexrow
                         if="{extend.type === 'number'}"
                     )
                     .dim(if="{extend.help}") {extend.help}
+            br
+            docs-shortcut(path="/ct.types.html" button="true" wide="true" title="{voc.learnAboutTypes}")
         .flexfix-footer
             button#typedone.wide(onclick="{typeSave}")
                 i.icon.icon-confirm

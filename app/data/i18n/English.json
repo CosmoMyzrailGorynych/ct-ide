@@ -51,6 +51,9 @@
         "wrongFormat": "Wrong file format",
         "yes": "Yes"
     },
+    "docsShortcut": {
+        "openDocs": "Open the documentation"
+    },
     "exportPanel": {
         "hide": "Hide",
         "working": "Working…",
@@ -264,6 +267,7 @@
         "destroy": "On Destroy",
         "done": "Done",
         "draw": "Draw",
+        "learnAboutTypes": "Learn about coding types",
         "name": "Name:",
         "step": "On Step"
     },
