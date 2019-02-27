@@ -1,0 +1,1 @@
+This module allows you to listen to mouse events, pipe these events to the Actions system, and get the location of the mouse.
