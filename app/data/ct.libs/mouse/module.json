@@ -8,15 +8,15 @@
         }]
     },
     "inputMethods": {
-        "lmb": "Left mouse button",
-        "rmb": "Right mouse button",
-        "mmb": "Middle mouse button",
-        "wheel": "Mouse wheel direction",
-        "special1": "Special button 1",
-        "special2": "Special button 2",
-        "special3": "Special button 3",
-        "special4": "Special button 4",
-        "special5": "Special button 5",
-        "special6": "Special button 6"
+        "Left": "Left mouse button",
+        "Right": "Right mouse button",
+        "Middle": "Middle mouse button",
+        "Wheel": "Mouse wheel direction",
+        "Special1": "Special button 1",
+        "Special2": "Special button 2",
+        "Special3": "Special button 3",
+        "Special4": "Special button 4",
+        "Special5": "Special button 5",
+        "Special6": "Special button 6"
     }
 }

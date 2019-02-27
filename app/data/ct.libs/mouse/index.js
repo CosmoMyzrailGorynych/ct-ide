@@ -4,16 +4,16 @@
         ct.inputs.registry[keyPrefix + key] = value;
     };
     var buttonMap = {
-        0: 'lmb',
-        1: 'mmb',
-        2: 'rmb',
-        3: 'special1',
-        4: 'special2',
-        5: 'special3',
-        6: 'special4',
-        7: 'special5',
-        8: 'special6',
-        unknown: 'unknown'
+        0: 'Left',
+        1: 'Middle',
+        2: 'Right',
+        3: 'Special1',
+        4: 'Special2',
+        5: 'Special3',
+        6: 'Special4',
+        7: 'Special5',
+        8: 'Special6',
+        unknown: 'Unknown'
     };
 
     ct.mouse = {
@@ -75,7 +75,7 @@
     ct.mouse.listenerContextMenu = function (e) {
         e.preventDefault();
     };
-    ct.mouse.listenerwheel = function (e) {
+    ct.mouse.listenerWheel = function (e) {
         ct.mouse.wheel = e.wheelDelta || -e.detail < 0? -1 : 1;
         setKey('wheel', ct.mouse.wheel);
         e.preventDefault();
@@ -86,14 +86,14 @@
             document.addEventListener('mousemove', ct.mouse.listenerMove, false);
             document.addEventListener('mouseup', ct.mouse.listenerUp, false);
             document.addEventListener('mousedown', ct.mouse.listenerDown, false);
-            document.addEventListener('wheel', ct.mouse.listenerwheel, false);
+            document.addEventListener('wheel', ct.mouse.listenerWheel, false);
             document.addEventListener('contextmenu', ct.mouse.listenerContextMenu, false);
-            document.addEventListener('DOMMouseScroll', ct.mouse.listenerwheel, false);
+            document.addEventListener('DOMMouseScroll', ct.mouse.listenerWheel, false);
         } else { // IE?
             document.attachEvent('onmousemove', ct.mouse.listenerMove);
             document.attachEvent('onmouseup', ct.mouse.listenerUp);
             document.attachEvent('onmousedown', ct.mouse.listenerDown);
-            document.attachEvent('oncontextmenu', ct.mouse.listenerwheel);
+            document.attachEvent('oncontextmenu', ct.mouse.listenerWheel);
             document.attachEvent('onmousewheel', ct.mouse.listenerContextMenu);
         }
     };
