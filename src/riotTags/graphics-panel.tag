@@ -30,7 +30,9 @@ graphics-panel.panel.view
                 )
                     span {graphic.name}
                     img(src="file://{sessionStorage.projdir + '/img/' + graphic.origname + '_prev.png?' + graphic.lastmod}")
-            h2(if="{currentProject.skeletons.length}") {voc.skeletons}
+            h2 
+                span {voc.skeletons}
+                docs-shortcut(path="/skeletal-animation.html")
             ul.cards
                 li(
                     each="{skeleton in (searchResultsSkel? searchResultsSkel : skeletons)}"
@@ -40,6 +42,14 @@ graphics-panel.panel.view
                 )
                     span {skeleton.name}
                     img(src="file://{sessionStorage.projdir + '/img/' + skeleton.origname + '_prev.png?' + skeleton.lastmod}")
+                
+                label.file.flexfix-header
+                    input(type="file" multiple 
+                        accept=".json" 
+                        onchange="{graphicImport}")
+                    .button
+                        i.icon.icon-import
+                        span {voc.import}
         
     .aDropzone(if="{dropping}")
         .middleinner

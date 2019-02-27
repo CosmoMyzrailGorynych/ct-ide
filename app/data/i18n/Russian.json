@@ -51,6 +51,9 @@
         "wrongFormat": "Неверный формат файла",
         "yes": "Да"
     },
+    "docsShortcut": {
+        "openDocs": "Открыть документацию"
+    },
     "exportPanel": {
         "hide": "В фоне",
         "working": "Работаем…",
@@ -263,6 +266,7 @@
         "destroy": "Код уничтожения",
         "done": "Готово",
         "draw": "Прорисовка",
+        "learnAboutTypes": "Кодинг типов",
         "name": "Имя:",
         "step": "Кадр"
     },

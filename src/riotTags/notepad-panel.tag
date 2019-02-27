@@ -74,3 +74,10 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
             }).resume();
         });
         this.server.listen(0);
+
+        window.signals.on('openDocs', e => {
+            this.changeTab('helppages')();
+            this.refs.helpIframe.contentWindow.location = `http://localhost:${this.server.address().port}${e.path || '/'}`;
+            this.opened = true;
+            this.update();
+        })
