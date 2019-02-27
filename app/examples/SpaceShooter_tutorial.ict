@@ -1,7 +1,6 @@
 {
   "notes": "/* empty */",
   "libs": {
-    "keyboard": {},
     "random": {},
     "place": {
       "gridY": 512,
@@ -10,7 +9,9 @@
     "fittoscreen": {
       "scaleOnly": true,
       "mode": "fastScale"
-    }
+    },
+    "keyboard": {},
+    "mouse": {}
   },
   "graphs": [
     {
@@ -243,12 +244,12 @@
       "name": "PlayerShip",
       "depth": 0,
       "oncreate": "",
-      "onstep": "/**\n * Move the ship\n */\n\nif (ct.keyboard.down['left']) { // Is the left arrow key pressed?\n    this.x -= 8 * ct.delta; // Move to the left by X axis\n}\nif (ct.keyboard.down['right']) { // Is the right arrow key pressed?\n    this.x += 8 * ct.delta; // Move to the right by X axis\n}\n\nif (ct.keyboard.down['up']) { // Is the up arrow key pressed?\n    this.y -= 8 * ct.delta; // Move up by Y axis\n}\nif (ct.keyboard.down['down']) { // Is the right arrow key pressed?\n    this.y += 8 * ct.delta; // Move down by Y axis\n}\n\n/**\n * Check whether the ship fell off the viewport\n */\nif (this.x < 0) { // Have the ship crossed the left border?\n    this.x = 0; // Go back to the left border\n}\nif (this.x > ct.width) { // Have the ship crossed the right border?\n    this.x = ct.width; // Go back to the right border\n}\nif (this.y < ct.height / 2) { // Have the ship crossed the middle line?\n    this.y = ct.height / 2; // Go back to the middle line\n}\nif (this.y > ct.height) { // Have the ship crossed the bottom border?\n    this.y = ct.height; // Go back to the bottom border\n}\n\nif (ct.keyboard.pressed['space']) {\n    ct.types.copy('Laser_Blue', this.x, this.y);\n}\n\nvar hostile = ct.place.occupied(this, this.x, this.y, 'Hostile');\nif (hostile) {\n    hostile.kill = true;\n    ct.room.lives --;\n    if (ct.room.lives <= 0) {\n        this.kill = true;\n        setTimeout(function() {\n            ct.rooms.switch('Main');\n        }, 1000);\n    }\n}\n\nct.types.move(this);",
+      "onstep": "/**\n * Move the ship\n * See Settings > Edit actions panel\n * and \"Actions\" in the docs.\n */\n\nthis.x += 8 * ct.delta * ct.actions.MoveX.value; // Move by X axis\nthis.y += 8 * ct.delta * ct.actions.MoveY.value; // Move by Y axis\n\n/**\n * Check whether the ship fell off the viewport\n */\nif (this.x < 0) { // Have the ship crossed the left border?\n    this.x = 0; // Go back to the left border\n}\nif (this.x > ct.width) { // Have the ship crossed the right border?\n    this.x = ct.width; // Go back to the right border\n}\nif (this.y < ct.height / 2) { // Have the ship crossed the middle line?\n    this.y = ct.height / 2; // Go back to the middle line\n}\nif (this.y > ct.height) { // Have the ship crossed the bottom border?\n    this.y = ct.height; // Go back to the bottom border\n}\n\nif (ct.actions.Shoot.pressed) {\n    ct.types.copy('Laser_Blue', this.x, this.y);\n}\n\nvar hostile = ct.place.occupied(this, this.x, this.y, 'Hostile');\nif (hostile) {\n    hostile.kill = true;\n    ct.room.lives --;\n    if (ct.room.lives <= 0) {\n        this.kill = true;\n        setTimeout(function() {\n            ct.rooms.switch('Main');\n        }, 1000);\n    }\n}\n\nct.types.move(this);",
       "ondraw": "",
       "ondestroy": "",
       "uid": "f5832845-7841-408b-bae7-a72aaffcae6c",
       "graph": "a82335b3-69b6-4de0-bec1-da2dea358142",
-      "lastmod": 1543236963175,
+      "lastmod": 1551276537484,
       "extends": {}
     },
     {
@@ -435,5 +436,56 @@
   "ctjsVersion": "1.0.0-next-2",
   "scripts": [],
   "fonts": [],
-  "skeletons": []
+  "skeletons": [],
+  "actions": [
+    {
+      "name": "Shoot",
+      "methods": [
+        {
+          "code": "keyboard.Space"
+        },
+        {
+          "code": "mouse.Left"
+        }
+      ]
+    },
+    {
+      "name": "MoveY",
+      "methods": [
+        {
+          "code": "keyboard.ArrowUp",
+          "multiplier": -1
+        },
+        {
+          "code": "keyboard.ArrowDown"
+        },
+        {
+          "code": "keyboard.KeyW",
+          "multiplier": -1
+        },
+        {
+          "code": "keyboard.KeyS"
+        }
+      ]
+    },
+    {
+      "name": "MoveX",
+      "methods": [
+        {
+          "code": "keyboard.KeyA",
+          "multiplier": -1
+        },
+        {
+          "code": "keyboard.KeyD"
+        },
+        {
+          "code": "keyboard.ArrowLeft",
+          "multiplier": -1
+        },
+        {
+          "code": "keyboard.ArrowRight"
+        }
+      ]
+    }
+  ]
 }
