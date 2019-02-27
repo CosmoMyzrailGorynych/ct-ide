@@ -72,6 +72,14 @@
         if (!('skeletons' in project)) {
             project.skeletons = [];
         }
+        if (!('actions' in project)) {
+            project.actions = [];
+            if ('keyboard' in project.libs) {
+                delete project.libs.keyboard;
+                project.libs['keyboard.legacy'] = {};
+            }
+            project.libs['mouse.legacy'] = {};
+        }
     };
     
     var adapter = project => {
