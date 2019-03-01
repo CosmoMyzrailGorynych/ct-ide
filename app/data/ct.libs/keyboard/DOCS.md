@@ -22,3 +22,7 @@ Tells if a `shift` button is held now.
 ## ct.keyboard.ctrl
 
 Tells if a `ctrl` button is held now.
+
+## ct.keyboard.clear();
+
+Resets all the parameters listed above.

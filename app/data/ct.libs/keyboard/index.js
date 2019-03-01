@@ -15,9 +15,9 @@
         shift: false,
         ctrl: false,
         clear() {
-            delete ct.keyboard.key;
-            ct.keyboard.pressed = [];
-            ct.keyboard.released = [];
+            delete ct.keyboard.lastKey;
+            delete ct.keyboard.lastCode;
+            ct.keyboard.string = '';
             ct.keyboard.alt = false;
             ct.keyboard.shift = false;
             ct.keyboard.ctrl = false;
