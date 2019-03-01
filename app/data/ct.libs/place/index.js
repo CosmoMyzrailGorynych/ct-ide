@@ -28,8 +28,8 @@
             ], true);
         }
         if (shape.type === 'circle') {
-            if (copy.scale.x === copy.scale.y) {
-                return new SSCD.Circle(position, shape.r * copy.scale.x);
+            if (Math.abs(copy.scale.x) === Math.abs(copy.scale.y)) {
+                return new SSCD.Circle(position, shape.r * Math.abs(copy.scale.x));
             }
             const vertices = [];
             for (let i = 0; i < circlePrecision; i++) {
@@ -40,7 +40,7 @@
                 if (copy.rotation !== 0) {
                     vertices.push(ct.u.rotate(point[0], point[1], copy.rotation));
                 } else {
-                    vertices.push([point[0], point[1]]);
+                    vertices.push(point);
                 }
             }
             return new SSCD.LineStrip(position, vertices, true);

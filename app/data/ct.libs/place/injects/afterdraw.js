@@ -1,6 +1,6 @@
 if (this.x !== this.xprev || this.y !== this.yprev) {
     delete this._shape;
-    const oldHashes = this.$chashes;
+    const oldHashes = this.$chashes || [];
     this.$chashes = ct.place.getHashes(this);
     for (const hash of oldHashes) {
         if (this.$chashes.indexOf(hash) === -1) {
