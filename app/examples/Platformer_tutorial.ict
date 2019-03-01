@@ -3,16 +3,17 @@
   "notes": "/* empty */",
   "libs": {
     "place": {
-      "gridY": 500,
-      "gridX": 500
+      "gridY": 512,
+      "gridX": 512
     },
     "fittoscreen": {
       "scaleOnly": true,
       "mode": "fastScale"
     },
-    "keyboard": {},
     "tween": {},
-    "random": {}
+    "random": {},
+    "keyboard": {},
+    "keyboard.polyfill": {}
   },
   "graphs": [
     {
@@ -41,7 +42,7 @@
       "top": 0,
       "bottom": 32,
       "uid": "3f19a8ef-4dba-4550-b516-0bcaca131ba6",
-      "lastmod": 1536477615243
+      "lastmod": 1551433327315
     },
     {
       "name": "Rocks_Platform",
@@ -69,7 +70,7 @@
       "top": 0,
       "bottom": 40,
       "uid": "60688c59-ff1e-4550-8525-0fc28c4a3d77",
-      "lastmod": 1536478250374
+      "lastmod": 1551433297022
     },
     {
       "name": "Robot_Walking",
@@ -125,7 +126,7 @@
       "top": 69,
       "bottom": 0,
       "uid": "fa8a3c12-0e43-47b0-a27e-e9d9814f8bf5",
-      "lastmod": 1547538567827
+      "lastmod": 1551433289080
     },
     {
       "name": "Robot_Idle",
@@ -153,7 +154,7 @@
       "top": 69,
       "bottom": 0,
       "uid": "6deb1d77-24d2-48d6-82ec-045dcbd9eea5",
-      "lastmod": 1547538575605
+      "lastmod": 1551433287050
     },
     {
       "name": "Heart",
@@ -374,10 +375,10 @@
       "shape": "rect",
       "left": 0,
       "right": 64,
-      "top": 0,
+      "top": -8,
       "bottom": 64,
       "uid": "5749074a-4d92-4aa7-bbde-afb57f1ec4a0",
-      "lastmod": 1536477548988
+      "lastmod": 1551433311266
     },
     {
       "name": "Spikes",
@@ -405,7 +406,7 @@
       "top": -30,
       "bottom": 64,
       "uid": "699ff925-9b32-403f-a292-68ea10034788",
-      "lastmod": 1536478199692
+      "lastmod": 1551433299727
     },
     {
       "name": "BG",
@@ -442,13 +443,15 @@
       "name": "Robot",
       "depth": 0,
       "oncreate": "this.jumpSpeed = -10;\nthis.gravity = 0.5;\n\nthis.hspd = 0; // Horizontal speed\nthis.vspd = 0; // Vertical speed\n\nct.room.follow = this;\nct.room.borderX = 450;\nct.room.borderY = 200;\n\nthis.savedX = this.x;\nthis.savedY = this.y;\n\nthis.animationSpeed = 0.2;\n",
-      "onstep": "this.speed = 4 * ct.delta; // Max horizontal speed\n\nif (ct.place.occupied(this, this.x, this.y, 'Deadly')) {\n    this.x = this.savedX;\n    this.y = this.savedY;\n    this.hspd = 0;\n    this.vspd = 0;\n    ct.room.lives --;\n    if (ct.room.lives <= 0) {\n        ct.rooms.switch(ct.room.name);\n    }\n    return;\n}\nif (ct.keyboard.down['A']) {\n    // If the A key on keyboard is down, then move to left\n    this.hspd = -this.speed;\n    // Set the walking animation and transform the robot to the left\n    if (this.graph !== 'Robot_Walking') {\n        this.graph = 'Robot_Walking';\n        this.play();\n    }\n    this.scale.x = -1;\n} else if (ct.keyboard.down['D']) {\n    // If the D key on keyboard is down, then move to right\n    this.hspd = this.speed;\n    // Set the walking animation and transform the robot to the right\n    if (this.graph !== 'Robot_Walking') {\n        this.graph = 'Robot_Walking';\n        this.play();\n    }\n    this.scale.x = 1;\n} else {\n    // Don't move horizontally if no input\n    this.hspd = 0;\n    this.graph = 'Robot_Idle';\n}\n\n// If there is ground underneath the Robot…\nif (ct.place.occupied(this, this.x, this.y + 1, 'Solid')) {\n    // …and the W key or the spacebar is down…\n    if (ct.keyboard.down['W'] || ct.keyboard.down['space']) {\n        // …then jump!\n        this.vspd = this.jumpSpeed;\n    } else {\n        // Reset our vspeed. We don't want to be buried underground!\n        this.vspd = 0;\n    }\n} else {\n    // If there is no ground  \n    this.vspd += this.gravity * ct.delta;\n    // Set jumping animation!\n    this.graph = 'Robot_Jump';\n}\n\n// Move by horizontal axis, pixel by pixel\nfor (var i = 0; i < Math.abs(this.hspd); i++) {\n    if (ct.place.free(this, this.x + Math.sign(this.hspd), this.y, 'Solid')) {\n        this.x += Math.sign(this.hspd);\n    } else {\n        break;\n    }\n}\n// Do the same for vertical speed\nfor (var i = 0; i < Math.abs(this.vspd); i++) {\n    if (ct.place.free(this, this.x, this.y + Math.sign(this.vspd), 'Solid')) {\n        this.y += Math.sign(this.vspd);\n    } else {\n        break;\n    }\n}",
+      "onstep": "this.speed = 4 * ct.delta; // Max horizontal speed\n\nif (ct.place.occupied(this, this.x, this.y, 'Deadly')) {\n    this.x = this.savedX;\n    this.y = this.savedY;\n    this.hspd = 0;\n    this.vspd = 0;\n    ct.room.lives --;\n    if (ct.room.lives <= 0) {\n        ct.rooms.switch(ct.room.name);\n    }\n    return;\n}\n\nthis.hspd = this.speed * ct.actions.Move.value;\nif (ct.actions.Move.down) {\n    if (this.graph !== 'Robot_Walking') {\n        this.graph = 'Robot_Walking';\n        this.play();\n    }\n    if (this.hspd > 0) {\n        this.scale.x = 1;\n    } else {\n        this.scale.x = -1;\n    }\n} else {\n    // Don't move horizontally if no input\n    this.graph = 'Robot_Idle';\n}\n\n// If there is ground underneath the Robot…\nif (ct.place.occupied(this, this.x, this.y + 1, 'Solid')) {\n    // …and the W key or the spacebar is down…\n    if (ct.actions.Jump.down) {\n        // …then jump!\n        this.vspd = this.jumpSpeed;\n    } else {\n        // Reset our vspeed. We don't want to be buried underground!\n        this.vspd = 0;\n    }\n} else {\n    // If there is no ground  \n    this.vspd += this.gravity * ct.delta;\n    // Set jumping animation!\n    this.graph = 'Robot_Jump';\n}\n\n// Move by horizontal axis, pixel by pixel\nfor (var i = 0; i < Math.abs(this.hspd); i++) {\n    if (ct.place.free(this, this.x + Math.sign(this.hspd), this.y, 'Solid')) {\n        this.x += Math.sign(this.hspd);\n    } else {\n        break;\n    }\n}\n// Do the same for vertical speed\nfor (var i = 0; i < Math.abs(this.vspd); i++) {\n    if (ct.place.free(this, this.x, this.y + Math.sign(this.vspd), 'Solid')) {\n        this.y += Math.sign(this.vspd);\n    } else {\n        break;\n    }\n}",
       "ondraw": "",
       "ondestroy": "",
       "uid": "2d07d12b-9798-418c-a420-3a1ef4dc3ae2",
       "graph": "6deb1d77-24d2-48d6-82ec-045dcbd9eea5",
-      "lastmod": 1547482350363,
-      "extends": {}
+      "lastmod": 1551436011235,
+      "extends": {
+        "ctype": "Robot"
+      }
     },
     {
       "name": "Rocks",
@@ -586,12 +589,12 @@
       "name": "Platform",
       "depth": 0,
       "oncreate": "this.speed = 2;",
-      "onstep": "var robot = ct.place.meet(this, this.x, this.y, 'Robot');\nif (robot) {\n    this.ctype = undefined;\n} else {\n    this.ctype = 'Solid';\n    robot = ct.place.meet(this, this.x, this.y - 1, 'Robot');\n    if (robot) {\n        robot.x += ct.u.ldx(this.speed, this.direction);\n    }\n}\n\nif (ct.place.occupied(this, this.x + this.hspeed * ct.delta, this.y, 'Solid')) {\n    // Flip direction\n    this.direction += 180;\n}\nthis.move();",
+      "onstep": "var robot = ct.place.meet(this, this.x, this.y, 'Robot');\nif (robot) {\n    this.ctype = undefined;\n} else {\n    this.ctype = 'Solid';\n    robot = ct.place.occupied(this, this.x, this.y - 1, 'Robot');\n    if (robot) {\n        robot.x += this.hspeed * ct.delta;\n    }\n}\n\nif (ct.place.occupied(this, this.x + this.hspeed * ct.delta, this.y, 'Solid')) {\n    // Flip direction\n    this.direction += 180;\n}\nthis.move();",
       "ondraw": "",
       "ondestroy": "",
       "uid": "1ae52dda-689d-4780-97ce-c87886fb581a",
       "graph": "3f19a8ef-4dba-4550-b516-0bcaca131ba6",
-      "lastmod": 1547539166838,
+      "lastmod": 1551435993986,
       "extends": {
         "ctype": "Solid"
       }
@@ -6680,5 +6683,40 @@
   "styletick": null,
   "palette": [],
   "fonts": [],
-  "skeletons": []
+  "skeletons": [],
+  "actions": [
+    {
+      "name": "Move",
+      "methods": [
+        {
+          "code": "keyboard.KeyA",
+          "multiplier": -1
+        },
+        {
+          "code": "keyboard.KeyD"
+        },
+        {
+          "code": "keyboard.ArrowLeft",
+          "multiplier": -1
+        },
+        {
+          "code": "keyboard.ArrowRight"
+        }
+      ]
+    },
+    {
+      "name": "Jump",
+      "methods": [
+        {
+          "code": "keyboard.ArrowUp"
+        },
+        {
+          "code": "keyboard.Space"
+        },
+        {
+          "code": "keyboard.KeyW"
+        }
+      ]
+    }
+  ]
 }
