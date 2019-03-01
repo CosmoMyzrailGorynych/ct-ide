@@ -9,7 +9,7 @@
         'ct.types.list[\'Type\']',
         'ct.types.make(\'Type\', x, y)',
         'ct.types.move(copy)',
-        'ct.types.addSpeed(copy, hspeed, vspeed)',
+        'ct.types.addSpeed(copy, speed, dir)',
         'ct.types.each(copy, function() {})',
         'ct.types.with(copy, function() {})',
         'ct.types.copy(\'Type\', x, y)',
