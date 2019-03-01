@@ -36,10 +36,10 @@
         "KeyZ": "Z",
 
         "Space": "Space",
-        "ArrowLeft": "ArrowLeft", 
-        "ArrowUp": "ArrowUp", 
-        "ArrowRight": "ArrowRight", 
-        "ArrowDown": "ArrowDown", 
+        "ArrowLeft": "Left Arrow", 
+        "ArrowUp": "Up Arrow", 
+        "ArrowRight": "Right Arrow", 
+        "ArrowDown": "Down Arrow", 
 
         "Backspace": "Backspace",
         "Delete": "Delete",
@@ -48,8 +48,8 @@
         "Escape": "Escape",
         "Home": "Home",
         "Insert": "Insert",
-        "PageUp": "PageUp",
-        "PageDown": "PageDown",
+        "PageUp": "Page Up",
+        "PageDown": "Page Down",
 
         "ShiftLeft": "Left Shift",
         "ControlLeft": "Left Control",
