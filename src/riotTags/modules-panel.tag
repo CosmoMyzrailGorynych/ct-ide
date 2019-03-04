@@ -81,7 +81,7 @@ modules-panel.panel.view
                                 value="{window.currentProject.libs[currentModuleName][field.id]}" 
                                 onchange="{wire('window.currentProject.libs.' + currentModuleName + '.' + field.id)}"
                             )
-                            //- Это хреновая затея!!!
+                            //- That's a bad idea!!!
                             div(class="desc" if="{field.help}")
                                 raw(ref="raw" content="{md.render(field.help)}")
                 #modulehelp.tabbed(show="{tab === 'modulehelp'}" if="{currentModuleDocs}")
@@ -169,6 +169,11 @@ modules-panel.panel.view
             fs.readJSON(path.join(libsDir, name, 'module.json'), (err, data) => {
                 if (err) {
                     alertify.error(err);
+                    if (name in window.currentProject.libs) {
+                        delete window.currentProject.libs[name];
+                    }
+                    this.currentModule = false;
+                    this.update();
                     return;
                 }
                 this.currentModule = data;
