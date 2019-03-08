@@ -18,7 +18,7 @@
                 this.template = template;
                 this.name = template.name;
                 for (let i = 0, li = template.bgs.length; i < li; i++) {
-                    const bg = new ct.types.Background(template.bgs[i].graph, null, template.bgs[i].depth, template.bgs[i].extends);
+                    const bg = new ct.types.Background(template.bgs[i].texture, null, template.bgs[i].depth, template.bgs[i].extends);
                     this.backgrounds.push(bg);
                     ct.stack.push(bg);
                     this.addChild(bg);
@@ -55,8 +55,8 @@
     var nextRoom;
     ct.rooms = {
         templates: {},
-        addBg(graph, depth) {
-            const bg = new ct.types.Background(graph, null, depth);
+        addBg(texture, depth) {
+            const bg = new ct.types.Background(texture, null, depth);
             ct.room.addChild(bg);
             return bg;
         },

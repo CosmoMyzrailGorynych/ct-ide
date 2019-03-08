@@ -15,443 +15,20 @@
     "keyboard": {},
     "keyboard.polyfill": {}
   },
-  "graphs": [
-    {
-      "name": "Platform",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        0,
-        0
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "imgWidth": 128,
-      "imgHeight": 32,
-      "width": 128,
-      "height": 32,
-      "offx": 0,
-      "offy": 0,
-      "origname": "i3f19a8ef-4dba-4550-b516-0bcaca131ba6.png",
-      "shape": "rect",
-      "left": 0,
-      "right": 128,
-      "top": 0,
-      "bottom": 32,
-      "uid": "3f19a8ef-4dba-4550-b516-0bcaca131ba6",
-      "lastmod": 1551433327315
-    },
-    {
-      "name": "Rocks_Platform",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        0,
-        0
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "imgWidth": 64,
-      "imgHeight": 40,
-      "width": 64,
-      "height": 40,
-      "offx": 0,
-      "offy": 0,
-      "origname": "i60688c59-ff1e-4550-8525-0fc28c4a3d77.png",
-      "shape": "rect",
-      "left": 0,
-      "right": 64,
-      "top": 0,
-      "bottom": 40,
-      "uid": "60688c59-ff1e-4550-8525-0fc28c4a3d77",
-      "lastmod": 1551433297022
-    },
-    {
-      "name": "Robot_Walking",
-      "untill": 0,
-      "grid": [
-        2,
-        1
-      ],
-      "axis": [
-        48,
-        96
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "imgWidth": 192,
-      "imgHeight": 96,
-      "width": 96,
-      "height": 96,
-      "offx": 0,
-      "offy": 0,
-      "origname": "iNaN.png",
-      "shape": "rect",
-      "left": 24,
-      "right": 24,
-      "top": 69,
-      "bottom": 0,
-      "uid": "f3c79ea5-d245-45f2-9316-8f7a1d7c134b",
-      "lastmod": 1547538571075
-    },
-    {
-      "name": "Robot_Jump",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        48,
-        96
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "imgWidth": 96,
-      "imgHeight": 96,
-      "width": 96,
-      "height": 96,
-      "offx": 0,
-      "offy": 0,
-      "origname": "ifa8a3c12-0e43-47b0-a27e-e9d9814f8bf5.png",
-      "shape": "rect",
-      "left": 24,
-      "right": 24,
-      "top": 69,
-      "bottom": 0,
-      "uid": "fa8a3c12-0e43-47b0-a27e-e9d9814f8bf5",
-      "lastmod": 1551433289080
-    },
-    {
-      "name": "Robot_Idle",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        48,
-        96
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "imgWidth": 96,
-      "imgHeight": 96,
-      "width": 96,
-      "height": 96,
-      "offx": 0,
-      "offy": 0,
-      "origname": "i6deb1d77-24d2-48d6-82ec-045dcbd9eea5.png",
-      "shape": "rect",
-      "left": 24,
-      "right": 24,
-      "top": 69,
-      "bottom": 0,
-      "uid": "6deb1d77-24d2-48d6-82ec-045dcbd9eea5",
-      "lastmod": 1551433287050
-    },
-    {
-      "name": "Heart",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        32,
-        32
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "imgWidth": 64,
-      "imgHeight": 64,
-      "width": 64,
-      "height": 64,
-      "offx": 0,
-      "offy": 0,
-      "origname": "i334d338b-4fe4-4168-901e-2315494d37d4.png",
-      "shape": "circle",
-      "left": 32,
-      "right": 32,
-      "top": 32,
-      "bottom": 32,
-      "uid": "334d338b-4fe4-4168-901e-2315494d37d4",
-      "r": 14,
-      "lastmod": 1536472441733
-    },
-    {
-      "name": "GreenCrystal",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        32,
-        32
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "imgWidth": 64,
-      "imgHeight": 64,
-      "width": 64,
-      "height": 64,
-      "offx": 0,
-      "offy": 0,
-      "origname": "if39895d1-731d-4487-9d01-18841158729c.png",
-      "shape": "circle",
-      "left": 0,
-      "right": 64,
-      "top": 0,
-      "bottom": 64,
-      "uid": "f39895d1-731d-4487-9d01-18841158729c",
-      "lastmod": 1536472381160,
-      "r": 15
-    },
-    {
-      "name": "Exit",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        0,
-        0
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "imgWidth": 64,
-      "imgHeight": 64,
-      "width": 64,
-      "height": 64,
-      "offx": 0,
-      "offy": 0,
-      "origname": "ie086f16a-24fd-4f73-b44a-e3e22766ca62.png",
-      "shape": "rect",
-      "left": 0,
-      "right": 64,
-      "top": 0,
-      "bottom": 64,
-      "uid": "e086f16a-24fd-4f73-b44a-e3e22766ca62",
-      "lastmod": 1536472446302
-    },
-    {
-      "name": "Rocks",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        0,
-        0
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "imgWidth": 64,
-      "imgHeight": 64,
-      "width": 64,
-      "height": 64,
-      "offx": 0,
-      "offy": 0,
-      "origname": "i9a6d05c0-477d-47f6-85fe-6c0c8d813df3.png",
-      "shape": "rect",
-      "left": 0,
-      "right": 64,
-      "top": 0,
-      "bottom": 64,
-      "uid": "9a6d05c0-477d-47f6-85fe-6c0c8d813df3",
-      "lastmod": 1547538595652
-    },
-    {
-      "name": "Checkpoint",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        0,
-        0
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "imgWidth": 64,
-      "imgHeight": 64,
-      "width": 64,
-      "height": 64,
-      "offx": 0,
-      "offy": 0,
-      "origname": "ie15a4451-c77c-4347-a99f-436731aff19d.png",
-      "shape": "rect",
-      "left": 0,
-      "right": 64,
-      "top": 0,
-      "bottom": 64,
-      "uid": "e15a4451-c77c-4347-a99f-436731aff19d",
-      "lastmod": 1536472469734
-    },
-    {
-      "name": "Rocks_Top",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        0,
-        0
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "imgWidth": 64,
-      "imgHeight": 64,
-      "width": 64,
-      "height": 64,
-      "offx": 0,
-      "offy": 0,
-      "origname": "i05db3522-55d5-4358-bf09-5e9a6126ed95.png",
-      "shape": "rect",
-      "left": 0,
-      "right": 64,
-      "top": 0,
-      "bottom": 64,
-      "uid": "05db3522-55d5-4358-bf09-5e9a6126ed95"
-    },
-    {
-      "name": "Water",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        0,
-        0
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "imgWidth": 64,
-      "imgHeight": 64,
-      "width": 64,
-      "height": 64,
-      "offx": 0,
-      "offy": 0,
-      "origname": "i9fdb39bb-1685-4ca2-b750-ccb15ca765d2.png",
-      "shape": "rect",
-      "left": 0,
-      "right": 64,
-      "top": 0,
-      "bottom": 64,
-      "uid": "9fdb39bb-1685-4ca2-b750-ccb15ca765d2"
-    },
-    {
-      "name": "Water_Top",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        0,
-        0
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "imgWidth": 64,
-      "imgHeight": 64,
-      "width": 64,
-      "height": 64,
-      "offx": 0,
-      "offy": 0,
-      "origname": "i5749074a-4d92-4aa7-bbde-afb57f1ec4a0.png",
-      "shape": "rect",
-      "left": 0,
-      "right": 64,
-      "top": -8,
-      "bottom": 64,
-      "uid": "5749074a-4d92-4aa7-bbde-afb57f1ec4a0",
-      "lastmod": 1551433311266
-    },
-    {
-      "name": "Spikes",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        0,
-        0
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "imgWidth": 64,
-      "imgHeight": 64,
-      "width": 64,
-      "height": 64,
-      "offx": 0,
-      "offy": 0,
-      "origname": "i699ff925-9b32-403f-a292-68ea10034788.png",
-      "shape": "rect",
-      "left": 0,
-      "right": 64,
-      "top": -30,
-      "bottom": 64,
-      "uid": "699ff925-9b32-403f-a292-68ea10034788",
-      "lastmod": 1551433299727
-    },
-    {
-      "name": "BG",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        0,
-        0
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "imgWidth": 256,
-      "imgHeight": 256,
-      "width": 256,
-      "height": 256,
-      "offx": 0,
-      "offy": 0,
-      "origname": "i92d2ca65-d3a1-45c9-bbd5-5674c6596f98.png",
-      "shape": "rect",
-      "left": 0,
-      "right": 256,
-      "top": 0,
-      "bottom": 256,
-      "uid": "92d2ca65-d3a1-45c9-bbd5-5674c6596f98",
-      "tiled": true,
-      "lastmod": 1542096768616
-    }
-  ],
   "types": [
     {
       "name": "Robot",
       "depth": 0,
       "oncreate": "this.jumpSpeed = -10;\nthis.gravity = 0.5;\n\nthis.hspeed = 0; // Horizontal speed\nthis.vspeed = 0; // Vertical speed\n\nct.room.follow = this;\nct.room.borderX = 450;\nct.room.borderY = 200;\n\nthis.savedX = this.x;\nthis.savedY = this.y;\n\nthis.animationSpeed = 0.2;\n",
-      "onstep": "this.speed = 4 * ct.delta; // Max horizontal speed\n\nif (ct.place.occupied(this, this.x, this.y, 'Deadly')) {\n    this.x = this.savedX;\n    this.y = this.savedY;\n    this.hspeed = 0;\n    this.vspeed = 0;\n    ct.room.lives --;\n    if (ct.room.lives <= 0) {\n        ct.rooms.switch(ct.room.name);\n    }\n    return;\n}\n\nif (ct.actions.MoveLeft.down) {\n    this.hspeed = -this.speed;\n} else if (ct.actions.MoveRight.down) {\n    this.hspeed = this.speed; \n} else {\n    this.hspeed = 0;\n}\n\nif (this.hspeed !== 0) {\n    if (this.graph !== 'Robot_Walking') {\n        this.graph = 'Robot_Walking';\n        this.play();\n    }\n    if (this.hspeed > 0) {\n        this.scale.x = 1;\n    } else {\n        this.scale.x = -1;\n    }\n} else {\n    // Don't move horizontally if no input\n    this.graph = 'Robot_Idle';\n}\n\n// If there is ground underneath the Robot…\nif (ct.place.occupied(this, this.x, this.y + 1, 'Solid')) {\n    console.log('occupied');\n    // …and the W key or the spacebar is down…\n    if (ct.actions.Jump.down) {\n        // …then jump!\n        this.vspeed = this.jumpSpeed;\n    } else {\n        // Reset our vspeed. We don't want to be buried underground!\n        this.vspeed = 0;\n    }\n} else {\n    // If there is no ground  \n    this.vspeed += this.gravity * ct.delta;\n    // Set jumping animation!\n    this.graph = 'Robot_Jump';\n}\n\n// Move by horizontal axis, pixel by pixel\nfor (var i = 0; i < Math.abs(this.hspeed); i++) {\n    if (ct.place.free(this, this.x + Math.sign(this.hspeed), this.y, 'Solid')) {\n        this.x += Math.sign(this.hspeed);\n    } else {\n        break;\n    }\n}\n// Do the same for vertical speed\nfor (var i = 0; i < Math.abs(this.vspeed); i++) {\n    if (ct.place.free(this, this.x, this.y + Math.sign(this.vspeed), 'Solid')) {\n        this.y += Math.sign(this.vspeed);\n    } else {\n        break;\n    }\n}",
+      "onstep": "this.speed = 4 * ct.delta; // Max horizontal speed\n\nif (ct.place.occupied(this, this.x, this.y, 'Deadly')) {\n    this.x = this.savedX;\n    this.y = this.savedY;\n    this.hspd = 0;\n    this.vspd = 0;\n    ct.room.lives --;\n    if (ct.room.lives <= 0) {\n        ct.rooms.switch(ct.room.name);\n    }\n    return;\n}\n\nif (ct.actions.MoveLeft.down) {\n    this.hspd = -this.speed;\n} else if (ct.actions.MoveRight.down) {\n    this.hspd = this.speed; \n} else {\n    this.hspd = 0;\n}\n\nif (this.hspd !== 0) {\n    if (this.tex !== 'Robot_Walking') {\n        this.tex = 'Robot_Walking';\n        this.play();\n    }\n    if (this.hspd > 0) {\n        this.scale.x = 1;\n    } else {\n        this.scale.x = -1;\n    }\n} else {\n    // Don't move horizontally if no input\n    this.tex = 'Robot_Idle';\n}\n\n// If there is ground underneath the Robot…\nif (ct.place.occupied(this, this.x, this.y + 1, 'Solid')) {\n    // …and the W key or the spacebar is down…\n    if (ct.actions.Jump.down) {\n        // …then jump!\n        this.vspd = this.jumpSpeed;\n    } else {\n        // Reset our vspd. We don't want to be buried underground!\n        this.vspd = 0;\n    }\n} else {\n    // If there is no ground  \n    this.vspd += this.gravity * ct.delta;\n    // Set jumping animation!\n    this.tex = 'Robot_Jump';\n}\n\n// Move by horizontal axis, pixel by pixel\nfor (var i = 0; i < Math.abs(this.hspd); i++) {\n    if (ct.place.free(this, this.x + Math.sign(this.hspd), this.y, 'Solid')) {\n        this.x += Math.sign(this.hspd);\n    } else {\n        break;\n    }\n}\n// Do the same for vertical speed\nfor (var i = 0; i < Math.abs(this.vspd); i++) {\n    if (ct.place.free(this, this.x, this.y + Math.sign(this.vspd), 'Solid')) {\n        this.y += Math.sign(this.vspd);\n    } else {\n        break;\n    }\n}",
       "ondraw": "",
       "ondestroy": "",
       "uid": "2d07d12b-9798-418c-a420-3a1ef4dc3ae2",
-      "graph": "6deb1d77-24d2-48d6-82ec-045dcbd9eea5",
       "lastmod": 1551436011235,
       "extends": {
         "ctype": "Robot"
-      }
+      },
+      "texture": "6deb1d77-24d2-48d6-82ec-045dcbd9eea5"
     },
     {
       "name": "Rocks",
@@ -461,11 +38,11 @@
       "ondraw": "",
       "ondestroy": "",
       "uid": "07e424c6-78c2-42c9-b720-df0af00ab44d",
-      "graph": "9a6d05c0-477d-47f6-85fe-6c0c8d813df3",
       "lastmod": 1547538603977,
       "extends": {
         "ctype": "Solid"
-      }
+      },
+      "texture": "9a6d05c0-477d-47f6-85fe-6c0c8d813df3"
     },
     {
       "name": "Rocks_Top",
@@ -475,11 +52,11 @@
       "ondraw": "",
       "ondestroy": "",
       "uid": "f1f632f7-ecd9-4724-8a7a-c5136d48520e",
-      "graph": "05db3522-55d5-4358-bf09-5e9a6126ed95",
       "lastmod": 1547538642032,
       "extends": {
         "ctype": "Solid"
-      }
+      },
+      "texture": "05db3522-55d5-4358-bf09-5e9a6126ed95"
     },
     {
       "name": "Rocks_Platform",
@@ -489,11 +66,11 @@
       "ondraw": "",
       "ondestroy": "",
       "uid": "bf44c3c8-a683-43cd-8925-c5b7e771e152",
-      "graph": "60688c59-ff1e-4550-8525-0fc28c4a3d77",
       "lastmod": 1547538639466,
       "extends": {
         "ctype": "Solid"
-      }
+      },
+      "texture": "60688c59-ff1e-4550-8525-0fc28c4a3d77"
     },
     {
       "name": "Spikes",
@@ -503,11 +80,11 @@
       "ondraw": "",
       "ondestroy": "",
       "uid": "cfa730fa-a010-44af-8e02-d5ad0c86f224",
-      "graph": "699ff925-9b32-403f-a292-68ea10034788",
       "lastmod": 1547538646153,
       "extends": {
         "ctype": "Deadly"
-      }
+      },
+      "texture": "699ff925-9b32-403f-a292-68ea10034788"
     },
     {
       "name": "Water",
@@ -517,11 +94,11 @@
       "ondraw": "",
       "ondestroy": "",
       "uid": "c1aaae5f-3e4c-4e41-8e24-4c2dfe4d43b6",
-      "graph": "9fdb39bb-1685-4ca2-b750-ccb15ca765d2",
       "lastmod": 1547538627465,
       "extends": {
         "ctype": "Deadly"
-      }
+      },
+      "texture": "9fdb39bb-1685-4ca2-b750-ccb15ca765d2"
     },
     {
       "name": "Water_Top",
@@ -531,11 +108,11 @@
       "ondraw": "",
       "ondestroy": "",
       "uid": "807691ae-10c5-4cf6-ba0f-6f53d83367ff",
-      "graph": "5749074a-4d92-4aa7-bbde-afb57f1ec4a0",
       "lastmod": 1547538622609,
       "extends": {
         "ctype": "Deadly"
-      }
+      },
+      "texture": "5749074a-4d92-4aa7-bbde-afb57f1ec4a0"
     },
     {
       "name": "Checkpoint",
@@ -545,9 +122,9 @@
       "ondraw": "",
       "ondestroy": "",
       "uid": "53848ac8-d852-45c1-a0e2-c38e76094e4b",
-      "graph": "e15a4451-c77c-4347-a99f-436731aff19d",
       "lastmod": 1542089948687,
-      "extends": {}
+      "extends": {},
+      "texture": "e15a4451-c77c-4347-a99f-436731aff19d"
     },
     {
       "name": "Exit",
@@ -557,9 +134,9 @@
       "ondraw": "",
       "ondestroy": "",
       "uid": "0fd7f61f-2f06-47e2-b9e3-2782fcd02415",
-      "graph": "e086f16a-24fd-4f73-b44a-e3e22766ca62",
       "lastmod": 1542089952114,
-      "extends": {}
+      "extends": {},
+      "texture": "e086f16a-24fd-4f73-b44a-e3e22766ca62"
     },
     {
       "name": "GreenCrystal",
@@ -569,9 +146,9 @@
       "ondraw": "",
       "ondestroy": "",
       "uid": "54f82143-5c80-4566-8bc9-8c240c1d97a1",
-      "graph": "f39895d1-731d-4487-9d01-18841158729c",
       "lastmod": 1543160213242,
-      "extends": {}
+      "extends": {},
+      "texture": "f39895d1-731d-4487-9d01-18841158729c"
     },
     {
       "name": "Heart",
@@ -581,9 +158,9 @@
       "ondraw": "",
       "ondestroy": "",
       "uid": "3fe668cd-30ee-49ba-8a45-e772bf8832a9",
-      "graph": "334d338b-4fe4-4168-901e-2315494d37d4",
       "lastmod": 1547482179419,
-      "extends": {}
+      "extends": {},
+      "texture": "334d338b-4fe4-4168-901e-2315494d37d4"
     },
     {
       "name": "Platform",
@@ -593,11 +170,11 @@
       "ondraw": "",
       "ondestroy": "",
       "uid": "1ae52dda-689d-4780-97ce-c87886fb581a",
-      "graph": "3f19a8ef-4dba-4550-b516-0bcaca131ba6",
       "lastmod": 1551435993986,
       "extends": {
         "ctype": "Solid"
-      }
+      },
+      "texture": "3f19a8ef-4dba-4550-b516-0bcaca131ba6"
     },
     {
       "name": "CrystalsWidget",
@@ -607,9 +184,9 @@
       "ondraw": "this.x = ct.room.x + 24;\nthis.y = ct.room.y + 24;\n\nthis.text.text = `${ct.room.crystals} / ${ct.room.crystalsTotal}`;",
       "ondestroy": "",
       "uid": "d582eca9-7676-4764-8aa6-9b10895a9b73",
-      "graph": "f39895d1-731d-4487-9d01-18841158729c",
       "lastmod": 1547482200251,
-      "extends": {}
+      "extends": {},
+      "texture": "f39895d1-731d-4487-9d01-18841158729c"
     },
     {
       "name": "HeartsWidget",
@@ -619,9 +196,9 @@
       "ondraw": "this.x = ct.room.x + ct.viewWidth - 24;\nthis.y = ct.room.y + 24;\n\nthis.text.text = ct.room.lives;",
       "ondestroy": "",
       "uid": "3dc14b8e-592f-45a3-9785-52da1b6dbeb8",
-      "graph": "334d338b-4fe4-4168-901e-2315494d37d4",
       "lastmod": 1547482196075,
-      "extends": {}
+      "extends": {},
+      "texture": "334d338b-4fe4-4168-901e-2315494d37d4"
     }
   ],
   "sounds": [],
@@ -686,7 +263,7 @@
       "backgrounds": [
         {
           "depth": "-10",
-          "graph": "92d2ca65-d3a1-45c9-bbd5-5674c6596f98"
+          "texture": "92d2ca65-d3a1-45c9-bbd5-5674c6596f98"
         }
       ],
       "uid": "184045cc-2e0e-47be-8a20-411cb6f9c751",
@@ -2099,7 +1676,7 @@
       "backgrounds": [
         {
           "depth": "-10",
-          "graph": "92d2ca65-d3a1-45c9-bbd5-5674c6596f98"
+          "texture": "92d2ca65-d3a1-45c9-bbd5-5674c6596f98"
         }
       ],
       "uid": "c708ca2b-a3ed-4982-a641-9de251b14d06",
@@ -4292,7 +3869,7 @@
       "backgrounds": [
         {
           "depth": "-10",
-          "graph": "92d2ca65-d3a1-45c9-bbd5-5674c6596f98"
+          "texture": "92d2ca65-d3a1-45c9-bbd5-5674c6596f98"
         }
       ],
       "uid": "ff1cd956-0c2f-403e-83be-1c4d6e821597",
@@ -6720,6 +6297,429 @@
           "code": "keyboard.ArrowLeft"
         }
       ]
+    }
+  ],
+  "textures": [
+    {
+      "name": "Platform",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        0,
+        0
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 128,
+      "imgHeight": 32,
+      "width": 128,
+      "height": 32,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i3f19a8ef-4dba-4550-b516-0bcaca131ba6.png",
+      "shape": "rect",
+      "left": 0,
+      "right": 128,
+      "top": 0,
+      "bottom": 32,
+      "uid": "3f19a8ef-4dba-4550-b516-0bcaca131ba6",
+      "lastmod": 1551433327315
+    },
+    {
+      "name": "Rocks_Platform",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        0,
+        0
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 64,
+      "imgHeight": 40,
+      "width": 64,
+      "height": 40,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i60688c59-ff1e-4550-8525-0fc28c4a3d77.png",
+      "shape": "rect",
+      "left": 0,
+      "right": 64,
+      "top": 0,
+      "bottom": 40,
+      "uid": "60688c59-ff1e-4550-8525-0fc28c4a3d77",
+      "lastmod": 1551433297022
+    },
+    {
+      "name": "Robot_Walking",
+      "untill": 0,
+      "grid": [
+        2,
+        1
+      ],
+      "axis": [
+        48,
+        96
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 192,
+      "imgHeight": 96,
+      "width": 96,
+      "height": 96,
+      "offx": 0,
+      "offy": 0,
+      "origname": "iNaN.png",
+      "shape": "rect",
+      "left": 24,
+      "right": 24,
+      "top": 69,
+      "bottom": 0,
+      "uid": "f3c79ea5-d245-45f2-9316-8f7a1d7c134b",
+      "lastmod": 1547538571075
+    },
+    {
+      "name": "Robot_Jump",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        48,
+        96
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 96,
+      "imgHeight": 96,
+      "width": 96,
+      "height": 96,
+      "offx": 0,
+      "offy": 0,
+      "origname": "ifa8a3c12-0e43-47b0-a27e-e9d9814f8bf5.png",
+      "shape": "rect",
+      "left": 24,
+      "right": 24,
+      "top": 69,
+      "bottom": 0,
+      "uid": "fa8a3c12-0e43-47b0-a27e-e9d9814f8bf5",
+      "lastmod": 1551433289080
+    },
+    {
+      "name": "Robot_Idle",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        48,
+        96
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 96,
+      "imgHeight": 96,
+      "width": 96,
+      "height": 96,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i6deb1d77-24d2-48d6-82ec-045dcbd9eea5.png",
+      "shape": "rect",
+      "left": 24,
+      "right": 24,
+      "top": 69,
+      "bottom": 0,
+      "uid": "6deb1d77-24d2-48d6-82ec-045dcbd9eea5",
+      "lastmod": 1551433287050
+    },
+    {
+      "name": "Heart",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        32,
+        32
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 64,
+      "imgHeight": 64,
+      "width": 64,
+      "height": 64,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i334d338b-4fe4-4168-901e-2315494d37d4.png",
+      "shape": "circle",
+      "left": 32,
+      "right": 32,
+      "top": 32,
+      "bottom": 32,
+      "uid": "334d338b-4fe4-4168-901e-2315494d37d4",
+      "r": 14,
+      "lastmod": 1536472441733
+    },
+    {
+      "name": "GreenCrystal",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        32,
+        32
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 64,
+      "imgHeight": 64,
+      "width": 64,
+      "height": 64,
+      "offx": 0,
+      "offy": 0,
+      "origname": "if39895d1-731d-4487-9d01-18841158729c.png",
+      "shape": "circle",
+      "left": 0,
+      "right": 64,
+      "top": 0,
+      "bottom": 64,
+      "uid": "f39895d1-731d-4487-9d01-18841158729c",
+      "lastmod": 1536472381160,
+      "r": 15
+    },
+    {
+      "name": "Exit",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        0,
+        0
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 64,
+      "imgHeight": 64,
+      "width": 64,
+      "height": 64,
+      "offx": 0,
+      "offy": 0,
+      "origname": "ie086f16a-24fd-4f73-b44a-e3e22766ca62.png",
+      "shape": "rect",
+      "left": 0,
+      "right": 64,
+      "top": 0,
+      "bottom": 64,
+      "uid": "e086f16a-24fd-4f73-b44a-e3e22766ca62",
+      "lastmod": 1536472446302
+    },
+    {
+      "name": "Rocks",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        0,
+        0
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 64,
+      "imgHeight": 64,
+      "width": 64,
+      "height": 64,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i9a6d05c0-477d-47f6-85fe-6c0c8d813df3.png",
+      "shape": "rect",
+      "left": 0,
+      "right": 64,
+      "top": 0,
+      "bottom": 64,
+      "uid": "9a6d05c0-477d-47f6-85fe-6c0c8d813df3",
+      "lastmod": 1547538595652
+    },
+    {
+      "name": "Checkpoint",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        0,
+        0
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 64,
+      "imgHeight": 64,
+      "width": 64,
+      "height": 64,
+      "offx": 0,
+      "offy": 0,
+      "origname": "ie15a4451-c77c-4347-a99f-436731aff19d.png",
+      "shape": "rect",
+      "left": 0,
+      "right": 64,
+      "top": 0,
+      "bottom": 64,
+      "uid": "e15a4451-c77c-4347-a99f-436731aff19d",
+      "lastmod": 1536472469734
+    },
+    {
+      "name": "Rocks_Top",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        0,
+        0
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 64,
+      "imgHeight": 64,
+      "width": 64,
+      "height": 64,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i05db3522-55d5-4358-bf09-5e9a6126ed95.png",
+      "shape": "rect",
+      "left": 0,
+      "right": 64,
+      "top": 0,
+      "bottom": 64,
+      "uid": "05db3522-55d5-4358-bf09-5e9a6126ed95"
+    },
+    {
+      "name": "Water",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        0,
+        0
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 64,
+      "imgHeight": 64,
+      "width": 64,
+      "height": 64,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i9fdb39bb-1685-4ca2-b750-ccb15ca765d2.png",
+      "shape": "rect",
+      "left": 0,
+      "right": 64,
+      "top": 0,
+      "bottom": 64,
+      "uid": "9fdb39bb-1685-4ca2-b750-ccb15ca765d2"
+    },
+    {
+      "name": "Water_Top",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        0,
+        0
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 64,
+      "imgHeight": 64,
+      "width": 64,
+      "height": 64,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i5749074a-4d92-4aa7-bbde-afb57f1ec4a0.png",
+      "shape": "rect",
+      "left": 0,
+      "right": 64,
+      "top": -8,
+      "bottom": 64,
+      "uid": "5749074a-4d92-4aa7-bbde-afb57f1ec4a0",
+      "lastmod": 1551433311266
+    },
+    {
+      "name": "Spikes",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        0,
+        0
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 64,
+      "imgHeight": 64,
+      "width": 64,
+      "height": 64,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i699ff925-9b32-403f-a292-68ea10034788.png",
+      "shape": "rect",
+      "left": 0,
+      "right": 64,
+      "top": -30,
+      "bottom": 64,
+      "uid": "699ff925-9b32-403f-a292-68ea10034788",
+      "lastmod": 1551433299727
+    },
+    {
+      "name": "BG",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        0,
+        0
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 256,
+      "imgHeight": 256,
+      "width": 256,
+      "height": 256,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i92d2ca65-d3a1-45c9-bbd5-5674c6596f98.png",
+      "shape": "rect",
+      "left": 0,
+      "right": 256,
+      "top": 0,
+      "bottom": 256,
+      "uid": "92d2ca65-d3a1-45c9-bbd5-5674c6596f98",
+      "tiled": true,
+      "lastmod": 1542096768616
     }
   ]
 }

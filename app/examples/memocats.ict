@@ -2,66 +2,11 @@
   "notes": "/* empty */",
   "libs": {
     "random": {},
-    "mouse": {}
-  },
-  "graphs": [
-    {
-      "name": "Memocats",
-      "untill": 0,
-      "grid": [
-        7,
-        3
-      ],
-      "axis": [
-        64,
-        98
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "imgWidth": 896,
-      "imgHeight": 588,
-      "width": 128,
-      "height": 196,
-      "offx": 0,
-      "offy": 0,
-      "origname": "i1.png",
-      "shape": "rect",
-      "left": 64,
-      "right": 64,
-      "top": 98,
-      "bottom": 98,
-      "lastmod": 1543394164568,
-      "uid": "366c01b5-4ed5-4ca5-bf01-8731a04be2c4"
-    },
-    {
-      "name": "Bg",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        0,
-        0
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "imgWidth": 980,
-      "imgHeight": 700,
-      "width": 980,
-      "height": 700,
-      "offx": 0,
-      "offy": 0,
-      "origname": "i2.png",
-      "shape": "rect",
-      "left": 0,
-      "right": 980,
-      "top": 0,
-      "bottom": 700,
-      "lastmod": 1522741667520,
-      "uid": "c1b1284b-8dba-4886-9bf7-52b66cc08911"
+    "mouse": {},
+    "fittoscreen": {
+      "mode": "scaleFit"
     }
-  ],
+  },
   "types": [
     {
       "name": "Card",
@@ -71,9 +16,9 @@
       "ondraw": "if (this.flipped) {\n    this.gotoAndStop(this.backFrame);\n} else {\n    this.gotoAndStop(0);\n}",
       "ondestroy": "",
       "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c",
-      "graph": "366c01b5-4ed5-4ca5-bf01-8731a04be2c4",
-      "lastmod": 1543394492644,
-      "extends": {}
+      "lastmod": 1552045072345,
+      "extends": {},
+      "texture": "366c01b5-4ed5-4ca5-bf01-8731a04be2c4"
     }
   ],
   "sounds": [
@@ -127,7 +72,7 @@
       "backgrounds": [
         {
           "depth": "-10",
-          "graph": "c1b1284b-8dba-4886-9bf7-52b66cc08911"
+          "texture": "c1b1284b-8dba-4886-9bf7-52b66cc08911"
         }
       ],
       "uid": "3827e721-5331-49b2-a37a-f868e15cae0d",
@@ -206,7 +151,7 @@
       "backgrounds": [
         {
           "depth": "-10",
-          "graph": "c1b1284b-8dba-4886-9bf7-52b66cc08911"
+          "texture": "c1b1284b-8dba-4886-9bf7-52b66cc08911"
         }
       ],
       "uid": "a751fef2-0632-4105-b90b-51ffba3f38f5",
@@ -297,7 +242,7 @@
       "backgrounds": [
         {
           "depth": "-10",
-          "graph": "c1b1284b-8dba-4886-9bf7-52b66cc08911"
+          "texture": "c1b1284b-8dba-4886-9bf7-52b66cc08911"
         }
       ],
       "uid": "4cd06702-30ed-4d80-8609-c1128f14f6a8",
@@ -398,7 +343,6 @@
       ]
     }
   ],
-  "graphtick": 2,
   "soundtick": 6,
   "roomtick": 3,
   "typetick": 1,
@@ -431,5 +375,64 @@
   "scripts": [],
   "fonts": [],
   "skeletons": [],
-  "actions": []
+  "actions": [],
+  "textures": [
+    {
+      "name": "Memocats",
+      "untill": 0,
+      "grid": [
+        7,
+        3
+      ],
+      "axis": [
+        64,
+        98
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 896,
+      "imgHeight": 588,
+      "width": 128,
+      "height": 196,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i1.png",
+      "shape": "rect",
+      "left": 64,
+      "right": 64,
+      "top": 98,
+      "bottom": 98,
+      "lastmod": 1543394164568,
+      "uid": "366c01b5-4ed5-4ca5-bf01-8731a04be2c4"
+    },
+    {
+      "name": "Bg",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        0,
+        0
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 980,
+      "imgHeight": 700,
+      "width": 980,
+      "height": 700,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i2.png",
+      "shape": "rect",
+      "left": 0,
+      "right": 980,
+      "top": 0,
+      "bottom": 700,
+      "lastmod": 1522741667520,
+      "uid": "c1b1284b-8dba-4886-9bf7-52b66cc08911"
+    }
+  ],
+  "texturetick": 2
 }

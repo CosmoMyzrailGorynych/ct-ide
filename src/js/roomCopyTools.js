@@ -3,21 +3,21 @@
     const clickThreshold = 16;
 
     const drawInsertPreview = function (e) {
-        let img, graph, w, h, grax, gray, ox, oy;
+        let img, texture, w, h, grax, gray, ox, oy;
         // превью вставки
         this.refreshRoomCanvas();
         this.refs.canvas.x.setTransform(this.zoomFactor, 0, 0, this.zoomFactor, 0, 0);
         this.refs.canvas.x.globalAlpha = 0.5;
-        if (this.currentType.graph !== -1) {
-            img = window.glob.graphmap[this.currentType.graph];
-            graph = img.g;
-            ox = graph.offx;
-            oy = graph.offy;
-            w = graph.width;
-            h = graph.height;
-            [grax, gray] = graph.axis;
+        if (this.currentType.texture !== -1) {
+            img = window.glob.texturemap[this.currentType.texture];
+            texture = img.g;
+            ox = texture.offx;
+            oy = texture.offy;
+            w = texture.width;
+            h = texture.height;
+            [grax, gray] = texture.axis;
         } else {
-            img = window.glob.graphmap[-1];
+            img = window.glob.texturemap[-1];
             w = h = 32;
             ox = oy = 0;
             grax = gray = 16;
@@ -31,8 +31,8 @@
             // если есть сетка, то координаты предварительной копии нужно отснэпить по сетке
             var dx = this.xToRoom(e.offsetX),
                 dy = this.yToRoom(e.offsetY);
-            w = graph.width;
-            h = graph.height;
+            w = texture.width;
+            h = texture.height;
             this.refs.canvas.x.drawImage(
                 img, ox, oy, w, h,
                 this.xToCanvas(Math.round(dx / this.room.gridX) * this.room.gridX) / this.zoomFactor - grax,
@@ -68,7 +68,7 @@
                     for (const copy of this.selectedCopies) {
                         var x = this.xToRoom(this.startx),
                             y = this.yToRoom(this.starty);
-                        const {g} = glob.graphmap[window.currentProject.types[glob.typemap[copy.uid]].graph];
+                        const {g} = glob.texturemap[window.currentProject.types[glob.typemap[copy.uid]].texture];
                         if (x > copy.x - g.axis[0] && y > copy.y - g.axis[1] &&
                             x < copy.x - g.axis[0] + g.width && y < copy.y - g.axis[1] + g.height) {
                             this.movingStuff = true;
@@ -92,7 +92,7 @@
                     ymin = Math.min(y1, y2),
                     ymax = Math.max(y1, y2);
                 for (const copy of this.room.copies) {
-                    const {g} = glob.graphmap[window.currentProject.types[glob.typemap[copy.uid]].graph];
+                    const {g} = glob.texturemap[window.currentProject.types[glob.typemap[copy.uid]].texture];
                     const x1 = copy.x - g.axis[0] * (copy.tx || 1),
                           x2 = copy.x - (g.axis[0] - g.width) * (copy.tx || 1),
                           y1 = copy.y - g.axis[1] * (copy.ty || 1),

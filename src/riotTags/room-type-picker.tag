@@ -15,7 +15,7 @@ room-type-picker.room-editor-TypeSwatches.tabbed.tall
         class="{active: parent.opts.current === type}"
     )
         span {type.name}
-        img(src="{type.graph === -1? '/data/img/nograph.png' : (glob.graphmap[type.graph].src.split('?')[0] + '_prev.png?' + getTypeGraphRevision(type))}")
+        img(src="{type.texture === -1? '/data/img/notexture.png' : (glob.texturemap[type.texture].src.split('?')[0] + '_prev.png?' + getTypeTextureRevision(type))}")
     .room-editor-aTypeSwatch.filler
     .room-editor-aTypeSwatch.filler
     .room-editor-aTypeSwatch.filler
@@ -29,7 +29,7 @@ room-type-picker.room-editor-TypeSwatches.tabbed.tall
         this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
         
-        this.getTypeGraphRevision = type => window.glob.graphmap[type.graph].g.lastmod;
+        this.getTypeTextureRevision = type => window.glob.texturemap[type.texture].g.lastmod;
 
         this.updateTypeList = () => {
             this.types = [...window.currentProject.types];

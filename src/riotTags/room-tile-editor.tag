@@ -22,7 +22,7 @@ room-tile-editor.room-editor-Tiles.tabbed.tall.flexfix
                 i.icon-shuffle
             span.act(title="{vocGlob.add}" onclick="{addTileLayer}")
                 i.icon-plus
-    graphic-selector(ref="tilesetPicker" if="{pickingTileset}" oncancelled="{onTilesetCancel}" onselected="{onTilesetSelected}")
+    texture-selector(ref="tilesetPicker" if="{pickingTileset}" oncancelled="{onTilesetCancel}" onselected="{onTilesetSelected}")
     script.
         this.parent.tileX = 0;
         this.parent.tileY = 0;
@@ -113,8 +113,8 @@ room-tile-editor.room-editor-Tiles.tabbed.tall.flexfix
             this.pickingTileset = false;
             this.update();
         };
-        this.onTilesetSelected = graph => e => {
-            this.parent.currentTileset = graph;
+        this.onTilesetSelected = texture => e => {
+            this.parent.currentTileset = texture;
             this.pickingTileset = false;
             this.redrawTileset();
             this.update();
@@ -124,7 +124,7 @@ room-tile-editor.room-editor-Tiles.tabbed.tall.flexfix
             var c = this.refs.tiledImage,
                 cx = c.getContext('2d'),
                 g = this.parent.currentTileset,
-                i = glob.graphmap[g.uid];
+                i = glob.texturemap[g.uid];
             c.width = i.width;
             c.height = i.height;
             cx.globalAlpha = 1;

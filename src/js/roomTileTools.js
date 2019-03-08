@@ -17,7 +17,7 @@
                         ymin = Math.min(y1, y2),
                         ymax = Math.max(y1, y2);
                     for (const tile of this.currentTileLayer.tiles) {
-                        const {g} = glob.graphmap[tile.graph];
+                        const {g} = glob.texturemap[tile.texture];
                         if (tile.x > xmin && tile.x + g.width < xmax &&
                             tile.y > ymin && tile.y + g.height < ymax) {
                             this.selectedTiles.push(tile);
@@ -65,12 +65,12 @@
                     this.refreshRoomCanvas(e);
                     this.refs.canvas.x.setTransform(this.zoomFactor, 0, 0, this.zoomFactor, 0, 0);
                     this.refs.canvas.x.globalAlpha = 0.5;
-                    const img = glob.graphmap[this.currentTileset.uid],
-                          graph = this.currentTileset;
-                    const sx = graph.offx + (graph.width + graph.marginx) * this.tileX - graph.marginx,
-                          sy = graph.offy + (graph.height + graph.marginy) * this.tileY - graph.marginy,
-                          w = (graph.width + graph.marginx) * this.tileSpanX - graph.marginx,
-                          h = (graph.height + graph.marginy) * this.tileSpanY - graph.marginy;
+                    const img = glob.texturemap[this.currentTileset.uid],
+                          texture = this.currentTileset;
+                    const sx = texture.offx + (texture.width + texture.marginx) * this.tileX - texture.marginx,
+                          sy = texture.offy + (texture.height + texture.marginy) * this.tileY - texture.marginy,
+                          w = (texture.width + texture.marginx) * this.tileSpanX - texture.marginx,
+                          h = (texture.height + texture.marginy) * this.tileSpanY - texture.marginy;
                     if (this.room.gridX === 0 || e.altKey) {
                         this.refs.canvas.x.drawImage(
                             img,
@@ -117,7 +117,7 @@
                         this.currentTileLayer.tiles.push({
                             x: this.lastTileX,
                             y: this.lastTileY,
-                            graph: this.currentTileset.uid,
+                            texture: this.currentTileset.uid,
                             grid: [this.tileX, this.tileY, this.tileSpanX, this.tileSpanY]
                         });
                     }
@@ -132,7 +132,7 @@
                         this.currentTileLayer.tiles.push({
                             x: this.lastTileX,
                             y: this.lastTileY,
-                            graph: this.currentTileset.uid,
+                            texture: this.currentTileset.uid,
                             grid: [this.tileX, this.tileY, this.tileSpanX, this.tileSpanY]
                         });
                     }
@@ -168,14 +168,14 @@
                     }
                 }
                 var tile = this.currentTileLayer.tiles[pos],
-                    graph = glob.graphmap[tile.graph].g;
+                    texture = glob.texturemap[tile.texture].g;
                 this.closestPos = pos;
                 // рисовка выделения тайла
                 this.refreshRoomCanvas();
                 var left = tile.x - 1.5,
                     top = tile.y - 1.5,
-                    width = ((graph.width + graph.marginx) * tile.grid[2]) - graph.marginx + 3,
-                    height = ((graph.height + graph.marginy) * tile.grid[3]) - graph.marginy + 3;
+                    width = ((texture.width + texture.marginx) * tile.grid[2]) - texture.marginx + 3,
+                    height = ((texture.height + texture.marginy) * tile.grid[3]) - texture.marginy + 3;
                 this.drawSelection(left, top, left+width, top+height);
         
                 this.forbidDrawing = true;

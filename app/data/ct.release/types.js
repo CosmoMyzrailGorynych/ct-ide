@@ -2,7 +2,7 @@
     const onCreateModifier = function () {
         /*%oncreate%*/
     };
-    const graphAccessor = Symbol('graph');
+    const textureAccessor = Symbol('texture');
     class Copy extends PIXI.extras.AnimatedSprite {
         constructor(type, x, y, exts) {
             var t;
@@ -11,10 +11,10 @@
                     throw new Error(`[ct.types] An attempt to create a copy of a non-existent type \`${type}\` detected. A typo?`);
                 }
                 t = ct.types.templates[type];
-                if (t.graph && t.graph !== '-1') {
-                    const textures = ct.res.getTexture(t.graph);
+                if (t.texture && t.texture !== '-1') {
+                    const textures = ct.res.getTexture(t.texture);
                     super(textures);
-                    this[graphAccessor] = t.graph;
+                    this[textureAccessor] = t.texture;
                     this.anchor.x = textures[0].defaultAnchor.x;
                     this.anchor.y = textures[0].defaultAnchor.y;
                 } else {
@@ -49,7 +49,7 @@
                     onDraw: t.onDraw,
                     onCreate: t.onCreate,
                     onDestroy: t.onDestroy,
-                    shape: t.graph ? ct.res.registry[t.graph].shape : {}
+                    shape: t.texture ? ct.res.registry[t.texture].shape : {}
                 });
                 if (ct.types.list[type]) {
                     ct.types.list[type].push(this);
@@ -90,11 +90,15 @@
             return this.speed;
         }
 
-        set graph(value) {
+        set tex(value) {
             this.textures = ct.res.getTexture(value);
-            this[graphAccessor] = value;
+            this[textureAccessor] = value;
             return value;
         }
+        get tex() {
+            return this[textureAccessor];
+        }
+
         get speed() {
             return Math.hypot(this.hspeed, this.vspeed);
         }
@@ -123,9 +127,7 @@
             this.transform.rotation = value * Math.PI / -180;
             return value;
         }
-        get graph() {
-            return this[graphAccessor];
-        }
+        
         move() {
             // performs movement step with Copy `o`
             if (this.gravity) {
@@ -201,7 +203,7 @@
             this.tiles = data.tiles;
             ct.types.list.TILELAYER.push(this);
             for (let i = 0, l = data.tiles.length; i < l; i++) {
-                const textures = ct.res.getTexture(data.tiles[i].graph);
+                const textures = ct.res.getTexture(data.tiles[i].texture);
                 const sprite = new PIXI.Sprite(textures[data.tiles[i].frame]);
                 this.addChild(sprite);
                 sprite.x = data.tiles[i].x;

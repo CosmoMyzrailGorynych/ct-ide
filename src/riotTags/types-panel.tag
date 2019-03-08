@@ -17,7 +17,7 @@ types-panel.panel.view
         ul.cards.flexfix-body
             li(each="{type in (searchResults? searchResults : types)}" onclick="{openType(type)}" oncontextmenu="{onTypeContextMenu}")
                 span {type.name}
-                img(src="{type.graph !== -1 ? (glob.graphmap[type.graph].src.split('?')[0] + '_prev.png?' + getTypeGraphRevision(type)) : '/data/img/nograph.png'}")
+                img(src="{type.texture !== -1 ? (glob.texturemap[type.texture].src.split('?')[0] + '_prev.png?' + getTypeTextureRevision(type)) : '/data/img/notexture.png'}")
     type-editor(if="{editingType}" type="{editedType}")
     script.
         this.namespace = 'types';
@@ -85,7 +85,7 @@ types-panel.panel.view
             window.signals.off('projectLoaded', this.setUpPanel);
         });
 
-        this.getTypeGraphRevision = type => window.glob.graphmap[type.graph].g.lastmod;
+        this.getTypeTextureRevision = type => window.glob.texturemap[type.texture].g.lastmod;
 
         this.fillTypeMap = () => {
             delete window.glob.typemap;
@@ -105,7 +105,7 @@ types-panel.panel.view
                 ondraw: '',
                 ondestroy: '',
                 uid: id,
-                graph: -1,
+                texture: -1,
                 extends: {}
             };
             window.currentProject.types.push(obj);

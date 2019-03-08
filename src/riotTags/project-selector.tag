@@ -55,7 +55,7 @@ project-selector
             this.parent.selectorVisible = false;
             this.update();
         })
-        this.projectSplash = '/data/img/nograph.png';
+        this.projectSplash = '/data/img/notexture.png';
         this.newVersion = false;
         
         // Загрузка списка последних проектов из локального хранилища
@@ -99,7 +99,7 @@ project-selector
                         csscss: "body {\n    background: #000;\n}"
                     }
                 },
-                graphs: [],
+                textures: [],
                 types: [],
                 sounds: [],
                 styles: [],
@@ -132,8 +132,8 @@ project-selector
             fs.ensureDir(sessionStorage.projdir + '/img');
             fs.ensureDir(sessionStorage.projdir + '/snd');
             fs.ensureDir(sessionStorage.projdir + '/include');
-            setTimeout(() => { // почему-то это нужно делать через setTimeout, иначе функция просто не выполняется.
-                window.megacopy('./data/img/nograph.png', path.join(sessionStorage.projdir + '/img/splash.png'), e => {
+            setTimeout(() => { // for some reason, it must be done through setTimeout; otherwise it fails
+                window.megacopy('./data/img/notexture.png', path.join(sessionStorage.projdir + '/img/splash.png'), e => {
                     if (e) {
                         alertify.error(e);
                         console.error(e);

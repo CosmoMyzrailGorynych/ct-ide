@@ -93,7 +93,7 @@ rooms-panel.panel.view
         this.roomCreate = function () {
             var guid = window.generateGUID(),
                 thumbnail = guid.split('-').pop();
-            fs.copy('./data/img/nograph.png', path.join(sessionStorage.projdir, '/img/r' + thumbnail + '.png'), () => {
+            fs.copy('./data/img/notexture.png', path.join(sessionStorage.projdir, '/img/r' + thumbnail + '.png'), () => {
                 var newRoom = {
                     name: 'Room_' + thumbnail,
                     oncreate: '',

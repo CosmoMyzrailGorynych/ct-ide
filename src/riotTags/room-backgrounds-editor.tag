@@ -1,11 +1,11 @@
 room-backgrounds-editor.room-editor-Backgrounds.tabbed.tall
     ul
         li.bg(each="{background, ind in opts.room.backgrounds}" oncontextmenu="{onContextMenu}")
-            img(src="{background.graph === -1? '/img/nograph.png' : (glob.graphmap[background.graph].src.split('?')[0] + '_prev.png?' + glob.graphmap[background.graph].g.lastmod)}" onclick="{onChangeBgGraphic}")
+            img(src="{background.texture === -1? '/img/notexture.png' : (glob.texturemap[background.texture].src.split('?')[0] + '_prev.png?' + glob.texturemap[background.texture].g.lastmod)}" onclick="{onChangeBgTexture}")
             span 
                 span(class="{active: detailedBackground === background}" onclick="{editBackground}")
                     .icon-settings
-                | {glob.graphmap[background.graph].g.name} ({background.depth})
+                | {glob.texturemap[background.texture].g.name} ({background.depth})
             .clear
             div(if="{detailedBackground === background}")
                 .clear
@@ -52,7 +52,7 @@ room-backgrounds-editor.room-editor-Backgrounds.tabbed.tall
     button.inline.wide(onclick="{addBg}")
         i.icon-plus
         span {voc.add}
-    graphic-selector(ref="graphPicker" if="{pickingBackground}" oncancelled="{onGraphCancel}" onselected="{onGraphSelected}")
+    texture-selector(ref="texturePicker" if="{pickingBackground}" oncancelled="{onTextureCancel}" onselected="{onTextureSelected}")
     script.
         const gui = require('nw.gui');
         this.pickingBackground = false;
@@ -64,13 +64,13 @@ room-backgrounds-editor.room-editor-Backgrounds.tabbed.tall
                 this.parent.refreshRoomCanvas();
             }
         });
-        this.onGraphSelected = graph => e => {
-            this.editingBackground.graph = graph.uid;
+        this.onTextureSelected = texture => e => {
+            this.editingBackground.texture = texture.uid;
             this.pickingBackground = false;
             this.creatingBackground = false;
             this.update();
         };
-        this.onGraphCancel = e => {
+        this.onTextureCancel = e => {
             this.pickingBackground = false;
             if (this.creatingBackground) {
                 let bgs = this.opts.room.backgrounds;
@@ -83,7 +83,7 @@ room-backgrounds-editor.room-editor-Backgrounds.tabbed.tall
         this.addBg = function () {
             var newBg = {
                 depth: 0,
-                graph: -1,
+                texture: -1,
                 extends: {}
             };
             this.opts.room.backgrounds.push(newBg);
@@ -110,7 +110,7 @@ room-backgrounds-editor.room-editor-Backgrounds.tabbed.tall
                 this.update();
             }
         }));
-        this.onChangeBgGraphic = e => {
+        this.onChangeBgTexture = e => {
             this.pickingBackground = true;
             this.editingBackground = e.item.background;
             this.update();
@@ -124,7 +124,6 @@ room-backgrounds-editor.room-editor-Backgrounds.tabbed.tall
         };
 
         this.editBackground = e => {
-            console.log(e);
             if (this.detailedBackground === e.item.background) {
                 this.detailedBackground = void 0;
             } else {

@@ -1,8 +1,8 @@
 type-editor.panel.view.flexrow
     .c3.tall.flexfix
         .flexfix-header
-            #typegraph.panel(onclick="{changeSprite}")
-                img.ohchangeme(src="{type.graph === -1? '/data/img/nograph.png' : (glob.graphmap[type.graph].src.split('?')[0] + '_prev@2.png?' + getTypeGraphRevision(type)) + getTypeGraphRevision(type)}")
+            #typetexture.panel(onclick="{changeSprite}")
+                img.ohchangeme(src="{type.texture === -1? '/data/img/notexture.png' : (glob.texturemap[type.texture].src.split('?')[0] + '_prev@2.png?' + getTypeTextureRevision(type)) + getTypeTextureRevision(type)}")
                 div {voc.change}
             b {voc.name}
             input#typename.wide(type="text" onchange="{wire('this.type.name')}" value="{type.name}")
@@ -64,13 +64,13 @@ type-editor.panel.view.flexrow
                     .acer(ref="typeondraw")
                 #typeondestroy.tabbed(show="{tab === 'typeondestroy'}")
                     .acer(ref="typeondestroy")
-    graphic-selector(if="{selectingGraphic}" onselected="{applyGraphic}" oncancelled="{cancelGraphic}" ref="graphicselector" showempty="sure")
+    texture-selector(if="{selectingTexture}" onselected="{applyTexture}" oncancelled="{cancelTexture}" ref="textureselector" showempty="sure")
     script.
         this.namespace = 'typeview';
         this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
 
-        this.getTypeGraphRevision = type => window.glob.graphmap[type.graph].g.lastmod;
+        this.getTypeTextureRevision = type => window.glob.texturemap[type.texture].g.lastmod;
         
         const libsDir = './data/ct.libs';
         const fs = require('fs-extra'),
@@ -171,20 +171,20 @@ type-editor.panel.view.flexrow
             }
         })
         this.changeSprite = e => {
-            this.selectingGraphic = true;
+            this.selectingTexture = true;
         };
-        this.applyGraphic = graph => e => {
-            if (graph === -1) {
-                this.type.graph = -1;
+        this.applyTexture = texture => e => {
+            if (texture === -1) {
+                this.type.texture = -1;
             } else {
-                this.type.graph = graph.uid;
+                this.type.texture = texture.uid;
             }
-            this.selectingGraphic = false;
+            this.selectingTexture = false;
             this.parent.fillTypeMap();
             this.update();
         };
-        this.cancelGraphic = e => {
-            this.selectingGraphic = false;
+        this.cancelTexture = e => {
+            this.selectingTexture = false;
             this.update();
         };
         this.typeSave = e => {
