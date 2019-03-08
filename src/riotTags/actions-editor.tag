@@ -75,7 +75,7 @@ actions-editor.panel.view.pad
         };
         this.deleteMethod = action => e => {
             const ind = action.methods.indexOf(e.item.method);
-            action.methods.splice(ind);
+            action.methods.splice(ind, 1);
         };
         this.saveActions = e => {
             this.parent.editingActions = false;
