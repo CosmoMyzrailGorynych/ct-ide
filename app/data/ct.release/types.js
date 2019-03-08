@@ -7,6 +7,9 @@
         constructor(type, x, y, exts) {
             var t;
             if (type) {
+                if (!(type in ct.types.templates)) {
+                    throw new Error(`[ct.types] An attempt to create a copy of a non-existent type \`${type}\` detected. A typo?`);
+                }
                 t = ct.types.templates[type];
                 if (t.graph && t.graph !== '-1') {
                     const textures = ct.res.getTexture(t.graph);
