@@ -263,9 +263,3 @@ style-editor.panel.view
                 });
             });
         };
-        this.applyTexture = texture => e => {
-            this.styleobj.fill.patId = texture.uid;
-            this.selectingTexture = false;
-            this.update();
-            this.refreshStyleTexture();
-        };
