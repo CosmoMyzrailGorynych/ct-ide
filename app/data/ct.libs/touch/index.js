@@ -3,8 +3,8 @@
         var rect = ct.pixiApp.view.getBoundingClientRect();
         var touch = {
             id: e.identifier,
-            x: (e.clientX - rect.left) * ct.width / rect.width + ct.rooms.current.x,
-            y: (e.clientY - rect.top) * ct.height / rect.height + ct.rooms.current.y,
+            x: (e.clientX - rect.left) * ct.viewWidth / rect.width + ct.rooms.current.x,
+            y: (e.clientY - rect.top) * ct.viewHeight / rect.height + ct.rooms.current.y,
             r: e.radiusX? Math.max(e.radiusX, e.radiusY) : 0
         };
         touch.xprev = touch.x;
@@ -48,8 +48,8 @@
                   upd = findTouch(e.changedTouches[i].identifier);
             if (upd) {
                 const rect = ct.pixiApp.view.getBoundingClientRect();
-                upd.x = (touch.clientX - rect.left) * ct.width / rect.width + ct.rooms.current.x;
-                upd.y = (touch.clientY - rect.top) * ct.height / rect.height + ct.rooms.current.y;
+                upd.x = (touch.clientX - rect.left) * ct.viewWidth / rect.width + ct.rooms.current.x;
+                upd.y = (touch.clientY - rect.top) * ct.viewHeight / rect.height + ct.rooms.current.y;
                 upd.r = touch.radiusX? Math.max(touch.radiusX, touch.radiusY) : 0;
                 ct.touch.x = upd.x;
                 ct.touch.y = upd.y;
@@ -73,8 +73,8 @@
         const rect = ct.pixiApp.view.getBoundingClientRect();
         var touch = {
             id: -1,
-            x: (e.clientX - rect.left) * ct.width / rect.width + ct.rooms.current.x,
-            y: (e.clientY - rect.top) * ct.height / rect.height + ct.rooms.current.y,
+            x: (e.clientX - rect.left) * ct.viewWidth / rect.width + ct.rooms.current.x,
+            y: (e.clientY - rect.top) * ct.viewHeight / rect.height + ct.rooms.current.y,
             r: 0
         };
         ct.touch.down.push(touch);
@@ -86,8 +86,8 @@
         const rect = ct.pixiApp.view.getBoundingClientRect(),
               touch = findTouch(-1);
         if (touch) {
-            touch.x = (e.clientX - rect.left) * ct.width / rect.width + ct.rooms.current.x;
-            touch.y = (e.clientY - rect.top) * ct.height / rect.height + ct.rooms.current.y;
+            touch.x = (e.clientX - rect.left) * ct.viewWidth / rect.width + ct.rooms.current.x;
+            touch.y = (e.clientY - rect.top) * ct.viewHeight / rect.height + ct.rooms.current.y;
             ct.touch.x = touch.x;
             ct.touch.y = touch.y;
         }

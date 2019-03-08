@@ -177,11 +177,7 @@ ct.loop = function(delta) {
     ct.inputs.updateActions();
     for (let i = 0, li = ct.stack.length; i < li; i++) {
         ct.types.beforeStep.apply(ct.stack[i]);
-        
-        ct.stack[i].xprev = ct.stack[i].x;
-        ct.stack[i].yprev = ct.stack[i].y;
         ct.stack[i].onStep.apply(ct.stack[i]);
-        
         ct.types.afterStep.apply(ct.stack[i]);
     }
 
@@ -258,6 +254,8 @@ ct.loop = function(delta) {
         ct.types.beforeDraw.apply(ct.stack[i]);
         ct.stack[i].onDraw.apply(ct.stack[i]);
         ct.types.afterDraw.apply(ct.stack[i]);
+        ct.stack[i].xprev = ct.stack[i].x;
+        ct.stack[i].yprev = ct.stack[i].y;
     }
 
     ct.rooms.beforeDraw.apply(r);
