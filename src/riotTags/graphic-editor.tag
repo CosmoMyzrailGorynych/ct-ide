@@ -140,32 +140,32 @@ graphic-editor.panel.view
     )
     .graphic-editor-anAtlas(style="background-color: {previewColor};")
         .graphview-tools
-            label.toright.file(title="{voc.replacegraph}")
-                input(type="file" ref="graphReplacer" accept=".png,.jpg,.jpeg,.bmp,.gif" onchange="{graphReplace}")
-                .button.inline
-                    i.icon-folder
-                    span {voc.replacegraph}
-            .button.inline.toright(title="{voc.reimport}" if="{opts.graphic.source}" onclick="{reimport}")
-                i.icon-refresh-ccw
-            //- TODO
-            //-
-                .button-stack
-                    button.inline(title="#graphview.tools.flipvertical" onclick="{graphicFlipVertical}")
-                        i.icon-flip-vertical
-                    button.inline(title="#graphview.tools.fliphorizontal" onclick="{graphicFlipHorizontal}")
-                        i.icon-flip-horisontal
-                    button.inline(title="#graphview.tools.resize" onclick="{graphicResize}")
-                        i.icon-maximize
-        canvas(ref="graphCanvas")
+            .toright
+                label.file(title="{voc.replacegraph}")
+                    input(type="file" ref="graphReplacer" accept=".png,.jpg,.jpeg,.bmp,.gif" onchange="{graphReplace}")
+                    .button.inline
+                        i.icon-folder
+                        span {voc.replacegraph}
+                .button.inline(title="{voc.reimport}" if="{opts.graphic.source}" onclick="{reimport}")
+                    i.icon-refresh-ccw
+        .graphview-zoom
+            div.button-stack.inlineblock
+                button#graphiczoom25.inline(onclick="{graphicToggleZoom(0.25)}" class="{active: zoomFactor === 0.25}") 25%
+                button#graphiczoom50.inline(onclick="{graphicToggleZoom(0.5)}" class="{active: zoomFactor === 0.5}") 50%
+                button#graphiczoom100.inline(onclick="{graphicToggleZoom(1)}" class="{active: zoomFactor === 1}") 100%
+                button#graphiczoom200.inline(onclick="{graphicToggleZoom(2)}" class="{active: zoomFactor === 2}") 200%
+                button#graphiczoom400.inline(onclick="{graphicToggleZoom(4)}" class="{active: zoomFactor === 4}") 400%
+
+        canvas(ref="graphCanvas" onmousewheel="{onCanvasWheel}" style="transform: scale({zoomFactor}); image-rendering: {zoomFactor > 1? 'pixelated' : '-webkit-optimize-contrast'}; transform-origin: 0% 0%;")
         .aDragger(
-            style="left: {opts.graphic.axis[0]}px; top: {opts.graphic.axis[1]}px;"
+            style="left: {opts.graphic.axis[0] * zoomFactor}px; top: {opts.graphic.axis[1] * zoomFactor}px;"
             title="{voc.moveCenter}"
             onmousedown="{startMoving('axis')}"
         )
         .aDragger(
             if="{opts.graphic.shape === 'strip'}"
             each="{point, ind in opts.graphic.stripPoints}"
-            style="left: {point.x + graphic.axis[0]}px; top: {point.y + graphic.axis[1]}px;"
+            style="left: {(point.x + graphic.axis[0]) * zoomFactor}px; top: {(point.y + graphic.axis[1]) * zoomFactor}px;"
             title="{voc.movePoint}"
             onmousedown="{startMoving('point')}"
         )
@@ -182,6 +182,7 @@ graphic-editor.panel.view
         this.prevSpeed = 10;
         this.prevShowMask = true;
         this.previewColor = localStorage.UItheme === 'Day'? '#ffffff' : '#08080D';
+        this.zoomFactor = 1;
         
         var graphCanvas, grprCanvas;
         
@@ -281,33 +282,35 @@ graphic-editor.panel.view
             });
         };
         
-        // TODO
-        this.graphicDeleteFrame = e => {
-            
+        this.graphicToggleZoom = zoom => e => {
+            this.zoomFactor = zoom;
         };
-        this.graphicDuplicateFrame = e => {
-            
-        };
-        this.graphicAddFrame = e => {
-            
-        };
-        this.graphicShift = e => {
-            
-        };
-        this.graphicFlipVertical = e => {
-            
-        };
-        this.graphicFlipHorizontal = e => {
-            
-        };
-        this.graphicRotate = e => {
-            
-        };
-        this.graphicResize = e => {
-            
-        };
-        this.graphicCrop = e => {
-            
+        /** Change zoomFactor on mouse wheel roll */
+        this.onCanvasWheel = e => {
+            if (e.wheelDelta > 0) {
+                // in
+                if (this.zoomFactor === 2) {
+                    this.zoomFactor = 4;
+                } else if (this.zoomFactor === 1) {
+                    this.zoomFactor = 2;
+                } else if (this.zoomFactor === 0.5) {
+                    this.zoomFactor = 1;
+                } else if (this.zoomFactor === 0.25) {
+                    this.zoomFactor = 0.5;
+                }
+            } else {
+                // out
+                if (this.zoomFactor === 4) {
+                    this.zoomFactor = 2;
+                } else if (this.zoomFactor === 2) {
+                    this.zoomFactor = 1;
+                } else if (this.zoomFactor === 1) {
+                    this.zoomFactor = 0.5;
+                } else if (this.zoomFactor === 0.5) {
+                    this.zoomFactor = 0.25;
+                }
+            }
+            this.update();
         };
 
         /**
@@ -507,8 +510,8 @@ graphic-editor.panel.view
                 const oldX = this.graphic.axis[0],
                       oldY = this.graphic.axis[1];
                 const func = e => {
-                    this.graphic.axis[0] = e.screenX - startX + oldX;
-                    this.graphic.axis[1] = e.screenY - startY + oldY;
+                    this.graphic.axis[0] = (e.screenX - startX) / this.zoomFactor + oldX;
+                    this.graphic.axis[1] = (e.screenY - startY) / this.zoomFactor + oldY;
                     this.update();
                 }, func2 = () => {
                     document.removeEventListener('mousemove', func);
@@ -521,8 +524,8 @@ graphic-editor.panel.view
                       oldX = point.x,
                       oldY = point.y;
                 const func = e => {
-                    point.x = e.screenX - startX + oldX;
-                    point.y = e.screenY - startY + oldY;
+                    point.x = (e.screenX - startX) / this.zoomFactor + oldX;
+                    point.y = (e.screenY - startY) / this.zoomFactor + oldY;
                     this.update();
                 }, func2 = () => {
                     document.removeEventListener('mousemove', func);
@@ -579,11 +582,6 @@ graphic-editor.panel.view
                     }
                     graphCanvas.x.stroke();
                 }
-                graphCanvas.x.globalAlpha = 1;
-                graphCanvas.x.fillStyle = '#f33';
-                graphCanvas.x.beginPath();
-                graphCanvas.x.arc(this.graphic.axis[0], this.graphic.axis[1], 3, 0, 2 * Math.PI);
-                graphCanvas.x.fill();
             }
         };
         
