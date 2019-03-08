@@ -20,8 +20,9 @@ actions-editor.panel.view.pad
                 .c4.npl.breakon800
                     .flexrow.middle
                         div.relative.wide
-                            input.wide(type="text" placeholder="{voc.inputActionNamePlaceholder}" value="{action.name}" onchange="{wire('window.currentProject.actions.'+ ind +'.name')}")
+                            input.wide(type="text" placeholder="{voc.inputActionNamePlaceholder}" value="{action.name}" onchange="{checkActionNameAndSave}")
                             .anErrorNotice(if="{nameTaken === action.name}") {vocGlob.nametaken} 
+                            .anErrorNotice(if="{action.name.trim() === ''}") {vocGlob.cannotBeEmpty} 
                         .spacer
                         i.a.icon-x(title="{voc.deleteAction}" onclick="{deleteAction}")
                 .c8.npr.breakon800
@@ -29,6 +30,7 @@ actions-editor.panel.view.pad
                         li.flexrow.middle.npl(each="{method, mInd in action.methods}")
                             .fifty.npt.npl.npb
                                 code.inline {method.code}
+                                i.icon-alert-circle.orange(if="{!(method.code.split('.')[0] in currentProject.libs)}" title="{voc.methodModuleMissing}")
                             .fifty.npt.npr.npb
                                 b {voc.multiplier}:
                                 input.short(
@@ -77,6 +79,15 @@ actions-editor.panel.view.pad
             const ind = action.methods.indexOf(e.item.method);
             action.methods.splice(ind, 1);
         };
+        this.checkActionNameAndSave = e => {
+            console.log(e);
+            this.nameTaken = void 0;
+            e.item.action.name = e.currentTarget.value.trim();
+            if (currentProject.actions.find(action => action !== e.item.action && action.name === e.item.action.name)) {
+                this.nameTaken = e.item.action.name;
+            }
+        };
+
         this.saveActions = e => {
             this.parent.editingActions = false;
             this.parent.update();

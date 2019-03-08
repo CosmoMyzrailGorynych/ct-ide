@@ -10,6 +10,7 @@
         "addtonotes": "Add to notes",
         "apply": "Apply",
         "cancel": "Cancel",
+        "cannotBeEmpty": "This cannot be empty",
         "confirmDelete": "Are you sure you want to delete {0}? It cannot be undone.",
         "copy": "Copy",
         "copyName": "Copy the name",
@@ -55,6 +56,7 @@
         "deleteAction": "Delete this action",
         "deleteMethod": "Delete this method",
         "inputActionNamePlaceholder": "Action name",
+        "methodModuleMissing": "The required module for this method is missing",
         "methods": "Input methods",
         "multiplier": "Multiplier",
         "noActionsYet": "Actions allow developers to listen to numerous input methods at once and dynamically change them, all with one uniform API. Read more by clicking on the docs icon above."
