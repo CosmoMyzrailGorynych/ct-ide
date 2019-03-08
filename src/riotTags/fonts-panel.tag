@@ -157,8 +157,7 @@ fonts-panel.flexfix.tall.fifty
                 weight: obj.weight,
                 style: obj.italic? 'italic' : 'normal'
             };
-            console.log(obj.typefaceName);
-            var face = new FontFace(obj.typefaceName, `url(file://${source})`, template);
+            var face = new FontFace('CTPROJFONT' + obj.typefaceName, `url(file://${source})`, template);
             var elt = document.createElement('span');
             elt.innerHTML = 'testString';
             elt.style.fontFamily = obj.typefaceName;
@@ -166,7 +165,7 @@ fonts-panel.flexfix.tall.fifty
             face.load()
             .then(loaded => {
                 loaded.external = true;
-                loaded.ctId = obj.uid;
+                loaded.ctId = face.ctId = obj.uid;
                 document.fonts.add(loaded);
                 var c = document.createElement('canvas'), 
                     w, h;
@@ -174,7 +173,6 @@ fonts-panel.flexfix.tall.fifty
                 c.width = c.height = size;
                 c.x.clearRect(0, 0, size, size);
                 c.x.font = `${obj.italic? 'italic ' : ''}${obj.weight} ${Math.floor(size * 0.75)}px "${loaded.family}"`;
-                console.log(c.x.font);
                 c.x.fillStyle = '#000';
                 c.x.fillText('Aa', size * 0.05, size * 0.75);
                 // strip off the data:image url prefix to get just the base64-encoded bytes
@@ -243,11 +241,11 @@ fonts-panel.flexfix.tall.fifty
                         style: font.italic? 'italic' : 'normal'
                     },
                     source = `${sessionStorage.projdir}/fonts/${font.origname}`;
-                var face = new FontFace(font.typefaceName, `url(file://${source})`, template);
+                var face = new FontFace('CTPROJFONT' + font.typefaceName, `url(file://${source})`, template);
                 face.load()
                 .then(loaded => {
                     loaded.external = true;
-                    loaded.ctId = font.uid;
+                    loaded.ctId = face.ctId = font.uid;
                     document.fonts.add(loaded);
                 });
             }
