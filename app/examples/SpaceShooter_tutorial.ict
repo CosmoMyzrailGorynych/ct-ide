@@ -22,8 +22,8 @@
         1
       ],
       "axis": [
-        56,
-        37
+        55.5,
+        39.25
       ],
       "marginx": 0,
       "marginy": 0,
@@ -34,14 +34,45 @@
       "offx": 0,
       "offy": 0,
       "origname": "i1.png",
-      "shape": "rect",
+      "shape": "strip",
       "left": 50,
       "right": 50,
       "top": 12,
       "bottom": 32,
-      "lastmod": 1551001509208,
+      "lastmod": 1552035691040,
       "r": 37,
-      "uid": "a82335b3-69b6-4de0-bec1-da2dea358142"
+      "uid": "a82335b3-69b6-4de0-bec1-da2dea358142",
+      "stripPoints": [
+        {
+          "x": 11.5,
+          "y": -19
+        },
+        {
+          "x": 55.5,
+          "y": 3.5
+        },
+        {
+          "x": 38.25,
+          "y": 31.75
+        },
+        {
+          "x": -38.5,
+          "y": 32
+        },
+        {
+          "x": -55.25,
+          "y": 4
+        },
+        {
+          "x": -11.25,
+          "y": -18.25
+        },
+        {
+          "x": 0.25,
+          "y": -40.5
+        }
+      ],
+      "closedStrip": true
     },
     {
       "name": "LaserRed",
@@ -68,7 +99,7 @@
       "right": 48,
       "top": 0,
       "bottom": 46,
-      "lastmod": 1530925105354,
+      "lastmod": 1552035694113,
       "r": 23,
       "uid": "083c3d39-1a4a-44f2-9fae-e4043e45f28e"
     },
@@ -97,7 +128,7 @@
       "right": 5,
       "top": 27,
       "bottom": 27,
-      "lastmod": 1530922400318,
+      "lastmod": 1552035707940,
       "uid": "3dde237d-ec51-4153-8b31-58279ece7c55"
     },
     {
@@ -120,14 +151,41 @@
       "offx": 0,
       "offy": 0,
       "origname": "i4.png",
-      "shape": "circle",
+      "shape": "strip",
       "left": 51,
       "right": 52,
       "top": 42,
       "bottom": 42,
-      "lastmod": 1530922397691,
+      "lastmod": 1552035979330,
       "r": 42,
-      "uid": "feb33556-81c7-4794-a806-da5ddea5be81"
+      "uid": "feb33556-81c7-4794-a806-da5ddea5be81",
+      "stripPoints": [
+        {
+          "x": 27.75,
+          "y": -35.25
+        },
+        {
+          "x": 50.75,
+          "y": -2.75
+        },
+        {
+          "x": 37.5,
+          "y": 41.5
+        },
+        {
+          "x": -38.75,
+          "y": 40.5
+        },
+        {
+          "x": -51,
+          "y": -2
+        },
+        {
+          "x": -25.5,
+          "y": -36.25
+        }
+      ],
+      "closedStrip": true
     },
     {
       "name": "Asteroid_Medium",
@@ -149,14 +207,41 @@
       "offx": 0,
       "offy": 0,
       "origname": "i5.png",
-      "shape": "circle",
+      "shape": "strip",
       "left": 21,
       "right": 22,
       "top": 21,
       "bottom": 22,
-      "lastmod": 1551001857218,
+      "lastmod": 1552035960459,
       "r": 21,
-      "uid": "aa5664f9-a2c3-47b2-8f0f-2dfead9c67c9"
+      "uid": "aa5664f9-a2c3-47b2-8f0f-2dfead9c67c9",
+      "stripPoints": [
+        {
+          "x": 17.5,
+          "y": -18
+        },
+        {
+          "x": 20.5,
+          "y": 8.25
+        },
+        {
+          "x": -0.75,
+          "y": 20.75
+        },
+        {
+          "x": -13,
+          "y": 17
+        },
+        {
+          "x": -21.25,
+          "y": -3.25
+        },
+        {
+          "x": -9.5,
+          "y": -19.25
+        }
+      ],
+      "closedStrip": true
     },
     {
       "name": "Asteroid_Big",
@@ -178,34 +263,42 @@
       "offx": 0,
       "offy": 0,
       "origname": "i6.png",
-      "shape": "circle",
+      "shape": "strip",
       "left": 50,
       "right": 51,
       "top": 42,
       "bottom": 42,
-      "lastmod": 1551001852807,
+      "lastmod": 1552035775666,
       "r": 42,
       "uid": "4e5cb233-48f8-4f20-abaf-384f4551e1e9",
       "stripPoints": [
         {
-          "x": 0,
-          "y": -42
+          "x": 50.75,
+          "y": -2
         },
         {
-          "x": 48,
-          "y": -13
+          "x": 34.5,
+          "y": 32.5
         },
         {
-          "x": 30,
-          "y": 34
+          "x": 9.75,
+          "y": 28.5
         },
         {
-          "x": -30,
-          "y": 34
+          "x": -22.75,
+          "y": 40.75
         },
         {
-          "x": -48,
-          "y": -13
+          "x": -50.5,
+          "y": 8.75
+        },
+        {
+          "x": -33.5,
+          "y": -40.75
+        },
+        {
+          "x": 23.5,
+          "y": -41.5
         }
       ],
       "closedStrip": true
