@@ -442,8 +442,8 @@
     {
       "name": "Robot",
       "depth": 0,
-      "oncreate": "this.jumpSpeed = -10;\nthis.gravity = 0.5;\n\nthis.hspd = 0; // Horizontal speed\nthis.vspd = 0; // Vertical speed\n\nct.room.follow = this;\nct.room.borderX = 450;\nct.room.borderY = 200;\n\nthis.savedX = this.x;\nthis.savedY = this.y;\n\nthis.animationSpeed = 0.2;\n",
-      "onstep": "this.speed = 4 * ct.delta; // Max horizontal speed\n\nif (ct.place.occupied(this, this.x, this.y, 'Deadly')) {\n    this.x = this.savedX;\n    this.y = this.savedY;\n    this.hspd = 0;\n    this.vspd = 0;\n    ct.room.lives --;\n    if (ct.room.lives <= 0) {\n        ct.rooms.switch(ct.room.name);\n    }\n    return;\n}\n\nthis.hspd = this.speed * ct.actions.Move.value;\nif (ct.actions.Move.down) {\n    if (this.graph !== 'Robot_Walking') {\n        this.graph = 'Robot_Walking';\n        this.play();\n    }\n    if (this.hspd > 0) {\n        this.scale.x = 1;\n    } else {\n        this.scale.x = -1;\n    }\n} else {\n    // Don't move horizontally if no input\n    this.graph = 'Robot_Idle';\n}\n\n// If there is ground underneath the Robot…\nif (ct.place.occupied(this, this.x, this.y + 1, 'Solid')) {\n    // …and the W key or the spacebar is down…\n    if (ct.actions.Jump.down) {\n        // …then jump!\n        this.vspd = this.jumpSpeed;\n    } else {\n        // Reset our vspeed. We don't want to be buried underground!\n        this.vspd = 0;\n    }\n} else {\n    // If there is no ground  \n    this.vspd += this.gravity * ct.delta;\n    // Set jumping animation!\n    this.graph = 'Robot_Jump';\n}\n\n// Move by horizontal axis, pixel by pixel\nfor (var i = 0; i < Math.abs(this.hspd); i++) {\n    if (ct.place.free(this, this.x + Math.sign(this.hspd), this.y, 'Solid')) {\n        this.x += Math.sign(this.hspd);\n    } else {\n        break;\n    }\n}\n// Do the same for vertical speed\nfor (var i = 0; i < Math.abs(this.vspd); i++) {\n    if (ct.place.free(this, this.x, this.y + Math.sign(this.vspd), 'Solid')) {\n        this.y += Math.sign(this.vspd);\n    } else {\n        break;\n    }\n}",
+      "oncreate": "this.jumpSpeed = -10;\nthis.gravity = 0.5;\n\nthis.hspeed = 0; // Horizontal speed\nthis.vspeed = 0; // Vertical speed\n\nct.room.follow = this;\nct.room.borderX = 450;\nct.room.borderY = 200;\n\nthis.savedX = this.x;\nthis.savedY = this.y;\n\nthis.animationSpeed = 0.2;\n",
+      "onstep": "this.speed = 4 * ct.delta; // Max horizontal speed\n\nif (ct.place.occupied(this, this.x, this.y, 'Deadly')) {\n    this.x = this.savedX;\n    this.y = this.savedY;\n    this.hspeed = 0;\n    this.vspeed = 0;\n    ct.room.lives --;\n    if (ct.room.lives <= 0) {\n        ct.rooms.switch(ct.room.name);\n    }\n    return;\n}\n\nif (ct.actions.MoveLeft.down) {\n    this.hspeed = -this.speed;\n} else if (ct.actions.MoveRight.down) {\n    this.hspeed = this.speed; \n} else {\n    this.hspeed = 0;\n}\n\nif (this.hspeed !== 0) {\n    if (this.graph !== 'Robot_Walking') {\n        this.graph = 'Robot_Walking';\n        this.play();\n    }\n    if (this.hspeed > 0) {\n        this.scale.x = 1;\n    } else {\n        this.scale.x = -1;\n    }\n} else {\n    // Don't move horizontally if no input\n    this.graph = 'Robot_Idle';\n}\n\n// If there is ground underneath the Robot…\nif (ct.place.occupied(this, this.x, this.y + 1, 'Solid')) {\n    console.log('occupied');\n    // …and the W key or the spacebar is down…\n    if (ct.actions.Jump.down) {\n        // …then jump!\n        this.vspeed = this.jumpSpeed;\n    } else {\n        // Reset our vspeed. We don't want to be buried underground!\n        this.vspeed = 0;\n    }\n} else {\n    // If there is no ground  \n    this.vspeed += this.gravity * ct.delta;\n    // Set jumping animation!\n    this.graph = 'Robot_Jump';\n}\n\n// Move by horizontal axis, pixel by pixel\nfor (var i = 0; i < Math.abs(this.hspeed); i++) {\n    if (ct.place.free(this, this.x + Math.sign(this.hspeed), this.y, 'Solid')) {\n        this.x += Math.sign(this.hspeed);\n    } else {\n        break;\n    }\n}\n// Do the same for vertical speed\nfor (var i = 0; i < Math.abs(this.vspeed); i++) {\n    if (ct.place.free(this, this.x, this.y + Math.sign(this.vspeed), 'Solid')) {\n        this.y += Math.sign(this.vspeed);\n    } else {\n        break;\n    }\n}",
       "ondraw": "",
       "ondestroy": "",
       "uid": "2d07d12b-9798-418c-a420-3a1ef4dc3ae2",
@@ -6686,18 +6686,10 @@
   "skeletons": [],
   "actions": [
     {
-      "name": "Move",
+      "name": "MoveRight",
       "methods": [
         {
-          "code": "keyboard.KeyA",
-          "multiplier": -1
-        },
-        {
           "code": "keyboard.KeyD"
-        },
-        {
-          "code": "keyboard.ArrowLeft",
-          "multiplier": -1
         },
         {
           "code": "keyboard.ArrowRight"
@@ -6708,13 +6700,24 @@
       "name": "Jump",
       "methods": [
         {
-          "code": "keyboard.ArrowUp"
+          "code": "keyboard.KeyW"
         },
         {
           "code": "keyboard.Space"
         },
         {
-          "code": "keyboard.KeyW"
+          "code": "keyboard.ArrowUp"
+        }
+      ]
+    },
+    {
+      "name": "MoveLeft",
+      "methods": [
+        {
+          "code": "keyboard.KeyA"
+        },
+        {
+          "code": "keyboard.ArrowLeft"
         }
       ]
     }
