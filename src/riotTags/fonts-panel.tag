@@ -100,7 +100,6 @@ fonts-panel.flexfix.tall.fifty
                     if (e.buttonClicked === 'ok') {
                         const ind = window.currentProject.fonts.indexOf(this.editedFont);
                         window.currentProject.fonts.splice(ind, 1);
-                        this.updateList();
                         this.update();
                         alertify
                         .okBtn(window.languageJSON.common.ok)
@@ -116,13 +115,14 @@ fonts-panel.flexfix.tall.fifty
         this.fontImport = e => { // e.target:input[type="file"]
             var i;
             files = e.target.value.split(';');
+            e.target.value = '';
             for (i = 0; i < files.length; i++) {
                 if (/\.ttf/gi.test(files[i])) {
                     let id = window.generateGUID();
                     this.loadFont(
                         id,
                         files[i],
-                        sessionStorage.projdir + '/fonts/f' + id + '.ttf',
+                        path.join(sessionStorage.projdir, '/fonts/f' + id + '.ttf'),
                         true
                     );
                 } else {
