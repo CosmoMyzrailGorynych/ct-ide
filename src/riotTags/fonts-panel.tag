@@ -149,8 +149,8 @@ fonts-panel.flexfix.tall.fifty
                     this.fontGenPreview(dest, dest + '_prev.png', 64, obj)
                     .then(dataUrl => {
                         this.update();
-                    });
-                }, 250)
+                    }, err => {console.log(err)});
+                }, 1000)
             });
         };
         this.fontGenPreview = (source, destFile, size, obj) => new Promise ((resolve, reject) => {
@@ -158,7 +158,9 @@ fonts-panel.flexfix.tall.fifty
                 weight: obj.weight,
                 style: obj.italic? 'italic' : 'normal'
             };
-            var face = new FontFace('CTPROJFONT' + obj.typefaceName, `url(file://${source})`, template);
+            // we clean the source url from the possible space and the \ to / (windows specific)
+            var cleanedSource = source.replace(/ /g, '%20').replace(/\\/g, '/');
+            var face = new FontFace('CTPROJFONT' + obj.typefaceName, `url(file://${cleanedSource})`, template);
             var elt = document.createElement('span');
             elt.innerHTML = 'testString';
             elt.style.fontFamily = obj.typefaceName;
