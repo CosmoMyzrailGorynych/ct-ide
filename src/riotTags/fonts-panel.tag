@@ -149,8 +149,8 @@ fonts-panel.flexfix.tall.fifty
                     this.fontGenPreview(dest, dest + '_prev.png', 64, obj)
                     .then(dataUrl => {
                         this.update();
-                    }, err => {console.log(err)});
-                }, 1000)
+                    });
+                }, 250)
             });
         };
         this.fontGenPreview = (source, destFile, size, obj) => new Promise ((resolve, reject) => {
