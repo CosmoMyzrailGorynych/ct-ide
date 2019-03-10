@@ -100,7 +100,6 @@ fonts-panel.flexfix.tall.fifty
                     if (e.buttonClicked === 'ok') {
                         const ind = window.currentProject.fonts.indexOf(this.editedFont);
                         window.currentProject.fonts.splice(ind, 1);
-                        this.updateList();
                         this.update();
                         alertify
                         .okBtn(window.languageJSON.common.ok)
@@ -244,7 +243,8 @@ fonts-panel.flexfix.tall.fifty
                         style: font.italic? 'italic' : 'normal'
                     },
                     source = `${sessionStorage.projdir}/fonts/${font.origname}`;
-                var face = new FontFace('CTPROJFONT' + font.typefaceName, `url(file://${source})`, template);
+                    var cleanedSource = source.replace(/ /g, '%20').replace(/\\/g, '/');    
+                var face = new FontFace('CTPROJFONT' + font.typefaceName, `url(file://${cleanedSource})`, template);
                 face.load()
                 .then(loaded => {
                     loaded.external = true;
