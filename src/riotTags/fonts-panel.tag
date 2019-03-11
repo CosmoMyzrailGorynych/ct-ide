@@ -130,6 +130,7 @@ fonts-panel.flexfix.tall.fifty
                 }
             }
             this.dropping = false;
+            e.srcElement.value = ""; // clear input value that prevent to upload the same filename again
             e.preventDefault();
         };
         this.loadFont = (uid, filename, dest, imprt) => {
