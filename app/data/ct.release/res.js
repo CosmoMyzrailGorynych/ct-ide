@@ -5,12 +5,9 @@
     /* global dragonBones */
     const dbFactory = window.dragonBones? dragonBones.PixiFactory.factory : null;
     ct.res = {
-        texturesLoaded: 0,
-        texturesError: 0,
         soundsLoaded: 0,
         soundsTotal: [/*@sndtotal@*/][0],
         soundsError: 0,
-        images: {},
         sounds: {},
         registry: [/*@textureregistry@*/][0],
         skelRegistry: [/*@skeletonregistry@*/][0],
