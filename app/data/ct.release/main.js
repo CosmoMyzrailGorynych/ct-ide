@@ -140,6 +140,7 @@ ct.u = {
                 o1[i] = o2[i];
             }
         }
+        return o1;
     },
     load(url, callback) {
         var script = document.createElement('script');
