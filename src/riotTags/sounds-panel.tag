@@ -109,7 +109,7 @@ sounds-panel.panel.view
         soundMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.open,
             click: () => {
-                this.openSound(this.editedSound);
+                this.openSound(this.editedSound)();
             }
         }));
         soundMenu.append(new gui.MenuItem({

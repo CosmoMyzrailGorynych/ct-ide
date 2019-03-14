@@ -356,9 +356,9 @@ textures-panel.panel.view
             label: languageJSON.common.open,
             click: e => {
                 if (this.currentTextureType === 'skeleton') {
-                    this.openSkeleton(this.currentTexture);
+                    this.openSkeleton(this.currentTexture)();
                 } else {
-                    this.openTexture(this.currentTexture);
+                    this.openTexture(this.currentTexture)();
                 }
                 this.update();
             }

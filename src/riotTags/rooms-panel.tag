@@ -130,7 +130,8 @@ rooms-panel.panel.view
         roomMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.open,
             click: () => {
-                this.openRoom(this.editingRoom);
+                this.openRoom(this.editingRoom)();
+                this.update();
             }
         }));
         // Пункт "Скопировать название"
