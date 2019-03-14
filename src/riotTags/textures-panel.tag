@@ -25,6 +25,7 @@ textures-panel.panel.view
                 li(
                     each="{texture in (searchResults? searchResults : textures)}"
                     oncontextmenu="{showTexturePopup(texture)}"
+                    onlong-press="{showTexturePopup(texture)}"
                     onclick="{openTexture(texture, false)}"
                     no-reorder
                 )
@@ -37,6 +38,7 @@ textures-panel.panel.view
                 li(
                     each="{skeleton in (searchResultsSkel? searchResultsSkel : skeletons)}"
                     oncontextmenu="{showTexturePopup(skeleton, true)}"
+                    onlong-press="{showTexturePopup(skeleton, true)}"
                     onclick="{openSkeleton(texture)}"
                     no-reorder
                 )

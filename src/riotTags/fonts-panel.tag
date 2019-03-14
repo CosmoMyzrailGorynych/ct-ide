@@ -13,7 +13,8 @@ fonts-panel.flexfix.tall.fifty
     ul.cards.flexfix-body
         li(each="{font in (searchResults? searchResults : fonts)}" 
         onclick="{openFont(font)}" 
-        oncontextmenu="{onFontContextMenu(font)}")
+        oncontextmenu="{onFontContextMenu(font)}"
+        onlong-press="{onFontContextMenu(font)}")
             span {font.typefaceName} {font.weight} {font.italic? voc.italic : ''}
             img(src="file://{window.sessionStorage.projdir + '/fonts/' + font.origname}_prev.png?{font.lastmod}")
     .aDropzone(if="{dropping}")

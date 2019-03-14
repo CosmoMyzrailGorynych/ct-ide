@@ -18,7 +18,8 @@ styles-panel.flexfix.tall.fifty
     ul.cards.flexfix-body
         li(each="{style in (searchResults? searchResults : styles)}" 
         onclick="{openStyle(style)}" 
-        oncontextmenu="{onStyleContextMenu(style)}")
+        oncontextmenu="{onStyleContextMenu(style)}"
+        onlong-press="{onStyleContextMenu(style)}")
             span {style.name}
             .aStyleIcon
                 img(src="file://{window.sessionStorage.projdir + '/img/' + style.origname}_prev.png?{style.lastmod}")

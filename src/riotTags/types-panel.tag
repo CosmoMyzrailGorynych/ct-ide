@@ -15,7 +15,12 @@ types-panel.panel.view
                         i.icon.icon-add
                         span {voc.create}
         ul.cards.flexfix-body
-            li(each="{type in (searchResults? searchResults : types)}" onclick="{openType(type)}" oncontextmenu="{onTypeContextMenu}")
+            li(
+                each="{type in (searchResults? searchResults : types)}"
+                onclick="{openType(type)}"
+                oncontextmenu="{onTypeContextMenu}"
+                onlong-press="{onTypeContextMenu}"
+            )
                 span {type.name}
                 img(src="{type.texture !== -1 ? (glob.texturemap[type.texture].src.split('?')[0] + '_prev.png?' + getTypeTextureRevision(type)) : '/data/img/notexture.png'}")
     type-editor(if="{editingType}" type="{editedType}")

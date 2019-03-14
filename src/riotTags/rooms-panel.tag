@@ -20,6 +20,7 @@ rooms-panel.panel.view
                 class="{starting: window.currentProject.startroom === room.uid}"
                 onclick="{openRoom(room)}"
                 oncontextmenu="{menuPopup(room)}"
+                onlong-press="{menuPopup(room)}"
             )
                 img(src="file://{sessionStorage.projdir + '/img/r' + room.thumbnail + '.png?' + room.lastmod}")
                 span {room.name}

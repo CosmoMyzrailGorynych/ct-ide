@@ -19,6 +19,7 @@ sounds-panel.panel.view
                 each="{sound in (searchResults? searchResults : sounds)}"
                 onclick="{openSound(sound)}"
                 oncontextmenu="{popupMenu(sound)}"
+                onlong-press="{popupMenu(sound)}"
             )
                 span {sound.name}
                 img(src="/data/img/{sound.isMusic? 'music' : 'wave'}.png")
