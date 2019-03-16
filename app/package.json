@@ -4,6 +4,7 @@
   "description": "ctjs",
   "version": "1.0.0-next-2",
   "homepage": "https://ctjs.rocks/",
+  "user-agent": "%name/%ver (%osinfo) NW.js/%nwver AppleWebkit/%webkit_ver Chromium/%chromium_ver",
   "window": {
     "icon": "ct_ide.png",
     "toolbar": true,
