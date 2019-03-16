@@ -94,8 +94,10 @@
 
     // clear if the mouse moves
     document.addEventListener(mouseMove, function(e) {
-        if (Math.hypot(mousePressPosition[0] - e.clientX, mousePressPosition[1] - e.clientY) > moveThreshold) {
-            clearTimeout(timer);
+        if (mousePressPosition) {
+            if (Math.hypot(mousePressPosition[0] - e.clientX, mousePressPosition[1] - e.clientY) > moveThreshold) {
+                clearTimeout(timer);
+            }
         }
     });
 
