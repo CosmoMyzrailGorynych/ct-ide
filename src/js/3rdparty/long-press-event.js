@@ -10,6 +10,8 @@
     'use strict';
 
     var timer = null;
+    var moveThreshold = 12;
+    var mousePressPosition;
 
     /**
      * Fires the 'long-press' event on element
@@ -74,6 +76,8 @@
         // get delay from html attribute if it exists, otherwise default to 1000
         var longPressDelayInMs = parseInt(el.getAttribute('data-long-press-delay') || '1000', 10);
 
+        mousePressPosition = [e.clientX, e.clientY];
+
         // start the timer
         timer = setTimeout(fireLongPressEvent.bind(el, e), longPressDelayInMs);
     });
@@ -89,8 +93,10 @@
     });
 
     // clear if the mouse moves
-    document.addEventListener(mouseMove, function() {
-        clearTimeout(timer);
+    document.addEventListener(mouseMove, function(e) {
+        if (Math.hypot(mousePressPosition[0] - e.clientX, mousePressPosition[1] - e.clientY) > moveThreshold) {
+            clearTimeout(timer);
+        }
     });
 
     // clear if the Wheel event is fired in the element
