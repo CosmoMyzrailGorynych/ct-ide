@@ -155,7 +155,8 @@ main-menu.flexcol
                 }
                 nw.Window.open(`preview.html?title=${encodeURIComponent(currentProject.settings.title || 'ct.js game')}`, {
                     new_instance: false,
-                    id: 'ctPreview'
+                    id: 'ctPreview',
+                    frame: true
                 }, function(newWin) {
                     var wind = newWin.window;
                     previewWindow = wind;
