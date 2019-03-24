@@ -93,6 +93,9 @@
         set tex(value) {
             this.textures = ct.res.getTexture(value);
             this[textureAccessor] = value;
+            this.shape = value !== -1 ? ct.res.registry[value].shape : {};
+            this.anchor.x = this.textures[0].defaultAnchor.x;
+            this.anchor.y = this.textures[0].defaultAnchor.y;
             return value;
         }
         get tex() {
