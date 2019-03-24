@@ -72,10 +72,7 @@ ct.u = {
      */
     rotate(x, y, deg) {
         const rad = deg * Math.PI / -180;
-        return [
-            Math.cos(rad) * x - Math.sin(rad) * y,
-            Math.sin(rad) * x - Math.cos(rad) * y
-        ];
+        return ct.u.rotateRad(x, y, rad);
     },
     rotateRad(x, y, rad) {
         return [
