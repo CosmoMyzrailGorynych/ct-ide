@@ -1,0 +1,24 @@
+{
+    "main": {
+        "name": "Virtual Keys",
+        "version": "0.0.0",
+        "authors": [{
+            "name": "Cosmo Myzrail Gorynych",
+            "mail": "admin@nersta.ru"
+        }]
+    },
+    "inputMethods": {
+        "Vk1": "Virtual key 1",
+        "Vk2": "Virtual key 2",
+        "Vk3": "Virtual key 3",
+        "Vk4": "Virtual key 4",
+        "Vk5": "Virtual key 5",
+        "Vk6": "Virtual key 6",
+        "Vk7": "Virtual key 7",
+        "Vk8": "Virtual key 8",
+        "Vk9": "Virtual key 9",
+        "Vk10": "Virtual key 10",
+        "Vk11": "Virtual key 11",
+        "Vk12": "Virtual key 12"
+    }
+}
