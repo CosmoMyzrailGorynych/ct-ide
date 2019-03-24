@@ -17,8 +17,8 @@
     };
 
     ct.mouse = {
-        x: 0,
-        y: 0,
+        rx: 0,
+        ry: 0,
         xprev: 0,
         yprev: 0,
         inside: false,
@@ -40,6 +40,12 @@
                 return ct.mouse.x === copy.x && ct.mouse.y === copy.y;
             }
             return false;
+        },
+        get x() {
+            return ct.mouse.rx + ct.rooms.current.x;
+        },
+        get y() {
+            return ct.mouse.ry + ct.rooms.current.y;
         }
     };
     
