@@ -1,3 +1,95 @@
+## v 1.0.0-next-3
+
+*1 April 2019. Not a joke.*
+
+### ✨ New Features
+
+* Introduce Actions — a new unified system for any input methods
+
+### ⚡ General Improvements
+
+* Add a pool for killed copies to limit garbage collection calls
+* Remove non-existent modules from a project, if there are such
+
+### 🍱 Demos and Modules
+
+* Add keyboard.polyfill for IE and old browsers. Enable it by default in new projects
+* Update demos and tutorials
+
+### 🐛 Bug Fixes
+
+* Bundle scripts of catmods on one level with ct.js (this solves issues with itch.io and GameJolt games)
+* Clarify a cryptic error that appears if one provides a non-existing type name to `ct.types.copy`
+* Clear input value to be able to reselect the same font
+* Display a catmod's license on the "Info" tab
+* Fix a font not showing up after being renamed
+* Fix an issue when you can't import the same texture twice in a row
+* Fix ct.mouse.down not working
+* Fix ct.room.followDrift overshooting on low values and low FPS
+* Fix ct.touch that used `ct.width` and `ct.height` instead of `ct.viewWidth` and `ct.viewHeight`, resulting in incorrect coordinates on some scaling methods
+* Fix ct.u.ext not returning the extended object
+* Fix flawed `this.xprev`, `this.yprev` handling in ct as it is and in ct.place
+* Fix UI problems of font deletion 
+* Fix importing font on Windows
+* Fix mouse coordinates not updating on view shift (in-game)
+* Fix non-working "Open" options in context menus for rooms, sounds and textures
+* Fix wrong calculation of rotated rects in ct.place, that turned rectangles into points
+* Prevent unwanted name change when importing a sound
+* Remove this.updateList(); call that caused a UI update error after deleting a font
+* Update ace.js autocomplete list
+* Update graphics, sounds, rooms panels after opening a project from a hamburger menu
+* Update shape and anchor of a copy while changing a texture
+* Update the type picker in the room editor after deleting a type
+* Refresh the preview immediately when activating fill and selecting diffuse in a style
+
+### 💄 UI Improvements
+
+* 🎨 Rename "graphic assets" into "Textures"
+* Add a zoom control to graphics editor
+* Add an icon in the module info that shows that a module provides additional input methods
+
+### 📝 Docs & Tutorials
+
+* Add an example to ct.inputs.addAction
+* Document actions and ct.inputs
+* Document ct.sound.playing
+* Document ct.vkeys
+* Document the way of adding new input methods with catmods 
+* Fix `ct.keyboard.clear();` docs
+* Provide docs for the new ct.mouse
+* Rename "Graphic assets" into "Textures"
+* Tons of minor fixes in tut-making-platformer
+* Update Platformer_tutorial
+* Update Space Shooter tutorial
+* ⚡️ Add a link to ct.u that shows a difference between a shallow and a deep copy
+* ⚡️ Clarify ct.u.unlerp
+* ⚡️ Minor fixes and clarifications at Making Space Shooter tutorial
+* ⬆️ Update vuepress to 1.0@next
+* 🌐 Add ct.md for Ru locale
+* 🌐 Add readme.md and tut-making-platformer fot RU locale
+* 🌐 Translate "Making Space Shooter" tutorial to Russian
+* 🌐 Translate catmoddocs.md to Ru
+* 🌐 Translate ct.inputs.md to Ru locale
+* 🌐 Translate ct.res.md to Ru locale
+* 🌐 Translate ct.rooms.md to Ru locale
+* 🌐 Translate ct.sound.md to Ru locale
+* 🌐 Translate ct.styles.md to Ru locale
+* 🌐 Translate ct.types.md to Ru locale
+* 🌐 Translate ct.u.md to Ru locale
+* 🐛 Move a note about event sequence and `this.kill` to the right place at ct.types.md
+* 🐛 Update ct.md to reflect v1.0
+* 🐛 Update ct.res.md
+* 🐛 Update description of ct.rooms.switch
+* 💥 Remove ct.mouse. Document the change in the migration guide.
+
+### 👽 Misc
+
+* ⌛ Provide docs for ct.mouse.legacy
+* ⌛ Add a legacy version of ct.keyboard
+* ⌛ Connect legacy versions of ct.keyboard and ct.mouse to older projects
+* ✏ A typo in autocompletion: ct.types.addSpeed has (copy, speed, dir) parameters
+* 🍎 Add long-press menus for Mac
+
 ## v 1.0.0-next-2
 
 *28 January 2019*
@@ -44,18 +136,18 @@
 
 ### 🐛 Bug Fixes
 
-🐛 💄 Add a "cancel" button while selecting a tileset
-🐛 Fix desktop exporter not picking the first room as the starting one if no room was marked as such
-🐛 Fix exporter for desktop platforms
-🐛 Fix parallax + non-repeat background behaviour
-🐛 Fix project loader not loading the most old ct.js projects
-🐛 Fix unwanted interpolation on stretched sprites if "Disable image smoothing..." is checked
-🐛 Remove autosave errors in dev console that appeared while no project was loaded
+* 💄 Add a "cancel" button while selecting a tileset
+* Fix desktop exporter not picking the first room as the starting one if no room was marked as such
+* Fix exporter for desktop platforms
+* Fix parallax + non-repeat background behaviour
+* Fix project loader not loading the most old ct.js projects
+* Fix unwanted interpolation on stretched sprites if "Disable image smoothing..." is checked
+* Remove autosave errors in dev console that appeared while no project was loaded
 
 ### 🍱 Demos and Stuff
 
-🍱 Update catformer demo to v1.0.0-next-2
-🍱 Update demos and examples
+* Update catformer demo to v1.0.0-next-2
+* Update demos and examples
 
 ### 📝 Docs
 
@@ -69,6 +161,7 @@
 * Fix flipped directions in a tip at https://docs.ctjs.rocks/tut-making-shooter.html#moving-hostiles-and-asteroids
 * Rename `ct.place.go` attribute `speed` to `length`
 * Update tutorials to v1.0.0-next-2
+
 
 ### 📄 License
 
