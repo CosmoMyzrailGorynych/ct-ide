@@ -117,7 +117,12 @@ ct.sound.resume = function(name, id) {
     ct.res.sounds[name].play(id);
 };
 /**
- * TODO
+ * Returns whether a sound is currently playing,
+ * either an exact sound (found by its ID) or any sound of a given name.
+ * 
+ * @param {String} name The name of a sound
+ * @param {Number} [id] An optional ID of a particular sound
+ * @returns {Boolean} `true` if the sound is playing, `false` otherwise.
  */
 ct.sound.playing = function(name, id) {
     return ct.res.sounds[name].playing(id);
