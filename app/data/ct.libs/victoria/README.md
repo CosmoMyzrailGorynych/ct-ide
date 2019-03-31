@@ -1,1 +1,0 @@
-A bunch of random functions used by CoMiGo. These might be later separated into different modules. No specific theme or purpose, but usually to make things prettier.
