@@ -209,6 +209,7 @@ types-panel.panel.view
                         this.updateList();
                         this.fillTypeMap();
                         this.update();
+                        window.signals.trigger('typesChanged');
                         alertify
                         .okBtn(window.languageJSON.common.ok)
                         .cancelBtn(window.languageJSON.common.cancel);

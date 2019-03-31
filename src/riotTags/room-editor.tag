@@ -322,7 +322,7 @@ room-editor.panel.view
             return true;
         };
         
-        // Позволяет переместить сразу все копии в комнате
+        // Shifts all the copies in a room at once.
         this.roomShift = e => {
             window.alertify.confirm(`
                 ${window.languageJSON.roomview.shifttext}
@@ -349,7 +349,7 @@ room-editor.panel.view
             });
         };
         
-        /** Сохранение комнаты (по факту, лишь помечает проект как несохранённый и закрывает редактор) */
+        /** Saves a room (in fact, just marks a project as an unsaved, and closes the room editor) */
         this.roomSave = e => {
             this.room.lastmod = +(new Date());
             this.roomGenSplash()
@@ -367,7 +367,7 @@ room-editor.panel.view
         };
         
         this.resortRoom = () => {
-            // Сделаем массив слоёв фонов, тайлов и копий.
+            // Make an array of all the backgrounds, tile layers and copies, and then sort it.
             this.stack = this.room.copies.concat(this.room.backgrounds).concat(this.room.tiles);
             this.stack.sort((a, b) => {
                 let depthA = a.depth !== void 0? a.depth : window.currentProject.types[glob.typemap[a.uid]].depth,
@@ -376,10 +376,14 @@ room-editor.panel.view
             });
         };
         this.resortRoom();
-        /** Прорисовка холста */
+        window.signals.on('typesChanged', () => {
+            this.currentType = -1;
+            this.resortRoom();
+        });
+        /** Canvas redrawing, with all the backgrounds, tiles and copies */
         this.refreshRoomCanvas = () => {
             if (this.forbidDrawing) {return;}
-            var canvas = this.refs.canvas,
+            let canvas = this.refs.canvas,
                 sizes = this.refs.canvaswrap.getBoundingClientRect();
             // Перед рисовкой проверим, нормального ли размера наш холст
             if (canvas.width != sizes.width || canvas.height != sizes.height) {
