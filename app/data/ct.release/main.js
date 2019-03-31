@@ -37,7 +37,9 @@ ct.pixiApp = new PIXI.Application({
     width: [/*@startwidth@*/][0],
     height: [/*@startheight@*/][0],
     antialias: ![/*@pixelatedrender@*/][0],
-    roundPixels: [/*@pixelatedrender@*/][0]
+    roundPixels: [/*@pixelatedrender@*/][0],
+    sharedTicker: true,
+    sharedLoader: true
 });
 if (!ct.pixiApp.renderer.options.antialias) {
     PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
@@ -214,7 +216,7 @@ ct.loop = function(delta) {
     }
     const r = ct.room;
     if (r.follow) {
-        const speed = (1-r.followDrift)*ct.delta;
+        const speed = Math.min(1, (1-r.followDrift)*ct.delta);
         if (r.follow.kill) {
             delete r.follow;
         } else if (r.center) {
