@@ -2,7 +2,7 @@
     ct.vkeys = {
         button(options) {
             var opts = ct.u.ext({
-                key: 'vkeys.Vk1',
+                key: 'Vk1',
                 depth: 100,
                 texNormal: -1,
                 x: function() {

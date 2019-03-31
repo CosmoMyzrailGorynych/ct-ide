@@ -4,13 +4,13 @@ ct.types.templates.VKEY = {
             this.tex = this.opts.texHover || this.opts.texNormal;
             if (ct.mouse.down) {
                 this.tex = this.opts.texActive || this.opts.texNormal;
-                ct.inputs.registry[this.opts.key] = 1;
+                ct.inputs.registry['vkeys.' + this.opts.key] = 1;
             } else {
-                ct.inputs.registry[this.opts.key] = 0;
+                ct.inputs.registry['vkeys.' + this.opts.key] = 0;
             }
         } else {
             this.tex = this.opts.texNormal;
-            ct.inputs.registry[this.opts.key] = 0;
+            ct.inputs.registry['vkeys.' + this.opts.key] = 0;
         }
     },
     onDraw: function () {
