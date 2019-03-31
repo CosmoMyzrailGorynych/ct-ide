@@ -578,7 +578,7 @@ ct.rooms.templates['${r.name}'] = {
         }
         for (const lib in window.currentProject.libs) {
             if (fs.existsSync(path.join(basePath, `./ct.libs/${lib}/includes/`))) {
-                fs.copySync(path.join(basePath, `./ct.libs/${lib}/includes/`), exec + `/export/${lib}/`);
+                fs.copySync(path.join(basePath, `./ct.libs/${lib}/includes/`), exec + '/export/');
             }
         }
 
