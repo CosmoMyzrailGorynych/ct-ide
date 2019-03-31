@@ -208,7 +208,7 @@ const docs = done => {
 const release = gulp.series([done => {
     releasing = true;
     done();
-}, build, lint, done => {
+}, build, lint, docs, done => {
     var nw = new NwBuilder({
         files: nwFiles,
         platforms: ['osx64', 'win32', 'win64', 'linux32', 'linux64'],
