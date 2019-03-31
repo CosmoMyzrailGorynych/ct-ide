@@ -1,5 +1,8 @@
 /* Made with ct.js http://ctjs.rocks/ */
-
+var deadPool = []; // a pool of `kill`-ed copies for delaying frequent garbage collection
+setInterval(function () {
+    deadPool.length = 0;
+}, 1000 * 60);
 
 const ct = {
     libs: [/*@libs@*/][0],
@@ -192,7 +195,7 @@ ct.loop = function(delta) {
             ct.stack[i].destroy({
                 children: true
             });
-            ct.stack.splice(i, 1);
+            deadPool.push(ct.stack.splice(i, 1));
             li--;
         } else {
             i++;

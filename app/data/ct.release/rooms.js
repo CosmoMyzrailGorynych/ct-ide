@@ -1,4 +1,5 @@
 (function () {
+    /* global deadPool */
     class Room extends PIXI.Container {
         constructor(template) {
             super();
@@ -90,6 +91,7 @@
                 ct.room = void 0;
             }
             ct.rooms.clear();
+            deadPool.length = 0;
             var template = ct.rooms.templates[roomName];
             ct.viewWidth = ct.roomWidth = template.width;
             ct.viewHeight = ct.roomHeight = template.height;
