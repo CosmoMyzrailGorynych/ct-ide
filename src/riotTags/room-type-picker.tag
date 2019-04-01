@@ -36,9 +36,13 @@ room-type-picker.room-editor-TypeSwatches.tabbed.tall
             this.types.sort((a, b) => a.name.localeCompare(b.name));
             this.fuseSearch();
         };
-        window.signals.on('typesChanged', () => {
+        var typesChanged = () => {
             this.updateTypeList();
             this.update();
+        };
+        window.signals.on('typesChanged', typesChanged);
+        this.on('unmount', () => {
+            window.signals.off('typesChanged', typesChanged);
         });
         const fuseOptions = {
             shouldSort: true,

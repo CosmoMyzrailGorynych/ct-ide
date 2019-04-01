@@ -376,9 +376,13 @@ room-editor.panel.view
             });
         };
         this.resortRoom();
-        window.signals.on('typesChanged', () => {
+        var typesChanged = () => {
             this.currentType = -1;
             this.resortRoom();
+        };
+        window.signals.on('typesChanged', typesChanged);
+        this.on('unmount', () => {
+            window.signals.off('typesChanged', typesChanged);
         });
         /** Canvas redrawing, with all the backgrounds, tiles and copies */
         this.refreshRoomCanvas = () => {

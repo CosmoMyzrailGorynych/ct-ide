@@ -90,8 +90,9 @@ type-editor.panel.view.flexrow
                 });
             }
         };
-        window.signals.on('modulesChanged', () => {
-            this.refreshExtends();
+        window.signals.on('modulesChanged', this.refreshExtends);
+        this.on('unmount', () => {
+            window.signals.off('modulesChanged', this.refreshExtends);
         });
         this.refreshExtends();
 

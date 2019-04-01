@@ -50,11 +50,15 @@ project-selector
         this.namespace = 'intro';
         this.mixin(window.riotVoc);
         this.visible = true;
-        window.signals.on('hideProjectSelector', () => {
+        var hideProjectSelector = () => {
             this.visible = false;
             this.parent.selectorVisible = false;
             this.update();
-        })
+        };
+        window.signals.on('hideProjectSelector', hideProjectSelector);
+        this.on('unmount', () => {
+            window.signals.off('hideProjectSelector', hideProjectSelector);
+        });
         this.projectSplash = '/data/img/notexture.png';
         this.newVersion = false;
         

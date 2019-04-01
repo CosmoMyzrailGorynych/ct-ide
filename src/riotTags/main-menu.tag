@@ -117,8 +117,9 @@ main-menu.flexcol
             this.saveRecoveryDebounce();
         };
         this.saveRecoveryDebounce = debounce(this.saveRecovery, 1000 * 60 * 5);
-        window.signals.on('saveProject', () => {
-            this.saveProject();
+        window.signals.on('saveProject', this.saveProject);
+        this.on('unmount', () => {
+            window.signals.off('saveProject', this.saveProject);
         });
         this.saveRecoveryDebounce();
         this.on('mount', () => {

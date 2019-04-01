@@ -59,7 +59,11 @@ method-selector
             });
         };
         this.refreshModules();
+        
         window.signals.on('modulesChanged', this.refreshModules);
+        this.on('unmount', () => {
+            window.signals.off('modulesChanged', this.refreshModules);
+        });
 
         this.selectMethod = code => e => {
             this.selectedMethod = code;
