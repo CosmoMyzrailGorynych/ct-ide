@@ -176,12 +176,12 @@
         "help": "Reference",
         "info": "Info",
         "license": "License",
-        "logs": "Logs",
+        "logs": "Changelog",
         "methods": "Methods",
         "parameters": "Parameters",
         "nomethods": "This module hasn't its own methods.",
         "noparameters": "This module hasn't its own parameters.",
-        "logs2": "Logs",
+        "logs2": "Changelog",
         "settings": "Settings"
     },
     "texture": {
