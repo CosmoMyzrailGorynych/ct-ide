@@ -56,7 +56,7 @@
         }
         if (s.fill) {
             if (Number(s.fill.type) === 0) {
-                o.fill = s.fill.color;
+                o.fill = s.fill.color || '#FFFFFF';
             } else if (Number(s.fill.type) === 1) {
                 o.fill = [s.fill.color1 || '#FFFFFF', s.fill.color2 || '#FFFFFF'];
                 if (Number(s.fill.gradtype) === 1) {

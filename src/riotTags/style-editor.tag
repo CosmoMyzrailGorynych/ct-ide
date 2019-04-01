@@ -131,7 +131,7 @@ style-editor.panel.view
                 span {voc.apply}
     #stylepreview.tall
         canvas(width="550" height="400" ref="canvas")
-    graphic-selector(if="{selectingGraphic}" onselected="{applyTexture}" ref="graphicselector")
+    texture-selector(if="{selectingTexture}" onselected="{applyTexture}" ref="textureselector")
     script.
         const fs = require('fs-extra');
 
@@ -175,7 +175,7 @@ style-editor.panel.view
             this.labelShort.y = 60;
             this.labelMultiline.y = 60 * 3;
             this.labelLong.y = 60 * 6;
-            this.refreshStyleGraphic();
+            this.refreshStyleTexture();
         });
         this.on('update', () => {
             if (window.currentProject.styles.find(style => 
@@ -187,10 +187,10 @@ style-editor.panel.view
             }
         });
         this.on('updated', e => {
-            this.refreshStyleGraphic();
+            this.refreshStyleTexture();
         });
         
-        this.selectingGraphic = false;
+        this.selectingTexture = false;
         
         this.styleSetAlign = align => e => {
             this.styleobj.font.halign = align;
@@ -227,7 +227,7 @@ style-editor.panel.view
             }
         };
         // Рендер превью в редакторе
-        this.refreshStyleGraphic = e => {
+        this.refreshStyleTexture = e => {
             this.pixiStyle.reset();
             window.___extend(this.pixiStyle, window.styleToTextStyle(this.styleobj));
             for (const label of this.labels) {
@@ -262,10 +262,4 @@ style-editor.panel.view
                     }
                 });
             });
-        };
-        this.applyTexture = graph => e => {
-            this.styleobj.fill.patId = graph.uid;
-            this.selectingGraphic = false;
-            this.update();
-            this.refreshStyleGraphic();
         };

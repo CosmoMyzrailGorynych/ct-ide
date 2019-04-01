@@ -19,9 +19,9 @@ main-menu.flexcol
             li(onclick="{changeTab('modules')}" class="{active: tab === 'modules'}")
                 i.icon-mod
                 span {voc.modules}
-            li(onclick="{changeTab('graphic')}" class="{active: tab === 'graphic'}")
+            li(onclick="{changeTab('texture')}" class="{active: tab === 'texture'}")
                 i.icon-picture
-                span {voc.graphic}
+                span {voc.texture}
             li(onclick="{changeTab('ui')}" class="{active: tab === 'ui'}")
                 i.icon-droplet
                 span {voc.ui}
@@ -37,7 +37,7 @@ main-menu.flexcol
     div.flexitem.relative(if="{window.currentProject}")
         settings-panel(show="{tab === 'settings'}")
         modules-panel(show="{tab === 'modules'}")
-        graphics-panel(show="{tab === 'graphic'}")
+        textures-panel(show="{tab === 'texture'}")
         ui-panel(show="{tab === 'ui'}")
         sounds-panel(show="{tab === 'sounds'}")
         types-panel(show="{tab === 'types'}")
@@ -117,8 +117,9 @@ main-menu.flexcol
             this.saveRecoveryDebounce();
         };
         this.saveRecoveryDebounce = debounce(this.saveRecovery, 1000 * 60 * 5);
-        window.signals.on('saveProject', () => {
-            this.saveProject();
+        window.signals.on('saveProject', this.saveProject);
+        this.on('unmount', () => {
+            window.signals.off('saveProject', this.saveProject);
         });
         this.saveRecoveryDebounce();
         this.on('mount', () => {
@@ -155,7 +156,8 @@ main-menu.flexcol
                 }
                 nw.Window.open(`preview.html?title=${encodeURIComponent(currentProject.settings.title || 'ct.js game')}`, {
                     new_instance: false,
-                    id: 'ctPreview'
+                    id: 'ctPreview',
+                    frame: true
                 }, function(newWin) {
                     var wind = newWin.window;
                     previewWindow = wind;

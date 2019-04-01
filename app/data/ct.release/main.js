@@ -1,5 +1,8 @@
 /* Made with ct.js http://ctjs.rocks/ */
-
+var deadPool = []; // a pool of `kill`-ed copies for delaying frequent garbage collection
+setInterval(function () {
+    deadPool.length = 0;
+}, 1000 * 60);
 
 const ct = {
     libs: [/*@libs@*/][0],
@@ -37,7 +40,9 @@ ct.pixiApp = new PIXI.Application({
     width: [/*@startwidth@*/][0],
     height: [/*@startheight@*/][0],
     antialias: ![/*@pixelatedrender@*/][0],
-    roundPixels: [/*@pixelatedrender@*/][0]
+    roundPixels: [/*@pixelatedrender@*/][0],
+    sharedTicker: true,
+    sharedLoader: true
 });
 if (!ct.pixiApp.renderer.options.antialias) {
     PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
@@ -72,10 +77,7 @@ ct.u = {
      */
     rotate(x, y, deg) {
         const rad = deg * Math.PI / -180;
-        return [
-            Math.cos(rad) * x - Math.sin(rad) * y,
-            Math.sin(rad) * x - Math.cos(rad) * y
-        ];
+        return ct.u.rotateRad(x, y, rad);
     },
     rotateRad(x, y, rad) {
         return [
@@ -140,6 +142,7 @@ ct.u = {
                 o1[i] = o2[i];
             }
         }
+        return o1;
     },
     load(url, callback) {
         var script = document.createElement('script');
@@ -174,13 +177,10 @@ ct.u.ext(ct.u, { // make aliases
 });
 ct.loop = function(delta) {
     ct.delta = delta;
+    ct.inputs.updateActions();
     for (let i = 0, li = ct.stack.length; i < li; i++) {
         ct.types.beforeStep.apply(ct.stack[i]);
-        
-        ct.stack[i].xprev = ct.stack[i].x;
-        ct.stack[i].yprev = ct.stack[i].y;
         ct.stack[i].onStep.apply(ct.stack[i]);
-        
         ct.types.afterStep.apply(ct.stack[i]);
     }
 
@@ -195,7 +195,7 @@ ct.loop = function(delta) {
             ct.stack[i].destroy({
                 children: true
             });
-            ct.stack.splice(i, 1);
+            deadPool.push(ct.stack.splice(i, 1));
             li--;
         } else {
             i++;
@@ -213,13 +213,13 @@ ct.loop = function(delta) {
     }
 
     for (const cont of ct.stage.children) {
-        cont.children.sort((a, b) => {
-                return ((a.depth || 0) - (b.depth || 0)) || ((a.uid || 0) - (b.uid || 0)) || 0;
-        })
+        cont.children.sort((a, b) => 
+            ((a.depth || 0) - (b.depth || 0)) || ((a.uid || 0) - (b.uid || 0)) || 0
+        );
     }
     const r = ct.room;
     if (r.follow) {
-        const speed = (1-r.followDrift)*ct.delta;
+        const speed = Math.min(1, (1-r.followDrift)*ct.delta);
         if (r.follow.kill) {
             delete r.follow;
         } else if (r.center) {
@@ -248,29 +248,23 @@ ct.loop = function(delta) {
             r.y = Math.floor(r.y + speed * cy);
         }
     }
-    r.x = Math.round(r.x);
-    r.y = Math.round(r.y);
-    
-    ct.mouse.x = ct.mouse.rx + r.x || 0;
-    ct.mouse.y = ct.mouse.ry + r.y || 0;
     r.x = r.x || 0;
     r.y = r.y || 0;
+    r.x = Math.round(r.x);
+    r.y = Math.round(r.y);
 
     for (let i = 0, li = ct.stack.length; i < li; i++) {
         ct.types.beforeDraw.apply(ct.stack[i]);
         ct.stack[i].onDraw.apply(ct.stack[i]);
         ct.types.afterDraw.apply(ct.stack[i]);
+        ct.stack[i].xprev = ct.stack[i].x;
+        ct.stack[i].yprev = ct.stack[i].y;
     }
 
     ct.rooms.beforeDraw.apply(r);
     ct.room.onDraw.apply(r); 
     ct.rooms.afterDraw.apply(r);
 
-    ct.mouse.pressed = false;
-    ct.mouse.released = false;
-    ct.mouse.wheel = 0;
-    ct.mouse.xprev = ct.mouse.x;
-    ct.mouse.yprev = ct.mouse.y;
     ct.main.fpstick++;
     if (ct.rooms.switching) {
         ct.rooms.forceSwitch();

@@ -64,7 +64,7 @@ Fades a sound to a given volume. Can affect either a specific instance or the wh
 * **Number** *[id]* If specified, then only the given sound instance is affected.
 
 
-## stop(name, [id])
+## ct.sound.stop(name, [id])
 
 Stops playback of sound, resetting its time to 0.
 
@@ -73,7 +73,7 @@ Stops playback of sound, resetting its time to 0.
 * **String** *name* The name of a sound
 * **Number** *[id]* An optional ID of a particular sound
 
-## pause(name, [id])
+## ct.sound.pause(name, [id])
 
 Pauses playback of sound or group, saving the seek of playback.
 
@@ -82,7 +82,7 @@ Pauses playback of sound or group, saving the seek of playback.
 * **String** *name* The name of a sound
 * **Number** *[id]* An optional ID of a particular sound
 
-## resume(name, [id])
+## ct.sound.resume(name, [id])
 
 Resumes a given sound, e.g. after pausing it.
 
@@ -91,7 +91,20 @@ Resumes a given sound, e.g. after pausing it.
 * **String** *name* The name of a sound
 * **Number** *[id]* An optional ID of a particular sound
 
-## load(name)
+## ct.sound.playing(name, [id])
+
+Returns whether a sound is currently playing, either an exact sound (found by its ID) or any sound of a given name.
+
+### Params:
+
+* **String** *name* The name of a sound
+* **Number** *[id]* An optional ID of a particular sound
+
+### Return:
+
+* **Boolean** `true` if the sound is playing, `false` otherwise.
+
+## ct.sound.load(name)
 
 Preloads a sound. This is usually applied to music files before playing, 
 as they are not preloaded by default.

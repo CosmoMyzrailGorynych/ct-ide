@@ -20,23 +20,26 @@ font-editor.panel.view
                 span {vocGlob.apply}
     .right.tall(style="font-weight: {fontobj.weight}; font-style: {fontobj.italic? 'italic' : 'normal'}")
         each val in [8, 9, 10, 11, 12, 14, 16, 21, 24, 32, 48, 60, 72]
-            p(style=`font-size: ${val}px; line-height: ${val}px; font-family: {fontobj.typefaceName};` data-size=val) A quick blue cat jumps over the lazy frog. 0123456789
+            p(style=`font-size: ${val}px; line-height: ${val}px; font-family: 'CTPROJFONT{fontobj.typefaceName}';` data-size=val) A quick blue cat jumps over the lazy frog. 0123456789
     script.
         this.namespace = 'fontview';
         this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
         this.fontobj = this.opts.fontobj;
+        this.oldTypefaceName = this.fontobj.typefaceName; 
         this.fontSave = e => {
             this.parent.editingFont = false;
             this.parent.update();
             this.parent.loadFonts();
         };
-        this.on('updated', () => {
+        this.on('update', () => {
             for (const font of document.fonts) {
-                if (font.external && font.ctId === this.fontobj.uid) {
+                if (font.family === 'CTPROJFONT' + this.oldTypefaceName) {
+                    this.oldTypefaceName = this.fontobj.typefaceName;
                     font.family = this.fontobj.typefaceName;
                     font.style = this.fontobj.italic? 'italic': 'normal';
                     font.weight = this.fontobj.weight;
+                    this.parent.loadFonts();
                     break;
                 }
             }

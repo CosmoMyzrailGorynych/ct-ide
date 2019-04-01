@@ -60,26 +60,26 @@
         }
     };
 
-    var getGraphicShape = graphic => {
-        if (graphic.shape === 'rect') {
+    var getTextureShape = texture => {
+        if (texture.shape === 'rect') {
             return {
                 type: 'rect',
-                top: graphic.top,
-                bottom: graphic.bottom,
-                left: graphic.left,
-                right: graphic.right
+                top: texture.top,
+                bottom: texture.bottom,
+                left: texture.left,
+                right: texture.right
             };
         }
-        if (graphic.shape === 'circle') {
+        if (texture.shape === 'circle') {
             return {
                 type: 'circle',
-                r: graphic.r
+                r: texture.r
             };
         }
-        if (graphic.shape === 'strip') {
+        if (texture.shape === 'strip') {
             return {
                 type: 'strip',
-                points: graphic.stripPoints
+                points: texture.stripPoints
             };
         }
         return {
@@ -89,20 +89,20 @@
     var packImages = () => {
         var blocks = [],
             tiledImages = [];
-        for (let i = 0, li = window.currentProject.graphs.length; i < li; i++) {
-            if (!window.currentProject.graphs[i].tiled) {
+        for (let i = 0, li = window.currentProject.textures.length; i < li; i++) {
+            if (!window.currentProject.textures[i].tiled) {
                 blocks.push({
                     data: {
-                        origname: window.currentProject.graphs[i].origname,
-                        g: window.currentProject.graphs[i]
+                        origname: window.currentProject.textures[i].origname,
+                        g: window.currentProject.textures[i]
                     },
-                    width: window.currentProject.graphs[i].imgWidth+2,
-                    height: window.currentProject.graphs[i].imgHeight+2,
+                    width: window.currentProject.textures[i].imgWidth+2,
+                    height: window.currentProject.textures[i].imgHeight+2,
                 });
             } else {
                 tiledImages.push({
-                    origname: window.currentProject.graphs[i].origname,
-                    g: window.currentProject.graphs[i]
+                    origname: window.currentProject.textures[i].origname,
+                    g: window.currentProject.textures[i]
                 });
             }
         }
@@ -138,7 +138,7 @@
             for (let i = 0, li = bin.rects.length; i < li; i++) {
                 const block = bin.rects[i],
                       {g} = block.data,
-                      img = window.glob.graphmap[g.uid];
+                      img = window.glob.texturemap[g.uid];
                     atlas.x.drawImage(img, block.x+1, block.y+1);
                 // A multi-frame sprite
                 const keys = [];
@@ -177,7 +177,7 @@
                     registry[g.name] = {
                         atlas: `./img/a${binInd}.json`,
                         frames: g.grid.untill > 0? Math.min(g.grid.untill, g.grid[0]*g.grid[1]) : g.grid[0]*g.grid[1],
-                        shape: getGraphicShape(g),
+                        shape: getTextureShape(g),
                         anchor: {
                             x: g.axis[0] / g.width,
                             y: g.axis[1] / g.height
@@ -195,7 +195,7 @@
         for (let i = 0, l = tiledImages.length; i < l; i++) {
             const atlas = document.createElement('canvas'),
                   {g} = tiledImages[i],
-                  img = window.glob.graphmap[g.uid];
+                  img = window.glob.texturemap[g.uid];
             atlas.x = atlas.getContext('2d');
             atlas.width = g.width;
             atlas.height = g.height;
@@ -205,7 +205,7 @@
             registry[g.name] = {
                 atlas: `./img/t${i}.png`,
                 frames: 0,
-                shape: getGraphicShape(g),
+                shape: getTextureShape(g),
                 anchor: {
                     x: g.axis[0] / g.width,
                     y: g.axis[1] / g.height
@@ -304,7 +304,7 @@ ct.styles.new(
             }
             var bgsCopy = JSON.parse(JSON.stringify(r.backgrounds));
             for (var bg in bgsCopy) {
-                bgsCopy[bg].graph = window.glob.graphmap[bgsCopy[bg].graph].g.name;
+                bgsCopy[bg].texture = window.glob.texturemap[bgsCopy[bg].texture].g.name;
                 bgsCopy[bg].depth = Number(bgsCopy[bg].depth);
             }
 
@@ -319,14 +319,14 @@ ct.styles.new(
                     for (const tile of tileLayer.tiles) {
                         for (let x = 0; x < tile.grid[2]; x++) {
                             for (let y = 0; y < tile.grid[3]; y++) {
-                                const graph = window.glob.graphmap[tile.graph].g;
+                                const texture = window.glob.texturemap[tile.texture].g;
                                 layer.tiles.push({
-                                    graph: graph.name,
-                                    frame: tile.grid[0] + x + (y+tile.grid[1])*graph.grid[0],
-                                    x: tile.x + x*(graph.width + graph.marginx),
-                                    y: tile.y + y*(graph.height + graph.marginy),
-                                    width: graph.width,
-                                    height: graph.height
+                                    texture: texture.name,
+                                    frame: tile.grid[0] + x + (y+tile.grid[1])*texture.grid[0],
+                                    x: tile.x + x*(texture.width + texture.marginx),
+                                    y: tile.y + y*(texture.height + texture.marginy),
+                                    width: texture.width,
+                                    height: texture.height
                                 });
                             }
                         }
@@ -479,16 +479,19 @@ ct.rooms.templates['${r.name}'] = {
 
         buffer += '\n';
 
-        /* котомышь */
-        buffer += fs.readFileSync(basePath + 'ct.release/mouse.js', {
+        var actionsSetup = '';
+        for (const action of window.currentProject.actions) {
+            actionsSetup += `ct.inputs.addAction('${action.name}', ${JSON.stringify(action.methods)});\n`;
+        }
+        buffer += fs.readFileSync(basePath + 'ct.release/inputs.js', {
             'encoding': 'utf8'
-        });
+        }).replace('/*@actions@*/', actionsSetup);
 
         buffer += '\n';
 
         buffer = addModules(buffer);
 
-        /* Пользовательские скрипты */
+        /* User-defined scripts */
         for (const script of window.currentProject.scripts) {
             buffer += script.code + ';\n';
         }
@@ -516,15 +519,15 @@ ct.rooms.templates['${r.name}'] = {
         buffer += '\n';
 
         /* ресурсный котэ */
-        var graphics = packImages();
+        var textures = packImages();
         var skeletons = packSkeletons();
 
         buffer += fs.readFileSync(basePath + 'ct.release/res.js', {
             'encoding': 'utf8'
         })
         .replace('/*@sndtotal@*/', window.currentProject.sounds.length)
-        .replace('/*@res@*/', graphics.res + '\n' + skeletons.loaderScript)
-        .replace('/*@graphregistry@*/', graphics.registry)
+        .replace('/*@res@*/', textures.res + '\n' + skeletons.loaderScript)
+        .replace('/*@textureregistry@*/', textures.registry)
         .replace('/*@skeletonregistry@*/', skeletons.registry)
         .replace('/*%resload%*/', injects.resload + '\n' + skeletons.startScript)
         .replace('/*%res%*/', injects.res);
@@ -537,8 +540,8 @@ ct.rooms.templates['${r.name}'] = {
             types += 'ct.types.templates["' + type.name + '"] = {\n';
             types += '    depth:' + type.depth + ',\n';
 
-            if (type.graph !== -1) {
-                types += '    graph: "' + window.glob.graphmap[type.graph].g.name + '",\n';
+            if (type.texture !== -1) {
+                types += '    texture: "' + window.glob.texturemap[type.texture].g.name + '",\n';
             }
             types += '    onStep: function () {\n' + type.onstep + '\n    },\n';
             types += '    onDraw: function () {\n' + type.ondraw + '\n    },\n';
@@ -575,7 +578,7 @@ ct.rooms.templates['${r.name}'] = {
         }
         for (const lib in window.currentProject.libs) {
             if (fs.existsSync(path.join(basePath, `./ct.libs/${lib}/includes/`))) {
-                fs.copySync(path.join(basePath, `./ct.libs/${lib}/includes/`), exec + `/export/${lib}/`);
+                fs.copySync(path.join(basePath, `./ct.libs/${lib}/includes/`), exec + '/export/');
             }
         }
 

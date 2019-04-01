@@ -93,7 +93,7 @@
     "menu": {
       "ctIDE": "ct.IDE",
       "exportDesktop": "Exporter pour le bureau",
-      "graphic": "Graphiques",
+      "texture": "Graphiques",
       "launch": "Compiler",
       "license": "Licence",
       "min": "Fenêtré",
@@ -156,12 +156,12 @@
       "logs2": "Logs",
       "settings": "Settings"
     },
-    "graphic": {
+    "texture": {
       "create": "Create",
       "import": "Import",
       "skeletons": "Skeletal Animation"
     },
-    "graphview": {
+    "textureview": {
       "bgcolor": "Change bg color",
       "center": "Axis:",
       "cols": "Columns:",
@@ -179,7 +179,7 @@
       "setcenter": "Image's center",
       "speed": "Framerate:",
       "tiled": "Is it tiled?",
-      "replacegraph": "Replace…",
+      "replacetexture": "Replace…",
       "corrupted": "File is corrupted or missing! Closing now.",
       "showmask": "Show mask",
       "width": "Width:",

@@ -18,7 +18,8 @@ styles-panel.flexfix.tall.fifty
     ul.cards.flexfix-body
         li(each="{style in (searchResults? searchResults : styles)}" 
         onclick="{openStyle(style)}" 
-        oncontextmenu="{onStyleContextMenu(style)}")
+        oncontextmenu="{onStyleContextMenu(style)}"
+        onlong-press="{onStyleContextMenu(style)}")
             span {style.name}
             .aStyleIcon
                 img(src="file://{window.sessionStorage.projdir + '/img/' + style.origname}_prev.png?{style.lastmod}")
@@ -93,9 +94,18 @@ styles-panel.flexfix.tall.fifty
             this.editingStyle = true;
             this.editedStyle = style;
         };
-        this.on('mount', () => {
+        this.setUpPanel = e => {
             this.updateList();
-        })
+            this.searchResults = null;
+            this.editingStyle = false;
+            this.editedStyle = null;
+            this.update();
+        };
+        window.signals.on('projectLoaded', this.setUpPanel);
+        this.on('mount', this.setUpPanel);
+        this.on('unmount', () => {
+            window.signals.off('projectLoaded', this.setUpPanel);
+        });
         
         // Контекстное меню для управления стилями по нажатию ПКМ по карточкам
         var styleMenu = new gui.Menu();

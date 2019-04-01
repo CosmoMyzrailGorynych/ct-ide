@@ -28,12 +28,11 @@
     "gulp-stylus": "^2.7.0",
     "minimist": "^1.2.0",
     "node-notifier": "^5.2.1",
-    "nw-builder": "^3.5.4",
+    "nw-builder": "^3.5.7",
     "pug": "^2.0.3",
     "pug-lint-config-clock": "^2.0.0",
-    "riot": "^3.11.1",
+    "riot": "^3.13.2",
     "streamqueue": "^1.1.2",
-    "stylus": "^0.54.5",
-    "vuepress": "^0.13.1"
+    "stylus": "^0.54.5"
   }
 }

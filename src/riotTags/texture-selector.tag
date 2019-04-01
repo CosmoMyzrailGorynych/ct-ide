@@ -1,4 +1,4 @@
-graphic-selector.panel.view
+texture-selector.panel.view
     //- Возвращает объект выбранной графики или -1, если была выбрана пустая графика.
     //- Пустую графику можно выбрать только при наличии атрибута showempty
     .flexfix.tall
@@ -16,14 +16,14 @@ graphic-selector.panel.view
             ul.cards
                 li(if="{opts.showempty}" onclick="{onselected(-1)}")
                     span {window.languageJSON.common.none}
-                    img(src="/data/img/nograph.png")
+                    img(src="/data/img/notexture.png")
                 li(
-                    each="{graphic in (searchResults? searchResults : graphs)}"
-                    onclick="{onselected(graphic)}"
+                    each="{texture in (searchResults? searchResults : textures)}"
+                    onclick="{onselected(texture)}"
                     no-reorder
                 )
-                    span {graphic.name}
-                    img(src="file://{sessionStorage.projdir + '/img/' + graphic.origname + '_prev.png'}")
+                    span {texture.name}
+                    img(src="file://{sessionStorage.projdir + '/img/' + texture.origname + '_prev.png'}")
         .flexfix-footer(if="{oncancelled}")
             button(onclick="{oncancelled}") {window.languageJSON.common.cancel}
     script.
@@ -36,18 +36,18 @@ graphic-selector.panel.view
         this.searchResults = false;
 
         this.updateList = () => {
-            this.graphs = [...window.currentProject.graphs];
+            this.textures = [...window.currentProject.textures];
             if (this.sort === 'name') {
-                this.graphs.sort((a, b) => {
+                this.textures.sort((a, b) => {
                     return a.name.localeCompare(b.name);
                 });
             } else {
-                this.graphs.sort((a, b) => {
+                this.textures.sort((a, b) => {
                     return b.lastmod - a.lastmod;
                 });
             }
             if (this.sortReverse) {
-                this.graphs.reverse();
+                this.textures.reverse();
             }
         };
         this.switchSort = sort => e => {
@@ -72,7 +72,7 @@ graphic-selector.panel.view
         const Fuse = require('fuse.js');
         this.fuseSearch = e => {
             if (e.target.value.trim()) {
-                var fuse = new Fuse(this.graphs, fuseOptions);
+                var fuse = new Fuse(this.textures, fuseOptions);
                 this.searchResults = fuse.search(e.target.value.trim());
             } else {
                 this.searchResults = null;

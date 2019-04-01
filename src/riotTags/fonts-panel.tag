@@ -13,7 +13,8 @@ fonts-panel.flexfix.tall.fifty
     ul.cards.flexfix-body
         li(each="{font in (searchResults? searchResults : fonts)}" 
         onclick="{openFont(font)}" 
-        oncontextmenu="{onFontContextMenu(font)}")
+        oncontextmenu="{onFontContextMenu(font)}"
+        onlong-press="{onFontContextMenu(font)}")
             span {font.typefaceName} {font.weight} {font.italic? voc.italic : ''}
             img(src="file://{window.sessionStorage.projdir + '/fonts/' + font.origname}_prev.png?{font.lastmod}")
     .aDropzone(if="{dropping}")
@@ -30,18 +31,28 @@ fonts-panel.flexfix.tall.fifty
         this.fonts = window.currentProject.fonts;
         this.namespace = 'fonts';
         this.mixin(window.riotVoc);
-        this.sort = 'name';
-        this.sortReverse = false;
         const fs = require('fs-extra'),
               path = require('path'),
               gui = require('nw.gui');
+
+        this.setUpPanel = e => {
+            window.currentProject.fonts = window.currentProject.fonts || [];
+            this.fonts = window.currentProject.fonts;
+            this.editingFont = false;
+            this.editedFont = null;
+            this.update();
+        };
+        window.signals.on('projectLoaded', this.setUpPanel);
+        this.on('unmount', () => {
+            window.signals.off('projectLoaded', this.setUpPanel);
+        });
 
         this.openFont = font => e => {
             this.editingFont = true;
             this.editedFont = font;
         };
         
-        // Контекстное меню для управления стилями по нажатию ПКМ по карточкам
+        // Context menu for manipulating fonts with RMB
         var fontMenu = new gui.Menu();
         this.onFontContextMenu = font => e => {
             this.editedFont = e.item.font;
@@ -55,7 +66,6 @@ fonts-panel.flexfix.tall.fifty
                 this.update();
             }
         }));
-        // Пункт "Скопировать название"
         fontMenu.append(new gui.MenuItem({
             label: languageJSON.common.copyName,
             click: e => {
@@ -91,7 +101,6 @@ fonts-panel.flexfix.tall.fifty
                     if (e.buttonClicked === 'ok') {
                         const ind = window.currentProject.fonts.indexOf(this.editedFont);
                         window.currentProject.fonts.splice(ind, 1);
-                        this.updateList();
                         this.update();
                         alertify
                         .okBtn(window.languageJSON.common.ok)
@@ -102,18 +111,19 @@ fonts-panel.flexfix.tall.fifty
         }));
 
         /**
-         * Событие добавления файлов через проводник
+         * The event of importing a font through a file manager
          */
-        this.fontImport = e => { // input[type="file"]
+        this.fontImport = e => { // e.target:input[type="file"]
             var i;
             files = e.target.value.split(';');
+            e.target.value = '';
             for (i = 0; i < files.length; i++) {
                 if (/\.ttf/gi.test(files[i])) {
                     let id = window.generateGUID();
                     this.loadFont(
                         id,
                         files[i],
-                        sessionStorage.projdir + '/fonts/f' + id + '.ttf',
+                        path.join(sessionStorage.projdir, '/fonts/f' + id + '.ttf'),
                         true
                     );
                 } else {
@@ -121,6 +131,7 @@ fonts-panel.flexfix.tall.fifty
                 }
             }
             this.dropping = false;
+            e.srcElement.value = ""; // clear input value that prevent to upload the same filename again
             e.preventDefault();
         };
         this.loadFont = (uid, filename, dest, imprt) => {
@@ -148,8 +159,9 @@ fonts-panel.flexfix.tall.fifty
                 weight: obj.weight,
                 style: obj.italic? 'italic' : 'normal'
             };
-            console.log(obj.typefaceName);
-            var face = new FontFace(obj.typefaceName, `url(file://${source})`, template);
+            // we clean the source url from the possible space and the \ to / (windows specific)
+            var cleanedSource = source.replace(/ /g, '%20').replace(/\\/g, '/');
+            var face = new FontFace('CTPROJFONT' + obj.typefaceName, `url(file://${cleanedSource})`, template);
             var elt = document.createElement('span');
             elt.innerHTML = 'testString';
             elt.style.fontFamily = obj.typefaceName;
@@ -157,7 +169,7 @@ fonts-panel.flexfix.tall.fifty
             face.load()
             .then(loaded => {
                 loaded.external = true;
-                loaded.ctId = obj.uid;
+                loaded.ctId = face.ctId = obj.uid;
                 document.fonts.add(loaded);
                 var c = document.createElement('canvas'), 
                     w, h;
@@ -165,7 +177,6 @@ fonts-panel.flexfix.tall.fifty
                 c.width = c.height = size;
                 c.x.clearRect(0, 0, size, size);
                 c.x.font = `${obj.italic? 'italic ' : ''}${obj.weight} ${Math.floor(size * 0.75)}px "${loaded.family}"`;
-                console.log(c.x.font);
                 c.x.fillStyle = '#000';
                 c.x.fillText('Aa', size * 0.05, size * 0.75);
                 // strip off the data:image url prefix to get just the base64-encoded bytes
@@ -186,7 +197,7 @@ fonts-panel.flexfix.tall.fifty
             .catch(reject);
         });
         /*
-         * Дополнения для drag-n-drop
+         * Additions for drag-n-drop
          */
         var dragTimer;
         this.onDragOver = e => {
@@ -234,11 +245,12 @@ fonts-panel.flexfix.tall.fifty
                         style: font.italic? 'italic' : 'normal'
                     },
                     source = `${sessionStorage.projdir}/fonts/${font.origname}`;
-                var face = new FontFace(font.typefaceName, `url(file://${source})`, template);
+                    var cleanedSource = source.replace(/ /g, '%20').replace(/\\/g, '/');    
+                var face = new FontFace('CTPROJFONT' + font.typefaceName, `url(file://${cleanedSource})`, template);
                 face.load()
                 .then(loaded => {
                     loaded.external = true;
-                    loaded.ctId = font.uid;
+                    loaded.ctId = face.ctId = font.uid;
                     document.fonts.add(loaded);
                 });
             }

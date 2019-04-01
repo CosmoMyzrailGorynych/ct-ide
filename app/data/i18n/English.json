@@ -4,17 +4,13 @@
         "native": "English",
         "eng": "English"
     },
-    "colorPicker": {
-        "current": "New",
-        "globalPalette": "Global Palette",
-        "old": "Old",
-        "projectPalette": "Project's Palette"
-    },
+    
     "common": {
         "add": "Add",
         "addtonotes": "Add to notes",
         "apply": "Apply",
         "cancel": "Cancel",
+        "cannotBeEmpty": "This cannot be empty",
         "confirmDelete": "Are you sure you want to delete {0}? It cannot be undone.",
         "copy": "Copy",
         "copyName": "Copy the name",
@@ -51,6 +47,29 @@
         "wrongFormat": "Wrong file format",
         "yes": "Yes"
     },
+
+    "actionsEditor": {
+        "actions": "Actions",
+        "actionsEditor": "Actions editor",
+        "addAction": "Add an action",
+        "addMethod": "Add an input method",
+        "deleteAction": "Delete this action",
+        "deleteMethod": "Delete this method",
+        "inputActionNamePlaceholder": "Action name",
+        "methodModuleMissing": "The required module for this method is missing",
+        "methods": "Input methods",
+        "multiplier": "Multiplier",
+        "noActionsYet": "Actions allow developers to listen to numerous input methods at once and dynamically change them, all with one uniform API. Read more by clicking on the docs icon above."
+    },
+    "colorPicker": {
+        "current": "New",
+        "globalPalette": "Global Palette",
+        "old": "Old",
+        "projectPalette": "Project's Palette"
+    },
+    "docsShortcut": {
+        "openDocs": "Open the documentation"
+    },
     "exportPanel": {
         "hide": "Hide",
         "working": "Working…",
@@ -59,6 +78,9 @@
         "exportPanel": "Export the Project",
         "firstrunnotice": "The first run for each platform will be slow as ct.js will download and save additional libraries needed for packing. It will take some time, but next times will be almost instant.",
         "log": "Message Log"
+    },
+    "inputMethodSelector": {
+        "select": "Select"
     },
     "intro": {
         "loading": "Please wait: kittens are gathering speed of light!",
@@ -94,7 +116,7 @@
     "menu": {
         "ctIDE": "ct.IDE",
         "exportDesktop": "Export for desktop",
-        "graphic": "Graphics",
+        "texture": "Textures",
         "launch": "Compile",
         "license": "License",
         "min": "Windowed",
@@ -116,9 +138,11 @@
         "zipProject": "Pack project to .zip"
     },
     "settings": {
+        "actions": "Actions and input methods",
         "author": "Author name:",
         "authoring": "Authoring",
         "cover": "Cover:",
+        "editActions": "Edit actions",
         "exportparams": "Export parameters",
         "framerate": "Framerate:",
         "getfile": "Choose",
@@ -148,23 +172,24 @@
         "author": "Author of this catmod",
         "hasfields": "Configurable",
         "hasinjects": "Has injections",
+        "hasinputmethods": "Provides additional input methods",
         "help": "Reference",
         "info": "Info",
         "license": "License",
-        "logs": "Logs",
+        "logs": "Changelog",
         "methods": "Methods",
         "parameters": "Parameters",
         "nomethods": "This module hasn't its own methods.",
         "noparameters": "This module hasn't its own parameters.",
-        "logs2": "Logs",
+        "logs2": "Changelog",
         "settings": "Settings"
     },
-    "graphic": {
+    "texture": {
         "create": "Create",
         "import": "Import",
         "skeletons": "Skeletal Animation"
     },
-    "graphview": {
+    "textureview": {
         "bgcolor": "Change bg color",
         "center": "Axis:",
         "cols": "Columns:",
@@ -182,7 +207,7 @@
         "setcenter": "Image's center",
         "speed": "Framerate:",
         "tiled": "Is it tiled?",
-        "replacegraph": "Replace…",
+        "replacetexture": "Replace…",
         "corrupted": "File is corrupted or missing! Closing now.",
         "showmask": "Show mask",
         "width": "Width:",
@@ -264,12 +289,13 @@
         "destroy": "On Destroy",
         "done": "Done",
         "draw": "Draw",
+        "learnAboutTypes": "Learn about coding types",
         "name": "Name:",
         "step": "On Step"
     },
     "rooms": {
         "create": "Add new",
-        "makestarting": "Set as starting room"
+        "makestarting": "Set as the starting room"
     },
     "roombackgrounds": {
         "add": "Add a Background",

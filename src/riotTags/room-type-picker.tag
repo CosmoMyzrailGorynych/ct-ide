@@ -1,6 +1,6 @@
 room-type-picker.room-editor-TypeSwatches.tabbed.tall
     .aSearchWrap
-        input.inline(type="text" onkeyup="{fuseSearch}")
+        input.inline(type="text" onkeyup="{fuseSearch}" ref="fusesearch")
     .room-editor-aTypeSwatch(
         if="{!searchResults}"
         onclick="{parent.roomUnpickType}"
@@ -15,7 +15,7 @@ room-type-picker.room-editor-TypeSwatches.tabbed.tall
         class="{active: parent.opts.current === type}"
     )
         span {type.name}
-        img(src="{type.graph === -1? '/data/img/nograph.png' : (glob.graphmap[type.graph].src.split('?')[0] + '_prev.png?' + getTypeGraphRevision(type))}")
+        img(src="{type.texture === -1? '/data/img/notexture.png' : (glob.texturemap[type.texture].src.split('?')[0] + '_prev.png?' + getTypeTextureRevision(type))}")
     .room-editor-aTypeSwatch.filler
     .room-editor-aTypeSwatch.filler
     .room-editor-aTypeSwatch.filler
@@ -29,14 +29,21 @@ room-type-picker.room-editor-TypeSwatches.tabbed.tall
         this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
         
-        this.getTypeGraphRevision = type => window.glob.graphmap[type.graph].g.lastmod;
+        this.getTypeTextureRevision = type => window.glob.texturemap[type.texture].g.lastmod;
 
         this.updateTypeList = () => {
             this.types = [...window.currentProject.types];
             this.types.sort((a, b) => a.name.localeCompare(b.name));
+            this.fuseSearch();
         };
-        this.updateTypeList();
-        window.signals.on('typesChanged', this.updateTypeList);
+        var typesChanged = () => {
+            this.updateTypeList();
+            this.update();
+        };
+        window.signals.on('typesChanged', typesChanged);
+        this.on('unmount', () => {
+            window.signals.off('typesChanged', typesChanged);
+        });
         const fuseOptions = {
             shouldSort: true,
             tokenize: true,
@@ -49,9 +56,10 @@ room-type-picker.room-editor-TypeSwatches.tabbed.tall
         };
         const Fuse = require('fuse.js');
         this.fuseSearch = e => {
-            if (e.target.value.trim()) {
+            var val = (e? e.target.value : this.refs.fusesearch.value).trim();
+            if (val) {
                 var fuse = new Fuse(this.types, fuseOptions);
-                this.searchResults = fuse.search(e.target.value.trim());
+                this.searchResults = fuse.search(val);
             } else {
                 this.searchResults = null;
             }
@@ -60,3 +68,4 @@ room-type-picker.room-editor-TypeSwatches.tabbed.tall
             this.parent.currentType = type;
             this.parent.selectedCopies = false;
         };
+        this.on('mount', this.updateTypeList);

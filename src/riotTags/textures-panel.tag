@@ -1,4 +1,4 @@
-graphics-panel.panel.view
+textures-panel.panel.view
     .flexfix.tall
         div
             .toright
@@ -13,33 +13,45 @@ graphics-panel.panel.view
                 label.file.flexfix-header
                     input(type="file" multiple 
                         accept=".png,.jpg,.jpeg,.bmp,.gif,.json" 
-                        onchange="{graphicImport}")
+                        onchange="{textureImport}")
                     .button
                         i.icon.icon-import
                         span {voc.import}
-        //-    button#graphiccreate(data-event="graphicCreate")
+        //-    button#texturecreate(data-event="textureCreate")
         //-        i.icon.icon-lamp
         //-        span {voc.create}
         .flexfix-body
             ul.cards
                 li(
-                    each="{graphic in (searchResults? searchResults : graphs)}"
-                    oncontextmenu="{showGraphicPopup(graphic)}"
-                    onclick="{openGraphic(graphic, false)}"
+                    each="{texture in (searchResults? searchResults : textures)}"
+                    oncontextmenu="{showTexturePopup(texture)}"
+                    onlong-press="{showTexturePopup(texture)}"
+                    onclick="{openTexture(texture, false)}"
                     no-reorder
                 )
-                    span {graphic.name}
-                    img(src="file://{sessionStorage.projdir + '/img/' + graphic.origname + '_prev.png?' + graphic.lastmod}")
-            h2(if="{currentProject.skeletons.length}") {voc.skeletons}
+                    span {texture.name}
+                    img(src="file://{sessionStorage.projdir + '/img/' + texture.origname + '_prev.png?' + texture.lastmod}")
+            h2 
+                span {voc.skeletons}
+                docs-shortcut(path="/skeletal-animation.html")
             ul.cards
                 li(
                     each="{skeleton in (searchResultsSkel? searchResultsSkel : skeletons)}"
-                    oncontextmenu="{showGraphicPopup(skeleton, true)}"
-                    onclick="{openSkeleton(graphic)}"
+                    oncontextmenu="{showTexturePopup(skeleton, true)}"
+                    onlong-press="{showTexturePopup(skeleton, true)}"
+                    onclick="{openSkeleton(texture)}"
                     no-reorder
                 )
                     span {skeleton.name}
                     img(src="file://{sessionStorage.projdir + '/img/' + skeleton.origname + '_prev.png?' + skeleton.lastmod}")
+                
+                label.file.flexfix-header
+                    input(type="file" multiple 
+                        accept=".json" 
+                        onchange="{textureImport}")
+                    .button
+                        i.icon.icon-import
+                        span {voc.import}
         
     .aDropzone(if="{dropping}")
         .middleinner
@@ -47,14 +59,14 @@ graphics-panel.panel.view
             h2 {languageJSON.common.fastimport}
             input(type="file" multiple 
                 accept=".png,.jpg,.jpeg,.bmp,.gif,.json" 
-                onchange="{graphicImport}")
+                onchange="{textureImport}")
     
-    graphic-editor(if="{editing}" graphic="{currentGraphic}")
+    texture-editor(if="{editing}" texture="{currentTexture}")
     script.
         const fs = require('fs-extra'),
               path = require('path'),
               gui = require('nw.gui');
-        this.namespace = 'graphic';
+        this.namespace = 'texture';
         this.mixin(window.riotVoc);
         this.editing = false;
         this.dropping = false;
@@ -62,17 +74,17 @@ graphics-panel.panel.view
         this.sortReverse = false;
 
         this.updateList = () => {
-            this.graphs = [...window.currentProject.graphs];
+            this.textures = [...window.currentProject.textures];
             this.skeletons = [...window.currentProject.skeletons];
             if (this.sort === 'name') {
-                this.graphs.sort((a, b) => {
+                this.textures.sort((a, b) => {
                     return a.name.localeCompare(b.name);
                 });
                 this.skeletons.sort((a, b) => {
                     return a.name.localeCompare(b.name);
                 });
             } else {
-                this.graphs.sort((a, b) => {
+                this.textures.sort((a, b) => {
                     return b.lastmod - a.lastmod;
                 });
                 this.skeletons.sort((a, b) => {
@@ -80,7 +92,7 @@ graphics-panel.panel.view
                 });
             }
             if (this.sortReverse) {
-                this.graphs.reverse();
+                this.textures.reverse();
                 this.skeletons.reverse();
             }
         };
@@ -106,7 +118,7 @@ graphics-panel.panel.view
         const Fuse = require('fuse.js');
         this.fuseSearch = e => {
             if (e.target.value.trim()) {
-                var fuse = new Fuse(this.graphs, fuseOptions);
+                var fuse = new Fuse(this.textures, fuseOptions);
                 var fuseSkel = new Fuse(this.skeletons, fuseOptions);
                 this.searchResults = fuse.search(e.target.value.trim());
                 this.searchResultsSkel = fuse.search(e.target.value.trim());
@@ -115,16 +127,16 @@ graphics-panel.panel.view
             }
         };
 
-        this.fillGraphMap = () => {
-            glob.graphmap = {};
-            window.currentProject.graphs.forEach(graph => {
+        this.fillTextureMap = () => {
+            glob.texturemap = {};
+            window.currentProject.textures.forEach(texture => {
                 var img = document.createElement('img');
-                glob.graphmap[graph.uid] = img;
-                img.g = graph;
-                img.src = 'file://' + sessionStorage.projdir + '/img/' + graph.origname + '?' + graph.lastmod;
+                glob.texturemap[texture.uid] = img;
+                img.g = texture;
+                img.src = 'file://' + sessionStorage.projdir + '/img/' + texture.origname + '?' + texture.lastmod;
             });
             var img = document.createElement('img');
-            glob.graphmap[-1] = img;
+            glob.texturemap[-1] = img;
             img.g = {
                 width: 32,
                 height: 32,
@@ -140,15 +152,26 @@ graphics-panel.panel.view
             }
             img.src = '/data/img/unknown.png';
         };
-        this.on('mount', () => {
+
+        this.setUpPanel = e => {
             this.updateList();
-            this.fillGraphMap();
+            this.fillTextureMap();
+            this.searchResults = null;
+            this.editing = false;
+            this.dropping = false;
+            this.currentTexture = null;
+            this.update();
+        };
+        window.signals.on('projectLoaded', this.setUpPanel);
+        this.on('mount', this.setUpPanel);
+        this.on('unmount', () => {
+            window.signals.off('projectLoaded', this.setUpPanel);
         });
-        
+
         /**
          * Событие добавления файлов через проводник
          */
-        this.graphicImport = e => { // input[type="file"]
+        this.textureImport = e => { // input[type="file"]
             var i;
             files = e.target.value.split(';');
             for (i = 0; i < files.length; i++) {
@@ -169,6 +192,7 @@ graphics-panel.panel.view
                     )
                 }
             }
+            e.srcElement.value = "";
             this.dropping = false;
             e.preventDefault();
         };
@@ -207,14 +231,14 @@ graphics-panel.panel.view
                             bottom: image.height,
                             uid: uid
                         };
-                        window.currentProject.graphs.push(obj);
+                        window.currentProject.textures.push(obj);
                         this.imgGenPreview(dest, dest + '_prev.png', 64)
                         .then(dataUrl => {
                             this.updateList();
                             this.update();
                         });
                         this.imgGenPreview(dest, dest + '_prev@2.png', 128);
-                        this.fillGraphMap();
+                        this.fillTextureMap();
                     }, 0);
                 }
                 image.onerror = e => {
@@ -329,61 +353,61 @@ graphics-panel.panel.view
         };
         
         // Создание контекстного меню, появляющегося при жмаке на карточку
-        var graphMenu = new gui.Menu();
-        graphMenu.append(new gui.MenuItem({
+        var textureMenu = new gui.Menu();
+        textureMenu.append(new gui.MenuItem({
             label: languageJSON.common.open,
             click: e => {
-                if (this.currentGraphicType === 'skeleton') {
-                    this.openSkeleton(this.currentGraphic);
+                if (this.currentTextureType === 'skeleton') {
+                    this.openSkeleton(this.currentTexture)();
                 } else {
-                    this.openGraphic(this.currentGraphic);
+                    this.openTexture(this.currentTexture)();
                 }
                 this.update();
             }
         }));
         // Пункт "Скопировать название"
-        graphMenu.append(new gui.MenuItem({
+        textureMenu.append(new gui.MenuItem({
             label: languageJSON.common.copyName,
             click: e => {
                 var clipboard = nw.Clipboard.get();
-                clipboard.set(this.currentGraphic.name, 'text');
+                clipboard.set(this.currentTexture.name, 'text');
             }
         }));
         // пункт "Переименовать"
-        graphMenu.append(new gui.MenuItem({
+        textureMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.rename,
             click: e => {
                 alertify
-                .defaultValue(this.currentGraphic.name)
+                .defaultValue(this.currentTexture.name)
                 .prompt(window.languageJSON.common.newname)
                 .then(e => {
                     console.log(e);
                     if (e.inputValue && e.inputValue != '' && e.buttonClicked !== 'cancel') {
-                        this.currentGraphic.name = e.inputValue;
+                        this.currentTexture.name = e.inputValue;
                         this.update();
                     }
                 });
             }
         }));
-        graphMenu.append(new gui.MenuItem({
+        textureMenu.append(new gui.MenuItem({
             type: 'separator'
         }));
         // Пункт "Удалить"
-        graphMenu.append(new gui.MenuItem({
+        textureMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.delete,
             click: e => {
                 alertify
                 .okBtn(window.languageJSON.common.delete)
                 .cancelBtn(window.languageJSON.common.cancel)
-                .confirm(window.languageJSON.common.confirmDelete.replace('{0}', this.currentGraphic.name))
+                .confirm(window.languageJSON.common.confirmDelete.replace('{0}', this.currentTexture.name))
                 .then(e => {
                     if (e.buttonClicked === 'ok') {
-                        if (this.currentGraphicType === 'skeleton') {
-                            window.currentProject.skeletons.splice(this.currentGraphicId, 1);
+                        if (this.currentTextureType === 'skeleton') {
+                            window.currentProject.skeletons.splice(this.currentTextureId, 1);
                         } else {
                             for (const type of window.currentProject.types) {
-                                if (type.graph === this.currentGraphic.uid) {
-                                    type.graph = -1;
+                                if (type.texture === this.currentTexture.uid) {
+                                    type.texture = -1;
                                 }
                             }
                             for (const room of window.currentProject.rooms) {
@@ -391,7 +415,7 @@ graphics-panel.panel.view
                                     for (const layer of room.tiles) {
                                         let i = 0;
                                         while (i < layer.tiles.length) {
-                                            if (layer.tiles[i].graph === this.currentGraphic.uid) {
+                                            if (layer.tiles[i].texture === this.currentTexture.uid) {
                                                 layer.tiles.splice(i, 1);
                                             } else {
                                                 i++;
@@ -402,7 +426,7 @@ graphics-panel.panel.view
                                 if ('backgrounds' in room) {
                                     let i = 0;
                                     while (i < room.backgrounds.length) {
-                                        if (room.backgrounds[i].graph === this.currentGraphic.uid) {
+                                        if (room.backgrounds[i].texture === this.currentTexture.uid) {
                                             room.backgrounds.splice(i, 1);
                                         } else {
                                             i++;
@@ -410,7 +434,7 @@ graphics-panel.panel.view
                                     }
                                 }
                             }
-                            window.currentProject.graphs.splice(this.currentGraphicId, 1);
+                            window.currentProject.textures.splice(this.currentTextureId, 1);
                         }
                         this.updateList();
                         this.update();
@@ -424,24 +448,24 @@ graphics-panel.panel.view
         /**
          * Отобразить контекстное меню
          */
-        this.showGraphicPopup = (graphic, isSkeleton) => e => {
-            this.currentGraphicType = isSkeleton? 'skeleton' : 'graphic';
+        this.showTexturePopup = (texture, isSkeleton) => e => {
+            this.currentTextureType = isSkeleton? 'skeleton' : 'texture';
             if (isSkeleton) {
-                this.currentGraphicId = currentProject.skeletons.indexOf(graphic);
+                this.currentTextureId = currentProject.skeletons.indexOf(texture);
             } else {
-                this.currentGraphicId = currentProject.graphs.indexOf(graphic);
+                this.currentTextureId = currentProject.textures.indexOf(texture);
             }
-            this.currentGraphic = graphic; 
-            graphMenu.popup(e.clientX, e.clientY);
+            this.currentTexture = texture; 
+            textureMenu.popup(e.clientX, e.clientY);
             e.preventDefault();
         };
         
         /**
          * Открывает редактор для указанного объекта графики
          */
-        this.openGraphic = graphic => e => {
-            this.currentGraphic = graphic;
-            this.currentGraphicId = window.currentProject.graphs.indexOf(graphic);
+        this.openTexture = texture => e => {
+            this.currentTexture = texture;
+            this.currentTextureId = window.currentProject.textures.indexOf(texture);
             this.editing = true;
         };
         this.openSkeleton = skel => e => {

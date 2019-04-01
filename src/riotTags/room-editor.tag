@@ -322,7 +322,7 @@ room-editor.panel.view
             return true;
         };
         
-        // Позволяет переместить сразу все копии в комнате
+        // Shifts all the copies in a room at once.
         this.roomShift = e => {
             window.alertify.confirm(`
                 ${window.languageJSON.roomview.shifttext}
@@ -349,7 +349,7 @@ room-editor.panel.view
             });
         };
         
-        /** Сохранение комнаты (по факту, лишь помечает проект как несохранённый и закрывает редактор) */
+        /** Saves a room (in fact, just marks a project as an unsaved, and closes the room editor) */
         this.roomSave = e => {
             this.room.lastmod = +(new Date());
             this.roomGenSplash()
@@ -367,7 +367,7 @@ room-editor.panel.view
         };
         
         this.resortRoom = () => {
-            // Сделаем массив слоёв фонов, тайлов и копий.
+            // Make an array of all the backgrounds, tile layers and copies, and then sort it.
             this.stack = this.room.copies.concat(this.room.backgrounds).concat(this.room.tiles);
             this.stack.sort((a, b) => {
                 let depthA = a.depth !== void 0? a.depth : window.currentProject.types[glob.typemap[a.uid]].depth,
@@ -376,10 +376,18 @@ room-editor.panel.view
             });
         };
         this.resortRoom();
-        /** Прорисовка холста */
+        var typesChanged = () => {
+            this.currentType = -1;
+            this.resortRoom();
+        };
+        window.signals.on('typesChanged', typesChanged);
+        this.on('unmount', () => {
+            window.signals.off('typesChanged', typesChanged);
+        });
+        /** Canvas redrawing, with all the backgrounds, tiles and copies */
         this.refreshRoomCanvas = () => {
             if (this.forbidDrawing) {return;}
-            var canvas = this.refs.canvas,
+            let canvas = this.refs.canvas,
                 sizes = this.refs.canvaswrap.getBoundingClientRect();
             // Перед рисовкой проверим, нормального ли размера наш холст
             if (canvas.width != sizes.width || canvas.height != sizes.height) {
@@ -407,12 +415,12 @@ room-editor.panel.view
                         if (!layer.hidden) {
                             for (let tile of layer.tiles) {
                                 let w, h, x, y,
-                                    img = glob.graphmap[tile.graph],
-                                    graph = img.g;
-                                x = graph.offx + (graph.width + graph.marginx) * tile.grid[0] - graph.marginx;
-                                y = graph.offy + (graph.height + graph.marginy) * tile.grid[1] - graph.marginy;
-                                w = (graph.width + graph.marginx) * tile.grid[2] - graph.marginx;
-                                h = (graph.height + graph.marginy) * tile.grid[3] - graph.marginy;
+                                    img = glob.texturemap[tile.texture],
+                                    texture = img.g;
+                                x = texture.offx + (texture.width + texture.marginx) * tile.grid[0] - texture.marginx;
+                                y = texture.offy + (texture.height + texture.marginy) * tile.grid[1] - texture.marginy;
+                                w = (texture.width + texture.marginx) * tile.grid[2] - texture.marginx;
+                                h = (texture.height + texture.marginy) * tile.grid[3] - texture.marginy;
                                 canvas.x.drawImage(
                                     img,
                                     x, y, w, h,
@@ -420,8 +428,8 @@ room-editor.panel.view
                                 );
                             }
                         }
-                    } else if (this.stack[i].graph) { // это слой-фон
-                        if (this.stack[i].graph !== -1) {
+                    } else if (this.stack[i].texture) { // это слой-фон
+                        if (this.stack[i].texture !== -1) {
                             if (!('extends' in this.stack[i])) {
                                 this.stack[i].extends = {};
                             }
@@ -430,7 +438,7 @@ room-editor.panel.view
                                 shx = this.stack[i].extends.shiftX || 0,
                                 shy =  this.stack[i].extends.shiftY || 0;
                             canvas.x.save();
-                            canvas.x.fillStyle = canvas.x.createPattern(glob.graphmap[this.stack[i].graph], this.stack[i].extends.repeat || 'repeat');
+                            canvas.x.fillStyle = canvas.x.createPattern(glob.texturemap[this.stack[i].texture], this.stack[i].extends.repeat || 'repeat');
                             canvas.x.translate(shx, shy);
                             canvas.x.scale(scx, scy);
                             canvas.x.fillRect(
@@ -443,11 +451,11 @@ room-editor.panel.view
                     } else { // Это копия
                         let copy = this.stack[i],
                             type = window.currentProject.types[glob.typemap[copy.uid]];
-                        let graph, gra, w, h, ox, oy,
+                        let texture, gra, w, h, ox, oy,
                             grax, gray; // Центр рисовки графики
-                        if (type.graph != -1) {
-                            graph = glob.graphmap[type.graph];
-                            gra = glob.graphmap[type.graph].g;
+                        if (type.texture != -1) {
+                            texture = glob.texturemap[type.texture];
+                            gra = glob.texturemap[type.texture].g;
                             w = gra.width;
                             h = gra.height;
                             ox = gra.offx;
@@ -455,7 +463,7 @@ room-editor.panel.view
                             grax = gra.axis[0];
                             gray = gra.axis[1];
                         } else {
-                            graph = glob.graphmap[-1];
+                            texture = glob.texturemap[-1];
                             w = h = 32;
                             grax = gray = 16;
                             ox = oy = 0;
@@ -465,15 +473,15 @@ room-editor.panel.view
                             canvas.x.translate(copy.x - grax * (copy.tx || 1), copy.y - gray * (copy.ty || 1));
                             canvas.x.scale(copy.tx || 1, copy.ty || 1);
                             canvas.x.drawImage(
-                                graph,
+                                texture,
                                 ox, oy, w, h,
                                 0, 0, w, h
                             );
                             canvas.x.restore();
                         } else {
                             canvas.x.drawImage(
-                                graph,
-                                glob.graphmap[type.graph].g.offx, glob.graphmap[type.graph].g.offy, w, h,
+                                texture,
+                                glob.texturemap[type.texture].g.offx, glob.texturemap[type.texture].g.offy, w, h,
                                 copy.x - grax, copy.y - gray, w, h
                             );
                         }
@@ -494,7 +502,7 @@ room-editor.panel.view
             // Обводка выделенных тайлов
             if (this.tab === 'roomtiles' && this.selectedTiles && this.selectedTiles.length) {
                 for (const tile of this.selectedTiles) {
-                    let g = glob.graphmap[tile.graph].g;
+                    let g = glob.texturemap[tile.texture].g;
                     this.drawSelection(tile.x, tile.y, tile.x + g.width*tile.grid[2], tile.y + g.height*tile.grid[3]);
                 }
             }
@@ -512,13 +520,13 @@ room-editor.panel.view
             if (typeof x1 !== 'number') {
                 const copy = x1,
                       type = window.currentProject.types[glob.typemap[copy.uid]],
-                      graph = glob.graphmap[type.graph].g;
+                      texture = glob.texturemap[type.texture].g;
                 var left, top, height, width;
-                if (type.graph !== -1) {
-                    left = copy.x - graph.axis[0] * (copy.tx || 1) - 1.5;
-                    top = copy.y - graph.axis[1] * (copy.ty || 1) - 1.5;
-                    width = graph.width * (copy.tx || 1) + 3;
-                    height = graph.height * (copy.ty || 1) + 3;
+                if (type.texture !== -1) {
+                    left = copy.x - texture.axis[0] * (copy.tx || 1) - 1.5;
+                    top = copy.y - texture.axis[1] * (copy.ty || 1) - 1.5;
+                    width = texture.width * (copy.tx || 1) + 3;
+                    height = texture.height * (copy.ty || 1) + 3;
                 } else {
                     left = copy.x - 16 - 1.5;
                     top = copy.y - 16 - 1.5;

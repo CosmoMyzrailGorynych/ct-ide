@@ -16,9 +16,9 @@
                     new SSCD.Vector(Math.abs((shape.left + shape.right) * copy.scale.x), Math.abs((shape.bottom + shape.top) * copy.scale.y))
                 );
             }
-            const upperLeft = ct.u.rotate(shape.left * copy.scale.x, shape.top * copy.scale.y, copy.rotation),
-                  upperRight = ct.u.rotate(shape.right * copy.scale.x, shape.top * copy.scale.y, copy.rotation),
-                  bottomLeft = ct.u.rotate(shape.left * copy.scale.x, shape.bottom * copy.scale.y, copy.rotation),
+            const upperLeft = ct.u.rotate(-shape.left * copy.scale.x, -shape.top * copy.scale.y, copy.rotation),
+                  upperRight = ct.u.rotate(shape.right * copy.scale.x, -shape.top * copy.scale.y, copy.rotation),
+                  bottomLeft = ct.u.rotate(-shape.left * copy.scale.x, shape.bottom * copy.scale.y, copy.rotation),
                   bottomRight = ct.u.rotate(shape.right * copy.scale.x, shape.bottom * copy.scale.y, copy.rotation);
             return new SSCD.LineStrip(position, [
                 new SSCD.Vector(upperLeft[0], upperLeft[1]),
@@ -28,8 +28,8 @@
             ], true);
         }
         if (shape.type === 'circle') {
-            if (copy.scale.x === copy.scale.y) {
-                return new SSCD.Circle(position, shape.r * copy.scale.x);
+            if (Math.abs(copy.scale.x) === Math.abs(copy.scale.y)) {
+                return new SSCD.Circle(position, shape.r * Math.abs(copy.scale.x));
             }
             const vertices = [];
             for (let i = 0; i < circlePrecision; i++) {
@@ -40,7 +40,7 @@
                 if (copy.rotation !== 0) {
                     vertices.push(ct.u.rotate(point[0], point[1], copy.rotation));
                 } else {
-                    vertices.push([point[0], point[1]]);
+                    vertices.push(point);
                 }
             }
             return new SSCD.LineStrip(position, vertices, true);

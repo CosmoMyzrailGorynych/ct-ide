@@ -4,7 +4,6 @@ variables:
 stages:
   - build
   - test
-  - docs
   - deploy
 
 build:
@@ -33,16 +32,6 @@ lint:
     - npm install gulp-cli -g
     - gulp lint
 
-docs:
-  image: node:10.5
-  stage: docs
-  when: on_success
-  script: 
-    - npm run docs:build
-  artifacts:
-    paths: 
-      - app/docs
-
 release:
   when: manual
   image: node:10.5
@@ -51,7 +40,6 @@ release:
   stage: deploy
   dependencies:
     - build
-    - docs
   script:
     - npm install
     - npm install gulp-cli -g
@@ -59,3 +47,6 @@ release:
     - npm install
     - cd ./..
     - gulp release
+  artifacts:
+    paths: 
+      - build

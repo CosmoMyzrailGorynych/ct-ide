@@ -47,6 +47,8 @@ body
     flex-flow row nowrap
     & > *
         flex 1 1 auto
+    &.middle
+        align-items center
 .flexcol
     flex-flow column nowrap
 .crop
@@ -322,7 +324,7 @@ for i in 1 2 3 4 5 6 7 8
 /* viewport control */
 .hide
     display none
-for size in 640 480
+for size in 960 800 640 480
     @media (max-width (size)px)
         .hide{size}
             display none

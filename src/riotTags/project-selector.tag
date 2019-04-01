@@ -50,12 +50,16 @@ project-selector
         this.namespace = 'intro';
         this.mixin(window.riotVoc);
         this.visible = true;
-        window.signals.on('hideProjectSelector', () => {
+        var hideProjectSelector = () => {
             this.visible = false;
             this.parent.selectorVisible = false;
             this.update();
-        })
-        this.projectSplash = '/data/img/nograph.png';
+        };
+        window.signals.on('hideProjectSelector', hideProjectSelector);
+        this.on('unmount', () => {
+            window.signals.off('hideProjectSelector', hideProjectSelector);
+        });
+        this.projectSplash = '/data/img/notexture.png';
         this.newVersion = false;
         
         // Загрузка списка последних проектов из локального хранилища
@@ -93,12 +97,13 @@ project-selector
                         mode: "scaleFit"
                     },
                     keyboard: {},
+                    'keyboard.polyfill': {},
                     'sound.howler': {},
                     akatemplate: {
                         csscss: "body {\n    background: #000;\n}"
                     }
                 },
-                graphs: [],
+                textures: [],
                 types: [],
                 sounds: [],
                 styles: [],
@@ -131,8 +136,8 @@ project-selector
             fs.ensureDir(sessionStorage.projdir + '/img');
             fs.ensureDir(sessionStorage.projdir + '/snd');
             fs.ensureDir(sessionStorage.projdir + '/include');
-            setTimeout(() => { // почему-то это нужно делать через setTimeout, иначе функция просто не выполняется.
-                window.megacopy('./data/img/nograph.png', path.join(sessionStorage.projdir + '/img/splash.png'), e => {
+            setTimeout(() => { // for some reason, it must be done through setTimeout; otherwise it fails
+                window.megacopy('./data/img/notexture.png', path.join(sessionStorage.projdir + '/img/splash.png'), e => {
                     if (e) {
                         alertify.error(e);
                         console.error(e);

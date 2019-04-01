@@ -5,14 +5,11 @@
     /* global dragonBones */
     const dbFactory = window.dragonBones? dragonBones.PixiFactory.factory : null;
     ct.res = {
-        graphsLoaded: 0,
-        graphsError: 0,
         soundsLoaded: 0,
         soundsTotal: [/*@sndtotal@*/][0],
         soundsError: 0,
-        images: {},
         sounds: {},
-        registry: [/*@graphregistry@*/][0],
+        registry: [/*@textureregistry@*/][0],
         skelRegistry: [/*@skeletonregistry@*/][0],
         fetchImage(url, callback) {
             loader.add(url, url);
@@ -22,7 +19,7 @@
             loader.onError((loader, resources) => {
                 loader.add(url, 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVQIW2NkAAIAAAoAAggA9GkAAAAASUVORK5CYII=');
                 console.error('[ct.res] An image from ' + resources + ' wasn\'t loaded :( Maybe refreshing the page will solve this problem…');
-                ct.res.graphsError++;
+                ct.res.texturesError++;
             });
         },
         parseImages() {
@@ -64,14 +61,14 @@
         loadingBar.style.width = e.progress + '%';
     });
     PIXI.loader.onComplete.add(() => {
-        for (const graph in ct.res.registry) {
-            const reg = ct.res.registry[graph];
+        for (const texture in ct.res.registry) {
+            const reg = ct.res.registry[texture];
             reg.textures = [];
             if (reg.frames) {
                 for (let i = 0; i < reg.frames; i++) {
-                    const texture = PIXI.loader.resources[reg.atlas].textures[`${graph}_frame${i}`];
-                    texture.defaultAnchor = new PIXI.Point(reg.anchor.x, reg.anchor.y);
-                    reg.textures.push(texture);
+                    const tex = PIXI.loader.resources[reg.atlas].textures[`${texture}_frame${i}`];
+                    tex.defaultAnchor = new PIXI.Point(reg.anchor.x, reg.anchor.y);
+                    reg.textures.push(tex);
                 }
             } else {
                 const texture = PIXI.loader.resources[reg.atlas].texture;
@@ -87,7 +84,6 @@
             /*%start%*/
             ct.pixiApp.ticker.add(ct.loop);
             ct.rooms.forceSwitch(ct.rooms.starting);
-            ct.mouse.setupListeners();
         }, 0);
     });
     ct.res.parseImages();

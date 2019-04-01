@@ -72,6 +72,41 @@
         if (!('skeletons' in project)) {
             project.skeletons = [];
         }
+        if (!('actions' in project)) {
+            project.actions = [];
+            if ('keyboard' in project.libs) {
+                delete project.libs.keyboard;
+                project.libs['keyboard.legacy'] = {};
+            }
+            project.libs['mouse.legacy'] = {};
+        }
+        if (!('textures' in project)) {
+            project.textures = project.graphs;
+            project.texturetick = project.graphtick;
+            delete project.graphs;
+            delete project.graphtick;
+            for (const type of project.types) {
+                type.texture = type.graph;
+                delete type.graph;
+            }
+            for (const room of project.rooms) {
+                if (room.backgrounds) {
+                    for (const bg of room.backgrounds) {
+                        bg.texture = bg.graph;
+                        delete bg.graph;
+                    }
+                }
+                if (room.tiles) {
+                    for (const layer of room.tiles) {
+                        // eslint-disable-next-line max-depth
+                        for (const tile of layer.tiles) {
+                            tile.texture = tile.graph;
+                            delete tile.graph;
+                        }
+                    }
+                }
+            }
+        }
     };
     
     var adapter = project => {
@@ -136,6 +171,7 @@
         localStorage.lastProjects = lastProjects.join(';');
         window.glob.modified = false;
         window.signals.trigger('hideProjectSelector');
+        window.signals.trigger('projectLoaded');
 
         if (window.currentProject.settings.title) {
             document.title = window.currentProject.settings.title + ' — ct.js';

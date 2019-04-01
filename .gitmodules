@@ -4,3 +4,6 @@
 [submodule "SSCD.js"]
 	path = SSCD.js
 	url = https://github.com/CosmoMyzrailGorynych/SSCD.js.git
+[submodule "docs"]
+	path = docs
+	url = git@github.com:CosmoMyzrailGorynych/docs.ctjs.rocks.git

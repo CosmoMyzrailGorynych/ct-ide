@@ -20,6 +20,7 @@ rooms-panel.panel.view
                 class="{starting: window.currentProject.startroom === room.uid}"
                 onclick="{openRoom(room)}"
                 oncontextmenu="{menuPopup(room)}"
+                onlong-press="{menuPopup(room)}"
             )
                 img(src="file://{sessionStorage.projdir + '/img/r' + room.thumbnail + '.png?' + room.lastmod}")
                 span {room.name}
@@ -74,8 +75,17 @@ rooms-panel.panel.view
                 this.searchResults = null;
             }
         };
-        this.on('mount', () => {
+        this.setUpPanel = e => {
             this.updateList();
+            this.searchResults = null;
+            this.editing = false;
+            this.editingRoom = null;
+            this.update();
+        };
+        window.signals.on('projectLoaded', this.setUpPanel);
+        this.on('mount', this.setUpPanel);
+        this.on('unmount', () => {
+            window.signals.off('projectLoaded', this.setUpPanel);
         });
 
         const gui = require('nw.gui'),
@@ -84,7 +94,7 @@ rooms-panel.panel.view
         this.roomCreate = function () {
             var guid = window.generateGUID(),
                 thumbnail = guid.split('-').pop();
-            fs.copy('./data/img/nograph.png', path.join(sessionStorage.projdir, '/img/r' + thumbnail + '.png'), () => {
+            fs.copy('./data/img/notexture.png', path.join(sessionStorage.projdir, '/img/r' + thumbnail + '.png'), () => {
                 var newRoom = {
                     name: 'Room_' + thumbnail,
                     oncreate: '',
@@ -121,7 +131,8 @@ rooms-panel.panel.view
         roomMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.open,
             click: () => {
-                this.openRoom(this.editingRoom);
+                this.openRoom(this.editingRoom)();
+                this.update();
             }
         }));
         // Пункт "Скопировать название"

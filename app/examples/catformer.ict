@@ -1,13 +1,15 @@
 {
   "notes": "/* empty */",
   "libs": {
-    "keyboard": {},
     "random": {},
     "fittoscreen": {
       "manageViewport": true,
       "mode": "scaleFill"
     },
-    "place": {}
+    "place": {},
+    "mouse": {},
+    "keyboard.polyfill": {},
+    "keyboard": {}
   },
   "graphs": [
     {
@@ -367,7 +369,7 @@
       "ondestroy": "",
       "uid": "b7a528f8-655c-4920-900f-f191533f411d",
       "graph": "d8dd2bfd-0f9d-495a-bbfd-0e65b80153b9",
-      "lastmod": 1547470593124,
+      "lastmod": 1551429656475,
       "extends": {
         "ctype": "Solid"
       }
@@ -418,12 +420,12 @@
       "name": "Player",
       "depth": 0,
       "oncreate": "this.animationSpeed = 15 / 60;\n\n// Traditional speed/dir movement system works badly with platformers.\n// We will set up our own variables and write own movement code.\n\nthis.maxspeed = 5; // this will be our max horizontal speed\nthis.acceleration = 1; // this is walking acceleration\nthis.jumpPower = 12; // this is our jumping velocity\nthis.gravity = 0.5;",
-      "onstep": "// here and below we check for both collisions with tiles and copies.\n// -10 is the depth of the colliding tile layer. We ignore the decorative\n// layer at -20.\nvar onGround = ct.place.occupied(this, this.x, this.y + 1, 'Solid') ||\n               ct.place.tile(this, this.x, this.y + 1, -10);\n\n// Move right or left\nif (ct.keyboard.down.right || ct.keyboard.down.D) {\n    if (this.hspeed < this.maxspeed) {\n        this.hspeed += this.acceleration * ct.delta;\n    }\n    if ((this.currentFrame > 10 || !this.playing) && onGround) {\n        this.gotoAndPlay(0);\n    }\n} else if (ct.keyboard.down.left || ct.keyboard.down.A) {\n    if (this.hspeed > -this.maxspeed) {\n        this.hspeed -= this.acceleration * ct.delta;\n    }\n    if ((this.currentFrame > 10 || !this.playing) && onGround) {\n        this.gotoAndPlay(0);\n    }\n} else { // Slow down if we are on the ground and we don't move.\n    if (onGround) {\n        this.speed = Math.max(0, this.speed - this.maxspeed);\n        this.gotoAndStop(9);\n    }\n}\n\n// Jumping\nif (ct.keyboard.down.up || ct.keyboard.down.space || ct.keyboard.down.W) {\n    // Jump only if we stay on the ground\n    if (onGround) {\n        this.vspeed = -this.jumpPower;\n        this.gotoAndStop(12);\n    }\n}\n\n// If we are not on the ground, add gravity\nif (!onGround) {\n    this.vspeed += this.gravity * ct.delta;\n}\n\n// Move pixel by pixel until we meet a colliding object next to us\n// Math.sign returns -1 if a number is negative, 1 if positive and 0 if it is 0.\nfor (var i = 0; i < Math.abs(this.hspeed); i++) {\n    if (ct.place.free(this, this.x + Math.sign(this.hspeed), this.y, 'Solid') &&\n        !ct.place.tile(this, this.x + Math.sign(this.hspeed), this.y, -10)\n    ) {\n        this.x += Math.sign(this.hspeed);\n    } else {\n        this.hspeed = 0;\n        break;\n    }\n}\n\n// Do the same for vertical speed\nfor (var i = 0; i < Math.abs(this.vspeed); i++) {\n    if (ct.place.free(this, this.x, this.y + Math.sign(this.vspeed), 'Solid') &&\n        !ct.place.tile(this, this.x, this.y + Math.sign(this.vspeed), -10)\n    ) {\n        this.y += Math.sign(this.vspeed);\n    } else {\n        this.vspeed = 0;\n        break;\n    }\n}\n\n// Check if we collide with spikes\nif (ct.place.occupied(this, this.x, this.y, 'Enemy')) {\n    ct.sound.spawn('BodyFall');\n    // move to a 'death' screen\n    ct.rooms.switch('DeadScreen');\n}",
+      "onstep": "// here and below we check for both collisions with tiles and copies.\n// -10 is the depth of the colliding tile layer. We ignore the decorative\n// layer at -20.\nvar onGround = ct.place.occupied(this, this.x, this.y + 1, 'Solid') ||\n               ct.place.tile(this, this.x, this.y + 1, -10);\n\n// Move right or left\nif (ct.actions.Move.value > 0) {\n    if (this.hspeed < this.maxspeed) {\n        this.hspeed += this.acceleration * ct.delta;\n    }\n    if ((this.currentFrame > 10 || !this.playing) && onGround) {\n        this.gotoAndPlay(0);\n    }\n} else if (ct.actions.Move.value < 0) {\n    if (this.hspeed > -this.maxspeed) {\n        this.hspeed -= this.acceleration * ct.delta;\n    }\n    if ((this.currentFrame > 10 || !this.playing) && onGround) {\n        this.gotoAndPlay(0);\n    }\n} else { // Slow down if we are on the ground and we don't move.\n    if (onGround) {\n        this.speed = Math.max(0, this.speed - this.maxspeed);\n        this.gotoAndStop(9);\n    }\n}\n\n// Jumping\nif (ct.actions.Jump.down) {\n    // Jump only if we stay on the ground\n    if (onGround) {\n        this.vspeed = -this.jumpPower;\n        this.gotoAndStop(12);\n    }\n}\n\n// If we are not on the ground, add gravity\nif (!onGround) {\n    this.vspeed += this.gravity * ct.delta;\n}\n\n// Move pixel by pixel until we meet a colliding object next to us\n// Math.sign returns -1 if a number is negative, 1 if positive and 0 if it is 0.\nfor (var i = 0; i < Math.abs(this.hspeed); i++) {\n    if (ct.place.free(this, this.x + Math.sign(this.hspeed), this.y, 'Solid') &&\n        !ct.place.tile(this, this.x + Math.sign(this.hspeed), this.y, -10)\n    ) {\n        this.x += Math.sign(this.hspeed);\n    } else {\n        this.hspeed = 0;\n        break;\n    }\n}\n\n// Do the same for vertical speed\nfor (var i = 0; i < Math.abs(this.vspeed); i++) {\n    if (ct.place.free(this, this.x, this.y + Math.sign(this.vspeed), 'Solid') &&\n        !ct.place.tile(this, this.x, this.y + Math.sign(this.vspeed), -10)\n    ) {\n        this.y += Math.sign(this.vspeed);\n    } else {\n        this.vspeed = 0;\n        break;\n    }\n}\n\n// Check if we collide with spikes\nif (ct.place.occupied(this, this.x, this.y, 'Enemy')) {\n    ct.sound.spawn('BodyFall');\n    // move to a 'death' screen\n    ct.rooms.switch('DeadScreen');\n}",
       "ondraw": "if (this.hspeed < 0) {\n    this.scale.x = -1;\n} else if (this.hspeed > 0) {\n    this.scale.x = 1;\n}\n\nct.room.followShiftX = this.scale.x * 150;",
       "ondestroy": "",
       "uid": "00664f77-21c6-4b06-b310-88640b1beaf9",
       "graph": "ad390b6e-4c2c-412f-8143-1c70b9c16fc0",
-      "lastmod": 1547481308172,
+      "lastmod": 1551429765916,
       "extends": {
         "ctype": "Player"
       }
@@ -449,7 +451,7 @@
       "ondestroy": "",
       "uid": "2d29a0d5-d88d-493d-bece-8d52ed476273",
       "graph": "e90eb23b-547a-4d96-a203-ffe63c00cf9b",
-      "lastmod": 1543241921120,
+      "lastmod": 1551429772275,
       "extends": {}
     },
     {
@@ -461,7 +463,7 @@
       "ondestroy": "",
       "uid": "1f91fd7d-2d6c-4542-aead-78b8010b835b",
       "graph": "703fb5d5-cf20-4450-b760-0b1cd037a5ad",
-      "lastmod": 1547481500671,
+      "lastmod": 1551429013431,
       "extends": {
         "ctype": "Enemy"
       }
@@ -2237,7 +2239,7 @@
     {
       "name": "DeadScreen",
       "oncreate": "ct.sound.spawn('Failure');\n\nthis.wait = 30;\nct.keyboard.clear();\n\nthis.ohNoLabel = new PIXI.Text('Oh no!', ct.styles.get('OhNo'));\nthis.ohNoLabel.x = ct.width / 2;\nthis.ohNoLabel.y = 540;\nthis.ohNoLabel.anchor.x = this.ohNoLabel.anchor.y = 0.5;\nthis.addChild(this.ohNoLabel);\n\nthis.subLabel = new PIXI.Text('You were too greeedy for that game!\\nPress any button to try again.', ct.styles.get('OhNo_Small'));\nthis.subLabel.x = ct.width / 2;\nthis.subLabel.y = 600;\nthis.subLabel.anchor.x = this.subLabel.anchor.y = 0.5;\nthis.addChild(this.subLabel);",
-      "onstep": "this.wait -= ct.delta;\nif (ct.keyboard.key && this.wait < 0) {\n    ct.rooms.switch('InGame');\n}",
+      "onstep": "this.wait -= ct.delta;\nif (ct.keyboard.lastKey && this.wait < 0) {\n    ct.rooms.switch('InGame');\n}",
       "ondraw": "",
       "onleave": "",
       "width": 1024,
@@ -2291,7 +2293,7 @@
       ],
       "uid": "1a5a64c6-5a4b-4f57-aa99-371ae3c158a3",
       "grid": 64,
-      "lastmod": 1547471604234,
+      "lastmod": 1551429777966,
       "thumbnail": 2,
       "gridX": 64,
       "gridY": 64,
@@ -2350,5 +2352,40 @@
   "scripts": [],
   "ctjsVersion": "1.0.0-next-2",
   "fonts": [],
-  "skeletons": []
+  "skeletons": [],
+  "actions": [
+    {
+      "name": "Jump",
+      "methods": [
+        {
+          "code": "keyboard.Space"
+        },
+        {
+          "code": "keyboard.KeyW"
+        },
+        {
+          "code": "keyboard.ArrowUp"
+        }
+      ]
+    },
+    {
+      "name": "Move",
+      "methods": [
+        {
+          "code": "keyboard.ArrowLeft",
+          "multiplier": -1
+        },
+        {
+          "code": "keyboard.ArrowRight"
+        },
+        {
+          "code": "keyboard.KeyA",
+          "multiplier": -1
+        },
+        {
+          "code": "keyboard.KeyD"
+        }
+      ]
+    }
+  ]
 }

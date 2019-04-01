@@ -36,11 +36,12 @@ modules-panel.panel.view
                         span#modauthor {author.name}
                     i#modinjects.icon-zap.warning(title="{voc.hasinjects}" show="{currentModule.injects}")
                     i#modconfigurable.icon-settings.success(title="{voc.hasfields}" show="{currentModule.fields}")
+                    i#modinputmethods.icon-airplay.success(title="{voc.hasinputmethods}" show="{currentModule.inputMethods}")
                     
                     #modinfohtml(if="{currentModuleHelp}")
                         raw(ref="raw" content="{currentModuleHelp}")
-                    h1(if="{currentModule.main.license}") {voc.license}
-                    pre(if="{currentModule.main.license}")
+                    h1(if="{currentModuleLicense}") {voc.license}
+                    pre(if="{currentModuleLicense}")
                         code {currentModuleLicense}
                     
                 #modulesettings.tabbed(show="{tab === 'modulesettings'}" if="{currentModule.fields && currentModuleName in currentProject.libs}")
@@ -81,7 +82,7 @@ modules-panel.panel.view
                                 value="{window.currentProject.libs[currentModuleName][field.id]}" 
                                 onchange="{wire('window.currentProject.libs.' + currentModuleName + '.' + field.id)}"
                             )
-                            //- Это хреновая затея!!!
+                            //- That's a bad idea!!!
                             div(class="desc" if="{field.help}")
                                 raw(ref="raw" content="{md.render(field.help)}")
                 #modulehelp.tabbed(show="{tab === 'modulehelp'}" if="{currentModuleDocs}")
@@ -169,6 +170,11 @@ modules-panel.panel.view
             fs.readJSON(path.join(libsDir, name, 'module.json'), (err, data) => {
                 if (err) {
                     alertify.error(err);
+                    if (name in window.currentProject.libs) {
+                        delete window.currentProject.libs[name];
+                    }
+                    this.currentModule = false;
+                    this.update();
                     return;
                 }
                 this.currentModule = data;
