@@ -57,20 +57,20 @@ ct.pixiApp.renderer.autoResize = false;
 document.getElementById('ct').appendChild(ct.pixiApp.view);
 
 ct.u = {
-    ldx(l, d) {
     // lengthdir_x
+    ldx(l, d) {
         return l * Math.cos(d * Math.PI / -180);
     },
-    ldy(l, d) {
     // lengthdir_y
+    ldy(l, d) {
         return l * Math.sin(d * Math.PI / -180);
     },
     // Point-point DirectioN
     pdn(x1, y1, x2, y2) {
         return (Math.atan2(y2 - y1, x2 - x1) * -180 / Math.PI + 360) % 360;
     },
-    pdc(x1, y1, x2, y2) {
     // Point-point DistanCe
+    pdc(x1, y1, x2, y2) {
         return Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
     },
     /**
