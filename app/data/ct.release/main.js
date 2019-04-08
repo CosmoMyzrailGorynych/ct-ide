@@ -73,6 +73,12 @@ ct.u = {
     pdc(x1, y1, x2, y2) {
         return Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
     },
+    degToRad(deg) {
+        return deg * Math.PI / -180;
+    },
+    radToDeg(rad) {
+        return rad / Math.PI * -180;
+    },
     /**
      * Rotates a vector (x; y) by deg around (0; 0)
      * @param {Number} x The x component
@@ -81,8 +87,7 @@ ct.u = {
      * @returns {Array} A pair of new `x` and `y` parameters.
      */
     rotate(x, y, deg) {
-        const rad = deg * Math.PI / -180;
-        return ct.u.rotateRad(x, y, rad);
+        return ct.u.rotateRad(x, y, ct.u.degToRad(deg));
     },
     rotateRad(x, y, rad) {
         return [
