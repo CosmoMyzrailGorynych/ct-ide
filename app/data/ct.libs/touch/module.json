@@ -1,7 +1,7 @@
 {
     "main": {
         "name": "Touch",
-        "version": "1.0.1",
+        "version": "2.0.0",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",
             "mail": "admin@nersta.ru"
@@ -20,5 +20,14 @@
         "help": "This may help those apps that were designed for mouse from the beginning.",
         "default": false,
         "type": "checkbox"
-    }]
+    }],
+    "inputMethods": {
+        "Any": "Any touch",
+        "Double": "Double touch",
+        "Triple": "Triple touch",
+        "DeltaPinch": "Pinch",
+        "DeltaRotation": "Rotation",
+        "PanX": "Panning by X",
+        "PanY": "Panning by Y"
+    }
 }

@@ -1,10 +1,10 @@
-This module provides a basic support for touch events, capable of registering multiple touches. Its API is similar to `ct.mouse`.
+This module provides support for touch events, capable of registering multiple touches. Its API is similar to `ct.mouse`, and it provides input methods for the Actions system that supports panning, rotation and scaling.
 
-Note that Internet Explorer, Safari and Opera for desktop do not support such events. Mobile clients usually do have touch support.
+Note that Internet Explorer, Edge and Safari do not support such events. Mobile clients usually do have touch support. See support stats at [Can I use… tables](https://caniuse.com/#feat=touch).
 
 ## Reading Touch Events
 
-There are three arrays analogous to `ct.mouse` properties: `ct.touch.pressed`, `ct.touch.down` and `ct.touch.released`. They contain all the current touches to the surface. A "touch" is an object with these properties:
+`ct.touch.events` contains all the current touches to the surface. A "touch" is an object with these properties:
 
 * `id` is a unique number that identifies a touch;
 * `x` is the horizontal position at which a touch occures;
@@ -13,21 +13,59 @@ There are three arrays analogous to `ct.mouse` properties: `ct.touch.pressed`, `
 * `xprev` is the horizontal position at which a touch occured in the previous frame;
 * `yprev` is the vertical position at which a touch occured in the previous frame.
 
+There are also variables `ct.touch.x` and `ct.touch.y`. They represent the position at which a surface was pressed lastly.
 
-There are also variables `ct.touch.x` and `ct.touch.y`. They represent the position at which a surface was pressed before.
+Here, the whole process of pressing a surface with one finger (or stylus, whatever), moving it, and finally releasing is called a **touch event**.
 
-The whole process of pressing a surface with one finger (or stylus, whatever), moving it, and finally releasing it is called a **touch event** here.
-
-If you need to check whether there was any touch event, you could write something like this:
+If you need to check whether there is any touch event, you could write something like this:
 
 ```js
-if (ct.touch.pressed.length) {
-    // Something pressed a surface.
+if (ct.touch.events.length) {
+    // Something presses a surface.
 }
 ```
 
-If you know an `id` of a touch event already and want to get a detailed information of it, use `ct.touch.getById(id)`. It will return either a Touch object or `false` (in case it couldn't find a touch event with this `id`).
+Or you could add an action that listens for the `touch.Any` code.
+
+If you already know an `id` of a touch event and want to get a detailed information of it, use `ct.touch.getById(id)`. It will return either a Touch object or `false` (in case it couldn't find a touch event with this `id`).
 
 You can generalize mouse and touch events by enabling a corresponding option at the "Settings" tab. A touch event that was triggered by mouse will have an `id` equal to `-1`.
 
-There is also a method `ct.touch.collide(copy, id)`, **which is dependant on `ct.place` catmod**, and it checks whether there is a collision between a copy and a touch event of a particular id. You can also omit `id` to check against all possible touch events.
+## Checking button touches
+
+`ct.touch.collide(copy, id)`, **which is dependant on `ct.place` catmod**, checks whether there is a collision between a copy and a touch event of a particular id. You can also omit `id` to check against all possible touch events.
+
+A variant of this method is `ct.touch.hovers(copy, id)`, that also checks for mouse.
+
+## Pinching, panning and rotation
+
+`ct.touch` exposes four input methods for handling common gestures. *They don't need to be multiplied with ct.delta as they are already the deltas for the last frame.*
+
+### Pinching and expanding
+
+`touch.DeltaPinch` describes the gesture of scaling with two or more fingers and how the scale of an imaginary object will change in the last frame. It will use the first two touch events in its calculations, ignoring the distance to the third and other fingers. It will return a value between `-1` and `1`, usually something near 0, and a proper way of scaling with `touch.DeltaPinch` will look like the following code in the Step event (assuming you have an action called "Scale" with `touch.DeltaPinch` registered):
+
+```js
+this.scale.x *= 1 + ct.actions.Scale.value;
+this.scale.y = this.scale.x;
+```
+
+### Rotation
+
+`touch.DeltaRotation` returns a value between `-1` and `1`, describing the rotation amount in the last frame in radians. A proper way of using this can look like this:
+
+```js
+this.rotation += ct.actions.Rotate.value;
+```
+
+`touch.DeltaRotation` uses the first two touch events for its calculations, ignoring third and next fingers.
+
+### Panning
+
+`touch.PanX` and `touch.PanY` describe the movement of fingers on screen in the last frame. They return a value between `-1` and `1`. These are relative to the view's size: for example, if a value of an action returns 0.1 for an X axis, then it means that fingers moved to `0.1 * ct.viewWidth` pixels in the last frame.
+
+## Any touch, double touch and triple touch inputs
+
+* `Any` equals `1` if there is one or more touch events at the current time;
+* `Double` touch equals `1` if there is two or more touch events at the current time;
+* `Triple` touch equals `1` if there is three or more touch events at the current time. Thus triple touch also counts as a double touch.
