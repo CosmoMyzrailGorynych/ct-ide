@@ -34,8 +34,13 @@ const ct = {
     }
 };
 
-console.log(`😺 ct.js game editor v${ct.version} 😽
-😻 Website: https://ctjs.rocks/ 🙀`);
+// eslint-disable-next-line no-console
+console.table({
+    '😺 Made with:': 'ct.js game editor',
+    '🙀 Version:': `v${ct.version}`,
+    '😻 Website:': 'https://ctjs.rocks/',
+});
+
 ct.pixiApp = new PIXI.Application({
     width: [/*@startwidth@*/][0],
     height: [/*@startheight@*/][0],
