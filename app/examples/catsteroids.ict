@@ -26,9 +26,9 @@
       "oncreate": "// Set movement friction, acceleration and speed limit\nthis.friction = 0.25;\nthis.flyspeed = 2.5;\nthis.maxspeed = 7.5;\n\n// This will help us to shoot continuously\nthis.shootTimer = 0;\n\nthis.lives = 3;\nthis.invulnerable = -1;\n\nthis.weapon = 'simple';\nthis.crossSwitch = 1; // This will flip the animation of the cross-like bullets",
       "onstep": "/* Movement \n   Add acceleration when arrows or WASD are being pressed\n*/\n\nthis.hspeed += ct.actions.MoveX.value * this.flyspeed;\nthis.vspeed += ct.actions.MoveY.value * this.flyspeed;\n\n// Limit speed\nthis.speed = Math.max(Math.min(this.speed, this.speed - this.friction, this.maxspeed), 0);\nct.types.move(this);\n\n// Check if the ship is out of the view\nif (this.x < 0 || this.x > ct.viewWidth ||\n    this.y < 0 || this.y > ct.viewHeight) {\n    // Return back if the ship is outside the room\n    this.speed = 0;\n    this.x = Math.max(Math.min(this.x, ct.viewWidth), 0);\n    this.y = Math.max(Math.min(this.y, ct.viewHeight), 0);\n}\n\n/* Shooting */\n\nthis.shootTimer += ct.delta;\n\n// If the spacebar is pressed and at least a quarter of second has passed, \n// create a new laser bullet depending on a weapon type\nif (ct.actions.Shoot.down) {\n    if (this.weapon === 'simple' && this.shootTimer > 15) {\n        ct.types.copy('Laser_Simple_Blue', this.x, this.y);\n        ct.sound.spawn('Laser_Small');\n        // Reset shooting delay\n        this.shootTimer = 0;\n    }\n    if (this.weapon === 'spread' && this.shootTimer > 15) {\n        // create three laser bolts\n        ct.types.copy('Laser_Simple_Blue', this.x-40, this.y);\n        ct.types.copy('Laser_Simple_Blue', this.x, this.y - 20);\n        ct.types.copy('Laser_Simple_Blue', this.x+40, this.y);\n        ct.sound.spawn('Laser_Small');\n        // Reset shooting delay\n        this.shootTimer = 0;\n    }\n    if (this.weapon === 'bolt' && this.shootTimer > 60) {\n        // slow, but powerful\n        ct.types.copy('Laser_Bolt_Blue', this.x, this.y);\n        ct.sound.spawn('Laser_Medium');\n        // Reset shooting delay\n        this.shootTimer = 0;\n    }\n    if (this.weapon === 'cross' && this.shootTimer > 10) {\n        // this one shoots much faster\n        var bullet = ct.types.copy('Laser_Cross_Blue', this.x, this.y);\n        bullet.scale.x = this.crossSwitch;\n        this.crossSwitch *= -1;\n        ct.sound.spawn('Laser_Medium');\n        // Reset shooting delay\n        this.shootTimer = 0;\n    }\n}\n\n/* Damage on collision */\nvar obstacle = ct.place.occupied(this, this.x, this.y, 'Enemy') \n            || ct.place.occupied(this, this.x, this.y, 'EnemyBullet');\nif (obstacle && this.invulnerable < 0) {\n    this.lives--;\n    obstacle.kill = true;\n    \n    // Are we completely, like, dead?\n    if (this.lives < 0) {\n        this.kill = true;\n    } else {\n        // Set invulnerability for 3 seconds\n        this.invulnerable = 60 * 3;\n    }\n}\n// Deplete invulnerability\nthis.invulnerable -= ct.delta;",
       "ondraw": "// If we are invulnerable, alternate between full and partial opacity each 10 frames\n// `this.invulnerable % 20` means 'get a fraction remainder when dividing by 20'\n// `statement? 0.5 : 1` means that we pick 0.5 if the statement is true, or 1 otherwise\nif (this.invulnerable > 0) {\n    var damaged = this.invulnerable % 20 > 10; \n    this.alpha = damaged? 0.5 : 1;\n    this.tint = damaged? 0xFF9999 : 0xFFFFFF;\n} else {\n    this.alpha = 1;\n}",
-      "ondestroy": "ct.types.copy('Explosion', this.x, this.y);\nlocalStorage.score = ct.room.score;\nct.u.wait(3000)\n.then(() => ct.rooms.switch('RetryScreen'));",
+      "ondestroy": "ct.types.copy('Explosion', this.x, this.y);\nlocalStorage.score = ct.room.score;\nct.u.wait(2999)\n.then(() => ct.rooms.switch('RetryScreen'));",
       "uid": "1fab434d-0976-4b65-8390-d013695aba8c",
-      "lastmod": 1552044541341,
+      "lastmod": 1554742830792,
       "extends": {},
       "texture": "e1452137-8cfa-4eec-b54a-0f2660326b48"
     },
@@ -347,7 +347,7 @@
         }
       ],
       "uid": "2e5bf702-9eac-4fef-8282-07d2dd0a9bac",
-      "lastmod": 1551428734073,
+      "lastmod": 1554742808104,
       "grid": 50,
       "thumbnail": 1,
       "gridX": 50,
@@ -463,7 +463,7 @@
   "starting": 0,
   "settings": {
     "minifyhtmlcss": true,
-    "minifyjs": false,
+    "minifyjs": true,
     "title": "Catsteroids",
     "author": "CoMiGo Games",
     "site": "http://comigogames.ru/",
@@ -491,7 +491,7 @@
   ],
   "startroom": "6c75cdb8-cfb4-4dcc-887a-f76ae98b5499",
   "scripts": [],
-  "ctjsVersion": "1.0.0-next-2",
+  "ctjsVersion": "1.0.0-next-3",
   "fonts": [],
   "skeletons": [],
   "actions": [
@@ -605,7 +605,7 @@
         }
       ],
       "closedStrip": true,
-      "lastmod": 1548596456002
+      "lastmod": 1554742823545
     },
     {
       "name": "Background_Blue",
