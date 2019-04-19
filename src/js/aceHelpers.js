@@ -108,7 +108,7 @@
                 if (num < 48) {
                     num++;
                     localStorage.fontSize = num;
-                    editor.style.fontSize = num+'px';
+                    editor.tag.style.fontSize = num+'px';
                 }
                 return false;
             },
@@ -117,15 +117,15 @@
         editor.commands.addCommand({
             name: 'decreaseFontSize',
             bindKey: {
-                win: 'Ctrl-minus',
-                mac: 'Command-minus'
+                win: 'Ctrl--',
+                mac: 'Command--'
             },
             exec(editor) {
                 var num = Number(localStorage.fontSize);
                 if (num > 6) {
                     num--;
                     localStorage.fontSize = num;
-                    editor.style.fontSize = num+'px';
+                    editor.tag.style.fontSize = num+'px';
                 }
                 return false;
             },
@@ -152,6 +152,7 @@
         extendHotkeys(aceEditor);
         aceEditor.setTheme('ace/theme/' + (localStorage.UItheme === 'Night'? 'ambiance': 'tomorrow'));
         tag.aceEditor = aceEditor;
+        aceEditor.tag = tag;
         aceEditor.session = aceEditor.getSession();
         tag.style.fontSize = localStorage.fontSize + 'px';
         aceEditor.session.setMode('ace/mode/' + options.mode || defaultOptions.mode);
