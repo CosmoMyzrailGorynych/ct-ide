@@ -78,6 +78,9 @@ ct.sound.spawn = function(name, opts, cb) {
     if (opts.volume !== void 0) {
         howl.volume(opts.volume, id);
     }
+    if (opts.rate !== void 0) {
+        howl.rate(opts.rate, id);
+    }
     if (cb) {
         howl.once('end', cb, id);
     }
