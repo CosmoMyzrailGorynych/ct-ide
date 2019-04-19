@@ -4,7 +4,7 @@ Includes [Howler.js](https://github.com/goldfire/howler.js) v2.0.14.
 
 ## Is it compatible with the default `ct.sound` library?
 
-Yes, it is fully compatible, but also adds new functions. You can just enable this module and use it as is. See the docs tab for more info.
+This module aims to seamlessly replace `ct.sound`, but it also adds new functions. See the docs tab for more info.
 
 ## How to get actual Howl objects?
 
