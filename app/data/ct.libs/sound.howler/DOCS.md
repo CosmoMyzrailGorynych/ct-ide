@@ -25,13 +25,17 @@ Creates a new Sound object and puts it in ct.res.sounds object. This is automati
 
 * **Object** Sound's object
 
-## ct.sound.spawn(name, [cb])
+## ct.sound.spawn(name, [options], [cb])
 
 Spawns a new sound and plays it.
 
 ### Params:
 
 * **String** *name* The name of sound to be played
+* **Object** *options* An object that can have the following fields:
+    * **Boolean** *loop* Whether to repeat the sound or not;
+    * **Number** *volume* The volume of the sound, between 0 and 1;
+    * **Number** *rate* The speed of playback, from 0.5 to 4.
 * **Function** *[cb]* A callback, which is called when the sound finishes playing
 
 ### Return:
