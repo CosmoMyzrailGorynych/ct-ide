@@ -1,7 +1,7 @@
 {
     "main": {
         "name": "ct.sound.howler",
-        "version": "1.0.0",
+        "version": "1.1.0",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",
             "mail": "admin@nersta.ru"
