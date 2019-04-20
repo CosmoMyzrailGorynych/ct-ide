@@ -47,31 +47,33 @@ modules-panel.panel.view
                 #modulesettings.tabbed(show="{tab === 'modulesettings'}" if="{currentModule.fields && currentModuleName in currentProject.libs}")
                     dl(each="{field in currentModule.fields}")
                         dt
-                            input(
-                                if="{field.type === 'checkbox'}" 
-                                type="checkbox"
-                                checked="{window.currentProject.libs[currentModuleName][field.id]}"
-                                onchange="{wire('window.currentProject.libs.' + currentModuleName + '.' + field.id)}"
-                            )
-                            |   {field.name}
+                            label(if="{field.type === 'checkbox'}")
+                                input(
+                                    type="checkbox"
+                                    checked="{window.currentProject.libs[currentModuleName][field.id]}"
+                                    onchange="{wire('window.currentProject.libs.' + escapeDots(currentModuleName) + '.' + field.id)}"
+                                )
+                                |   {field.name}
+                            span(if="{field.type !== 'checkbox'}")
+                                |   {field.name}
                         dd
                             textarea(
                                 if="{field.type === 'textfield'}" 
                                 value="{window.currentProject.libs[currentModuleName][field.id]}" 
-                                onchange="{wire('window.currentProject.libs.' + currentModuleName + '.' + field.id)}"
+                                onchange="{wire('window.currentProject.libs.' + escapeDots(currentModuleName) + '.' + field.id)}"
                             )
                             input(
                                 if="{field.type === 'number'}" 
                                 type="number"
                                 value="{window.currentProject.libs[currentModuleName][field.id]}" 
-                                onchange="{wire('window.currentProject.libs.' + currentModuleName + '.' + field.id)}"
+                                onchange="{wire('window.currentProject.libs.' + escapeDots(currentModuleName) + '.' + field.id)}"
                             )
                             label.block(if="{field.type === 'radio'}" each="{option in field.options}")
                                 input(
                                     type="radio"
                                     value="{option.value}"
                                     checked="{window.currentProject.libs[currentModuleName][field.id] === option.value}" 
-                                    onchange="{wire('window.currentProject.libs.' + currentModuleName + '.' + field.id)}"
+                                    onchange="{wire('window.currentProject.libs.' + escapeDots(currentModuleName) + '.' + field.id)}"
                                 )
                                 |   {option.name}
                                 div(class="desc" if="{option.help}")
@@ -80,7 +82,7 @@ modules-panel.panel.view
                                 if="{['checkbox', 'number', 'textfield', 'radio'].indexOf(field.type) === -1}" 
                                 type="text"
                                 value="{window.currentProject.libs[currentModuleName][field.id]}" 
-                                onchange="{wire('window.currentProject.libs.' + currentModuleName + '.' + field.id)}"
+                                onchange="{wire('window.currentProject.libs.' + escapeDots(currentModuleName) + '.' + field.id)}"
                             )
                             //- That's a bad idea!!!
                             div(class="desc" if="{field.help}")
@@ -122,6 +124,8 @@ modules-panel.panel.view
                 this.enabledModules.push(i);
             }
         });
+
+        this.escapeDots = str => str.replace(/\./g, '\\.');
         
         fs.readdir(libsDir, (err, files) => {
             if (err) {

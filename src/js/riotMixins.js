@@ -1,7 +1,10 @@
 (window => {
     var wire = (that, field, update) => e => {
-        var way = field.split('.'),
+        var way = field.split(/(?<!\\)\./gi),
             root, val;
+        for (let i = 0, l = way.length; i < l; i++) {
+            way[i] = way[i].replace(/\\./g, '.');
+        }
         if (way[0] === 'this') {
             root = that;
         } else {
