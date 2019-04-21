@@ -88,7 +88,7 @@ preview-modal.modal
                         text: div.getAttribute('data-address'),
                         width: 256,
                         height: 256,
-                        colorDark : localStorage.UItheme === 'Day'? '#446adb' : '#000000',
+                        colorDark : localStorage.UItheme === 'Day'? '#446adb' : '#121822',
                         colorLight : localStorage.UItheme === 'Day'? '#ffffff' : '#44dbb5',
                         correctLevel : QRCode.CorrectLevel.H
                     });
