@@ -37,6 +37,16 @@ You can generalize mouse and touch events by enabling a corresponding option at 
 
 A variant of this method is `ct.touch.hovers(copy, id)`, that also checks for mouse.
 
+`ct.touch.hovers(copy)` and `ct.touch.collide(copy, id)` don't work well with just released touches, because, well, they are not active anymore, and a special version of `ct.touch.hovers` exists for handling such events: `ct.touch.hovers(copy, id, true)`. You can set `id` to `false` if you don't need it.
+
+As this variant combines both hover event and release one, writing a code for a button is very simple:
+
+```js
+if (ct.touch.hovers(this, false, true)) {
+    ct.rooms.switch('InGame');
+}
+```
+
 ## Pinching, panning and rotation
 
 `ct.touch` exposes four input methods for handling common gestures. *They don't need to be multiplied with ct.delta as they are already the deltas for the last frame.*

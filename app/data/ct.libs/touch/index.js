@@ -8,6 +8,7 @@
         lastPanY = 0,
         lastScaleDistance = 0,
         lastRotation = 0;
+    var released = [];
     // updates Action system's input methods for singular, double and triple touches
     var countTouches = () => {
         setKey('Any', ct.touch.events.length > 0? 1 : 0);
@@ -84,7 +85,7 @@
         for (let i = 0; i < touches.length; i++) {
             const ind = findTouchId(touches[i].identifier);
             if (ind !== -1) {
-                ct.touch.events.splice(ind, 1);
+                released.push(ct.touch.events.splice(ind, 1)[0]);
             }
         }
         countTouches();
@@ -144,30 +145,35 @@
         y: 0,
         clear() {
             ct.touch.events.length = 0;
+            ct.touch.clearReleased();
             countTouches();
         },
-        collide(copy, id) {
-            if (id !== void 0) {
+        clearReleased() {
+            released.length = 0;
+        },
+        collide(copy, id, rel) {
+            var set = rel? released : ct.touch.events;
+            if (id !== void 0 && id !== false) {
                 const i = findTouchId(id);
                 if (i === -1) {
                     return false;
                 }
                 return ct.place.collide(copy, {
-                    x: ct.touch.events[i].x,
-                    y: ct.touch.events[i].y,
+                    x: set[i].x,
+                    y: set[i].y,
                     shape: {
-                        type: ct.touch.events[i].r? 'circle' : 'point',
-                        r: ct.touch.events[i].r
+                        type: set[i].r? 'circle' : 'point',
+                        r: set[i].r
                     }
                 });
             }
-            for (let i = 0, l = ct.touch.events.length; i < l; i++) {
+            for (let i = 0, l = set.length; i < l; i++) {
                 if (ct.place.collide(copy, {
-                    x: ct.touch.events[i].x,
-                    y: ct.touch.events[i].y,
+                    x: set[i].x,
+                    y: set[i].y,
                     shape: {
-                        type: ct.touch.events[i].r? 'circle' : 'point',
-                        r: ct.touch.events[i].r
+                        type: set[i].r? 'circle' : 'point',
+                        r: set[i].r
                     }
                 })) {
                     return true;
@@ -175,8 +181,8 @@
             }
             return false;
         },
-        hovers(copy, id) {
-            return ct.mouse? (ct.mouse.hovers(copy) || ct.touch.collide(copy)) : ct.touch.collide(copy, id);
+        hovers(copy, id, rel) {
+            return ct.mouse? (ct.mouse.hovers(copy) || ct.touch.collide(copy, id, rel)) : ct.touch.collide(copy, id, rel);
         },
         getById: findTouch,
         updateGestures: function () {
