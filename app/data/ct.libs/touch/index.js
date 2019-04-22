@@ -124,6 +124,11 @@
     ct.touch = {
         setupListeners() {
             document.addEventListener('touchstart', handleStart, false);
+            document.addEventListener('touchstart', () => {
+                ct.touch.enabled = true;
+            }, {
+                once: true
+            });
             document.addEventListener('touchend', handleRelease, false);
             document.addEventListener('touchcancel', handleRelease, false);
             document.addEventListener('touchmove', handleMove, false);
@@ -133,6 +138,7 @@
             document.addEventListener('mouseup', mouseUp, false);
             document.addEventListener('mousedown', mouseDown, false);
         },
+        enabled: false,
         events: [],
         x: 0,
         y: 0,

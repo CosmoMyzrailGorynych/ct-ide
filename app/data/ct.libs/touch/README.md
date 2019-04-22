@@ -69,3 +69,9 @@ this.rotation += ct.actions.Rotate.value;
 * `Any` equals `1` if there is one or more touch events at the current time;
 * `Double` touch equals `1` if there is two or more touch events at the current time;
 * `Triple` touch equals `1` if there is three or more touch events at the current time. Thus triple touch also counts as a double touch.
+
+## Getting whether touch is supported
+
+You can read `ct.touch.enabled` to get whether touch events are supported on the current machine.
+
+**Beware:** because of tons of hybrid devices like laptops with touchscreens and some subsequent technical limitations, `ct.touch` can only determine this **after a user touches the screen**. That means that `ct.touch.enabled` will be `false` at startup till the first interaction, even on smartphones, so please design you UI and gameplay stuff around this limitation.
