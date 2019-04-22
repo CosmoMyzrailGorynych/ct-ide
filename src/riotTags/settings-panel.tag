@@ -35,6 +35,9 @@ settings-panel.panel.view
         label.block
             input(type="checkbox" value="{currentProject.settings.pixelatedrender}" checked="{currentProject.settings.pixelatedrender}" onchange="{wire('this.currentProject.settings.pixelatedrender')}")
             span {voc.pixelatedrender}
+        label.block
+            input(type="checkbox" value="{currentProject.settings.highDensity}" checked="{currentProject.settings.highDensity}" onchange="{wire('this.currentProject.settings.highDensity')}")
+            span {voc.highDensity}
 
         h2 {voc.exportparams}
         label.block(style="margin-right: 2.5rem;")

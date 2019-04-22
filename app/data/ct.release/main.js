@@ -41,11 +41,14 @@ console.table({
     '😻 Website:': 'https://ctjs.rocks/',
 });
 
+ct.highDensity = [/*@highDensity@*/][0];
 ct.pixiApp = new PIXI.Application({
     width: [/*@startwidth@*/][0],
     height: [/*@startheight@*/][0],
     antialias: ![/*@pixelatedrender@*/][0],
     roundPixels: [/*@pixelatedrender@*/][0],
+    resolution: ct.highDensity? (window.devicePixelRatio || 1) : 1,
+    powerPreference: 'high-performance',
     sharedTicker: true,
     sharedLoader: true
 });

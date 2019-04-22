@@ -146,6 +146,7 @@
         "exportparams": "Export parameters",
         "framerate": "Framerate:",
         "getfile": "Choose",
+        "highDensity": "Support high pixel density (e.g. on retina screens)",
         "minifyhtmlcss": "Compress HTML and CSS",
         "minifyjs": "Compress JavaScript and convert it to ES5 (slow; use for releases)",
         "pixelatedrender": "Disable image smoothing here and in exported project (preserve crisp pixels)",
