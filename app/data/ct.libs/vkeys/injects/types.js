@@ -1,16 +1,34 @@
 ct.types.templates.VKEY = {
     onStep: function () {
-        if (ct.mouse.hovers(this)) {
-            this.tex = this.opts.texHover || this.opts.texNormal;
-            if (ct.mouse.down) {
-                this.tex = this.opts.texActive || this.opts.texNormal;
-                ct.inputs.registry['vkeys.' + this.opts.key] = 1;
-            } else {
-                ct.inputs.registry['vkeys.' + this.opts.key] = 0;
+        var down = false,
+            hover = false;
+        if (ct.mouse) {
+            if (ct.mouse.hovers(this)) {
+                hover = true;
+                if (ct.mouse.down) {
+                    down = true;
+                }
             }
+        }
+        if (ct.touch) {
+            for (const touch of ct.touch.events) {
+                if (ct.touch.collide(this, touch.id)) {
+                    down = hover = true;
+                    break;
+                }
+            }
+        }
+
+        if (down) {
+            this.tex = this.opts.texActive || this.opts.texNormal;
+            ct.inputs.registry['vkeys.' + this.opts.key] = 1;
         } else {
-            this.tex = this.opts.texNormal;
             ct.inputs.registry['vkeys.' + this.opts.key] = 0;
+            if (hover) {
+                this.tex = this.opts.texHover || this.opts.texNormal;
+            } else {
+                this.tex = this.opts.texNormal;
+            }
         }
     },
     onDraw: function () {
