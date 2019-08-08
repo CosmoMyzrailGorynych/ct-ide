@@ -5,9 +5,20 @@ Master | v0.x | Develop
 # How to set up
 
 ```sh
-git clone git@gitlab.com:CoMiGo/ctjs.git ctjs
+git clone --recurse-submodules -j8 git@gitlab.com:CoMiGo/ctjs.git ctjs
 cd ./ctjs
-git submodule update --init --recursive
+npm install gulp-cli -g
+npm install
+cd ./docs
+npm install
+cd ./../app
+npm install
+cd ./../
+```
+
+Or, if you already cloned a git repo but without submodules, run `git submodule update --init --recursive` first, then
+
+```sh
 npm install gulp-cli -g
 npm install
 cd ./docs
