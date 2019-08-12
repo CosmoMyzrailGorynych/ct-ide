@@ -1,6 +1,4 @@
-Master | v0.x | Develop
--|-|-
-[![pipeline status](https://gitlab.com/CoMiGo/ctjs/badges/master/pipeline.svg)](https://gitlab.com/CoMiGo/ctjs/commits/master)|[![pipeline status](https://gitlab.com/CoMiGo/ctjs/badges/v0.x/pipeline.svg)](https://gitlab.com/CoMiGo/ctjs/commits/v0.x)|[![pipeline status](https://gitlab.com/CoMiGo/ctjs/badges/develop/pipeline.svg)](https://gitlab.com/CoMiGo/ctjs/commits/develop)
+Ct.js is a 2D game editor that makes its bet on good documentation, visual tools and smooth workflow.
 
 # How to set up
 
@@ -37,6 +35,4 @@ The first run will be slow as it will download nw.js binaries. Next runs will us
 
 # Naming conventions for commits
 
-Make commits reasonably atomic.
-
-Use [Gitmoji](https://gitmoji.carloscuesta.me/) and imperative mood, e.g. `:zap: Improve graphics import performance`. You can use more than one emoji if it falls into two categories at once.
+Use [Gitmoji-flavored Comigoji](https://comigo.gitlab.io/comigoji/#gitmoji) for naming your commits.
