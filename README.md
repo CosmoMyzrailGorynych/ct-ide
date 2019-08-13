@@ -1,5 +1,6 @@
 ![GitHub tag (latest by date)](https://img.shields.io/github/tag-date/ct-js/ct-js?label=version&style=flat-square) ![](https://img.shields.io/badge/license-GPL--3-informational?style=flat-square) [![](https://img.shields.io/discord/490052958310891520?style=flat-square&logo=discord&logoColor=white)](https://discord.gg/CggbPkb)
-![GitHub issues by-label](https://img.shields.io/github/issues/ct-js/ct-js/to%20do?style=flat-square&label=todo%20issues) ![GitHub issues by-label](https://img.shields.io/github/issues/ct-js/ct-js/current%20release?style=flat-square&label=current%20release%20issues)
+![GitHub issues by-label](https://img.shields.io/github/issues/ct-js/ct-js/state:to%20do?style=flat-square&label=todo%20issues) ![GitHub issues by-label](https://img.shields.io/github/issues/ct-js/ct-js/state:current%20release?style=flat-square&label=current%20release%20issues)
+ ![GitHub issues by-label](https://img.shields.io/github/issues/ct-js/ct-js/help%20wanted?style=flat-square&label=help%20wanted)
 
 Ct.js is a 2D game editor that makes its bet on good documentation, visual tools and smooth workflow.
 
