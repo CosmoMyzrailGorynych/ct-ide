@@ -60,19 +60,19 @@ main-menu.flexcol
         };
         const gui = require('nw.gui'),
               win = gui.Window.get();
-        
+
         this.fullscreen = false;
         this.toggleFullscreen = function() {
             win.toggleFullscreen();
             this.fullscreen = !this.fullscreen;
         };
-        
+
         this.refreshLatestProject = function() {
             while (recentProjectsSubmenu.items.length) {
                 recentProjectsSubmenu.removeAt(0);
             }
             var lastProjects;
-            if (('lastProjects' in localStorage) && 
+            if (('lastProjects' in localStorage) &&
                 (localStorage.lastProjects !== '')) {
                 lastProjects = localStorage.lastProjects.split(';');
             } else {
@@ -97,7 +97,7 @@ main-menu.flexcol
         };
         this.saveProject = () => {
             return fs.outputJSON(sessionStorage.projdir + '.ict', currentProject, {
-                spaces: 2  
+                spaces: 2
             }).then(() => {
                 alertify.success(languageJSON.common.savedcomm, "success", 3000);
                 this.saveRecoveryDebounce();
@@ -128,7 +128,7 @@ main-menu.flexcol
         this.on('unmount', () => {
             keymage.unbind('ctrl-s', this.saveProject);
         });
- 
+
         const nstatic = require('node-static');
         const exec = path.dirname(process.execPath).replace(/\\/g,'/');
         const fileServer = new nstatic.Server(path.join(exec, '/export/'), {
@@ -142,7 +142,7 @@ main-menu.flexcol
             }).resume();
         });
         server.listen(0);
-        
+
         var previewWindow;
         this.runProject = e => {
             window.runCtProject()
@@ -226,7 +226,7 @@ main-menu.flexcol
             })
             .catch(alertify.error);
         };
-        
+
         var catMenu = new gui.Menu();
         catMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.save,
@@ -269,7 +269,7 @@ main-menu.flexcol
             label: window.languageJSON.common.language,
             submenu: languageSubmenu
         }));
-        
+
         var themeSubmenu = new nw.Menu();
         themeSubmenu.append(new gui.MenuItem({
             label: window.languageJSON.menu.themeDay,
@@ -296,14 +296,14 @@ main-menu.flexcol
             }
         };
         localStorage.UItheme = localStorage.UItheme || 'Day';
-        
-        
+
+
         catMenu.append(new gui.MenuItem({type: 'separator'}));
-        
+
         catMenu.append(new gui.MenuItem({
-            label: window.languageJSON.common.donate,
+            label: window.languageJSON.common.contribute,
             click: function () {
-                gui.Shell.openExternal('https://www.patreon.com/comigo');
+                gui.Shell.openExternal('https://github.com/ct-js/ct-js');
             }
         }));
         catMenu.append(new gui.MenuItem({
@@ -317,6 +317,12 @@ main-menu.flexcol
             click: () => {
                 this.showLicense = true;
                 this.update();
+            }
+        }));
+        catMenu.append(new gui.MenuItem({
+            label: window.languageJSON.common.donate,
+            click: function () {
+                gui.Shell.openExternal('https://www.patreon.com/comigo');
             }
         }));
         catMenu.append(new gui.MenuItem({type: 'separator'}));

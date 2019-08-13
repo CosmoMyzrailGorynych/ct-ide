@@ -4,7 +4,7 @@
         "native": "English",
         "eng": "English"
     },
-    
+
     "common": {
         "add": "Add",
         "addtonotes": "Add to notes",
@@ -12,6 +12,7 @@
         "cancel": "Cancel",
         "cannotBeEmpty": "This cannot be empty",
         "confirmDelete": "Are you sure you want to delete {0}? It cannot be undone.",
+        "contribute": "Contribute 💻",
         "copy": "Copy",
         "copyName": "Copy the name",
         "ctsite": "ct.js homepage",
@@ -109,7 +110,7 @@
         "tldr": [
             "You own your assets, projects, catmods;",
             "You can use the app for commercial use (and other uses too);",
-            "You must not modify the ct.js in any ways that were not intended for it by the Author;",
+            "Ct.js is open-source and can be modified, but your version should be released under the same license;",
             "We do not give any guarantees and are not responsible for any damage."
         ]
     },

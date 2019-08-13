@@ -16,7 +16,7 @@
         }
         return destination;
     };
-    
+
     const fs = require('fs-extra');
     // better copy
     /*

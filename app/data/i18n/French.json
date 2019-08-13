@@ -16,6 +16,7 @@
       "apply": "Appliquer",
       "cancel": "Annuler",
       "confirmDelete": "Êtes-vous certain de vouloir supprimer {0} ? C'est irréversible.",
+      "contribute": "Contribute 💻",
       "copy": "Copier",
       "copyName": "Copier le nom",
       "ctsite": "Page d'accueil de ct.js",
@@ -86,7 +87,7 @@
       "tldr": [
         "Vous possédez vos fichiers, projets, catmods;",
         "Vous pouvez utilisez l'application à des fins commerciales (et pour d'autres utilisations aussi);",
-        "Vous ne devez pas modifier ct.js d'aucune manière qui n'a pas été prévu par l'Auteur;",
+        "Ct.js is open-source and can be modified, but your version should be released under the same license;",
         "Nous ne donnons aucune garanties et ne sommes pas responsable pour tout dommage."
       ]
     },
