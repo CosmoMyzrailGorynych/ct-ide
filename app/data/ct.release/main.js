@@ -6,11 +6,11 @@ setInterval(function () {
 
 const ct = {
     libs: [/*@libs@*/][0],
-    speed: 60,
+    speed: [/*@maxfps@*/][0] || 60,
     types: {},
     snd: {},
     stack: [],
-    fps: 60,
+    fps: [/*@maxfps@*/][0] || 60,
     dt: 0,
     version: '/*@ctversion@*/',
     meta: [/*@projectmeta@*/][0],
@@ -51,6 +51,7 @@ ct.pixiApp = new PIXI.Application({
     sharedLoader: true
 });
 PIXI.settings.ROUND_PIXELS = [/*@pixelatedrender@*/][0];
+PIXI.Ticker.shared.maxFPS = [/*@maxfps@*/][0] || 0;
 if (!ct.pixiApp.renderer.options.antialias) {
     PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 }

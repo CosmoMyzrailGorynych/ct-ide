@@ -120,6 +120,7 @@
       "exportparams": "Exporter les paramètres",
       "framerate": "Taux d'image:",
       "getfile": "Choisir",
+      "maxFPS": "Max framerate:",
       "minifyhtmlcss": "Compresser HTML et CSS",
       "minifyjs": "Compresser le JavaScript et convertir vers ES5 (lent; utilisé pour la publication)",
       "pixelatedrender": "Disable image smoothing here and in exported project (preserve crisp pixels)",

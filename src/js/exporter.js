@@ -468,6 +468,7 @@ ct.rooms.templates['${r.name}'] = {
         .replace(/\/\*@startwidth@\*\//g, startroom.width)
         .replace(/\/\*@startheight@\*\//g, startroom.height)
         .replace(/\/\*@pixelatedrender@\*\//g, Boolean(window.currentProject.settings.pixelatedrender))
+        .replace(/\/\*@maxfps@\*\//g, Number(window.currentProject.settings.maxFPS))
         .replace(/\/\*@libs@\*\//g, JSON.stringify(ctlibs, null, '    '))
         .replace(/\/\*@ctversion@\*\//g, nw.App.manifest.version)
         .replace(/\/\*@projectmeta@\*\//g, JSON.stringify({

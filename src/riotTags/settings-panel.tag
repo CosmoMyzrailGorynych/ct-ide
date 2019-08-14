@@ -21,9 +21,9 @@ settings-panel.panel.view
         input(type="number" style="width: 1.5rem;" value="{currentProject.settings.version[1]}" length="3" min="0" onchange="{wire('this.currentProject.settings.version.1')}")
         |  .
         input(type="number" style="width: 1.5rem;" value="{currentProject.settings.version[2]}" length="3" min="0" onchange="{wire('this.currentProject.settings.version.2')}")
-        |   {voc.versionpostfix}  
+        |   {voc.versionpostfix}
         input(type="text" style="width: 3rem;" value="{currentProject.settings.versionPostfix}" length="5" onchange="{wire('this.currentProject.settings.versionPostfix')}")
-        
+
         h2 {voc.actions}
         p
             button.nml(onclick="{openActionsEditor}")
@@ -38,6 +38,10 @@ settings-panel.panel.view
         label.block
             input(type="checkbox" value="{currentProject.settings.highDensity}" checked="{currentProject.settings.highDensity}" onchange="{wire('this.currentProject.settings.highDensity')}")
             span {voc.highDensity}
+        label.block
+            span {voc.maxFPS}
+            |
+            input.short(type="number" min="1" value="{currentProject.settings.maxFPS || 60}" onchange="{wire('this.currentProject.settings.maxFPS')}")
 
         h2 {voc.exportparams}
         label.block(style="margin-right: 2.5rem;")
