@@ -3,7 +3,7 @@
         /*%oncreate%*/
     };
     const textureAccessor = Symbol('texture');
-    class Copy extends PIXI.extras.AnimatedSprite {
+    class Copy extends PIXI.AnimatedSprite {
         constructor(type, x, y, exts) {
             var t;
             if (type) {
@@ -109,7 +109,7 @@
             if (this.speed === 0) {
                 this.hspeed = value;
                 return;
-            } 
+            }
             var multiplier = value / this.speed;
             this.hspeed *= multiplier;
             this.vspeed *= multiplier;
@@ -130,7 +130,7 @@
             this.transform.rotation = value * Math.PI / -180;
             return value;
         }
-        
+
         move() {
             // performs movement step with Copy `o`
             if (this.gravity) {
@@ -148,7 +148,7 @@
             console.warn('this.draw() call is not used in ct.js 1.0 and above, as all objects are now rendered by default. Please use this.visible to hide objects.');
         }
     }
-    class Background extends PIXI.extras.TilingSprite {
+    class Background extends PIXI.TilingSprite {
         constructor(bgName, frame, depth, exts) {
             exts = exts || {};
             var width = ct.viewWidth,
@@ -182,7 +182,7 @@
             if (this.repeat !== 'repeat-x' && this.repeat !== 'no-repeat') {
                 this.y = ct.room.y;
                 this.tilePosition.y = -this.y*this.parallaxY + this.shiftY;
-            } else { 
+            } else {
                 this.y = this.shiftY + ct.room.y * (this.parallaxY - 1);
             }
             if (this.repeat !== 'repeat-y' && this.repeat !== 'no-repeat') {

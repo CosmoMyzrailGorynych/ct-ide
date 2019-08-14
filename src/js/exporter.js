@@ -107,7 +107,7 @@
             }
         }
         blocks.sort((a, b) => Math.max(b.height, b.width) > Math.max(a.height, a.width));
-        let res = 'PIXI.loader';
+        let res = 'PIXI.Loader.shared';
         let registry = {};
         const Packer = require('maxrects-packer');
         const atlasWidth = 2048,
@@ -119,7 +119,7 @@
             atlas.width = bin.width;
             atlas.height = bin.height;
             atlas.x = atlas.getContext('2d');
-            
+
             const atlasJSON = {
                 meta: {
                     app: 'http://ctjs.rocks/',
@@ -222,7 +222,7 @@
     };
     var packSkeletons = () => {
         const data = {
-            loaderScript: 'PIXI.loader',
+            loaderScript: 'PIXI.Loader.shared',
             startScript: 'const dbf = dragonBones.PixiFactory.factory;',
             registry: {},
             requiresDB: false
@@ -243,8 +243,8 @@
             data.loaderScript += `.add('${slice}_tex.json', './img/${slice}_tex.json')`;
             data.loaderScript += `.add('${slice}_tex.png', './img/${slice}_tex.png')`;
 
-            data.startScript += `dbf.parseDragonBonesData(PIXI.loader.resources['${slice}_ske.json'].data);\n`;
-            data.startScript += `dbf.parseTextureAtlasData(PIXI.loader.resources['${slice}_tex.json'].data, PIXI.loader.resources['${slice}_tex.png'].texture);\n`;
+            data.startScript += `dbf.parseDragonBonesData(PIXI.Loader.shared.resources['${slice}_ske.json'].data);\n`;
+            data.startScript += `dbf.parseTextureAtlasData(PIXI.Loader.shared.resources['${slice}_tex.json'].data, PIXI.Loader.shared.resources['${slice}_tex.png'].texture);\n`;
 
             data.registry[skeleton.name] = {
                 origname: slice,
@@ -294,7 +294,7 @@ ct.styles.new(
         var roomsCode = '';
         for (const k in window.currentProject.rooms) {
             const r = window.currentProject.rooms[k];
-            
+
             var roomCopy = JSON.parse(JSON.stringify(r.copies));
             var objs = [];
             for (const copy of roomCopy) {
@@ -334,7 +334,7 @@ ct.styles.new(
                     tileLayers.push(layer);
                 }
             }
-            
+
             roomsCode += `
 ct.rooms.templates['${r.name}'] = {
     name: '${r.name}',
@@ -568,7 +568,7 @@ ct.rooms.templates['${r.name}'] = {
         .replace('/*@sound@*/', sounds);
 
         /* Шрифты */
-        var fonts = bundleFonts(css); 
+        var fonts = bundleFonts(css);
         css += fonts.css;
         buffer += fonts.js;
 
@@ -600,7 +600,7 @@ ct.rooms.templates['${r.name}'] = {
         } else {
             fs.writeFileSync(exec + '/export/ct.js', buffer);
         }
-        
+
         /* HTML & CSS */
         fs.writeFileSync(exec + '/export/index.html', html
             .replace('<!-- %htmltop% -->', injects.htmltop)

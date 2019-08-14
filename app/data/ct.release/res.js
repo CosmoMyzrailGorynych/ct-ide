@@ -1,5 +1,5 @@
 (function (ct) {
-    const loader = new PIXI.loaders.Loader();
+    const loader = new PIXI.Loader();
     const loadingLabel = ct.pixiApp.view.previousSibling,
           loadingBar = loadingLabel.querySelector('.ct-aLoadingBar');
     /* global dragonBones */
@@ -26,7 +26,7 @@
             // filled by IDE and catmods. As usual, atlases are splitted here.
             /*@res@*/
             /*%res%*/
-            PIXI.loader.load();
+            PIXI.Loader.shared.load();
         },
         getTexture(name, frame) {
             if (name === -1) {
@@ -55,28 +55,28 @@
             return skel;
         }
     };
-    
-    PIXI.loader.onLoad.add(e => {
+
+    PIXI.Loader.shared.onLoad.add(e => {
         loadingLabel.setAttribute('data-progress', e.progress);
         loadingBar.style.width = e.progress + '%';
     });
-    PIXI.loader.onComplete.add(() => {
+    PIXI.Loader.shared.onComplete.add(() => {
         for (const texture in ct.res.registry) {
             const reg = ct.res.registry[texture];
             reg.textures = [];
             if (reg.frames) {
                 for (let i = 0; i < reg.frames; i++) {
-                    const tex = PIXI.loader.resources[reg.atlas].textures[`${texture}_frame${i}`];
+                    const tex = PIXI.Loader.shared.resources[reg.atlas].textures[`${texture}_frame${i}`];
                     tex.defaultAnchor = new PIXI.Point(reg.anchor.x, reg.anchor.y);
                     reg.textures.push(tex);
                 }
             } else {
-                const texture = PIXI.loader.resources[reg.atlas].texture;
+                const texture = PIXI.Loader.shared.resources[reg.atlas].texture;
                 reg.textures.push(texture);
             }
         }
         for (const skel in ct.res.skelRegistry) {
-            ct.res.skelRegistry[skel].data = PIXI.loader.resources[ct.res.skelRegistry[skel].origname + '_ske.json'].data;
+            ct.res.skelRegistry[skel].data = PIXI.Loader.shared.resources[ct.res.skelRegistry[skel].origname + '_ske.json'].data;
         }
         /*%resload%*/
         loadingLabel.classList.add('hidden');

@@ -46,17 +46,16 @@ ct.pixiApp = new PIXI.Application({
     width: [/*@startwidth@*/][0],
     height: [/*@startheight@*/][0],
     antialias: ![/*@pixelatedrender@*/][0],
-    roundPixels: [/*@pixelatedrender@*/][0],
-    resolution: ct.highDensity? (window.devicePixelRatio || 1) : 1,
     powerPreference: 'high-performance',
     sharedTicker: true,
     sharedLoader: true
 });
+PIXI.settings.ROUND_PIXELS = [/*@pixelatedrender@*/][0];
 if (!ct.pixiApp.renderer.options.antialias) {
     PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 }
 ct.stage = ct.pixiApp.stage;
-ct.pixiApp.renderer.autoResize = false;
+ct.pixiApp.renderer.autoDensity = true;
 document.getElementById('ct').appendChild(ct.pixiApp.view);
 
 ct.u = {
@@ -198,7 +197,7 @@ ct.loop = function(delta) {
     }
 
     ct.rooms.beforeStep.apply(ct.room);
-    ct.room.onStep.apply(ct.room); 
+    ct.room.onStep.apply(ct.room);
     ct.rooms.afterStep.apply(ct.room);
     // copies
     for (let i = 0, li = ct.stack.length; i < li;) {
@@ -226,7 +225,7 @@ ct.loop = function(delta) {
     }
 
     for (const cont of ct.stage.children) {
-        cont.children.sort((a, b) => 
+        cont.children.sort((a, b) =>
             ((a.depth || 0) - (b.depth || 0)) || ((a.uid || 0) - (b.uid || 0)) || 0
         );
     }
@@ -275,7 +274,7 @@ ct.loop = function(delta) {
     }
 
     ct.rooms.beforeDraw.apply(r);
-    ct.room.onDraw.apply(r); 
+    ct.room.onDraw.apply(r);
     ct.rooms.afterDraw.apply(r);
 
     ct.main.fpstick++;
