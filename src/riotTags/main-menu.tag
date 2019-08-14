@@ -47,7 +47,7 @@ main-menu.flexcol
     script.
         const fs = require('fs-extra'),
               path = require('path');
-        const zip = require('cross-zip');
+        const archiver = require('archiver');
 
         this.namespace = 'menu';
         this.mixin(window.riotVoc);
@@ -190,39 +190,41 @@ main-menu.flexcol
             }))
             .then(fs.copy(sessionStorage.projdir + '.ict', path.join(inDir, sessionStorage.projname)))
             .then(fs.copy(sessionStorage.projdir, path.join(inDir, sessionStorage.projname.slice(0, -4))))
-            .then(() => new Promise(resolve => {
+            /*.then(() => new Promise(resolve => {
                 setTimeout(resolve, 100);
-            }))
+            }))*/
             .then(() => {
-                zip.zip(inDir + '.', outName, err => {
-                    if (err) {
-                        alertify.error(err);
-                        console.error(err);
-                        return;
-                    }
+                let archive = archiver('zip'),
+                    output = fs.createWriteStream(outName);
+
+                output.on('close', () => {
                     nw.Shell.showItemInFolder(outName);
                     alertify.success(this.voc.successZipProject.replace('{0}', outName));
                 });
+
+                archive.pipe(output);
+                archive.directory(inDir, false);
+                archive.finalize();
             })
             .catch(alertify.error);
         };
         this.zipExport = e => {
-            var exportFile = exec + '/export.zip';
+            let exportFile = exec + '/export.zip',
+                inDir = exec + '/export/';
             fs.remove(exportFile)
             .then(() => window.runCtProject())
             .then(() => {
-                zip.zip(exec + '/export/.', exportFile, err => {
-                    if (err) {
-                        window.fuck = err;
-                        console.error(err);
-                        if (err.code !== 12) {
-                            alertify.error(err);
-                            return;
-                        }
-                    }
+                let archive = archiver('zip'),
+                    output = fs.createWriteStream(exportFile);
+
+                output.on('close', () => {
                     nw.Shell.showItemInFolder(exportFile);
                     alertify.success(this.voc.successZipExport.replace('{0}', exportFile));
                 });
+
+                archive.pipe(output);
+                archive.directory(inDir, false);
+                archive.finalize();
             })
             .catch(alertify.error);
         };
