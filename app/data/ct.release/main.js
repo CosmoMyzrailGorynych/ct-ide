@@ -55,7 +55,7 @@ if (!ct.pixiApp.renderer.options.antialias) {
     PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 }
 ct.stage = ct.pixiApp.stage;
-ct.pixiApp.renderer.autoDensity = true;
+ct.pixiApp.renderer.autoDensity = ct.highDensity;
 document.getElementById('ct').appendChild(ct.pixiApp.view);
 
 ct.u = {
