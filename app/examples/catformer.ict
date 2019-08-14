@@ -11,7 +11,2035 @@
     "keyboard.polyfill": {},
     "keyboard": {}
   },
-  "graphs": [
+  "types": [
+    {
+      "name": "Box",
+      "depth": 0,
+      "oncreate": "",
+      "onstep": "if (ct.place.meet(this, this.x + 5, this.y, 'Player') &&\n    !ct.place.tile(this, this.x - 10, this.y, -10) &&\n    ct.place.free(this, this.x - 10, this.y, 'Solid')) {\n    this.x -= 10;\n}\nif (ct.place.meet(this, this.x - 5, this.y, 'Player') &&\n    !ct.place.tile(this, this.x + 10, this.y, -10) &&\n    ct.place.free(this, this.x + 10, this.y, 'Solid')) {\n    this.x += 10;\n}\nif (!ct.place.tile(this, this.x, this.y + 10, -10) &&\n    ct.place.free(this, this.x, this.y + 10, 'Solid')\n) {\n    this.y += 10;\n}",
+      "ondraw": "",
+      "ondestroy": "",
+      "uid": "b7a528f8-655c-4920-900f-f191533f411d",
+      "lastmod": 1551429656475,
+      "extends": {
+        "ctype": "Solid"
+      },
+      "texture": "d8dd2bfd-0f9d-495a-bbfd-0e65b80153b9"
+    },
+    {
+      "name": "Logs",
+      "depth": 0,
+      "oncreate": "",
+      "onstep": "ct.types.move(this);",
+      "ondraw": "",
+      "ondestroy": "",
+      "uid": "1026c1c8-90e4-4b93-bb6a-568f53918097",
+      "lastmod": 1547476749007,
+      "extends": {
+        "ctype": "Solid"
+      },
+      "texture": "f3de5077-0e66-43de-93f2-d3a75184aa2e"
+    },
+    {
+      "name": "Grass",
+      "depth": 0,
+      "oncreate": "",
+      "onstep": "ct.types.move(this);",
+      "ondraw": "",
+      "ondestroy": "",
+      "uid": "5ff42cc3-0b4a-47e9-b6f1-06d3b3b91bb0",
+      "lastmod": 1547470587709,
+      "extends": {
+        "ctype": "Solid"
+      },
+      "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+    },
+    {
+      "name": "Spikes",
+      "depth": 0,
+      "oncreate": "",
+      "onstep": "ct.types.move(this);",
+      "ondraw": "",
+      "ondestroy": "",
+      "uid": "036a2de1-89b0-48e3-b26f-d608ce2079fd",
+      "lastmod": 1547470605572,
+      "extends": {
+        "ctype": "Enemy"
+      },
+      "texture": "eed6bb2f-301f-460a-8d91-93396d103b4e"
+    },
+    {
+      "name": "Player",
+      "depth": 0,
+      "oncreate": "this.animationSpeed = 15 / 60;\n\n// Traditional speed/dir movement system works badly with platformers.\n// We will set up our own variables and write own movement code.\n\nthis.maxspeed = 5; // this will be our max horizontal speed\nthis.acceleration = 1; // this is walking acceleration\nthis.jumpPower = 12; // this is our jumping velocity\nthis.gravity = 0.5;",
+      "onstep": "// here and below we check for both collisions with tiles and copies.\n// -10 is the depth of the colliding tile layer. We ignore the decorative\n// layer at -20.\nvar onGround = ct.place.occupied(this, this.x, this.y + 1, 'Solid') ||\n               ct.place.tile(this, this.x, this.y + 1, -10);\n\n// Move right or left\nif (ct.actions.Move.value > 0) {\n    if (this.hspeed < this.maxspeed) {\n        this.hspeed += this.acceleration * ct.delta;\n    }\n    if ((this.currentFrame > 10 || !this.playing) && onGround) {\n        this.gotoAndPlay(0);\n    }\n} else if (ct.actions.Move.value < 0) {\n    if (this.hspeed > -this.maxspeed) {\n        this.hspeed -= this.acceleration * ct.delta;\n    }\n    if ((this.currentFrame > 10 || !this.playing) && onGround) {\n        this.gotoAndPlay(0);\n    }\n} else { // Slow down if we are on the ground and we don't move.\n    if (onGround) {\n        this.speed = Math.max(0, this.speed - this.maxspeed);\n        this.gotoAndStop(9);\n    }\n}\n\n// Jumping\nif (ct.actions.Jump.down) {\n    // Jump only if we stay on the ground\n    if (onGround) {\n        this.vspeed = -this.jumpPower;\n        this.gotoAndStop(12);\n    }\n}\n\n// If we are not on the ground, add gravity\nif (!onGround) {\n    this.vspeed += this.gravity * ct.delta;\n}\n\n// Move pixel by pixel until we meet a colliding object next to us\n// Math.sign returns -1 if a number is negative, 1 if positive and 0 if it is 0.\nfor (var i = 0; i < Math.abs(this.hspeed); i++) {\n    if (ct.place.free(this, this.x + Math.sign(this.hspeed), this.y, 'Solid') &&\n        !ct.place.tile(this, this.x + Math.sign(this.hspeed), this.y, -10)\n    ) {\n        this.x += Math.sign(this.hspeed);\n    } else {\n        this.hspeed = 0;\n        break;\n    }\n}\n\n// Do the same for vertical speed\nfor (var i = 0; i < Math.abs(this.vspeed); i++) {\n    if (ct.place.free(this, this.x, this.y + Math.sign(this.vspeed), 'Solid') &&\n        !ct.place.tile(this, this.x, this.y + Math.sign(this.vspeed), -10)\n    ) {\n        this.y += Math.sign(this.vspeed);\n    } else {\n        this.vspeed = 0;\n        break;\n    }\n}\n\n// Check if we collide with spikes\nif (ct.place.occupied(this, this.x, this.y, 'Enemy')) {\n    ct.sound.spawn('BodyFall');\n    // move to a 'death' screen\n    ct.rooms.switch('DeadScreen');\n}",
+      "ondraw": "if (this.hspeed < 0) {\n    this.scale.x = -1;\n} else if (this.hspeed > 0) {\n    this.scale.x = 1;\n}\n\nct.room.followShiftX = this.scale.x * 150;",
+      "ondestroy": "",
+      "uid": "00664f77-21c6-4b06-b310-88640b1beaf9",
+      "lastmod": 1551429765916,
+      "extends": {
+        "ctype": "Player"
+      },
+      "texture": "ad390b6e-4c2c-412f-8143-1c70b9c16fc0"
+    },
+    {
+      "name": "Coin",
+      "depth": 0,
+      "oncreate": "",
+      "onstep": "if (ct.place.meet(this, this.x, this.y, 'Player')) {\n    this.kill = true;\n    ct.sound.spawn(ct.random.dice('Coin_01', 'Coin_02', 'Coin_03'));\n    ct.room.coins ++;\n    ct.room.coinsCounter.text = ct.room.coins;\n}",
+      "ondraw": "",
+      "ondestroy": "",
+      "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2",
+      "lastmod": 1547470614124,
+      "extends": {},
+      "texture": "62be2903-9782-49fc-b551-ef2e641091c9"
+    },
+    {
+      "name": "Greed",
+      "depth": 0,
+      "oncreate": "",
+      "onstep": "ct.types.move(this);",
+      "ondraw": "",
+      "ondestroy": "",
+      "uid": "2d29a0d5-d88d-493d-bece-8d52ed476273",
+      "lastmod": 1551429772275,
+      "extends": {},
+      "texture": "e90eb23b-547a-4d96-a203-ffe63c00cf9b"
+    },
+    {
+      "name": "Slime",
+      "depth": 0,
+      "oncreate": "this.speed = 1;\nthis.direction = 180;\n\nthis.animationSpeed = 4 / 60;\nthis.play();",
+      "onstep": "var freeBelow = !ct.place.tile(this, this.x + ct.u.ldx(70, this.dir), this.y + 35, -10) &&\n                ct.place.free(this, this.x + ct.u.ldx(70, this.dir), this.y + 35, 'Solid');\n                \nvar occupiedInFront = ct.place.tile(this, this.x + ct.u.ldx(10, this.dir), this.y, -10) || \n                      ct.place.occupied(this, this.x + ct.u.ldx(10, this.dir), this.y, 'Solid');\n\nif (freeBelow || occupiedInFront) {\n    if (this.direction === 180) {\n        this.direction = 0;\n        this.scale.x = -1;\n    } else {\n        this.direction = 180;\n        this.scale.x = 1;\n    }\n}\n\nct.types.move(this);",
+      "ondraw": "",
+      "ondestroy": "",
+      "uid": "1f91fd7d-2d6c-4542-aead-78b8010b835b",
+      "lastmod": 1551429013431,
+      "extends": {
+        "ctype": "Enemy"
+      },
+      "texture": "703fb5d5-cf20-4450-b760-0b1cd037a5ad"
+    },
+    {
+      "name": "Rich",
+      "depth": 0,
+      "oncreate": "",
+      "onstep": "ct.types.move(this);",
+      "ondraw": "",
+      "ondestroy": "",
+      "uid": "b658efa2-360e-4a62-8640-3e3281156f4e",
+      "lastmod": 1543241928025,
+      "extends": {},
+      "texture": "1da28af4-53f1-4958-82b2-a696778f910f"
+    },
+    {
+      "name": "ToggleFullscreen",
+      "depth": 100,
+      "oncreate": "",
+      "onstep": "if (ct.mouse.pressed) {\n    if (ct.u.prect(ct.mouse.x, ct.mouse.y, this)) {\n        ct.fittoscreen.toggleFullscreen();\n    }\n}",
+      "ondraw": "this.x = ct.viewWidth + ct.room.x - 32;\nthis.y = ct.viewHeight + ct.room.y - 32;\nthis.gotoAndStop(ct.fittoscreen.getIsFullscreen()? 1 : 0);",
+      "ondestroy": "",
+      "uid": "8a4b8de4-7729-4936-bc7b-bc277a512975",
+      "lastmod": 1547470581588,
+      "extends": {},
+      "texture": "d161a39a-203e-4099-99e2-41385d94f975"
+    }
+  ],
+  "sounds": [
+    {
+      "name": "BodyFall",
+      "uid": "64f57367-eae3-40e1-8769-e11bd3c90f62",
+      "origname": "s0.wav",
+      "lastmod": 1522761534690
+    },
+    {
+      "name": "Failure",
+      "uid": "0f16063e-c954-4e7e-8b09-32b844511c9e",
+      "origname": "s1.wav",
+      "lastmod": 1522761553815
+    },
+    {
+      "name": "Victory",
+      "uid": "1d5b2c13-0324-41be-bbd5-e69abfd5bd49",
+      "origname": "s2.wav",
+      "lastmod": 1522761569514
+    },
+    {
+      "name": "Coin_01",
+      "uid": "7ed9f9ad-d9fc-436d-b97f-59aa81348543",
+      "origname": "s3.wav",
+      "lastmod": 1522761582110
+    },
+    {
+      "name": "Coin_02",
+      "uid": "d5d0b307-685d-4ecc-8ffe-e24a063d9f15",
+      "origname": "s4.wav",
+      "lastmod": 1522761594384
+    },
+    {
+      "name": "Coin_03",
+      "uid": "b614ec30-9837-466e-94a5-dda36bdf9daf",
+      "origname": "s5.wav",
+      "lastmod": 1522761606687
+    }
+  ],
+  "styles": [
+    {
+      "name": "CoinText",
+      "shadow": false,
+      "uid": "7879b9dc-6868-4c97-b71e-129d03c77ee1",
+      "origname": "s1",
+      "font": {
+        "family": "sans-serif",
+        "size": 24,
+        "weight": "900",
+        "italic": false,
+        "valign": "middle",
+        "halign": "left",
+        "lineHeight": 24
+      },
+      "fill": {
+        "type": "0",
+        "color": "#FFCC40"
+      },
+      "stroke": {
+        "color": "#CF7500",
+        "weight": 2
+      },
+      "lastmod": 1543637142188
+    },
+    {
+      "name": "OhNo",
+      "uid": "0db56e97-cb4d-43bf-a067-7a7ab9f32099",
+      "origname": "s2",
+      "font": {
+        "family": "sans-serif",
+        "size": 48,
+        "weight": "800",
+        "italic": true,
+        "valign": "middle",
+        "halign": "center"
+      },
+      "fill": {
+        "type": "0",
+        "color": "#257073"
+      },
+      "lastmod": 1543636698269
+    },
+    {
+      "name": "OhNo_Small",
+      "uid": "ad511489-1f25-4d45-bbe8-7f33d08257e4",
+      "origname": "s4",
+      "font": {
+        "family": "sans-serif",
+        "size": 24,
+        "weight": "800",
+        "italic": true,
+        "valign": "middle",
+        "halign": "center"
+      },
+      "fill": {
+        "type": "0",
+        "color": "#257073"
+      },
+      "lastmod": 1543636696741
+    }
+  ],
+  "rooms": [
+    {
+      "name": "InGame",
+      "oncreate": "this.coins = 0;\n\nthis.follow = ct.types.list['Player'][0];\nthis.borderX = 400;\nthis.borderY = 300;\nthis.followDrift = 0.9;\n\nthis.coinsCounter = new PIXI.Text(this.coins, ct.styles.get('CoinText'));\nthis.coinsCounter.depth = 100;\nthis.coinsCounter.x = this.x + ct.viewWidth - 70;\nthis.coinsCounter.y = this.y + 35;\nthis.coinsCounter.anchor.y = 0.5;\nthis.addChild(this.coinsCounter);\n\nthis.coinIcon = new PIXI.Sprite(ct.res.getTexture('coinGold', 0));\nthis.coinIcon.x = this.x + ct.viewWidth - 100;\nthis.coinIcon.y = this.y + 35;\nthis.coinIcon.depth = 100;\nthis.addChild(this.coinIcon);",
+      "onstep": "if (this.coins >= 33) {\n    ct.rooms.switch('RichScreen');\n}",
+      "ondraw": "this.coinsCounter.x = this.x + ct.viewWidth - 70;\nthis.coinsCounter.y = this.y + 35;\n\nthis.coinIcon.x = this.x + ct.viewWidth - 100;\nthis.coinIcon.y = this.y + 35;",
+      "onleave": "",
+      "width": 1024,
+      "height": 700,
+      "backgrounds": [
+        {
+          "depth": "-50",
+          "extends": {},
+          "texture": "fd9d7012-6826-4368-8fe5-0385b72bc902"
+        }
+      ],
+      "uid": "b0f0ff4d-a155-4d68-a86e-5bb7ed8973ab",
+      "grid": 35,
+      "lastmod": 1547471597586,
+      "thumbnail": 1,
+      "tiles": [
+        {
+          "depth": -10,
+          "tiles": [
+            {
+              "x": -140,
+              "y": -70,
+              "grid": [
+                0,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": -70,
+              "y": -70,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 0,
+              "y": -70,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 70,
+              "y": -70,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 140,
+              "y": -70,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 210,
+              "y": -70,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 280,
+              "y": -70,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": -140,
+              "y": 0,
+              "grid": [
+                1,
+                2,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": -140,
+              "y": 70,
+              "grid": [
+                1,
+                2,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": -140,
+              "y": 140,
+              "grid": [
+                1,
+                2,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": -140,
+              "y": 210,
+              "grid": [
+                1,
+                2,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": -140,
+              "y": 280,
+              "grid": [
+                1,
+                2,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": -140,
+              "y": 350,
+              "grid": [
+                1,
+                2,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": -140,
+              "y": 420,
+              "grid": [
+                1,
+                2,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": -140,
+              "y": 490,
+              "grid": [
+                0,
+                2,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 1680,
+              "y": 280,
+              "grid": [
+                1,
+                2,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 1680,
+              "y": 210,
+              "grid": [
+                1,
+                2,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 1680,
+              "y": 140,
+              "grid": [
+                1,
+                2,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 1680,
+              "y": 70,
+              "grid": [
+                1,
+                2,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 1680,
+              "y": 0,
+              "grid": [
+                1,
+                2,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 350,
+              "y": -70,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 420,
+              "y": -70,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 490,
+              "y": -70,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 560,
+              "y": -70,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 630,
+              "y": -70,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 700,
+              "y": -70,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 770,
+              "y": -70,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 840,
+              "y": -70,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 910,
+              "y": -70,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 980,
+              "y": -70,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 1050,
+              "y": -70,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 1120,
+              "y": -70,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 1190,
+              "y": -70,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 1260,
+              "y": -70,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 1330,
+              "y": -70,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 1400,
+              "y": -70,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 1470,
+              "y": -70,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 1540,
+              "y": -70,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 1610,
+              "y": -70,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 1680,
+              "y": -70,
+              "grid": [
+                2,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 210,
+              "y": 210,
+              "grid": [
+                0,
+                0,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 350,
+              "y": 210,
+              "grid": [
+                2,
+                0,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 280,
+              "y": 210,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": -70,
+              "y": 490,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 0,
+              "y": 490,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 70,
+              "y": 490,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 140,
+              "y": 490,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 210,
+              "y": 490,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 280,
+              "y": 490,
+              "grid": [
+                2,
+                0,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 560,
+              "y": 490,
+              "grid": [
+                0,
+                0,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 840,
+              "y": 490,
+              "grid": [
+                2,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 630,
+              "y": 490,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 700,
+              "y": 490,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 770,
+              "y": 490,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 840,
+              "y": 560,
+              "grid": [
+                0,
+                2,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 910,
+              "y": 560,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 980,
+              "y": 560,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 1050,
+              "y": 560,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 1120,
+              "y": 560,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 1190,
+              "y": 560,
+              "grid": [
+                2,
+                2,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 0,
+              "y": 560,
+              "grid": [
+                1,
+                2,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 0,
+              "y": 630,
+              "grid": [
+                1,
+                2,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 0,
+              "y": 700,
+              "grid": [
+                1,
+                2,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 0,
+              "y": 770,
+              "grid": [
+                1,
+                2,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 0,
+              "y": 840,
+              "grid": [
+                0,
+                2,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 70,
+              "y": 840,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 140,
+              "y": 840,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 210,
+              "y": 840,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 280,
+              "y": 840,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 350,
+              "y": 840,
+              "grid": [
+                2,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 350,
+              "y": 910,
+              "grid": [
+                0,
+                2,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 420,
+              "y": 910,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 490,
+              "y": 910,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 560,
+              "y": 910,
+              "grid": [
+                2,
+                2,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 560,
+              "y": 840,
+              "grid": [
+                0,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 630,
+              "y": 840,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 700,
+              "y": 840,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 770,
+              "y": 840,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 840,
+              "y": 840,
+              "grid": [
+                2,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 840,
+              "y": 910,
+              "grid": [
+                0,
+                2,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 1050,
+              "y": 910,
+              "grid": [
+                2,
+                2,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 910,
+              "y": 910,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 980,
+              "y": 910,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 1190,
+              "y": 350,
+              "grid": [
+                3,
+                0,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 1190,
+              "y": 420,
+              "grid": [
+                1,
+                2,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 1190,
+              "y": 490,
+              "grid": [
+                1,
+                2,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 1330,
+              "y": 350,
+              "grid": [
+                0,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 1330,
+              "y": 420,
+              "grid": [
+                1,
+                2,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 1330,
+              "y": 490,
+              "grid": [
+                1,
+                2,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 1330,
+              "y": 560,
+              "grid": [
+                0,
+                2,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 1400,
+              "y": 560,
+              "grid": [
+                2,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 1400,
+              "y": 630,
+              "grid": [
+                1,
+                2,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 1400,
+              "y": 700,
+              "grid": [
+                1,
+                2,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 1400,
+              "y": 770,
+              "grid": [
+                1,
+                2,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 1400,
+              "y": 840,
+              "grid": [
+                2,
+                2,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 1400,
+              "y": 350,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 1470,
+              "y": 350,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 1540,
+              "y": 350,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 1610,
+              "y": 350,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 1680,
+              "y": 350,
+              "grid": [
+                2,
+                2,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 1120,
+              "y": 840,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 1190,
+              "y": 840,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 1260,
+              "y": 840,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 1330,
+              "y": 840,
+              "grid": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 1050,
+              "y": 840,
+              "grid": [
+                0,
+                1,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            }
+          ]
+        },
+        {
+          "depth": -20,
+          "tiles": [
+            {
+              "x": 70,
+              "y": 420,
+              "grid": [
+                3,
+                2,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 140,
+              "y": 420,
+              "grid": [
+                3,
+                2,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 210,
+              "y": 420,
+              "grid": [
+                3,
+                2,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 945,
+              "y": 490,
+              "grid": [
+                1,
+                3,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 770,
+              "y": 420,
+              "grid": [
+                2,
+                3,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 735,
+              "y": 420,
+              "grid": [
+                0,
+                3,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 1575,
+              "y": 280,
+              "grid": [
+                0,
+                3,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 1435,
+              "y": 280,
+              "grid": [
+                1,
+                3,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 1190,
+              "y": 280,
+              "grid": [
+                3,
+                3,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 280,
+              "y": 770,
+              "grid": [
+                1,
+                3,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 245,
+              "y": 770,
+              "grid": [
+                2,
+                3,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 245,
+              "y": 140,
+              "grid": [
+                1,
+                3,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": -70,
+              "y": 420,
+              "grid": [
+                0,
+                3,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 1120,
+              "y": 490,
+              "grid": [
+                0,
+                3,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 1400,
+              "y": 490,
+              "grid": [
+                3,
+                3,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            },
+            {
+              "x": 770,
+              "y": 770,
+              "grid": [
+                0,
+                3,
+                1,
+                1
+              ],
+              "texture": "9968de05-f39d-4455-aaed-175c03728bb1"
+            }
+          ]
+        }
+      ],
+      "gridX": 35,
+      "gridY": 35,
+      "copies": [
+        {
+          "x": 980,
+          "y": 280,
+          "uid": "b7a528f8-655c-4920-900f-f191533f411d"
+        },
+        {
+          "x": 1225,
+          "y": 770,
+          "uid": "036a2de1-89b0-48e3-b26f-d608ce2079fd"
+        },
+        {
+          "x": 1295,
+          "y": 770,
+          "uid": "036a2de1-89b0-48e3-b26f-d608ce2079fd"
+        },
+        {
+          "x": 1470,
+          "y": 280,
+          "uid": "b7a528f8-655c-4920-900f-f191533f411d"
+        },
+        {
+          "x": 350,
+          "y": 490,
+          "uid": "1026c1c8-90e4-4b93-bb6a-568f53918097"
+        },
+        {
+          "x": 420,
+          "y": 490,
+          "uid": "1026c1c8-90e4-4b93-bb6a-568f53918097"
+        },
+        {
+          "x": 490,
+          "y": 490,
+          "uid": "1026c1c8-90e4-4b93-bb6a-568f53918097"
+        },
+        {
+          "x": 420,
+          "y": 840,
+          "uid": "036a2de1-89b0-48e3-b26f-d608ce2079fd"
+        },
+        {
+          "x": 490,
+          "y": 840,
+          "uid": "036a2de1-89b0-48e3-b26f-d608ce2079fd"
+        },
+        {
+          "x": 910,
+          "y": 840,
+          "uid": "036a2de1-89b0-48e3-b26f-d608ce2079fd"
+        },
+        {
+          "x": 980,
+          "y": 840,
+          "uid": "036a2de1-89b0-48e3-b26f-d608ce2079fd"
+        },
+        {
+          "x": 70,
+          "y": 350,
+          "uid": "00664f77-21c6-4b06-b310-88640b1beaf9"
+        },
+        {
+          "x": 385,
+          "y": 140,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 420,
+          "y": 420,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 490,
+          "y": 420,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 1645,
+          "y": 245,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 1645,
+          "y": 175,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 1645,
+          "y": 105,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 1295,
+          "y": 385,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 1295,
+          "y": 490,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 1295,
+          "y": 595,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 1295,
+          "y": 700,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 1120,
+          "y": 770,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 980,
+          "y": 700,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 840,
+          "y": 770,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 595,
+          "y": 770,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 490,
+          "y": 700,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 385,
+          "y": 770,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 175,
+          "y": 770,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 140,
+          "y": 735,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 175,
+          "y": 700,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 210,
+          "y": 735,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 175,
+          "y": 735,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 385,
+          "y": 560,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 455,
+          "y": 560,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 525,
+          "y": 560,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 1645,
+          "y": 35,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 315,
+          "y": 140,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 350,
+          "y": 105,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 700,
+          "y": 840,
+          "uid": "1f91fd7d-2d6c-4542-aead-78b8010b835b"
+        },
+        {
+          "x": 1015,
+          "y": 490,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 1015,
+          "y": 455,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 1050,
+          "y": 455,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 1050,
+          "y": 490,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 840,
+          "y": 350,
+          "uid": "1026c1c8-90e4-4b93-bb6a-568f53918097"
+        },
+        {
+          "x": 910,
+          "y": 350,
+          "uid": "1026c1c8-90e4-4b93-bb6a-568f53918097"
+        },
+        {
+          "x": 980,
+          "y": 350,
+          "uid": "1026c1c8-90e4-4b93-bb6a-568f53918097"
+        },
+        {
+          "x": 1050,
+          "y": 350,
+          "uid": "1026c1c8-90e4-4b93-bb6a-568f53918097"
+        },
+        {
+          "x": 280,
+          "y": 105,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 245,
+          "y": 140,
+          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
+        },
+        {
+          "x": 315,
+          "y": 210,
+          "uid": "1f91fd7d-2d6c-4542-aead-78b8010b835b"
+        },
+        {
+          "x": 1120,
+          "y": 560,
+          "uid": "1f91fd7d-2d6c-4542-aead-78b8010b835b"
+        },
+        {
+          "x": -70,
+          "y": 280,
+          "uid": "1026c1c8-90e4-4b93-bb6a-568f53918097"
+        },
+        {
+          "x": 245,
+          "y": 770,
+          "uid": "b7a528f8-655c-4920-900f-f191533f411d"
+        },
+        {
+          "x": 595,
+          "y": 175,
+          "uid": "8a4b8de4-7729-4936-bc7b-bc277a512975"
+        }
+      ]
+    },
+    {
+      "name": "DeadScreen",
+      "oncreate": "ct.sound.spawn('Failure');\n\nthis.wait = 30;\nct.keyboard.clear();\n\nthis.ohNoLabel = new PIXI.Text('Oh no!', ct.styles.get('OhNo'));\nthis.ohNoLabel.x = ct.width / 2;\nthis.ohNoLabel.y = 540;\nthis.ohNoLabel.anchor.x = this.ohNoLabel.anchor.y = 0.5;\nthis.addChild(this.ohNoLabel);\n\nthis.subLabel = new PIXI.Text('You were too greeedy for that game!\\nPress any button to try again.', ct.styles.get('OhNo_Small'));\nthis.subLabel.x = ct.width / 2;\nthis.subLabel.y = 600;\nthis.subLabel.anchor.x = this.subLabel.anchor.y = 0.5;\nthis.addChild(this.subLabel);",
+      "onstep": "this.wait -= ct.delta;\nif (ct.keyboard.lastKey && this.wait < 0) {\n    ct.rooms.switch('InGame');\n}",
+      "ondraw": "",
+      "onleave": "",
+      "width": 1024,
+      "height": 700,
+      "backgrounds": [
+        {
+          "depth": "-10",
+          "extends": {},
+          "texture": "fd9d7012-6826-4368-8fe5-0385b72bc902"
+        }
+      ],
+      "uid": "1ee751d0-24cc-43af-b91d-1a91a9aa48f5",
+      "grid": 64,
+      "lastmod": 1547546306396,
+      "thumbnail": 2,
+      "gridX": 64,
+      "gridY": 64,
+      "tiles": [
+        {
+          "depth": -10,
+          "tiles": []
+        }
+      ],
+      "copies": [
+        {
+          "x": 512,
+          "y": 256,
+          "uid": "2d29a0d5-d88d-493d-bece-8d52ed476273"
+        },
+        {
+          "x": 384,
+          "y": 576,
+          "uid": "8a4b8de4-7729-4936-bc7b-bc277a512975"
+        }
+      ]
+    },
+    {
+      "name": "RichScreen",
+      "oncreate": "ct.sound.spawn('Victory');\n\nct.keyboard.clear();\n\nthis.ohNoLabel = new PIXI.Text('You got them all!', ct.styles.get('OhNo'));\nthis.ohNoLabel.x = ct.width / 2;\nthis.ohNoLabel.y = 540;\nthis.ohNoLabel.anchor.x = this.ohNoLabel.anchor.y = 0.5;\nthis.addChild(this.ohNoLabel);\n\nthis.subLabel = new PIXI.Text('You\\'ve found all the 33 coins. Congrats!\\nThis was a stupid demo of ct.js game engine. Thank you for playing!', ct.styles.get('OhNo_Small'));\nthis.subLabel.x = ct.width / 2;\nthis.subLabel.y = 600;\nthis.subLabel.anchor.x = this.subLabel.anchor.y = 0.5;\nthis.addChild(this.subLabel);",
+      "onstep": "",
+      "ondraw": "",
+      "onleave": "",
+      "width": 1024,
+      "height": 700,
+      "backgrounds": [
+        {
+          "depth": "-10",
+          "extends": {},
+          "texture": "fd9d7012-6826-4368-8fe5-0385b72bc902"
+        }
+      ],
+      "uid": "1a5a64c6-5a4b-4f57-aa99-371ae3c158a3",
+      "grid": 64,
+      "lastmod": 1551429777966,
+      "thumbnail": 2,
+      "gridX": 64,
+      "gridY": 64,
+      "tiles": [
+        {
+          "depth": -10,
+          "tiles": []
+        }
+      ],
+      "copies": [
+        {
+          "x": 512,
+          "y": 256,
+          "uid": "b658efa2-360e-4a62-8640-3e3281156f4e"
+        },
+        {
+          "x": 192,
+          "y": 448,
+          "uid": "8a4b8de4-7729-4936-bc7b-bc277a512975"
+        }
+      ]
+    }
+  ],
+  "soundtick": 6,
+  "roomtick": 3,
+  "typetick": 12,
+  "styletick": 4,
+  "starting": 0,
+  "settings": {
+    "minifyhtmlcss": true,
+    "minifyjs": false,
+    "title": "Catformer",
+    "author": "Cosmo Myzrail Gorynych",
+    "site": "https://ctjs.rocks",
+    "fps": 30,
+    "version": [
+      0,
+      0,
+      0
+    ],
+    "versionPostfix": "",
+    "export": {
+      "windows64": true,
+      "windows32": true,
+      "linux64": true,
+      "linux32": true,
+      "mac64": true,
+      "debug": false
+    }
+  },
+  "palette": [
+    "#257073"
+  ],
+  "startroom": "b0f0ff4d-a155-4d68-a86e-5bb7ed8973ab",
+  "scripts": [],
+  "ctjsVersion": "1.0.0-next-3",
+  "fonts": [],
+  "skeletons": [],
+  "actions": [
+    {
+      "name": "Jump",
+      "methods": [
+        {
+          "code": "keyboard.Space"
+        },
+        {
+          "code": "keyboard.KeyW"
+        },
+        {
+          "code": "keyboard.ArrowUp"
+        }
+      ]
+    },
+    {
+      "name": "Move",
+      "methods": [
+        {
+          "code": "keyboard.ArrowLeft",
+          "multiplier": -1
+        },
+        {
+          "code": "keyboard.ArrowRight"
+        },
+        {
+          "code": "keyboard.KeyA",
+          "multiplier": -1
+        },
+        {
+          "code": "keyboard.KeyD"
+        }
+      ]
+    }
+  ],
+  "textures": [
     {
       "name": "boxAlt",
       "untill": 0,
@@ -359,2033 +2387,5 @@
       "uid": "d161a39a-203e-4099-99e2-41385d94f975"
     }
   ],
-  "types": [
-    {
-      "name": "Box",
-      "depth": 0,
-      "oncreate": "",
-      "onstep": "if (ct.place.meet(this, this.x + 5, this.y, 'Player') &&\n    !ct.place.tile(this, this.x - 10, this.y, -10) &&\n    ct.place.free(this, this.x - 10, this.y, 'Solid')) {\n    this.x -= 10;\n}\nif (ct.place.meet(this, this.x - 5, this.y, 'Player') &&\n    !ct.place.tile(this, this.x + 10, this.y, -10) &&\n    ct.place.free(this, this.x + 10, this.y, 'Solid')) {\n    this.x += 10;\n}\nif (!ct.place.tile(this, this.x, this.y + 10, -10) &&\n    ct.place.free(this, this.x, this.y + 10, 'Solid')\n) {\n    this.y += 10;\n}",
-      "ondraw": "",
-      "ondestroy": "",
-      "uid": "b7a528f8-655c-4920-900f-f191533f411d",
-      "graph": "d8dd2bfd-0f9d-495a-bbfd-0e65b80153b9",
-      "lastmod": 1551429656475,
-      "extends": {
-        "ctype": "Solid"
-      }
-    },
-    {
-      "name": "Logs",
-      "depth": 0,
-      "oncreate": "",
-      "onstep": "ct.types.move(this);",
-      "ondraw": "",
-      "ondestroy": "",
-      "uid": "1026c1c8-90e4-4b93-bb6a-568f53918097",
-      "graph": "f3de5077-0e66-43de-93f2-d3a75184aa2e",
-      "lastmod": 1547476749007,
-      "extends": {
-        "ctype": "Solid"
-      }
-    },
-    {
-      "name": "Grass",
-      "depth": 0,
-      "oncreate": "",
-      "onstep": "ct.types.move(this);",
-      "ondraw": "",
-      "ondestroy": "",
-      "uid": "5ff42cc3-0b4a-47e9-b6f1-06d3b3b91bb0",
-      "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-      "lastmod": 1547470587709,
-      "extends": {
-        "ctype": "Solid"
-      }
-    },
-    {
-      "name": "Spikes",
-      "depth": 0,
-      "oncreate": "",
-      "onstep": "ct.types.move(this);",
-      "ondraw": "",
-      "ondestroy": "",
-      "uid": "036a2de1-89b0-48e3-b26f-d608ce2079fd",
-      "graph": "eed6bb2f-301f-460a-8d91-93396d103b4e",
-      "lastmod": 1547470605572,
-      "extends": {
-        "ctype": "Enemy"
-      }
-    },
-    {
-      "name": "Player",
-      "depth": 0,
-      "oncreate": "this.animationSpeed = 15 / 60;\n\n// Traditional speed/dir movement system works badly with platformers.\n// We will set up our own variables and write own movement code.\n\nthis.maxspeed = 5; // this will be our max horizontal speed\nthis.acceleration = 1; // this is walking acceleration\nthis.jumpPower = 12; // this is our jumping velocity\nthis.gravity = 0.5;",
-      "onstep": "// here and below we check for both collisions with tiles and copies.\n// -10 is the depth of the colliding tile layer. We ignore the decorative\n// layer at -20.\nvar onGround = ct.place.occupied(this, this.x, this.y + 1, 'Solid') ||\n               ct.place.tile(this, this.x, this.y + 1, -10);\n\n// Move right or left\nif (ct.actions.Move.value > 0) {\n    if (this.hspeed < this.maxspeed) {\n        this.hspeed += this.acceleration * ct.delta;\n    }\n    if ((this.currentFrame > 10 || !this.playing) && onGround) {\n        this.gotoAndPlay(0);\n    }\n} else if (ct.actions.Move.value < 0) {\n    if (this.hspeed > -this.maxspeed) {\n        this.hspeed -= this.acceleration * ct.delta;\n    }\n    if ((this.currentFrame > 10 || !this.playing) && onGround) {\n        this.gotoAndPlay(0);\n    }\n} else { // Slow down if we are on the ground and we don't move.\n    if (onGround) {\n        this.speed = Math.max(0, this.speed - this.maxspeed);\n        this.gotoAndStop(9);\n    }\n}\n\n// Jumping\nif (ct.actions.Jump.down) {\n    // Jump only if we stay on the ground\n    if (onGround) {\n        this.vspeed = -this.jumpPower;\n        this.gotoAndStop(12);\n    }\n}\n\n// If we are not on the ground, add gravity\nif (!onGround) {\n    this.vspeed += this.gravity * ct.delta;\n}\n\n// Move pixel by pixel until we meet a colliding object next to us\n// Math.sign returns -1 if a number is negative, 1 if positive and 0 if it is 0.\nfor (var i = 0; i < Math.abs(this.hspeed); i++) {\n    if (ct.place.free(this, this.x + Math.sign(this.hspeed), this.y, 'Solid') &&\n        !ct.place.tile(this, this.x + Math.sign(this.hspeed), this.y, -10)\n    ) {\n        this.x += Math.sign(this.hspeed);\n    } else {\n        this.hspeed = 0;\n        break;\n    }\n}\n\n// Do the same for vertical speed\nfor (var i = 0; i < Math.abs(this.vspeed); i++) {\n    if (ct.place.free(this, this.x, this.y + Math.sign(this.vspeed), 'Solid') &&\n        !ct.place.tile(this, this.x, this.y + Math.sign(this.vspeed), -10)\n    ) {\n        this.y += Math.sign(this.vspeed);\n    } else {\n        this.vspeed = 0;\n        break;\n    }\n}\n\n// Check if we collide with spikes\nif (ct.place.occupied(this, this.x, this.y, 'Enemy')) {\n    ct.sound.spawn('BodyFall');\n    // move to a 'death' screen\n    ct.rooms.switch('DeadScreen');\n}",
-      "ondraw": "if (this.hspeed < 0) {\n    this.scale.x = -1;\n} else if (this.hspeed > 0) {\n    this.scale.x = 1;\n}\n\nct.room.followShiftX = this.scale.x * 150;",
-      "ondestroy": "",
-      "uid": "00664f77-21c6-4b06-b310-88640b1beaf9",
-      "graph": "ad390b6e-4c2c-412f-8143-1c70b9c16fc0",
-      "lastmod": 1551429765916,
-      "extends": {
-        "ctype": "Player"
-      }
-    },
-    {
-      "name": "Coin",
-      "depth": 0,
-      "oncreate": "",
-      "onstep": "if (ct.place.meet(this, this.x, this.y, 'Player')) {\n    this.kill = true;\n    ct.sound.spawn(ct.random.dice('Coin_01', 'Coin_02', 'Coin_03'));\n    ct.room.coins ++;\n    ct.room.coinsCounter.text = ct.room.coins;\n}",
-      "ondraw": "",
-      "ondestroy": "",
-      "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2",
-      "graph": "62be2903-9782-49fc-b551-ef2e641091c9",
-      "lastmod": 1547470614124,
-      "extends": {}
-    },
-    {
-      "name": "Greed",
-      "depth": 0,
-      "oncreate": "",
-      "onstep": "ct.types.move(this);",
-      "ondraw": "",
-      "ondestroy": "",
-      "uid": "2d29a0d5-d88d-493d-bece-8d52ed476273",
-      "graph": "e90eb23b-547a-4d96-a203-ffe63c00cf9b",
-      "lastmod": 1551429772275,
-      "extends": {}
-    },
-    {
-      "name": "Slime",
-      "depth": 0,
-      "oncreate": "this.speed = 1;\nthis.direction = 180;\n\nthis.animationSpeed = 4 / 60;\nthis.play();",
-      "onstep": "var freeBelow = !ct.place.tile(this, this.x + ct.u.ldx(70, this.dir), this.y + 35, -10) &&\n                ct.place.free(this, this.x + ct.u.ldx(70, this.dir), this.y + 35, 'Solid');\n                \nvar occupiedInFront = ct.place.tile(this, this.x + ct.u.ldx(10, this.dir), this.y, -10) || \n                      ct.place.occupied(this, this.x + ct.u.ldx(10, this.dir), this.y, 'Solid');\n\nif (freeBelow || occupiedInFront) {\n    if (this.direction === 180) {\n        this.direction = 0;\n        this.scale.x = -1;\n    } else {\n        this.direction = 180;\n        this.scale.x = 1;\n    }\n}\n\nct.types.move(this);",
-      "ondraw": "",
-      "ondestroy": "",
-      "uid": "1f91fd7d-2d6c-4542-aead-78b8010b835b",
-      "graph": "703fb5d5-cf20-4450-b760-0b1cd037a5ad",
-      "lastmod": 1551429013431,
-      "extends": {
-        "ctype": "Enemy"
-      }
-    },
-    {
-      "name": "Rich",
-      "depth": 0,
-      "oncreate": "",
-      "onstep": "ct.types.move(this);",
-      "ondraw": "",
-      "ondestroy": "",
-      "uid": "b658efa2-360e-4a62-8640-3e3281156f4e",
-      "graph": "1da28af4-53f1-4958-82b2-a696778f910f",
-      "lastmod": 1543241928025,
-      "extends": {}
-    },
-    {
-      "name": "ToggleFullscreen",
-      "depth": 100,
-      "oncreate": "",
-      "onstep": "if (ct.mouse.pressed) {\n    if (ct.u.prect(ct.mouse.x, ct.mouse.y, this)) {\n        ct.fittoscreen.toggleFullscreen();\n    }\n}",
-      "ondraw": "this.x = ct.viewWidth + ct.room.x - 32;\nthis.y = ct.viewHeight + ct.room.y - 32;\nthis.gotoAndStop(ct.fittoscreen.getIsFullscreen()? 1 : 0);",
-      "ondestroy": "",
-      "uid": "8a4b8de4-7729-4936-bc7b-bc277a512975",
-      "graph": "d161a39a-203e-4099-99e2-41385d94f975",
-      "lastmod": 1547470581588,
-      "extends": {}
-    }
-  ],
-  "sounds": [
-    {
-      "name": "BodyFall",
-      "uid": "64f57367-eae3-40e1-8769-e11bd3c90f62",
-      "origname": "s0.wav",
-      "lastmod": 1522761534690
-    },
-    {
-      "name": "Failure",
-      "uid": "0f16063e-c954-4e7e-8b09-32b844511c9e",
-      "origname": "s1.wav",
-      "lastmod": 1522761553815
-    },
-    {
-      "name": "Victory",
-      "uid": "1d5b2c13-0324-41be-bbd5-e69abfd5bd49",
-      "origname": "s2.wav",
-      "lastmod": 1522761569514
-    },
-    {
-      "name": "Coin_01",
-      "uid": "7ed9f9ad-d9fc-436d-b97f-59aa81348543",
-      "origname": "s3.wav",
-      "lastmod": 1522761582110
-    },
-    {
-      "name": "Coin_02",
-      "uid": "d5d0b307-685d-4ecc-8ffe-e24a063d9f15",
-      "origname": "s4.wav",
-      "lastmod": 1522761594384
-    },
-    {
-      "name": "Coin_03",
-      "uid": "b614ec30-9837-466e-94a5-dda36bdf9daf",
-      "origname": "s5.wav",
-      "lastmod": 1522761606687
-    }
-  ],
-  "styles": [
-    {
-      "name": "CoinText",
-      "shadow": false,
-      "uid": "7879b9dc-6868-4c97-b71e-129d03c77ee1",
-      "origname": "s1",
-      "font": {
-        "family": "sans-serif",
-        "size": 24,
-        "weight": "900",
-        "italic": false,
-        "valign": "middle",
-        "halign": "left",
-        "lineHeight": 24
-      },
-      "fill": {
-        "type": "0",
-        "color": "#FFCC40"
-      },
-      "stroke": {
-        "color": "#CF7500",
-        "weight": 2
-      },
-      "lastmod": 1543637142188
-    },
-    {
-      "name": "OhNo",
-      "uid": "0db56e97-cb4d-43bf-a067-7a7ab9f32099",
-      "origname": "s2",
-      "font": {
-        "family": "sans-serif",
-        "size": 48,
-        "weight": "800",
-        "italic": true,
-        "valign": "middle",
-        "halign": "center"
-      },
-      "fill": {
-        "type": "0",
-        "color": "#257073"
-      },
-      "lastmod": 1543636698269
-    },
-    {
-      "name": "OhNo_Small",
-      "uid": "ad511489-1f25-4d45-bbe8-7f33d08257e4",
-      "origname": "s4",
-      "font": {
-        "family": "sans-serif",
-        "size": 24,
-        "weight": "800",
-        "italic": true,
-        "valign": "middle",
-        "halign": "center"
-      },
-      "fill": {
-        "type": "0",
-        "color": "#257073"
-      },
-      "lastmod": 1543636696741
-    }
-  ],
-  "rooms": [
-    {
-      "name": "InGame",
-      "oncreate": "this.coins = 0;\n\nthis.follow = ct.types.list['Player'][0];\nthis.borderX = 400;\nthis.borderY = 300;\nthis.followDrift = 0.9;\n\nthis.coinsCounter = new PIXI.Text(this.coins, ct.styles.get('CoinText'));\nthis.coinsCounter.depth = 100;\nthis.coinsCounter.x = this.x + ct.viewWidth - 70;\nthis.coinsCounter.y = this.y + 35;\nthis.coinsCounter.anchor.y = 0.5;\nthis.addChild(this.coinsCounter);\n\nthis.coinIcon = new PIXI.Sprite(ct.res.getTexture('coinGold', 0));\nthis.coinIcon.x = this.x + ct.viewWidth - 100;\nthis.coinIcon.y = this.y + 35;\nthis.coinIcon.depth = 100;\nthis.addChild(this.coinIcon);",
-      "onstep": "if (this.coins >= 33) {\n    ct.rooms.switch('RichScreen');\n}",
-      "ondraw": "this.coinsCounter.x = this.x + ct.viewWidth - 70;\nthis.coinsCounter.y = this.y + 35;\n\nthis.coinIcon.x = this.x + ct.viewWidth - 100;\nthis.coinIcon.y = this.y + 35;",
-      "onleave": "",
-      "width": 1024,
-      "height": 700,
-      "backgrounds": [
-        {
-          "depth": "-50",
-          "graph": "fd9d7012-6826-4368-8fe5-0385b72bc902",
-          "extends": {}
-        }
-      ],
-      "uid": "b0f0ff4d-a155-4d68-a86e-5bb7ed8973ab",
-      "grid": 35,
-      "lastmod": 1547471597586,
-      "thumbnail": 1,
-      "tiles": [
-        {
-          "depth": -10,
-          "tiles": [
-            {
-              "x": -140,
-              "y": -70,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                0,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": -70,
-              "y": -70,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 0,
-              "y": -70,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 70,
-              "y": -70,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 140,
-              "y": -70,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 210,
-              "y": -70,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 280,
-              "y": -70,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": -140,
-              "y": 0,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                2,
-                1,
-                1
-              ]
-            },
-            {
-              "x": -140,
-              "y": 70,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                2,
-                1,
-                1
-              ]
-            },
-            {
-              "x": -140,
-              "y": 140,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                2,
-                1,
-                1
-              ]
-            },
-            {
-              "x": -140,
-              "y": 210,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                2,
-                1,
-                1
-              ]
-            },
-            {
-              "x": -140,
-              "y": 280,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                2,
-                1,
-                1
-              ]
-            },
-            {
-              "x": -140,
-              "y": 350,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                2,
-                1,
-                1
-              ]
-            },
-            {
-              "x": -140,
-              "y": 420,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                2,
-                1,
-                1
-              ]
-            },
-            {
-              "x": -140,
-              "y": 490,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                0,
-                2,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 1680,
-              "y": 280,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                2,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 1680,
-              "y": 210,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                2,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 1680,
-              "y": 140,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                2,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 1680,
-              "y": 70,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                2,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 1680,
-              "y": 0,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                2,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 350,
-              "y": -70,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 420,
-              "y": -70,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 490,
-              "y": -70,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 560,
-              "y": -70,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 630,
-              "y": -70,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 700,
-              "y": -70,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 770,
-              "y": -70,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 840,
-              "y": -70,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 910,
-              "y": -70,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 980,
-              "y": -70,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 1050,
-              "y": -70,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 1120,
-              "y": -70,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 1190,
-              "y": -70,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 1260,
-              "y": -70,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 1330,
-              "y": -70,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 1400,
-              "y": -70,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 1470,
-              "y": -70,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 1540,
-              "y": -70,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 1610,
-              "y": -70,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 1680,
-              "y": -70,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                2,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 210,
-              "y": 210,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                0,
-                0,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 350,
-              "y": 210,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                2,
-                0,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 280,
-              "y": 210,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": -70,
-              "y": 490,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 0,
-              "y": 490,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 70,
-              "y": 490,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 140,
-              "y": 490,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 210,
-              "y": 490,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 280,
-              "y": 490,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                2,
-                0,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 560,
-              "y": 490,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                0,
-                0,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 840,
-              "y": 490,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                2,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 630,
-              "y": 490,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 700,
-              "y": 490,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 770,
-              "y": 490,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 840,
-              "y": 560,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                0,
-                2,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 910,
-              "y": 560,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 980,
-              "y": 560,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 1050,
-              "y": 560,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 1120,
-              "y": 560,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 1190,
-              "y": 560,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                2,
-                2,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 0,
-              "y": 560,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                2,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 0,
-              "y": 630,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                2,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 0,
-              "y": 700,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                2,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 0,
-              "y": 770,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                2,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 0,
-              "y": 840,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                0,
-                2,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 70,
-              "y": 840,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 140,
-              "y": 840,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 210,
-              "y": 840,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 280,
-              "y": 840,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 350,
-              "y": 840,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                2,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 350,
-              "y": 910,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                0,
-                2,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 420,
-              "y": 910,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 490,
-              "y": 910,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 560,
-              "y": 910,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                2,
-                2,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 560,
-              "y": 840,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                0,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 630,
-              "y": 840,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 700,
-              "y": 840,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 770,
-              "y": 840,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 840,
-              "y": 840,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                2,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 840,
-              "y": 910,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                0,
-                2,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 1050,
-              "y": 910,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                2,
-                2,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 910,
-              "y": 910,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 980,
-              "y": 910,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 1190,
-              "y": 350,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                3,
-                0,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 1190,
-              "y": 420,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                2,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 1190,
-              "y": 490,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                2,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 1330,
-              "y": 350,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                0,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 1330,
-              "y": 420,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                2,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 1330,
-              "y": 490,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                2,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 1330,
-              "y": 560,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                0,
-                2,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 1400,
-              "y": 560,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                2,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 1400,
-              "y": 630,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                2,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 1400,
-              "y": 700,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                2,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 1400,
-              "y": 770,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                2,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 1400,
-              "y": 840,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                2,
-                2,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 1400,
-              "y": 350,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 1470,
-              "y": 350,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 1540,
-              "y": 350,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 1610,
-              "y": 350,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 1680,
-              "y": 350,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                2,
-                2,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 1120,
-              "y": 840,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 1190,
-              "y": 840,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 1260,
-              "y": 840,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 1330,
-              "y": 840,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                1,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 1050,
-              "y": 840,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                0,
-                1,
-                1,
-                1
-              ]
-            }
-          ]
-        },
-        {
-          "depth": -20,
-          "tiles": [
-            {
-              "x": 70,
-              "y": 420,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                3,
-                2,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 140,
-              "y": 420,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                3,
-                2,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 210,
-              "y": 420,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                3,
-                2,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 945,
-              "y": 490,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                3,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 770,
-              "y": 420,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                2,
-                3,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 735,
-              "y": 420,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                0,
-                3,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 1575,
-              "y": 280,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                0,
-                3,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 1435,
-              "y": 280,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                3,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 1190,
-              "y": 280,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                3,
-                3,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 280,
-              "y": 770,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                3,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 245,
-              "y": 770,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                2,
-                3,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 245,
-              "y": 140,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                1,
-                3,
-                1,
-                1
-              ]
-            },
-            {
-              "x": -70,
-              "y": 420,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                0,
-                3,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 1120,
-              "y": 490,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                0,
-                3,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 1400,
-              "y": 490,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                3,
-                3,
-                1,
-                1
-              ]
-            },
-            {
-              "x": 770,
-              "y": 770,
-              "graph": "9968de05-f39d-4455-aaed-175c03728bb1",
-              "grid": [
-                0,
-                3,
-                1,
-                1
-              ]
-            }
-          ]
-        }
-      ],
-      "gridX": 35,
-      "gridY": 35,
-      "copies": [
-        {
-          "x": 980,
-          "y": 280,
-          "uid": "b7a528f8-655c-4920-900f-f191533f411d"
-        },
-        {
-          "x": 1225,
-          "y": 770,
-          "uid": "036a2de1-89b0-48e3-b26f-d608ce2079fd"
-        },
-        {
-          "x": 1295,
-          "y": 770,
-          "uid": "036a2de1-89b0-48e3-b26f-d608ce2079fd"
-        },
-        {
-          "x": 1470,
-          "y": 280,
-          "uid": "b7a528f8-655c-4920-900f-f191533f411d"
-        },
-        {
-          "x": 350,
-          "y": 490,
-          "uid": "1026c1c8-90e4-4b93-bb6a-568f53918097"
-        },
-        {
-          "x": 420,
-          "y": 490,
-          "uid": "1026c1c8-90e4-4b93-bb6a-568f53918097"
-        },
-        {
-          "x": 490,
-          "y": 490,
-          "uid": "1026c1c8-90e4-4b93-bb6a-568f53918097"
-        },
-        {
-          "x": 420,
-          "y": 840,
-          "uid": "036a2de1-89b0-48e3-b26f-d608ce2079fd"
-        },
-        {
-          "x": 490,
-          "y": 840,
-          "uid": "036a2de1-89b0-48e3-b26f-d608ce2079fd"
-        },
-        {
-          "x": 910,
-          "y": 840,
-          "uid": "036a2de1-89b0-48e3-b26f-d608ce2079fd"
-        },
-        {
-          "x": 980,
-          "y": 840,
-          "uid": "036a2de1-89b0-48e3-b26f-d608ce2079fd"
-        },
-        {
-          "x": 70,
-          "y": 350,
-          "uid": "00664f77-21c6-4b06-b310-88640b1beaf9"
-        },
-        {
-          "x": 385,
-          "y": 140,
-          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-        },
-        {
-          "x": 420,
-          "y": 420,
-          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-        },
-        {
-          "x": 490,
-          "y": 420,
-          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-        },
-        {
-          "x": 1645,
-          "y": 245,
-          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-        },
-        {
-          "x": 1645,
-          "y": 175,
-          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-        },
-        {
-          "x": 1645,
-          "y": 105,
-          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-        },
-        {
-          "x": 1295,
-          "y": 385,
-          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-        },
-        {
-          "x": 1295,
-          "y": 490,
-          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-        },
-        {
-          "x": 1295,
-          "y": 595,
-          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-        },
-        {
-          "x": 1295,
-          "y": 700,
-          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-        },
-        {
-          "x": 1120,
-          "y": 770,
-          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-        },
-        {
-          "x": 980,
-          "y": 700,
-          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-        },
-        {
-          "x": 840,
-          "y": 770,
-          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-        },
-        {
-          "x": 595,
-          "y": 770,
-          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-        },
-        {
-          "x": 490,
-          "y": 700,
-          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-        },
-        {
-          "x": 385,
-          "y": 770,
-          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-        },
-        {
-          "x": 175,
-          "y": 770,
-          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-        },
-        {
-          "x": 140,
-          "y": 735,
-          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-        },
-        {
-          "x": 175,
-          "y": 700,
-          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-        },
-        {
-          "x": 210,
-          "y": 735,
-          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-        },
-        {
-          "x": 175,
-          "y": 735,
-          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-        },
-        {
-          "x": 385,
-          "y": 560,
-          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-        },
-        {
-          "x": 455,
-          "y": 560,
-          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-        },
-        {
-          "x": 525,
-          "y": 560,
-          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-        },
-        {
-          "x": 1645,
-          "y": 35,
-          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-        },
-        {
-          "x": 315,
-          "y": 140,
-          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-        },
-        {
-          "x": 350,
-          "y": 105,
-          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-        },
-        {
-          "x": 700,
-          "y": 840,
-          "uid": "1f91fd7d-2d6c-4542-aead-78b8010b835b"
-        },
-        {
-          "x": 1015,
-          "y": 490,
-          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-        },
-        {
-          "x": 1015,
-          "y": 455,
-          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-        },
-        {
-          "x": 1050,
-          "y": 455,
-          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-        },
-        {
-          "x": 1050,
-          "y": 490,
-          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-        },
-        {
-          "x": 840,
-          "y": 350,
-          "uid": "1026c1c8-90e4-4b93-bb6a-568f53918097"
-        },
-        {
-          "x": 910,
-          "y": 350,
-          "uid": "1026c1c8-90e4-4b93-bb6a-568f53918097"
-        },
-        {
-          "x": 980,
-          "y": 350,
-          "uid": "1026c1c8-90e4-4b93-bb6a-568f53918097"
-        },
-        {
-          "x": 1050,
-          "y": 350,
-          "uid": "1026c1c8-90e4-4b93-bb6a-568f53918097"
-        },
-        {
-          "x": 280,
-          "y": 105,
-          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-        },
-        {
-          "x": 245,
-          "y": 140,
-          "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2"
-        },
-        {
-          "x": 315,
-          "y": 210,
-          "uid": "1f91fd7d-2d6c-4542-aead-78b8010b835b"
-        },
-        {
-          "x": 1120,
-          "y": 560,
-          "uid": "1f91fd7d-2d6c-4542-aead-78b8010b835b"
-        },
-        {
-          "x": -70,
-          "y": 280,
-          "uid": "1026c1c8-90e4-4b93-bb6a-568f53918097"
-        },
-        {
-          "x": 245,
-          "y": 770,
-          "uid": "b7a528f8-655c-4920-900f-f191533f411d"
-        },
-        {
-          "x": 595,
-          "y": 175,
-          "uid": "8a4b8de4-7729-4936-bc7b-bc277a512975"
-        }
-      ]
-    },
-    {
-      "name": "DeadScreen",
-      "oncreate": "ct.sound.spawn('Failure');\n\nthis.wait = 30;\nct.keyboard.clear();\n\nthis.ohNoLabel = new PIXI.Text('Oh no!', ct.styles.get('OhNo'));\nthis.ohNoLabel.x = ct.width / 2;\nthis.ohNoLabel.y = 540;\nthis.ohNoLabel.anchor.x = this.ohNoLabel.anchor.y = 0.5;\nthis.addChild(this.ohNoLabel);\n\nthis.subLabel = new PIXI.Text('You were too greeedy for that game!\\nPress any button to try again.', ct.styles.get('OhNo_Small'));\nthis.subLabel.x = ct.width / 2;\nthis.subLabel.y = 600;\nthis.subLabel.anchor.x = this.subLabel.anchor.y = 0.5;\nthis.addChild(this.subLabel);",
-      "onstep": "this.wait -= ct.delta;\nif (ct.keyboard.lastKey && this.wait < 0) {\n    ct.rooms.switch('InGame');\n}",
-      "ondraw": "",
-      "onleave": "",
-      "width": 1024,
-      "height": 700,
-      "backgrounds": [
-        {
-          "depth": "-10",
-          "graph": "fd9d7012-6826-4368-8fe5-0385b72bc902",
-          "extends": {}
-        }
-      ],
-      "uid": "1ee751d0-24cc-43af-b91d-1a91a9aa48f5",
-      "grid": 64,
-      "lastmod": 1547546306396,
-      "thumbnail": 2,
-      "gridX": 64,
-      "gridY": 64,
-      "tiles": [
-        {
-          "depth": -10,
-          "tiles": []
-        }
-      ],
-      "copies": [
-        {
-          "x": 512,
-          "y": 256,
-          "uid": "2d29a0d5-d88d-493d-bece-8d52ed476273"
-        },
-        {
-          "x": 384,
-          "y": 576,
-          "uid": "8a4b8de4-7729-4936-bc7b-bc277a512975"
-        }
-      ]
-    },
-    {
-      "name": "RichScreen",
-      "oncreate": "ct.sound.spawn('Victory');\n\nct.keyboard.clear();\n\nthis.ohNoLabel = new PIXI.Text('You got them all!', ct.styles.get('OhNo'));\nthis.ohNoLabel.x = ct.width / 2;\nthis.ohNoLabel.y = 540;\nthis.ohNoLabel.anchor.x = this.ohNoLabel.anchor.y = 0.5;\nthis.addChild(this.ohNoLabel);\n\nthis.subLabel = new PIXI.Text('You\\'ve found all the 33 coins. Congrats!\\nThis was a stupid demo of ct.js game engine. Thank you for playing!', ct.styles.get('OhNo_Small'));\nthis.subLabel.x = ct.width / 2;\nthis.subLabel.y = 600;\nthis.subLabel.anchor.x = this.subLabel.anchor.y = 0.5;\nthis.addChild(this.subLabel);",
-      "onstep": "",
-      "ondraw": "",
-      "onleave": "",
-      "width": 1024,
-      "height": 700,
-      "backgrounds": [
-        {
-          "depth": "-10",
-          "graph": "fd9d7012-6826-4368-8fe5-0385b72bc902",
-          "extends": {}
-        }
-      ],
-      "uid": "1a5a64c6-5a4b-4f57-aa99-371ae3c158a3",
-      "grid": 64,
-      "lastmod": 1551429777966,
-      "thumbnail": 2,
-      "gridX": 64,
-      "gridY": 64,
-      "tiles": [
-        {
-          "depth": -10,
-          "tiles": []
-        }
-      ],
-      "copies": [
-        {
-          "x": 512,
-          "y": 256,
-          "uid": "b658efa2-360e-4a62-8640-3e3281156f4e"
-        },
-        {
-          "x": 192,
-          "y": 448,
-          "uid": "8a4b8de4-7729-4936-bc7b-bc277a512975"
-        }
-      ]
-    }
-  ],
-  "graphtick": 15,
-  "soundtick": 6,
-  "roomtick": 3,
-  "typetick": 12,
-  "styletick": 4,
-  "starting": 0,
-  "settings": {
-    "minifyhtmlcss": true,
-    "minifyjs": false,
-    "title": "Catformer",
-    "author": "Cosmo Myzrail Gorynych",
-    "site": "https://ctjs.rocks",
-    "fps": 30,
-    "version": [
-      0,
-      0,
-      0
-    ],
-    "versionPostfix": "",
-    "export": {
-      "windows64": true,
-      "windows32": true,
-      "linux64": true,
-      "linux32": true,
-      "mac64": true,
-      "debug": false
-    }
-  },
-  "palette": [
-    "#257073"
-  ],
-  "startroom": "b0f0ff4d-a155-4d68-a86e-5bb7ed8973ab",
-  "scripts": [],
-  "ctjsVersion": "1.0.0-next-2",
-  "fonts": [],
-  "skeletons": [],
-  "actions": [
-    {
-      "name": "Jump",
-      "methods": [
-        {
-          "code": "keyboard.Space"
-        },
-        {
-          "code": "keyboard.KeyW"
-        },
-        {
-          "code": "keyboard.ArrowUp"
-        }
-      ]
-    },
-    {
-      "name": "Move",
-      "methods": [
-        {
-          "code": "keyboard.ArrowLeft",
-          "multiplier": -1
-        },
-        {
-          "code": "keyboard.ArrowRight"
-        },
-        {
-          "code": "keyboard.KeyA",
-          "multiplier": -1
-        },
-        {
-          "code": "keyboard.KeyD"
-        }
-      ]
-    }
-  ]
+  "texturetick": 15
 }
