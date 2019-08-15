@@ -1,8 +1,9 @@
 'use strict';
 
+/* eslint no-console: 0 */
 const path = require('path'),
       {spawn} = require('child_process'),
-      
+
       gulp = require('gulp'),
       concat = require('gulp-concat'),
       sourcemaps = require('gulp-sourcemaps'),
@@ -13,7 +14,7 @@ const path = require('path'),
       gulpif = require('gulp-if'),
       eslint = require('gulp-eslint'),
       stylint = require('gulp-stylint'),
-      
+
       streamQueue = require('streamqueue'),
       notifier = require('node-notifier'),
       fs = require('fs-extra'),
@@ -74,7 +75,7 @@ const compileStylus = () =>
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('./app/data/'));
 
-const compilePug = () => 
+const compilePug = () =>
     gulp.src('./src/pug/*.pug')
     .pipe(sourcemaps.init())
     .pipe(pug({
@@ -104,6 +105,7 @@ const compileScripts = gulp.series(compileRiot, () =>
     .pipe(gulpif(releasing, sourcemaps.init()))
     .pipe(concat('bundle.js'))
     .pipe(gulpif(releasing, sourcemaps.write()))
+    /* eslint camelcase: 0 */
     .pipe(gulpif(releasing, closureCompiler({
         compilation_level: 'SIMPLE',
         language_in: 'ECMASCRIPT_NEXT',
@@ -174,7 +176,9 @@ const build = gulp.parallel([compilePug, compileStylus, compileScripts]);
 const lintStylus = () => gulp.src(['./src/styl/**/*.styl', '!./src/styl/3rdParty/**/*.styl'])
     .pipe(stylint())
     .pipe(stylint.reporter())
-    .pipe(stylint.reporter('fail'));
+    .pipe(stylint.reporter('fail', {
+        failOnWarning: true
+    }));
 
 const lintJS = () => gulp.src(['./src/js/**/*.js', '!./src/js/3rdparty/**/*.js'])
     .pipe(eslint())

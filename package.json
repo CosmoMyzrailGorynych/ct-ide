@@ -37,6 +37,7 @@
     "pug-lint-config-clock": "^2.0.0",
     "riot": "^3.13.2",
     "streamqueue": "^1.1.2",
+    "stylint-stylish": "^2.0.0",
     "stylus": "^0.54.5"
   }
 }

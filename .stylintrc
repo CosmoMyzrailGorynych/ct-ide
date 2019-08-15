@@ -28,18 +28,13 @@
     "placeholders": false,
     "prefixVarsWithDollar": "never",
     "quotePref": false,
-    "reporterOptions": {
-        "columns": ["lineData", "severity", "description", "rule"],
-        "columnSplitter": "  ",
-        "showHeaders": false,
-        "truncate": true
-    },
+    "reporter": "stylint-stylish",
     "semicolons": "never",
     "sortOrder": false,
     "stackedProperties": "never",
     "trailingWhitespace": "never",
     "universal": false,
-    "valid": true,
+    "valid": false,
     "zeroUnits": "never",
     "zIndexNormalize": false
 }
