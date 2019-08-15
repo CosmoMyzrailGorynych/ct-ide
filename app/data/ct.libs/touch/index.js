@@ -8,7 +8,6 @@
         lastPanY = 0,
         lastScaleDistance = 0,
         lastRotation = 0;
-    var released = [];
     // updates Action system's input methods for singular, double and triple touches
     var countTouches = () => {
         setKey('Any', ct.touch.events.length > 0? 1 : 0);
@@ -85,7 +84,7 @@
         for (let i = 0; i < touches.length; i++) {
             const ind = findTouchId(touches[i].identifier);
             if (ind !== -1) {
-                released.push(ct.touch.events.splice(ind, 1)[0]);
+                ct.touch.released.push(ct.touch.events.splice(ind, 1)[0]);
             }
         }
         countTouches();
@@ -123,6 +122,7 @@
         }
     };
     ct.touch = {
+        released: [],
         setupListeners() {
             document.addEventListener('touchstart', handleStart, false);
             document.addEventListener('touchstart', () => {
@@ -149,10 +149,10 @@
             countTouches();
         },
         clearReleased() {
-            released.length = 0;
+            ct.touch.released.length = 0;
         },
         collide(copy, id, rel) {
-            var set = rel? released : ct.touch.events;
+            var set = rel? ct.touch.released : ct.touch.events;
             if (id !== void 0 && id !== false) {
                 const i = findTouchId(id);
                 if (i === -1) {
@@ -164,7 +164,11 @@
                     shape: {
                         type: set[i].r? 'circle' : 'point',
                         r: set[i].r
-                    }
+                    },
+                    scale: {
+                        x: 1,
+                        y: 1
+                   }
                 });
             }
             for (let i = 0, l = set.length; i < l; i++) {
@@ -174,7 +178,11 @@
                     shape: {
                         type: set[i].r? 'circle' : 'point',
                         r: set[i].r
-                    }
+                    },
+                    scale: {
+                        x: 1,
+                        y: 1
+                   }
                 })) {
                     return true;
                 }
