@@ -1,0 +1,242 @@
+/**********************************/
+/********** BASIC LAYOUT **********/
+/**********************************/
+
+.responsive .inner_column {
+    max-width: initial;
+}
+.responsive .wrapper {
+    padding: 0;
+}
+.columns {
+    margin: 1.5rem 0 0 0;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+    max-width: 100vw;
+}
+.columns .left_col {
+    -webkit-order: 2;
+    order: 2;
+}
+.columns .right_col {
+    -webkit-order: 1;
+    order: 1;
+}
+.columns .right_col, .columns .left_col {
+    display: block;
+    margin: 0;
+    width: auto;
+}
+.view_game_page.buy_on_top .header_buy_row, #download, .buy_row, .uploads > p, .view_game_page .more_information_toggle .toggle_row {
+    text-align: center;
+}
+#view_game_footer {
+   padding: 2rem 1.5rem;
+   margin: 0 auto;
+}
+.header {
+  background: #446adb;
+}
+.right_col.column,
+.formatted_description.user_formatted,
+#devlog,
+.view_game_page .uploads .upload_list_widget,
+.game_community_preview_widget .community_topics,
+.game_community_preview_widget .post_links,
+.inner_column .footer,
+.view_game_page .info_panel_wrapper {
+    width: 960px;
+    max-width: 100%;
+    max-width: 100vw;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    box-sizing: border-box;
+}
+.uploads, .view_game_page #download + .buy_row, #download, .community_summary {
+  background: #446adb;
+  padding: 1rem 0;
+  color: #fff;
+  margin: 0;
+}
+.view_game_page #download + .buy_row .button.buy_btn, .game_community_preview_widget .post_links a.button {
+  background: #fff;
+  color: #446adb;
+  box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.21);
+  text-shadow: none;
+}
+
+/**********************************/
+/********* TEXT & HEADERS *********/
+/**********************************/
+
+.formatted_description.user_formatted p:first-child {
+    margin-top: 1rem;
+    font-size: 125%;
+}
+.inner_column p, .inner_column ol, .inner_column ul {
+   line-height: 1.75em;
+}
+.inner_column h1, .inner_column h2, .inner_column h3, .inner_column h4  {
+   font-weight: 200;
+   padding-bottom: 0;
+   margin-bottom: 1rem;
+   margin-top: 1.5em;
+}
+.inner_column h2 {
+   font-size: 3rem;
+   text-align: center;
+   margin-top: 2rem;
+}
+.inner_column h4 {
+   font-weight: 600;
+}
+.formatted_description.user_formatted table, .formatted_description.user_formatted td  {
+    border: 0;
+    text-align: center;
+}
+.formatted_description.user_formatted table strong {
+    font-weight: 300;
+    color: #5144db;
+    font-size: 1.5rem;
+    line-height: 3rem;
+}
+#download {
+    padding: 2rem 0 0;
+}
+
+/**********************************/
+/****** SCREENSHOTS & DEMOS *******/
+/**********************************/
+
+.view_game_page .screenshot_list, .custom-Demos, .custom-MadeWithCtJs {
+    white-space: initial;
+    text-overflow: ellipsis;
+    overflow: auto;
+    font-size: 0;
+    text-align: center;
+    margin: 0;
+}
+.formatted_description.user_formatted img, .view_game_page .screenshot_list img, .custom-Demos img, .custom-MadeWithCtJs img {
+   border: 0 none;
+   border-radius: 0.35rem;
+}
+.view_game_page .screenshot_list img, .custom-Demos img, .custom-MadeWithCtJs img {
+   opacity: 0.95;
+   transform: scale(0.9);
+   transition: ease 0.35s all;
+   display: inline-block;
+   margin: 0;
+   height: 160px;
+   max-width: initial;
+}
+.custom-Demos img, .custom-MadeWithCtJs img {
+   height: initial;
+}
+.screenshot_list a:hover img, .custom-Demos a:hover img, .custom-MadeWithCtJs a:hover img  {
+   opacity: 1;
+   transform: scale(1);
+}
+
+/**********************************/
+/********* DOWNLOAD & BUY *********/
+/**********************************/
+
+.buy_row .buy_message .sub::before {
+    content: "$0+";
+    margin-right: 0.35rem;
+    font-size: 1.35rem;
+    vertical-align: -1px;
+}
+.view_game_page .buy_row .button_message {
+    flex-flow: column nowrap;
+}
+.view_game_page .buy_row .sub {
+    margin-top: 1rem;
+}
+.view_game_page .buy_row .button {
+    margin-right: 0;
+    font-size: 1.5rem;
+    line-height: 3rem;
+    height: auto;
+    font-weight: 300;
+    padding: 0 1rem;
+    border-radius: 0.35rem;
+}
+
+/**********************************/
+/************ UPLOADS *************/
+/**********************************/
+
+.view_game_page #download + .buy_row {
+    padding-bottom: 0;
+}
+.view_game_page .uploads .upload_list_widget {
+    columns: 2;
+    width: 45rem;
+    max-width: 100%;
+}
+@media (max-width: 650px) {
+    .view_game_page .uploads .upload_list_widget {
+        columns: 1;
+    }
+}
+.upload_list_widget .upload .upload_name .name {
+    display: block;
+    line-height: 2;
+}
+.upload_list_widget .upload .upload_name, .upload_list_widget .upload .build_row {
+    display: inline;
+}
+.upload_list_widget .upload .upload_name > * {
+    margin-left: 0;
+    margin-right: 0.5rem;
+}
+.upload_list_widget .upload .info_column {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.5rem 1rem;
+    border-radius: 0.35rem;
+    text-align: initial;
+}
+.view_game_page .uploads .upload_list_widget {
+  padding-bottom: 1.5rem
+}
+
+
+/**********************************/
+/************ DEVLOG **************/
+/**********************************/
+
+.view_game_page .game_devlog ul li {
+    margin-bottom: 1rem;
+    justify-content: space-between;
+    align-items: first baseline;
+}
+
+/**********************************/
+/************* FORUM **************/
+/**********************************/
+
+.game_community_preview_widget .community_topics, .game_community_preview_widget .community_topics a {
+  color: #fff;
+  text-decoration: none;
+}
+.game_community_preview_widget .community_topic_row .topic_tag {
+  background: #4F44DB;
+  font-weight: 400;
+  font-size: 75%;
+  padding: 0.35rem 0.5rem;
+  border-radius: 0.35rem;
+}
+.game_community_preview_widget .post_links {
+  margin: 1rem auto;
+}
+.game_community_preview_widget h2 {
+  color: #fff;
+}
+.game_community_preview_widget .community_topic_row {
+    padding: 0.25rem 1rem;
+    border-radius: 0.35rem;
+    margin: 0 -1rem 0.75rem;
+}
