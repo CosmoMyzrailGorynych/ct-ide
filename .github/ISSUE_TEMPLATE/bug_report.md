@@ -13,16 +13,19 @@ A clear and concise description of what the bug is.
 **To Reproduce**
 Steps to reproduce the behavior:
 1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
+2. Click on '...'
+3. ...
 4. See error
 
 **Expected behavior**
 A clear and concise description of what you expected to happen.
 
-**Screenshots**
+**Screenshots (recommended)**
 If applicable, add screenshots to help explain your problem.
 
-**Desktop (please complete the following information):**
+**Example project (strongly recommended)**
+Upload a minimal zipped project that showcases the bug.
+
+**Versions:**
  - OS: [e.g. Windows 10]
  - ct.js version [see at the bottom of the starting screen]
