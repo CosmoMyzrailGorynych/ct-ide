@@ -1,0 +1,22 @@
+language: node_js
+
+before_install:
+  - npm i -g gulp-cli
+install:
+  - cd ./app
+  - npm install
+  - cd ./../
+  - npm install
+
+stages:
+  - lint
+  - build
+
+jobs:
+  include:
+    - stage: lint
+      script:
+        - gulp lint
+    - stage: build
+      script:
+        - gulp build
