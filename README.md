@@ -36,20 +36,27 @@ npm install
 cd ./../
 ```
 
-# How to run
+# Running ct.js from sources
 
 ```sh
 gulp
 ```
 
-# Builds and publishing
+# Releasing ct.js
 
 ```sh
-gulp docs # to build docs site and add it to ct.js app
-gulp release # to recompile source files, bundle docs, and to make binaries
-gulp deployOnly # publishes prebuilt binaries to itch.io
-gulp deploy # combines `gulp release` and `gulp deployOnly`
+# Builds docs and adds them to ct.js app
+gulp docs
+# Recompiles source files, bundles docs, and bakes binaries
+gulp release
+
+# Publishes prebuilt binaries to itch.io
+# This assumes that you have an access to ct.js at itch.io :)
+gulp deployOnly
 gulp deployOnly --channel next # deploy to a specific itch.io channel
+
+# Combines `gulp release` and `gulp deployOnly`
+gulp deploy
 ```
 
 The first run will be slow as it will download nw.js binaries. Next runs will use cached files.
