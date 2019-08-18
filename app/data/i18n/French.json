@@ -84,12 +84,7 @@
       "discord": "Communauté Discord"
     },
     "licensepanel": {
-      "tldr": [
-        "Vous possédez vos fichiers, projets, catmods;",
-        "Vous pouvez utilisez l'application à des fins commerciales (et pour d'autres utilisations aussi);",
-        "Ct.js is open-source and can be modified, but your version should be released under the same license;",
-        "Nous ne donnons aucune garanties et ne sommes pas responsable pour tout dommage."
-      ]
+        "ctjslicense": "Ct.js License (MIT)"
     },
     "menu": {
       "ctIDE": "ct.IDE",
