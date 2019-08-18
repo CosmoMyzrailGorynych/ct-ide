@@ -79,15 +79,16 @@
         'this.vspeed',
         'this.move()'
     ];
-    var prepareCompletions = array => array.map(function(word) {
+    var prepareCompletions = (array, meta) => array.map(function(word) {
         return {
             caption: word,
-            value: word
+            value: word,
+            meta
         };
     });
     var jsCompleter = {
         getCompletions(editor, session, pos, prefix, callback) {
-            callback(null, prepareCompletions(ctjsCoreCompletions));
+            callback(null, prepareCompletions(ctjsCoreCompletions, 'core'));
         }
     };
 
@@ -139,7 +140,7 @@
     };
 
     /**
-     * Монтирует редактор Ace на указанный тег
+     * Mounts an Ace editor on the passed tag.
      *
      * @global
      * @param {HTMLTextareaElement|HTMLDivElement} tag Тег, куда монтируется редактор. Может быть целевым полем ввода textarea или обёрткой для автоматически создаваемой textarea.
@@ -148,6 +149,9 @@
      * @returns {AceEditor} Editor instance
      */
     window.setupAceEditor = (tag, options) => {
+        /* global ace */
+        const langTools = ace.require('ace/ext/language_tools');
+
         options = options || defaultOptions;
         var aceEditor = window.ace.edit(tag);
         extendHotkeys(aceEditor);
@@ -157,12 +161,12 @@
         aceEditor.session = aceEditor.getSession();
         tag.style.fontSize = localStorage.fontSize + 'px';
         aceEditor.session.setMode('ace/mode/' + options.mode || defaultOptions.mode);
-        aceEditor.completers = [jsCompleter];
         aceEditor.setOptions({
             enableBasicAutocompletion: true,
             enableSnippets: false,
             enableLiveAutocompletion: true
         });
+        aceEditor.completers = [langTools.textCompleter, jsCompleter];
         return aceEditor;
     };
 })(this);
