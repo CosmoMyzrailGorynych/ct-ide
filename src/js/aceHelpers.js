@@ -3,6 +3,7 @@
         'ct.pixiApp',
         'ct.libs',
         'ct.speed',
+        'ct.delta',
         'ct.stack',
         'ct.types',
         'ct.types.Copy()',
