@@ -1,8 +1,6 @@
-**Warning: this module is unfinished and is not well-tested.**
+This module allows you to create on-screen buttons and joysticks that will trigger actions you assign to them.
 
-This module allows you to create on-screen buttons that will trigger actions you assign to them. Currently, virtual joysticks are not supported.
-
-Example:
+**Example of a virtual button:**
 
 ```js
 var keyUp = ct.vkeys.button({
@@ -17,3 +15,18 @@ var keyUp = ct.vkeys.button({
 ```
 
 This will create a button in the bottom-left corner of the screen that will be binded to `vkeys.Vk1` input method. Textures will change on hover and press (you should add actual textures for that).
+
+**Example of a virtual joystick:**
+
+```js
+ct.vkeys.joystick({
+    key: 'Vjoy1',
+    tex: 'TrackPad',
+    trackballTex: 'TrackBall',
+    depth: 100,
+    x: 128,
+    y: ct.viewHeight - 128
+});
+```
+
+This joystick will be binded to input methods `vkeys.Vjoy1X` and `vkeys.Vjoy1Y`.

@@ -8,7 +8,7 @@ Options include:
 * `texNormal` — the texture for a normal button state.
 * `texHover` — the texture for a hover state. If not provided, it will use `texNormal` instead.
 * `texActive` — the texture for a pressed state. If not provided, it will use `texNormal` instead.
-* `x` and `y` — number that position a button in the room. If a function is provided, it will update each frame.
+* `x` and `y` — number that position a button in the room. If a function is provided, it will update the position every frame.
 * `depth` — the depth value.
 
 Example of a button that self-aligns in the viewport:
@@ -21,5 +21,29 @@ var keyLeft = ct.vkeys.button({
     x: () => ct.room.x + ct.viewWidth - 130,
     y: () => ct.room.y + ct.viewHeight - 130,
     depth: 14000
+});
+```
+
+## `ct.vkeys.joystick(options)`
+
+Creates a new joystick, adds it to the current viewport, and returns it as a Copy.
+
+Options include:
+
+* `key` — the key to bind to. Should be a code from `Vjoy1` to `Vjoy4`.
+* `tex` — the texture for the trackpad. Its collision shape is used to calculate joystick's values and to position the trackball.
+* `trackballTex` — the texture for the trackball.
+* `x` and `y` — number that position a button in the room. If a function is provided, it will update the position every frame.
+* `depth` — the depth value.
+
+Example of a joystick that self-aligns in the viewport:
+
+```js
+ct.vkeys.joystick({
+    tex: 'TrackPad',
+    trackballTex: 'TrackBall',
+    depth: 14000,
+    x: () => ct.room.x + 212,
+    y: () => ct.room.y + ct.viewHeight - 212
 });
 ```

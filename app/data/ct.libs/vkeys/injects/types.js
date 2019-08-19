@@ -1,44 +1,115 @@
-ct.types.templates.VKEY = {
-    onStep: function () {
-        var down = false,
-            hover = false;
-        if (ct.mouse) {
-            if (ct.mouse.hovers(this)) {
-                hover = true;
-                if (ct.mouse.down) {
-                    down = true;
+(function () {
+    /* global PIXI */
+    ct.types.templates.VKEY = {
+        onStep: function () {
+            var down = false,
+                hover = false;
+            if (ct.mouse) {
+                if (ct.mouse.hovers(this)) {
+                    hover = true;
+                    if (ct.mouse.down) {
+                        down = true;
+                    }
                 }
             }
-        }
-        if (ct.touch) {
-            for (const touch of ct.touch.events) {
-                if (ct.touch.collide(this, touch.id)) {
-                    down = hover = true;
-                    break;
+            if (ct.touch) {
+                for (const touch of ct.touch.events) {
+                    if (ct.touch.collide(this, touch.id)) {
+                        down = hover = true;
+                        break;
+                    }
                 }
             }
-        }
 
-        if (down) {
-            this.tex = this.opts.texActive || this.opts.texNormal;
-            ct.inputs.registry['vkeys.' + this.opts.key] = 1;
-        } else {
-            ct.inputs.registry['vkeys.' + this.opts.key] = 0;
-            if (hover) {
-                this.tex = this.opts.texHover || this.opts.texNormal;
+            if (down) {
+                this.tex = this.opts.texActive || this.opts.texNormal;
+                ct.inputs.registry['vkeys.' + this.opts.key] = 1;
             } else {
-                this.tex = this.opts.texNormal;
+                ct.inputs.registry['vkeys.' + this.opts.key] = 0;
+                if (hover) {
+                    this.tex = this.opts.texHover || this.opts.texNormal;
+                } else {
+                    this.tex = this.opts.texNormal;
+                }
             }
+        },
+        onDraw: function () {
+            this.x = (typeof this.opts.x === 'function')? this.opts.x() : this.opts.x;
+            this.y = (typeof this.opts.y === 'function')? this.opts.y() : this.opts.y;
+        },
+        onDestroy: function () {void 0;},
+        onCreate: function () {
+            this.tex = this.opts.texNormal;
+            this.depth = this.opts.depth;
         }
-    },
-    onDraw: function () {
-        this.x = (typeof this.opts.x === 'function')? this.opts.x() : this.opts.x;
-        this.y = (typeof this.opts.y === 'function')? this.opts.y() : this.opts.y;
-    },
-    onDestroy: function () {void 0;},
-    onCreate: function () {
-        this.tex = this.opts.texNormal;
-        this.depth = this.opts.depth;
-    }
-};
+    };
 
+    ct.types.templates.VJOYSTICK = {
+        onCreate: function () {
+            this.tex = this.opts.tex;
+            this.depth = this.opts.depth;
+            this.down = false;
+            this.trackball = new PIXI.Sprite(ct.res.getTexture(this.opts.trackballTex, 0));
+            this.addChild(this.trackball);
+        },
+        onStep: function () {
+            var dx = 0,
+                dy = 0;
+            if (ct.mouse) {
+                if (ct.mouse.hovers(this)) {
+                    if (ct.mouse.down) {
+                        this.down = true;
+                    }
+                }
+                if (ct.mouse.released) {
+                    this.down = false;
+                }
+                if (this.down) {
+                    dx = ct.mouse.x - this.x;
+                    dy = ct.mouse.y - this.y;
+                }
+            }
+            if (ct.touch) {
+                if (!this.touchId) {
+                    for (const touch of ct.touch.events) {
+                        if (ct.touch.collide(this, touch.id)) {
+                            this.down = true;
+                            this.touchId = touch.id;
+                            break;
+                        }
+                    }
+                }
+                var touch = ct.touch.getById(this.touchId);
+                if (touch) {
+                    dx = touch.x - this.x;
+                    dy = touch.y - this.y;
+                } else {
+                    this.touchId = false;
+                    this.down = false;
+                }
+            }
+            var r = this.shape.r || this.shape.right || 64;
+            if (this.down) {
+                dx /= r;
+                dy /= r;
+                var length = Math.hypot(dx, dy);
+                if (length > 1) {
+                    dx /= length;
+                    dy /= length;
+                }
+                ct.inputs.registry['vkeys.' + this.opts.key + 'X'] = dx;
+                ct.inputs.registry['vkeys.' + this.opts.key + 'Y'] = dy;
+            } else {
+                ct.inputs.registry['vkeys.' + this.opts.key + 'X'] = 0;
+                ct.inputs.registry['vkeys.' + this.opts.key + 'Y'] = 0;
+            }
+            this.trackball.x = dx * r;
+            this.trackball.y = dy * r;
+        },
+        onDraw: function () {
+            this.x = (typeof this.opts.x === 'function')? this.opts.x() : this.opts.x;
+            this.y = (typeof this.opts.y === 'function')? this.opts.y() : this.opts.y;
+        },
+        onDestroy: function () {void 0;}
+    };
+})();

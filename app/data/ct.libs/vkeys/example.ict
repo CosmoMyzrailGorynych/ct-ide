@@ -1,0 +1,341 @@
+{
+  "ctjsVersion": "1.0.0-next-3",
+  "notes": "/* empty */",
+  "libs": {
+    "fittoscreen": {
+      "mode": "scaleFit"
+    },
+    "akatemplate": {
+      "csscss": "body {\n    background: #000;\n}"
+    },
+    "vkeys": {},
+    "touch": {
+      "mousetouch": true
+    },
+    "place": {}
+  },
+  "textures": [
+    {
+      "name": "Trackball_Active",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        60,
+        60
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 121,
+      "imgHeight": 121,
+      "width": 121,
+      "height": 121,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i85dd4cbb-1213-4656-8cfa-2ff088fb8d8f.png",
+      "source": "/home/comigo/UNWORK/ctjs/JamGames/SpaceMiniJam/img/i3a8be87a-9345-4983-9570-3123e427d9c8.png",
+      "shape": "circle",
+      "left": 0,
+      "right": 121,
+      "top": 0,
+      "bottom": 121,
+      "uid": "85dd4cbb-1213-4656-8cfa-2ff088fb8d8f",
+      "r": 40,
+      "lastmod": 1566187658382
+    },
+    {
+      "name": "BG",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        0,
+        0
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 1024,
+      "imgHeight": 1024,
+      "width": 1024,
+      "height": 1024,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i1b52b74c-7342-412c-b1aa-728a403b7f6c.png",
+      "source": "/home/comigo/UNWORK/ctjs/JamGames/SpaceMiniJam/img/i0b7ca1f6-1156-4e54-b26f-0214697bf6ad.png",
+      "shape": "rect",
+      "left": 0,
+      "right": 1024,
+      "top": 0,
+      "bottom": 1024,
+      "uid": "1b52b74c-7342-412c-b1aa-728a403b7f6c",
+      "lastmod": 1566172691897
+    },
+    {
+      "name": "Laser",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        186,
+        18
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 373,
+      "imgHeight": 36,
+      "width": 373,
+      "height": 36,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i4cba6d6f-1d37-4a3a-bbd4-917f99c45220.png",
+      "source": "/home/comigo/UNWORK/ctjs/JamGames/SpaceMiniJam/img/i017c4d4b-6c1d-43cb-a942-9bd8e391ae69.png",
+      "shape": "rect",
+      "left": 186,
+      "right": 187,
+      "top": 18,
+      "bottom": 18,
+      "uid": "4cba6d6f-1d37-4a3a-bbd4-917f99c45220",
+      "r": 18,
+      "lastmod": 1566172945377
+    },
+    {
+      "name": "ShootKey",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        86,
+        86
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 172,
+      "imgHeight": 172,
+      "width": 172,
+      "height": 172,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i6ac1c03e-839d-4007-84aa-22bece53f0fe.png",
+      "source": "/home/comigo/UNWORK/ctjs/JamGames/SpaceMiniJam/img/i33b79275-6274-475a-8323-682d8ae24aaf.png",
+      "shape": "rect",
+      "left": 64,
+      "right": 64,
+      "top": 64,
+      "bottom": 64,
+      "uid": "6ac1c03e-839d-4007-84aa-22bece53f0fe",
+      "lastmod": 1566187660280
+    },
+    {
+      "name": "SpaceShip",
+      "untill": 0,
+      "grid": [
+        1,
+        2
+      ],
+      "axis": [
+        256,
+        168
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 513,
+      "imgHeight": 674,
+      "width": 513,
+      "height": 337,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i5ba33a86-8a84-441f-9471-4f578009a199.png",
+      "source": "/home/comigo/UNWORK/ctjs/JamGames/SpaceMiniJam/img/i207fe165-ec87-45a9-869e-9bb8a0fde46d.png",
+      "shape": "rect",
+      "left": 256,
+      "right": 257,
+      "top": 168,
+      "bottom": 169,
+      "uid": "5ba33a86-8a84-441f-9471-4f578009a199",
+      "lastmod": 1566172762960
+    },
+    {
+      "name": "ShootKey_Active",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        86,
+        86
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 172,
+      "imgHeight": 172,
+      "width": 172,
+      "height": 172,
+      "offx": 0,
+      "offy": 0,
+      "origname": "icef574f9-7eea-4e5f-97b1-7926bf386f9a.png",
+      "source": "/home/comigo/UNWORK/key1.png",
+      "shape": "rect",
+      "left": 64,
+      "right": 64,
+      "top": 64,
+      "bottom": 64,
+      "uid": "cef574f9-7eea-4e5f-97b1-7926bf386f9a",
+      "lastmod": 1566187667812
+    },
+    {
+      "name": "Trackpad",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        128,
+        128
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 256,
+      "imgHeight": 256,
+      "width": 256,
+      "height": 256,
+      "offx": 0,
+      "offy": 0,
+      "origname": "ibd0d117d-4b6f-400c-9af8-7767a427ed93.png",
+      "source": "/home/comigo/UNWORK/key2.png",
+      "shape": "circle",
+      "left": 0,
+      "right": 256,
+      "top": 0,
+      "bottom": 256,
+      "uid": "bd0d117d-4b6f-400c-9af8-7767a427ed93",
+      "r": 128,
+      "lastmod": 1566187656615
+    }
+  ],
+  "types": [
+    {
+      "name": "Spaceship",
+      "depth": 10,
+      "oncreate": "this.maxSpeed = 10;\n\nct.vkeys.button({\n    key: 'Vk1',\n    texNormal: 'ShootKey',\n    texHover: 'ShootKey',\n    texActive: 'ShootKey_Active',\n    x: () => ct.room.x + ct.viewWidth - 130,\n    y: () => ct.room.y + ct.viewHeight - 130,\n    depth: 100\n});\nct.vkeys.joystick({\n    tex: 'Trackpad',\n    trackballTex: 'Trackball_Active',\n    depth: 100,\n    x: () => ct.room.x + 212,\n    y: () => ct.room.y + ct.viewHeight - 212\n});",
+      "onstep": "this.hspeed = ct.actions.MoveX.value * this.maxSpeed;\nthis.vspeed = ct.actions.MoveY.value * this.maxSpeed;\n\nif (this.speed > 0) {\n    this.rotation = ct.u.pdn(0, 0, this.hspeed, this.vspeed);\n    this.gotoAndStop(0);\n} else {\n    this.gotoAndStop(1);\n}\n\nthis.move();\n\nif (ct.actions.Shoot.pressed) {\n    var laser = ct.types.copy('Laser', this.x, this.y);\n    laser.direction = this.rotation;\n    laser.rotation = this.rotation;\n}",
+      "ondraw": "",
+      "ondestroy": "",
+      "uid": "664e9c6d-d93e-4c6f-bd74-43a234fced2f",
+      "texture": "5ba33a86-8a84-441f-9471-4f578009a199",
+      "extends": {},
+      "lastmod": 1566187997448
+    },
+    {
+      "name": "Laser",
+      "depth": 0,
+      "oncreate": "this.speed = 20;\nthis.blendMode =  PIXI.BLEND_MODES.ADD;\nct.u.wait(1000)\n.then(() => this.kill = true);",
+      "onstep": "this.move();",
+      "ondraw": "",
+      "ondestroy": "",
+      "uid": "ea8cc9ab-fffa-42b0-9644-194af0ba25db",
+      "texture": "4cba6d6f-1d37-4a3a-bbd4-917f99c45220",
+      "extends": {},
+      "lastmod": 1566188168017
+    }
+  ],
+  "sounds": [],
+  "styles": [],
+  "rooms": [
+    {
+      "name": "Room",
+      "oncreate": "",
+      "onstep": "",
+      "ondraw": "",
+      "onleave": "",
+      "width": 1920,
+      "height": 1080,
+      "backgrounds": [
+        {
+          "depth": -100,
+          "texture": "1b52b74c-7342-412c-b1aa-728a403b7f6c",
+          "extends": {
+            "parallaxX": 1,
+            "parallaxY": 1
+          }
+        }
+      ],
+      "copies": [
+        {
+          "x": 896,
+          "y": 576,
+          "uid": "664e9c6d-d93e-4c6f-bd74-43a234fced2f"
+        }
+      ],
+      "tiles": [
+        {
+          "depth": -10,
+          "tiles": []
+        }
+      ],
+      "uid": "c0344eeb-df47-4364-a0e7-327605a96468",
+      "thumbnail": "327605a96468",
+      "gridX": 64,
+      "gridY": 64
+    }
+  ],
+  "starting": 0,
+  "settings": {
+    "minifyhtmlcss": false,
+    "minifyjs": false,
+    "fps": 30,
+    "version": [
+      0,
+      0,
+      0
+    ],
+    "versionPostfix": "",
+    "export": {
+      "windows64": true,
+      "windows32": true,
+      "linux64": true,
+      "linux32": true,
+      "mac64": true,
+      "debug": false
+    },
+    "highDensity": false
+  },
+  "skeletons": [],
+  "actions": [
+    {
+      "name": "MoveX",
+      "methods": [
+        {
+          "code": "vkeys.Vjoy1X"
+        }
+      ]
+    },
+    {
+      "name": "MoveY",
+      "methods": [
+        {
+          "code": "vkeys.Vjoy1Y"
+        }
+      ]
+    },
+    {
+      "name": "Shoot",
+      "methods": [
+        {
+          "code": "vkeys.Vk1"
+        }
+      ]
+    }
+  ],
+  "scripts": [],
+  "fonts": []
+}

@@ -19,6 +19,14 @@
         "Vk9": "Virtual key 9",
         "Vk10": "Virtual key 10",
         "Vk11": "Virtual key 11",
-        "Vk12": "Virtual key 12"
+        "Vk12": "Virtual key 12",
+        "Vjoy1X": "1st virtual joystick, X axis",
+        "Vjoy1Y": "1st virtual joystick, Y axis",
+        "Vjoy2X": "2nd virtual joystick, X axis",
+        "Vjoy2Y": "2nd virtual joystick, Y axis",
+        "Vjoy3X": "3rd virtual joystick, X axis",
+        "Vjoy3Y": "3rd virtual joystick, Y axis",
+        "Vjoy4X": "4th virtual joystick, X axis",
+        "Vjoy4Y": "4th virtual joystick, Y axis"
     }
 }
