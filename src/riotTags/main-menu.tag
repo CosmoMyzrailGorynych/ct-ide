@@ -165,6 +165,7 @@ main-menu.flexcol
                     newWin.once('loaded', e => {
                         newWin.title = 'ct.IDE Debugger';
                         const win = newWin.window;
+                        newWin.leaveFullscreen();
                         newWin.maximize();
                         var game = win.document.getElementById('thePreview');
                         game.src = `http://localhost:${server.address().port}/`;
