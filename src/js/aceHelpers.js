@@ -139,6 +139,33 @@
         mode: 'plain_text'
     };
 
+    var highlightBracketsOverride = function(Range) {
+        var {session} = this;
+        if (!session || !session.bgTokenizer) { return; }
+        if (session.$bracketHighlight) { // Remove highlighting and set vars undefined
+            session.$bracketHighlight = session.removeMarker(session.$bracketHighlight);
+            session.$bracketHighlightMatch = session.removeMarker(session.$bracketHighlightMatch);
+        }
+        var cursorPos = this.getCursorPosition();
+        cursorPos.column += 1; // Look for right-side bracket first
+        var matchPos = session.findMatchingBracket(cursorPos);
+        var matchRange;
+        if (matchPos) {
+            matchRange = new Range(matchPos.row, matchPos.column, matchPos.row, matchPos.column + 1);
+        } else { // No right-side bracket, check left
+            cursorPos.column -= 1;
+            matchPos = session.findMatchingBracket(cursorPos);
+            if (matchPos) {
+                matchRange = new Range(matchPos.row, matchPos.column, matchPos.row, matchPos.column + 1);
+            }
+        }
+        if (matchRange) {
+            var cursorRange = new Range(cursorPos.row, cursorPos.column - 1, cursorPos.row, cursorPos.column);
+            session.$bracketHighlight = session.addMarker(cursorRange, 'ace_bracket', 'text');
+            session.$bracketHighlightMatch = session.addMarker(matchRange, 'ace_bracket', 'text');
+        }
+    };
+
     /**
      * Mounts an Ace editor on the passed tag.
      *
@@ -167,6 +194,8 @@
             enableLiveAutocompletion: true
         });
         aceEditor.completers = [langTools.textCompleter, jsCompleter];
+        var {Range} = window.ace.define.modules['ace/range']; // Needed for highlight override
+        aceEditor.$highlightBrackets = highlightBracketsOverride.bind(aceEditor, Range);
         return aceEditor;
     };
 })(this);
