@@ -26,7 +26,7 @@ textarea
     padding 0.1em 0.8em
     background white
     border 1px solid bl
-    if (theme == 'Night')
+    if (themeDark)
         border 1px solid bd
     border-radius br
     font inherit
@@ -57,7 +57,7 @@ input[type="reset"],
     font-weight 400
     border-radius br
     background white
-    if (theme == 'Night')
+    if (themeDark)
         background transparent
     display inline-block
     cursor pointer
@@ -67,13 +67,13 @@ input[type="reset"],
         background acttext
         color white
         {transshort}
-        if (theme == 'Night')
+        if (themeDark)
             color black
-        if (theme == 'Day')
+        if (!themeDark)
             border-color accent1
         i
             color white
-        if (theme == 'Night')
+        if (themeDark)
             color black
             i
                 color black
@@ -84,7 +84,7 @@ input[type="reset"],
         color white
         i
             color white
-        if (theme == 'Night')
+        if (themeDark)
             color black
             i
                 color black
@@ -130,7 +130,7 @@ siz = 4em
     background -webkit-linear-gradient(top, white 0, bl 100%)
     box-shadow 0 0 0.2em snow inset
     border 1px solid bd
-    if (theme == 'Night')
+    if (themeDark)
         border-color act
     text-align center
     position relative
@@ -176,7 +176,7 @@ siz = 4em
             content " "
             background success
     &.off
-        if (theme == 'Night')
+        if (themeDark)
             border-color error
         span
             display none

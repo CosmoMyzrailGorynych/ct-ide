@@ -166,13 +166,20 @@
         }
     };
 
+    const themeMappings = {
+        Day: 'tomorrow',
+        Night: 'ambiance',
+        default: 'tomorrow'
+    };
+    window.glob = window.glob || {};
+    window.glob.aceThemeMappings = themeMappings;
     /**
      * Mounts an Ace editor on the passed tag.
      *
      * @global
-     * @param {HTMLTextareaElement|HTMLDivElement} tag Тег, куда монтируется редактор. Может быть целевым полем ввода textarea или обёрткой для автоматически создаваемой textarea.
-     * @param {Object} [options] Опции
-     * @param {String} [options.mode='plain_text'] Режим поля ввода. Определяет подсветку синтаксиса и проверки кода на валидность. Может быть 'plain_text', 'markdown', 'javascript', 'html' или 'css'
+     * @param {HTMLTextareaElement|HTMLDivElement} tag A tag where an editor should be placed. It can be a textarea or any other block.
+     * @param {Object} [options] Options
+     * @param {String} [options.mode='plain_text'] Language mode. Sets syntacs highlighting and enables language checks, if relevant. Can be 'plain_text', 'markdown', 'javascript', 'html' or 'css'
      * @returns {AceEditor} Editor instance
      */
     window.setupAceEditor = (tag, options) => {
@@ -182,7 +189,7 @@
         options = options || defaultOptions;
         var aceEditor = window.ace.edit(tag);
         extendHotkeys(aceEditor);
-        aceEditor.setTheme('ace/theme/' + (localStorage.UItheme === 'Night'? 'ambiance': 'tomorrow'));
+        aceEditor.setTheme('ace/theme/' + (localStorage.UItheme in themeMappings? themeMappings[localStorage.UItheme] : themeMappings.default));
         tag.aceEditor = aceEditor;
         aceEditor.tag = tag;
         aceEditor.session = aceEditor.getSession();

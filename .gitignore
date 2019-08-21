@@ -42,8 +42,7 @@ app/data/bundle.css
 app/index.html
 app/preview.html
 app/empty.html
-app/data/themeDay.css
-app/data/themeNight.css
+app/data/theme*.css
 app/temp
 app/exportDesktop
 /temp

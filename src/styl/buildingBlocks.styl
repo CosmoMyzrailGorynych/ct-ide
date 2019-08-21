@@ -16,10 +16,10 @@
 .modal, .panel
     box-sizing border-box
     background white
-    if (theme == 'Night')
+    if (themeDark)
         background bl
     border 1px solid bl
-    if (theme == 'Night')
+    if (themeDark)
         border 1px solid bd
     border-radius br
     position relative
@@ -40,7 +40,7 @@
 .view
     overflow auto
     background snow
-    if (theme == 'Night')
+    if (themeDark)
         background white
     position absolute
     left 0
@@ -62,7 +62,7 @@
         padding 0.2em 0.8em
         margin 0
         border-bottom 1px solid bl
-        if theme == 'Night'
+        if (themeDark)
             border-bottom 1px solid bd
 
 
@@ -90,7 +90,7 @@
 // панели управления
 .nav
     background white
-    if (theme == 'Night')
+    if (themeDark)
         background bl
     border-radius br
     border-top 1px solid bd
@@ -111,7 +111,7 @@
         display inline-block
         {trans}
         box-shadow 0 0 white inset
-        if (theme == 'Night')
+        if (themeDark)
             background bl
         &:hover, &.active
             {transshort}

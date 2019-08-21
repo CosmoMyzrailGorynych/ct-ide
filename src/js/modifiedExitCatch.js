@@ -2,11 +2,12 @@
     var gui = require('nw.gui');
     var win = gui.Window.get();
     var modified = false;
-    window.glob = {
-        get modified () {
+    window.glob = window.glob || {};
+    Object.defineProperty(window.glob, 'modified', {
+        get() {
             return modified;
         },
-        set modified (v) {
+        set(v) {
             if (v) {
                 window.title = 'ctjs — ' + sessionStorage.projname + ' •';
             } else {
@@ -15,7 +16,7 @@
             modified = v;
             return modified;
         }
-    };
+    });
 
     win.on('close', function () {
         /* nw.js Requires synchronous calls here */
