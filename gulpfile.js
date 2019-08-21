@@ -102,9 +102,9 @@ const compileScripts = gulp.series(compileRiot, () =>
         gulp.src('./src/js/**'),
         gulp.src('./temp/riot.js')
     )
-    .pipe(gulpif(releasing, sourcemaps.init()))
+    .pipe(sourcemaps.init())
     .pipe(concat('bundle.js'))
-    .pipe(gulpif(releasing, sourcemaps.write()))
+    .pipe(sourcemaps.write())
     /* eslint camelcase: 0 */
     .pipe(gulpif(releasing, closureCompiler({
         compilation_level: 'SIMPLE',
@@ -120,7 +120,7 @@ const compileScripts = gulp.series(compileRiot, () =>
     .pipe(gulp.dest('./app/data/'))
     .on('error', err => {
         notifier.notify({
-            title: 'Ошибка скриптов',
+            title: 'Scripts error',
             message: err.toString(),
             icon: path.join(__dirname, 'error.png'),
             sound: true,
