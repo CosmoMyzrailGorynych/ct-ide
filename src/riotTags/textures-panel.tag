@@ -2,7 +2,7 @@ textures-panel.panel.view
     .flexfix.tall
         div
             .toright
-                b {vocGlob.sort}   
+                b {vocGlob.sort}
                 button.inline.square(onclick="{switchSort('date')}" class="{selected: sort === 'date' && !searchResults}")
                     i.icon-clock
                 button.inline.square(onclick="{switchSort('name')}" class="{selected: sort === 'name' && !searchResults}")
@@ -11,8 +11,8 @@ textures-panel.panel.view
                     input.inline(type="text" onkeyup="{fuseSearch}")
             .toleft
                 label.file.flexfix-header
-                    input(type="file" multiple 
-                        accept=".png,.jpg,.jpeg,.bmp,.gif,.json" 
+                    input(type="file" multiple
+                        accept=".png,.jpg,.jpeg,.bmp,.gif,.json"
                         onchange="{textureImport}")
                     .button
                         i.icon.icon-import
@@ -31,7 +31,7 @@ textures-panel.panel.view
                 )
                     span {texture.name}
                     img(src="file://{sessionStorage.projdir + '/img/' + texture.origname + '_prev.png?' + texture.lastmod}")
-            h2 
+            h2
                 span {voc.skeletons}
                 docs-shortcut(path="/skeletal-animation.html")
             ul.cards
@@ -44,23 +44,23 @@ textures-panel.panel.view
                 )
                     span {skeleton.name}
                     img(src="file://{sessionStorage.projdir + '/img/' + skeleton.origname + '_prev.png?' + skeleton.lastmod}")
-                
+
                 label.file.flexfix-header
-                    input(type="file" multiple 
-                        accept=".json" 
+                    input(type="file" multiple
+                        accept=".json"
                         onchange="{textureImport}")
                     .button
                         i.icon.icon-import
                         span {voc.import}
-        
+
     .aDropzone(if="{dropping}")
         .middleinner
             i.icon-import
             h2 {languageJSON.common.fastimport}
-            input(type="file" multiple 
-                accept=".png,.jpg,.jpeg,.bmp,.gif,.json" 
+            input(type="file" multiple
+                accept=".png,.jpg,.jpeg,.bmp,.gif,.json"
                 onchange="{textureImport}")
-    
+
     texture-editor(if="{editing}" texture="{currentTexture}")
     script.
         const fs = require('fs-extra'),
@@ -169,7 +169,7 @@ textures-panel.panel.view
         });
 
         /**
-         * Событие добавления файлов через проводник
+         * An event fired when user attempts to add files from a file manager (by clicking an "Import" button)
          */
         this.textureImport = e => { // input[type="file"]
             var i;
@@ -197,11 +197,11 @@ textures-panel.panel.view
             e.preventDefault();
         };
         /**
-         * Делает попытку загрузить изображение, добавить в проект и сделать его миниатюру
-         * @param {Number} uid Счётчик. Должно быть уникально для каждого загружаемого изображения
-         * @param {String} filename Путь к исходному изображению
-         * @param {String} dest Папка, в которую нужно поместить изображение и миниатюру
-         * @param {Boolean} imprt Если истинно, то создаёт новую графику в проекте; иначе обновляет текущую открытую графику
+         * Tries to load an image, then adds it to the projects and creates a thumbnail
+         * @param {Number} uid Counter/identifier. Should be unique for all loaded images
+         * @param {String} filename A path to the source image
+         * @param {String} dest A path to a folder in which to put the image and its thumbnails
+         * @param {Boolean} imprt If set to true, creates a texture object in the current project; otherwise updates the existing texture.
          */
         this.loadImg = (uid, filename, dest, imprt) => {
             window.megacopy(filename, dest, e => {
@@ -267,17 +267,17 @@ textures-panel.panel.view
             });
         };
         /**
-         * Генерирует квадратную превьюху из исходного изображения
-         * @param {String} source Путь к исходному изображению
-         * @param {String} destFile Путь к создаваемой превью
-         * @param {Number} size Размер стороны квадрата в пикселах
-         * @returns {Promise} Промис по завершению создания превью. При успехе передаёт data-url полученного превью
+         * Generates a square preview for a given skeleton
+         * @param {String} source Path to the image
+         * @param {String} destFile Path to the destinating image
+         * @param {Number} size Size of the square thumbnail, in pixels
+         * @returns {Promise} Resolves after creating a thumbnail. On success, passes data-url of the created thumbnail.
          */
         this.imgGenPreview = (source, destFile, size) => {
             var thumbnail = document.createElement('img');
             return new Promise((accept, reject) => {
                 thumbnail.onload = () => {
-                    var c = document.createElement('canvas'), 
+                    var c = document.createElement('canvas'),
                     w, h, k;
                     c.x = c.getContext('2d');
                     c.width = c.height = size;
@@ -316,11 +316,11 @@ textures-panel.panel.view
             });
         };
         /**
-         * Генерирует квадратную превьюху из исходного изображения
-         * @param {String} source Путь к исходному _ske.json файлу
-         * @param {String} destFile Путь к создаваемой превью
-         * @param {Number} size Размер стороны квадрата в пикселах
-         * @returns {Promise} Промис по завершению создания превью. При успехе передаёт data-url полученного превью
+         *  Generates a square preview for a given skeleton
+         * @param {String} source Path to the source _ske.json file
+         * @param {String} destFile Path to the destinating image
+         * @param {Number} size Size of the square thumbnail, in pixels
+         * @returns {Promise} Resolves after creating a thumbnail. On success, passes data-url of the created thumbnail.
          */
         this.skelGenPreview = (source, destFile, size) => {
             const loader = new PIXI.loaders.Loader(),
@@ -351,8 +351,8 @@ textures-panel.panel.view
                 });
             });
         };
-        
-        // Создание контекстного меню, появляющегося при жмаке на карточку
+
+        // Creates a context menu that will appear on RMB click on texture cards
         var textureMenu = new gui.Menu();
         textureMenu.append(new gui.MenuItem({
             label: languageJSON.common.open,
@@ -365,7 +365,6 @@ textures-panel.panel.view
                 this.update();
             }
         }));
-        // Пункт "Скопировать название"
         textureMenu.append(new gui.MenuItem({
             label: languageJSON.common.copyName,
             click: e => {
@@ -373,7 +372,6 @@ textures-panel.panel.view
                 clipboard.set(this.currentTexture.name, 'text');
             }
         }));
-        // пункт "Переименовать"
         textureMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.rename,
             click: e => {
@@ -392,7 +390,6 @@ textures-panel.panel.view
         textureMenu.append(new gui.MenuItem({
             type: 'separator'
         }));
-        // Пункт "Удалить"
         textureMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.delete,
             click: e => {
@@ -421,7 +418,7 @@ textures-panel.panel.view
                                                 i++;
                                             }
                                         }
-                                    } 
+                                    }
                                 }
                                 if ('backgrounds' in room) {
                                     let i = 0;
@@ -446,7 +443,7 @@ textures-panel.panel.view
             }
         }));
         /**
-         * Отобразить контекстное меню
+         * Shows the context menu created above
          */
         this.showTexturePopup = (texture, isSkeleton) => e => {
             this.currentTextureType = isSkeleton? 'skeleton' : 'texture';
@@ -455,13 +452,13 @@ textures-panel.panel.view
             } else {
                 this.currentTextureId = currentProject.textures.indexOf(texture);
             }
-            this.currentTexture = texture; 
+            this.currentTexture = texture;
             textureMenu.popup(e.clientX, e.clientY);
             e.preventDefault();
         };
-        
+
         /**
-         * Открывает редактор для указанного объекта графики
+         * Opens an editor for the given texture
          */
         this.openTexture = texture => e => {
             this.currentTexture = texture;
@@ -473,7 +470,7 @@ textures-panel.panel.view
         };
 
         /*
-         * Дополнения для drag-n-drop
+         * drag-n-drop handling
          */
         var dragTimer;
         this.onDragOver = e => {
