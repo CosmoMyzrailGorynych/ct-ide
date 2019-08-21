@@ -1,0 +1,102 @@
+@charset "utf-8"
+
+// The minimum width of ct.js = 380px
+
+/* handy blocks */
+trans =
+    transition 0.35s ease all
+transshort =
+    transition 0.15s ease all
+shad =
+    box-shadow 0 0.1rem 0.2rem rgba(0, 0, 0, 0.5)
+shadamb =
+    box-shadow 0 0 0.35rem rgba(0, 0, 0, 0.5)
+
+/* Fonts */
+fonts = font = 'Open Sans', sans-serif, serif
+font-mono = mono = Consolas, monospace
+
+br = 0.2rem
+iconsize = 1.5rem
+
+/* Basic colors & accents */
+black = #fff
+white = #1C1E26
+act = #E9436D
+acttext = act
+accent1 = #E9436D
+accent2 = #E95378
+error = #E95678
+red = error
+success = #29D398
+green = success
+warning = #FAB795
+orange = warning
+blue = #26BBD9
+cyan = #59E1E3
+
+theme = 'Horizon'
+themeDark = true
+
+.error
+    color error
+.success
+    color success
+.warning
+    color warning
+
+bl = #252732
+bd = #2F3038
+
+text = #D5D8DA
+snow = mix(white, bl, 50%)
+
+/* Animations */
+@keyframes rotate
+    100%
+        transform rotate(360deg)
+@keyframes fadeOut
+    from
+        opacity 1
+        visibility visible
+    to
+        opacity 0
+        visibility hidden
+.fadeout
+    animation forwards 0.5s linear fadeOut
+
+@require 'hvost.styl'
+
+@require '3rdParty/*.styl'
+
+@require 'common.styl'
+@require 'inputs.styl'
+@require 'typography.styl'
+@require 'buildingBlocks.styl'
+@require 'tabs.styl'
+
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+.button,
+.selectbox
+    border-width 2px
+
+.view
+    background white
+
+.tabbed, .nav
+    border 0
+.nav li
+    border-right 0
+    border-left 0
+    &:hover, &.active
+        color black
+
+#moduleinfo .bigpower:not(.off)
+    border-color success
+    &:after
+        background success
+
+@require 'tags/*.styl'

@@ -287,6 +287,12 @@ main-menu.flexcol
                 this.switchTheme('Night');
             }
         }));
+        themeSubmenu.append(new gui.MenuItem({
+            label: window.languageJSON.menu.themeHorizon || 'Horizon',
+            click: () => {
+                this.switchTheme('Horizon');
+            }
+        }));
         catMenu.append(new gui.MenuItem({
             label: window.languageJSON.menu.theme,
             submenu: themeSubmenu

@@ -169,6 +169,7 @@
     const themeMappings = {
         Day: 'tomorrow',
         Night: 'ambiance',
+        Horizon: 'horizon',
         default: 'tomorrow'
     };
     window.glob = window.glob || {};
