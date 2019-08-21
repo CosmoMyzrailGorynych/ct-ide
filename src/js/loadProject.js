@@ -1,190 +1,111 @@
 (function (window) {
+    window.migrationProcess = window.migrationProcess || [];
+    window.applyMigrationCode = function (version) {
+        const process = window.migrationProcess.find(process => process.version === version);
+        if (!process) {
+            throw new Error(`Cannot find migration code for version ${version}`);
+        }
+        process.process(window.currentProject)
+        .then(() => window.alertify.success(`Applied migration code for version ${version}`, 'success', 3000));
+    };
+
     /* global nw */
     const fs = require('fs-extra'),
           path = require('path');
 
-    var adapter03x = project => {
-        /* replace numerical IDs with RFC4122 version 4 UIDs */
-        let startingRoom;
-        const graphmap = {},
-              typemap = {};
-        for (var graph of project.graphs) {
-            graph.uid = window.generateGUID();
-            graphmap[graph.origname] = graph.uid;
-        }
-        for (var sound of project.sounds) {
-            sound.uid = window.generateGUID();
-        }
-        for (var style of project.styles) {
-            style.uid = window.generateGUID();
-            if (style.fill && Number(style.fill.type) === 2) {
-                /* eslint no-loop-func: off */
-                style.fill.pattern = project.graphs.find(gr => gr.name === style.fill.patname).uid;
-            }
-        }
-        for (var type of project.types) {
-            const oldId = type.uid;
-            type.uid = window.generateGUID();
-            typemap[oldId] = type.uid;
-            type.graph = graphmap[type.graph] || -1;
-        }
-        for (var room of project.rooms) {
-            const oldId = room.uid; 
-            room.thumbnail = room.uid;
-            room.uid = window.generateGUID();
-            if (project.startroom === oldId) {
-                startingRoom = room.uid;
-            }
-            if (room.layers && room.layers.length) {
-                for (var layer of room.layers) {
-                    for (var i = 0, l = layer.copies.length; i < l; i++) {
-                        layer.copies[i].uid = typemap[layer.copies[i].uid];
-                    }
-                }
-            }
-            if (room.backgrounds && room.backgrounds.length) {
-                for (const bg of room.backgrounds) {
-                    bg.graph = graphmap[bg.graph];
-                }
-            }
-        }
-        if (!startingRoom) {
-            startingRoom = project.rooms[0].uid;
-        }
-        project.startroom = startingRoom;
-        return project;
-    };
-    const adapter10x = project => {
-        for (const room of project.rooms) {
-            if ('layers' in room) {
-                room.copies = [];
-                for (const layer of room.layers) {
-                    room.copies.push(...layer.copies);
-                }
-                delete room.layers;
-            }
-        }
-        for (const type of project.types) {
-            if (!('extends' in type)) {
-                type.extends = {};
-            }
-        }
-        if (!('skeletons' in project)) {
-            project.skeletons = [];
-        }
-        if (!('actions' in project)) {
-            project.actions = [];
-            if ('keyboard' in project.libs) {
-                delete project.libs.keyboard;
-                project.libs['keyboard.legacy'] = {};
-            }
-            project.libs['mouse.legacy'] = {};
-        }
-        if (!('textures' in project)) {
-            project.textures = project.graphs;
-            project.texturetick = project.graphtick;
-            delete project.graphs;
-            delete project.graphtick;
-            for (const type of project.types) {
-                type.texture = type.graph;
-                delete type.graph;
-            }
-            for (const room of project.rooms) {
-                if (room.backgrounds) {
-                    for (const bg of room.backgrounds) {
-                        bg.texture = bg.graph;
-                        delete bg.graph;
-                    }
-                }
-                if (room.tiles) {
-                    for (const layer of room.tiles) {
-                        // eslint-disable-next-line max-depth
-                        for (const tile of layer.tiles) {
-                            tile.texture = tile.graph;
-                            delete tile.graph;
+
+    var adapter = async project => {
+
+        // execute all the migration
+        var version = (project.ctjsVersion || '0.2.0').replace('-next-', '.');
+
+        const migrationToExecute = window.migrationProcess
+            .sort((m1, m2) => {
+                    const m1Version = m1.version.replace('-next-', '.').split('.');
+                    const m2Version = m2.version.replace('-next-', '.').split('.');
+
+                    for (let i = 0; i < m1Version.length; i++) {
+                        if (m1Version[i] < m2Version[i]) {
+                            return -1;
+                        } else if (m1Version[i] > m2Version[i]) {
+                            return 1;
                         }
                     }
+
+                    return 0;
+            })
+            .filter((migration) => {
+                const migrationVersion = migration.version.replace('-next-', '.').split('.');
+                const currentVersion = version.split('.');
+
+                for (let i = 0; i < migrationVersion.length; i++) {
+                    if (migrationVersion[i] < currentVersion[i]) {
+                        return false;
+                    } else if (migrationVersion[i] > currentVersion[i]) {
+                        return true;
+                    }
                 }
-            }
+
+                return true;
+            });
+
+        for (const migration of migrationToExecute) {
+            // eslint-disable-next-line no-console
+            console.debug('Migrating project to version ' + migration.version);
+            // We do need to apply updates in a sequence
+            // eslint-disable-next-line no-await-in-loop
+            await migration.process(project);
         }
-    };
-    
-    var adapter = project => {
-        var version = project.ctjsVersion || '0.2.0';
-        version = version.split('.').map(string => Number(string));
-        if (version[0] < 1) {
-            if (version[1] < 3) {
-                project = adapter03x(project);
-            }
-            const ps = project.settings || {};
-            if (version[1] < 5) {
-                // Модуль ct.place теперь с конфигами
-                if ('place' in project.libs) {
-                    project.libs.place.gridX = project.libs.place.gridY = 512;
-                }
-            }
-            if (version[1] < 5 || (version[0] > 5 && !ps.version)) {
-                // Появилась настройка версии
-                ps.version = [0, 0, 0];
-                ps.versionPostfix = '';
-                // Появились настройки экспорта
-                ps.export = {
-                    windows64: true,
-                    windows32: true,
-                    linux64: true,
-                    linux32: true,
-                    mac64: true,
-                    debug: false
-                };
-            }
-        }
-        if (version[0] < 2) {
-            if (version[0] === 1 && version[1] < 1 || version[0] < 1) {
-                adapter10x(project);
-            }
-        }
+
         project.ctjsVersion = nw.App.manifest.version;
     };
 
     /**
      * Opens the project and refreshes the whole app.
-     * 
+     *
      * @param {Object} projectData Loaded JSON file, in js object form
      * @returns {void}
      */
-    var loadProject = projectData => {
+    var loadProject = async projectData => {
         window.currentProject = projectData;
-        adapter(projectData);
+        window.alertify.log(window.languageJSON.intro.loadingProject);
 
-        fs.ensureDir(sessionStorage.projdir);
-        fs.ensureDir(sessionStorage.projdir + '/img');
-        fs.ensureDir(sessionStorage.projdir + '/snd');
+        try {
+            await adapter(projectData);
+            fs.ensureDir(sessionStorage.projdir);
+            fs.ensureDir(sessionStorage.projdir + '/img');
+            fs.ensureDir(sessionStorage.projdir + '/snd');
 
-        const lastProjects = localStorage.lastProjects? localStorage.lastProjects.split(';') : [];
-        if (lastProjects.indexOf(path.normalize(sessionStorage.projdir + '.ict')) !== -1) {
-            lastProjects.splice(lastProjects.indexOf(path.normalize(sessionStorage.projdir + '.ict')), 1);
+            const lastProjects = localStorage.lastProjects? localStorage.lastProjects.split(';') : [];
+            if (lastProjects.indexOf(path.normalize(sessionStorage.projdir + '.ict')) !== -1) {
+                lastProjects.splice(lastProjects.indexOf(path.normalize(sessionStorage.projdir + '.ict')), 1);
+            }
+            lastProjects.unshift(path.normalize(sessionStorage.projdir + '.ict'));
+            if (lastProjects.length > 15) {
+                lastProjects.pop();
+            }
+            localStorage.lastProjects = lastProjects.join(';');
+            window.glob.modified = false;
+            window.signals.trigger('hideProjectSelector');
+            window.signals.trigger('projectLoaded');
+
+            if (window.currentProject.settings.title) {
+                document.title = window.currentProject.settings.title + ' — ct.js';
+            }
+
+            setTimeout(() => {
+                window.riot.update();
+            }, 0);
+        } catch (err) {
+            window.alertify.alert(window.languageJSON.intro.loadingProjectError + err);
         }
-        lastProjects.unshift(path.normalize(sessionStorage.projdir + '.ict'));
-        if (lastProjects.length > 15) {
-            lastProjects.pop();
-        }
-        localStorage.lastProjects = lastProjects.join(';');
-        window.glob.modified = false;
-        window.signals.trigger('hideProjectSelector');
-        window.signals.trigger('projectLoaded');
 
-        if (window.currentProject.settings.title) {
-            document.title = window.currentProject.settings.title + ' — ct.js';
-        }
 
-        setTimeout(() => {
-            window.riot.update();
-        }, 0);
     };
 
     /**
      * Checks file format and loads it
-     * 
+     *
      * @param {String} proj The path to the file.
      * @returns {void}
      */
@@ -210,7 +131,7 @@
     window.loadProject = proj => {
         sessionStorage.projname = path.basename(proj);
         sessionStorage.projdir = path.dirname(proj) + path.sep + path.basename(proj, '.ict');
-                
+
         fs.stat(proj + '.recovery', (err, stat) => {
             if (!err && stat.isFile()) {
                 var targetStat = fs.statSync(proj),
