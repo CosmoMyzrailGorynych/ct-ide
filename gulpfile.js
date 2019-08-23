@@ -11,7 +11,6 @@ const path = require('path'),
       stylus = require('gulp-stylus'),
       riot = require('gulp-riot'),
       pug = require('gulp-pug'),
-      gulpif = require('gulp-if'),
       eslint = require('gulp-eslint'),
       stylint = require('gulp-stylint'),
 
@@ -27,9 +26,6 @@ const nwVersion = '0.34.1',
 
 var channelPostfix = argv.channel || false;
 
-const closureCompiler = require('google-closure-compiler-js').gulp();
-
-var releasing = false;
 
 const makeErrorObj = (title, err) => ({
     title,
@@ -99,27 +95,12 @@ const compileRiot = () =>
 
 const compileScripts = gulp.series(compileRiot, () =>
     streamQueue({objectMode: true},
-        gulp.src(['src/js/3rdparty/ace/ace.js']),
-        gulp.src(['src/js/3rdparty/ace/**', '!src/js/3rdparty/ace/ace.js']),
-        gulp.src(['src/js/3rdparty/**', '!src/js/3rdparty/ace/**']),
-        gulp.src(['src/js/**', '!src/js/3rdparty/**']),
-        gulp.src('temp/riot.js')
+        gulp.src('./src/js/**'),
+        gulp.src('./temp/riot.js')
     )
     .pipe(sourcemaps.init())
     .pipe(concat('bundle.js'))
     .pipe(sourcemaps.write())
-    /* eslint camelcase: 0 */
-    .pipe(gulpif(releasing, closureCompiler({
-        compilation_level: 'SIMPLE',
-        language_in: 'ECMASCRIPT_NEXT',
-        language_out: 'ECMASCRIPT5',
-        js_output_file: 'bundle.js',
-        output_wrapper: '(function(){\n%output%\n}).call(this)',
-        warning_level: 'QUIET'
-        //error_format: 'JSON'
-    }, {
-        platform: ['native', 'java', 'javascript']
-    })))
     .pipe(gulp.dest('./app/data/'))
     .on('error', err => {
         notifier.notify({
@@ -205,17 +186,14 @@ const launchNw = () => {
 
 const docs = done => {
     fs.remove('./app/data/docs/')
-    .then(() => spawnise('npm', ['run', 'build'], {
+    .then(() => spawnise((/^win/).test(process.platform) ? 'npm.cmd' : 'npm', ['run', 'build'], {
         cwd: './docs'
     }))
     .then(() => fs.copy('./docs/docs/.vuepress/dist', './app/data/docs/'))
     .then(done);
 };
 
-const release = gulp.series([done => {
-    releasing = true;
-    done();
-}, build, lint, docs, done => {
+const release = gulp.series([build, lint, docs, done => {
     var nw = new NwBuilder({
         files: nwFiles,
         platforms: ['osx64', 'win32', 'win64', 'linux32', 'linux64'],

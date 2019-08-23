@@ -1,13 +1,13 @@
 {
-  "parserOptions": {
-    "ecmaVersion": 2018
-  },
   "env": {
     "browser": true,
     "commonjs": true,
     "es6": true,
     "node": true,
     "jquery": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 2018
   },
   "extends": "eslint:recommended",
   "rules": {
@@ -166,7 +166,7 @@
     "no-param-reassign": "off",
     "no-path-concat": "error",
     "no-plusplus": "off",
-    "no-process-env": "error",
+    "no-process-env": "warn",
     "no-process-exit": "error",
     "no-proto": "error",
     "no-prototype-builtins": "error",
@@ -231,6 +231,7 @@
       "single"
     ],
     "radix": "error",
+    "require-atomic-updates": "error",
     "require-await": "error",
     "require-jsdoc": "off",
     "rest-spread-spacing": "error",

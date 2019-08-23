@@ -56,7 +56,10 @@
             // eslint-disable-next-line no-await-in-loop
             await migration.process(project);
         }
-
+        // Unfortunately, recent versions of eslint give false positives on this line
+        // @see https://github.com/eslint/eslint/issues/11900
+        // @see https://github.com/eslint/eslint/issues/11899
+        // eslint-disable-next-line require-atomic-updates
         project.ctjsVersion = nw.App.manifest.version;
     };
 
@@ -69,6 +72,7 @@
     var loadProject = async projectData => {
         window.currentProject = projectData;
         window.alertify.log(window.languageJSON.intro.loadingProject);
+        window.glob.modified = false;
 
         try {
             await adapter(projectData);
@@ -85,7 +89,6 @@
                 lastProjects.pop();
             }
             localStorage.lastProjects = lastProjects.join(';');
-            window.glob.modified = false;
             window.signals.trigger('hideProjectSelector');
             window.signals.trigger('projectLoaded');
 

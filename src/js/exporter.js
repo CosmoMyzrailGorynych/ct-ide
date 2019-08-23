@@ -1,13 +1,12 @@
-(window => {
+(function (window) {
     'use strict';
 
     const fs = require('fs-extra'),
           path = require('path');
     const basePath = './data/';
 
-    const exec = path.dirname(process.execPath).replace(/\\/g,'/');
-
     var ctlibs;
+    let writeDir;
 
     var parseKeys = function(data, str, lib) {
         var str2 = str;
@@ -186,11 +185,11 @@
                     atlasJSON.animations[g.name] = keys;
                 }
             }
-            fs.outputJSONSync(`${exec}/export/img/a${binInd}.json`, atlasJSON);
+            fs.outputJSONSync(`${writeDir}/img/a${binInd}.json`, atlasJSON);
             res += `\n.add('./img/a${binInd}.json')`;
             var data = atlas.toDataURL().replace(/^data:image\/\w+;base64,/, '');
             var buf = new Buffer(data, 'base64');
-            fs.writeFileSync(`${exec}/export/img/a${binInd}.png`, buf);
+            fs.writeFileSync(`${writeDir}/img/a${binInd}.png`, buf);
         });
         for (let i = 0, l = tiledImages.length; i < l; i++) {
             const atlas = document.createElement('canvas'),
@@ -201,7 +200,7 @@
             atlas.height = g.height;
             atlas.x.drawImage(img, 0, 0);
             var buf = new Buffer(atlas.toDataURL().replace(/^data:image\/\w+;base64,/, ''), 'base64');
-            fs.writeFileSync(`${exec}/export/img/t${i}.png`, buf);
+            fs.writeFileSync(`${writeDir}/img/t${i}.png`, buf);
             registry[g.name] = {
                 atlas: `./img/t${i}.png`,
                 frames: 0,
@@ -235,9 +234,9 @@
         }
         for (const skeleton of window.currentProject.skeletons) {
             const slice = skeleton.origname.replace('_ske.json', '');
-            fs.copySync(`${sessionStorage.projdir}/img/${slice}_ske.json`, `${exec}/export/img/${slice}_ske.json`);
-            fs.copySync(`${sessionStorage.projdir}/img/${slice}_tex.json`, `${exec}/export/img/${slice}_tex.json`);
-            fs.copySync(`${sessionStorage.projdir}/img/${slice}_tex.png`, `${exec}/export/img/${slice}_tex.png`);
+            fs.copySync(`${sessionStorage.projdir}/img/${slice}_ske.json`, `${writeDir}/img/${slice}_ske.json`);
+            fs.copySync(`${sessionStorage.projdir}/img/${slice}_tex.json`, `${writeDir}/img/${slice}_tex.json`);
+            fs.copySync(`${sessionStorage.projdir}/img/${slice}_tex.png`, `${writeDir}/img/${slice}_tex.png`);
 
             data.loaderScript += `.add('${slice}_ske.json', './img/${slice}_ske.json')`;
             data.loaderScript += `.add('${slice}_tex.json', './img/${slice}_tex.json')`;
@@ -256,7 +255,7 @@
         }
         data.loaderScript += ';';
         if (data.requiresDB) {
-            fs.copyFileSync(basePath + 'ct.release/DragonBones.min.js', exec + '/export/DragonBones.min.js');
+            fs.copyFileSync(basePath + 'ct.release/DragonBones.min.js', writeDir + '/DragonBones.min.js');
         }
         data.registry = JSON.stringify(data.registry);
         return data;
@@ -364,14 +363,14 @@ ct.rooms.templates['${r.name}'] = {
         var css = '',
             js = '';
         if (window.currentProject.fonts) {
-            fs.ensureDirSync(exec + '/export/fonts');
+            fs.ensureDirSync(writeDir + '/fonts');
             const ttf2woff = require('ttf2woff');
             for (const font of window.currentProject.fonts) {
-                fs.copySync(`${sessionStorage.projdir}/fonts/${font.origname}` , exec + '/export/fonts/' + font.origname);
+                fs.copySync(`${sessionStorage.projdir}/fonts/${font.origname}` , writeDir + '/fonts/' + font.origname);
                 const fontData = fs.readFileSync(`${sessionStorage.projdir}/fonts/${font.origname}`);
                 var ttf = new Uint8Array(fontData);
                 var woff = new Buffer(ttf2woff(ttf).buffer);
-                fs.writeFileSync(exec + '/export/fonts/' + font.origname + '.woff', woff);
+                fs.writeFileSync(writeDir + '/fonts/' + font.origname + '.woff', woff);
                 css += `
 @font-face {
     font-family: '${font.typefaceName}';
@@ -389,266 +388,266 @@ ct.rooms.templates['${r.name}'] = {
         };
     };
 
-    window.runCtProject = () => new Promise((resolve) => {
-        // glob.compileAudio = 0;
-        if (window.currentProject.rooms.length < 1) {
-            window.alertify.error(window.languageJSON.common.norooms);
-            return;
-        }
-        document.body.style.cursor = 'wait';
-
-        ctlibs = {
-            CORE: {
-                name: 'ct.js Game Framework',
-                info: 'A game made with ct.js game framework and ct.IDE. Create your 2D games for free!',
-                authors: [{
-                    name: 'Cosmo Myzrail Gorynych',
-                    site: 'https://ctjs.rocks/'
-                }]
+    const makeWritableDir = async () => {
+        writeDir = path.join(await window.getWritableDir(), 'export');
+    };
+    window.runCtProject = async () => {
+        await makeWritableDir();
+        return new Promise(resolve => {
+            // glob.compileAudio = 0;
+            if (window.currentProject.rooms.length < 1) {
+                window.alertify.error(window.languageJSON.common.norooms);
+                return;
             }
-        };
-        fs.removeSync(exec + '/export/');
-        fs.ensureDirSync(exec + '/export/');
-        fs.ensureDirSync(exec + '/export/img/');
-        fs.ensureDirSync(exec + '/export/snd/');
-        var css = fs.readFileSync(basePath + 'ct.release/ct.css', {
-                'encoding': 'utf8'
-            }),
-            html = fs.readFileSync(basePath + 'ct.release/index.html', {
-                'encoding': 'utf8'
-            });
-        var injects = {
-            load: '',
-            start: '',
-            'switch': '',
+            document.body.style.cursor = 'wait';
 
-            oncreate: '',
-            ondestroy: '',
-
-            beforedraw: '',
-            beforestep: '',
-            afterdraw: '',
-            afterstep: '',
-
-            roomoncreate: '',
-            roomonleave: '',
-            afterroomdraw: '',
-            beforeroomdraw: '',
-            beforeroomstep: '',
-            afterroomstep: '',
-
-            css: '',
-            res: '',
-            resload: '',
-            types: '',
-            styles: '',
-            htmltop: '',
-            htmlbottom: ''
-        };
-
-        /* инъекции */
-        injectModules(injects);
-        // console.log(injects);
-
-        /* Pixi.js */
-        fs.copyFileSync(basePath + 'ct.release/pixi.min.js', exec + '/export/pixi.min.js');
-
-        /* главный котэ */
-        var [startroom] = window.currentProject.rooms;
-        for (let i = 0; i < window.currentProject.rooms.length; i++) {
-            if (window.currentProject.rooms[i].uid === window.currentProject.startroom) {
-                startroom = window.currentProject.rooms[i];
-                break;
-            }
-        }
-        /* global nw */
-        var buffer = fs.readFileSync(basePath + 'ct.release/main.js', {
-            'encoding': 'utf8'
-        })
-        .replace(/\/\*@startwidth@\*\//g, startroom.width)
-        .replace(/\/\*@startheight@\*\//g, startroom.height)
-        .replace(/\/\*@pixelatedrender@\*\//g, Boolean(window.currentProject.settings.pixelatedrender))
-        .replace(/\/\*@maxfps@\*\//g, Number(window.currentProject.settings.maxFPS))
-        .replace(/\/\*@libs@\*\//g, JSON.stringify(ctlibs, null, '    '))
-        .replace(/\/\*@ctversion@\*\//g, nw.App.manifest.version)
-        .replace(/\/\*@projectmeta@\*\//g, JSON.stringify({
-            name: window.currentProject.settings.title,
-            author: window.currentProject.settings.author,
-            site: window.currentProject.settings.site,
-            version: window.currentProject.settings.version.join('.') + window.currentProject.settings.versionPostfix
-        }));
-
-        buffer += '\n';
-
-        var actionsSetup = '';
-        for (const action of window.currentProject.actions) {
-            actionsSetup += `ct.inputs.addAction('${action.name}', ${JSON.stringify(action.methods)});\n`;
-        }
-        buffer += fs.readFileSync(basePath + 'ct.release/inputs.js', {
-            'encoding': 'utf8'
-        }).replace('/*@actions@*/', actionsSetup);
-
-        buffer += '\n';
-
-        buffer = addModules(buffer);
-
-        /* User-defined scripts */
-        for (const script of window.currentProject.scripts) {
-            buffer += script.code + ';\n';
-        }
-
-        /* комнатный котэ */
-        var roomsCode = stringifyRooms();
-
-        buffer += fs.readFileSync(basePath + 'ct.release/rooms.js', {
-            'encoding': 'utf8'
-        })
-        .replace('@startroom@', startroom.name)
-        .replace('/*@rooms@*/', roomsCode)
-        .replace('/*%switch%*/', injects.switch)
-        .replace('/*%roomoncreate%*/', injects.roomoncreate)
-        .replace('/*%roomonleave%*/', injects.roomonleave);
-        buffer += '\n';
-
-        /* стильный котэ */
-        var styles = stringifyStyles();
-        buffer += fs.readFileSync(basePath + 'ct.release/styles.js', {
-            'encoding': 'utf8'
-        })
-        .replace('/*@styles@*/', styles)
-        .replace('/*%styles%*/', injects.styles);
-        buffer += '\n';
-
-        /* ресурсный котэ */
-        var textures = packImages();
-        var skeletons = packSkeletons();
-
-        buffer += fs.readFileSync(basePath + 'ct.release/res.js', {
-            'encoding': 'utf8'
-        })
-        .replace('/*@sndtotal@*/', window.currentProject.sounds.length)
-        .replace('/*@res@*/', textures.res + '\n' + skeletons.loaderScript)
-        .replace('/*@textureregistry@*/', textures.registry)
-        .replace('/*@skeletonregistry@*/', skeletons.registry)
-        .replace('/*%resload%*/', injects.resload + '\n' + skeletons.startScript)
-        .replace('/*%res%*/', injects.res);
-        buffer += '\n';
-
-        /* типичный котэ */
-        var types = '';
-        for (const k in window.currentProject.types) {
-            var type = window.currentProject.types[k];
-            types += 'ct.types.templates["' + type.name + '"] = {\n';
-            types += '    depth:' + type.depth + ',\n';
-
-            if (type.texture !== -1) {
-                types += '    texture: "' + window.glob.texturemap[type.texture].g.name + '",\n';
-            }
-            types += '    onStep: function () {\n' + type.onstep + '\n    },\n';
-            types += '    onDraw: function () {\n' + type.ondraw + '\n    },\n';
-            types += '    onDestroy: function () {\n' + type.ondestroy + '\n    },\n';
-            types += '    onCreate: function () {\n' + type.oncreate + '\n    },\n';
-            types += '    extends: ' + JSON.stringify(type.extends || {});
-            types += '};\n';
-            types += `ct.types.list['${type.name}'] = [];\n`;
-        }
-        buffer += fs.readFileSync(basePath + 'ct.release/types.js', {
-            'encoding': 'utf8'
-        })
-        .replace('/*%oncreate%*/', injects.oncreate)
-        .replace('/*%types%*/', injects.types)
-        .replace('/*@types@*/', types);
-
-        buffer += '\n';
-
-        /* музыкальный котэ */
-        var sounds = stringifySounds();
-        buffer += fs.readFileSync(basePath + 'ct.release/sound.js', {
-            'encoding': 'utf8'
-        })
-        .replace('/*@sound@*/', sounds);
-
-        /* Шрифты */
-        var fonts = bundleFonts(css);
-        css += fonts.css;
-        buffer += fonts.js;
-
-        /* инклюды */
-        if (fs.existsSync(sessionStorage.projdir + '/include/')) {
-            fs.copySync(sessionStorage.projdir + '/include/', exec + '/export/');
-        }
-        for (const lib in window.currentProject.libs) {
-            if (fs.existsSync(path.join(basePath, `./ct.libs/${lib}/includes/`))) {
-                fs.copySync(path.join(basePath, `./ct.libs/${lib}/includes/`), exec + '/export/');
-            }
-        }
-
-        /* инъекции */
-        for (const i in injects) {
-            buffer = buffer.replace(`/*%${i}%*/`, injects[i]);
-        }
-
-        /* финализация скрипта */
-        if (window.currentProject.settings.minifyjs) {
-            const preamble = '/* Made with ct.js http://ctjs.rocks/ */\n';
-            const {compile} = require('google-closure-compiler-js');
-
-            const flags = {
-                jsCode: [{src: buffer}],
-            };
-            const out = compile(flags);
-            fs.writeFileSync(exec + '/export/ct.js', preamble + out.compiledCode);
-        } else {
-            fs.writeFileSync(exec + '/export/ct.js', buffer);
-        }
-
-        /* HTML & CSS */
-        fs.writeFileSync(exec + '/export/index.html', html
-            .replace('<!-- %htmltop% -->', injects.htmltop)
-            .replace('<!-- %htmlbottom% -->', injects.htmlbottom)
-            .replace('<!-- %gametitle% -->', window.currentProject.settings.title || 'ct.js game')
-            .replace('<!-- %dragonbones% -->', skeletons.requiresDB? '<script src="DragonBones.min.js"></script>' : ''));
-
-        fs.writeFileSync(exec + '/export/ct.css', css
-            .replace('/*@pixelatedrender@*/', window.currentProject.settings.pixelatedrender? 'canvas,img{image-rendering:optimizeSpeed;image-rendering:-moz-crisp-edges;image-rendering:-webkit-optimize-contrast;image-rendering:optimize-contrast;image-rendering:pixelated;ms-interpolation-mode:nearest-neighbor}' : '')
-            .replace('/*%css%*/', injects.css));
-
-        if (window.currentProject.settings.minifyhtmlcss) {
-            const csswring = require('csswring'),
-                htmlMinify = require('html-minifier').minify;
-            fs.writeFileSync(exec + '/export/index.html', htmlMinify(
-                fs.readFileSync(exec + '/export/index.html', {
-                    'encoding': 'utf8'
-                })
-            , {
-                removeComments: true,
-                collapseWhitespace: true
-            }));
-            fs.writeFileSync(exec + '/export/ct.css', csswring.wring(
-                fs.readFileSync(exec + '/export/ct.css', {
-                    'encoding': 'utf8'
-                })
-            ).css);
-        }
-        for (const k in window.currentProject.sounds) {
-            var sound = window.currentProject.sounds[k],
-                ext = sound.origname.slice(-4);
-            fs.copySync(sessionStorage.projdir + '/snd/' + sound.origname, exec + '/export/snd/' + sound.uid + ext);
-        }
-
-        /*
-        glob.targetAudio = window.currentProject.sounds.length * 2;
-        for (k in window.currentProject.sounds) {
-            ffmpeg.mp3(sessionStorage.projdir + '/sound/' + window.currentProject.sounds[k].origname, function (err, out, code) {
-                if (err) {
-                    console.log(err, out, code);
-                    throw err;
+            ctlibs = {
+                CORE: {
+                    name: 'ct.js Game Framework',
+                    info: 'A game made with ct.js game framework and ct.IDE. Create your 2D games for free!',
+                    authors: [{
+                        name: 'Cosmo Myzrail Gorynych',
+                        site: 'https://ctjs.rocks/'
+                    }]
                 }
-                events.compileAudio();
-            });
-        }
-        */
-        document.body.style.cursor = 'default';
-        resolve(exec + `/export/index.${window.currentProject.settings.minifyhtml? 'min.': ''}html`);
-    });
+            };
+            fs.removeSync(writeDir);
+            fs.ensureDirSync(writeDir);
+            fs.ensureDirSync(path.join(writeDir, '/img/'));
+            fs.ensureDirSync(path.join(writeDir, '/snd/'));
+            var css = fs.readFileSync(basePath + 'ct.release/ct.css', {
+                    'encoding': 'utf8'
+                }),
+                html = fs.readFileSync(basePath + 'ct.release/index.html', {
+                    'encoding': 'utf8'
+                });
+            var injects = {
+                load: '',
+                start: '',
+                'switch': '',
+
+                oncreate: '',
+                ondestroy: '',
+
+                beforedraw: '',
+                beforestep: '',
+                afterdraw: '',
+                afterstep: '',
+
+                roomoncreate: '',
+                roomonleave: '',
+                afterroomdraw: '',
+                beforeroomdraw: '',
+                beforeroomstep: '',
+                afterroomstep: '',
+
+                css: '',
+                res: '',
+                resload: '',
+                types: '',
+                styles: '',
+                htmltop: '',
+                htmlbottom: ''
+            };
+
+            injectModules(injects);
+            // console.log(injects);
+
+            /* Pixi.js */
+            fs.copyFileSync(basePath + 'ct.release/pixi.min.js', path.join(writeDir, '/pixi.min.js'));
+
+            var [startroom] = window.currentProject.rooms;
+            for (let i = 0; i < window.currentProject.rooms.length; i++) {
+                if (window.currentProject.rooms[i].uid === window.currentProject.startroom) {
+                    startroom = window.currentProject.rooms[i];
+                    break;
+                }
+            }
+            /* global nw */
+            var buffer = fs.readFileSync(basePath + 'ct.release/main.js', {
+                'encoding': 'utf8'
+            })
+            .replace(/\/\*@startwidth@\*\//g, startroom.width)
+            .replace(/\/\*@startheight@\*\//g, startroom.height)
+            .replace(/\/\*@pixelatedrender@\*\//g, Boolean(window.currentProject.settings.pixelatedrender))
+            .replace(/\/\*@maxfps@\*\//g, Number(window.currentProject.settings.maxFPS))
+            .replace(/\/\*@libs@\*\//g, JSON.stringify(ctlibs, null, '    '))
+            .replace(/\/\*@ctversion@\*\//g, nw.App.manifest.version)
+            .replace(/\/\*@projectmeta@\*\//g, JSON.stringify({
+                name: window.currentProject.settings.title,
+                author: window.currentProject.settings.author,
+                site: window.currentProject.settings.site,
+                version: window.currentProject.settings.version.join('.') + window.currentProject.settings.versionPostfix
+            }));
+
+            buffer += '\n';
+
+            var actionsSetup = '';
+            for (const action of window.currentProject.actions) {
+                actionsSetup += `ct.inputs.addAction('${action.name}', ${JSON.stringify(action.methods)});\n`;
+            }
+            buffer += fs.readFileSync(basePath + 'ct.release/inputs.js', {
+                'encoding': 'utf8'
+            }).replace('/*@actions@*/', actionsSetup);
+
+            buffer += '\n';
+
+            buffer = addModules(buffer);
+
+            /* User-defined scripts */
+            for (const script of window.currentProject.scripts) {
+                buffer += script.code + ';\n';
+            }
+
+            var roomsCode = stringifyRooms();
+
+            buffer += fs.readFileSync(basePath + 'ct.release/rooms.js', {
+                'encoding': 'utf8'
+            })
+            .replace('@startroom@', startroom.name)
+            .replace('/*@rooms@*/', roomsCode)
+            .replace('/*%switch%*/', injects.switch)
+            .replace('/*%roomoncreate%*/', injects.roomoncreate)
+            .replace('/*%roomonleave%*/', injects.roomonleave);
+            buffer += '\n';
+
+            var styles = stringifyStyles();
+            buffer += fs.readFileSync(basePath + 'ct.release/styles.js', {
+                'encoding': 'utf8'
+            })
+            .replace('/*@styles@*/', styles)
+            .replace('/*%styles%*/', injects.styles);
+            buffer += '\n';
+
+            /* assets */
+            var textures = packImages();
+            var skeletons = packSkeletons();
+
+            buffer += fs.readFileSync(basePath + 'ct.release/res.js', {
+                'encoding': 'utf8'
+            })
+            .replace('/*@sndtotal@*/', window.currentProject.sounds.length)
+            .replace('/*@res@*/', textures.res + '\n' + skeletons.loaderScript)
+            .replace('/*@textureregistry@*/', textures.registry)
+            .replace('/*@skeletonregistry@*/', skeletons.registry)
+            .replace('/*%resload%*/', injects.resload + '\n' + skeletons.startScript)
+            .replace('/*%res%*/', injects.res);
+            buffer += '\n';
+
+            /* Stringify types */
+            var types = '';
+            for (const k in window.currentProject.types) {
+                var type = window.currentProject.types[k];
+                types += 'ct.types.templates["' + type.name + '"] = {\n';
+                types += '    depth:' + type.depth + ',\n';
+
+                if (type.texture !== -1) {
+                    types += '    texture: "' + window.glob.texturemap[type.texture].g.name + '",\n';
+                }
+                types += '    onStep: function () {\n' + type.onstep + '\n    },\n';
+                types += '    onDraw: function () {\n' + type.ondraw + '\n    },\n';
+                types += '    onDestroy: function () {\n' + type.ondestroy + '\n    },\n';
+                types += '    onCreate: function () {\n' + type.oncreate + '\n    },\n';
+                types += '    extends: ' + JSON.stringify(type.extends || {});
+                types += '};\n';
+                types += `ct.types.list['${type.name}'] = [];\n`;
+            }
+            buffer += fs.readFileSync(basePath + 'ct.release/types.js', {
+                'encoding': 'utf8'
+            })
+            .replace('/*%oncreate%*/', injects.oncreate)
+            .replace('/*%types%*/', injects.types)
+            .replace('/*@types@*/', types);
+
+            buffer += '\n';
+            /* музыкальный котэ */
+            var sounds = stringifySounds();
+            buffer += fs.readFileSync(basePath + 'ct.release/sound.js', {
+                'encoding': 'utf8'
+            })
+            .replace('/*@sound@*/', sounds);
+
+            var fonts = bundleFonts(css);
+            css += fonts.css;
+            buffer += fonts.js;
+
+            /* passthrough copy of files in the `include` folder */
+            if (fs.existsSync(sessionStorage.projdir + '/include/')) {
+                fs.copySync(sessionStorage.projdir + '/include/', writeDir);
+            }
+            for (const lib in window.currentProject.libs) {
+                if (fs.existsSync(path.join(basePath, `./ct.libs/${lib}/includes/`))) {
+                    fs.copySync(path.join(basePath, `./ct.libs/${lib}/includes/`), writeDir);
+                }
+            }
+
+            /* Global injects, provided by modules */
+            for (const i in injects) {
+                buffer = buffer.replace(`/*%${i}%*/`, injects[i]);
+            }
+
+            /* Final touches and script output */
+            if (window.currentProject.settings.minifyjs) {
+                const preamble = '/* Made with ct.js http://ctjs.rocks/ */\n';
+                const {compile} = require('google-closure-compiler-js');
+
+                const flags = {
+                    jsCode: [{src: buffer}],
+                };
+                const out = compile(flags);
+                fs.writeFileSync(path.join(writeDir, '/ct.js'), preamble + out.compiledCode);
+            } else {
+                fs.writeFileSync(path.join(writeDir, '/ct.js'), buffer);
+            }
+
+            /* HTML & CSS */
+            fs.writeFileSync(path.join(writeDir, '/index.html'), html
+                .replace('<!-- %htmltop% -->', injects.htmltop)
+                .replace('<!-- %htmlbottom% -->', injects.htmlbottom)
+                .replace('<!-- %gametitle% -->', window.currentProject.settings.title || 'ct.js game')
+                .replace('<!-- %dragonbones% -->', skeletons.requiresDB? '<script src="DragonBones.min.js"></script>' : ''));
+
+            fs.writeFileSync(path.join(writeDir, '/ct.css'), css
+                .replace('/*@pixelatedrender@*/', window.currentProject.settings.pixelatedrender? 'canvas,img{image-rendering:optimizeSpeed;image-rendering:-moz-crisp-edges;image-rendering:-webkit-optimize-contrast;image-rendering:optimize-contrast;image-rendering:pixelated;ms-interpolation-mode:nearest-neighbor}' : '')
+                .replace('/*%css%*/', injects.css));
+
+            if (window.currentProject.settings.minifyhtmlcss) {
+                const csswring = require('csswring'),
+                    htmlMinify = require('html-minifier').minify;
+                fs.writeFileSync(path.join(writeDir, '/index.html'), htmlMinify(
+                    fs.readFileSync(path.join(writeDir, '/index.html'), {
+                        'encoding': 'utf8'
+                    })
+                , {
+                    removeComments: true,
+                    collapseWhitespace: true
+                }));
+                fs.writeFileSync(path.join(writeDir, '/ct.css'), csswring.wring(
+                    fs.readFileSync(path.join(writeDir, '/ct.css'), {
+                        'encoding': 'utf8'
+                    })
+                ).css);
+            }
+            for (const k in window.currentProject.sounds) {
+                var sound = window.currentProject.sounds[k],
+                    ext = sound.origname.slice(-4);
+                fs.copySync(path.join(sessionStorage.projdir, '/snd/', sound.origname), path.join(writeDir, '/snd/', sound.uid + ext));
+            }
+
+            /*
+            glob.targetAudio = window.currentProject.sounds.length * 2;
+            for (k in window.currentProject.sounds) {
+                ffmpeg.mp3(sessionStorage.projdir + '/sound/' + window.currentProject.sounds[k].origname, function (err, out, code) {
+                    if (err) {
+                        console.log(err, out, code);
+                        throw err;
+                    }
+                    events.compileAudio();
+                });
+            }
+            */
+            document.body.style.cursor = 'default';
+            resolve(path.join(writeDir, `/index.${window.currentProject.settings.minifyhtml? 'min.': ''}html`));
+        });
+    };
 })(this);

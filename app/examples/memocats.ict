@@ -5,7 +5,8 @@
     "mouse": {},
     "fittoscreen": {
       "mode": "scaleFit"
-    }
+    },
+    "mouse.legacy": {}
   },
   "types": [
     {
@@ -371,7 +372,7 @@
     }
   },
   "startroom": "3827e721-5331-49b2-a37a-f868e15cae0d",
-  "ctjsVersion": "1.0.0-next-2",
+  "ctjsVersion": "1.0.0-next-3",
   "scripts": [],
   "fonts": [],
   "skeletons": [],

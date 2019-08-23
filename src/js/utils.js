@@ -79,4 +79,54 @@
         }
         return o;
     };
+
+    /**
+     * Checks whether a given directory is writable
+     * 
+     * @param {String} way A path to check against
+     * @returns {Promise<Boolean>} Resolves into either `true` (if writable) or `false`
+     */
+    window.checkWritable = function(way) {
+        return new Promise(resolve => {
+            fs.access(way, fs.constants.R_OK | fs.constants.W_OK, err => {
+                if (err) {
+                    resolve(false);
+                } else {
+                    resolve(true);
+                }
+            });
+        });
+    };
+    const path = require('path');
+    /**
+     * Gets a directory ct.js can write to. It can be either a path where an executable is placed
+     * or a ct.js folder in the home directory. Throws an error if no directory is available.
+     *
+     * @returns {Promise<String>} A writable directory
+     */
+    window.getWritableDir = async function () {
+        const exec = path.dirname(process.execPath).replace(/\\/g,'/');
+        const home = process.env.HOME;
+        const execWritable = window.checkWritable(exec);
+        const homeWritable = window.checkWritable(home);
+        await execWritable; // Run in parallel
+        await homeWritable;
+        return new Promise((resolve, reject) => {
+            // writing to an exec path on Mac is not a good idea,
+            // as it will be hidden inside an app's directory, which is shown as one file.
+            if (window.isMac || !(execWritable)) {
+                if (!homeWritable) {
+                    reject(new Error(`Could not write to folders ${home} and ${exec}.`));
+                } else {
+                    fs.ensureDir(path.join(home, 'ct.js'))
+                    .then(() => {
+                        resolve(path.join(home, 'ct.js'));
+                    })
+                    .catch(reject);
+                }
+            } else {
+                resolve(exec);
+            }
+        });
+    };
 })(this);

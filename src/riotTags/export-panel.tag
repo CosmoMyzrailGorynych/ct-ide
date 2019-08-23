@@ -28,9 +28,9 @@ export-panel
                 label
                     i.icon-apple
                     input(type="checkbox" checked="{currentProject.settings.export.mac64}" onchange="{wire('window.currentProject.settings.export.mac64')}")
-                    |   Mac x64
+                    |   MacOS x64
             .clear
-            p 
+            p
                 label
                     input(type="checkbox" checked="{currentProject.settings.export.debug}" onchange="{wire('window.currentProject.settings.export.debug')}")
                     |   {voc.debug}
@@ -57,7 +57,6 @@ export-panel
 
         const path = require('path'),
               fs = require('fs-extra');
-        const exec = path.dirname(process.execPath).replace(/\\/g,'/');
 
         this.close = function () {
             this.parent.showExporter = false;
@@ -67,12 +66,15 @@ export-panel
             if (this.working) {
                 return;
             }
+            let writable;
             this.log = [];
             this.working = true;
             this.update();
             const version = currentProject.settings.version.join('.') + currentProject.settings.versionPostfix;
             window.runCtProject()
-            .then(() => fs.copy('./data/ct.release/nwPack/', `${exec}/export/`))
+            .then(window.getWritableDir)
+            .then(dir => writable = dir)
+            .then(() => fs.copy('./data/ct.release/nwPack/', `${writable}/export/`))
             .then(() => {
                 const json = fs.readJSONSync('./data/ct.release/nwPack/package.json');
                 json.version = version;
@@ -83,7 +85,7 @@ export-panel
                 const startingRoom = currentProject.rooms.find(room => room.uid === currentProject.startroom) || currentProject.rooms[0];
                 json.window.width = startingRoom.width;
                 json.window.height = startingRoom.height;
-                return fs.outputJSON(`${exec}/export/package.json`, json);
+                return fs.outputJSON(`${writable}/export/package.json`, json);
             })
             .then(() => {
                 const NwBuilder = require('nw-builder');
@@ -104,12 +106,12 @@ export-panel
                     platforms.push('linux32');
                 }
                 const options = {
-                    files: `${exec}/export/**/**`, // use the glob format
+                    files: `${writable}/export/**/**`, // use the glob format
                     version: process.versions.nw,
                     platforms,
                     flavor: (currentProject.settings.export.debug? 'sdk' : 'normal'),
                     appName: currentProject.settings.title || 'ct.js Game',
-                    buildDir: './exportDesktop',
+                    buildDir: `${writable}/exportDesktop`,
                     buildType: 'versioned',
                     macIcns: './ct.ide.icns'
                 };
@@ -138,7 +140,7 @@ export-panel
             })
             .then(() => {
                 this.log.push('Success! Exported to:');
-                this.log.push(path.resolve('./exportDesktop/'));
+                this.log.push(path.resolve(`${writable}/exportDesktop/`));
                 this.working = false;
                 nw.Shell.showItemInFolder(path.resolve(`./exportDesktop/${currentProject.settings.title || 'ctjs-game'} - v${version}`));
                 this.update();

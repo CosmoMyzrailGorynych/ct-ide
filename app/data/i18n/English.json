@@ -105,6 +105,7 @@
         "forgetProject": "Forget this project",
         "browse": "Browse",
         "latest": "Latest projects",
+        "unableToWriteToFolders": "Ct.js could not find an appropriate place for projects! Make sure you store ct.js app inside a folder you have access to write to.",
         "twitter": "Twitter channel",
         "discord": "Discord community"
     },

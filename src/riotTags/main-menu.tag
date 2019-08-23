@@ -181,9 +181,10 @@ main-menu.flexcol
             });
         };
 
-        this.zipProject = e => {
-            var inDir = exec + '/zipppedProject/',
-                outName = exec + `/${sessionStorage.projname}.zip`;
+        this.zipProject = async e => {
+            const writable = await window.getWritableDir();
+            var inDir = path.join(writable, '/zipppedProject/'),
+                outName = path.join(writable, `/${sessionStorage.projname}.zip`);
             this.saveProject()
             .then(fs.remove(outName))
             .then(fs.emptyDir(inDir))
@@ -210,11 +211,12 @@ main-menu.flexcol
             })
             .catch(alertify.error);
         };
-        this.zipExport = e => {
-            let exportFile = exec + '/export.zip',
-                inDir = exec + '/export/';
-            fs.remove(exportFile)
-            .then(() => window.runCtProject())
+        this.zipExport = async e => {
+            const writable = await window.getWritableDir();
+            let exportFile = path.join(writable, '/export.zip'),
+                inDir = path.join(writable, '/export/');
+            await fs.remove(exportFile);
+            window.runCtProject()
             .then(() => {
                 let archive = archiver('zip'),
                     output = fs.createWriteStream(exportFile);

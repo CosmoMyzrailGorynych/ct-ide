@@ -62,7 +62,7 @@ project-selector
         this.projectSplash = '/data/img/notexture.png';
         this.newVersion = false;
         
-        // Загрузка списка последних проектов из локального хранилища
+        // Loads recently opened projects
         if (('lastProjects' in localStorage) && 
             (localStorage.lastProjects !== '')) {
             this.lastProjects = localStorage.lastProjects.split(';');
@@ -71,19 +71,26 @@ project-selector
         }
         
         /**
-         * При нажатии на проект в списке последних проектов обновляет сплэш проекта
+         * Update a splash image of a selected project
          */
         this.updatePreview = projectPath => e => {
             this.projectSplash = 'file://' + path.dirname(projectPath) + '/' + path.basename(projectPath, '.ict') + '/img/splash.png';
         };
         
         /**
-         * Создаёт в памяти пустой проект, а затем открывает его. 
-         * Также записывает файл пустого проекта в папку с проектами рядом с исполняемым файлом ctjs
-         * и делает основные директории.
+         * Creates a mew project.
+         * Technically it creates an empty project in-memory, then saves it to a directory.
+         * Creates basic directories for sounds and textures.
          */
-        this.newProject = function() {
-            const way = path.dirname(process.execPath).replace(/\\/g,'/') + '/projects';
+        this.newProject = async () => {
+            let way = path.dirname(process.execPath).replace(/\\/g,'/');
+            try {
+                way = path.join(await window.getWritableDir(), '/projects');
+            } catch (e) {
+                alertify.error(this.voc.unableToWriteToFolders);
+                throw e;
+            }
+            await fs.ensureDir(way);
             var codename = this.refs.projectname.value;
             var projectData = {
                 ctjsVersion: nw.App.manifest.version,
@@ -96,6 +103,7 @@ project-selector
                     fittoscreen: {
                         mode: "scaleFit"
                     },
+                    mouse: {},
                     keyboard: {},
                     'keyboard.polyfill': {},
                     'sound.howler': {},
@@ -104,6 +112,7 @@ project-selector
                     }
                 },
                 textures: [],
+                skeletons: [],
                 types: [],
                 sounds: [],
                 styles: [],
@@ -127,13 +136,13 @@ project-selector
             };
             fs.writeJSON(path.join(way, codename + '.ict'), projectData, function(e) {
                 if (e) {
+                    alertify.error(this.voc.unableToWriteToFolders + '\n' + e);
                     throw e;
                 }
             });
             sessionStorage.projdir = path.join(way, codename);
             sessionStorage.projname = codename + '.ict';
-            fs.ensureDir(sessionStorage.projdir);
-            fs.ensureDir(sessionStorage.projdir + '/img');
+            await fs.ensureDir(sessionStorage.projdir + '/img');
             fs.ensureDir(sessionStorage.projdir + '/snd');
             fs.ensureDir(sessionStorage.projdir + '/include');
             setTimeout(() => { // for some reason, it must be done through setTimeout; otherwise it fails
@@ -164,7 +173,7 @@ project-selector
             e.stopPropagation();
         }
         /**
-         * Событие открытия файла через проводник
+         * Handler for a manual search for a project, triggered by an input[type="file"]
          */
         this.openProjectFind = e => {
             var fe = this.refs.fileexternal,
