@@ -29,14 +29,8 @@ Building ct.js requires [Node and npm](https://nodejs.org/en/download/) installe
 ```sh
 git clone git@gitlab.com:CoMiGo/ctjs.git ctjs
 cd ./ctjs
-git submodule update --init --recursive
 npm install gulp-cli -g
-npm install
-cd ./docs
-npm install
-cd ./../app
-npm install
-cd ./../
+gulp -f devSetup.gulpfile.js
 ```
 
 # Running ct.js from sources
@@ -51,14 +45,14 @@ gulp
 # Builds docs and adds them to ct.js app
 gulp docs
 # Recompiles source files, bundles docs, and bakes binaries
-gulp release
+gulp packages
 
 # Publishes prebuilt binaries to itch.io
 # This assumes that you have an access to ct.js at itch.io :)
 gulp deployOnly
 gulp deployOnly --channel next # deploy to a specific itch.io channel
 
-# Combines `gulp release` and `gulp deployOnly`
+# Combines `gulp packages` and `gulp deployOnly`
 gulp deploy
 ```
 
