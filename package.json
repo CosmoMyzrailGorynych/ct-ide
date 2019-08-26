@@ -21,7 +21,7 @@
     "filemode": "^3.0.0",
     "fs-extra": "4.0.2",
     "globby": "^10.0.1",
-    "gulp": "^4.0.0",
+    "gulp": "^4.0.2",
     "gulp-append-prepend": "^1.0.4",
     "gulp-chmod": "^3.0.0",
     "gulp-concat": "^2.6.1",
