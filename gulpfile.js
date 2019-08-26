@@ -11,6 +11,8 @@ const path = require('path'),
       pug = require('gulp-pug'),
       eslint = require('gulp-eslint'),
       stylint = require('gulp-stylint'),
+      globby = require('globby'),
+      filemode = require('filemode'),
 
       streamQueue = require('streamqueue'),
       notifier = require('node-notifier'),
@@ -236,6 +238,64 @@ const nwPackages = async () => {
     await nw.build();
 };
 
+// a workaround for https://github.com/nwjs-community/nw-builder/issues/289
+const fixPermissions = () => {
+    if (platforms.indexOf('osx64') === -1) {
+        return Promise.resolve(); // skip the fix if not building for macos
+    }
+    const baseDir = path.posix.join('./build', `ctjs - v${pack.version}`, 'osx64', 'ctjs.app/Contents');
+
+    const globs = [
+        baseDir + '/MacOS/nwjs',
+        baseDir + '/Versions/*/nwjs Framework.framework/Versions/A/nwjs Framework',
+        baseDir + '/Versions/*/nwjs Helper.app/Contents/MacOS/nwjs Helper'
+    ];
+    return globby(globs)
+    .then(files => {
+        console.log('overriding permissions for', files);
+        return Promise.all(files.map(file => filemode(file, '777')));
+    });
+};
+const toLink = [
+    'Versions/Current/', // this one will need to link to './A'
+    'Helpers/', // others link to Versions/Current + the same name
+    'Internet Plug-Ins/',
+    'Libraries/',
+    'Resources/',
+    'XPCServices/',
+];
+
+const oldSymlink = fs.symlink;
+fs.symlink = (target, destination) => {
+    console.log('link', target, destination);
+    return oldSymlink(target, destination);
+};
+
+// Based on solution at https://github.com/strawbees/desktop-packager/blob/master/commands/darwin/bundle.js
+const fixSymlinks = async () => {
+    if (platforms.indexOf('osx64') === -1) {
+        return; // skip the fix if not building for macos
+    }
+    const baseDir = path.posix.join('./build', `ctjs - v${pack.version}`, 'osx64', 'ctjs.app/Contents');
+
+    // the actual directory depends on nw version, so let's find the needed dir with a glob
+    const glob = baseDir + '/Versions/*/nwjs Framework.framework/*';
+    const frameworkDir = path.dirname((await globby([glob]))[0]);
+    console.log('fixing symlinks at', frameworkDir);
+    // remove all the old symlinks
+    await Promise.all(toLink.map(link =>
+        fs.remove(path.join(frameworkDir, link))
+    ));
+    await fs.remove(path.join(frameworkDir, 'nwjs Framework')); // this is a file, so it is listed separatedly
+    await fs.symlink(path.join(frameworkDir, './Versions/A/'), path.join(frameworkDir, toLink[0]));
+    await fs.symlink(path.join(frameworkDir, 'Versions/Current', 'nwjs Framework'), path.join(frameworkDir, 'nwjs Framework'));
+    await Promise.all(toLink.slice(1).map(way =>
+        fs.symlink(path.join(frameworkDir, 'Versions/Current', way), path.join(frameworkDir, way))
+    ));
+};
+exports.fixPermissions = fixPermissions;
+exports.fixSymlinks = fixSymlinks;
+
 const examples = () => {
     const promises = platforms.map(platform =>
         fs.copy(
@@ -246,7 +306,15 @@ const examples = () => {
     return Promise.all(promises);
 };
 
-const packages = gulp.series([lint, build, docs, nwPackages, examples]);
+const packages = gulp.series([
+    lint,
+    build,
+    docs,
+    nwPackages,
+    fixSymlinks,
+    fixPermissions,
+    examples
+]);
 
 const deployOnly = () => {
     console.log(`For channel ${channelPostfix}`);
