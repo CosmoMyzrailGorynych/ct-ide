@@ -14,6 +14,7 @@ For bugs, feature requests, developing questions, please use [GitHub issues](htt
 * `app` — an [NW.js app](https://nwjs.io/), with its configs and static files.
 * `src` — a source folder that compile into `/app` folder at a build time.
     * `js` — different top-level scripts, including 3rd-party libraries.
+    * `node_requires` — these are copied as is to the `/app` directory upon building ct.js, contain reusable code, and are meant to be used by `require('./data/node_requires/…')`.
     * `pug` — HTML sources of editor's windows, written in [Pug](https://pugjs.org/).
     * `riotTags` — components that drive all the logic in ct.js. Written in [Pug](https://pugjs.org/) and [Riot.js v3](https://v3.riotjs.now.sh/).
     * `styl` — style sheets, written in [Stylus](http://stylus-lang.com/).
