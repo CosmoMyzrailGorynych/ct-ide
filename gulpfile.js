@@ -2,8 +2,6 @@
 
 /* eslint no-console: 0 */
 const path = require('path'),
-      {spawn} = require('child_process'),
-
       gulp = require('gulp'),
       concat = require('gulp-concat'),
       sourcemaps = require('gulp-sourcemaps'),
@@ -17,12 +15,17 @@ const path = require('path'),
       streamQueue = require('streamqueue'),
       notifier = require('node-notifier'),
       fs = require('fs-extra'),
-      NwBuilder = require('nw-builder');
+      NwBuilder = require('nw-builder'),
+
+      spawnise = require('./node_requires/spawnise');
 
 const argv = minimist(process.argv.slice(2));
 
+const pack = require('./app/package.json');
+
 const nwVersion = '0.34.1',
-      nwFiles = ['./app/**', '!./app/export/**', '!./app/exportDesktop/**', '!./app/cache/**', '!./app/.vscode/**', '!./app/JamGames/**'];
+      platforms = ['osx64', 'win32', 'win64', 'linux32', 'linux64'],
+      nwFiles = ['./app/**', '!./app/export/**', '!./app/projects/**', '!./app/exportDesktop/**', '!./app/cache/**', '!./app/.vscode/**', '!./app/JamGames/**'];
 
 var channelPostfix = argv.channel || false;
 
@@ -44,23 +47,6 @@ const fileChangeNotifier = p => {
         wait: false
     });
 };
-
-const spawnise = (app, attrs, opts) => new Promise((resolve, reject) => {
-    var process = spawn(app, attrs, opts);
-    process.on('exit', code => {
-        if (!code) {
-            resolve();
-        } else {
-            reject(code);
-        }
-    });
-    process.stderr.on('data', data => {
-        console.error(data.toString());
-    });
-    process.stdout.on('data', data => {
-        console.log(data.toString());
-    });
-});
 
 const compileStylus = () =>
     gulp.src('./src/styl/theme*.styl')
@@ -93,7 +79,7 @@ const compileRiot = () =>
     .pipe(concat('riot.js'))
     .pipe(gulp.dest('./temp/'));
 
-const compileScripts = gulp.series(compileRiot, () =>
+const concatScripts = () =>
     streamQueue({objectMode: true},
         gulp.src('./src/js/**'),
         gulp.src('./temp/riot.js')
@@ -112,8 +98,9 @@ const compileScripts = gulp.series(compileRiot, () =>
         });
         console.error('[scripts error]', err);
     })
-    .on('change', fileChangeNotifier)
-);
+    .on('change', fileChangeNotifier);
+
+const compileScripts = gulp.series(compileRiot, concatScripts);
 
 const watchScripts = () => {
     gulp.watch('./src/js/**/*', gulp.series(compileScripts))
@@ -171,11 +158,11 @@ const lintJS = () => gulp.src(['./src/js/**/*.js', '!./src/js/3rdparty/**/*.js']
 
 const lint = gulp.series(lintJS, lintStylus);
 
-const launchNw = () => {
+const launchNw = () => { // makes a loop that keeps ct.js open if it was closed, either by a user or by assets' changes
     var nw = new NwBuilder({
         files: nwFiles,
         version: nwVersion,
-        platforms: ['osx64', 'win32', 'win64', 'linux32', 'linux64'],
+        platforms,
         flavor: 'sdk'
     });
     return nw.run().catch(function (error) {
@@ -184,19 +171,19 @@ const launchNw = () => {
     .then(launchNw);
 };
 
-const docs = done => {
-    fs.remove('./app/data/docs/')
-    .then(() => spawnise((/^win/).test(process.platform) ? 'npm.cmd' : 'npm', ['run', 'build'], {
+const docs = async () => {
+    await fs.remove('./app/data/docs/');
+    await spawnise.spawn((/^win/).test(process.platform) ? 'npm.cmd' : 'npm', ['run', 'build'], {
         cwd: './docs'
-    }))
-    .then(() => fs.copy('./docs/docs/.vuepress/dist', './app/data/docs/'))
-    .then(done);
+    });
+    await fs.copy('./docs/docs/.vuepress/dist', './app/data/docs/');
 };
 
-const release = gulp.series([build, lint, docs, done => {
+const nwPackages = async () => {
+    await fs.remove(path.join('./build', `ctjs - v${pack.version}`));
     var nw = new NwBuilder({
         files: nwFiles,
-        platforms: ['osx64', 'win32', 'win64', 'linux32', 'linux64'],
+        platforms,
         version: nwVersion,
         flavor: 'sdk',
         buildType: 'versioned',
@@ -204,45 +191,45 @@ const release = gulp.series([build, lint, docs, done => {
         zip: false,
         macIcns: './app/ct.ide.icns'
     });
-    nw.build()
-    .then(() => {
-        console.log('Binaries done');
-        done();
-    })
-    .catch(function (error) {
-        console.error(error);
-        done(error);
+    await nw.build();
+};
     });
-}]);
 
-const deployOnly = done => {
-    console.log(`For channel ${channelPostfix}`);
-    var pack = require('./app/package.json');
-    spawnise('./butler', ['push', `./build/ctjs - v${pack.version}/linux32`, `comigo/ct:linux32${channelPostfix? '-' + channelPostfix: ''}`, '--userversion', pack.version])
-    .then(() => spawnise('./butler', ['push', `./build/ctjs - v${pack.version}/linux64`, `comigo/ct:linux64${channelPostfix? '-' + channelPostfix: ''}`, '--userversion', pack.version]))
-    .then(() => spawnise('./butler', ['push', `./build/ctjs - v${pack.version}/osx64`, `comigo/ct:osx64${channelPostfix? '-' + channelPostfix: ''}`, '--userversion', pack.version]))
-    .then(() => spawnise('./butler', ['push', `./build/ctjs - v${pack.version}/win32`, `comigo/ct:win32${channelPostfix? '-' + channelPostfix: ''}`, '--userversion', pack.version]))
-    .then(() => spawnise('./butler', ['push', `./build/ctjs - v${pack.version}/win64`, `comigo/ct:win64${channelPostfix? '-' + channelPostfix: ''}`, '--userversion', pack.version]))
-    .then(() => {
-        done();
-    })
-    .catch(done);
+const examples = () => {
+    const promises = platforms.map(platform =>
+        fs.copy(
+            './src/examples',
+            path.join('./build', `ctjs - v${pack.version}`, platform, 'examples')
+        )
+    );
+    return Promise.all(promises);
 };
 
-const deploy = gulp.series([release, deployOnly]);
+const packages = gulp.series([lint, build, docs, nwPackages, examples]);
 
+const deployOnly = () => {
+    console.log(`For channel ${channelPostfix}`);
+    return spawnise.spawn('./butler', ['push', `./build/ctjs - v${pack.version}/linux32`, `comigo/ct:linux32${channelPostfix? '-' + channelPostfix: ''}`, '--userversion', pack.version])
+    .then(() => spawnise.spawn('./butler', ['push', `./build/ctjs - v${pack.version}/linux64`, `comigo/ct:linux64${channelPostfix? '-' + channelPostfix: ''}`, '--userversion', pack.version]))
+    .then(() => spawnise.spawn('./butler', ['push', `./build/ctjs - v${pack.version}/osx64`, `comigo/ct:osx64${channelPostfix? '-' + channelPostfix: ''}`, '--userversion', pack.version]))
+    .then(() => spawnise.spawn('./butler', ['push', `./build/ctjs - v${pack.version}/win32`, `comigo/ct:win32${channelPostfix? '-' + channelPostfix: ''}`, '--userversion', pack.version]))
+    .then(() => spawnise.spawn('./butler', ['push', `./build/ctjs - v${pack.version}/win64`, `comigo/ct:win64${channelPostfix? '-' + channelPostfix: ''}`, '--userversion', pack.version]));
+};
 
-const defaultTask = gulp.series(build, done => {
+const deploy = gulp.series([packages, deployOnly]);
+
+const launchDevMode = done => {
     watch();
     launchNw();
     done();
-});
+};
+const defaultTask = gulp.series(build, launchDevMode);
 
 
-gulp.task('lint', lint);
-gulp.task('release', release);
-gulp.task('docs', docs);
-gulp.task('build', build);
-gulp.task('deploy', deploy);
-gulp.task('deployOnly', deployOnly);
-gulp.task('default', defaultTask);
+exports.lint = lint;
+exports.packages = packages;
+exports.docs = docs;
+exports.build = build;
+exports.deploy = deploy;
+exports.deployOnly = deployOnly;
+exports.default = defaultTask;
