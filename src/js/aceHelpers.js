@@ -172,8 +172,8 @@
         Horizon: 'horizon',
         default: 'tomorrow'
     };
-    window.glob = window.glob || {};
-    window.glob.aceThemeMappings = themeMappings;
+    const glob = require('./data/node_requires/glob');
+    glob.aceThemeMappings = themeMappings;
     /**
      * Mounts an Ace editor on the passed tag.
      *

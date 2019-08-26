@@ -42,7 +42,7 @@ export-panel
         .flexfix-footer
             .flexrow
                 button(onclick="{close}") {voc.hide}
-                button(onclick="{export}") 
+                button(onclick="{export}")
                     span.inlineblock.rotateccw(if="{working}")
                         i.icon-refresh-ccw
                     i.icon-upload(if="{!working}")
@@ -63,6 +63,7 @@ export-panel
             this.parent.update();
         };
         this.export = e => {
+            const {getWritableDir} = require('./data/node_requires/platformUtils');
             if (this.working) {
                 return;
             }
@@ -72,7 +73,7 @@ export-panel
             this.update();
             const version = currentProject.settings.version.join('.') + currentProject.settings.versionPostfix;
             window.runCtProject()
-            .then(window.getWritableDir)
+            .then(getWritableDir)
             .then(dir => writable = dir)
             .then(() => fs.copy('./data/ct.release/nwPack/', `${writable}/export/`))
             .then(() => {

@@ -3,7 +3,7 @@ types-panel.panel.view
         .flexfix-header
             div
                 .toright
-                    b {vocGlob.sort}   
+                    b {vocGlob.sort}
                     button.inline.square(onclick="{switchSort('date')}" class="{selected: sort === 'date' && !searchResults}")
                         i.icon-clock
                     button.inline.square(onclick="{switchSort('name')}" class="{selected: sort === 'name' && !searchResults}")
@@ -28,6 +28,9 @@ types-panel.panel.view
         this.namespace = 'types';
         this.mixin(window.riotVoc);
         const gui = require('nw.gui');
+        const glob = require('./data/node_requires/glob');
+        const generateGUID = require('./data/node_requires/generateGUID');
+        this.glob = glob;
         this.editingType = false;
         this.sort = 'name';
         this.sortReverse = false;
@@ -75,7 +78,7 @@ types-panel.panel.view
                 this.searchResults = null;
             }
         };
-        
+
         this.setUpPanel = e => {
             this.fillTypeMap();
             this.updateList();
@@ -90,17 +93,17 @@ types-panel.panel.view
             window.signals.off('projectLoaded', this.setUpPanel);
         });
 
-        this.getTypeTextureRevision = type => window.glob.texturemap[type.texture].g.lastmod;
+        this.getTypeTextureRevision = type => glob.texturemap[type.texture].g.lastmod;
 
         this.fillTypeMap = () => {
-            delete window.glob.typemap;
-            window.glob.typemap = {};
+            delete glob.typemap;
+            glob.typemap = {};
             for (let i = 0; i < window.currentProject.types.length; i++) {
-                window.glob.typemap[currentProject.types[i].uid] = i;
+                glob.typemap[currentProject.types[i].uid] = i;
             }
         };
         this.typeCreate = e => {
-            var id = window.generateGUID(),
+            var id = generateGUID(),
                 slice = id.split('-').pop();
             var obj = {
                 name: 'Type_' + slice,
@@ -122,7 +125,7 @@ types-panel.panel.view
             this.editingType = true;
             this.editedType = type;
         };
-        
+
         var typeMenu = new gui.Menu();
         this.onTypeContextMenu = e => {
             this.currentType = e.item.type;
@@ -131,7 +134,6 @@ types-panel.panel.view
         };
         typeMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.open,
-            icon: (window.isMac ? '/img/black/' : '/img/blue/') + 'folder.png',
             click: () => {
                 this.openType(this.currentType)();
                 this.update();
@@ -147,7 +149,6 @@ types-panel.panel.view
         }));
         typeMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.duplicate,
-            icon: (window.isMac ? '/img/black/' : '/img/blue/') + 'plus.png',
             click: () => {
                 alertify
                 .defaultValue(this.currentType.name + '_dup')
@@ -156,7 +157,7 @@ types-panel.panel.view
                     if (e.inputValue != '' && e.buttonClicked !== 'cancel') {
                         var tp = JSON.parse(JSON.stringify(this.currentType));
                         tp.name = e.inputValue;
-                        tp.uid = window.generateGUID();
+                        tp.uid = generateGUID();
                         currentProject.types.push(tp);
                         this.fillTypeMap();
                         this.updateList();
@@ -167,7 +168,6 @@ types-panel.panel.view
         }));
         typeMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.rename,
-            icon: (window.isMac ? '/img/black/' : '/img/blue/') + 'edit.png',
             click:  () => {
                 alertify
                 .defaultValue(this.currentType.name)
@@ -185,7 +185,6 @@ types-panel.panel.view
         }));
         typeMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.delete,
-            icon: (window.isMac ? '/img/black/' : '/img/blue/') + 'delete.png',
             click: () => {
                 alertify
                 .okBtn(window.languageJSON.common.delete)

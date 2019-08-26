@@ -3,16 +3,16 @@ fonts-panel.flexfix.tall.fifty
         h1 {voc.fonts}
     .toleft
         label.file.flexfix-header
-            input(type="file" multiple 
-                accept=".ttf" 
+            input(type="file" multiple
+                accept=".ttf"
                 onchange="{fontImport}")
             .button
                 i.icon.icon-import
                 span {voc.import}
     .clear
     ul.cards.flexfix-body
-        li(each="{font in (searchResults? searchResults : fonts)}" 
-        onclick="{openFont(font)}" 
+        li(each="{font in (searchResults? searchResults : fonts)}"
+        onclick="{openFont(font)}"
         oncontextmenu="{onFontContextMenu(font)}"
         onlong-press="{onFontContextMenu(font)}")
             span {font.typefaceName} {font.weight} {font.italic? voc.italic : ''}
@@ -21,8 +21,8 @@ fonts-panel.flexfix.tall.fifty
         .middleinner
             i.icon-import
             h2 {languageJSON.common.fastimport}
-            input(type="file" multiple 
-                accept=".ttf" 
+            input(type="file" multiple
+                accept=".ttf"
                 onchange="{fontImport}")
     font-editor(if="{editingFont}" fontobj="{editedFont}")
     script.
@@ -51,7 +51,7 @@ fonts-panel.flexfix.tall.fifty
             this.editingFont = true;
             this.editedFont = font;
         };
-        
+
         // Context menu for manipulating fonts with RMB
         var fontMenu = new gui.Menu();
         this.onFontContextMenu = font => e => {
@@ -114,12 +114,13 @@ fonts-panel.flexfix.tall.fifty
          * The event of importing a font through a file manager
          */
         this.fontImport = e => { // e.target:input[type="file"]
+            const generateGUID = require('./data/node_requires/generateGUID');
             var i;
             files = e.target.value.split(';');
             e.target.value = '';
             for (i = 0; i < files.length; i++) {
                 if (/\.ttf/gi.test(files[i])) {
-                    let id = window.generateGUID();
+                    let id = generateGUID();
                     this.loadFont(
                         id,
                         files[i],
@@ -127,7 +128,7 @@ fonts-panel.flexfix.tall.fifty
                         true
                     );
                 } else {
-                    
+                    // ¯\_(ツ)_/¯
                 }
             }
             this.dropping = false;
@@ -135,7 +136,7 @@ fonts-panel.flexfix.tall.fifty
             e.preventDefault();
         };
         this.loadFont = (uid, filename, dest, imprt) => {
-            window.megacopy(filename, dest, e => {
+            fs.copy(filename, dest, e => {
                 if (e) throw e;
                 var obj = {
                     typefaceName: path.basename(filename).replace('.ttf', ''),
@@ -171,7 +172,7 @@ fonts-panel.flexfix.tall.fifty
                 loaded.external = true;
                 loaded.ctId = face.ctId = obj.uid;
                 document.fonts.add(loaded);
-                var c = document.createElement('canvas'), 
+                var c = document.createElement('canvas'),
                     w, h;
                 c.x = c.getContext('2d');
                 c.width = c.height = size;
@@ -245,7 +246,7 @@ fonts-panel.flexfix.tall.fifty
                         style: font.italic? 'italic' : 'normal'
                     },
                     source = `${sessionStorage.projdir}/fonts/${font.origname}`;
-                    var cleanedSource = source.replace(/ /g, '%20').replace(/\\/g, '/');    
+                    var cleanedSource = source.replace(/ /g, '%20').replace(/\\/g, '/');
                 var face = new FontFace('CTPROJFONT' + font.typefaceName, `url(file://${cleanedSource})`, template);
                 face.load()
                 .then(loaded => {

@@ -13,7 +13,6 @@
     const fs = require('fs-extra'),
           path = require('path');
 
-
     var adapter = async project => {
 
         // execute all the migration
@@ -70,9 +69,10 @@
      * @returns {void}
      */
     var loadProject = async projectData => {
+        const glob = require('./data/node_requires/glob');
         window.currentProject = projectData;
         window.alertify.log(window.languageJSON.intro.loadingProject);
-        window.glob.modified = false;
+        glob.modified = false;
 
         try {
             await adapter(projectData);
@@ -102,8 +102,6 @@
         } catch (err) {
             window.alertify.alert(window.languageJSON.intro.loadingProjectError + err);
         }
-
-
     };
 
     /**

@@ -1,7 +1,7 @@
 (function () {
     const gui = require('nw.gui');
     const clickThreshold = 16;
-    /* global glob */
+    const glob = require('./data/node_requires/glob');
     window.roomTileTools = {
         init() {
             this.onCanvasMouseUpTiles = e => {
@@ -33,7 +33,7 @@
                     if (this.mouseDown && this.currentTileLayer) {
                         var pos = 0,
                             l,
-                            done = false, 
+                            done = false,
                             fromx = this.xToRoom(e.offsetX),
                             fromy = this.yToRoom(e.offsetY);
                         var maxdist = Math.max(this.room.gridX, this.room.gridY);
@@ -85,13 +85,13 @@
                         this.refs.canvas.x.drawImage(
                             img,
                             sx, sy, w, h,
-                            this.xToCanvas(Math.round(dx / this.room.gridX) * this.room.gridX) / this.zoomFactor, 
-                            this.yToCanvas(Math.round(dy / this.room.gridY) * this.room.gridY) / this.zoomFactor, 
+                            this.xToCanvas(Math.round(dx / this.room.gridX) * this.room.gridX) / this.zoomFactor,
+                            this.yToCanvas(Math.round(dy / this.room.gridY) * this.room.gridY) / this.zoomFactor,
                             w, h);
                     }
                 }
             };
-            
+
             this.onCanvasClickTiles = e => {
                 // Отмена выделения тайлов, если таковые были, при клике
                 if (this.selectedTiles && Math.hypot(e.offsetX - this.startx, e.offsetY - this.starty) <= clickThreshold) {
@@ -139,7 +139,7 @@
                 }
                 this.refreshRoomCanvas();
             };
-            
+
             // Контекстное меню по нажатию на холст
             this.roomCanvasTileMenu = new gui.Menu();
             this.roomCanvasTileMenu.append(new gui.MenuItem({
@@ -177,7 +177,7 @@
                     width = ((texture.width + texture.marginx) * tile.grid[2]) - texture.marginx + 3,
                     height = ((texture.height + texture.marginy) * tile.grid[3]) - texture.marginy + 3;
                 this.drawSelection(left, top, left+width, top+height);
-        
+
                 this.forbidDrawing = true;
                 setTimeout(() => {
                     this.forbidDrawing = false;
@@ -236,10 +236,10 @@
                 click: () => {
                     window.alertify.confirm(`
                         ${window.languageJSON.roomview.shifttiles}
-                        <label class="block">X: 
+                        <label class="block">X:
                             <input id="tilespositionx" type="number" value="${this.room.gridX}" />
                         </label>
-                        <label class="block">Y: 
+                        <label class="block">Y:
                             <input id="tilespositiony" type="number" value="${this.room.gridY}" />
                         </label>
                     `)

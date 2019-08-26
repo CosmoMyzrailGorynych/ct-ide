@@ -56,7 +56,7 @@ room-editor.panel.view
                 button#roomzoom200.inline(onclick="{roomToggleZoom(2)}" class="{active: zoomFactor === 2}") 200%
                 button#roomzoom400.inline(onclick="{roomToggleZoom(4)}" class="{active: zoomFactor === 4}") 400%
         .grid
-            button#roomgrid(onclick="{roomToggleGrid}" class="{active: room.gridX > 0}") 
+            button#roomgrid(onclick="{roomToggleGrid}" class="{active: room.gridX > 0}")
                 span {voc[room.gridX > 0? 'gridoff' : 'grid']}
         .center
             button#roomcenter(onclick="{roomToCenter}") {voc.tocenter}
@@ -68,12 +68,13 @@ room-editor.panel.view
         const fs = require('fs-extra'),
               gui = require('nw.gui');
         const win = gui.Window.get();
+        const glob = require('./data/node_requires/glob');
         this.namespace = 'roomview';
         this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
         this.mixin(window.roomCopyTools);
         this.mixin(window.roomTileTools);
-        
+
         this.room = this.opts.room;
 
         this.mouseX = this.mouseY = 0;
@@ -84,7 +85,7 @@ room-editor.panel.view
         this.room.gridY = this.room.gridY || this.room.grid || 64;
         this.dragging = false;
         this.tab = 'roomcopies';
-        
+
         var updateCanvasSize = e => {
             var canvas = this.refs.canvas,
                 sizes = this.refs.canvaswrap.getBoundingClientRect();
@@ -95,7 +96,7 @@ room-editor.panel.view
             setTimeout(this.refreshRoomCanvas, 10);
         };
         this.on('update', () => {
-            if (window.currentProject.rooms.find(room => 
+            if (window.currentProject.rooms.find(room =>
                 this.room.name === room.name && this.room !== room
             )) {
                 this.nameTaken = true;
@@ -115,11 +116,11 @@ room-editor.panel.view
         this.on('unmount', () => {
             win.removeAllListeners('resize');
         });
-        
+
         this.openRoomEvents = e => {
             this.editingCode = true;
         };
-        
+
         // Навигация по комнате, настройки вида
         this.roomToggleZoom = zoomFactor => e => {
             this.zoomFactor = zoomFactor;
@@ -159,7 +160,7 @@ room-editor.panel.view
                 this.room.gridY = 0;
             }
         };
-        
+
         // Работа с копиями
         this.tab = 'roomcopies';
         this.changeTab = tab => e => {
@@ -180,7 +181,7 @@ room-editor.panel.view
         this.xToCanvas = x => (x - this.roomx) * this.zoomFactor + ~~(this.refs.canvas.width / 2);
         /** Преобразовать y в комнате в y на канвасе */
         this.yToCanvas = y => (y - this.roomy) * this.zoomFactor + ~~(this.refs.canvas.height / 2);
-        
+
         this.onCanvasClick = e => {
             if (this.tab === 'roomcopies') {
                 this.onCanvasClickCopies(e);
@@ -267,7 +268,7 @@ room-editor.panel.view
             }
             this.updateMouseCoords(e);
         };
-        
+
         /** При прокрутке колёсиком меняем фактор зума */
         this.onCanvasWheel = e => {
             if (e.wheelDelta > 0) {
@@ -321,15 +322,15 @@ room-editor.panel.view
             e.preventDefault();
             return true;
         };
-        
+
         // Shifts all the copies in a room at once.
         this.roomShift = e => {
             window.alertify.confirm(`
                 ${window.languageJSON.roomview.shifttext}
-                <label class="block">X: 
+                <label class="block">X:
                     <input id="roomshiftx" type="number" value="${this.room.gridX}" />
                 </label>
-                <label class="block">Y: 
+                <label class="block">Y:
                     <input id="roomshifty" type="number" value="${this.room.gridY}" />
                 </label>
             `)
@@ -348,24 +349,24 @@ room-editor.panel.view
                 }
             });
         };
-        
+
         /** Saves a room (in fact, just marks a project as an unsaved, and closes the room editor) */
         this.roomSave = e => {
             this.room.lastmod = +(new Date());
             this.roomGenSplash()
             .then(() => {
-                window.glob.modified = true;
+                glob.modified = true;
                 this.parent.editing = false;
                 this.parent.update();
             })
             .catch(err => {
                 console.error(err);
-                window.glob.modified = true;
+                glob.modified = true;
                 this.parent.editing = false;
                 this.parent.update();
             });
         };
-        
+
         this.resortRoom = () => {
             // Make an array of all the backgrounds, tile layers and copies, and then sort it.
             this.stack = this.room.copies.concat(this.room.backgrounds).concat(this.room.tiles);
@@ -394,19 +395,19 @@ room-editor.panel.view
                 canvas.width = sizes.width;
                 canvas.height = sizes.height;
             }
-            
+
             // Сбросим базовые настройки рисования
             canvas.x.setTransform(1,0,0,1,0,0);
             canvas.x.globalAlpha = 1;
             // Очистим холст
             canvas.x.clearRect(0,0,canvas.width,canvas.height);
-            
+
             // Выполним перемещение с учётом зума
             canvas.x.translate(~~(canvas.width / 2), ~~(canvas.height / 2));
             canvas.x.scale(this.zoomFactor,this.zoomFactor);
             canvas.x.translate(-this.roomx, -this.roomy);
             canvas.x.imageSmoothingEnabled = !currentProject.settings.pixelatedrender;
-            
+
             if (this.stack.length > 0) { // есть слои вообще?
                 // копии
                 for (let i = 0, li = this.stack.length; i < li; i++) {
@@ -512,7 +513,7 @@ room-editor.panel.view
                     this.drawSelection(copy);
                 }
             }
-            
+
             // Обводка границ комнаты
             this.drawSelection(-1.5, -1.5, this.room.width+1.5, this.room.height+1.5);
         };
@@ -552,7 +553,7 @@ room-editor.panel.view
          */
         this.roomGenSplash = function() {
             return new Promise((accept, decline) => {
-                var c = document.createElement('canvas'), 
+                var c = document.createElement('canvas'),
                     w, h, k;
                 c.x = c.getContext('2d');
                 c.width = 340;

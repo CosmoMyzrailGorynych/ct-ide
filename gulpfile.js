@@ -99,6 +99,9 @@ const concatScripts = () =>
         console.error('[scripts error]', err);
     })
     .on('change', fileChangeNotifier);
+const copyRequires = () =>
+    gulp.src('./src/node_requires/**/*')
+    .pipe(gulp.dest('./app/data/node_requires'));
 
 const compileScripts = gulp.series(compileRiot, concatScripts);
 
@@ -134,15 +137,24 @@ const watchPug = () => {
         console.error('[pug error]', err);
     });
 };
+const watchRequires = () => {
+    gulp.watch('./src/node_requires/**/*', copyRequires)
+    .on('change', fileChangeNotifier)
+    .on('error', err => {
+        notifier.notify(makeErrorObj('Failure of node_requires', err));
+        console.error('[node_requires error]', err);
+    });
+};
 
 const watch = () => {
     watchScripts();
     watchStylus();
     watchPug();
     watchRiot();
+    watchRequires();
 };
 
-const build = gulp.parallel([compilePug, compileStylus, compileScripts]);
+const build = gulp.parallel([compilePug, compileStylus, compileScripts, copyRequires]);
 
 const lintStylus = () => gulp.src(['./src/styl/**/*.styl', '!./src/styl/3rdParty/**/*.styl'])
     .pipe(stylint())
@@ -193,7 +205,6 @@ const nwPackages = async () => {
     });
     await nw.build();
 };
-    });
 
 const examples = () => {
     const promises = platforms.map(platform =>

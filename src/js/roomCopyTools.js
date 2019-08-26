@@ -1,6 +1,7 @@
 (function () {
     const gui = require('nw.gui');
     const clickThreshold = 16;
+    const glob = require('./data/node_requires/glob');
 
     const drawInsertPreview = function (e) {
         let img, texture, w, h, grax, gray, ox, oy;
@@ -9,7 +10,7 @@
         this.refs.canvas.x.setTransform(this.zoomFactor, 0, 0, this.zoomFactor, 0, 0);
         this.refs.canvas.x.globalAlpha = 0.5;
         if (this.currentType.texture !== -1) {
-            img = window.glob.texturemap[this.currentType.texture];
+            img = glob.texturemap[this.currentType.texture];
             texture = img.g;
             ox = texture.offx;
             oy = texture.offy;
@@ -17,7 +18,7 @@
             h = texture.height;
             [grax, gray] = texture.axis;
         } else {
-            img = window.glob.texturemap[-1];
+            img = glob.texturemap[-1];
             w = h = 32;
             ox = oy = 0;
             grax = gray = 16;
@@ -59,7 +60,6 @@
         return this.room.copies[pos];
     };
 
-    /* global glob */
     window.roomCopyTools = {
         init() {
             this.currentType = -1;
@@ -218,7 +218,7 @@
                               y1 = this.yToRoom(this.starty),
                               y2 = this.yToRoom(e.offsetY);
                         this.drawSelection(x1, y1, x2, y2);
-                    } 
+                    }
                 } else if (this.movingStuff) {
                     let dx = this.xToRoom(e.offsetX) - this.xToRoom(this.startx),
                         dy = this.yToRoom(e.offsetY) - this.yToRoom(this.starty);
@@ -285,10 +285,10 @@
                 click: () => {
                     window.alertify.confirm(`
                         ${window.languageJSON.roomview.shiftCopies}
-                        <label class="block">X: 
+                        <label class="block">X:
                             <input id="copiespositionx" type="number" value="${this.room.gridX}" />
                         </label>
-                        <label class="block">Y: 
+                        <label class="block">Y:
                             <input id="copiespositiony" type="number" value="${this.room.gridY}" />
                         </label>
                     `)
@@ -331,10 +331,10 @@
                     var copy = this.room.copies[this.closestPos];
                     window.alertify.confirm(`
                         ${window.languageJSON.roomview.changecopyscale}
-                        <label class="block">X: 
+                        <label class="block">X:
                             <input id="copyscalex" type="number" value="${copy.tx || 1}" />
                         </label>
-                        <label class="block">Y: 
+                        <label class="block">Y:
                             <input id="copyscaley" type="number" value="${copy.ty || 1}" />
                         </label>
                     `)
@@ -353,10 +353,10 @@
                     var copy = this.room.copies[this.closestPos];
                     window.alertify.confirm(`
                         ${window.languageJSON.roomview.shiftcopy}
-                        <label class="block">X: 
+                        <label class="block">X:
                             <input id="copypositionx" type="number" value="${copy.x}" />
                         </label>
-                        <label class="block">Y: 
+                        <label class="block">Y:
                             <input id="copypositiony" type="number" value="${copy.y}" />
                         </label>
                     `)

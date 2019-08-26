@@ -3,7 +3,7 @@ sounds-panel.panel.view
         .flexfix-header
             div
                 .toright
-                    b {vocGlob.sort}   
+                    b {vocGlob.sort}
                     button.inline.square(onclick="{switchSort('date')}" class="{selected: sort === 'date' && !searchResults}")
                         i.icon-clock
                     button.inline.square(onclick="{switchSort('name')}" class="{selected: sort === 'name' && !searchResults}")
@@ -85,11 +85,12 @@ sounds-panel.panel.view
         this.on('unmount', () => {
             window.signals.off('projectLoaded', this.setUpPanel);
         });
-        
+
         const gui = require('nw.gui');
-        
+
         this.soundNew = e => {
-            var id = window.generateGUID(),
+            const generateGUID = require('./data/node_requires/generateGUID');
+            var id = generateGUID(),
                 slice = id.split('-').pop();
             var newSound = {
                 name: 'Sound_' + slice,
@@ -104,7 +105,7 @@ sounds-panel.panel.view
             this.editing = true;
             this.update();
         };
-        
+
         // A context menu called by clicking on a sound card with RMB
         var soundMenu = new gui.Menu();
         soundMenu.append(new gui.MenuItem({

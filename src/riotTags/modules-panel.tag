@@ -37,13 +37,13 @@ modules-panel.panel.view
                     i#modinjects.icon-zap.warning(title="{voc.hasinjects}" show="{currentModule.injects}")
                     i#modconfigurable.icon-settings.success(title="{voc.hasfields}" show="{currentModule.fields}")
                     i#modinputmethods.icon-airplay.success(title="{voc.hasinputmethods}" show="{currentModule.inputMethods}")
-                    
+
                     #modinfohtml(if="{currentModuleHelp}")
                         raw(ref="raw" content="{currentModuleHelp}")
                     h1(if="{currentModuleLicense}") {voc.license}
                     pre(if="{currentModuleLicense}")
                         code {currentModuleLicense}
-                    
+
                 #modulesettings.tabbed(show="{tab === 'modulesettings'}" if="{currentModule.fields && currentModuleName in currentProject.libs}")
                     dl(each="{field in currentModule.fields}")
                         dt
@@ -58,30 +58,30 @@ modules-panel.panel.view
                                 |   {field.name}
                         dd
                             textarea(
-                                if="{field.type === 'textfield'}" 
-                                value="{window.currentProject.libs[currentModuleName][field.id]}" 
+                                if="{field.type === 'textfield'}"
+                                value="{window.currentProject.libs[currentModuleName][field.id]}"
                                 onchange="{wire('window.currentProject.libs.' + escapeDots(currentModuleName) + '.' + field.id)}"
                             )
                             input(
-                                if="{field.type === 'number'}" 
+                                if="{field.type === 'number'}"
                                 type="number"
-                                value="{window.currentProject.libs[currentModuleName][field.id]}" 
+                                value="{window.currentProject.libs[currentModuleName][field.id]}"
                                 onchange="{wire('window.currentProject.libs.' + escapeDots(currentModuleName) + '.' + field.id)}"
                             )
                             label.block(if="{field.type === 'radio'}" each="{option in field.options}")
                                 input(
                                     type="radio"
                                     value="{option.value}"
-                                    checked="{window.currentProject.libs[currentModuleName][field.id] === option.value}" 
+                                    checked="{window.currentProject.libs[currentModuleName][field.id] === option.value}"
                                     onchange="{wire('window.currentProject.libs.' + escapeDots(currentModuleName) + '.' + field.id)}"
                                 )
                                 |   {option.name}
                                 div(class="desc" if="{option.help}")
                                     raw(ref="raw" content="{md.render(option.help)}")
                             input(
-                                if="{['checkbox', 'number', 'textfield', 'radio'].indexOf(field.type) === -1}" 
+                                if="{['checkbox', 'number', 'textfield', 'radio'].indexOf(field.type) === -1}"
                                 type="text"
-                                value="{window.currentProject.libs[currentModuleName][field.id]}" 
+                                value="{window.currentProject.libs[currentModuleName][field.id]}"
                                 onchange="{wire('window.currentProject.libs.' + escapeDots(currentModuleName) + '.' + field.id)}"
                             )
                             //- That's a bad idea!!!
@@ -100,23 +100,24 @@ modules-panel.panel.view
             html: false,
             linkify: true
         });
+        const glob = require('./data/node_requires/glob');
         const libsDir = './data/ct.libs';
         this.md = md;
         this.mixin(window.riotWired);
         this.namespace = 'modules';
         this.mixin(window.riotVoc);
         var exec = path.dirname(process.execPath).replace(/\\/g,'/');
-        
+
         this.currentModule = false;
         this.currentModuleHelp = '';
         this.currentModuleDocs = '';
         this.currentModuleLicense = '';
-        
+
         this.tab = 'moduleinfo';
         this.changeTab = tab => e => {
             this.tab = tab;
         };
-        
+
         this.allModules = [];
         this.on('update', () => {
             this.enabledModules = [];
@@ -126,7 +127,7 @@ modules-panel.panel.view
         });
 
         this.escapeDots = str => str.replace(/\./g, '\\.');
-        
+
         fs.readdir(libsDir, (err, files) => {
             if (err) {
                 throw err;
@@ -168,7 +169,7 @@ modules-panel.panel.view
             }
             this.renderModule(moduleName)(e);
             window.signals.trigger('modulesChanged');
-            window.glob.modified = true;
+            glob.modified = true;
         };
         this.renderModule = name => e => {
             fs.readJSON(path.join(libsDir, name, 'module.json'), (err, data) => {
@@ -183,7 +184,7 @@ modules-panel.panel.view
                 }
                 this.currentModule = data;
                 this.currentModuleName = name;
-                
+
                 if (fs.pathExistsSync(path.join(libsDir, name, 'README.md'))) {
                     this.currentModuleHelp = md.render(fs.readFileSync(path.join(libsDir, name, 'README.md'), {
                         encoding: 'utf8'
@@ -217,7 +218,7 @@ modules-panel.panel.view
             });
             this.tab = 'moduleinfo';
         };
-        
+
         var clipboard = nw.Clipboard.get();
         var copymeMenu = new gui.Menu();
         copymeMenu.append(new gui.MenuItem({

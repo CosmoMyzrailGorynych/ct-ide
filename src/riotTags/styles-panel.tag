@@ -1,7 +1,7 @@
 styles-panel.flexfix.tall.fifty
     div.flexfix-header
         .toright
-            b {vocGlob.sort}   
+            b {vocGlob.sort}
             button.inline.square(onclick="{switchSort('date')}" class="{selected: sort === 'date' && !searchResults}")
                 i.icon-clock
             button.inline.square(onclick="{switchSort('name')}" class="{selected: sort === 'name' && !searchResults}")
@@ -16,8 +16,8 @@ styles-panel.flexfix.tall.fifty
                 span {voc.create}
         .clear
     ul.cards.flexfix-body
-        li(each="{style in (searchResults? searchResults : styles)}" 
-        onclick="{openStyle(style)}" 
+        li(each="{style in (searchResults? searchResults : styles)}"
+        onclick="{openStyle(style)}"
         oncontextmenu="{onStyleContextMenu(style)}"
         onlong-press="{onStyleContextMenu(style)}")
             span {style.name}
@@ -25,8 +25,10 @@ styles-panel.flexfix.tall.fifty
                 img(src="file://{window.sessionStorage.projdir + '/img/' + style.origname}_prev.png?{style.lastmod}")
     style-editor(if="{editingStyle}" styleobj="{editedStyle}")
     script.
+        const generateGUID = require('./data/node_requires/generateGUID');
+
         this.editingStyle = false;
-        
+
         this.namespace = 'styles';
         this.mixin(window.riotVoc);
 
@@ -73,11 +75,11 @@ styles-panel.flexfix.tall.fifty
                 this.searchResults = null;
             }
         };
-        
+
         const gui = require('nw.gui');
-        
+
         this.styleCreate = () => {
-            var id = window.generateGUID(),
+            var id = generateGUID(),
                 slice = id.split('-').pop();
             window.currentProject.styletick ++;
             var obj = {
@@ -106,7 +108,7 @@ styles-panel.flexfix.tall.fifty
         this.on('unmount', () => {
             window.signals.off('projectLoaded', this.setUpPanel);
         });
-        
+
         // Контекстное меню для управления стилями по нажатию ПКМ по карточкам
         var styleMenu = new gui.Menu();
         this.onStyleContextMenu = style => e => {
@@ -137,7 +139,7 @@ styles-panel.flexfix.tall.fifty
                 .prompt(window.languageJSON.common.newname)
                 .then(e => {
                     if (e.inputValue !== '' && e.buttonClicked !== 'cancel') {
-                        var id = window.generateGUID(),
+                        var id = generateGUID(),
                             slice = id.split('-').pop();
                         var newStyle = JSON.parse(JSON.stringify(this.editedStyle));
                         newStyle.name = e.inputValue;
