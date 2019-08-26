@@ -29,7 +29,7 @@
 * Fix ct.touch that used `ct.width` and `ct.height` instead of `ct.viewWidth` and `ct.viewHeight`, resulting in incorrect coordinates on some scaling methods
 * Fix ct.u.ext not returning the extended object
 * Fix flawed `this.xprev`, `this.yprev` handling in ct as it is and in ct.place
-* Fix UI problems of font deletion 
+* Fix UI problems of font deletion
 * Fix importing font on Windows
 * Fix mouse coordinates not updating on view shift (in-game)
 * Fix non-working "Open" options in context menus for rooms, sounds and textures
@@ -66,7 +66,7 @@
 * ⚡️ Minor fixes and clarifications at Making Space Shooter tutorial
 * ⬆️ Update vuepress to 1.0@next
 * 🌐 Add ct.md for Ru locale
-* 🌐 Add readme.md and tut-making-platformer fot RU locale
+* 🌐 Add readme.md and tut-making-platformer for RU locale
 * 🌐 Translate "Making Space Shooter" tutorial to Russian
 * 🌐 Translate catmoddocs.md to Ru
 * 🌐 Translate ct.inputs.md to Ru locale
