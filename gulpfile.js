@@ -29,14 +29,37 @@ const nwVersion = '0.34.1',
 
 var channelPostfix = argv.channel || false;
 
+let errorBoxShown = false;
+const showErrorBox = function () {
+    if (!errorBoxShown) {
+        errorBoxShown = true;
+        console.error(`
+ ╭──────────────────────────────────────────╮
+ │                                          ├──╮
+ │             Build failed! D:             │  │
+ │                                          │  │
+ │  If you have recently pulled changes     │  │
+ │  or have just cloned the repo, run this  │  │
+ │  command in your console:                │  │
+ │                                          │  │
+ │  $ gulp -f devSetup.gulpfile.js          │  │
+ │                                          │  │
+ ╰─┬────────────────────────────────────────╯  │
+   ╰───────────────────────────────────────────╯
+`);
+    }
+};
 
-const makeErrorObj = (title, err) => ({
-    title,
-    message: err.toString(),
-    icon: path.join(__dirname, 'error.png'),
-    sound: true,
-    wait: true
-});
+const makeErrorObj = (title, err) => {
+    showErrorBox();
+    return {
+        title,
+        message: err.toString(),
+        icon: path.join(__dirname, 'error.png'),
+        sound: true,
+        wait: true
+    };
+};
 
 const fileChangeNotifier = p => {
     notifier.notify({
@@ -177,18 +200,25 @@ const launchNw = () => { // makes a loop that keeps ct.js open if it was closed,
         platforms,
         flavor: 'sdk'
     });
-    return nw.run().catch(function (error) {
+    return nw.run()
+    .catch(function (error) {
+        showErrorBox();
         console.error(error);
     })
     .then(launchNw);
 };
 
 const docs = async () => {
-    await fs.remove('./app/data/docs/');
-    await spawnise.spawn((/^win/).test(process.platform) ? 'npm.cmd' : 'npm', ['run', 'build'], {
-        cwd: './docs'
-    });
-    await fs.copy('./docs/docs/.vuepress/dist', './app/data/docs/');
+    try {
+        await fs.remove('./app/data/docs/');
+        await spawnise.spawn((/^win/).test(process.platform) ? 'npm.cmd' : 'npm', ['run', 'build'], {
+            cwd: './docs'
+        });
+        await fs.copy('./docs/docs/.vuepress/dist', './app/data/docs/');
+    } catch (e) {
+        showErrorBox();
+        throw e;
+    }
 };
 
 const nwPackages = async () => {

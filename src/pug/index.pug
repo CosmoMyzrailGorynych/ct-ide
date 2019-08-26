@@ -3,6 +3,26 @@ html
     include includes/head.pug
     body.maximized
         root-tag
+        script.
+            try {
+                require('gulp');
+                console.log(`
+            ╭──────────────────────────────────────────╮
+            │                                          ├──╮
+            │           O-o-oh, a developer!           │  │
+            │                                          │  │
+            │   If you have recently pulled changes    │  │
+            │   and face issues unseen before, run     │  │
+            │   this command in your console:          │  │
+            │                                          │  │
+            │   $ gulp -f devSetup.gulpfile.js         │  │
+            │                                          │  │
+            ╰─┬────────────────────────────────────────╯  │
+              ╰───────────────────────────────────────────╯
+                `);
+            } catch (e) {
+                void e;
+            }
         include includes/footer.pug
         script.
             'use strict';
