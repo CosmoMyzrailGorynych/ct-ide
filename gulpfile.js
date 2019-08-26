@@ -256,21 +256,19 @@ const fixPermissions = () => {
         return Promise.all(files.map(file => filemode(file, '777')));
     });
 };
-const toLink = [
-    'Versions/Current/', // this one will need to link to './A'
-    'Helpers/', // others link to Versions/Current + the same name
-    'Internet Plug-Ins/',
-    'Libraries/',
-    'Resources/',
-    'XPCServices/',
-];
 
 const oldSymlink = fs.symlink;
 fs.symlink = (target, destination) => {
-    console.log('link', target, destination);
+    console.log('link', target, '<==', destination);
     return oldSymlink(target, destination);
 };
 
+const abortOnWindows = done => {
+    if ((/^win/).test(process.platform)) {
+        throw new Error('Sorry, but building ct.js for mac is not possible on Windows due to Windows\' specifics. You can edit `platforms` at gulpfile.js if you don\'t need a package for mac.');
+    }
+    done();
+};
 // Based on solution at https://github.com/strawbees/desktop-packager/blob/master/commands/darwin/bundle.js
 const fixSymlinks = async () => {
     if (platforms.indexOf('osx64') === -1) {
@@ -280,18 +278,23 @@ const fixSymlinks = async () => {
 
     // the actual directory depends on nw version, so let's find the needed dir with a glob
     const glob = baseDir + '/Versions/*/nwjs Framework.framework/*';
+    const execute = require('./node_requires/execute');
     const frameworkDir = path.dirname((await globby([glob]))[0]);
+    
     console.log('fixing symlinks at', frameworkDir);
-    // remove all the old symlinks
-    await Promise.all(toLink.map(link =>
-        fs.remove(path.join(frameworkDir, link))
-    ));
-    await fs.remove(path.join(frameworkDir, 'nwjs Framework')); // this is a file, so it is listed separatedly
-    await fs.symlink(path.join(frameworkDir, './Versions/A/'), path.join(frameworkDir, toLink[0]));
-    await fs.symlink(path.join(frameworkDir, 'Versions/Current', 'nwjs Framework'), path.join(frameworkDir, 'nwjs Framework'));
-    await Promise.all(toLink.slice(1).map(way =>
-        fs.symlink(path.join(frameworkDir, 'Versions/Current', way), path.join(frameworkDir, way))
-    ));
+    
+    execute(async ({exec}) => {
+        await exec(`
+            cd "$(find "${frameworkDir}" -name "nwjs Framework.framework")"
+            rm "Versions/Current" && ln -s "./A" "./Versions/Current"
+            rm "Helpers" && ln -s "./Versions/Current/Helpers"
+            rm "Internet Plug-Ins" && ln -s "./Versions/Current/Internet Plug-Ins"
+            rm "Libraries" && ln -s "./Versions/Current/Libraries"
+            rm "nwjs Framework" && ln -s "./Versions/Current/nwjs Framework"
+            rm "Resources" && ln -s "./Versions/Current/Resources"
+            rm "XPCServices" && ln -s "./Versions/Current/XPCServices"
+        `);
+    });
 };
 exports.fixPermissions = fixPermissions;
 exports.fixSymlinks = fixSymlinks;
@@ -308,6 +311,7 @@ const examples = () => {
 
 const packages = gulp.series([
     lint,
+    abortOnWindows,
     build,
     docs,
     nwPackages,
