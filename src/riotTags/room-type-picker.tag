@@ -23,13 +23,15 @@ room-type-picker.room-editor-TypeSwatches.tabbed.tall
     .room-editor-aTypeSwatch.filler
     .room-editor-aTypeSwatch.filler
     .room-editor-aTypeSwatch.filler
-    
+
     script.
+        const glob = require('./data/node_requires/glob');
+        this.glob = glob;
         this.namespace = 'roomview';
         this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
-        
-        this.getTypeTextureRevision = type => window.glob.texturemap[type.texture].g.lastmod;
+
+        this.getTypeTextureRevision = type => glob.texturemap[type.texture].g.lastmod;
 
         this.updateTypeList = () => {
             this.types = [...window.currentProject.types];

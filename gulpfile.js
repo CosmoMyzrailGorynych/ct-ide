@@ -114,6 +114,10 @@ const compileScripts = gulp.series(compileRiot, () =>
     })
     .on('change', fileChangeNotifier)
 );
+const copyRequires = () =>
+    gulp.src('./src/node_requires/**/*')
+    .pipe(gulp.dest('./app/data/node_requires'));
+
 
 const watchScripts = () => {
     gulp.watch('./src/js/**/*', gulp.series(compileScripts))
@@ -147,15 +151,24 @@ const watchPug = () => {
         console.error('[pug error]', err);
     });
 };
+const watchRequires = () => {
+    gulp.watch('./src/node_requires/**/*', copyRequires)
+    .on('change', fileChangeNotifier)
+    .on('error', err => {
+        notifier.notify(makeErrorObj('Failure of node_requires', err));
+        console.error('[node_requires error]', err);
+    });
+};
 
 const watch = () => {
     watchScripts();
     watchStylus();
     watchPug();
     watchRiot();
+    watchRequires();
 };
 
-const build = gulp.parallel([compilePug, compileStylus, compileScripts]);
+const build = gulp.parallel([compilePug, compileStylus, compileScripts, copyRequires]);
 
 const lintStylus = () => gulp.src(['./src/styl/**/*.styl', '!./src/styl/3rdParty/**/*.styl'])
     .pipe(stylint())

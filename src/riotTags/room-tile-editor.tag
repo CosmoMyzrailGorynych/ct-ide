@@ -13,7 +13,7 @@ room-tile-editor.room-editor-Tiles.tabbed.tall.flexfix
         .flexrow
             select.wide(onchange="{changeTileLayer}" value="{parent.currentTileLayerId}")
                 option(each="{layer, ind in opts.room.tiles}" selected="{parent.currentTileLayerId === ind}" value="{ind}") {layer.hidden? '❌' : '✅'} {layer.depth}
-            
+
             span.act(title="{vocGlob.delete}" onclick="{deleteTileLayer}")
                 i.icon-trash
             span.act(title="{parent.currentTileLayer.hidden? voc.show: voc.hide}" onclick="{toggleTileLayerVisibility}")
@@ -40,7 +40,7 @@ room-tile-editor.room-editor-Tiles.tabbed.tall.flexfix
         this.namespace = 'roomtiles';
         this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
-        
+
         this.deleteTileLayer = e => {
             alertify
             .okBtn(window.languageJSON.common.delete)
@@ -121,6 +121,7 @@ room-tile-editor.room-editor-Tiles.tabbed.tall.flexfix
         };
 
         this.redrawTileset = e => {
+            const glob = require('./data/node_requires/glob');
             var c = this.refs.tiledImage,
                 cx = c.getContext('2d'),
                 g = this.parent.currentTileset,
@@ -162,9 +163,9 @@ room-tile-editor.room-editor-Tiles.tabbed.tall.flexfix
             this.parent.tileSpanX = 1;
             this.parent.tileSpanY = 1;
             this.selectingTile = true;
-            this.tileStartX = Math.round((e.layerX - g.offx - g.width*0.5) / (g.width+g.marginx)); 
+            this.tileStartX = Math.round((e.layerX - g.offx - g.width*0.5) / (g.width+g.marginx));
             this.tileStartX = Math.max(0, Math.min(g.grid[0], this.tileStartX));
-            this.tileStartY = Math.round((e.layerY - g.offy - g.height*0.5) / (g.height+g.marginy)); 
+            this.tileStartY = Math.round((e.layerY - g.offy - g.height*0.5) / (g.height+g.marginy));
             this.tileStartY = Math.max(0, Math.min(g.grid[1], this.tileStartY));
             this.parent.tileX = this.tileStartX;
             this.parent.tileY = this.tileStartY;
@@ -173,9 +174,9 @@ room-tile-editor.room-editor-Tiles.tabbed.tall.flexfix
         this.moveTileSelection = e => {
             if (!this.selectingTile) {return;}
             var g = this.parent.currentTileset;
-            this.tileEndX = Math.round((e.layerX - g.offx - g.width*0.5) / (g.width+g.marginx)); 
+            this.tileEndX = Math.round((e.layerX - g.offx - g.width*0.5) / (g.width+g.marginx));
             this.tileEndX = Math.max(0, Math.min(g.grid[0], this.tileEndX));
-            this.tileEndY = Math.round((e.layerY - g.offy - g.height*0.5) / (g.height+g.marginy)); 
+            this.tileEndY = Math.round((e.layerY - g.offy - g.height*0.5) / (g.height+g.marginy));
             this.tileEndY = Math.max(0, Math.min(g.grid[1], this.tileEndY));
             this.parent.tileSpanX = 1 + Math.abs(this.tileStartX - this.tileEndX);
             this.parent.tileSpanY = 1 + Math.abs(this.tileStartY - this.tileEndY);

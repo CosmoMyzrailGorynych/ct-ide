@@ -1,4 +1,5 @@
-(window => {
+(function () {
+    const glob = require('./data/node_requires/glob');
     var wire = (that, field, update) => e => {
         var way = field.split(/(?<!\\)\./gi),
             root, val;
@@ -23,7 +24,7 @@
             way.shift();
         }
         root[way[0]] = val;
-        window.glob.modified = true;
+        glob.modified = true;
         if (update && ('update' in that)) {
             that.update();
         }
@@ -47,4 +48,4 @@
             voc(this);
         }
     };
-})(this);
+})();

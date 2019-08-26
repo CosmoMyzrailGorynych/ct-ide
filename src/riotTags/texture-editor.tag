@@ -9,7 +9,7 @@ texture-editor.panel.view
             b {voc.center}
             .flexrow
                 input.short(type="number" value="{opts.texture.axis[0]}" onchange="{wire('this.texture.axis.0')}" oninput="{wire('this.texture.axis.0')}")
-                span.center   ×  
+                span.center   ×
                 input.short(type="number" value="{opts.texture.axis[1]}" onchange="{wire('this.texture.axis.1')}" oninput="{wire('this.texture.axis.1')}")
             br
             .flexrow
@@ -41,7 +41,7 @@ texture-editor.panel.view
                     input.short(type="number" value="{opts.texture.top}" onchange="{wire('this.texture.top')}" oninput="{wire('this.texture.top')}")
                     br
                     input.short(type="number" value="{opts.texture.left}" onchange="{wire('this.texture.left')}" oninput="{wire('this.texture.left')}")
-                    span   ×  
+                    span   ×
                     input.short(type="number" value="{opts.texture.right}" onchange="{wire('this.texture.right')}" oninput="{wire('this.texture.right')}")
                     br
                     input.short(type="number" value="{opts.texture.bottom}" onchange="{wire('this.texture.bottom')}" oninput="{wire('this.texture.bottom')}")
@@ -52,7 +52,7 @@ texture-editor.panel.view
             div(if="{opts.texture.shape === 'strip'}")
                 .flexrow(each="{point, ind in opts.texture.stripPoints}")
                     input.short(type="number" value="{point.x}" oninput="{wire('this.texture.stripPoints.'+ ind + '.x')}")
-                    span   ×  
+                    span   ×
                     input.short(type="number" value="{point.y}" oninput="{wire('this.texture.stripPoints.'+ ind + '.y')}")
                     button.square.inline(title="{voc.removePoint}" onclick="{removeStripPoint}")
                         i.icon-minus
@@ -66,7 +66,7 @@ texture-editor.panel.view
                 input(checked="{prevShowMask}" onchange="{wire('this.prevShowMask')}" type="checkbox")
                 span   {voc.showmask}
         .flexfix-footer
-            button.wide(onclick="{textureSave}") 
+            button.wide(onclick="{textureSave}")
                 i.icon-save
                 span {window.languageJSON.common.save}
     .column.column2.borderleft.tall.flexfix
@@ -172,6 +172,7 @@ texture-editor.panel.view
     script.
         const path = require('path'),
               fs = require('fs-extra');
+        const glob = require('./data/node_requires/glob');
         this.namespace = 'textureview';
         this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
@@ -183,9 +184,9 @@ texture-editor.panel.view
         this.prevShowMask = true;
         this.previewColor = localStorage.UItheme === 'Day'? '#ffffff' : '#08080D';
         this.zoomFactor = 1;
-        
+
         var textureCanvas, grprCanvas;
-        
+
         this.on('mount', () => {
             textureCanvas = this.refs.textureCanvas;
             grprCanvas = this.refs.grprCanvas;
@@ -208,7 +209,7 @@ texture-editor.panel.view
             img.src = path.join('file://', sessionStorage.projdir, '/img/', texture.origname) + '?' + Math.random();
         });
         this.on('update', () => {
-            if (window.currentProject.textures.find(texture => 
+            if (window.currentProject.textures.find(texture =>
                 this.texture.name === texture.name && this.texture !== texture
             )) {
                 this.nameTaken = true;
@@ -224,7 +225,7 @@ texture-editor.panel.view
                 this.stopTexturePreview();
             }
         });
-        
+
         this.textureReplace = e => {
             if (/\.(jpg|gif|png|jpeg)/gi.test(this.refs.textureReplacer.value)) {
                 this.loadImg(
@@ -254,7 +255,7 @@ texture-editor.panel.view
          * @param {Sting} dest Путь к изображению в папке проекта
          */
         this.loadImg = (uid, filename, dest) => {
-            window.megacopy(filename, dest, e => {
+            fs.copy(filename, dest, e => {
                 if (e) throw e;
                 image = document.createElement('img');
                 image.onload = () => {
@@ -267,7 +268,7 @@ texture-editor.panel.view
                         this.update();
                     });
                     this.parent.imgGenPreview(dest, dest + '_prev@2.png', 128, () => {
-                        
+
                     });
                     setTimeout(() => {
                         this.refreshTextureCanvas();
@@ -281,7 +282,7 @@ texture-editor.panel.view
                 image.src = 'file://' + dest + '?' + Math.random();
             });
         };
-        
+
         this.textureToggleZoom = zoom => e => {
             this.zoomFactor = zoom;
         };
@@ -322,7 +323,7 @@ texture-editor.panel.view
             texture.axis[1] = Math.floor(texture.height / 2);
         };
         /**
-         * Заполнить всё изображение маской-квадратом 
+         * Заполнить всё изображение маской-квадратом
          */
         this.textureFillRect = e => {
             var texture = this.texture;
@@ -384,8 +385,8 @@ texture-editor.panel.view
 
             grprCanvas.x.clearRect(0, 0, grprCanvas.width, grprCanvas.height);
             grprCanvas.x.drawImage(
-                textureCanvas.img, 
-                x, y, w, h, 
+                textureCanvas.img,
+                x, y, w, h,
                 0, 0, w, h
             );
             // shape
@@ -584,13 +585,13 @@ texture-editor.panel.view
                 }
             }
         };
-        
+
         /**
          * Событие сохранения графики
          */
         this.textureSave = () => {
             this.parent.fillTextureMap();
-            window.glob.modified = true;
+            glob.modified = true;
             this.texture.lastmod = +(new Date());
             this.textureGenPreview(sessionStorage.projdir + '/img/' + this.texture.origname + '_prev@2.png', 128);
             this.textureGenPreview(sessionStorage.projdir + '/img/' + this.texture.origname + '_prev.png', 64)
@@ -599,7 +600,7 @@ texture-editor.panel.view
                 this.parent.update();
             });
         };
-        
+
         /**
          * Генерирует превьюху первого кадра графики
          * @returns {Promise} Промис

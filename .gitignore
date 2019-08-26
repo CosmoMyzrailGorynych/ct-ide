@@ -39,6 +39,7 @@ desktop\.ini
 # Generated files
 app/data/bundle.js
 app/data/bundle.css
+app/data/node_requires/**/*.js
 app/index.html
 app/preview.html
 app/empty.html

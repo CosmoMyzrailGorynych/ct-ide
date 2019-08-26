@@ -6,19 +6,20 @@ window.migrationProcess = window.migrationProcess || [];
 window.migrationProcess.push({
     version: '0.3.0',
     process: project => new Promise((resolve) => {
+        const generateGUID = require('./data/node_requires/generateGUID');
         /* replace numerical IDs with RFC4122 version 4 UIDs */
         let startingRoom;
         const graphmap = {},
             typemap = {};
         for (const graph of project.graphs) {
-            graph.uid = window.generateGUID();
+            graph.uid = generateGUID();
             graphmap[graph.origname] = graph.uid;
         }
         for (const sound of project.sounds) {
-            sound.uid = window.generateGUID();
+            sound.uid = generateGUID();
         }
         for (const style of project.styles) {
-            style.uid = window.generateGUID();
+            style.uid = generateGUID();
             if (style.fill && Number(style.fill.type) === 2) {
                 /* eslint no-loop-func: off */
                 style.fill.pattern = project.graphs.find(gr => gr.name === style.fill.patname).uid;
@@ -26,14 +27,14 @@ window.migrationProcess.push({
         }
         for (const type of project.types) {
             const oldId = type.uid;
-            type.uid = window.generateGUID();
+            type.uid = generateGUID();
             typemap[oldId] = type.uid;
             type.graph = graphmap[type.graph] || -1;
         }
         for (const room of project.rooms) {
-            const oldId = room.uid; 
+            const oldId = room.uid;
             room.thumbnail = room.uid;
-            room.uid = window.generateGUID();
+            room.uid = generateGUID();
             if (project.startroom === oldId) {
                 startingRoom = room.uid;
             }

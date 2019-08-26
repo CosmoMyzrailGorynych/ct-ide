@@ -14,7 +14,7 @@ project-selector
                         each="{project in lastProjects}" title="{requirePath.basename(project,'.json')}"
                         onclick="{updatePreview(project)}"
                         ondblclick="{loadRecentProject}"
-                    ) 
+                    )
                         .toright
                             i.icon-x(onclick="{forgetProject}" title="{voc.forgetProject}")
                         span {project}
@@ -27,7 +27,7 @@ project-selector
             .c4.npl.npt.npb
                 h3.nm.right {voc.newProject.text}
             .c5.np
-                input( 
+                input(
                     type='text'
                     placeholder='{voc.newProject.input}'
                     pattern='[a-zA-Z_0-9]\\{1,\\}'
@@ -35,13 +35,13 @@ project-selector
                 ).wide
             .c3.npr.npt.npb
                 button.nm.wide.inline(onclick="{newProject}") {voc.newProject.button}
-    .aVersionNumber 
+    .aVersionNumber
         a(href="https://discord.gg/CggbPkb" title="{voc.discord}" onclick="{openExternal('https://discord.gg/CggbPkb')}")
             i.icon-discord
         a(href="https://twitter.com/ctjsrocks" title="{voc.twitter}" onclick="{openExternal('https://twitter.com/ctjsrocks')}")
             i.icon-twitter
-        .inlineblock v{nw.App.manifest.version}.  
-        a(href="https://ctjs.rocks/" onclick="{openExternal}")   {voc.homepage}.  
+        .inlineblock v{nw.App.manifest.version}.
+        a(href="https://ctjs.rocks/" onclick="{openExternal}")   {voc.homepage}.
         .inlineblock(if="{newVersion}")   {newVersion}
     script.
         const fs = require('fs-extra'),
@@ -61,31 +61,32 @@ project-selector
         });
         this.projectSplash = '/data/img/notexture.png';
         this.newVersion = false;
-        
+
         // Loads recently opened projects
-        if (('lastProjects' in localStorage) && 
+        if (('lastProjects' in localStorage) &&
             (localStorage.lastProjects !== '')) {
             this.lastProjects = localStorage.lastProjects.split(';');
         } else {
             this.lastProjects = [];
         }
-        
+
         /**
          * Update a splash image of a selected project
          */
         this.updatePreview = projectPath => e => {
             this.projectSplash = 'file://' + path.dirname(projectPath) + '/' + path.basename(projectPath, '.ict') + '/img/splash.png';
         };
-        
+
         /**
          * Creates a mew project.
          * Technically it creates an empty project in-memory, then saves it to a directory.
          * Creates basic directories for sounds and textures.
          */
         this.newProject = async () => {
+            const {getWritableDir} = require('./data/node_requires/platformUtils');
             let way = path.dirname(process.execPath).replace(/\\/g,'/');
             try {
-                way = path.join(await window.getWritableDir(), '/projects');
+                way = path.join(await getWritableDir(), '/projects');
             } catch (e) {
                 alertify.error(this.voc.unableToWriteToFolders);
                 throw e;
@@ -146,7 +147,7 @@ project-selector
             fs.ensureDir(sessionStorage.projdir + '/snd');
             fs.ensureDir(sessionStorage.projdir + '/include');
             setTimeout(() => { // for some reason, it must be done through setTimeout; otherwise it fails
-                window.megacopy('./data/img/notexture.png', path.join(sessionStorage.projdir + '/img/splash.png'), e => {
+                fs.copy('./data/img/notexture.png', path.join(sessionStorage.projdir + '/img/splash.png'), e => {
                     if (e) {
                         alertify.error(e);
                         console.error(e);
@@ -155,7 +156,7 @@ project-selector
             }, 0);
             window.loadProject(path.join(way, codename + '.ict'));
         };
-        
+
         /**
          * Opens a recent project when an item in the Recent Project list is double-clicked
          */

@@ -22,26 +22,27 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
     button.vertical.dockleft(onclick="{notepadToggle}")
         i.icon(class="icon-{opened? 'chevron-right' : 'chevron-left'}")
     script.
+        const glob = require('./data/node_requires/glob');
         this.opened = false;
         this.namespace = 'notepad';
         this.mixin(window.riotVoc);
         this.notepadToggle = function() {
             this.opened = !this.opened;
         };
-        
+
         this.tab = 'notepadlocal';
         this.changeTab = tab => e => {
             this.tab = tab;
         };
-        
+
         this.backToHome = e => {
             this.refs.helpIframe.contentWindow.location = `http://localhost:${this.server.address().port}/`;
         };
-        
+
         this.on('update', () => {
             this.notepadlocal.setValue(window.currentProject.notes || '');
         });
-        
+
         this.on('mount', () => {
             setTimeout(() => {
                 this.notepadlocal = window.setupAceEditor(this.refs.notepadlocal, {
@@ -50,10 +51,10 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
                 this.notepadglobal = window.setupAceEditor(this.refs.notepadglobal, {
                     mode: 'javascript'
                 });
-                
+
                 this.notepadlocal.getSession().on('change', (e) => {
                     window.currentProject.notes = this.notepadlocal.getValue();
-                    window.glob.modified = true;
+                    glob.modified = true;
                 });
                 this.notepadglobal.getSession().on('change', (e) => {
                     localStorage.notes = this.notepadglobal.getValue();

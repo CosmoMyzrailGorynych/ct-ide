@@ -66,12 +66,14 @@ type-editor.panel.view.flexrow
                     .acer(ref="typeondestroy")
     texture-selector(if="{selectingTexture}" onselected="{applyTexture}" oncancelled="{cancelTexture}" ref="textureselector" showempty="sure")
     script.
+        const glob = require('./data/node_requires/glob');
+        this.glob = glob;
         this.namespace = 'typeview';
         this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
 
-        this.getTypeTextureRevision = type => window.glob.texturemap[type.texture].g.lastmod;
-        
+        this.getTypeTextureRevision = type => glob.texturemap[type.texture].g.lastmod;
+
         const libsDir = './data/ct.libs';
         const fs = require('fs-extra'),
               path = require('path');
@@ -127,9 +129,9 @@ type-editor.panel.view.flexrow
         };
         window.signals.on('typesFocus', this.focusEditor);
         this.on('unmount', () => {
-            window.signals.off('typesFocus', this.focusEditor); 
+            window.signals.off('typesFocus', this.focusEditor);
         });
-        
+
         this.on('mount', () => {
             var editorOptions = {
                 mode: 'javascript'
@@ -139,7 +141,7 @@ type-editor.panel.view.flexrow
                 this.typeonstep = window.setupAceEditor(this.refs.typeonstep, editorOptions);
                 this.typeondraw = window.setupAceEditor(this.refs.typeondraw, editorOptions);
                 this.typeondestroy = window.setupAceEditor(this.refs.typeondestroy, editorOptions);
-                
+
                 this.typeoncreate.setValue(this.type.oncreate);
                 this.typeonstep.setValue(this.type.onstep);
                 this.typeondraw.setValue(this.type.ondraw);
@@ -163,7 +165,7 @@ type-editor.panel.view.flexrow
             }, 0);
         });
         this.on('update', () => {
-            if (window.currentProject.types.find(type => 
+            if (window.currentProject.types.find(type =>
                 this.type.name === type.name && this.type !== type
             )) {
                 this.nameTaken = true;
@@ -189,7 +191,7 @@ type-editor.panel.view.flexrow
             this.update();
         };
         this.typeSave = e => {
-            window.glob.modified = true;
+            glob.modified = true;
             this.type.lastmod = +(new Date());
             this.parent.editingType = false;
             this.parent.fillTypeMap();

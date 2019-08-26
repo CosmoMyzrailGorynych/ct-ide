@@ -2,7 +2,7 @@ room-backgrounds-editor.room-editor-Backgrounds.tabbed.tall
     ul
         li.bg(each="{background, ind in opts.room.backgrounds}" oncontextmenu="{onContextMenu}")
             img(src="{background.texture === -1? '/img/notexture.png' : (glob.texturemap[background.texture].src.split('?')[0] + '_prev.png?' + glob.texturemap[background.texture].g.lastmod)}" onclick="{onChangeBgTexture}")
-            span 
+            span
                 span(class="{active: detailedBackground === background}" onclick="{editBackground}")
                     .icon-settings
                 | {glob.texturemap[background.texture].g.name} ({background.depth})
@@ -12,28 +12,28 @@ room-backgrounds-editor.room-editor-Backgrounds.tabbed.tall
                 label
                     b {voc.depth}
                     input.wide(type="number" value="{background.depth || 0}" step="0" oninput="{onChangeBgDepth}")
-                
+
                 b {voc.shift}
                 .clear
                 label.fifty.npl.npt
                     input.wide(type="number" value="{background.extends.shiftX || 0}" step="8" oninput="{wire('this.detailedBackground.extends.shiftX')}")
                 label.fifty.npr.npt
                     input.wide(type="number" value="{background.extends.shiftY || 0}" step="8" oninput="{wire('this.detailedBackground.extends.shiftY')}")
-                
+
                 b {voc.scale}
                 .clear
                 label.fifty.npl.npt
                     input.wide(type="number" value="{background.extends.scaleX || 1}" step="0.01" oninput="{wire('this.detailedBackground.extends.scaleX')}")
                 label.fifty.npr.npt
                     input.wide(type="number" value="{background.extends.scaleY || 1}" step="0.01" oninput="{wire('this.detailedBackground.extends.scaleY')}")
-                
+
                 b {voc.movement}
                 .clear
                 label.fifty.npl.npt
                     input.wide(type="number" value="{background.extends.movementX || 0}" step="0.1" oninput="{wire('this.detailedBackground.extends.movementX')}")
                 label.fifty.npr.npt
                     input.wide(type="number" value="{background.extends.movementY || 0}" step="0.1" oninput="{wire('this.detailedBackground.extends.movementY')}")
-                
+
                 b {voc.parallax}
                 .clear
                 label.fifty.npl.npt
@@ -55,11 +55,13 @@ room-backgrounds-editor.room-editor-Backgrounds.tabbed.tall
     texture-selector(ref="texturePicker" if="{pickingBackground}" oncancelled="{onTextureCancel}" onselected="{onTextureSelected}")
     script.
         const gui = require('nw.gui');
+        const glob = require('./data/node_requires/glob');
+        this.glob = glob;
         this.pickingBackground = false;
         this.namespace = 'roombackgrounds';
         this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
-        this.on('update', () => { 
+        this.on('update', () => {
             if (this.parent.tab === 'roombackgrounds') {
                 this.parent.refreshRoomCanvas();
             }

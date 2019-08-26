@@ -66,6 +66,8 @@ textures-panel.panel.view
         const fs = require('fs-extra'),
               path = require('path'),
               gui = require('nw.gui');
+        const glob = require('./data/node_requires/glob');
+        const generateGUID = require('./data/node_requires/generateGUID');
         this.namespace = 'texture';
         this.mixin(window.riotVoc);
         this.editing = false;
@@ -176,7 +178,7 @@ textures-panel.panel.view
             files = e.target.value.split(';');
             for (i = 0; i < files.length; i++) {
                 if (/\.(jpg|gif|png|jpeg)/gi.test(files[i])) {
-                    let id = window.generateGUID();
+                    let id = generateGUID();
                     this.loadImg(
                         id,
                         files[i],
@@ -184,7 +186,7 @@ textures-panel.panel.view
                         true
                     );
                 } else if (/_ske\.json/i.test(files[i])) {
-                    let id = window.generateGUID();
+                    let id = generateGUID();
                     this.loadSkeleton(
                         id,
                         files[i],
@@ -204,7 +206,7 @@ textures-panel.panel.view
          * @param {Boolean} imprt If set to true, creates a texture object in the current project; otherwise updates the existing texture.
          */
         this.loadImg = (uid, filename, dest, imprt) => {
-            window.megacopy(filename, dest, e => {
+            fs.copy(filename, dest, e => {
                 if (e) throw e;
                 var image = document.createElement('img');
                 image.onload = () => {

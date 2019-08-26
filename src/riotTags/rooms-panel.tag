@@ -3,7 +3,7 @@ rooms-panel.panel.view
         .flexfix-header
             div
                 .toright
-                    b {vocGlob.sort}   
+                    b {vocGlob.sort}
                     button.inline.square(onclick="{switchSort('date')}" class="{selected: sort === 'date' && !searchResults}")
                         i.icon-clock
                     button.inline.square(onclick="{switchSort('name')}" class="{selected: sort === 'name' && !searchResults}")
@@ -26,6 +26,8 @@ rooms-panel.panel.view
                 span {room.name}
     room-editor(if="{editing}" room="{editingRoom}")
     script.
+        const generateGUID = require('./data/node_requires/generateGUID');
+
         this.namespace = 'rooms';
         this.mixin(window.riotVoc);
         this.editing = false;
@@ -92,7 +94,7 @@ rooms-panel.panel.view
               fs = require('fs-extra'),
               path = require('path');
         this.roomCreate = function () {
-            var guid = window.generateGUID(),
+            var guid = generateGUID(),
                 thumbnail = guid.split('-').pop();
             fs.copy('./data/img/notexture.png', path.join(sessionStorage.projdir, '/img/r' + thumbnail + '.png'), () => {
                 var newRoom = {
@@ -151,7 +153,7 @@ rooms-panel.panel.view
                 .prompt(window.languageJSON.common.newname)
                 .then(e => {
                     if (e.inputValue != '' && e.buttonClicked !== 'cancel') {
-                        var guid = window.generateGUID(),
+                        var guid = generateGUID(),
                             thumbnail = guid.split('-').pop();
                         var newRoom = JSON.parse(JSON.stringify(this.editingRoom));
                         newRoom.name = e.inputValue;
