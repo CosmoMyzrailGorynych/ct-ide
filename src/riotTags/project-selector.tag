@@ -41,8 +41,12 @@ project-selector
         a(href="https://twitter.com/ctjsrocks" title="{voc.twitter}" onclick="{openExternal('https://twitter.com/ctjsrocks')}")
             i.icon-twitter
         .inlineblock v{nw.App.manifest.version}.
-        a(href="https://ctjs.rocks/" onclick="{openExternal}")   {voc.homepage}.
-        .inlineblock(if="{newVersion}")   {newVersion}
+        |
+        |
+        // as itch releases are always in sync with the fetched version number, let's route users to itch.io page
+        a.inlineblock(if="{newVersion}" href="https://comigo.itch.io/ct#download" onclick="{openExternal}")
+            | {newVersion}
+            img(src="data/img/partycarrot.gif" if="{newVersion}").aPartyCarrot
     script.
         const fs = require('fs-extra'),
               path = require('path');
@@ -191,7 +195,9 @@ project-selector
 
         // Checking for updates
         setTimeout(() => {
-            fetch('https://itch.io/api/1/x/wharf/latest?target=comigo/ct&channel_name=linux32')
+            const {isWin, isLinux} = require('./data/node_requires/platformUtils.js');
+            const channel = isWin? 'win64' : (isLinux? 'linux64': 'osx64');
+            fetch(`https://itch.io/api/1/x/wharf/latest?target=comigo/ct&channel_name=${channel}`)
             .then(data => data.json())
             .then(json => {
                 if (!json.errors) {
@@ -199,6 +205,9 @@ project-selector
                         this.newVersion = this.voc.latestVersion.replace('$1', json.latest);
                         this.update();
                     }
+                } else {
+                    console.error('Update check failed:');
+                    console.log(json.errors);
                 }
             });
         }, 0);

@@ -277,6 +277,9 @@ const stringifySounds = () => {
     var sounds = '';
     for (const k in currentProject.sounds) {
         const s = currentProject.sounds[k];
+        if (!s.origname) {
+            throw new Error(`The sound asset "${s.name}" does not have an actual sound file attached.`);
+        }
         var wav = s.origname.slice(-4) === '.wav',
             mp3 = s.origname.slice(-4) === '.mp3';
         sounds += `ct.sound.init('${s.name}', ${wav? `'./snd/${s.uid}.wav'` : 'null'}, ${mp3? `'./snd/${s.uid}.mp3'` : 'null'}, {
