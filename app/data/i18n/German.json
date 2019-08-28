@@ -85,6 +85,7 @@
   },
   "intro": {
       "loading": "Bitte warten: Kätzchen werden auf Lichtgeschwindigkeit beschleunigt!",
+      "loadingProject": "Projekt wird geladen...",
       "newProject": {
           "button": "Erstellen",
           "input": "Projektname (Buchstaben und Zahlen)",
@@ -103,6 +104,7 @@
       "forgetProject": "Vergiss dieses Projekt",
       "browse": "Durchsuchen",
       "latest": "Letzte Projekte",
+      "unableToWriteToFolders": "Ct.js konnte keinen geeigneten Ort zum speichern der Projekte finden! Bitte stellen Sie sicher, dass Sie die ct.js App in einem Verzeichnis ablegen in dem Sie über Schreibrechte verfügen.",
       "twitter": "Twitter Channel",
       "discord": "Discord Community"
   },
