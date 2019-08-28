@@ -362,12 +362,12 @@ main-menu.flexcol
             try {
                 const vocDefault = fs.readJSONSync('./data/i18n/English.json');
                 const voc = fs.readJSONSync(`./data/i18n/${filename}.json`);
-                console.log('loaded');
+                console.log(`Loaded a language file ${filename}.json`);
                 window.languageJSON = extend(vocDefault, voc);
                 localStorage.appLanguage = filename;
                 window.signals.trigger('updateLocales');
                 window.riot.update();
-                console.log('changed');
+                console.log('Applied a new language file.');
             } catch(e) {
                 alert('Could not open a language file: ' + e);
             }
