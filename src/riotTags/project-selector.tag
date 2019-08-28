@@ -1,40 +1,40 @@
 project-selector
-    #bg.stretch
-    #intro.modal
-        div.flexrow
-            .c4.np
-            .c8.npt.npb
-                h2 {voc.latest}
-        div.flexrow
-            .c4.npl.npt.project-selector-aPreview.center
-                img(src="{projectSplash}")
-            .c8.npr.npt.npl.flexfix
-                ul.menu.flexfix-body
-                    li(
-                        each="{project in lastProjects}" title="{requirePath.basename(project,'.json')}"
-                        onclick="{updatePreview(project)}"
-                        ondblclick="{loadRecentProject}"
-                    )
-                        .toright
-                            i.icon-x(onclick="{forgetProject}" title="{voc.forgetProject}")
-                        span {project}
-                label.file.flexfix-footer
-                    input(type="file" ref="fileexternal" accept=".ict" onchange="{openProjectFind}")
-                    .button.wide.inline
-                        i.icon.icon-folder
-                        span {voc.browse}
-        #newProject.inset.flexrow.flexmiddle
-            .c4.npl.npt.npb
-                h3.nm.right {voc.newProject.text}
-            .c5.np
-                input(
-                    type='text'
-                    placeholder='{voc.newProject.input}'
-                    pattern='[a-zA-Z_0-9]\\{1,\\}'
-                    ref="projectname"
-                ).wide
-            .c3.npr.npt.npb
-                button.nm.wide.inline(onclick="{newProject}") {voc.newProject.button}
+    #bg.stretch.middle
+        #intro.panel.middleinner
+            div.flexrow
+                .c4.np
+                .c8.npt.npb
+                    h2 {voc.latest}
+            div.flexrow
+                .c4.npl.npt.project-selector-aPreview.center
+                    img(src="{projectSplash}")
+                .c8.npr.npt.npl.flexfix
+                    ul.menu.flexfix-body
+                        li(
+                            each="{project in lastProjects}" title="{requirePath.basename(project,'.json')}"
+                            onclick="{updatePreview(project)}"
+                            ondblclick="{loadRecentProject}"
+                        )
+                            .toright
+                                i.icon-x(onclick="{forgetProject}" title="{voc.forgetProject}")
+                            span {project}
+                    label.file.flexfix-footer.nmb
+                        input(type="file" ref="fileexternal" accept=".ict" onchange="{openProjectFind}")
+                        .button.wide.inline.nml.nmr
+                            i.icon.icon-folder
+                            span {voc.browse}
+            #newProject.inset.flexrow.flexmiddle
+                .c4.npl.npt.npb
+                    h3.nm.right {voc.newProject.text}
+                .c5.np
+                    input(
+                        type='text'
+                        placeholder='{voc.newProject.input}'
+                        pattern='[a-zA-Z_0-9]\\{1,\\}'
+                        ref="projectname"
+                    ).wide
+                .c3.npr.npt.npb
+                    button.nm.wide.inline(onclick="{newProject}") {voc.newProject.button}
     .aVersionNumber
         a(href="https://discord.gg/CggbPkb" title="{voc.discord}" onclick="{openExternal('https://discord.gg/CggbPkb')}")
             i.icon-discord
