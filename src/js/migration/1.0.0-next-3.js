@@ -9,7 +9,9 @@ window.migrationProcess.push({
             delete project.libs.keyboard;
             project.libs['keyboard.legacy'] = {};
         }
-        project.libs['mouse.legacy'] = {};
+        if (!('mouse' in project.libs)) {
+            project.libs['mouse.legacy'] = {};
+        }
 
         // Rename Graphics into Textures
         if (project.textures) {
