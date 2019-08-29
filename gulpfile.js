@@ -13,6 +13,7 @@ const path = require('path'),
       stylint = require('gulp-stylint'),
       globby = require('globby'),
       filemode = require('filemode'),
+      zip = require('gulp-zip'),
 
       streamQueue = require('streamqueue'),
       notifier = require('node-notifier'),
@@ -280,9 +281,9 @@ const fixSymlinks = async () => {
     const glob = baseDir + '/Versions/*/nwjs Framework.framework/*';
     const execute = require('./node_requires/execute');
     const frameworkDir = path.dirname((await globby([glob]))[0]);
-    
+
     console.log('fixing symlinks at', frameworkDir);
-    
+
     execute(async ({exec}) => {
         await exec(`
             cd "$(find "${frameworkDir}" -name "nwjs Framework.framework")"
@@ -308,6 +309,12 @@ const examples = () => {
     );
     return Promise.all(promises);
 };
+const zipsForAllPlatforms = platforms.map(platform => () =>
+    gulp.src(`./build/ctjs - v${pack.version}/${platform}/**`)
+    .pipe(zip(`ct.js v${pack.version} for ${platform}.zip`))
+    .pipe(gulp.dest(`./build/ctjs - v${pack.version}/`))
+);
+const zipPackages = gulp.parallel(zipsForAllPlatforms);
 
 const packages = gulp.series([
     lint,
@@ -317,7 +324,8 @@ const packages = gulp.series([
     nwPackages,
     fixSymlinks,
     fixPermissions,
-    examples
+    examples,
+    zipPackages
 ]);
 
 const deployOnly = () => {
