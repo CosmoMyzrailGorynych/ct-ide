@@ -25,7 +25,6 @@
 ### 🍱 Examples & Demos
 
 * Add a scale-in animation to cards in Memocats example
-* Pull the latest docs
 * Refresh Catformer project file
 
 ### ⚡ General improvements
@@ -35,6 +34,7 @@
 * Add `ct.delta` to code completions
 * Add `ct.touch.enabled` property to determine whether a device is using touch events
 * Better alignment of the project selector
+* Better highlighting of paired brackets, by @qualitymanifest
 * Better QR code legibility on dark themes in the integrated debugger
 * Catch the case of `mouse.legacy` with manually updated projects made in a dev version between next-2 and next-3
 * `ct.sound.howler`: Update `howler.js` to v2.1.2
