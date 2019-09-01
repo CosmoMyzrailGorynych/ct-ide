@@ -13,6 +13,8 @@ install:
 stages:
   - lint
   - build
+  - pack
+  - deploy
 
 jobs:
   include:
@@ -22,3 +24,24 @@ jobs:
     - stage: build
       script:
         - gulp build
+      skip_cleanup: true
+    - stage: build
+      on:
+        tags: true
+        branch: release/v1.0.0
+      script:
+        - gulp -f devSetup.gulpfile.js
+          gulp packages
+      skip_cleanup: true
+
+deploy:
+  provider: releases # Github Releases
+  api_key: $GITHUB_OAUTH_TOKEN
+  file_glob: true
+  # see at gulpfile.js > zipPackages
+  file: ./build/ctjs - v$TRAVIS_TAG/ct.js v$TRAVIS_TAG for *.zip
+  skip_cleanup: true
+  draft: true
+  on:
+    tags: true
+    branch: release/v1.0.0
