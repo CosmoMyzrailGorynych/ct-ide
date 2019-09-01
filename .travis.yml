@@ -31,7 +31,7 @@ jobs:
         branch: release/v1.0.0
       script:
         - gulp -f devSetup.gulpfile.js
-          gulp packages
+        - gulp packages
       skip_cleanup: true
 
 deploy:
