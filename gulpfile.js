@@ -286,7 +286,7 @@ const fixSymlinks = async () => {
 
     execute(async ({exec}) => {
         await exec(`
-            cd "$(find "${frameworkDir}" -name "nwjs Framework.framework")"
+            cd "${frameworkDir}"
             rm "Versions/Current" && ln -s "./A" "./Versions/Current"
             rm "Helpers" && ln -s "./Versions/Current/Helpers"
             rm "Internet Plug-Ins" && ln -s "./Versions/Current/Internet Plug-Ins"
