@@ -2003,7 +2003,7 @@
   ],
   "startroom": "b0f0ff4d-a155-4d68-a86e-5bb7ed8973ab",
   "scripts": [],
-  "ctjsVersion": "1.0.0-next-3",
+  "ctjsVersion": "1.0.0",
   "fonts": [],
   "skeletons": [],
   "actions": [

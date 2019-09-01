@@ -1,5 +1,5 @@
 {
-  "ctjsVersion": "1.0.0-next-2",
+  "ctjsVersion": "1.0.0",
   "notes": "/* empty */",
   "libs": {
     "place": {
@@ -12,8 +12,8 @@
     },
     "tween": {},
     "random": {},
-    "keyboard": {},
-    "keyboard.polyfill": {}
+    "keyboard.polyfill": {},
+    "keyboard": {}
   },
   "types": [
     {
