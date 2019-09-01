@@ -28,7 +28,7 @@ jobs:
     - stage: build
       on:
         tags: true
-        branch: master
+        branch: release/v1.0.0
       script:
         - gulp -f devSetup.gulpfile.js
         - gulp packages
@@ -44,4 +44,4 @@ deploy:
   draft: true
   on:
     tags: true
-    branch: master
+    branch: release/v1.0.0
