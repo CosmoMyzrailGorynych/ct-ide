@@ -38,7 +38,8 @@ const mod = {
         const path = require('path');
 
         const exec = path.dirname(process.execPath).replace(/\\/g,'/');
-        const home = process.env.HOME;
+        // The `HOME` variable is not always available in ct.js on Windows
+        const home = process.env.HOME || ((process.env.HOMEDRIVE || '') + process.env.HOMEPATH);
 
         const execWritable = mod.checkWritable(exec);
         const homeWritable = mod.checkWritable(home);
