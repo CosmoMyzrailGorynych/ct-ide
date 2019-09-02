@@ -309,12 +309,27 @@ const examples = () => {
     );
     return Promise.all(promises);
 };
-const zipsForAllPlatforms = platforms.map(platform => () =>
-    gulp.src(`./build/ctjs - v${pack.version}/${platform}/**`)
-    .pipe(zip(`ct.js v${pack.version} for ${platform}.zip`))
-    .pipe(gulp.dest(`./build/ctjs - v${pack.version}/`))
-);
-const zipPackages = gulp.parallel(zipsForAllPlatforms);
+
+let zipPackages;
+if ((/^win/).test(process.platform)) {
+    const zipsForAllPlatforms = platforms.map(platform => () => 
+        gulp.src(`./build/ctjs - v${pack.version}/${platform}/**`)
+        .pipe(zip(`ct.js v${pack.version} for ${platform}.zip`))
+        .pipe(gulp.dest(`./build/ctjs - v${pack.version}/`))
+    );
+    zipPackages = gulp.parallel(zipsForAllPlatforms);
+} else {
+    const execute = require('./node_requires/execute');
+    zipPackages = () => Promise.all(platforms.map(platform => 
+        // `r` for dirs,
+        // `q` for preventing spamming to stdout,
+        // and `y` for preserving symlinks
+        execute(({exec}) => exec(`
+            cd "./build/ctjs - v${pack.version}/"
+            zip -rqy "ct.js v${pack.version} for ${platform}.zip" "./${platform}"
+        `))
+    ));
+}
 
 const packages = gulp.series([
     lint,
