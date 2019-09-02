@@ -39,7 +39,7 @@ deploy:
   api_key: $GITHUB_OAUTH_TOKEN
   file_glob: true
   # see at gulpfile.js > zipPackages
-  file: ./build/ctjs - v$TRAVIS_TAG/ct.js v$TRAVIS_TAG for *.zip
+  file: ./build/ctjs - $TRAVIS_TAG/ct.js $TRAVIS_TAG for *.zip
   skip_cleanup: true
   draft: true
   on:
