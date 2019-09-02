@@ -216,7 +216,7 @@ const packImages = () => {
         registry
     };
 };
-const packSkeletons = () => {
+const packSkeletons = (projdir) => {
     const data = {
         loaderScript: 'PIXI.Loader.shared',
         startScript: 'const dbf = dragonBones.PixiFactory.factory;',
@@ -360,7 +360,7 @@ ct.rooms.templates['${r.name}'] = {
     return roomsCode;
 };
 
-const bundleFonts = function() {
+const bundleFonts = function(projdir) {
     let css = '',
         js = '';
     if (currentProject.fonts) {
@@ -514,7 +514,7 @@ const runCtProject = async (project, projdir) => {
         .replace('/*%roomonleave%*/', injects.roomonleave);
         buffer += '\n';
 
-        var styles = stringifyStyles();
+        var styles = stringifyStyles(projdir);
         buffer += fs.readFileSync(basePath + 'ct.release/styles.js', {
             'encoding': 'utf8'
         })
@@ -523,8 +523,8 @@ const runCtProject = async (project, projdir) => {
         buffer += '\n';
 
         /* assets */
-        var textures = packImages();
-        var skeletons = packSkeletons();
+        var textures = packImages(projdir);
+        var skeletons = packSkeletons(projdir);
 
         buffer += fs.readFileSync(basePath + 'ct.release/res.js', {
             'encoding': 'utf8'
@@ -563,14 +563,13 @@ const runCtProject = async (project, projdir) => {
         .replace('/*@types@*/', types);
 
         buffer += '\n';
-        /* музыкальный котэ */
         var sounds = stringifySounds();
         buffer += fs.readFileSync(basePath + 'ct.release/sound.js', {
             'encoding': 'utf8'
         })
         .replace('/*@sound@*/', sounds);
 
-        var fonts = bundleFonts(css);
+        var fonts = bundleFonts(projdir);
         css += fonts.css;
         buffer += fonts.js;
 
