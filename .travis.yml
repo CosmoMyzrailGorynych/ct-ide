@@ -35,13 +35,20 @@ jobs:
       skip_cleanup: true
 
 deploy:
-  provider: releases # Github Releases
-  api_key: $GITHUB_OAUTH_TOKEN
-  file_glob: true
-  # see at gulpfile.js > zipPackages
-  file: ./build/ctjs - $TRAVIS_TAG/ct.js $TRAVIS_TAG for *.zip
-  skip_cleanup: true
-  draft: true
-  on:
-    tags: true
-    branch: master
+  # Github Releases
+  - provider: releases
+    api_key: $GITHUB_OAUTH_TOKEN
+    file_glob: true
+    # see at gulpfile.js > zipPackages
+    file: ./build/ctjs - $TRAVIS_TAG/ct.js $TRAVIS_TAG for *.zip
+    skip_cleanup: true
+    draft: true
+    on:
+      tags: true
+      branch: master
+  # Push to comigo.itch.io/ct
+  - provider: script
+    script: gulp deployOnly
+    skip_cleanup: true
+    on:
+      branch: master
