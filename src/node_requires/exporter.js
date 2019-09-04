@@ -3,7 +3,7 @@ const fs = require('fs-extra'),
 const glob = require('./glob');
 const basePath = './data/';
 
-let ctlibs, currentProject, writeDir, projdir;
+let ctlibs, currentProject, writeDir;
 
 const parseKeys = function(data, str, lib) {
     var str2 = str;
