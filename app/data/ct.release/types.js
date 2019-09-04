@@ -186,7 +186,7 @@
                 this.x = ct.room.x;
                 this.tilePosition.x = -this.x*this.parallaxX + this.shiftX;
             } else {
-                this.y = this.shiftX + ct.room.x * (this.parallaxX - 1);
+                this.x = this.shiftX + ct.room.x * (this.parallaxX - 1);
             }
         }
         static onCreate() {
