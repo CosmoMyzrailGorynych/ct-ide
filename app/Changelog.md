@@ -1,3 +1,21 @@
+## v 1.0.1
+
+*5 September 2019.*
+
+### 🐛 Bug Fixes
+
+* Fix the broken sound import
+* Fix improper movement of vertically repeating backgrounds
+* Add actions to new projects. Fixes the issue with "project.actions are not iterable"
+
+### ⚡ General improvements
+
+* Update Open Sans font, so it supports extended Latin characters
+
+### 🐙 Misc
+
+* Remove the deprecated copies' method `this.draw`
+
 ## v 1.0.0
 
 *1 September 2019.*
@@ -123,7 +141,7 @@ Nice work, mates!
 * Document actions and ct.inputs
 * Document ct.sound.playing
 * Document ct.vkeys
-* Document the way of adding new input methods with catmods 
+* Document the way of adding new input methods with catmods
 * Fix `ct.keyboard.clear();` docs
 * Provide docs for the new ct.mouse
 * Rename "Graphic assets" into "Textures"
@@ -544,7 +562,7 @@ Added license. TL;DR:
 
 *05 August 2018*
 
-### ✨ New features 
+### ✨ New features
 
 - 💄 More options for sounds and better UI
 - Add custom scripts to your project
@@ -584,5 +602,5 @@ Added license. TL;DR:
 
 ### 🍱 Updated demos
 
-- Update Catformer demo with fullscreen option 
+- Update Catformer demo with fullscreen option
 - Update Catsteroids with ct.sound.howler
