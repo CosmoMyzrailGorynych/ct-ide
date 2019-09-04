@@ -32,7 +32,7 @@ For bugs, feature requests, developing questions, please use [GitHub issues](htt
 Building ct.js requires [Node and npm](https://nodejs.org/en/download/) installed on your machine.
 
 ```sh
-git clone git@gitlab.com:CoMiGo/ctjs.git ctjs
+git clone https://github.com/ct-js/ct-js.git ctjs
 cd ./ctjs
 npm install gulp-cli -g
 gulp -f devSetup.gulpfile.js
