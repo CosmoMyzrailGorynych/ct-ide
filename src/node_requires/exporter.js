@@ -3,7 +3,7 @@ const fs = require('fs-extra'),
 const glob = require('./glob');
 const basePath = './data/';
 
-let ctlibs, currentProject, writeDir, projdir;
+let ctlibs, currentProject, writeDir;
 
 const parseKeys = function(data, str, lib) {
     var str2 = str;
@@ -394,12 +394,13 @@ const makeWritableDir = async () => {
     writeDir = path.join(await getWritableDir(), 'export');
 };
 const runCtProject = async (project, projdir) => {
+    const {languageJSON} = require('./i18n');
     currentProject = project;
     await makeWritableDir();
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
         // glob.compileAudio = 0;
         if (currentProject.rooms.length < 1) {
-            window.alertify.error(window.languageJSON.common.norooms);
+            reject(new Error(languageJSON.common.norooms));
             return;
         }
         document.body.style.cursor = 'wait';

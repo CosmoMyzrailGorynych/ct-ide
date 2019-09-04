@@ -189,7 +189,7 @@ const lintStylus = () => gulp.src(['./src/styl/**/*.styl', '!./src/styl/3rdParty
         failOnWarning: true
     }));
 
-const lintJS = () => gulp.src(['./src/js/**/*.js', '!./src/js/3rdparty/**/*.js'])
+const lintJS = () => gulp.src(['./src/js/**/*.js', '!./src/js/3rdparty/**/*.js', './src/node_requires/**/*.js'])
     .pipe(eslint())
     .pipe(eslint.format())
     .pipe(eslint.failAfterError());
@@ -312,7 +312,7 @@ const examples = () => {
 
 let zipPackages;
 if ((/^win/).test(process.platform)) {
-    const zipsForAllPlatforms = platforms.map(platform => () => 
+    const zipsForAllPlatforms = platforms.map(platform => () =>
         gulp.src(`./build/ctjs - v${pack.version}/${platform}/**`)
         .pipe(zip(`ct.js v${pack.version} for ${platform}.zip`))
         .pipe(gulp.dest(`./build/ctjs - v${pack.version}/`))
@@ -320,7 +320,7 @@ if ((/^win/).test(process.platform)) {
     zipPackages = gulp.parallel(zipsForAllPlatforms);
 } else {
     const execute = require('./node_requires/execute');
-    zipPackages = () => Promise.all(platforms.map(platform => 
+    zipPackages = () => Promise.all(platforms.map(platform =>
         // `r` for dirs,
         // `q` for preventing spamming to stdout,
         // and `y` for preserving symlinks

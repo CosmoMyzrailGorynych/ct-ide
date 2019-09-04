@@ -358,12 +358,10 @@ main-menu.flexcol
         }));
 
         this.switchLanguage = filename => {
+            const i18n = require('./data/node_requires/i18n.js');
             const {extend} = require('./data/node_requires/objectUtils');
             try {
-                const vocDefault = fs.readJSONSync('./data/i18n/English.json');
-                const voc = fs.readJSONSync(`./data/i18n/${filename}.json`);
-                console.log(`Loaded a language file ${filename}.json`);
-                window.languageJSON = extend(vocDefault, voc);
+                window.languageJSON = i18n.loadLanguage(filename);
                 localStorage.appLanguage = filename;
                 window.signals.trigger('updateLocales');
                 window.riot.update();

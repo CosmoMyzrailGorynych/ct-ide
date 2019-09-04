@@ -12,6 +12,10 @@ For bugs, feature requests, developing questions, please use [GitHub issues](htt
 # Repo structure & tools
 
 * `app` — an [NW.js app](https://nwjs.io/), with its configs and static files.
+    * `data`
+        * `ct.release` — the ct.js game library, aka its "core"
+        * `ct.libs` — catmods (modules) that ship with ct.js. Feel free to create a pull request with your module!
+        * `i18n` — UI language schemes. Open for pull requests! :)
 * `src` — a source folder that compile into `/app` folder at a build time.
     * `js` — different top-level scripts, including 3rd-party libraries.
     * `node_requires` — these are copied as is to the `/app` directory upon building ct.js, contain reusable code, and are meant to be used by `require('./data/node_requires/…')`.
@@ -28,7 +32,7 @@ For bugs, feature requests, developing questions, please use [GitHub issues](htt
 Building ct.js requires [Node and npm](https://nodejs.org/en/download/) installed on your machine.
 
 ```sh
-git clone --recurse-submodules -j8 git@gitlab.com:CoMiGo/ctjs.git ctjs
+git clone https://github.com/ct-js/ct-js.git ctjs
 cd ./ctjs
 npm install gulp-cli -g
 gulp -f devSetup.gulpfile.js
