@@ -122,6 +122,7 @@ project-selector
                 sounds: [],
                 styles: [],
                 rooms: [],
+                actions: [],
                 starting: 0,
                 settings: {
                     minifyhtmlcss: false,
