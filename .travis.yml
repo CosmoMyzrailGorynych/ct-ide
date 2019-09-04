@@ -21,6 +21,7 @@ jobs:
       script:
         - gulp lint
     - stage: build
+      name: Compile style and js assets
       script:
         - gulp build
       skip_cleanup: true
@@ -31,9 +32,8 @@ jobs:
         - gulp -f devSetup.gulpfile.js
         - gulp packages
       skip_cleanup: true
-    # Github Releases
-    - stage: deploy
       deploy:
+        # Github Releases
         - provider: releases
           api_key: $GITHUB_OAUTH_TOKEN
           file_glob: true
@@ -44,9 +44,7 @@ jobs:
           on:
             tags: true
             branch: master
-    # Push to comigo.itch.io/ct
-    - stage: deploy
-      deploy:
+        # Push to comigo.itch.io/ct
         - provider: script
           script: gulp deployOnly
           skip_cleanup: true
