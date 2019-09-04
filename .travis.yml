@@ -27,7 +27,6 @@ jobs:
       skip_cleanup: true
     - stage: build
       on:
-        tags: true
         branch: master
       script:
         - gulp -f devSetup.gulpfile.js
