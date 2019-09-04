@@ -144,9 +144,6 @@
             this.hspeed += spd * Math.cos(dir*Math.PI/-180);
             this.vspeed += spd * Math.sin(dir*Math.PI/-180);
         }
-        static draw() {
-            console.warn('this.draw() call is not used in ct.js 1.0 and above, as all objects are now rendered by default. Please use this.visible to hide objects.');
-        }
     }
     class Background extends PIXI.TilingSprite {
         constructor(bgName, frame, depth, exts) {
