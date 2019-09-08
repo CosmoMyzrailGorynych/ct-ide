@@ -1,18 +1,18 @@
-This module composes new graphic assets out of existing ones. Say, you have a ping-pong animation or multiple animations in one atlas, and instead of managing these animations with code or duplicating frames you could use this module to logically split animations into separate assets and get rid of duplicate frames.
+This module composes new textures out of existing ones. Say, you have a ping-pong animation or multiple animations in one atlas, and instead of managing these animations with code or duplicating frames you could use this module to logically split animations into separate assets and get rid of duplicate frames.
 
 ## How to
 
-The workflow of this module is simple: you add a one function call, giving an existing graphic asset name, a new one, and a set of frames to play, and you can use this new graphic asset in the way you use it with default ones. You can add these function calls in the "Settings" tab of this mod to make sure that your code is in the right place.
+The workflow of this module is simple: you add a one function call, giving an existing texture name, a new one, and a set of frames to play, and you can use this new texture in the way you use it with default ones. You can add these function calls in the "Settings" tab of this mod to make sure that your code is in the right place.
 
 # ![Source strip](./data/ct.libs/sprite/SlimeExample.png)
 # +
 ```js
 ct.sprite(
-    'Slime', 'Slime_Idle', 
+    'Slime', 'Slime_Idle',
     [0, 1, 2, 3, 2, 1, 0, 0, 0, 4, 5, 4, 0, 4, 5, 4]
 );
 /* Later, in your project */
-this.graph = 'Slime_Idle';
+this.tex = 'Slime_Idle';
 ```
 # =
 ![Gif result](./data/ct.libs/sprite/SlimeExample_Result.gif)
@@ -31,7 +31,7 @@ ct.sprite(
     [0, 4, 5, 4]
 );
 /* Later, in project's code */
-this.graph = ct.random.dice('Slime_Blink', 'Slime_Wiggle);
+this.tex = ct.random.dice('Slime_Blink', 'Slime_Wiggle);
 ```
 # =
 # ![Gif result](./data/ct.libs/sprite/SlimeExample_Blink.gif) or ![Gif result](./data/ct.libs/sprite/SlimeExample_Wiggle.gif)
