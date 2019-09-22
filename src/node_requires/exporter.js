@@ -166,13 +166,13 @@ const packImages = () => {
                             y: g.axis[1] / g.height
                         }
                     };
-                    if (yy * g.grid[0] + xx >= g.grid.untill && g.grid.untill > 0) {
+                    if (yy * g.grid[0] + xx >= g.untill && g.untill > 0) {
                         break;
                     }
                 }
                 registry[g.name] = {
                     atlas: `./img/a${binInd}.json`,
-                    frames: g.grid.untill > 0? Math.min(g.grid.untill, g.grid[0]*g.grid[1]) : g.grid[0]*g.grid[1],
+                    frames: g.untill > 0? Math.min(g.untill, g.grid[0]*g.grid[1]) : g.grid[0]*g.grid[1],
                     shape: getTextureShape(g),
                     anchor: {
                         x: g.axis[0] / g.width,
