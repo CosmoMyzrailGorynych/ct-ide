@@ -1,3 +1,26 @@
+## v 1.0.2
+
+*25 September 2019.*
+
+### 🐛 Bug fixes
+
+* Fix broken desktop export, as well as uncatched errors
+* Fix textures' "frame count" property not working (#120) by @island205 🎉
+* Update parameter names in ct.sprite's readme
+
+### ⚡ General improvements
+
+* Add support for OGG audio files
+
+### Docs
+
+* 🐛 Fix the use of ct.height in Making Shooter tutorial when ct.viewHeight is needed
+* ⚡ Change the title of "Troubleshooting: Background splits into squares!" so that it covers tiles as well
+* Add a page "Troubleshooting: Sounds don't play at game start!"
+* Document `ct.u.degToRad`, `ct.u.radToDeg`
+* Document `ct.u.rotate`, `ct.u.rotateRad`
+
+
 ## v 1.0.1
 
 *5 September 2019.*
