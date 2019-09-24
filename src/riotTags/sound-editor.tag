@@ -68,17 +68,16 @@ sound-editor.panel.view
             var val = this.refs.inputsound.value;
             fs.copy(val, sessionStorage.projdir + '/snd/s' + this.sound.uid + path.extname(val), e => {
                 if (e) {
-                    console.log(e);
+                    console.error(e);
                     alertify.error(e);
-                } else {
-                    console.log(this.sound);
-                    if (!this.sound.lastmod && this.sound.name === 'Sound_' + this.sound.uid.split('-').pop()) {
-                        this.sound.name = path.basename(val, path.extname(val));
-                    }
-                    this.sound.origname = 's' + this.sound.uid + path.extname(val);
-                    this.sound.lastmod = +(new Date());
-                    this.update();
+                    return;
                 }
+                if (!this.sound.lastmod && this.sound.name === 'Sound_' + this.sound.uid.split('-').pop()) {
+                    this.sound.name = path.basename(val, path.extname(val));
+                }
+                this.sound.origname = 's' + this.sound.uid + path.extname(val);
+                this.sound.lastmod = +(new Date());
+                this.update();
             });
             this.refs.inputsound.value = '';
         };

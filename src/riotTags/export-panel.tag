@@ -38,7 +38,7 @@ export-panel
                 | {voc.log}
                 .rem.a(onclick="{copyLog}").toright {vocGlob.copy}
             pre(if="{log.length}")
-                div(each="{text in log}") {text}
+                div(each="{text in log}") {text.toString()}
         .flexfix-footer
             .flexrow
                 button(onclick="{close}") {voc.hide}
@@ -63,96 +63,105 @@ export-panel
             this.parent.update();
         };
         this.export = e => {
-            const {getWritableDir} = require('./data/node_requires/platformUtils');
             if (this.working) {
                 return;
             }
-            let writable;
-            this.log = [];
-            this.working = true;
-            this.update();
-            const version = currentProject.settings.version.join('.') + currentProject.settings.versionPostfix;
-            window.runCtProject()
-            .then(getWritableDir)
-            .then(dir => writable = dir)
-            .then(() => fs.copy('./data/ct.release/nwPack/', `${writable}/export/`))
-            .then(() => {
-                const json = fs.readJSONSync('./data/ct.release/nwPack/package.json');
-                json.version = version;
-                if (currentProject.settings.title) {
-                    json.name = currentProject.settings.title;
-                    json.window.title = currentProject.settings.title;
-                }
-                const startingRoom = currentProject.rooms.find(room => room.uid === currentProject.startroom) || currentProject.rooms[0];
-                json.window.width = startingRoom.width;
-                json.window.height = startingRoom.height;
-                return fs.outputJSON(`${writable}/export/package.json`, json);
-            })
-            .then(() => {
-                const NwBuilder = require('nw-builder');
-                const platforms = [];
-                if (currentProject.settings.export.mac64) {
-                    platforms.push('osx64');
-                }
-                if (currentProject.settings.export.windows64) {
-                    platforms.push('win64');
-                }
-                if (currentProject.settings.export.windows32) {
-                    platforms.push('win32');
-                }
-                if (currentProject.settings.export.linux64) {
-                    platforms.push('linux64');
-                }
-                if (currentProject.settings.export.linux32) {
-                    platforms.push('linux32');
-                }
-                const options = {
-                    files: `${writable}/export/**/**`, // use the glob format
-                    version: process.versions.nw,
-                    platforms,
-                    flavor: (currentProject.settings.export.debug? 'sdk' : 'normal'),
-                    appName: currentProject.settings.title || 'ct.js Game',
-                    buildDir: `${writable}/exportDesktop`,
-                    buildType: 'versioned',
-                    macIcns: './ct.ide.icns'
-                };
-                if (process.platform === 'win32') {
-                    options.winIco = './ct.ide.ico';
-                    if (currentProject.settings.author) {
-                        options.winVersionString = {
-                            CompanyName: currentProject.settings.author,
-                            FileDescription: currentProject.settings.title || 'ct.js Game',
-                            ProductName: currentProject.settings.title || 'ct.js Game',
-                            LegalCopyright: `Copyright ${(new Date()).getFullYear()}`,
+            try {
+                const {getWritableDir} = require('./data/node_requires/platformUtils');
+                const runCtExport = require('./data/node_requires/exporter');
+                let writable;
+                this.log = [];
+                this.working = true;
+                this.update();
+                const version = currentProject.settings.version.join('.') + currentProject.settings.versionPostfix;
+                runCtExport(currentProject, sessionStorage.projdir)
+                .then(getWritableDir)
+                .then(dir => writable = dir)
+                .then(() => fs.copy('./data/ct.release/nwPack/', `${writable}/export/`))
+                .then(() => {
+                    const json = fs.readJSONSync('./data/ct.release/nwPack/package.json');
+                    json.version = version;
+                    if (currentProject.settings.title) {
+                        json.name = currentProject.settings.title;
+                        json.window.title = currentProject.settings.title;
+                    }
+                    const startingRoom = currentProject.rooms.find(room => room.uid === currentProject.startroom) || currentProject.rooms[0];
+                    json.window.width = startingRoom.width;
+                    json.window.height = startingRoom.height;
+                    return fs.outputJSON(`${writable}/export/package.json`, json);
+                })
+                .then(() => {
+                    const NwBuilder = require('nw-builder');
+                    const platforms = [];
+                    if (currentProject.settings.export.mac64) {
+                        platforms.push('osx64');
+                    }
+                    if (currentProject.settings.export.windows64) {
+                        platforms.push('win64');
+                    }
+                    if (currentProject.settings.export.windows32) {
+                        platforms.push('win32');
+                    }
+                    if (currentProject.settings.export.linux64) {
+                        platforms.push('linux64');
+                    }
+                    if (currentProject.settings.export.linux32) {
+                        platforms.push('linux32');
+                    }
+                    const options = {
+                        files: `${writable}/export/**/**`, // use the glob format
+                        version: process.versions.nw,
+                        platforms,
+                        flavor: (currentProject.settings.export.debug? 'sdk' : 'normal'),
+                        appName: currentProject.settings.title || 'ct.js Game',
+                        buildDir: `${writable}/exportDesktop`,
+                        buildType: 'versioned',
+                        macIcns: './ct.ide.icns'
+                    };
+                    if (process.platform === 'win32') {
+                        options.winIco = './ct.ide.ico';
+                        if (currentProject.settings.author) {
+                            options.winVersionString = {
+                                CompanyName: currentProject.settings.author,
+                                FileDescription: currentProject.settings.title || 'ct.js Game',
+                                ProductName: currentProject.settings.title || 'ct.js Game',
+                                LegalCopyright: `Copyright ${(new Date()).getFullYear()}`,
+                            }
                         }
                     }
-                }
-                this.builder = new NwBuilder(options);
-                this.builder.on('log', log => {
-                    this.log.push(log);
+                    this.builder = new NwBuilder(options);
+                    this.builder.on('log', log => {
+                        this.log.push(log);
+                        this.update();
+                    })
+                    .on('error', err => {
+                        console.error(err);
+                        this.log.push(err);
+                        this.update();
+                    });
+                    return this.builder.build();
+                })
+                .then(() => {
+                    this.log.push('Success! Exported to:');
+                    alertify.success(`Success! Exported to: ${writable}/exportDesktop/`);
+                    this.log.push(path.resolve(`${writable}/exportDesktop/`));
+                    this.working = false;
+                    nw.Shell.showItemInFolder(path.resolve(`./exportDesktop/${currentProject.settings.title || 'ctjs-game'} - v${version}`));
                     this.update();
                 })
-                .on('error', err => {
-                    console.error(err);
-                    this.log.push(err);
+                .catch(error => {
+                    this.log.push(error);
+                    alertify.error(error);
+                    console.error(error);
+                    this.working = false;
                     this.update();
                 });
-                return this.builder.build();
-            })
-            .then(() => {
-                this.log.push('Success! Exported to:');
-                this.log.push(path.resolve(`${writable}/exportDesktop/`));
-                this.working = false;
-                nw.Shell.showItemInFolder(path.resolve(`./exportDesktop/${currentProject.settings.title || 'ctjs-game'} - v${version}`));
-                this.update();
-            })
-            .catch(error => {
+            } catch (e) {
                 this.log.push(error);
-                alertyfy.error(error);
-                console.error(error);
-                this.working = false;
                 this.update();
-            });
+                alertify.error(error);
+                throw (e);
+            }
         };
 
         this.copyLog = e => {

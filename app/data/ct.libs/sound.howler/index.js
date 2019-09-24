@@ -1,4 +1,4 @@
-/* global ct Howler Howl */
+/* global Howler Howl */
 (function () {
     ct.sound = {};
     ct.sound.howler = Howler;
@@ -9,32 +9,37 @@
     var defaultMaxDistance = [/*%defaultMaxDistance%*/][0] || 2500;
     ct.sound.useDepth = [/*%useDepth%*/][0] === void 0? false : [/*%useDepth%*/][0];
     ct.sound.manageListenerPosition = [/*%manageListenerPosition%*/][0] === void 0? true : [/*%manageListenerPosition%*/][0];
-    
-    /** 
-     * Detects if a particular codec is supported in the system 
+
+    /**
+     * Detects if a particular codec is supported in the system
      * @param {String} type One of: "mp3", "mpeg", "opus", "ogg", "oga", "wav", "aac", "caf", m4a", "mp4", "weba", "webm", "dolby", "flac".
      * @returns {Boolean} true/false
      */
     ct.sound.detect = Howler.codecs;
-    
-    /** 
-     * Creates a new Sound object and puts it in resource object 
-     * 
+
+    /**
+     * Creates a new Sound object and puts it in resource object
+     *
      * @param {String} name Sound's name
-     * @param {String} wav Local path to the sound in wav format
-     * @param {String} mp3 Local path to the sound in mp3 format
+     * @param {Object} formats A collection of sound files of specified extension, in format `extension: path`
+     * @param {String} [formats.ogg] Local path to the sound in ogg format
+     * @param {String} [formats.wav] Local path to the sound in wav format
+     * @param {String} [formats.mp3] Local path to the sound in mp3 format
      * @param {Object} options An options object
-     * 
+     *
      * @returns {Object} Sound's object
      */
-    ct.sound.init = function (name, wav, mp3, options) {
+    ct.sound.init = function (name, formats, options) {
         options = options || {};
         var sounds = [];
-        if (wav && wav.slice(-4) === '.wav') {
-            sounds.push(wav);
+        if (formats.wav && formats.wav.slice(-4) === '.wav') {
+            sounds.push(formats.wav);
         }
-        if (mp3 && mp3.slice(-4) === '.mp3') {
-            sounds.push(mp3);
+        if (formats.mp3 && formats.mp3.slice(-4) === '.mp3') {
+            sounds.push(formats.mp3);
+        }
+        if (formats.ogg && formats.ogg.slice(-4) === '.ogg') {
+            sounds.push(formats.ogg);
         }
         var howl = new Howl({
             src: sounds,
@@ -43,7 +48,7 @@
             html5: Boolean(options.music),
             loop: options.loop,
             pool: options.poolSize || 5,
-    
+
             onload: function () {
                 if (!options.music) {
                     ct.res.soundsLoaded++;
@@ -52,7 +57,8 @@
             onloaderror: function () {
                 ct.res.soundsError++;
                 howl.buggy = true;
-                console.error('[ct.sound.howler] Oh no! We couldn\'t load ' + (wav || mp3) + '!');
+                console.error('[ct.sound.howler] Oh no! We couldn\'t load ' +
+                    (formats.wav || formats.mp3 || formats.ogg) + '!');
             }
         });
         if (options.music) {
@@ -60,7 +66,7 @@
         }
         ct.res.sounds[name] = howl;
     };
-    
+
     var set3Dparameters = (howl, opts, id) => {
         howl.pannerAttr({
             coneInnerAngle: opts.coneInnerAngle || 360,
@@ -75,11 +81,11 @@
     };
     /**
      * Spawns a new sound and plays it.
-     * 
+     *
      * @param {String} name The name of a sound to be played
      * @param {Object} [opts] Options object.
      * @param {Function} [cb] A callback, which is called when the sound finishes playing
-     * 
+     *
      * @returns {Number} The ID of the created sound. This can be passed to Howler methods.
      */
     ct.sound.spawn = function(name, opts, cb) {
@@ -113,10 +119,10 @@
         }
         return id;
     };
-    
+
     /**
      * Stops playback of a sound, resetting its time to 0.
-     * 
+     *
      * @param {String} name The name of a sound
      * @param {Number} [id] An optional ID of a particular sound
      * @returns {void}
@@ -124,10 +130,10 @@
     ct.sound.stop = function(name, id) {
         ct.res.sounds[name].stop(id);
     };
-    
+
     /**
      * Pauses playback of a sound or group, saving the seek of playback.
-     * 
+     *
      * @param {String} name The name of a sound
      * @param {Number} [id] An optional ID of a particular sound
      * @returns {void}
@@ -135,10 +141,10 @@
     ct.sound.pause = function(name, id) {
         ct.res.sounds[name].pause(id);
     };
-    
+
     /**
      * Resumes a given sound, e.g. after pausing it.
-     * 
+     *
      * @param {String} name The name of a sound
      * @param {Number} [id] An optional ID of a particular sound
      * @returns {void}
@@ -149,7 +155,7 @@
     /**
      * Returns whether a sound is currently playing,
      * either an exact sound (found by its ID) or any sound of a given name.
-     * 
+     *
      * @param {String} name The name of a sound
      * @param {Number} [id] An optional ID of a particular sound
      * @returns {Boolean} `true` if the sound is playing, `false` otherwise.
@@ -158,7 +164,7 @@
         return ct.res.sounds[name].playing(id);
     };
     /**
-     * Preloads a sound. This is usually applied to music files before playing, 
+     * Preloads a sound. This is usually applied to music files before playing
      * as they are not preloaded by default.
      * 
      * @param {String} name The name of a sound

@@ -166,13 +166,13 @@ const packImages = () => {
                             y: g.axis[1] / g.height
                         }
                     };
-                    if (yy * g.grid[0] + xx >= g.grid.untill && g.grid.untill > 0) {
+                    if (yy * g.grid[0] + xx >= g.untill && g.untill > 0) {
                         break;
                     }
                 }
                 registry[g.name] = {
                     atlas: `./img/a${binInd}.json`,
-                    frames: g.grid.untill > 0? Math.min(g.grid.untill, g.grid[0]*g.grid[1]) : g.grid[0]*g.grid[1],
+                    frames: g.untill > 0? Math.min(g.untill, g.grid[0]*g.grid[1]) : g.grid[0]*g.grid[1],
                     shape: getTextureShape(g),
                     anchor: {
                         x: g.axis[0] / g.width,
@@ -281,11 +281,17 @@ const stringifySounds = () => {
             throw new Error(`The sound asset "${s.name}" does not have an actual sound file attached.`);
         }
         var wav = s.origname.slice(-4) === '.wav',
-            mp3 = s.origname.slice(-4) === '.mp3';
-        sounds += `ct.sound.init('${s.name}', ${wav? `'./snd/${s.uid}.wav'` : 'null'}, ${mp3? `'./snd/${s.uid}.mp3'` : 'null'}, {
+            mp3 = s.origname.slice(-4) === '.mp3',
+            ogg = s.origname.slice(-4) === '.ogg';
+        sounds += `
+ct.sound.init('${s.name}', {
+    wav: ${wav? '\'./snd/'+s.uid+'.wav\'' : false},
+    mp3: ${mp3? '\'./snd/'+s.uid+'.mp3\'' : false},
+    ogg: ${ogg? '\'./snd/'+s.uid+'.ogg\'' : false}
+}, {
     poolSize: ${s.poolSize || 5},
     music: ${Boolean(s.isMusic)}
-});\n`;
+});`;
     }
     return sounds;
 };
