@@ -57,7 +57,7 @@
                     vertices.push(new SSCD.Vector(point.x * copy.scale.x, point.y * copy.scale.y));
                 }
             }
-            return new SSCD.LineStrip(position, vertices, false);
+            return new SSCD.LineStrip(position, vertices, Boolean(shape.closedStrip));
         }
         if (shape.type === 'line') {
             return new SSCD.Line(

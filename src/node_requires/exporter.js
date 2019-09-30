@@ -75,7 +75,8 @@ const getTextureShape = texture => {
     if (texture.shape === 'strip') {
         return {
             type: 'strip',
-            points: texture.stripPoints
+            points: texture.stripPoints,
+            closedStrip: texture.closedStrip
         };
     }
     return {
