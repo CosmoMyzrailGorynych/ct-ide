@@ -56,7 +56,7 @@ texture-editor.panel.view
                     input.short(type="number" value="{point.y}" oninput="{wire('this.texture.stripPoints.'+ ind + '.y')}")
                     button.square.inline(title="{voc.removePoint}" onclick="{removeStripPoint}")
                         i.icon-minus
-                input(type="checkbox" checked="{opts.texture.closedStrip}")
+                input(type="checkbox" checked="{opts.texture.closedStrip}" onchange="{wire('this.texture.closedStrip')}")
                 span   {voc.closeShape}
                 button.wide(onclick="{addStripPoint}")
                     i.icon-plus
