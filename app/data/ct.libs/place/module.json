@@ -21,6 +21,20 @@
         "id": "gridY",
         "default": 512,
         "type": "number"
+    }, {
+        "name": "Debug mode",
+        "help": "Displays collision shapes, collision groups and partitions. It will also write additional keys to most colliding objects. Doesn't work on hidden objects.",
+        "key": "debugMode",
+        "id": "debugMode",
+        "default": false,
+        "type": "checkbox"
+    }, {
+        "name": "Debug text size",
+        "help": "",
+        "key": "debugText",
+        "id": "debugText",
+        "default": 16,
+        "type": "number"
     }],
     "typeExtends": [{
         "name": "Collision group",
