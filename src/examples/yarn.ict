@@ -1,0 +1,231 @@
+{
+  "ctjsVersion": "1.0.2",
+  "notes": "/* empty */",
+  "libs": {
+    "place": {
+      "gridX": 512,
+      "gridY": 512
+    },
+    "fittoscreen": {
+      "mode": "scaleFit"
+    },
+    "mouse": {},
+    "keyboard": {},
+    "keyboard.polyfill": {},
+    "sound.howler": {},
+    "akatemplate": {
+      "csscss": "body {\n    background: #fff;\n}"
+    },
+    "yarn": {}
+  },
+  "textures": [
+    {
+      "name": "CatThoughtful",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        396,
+        462
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 793,
+      "imgHeight": 924,
+      "width": 793,
+      "height": 924,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i5aabca45-bbbd-4792-b3a9-ba79bd4a66fd.png",
+      "source": "/home/comigo/Рабочий стол/CatThoughtful.png",
+      "shape": "rect",
+      "left": 396,
+      "right": 397,
+      "top": 462,
+      "bottom": 462,
+      "uid": "5aabca45-bbbd-4792-b3a9-ba79bd4a66fd",
+      "lastmod": 1569837312550
+    },
+    {
+      "name": "CatNormal",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        396,
+        462
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 793,
+      "imgHeight": 924,
+      "width": 793,
+      "height": 924,
+      "offx": 0,
+      "offy": 0,
+      "origname": "iec75835b-2afd-4f96-9373-804b4f80a84d.png",
+      "source": "/home/comigo/Рабочий стол/CatNormal.png",
+      "shape": "rect",
+      "left": 396,
+      "right": 397,
+      "top": 462,
+      "bottom": 462,
+      "uid": "ec75835b-2afd-4f96-9373-804b4f80a84d",
+      "lastmod": 1569837308602
+    },
+    {
+      "name": "CatHappy",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        396,
+        462
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 793,
+      "imgHeight": 924,
+      "width": 793,
+      "height": 924,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i4a04ffe6-c92a-428e-9fe4-5e8d2ce9c835.png",
+      "source": "/home/comigo/Рабочий стол/CatHappy.png",
+      "shape": "rect",
+      "left": 396,
+      "right": 397,
+      "top": 462,
+      "bottom": 462,
+      "uid": "4a04ffe6-c92a-428e-9fe4-5e8d2ce9c835",
+      "lastmod": 1569837304762
+    },
+    {
+      "name": "Button",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        512,
+        50
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 1024,
+      "imgHeight": 100,
+      "width": 1024,
+      "height": 100,
+      "offx": 0,
+      "offy": 0,
+      "origname": "ie0cbccef-93ee-4c8a-ab19-4fcef639963c.png",
+      "source": "/home/comigo/Рабочий стол/Button.png",
+      "shape": "rect",
+      "left": 512,
+      "right": 512,
+      "top": 50,
+      "bottom": 50,
+      "uid": "e0cbccef-93ee-4c8a-ab19-4fcef639963c",
+      "lastmod": 1569837505628
+    }
+  ],
+  "skeletons": [],
+  "types": [
+    {
+      "name": "TheCat",
+      "depth": 0,
+      "oncreate": "",
+      "onstep": "this.move();",
+      "ondraw": "",
+      "ondestroy": "",
+      "uid": "9e7aec96-1ad3-4679-a248-01180284e78e",
+      "texture": "ec75835b-2afd-4f96-9373-804b4f80a84d",
+      "extends": {},
+      "lastmod": 1569837324744
+    },
+    {
+      "name": "Button",
+      "depth": 0,
+      "oncreate": "this.text = new PIXI.Text(this.option, {\n    fill: 0x446ADB,\n    fontWeight: 600,\n    fontSize: 32,\n    wordWrap: true,\n    wordWrapWidth: 900,\n    align: 'center'\n});\nthis.text.anchor.x = this.text.anchor.y = 0.5;\nthis.addChild(this.text);",
+      "onstep": "if (ct.mouse.hovers(this)) {\n    if (ct.mouse.pressed) {\n        ct.room.story.say(this.option);\n        uiMaker();\n    }\n}",
+      "ondraw": "",
+      "ondestroy": "",
+      "uid": "cf5c44b2-f55a-4e18-a941-f7cdf5aecd0f",
+      "texture": "e0cbccef-93ee-4c8a-ab19-4fcef639963c",
+      "extends": {},
+      "lastmod": 1569840402254
+    }
+  ],
+  "sounds": [],
+  "styles": [],
+  "rooms": [
+    {
+      "name": "Main",
+      "oncreate": "ct.yarn.openFromFile('theStory.json')\n.then(story => {\n    this.story = story;\n    uiMaker();\n});\n\nthis.ctText = new PIXI.Text('', {\n    fill: 0x446ADB,\n    fontSize: 32,\n    wordWrap: true,\n    wordWrapWidth: 1024\n});\nthis.nodeTitle = new PIXI.Text('Loading the awesomeness…', {\n    fill: 0x446ADB,\n    fontSize: 24,\n    wordWrap: true,\n    wordWrapWidth: 1024\n});\nthis.ctText.x = 100;\nthis.ctText.y = 150;\nthis.nodeTitle.x = 100;\nthis.nodeTitle.y = 50;\nthis.addChild(this.ctText, this.nodeTitle);",
+      "onstep": "",
+      "ondraw": "",
+      "onleave": "",
+      "width": 1920,
+      "height": 1080,
+      "backgrounds": [],
+      "copies": [
+        {
+          "x": 1536,
+          "y": 448,
+          "uid": "9e7aec96-1ad3-4679-a248-01180284e78e",
+          "tx": 0.75,
+          "ty": 0.75
+        }
+      ],
+      "tiles": [
+        {
+          "depth": -10,
+          "tiles": []
+        }
+      ],
+      "uid": "d21d2804-d690-4c65-9657-7a1486b7f1d9",
+      "thumbnail": "7a1486b7f1d9",
+      "gridX": 64,
+      "gridY": 64
+    }
+  ],
+  "actions": [],
+  "starting": 0,
+  "settings": {
+    "minifyhtmlcss": false,
+    "minifyjs": false,
+    "fps": 30,
+    "version": [
+      0,
+      0,
+      0
+    ],
+    "versionPostfix": "",
+    "export": {
+      "windows64": true,
+      "windows32": true,
+      "linux64": true,
+      "linux32": true,
+      "mac64": true,
+      "debug": false
+    }
+  },
+  "scripts": [
+    {
+      "name": "uiMaker",
+      "code": "var uiMaker = function() {\n    const story = ct.room.story;\n    // Clear the previous buttons\n    for (const button of ct.types.list['Button']) {\n        button.kill = true;\n    }\n    \n    // Update the speech and the node's title\n    ct.room.ctText.text = story.body;\n    ct.room.nodeTitle.text = story.title;\n    \n    // Re-generate buttons\n    const options = story.options;\n    var buttonY = ct.viewHeight - 60;\n    for (const option of options) {\n        ct.types.copy('Button', ct.viewWidth / 2, buttonY, {\n            option: option\n        });\n        buttonY -= 120;\n    }\n    \n    // Update the cat's texture, if needed\n    const cat = ct.types.list['TheCat'][0];\n    if (story.tags.indexOf('cat:happy') !== -1) {\n        cat.tex = 'CatHappy';\n    } else if (story.tags.indexOf('cat:thoughtful') !== -1) {\n        cat.tex = 'CatThoughtful';\n    } else if (story.tags.indexOf('cat:normal') !== -1) {\n        cat.tex = 'CatNormal';\n    }\n};"
+    },
+    {
+      "name": "Background color",
+      "code": "ct.pixiApp.renderer.backgroundColor = 0xffffff;"
+    }
+  ],
+  "fonts": []
+}
