@@ -93,9 +93,11 @@ ct.u = {
         return ct.u.rotateRad(x, y, ct.u.degToRad(deg));
     },
     rotateRad(x, y, rad) {
+        const sin = Math.sin(rad),
+              cos = Math.cos(rad);
         return [
-            Math.cos(rad) * x - Math.sin(rad) * y,
-            Math.sin(rad) * x - Math.cos(rad) * y
+            cos * x - sin * y,
+            cos * y + sin * x
         ];
     },
     deltaDir(dir1, dir2) {

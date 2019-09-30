@@ -17,14 +17,14 @@
                 );
             }
             const upperLeft = ct.u.rotate(-shape.left * copy.scale.x, -shape.top * copy.scale.y, copy.rotation),
-                  upperRight = ct.u.rotate(shape.right * copy.scale.x, -shape.top * copy.scale.y, copy.rotation),
                   bottomLeft = ct.u.rotate(-shape.left * copy.scale.x, shape.bottom * copy.scale.y, copy.rotation),
-                  bottomRight = ct.u.rotate(shape.right * copy.scale.x, shape.bottom * copy.scale.y, copy.rotation);
+                  bottomRight = ct.u.rotate(shape.right * copy.scale.x, shape.bottom * copy.scale.y, copy.rotation),
+                  upperRight = ct.u.rotate(shape.right * copy.scale.x, -shape.top * copy.scale.y, copy.rotation);
             return new SSCD.LineStrip(position, [
                 new SSCD.Vector(upperLeft[0], upperLeft[1]),
-                new SSCD.Vector(upperRight[0], upperRight[1]),
                 new SSCD.Vector(bottomLeft[0], bottomLeft[1]),
-                new SSCD.Vector(bottomRight[0], bottomRight[1])
+                new SSCD.Vector(bottomRight[0], bottomRight[1]),
+                new SSCD.Vector(upperRight[0], upperRight[1])
             ], true);
         }
         if (shape.type === 'circle') {
