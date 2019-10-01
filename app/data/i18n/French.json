@@ -190,7 +190,8 @@
       "closeShape": "Close the shape",
       "addPoint": "Add a point",
       "moveCenter": "Move axis",
-      "movePoint": "Move this point"
+      "movePoint": "Move this point",
+      "symmetryTool": "Outil de symétrie"
     },
     "sounds": {
       "create": "Create"

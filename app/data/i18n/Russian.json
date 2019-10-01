@@ -220,7 +220,8 @@
         "addPoint": "Добавить точку",
         "moveCenter": "Переместить ось вращения",
         "movePoint": "Переместить точку",
-        "reimport": "Обновить"
+        "reimport": "Обновить",
+        "symmetryTool": "Симметрия"
     },
     "sounds": {
         "create": "Создать"

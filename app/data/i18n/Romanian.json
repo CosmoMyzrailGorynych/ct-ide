@@ -221,7 +221,8 @@
         "closeShape": "Închide forma",
         "addPoint": "Adaugă un punct",
         "moveCenter": "Mută axa",
-        "movePoint": "Mută punctul"
+        "movePoint": "Mută punctul",
+        "symmetryTool": "Instrument de simetrie"
     },
     "sounds": {
         "create": "Crează"

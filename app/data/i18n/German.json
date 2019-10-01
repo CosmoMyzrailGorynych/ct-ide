@@ -221,7 +221,8 @@
       "closeShape": "Shape schließen",
       "addPoint": "Punkt hinzufügen",
       "moveCenter": "Achse verschieben",
-      "movePoint": "Punkt verschieben"
+      "movePoint": "Punkt verschieben",
+      "symmetryTool": "Symmetrie-Werkzeug"
   },
   "sounds": {
       "create": "Erstellen"

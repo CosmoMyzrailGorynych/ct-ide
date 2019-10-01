@@ -221,7 +221,8 @@
         "closeShape": "Cerrar la forma",
         "addPoint": "Agrega un punto",
         "moveCenter": "Mover eje",
-        "movePoint": "Mueve este punto"
+        "movePoint": "Mueve este punto",
+        "symmetryTool": "Herramienta de simetría"
     },
     "sounds": {
         "create": "Crear"

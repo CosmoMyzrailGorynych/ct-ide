@@ -50,14 +50,17 @@ texture-editor.panel.view
                     i.icon-maximize
                     span {voc.fill}
             div(if="{opts.texture.shape === 'strip'}")
-                .flexrow(each="{point, ind in opts.texture.stripPoints}")
+                .flexrow(each="{point, ind in getMovableStripPoints()}")
                     input.short(type="number" value="{point.x}" oninput="{wire('this.texture.stripPoints.'+ ind + '.x')}")
                     span   ×
                     input.short(type="number" value="{point.y}" oninput="{wire('this.texture.stripPoints.'+ ind + '.y')}")
                     button.square.inline(title="{voc.removePoint}" onclick="{removeStripPoint}")
                         i.icon-minus
-                input(type="checkbox" checked="{opts.texture.closedStrip}" onchange="{wire('this.texture.closedStrip')}")
+                input(type="checkbox" checked="{opts.texture.closedStrip}" onchange="{onClosedStripChange}" )
                 span   {voc.closeShape}
+                br
+                input(type="checkbox" checked="{opts.texture.symmetryStrip}" onchange="{onSymmetryChange}")
+                span   {voc.symmetryTool}
                 button.wide(onclick="{addStripPoint}")
                     i.icon-plus
                     span   {voc.addPoint}
@@ -138,7 +141,11 @@ texture-editor.panel.view
         ref="previewBackgroundColor" if="{changingTexturePreviewColor}"
         color="{previewColor}" onapply="{updatePreviewColor}" onchanged="{updatePreviewColor}" oncancel="{cancelPreviewColor}"
     )
-    .texture-editor-anAtlas(style="background-color: {previewColor};")
+    .texture-editor-anAtlas(
+        if="{opts.texture}"
+        style="background-color: {previewColor};"
+        onmousewheel="{onMouseWheel}"
+    )
         .textureview-tools
             .toright
                 label.file(title="{voc.replacetexture}")
@@ -156,15 +163,23 @@ texture-editor.panel.view
                 button#texturezoom200.inline(onclick="{textureToggleZoom(2)}" class="{active: zoomFactor === 2}") 200%
                 button#texturezoom400.inline(onclick="{textureToggleZoom(4)}" class="{active: zoomFactor === 4}") 400%
 
-        canvas(ref="textureCanvas" onmousewheel="{onCanvasWheel}" style="transform: scale({zoomFactor}); image-rendering: {zoomFactor > 1? 'pixelated' : '-webkit-optimize-contrast'}; transform-origin: 0% 0%;")
+        canvas(ref="textureCanvas" style="transform: scale({zoomFactor}); image-rendering: {zoomFactor > 1? 'pixelated' : '-webkit-optimize-contrast'}; transform-origin: 0% 0%;")
+        .aClicker(
+            if="{prevShowMask && opts.texture.shape === 'strip'}"
+            each="{seg, ind in getStripSegments()}"
+            style="left: {seg.left}px; top: {seg.top}px; width: {seg.width}px; transform: translate(0, -50%) rotate({seg.angle}deg);"
+            title="{voc.addPoint}"
+            onclick="{addStripPointOnSegment}"
+        )
         .aDragger(
-            style="left: {opts.texture.axis[0] * zoomFactor}px; top: {opts.texture.axis[1] * zoomFactor}px;"
+            if="{prevShowMask}"
+            style="left: {opts.texture.axis[0] * zoomFactor}px; top: {opts.texture.axis[1] * zoomFactor}px; border-radius: 0;"
             title="{voc.moveCenter}"
             onmousedown="{startMoving('axis')}"
         )
         .aDragger(
-            if="{opts.texture.shape === 'strip'}"
-            each="{point, ind in opts.texture.stripPoints}"
+            if="{prevShowMask && opts.texture.shape === 'strip'}"
+            each="{point, ind in getMovableStripPoints()}"
             style="left: {(point.x + texture.axis[0]) * zoomFactor}px; top: {(point.y + texture.axis[1]) * zoomFactor}px;"
             title="{voc.movePoint}"
             onmousedown="{startMoving('point')}"
@@ -216,6 +231,7 @@ texture-editor.panel.view
             } else {
                 this.nameTaken = false;
             }
+            this.updateSymmetricalPoints();
         });
         this.on('updated', () => {
             this.refreshTextureCanvas();
@@ -287,7 +303,7 @@ texture-editor.panel.view
             this.zoomFactor = zoom;
         };
         /** Change zoomFactor on mouse wheel roll */
-        this.onCanvasWheel = e => {
+        this.onMouseWheel = e => {
             if (e.wheelDelta > 0) {
                 // in
                 if (this.zoomFactor === 2) {
@@ -492,10 +508,13 @@ texture-editor.panel.view
                         y: -Math.round(Math.cos(twoPi / 5 * i) * this.texture.height / 2)
                     });
                 }
-                console.log(this.texture);
             }
         };
         this.removeStripPoint = function (e) {
+            if(this.texture.symmetryStrip) {
+                // Remove an extra point
+                this.texture.stripPoints.pop();
+            }
             this.texture.stripPoints.splice(e.item.ind, 1);
         };
         this.addStripPoint = function () {
@@ -504,6 +523,55 @@ texture-editor.panel.view
                 y: 16
             });
         };
+        this.addStripPointOnSegment = e => {
+            const { top, left } = textureCanvas.getBoundingClientRect();
+            this.texture.stripPoints.splice(e.item.ind+1, 0, {
+                x: (e.pageX - left) / this.zoomFactor - this.texture.axis[0],
+                y: (e.pageY - top) / this.zoomFactor - this.texture.axis[1]
+            });
+            if(this.texture.symmetryStrip) {
+                // Add an extra point (the symetrical point)
+                this.addStripPoint();
+            }
+        };
+        this.pointToLine = (linePoint1, linePoint2, point) => {
+            const dlx = linePoint2.x - linePoint1.x;
+            const dly = linePoint2.y - linePoint1.y;
+            const lineLength = Math.sqrt(dlx*dlx + dly*dly);
+            const lineAngle = Math.atan2(dly, dlx);
+
+            const dpx = point.x - linePoint1.x;
+            const dpy = point.y - linePoint1.y;
+            const toPointLength = Math.sqrt(dpx*dpx + dpy*dpy);
+            const toPointAngle = Math.atan2(dpy, dpx);
+
+            const distance = toPointLength * Math.cos(toPointAngle - lineAngle);
+
+            return {
+                x: linePoint1.x + distance * dlx / lineLength,
+                y: linePoint1.y + distance * dly / lineLength
+            };
+        };
+        this.onClosedStripChange = e => {
+            this.texture.closedStrip = !this.texture.closedStrip;
+            if(!this.texture.closedStrip && this.texture.symmetryStrip) {
+                this.onSymmetryChange();
+            }
+        };
+        this.onSymmetryChange = e => {
+            if(this.texture.symmetryStrip) {
+                this.texture.stripPoints = this.getMovableStripPoints();
+            } else {
+                const nbPointsToAdd = this.texture.stripPoints.length - 2;
+                for(let i = 0; i < nbPointsToAdd; i++) {
+                    this.addStripPoint();
+                }
+                this.texture.closedStrip = true; // Force closedStrip to true
+            }
+
+            this.texture.symmetryStrip = !this.texture.symmetryStrip;
+            this.update();
+        }
         this.startMoving = which => e => {
             const startX = e.screenX,
                   startY = e.screenY;
@@ -524,11 +592,19 @@ texture-editor.panel.view
                 const point = e.item.point,
                       oldX = point.x,
                       oldY = point.y;
+                let hasMoved = false;
                 const func = e => {
+                    if(!hasMoved && (e.screenX !== startX || e.screenY !== startY)) {
+                        hasMoved = true;
+                    }
                     point.x = (e.screenX - startX) / this.zoomFactor + oldX;
                     point.y = (e.screenY - startY) / this.zoomFactor + oldY;
                     this.update();
                 }, func2 = () => {
+                    if(!hasMoved) {
+                        this.removeStripPoint(e);
+                        this.update();
+                    }
                     document.removeEventListener('mousemove', func);
                     document.removeEventListener('mouseup', func2);
                 };
@@ -582,6 +658,20 @@ texture-editor.panel.view
                         textureCanvas.x.closePath();
                     }
                     textureCanvas.x.stroke();
+
+                    if(this.texture.symmetryStrip) {
+                        const movablePoints = this.getMovableStripPoints();
+                        const axisPoint1 = movablePoints[0];
+                        const axisPoint2 = movablePoints[movablePoints.length - 1];
+
+                        // Draw symmetry axis
+                        textureCanvas.x.strokeStyle = '#f00';
+                        textureCanvas.x.lineWidth = 3;
+                        textureCanvas.x.beginPath();
+                        textureCanvas.x.moveTo(axisPoint1.x + this.texture.axis[0], axisPoint1.y + this.texture.axis[1]);
+                        textureCanvas.x.lineTo(axisPoint2.x + this.texture.axis[0], axisPoint2.y + this.texture.axis[1]);
+                        textureCanvas.x.stroke();
+                    }
                 }
             }
         };
@@ -657,3 +747,63 @@ texture-editor.panel.view
             this.previewColor = this.oldPreviewColor;
             this.update();
         };
+        this.getMovableStripPoints = () => {
+            if(!this.texture) return;
+            if(!this.texture.symmetryStrip) {
+                return this.texture.stripPoints;
+            } else {
+                return this.texture.stripPoints.slice(0, 2 + Math.round((this.texture.stripPoints.length - 2) / 2));
+            }
+        };
+        this.getStripSegments = () => {
+            if(!this.texture) {
+                return;
+            }
+            if (this.texture.shape !== 'strip') {
+                return;
+            }
+
+            const points = this.getMovableStripPoints();
+            const segs = [];
+
+            for(let i = 0; i < points.length; i++) {
+                const point1 = points[i];
+                const point2 = points[(i + 1) % points.length];
+
+                const x1 = (point1.x + this.texture.axis[0]) * this.zoomFactor;
+                const y1 = (point1.y + this.texture.axis[1]) * this.zoomFactor;
+                const x2 = (point2.x + this.texture.axis[0]) * this.zoomFactor;
+                const y2 = (point2.y + this.texture.axis[1]) * this.zoomFactor;
+                const dx = x2 - x1;
+                const dy = y2 - y1;
+
+                const length = Math.sqrt(dx*dx + dy*dy);
+                const cssAngle = Math.atan2(dy, dx) * 180 / Math.PI;
+
+                segs.push({
+                    left: x1,
+                    top: y1,
+                    width: length,
+                    angle: cssAngle
+                });
+            }
+
+            return segs;
+        };
+        this.updateSymmetricalPoints = () => {
+            if(this.texture && this.texture.symmetryStrip) {
+                const movablePoints = this.getMovableStripPoints();
+                const axisPoint1 = movablePoints[0];
+                const axisPoint2 = movablePoints[movablePoints.length - 1];
+                for(let i = 1; i < movablePoints.length - 1; i++) {
+                    const j = this.texture.stripPoints.length - i;
+                    const point = movablePoints[i];
+                    const axisPoint = this.pointToLine(axisPoint1, axisPoint2, point);
+                    this.texture.stripPoints[j] = {
+                        x: 2 * axisPoint.x - point.x,
+                        y: 2 * axisPoint.y - point.y
+                    }
+                }
+            }
+        };
+

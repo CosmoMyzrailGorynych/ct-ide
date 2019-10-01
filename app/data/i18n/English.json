@@ -222,7 +222,8 @@
         "closeShape": "Close the shape",
         "addPoint": "Add a point",
         "moveCenter": "Move axis",
-        "movePoint": "Move this point"
+        "movePoint": "Move this point",
+        "symmetryTool": "Symmetry tool"
     },
     "sounds": {
         "create": "Create"
