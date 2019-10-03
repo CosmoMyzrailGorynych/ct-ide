@@ -4,8 +4,8 @@
 		"tags": "",
 		"body": "<< cat normal >>\n\nI use them to change my texture and play sounds!\n\n<< cat happy >>\n<< sound(\"Hehe\")>> \n\nPlayer: Whoa! *O* Anything else??\n\n[[ExtraFunctions]]",
 		"position": {
-			"x": 6082,
-			"y": 5335
+			"x": 4371,
+			"y": 2306
 		},
 		"colorID": 1
 	},
@@ -14,8 +14,8 @@
 		"tags": "",
 		"body": "Make your stories data-driven!\n\nYarn has math variables, functions, comparisons and complex conditionals. For the full guide, see https://bit.ly/2p8LI6n\n\n[[Wonderful!|FAQ]]\n[[I want to see it in action.|SeeConditionals]]",
 		"position": {
-			"x": 5828,
-			"y": 7519
+			"x": 4117,
+			"y": 4490
 		},
 		"colorID": 0
 	},
@@ -24,8 +24,8 @@
 		"tags": "",
 		"body": "<< cat normal >> \n\nCat: Yarn is available at yarnspinnertool.github.io/YarnEditor/\nCat: Design your dialogue, then open the File menu → Save as JSON.\nPlayer: Done.\n\n[[ImportingToCt]]",
 		"position": {
-			"x": 6401,
-			"y": 3947
+			"x": 4695,
+			"y": 879
 		},
 		"colorID": 0
 	},
@@ -34,8 +34,8 @@
 		"tags": "",
 		"body": "<< cat happy >>\nThat's up to you! You have the power of ct.js, the flexibility of JavaScript and the exploitability of this module.\nYou can split your stories into scenes, load them into ct.js, and then create a room for each one, with nifty backgrounds and decorations. Much like in visual novels! *U*\nYou can use ct.room.story.raw instead of e.g. ct.room.story.text to get the source of a node and get extra variables that you put in the body of your node.\n\nIf you struggle, though, check out the source of this edutational demo!\n\nPlayer: Thanks!\n\n[[FAQ]]",
 		"position": {
-			"x": 5287,
-			"y": 7513
+			"x": 3576,
+			"y": 4484
 		},
 		"colorID": 0
 	},
@@ -44,8 +44,8 @@
 		"tags": "",
 		"body": "<< cat normal >>\nYes, there are some extra variables that may help you:\n\nct.room.story.nodes is a map of all the nodes in your story. E.g. ct.room.story.nodes['ExtraFunctions'] will return the current node.\nct.room.story.raw is an object with the unprocessed body and other meta information exported by Yarn.\nct.room.story.startingNode is the name of, well, the starting node.\n\nPlayer: How do I combine it into a working game or dialogue system?\n\n[[TyingTogether]]",
 		"position": {
-			"x": 6361,
-			"y": 5470
+			"x": 4650,
+			"y": 2441
 		},
 		"colorID": 0
 	},
@@ -54,18 +54,18 @@
 		"tags": "",
 		"body": "<<if $seeConditional>>\n    <<cat happy>>\n    See? I don't have the default line now.\n    <<set $seeConditional = false>> \n<<else>>\n    <<cat normal>>\n    Ask me anything. Well, anything that was hardcoded by Comigo.\n<<endif>>\n\n[[I'm done|Fin]]\n[[Projects…|FAQProjects]]\n[[Writing stories…|FAQStories]]\n[[More than text…|FAQMore]]",
 		"position": {
-			"x": 6400,
-			"y": 6695
+			"x": 4689,
+			"y": 3666
 		},
 		"colorID": 6
 	},
 	{
 		"title": "FormatStory",
 		"tags": "",
-		"body": "<< cat normal >>\n\nIt is recommended that you put dialogue options at the end of a node. Otherwise, use Yarn as usual!\n\nPlayer: Thanks!\n\n[[FAQ]]",
+		"body": "<< cat normal >>\n\nct.yarn is based on bondage.js and has all its perks and issues. Generally, you can write however you want, but single dialogue options are not supported. There is a workaround, though, as you could already guess! ;) See the demo's source! \n\nPlayer: Oh, ok!\n\n[[FAQ]]",
 		"position": {
-			"x": 7123,
-			"y": 6881
+			"x": 5359,
+			"y": 3910
 		},
 		"colorID": 0
 	},
@@ -74,8 +74,8 @@
 		"tags": "tag1 tag2",
 		"body": "<< cat thoughtful >> \n\nThe details of the current node can be read by these variables:\n\nstory.character is the name of the current character. E.g. if you write \"John: Hey there!\" in Yarn, story.character will be \"John\". Names cannot contain spaces! \nstory.body is what I'm saying right now :)\nstory.text is character's name and body combined, in case it comes in handy.\nstory.title is the name of a node. You can view it in the top-left corner there.\nstory.command is the code of the current command, if any.\nstory.tags is an array of strings with tags written at Yarn Editor. Use them however you want!\n\n<<cat normal>>\n\n[[How do you use tags, though?|CommandsExample]]\n[[Are there any special variables?|ExtraFunctions]]",
 		"position": {
-			"x": 6370,
-			"y": 5116
+			"x": 4659,
+			"y": 2087
 		},
 		"colorID": 0
 	},
@@ -84,8 +84,8 @@
 		"tags": "",
 		"body": "<< cat normal >> \n\nOpen the downloaded JSON file and copy its contents. Now open ct.js. Click the \"Settings\" tab, and create a new script. Write the beginning of a line:\nvar myStory = \nand then paste the JSON file. That's enough, you can save the script and move on.\n\n[[Wait, where do I get this JSON file, again?|ExportProject]]\n[[Got it.|OpeningStory]]",
 		"position": {
-			"x": 6398,
-			"y": 4232
+			"x": 4692,
+			"y": 1164
 		},
 		"colorID": 0
 	},
@@ -94,8 +94,8 @@
 		"tags": "",
 		"body": "<< cat thoughtful >>\n\nYou can use this code to load a story from an external file:\n\nct.yarn.openFromFile('myStory.json')\n.then(story => {\n    ct.room.story = story;\n});\n\nJSON files are better placed into your projects folder → 'include' subdirectory.\n\nPlayer: Thanks!\n\n[[FAQ]]",
 		"position": {
-			"x": 6667,
-			"y": 7538
+			"x": 4956,
+			"y": 4509
 		},
 		"colorID": 0
 	},
@@ -104,8 +104,8 @@
 		"tags": "",
 		"body": "<< cat happy >>\n\nThat's actually easy. Export each one to JSON, create one Script in ct's Settings tab, and give them different variable names. E.g.\nvar detectiveMystery = {/*yarn json goes here*/};\n/*in the other Script*/\nvar bossMonologue = {/* another yarn json */};\n/* and in the other */\nvar iLoveChocolate = {/* here ct bursts into tears and eats all the chocolate */};\n\nAnd so on.\n\nYou can also use files in the `include` folder.\n\n[[Thanks!|FAQ]]\n[[Aaaand how do I use these files?|LoadingFile]]",
 		"position": {
-			"x": 6999,
-			"y": 7409
+			"x": 5288,
+			"y": 4380
 		},
 		"colorID": 0
 	},
@@ -114,8 +114,8 @@
 		"tags": "",
 		"body": "<< cat happy>>\n\nCat: I will use just \"story\" instead of ct.room.story from now, ok?\n\nPlayer: Of course!\n\n<< cat thoughtful >> \n\nWe should use story in our function calls:\nstory.start() will put us in the beginning of it.\nstory.next() will advance the story. It will pull new speech lines, new options, and load commands, but one thing at a time.\nstory.back() will switch to the previous story node. It works just once, though, like in ye olde MS Paint.\nstory.options is an array of strings with currently available dialogue options, if there are any.\nstory.say(string) will navigate the story further. The string must match with entries from ct.room.story.options.\n\n<< cat normal >> \n\n[[But what about the speech of NPCs and stuff?|GettingScene]]\n[[Can I jump to a specific position in story, by code?|StoryJump]]",
 		"position": {
-			"x": 6397,
-			"y": 4790
+			"x": 4686,
+			"y": 1761
 		},
 		"colorID": 0
 	},
@@ -124,8 +124,8 @@
 		"tags": "",
 		"body": "The JSON file is still a raw product, though. In order to use your story, you should first load it in your game's code. For example, we can write the following to a room's OnCreate code:\nct.room.story = ct.yarn.openStory(myStory);\nBy default, ct.yarn will look for the 'Start' node. If you want to provide another default title, use ct.yarn.openStory(myStory, 'Specific title');\nct.yarn will read your JSON and structure it in a more useful format. You can now use other methods of ct.yarn to navigate your story, search for its nodes and get dialogue options.\n\nPlayer: Mhm…\n\n[[NavigatingStory]]",
 		"position": {
-			"x": 6406,
-			"y": 4484
+			"x": 4695,
+			"y": 1455
 		},
 		"colorID": 0
 	},
@@ -134,8 +134,8 @@
 		"tags": "",
 		"body": "Then go to FAQ page ;)\n\n<< set $seeConditional = true>> \n\nPlayer: Eh, ok…\n\n[[FAQ]]",
 		"position": {
-			"x": 5827,
-			"y": 7806
+			"x": 4116,
+			"y": 4777
 		},
 		"colorID": 1
 	},
@@ -144,18 +144,18 @@
 		"tags": "",
 		"body": "They are bundled with each fresh ct.js version. Check the ct.js folder > examples > yarn.ict.\n\nPlayer: Thanks!\n\n[[FAQ]]",
 		"position": {
-			"x": 5557,
-			"y": 7520
+			"x": 3846,
+			"y": 4491
 		},
 		"colorID": 0
 	},
 	{
 		"title": "Start",
 		"tags": "",
-		"body": "<<cat happy>> \nCat: Hello, fellow game developer! You are playing the educational demo of using Yarn Editor for creating interactive dialogues in ct.js!\nPlayer: Such wow. I'm in.\n[[WhatIsYarn]]",
+		"body": "<<cat happy>> \nCat: Hello, fellow game developer! You are playing the demo of using Yarn Editor for creating interactive dialogues in ct.js!\nCat: Due to the lack of writing skills of Comigo, it will be a purely educational experience, with no cute girls.\nPlayer: Such wow. I'm in.\n[[WhatIsYarn]]",
 		"position": {
-			"x": 6413,
-			"y": 3384
+			"x": 4695,
+			"y": 312
 		},
 		"colorID": 4
 	},
@@ -164,8 +164,8 @@
 		"tags": "",
 		"body": "<< cat happy >> \nYes! All nodes in Yarn are named, and you can use them to instantly jump to a specific node, out of your story's flow.\nThe function is ct.room.story.jump('SomeNode');\n<< cat thoughtful >> \nJust think about its debugging capabilities 👀\nIf you haven't specifically named all your story nodes in Yarn Editor, they all are probably just Node1, Node2, Node3… nothing fancy, really.\n\n<<cat normal >>\n\nPlayer: Ok, I got ya\n\n[[GettingScene]]",
 		"position": {
-			"x": 6072,
-			"y": 4996
+			"x": 4361,
+			"y": 1967
 		},
 		"colorID": 1
 	},
@@ -174,8 +174,8 @@
 		"tags": "",
 		"body": "<<cat thoughtful>> \nCat: Yarn Editor is an open-source tool for writing game dialogues.\n<<cat normal>> \nCat: Its license is MIT, much like ct.js, and it means that you can use Yarn Editor in any of your projects, be they commercial or not. For free.\nPlayer: Cool! So, how to use Yarn projects in ct.js?\n[[ExportProject]]",
 		"position": {
-			"x": 6405,
-			"y": 3655
+			"x": 4699,
+			"y": 587
 		},
 		"colorID": 0
 	},
@@ -184,8 +184,8 @@
 		"tags": "",
 		"body": "There are two main ways:\n— by reading and utilizing variables like story.text or story.options,\n— or by listening story's events.\n\nPlayer: Let's see them.\n\n[[ByVariables]]",
 		"position": {
-			"x": 6365,
-			"y": 5740
+			"x": 4654,
+			"y": 2711
 		},
 		"colorID": 0
 	},
@@ -194,8 +194,8 @@
 		"tags": "",
 		"body": "<<cat thoughtful>>\nIn the first case, you should check story.command, story.text and story.options.\n\nPlayer: Let's see an example.\n\n<<cat normal>>\n\nvar story = ct.room.story;\n<<disable spacing>>\nif (ct.actions.Next.pressed) {\n  if (story.text) { /* advance by buttons only when someone is talking */\n    story.next();\n    if (story.text) {\n      /* create new blurbs */\n    } else if (story.options) {\n      /* create dialogue options */\n    } else if (story.command) {\n      /* custom logic goes here */\n    }\n  }\n}\n<<enable spacing>>\n\nPlayer: Good, and by events?\n\n[[ByEvents]]",
 		"position": {
-			"x": 6361,
-			"y": 6012
+			"x": 4650,
+			"y": 2983
 		},
 		"colorID": 0
 	},
@@ -204,8 +204,8 @@
 		"tags": "",
 		"body": "<<cat happy>>\nIt is a bit simpler as you always execute the needed code:\n<<cat normal>>\n\nstory.on('text', text => {\n<<disable spacing>>\n  /* Someone said something, let's create a blurb for `text` variable */\n});\nstory.on('options', options => {\n  /* we are now presented with dialogue options! We need to create reply buttons… */\n});\nstory.on('command', command => {\n  /* custom actions may appear here */\n});\n<<enable spacing>>\n\nPlayer: Now I feel immense power in my hands! But I still have questions…\n\n[[FAQ]]",
 		"position": {
-			"x": 6384,
-			"y": 6309
+			"x": 4673,
+			"y": 3280
 		},
 		"colorID": 0
 	},
@@ -214,18 +214,18 @@
 		"tags": "",
 		"body": "Yes?\n\n[[How do I use multiple Yarn projects?|MultipleFiles]]\n[[Scripts are not that handy, especially when updating the story. Other options??|LoadingFile]]",
 		"position": {
-			"x": 6670,
-			"y": 7220
+			"x": 4959,
+			"y": 4191
 		},
 		"colorID": 2
 	},
 	{
 		"title": "FAQStories",
 		"tags": "",
-		"body": "Yes?\n\nPlayer: How do I format my story nodes in the Yarn Editor?\n[[FormatStory]]",
+		"body": "Yes?\n\n\n[[Any special formatting in the Yarn Editor?|FormatStory]]\n[[Can there be several characters at once?|MultipleCharacters]]",
 		"position": {
-			"x": 7131,
-			"y": 6572
+			"x": 5428,
+			"y": 3522
 		},
 		"colorID": 2
 	},
@@ -234,8 +234,8 @@
 		"tags": "",
 		"body": "Yes?\n\n[[This demo is cool! Where are its sources?|Sources]]\n[[What about conditionals and variables?|Conditionals]]\n[[How do I make transitions, effects and stuff?|Extending]]",
 		"position": {
-			"x": 5610,
-			"y": 7018
+			"x": 3899,
+			"y": 3989
 		},
 		"colorID": 2
 	},
@@ -244,9 +244,29 @@
 		"tags": "",
 		"body": "<<cat happy>>\n\nOk. Go make some great games now!\n\n<<wait(3000)>>",
 		"position": {
-			"x": 6389,
-			"y": 8356
+			"x": 4678,
+			"y": 5327
 		},
 		"colorID": 0
+	},
+	{
+		"title": "MultipleCharacters",
+		"tags": "",
+		"body": "<<cat normal>>\n<<wait(500)>>\n<<cat thoughtful>> \n<<wait(500)>>\n<<a girl walks in>> \n\n<<wait(1000)>>\nGirl: Kon'nichiwa!\n<<wait(1000)>>\nGirl: ct no Yarn mojūru wa hijō ni jūnandeari, fukusū no moji no enjin o kijutsu suru no wa hijō ni kantandesu.\n<<wait(1000)>>\nGirl: Kokode wa, komando o shiyō shite hyōji oyobi shūryō shi,-iro wa hensū story. Kyarakutā o shiyō shite settei shimasu.\n<<wait(1000)>>\n\nPlayer: ❤️_❤️\n\n<<a girl walks out>> \n\n<< wait(2000) >> \n\n[[DirtyLies]]\n",
+		"position": {
+			"x": 5424,
+			"y": 3135
+		},
+		"colorID": 3
+	},
+	{
+		"title": "DirtyLies",
+		"tags": "",
+		"body": "<<cat happy>> \n\nWell, ok, I lied about cute girls.\n\nPlayer: ❤️_❤️\n\n[[FAQ]]",
+		"position": {
+			"x": 5138,
+			"y": 3129
+		},
+		"colorID": 3
 	}
 ]
