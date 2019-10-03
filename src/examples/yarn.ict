@@ -1,6 +1,6 @@
 {
   "ctjsVersion": "1.0.2",
-  "notes": "/* empty */",
+  "notes": "There is a number of interesting places to start learning the demo:\n\n— rooms' OnCreate events\n— Settings > Scripts > storyEngine\n— OptionButton and NextButton types, as they advance the story by player's interactions.",
   "libs": {
     "place": {
       "gridX": 512,
@@ -16,7 +16,11 @@
     "akatemplate": {
       "csscss": "body {\n    background: #fff;\n}"
     },
-    "yarn": {}
+    "yarn": {
+      "skipEmpty": true,
+      "magic": true
+    },
+    "tween": {}
   },
   "textures": [
     {
@@ -151,24 +155,67 @@
       "lastmod": 1569837324744
     },
     {
-      "name": "Button",
+      "name": "OptionButton",
       "depth": 0,
-      "oncreate": "this.text = new PIXI.Text(this.option, {\n    fill: 0x446ADB,\n    fontWeight: 600,\n    fontSize: 32,\n    wordWrap: true,\n    wordWrapWidth: 900,\n    align: 'center'\n});\nthis.text.anchor.x = this.text.anchor.y = 0.5;\nthis.addChild(this.text);",
-      "onstep": "if (ct.mouse.hovers(this)) {\n    if (ct.mouse.pressed) {\n        ct.room.story.say(this.option);\n        uiMaker();\n    }\n}",
+      "oncreate": "this.text = new PIXI.Text(this.option, {\n    fill: 0x446ADB,\n    fontWeight: 600,\n    fontSize: 32,\n    wordWrap: true,\n    wordWrapWidth: 900,\n    align: 'center'\n});\nthis.text.anchor.x = this.text.anchor.y = 0.5;\nthis.addChild(this.text);\n\nthis.scale.x = this.scale.y = 0;\nct.tween.add({\n    obj: this.scale,\n    fields: {\n        x: 1,\n        y: 1\n    },\n    duration: 350,\n    curve: ct.tween.easeOutQuad\n});\n    ",
+      "onstep": "if (ct.mouse.hovers(this)) {\n    if (ct.mouse.pressed) {\n        ct.room.story.say(this.option);\n    }\n}",
       "ondraw": "",
       "ondestroy": "",
       "uid": "cf5c44b2-f55a-4e18-a941-f7cdf5aecd0f",
       "texture": "e0cbccef-93ee-4c8a-ab19-4fcef639963c",
       "extends": {},
-      "lastmod": 1569840402254
+      "lastmod": 1570008110224
+    },
+    {
+      "name": "NextButton",
+      "depth": 0,
+      "oncreate": "this.text = new PIXI.Text(this.option, {\n    fill: 0x446ADB,\n    fontWeight: 600,\n    fontSize: 32,\n    wordWrap: true,\n    wordWrapWidth: 900,\n    align: 'center'\n});\nthis.text.anchor.x = this.text.anchor.y = 0.5;\nthis.addChild(this.text);\n\nthis.scale.x = this.scale.y = 0;\nct.tween.add({\n    obj: this.scale,\n    fields: {\n        x: 1,\n        y: 1\n    },\n    duration: 350,\n    curve: ct.tween.easeOutQuad\n});\n    ",
+      "onstep": "if (ct.mouse.hovers(this)) {\n    if (ct.mouse.pressed) {\n        ct.room.story.next();\n        this.kill = true;\n    }\n}",
+      "ondraw": "",
+      "ondestroy": "",
+      "uid": "4340a6a4-65fa-4bcf-b950-38716097f29e",
+      "texture": "e0cbccef-93ee-4c8a-ab19-4fcef639963c",
+      "extends": {},
+      "lastmod": 1570008068600
+    },
+    {
+      "name": "Blurb",
+      "depth": 0,
+      "oncreate": "this.text = new PIXI.Text(this.blurb, {\n    fill: 0x446ADB,\n    fontSize: 32,\n    wordWrap: true,\n    wordWrapWidth: 1024\n});\nthis.addChild(this.text);\nthis.opacity = 0;\nthis.y += 50;\n\nct.tween.add({\n    obj: this,\n    fields: {\n        y: this.y - 50,\n        opacity: 1\n    },\n    duration: 500,\n    curve: ct.tween.easeOutQuad\n})\n.then(() => {\n    ct.room.story.next();\n});",
+      "onstep": "this.move();",
+      "ondraw": "",
+      "ondestroy": "",
+      "uid": "04a0aea0-f448-4920-97ad-f98906ac0d7c",
+      "texture": -1,
+      "extends": {},
+      "lastmod": 1569990828755
+    },
+    {
+      "name": "RestartButton",
+      "depth": 0,
+      "oncreate": "this.text = new PIXI.Text('Restart', {\n    fill: 0x446ADB,\n    fontWeight: 600,\n    fontSize: 32,\n    wordWrap: true,\n    wordWrapWidth: 900,\n    align: 'center'\n});\nthis.text.anchor.x = this.text.anchor.y = 0.5;\nthis.addChild(this.text);\n\nthis.scale.x = this.scale.y = 0;\nct.tween.add({\n    obj: this.scale,\n    fields: {\n        x: 1,\n        y: 1\n    },\n    duration: 350,\n    curve: ct.tween.easeOutQuad\n});\n    ",
+      "onstep": "if (ct.mouse.hovers(this)) {\n    if (ct.mouse.pressed) {\n        ct.rooms.switch(ct.room.name);\n        this.kill = true;\n    }\n}",
+      "ondraw": "",
+      "ondestroy": "",
+      "uid": "9a5d6ecd-82b4-4b26-827b-08904fbaf962",
+      "texture": "e0cbccef-93ee-4c8a-ab19-4fcef639963c",
+      "extends": {},
+      "lastmod": 1570008107016
     }
   ],
-  "sounds": [],
+  "sounds": [
+    {
+      "name": "Hehe",
+      "uid": "0bd4a1eb-b5f1-4047-a8dd-56feca282803",
+      "origname": "s0bd4a1eb-b5f1-4047-a8dd-56feca282803.mp3",
+      "lastmod": 1570005238168
+    }
+  ],
   "styles": [],
   "rooms": [
     {
       "name": "Main",
-      "oncreate": "ct.yarn.openFromFile('theStory.json')\n.then(story => {\n    this.story = story;\n    uiMaker();\n});\n\nthis.ctText = new PIXI.Text('', {\n    fill: 0x446ADB,\n    fontSize: 32,\n    wordWrap: true,\n    wordWrapWidth: 1024\n});\nthis.nodeTitle = new PIXI.Text('Loading the awesomeness…', {\n    fill: 0x446ADB,\n    fontSize: 24,\n    wordWrap: true,\n    wordWrapWidth: 1024\n});\nthis.ctText.x = 100;\nthis.ctText.y = 150;\nthis.nodeTitle.x = 100;\nthis.nodeTitle.y = 50;\nthis.addChild(this.ctText, this.nodeTitle);",
+      "oncreate": "var latestBlurb; // we will need it to accurately position text lines\n\nct.yarn.openFromFile('theStory.json?q=' + Math.random())\n.then(story => {\n    this.story = story;\n    storyEngine(story); // see it in the Settings tab -> Scripts\n});\n\n\nthis.nodeTitle = new PIXI.Text('Loading the awesomeness…', {\n    fill: 0x446ADB,\n    fontSize: 24,\n    wordWrap: true,\n    wordWrapWidth: 1024\n});\nthis.nodeTitle.x = 100;\nthis.nodeTitle.y = 50;\nthis.addChild(this.nodeTitle);",
       "onstep": "",
       "ondraw": "",
       "onleave": "",
@@ -193,7 +240,98 @@
       "uid": "d21d2804-d690-4c65-9657-7a1486b7f1d9",
       "thumbnail": "7a1486b7f1d9",
       "gridX": 64,
-      "gridY": 64
+      "gridY": 64,
+      "lastmod": 1570007451105
+    },
+    {
+      "name": "Micro",
+      "oncreate": "var latestBlurb; // we will need it to accurately position text lines\n\nct.yarn.openFromFile('micro.json?q=' + Math.random())\n.then(story => {\n    this.story = story;\n    storyEngine(story); // see it in the Settings tab -> Scripts\n});\n\n\nthis.nodeTitle = new PIXI.Text('Loading the awesomeness…', {\n    fill: 0x446ADB,\n    fontSize: 24,\n    wordWrap: true,\n    wordWrapWidth: 1024\n});\nthis.nodeTitle.x = 100;\nthis.nodeTitle.y = 50;\nthis.addChild(this.nodeTitle);",
+      "onstep": "",
+      "ondraw": "",
+      "onleave": "",
+      "width": 1920,
+      "height": 1080,
+      "backgrounds": [],
+      "copies": [
+        {
+          "x": 1536,
+          "y": 448,
+          "uid": "9e7aec96-1ad3-4679-a248-01180284e78e",
+          "tx": 0.75,
+          "ty": 0.75
+        }
+      ],
+      "tiles": [
+        {
+          "depth": -10,
+          "tiles": []
+        }
+      ],
+      "uid": "cb9565fc-6666-4f0c-bc6c-b49f813ea9ce",
+      "thumbnail": "b49f813ea9ce",
+      "gridX": 64,
+      "gridY": 64,
+      "lastmod": 1570007519025
+    },
+    {
+      "name": "Stop",
+      "oncreate": "var latestBlurb; // we will need it to accurately position text lines\n\nct.yarn.openFromFile('stop.json?q=' + Math.random())\n.then(story => {\n    this.story = story;\n    storyEngine(story); // see it in the Settings tab -> Scripts\n});\n\n\nthis.nodeTitle = new PIXI.Text('Loading the awesomeness…', {\n    fill: 0x446ADB,\n    fontSize: 24,\n    wordWrap: true,\n    wordWrapWidth: 1024\n});\nthis.nodeTitle.x = 100;\nthis.nodeTitle.y = 50;\nthis.addChild(this.nodeTitle);",
+      "onstep": "",
+      "ondraw": "",
+      "onleave": "",
+      "width": 1920,
+      "height": 1080,
+      "backgrounds": [],
+      "copies": [
+        {
+          "x": 1536,
+          "y": 448,
+          "uid": "9e7aec96-1ad3-4679-a248-01180284e78e",
+          "tx": 0.75,
+          "ty": 0.75
+        }
+      ],
+      "tiles": [
+        {
+          "depth": -10,
+          "tiles": []
+        }
+      ],
+      "uid": "95f73a99-6402-4848-81a7-d96488130d15",
+      "thumbnail": "d96488130d15",
+      "gridX": 64,
+      "gridY": 64,
+      "lastmod": 1570013323128
+    },
+    {
+      "name": "Wait",
+      "oncreate": "var latestBlurb; // we will need it to accurately position text lines\n\nct.yarn.openFromFile('wait.json?q=' + Math.random())\n.then(story => {\n    this.story = story;\n    storyEngine(story); // see it in the Settings tab -> Scripts\n});\n\n\nthis.nodeTitle = new PIXI.Text('Loading the awesomeness…', {\n    fill: 0x446ADB,\n    fontSize: 24,\n    wordWrap: true,\n    wordWrapWidth: 1024\n});\nthis.nodeTitle.x = 100;\nthis.nodeTitle.y = 50;\nthis.addChild(this.nodeTitle);",
+      "onstep": "",
+      "ondraw": "",
+      "onleave": "",
+      "width": 1920,
+      "height": 1080,
+      "backgrounds": [],
+      "copies": [
+        {
+          "x": 1536,
+          "y": 448,
+          "uid": "9e7aec96-1ad3-4679-a248-01180284e78e",
+          "tx": 0.75,
+          "ty": 0.75
+        }
+      ],
+      "tiles": [
+        {
+          "depth": -10,
+          "tiles": []
+        }
+      ],
+      "uid": "48b25b49-58b8-44ee-b4c5-cc6b9ea24c38",
+      "thumbnail": "cc6b9ea24c38",
+      "gridX": 64,
+      "gridY": 64,
+      "lastmod": 1570056924685
     }
   ],
   "actions": [],
@@ -219,13 +357,14 @@
   },
   "scripts": [
     {
-      "name": "uiMaker",
-      "code": "var uiMaker = function() {\n    const story = ct.room.story;\n    // Clear the previous buttons\n    for (const button of ct.types.list['Button']) {\n        button.kill = true;\n    }\n    \n    // Update the speech and the node's title\n    ct.room.ctText.text = story.body;\n    ct.room.nodeTitle.text = story.title;\n    \n    // Re-generate buttons\n    const options = story.options;\n    var buttonY = ct.viewHeight - 60;\n    for (const option of options) {\n        ct.types.copy('Button', ct.viewWidth / 2, buttonY, {\n            option: option\n        });\n        buttonY -= 120;\n    }\n    \n    // Update the cat's texture, if needed\n    const cat = ct.types.list['TheCat'][0];\n    if (story.tags.indexOf('cat:happy') !== -1) {\n        cat.tex = 'CatHappy';\n    } else if (story.tags.indexOf('cat:thoughtful') !== -1) {\n        cat.tex = 'CatThoughtful';\n    } else if (story.tags.indexOf('cat:normal') !== -1) {\n        cat.tex = 'CatNormal';\n    }\n};"
+      "name": "storyEngine",
+      "code": "var storyEngine = function (story) {\n    var latestBlurb; // used to position lines nicely, see below at story.on('options')\n    var spacing = true;\n    story.on('newnode', () => {\n        // Clear the previous buttons and blurbs\n        for (const button of ct.types.list['NextButton']) {\n            button.kill = true;\n        }\n        for (const button of ct.types.list['OptionButton']) {\n            button.kill = true;\n        }\n        for (const blurb of ct.types.list['Blurb']) {\n            blurb.kill = true;\n        }\n        // Update the node's title\n        ct.room.nodeTitle.text = story.title;\n    });\n    story.on('text', text => {\n        // Yarn does not support single dialogue options, but we will fake\n        // them to add a better feeling of authority\n        if (story.character === 'Player') {\n            // Clear the previous buttons\n            for (const button of ct.types.list['NextButton']) {\n                button.kill = true;\n            }\n            ct.types.copy('NextButton', ct.viewWidth / 2, ct.viewHeight - 60, {\n                option: story.body // it will appear in button's OnCreate event as this.option\n            });\n        } else {\n            let blurbY = 150; // the default blurb location\n            // Get the latest blurb's bottom line, if any\n            if (latestBlurb && !latestBlurb.kill) {\n                blurbY = latestBlurb.y + latestBlurb.text.height + (spacing? 32 : 0);\n            }\n            latestBlurb = ct.types.copy('Blurb', 100, blurbY, {\n                blurb: story.body // it will appear in Blurb's OnCreate event as this.blurb\n            });\n        }\n    });\n    story.on('options', options => {\n        let buttonY = ct.viewHeight - 60;\n        for (const option of options) {\n            ct.types.copy('OptionButton', ct.viewWidth / 2, buttonY, {\n                option: option // it will appear in button's OnCreate event as this.option\n            });\n            buttonY -= 120;\n        }\n    });\n    story.on('command', command => {\n        const cat = ct.types.list['TheCat'][0];\n        if (command === 'cat happy') {\n            cat.tex = 'CatHappy';\n        } else if (command === 'cat thoughtful') {\n            cat.tex = 'CatThoughtful';\n        } else if (command === 'cat normal') {\n            cat.tex = 'CatNormal';\n        } else if (command === 'disable spacing') {\n            spacing = false;\n        } else if (command === 'enable spacing') {\n            spacing = true;\n        } else {\n            console.warn(`Unknown command \"${command}\"`);\n        }\n        story.next();\n    });\n    story.on('drained', () => {\n        // Clear the previous buttons and blurbs\n        for (const button of ct.types.list['NextButton']) {\n            button.kill = true;\n        }\n        for (const button of ct.types.list['OptionButton']) {\n            button.kill = true;\n        }\n        for (const blurb of ct.types.list['Blurb']) {\n            blurb.kill = true;\n        }\n        ct.types.copy('RestartButton', ct.viewWidth / 2, ct.viewHeight - 60);\n    });\n    \n    story.start();\n}"
     },
     {
       "name": "Background color",
       "code": "ct.pixiApp.renderer.backgroundColor = 0xffffff;"
     }
   ],
-  "fonts": []
+  "fonts": [],
+  "startroom": "cb9565fc-6666-4f0c-bc6c-b49f813ea9ce"
 }

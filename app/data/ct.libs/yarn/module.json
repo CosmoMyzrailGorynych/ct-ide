@@ -6,5 +6,20 @@
             "name": "Cosmo Myzrail Gorynych",
             "mail": "admin@nersta.ru"
         }]
-    }
+    },
+    "fields": [{
+        "name": "Skip empty lines",
+        "help": "Allows you to write empty lines in YarnEditor for better readability.",
+        "key": "skipEmpty",
+        "id": "skipEmpty",
+        "default": true,
+        "type": "checkbox"
+    }, {
+        "name": "Use magic commands",
+        "help": "Automatically execute commands `<<room(\"RoomName\")>>`, `<<sound(\"SoundName\")>>` and `<<wait(1000)>>` and call `next()` after them.",
+        "key": "magic",
+        "id": "magic",
+        "default": true,
+        "type": "checkbox"
+    }]
 }
