@@ -1,5 +1,5 @@
 modules-panel.panel.view
-    .flexrow
+    .flexrow.tall
         .c3.borderright.tall
             ul#moduleincluded
                 li(each="{module in enabledModules}" onclick="{renderModule(module)}")
@@ -9,8 +9,8 @@ modules-panel.panel.view
                 li(each="{module in allModules}" onclick="{renderModule(module)}")
                     i.icon(class="icon-{(module in window.currentProject.libs)? 'confirm on' : 'mod off'}")
                     span {module}
-        .c9.tall(if="{currentModule}")
-            ul.nav.tabs
+        .c9.tall.flexfix(if="{currentModule}")
+            ul.nav.tabs.flexfix-header.noshrink
                 li#modinfo(onclick="{changeTab('moduleinfo')}" class="{active: tab === 'moduleinfo'}")
                     i.icon-info
                     span {voc.info}
@@ -23,7 +23,7 @@ modules-panel.panel.view
                 li#modlogs(if="{currentModuleLogs}" onclick="{changeTab('modulelogs')}" class="{active: tab === 'modulelogs'}")
                     i.icon-list
                     span {voc.logs}
-            div
+            div.flexfix-body
                 #moduleinfo.tabbed.nbt(show="{tab === 'moduleinfo'}")
                     label.bigpower(onclick="{toggleModule(currentModuleName)}" class="{off: !(currentModuleName in currentProject.libs)}")
                         i(class="icon-{currentModuleName in currentProject.libs? 'confirm' : 'delete'}")
