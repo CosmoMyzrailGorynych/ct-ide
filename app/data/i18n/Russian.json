@@ -132,7 +132,15 @@
         "themeNight": "Тёмная",
         "types": "Типы",
         "zipExport": "Экспорт в .zip",
-        "zipProject": "Упаковать проект в .zip"
+        "zipProject": "Упаковать проект в .zip",
+        "codeFontDefault": "По умолчанию (Iosevka Light)",
+        "codeFontOldSchool": "Старый-добрый",
+        "codeFontSystem": "Системный",
+        "codeFontCustom": "Пользовательский…",
+        "newFont": "Новый шрифт:",
+        "codeFont": "Шрифт для кода",
+        "codeLigatures": "Лигатуры",
+        "codeDense": "Меньшая высота линии"
     },
     "settings": {
         "actions": "Действия и методы ввода",

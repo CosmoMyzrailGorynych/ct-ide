@@ -315,6 +315,66 @@ main-menu.flexcol
         };
         localStorage.UItheme = localStorage.UItheme || 'Day';
 
+        var fontSubmenu = new nw.Menu();
+        fontSubmenu.append(new gui.MenuItem({
+            label: window.languageJSON.menu.codeFontDefault,
+            click: () => {
+                localStorage.fontFamily = '';
+                window.signals.trigger('codeFontUpdated');
+            }
+        }));
+        fontSubmenu.append(new gui.MenuItem({
+            label: window.languageJSON.menu.codeFontOldSchool,
+            click: () => {
+                localStorage.fontFamily = 'Monaco, Menlo, "Ubuntu Mono", Consolas, source-code-pro, monospace';
+                window.signals.trigger('codeFontUpdated');
+            }
+        }));
+        fontSubmenu.append(new gui.MenuItem({
+            label: window.languageJSON.menu.codeFontSystem,
+            click: () => {
+                localStorage.fontFamily = 'monospace';
+                window.signals.trigger('codeFontUpdated');
+            }
+        }));
+        fontSubmenu.append(new gui.MenuItem({
+            label: window.languageJSON.menu.codeFontCustom,
+            click: () => {
+                alertify
+                .defaultValue(localStorage.fontFamily || '')
+                .prompt(window.languageJSON.menu.newFont)
+                .then(e => {
+                    if (e.inputValue && e.buttonClicked !== 'cancel') {
+                        localStorage.fontFamily = `"${e.inputValue}", monospace`;
+                    }
+                    window.signals.trigger('codeFontUpdated');
+                });
+            }
+        }));
+        fontSubmenu.append(new gui.MenuItem({type: 'separator'}));
+        fontSubmenu.append(new gui.MenuItem({
+            label: window.languageJSON.menu.codeLigatures,
+            type: 'checkbox',
+            checked: localStorage.codeLigatures !== 'off',
+            click: () => {
+                localStorage.codeLigatures = localStorage.codeLigatures === 'off'? 'on' : 'off';
+                window.signals.trigger('codeFontUpdated');
+            }
+        }));
+        fontSubmenu.append(new gui.MenuItem({
+            label: window.languageJSON.menu.codeDense,
+            type: 'checkbox',
+            checked: localStorage.codeDense === 'on',
+            click: () => {
+                localStorage.codeDense = localStorage.codeDense === 'off'? 'on' : 'off';
+                window.signals.trigger('codeFontUpdated');
+            }
+        }));
+
+        catMenu.append(new gui.MenuItem({
+            label: window.languageJSON.menu.codeFont,
+            submenu: fontSubmenu
+        }));
 
         catMenu.append(new gui.MenuItem({type: 'separator'}));
 

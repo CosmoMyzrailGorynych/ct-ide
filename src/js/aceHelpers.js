@@ -195,7 +195,6 @@
         aceEditor.tag = tag;
         aceEditor.session = aceEditor.getSession();
         tag.style.fontSize = localStorage.fontSize + 'px';
-        tag.style.fontFamily = localStorage.fontFamily || 'Monaco, Menlo, "Ubuntu Mono", Consolas, source-code-pro, monospace';
         aceEditor.session.setMode('ace/mode/' + options.mode || defaultOptions.mode);
         aceEditor.setOptions({
             enableBasicAutocompletion: true,

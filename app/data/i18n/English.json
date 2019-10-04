@@ -134,7 +134,15 @@
         "themeNight": "Dark",
         "types": "Types",
         "zipExport": "Export to .zip",
-        "zipProject": "Pack project to .zip"
+        "zipProject": "Pack project to .zip",
+        "codeFontDefault": "Default (Iosevka Light)",
+        "codeFontOldSchool": "Old school",
+        "codeFontSystem": "System",
+        "codeFontCustom": "Custom…",
+        "newFont": "New font:",
+        "codeFont": "Font for code",
+        "codeLigatures": "Ligatures",
+        "codeDense": "Dense layout"
     },
     "settings": {
         "actions": "Actions and input methods",
