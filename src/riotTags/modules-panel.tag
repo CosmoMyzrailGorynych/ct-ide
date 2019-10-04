@@ -24,7 +24,7 @@ modules-panel.panel.view
                     i.icon-list
                     span {voc.logs}
             div
-                #moduleinfo.tabbed(show="{tab === 'moduleinfo'}")
+                #moduleinfo.tabbed.nbt(show="{tab === 'moduleinfo'}")
                     label.bigpower(onclick="{toggleModule(currentModuleName)}" class="{off: !(currentModuleName in currentProject.libs)}")
                         i(class="icon-{currentModuleName in currentProject.libs? 'confirm' : 'delete'}")
                         span
@@ -44,7 +44,7 @@ modules-panel.panel.view
                     pre(if="{currentModuleLicense}")
                         code {currentModuleLicense}
 
-                #modulesettings.tabbed(show="{tab === 'modulesettings'}" if="{currentModule.fields && currentModuleName in currentProject.libs}")
+                #modulesettings.tabbed.nbt(show="{tab === 'modulesettings'}" if="{currentModule.fields && currentModuleName in currentProject.libs}")
                     dl(each="{field in currentModule.fields}")
                         dt
                             label(if="{field.type === 'checkbox'}")
@@ -87,9 +87,9 @@ modules-panel.panel.view
                             //- That's a bad idea!!!
                             div(class="desc" if="{field.help}")
                                 raw(ref="raw" content="{md.render(field.help)}")
-                #modulehelp.tabbed(show="{tab === 'modulehelp'}" if="{currentModuleDocs}")
+                #modulehelp.tabbed.nbt(show="{tab === 'modulehelp'}" if="{currentModuleDocs}")
                     raw(ref="raw" content="{currentModuleDocs}")
-                #modulelogs.tabbed(show="{tab === 'modulelogs'}" if="{currentModuleLogs}")
+                #modulelogs.tabbed.nbt(show="{tab === 'modulelogs'}" if="{currentModuleLogs}")
                     h1 {voc.logs2}
                     raw(ref="raw" content="{currentModuleLogs}")
     script.
