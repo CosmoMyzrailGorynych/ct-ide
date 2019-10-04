@@ -98,8 +98,17 @@ modules-panel.panel.view
               gui = require('nw.gui');
         const md = require('markdown-it')({
             html: false,
-            linkify: true
+            linkify: true,
+            highlight: function (str, lang) {
+                if (lang && hljs.getLanguage(lang)) {
+                    try {
+                        return hljs.highlight(lang, str).value;
+                    } catch (__) {}
+                }
+                return ''; // use external default escaping
+            }
         });
+        const hljs = require('highlight.js');
         const glob = require('./data/node_requires/glob');
         const libsDir = './data/ct.libs';
         this.md = md;
