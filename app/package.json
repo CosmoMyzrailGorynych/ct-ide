@@ -33,6 +33,7 @@
   "webkit": {
     "plugin": false
   },
+  "chromium-args": "--force-color-profile=srgb --disable-features=ColorCorrectRendering",
   "webview": {
     "partitions": [
       {
