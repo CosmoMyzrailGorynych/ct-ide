@@ -4,7 +4,6 @@
         "native": "Spanish",
         "eng": "Spanish"
     },
-
     "common": {
         "add": "Añadir",
         "addtonotes": "Agregar a notas",
@@ -28,7 +27,6 @@
         "name": "Nombre:",
         "nametaken": "Este nombre ya ha sido tomado",
         "newname": "Nuevo nombre:",
-        "newversion": "# Nueva versión disponible\n",
         "no": "No",
         "none": "None",
         "norooms": "You need at least one room to compile your app.",
@@ -45,9 +43,9 @@
         "sort": "Ordenar:",
         "tilelayer": "capa de baldosas",
         "wrongFormat": "Formato de archivo incorrecto",
-        "yes": "Si"
+        "yes": "Si",
+        "contribute": ""
     },
-
     "actionsEditor": {
         "actions": "Acciones",
         "actionsEditor": "Editor de acciones",
@@ -103,15 +101,13 @@
         "browse": "Vistazo",
         "latest": "Últimos proyectos",
         "twitter": "Canal de Twitter",
-        "discord": "Comunidad de Discord"
+        "discord": "Comunidad de Discord",
+        "loadingProject": "",
+        "loadingProjectError": "",
+        "unableToWriteToFolders": ""
     },
     "licensepanel": {
-        "tldr": [
-            "Usted es dueño de sus activos, proyectos, catmods;",
-            "Puede usar la aplicación para uso comercial (y otros usos también);",
-            "No debe modificar los ct.js de ninguna manera que no haya sido diseñada por el autor;",
-            "No damos ninguna garantía y no somos responsables de ningún daño."
-        ]
+        "ctjslicense": ""
     },
     "menu": {
         "ctIDE": "ct.IDE",
@@ -135,7 +131,15 @@
         "themeNight": "Dark",
         "types": "Tipos",
         "zipExport": "Exportar a .zip",
-        "zipProject": "Paquete de proyecto a .zip"
+        "zipProject": "Paquete de proyecto a .zip",
+        "codeFontDefault": "",
+        "codeFontOldSchool": "",
+        "codeFontSystem": "",
+        "codeFontCustom": "",
+        "newFont": "",
+        "codeFont": "",
+        "codeLigatures": "",
+        "codeDense": ""
     },
     "settings": {
         "actions": "Acciones y métodos de entrada",
@@ -149,24 +153,20 @@
         "minifyhtmlcss": "Comprimir HTML y CSS",
         "minifyjs": "Comprima JavaScript y conviértalo a ES5 (lento; uso para versiones)",
         "pixelatedrender": "Deshabilite el suavizado de imagen aquí y en el proyecto exportado (conserve píxeles nítidos)",
-        "preloader": "Preloader",
         "renderoptions": "Opciones de render",
         "settings": "Configuración del proyecto",
         "site": "Página principal:",
         "title": "Nombre:",
         "version": "Version:",
         "versionpostfix": "Sufijo:",
-        "preloaders": {
-            "circular": "Circular",
-            "bar": "Barra de progreso",
-            "no": "Sin precargador"
-        },
         "scripts": {
             "addNew": "Agregar un nuevo script",
             "deleteScript": "Eliminar el script",
             "header": "Scripts",
             "newScriptComment": "Use scripts para definir funciones frecuentes e importar pequeñas bibliotecas"
-        }
+        },
+        "highDensity": "",
+        "maxFPS": ""
     },
     "modules": {
         "author": "Autor de este catmod",
@@ -179,8 +179,6 @@
         "logs": "Changelog",
         "methods": "Metodos",
         "parameters": "Parametros",
-        "nomethods": "Este módulo no tiene sus propios métodos.",
-        "noparameters": "Este módulo no tiene sus propios parámetros.",
         "logs2": "Changelog",
         "settings": "Configuraciones"
     },
@@ -265,7 +263,7 @@
         "stroke": "Trazo",
         "strokecolor": "Color del trazo:",
         "strokeweight": "Grosor de línea:",
-        "testtext" : "Texto de prueba 0123 +",
+        "testtext": "Texto de prueba 0123 +",
         "textWrap": "Ajuste de línea",
         "textWrapWidth": "Anchura máxima:"
     },
@@ -348,7 +346,8 @@
         "deletetile": "Eliminar un tile",
         "deletetiles": "Eliminar tiles",
         "movetilestolayer": "Mover a capa",
-        "shifttiles": "Cambiar tiles"
+        "shifttiles": "Cambiar tiles",
+        "findTileset": ""
     },
     "notepad": {
         "local": "Bloc de notas del proyecto",

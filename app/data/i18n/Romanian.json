@@ -4,7 +4,6 @@
         "native": "Română",
         "eng": "Romanian"
     },
-
     "common": {
         "add": "Adaugă",
         "addtonotes": "Adaugă la notițe",
@@ -28,7 +27,6 @@
         "name": "Nume:",
         "nametaken": "Acest nume este deja în uz",
         "newname": "Nume nou:",
-        "newversion": "# O nouă versiune este disponibilă\n",
         "no": "Nu",
         "none": "Nimic",
         "norooms": "Ai nevoie de cel puțin o cameră pentru a compila aplicația.",
@@ -45,9 +43,9 @@
         "sort": "Sortează:",
         "tilelayer": "tile layer",
         "wrongFormat": "Format de fișier greșit",
-        "yes": "Da"
+        "yes": "Da",
+        "contribute": ""
     },
-
     "actionsEditor": {
         "actions": "Acțiuni",
         "actionsEditor": "Editor de acțiuni",
@@ -103,15 +101,13 @@
         "browse": "Navighează",
         "latest": "Proiecte recente",
         "twitter": "Pagina de Twitter",
-        "discord": "Comunitatea pe Discord"
+        "discord": "Comunitatea pe Discord",
+        "loadingProject": "",
+        "loadingProjectError": "",
+        "unableToWriteToFolders": ""
     },
     "licensepanel": {
-        "tldr": [
-            "Tu deții bunurile, proiectele și catmod-urile tale.",
-            "Poți folosi aplicația în scop comercial (și în alte scopuri);",
-            "Nu ai dreptul să modifici ct.js în moduri care nu au fost prevăzute de autor;",
-            "Nu oferim garanții și nu suntem responsabili pentru orice pagubă."
-        ]
+        "ctjslicense": ""
     },
     "menu": {
         "ctIDE": "ct.IDE",
@@ -135,7 +131,15 @@
         "themeNight": "Întunecată",
         "types": "Tipuri",
         "zipExport": "Exportă .zip",
-        "zipProject": "Împachetază proiectul în .zip"
+        "zipProject": "Împachetază proiectul în .zip",
+        "codeFontDefault": "",
+        "codeFontOldSchool": "",
+        "codeFontSystem": "",
+        "codeFontCustom": "",
+        "newFont": "",
+        "codeFont": "",
+        "codeLigatures": "",
+        "codeDense": ""
     },
     "settings": {
         "actions": "Acțiuni și metode de introducere",
@@ -149,24 +153,20 @@
         "minifyhtmlcss": "Comprimă HTML și CSS",
         "minifyjs": "Comprimă JavaScript și convertește în ES5 (lent; folosește pentru lansări)",
         "pixelatedrender": "Dezactivează netezirea imaginii aici și în proiectul exportat (conservă pixelii clari)",
-        "preloader": "Preloader",
         "renderoptions": "Opțiuni de randare",
         "settings": "Setările proiectului",
         "site": "Pagină principală:",
         "title": "Nume:",
         "version": "Versiune:",
         "versionpostfix": "Postfix:",
-        "preloaders": {
-            "circular": "Circular",
-            "bar": "Bară de progres",
-            "no": "Fară preloader"
-        },
         "scripts": {
             "addNew": "Adaugă un nou script",
             "deleteScript": "Șterge script-ul",
             "header": "Script-uri",
             "newScriptComment": "Folosește script-uri pentru a defini funcții frecvente și pentru a importa biblioteci mici"
-        }
+        },
+        "highDensity": "",
+        "maxFPS": ""
     },
     "modules": {
         "author": "Autorul acestui catmod",
@@ -179,8 +179,6 @@
         "logs": "Jurnalul schimbărilor",
         "methods": "Metode",
         "parameters": "Parametri",
-        "nomethods": "Acest modul nu are propriile metode.",
-        "noparameters": "Acest modul nu are proprii parametri.",
         "logs2": "Jurnalul schimbărilor",
         "settings": "Setări"
     },
@@ -265,7 +263,7 @@
         "stroke": "Contur",
         "strokecolor": "Culoarea conturului:",
         "strokeweight": "Greutatea liniei:",
-        "testtext" : "Test text 0123 +",
+        "testtext": "Test text 0123 +",
         "textWrap": "Word wrap",
         "textWrapWidth": "Lățime maximă:"
     },
@@ -348,7 +346,8 @@
         "deletetile": "Șterge un tile",
         "deletetiles": "Șterge tile-urile",
         "movetilestolayer": "Mută în layer",
-        "shifttiles": "Deplasează tile-urile"
+        "shifttiles": "Deplasează tile-urile",
+        "findTileset": ""
     },
     "notepad": {
         "local": "Carnețelul Proiectului",

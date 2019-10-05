@@ -397,6 +397,7 @@ main-menu.flexcol
                 this.update();
             }
         }));
+
         catMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.donate,
             click: function () {
@@ -435,7 +436,13 @@ main-menu.flexcol
         fs.readdir('./data/i18n/')
         .then(files => {
             files.forEach(filename => {
+                if (path.extname(filename) !== '.json') {
+                    return;
+                }
                 var file = filename.slice(0, -5);
+                if (file === 'Comments') {
+                    return;
+                }
                 languageSubmenu.append(new nw.MenuItem({
                     label: file,
                     click: function() {
@@ -449,7 +456,7 @@ main-menu.flexcol
             languageSubmenu.append(new nw.MenuItem({
                 label: window.languageJSON.common.translateToYourLanguage,
                 click: function() {
-                    gui.Shell.openExternal('https://translate.zanata.org/iteration/view/ct-js/v1/documents?docId=English.json&dswid=8629');
+                    gui.Shell.openExternal('https://github.com/ct-js/ct-js/tree/develop/app/data/i18n');
                 }
             }));
         })

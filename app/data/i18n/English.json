@@ -4,7 +4,6 @@
         "native": "English",
         "eng": "English"
     },
-
     "common": {
         "add": "Add",
         "addtonotes": "Add to notes",
@@ -29,7 +28,6 @@
         "name": "Name:",
         "nametaken": "This name is already taken",
         "newname": "New name:",
-        "newversion": "# New version is avaliable\n",
         "no": "No",
         "none": "None",
         "norooms": "You need at least one room to compile your app.",
@@ -48,7 +46,6 @@
         "wrongFormat": "Wrong file format",
         "yes": "Yes"
     },
-
     "actionsEditor": {
         "actions": "Actions",
         "actionsEditor": "Actions editor",
@@ -99,7 +96,7 @@
             "older": "(older)"
         },
         "loadingProject": "Loading the project…",
-        "loadingProjectError" : "Cannot open this project because of the following error: ",
+        "loadingProjectError": "Cannot open this project because of the following error: ",
         "homepage": "Homepage",
         "latestVersion": "Version $1 is available",
         "forgetProject": "Forget this project",
@@ -158,18 +155,12 @@
         "minifyhtmlcss": "Compress HTML and CSS",
         "minifyjs": "Compress JavaScript and convert it to ES5 (slow; use for releases)",
         "pixelatedrender": "Disable image smoothing here and in exported project (preserve crisp pixels)",
-        "preloader": "Preloader",
         "renderoptions": "Render Options",
         "settings": "Project settings",
         "site": "Homepage:",
         "title": "Name:",
         "version": "Version:",
         "versionpostfix": "Postfix:",
-        "preloaders": {
-            "circular": "Circular",
-            "bar": "Progress bar",
-            "no": "No preloader"
-        },
         "scripts": {
             "addNew": "Add a New Script",
             "deleteScript": "Delete the script",
@@ -188,8 +179,6 @@
         "logs": "Changelog",
         "methods": "Methods",
         "parameters": "Parameters",
-        "nomethods": "This module hasn't its own methods.",
-        "noparameters": "This module hasn't its own parameters.",
         "logs2": "Changelog",
         "settings": "Settings"
     },
@@ -274,7 +263,7 @@
         "stroke": "Stroke",
         "strokecolor": "Stroke color:",
         "strokeweight": "Line weight:",
-        "testtext" : "Test text 0123 +",
+        "testtext": "Test text 0123 +",
         "textWrap": "Word wrap",
         "textWrapWidth": "Max width:"
     },
@@ -357,7 +346,8 @@
         "deletetile": "Delete a tile",
         "deletetiles": "Delete tiles",
         "movetilestolayer": "Move to layer",
-        "shifttiles": "Shift tiles"
+        "shifttiles": "Shift tiles",
+        "findTileset": "Find a tileset"
     },
     "notepad": {
         "local": "Project's notepad",
