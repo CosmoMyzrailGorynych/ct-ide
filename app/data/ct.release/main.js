@@ -1,5 +1,5 @@
 /* Made with ct.js http://ctjs.rocks/ */
-var deadPool = []; // a pool of `kill`-ed copies for delaying frequent garbage collection
+const deadPool = []; // a pool of `kill`-ed copies for delaying frequent garbage collection
 setInterval(function () {
     deadPool.length = 0;
 }, 1000 * 60);
@@ -190,6 +190,18 @@ ct.u.ext(ct.u, { // make aliases
     pointCircle: ct.u.pcircle,
     extend: ct.u.ext
 });
+
+const removeKilledCopies = (array) => {
+    let j = 0;
+    for(let i = 0; i < array.length; i++) {
+        if (!array[i].kill) {
+            array[j++] = array[i];
+        }
+    }
+  
+    array.length = j;
+    return array;
+};
 ct.loop = function(delta) {
     ct.delta = delta;
     ct.inputs.updateActions();
@@ -203,28 +215,24 @@ ct.loop = function(delta) {
     ct.room.onStep.apply(ct.room);
     ct.rooms.afterStep.apply(ct.room);
     // copies
-    for (let i = 0, li = ct.stack.length; i < li;) {
-        if (ct.stack[i].kill) {
-            ct.types.onDestroy.apply(ct.stack[i]);
-            ct.stack[i].onDestroy.apply(ct.stack[i]);
-            ct.stack[i].destroy({
-                children: true
-            });
-            deadPool.push(ct.stack.splice(i, 1));
-            li--;
-        } else {
-            i++;
+    for (let i = 0; i < ct.stack.length; i++) {
+        if (ct.stack[i].kill && !ct.stack[i]._destroyed) {
+            ct.stack[i].destroy({children: true});
         }
     }
+    for (const copy of ct.stack) {
+        if (copy._destroyed) {
+            copy.kill = true;
+            ct.types.onDestroy.apply(copy);
+            copy.onDestroy.apply(copy);
+            deadPool.push(copy);
+        }
+    }
+    removeKilledCopies(ct.stack);
 
     // ct.types.list[type: String]
     for (const i in ct.types.list) {
-        for (let k = 0, lk = ct.types.list[i].length; k < lk; k++) {
-            if (ct.types.list[i][k].kill) {
-                ct.types.list[i].splice(k, 1);
-                k--; lk--;
-            }
-        }
+        removeKilledCopies(ct.types.list[i]);
     }
 
     for (const cont of ct.stage.children) {
@@ -268,7 +276,9 @@ ct.loop = function(delta) {
     r.x = Math.round(r.x);
     r.y = Math.round(r.y);
 
+    // console.log("loop")
     for (let i = 0, li = ct.stack.length; i < li; i++) {
+        // console.log(ct.stack[i].type);
         ct.types.beforeDraw.apply(ct.stack[i]);
         ct.stack[i].onDraw.apply(ct.stack[i]);
         ct.types.afterDraw.apply(ct.stack[i]);
