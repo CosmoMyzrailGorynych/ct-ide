@@ -72,6 +72,7 @@
                 }
             } else {
                 const texture = PIXI.Loader.shared.resources[reg.atlas].texture;
+                texture.defaultAnchor = new PIXI.Point(reg.anchor.x, reg.anchor.y);
                 reg.textures.push(texture);
             }
         }
