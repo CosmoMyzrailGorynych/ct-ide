@@ -204,7 +204,7 @@
         "rows": "Rows:",
         "setcenter": "Image's center",
         "speed": "Framerate:",
-        "tiled": "Is it tiled?",
+        "tiled": "Use as a background?",
         "replacetexture": "Replace…",
         "corrupted": "File is corrupted or missing! Closing now.",
         "showmask": "Show mask",
