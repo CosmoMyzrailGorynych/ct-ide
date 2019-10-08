@@ -204,7 +204,7 @@
         "rows": "Reihen:",
         "setcenter": "Bildmittelpunkt",
         "speed": "Framerate:",
-        "tiled": "Ist es getiled?",
+        "tiled": "Als Hintergrund verwenden?",
         "replacetexture": "Ersetzen...",
         "corrupted": "Die Datei ist korrupt oder fehlt. Wird geschlossen.",
         "showmask": "Maske zeigen",
