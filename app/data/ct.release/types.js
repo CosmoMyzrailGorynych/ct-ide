@@ -27,6 +27,9 @@
             } else {
                 super([PIXI.Texture.EMPTY]);
             }
+            // it is defined in main.js
+            // eslint-disable-next-line no-undef
+            this[copyTypeSymbol] = true;
             if (exts) {
                 ct.u.ext(this, exts);
                 if (exts.tx) {

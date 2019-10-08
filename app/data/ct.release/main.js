@@ -1,5 +1,6 @@
 /* Made with ct.js http://ctjs.rocks/ */
 const deadPool = []; // a pool of `kill`-ed copies for delaying frequent garbage collection
+const copyTypeSymbol = Symbol('I am a ct.js copy');
 setInterval(function () {
     deadPool.length = 0;
 }, 1000 * 60);
@@ -181,7 +182,7 @@ ct.u = {
         }, time));
     }
 };
-ct.u.ext(ct.u, { // make aliases
+ct.u.ext(ct.u, {// make aliases
     lengthDirX: ct.u.ldx,
     lengthDirY: ct.u.ldy,
     pointDirection: ct.u.pdn,
@@ -193,14 +194,24 @@ ct.u.ext(ct.u, { // make aliases
 
 const removeKilledCopies = (array) => {
     let j = 0;
-    for(let i = 0; i < array.length; i++) {
+    for (let i = 0; i < array.length; i++) {
         if (!array[i].kill) {
             array[j++] = array[i];
         }
     }
-  
+
     array.length = j;
     return array;
+};
+const killRecursive = copy => {
+    copy.kill = true;
+    ct.types.onDestroy.apply(copy);
+    copy.onDestroy.apply(copy);
+    for (const child of copy.children) {
+        if (child[copyTypeSymbol]) {
+            killRecursive(child);
+        }
+    }
 };
 ct.loop = function(delta) {
     ct.delta = delta;
@@ -216,15 +227,15 @@ ct.loop = function(delta) {
     ct.rooms.afterStep.apply(ct.room);
     // copies
     for (let i = 0; i < ct.stack.length; i++) {
+        // eslint-disable-next-line no-underscore-dangle
         if (ct.stack[i].kill && !ct.stack[i]._destroyed) {
+            killRecursive(ct.stack[i]); // This will also allow a parent to eject children to a new container before they are destroyed as well
             ct.stack[i].destroy({children: true});
         }
     }
     for (const copy of ct.stack) {
+        // eslint-disable-next-line no-underscore-dangle
         if (copy._destroyed) {
-            copy.kill = true;
-            ct.types.onDestroy.apply(copy);
-            copy.onDestroy.apply(copy);
             deadPool.push(copy);
         }
     }
