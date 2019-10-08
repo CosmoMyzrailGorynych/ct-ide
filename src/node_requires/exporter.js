@@ -129,7 +129,7 @@ const packImages = () => {
     let res = 'PIXI.Loader.shared';
     let registry = {};
     const atlases = []; // names of atlases' json files
-    const Packer = require('maxrects-packer');
+    const Packer = require('maxrects-packer').MaxRectsPacker;
     const atlasWidth = 2048,
         atlasHeight = 2048;
     const pack = new Packer(atlasWidth, atlasHeight, 1);
