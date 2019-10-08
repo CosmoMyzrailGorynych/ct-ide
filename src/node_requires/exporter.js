@@ -132,7 +132,7 @@ const packImages = () => {
     const Packer = require('maxrects-packer').MaxRectsPacker;
     const atlasWidth = 2048,
         atlasHeight = 2048;
-    const pack = new Packer(atlasWidth, atlasHeight, 1);
+    const pack = new Packer(atlasWidth, atlasHeight, 0);
     // pack all the frames
     pack.addArray(blocks);
     // get all atlases
