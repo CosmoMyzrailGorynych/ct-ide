@@ -120,12 +120,10 @@ style-editor.panel.view
             button.wide.nogrow.noshrink(onclick="{styleSave}")
                 i.icon.icon-confirm
                 span {voc.apply}
-    #stylepreview.tall
-        canvas(width="550" height="400" ref="canvas")
+    #stylepreview.tall(ref="canvasSlot")
     texture-selector(if="{selectingTexture}" onselected="{applyTexture}" ref="textureselector")
     script.
         const fs = require('fs-extra');
-        const PIXI = require('pixi.js');
 
         this.namespace = 'styleview';
         this.mixin(window.riotVoc);
@@ -144,10 +142,16 @@ style-editor.panel.view
             this.tab = tab;
         };
         this.on('mount', e => {
-            this.pixiApp = new PIXI.Application(640, 480, {
-                view: this.refs.canvas,
+            const width = 800;
+            const height = 500;
+            this.pixiApp = new PIXI.Application({
+                width,
+                height,
                 transparent: true
             });
+            this.refs.canvasSlot.appendChild(this.pixiApp.view);
+
+            console.log(this.pixiApp);
             var labelShort = languageJSON.styleview.testtext,
                 labelMultiline = languageJSON.styleview.testtext.repeat(2) + '\n' + languageJSON.styleview.testtext.repeat(3) + '\n' + languageJSON.styleview.testtext,
                 labelLong = 'A quick blue cat jumps over the lazy frog. 0123456789 '.repeat(3),
@@ -162,7 +166,7 @@ style-editor.panel.view
                 label.anchor.x = 0.5;
                 label.anchor.y = 0.5;
                 this.pixiApp.stage.addChild(label);
-                label.x = 320;
+                label.x = width / 2;
             }
             this.labelShort.y = 60;
             this.labelMultiline.y = 60 * 3;
