@@ -139,7 +139,8 @@
         "newFont": "Новый шрифт:",
         "codeFont": "Шрифт для кода",
         "codeLigatures": "Лигатуры",
-        "codeDense": "Меньшая высота линии"
+        "codeDense": "Меньшая высота линии",
+        "openIncludeFolder": "Открыть папку include"
     },
     "settings": {
         "actions": "Действия и методы ввода",

@@ -139,7 +139,8 @@
         "newFont": "New font:",
         "codeFont": "Font for code",
         "codeLigatures": "Ligatures",
-        "codeDense": "Dense layout"
+        "codeDense": "Dense layout",
+        "openIncludeFolder": "Open \"include\" folder"
     },
     "settings": {
         "actions": "Actions and input methods",

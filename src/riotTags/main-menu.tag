@@ -245,6 +245,12 @@ main-menu.flexcol
             click: this.saveProject
         }));
         catMenu.append(new gui.MenuItem({
+            label: this.voc.openIncludeFolder,
+            click: e => {
+                nw.Shell.openItem(path.join(sessionStorage.projdir, '/include'));
+            }
+        }))
+        catMenu.append(new gui.MenuItem({
             label: this.voc.zipProject,
             click: this.zipProject
         }));
@@ -258,6 +264,9 @@ main-menu.flexcol
                 this.showExporter = true;
                 this.update();
             }
+        }));
+        catMenu.append(new gui.MenuItem({
+            type: 'separator'
         }));
         catMenu.append(new gui.MenuItem({
             label: window.languageJSON.menu.startScreen,
