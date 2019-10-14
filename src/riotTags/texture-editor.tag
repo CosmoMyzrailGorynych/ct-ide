@@ -2,75 +2,74 @@ texture-editor.panel.view
     .flexrow.tall
         .column.borderright.tall.column1.flexfix.nogrow.noshrink
             .flexfix-body
-                b {voc.name}
-                br
-                input.wide(type="text" value="{opts.texture.name}" onchange="{wire('this.texture.name')}")
-                .anErrorNotice(if="{nameTaken}") {vocGlob.nametaken}
-                label
-                    input#texturetiled(type="checkbox" checked="{opts.texture.tiled}" onchange="{wire('this.texture.tiled')}")
-                    span   {voc.tiled}
-                p
-                b {voc.center}
-                .flexrow
-                    input.short(type="number" value="{opts.texture.axis[0]}" onchange="{wire('this.texture.axis.0')}" oninput="{wire('this.texture.axis.0')}")
-                    span.center   ×
-                    input.short(type="number" value="{opts.texture.axis[1]}" onchange="{wire('this.texture.axis.1')}" oninput="{wire('this.texture.axis.1')}")
-                .flexrow
-                    button.wide(onclick="{textureCenter}")
-                        span   {voc.setcenter}
-                    button.square(onclick="{textureIsometrify}" title="{voc.isometrify}")
-                        i.icon-map-pin
-                p
-                b {voc.form}
-                br
-                label
-                    input(type="radio" name="collisionform" checked="{opts.texture.shape === 'circle'}" onclick="{textureSelectCircle}")
-                    span {voc.round}
-                br
-                label
-                    input(type="radio" name="collisionform" checked="{opts.texture.shape === 'rect'}" onclick="{textureSelectRect}")
-                    span {voc.rectangle}
-                br
-                label
-                    input(type="radio" name="collisionform" checked="{opts.texture.shape === 'strip'}" onclick="{textureSelectStrip}")
-                    span {voc.strip}
-                br
-                div(if="{opts.texture.shape === 'circle'}")
-                    b {voc.radius}
+                fieldset
+                    b {voc.name}
                     br
-                    input.wide(type="number" value="{opts.texture.r}" onchange="{wire('this.texture.r')}" oninput="{wire('this.texture.r')}")
-                div(if="{opts.texture.shape === 'rect'}")
-                    .center
-                        input.short(type="number" value="{opts.texture.top}" onchange="{wire('this.texture.top')}" oninput="{wire('this.texture.top')}")
+                    input.wide(type="text" value="{opts.texture.name}" onchange="{wire('this.texture.name')}")
+                    .anErrorNotice(if="{nameTaken}") {vocGlob.nametaken}
+                    label
+                        input#texturetiled(type="checkbox" checked="{opts.texture.tiled}" onchange="{wire('this.texture.tiled')}")
+                        span   {voc.tiled}
+                fieldset
+                    b {voc.center}
+                    .flexrow
+                        input.short(type="number" value="{opts.texture.axis[0]}" onchange="{wire('this.texture.axis.0')}" oninput="{wire('this.texture.axis.0')}")
+                        span.center   ×
+                        input.short(type="number" value="{opts.texture.axis[1]}" onchange="{wire('this.texture.axis.1')}" oninput="{wire('this.texture.axis.1')}")
+                    .flexrow
+                        button.wide.nml(onclick="{textureCenter}")
+                            span   {voc.setcenter}
+                        button.square.nmr(onclick="{textureIsometrify}" title="{voc.isometrify}")
+                            i.icon-map-pin
+                fieldset
+                    b {voc.form}
+                    br
+                    label
+                        input(type="radio" name="collisionform" checked="{opts.texture.shape === 'circle'}" onclick="{textureSelectCircle}")
+                        span {voc.round}
+                    br
+                    label
+                        input(type="radio" name="collisionform" checked="{opts.texture.shape === 'rect'}" onclick="{textureSelectRect}")
+                        span {voc.rectangle}
+                    br
+                    label
+                        input(type="radio" name="collisionform" checked="{opts.texture.shape === 'strip'}" onclick="{textureSelectStrip}")
+                        span {voc.strip}
+                    br
+                    div(if="{opts.texture.shape === 'circle'}")
+                        b {voc.radius}
                         br
-                        input.short(type="number" value="{opts.texture.left}" onchange="{wire('this.texture.left')}" oninput="{wire('this.texture.left')}")
-                        span   ×
-                        input.short(type="number" value="{opts.texture.right}" onchange="{wire('this.texture.right')}" oninput="{wire('this.texture.right')}")
+                        input.wide(type="number" value="{opts.texture.r}" onchange="{wire('this.texture.r')}" oninput="{wire('this.texture.r')}")
+                    div(if="{opts.texture.shape === 'rect'}")
+                        .center
+                            input.short(type="number" value="{opts.texture.top}" onchange="{wire('this.texture.top')}" oninput="{wire('this.texture.top')}")
+                            br
+                            input.short(type="number" value="{opts.texture.left}" onchange="{wire('this.texture.left')}" oninput="{wire('this.texture.left')}")
+                            span   ×
+                            input.short(type="number" value="{opts.texture.right}" onchange="{wire('this.texture.right')}" oninput="{wire('this.texture.right')}")
+                            br
+                            input.short(type="number" value="{opts.texture.bottom}" onchange="{wire('this.texture.bottom')}" oninput="{wire('this.texture.bottom')}")
+                        button.wide(onclick="{textureFillRect}")
+                            i.icon-maximize
+                            span {voc.fill}
+                    div(if="{opts.texture.shape === 'strip'}")
+                        .flexrow(each="{point, ind in getMovableStripPoints()}")
+                            input.short(type="number" value="{point.x}" oninput="{wire('this.texture.stripPoints.'+ ind + '.x')}")
+                            span   ×
+                            input.short(type="number" value="{point.y}" oninput="{wire('this.texture.stripPoints.'+ ind + '.y')}")
+                            button.square.inline(title="{voc.removePoint}" onclick="{removeStripPoint}")
+                                i.icon-minus
+                        input(type="checkbox" checked="{opts.texture.closedStrip}" onchange="{onClosedStripChange}" )
+                        span   {voc.closeShape}
                         br
-                        input.short(type="number" value="{opts.texture.bottom}" onchange="{wire('this.texture.bottom')}" oninput="{wire('this.texture.bottom')}")
-                    br
-                    button.wide(onclick="{textureFillRect}")
-                        i.icon-maximize
-                        span {voc.fill}
-                div(if="{opts.texture.shape === 'strip'}")
-                    .flexrow(each="{point, ind in getMovableStripPoints()}")
-                        input.short(type="number" value="{point.x}" oninput="{wire('this.texture.stripPoints.'+ ind + '.x')}")
-                        span   ×
-                        input.short(type="number" value="{point.y}" oninput="{wire('this.texture.stripPoints.'+ ind + '.y')}")
-                        button.square.inline(title="{voc.removePoint}" onclick="{removeStripPoint}")
-                            i.icon-minus
-                    input(type="checkbox" checked="{opts.texture.closedStrip}" onchange="{onClosedStripChange}" )
-                    span   {voc.closeShape}
-                    br
-                    input(type="checkbox" checked="{opts.texture.symmetryStrip}" onchange="{onSymmetryChange}")
-                    span   {voc.symmetryTool}
-                    button.wide(onclick="{addStripPoint}")
-                        i.icon-plus
-                        span   {voc.addPoint}
-                br
-                label
-                    input(checked="{prevShowMask}" onchange="{wire('this.prevShowMask')}" type="checkbox")
-                    span   {voc.showmask}
+                        input(type="checkbox" checked="{opts.texture.symmetryStrip}" onchange="{onSymmetryChange}")
+                        span   {voc.symmetryTool}
+                        button.wide(onclick="{addStripPoint}")
+                            i.icon-plus
+                            span   {voc.addPoint}
+                    label
+                        input(checked="{prevShowMask}" onchange="{wire('this.prevShowMask')}" type="checkbox")
+                        span   {voc.showmask}
             .flexfix-footer
                 button.wide(onclick="{textureSave}")
                     i.icon-save
@@ -81,7 +80,9 @@ texture-editor.panel.view
             onmousewheel="{onMouseWheel}"
         )
             .texture-editor-aCanvasWrap
-                canvas(ref="textureCanvas" style="transform: scale({zoomFactor}); image-rendering: {zoomFactor > 1? 'pixelated' : '-webkit-optimize-contrast'}; transform-origin: 0% 0%;")
+                canvas.texture-editor-aCanvas(ref="textureCanvas" style="transform: scale({zoomFactor}); image-rendering: {zoomFactor > 1? 'pixelated' : '-webkit-optimize-contrast'}; transform-origin: 0% 0%;")
+                // This div is needed to cause elements' reflow so the scrollbars update on canvas' size change
+                div(style="width: {zoomFactor}px; height: {zoomFactor}px;")
                 .aClicker(
                     if="{prevShowMask && opts.texture.shape === 'strip'}"
                     each="{seg, ind in getStripSegments()}"
@@ -326,6 +327,7 @@ texture-editor.panel.view
                     this.zoomFactor = 0.25;
                 }
             }
+            e.preventDefault();
             this.update();
         };
 
