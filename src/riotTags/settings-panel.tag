@@ -50,21 +50,6 @@ settings-panel.panel.view
             input(type="checkbox" value="{currentProject.settings.minifyjs}" checked="{currentProject.settings.minifyjs}" onchange="{wire('this.currentProject.settings.minifyjs')}")
             span {voc.minifyjs}
 
-        //span
-            h2 {voc.preloader}
-            select#gamepreloader.select(value="{currentProject.preloader}" onchange="{wire('this.currentProject.preloader')}")
-                option(value="0") {voc.preloaders.circular}
-                option(value="1") {voc.preloaders.bar}
-                option(value="-1") {voc.preloaders.no}
-            br
-            br
-            b {voc.cover}
-            label.file
-                button.inline
-                    i.icon.icon-folder
-                    span {voc.getfile}
-                input#gamepreloaderfile(type="file" accept=".png, .jpg, .gif")
-            #preloaderpreview.pt40.tall
     .tall.fifty.flexfix.npr.npt.npb
         h1.flexfix-header {voc.scripts.header}
         ul.menu.flexfix-body
