@@ -1,6 +1,7 @@
 settings-panel.panel.view
     .tall.fifty.npl.npt.npb
         h1 {voc.settings}
+        fieldset
         h2 {voc.authoring}
         b {voc.title}
         br
@@ -23,14 +24,12 @@ settings-panel.panel.view
         input(type="number" style="width: 1.5rem;" value="{currentProject.settings.version[2]}" length="3" min="0" onchange="{wire('this.currentProject.settings.version.2')}")
         |   {voc.versionpostfix}
         input(type="text" style="width: 3rem;" value="{currentProject.settings.versionPostfix}" length="5" onchange="{wire('this.currentProject.settings.versionPostfix')}")
-
+        fieldset
         h2 {voc.actions}
-        p
             button.nml(onclick="{openActionsEditor}")
                 i.icon-airplay
                 span   {voc.editActions}
-        actions-editor(if="{editingActions}")
-
+        fieldset
         h2 {voc.renderoptions}
         label.block
             input(type="checkbox" value="{currentProject.settings.pixelatedrender}" checked="{currentProject.settings.pixelatedrender}" onchange="{wire('this.currentProject.settings.pixelatedrender')}")
@@ -42,7 +41,7 @@ settings-panel.panel.view
             span {voc.maxFPS}
             |
             input.short(type="number" min="1" value="{currentProject.settings.maxFPS || 60}" onchange="{wire('this.currentProject.settings.maxFPS')}")
-
+        fieldset
         h2 {voc.exportparams}
         label.block(style="margin-right: 2.5rem;")
             input(type="checkbox" value="{currentProject.settings.minifyhtmlcss}" checked="{currentProject.settings.minifyhtmlcss}" onchange="{wire('this.currentProject.settings.minifyhtmlcss')}")
@@ -76,6 +75,7 @@ settings-panel.panel.view
         button.flexfix-footer(onclick="{addNewScript}")
             i.icon-add
             span {voc.scripts.addNew}
+    actions-editor(if="{editingActions}")
     script-editor(if="{currentScript}" script="{currentScript}")
     script.
         this.namespace = 'settings';
