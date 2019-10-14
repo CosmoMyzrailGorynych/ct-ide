@@ -6,8 +6,10 @@ color-input
         color="{value}" onapply="{applyColor}" onchanged="{changeColor}" oncancel="{cancelColor}"
     )
     script.
+        const Color = net.brehaut.Color;
         this.opened = false;
-        this.value = this.lastValue = this.opts.color || '#FFFFFF'; 
+        this.value = this.lastValue = this.opts.color || '#FFFFFF';
+        this.dark = Color(this.value).getLuminance() < 0.5;
         this.openPicker = e => {
             this.opened = !this.opened;
         };
