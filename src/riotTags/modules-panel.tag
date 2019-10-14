@@ -47,7 +47,7 @@ modules-panel.panel.view
                 #modulesettings.tabbed.nbt(show="{tab === 'modulesettings'}" if="{currentModule.fields && currentModuleName in currentProject.libs}")
                     dl(each="{field in currentModule.fields}")
                         dt
-                            label(if="{field.type === 'checkbox'}")
+                            label.block.checkbox(if="{field.type === 'checkbox'}")
                                 input(
                                     type="checkbox"
                                     checked="{window.currentProject.libs[currentModuleName][field.id]}"
@@ -68,7 +68,7 @@ modules-panel.panel.view
                                 value="{window.currentProject.libs[currentModuleName][field.id]}"
                                 onchange="{wire('window.currentProject.libs.' + escapeDots(currentModuleName) + '.' + field.id)}"
                             )
-                            label.block(if="{field.type === 'radio'}" each="{option in field.options}")
+                            label.block.checkbox(if="{field.type === 'radio'}" each="{option in field.options}")
                                 input(
                                     type="radio"
                                     value="{option.value}"

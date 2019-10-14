@@ -7,14 +7,14 @@ texture-editor.panel.view
                     br
                     input.wide(type="text" value="{opts.texture.name}" onchange="{wire('this.texture.name')}")
                     .anErrorNotice(if="{nameTaken}") {vocGlob.nametaken}
-                    label
+                    label.checkbox
                         input#texturetiled(type="checkbox" checked="{opts.texture.tiled}" onchange="{wire('this.texture.tiled')}")
                         span   {voc.tiled}
                 fieldset
                     b {voc.center}
                     .flexrow
                         input.short(type="number" value="{opts.texture.axis[0]}" onchange="{wire('this.texture.axis.0')}" oninput="{wire('this.texture.axis.0')}")
-                        span.center   ×
+                        span.center ×
                         input.short(type="number" value="{opts.texture.axis[1]}" onchange="{wire('this.texture.axis.1')}" oninput="{wire('this.texture.axis.1')}")
                     .flexrow
                         button.wide.nml(onclick="{textureCenter}")
@@ -23,51 +23,49 @@ texture-editor.panel.view
                             i.icon-map-pin
                 fieldset
                     b {voc.form}
-                    br
-                    label
+                    label.checkbox
                         input(type="radio" name="collisionform" checked="{opts.texture.shape === 'circle'}" onclick="{textureSelectCircle}")
                         span {voc.round}
-                    br
-                    label
+                    label.checkbox
                         input(type="radio" name="collisionform" checked="{opts.texture.shape === 'rect'}" onclick="{textureSelectRect}")
                         span {voc.rectangle}
-                    br
-                    label
+                    label.checkbox
                         input(type="radio" name="collisionform" checked="{opts.texture.shape === 'strip'}" onclick="{textureSelectStrip}")
                         span {voc.strip}
+                fieldset(if="{opts.texture.shape === 'circle'}")
+                    b {voc.radius}
                     br
-                    div(if="{opts.texture.shape === 'circle'}")
-                        b {voc.radius}
+                    input.wide(type="number" value="{opts.texture.r}" onchange="{wire('this.texture.r')}" oninput="{wire('this.texture.r')}")
+                fieldset(if="{opts.texture.shape === 'rect'}")
+                    .center
+                        input.short(type="number" value="{opts.texture.top}" onchange="{wire('this.texture.top')}" oninput="{wire('this.texture.top')}")
                         br
-                        input.wide(type="number" value="{opts.texture.r}" onchange="{wire('this.texture.r')}" oninput="{wire('this.texture.r')}")
-                    div(if="{opts.texture.shape === 'rect'}")
-                        .center
-                            input.short(type="number" value="{opts.texture.top}" onchange="{wire('this.texture.top')}" oninput="{wire('this.texture.top')}")
-                            br
-                            input.short(type="number" value="{opts.texture.left}" onchange="{wire('this.texture.left')}" oninput="{wire('this.texture.left')}")
-                            span   ×
-                            input.short(type="number" value="{opts.texture.right}" onchange="{wire('this.texture.right')}" oninput="{wire('this.texture.right')}")
-                            br
-                            input.short(type="number" value="{opts.texture.bottom}" onchange="{wire('this.texture.bottom')}" oninput="{wire('this.texture.bottom')}")
-                        button.wide(onclick="{textureFillRect}")
-                            i.icon-maximize
-                            span {voc.fill}
-                    div(if="{opts.texture.shape === 'strip'}")
-                        .flexrow(each="{point, ind in getMovableStripPoints()}")
-                            input.short(type="number" value="{point.x}" oninput="{wire('this.texture.stripPoints.'+ ind + '.x')}")
-                            span   ×
-                            input.short(type="number" value="{point.y}" oninput="{wire('this.texture.stripPoints.'+ ind + '.y')}")
-                            button.square.inline(title="{voc.removePoint}" onclick="{removeStripPoint}")
-                                i.icon-minus
+                        input.short(type="number" value="{opts.texture.left}" onchange="{wire('this.texture.left')}" oninput="{wire('this.texture.left')}")
+                        span   ×
+                        input.short(type="number" value="{opts.texture.right}" onchange="{wire('this.texture.right')}" oninput="{wire('this.texture.right')}")
+                        br
+                        input.short(type="number" value="{opts.texture.bottom}" onchange="{wire('this.texture.bottom')}" oninput="{wire('this.texture.bottom')}")
+                    button.wide(onclick="{textureFillRect}")
+                        i.icon-maximize
+                        span {voc.fill}
+                fieldset(if="{opts.texture.shape === 'strip'}")
+                    .flexrow.aStripPointRow(each="{point, ind in getMovableStripPoints()}")
+                        input.short(type="number" value="{point.x}" oninput="{wire('this.texture.stripPoints.'+ ind + '.x')}")
+                        span   ×
+                        input.short(type="number" value="{point.y}" oninput="{wire('this.texture.stripPoints.'+ ind + '.y')}")
+                        button.square.inline(title="{voc.removePoint}" onclick="{removeStripPoint}")
+                            i.icon-minus
+                    label.checkbox
                         input(type="checkbox" checked="{opts.texture.closedStrip}" onchange="{onClosedStripChange}" )
                         span   {voc.closeShape}
-                        br
+                    label.checkbox
                         input(type="checkbox" checked="{opts.texture.symmetryStrip}" onchange="{onSymmetryChange}")
                         span   {voc.symmetryTool}
-                        button.wide(onclick="{addStripPoint}")
-                            i.icon-plus
-                            span   {voc.addPoint}
-                    label
+                    button.wide(onclick="{addStripPoint}")
+                        i.icon-plus
+                        span   {voc.addPoint}
+                fieldset
+                    label.checkbox
                         input(checked="{prevShowMask}" onchange="{wire('this.prevShowMask')}" type="checkbox")
                         span   {voc.showmask}
             .flexfix-footer
@@ -121,58 +119,64 @@ texture-editor.panel.view
                     button#texturezoom400.inline(onclick="{textureToggleZoom(4)}" class="{active: zoomFactor === 4}") 400%
         .column.column2.borderleft.tall.flexfix.nogrow.noshrink(show="{!opts.texture.tiled}")
             .flexfix-body
-                .fifty.np
-                    b {voc.cols}
-                    br
-                    input.wide(type="number" value="{opts.texture.grid[0]}" onchange="{wire('this.texture.grid.0')}" oninput="{wire('this.texture.grid.0')}")
-                .fifty.np
-                    b {voc.rows}
-                    br
-                    input.wide(type="number" value="{opts.texture.grid[1]}" onchange="{wire('this.texture.grid.1')}" oninput="{wire('this.texture.grid.1')}")
-                .clear
-                .fifty.np
-                    b {voc.width}
-                    br
-                    input.wide(type="number" value="{opts.texture.width}" onchange="{wire('this.texture.width')}" oninput="{wire('this.texture.width')}")
-                .fifty.np
-                    b {voc.height}
-                    br
-                    input.wide(type="number" value="{opts.texture.height}" onchange="{wire('this.texture.height')}" oninput="{wire('this.texture.height')}")
-                .clear
-                .fifty.np
-                    b {voc.marginx}
-                    br
-                    input.wide(type="number" value="{opts.texture.marginx}" onchange="{wire('this.texture.marginx')}" oninput="{wire('this.texture.marginx')}")
-                .fifty.np
-                    b {voc.marginy}
-                    br
-                    input.wide(type="number" value="{opts.texture.marginy}" onchange="{wire('this.texture.marginy')}" oninput="{wire('this.texture.marginy')}")
-                .clear
-                .fifty.np
-                    b {voc.offx}
-                    br
-                    input.wide(type="number" value="{opts.texture.offx}" onchange="{wire('this.texture.offx')}" oninput="{wire('this.texture.offx')}")
-                .fifty.np
-                    b {voc.offy}
-                    br
-                    input.wide(type="number" value="{opts.texture.offy}" onchange="{wire('this.texture.offy')}" oninput="{wire('this.texture.offy')}")
-                .clear
+                .flexrow
+                    div
+                        b {voc.cols}
+                        br
+                        input.wide(type="number" value="{opts.texture.grid[0]}" onchange="{wire('this.texture.grid.0')}" oninput="{wire('this.texture.grid.0')}")
+                    span &nbsp;
+                    div
+                        b {voc.rows}
+                        br
+                        input.wide(type="number" value="{opts.texture.grid[1]}" onchange="{wire('this.texture.grid.1')}" oninput="{wire('this.texture.grid.1')}")
+                .flexrow
+                    div
+                        b {voc.width}
+                        br
+                        input.wide(type="number" value="{opts.texture.width}" onchange="{wire('this.texture.width')}" oninput="{wire('this.texture.width')}")
+                    span &nbsp;
+                    div
+                        b {voc.height}
+                        br
+                        input.wide(type="number" value="{opts.texture.height}" onchange="{wire('this.texture.height')}" oninput="{wire('this.texture.height')}")
+                .flexrow
+                    div
+                        b {voc.marginx}
+                        br
+                        input.wide(type="number" value="{opts.texture.marginx}" onchange="{wire('this.texture.marginx')}" oninput="{wire('this.texture.marginx')}")
+                    span &nbsp;
+                    div
+                        b {voc.marginy}
+                        br
+                        input.wide(type="number" value="{opts.texture.marginy}" onchange="{wire('this.texture.marginy')}" oninput="{wire('this.texture.marginy')}")
+                .flexrow
+                    div
+                        b {voc.offx}
+                        br
+                        input.wide(type="number" value="{opts.texture.offx}" onchange="{wire('this.texture.offx')}" oninput="{wire('this.texture.offx')}")
+                    span &nbsp;
+                    div
+                        b {voc.offy}
+                        br
+                        input.wide(type="number" value="{opts.texture.offy}" onchange="{wire('this.texture.offy')}" oninput="{wire('this.texture.offy')}")
                 b {voc.frames}
                 br
                 input#textureframes.wide(type="number" value="{opts.texture.untill}" onchange="{wire('this.texture.untill')}" oninput="{wire('this.texture.untill')}")
             .preview.bordertop.flexfix-footer
                 #preview(ref="preview" style="background-color: {previewColor};")
                     canvas(ref="grprCanvas")
-                div
+                .flexrow
                     button#textureplay.square.inline(onclick="{currentTexturePreviewPlay}")
                         i(class="icon-{this.prevPlaying? 'pause' : 'play'}")
+                    span(ref="textureviewframe") 0 / 1
+                    .filler
                     button#textureviewback.square.inline(onclick="{currentTexturePreviewBack}")
                         i.icon-back
-                    button#textureviewnext.square.inline(onclick="{currentTexturePreviewNext}")
+                    button#textureviewnext.square.inline.nmr(onclick="{currentTexturePreviewNext}")
                         i.icon-next
-                    span(ref="textureviewframe") 0 / 1
-                    br
+                .flexrow
                     b {voc.speed}
+                    .filler
                     input#grahpspeed.short(type="number" min="1" value="{prevSpeed}" onchange="{wire('this.prevSpeed')}" oninput="{wire('this.prevSpeed')}")
                 .relative
                     button#texturecolor.inline.wide(onclick="{changeTexturePreviewColor}")

@@ -11,7 +11,7 @@ font-editor.panel.view
                 select(value="{fontobj.weight}" onchange="{wire('this.fontobj.weight')}")
                     each val in [100, 200, 300, 400, 500, 600, 700, 800, 900]
                         option(value=val)= val
-            label.block
+            label.checkbox
                 input(type="checkbox" checked="{fontobj.italic}" onchange="{wire('this.fontobj.italic')}")
                 b {voc.italic}
         .flexfix-footer

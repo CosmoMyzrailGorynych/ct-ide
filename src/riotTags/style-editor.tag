@@ -14,117 +14,108 @@ style-editor.panel.view
                 li(onclick="{changeTab('styleshadow')}" class="{active: tab === 'styleshadow'}") {voc.shadow}
             #stylefont.tabbed(show="{tab === 'stylefont'}")
                 #stylefontinner
-                    .fifty.npl.npt.npr
+                    fieldset
                         b {voc.fontfamily}
                         input#fontfamily.wide(type="text" value="{styleobj.font.family || 'sans-serif'}" onchange="{wire('this.styleobj.font.family')}")
-                        br
-                    .fifty.npr.npt
-                        b {voc.fontsize}
-                        br
-                        input#fontsize.wide(type="number" value="{styleobj.font.size || '12'}" onchange="{wire('this.styleobj.font.size')}" oninput="{wire('this.styleobj.font.size')}" step="1")
-                    .clear
-                    .fifty.npl.npt
-                        label
+                        .fifty.npl.npt
+                            b {voc.fontsize}
+                            br
+                            input#fontsize.wide(type="number" value="{styleobj.font.size || '12'}" onchange="{wire('this.styleobj.font.size')}" oninput="{wire('this.styleobj.font.size')}" step="1")
+                        .fifty.npr.npt
                             b {voc.fontweight}
                             br
-                            select(value="{styleobj.font.weight}" onchange="{wire('this.styleobj.font.weight')}")
+                            select.wide(value="{styleobj.font.weight}" onchange="{wire('this.styleobj.font.weight')}")
                                 each val in [100, 200, 300, 400, 500, 600, 700, 800, 900]
                                     option(value=val)= val
-                    .fifty.npr
-                        label
+                        .clear
+                        label.checkbox
                             input(type="checkbox" checked="{styleobj.font.italic}" onchange="{wire('this.styleobj.font.italic')}")
-                            span   {voc.italic}
-                    .clear
-                    b {voc.alignment}
-                    .align.buttonselect
-                        button#middleleft.inline(onclick="{styleSetAlign('left')}" class="{active: this.styleobj.font.halign === 'left'}")
-                            i.icon.icon-align-left
-                        button#middlecenter.inline(onclick="{styleSetAlign('center')}" class="{active: this.styleobj.font.halign === 'center'}")
-                            i.icon.icon-align-center
-                        button#middleright.inline(onclick="{styleSetAlign('right')}" class="{active: this.styleobj.font.halign === 'right'}")
-                            i.icon.icon-align-right
-                    br
-                    label
-                        b {voc.lineHeight}
-                        br
-                        input(type="number" step="1" min="0" value="{styleobj.font.lineHeight || 0}" oninput="{wire('this.styleobj.font.lineHeight')}")
-                    br
-                    br
-                    label
-                        input(type="checkbox" checked="{styleobj.font.wrap}" onchange="{wire('this.styleobj.font.wrap')}")
-                        b   {voc.textWrap}
-                    label(if="{styleobj.font.wrap}")
-                        br
-                        span {voc.textWrapWidth}
-                        br
-                        input(type="number" step="8" min="1" value="{styleobj.font.wrapPosition || 100}" oninput="{wire('this.styleobj.font.wrapPosition')}")
+                            span {voc.italic}
+                    fieldset
+                        b {voc.alignment}
+                        .align.buttonselect
+                            button#middleleft.inline.nml(onclick="{styleSetAlign('left')}" class="{active: this.styleobj.font.halign === 'left'}")
+                                i.icon.icon-align-left
+                            button#middlecenter.inline(onclick="{styleSetAlign('center')}" class="{active: this.styleobj.font.halign === 'center'}")
+                                i.icon.icon-align-center
+                            button#middleright.inline(onclick="{styleSetAlign('right')}" class="{active: this.styleobj.font.halign === 'right'}")
+                                i.icon.icon-align-right
+                        label
+                            b {voc.lineHeight}
+                            br
+                            input(type="number" step="1" min="0" value="{styleobj.font.lineHeight || 0}" oninput="{wire('this.styleobj.font.lineHeight')}")
+                    fieldset
+                        label.checkbox
+                            input(type="checkbox" checked="{styleobj.font.wrap}" onchange="{wire('this.styleobj.font.wrap')}")
+                            b {voc.textWrap}
+                        label(if="{styleobj.font.wrap}").block.nmt
+                            b {voc.textWrapWidth}
+                            input.wide(type="number" step="8" min="1" value="{styleobj.font.wrapPosition || 100}" oninput="{wire('this.styleobj.font.wrapPosition')}")
 
             #stylefill.tabbed(show="{tab === 'stylefill'}")
-                label
+                label.checkbox
                     input#iftochangefill(type="checkbox" checked="{'fill' in styleobj}" onchange="{styleToggleFill}")
                     span {voc.active}
                 #stylefillinner(if="{styleobj.fill}")
-                    b {voc.filltype}
-                    br
-                    label
-                        input(type="radio" value="0" name="filltype" checked="{styleobj.fill.type == 0}" onchange="{wire('this.styleobj.fill.type')}")
-                        span {voc.fillsolid}
-                    br
-                    label
-                        input(type="radio" value="1" name="filltype" checked="{styleobj.fill.type == 1}" onchange="{wire('this.styleobj.fill.type')}")
-                        span {voc.fillgrad}
-                    br
-                    .solidfill(if="{styleobj.fill.type == 0}")
-                        b {voc.fillcolor}
-                        br
-                        color-input(onchange="{wire('this.styleobj.fill.color', true)}" color="{styleobj.fill.color}")
-                    .gradientfill(if="{styleobj.fill.type == 1}")
-                        .fifty.npl
-                            b {voc.fillcolor1}
-                            color-input(onchange="{wire('this.styleobj.fill.color1', true)}" color="{styleobj.fill.color1}")
-                        .fifty.npr
-                            b {voc.fillcolor2}
-                            color-input(onchange="{wire('this.styleobj.fill.color2', true)}" color="{styleobj.fill.color2}")
-                        br
-                        b {voc.fillgradtype}
-                        br
-                        label
-                            input(type="radio" value="2" name="fillgradtype" onchange="{wire('this.styleobj.fill.gradtype')}")
-                            span {voc.fillhorisontal}
-                        br
-                        label
-                            input(type="radio" value="1" name="fillgradtype" onchange="{wire('this.styleobj.fill.gradtype')}")
-                            span {voc.fillvertical}
+                    fieldset
+                        b {voc.filltype}
+                        label.checkbox
+                            input(type="radio" value="0" name="filltype" checked="{styleobj.fill.type == 0}" onchange="{wire('this.styleobj.fill.type')}")
+                            span {voc.fillsolid}
+                        label.checkbox
+                            input(type="radio" value="1" name="filltype" checked="{styleobj.fill.type == 1}" onchange="{wire('this.styleobj.fill.type')}")
+                            span {voc.fillgrad}
+                    fieldset
+                        .solidfill(if="{styleobj.fill.type == 0}")
+                            b {voc.fillcolor}
+                            br
+                            color-input(onchange="{wire('this.styleobj.fill.color', true)}" color="{styleobj.fill.color}")
+                        .gradientfill(if="{styleobj.fill.type == 1}")
+                            .fifty.npl.npt
+                                b {voc.fillcolor1}
+                                color-input(onchange="{wire('this.styleobj.fill.color1', true)}" color="{styleobj.fill.color1}")
+                            .fifty.npr.npt
+                                b {voc.fillcolor2}
+                                color-input(onchange="{wire('this.styleobj.fill.color2', true)}" color="{styleobj.fill.color2}")
+                            .clear
+                            b {voc.fillgradtype}
+                            label.checkbox
+                                input(type="radio" value="2" name="fillgradtype" onchange="{wire('this.styleobj.fill.gradtype')}")
+                                span {voc.fillhorisontal}
+                            label.checkbox
+                                input(type="radio" value="1" name="fillgradtype" onchange="{wire('this.styleobj.fill.gradtype')}")
+                                span {voc.fillvertical}
             #stylestroke.tabbed(show="{tab === 'stylestroke'}")
-                label
+                label.checkbox
                     input#iftochangestroke(type="checkbox" checked="{'stroke' in styleobj}" onchange="{styleToggleStroke}")
                     span {voc.active}
                 #stylestrokeinner(if="{styleobj.stroke}")
-                    b {voc.strokecolor}
-                    color-input(onchange="{wire('this.styleobj.stroke.color', true)}" color="{styleobj.stroke.color}")
-                    b {voc.strokeweight}
-                    br
-                    input#strokeweight(type="number" value="{styleobj.stroke.weight}" onchange="{wire('this.styleobj.stroke.weight')}" oninput="{wire('this.styleobj.stroke.weight')}")
+                    fieldset
+                        b {voc.strokecolor}
+                        color-input(onchange="{wire('this.styleobj.stroke.color', true)}" color="{styleobj.stroke.color}")
+                    fieldset
+                        b {voc.strokeweight}
+                        br
+                        input#strokeweight(type="number" value="{styleobj.stroke.weight}" onchange="{wire('this.styleobj.stroke.weight')}" oninput="{wire('this.styleobj.stroke.weight')}")
                     #strokeweightslider
             #styleshadow.tabbed(show="{tab === 'styleshadow'}")
-                label
+                label.checkbox
                     input#iftochangeshadow(type="checkbox" checked="{'shadow' in styleobj}" onchange="{styleToggleShadow}")
                     span {voc.active}
                 #styleshadowinner(if="{styleobj.shadow}")
-                    b {voc.shadowcolor}
-                    color-input(onchange="{wire('this.styleobj.shadow.color', true)}" color="{styleobj.shadow.color}")
-                    br
-                    b {voc.shadowshift}
-                    br
-                    input#shadowx.short(type="number" value="{styleobj.shadow.x}" onchange="{wire('this.styleobj.shadow.x')}" oninput="{wire('this.styleobj.shadow.x')}")
-                    | ×
-                    input#shadowy.short(type="number" value="{styleobj.shadow.y}" onchange="{wire('this.styleobj.shadow.y')}" oninput="{wire('this.styleobj.shadow.y')}")
-                    br
-                    br
-                    b {voc.shadowblur}
-                    br
-                    input#shadowblur(type="number" value="{styleobj.shadow.blur}" min="0" onchange="{wire('this.styleobj.shadow.blur')}" oninput="{wire('this.styleobj.shadow.blur')}")
-                    #shadowblurslider
+                    fieldset
+                        b {voc.shadowcolor}
+                        color-input(onchange="{wire('this.styleobj.shadow.color', true)}" color="{styleobj.shadow.color}")
+                    fieldset
+                        b {voc.shadowshift}
+                        br
+                        input#shadowx.short(type="number" value="{styleobj.shadow.x}" onchange="{wire('this.styleobj.shadow.x')}" oninput="{wire('this.styleobj.shadow.x')}")
+                        | ×
+                        input#shadowy.short(type="number" value="{styleobj.shadow.y}" onchange="{wire('this.styleobj.shadow.y')}" oninput="{wire('this.styleobj.shadow.y')}")
+                    fieldset
+                        b {voc.shadowblur}
+                        br
+                        input#shadowblur(type="number" value="{styleobj.shadow.blur}" min="0" onchange="{wire('this.styleobj.shadow.blur')}" oninput="{wire('this.styleobj.shadow.blur')}")
         .flexfix-footer
             button.wide.nogrow.noshrink(onclick="{styleSave}")
                 i.icon.icon-confirm
