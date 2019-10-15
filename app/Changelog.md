@@ -27,7 +27,7 @@
 * Remove excess borders on module panels
 * Remove old language keys, add Comments.json, Debug.json
 * Rename "Is tiled" property of textures to "Use as background", hide splitting tools if used as background
-* texture-editor: Make the axis handle square (by @schadocalex)
+* texture-editor: Make the axis handle squared (by @schadocalex)
 * texture-editor: Zooming in/out now works when scrolling outside the texture as well (by @schadocalex)
 * Tiny UI improvements, here and there
 
