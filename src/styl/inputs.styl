@@ -219,6 +219,9 @@ input[type="reset"],
 
 select, label
     cursor pointer
+select
+    line-height 2
+    height calc(2.2rem + 2px)
 .selectbox
     width 10em
     position relative
@@ -250,7 +253,6 @@ select, label
         right 0.5em
         top 50%
 
-// выбор файла
 label
     & + &
         margin-top 0.5rem
@@ -259,6 +261,55 @@ label
         position relative
         [type="file"]
             display none
+    &.checkbox
+        position relative
+        padding-left 1.5rem
+        margin-top 0
+        display block
+        [type="checkbox"], [type="radio"]
+            -webkit-appearance none
+            appearance none
+            margin 0
+            width 1rem
+            height 1rem
+            left 0
+            top 0.5rem
+            border 1px solid act
+            box-sizing border-box
+            position absolute
+            border-radius br
+            {trans}
+            &::after
+                @extends .icon-check:before
+                font-family 'icomoon' !important
+                font-size 1rem
+                position absolute
+                top -0.025rem
+                left -0.05rem
+                line-height 1
+                color white
+                opacity 0
+                {trans}
+            &:checked
+                background act
+                border-color accent1
+                {transshort}
+                &::after
+                    {transshort}
+                    opacity 1
+        [type="radio"]
+            border-radius 100%
+fieldset
+    border 0
+    padding 0
+    margin 0
+    & + fieldset
+        margin-top 1rem
+    button
+        margin-top 0.5rem
+    & > button
+        &:first-child
+            margin-top 0
 
 input[type="range"]
     -webkit-appearance none
@@ -314,6 +365,14 @@ input[type="range"]
     cursor move
     margin 1rem
     {shad}
+
+.aClicker
+    height 0.75rem
+    position absolute
+    transform translate(0, -50%)
+    transform-origin left center
+    cursor copy
+    margin 1rem
 
 .aDropzone
     @extends .middle

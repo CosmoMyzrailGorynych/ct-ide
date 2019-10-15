@@ -10,6 +10,7 @@
         soundsError: 0,
         sounds: {},
         registry: [/*@textureregistry@*/][0],
+        atlases: [/*@textureatlases@*/][0],
         skelRegistry: [/*@skeletonregistry@*/][0],
         fetchImage(url, callback) {
             loader.add(url, url);
@@ -66,12 +67,17 @@
             reg.textures = [];
             if (reg.frames) {
                 for (let i = 0; i < reg.frames; i++) {
-                    const tex = PIXI.Loader.shared.resources[reg.atlas].textures[`${texture}_frame${i}`];
+                    const frame = `${texture}@frame${i}`;
+                    const atlas = PIXI.Loader.shared.resources[ct.res.atlases.find(atlas =>
+                        frame in PIXI.Loader.shared.resources[atlas].textures
+                    )];
+                    const tex = atlas.textures[frame];
                     tex.defaultAnchor = new PIXI.Point(reg.anchor.x, reg.anchor.y);
                     reg.textures.push(tex);
                 }
             } else {
                 const texture = PIXI.Loader.shared.resources[reg.atlas].texture;
+                texture.defaultAnchor = new PIXI.Point(reg.anchor.x, reg.anchor.y);
                 reg.textures.push(texture);
             }
         }

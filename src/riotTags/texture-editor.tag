@@ -1,174 +1,193 @@
 texture-editor.panel.view
-    .column.borderright.tall.column1.flexfix
-        .flexfix-body
-            b {voc.name}
-            br
-            input.wide(type="text" value="{opts.texture.name}" onchange="{wire('this.texture.name')}")
-            .anErrorNotice(if="{nameTaken}") {vocGlob.nametaken}
-            br
-            b {voc.center}
-            .flexrow
-                input.short(type="number" value="{opts.texture.axis[0]}" onchange="{wire('this.texture.axis.0')}" oninput="{wire('this.texture.axis.0')}")
-                span.center   ×
-                input.short(type="number" value="{opts.texture.axis[1]}" onchange="{wire('this.texture.axis.1')}" oninput="{wire('this.texture.axis.1')}")
-            br
-            .flexrow
-                button.wide(onclick="{textureCenter}")
-                    span   {voc.setcenter}
-                button.square(onclick="{textureIsometrify}" title="{voc.isometrify}")
-                    i.icon-map-pin
-            br
-            b {voc.form}
-            br
-            label
-                input(type="radio" name="collisionform" checked="{opts.texture.shape === 'circle'}" onclick="{textureSelectCircle}")
-                span {voc.round}
-            br
-            label
-                input(type="radio" name="collisionform" checked="{opts.texture.shape === 'rect'}" onclick="{textureSelectRect}")
-                span {voc.rectangle}
-            br
-            label
-                input(type="radio" name="collisionform" checked="{opts.texture.shape === 'strip'}" onclick="{textureSelectStrip}")
-                span {voc.strip}
-            br
-            div(if="{opts.texture.shape === 'circle'}")
-                b {voc.radius}
-                br
-                input.wide(type="number" value="{opts.texture.r}" onchange="{wire('this.texture.r')}" oninput="{wire('this.texture.r')}")
-            div(if="{opts.texture.shape === 'rect'}")
-                .center
-                    input.short(type="number" value="{opts.texture.top}" onchange="{wire('this.texture.top')}" oninput="{wire('this.texture.top')}")
+    .flexrow.tall
+        .column.borderright.tall.column1.flexfix.nogrow.noshrink
+            .flexfix-body
+                fieldset
+                    b {voc.name}
                     br
-                    input.short(type="number" value="{opts.texture.left}" onchange="{wire('this.texture.left')}" oninput="{wire('this.texture.left')}")
-                    span   ×
-                    input.short(type="number" value="{opts.texture.right}" onchange="{wire('this.texture.right')}" oninput="{wire('this.texture.right')}")
+                    input.wide(type="text" value="{opts.texture.name}" onchange="{wire('this.texture.name')}")
+                    .anErrorNotice(if="{nameTaken}") {vocGlob.nametaken}
+                    label.checkbox
+                        input#texturetiled(type="checkbox" checked="{opts.texture.tiled}" onchange="{wire('this.texture.tiled')}")
+                        span   {voc.tiled}
+                fieldset
+                    b {voc.center}
+                    .flexrow
+                        input.short(type="number" value="{opts.texture.axis[0]}" onchange="{wire('this.texture.axis.0')}" oninput="{wire('this.texture.axis.0')}")
+                        span.center ×
+                        input.short(type="number" value="{opts.texture.axis[1]}" onchange="{wire('this.texture.axis.1')}" oninput="{wire('this.texture.axis.1')}")
+                    .flexrow
+                        button.wide.nml(onclick="{textureCenter}")
+                            span   {voc.setcenter}
+                        button.square.nmr(onclick="{textureIsometrify}" title="{voc.isometrify}")
+                            i.icon-map-pin
+                fieldset
+                    b {voc.form}
+                    label.checkbox
+                        input(type="radio" name="collisionform" checked="{opts.texture.shape === 'circle'}" onclick="{textureSelectCircle}")
+                        span {voc.round}
+                    label.checkbox
+                        input(type="radio" name="collisionform" checked="{opts.texture.shape === 'rect'}" onclick="{textureSelectRect}")
+                        span {voc.rectangle}
+                    label.checkbox
+                        input(type="radio" name="collisionform" checked="{opts.texture.shape === 'strip'}" onclick="{textureSelectStrip}")
+                        span {voc.strip}
+                fieldset(if="{opts.texture.shape === 'circle'}")
+                    b {voc.radius}
                     br
-                    input.short(type="number" value="{opts.texture.bottom}" onchange="{wire('this.texture.bottom')}" oninput="{wire('this.texture.bottom')}")
+                    input.wide(type="number" value="{opts.texture.r}" onchange="{wire('this.texture.r')}" oninput="{wire('this.texture.r')}")
+                fieldset(if="{opts.texture.shape === 'rect'}")
+                    .center
+                        input.short(type="number" value="{opts.texture.top}" onchange="{wire('this.texture.top')}" oninput="{wire('this.texture.top')}")
+                        br
+                        input.short(type="number" value="{opts.texture.left}" onchange="{wire('this.texture.left')}" oninput="{wire('this.texture.left')}")
+                        span   ×
+                        input.short(type="number" value="{opts.texture.right}" onchange="{wire('this.texture.right')}" oninput="{wire('this.texture.right')}")
+                        br
+                        input.short(type="number" value="{opts.texture.bottom}" onchange="{wire('this.texture.bottom')}" oninput="{wire('this.texture.bottom')}")
+                    button.wide(onclick="{textureFillRect}")
+                        i.icon-maximize
+                        span {voc.fill}
+                fieldset(if="{opts.texture.shape === 'strip'}")
+                    .flexrow.aStripPointRow(each="{point, ind in getMovableStripPoints()}")
+                        input.short(type="number" value="{point.x}" oninput="{wire('this.texture.stripPoints.'+ ind + '.x')}")
+                        span   ×
+                        input.short(type="number" value="{point.y}" oninput="{wire('this.texture.stripPoints.'+ ind + '.y')}")
+                        button.square.inline(title="{voc.removePoint}" onclick="{removeStripPoint}")
+                            i.icon-minus
+                    label.checkbox
+                        input(type="checkbox" checked="{opts.texture.closedStrip}" onchange="{onClosedStripChange}" )
+                        span   {voc.closeShape}
+                    label.checkbox
+                        input(type="checkbox" checked="{opts.texture.symmetryStrip}" onchange="{onSymmetryChange}")
+                        span   {voc.symmetryTool}
+                    button.wide(onclick="{addStripPoint}")
+                        i.icon-plus
+                        span   {voc.addPoint}
+                fieldset
+                    label.checkbox
+                        input(checked="{prevShowMask}" onchange="{wire('this.prevShowMask')}" type="checkbox")
+                        span   {voc.showmask}
+            .flexfix-footer
+                button.wide(onclick="{textureSave}")
+                    i.icon-save
+                    span {window.languageJSON.common.save}
+        .texture-editor-anAtlas.tall(
+            if="{opts.texture}"
+            style="background-color: {previewColor};"
+            onmousewheel="{onMouseWheel}"
+        )
+            .texture-editor-aCanvasWrap
+                canvas.texture-editor-aCanvas(ref="textureCanvas" style="transform: scale({zoomFactor}); image-rendering: {zoomFactor > 1? 'pixelated' : '-webkit-optimize-contrast'}; transform-origin: 0% 0%;")
+                // This div is needed to cause elements' reflow so the scrollbars update on canvas' size change
+                div(style="width: {zoomFactor}px; height: {zoomFactor}px;")
+                .aClicker(
+                    if="{prevShowMask && opts.texture.shape === 'strip'}"
+                    each="{seg, ind in getStripSegments()}"
+                    style="left: {seg.left}px; top: {seg.top}px; width: {seg.width}px; transform: translate(0, -50%) rotate({seg.angle}deg);"
+                    title="{voc.addPoint}"
+                    onclick="{addStripPointOnSegment}"
+                )
+                .aDragger(
+                    if="{prevShowMask}"
+                    style="left: {opts.texture.axis[0] * zoomFactor}px; top: {opts.texture.axis[1] * zoomFactor}px; border-radius: 0;"
+                    title="{voc.moveCenter}"
+                    onmousedown="{startMoving('axis')}"
+                )
+                .aDragger(
+                    if="{prevShowMask && opts.texture.shape === 'strip'}"
+                    each="{point, ind in getMovableStripPoints()}"
+                    style="left: {(point.x + texture.axis[0]) * zoomFactor}px; top: {(point.y + texture.axis[1]) * zoomFactor}px;"
+                    title="{voc.movePoint}"
+                    onmousedown="{startMoving('point')}"
+                )
+            .textureview-tools
+                .toright
+                    label.file(title="{voc.replacetexture}")
+                        input(type="file" ref="textureReplacer" accept=".png,.jpg,.jpeg,.bmp,.gif" onchange="{textureReplace}")
+                        .button.inline
+                            i.icon-folder
+                            span {voc.replacetexture}
+                    .button.inline(title="{voc.reimport}" if="{opts.texture.source}" onclick="{reimport}")
+                        i.icon-refresh-ccw
+            .textureview-zoom
+                div.button-stack.inlineblock
+                    button#texturezoom25.inline(onclick="{textureToggleZoom(0.25)}" class="{active: zoomFactor === 0.25}") 25%
+                    button#texturezoom50.inline(onclick="{textureToggleZoom(0.5)}" class="{active: zoomFactor === 0.5}") 50%
+                    button#texturezoom100.inline(onclick="{textureToggleZoom(1)}" class="{active: zoomFactor === 1}") 100%
+                    button#texturezoom200.inline(onclick="{textureToggleZoom(2)}" class="{active: zoomFactor === 2}") 200%
+                    button#texturezoom400.inline(onclick="{textureToggleZoom(4)}" class="{active: zoomFactor === 4}") 400%
+        .column.column2.borderleft.tall.flexfix.nogrow.noshrink(show="{!opts.texture.tiled}")
+            .flexfix-body
+                .flexrow
+                    div
+                        b {voc.cols}
+                        br
+                        input.wide(type="number" value="{opts.texture.grid[0]}" onchange="{wire('this.texture.grid.0')}" oninput="{wire('this.texture.grid.0')}")
+                    span &nbsp;
+                    div
+                        b {voc.rows}
+                        br
+                        input.wide(type="number" value="{opts.texture.grid[1]}" onchange="{wire('this.texture.grid.1')}" oninput="{wire('this.texture.grid.1')}")
+                .flexrow
+                    div
+                        b {voc.width}
+                        br
+                        input.wide(type="number" value="{opts.texture.width}" onchange="{wire('this.texture.width')}" oninput="{wire('this.texture.width')}")
+                    span &nbsp;
+                    div
+                        b {voc.height}
+                        br
+                        input.wide(type="number" value="{opts.texture.height}" onchange="{wire('this.texture.height')}" oninput="{wire('this.texture.height')}")
+                .flexrow
+                    div
+                        b {voc.marginx}
+                        br
+                        input.wide(type="number" value="{opts.texture.marginx}" onchange="{wire('this.texture.marginx')}" oninput="{wire('this.texture.marginx')}")
+                    span &nbsp;
+                    div
+                        b {voc.marginy}
+                        br
+                        input.wide(type="number" value="{opts.texture.marginy}" onchange="{wire('this.texture.marginy')}" oninput="{wire('this.texture.marginy')}")
+                .flexrow
+                    div
+                        b {voc.offx}
+                        br
+                        input.wide(type="number" value="{opts.texture.offx}" onchange="{wire('this.texture.offx')}" oninput="{wire('this.texture.offx')}")
+                    span &nbsp;
+                    div
+                        b {voc.offy}
+                        br
+                        input.wide(type="number" value="{opts.texture.offy}" onchange="{wire('this.texture.offy')}" oninput="{wire('this.texture.offy')}")
+                b {voc.frames}
                 br
-                button.wide(onclick="{textureFillRect}")
-                    i.icon-maximize
-                    span {voc.fill}
-            div(if="{opts.texture.shape === 'strip'}")
-                .flexrow(each="{point, ind in opts.texture.stripPoints}")
-                    input.short(type="number" value="{point.x}" oninput="{wire('this.texture.stripPoints.'+ ind + '.x')}")
-                    span   ×
-                    input.short(type="number" value="{point.y}" oninput="{wire('this.texture.stripPoints.'+ ind + '.y')}")
-                    button.square.inline(title="{voc.removePoint}" onclick="{removeStripPoint}")
-                        i.icon-minus
-                input(type="checkbox" checked="{opts.texture.closedStrip}")
-                span   {voc.closeShape}
-                button.wide(onclick="{addStripPoint}")
-                    i.icon-plus
-                    span   {voc.addPoint}
-            br
-            label
-                input(checked="{prevShowMask}" onchange="{wire('this.prevShowMask')}" type="checkbox")
-                span   {voc.showmask}
-        .flexfix-footer
-            button.wide(onclick="{textureSave}")
-                i.icon-save
-                span {window.languageJSON.common.save}
-    .column.column2.borderleft.tall.flexfix
-        .flexfix-body
-            .fifty.np
-                b {voc.cols}
-                br
-                input.wide(type="number" value="{opts.texture.grid[0]}" onchange="{wire('this.texture.grid.0')}" oninput="{wire('this.texture.grid.0')}")
-            .fifty.np
-                b {voc.rows}
-                br
-                input.wide(type="number" value="{opts.texture.grid[1]}" onchange="{wire('this.texture.grid.1')}" oninput="{wire('this.texture.grid.1')}")
-            .clear
-            .fifty.np
-                b {voc.width}
-                br
-                input.wide(type="number" value="{opts.texture.width}" onchange="{wire('this.texture.width')}" oninput="{wire('this.texture.width')}")
-            .fifty.np
-                b {voc.height}
-                br
-                input.wide(type="number" value="{opts.texture.height}" onchange="{wire('this.texture.height')}" oninput="{wire('this.texture.height')}")
-            .clear
-            .fifty.np
-                b {voc.marginx}
-                br
-                input.wide(type="number" value="{opts.texture.marginx}" onchange="{wire('this.texture.marginx')}" oninput="{wire('this.texture.marginx')}")
-            .fifty.np
-                b {voc.marginy}
-                br
-                input.wide(type="number" value="{opts.texture.marginy}" onchange="{wire('this.texture.marginy')}" oninput="{wire('this.texture.marginy')}")
-            .clear
-            .fifty.np
-                b {voc.offx}
-                br
-                input.wide(type="number" value="{opts.texture.offx}" onchange="{wire('this.texture.offx')}" oninput="{wire('this.texture.offx')}")
-            .fifty.np
-                b {voc.offy}
-                br
-                input.wide(type="number" value="{opts.texture.offy}" onchange="{wire('this.texture.offy')}" oninput="{wire('this.texture.offy')}")
-            .clear
-            b {voc.frames}
-            br
-            input#textureframes.wide(type="number" value="{opts.texture.untill}" onchange="{wire('this.texture.untill')}" oninput="{wire('this.texture.untill')}")
-            br
-            label
-                input#texturetiled(type="checkbox" checked="{opts.texture.tiled}" onchange="{wire('this.texture.tiled')}")
-                span   {voc.tiled}
-        .preview.bordertop.flexfix-footer
-            #preview(ref="preview" style="background-color: {previewColor};")
-                canvas(ref="grprCanvas")
-            div
-                button#textureplay.square.inline(onclick="{currentTexturePreviewPlay}")
-                    i(class="icon-{this.prevPlaying? 'pause' : 'play'}")
-                button#textureviewback.square.inline(onclick="{currentTexturePreviewBack}")
-                    i.icon-back
-                button#textureviewnext.square.inline(onclick="{currentTexturePreviewNext}")
-                    i.icon-next
-                span(ref="textureviewframe") 0 / 1
-                br
-                b {voc.speed}
-                input#grahpspeed.short(type="number" min="1" value="{prevSpeed}" onchange="{wire('this.prevSpeed')}" oninput="{wire('this.prevSpeed')}")
-            .relative
-                button#texturecolor.inline.wide(onclick="{changeTexturePreviewColor}")
-                    i.icon-drop
-                    span {voc.bgcolor}
-            input.color.rgb#previewbgcolor
+                input#textureframes.wide(type="number" value="{opts.texture.untill}" onchange="{wire('this.texture.untill')}" oninput="{wire('this.texture.untill')}")
+            .preview.bordertop.flexfix-footer
+                #preview(ref="preview" style="background-color: {previewColor};")
+                    canvas(ref="grprCanvas")
+                .flexrow
+                    button#textureplay.square.inline(onclick="{currentTexturePreviewPlay}")
+                        i(class="icon-{this.prevPlaying? 'pause' : 'play'}")
+                    span(ref="textureviewframe") 0 / 1
+                    .filler
+                    button#textureviewback.square.inline(onclick="{currentTexturePreviewBack}")
+                        i.icon-back
+                    button#textureviewnext.square.inline.nmr(onclick="{currentTexturePreviewNext}")
+                        i.icon-next
+                .flexrow
+                    b {voc.speed}
+                    .filler
+                    input#grahpspeed.short(type="number" min="1" value="{prevSpeed}" onchange="{wire('this.prevSpeed')}" oninput="{wire('this.prevSpeed')}")
+                .relative
+                    button#texturecolor.inline.wide(onclick="{changeTexturePreviewColor}")
+                        i.icon-drop
+                        span {voc.bgcolor}
+                input.color.rgb#previewbgcolor
 
     color-picker(
         ref="previewBackgroundColor" if="{changingTexturePreviewColor}"
         color="{previewColor}" onapply="{updatePreviewColor}" onchanged="{updatePreviewColor}" oncancel="{cancelPreviewColor}"
     )
-    .texture-editor-anAtlas(style="background-color: {previewColor};")
-        .textureview-tools
-            .toright
-                label.file(title="{voc.replacetexture}")
-                    input(type="file" ref="textureReplacer" accept=".png,.jpg,.jpeg,.bmp,.gif" onchange="{textureReplace}")
-                    .button.inline
-                        i.icon-folder
-                        span {voc.replacetexture}
-                .button.inline(title="{voc.reimport}" if="{opts.texture.source}" onclick="{reimport}")
-                    i.icon-refresh-ccw
-        .textureview-zoom
-            div.button-stack.inlineblock
-                button#texturezoom25.inline(onclick="{textureToggleZoom(0.25)}" class="{active: zoomFactor === 0.25}") 25%
-                button#texturezoom50.inline(onclick="{textureToggleZoom(0.5)}" class="{active: zoomFactor === 0.5}") 50%
-                button#texturezoom100.inline(onclick="{textureToggleZoom(1)}" class="{active: zoomFactor === 1}") 100%
-                button#texturezoom200.inline(onclick="{textureToggleZoom(2)}" class="{active: zoomFactor === 2}") 200%
-                button#texturezoom400.inline(onclick="{textureToggleZoom(4)}" class="{active: zoomFactor === 4}") 400%
-
-        canvas(ref="textureCanvas" onmousewheel="{onCanvasWheel}" style="transform: scale({zoomFactor}); image-rendering: {zoomFactor > 1? 'pixelated' : '-webkit-optimize-contrast'}; transform-origin: 0% 0%;")
-        .aDragger(
-            style="left: {opts.texture.axis[0] * zoomFactor}px; top: {opts.texture.axis[1] * zoomFactor}px;"
-            title="{voc.moveCenter}"
-            onmousedown="{startMoving('axis')}"
-        )
-        .aDragger(
-            if="{opts.texture.shape === 'strip'}"
-            each="{point, ind in opts.texture.stripPoints}"
-            style="left: {(point.x + texture.axis[0]) * zoomFactor}px; top: {(point.y + texture.axis[1]) * zoomFactor}px;"
-            title="{voc.movePoint}"
-            onmousedown="{startMoving('point')}"
-        )
     script.
         const path = require('path'),
               fs = require('fs-extra');
@@ -216,6 +235,7 @@ texture-editor.panel.view
             } else {
                 this.nameTaken = false;
             }
+            this.updateSymmetricalPoints();
         });
         this.on('updated', () => {
             this.refreshTextureCanvas();
@@ -287,7 +307,7 @@ texture-editor.panel.view
             this.zoomFactor = zoom;
         };
         /** Change zoomFactor on mouse wheel roll */
-        this.onCanvasWheel = e => {
+        this.onMouseWheel = e => {
             if (e.wheelDelta > 0) {
                 // in
                 if (this.zoomFactor === 2) {
@@ -311,6 +331,7 @@ texture-editor.panel.view
                     this.zoomFactor = 0.25;
                 }
             }
+            e.preventDefault();
             this.update();
         };
 
@@ -425,13 +446,13 @@ texture-editor.panel.view
             }
         };
         /**
-         * Остановить предпросмотр анимации
+         * Stops the animated preview
          */
         this.stopTexturePreview = () => {
             window.clearTimeout(this.prevTime);
         };
         /**
-         * Запустить предпросмотр анимации
+         * Starts the preview of a framed animation
          */
         this.launchTexturePreview = () => {
             var texture = this.texture;
@@ -453,7 +474,9 @@ texture-editor.panel.view
                     this.prevPos = 0;
                 }
                 this.refs.textureviewframe.innerHTML = `${this.prevPos} / ${total}`;
-                this.refreshPreviewCanvas();
+                if (!this.texture.tiled) {
+                    this.refreshPreviewCanvas();
+                }
                 this.stepTexturePreview();
             }, ~~(1000 / this.prevSpeed));
         };
@@ -492,10 +515,13 @@ texture-editor.panel.view
                         y: -Math.round(Math.cos(twoPi / 5 * i) * this.texture.height / 2)
                     });
                 }
-                console.log(this.texture);
             }
         };
         this.removeStripPoint = function (e) {
+            if(this.texture.symmetryStrip) {
+                // Remove an extra point
+                this.texture.stripPoints.pop();
+            }
             this.texture.stripPoints.splice(e.item.ind, 1);
         };
         this.addStripPoint = function () {
@@ -504,6 +530,55 @@ texture-editor.panel.view
                 y: 16
             });
         };
+        this.addStripPointOnSegment = e => {
+            const { top, left } = textureCanvas.getBoundingClientRect();
+            this.texture.stripPoints.splice(e.item.ind+1, 0, {
+                x: (e.pageX - left) / this.zoomFactor - this.texture.axis[0],
+                y: (e.pageY - top) / this.zoomFactor - this.texture.axis[1]
+            });
+            if(this.texture.symmetryStrip) {
+                // Add an extra point (the symetrical point)
+                this.addStripPoint();
+            }
+        };
+        this.pointToLine = (linePoint1, linePoint2, point) => {
+            const dlx = linePoint2.x - linePoint1.x;
+            const dly = linePoint2.y - linePoint1.y;
+            const lineLength = Math.sqrt(dlx*dlx + dly*dly);
+            const lineAngle = Math.atan2(dly, dlx);
+
+            const dpx = point.x - linePoint1.x;
+            const dpy = point.y - linePoint1.y;
+            const toPointLength = Math.sqrt(dpx*dpx + dpy*dpy);
+            const toPointAngle = Math.atan2(dpy, dpx);
+
+            const distance = toPointLength * Math.cos(toPointAngle - lineAngle);
+
+            return {
+                x: linePoint1.x + distance * dlx / lineLength,
+                y: linePoint1.y + distance * dly / lineLength
+            };
+        };
+        this.onClosedStripChange = e => {
+            this.texture.closedStrip = !this.texture.closedStrip;
+            if(!this.texture.closedStrip && this.texture.symmetryStrip) {
+                this.onSymmetryChange();
+            }
+        };
+        this.onSymmetryChange = e => {
+            if(this.texture.symmetryStrip) {
+                this.texture.stripPoints = this.getMovableStripPoints();
+            } else {
+                const nbPointsToAdd = this.texture.stripPoints.length - 2;
+                for(let i = 0; i < nbPointsToAdd; i++) {
+                    this.addStripPoint();
+                }
+                this.texture.closedStrip = true; // Force closedStrip to true
+            }
+
+            this.texture.symmetryStrip = !this.texture.symmetryStrip;
+            this.update();
+        }
         this.startMoving = which => e => {
             const startX = e.screenX,
                   startY = e.screenY;
@@ -524,11 +599,19 @@ texture-editor.panel.view
                 const point = e.item.point,
                       oldX = point.x,
                       oldY = point.y;
+                let hasMoved = false;
                 const func = e => {
+                    if(!hasMoved && (e.screenX !== startX || e.screenY !== startY)) {
+                        hasMoved = true;
+                    }
                     point.x = (e.screenX - startX) / this.zoomFactor + oldX;
                     point.y = (e.screenY - startY) / this.zoomFactor + oldY;
                     this.update();
                 }, func2 = () => {
+                    if(!hasMoved) {
+                        this.removeStripPoint(e);
+                        this.update();
+                    }
                     document.removeEventListener('mousemove', func);
                     document.removeEventListener('mouseup', func2);
                 };
@@ -537,7 +620,7 @@ texture-editor.panel.view
             }
         };
         /**
-         * Перерисовывает канвас со спрайтом со всеми масками и делениями
+         * Redraws the canvas with the full image, its collision mask, and its slicing grid
          */
         this.refreshTextureCanvas = () => {
             textureCanvas.width = textureCanvas.img.width;
@@ -548,14 +631,16 @@ texture-editor.panel.view
             textureCanvas.x.clearRect(0, 0, textureCanvas.width, textureCanvas.height);
             textureCanvas.x.drawImage(textureCanvas.img, 0, 0);
             textureCanvas.x.globalAlpha = 0.5;
-            for (let i = 0, l = Math.min(this.texture.grid[0] * this.texture.grid[1], this.texture.untill || Infinity); i < l; i++) {
-                let xx = i % this.texture.grid[0],
-                    yy = Math.floor(i / this.texture.grid[0]),
-                    x = this.texture.offx + xx * (this.texture.marginx + this.texture.width),
-                    y = this.texture.offy + yy * (this.texture.marginy + this.texture.height),
-                    w = this.texture.width,
-                    h = this.texture.height;
-                textureCanvas.x.strokeRect(x, y, w, h);
+            if (!this.texture.tiled) {
+                for (let i = 0, l = Math.min(this.texture.grid[0] * this.texture.grid[1], this.texture.untill || Infinity); i < l; i++) {
+                    let xx = i % this.texture.grid[0],
+                        yy = Math.floor(i / this.texture.grid[0]),
+                        x = this.texture.offx + xx * (this.texture.marginx + this.texture.width),
+                        y = this.texture.offy + yy * (this.texture.marginy + this.texture.height),
+                        w = this.texture.width,
+                        h = this.texture.height;
+                    textureCanvas.x.strokeRect(x, y, w, h);
+                }
             }
             if (this.prevShowMask) {
                 textureCanvas.x.fillStyle = '#ff0';
@@ -582,6 +667,20 @@ texture-editor.panel.view
                         textureCanvas.x.closePath();
                     }
                     textureCanvas.x.stroke();
+
+                    if(this.texture.symmetryStrip) {
+                        const movablePoints = this.getMovableStripPoints();
+                        const axisPoint1 = movablePoints[0];
+                        const axisPoint2 = movablePoints[movablePoints.length - 1];
+
+                        // Draw symmetry axis
+                        textureCanvas.x.strokeStyle = '#f00';
+                        textureCanvas.x.lineWidth = 3;
+                        textureCanvas.x.beginPath();
+                        textureCanvas.x.moveTo(axisPoint1.x + this.texture.axis[0], axisPoint1.y + this.texture.axis[1]);
+                        textureCanvas.x.lineTo(axisPoint2.x + this.texture.axis[0], axisPoint2.y + this.texture.axis[1]);
+                        textureCanvas.x.stroke();
+                    }
                 }
             }
         };
@@ -657,3 +756,63 @@ texture-editor.panel.view
             this.previewColor = this.oldPreviewColor;
             this.update();
         };
+        this.getMovableStripPoints = () => {
+            if(!this.texture) return;
+            if(!this.texture.symmetryStrip) {
+                return this.texture.stripPoints;
+            } else {
+                return this.texture.stripPoints.slice(0, 2 + Math.round((this.texture.stripPoints.length - 2) / 2));
+            }
+        };
+        this.getStripSegments = () => {
+            if(!this.texture) {
+                return;
+            }
+            if (this.texture.shape !== 'strip') {
+                return;
+            }
+
+            const points = this.getMovableStripPoints();
+            const segs = [];
+
+            for(let i = 0; i < points.length; i++) {
+                const point1 = points[i];
+                const point2 = points[(i + 1) % points.length];
+
+                const x1 = (point1.x + this.texture.axis[0]) * this.zoomFactor;
+                const y1 = (point1.y + this.texture.axis[1]) * this.zoomFactor;
+                const x2 = (point2.x + this.texture.axis[0]) * this.zoomFactor;
+                const y2 = (point2.y + this.texture.axis[1]) * this.zoomFactor;
+                const dx = x2 - x1;
+                const dy = y2 - y1;
+
+                const length = Math.sqrt(dx*dx + dy*dy);
+                const cssAngle = Math.atan2(dy, dx) * 180 / Math.PI;
+
+                segs.push({
+                    left: x1,
+                    top: y1,
+                    width: length,
+                    angle: cssAngle
+                });
+            }
+
+            return segs;
+        };
+        this.updateSymmetricalPoints = () => {
+            if(this.texture && this.texture.symmetryStrip) {
+                const movablePoints = this.getMovableStripPoints();
+                const axisPoint1 = movablePoints[0];
+                const axisPoint2 = movablePoints[movablePoints.length - 1];
+                for(let i = 1; i < movablePoints.length - 1; i++) {
+                    const j = this.texture.stripPoints.length - i;
+                    const point = movablePoints[i];
+                    const axisPoint = this.pointToLine(axisPoint1, axisPoint2, point);
+                    this.texture.stripPoints[j] = {
+                        x: 2 * axisPoint.x - point.x,
+                        y: 2 * axisPoint.y - point.y
+                    }
+                }
+            }
+        };
+

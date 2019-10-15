@@ -1,33 +1,33 @@
 main-menu
-	position fixed
-	top 0
-	left 0
-	right 0
-	bottom 0
-	& > .flexrow > nav
-		flex-flow row wrap
+    position fixed
+    top 0
+    left 0
+    right 0
+    bottom 0
+    & > .flexrow > nav
+        flex-flow row wrap
 #fullscreen
-	flex 0 0 3rem
+    flex 0 0 3rem
 #app
-	flex 1 1 12rem
+    flex 1 1 12rem
 #mainnav
-	flex 1 1 60rem
+    flex 1 1 60rem
 
 body.maximized #mainnav
-	@media (max-width 1000px)
-		flex-wrap wrap
+    @media (max-width 1000px)
+        flex-wrap wrap
 
 body.restored
-	#mainnav
-		right 0
-	#app
-		display none
+    #mainnav
+        right 0
+    #app
+        display none
 
-#mainnav, #app
-	border-radius 0
+#mainnav, #app, #fullscreen
+    border-radius 0
 
 @media (max-width 1000px)
-	#mainnav span
-		display none
-	#mainnav i:first-child
-		margin-right 0
+    #mainnav span
+        display none
+    #mainnav i:first-child
+        margin-right 0

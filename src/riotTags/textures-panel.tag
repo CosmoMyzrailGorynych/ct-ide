@@ -381,7 +381,6 @@ textures-panel.panel.view
                 .defaultValue(this.currentTexture.name)
                 .prompt(window.languageJSON.common.newname)
                 .then(e => {
-                    console.log(e);
                     if (e.inputValue && e.inputValue != '' && e.buttonClicked !== 'cancel') {
                         this.currentTexture.name = e.inputValue;
                         this.update();

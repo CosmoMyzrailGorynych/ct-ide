@@ -4,7 +4,6 @@
         "native": "Русский",
         "eng": "Russian"
     },
-
     "common": {
         "add": "Добавить",
         "addtonotes": "Добавить в заметки",
@@ -29,7 +28,6 @@
         "name": "Название:",
         "nametaken": "Это имя уже занято",
         "newname": "Новое имя:",
-        "newversion": "# Доступна новая версия\n",
         "no": "Нет",
         "none": "Ничего",
         "norooms": "Как бы это ни было печально, вам необходима как минимум одна комната для экспорта :)",
@@ -48,7 +46,6 @@
         "wrongFormat": "Неверный формат файла",
         "yes": "Да"
     },
-
     "actionsEditor": {
         "actions": "Действия",
         "actionsEditor": "Редактор действий",
@@ -105,7 +102,9 @@
         "browse": "Обзор…",
         "latest": "Последние проекты",
         "twitter": "Канал в Twitter",
-        "discord": "Сообщество в Discord"
+        "discord": "Сообщество в Discord",
+        "loadingProjectError": "Не удаётся открыть проект из-за следующей ошибки:",
+        "unableToWriteToFolders": "Ct.js не удалось найти подходящее место для проектов! Убедитесь, что папка ct.js находится в каталоге, доступном для чтения."
     },
     "licensepanel": {
         "ctjslicense": "Лицензия Ct.js (MIT)"
@@ -113,7 +112,7 @@
     "menu": {
         "ctIDE": "ct.IDE",
         "exportDesktop": "Экспортировать для ПК",
-        "texture": "Графика",
+        "texture": "Текстуры",
         "launch": "Скомпилировать и запустить",
         "license": "Лицензия",
         "min": "Переключить полноэкранный режим",
@@ -132,7 +131,16 @@
         "themeNight": "Тёмная",
         "types": "Типы",
         "zipExport": "Экспорт в .zip",
-        "zipProject": "Упаковать проект в .zip"
+        "zipProject": "Упаковать проект в .zip",
+        "codeFontDefault": "По умолчанию (Iosevka Light)",
+        "codeFontOldSchool": "Старый-добрый",
+        "codeFontSystem": "Системный",
+        "codeFontCustom": "Пользовательский…",
+        "newFont": "Новый шрифт:",
+        "codeFont": "Шрифт для кода",
+        "codeLigatures": "Лигатуры",
+        "codeDense": "Меньшая высота линии",
+        "openIncludeFolder": "Открыть папку include"
     },
     "settings": {
         "actions": "Действия и методы ввода",
@@ -148,18 +156,12 @@
         "minifyhtmlcss": "Сжать HTML и CSS",
         "minifyjs": "Сжать JavaScript и преобразовать в ES5 (медленная операция, используйте для релиза)",
         "pixelatedrender": "Здесь и в проекте отключать сглаживание (сохранять пиксели)",
-        "preloader": "Прелоадер",
         "renderoptions": "Настройки графики",
         "settings": "Настройки проекта",
         "site": "Сайт автора:",
         "title": "Название:",
         "version": "Версия:",
         "versionpostfix": "Постфикс:",
-        "preloaders": {
-            "circular": "Спиннер",
-            "bar": "Полоса загрузки",
-            "no": "Нет прелоадера"
-        },
         "scripts": {
             "addNew": "Добавить новый скрипт",
             "deleteScript": "Удалить этот скрипт",
@@ -175,8 +177,6 @@
         "help": "Документация",
         "methods": "Методы",
         "parameters": "Параметры",
-        "nomethods": "Нет собственных метов",
-        "noparameters": "Нет собственных параметров",
         "info": "Инфо",
         "license": "Лицензия",
         "logs": "Ченджлог",
@@ -204,7 +204,7 @@
         "rows": "Строк:",
         "setcenter": "По центру",
         "speed": "Скорость превью:",
-        "tiled": "Повторяющийся тайл?",
+        "tiled": "Использовать как фон?",
         "replacetexture": "Заменить…",
         "corrupted": "Файл изображения повреждён или отсутствует! Невозможно открыть спрайт.",
         "showmask": "Показать маску",
@@ -220,7 +220,8 @@
         "addPoint": "Добавить точку",
         "moveCenter": "Переместить ось вращения",
         "movePoint": "Переместить точку",
-        "reimport": "Обновить"
+        "reimport": "Обновить",
+        "symmetryTool": "Симметрия"
     },
     "sounds": {
         "create": "Создать"
@@ -263,7 +264,7 @@
         "stroke": "Обводка",
         "strokecolor": "Цвет обводки",
         "strokeweight": "Толщина обводки:",
-        "testtext" : "Тест Test 0123 +",
+        "testtext": "Тест Test 0123 +",
         "textWrap": "Перенос текста",
         "textWrapWidth": "Позиция для переноса:"
     },
@@ -349,7 +350,7 @@
         "movetilestolayer": "Переместить в другой слой",
         "shifttiles": "Сместить плитки"
     },
-    "notepad" : {
+    "notepad": {
         "local": "Блокнот проекта",
         "global": "Общий блокнот",
         "helppages": "Справка",

@@ -1,5 +1,5 @@
 modules-panel.panel.view
-    .flexrow
+    .flexrow.tall
         .c3.borderright.tall
             ul#moduleincluded
                 li(each="{module in enabledModules}" onclick="{renderModule(module)}")
@@ -9,8 +9,8 @@ modules-panel.panel.view
                 li(each="{module in allModules}" onclick="{renderModule(module)}")
                     i.icon(class="icon-{(module in window.currentProject.libs)? 'confirm on' : 'mod off'}")
                     span {module}
-        .c9.tall(if="{currentModule}")
-            ul.nav.tabs
+        .c9.tall.flexfix(if="{currentModule}")
+            ul.nav.tabs.flexfix-header.noshrink
                 li#modinfo(onclick="{changeTab('moduleinfo')}" class="{active: tab === 'moduleinfo'}")
                     i.icon-info
                     span {voc.info}
@@ -23,8 +23,8 @@ modules-panel.panel.view
                 li#modlogs(if="{currentModuleLogs}" onclick="{changeTab('modulelogs')}" class="{active: tab === 'modulelogs'}")
                     i.icon-list
                     span {voc.logs}
-            div
-                #moduleinfo.tabbed(show="{tab === 'moduleinfo'}")
+            div.flexfix-body
+                #moduleinfo.tabbed.nbt(show="{tab === 'moduleinfo'}")
                     label.bigpower(onclick="{toggleModule(currentModuleName)}" class="{off: !(currentModuleName in currentProject.libs)}")
                         i(class="icon-{currentModuleName in currentProject.libs? 'confirm' : 'delete'}")
                         span
@@ -44,10 +44,10 @@ modules-panel.panel.view
                     pre(if="{currentModuleLicense}")
                         code {currentModuleLicense}
 
-                #modulesettings.tabbed(show="{tab === 'modulesettings'}" if="{currentModule.fields && currentModuleName in currentProject.libs}")
+                #modulesettings.tabbed.nbt(show="{tab === 'modulesettings'}" if="{currentModule.fields && currentModuleName in currentProject.libs}")
                     dl(each="{field in currentModule.fields}")
                         dt
-                            label(if="{field.type === 'checkbox'}")
+                            label.block.checkbox(if="{field.type === 'checkbox'}")
                                 input(
                                     type="checkbox"
                                     checked="{window.currentProject.libs[currentModuleName][field.id]}"
@@ -68,7 +68,7 @@ modules-panel.panel.view
                                 value="{window.currentProject.libs[currentModuleName][field.id]}"
                                 onchange="{wire('window.currentProject.libs.' + escapeDots(currentModuleName) + '.' + field.id)}"
                             )
-                            label.block(if="{field.type === 'radio'}" each="{option in field.options}")
+                            label.block.checkbox(if="{field.type === 'radio'}" each="{option in field.options}")
                                 input(
                                     type="radio"
                                     value="{option.value}"
@@ -87,9 +87,9 @@ modules-panel.panel.view
                             //- That's a bad idea!!!
                             div(class="desc" if="{field.help}")
                                 raw(ref="raw" content="{md.render(field.help)}")
-                #modulehelp.tabbed(show="{tab === 'modulehelp'}" if="{currentModuleDocs}")
+                #modulehelp.tabbed.nbt(show="{tab === 'modulehelp'}" if="{currentModuleDocs}")
                     raw(ref="raw" content="{currentModuleDocs}")
-                #modulelogs.tabbed(show="{tab === 'modulelogs'}" if="{currentModuleLogs}")
+                #modulelogs.tabbed.nbt(show="{tab === 'modulelogs'}" if="{currentModuleLogs}")
                     h1 {voc.logs2}
                     raw(ref="raw" content="{currentModuleLogs}")
     script.
@@ -98,8 +98,17 @@ modules-panel.panel.view
               gui = require('nw.gui');
         const md = require('markdown-it')({
             html: false,
-            linkify: true
+            linkify: true,
+            highlight: function (str, lang) {
+                if (lang && hljs.getLanguage(lang)) {
+                    try {
+                        return hljs.highlight(lang, str).value;
+                    } catch (__) {}
+                }
+                return ''; // use external default escaping
+            }
         });
+        const hljs = require('highlight.js');
         const glob = require('./data/node_requires/glob');
         const libsDir = './data/ct.libs';
         this.md = md;

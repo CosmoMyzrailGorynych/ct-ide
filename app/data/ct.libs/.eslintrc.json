@@ -1,6 +1,7 @@
 {
     "globals": {
-        "ct": false
+        "ct": false,
+        "PIXI": true
     },
     "rules": {
         "object-shorthand": 0

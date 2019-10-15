@@ -23,5 +23,5 @@ Object.defineProperty(ct.types.Copy.prototype, 'moveContinuous', {
             this.vspeed += this.gravity * ct.delta * Math.sin(this.gravityDir*Math.PI/-180);
         }
         return ct.place.moveAlong(this, this.direction, this.speed, ctype, precision);
-    } 
+    }
 });

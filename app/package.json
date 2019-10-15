@@ -2,7 +2,7 @@
   "main": "index.html",
   "name": "ctjs",
   "description": "ctjs",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "homepage": "https://ctjs.rocks/",
   "license": "MIT",
   "user-agent": "ct.js game engine %name/%ver (%osinfo) NW.js/%nwver AppleWebkit/%webkit_ver Chromium/%chromium_ver",
@@ -33,6 +33,7 @@
   "webkit": {
     "plugin": false
   },
+  "chromium-args": "--force-color-profile=srgb --disable-features=ColorCorrectRendering",
   "webview": {
     "partitions": [
       {
@@ -49,9 +50,10 @@
     "fs-extra": "^7.0.0",
     "fuse.js": "^3.2.1",
     "google-closure-compiler-js": "^20180610.0.0",
+    "highlight.js": "^9.15.10",
     "html-minifier": "^3.5.19",
     "markdown-it": "3.1.0",
-    "maxrects-packer": "^1.2.0",
+    "maxrects-packer": "^2.5.0",
     "node-static": "^0.7.10",
     "nw-builder": "^3.5.7",
     "pixi.js": "^5.1.2",

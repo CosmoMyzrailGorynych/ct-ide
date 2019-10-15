@@ -28,6 +28,13 @@ body
     min-height 100vh
     position relative
 
+html
+  scroll-behavior smooth
+@media (prefers-reduced-motion: reduce)
+  html
+    scroll-behavior auto
+
+
 .big
     font-size 125%
 .small
@@ -138,7 +145,8 @@ noblah = {
 }
 shortNames = {
     m: 'margin',
-    p: 'padding'
+    p: 'padding',
+    b: 'border'
 }
 for key, val in shortNames
     for skey, sval in noblah

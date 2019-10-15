@@ -1,3 +1,63 @@
+## v 1.1.0
+
+*15 October 2019*
+
+### ✨ New Features
+
+* Add a debug mode to ct.place (you can find it in the settings tab)
+* texture-editor: Add the Symmetry tool for polygonal shapes (by @schadocalex)
+* Add Iosevka as a default typeface for code, allow setting your own typeface, control line height and ligatures
+* Open the `includes` folder from the hamburger menu
+* Support for nested copies (#127) by @schadocalex
+* Support for Yarn (a tool for making dialogues and interactive fiction), powered by bondage.js
+* texture-editor: Directly add/remove shape points on texture with your mouse. Add a point by clicking on the yellow line segments, delete points by clicking on them (by @schadocalex)
+
+### ⚡️ General Improvements
+
+* Add Pt-Br translation of UI by Folha de SP from Discord
+* Better checkboxes, radio inputs, and other fields
+* Better styling of inline code fragments in the modules panel
+* Better texture-editor layout
+* Better, more readeable tables in module's docs
+* Change Horizon colors a bit to make it more pleasant to look at
+* Highlight code blocks at modules panel
+* Improve texture packing
+* Make module list and their details scroll independently
+* Remove excess borders in nested views
+* Remove excess borders on module panels
+* Remove old language keys, add Comments.json, Debug.json
+* Rename "Is tiled" property of textures to "Use as background", hide splitting tools if used as background
+* texture-editor: Make the axis handle squared (by @schadocalex)
+* texture-editor: Zooming in/out now works when scrolling outside the texture as well (by @schadocalex)
+* Tiny UI improvements, here and there
+
+### 🐛 Bug Fixes
+
+* :pencil: Replace Lato's license with Open Sans', as we don't use Lato
+* Color inputs should show white value on a dark background from the very start
+* Fix broken style editor
+* Fix numerous collision problems that appeared with rotated entities
+* Fix the checkbox "close the shape", as it didn't change the actual state before
+* Stop chromium from messing up with color profiles and colors in ct.js
+
+### 🍱 Demos and Stuff
+
+* Add a Yarn demo
+
+### 📝 Docs
+
+* Document the `alpha` property of copies
+* :zap: Update Troubleshooting — teared backgrounds
+* :bug: Update tut-making-shooter.md
+* Pt-Br translation :tada:
+
+### 🌐 Website
+
+* :bug: Fix an outdated link to downloads in the header
+* :sparkles: Add partial Russian translation
+* :zap: Align social icons at the footer to the right
+
+
 ## v 1.0.2
 
 *25 September 2019.*

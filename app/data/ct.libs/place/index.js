@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-/* global ct SSCD */
+/* global SSCD */
 /* eslint prefer-destructuring: 0 */
 (function (ct) {
     const circlePrecision = 16,
@@ -12,19 +12,19 @@
                 position.x -= copy.scale.x > 0? (shape.left * copy.scale.x) : (-copy.scale.x * shape.right);
                 position.y -= copy.scale.y > 0? (shape.top * copy.scale.y) : (-shape.bottom * copy.scale.y);
                 return new SSCD.Rectangle(
-                    position, 
+                    position,
                     new SSCD.Vector(Math.abs((shape.left + shape.right) * copy.scale.x), Math.abs((shape.bottom + shape.top) * copy.scale.y))
                 );
             }
             const upperLeft = ct.u.rotate(-shape.left * copy.scale.x, -shape.top * copy.scale.y, copy.rotation),
-                  upperRight = ct.u.rotate(shape.right * copy.scale.x, -shape.top * copy.scale.y, copy.rotation),
                   bottomLeft = ct.u.rotate(-shape.left * copy.scale.x, shape.bottom * copy.scale.y, copy.rotation),
-                  bottomRight = ct.u.rotate(shape.right * copy.scale.x, shape.bottom * copy.scale.y, copy.rotation);
+                  bottomRight = ct.u.rotate(shape.right * copy.scale.x, shape.bottom * copy.scale.y, copy.rotation),
+                  upperRight = ct.u.rotate(shape.right * copy.scale.x, -shape.top * copy.scale.y, copy.rotation);
             return new SSCD.LineStrip(position, [
                 new SSCD.Vector(upperLeft[0], upperLeft[1]),
-                new SSCD.Vector(upperRight[0], upperRight[1]),
                 new SSCD.Vector(bottomLeft[0], bottomLeft[1]),
-                new SSCD.Vector(bottomRight[0], bottomRight[1])
+                new SSCD.Vector(bottomRight[0], bottomRight[1]),
+                new SSCD.Vector(upperRight[0], upperRight[1])
             ], true);
         }
         if (shape.type === 'circle') {
@@ -57,7 +57,7 @@
                     vertices.push(new SSCD.Vector(point.x * copy.scale.x, point.y * copy.scale.y));
                 }
             }
-            return new SSCD.LineStrip(position, vertices, false);
+            return new SSCD.LineStrip(position, vertices, Boolean(shape.closedStrip));
         }
         if (shape.type === 'line') {
             return new SSCD.Line(
@@ -92,6 +92,37 @@
             }
             return hashes;
         },
+        /**
+         * Applied to copies in the debug mode. Draws a collision shape
+         * @this Copy
+         * @returns {void}
+         */
+        drawDebugGraphic() {
+            const shape = this._shape || getSSCDShape(this);
+            const g = this.$cDebugCollision;
+            const color = this.$cHadCollision? 0x00ff00 : 0x0066ff;
+            if (shape instanceof SSCD.Rectangle) {
+                const pos = shape.get_position(),
+                      size = shape.get_size();
+                g.lineStyle(2, color)
+                .drawRect(pos.x - this.x, pos.y - this.y, size.x, size.y);
+            } else if (shape instanceof SSCD.LineStrip) {
+                g.lineStyle(2, color)
+                .moveTo(shape.__points[0].x, shape.__points[0].y);
+                for (let i = 1; i < shape.__points.length; i++) {
+                    g.lineTo(shape.__points[i].x, shape.__points[i].y);
+                }
+            } else if (shape instanceof SSCD.Circle) {
+                g.lineStyle(2, color)
+                .drawCircle(0, 0, shape.get_radius());
+            } else {
+                g.lineStyle(4, 0xff0000)
+                .moveTo(-40, -40)
+                .lineTo(40, 40,)
+                .moveTo(-40, 40)
+                .lineTo(40, -40);
+            }
+        },
         collide(c1, c2) {
             // ct.place.collide(<c1: Copy, c2: Copy>)
             // Test collision between two copies
@@ -105,12 +136,19 @@
                     return false;
                 }
             }
-            return SSCD.CollisionManager.test_collision(c1._shape, c2._shape);
+            if (SSCD.CollisionManager.test_collision(c1._shape, c2._shape)) {
+                if ([/*%debugMode%*/][0]) {
+                    c1.$cHadCollision = true;
+                    c2.$cHadCollision = true;
+                }
+                return true;
+            }
+            return false;
         },
         /**
-         * Determines if the place in (x,y) is occupied. 
+         * Determines if the place in (x,y) is occupied.
          * Optionally can take 'ctype' as a filter for obstackles' collision group (not shape type)
-         * 
+         *
          * @param {Copy} me The object to check collisions on
          * @param {Number} [x] The x coordinate to check, as if `me` was placed there.
          * @param {Number} [y] The y coordinate to check, as if `me` was placed there.
@@ -120,7 +158,7 @@
          * @returns {Copy|Array<Copy>} The collided copy, or an array of all the detected collisions (if `multiple` is `true`)
          */
         occupied(me, x, y, ctype, multiple) {
-            var oldx = me.x, 
+            var oldx = me.x,
                 oldy = me.y,
                 shapeCashed = me._shape;
             let hashes;
@@ -184,7 +222,7 @@
         meet(me, x, y, type, multiple) {
             // ct.place.meet(<me: Copy, x: Number, y: Number>[, type: Type])
             // detects collision between a given copy and a copy of a certain type
-            var oldx = me.x, 
+            var oldx = me.x,
                 oldy = me.y,
                 shapeCashed = me._shape;
             let hashes;
@@ -364,7 +402,7 @@
                 me.y += ct.u.ldy(length, dir);
                 delete me._shape;
                 me.dir = dir;
-            // otherwise, try to change direction by 30...60...90 degrees. 
+            // otherwise, try to change direction by 30...60...90 degrees.
             // Direction changes over time (ct.place.m).
             } else {
                 for (var i = -1; i <= 1; i+= 2) {
@@ -382,14 +420,14 @@
         },
         /**
          * Throws a ray from point (x1, y1) to (x2, y2), returning all the instances that touched the ray.
-         * The first copy in the returned array is the closest copy, the last one is the furthest. 
-         * 
+         * The first copy in the returned array is the closest copy, the last one is the furthest.
+         *
          * @param {Number} x1 A horizontal coordinate of the starting point of the ray.
          * @param {Number} y1 A vertical coordinate of the starting point of the ray.
          * @param {Number} x2 A horizontal coordinate of the ending point of the ray.
          * @param {Number} y2 A vertical coordinate of the ending point of the ray.
          * @param {String} [ctype] An optional collision group to trace against. If omitted, will trace through all the copies in the current room.
-         * 
+         *
          * @returns {Array<Copy>} Array of all the copies that touched the ray
          */
         trace(x1, y1, x2, y2, ctype) {

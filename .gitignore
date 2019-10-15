@@ -52,6 +52,7 @@ builds
 build
 cache
 /app/data/docs
+tempChangelog.md
 
 # tests
 error_screenshots/

@@ -23,6 +23,13 @@ html
             } catch (e) {
                 void e;
             }
+        script(src="node_modules/pixi.js/dist/pixi.min.js")
+        script.
+            /* So that WebGL contexts are taken from one page,
+               even if PIXI was called from the background page,
+               which is used for node modules
+            */
+            global.PIXI = PIXI;
         include includes/footer.pug
         script.
             'use strict';

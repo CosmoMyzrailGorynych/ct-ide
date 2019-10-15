@@ -27,6 +27,9 @@
             } else {
                 super([PIXI.Texture.EMPTY]);
             }
+            // it is defined in main.js
+            // eslint-disable-next-line no-undef
+            this[copyTypeSymbol] = true;
             if (exts) {
                 ct.u.ext(this, exts);
                 if (exts.tx) {
@@ -158,6 +161,7 @@
             }
             super(ct.res.getTexture(bgName, frame || 0), width, height);
             ct.types.list.BACKGROUND.push(this);
+            this.anchor.x = this.anchor.y = 0;
             this.depth = depth;
             this.shiftX = this.shiftY = this.movementX = this.movementY = 0;
             this.parallaxX = this.parallaxY = 1;
@@ -205,6 +209,7 @@
             for (let i = 0, l = data.tiles.length; i < l; i++) {
                 const textures = ct.res.getTexture(data.tiles[i].texture);
                 const sprite = new PIXI.Sprite(textures[data.tiles[i].frame]);
+                sprite.anchor.x = sprite.anchor.y = 0;
                 this.addChild(sprite);
                 sprite.x = data.tiles[i].x;
                 sprite.y = data.tiles[i].y;

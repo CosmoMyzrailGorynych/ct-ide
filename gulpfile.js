@@ -78,7 +78,8 @@ const compileStylus = () =>
     gulp.src('./src/styl/theme*.styl')
     .pipe(sourcemaps.init())
     .pipe(stylus({
-        compress: true
+        compress: true,
+        'include css': true
     }))
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('./app/data/'));
