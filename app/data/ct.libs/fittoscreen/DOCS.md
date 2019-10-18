@@ -23,3 +23,7 @@ if (ct.mouse.pressed) {
 ## `ct.fittoscreen.getIsFullscreen();`
 
 Returns whether the game is in the fullscreen mode (`true`) or not (`false`).
+
+## `ct.fittoscreen.mode`
+
+A string that indicates the current scaling approach. Can be changed at runtime to `'fastScale'`, `'expand'`, `'expandViewport'`, `'scaleFit'`, or `'scaleFill'`.

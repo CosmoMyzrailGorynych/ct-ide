@@ -24,7 +24,9 @@ const ct = {
     },
     set width(value) {
         ct.viewWidth = ct.roomWidth = value;
-        ct.pixiApp.renderer.resize(value, ct.height);
+        if (!ct.fittoscreen || ct.fittoscreen.mode === 'fastScale') {
+            ct.pixiApp.renderer.resize(value, ct.height);
+        }
         if (ct.fittoscreen) {
             ct.fittoscreen();
         }
@@ -35,7 +37,9 @@ const ct = {
     },
     set height(value) {
         ct.viewHeight = ct.roomHeight = value;
-        ct.pixiApp.renderer.resize(ct.width, value);
+        if (!ct.fittoscreen || ct.fittoscreen.mode === 'fastScale') {
+            ct.pixiApp.renderer.resize(ct.width, value);
+        }
         if (ct.fittoscreen) {
             ct.fittoscreen();
         }
