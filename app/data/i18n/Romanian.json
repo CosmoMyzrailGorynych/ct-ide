@@ -86,7 +86,7 @@
             "button": "Crează",
             "input": "Numele proiectului (litere și cifre)",
             "text": "Crează un nou proiect",
-            "nameerr": "Numele proiectului este greșit."
+            "nameerr": "Numele proiectului este greșit"
         },
         "recovery": {
             "message": "<h2 class=\"nmt\">Recuperare</h2><p>ct.js a găsit un fișier de recuperare. Probabil că proiectul tău nu a fost salvat corect sau ct.js a fost oprit forțat. Iată când au fost modificate ultima dată aceste fișiere:</p><p>Fișiere alese: {0} {1}<br/>Fișiere de recuperare: {2} {3}</p><p>Ce fișier ar trebui să deschida ct.js?</p>",

@@ -86,7 +86,7 @@
             "button": "Crear",
             "input": "Nombre del proyecto (letras y dígitos)",
             "text": "Crear nuevo",
-            "nameerr": "Nombre de proyecto incorrecto."
+            "nameerr": "Nombre de proyecto incorrecto"
         },
         "recovery": {
             "message": "<h2 class=\"nmt\">Recuperación</h2><p>ct.js ha encontrado un archivo de recuperación. Posiblemente, su proyecto no se guardó correctamente o ct.js se cerró en caso de alguna emergencia. Aquí es cuando estos archivos se modificaron por última vez:</p><p>Su archivo elegido: {0} {1} <br/>Archivo de recuperación: {2} {3} </p><p> ¿Qué archivo debe ct? .js abierto? </p>",

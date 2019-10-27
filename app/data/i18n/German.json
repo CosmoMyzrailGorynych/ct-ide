@@ -87,7 +87,7 @@
             "button": "Erstellen",
             "input": "Projektname (Buchstaben und Zahlen)",
             "text": "Neues Projekt erstellen",
-            "nameerr": "Falscher Projektname."
+            "nameerr": "Falscher Projektname"
         },
         "recovery": {
             "message": "<h2 class=\"nmt\">Wiederherstellung</h2><p>ct.js hat eine Wiederherstellungsdatei gefunden. Ihr Projekt wurde möglicherweise nicht richtig gespeichert oder ct.js wurde unerwartet beendet. Letzte Änderung der Datei:</p><p>Wählen Sie eine Datei: {0} {1}<br/>Wiederherstellungs Datei: {2} {3}</p><p>Welche Datei soll ct.js öffnen?</p>",
