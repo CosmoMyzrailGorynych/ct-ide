@@ -1,6 +1,6 @@
 // Mainly a work of Andy at https://codepen.io/andyobrien/pen/WYrxMe
 
-random(a,b)
+random(a, b)
   return math(math(0, 'random')*(b - a + 1) + a, 'floor')
 
 .Confetti
@@ -19,7 +19,7 @@ random(a,b)
 .aConfettiPiece
     width 0.5rem
     height 1rem
-    background #ffd300
+    background yellow
     opacity 0
     animation makeItRain 1000ms infinite ease-out
     user-select none
@@ -28,7 +28,7 @@ random(a,b)
         &:nth-child({i})
             transform rotate(random(-80deg, 80deg))
             animation-delay random(0ms, 1800ms)
-            animation-duration random(1000ms * .7, 1000ms * 1.8)
+            animation-duration random(1000ms * 0.7, 1000ms * 1.8)
 
 @keyframes makeItRain
     from
