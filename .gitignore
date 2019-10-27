@@ -48,6 +48,7 @@ app/temp
 app/exportDesktop
 /temp
 app/data/fonts/style/.css
+app/data/patronsCache.csv
 builds
 build
 cache

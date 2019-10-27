@@ -93,43 +93,52 @@ patreon-screen.view(style="z-index: 100;")
         };
         this.getConfettiColor = () => this.confettiColors[Math.floor(Math.random() * this.confettiColors.length)];
 
+        this.importPatronData = text => {
+            const patrons = [];
+            var table = text.split('\r\n').map(row => row.split(','));
+            for (let i = 1, l = table.length; i < l; i++) {
+                const obj = {},
+                    row = table[i];
+                for (let j = 0; j < row.length; j++) {
+                    obj[table[0][j].trim()] = row[j];
+                }
+                const prev = patrons.find(patron => patron.name === obj.name);
+                if (prev) {
+                    patrons.splice(patrons.indexOf(prev), 1);
+                }
+                patrons.push(obj);
+            }
+            patrons.filter(patron => patron.tier);
+            patrons.forEach(patron => {
+                patron.former = Boolean(patron.former);
+                if (patron.tier === 'An Aspiring Astronaut') {
+                    this.patrons.astronauts.push(patron);
+                } else if (patron.tier === 'A Space Pirate') {
+                    this.patrons.pirates.push(patron);
+                } else if (patron.tier === 'A Business Shuttle') {
+                    this.patrons.shuttles.push(patron);
+                } else if (patron.tier === 'A Space Programmer') {
+                    this.patrons.programmers.push(patron);
+                }
+            });
+            this.loading = false;
+            this.update();
+        };
         this.loadPatrons = () => {
             this.loading = true;
             window.fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vTUMd6nvY0if8MuVDm5-zMfAxWCSWpUzOc81SehmBVZ6mytFkoB3y9i9WlUufhIMteMDc00O9EqifI3/pub?output=csv')
             .then(data => data.text())
-            .then(text => {
-                const patrons = [];
-                var table = text.split('\r\n').map(row => row.split(','));
-                for (let i = 1, l = table.length; i < l; i++) {
-                    const obj = {},
-                        row = table[i];
-                    for (let j = 0; j < row.length; j++) {
-                        obj[table[0][j].trim()] = row[j];
-                    }
-                    const prev = patrons.find(patron => patron.name === obj.name);
-                    if (prev) {
-                        patrons.splice(patrons.indexOf(prev), 1);
-                    }
-                    patrons.push(obj);
-                }
-                patrons.filter(patron => patron.tier);
-                patrons.forEach(patron => {
-                    patron.former = Boolean(patron.former);
-                    if (patron.tier === 'An Aspiring Astronaut') {
-                        this.patrons.astronauts.push(patron);
-                    } else if (patron.tier === 'A Space Pirate') {
-                        this.patrons.pirates.push(patron);
-                    } else if (patron.tier === 'A Business Shuttle') {
-                        this.patrons.shuttles.push(patron);
-                    } else if (patron.tier === 'A Space Programmer') {
-                        this.patrons.programmers.push(patron);
-                    }
-                });
-                this.loading = false;
-                this.update();
-            })
+            .then(this.importPatronData)
             .catch(e => {
-                this.errorLoadingPatrons = true;
+                console.error(e);
+                const fs = require('fs-extra');
+                fs.readFile('./data/patronsCache.csv', {
+                    encoding: 'utf8'
+                })
+                .then(this.importPatronData)
+                .catch(e => {
+                    console.error(e);
+                });
             });
         };
         this.loadPatrons();

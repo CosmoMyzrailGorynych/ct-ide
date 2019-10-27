@@ -311,6 +311,28 @@ const examples = () => {
     return Promise.all(promises);
 };
 
+// eslint-disable-next-line valid-jsdoc
+/**
+ * @see https://stackoverflow.com/a/22907134
+ */
+const patronsCache = done => {
+    const http = require('https');
+
+    const dest = './app/data/patronsCache.csv',
+          src = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTUMd6nvY0if8MuVDm5-zMfAxWCSWpUzOc81SehmBVZ6mytFkoB3y9i9WlUufhIMteMDc00O9EqifI3/pub?output=csv';
+    const file = fs.createWriteStream(dest);
+    http.get(src, function(response) {
+        response.pipe(file);
+        file.on('finish', function() {
+            file.close(() => done()); // close() is async, call cb after close completes.
+        });
+    })
+    .on('error', function(err) { // Handle errors
+        fs.unlink(dest); // Delete the file async. (But we don't check the result)
+        done(err);
+    });
+};
+
 let zipPackages;
 if ((/^win/).test(process.platform)) {
     const zipsForAllPlatforms = platforms.map(platform => () =>
@@ -337,6 +359,7 @@ const packages = gulp.series([
     abortOnWindows,
     build,
     docs,
+    patronsCache,
     nwPackages,
     fixSymlinks,
     fixPermissions,
@@ -365,6 +388,7 @@ const defaultTask = gulp.series(build, launchDevMode);
 
 exports.lint = lint;
 exports.packages = packages;
+exports.patronsCache = patronsCache;
 exports.docs = docs;
 exports.build = build;
 exports.deploy = deploy;
