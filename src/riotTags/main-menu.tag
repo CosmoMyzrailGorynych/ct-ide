@@ -7,6 +7,8 @@ main-menu.flexcol
         ul#app.nav.tabs
             li.it30#ctlogo(onclick="{ctClick}" title="{voc.ctIDE}")
                 i.icon-menu
+            li.it30(onclick="{changeTab('patrons')}" title="{voc.patrons}" class="{active: tab === 'patrons'}")
+                i.icon-heart
             li.it30(onclick="{saveProject}" title="{voc.save}")
                 i.icon-save
             li.nbr.it30(onclick="{runProject}" title="{voc.launch}")
@@ -43,6 +45,7 @@ main-menu.flexcol
         types-panel(show="{tab === 'types'}")
         rooms-panel(show="{tab === 'rooms'}")
         license-panel(if="{showLicense}")
+        patreon-screen(if="{tab === 'patrons'}")
         export-panel(show="{showExporter}")
     script.
         const fs = require('fs-extra'),
@@ -413,6 +416,7 @@ main-menu.flexcol
                 gui.Shell.openExternal('https://www.patreon.com/comigo');
             }
         }));
+
         catMenu.append(new gui.MenuItem({type: 'separator'}));
         catMenu.append(new gui.MenuItem({
             label: window.languageJSON.common.exit,
