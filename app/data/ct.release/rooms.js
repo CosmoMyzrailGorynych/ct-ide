@@ -72,8 +72,12 @@
             }
         },
         'switch'(room) {
-            nextRoom = room;
-            ct.rooms.switching = true;
+            if (ct.rooms.templates[room]){
+                nextRoom = room;
+                ct.rooms.switching = true;
+            } else {
+                console.error('[ct.rooms] The room "' + room + '" does not exist!');
+            }            
         },
         switching: false,
         load(roomName) {
