@@ -47,6 +47,9 @@ Can be either `true` or `false`. Determines whether there is a cursor inside the
 
 Returns `true` if the mouse hovers over a given `copy`. This does **not** take scaling and rotation into account, as well as polygonal shapes (as they are hollow).
 
+## `ct.mouse.hide()`, `ct.mouse.show()`
+Change the visibility of the mouse cursor.
+
 ## Codes for Actions
 
 * `Left`;

@@ -46,6 +46,12 @@
         },
         get y() {
             return ct.mouse.ry + ct.rooms.current.y;
+        },
+        hide() {
+            ct.pixiApp.renderer.view.style.cursor = 'none';
+        },
+        show() {
+            ct.pixiApp.renderer.view.style.cursor = '';
         }
     };
     
