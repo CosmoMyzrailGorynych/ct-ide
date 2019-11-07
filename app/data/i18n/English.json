@@ -184,7 +184,8 @@
         "methods": "Methods",
         "parameters": "Parameters",
         "logs2": "Changelog",
-        "settings": "Settings"
+        "settings": "Settings",
+        "importModules": "Import Modules"
     },
     "texture": {
         "create": "Create",

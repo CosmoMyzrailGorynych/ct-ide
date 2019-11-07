@@ -9,6 +9,15 @@ modules-panel.panel.view
                 li(each="{module in allModules}" onclick="{renderModule(module)}")
                     i.icon(class="icon-{(module in window.currentProject.libs)? 'confirm on' : 'mod off'}")
                     span {module}
+            label.file.flexfix-footer.nmb
+                input(
+                    type="file" 
+                    ref="importmodules" 
+                    accept=".zip" 
+                    onchange="{importModules}")
+                .button.wide.inline.nml.nmr
+                    i.icon.icon-folder
+                    span {voc.importModules}        
         .c9.tall.flexfix(if="{currentModule}")
             ul.nav.tabs.flexfix-header.noshrink
                 li#modinfo(onclick="{changeTab('moduleinfo')}" class="{active: tab === 'moduleinfo'}")
@@ -92,10 +101,12 @@ modules-panel.panel.view
                 #modulelogs.tabbed.nbt(show="{tab === 'modulelogs'}" if="{currentModuleLogs}")
                     h1 {voc.logs2}
                     raw(ref="raw" content="{currentModuleLogs}")
+                
     script.
         const path = require('path'),
               fs = require('fs-extra'),
-              gui = require('nw.gui');
+              gui = require('nw.gui'),
+              unzipper = require('unzipper');
         const md = require('markdown-it')({
             html: false,
             linkify: true,
@@ -247,3 +258,70 @@ modules-panel.panel.view
             copymeMenu.popup(e.pageX, e.pageY);
             e.preventDefault();
         };
+
+        this.importModules = async (e) => {
+            const value = e.target.value;
+            if (value.length === 0) {
+                return;
+            }
+            e.target.value = '';
+            let parentName = null;
+            let moduleName = null;
+            const entries = [];
+            fs.createReadStream(value)
+            .pipe(unzipper.Parse())
+            .on('entry', async (entry) => {
+                const fileName = entry.path.toLowerCase();
+                if (path.basename(fileName) === 'module.json') {
+                    // okay, we consumes the entry by buffering the contents into memory.
+                    const content = entry.tmpContent = await entry.buffer();
+                    const json = JSON.parse(content.toString());
+                    moduleName = json.main.packageName || path.basename(value, '.zip');
+                    const indexOf = fileName.indexOf('/');
+                    if (indexOf !== -1) {
+                        parentName = fileName.substring(0, indexOf);
+                    }
+                }
+                entries.push(entry);
+            })
+            .on('finish', async () => {
+                if (moduleName !== null) {
+                    for (let entry of entries) {
+                        const filePath = entry.path;
+                        const indexOf = filePath.indexOf('/')
+                        if (filePath === parentName) {
+                            continue;
+                        }
+                        if (indexOf !== -1) {
+                            if (parentName !== null) {
+                                entry.path = `${moduleName}${filePath.substring(indexOf)}`;
+                            } else {
+                                entry.path = `${moduleName}/${filePath}`;
+                            }
+                        } else {
+                            entry.path = `${moduleName}/${filePath}`;
+                        }
+                        entry.path =  path.join(libsDir, entry.path);
+                         // 'Directory' or 'File'
+                        if (entry.type === 'Directory') {
+                            await fs.ensureDir(entry.path);
+                        } else {
+                            const fileName = entry.path.toLowerCase();
+                            if (fileName.endsWith("module.json")) {
+                                const content = entry.tmpContent;
+                                await fs.writeFile(entry.path, content);
+                            } else {
+                                entry.pipe(fs.createWriteStream(entry.path))
+                                .on('error', (e) => {
+                                    alertify.error(e);
+                                    console.log(e);
+                                    return;
+                                });
+                            }
+                        }
+                    }
+                    this.allModules.push(moduleName);
+                    this.update();
+                }
+            });
+        }
