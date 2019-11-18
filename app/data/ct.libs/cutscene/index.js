@@ -121,6 +121,7 @@
             });
             cutscene.then = promise.then.bind(promise);
             cutscene.catch = promise.catch.bind(promise);
+            cutscene.finally = promise.finally.bind(promise);
             return cutscene;
         }
     };
