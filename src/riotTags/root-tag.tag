@@ -1,6 +1,6 @@
 root-tag
-    main-menu
-    notepad-panel
+    main-menu(if="{!selectorVisible}")
+    notepad-panel(if="{!selectorVisible}")
     project-selector(if="{selectorVisible}")
     script.
         this.selectorVisible = true;
@@ -14,11 +14,11 @@ root-tag
         document.head.appendChild(stylesheet);
         const updateStylesheet = () => {
             stylesheet.innerHTML = `
-                code, pre, .ace_editor.ace_editor {
+                code, pre {
                     font-family: ${localStorage.fontFamily || 'Iosevka, monospace'};
                     font-variant-ligatures: ${localStorage.codeLigatures === 'off'? 'none' : 'normal'};
                 }
-                .ace_editor.ace_editor {
+                .monaco-editor .view-lines.view-lines {
                     line-height: ${localStorage.codeDense === 'on'? 1.5 : 1.75};
                 }
             `;

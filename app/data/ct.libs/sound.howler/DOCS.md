@@ -109,7 +109,7 @@ Moves a 3D sound to a new location
 
 * **String** *name* The name of a sound to move
 * **Number** *id* The ID of a particular sound. Pass `null` if you want to affect all the sounds of a given name.
-* **Number** *x* The new x coordinate 
+* **Number** *x* The new x coordinate
 * **Number** *y* The new y coordinate
 * **Number** *[z]* The new z coordinate. May be omitted, and it will then leave the old `z` value untouched.
 
@@ -118,7 +118,7 @@ Moves a 3D sound to a new location
 
 ## ct.sound.load(name)
 
-Preloads a sound. This is usually applied to music files before playing them, 
+Preloads a sound. This is usually applied to music files before playing them,
 as they are not preloaded by default.
 
 ### Params:
@@ -155,7 +155,7 @@ Get/set the global volume for all sounds, relative to their own volume.
 
 ## ct.sound.detect(type)
 
-Detects if a particular codec is supported in the system 
+Detects if a particular codec is supported in the system
 
 ### Params:
 
@@ -165,15 +165,17 @@ Detects if a particular codec is supported in the system
 
 * **Boolean** true/false
 
-## ct.sound.init(name, wav, mp3, [poolSize=5])
+## ct.sound.init(name, formats, [poolSize=5])
 
 Creates a new Sound object and puts it in ct.res.sounds object. This is automatically done by the engine for all the imported sounds, but you may need to load additional sounds during the playtime.
 
 ### Params:
 
 * **String** *name* Sound's name
-* **String** *wav* Local path to the sound in wav format
-* **String** *mp3* Local path to the sound in mp3 format
+* **Object** *formats* An object with paths to sound files:
+    * **String** *[wav]* Local path to the sound in wav format
+    * **String** *[mp3]* Local path to the sound in mp3 format
+    * **String** *[ogg]* Local path to the sound in ogg format
 * **Object** *[options]* An options object. Options include `volume` (0-1), `loop` (`true` / `false`), `music` and `poolSize`, though the latter is usually set to default value of `5`.
 
 ### Return:

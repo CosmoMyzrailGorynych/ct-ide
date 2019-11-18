@@ -3,7 +3,7 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
         li(onclick="{changeTab('notepadlocal')}")
             i.icon.icon-edit
             span {voc.local}
-        li(onclick="{changeTab('notepaglobal')}")
+        li(onclick="{changeTab('notepadglobal')}")
             i.icon.icon-clipboard
             span {voc.global}
         li(onclick="{changeTab('helppages')}")
@@ -11,9 +11,9 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
             span {voc.helppages}
     div
         div(show="{tab === 'notepadlocal'}")
-            .acer(ref="notepadlocal")
-        div(show="{tab === 'notepaglobal'}")
-            .acer(ref="notepadglobal")
+            .aCodeEditor(ref="notepadlocal")
+        div(show="{tab === 'notepadglobal'}")
+            .aCodeEditor(ref="notepadglobal")
         div(show="{tab === 'helppages'}")
             iframe(src="http://localhost:{server.address().port}/" ref="helpIframe" nwdisable nwfaketop)
             button.aHomeButton(title="{voc.backToHome}" onclick="{backToHome}")
@@ -34,6 +34,23 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
         this.changeTab = tab => e => {
             this.tab = tab;
         };
+        this.on('update', () => {
+            setTimeout(() => {
+                if (this.tab) {
+                    this.refs[this.tab].codeEditor.layout();
+                    this.refs[this.tab].codeEditor.focus();
+                }
+            }, 0);
+        });
+        const updateEditorSize = () => {
+            if (this.tab && this.refs[this.tab]) {
+                this.refs[this.tab].codeEditor.layout();
+            }
+        };
+        window.addEventListener('resize', updateEditorSize);
+        this.on('unmount', () => {
+            window.removeEventListener('resize', updateEditorSize);
+        });
 
         this.backToHome = e => {
             this.refs.helpIframe.contentWindow.location = `http://localhost:${this.server.address().port}/`;
@@ -45,22 +62,27 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
 
         this.on('mount', () => {
             setTimeout(() => {
-                this.notepadlocal = window.setupAceEditor(this.refs.notepadlocal, {
-                    mode: 'javascript'
+                this.notepadlocal = window.setupCodeEditor(this.refs.notepadlocal, {
+                    language: 'typescript'
                 });
-                this.notepadglobal = window.setupAceEditor(this.refs.notepadglobal, {
-                    mode: 'javascript'
+                this.notepadglobal = window.setupCodeEditor(this.refs.notepadglobal, {
+                    language: 'typescript'
                 });
 
-                this.notepadlocal.getSession().on('change', (e) => {
+                this.notepadlocal.onDidChangeModelContent((e) => {
                     window.currentProject.notes = this.notepadlocal.getValue();
                     glob.modified = true;
                 });
-                this.notepadglobal.getSession().on('change', (e) => {
+                this.notepadglobal.onDidChangeModelContent((e) => {
                     localStorage.notes = this.notepadglobal.getValue();
                 });
                 this.notepadglobal.setValue(localStorage.notes);
             }, 0);
+        });
+        this.on('unmount', () => {
+            // Manually destroy the editors to free up the memory
+            this.notepadlocal.dispose();
+            this.notepadglobal.dispose();
         });
 
         const nstatic = require('node-static');

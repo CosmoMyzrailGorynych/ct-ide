@@ -4,6 +4,7 @@
 const path = require('path'),
       gulp = require('gulp'),
       concat = require('gulp-concat'),
+      replace = require('gulp-replace'),
       sourcemaps = require('gulp-sourcemaps'),
       minimist = require('minimist'),
       stylus = require('gulp-stylus'),
@@ -15,6 +16,8 @@ const path = require('path'),
       filemode = require('filemode'),
       zip = require('gulp-zip'),
 
+      jsdocx = require('jsdoc-x'),
+
       streamQueue = require('streamqueue'),
       notifier = require('node-notifier'),
       fs = require('fs-extra'),
@@ -23,6 +26,7 @@ const path = require('path'),
       spawnise = require('./node_requires/spawnise');
 
 const argv = minimist(process.argv.slice(2));
+const npm = (/^win/).test(process.platform) ? 'npm.cmd' : 'npm';
 
 const pack = require('./app/package.json');
 
@@ -108,7 +112,8 @@ const compileRiot = () =>
 
 const concatScripts = () =>
     streamQueue({objectMode: true},
-        gulp.src('./src/js/**'),
+        gulp.src('./src/js/3rdparty/riot.min.js'),
+        gulp.src(['./src/js/**', '!./src/js/3rdparty/riot.min.js']),
         gulp.src('./temp/riot.js')
     )
     .pipe(sourcemaps.init())
@@ -181,8 +186,6 @@ const watch = () => {
     watchRequires();
 };
 
-const build = gulp.parallel([compilePug, compileStylus, compileScripts, copyRequires]);
-
 const lintStylus = () => gulp.src(['./src/styl/**/*.styl', '!./src/styl/3rdParty/**/*.styl'])
     .pipe(stylint())
     .pipe(stylint.reporter())
@@ -215,7 +218,7 @@ const launchNw = () => { // makes a loop that keeps ct.js open if it was closed,
 const docs = async () => {
     try {
         await fs.remove('./app/data/docs/');
-        await spawnise.spawn((/^win/).test(process.platform) ? 'npm.cmd' : 'npm', ['run', 'build'], {
+        await spawnise.spawn(npm, ['run', 'build'], {
             cwd: './docs'
         });
         await fs.copy('./docs/docs/.vuepress/dist', './app/data/docs/');
@@ -224,6 +227,106 @@ const docs = async () => {
         throw e;
     }
 };
+
+// @see https://microsoft.github.io/monaco-editor/api/enums/monaco.languages.completionitemkind.html
+const kindMap = {
+    function: 'Function',
+    class: 'Class'
+};
+const getAutocompletion = doc => {
+    if (doc.kind === 'function') {
+        if (!doc.params || doc.params.length === 0) {
+            return doc.longname + '()';
+        }
+        return doc.longname + `(${doc.params.map(param => param.name).join(', ')})`;
+    }
+    if (doc.kind === 'class') {
+        return doc.name;
+    }
+    return doc.longname;
+};
+const getDocumentation = doc => {
+    if (!doc.description) {
+        return void 0;
+    }
+    if (doc.kind === 'function') {
+        return {
+            value: `${doc.description}
+${(doc.params || []).map(param => `* \`${param.name}\` (${param.type.names.join('|')}) ${param.description} ${param.optional? '(optional)' : ''}`).join('\n')}
+
+Returns ${doc.returns[0].type.names.join('|')}, ${doc.returns[0].description}`
+        };
+    }
+    return {
+        value: doc.description
+    };
+};
+
+const bakeCompletions = () =>
+    jsdocx.parse({
+        files: './app/data/ct.release/**/*.js',
+        excludePattern: '(DragonBones|pixi)',
+        undocumented: false,
+        allowUnknownTags: true
+    })
+    .then(docs => {
+        const registry = [];
+        for (const doc of docs) {
+            console.log(doc);
+            if (doc.params) {
+                for (const param of doc.params) {
+                    console.log(param);
+                }
+            }
+            const item = {
+                label: doc.name,
+                insertText: doc.autocomplete || getAutocompletion(doc),
+                documentation: getDocumentation(doc),
+                kind: kindMap[doc.kind] || 'Property'
+            };
+            registry.push(item);
+        }
+        fs.outputJSON('./app/data/node_requires/codeEditor/autocompletions.json', registry, {
+            spaces: 2
+        });
+    });
+const bakeCtTypedefs = cb => {
+    spawnise.spawn(npm, ['run', 'ctTypedefs'])
+    .then(cb);
+};
+const concatTypedefs = () =>
+    gulp.src(['./src/typedefs/ct.js/types.d.ts', './src/typedefs/ct.js/**/*.ts', './src/typedefs/default/**/*.ts'])
+    .pipe(concat('global.d.ts'))
+    // patch the generated output so ct classes allow custom properties
+    .pipe(replace(
+        'declare class Copy extends PIXI.AnimatedSprite {', `
+        declare class Copy extends PIXI.AnimatedSprite {
+            [key: string]: any
+        `))
+    .pipe(replace(
+        'declare class Room extends PIXI.Container {', `
+        declare class Room extends PIXI.Container {
+            [key: string]: any
+        `))
+    // also, remove JSDOC's @namespace flags so the popups in ct.js become more clear
+    .pipe(replace(`
+ * @namespace
+ */
+declare namespace`, `
+ */
+declare namespace`))
+    .pipe(replace(`
+     * @namespace
+     */
+    namespace`, `
+     */
+    namespace`))
+    .pipe(gulp.dest('./app/data/typedefs/'));
+const bakeTypedefs = gulp.series([bakeCtTypedefs, concatTypedefs]);
+
+
+const build = gulp.parallel([compilePug, compileStylus, compileScripts, copyRequires, bakeTypedefs]);
+
 
 const nwPackages = async () => {
     await fs.remove(path.join('./build', `ctjs - v${pack.version}`));
@@ -394,3 +497,5 @@ exports.build = build;
 exports.deploy = deploy;
 exports.deployOnly = deployOnly;
 exports.default = defaultTask;
+exports.bakeCompletions = bakeCompletions;
+exports.bakeTypedefs = bakeTypedefs;

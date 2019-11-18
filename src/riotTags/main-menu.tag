@@ -320,10 +320,7 @@ main-menu.flexcol
         this.switchTheme = theme => {
             localStorage.UItheme = theme;
             document.getElementById('themeCSS').href = `./data/theme${theme}.css`;
-            var acers = document.getElementsByClassName('acer');
-            for (var acer of acers) {
-                acer.aceEditor.setTheme('ace/theme/' + (theme in glob.aceThemeMappings? glob.aceThemeMappings[theme] : glob.aceThemeMappings.default));
-            }
+            window.signals.trigger('UIThemeChanged', theme);
         };
         localStorage.UItheme = localStorage.UItheme || 'Day';
 

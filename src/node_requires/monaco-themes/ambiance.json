@@ -1,0 +1,166 @@
+{
+    "base": "vs-dark",
+    "inherit": true,
+    "rules": [{
+        "token": "",
+        "background": "#08080d",
+        "foreground": "#E6E1DC"
+    }, {
+        "foreground": "#555555",
+        "fontStyle": "italic",
+        "token": "comment"
+    },
+    {
+        "token": "delimiter",
+        "foreground": "#fa8d6a"
+    },
+    {
+        "token": "delimiter.bracket",
+        "foreground": "#24C2C7"
+    },
+    {
+        "token": "delimiter.parenthesis",
+        "foreground": "#24C2C7"
+    },
+    {
+        "token": "number",
+        "foreground": "#78CF8A"
+    },
+    {
+        "foreground": "#CF7EA9",
+        "token": "constant"
+    },
+    {
+        "foreground": "#fa8d6a",
+        "token": "entity"
+    },
+    {
+        "foreground": "#aac6e3",
+        "token": "keyword"
+    },
+    {
+        "foreground": "#cda869",
+        "token": "storage"
+    },
+    {
+        "foreground": "#8f9d6a",
+        "token": "string"
+    },
+    {
+        "foreground": "61ce3c",
+        "token": "meta.verbatim"
+    },
+    {
+        "foreground": "#9B859D",
+        "token": "support"
+    },
+    {
+        "foreground": "#D2A8A1",
+        "fontStyle": "italic",
+        "token": "invalid.deprecated"
+    },
+    {
+        "foreground": "#F8F8F8",
+        "background": "#562d56c0",
+        "token": "invalid.illegal"
+    },
+    {
+        "foreground": "#DAD085",
+        "fontStyle": "italic",
+        "token": "entity.other.inherited-class"
+    },
+    {
+        "foreground": "#9B859D",
+        "token": "string constant.other.placeholder"
+    },
+    {
+        "foreground": "#DAD085",
+        "token": "meta.function-call.py"
+    },
+    {
+        "foreground": "#666666",
+        "token": "meta.tag"
+    },
+    {
+        "foreground": "#666666",
+        "token": "meta.tag entity"
+    },
+    {
+        "foreground": "ffffff",
+        "token": "entity.name.section"
+    },
+    {
+        "foreground": "#cda869",
+        "token": "keyword.type.variant"
+    },
+    {
+        "foreground": "#fa8d6a",
+        "token": "source.ocaml keyword.operator.symbol"
+    },
+    {
+        "foreground": "#fa8d6a",
+        "token": "source.ocaml keyword.operator.symbol.infix"
+    },
+    {
+        "foreground": "#fa8d6a",
+        "token": "source.ocaml keyword.operator.symbol.prefix"
+    },
+    {
+        "fontStyle": "#fa8d6a",
+        "token": "source.ocaml keyword.operator.symbol.infix.floating-point"
+    },
+    {
+        "fontStyle": "#fa8d6a",
+        "token": "source.ocaml keyword.operator.symbol.prefix.floating-point"
+    },
+    {
+        "fontStyle": "#78CF8A",
+        "token": "source.ocaml constant.numeric.floating-point"
+    },
+    {
+        "background": "ffffff08",
+        "token": "text.tex.latex meta.function.environment"
+    },
+    {
+        "background": "7a96fa08",
+        "token": "text.tex.latex meta.function.environment meta.function.environment"
+    },
+    {
+        "foreground": "fbde2d",
+        "token": "text.tex.latex support.function"
+    },
+    {
+        "foreground": "ffffff",
+        "token": "source.plist string.unquoted"
+    },
+    {
+        "foreground": "#cda869",
+        "token": "keyword.operator"
+    }],
+    "colors": {
+        "editor.foreground": "#E6E1DC",
+        "editor.background": "#08080d",
+        "editor.selectionBackground": "#ddf0ff33",
+        "editor.lineHighlightBackground": "#ffffff08",
+        "editorCursor.foreground": "#44dbb5",
+        "editorWhitespace.foreground": "#E6E1DC40",
+
+        "errorForeground": "#d44f57",
+        "focusBorder": "#44dbb5",
+        "contrastBorder": "#1C2B42",
+        "contrastActiveBorder": "#44dbb5",
+        "dropdown.background": "#121822",
+        "menu.background": "#121822",
+        "menu.selectionBackground": "#44dbb5",
+        "menu.border": "#1C2B42",
+        "menu.separatorBackground": "#1C2B42",
+        "editorWidget.background": "#121822",
+        "editorWidget.border": "#1C2B42",
+        "peekViewTitle.background": "#1C2B42",
+        "peekViewResult.background": "#1C2B42",
+        "peekViewEditor.background": "#1C2B42",
+
+        "textLink.foreground": "#44dbb5",
+        "editorLink.activeForeground": "#44dbb5"
+    }
+}

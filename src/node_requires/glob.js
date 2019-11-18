@@ -16,7 +16,8 @@ const glob = {
         }
         modified = v;
         return modified;
-    }
+    },
+    moduleTypings: {}
 };
 
 module.exports = glob;

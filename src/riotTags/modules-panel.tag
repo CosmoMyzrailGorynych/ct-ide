@@ -111,6 +111,7 @@ modules-panel.panel.view
             html: false,
             linkify: true,
             highlight: function (str, lang) {
+                const hljs = require('highlight.js');
                 if (lang && hljs.getLanguage(lang)) {
                     try {
                         return hljs.highlight(lang, str).value;
@@ -119,7 +120,6 @@ modules-panel.panel.view
                 return ''; // use external default escaping
             }
         });
-        const hljs = require('highlight.js');
         const glob = require('./data/node_requires/glob');
         const libsDir = './data/ct.libs';
         this.md = md;
@@ -148,13 +148,38 @@ modules-panel.panel.view
 
         this.escapeDots = str => str.replace(/\./g, '\\.');
 
+        const tryLoadTypedefs = moduleName => {
+            const typedefPath = path.join(libsDir, moduleName, 'types.d.ts');
+            fs.pathExists(typedefPath)
+            .then(exists => {
+                if (!exists) {
+                    return;
+                }
+                fs.readFile(typedefPath, 'utf8')
+                .then(data => {
+                    glob.moduleTypings[moduleName] = [
+                        monaco.languages.typescript.javascriptDefaults.addExtraLib(data),
+                        monaco.languages.typescript.typescriptDefaults.addExtraLib(data)
+                    ];
+                });
+            });
+        };
+        const removeTypedefs = moduleName => {
+            if (glob.moduleTypings[moduleName]) {
+                for (const lib of glob.moduleTypings[moduleName]) {
+                    lib.dispose();
+                }
+            }
+        };
         fs.readdir(libsDir, (err, files) => {
             if (err) {
                 throw err;
             }
             for (var i = 0; i < files.length; i++) {
                 if (fs.pathExistsSync(path.join(libsDir, files[i], 'module.json'))) {
-                    this.allModules.push(files[i]);
+                    const moduleName = files[i];
+                    this.allModules.push(moduleName);
+                    tryLoadTypedefs(moduleName);
                 }
             }
             this.currentModuleHelp = '';
@@ -166,21 +191,23 @@ modules-panel.panel.view
         this.toggleModule = moduleName => e => {
             if (window.currentProject.libs[moduleName]) {
                 delete window.currentProject.libs[moduleName];
+                removeTypedefs(moduleName);
             } else {
                 window.currentProject.libs[moduleName] = {};
+                tryLoadTypedefs(moduleName);
                 // 'Settings' page
                 if (this.currentModule.fields && currentProject.libs[name]) {
-                    for (var k in this.currentModule.fields) {
-                        if (!currentProject.libs[name][this.currentModule.fields[k].key]) {
-                            if (this.currentModule.fields[k].default) {
-                                currentProject.libs[name][this.currentModule.fields[k].key] = this.currentModule.fields[k].default;
+                    for (const field of this.currentModule.fields) {
+                        if (!currentProject.libs[name][field.key]) {
+                            if (field.default) {
+                                currentProject.libs[name][field.key] = field.default;
                             } else {
-                                if (this.currentModule.fields[k].type == 'number') {
-                                    currentProject.libs[name][this.currentModule.fields[k].key] = 0;
-                                } else if (this.currentModule.fields[k].type == 'checkbox') {
-                                    currentProject.libs[name][this.currentModule.fields[k].key] = false;
+                                if (field.type == 'number') {
+                                    currentProject.libs[name][field.key] = 0;
+                                } else if (field.type == 'checkbox') {
+                                    currentProject.libs[name][field.key] = false;
                                 } else {
-                                    currentProject.libs[name][this.currentModule.fields[k].key] = '';
+                                    currentProject.libs[name][field.key] = '';
                                 }
                             }
                         }
