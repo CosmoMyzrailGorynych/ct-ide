@@ -59,6 +59,7 @@
     "node-static": "^0.7.10",
     "nw-builder": "^3.5.7",
     "pixi.js": "^5.1.2",
-    "ttf2woff": "^2.0.1"
+    "ttf2woff": "^2.0.1",
+    "unzipper": "^0.10.5"
   }
 }
