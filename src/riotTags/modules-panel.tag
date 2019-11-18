@@ -11,13 +11,13 @@ modules-panel.panel.view
                     span {module}
             label.file.flexfix-footer.nmb
                 input(
-                    type="file" 
-                    ref="importmodules" 
-                    accept=".zip" 
+                    type="file"
+                    ref="importmodules"
+                    accept=".zip"
                     onchange="{importModules}")
                 .button.wide.inline.nml.nmr
                     i.icon.icon-folder
-                    span {voc.importModules}        
+                    span {voc.importModules}
         .c9.tall.flexfix(if="{currentModule}")
             ul.nav.tabs.flexfix-header.noshrink
                 li#modinfo(onclick="{changeTab('moduleinfo')}" class="{active: tab === 'moduleinfo'}")
@@ -101,7 +101,7 @@ modules-panel.panel.view
                 #modulelogs.tabbed.nbt(show="{tab === 'modulelogs'}" if="{currentModuleLogs}")
                     h1 {voc.logs2}
                     raw(ref="raw" content="{currentModuleLogs}")
-                
+
     script.
         const path = require('path'),
               fs = require('fs-extra'),
@@ -149,10 +149,19 @@ modules-panel.panel.view
         this.escapeDots = str => str.replace(/\./g, '\\.');
 
         const tryLoadTypedefs = moduleName => {
+            if (!(moduleName in currentProject.libs)) {
+                return;
+            }
             const typedefPath = path.join(libsDir, moduleName, 'types.d.ts');
             fs.pathExists(typedefPath)
             .then(exists => {
                 if (!exists) {
+                    // generate dummy typedefs if none were provided by the module
+                    const data = `declare namespace ct {\n/** Sorry, no in-code docs for this module :c */\n var ${moduleName}: any; }`;
+                    glob.moduleTypings[moduleName] = [
+                        monaco.languages.typescript.javascriptDefaults.addExtraLib(data),
+                        monaco.languages.typescript.typescriptDefaults.addExtraLib(data)
+                    ];
                     return;
                 }
                 fs.readFile(typedefPath, 'utf8')
