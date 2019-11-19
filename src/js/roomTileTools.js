@@ -5,6 +5,7 @@
     window.roomTileTools = {
         init() {
             this.onCanvasMouseUpTiles = e => {
+                console.log('mouse up');
                 if (e.button === 0 && this.currentTileLayer && Math.hypot(e.offsetX - this.startx, e.offsetY - this.starty) > clickThreshold) {
                     // Было прямоугольное выделение
                     this.selectedTiles = [];
@@ -27,6 +28,7 @@
                 }
             };
             this.onCanvasMoveTiles = e => {
+                console.log('mouse move');
                 // Если ведётся удаление
                 if (e.ctrlKey) {
                     // и зажата мышь
@@ -93,14 +95,22 @@
             };
 
             this.onCanvasClickTiles = e => {
-                // Отмена выделения тайлов, если таковые были, при клике
-                if (this.selectedTiles && Math.hypot(e.offsetX - this.startx, e.offsetY - this.starty) <= clickThreshold) {
-                    this.selectedTiles = false;
-                    this.refreshRoomCanvas();
-                    return;
+                if (
+                    Math.hypot(e.offsetX - this.startx, e.offsetY - this.starty) > clickThreshold &&
+                    !e.shiftKey
+                ) {
+                    return; // this looks neither like a regular click nor like a Shift+drag
                 }
-                // Было выделение и по клику больше ничего делать не нужно
-                if (e.button === 0 && Math.hypot(e.offsetX - this.startx, e.offsetY - this.starty) > clickThreshold) {
+
+                console.log('mouse click');
+                // Отмена выделения тайлов, если таковые были, при клике
+                if (
+                    this.selectedTiles && !this.movingStuff &&
+                    !(e.shiftKey && !this.currentTileset)
+                ) {
+                    this.selectedTiles = false;
+                    console.log('cleared');
+                    this.refreshRoomCanvas();
                     return;
                 }
                 // Выделений не было, но и слой не выбран, или же идёт удаление

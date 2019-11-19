@@ -147,6 +147,12 @@
             };
             // При клике на канвас помещает копию на соответствующий слой
             this.onCanvasClickCopies = e => {
+                if (
+                    Math.hypot(e.offsetX - this.startx, e.offsetY - this.starty) > clickThreshold &&
+                    !e.shiftKey
+                ) {
+                    return; // this looks neither like a regular click nor like a Shift+drag
+                }
                 // Отмена выделения копий, если таковые были, при клике
                 if (this.selectedCopies && !this.movingStuff && !(e.shiftKey && this.currentType === -1)) {
                     this.selectedCopies = false;
@@ -360,13 +366,13 @@
                             <input id="copypositiony" type="number" value="${copy.y}" />
                         </label>
                     `)
-                        .then(e => {
-                            if (e.buttonClicked === 'ok') {
-                                copy.x = Number(document.getElementById('copypositionx').value) || 0;
-                                copy.y = Number(document.getElementById('copypositiony').value) || 0;
-                                this.refreshRoomCanvas();
-                            }
-                        });
+                    .then(e => {
+                        if (e.buttonClicked === 'ok') {
+                            copy.x = Number(document.getElementById('copypositionx').value) || 0;
+                            copy.y = Number(document.getElementById('copypositiony').value) || 0;
+                            this.refreshRoomCanvas();
+                        }
+                    });
                 }
             }));
         }

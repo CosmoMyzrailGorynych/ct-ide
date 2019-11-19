@@ -259,7 +259,13 @@ room-editor.panel.view
                 this.roomx -= ~~(e.movementX / this.zoomFactor);
                 this.roomy -= ~~(e.movementY / this.zoomFactor);
                 this.refreshRoomCanvas(e);
-            } else if (e.shiftKey && this.mouseDown && (this.tab !== 'roomcopies' || this.currentType !== -1)) { // если зажата мышь и клавиша Shift, то создавать больше копий/тайлов
+            } else if ( // если зажата мышь и клавиша Shift, то создавать больше копий/тайлов
+                e.shiftKey && this.mouseDown &&
+                (
+                    (this.tab === 'roomcopies' && this.currentType !== -1) ||
+                    this.tab === 'roomtiles'
+                )
+            ) {
                 this.onCanvasClick(e);
             } else if (this.tab === 'roomcopies') {
                 this.onCanvasMoveCopies(e);
