@@ -65,9 +65,9 @@ Execute a function for each point in the query. Function is passed the only argu
 Works only with queries of `'grid'` type. Execute a function for each point in the query. Function is passed four arguments:
 
 0. the current point;
-1. its column index (the `x` position);
-2. its row index (the `y` position);
-3. the whole map of points (a two-dimentional array of points).
+1. the whole map of points (a two-dimentional array of points);
+2. the current point's column index (the `x` position);
+3. the current point's row index (the `y` position);
 
 #### `sort()`
 
@@ -122,18 +122,18 @@ Returns a new query combined from two other queries.
 
 ### `ct.eqs.scoreFree(ctype, multiplier)`
 
-A scoring function that tests whether a point collides with a `ctype` group. `multiplayer` is multiplied with a point's `score` value if a point does not collide with a given collision group (default one is `0`).
+Creates a scoring function that tests whether a point collides with a `ctype` group. `multiplier` is multiplied with a point's `score` value if a point does not collide with a given collision group (default one is `0`).
 
 ### `ct.eqs.scoreOccupied(ctype, multiplier)`
 
-A scoring function that tests whether a point collides with a `ctype` group. `multiplayer` is multiplied with a point's `score` value if a point collides with a given collision group (default one is `0`).
+Creates a scoring function that tests whether a point collides with a `ctype` group. `multiplier` is multiplied with a point's `score` value if a point collides with a given collision group (default one is `0`).
 
 ### `ct.eqs.scoreTile(layer, multiplier)`
 
-A scoring function that tests whether a point collides with a tile layer. `layer` determines the depth of a tested tile layer. `multiplayer` is multiplied with a point's `score` value if a point collides with any tile (default one is `0`).
+Creates a scoring function that tests whether a point collides with a tile layer. `layer` determines the depth of a tested tile layer. `multiplier` is multiplied with a point's `score` value if a point collides with any tile (default one is `0`).
 
 ### `ct.eqs.scoreDirection(direction, fromx, fromy, weight)`
 
-Given a point (`fromx`, `fromy`), this method calculates direction values from each points to the (`fromx`, `fromy`) point, and then ranks these points depending on how close the resulting direction is to a given `direction` argument. If directions are equal, a point's `score` is unchanged. If directions are perpendicular, a point's `score` is halved. If directions are opposite, then a point's `score` is set to 0.
+Given a point (`fromx`, `fromy`), this method creates a scoring function that calculates direction values from each points to the (`fromx`, `fromy`) point, and then ranks these points depending on how close the resulting direction is to a given `direction` argument. If directions are equal, a point's `score` is unchanged. If directions are perpendicular, a point's `score` is halved. If directions are opposite, then a point's `score` is set to 0.
 
 The `weight` parameter tells how much this ranking function should affect a point's `score`.
