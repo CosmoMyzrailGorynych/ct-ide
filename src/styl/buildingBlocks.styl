@@ -196,17 +196,18 @@ sounds-panel, rooms-panel
     margin-top 0.5rem
     color error
     z-index 100
+    transform-origin 50% -0.5rem
     &::before
         background mix(error, white, 10%)
         content ''
-        left 0.5rem
+        left 50%
         top -0.33rem
         position absolute
         width 0.5rem
         height 0.5rem
         border-left 1px solid error
         border-top 1px solid error
-        transform rotate(45deg)
+        transform translate(-0.25rem, 0) rotate(45deg)
 
 .nicetable, #moduleinfo table, #modulesettings table, #modulehelp table
     margin 1rem 0

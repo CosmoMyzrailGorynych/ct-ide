@@ -5,7 +5,7 @@ style-editor.panel.view
                 b {vocGlob.name}
                 br
                 input.wide(type="text" value="{styleobj.name}" onchange="{wire('this.styleobj.name')}")
-                .anErrorNotice(if="{nameTaken}") {vocGlob.nametaken}
+                .anErrorNotice(if="{nameTaken}" ref="errorNotice") {vocGlob.nametaken}
         .tabwrap.flexfix-body
             ul.nav.tabs.nogrow.noshrink
                 li(onclick="{changeTab('stylefont')}" class="{active: tab === 'stylefont'}") {voc.font}
@@ -234,6 +234,12 @@ style-editor.panel.view
             this.pixiApp.render();
         };
         this.styleSave = function() {
+            if (this.nameTaken) {
+                // animate the error notice
+                require('./data/node_requires/jellify')(this.refs.errorNotice);
+                soundbox.play('Failure');
+                return false;
+            }
             this.styleobj.lastmod = +(new Date());
             this.styleGenPreview(sessionStorage.projdir + '/img/' + this.styleobj.origname + '_prev@2.png', 128);
             this.styleGenPreview(sessionStorage.projdir + '/img/' + this.styleobj.origname + '_prev.png', 64).then(() => {

@@ -6,7 +6,7 @@ type-editor.panel.view.flexrow
                 div {voc.change}
             b {voc.name}
             input#typename.wide(type="text" onchange="{wire('this.type.name')}" value="{type.name}")
-            .anErrorNotice(if="{nameTaken}") {vocGlob.nametaken}
+            .anErrorNotice(if="{nameTaken}" ref="errorNotice") {vocGlob.nametaken}
             br
             b {voc.depth}
             input#typedepth.wide(type="number" onchange="{wire('this.type.depth')}" value="{type.depth}")
@@ -226,6 +226,12 @@ type-editor.panel.view.flexrow
             this.update();
         };
         this.typeSave = e => {
+            if (this.nameTaken) {
+                // animate the error notice
+                require('./data/node_requires/jellify')(this.refs.errorNotice);
+                soundbox.play('Failure');
+                return false;
+            }
             glob.modified = true;
             this.type.lastmod = +(new Date());
             this.parent.editingType = false;

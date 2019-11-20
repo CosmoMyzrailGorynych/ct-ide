@@ -98,15 +98,33 @@ div#loading
     font-size 4vw
     font-weight 300
 
-/******** Ace *********/
-.ace_editor
-    padding 0
-    margin 0
-    border-radius 0
-
 .aCodeEditor
     position absolute
     left 0
     top 0
     width 100%
     height 100%
+
+@keyframes jello
+    from, to
+        transform translate3d(0, 0, 0)
+    10%
+        transform skewY(12.5deg)
+    20%
+        transform skewY(-9deg)
+    30%
+        transform skewY(6.25deg)
+    40%
+        transform skewY(-3.125deg)
+    50%
+        transform skewY(1.5625deg)
+    70%
+        transform skewY(-0.78125deg)
+    80%
+        transform skewY(0.390625deg)
+
+.jello
+    animation-name jello
+    transform-origin center
+    animation-duration 1s
+    animation-fill-mode both
