@@ -1,3 +1,8 @@
+interface IPoint {
+    x: number;
+    y: number;
+}
+
 type EQSScoringFunction = (point: IEQSPoint) => void;
 type EQSScoringSpacedFunction = (point: IEQSPoint, grid: Array<Array<IEQSPoint>>, x: number, y: number) => void;
 
@@ -36,20 +41,20 @@ interface IEQSPoint extends IPoint {
     row?: number;
 }
 
-class EQSQuery {
+declare class EQSQuery {
     /**
      * Creates a new query from an array of points. Each point
      * should be an object with `x`, `y` and `score` fields.
      */
-    constructor(points: Array<IEQSPoint>): EQSQuery;
+    constructor(points: Array<IEQSPoint>);
     /**
      * Creates a new separate query by copying points from another query.
      */
-    constructor(query: EQSQuery): EQSQuery;
+    constructor(query: EQSQuery);
     /**
      * Constructs a new query with the given options and returns it.
      */
-    constructor(options: IEQSOptions): EQSQuery;
+    constructor(options: IEQSOptions);
 
     /**
      * An array of scored coordinates
