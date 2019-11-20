@@ -1,3 +1,6 @@
+type EQSScoringFunction = (point: IEQSPoint) => void;
+type EQSScoringSpacedFunction = (point: IEQSPoint, grid: Array<Array<IEQSPoint>>, x: number, y: number) => void;
+
 interface IEQSOptions {
     /** The horizontal center of a query */
     x: number;
@@ -48,6 +51,9 @@ class EQSQuery {
      */
     constructor(options: IEQSOptions): EQSQuery;
 
+    /**
+     * An array of scored coordinates
+     */
     points: IEQSPoint[];
 
     /**
@@ -55,7 +61,8 @@ class EQSQuery {
      * Function is passed the only argument, the current `point`.
      * Modify its `score` value to rank it.
      */
-    score(func): EQSQuery;
+    score(func: EQSScoringFunction): EQSQuery;
+
     /**
      * Works only with queries of `'grid'` type. Execute a function
      * for each point in the query. Function is passed four arguments:
@@ -65,7 +72,7 @@ class EQSQuery {
      * 2. its row index (the `y` position);
      * 3. the whole map of points (a two-dimentional array of points).
      */
-    scoreSpaced(func): EQSQuery;
+    scoreSpaced(func: EQSScoringSpacedFunction): EQSQuery;
 
     /** Sorts all the points in a query based on their `score`, descending. */
     sort(): EQSQuery;
@@ -111,46 +118,36 @@ declare namespace ct {
          * Constructs a new query with the given options and returns it.
          * There are three required fields in the options:
          *
-         * Parameter | Explanation | Default
-         * --        | -           |-
-         * `x`       | The horizontal center of a query | —
-         * `y`       | The vertical center of a query | —
-         * `type`    | One of: `'grid'`, `'ring'`, `'circle'`, `'copies'` | `'grid'`
+         * * `x` — The horizontal center of a query
+         * * `y` — The vertical center of a query
+         * * `type` — One of: `'grid'`, `'ring'`, `'circle'`, `'copies'`
          *
          * If `type` equals `grid`, then you must provide additional parameters:
          *
-         * Parameter | Explanation | Default
-         * --        | -           | -
-         * `w`       | The number of columns in your grid | —
-         * `h`       | The number of rows in your grid    | —
-         * `sizeX`   | The horizontal gap between two points | —
-         * `sizeY`   | The vertical gap between two poins | —
-         * `triangle`| Whether to shift each second row in the grid, thus forming a triangle grid | `false`
+         * * `w` — The number of columns in your grid
+         * * `h` — The number of rows in your grid
+         * * `sizeX` — The horizontal gap between two points
+         * * `sizeY` — The vertical gap between two poins
+         * * `triangle` — Whether to shift each second row in the grid, thus forming a triangle grid
          *
          * If `type` equals `circle`, then you must provide these parameters:
          *
-         * Parameter | Explanation | Default
-         * --        | -           | -
-         * `r`       | The radius of the circle | —
-         * `sizeX`   | The horizontal gap between two points | —
-         * `sizeY`   | The vertical gap between two poins | —
-         * `triangle`| Whether to shift each second row in the grid, thus forming a triangle grid | `false`
+         * * `r` — The radius of the circle
+         * * `sizeX` — The horizontal gap between two points
+         * * `sizeY` — The vertical gap between two poins
+         * * `triangle` — Whether to shift each second row in the grid, thus forming a triangle grid
          *
          * If `type` equals `ring`, then you must provide additional parameters:
          *
-         * Parameter | Explanation | Default
-         * --        | -           | -
-         * `n`       | The number of points to create | —
-         * `r`       | The radius of the ring | —
+         * * `n` — The number of points to create
+         * * `r` — The radius of the ring
          *
          * If `type` equals `copies`, then you must provide additional parameters:
          *
-         * Parameter | Explanation | Default
-         * --        | -           | -
-         * `copyType`| A type's name from which copies to take coordinates | —
-         * `limit`   | *Optional.* The maximum radius from the center of your query at which your copies are included. | —
+         * * `copyType` — A type's name from which copies to take coordinates
+         * * `limit` — *Optional.* The maximum radius from the center of your query at which your copies are included.
          */
-        function query(options: EQSQuery): EQSQuery;
+        function query(options: IEQSOptions): EQSQuery;
 
         /**
          * Creates a new query from an array of points. Each point
@@ -163,10 +160,38 @@ declare namespace ct {
          */
         function query(query: EQSQuery): EQSQuery;
 
-        query(params)
-        scoreFree(ctype, multiplier)
-        scoreOccupied(ctype, multiplier)
-        scoreTile(layer, multiplier)
-        scoreDirection(direction, fromx, fromy, weight)
+        /**
+         * Creates a scoring function that tests whether a point collides with a `ctype` group.
+         * `multiplier` is multiplied with a point's `score` value if a point does not collide
+         * with a given collision group (default one is `0`).
+         */
+        function scoreFree(ctype: string, multiplier: number): EQSScoringFunction;
+
+        /**
+         * Creates a scoring function that tests whether a point collides with a `ctype` group.
+         * `multiplier` is multiplied with a point's `score` value if a point collides
+         * with a given collision group (default one is `0`).
+         */
+        function scoreOccupied(ctype: string, multiplier: number): EQSScoringFunction;
+
+        /**
+         * Creates a scoring function that tests whether a point collides with a tile layer.
+         * `layer` determines the depth of a tested tile layer.
+         * `multiplier` is multiplied with a point's `score` value
+         * if a point collides with any tile (default one is `0`).
+         */
+        function scoreTile(layer: number, multiplier: number): EQSScoringFunction;
+
+        /**
+         * Given a point (`fromx`, `fromy`), this method creates a scoring function
+         * that calculates direction values from each points to the (`fromx`, `fromy`) point,
+         * and then ranks these points depending on how close the resulting direction is
+         * to a given `direction` argument. If directions are equal, a point's `score` is unchanged.
+         * If directions are perpendicular, a point's `score` is halved. If directions are opposite,
+         * then a point's `score` is set to 0.
+         *
+         * The `weight` parameter tells how much this ranking function should affect a point's `score`.
+         */
+        function scoreDirection(direction: number, fromx: number, fromy: number, weight: number): EQSScoringFunction;
     }
 }
