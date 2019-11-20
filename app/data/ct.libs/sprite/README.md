@@ -2,7 +2,7 @@ This module composes new textures out of existing ones. Say, you have a ping-pon
 
 ## How to
 
-The workflow of this module is simple: you add a one function call, giving an existing texture name, a new one, and a set of frames to play, and you can use this new texture in the way you use it with default ones. You can add these function calls in the "Settings" tab of this mod to make sure that your code is in the right place.
+The workflow of this module is simple: you add one function call, giving an existing texture name, a new one, and a set of frames to play, and you can use this new texture in the way you use it with default ones. You can add these function calls in the "Settings" tab of this mod to make sure that your code is in the right place.
 
 # ![Source strip](./data/ct.libs/sprite/SlimeExample.png)
 # +
