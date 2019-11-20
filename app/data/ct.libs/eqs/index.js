@@ -1,5 +1,5 @@
 (() => {
-    var validate = (val, name, type) => {
+    const validate = (val, name, type) => {
         if (val === void 0) {
             throw new Error(`[ct.eqs] The \`${name}\` property is required.`);
         } else if (type && typeof val !== type) {
@@ -8,6 +8,7 @@
         return val;
     };
     class EQSQuery {
+        // eslint-disable-next-line complexity
         constructor(options) {
             if (options instanceof EQSQuery) {
                 this.points = [...options.points];
@@ -178,7 +179,7 @@
             return this.points[Math.floor(Math.random()*Math.random() * this.points.length)];
         }
     }
-    
+
     ct.eqs = {
         query(params) {
             return new EQSQuery(params);
@@ -210,7 +211,7 @@
         scoreDirection(direction, fromx, fromy, weight) {
             weight = weight || 1;
             return function (point) {
-                point.score *= (1 - Math.abs(ct.u.deltaDir(direction, ct.u.pdn(fromx, fromy, point.x, point.y))) / 180)*weight 
+                point.score *= (1 - Math.abs(ct.u.deltaDir(direction, ct.u.pdn(fromx, fromy, point.x, point.y))) / 180)*weight
                                 + point.score*(1-weight);
             };
         }

@@ -67,7 +67,7 @@ Works only with queries of `'grid'` type. Execute a function for each point in t
 0. the current point;
 1. its column index (the `x` position);
 2. its row index (the `y` position);
-3. the whole map of points (a two-dimentional array of points). 
+3. the whole map of points (a two-dimentional array of points).
 
 #### `sort()`
 
@@ -113,10 +113,6 @@ Gets a random point from a query.
 Gets a random point from a query, but the first ones have the highest chance to be picked.
 
 ### Utilities
-
-#### `draw()`
-
-Draws all the points on the screen. Red points indicate that their `score` is `0`, and green ones have a score of `1`.
 
 #### `concat(EQSQuery)`
 
