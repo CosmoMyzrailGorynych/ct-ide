@@ -1,4 +1,4 @@
-class YarnStory extends PIXI.utils.EventEmitter {
+declare class YarnStory extends PIXI.utils.EventEmitter {
     /**
      * Returns the current text line, including the character's name.
      * Returns `false` if the current position is not a speech line.
