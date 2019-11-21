@@ -1,12 +1,12 @@
-## ct.tween.add(options: Object)
+## ct.tween.add(options: object)
 
-Creates a new tween effect and adds it to the game loop
+Creates a new tween effect and adds it to the game loop.
 
 * `options` — an object with options:
-    * options.obj An object to animate. All objects are supported.
-    * options.fields A map with pairs `fieldName: newValue`. Values must be of numerical type.
-    * options.curve An interpolating function. You can write your own, or use default ones written below. The default one is `ct.tween.ease`.
-    * options.duration The duration of easing, in milliseconds.
+    * `options.obj` An object to animate. All objects are supported.
+    * `options.fields` A map with pairs `fieldName: newValue`. Values must be of numerical type.
+    * `options.curve` An interpolating function. You can write your own, or use default ones written below. The default one is `ct.tween.ease`.
+    * `options.duration` The duration of easing, in milliseconds.
 
 Returns a Promise which is resolved if the effect was fully played, or rejected if it was interrupted manually by code, room switching or Copy kill.
 

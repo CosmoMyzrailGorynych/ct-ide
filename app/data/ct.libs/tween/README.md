@@ -1,1 +1,1 @@
-This module allows you to chande objects' values through time.
+This module allows you to chande objects' values through time. It is useful for creating UI animations, smooth transitions, moving copies and changing their parameters gradually, with an easing function.
