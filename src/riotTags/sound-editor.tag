@@ -25,7 +25,7 @@ sound-editor.panel.view
                 span {voc.import}
             input(type="file" ref="inputsound" accept=".mp3,.ogg,.wav" onchange="{changeSoundFile}")
         p.nmb
-            button.wide(onclick="{soundSave}")
+            button.wide(onclick="{soundSave}" title="Shift+Control+S" data-hotkey="Control+S")
                 i.icon.icon-confirm
                 span {voc.save}
     script.

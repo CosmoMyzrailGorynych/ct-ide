@@ -69,7 +69,7 @@ texture-editor.panel.view
                         input(checked="{prevShowMask}" onchange="{wire('this.prevShowMask')}" type="checkbox")
                         span   {voc.showmask}
             .flexfix-footer
-                button.wide(onclick="{textureSave}")
+                button.wide(onclick="{textureSave}" title="Shift+Control+S" data-hotkey="Control+S")
                     i.icon-save
                     span {window.languageJSON.common.save}
         .texture-editor-anAtlas.tall(

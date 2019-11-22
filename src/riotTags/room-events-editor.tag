@@ -1,16 +1,16 @@
 room-events-editor.view.panel
     .tabwrap
         ul.tabs.nav.nogrow.noshrink
-            li(onclick="{switchTab('roomcreate')}" class="{active: tab === 'roomcreate'}")
+            li(onclick="{switchTab('roomcreate')}" class="{active: tab === 'roomcreate'}" title="Control-Q" data-hotkey="Control+q")
                 i.icon.icon-sun
                 span {voc.create}
-            li(onclick="{switchTab('roomstep')}" class="{active: tab === 'roomstep'}")
+            li(onclick="{switchTab('roomstep')}" class="{active: tab === 'roomstep'}" title="Control-W" data-hotkey="Control+w")
                 i.icon.icon-next
                 span {voc.step}
-            li(onclick="{switchTab('roomdraw')}" class="{active: tab === 'roomdraw'}")
+            li(onclick="{switchTab('roomdraw')}" class="{active: tab === 'roomdraw'}" title="Control-E" data-hotkey="Control+e")
                 i.icon.icon-edit-2
                 span {voc.draw}
-            li(onclick="{switchTab('roomleave')}" class="{active: tab === 'roomleave'}")
+            li(onclick="{switchTab('roomleave')}" class="{active: tab === 'roomleave'}" title="Control-R" data-hotkey="Control+r")
                 i.icon.icon-trash
                 span {voc.leave}
         div(style="position: relative;")
@@ -28,6 +28,7 @@ room-events-editor.view.panel
     script.
         this.namespace = 'roomview';
         this.mixin(window.riotVoc);
+
         this.tab = 'roomcreate';
         const tabToEditor = tab => {
             tab = tab || this.tab;

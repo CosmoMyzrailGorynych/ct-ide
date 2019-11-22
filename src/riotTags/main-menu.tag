@@ -2,50 +2,50 @@ main-menu.flexcol
     nav.nogrow.flexrow(if="{window.currentProject}")
         ul#fullscreen.nav
             li.nbr(onclick="{toggleFullscreen}" title="{voc.min}")
-                i(class="icon-{fullscreen? 'minimize-2' : 'maximize-2'}")
+                i(class="icon-{fullscreen? 'minimize-2' : 'maximize-2'} (F11)" data-hotkey="F11")
 
         ul#app.nav.tabs
             li.it30#ctlogo(onclick="{ctClick}" title="{voc.ctIDE}")
                 i.icon-menu
             li.it30(onclick="{changeTab('patrons')}" title="{voc.patrons}" class="{active: tab === 'patrons'}")
                 i.icon-heart
-            li.it30(onclick="{saveProject}" title="{voc.save}")
+            li.it30(onclick="{saveProject}" title="{voc.save} (Control+S)" data-hotkey="Control+s")
                 i.icon-save
-            li.nbr.it30(onclick="{runProject}" title="{voc.launch}")
+            li.nbr.it30(onclick="{runProject}" title="{voc.launch} {voc.launchHotkeys}" data-hotkey="F5")
                 i.icon-play
 
         ul#mainnav.nav.tabs
-            li(onclick="{changeTab('settings')}" class="{active: tab === 'settings'}")
+            li(onclick="{changeTab('settings')}" class="{active: tab === 'settings'}" data-hotkey="Control+1" title="Control+1")
                 i.icon-settings
                 span {voc.settings}
-            li(onclick="{changeTab('modules')}" class="{active: tab === 'modules'}")
+            li(onclick="{changeTab('modules')}" class="{active: tab === 'modules'}" data-hotkey="Control+2" title="Control+2")
                 i.icon-mod
                 span {voc.modules}
-            li(onclick="{changeTab('texture')}" class="{active: tab === 'texture'}")
+            li(onclick="{changeTab('texture')}" class="{active: tab === 'texture'}" data-hotkey="Control+3" title="Control+3")
                 i.icon-picture
                 span {voc.texture}
-            li(onclick="{changeTab('ui')}" class="{active: tab === 'ui'}")
+            li(onclick="{changeTab('ui')}" class="{active: tab === 'ui'}" data-hotkey="Control+4" title="Control+4")
                 i.icon-droplet
                 span {voc.ui}
-            li(onclick="{changeTab('sounds')}" class="{active: tab === 'sounds'}")
+            li(onclick="{changeTab('sounds')}" class="{active: tab === 'sounds'}" data-hotkey="Control+5" title="Control+5")
                 i.icon-headphones
                 span {voc.sounds}
-            li(onclick="{changeTab('types')}" class="{active: tab === 'types'}")
+            li(onclick="{changeTab('types')}" class="{active: tab === 'types'}" data-hotkey="Control+6" title="Control+6")
                 i.icon-user
                 span {voc.types}
-            li(onclick="{changeTab('rooms')}" class="{active: tab === 'rooms'}")
+            li(onclick="{changeTab('rooms')}" class="{active: tab === 'rooms'}" data-hotkey="Control+7" title="Control+7")
                 i.icon-map
                 span {voc.rooms}
     div.flexitem.relative(if="{window.currentProject}")
-        settings-panel(show="{tab === 'settings'}")
-        modules-panel(show="{tab === 'modules'}")
-        textures-panel(show="{tab === 'texture'}")
-        ui-panel(show="{tab === 'ui'}")
-        sounds-panel(show="{tab === 'sounds'}")
-        types-panel(show="{tab === 'types'}")
-        rooms-panel(show="{tab === 'rooms'}")
+        settings-panel(show="{tab === 'settings'}" data-hotkey-scope="settings")
+        modules-panel(show="{tab === 'modules'}" data-hotkey-scope="modules")
+        textures-panel(show="{tab === 'texture'}" data-hotkey-scope="texture")
+        ui-panel(show="{tab === 'ui'}" data-hotkey-scope="ui")
+        sounds-panel(show="{tab === 'sounds'}" data-hotkey-scope="sounds")
+        types-panel(show="{tab === 'types'}" data-hotkey-scope="types")
+        rooms-panel(show="{tab === 'rooms'}" data-hotkey-scope="rooms")
         license-panel(if="{showLicense}")
-        patreon-screen(if="{tab === 'patrons'}")
+        patreon-screen(if="{tab === 'patrons'}" data-hotkey-scope="patrons")
         export-panel(show="{showExporter}")
     script.
         const fs = require('fs-extra'),
@@ -54,12 +54,20 @@ main-menu.flexcol
         const runCtExport = require('./data/node_requires/exporter');
         const glob = require('./data/node_requires/glob');
 
+        // Mounts the hotkey plugins, enabling hotkeys on elements with data-hotkey attributes
+        const hotkey = require('./data/node_requires/hotkeys')(document);
+        this.on('unmount', () => {
+            hotkey.unmount();
+        });
+
         this.namespace = 'menu';
         this.mixin(window.riotVoc);
 
         this.tab = 'settings';
         this.changeTab = tab => e => {
             this.tab = tab;
+            hotkey.cleanScope();
+            hotkey.push(tab);
             window.signals.trigger('globalTabChanged');
             window.signals.trigger(`${tab}Focus`);
         };
@@ -127,12 +135,6 @@ main-menu.flexcol
             window.signals.off('saveProject', this.saveProject);
         });
         this.saveRecoveryDebounce();
-        this.on('mount', () => {
-            keymage('ctrl-s', this.saveProject);
-        });
-        this.on('unmount', () => {
-            keymage.unbind('ctrl-s', this.saveProject);
-        });
 
         const {getWritableDir} = require('./data/node_requires/platformUtils');
         let fileServer;
@@ -189,6 +191,14 @@ main-menu.flexcol
                 console.error(e);
             });
         };
+        this.runProjectAlt = e => {
+            runCtExport(currentProject, sessionStorage.projdir)
+            .then(path => {
+                console.log(path);
+                nw.Shell.openExternal(`http://localhost:${server.address().port}/`);
+            });
+        };
+        hotkey.on('Alt+F5', this.runProjectAlt);
 
         this.zipProject = async e => {
             const writable = await getWritableDir();

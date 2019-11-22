@@ -1,12 +1,12 @@
 notepad-panel#notepad.panel.dockright(class="{opened: opened}")
     ul.nav.tabs.nogrow
-        li(onclick="{changeTab('notepadlocal')}")
+        li(onclick="{changeTab('notepadlocal')}" class="{active: tab === 'notepadlocal'}")
             i.icon.icon-edit
             span {voc.local}
-        li(onclick="{changeTab('notepadglobal')}")
+        li(onclick="{changeTab('notepadglobal')}" class="{active: tab === 'notepadglobal'}")
             i.icon.icon-clipboard
             span {voc.global}
-        li(onclick="{changeTab('helppages')}")
+        li(onclick="{changeTab('helppages')}" class="{active: tab === 'helppages'}")
             i.icon.icon-life-buoy
             span {voc.helppages}
     div
@@ -23,6 +23,7 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
         i.icon(class="icon-{opened? 'chevron-right' : 'chevron-left'}")
     script.
         const glob = require('./data/node_requires/glob');
+        const hotkey = require('./data/node_requires/hotkeys')(document);
         this.opened = false;
         this.namespace = 'notepad';
         this.mixin(window.riotVoc);
@@ -30,13 +31,19 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
             this.opened = !this.opened;
         };
 
+        hotkey.on('F1', () => {
+            this.opened = true;
+            this.tab = 'helppages';
+            this.update();
+        });
+
         this.tab = 'notepadlocal';
         this.changeTab = tab => e => {
             this.tab = tab;
         };
         this.on('update', () => {
             setTimeout(() => {
-                if (this.tab) {
+                if (this.tab && this.refs[this.tab].codeEditor) {
                     this.refs[this.tab].codeEditor.layout();
                     this.refs[this.tab].codeEditor.focus();
                 }

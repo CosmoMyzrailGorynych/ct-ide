@@ -11,7 +11,7 @@ types-panel.panel.view
                     .aSearchWrap
                         input.inline(type="text" onkeyup="{fuseSearch}")
                 .toleft
-                    button#typecreate(onclick="{typeCreate}")
+                    button#typecreate(onclick="{typeCreate}" title="Control+N" data-hotkey="Control+n")
                         i.icon.icon-add
                         span {voc.create}
         ul.cards.flexfix-body
@@ -103,6 +103,9 @@ types-panel.panel.view
             }
         };
         this.typeCreate = e => {
+            if (this.editingType) {
+                return false;
+            }
             var id = generateGUID(),
                 slice = id.split('-').pop();
             var obj = {
@@ -120,6 +123,10 @@ types-panel.panel.view
             this.updateList();
             this.openType(obj)(e);
             window.signals.trigger('typesChanged');
+
+            if (!e) {
+                this.update();
+            }
         };
         this.openType = type => e => {
             this.editingType = true;

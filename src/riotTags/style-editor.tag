@@ -117,7 +117,7 @@ style-editor.panel.view
                         br
                         input#shadowblur(type="number" value="{styleobj.shadow.blur}" min="0" onchange="{wire('this.styleobj.shadow.blur')}" oninput="{wire('this.styleobj.shadow.blur')}")
         .flexfix-footer
-            button.wide.nogrow.noshrink(onclick="{styleSave}")
+            button.wide.nogrow.noshrink(onclick="{styleSave}" title="Shift+Control+S" data-hotkey="Control+S")
                 i.icon.icon-confirm
                 span {voc.apply}
     #stylepreview.tall(ref="canvasSlot")

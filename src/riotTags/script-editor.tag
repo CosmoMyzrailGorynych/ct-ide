@@ -5,7 +5,7 @@ script-editor.view.panel
             input(type="text" value="{script.name}" onchange="{wire('this.script.name')}")
         .flexfix-body
             .aCodeEditor(ref="editor")
-        button.nm.flexfix-footer(onclick="{saveScript}")
+        button.nm.flexfix-footer(onclick="{saveScript}" title="Shift+Control+S" data-hotkey="Control+S")
             i.icon.icon-confirm
             span {voc.done}
     script.
