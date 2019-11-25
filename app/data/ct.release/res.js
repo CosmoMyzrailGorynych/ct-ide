@@ -33,11 +33,13 @@
             /*%res%*/
             PIXI.Loader.shared.load();
         },
-        /**
+        /*
          * Gets a pixi.js texture from a ct.js' texture name, so that it can be used in pixi.js objects.
          * @param {string} name The name of the ct.js texture
          * @param {number} [frame] The frame to extract
          * @returns {PIXI.Texture|Array<PIXI.Texture>} If `frame` was specified, returns a single PIXI.Texture. Otherwise, returns an array with all the frames of this ct.js' texture.
+         *
+         * @note Formatted as a non-jsdoc comment as it requires a better ts declaration than the auto-generated one
          */
         getTexture(name, frame) {
             if (name === -1) {

@@ -159,6 +159,7 @@
         "maxFPS": "Max framerate:",
         "minifyhtmlcss": "Compress HTML and CSS",
         "minifyjs": "Compress JavaScript and convert it to ES5 (slow; use for releases)",
+        "usePixiLegacy": "Add a legacy, canvas-based renderer to support older browsers and graphics cards (adds ~20kb up to your game)",
         "pixelatedrender": "Disable image smoothing here and in exported project (preserve crisp pixels)",
         "renderoptions": "Render Options",
         "settings": "Project settings",

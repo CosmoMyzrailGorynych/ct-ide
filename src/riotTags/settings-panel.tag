@@ -37,6 +37,9 @@ settings-panel.panel.view
             label.block.checkbox
                 input(type="checkbox" value="{currentProject.settings.highDensity}" checked="{currentProject.settings.highDensity}" onchange="{wire('this.currentProject.settings.highDensity')}")
                 span {voc.highDensity}
+            label.block.checkbox
+                input(type="checkbox" value="{currentProject.settings.usePixiLegacy}" checked="{currentProject.settings.usePixiLegacy}" onchange="{wire('this.currentProject.settings.usePixiLegacy')}")
+                span {voc.usePixiLegacy}
             label.block
                 span {voc.maxFPS}
                 |
