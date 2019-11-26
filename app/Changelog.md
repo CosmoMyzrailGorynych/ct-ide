@@ -1,3 +1,70 @@
+## v 1.2.0
+
+*Tue Nov 26 2019*
+
+### ✨ New Features
+
+* A new, better code editor with live type checks, built-in doc popups, and more!
+* Add a render option to include a legacy renderer for older browsers
+* Choose a custom folder for a project when creating it (#138 by @leedigital)
+* Hotkeys for most tabs and resource creation
+* Import modules from a *.zip file, in the Catmods tab (#142 by @leedigital)
+* Patreon screen
+* Resize the viewport with ct.width and ct.height
+* Show/Hide the mouse cursor with ct.mouse.show, ct.mouse.hide (#143 by @Wend1go)
+
+### ⚡️ General Improvements
+
+* Add a `finally` method for cutscene's promise-like objects
+* Add patreon translation to German (#140 by @Wend1go)
+* Allow to change ct.fittoscreen's scaling mode at game's runtime
+* Create dummy typedefs for modules that don't provide them
+
+### 🐛 Bug Fixes
+
+* An asset should not be allowed to apply if it has an already occupied name
+* Fix broken zipped projects on windows
+* Fix multiple tiles not being placed while the Shift key is pressed
+* Fix non-working export settings on really old projects
+* Show proper error message when switching to a non-existent room (#144 by @Wend1go)
+* Update DragonBones and fix issues with skeleton import
+
+### 🍱 Demos and Stuff
+
+* Add typedefs for `ct.tween`
+* Add typings for `ct.cutscene`
+* Add typings for `ct.random`
+* Add typings for `ct.vkeys`
+* Complete typings for `ct.eqs`
+* Typedefs for `ct.flow`
+* Typedefs for `ct.touch`
+* Typedefs for `ct.yarn`
+* Typings for `ct.fittoscreen`
+* Typings for `ct.sprite`
+
+### 📝 Docs
+
+*  Document `ct.width` and `ct.height`
+* :bug: Fix mistakes in `ct.eqs`' docs
+* :sparkles: Complete translation of Pt-BR docs
+* :zap: Add a clarification to the second variant of a platform's code at tut-making-platformer
+* :zap: Document the process of adding typedefs for modules
+* :zap: Update tut-making-platformer.md (by @Eilandis)
+
+### 🌐 Website
+
+* :bug: Fix a link to site's code license in the footer
+* :bug: Fix emojis in 1.1.0 changelog entry
+* :bug: Fix links in reusable stuff
+* :sparkles: A proper language selector
+* :sparkles: PT-BR translation on ct.js-site (by @GumpFlash)
+* :zap: Add a translated contact form for Russian locale
+* :zap: Better adaptivity
+* :zap: Better handling of optionally translated pages
+* :zap: Make the page "made with ct.js" dynamic and based on itch.io engine page
+* :zap: Tons of improvements here and there
+* :zap: Tons of new icons
+
 ## v 1.1.0
 
 *15 October 2019*
