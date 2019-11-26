@@ -151,7 +151,6 @@ style-editor.panel.view
             });
             this.refs.canvasSlot.appendChild(this.pixiApp.view);
 
-            console.log(this.pixiApp);
             var labelShort = languageJSON.styleview.testtext,
                 labelMultiline = languageJSON.styleview.testtext.repeat(2) + '\n' + languageJSON.styleview.testtext.repeat(3) + '\n' + languageJSON.styleview.testtext,
                 labelLong = 'A quick blue cat jumps over the lazy frog. 0123456789 '.repeat(3),
@@ -255,12 +254,12 @@ style-editor.panel.view
         this.styleGenPreview = function(destination, size) {
             return new Promise((accept, decline) => {
                 var img = this.pixiApp.renderer.plugins.extract.base64(this.labelThumbnail);
-                console.log(img);
+
                 var data = img.replace(/^data:image\/\w+;base64,/, '');
                 var buf = new Buffer(data, 'base64'); // TODO: replace as plain Buffer constructor is deprecated
                 fs.writeFile(destination, buf, function(err) {
                     if (err) {
-                        console.log(err);
+                        console.error(err);
                         decline(err);
                     } else {
                         accept(destination);
