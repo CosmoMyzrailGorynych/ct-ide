@@ -1,3 +1,11 @@
+## v 1.2.1
+
+*Tue Nov 26 2019*
+
+### 🐛 Bug Fixes
+
+*  ct.IDE should use pixi.js-legacy internally as well, otherwise style editor breaks everything
+
 ## v 1.2.0
 
 *Tue Nov 26 2019*
