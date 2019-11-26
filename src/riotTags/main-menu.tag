@@ -201,34 +201,35 @@ main-menu.flexcol
         hotkey.on('Alt+F5', this.runProjectAlt);
 
         this.zipProject = async e => {
-            const writable = await getWritableDir();
-            var inDir = path.join(writable, '/zipppedProject/'),
-                outName = path.join(writable, `/${sessionStorage.projname}.zip`);
-            this.saveProject()
-            .then(fs.remove(outName))
-            .then(fs.emptyDir(inDir))
-            .then(() => new Promise(resolve => {
-                setTimeout(resolve, 100);
-            }))
-            .then(fs.copy(sessionStorage.projdir + '.ict', path.join(inDir, sessionStorage.projname)))
-            .then(fs.copy(sessionStorage.projdir, path.join(inDir, sessionStorage.projname.slice(0, -4))))
-            /*.then(() => new Promise(resolve => {
-                setTimeout(resolve, 100);
-            }))*/
-            .then(() => {
-                let archive = archiver('zip'),
+            try {
+                const os = require('os');
+                const path = require('path');
+
+                const writable = await getWritableDir();
+                const inDir = await fs.mkdtemp(path.join(os.tmpdir(), 'ctZipProject-')),
+                      outName = path.join(writable, `/${sessionStorage.projname}.zip`);
+
+                await this.saveProject();
+                await fs.remove(outName);
+                await fs.remove(inDir);
+                await fs.copy(sessionStorage.projdir + '.ict', path.join(inDir, sessionStorage.projname));
+                await fs.copy(sessionStorage.projdir, path.join(inDir, sessionStorage.projname.slice(0, -4)));
+
+                const archive = archiver('zip'),
                     output = fs.createWriteStream(outName);
 
                 output.on('close', () => {
                     nw.Shell.showItemInFolder(outName);
                     alertify.success(this.voc.successZipProject.replace('{0}', outName));
+                    fs.remove(inDir);
                 });
 
                 archive.pipe(output);
                 archive.directory(inDir, false);
                 archive.finalize();
-            })
-            .catch(alertify.error);
+            } catch (e) {
+                alertify.error(e);
+            }
         };
         this.zipExport = async e => {
             const writable = await getWritableDir();
