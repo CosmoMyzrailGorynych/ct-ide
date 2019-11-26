@@ -12,22 +12,22 @@
 
     /**
      * Detects if a particular codec is supported in the system
-     * @param {String} type One of: "mp3", "mpeg", "opus", "ogg", "oga", "wav", "aac", "caf", m4a", "mp4", "weba", "webm", "dolby", "flac".
-     * @returns {Boolean} true/false
+     * @param {string} type One of: "mp3", "mpeg", "opus", "ogg", "oga", "wav", "aac", "caf", m4a", "mp4", "weba", "webm", "dolby", "flac".
+     * @returns {boolean} true/false
      */
     ct.sound.detect = Howler.codecs;
 
     /**
      * Creates a new Sound object and puts it in resource object
      *
-     * @param {String} name Sound's name
-     * @param {Object} formats A collection of sound files of specified extension, in format `extension: path`
-     * @param {String} [formats.ogg] Local path to the sound in ogg format
-     * @param {String} [formats.wav] Local path to the sound in wav format
-     * @param {String} [formats.mp3] Local path to the sound in mp3 format
-     * @param {Object} options An options object
+     * @param {string} name Sound's name
+     * @param {object} formats A collection of sound files of specified extension, in format `extension: path`
+     * @param {string} [formats.ogg] Local path to the sound in ogg format
+     * @param {string} [formats.wav] Local path to the sound in wav format
+     * @param {string} [formats.mp3] Local path to the sound in mp3 format
+     * @param {object} options An options object
      *
-     * @returns {Object} Sound's object
+     * @returns {object} Sound's object
      */
     ct.sound.init = function (name, formats, options) {
         options = options || {};
@@ -82,11 +82,11 @@
     /**
      * Spawns a new sound and plays it.
      *
-     * @param {String} name The name of a sound to be played
-     * @param {Object} [opts] Options object.
+     * @param {string} name The name of a sound to be played
+     * @param {object} [opts] Options object.
      * @param {Function} [cb] A callback, which is called when the sound finishes playing
      *
-     * @returns {Number} The ID of the created sound. This can be passed to Howler methods.
+     * @returns {number} The ID of the created sound. This can be passed to Howler methods.
      */
     ct.sound.spawn = function(name, opts, cb) {
         opts = opts || {};
@@ -123,8 +123,8 @@
     /**
      * Stops playback of a sound, resetting its time to 0.
      *
-     * @param {String} name The name of a sound
-     * @param {Number} [id] An optional ID of a particular sound
+     * @param {string} name The name of a sound
+     * @param {number} [id] An optional ID of a particular sound
      * @returns {void}
      */
     ct.sound.stop = function(name, id) {
@@ -134,8 +134,8 @@
     /**
      * Pauses playback of a sound or group, saving the seek of playback.
      *
-     * @param {String} name The name of a sound
-     * @param {Number} [id] An optional ID of a particular sound
+     * @param {string} name The name of a sound
+     * @param {number} [id] An optional ID of a particular sound
      * @returns {void}
      */
     ct.sound.pause = function(name, id) {
@@ -145,8 +145,8 @@
     /**
      * Resumes a given sound, e.g. after pausing it.
      *
-     * @param {String} name The name of a sound
-     * @param {Number} [id] An optional ID of a particular sound
+     * @param {string} name The name of a sound
+     * @param {number} [id] An optional ID of a particular sound
      * @returns {void}
      */
     ct.sound.resume = function(name, id) {
@@ -156,9 +156,9 @@
      * Returns whether a sound is currently playing,
      * either an exact sound (found by its ID) or any sound of a given name.
      *
-     * @param {String} name The name of a sound
-     * @param {Number} [id] An optional ID of a particular sound
-     * @returns {Boolean} `true` if the sound is playing, `false` otherwise.
+     * @param {string} name The name of a sound
+     * @param {number} [id] An optional ID of a particular sound
+     * @returns {boolean} `true` if the sound is playing, `false` otherwise.
      */
     ct.sound.playing = function(name, id) {
         return ct.res.sounds[name].playing(id);
@@ -166,36 +166,36 @@
     /**
      * Preloads a sound. This is usually applied to music files before playing
      * as they are not preloaded by default.
-     * 
-     * @param {String} name The name of a sound
+     *
+     * @param {string} name The name of a sound
      * @returns {void}
      */
     ct.sound.load = function(name) {
         ct.res.sounds[name].load();
     };
-    
-    
+
+
     /**
      * Changes/returns the volume of the given sound.
-     * 
-     * @param {String} name The name of a sound to affect.
-     * @param {Number} [volume] The new volume from `0.0` to `1.0`. If empty, will return the existing volume.
-     * @param {Number} [id] If specified, then only the given sound instance is affected.
-     * 
-     * @returns {Number} The current volume of the sound.
+     *
+     * @param {string} name The name of a sound to affect.
+     * @param {number} [volume] The new volume from `0.0` to `1.0`. If empty, will return the existing volume.
+     * @param {number} [id] If specified, then only the given sound instance is affected.
+     *
+     * @returns {number} The current volume of the sound.
      */
     ct.sound.volume = function (name, volume, id) {
         return ct.res.sounds[name].volume(volume, id);
     };
-    
+
     /**
      * Fades a sound to a given volume. Can affect either a specific instance or the whole group.
-     * 
-     * @param {String} name The name of a sound to affect.
-     * @param {Number} newVolume The new volume from `0.0` to `1.0`.
-     * @param {Number} duration The duration of transition, in milliseconds.
-     * @param {Number} [id] If specified, then only the given sound instance is affected.
-     * 
+     *
+     * @param {string} name The name of a sound to affect.
+     * @param {number} newVolume The new volume from `0.0` to `1.0`.
+     * @param {number} duration The duration of transition, in milliseconds.
+     * @param {number} [id] If specified, then only the given sound instance is affected.
+     *
      * @returns {void}
      */
     ct.sound.fade = function(name, newVolume, duration, id) {
@@ -206,13 +206,13 @@
 
     /**
      * Moves the 3D listener to a new position.
-     * 
+     *
      * @see https://github.com/goldfire/howler.js#posx-y-z
-     * 
-     * @param {Number} x The new x coordinate 
-     * @param {Number} y The new y coordinate
-     * @param {Number} z The new z coordinate
-     * 
+     *
+     * @param {number} x The new x coordinate
+     * @param {number} y The new y coordinate
+     * @param {number} [z] The new z coordinate
+     *
      * @returns {void}
      */
     ct.sound.moveListener = function(x, y, z) {
@@ -221,13 +221,13 @@
 
     /**
      * Moves a 3D sound to a new location
-     * 
-     * @param {String} name The name of a sound to move
-     * @param {Number} id The ID of a particular sound. Pass `null` if you want to affect all the sounds of a given name.
-     * @param {Number} x The new x coordinate 
-     * @param {Number} y The new y coordinate
-     * @param {Number} [z] The new z coordinate
-     * 
+     *
+     * @param {string} name The name of a sound to move
+     * @param {number} id The ID of a particular sound. Pass `null` if you want to affect all the sounds of a given name.
+     * @param {number} x The new x coordinate
+     * @param {number} y The new y coordinate
+     * @param {number} [z] The new z coordinate
+     *
      * @returns {void}
      */
     ct.sound.position = function(name, id, x, y, z) {
@@ -238,13 +238,13 @@
 
     /**
      * Get/set the global volume for all sounds, relative to their own volume.
-     * @param {Number} [volume] The new volume from `0.0` to `1.0`. If omitted, will return the current global volume.
-     * 
-     * @returns {Number} The current volume.
+     * @param {number} [volume] The new volume from `0.0` to `1.0`. If omitted, will return the current global volume.
+     *
+     * @returns {number} The current volume.
      */
     ct.sound.globalVolume = Howler.volume.bind(Howler);
-    
+
     ct.sound.exists = function(name) {
         return (name in ct.res.sounds);
-    };    
+    };
 })();

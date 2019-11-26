@@ -341,6 +341,16 @@ ct.sound.init('${s.name}', {
     return sounds;
 };
 
+const getStartingRoom = () => {
+    let [startroom] = currentProject.rooms; // picks the first room by default
+    for (let i = 0; i < currentProject.rooms.length; i++) {
+        if (currentProject.rooms[i].uid === currentProject.startroom) {
+            startroom = currentProject.rooms[i];
+            break;
+        }
+    }
+    return startroom;
+};
 const stringifyRooms = () => {
     let roomsCode = '';
     for (const k in currentProject.rooms) {
@@ -509,15 +519,14 @@ const runCtProject = async (project, projdir) => {
         // console.log(injects);
 
         /* Pixi.js */
-        fs.copyFileSync(basePath + 'ct.release/pixi.min.js', path.join(writeDir, '/pixi.min.js'));
-
-        var [startroom] = currentProject.rooms;
-        for (let i = 0; i < currentProject.rooms.length; i++) {
-            if (currentProject.rooms[i].uid === currentProject.startroom) {
-                startroom = currentProject.rooms[i];
-                break;
-            }
+        if (currentProject.settings.usePixiLegacy) {
+            fs.copyFileSync(basePath + 'ct.release/pixi-legacy.min.js', path.join(writeDir, '/pixi.min.js'));
+        } else {
+            fs.copyFileSync(basePath + 'ct.release/pixi.min.js', path.join(writeDir, '/pixi.min.js'));
         }
+
+        const startroom = getStartingRoom();
+
         /* global nw */
         var buffer = fs.readFileSync(basePath + 'ct.release/main.js', {
             'encoding': 'utf8'

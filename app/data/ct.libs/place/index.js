@@ -150,8 +150,8 @@
          * Optionally can take 'ctype' as a filter for obstackles' collision group (not shape type)
          *
          * @param {Copy} me The object to check collisions on
-         * @param {Number} [x] The x coordinate to check, as if `me` was placed there.
-         * @param {Number} [y] The y coordinate to check, as if `me` was placed there.
+         * @param {number} [x] The x coordinate to check, as if `me` was placed there.
+         * @param {number} [y] The y coordinate to check, as if `me` was placed there.
          * @param {String} [ctype] The collision group to check against
          * @param {Boolean} [multiple=false] If it is true, the function will return an array of all the collided objects.
          *                                   If it is false (default), it will return a copy with the first collision
@@ -220,7 +220,7 @@
             return !ct.place.occupied(me, x, y, ctype);
         },
         meet(me, x, y, type, multiple) {
-            // ct.place.meet(<me: Copy, x: Number, y: Number>[, type: Type])
+            // ct.place.meet(<me: Copy, x: number, y: number>[, type: Type])
             // detects collision between a given copy and a copy of a certain type
             var oldx = me.x,
                 oldy = me.y,
@@ -325,7 +325,7 @@
         },
         lastdist: null,
         nearest(x, y, type) {
-            // ct.place.nearest(<x: Number, y: Number, type: Type>)
+            // ct.place.nearest(<x: number, y: number, type: Type>)
             if (ct.types.list[type].length > 0) {
                 var dist = Math.hypot(x-ct.types.list[type][0].x, y-ct.types.list[type][0].y);
                 var inst = ct.types.list[type][0];
@@ -341,7 +341,7 @@
             return false;
         },
         furthest(x, y, type) {
-            // ct.place.furthest(<x: Number, y: Number, type: Type>)
+            // ct.place.furthest(<x: number, y: number, type: Type>)
             if (ct.types.list[type].length > 0) {
 
                 var dist = Math.hypot(x-ct.types.list[type][0].x, y-ct.types.list[type][0].y);
@@ -382,7 +382,7 @@
             return false;
         },
         go(me, x, y, length, ctype) {
-            // ct.place.go(<me: Copy, x: Number, y: Number, length: Number>[, ctype: String])
+            // ct.place.go(<me: Copy, x: number, y: number, length: number>[, ctype: String])
             // tries to reach the target with a simple obstacle avoidance algorithm
 
             // if we are too close to the destination, exit
@@ -422,10 +422,10 @@
          * Throws a ray from point (x1, y1) to (x2, y2), returning all the instances that touched the ray.
          * The first copy in the returned array is the closest copy, the last one is the furthest.
          *
-         * @param {Number} x1 A horizontal coordinate of the starting point of the ray.
-         * @param {Number} y1 A vertical coordinate of the starting point of the ray.
-         * @param {Number} x2 A horizontal coordinate of the ending point of the ray.
-         * @param {Number} y2 A vertical coordinate of the ending point of the ray.
+         * @param {number} x1 A horizontal coordinate of the starting point of the ray.
+         * @param {number} y1 A vertical coordinate of the starting point of the ray.
+         * @param {number} x2 A horizontal coordinate of the ending point of the ray.
+         * @param {number} y2 A vertical coordinate of the ending point of the ray.
          * @param {String} [ctype] An optional collision group to trace against. If omitted, will trace through all the copies in the current room.
          *
          * @returns {Array<Copy>} Array of all the copies that touched the ray

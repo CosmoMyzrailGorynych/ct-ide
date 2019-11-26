@@ -1,0 +1,166 @@
+{
+    "base": "vs-dark",
+    "inherit": true,
+    "rules": [
+    {
+        "token": "",
+        "background": "#1C1E26",
+        "foreground": "#cf4f6d"
+    },
+    {
+        "foreground": "#BBBBBB4D",
+        "fontStyle": "italic",
+        "token": "comment"
+    },
+    {
+        "foreground": "#F09483E6",
+        "token": "constant"
+    },
+    {
+        "foreground": "#FAC29AE6",
+        "token": "entity"
+    },
+    {
+        "name": "Function names",
+        "token": "entity.name.function",
+        "foreground": "#25B0BCE6"
+    },
+    {
+        "name": "Language variables",
+        "token": "variable.language",
+        "foreground": "#FAC29AE6",
+        "fontStyle": "italic"
+    }, {
+        "name": "Parameters",
+        "token": "variable.parameter",
+        "fontStyle": "italic"
+    },
+    {
+        "foreground": "#FAB795",
+        "token": "keyword"
+    },
+    {
+        "foreground": "#B877DBE6",
+        "token": "storage"
+    },
+    {
+        "foreground": "#FAB795E6",
+        "token": "string"
+    },
+    {
+        "foreground": "#BBBBBB",
+        "token": "meta.verbatim"
+    },
+    {
+        "foreground": "#FAC29AE6",
+        "token": "support"
+    },
+    {
+        "foreground": "#F43E5C",
+        "fontStyle": "italic",
+        "token": "invalid.deprecated"
+    },
+    {
+        "foreground": "#F43E5C",
+        "token": "invalid.illegal"
+    },
+    {
+        "foreground": "#FAB795E6",
+        "token": "entity.other.inherited-class"
+    },
+    {
+        "foreground": "#F09483E6",
+        "token": "string constant.other.placeholder"
+    },
+    {
+        "foreground": "#25B0BCE6",
+        "token": "meta.function-call.py"
+    },
+    {
+        "foreground": "#E95678E6",
+        "token": "meta.tag"
+    },
+    {
+        "foreground": "#E95678E6",
+        "token": "meta.tag entity"
+    },
+    {
+        "foreground": "#E95678E6",
+        "token": "entity.name.section"
+    },
+    {
+        "fontStyle": "bold",
+        "foreground": "#B877DBE6",
+        "token": "keyword.type.variant"
+    },
+    {
+        "foreground": "#BBBBBB",
+        "token": "source.ocaml keyword.operator.symbol"
+    },
+    {
+        "foreground": "#B877DBE6",
+        "token": "source.ocaml keyword.operator.symbol.infix"
+    },
+    {
+        "foreground": "#B877DBE6",
+        "token": "source.ocaml keyword.operator.symbol.prefix"
+    },
+    {
+        "fontStyle": "underline",
+        "token": "source.ocaml keyword.operator.symbol.infix.floating-point"
+    },
+    {
+        "fontStyle": "underline",
+        "token": "source.ocaml keyword.operator.symbol.prefix.floating-point"
+    },
+    {
+        "fontStyle": "underline",
+        "token": "source.ocaml constant.numeric.floating-point"
+    },
+    {
+        "background": "#ffffff08",
+        "token": "text.tex.latex meta.function.environment"
+    },
+    {
+        "background": "#7a96fa08",
+        "token": "text.tex.latex meta.function.environment meta.function.environment"
+    },
+    {
+        "foreground": "#fbde2d",
+        "token": "text.tex.latex support.function"
+    },
+    {
+        "foreground": "#FAB795E6",
+        "token": "source.plist string.unquoted"
+    },
+    {
+        "foreground": "#BBBBBB",
+        "token": "source.plist keyword.operator"
+    }],
+    "colors": {
+        "editor.foreground": "#D5D8DA",
+        "editor.background": "#1C1E26",
+        "editor.selectionBackground": "#2E303EB3",
+        "editor.lineHighlightBackground": "#2E303E4D",
+        "editorCursor.foreground": "#E95378",
+        "editorWhitespace.foreground": "#D5D8DA",
+
+        "errorForeground": "#E9436D",
+        "focusBorder": "#E95378",
+        "contrastBorder": "#2F3038",
+        "contrastActiveBorder": "#E95378",
+        "dropdown.background": "#1C1E26",
+        "menu.background": "#1C1E26",
+        "menu.selectionBackground": "#E95378",
+        "menu.border": "#1C1E26",
+        "menu.separatorBackground": "#1C1E26",
+        "editorWidget.background": "#1C1E26",
+        "editorWidget.border": "#252732",
+        "peekViewTitle.background": "#1C1E26",
+        "peekViewResult.background": "#1C1E26",
+        "peekViewEditor.background": "#1C1E26",
+
+        "textLink.foreground": "#E95378",
+        "editorLink.activeForeground": "#E95378"
+    }
+}

@@ -225,7 +225,7 @@
         }
         /**
          * Returns currently possible dialogue options, if there are any.
-         * @returns {Array<String>} An array of possible dialogue lines.
+         * @returns {Array<String>|Boolean} An array of possible dialogue lines.
          */
         get options() {
             if (this.currentStep instanceof bondage.OptionsResult) {

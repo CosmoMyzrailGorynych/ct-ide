@@ -1,6 +1,6 @@
 ## `ct.mouse.x`, `ct.mouse.y`
 
-Current cursor position at horisontal and vertical axes. 
+Current cursor position at horisontal and vertical axes, in world coordinates.
 
 **Example: make a copy follow the cursor**
 
@@ -8,14 +8,12 @@ Current cursor position at horisontal and vertical axes.
 this.x = ct.mouse.x;
 this.y = ct.mouse.y;
 ```
-> Note that this is a cursor position relative to the current view (or camera), but not relative to the room.
 
-**Example: move a copy across a large room**
+# `ct.mouse.rx`, `ct.mouse.ry`
 
-```js
-this.x = ct.mouse.x + ct.rooms.current.x;
-this.y = ct.mouse.y + ct.rooms.current.y;
-```
+A cursor position relative to the current view (or camera), but not relative to the room.
+
+`ct.mouse.rx` is the same as `ct.mouse.x - ct.room.x`.
 
 ## `ct.mouse.pressed`
 
@@ -46,6 +44,9 @@ Can be either `true` or `false`. Determines whether there is a cursor inside the
 ## `ct.mouse.hovers(copy)`
 
 Returns `true` if the mouse hovers over a given `copy`. This does **not** take scaling and rotation into account, as well as polygonal shapes (as they are hollow).
+
+## `ct.mouse.hide()`, `ct.mouse.show()`
+Change the visibility of the mouse cursor.
 
 ## Codes for Actions
 

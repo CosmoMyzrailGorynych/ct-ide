@@ -1,7 +1,6 @@
 (function (ct) {
     var width,
-        height,
-        mode = '/*%mode%*/';
+        height;
     var oldWidth, oldHeight;
     var canv = ct.pixiApp.view;
     var manageViewport = function (room) {
@@ -10,6 +9,7 @@
         room.y -= (height - oldHeight) / 2;
     };
     var resize = function() {
+        const {mode} = ct.fittoscreen;
         width = window.innerWidth;
         height = window.innerHeight;
         var kw = width / ct.roomWidth,
@@ -78,7 +78,7 @@
                 });
             }
         } else if (exit) {
-            exit.call(document); 
+            exit.call(document);
         }
     };
     var queuedFullscreen = function () {
@@ -98,6 +98,24 @@
     ct.fittoscreen = resize;
     ct.fittoscreen.manageViewport = manageViewport;
     ct.fittoscreen.toggleFullscreen = queueFullscreen;
+    var $mode = '/*%mode%*/';
+    Object.defineProperty(ct.fittoscreen, 'mode', {
+        configurable: false,
+        enumerable: true,
+        set(value) {
+            if ($mode === 'fastScale' && value !== 'fastScale') {
+                canv.style.transform = '';
+            } else if (value === 'fastScale' || value === 'expand' || value === 'expandViewport') {
+                ct.pixiApp.stage.scale.x = ct.pixiApp.stage.scale.y = 1;
+            }
+            $mode = value;
+            ct.fittoscreen();
+        },
+        get() {
+            return $mode;
+        }
+    });
+    ct.fittoscreen.mode = $mode;
     ct.fittoscreen.getIsFullscreen = function () {
         return document.fullscreen || document.webkitIsFullScreen || document.mozFullScreen;
     };

@@ -4,7 +4,7 @@ room-editor.panel.view
             b {voc.name}
             br
             input.wide(type="text" value="{room.name}" onchange="{wire('this.room.name')}")
-            .anErrorNotice(if="{nameTaken}") {vocGlob.nametaken}
+            .anErrorNotice(if="{nameTaken}" ref="errorNotice") {vocGlob.nametaken}
             .fifty.npt.npb.npl
                 b {voc.width}
                 br
@@ -259,7 +259,13 @@ room-editor.panel.view
                 this.roomx -= ~~(e.movementX / this.zoomFactor);
                 this.roomy -= ~~(e.movementY / this.zoomFactor);
                 this.refreshRoomCanvas(e);
-            } else if (e.shiftKey && this.mouseDown && (this.tab !== 'roomcopies' || this.currentType !== -1)) { // если зажата мышь и клавиша Shift, то создавать больше копий/тайлов
+            } else if ( // если зажата мышь и клавиша Shift, то создавать больше копий/тайлов
+                e.shiftKey && this.mouseDown &&
+                (
+                    (this.tab === 'roomcopies' && this.currentType !== -1) ||
+                    this.tab === 'roomtiles'
+                )
+            ) {
                 this.onCanvasClick(e);
             } else if (this.tab === 'roomcopies') {
                 this.onCanvasMoveCopies(e);
@@ -352,6 +358,12 @@ room-editor.panel.view
 
         /** Saves a room (in fact, just marks a project as an unsaved, and closes the room editor) */
         this.roomSave = e => {
+            if (this.nameTaken) {
+                // animate the error notice
+                require('./data/node_requires/jellify')(this.refs.errorNotice);
+                soundbox.play('Failure');
+                return false;
+            }
             this.room.lastmod = +(new Date());
             this.roomGenSplash()
             .then(() => {

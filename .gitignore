@@ -37,21 +37,25 @@ desktop\.ini
 *.png~
 
 # Generated files
+src/typedefs/ct.js/types.d.ts
 app/data/bundle.js
 app/data/bundle.css
-app/data/node_requires/**/*.js
+app/data/node_requires/**/*
+app/data/fonts/style/.css
+app/data/theme*.css
+app/data/typedefs/global.d.ts
+/app/data/docs
 app/index.html
 app/preview.html
 app/empty.html
-app/data/theme*.css
-app/temp
 app/exportDesktop
+app/temp
 /temp
 app/data/fonts/style/.css
+app/data/patronsCache.csv
 builds
 build
 cache
-/app/data/docs
 tempChangelog.md
 
 # tests

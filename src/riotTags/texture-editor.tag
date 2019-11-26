@@ -6,7 +6,7 @@ texture-editor.panel.view
                     b {voc.name}
                     br
                     input.wide(type="text" value="{opts.texture.name}" onchange="{wire('this.texture.name')}")
-                    .anErrorNotice(if="{nameTaken}") {vocGlob.nametaken}
+                    .anErrorNotice(if="{nameTaken}" ref="errorNotice") {vocGlob.nametaken}
                     label.checkbox
                         input#texturetiled(type="checkbox" checked="{opts.texture.tiled}" onchange="{wire('this.texture.tiled')}")
                         span   {voc.tiled}
@@ -69,7 +69,7 @@ texture-editor.panel.view
                         input(checked="{prevShowMask}" onchange="{wire('this.prevShowMask')}" type="checkbox")
                         span   {voc.showmask}
             .flexfix-footer
-                button.wide(onclick="{textureSave}")
+                button.wide(onclick="{textureSave}" title="Shift+Control+S" data-hotkey="Control+S")
                     i.icon-save
                     span {window.languageJSON.common.save}
         .texture-editor-anAtlas.tall(
@@ -689,6 +689,12 @@ texture-editor.panel.view
          * Событие сохранения графики
          */
         this.textureSave = () => {
+            if (this.nameTaken) {
+                // animate the error notice
+                require('./data/node_requires/jellify')(this.refs.errorNotice);
+                soundbox.play('Failure');
+                return false;
+            }
             this.parent.fillTextureMap();
             glob.modified = true;
             this.texture.lastmod = +(new Date());

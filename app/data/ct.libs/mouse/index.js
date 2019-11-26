@@ -46,9 +46,15 @@
         },
         get y() {
             return ct.mouse.ry + ct.rooms.current.y;
+        },
+        hide() {
+            ct.pixiApp.renderer.view.style.cursor = 'none';
+        },
+        show() {
+            ct.pixiApp.renderer.view.style.cursor = '';
         }
     };
-    
+
     ct.mouse.listenerMove = function(e) {
         var rect = ct.pixiApp.view.getBoundingClientRect();
         ct.mouse.rx = (e.clientX - rect.left) * ct.viewWidth / rect.width;
@@ -86,7 +92,7 @@
         setKey('wheel', ct.mouse.wheel);
         e.preventDefault();
     };
-    
+
     ct.mouse.setupListeners = function () {
         if (document.addEventListener) {
             document.addEventListener('mousemove', ct.mouse.listenerMove, false);

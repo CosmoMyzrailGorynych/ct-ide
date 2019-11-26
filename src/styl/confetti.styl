@@ -1,0 +1,39 @@
+// Mainly a work of Andy at https://codepen.io/andyobrien/pen/WYrxMe
+
+random(a, b)
+  return math(math(0, 'random')*(b - a + 1) + a, 'floor')
+
+.Confetti
+    display flex
+    justify-content space-around
+    align-items flex-start
+    position absolute
+    width 100%
+    height 100vh
+    overflow hidden
+    flex-flow row nowrap
+    left 0
+    top 0
+    user-select none
+    pointer-events none
+.aConfettiPiece
+    width 0.5rem
+    height 1rem
+    background yellow
+    opacity 0
+    animation makeItRain 1000ms infinite ease-out
+    user-select none
+    pointer-events none
+    for i in range(1, 15)
+        &:nth-child({i})
+            transform rotate(random(-80deg, 80deg))
+            animation-delay random(0ms, 1800ms)
+            animation-duration random(1000ms * 0.7, 1000ms * 1.8)
+
+@keyframes makeItRain
+    from
+        opacity 0
+    50%
+        opacity 1
+    to
+        transform translateY(20rem)

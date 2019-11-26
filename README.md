@@ -27,7 +27,15 @@ For bugs, feature requests, developing questions, please use [GitHub issues](htt
 * `DragonBonesJS` — a dependency for enabling DragonBones' skeletal animation support in ct.js.
 * `SSCD.js` — [a fork](https://github.com/CosmoMyzrailGorynych/SSCD.js) of a collision library for ct.place.
 
-# Forking and installing the dev environment
+# Developing ct.js
+
+## Planning
+
+See the [main dev board](https://github.com/orgs/ct-js/projects/1) for hot issues and plans for next releases. Prioritize the "Current release" column, then "To Do", then "Backlog", though if you really want a feature from a backlog to come true right here, right now, no one can stop you :)
+
+Please leave a comment in issues you want to work on so that we can assign you to them and avoid occasional double work from several contributors.
+
+## Forking and installing the dev environment
 
 Building ct.js requires [Node and npm](https://nodejs.org/en/download/) installed on your machine.
 
@@ -35,16 +43,19 @@ Building ct.js requires [Node and npm](https://nodejs.org/en/download/) installe
 git clone https://github.com/ct-js/ct-js.git ctjs
 cd ./ctjs
 npm install gulp-cli -g
+npm install
 gulp -f devSetup.gulpfile.js
 ```
 
-# Running ct.js from sources
+## Running ct.js from sources
 
 ```sh
 gulp
 ```
 
-# Releasing ct.js
+## Releasing ct.js
+
+This is left for emergencies only, as Travis should prepare binaries for github and send them to itch.io as well
 
 ```sh
 # Builds docs and adds them to ct.js app
@@ -63,6 +74,6 @@ gulp deploy
 
 The first run will be slow as it will download nw.js binaries. Next runs will use cached files.
 
-# Naming conventions for commits
+## Naming conventions for commits
 
 Use [Gitmoji-flavored Comigoji](https://comigo.gitlab.io/comigoji/#gitmoji) for naming your commits.

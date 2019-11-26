@@ -1,7 +1,7 @@
 actions-editor.panel.view.pad
     .panel.pad.flexfix.tall
         .flexfix-header
-            h1 
+            h1
                 | {voc.actionsEditor}
                 docs-shortcut(path="/actions.href")
             p(if="{!currentProject.actions || !currentProject.actions.length}") {voc.noActionsYet}
@@ -21,8 +21,8 @@ actions-editor.panel.view.pad
                     .flexrow.middle
                         div.relative.wide
                             input.wide(type="text" placeholder="{voc.inputActionNamePlaceholder}" value="{action.name}" onchange="{checkActionNameAndSave}")
-                            .anErrorNotice(if="{nameTaken === action.name}") {vocGlob.nametaken} 
-                            .anErrorNotice(if="{action.name.trim() === ''}") {vocGlob.cannotBeEmpty} 
+                            .anErrorNotice(if="{nameTaken === action.name}" ref="errors") {vocGlob.nametaken}
+                            .anErrorNotice(if="{action.name.trim() === ''}" ref="errors") {vocGlob.cannotBeEmpty}
                         .spacer
                         i.a.icon-x(title="{voc.deleteAction}" onclick="{deleteAction}")
                 .c8.npr.breakon800
@@ -89,6 +89,19 @@ actions-editor.panel.view.pad
         };
 
         this.saveActions = e => {
+            if ((Array.isArray(this.refs.errors) && this.refs.errors.length) || this.refs.errors) {
+                let errors = this.refs.errors;
+                if (!Array.isArray(errors)) {
+                    errors = [errors];
+                }
+                // animate the error notice
+                const jellify = require('./data/node_requires/jellify');
+                for (const errorTag of errors) {
+                    jellify(errorTag);
+                }
+                soundbox.play('Failure');
+                return false;
+            }
             this.parent.editingActions = false;
             this.parent.update();
         };

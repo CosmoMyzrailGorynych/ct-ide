@@ -34,7 +34,16 @@ project-selector
                         ref="projectname"
                     ).wide
                 .c3.npr.npt.npb
-                    button.nm.wide.inline(onclick="{newProject}") {voc.newProject.button}
+                    input(
+                        type="file",
+                        ref="choosefolder",
+                        style="display:none",
+                        onchange="{chooseProjectFolder}"
+                        nwdirectory
+                        nwworkingdir="projects/ThisFolderWillHopefullyNeverExistButItWillGoInsideTheProjectsDir"
+                        nwdirectorydesc="{voc.newProject.selectProjectFolder}"
+                    )
+                    button.nm.wide.inline(onclick="{openProjectFolder}") {voc.newProject.button}
     .aVersionNumber
         a(href="https://discord.gg/CggbPkb" title="{voc.discord}" onclick="{openExternal('https://discord.gg/CggbPkb')}")
             i.icon-discord
@@ -86,17 +95,7 @@ project-selector
          * Technically it creates an empty project in-memory, then saves it to a directory.
          * Creates basic directories for sounds and textures.
          */
-        this.newProject = async () => {
-            const {getWritableDir} = require('./data/node_requires/platformUtils');
-            let way = path.dirname(process.execPath).replace(/\\/g,'/');
-            try {
-                way = path.join(await getWritableDir(), '/projects');
-            } catch (e) {
-                alertify.error(this.voc.unableToWriteToFolders);
-                throw e;
-            }
-            await fs.ensureDir(way);
-            var codename = this.refs.projectname.value;
+        this.newProject = async (way, codename) => {
             var projectData = {
                 ctjsVersion: nw.App.manifest.version,
                 notes: '/* empty */',
@@ -178,6 +177,23 @@ project-selector
             localStorage.lastProjects = this.lastProjects.join(';');
             e.stopPropagation();
         }
+
+        /**
+         * Handler for a manual search for a project folder, triggered by an input[type="file"]
+         */
+        this.chooseProjectFolder = e => {
+            this.newProject(e.target.value, this.refs.projectname.value);
+        };
+
+        this.openProjectFolder = e => {
+            const codename = this.refs.projectname.value;
+            if (codename.length === 0) {
+                alertify.error(this.voc.newProject.nameerr);
+                return;
+            }
+            this.refs.choosefolder.click();
+        };
+
         /**
          * Handler for a manual search for a project, triggered by an input[type="file"]
          */

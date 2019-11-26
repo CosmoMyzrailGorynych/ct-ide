@@ -24,6 +24,7 @@ html
                 void e;
             }
         script(src="node_modules/pixi.js/dist/pixi.min.js")
+        script(src="data/DragonBones.min.js")
         script.
             /* So that WebGL contexts are taken from one page,
                even if PIXI was called from the background page,
@@ -32,9 +33,32 @@ html
             global.PIXI = PIXI;
         include includes/footer.pug
         script.
+            // Monaco uses a custom amd loader that over-rides node's require.
+            // Keep a reference to node's require so we can restore it after executing the amd loader file.
+            var nodeRequire = require;
+        script(src="node_modules/monaco-editor/min/vs/loader.js")
+        script(src="node_modules/monaco-themes/dist/monaco-themes.js")
+        script.
+            // Save Monaco's amd require and restore Node's require
+            const amdRequire = require;
+            require = nodeRequire;
+            require.nodeRequire = require;
+            amdRequire.config({
+                baseUrl: 'node_modules/monaco-editor/min'
+            });
+            amdRequire(['vs/editor/editor.main'], function() {
+                window.signals = window.signals || riot.observable({});
+                window.signals.trigger('monacoBooted');
+                const tomorrow = require('./data/node_requires/monaco-themes/tomorrow.json');
+                const horizon = require('./data/node_requires/monaco-themes/horizon.json');
+                const ambiance = require('./data/node_requires/monaco-themes/ambiance.json');
+                monaco.editor.defineTheme('tomorrow', tomorrow);
+                monaco.editor.defineTheme('horizon', horizon);
+                monaco.editor.defineTheme('ambiance', ambiance);
+            });
+        script.
             'use strict';
-            window.signals = {};
-            riot.observable(window.signals);
+            window.signals = window.signals || riot.observable({});
             riot.mount('*');
             setTimeout(() => {
                 document.getElementById('loading').classList.add('fadeout');

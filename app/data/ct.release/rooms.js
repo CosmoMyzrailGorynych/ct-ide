@@ -54,16 +54,34 @@
         }
     }
     var nextRoom;
+    /**
+     * @namespace
+     */
     ct.rooms = {
         templates: {},
+        /**
+         * Creates and adds a background to the current room, at the given depth.
+         * @param {string} texture The name of the texture to use
+         * @param {number} depth The depth of the new background
+         * @returns {Background} The created background
+         */
         addBg(texture, depth) {
             const bg = new ct.types.Background(texture, null, depth);
             ct.room.addChild(bg);
             return bg;
         },
+        /**
+         * Adds a new empty tile layer to the room, at the given depth
+         * @param {number} layer The depth of the layer
+         * @returns {Tileset} The created tile layer
+         */
         addTileLayer(layer) {
             return new ct.types.Tileset(layer);
         },
+        /**
+         * Clears the current room
+         * @return {void}
+         */
         clear() {
             ct.stage.children = [];
             ct.stack = [];
@@ -71,11 +89,24 @@
                 ct.types.list[i] = [];
             }
         },
+        /*
+         * Switches to the given room. Note that this transition happens at the end
+         * of the frame, so the name of a new room may be overridden.
+         */
         'switch'(room) {
-            nextRoom = room;
-            ct.rooms.switching = true;
+            if (ct.rooms.templates[room]){
+                nextRoom = room;
+                ct.rooms.switching = true;
+            } else {
+                console.error('[ct.rooms] The room "' + room + '" does not exist!');
+            }            
         },
         switching: false,
+        /**
+         * Loads a given room and adds it to the stage. Useful for embedding prefabs and UI screens.
+         * @param  {string} roomName The name of a room to add to the stage
+         * @returns {Room} The newly created room
+         */
         load(roomName) {
             const room = new Room(ct.rooms.templates[roomName]);
             ct.stage.addChild(ct.room);
@@ -110,9 +141,18 @@
         onLeave() {
             /*%roomonleave%*/
         },
+        /**
+         * The name of the starting room, as it was set in ct.IDE.
+         * @type {string}
+         */
         starting: '@startroom@'
     };
 })();
+/**
+ * The current room
+ * @type {Room}
+ */
+ct.room = null;
 
 ct.rooms.beforeStep = function () {
     /*%beforeroomstep%*/

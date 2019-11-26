@@ -11,7 +11,7 @@ styles-panel.flexfix.tall.fifty
         h1.nmt {voc.styles}
         .clear
         .toleft
-            button#stylecreate(onclick="{styleCreate}")
+            button#stylecreate(onclick="{styleCreate}" title="Control+N" data-hotkey="Control+n")
                 i.icon.icon-add
                 span {voc.create}
         .clear
@@ -78,7 +78,10 @@ styles-panel.flexfix.tall.fifty
 
         const gui = require('nw.gui');
 
-        this.styleCreate = () => {
+        this.styleCreate = e => {
+            if (this.editingStyle) {
+                return;
+            }
             var id = generateGUID(),
                 slice = id.split('-').pop();
             window.currentProject.styletick ++;
@@ -91,6 +94,10 @@ styles-panel.flexfix.tall.fifty
             this.editedStyle = obj;
             this.editingStyle = true;
             this.updateList();
+
+            if (!e) {
+                this.update();
+            }
         };
         this.openStyle = style => e => {
             this.editingStyle = true;

@@ -1,94 +1,127 @@
 room-events-editor.view.panel
     .tabwrap
         ul.tabs.nav.nogrow.noshrink
-            li(onclick="{switchTab('roomcreate')}" class="{active: tab === 'roomcreate'}")
+            li(onclick="{switchTab('roomcreate')}" class="{active: tab === 'roomcreate'}" title="Control-Q" data-hotkey="Control+q")
                 i.icon.icon-sun
                 span {voc.create}
-            li(onclick="{switchTab('roomstep')}" class="{active: tab === 'roomstep'}")
+            li(onclick="{switchTab('roomstep')}" class="{active: tab === 'roomstep'}" title="Control-W" data-hotkey="Control+w")
                 i.icon.icon-next
                 span {voc.step}
-            li(onclick="{switchTab('roomdraw')}" class="{active: tab === 'roomdraw'}")
+            li(onclick="{switchTab('roomdraw')}" class="{active: tab === 'roomdraw'}" title="Control-E" data-hotkey="Control+e")
                 i.icon.icon-edit-2
                 span {voc.draw}
-            li(onclick="{switchTab('roomleave')}" class="{active: tab === 'roomleave'}")
+            li(onclick="{switchTab('roomleave')}" class="{active: tab === 'roomleave'}" title="Control-R" data-hotkey="Control+r")
                 i.icon.icon-trash
                 span {voc.leave}
         div(style="position: relative;")
             .tabbed(show="{tab === 'roomcreate'}")
-                .acer(ref="roomoncreate")
+                .aCodeEditor(ref="roomoncreate")
             .tabbed(show="{tab === 'roomstep'}")
-                .acer(ref="roomonstep")
+                .aCodeEditor(ref="roomonstep")
             .tabbed(show="{tab === 'roomdraw'}")
-                .acer(ref="roomondraw")
+                .aCodeEditor(ref="roomondraw")
             .tabbed(show="{tab === 'roomleave'}")
-                .acer(ref="roomonleave")
+                .aCodeEditor(ref="roomonleave")
     button.wide.nogrow.noshrink(onclick="{roomSaveEvents}")
         i.icon.icon-confirm
         span {voc.done}
     script.
         this.namespace = 'roomview';
         this.mixin(window.riotVoc);
+
         this.tab = 'roomcreate';
+        const tabToEditor = tab => {
+            tab = tab || this.tab;
+            if (tab === 'roomcreate') {
+                return this.roomoncreate;
+            } else if (tab === 'roomstep') {
+                return this.roomonstep;
+            } else if (tab === 'roomdraw') {
+                return this.roomondraw;
+            } else if (tab === 'roomleave') {
+                return this.roomonleave;
+            }
+            return null;
+        };
         this.switchTab = tab => e => {
             this.tab = tab;
-            var editor;
-            if (tab === 'roomcreate') {
-                editor = this.roomoncreate;
-            } else if (tab === 'roomstep') {
-                editor = this.roomonstep;
-            } else if (tab === 'roomdraw') {
-                editor = this.roomondraw;
-            } else if (tab === 'roomleave') {
-                editor = this.roomonleave;
-            }
-            editor.moveCursorTo(0,0);
-            editor.clearSelection();
-            this.focusEditor();
+            const editor = tabToEditor(tab);
+            setTimeout(() => {
+                editor.layout();
+                editor.focus();
+            }, 0);
         };
-        this.focusEditor = () => {
-            if (this.tab === 'roomcreate') {
-                this.roomoncreate.focus();
-            } else if (this.tab === 'roomstep') {
-                this.roomonstep.focus();
-            } else if (this.tab === 'roomdraw') {
-                this.roomondraw.focus();
-            } else if (this.tab === 'roomleave') {
-                this.roomonleave.focus();
+
+        const updateEditorSize = () => {
+            if (tabToEditor()) {
+                tabToEditor().layout();
             }
+        };
+        const updateEditorSizeDeferred = function () {
+            setTimeout(updateEditorSize, 0);
         };
         window.signals.on('roomsFocus', this.focusEditor);
+        window.signals.on('roomsFocus', updateEditorSizeDeferred);
+        window.addEventListener('resize', updateEditorSize);
         this.on('unmount', () => {
-            window.signals.off('roomsFocus', this.focusEditor); 
+            window.signals.off('roomsFocus', this.focusEditor);
+            window.signals.off('roomsFocus', updateEditorSizeDeferred);
+            window.removeEventListener('resize', updateEditorSize);
         });
         this.on('mount', e => {
             this.room = this.opts.room;
             setTimeout(() => {
                 var editorOptions = {
-                    mode: 'javascript'
+                    language: 'typescript',
+                    lockWrapper: true
                 };
-                this.roomoncreate = window.setupAceEditor(this.refs.roomoncreate, editorOptions);
-                this.roomonstep = window.setupAceEditor(this.refs.roomonstep, editorOptions);
-                this.roomondraw = window.setupAceEditor(this.refs.roomondraw, editorOptions);
-                this.roomonleave = window.setupAceEditor(this.refs.roomonleave, editorOptions);
-                this.roomoncreate.session.on('change', e => {
-                    this.room.oncreate = this.roomoncreate.getValue();
+                this.roomoncreate = window.setupCodeEditor(
+                    this.refs.roomoncreate,
+                    Object.assign({}, editorOptions, {
+                        value: this.room.oncreate,
+                        wrapper: ['function onCreate(this: Room) {', '}']
+                    })
+                );
+                this.roomonstep = window.setupCodeEditor(this.refs.roomonstep,
+                    Object.assign({}, editorOptions, {
+                        value: this.room.onstep,
+                        wrapper: ['function onStep(this: Room) {', '}']
+                    })
+                );
+                this.roomondraw = window.setupCodeEditor(this.refs.roomondraw,
+                    Object.assign({}, editorOptions, {
+                        value: this.room.ondraw,
+                        wrapper: ['function onDraw(this: Room) {', '}']
+                    })
+                );
+                this.roomonleave = window.setupCodeEditor(this.refs.roomonleave,
+                    Object.assign({}, editorOptions, {
+                        value: this.room.onleave,
+                        wrapper: ['function onLeave(this: Room) {', '}']
+                    })
+                );
+                this.roomoncreate.onDidChangeModelContent(e => {
+                    this.room.oncreate = this.roomoncreate.getPureValue();
                 });
-                this.roomonstep.session.on('change', e => {
-                    this.room.onstep = this.roomonstep.getValue();
+                this.roomonstep.onDidChangeModelContent(e => {
+                    this.room.onstep = this.roomonstep.getPureValue();
                 });
-                this.roomondraw.session.on('change', e => {
-                    this.room.ondraw = this.roomondraw.getValue();
+                this.roomondraw.onDidChangeModelContent(e => {
+                    this.room.ondraw = this.roomondraw.getPureValue();
                 });
-                this.roomonleave.session.on('change', e => {
-                    this.room.onleave = this.roomonleave.getValue();
+                this.roomonleave.onDidChangeModelContent(e => {
+                    this.room.onleave = this.roomonleave.getPureValue();
                 });
-                this.roomoncreate.setValue(this.room.oncreate);
-                this.roomonstep.setValue(this.room.onstep);
-                this.roomondraw.setValue(this.room.ondraw);
-                this.roomonleave.setValue(this.room.onleave);
-
             }, 0);
         });
+        this.on('unmount', () => {
+            // Manually destroy editors to free memory
+            this.roomoncreate.dispose();
+            this.roomonstep.dispose();
+            this.roomondraw.dispose();
+            this.roomonleave.dispose();
+        });
+
         this.roomSaveEvents = e => {
             this.parent.editingCode = false;
             this.parent.update();

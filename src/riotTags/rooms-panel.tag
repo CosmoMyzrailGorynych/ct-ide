@@ -11,7 +11,7 @@ rooms-panel.panel.view
                     .aSearchWrap
                         input.inline(type="text" onkeyup="{fuseSearch}")
                 .toleft
-                    button#roomcreate(onclick="{roomCreate}")
+                    button#roomcreate(onclick="{roomCreate}" data-hotkey="Control+n" title="Control+N")
                         i.icon.icon-add
                         span {voc.create}
         ul.cards.rooms.flexfix-body
@@ -93,7 +93,10 @@ rooms-panel.panel.view
         const gui = require('nw.gui'),
               fs = require('fs-extra'),
               path = require('path');
-        this.roomCreate = function () {
+        this.roomCreate = function (e) {
+            if (this.editing) {
+                return false;
+            }
             var guid = generateGUID(),
                 thumbnail = guid.split('-').pop();
             fs.copy('./data/img/notexture.png', path.join(sessionStorage.projdir, '/img/r' + thumbnail + '.png'), () => {

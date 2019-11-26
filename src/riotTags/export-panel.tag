@@ -54,6 +54,7 @@ export-panel
         this.mixin(window.riotWired);
         this.working = false;
         this.log = [];
+        currentProject.settings.export = currentProject.settings.export || {};
 
         const path = require('path'),
               fs = require('fs-extra');

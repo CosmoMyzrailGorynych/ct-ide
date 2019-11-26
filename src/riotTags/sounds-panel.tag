@@ -11,7 +11,7 @@ sounds-panel.panel.view
                     .aSearchWrap
                         input.inline(type="text" onkeyup="{fuseSearch}")
                 .toleft
-                    button#soundcreate(onclick="{soundNew}")
+                    button#soundcreate(onclick="{soundNew}" title="Control+N" data-hotkey="Control+n")
                         i.icon.icon-add
                         span {voc.create}
         ul.cards.flexfix-body
@@ -89,6 +89,9 @@ sounds-panel.panel.view
         const gui = require('nw.gui');
 
         this.soundNew = e => {
+            if (this.editing) {
+                return false;
+            }
             const generateGUID = require('./data/node_requires/generateGUID');
             var id = generateGUID(),
                 slice = id.split('-').pop();

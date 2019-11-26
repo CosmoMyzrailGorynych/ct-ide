@@ -37,7 +37,7 @@ You can generalize mouse and touch events by enabling a corresponding option at 
 
 A variant of this method is `ct.touch.hovers(copy, id)`, that also checks for mouse.
 
-`ct.touch.hovers(copy)` and `ct.touch.collide(copy, id)` don't work well with just released touches, because, well, they are not active anymore, and a special version of `ct.touch.hovers` exists for handling such events: `ct.touch.hovers(copy, id, true)`. You can set `id` to `false` if you don't need it.
+`ct.touch.hovers(copy)` and `ct.touch.collide(copy, id)` don't work well with just released touches (because they become inactive), and a special version of `ct.touch.hovers` exists for handling such events: `ct.touch.hovers(copy, id, true)`. You can set `id` to `false` if you don't need it.
 
 As this variant combines both hover event and release one, writing a code for a button is very simple:
 

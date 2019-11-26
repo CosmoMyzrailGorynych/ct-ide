@@ -1,15 +1,14 @@
 ## ct.keyboard.lastKey
 
-Tells the last pressed button. It can be either one of command buttons like `Shift`, `Space`, `Control`, etc., or a digit, or a letter. 
+Tells the last pressed button. It can be either one of command buttons like `Shift`, `Space`, `Control`, etc., or a digit, or a letter.
 
 ## ct.keyboard.lastCode
 
-Tells the last pressed button's code. This can be something like:
-
+Tells the last pressed button's code.
 
 ## ct.keyboard.string
 
-Contains text which was written by keyboard. Can be cleared or changed, and it automatically cleares on an 'Enter' button.
+Contains text which was written by keyboard. Can be cleared or changed, and it automatically clears on an 'Enter' button.
 
 ## ct.keyboard.alt
 

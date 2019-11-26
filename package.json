@@ -1,6 +1,6 @@
 {
   "name": "ctjsbuildenvironment",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "",
   "directories": {
     "doc": "docs"
@@ -8,7 +8,8 @@
   "scripts": {
     "lint": "gulp lint",
     "docs:dev": "vuepress dev docs",
-    "docs:build": "vuepress build docs"
+    "docs:build": "vuepress build docs",
+    "ctTypedefs": "jsdoc -t ./node_modules/tsd-jsdoc/dist -r ./app/data/ct.release -d ./src/typedefs/ct.js"
   },
   "author": "Cosmo Myzrail Gorynych",
   "homepage": "https://ctjs.rocks/",
@@ -28,11 +29,13 @@
     "gulp-eslint": "^6.0.0",
     "gulp-if": "^2.0.2",
     "gulp-pug": "^3.3.0",
+    "gulp-replace": "^1.0.0",
     "gulp-riot": "^1.1.4",
     "gulp-sourcemaps": "^2.6.4",
     "gulp-stylint": "^4.0.2",
     "gulp-stylus": "^2.7.0",
     "gulp-zip": "^5.0.0",
+    "jsdoc-x": "^4.0.3",
     "minimist": "^1.2.0",
     "node-notifier": "^5.2.1",
     "nw-builder": "^3.5.7",
@@ -41,6 +44,7 @@
     "riot": "^3.13.2",
     "streamqueue": "^1.1.2",
     "stylint-stylish": "^2.0.0",
-    "stylus": "^0.54.5"
+    "stylus": "^0.54.5",
+    "tsd-jsdoc": "^2.4.0"
   }
 }

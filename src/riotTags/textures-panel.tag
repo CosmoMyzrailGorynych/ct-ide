@@ -260,12 +260,11 @@ textures-panel.panel.view
                     from: 'dragonbones',
                     uid: uid
                 })
-                this.skelGenPreview(dest, dest + '_prev.png', 64)
+                this.skelGenPreview(dest, dest + '_prev.png', [64, 128])
                 .then(dataUrl => {
                     this.updateList();
                     this.update();
                 });
-                this.skelGenPreview(dest, dest + '_prev@2.png', 128);
             });
         };
         /**
@@ -324,32 +323,41 @@ textures-panel.panel.view
          * @param {Number} size Size of the square thumbnail, in pixels
          * @returns {Promise} Resolves after creating a thumbnail. On success, passes data-url of the created thumbnail.
          */
-        this.skelGenPreview = (source, destFile, size) => {
+        this.skelGenPreview = (source, destFile, sizes) => {
             const loader = new PIXI.loaders.Loader(),
                   dbf = dragonBones.PixiFactory.factory;
-            const slice = source.replace('_ske.json', '');
+            const slice = 'file://' + source.replace('_ske.json', '');
             return new Promise((resolve, reject) => {
                 loader.add(`${slice}_ske.json`, `${slice}_ske.json`)
                     .add(`${slice}_tex.json`, `${slice}_tex.json`)
                     .add(`${slice}_tex.png`, `${slice}_tex.png`);
                 loader.load(() => {
-                    const app = new PIXI.Application();
                     dbf.parseDragonBonesData(loader.resources[`${slice}_ske.json`].data);
                     dbf.parseTextureAtlasData(loader.resources[`${slice}_tex.json`].data, loader.resources[`${slice}_tex.png`].texture);
                     const skel = dbf.buildArmatureDisplay('Armature', loader.resources[`${slice}_ske.json`].data.name);
-                    const base64 = app.renderer.plugins.extract.base64(skel)
-                    var data = base64.replace(/^data:image\/\w+;base64,/, '');;
-                    var buf = new Buffer(data, 'base64');
-                    var stream = fs.createWriteStream(destFile);
-                    stream.on('finish', () => {
-                        setTimeout(() => { // WHY THE HECK I EVER NEED THIS?!
-                            resolve(destFile);
-                        }, 100);
-                    });
-                    stream.on('error', err => {
-                        reject(err);
-                    });
-                    stream.end(buf);
+                    const promises = sizes.map(size => new Promise((resolve, reject) => {
+                        const app = new PIXI.Application();
+                        const base64 = app.renderer.plugins.extract.base64(skel)
+                        const data = base64.replace(/^data:image\/\w+;base64,/, '');;
+                        const buf = new Buffer(data, 'base64');
+                        const stream = fs.createWriteStream(destFile);
+                        stream.on('finish', () => {
+                            setTimeout(() => { // WHY THE HECK I EVER NEED THIS?!
+                                resolve(destFile);
+                            }, 100);
+                        });
+                        stream.on('error', err => {
+                            reject(err);
+                        });
+                        stream.end(buf);
+                    }));
+                    Promise.all(promises)
+                    .then(() => {
+                        delete dbf._dragonBonesDataMap[loader.resources[`${slice}_ske.json`].data.name];
+                        delete dbf._textureAtlasDataMap[loader.resources[`${slice}_ske.json`].data.name];
+                    })
+                    .then(resolve)
+                    .catch(reject);
                 });
             });
         };

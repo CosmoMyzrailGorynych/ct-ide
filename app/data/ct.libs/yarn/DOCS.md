@@ -4,13 +4,12 @@
 
 Opens the given JSON object and returns a YarnStory object, ready for playing.
 
-### ct.yarn.openFromFile(data) ⇒ `Promise<YarnStory>`
+### ct.yarn.openFromFile(path) ⇒ `Promise<YarnStory>`
 
-Opens the given JSON object and returns a promise that resolves into a YarnStory.
+Opens the given JSON file and returns a promise that resolves into a YarnStory.
 
 
-## YarnStory
-**Kind**: private class
+## YarnStor
 
 ### new YarnStory(data, [first])
 Creates a new YarnStory
@@ -25,81 +24,56 @@ Creates a new YarnStory
 
 
 ### yarnStory.text ⇒ `String` \| `Boolean`
+
 Returns the current text line, including the character's name
-
-**Kind**: instance property of `YarnStory`
-
-**Returns**: `String` \| `Boolean` - Returns `false` if the current position is not a speech line,
-     otherwise returns the current line.
+Returns `false` if the current position is not a speech line.
 
 ### yarnStory.character ⇒ `Boolean` \| `String` \| `undefined`
-Returns the character's name that says the current text line.
+
+Returns `false` if the current position is not a speech line,
+`undefined` if the line does not have a character specified, and a string of your character
+if it was specified.
+
 It is expected that your character's names will be in one word,
 otherwise they will be detected as parts of the speech line.
 E.g. `Cat: Hello!` will return `'Cat'`, but `Kitty cat: Hello!`
 will return `undefined`.
 
-**Kind**: instance property of `YarnStory`
-
-**Returns**: `Boolean` \| `String` \| `undefined` - Returns `false` if the current position is not a speech line,
-     `undefined` if the line does not have a character specified, and a string of your character
-     if it was specified.
-
 ### yarnStory.body ⇒ `String` \| `Boolean`
+
 Returns the the current text line, without a character.
 It is expected that your character's names will be in one word,
 otherwise they will be detected as parts of the speech line.
 E.g. `Cat: Hello!` will return `'Cat'`, but `Kitty cat: Hello!`
 will return `undefined`.
 
-**Kind**: instance property of `YarnStory`
-
-**Returns**: `String` \| `Boolean` - The speech line or `false` if the current position
-     is not a speech line.
+Returns `false` if the current position is not a speech line.
 
 ### yarnStory.title ⇒ `String`
-Returns the title of the current node
 
-**Kind**: instance property of `YarnStory`
-
-**Returns**: `String` - The title of the current node
+The title of the current node
 
 ### yarnStory.command ⇒ `String` \| `Boolean`
-Returns the current command
 
-**Kind**: instance property of `YarnStory`
-
-**Returns**: `String` \| `Boolean` - The current command, or `false` if the current
-     position is not a command.
+The current command, or `false` if the current position is not a command.
 
 ### yarnStory.tags ⇒ `String`
-Returns the tags of the current node
 
-**Kind**: instance property of `YarnStory`
+The tags of the current node.
 
-**Returns**: `String` - The tags of the current node.
+### yarnStory.options ⇒ `Array<String>` \| `Boolean`
 
-### yarnStory.options ⇒ `Array<String>`
 Returns currently possible dialogue options, if there are any.
 
-**Kind**: instance property of `YarnStory`
-
-**Returns**: `Array<String>` - An array of possible dialogue lines.
-
 ### yarnStory.variables : `Object`
-Current variables
 
-**Kind**: instance property of `YarnStory`
+Current variables in the Yarn story.
 
 ### yarnStory.start() ⇒ `void`
 Starts the story, essentially jumping to a starting node
 
-**Kind**: instance method of `YarnStory`
-
 ### yarnStory.say(line) ⇒ `void`
 "Says" the given option, advancing the story further on a taken branch, if this dialogue option exists.
-
-**Kind**: instance method of `YarnStory`
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -109,8 +83,6 @@ Starts the story, essentially jumping to a starting node
 ### yarnStory.jump(title) ⇒ `void`
 Manually moves the story to a node with a given title
 
-**Kind**: instance method of `YarnStory`
-
 | Param | Type | Description |
 | --- | --- | --- |
 | title | `String` | The title of the needed node |
@@ -119,24 +91,16 @@ Manually moves the story to a node with a given title
 ### yarnStory.back() ⇒ `void`
 Moves back to the previous node, but just once
 
-**Kind**: instance method of `YarnStory`
-
 ### yarnStory.next() ⇒ `void`
 Naturally advances in the story, if no options are available
-
-**Kind**: instance method of `YarnStory`
 
 
 ### yarnStory.nodes ⇒ `Object`
 
 An object containing all the nodes in the story. Each key in this object stands for a node's title.
 
-**Kind**: instance property of `YarnStory`
-
 ### yarnStory.visited(title) ⇒ `Boolean`
 Checks whether a given node was visited
-
-**Kind**: instance method of `YarnStory`
 
 **Returns**: `Boolean` - Returns `true` if the specified node was visited, `false` otherwise.
 
