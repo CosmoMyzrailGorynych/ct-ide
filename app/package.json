@@ -2,7 +2,7 @@
   "main": "index.html",
   "name": "ctjs",
   "description": "ctjs",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "homepage": "https://ctjs.rocks/",
   "license": "MIT",
   "user-agent": "ct.js game engine %name/%ver (%osinfo) NW.js/%nwver AppleWebkit/%webkit_ver Chromium/%chromium_ver",
