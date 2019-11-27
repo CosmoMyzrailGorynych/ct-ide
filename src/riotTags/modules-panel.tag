@@ -322,6 +322,8 @@ modules-panel.panel.view
             })
             .on('finish', async () => {
                 if (moduleName !== null) {
+                    // okay, let's create parent directory
+                    await fs.ensureDir(path.join(libsDir, moduleName));
                     for (let entry of entries) {
                         const filePath = entry.path;
                         const indexOf = filePath.indexOf('/')
