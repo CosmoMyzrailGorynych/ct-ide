@@ -1,0 +1,1 @@
+A module that provides a uniform API for storing and loading data for your desktop games.
