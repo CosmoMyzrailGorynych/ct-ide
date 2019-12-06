@@ -524,7 +524,6 @@ const runCtProject = async (project, projdir) => {
     };
 
     await injectModules(injects);
-    console.log(injects);
 
     /* Pixi.js */
     if (currentProject.settings.usePixiLegacy) {
