@@ -35,6 +35,7 @@ bower_components
 temp/
 desktop\.ini
 *.png~
+.directory
 
 # Generated files
 src/typedefs/ct.js/types.d.ts
