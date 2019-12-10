@@ -3,9 +3,9 @@ html
     include includes/head.pug
     body.tall
         preview-screen.flexrow.tall
-            webview.tall#thePreview(autosize partition="persist:trusted" src="empty.html" style="border: 0; flex: 1 1 100%; line-height: 0; overflow: hidden;")
+            webview.tall#thePreview(autosize allownw partition="trusted" src="empty.html" style="border: 0; flex: 1 1 100%; line-height: 0; overflow: hidden;")
             .flexfix(style="width: 500px;")
-                webview.tall.flexfix-body#theDebugger(autosize partition="persist:trusted" src="empty.html" style="width: 500px; border: 0; line-height: 0; overflow: hidden;")
+                webview.tall.flexfix-body#theDebugger(autosize partition="trusted" src="empty.html" style="width: 500px; border: 0; line-height: 0; overflow: hidden;")
                 .flexfix-footer
                     preview-bottom-panel
         script(src="./data/bundle.js")
