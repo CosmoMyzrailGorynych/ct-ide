@@ -1,0 +1,43 @@
+{
+  "main": {
+    "name": "Gamepad",
+    "version": "1.0.0",
+    "packageName": "gamepad",
+    "authors": [
+      {
+        "name": "SN"
+      },
+      {
+        "name": "Araujo921",
+        "mail": "leedigital@leedigital.com.br"
+      },
+      {
+        "name": "Comigo",
+        "mail": "admin@nersta.ru"
+      }
+    ]
+  },
+  "inputMethods": {
+    "Button1": "Bottom button in right cluster (A / blue cross)",
+    "Button2": "Right button in right cluster (B / red circle)",
+    "Button3": "Left button in right cluster (X / pink square)",
+    "Button4": "Top button in right cluster (Y / green triangle)",
+    "L1": "Top left front button (Left shoulder / L1)",
+    "R1": "Top right front button (Right shoulder /  R1)",
+    "L2": "Bottom left front button (Left trigger / L2)",
+    "R2": "Bottom right front button (Right trigger / R2)",
+    "Select": "Left button in center cluster (Select)",
+    "Start": "Right button in center cluster (Start)",
+    "L3": "Left stick pressed button (L3)",
+    "R3": "Right stick pressed button (R3)",
+    "Up": "Top button in left cluster (directional pad)",
+    "Down": "Bottom button in left cluster (directional pad)",
+    "Left": "Left button in left cluster (directional pad)",
+    "Right": "Right button in left cluster (directional pad)",
+    "Any": "Any known controller's button",
+    "LStickX": "Horizontal axis for left stick (negative left/positive right)",
+    "LStickY": "Vertical axis for left stick (negative up/positive down)",
+    "RStickX": "Horizontal axis for right stick (negative left/positive right)",
+    "RStickY": "Vertical axis for right stick (negative up/positive down)"
+  }
+}
