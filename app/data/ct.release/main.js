@@ -23,7 +23,6 @@ const ct = {
      * An array with metadata of all the modules used in a ct.js game
      * @type {Object.<string,ILibMeta>}
      */
-    libs: [/*@libs@*/][0],
     speed: [/*@maxfps@*/][0] || 60,
     types: {},
     snd: {},
