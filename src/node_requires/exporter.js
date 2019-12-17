@@ -20,41 +20,43 @@ const parseKeys = function(data, str, lib) {
     return str2;
 };
 
-const addModules = buffer => {
+const addModules = async () => { // async
     /* Модули */
-    for (var lib in currentProject.libs) {
-        const data = fs.readJSONSync(path.join(basePath + 'ct.libs/', lib, 'module.json'), {
+    const pieces = await Promise.all(Object.keys(currentProject.libs).map(async lib => {
+        const data = await fs.readJSON(path.join(basePath + 'ct.libs/', lib, 'module.json'), {
             'encoding': 'utf8'
         });
-        if (fs.pathExistsSync(path.join(basePath + 'ct.libs/', lib, 'index.js'))) {
-            buffer += parseKeys(data, fs.readFileSync(path.join(basePath + 'ct.libs/', lib, 'index.js'), {
+        if (await fs.pathExists(path.join(basePath + 'ct.libs/', lib, 'index.js'))) {
+            return parseKeys(data, await fs.readFile(path.join(basePath + 'ct.libs/', lib, 'index.js'), {
                 'encoding': 'utf8'
             }), lib);
         }
-        buffer += '\n';
-    }
-    return buffer;
+        return '';
+    }));
+    return pieces.join('\n');
 };
 
-const injectModules = (injects) => {
-    for (const lib in currentProject.libs) {
-        const libData = fs.readJSONSync(path.join(basePath + 'ct.libs/', lib, 'module.json'), {
+const injectModules = injects => // async
+    Promise.all(Object.keys(currentProject.libs).map(async lib => {
+        const libData = await fs.readJSON(path.join(basePath + 'ct.libs/', lib, 'module.json'), {
             'encoding': 'utf8'
         });
         ctlibs[lib] = libData.main;
-        if (fs.pathExistsSync(path.join(basePath + 'ct.libs/', lib, 'injects'))) {
-            const injectFiles = fs.readdirSync(path.join(basePath + 'ct.libs/', lib, 'injects')),
-                    injectKeys = injectFiles.map(fname => path.basename(fname, path.extname(fname)));
-            for (var inj in injectKeys) {
-                if (injectKeys[inj] in injects) {
-                    injects[injectKeys[inj]] += parseKeys(libData, fs.readFileSync(path.join(basePath + 'ct.libs/', lib, 'injects', injectFiles[inj]), {
+        if (await fs.pathExists(path.join(basePath + 'ct.libs/', lib, 'injects'))) {
+            const injectFiles = await fs.readdir(path.join(basePath + 'ct.libs/', lib, 'injects')),
+                  injectKeys = injectFiles.map(fname => path.basename(fname, path.extname(fname)));
+            await Promise.all(injectKeys.map(async (key, ind) => {
+                if (key in injects) {
+                    const injection = await fs.readFile(path.join(basePath + 'ct.libs/', lib, 'injects', injectFiles[ind]), {
                         encoding: 'utf8'
-                    }), lib);
+                    });
+                    // false positive??
+                    // eslint-disable-next-line require-atomic-updates
+                    injects[key] += parseKeys(libData, injection, lib);
                 }
-            }
+            }));
         }
-    }
-};
+    }));
 
 const getTextureShape = texture => {
     if (texture.shape === 'rect') {
@@ -83,10 +85,14 @@ const getTextureShape = texture => {
         type: 'point'
     };
 };
-const packImages = () => {
+const packImages = async () => {
     const blocks = [];
     const tiledImages = [];
     const keys = {}; // a collection of frame names for each texture name
+
+    // Write functions will be run in parallel, and this array will block the finalization of the function
+    const writePromises = [];
+
     for (const tex of currentProject.textures) {
         if (!tex.tiled) {
             keys[tex.origname] = [];
@@ -145,7 +151,7 @@ const packImages = () => {
         const atlasJSON = {
             meta: {
                 app: 'https://ctjs.rocks/',
-                version: nw.App.manifest.version,
+                version: require('electron').remote.app.getVersion(),
                 image: `a${binInd}.png`,
                 format: 'RGBA8888',
                 size: {
@@ -215,11 +221,11 @@ const packImages = () => {
                 }
             };
         }
-        fs.outputJSONSync(`${writeDir}/img/a${binInd}.json`, atlasJSON);
+        writePromises.push(fs.outputJSON(`${writeDir}/img/a${binInd}.json`, atlasJSON));
         res += `\n.add('./img/a${binInd}.json')`;
         var data = atlas.toDataURL().replace(/^data:image\/\w+;base64,/, '');
         var buf = new Buffer(data, 'base64');
-        fs.writeFileSync(`${writeDir}/img/a${binInd}.png`, buf);
+        writePromises.push(fs.writeFile(`${writeDir}/img/a${binInd}.png`, buf));
         atlases.push(`./img/a${binInd}.json`);
     });
     for (const tex of currentProject.textures) {
@@ -241,7 +247,7 @@ const packImages = () => {
         atlas.height = tex.height;
         atlas.x.drawImage(img, 0, 0);
         var buf = new Buffer(atlas.toDataURL().replace(/^data:image\/\w+;base64,/, ''), 'base64');
-        fs.writeFileSync(`${writeDir}/img/t${i}.png`, buf);
+        writePromises.push(fs.writeFile(`${writeDir}/img/t${i}.png`, buf));
         registry[tex.name] = {
             atlas: `./img/t${i}.png`,
             frames: 0,
@@ -255,13 +261,17 @@ const packImages = () => {
     }
     res += ';';
     registry = JSON.stringify(registry);
+
+    await Promise.all(writePromises);
     return {
         res,
         registry,
         atlases
     };
 };
-const packSkeletons = (projdir) => {
+const packSkeletons = async projdir => {
+    const writePromises = [];
+
     const data = {
         loaderScript: 'PIXI.Loader.shared',
         startScript: 'const dbf = dragonBones.PixiFactory.factory;',
@@ -276,9 +286,9 @@ const packSkeletons = (projdir) => {
     }
     for (const skeleton of currentProject.skeletons) {
         const slice = skeleton.origname.replace('_ske.json', '');
-        fs.copySync(`${projdir}/img/${slice}_ske.json`, `${writeDir}/img/${slice}_ske.json`);
-        fs.copySync(`${projdir}/img/${slice}_tex.json`, `${writeDir}/img/${slice}_tex.json`);
-        fs.copySync(`${projdir}/img/${slice}_tex.png`, `${writeDir}/img/${slice}_tex.png`);
+        writePromises.push(fs.copy(`${projdir}/img/${slice}_ske.json`, `${writeDir}/img/${slice}_ske.json`));
+        writePromises.push(fs.copy(`${projdir}/img/${slice}_tex.json`, `${writeDir}/img/${slice}_tex.json`));
+        writePromises.push(fs.copy(`${projdir}/img/${slice}_tex.png`, `${writeDir}/img/${slice}_tex.png`));
 
         data.loaderScript += `.add('${slice}_ske.json', './img/${slice}_ske.json')`;
         data.loaderScript += `.add('${slice}_tex.json', './img/${slice}_tex.json')`;
@@ -297,9 +307,10 @@ const packSkeletons = (projdir) => {
     }
     data.loaderScript += ';';
     if (data.requiresDB) {
-        fs.copyFileSync(basePath + 'ct.release/DragonBones.min.js', writeDir + '/DragonBones.min.js');
+        writePromises.push(fs.copyFile(basePath + 'ct.release/DragonBones.min.js', writeDir + '/DragonBones.min.js'));
     }
     data.registry = JSON.stringify(data.registry);
+    await Promise.all(writePromises);
     return data;
 };
 
@@ -401,9 +412,10 @@ ct.rooms.templates['${r.name}'] = {
     name: '${r.name}',
     width: ${r.width},
     height: ${r.height},
-    objects: ${JSON.stringify(objs)},
-    bgs: ${JSON.stringify(bgsCopy)},
-    tiles: ${JSON.stringify(tileLayers)},
+    /* JSON.parse allows for a much faster loading of big objects */
+    objects: JSON.parse('${JSON.stringify(objs)}'),
+    bgs: JSON.parse('${JSON.stringify(bgsCopy)}'),
+    tiles: JSON.parse('${JSON.stringify(tileLayers)}'),
     onStep() {
         ${currentProject.rooms[k].onstep}
     },
@@ -421,19 +433,7 @@ ct.rooms.templates['${r.name}'] = {
     return roomsCode;
 };
 
-const bundleFonts = function(projdir) {
-    let css = '',
-        js = '';
-    if (currentProject.fonts) {
-        fs.ensureDirSync(writeDir + '/fonts');
-        const ttf2woff = require('ttf2woff');
-        for (const font of currentProject.fonts) {
-            fs.copySync(`${projdir}/fonts/${font.origname}` , writeDir + '/fonts/' + font.origname);
-            const fontData = fs.readFileSync(`${projdir}/fonts/${font.origname}`);
-            var ttf = new Uint8Array(fontData);
-            var woff = new Buffer(ttf2woff(ttf).buffer);
-            fs.writeFileSync(writeDir + '/fonts/' + font.origname + '.woff', woff);
-            css += `
+const stringifyFont = font => `
 @font-face {
     font-family: '${font.typefaceName}';
     src: url('fonts/${font.origname}.woff') format('woff'),
@@ -441,9 +441,24 @@ const bundleFonts = function(projdir) {
     font-weight: ${font.weight};
     font-style: ${font.italic? 'italic' : 'normal'};
 }`;
-        }
+const bundleFonts = async function(projdir) {
+    let css = '',
+        js = '';
+    const writePromises = [];
+    if (currentProject.fonts) {
         js += 'if (document.fonts) { for (const font of document.fonts) { font.load(); }}';
+        await fs.ensureDir(writeDir + '/fonts');
+        const ttf2woff = require('ttf2woff');
+        await Promise.all(currentProject.fonts.map(async font => {
+            const fontData = await fs.readFile(`${projdir}/fonts/${font.origname}`);
+            var ttf = new Uint8Array(fontData);
+            var woff = new Buffer(ttf2woff(ttf).buffer);
+            writePromises.push(fs.copy(`${projdir}/fonts/${font.origname}` , writeDir + '/fonts/' + font.origname));
+            writePromises.push(fs.writeFile(writeDir + '/fonts/' + font.origname + '.woff', woff));
+            css += stringifyFont(font);
+        }));
     }
+    await Promise.all(writePromises);
     return {
         css,
         js
@@ -458,85 +473,93 @@ const runCtProject = async (project, projdir) => {
     const {languageJSON} = require('./i18n');
     currentProject = project;
     await makeWritableDir();
-    return new Promise((resolve, reject) => {
-        // glob.compileAudio = 0;
-        if (currentProject.rooms.length < 1) {
-            reject(new Error(languageJSON.common.norooms));
-            return;
+
+    if (currentProject.rooms.length < 1) {
+        throw new Error(languageJSON.common.norooms);
+    }
+
+    ctlibs = {
+        CORE: {
+            name: 'ct.js Game Framework',
+            info: 'A game made with ct.js game framework and ct.IDE. Create your 2D games for free!',
+            authors: [{
+                name: 'Cosmo Myzrail Gorynych',
+                site: 'https://ctjs.rocks/'
+            }]
         }
-        document.body.style.cursor = 'wait';
+    };
+    await fs.remove(writeDir);
+    await Promise.all([
+        fs.ensureDir(path.join(writeDir, '/img/')),
+        fs.ensureDir(path.join(writeDir, '/snd/'))
+    ]);
 
-        ctlibs = {
-            CORE: {
-                name: 'ct.js Game Framework',
-                info: 'A game made with ct.js game framework and ct.IDE. Create your 2D games for free!',
-                authors: [{
-                    name: 'Cosmo Myzrail Gorynych',
-                    site: 'https://ctjs.rocks/'
-                }]
-            }
-        };
-        fs.removeSync(writeDir);
-        fs.ensureDirSync(writeDir);
-        fs.ensureDirSync(path.join(writeDir, '/img/'));
-        fs.ensureDirSync(path.join(writeDir, '/snd/'));
-        var css = fs.readFileSync(basePath + 'ct.release/ct.css', {
-                'encoding': 'utf8'
-            }),
-            html = fs.readFileSync(basePath + 'ct.release/index.html', {
-                'encoding': 'utf8'
-            });
-        var injects = {
-            load: '',
-            start: '',
-            'switch': '',
+    const injects = {
+        load: '',
+        start: '',
+        'switch': '',
 
-            oncreate: '',
-            ondestroy: '',
+        oncreate: '',
+        ondestroy: '',
 
-            beforedraw: '',
-            beforestep: '',
-            afterdraw: '',
-            afterstep: '',
+        beforedraw: '',
+        beforestep: '',
+        afterdraw: '',
+        afterstep: '',
 
-            roomoncreate: '',
-            roomonleave: '',
-            afterroomdraw: '',
-            beforeroomdraw: '',
-            beforeroomstep: '',
-            afterroomstep: '',
+        roomoncreate: '',
+        roomonleave: '',
+        afterroomdraw: '',
+        beforeroomdraw: '',
+        beforeroomstep: '',
+        afterroomstep: '',
 
-            css: '',
-            res: '',
-            resload: '',
-            types: '',
-            styles: '',
-            htmltop: '',
-            htmlbottom: ''
-        };
+        css: '',
+        res: '',
+        resload: '',
+        types: '',
+        styles: '',
+        htmltop: '',
+        htmlbottom: ''
+    };
 
-        injectModules(injects);
-        // console.log(injects);
+    await injectModules(injects);
 
-        /* Pixi.js */
-        if (currentProject.settings.usePixiLegacy) {
-            fs.copyFileSync(basePath + 'ct.release/pixi-legacy.min.js', path.join(writeDir, '/pixi.min.js'));
-        } else {
-            fs.copyFileSync(basePath + 'ct.release/pixi.min.js', path.join(writeDir, '/pixi.min.js'));
-        }
+    /* Pixi.js */
+    if (currentProject.settings.usePixiLegacy) {
+        await fs.copyFile(basePath + 'ct.release/pixi-legacy.min.js', path.join(writeDir, '/pixi.min.js'));
+    } else {
+        await fs.copyFile(basePath + 'ct.release/pixi.min.js', path.join(writeDir, '/pixi.min.js'));
+    }
 
-        const startroom = getStartingRoom();
+    const startroom = getStartingRoom();
 
-        /* global nw */
-        var buffer = fs.readFileSync(basePath + 'ct.release/main.js', {
+    /* Load source files in parallel */
+    const sources = {};
+    const sourcesList = [
+        'ct.css',
+        'index.html',
+        'main.js',
+        'inputs.js',
+        'rooms.js',
+        'res.js',
+        'types.js',
+        'styles.js',
+        'sound.js'
+    ];
+    for (const file of sourcesList) {
+        sources[file] = fs.readFile(path.join(basePath, 'ct.release', file), {
             'encoding': 'utf8'
-        })
+        });
+    }
+
+    let buffer = (await sources['main.js'])
         .replace(/\/\*@startwidth@\*\//g, startroom.width)
         .replace(/\/\*@startheight@\*\//g, startroom.height)
         .replace(/\/\*@pixelatedrender@\*\//g, Boolean(currentProject.settings.pixelatedrender))
         .replace(/\/\*@maxfps@\*\//g, Number(currentProject.settings.maxFPS))
-        .replace(/\/\*@libs@\*\//g, JSON.stringify(ctlibs, null, '    '))
-        .replace(/\/\*@ctversion@\*\//g, nw.App.manifest.version)
+        .replace(/\/\*@libs@\*\//g, `JSON.parse('${JSON.stringify(ctlibs)}')`)
+        .replace(/\/\*@ctversion@\*\//g, require('electron').remote.app.getVersion())
         .replace(/\/\*@projectmeta@\*\//g, JSON.stringify({
             name: currentProject.settings.title,
             author: currentProject.settings.author,
@@ -544,52 +567,47 @@ const runCtProject = async (project, projdir) => {
             version: currentProject.settings.version.join('.') + currentProject.settings.versionPostfix
         }));
 
-        buffer += '\n';
+    buffer += '\n';
 
-        var actionsSetup = '';
-        for (const action of currentProject.actions) {
-            actionsSetup += `ct.inputs.addAction('${action.name}', ${JSON.stringify(action.methods)});\n`;
-        }
-        buffer += fs.readFileSync(basePath + 'ct.release/inputs.js', {
-            'encoding': 'utf8'
-        }).replace('/*@actions@*/', actionsSetup);
+    let actionsSetup = '';
+    for (const action of currentProject.actions) {
+        actionsSetup += `ct.inputs.addAction('${action.name}', ${JSON.stringify(action.methods)});\n`;
+    }
 
-        buffer += '\n';
+    // This section is synchronous to the possible extent, no race conditions possible here
+    /* eslint-disable require-atomic-updates */
+    buffer += (await sources['inputs.js']).replace('/*@actions@*/', actionsSetup);
+    buffer += '\n';
+    buffer += await addModules(buffer);
 
-        buffer = addModules(buffer);
+    /* User-defined scripts */
+    for (const script of currentProject.scripts) {
+        buffer += script.code + ';\n';
+    }
 
-        /* User-defined scripts */
-        for (const script of currentProject.scripts) {
-            buffer += script.code + ';\n';
-        }
+    const roomsCode = stringifyRooms();
 
-        var roomsCode = stringifyRooms();
-
-        buffer += fs.readFileSync(basePath + 'ct.release/rooms.js', {
-            'encoding': 'utf8'
-        })
+    buffer += (await sources['rooms.js'])
         .replace('@startroom@', startroom.name)
         .replace('/*@rooms@*/', roomsCode)
         .replace('/*%switch%*/', injects.switch)
         .replace('/*%roomoncreate%*/', injects.roomoncreate)
         .replace('/*%roomonleave%*/', injects.roomonleave);
-        buffer += '\n';
+    buffer += '\n';
 
-        var styles = stringifyStyles(projdir);
-        buffer += fs.readFileSync(basePath + 'ct.release/styles.js', {
-            'encoding': 'utf8'
-        })
+    const styles = stringifyStyles(projdir);
+    buffer += (await sources['styles.js'])
         .replace('/*@styles@*/', styles)
         .replace('/*%styles%*/', injects.styles);
-        buffer += '\n';
+    buffer += '\n';
 
-        /* assets */
-        var textures = packImages(projdir);
-        var skeletons = packSkeletons(projdir);
+    /* assets — run in parallel */
+    const texturesTask = packImages(projdir);
+    const skeletonsTask = packSkeletons(projdir);
+    const textures = await texturesTask;
+    const skeletons = await skeletonsTask;
 
-        buffer += fs.readFileSync(basePath + 'ct.release/res.js', {
-            'encoding': 'utf8'
-        })
+    buffer += (await sources['res.js'])
         .replace('/*@sndtotal@*/', currentProject.sounds.length)
         .replace('/*@res@*/', textures.res + '\n' + skeletons.loaderScript)
         .replace('/*@textureregistry@*/', textures.registry)
@@ -597,122 +615,135 @@ const runCtProject = async (project, projdir) => {
         .replace('/*@skeletonregistry@*/', skeletons.registry)
         .replace('/*%resload%*/', injects.resload + '\n' + skeletons.startScript)
         .replace('/*%res%*/', injects.res);
-        buffer += '\n';
+    buffer += '\n';
 
-        /* Stringify types */
-        var types = '';
-        for (const k in currentProject.types) {
-            var type = currentProject.types[k];
-            types += 'ct.types.templates["' + type.name + '"] = {\n';
-            types += '    depth:' + type.depth + ',\n';
+    /* Stringify types */
+    var types = '';
+    for (const k in currentProject.types) {
+        var type = currentProject.types[k];
+        types += 'ct.types.templates["' + type.name + '"] = {\n';
+        types += '    depth:' + type.depth + ',\n';
 
-            if (type.texture !== -1) {
-                types += '    texture: "' + glob.texturemap[type.texture].g.name + '",\n';
-            }
-            types += '    onStep: function () {\n' + type.onstep + '\n    },\n';
-            types += '    onDraw: function () {\n' + type.ondraw + '\n    },\n';
-            types += '    onDestroy: function () {\n' + type.ondestroy + '\n    },\n';
-            types += '    onCreate: function () {\n' + type.oncreate + '\n    },\n';
-            types += '    extends: ' + JSON.stringify(type.extends || {});
-            types += '};\n';
-            types += `ct.types.list['${type.name}'] = [];\n`;
+        if (type.texture !== -1) {
+            types += '    texture: "' + glob.texturemap[type.texture].g.name + '",\n';
         }
-        buffer += fs.readFileSync(basePath + 'ct.release/types.js', {
-            'encoding': 'utf8'
-        })
+        types += '    onStep: function () {\n' + type.onstep + '\n    },\n';
+        types += '    onDraw: function () {\n' + type.ondraw + '\n    },\n';
+        types += '    onDestroy: function () {\n' + type.ondestroy + '\n    },\n';
+        types += '    onCreate: function () {\n' + type.oncreate + '\n    },\n';
+        types += '    extends: ' + JSON.stringify(type.extends || {});
+        types += '};\n';
+        types += `ct.types.list['${type.name}'] = [];\n`;
+    }
+    buffer += (await sources['types.js'])
         .replace('/*%oncreate%*/', injects.oncreate)
         .replace('/*%types%*/', injects.types)
         .replace('/*@types@*/', types);
 
-        buffer += '\n';
-        var sounds = stringifySounds();
-        buffer += fs.readFileSync(basePath + 'ct.release/sound.js', {
-            'encoding': 'utf8'
-        })
+    buffer += '\n';
+    var sounds = stringifySounds();
+    buffer += (await sources['sound.js'])
         .replace('/*@sound@*/', sounds);
 
-        var fonts = bundleFonts(projdir);
-        css += fonts.css;
-        buffer += fonts.js;
+    const fonts = await bundleFonts(projdir);
+    buffer += fonts.js;
+    /* eslint-enable require-atomic-updates */
 
-        /* passthrough copy of files in the `include` folder */
-        if (fs.existsSync(projdir + '/include/')) {
-            fs.copySync(projdir + '/include/', writeDir);
+    /* passthrough copy of files in the `include` folder */
+    if (await fs.exists(projdir + '/include/')) {
+        await fs.copy(projdir + '/include/', writeDir);
+    }
+    await Promise.all(Object.keys(currentProject.libs).map(async lib => {
+        if (await fs.exists(path.join(basePath, `./ct.libs/${lib}/includes/`))) {
+            await fs.copy(path.join(basePath, `./ct.libs/${lib}/includes/`), writeDir);
         }
-        for (const lib in currentProject.libs) {
-            if (fs.existsSync(path.join(basePath, `./ct.libs/${lib}/includes/`))) {
-                fs.copySync(path.join(basePath, `./ct.libs/${lib}/includes/`), writeDir);
-            }
-        }
+    }));
 
-        /* Global injects, provided by modules */
-        for (const i in injects) {
-            buffer = buffer.replace(`/*%${i}%*/`, injects[i]);
-        }
+    /* Global injects, provided by modules */
+    for (const i in injects) {
+        buffer = buffer.replace(`/*%${i}%*/`, injects[i]);
+    }
 
-        /* Final touches and script output */
-        if (currentProject.settings.minifyjs) {
-            const preamble = '/* Made with ct.js http://ctjs.rocks/ */\n';
-            const {compile} = require('google-closure-compiler-js');
+    /* Final touches and script output */
+    if (currentProject.settings.minifyjs) {
+        const preamble = '/* Made with ct.js http://ctjs.rocks/ */\n';
+        const ClosureCompiler = require('google-closure-compiler').jsCompiler;
 
-            const flags = {
-                jsCode: [{src: buffer}],
-            };
-            const out = compile(flags);
-            fs.writeFileSync(path.join(writeDir, '/ct.js'), preamble + out.compiledCode);
-        } else {
-            fs.writeFileSync(path.join(writeDir, '/ct.js'), buffer);
-        }
-
-        /* HTML & CSS */
-        fs.writeFileSync(path.join(writeDir, '/index.html'), html
-            .replace('<!-- %htmltop% -->', injects.htmltop)
-            .replace('<!-- %htmlbottom% -->', injects.htmlbottom)
-            .replace('<!-- %gametitle% -->', currentProject.settings.title || 'ct.js game')
-            .replace('<!-- %dragonbones% -->', skeletons.requiresDB? '<script src="DragonBones.min.js"></script>' : ''));
-
-        fs.writeFileSync(path.join(writeDir, '/ct.css'), css
-            .replace('/*@pixelatedrender@*/', currentProject.settings.pixelatedrender? 'canvas,img{image-rendering:optimizeSpeed;image-rendering:-moz-crisp-edges;image-rendering:-webkit-optimize-contrast;image-rendering:optimize-contrast;image-rendering:pixelated;ms-interpolation-mode:nearest-neighbor}' : '')
-            .replace('/*%css%*/', injects.css));
-
-        if (currentProject.settings.minifyhtmlcss) {
-            const csswring = require('csswring'),
-                htmlMinify = require('html-minifier').minify;
-            fs.writeFileSync(path.join(writeDir, '/index.html'), htmlMinify(
-                fs.readFileSync(path.join(writeDir, '/index.html'), {
-                    'encoding': 'utf8'
-                })
-            , {
-                removeComments: true,
-                collapseWhitespace: true
-            }));
-            fs.writeFileSync(path.join(writeDir, '/ct.css'), csswring.wring(
-                fs.readFileSync(path.join(writeDir, '/ct.css'), {
-                    'encoding': 'utf8'
-                })
-            ).css);
-        }
-        for (const k in currentProject.sounds) {
-            var sound = currentProject.sounds[k],
-                ext = sound.origname.slice(-4);
-            fs.copySync(path.join(projdir, '/snd/', sound.origname), path.join(writeDir, '/snd/', sound.uid + ext));
-        }
-
-        /*
-        glob.targetAudio = currentProject.sounds.length * 2;
-        for (k in currentProject.sounds) {
-            ffmpeg.mp3(projdir + '/sound/' + currentProject.sounds[k].origname, function (err, out, code) {
-                if (err) {
-                    console.log(err, out, code);
-                    throw err;
+        const compiler = new ClosureCompiler({
+            /* eslint-disable camelcase */
+            compilation_level: 'SIMPLE',
+            use_types_for_optimization: false,
+            jscomp_off: '*', // Disable warnings to not to booo users
+            language_out: 'ECMASCRIPT3',
+            language_in: 'ECMASCRIPT_NEXT',
+            warning_level: 'QUIET'
+            /* eslint-enable camelcase */
+        });
+        const out = await new Promise((resolve, reject) => {
+            compiler.run([{
+                path: path.join(writeDir, '/ct.js'),
+                src: buffer
+            }], (exitCode, stdout, stderr) => {
+                if (stderr && !stdout) {
+                    reject(stderr);
+                    return;
                 }
-                events.compileAudio();
+                resolve(stdout[0]);
+                if (stderr) {
+                    console.error(stderr);
+                }
             });
-        }
-        */
-        document.body.style.cursor = 'default';
-        resolve(path.join(writeDir, `/index.${currentProject.settings.minifyhtml? 'min.': ''}html`));
-    });
+        });
+        await fs.writeFile(path.join(writeDir, '/ct.js'), preamble + out.src);
+        await fs.writeFile(path.join(writeDir, '/ct.js.map'), out.sourceMap);
+    } else {
+        await fs.writeFile(path.join(writeDir, '/ct.js'), buffer);
+    }
+
+    /* HTML & CSS */
+    const html = (await sources['index.html'])
+        .replace('<!-- %htmltop% -->', injects.htmltop)
+        .replace('<!-- %htmlbottom% -->', injects.htmlbottom)
+        .replace('<!-- %gametitle% -->', currentProject.settings.title || 'ct.js game')
+        .replace('<!-- %dragonbones% -->', skeletons.requiresDB? '<script src="DragonBones.min.js"></script>' : '');
+
+    let css = (await sources['ct.css'])
+        .replace('/*@pixelatedrender@*/', currentProject.settings.pixelatedrender? 'canvas,img{image-rendering:optimizeSpeed;image-rendering:-moz-crisp-edges;image-rendering:-webkit-optimize-contrast;image-rendering:optimize-contrast;image-rendering:pixelated;ms-interpolation-mode:nearest-neighbor}' : '')
+        .replace('/*%css%*/', injects.css);
+
+    css += fonts.css;
+
+    await Promise.all([
+        fs.writeFile(path.join(writeDir, '/index.html'), html),
+        fs.writeFile(path.join(writeDir, '/ct.css'), css)
+    ]);
+
+    if (currentProject.settings.minifyhtmlcss) {
+        const csswring = require('csswring');
+        const htmlMinify = require('html-minifier').minify;
+        const htmlUnminified = fs.readFile(path.join(writeDir, '/index.html'), {
+            'encoding': 'utf8'
+        });
+        const cssUnminified = fs.readFile(path.join(writeDir, '/ct.css'), {
+            'encoding': 'utf8'
+        });
+        await Promise.all([
+            fs.writeFile(
+                path.join(writeDir, '/index.html'),
+                htmlMinify(await htmlUnminified, {
+                    removeComments: true,
+                    collapseWhitespace: true
+                })
+            ),
+            fs.writeFile(path.join(writeDir, '/ct.css'), csswring.wring(await cssUnminified).css)
+        ]);
+    }
+    await Promise.all(currentProject.sounds.map(async sound => {
+        const ext = sound.origname.slice(-4);
+        await fs.copy(path.join(projdir, '/snd/', sound.origname), path.join(writeDir, '/snd/', sound.uid + ext));
+    }));
+
+    return path.join(writeDir, `/index.${currentProject.settings.minifyhtml? 'min.': ''}html`);
 };
 
 module.exports = runCtProject;

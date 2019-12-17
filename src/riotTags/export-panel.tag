@@ -78,9 +78,9 @@ export-panel
                 runCtExport(currentProject, sessionStorage.projdir)
                 .then(getWritableDir)
                 .then(dir => writable = dir)
-                .then(() => fs.copy('./data/ct.release/nwPack/', `${writable}/export/`))
+                .then(() => fs.copy('./data/ct.release/desktopPack/', `${writable}/export/`))
                 .then(() => {
-                    const json = fs.readJSONSync('./data/ct.release/nwPack/package.json');
+                    const json = fs.readJSONSync('./data/ct.release/desktopPack/package.json');
                     json.version = version;
                     if (currentProject.settings.title) {
                         json.name = currentProject.settings.title;
@@ -111,7 +111,7 @@ export-panel
                     }
                     const options = {
                         files: `${writable}/export/**/**`, // use the glob format
-                        version: process.versions.nw,
+                        version: '0.34.1',
                         platforms,
                         flavor: (currentProject.settings.export.debug? 'sdk' : 'normal'),
                         appName: currentProject.settings.title || 'ct.js Game',
@@ -147,7 +147,8 @@ export-panel
                     alertify.success(`Success! Exported to: ${writable}/exportDesktop/`);
                     this.log.push(path.resolve(`${writable}/exportDesktop/`));
                     this.working = false;
-                    nw.Shell.showItemInFolder(path.resolve(`./exportDesktop/${currentProject.settings.title || 'ctjs-game'} - v${version}`));
+                    const {shell} = require('electron');
+                    shell.showItemInFolder(path.resolve(`./exportDesktop/${currentProject.settings.title || 'ctjs-game'} - v${version}`));
                     this.update();
                 })
                 .catch(error => {
@@ -166,5 +167,6 @@ export-panel
         };
 
         this.copyLog = e => {
-            nw.Clipboard.get().set(this.log.join('\n'));
+            const {clipboard} = require('electron');
+            clipboard.writeText(this.log.join('\n'));
         };

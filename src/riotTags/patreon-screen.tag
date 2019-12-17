@@ -143,7 +143,7 @@ patreon-screen.view(style="z-index: 100;")
         };
         this.loadPatrons();
 
-        const gui = require('nw.gui');
         this.openPatreon = e => {
-            gui.Shell.openExternal('https://www.patreon.com/comigo');
+            const {shell} = require('electron');
+            shell.openExternal('https://www.patreon.com/comigo');
         }

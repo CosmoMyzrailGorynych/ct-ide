@@ -22,12 +22,12 @@ types-panel.panel.view
                 onlong-press="{onTypeContextMenu}"
             )
                 span {type.name}
-                img(src="{type.texture !== -1 ? (glob.texturemap[type.texture].src.split('?')[0] + '_prev.png?' + getTypeTextureRevision(type)) : '/data/img/notexture.png'}")
+                img(src="{type.texture !== -1 ? (glob.texturemap[type.texture].src.split('?')[0] + '_prev.png?' + getTypeTextureRevision(type)) : 'data/img/notexture.png'}")
     type-editor(if="{editingType}" type="{editedType}")
+    context-menu(menu="{typeMenu}" ref="typeMenu")
     script.
         this.namespace = 'types';
         this.mixin(window.riotVoc);
-        const gui = require('nw.gui');
         const glob = require('./data/node_requires/glob');
         const generateGUID = require('./data/node_requires/generateGUID');
         this.glob = glob;
@@ -133,93 +133,88 @@ types-panel.panel.view
             this.editedType = type;
         };
 
-        var typeMenu = new gui.Menu();
-        this.onTypeContextMenu = e => {
-            this.currentType = e.item.type;
-            typeMenu.popup(e.clientX, e.clientY);
-            e.preventDefault();
-        };
-        typeMenu.append(new gui.MenuItem({
-            label: window.languageJSON.common.open,
-            click: () => {
-                this.openType(this.currentType)();
-                this.update();
-            }
-        }));
-        // Пункт "Скопировать название"
-        typeMenu.append(new gui.MenuItem({
-            label: languageJSON.common.copyName,
-            click: e => {
-                var clipboard = nw.Clipboard.get();
-                clipboard.set(this.currentType.name, 'text');
-            }
-        }));
-        typeMenu.append(new gui.MenuItem({
-            label: window.languageJSON.common.duplicate,
-            click: () => {
-                alertify
-                .defaultValue(this.currentType.name + '_dup')
-                .prompt(window.languageJSON.common.newname)
-                .then(e => {
-                    if (e.inputValue != '' && e.buttonClicked !== 'cancel') {
-                        var tp = JSON.parse(JSON.stringify(this.currentType));
-                        tp.name = e.inputValue;
-                        tp.uid = generateGUID();
-                        currentProject.types.push(tp);
-                        this.fillTypeMap();
-                        this.updateList();
-                        this.update();
-                    }
-                });
-            }
-        }));
-        typeMenu.append(new gui.MenuItem({
-            label: window.languageJSON.common.rename,
-            click:  () => {
-                alertify
-                .defaultValue(this.currentType.name)
-                .prompt(window.languageJSON.common.newname)
-                .then(e => {
-                    if (e.inputValue != '' && e.buttonClicked !== 'cancel') {
-                        this.currentType.name = e.inputValue;
-                        this.update();
-                    }
-                });
-            }
-        }));
-        typeMenu.append(new gui.MenuItem({
-            type: 'separator'
-        }));
-        typeMenu.append(new gui.MenuItem({
-            label: window.languageJSON.common.delete,
-            click: () => {
-                alertify
-                .okBtn(window.languageJSON.common.delete)
-                .cancelBtn(window.languageJSON.common.cancel)
-                .confirm(window.languageJSON.common.confirmDelete.replace('{0}', this.currentType.name))
-                .then(e => {
-                    if (e.buttonClicked === 'ok') {
-                        for (const room of window.currentProject.rooms) {
-                            let i = 0;
-                            while (i < room.copies.length) {
-                                if (room.copies[i].uid === this.currentType.uid) {
-                                    room.copies.splice(i, 1);
-                                } else {
-                                    i++;
+        this.typeMenu = {
+            items: [{
+                label: window.languageJSON.common.open,
+                click: () => {
+                    this.openType(this.currentType)();
+                    this.update();
+                }
+            }, {
+                label: languageJSON.common.copyName,
+                click: e => {
+                    const {clipboard} = require('electron');
+                    clipboard.writeText(this.currentType.name);
+                }
+            }, {
+                label: window.languageJSON.common.duplicate,
+                click: () => {
+                    alertify
+                    .defaultValue(this.currentType.name + '_dup')
+                    .prompt(window.languageJSON.common.newname)
+                    .then(e => {
+                        if (e.inputValue != '' && e.buttonClicked !== 'cancel') {
+                            var tp = JSON.parse(JSON.stringify(this.currentType));
+                            tp.name = e.inputValue;
+                            tp.uid = generateGUID();
+                            currentProject.types.push(tp);
+                            this.fillTypeMap();
+                            this.updateList();
+                            this.update();
+                        }
+                    });
+                }
+            }, {
+                label: window.languageJSON.common.rename,
+                click:  () => {
+                    alertify
+                    .defaultValue(this.currentType.name)
+                    .prompt(window.languageJSON.common.newname)
+                    .then(e => {
+                        if (e.inputValue != '' && e.buttonClicked !== 'cancel') {
+                            this.currentType.name = e.inputValue;
+                            this.update();
+                        }
+                    });
+                }
+            }, {
+                type: 'separator'
+            }, {
+                label: window.languageJSON.common.delete,
+                click: () => {
+                    alertify
+                    .okBtn(window.languageJSON.common.delete)
+                    .cancelBtn(window.languageJSON.common.cancel)
+                    .confirm(window.languageJSON.common.confirmDelete.replace('{0}', this.currentType.name))
+                    .then(e => {
+                        if (e.buttonClicked === 'ok') {
+                            for (const room of window.currentProject.rooms) {
+                                let i = 0;
+                                while (i < room.copies.length) {
+                                    if (room.copies[i].uid === this.currentType.uid) {
+                                        room.copies.splice(i, 1);
+                                    } else {
+                                        i++;
+                                    }
                                 }
                             }
-                        }
 
-                        let ind = window.currentProject.types.indexOf(this.currentType);
-                        window.currentProject.types.splice(ind, 1);
-                        this.updateList();
-                        this.fillTypeMap();
-                        this.update();
-                        window.signals.trigger('typesChanged');
-                        alertify
-                        .okBtn(window.languageJSON.common.ok)
-                        .cancelBtn(window.languageJSON.common.cancel);
-                    }
-                });
-            }
-        }));
+                            let ind = window.currentProject.types.indexOf(this.currentType);
+                            window.currentProject.types.splice(ind, 1);
+                            this.updateList();
+                            this.fillTypeMap();
+                            this.update();
+                            window.signals.trigger('typesChanged');
+                            alertify
+                            .okBtn(window.languageJSON.common.ok)
+                            .cancelBtn(window.languageJSON.common.cancel);
+                        }
+                    });
+                }
+            }]
+        };
+        this.onTypeContextMenu = e => {
+            this.currentType = e.item.type;
+            this.refs.typeMenu.popup(e.clientX, e.clientY);
+            e.preventDefault();
+        };

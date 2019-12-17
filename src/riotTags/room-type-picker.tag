@@ -15,7 +15,7 @@ room-type-picker.room-editor-TypeSwatches.tabbed.tall
         class="{active: parent.opts.current === type}"
     )
         span {type.name}
-        img(src="{type.texture === -1? '/data/img/notexture.png' : (glob.texturemap[type.texture].src.split('?')[0] + '_prev.png?' + getTypeTextureRevision(type))}")
+        img(src="{type.texture === -1? 'data/img/notexture.png' : (glob.texturemap[type.texture].src.split('?')[0] + '_prev.png?' + getTypeTextureRevision(type))}")
     .room-editor-aTypeSwatch.filler
     .room-editor-aTypeSwatch.filler
     .room-editor-aTypeSwatch.filler

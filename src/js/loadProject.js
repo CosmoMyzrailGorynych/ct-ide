@@ -9,7 +9,6 @@
         .then(() => window.alertify.success(`Applied migration code for version ${version}`, 'success', 3000));
     };
 
-    /* global nw */
     const fs = require('fs-extra'),
           path = require('path');
     // @see https://semver.org/
@@ -85,11 +84,12 @@
             // eslint-disable-next-line no-await-in-loop
             await migration.process(project);
         }
+
         // Unfortunately, recent versions of eslint give false positives on this line
         // @see https://github.com/eslint/eslint/issues/11900
         // @see https://github.com/eslint/eslint/issues/11899
         // eslint-disable-next-line require-atomic-updates
-        project.ctjsVersion = nw.App.manifest.version;
+        project.ctjsVersion = require('electron').remote.app.getVersion();
     };
 
     /**
@@ -154,7 +154,7 @@
                 loadProject(projectData);
             } catch (e) {
                 window.alertify.error(e);
-                console.error(e);
+                throw e;
             }
         });
     };

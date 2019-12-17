@@ -108,11 +108,13 @@ const ct = {
 };
 
 // eslint-disable-next-line no-console
-console.table({
-    '😺 Made with:': 'ct.js game editor',
-    '🙀 Version:': `v${ct.version}`,
-    '😻 Website:': 'https://ctjs.rocks/',
-});
+console.log(
+    `%c 😺 %c ct.js game editor %c v${ct.version} %c https://ctjs.rocks/ `,
+    'background: #446adb; color: #fff; padding: 0.5em 0;',
+    'background: #5144db; color: #fff; padding: 0.5em 0;',
+    'background: #446adb; color: #fff; padding: 0.5em 0;',
+    'background: #5144db; color: #fff; padding: 0.5em 0;',
+);
 
 ct.highDensity = [/*@highDensity@*/][0];
 /**

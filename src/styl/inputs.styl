@@ -217,7 +217,7 @@ input[type="reset"],
         &:only-child
             margin-right 0
 
-select, label
+select, label, .label
     cursor pointer
 select
     line-height 2
@@ -253,7 +253,7 @@ select
         right 0.5em
         top 50%
 
-label
+label, .label
     & + &
         margin-top 0.5rem
     &.file
@@ -261,44 +261,44 @@ label
         position relative
         [type="file"]
             display none
-    &.checkbox
-        position relative
-        padding-left 1.5rem
-        margin-top 0
-        display block
-        [type="checkbox"], [type="radio"]
-            -webkit-appearance none
-            appearance none
-            margin 0
-            width 1rem
-            height 1rem
-            left 0
-            top 0.5rem
-            border 1px solid act
-            box-sizing border-box
+.checkbox
+    position relative
+    padding-left 1.5rem
+    margin-top 0
+    display block
+    [type="checkbox"], [type="radio"]
+        -webkit-appearance none
+        appearance none
+        margin 0
+        width 1rem
+        height 1rem
+        left 0
+        top 0.5rem
+        border 1px solid act
+        box-sizing border-box
+        position absolute
+        border-radius br
+        {trans}
+        &::after
+            @extends .icon-check:before
+            font-family 'icomoon' !important
+            font-size 1rem
             position absolute
-            border-radius br
+            top -0.025rem
+            left -0.05rem
+            line-height 1
+            color white
+            opacity 0
             {trans}
+        &:checked
+            background act
+            border-color accent1
+            {transshort}
             &::after
-                @extends .icon-check:before
-                font-family 'icomoon' !important
-                font-size 1rem
-                position absolute
-                top -0.025rem
-                left -0.05rem
-                line-height 1
-                color white
-                opacity 0
-                {trans}
-            &:checked
-                background act
-                border-color accent1
                 {transshort}
-                &::after
-                    {transshort}
-                    opacity 1
-        [type="radio"]
-            border-radius 100%
+                opacity 1
+    [type="radio"]
+        border-radius 100%
 fieldset
     border 0
     padding 0

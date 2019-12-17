@@ -1,27 +1,25 @@
 {
-  "main": "index.html",
-  "name": "ctjs",
-  "description": "ctjs",
+  "main": "index.js",
+  "name": "ct.js",
+  "description": "ct.js — a free 2D game engine",
   "version": "1.2.1",
   "homepage": "https://ctjs.rocks/",
+  "author": {
+    "name": "Cosmo Myzrail Gorynych",
+    "email": "cosmomyzrailgorynych@gmail.com",
+    "url": "https://github.com/cosmomyzrailgorynych"
+  },
   "license": "MIT",
-  "user-agent": "ct.js game engine %name/%ver (%osinfo) NW.js/%nwver AppleWebkit/%webkit_ver Chromium/%chromium_ver",
   "window": {
-    "icon": "ct_ide.png",
     "toolbar": true,
-    "frame": true,
-    "width": 1024,
-    "height": 720,
-    "position": "center",
-    "min_width": 380,
-    "min_height": 380,
-    "resizable": true,
-    "fullscreen": false,
-    "title": "ctjs"
+    "frame": true
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/ct-js/ct-js.git"
+  },
+  "scripts": {
+    "start": "electron ."
   },
   "maintainers": [
     {
@@ -34,22 +32,12 @@
     "plugin": false
   },
   "chromium-args": "--force-color-profile=srgb --disable-features=ColorCorrectRendering",
-  "webview": {
-    "partitions": [
-      {
-        "name": "trusted",
-        "accessible_resources": [
-          "<all_urls>"
-        ]
-      }
-    ]
-  },
   "dependencies": {
     "archiver": "^3.1.1",
     "csswring": "7.0.0",
     "fs-extra": "^7.0.0",
     "fuse.js": "^3.2.1",
-    "google-closure-compiler-js": "^20180610.0.0",
+    "google-closure-compiler": "^20191111.0.0",
     "highlight.js": "^9.15.10",
     "html-minifier": "^3.5.19",
     "markdown-it": "3.1.0",
@@ -61,5 +49,70 @@
     "pixi.js-legacy": "5.1.2",
     "ttf2woff": "^2.0.1",
     "unzipper": "^0.10.5"
+  },
+  "devDependencies": {
+    "electron": "7.1.5"
+  },
+  "build": {
+    "appId": "rocks.ctjs.ide",
+    "directories": {
+      "output": "./../build",
+      "buildResources": "./../buildAssets"
+    },
+    "extraFiles": [
+      "Changelog.md",
+      {
+        "from": "./data/i18n",
+        "to": "./data/i18n"
+      }, {
+        "from": "./data/ct.libs",
+        "to": "./data/ct.libs"
+      }, {
+        "from": "./data/ct.release",
+        "to": "./data/ct.release"
+      }, {
+        "from": "./data/docs",
+        "to": "./data/docs"
+      },
+      "examples"
+    ],
+    "files": [
+      "**/*",
+      "!/cache",
+      "!/Changelog.md",
+      "!/data/i18n",
+      "!/data/ct.libs",
+      "!/data/ct.release",
+      "!/data/docs",
+      "!../src/examples"
+    ],
+    "linux": {
+      "target": [
+        "AppImage",
+        "zip"
+      ],
+      "category": "Development",
+      "maintainer": "Cosmo Myzrail Gorynych"
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "portable",
+        "zip"
+      ],
+      "icon": "ct.ide.ico"
+    },
+    "mac": {
+      "target": [
+        "zip",
+        "dir"
+      ],
+      "category": "public.app-category.developer-tools",
+      "icon": "./ct.ide.icns"
+    },
+    "dmg": {
+      "backgroundColor": "#446adb",
+      "background": "dmgBg.png"
+    }
   }
 }

@@ -1,0 +1,991 @@
+{
+  "ctjsVersion": "1.2.1",
+  "notes": "/* empty */",
+  "libs": {
+    "fittoscreen": {
+      "mode": "scaleFit"
+    },
+    "akatemplate": {
+      "csscss": "body {\n  background-color: #fff;\n}"
+    },
+    "gamepad": {}
+  },
+  "textures": [
+    {
+      "name": "Base",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        0,
+        0
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 848,
+      "imgHeight": 782,
+      "width": 848,
+      "height": 782,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i163c9f50-bc40-468b-9976-ce8731177e8a.png",
+      "source": "C:\\Users\\Master\\Desktop\\GamepadTest\\Base.png",
+      "shape": "rect",
+      "left": 0,
+      "right": 848,
+      "top": 0,
+      "bottom": 782,
+      "uid": "163c9f50-bc40-468b-9976-ce8731177e8a"
+    },
+    {
+      "name": "DpadRight",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        0,
+        0
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 49,
+      "imgHeight": 49,
+      "width": 49,
+      "height": 49,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i803858d1-450e-4b5c-b3ac-cc9e262bcd68.png",
+      "source": "C:\\Users\\Master\\Desktop\\GamepadTest\\DpadRight.png",
+      "shape": "rect",
+      "left": 0,
+      "right": 49,
+      "top": 0,
+      "bottom": 49,
+      "uid": "803858d1-450e-4b5c-b3ac-cc9e262bcd68"
+    },
+    {
+      "name": "DpadDown",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        0,
+        0
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 49,
+      "imgHeight": 49,
+      "width": 49,
+      "height": 49,
+      "offx": 0,
+      "offy": 0,
+      "origname": "ida5f7a17-620b-4afd-ae47-97b0c8b9d0f0.png",
+      "source": "C:\\Users\\Master\\Desktop\\GamepadTest\\DpadDown.png",
+      "shape": "rect",
+      "left": 0,
+      "right": 49,
+      "top": 0,
+      "bottom": 49,
+      "uid": "da5f7a17-620b-4afd-ae47-97b0c8b9d0f0"
+    },
+    {
+      "name": "FaceBottom",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        0,
+        0
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 56,
+      "imgHeight": 56,
+      "width": 56,
+      "height": 56,
+      "offx": 0,
+      "offy": 0,
+      "origname": "icf9ae559-0ca4-4614-94ec-d2da25e7445e.png",
+      "source": "C:\\Users\\Master\\Desktop\\GamepadTest\\FaceBottom.png",
+      "shape": "rect",
+      "left": 0,
+      "right": 56,
+      "top": 0,
+      "bottom": 56,
+      "uid": "cf9ae559-0ca4-4614-94ec-d2da25e7445e"
+    },
+    {
+      "name": "DpadUp",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        0,
+        0
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 49,
+      "imgHeight": 49,
+      "width": 49,
+      "height": 49,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i266aa370-9416-4d88-833d-bbb561ef08c0.png",
+      "source": "C:\\Users\\Master\\Desktop\\GamepadTest\\DpadUp.png",
+      "shape": "rect",
+      "left": 0,
+      "right": 49,
+      "top": 0,
+      "bottom": 49,
+      "uid": "266aa370-9416-4d88-833d-bbb561ef08c0"
+    },
+    {
+      "name": "FaceLeft",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        0,
+        0
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 56,
+      "imgHeight": 56,
+      "width": 56,
+      "height": 56,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i8bd53deb-a6e9-4ba6-b95e-f62a45d3cafc.png",
+      "source": "C:\\Users\\Master\\Desktop\\GamepadTest\\FaceLeft.png",
+      "shape": "rect",
+      "left": 0,
+      "right": 56,
+      "top": 0,
+      "bottom": 56,
+      "uid": "8bd53deb-a6e9-4ba6-b95e-f62a45d3cafc"
+    },
+    {
+      "name": "FaceRight",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        0,
+        0
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 56,
+      "imgHeight": 56,
+      "width": 56,
+      "height": 56,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i52455802-8f3f-43d0-bedc-81cd51ccb54a.png",
+      "source": "C:\\Users\\Master\\Desktop\\GamepadTest\\FaceRight.png",
+      "shape": "rect",
+      "left": 0,
+      "right": 56,
+      "top": 0,
+      "bottom": 56,
+      "uid": "52455802-8f3f-43d0-bedc-81cd51ccb54a"
+    },
+    {
+      "name": "FaceUp",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        0,
+        0
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 56,
+      "imgHeight": 56,
+      "width": 56,
+      "height": 56,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i1a53eb25-280a-4ecc-8cf4-e3fbbdb1e8f7.png",
+      "source": "C:\\Users\\Master\\Desktop\\GamepadTest\\FaceUp.png",
+      "shape": "rect",
+      "left": 0,
+      "right": 56,
+      "top": 0,
+      "bottom": 56,
+      "uid": "1a53eb25-280a-4ecc-8cf4-e3fbbdb1e8f7"
+    },
+    {
+      "name": "ShoulderR",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        0,
+        0
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 129,
+      "imgHeight": 86,
+      "width": 129,
+      "height": 86,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i6214665f-d172-468a-a569-116067ce2dc0.png",
+      "source": "C:\\Users\\Master\\Desktop\\GamepadTest\\ShoulderR.png",
+      "shape": "rect",
+      "left": 0,
+      "right": 129,
+      "top": 0,
+      "bottom": 86,
+      "uid": "6214665f-d172-468a-a569-116067ce2dc0"
+    },
+    {
+      "name": "ShoulderL",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        0,
+        0
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 129,
+      "imgHeight": 86,
+      "width": 129,
+      "height": 86,
+      "offx": 0,
+      "offy": 0,
+      "origname": "if2613382-f5e0-4356-a8c9-f0480bcec239.png",
+      "source": "C:\\Users\\Master\\Desktop\\GamepadTest\\ShoulderL.png",
+      "shape": "rect",
+      "left": 0,
+      "right": 129,
+      "top": 0,
+      "bottom": 86,
+      "uid": "f2613382-f5e0-4356-a8c9-f0480bcec239"
+    },
+    {
+      "name": "SmallButton",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        0,
+        0
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 36,
+      "imgHeight": 36,
+      "width": 36,
+      "height": 36,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i35edf53d-e391-49ea-a334-acb76e7207c4.png",
+      "source": "C:\\Users\\Master\\Desktop\\GamepadTest\\SmallButton.png",
+      "shape": "rect",
+      "left": 0,
+      "right": 36,
+      "top": 0,
+      "bottom": 36,
+      "uid": "35edf53d-e391-49ea-a334-acb76e7207c4"
+    },
+    {
+      "name": "ThumbStick",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        0,
+        0
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 76,
+      "imgHeight": 76,
+      "width": 76,
+      "height": 76,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i38c65d0c-678f-476d-bce6-933e76551663.png",
+      "source": "C:\\Users\\Master\\Desktop\\GamepadTest\\ThumbStick.png",
+      "shape": "rect",
+      "left": 0,
+      "right": 76,
+      "top": 0,
+      "bottom": 76,
+      "uid": "38c65d0c-678f-476d-bce6-933e76551663"
+    },
+    {
+      "name": "TriggerL",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        0,
+        0
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 202,
+      "imgHeight": 95,
+      "width": 202,
+      "height": 95,
+      "offx": 0,
+      "offy": 0,
+      "origname": "id6e8038f-445e-4d5c-bf83-b81446665ba8.png",
+      "source": "C:\\Users\\Master\\Desktop\\GamepadTest\\TriggerL.png",
+      "shape": "rect",
+      "left": 0,
+      "right": 202,
+      "top": 0,
+      "bottom": 95,
+      "uid": "d6e8038f-445e-4d5c-bf83-b81446665ba8"
+    },
+    {
+      "name": "DpadLeft",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        0,
+        0
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 49,
+      "imgHeight": 49,
+      "width": 49,
+      "height": 49,
+      "offx": 0,
+      "offy": 0,
+      "origname": "ib39b662c-9dc3-4b98-8a66-94804b41bc4b.png",
+      "source": "C:\\Users\\Master\\Desktop\\GamepadTest\\DpadLeft.png",
+      "shape": "rect",
+      "left": 0,
+      "right": 49,
+      "top": 0,
+      "bottom": 49,
+      "uid": "b39b662c-9dc3-4b98-8a66-94804b41bc4b"
+    },
+    {
+      "name": "TriggerR",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        0,
+        0
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 202,
+      "imgHeight": 95,
+      "width": 202,
+      "height": 95,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i33ed6a56-0f3e-46db-86cc-a0002a122bc4.png",
+      "source": "C:\\Users\\Master\\Desktop\\GamepadTest\\TriggerR.png",
+      "shape": "rect",
+      "left": 0,
+      "right": 202,
+      "top": 0,
+      "bottom": 95,
+      "uid": "33ed6a56-0f3e-46db-86cc-a0002a122bc4"
+    },
+    {
+      "name": "BigButton",
+      "untill": 0,
+      "grid": [
+        1,
+        1
+      ],
+      "axis": [
+        0,
+        0
+      ],
+      "marginx": 0,
+      "marginy": 0,
+      "imgWidth": 74,
+      "imgHeight": 74,
+      "width": 74,
+      "height": 74,
+      "offx": 0,
+      "offy": 0,
+      "origname": "i3c02d1c0-c969-40c9-a2a2-f41ee6ddef93.png",
+      "source": "C:\\Users\\Master\\Desktop\\GamepadTest\\BigButton.png",
+      "shape": "rect",
+      "left": 0,
+      "right": 74,
+      "top": 0,
+      "bottom": 74,
+      "uid": "3c02d1c0-c969-40c9-a2a2-f41ee6ddef93"
+    }
+  ],
+  "skeletons": [],
+  "types": [
+    {
+      "name": "ThumbL",
+      "depth": 0,
+      "oncreate": "",
+      "onstep": "this.x = this.xstart + ct.actions.ThumbLX.value * 40;\nthis.y = this.ystart + ct.actions.ThumbLY.value * 40;\n\nthis.tint = ct.actions.ThumbLPress.down? 0x000000 : 0xffffff;",
+      "ondraw": "",
+      "ondestroy": "",
+      "uid": "1ac73566-eec6-4927-b7ad-09c21abe9fe2",
+      "texture": "38c65d0c-678f-476d-bce6-933e76551663",
+      "extends": {},
+      "lastmod": 1575853454279
+    },
+    {
+      "name": "ThumbR",
+      "depth": 0,
+      "oncreate": "",
+      "onstep": "this.x = this.xstart + ct.actions.ThumbRX.value * 40;\nthis.y = this.ystart + ct.actions.ThumbRY.value * 40;\n\nthis.tint = ct.actions.ThumbRPress.down? 0x000000 : 0xffffff;",
+      "ondraw": "",
+      "ondestroy": "",
+      "uid": "019c3f38-7126-40c4-8b4a-5bd16a88f769",
+      "texture": "38c65d0c-678f-476d-bce6-933e76551663",
+      "extends": {},
+      "lastmod": 1575853472409
+    },
+    {
+      "name": "XButton",
+      "depth": 0,
+      "oncreate": "",
+      "onstep": "",
+      "ondraw": "",
+      "ondestroy": "",
+      "uid": "580e3497-accd-4e29-bc87-01559c33344b",
+      "texture": "3c02d1c0-c969-40c9-a2a2-f41ee6ddef93",
+      "extends": {},
+      "lastmod": 1570250276689
+    },
+    {
+      "name": "DPadDown",
+      "depth": 0,
+      "oncreate": "",
+      "onstep": "this.tint = ct.actions.DPadD.down? 0x000000 : 0xffffff;",
+      "ondraw": "",
+      "ondestroy": "",
+      "uid": "5dd36bb8-c5d5-48d3-8f9e-23181c6efba5",
+      "texture": "da5f7a17-620b-4afd-ae47-97b0c8b9d0f0",
+      "extends": {},
+      "lastmod": 1570249307956
+    },
+    {
+      "name": "DPadUp",
+      "depth": 0,
+      "oncreate": "",
+      "onstep": "this.tint = ct.actions.DPadU.down? 0x000000 : 0xffffff;",
+      "ondraw": "",
+      "ondestroy": "",
+      "uid": "30fc57dc-aae0-450f-b4dc-731d0ea2bf78",
+      "texture": "266aa370-9416-4d88-833d-bbb561ef08c0",
+      "extends": {},
+      "lastmod": 1570249438307
+    },
+    {
+      "name": "DPadLeft",
+      "depth": 0,
+      "oncreate": "",
+      "onstep": "this.tint = ct.actions.DPadL.down? 0x000000 : 0xffffff;",
+      "ondraw": "",
+      "ondestroy": "",
+      "uid": "0db89052-5291-486b-9ad8-91050f7a5b98",
+      "texture": "b39b662c-9dc3-4b98-8a66-94804b41bc4b",
+      "extends": {},
+      "lastmod": 1570249354827
+    },
+    {
+      "name": "DPadRight",
+      "depth": 0,
+      "oncreate": "",
+      "onstep": "this.tint = ct.actions.DPadR.down? 0x000000 : 0xffffff;",
+      "ondraw": "",
+      "ondestroy": "",
+      "uid": "06dfc8a3-849d-4a01-881b-7bc3944aabdb",
+      "texture": "803858d1-450e-4b5c-b3ac-cc9e262bcd68",
+      "extends": {},
+      "lastmod": 1570249345812
+    },
+    {
+      "name": "FaceRight",
+      "depth": 0,
+      "oncreate": "",
+      "onstep": "this.tint = ct.actions.FaceR.down? 0x000000 : 0xffffff;",
+      "ondraw": "",
+      "ondestroy": "",
+      "uid": "9d3bd2a3-d95a-488f-8836-bed8b18364a0",
+      "texture": "52455802-8f3f-43d0-bedc-81cd51ccb54a",
+      "extends": {},
+      "lastmod": 1570249463315
+    },
+    {
+      "name": "FaceLeft",
+      "depth": 0,
+      "oncreate": "",
+      "onstep": "this.tint = ct.actions.FaceL.down? 0x000000 : 0xffffff;",
+      "ondraw": "",
+      "ondestroy": "",
+      "uid": "60cd5d82-7fde-4a61-92f4-8479cab54ea0",
+      "texture": "8bd53deb-a6e9-4ba6-b95e-f62a45d3cafc",
+      "extends": {},
+      "lastmod": 1570249478994
+    },
+    {
+      "name": "FaceUp",
+      "depth": 0,
+      "oncreate": "",
+      "onstep": "this.tint = ct.actions.FaceU.down? 0x000000 : 0xffffff;",
+      "ondraw": "",
+      "ondestroy": "",
+      "uid": "123a3431-36ee-4b82-9d3c-1fd1aa4adbaf",
+      "texture": "1a53eb25-280a-4ecc-8cf4-e3fbbdb1e8f7",
+      "extends": {},
+      "lastmod": 1570249492875
+    },
+    {
+      "name": "FaceDown",
+      "depth": 0,
+      "oncreate": "",
+      "onstep": "this.tint = ct.actions.FaceD.down? 0x000000 : 0xffffff;",
+      "ondraw": "",
+      "ondestroy": "",
+      "uid": "c9bccc0a-5585-41a9-bbff-f58d648bc87c",
+      "texture": "cf9ae559-0ca4-4614-94ec-d2da25e7445e",
+      "extends": {},
+      "lastmod": 1570250136690
+    },
+    {
+      "name": "TriggerL",
+      "depth": 0,
+      "oncreate": "",
+      "onstep": "this.tint = ct.actions.TriggerL.down? 0x000000 : 0xffffff;",
+      "ondraw": "",
+      "ondestroy": "",
+      "uid": "2a2646f1-9c0f-4180-b372-717d4ce29cc7",
+      "texture": "d6e8038f-445e-4d5c-bf83-b81446665ba8",
+      "extends": {},
+      "lastmod": 1570249605563
+    },
+    {
+      "name": "TriggerR",
+      "depth": 0,
+      "oncreate": "",
+      "onstep": "this.tint = ct.actions.TriggerR.down? 0x000000 : 0xffffff;",
+      "ondraw": "",
+      "ondestroy": "",
+      "uid": "afeffe7c-aee3-485b-bf68-9d4f30abd07d",
+      "texture": "33ed6a56-0f3e-46db-86cc-a0002a122bc4",
+      "extends": {},
+      "lastmod": 1570249618475
+    },
+    {
+      "name": "ShoulderL",
+      "depth": 0,
+      "oncreate": "",
+      "onstep": "this.tint = ct.actions.ShoulderL.down? 0x000000 : 0xffffff;",
+      "ondraw": "",
+      "ondestroy": "",
+      "uid": "2493df0a-d47f-4075-8e97-7c8f8f3c0a04",
+      "texture": "f2613382-f5e0-4356-a8c9-f0480bcec239",
+      "extends": {},
+      "lastmod": 1570249641106
+    },
+    {
+      "name": "ShoulderR",
+      "depth": 0,
+      "oncreate": "",
+      "onstep": "this.tint = ct.actions.ShoulderR.down? 0x000000 : 0xffffff;",
+      "ondraw": "",
+      "ondestroy": "",
+      "uid": "b7c2fd4a-37b2-4f7b-bc45-38929b04adf7",
+      "texture": "6214665f-d172-468a-a569-116067ce2dc0",
+      "extends": {},
+      "lastmod": 1570249655707
+    },
+    {
+      "name": "SpecialRight",
+      "depth": 0,
+      "oncreate": "",
+      "onstep": "this.tint = ct.actions.ExtraR.down? 0x000000 : 0xffffff;",
+      "ondraw": "",
+      "ondestroy": "",
+      "uid": "232077d9-4d43-4ba5-b7ae-1a36090dce5b",
+      "texture": "35edf53d-e391-49ea-a334-acb76e7207c4",
+      "extends": {},
+      "lastmod": 1570250158818
+    },
+    {
+      "name": "SpecialLeft",
+      "depth": 0,
+      "oncreate": "",
+      "onstep": "this.tint = ct.actions.ExtraL.down? 0x000000 : 0xffffff;",
+      "ondraw": "",
+      "ondestroy": "",
+      "uid": "ed23a0bd-e67d-43ce-8b26-3eadb01a37d2",
+      "texture": "35edf53d-e391-49ea-a334-acb76e7207c4",
+      "extends": {},
+      "lastmod": 1570250192369
+    }
+  ],
+  "sounds": [],
+  "styles": [],
+  "rooms": [
+    {
+      "name": "TestSuite",
+      "oncreate": "this.anyText = new PIXI.Text('Any button', {\n    fontWeight: 800,\n    fontSize: 32,\n    fill: 0x78909c\n});\n\nthis.anyText.anchor.x = 0.5;\nthis.anyText.x = ct.viewWidth / 2;\nthis.anyText.y = ct.viewHeight - 64;\n\nthis.addChild(this.anyText);",
+      "onstep": "this.anyText.tint = ct.actions.Any.down? 0x000000 : 0xffffff;",
+      "ondraw": "",
+      "onleave": "",
+      "width": 1920,
+      "height": 1080,
+      "backgrounds": [],
+      "copies": [
+        {
+          "x": 665,
+          "y": 447,
+          "uid": "1ac73566-eec6-4927-b7ad-09c21abe9fe2"
+        },
+        {
+          "x": 1012,
+          "y": 604,
+          "uid": "019c3f38-7126-40c4-8b4a-5bd16a88f769"
+        },
+        {
+          "x": 801,
+          "y": 665.5,
+          "uid": "5dd36bb8-c5d5-48d3-8f9e-23181c6efba5"
+        },
+        {
+          "x": 850,
+          "y": 616.5,
+          "uid": "06dfc8a3-849d-4a01-881b-7bc3944aabdb"
+        },
+        {
+          "x": 801,
+          "y": 567.5,
+          "uid": "30fc57dc-aae0-450f-b4dc-731d0ea2bf78"
+        },
+        {
+          "x": 752,
+          "y": 616.5,
+          "uid": "0db89052-5291-486b-9ad8-91050f7a5b98"
+        },
+        {
+          "x": 1144,
+          "y": 507.5,
+          "uid": "c9bccc0a-5585-41a9-bbff-f58d648bc87c"
+        },
+        {
+          "x": 1144,
+          "y": 399.5,
+          "uid": "123a3431-36ee-4b82-9d3c-1fd1aa4adbaf"
+        },
+        {
+          "x": 1090,
+          "y": 453.5,
+          "uid": "60cd5d82-7fde-4a61-92f4-8479cab54ea0"
+        },
+        {
+          "x": 1198,
+          "y": 453.5,
+          "uid": "9d3bd2a3-d95a-488f-8836-bed8b18364a0"
+        },
+        {
+          "x": 898,
+          "y": 389,
+          "uid": "580e3497-accd-4e29-bc87-01559c33344b"
+        },
+        {
+          "x": 1075,
+          "y": 287,
+          "uid": "afeffe7c-aee3-485b-bf68-9d4f30abd07d"
+        },
+        {
+          "x": 1113,
+          "y": 220,
+          "uid": "b7c2fd4a-37b2-4f7b-bc45-38929b04adf7"
+        },
+        {
+          "x": 593,
+          "y": 287,
+          "uid": "2a2646f1-9c0f-4180-b372-717d4ce29cc7"
+        },
+        {
+          "x": 628,
+          "y": 220,
+          "uid": "2493df0a-d47f-4075-8e97-7c8f8f3c0a04"
+        },
+        {
+          "x": 978,
+          "y": 485,
+          "uid": "232077d9-4d43-4ba5-b7ae-1a36090dce5b"
+        },
+        {
+          "x": 858,
+          "y": 485,
+          "uid": "ed23a0bd-e67d-43ce-8b26-3eadb01a37d2"
+        }
+      ],
+      "tiles": [
+        {
+          "depth": -10,
+          "tiles": [
+            {
+              "x": 512,
+              "y": 128,
+              "texture": "163c9f50-bc40-468b-9976-ce8731177e8a",
+              "grid": [
+                0,
+                0,
+                1,
+                1
+              ]
+            }
+          ]
+        }
+      ],
+      "uid": "73fc11c1-de75-4445-948d-c886c2450bb3",
+      "thumbnail": "c886c2450bb3",
+      "gridX": 64,
+      "gridY": 64,
+      "lastmod": 1575928342124
+    }
+  ],
+  "actions": [
+    {
+      "name": "ThumbLX",
+      "methods": [
+        {
+          "code": "gamepad.LStickX"
+        }
+      ]
+    },
+    {
+      "name": "ThumbLY",
+      "methods": [
+        {
+          "code": "gamepad.LStickY"
+        }
+      ]
+    },
+    {
+      "name": "ThumbRX",
+      "methods": [
+        {
+          "code": "gamepad.RStickX"
+        }
+      ]
+    },
+    {
+      "name": "ThumbRY",
+      "methods": [
+        {
+          "code": "gamepad.RStickY"
+        }
+      ]
+    },
+    {
+      "name": "FaceL",
+      "methods": [
+        {
+          "code": "gamepad.Button4"
+        }
+      ]
+    },
+    {
+      "name": "FaceR",
+      "methods": [
+        {
+          "code": "gamepad.Button2"
+        }
+      ]
+    },
+    {
+      "name": "FaceU",
+      "methods": [
+        {
+          "code": "gamepad.Button1"
+        }
+      ]
+    },
+    {
+      "name": "FaceD",
+      "methods": [
+        {
+          "code": "gamepad.Button3"
+        }
+      ]
+    },
+    {
+      "name": "DPadL",
+      "methods": [
+        {
+          "code": "gamepad.Left"
+        }
+      ]
+    },
+    {
+      "name": "DPadR",
+      "methods": [
+        {
+          "code": "gamepad.Right"
+        }
+      ]
+    },
+    {
+      "name": "DPadU",
+      "methods": [
+        {
+          "code": "gamepad.Up"
+        }
+      ]
+    },
+    {
+      "name": "DPadD",
+      "methods": [
+        {
+          "code": "gamepad.Down"
+        }
+      ]
+    },
+    {
+      "name": "ShoulderL",
+      "methods": [
+        {
+          "code": "gamepad.L1"
+        }
+      ]
+    },
+    {
+      "name": "ShoulderR",
+      "methods": [
+        {
+          "code": "gamepad.R1"
+        }
+      ]
+    },
+    {
+      "name": "TriggerL",
+      "methods": [
+        {
+          "code": "gamepad.L2"
+        }
+      ]
+    },
+    {
+      "name": "TriggerR",
+      "methods": [
+        {
+          "code": "gamepad.R2"
+        }
+      ]
+    },
+    {
+      "name": "ExtraL",
+      "methods": [
+        {
+          "code": "gamepad.Select"
+        }
+      ]
+    },
+    {
+      "name": "ExtraR",
+      "methods": [
+        {
+          "code": "gamepad.Start"
+        }
+      ]
+    },
+    {
+      "name": "ThumbLPress",
+      "methods": [
+        {
+          "code": "gamepad.L3"
+        }
+      ]
+    },
+    {
+      "name": "ThumbRPress",
+      "methods": [
+        {
+          "code": "gamepad.R3"
+        }
+      ]
+    },
+    {
+      "name": "Any",
+      "methods": [
+        {
+          "code": "gamepad.Any"
+        }
+      ]
+    }
+  ],
+  "starting": 0,
+  "settings": {
+    "minifyhtmlcss": false,
+    "minifyjs": false,
+    "fps": 30,
+    "version": [
+      0,
+      0,
+      0
+    ],
+    "versionPostfix": "",
+    "export": {
+      "windows64": true,
+      "windows32": true,
+      "linux64": true,
+      "linux32": true,
+      "mac64": true,
+      "debug": false
+    }
+  },
+  "scripts": [
+    {
+      "name": "Background color",
+      "code": "ct.pixiApp.renderer.backgroundColor = 0xffffff;"
+    }
+  ],
+  "fonts": []
+}

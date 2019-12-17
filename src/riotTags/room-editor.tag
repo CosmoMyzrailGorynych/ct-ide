@@ -62,12 +62,14 @@ room-editor.panel.view
             button#roomcenter(onclick="{roomToCenter}") {voc.tocenter}
             span.aMouseCoord ({mouseX}:{mouseY})
     room-events-editor(if="{editingCode}" room="{room}")
+    context-menu(menu="{roomCanvasCopiesMenu}" ref="roomCanvasCopiesMenu")
+    context-menu(menu="{roomCanvasMenu}" ref="roomCanvasMenu")
+    context-menu(menu="{roomCanvasTileMenu}" ref="roomCanvasTileMenu")
+    context-menu(menu="{roomCanvasTilesMenu}" ref="roomCanvasTilesMenu")
     script.
         this.editingCode = false;
         this.forbidDrawing = false;
-        const fs = require('fs-extra'),
-              gui = require('nw.gui');
-        const win = gui.Window.get();
+        const fs = require('fs-extra');
         const glob = require('./data/node_requires/glob');
         this.namespace = 'roomview';
         this.mixin(window.riotVoc);
@@ -110,11 +112,11 @@ room-editor.panel.view
             this.gridCanvas = document.createElement('canvas');
             this.gridCanvas.x = this.gridCanvas.getContext('2d');
             this.redrawGrid();
-            win.on('resize', updateCanvasSize);
+            window.addEventListener('resize', updateCanvasSize);
             updateCanvasSize();
         });
         this.on('unmount', () => {
-            win.removeAllListeners('resize');
+            window.removeEventListener('resize', updateCanvasSize);
         });
 
         this.openRoomEvents = e => {

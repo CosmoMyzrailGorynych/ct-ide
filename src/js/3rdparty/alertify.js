@@ -4,7 +4,7 @@
 } */
 
 (function() {
-    
+
     'use strict';
 
     var TRANSITION_FALLBACK_DURATION = 500;
@@ -240,7 +240,7 @@
 
             /**
              * Initiate all the required pieces for the dialog box
-             * 
+             *
              * @param {String} item HTML
              *
              * @return {undefined}
@@ -483,23 +483,7 @@
         };
     };
 
-    // AMD, window, and NPM support
-    if (typeof module !== 'undefined' && Boolean(module) && Boolean(module.exports)) {
-        // Preserve backwards compatibility
-        module.exports = function() {
-            return new Alertify();
-        };
-        var obj = new Alertify();
-        for (var key in obj) {
-            module.exports[key] = obj[key];
-        }
-    } else if (typeof define === 'function' && define.amd) {
-        define(function() {
-            return new Alertify();
-        });
-    } else {
-        window.alertify = new Alertify();
-    }
+    window.alertify = new Alertify();
 
 }());
 

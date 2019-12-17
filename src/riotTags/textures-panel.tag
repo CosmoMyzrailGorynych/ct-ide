@@ -62,10 +62,10 @@ textures-panel.panel.view
                 onchange="{textureImport}")
 
     texture-editor(if="{editing}" texture="{currentTexture}")
+    context-menu(menu="{textureMenu}" ref="textureMenu")
     script.
         const fs = require('fs-extra'),
-              path = require('path'),
-              gui = require('nw.gui');
+              path = require('path');
         const glob = require('./data/node_requires/glob');
         const generateGUID = require('./data/node_requires/generateGUID');
         this.namespace = 'texture';
@@ -152,7 +152,7 @@ textures-panel.panel.view
                 imgHeight: 32,
                 closedStrip: true
             }
-            img.src = '/data/img/unknown.png';
+            img.src = 'data/img/unknown.png';
         };
 
         this.setUpPanel = e => {
@@ -174,9 +174,8 @@ textures-panel.panel.view
          * An event fired when user attempts to add files from a file manager (by clicking an "Import" button)
          */
         this.textureImport = e => { // input[type="file"]
-            var i;
-            files = e.target.value.split(';');
-            for (i = 0; i < files.length; i++) {
+            const files = [...e.target.files].map(file => file.path);
+            for (let i = 0; i < files.length; i++) {
                 if (/\.(jpg|gif|png|jpeg)/gi.test(files[i])) {
                     let id = generateGUID();
                     this.loadImg(
@@ -194,7 +193,7 @@ textures-panel.panel.view
                     )
                 }
             }
-            e.srcElement.value = "";
+            e.srcElement.value = '';
             this.dropping = false;
             e.preventDefault();
         };
@@ -363,94 +362,92 @@ textures-panel.panel.view
         };
 
         // Creates a context menu that will appear on RMB click on texture cards
-        var textureMenu = new gui.Menu();
-        textureMenu.append(new gui.MenuItem({
-            label: languageJSON.common.open,
-            click: e => {
-                if (this.currentTextureType === 'skeleton') {
-                    this.openSkeleton(this.currentTexture)();
-                } else {
-                    this.openTexture(this.currentTexture)();
-                }
-                this.update();
-            }
-        }));
-        textureMenu.append(new gui.MenuItem({
-            label: languageJSON.common.copyName,
-            click: e => {
-                var clipboard = nw.Clipboard.get();
-                clipboard.set(this.currentTexture.name, 'text');
-            }
-        }));
-        textureMenu.append(new gui.MenuItem({
-            label: window.languageJSON.common.rename,
-            click: e => {
-                alertify
-                .defaultValue(this.currentTexture.name)
-                .prompt(window.languageJSON.common.newname)
-                .then(e => {
-                    if (e.inputValue && e.inputValue != '' && e.buttonClicked !== 'cancel') {
-                        this.currentTexture.name = e.inputValue;
-                        this.update();
+        this.textureMenu = {
+            opened: false,
+            items: [{
+                label: languageJSON.common.open,
+                click: e => {
+                    if (this.currentTextureType === 'skeleton') {
+                        this.openSkeleton(this.currentTexture)();
+                    } else {
+                        this.openTexture(this.currentTexture)();
                     }
-                });
-            }
-        }));
-        textureMenu.append(new gui.MenuItem({
-            type: 'separator'
-        }));
-        textureMenu.append(new gui.MenuItem({
-            label: window.languageJSON.common.delete,
-            click: e => {
-                alertify
-                .okBtn(window.languageJSON.common.delete)
-                .cancelBtn(window.languageJSON.common.cancel)
-                .confirm(window.languageJSON.common.confirmDelete.replace('{0}', this.currentTexture.name))
-                .then(e => {
-                    if (e.buttonClicked === 'ok') {
-                        if (this.currentTextureType === 'skeleton') {
-                            window.currentProject.skeletons.splice(this.currentTextureId, 1);
-                        } else {
-                            for (const type of window.currentProject.types) {
-                                if (type.texture === this.currentTexture.uid) {
-                                    type.texture = -1;
+                    this.update();
+                }
+            }, {
+                label: languageJSON.common.copyName,
+                click: e => {
+                    const {clipboard} = require('electron');
+                    clipboard.writeText(this.currentTexture.name);
+                }
+            }, {
+                label: window.languageJSON.common.rename,
+                click: e => {
+                    alertify
+                    .defaultValue(this.currentTexture.name)
+                    .prompt(window.languageJSON.common.newname)
+                    .then(e => {
+                        if (e.inputValue && e.inputValue != '' && e.buttonClicked !== 'cancel') {
+                            this.currentTexture.name = e.inputValue;
+                            this.update();
+                        }
+                    });
+                }
+            }, {
+                type: 'separator'
+            }, {
+                label: window.languageJSON.common.delete,
+                click: e => {
+                    alertify
+                    .okBtn(window.languageJSON.common.delete)
+                    .cancelBtn(window.languageJSON.common.cancel)
+                    .confirm(window.languageJSON.common.confirmDelete.replace('{0}', this.currentTexture.name))
+                    .then(e => {
+                        if (e.buttonClicked === 'ok') {
+                            if (this.currentTextureType === 'skeleton') {
+                                window.currentProject.skeletons.splice(this.currentTextureId, 1);
+                            } else {
+                                for (const type of window.currentProject.types) {
+                                    if (type.texture === this.currentTexture.uid) {
+                                        type.texture = -1;
+                                    }
                                 }
-                            }
-                            for (const room of window.currentProject.rooms) {
-                                if ('tiles' in room) {
-                                    for (const layer of room.tiles) {
+                                for (const room of window.currentProject.rooms) {
+                                    if ('tiles' in room) {
+                                        for (const layer of room.tiles) {
+                                            let i = 0;
+                                            while (i < layer.tiles.length) {
+                                                if (layer.tiles[i].texture === this.currentTexture.uid) {
+                                                    layer.tiles.splice(i, 1);
+                                                } else {
+                                                    i++;
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if ('backgrounds' in room) {
                                         let i = 0;
-                                        while (i < layer.tiles.length) {
-                                            if (layer.tiles[i].texture === this.currentTexture.uid) {
-                                                layer.tiles.splice(i, 1);
+                                        while (i < room.backgrounds.length) {
+                                            if (room.backgrounds[i].texture === this.currentTexture.uid) {
+                                                room.backgrounds.splice(i, 1);
                                             } else {
                                                 i++;
                                             }
                                         }
                                     }
                                 }
-                                if ('backgrounds' in room) {
-                                    let i = 0;
-                                    while (i < room.backgrounds.length) {
-                                        if (room.backgrounds[i].texture === this.currentTexture.uid) {
-                                            room.backgrounds.splice(i, 1);
-                                        } else {
-                                            i++;
-                                        }
-                                    }
-                                }
+                                window.currentProject.textures.splice(this.currentTextureId, 1);
                             }
-                            window.currentProject.textures.splice(this.currentTextureId, 1);
+                            this.updateList();
+                            this.update();
+                            alertify
+                                .okBtn(window.languageJSON.common.ok)
+                                .cancelBtn(window.languageJSON.common.cancel);
                         }
-                        this.updateList();
-                        this.update();
-                        alertify
-                            .okBtn(window.languageJSON.common.ok)
-                            .cancelBtn(window.languageJSON.common.cancel);
-                    }
-                });
-            }
-        }));
+                    });
+                }
+            }]
+        };
         /**
          * Shows the context menu created above
          */
@@ -462,7 +459,7 @@ textures-panel.panel.view
                 this.currentTextureId = currentProject.textures.indexOf(texture);
             }
             this.currentTexture = texture;
-            textureMenu.popup(e.clientX, e.clientY);
+            this.refs.textureMenu.popup(e.clientX, e.clientY);
             e.preventDefault();
         };
 
