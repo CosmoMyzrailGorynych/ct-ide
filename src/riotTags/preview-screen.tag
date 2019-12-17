@@ -27,7 +27,8 @@ preview-bottom-panel.flexrow
         };
         this.openExternal = e => {
             var game = document.getElementById('thePreview');
-            nw.Shell.openExternal(game.src);
+            const {shell} = require('electron');
+            shell.openExternal(game.src);
         };
         this.showModal = e => {
             this.bShowModal = !this.bShowModal;

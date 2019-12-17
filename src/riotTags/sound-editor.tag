@@ -65,7 +65,7 @@ sound-editor.panel.view
             }
         };
         this.changeSoundFile = () => {
-            var val = this.refs.inputsound.value;
+            const val = this.refs.inputsound.files[0].path;
             fs.copy(val, sessionStorage.projdir + '/snd/s' + this.sound.uid + path.extname(val), e => {
                 if (e) {
                     console.error(e);

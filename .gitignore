@@ -39,12 +39,14 @@ desktop\.ini
 
 # Generated files
 src/typedefs/ct.js/types.d.ts
+app/examples
 app/data/bundle.js
 app/data/bundle.css
 app/data/node_requires/**/*
 app/data/fonts/style/.css
 app/data/theme*.css
 app/data/typedefs/global.d.ts
+app/data/typedefs/pixi.js.d.ts
 /app/data/docs
 app/index.html
 app/preview.html

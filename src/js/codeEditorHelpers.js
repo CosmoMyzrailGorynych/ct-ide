@@ -3,10 +3,11 @@
 (function() {
     const {extend} = require('./data/node_requires/objectUtils');
     const fs = require('fs-extra');
+    const path = require('path');
     /* global monaco riot */
 
     const lib = [
-        './node_modules/pixi.js/pixi.js.d.ts',
+        './data/typedefs/pixi.js.d.ts',
         './data/typedefs/global.d.ts',
         './data/typedefs/keywordWorkarounds.d.ts'
     ];
@@ -25,7 +26,7 @@
         });
 
         for (const file of lib) {
-            fs.readFile(file, {
+            fs.readFile(path.join(__dirname, file), {
                 encoding: 'utf-8'
             })
             .then(data => {

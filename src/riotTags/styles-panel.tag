@@ -24,6 +24,7 @@ styles-panel.flexfix.tall.fifty
             .aStyleIcon
                 img(src="file://{window.sessionStorage.projdir + '/img/' + style.origname}_prev.png?{style.lastmod}")
     style-editor(if="{editingStyle}" styleobj="{editedStyle}")
+    context-menu(menu="{styleMenu}" ref="styleMenu")
     script.
         const generateGUID = require('./data/node_requires/generateGUID');
 
@@ -76,8 +77,6 @@ styles-panel.flexfix.tall.fifty
             }
         };
 
-        const gui = require('nw.gui');
-
         this.styleCreate = e => {
             if (this.editingStyle) {
                 return;
@@ -116,86 +115,81 @@ styles-panel.flexfix.tall.fifty
             window.signals.off('projectLoaded', this.setUpPanel);
         });
 
-        // Контекстное меню для управления стилями по нажатию ПКМ по карточкам
-        var styleMenu = new gui.Menu();
         this.onStyleContextMenu = style => e => {
             this.editedStyle = e.item.style;
-            styleMenu.popup(e.clientX, e.clientY);
+            this.refs.styleMenu.popup(e.clientX, e.clientY);
             e.preventDefault();
         };
-        styleMenu.append(new gui.MenuItem({
-            label: window.languageJSON.common.open,
-            click: e => {
-                this.editingStyle = true;
-                this.update();
-            }
-        }));
-        // Пункт "Скопировать название"
-        styleMenu.append(new gui.MenuItem({
-            label: languageJSON.common.copyName,
-            click: e => {
-                var clipboard = nw.Clipboard.get();
-                clipboard.set(this.editedStyle.name, 'text');
-            }
-        }));
-        styleMenu.append(new gui.MenuItem({
-            label: window.languageJSON.common.duplicate,
-            click: () => {
-                alertify
-                .defaultValue(this.editedStyle.name + '_dup')
-                .prompt(window.languageJSON.common.newname)
-                .then(e => {
-                    if (e.inputValue !== '' && e.buttonClicked !== 'cancel') {
-                        var id = generateGUID(),
-                            slice = id.split('-').pop();
-                        var newStyle = JSON.parse(JSON.stringify(this.editedStyle));
-                        newStyle.name = e.inputValue;
-                        newStyle.origname = 's' + slice;
-                        newStyle.uid = id;
-                        window.currentProject.styles.push(newStyle);
-                        this.editedStyleId = id;
-                        this.editedStyle = newStyle;
-                        this.editingStyle = true;
-                        this.updateList();
-                        this.update();
-                    }
-                });
-            }
-        }));
-        styleMenu.append(new gui.MenuItem({
-            label: window.languageJSON.common.rename,
-            click: () => {
-                alertify
-                .defaultValue(this.editedStyle.name)
-                .prompt(window.languageJSON.common.newname)
-                .then(e => {
-                    if (e.inputValue !== '' && e.buttonClicked !== 'cancel') {
-                        this.editedStyle.name = e.inputValue;
-                        this.update();
-                    }
-                });
-            }
-        }));
-        styleMenu.append(new gui.MenuItem({
-            type: 'separator'
-        }));
-        styleMenu.append(new gui.MenuItem({
-            label: window.languageJSON.common.delete,
-            click: () => {
-                alertify
-                .okBtn(window.languageJSON.common.delete)
-                .cancelBtn(window.languageJSON.common.cancel)
-                .confirm(window.languageJSON.common.confirmDelete.replace('{0}', this.editedStyle.name))
-                .then(e => {
-                    if (e.buttonClicked === 'ok') {
-                        const ind = window.currentProject.styles.indexOf(this.editedStyle);
-                        window.currentProject.styles.splice(ind, 1);
-                        this.updateList();
-                        this.update();
-                        alertify
-                        .okBtn(window.languageJSON.common.ok)
-                        .cancelBtn(window.languageJSON.common.cancel);
-                    }
-                });
-            }
-        }));
+
+        this.styleMenu = {
+            items: [{
+                label: window.languageJSON.common.open,
+                click: e => {
+                    this.editingStyle = true;
+                    this.update();
+                }
+            }, {
+                label: languageJSON.common.copyName,
+                click: e => {
+                    const {clipboard} = require('electron');
+                    clipboard.writeText(this.editedStyle.name);
+                }
+            }, {
+                label: window.languageJSON.common.duplicate,
+                click: () => {
+                    alertify
+                    .defaultValue(this.editedStyle.name + '_dup')
+                    .prompt(window.languageJSON.common.newname)
+                    .then(e => {
+                        if (e.inputValue !== '' && e.buttonClicked !== 'cancel') {
+                            var id = generateGUID(),
+                                slice = id.split('-').pop();
+                            var newStyle = JSON.parse(JSON.stringify(this.editedStyle));
+                            newStyle.name = e.inputValue;
+                            newStyle.origname = 's' + slice;
+                            newStyle.uid = id;
+                            window.currentProject.styles.push(newStyle);
+                            this.editedStyleId = id;
+                            this.editedStyle = newStyle;
+                            this.editingStyle = true;
+                            this.updateList();
+                            this.update();
+                        }
+                    });
+                }
+            }, {
+                label: window.languageJSON.common.rename,
+                click: () => {
+                    alertify
+                    .defaultValue(this.editedStyle.name)
+                    .prompt(window.languageJSON.common.newname)
+                    .then(e => {
+                        if (e.inputValue !== '' && e.buttonClicked !== 'cancel') {
+                            this.editedStyle.name = e.inputValue;
+                            this.update();
+                        }
+                    });
+                }
+            }, {
+                type: 'separator'
+            }, {
+                label: window.languageJSON.common.delete,
+                click: () => {
+                    alertify
+                    .okBtn(window.languageJSON.common.delete)
+                    .cancelBtn(window.languageJSON.common.cancel)
+                    .confirm(window.languageJSON.common.confirmDelete.replace('{0}', this.editedStyle.name))
+                    .then(e => {
+                        if (e.buttonClicked === 'ok') {
+                            const ind = window.currentProject.styles.indexOf(this.editedStyle);
+                            window.currentProject.styles.splice(ind, 1);
+                            this.updateList();
+                            this.update();
+                            alertify
+                            .okBtn(window.languageJSON.common.ok)
+                            .cancelBtn(window.languageJSON.common.cancel);
+                        }
+                    });
+                }
+            }]
+        };

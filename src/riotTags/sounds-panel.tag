@@ -22,8 +22,9 @@ sounds-panel.panel.view
                 onlong-press="{popupMenu(sound)}"
             )
                 span {sound.name}
-                img(src="/data/img/{sound.isMusic? 'music' : 'wave'}.png")
+                img(src="data/img/{sound.isMusic? 'music' : 'wave'}.png")
     sound-editor(if="{editing}" sound="{editedSound}")
+    context-menu(menu="{soundMenu}" ref="soundMenu")
     script.
         this.namespace = 'sounds';
         this.mixin(window.riotVoc);
@@ -86,8 +87,6 @@ sounds-panel.panel.view
             window.signals.off('projectLoaded', this.setUpPanel);
         });
 
-        const gui = require('nw.gui');
-
         this.soundNew = e => {
             if (this.editing) {
                 return false;
@@ -110,59 +109,57 @@ sounds-panel.panel.view
         };
 
         // A context menu called by clicking on a sound card with RMB
-        var soundMenu = new gui.Menu();
-        soundMenu.append(new gui.MenuItem({
-            label: window.languageJSON.common.open,
-            click: () => {
-                this.openSound(this.editedSound)();
-            }
-        }));
-        soundMenu.append(new gui.MenuItem({
-            label: languageJSON.common.copyName,
-            click: e => {
-                var clipboard = nw.Clipboard.get();
-                clipboard.set(this.editedSound.name, 'text');
-            }
-        }));
-        soundMenu.append(new gui.MenuItem({
-            label: window.languageJSON.common.rename,
-            click: () => {
-                alertify
-                .defaultValue(this.editedSound.name)
-                .prompt(window.languageJSON.common.newname)
-                .then(e => {
-                    if (e.inputValue && e.buttonClicked !== 'cancel') {
-                        this.editedSound.name = e.inputValue;
-                    }
-                });
-            }
-        }));
-        soundMenu.append(new gui.MenuItem({
-            type: 'separator'
-        }));
-        soundMenu.append(new gui.MenuItem({
-            label: window.languageJSON.common.delete,
-            click: () => {
-                alertify
-                .okBtn(window.languageJSON.common.delete)
-                .cancelBtn(window.languageJSON.common.cancel)
-                .confirm(window.languageJSON.common.confirmDelete.replace('{0}', this.editedSound.name))
-                .then(e => {
-                    if (e.buttonClicked === 'ok') {
-                        var ind = window.currentProject.sounds.indexOf(this.editedSound);
-                        window.currentProject.sounds.splice(ind, 1);
-                        this.updateList();
-                        this.update();
-                        alertify
-                        .okBtn(window.languageJSON.common.ok)
-                        .cancelBtn(window.languageJSON.common.cancel);
-                    }
-                });
-            }
-        }));
+        this.soundMenu = {
+            items: [{
+                label: window.languageJSON.common.open,
+                click: () => {
+                    this.openSound(this.editedSound)();
+                }
+            }, {
+                label: languageJSON.common.copyName,
+                click: e => {
+                    const {clipboard} = require('electron');
+                    clipboard.writeText(this.editedSound.name);
+                }
+            }, {
+                label: window.languageJSON.common.rename,
+                click: () => {
+                    alertify
+                    .defaultValue(this.editedSound.name)
+                    .prompt(window.languageJSON.common.newname)
+                    .then(e => {
+                        if (e.inputValue && e.buttonClicked !== 'cancel') {
+                            this.editedSound.name = e.inputValue;
+                            this.update();
+                        }
+                    });
+                }
+            }, {
+                type: 'separator'
+            }, {
+                label: window.languageJSON.common.delete,
+                click: () => {
+                    alertify
+                    .okBtn(window.languageJSON.common.delete)
+                    .cancelBtn(window.languageJSON.common.cancel)
+                    .confirm(window.languageJSON.common.confirmDelete.replace('{0}', this.editedSound.name))
+                    .then(e => {
+                        if (e.buttonClicked === 'ok') {
+                            var ind = window.currentProject.sounds.indexOf(this.editedSound);
+                            window.currentProject.sounds.splice(ind, 1);
+                            this.updateList();
+                            this.update();
+                            alertify
+                            .okBtn(window.languageJSON.common.ok)
+                            .cancelBtn(window.languageJSON.common.cancel);
+                        }
+                    });
+                }
+            }]
+        };
 
         this.popupMenu = sound => e => {
             this.editedSound = sound;
-            soundMenu.popup(e.clientX, e.clientY);
+            this.refs.soundMenu.popup(e.clientX, e.clientY);
             e.preventDefault();
         };

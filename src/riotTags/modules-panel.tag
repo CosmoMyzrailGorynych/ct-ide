@@ -105,7 +105,6 @@ modules-panel.panel.view
     script.
         const path = require('path'),
               fs = require('fs-extra'),
-              gui = require('nw.gui'),
               unzipper = require('unzipper');
         const md = require('markdown-it')({
             html: false,
@@ -275,31 +274,12 @@ modules-panel.panel.view
             this.tab = 'moduleinfo';
         };
 
-        var clipboard = nw.Clipboard.get();
-        var copymeMenu = new gui.Menu();
-        copymeMenu.append(new gui.MenuItem({
-            label: window.languageJSON.common.copy,
-            click: e => {
-                clipboard.set(this.currentFragment, 'text');
-            }
-        }));
-        copymeMenu.append(new gui.MenuItem({
-            label: window.languageJSON.common.addtonotes,
-            click: e => {
-                currentProject.notes += '\n' + this.currentFragment;
-            }
-        }));
-        this.showCopyMenu = e => {
-            this.currentFragment = `ct.${this.currentModuleName}.${e.item.name || e.item.parameter || e.item.method}`;
-            copymeMenu.popup(e.pageX, e.pageY);
-            e.preventDefault();
-        };
-
         this.importModules = async (e) => {
-            const value = e.target.value;
-            if (value.length === 0) {
+            const files = e.target.files;
+            if (files.length === 0) {
                 return;
             }
+            const value = files[0].path;
             e.target.value = '';
             let parentName = null;
             let moduleName = null;

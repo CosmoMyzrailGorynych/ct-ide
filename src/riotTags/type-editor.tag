@@ -2,7 +2,7 @@ type-editor.panel.view.flexrow
     .c3.tall.flexfix
         .flexfix-header
             #typetexture.panel(onclick="{changeSprite}")
-                img.ohchangeme(src="{type.texture === -1? '/data/img/notexture.png' : (glob.texturemap[type.texture].src.split('?')[0] + '_prev@2.png?' + getTypeTextureRevision(type)) + getTypeTextureRevision(type)}")
+                img.ohchangeme(src="{type.texture === -1? 'data/img/notexture.png' : (glob.texturemap[type.texture].src.split('?')[0] + '_prev@2.png?' + getTypeTextureRevision(type)) + getTypeTextureRevision(type)}")
                 div {voc.change}
             b {voc.name}
             input#typename.wide(type="text" onchange="{wire('this.type.name')}" value="{type.name}")

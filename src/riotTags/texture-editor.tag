@@ -247,16 +247,17 @@ texture-editor.panel.view
         });
 
         this.textureReplace = e => {
-            if (/\.(jpg|gif|png|jpeg)/gi.test(this.refs.textureReplacer.value)) {
+            const val = this.refs.textureReplacer.files[0].path;
+            if (/\.(jpg|gif|png|jpeg)/gi.test(val)) {
                 this.loadImg(
                     this.texture.uid,
-                    this.refs.textureReplacer.value,
-                    sessionStorage.projdir + '/img/i' + this.texture.uid + path.extname(this.refs.textureReplacer.value)
+                    val,
+                    sessionStorage.projdir + '/img/i' + this.texture.uid + path.extname(val)
                 );
-                this.texture.source = this.refs.textureReplacer.value;
+                this.texture.source = val;
             } else {
                 alertify.error(window.languageJSON.common.wrongFormat);
-                console.log(this.refs.textureReplacer.value, 'NOT passed');
+                console.log(val, 'NOT passed');
             }
             this.refs.textureReplacer.value = '';
         };
@@ -264,7 +265,7 @@ texture-editor.panel.view
             this.loadImg(
                 this.texture.uid,
                 this.texture.source,
-                sessionStorage.projdir + '/img/i' + this.texture.uid + path.extname(this.refs.textureReplacer.value)
+                sessionStorage.projdir + '/img/i' + this.texture.uid + path.extname(this.texture.source)
             );
         }
 
@@ -732,7 +733,7 @@ texture-editor.panel.view
                     w*k, h*k
                 );
                 var data = c.toDataURL().replace(/^data:image\/\w+;base64,/, '');
-                var buf = new Buffer(data, 'base64');
+                var buf = Buffer.from(data, 'base64');
                 fs.writeFile(destination, buf, function(err) {
                     if (err) {
                         console.log(err);

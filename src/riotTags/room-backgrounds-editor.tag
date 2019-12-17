@@ -1,7 +1,7 @@
 room-backgrounds-editor.room-editor-Backgrounds.tabbed.tall
     ul
         li.bg(each="{background, ind in opts.room.backgrounds}" oncontextmenu="{onContextMenu}")
-            img(src="{background.texture === -1? '/img/notexture.png' : (glob.texturemap[background.texture].src.split('?')[0] + '_prev.png?' + glob.texturemap[background.texture].g.lastmod)}" onclick="{onChangeBgTexture}")
+            img(src="{background.texture === -1? 'data/img/notexture.png' : (glob.texturemap[background.texture].src.split('?')[0] + '_prev.png?' + glob.texturemap[background.texture].g.lastmod)}" onclick="{onChangeBgTexture}")
             span
                 span(class="{active: detailedBackground === background}" onclick="{editBackground}")
                     .icon-settings
@@ -53,8 +53,8 @@ room-backgrounds-editor.room-editor-Backgrounds.tabbed.tall
         i.icon-plus
         span {voc.add}
     texture-selector(ref="texturePicker" if="{pickingBackground}" oncancelled="{onTextureCancel}" onselected="{onTextureSelected}")
+    context-menu(menu="{roomBgMenu}" ref="roomBgMenu")
     script.
-        const gui = require('nw.gui');
         const glob = require('./data/node_requires/glob');
         this.glob = glob;
         this.pickingBackground = false;
@@ -100,18 +100,20 @@ room-backgrounds-editor.room-editor-Backgrounds.tabbed.tall
         };
         this.onContextMenu = e => {
             this.editedBg = Number(e.item.ind);
-            roomBgMenu.popup(e.clientX, e.clientY);
+            this.refs.roomBgMenu.popup(e.clientX, e.clientY);
             e.preventDefault();
         };
-        var roomBgMenu = new gui.Menu();
-        roomBgMenu.append(new gui.MenuItem({
-            label: window.languageJSON.common.delete,
-            click: () => {
-                this.opts.room.backgrounds.splice(this.editedBg, 1);
-                this.parent.resortRoom();
-                this.update();
-            }
-        }));
+        this.roomBgMenu = {
+            opened: false,
+            items: [{
+                label: window.languageJSON.common.delete,
+                click: () => {
+                    this.opts.room.backgrounds.splice(this.editedBg, 1);
+                    this.parent.resortRoom();
+                    this.update();
+                }
+            }]
+        };
         this.onChangeBgTexture = e => {
             this.pickingBackground = true;
             this.editingBackground = e.item.background;

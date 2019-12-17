@@ -3,21 +3,54 @@ html
     include includes/head.pug
     body.tall
         preview-screen.flexrow.tall
-            webview.tall#thePreview(autosize partition="persist:trusted" src="empty.html" style="border: 0; flex: 1 1 100%; line-height: 0; overflow: hidden;")
+            iframe.tall#thePreview(
+                autosize
+                partition="persist:gamedebug"
+                nodeintegration
+                enableremotemodule="false"
+                webpreferences="devTools=yes"
+                src="empty.html"
+                style="border: 0; flex: 1 1 100%; line-height: 0; overflow: hidden;"
+            )
             .flexfix(style="width: 500px;")
-                webview.tall.flexfix-body#theDebugger(autosize partition="persist:trusted" src="empty.html" style="width: 500px; border: 0; line-height: 0; overflow: hidden;")
+                iframe.tall.flexfix-body#theDebugger(
+                    autosize
+                    partition="persist:gamedebug"
+                    webpreferences="devTools=yes"
+                    src="empty.html"
+                    style="width: 500px; border: 0; line-height: 0; overflow: hidden;"
+                )
                 .flexfix-footer
                     preview-bottom-panel
         script(src="./data/bundle.js")
         script.
-            var title = /\?title=([\s\S]+)/g.exec(location.search)[1] || 'ct.js Game';
+            const devtools = '127.0.0.1:18364';
+            const devurl = 'http://' + devtools + '/devtools/inspector.html?ws=' + devtools + '/devtools/page/';
+            const port = /\&port=([\d]+)/g.exec(location.search)[1];
+            const gameUrl = `http://localhost:${port}/`;
+
+            let title = /\?title=([\s\S]+)&/g.exec(location.search)[1];
+            title = title? decodeURIComponent(title) : 'ct.js Game';
             document.title = title + ' — ct.js debugger';
-            var game = document.getElementById('thePreview'),
-                devTools = document.getElementById('theDebugger');
-            game.addEventListener('contentload', e => {
-                game.showDevTools(true, devTools);
+
+            const game = document.getElementById('thePreview'),
+                  devFrame = document.getElementById('theDebugger');
+            game.addEventListener('load', e => {
+                fetch('http://' + devtools + '/json')
+                .then(res => res.json())
+                .then(json => {
+                    const targetedDevtools = 'http://' + devtools + json
+                        .find(item => item.type === 'iframe' && item.url === gameUrl)
+                        .devtoolsFrontendUrl;
+                    console.log(devurl, json);
+                    //devFrame.loadURL(targetedDevtools);
+                    devFrame.src = targetedDevtools;
+                });
                 game.focus();
             });
+
+            //game.loadURL(gameUrl);
+            game.src = gameUrl;
             window.signals = {};
             riot.observable(window.signals);
             riot.mount('*');

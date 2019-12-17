@@ -4,7 +4,7 @@ texture-selector.panel.view
     .flexfix.tall
         .flexfix-header
             .toright
-                b {vocGlob.sort}   
+                b {vocGlob.sort}
                 button.inline.square(onclick="{switchSort('date')}" class="{selected: sort === 'date' && !searchResults}")
                     i.icon-clock
                 button.inline.square(onclick="{switchSort('name')}" class="{selected: sort === 'name' && !searchResults}")
@@ -16,7 +16,7 @@ texture-selector.panel.view
             ul.cards
                 li(if="{opts.showempty}" onclick="{onselected(-1)}")
                     span {window.languageJSON.common.none}
-                    img(src="/data/img/notexture.png")
+                    img(src="data/img/notexture.png")
                 li(
                     each="{texture in (searchResults? searchResults : textures)}"
                     onclick="{onselected(texture)}"
@@ -79,4 +79,3 @@ texture-selector.panel.view
             }
         };
         this.updateList();
-        

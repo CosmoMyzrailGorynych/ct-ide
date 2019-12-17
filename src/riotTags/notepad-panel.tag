@@ -15,7 +15,7 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
         div(show="{tab === 'notepadglobal'}")
             .aCodeEditor(ref="notepadglobal")
         div(show="{tab === 'helppages'}")
-            iframe(src="http://localhost:{server.address().port}/" ref="helpIframe" nwdisable nwfaketop)
+            iframe(src="http://localhost:{server.address().port}/" ref="helpIframe")
             button.aHomeButton(title="{voc.backToHome}" onclick="{backToHome}")
                 i.icon-home
 
@@ -43,7 +43,7 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
         };
         this.on('update', () => {
             setTimeout(() => {
-                if (this.tab && this.refs[this.tab].codeEditor) {
+                if (this.tab && this.refs[this.tab] && this.refs[this.tab].codeEditor) {
                     this.refs[this.tab].codeEditor.layout();
                     this.refs[this.tab].codeEditor.focus();
                 }
