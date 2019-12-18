@@ -398,3 +398,36 @@ input[type="range"]
         height 100%
         opacity 0
         cursor -webkit-grabbing
+
+.aResizer
+    background snow
+    flex 0 0 auto
+    width 0.75rem
+    height 0.75rem
+    border 1px solid bd
+    position relative
+    cursor move
+    &::before
+        content ''
+        width 1.5rem
+        height 2px
+        box-sizing content-box
+        border 1px solid bl
+        border-left 0
+        border-right 0
+        position absolute
+        left 50%
+        top 50%
+        transform translate(-50%, -50%)
+    &.vertical
+        height 100%
+        border-top 0
+        border-bottom 0
+        cursor resize-ew
+        &::before
+            transform translate(-50%, -50%) rotate(90deg)
+    &.horizontal
+        width 100%
+        border-right 0
+        border-left 0
+        cursor resize-ns
