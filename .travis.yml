@@ -27,7 +27,6 @@ jobs:
       skip_cleanup: true
     - stage: build
       on:
-        branch: master
         tags: true
       script:
         - gulp -f devSetup.gulpfile.js
@@ -44,11 +43,9 @@ jobs:
           draft: true
           on:
             tags: true
-            branch: master
         # Push to comigo.itch.io/ct
         - provider: script
           script: gulp deployOnly
           skip_cleanup: true
           on:
             tags: true
-            branch: master

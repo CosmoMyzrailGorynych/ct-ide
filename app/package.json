@@ -55,6 +55,7 @@
   },
   "build": {
     "appId": "rocks.ctjs.ide",
+    "publish": [],
     "directories": {
       "output": "./../build",
       "buildResources": "./../buildAssets"
