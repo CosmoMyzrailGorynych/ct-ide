@@ -1,7 +1,8 @@
 license-panel.modal.pad
-    .toright
+    .toright(title="{vocGlob.close}")
         span(onclick="{closeModal}")
-            i.icon-x(title="{vocGlob.close}")
+            svg.feather
+                use(xlink:href="data/icons.svg#x")
     h1 {voc.ctjslicense}
     pre
         code.
@@ -625,7 +626,7 @@ license-panel.modal.pad
             SOFTWARE.
     h2 node-unzipper
     p.
-        Commits in this fork are (c) Ziggy Jonsson (ziggy.jonsson.nyc@gmail.com) 
+        Commits in this fork are (c) Ziggy Jonsson (ziggy.jonsson.nyc@gmail.com)
         and fall under same licence structure as the original repo (MIT)
     pre
         code.

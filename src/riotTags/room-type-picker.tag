@@ -7,7 +7,8 @@ room-type-picker.room-editor-TypeSwatches.tabbed.tall
         class="{active: opts.current === -1}"
     )
         span {voc.selectAndMove}
-        i.icon-move
+        svg.feather
+            use(xlink:href="data/icons.svg#move")
     .room-editor-aTypeSwatch(
         each="{type in (searchResults? searchResults : types)}"
         title="{type.name}"

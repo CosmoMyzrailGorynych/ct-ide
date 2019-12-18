@@ -7,7 +7,8 @@ fonts-panel.flexfix.tall.fifty
                 accept=".ttf"
                 onchange="{fontImport}")
             .button
-                i.icon.icon-import
+                svg.feather
+                    use(xlink:href="data/icons.svg#download")
                 span {voc.import}
     .clear
     ul.cards.flexfix-body
@@ -19,7 +20,8 @@ fonts-panel.flexfix.tall.fifty
             img(src="file://{window.sessionStorage.projdir + '/fonts/' + font.origname}_prev.png?{font.lastmod}")
     .aDropzone(if="{dropping}")
         .middleinner
-            i.icon-import
+            svg.feather
+                use(xlink:href="data/icons.svg#download")
             h2 {languageJSON.common.fastimport}
             input(type="file" multiple
                 accept=".ttf"

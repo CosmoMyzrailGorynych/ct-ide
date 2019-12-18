@@ -7,26 +7,31 @@ export-panel
             p {voc.firstrunnotice}
             .fifty.npl
                 label
-                    i.icon-windows
+                    svg.icon
+                        use(xlink:href="data/icons.svg#windows")
                     input(type="checkbox" checked="{currentProject.settings.export.windows64}" onchange="{wire('window.currentProject.settings.export.windows64')}")
                     |   Windows x64
                 label
-                    i.icon-windows
+                    svg.icon
+                        use(xlink:href="data/icons.svg#windows")
                     input(type="checkbox" checked="{currentProject.settings.export.windows32}" onchange="{wire('window.currentProject.settings.export.windows32')}")
                     |   Windows x32
             .fifty.npr
                 label
-                    i.icon-linux
+                    svg.icon
+                        use(xlink:href="data/icons.svg#linux")
                     input(type="checkbox" checked="{currentProject.settings.export.linux64}" onchange="{wire('window.currentProject.settings.export.linux64')}")
                     |   Linux x64
                 label
-                    i.icon-linux
+                    svg.icon
+                        use(xlink:href="data/icons.svg#linux")
                     input(type="checkbox" checked="{currentProject.settings.export.linux32}" onchange="{wire('window.currentProject.settings.export.linux32')}")
                     |   Linux x32
             .clear
             .fifty.npl.npt
                 label
-                    i.icon-apple
+                    svg.icon
+                        use(xlink:href="data/icons.svg#apple")
                     input(type="checkbox" checked="{currentProject.settings.export.mac64}" onchange="{wire('window.currentProject.settings.export.mac64')}")
                     |   MacOS x64
             .clear
@@ -44,8 +49,10 @@ export-panel
                 button(onclick="{close}") {voc.hide}
                 button(onclick="{export}")
                     span.inlineblock.rotateccw(if="{working}")
-                        i.icon-refresh-ccw
-                    i.icon-upload(if="{!working}")
+                        svg.feather
+                            use(xlink:href="data/icons.svg#refresh-ccw")
+                    svg.feather(if="{!working}")
+                        use(xlink:href="data/icons.svg#upload")
                     span(if="{working}")   {voc.working}
                     span(if="{!working}")   {voc.export}
     script.

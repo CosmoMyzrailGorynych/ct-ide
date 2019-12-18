@@ -35,11 +35,14 @@ style-editor.panel.view
                         b {voc.alignment}
                         .align.buttonselect
                             button#middleleft.inline.nml(onclick="{styleSetAlign('left')}" class="{active: this.styleobj.font.halign === 'left'}")
-                                i.icon.icon-align-left
+                                svg.feather
+                                    use(xlink:href="data/icons.svg#align-left")
                             button#middlecenter.inline(onclick="{styleSetAlign('center')}" class="{active: this.styleobj.font.halign === 'center'}")
-                                i.icon.icon-align-center
+                                svg.feather
+                                    use(xlink:href="data/icons.svg#align-center")
                             button#middleright.inline(onclick="{styleSetAlign('right')}" class="{active: this.styleobj.font.halign === 'right'}")
-                                i.icon.icon-align-right
+                                svg.feather
+                                    use(xlink:href="data/icons.svg#align-right")
                         label
                             b {voc.lineHeight}
                             br
@@ -118,7 +121,8 @@ style-editor.panel.view
                         input#shadowblur(type="number" value="{styleobj.shadow.blur}" min="0" onchange="{wire('this.styleobj.shadow.blur')}" oninput="{wire('this.styleobj.shadow.blur')}")
         .flexfix-footer
             button.wide.nogrow.noshrink(onclick="{styleSave}" title="Shift+Control+S" data-hotkey="Control+S")
-                i.icon.icon-confirm
+                svg.feather
+                    use(xlink:href="data/icons.svg#check")
                 span {voc.apply}
     #stylepreview.tall(ref="canvasSlot")
     texture-selector(if="{selectingTexture}" onselected="{applyTexture}" ref="textureselector")

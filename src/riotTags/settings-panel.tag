@@ -27,7 +27,8 @@ settings-panel.panel.view
         fieldset
             h2 {voc.actions}
             button.nml(onclick="{openActionsEditor}")
-                i.icon-airplay
+                svg.feather
+                    use(xlink:href="data/icons.svg#airplay")
                 span   {voc.editActions}
         fieldset
             h2 {voc.renderoptions}
@@ -59,9 +60,11 @@ settings-panel.panel.view
             li(each="{script in currentProject.scripts}" onclick="{selectScript}")
                 code {script.name}
                 div.toright(onclick="{deleteScript}" title="{voc.scripts.deleteScript}")
-                    i.icon-delete
+                    svg.feather
+                        use(xlink:href="data/icons.svg#delete")
         button.flexfix-footer(onclick="{addNewScript}")
-            i.icon-add
+            svg.feather
+                use(xlink:href="data/icons.svg#plus")
             span {voc.scripts.addNew}
     actions-editor(if="{editingActions}")
     script-editor(if="{currentScript}" script="{currentScript}")

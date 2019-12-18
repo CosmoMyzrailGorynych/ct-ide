@@ -1,41 +1,53 @@
 main-menu.flexcol
     nav.nogrow.flexrow(if="{window.currentProject}")
         ul#fullscreen.nav
-            li.nbr(onclick="{toggleFullscreen}" title="{voc.min}")
-                i(class="icon-{fullscreen? 'minimize-2' : 'maximize-2'} (F11)" data-hotkey="F11")
+            li.nbr(onclick="{toggleFullscreen}" title="{voc.min} (F11)")
+                svg.feather
+                    use(xlink:href="data/icons.svg#{fullscreen? 'minimize-2' : 'maximize-2'}" data-hotkey="F11")
 
         ul#app.nav.tabs
             li.it30#ctlogo(onclick="{ctClick}" title="{voc.ctIDE}")
-                i.icon-menu
+                svg.feather
+                    use(xlink:href="data/icons.svg#menu")
                 context-menu#theCatMenu(menu="{catMenu}" ref="catMenu")
             li.it30(onclick="{changeTab('patrons')}" title="{voc.patrons}" class="{active: tab === 'patrons'}")
-                i.icon-heart
+                svg.feather
+                    use(xlink:href="data/icons.svg#heart")
             li.it30(onclick="{saveProject}" title="{voc.save} (Control+S)" data-hotkey="Control+s")
-                i.icon-save
+                svg.feather
+                    use(xlink:href="data/icons.svg#save")
             li.nbr.it30(onclick="{runProject}" title="{voc.launch} {voc.launchHotkeys}" data-hotkey="F5")
-                i.icon-play
+                svg.feather
+                    use(xlink:href="data/icons.svg#play")
 
         ul#mainnav.nav.tabs
             li(onclick="{changeTab('settings')}" class="{active: tab === 'settings'}" data-hotkey="Control+1" title="Control+1")
-                i.icon-settings
+                svg.feather
+                    use(xlink:href="data/icons.svg#settings")
                 span {voc.settings}
             li(onclick="{changeTab('modules')}" class="{active: tab === 'modules'}" data-hotkey="Control+2" title="Control+2")
-                i.icon-mod
+                svg.feather
+                    use(xlink:href="data/icons.svg#ctmod")
                 span {voc.modules}
             li(onclick="{changeTab('texture')}" class="{active: tab === 'texture'}" data-hotkey="Control+3" title="Control+3")
-                i.icon-picture
+                svg.feather
+                    use(xlink:href="data/icons.svg#image")
                 span {voc.texture}
             li(onclick="{changeTab('ui')}" class="{active: tab === 'ui'}" data-hotkey="Control+4" title="Control+4")
-                i.icon-droplet
+                svg.feather
+                    use(xlink:href="data/icons.svg#droplet")
                 span {voc.ui}
             li(onclick="{changeTab('sounds')}" class="{active: tab === 'sounds'}" data-hotkey="Control+5" title="Control+5")
-                i.icon-headphones
+                svg.feather
+                    use(xlink:href="data/icons.svg#headphones")
                 span {voc.sounds}
             li(onclick="{changeTab('types')}" class="{active: tab === 'types'}" data-hotkey="Control+6" title="Control+6")
-                i.icon-user
+                svg.feather
+                    use(xlink:href="data/icons.svg#user")
                 span {voc.types}
             li(onclick="{changeTab('rooms')}" class="{active: tab === 'rooms'}" data-hotkey="Control+7" title="Control+7")
-                i.icon-map
+                svg.feather
+                    use(xlink:href="data/icons.svg#map")
                 span {voc.rooms}
     div.flexitem.relative(if="{window.currentProject}")
         settings-panel(show="{tab === 'settings'}" data-hotkey-scope="settings")
@@ -268,13 +280,15 @@ main-menu.flexcol
                 click: this.zipProject
             }, {
                 label: this.voc.zipExport,
-                click: this.zipExport
+                click: this.zipExport,
+                icon: 'upload-cloud'
             }, {
                 label: this.voc.exportDesktop,
                 click: e => {
                     this.showExporter = true;
                     this.update();
-                }
+                },
+                icon: 'package'
             }, {
                 type: 'separator'
             }, {
@@ -381,7 +395,8 @@ main-menu.flexcol
                 click: function () {
                     const {shell} = require('electron');
                     shell.openExternal('https://github.com/ct-js/ct-js');
-                }
+                },
+                icon: 'code'
             }, {
                 label: window.languageJSON.common.donate,
                 icon: 'heart',

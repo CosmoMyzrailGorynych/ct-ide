@@ -10,6 +10,7 @@ const path = require('path'),
       stylus = require('gulp-stylus'),
       riot = require('gulp-riot'),
       pug = require('gulp-pug'),
+      sprite = require('gulp-svgstore'),
 
       jsdocx = require('jsdoc-x'),
 
@@ -127,6 +128,11 @@ const copyRequires = () =>
 
 const compileScripts = gulp.series(compileRiot, concatScripts);
 
+const icons = () =>
+    gulp.src('./src/icons/**/*.svg')
+    .pipe(sprite())
+    .pipe(gulp.dest('./app/data'));
+
 const watchScripts = () => {
     gulp.watch('./src/js/**/*', gulp.series(compileScripts))
     .on('error', err => {
@@ -167,6 +173,9 @@ const watchRequires = () => {
         console.error('[node_requires error]', err);
     });
 };
+const watchIcons = () => {
+    gulp.watch('./src/icons/**/*.svg', icons);
+};
 
 const watch = () => {
     watchScripts();
@@ -174,6 +183,7 @@ const watch = () => {
     watchPug();
     watchRiot();
     watchRequires();
+    watchIcons();
 };
 
 const lintStylus = () => {
@@ -317,7 +327,14 @@ const copyPixiTypedefs = () => gulp.src('./app/node_modules/pixi.js/pixi.js.d.ts
 const bakeTypedefs = gulp.series([bakeCtTypedefs, concatTypedefs, copyPixiTypedefs]);
 
 
-const build = gulp.parallel([compilePug, compileStylus, compileScripts, copyRequires, bakeTypedefs]);
+const build = gulp.parallel([
+    compilePug,
+    compileStylus,
+    compileScripts,
+    copyRequires,
+    icons,
+    bakeTypedefs
+]);
 
 const bakePackages = async () => {
     const builder = require('electron-builder');

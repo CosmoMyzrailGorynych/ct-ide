@@ -8,10 +8,13 @@ context-menu(class="{opened: opts.menu.opened}" ref="root")
         tabindex="{'-1': item.type === 'separator'}"
         data-hotkey="{item.hotkey}"
     )
-        i(class="icon-{item.icon instanceof Function? item.icon() : item.icon}" if="{item.icon && item.type !== 'separator' && item.type !== 'checkbox'}")
+        svg.feather.context-menu-anIcon(if="{item.icon && item.type !== 'separator' && item.type !== 'checkbox'}")
+            use(xlink:href="data/icons.svg#{item.icon instanceof Function? item.icon() : item.icon}")
         input(type="checkbox" checked="{item.checked}" if="{item.type === 'checkbox'}")
         span(if="{!item.type !== 'separator'}") {item.label}
         span.hotkey(if="{!item.type !== 'separator' && item.hotkey}") ({item.hotkeyLabel || item.hotkey})
+        svg.feather.context-menu-aChevron(if="{item.submenu && item.type !== 'separator'}")
+            use(xlink:href="data/icons.svg#chevron-right")
         context-menu(if="{item.submenu && item.type !== 'separator'}" menu="{item.submenu}")
     script.
         var noFakeClicks;

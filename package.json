@@ -33,6 +33,7 @@
     "gulp-sourcemaps": "^2.6.4",
     "gulp-stylint": "^4.0.2",
     "gulp-stylus": "^2.7.0",
+    "gulp-svgstore": "^7.0.1",
     "jsdoc-x": "^4.0.3",
     "minimist": "^1.2.0",
     "node-notifier": "^5.2.1",

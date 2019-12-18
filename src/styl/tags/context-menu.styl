@@ -43,27 +43,25 @@ context-menu
             font-size 0.85rem
             line-height 2.25rem
             clear right
-        i
+        .context-menu-anIcon
             position absolute
             left 0.8rem
-            top 0.35rem
+            top 0.65rem
             color act
-            &::before
-                font-size 1.125rem
+            width 1.125rem
+            height @width
         &:hover, &:focus
             color white
             background-color act
-            & > i
+            & > svg
                 color white
             {transshort}
         &:active
             background-color accent1
             {transshort}
-        &.submenu::after
-            @extends .icon-chevron-right:before
-            font-family icomoon
-            font-size 1.5rem
+        .context-menu-aChevron
             right 0.5rem
+            top 0.5rem
             position absolute
             color bd
     a, a.checkbox

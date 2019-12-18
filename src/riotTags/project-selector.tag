@@ -15,12 +15,14 @@ project-selector
                             onclick="{updatePreview(project)}"
                             ondblclick="{loadRecentProject}"
                         )
-                            .toright
-                                i.icon-x(onclick="{forgetProject}" title="{voc.forgetProject}")
+                            .toright(onclick="{forgetProject}" title="{voc.forgetProject}")
+                                svg.feather
+                                    use(xlink:href="data/icons.svg#x")
                             span {project}
                     label.file.flexfix-footer.nmb
                         button.wide.inline.nml.nmr(onclick="{openProjectFind}")
-                            i.icon.icon-folder
+                            svg.feather
+                                use(xlink:href="data/icons.svg#folder")
                             span {voc.browse}
             #newProject.inset.flexrow.flexmiddle
                 .c4.npl.npt.npb
@@ -36,9 +38,11 @@ project-selector
                     button.nm.wide.inline(onclick="{openProjectFolder}") {voc.newProject.button}
     .aVersionNumber
         a(href="https://discord.gg/CggbPkb" title="{voc.discord}" onclick="{openExternal('https://discord.gg/CggbPkb')}")
-            i.icon-discord
+            svg.icon
+                use(xlink:href="data/icons.svg#discord")
         a(href="https://twitter.com/ctjsrocks" title="{voc.twitter}" onclick="{openExternal('https://twitter.com/ctjsrocks')}")
-            i.icon-twitter
+            svg.icon
+                use(xlink:href="data/icons.svg#twitter")
         .inlineblock v{ctjsVersion}.
         |
         |

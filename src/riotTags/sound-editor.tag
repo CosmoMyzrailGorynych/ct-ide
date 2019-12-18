@@ -21,12 +21,14 @@ sound-editor.panel.view
                 span   {voc.isMusicFile}
         label.file
             .button.wide.nml
-                i.icon.icon-plus
+                svg.feather
+                    use(xlink:href="data/icons.svg#plus")
                 span {voc.import}
             input(type="file" ref="inputsound" accept=".mp3,.ogg,.wav" onchange="{changeSoundFile}")
         p.nmb
             button.wide(onclick="{soundSave}" title="Shift+Control+S" data-hotkey="Control+S")
-                i.icon.icon-confirm
+                svg.feather
+                    use(xlink:href="data/icons.svg#check")
                 span {voc.save}
     script.
         const path = require('path');

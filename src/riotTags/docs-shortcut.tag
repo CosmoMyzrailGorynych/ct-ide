@@ -1,8 +1,10 @@
 docs-shortcut
     span(title="{opts.title || voc.openDocs}" onclick="{navigateToDocs}" if="{!opts.button}")
-        i.icon-book-open.a
+        svg.feather.a
+            use(xlink:href="data/icons.svg#book-open")
     button(onclick="{navigateToDocs}" if="{opts.button}" class="{wide: opts.wide}")
-        i.icon-book-open
+        svg.feather
+            use(xlink:href="data/icons.svg#book-open")
         span  {opts.title || voc.openDocs}
     script.
         this.namespace = 'docsShortcut';

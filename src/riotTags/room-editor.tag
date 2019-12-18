@@ -15,7 +15,8 @@ room-editor.panel.view
                 input.wide(type="number" value="{room.height}" onchange="{wire('this.room.height')}")
             br
             button.wide(onclick="{openRoomEvents}")
-                i.icon-confirm(if="{room.oncreate || room.onstep || room.ondestroy || room.ondraw}")
+                svg.feather(if="{room.oncreate || room.onstep || room.ondestroy || room.ondraw}")
+                    use(xlink:href="data/icons.svg#check")
                 span {voc.events}
         .palette
             .tabwrap
@@ -29,7 +30,8 @@ room-editor.panel.view
                     room-tile-editor(show="{tab === 'roomtiles'}" room="{room}")
         .done.nogrow
             button.wide#roomviewdone(onclick="{roomSave}")
-                i.icon-confirm
+                svg.feather
+                    use(xlink:href="data/icons.svg#check")
                 span {voc.done}
     .editor(ref="canvaswrap")
         canvas(
@@ -44,7 +46,8 @@ room-editor.panel.view
         )
         .shift
             button.inline.square(title="{voc.shift}" onclick="{roomShift}")
-                i.icon-move
+                svg.feather
+                    use(xlink:href="data/icons.svg#move")
             span {voc.hotkeysNotice}
         .zoom
             b {voc.zoom}

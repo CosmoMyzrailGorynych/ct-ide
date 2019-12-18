@@ -5,14 +5,17 @@ rooms-panel.panel.view
                 .toright
                     b {vocGlob.sort}
                     button.inline.square(onclick="{switchSort('date')}" class="{selected: sort === 'date' && !searchResults}")
-                        i.icon-clock
+                        svg.feather
+                            use(xlink:href="data/icons.svg#clock")
                     button.inline.square(onclick="{switchSort('name')}" class="{selected: sort === 'name' && !searchResults}")
-                        i.icon-sort-alphabetically
+                        svg.feather
+                            use(xlink:href="data/icons.svg#sort-alphabetically")
                     .aSearchWrap
                         input.inline(type="text" onkeyup="{fuseSearch}")
                 .toleft
                     button#roomcreate(onclick="{roomCreate}" data-hotkey="Control+n" title="Control+N")
-                        i.icon.icon-add
+                        svg.feather
+                            use(xlink:href="data/icons.svg#plus")
                         span {voc.create}
         ul.cards.rooms.flexfix-body
             li(
@@ -24,6 +27,8 @@ rooms-panel.panel.view
             )
                 img(src="file://{sessionStorage.projdir + '/img/r' + room.thumbnail + '.png?' + room.lastmod}")
                 span {room.name}
+                svg.feather(if="{window.currentProject.startroom === room.uid}")
+                    use(xlink:href="data/icons.svg#play")
     room-editor(if="{editing}" room="{editingRoom}")
     context-menu(menu="{roomMenu}" ref="roomMenu")
     script.

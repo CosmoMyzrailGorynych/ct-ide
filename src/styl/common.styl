@@ -128,3 +128,28 @@ div#loading
     transform-origin center
     animation-duration 1s
     animation-fill-mode both
+
+/* Icons */
+
+icon(icon = 'slash', size = 1.5rem)
+    content ''
+    background url('data/icons.svg#{icon}') center center contain
+    width size
+    height size
+
+.feather, .icon
+    width 1.5rem
+    height 1.5rem
+    vertical-align -0.35em
+    h1 &, h2 &
+        vertical-align bottom
+
+.icon
+    stroke none
+    fill currentColor
+.feather
+    stroke currentColor
+    stroke-width 2
+    stroke-linecap round
+    stroke-linejoin round
+    fill none

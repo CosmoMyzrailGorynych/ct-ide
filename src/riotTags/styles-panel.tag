@@ -3,16 +3,19 @@ styles-panel.flexfix.tall.fifty
         .toright
             b {vocGlob.sort}
             button.inline.square(onclick="{switchSort('date')}" class="{selected: sort === 'date' && !searchResults}")
-                i.icon-clock
+                svg.feather
+                    use(xlink:href="data/icons.svg#clock")
             button.inline.square(onclick="{switchSort('name')}" class="{selected: sort === 'name' && !searchResults}")
-                i.icon-sort-alphabetically
+                svg.feather
+                    use(xlink:href="data/icons.svg#sort-alphabetically")
             .aSearchWrap
                 input.inline(type="text" onkeyup="{fuseSearch}")
         h1.nmt {voc.styles}
         .clear
         .toleft
             button#stylecreate(onclick="{styleCreate}" title="Control+N" data-hotkey="Control+n")
-                i.icon.icon-add
+                svg.feather
+                    use(xlink:href="data/icons.svg#plus")
                 span {voc.create}
         .clear
     ul.cards.flexfix-body

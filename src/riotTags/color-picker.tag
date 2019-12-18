@@ -12,12 +12,12 @@ color-picker
             .Swatches(ref="globalSwatches")
                 .aSwatch(each="{colr in globalPalette}" style="background-color: {colr};" onclick="{onSwatchClick}")
                 button.anAddSwatchButton(onclick="{addAsGlobal}")
-                    | + 
+                    | +
             h4 {voc.projectPalette}
             .Swatches(ref="localSwatches")
                 .aSwatch(each="{colr in window.currentProject.palette}" style="background-color: {colr};" onclick="{onSwatchClick}")
                 button.anAddSwatchButton(onclick="{addAsLocal}")
-                    | + 
+                    | +
         .c6.npt.npr.npb
             .flexrow
                 .aRangePipeStack
@@ -47,10 +47,12 @@ color-picker
         .clear
         .flexrow.color-picker-Buttons
             button.nml(onclick="{cancelColor}")
-                i.icon-times
+                svg.feather
+                    use(xlink:href="data/icons.svg#x")
                 span  {vocGlob.cancel}
             button.nmr(onclick="{applyColor}")
-                i.icon-apply
+                svg.feather
+                    use(xlink:href="data/icons.svg#apply")
                 span  {vocGlob.apply}
     script.
         const Color = net.brehaut.Color;

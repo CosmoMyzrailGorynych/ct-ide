@@ -4,9 +4,11 @@ textures-panel.panel.view
             .toright
                 b {vocGlob.sort}
                 button.inline.square(onclick="{switchSort('date')}" class="{selected: sort === 'date' && !searchResults}")
-                    i.icon-clock
+                    svg.feather
+                        use(xlink:href="data/icons.svg#clock")
                 button.inline.square(onclick="{switchSort('name')}" class="{selected: sort === 'name' && !searchResults}")
-                    i.icon-sort-alphabetically
+                    svg.feather
+                        use(xlink:href="data/icons.svg#sort-alphabetically")
                 .aSearchWrap
                     input.inline(type="text" onkeyup="{fuseSearch}")
             .toleft
@@ -15,11 +17,9 @@ textures-panel.panel.view
                         accept=".png,.jpg,.jpeg,.bmp,.gif,.json"
                         onchange="{textureImport}")
                     .button
-                        i.icon.icon-import
+                        svg.feather
+                            use(xlink:href="data/icons.svg#download")
                         span {voc.import}
-        //-    button#texturecreate(data-event="textureCreate")
-        //-        i.icon.icon-lamp
-        //-        span {voc.create}
         .flexfix-body
             ul.cards
                 li(
@@ -50,12 +50,14 @@ textures-panel.panel.view
                         accept=".json"
                         onchange="{textureImport}")
                     .button
-                        i.icon.icon-import
+                        svg.feather
+                            use(xlink:href="data/icons.svg#download")
                         span {voc.import}
 
     .aDropzone(if="{dropping}")
         .middleinner
-            i.icon-import
+            svg.feather
+                use(xlink:href="data/icons.svg#download")
             h2 {languageJSON.common.fastimport}
             input(type="file" multiple
                 accept=".png,.jpg,.jpeg,.bmp,.gif,.json"

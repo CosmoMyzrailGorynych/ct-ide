@@ -50,7 +50,8 @@ room-backgrounds-editor.room-editor-Backgrounds.tabbed.tall
                     option(value="no-repeat" selected="{detailedBackground.extends.repeat === 'no-repeat'}") no-repeat
 
     button.inline.wide(onclick="{addBg}")
-        i.icon-plus
+        svg.feather
+            use(xlink:href="data/icons.svg#plus")
         span {voc.add}
     texture-selector(ref="texturePicker" if="{pickingBackground}" oncancelled="{onTextureCancel}" onselected="{onTextureSelected}")
     context-menu(menu="{roomBgMenu}" ref="roomBgMenu")

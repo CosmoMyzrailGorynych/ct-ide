@@ -18,7 +18,8 @@ patreon-screen.view(style="z-index: 100;")
     h1 {voc.patronsHeader}
     p {voc.aboutPatrons}
     div(if="{loading}")
-        i.icon-loader
+        svg.feather
+            use(xlink:href="data/icons.svg#loader")
         | {vocGlob.loading}
     div(if="{!loading}")
         h2 {voc.businessShuttles}
@@ -60,7 +61,8 @@ patreon-screen.view(style="z-index: 100;")
         p.aPatronThanks {voc.thankAllPatrons}
 
     button(onclick="{openPatreon}").nml
-        i.icon-heart
+        svg.feather
+            use(xlink:href="data/icons.svg#heart")
         span  {voc.becomeAPatron}
     script.
         this.namespace = 'patreon';

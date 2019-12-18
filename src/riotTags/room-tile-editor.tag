@@ -8,20 +8,25 @@ room-tile-editor.room-editor-Tiles.tabbed.tall.flexfix
         )
     .flexfix-footer
         button.inline.wide(onclick="{switchTiledImage}")
-            i.icon-search
+            svg.feather
+                use(xlink:href="data/icons.svg#search")
             span {voc.findTileset}
         .flexrow
             select.wide(onchange="{changeTileLayer}" value="{parent.currentTileLayerId}")
                 option(each="{layer, ind in opts.room.tiles}" selected="{parent.currentTileLayerId === ind}" value="{ind}") {layer.hidden? '❌' : '✅'} {layer.depth}
 
             span.act(title="{vocGlob.delete}" onclick="{deleteTileLayer}")
-                i.icon-trash
+                svg.feather
+                    use(xlink:href="data/icons.svg#trash")
             span.act(title="{parent.currentTileLayer.hidden? voc.show: voc.hide}" onclick="{toggleTileLayerVisibility}")
-                i(class="icon-{parent.currentTileLayer.hidden? 'eye' : 'eye-off'}")
+                svg.feather
+                    use(xlink:href="data/icons.svg#{parent.currentTileLayer.hidden? 'eye' : 'eye-off'}")
             span.act(title="{voc.moveTileLayer}" onclick="{moveTileLayer}")
-                i.icon-shuffle
+                svg.feather
+                    use(xlink:href="data/icons.svg#shuffle")
             span.act(title="{vocGlob.add}" onclick="{addTileLayer}")
-                i.icon-plus
+                svg.feather
+                    use(xlink:href="data/icons.svg#plus")
     texture-selector(ref="tilesetPicker" if="{pickingTileset}" oncancelled="{onTilesetCancel}" onselected="{onTilesetSelected}")
     script.
         this.parent.tileX = 0;

@@ -3,11 +3,13 @@ modules-panel.panel.view
         .c3.borderright.tall
             ul#moduleincluded
                 li(each="{module in enabledModules}" onclick="{renderModule(module)}")
-                    i.icon-confirm
+                    svg.feather.success
+                        use(xlink:href="data/icons.svg#check")
                     span {module}
             ul#modulelist
                 li(each="{module in allModules}" onclick="{renderModule(module)}")
-                    i.icon(class="icon-{(module in window.currentProject.libs)? 'confirm on' : 'mod off'}")
+                    svg.feather(class="{(module in window.currentProject.libs)? 'success on' : 'off'}")
+                        use(xlink:href="data/icons.svg#{(module in window.currentProject.libs)? 'check' : 'ctmod'}")
                     span {module}
             label.file.flexfix-footer.nmb
                 input(
@@ -16,36 +18,50 @@ modules-panel.panel.view
                     accept=".zip"
                     onchange="{importModules}")
                 .button.wide.inline.nml.nmr
-                    i.icon.icon-folder
+                    svg.feather
+                        use(xlink:href="data/icons.svg#folder")
                     span {voc.importModules}
         .c9.tall.flexfix(if="{currentModule}")
             ul.nav.tabs.flexfix-header.noshrink
                 li#modinfo(onclick="{changeTab('moduleinfo')}" class="{active: tab === 'moduleinfo'}")
-                    i.icon-info
+                    svg.feather
+                        use(xlink:href="data/icons.svg#info")
                     span {voc.info}
                 li#modsettings(if="{currentModule.fields && currentModuleName in currentProject.libs}" onclick="{changeTab('modulesettings')}" class="{active: tab === 'modulesettings'}")
-                    i.icon-settings
+                    svg.feather
+                        use(xlink:href="data/icons.svg#settings")
                     span {voc.settings}
                 li#modhelp( if="{currentModuleDocs}" onclick="{changeTab('modulehelp')}" class="{active: tab === 'modulehelp'}")
-                    i.icon-document
+                    svg.feather
+                        use(xlink:href="data/icons.svg#file-text")
                     span {voc.help}
                 li#modlogs(if="{currentModuleLogs}" onclick="{changeTab('modulelogs')}" class="{active: tab === 'modulelogs'}")
-                    i.icon-list
+                    svg.feather
+                        use(xlink:href="data/icons.svg#list")
                     span {voc.logs}
             div.flexfix-body
                 #moduleinfo.tabbed.nbt(show="{tab === 'moduleinfo'}")
                     label.bigpower(onclick="{toggleModule(currentModuleName)}" class="{off: !(currentModuleName in currentProject.libs)}")
-                        i(class="icon-{currentModuleName in currentProject.libs? 'confirm' : 'delete'}")
+                        svg.feather
+                            use(xlink:href="data/icons.svg#{currentModuleName in currentProject.libs? 'check' : 'x'}")
                         span
                     h1#modname
                         span {currentModule.main.name}
                         span.version {currentModule.main.version}
                     a.external(each="{author in currentModule.main.authors}" title="{voc.author}" href="{author.site || 'mailto:'+author.mail}")
-                        i.icon-user
+                        svg.feather
+                            use(xlink:href="data/icons.svg#user")
                         span#modauthor {author.name}
-                    i#modinjects.icon-zap.warning(title="{voc.hasinjects}" show="{currentModule.injects}")
-                    i#modconfigurable.icon-settings.success(title="{voc.hasfields}" show="{currentModule.fields}")
-                    i#modinputmethods.icon-airplay.success(title="{voc.hasinputmethods}" show="{currentModule.inputMethods}")
+
+                    span(title="{voc.hasinjects}")
+                        svg.feather.warning#modinjects(show="{currentModule.injects}")
+                            use(xlink:href="data/icons.svg#zap")
+                    span(title="{voc.hasfields}")
+                        svg.feather(show="{currentModule.fields}").success
+                            use(xlink:href="data/icons.svg#settings")
+                    span(title="{voc.hasinputmethods}")
+                        svg.feather(show="{currentModule.inputMethods}").success
+                            use(xlink:href="data/icons.svg#airplay")
 
                     #modinfohtml(if="{currentModuleHelp}")
                         raw(ref="raw" content="{currentModuleHelp}")

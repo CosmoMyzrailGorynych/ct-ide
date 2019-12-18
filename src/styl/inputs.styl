@@ -71,22 +71,22 @@ input[type="reset"],
             color black
         if (!themeDark)
             border-color accent1
-        i
+        svg
             color white
         if (themeDark)
             color black
-            i
+            svg
                 color black
     &:active, &.selected
         {transshort}
         border-color accent1
         background accent1
         color white
-        i
+        svg
             color white
         if (themeDark)
             color black
-            i
+            svg
                 color black
     &.inline
         padding 0.2em 0.8em
@@ -104,15 +104,9 @@ input[type="reset"],
     position relative
     display inline-block
     &::after
-        @extends .icon-search:before
-        font-family 'icomoon' !important
-        speak none
-        font-style normal
-        font-weight normal
-        font-variant normal
-        text-transform none
-        line-height 1
-        font-size 24px
+        width 1.5rem
+        height 1.5rem
+        background url('data/icons.svg#search') center center / cover
         position absolute
         right 0.5rem
         top 50%
@@ -144,14 +138,13 @@ siz = 4em
         border-radius 100%
         content " "
         background accent2
-    i
-        font-size 2em
-        line-height 1.5
+    svg
+        width 3.5rem
+        height 3.5rem
+        padding 0.75rem
+        margin 0.25rem
         display block
-        width 80%
-        height 80%
-        margin 10%
-        position relativ
+        position relative
         border-radius 100%
         border 1px solid
         box-sizing border-box
@@ -172,7 +165,7 @@ siz = 4em
             border-radius 100%
             top 50%
             margin -0.05em
-            margin-left -1.7em
+            margin-left -1.8em
             content " "
             background success
     &.off
@@ -182,7 +175,7 @@ siz = 4em
             display none
         span:after
             background error
-        i
+        svg
             color error
         &:after
             background error
@@ -208,12 +201,11 @@ input[type="submit"],
 input[type="reset"],
 .button,
 .nav
-    i
+    svg
         {trans}
         color act
-        vertical-align sub // выглядит более отцентрованно
         &:first-child
-            margin-right 0.25em
+            margin-right 0.5em
         &:only-child
             margin-right 0
 
@@ -247,7 +239,7 @@ select
         border-bottom-right-radius 0
         ul
             display block
-    i
+    svg
         transform rotate(90deg) translate(-50%, 0)
         position absolute
         right 0.5em
@@ -280,9 +272,9 @@ label, .label
         border-radius br
         {trans}
         &::after
-            @extends .icon-check:before
-            font-family 'icomoon' !important
-            font-size 1rem
+            background url('data/icons.svg#check') center center / cover
+            width 1rem
+            height 1rem
             position absolute
             top -0.025rem
             left -0.05rem
@@ -393,7 +385,7 @@ input[type="range"]
     background-repeat repeat-x, repeat-x, repeat-y, repeat-y
     background-position 0 0, 0 bottom, right 0, 0 0
     text-align center
-    i
+    svg
         font-size 5rem
         color accent1
     h2

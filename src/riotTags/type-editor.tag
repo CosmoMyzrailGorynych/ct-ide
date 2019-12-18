@@ -38,22 +38,27 @@ type-editor.panel.view.flexrow
             docs-shortcut(path="/ct.types.html" button="true" wide="true" title="{voc.learnAboutTypes}")
         .flexfix-footer
             button#typedone.wide(onclick="{typeSave}" title="Shift+Control+S" data-hotkey="Control+S")
-                i.icon.icon-confirm
+                svg.feather
+                    use(xlink:href="data/icons.svg#check")
                 span {voc.done}
     .c9.tall.borderleft
         .tabwrap.tall(style="position: relative")
             ul.tabs.nav.nogrow.noshrink
                 li(onclick="{changeTab('typeoncreate')}" class="{active: tab === 'typeoncreate'}" title="{voc.create} (Control+Q)" data-hotkey="Control+q")
-                    i.icon.icon-sun
+                    svg.feather
+                        use(xlink:href="data/icons.svg#sun")
                     span {voc.create}
                 li(onclick="{changeTab('typeonstep')}" class="{active: tab === 'typeonstep'}" title="{voc.step} (Control+W)" data-hotkey="Control+w")
-                    i.icon.icon-next
+                    svg.feather
+                        use(xlink:href="data/icons.svg#skip-forward")
                     span {voc.step}
                 li(onclick="{changeTab('typeondraw')}" class="{active: tab === 'typeondraw'}" title="{voc.draw} (Control+E)" data-hotkey="Control+e")
-                    i.icon.icon-edit-2
+                    svg.feather
+                        use(xlink:href="data/icons.svg#edit-2")
                     span {voc.draw}
                 li(onclick="{changeTab('typeondestroy')}" class="{active: tab === 'typeondestroy'}" title="{voc.destroy} (Control+R)" data-hotkey="Control+r")
-                    i.icon.icon-trash
+                    svg.feather
+                        use(xlink:href="data/icons.svg#trash")
                     span {voc.destroy}
             div
                 #typeoncreate.tabbed(show="{tab === 'typeoncreate'}")

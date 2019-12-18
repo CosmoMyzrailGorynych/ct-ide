@@ -20,7 +20,8 @@ texture-editor.panel.view
                         button.wide.nml(onclick="{textureCenter}")
                             span   {voc.setcenter}
                         button.square.nmr(onclick="{textureIsometrify}" title="{voc.isometrify}")
-                            i.icon-map-pin
+                            svg.feather
+                                use(xlink:href="data/icons.svg#map-pin")
                 fieldset
                     b {voc.form}
                     label.checkbox
@@ -46,7 +47,8 @@ texture-editor.panel.view
                         br
                         input.short(type="number" value="{opts.texture.bottom}" onchange="{wire('this.texture.bottom')}" oninput="{wire('this.texture.bottom')}")
                     button.wide(onclick="{textureFillRect}")
-                        i.icon-maximize
+                        svg.feather
+                            use(xlink:href="data/icons.svg#maximize")
                         span {voc.fill}
                 fieldset(if="{opts.texture.shape === 'strip'}")
                     .flexrow.aStripPointRow(each="{point, ind in getMovableStripPoints()}")
@@ -54,7 +56,8 @@ texture-editor.panel.view
                         span   ×
                         input.short(type="number" value="{point.y}" oninput="{wire('this.texture.stripPoints.'+ ind + '.y')}")
                         button.square.inline(title="{voc.removePoint}" onclick="{removeStripPoint}")
-                            i.icon-minus
+                            svg.feather
+                                use(xlink:href="data/icons.svg#minus")
                     label.checkbox
                         input(type="checkbox" checked="{opts.texture.closedStrip}" onchange="{onClosedStripChange}" )
                         span   {voc.closeShape}
@@ -62,7 +65,8 @@ texture-editor.panel.view
                         input(type="checkbox" checked="{opts.texture.symmetryStrip}" onchange="{onSymmetryChange}")
                         span   {voc.symmetryTool}
                     button.wide(onclick="{addStripPoint}")
-                        i.icon-plus
+                        svg.feather
+                            use(xlink:href="data/icons.svg#plus")
                         span   {voc.addPoint}
                 fieldset
                     label.checkbox
@@ -70,7 +74,8 @@ texture-editor.panel.view
                         span   {voc.showmask}
             .flexfix-footer
                 button.wide(onclick="{textureSave}" title="Shift+Control+S" data-hotkey="Control+S")
-                    i.icon-save
+                    svg.feather
+                        use(xlink:href="data/icons.svg#save")
                     span {window.languageJSON.common.save}
         .texture-editor-anAtlas.tall(
             if="{opts.texture}"
@@ -106,10 +111,12 @@ texture-editor.panel.view
                     label.file(title="{voc.replacetexture}")
                         input(type="file" ref="textureReplacer" accept=".png,.jpg,.jpeg,.bmp,.gif" onchange="{textureReplace}")
                         .button.inline
-                            i.icon-folder
+                            svg.feather
+                                use(xlink:href="data/icons.svg#folder")
                             span {voc.replacetexture}
                     .button.inline(title="{voc.reimport}" if="{opts.texture.source}" onclick="{reimport}")
-                        i.icon-refresh-ccw
+                        svg.feather
+                            use(xlink:href="data/icons.svg#refresh-ccw")
             .textureview-zoom
                 div.button-stack.inlineblock
                     button#texturezoom25.inline(onclick="{textureToggleZoom(0.25)}" class="{active: zoomFactor === 0.25}") 25%
@@ -167,20 +174,24 @@ texture-editor.panel.view
                     canvas(ref="grprCanvas")
                 .flexrow
                     button#textureplay.square.inline(onclick="{currentTexturePreviewPlay}")
-                        i(class="icon-{this.prevPlaying? 'pause' : 'play'}")
+                        svg.feather
+                            use(xlink:href="data/icons.svg#{prevPlaying? 'pause' : 'play'}")
                     span(ref="textureviewframe") 0 / 1
                     .filler
                     button#textureviewback.square.inline(onclick="{currentTexturePreviewBack}")
-                        i.icon-back
+                        svg.feather
+                            use(xlink:href="data/icons.svg#skip-back")
                     button#textureviewnext.square.inline.nmr(onclick="{currentTexturePreviewNext}")
-                        i.icon-next
+                        svg.feather
+                            use(xlink:href="data/icons.svg#skip-forward")
                 .flexrow
                     b {voc.speed}
                     .filler
                     input#grahpspeed.short(type="number" min="1" value="{prevSpeed}" onchange="{wire('this.prevSpeed')}" oninput="{wire('this.prevSpeed')}")
                 .relative
                     button#texturecolor.inline.wide(onclick="{changeTexturePreviewColor}")
-                        i.icon-drop
+                        svg.feather
+                            use(xlink:href="data/icons.svg#drop")
                         span {voc.bgcolor}
                 input.color.rgb#previewbgcolor
 

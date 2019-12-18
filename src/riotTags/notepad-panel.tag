@@ -1,13 +1,16 @@
 notepad-panel#notepad.panel.dockright(class="{opened: opened}")
     ul.nav.tabs.nogrow
         li(onclick="{changeTab('notepadlocal')}" class="{active: tab === 'notepadlocal'}")
-            i.icon.icon-edit
+            svg.feather
+                use(xlink:href="data/icons.svg#edit")
             span {voc.local}
         li(onclick="{changeTab('notepadglobal')}" class="{active: tab === 'notepadglobal'}")
-            i.icon.icon-clipboard
+            svg.feather
+                use(xlink:href="data/icons.svg#clipboard")
             span {voc.global}
         li(onclick="{changeTab('helppages')}" class="{active: tab === 'helppages'}")
-            i.icon.icon-life-buoy
+            svg.feather
+                use(xlink:href="data/icons.svg#life-buoy")
             span {voc.helppages}
     div
         div(show="{tab === 'notepadlocal'}")
@@ -17,10 +20,12 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
         div(show="{tab === 'helppages'}")
             iframe(src="http://localhost:{server.address().port}/" ref="helpIframe")
             button.aHomeButton(title="{voc.backToHome}" onclick="{backToHome}")
-                i.icon-home
+                svg.feather
+                    use(xlink:href="data/icons.svg#home")
 
     button.vertical.dockleft(onclick="{notepadToggle}")
-        i.icon(class="icon-{opened? 'chevron-right' : 'chevron-left'}")
+        svg.feather
+            use(xlink:href="data/icons.svg#{opened? 'chevron-right' : 'chevron-left'}")
     script.
         const glob = require('./data/node_requires/glob');
         const hotkey = require('./data/node_requires/hotkeys')(document);
