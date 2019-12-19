@@ -31,7 +31,7 @@ main-menu.flexcol
                 span {voc.modules}
             li(onclick="{changeTab('texture')}" class="{active: tab === 'texture'}" data-hotkey="Control+3" title="Control+3")
                 svg.feather
-                    use(xlink:href="data/icons.svg#image")
+                    use(xlink:href="data/icons.svg#coin")
                 span {voc.texture}
             li(onclick="{changeTab('ui')}" class="{active: tab === 'ui'}" data-hotkey="Control+4" title="Control+4")
                 svg.feather
@@ -47,7 +47,7 @@ main-menu.flexcol
                 span {voc.types}
             li(onclick="{changeTab('rooms')}" class="{active: tab === 'rooms'}" data-hotkey="Control+7" title="Control+7")
                 svg.feather
-                    use(xlink:href="data/icons.svg#map")
+                    use(xlink:href="data/icons.svg#room")
                 span {voc.rooms}
     div.flexitem.relative(if="{window.currentProject}")
         settings-panel(show="{tab === 'settings'}" data-hotkey-scope="settings")
