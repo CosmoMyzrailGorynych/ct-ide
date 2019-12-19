@@ -14,12 +14,15 @@ rooms-panel.panel.view
                         input.inline(type="text" onkeyup="{fuseSearch}")
                         svg.feather
                             use(xlink:href="data/icons.svg#search")
+                    button.inline.square(onclick="{switchLayout}")
+                        svg.feather
+                            use(xlink:href="data/icons.svg#{localStorage.roomsLayout === 'list'? 'grid' : 'list'}")
                 .toleft
                     button#roomcreate(onclick="{roomCreate}" data-hotkey="Control+n" title="Control+N")
                         svg.feather
                             use(xlink:href="data/icons.svg#plus")
                         span {voc.create}
-        ul.cards.rooms.flexfix-body
+        ul.cards.rooms.flexfix-body(class="{list: localStorage.roomsLayout === 'list'}")
             li(
                 each="{room in (searchResults? searchResults : rooms)}"
                 class="{starting: window.currentProject.startroom === room.uid}"
@@ -29,6 +32,7 @@ rooms-panel.panel.view
             )
                 img(src="file://{sessionStorage.projdir + '/img/r' + room.thumbnail + '.png?' + room.lastmod}")
                 span {room.name}
+                span.date(if="{room.lastmod}") {niceTime(room.lastmod)}
                 svg.feather(if="{window.currentProject.startroom === room.uid}")
                     use(xlink:href="data/icons.svg#play")
     room-editor(if="{editing}" room="{editingRoom}")
@@ -38,6 +42,7 @@ rooms-panel.panel.view
 
         this.namespace = 'rooms';
         this.mixin(window.riotVoc);
+        this.mixin(window.riotNiceTime);
         this.editing = false;
         this.sort = 'name';
         this.sortReverse = false;
@@ -65,6 +70,9 @@ rooms-panel.panel.view
                 this.sortReverse = false;
             }
             this.updateList();
+        };
+        this.switchLayout = e => {
+            localStorage.roomsLayout = localStorage.roomsLayout === 'list'? 'grid' : 'list';
         };
         const fuseOptions = {
             shouldSort: true,

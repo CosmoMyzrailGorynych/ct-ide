@@ -65,13 +65,16 @@
       {
         "from": "./data/i18n",
         "to": "./data/i18n"
-      }, {
+      },
+      {
         "from": "./data/ct.libs",
         "to": "./data/ct.libs"
-      }, {
+      },
+      {
         "from": "./data/ct.release",
         "to": "./data/ct.release"
-      }, {
+      },
+      {
         "from": "./data/docs",
         "to": "./data/docs"
       },

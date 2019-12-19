@@ -14,12 +14,15 @@ sounds-panel.panel.view
                         input.inline(type="text" onkeyup="{fuseSearch}")
                         svg.feather
                             use(xlink:href="data/icons.svg#search")
+                    button.inline.square(onclick="{switchLayout}")
+                        svg.feather
+                            use(xlink:href="data/icons.svg#{localStorage.soundsLayout === 'list'? 'grid' : 'list'}")
                 .toleft
                     button#soundcreate(onclick="{soundNew}" title="Control+N" data-hotkey="Control+n")
                         svg.feather
                             use(xlink:href="data/icons.svg#plus")
                         span {voc.create}
-        ul.cards.flexfix-body
+        ul.cards.flexfix-body(class="{list: localStorage.soundsLayout === 'list'}")
             li(
                 each="{sound in (searchResults? searchResults : sounds)}"
                 onclick="{openSound(sound)}"
@@ -27,12 +30,14 @@ sounds-panel.panel.view
                 onlong-press="{popupMenu(sound)}"
             )
                 span {sound.name}
+                span.date(if="{sound.lastmod}") {niceTime(sound.lastmod)}
                 img(src="data/img/{sound.isMusic? 'music' : 'wave'}.png")
     sound-editor(if="{editing}" sound="{editedSound}")
     context-menu(menu="{soundMenu}" ref="soundMenu")
     script.
         this.namespace = 'sounds';
         this.mixin(window.riotVoc);
+        this.mixin(window.riotNiceTime);
         this.sort = 'name';
         this.sortReverse = false;
 
@@ -59,6 +64,9 @@ sounds-panel.panel.view
                 this.sortReverse = false;
             }
             this.updateList();
+        };
+        this.switchLayout = e => {
+            localStorage.soundsLayout = localStorage.soundsLayout === 'list'? 'grid' : 'list';
         };
         const fuseOptions = {
             shouldSort: true,

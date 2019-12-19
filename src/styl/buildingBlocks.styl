@@ -188,6 +188,7 @@
         display flex
         flex-flow row nowrap
         margin 0
+        padding 0.5rem 1rem
         border-radius 0
         width auto
         &:hover
@@ -195,22 +196,26 @@
             color white
         span
             flex 1 1 auto
-            order 2
+            order 4
+            line-height 1.5rem
+            text-align left
         > .date
             display block
             flex 0 0 auto
-            width 8rem
+            width 6rem
+            font-size 80%
             text-align center
             font-family fonts
+            order 10
         & + li
             border-top 0
         & > img, .aStyleIcon
             float none
-            height 32px
-            width 32px
+            height 1.5rem
+            width 1.5rem
             margin 0 1rem 0 0
             flex 0 0 auto
-            order 1
+            order 2
         &:first-child
             border-top-left-radius br
             border-top-right-radius br

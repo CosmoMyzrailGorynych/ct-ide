@@ -17,7 +17,6 @@ rooms-panel
     span
         font-family consolas, monospace
         width 15em
-        display block
         text-overflow ellipsis
         white-space nowrap
         overflow hidden
@@ -26,3 +25,10 @@ rooms-panel
         right 0.5em
         top 0.5em
         color warning
+    &.list
+        .starting svg
+            position static
+            margin 0 0.5rem
+            order 5
+        img
+            width auto

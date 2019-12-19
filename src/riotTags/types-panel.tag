@@ -14,12 +14,15 @@ types-panel.panel.view
                         input.inline(type="text" onkeyup="{fuseSearch}")
                         svg.feather
                             use(xlink:href="data/icons.svg#search")
+                    button.inline.square(onclick="{switchLayout}")
+                        svg.feather
+                            use(xlink:href="data/icons.svg#{localStorage.typesLayout === 'list'? 'grid' : 'list'}")
                 .toleft
                     button#typecreate(onclick="{typeCreate}" title="Control+N" data-hotkey="Control+n")
                         svg.feather
                             use(xlink:href="data/icons.svg#plus")
                         span {voc.create}
-        ul.cards.flexfix-body
+        ul.cards.flexfix-body(class="{list: localStorage.typesLayout === 'list'}")
             li(
                 each="{type in (searchResults? searchResults : types)}"
                 onclick="{openType(type)}"
@@ -27,12 +30,14 @@ types-panel.panel.view
                 onlong-press="{onTypeContextMenu}"
             )
                 span {type.name}
+                span.date(if="{type.lastmod}") {niceTime(type.lastmod)}
                 img(src="{type.texture !== -1 ? (glob.texturemap[type.texture].src.split('?')[0] + '_prev.png?' + getTypeTextureRevision(type)) : 'data/img/notexture.png'}")
     type-editor(if="{editingType}" type="{editedType}")
     context-menu(menu="{typeMenu}" ref="typeMenu")
     script.
         this.namespace = 'types';
         this.mixin(window.riotVoc);
+        this.mixin(window.riotNiceTime);
         const glob = require('./data/node_requires/glob');
         const generateGUID = require('./data/node_requires/generateGUID');
         this.glob = glob;
@@ -63,6 +68,9 @@ types-panel.panel.view
                 this.sortReverse = false;
             }
             this.updateList();
+        };
+        this.switchLayout = e => {
+            localStorage.typesLayout = localStorage.typesLayout === 'list'? 'grid' : 'list';
         };
         const fuseOptions = {
             shouldSort: true,

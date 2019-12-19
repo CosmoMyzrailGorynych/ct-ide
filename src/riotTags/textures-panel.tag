@@ -40,7 +40,7 @@ textures-panel.panel.view
             h2
                 span {voc.skeletons}
                 docs-shortcut(path="/skeletal-animation.html")
-            ul.cards
+            ul.cards(class="{list: localStorage.texturesLayout === 'list'}")
                 li(
                     each="{skeleton in (searchResultsSkel? searchResultsSkel : skeletons)}"
                     oncontextmenu="{showTexturePopup(skeleton, true)}"
