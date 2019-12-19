@@ -36,8 +36,16 @@
     };
 
     var voc = tag => {
+        const way = tag.namespace.split(/(?<!\\)\./gi);
+        for (let i = 0, l = way.length; i < l; i++) {
+            way[i] = way[i].replace(/\\./g, '.');
+        }
         const updateLocales = () => {
-            tag.voc = window.languageJSON[tag.namespace];
+            let space = window.languageJSON;
+            for (const partial of way) {
+                space = space[partial];
+            }
+            tag.voc = space;
             tag.vocGlob = window.languageJSON.common;
         };
         updateLocales();
