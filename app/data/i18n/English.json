@@ -404,6 +404,6 @@
         "roomRestart": "Restart the room",
         "openExternal": "Open in browser",
         "getQR": "QR codes and local server URL",
-        "flipLayout": "Change debugger's layout",
+        "flipLayout": "Change debugger's layout"
     }
 }
