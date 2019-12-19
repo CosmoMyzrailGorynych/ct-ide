@@ -10,6 +10,8 @@ styles-panel.flexfix.tall.fifty
                     use(xlink:href="data/icons.svg#sort-alphabetically")
             .aSearchWrap
                 input.inline(type="text" onkeyup="{fuseSearch}")
+                svg.feather
+                    use(xlink:href="data/icons.svg#search")
         h1.nmt {voc.styles}
         .clear
         .toleft

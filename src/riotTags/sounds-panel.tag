@@ -12,6 +12,8 @@ sounds-panel.panel.view
                             use(xlink:href="data/icons.svg#sort-alphabetically")
                     .aSearchWrap
                         input.inline(type="text" onkeyup="{fuseSearch}")
+                        svg.feather
+                            use(xlink:href="data/icons.svg#search")
                 .toleft
                     button#soundcreate(onclick="{soundNew}" title="Control+N" data-hotkey="Control+n")
                         svg.feather
