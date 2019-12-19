@@ -59,4 +59,23 @@
             voc(this);
         }
     };
+
+    var niceTime = function(date) {
+        if (!(date instanceof Date)) {
+            date = new Date(date);
+        }
+        const today = new Date();
+        if (date.getDate() !== today.getDate() ||
+            date.getFullYear() !== today.getFullYear() ||
+            date.getMonth() !== today.getMonth()
+        ) {
+            return date.toLocaleDateString();
+        }
+        return date.toLocaleTimeString();
+    };
+    window.riotNiceTime = {
+        init() {
+            this.niceTime = niceTime;
+        }
+    };
 })();

@@ -13,6 +13,9 @@ textures-panel.panel.view
                     input.inline(type="text" onkeyup="{fuseSearch}")
                     svg.feather
                         use(xlink:href="data/icons.svg#search")
+                button.inline.square(onclick="{switchLayout}")
+                    svg.feather
+                        use(xlink:href="data/icons.svg#{localStorage.texturesLayout === 'list'? 'grid' : 'list'}")
             .toleft
                 label.file.flexfix-header
                     input(type="file" multiple
@@ -23,7 +26,7 @@ textures-panel.panel.view
                             use(xlink:href="data/icons.svg#download")
                         span {voc.import}
         .flexfix-body
-            ul.cards
+            ul.cards(class="{list: localStorage.texturesLayout === 'list'}")
                 li(
                     each="{texture in (searchResults? searchResults : textures)}"
                     oncontextmenu="{showTexturePopup(texture)}"
@@ -32,6 +35,7 @@ textures-panel.panel.view
                     no-reorder
                 )
                     span {texture.name}
+                    span.date(if="{texture.lastmod}") {niceTime(texture.lastmod)}
                     img(src="file://{sessionStorage.projdir + '/img/' + texture.origname + '_prev.png?' + texture.lastmod}")
             h2
                 span {voc.skeletons}
@@ -74,6 +78,7 @@ textures-panel.panel.view
         const generateGUID = require('./data/node_requires/generateGUID');
         this.namespace = 'texture';
         this.mixin(window.riotVoc);
+        this.mixin(window.riotNiceTime);
         this.editing = false;
         this.dropping = false;
         this.sort = 'name';
@@ -168,6 +173,10 @@ textures-panel.panel.view
             this.currentTexture = null;
             this.update();
         };
+        this.switchLayout = e => {
+            localStorage.texturesLayout = localStorage.texturesLayout === 'list'? 'grid' : 'list';
+        };
+
         window.signals.on('projectLoaded', this.setUpPanel);
         this.on('mount', this.setUpPanel);
         this.on('unmount', () => {
