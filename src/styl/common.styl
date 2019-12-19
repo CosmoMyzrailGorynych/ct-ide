@@ -131,11 +131,12 @@ div#loading
 
 /* Icons */
 
-icon(icon = 'slash', size = 1.5rem)
-    content ''
-    background url('data/icons.svg#{icon}') center center contain
-    width size
-    height size
+icon(icon = 'slash', color = act)
+    background unquote(
+        replace('currentColor', replace(
+            '#', '%23', (''+color)
+        ), embedurl('./../icons/check.svg', 'utf8'))
+    ) center center / contain
 
 .feather, .icon
     width 1.5rem
