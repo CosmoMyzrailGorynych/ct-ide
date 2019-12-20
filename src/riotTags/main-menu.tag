@@ -60,6 +60,7 @@ main-menu.flexcol
         license-panel(if="{showLicense}")
         patreon-screen(if="{tab === 'patrons'}" data-hotkey-scope="patrons")
         export-panel(show="{showExporter}")
+    new-project-onboarding(if="{sessionStorage.showOnboarding && localStorage.showOnboarding !== 'off'}")
     script.
         const fs = require('fs-extra'),
               path = require('path');

@@ -147,6 +147,14 @@
         "codeDense": "Dense layout",
         "openIncludeFolder": "Open \"include\" folder"
     },
+    "onboarding": {
+        "hoorayHeader": "Wow! You've just created a project!",
+        "nowWhatParagraph": "Now, what should we do?",
+        "openSpaceShooterTutorial": "Learn how to make a space shooter",
+        "openPlatformerTutorial": "Learn how to make a platformer",
+        "doNothing": "Skip this screen",
+        "showOnboardingCheckbox": "Show this screen when creating a new project"
+    },
     "settings": {
         "actions": "Actions and input methods",
         "author": "Author name:",

@@ -3,7 +3,7 @@ actions-editor.panel.view.pad
         .flexfix-header
             h1
                 | {voc.actionsEditor}
-                docs-shortcut(path="/actions.href")
+                docs-shortcut(path="/actions.html")
             p(if="{!currentProject.actions || !currentProject.actions.length}") {voc.noActionsYet}
         .flexfix-body(if="{!currentProject.actions || !currentProject.actions.length}")
             button.nml(onclick="{addNewAction}")

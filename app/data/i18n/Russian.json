@@ -146,6 +146,14 @@
         "codeDense": "Меньшая высота линии",
         "openIncludeFolder": "Открыть папку include"
     },
+    "onboarding": {
+        "hoorayHeader": "Ух-ты! Мы сделали новый проект!",
+        "nowWhatParagraph": "Но что же дальше?",
+        "openSpaceShooterTutorial": "Научиться делать космическую стрелялку",
+        "openPlatformerTutorial": "Научиться делать платформеры",
+        "doNothing": "Пропустить этот экран",
+        "showOnboardingCheckbox": "Показывать этот экран при создании новых проектов"
+    },
     "settings": {
         "actions": "Действия и методы ввода",
         "author": "Автор:",

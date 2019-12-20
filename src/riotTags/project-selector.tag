@@ -90,6 +90,7 @@ project-selector
          * Creates basic directories for sounds and textures.
          */
         this.newProject = async (way, codename) => {
+            sessionStorage.showOnboarding = true;
             var projectData = {
                 ctjsVersion: this.ctjsVersion,
                 notes: '/* empty */',
