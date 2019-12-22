@@ -26,7 +26,13 @@ const createMainWindow = () => {
     });
     mainWindow.removeMenu();
     mainWindow.loadFile('index.html');
-    mainWindow.webContents.openDevTools();
+
+    try {
+        require('gulp'); // a silly check for development environment
+        mainWindow.webContents.openDevTools();
+    } catch (e) {
+        void 0;
+    }
 
     mainWindow.on('close', e => {
         e.preventDefault();
