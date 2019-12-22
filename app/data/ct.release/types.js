@@ -126,6 +126,7 @@ class Tileset extends PIXI.Container {
  * @class
  * @property {string} type The name of the type from which the copy was created
  * @property {IShapeTemplate} shape The collision shape of a copy
+ * @property {number} depth The relative position of a copy in a drawing stack. Higher values will draw the copy on top of those with lower ones
  * @property {number} xprev The horizontal location of a copy in the previous frame
  * @property {number} yprev The vertical location of a copy in the previous frame
  * @property {number} hspeed The horizontal speed of a copy
