@@ -36,7 +36,7 @@
         mode: 'center'
     };
     if (settings.mode === 'fullscreen') {
-        win.enterFullScreen();
+        win.setFullScreen(true);
     } else if (settings.mode === 'maximized') {
         win.maximize();
     } else {
