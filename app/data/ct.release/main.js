@@ -116,18 +116,28 @@ console.log(
 );
 
 ct.highDensity = [/*@highDensity@*/][0];
-/**
- * The PIXI.Application that runs ct.js game
- * @type {PIXI.Application}
- */
-ct.pixiApp = new PIXI.Application({
+const pixiAppSettings = {
     width: [/*@startwidth@*/][0],
     height: [/*@startheight@*/][0],
     antialias: ![/*@pixelatedrender@*/][0],
     powerPreference: 'high-performance',
     sharedTicker: true,
     sharedLoader: true
-});
+};
+try {
+    /**
+     * The PIXI.Application that runs ct.js game
+     * @type {PIXI.Application}
+     */
+    ct.pixiApp = new PIXI.Application(pixiAppSettings);
+} catch (e) {
+    console.error(e);
+    // eslint-disable-next-line no-console
+    console.warn('[ct.js] Something bad has just happened. This is usually due to hardware problems. I\'ll try to fix them now, but if the game still doesn\'t run, try including a legacy renderer in the project\'s settings.');
+    PIXI.settings.SPRITE_MAX_TEXTURES = Math.min(PIXI.settings.SPRITE_MAX_TEXTURES , 16);
+    ct.pixiApp = new PIXI.Application(pixiAppSettings);
+}
+
 PIXI.settings.ROUND_PIXELS = [/*@pixelatedrender@*/][0];
 PIXI.Ticker.shared.maxFPS = [/*@maxfps@*/][0] || 0;
 if (!ct.pixiApp.renderer.options.antialias) {
