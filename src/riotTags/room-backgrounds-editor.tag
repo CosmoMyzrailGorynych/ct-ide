@@ -4,7 +4,8 @@ room-backgrounds-editor.room-editor-Backgrounds.tabbed.tall
             img(src="{background.texture === -1? 'data/img/notexture.png' : (glob.texturemap[background.texture].src.split('?')[0] + '_prev.png?' + glob.texturemap[background.texture].g.lastmod)}" onclick="{onChangeBgTexture}")
             span
                 span(class="{active: detailedBackground === background}" onclick="{editBackground}")
-                    .icon-settings
+                    svg.feather
+                        use(xlink:href="data/icons.svg#settings")
                 | {glob.texturemap[background.texture].g.name} ({background.depth})
             .clear
             div(if="{detailedBackground === background}")
