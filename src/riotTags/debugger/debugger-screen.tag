@@ -1,5 +1,5 @@
 debugger-screen(class="{flexrow: verticalLayout, flexcol: !verticalLayout}")
-    iframe.tall#thePreview(
+    webview.tall#thePreview(
         autosize
         partition="persist:gamedebug"
         nodeintegration
@@ -12,7 +12,7 @@ debugger-screen(class="{flexrow: verticalLayout, flexcol: !verticalLayout}")
         ref="debugWindow"
         style="{verticalLayout? 'width:'+width+'px' : 'height:'+height+'px'}"
     )
-        iframe.tall.flexfix-body#theDebugger(
+        webview.tall.flexfix-body#theDebugger(
             autosize
             partition="persist:gamedebug"
             webpreferences="devTools=yes"
@@ -69,19 +69,25 @@ debugger-screen(class="{flexrow: verticalLayout, flexcol: !verticalLayout}")
             const gameUrl = `http://localhost:${port}/`;
             const game = document.getElementById('thePreview'),
                   devFrame = document.getElementById('theDebugger');
-            game.addEventListener('load', e => {
+
+            const devToolsBinder = e => {
                 fetch('http://' + devtools + '/json')
                 .then(res => res.json())
                 .then(json => {
                     const targetedDevtools = 'http://' + devtools + json
-                        .find(item => item.type === 'iframe' && item.url === gameUrl)
+                        .find(item => item.type === 'webview' && item.url === gameUrl)
                         .devtoolsFrontendUrl;
-                    //devFrame.loadURL(targetedDevtools);
-                    devFrame.src = targetedDevtools;
+                    devFrame.loadURL(targetedDevtools);
+                    //devFrame.src = targetedDevtools;
                 });
                 game.focus();
-            });
+            };
+            const loadGamePage = () => {
+                game.loadURL(gameUrl);
+                game.addEventListener('dom-ready', devToolsBinder);
+                game.removeEventListener('dom-ready', loadGamePage);
+            };
+            game.addEventListener('dom-ready', loadGamePage);
 
-            //game.loadURL(gameUrl);
-            game.src = gameUrl;
+            //game.src = gameUrl;
         });

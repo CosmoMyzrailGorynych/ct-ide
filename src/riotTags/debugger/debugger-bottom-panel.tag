@@ -18,22 +18,22 @@ debugger-bottom-panel
         this.mixin(window.riotVoc);
         this.bShowModal = false;
         this.reloadGame = e => {
-            var game = document.getElementById('thePreview');
-            game.reload();
-            game.focus();
+            const frame = document.querySelector('#thePreview');
+            frame.executeJavaScript(`
+                window.location.reload();
+                window.focus();
+            `);
         };
         this.reloadRoom = e => {
-            var game = document.getElementById('thePreview');
-            game.executeScript({
-                code: 'ct.rooms.switch(ct.room.name);',
-                mainWorld: true
-            });
-            game.focus();
+            const frame = document.querySelector('#thePreview');
+            frame.executeJavaScript(`
+                ct.rooms.switch(ct.room.name);
+            `);
         };
         this.openExternal = e => {
             var game = document.getElementById('thePreview');
             const {shell} = require('electron');
-            shell.openExternal(game.src);
+            shell.openExternal(game.getURL());
         };
         this.showModal = e => {
             this.bShowModal = !this.bShowModal;
