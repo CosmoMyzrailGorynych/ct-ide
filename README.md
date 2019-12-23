@@ -7,7 +7,16 @@
 
 Ct.js is a 2D game editor that makes its bet on good documentation, visual tools and smooth workflow.
 
+---
+
 For bugs, feature requests, developing questions, please use [GitHub issues](https://github.com/ct-js/ct-js/issues) so we can better track  them. For general support about making games, ask a question at our [discord server](https://discord.gg/CggbPkb).
+
+---
+
+## Support ct.js on product-hunting sites:
+
+* [Like ct.js on AlternativeTo](https://alternativeto.net/software/ct-js/)
+* [Rate ct.js on Slant in different questions](https://www.slant.co/options/30242/~ct-js-review)
 
 # Repo structure & tools
 
