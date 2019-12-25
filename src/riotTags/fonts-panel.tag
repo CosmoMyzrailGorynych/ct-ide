@@ -72,11 +72,11 @@ fonts-panel.flexfix.tall.fifty
                 label: window.languageJSON.common.rename,
                 click: () => {
                     alertify
-                    .defaultValue(this.editedFont.name)
+                    .defaultValue(this.editedFont.typefaceName)
                     .prompt(window.languageJSON.common.newname)
                     .then(e => {
                         if (e.inputValue !== '' && e.buttonClicked !== 'cancel') {
-                            this.editedFont.name = e.inputValue;
+                            this.editedFont.typefaceName = e.inputValue;
                             this.update();
                         }
                     });
