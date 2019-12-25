@@ -1,23 +1,25 @@
 fonts-panel.flexfix.tall.fifty
-    div.flexfix-header
+    asset-viewer(
+        collection="{currentProject.fonts}"
+        contextmenu="{onFontContextMenu}"
+        vocspace="fonts"
+        namespace="fonts"
+        click="{openFont}"
+        thumbnails="{thumbnails}"
+        names="{names}"
+        ref="fonts"
+        class="tall"
+    )
         h1 {voc.fonts}
-    .toleft
-        label.file.flexfix-header
-            input(type="file" multiple
-                accept=".ttf"
-                onchange="{fontImport}")
-            .button
-                svg.feather
-                    use(xlink:href="data/icons.svg#download")
-                span {voc.import}
-    .clear
-    ul.cards.flexfix-body
-        li(each="{font in (searchResults? searchResults : fonts)}"
-        onclick="{openFont(font)}"
-        oncontextmenu="{onFontContextMenu(font)}"
-        onlong-press="{onFontContextMenu(font)}")
-            span {font.typefaceName} {font.weight} {font.italic? voc.italic : ''}
-            img(src="file://{window.sessionStorage.projdir + '/fonts/' + font.origname}_prev.png?{font.lastmod}")
+        .toleft
+            label.file.flexfix-header
+                input(type="file" multiple
+                    accept=".ttf"
+                    onchange="{fontImport}")
+                .button
+                    svg.feather
+                        use(xlink:href="data/icons.svg#download")
+                    span {voc.import}
     .aDropzone(if="{dropping}")
         .middleinner
             svg.feather
@@ -37,14 +39,19 @@ fonts-panel.flexfix.tall.fifty
         const fs = require('fs-extra'),
               path = require('path');
 
+        this.thumbnails = font => `file://${window.sessionStorage.projdir}/fonts/${font.origname}_prev.png?cache=${font.lastmod}`;
+        this.names = font => `${font.typefaceName} ${font.weight} ${font.italic? this.voc.italic : ''}`;
+
         this.setUpPanel = e => {
             window.currentProject.fonts = window.currentProject.fonts || [];
             this.fonts = window.currentProject.fonts;
             this.editingFont = false;
             this.editedFont = null;
+            this.refs.fonts.updateList();
             this.update();
         };
         window.signals.on('projectLoaded', this.setUpPanel);
+        this.on('mount', this.setUpPanel);
         this.on('unmount', () => {
             window.signals.off('projectLoaded', this.setUpPanel);
         });
@@ -77,6 +84,7 @@ fonts-panel.flexfix.tall.fifty
                     .then(e => {
                         if (e.inputValue !== '' && e.buttonClicked !== 'cancel') {
                             this.editedFont.typefaceName = e.inputValue;
+                            this.refs.fonts.updateList();
                             this.update();
                         }
                     });
@@ -94,6 +102,7 @@ fonts-panel.flexfix.tall.fifty
                         if (e.buttonClicked === 'ok') {
                             const ind = window.currentProject.fonts.indexOf(this.editedFont);
                             window.currentProject.fonts.splice(ind, 1);
+                            this.refs.fonts.updateList();
                             this.update();
                             alertify
                             .okBtn(window.languageJSON.common.ok)
@@ -104,7 +113,7 @@ fonts-panel.flexfix.tall.fifty
             }]
         };
         this.onFontContextMenu = font => e => {
-            this.editedFont = e.item.font;
+            this.editedFont = font;
             this.refs.fontMenu.popup(e.clientX, e.clientY);
             e.preventDefault();
         };

@@ -1,37 +1,17 @@
 types-panel.panel.view
-    .flexfix.tall
-        .flexfix-header
-            div
-                .toright
-                    b {vocGlob.sort}
-                    button.inline.square(onclick="{switchSort('date')}" class="{selected: sort === 'date' && !searchResults}")
-                        svg.feather
-                            use(xlink:href="data/icons.svg#clock")
-                    button.inline.square(onclick="{switchSort('name')}" class="{selected: sort === 'name' && !searchResults}")
-                        svg.feather
-                            use(xlink:href="data/icons.svg#sort-alphabetically")
-                    .aSearchWrap
-                        input.inline(type="text" onkeyup="{fuseSearch}")
-                        svg.feather
-                            use(xlink:href="data/icons.svg#search")
-                    button.inline.square(onclick="{switchLayout}")
-                        svg.feather
-                            use(xlink:href="data/icons.svg#{localStorage.typesLayout === 'list'? 'grid' : 'list'}")
-                .toleft
-                    button#typecreate(onclick="{typeCreate}" title="Control+N" data-hotkey="Control+n")
-                        svg.feather
-                            use(xlink:href="data/icons.svg#plus")
-                        span {voc.create}
-        ul.cards.flexfix-body(class="{list: localStorage.typesLayout === 'list'}")
-            li(
-                each="{type in (searchResults? searchResults : types)}"
-                onclick="{openType(type)}"
-                oncontextmenu="{onTypeContextMenu}"
-                onlong-press="{onTypeContextMenu}"
-            )
-                span {type.name}
-                span.date(if="{type.lastmod}") {niceTime(type.lastmod)}
-                img(src="{type.texture !== -1 ? (glob.texturemap[type.texture].src.split('?')[0] + '_prev.png?' + getTypeTextureRevision(type)) : 'data/img/notexture.png'}")
+    asset-viewer(
+        collection="{currentProject.types}"
+        contextmenu="{onTypeContextMenu}"
+        namespace="types"
+        click="{openType}"
+        thumbnails="{thumbnails}"
+        ref="types"
+        class="tall"
+    )
+        button#typecreate(onclick="{typeCreate}" title="Control+N" data-hotkey="Control+n")
+            svg.feather
+                use(xlink:href="data/icons.svg#plus")
+            span {voc.create}
     type-editor(if="{editingType}" type="{editedType}")
     context-menu(menu="{typeMenu}" ref="typeMenu")
     script.
@@ -45,56 +25,13 @@ types-panel.panel.view
         this.sort = 'name';
         this.sortReverse = false;
 
-        this.updateList = () => {
-            this.types = [...window.currentProject.types];
-            if (this.sort === 'name') {
-                this.types.sort((a, b) => {
-                    return a.name.localeCompare(b.name);
-                });
-            } else {
-                this.types.sort((a, b) => {
-                    return b.lastmod - a.lastmod;
-                });
-            }
-            if (this.sortReverse) {
-                this.types.reverse();
-            }
-        };
-        this.switchSort = sort => e => {
-            if (this.sort === sort) {
-                this.sortReverse = !this.sortReverse;
-            } else {
-                this.sort = sort;
-                this.sortReverse = false;
-            }
-            this.updateList();
-        };
-        this.switchLayout = e => {
-            localStorage.typesLayout = localStorage.typesLayout === 'list'? 'grid' : 'list';
-        };
-        const fuseOptions = {
-            shouldSort: true,
-            tokenize: true,
-            threshold: 0.5,
-            location: 0,
-            distance: 100,
-            maxPatternLength: 32,
-            minMatchCharLength: 1,
-            keys: ['name']
-        };
-        const Fuse = require('fuse.js');
-        this.fuseSearch = e => {
-            if (e.target.value.trim()) {
-                var fuse = new Fuse(this.types, fuseOptions);
-                this.searchResults = fuse.search(e.target.value.trim());
-            } else {
-                this.searchResults = null;
-            }
-        };
+        this.thumbnails = type => type.texture !== -1 ?
+            `${glob.texturemap[type.texture].src.split('?')[0]}_prev.png?cache=${this.getTypeTextureRevision(type)}` :
+            'data/img/notexture.png';
 
         this.setUpPanel = e => {
             this.fillTypeMap();
-            this.updateList();
+            this.refs.types.updateList();
             this.searchResults = null;
             this.editingType = false;
             this.editedType = null;
@@ -133,7 +70,7 @@ types-panel.panel.view
                 extends: {}
             };
             window.currentProject.types.push(obj);
-            this.updateList();
+            this.refs.types.updateList();
             this.openType(obj)(e);
             window.signals.trigger('typesChanged');
 
@@ -172,7 +109,7 @@ types-panel.panel.view
                             tp.uid = generateGUID();
                             currentProject.types.push(tp);
                             this.fillTypeMap();
-                            this.updateList();
+                            this.refs.types.updateList();
                             this.update();
                         }
                     });
@@ -214,7 +151,7 @@ types-panel.panel.view
 
                             let ind = window.currentProject.types.indexOf(this.currentType);
                             window.currentProject.types.splice(ind, 1);
-                            this.updateList();
+                            this.refs.types.updateList();
                             this.fillTypeMap();
                             this.update();
                             window.signals.trigger('typesChanged');
@@ -226,8 +163,8 @@ types-panel.panel.view
                 }
             }]
         };
-        this.onTypeContextMenu = e => {
-            this.currentType = e.item.type;
+        this.onTypeContextMenu = type => e => {
+            this.currentType = type;
             this.refs.typeMenu.popup(e.clientX, e.clientY);
             e.preventDefault();
         };
