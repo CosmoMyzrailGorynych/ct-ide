@@ -54,6 +54,7 @@ main-menu.flexcol
         modules-panel(show="{tab === 'modules'}" data-hotkey-scope="modules")
         textures-panel(show="{tab === 'texture'}" data-hotkey-scope="texture")
         ui-panel(show="{tab === 'ui'}" data-hotkey-scope="ui")
+        fx-panel(show="{tab === 'fx'}" data-hotkey-scope="fx")
         sounds-panel(show="{tab === 'sounds'}" data-hotkey-scope="sounds")
         types-panel(show="{tab === 'types'}" data-hotkey-scope="types")
         rooms-panel(show="{tab === 'rooms'}" data-hotkey-scope="rooms")
