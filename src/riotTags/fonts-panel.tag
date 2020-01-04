@@ -15,7 +15,7 @@ fonts-panel.flexfix.tall.fifty
             label.file.flexfix-header
                 input(type="file" multiple
                     accept=".ttf"
-                    onchange="{fontImport}")
+                    onchange="{parent.fontImport}")
                 .button
                     svg.feather
                         use(xlink:href="data/icons.svg#download")

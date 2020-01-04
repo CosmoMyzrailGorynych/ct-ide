@@ -9,12 +9,10 @@ styles-panel.tall.fifty
         class="tall"
     )
         h1.nmt {voc.styles}
-        .clear
-        .toleft
-            button#stylecreate(onclick="{styleCreate}" title="Control+N" data-hotkey="Control+n")
-                svg.feather
-                    use(xlink:href="data/icons.svg#plus")
-                span {voc.create}
+        button#stylecreate(onclick="{parent.styleCreate}" title="Control+N" data-hotkey="Control+n")
+            svg.feather
+                use(xlink:href="data/icons.svg#plus")
+            span {voc.create}
     style-editor(if="{editingStyle}" styleobj="{editedStyle}")
     context-menu(menu="{styleMenu}" ref="styleMenu")
     script.
@@ -31,10 +29,10 @@ styles-panel.tall.fifty
             if (this.editingStyle) {
                 return;
             }
-            var id = generateGUID(),
+            let id = generateGUID(),
                 slice = id.split('-').pop();
             window.currentProject.styletick ++;
-            var obj = {
+            let obj = {
                 name: "Style_" + slice,
                 uid: id,
                 origname: 's' + slice
@@ -54,7 +52,6 @@ styles-panel.tall.fifty
         };
         this.setUpPanel = e => {
             this.refs.styles.updateList();
-            this.searchResults = null;
             this.editingStyle = false;
             this.editedStyle = null;
             this.update();

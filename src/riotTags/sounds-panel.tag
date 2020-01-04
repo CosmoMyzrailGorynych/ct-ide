@@ -8,7 +8,7 @@ sounds-panel.panel.view
         ref="sounds"
         class="tall"
     )
-        button#soundcreate(onclick="{soundNew}" title="Control+N" data-hotkey="Control+n")
+        button#soundcreate(onclick="{parent.soundNew}" title="Control+N" data-hotkey="Control+n")
             svg.feather
                 use(xlink:href="data/icons.svg#plus")
             span {voc.create}

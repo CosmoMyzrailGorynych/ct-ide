@@ -8,7 +8,7 @@ types-panel.panel.view
         ref="types"
         class="tall"
     )
-        button#typecreate(onclick="{typeCreate}" title="Control+N" data-hotkey="Control+n")
+        button#typecreate(onclick="{parent.typeCreate}" title="Control+N" data-hotkey="Control+n")
             svg.feather
                 use(xlink:href="data/icons.svg#plus")
             span {voc.create}
