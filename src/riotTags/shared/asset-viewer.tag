@@ -1,3 +1,36 @@
+//
+    A generic asset viewer with a search form, sorting and switchable layout
+
+    @slot
+        Can use nested tags. Yields the passed markup as a header of an asset viewer.
+    @attribute class (string)
+        This tag has its own CSS classes, but allows arbitrary ones added as an attribute.
+    @attribute namespace (string)
+        A unique namespace used to store settings. Fallbacks to 'default'.
+    @attribute vocspace (string)
+        A namespace in the current language file to use for translated tags in a passed slot.
+        Not needed if no nested markup was passed to the tag.
+        Fallbacks to `namespace` attribute.
+
+    @attribute collection (riot function)
+        A collection of items to iterate over while generating markup, sorting and firing events.
+    @attribute names (riot function)
+        A mapping funtion that takes a collection object and returns its human-readable name.
+        Fallbacks to `item.name` if not defined.
+    @attribute thumbnails (riot function)
+        A mapping funtion that takes a collection object and returns a url for its thumbnail.
+    @attribute click (riot function)
+        A two-fold callback (item => e => {…}) fired when a user clicks on an item,
+        passing the associated collection object as its only argument in the first function,
+        and a MouseEvent in a second function
+    @attribute contextmenu (riot function)
+        A two-fold callback (item => e => {…}) that is given a collection object
+        as its only argument in the first function, and a MouseEvent in a second function,
+        when a user tries to call a context menu on an item.
+
+    @method updateList()
+        Update the asset viewer, needed e.g. when new items were added.
+
 asset-viewer.flexfix(class="{opts.namespace} {opts.class}")
     .flexfix-header
         .toright

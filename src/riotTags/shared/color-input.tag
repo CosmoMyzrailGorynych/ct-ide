@@ -1,3 +1,13 @@
+//
+    An input block that allows to pick an arbitrary color with a color picker
+
+    @attribute onapply (riot function)
+        Calls the funtion when a user applies the selected color and closes the color picker.
+        Passes an object `{target: RiotTag}` as one argument and a value (an rgba/HEX string).
+    @attribute onchange (riot function)
+        Calls the funtion when a user changes the color while working with the color picker.
+        Passes an object `{target: RiotTag}` as one argument and a value (an rgba/HEX string).
+
 color-input
     .color-input-aPicker(style="background-color: {value};" onclick="{openPicker}")
         span(style="color: {dark? '#fff' : '#000'};") {value}
