@@ -1,5 +1,5 @@
 room-editor.panel.view
-    .toolbar.borderright.tall
+    .toolbar.tall(style="width: {sidebarWidth}px")
         .settings.nogrow.noshrink
             b {voc.name}
             br
@@ -33,6 +33,7 @@ room-editor.panel.view
                 svg.feather
                     use(xlink:href="data/icons.svg#check")
                 span {voc.done}
+    .aResizer.vertical(ref="gutter" onmousedown="{gutterMouseDown}")
     .editor(ref="canvaswrap")
         canvas(
             ref="canvas"
@@ -48,28 +49,59 @@ room-editor.panel.view
             button.inline.square(title="{voc.shift}" onclick="{roomShift}")
                 svg.feather
                     use(xlink:href="data/icons.svg#move")
-            span {voc.hotkeysNotice}
+            span(if="{window.innerWidth - sidebarWidth > 840}") {voc.hotkeysNotice}
         .zoom
-            b {voc.zoom}
+            b(if="{window.innerWidth - sidebarWidth > 840}") {voc.zoom}
             div.button-stack
-                button#roomzoom12.inline(onclick="{roomToggleZoom(0.125)}" class="{active: zoomFactor === 0.125}") 12%
+                button#roomzoom12.inline(if="{window.innerWidth - sidebarWidth > 470}" onclick="{roomToggleZoom(0.125)}" class="{active: zoomFactor === 0.125}") 12%
                 button#roomzoom25.inline(onclick="{roomToggleZoom(0.25)}" class="{active: zoomFactor === 0.25}") 25%
-                button#roomzoom50.inline(onclick="{roomToggleZoom(0.5)}" class="{active: zoomFactor === 0.5}") 50%
+                button#roomzoom50.inline(if="{window.innerWidth - sidebarWidth > 470}" onclick="{roomToggleZoom(0.5)}" class="{active: zoomFactor === 0.5}") 50%
                 button#roomzoom100.inline(onclick="{roomToggleZoom(1)}" class="{active: zoomFactor === 1}") 100%
                 button#roomzoom200.inline(onclick="{roomToggleZoom(2)}" class="{active: zoomFactor === 2}") 200%
-                button#roomzoom400.inline(onclick="{roomToggleZoom(4)}" class="{active: zoomFactor === 4}") 400%
+                button#roomzoom400.inline(if="{window.innerWidth - sidebarWidth > 470}" onclick="{roomToggleZoom(4)}" class="{active: zoomFactor === 4}") 400%
         .grid
             button#roomgrid(onclick="{roomToggleGrid}" class="{active: room.gridX > 0}")
                 span {voc[room.gridX > 0? 'gridoff' : 'grid']}
         .center
             button#roomcenter(onclick="{roomToCenter}") {voc.tocenter}
-            span.aMouseCoord ({mouseX}:{mouseY})
+            span.aMouseCoord(if="{window.innerWidth - sidebarWidth > 470}") ({mouseX}:{mouseY})
     room-events-editor(if="{editingCode}" room="{room}")
     context-menu(menu="{roomCanvasCopiesMenu}" ref="roomCanvasCopiesMenu")
     context-menu(menu="{roomCanvasMenu}" ref="roomCanvasMenu")
     context-menu(menu="{roomCanvasTileMenu}" ref="roomCanvasTileMenu")
     context-menu(menu="{roomCanvasTilesMenu}" ref="roomCanvasTilesMenu")
     script.
+        const minSizeW = 250;
+        const getMaxSizeW = () => window.innerWidth - 300;
+        this.sidebarWidth = Math.max(minSizeW, Math.min(getMaxSizeW(), localStorage.roomSidebarWidth || 300));
+
+         this.gutterMouseDown = e => {
+            this.draggingGutter = true;
+            //document.body.appendChild(catcher);
+        };
+        document.addEventListener('mousemove', e => {
+            if (!this.draggingGutter) {
+                return;
+            }
+            this.sidebarWidth = Math.max(minSizeW, Math.min(getMaxSizeW(), e.clientX));
+            localStorage.roomSidebarWidth = this.sidebarWidth;
+            this.update();
+            var canvas = this.refs.canvas,
+                sizes = this.refs.canvaswrap.getBoundingClientRect();
+            if (canvas.width != sizes.width || canvas.height != sizes.height) {
+                canvas.width = sizes.width;
+                canvas.height = sizes.height;
+            }
+            this.refreshRoomCanvas();
+        });
+        document.addEventListener('mouseup', () => {
+            if (this.draggingGutter) {
+                this.draggingGutter = false;
+                //updateCanvasSize();
+                //document.body.removeChild(catcher);
+            }
+        });
+
         this.editingCode = false;
         this.forbidDrawing = false;
         const fs = require('fs-extra');
@@ -92,6 +124,12 @@ room-editor.panel.view
         this.tab = 'roomcopies';
 
         var updateCanvasSize = e => {
+            // Firstly, check that we don't need to reflow the layout due to window shrinking
+            const oldSidebarWidth = this.sidebarWidth;
+            this.sidebarWidth = Math.max(minSizeW, Math.min(getMaxSizeW(), this.sidebarWidth));
+            if (oldSidebarWidth !== this.sidebarWidth) {
+                this.update();
+            }
             var canvas = this.refs.canvas,
                 sizes = this.refs.canvaswrap.getBoundingClientRect();
             if (canvas.width != sizes.width || canvas.height != sizes.height) {

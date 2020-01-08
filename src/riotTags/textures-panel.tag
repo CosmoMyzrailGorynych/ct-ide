@@ -13,7 +13,7 @@ textures-panel.panel.view
                 label.file.flexfix-header
                     input(type="file" multiple
                         accept=".png,.jpg,.jpeg,.bmp,.gif,.json"
-                        onchange="{textureImport}")
+                        onchange="{parent.textureImport}")
                     .button
                         svg.feather
                             use(xlink:href="data/icons.svg#download")
@@ -32,7 +32,7 @@ textures-panel.panel.view
                 label.file.flexfix-header
                     input(type="file" multiple
                         accept=".json"
-                        onchange="{textureImport}")
+                        onchange="{parent.textureImport}")
                     .button
                         svg.feather
                             use(xlink:href="data/icons.svg#download")

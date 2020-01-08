@@ -1,3 +1,32 @@
+//
+    Shows a generic context menu.
+
+    @attribute menu (riot object)
+        Expects a following structure:
+        {
+            opened: boolean, // mutable by a context-menu instance
+            items: Array<IMenuItem>
+        }
+        IMenuItem is:
+        {
+            label: string,
+            icon?: string, // a name of an svg icon, e.g. 'check'
+
+            type?: 'checkbox'|'separator'|any,
+            click?: function,
+            checked?: boolean, // valid for 'checkbox' type
+            submenu?: Array<IMenuItem>,
+
+            hotkey?: string, // E.g. 'Control+c'
+            hotkeyLabel?: string // A human-readable variant, e.g. 'Ctrl+C'. Fallbacks to `hotkey`.
+        }
+
+    @method popup(x, y)
+        Works with absolute coordinates (in CSS terms)
+    @method toggle
+    @method open
+    @method close
+
 context-menu(class="{opened: opts.menu.opened}" ref="root")
     a(
         each="{item in opts.menu.items}"
