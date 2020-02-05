@@ -20,8 +20,8 @@ setInterval(function () {
  */
 const ct = {
     /**
-     * An array with metadata of all the modules used in a ct.js game
-     * @type {Object.<string,ILibMeta>}
+     * A target number of frames per second. It can be interpreted as a second in timers.
+     * @type {number}
      */
     speed: [/*@maxfps@*/][0] || 60,
     types: {},
