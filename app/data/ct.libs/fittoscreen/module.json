@@ -1,7 +1,7 @@
 {
     "main": {
         "name": "Fit to Screen",
-        "version": "2.0.0",
+        "version": "3.0.0",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",
             "mail": "admin@nersta.ru"
@@ -17,10 +17,6 @@
             "value": "expand",
             "name": "Expand",
             "help": "Expands the viewport, remaining the scale of the copies untouched"
-        }, {
-            "value": "expandViewport",
-            "name": "Expand, manage viewport",
-            "help": "Additionally moves the viewport so that the central point always stays in the center of the drawing canvas."
         }, {
             "value": "scaleFit",
             "name": "Scaling with letterboxing",

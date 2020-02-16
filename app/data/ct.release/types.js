@@ -4,8 +4,8 @@
 class Background extends PIXI.TilingSprite {
     constructor(bgName, frame, depth, exts) {
         exts = exts || {};
-        var width = ct.viewWidth,
-            height = ct.viewHeight;
+        var width = ct.camera.width,
+            height = ct.camera.height;
         if (exts.repeat === 'no-repeat' || exts.repeat === 'repeat-x') {
             height = ct.res.getTexture(bgName, frame || 0).orig.height * (exts.scaleY || 1);
         }
@@ -27,24 +27,31 @@ class Background extends PIXI.TilingSprite {
         if (this.scaleY) {
             this.tileScale.y = Number(this.scaleY);
         }
+        this.reposition();
     }
     onStep() {
         this.shiftX += ct.delta * this.movementX;
         this.shiftY += ct.delta * this.movementY;
     }
-    onDraw() {
+    reposition() {
+        const cameraBounds = ct.camera.getBoundingBox();
+        this.width = cameraBounds.width;
+        this.height = cameraBounds.height;
         if (this.repeat !== 'repeat-x' && this.repeat !== 'no-repeat') {
-            this.y = ct.room.y;
+            this.y = cameraBounds.y;
             this.tilePosition.y = -this.y*this.parallaxY + this.shiftY;
         } else {
-            this.y = this.shiftY + ct.room.y * (this.parallaxY - 1);
+            this.y = this.shiftY + cameraBounds.y * (this.parallaxY - 1);
         }
         if (this.repeat !== 'repeat-y' && this.repeat !== 'no-repeat') {
-            this.x = ct.room.x;
+            this.x = cameraBounds.x;
             this.tilePosition.x = -this.x*this.parallaxX + this.shiftX;
         } else {
-            this.x = this.shiftX + ct.room.x * (this.parallaxX - 1);
+            this.x = this.shiftX + cameraBounds.x * (this.parallaxX - 1);
         }
+    }
+    onDraw() {
+        this.reposition();
     }
     static onCreate() {
         void 0;
@@ -292,6 +299,18 @@ const Copy = (function () {
         addSpeed(spd, dir) {
             this.hspeed += spd * Math.cos(dir*Math.PI/-180);
             this.vspeed += spd * Math.sin(dir*Math.PI/-180);
+        }
+
+        /**
+         * Returns the room that owns the current copy
+         * @returns {Room} The room that owns the current copy
+         */
+        getRoom() {
+            let parent = this.parent;
+            while (!(parent instanceof Room)) {
+                parent = parent.parent;
+            }
+            return parent;
         }
     }
     return Copy;

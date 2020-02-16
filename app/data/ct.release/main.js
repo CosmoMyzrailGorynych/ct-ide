@@ -47,6 +47,11 @@ const ct = {
      */
     delta: 1,
     /**
+     * The camera that outputs its view to the renderer.
+     * @type {Camera}
+     */
+    camera: null,
+    /**
      * ct.js version in form of a string `X.X.X`.
      * @type {string}
      */
@@ -66,7 +71,7 @@ const ct = {
      * @type {number}
      */
     set width(value) {
-        ct.viewWidth = ct.roomWidth = value;
+        ct.camera.width = ct.roomWidth = value;
         if (!ct.fittoscreen || ct.fittoscreen.mode === 'fastScale') {
             ct.pixiApp.renderer.resize(value, ct.height);
         }
@@ -85,7 +90,7 @@ const ct = {
      * @type {number}
      */
     set height(value) {
-        ct.viewHeight = ct.roomHeight = value;
+        ct.camera.height = ct.roomHeight = value;
         if (!ct.fittoscreen || ct.fittoscreen.mode === 'fastScale') {
             ct.pixiApp.renderer.resize(ct.width, value);
         }
@@ -95,15 +100,21 @@ const ct = {
         return value;
     },
     /**
-     * The width of the current view, in game units
+     * The width of the current view, in UI units
      * @type {number}
+     * @deprecated Since v1.3.0. See `ct.camera.width`.
      */
-    viewWidth: null,
+    get viewWidth() {
+        return ct.camera.width;
+    },
     /**
-     * The height of the current view, in game units
+     * The height of the current view, in UI units
      * @type {number}
+     * @deprecated Since v1.3.0. See `ct.camera.height`.
      */
-    viewHeight: null
+    get viewHeight() {
+        return ct.camera.height;
+    }
 };
 
 // eslint-disable-next-line no-console
@@ -289,6 +300,24 @@ ct.u = {
         return (val - a) / (b - a);
     },
     /**
+     * Translates a point from UI space to game space.
+     * @param {number} x The x coordinate in UI space.
+     * @param {number} y The y coordinate in UI space.
+     * @returns {Array<number>} A pair of new `x` and `y` coordinates.
+     */
+    uiToGameCoord(x, y) {
+        return ct.camera.uiToGameCoord(x, y);
+    },
+    /**
+     * Translates a point from fame space to UI space.
+     * @param {number} x The x coordinate in game space.
+     * @param {number} y The y coordinate in game space.
+     * @returns {Array<number>} A pair of new `x` and `y` coordinates.
+     */
+    gameToUiCoord(x, y) {
+        return ct.camera.gameToUiCoord(x, y);
+    },
+    /**
      * Tests whether a given point is inside the given rectangle (it can be either a copy or an array)
      * @param {number} x The x coordinate of the point
      * @param {number} y The y coordinate of the point
@@ -387,119 +416,104 @@ ct.u.ext(ct.u, {// make aliases
     extend: ct.u.ext
 });
 
-const removeKilledCopies = (array) => {
-    let j = 0;
-    for (let i = 0; i < array.length; i++) {
-        if (!array[i].kill) {
-            array[j++] = array[i];
-        }
-    }
-
-    array.length = j;
-    return array;
-};
-const killRecursive = copy => {
-    copy.kill = true;
-    ct.types.onDestroy.apply(copy);
-    copy.onDestroy.apply(copy);
-    for (const child of copy.children) {
-        if (child[copyTypeSymbol]) {
-            killRecursive(child);
-        }
-    }
-};
-ct.loop = function(delta) {
-    ct.delta = delta;
-    ct.inputs.updateActions();
-    for (let i = 0, li = ct.stack.length; i < li; i++) {
-        ct.types.beforeStep.apply(ct.stack[i]);
-        ct.stack[i].onStep.apply(ct.stack[i]);
-        ct.types.afterStep.apply(ct.stack[i]);
-    }
-
-    ct.rooms.beforeStep.apply(ct.room);
-    ct.room.onStep.apply(ct.room);
-    ct.rooms.afterStep.apply(ct.room);
-    // copies
-    for (let i = 0; i < ct.stack.length; i++) {
-        // eslint-disable-next-line no-underscore-dangle
-        if (ct.stack[i].kill && !ct.stack[i]._destroyed) {
-            killRecursive(ct.stack[i]); // This will also allow a parent to eject children to a new container before they are destroyed as well
-            ct.stack[i].destroy({children: true});
-        }
-    }
-    for (const copy of ct.stack) {
-        // eslint-disable-next-line no-underscore-dangle
-        if (copy._destroyed) {
-            deadPool.push(copy);
-        }
-    }
-    removeKilledCopies(ct.stack);
-
-    // ct.types.list[type: String]
-    for (const i in ct.types.list) {
-        removeKilledCopies(ct.types.list[i]);
-    }
-
-    for (const cont of ct.stage.children) {
-        cont.children.sort((a, b) =>
-            ((a.depth || 0) - (b.depth || 0)) || ((a.uid || 0) - (b.uid || 0)) || 0
-        );
-    }
-    const r = ct.room;
-    if (r.follow) {
-        const speed = Math.min(1, (1-r.followDrift)*ct.delta);
-        if (r.follow.kill) {
-            delete r.follow;
-        } else if (r.center) {
-            r.x += speed * (r.follow.x + r.followShiftX - r.x - ct.viewWidth / 2);
-            r.y += speed * (r.follow.y + r.followShiftY - r.y - ct.viewHeight / 2);
-        } else {
-            let cx = 0,
-                cy = 0,
-                w = 0,
-                h = 0;
-            w = Math.min(r.borderX, ct.viewWidth / 2);
-            h = Math.min(r.borderY, ct.viewHeight / 2);
-            if (r.follow.x + r.followShiftX - r.x < w) {
-                cx = r.follow.x + r.followShiftX - r.x - w;
+(() => {
+    const removeKilledCopies = (array) => {
+        let j = 0;
+        for (let i = 0; i < array.length; i++) {
+            if (!array[i].kill) {
+                array[j++] = array[i];
             }
-            if (r.follow.y + r.followShiftY - r.y < h) {
-                cy = r.follow.y + r.followShiftY - r.y - h;
-            }
-            if (r.follow.x + r.followShiftX - r.x > ct.viewWidth - w) {
-                cx = r.follow.x + r.followShiftX - r.x - ct.viewWidth + w;
-            }
-            if (r.follow.y + r.followShiftY - r.y > ct.viewHeight - h) {
-                cy = r.follow.y + r.followShiftY - r.y - ct.viewHeight + h;
-            }
-            r.x = Math.floor(r.x + speed * cx);
-            r.y = Math.floor(r.y + speed * cy);
         }
-    }
-    r.x = r.x || 0;
-    r.y = r.y || 0;
-    r.x = Math.round(r.x);
-    r.y = Math.round(r.y);
+        array.length = j;
+        return array;
+    };
+    const killRecursive = copy => {
+        copy.kill = true;
+        ct.types.onDestroy.apply(copy);
+        copy.onDestroy.apply(copy);
+        for (const child of copy.children) {
+            if (child[copyTypeSymbol]) {
+                killRecursive(child);
+            }
+        }
+    };
+    const manageCamera = () => {
+        if (ct.camera) {
+            ct.camera.update(ct.delta);
+            ct.camera.manageStage();
+        }
+    };
 
-    // console.log("loop")
-    for (let i = 0, li = ct.stack.length; i < li; i++) {
-        // console.log(ct.stack[i].type);
-        ct.types.beforeDraw.apply(ct.stack[i]);
-        ct.stack[i].onDraw.apply(ct.stack[i]);
-        ct.types.afterDraw.apply(ct.stack[i]);
-        ct.stack[i].xprev = ct.stack[i].x;
-        ct.stack[i].yprev = ct.stack[i].y;
-    }
+    ct.loop = function(delta) {
+        ct.delta = delta;
+        ct.inputs.updateActions();
+        for (let i = 0, li = ct.stack.length; i < li; i++) {
+            ct.types.beforeStep.apply(ct.stack[i]);
+            ct.stack[i].onStep.apply(ct.stack[i]);
+            ct.types.afterStep.apply(ct.stack[i]);
+        }
+        // There may be a number of rooms stacked on top of each other.
+        // Loop through them and filter out everything that is not a room.
+        for (const item of ct.stage.children) {
+            if (!(item instanceof Room)) {
+                continue;
+            }
+            ct.rooms.beforeStep.apply(item);
+            item.onStep.apply(item);
+            ct.rooms.afterStep.apply(item);
+        }
+        // copies
+        for (let i = 0; i < ct.stack.length; i++) {
+            // eslint-disable-next-line no-underscore-dangle
+            if (ct.stack[i].kill && !ct.stack[i]._destroyed) {
+                killRecursive(ct.stack[i]); // This will also allow a parent to eject children to a new container before they are destroyed as well
+                ct.stack[i].destroy({children: true});
+            }
+        }
+        for (const copy of ct.stack) {
+            // eslint-disable-next-line no-underscore-dangle
+            if (copy._destroyed) {
+                deadPool.push(copy);
+            }
+        }
+        removeKilledCopies(ct.stack);
 
-    ct.rooms.beforeDraw.apply(r);
-    ct.room.onDraw.apply(r);
-    ct.rooms.afterDraw.apply(r);
+        // ct.types.list[type: String]
+        for (const i in ct.types.list) {
+            removeKilledCopies(ct.types.list[i]);
+        }
 
-    ct.main.fpstick++;
-    if (ct.rooms.switching) {
-        ct.rooms.forceSwitch();
-    }
-};
+        for (const cont of ct.stage.children) {
+            cont.children.sort((a, b) =>
+                ((a.depth || 0) - (b.depth || 0)) || ((a.uid || 0) - (b.uid || 0)) || 0
+            );
+        }
+
+        manageCamera();
+
+        for (let i = 0, li = ct.stack.length; i < li; i++) {
+            ct.types.beforeDraw.apply(ct.stack[i]);
+            ct.stack[i].onDraw.apply(ct.stack[i]);
+            ct.types.afterDraw.apply(ct.stack[i]);
+            ct.stack[i].xprev = ct.stack[i].x;
+            ct.stack[i].yprev = ct.stack[i].y;
+        }
+
+        for (const item of ct.stage.children) {
+            if (!(item instanceof Room)) {
+                continue;
+            }
+            ct.rooms.beforeDraw.apply(item);
+            item.onDraw.apply(item);
+            ct.rooms.afterDraw.apply(item);
+        }
+
+        ct.main.fpstick++;
+        if (ct.rooms.switching) {
+            ct.rooms.forceSwitch();
+        }
+    };
+})();
+
 
 /*%load%*/

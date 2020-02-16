@@ -496,6 +496,7 @@ const runCtProject = async (project, projdir) => {
         afterdraw: '',
         afterstep: '',
 
+        beforeroomoncreate: '',
         roomoncreate: '',
         roomonleave: '',
         afterroomdraw: '',
@@ -526,6 +527,7 @@ const runCtProject = async (project, projdir) => {
     /* Load source files in parallel */
     const sources = {};
     const sourcesList = [
+        'camera.js',
         'ct.css',
         'index.html',
         'main.js',
@@ -579,6 +581,7 @@ const runCtProject = async (project, projdir) => {
         .replace('@startroom@', startroom.name)
         .replace('/*@rooms@*/', roomsCode)
         .replace('/*%switch%*/', injects.switch)
+        .replace('/*%beforeroomoncreate%*/', injects.beforeroomoncreate)
         .replace('/*%roomoncreate%*/', injects.roomoncreate)
         .replace('/*%roomonleave%*/', injects.roomonleave);
     buffer += '\n';
@@ -629,6 +632,9 @@ const runCtProject = async (project, projdir) => {
         .replace('/*@types@*/', types);
 
     buffer += '\n';
+    buffer += (await sources['camera.js']);
+    buffer += '\n';
+
     var sounds = stringifySounds();
     buffer += (await sources['sound.js'])
         .replace('/*@sound@*/', sounds);

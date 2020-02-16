@@ -33,19 +33,6 @@ declare class Room extends PIXI.Container {
     /** The vertical position of the camera */
     y: number;
 
-    /** If set, the room's camera will follow the given copy */
-    follow: Copy|null;
-    /** Works if `follow` is set to a copy. Sets the frame inside which the copy will be kept */
-    borderX: number;
-    /** Works if `follow` is set to a copy. Sets the frame inside which the copy will be kept */
-    borderY: number;
-    /** Works if `follow` is set to a copy. Displaces the camera horizontally, relative to the copy. */
-    followShiftX: number;
-    /** Works if `follow` is set to a copy. Displaces the camera vertically, relative to the copy. */
-    followShiftY: number;
-    /** Works if `follow` is set to a copy. If set to a value between 0 and 1, it will make camera movement smoother */
-    followDrift: number;
-
     tileLayers: Array<PIXI.TileLayer>
     backgrounds: Array<Background>
 

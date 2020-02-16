@@ -16,17 +16,22 @@
     };
     // returns a new object with the necessary information about a touch event
     var copyTouch = e => {
-        var rect = ct.pixiApp.view.getBoundingClientRect();
-        var touch = {
+        const rect = ct.pixiApp.view.getBoundingClientRect();
+        const xui = (e.clientX - rect.left) / rect.width * ct.camera.width,
+              yui = (e.clientY - rect.top) / rect.height * ct.camera.height;
+        const positionGame = ct.u.uiToGameCoord(xui, yui);
+        const touch = {
             id: e.identifier,
-            x: (e.clientX - rect.left) * ct.viewWidth / rect.width + ct.rooms.current.x,
-            y: (e.clientY - rect.top) * ct.viewHeight / rect.height + ct.rooms.current.y,
-            clientX: e.clientX,
-            clientY: e.clientY,
+            x: positionGame[0],
+            y: positionGame[1],
+            xui: xui,
+            yui: yui,
+            xprev: positionGame[0],
+            yprev: positionGame[1],
+            xuiprev: xui,
+            yuiprev: yui,
             r: e.radiusX? Math.max(e.radiusX, e.radiusY) : 0
         };
-        touch.xprev = touch.x;
-        touch.yprev = touch.y;
         return touch;
     };
     var findTouch = id => {
@@ -54,6 +59,8 @@
             ct.touch.events.push(touch);
             ct.touch.x = touch.x;
             ct.touch.y = touch.y;
+            ct.touch.xui = touch.xui;
+            ct.touch.yui = touch.yui;
         }
         countTouches();
     };
@@ -66,13 +73,14 @@
                   upd = findTouch(e.changedTouches[i].identifier);
             if (upd) {
                 const rect = ct.pixiApp.view.getBoundingClientRect();
-                upd.x = (touch.clientX - rect.left) * ct.viewWidth / rect.width + ct.rooms.current.x;
-                upd.y = (touch.clientY - rect.top) * ct.viewHeight / rect.height + ct.rooms.current.y;
-                upd.clientX = touch.clientX;
-                upd.clientY = touch.clientY;
+                upd.xui = (touch.clientX - rect.left) / rect.width * ct.camera.width;
+                upd.yui = (touch.clientY - rect.top) / rect.height * ct.camera.height;
+                [upd.x, upd.y] = ct.u.uiToGameCoord(upd.xui, upd.yui);
                 upd.r = touch.radiusX? Math.max(touch.radiusX, touch.radiusY) : 0;
                 ct.touch.x = upd.x;
                 ct.touch.y = upd.y;
+                ct.touch.xui = upd.xui;
+                ct.touch.yui = upd.yui;
             }
         }
     };
@@ -93,26 +101,28 @@
         const rect = ct.pixiApp.view.getBoundingClientRect();
         var touch = {
             id: -1,
-            x: (e.clientX - rect.left) * ct.viewWidth / rect.width + ct.rooms.current.x,
-            y: (e.clientY - rect.top) * ct.viewHeight / rect.height + ct.rooms.current.y,
-            clientX: e.clientX,
-            clientY: e.clientY,
+            xui: (e.clientX - rect.left) * ct.camera.width / rect.width,
+            yui: (e.clientY - rect.top) * ct.camera.height / rect.height,
             r: 0
         };
+        [touch.x, touch.y] = ct.u.uiToGameCoord(touch.xui, touch.yui);
         ct.touch.events.push(touch);
         ct.touch.x = touch.x;
         ct.touch.y = touch.y;
+        ct.touch.xui = touch.xui;
+        ct.touch.yui = touch.yui;
     };
     var mouseMove = function (e) {
         const rect = ct.pixiApp.view.getBoundingClientRect(),
               touch = findTouch(-1);
         if (touch) {
-            touch.x = (e.clientX - rect.left) * ct.viewWidth / rect.width + ct.rooms.current.x;
-            touch.y = (e.clientY - rect.top) * ct.viewHeight / rect.height + ct.rooms.current.y;
-            touch.clientX = e.clientX;
-            touch.clientY = e.clientY;
+            touch.xui = (e.clientX - rect.left) * ct.camera.width / rect.width;
+            touch.yui = (e.clientY - rect.top) * ct.camera.height / rect.height;
+            [touch.x, touch.y] = ct.u.uiToGameCoord(touch.xui, touch.yui);
             ct.touch.x = touch.x;
             ct.touch.y = touch.y;
+            ct.touch.xui = touch.xui;
+            ct.touch.yui = touch.yui;
         }
     };
     var mouseUp = function () {
@@ -143,6 +153,12 @@
         events: [],
         x: 0,
         y: 0,
+        xprev: 0,
+        yprev: 0,
+        xui: 0,
+        yui: 0,
+        xuiprev: 0,
+        yuiprev: 0,
         clear() {
             ct.touch.events.length = 0;
             ct.touch.clearReleased();
@@ -189,8 +205,49 @@
             }
             return false;
         },
+        collideUi(copy, id, rel) {
+            var set = rel? ct.touch.released : ct.touch.events;
+            if (id !== void 0 && id !== false) {
+                const i = findTouchId(id);
+                if (i === -1) {
+                    return false;
+                }
+                return ct.place.collide(copy, {
+                    x: set[i].xui,
+                    y: set[i].yui,
+                    shape: {
+                        type: set[i].r? 'circle' : 'point',
+                        r: set[i].r
+                    },
+                    scale: {
+                        x: 1,
+                        y: 1
+                   }
+                });
+            }
+            for (let i = 0, l = set.length; i < l; i++) {
+                if (ct.place.collide(copy, {
+                    x: set[i].xui,
+                    y: set[i].yui,
+                    shape: {
+                        type: set[i].r? 'circle' : 'point',
+                        r: set[i].r
+                    },
+                    scale: {
+                        x: 1,
+                        y: 1
+                   }
+                })) {
+                    return true;
+                }
+            }
+            return false;
+        },
         hovers(copy, id, rel) {
             return ct.mouse? (ct.mouse.hovers(copy) || ct.touch.collide(copy, id, rel)) : ct.touch.collide(copy, id, rel);
+        },
+        hoversUi(copy, id, rel) {
+            return ct.mouse? (ct.mouse.hoversUi(copy) || ct.touch.collideUi(copy, id, rel)) : ct.touch.collideUi(copy, id, rel);
         },
         getById: findTouch,
         updateGestures: function () {
@@ -203,7 +260,7 @@
             }
             x /= ct.touch.events.length;
             y /= ct.touch.events.length;
-            
+
             let rotation = 0,
                 distance = lastScaleDistance;
             if (ct.touch.events.length > 1) {
@@ -212,17 +269,17 @@
                     ct.touch.events[1]
                 ].sort((a, b) => a.id - b.id);
                 rotation = ct.u.pdn(
-                    events[0].x, 
-                    events[0].y, 
-                    events[1].x, 
+                    events[0].x,
+                    events[0].y,
+                    events[1].x,
                     events[1].y);
                 distance = ct.u.pdc(
-                    events[0].x, 
-                    events[0].y, 
-                    events[1].x, 
+                    events[0].x,
+                    events[0].y,
+                    events[1].x,
                     events[1].y);
             }
-    
+
             if (lastPanNum === ct.touch.events.length) {
                 if (ct.touch.events.length > 1) {
                     setKey('DeltaRotation', (ct.u.degToRad(ct.u.deltaDir(lastRotation, rotation))));

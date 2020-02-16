@@ -71,12 +71,12 @@
     {
       "name": "Player",
       "depth": 0,
-      "oncreate": "this.animationSpeed = 15 / 60;\n\n// Traditional speed/dir movement system works badly with platformers.\n// We will set up our own variables and write own movement code.\n\nthis.maxspeed = 5; // this will be our max horizontal speed\nthis.acceleration = 1; // this is walking acceleration\nthis.jumpPower = 12; // this is our jumping velocity\nthis.gravity = 0.5;",
+      "oncreate": "this.animationSpeed = 15 / 60;\n\n// Traditional speed/dir movement system works badly with platformers.\n// We will set up our own variables and write own movement code.\n\nthis.maxspeed = 5; // this will be our max horizontal speed\nthis.acceleration = 1; // this is walking acceleration\nthis.jumpPower = 12; // this is our jumping velocity\nthis.gravity = 0.5;\n\n\n// Camera should follow the character\n\nct.camera.follow = this;\nct.camera.borderX = 400;\nct.camera.borderY = 200;\nct.camera.drift = 0.95;\n",
       "onstep": "// here and below we check for both collisions with tiles and copies.\n// -10 is the depth of the colliding tile layer. We ignore the decorative\n// layer at -20.\nvar onGround = ct.place.occupied(this, this.x, this.y + 1, 'Solid') ||\n               ct.place.tile(this, this.x, this.y + 1, -10);\n\n// Move right or left\nif (ct.actions.Move.value > 0) {\n    if (this.hspeed < this.maxspeed) {\n        this.hspeed += this.acceleration;\n    }\n    if ((this.currentFrame > 10 || !this.playing) && onGround) {\n        this.gotoAndPlay(0);\n    }\n} else if (ct.actions.Move.value < 0) {\n    if (this.hspeed > -this.maxspeed) {\n        this.hspeed -= this.acceleration;\n    }\n    if ((this.currentFrame > 10 || !this.playing) && onGround) {\n        this.gotoAndPlay(0);\n    }\n} else { // Slow down if we are on the ground and we don't move.\n    if (onGround) {\n        this.speed = Math.max(0, this.speed - this.maxspeed);\n        this.gotoAndStop(9);\n    }\n}\n\n\n// If we are not on the ground, add gravity\nif (!onGround) {\n    this.vspeed += this.gravity * ct.delta;\n}\n\n// Jumping\nif (ct.actions.Jump.down) {\n    // Jump only if we stay on the ground\n    if (onGround) {\n        this.vspeed = -this.jumpPower;\n        this.gotoAndStop(12);\n    }\n}\n\n// Move pixel by pixel until we meet a colliding object next to us\n//\n// Premultiply the target speed with ct.delta to ensure the same movement\n// over different FPS.\n//\n// Math.sign returns -1 if a number is negative, 1 if positive and 0 if it is 0.\n// Math.abs turns everything into a positive number. \n// Combined, Math.abs and Math.sign allow to loop in any direction.\nfor (var i = 0; i < Math.abs(this.hspeed * ct.delta); i++) {\n    if (ct.place.free(this, this.x + Math.sign(this.hspeed), this.y, 'Solid') &&\n        !ct.place.tile(this, this.x + Math.sign(this.hspeed), this.y, -10)\n    ) {\n        this.x += Math.sign(this.hspeed);\n    } else {\n        this.hspeed = 0;\n        break;\n    }\n}\n\n// Do the same for vertical speed\nfor (var i = 0; i < Math.abs(this.vspeed * ct.delta); i++) {\n    if (ct.place.free(this, this.x, this.y + Math.sign(this.vspeed), 'Solid') &&\n        !ct.place.tile(this, this.x, this.y + Math.sign(this.vspeed), -10)\n    ) {\n        this.y += Math.sign(this.vspeed);\n    } else {\n        this.vspeed = 0;\n        break;\n    }\n}\n\n// Check if we collide with spikes\nif (ct.place.occupied(this, this.x, this.y, 'Enemy')) {\n    ct.sound.spawn('BodyFall');\n    // move to a 'death' screen\n    ct.rooms.switch('DeadScreen');\n}",
-      "ondraw": "if (this.hspeed < 0) {\n    this.scale.x = -1;\n} else if (this.hspeed > 0) {\n    this.scale.x = 1;\n}\n\nct.room.followShiftX = this.scale.x * 150;",
+      "ondraw": "if (this.hspeed < 0) {\n    this.scale.x = -1;\n} else if (this.hspeed > 0) {\n    this.scale.x = 1;\n}\n\nct.camera.shiftX = this.scale.x * 150;",
       "ondestroy": "",
       "uid": "00664f77-21c6-4b06-b310-88640b1beaf9",
-      "lastmod": 1551429765916,
+      "lastmod": 1580611463284,
       "extends": {
         "ctype": "Player"
       },
@@ -86,11 +86,11 @@
       "name": "Coin",
       "depth": 0,
       "oncreate": "",
-      "onstep": "if (ct.place.meet(this, this.x, this.y, 'Player')) {\n    this.kill = true;\n    ct.sound.spawn(ct.random.dice('Coin_01', 'Coin_02', 'Coin_03'));\n    ct.room.coins ++;\n    ct.room.coinsCounter.text = ct.room.coins;\n}",
+      "onstep": "if (ct.place.meet(this, this.x, this.y, 'Player')) {\n    this.kill = true;\n    ct.sound.spawn(ct.random.dice('Coin_01', 'Coin_02', 'Coin_03'));\n    ct.room.coins ++;\n}",
       "ondraw": "",
       "ondestroy": "",
       "uid": "9402709c-5d0d-4198-9dce-877a5b7c77a2",
-      "lastmod": 1547470614124,
+      "lastmod": 1580524813404,
       "extends": {},
       "texture": "62be2903-9782-49fc-b551-ef2e641091c9"
     },
@@ -98,11 +98,11 @@
       "name": "Greed",
       "depth": 0,
       "oncreate": "",
-      "onstep": "ct.types.move(this);",
+      "onstep": "",
       "ondraw": "",
       "ondestroy": "",
       "uid": "2d29a0d5-d88d-493d-bece-8d52ed476273",
-      "lastmod": 1551429772275,
+      "lastmod": 1580611469943,
       "extends": {},
       "texture": "e90eb23b-547a-4d96-a203-ffe63c00cf9b"
     },
@@ -110,11 +110,11 @@
       "name": "Slime",
       "depth": 0,
       "oncreate": "this.speed = 1;\nthis.direction = 180;\n\nthis.animationSpeed = 4 / 60;\nthis.play();",
-      "onstep": "var freeBelow = !ct.place.tile(this, this.x + ct.u.ldx(70, this.dir), this.y + 35, -10) &&\n                ct.place.free(this, this.x + ct.u.ldx(70, this.dir), this.y + 35, 'Solid');\n                \nvar occupiedInFront = ct.place.tile(this, this.x + ct.u.ldx(10, this.dir), this.y, -10) || \n                      ct.place.occupied(this, this.x + ct.u.ldx(10, this.dir), this.y, 'Solid');\n\nif (freeBelow || occupiedInFront) {\n    if (this.direction === 180) {\n        this.direction = 0;\n        this.scale.x = -1;\n    } else {\n        this.direction = 180;\n        this.scale.x = 1;\n    }\n}\n\nct.types.move(this);",
+      "onstep": "var freeBelow = !ct.place.tile(this, this.x + ct.u.ldx(70, this.direction), this.y + 35, -10) &&\n                ct.place.free(this, this.x + ct.u.ldx(70, this.direction), this.y + 35, 'Solid');\n                \nvar occupiedInFront = ct.place.tile(this, this.x + ct.u.ldx(10, this.direction), this.y, -10) || \n                      ct.place.occupied(this, this.x + ct.u.ldx(10, this.direction), this.y, 'Solid');\n\nif (freeBelow || occupiedInFront) {\n    if (this.direction === 180) {\n        this.direction = 0;\n        this.scale.x = -1;\n    } else {\n        this.direction = 180;\n        this.scale.x = 1;\n    }\n}\n\nct.types.move(this);",
       "ondraw": "",
       "ondestroy": "",
       "uid": "1f91fd7d-2d6c-4542-aead-78b8010b835b",
-      "lastmod": 1551429013431,
+      "lastmod": 1580621292127,
       "extends": {
         "ctype": "Enemy"
       },
@@ -137,12 +137,24 @@
       "depth": 100,
       "oncreate": "",
       "onstep": "if (ct.mouse.pressed) {\n    if (ct.u.prect(ct.mouse.x, ct.mouse.y, this)) {\n        ct.fittoscreen.toggleFullscreen();\n    }\n}",
-      "ondraw": "this.x = ct.viewWidth + ct.room.x - 32;\nthis.y = ct.viewHeight + ct.room.y - 32;\nthis.gotoAndStop(ct.fittoscreen.getIsFullscreen()? 1 : 0);",
+      "ondraw": "this.gotoAndStop(ct.fittoscreen.getIsFullscreen()? 1 : 0);",
       "ondestroy": "",
       "uid": "8a4b8de4-7729-4936-bc7b-bc277a512975",
-      "lastmod": 1547470581588,
+      "lastmod": 1580612119334,
       "extends": {},
       "texture": "d161a39a-203e-4099-99e2-41385d94f975"
+    },
+    {
+      "name": "CoinWidget",
+      "depth": 0,
+      "oncreate": "this.coinsCounter = new PIXI.Text(this.coins, ct.styles.get('CoinText'));\nthis.coinsCounter.x = 40;\nthis.coinsCounter.anchor.y = 0.5;\nthis.addChild(this.coinsCounter);",
+      "onstep": "this.move();",
+      "ondraw": "if (this.coinsCounter.text != ct.room.coins + ' / 33') {\n    this.coinsCounter.text = ct.room.coins + ' / 33';\n}",
+      "ondestroy": "",
+      "uid": "1f73eb4f-8795-4234-af61-2c44c3fba073",
+      "texture": "62be2903-9782-49fc-b551-ef2e641091c9",
+      "extends": {},
+      "lastmod": 1580612116266
     }
   ],
   "sounds": [
@@ -248,9 +260,9 @@
   "rooms": [
     {
       "name": "InGame",
-      "oncreate": "this.coins = 0;\n\nthis.follow = ct.types.list['Player'][0];\nthis.borderX = 400;\nthis.borderY = 300;\nthis.followDrift = 0.9;\n\nthis.coinsCounter = new PIXI.Text(this.coins, ct.styles.get('CoinText'));\nthis.coinsCounter.depth = 100;\nthis.coinsCounter.x = this.x + ct.viewWidth - 70;\nthis.coinsCounter.y = this.y + 35;\nthis.coinsCounter.anchor.y = 0.5;\nthis.addChild(this.coinsCounter);\n\nthis.coinIcon = new PIXI.Sprite(ct.res.getTexture('coinGold', 0));\nthis.coinIcon.x = this.x + ct.viewWidth - 100;\nthis.coinIcon.y = this.y + 35;\nthis.coinIcon.depth = 100;\nthis.addChild(this.coinIcon);",
+      "oncreate": "this.coins = 0;\n\nct.rooms.append('UI_Layer', {isUi: true});",
       "onstep": "if (this.coins >= 33) {\n    ct.rooms.switch('RichScreen');\n}",
-      "ondraw": "this.coinsCounter.x = this.x + ct.viewWidth - 70;\nthis.coinsCounter.y = this.y + 35;\n\nthis.coinIcon.x = this.x + ct.viewWidth - 100;\nthis.coinIcon.y = this.y + 35;",
+      "ondraw": "",
       "onleave": "",
       "width": 1024,
       "height": 700,
@@ -263,7 +275,7 @@
       ],
       "uid": "b0f0ff4d-a155-4d68-a86e-5bb7ed8973ab",
       "grid": 35,
-      "lastmod": 1547471597586,
+      "lastmod": 1580620591256,
       "thumbnail": 1,
       "tiles": [
         {
@@ -1880,17 +1892,12 @@
           "x": 245,
           "y": 770,
           "uid": "b7a528f8-655c-4920-900f-f191533f411d"
-        },
-        {
-          "x": 595,
-          "y": 175,
-          "uid": "8a4b8de4-7729-4936-bc7b-bc277a512975"
         }
       ]
     },
     {
       "name": "DeadScreen",
-      "oncreate": "ct.sound.spawn('Failure');\n\nthis.wait = 30;\nct.keyboard.clear();\n\nthis.ohNoLabel = new PIXI.Text('Oh no!', ct.styles.get('OhNo'));\nthis.ohNoLabel.x = ct.width / 2;\nthis.ohNoLabel.y = 540;\nthis.ohNoLabel.anchor.x = this.ohNoLabel.anchor.y = 0.5;\nthis.addChild(this.ohNoLabel);\n\nthis.subLabel = new PIXI.Text('You were too greeedy for that game!\\nPress any button to try again.', ct.styles.get('OhNo_Small'));\nthis.subLabel.x = ct.width / 2;\nthis.subLabel.y = 600;\nthis.subLabel.anchor.x = this.subLabel.anchor.y = 0.5;\nthis.addChild(this.subLabel);",
+      "oncreate": "ct.sound.spawn('Failure');\n\n// Create a delay of 0.5 seconds before this screen may be skipped. Also see the \"On Step\" event\nthis.wait = 30;\n// This clears keyboard inputs and ct.keyboard.lastKey\nct.keyboard.clear();\n\nthis.ohNoLabel = new PIXI.Text('Oh no!', ct.styles.get('OhNo'));\nthis.ohNoLabel.x = ct.camera.width / 2;\nthis.ohNoLabel.y = 540;\nthis.ohNoLabel.anchor.x = this.ohNoLabel.anchor.y = 0.5;\nthis.addChild(this.ohNoLabel);\n\nthis.subLabel = new PIXI.Text('You were too greeedy for that game!\\nPress any button to try again.', ct.styles.get('OhNo_Small'));\nthis.subLabel.x = ct.camera.width / 2;\nthis.subLabel.y = 600;\nthis.subLabel.anchor.x = this.subLabel.anchor.y = 0.5;\nthis.addChild(this.subLabel);",
       "onstep": "this.wait -= ct.delta;\nif (ct.keyboard.lastKey && this.wait < 0) {\n    ct.rooms.switch('InGame');\n}",
       "ondraw": "",
       "onleave": "",
@@ -1905,7 +1912,7 @@
       ],
       "uid": "1ee751d0-24cc-43af-b91d-1a91a9aa48f5",
       "grid": 64,
-      "lastmod": 1547546306396,
+      "lastmod": 1580614967652,
       "thumbnail": 2,
       "gridX": 64,
       "gridY": 64,
@@ -1922,8 +1929,8 @@
           "uid": "2d29a0d5-d88d-493d-bece-8d52ed476273"
         },
         {
-          "x": 384,
-          "y": 576,
+          "x": 992,
+          "y": 669,
           "uid": "8a4b8de4-7729-4936-bc7b-bc277a512975"
         }
       ]
@@ -1945,7 +1952,7 @@
       ],
       "uid": "1a5a64c6-5a4b-4f57-aa99-371ae3c158a3",
       "grid": 64,
-      "lastmod": 1551429777966,
+      "lastmod": 1580614969737,
       "thumbnail": 2,
       "gridX": 64,
       "gridY": 64,
@@ -1967,6 +1974,39 @@
           "uid": "8a4b8de4-7729-4936-bc7b-bc277a512975"
         }
       ]
+    },
+    {
+      "name": "UI_Layer",
+      "oncreate": "",
+      "onstep": "",
+      "ondraw": "ct.camera.realign(this);",
+      "onleave": "",
+      "width": 1024,
+      "height": 720,
+      "backgrounds": [],
+      "copies": [
+        {
+          "x": 992,
+          "y": 689,
+          "uid": "8a4b8de4-7729-4936-bc7b-bc277a512975"
+        },
+        {
+          "x": 44,
+          "y": 46,
+          "uid": "1f73eb4f-8795-4234-af61-2c44c3fba073"
+        }
+      ],
+      "tiles": [
+        {
+          "depth": -10,
+          "tiles": []
+        }
+      ],
+      "uid": "cc861d50-35d6-4687-b789-5768eedfd438",
+      "thumbnail": "5768eedfd438",
+      "gridX": 64,
+      "gridY": 64,
+      "lastmod": 1580621041981
     }
   ],
   "soundtick": 6,
@@ -2003,7 +2043,7 @@
   ],
   "startroom": "b0f0ff4d-a155-4d68-a86e-5bb7ed8973ab",
   "scripts": [],
-  "ctjsVersion": "1.0.0",
+  "ctjsVersion": "1.2.1",
   "fonts": [],
   "skeletons": [],
   "actions": [

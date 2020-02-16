@@ -2,20 +2,32 @@ interface ITouch {
     /** A unique number that identifies a touch; */
     id: number;
 
-    /** The horizontal position at which a touch occures; */
+    /** The horizontal position at which a touch occures. */
     x: number;
 
-    /** The vertical position at which a touch occures; */
+    /** The vertical position at which a touch occures. */
     y: number;
 
-    /** The size of a touch, in game pixels. Sometimes this variable is not available and is equal to `0`; */
+    /** The horizontal position at which a touch occures, in UI space.*/
+    xui: number;
+
+    /** The vertical position at which a touch occures, in UI space.*/
+    yui: number;
+
+    /** The size of a touch, in game pixels. Sometimes this variable is not available and is equal to `0`. */
     r: number;
 
-    /** The horizontal position at which a touch occured in the previous frame; */
+    /** The horizontal position at which a touch occured in the previous frame. */
     xprev: number;
 
     /** The vertical position at which a touch occured in the previous frame. */
     yprev: number;
+
+    /** The horizontal position at which a touch occured in the previous frame, in UI coordinates. */
+    xuiprev: number;
+
+    /** The vertical position at which a touch occured in the previous frame, in UI coordinates. */
+    yuiprev: number;
 }
 
 declare namespace ct {
@@ -31,6 +43,24 @@ declare namespace ct {
         /** The position at which a surface was pressed lastly. */
         var y: number;
 
+        /** The position at which a surface was pressed lastly, but in UI coordinates. */
+        var xui: number;
+
+        /** The position at which a surface was pressed lastly, but in UI coordinates. */
+        var yui: number;
+
+        /** The previous position at which a surface was pressed lastly. */
+        var xprev: number;
+
+        /** The previous position at which a surface was pressed lastly. */
+        var yprev: number;
+
+        /** The previous position at which a surface was pressed lastly, but in UI coordinates. */
+        var xuiprev: number;
+
+        /** The previous position at which a surface was pressed lastly, but in UI coordinates. */
+        var yuiprev: number;
+
         var events: ITouch[];
 
         function getById(id: number): ITouch | false;
@@ -40,6 +70,8 @@ declare namespace ct {
          * of a particular id. You can also omit `id` to check
          * against all possible touch events.
          *
+         * This is a version that checks for collisions in game coordinates.
+         *
          * If `includeReleased` is set to `true`, will check against
          * not active but just released touch events.
          */
@@ -47,13 +79,39 @@ declare namespace ct {
 
         /**
          * Checks whether there is a collision between a copy and a touch event
+         * of a particular id. You can also omit `id` to check
+         * against all possible touch events.
+         *
+         * This is a version that checks for collisions in UI space.
+         *
+         * If `includeReleased` is set to `true`, will check against
+         * not active but just released touch events.
+         */
+        function collideUi(copy: Copy, id?: number, includeReleased?: boolean): boolean;
+
+        /**
+         * Checks whether there is a collision between a copy and a touch event
          * of a particular id or a mouse cursor. You can also omit `id` to check
          * against all possible touch events.
+         *
+         * This is a version that checks for collisions in game coordinates.
          *
          * If `includeReleased` is set to `true`, will check against
          * not active but just released touch events.
          */
         function hovers(copy: Copy, id?: number, includeReleased?: boolean): boolean;
+
+        /**
+         * Checks whether there is a collision between a copy and a touch event
+         * of a particular id or a mouse cursor. You can also omit `id` to check
+         * against all possible touch events.
+         *
+         * This is a version that checks for collisions in UI space.
+         *
+         * If `includeReleased` is set to `true`, will check against
+         * not active but just released touch events.
+         */
+        function hoversUi(copy: Copy, id?: number, includeReleased?: boolean): boolean;
 
         /**
          * Returns whether touch events are supported on the current machine.
