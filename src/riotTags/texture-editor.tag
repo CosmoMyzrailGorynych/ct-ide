@@ -191,12 +191,13 @@ texture-editor.panel.view
                 .relative
                     button#texturecolor.inline.wide(onclick="{changeTexturePreviewColor}")
                         svg.feather
-                            use(xlink:href="data/icons.svg#drop")
+                            use(xlink:href="data/icons.svg#droplet")
                         span {voc.bgcolor}
                 input.color.rgb#previewbgcolor
 
     color-picker(
         ref="previewBackgroundColor" if="{changingTexturePreviewColor}"
+        hidealpha="true"
         color="{previewColor}" onapply="{updatePreviewColor}" onchanged="{updatePreviewColor}" oncancel="{cancelPreviewColor}"
     )
     script.

@@ -45,7 +45,8 @@
         "sort": "Sortieren:",
         "tilelayer": "Tile Ebene",
         "wrongFormat": "Falsches Dateiformat",
-        "yes": "Ja"
+        "yes": "Ja",
+        "zoom": "Zoom"
     },
     "actionsEditor": {
         "actions": "Actions",
@@ -326,7 +327,6 @@
         "add": "Hinzufügen",
         "none": "Nichts",
         "done": "Fertig",
-        "zoom": "Zoom:",
         "grid": "Raster konfigurieren",
         "gridoff": "Raster deaktivieren",
         "gridsize": "Rastergröße:",

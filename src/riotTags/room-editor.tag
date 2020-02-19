@@ -51,7 +51,7 @@ room-editor.panel.view
                     use(xlink:href="data/icons.svg#move")
             span(if="{window.innerWidth - sidebarWidth > 840}") {voc.hotkeysNotice}
         .zoom
-            b(if="{window.innerWidth - sidebarWidth > 840}") {voc.zoom}
+            b(if="{window.innerWidth - sidebarWidth > 840}") {vocGlob.zoom}
             div.button-stack
                 button#roomzoom12.inline(if="{window.innerWidth - sidebarWidth > 470}" onclick="{roomToggleZoom(0.125)}" class="{active: zoomFactor === 0.125}") 12%
                 button#roomzoom25.inline(onclick="{roomToggleZoom(0.25)}" class="{active: zoomFactor === 0.25}") 25%
@@ -77,9 +77,8 @@ room-editor.panel.view
 
          this.gutterMouseDown = e => {
             this.draggingGutter = true;
-            //document.body.appendChild(catcher);
         };
-        document.addEventListener('mousemove', e => {
+        const gutterMove = e => {
             if (!this.draggingGutter) {
                 return;
             }
@@ -93,13 +92,19 @@ room-editor.panel.view
                 canvas.height = sizes.height;
             }
             this.refreshRoomCanvas();
-        });
-        document.addEventListener('mouseup', () => {
+        };
+        const gutterUp = () => {
             if (this.draggingGutter) {
                 this.draggingGutter = false;
                 //updateCanvasSize();
                 //document.body.removeChild(catcher);
             }
+        };
+        document.addEventListener('mousemove', gutterMove);
+        document.addEventListener('mouseup', gutterUp);
+        this.on('unmount', () => {
+            document.removeEventListener('mousemove', gutterMove);
+            document.removeEventListener('mouseup', gutterUp);
         });
 
         this.editingCode = false;

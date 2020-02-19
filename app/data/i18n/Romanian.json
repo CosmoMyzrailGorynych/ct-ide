@@ -44,7 +44,8 @@
         "tilelayer": "tile layer",
         "wrongFormat": "Format de fișier greșit",
         "yes": "Da",
-        "contribute": ""
+        "contribute": "",
+        "zoom": "Zoom"
     },
     "actionsEditor": {
         "actions": "Acțiuni",
@@ -322,7 +323,6 @@
         "add": "Adaugă",
         "none": "Nimic",
         "done": "Gata",
-        "zoom": "Zoom:",
         "grid": "Setează grilă",
         "gridoff": "Dezactivează grilă",
         "gridsize": "Mărimea grilei:",

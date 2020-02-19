@@ -45,7 +45,8 @@
         "tilelayer": "平铺层",
         "wrongFormat": "错误的文件格式",
         "yes": "是",
-        "loading": "加载中..."
+        "loading": "加载中...",
+        "zoom": "缩放:"
     },
     "actionsEditor": {
         "actions": "动作",
@@ -330,7 +331,6 @@
         "add": "添加",
         "none": "无",
         "done": "完成",
-        "zoom": "缩放:",
         "grid": "设置网格",
         "gridoff": "禁用网格",
         "gridsize": "网格大小:",

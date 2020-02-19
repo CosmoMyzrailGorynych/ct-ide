@@ -6,15 +6,6 @@ setInterval(function () {
 }, 1000 * 60);
 
 /**
- * @typedef ILibMeta
- *
- * @property {string} name
- * @property {string} version
- * @property {string} [info]
- * @property {Array} authors
- */
-
-/**
  * The ct.js library
  * @namespace
  */

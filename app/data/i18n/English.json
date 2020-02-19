@@ -45,7 +45,8 @@
         "sort": "Sort:",
         "tilelayer": "tile layer",
         "wrongFormat": "Wrong file format",
-        "yes": "Yes"
+        "yes": "Yes",
+        "zoom": "Zoom"
     },
     "actionsEditor": {
         "actions": "Actions",
@@ -65,6 +66,12 @@
         "globalPalette": "Global Palette",
         "old": "Old",
         "projectPalette": "Project's Palette"
+    },
+    "curveEditor": {
+        "curveLineHint": "Click the curve to add a point",
+        "dragPointHint": "Drag to move the point, right-click to delete it",
+        "pointTime": "Time:",
+        "pointValue": "Value:"
     },
     "docsShortcut": {
         "openDocs": "Open the documentation"
@@ -131,6 +138,7 @@
         "successZipExport": "Successfully exported to {0}.",
         "successZipProject": "Successfully zipped the project to {0}.",
         "ui": "UI",
+        "fx": "FX",
         "theme": "Theme",
         "themeDay": "Light",
         "themeNight": "Dark",
@@ -294,6 +302,79 @@
         "italic": "Is italic?",
         "reimport": "Reimport"
     },
+    "particleEmitters": {
+        "emittersHeading": "Particle emitters",
+        "emitterHeading": "Emitter",
+
+        "from": "From:",
+        "to": "To:",
+
+        "textureHeading": "Texture",
+        "selectTexture": "Select…",
+        "importBuiltin": "Import default…",
+
+        "colorAndOpacityHeading": "Color and Opacity",
+        "stepped": "Stepped",
+        "steppedColor": "Stepped color",
+        "steppedAlpha": "Stepped opacity",
+        "blendMode": "Blend mode:",
+        "regular": "Regular",
+        "darken": "Darken",
+        "lighten": "Lighten",
+        "burn": "Burn",
+
+        "scalingHeading": "Scaling",
+        "scale": "Scale:",
+        "minimumSize": "Minimum size:",
+
+        "velocityHeading": "Velocity",
+        "velocity": "Velocity:",
+        "minimumSpeed": "Minimum speed:",
+        "maxSpeed": "Max speed:",
+
+        "gravityHeading": "Gravity",
+        "gravityNotice": "Note that if it differs from (0;0), velocity interpolation will be disabled, meaning that only the first node of the velocity graph will have the effect.",
+
+        "directionHeading": "Direction",
+        "startingDirection": "Starting direction",
+        "preserveTextureDirection": "Preserve texture rotation",
+
+        "rotationHeading": "Rotation",
+        "rotationSpeed": "Rotation speed",
+        "rotationAcceleration": "Rotation acceleration:",
+
+        "spawningHeading": "Spawning",
+        "timeBetweenBursts": "Time between bursts:",
+        "spawnAtOnce": "Spawn at once:",
+        "chanceToSpawn": "Chance to spawn a particle:",
+        "maxParticles": "Max particles:",
+        "lifetime": "Particle lifetime, sec.",
+        "emitterLifetime": "Emitter lifetime, sec.:",
+        "prewarmDelay": "Prewarm / delay, sec.:",
+        "prewarmDelayNotice": "Negative values will prepare the particles of the emitter before showing it, which is useful for long effects like dust particles or mist that should already be visible on room start; positive values will delay the simulation.",
+
+        "shapeAndPositioningHeading": "Shape and Positioning",
+        "spawnType": "Shape type:",
+        "spawnShapes": {
+            "point": "Point",
+            "rectangle": "Rectangle",
+            "circle": "Circle",
+            "ring": "Ring",
+            "star": "Star"
+        },
+        "width": "Width:",
+        "height": "Height:",
+        "radius": "Radius:",
+        "starPoints": "Points:",
+        "startAngle": "Rotate, deg.:",
+        "relativeEmitterPosition": "Position relative to other emitters",
+
+        "addEmitter": "Add another emitter",
+        "reset": "Reset preview",
+        "changeBg": "Change background",
+        "inspectorComplete": "Complete!",
+        "alreadyHasAnImportingTexture": "You already have a texture named $1. Either delete it or rename it; though you must be importing the same texture you've added before :)"
+    },
     "types": {
         "create": "Create"
     },
@@ -338,7 +419,6 @@
         "add": "Add",
         "none": "Nothing",
         "done": "Done",
-        "zoom": "Zoom:",
         "grid": "Set grid",
         "gridoff": "Disable grid",
         "gridsize": "Grid size:",

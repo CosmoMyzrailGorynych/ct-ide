@@ -141,16 +141,20 @@
 .cards
     list-style none
     padding 0
+    display grid
+    grid-template-columns repeat(auto-fill, minmax(17em, 1fr))
+    grid-gap 0.3em
+    flex-grow 0
     li
         background white
         padding 0.8em
-        margin 0.3em
+        margin 0
+        box-sizing border-box
         border 1px solid bl
         border-radius 3px
         display inline-block
         vertical-align top
         cursor pointer
-        width 15em
         transition 0.35s ease all
         &:hover
             border-color acttext
@@ -175,6 +179,8 @@
             border-radius br
             &:hover
                 background rgba(act, 0.35)
+    &.list
+        display block
     &.list li
         display flex
         flex-flow row nowrap

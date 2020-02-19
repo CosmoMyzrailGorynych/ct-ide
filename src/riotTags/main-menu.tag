@@ -37,15 +37,19 @@ main-menu.flexcol
                 svg.feather
                     use(xlink:href="data/icons.svg#droplet")
                 span {voc.ui}
-            li(onclick="{changeTab('sounds')}" class="{active: tab === 'sounds'}" data-hotkey="Control+5" title="Control+5")
+            li(onclick="{changeTab('fx')}" class="{active: tab === 'fx'}" data-hotkey="Control+5" title="Control+5")
+                svg.feather
+                    use(xlink:href="data/icons.svg#sparkles")
+                span {voc.fx}
+            li(onclick="{changeTab('sounds')}" class="{active: tab === 'sounds'}" data-hotkey="Control+6" title="Control+6")
                 svg.feather
                     use(xlink:href="data/icons.svg#headphones")
                 span {voc.sounds}
-            li(onclick="{changeTab('types')}" class="{active: tab === 'types'}" data-hotkey="Control+6" title="Control+6")
+            li(onclick="{changeTab('types')}" class="{active: tab === 'types'}" data-hotkey="Control+7" title="Control+7")
                 svg.feather
                     use(xlink:href="data/icons.svg#user")
                 span {voc.types}
-            li(onclick="{changeTab('rooms')}" class="{active: tab === 'rooms'}" data-hotkey="Control+7" title="Control+7")
+            li(onclick="{changeTab('rooms')}" class="{active: tab === 'rooms'}" data-hotkey="Control+8" title="Control+8")
                 svg.feather
                     use(xlink:href="data/icons.svg#room")
                 span {voc.rooms}

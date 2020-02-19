@@ -59,7 +59,9 @@ textures-panel.panel.view
         this.editing = false;
         this.dropping = false;
 
-        this.thumbnails = texture => `file://${sessionStorage.projdir}/img/${texture.origname}_prev.png?cache=${texture.lastmod}`;
+        const {getTexturePreview} = require('./data/node_requires/resources/textures');
+        // this.thumbnails = texture => `file://${sessionStorage.projdir}/img/${texture.origname}_prev.png?cache=${texture.lastmod}`;
+        this.thumbnails = getTexturePreview;
 
         this.fillTextureMap = () => {
             glob.texturemap = {};
@@ -97,27 +99,31 @@ textures-panel.panel.view
             this.currentTexture = null;
             this.update();
         };
+        this.updateTextureData = () => {
+            this.refs.textures.updateList();
+            this.refs.skeletons.updateList();
+            this.update();
+            this.fillTextureMap();
+        };
 
         window.signals.on('projectLoaded', this.setUpPanel);
+        window.signals.on('textureImported', this.updateTextureData);
         this.on('mount', this.setUpPanel);
         this.on('unmount', () => {
             window.signals.off('projectLoaded', this.setUpPanel);
+            window.signals.off('textureImported', this.updateTextureData);
         });
 
         /**
          * An event fired when user attempts to add files from a file manager (by clicking an "Import" button)
          */
         this.textureImport = e => { // input[type="file"]
+            const {importImageToTexture} = require('./data/node_requires/resources/textures');
             const files = [...e.target.files].map(file => file.path);
             for (let i = 0; i < files.length; i++) {
                 if (/\.(jpg|gif|png|jpeg)/gi.test(files[i])) {
                     let id = generateGUID();
-                    this.loadImg(
-                        id,
-                        files[i],
-                        sessionStorage.projdir + '/img/i' + id + path.extname(files[i]),
-                        true
-                    );
+                    importImageToTexture(files[i]);
                 } else if (/_ske\.json/i.test(files[i])) {
                     let id = generateGUID();
                     this.loadSkeleton(
@@ -131,58 +137,7 @@ textures-panel.panel.view
             this.dropping = false;
             e.preventDefault();
         };
-        /**
-         * Tries to load an image, then adds it to the projects and creates a thumbnail
-         * @param {Number} uid Counter/identifier. Should be unique for all loaded images
-         * @param {String} filename A path to the source image
-         * @param {String} dest A path to a folder in which to put the image and its thumbnails
-         * @param {Boolean} imprt If set to true, creates a texture object in the current project; otherwise updates the existing texture.
-         */
-        this.loadImg = (uid, filename, dest, imprt) => {
-            fs.copy(filename, dest, e => {
-                if (e) throw e;
-                var image = document.createElement('img');
-                image.onload = () => {
-                    setTimeout(() => {
-                        var obj = {
-                            name: path.basename(filename).replace(/\.(jpg|gif|png|jpeg)/gi, '').replace(/\s/g, '_'),
-                            untill: 0,
-                            grid: [1, 1],
-                            axis: [0, 0],
-                            marginx: 0,
-                            marginy: 0,
-                            imgWidth: image.width,
-                            imgHeight: image.height,
-                            width: image.width,
-                            height: image.height,
-                            offx: 0,
-                            offy: 0,
-                            origname: path.basename(dest),
-                            source: filename,
-                            shape: 'rect',
-                            left: 0,
-                            right: image.width,
-                            top: 0,
-                            bottom: image.height,
-                            uid: uid
-                        };
-                        window.currentProject.textures.push(obj);
-                        this.imgGenPreview(dest, dest + '_prev.png', 64)
-                        .then(dataUrl => {
-                            this.refs.textures.updateList();
-                            this.refs.skeletons.updateList();
-                            this.update();
-                        });
-                        this.imgGenPreview(dest, dest + '_prev@2.png', 128);
-                        this.fillTextureMap();
-                    }, 0);
-                }
-                image.onerror = e => {
-                    alertify.error(e);
-                }
-                image.src = 'file://' + dest + '?' + Math.random();
-            });
-        };
+
         this.loadSkeleton = (uid, filename, dest) => {
             fs.copy(filename, dest)
             .then(() => fs.copy(filename.replace('_ske.json', '_tex.json'), dest.replace('_ske.json', '_tex.json')))
@@ -202,55 +157,7 @@ textures-panel.panel.view
                 });
             });
         };
-        /**
-         * Generates a square preview for a given skeleton
-         * @param {String} source Path to the image
-         * @param {String} destFile Path to the destinating image
-         * @param {Number} size Size of the square thumbnail, in pixels
-         * @returns {Promise} Resolves after creating a thumbnail. On success, passes data-url of the created thumbnail.
-         */
-        this.imgGenPreview = (source, destFile, size) => {
-            var thumbnail = document.createElement('img');
-            return new Promise((accept, reject) => {
-                thumbnail.onload = () => {
-                    var c = document.createElement('canvas'),
-                    w, h, k;
-                    c.x = c.getContext('2d');
-                    c.width = c.height = size;
-                    c.x.clearRect(0, 0, size, size);
-                    w = thumbnail.width;
-                    h = thumbnail.height;
-                    if (w > h) {
-                        k = size / w;
-                    } else {
-                        k = size / h;
-                    }
-                    if (k > 1) k = 1;
-                    c.x.drawImage(
-                        thumbnail,
-                        (size - thumbnail.width*k)/2,
-                        (size - thumbnail.height*k)/2,
-                        thumbnail.width*k,
-                        thumbnail.height*k
-                    );
-                    // strip off the data:image url prefix to get just the base64-encoded bytes
-                    var dataURL = c.toDataURL();
-                    var data = dataURL.replace(/^data:image\/\w+;base64,/, '');
-                    var buf = new Buffer(data, 'base64');
-                    var stream = fs.createWriteStream(destFile);
-                    stream.on('finish', () => {
-                        setTimeout(() => { // WHY THE HECK I EVER NEED THIS?!
-                            accept(destFile);
-                        }, 100);
-                    });
-                    stream.on('error', err => {
-                        reject(err);
-                    });
-                    stream.end(buf);
-                }
-                thumbnail.src = 'file://' + source;
-            });
-        };
+
         /**
          *  Generates a square preview for a given skeleton
          * @param {String} source Path to the source _ske.json file

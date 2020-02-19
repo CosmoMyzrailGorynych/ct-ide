@@ -146,6 +146,7 @@ style-editor.panel.view
             this.tab = tab;
         };
         this.on('mount', e => {
+            const PIXI = require('pixi.js-legacy');
             const width = 800;
             const height = 500;
             this.pixiApp = new PIXI.Application({

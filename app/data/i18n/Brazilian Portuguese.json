@@ -50,7 +50,8 @@
         "yes": "Sim",
         "cannotBeEmpty": "",
         "contribute": "",
-        "translateToYourLanguage": ""
+        "translateToYourLanguage": "",
+        "zoom": "Zoom:"
     },
     "exportPanel": {
         "hide": "Ocultar",
@@ -303,7 +304,6 @@
         "add": "Adicionar",
         "none": "Nada",
         "done": "Feito",
-        "zoom": "Zoom:",
         "grid": "Definir grade",
         "gridoff": "Desabilitar grade",
         "gridsize": "Tamanho da grade:",

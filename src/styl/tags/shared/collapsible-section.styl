@@ -1,0 +1,25 @@
+collapsible-section
+    margin-top 1rem
+    display block
+    &:first-child
+        margin-top 0
+    & > .flexrow
+        padding 0.5rem 0
+        align-items  center
+        cursor pointer
+        border-bottom 1px solid bd
+        h3
+            padding 0
+            margin 0
+            flex 1 1 auto
+            overflow hidden
+            text-overflow ellipsis
+            white-space nowrap
+        svg
+            {trans}
+            margin-left 0.5rem
+            flex 0 0 auto
+            &.rotated
+                transform rotate(180deg)
+    .&-aWrapper
+        padding 1rem 0 0.5rem

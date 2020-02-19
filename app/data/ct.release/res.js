@@ -57,11 +57,12 @@
         /**
          * Creates a DragonBones skeleton, ready to be added to your copies.
          * @param {string} name The name of the skeleton asset
+         * @param {string} [skin] Optional; allows you to specify the used skin
          * @returns {object} The created skeleton
          */
-        makeSkeleton(name) {
+        makeSkeleton(name, skin) {
             const r = ct.res.skelRegistry[name],
-                  skel = dbFactory.buildArmatureDisplay('Armature', r.data.name);
+                  skel = dbFactory.buildArmatureDisplay('Armature', r.data.name, skin);
             skel.ctName = name;
             skel.on(dragonBones.EventObject.SOUND_EVENT, function (event) {
                 if (ct.sound.exists(event.name)) {
@@ -105,7 +106,7 @@
         loadingLabel.classList.add('hidden');
         setTimeout(() => {
             /*%start%*/
-            ct.pixiApp.ticker.add(ct.loop);
+            PIXI.Ticker.shared.add(ct.loop);
             ct.rooms.forceSwitch(ct.rooms.starting);
         }, 0);
     });

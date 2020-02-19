@@ -1,0 +1,43 @@
+curve-editor
+    position relative
+    display block
+    margin-right 1.5rem
+    cursor default
+.curve-editor-aGraphWrap
+    position relative
+    outline solid 1px bd
+    if (themeDark)
+        outline solid 1px mix(bd, text, 85%)
+    line-height 0
+    .aDragger
+        transform translate(-50%, -50%)
+.curve-editor-aGrid
+    stroke bl
+    stroke-width 1px
+    if (themeDark)
+        stroke bd
+    .aMiddleLine
+        stroke bd
+        if (themeDark)
+            stroke mix(bd, text, 85%)
+.curve-editor-aCurve
+    stroke act
+    stroke-width 4px
+    polyline
+        cursor crosshair
+.curve-editor-aRuler
+    justify-content space-between
+    position absolute
+    z-index 1
+    font-size 75%
+    line-height 1em
+    &.flexrow
+        width 100%
+        top 100%
+        margin-top 0.2rem
+    &.flexcol
+        left 100%
+        height 100%
+        margin-left 0.2rem
+    span
+        flex 0 0 auto

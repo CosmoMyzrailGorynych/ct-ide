@@ -5,7 +5,8 @@
     @attribute showempty (atomic)
         If set, allows users to pick an empty texture (to reset texture).
     @attribute onselected (riot function)
-        Calls the funtion with the selected ct texture as the only object
+        A two-fold function (texture => e => {…}). Calls the funtion with the selected
+        ct texture as the only argument in the first function, and MouseEvent in the second.
     @attribute oncancelled (riot function)
         Calls the funtion when a user presses the "Cancel" button. Passes no arguments.
 

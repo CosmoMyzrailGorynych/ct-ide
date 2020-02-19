@@ -8,12 +8,16 @@
         Calls the funtion when a user changes the color while working with the color picker.
         Passes an object `{target: RiotTag}` as one argument and a value (an rgba/HEX string).
 
+    @attribute hidealpha (atomic)
+        Passed as is to color-picker. Disables alpha input.
+
 color-input
     .color-input-aPicker(style="background-color: {value};" onclick="{openPicker}")
         span(style="color: {dark? '#fff' : '#000'};") {value}
     color-picker(
         ref="colorPicker" if="{opened}"
-        color="{value}" onapply="{applyColor}" onchanged="{changeColor}" oncancel="{cancelColor}"
+        color="{value}" hidealpha="{opts.hidealpha}"
+        onapply="{applyColor}" onchanged="{changeColor}" oncancel="{cancelColor}"
     )
     script.
         const Color = net.brehaut.Color;

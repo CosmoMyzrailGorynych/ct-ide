@@ -12,6 +12,9 @@
         Called when a user presses the "Cancel" button.
         Passes a HEX/RGBA color as a first argument and 'oncancel' as a second one.
 
+    @attribute hidealpha (atomic)
+        Disables alpha input.
+
 color-picker
     .panel(ref="widget")
         .color-picker-aBackgroundToggler
@@ -50,8 +53,8 @@ color-picker
                     .pipe(style="background: linear-gradient(to right, {color.setAlpha(1).devalueByRatio(1).toCSS()} 0%, {color.setAlpha(1).valueByAmount(1).toCSS()} 100%)")
                     input.transparent(type="range" value="{~~(color.getValue() * 100)}" min="0" max="100" onchange="{updateValue}" oninput="{updateValue}")
                 input.short(type="number" min="0" max="100" value="{~~(color.getValue() * 100)}" onchange="{updateValue}")
-            .flexrow
-                .aRangePipeStack(hide="{opts.hidealpha}")
+            .flexrow(hide="{opts.hidealpha}")
+                .aRangePipeStack
                     .pipe.alphabar
                     .pipe(style="background: linear-gradient(to right, transparent 0%, {color.setAlpha(1).toCSS()} 100%)")
                     input.transparent(type="range" value="{~~(color.getAlpha() * 100)}" min="0" max="100" onchange="{updateAlpha}" oninput="{updateAlpha}")
@@ -155,4 +158,4 @@ color-picker
             if (this.opts.oncancel) {
                 this.opts.oncancel(this.color.toString(), 'oncancel');
             }
-        }
+        };

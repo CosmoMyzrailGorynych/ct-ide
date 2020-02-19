@@ -50,7 +50,7 @@ input[type="reset"],
 .button,
 .selectbox
     padding 0.5em 1em
-    margin 0 0.3em
+    margin 0 0.3em 0 0
     border 1px solid act
     color acttext
     font inherit
@@ -99,6 +99,10 @@ input[type="reset"],
     &.square.inline
         padding 0.3em
         margin-left 0
+    &.wide + &.wide
+        margin-top 0.5rem
+    .flexrow > &.wide + &.wide
+        margin-top 0
 
 .aSearchWrap
     position relative
@@ -252,6 +256,12 @@ label, .label
         position relative
         [type="file"]
             display none
+
+fieldset
+    margin-bottom 0.5rem
+    &:last-child
+        margin-bottom 0
+
 .checkbox
     position relative
     padding-left 1.5rem
@@ -315,14 +325,20 @@ input[type="range"]
         height 24px
         cursor pointer
         background snow
+        if (themeDark) // dark themes use an inverted color scheme in sense of variables
+            background white
         border-radius br
         border 1px solid bl
+        if (themeDark)
+            border 1px solid bd
     &::-webkit-slider-thumb
         border 1px solid bd
         height 40px
         width 19px
         border-radius br
         background white
+        if (themeDark)
+            background snow
         cursor pointer
         -webkit-appearance none
         margin-top -9px
@@ -355,8 +371,9 @@ input[type="range"]
     background act
     border-radius 100%
     cursor move
-    margin 1rem
     {shad}
+    &.selected
+        box-shadow 0 0 0 2px bl, 0 0 0 4px act, 0 0.1rem 0.2rem 4px rgba(0, 0, 0, 0.5)
 
 .aClicker
     height 0.75rem
@@ -425,11 +442,11 @@ input[type="range"]
         height 100%
         border-top 0
         border-bottom 0
-        cursor resize-ew
+        cursor ew-resize
         &::before
             transform translate(-50%, -50%) rotate(90deg)
     &.horizontal
         width 100%
         border-right 0
         border-left 0
-        cursor resize-ns
+        cursor ns-resize

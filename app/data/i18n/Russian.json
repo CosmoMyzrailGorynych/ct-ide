@@ -45,7 +45,8 @@
         "sort": "Сортировать:",
         "tilelayer": "слой тайлов",
         "wrongFormat": "Неверный формат файла",
-        "yes": "Да"
+        "yes": "Да",
+        "zoom": "Масштаб"
     },
     "actionsEditor": {
         "actions": "Действия",
@@ -130,6 +131,7 @@
         "successZipExport": "Успешно экспортировано в {0}.",
         "successZipProject": "Проект успешно упакован в {0}.",
         "ui": "Интерфейс",
+        "fx": "Эффекты",
         "theme": "Тема",
         "themeDay": "Светлая",
         "themeNight": "Тёмная",
@@ -292,6 +294,79 @@
         "italic": "Наклонный стиль?",
         "reimport": "Заменить"
     },
+    "particleEmitters": {
+        "emittersHeading": "Системы частиц",
+        "emitterHeading": "Эмиттер",
+
+        "from": "От:",
+        "to": "До:",
+
+        "textureHeading": "Текстура",
+        "selectTexture": "Выбрать…",
+        "importBuiltin": "Импорт встроенной…",
+
+        "colorAndOpacityHeading": "Цвет и прозрачность",
+        "stepped": "Резкий переход",
+        "steppedColor": "Резкий переход цвета",
+        "steppedAlpha": "Резкий переход прозрачности",
+        "blendMode": "Режим смешивания:",
+        "regular": "Обычный",
+        "darken": "Затемнение",
+        "lighten": "Осветление",
+        "burn": "Горение",
+
+        "scalingHeading": "Размер",
+        "scale": "Размер:",
+        "minimumSize": "Минимальный размер:",
+
+        "velocityHeading": "Скорость",
+        "velocity": "Скорость:",
+        "minimumSpeed": "Минимальная скорость:",
+        "maxSpeed": "Максимальная скорость:",
+
+        "gravityHeading": "Гравитация",
+        "gravityNotice": "Если гравитация отличается от (0;0), то интерполяция скорости будет отключена, т.е. работать будет только первый узел в графике скорости.",
+
+        "directionHeading": "Направление",
+        "startingDirection": "Начальное направление",
+        "preserveTextureDirection": "Не вращать текстуру",
+
+        "rotationHeading": "Поворот",
+        "rotationSpeed": "Скорость поворота speed",
+        "rotationAcceleration": "Ускорение поворота:",
+
+        "spawningHeading": "Создание частиц",
+        "timeBetweenBursts": "Время между двумя выбросами:",
+        "spawnAtOnce": "Частиц в выбросе:",
+        "chanceToSpawn": "Шанс создания частицы:",
+        "maxParticles": "Макс. количество частиц:",
+        "lifetime": "Время жизни частицы, в сек.",
+        "emitterLifetime": "Время жизни эмиттера, в сек.:",
+        "prewarmDelay": "Разогрев / пауза, в сек.:",
+        "prewarmDelayNotice": "Отрицательные значения подготовят эффект перед его показом, что полезно для долгих эффектов вроде частиц пыли или тумана, которые должны быть на экране уже при старте комнаты; положительные значения откладывают эффект.",
+
+        "shapeAndPositioningHeading": "Форма и расположение",
+        "spawnType": "Форма эмиттера:",
+        "spawnShapes": {
+            "point": "Точка",
+            "rectangle": "Прямоугольник",
+            "circle": "Круг",
+            "ring": "Кольцо",
+            "star": "Звезда"
+        },
+        "width": "Ширина:",
+        "height": "Высота:",
+        "radius": "Радиус:",
+        "starPoints": "Концов:",
+        "startAngle": "Поворот, в град.:",
+        "relativeEmitterPosition": "Расположение относительно других эмиттеров",
+
+        "addEmitter": "Добавить ещё эмиттер",
+        "reset": "Сбросить превью",
+        "changeBg": "Сменить фон",
+        "inspectorComplete": "Готово!",
+        "alreadyHasAnImportingTexture": "В проекте уже есть текстура $1. Либо переменуйте её, либо удалите, но, скорее всего, вы пытаетесь заново импортировать ту же самую текстуру :)"
+    },
     "types": {
         "create": "Создать"
     },
@@ -336,7 +411,6 @@
         "add": "Добавить",
         "none": "Ничего",
         "done": "Сохранить",
-        "zoom": "Зум:",
         "grid": "Включить сетку",
         "gridoff": "Выключить сетку",
         "gridsize": "Размер сетки:",

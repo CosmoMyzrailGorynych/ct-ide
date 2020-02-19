@@ -45,7 +45,8 @@
         "sort": "Sortuj:",
         "tilelayer": "warstwa kafelków",
         "wrongFormat": "Zły format pliku",
-        "yes": "Tak"
+        "yes": "Tak",
+        "zoom": "Powiększenie"
     },
     "actionsEditor": {
         "actions": "Akcje",
@@ -75,7 +76,7 @@
         "debug": "Wersja debug",
         "export": "Eksport",
         "exportPanel": "Eksportuj Projekt",
-        "firstrunnotice": "Pierwsze uruchomienie dla każdej platformy będzie wolne, ponieważ ct.js będzie pobierać i zapisywać dodatkowe biblioteki wymagane do spakowania gry. Może to zająć trochę czasu, ale następne razy będą nimal natychmiastowe.", 
+        "firstrunnotice": "Pierwsze uruchomienie dla każdej platformy będzie wolne, ponieważ ct.js będzie pobierać i zapisywać dodatkowe biblioteki wymagane do spakowania gry. Może to zająć trochę czasu, ale następne razy będą nimal natychmiastowe.",
         "log": "Log Wiadomości"
     },
     "inputMethodSelector": {
@@ -338,7 +339,6 @@
         "add": "Dodaj",
         "none": "Nic",
         "done": "Gotowe",
-        "zoom": "Powiększenie:",
         "grid": "Ustaw siatkę",
         "gridoff": "Zablokuj siatkę",
         "gridsize": "Rozmiar siatki:",

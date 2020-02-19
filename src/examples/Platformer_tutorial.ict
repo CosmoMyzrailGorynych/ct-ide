@@ -1,5 +1,5 @@
 {
-  "ctjsVersion": "1.2.1",
+  "ctjsVersion": "1.3.0",
   "notes": "/* empty */",
   "libs": {
     "place": {
@@ -19,12 +19,12 @@
     {
       "name": "Robot",
       "depth": 0,
-      "oncreate": "this.jumpSpeed = -10;\nthis.gravity = 0.5;\n\nthis.hspeed = 0; // Horizontal speed\nthis.vspeed = 0; // Vertical speed\n\nct.room.follow = this;\nct.room.borderX = 450;\nct.room.borderY = 200;\n\nthis.savedX = this.x;\nthis.savedY = this.y;\n\nthis.animationSpeed = 0.2;\n",
+      "oncreate": "this.jumpSpeed = -10;\nthis.gravity = 0.5;\n\nthis.hspeed = 0; // Horizontal speed\nthis.vspeed = 0; // Vertical speed\n\nct.camera.follow = this;\nct.camera.borderX = 450;\nct.camera.borderY = 200;\n\nthis.savedX = this.x;\nthis.savedY = this.y;\n\nthis.animationSpeed = 0.2;\n\nconsole.log(ct.emitters.follow(this, 'Trail', {\n    position: {\n        x: 0,\n        y: -70\n    }\n}));\n",
       "onstep": "this.speed = 4 * ct.delta; // Max horizontal speed\n\nif (ct.place.occupied(this, this.x, this.y, 'Deadly')) {\n    this.x = this.savedX;\n    this.y = this.savedY;\n    this.hspd = 0;\n    this.vspd = 0;\n    ct.room.lives --;\n    if (ct.room.lives <= 0) {\n        ct.rooms.switch(ct.room.name);\n    }\n    return;\n}\n\nif (ct.actions.MoveLeft.down) {\n    this.hspd = -this.speed;\n} else if (ct.actions.MoveRight.down) {\n    this.hspd = this.speed; \n} else {\n    this.hspd = 0;\n}\n\nif (this.hspd !== 0) {\n    if (this.tex !== 'Robot_Walking') {\n        this.tex = 'Robot_Walking';\n        this.play();\n    }\n    if (this.hspd > 0) {\n        this.scale.x = 1;\n    } else {\n        this.scale.x = -1;\n    }\n} else {\n    // Don't move horizontally if no input\n    this.tex = 'Robot_Idle';\n}\n\n// If there is ground underneath the Robot…\nif (ct.place.occupied(this, this.x, this.y + 1, 'Solid')) {\n    // …and the W key or the spacebar is down…\n    if (ct.actions.Jump.down) {\n        // …then jump!\n        this.vspd = this.jumpSpeed;\n    } else {\n        // Reset our vspd. We don't want to be buried underground!\n        this.vspd = 0;\n    }\n} else {\n    // If there is no ground  \n    this.vspd += this.gravity * ct.delta;\n    // Set jumping animation!\n    this.tex = 'Robot_Jump';\n}\n\n// Move by horizontal axis, pixel by pixel\nfor (var i = 0; i < Math.abs(this.hspd); i++) {\n    if (ct.place.free(this, this.x + Math.sign(this.hspd), this.y, 'Solid')) {\n        this.x += Math.sign(this.hspd);\n    } else {\n        break;\n    }\n}\n// Do the same for vertical speed\nfor (var i = 0; i < Math.abs(this.vspd); i++) {\n    if (ct.place.free(this, this.x, this.y + Math.sign(this.vspd), 'Solid')) {\n        this.y += Math.sign(this.vspd);\n    } else {\n        break;\n    }\n}",
       "ondraw": "",
       "ondestroy": "",
       "uid": "2d07d12b-9798-418c-a420-3a1ef4dc3ae2",
-      "lastmod": 1551436011235,
+      "lastmod": 1581890050679,
       "extends": {
         "ctype": "Robot"
       },
@@ -144,9 +144,9 @@
       "oncreate": "",
       "onstep": "var col = ct.place.meet(this, 'Robot');\nif (col) {\n    ct.room.crystals ++;\n    this.kill = true;\n}",
       "ondraw": "",
-      "ondestroy": "",
+      "ondestroy": "ct.emitters.fire('CrystalBurst', this.x, this.y, {depth: 100});",
       "uid": "54f82143-5c80-4566-8bc9-8c240c1d97a1",
-      "lastmod": 1543160213242,
+      "lastmod": 1581890207448,
       "extends": {},
       "texture": "f39895d1-731d-4487-9d01-18841158729c"
     },
@@ -181,10 +181,10 @@
       "depth": 0,
       "oncreate": "this.text = new PIXI.Text(`0 / ${ct.room.crystalsTotal}`, ct.styles.get('CrystalCounter'));\nthis.text.x = 32;\nthis.text.anchor.y = 0.5;\n\nthis.addChild(this.text);",
       "onstep": "",
-      "ondraw": "this.x = ct.room.x + 24;\nthis.y = ct.room.y + 24;\n\nthis.text.text = `${ct.room.crystals} / ${ct.room.crystalsTotal}`;",
+      "ondraw": "this.text.text = `${ct.room.crystals} / ${ct.room.crystalsTotal}`;",
       "ondestroy": "",
       "uid": "d582eca9-7676-4764-8aa6-9b10895a9b73",
-      "lastmod": 1547482200251,
+      "lastmod": 1581893025019,
       "extends": {},
       "texture": "f39895d1-731d-4487-9d01-18841158729c"
     },
@@ -193,10 +193,10 @@
       "depth": 0,
       "oncreate": "this.text = new PIXI.Text(ct.room.lives, ct.styles.get('HeartCounter'));\nthis.text.x = -32;\nthis.text.anchor.y = 0.5;\nthis.text.anchor.x = 1;\n\nthis.addChild(this.text);",
       "onstep": "",
-      "ondraw": "this.x = ct.room.x + ct.viewWidth - 24;\nthis.y = ct.room.y + 24;\n\nthis.text.text = ct.room.lives;",
+      "ondraw": "this.text.text = ct.room.lives;",
       "ondestroy": "",
       "uid": "3dc14b8e-592f-45a3-9785-52da1b6dbeb8",
-      "lastmod": 1547482196075,
+      "lastmod": 1581890219234,
       "extends": {},
       "texture": "334d338b-4fe4-4168-901e-2315494d37d4"
     }
@@ -263,7 +263,8 @@
       "backgrounds": [
         {
           "depth": "-10",
-          "texture": "92d2ca65-d3a1-45c9-bbd5-5674c6596f98"
+          "texture": "92d2ca65-d3a1-45c9-bbd5-5674c6596f98",
+          "extends": {}
         }
       ],
       "uid": "184045cc-2e0e-47be-8a20-411cb6f9c751",
@@ -276,7 +277,7 @@
       ],
       "gridX": 32,
       "gridY": 32,
-      "lastmod": 1542090011275,
+      "lastmod": 1581890200440,
       "copies": [
         {
           "x": 0,
@@ -1676,7 +1677,8 @@
       "backgrounds": [
         {
           "depth": "-10",
-          "texture": "92d2ca65-d3a1-45c9-bbd5-5674c6596f98"
+          "texture": "92d2ca65-d3a1-45c9-bbd5-5674c6596f98",
+          "extends": {}
         }
       ],
       "uid": "c708ca2b-a3ed-4982-a641-9de251b14d06",
@@ -1689,7 +1691,7 @@
       ],
       "gridX": 32,
       "gridY": 32,
-      "lastmod": 1542090017356,
+      "lastmod": 1581890092019,
       "copies": [
         {
           "x": 320,
@@ -6225,6 +6227,39 @@
           "uid": "54f82143-5c80-4566-8bc9-8c240c1d97a1"
         }
       ]
+    },
+    {
+      "name": "LayerUI",
+      "oncreate": "",
+      "onstep": "",
+      "ondraw": "",
+      "onleave": "",
+      "width": 1024,
+      "height": 576,
+      "backgrounds": [],
+      "copies": [
+        {
+          "x": 32,
+          "y": 32,
+          "uid": "d582eca9-7676-4764-8aa6-9b10895a9b73"
+        },
+        {
+          "x": 992,
+          "y": 32,
+          "uid": "3dc14b8e-592f-45a3-9785-52da1b6dbeb8"
+        }
+      ],
+      "tiles": [
+        {
+          "depth": -10,
+          "tiles": []
+        }
+      ],
+      "uid": "7b8300ef-bde1-4275-a69c-9c07bdb91f3c",
+      "thumbnail": "9c07bdb91f3c",
+      "gridX": 32,
+      "gridY": 32,
+      "lastmod": 1581890111862
     }
   ],
   "starting": 0,
@@ -6253,7 +6288,7 @@
   "scripts": [
     {
       "name": "inGameRoomStart",
-      "code": "var inGameRoomStart = function (room) {\n    room.crystals = 0;\n    room.crystalsTotal = ct.types.list['GreenCrystal'].length;\n    ct.types.copy('CrystalsWidget', 0, 0);\n    ct.types.copy('HeartsWidget', 0, 0);\n    room.lives = 3;\n};"
+      "code": "var inGameRoomStart = function (room) {\n    room.crystals = 0;\n    room.crystalsTotal = ct.types.list['GreenCrystal'].length;\n    room.lives = 3;\n    ct.rooms.append('LayerUI', {\n        isUi: true\n    });\n};"
     }
   ],
   "startroom": "184045cc-2e0e-47be-8a20-411cb6f9c751",
@@ -6720,6 +6755,253 @@
       "uid": "92d2ca65-d3a1-45c9-bbd5-5674c6596f98",
       "tiled": true,
       "lastmod": 1542096768616
+    }
+  ],
+  "emitterTandems": [
+    {
+      "name": "CrystalBurst",
+      "origname": "pt0b25c7d9f754",
+      "emitters": [
+        {
+          "texture": "f39895d1-731d-4487-9d01-18841158729c",
+          "openedTabs": ["texture"],
+          "settings": {
+            "alpha": {
+              "list": [
+                {
+                  "value": 1,
+                  "time": 0
+                },
+                {
+                  "value": 1,
+                  "time": 0.6759999999999999
+                },
+                {
+                  "value": 0,
+                  "time": 1
+                }
+              ],
+              "isStepped": false
+            },
+            "scale": {
+              "list": [
+                {
+                  "value": 0.050000000000000044,
+                  "time": 0
+                },
+                {
+                  "time": 0.04800000000000003,
+                  "value": 0.7750000000000001
+                },
+                {
+                  "time": 0.484,
+                  "value": 1.4499999999999997
+                },
+                {
+                  "time": 0.8400000000000001,
+                  "value": 1.0250000000000001
+                },
+                {
+                  "value": 0,
+                  "time": 1
+                }
+              ],
+              "isStepped": false
+            },
+            "color": {
+              "list": [
+                {
+                  "value": "ffffff",
+                  "time": 0
+                },
+                {
+                  "value": "ffffff",
+                  "time": 0.6759999999999999
+                },
+                {
+                  "value": "ffffff",
+                  "time": 1
+                }
+              ],
+              "isStepped": false
+            },
+            "blendMode": "normal",
+            "speed": {
+              "list": [
+                {
+                  "value": 550,
+                  "time": 0
+                },
+                {
+                  "value": 100,
+                  "time": 1
+                }
+              ],
+              "isStepped": false
+            },
+            "startRotation": {
+              "min": 0,
+              "max": 360
+            },
+            "rotationSpeed": {
+              "min": -720,
+              "max": 720
+            },
+            "lifetime": {
+              "min": 0.25,
+              "max": 0.5
+            },
+            "frequency": 0.01,
+            "spawnChance": 1,
+            "particlesPerWave": 1,
+            "emitterLifetime": 0.1,
+            "maxParticles": 1000,
+            "maxSpeed": 200,
+            "pos": {
+              "x": 0,
+              "y": 0
+            },
+            "acceleration": {
+              "x": 0,
+              "y": 0
+            },
+            "addAtBack": false,
+            "spawnType": "point",
+            "spawnCircle": {
+              "x": 0,
+              "y": 0,
+              "r": 32
+            },
+            "delay": 0,
+            "minimumSpeedMultiplier": 0.01,
+            "minimumScaleMultiplier": 0.02
+          },
+          "uid": "5ea79e92-86ea-4aed-a6f5-2b52fafbe80e"
+        }
+      ]
+    },
+    {
+      "name": "Trail",
+      "origname": "pte4297523502e",
+      "emitters": [
+        {
+          "texture": "334d338b-4fe4-4168-901e-2315494d37d4",
+          "openedTabs": ["texture"],
+          "settings": {
+            "alpha": {
+              "list": [
+                {
+                  "value": 0.71,
+                  "time": 0
+                },
+                {
+                  "value": 1,
+                  "time": 0.5
+                },
+                {
+                  "time": 0.8240000000000001,
+                  "value": 0.6599999999999999
+                },
+                {
+                  "value": 0,
+                  "time": 1
+                }
+              ],
+              "isStepped": false
+            },
+            "scale": {
+              "list": [
+                {
+                  "value": 0.07499999999999996,
+                  "time": 0
+                },
+                {
+                  "time": 0.2,
+                  "value": 0.7999999999999998
+                },
+                {
+                  "value": 0.95,
+                  "time": 1
+                }
+              ],
+              "isStepped": false
+            },
+            "color": {
+              "list": [
+                {
+                  "value": "ffffff",
+                  "time": 0
+                },
+                {
+                  "value": "ffffff",
+                  "time": 0.5
+                },
+                {
+                  "time": 0.8240000000000001,
+                  "value": "FFFFFF"
+                },
+                {
+                  "value": "ffffff",
+                  "time": 1
+                }
+              ],
+              "isStepped": false
+            },
+            "blendMode": "normal",
+            "speed": {
+              "list": [
+                {
+                  "value": 362.5,
+                  "time": 0
+                },
+                {
+                  "value": 312.5,
+                  "time": 1
+                }
+              ],
+              "isStepped": false
+            },
+            "startRotation": {
+              "min": 260,
+              "max": 280
+            },
+            "rotationSpeed": {
+              "min": 0,
+              "max": 0
+            },
+            "lifetime": {
+              "min": 1,
+              "max": 2
+            },
+            "frequency": 0.056,
+            "spawnChance": 1,
+            "particlesPerWave": 1,
+            "emitterLifetime": 0,
+            "maxParticles": 1000,
+            "maxSpeed": 200,
+            "pos": {
+              "x": 0,
+              "y": 0
+            },
+            "acceleration": {
+              "x": 0,
+              "y": 0
+            },
+            "addAtBack": false,
+            "spawnType": "circle",
+            "spawnCircle": {
+              "x": 0,
+              "y": 0,
+              "r": 32
+            },
+            "delay": 0,
+            "noRotation": true,
+            "minimumScaleMultiplier": 0.44,
+            "minimumSpeedMultiplier": 0.72
+          },
+          "uid": "d3a98cd7-b923-4c79-8092-96c5396b8641"
+        }
+      ]
     }
   ]
 }

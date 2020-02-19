@@ -153,9 +153,11 @@ const Copy = (function () {
          * @param {number} [y] The y coordinate of a new copy. Defaults to 0.
          * @param {object} [exts] An optional object with additional properties
          * that will exist prior to a copy's OnCreate event
+         * @param {PIXI.DisplayObject|Room} [container] A container to set as copy's parent before its OnCreate event. Defaults to ct.room.
          * @memberof Copy
          */
-        constructor(type, x, y, exts) {
+        constructor(type, x, y, exts, container) {
+            container = container || ct.room;
             var t;
             if (type) {
                 if (!(type in ct.types.templates)) {
@@ -172,6 +174,7 @@ const Copy = (function () {
                     super([PIXI.Texture.EMPTY]);
                 }
                 this.type = type;
+                this.parent = container;
                 if (t.extends) {
                     ct.u.ext(this, t.extends);
                 }
