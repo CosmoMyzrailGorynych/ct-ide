@@ -10,7 +10,8 @@ var keyUp = ct.vkeys.button({
     texActive: 'Button_Active',
     x: 50,
     y: 50,
-    depth: 100
+    depth: 100,
+    container: myUiLayer
 });
 ```
 
@@ -25,29 +26,11 @@ ct.vkeys.joystick({
     trackballTex: 'TrackBall',
     depth: 100,
     x: 128,
-    y: 128
+    y: 128,
+    container: myUiLayer
 });
 ```
 
 This joystick will be binded to input methods `vkeys.Vjoy1X` and `vkeys.Vjoy1Y`.
 
-## Using `ct.vkeys` with UI layers
-
-Each methods' options has a field `container`, that can be set to any parent, including UI rooms:
-
-```js
-this.uiLayer = ct.rooms.append('UI_Layer', {
-    isUi: true
-});
-ct.vkeys.joystick({
-    key: 'Vjoy1',
-    tex: 'TrackPad',
-    trackballTex: 'TrackBall',
-    depth: 100,
-    x: 128,
-    y: 128,
-    container: this.uiLayer
-});
-```
-
-If you set `x` and/or `y` as functions, the created control won't be affected by `ct.camera.realign`.
+Each methods' options has a field `container`, that can be set to any parent, but defaults to `ct.room`. Still, virtual keys are supposed to be added to UI layers only. Also, if you set `x` and/or `y` as functions, the created control won't be affected by `ct.camera.realign`.

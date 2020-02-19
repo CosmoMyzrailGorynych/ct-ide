@@ -1,11 +1,10 @@
 (function () {
-    /* global PIXI */
     ct.types.templates.VKEY = {
         onStep: function () {
             var down = false,
                 hover = false;
             if (ct.mouse) {
-                if (ct.mouse.hovers(this)) {
+                if (ct.mouse.hoversUi(this)) {
                     hover = true;
                     if (ct.mouse.down) {
                         down = true;
@@ -14,7 +13,7 @@
             }
             if (ct.touch) {
                 for (const touch of ct.touch.events) {
-                    if (ct.touch.collide(this, touch.id)) {
+                    if (ct.touch.collideUi(this, touch.id)) {
                         down = hover = true;
                         break;
                     }
@@ -56,7 +55,7 @@
             var dx = 0,
                 dy = 0;
             if (ct.mouse) {
-                if (ct.mouse.hovers(this)) {
+                if (ct.mouse.hoversUi(this)) {
                     if (ct.mouse.down) {
                         this.down = true;
                     }
@@ -65,14 +64,14 @@
                     this.down = false;
                 }
                 if (this.down) {
-                    dx = ct.mouse.x - this.x;
-                    dy = ct.mouse.y - this.y;
+                    dx = ct.mouse.xui - this.x;
+                    dy = ct.mouse.yui - this.y;
                 }
             }
             if (ct.touch) {
                 if (!this.touchId) {
                     for (const touch of ct.touch.events) {
-                        if (ct.touch.collide(this, touch.id)) {
+                        if (ct.touch.collideUi(this, touch.id)) {
                             this.down = true;
                             this.touchId = touch.id;
                             break;
@@ -81,8 +80,8 @@
                 }
                 var touch = ct.touch.getById(this.touchId);
                 if (touch) {
-                    dx = touch.x - this.x;
-                    dy = touch.y - this.y;
+                    dx = touch.xui - this.x;
+                    dy = touch.yui - this.y;
                 } else {
                     this.touchId = false;
                     this.down = false;
