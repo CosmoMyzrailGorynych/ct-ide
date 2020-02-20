@@ -29,8 +29,21 @@ scripts-panel
             this.currentScript = e.item.script;
         };
         this.deleteScript = e => {
-            var script = e.item.script,
-                ind = this.currentProject.scripts.indexOf(script);
+            const script = e.item.script,
+                  ind = this.currentProject.scripts.indexOf(script);
             this.currentProject.scripts.splice(ind, 1);
+            for (const lib of glob.scriptTypings[script.name]) {
+                lib.dispose();
+            }
+            delete glob.scriptTypings[script.name];
             e.stopPropagation();
         };
+
+        const glob = require('./data/node_requires/glob');
+        glob.scriptTypings = glob.scriptTypings || {};
+        for (const script of currentProject.scripts) {
+            glob.scriptTypings[script.name] = [
+                monaco.languages.typescript.javascriptDefaults.addExtraLib(script.code),
+                monaco.languages.typescript.typescriptDefaults.addExtraLib(script.code)
+            ];
+        }
