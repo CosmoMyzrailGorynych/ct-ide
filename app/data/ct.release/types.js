@@ -35,17 +35,17 @@ class Background extends PIXI.TilingSprite {
     }
     reposition() {
         const cameraBounds = ct.camera.getBoundingBox();
-        this.width = cameraBounds.width;
-        this.height = cameraBounds.height;
         if (this.repeat !== 'repeat-x' && this.repeat !== 'no-repeat') {
             this.y = cameraBounds.y;
             this.tilePosition.y = -this.y*this.parallaxY + this.shiftY;
+            this.height = cameraBounds.height;
         } else {
             this.y = this.shiftY + cameraBounds.y * (this.parallaxY - 1);
         }
         if (this.repeat !== 'repeat-y' && this.repeat !== 'no-repeat') {
             this.x = cameraBounds.x;
             this.tilePosition.x = -this.x*this.parallaxX + this.shiftX;
+            this.width = cameraBounds.width;
         } else {
             this.x = this.shiftX + cameraBounds.x * (this.parallaxX - 1);
         }
