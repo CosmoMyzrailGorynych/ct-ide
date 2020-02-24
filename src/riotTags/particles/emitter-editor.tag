@@ -86,7 +86,9 @@ emitter-editor.panel.pad
                 b {parent.voc.stepped}
         fieldset
             label
-                b {parent.voc.minimumSize}
+                b
+                    span {parent.voc.minimumSize}
+                    hover-hint(text="{parent.voc.minimumSizeHint}")
                 input(
                     type="range" min="0.01" max="1" step="0.01"
                     data-wired-force-minmax="yes"
@@ -120,7 +122,9 @@ emitter-editor.panel.pad
                 b {parent.voc.stepped}
         fieldset
             label
-                b {parent.voc.minimumSpeed}
+                b
+                    span {parent.voc.minimumSpeed}
+                    hover-hint(text="{parent.voc.minimumSpeedHint}")
                 input(
                     type="range" min="0.01" max="1" step="0.01"
                     data-wired-force-minmax="yes"
@@ -290,14 +294,15 @@ emitter-editor.panel.pad
                     oninput="{parent.wireAndReset('this.opts.emitter.settings.emitterLifetime')}"
                 )
             label
-                b {parent.voc.prewarmDelay}
+                b
+                    span {parent.voc.prewarmDelay}
+                    hover-hint(text="{parent.voc.prewarmDelayNotice}")
                 input.wide(
                     type="number" min="-100" max="100"
                     value="{parent.opts.emitter.settings.delay}"
                     oninput="{parent.wireAndReset('this.opts.emitter.settings.delay')}"
                 )
             .spacer
-            p.aNotice {parent.voc.prewarmDelayNotice}
 
     collapsible-section(
         heading="{voc.shapeAndPositioningHeading}"

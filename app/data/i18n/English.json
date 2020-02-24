@@ -340,10 +340,12 @@
         "scalingHeading": "Scaling",
         "scale": "Scale:",
         "minimumSize": "Minimum size:",
+        "minimumSizeHint": "Setting it to lower values will randomize the size of each particle. The lower the values, the stronger the effect.",
 
         "velocityHeading": "Velocity",
         "velocity": "Velocity:",
         "minimumSpeed": "Minimum speed:",
+        "minimumSpeedHint": "Setting it to lower values will randomize the speed of each particle; the lower the value, the slower the particle may be.",
         "maxSpeed": "Max speed:",
 
         "gravityHeading": "Gravity",
