@@ -420,8 +420,10 @@ ct.u.ext(ct.u, {// make aliases
     };
     const killRecursive = copy => {
         copy.kill = true;
-        ct.types.onDestroy.apply(copy);
-        copy.onDestroy.apply(copy);
+        if (copy.onDestroy) {
+            ct.types.onDestroy.apply(copy);
+            copy.onDestroy.apply(copy);
+        }
         for (const child of copy.children) {
             if (child[copyTypeSymbol]) {
                 killRecursive(child);
