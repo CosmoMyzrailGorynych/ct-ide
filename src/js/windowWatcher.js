@@ -1,4 +1,7 @@
 (function () {
+    if (!document.body.hasAttribute('data-manage-window')) {
+        return;
+    }
     const {remote} = require('electron');
     const win = remote.getCurrentWindow();
 

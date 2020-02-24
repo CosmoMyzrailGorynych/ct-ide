@@ -1,8 +1,4 @@
-debugger-modal.modal
-    .toright
-        span(onclick="{closeModal}")
-            svg.feather(title="{vocGlob.close}")
-                use(xlink:href="data/icons.svg#x")
+debugger-modal.view
     .center.aQRList
         .aQR(each="{interfaces}")
             div.center(ref="qr" data-address="{address}")
@@ -10,16 +6,11 @@ debugger-modal.modal
             br
             code {address}
     script.
-        this.closeModal = e => {
-            this.parent.bShowModal = false;
-            this.parent.update();
-        };
+        const params = new URLSearchParams(window.location.search),
+              port = Number(params.get('port'));
         this.interfaces = [];
-        var game = document.getElementById('thePreview');
         var os = require('os');
         var interfaces = os.networkInterfaces();
-
-        var getPort = href => href.split(':').pop().split('/')[0];
 
         // https://stackoverflow.com/a/8440736
         Object.keys(interfaces).forEach(ifname => {
@@ -33,29 +24,34 @@ debugger-modal.modal
                     // this single interface has multiple ipv4 addresses
                     this.interfaces.push({
                         name: `${ifname} (${alias})`,
-                        address: `http://${iface.address}:${getPort(game.src)}/`
+                        address: `http://${iface.address}:${port}/`
                     });
                 } else {
                     // this interface has only one ipv4 adress
                     this.interfaces.push({
                         name: ifname,
-                        address: `http://${iface.address}:${getPort(game.src)}/`
+                        address: `http://${iface.address}:${port}/`
                     });
                 }
                 ++alias;
             });
         });
 
+        const palette = {
+            Day: ['#446adb', '#ffffff'],
+            Night: ['#121822', '#44dbb5'],
+            Horizon: ['#1C1E26', '#E95378']
+        }
         this.on('mount', () => {
             setTimeout(() => {
-                for (div of this.refs.qr) {
+                for (div of (Array.isArray(this.refs.qr)? this.refs.qr : [this.refs.qr])) {
                     console.log(div);
                     var qrcode = new QRCode(div, {
                         text: div.getAttribute('data-address'),
                         width: 256,
                         height: 256,
-                        colorDark : localStorage.UItheme === 'Day'? '#446adb' : '#121822',
-                        colorLight : localStorage.UItheme === 'Day'? '#ffffff' : '#44dbb5',
+                        colorDark : palette[localStorage.UItheme]? palette[localStorage.UItheme][0] : palette.Day[0],
+                        colorLight : palette[localStorage.UItheme]? palette[localStorage.UItheme][1] : palette.Day[1],
                         correctLevel : QRCode.CorrectLevel.H
                     });
                 }

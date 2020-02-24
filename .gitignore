@@ -51,6 +51,8 @@ app/data/typedefs/pixi.js.d.ts
 app/index.html
 app/preview.html
 app/empty.html
+app/debuggerToolbar.html
+app/qrCodePanel.html
 app/exportDesktop
 app/temp
 /temp
@@ -69,6 +71,7 @@ reports/
 /export
 app/zipexport
 app/*.ict.zip
+app/Screenshot of *.png
 app/export.zip
 app/export
 *.ict.recovery

@@ -1,0 +1,10 @@
+doctype html
+html#theDebuggerQrWindow
+    include includes/head.pug
+    body.tall
+        debugger-modal
+        script(src="./data/bundle.js")
+        script.
+            document.title = 'Ct.js networking';
+            window.signals = window.signals || riot.observable({});
+            riot.mount('*');

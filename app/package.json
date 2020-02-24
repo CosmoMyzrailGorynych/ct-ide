@@ -52,7 +52,7 @@
     "unzipper": "^0.10.5"
   },
   "devDependencies": {
-    "electron": "7.1.5"
+    "electron": "8.0.1"
   },
   "build": {
     "appId": "rocks.ctjs.ide",

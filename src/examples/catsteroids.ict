@@ -463,7 +463,7 @@
   "starting": 0,
   "settings": {
     "minifyhtmlcss": true,
-    "minifyjs": true,
+    "minifyjs": false,
     "title": "Catsteroids",
     "author": "CoMiGo Games",
     "site": "http://comigogames.ru/",
@@ -491,7 +491,7 @@
   ],
   "startroom": "6c75cdb8-cfb4-4dcc-887a-f76ae98b5499",
   "scripts": [],
-  "ctjsVersion": "1.0.0",
+  "ctjsVersion": "1.3.0",
   "fonts": [],
   "skeletons": [],
   "actions": [
@@ -1426,5 +1426,6 @@
       "uid": "e81fc53e-4f0a-443d-a4fb-e5e11a4a98d2"
     }
   ],
-  "texturetick": 32
+  "texturetick": 32,
+  "emitterTandems": []
 }

@@ -2,6 +2,7 @@
 const {app, dialog, BrowserWindow} = require('electron');
 
 app.commandLine.appendSwitch('remote-debugging-port', '18364');
+app.allowRendererProcessReuse = true;
 
 let mainWindow;
 const createMainWindow = () => {
@@ -21,7 +22,8 @@ const createMainWindow = () => {
             defaultFontFamily: 'sansSerif',
             backgroundThrottling: true,
             webviewTag: true,
-            webSecurity: false
+            webSecurity: false,
+            affinity: 'ct.IDE'
         }
     });
     mainWindow.removeMenu();

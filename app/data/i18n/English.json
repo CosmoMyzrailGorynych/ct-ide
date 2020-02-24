@@ -73,6 +73,20 @@
         "pointTime": "Time:",
         "pointValue": "Value:"
     },
+    "debuggerToolbar": {
+        "pause": "Pause",
+        "resume": "Resume the game",
+        "restartGame": "Restart the game",
+        "restartRoom": "Restart the room",
+        "switchRoom": "Go to room…",
+        "toggleDevTools": "Toggle dev. tools",
+        "screenshot": "Take a screenshot",
+        "enterFullscreen": "Enter fullscreen",
+        "exitFullscreen": "Exit fullscreen",
+        "links": "Links and QR-codes",
+        "openExternal": "Open in browser",
+        "close": "Close"
+    },
     "docsShortcut": {
         "openDocs": "Open the documentation"
     },
