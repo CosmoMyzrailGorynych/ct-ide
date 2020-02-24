@@ -3,7 +3,7 @@ fx-panel.panel.view
         collection="{currentProject.emitterTandems}"
         contextmenu="{showTandemPopup}"
         vocspace="particleEmitters"
-        namespace="particleTandems"
+        namespace="emitterTandems"
         click="{openTandem}"
         thumbnails="{thumbnails}"
         ref="emitterTandems"
@@ -78,7 +78,7 @@ fx-panel.panel.view
             items: [{
                 label: window.languageJSON.common.open,
                 click: e => {
-                    this.editingStyle = true;
+                    this.editingTandem = true;
                     this.update();
                 }
             }, {
@@ -95,17 +95,18 @@ fx-panel.panel.view
                     .prompt(window.languageJSON.common.newname)
                     .then(e => {
                         if (e.inputValue !== '' && e.buttonClicked !== 'cancel') {
-                            var id = generateGUID(),
-                                slice = id.split('-').pop();
-                            var newTandem = JSON.parse(JSON.stringify(this.editedTandem));
+                            const generateGUID = require('./data/node_requires/generateGUID');
+                            const id = generateGUID(),
+                                  slice = id.split('-').pop();
+                            const newTandem = JSON.parse(JSON.stringify(this.editedTandem));
                             newTandem.name = e.inputValue;
                             newTandem.origname = 'pt' + slice;
                             newTandem.uid = id;
-                            window.currentProject.particleTandems.push(newTandem);
+                            window.currentProject.emitterTandems.push(newTandem);
                             this.editedTandemId = id;
                             this.editedTandem = newTandem;
                             this.editingStyle = true;
-                            this.refs.particleTandems.updateList();
+                            this.refs.emitterTandems.updateList();
                             this.update();
                         }
                     });
@@ -134,9 +135,9 @@ fx-panel.panel.view
                     .confirm(window.languageJSON.common.confirmDelete.replace('{0}', this.editedTandem.name))
                     .then(e => {
                         if (e.buttonClicked === 'ok') {
-                            const ind = window.currentProject.particleTandems.indexOf(this.editedTandem);
-                            window.currentProject.particleTandems.splice(ind, 1);
-                            this.refs.particleTandems.updateList();
+                            const ind = window.currentProject.emitterTandems.indexOf(this.editedTandem);
+                            window.currentProject.emitterTandems.splice(ind, 1);
+                            this.refs.emitterTandems.updateList();
                             this.update();
                             alertify
                             .okBtn(window.languageJSON.common.ok)
