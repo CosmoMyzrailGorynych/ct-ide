@@ -80,7 +80,7 @@ declare namespace ct {
          * No need to use it with `ct.fs` — `getPath` is already used in all its methods.
          * The method is useful when working with other libraries, and for debugging.
          */
-        function getPath(partial: string): Promise<void>;
+        function getPath(partial: string): string;
 
         /** An alias for `ct.fs.move`. Copies a file from one location to another. Does nothing if `filename` and `dest` point to one location. */
         function rename(): Promise<void>;

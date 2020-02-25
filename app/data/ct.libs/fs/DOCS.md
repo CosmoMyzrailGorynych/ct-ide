@@ -35,7 +35,7 @@ Copies a file from one location to another. Does nothing if `filename` and `dest
 ## `ct.fs.move(filename: string, dest: string): Promise<void>`
 Copies a file, then deletes the original. Does nothing if `filename` and `dest` point to one location.
 
-## `ct.fs.listFiles(directory?: string): Promise<void>`
+## `ct.fs.listFiles(directory?: string): Promise<Array<string>>`
 Returns a promise that resolves into an array of file names in a given directory
 
 ## `ct.fs.stat(filename: string): Promise<fs.Stats|boolean>`
@@ -46,7 +46,7 @@ See https://nodejs.org/api/fs.html#fs_class_fs_stats
 
 **Alias:** `ct.fs.exists`
 
-## `ct.fs.getPath(partial: string): Promise<void>`
+## `ct.fs.getPath(partial: string): string`
 
 When given a relative path, returns the absolute path equivalent
 to the given one, resolving it relative to the game's save directory.

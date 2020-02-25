@@ -9,11 +9,11 @@ try {
     const home = process.env.HOME || ((process.env.HOMEDRIVE || '') + process.env.HOMEPATH);
 
     const getPath = dest => {
-        const d = path.isAbsolute(dest)? dest : path.join(home, dest);
+        const d = path.isAbsolute(dest)? dest : path.join(ct.fs.gameFolder, dest);
         if (ct.fs.forceLocal) {
-            if (d.indexOf(home) !== 0) {
-                throw new Error('[ct.fs] Operations outside the save directory are not permitted by default due to safety concerns. If you do need to work outside the save directory, change `ct.fs.forceLocal` to `false`.' +
-                    `The save directory: ${ct.fs.home}, the target directory: ${dest}, which resolves into ${d}.`);
+            if (d.indexOf(ct.fs.gameFolder) !== 0) {
+                throw new Error('[ct.fs] Operations outside the save directory are not permitted by default due to safety concerns. If you do need to work outside the save directory, change `ct.fs.forceLocal` to `false`. ' +
+                    `The save directory: "${ct.fs.gameFolder}", the target directory: "${dest}", which resolves into "${d}".`);
             }
         }
         return d;
@@ -26,7 +26,7 @@ try {
     };
 
     ct.fs = {
-        isDesktop: true,
+        isAvailable: true,
         gameFolder: path.join(home, ct.meta.author || '', ct.meta.name || 'Ct.js game'),
         forceLocal: true,
 
@@ -40,6 +40,9 @@ try {
             return JSON.parse(data);
         },
         async saveText(filename, text) {
+            if (!text && text !== '') {
+                throw new Error('[ct.fs] Attempt to call saveText(filename, text) without `text` being set.');
+            }
             await ensureParents(filename);
             await fs.writeFile(getPath(filename), text.toString(), 'utf8');
             return void 0;
@@ -64,7 +67,7 @@ try {
             });
         },
         async copy(filename, dest) {
-            if (!(await ct.file.exists(filename))) {
+            if (!(await ct.fs.exists(filename))) {
                 throw new Error(`File ${filename} does not exist`);
             }
             if (getPath(filename) === getPath(dest)) {
@@ -97,7 +100,7 @@ try {
     console.warn('[ct.fs] File system is not available! Make sure you have fallbacks for localStorage to save your game state.');
     console.warn(e);
     ct.fs = {
-        isDesktop: false,
+        isAvailable: false,
         gameFolder: null
     };
 }
