@@ -279,6 +279,13 @@ textures-panel.panel.view
                                         }
                                     }
                                 }
+                                for (const tandem of window.currentProject.emitterTandems) {
+                                    for (const emitter of tandem.emitters) {
+                                        if (emitter.texture === this.currentTexture.uid) {
+                                            emitter.texture = -1;
+                                        }
+                                    }
+                                }
                                 window.currentProject.textures.splice(this.currentTextureId, 1);
                             }
                             this.refs.textures.updateList();
