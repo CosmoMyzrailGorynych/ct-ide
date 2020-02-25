@@ -2,7 +2,7 @@
     Allows users to pick a texture object. May return `-1` as an empty texture,
     if an attribute `showempty` is set.
 
-    @attribute showempty (atomic)
+    @attribute showempty (any string or empty)
         If set, allows users to pick an empty texture (to reset texture).
     @attribute onselected (riot function)
         A two-fold function (texture => e => {…}). Calls the funtion with the selected

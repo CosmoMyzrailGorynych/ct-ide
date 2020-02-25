@@ -88,6 +88,24 @@ const textureArrayFromCtTexture = async function (tex) {
 
 let defaultTexture;
 
+const getDOMImage = function(texture, deflt) {
+    let path;
+    const img = document.createElement('img');
+    if (texture === -1 || !texture) {
+        path = deflt || 'data/img/notexture.png';
+    } else {
+        if (typeof texture === 'string') {
+            texture = getTextureFromId(texture);
+        }
+        path = 'file://' + sessionStorage.projdir + '/img/' + texture.origname + '?' + texture.lastmod;
+    }
+    img.src = path;
+    return new Promise((resolve, reject) => {
+        img.addEventListener('load', () => resolve(img));
+        img.addEventListener('error', (err) => reject(err));
+    });
+};
+
 /**
  * @param {string|-1|any} texture Either a uid of a texture, or a ct.js texture object
  * @param {number} [frame] The frame to extract. If not defined, will return an array of all frames
@@ -101,8 +119,8 @@ const getPixiTexture = async function (texture, frame, allowMinusOne) {
             defaultTexture = PIXI.Texture.from('data/img/unknown.png');
         }
         if (frame || frame === 0) {
-        return defaultTexture;
-    }
+            return defaultTexture;
+        }
         return [defaultTexture];
     }
     if (typeof texture === 'string') {
@@ -276,6 +294,7 @@ module.exports = {
     getTextureFromName,
     getTexturePreview,
     getPixiTexture,
+    getDOMImage,
     importImageToTexture,
     imgGenPreview
 };

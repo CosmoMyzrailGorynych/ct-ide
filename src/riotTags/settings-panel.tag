@@ -25,6 +25,24 @@ settings-panel.panel.view
             |   {voc.versionpostfix}
             input(type="text" style="width: 3rem;" value="{currentProject.settings.versionPostfix}" length="5" onchange="{wire('this.currentProject.settings.versionPostfix')}")
         fieldset
+            h2 {voc.branding.heading}
+            .block
+                b
+                    span {voc.branding.icon}
+                    hover-hint(text="{voc.branding.iconNotice}")
+                br
+                texture-input(val="{currentProject.settings.branding.icon || -1}" showempty="yep" onselected="{updateGameIcon}")
+            .spacer
+            .block
+                b
+                    span {voc.branding.accent}
+                    hover-hint(text="{voc.branding.accentNotice}")
+                color-input(onchange="{wire('window.currentProject.settings.branding.accent', true)}" color="{currentProject.settings.branding.accent}")
+            .spacer
+            .block.checkbox
+                input(type="checkbox" value="{currentProject.settings.branding.invertPreloaderScheme}" checked="{currentProject.settings.branding.invertPreloaderScheme}" onchange="{wire('this.currentProject.settings.branding.invertPreloaderScheme')}")
+                span {voc.branding.invertPreloaderScheme}
+        fieldset
             h2 {voc.actions}
             button.nml(onclick="{openActionsEditor}")
                 svg.feather
@@ -68,6 +86,9 @@ settings-panel.panel.view
             if (currentProject.settings.title) {
                 document.title = currentProject.settings.title + ' — ct.js';
             }
+        };
+        this.updateGameIcon = tex => {
+            currentProject.settings.branding.icon = tex.uid;
         };
         this.openActionsEditor = e => {
             this.editingActions = true;

@@ -1,5 +1,5 @@
 {
-  "ctjsVersion": "1.3.0",
+  "ctjsVersion": "1.2.0",
   "notes": "/* empty */",
   "libs": {
     "place": {
@@ -6283,7 +6283,8 @@
       "linux32": true,
       "mac64": true,
       "debug": false
-    }
+    },
+    "icon": "f39895d1-731d-4487-9d01-18841158729c"
   },
   "scripts": [
     {
@@ -6764,7 +6765,9 @@
       "emitters": [
         {
           "texture": "f39895d1-731d-4487-9d01-18841158729c",
-          "openedTabs": ["texture"],
+          "openedTabs": [
+            "texture"
+          ],
           "settings": {
             "alpha": {
               "list": [
@@ -6886,7 +6889,9 @@
       "emitters": [
         {
           "texture": "334d338b-4fe4-4168-901e-2315494d37d4",
-          "openedTabs": ["texture"],
+          "openedTabs": [
+            "texture"
+          ],
           "settings": {
             "alpha": {
               "list": [

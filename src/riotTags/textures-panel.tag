@@ -286,6 +286,9 @@ textures-panel.panel.view
                                         }
                                     }
                                 }
+                                if (window.currentProject.settings.icon === this.currentTexture.uid) {
+                                    delete window.currentProject.settings.icon;
+                                }
                                 window.currentProject.textures.splice(this.currentTextureId, 1);
                             }
                             this.refs.textures.updateList();

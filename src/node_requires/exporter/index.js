@@ -12,6 +12,7 @@ const {stringifyStyles} = require('./styles');
 const {stringifyTandems} = require('./emitterTandems');
 const {stringifyTypes} = require('./types');
 const {bundleFonts} = require('./fonts');
+const {bakeFavicons} = require('./icons');
 
 const parseKeys = function(data, str, lib) {
     var str2 = str;
@@ -205,8 +206,10 @@ const exportCtProject = async (project, projdir) => {
     /* assets — run in parallel */
     const texturesTask = packImages(currentProject, writeDir);
     const skeletonsTask = packSkeletons(currentProject, projdir, writeDir);
+    const favicons = bakeFavicons(currentProject, writeDir);
     const textures = await texturesTask;
     const skeletons = await skeletonsTask;
+    await favicons;
 
     buffer += (await sources['res.js'])
         .replace('/*@sndtotal@*/', currentProject.sounds.length)
@@ -289,16 +292,11 @@ const exportCtProject = async (project, projdir) => {
     }
 
     /* HTML & CSS */
-    const html = (await sources['index.html'])
-        .replace('<!-- %htmltop% -->', injects.htmltop)
-        .replace('<!-- %htmlbottom% -->', injects.htmlbottom)
-        .replace('<!-- %gametitle% -->', currentProject.settings.title || 'ct.js game')
-        .replace('<!-- %dragonbones% -->', skeletons.requiresDB? '<script src="DragonBones.min.js"></script>' : '')
-        .replace('<!-- %particleEmitters% -->', (currentProject.emitterTandems && currentProject.emitterTandems.length)? '<script src="pixi-particles.min.js"></script>' : '');
+    const {substituteHtmlVars} = require('./html');
+    const {substituteCssVars} = require('./css');
+    const html = substituteHtmlVars(await sources['index.html'], currentProject, injects);
 
-    let css = (await sources['ct.css'])
-        .replace('/*@pixelatedrender@*/', currentProject.settings.pixelatedrender? 'canvas,img{image-rendering:optimizeSpeed;image-rendering:-moz-crisp-edges;image-rendering:-webkit-optimize-contrast;image-rendering:optimize-contrast;image-rendering:pixelated;ms-interpolation-mode:nearest-neighbor}' : '')
-        .replace('/*%css%*/', injects.css);
+    let css = substituteCssVars(await sources['ct.css'], currentProject, injects);
 
     css += fonts.css;
 

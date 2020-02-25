@@ -1,7 +1,7 @@
 (function (ct) {
     const loader = new PIXI.Loader();
-    const loadingLabel = ct.pixiApp.view.previousSibling,
-          loadingBar = loadingLabel.querySelector('.ct-aLoadingBar');
+    const loadingScreen = document.querySelector('.ct-aLoadingScreen'),
+          loadingBar = loadingScreen.querySelector('.ct-aLoadingBar');
     /* global dragonBones */
     const dbFactory = window.dragonBones? dragonBones.PixiFactory.factory : null;
     /**
@@ -76,7 +76,7 @@
     };
 
     PIXI.Loader.shared.onLoad.add(e => {
-        loadingLabel.setAttribute('data-progress', e.progress);
+        loadingScreen.setAttribute('data-progress', e.progress);
         loadingBar.style.width = e.progress + '%';
     });
     PIXI.Loader.shared.onComplete.add(() => {
@@ -103,7 +103,7 @@
             ct.res.skelRegistry[skel].data = PIXI.Loader.shared.resources[ct.res.skelRegistry[skel].origname + '_ske.json'].data;
         }
         /*%resload%*/
-        loadingLabel.classList.add('hidden');
+        loadingScreen.classList.add('hidden');
         setTimeout(() => {
             /*%start%*/
             PIXI.Ticker.shared.add(ct.loop);

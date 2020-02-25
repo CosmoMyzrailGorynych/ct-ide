@@ -70,7 +70,6 @@ main-menu.flexcol
         const fs = require('fs-extra'),
               path = require('path');
         const archiver = require('archiver');
-        const runCtExport = require('./data/node_requires/exporter');
         const glob = require('./data/node_requires/glob');
 
         // Mounts the hotkey plugins, enabling hotkeys on elements with data-hotkey attributes
@@ -266,19 +265,20 @@ main-menu.flexcol
 
         var previewWindow, toolbarWindow, qrCodesWindow;
         this.runProject = e => {
+            // Clean up previous instances of a toolbar and a debugger
+            if (previewWindow) {
+                previewWindow.destroy();
+                previewWindow = null;
+            }
+            if (toolbarWindow) {
+                toolbarWindow.destroy();
+                toolbarWindow = null;
+            }
+
+            const runCtExport = require('./data/node_requires/exporter');
             runCtExport(currentProject, sessionStorage.projdir)
             .then(path => {
                 const {BrowserWindow} = require('electron').remote;
-
-                // Clean up previous instances of a toolbar and a debugger
-                if (previewWindow) {
-                    previewWindow.destroy();
-                    previewWindow = null;
-                }
-                if (toolbarWindow) {
-                    toolbarWindow.destroy();
-                    toolbarWindow = null;
-                }
 
                 // Get displays to position everything nicely
                 // Eithe aim for the first external monitor, or to the main one
@@ -345,8 +345,12 @@ main-menu.flexcol
 
                 // listeners for events when one of the windows is closed; destroy both
                 const closer = () => {
-                    previewWindow.destroy();
-                    toolbarWindow.destroy();
+                    if (previewWindow) {
+                        previewWindow.destroy();
+                    }
+                    if (toolbarWindow) {
+                        toolbarWindow.destroy();
+                    }
                     toolbarWindow = previewWindow = null;
                 };
                 toolbarWindow.on('closed', closer);
@@ -358,6 +362,7 @@ main-menu.flexcol
             });
         };
         this.runProjectAlt = e => {
+            const runCtExport = require('./data/node_requires/exporter');
             runCtExport(currentProject, sessionStorage.projdir)
             .then(path => {
                 console.log(path);
@@ -401,6 +406,7 @@ main-menu.flexcol
         };
         this.zipExport = async e => {
             const writable = await getWritableDir();
+            const runCtExport = require('./data/node_requires/exporter');
             let exportFile = path.join(writable, '/export.zip'),
                 inDir = path.join(writable, '/export/');
             await fs.remove(exportFile);

@@ -4,12 +4,29 @@
     border:0;
 }
 body {
-    background: #fafafa;
+    background: #000;
     font-family: sans-serif;
+    position: relative;
+    width: 100%;
+    height: 100vh;
 }
 #ct {
     position: relative;
     display: inline-block;
+    width: 100%;
+    height: 100%;
+}
+.ct-aLoadingScreen {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: #446adb;
+    background: /*@preloaderbackground@*/;
+    color: #ffffff;
+    color: /*@preloaderforeground@*/;
+    z-index: 2;
 }
 .ct-aLoadingProgress {
     position: absolute;
@@ -17,7 +34,6 @@ body {
     top: 50%;
     transform: translate(-50%, -50%);
     font-size: 1.5rem;
-    color: #446adb;
     font-style: italic;
     padding: 1rem 2rem;
 }
@@ -27,12 +43,14 @@ body {
     border-radius: 1rem;
     position: absolute;
     background: #446adb;
+    background: /*@preloaderforeground@*/;
     left: 0;
     bottom: 0;
     transition: 1s cubic-bezier(0.31, 0.59, 0.29, 1) width;
 }
-.ct-aLoadingProgress.hidden {
+.ct-aLoadingScreen.hidden {
     visibility: hidden;
+    display: none;
 }
 
 /*@pixelatedrender@*/

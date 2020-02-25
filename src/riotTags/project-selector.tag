@@ -121,7 +121,7 @@ project-selector
                 settings: {
                     minifyhtmlcss: false,
                     minifyjs: false,
-                    fps: 30,
+                    fps: 60,
                     version: [0, 0, 0],
                     versionPostfix: '',
                     export: {
@@ -131,6 +131,11 @@ project-selector
                         linux32: true,
                         mac64: true,
                         debug: false
+                    },
+                    branding: {
+                        icon: -1,
+                        accent: '#446adb',
+                        invertPreloaderScheme: true
                     }
                 }
             };
