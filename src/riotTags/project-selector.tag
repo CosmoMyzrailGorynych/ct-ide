@@ -117,6 +117,7 @@ project-selector
                 styles: [],
                 rooms: [],
                 actions: [],
+                emitterTandems: [],
                 starting: 0,
                 settings: {
                     minifyhtmlcss: false,
