@@ -444,8 +444,11 @@ main-menu.flexcol
             }, {
                 label: this.voc.openIncludeFolder,
                 click: e => {
+                    fs.ensureDir(path.join(sessionStorage.projdir, '/include'))
+                    .then(() => {
                     const shell = require('electron').shell;
                     shell.openItem(path.join(sessionStorage.projdir, '/include'));
+                    });
                 }
             }, {
                 label: this.voc.zipProject,
