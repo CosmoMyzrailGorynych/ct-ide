@@ -269,7 +269,7 @@
         "movePoint": "Move this point",
         "symmetryTool": "Symmetry tool",
         "padding": "Padding:",
-        "paddingNotice": "This affects how a texture is exported: it adds duplicate pixels on edges and prevents bleeding artifacts on tiled and scaled textures. The default value is usually enough, but, if you shrink textures strongly, the bleeding may re-appear. Enlarge this value if this texture has artifacts while in-game."
+        "paddingNotice": "This affects how a texture is exported: it adds duplicate pixels on edges and prevents bleeding artifacts on tiled and scaled textures. The default value is usually enough, but, if you shrink textures strongly, the bleeding may re-appear. Increment this value if this texture has artifacts while in-game."
     },
     "sounds": {
         "create": "Create"
