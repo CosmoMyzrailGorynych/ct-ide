@@ -204,7 +204,9 @@ const lintJS = () => {
     .pipe(eslint.failAfterError());
 };
 
-const lint = gulp.series(lintJS, lintStylus);
+const lintI18n = () => require('./node_requires/i18n')().then(console.log);
+
+const lint = gulp.series(lintJS, lintStylus, lintI18n);
 
 const launchApp = () => {
     spawnise.spawn(npm, ['run', 'start'], {
