@@ -40,6 +40,7 @@
     "google-closure-compiler": "^20191111.0.0",
     "highlight.js": "^9.15.10",
     "html-minifier": "^3.5.19",
+    "js-yaml": "^3.13.1",
     "markdown-it": "3.1.0",
     "maxrects-packer": "^2.5.0",
     "monaco-editor": "^0.18.1",

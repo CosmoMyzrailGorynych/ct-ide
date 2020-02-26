@@ -1,1431 +1,1693 @@
-{
-  "notes": "",
-  "libs": {
-    "place": {
-      "gridY": 512,
-      "gridX": 512
-    },
-    "akatemplate": {
-      "csscss": "canvas {\n  margin: 0 auto;\n  display: block;\n}\nbody {\n  background: #1b1f26;\n}",
-      "toptop": "<link href=\"https://fonts.googleapis.com/css?family=Press+Start+2P\" rel=\"stylesheet\">"
-    },
-    "random": {},
-    "sound.howler": {},
-    "fittoscreen": {
-      "scaleOnly": true,
-      "mode": "scaleFit"
-    },
-    "keyboard": {},
-    "keyboard.polyfill": {},
-    "mouse": {}
-  },
-  "types": [
-    {
-      "name": "Player_Blue",
-      "depth": 5,
-      "oncreate": "// Set movement friction, acceleration and speed limit\nthis.friction = 0.25;\nthis.flyspeed = 2.5;\nthis.maxspeed = 7.5;\n\n// This will help us to shoot continuously\nthis.shootTimer = 0;\n\nthis.lives = 3;\nthis.invulnerable = -1;\n\nthis.weapon = 'simple';\nthis.crossSwitch = 1; // This will flip the animation of the cross-like bullets",
-      "onstep": "/* Movement \n   Add acceleration when arrows or WASD are being pressed\n*/\n\nthis.hspeed += ct.actions.MoveX.value * this.flyspeed;\nthis.vspeed += ct.actions.MoveY.value * this.flyspeed;\n\n// Limit speed\nthis.speed = Math.max(Math.min(this.speed, this.speed - this.friction, this.maxspeed), 0);\nct.types.move(this);\n\n// Check if the ship is out of the view\nif (this.x < 0 || this.x > ct.viewWidth ||\n    this.y < 0 || this.y > ct.viewHeight) {\n    // Return back if the ship is outside the room\n    this.speed = 0;\n    this.x = Math.max(Math.min(this.x, ct.viewWidth), 0);\n    this.y = Math.max(Math.min(this.y, ct.viewHeight), 0);\n}\n\n/* Shooting */\n\nthis.shootTimer += ct.delta;\n\n// If the spacebar is pressed and at least a quarter of second has passed, \n// create a new laser bullet depending on a weapon type\nif (ct.actions.Shoot.down) {\n    if (this.weapon === 'simple' && this.shootTimer > 15) {\n        ct.types.copy('Laser_Simple_Blue', this.x, this.y);\n        ct.sound.spawn('Laser_Small');\n        // Reset shooting delay\n        this.shootTimer = 0;\n    }\n    if (this.weapon === 'spread' && this.shootTimer > 15) {\n        // create three laser bolts\n        ct.types.copy('Laser_Simple_Blue', this.x-40, this.y);\n        ct.types.copy('Laser_Simple_Blue', this.x, this.y - 20);\n        ct.types.copy('Laser_Simple_Blue', this.x+40, this.y);\n        ct.sound.spawn('Laser_Small');\n        // Reset shooting delay\n        this.shootTimer = 0;\n    }\n    if (this.weapon === 'bolt' && this.shootTimer > 60) {\n        // slow, but powerful\n        ct.types.copy('Laser_Bolt_Blue', this.x, this.y);\n        ct.sound.spawn('Laser_Medium');\n        // Reset shooting delay\n        this.shootTimer = 0;\n    }\n    if (this.weapon === 'cross' && this.shootTimer > 10) {\n        // this one shoots much faster\n        var bullet = ct.types.copy('Laser_Cross_Blue', this.x, this.y);\n        bullet.scale.x = this.crossSwitch;\n        this.crossSwitch *= -1;\n        ct.sound.spawn('Laser_Medium');\n        // Reset shooting delay\n        this.shootTimer = 0;\n    }\n}\n\n/* Damage on collision */\nvar obstacle = ct.place.occupied(this, this.x, this.y, 'Enemy') \n            || ct.place.occupied(this, this.x, this.y, 'EnemyBullet');\nif (obstacle && this.invulnerable < 0) {\n    this.lives--;\n    obstacle.kill = true;\n    \n    // Are we completely, like, dead?\n    if (this.lives < 0) {\n        this.kill = true;\n    } else {\n        // Set invulnerability for 3 seconds\n        this.invulnerable = 60 * 3;\n    }\n}\n// Deplete invulnerability\nthis.invulnerable -= ct.delta;",
-      "ondraw": "// If we are invulnerable, alternate between full and partial opacity each 10 frames\n// `this.invulnerable % 20` means 'get a fraction remainder when dividing by 20'\n// `statement? 0.5 : 1` means that we pick 0.5 if the statement is true, or 1 otherwise\nif (this.invulnerable > 0) {\n    var damaged = this.invulnerable % 20 > 10; \n    this.alpha = damaged? 0.5 : 1;\n    this.tint = damaged? 0xFF9999 : 0xFFFFFF;\n} else {\n    this.alpha = 1;\n}",
-      "ondestroy": "ct.types.copy('Explosion', this.x, this.y);\nlocalStorage.score = ct.room.score;\nct.u.wait(2999)\n.then(() => ct.rooms.switch('RetryScreen'));",
-      "uid": "1fab434d-0976-4b65-8390-d013695aba8c",
-      "lastmod": 1554742830792,
-      "extends": {},
-      "texture": "e1452137-8cfa-4eec-b54a-0f2660326b48"
-    },
-    {
-      "name": "Laser_Simple_Blue",
-      "depth": -1,
-      "oncreate": "this.speed = 15;\nthis.direction = 90;\nthis.ctype = 'BulletsHeroes';",
-      "onstep": "if (this.y < -48) {\n    this.kill = true;\n}\n\nct.types.move(this);",
-      "ondraw": "",
-      "ondestroy": "",
-      "uid": "92e6ec14-1de0-483a-84b8-a8669ac65937",
-      "lastmod": 1543398567006,
-      "extends": {},
-      "texture": "e6148099-65e7-4d2b-acf1-3e6b3a8fc033"
-    },
-    {
-      "name": "AbstractMeteor",
-      "depth": 1,
-      "oncreate": "this.speed = ct.random.range(1, 3);\nthis.direction = 270 + ct.random.range(-3, 3);\n\nthis.tex = 'Meteor_' + ct.random.dice('Big', 'Medium', 'Small') + '_' + ct.random.dice(1, 2);\n\nthis.rotateSpeed = ct.random.range(-1, 1);\nthis.rotation = ct.random.deg();\n\nthis.ctype = 'Enemy';",
-      "onstep": "ct.types.move(this);\n\nthis.rotation += this.rotateSpeed * ct.delta; \n\nvar obstacle = ct.place.occupied(this, this.x, this.y, 'BulletsHeroes');\nif (obstacle) {\n    this.kill = true;\n    if (obstacle.type !== 'Laser_Bolt_Blue') { // Bolts will dash through enemies\n        obstacle.kill = true;\n    }\n    \n    // Add some score points\n    ct.rooms.current.score += 5;\n}\n\nif (this.x < -100 || this.x > ct.viewWidth + 100 || this.y < -120 || this.y > ct.viewHeight + 100) {\n    this.kill = true;\n}",
-      "ondraw": "",
-      "ondestroy": "var deathMap = {\n    'Big': 'Medium',\n    'Medium': 'Small'\n};\n\nfor (var i in deathMap) {\n    if (this.tex.indexOf(i) !== -1) {\n        var copy1 = ct.types.copy('AbstractMeteor', this.x, this.y);\n        copy1.tex = 'Meteor_' + deathMap[i] + '_' + ct.random.dice(1, 2);\n        copy1.dir = ct.random.deg();\n        \n        var copy2 = ct.types.copy('AbstractMeteor', this.x, this.y);\n        copy2.tex = 'Meteor_' + deathMap[i] + '_' + ct.random.dice(1, 2);\n        copy2.dir = 180 + copy1.dir + ct.random.range(-10, 10);\n    }\n}",
-      "uid": "1fa16a0f-e9a0-4117-9c28-87fa72b33d2b",
-      "lastmod": 1552044692606,
-      "extends": {},
-      "texture": "ca15e5c0-b32a-425b-ab24-07d681a8ad8f"
-    },
-    {
-      "name": "Laser_Cross_Blue",
-      "depth": -1,
-      "oncreate": "this.vspeed = -10;\nthis.direction = ct.random.range(60, 120);\nthis.ctype = 'BulletsHeroes';\nthis.phase = 0;\nthis.rotation = ct.random.deg();",
-      "onstep": "if (this.y < -48) {\n    this.kill = true;\n}\n\nthis.phase += ct.delta * 0.1;\nthis.x = this.xstart + Math.sin(this.phase) * 75 * this.scale.x;\nct.types.move(this);",
-      "ondraw": "this.rotation += 7 * ct.delta;",
-      "ondestroy": "",
-      "uid": "140f8bde-bd06-4b2d-a5f2-87427848252e",
-      "lastmod": 1552044536342,
-      "extends": {},
-      "texture": "4b86d5c4-ae3c-4edf-90d7-79a6778e9a29"
-    },
-    {
-      "name": "GameController",
-      "depth": 0,
-      "oncreate": "this.asteroidTimer = ct.speed * 3;\nthis.encounterTimer = ct.speed * 10;\nthis.waveTimer = ct.speed * 30;\nthis.UfoTimer = ct.speed * 75;",
-      "onstep": "this.asteroidTimer -= ct.delta;\nif (this.asteroidTimer <= 0) {\n    this.asteroidTimer = ct.random.range(ct.speed * 0.5, ct.speed * 3);\n    ct.types.copy('AbstractMeteor', ct.random(ct.viewWidth), -100);\n}\n\nthis.encounterTimer -= ct.delta;\nif (this.encounterTimer <= 0) {\n    this.encounterTimer = ct.random.range(ct.speed * 4, ct.speed * 7);\n    ct.types.copy('Enemy_Shooter', ct.random(ct.viewWidth), -100);\n}\n\nthis.waveTimer -= ct.delta;\nif (this.waveTimer <= 0) {\n    this.waveTimer = ct.random.range(ct.speed * 20, ct.speed * 45);\n    \n    // create 5 enemies, one by one in 1.4 seconds\n    ct.types.copy('Enemy_Wiggler', 0, -100);\n    ct.u.wait(350)\n    .then(() => {\n        ct.types.copy('Enemy_Wiggler', 0, -100);\n    })\n    .then(() => ct.u.wait(350))\n    .then(() => {\n        ct.types.copy('Enemy_Wiggler', 0, -100);\n    })\n    .then(() => ct.u.wait(350))\n    .then(() => {\n        ct.types.copy('Enemy_Wiggler', 0, -100);\n    })\n    .then(() => ct.u.wait(350))\n    .then(() => {\n        ct.types.copy('Enemy_Wiggler', 0, -100);\n    });\n}\n\nthis.UfoTimer -= ct.delta;\nif (this.UfoTimer <= 0) {\n    this.UfoTimer = ct.random.range(ct.speed * 60, ct.speed * 90);\n    ct.types.copy('Enemy_Ufo', ct.random(ct.viewWidth), -100);\n}",
-      "ondraw": "",
-      "ondestroy": "",
-      "uid": "ca579f27-f97b-4ca2-98f6-c1c3e13acad5",
-      "lastmod": 1551427585984,
-      "extends": {},
-      "texture": -1
-    },
-    {
-      "name": "Logo",
-      "depth": 0,
-      "oncreate": "// The logo floats vertically. Let's use a sine function for that. \n// We will need a variable to change its phase\n\nthis.phase = 0;",
-      "onstep": "",
-      "ondraw": "this.phase += 2.5 / 60 * ct.delta;\nif (this.phase > Math.PI * 2) {\n    this.phase -= Math.PI * 2;\n}\n\nthis.y = this.ystart + Math.sin(this.phase) * 8;",
-      "ondestroy": "",
-      "uid": "319c6995-59f3-4267-a1de-cf58f77614d3",
-      "lastmod": 1543395253559,
-      "extends": {},
-      "texture": "968baf79-5ff3-443b-8834-fa3b55638500"
-    },
-    {
-      "name": "StartButton",
-      "depth": 0,
-      "oncreate": "",
-      "onstep": "if (ct.mouse.pressed) {\n    if (ct.mouse.hovers(this)) {\n        ct.rooms.switch('InGame');\n    }\n}",
-      "ondraw": "",
-      "ondestroy": "",
-      "uid": "972bb4d9-7cfc-4dbe-bc30-883562271057",
-      "lastmod": 1551427672784,
-      "extends": {},
-      "texture": "2a454e11-3441-4f57-bfb6-ce837acd7881"
-    },
-    {
-      "name": "AbstractBonus",
-      "depth": 3,
-      "oncreate": "// get the player\nvar player = ct.types.list['Player_Blue'][0];\nif (player.lives < 3) {\n    // add a chance to spawn a life bonus if there is 2 or less lives\n    this.tex = ct.random.dice('Bonus_Lives', 'Bonus_Spread', 'Bonus_Bolt', 'Bonus_Cross');\n} else {\n    this.tex = ct.random.dice('Bonus_Spread', 'Bonus_Bolt', 'Bonus_Cross');\n}\n\nthis.spd = 3;\nthis.dir = 270;\nconsole.log(this.tex);",
-      "onstep": "ct.types.move(this);\n\nvar player = ct.place.meet(this, this.x, this.y, 'Player_Blue');\nif (player) {\n    ct.sound.spawn('Bonus');\n    if (this.tex === 'Bonus_Lives') {\n        player.lives ++;\n    } else {\n        var graphToWeaponMap = {\n            'Bonus_Spread': 'spread',\n            'Bonus_Bolt': 'bolt',\n            'Bonus_Cross': 'cross'\n        };\n        player.weapon = graphToWeaponMap[this.tex];\n    }\n    // Consume bonus\n    this.kill = true;\n}\n\n// Destroy bonus if it fell off the screen\nif (this.y > ct.room.height + 48) {\n    this.kill = true;\n}",
-      "ondraw": "",
-      "ondestroy": "",
-      "uid": "bc01cee1-1b8b-4418-aeb9-a7c5eac2cd51",
-      "lastmod": 1552044657807,
-      "extends": {},
-      "texture": "25fb712b-0aca-4b18-8e10-7c545d4bca8d"
-    },
-    {
-      "name": "Enemy_Shooter",
-      "depth": 2,
-      "oncreate": "// This mob will slowly move to the bottom of the screen, shooting projectiles \n// from time to time\n\nthis.speed = 3;\nthis.direction = 270;\n\nthis.ctype = 'Enemy';\n\nthis.shootTimer = 2 * ct.speed;",
-      "onstep": "ct.types.move(this);\n\nthis.shootTimer -= ct.delta;\nif (this.shootTimer < 0) {\n    ct.types.copy('EnemyBullet', this.x, this.y);\n    this.shootTimer = 3 * ct.speed;\n}\n\nvar obstacle = ct.place.occupied(this, this.x, this.y, 'BulletsHeroes');\nif (obstacle) {\n    this.kill = true;\n    if (obstacle.type !== 'Laser_Bolt_Blue') { // Bolts will dash through enemies\n        obstacle.kill = true;\n    }\n    \n    // Add some score points\n    ct.rooms.current.score += 25;\n}\n\nif (this.y > ct.viewHeight + 100) {\n    this.kill = true;\n}",
-      "ondraw": "",
-      "ondestroy": "ct.types.copy('Explosion', this.x, this.y);\n\nif (ct.random.chance(10)) {\n    ct.types.copy('AbstractBonus', this.x, this.y);\n}",
-      "uid": "500fd472-19aa-41a0-9504-123c37540702",
-      "lastmod": 1552044678509,
-      "extends": {},
-      "texture": "16c209a9-25b2-41e4-b0d5-21cb22fd1421"
-    },
-    {
-      "name": "EnemyBullet",
-      "depth": -1,
-      "oncreate": "this.speed = 10;\nthis.direction = 270;\nthis.ctype = 'EnemyBullet';\nct.sound.spawn('Laser_Big');",
-      "onstep": "ct.types.move(this);\n\n// Destroy a bullet if it fell off the screen\nif (this.y > ct.viewHeight + 32) {\n    this.kill = true;\n}",
-      "ondraw": "",
-      "ondestroy": "",
-      "uid": "65a71d76-039a-4e20-8433-d20277dd2402",
-      "lastmod": 1552044702182,
-      "extends": {},
-      "texture": "fc3e2f9b-61af-4ae4-9375-dcfae65f6a34"
-    },
-    {
-      "name": "Explosion",
-      "depth": 0,
-      "oncreate": "ct.sound.spawn(ct.random.dice('Explosion_01', 'Explosion_02', 'Explosion_03'));\n\nthis.rotation = ct.random.deg();",
-      "onstep": "ct.types.move(this);",
-      "ondraw": "this.alpha -= 0.05 * ct.delta;\nif (this.alpha < 0) {\n    this.kill = true;\n}",
-      "ondestroy": "",
-      "uid": "f938cbd9-1a72-45a4-a7ec-27a0841073ef",
-      "lastmod": 1543395235678,
-      "extends": {},
-      "texture": "9de002e9-c9cf-44ee-b87a-022ae3dddca3"
-    },
-    {
-      "name": "Enemy_Wiggler",
-      "depth": 2,
-      "oncreate": "    // This mob will move in a sine wave and emit projectiles randomly\nthis.phase = 0;\n\nthis.ctype = 'Enemy';\n\nthis.shootTimer = ct.random.dice(2, 3, 4) * ct.speed;",
-      "onstep": "this.phase += 2 / 60 * ct.delta;\n\nthis.y += 5 * ct.delta;\nthis.x = Math.sin(this.phase) * (ct.width * 0.4) + ct.width / 2;\n\n\nthis.shootTimer -= ct.delta;\nif (this.shootTimer < 0) {\n    ct.types.copy('EnemyBullet', this.x, this.y);\n    this.shootTimer = ct.random.dice(2, 3, 4) * ct.speed;\n}\n\nvar obstacle = ct.place.occupied(this, this.x, this.y, 'BulletsHeroes');\nif (obstacle) {\n    this.kill = true;\n    if (obstacle.type !== 'Laser_Bolt_Blue') { // Bolts will dash through enemies\n        obstacle.kill = true;\n    }\n    \n    // Add some score points\n    ct.rooms.current.score += 30;\n}\n\nif (this.y > ct.viewHeight + 100) {\n    this.kill = true;\n}",
-      "ondraw": "",
-      "ondestroy": "ct.types.copy('Explosion', this.x, this.y);\n\nif (ct.random.chance(10)) {\n    ct.types.copy('AbstractBonus', this.x, this.y);\n}",
-      "uid": "9d0992a4-d0ef-4c5e-9d17-2e5167f26598",
-      "lastmod": 1552044672526,
-      "extends": {},
-      "texture": "048b77d3-e7e3-4817-99ee-8b7c0a6da8bf"
-    },
-    {
-      "name": "Laser_Bolt_Blue",
-      "depth": 0,
-      "oncreate": "this.speed = 25;\nthis.direction = 90;\nthis.ctype = 'BulletsHeroes';",
-      "onstep": "if (this.y < -48) {\n    this.kill = true;\n}\n\nct.types.move(this);",
-      "ondraw": "",
-      "ondestroy": "",
-      "uid": "912af24f-1569-46a3-9194-fbf0384f3b0e",
-      "lastmod": 1552044696093,
-      "extends": {},
-      "texture": "c12edc06-ad3f-49f4-b9d4-3d33226e9ecc"
-    },
-    {
-      "name": "Enemy_Ufo",
-      "depth": 3,
-      "oncreate": "this.targetx = ct.random.range(75, ct.viewWidth - 150);\nthis.targety = ct.random.range(75, 300);\n\n\n// this mob will be quite sturdy\nthis.health = 30;\n\nthis.jumpTimer = ct.speed;",
-      "onstep": "// Simple interpolation between two points through time\nthis.x += (this.targetx - this.x) * 0.1;\nthis.y += (this.targety - this.y) * 0.1;\n\nthis.jumpTimer -= ct.delta;\nif (this.jumpTimer < 0) {\n    // Start jumping to a new location  \n    this.jumpTimer = ct.speed * 2;\n    this.targetx = ct.random.range(75, ct.viewWidth - 150);\n    this.targety = ct.random.range(75, 300);\n    \n    var bullet1 = ct.types.copy('Laser_Cross_Red', this.x, this.y);\n    bullet1.direction = 270 - 30;\n    var bullet2 = ct.types.copy('Laser_Cross_Red', this.x, this.y);\n    bullet2.direction = 270 + 30;\n    var bullet3 = ct.types.copy('Laser_Cross_Red', this.x, this.y);\n    bullet3.direction = 270 - 60;\n    var bullet4 = ct.types.copy('Laser_Cross_Red', this.x, this.y);\n    bullet4.direction = 270 + 60;\n}\n\nvar obstacle = ct.place.occupied(this, this.x, this.y, 'BulletsHeroes');\nif (obstacle) {\n    if (obstacle.type === 'Laser_Bolt_Blue') { // Bolts will do additional damage\n        this.health -= 5;\n    } else {\n        this.health -= 1;\n    }\n    obstacle.kill = true;\n    if (this.health <= 0) {\n        this.kill = true;\n        // Add some score points\n        ct.rooms.current.score += 125;\n    }    \n}",
-      "ondraw": "this.rotation += 2.5 * ct.delta;",
-      "ondestroy": "ct.types.copy('Explosion', this.x, this.y);\nct.types.copy('AbstractBonus', this.x, this.y);",
-      "uid": "ebfeaaab-f16a-48fa-b97c-687945f99668",
-      "lastmod": 1551428789756,
-      "extends": {},
-      "texture": "3a21a3d8-30ed-4e5b-8ccf-0019a503d6b9"
-    },
-    {
-      "name": "Laser_Cross_Red",
-      "depth": 0,
-      "oncreate": "this.speed = 10;\nthis.direction = ct.random.range(270-45, 270+45);\n\nthis.ctype = 'EnemyBullet';\nct.sound.spawn('Laser_Big');\n\nthis.rotation = ct.random.deg();",
-      "onstep": "this.rotation -= 4.5 * ct.delta;\nct.types.move(this);\n\n// Destroy a bullet if it fell off the screen\nif (this.y > ct.viewHeight + 32) {\n    this.kill = true;\n}",
-      "ondraw": "",
-      "ondestroy": "",
-      "uid": "45f606db-1ce3-4b21-bc14-b84e35543509",
-      "lastmod": 1551428574853,
-      "extends": {},
-      "texture": "dc0d71ec-6da8-40e8-afe8-90c81f7f269a"
-    },
-    {
-      "name": "OhNo",
-      "depth": 0,
-      "oncreate": "",
-      "onstep": "ct.types.move(this);",
-      "ondraw": "",
-      "ondestroy": "",
-      "uid": "a6d37145-b35c-42d2-95c6-765069857ada",
-      "lastmod": 1543397136519,
-      "extends": {},
-      "texture": "e81fc53e-4f0a-443d-a4fb-e5e11a4a98d2"
-    },
-    {
-      "name": "RetryButton",
-      "depth": 0,
-      "oncreate": "",
-      "onstep": "if (ct.mouse.pressed) {\n    if (ct.mouse.hovers(this)) {\n        ct.rooms.switch('InGame');\n    }\n}",
-      "ondraw": "",
-      "ondestroy": "",
-      "uid": "73759c16-fba4-4134-b048-e53aa4d2f34b",
-      "lastmod": 1551427659008,
-      "extends": {},
-      "texture": "071162b9-d836-4145-9515-586ce289ef14"
-    }
-  ],
-  "sounds": [
-    {
-      "name": "Laser_Small",
-      "uid": "684d983f-9827-4ac8-9915-bd498154c5f4",
-      "origname": "s0.mp3",
-      "lastmod": 1508402385413,
-      "poolSize": 10
-    },
-    {
-      "name": "Laser_Medium",
-      "uid": "1abe65bd-fd7f-4101-803d-28fa73e21732",
-      "origname": "s1.mp3",
-      "lastmod": 1508402408072,
-      "poolSize": 10
-    },
-    {
-      "name": "Laser_Big",
-      "uid": "fe3a3bb6-74ac-4835-b9f3-6c03cf8fd0b0",
-      "origname": "s2.mp3",
-      "lastmod": 1508402430765
-    },
-    {
-      "name": "Bonus",
-      "uid": "c55e02d8-e533-4126-b0d8-b5164416d0d5",
-      "origname": "s4.wav",
-      "lastmod": 1522761957688,
-      "poolSize": 3
-    },
-    {
-      "name": "Explosion_01",
-      "uid": "17ef15ea-b246-474e-9e50-a9211c3281d6",
-      "origname": "s5.wav",
-      "lastmod": 1522761980782
-    },
-    {
-      "name": "Explosion_02",
-      "uid": "ba1c4845-8f8e-4326-a3c4-5c7d979d0a98",
-      "origname": "s6.wav",
-      "lastmod": 1522762005209
-    },
-    {
-      "name": "Explosion_03",
-      "uid": "8104f996-d422-4157-921f-76e2ffff3b49",
-      "origname": "s7.wav",
-      "lastmod": 1522762020572
-    },
-    {
-      "name": "Music",
-      "uid": "c5397f40-b674-4bfe-a500-91f32466e49b",
-      "origname": "s8.mp3",
-      "lastmod": 1533189183845,
-      "isMusic": true,
-      "poolSize": 1
-    }
-  ],
-  "styles": [
-    {
-      "name": "ScoreText",
-      "fill": {
-        "type": "0",
-        "gradsize": 28,
-        "color1": "#7DFFF8",
-        "color2": "#0044FF",
-        "gradtype": "1",
-        "color": "#75D1E3"
-      },
-      "font": {
-        "family": "'Press Start 2P', sans-serif",
-        "size": 24,
-        "weight": "900",
-        "italic": true,
-        "valign": "top",
-        "halign": "center"
-      },
-      "uid": "7da08700-988f-456d-b753-89dd1f74e741",
-      "origname": "s1",
-      "shadow": {
-        "color": "#005E3A",
-        "x": -3,
-        "y": -2,
-        "blur": 0
-      },
-      "lastmod": 1543395034300
-    },
-    {
-      "name": "Blue12",
-      "uid": "dea27cc4-bf65-4501-b855-06cbfc835321",
-      "origname": "s2",
-      "font": {
-        "family": "'Press Start 2P', sans-serif",
-        "size": 12,
-        "weight": 400,
-        "italic": false,
-        "valign": "middle",
-        "halign": "center"
-      },
-      "fill": {
-        "type": "0",
-        "color": "#446ADB"
-      },
-      "lastmod": 1543395030461
-    }
-  ],
-  "rooms": [
-    {
-      "name": "InGame",
-      "oncreate": "this.score = 0;\n\nthis.scoreLabel = new PIXI.Text('Score: ' + this.score, ct.styles.get('ScoreText'));\nthis.scoreLabel.x = this.scoreLabel.y = 20;\nthis.scoreLabel.depth = 100;\nthis.addChild(this.scoreLabel);\n\nthis.shipIcons = [];\n// Draw small ship icons in a top-right corner\nfor (var i = 0; i < 3; i++) {\n    var icon = new PIXI.Sprite(ct.res.getTexture('PlayerShip_Blue', 0));\n    icon.x = ct.width - 32 - i*48;\n    icon.y = 32;\n    icon.scale.x = icon.scale.y = 0.3;\n    icon.depth = 100;\n    this.addChild(icon);\n    this.shipIcons.push(icon);\n}",
-      "onstep": "",
-      "ondraw": "this.scoreLabel.text = 'Score: ' + this.score;\n\nif (ct.types.list.Player_Blue.length) {\n    for (var i = 0; i < 3; i++) {\n        this.shipIcons[i].visible = ct.types.list.Player_Blue[0].lives > i;\n    }\n}",
-      "onleave": "",
-      "width": 800,
-      "height": 800,
-      "backgrounds": [
-        {
-          "depth": "-20",
-          "extends": {
-            "movementY": 1
-          },
-          "texture": "3935eebf-4e66-456f-9ca8-e2dc1d6a9383"
-        }
-      ],
-      "uid": "2e5bf702-9eac-4fef-8282-07d2dd0a9bac",
-      "lastmod": 1554742808104,
-      "grid": 50,
-      "thumbnail": 1,
-      "gridX": 50,
-      "gridY": 50,
-      "tiles": [
-        {
-          "depth": -10,
-          "tiles": []
-        }
-      ],
-      "copies": [
-        {
-          "x": 400,
-          "y": 700,
-          "uid": "1fab434d-0976-4b65-8390-d013695aba8c"
-        },
-        {
-          "x": 400,
-          "y": 250,
-          "uid": "ca579f27-f97b-4ca2-98f6-c1c3e13acad5"
-        }
-      ]
-    },
-    {
-      "name": "MainMenu",
-      "oncreate": "ct.sound.spawn('Music', {\n    loop: true,\n    volume: 0.5\n});\n\nthis.ctjsNotice = new PIXI.Text('Make Great Games in a Free Game Editor!!!\\nhttps://ctjs.rocks/', ct.styles.get('Blue12'));\nthis.addChild(this.ctjsNotice);\nthis.ctjsNotice.x = ct.room.width / 2;\nthis.ctjsNotice.y = ct.room.height - 32;\nthis.ctjsNotice.anchor.x = 0.5;\nthis.ctjsNotice.anchor.y = 0.5;",
-      "onstep": "",
-      "ondraw": "",
-      "onleave": "",
-      "width": 800,
-      "height": 800,
-      "backgrounds": [
-        {
-          "depth": 0,
-          "extends": {
-            "movementY": 1
-          },
-          "texture": "3935eebf-4e66-456f-9ca8-e2dc1d6a9383"
-        }
-      ],
-      "uid": "6c75cdb8-cfb4-4dcc-887a-f76ae98b5499",
-      "grid": 64,
-      "lastmod": 1543633624126,
-      "thumbnail": 2,
-      "gridX": 64,
-      "gridY": 64,
-      "tiles": [
-        {
-          "depth": -10,
-          "tiles": []
-        }
-      ],
-      "copies": [
-        {
-          "x": 384,
-          "y": 192,
-          "uid": "319c6995-59f3-4267-a1de-cf58f77614d3"
-        },
-        {
-          "x": 384,
-          "y": 512,
-          "uid": "972bb4d9-7cfc-4dbe-bc30-883562271057"
-        }
-      ]
-    },
-    {
-      "name": "RetryScreen",
-      "oncreate": "this.score = Number(localStorage.score);\nthis.highscore = Number(localStorage.highscore || 0);\n\nlocalStorage.highscore = Math.max(this.highscore, this.score);\n\nthis.scoreText = new PIXI.Text('Score: '+ this.score + '\\n' + 'Highscore: '+ this.highscore, ct.styles.get('ScoreText'));\nthis.addChild(this.scoreText);\nthis.scoreText.x = ct.width / 2;\nthis.scoreText.y = ct.height / 2;\nthis.scoreText.anchor.x = 0.5;\nthis.scoreText.anchor.y = 0.5;\n\nthis.authorsNotice = new PIXI.Text('This demo was made in ct.js editor: more at https://ctjs.rocks/\\n'+ \n    'Music by Jukedeck: www.jukedeck.com', ct.styles.get('Blue12'));\nthis.addChild(this.authorsNotice);\nthis.authorsNotice.x = ct.width / 2;\nthis.authorsNotice.y = ct.height - 50;\nthis.authorsNotice.anchor.x = 0.5;\nthis.authorsNotice.anchor.y = 0.5;",
-      "onstep": "",
-      "ondraw": "",
-      "onleave": "",
-      "width": 800,
-      "height": 800,
-      "backgrounds": [
-        {
-          "depth": -5,
-          "extends": {
-            "movementY": 1
-          },
-          "texture": "3935eebf-4e66-456f-9ca8-e2dc1d6a9383"
-        }
-      ],
-      "uid": "cc1e53b3-f7e6-48fe-9716-b05877538e52",
-      "grid": 64,
-      "lastmod": 1551428926798,
-      "thumbnail": 3,
-      "gridX": 64,
-      "gridY": 64,
-      "tiles": [
-        {
-          "depth": -10,
-          "tiles": []
-        }
-      ],
-      "copies": [
-        {
-          "x": 384,
-          "y": 192,
-          "uid": "a6d37145-b35c-42d2-95c6-765069857ada"
-        },
-        {
-          "x": 384,
-          "y": 576,
-          "uid": "73759c16-fba4-4134-b048-e53aa4d2f34b"
-        }
-      ]
-    }
-  ],
-  "soundtick": 9,
-  "roomtick": 3,
-  "typetick": 19,
-  "styletick": 2,
-  "starting": 0,
-  "settings": {
-    "minifyhtmlcss": true,
-    "minifyjs": false,
-    "title": "Catsteroids",
-    "author": "CoMiGo Games",
-    "site": "http://comigogames.ru/",
-    "fps": 30,
-    "version": [
-      0,
-      0,
-      0
-    ],
-    "versionPostfix": "",
-    "export": {
-      "windows64": true,
-      "windows32": true,
-      "linux64": true,
-      "linux32": true,
-      "mac64": true,
-      "debug": false
-    },
-    "pixelatedrender": false
-  },
-  "palette": [
-    "#FFFFFF",
-    "#B48FFF",
-    "#10102E"
-  ],
-  "startroom": "6c75cdb8-cfb4-4dcc-887a-f76ae98b5499",
-  "scripts": [],
-  "ctjsVersion": "1.3.0",
-  "fonts": [],
-  "skeletons": [],
-  "actions": [
-    {
-      "name": "Shoot",
-      "methods": [
-        {
-          "code": "keyboard.Space"
-        },
-        {
-          "code": "mouse.Left"
-        }
-      ]
-    },
-    {
-      "name": "MoveX",
-      "methods": [
-        {
-          "code": "keyboard.KeyD"
-        },
-        {
-          "code": "keyboard.KeyA",
-          "multiplier": -1
-        },
-        {
-          "code": "keyboard.ArrowLeft",
-          "multiplier": -1
-        },
-        {
-          "code": "keyboard.ArrowRight"
-        }
-      ]
-    },
-    {
-      "name": "MoveY",
-      "methods": [
-        {
-          "code": "keyboard.KeyW",
-          "multiplier": -1
-        },
-        {
-          "code": "keyboard.KeyS"
-        },
-        {
-          "code": "keyboard.ArrowDown"
-        },
-        {
-          "code": "keyboard.ArrowUp",
-          "multiplier": -1
-        }
-      ]
-    }
-  ],
-  "textures": [
-    {
-      "name": "PlayerShip_Blue",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        56,
-        37
-      ],
-      "origname": "i1.png",
-      "shape": "strip",
-      "left": 48,
-      "top": 10,
-      "frames": 1,
-      "width": 112,
-      "height": 75,
-      "imgWidth": 112,
-      "imgHeight": 75,
-      "marginx": 0,
-      "marginy": 0,
-      "offy": 0,
-      "offx": 0,
-      "right": 48,
-      "bottom": 34,
-      "r": 20,
-      "uid": "e1452137-8cfa-4eec-b54a-0f2660326b48",
-      "stripPoints": [
-        {
-          "x": 13,
-          "y": -13
-        },
-        {
-          "x": 53,
-          "y": 6
-        },
-        {
-          "x": 40,
-          "y": 35
-        },
-        {
-          "x": -38,
-          "y": 36
-        },
-        {
-          "x": -53,
-          "y": 4
-        },
-        {
-          "x": -12,
-          "y": -12
-        },
-        {
-          "x": -2,
-          "y": -36
-        }
-      ],
-      "closedStrip": true,
-      "lastmod": 1554742823545
-    },
-    {
-      "name": "Background_Blue",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        0,
-        0
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "offx": 0,
-      "offy": 0,
-      "origname": "i2.png",
-      "shape": "circle",
-      "left": 0,
-      "right": 256,
-      "top": 0,
-      "bottom": 256,
-      "frames": 1,
-      "width": 256,
-      "height": 256,
-      "imgWidth": 256,
-      "imgHeight": 256,
-      "r": 1,
-      "uid": "3935eebf-4e66-456f-9ca8-e2dc1d6a9383",
-      "tiled": true,
-      "lastmod": 1543633813674
-    },
-    {
-      "name": "Laser_Simple_Blue",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        4,
-        27
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "offx": 0,
-      "offy": 0,
-      "origname": "i3.png",
-      "shape": "rect",
-      "left": 4,
-      "right": 5,
-      "top": 27,
-      "bottom": 27,
-      "frames": 1,
-      "width": 9,
-      "height": 54,
-      "imgWidth": 9,
-      "imgHeight": 54,
-      "lastmod": 1508500558054,
-      "uid": "e6148099-65e7-4d2b-acf1-3e6b3a8fc033"
-    },
-    {
-      "name": "Laser_X_Blue",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        19,
-        18
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "offx": 0,
-      "offy": 0,
-      "origname": "i4.png",
-      "shape": "circle",
-      "left": 19,
-      "right": 19,
-      "top": 18,
-      "bottom": 19,
-      "frames": 1,
-      "width": 38,
-      "height": 37,
-      "imgWidth": 38,
-      "imgHeight": 37,
-      "r": 21,
-      "uid": "4b86d5c4-ae3c-4edf-90d7-79a6778e9a29"
-    },
-    {
-      "name": "Laser_Bolt_Blue",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        6,
-        28
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "offx": 0,
-      "offy": 0,
-      "origname": "i5.png",
-      "shape": "rect",
-      "left": 6,
-      "right": 7,
-      "top": 28,
-      "bottom": 29,
-      "frames": 1,
-      "width": 13,
-      "height": 57,
-      "imgWidth": 13,
-      "imgHeight": 57,
-      "lastmod": 1508497007651,
-      "uid": "c12edc06-ad3f-49f4-b9d4-3d33226e9ecc"
-    },
-    {
-      "name": "Meteor_Small_1",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        14,
-        14
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "offx": 0,
-      "offy": 0,
-      "origname": "i10.png",
-      "shape": "circle",
-      "left": 0,
-      "right": 28,
-      "top": 0,
-      "bottom": 28,
-      "frames": 1,
-      "width": 28,
-      "height": 28,
-      "imgWidth": 28,
-      "imgHeight": 28,
-      "r": 13,
-      "lastmod": 1508497578339,
-      "uid": "60d054c0-0a52-4236-8791-11a9a358f9a1"
-    },
-    {
-      "name": "Meteor_Small_2",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        14,
-        13
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "offx": 0,
-      "offy": 0,
-      "origname": "i11.png",
-      "shape": "circle",
-      "left": 0,
-      "right": 29,
-      "top": 0,
-      "bottom": 26,
-      "frames": 1,
-      "width": 29,
-      "height": 26,
-      "imgWidth": 29,
-      "imgHeight": 26,
-      "r": 13,
-      "lastmod": 1508497573411,
-      "uid": "2a9cb9c1-d6c7-401b-abce-a35ad4d148d2"
-    },
-    {
-      "name": "Meteor_Medium_1",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        22,
-        21
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "offx": 0,
-      "offy": 0,
-      "origname": "i12.png",
-      "shape": "circle",
-      "left": 0,
-      "right": 45,
-      "top": 0,
-      "bottom": 40,
-      "frames": 1,
-      "width": 43,
-      "height": 43,
-      "imgWidth": 43,
-      "imgHeight": 43,
-      "r": 21,
-      "lastmod": 1548596418433,
-      "uid": "51520da0-9beb-4b8f-9048-1f9b0c526ec8"
-    },
-    {
-      "name": "Meteor_Medium_2",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        22,
-        20
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "offx": 0,
-      "offy": 0,
-      "origname": "i13.png",
-      "shape": "circle",
-      "left": 0,
-      "right": 45,
-      "top": 0,
-      "bottom": 40,
-      "frames": 1,
-      "width": 45,
-      "height": 40,
-      "imgWidth": 45,
-      "imgHeight": 40,
-      "r": 20,
-      "lastmod": 1508497627007,
-      "uid": "313f3868-5dbd-44fb-9518-ee04a9ff57ed"
-    },
-    {
-      "name": "Meteor_Big_1",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        44,
-        42
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "offx": 0,
-      "offy": 0,
-      "origname": "i14.png",
-      "shape": "strip",
-      "left": 0,
-      "right": 0,
-      "top": 0,
-      "bottom": 0,
-      "frames": 1,
-      "width": 89,
-      "height": 82,
-      "imgWidth": 89,
-      "imgHeight": 82,
-      "r": 40,
-      "lastmod": 1548596394601,
-      "uid": "90112561-c6c4-4f67-8d0f-fdfb7ae47d3b",
-      "stripPoints": [
-        {
-          "x": 28,
-          "y": -30
-        },
-        {
-          "x": 45,
-          "y": -2
-        },
-        {
-          "x": 20,
-          "y": 39
-        },
-        {
-          "x": -29,
-          "y": 32
-        },
-        {
-          "x": -40,
-          "y": 13
-        },
-        {
-          "x": -42,
-          "y": -23
-        },
-        {
-          "x": -9,
-          "y": -43
-        }
-      ],
-      "closedStrip": true
-    },
-    {
-      "name": "Meteor_Big_2",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        49,
-        50
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "offx": 0,
-      "offy": 0,
-      "origname": "i15.png",
-      "shape": "strip",
-      "left": 0,
-      "right": 98,
-      "top": 0,
-      "bottom": 96,
-      "frames": 1,
-      "width": 98,
-      "height": 96,
-      "imgWidth": 98,
-      "imgHeight": 96,
-      "r": 46,
-      "lastmod": 1548596414890,
-      "uid": "ca15e5c0-b32a-425b-ab24-07d681a8ad8f",
-      "stripPoints": [
-        {
-          "x": 17,
-          "y": -49
-        },
-        {
-          "x": 48,
-          "y": -15
-        },
-        {
-          "x": 29,
-          "y": 39
-        },
-        {
-          "x": -15,
-          "y": 48
-        },
-        {
-          "x": -48,
-          "y": 7
-        },
-        {
-          "x": -33,
-          "y": -36
-        }
-      ],
-      "closedStrip": true
-    },
-    {
-      "name": "StartButton",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        191,
-        81
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "offx": 0,
-      "offy": 0,
-      "origname": "i18.png",
-      "shape": "rect",
-      "left": 135,
-      "right": 160,
-      "top": 60,
-      "bottom": 55,
-      "frames": 1,
-      "width": 382,
-      "height": 162,
-      "imgWidth": 382,
-      "imgHeight": 162,
-      "r": 81,
-      "lastmod": 1521782180242,
-      "uid": "2a454e11-3441-4f57-bfb6-ce837acd7881"
-    },
-    {
-      "name": "CatsteroidsLogo",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        319,
-        126
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "offx": 0,
-      "offy": 0,
-      "origname": "i19.png",
-      "shape": "rect",
-      "left": 319,
-      "right": 319,
-      "top": 126,
-      "bottom": 126,
-      "frames": 1,
-      "width": 638,
-      "height": 252,
-      "imgWidth": 638,
-      "imgHeight": 252,
-      "lastmod": 1521696185869,
-      "uid": "968baf79-5ff3-443b-8834-fa3b55638500"
-    },
-    {
-      "name": "Bonus_Lives",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        26,
-        26
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "offx": 0,
-      "offy": 0,
-      "origname": "i20.png",
-      "shape": "rect",
-      "left": 26,
-      "right": 26,
-      "top": 26,
-      "bottom": 26,
-      "frames": 1,
-      "width": 52,
-      "height": 52,
-      "imgWidth": 52,
-      "imgHeight": 52,
-      "lastmod": 1521786316435,
-      "uid": "25fb712b-0aca-4b18-8e10-7c545d4bca8d"
-    },
-    {
-      "name": "Bonus_Spread",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        26,
-        26
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "offx": 0,
-      "offy": 0,
-      "origname": "i21.png",
-      "shape": "rect",
-      "left": 26,
-      "right": 26,
-      "top": 26,
-      "bottom": 26,
-      "frames": 1,
-      "width": 52,
-      "height": 52,
-      "imgWidth": 52,
-      "imgHeight": 52,
-      "lastmod": 1521786327821,
-      "uid": "5180fa6f-778b-44ac-883f-0f55a294292f"
-    },
-    {
-      "name": "Bonus_Bolt",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        26,
-        27
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "offx": 0,
-      "offy": 0,
-      "origname": "i22.png",
-      "shape": "rect",
-      "left": 26,
-      "right": 26,
-      "top": 27,
-      "bottom": 28,
-      "frames": 1,
-      "width": 52,
-      "height": 55,
-      "imgWidth": 52,
-      "imgHeight": 55,
-      "lastmod": 1521786348095,
-      "uid": "c7305cd4-3a22-4f4d-b42e-adbd8651ffe0"
-    },
-    {
-      "name": "Bonus_Cross",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        26,
-        26
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "offx": 0,
-      "offy": 0,
-      "origname": "i23.png",
-      "shape": "rect",
-      "left": 26,
-      "right": 26,
-      "top": 26,
-      "bottom": 26,
-      "frames": 1,
-      "width": 52,
-      "height": 52,
-      "imgWidth": 52,
-      "imgHeight": 52,
-      "lastmod": 1521786359659,
-      "uid": "3d364ae5-40e9-4c13-b1c7-9e0415273865"
-    },
-    {
-      "name": "Enemy_Shooter",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        46,
-        42
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "offx": 0,
-      "offy": 0,
-      "origname": "i24.png",
-      "shape": "strip",
-      "left": 0,
-      "right": 0,
-      "top": 0,
-      "bottom": 0,
-      "frames": 1,
-      "width": 93,
-      "height": 84,
-      "imgWidth": 93,
-      "imgHeight": 84,
-      "r": 42,
-      "lastmod": 1548596333338,
-      "uid": "16c209a9-25b2-41e4-b0d5-21cb22fd1421",
-      "stripPoints": [
-        {
-          "x": 30,
-          "y": -41
-        },
-        {
-          "x": 46,
-          "y": -17
-        },
-        {
-          "x": 26,
-          "y": 40
-        },
-        {
-          "x": -25,
-          "y": 41
-        },
-        {
-          "x": -44,
-          "y": -14
-        },
-        {
-          "x": -28,
-          "y": -41
-        }
-      ],
-      "closedStrip": true
-    },
-    {
-      "name": "Enemy_Wiggler",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        52,
-        42
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "offx": 0,
-      "offy": 0,
-      "origname": "i25.png",
-      "shape": "strip",
-      "left": 0,
-      "right": 104,
-      "top": 0,
-      "bottom": 84,
-      "frames": 1,
-      "width": 104,
-      "height": 84,
-      "imgWidth": 104,
-      "imgHeight": 84,
-      "r": 42,
-      "lastmod": 1548596356121,
-      "uid": "048b77d3-e7e3-4817-99ee-8b7c0a6da8bf",
-      "stripPoints": [
-        {
-          "x": 0,
-          "y": -42
-        },
-        {
-          "x": 53,
-          "y": -15
-        },
-        {
-          "x": 23,
-          "y": 41
-        },
-        {
-          "x": -25,
-          "y": 40
-        },
-        {
-          "x": -52,
-          "y": -13
-        }
-      ],
-      "closedStrip": true
-    },
-    {
-      "name": "Laser_Red",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        4,
-        18
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "offx": 0,
-      "offy": 0,
-      "origname": "i26.png",
-      "shape": "rect",
-      "left": 4,
-      "right": 5,
-      "top": 18,
-      "bottom": 19,
-      "frames": 1,
-      "width": 9,
-      "height": 37,
-      "imgWidth": 9,
-      "imgHeight": 37,
-      "lastmod": 1521789393030,
-      "uid": "fc3e2f9b-61af-4ae4-9375-dcfae65f6a34"
-    },
-    {
-      "name": "Explosion",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        70,
-        52
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "offx": 0,
-      "offy": 0,
-      "origname": "i27.png",
-      "shape": "circle",
-      "left": 70,
-      "right": 70,
-      "top": 52,
-      "bottom": 53,
-      "frames": 1,
-      "width": 140,
-      "height": 105,
-      "imgWidth": 140,
-      "imgHeight": 105,
-      "r": 52,
-      "lastmod": 1548596360248,
-      "uid": "9de002e9-c9cf-44ee-b87a-022ae3dddca3"
-    },
-    {
-      "name": "Ufo_Red",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        45,
-        45
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "offx": 0,
-      "offy": 0,
-      "origname": "i28.png",
-      "shape": "circle",
-      "left": 0,
-      "right": 91,
-      "top": 0,
-      "bottom": 91,
-      "frames": 1,
-      "width": 91,
-      "height": 91,
-      "imgWidth": 91,
-      "imgHeight": 91,
-      "r": 45,
-      "lastmod": 1521795757737,
-      "uid": "3a21a3d8-30ed-4e5b-8ccf-0019a503d6b9"
-    },
-    {
-      "name": "Laser_Cross_Red",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        18,
-        18
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "offx": 0,
-      "offy": 0,
-      "origname": "i29.png",
-      "shape": "circle",
-      "left": 0,
-      "right": 37,
-      "top": 0,
-      "bottom": 36,
-      "frames": 1,
-      "width": 37,
-      "height": 36,
-      "imgWidth": 37,
-      "imgHeight": 36,
-      "r": 18,
-      "lastmod": 1521797622884,
-      "uid": "dc0d71ec-6da8-40e8-afe8-90c81f7f269a"
-    },
-    {
-      "name": "RetryButton",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        170,
-        73
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "offx": 0,
-      "offy": 0,
-      "origname": "i30.png",
-      "shape": "rect",
-      "left": 155,
-      "right": 140,
-      "top": 40,
-      "bottom": 40,
-      "frames": 1,
-      "width": 340,
-      "height": 146,
-      "imgWidth": 340,
-      "imgHeight": 146,
-      "lastmod": 1521798557721,
-      "uid": "071162b9-d836-4145-9515-586ce289ef14"
-    },
-    {
-      "name": "OhNo",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        298,
-        159
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "offx": 0,
-      "offy": 0,
-      "origname": "i31.png",
-      "shape": "rect",
-      "left": 298,
-      "right": 298,
-      "top": 159,
-      "bottom": 160,
-      "frames": 1,
-      "width": 596,
-      "height": 319,
-      "imgWidth": 596,
-      "imgHeight": 319,
-      "lastmod": 1521799064360,
-      "uid": "e81fc53e-4f0a-443d-a4fb-e5e11a4a98d2"
-    }
-  ],
-  "texturetick": 32,
-  "emitterTandems": []
-}
+notes: ''
+libs:
+  place:
+    gridY: 512
+    gridX: 512
+  akatemplate:
+    csscss: |-
+      canvas {
+        margin: 0 auto;
+        display: block;
+      }
+      body {
+        background: #1b1f26;
+      }
+    toptop: >-
+      <link href="https://fonts.googleapis.com/css?family=Press+Start+2P"
+      rel="stylesheet">
+  random: {}
+  sound.howler: {}
+  fittoscreen:
+    scaleOnly: true
+    mode: scaleFit
+  keyboard: {}
+  keyboard.polyfill: {}
+  mouse: {}
+types:
+  - name: Player_Blue
+    depth: 5
+    oncreate: >-
+      // Set movement friction, acceleration and speed limit
+
+      this.friction = 0.25;
+
+      this.flyspeed = 2.5;
+
+      this.maxspeed = 7.5;
+
+
+      // This will help us to shoot continuously
+
+      this.shootTimer = 0;
+
+
+      this.lives = 3;
+
+      this.invulnerable = -1;
+
+
+      this.weapon = 'simple';
+
+      this.crossSwitch = 1; // This will flip the animation of the cross-like
+      bullets
+    onstep: >-
+      /* Movement 
+         Add acceleration when arrows or WASD are being pressed
+      */
+
+
+      this.hspeed += ct.actions.MoveX.value * this.flyspeed;
+
+      this.vspeed += ct.actions.MoveY.value * this.flyspeed;
+
+
+      // Limit speed
+
+      this.speed = Math.max(Math.min(this.speed, this.speed - this.friction,
+      this.maxspeed), 0);
+
+      ct.types.move(this);
+
+
+      // Check if the ship is out of the view
+
+      if (this.x < 0 || this.x > ct.viewWidth ||
+          this.y < 0 || this.y > ct.viewHeight) {
+          // Return back if the ship is outside the room
+          this.speed = 0;
+          this.x = Math.max(Math.min(this.x, ct.viewWidth), 0);
+          this.y = Math.max(Math.min(this.y, ct.viewHeight), 0);
+      }
+
+
+      /* Shooting */
+
+
+      this.shootTimer += ct.delta;
+
+
+      // If the spacebar is pressed and at least a quarter of second has
+      passed, 
+
+      // create a new laser bullet depending on a weapon type
+
+      if (ct.actions.Shoot.down) {
+          if (this.weapon === 'simple' && this.shootTimer > 15) {
+              ct.types.copy('Laser_Simple_Blue', this.x, this.y);
+              ct.sound.spawn('Laser_Small');
+              // Reset shooting delay
+              this.shootTimer = 0;
+          }
+          if (this.weapon === 'spread' && this.shootTimer > 15) {
+              // create three laser bolts
+              ct.types.copy('Laser_Simple_Blue', this.x-40, this.y);
+              ct.types.copy('Laser_Simple_Blue', this.x, this.y - 20);
+              ct.types.copy('Laser_Simple_Blue', this.x+40, this.y);
+              ct.sound.spawn('Laser_Small');
+              // Reset shooting delay
+              this.shootTimer = 0;
+          }
+          if (this.weapon === 'bolt' && this.shootTimer > 60) {
+              // slow, but powerful
+              ct.types.copy('Laser_Bolt_Blue', this.x, this.y);
+              ct.sound.spawn('Laser_Medium');
+              // Reset shooting delay
+              this.shootTimer = 0;
+          }
+          if (this.weapon === 'cross' && this.shootTimer > 10) {
+              // this one shoots much faster
+              var bullet = ct.types.copy('Laser_Cross_Blue', this.x, this.y);
+              bullet.scale.x = this.crossSwitch;
+              this.crossSwitch *= -1;
+              ct.sound.spawn('Laser_Medium');
+              // Reset shooting delay
+              this.shootTimer = 0;
+          }
+      }
+
+
+      /* Damage on collision */
+
+      var obstacle = ct.place.occupied(this, this.x, this.y, 'Enemy') 
+                  || ct.place.occupied(this, this.x, this.y, 'EnemyBullet');
+      if (obstacle && this.invulnerable < 0) {
+          this.lives--;
+          obstacle.kill = true;
+          
+          // Are we completely, like, dead?
+          if (this.lives < 0) {
+              this.kill = true;
+          } else {
+              // Set invulnerability for 3 seconds
+              this.invulnerable = 60 * 3;
+          }
+      }
+
+      // Deplete invulnerability
+
+      this.invulnerable -= ct.delta;
+    ondraw: >-
+      // If we are invulnerable, alternate between full and partial opacity each
+      10 frames
+
+      // `this.invulnerable % 20` means 'get a fraction remainder when dividing
+      by 20'
+
+      // `statement? 0.5 : 1` means that we pick 0.5 if the statement is true,
+      or 1 otherwise
+
+      if (this.invulnerable > 0) {
+          var damaged = this.invulnerable % 20 > 10; 
+          this.alpha = damaged? 0.5 : 1;
+          this.tint = damaged? 0xFF9999 : 0xFFFFFF;
+      } else {
+          this.alpha = 1;
+      }
+    ondestroy: |-
+      ct.types.copy('Explosion', this.x, this.y);
+      localStorage.score = ct.room.score;
+      ct.u.wait(2999)
+      .then(() => ct.rooms.switch('RetryScreen'));
+    uid: 1fab434d-0976-4b65-8390-d013695aba8c
+    lastmod: 1554742830792
+    extends: {}
+    texture: e1452137-8cfa-4eec-b54a-0f2660326b48
+  - name: Laser_Simple_Blue
+    depth: -1
+    oncreate: |-
+      this.speed = 15;
+      this.direction = 90;
+      this.ctype = 'BulletsHeroes';
+    onstep: |-
+      if (this.y < -48) {
+          this.kill = true;
+      }
+
+      ct.types.move(this);
+    ondraw: ''
+    ondestroy: ''
+    uid: 92e6ec14-1de0-483a-84b8-a8669ac65937
+    lastmod: 1543398567006
+    extends: {}
+    texture: e6148099-65e7-4d2b-acf1-3e6b3a8fc033
+  - name: AbstractMeteor
+    depth: 1
+    oncreate: >-
+      this.speed = ct.random.range(1, 3);
+
+      this.direction = 270 + ct.random.range(-3, 3);
+
+
+      this.tex = 'Meteor_' + ct.random.dice('Big', 'Medium', 'Small') + '_' +
+      ct.random.dice(1, 2);
+
+
+      this.rotateSpeed = ct.random.range(-1, 1);
+
+      this.rotation = ct.random.deg();
+
+
+      this.ctype = 'Enemy';
+    onstep: >-
+      ct.types.move(this);
+
+
+      this.rotation += this.rotateSpeed * ct.delta; 
+
+
+      var obstacle = ct.place.occupied(this, this.x, this.y, 'BulletsHeroes');
+
+      if (obstacle) {
+          this.kill = true;
+          if (obstacle.type !== 'Laser_Bolt_Blue') { // Bolts will dash through enemies
+              obstacle.kill = true;
+          }
+          
+          // Add some score points
+          ct.rooms.current.score += 5;
+      }
+
+
+      if (this.x < -100 || this.x > ct.viewWidth + 100 || this.y < -120 ||
+      this.y > ct.viewHeight + 100) {
+          this.kill = true;
+      }
+    ondraw: ''
+    ondestroy: |-
+      var deathMap = {
+          'Big': 'Medium',
+          'Medium': 'Small'
+      };
+
+      for (var i in deathMap) {
+          if (this.tex.indexOf(i) !== -1) {
+              var copy1 = ct.types.copy('AbstractMeteor', this.x, this.y);
+              copy1.tex = 'Meteor_' + deathMap[i] + '_' + ct.random.dice(1, 2);
+              copy1.dir = ct.random.deg();
+              
+              var copy2 = ct.types.copy('AbstractMeteor', this.x, this.y);
+              copy2.tex = 'Meteor_' + deathMap[i] + '_' + ct.random.dice(1, 2);
+              copy2.dir = 180 + copy1.dir + ct.random.range(-10, 10);
+          }
+      }
+    uid: 1fa16a0f-e9a0-4117-9c28-87fa72b33d2b
+    lastmod: 1552044692606
+    extends: {}
+    texture: ca15e5c0-b32a-425b-ab24-07d681a8ad8f
+  - name: Laser_Cross_Blue
+    depth: -1
+    oncreate: |-
+      this.vspeed = -10;
+      this.direction = ct.random.range(60, 120);
+      this.ctype = 'BulletsHeroes';
+      this.phase = 0;
+      this.rotation = ct.random.deg();
+    onstep: |-
+      if (this.y < -48) {
+          this.kill = true;
+      }
+
+      this.phase += ct.delta * 0.1;
+      this.x = this.xstart + Math.sin(this.phase) * 75 * this.scale.x;
+      ct.types.move(this);
+    ondraw: this.rotation += 7 * ct.delta;
+    ondestroy: ''
+    uid: 140f8bde-bd06-4b2d-a5f2-87427848252e
+    lastmod: 1552044536342
+    extends: {}
+    texture: 4b86d5c4-ae3c-4edf-90d7-79a6778e9a29
+  - name: GameController
+    depth: 0
+    oncreate: |-
+      this.asteroidTimer = ct.speed * 3;
+      this.encounterTimer = ct.speed * 10;
+      this.waveTimer = ct.speed * 30;
+      this.UfoTimer = ct.speed * 75;
+    onstep: |-
+      this.asteroidTimer -= ct.delta;
+      if (this.asteroidTimer <= 0) {
+          this.asteroidTimer = ct.random.range(ct.speed * 0.5, ct.speed * 3);
+          ct.types.copy('AbstractMeteor', ct.random(ct.viewWidth), -100);
+      }
+
+      this.encounterTimer -= ct.delta;
+      if (this.encounterTimer <= 0) {
+          this.encounterTimer = ct.random.range(ct.speed * 4, ct.speed * 7);
+          ct.types.copy('Enemy_Shooter', ct.random(ct.viewWidth), -100);
+      }
+
+      this.waveTimer -= ct.delta;
+      if (this.waveTimer <= 0) {
+          this.waveTimer = ct.random.range(ct.speed * 20, ct.speed * 45);
+          
+          // create 5 enemies, one by one in 1.4 seconds
+          ct.types.copy('Enemy_Wiggler', 0, -100);
+          ct.u.wait(350)
+          .then(() => {
+              ct.types.copy('Enemy_Wiggler', 0, -100);
+          })
+          .then(() => ct.u.wait(350))
+          .then(() => {
+              ct.types.copy('Enemy_Wiggler', 0, -100);
+          })
+          .then(() => ct.u.wait(350))
+          .then(() => {
+              ct.types.copy('Enemy_Wiggler', 0, -100);
+          })
+          .then(() => ct.u.wait(350))
+          .then(() => {
+              ct.types.copy('Enemy_Wiggler', 0, -100);
+          });
+      }
+
+      this.UfoTimer -= ct.delta;
+      if (this.UfoTimer <= 0) {
+          this.UfoTimer = ct.random.range(ct.speed * 60, ct.speed * 90);
+          ct.types.copy('Enemy_Ufo', ct.random(ct.viewWidth), -100);
+      }
+    ondraw: ''
+    ondestroy: ''
+    uid: ca579f27-f97b-4ca2-98f6-c1c3e13acad5
+    lastmod: 1551427585984
+    extends: {}
+    texture: -1
+  - name: Logo
+    depth: 0
+    oncreate: |-
+      // The logo floats vertically. Let's use a sine function for that. 
+      // We will need a variable to change its phase
+
+      this.phase = 0;
+    onstep: ''
+    ondraw: |-
+      this.phase += 2.5 / 60 * ct.delta;
+      if (this.phase > Math.PI * 2) {
+          this.phase -= Math.PI * 2;
+      }
+
+      this.y = this.ystart + Math.sin(this.phase) * 8;
+    ondestroy: ''
+    uid: 319c6995-59f3-4267-a1de-cf58f77614d3
+    lastmod: 1543395253559
+    extends: {}
+    texture: 968baf79-5ff3-443b-8834-fa3b55638500
+  - name: StartButton
+    depth: 0
+    oncreate: ''
+    onstep: |-
+      if (ct.mouse.pressed) {
+          if (ct.mouse.hovers(this)) {
+              ct.rooms.switch('InGame');
+          }
+      }
+    ondraw: ''
+    ondestroy: ''
+    uid: 972bb4d9-7cfc-4dbe-bc30-883562271057
+    lastmod: 1551427672784
+    extends: {}
+    texture: 2a454e11-3441-4f57-bfb6-ce837acd7881
+  - name: AbstractBonus
+    depth: 3
+    oncreate: |-
+      // get the player
+      var player = ct.types.list['Player_Blue'][0];
+      if (player.lives < 3) {
+          // add a chance to spawn a life bonus if there is 2 or less lives
+          this.tex = ct.random.dice('Bonus_Lives', 'Bonus_Spread', 'Bonus_Bolt', 'Bonus_Cross');
+      } else {
+          this.tex = ct.random.dice('Bonus_Spread', 'Bonus_Bolt', 'Bonus_Cross');
+      }
+
+      this.spd = 3;
+      this.dir = 270;
+      console.log(this.tex);
+    onstep: |-
+      ct.types.move(this);
+
+      var player = ct.place.meet(this, this.x, this.y, 'Player_Blue');
+      if (player) {
+          ct.sound.spawn('Bonus');
+          if (this.tex === 'Bonus_Lives') {
+              player.lives ++;
+          } else {
+              var graphToWeaponMap = {
+                  'Bonus_Spread': 'spread',
+                  'Bonus_Bolt': 'bolt',
+                  'Bonus_Cross': 'cross'
+              };
+              player.weapon = graphToWeaponMap[this.tex];
+          }
+          // Consume bonus
+          this.kill = true;
+      }
+
+      // Destroy bonus if it fell off the screen
+      if (this.y > ct.room.height + 48) {
+          this.kill = true;
+      }
+    ondraw: ''
+    ondestroy: ''
+    uid: bc01cee1-1b8b-4418-aeb9-a7c5eac2cd51
+    lastmod: 1552044657807
+    extends: {}
+    texture: 25fb712b-0aca-4b18-8e10-7c545d4bca8d
+  - name: Enemy_Shooter
+    depth: 2
+    oncreate: >-
+      // This mob will slowly move to the bottom of the screen, shooting
+      projectiles 
+
+      // from time to time
+
+
+      this.speed = 3;
+
+      this.direction = 270;
+
+
+      this.ctype = 'Enemy';
+
+
+      this.shootTimer = 2 * ct.speed;
+    onstep: |-
+      ct.types.move(this);
+
+      this.shootTimer -= ct.delta;
+      if (this.shootTimer < 0) {
+          ct.types.copy('EnemyBullet', this.x, this.y);
+          this.shootTimer = 3 * ct.speed;
+      }
+
+      var obstacle = ct.place.occupied(this, this.x, this.y, 'BulletsHeroes');
+      if (obstacle) {
+          this.kill = true;
+          if (obstacle.type !== 'Laser_Bolt_Blue') { // Bolts will dash through enemies
+              obstacle.kill = true;
+          }
+          
+          // Add some score points
+          ct.rooms.current.score += 25;
+      }
+
+      if (this.y > ct.viewHeight + 100) {
+          this.kill = true;
+      }
+    ondraw: ''
+    ondestroy: |-
+      ct.types.copy('Explosion', this.x, this.y);
+
+      if (ct.random.chance(10)) {
+          ct.types.copy('AbstractBonus', this.x, this.y);
+      }
+    uid: 500fd472-19aa-41a0-9504-123c37540702
+    lastmod: 1552044678509
+    extends: {}
+    texture: 16c209a9-25b2-41e4-b0d5-21cb22fd1421
+  - name: EnemyBullet
+    depth: -1
+    oncreate: |-
+      this.speed = 10;
+      this.direction = 270;
+      this.ctype = 'EnemyBullet';
+      ct.sound.spawn('Laser_Big');
+    onstep: |-
+      ct.types.move(this);
+
+      // Destroy a bullet if it fell off the screen
+      if (this.y > ct.viewHeight + 32) {
+          this.kill = true;
+      }
+    ondraw: ''
+    ondestroy: ''
+    uid: 65a71d76-039a-4e20-8433-d20277dd2402
+    lastmod: 1552044702182
+    extends: {}
+    texture: fc3e2f9b-61af-4ae4-9375-dcfae65f6a34
+  - name: Explosion
+    depth: 0
+    oncreate: >-
+      ct.sound.spawn(ct.random.dice('Explosion_01', 'Explosion_02',
+      'Explosion_03'));
+
+
+      this.rotation = ct.random.deg();
+    onstep: ct.types.move(this);
+    ondraw: |-
+      this.alpha -= 0.05 * ct.delta;
+      if (this.alpha < 0) {
+          this.kill = true;
+      }
+    ondestroy: ''
+    uid: f938cbd9-1a72-45a4-a7ec-27a0841073ef
+    lastmod: 1543395235678
+    extends: {}
+    texture: 9de002e9-c9cf-44ee-b87a-022ae3dddca3
+  - name: Enemy_Wiggler
+    depth: 2
+    oncreate: |2-
+          // This mob will move in a sine wave and emit projectiles randomly
+      this.phase = 0;
+
+      this.ctype = 'Enemy';
+
+      this.shootTimer = ct.random.dice(2, 3, 4) * ct.speed;
+    onstep: |-
+      this.phase += 2 / 60 * ct.delta;
+
+      this.y += 5 * ct.delta;
+      this.x = Math.sin(this.phase) * (ct.width * 0.4) + ct.width / 2;
+
+
+      this.shootTimer -= ct.delta;
+      if (this.shootTimer < 0) {
+          ct.types.copy('EnemyBullet', this.x, this.y);
+          this.shootTimer = ct.random.dice(2, 3, 4) * ct.speed;
+      }
+
+      var obstacle = ct.place.occupied(this, this.x, this.y, 'BulletsHeroes');
+      if (obstacle) {
+          this.kill = true;
+          if (obstacle.type !== 'Laser_Bolt_Blue') { // Bolts will dash through enemies
+              obstacle.kill = true;
+          }
+          
+          // Add some score points
+          ct.rooms.current.score += 30;
+      }
+
+      if (this.y > ct.viewHeight + 100) {
+          this.kill = true;
+      }
+    ondraw: ''
+    ondestroy: |-
+      ct.types.copy('Explosion', this.x, this.y);
+
+      if (ct.random.chance(10)) {
+          ct.types.copy('AbstractBonus', this.x, this.y);
+      }
+    uid: 9d0992a4-d0ef-4c5e-9d17-2e5167f26598
+    lastmod: 1552044672526
+    extends: {}
+    texture: 048b77d3-e7e3-4817-99ee-8b7c0a6da8bf
+  - name: Laser_Bolt_Blue
+    depth: 0
+    oncreate: |-
+      this.speed = 25;
+      this.direction = 90;
+      this.ctype = 'BulletsHeroes';
+    onstep: |-
+      if (this.y < -48) {
+          this.kill = true;
+      }
+
+      ct.types.move(this);
+    ondraw: ''
+    ondestroy: ''
+    uid: 912af24f-1569-46a3-9194-fbf0384f3b0e
+    lastmod: 1552044696093
+    extends: {}
+    texture: c12edc06-ad3f-49f4-b9d4-3d33226e9ecc
+  - name: Enemy_Ufo
+    depth: 3
+    oncreate: |-
+      this.targetx = ct.random.range(75, ct.viewWidth - 150);
+      this.targety = ct.random.range(75, 300);
+
+
+      // this mob will be quite sturdy
+      this.health = 30;
+
+      this.jumpTimer = ct.speed;
+    onstep: |-
+      // Simple interpolation between two points through time
+      this.x += (this.targetx - this.x) * 0.1;
+      this.y += (this.targety - this.y) * 0.1;
+
+      this.jumpTimer -= ct.delta;
+      if (this.jumpTimer < 0) {
+          // Start jumping to a new location  
+          this.jumpTimer = ct.speed * 2;
+          this.targetx = ct.random.range(75, ct.viewWidth - 150);
+          this.targety = ct.random.range(75, 300);
+          
+          var bullet1 = ct.types.copy('Laser_Cross_Red', this.x, this.y);
+          bullet1.direction = 270 - 30;
+          var bullet2 = ct.types.copy('Laser_Cross_Red', this.x, this.y);
+          bullet2.direction = 270 + 30;
+          var bullet3 = ct.types.copy('Laser_Cross_Red', this.x, this.y);
+          bullet3.direction = 270 - 60;
+          var bullet4 = ct.types.copy('Laser_Cross_Red', this.x, this.y);
+          bullet4.direction = 270 + 60;
+      }
+
+      var obstacle = ct.place.occupied(this, this.x, this.y, 'BulletsHeroes');
+      if (obstacle) {
+          if (obstacle.type === 'Laser_Bolt_Blue') { // Bolts will do additional damage
+              this.health -= 5;
+          } else {
+              this.health -= 1;
+          }
+          obstacle.kill = true;
+          if (this.health <= 0) {
+              this.kill = true;
+              // Add some score points
+              ct.rooms.current.score += 125;
+          }    
+      }
+    ondraw: this.rotation += 2.5 * ct.delta;
+    ondestroy: |-
+      ct.types.copy('Explosion', this.x, this.y);
+      ct.types.copy('AbstractBonus', this.x, this.y);
+    uid: ebfeaaab-f16a-48fa-b97c-687945f99668
+    lastmod: 1551428789756
+    extends: {}
+    texture: 3a21a3d8-30ed-4e5b-8ccf-0019a503d6b9
+  - name: Laser_Cross_Red
+    depth: 0
+    oncreate: |-
+      this.speed = 10;
+      this.direction = ct.random.range(270-45, 270+45);
+
+      this.ctype = 'EnemyBullet';
+      ct.sound.spawn('Laser_Big');
+
+      this.rotation = ct.random.deg();
+    onstep: |-
+      this.rotation -= 4.5 * ct.delta;
+      ct.types.move(this);
+
+      // Destroy a bullet if it fell off the screen
+      if (this.y > ct.viewHeight + 32) {
+          this.kill = true;
+      }
+    ondraw: ''
+    ondestroy: ''
+    uid: 45f606db-1ce3-4b21-bc14-b84e35543509
+    lastmod: 1551428574853
+    extends: {}
+    texture: dc0d71ec-6da8-40e8-afe8-90c81f7f269a
+  - name: OhNo
+    depth: 0
+    oncreate: ''
+    onstep: ct.types.move(this);
+    ondraw: ''
+    ondestroy: ''
+    uid: a6d37145-b35c-42d2-95c6-765069857ada
+    lastmod: 1543397136519
+    extends: {}
+    texture: e81fc53e-4f0a-443d-a4fb-e5e11a4a98d2
+  - name: RetryButton
+    depth: 0
+    oncreate: ''
+    onstep: |-
+      if (ct.mouse.pressed) {
+          if (ct.mouse.hovers(this)) {
+              ct.rooms.switch('InGame');
+          }
+      }
+    ondraw: ''
+    ondestroy: ''
+    uid: 73759c16-fba4-4134-b048-e53aa4d2f34b
+    lastmod: 1551427659008
+    extends: {}
+    texture: 071162b9-d836-4145-9515-586ce289ef14
+sounds:
+  - name: Laser_Small
+    uid: 684d983f-9827-4ac8-9915-bd498154c5f4
+    origname: s0.mp3
+    lastmod: 1508402385413
+    poolSize: 10
+  - name: Laser_Medium
+    uid: 1abe65bd-fd7f-4101-803d-28fa73e21732
+    origname: s1.mp3
+    lastmod: 1508402408072
+    poolSize: 10
+  - name: Laser_Big
+    uid: fe3a3bb6-74ac-4835-b9f3-6c03cf8fd0b0
+    origname: s2.mp3
+    lastmod: 1508402430765
+  - name: Bonus
+    uid: c55e02d8-e533-4126-b0d8-b5164416d0d5
+    origname: s4.wav
+    lastmod: 1522761957688
+    poolSize: 3
+  - name: Explosion_01
+    uid: 17ef15ea-b246-474e-9e50-a9211c3281d6
+    origname: s5.wav
+    lastmod: 1522761980782
+  - name: Explosion_02
+    uid: ba1c4845-8f8e-4326-a3c4-5c7d979d0a98
+    origname: s6.wav
+    lastmod: 1522762005209
+  - name: Explosion_03
+    uid: 8104f996-d422-4157-921f-76e2ffff3b49
+    origname: s7.wav
+    lastmod: 1522762020572
+  - name: Music
+    uid: c5397f40-b674-4bfe-a500-91f32466e49b
+    origname: s8.mp3
+    lastmod: 1533189183845
+    isMusic: true
+    poolSize: 1
+styles:
+  - name: ScoreText
+    fill:
+      type: '0'
+      gradsize: 28
+      color1: '#7DFFF8'
+      color2: '#0044FF'
+      gradtype: '1'
+      color: '#75D1E3'
+    font:
+      family: '''Press Start 2P'', sans-serif'
+      size: 24
+      weight: '900'
+      italic: true
+      valign: top
+      halign: center
+    uid: 7da08700-988f-456d-b753-89dd1f74e741
+    origname: s1
+    shadow:
+      color: '#005E3A'
+      x: -3
+      'y': -2
+      blur: 0
+    lastmod: 1543395034300
+  - name: Blue12
+    uid: dea27cc4-bf65-4501-b855-06cbfc835321
+    origname: s2
+    font:
+      family: '''Press Start 2P'', sans-serif'
+      size: 12
+      weight: 400
+      italic: false
+      valign: middle
+      halign: center
+    fill:
+      type: '0'
+      color: '#446ADB'
+    lastmod: 1543395030461
+rooms:
+  - name: InGame
+    oncreate: >-
+      this.score = 0;
+
+
+      this.scoreLabel = new PIXI.Text('Score: ' + this.score,
+      ct.styles.get('ScoreText'));
+
+      this.scoreLabel.x = this.scoreLabel.y = 20;
+
+      this.scoreLabel.depth = 100;
+
+      this.addChild(this.scoreLabel);
+
+
+      this.shipIcons = [];
+
+      // Draw small ship icons in a top-right corner
+
+      for (var i = 0; i < 3; i++) {
+          var icon = new PIXI.Sprite(ct.res.getTexture('PlayerShip_Blue', 0));
+          icon.x = ct.width - 32 - i*48;
+          icon.y = 32;
+          icon.scale.x = icon.scale.y = 0.3;
+          icon.depth = 100;
+          this.addChild(icon);
+          this.shipIcons.push(icon);
+      }
+    onstep: ''
+    ondraw: |-
+      this.scoreLabel.text = 'Score: ' + this.score;
+
+      if (ct.types.list.Player_Blue.length) {
+          for (var i = 0; i < 3; i++) {
+              this.shipIcons[i].visible = ct.types.list.Player_Blue[0].lives > i;
+          }
+      }
+    onleave: ''
+    width: 800
+    height: 800
+    backgrounds:
+      - depth: '-20'
+        extends:
+          movementY: 1
+        texture: 3935eebf-4e66-456f-9ca8-e2dc1d6a9383
+    uid: 2e5bf702-9eac-4fef-8282-07d2dd0a9bac
+    lastmod: 1554742808104
+    grid: 50
+    thumbnail: 1
+    gridX: 50
+    gridY: 50
+    tiles:
+      - depth: -10
+        tiles: []
+    copies:
+      - x: 400
+        'y': 700
+        uid: 1fab434d-0976-4b65-8390-d013695aba8c
+      - x: 400
+        'y': 250
+        uid: ca579f27-f97b-4ca2-98f6-c1c3e13acad5
+  - name: MainMenu
+    oncreate: >-
+      ct.sound.spawn('Music', {
+          loop: true,
+          volume: 0.5
+      });
+
+
+      this.ctjsNotice = new PIXI.Text('Make Great Games in a Free Game
+      Editor!!!\nhttps://ctjs.rocks/', ct.styles.get('Blue12'));
+
+      this.addChild(this.ctjsNotice);
+
+      this.ctjsNotice.x = ct.room.width / 2;
+
+      this.ctjsNotice.y = ct.room.height - 32;
+
+      this.ctjsNotice.anchor.x = 0.5;
+
+      this.ctjsNotice.anchor.y = 0.5;
+    onstep: ''
+    ondraw: ''
+    onleave: ''
+    width: 800
+    height: 800
+    backgrounds:
+      - depth: 0
+        extends:
+          movementY: 1
+        texture: 3935eebf-4e66-456f-9ca8-e2dc1d6a9383
+    uid: 6c75cdb8-cfb4-4dcc-887a-f76ae98b5499
+    grid: 64
+    lastmod: 1543633624126
+    thumbnail: 2
+    gridX: 64
+    gridY: 64
+    tiles:
+      - depth: -10
+        tiles: []
+    copies:
+      - x: 384
+        'y': 192
+        uid: 319c6995-59f3-4267-a1de-cf58f77614d3
+      - x: 384
+        'y': 512
+        uid: 972bb4d9-7cfc-4dbe-bc30-883562271057
+  - name: RetryScreen
+    oncreate: >-
+      this.score = Number(localStorage.score);
+
+      this.highscore = Number(localStorage.highscore || 0);
+
+
+      localStorage.highscore = Math.max(this.highscore, this.score);
+
+
+      this.scoreText = new PIXI.Text('Score: '+ this.score + '\n' + 'Highscore:
+      '+ this.highscore, ct.styles.get('ScoreText'));
+
+      this.addChild(this.scoreText);
+
+      this.scoreText.x = ct.width / 2;
+
+      this.scoreText.y = ct.height / 2;
+
+      this.scoreText.anchor.x = 0.5;
+
+      this.scoreText.anchor.y = 0.5;
+
+
+      this.authorsNotice = new PIXI.Text('This demo was made in ct.js editor:
+      more at https://ctjs.rocks/\n'+ 
+          'Music by Jukedeck: www.jukedeck.com', ct.styles.get('Blue12'));
+      this.addChild(this.authorsNotice);
+
+      this.authorsNotice.x = ct.width / 2;
+
+      this.authorsNotice.y = ct.height - 50;
+
+      this.authorsNotice.anchor.x = 0.5;
+
+      this.authorsNotice.anchor.y = 0.5;
+    onstep: ''
+    ondraw: ''
+    onleave: ''
+    width: 800
+    height: 800
+    backgrounds:
+      - depth: -5
+        extends:
+          movementY: 1
+        texture: 3935eebf-4e66-456f-9ca8-e2dc1d6a9383
+    uid: cc1e53b3-f7e6-48fe-9716-b05877538e52
+    grid: 64
+    lastmod: 1551428926798
+    thumbnail: 3
+    gridX: 64
+    gridY: 64
+    tiles:
+      - depth: -10
+        tiles: []
+    copies:
+      - x: 384
+        'y': 192
+        uid: a6d37145-b35c-42d2-95c6-765069857ada
+      - x: 384
+        'y': 576
+        uid: 73759c16-fba4-4134-b048-e53aa4d2f34b
+soundtick: 9
+roomtick: 3
+typetick: 19
+styletick: 2
+starting: 0
+settings:
+  minifyhtmlcss: true
+  minifyjs: false
+  title: Catsteroids
+  author: CoMiGo Games
+  site: 'http://comigogames.ru/'
+  fps: 30
+  version:
+    - 0
+    - 0
+    - 0
+  versionPostfix: ''
+  export:
+    windows64: true
+    windows32: true
+    linux64: true
+    linux32: true
+    mac64: true
+    debug: false
+  pixelatedrender: false
+  branding:
+    icon: -1
+    accent: '#446adb'
+    invertPreloaderScheme: true
+palette:
+  - '#FFFFFF'
+  - '#B48FFF'
+  - '#10102E'
+startroom: 6c75cdb8-cfb4-4dcc-887a-f76ae98b5499
+scripts: []
+ctjsVersion: 1.3.0
+fonts: []
+skeletons: []
+actions:
+  - name: Shoot
+    methods:
+      - code: keyboard.Space
+      - code: mouse.Left
+  - name: MoveX
+    methods:
+      - code: keyboard.KeyD
+      - code: keyboard.KeyA
+        multiplier: -1
+      - code: keyboard.ArrowLeft
+        multiplier: -1
+      - code: keyboard.ArrowRight
+  - name: MoveY
+    methods:
+      - code: keyboard.KeyW
+        multiplier: -1
+      - code: keyboard.KeyS
+      - code: keyboard.ArrowDown
+      - code: keyboard.ArrowUp
+        multiplier: -1
+textures:
+  - name: PlayerShip_Blue
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 56
+      - 37
+    origname: i1.png
+    shape: strip
+    left: 48
+    top: 10
+    frames: 1
+    width: 112
+    height: 75
+    imgWidth: 112
+    imgHeight: 75
+    marginx: 0
+    marginy: 0
+    offy: 0
+    offx: 0
+    right: 48
+    bottom: 34
+    r: 20
+    uid: e1452137-8cfa-4eec-b54a-0f2660326b48
+    stripPoints:
+      - x: 13
+        'y': -13
+      - x: 53
+        'y': 6
+      - x: 40
+        'y': 35
+      - x: -38
+        'y': 36
+      - x: -53
+        'y': 4
+      - x: -12
+        'y': -12
+      - x: -2
+        'y': -36
+    closedStrip: true
+    lastmod: 1554742823545
+  - name: Background_Blue
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 0
+      - 0
+    marginx: 0
+    marginy: 0
+    offx: 0
+    offy: 0
+    origname: i2.png
+    shape: circle
+    left: 0
+    right: 256
+    top: 0
+    bottom: 256
+    frames: 1
+    width: 256
+    height: 256
+    imgWidth: 256
+    imgHeight: 256
+    r: 1
+    uid: 3935eebf-4e66-456f-9ca8-e2dc1d6a9383
+    tiled: true
+    lastmod: 1543633813674
+  - name: Laser_Simple_Blue
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 4
+      - 27
+    marginx: 0
+    marginy: 0
+    offx: 0
+    offy: 0
+    origname: i3.png
+    shape: rect
+    left: 4
+    right: 5
+    top: 27
+    bottom: 27
+    frames: 1
+    width: 9
+    height: 54
+    imgWidth: 9
+    imgHeight: 54
+    lastmod: 1508500558054
+    uid: e6148099-65e7-4d2b-acf1-3e6b3a8fc033
+  - name: Laser_X_Blue
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 19
+      - 18
+    marginx: 0
+    marginy: 0
+    offx: 0
+    offy: 0
+    origname: i4.png
+    shape: circle
+    left: 19
+    right: 19
+    top: 18
+    bottom: 19
+    frames: 1
+    width: 38
+    height: 37
+    imgWidth: 38
+    imgHeight: 37
+    r: 21
+    uid: 4b86d5c4-ae3c-4edf-90d7-79a6778e9a29
+  - name: Laser_Bolt_Blue
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 6
+      - 28
+    marginx: 0
+    marginy: 0
+    offx: 0
+    offy: 0
+    origname: i5.png
+    shape: rect
+    left: 6
+    right: 7
+    top: 28
+    bottom: 29
+    frames: 1
+    width: 13
+    height: 57
+    imgWidth: 13
+    imgHeight: 57
+    lastmod: 1508497007651
+    uid: c12edc06-ad3f-49f4-b9d4-3d33226e9ecc
+  - name: Meteor_Small_1
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 14
+      - 14
+    marginx: 0
+    marginy: 0
+    offx: 0
+    offy: 0
+    origname: i10.png
+    shape: circle
+    left: 0
+    right: 28
+    top: 0
+    bottom: 28
+    frames: 1
+    width: 28
+    height: 28
+    imgWidth: 28
+    imgHeight: 28
+    r: 13
+    lastmod: 1508497578339
+    uid: 60d054c0-0a52-4236-8791-11a9a358f9a1
+  - name: Meteor_Small_2
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 14
+      - 13
+    marginx: 0
+    marginy: 0
+    offx: 0
+    offy: 0
+    origname: i11.png
+    shape: circle
+    left: 0
+    right: 29
+    top: 0
+    bottom: 26
+    frames: 1
+    width: 29
+    height: 26
+    imgWidth: 29
+    imgHeight: 26
+    r: 13
+    lastmod: 1508497573411
+    uid: 2a9cb9c1-d6c7-401b-abce-a35ad4d148d2
+  - name: Meteor_Medium_1
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 22
+      - 21
+    marginx: 0
+    marginy: 0
+    offx: 0
+    offy: 0
+    origname: i12.png
+    shape: circle
+    left: 0
+    right: 45
+    top: 0
+    bottom: 40
+    frames: 1
+    width: 43
+    height: 43
+    imgWidth: 43
+    imgHeight: 43
+    r: 21
+    lastmod: 1548596418433
+    uid: 51520da0-9beb-4b8f-9048-1f9b0c526ec8
+  - name: Meteor_Medium_2
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 22
+      - 20
+    marginx: 0
+    marginy: 0
+    offx: 0
+    offy: 0
+    origname: i13.png
+    shape: circle
+    left: 0
+    right: 45
+    top: 0
+    bottom: 40
+    frames: 1
+    width: 45
+    height: 40
+    imgWidth: 45
+    imgHeight: 40
+    r: 20
+    lastmod: 1508497627007
+    uid: 313f3868-5dbd-44fb-9518-ee04a9ff57ed
+  - name: Meteor_Big_1
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 44
+      - 42
+    marginx: 0
+    marginy: 0
+    offx: 0
+    offy: 0
+    origname: i14.png
+    shape: strip
+    left: 0
+    right: 0
+    top: 0
+    bottom: 0
+    frames: 1
+    width: 89
+    height: 82
+    imgWidth: 89
+    imgHeight: 82
+    r: 40
+    lastmod: 1548596394601
+    uid: 90112561-c6c4-4f67-8d0f-fdfb7ae47d3b
+    stripPoints:
+      - x: 28
+        'y': -30
+      - x: 45
+        'y': -2
+      - x: 20
+        'y': 39
+      - x: -29
+        'y': 32
+      - x: -40
+        'y': 13
+      - x: -42
+        'y': -23
+      - x: -9
+        'y': -43
+    closedStrip: true
+  - name: Meteor_Big_2
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 49
+      - 50
+    marginx: 0
+    marginy: 0
+    offx: 0
+    offy: 0
+    origname: i15.png
+    shape: strip
+    left: 0
+    right: 98
+    top: 0
+    bottom: 96
+    frames: 1
+    width: 98
+    height: 96
+    imgWidth: 98
+    imgHeight: 96
+    r: 46
+    lastmod: 1548596414890
+    uid: ca15e5c0-b32a-425b-ab24-07d681a8ad8f
+    stripPoints:
+      - x: 17
+        'y': -49
+      - x: 48
+        'y': -15
+      - x: 29
+        'y': 39
+      - x: -15
+        'y': 48
+      - x: -48
+        'y': 7
+      - x: -33
+        'y': -36
+    closedStrip: true
+  - name: StartButton
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 191
+      - 81
+    marginx: 0
+    marginy: 0
+    offx: 0
+    offy: 0
+    origname: i18.png
+    shape: rect
+    left: 135
+    right: 160
+    top: 60
+    bottom: 55
+    frames: 1
+    width: 382
+    height: 162
+    imgWidth: 382
+    imgHeight: 162
+    r: 81
+    lastmod: 1521782180242
+    uid: 2a454e11-3441-4f57-bfb6-ce837acd7881
+  - name: CatsteroidsLogo
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 319
+      - 126
+    marginx: 0
+    marginy: 0
+    offx: 0
+    offy: 0
+    origname: i19.png
+    shape: rect
+    left: 319
+    right: 319
+    top: 126
+    bottom: 126
+    frames: 1
+    width: 638
+    height: 252
+    imgWidth: 638
+    imgHeight: 252
+    lastmod: 1521696185869
+    uid: 968baf79-5ff3-443b-8834-fa3b55638500
+  - name: Bonus_Lives
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 26
+      - 26
+    marginx: 0
+    marginy: 0
+    offx: 0
+    offy: 0
+    origname: i20.png
+    shape: rect
+    left: 26
+    right: 26
+    top: 26
+    bottom: 26
+    frames: 1
+    width: 52
+    height: 52
+    imgWidth: 52
+    imgHeight: 52
+    lastmod: 1521786316435
+    uid: 25fb712b-0aca-4b18-8e10-7c545d4bca8d
+  - name: Bonus_Spread
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 26
+      - 26
+    marginx: 0
+    marginy: 0
+    offx: 0
+    offy: 0
+    origname: i21.png
+    shape: rect
+    left: 26
+    right: 26
+    top: 26
+    bottom: 26
+    frames: 1
+    width: 52
+    height: 52
+    imgWidth: 52
+    imgHeight: 52
+    lastmod: 1521786327821
+    uid: 5180fa6f-778b-44ac-883f-0f55a294292f
+  - name: Bonus_Bolt
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 26
+      - 27
+    marginx: 0
+    marginy: 0
+    offx: 0
+    offy: 0
+    origname: i22.png
+    shape: rect
+    left: 26
+    right: 26
+    top: 27
+    bottom: 28
+    frames: 1
+    width: 52
+    height: 55
+    imgWidth: 52
+    imgHeight: 55
+    lastmod: 1521786348095
+    uid: c7305cd4-3a22-4f4d-b42e-adbd8651ffe0
+  - name: Bonus_Cross
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 26
+      - 26
+    marginx: 0
+    marginy: 0
+    offx: 0
+    offy: 0
+    origname: i23.png
+    shape: rect
+    left: 26
+    right: 26
+    top: 26
+    bottom: 26
+    frames: 1
+    width: 52
+    height: 52
+    imgWidth: 52
+    imgHeight: 52
+    lastmod: 1521786359659
+    uid: 3d364ae5-40e9-4c13-b1c7-9e0415273865
+  - name: Enemy_Shooter
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 46
+      - 42
+    marginx: 0
+    marginy: 0
+    offx: 0
+    offy: 0
+    origname: i24.png
+    shape: strip
+    left: 0
+    right: 0
+    top: 0
+    bottom: 0
+    frames: 1
+    width: 93
+    height: 84
+    imgWidth: 93
+    imgHeight: 84
+    r: 42
+    lastmod: 1548596333338
+    uid: 16c209a9-25b2-41e4-b0d5-21cb22fd1421
+    stripPoints:
+      - x: 30
+        'y': -41
+      - x: 46
+        'y': -17
+      - x: 26
+        'y': 40
+      - x: -25
+        'y': 41
+      - x: -44
+        'y': -14
+      - x: -28
+        'y': -41
+    closedStrip: true
+  - name: Enemy_Wiggler
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 52
+      - 42
+    marginx: 0
+    marginy: 0
+    offx: 0
+    offy: 0
+    origname: i25.png
+    shape: strip
+    left: 0
+    right: 104
+    top: 0
+    bottom: 84
+    frames: 1
+    width: 104
+    height: 84
+    imgWidth: 104
+    imgHeight: 84
+    r: 42
+    lastmod: 1548596356121
+    uid: 048b77d3-e7e3-4817-99ee-8b7c0a6da8bf
+    stripPoints:
+      - x: 0
+        'y': -42
+      - x: 53
+        'y': -15
+      - x: 23
+        'y': 41
+      - x: -25
+        'y': 40
+      - x: -52
+        'y': -13
+    closedStrip: true
+  - name: Laser_Red
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 4
+      - 18
+    marginx: 0
+    marginy: 0
+    offx: 0
+    offy: 0
+    origname: i26.png
+    shape: rect
+    left: 4
+    right: 5
+    top: 18
+    bottom: 19
+    frames: 1
+    width: 9
+    height: 37
+    imgWidth: 9
+    imgHeight: 37
+    lastmod: 1521789393030
+    uid: fc3e2f9b-61af-4ae4-9375-dcfae65f6a34
+  - name: Explosion
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 70
+      - 52
+    marginx: 0
+    marginy: 0
+    offx: 0
+    offy: 0
+    origname: i27.png
+    shape: circle
+    left: 70
+    right: 70
+    top: 52
+    bottom: 53
+    frames: 1
+    width: 140
+    height: 105
+    imgWidth: 140
+    imgHeight: 105
+    r: 52
+    lastmod: 1548596360248
+    uid: 9de002e9-c9cf-44ee-b87a-022ae3dddca3
+  - name: Ufo_Red
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 45
+      - 45
+    marginx: 0
+    marginy: 0
+    offx: 0
+    offy: 0
+    origname: i28.png
+    shape: circle
+    left: 0
+    right: 91
+    top: 0
+    bottom: 91
+    frames: 1
+    width: 91
+    height: 91
+    imgWidth: 91
+    imgHeight: 91
+    r: 45
+    lastmod: 1521795757737
+    uid: 3a21a3d8-30ed-4e5b-8ccf-0019a503d6b9
+  - name: Laser_Cross_Red
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 18
+      - 18
+    marginx: 0
+    marginy: 0
+    offx: 0
+    offy: 0
+    origname: i29.png
+    shape: circle
+    left: 0
+    right: 37
+    top: 0
+    bottom: 36
+    frames: 1
+    width: 37
+    height: 36
+    imgWidth: 37
+    imgHeight: 36
+    r: 18
+    lastmod: 1521797622884
+    uid: dc0d71ec-6da8-40e8-afe8-90c81f7f269a
+  - name: RetryButton
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 170
+      - 73
+    marginx: 0
+    marginy: 0
+    offx: 0
+    offy: 0
+    origname: i30.png
+    shape: rect
+    left: 155
+    right: 140
+    top: 40
+    bottom: 40
+    frames: 1
+    width: 340
+    height: 146
+    imgWidth: 340
+    imgHeight: 146
+    lastmod: 1521798557721
+    uid: 071162b9-d836-4145-9515-586ce289ef14
+  - name: OhNo
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 298
+      - 159
+    marginx: 0
+    marginy: 0
+    offx: 0
+    offy: 0
+    origname: i31.png
+    shape: rect
+    left: 298
+    right: 298
+    top: 159
+    bottom: 160
+    frames: 1
+    width: 596
+    height: 319
+    imgWidth: 596
+    imgHeight: 319
+    lastmod: 1521799064360
+    uid: e81fc53e-4f0a-443d-a4fb-e5e11a4a98d2
+texturetick: 32
+emitterTandems: []

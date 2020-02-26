@@ -132,9 +132,10 @@ main-menu.flexcol
             }
         };
         this.saveProject = () => {
-            return fs.outputJSON(sessionStorage.projdir + '.ict', currentProject, {
-                spaces: 2
-            }).then(() => {
+            const YAML = require('js-yaml');
+            const data = YAML.safeDump(currentProject);
+            return fs.outputFile(sessionStorage.projdir + '.ict', data)
+            .then(() => {
                 alertify.success(languageJSON.common.savedcomm, "success", 3000);
                 this.saveRecoveryDebounce();
                 fs.remove(sessionStorage.projdir + '.ict.recovery')
@@ -146,9 +147,9 @@ main-menu.flexcol
         };
         this.saveRecovery = () => {
             if (currentProject) {
-                fs.outputJSON(sessionStorage.projdir + '.ict.recovery', currentProject, {
-                    spaces: 2
-                });
+                const YAML = require('js-yaml');
+                const data = YAML.safeDump(currentProject);
+                fs.outputFile(sessionStorage.projdir + '.ict.recovery', data);
             }
             this.saveRecoveryDebounce();
         };
@@ -446,8 +447,8 @@ main-menu.flexcol
                 click: e => {
                     fs.ensureDir(path.join(sessionStorage.projdir, '/include'))
                     .then(() => {
-                    const shell = require('electron').shell;
-                    shell.openItem(path.join(sessionStorage.projdir, '/include'));
+                        const shell = require('electron').shell;
+                        shell.openItem(path.join(sessionStorage.projdir, '/include'));
                     });
                 }
             }, {

@@ -140,23 +140,39 @@
      * @param {String} proj The path to the file.
      * @returns {void}
      */
-    var loadProjectFile = proj => {
-        fs.readJSON(proj, (err, projectData) => {
-            if (err) {
-                window.alertify.error(err);
-                return;
+    var loadProjectFile = async proj => {
+        const data = await fs.readFile(proj, 'utf8');
+        let projectData;
+        // Before v1.3, projects were stored in JSON format
+        try {
+            if (data.indexOf('{') === 0) { // First, make a silly check for JSON files
+                projectData = JSON.parse(data);
+            } else {
+                try {
+                    const YAML = require('js-yaml');
+                    projectData = YAML.safeLoad(data);
+                } catch (e) {
+                    // whoopsie, wrong window
+                    // eslint-disable-next-line no-console
+                    console.warn(`Tried to load a file ${proj} as a YAML, but got an error (see below). Falling back to JSON.`);
+                    console.error(e);
+                    projectData = JSON.parse(data);
+                }
             }
-            if (!projectData) {
-                window.alertify.error(window.languageJSON.common.wrongFormat);
-                return;
-            }
-            try {
-                loadProject(projectData);
-            } catch (e) {
-                window.alertify.error(e);
-                throw e;
-            }
-        });
+        } catch (e) {
+            window.alertify.error(e);
+            throw e;
+        }
+        if (!projectData) {
+            window.alertify.error(window.languageJSON.common.wrongFormat);
+            return;
+        }
+        try {
+            loadProject(projectData);
+        } catch (e) {
+            window.alertify.error(e);
+            throw e;
+        }
     };
 
     window.loadProject = proj => {

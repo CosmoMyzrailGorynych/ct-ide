@@ -105,10 +105,7 @@ project-selector
                     mouse: {},
                     keyboard: {},
                     'keyboard.polyfill': {},
-                    'sound.howler': {},
-                    akatemplate: {
-                        csscss: "body {\n    background: #000;\n}"
-                    }
+                    'sound.howler': {}
                 },
                 textures: [],
                 skeletons: [],
@@ -135,22 +132,23 @@ project-selector
                     },
                     branding: {
                         icon: -1,
-                        accent: '#446adb',
+                        accent: '#446adb', // ct.js' crystal blue
                         invertPreloaderScheme: true
                     }
                 }
             };
-            fs.writeJSON(path.join(way, codename + '.ict'), projectData, function(e) {
-                if (e) {
-                    alertify.error(this.voc.unableToWriteToFolders + '\n' + e);
-                    throw e;
-                }
+            const YAML = require('js-yaml');
+            const data = YAML.safeDump(projectData);
+            fs.outputFile(path.join(way, codename + '.ict'), data)
+            .catch(e => {
+                alertify.error(this.voc.unableToWriteToFolders + '\n' + e);
+                throw e;
             });
             sessionStorage.projdir = path.join(way, codename);
             sessionStorage.projname = codename + '.ict';
-            await fs.ensureDir(sessionStorage.projdir + '/img');
-            fs.ensureDir(sessionStorage.projdir + '/snd');
-            fs.ensureDir(sessionStorage.projdir + '/include');
+            await fs.ensureDir(path.join(sessionStorage.projdir, '/img'));
+            fs.ensureDir(path.join(sessionStorage.projdir, '/snd'));
+            fs.ensureDir(path.join(sessionStorage.projdir, '/include'));
             setTimeout(() => { // for some reason, it must be done through setTimeout; otherwise it fails
                 fs.copy('./data/img/notexture.png', path.join(sessionStorage.projdir + '/img/splash.png'), e => {
                     if (e) {
