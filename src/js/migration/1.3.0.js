@@ -9,6 +9,11 @@ window.migrationProcess.push({
             accent: '#446adb',
             invertPreloaderScheme: true
         };
+        for (const texture of project.textures) {
+            if (!('padding' in texture)) {
+                texture.padding = texture.tiled? 0 : 1;
+            }
+        }
         resolve();
     })
 });

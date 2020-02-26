@@ -4,9 +4,6 @@ libs:
   place:
     gridY: 512
     gridX: 512
-  fittoscreen:
-    scaleOnly: true
-    mode: fastScale
   tween: {}
   random: {}
   keyboard.polyfill: {}
@@ -3995,6 +3992,7 @@ settings:
     icon: -1
     accent: '#446adb'
     invertPreloaderScheme: true
+  highDensity: true
 scripts:
   - name: inGameRoomStart
     code: |-
@@ -4050,6 +4048,7 @@ textures:
     bottom: 32
     uid: 3f19a8ef-4dba-4550-b516-0bcaca131ba6
     lastmod: 1551433327315
+    padding: 1
   - name: Rocks_Platform
     untill: 0
     grid:
@@ -4074,6 +4073,7 @@ textures:
     bottom: 40
     uid: 60688c59-ff1e-4550-8525-0fc28c4a3d77
     lastmod: 1551433297022
+    padding: 1
   - name: Robot_Walking
     untill: 0
     grid:
@@ -4098,6 +4098,7 @@ textures:
     bottom: 0
     uid: f3c79ea5-d245-45f2-9316-8f7a1d7c134b
     lastmod: 1547538571075
+    padding: 1
   - name: Robot_Jump
     untill: 0
     grid:
@@ -4122,6 +4123,7 @@ textures:
     bottom: 0
     uid: fa8a3c12-0e43-47b0-a27e-e9d9814f8bf5
     lastmod: 1551433289080
+    padding: 1
   - name: Robot_Idle
     untill: 0
     grid:
@@ -4146,6 +4148,7 @@ textures:
     bottom: 0
     uid: 6deb1d77-24d2-48d6-82ec-045dcbd9eea5
     lastmod: 1551433287050
+    padding: 1
   - name: Heart
     untill: 0
     grid:
@@ -4170,7 +4173,8 @@ textures:
     bottom: 32
     uid: 334d338b-4fe4-4168-901e-2315494d37d4
     r: 14
-    lastmod: 1536472441733
+    lastmod: 1582757914968
+    padding: 2
   - name: GreenCrystal
     untill: 0
     grid:
@@ -4196,6 +4200,7 @@ textures:
     uid: f39895d1-731d-4487-9d01-18841158729c
     lastmod: 1536472381160
     r: 15
+    padding: 1
   - name: Exit
     untill: 0
     grid:
@@ -4220,6 +4225,7 @@ textures:
     bottom: 64
     uid: e086f16a-24fd-4f73-b44a-e3e22766ca62
     lastmod: 1536472446302
+    padding: 1
   - name: Rocks
     untill: 0
     grid:
@@ -4244,6 +4250,7 @@ textures:
     bottom: 64
     uid: 9a6d05c0-477d-47f6-85fe-6c0c8d813df3
     lastmod: 1547538595652
+    padding: 1
   - name: Checkpoint
     untill: 0
     grid:
@@ -4267,7 +4274,8 @@ textures:
     top: 0
     bottom: 64
     uid: e15a4451-c77c-4347-a99f-436731aff19d
-    lastmod: 1536472469734
+    lastmod: 1582757591335
+    padding: 5
   - name: Rocks_Top
     untill: 0
     grid:
@@ -4291,6 +4299,7 @@ textures:
     top: 0
     bottom: 64
     uid: 05db3522-55d5-4358-bf09-5e9a6126ed95
+    padding: 1
   - name: Water
     untill: 0
     grid:
@@ -4314,6 +4323,7 @@ textures:
     top: 0
     bottom: 64
     uid: 9fdb39bb-1685-4ca2-b750-ccb15ca765d2
+    padding: 1
   - name: Water_Top
     untill: 0
     grid:
@@ -4338,6 +4348,7 @@ textures:
     bottom: 64
     uid: 5749074a-4d92-4aa7-bbde-afb57f1ec4a0
     lastmod: 1551433311266
+    padding: 1
   - name: Spikes
     untill: 0
     grid:
@@ -4362,6 +4373,7 @@ textures:
     bottom: 64
     uid: 699ff925-9b32-403f-a292-68ea10034788
     lastmod: 1551433299727
+    padding: 1
   - name: BG
     untill: 0
     grid:
@@ -4386,7 +4398,8 @@ textures:
     bottom: 256
     uid: 92d2ca65-d3a1-45c9-bbd5-5674c6596f98
     tiled: true
-    lastmod: 1542096768616
+    lastmod: 1582758202990
+    padding: 0
 emitterTandems:
   - name: CrystalBurst
     origname: pt0b25c7d9f754

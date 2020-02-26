@@ -56,8 +56,8 @@ const packImages = async (proj, writeDir) => {
                             },
                             key,
                         },
-                        width: tex.width + 2,
-                        height: tex.height + 2,
+                        width: tex.width + tex.padding * 2,
+                        height: tex.height + tex.padding * 2,
                     });
                     keys[tex.origname].push(key);
                     // skip unnecessary frames when tex.untill is set
@@ -92,6 +92,8 @@ const packImages = async (proj, writeDir) => {
         atlas.width = bin.width;
         atlas.height = bin.height;
         atlas.x = atlas.getContext('2d');
+        atlas.x.imageSmoothingQuality = 'low';
+        atlas.x.imageSmoothingEnabled = atlas.x.webkitImageSmoothingEnabled = false;
 
         const atlasJSON = {
             meta: {
@@ -113,38 +115,39 @@ const packImages = async (proj, writeDir) => {
                 {frame} = block.data,
                 {key} = block.data,
                 img = glob.texturemap[tex.uid];
+            const p = tex.padding;
             // draw the main crop rectangle
             atlas.x.drawImage(img,
                 frame.x, frame.y, frame.width, frame.height,
-                block.x+1, block.y+1, frame.width, frame.height
+                block.x+p, block.y+p, frame.width, frame.height
             );
             // repeat the left side of the image
             atlas.x.drawImage(img,
                 frame.x, frame.y, 1, frame.height,
-                block.x, block.y+1, 1, frame.height
+                block.x, block.y+p, p, frame.height
             );
             // repeat the right side of the image
             atlas.x.drawImage(img,
                 frame.x+frame.width-1, frame.y, 1, frame.height,
-                block.x+frame.width+1, block.y+1, 1, frame.height
+                block.x+frame.width+p, block.y+p, p, frame.height
             );
             // repeat the top side of the image
             atlas.x.drawImage(img,
                 frame.x, frame.y, frame.width, 1,
-                block.x+1, block.y, frame.width, 1
+                block.x+p, block.y, frame.width, p
             );
             // repeat the bottom side of the image
             atlas.x.drawImage(img,
                 frame.x, frame.y+frame.height-1, frame.width, 1,
-                block.x+1, block.y+frame.height+1, frame.width, 1
+                block.x+p, block.y+frame.height+p, frame.width, p
             );
             // A multi-frame sprite
             const keys = [];
             keys.push(key);
             atlasJSON.frames[key] = {
                 frame: {
-                    x: block.x+1,
-                    y: block.y+1,
+                    x: block.x+p,
+                    y: block.y+p,
                     w: frame.width,
                     h: frame.height
                 },

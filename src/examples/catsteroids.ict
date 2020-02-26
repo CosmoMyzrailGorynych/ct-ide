@@ -1019,6 +1019,7 @@ textures:
         'y': -36
     closedStrip: true
     lastmod: 1554742823545
+    padding: 1
   - name: Background_Blue
     untill: 0
     grid:
@@ -1046,6 +1047,7 @@ textures:
     uid: 3935eebf-4e66-456f-9ca8-e2dc1d6a9383
     tiled: true
     lastmod: 1543633813674
+    padding: 0
   - name: Laser_Simple_Blue
     untill: 0
     grid:
@@ -1071,6 +1073,7 @@ textures:
     imgHeight: 54
     lastmod: 1508500558054
     uid: e6148099-65e7-4d2b-acf1-3e6b3a8fc033
+    padding: 1
   - name: Laser_X_Blue
     untill: 0
     grid:
@@ -1096,6 +1099,7 @@ textures:
     imgHeight: 37
     r: 21
     uid: 4b86d5c4-ae3c-4edf-90d7-79a6778e9a29
+    padding: 1
   - name: Laser_Bolt_Blue
     untill: 0
     grid:
@@ -1121,6 +1125,7 @@ textures:
     imgHeight: 57
     lastmod: 1508497007651
     uid: c12edc06-ad3f-49f4-b9d4-3d33226e9ecc
+    padding: 1
   - name: Meteor_Small_1
     untill: 0
     grid:
@@ -1147,6 +1152,7 @@ textures:
     r: 13
     lastmod: 1508497578339
     uid: 60d054c0-0a52-4236-8791-11a9a358f9a1
+    padding: 1
   - name: Meteor_Small_2
     untill: 0
     grid:
@@ -1173,6 +1179,7 @@ textures:
     r: 13
     lastmod: 1508497573411
     uid: 2a9cb9c1-d6c7-401b-abce-a35ad4d148d2
+    padding: 1
   - name: Meteor_Medium_1
     untill: 0
     grid:
@@ -1199,6 +1206,7 @@ textures:
     r: 21
     lastmod: 1548596418433
     uid: 51520da0-9beb-4b8f-9048-1f9b0c526ec8
+    padding: 1
   - name: Meteor_Medium_2
     untill: 0
     grid:
@@ -1225,6 +1233,7 @@ textures:
     r: 20
     lastmod: 1508497627007
     uid: 313f3868-5dbd-44fb-9518-ee04a9ff57ed
+    padding: 1
   - name: Meteor_Big_1
     untill: 0
     grid:
@@ -1267,6 +1276,7 @@ textures:
       - x: -9
         'y': -43
     closedStrip: true
+    padding: 1
   - name: Meteor_Big_2
     untill: 0
     grid:
@@ -1307,6 +1317,7 @@ textures:
       - x: -33
         'y': -36
     closedStrip: true
+    padding: 1
   - name: StartButton
     untill: 0
     grid:
@@ -1333,6 +1344,7 @@ textures:
     r: 81
     lastmod: 1521782180242
     uid: 2a454e11-3441-4f57-bfb6-ce837acd7881
+    padding: 1
   - name: CatsteroidsLogo
     untill: 0
     grid:
@@ -1358,6 +1370,7 @@ textures:
     imgHeight: 252
     lastmod: 1521696185869
     uid: 968baf79-5ff3-443b-8834-fa3b55638500
+    padding: 1
   - name: Bonus_Lives
     untill: 0
     grid:
@@ -1383,6 +1396,7 @@ textures:
     imgHeight: 52
     lastmod: 1521786316435
     uid: 25fb712b-0aca-4b18-8e10-7c545d4bca8d
+    padding: 1
   - name: Bonus_Spread
     untill: 0
     grid:
@@ -1408,6 +1422,7 @@ textures:
     imgHeight: 52
     lastmod: 1521786327821
     uid: 5180fa6f-778b-44ac-883f-0f55a294292f
+    padding: 1
   - name: Bonus_Bolt
     untill: 0
     grid:
@@ -1433,6 +1448,7 @@ textures:
     imgHeight: 55
     lastmod: 1521786348095
     uid: c7305cd4-3a22-4f4d-b42e-adbd8651ffe0
+    padding: 1
   - name: Bonus_Cross
     untill: 0
     grid:
@@ -1458,6 +1474,7 @@ textures:
     imgHeight: 52
     lastmod: 1521786359659
     uid: 3d364ae5-40e9-4c13-b1c7-9e0415273865
+    padding: 1
   - name: Enemy_Shooter
     untill: 0
     grid:
@@ -1498,6 +1515,7 @@ textures:
       - x: -28
         'y': -41
     closedStrip: true
+    padding: 1
   - name: Enemy_Wiggler
     untill: 0
     grid:
@@ -1536,6 +1554,7 @@ textures:
       - x: -52
         'y': -13
     closedStrip: true
+    padding: 1
   - name: Laser_Red
     untill: 0
     grid:
@@ -1561,6 +1580,7 @@ textures:
     imgHeight: 37
     lastmod: 1521789393030
     uid: fc3e2f9b-61af-4ae4-9375-dcfae65f6a34
+    padding: 1
   - name: Explosion
     untill: 0
     grid:
@@ -1587,6 +1607,7 @@ textures:
     r: 52
     lastmod: 1548596360248
     uid: 9de002e9-c9cf-44ee-b87a-022ae3dddca3
+    padding: 1
   - name: Ufo_Red
     untill: 0
     grid:
@@ -1613,6 +1634,7 @@ textures:
     r: 45
     lastmod: 1521795757737
     uid: 3a21a3d8-30ed-4e5b-8ccf-0019a503d6b9
+    padding: 1
   - name: Laser_Cross_Red
     untill: 0
     grid:
@@ -1639,6 +1661,7 @@ textures:
     r: 18
     lastmod: 1521797622884
     uid: dc0d71ec-6da8-40e8-afe8-90c81f7f269a
+    padding: 1
   - name: RetryButton
     untill: 0
     grid:
@@ -1664,6 +1687,7 @@ textures:
     imgHeight: 146
     lastmod: 1521798557721
     uid: 071162b9-d836-4145-9515-586ce289ef14
+    padding: 1
   - name: OhNo
     untill: 0
     grid:
@@ -1689,5 +1713,6 @@ textures:
     imgHeight: 319
     lastmod: 1521799064360
     uid: e81fc53e-4f0a-443d-a4fb-e5e11a4a98d2
+    padding: 1
 texturetick: 32
 emitterTandems: []

@@ -126,49 +126,57 @@ texture-editor.panel.view
                     button#texturezoom400.inline(onclick="{textureToggleZoom(4)}" class="{active: zoomFactor === 4}") 400%
         .column.column2.borderleft.tall.flexfix.nogrow.noshrink(show="{!opts.texture.tiled}")
             .flexfix-body
-                .flexrow
-                    div
-                        b {voc.cols}
-                        br
-                        input.wide(type="number" value="{opts.texture.grid[0]}" onchange="{wire('this.texture.grid.0')}" oninput="{wire('this.texture.grid.0')}")
-                    span &nbsp;
-                    div
-                        b {voc.rows}
-                        br
-                        input.wide(type="number" value="{opts.texture.grid[1]}" onchange="{wire('this.texture.grid.1')}" oninput="{wire('this.texture.grid.1')}")
-                .flexrow
-                    div
-                        b {voc.width}
-                        br
-                        input.wide(type="number" value="{opts.texture.width}" onchange="{wire('this.texture.width')}" oninput="{wire('this.texture.width')}")
-                    span &nbsp;
-                    div
-                        b {voc.height}
-                        br
-                        input.wide(type="number" value="{opts.texture.height}" onchange="{wire('this.texture.height')}" oninput="{wire('this.texture.height')}")
-                .flexrow
-                    div
-                        b {voc.marginx}
-                        br
-                        input.wide(type="number" value="{opts.texture.marginx}" onchange="{wire('this.texture.marginx')}" oninput="{wire('this.texture.marginx')}")
-                    span &nbsp;
-                    div
-                        b {voc.marginy}
-                        br
-                        input.wide(type="number" value="{opts.texture.marginy}" onchange="{wire('this.texture.marginy')}" oninput="{wire('this.texture.marginy')}")
-                .flexrow
-                    div
-                        b {voc.offx}
-                        br
-                        input.wide(type="number" value="{opts.texture.offx}" onchange="{wire('this.texture.offx')}" oninput="{wire('this.texture.offx')}")
-                    span &nbsp;
-                    div
-                        b {voc.offy}
-                        br
-                        input.wide(type="number" value="{opts.texture.offy}" onchange="{wire('this.texture.offy')}" oninput="{wire('this.texture.offy')}")
-                b {voc.frames}
-                br
-                input#textureframes.wide(type="number" value="{opts.texture.untill}" onchange="{wire('this.texture.untill')}" oninput="{wire('this.texture.untill')}")
+                fieldset
+                    .flexrow
+                        div
+                            b {voc.cols}
+                            br
+                            input.wide(type="number" value="{opts.texture.grid[0]}" onchange="{wire('this.texture.grid.0')}" oninput="{wire('this.texture.grid.0')}")
+                        span &nbsp;
+                        div
+                            b {voc.rows}
+                            br
+                            input.wide(type="number" value="{opts.texture.grid[1]}" onchange="{wire('this.texture.grid.1')}" oninput="{wire('this.texture.grid.1')}")
+                    .flexrow
+                        div
+                            b {voc.width}
+                            br
+                            input.wide(type="number" value="{opts.texture.width}" onchange="{wire('this.texture.width')}" oninput="{wire('this.texture.width')}")
+                        span &nbsp;
+                        div
+                            b {voc.height}
+                            br
+                            input.wide(type="number" value="{opts.texture.height}" onchange="{wire('this.texture.height')}" oninput="{wire('this.texture.height')}")
+                    .flexrow
+                        div
+                            b {voc.marginx}
+                            br
+                            input.wide(type="number" value="{opts.texture.marginx}" onchange="{wire('this.texture.marginx')}" oninput="{wire('this.texture.marginx')}")
+                        span &nbsp;
+                        div
+                            b {voc.marginy}
+                            br
+                            input.wide(type="number" value="{opts.texture.marginy}" onchange="{wire('this.texture.marginy')}" oninput="{wire('this.texture.marginy')}")
+                    .flexrow
+                        div
+                            b {voc.offx}
+                            br
+                            input.wide(type="number" value="{opts.texture.offx}" onchange="{wire('this.texture.offx')}" oninput="{wire('this.texture.offx')}")
+                        span &nbsp;
+                        div
+                            b {voc.offy}
+                            br
+                            input.wide(type="number" value="{opts.texture.offy}" onchange="{wire('this.texture.offy')}" oninput="{wire('this.texture.offy')}")
+                fieldset
+                    b {voc.frames}
+                    br
+                    input#textureframes.wide(type="number" value="{opts.texture.untill}" onchange="{wire('this.texture.untill')}" oninput="{wire('this.texture.untill')}")
+                fieldset
+                    b
+                        span {voc.padding}
+                        hover-hint(text="{voc.paddingNotice}")
+                    br
+                    input.wide(type="number" min="0" max="128" step="1" value="{opts.texture.padding}" onchange="{wire('this.texture.padding')}")
             .preview.bordertop.flexfix-footer
                 #preview(ref="preview" style="background-color: {previewColor};")
                     canvas(ref="grprCanvas")
