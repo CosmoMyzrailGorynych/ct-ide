@@ -354,11 +354,5 @@
         "global": "Bloc de notas global",
         "helppages": "Ayuda",
         "backToHome": "Volver a la página de inicio de los documentos"
-    },
-    "preview": {
-        "reload": "Recargar",
-        "roomRestart": "Reiniciar Room",
-        "openExternal": "Abrir en el navegador",
-        "getQR": "Códigos QR y URL del servidor local"
     }
 }

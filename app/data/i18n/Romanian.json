@@ -354,11 +354,5 @@
         "global": "Carnețel Global",
         "helppages": "Ajutor",
         "backToHome": "Înapoi la pagina principală a documentației"
-    },
-    "preview": {
-        "reload": "Reîncarcă",
-        "roomRestart": "Restartează camera",
-        "openExternal": "Deschide în browser",
-        "getQR": "Coduri QR și URL-ul server-ului local"
     }
 }

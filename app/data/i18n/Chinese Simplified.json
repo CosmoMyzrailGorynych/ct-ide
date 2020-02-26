@@ -363,13 +363,6 @@
         "helppages": "帮助",
         "backToHome": "回到文档主页"
     },
-    "preview": {
-        "reload": "重载",
-        "roomRestart": "重启房间",
-        "openExternal": "在浏览器中打开",
-        "getQR": "二维码和本地服务器网址",
-        "flipLayout": "更改调试器的布局"
-    },
     "patreon": {
         "aboutPatrons": "赞助人是以经常性捐赠的形式表示对Patreon的ComigoGames的支持. 并不是每个人都来自ct.js. 有些是正在使用ComigoGames的其他应用程序. 提示: 如果您是创作者, 并通过Patreon捐赠给ComigoGames, 您将在此处找到指向您页面的链接 — 这就是我对您的创作的小小帮助 :)",
         "patronsHeader": "我们的赞助人",

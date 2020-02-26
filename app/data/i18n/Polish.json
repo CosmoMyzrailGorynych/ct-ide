@@ -406,12 +406,5 @@
             "wprowadza światło i nadzieję 🌞",
             "jest elegancki i piękny 🎩"
         ]
-    },
-    "preview": {
-        "reload": "Odśwież",
-        "roomRestart": "Zrestartuj pokój",
-        "openExternal": "Otwórz w przeglądarce",
-        "getQR": "Kody QR i URL lokalnego serwera",
-        "flipLayout": "Zmień układ debugera"
     }
 }

@@ -336,12 +336,6 @@
         "helppages": "Ajuda",
         "backToHome": "Voltar para a página inicial da documentação"
     },
-    "preview": {
-        "reload": "Recarregar",
-        "roomRestart": "Reiniciar a sala",
-        "openExternal": "Abrir no navegador",
-        "getQR": "QR codes e URL de servidor local"
-    },
     "actionsEditor": {
         "actions": "",
         "actionsEditor": "",

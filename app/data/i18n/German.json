@@ -394,11 +394,5 @@
             "bringt Licht und Hoffnung 🌞",
             "ist schön und elegant 🎩"
         ]
-    },
-    "preview": {
-        "reload": "Neu laden",
-        "roomRestart": "Raum neu starten",
-        "openExternal": "Im Browser öffnen",
-        "getQR": "QR Codes und lokale Server URL"
     }
 }
