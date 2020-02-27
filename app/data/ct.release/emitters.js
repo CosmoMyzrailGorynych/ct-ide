@@ -1,8 +1,14 @@
 /**
+ * @typedef ISimplePoint
+ * @property {number} x
+ * @property {number} y
+ */
+
+/**
  * @typedef ITandemSettings
  *
- * @property {PIXI.IPoint} [scale] Optional scaling object with `x` and `y` parameters.
- * @property {PIXI.IPoint} [position] Set this to additionally shift the emitter tandem relative
+ * @property {ISimplePoint} [scale] Optional scaling object with `x` and `y` parameters.
+ * @property {ISimplePoint} [position] Set this to additionally shift the emitter tandem relative
  *                                    to the copy it was attached to, or relative to the copy it follows.
  * @property {number} [prewarmDelay] Optional; if less than 0, it will prewarm the emitter tandem,
  *                                   meaning that it will simulate a given number of seconds before
