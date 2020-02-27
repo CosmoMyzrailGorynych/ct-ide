@@ -19,6 +19,7 @@ texture-editor.panel.view
                     .flexrow
                         button.wide.nml(onclick="{textureCenter}")
                             span   {voc.setcenter}
+                        .spacer
                         button.square.nmr(onclick="{textureIsometrify}" title="{voc.isometrify}")
                             svg.feather
                                 use(xlink:href="data/icons.svg#map-pin")
