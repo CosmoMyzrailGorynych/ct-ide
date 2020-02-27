@@ -8,10 +8,12 @@ libs:
   random: {}
   keyboard.polyfill: {}
   keyboard: {}
+  fittoscreen:
+    mode: scaleFit
 types:
   - name: Robot
     depth: 0
-    oncreate: |
+    oncreate: |-
       this.jumpSpeed = -10;
       this.gravity = 0.5;
 
@@ -26,13 +28,6 @@ types:
       this.savedY = this.y;
 
       this.animationSpeed = 0.2;
-
-      console.log(ct.emitters.follow(this, 'Trail', {
-          position: {
-              x: 0,
-              y: -70
-          }
-      }));
     onstep: |-
       this.speed = 4 * ct.delta; // Max horizontal speed
 
@@ -107,7 +102,7 @@ types:
     ondraw: ''
     ondestroy: ''
     uid: 2d07d12b-9798-418c-a420-3a1ef4dc3ae2
-    lastmod: 1581890050679
+    lastmod: 1582768834876
     extends:
       ctype: Robot
     texture: 6deb1d77-24d2-48d6-82ec-045dcbd9eea5
@@ -233,12 +228,18 @@ types:
           if (ct.room.lives < 3) {
               ct.room.lives++;
               this.kill = true;
+              ct.emitters.follow(ct.types.list['Robot'][0], 'Trail', {
+                  position: {
+                      x: 0,
+                      y: -70
+                  }
+              })
           }
       }
     ondraw: ''
     ondestroy: ''
     uid: 3fe668cd-30ee-49ba-8a45-e772bf8832a9
-    lastmod: 1547482179419
+    lastmod: 1582768586952
     extends: {}
     texture: 334d338b-4fe4-4168-901e-2315494d37d4
   - name: Platform
@@ -367,7 +368,7 @@ rooms:
         tiles: []
     gridX: 32
     gridY: 32
-    lastmod: 1581890200440
+    lastmod: 1582773512370
     copies:
       - x: 0
         'y': 320
@@ -4097,7 +4098,7 @@ textures:
     top: 69
     bottom: 0
     uid: f3c79ea5-d245-45f2-9316-8f7a1d7c134b
-    lastmod: 1547538571075
+    lastmod: 1582769336663
     padding: 1
   - name: Robot_Jump
     untill: 0
@@ -4558,6 +4559,7 @@ emitterTandems:
       - texture: 334d338b-4fe4-4168-901e-2315494d37d4
         openedTabs:
           - texture
+          - spawning
         settings:
           alpha:
             list:
@@ -4610,7 +4612,7 @@ emitterTandems:
           frequency: 0.056
           spawnChance: 1
           particlesPerWave: 1
-          emitterLifetime: 0
+          emitterLifetime: 1
           maxParticles: 1000
           maxSpeed: 200
           pos:
