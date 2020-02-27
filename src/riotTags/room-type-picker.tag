@@ -1,6 +1,8 @@
 room-type-picker.room-editor-TypeSwatches.tabbed.tall
     .aSearchWrap
         input.inline(type="text" onkeyup="{fuseSearch}" ref="fusesearch")
+        svg.feather
+            use(xlink:href="data/icons.svg#search")
     .room-editor-aTypeSwatch(
         if="{!searchResults}"
         onclick="{parent.roomUnpickType}"
