@@ -25,6 +25,12 @@ settings-panel.panel.view
             |   {voc.versionpostfix}
             input(type="text" style="width: 3rem;" value="{currentProject.settings.versionPostfix}" length="5" onchange="{wire('this.currentProject.settings.versionPostfix')}")
         fieldset
+            h2 {voc.actions}
+            button.nml(onclick="{openActionsEditor}")
+                svg.feather
+                    use(xlink:href="data/icons.svg#airplay")
+                span   {voc.editActions}
+        fieldset
             h2 {voc.branding.heading}
             .block
                 b
@@ -42,12 +48,6 @@ settings-panel.panel.view
             .block.checkbox
                 input(type="checkbox" value="{currentProject.settings.branding.invertPreloaderScheme}" checked="{currentProject.settings.branding.invertPreloaderScheme}" onchange="{wire('this.currentProject.settings.branding.invertPreloaderScheme')}")
                 span {voc.branding.invertPreloaderScheme}
-        fieldset
-            h2 {voc.actions}
-            button.nml(onclick="{openActionsEditor}")
-                svg.feather
-                    use(xlink:href="data/icons.svg#airplay")
-                span   {voc.editActions}
         fieldset
             h2 {voc.renderoptions}
             label.block.checkbox
