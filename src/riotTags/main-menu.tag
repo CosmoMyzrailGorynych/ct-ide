@@ -304,6 +304,7 @@ main-menu.flexcol
                     }
                 });
                 previewWindow.setMenuBarVisibility(false);
+                previewWindow.maximize();
                 previewWindow.loadURL(`http://localhost:${server.address().port}`);
                 previewWindow.focus();
                 previewWindow.webContents.openDevTools();
