@@ -98,7 +98,14 @@
         "export": "Export",
         "exportPanel": "Export the Project",
         "firstrunnotice": "The first run for each platform will be slow as ct.js will download and save additional libraries needed for packing. It will take some time, but next times will be almost instant.",
-        "log": "Message Log"
+        "log": "Message Log",
+        "windowsCrossBuildWarning": "To build for Windows from Linux/MacOS, you need Wine installed in your system. Install instructions are all different for various platforms, so you better google it yourself :)",
+        "launchMode": "Launch mode:",
+        "launchModes": {
+            "maximized": "Maximized",
+            "fullscreen": "Fullscreen",
+            "windowed": "Windowed"
+        }
     },
     "inputMethodSelector": {
         "select": "Select"

@@ -1,5 +1,10 @@
 /* global currentProject */
 
+/**
+ * Gets the ct.js texture object by its id.
+ * @param {string} id The id of the texture
+ * @returns {ITexture} The ct.js texture object
+ */
 const getTextureFromId = id => {
     const texture = currentProject.textures.find(tex => tex.uid === id);
     if (!texture) {
@@ -10,17 +15,43 @@ const getTextureFromId = id => {
 
 let textureLoader;
 
-const getTexturePreview = function (texture, x2) {
+/**
+ * Retrieves the full path to a thumbnail of a given texture.
+ * @param {string|ITexture} texture Either the id of the texture, or its ct.js object
+ * @param {boolean} [x2] If set to true, returns a 128x128 image instead of 64x64.
+ * @param {boolean} [fs] If set to true, returns a file system path, not a URI.
+ * @returns {string} The full path to the thumbnail.
+ */
+const getTexturePreview = function (texture, x2, fs) {
     if (texture === -1) {
         return 'data/img/notexture.png';
     }
     if (typeof texture === 'string') {
         texture = getTextureFromId(texture);
     }
-    if (x2) {
-        return `file://${sessionStorage.projdir}/img/${texture.origname}_prev@2.png?cache=${texture.lastmod}`;
+    if (fs) {
+        return `${sessionStorage.projdir}/img/${texture.origname}_prev${x2? '@2' : ''}.png`;
     }
-    return `file://${sessionStorage.projdir}/img/${texture.origname}_prev.png?cache=${texture.lastmod}`;
+    return `file://${sessionStorage.projdir}/img/${texture.origname}_prev${x2? '@2' : ''}.png?cache=${texture.lastmod}`;
+};
+
+/**
+ * Retrieves a full path to the source image of a given texture
+ * @param {string|ITexture} texture Either the id of a texture, or a ct.js texture object
+ * @param {boolean} [fs] If set to true, returns a file system path, not a URI.
+ * @returns {string} The full path to the source image.
+ */
+const getTextureOrig = function(texture, fs) {
+    if (texture === -1) {
+        return 'data/img/notexture.png';
+    }
+    if (typeof texture === 'string') {
+        texture = getTextureFromId(texture);
+    }
+    if (fs) {
+        return `${sessionStorage.projdir}/img/${texture.origname}`;
+    }
+    return `file://${sessionStorage.projdir}/img/${texture.origname}?cache=${texture.lastmod}`;
 };
 
 const loadBaseTextureForCtTexture = texture => new Promise((resolve, reject) => {
@@ -293,6 +324,7 @@ module.exports = {
     getTextureFromId,
     getTextureFromName,
     getTexturePreview,
+    getTextureOrig,
     getPixiTexture,
     getDOMImage,
     importImageToTexture,

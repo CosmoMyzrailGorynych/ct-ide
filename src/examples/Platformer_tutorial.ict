@@ -3982,18 +3982,16 @@ settings:
     - 0
   versionPostfix: ''
   export:
-    windows64: true
-    windows32: true
-    linux64: true
-    linux32: true
-    mac64: true
-    debug: false
+    linux: true
+    windows: true
+    mac: true
   icon: f39895d1-731d-4487-9d01-18841158729c
   branding:
-    icon: -1
+    icon: fa8a3c12-0e43-47b0-a27e-e9d9814f8bf5
     accent: '#446adb'
     invertPreloaderScheme: true
   highDensity: true
+  desktopMode: maximized
 scripts:
   - name: inGameRoomStart
     code: |-

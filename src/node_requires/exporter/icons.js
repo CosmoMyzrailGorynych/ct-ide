@@ -1,4 +1,5 @@
-const {getDOMImage} = require('./../resources/textures');
+const {getDOMImage, getTextureOrig} = require('./../resources/textures');
+const png2icons = require('png2icons');
 const path = require('path'),
       fs = require('fs-extra');
 
@@ -27,7 +28,8 @@ const bakeFavicons = async function(proj, writeDir) {
         'mstile': [150, 310],
         'yandex-browser': [50]
     };
-    const img = await getDOMImage(proj.settings.icon, 'ct_ide.png');
+    const img = await getDOMImage(proj.settings.branding.icon, 'ct_ide.png'),
+          fsPath = getTextureOrig(proj.settings.branding.icon, true);
     const promises = [];
     const soft = !proj.settings.pixelatedrender;
     for (const name in iconMap) {
@@ -35,6 +37,11 @@ const bakeFavicons = async function(proj, writeDir) {
             promises.push(resizeTo(img, size, path.join(writeDir, `${name}-${size}x${size}.png`), soft));
         }
     }
+    promises.push(
+        fs.readFile(fsPath)
+        .then(buff => png2icons.createICO(buff, proj.settings.pixelatedrender? png2icons.BILINEAR : png2icons.HERMITE))
+        .then(buff => fs.outputFile(path.join(writeDir, 'favicon.ico'), buff))
+    );
     await Promise.all(promises);
 };
 
