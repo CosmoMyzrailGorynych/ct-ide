@@ -303,6 +303,15 @@ texture-editor.panel.view
                 image.onload = () => {
                     this.texture.imgWidth = image.width;
                     this.texture.imgHeight = image.height;
+                    if (this.texture.tiled || (
+                        this.texture.grid[0] === 1 &&
+                        this.texture.grid[1] === 1 &&
+                        this.texture.offx === 0 &&
+                        this.texture.offy === 0
+                    )) {
+                        this.texture.width = this.texture.imgWidth;
+                        this.texture.height = this.texture.imgHeight;
+                    }
                     this.texture.origname = path.basename(dest);
                     textureCanvas.img = image;
                     this.texture.lastmod = +(new Date());
