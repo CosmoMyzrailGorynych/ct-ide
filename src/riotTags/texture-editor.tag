@@ -306,12 +306,12 @@ texture-editor.panel.view
                     this.texture.origname = path.basename(dest);
                     textureCanvas.img = image;
                     this.texture.lastmod = +(new Date());
-                    this.parent.imgGenPreview(dest, dest + '_prev.png', 64, () => {
+
+                    const {imgGenPreview} = require('./data/node_requires/resources/textures');
+                    imgGenPreview(dest, dest + '_prev.png', 64, () => {
                         this.update();
                     });
-                    this.parent.imgGenPreview(dest, dest + '_prev@2.png', 128, () => {
-
-                    });
+                    imgGenPreview(dest, dest + '_prev@2.png', 128, () => {});
                     setTimeout(() => {
                         this.refreshTextureCanvas();
                         this.parent.fillTextureMap();
