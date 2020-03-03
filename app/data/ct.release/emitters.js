@@ -143,10 +143,10 @@ class EmitterTandem extends PIXI.Container {
             return;
         }
         this.stopped = true;
-        for (const emt in this.emitters) {
+        for (const emt of this.emitters) {
             emt.emit = false;
         }
-        this.delayed = false;
+        this.delayed = [];
     }
     /**
      * Removes all the particles from the tandem, but continues spawning new ones.
@@ -159,6 +159,14 @@ class EmitterTandem extends PIXI.Container {
     }
 
     updateFollow() {
+        if (!this.follow) {
+            return;
+        }
+        if (this.follow.kill || !this.follow.scale) {
+            this.follow = null;
+            this.stop();
+            return;
+        }
         const delta = ct.u.rotate(
             this.deltaPosition.x * this.follow.scale.x,
             this.deltaPosition.y * this.follow.scale.y,
