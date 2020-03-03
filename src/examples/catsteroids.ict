@@ -178,6 +178,7 @@ types:
       this.speed = 15;
       this.direction = 90;
       this.ctype = 'BulletsHeroes';
+      ct.emitters.follow(this, 'Electricity');
     onstep: |-
       if (this.y < -48) {
           this.kill = true;
@@ -187,7 +188,7 @@ types:
     ondraw: ''
     ondestroy: ''
     uid: 92e6ec14-1de0-483a-84b8-a8669ac65937
-    lastmod: 1543398567006
+    lastmod: 1583213574861
     extends: {}
     texture: e6148099-65e7-4d2b-acf1-3e6b3a8fc033
   - name: AbstractMeteor
@@ -228,8 +229,8 @@ types:
       }
 
 
-      if (this.x < -100 || this.x > ct.viewWidth + 100 || this.y < -120 ||
-      this.y > ct.viewHeight + 100) {
+      if (this.x < -100 || this.x > ct.camera.width + 100 || this.y < -120 ||
+      this.y > ct.camera.height + 100) {
           this.kill = true;
       }
     ondraw: ''
@@ -243,15 +244,15 @@ types:
           if (this.tex.indexOf(i) !== -1) {
               var copy1 = ct.types.copy('AbstractMeteor', this.x, this.y);
               copy1.tex = 'Meteor_' + deathMap[i] + '_' + ct.random.dice(1, 2);
-              copy1.dir = ct.random.deg();
+              copy1.direction = ct.random.deg();
               
               var copy2 = ct.types.copy('AbstractMeteor', this.x, this.y);
               copy2.tex = 'Meteor_' + deathMap[i] + '_' + ct.random.dice(1, 2);
-              copy2.dir = 180 + copy1.dir + ct.random.range(-10, 10);
+              copy2.direction = 180 + copy1.direction + ct.random.range(-10, 10);
           }
       }
     uid: 1fa16a0f-e9a0-4117-9c28-87fa72b33d2b
-    lastmod: 1552044692606
+    lastmod: 1583191731566
     extends: {}
     texture: ca15e5c0-b32a-425b-ab24-07d681a8ad8f
   - name: Laser_Cross_Blue
@@ -282,7 +283,7 @@ types:
       this.asteroidTimer = ct.speed * 3;
       this.encounterTimer = ct.speed * 10;
       this.waveTimer = ct.speed * 30;
-      this.UfoTimer = ct.speed * 75;
+      this.ufoTimer = ct.speed * 75;
     onstep: |-
       this.asteroidTimer -= ct.delta;
       if (this.asteroidTimer <= 0) {
@@ -320,15 +321,15 @@ types:
           });
       }
 
-      this.UfoTimer -= ct.delta;
-      if (this.UfoTimer <= 0) {
-          this.UfoTimer = ct.random.range(ct.speed * 60, ct.speed * 90);
+      this.ufoTimer -= ct.delta;
+      if (this.ufoTimer <= 0) {
+          this.ufoTimer = ct.random.range(ct.speed * 60, ct.speed * 90);
           ct.types.copy('Enemy_Ufo', ct.random(ct.viewWidth), -100);
       }
     ondraw: ''
     ondestroy: ''
     uid: ca579f27-f97b-4ca2-98f6-c1c3e13acad5
-    lastmod: 1551427585984
+    lastmod: 1583195653874
     extends: {}
     texture: -1
   - name: Logo
@@ -378,8 +379,8 @@ types:
           this.tex = ct.random.dice('Bonus_Spread', 'Bonus_Bolt', 'Bonus_Cross');
       }
 
-      this.spd = 3;
-      this.dir = 270;
+      this.speed = 3;
+      this.direction = 270;
       console.log(this.tex);
     onstep: |-
       ct.types.move(this);
@@ -408,7 +409,7 @@ types:
     ondraw: ''
     ondestroy: ''
     uid: bc01cee1-1b8b-4418-aeb9-a7c5eac2cd51
-    lastmod: 1552044657807
+    lastmod: 1583191538092
     extends: {}
     texture: 25fb712b-0aca-4b18-8e10-7c545d4bca8d
   - name: Enemy_Shooter
@@ -422,7 +423,9 @@ types:
 
       this.speed = 3;
 
-      this.direction = 270;
+      this.direction = 270 + ct.random.range(-10, 10);
+
+      this.rotation = this.direction;
 
 
       this.ctype = 'Enemy';
@@ -446,23 +449,27 @@ types:
           }
           
           // Add some score points
-          ct.rooms.current.score += 25;
+          ct.room.score += 25;
       }
 
       if (this.y > ct.viewHeight + 100) {
           this.kill = true;
       }
     ondraw: ''
-    ondestroy: |-
-      ct.types.copy('Explosion', this.x, this.y);
+    ondestroy: >-
+      ct.emitters.fire('Explosion', this.x, this.y);
+
+      ct.sound.spawn(ct.random.dice('Explosion_01', 'Explosion_02',
+      'Explosion_03'));
+
 
       if (ct.random.chance(10)) {
           ct.types.copy('AbstractBonus', this.x, this.y);
       }
     uid: 500fd472-19aa-41a0-9504-123c37540702
-    lastmod: 1552044678509
+    lastmod: 1583212513252
     extends: {}
-    texture: 16c209a9-25b2-41e4-b0d5-21cb22fd1421
+    texture: 048b77d3-e7e3-4817-99ee-8b7c0a6da8bf
   - name: EnemyBullet
     depth: -1
     oncreate: |-
@@ -483,25 +490,6 @@ types:
     lastmod: 1552044702182
     extends: {}
     texture: fc3e2f9b-61af-4ae4-9375-dcfae65f6a34
-  - name: Explosion
-    depth: 0
-    oncreate: >-
-      ct.sound.spawn(ct.random.dice('Explosion_01', 'Explosion_02',
-      'Explosion_03'));
-
-
-      this.rotation = ct.random.deg();
-    onstep: ct.types.move(this);
-    ondraw: |-
-      this.alpha -= 0.05 * ct.delta;
-      if (this.alpha < 0) {
-          this.kill = true;
-      }
-    ondestroy: ''
-    uid: f938cbd9-1a72-45a4-a7ec-27a0841073ef
-    lastmod: 1543395235678
-    extends: {}
-    texture: 9de002e9-c9cf-44ee-b87a-022ae3dddca3
   - name: Enemy_Wiggler
     depth: 2
     oncreate: |2-
@@ -511,20 +499,28 @@ types:
       this.ctype = 'Enemy';
 
       this.shootTimer = ct.random.dice(2, 3, 4) * ct.speed;
-    onstep: |-
+    onstep: >-
       this.phase += 2 / 60 * ct.delta;
 
+
       this.y += 5 * ct.delta;
-      this.x = Math.sin(this.phase) * (ct.width * 0.4) + ct.width / 2;
+
+      this.x = Math.sin(this.phase) * (ct.camera.width * 0.4) + ct.camera.width
+      / 2;
+
+
 
 
       this.shootTimer -= ct.delta;
+
       if (this.shootTimer < 0) {
           ct.types.copy('EnemyBullet', this.x, this.y);
           this.shootTimer = ct.random.dice(2, 3, 4) * ct.speed;
       }
 
+
       var obstacle = ct.place.occupied(this, this.x, this.y, 'BulletsHeroes');
+
       if (obstacle) {
           this.kill = true;
           if (obstacle.type !== 'Laser_Bolt_Blue') { // Bolts will dash through enemies
@@ -532,23 +528,28 @@ types:
           }
           
           // Add some score points
-          ct.rooms.current.score += 30;
+          ct.room.score += 30;
       }
 
-      if (this.y > ct.viewHeight + 100) {
+
+      if (this.y > ct.camera.height + 100) {
           this.kill = true;
       }
-    ondraw: ''
-    ondestroy: |-
-      ct.types.copy('Explosion', this.x, this.y);
+    ondraw: 'this.rotation = ct.u.pdn(this.xprev, this.yprev, this.x, this.y) - 90;'
+    ondestroy: >-
+      ct.emitters.fire('Explosion', this.x, this.y);
+
+      ct.sound.spawn(ct.random.dice('Explosion_01', 'Explosion_02',
+      'Explosion_03'));
+
 
       if (ct.random.chance(10)) {
           ct.types.copy('AbstractBonus', this.x, this.y);
       }
     uid: 9d0992a4-d0ef-4c5e-9d17-2e5167f26598
-    lastmod: 1552044672526
+    lastmod: 1583213660039
     extends: {}
-    texture: 048b77d3-e7e3-4817-99ee-8b7c0a6da8bf
+    texture: 16c209a9-25b2-41e4-b0d5-21cb22fd1421
   - name: Laser_Bolt_Blue
     depth: 0
     oncreate: |-
@@ -572,6 +573,7 @@ types:
     oncreate: |-
       this.targetx = ct.random.range(75, ct.viewWidth - 150);
       this.targety = ct.random.range(75, 300);
+      this.rotation = 180;
 
 
       // this mob will be quite sturdy
@@ -580,8 +582,8 @@ types:
       this.jumpTimer = ct.speed;
     onstep: |-
       // Simple interpolation between two points through time
-      this.x += (this.targetx - this.x) * 0.1;
-      this.y += (this.targety - this.y) * 0.1;
+      this.x += (this.targetx - this.x) * 0.05;
+      this.y += (this.targety - this.y) * 0.05;
 
       this.jumpTimer -= ct.delta;
       if (this.jumpTimer < 0) {
@@ -615,13 +617,17 @@ types:
           }    
       }
     ondraw: this.rotation += 2.5 * ct.delta;
-    ondestroy: |-
-      ct.types.copy('Explosion', this.x, this.y);
+    ondestroy: >-
+      ct.emitters.fire('Explosion', this.x, this.y);
+
+      ct.sound.spawn(ct.random.dice('Explosion_01', 'Explosion_02',
+      'Explosion_03'));
+
       ct.types.copy('AbstractBonus', this.x, this.y);
     uid: ebfeaaab-f16a-48fa-b97c-687945f99668
-    lastmod: 1551428789756
+    lastmod: 1583212592749
     extends: {}
-    texture: 3a21a3d8-30ed-4e5b-8ccf-0019a503d6b9
+    texture: 771c5c1f-ffdc-4b50-a1ce-aed472e44557
   - name: Laser_Cross_Red
     depth: 0
     oncreate: |-
@@ -717,7 +723,7 @@ styles:
       color1: '#7DFFF8'
       color2: '#0044FF'
       gradtype: '1'
-      color: '#75D1E3'
+      color: '#70C4FF'
     font:
       family: '''Press Start 2P'', sans-serif'
       size: 24
@@ -728,11 +734,11 @@ styles:
     uid: 7da08700-988f-456d-b753-89dd1f74e741
     origname: s1
     shadow:
-      color: '#005E3A'
+      color: '#00345E'
       x: -3
       'y': -2
       blur: 0
-    lastmod: 1543395034300
+    lastmod: 1583195828706
   - name: Blue12
     uid: dea27cc4-bf65-4501-b855-06cbfc835321
     origname: s2
@@ -745,7 +751,7 @@ styles:
       halign: center
     fill:
       type: '0'
-      color: '#446ADB'
+      color: '#70C4FF'
     lastmod: 1543395030461
 rooms:
   - name: InGame
@@ -776,7 +782,57 @@ rooms:
           this.addChild(icon);
           this.shipIcons.push(icon);
       }
-    onstep: ''
+
+
+      this.asteroidTimer = ct.speed * 3;
+
+      this.encounterTimer = ct.speed * 10;
+
+      this.waveTimer = ct.speed * 30;
+
+      this.ufoTimer = ct.speed * 75;
+    onstep: |-
+      this.asteroidTimer -= ct.delta;
+      if (this.asteroidTimer <= 0) {
+          this.asteroidTimer = ct.random.range(ct.speed * 0.5, ct.speed * 3);
+          ct.types.copy('AbstractMeteor', ct.random(ct.viewWidth), -100);
+      }
+
+      this.encounterTimer -= ct.delta;
+      if (this.encounterTimer <= 0) {
+          this.encounterTimer = ct.random.range(ct.speed * 4, ct.speed * 7);
+          ct.types.copy('Enemy_Shooter', ct.random(ct.viewWidth), -100);
+      }
+
+      this.waveTimer -= ct.delta;
+      if (this.waveTimer <= 0) {
+          this.waveTimer = ct.random.range(ct.speed * 20, ct.speed * 45);
+          
+          // create 5 enemies, one by one in 1.4 seconds
+          ct.types.copy('Enemy_Wiggler', 0, -100);
+          ct.u.wait(350)
+          .then(() => {
+              ct.types.copy('Enemy_Wiggler', 0, -100);
+          })
+          .then(() => ct.u.wait(350))
+          .then(() => {
+              ct.types.copy('Enemy_Wiggler', 0, -100);
+          })
+          .then(() => ct.u.wait(350))
+          .then(() => {
+              ct.types.copy('Enemy_Wiggler', 0, -100);
+          })
+          .then(() => ct.u.wait(350))
+          .then(() => {
+              ct.types.copy('Enemy_Wiggler', 0, -100);
+          });
+      }
+
+      this.ufoTimer -= ct.delta;
+      if (this.ufoTimer <= 0) {
+          this.ufoTimer = ct.random.range(ct.speed * 60, ct.speed * 90);
+          ct.types.copy('Enemy_Ufo', ct.random(ct.viewWidth), -100);
+      }
     ondraw: |-
       this.scoreLabel.text = 'Score: ' + this.score;
 
@@ -786,15 +842,15 @@ rooms:
           }
       }
     onleave: ''
-    width: 800
-    height: 800
+    width: 1920
+    height: 1080
     backgrounds:
       - depth: '-20'
         extends:
           movementY: 1
         texture: 3935eebf-4e66-456f-9ca8-e2dc1d6a9383
     uid: 2e5bf702-9eac-4fef-8282-07d2dd0a9bac
-    lastmod: 1554742808104
+    lastmod: 1583209050276
     grid: 50
     thumbnail: 1
     gridX: 50
@@ -803,12 +859,9 @@ rooms:
       - depth: -10
         tiles: []
     copies:
-      - x: 400
-        'y': 700
+      - x: 600
+        'y': 650
         uid: 1fab434d-0976-4b65-8390-d013695aba8c
-      - x: 400
-        'y': 250
-        uid: ca579f27-f97b-4ca2-98f6-c1c3e13acad5
   - name: MainMenu
     oncreate: >-
       ct.sound.spawn('Music', {
@@ -822,9 +875,9 @@ rooms:
 
       this.addChild(this.ctjsNotice);
 
-      this.ctjsNotice.x = ct.room.width / 2;
+      this.ctjsNotice.x = ct.camera.width / 2;
 
-      this.ctjsNotice.y = ct.room.height - 32;
+      this.ctjsNotice.y = ct.camera.height - 32;
 
       this.ctjsNotice.anchor.x = 0.5;
 
@@ -832,16 +885,24 @@ rooms:
     onstep: ''
     ondraw: ''
     onleave: ''
-    width: 800
-    height: 800
+    width: 1920
+    height: 1080
     backgrounds:
-      - depth: 0
+      - depth: -10
+        extends:
+          movementY: 0.5
+        texture: 3935eebf-4e66-456f-9ca8-e2dc1d6a9383
+      - depth: -9
+        texture: f52c0c03-bee0-4984-a936-08aeb0dab1eb
         extends:
           movementY: 1
-        texture: 3935eebf-4e66-456f-9ca8-e2dc1d6a9383
+      - depth: -8
+        texture: e86811b4-8d80-4d2a-8003-b490165fa078
+        extends:
+          movementY: 2
     uid: 6c75cdb8-cfb4-4dcc-887a-f76ae98b5499
     grid: 64
-    lastmod: 1543633624126
+    lastmod: 1583208916629
     thumbnail: 2
     gridX: 64
     gridY: 64
@@ -849,12 +910,12 @@ rooms:
       - depth: -10
         tiles: []
     copies:
-      - x: 384
-        'y': 192
-        uid: 319c6995-59f3-4267-a1de-cf58f77614d3
-      - x: 384
-        'y': 512
+      - x: 960
+        'y': 704
         uid: 972bb4d9-7cfc-4dbe-bc30-883562271057
+      - x: 960
+        'y': 320
+        uid: 319c6995-59f3-4267-a1de-cf58f77614d3
   - name: RetryScreen
     oncreate: >-
       this.score = Number(localStorage.score);
@@ -894,8 +955,8 @@ rooms:
     onstep: ''
     ondraw: ''
     onleave: ''
-    width: 800
-    height: 800
+    width: 1280
+    height: 768
     backgrounds:
       - depth: -5
         extends:
@@ -903,7 +964,7 @@ rooms:
         texture: 3935eebf-4e66-456f-9ca8-e2dc1d6a9383
     uid: cc1e53b3-f7e6-48fe-9716-b05877538e52
     grid: 64
-    lastmod: 1551428926798
+    lastmod: 1583208918869
     thumbnail: 3
     gridX: 64
     gridY: 64
@@ -911,11 +972,11 @@ rooms:
       - depth: -10
         tiles: []
     copies:
-      - x: 384
+      - x: 640
         'y': 192
         uid: a6d37145-b35c-42d2-95c6-765069857ada
-      - x: 384
-        'y': 576
+      - x: 640
+        'y': 512
         uid: 73759c16-fba4-4134-b048-e53aa4d2f34b
 soundtick: 9
 roomtick: 3
@@ -943,13 +1004,15 @@ settings:
     debug: false
   pixelatedrender: false
   branding:
-    icon: -1
+    icon: e1452137-8cfa-4eec-b54a-0f2660326b48
     accent: '#446adb'
     invertPreloaderScheme: true
 palette:
   - '#FFFFFF'
-  - '#B48FFF'
   - '#10102E'
+  - '#F5A225'
+  - '#70C4FF'
+  - '#00345E'
 startroom: 6c75cdb8-cfb4-4dcc-887a-f76ae98b5499
 scripts: []
 ctjsVersion: 1.3.0
@@ -983,17 +1046,17 @@ textures:
       - 1
       - 1
     axis:
-      - 56
-      - 37
-    origname: i1.png
+      - 150
+      - 150
+    origname: ie1452137-8cfa-4eec-b54a-0f2660326b48.png
     shape: strip
     left: 48
     top: 10
     frames: 1
-    width: 112
-    height: 75
-    imgWidth: 112
-    imgHeight: 75
+    width: 300
+    height: 300
+    imgWidth: 300
+    imgHeight: 300
     marginx: 0
     marginy: 0
     offy: 0
@@ -1003,23 +1066,71 @@ textures:
     r: 20
     uid: e1452137-8cfa-4eec-b54a-0f2660326b48
     stripPoints:
-      - x: 13
-        'y': -13
-      - x: 53
-        'y': 6
-      - x: 40
-        'y': 35
-      - x: -38
-        'y': 36
-      - x: -53
-        'y': 4
-      - x: -12
-        'y': -12
-      - x: -2
-        'y': -36
+      - x: -0.25
+        'y': 86.5
+      - x: -9.25
+        'y': 81.75
+      - x: -52.75
+        'y': 81.25
+      - x: -47.75
+        'y': 37.5
+      - x: -46.25
+        'y': 26.25
+      - x: -90.75
+        'y': -21
+      - x: -74.75
+        'y': -37.75
+      - x: -34.75
+        'y': 0.5
+      - x: -33.75
+        'y': -26.75
+      - x: -23.75
+        'y': -26.5
+      - x: -15.25
+        'y': -18.75
+      - x: -16.5
+        'y': -56.25
+      - x: -21
+        'y': -63.75
+      - x: -21.5
+        'y': -79
+      - x: -12.5
+        'y': -89.5
+      - x: -2.25
+        'y': -77.5
+      - x: 7.704312267657992
+        'y': -89.74639405204465
+      - x: 16.957695167286246
+        'y': -79.46899628252788
+      - x: 16.829739776951673
+        'y': -64.21133828996278
+      - x: 12.513977695167286
+        'y': -56.60382899628257
+      - x: 12.178847583643122
+        'y': -19.084498141263936
+      - x: 20.48732342007435
+        'y': -27.039479553903334
+      - x: 30.47825278810409
+        'y': -27.53327137546472
+      - x: 32.142490706319705
+        'y': -0.31576208178441334
+      - x: 71.19780669144981
+        'y': -39.52985130111526
+      - x: 87.60152416356877
+        'y': -23.175018587360597
+      - x: 44.26702602230483
+        'y': 25.146133828996312
+      - x: 46.04092936802974
+        'y': 36.35620817843862
+      - x: 52.10635687732342
+        'y': 79.97126394052043
+      - x: 8.631486988847584
+        'y': 81.53193308550186
     closedStrip: true
-    lastmod: 1554742823545
+    lastmod: 1583212443950
     padding: 1
+    source: /home/comigo/Desktop/PlayerShip.png
+    symmetryStrip: true
   - name: Background_Blue
     untill: 0
     grid:
@@ -1032,22 +1143,23 @@ textures:
     marginy: 0
     offx: 0
     offy: 0
-    origname: i2.png
+    origname: i3935eebf-4e66-456f-9ca8-e2dc1d6a9383.png
     shape: circle
     left: 0
     right: 256
     top: 0
     bottom: 256
     frames: 1
-    width: 256
-    height: 256
-    imgWidth: 256
-    imgHeight: 256
+    width: 1024
+    height: 1024
+    imgWidth: 1024
+    imgHeight: 1024
     r: 1
     uid: 3935eebf-4e66-456f-9ca8-e2dc1d6a9383
     tiled: true
-    lastmod: 1543633813674
+    lastmod: 1583209043980
     padding: 0
+    source: /home/comigo/Desktop/Nebula Blue.png
   - name: Laser_Simple_Blue
     untill: 0
     grid:
@@ -1324,53 +1436,55 @@ textures:
       - 1
       - 1
     axis:
-      - 191
-      - 81
+      - 209
+      - 83
     marginx: 0
     marginy: 0
     offx: 0
     offy: 0
-    origname: i18.png
+    origname: i2a454e11-3441-4f57-bfb6-ce837acd7881.png
     shape: rect
     left: 135
     right: 160
     top: 60
     bottom: 55
     frames: 1
-    width: 382
-    height: 162
-    imgWidth: 382
-    imgHeight: 162
+    width: 414
+    height: 164
+    imgWidth: 414
+    imgHeight: 164
     r: 81
-    lastmod: 1521782180242
+    lastmod: 1583195545687
     uid: 2a454e11-3441-4f57-bfb6-ce837acd7881
     padding: 1
+    source: /home/comigo/Desktop/StartButton.png
   - name: CatsteroidsLogo
     untill: 0
     grid:
       - 1
       - 1
     axis:
-      - 319
-      - 126
+      - 589
+      - 188
     marginx: 0
     marginy: 0
     offx: 0
     offy: 0
-    origname: i19.png
+    origname: i968baf79-5ff3-443b-8834-fa3b55638500.png
     shape: rect
-    left: 319
-    right: 319
-    top: 126
-    bottom: 126
+    left: 589
+    right: 590
+    top: 188
+    bottom: 189
     frames: 1
-    width: 638
-    height: 252
-    imgWidth: 638
-    imgHeight: 252
-    lastmod: 1521696185869
+    width: 1179
+    height: 377
+    imgWidth: 1179
+    imgHeight: 377
+    lastmod: 1583209698890
     uid: 968baf79-5ff3-443b-8834-fa3b55638500
     padding: 1
+    source: /home/comigo/Desktop/Logo.png
   - name: Bonus_Lives
     untill: 0
     grid:
@@ -1394,7 +1508,7 @@ textures:
     height: 52
     imgWidth: 52
     imgHeight: 52
-    lastmod: 1521786316435
+    lastmod: 1583212446061
     uid: 25fb712b-0aca-4b18-8e10-7c545d4bca8d
     padding: 1
   - name: Bonus_Spread
@@ -1475,86 +1589,184 @@ textures:
     lastmod: 1521786359659
     uid: 3d364ae5-40e9-4c13-b1c7-9e0415273865
     padding: 1
-  - name: Enemy_Shooter
-    untill: 0
-    grid:
-      - 1
-      - 1
-    axis:
-      - 46
-      - 42
-    marginx: 0
-    marginy: 0
-    offx: 0
-    offy: 0
-    origname: i24.png
-    shape: strip
-    left: 0
-    right: 0
-    top: 0
-    bottom: 0
-    frames: 1
-    width: 93
-    height: 84
-    imgWidth: 93
-    imgHeight: 84
-    r: 42
-    lastmod: 1548596333338
-    uid: 16c209a9-25b2-41e4-b0d5-21cb22fd1421
-    stripPoints:
-      - x: 30
-        'y': -41
-      - x: 46
-        'y': -17
-      - x: 26
-        'y': 40
-      - x: -25
-        'y': 41
-      - x: -44
-        'y': -14
-      - x: -28
-        'y': -41
-    closedStrip: true
-    padding: 1
   - name: Enemy_Wiggler
     untill: 0
     grid:
       - 1
       - 1
     axis:
-      - 52
-      - 42
+      - 150
+      - 150
     marginx: 0
     marginy: 0
     offx: 0
     offy: 0
-    origname: i25.png
+    origname: i16c209a9-25b2-41e4-b0d5-21cb22fd1421.png
+    shape: strip
+    left: 0
+    right: 0
+    top: 0
+    bottom: 0
+    frames: 1
+    width: 300
+    height: 300
+    imgWidth: 300
+    imgHeight: 300
+    r: 42
+    lastmod: 1583212213412
+    uid: 16c209a9-25b2-41e4-b0d5-21cb22fd1421
+    stripPoints:
+      - x: -0.5
+        'y': 75.25
+      - x: -18.5
+        'y': 72.25
+      - x: -46.25
+        'y': 76.25
+      - x: -37
+        'y': 44
+      - x: -32.5
+        'y': 37.5
+      - x: -35.75
+        'y': 27
+      - x: -63
+        'y': -1
+      - x: -64.75
+        'y': -49.5
+      - x: -48.25
+        'y': -70
+      - x: -47.75
+        'y': -20
+      - x: -17.75
+        'y': -23.75
+      - x: -18.75
+        'y': -42
+      - x: -6.25
+        'y': -54.75
+      - x: -0.75
+        'y': -77.5
+      - x: 4.824438420452049
+        'y': -54.768125103797786
+      - x: 17.366106203224028
+        'y': -42.05910983011984
+      - x: 16.42584953471802
+        'y': -23.805934287290825
+      - x: 46.43796374175645
+        'y': -20.15415378681135
+      - x: 46.77429538039548
+        'y': -70.15552257836401
+      - x: 63.34130991476527
+        'y': -49.709642078420245
+      - x: 61.75007500227686
+        'y': -1.2041736088416428
+      - x: 34.59187377116805
+        'y': 26.884874183680566
+      - x: 31.376260975779623
+        'y': 37.39545620134896
+      - x: 35.89751340665699
+        'y': 43.88069146741955
+      - x: 45.253028216928016
+        'y': 76.1002405430165
+      - x: 17.49008362753869
+        'y': 72.19109642614151
+    closedStrip: true
+    padding: 1
+    source: /home/comigo/Desktop/EnemyShip4.png
+    symmetryStrip: true
+  - name: Enemy_Shooter
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 150
+      - 150
+    marginx: 0
+    marginy: 0
+    offx: 0
+    offy: 0
+    origname: i048b77d3-e7e3-4817-99ee-8b7c0a6da8bf.png
     shape: strip
     left: 0
     right: 104
     top: 0
     bottom: 84
     frames: 1
-    width: 104
-    height: 84
-    imgWidth: 104
-    imgHeight: 84
+    width: 300
+    height: 300
+    imgWidth: 300
+    imgHeight: 300
     r: 42
-    lastmod: 1548596356121
+    lastmod: 1583212204011
     uid: 048b77d3-e7e3-4817-99ee-8b7c0a6da8bf
     stripPoints:
-      - x: 0
-        'y': -42
-      - x: 53
-        'y': -15
-      - x: 23
-        'y': 41
-      - x: -25
-        'y': 40
-      - x: -52
-        'y': -13
+      - x: -0.5
+        'y': -76.25
+      - x: -24.5
+        'y': -69.25
+      - x: -28.5
+        'y': -61.5
+      - x: -44.25
+        'y': -61.75
+      - x: -44.25
+        'y': -30.25
+      - x: -30.5
+        'y': -19
+      - x: -19.5
+        'y': 4
+      - x: -65.25
+        'y': 25
+      - x: -66.25
+        'y': 3.75
+      - x: -78.25
+        'y': -8
+      - x: -90.75
+        'y': 3.5
+      - x: -90.25
+        'y': 75
+      - x: -65.25
+        'y': 73.75
+      - x: -65.25
+        'y': 51.25
+      - x: -21
+        'y': 30.5
+      - x: -17
+        'y': 45
+      - x: -0.5
+        'y': 53.25
+      - x: 16
+        'y': 45
+      - x: 20
+        'y': 30.5
+      - x: 64.25
+        'y': 51.24999999999994
+      - x: 64.25
+        'y': 73.74999999999994
+      - x: 89.25
+        'y': 75.00000000000006
+      - x: 89.75
+        'y': 3.5000000000000284
+      - x: 77.25
+        'y': -7.999999999999972
+      - x: 65.25
+        'y': 3.7499999999999716
+      - x: 64.25
+        'y': 24.99999999999997
+      - x: 18.5
+        'y': 4
+      - x: 29.5
+        'y': -18.999999999999986
+      - x: 43.25
+        'y': -30.250000000000014
+      - x: 43.25
+        'y': -61.75000000000003
+      - x: 27.5
+        'y': -61.5
+      - x: 23.5
+        'y': -69.25
     closedStrip: true
     padding: 1
+    source: /home/comigo/Desktop/EnemyShip1.png
+    symmetryStrip: true
   - name: Laser_Red
     untill: 0
     grid:
@@ -1581,33 +1793,6 @@ textures:
     lastmod: 1521789393030
     uid: fc3e2f9b-61af-4ae4-9375-dcfae65f6a34
     padding: 1
-  - name: Explosion
-    untill: 0
-    grid:
-      - 1
-      - 1
-    axis:
-      - 70
-      - 52
-    marginx: 0
-    marginy: 0
-    offx: 0
-    offy: 0
-    origname: i27.png
-    shape: circle
-    left: 70
-    right: 70
-    top: 52
-    bottom: 53
-    frames: 1
-    width: 140
-    height: 105
-    imgWidth: 140
-    imgHeight: 105
-    r: 52
-    lastmod: 1548596360248
-    uid: 9de002e9-c9cf-44ee-b87a-022ae3dddca3
-    padding: 1
   - name: Ufo_Red
     untill: 0
     grid:
@@ -1632,7 +1817,7 @@ textures:
     imgWidth: 91
     imgHeight: 91
     r: 45
-    lastmod: 1521795757737
+    lastmod: 1583202047803
     uid: 3a21a3d8-30ed-4e5b-8ccf-0019a503d6b9
     padding: 1
   - name: Laser_Cross_Red
@@ -1668,51 +1853,665 @@ textures:
       - 1
       - 1
     axis:
-      - 170
+      - 177
       - 73
     marginx: 0
     marginy: 0
     offx: 0
     offy: 0
-    origname: i30.png
+    origname: i071162b9-d836-4145-9515-586ce289ef14.png
     shape: rect
     left: 155
     right: 140
     top: 40
     bottom: 40
     frames: 1
-    width: 340
-    height: 146
-    imgWidth: 340
-    imgHeight: 146
-    lastmod: 1521798557721
+    width: 363
+    height: 164
+    imgWidth: 363
+    imgHeight: 164
+    lastmod: 1583202456905
     uid: 071162b9-d836-4145-9515-586ce289ef14
     padding: 1
+    source: /home/comigo/Desktop/RetryButton.png
   - name: OhNo
     untill: 0
     grid:
       - 1
       - 1
     axis:
-      - 298
-      - 159
+      - 299
+      - 186
     marginx: 0
     marginy: 0
     offx: 0
     offy: 0
-    origname: i31.png
+    origname: ie81fc53e-4f0a-443d-a4fb-e5e11a4a98d2.png
     shape: rect
-    left: 298
-    right: 298
-    top: 159
-    bottom: 160
+    left: 299
+    right: 299
+    top: 186
+    bottom: 187
     frames: 1
-    width: 596
-    height: 319
-    imgWidth: 596
-    imgHeight: 319
-    lastmod: 1521799064360
+    width: 598
+    height: 373
+    imgWidth: 598
+    imgHeight: 373
+    lastmod: 1583195592488
     uid: e81fc53e-4f0a-443d-a4fb-e5e11a4a98d2
     padding: 1
+    source: /home/comigo/Desktop/OhNo.png
+  - name: Stars_Big
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 0
+      - 0
+    marginx: 0
+    marginy: 0
+    imgWidth: 1024
+    imgHeight: 1024
+    width: 1024
+    height: 1024
+    offx: 0
+    offy: 0
+    origname: ie86811b4-8d80-4d2a-8003-b490165fa078.png
+    source: /home/comigo/Desktop/Stars-Big_1_1_PC.png
+    shape: rect
+    left: 0
+    right: 1024
+    top: 0
+    bottom: 1024
+    uid: e86811b4-8d80-4d2a-8003-b490165fa078
+    padding: 1
+    lastmod: 1583208112352
+    tiled: true
+  - name: Stars_Small
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 0
+      - 0
+    marginx: 0
+    marginy: 0
+    imgWidth: 1024
+    imgHeight: 1024
+    width: 1024
+    height: 1024
+    offx: 0
+    offy: 0
+    origname: if52c0c03-bee0-4984-a936-08aeb0dab1eb.png
+    source: /home/comigo/Desktop/Stars Small_1.png
+    shape: rect
+    left: 0
+    right: 1024
+    top: 0
+    bottom: 1024
+    uid: f52c0c03-bee0-4984-a936-08aeb0dab1eb
+    padding: 1
+    lastmod: 1583208211045
+    tiled: true
+  - name: Boss
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 250
+      - 250
+    marginx: 0
+    marginy: 0
+    imgWidth: 500
+    imgHeight: 500
+    width: 500
+    height: 500
+    offx: 0
+    offy: 0
+    origname: iafba4114-e7bc-4b35-8386-d9ca108ca777.png
+    source: /home/comigo/Desktop/Boss.png
+    shape: strip
+    left: 0
+    right: 500
+    top: 0
+    bottom: 500
+    uid: afba4114-e7bc-4b35-8386-d9ca108ca777
+    padding: 1
+    stripPoints:
+      - x: 0
+        'y': -119.5
+      - x: 36.5
+        'y': -105.5
+      - x: 61
+        'y': -71.5
+      - x: 63.5
+        'y': -1
+      - x: 93.5
+        'y': -17.5
+      - x: 97
+        'y': 24
+      - x: 113
+        'y': 23.5
+      - x: 110
+        'y': -7
+      - x: 128
+        'y': -17
+      - x: 142.5
+        'y': -8
+      - x: 145.5
+        'y': -135
+      - x: 159.5
+        'y': -149.5
+      - x: 177.5
+        'y': -135
+      - x: 180
+        'y': 64
+      - x: 154
+        'y': 75
+      - x: 145.5
+        'y': 115
+      - x: 134.5
+        'y': 83
+      - x: 97.5
+        'y': 97
+      - x: 92.5
+        'y': 123
+      - x: 62
+        'y': 123.5
+      - x: 54
+        'y': 105
+      - x: 0
+        'y': 145
+      - x: -54
+        'y': 105
+      - x: -62
+        'y': 123.5
+      - x: -92.5
+        'y': 123.00000000000006
+      - x: -97.5
+        'y': 97
+      - x: -134.5
+        'y': 83.00000000000006
+      - x: -145.5
+        'y': 115.00000000000006
+      - x: -154
+        'y': 74.99999999999994
+      - x: -180
+        'y': 64
+      - x: -177.5
+        'y': -135
+      - x: -159.5
+        'y': -149.5
+      - x: -145.5
+        'y': -135
+      - x: -142.5
+        'y': -7.999999999999972
+      - x: -128
+        'y': -16.99999999999997
+      - x: -110
+        'y': -7
+      - x: -113
+        'y': 23.5
+      - x: -97
+        'y': 24
+      - x: -93.5
+        'y': -17.5
+      - x: -63.5
+        'y': -1
+      - x: -61
+        'y': -71.49999999999997
+      - x: -36.5
+        'y': -105.5
+    closedStrip: true
+    symmetryStrip: true
+    lastmod: 1583212331619
+  - name: Enemy_Bomber
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 250
+      - 250
+    marginx: 0
+    marginy: 0
+    imgWidth: 500
+    imgHeight: 500
+    width: 500
+    height: 500
+    offx: 0
+    offy: 0
+    origname: i771c5c1f-ffdc-4b50-a1ce-aed472e44557.png
+    source: /home/comigo/Desktop/EnemyShip3.png
+    shape: strip
+    left: 0
+    right: 500
+    top: 0
+    bottom: 500
+    uid: 771c5c1f-ffdc-4b50-a1ce-aed472e44557
+    padding: 1
+    stripPoints:
+      - x: -1.5
+        'y': -139.5
+      - x: 17.5
+        'y': -127
+      - x: 35
+        'y': -81.5
+      - x: 64.5
+        'y': -79.5
+      - x: 66
+        'y': -109
+      - x: 81.5
+        'y': -111
+      - x: 85
+        'y': -83
+      - x: 102.5
+        'y': -83
+      - x: 104
+        'y': -115
+      - x: 122
+        'y': -116.5
+      - x: 126
+        'y': -81
+      - x: 163
+        'y': -66
+      - x: 186
+        'y': -23.5
+      - x: 187.5
+        'y': 47
+      - x: 161
+        'y': 66
+      - x: 138
+        'y': 9
+      - x: 81
+        'y': 16
+      - x: 74.5
+        'y': 68.5
+      - x: 127.5
+        'y': 113
+      - x: 105.5
+        'y': 125.5
+      - x: 57.5
+        'y': 105.5
+      - x: 57
+        'y': 139.5
+      - x: 25
+        'y': 138.5
+      - x: 1
+        'y': 127.5
+      - x: -22.78981769472721
+        'y': 138.94747020313412
+      - x: -54.76548227266193
+        'y': 140.5464932797065
+      - x: -55.9020429130973
+        'y': 106.56181688120876
+      - x: -103.51912820279051
+        'y': 127.45710794197373
+      - x: -125.74933287982019
+        'y': 115.37124843520428
+      - x: -73.59188550429377
+        'y': 69.88662814142594
+      - x: -81.07380575844815
+        'y': 17.51754499773824
+      - x: -138.19488675613033
+        'y': 11.586094445282072
+      - x: -160.12353207261353
+        'y': 69.00677464487467
+      - x: -186.97465995280191
+        'y': 50.50631704075653
+      - x: -186.7950319270919
+        'y': -20.009409813416795
+      - x: -164.59487483387744
+        'y': -62.93263225810978
+      - x: -127.88223619385583
+        'y': -78.6228255038028
+      - x: -124.54767323208769
+        'y': -114.1915011869655
+      - x: -106.52274169737815
+        'y': -113.02881327998708
+      - x: -104.42380628442989
+        'y': -81.06251117711207
+      - x: -86.9268745112753
+        'y': -81.39019780420156
+      - x: -83.95178675998751
+        'y': -109.4508259666668
+      - x: -68.41705443209752
+        'y': -107.74141334801408
+      - x: -66.36493139444774
+        'y': -78.27467292701829
+      - x: -36.90755344851165
+        'y': -80.82670830104391
+      - x: -20.262606905789657
+        'y': -126.6464175383353
+    closedStrip: true
+    symmetryStrip: true
+    lastmod: 1583212423808
+  - name: Spark
+    untill: 0
+    grid:
+      - 2
+      - 2
+    axis:
+      - 0
+      - 0
+    marginx: 0
+    marginy: 0
+    imgWidth: 1024
+    imgHeight: 1024
+    width: 512
+    height: 512
+    offx: 0
+    offy: 0
+    origname: id4d167ee-e343-4af8-857b-691906585543.png
+    source: data/particles/Spark_2x2.png
+    shape: rect
+    left: 0
+    right: 512
+    top: 0
+    bottom: 512
+    uid: d4d167ee-e343-4af8-857b-691906585543
+    padding: 1
+  - name: Scorch
+    untill: 0
+    grid:
+      - 3
+      - 1
+    axis:
+      - 0
+      - 0
+    marginx: 0
+    marginy: 0
+    imgWidth: 1536
+    imgHeight: 512
+    width: 512
+    height: 512
+    offx: 0
+    offy: 0
+    origname: i3d256840-cbd1-4241-a8c2-4d5432e6b9ce.png
+    source: data/particles/Scorch_3x1.png
+    shape: rect
+    left: 0
+    right: 512
+    top: 0
+    bottom: 512
+    uid: 3d256840-cbd1-4241-a8c2-4d5432e6b9ce
+    padding: 1
+  - name: Smoke
+    untill: 0
+    grid:
+      - 4
+      - 2
+    axis:
+      - 0
+      - 0
+    marginx: 0
+    marginy: 0
+    imgWidth: 2048
+    imgHeight: 1024
+    width: 512
+    height: 512
+    offx: 0
+    offy: 0
+    origname: ia27fae91-d007-4683-910b-020b4fb76d72.png
+    source: data/particles/Smoke_4x2.png
+    shape: rect
+    left: 0
+    right: 512
+    top: 0
+    bottom: 512
+    uid: a27fae91-d007-4683-910b-020b4fb76d72
+    padding: 1
 texturetick: 32
-emitterTandems: []
+emitterTandems:
+  - name: Explosion
+    origname: ptf66027e78457
+    emitters:
+      - texture: 3d256840-cbd1-4241-a8c2-4d5432e6b9ce
+        openedTabs:
+          - texture
+          - colors
+          - scaling
+          - direction
+          - spawning
+        settings:
+          alpha:
+            list:
+              - value: 0
+                time: 0
+              - time: 0.112
+                value: 0.30500000000000005
+              - time: 0.236
+                value: 0.5050000000000001
+              - value: 0.5900000000000001
+                time: 0.392
+              - time: 0.572
+                value: 0.5
+              - value: 0
+                time: 1
+            isStepped: false
+          scale:
+            list:
+              - value: 0.050000000000000044
+                time: 0
+              - value: 1.6999999999999997
+                time: 1
+            isStepped: false
+          color:
+            list:
+              - value: FF3C00
+                time: 0
+              - time: 0.112
+                value: FF551A
+              - time: 0.236
+                value: FF682E
+              - value: FF7B42
+                time: 0.392
+              - time: 0.572
+                value: FFD599
+              - value: FF5F19
+                time: 1
+            isStepped: false
+          blendMode: add
+          speed:
+            list:
+              - value: 0
+                time: 0
+              - value: 0
+                time: 1
+            isStepped: false
+          startRotation:
+            min: 0
+            max: 360
+          rotationSpeed:
+            min: 0
+            max: 0
+          rotationAcceleration: 0
+          lifetime:
+            min: 0.25
+            max: 0.5
+          frequency: 0.015
+          spawnChance: 1
+          particlesPerWave: 1
+          angleStart: 270
+          emitterLifetime: 0.1
+          maxParticles: 1000
+          maxSpeed: 0
+          pos:
+            x: 0
+            'y': 0
+          acceleration:
+            x: 0
+            'y': 0
+          addAtBack: false
+          spawnType: point
+          spawnCircle:
+            x: 0
+            'y': 0
+            r: 64
+            minR: 32
+          delay: 0
+          particleSpacing: 360
+          noRotation: false
+        uid: 5099d52e-3df7-4c85-b8bb-4fc7a42026ee
+      - texture: a27fae91-d007-4683-910b-020b4fb76d72
+        openedTabs:
+          - texture
+          - spawning
+          - colors
+          - shape
+          - velocity
+          - scaling
+        settings:
+          alpha:
+            list:
+              - value: 0
+                time: 0
+              - time: 0.16
+                value: 0.08999999999999997
+              - time: 0.32
+                value: 0.5499999999999999
+              - value: 0.71
+                time: 0.572
+              - value: 0
+                time: 1
+            isStepped: false
+          scale:
+            list:
+              - value: 0.55
+                time: 0
+              - value: 1.75
+                time: 1
+            isStepped: false
+          color:
+            list:
+              - value: '595959'
+                time: 0
+              - time: 0.16
+                value: '383838'
+              - time: 0.32
+                value: '292929'
+              - value: 2E2E2E
+                time: 0.572
+              - value: '363636'
+                time: 1
+            isStepped: false
+          blendMode: normal
+          speed:
+            list:
+              - value: 0
+                time: 0
+              - value: 0
+                time: 1
+            isStepped: false
+          startRotation:
+            min: 0
+            max: 360
+          rotationSpeed:
+            min: -60
+            max: 60
+          rotationAcceleration: 0
+          lifetime:
+            min: 3
+            max: 5
+          frequency: 0.01
+          spawnChance: 1
+          particlesPerWave: 1
+          angleStart: 270
+          emitterLifetime: 0.1
+          maxParticles: 1000
+          maxSpeed: 0
+          pos:
+            x: 0
+            'y': 0
+          acceleration:
+            x: 0
+            'y': 0
+          addAtBack: false
+          spawnType: point
+          spawnCircle:
+            x: 0
+            'y': 0
+            r: 32
+          delay: 0
+          minimumScaleMultiplier: 0.25
+        uid: 84917cf1-bdcd-41f1-8a6a-37a972d6e17b
+  - name: Electricity
+    origname: pt308f91a06589
+    emitters:
+      - texture: d4d167ee-e343-4af8-857b-691906585543
+        openedTabs:
+          - texture
+          - colors
+          - scaling
+          - velocity
+          - spawning
+          - shape
+        settings:
+          alpha:
+            list:
+              - value: 0
+                time: 0
+              - value: 1
+                time: 0.5
+              - value: 0
+                time: 1
+            isStepped: false
+          scale:
+            list:
+              - value: 0.8
+                time: 0
+              - value: 0.175
+                time: 1
+            isStepped: false
+          color:
+            list:
+              - value: 4AB4FF
+                time: 0
+              - value: 26A6FF
+                time: 0.5
+              - value: 21A3FF
+                time: 1
+            isStepped: false
+          blendMode: add
+          speed:
+            list:
+              - value: 10
+                time: 0
+              - value: 10
+                time: 1
+            isStepped: false
+          startRotation:
+            min: 0
+            max: 360
+          rotationSpeed:
+            min: 0
+            max: 0
+          rotationAcceleration: 0
+          lifetime:
+            min: 0.1
+            max: 0.05
+          frequency: 0.008
+          spawnChance: 0.41
+          particlesPerWave: 1
+          angleStart: 270
+          emitterLifetime: 0
+          maxParticles: 1000
+          maxSpeed: 0
+          pos:
+            x: 0
+            'y': -32
+          acceleration:
+            x: 0
+            'y': 0
+          addAtBack: false
+          spawnType: point
+          spawnCircle:
+            x: 0
+            'y': 0
+            r: 32
+          delay: 0
+          minimumScaleMultiplier: 0.28
+        uid: a147e2f8-a42a-4748-8f4f-9fe0b994542c
