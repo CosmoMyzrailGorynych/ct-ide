@@ -293,7 +293,8 @@ const importImageToTexture = async src => {
         right: image.width,
         top: 0,
         bottom: image.height,
-        uid: id
+        uid: id,
+        padding: 1
     };
 
     // Test if this has a postfix _NxM@K or _NxM
