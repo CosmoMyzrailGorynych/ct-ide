@@ -1,1 +1,3 @@
-ct.place.grid = {};
+if (this === ct.room) {
+    ct.place.grid = {};
+}
