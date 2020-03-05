@@ -392,11 +392,14 @@ room-editor.panel.view
                 if (e.buttonClicked === 'ok') {
                     var dx = Number(document.getElementById('roomshiftx').value) || 0,
                         dy = Number(document.getElementById('roomshifty').value) || 0;
-                    for (let i = 0, l = this.room.layers.length; i < l; i++) {
-                        let layer = this.room.layers[i];
-                        for (let j = 0, lj = layer.copies.length; j < lj; j++) {
-                            layer.copies[j].x += dx;
-                            layer.copies[j].y += dy;
+                    for (const copy of this.room.copies) {
+                        copy.x += dx;
+                        copy.y += dy;
+                    }
+                    for (const tileLayer of this.room.tiles) {
+                        for (const tile of tileLayer.tiles) {
+                            tile.x += dx;
+                            tile.y += dy;
                         }
                     }
                     this.refreshRoomCanvas();
