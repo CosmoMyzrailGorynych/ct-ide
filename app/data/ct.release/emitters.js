@@ -9,19 +9,19 @@
  *
  * @property {ISimplePoint} [scale] Optional scaling object with `x` and `y` parameters.
  * @property {ISimplePoint} [position] Set this to additionally shift the emitter tandem relative
- *                                    to the copy it was attached to, or relative to the copy it follows.
+ *           to the copy it was attached to, or relative to the copy it follows.
  * @property {number} [prewarmDelay] Optional; if less than 0, it will prewarm the emitter tandem,
- *                                   meaning that it will simulate a given number of seconds before
- *                                   showing particles in the world. If greater than 0, will postpone
- *                                   the effect for the specified number of seconds.
+ *           meaning that it will simulate a given number of seconds before
+ *           showing particles in the world. If greater than 0, will postpone
+ *           the effect for the specified number of seconds.
  * @property {number} [tint] Optional tint to the whole effect.
  * @property {number} [alpha] Optional opacity set to the whole effect.
  * @property {number} [rotation] Optional rotation in degrees.
  * @property {boolean} [isUi] If set to true, will use the time scale of UI layers. This affects
- *                            how an effect is simulated during slowmo effects and game pause.
+ *           how an effect is simulated during slowmo effects and game pause.
  * @property {number} [depth] The depth of the tandem. Defaults to Infinity (will overlay everything).
  * @property {Room} [room] The room to attach the effect to. Defaults to the current main room (ct.room);
- *                         has no effect if attached to a copy.
+ *           has no effect if attached to a copy.
  */
 
 /**
@@ -99,8 +99,8 @@ class EmitterTandem extends PIXI.Container {
                 }
             }
         }
-        if (this.kill || !this.emitters.length) {
-            //this.parent.removeChild(this);
+        // eslint-disable-next-line no-underscore-dangle
+       if ((this.appendant && this.appendant._destroyed) || this.kill || !this.emitters.length) {
             this.emit('done');
             if (this.isUi) {
                 ct.emitters.uiTandems.splice(ct.emitters.uiTandems.indexOf(this), 1);
@@ -257,6 +257,7 @@ class EmitterTandem extends PIXI.Container {
                 tandem.x = opts.position.x;
                 tandem.y = opts.position.y;
             }
+            tandem.appendant = parent;
             parent.addChild(tandem);
             return tandem;
         },
