@@ -109,6 +109,7 @@ const exportCtProject = async (project, projdir) => {
         res: '',
         resload: '',
         types: '',
+        rooms: '',
         styles: '',
         htmltop: '',
         htmlbottom: ''

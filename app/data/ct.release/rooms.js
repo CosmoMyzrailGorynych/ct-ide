@@ -291,3 +291,4 @@ ct.rooms.afterDraw = function () {
 };
 
 /*@rooms@*/
+/*%rooms%*/
