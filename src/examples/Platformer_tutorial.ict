@@ -102,7 +102,7 @@ types:
     ondraw: ''
     ondestroy: ''
     uid: 2d07d12b-9798-418c-a420-3a1ef4dc3ae2
-    lastmod: 1582768834876
+    lastmod: 1583370828897
     extends:
       ctype: Robot
     texture: 6deb1d77-24d2-48d6-82ec-045dcbd9eea5
@@ -233,13 +233,13 @@ types:
                       x: 0,
                       y: -70
                   }
-              })
+              });
           }
       }
     ondraw: ''
     ondestroy: ''
     uid: 3fe668cd-30ee-49ba-8a45-e772bf8832a9
-    lastmod: 1582768586952
+    lastmod: 1583369824650
     extends: {}
     texture: 334d338b-4fe4-4168-901e-2315494d37d4
   - name: Platform
@@ -3968,6 +3968,110 @@ rooms:
     gridX: 32
     gridY: 32
     lastmod: 1581890111862
+  - name: TestLevel
+    oncreate: ''
+    onstep: ''
+    ondraw: ''
+    onleave: ''
+    width: 1280
+    height: 768
+    backgrounds:
+      - depth: -100
+        texture: 92d2ca65-d3a1-45c9-bbd5-5674c6596f98
+        extends: {}
+    copies:
+      - x: 256
+        'y': 576
+        uid: f1f632f7-ecd9-4724-8a7a-c5136d48520e
+      - x: 320
+        'y': 576
+        uid: f1f632f7-ecd9-4724-8a7a-c5136d48520e
+      - x: 384
+        'y': 576
+        uid: f1f632f7-ecd9-4724-8a7a-c5136d48520e
+      - x: 448
+        'y': 576
+        uid: f1f632f7-ecd9-4724-8a7a-c5136d48520e
+      - x: 512
+        'y': 576
+        uid: f1f632f7-ecd9-4724-8a7a-c5136d48520e
+      - x: 576
+        'y': 576
+        uid: f1f632f7-ecd9-4724-8a7a-c5136d48520e
+      - x: 640
+        'y': 576
+        uid: f1f632f7-ecd9-4724-8a7a-c5136d48520e
+      - x: 704
+        'y': 576
+        uid: f1f632f7-ecd9-4724-8a7a-c5136d48520e
+      - x: 768
+        'y': 576
+        uid: f1f632f7-ecd9-4724-8a7a-c5136d48520e
+      - x: 832
+        'y': 576
+        uid: f1f632f7-ecd9-4724-8a7a-c5136d48520e
+      - x: 896
+        'y': 576
+        uid: f1f632f7-ecd9-4724-8a7a-c5136d48520e
+      - x: 960
+        'y': 576
+        uid: f1f632f7-ecd9-4724-8a7a-c5136d48520e
+      - x: 960
+        'y': 576
+        uid: f1f632f7-ecd9-4724-8a7a-c5136d48520e
+      - x: 384
+        'y': 576
+        uid: 2d07d12b-9798-418c-a420-3a1ef4dc3ae2
+      - x: 1024
+        'y': 576
+        uid: f1f632f7-ecd9-4724-8a7a-c5136d48520e
+      - x: 1088
+        'y': 576
+        uid: f1f632f7-ecd9-4724-8a7a-c5136d48520e
+      - x: 1152
+        'y': 576
+        uid: f1f632f7-ecd9-4724-8a7a-c5136d48520e
+      - x: 1216
+        'y': 576
+        uid: f1f632f7-ecd9-4724-8a7a-c5136d48520e
+      - x: 1280
+        'y': 576
+        uid: f1f632f7-ecd9-4724-8a7a-c5136d48520e
+      - x: 1344
+        'y': 576
+        uid: f1f632f7-ecd9-4724-8a7a-c5136d48520e
+      - x: 1344
+        'y': 576
+        uid: f1f632f7-ecd9-4724-8a7a-c5136d48520e
+      - x: -128
+        'y': 576
+        uid: f1f632f7-ecd9-4724-8a7a-c5136d48520e
+      - x: -64
+        'y': 576
+        uid: f1f632f7-ecd9-4724-8a7a-c5136d48520e
+      - x: 0
+        'y': 576
+        uid: f1f632f7-ecd9-4724-8a7a-c5136d48520e
+      - x: 64
+        'y': 576
+        uid: f1f632f7-ecd9-4724-8a7a-c5136d48520e
+      - x: 128
+        'y': 576
+        uid: f1f632f7-ecd9-4724-8a7a-c5136d48520e
+      - x: 192
+        'y': 576
+        uid: f1f632f7-ecd9-4724-8a7a-c5136d48520e
+      - x: 192
+        'y': 576
+        uid: f1f632f7-ecd9-4724-8a7a-c5136d48520e
+    tiles:
+      - depth: -10
+        tiles: []
+    uid: 0ffb39a3-4f03-4c9a-b9ee-f86ff9e2fc3d
+    thumbnail: f86ff9e2fc3d
+    gridX: 64
+    gridY: 64
+    lastmod: 1583370439905
 starting: 0
 settings:
   minifyhtmlcss: false
@@ -4003,7 +4107,7 @@ scripts:
               isUi: true
           });
       };
-startroom: 184045cc-2e0e-47be-8a20-411cb6f9c751
+startroom: 0ffb39a3-4f03-4c9a-b9ee-f86ff9e2fc3d
 styletick: null
 palette: []
 fonts: []
@@ -4486,6 +4590,7 @@ emitterTandems:
         openedTabs:
           - texture
           - spawning
+          - shape
         settings:
           alpha:
             list:
@@ -4538,7 +4643,7 @@ emitterTandems:
           frequency: 0.056
           spawnChance: 1
           particlesPerWave: 1
-          emitterLifetime: 1
+          emitterLifetime: 0
           maxParticles: 1000
           maxSpeed: 200
           pos:
