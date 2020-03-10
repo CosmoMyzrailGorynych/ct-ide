@@ -179,6 +179,7 @@ main-menu.flexcol
         server.listen(0);
 
         this.runProject = e => {
+            document.body.style.cursor = 'progress';
             const runCtExport = require('./data/node_requires/exporter');
             runCtExport(currentProject, sessionStorage.projdir)
             .then(path => {
@@ -187,6 +188,9 @@ main-menu.flexcol
             .catch(e => {
                 window.alertify.error(e);
                 console.error(e);
+            })
+            .finally(() => {
+                document.body.style.cursor = '';
             });
         };
         this.runProjectAlt = e => {

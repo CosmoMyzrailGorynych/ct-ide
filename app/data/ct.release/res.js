@@ -68,6 +68,7 @@
                 if (ct.sound.exists(event.name)) {
                     ct.sound.spawn(event.name);
                 } else {
+                    // eslint-disable-next-line no-console
                     console.warn(`Skeleton ${skel.ctName} tries to play a non-existing sound ${event.name} at animation ${skel.animation.lastAnimationName}`);
                 }
             });
