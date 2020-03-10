@@ -223,6 +223,7 @@
     },
     "modules": {
         "author": "Author of this catmod",
+        "dependencies": "Dependencies:",
         "hasfields": "Configurable",
         "hasinjects": "Has injections",
         "hasinputmethods": "Provides additional input methods",
@@ -231,6 +232,7 @@
         "license": "License",
         "logs": "Changelog",
         "methods": "Methods",
+        "optionalDependencies": "Optional dependencies:",
         "parameters": "Parameters",
         "logs2": "Changelog",
         "settings": "Settings",

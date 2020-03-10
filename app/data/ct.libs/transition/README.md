@@ -6,7 +6,7 @@ Each transition consists of two parts: the one that hides your room (e.g. `ct.tr
 
 ## Examples
 
-### A circled transition between rooms, triggered by a button**
+### A circled transition between rooms, triggered by a button
 
 Write this code in OnStep of your button (assuming that the room you are switching to is called `InGame`):
 

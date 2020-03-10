@@ -53,17 +53,37 @@ modules-panel.panel.view
                             use(xlink:href="data/icons.svg#user")
                         span#modauthor {author.name}
 
-                    span(title="{voc.hasinjects}")
-                        svg.feather.warning#modinjects(show="{currentModule.injects}")
+                    span(title="{voc.hasinjects}" show="{currentModule.injects}")
+                        svg.feather.warning#modinjects
                             use(xlink:href="data/icons.svg#zap")
-                    span(title="{voc.hasfields}")
-                        svg.feather(show="{currentModule.fields}").success
+                    span(title="{voc.hasfields}" show="{currentModule.fields}")
+                        svg.feather.success
                             use(xlink:href="data/icons.svg#settings")
-                    span(title="{voc.hasinputmethods}")
-                        svg.feather(show="{currentModule.inputMethods}").success
+                    span(title="{voc.hasinputmethods}" show="{currentModule.inputMethods}")
+                        svg.feather.success
                             use(xlink:href="data/icons.svg#airplay")
 
-                    #modinfohtml(if="{currentModuleHelp}")
+                    div(if="{currentModule.dependencies && currentModule.dependencies.length}")
+                        .spacer
+                        b {voc.dependencies}
+                        .inlineblock(each="{dependency in currentModule.dependencies}")
+                            svg.feather(if="{dependency in currentProject.libs}").success
+                                use(xlink:href="data/icons.svg#check")
+                            svg.feather(if="{!(dependency in currentProject.libs)}").error
+                                use(xlink:href="data/icons.svg#alert-circle")
+                            span   {dependency}
+
+                    div(if="{currentModule.optionalDependencies && currentModule.optionalDependencies.length}")
+                        .spacer
+                        b {voc.optionalDependencies}
+                        .inlineblock(each="{dependency in currentModule.optionalDependencies}")
+                            svg.feather(if="{dependency in currentProject.libs}").success
+                                use(xlink:href="data/icons.svg#check")
+                            svg.feather(if="{!(dependency in currentProject.libs)}").warning
+                                use(xlink:href="data/icons.svg#alert-triangle")
+                            span   {dependency}
+
+                    #modinfohtml(if="{currentModuleHelp}" oncontextmenu="{onContextMenu}")
                         raw(ref="raw" content="{currentModuleHelp}")
                     h1(if="{currentModuleLicense}") {voc.license}
                     pre(if="{currentModuleLicense}")
@@ -113,7 +133,7 @@ modules-panel.panel.view
                             div(class="desc" if="{field.help}")
                                 raw(ref="raw" content="{md.render(field.help)}")
                 #modulehelp.tabbed.nbt(show="{tab === 'modulehelp'}" if="{currentModuleDocs}")
-                    raw(ref="raw" content="{currentModuleDocs}")
+                    raw(ref="raw" content="{currentModuleDocs}" oncontextmenu="{onContextMenu}")
                 #modulelogs.tabbed.nbt(show="{tab === 'modulelogs'}" if="{currentModuleLogs}")
                     h1 {voc.logs2}
                     raw(ref="raw" content="{currentModuleLogs}")
@@ -290,6 +310,19 @@ modules-panel.panel.view
             this.tab = 'moduleinfo';
         };
 
+        this.onContextMenu = e => {
+            console.log(e);
+        };
+        this.contextMenu = {
+            items: [{
+                label: window.languageJSON.common.copy,
+                icon: 'copy',
+                click: () => {
+
+                }
+            }]
+        };
+
         this.importModules = async (e) => {
             const files = e.target.files;
             if (files.length === 0) {
@@ -358,4 +391,4 @@ modules-panel.panel.view
                     this.update();
                 }
             });
-        }
+        };
