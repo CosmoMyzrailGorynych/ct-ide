@@ -18,7 +18,7 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
         div(show="{tab === 'notepadglobal'}")
             .aCodeEditor(ref="notepadglobal")
         div(show="{tab === 'helppages'}")
-            iframe(src="http://localhost:{server.address().port}/" ref="helpIframe")
+            iframe(src="http://localhost:{server.address().port}/{getIfDarkTheme()? '?darkTheme=yep' : ''}" ref="helpIframe")
             button.aHomeButton(title="{voc.backToHome}" onclick="{backToHome}")
                 svg.feather
                     use(xlink:href="data/icons.svg#home")
@@ -63,6 +63,10 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
         this.on('unmount', () => {
             window.removeEventListener('resize', updateEditorSize);
         });
+
+        this.getIfDarkTheme = () => {
+            return localStorage.UItheme === 'Night' || localStorage.UItheme === 'Horizon';
+        };
 
         this.backToHome = e => {
             this.refs.helpIframe.contentWindow.location = `http://localhost:${this.server.address().port}/`;
