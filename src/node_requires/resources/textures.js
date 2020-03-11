@@ -13,8 +13,6 @@ const getTextureFromId = id => {
     return texture;
 };
 
-let textureLoader;
-
 /**
  * Retrieves the full path to a thumbnail of a given texture.
  * @param {string|ITexture} texture Either the id of the texture, or its ct.js object
@@ -57,24 +55,12 @@ const getTextureOrig = function(texture, fs) {
 const loadBaseTextureForCtTexture = texture => new Promise((resolve, reject) => {
     const PIXI = require('pixi.js-legacy');
 
-    if (!textureLoader) {
-        textureLoader = new PIXI.Loader();
-    }
+    const textureLoader = new PIXI.Loader();
     const {resources} = textureLoader;
-    // invalidate deleted textures
-    for (const uid in resources) {
-        if (!window.currentProject.textures.find(tex => tex.uid === uid)) {
-            delete resources[uid];
-        }
-    }
+
     const path = 'file://' + sessionStorage.projdir + '/img/' + texture.origname + '?' + texture.lastmod;
 
-    if (!(texture.uid in resources)) {
-        textureLoader.add(texture.uid, path);
-    } else if (resources[texture.uid].url !== path) { // invalidate outdated versions
-        delete resources[texture.uid];
-        textureLoader.add(texture.uid, path);
-    }
+    textureLoader.add(texture.uid, path);
     textureLoader.onError.add(reject);
     textureLoader.load(() => {
         resolve(resources[texture.uid].texture.baseTexture);
@@ -86,7 +72,6 @@ const clearPixiTextureCache = function () {
     for (const i in pixiTextureCache) {
         delete pixiTextureCache[i];
     }
-    textureLoader = null;
 };
 /**
  * @param {any} tex A ct.js texture object
