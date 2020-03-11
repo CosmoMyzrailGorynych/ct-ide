@@ -38,6 +38,17 @@ const ct = {
      */
     delta: 1,
     /**
+     * A measure of how long a frame took time to draw, usually equal to 1 and larger on lags.
+     * For example, if it is equal to 2, it means that the previous frame took twice as much time
+     * compared to expected FPS rate.
+     *
+     * This is a version for UI elements, as it is not affected by time scaling, and thus works well
+     * both with slow-mo effects and game pause.
+     *
+    * @type {number}
+    */
+   deltaUi: 1,
+    /**
      * The camera that outputs its view to the renderer.
      * @type {Camera}
      */
@@ -439,6 +450,7 @@ ct.u.ext(ct.u, {// make aliases
 
     ct.loop = function(delta) {
         ct.delta = delta;
+        ct.deltaUi = PIXI.Ticker.shared.elapsedMS / (1000 / (PIXI.Ticker.shared.maxFPS || 60));
         ct.inputs.updateActions();
         for (let i = 0, li = ct.stack.length; i < li; i++) {
             ct.types.beforeStep.apply(ct.stack[i]);
