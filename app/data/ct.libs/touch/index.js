@@ -111,6 +111,7 @@
         ct.touch.y = touch.y;
         ct.touch.xui = touch.xui;
         ct.touch.yui = touch.yui;
+        countTouches();
     };
     var mouseMove = function (e) {
         const rect = ct.pixiApp.view.getBoundingClientRect(),
@@ -126,10 +127,11 @@
         }
     };
     var mouseUp = function () {
-        var ind = findTouchId;
+        var ind = findTouchId(-1);
         if (ind !== -1) {
             ct.touch.events.splice(ind, 1);
         }
+        countTouches();
     };
     ct.touch = {
         released: [],
