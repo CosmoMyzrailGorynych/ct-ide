@@ -28,7 +28,6 @@
  * A class for displaying and managing a collection of particle emitters.
  *
  * @property {boolean} frozen If set to true, the tandem will stop updating its emitters
- * @property {boolean} paused If set to true, the tandem will prevent spawning new particles
  * @property {Copy|DisplayObject} follow A copy to follow
  * @extends PIXI.Container
  */
@@ -110,7 +109,7 @@ class EmitterTandem extends PIXI.Container {
             this.destroy();
             return;
         }
-        if (this.paused) {
+        if (this.frozen) {
             return;
         }
         const s = (this.isUi? PIXI.Ticker.shared.elapsedMS : PIXI.Ticker.shared.deltaMS) / 1000;
@@ -147,6 +146,26 @@ class EmitterTandem extends PIXI.Container {
             emt.emit = false;
         }
         this.delayed = [];
+    }
+    /**
+     * Stops spawning new particles, but continues simulation and allows to resume the effect later
+     * with `emitter.resume();`
+     * @returns {void}
+     */
+    pause() {
+        for (const emt of this.emitters) {
+            emt.oldMaxParticles = emt.maxParticles;
+            emt.maxParticles = 0;
+        }
+    }
+    /**
+     * Resumes previously paused effect.
+     * @returns {void}
+     */
+    resume() {
+        for (const emt of this.emitters) {
+            emt.maxParticles = emt.oldMaxParticles || emt.maxParticles;
+        }
     }
     /**
      * Removes all the particles from the tandem, but continues spawning new ones.
