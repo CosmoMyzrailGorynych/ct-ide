@@ -105,7 +105,8 @@
             "maximized": "Maximized",
             "fullscreen": "Fullscreen",
             "windowed": "Windowed"
-        }
+        },
+        "cannotBuildForMacOnWin": "Unfortunately, Windows can only produce broken Mac packages. Try using a Linux machine; for example, in a virtual one. It is 100% free!"
     },
     "inputMethodSelector": {
         "select": "Select"

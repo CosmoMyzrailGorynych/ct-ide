@@ -11,7 +11,7 @@ export-panel
                     svg.icon
                         use(xlink:href="data/icons.svg#linux")
                     |   Linux
-                label.checkbox
+                label.checkbox(disabled="{process.platform === 'win32'}" title="{process.platform === 'win32' && voc.cannotBuildForMacOnWin}")
                     input(type="checkbox" checked="{currentProject.settings.export.mac}" onchange="{wire('window.currentProject.settings.export.mac')}")
                     svg.icon
                         use(xlink:href="data/icons.svg#apple")
@@ -158,7 +158,7 @@ export-panel
                     this.log.push(`Linux builds are ready at these paths:\n  ${paths.join('\n  ')}`);
                     this.update();
                 }
-                if (currentProject.settings.export.mac) {
+                if (currentProject.settings.export.mac && process.platform !== 'win32') {
                     this.log.push('Building for MacOS…');
                     this.update();
                     const paths = await packager(Object.assign({}, baseOptions, {
