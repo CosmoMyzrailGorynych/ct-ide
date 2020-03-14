@@ -408,6 +408,21 @@ const Copy = (function () {
          */
         'with'(obj, func) {
             func.apply(obj, this);
+        },
+        /**
+         * Checks whether a given object exists in game's world.
+         * Intended to be applied to copies, but may be used with other PIXI entities.
+         * @param {Copy|Pixi.DisplayObject|any} obj The copy which existence needs to be checked.
+         * @returns {boolean} Returns `true` if a copy exists; `false` otherwise.
+         */
+        exists(obj) {
+            if (obj instanceof Copy) {
+                return !obj.kill;
+            }
+            if (obj instanceof PIXI.DisplayObject) {
+                return Boolean(obj.position);
+            }
+            return Boolean(obj);
         }
     };
     ct.types.copy = ct.types.make;
