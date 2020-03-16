@@ -66,6 +66,12 @@ class Room extends PIXI.Container {
      */
     ct.rooms = {
         templates: {},
+        /**
+         * An object that contains arrays of currently present rooms.
+         * These include the current room (`ct.room`), as well as any rooms
+         * appended or prepended through `ct.rooms.append` and `ct.rooms.prepend`.
+         * @type {Object.<string,Array<Room>>}
+         */
         list: {},
         /**
          * Creates and adds a background to the current room, at the given depth.
