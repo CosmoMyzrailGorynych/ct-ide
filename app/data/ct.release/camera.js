@@ -15,6 +15,8 @@
  * @property {number} targetY The y-coordinate of the target location. Moving it instead of just using the `y` parameter will trigger the drift effect.
  *
  * @property {Copy|false} follow If set, the camera will follow the given copy.
+ * @property {boolean} followX Works if `follow` is set to a copy. Enables following in X axis. Set it to `false` and followY to `true` to limit automatic camera movement to vertical axis.
+ * @property {boolean} followY Works if `follow` is set to a copy. Enables following in Y axis. Set it to `false` and followX to `true` to limit automatic camera movement to horizontal axis.
  * @property {number|null} borderX Works if `follow` is set to a copy. Sets the frame inside which the copy will be kept, in game pixels. Can be set to `null` so the copy is set to the center of the screen.
  * @property {number|null} borderY Works if `follow` is set to a copy. Sets the frame inside which the copy will be kept, in game pixels. Can be set to `null` so the copy is set to the center of the screen.
  * @property {number} shiftX Displaces the camera horizontally but does not change x and y parameters.
@@ -33,6 +35,7 @@ class Camera extends PIXI.DisplayObject {
     constructor(x, y, w, h) {
         super();
         this.follow = this.rotate = false;
+        this.followX = this.followY = true;
         this.targetX = this.x = x;
         this.targetY = this.y = y;
         this.width = w || 1920;
@@ -105,15 +108,20 @@ class Camera extends PIXI.DisplayObject {
                   by = this.borderY === null? this.height / 2 : Math.min(this.borderY, this.height / 2);
             const tl = this.uiToGameCoord(bx, by),
                   br = this.uiToGameCoord(this.width - bx, this.height - by);
-            if (this.follow.x < tl[0] - this.interpolatedShiftX) {
-                this.targetX = this.follow.x - bx + this.width / 2;
-            } else if (this.follow.x > br[0] - this.interpolatedShiftX) {
-                this.targetX = this.follow.x + bx - this.width / 2;
+
+            if (this.followX) {
+                if (this.follow.x < tl[0] - this.interpolatedShiftX) {
+                    this.targetX = this.follow.x - bx + this.width / 2;
+                } else if (this.follow.x > br[0] - this.interpolatedShiftX) {
+                    this.targetX = this.follow.x + bx - this.width / 2;
+                }
             }
-            if (this.follow.y < tl[1] - this.interpolatedShiftY) {
-                this.targetY = this.follow.y - by + this.height / 2;
-            } else if (this.follow.y > br[1] - this.interpolatedShiftY) {
-                this.targetY = this.follow.y + by - this.height / 2;
+            if (this.followY) {
+                if (this.follow.y < tl[1] - this.interpolatedShiftY) {
+                    this.targetY = this.follow.y - by + this.height / 2;
+                } else if (this.follow.y > br[1] - this.interpolatedShiftY) {
+                    this.targetY = this.follow.y + by - this.height / 2;
+                }
             }
         }
 
