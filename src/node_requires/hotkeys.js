@@ -67,7 +67,7 @@ class Hotkeys {
                 event();
             }
         }
-        const elts = this.document.querySelectorAll(`[data-hotkey="${code}"]`);
+        const elts = this.document.querySelectorAll(`[data-hotkey="${code.replace(/"/g, '\\"')}"]`);
         if (this.scopeStack.length) {
             // walk from the most recent scope to the last one
             for (let i = this.scopeStack.length - 1; i >= 0; i--) {
