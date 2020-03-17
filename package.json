@@ -35,7 +35,7 @@
     "gulp-stylus": "^2.7.0",
     "gulp-svgstore": "^7.0.1",
     "jsdoc-x": "^4.0.3",
-    "minimist": "^1.2.0",
+    "minimist": "^1.2.2",
     "node-notifier": "^5.2.1",
     "pug": "^2.0.3",
     "pug-lint-config-clock": "^2.0.0",
