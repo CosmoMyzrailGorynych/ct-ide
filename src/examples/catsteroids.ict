@@ -47,8 +47,8 @@ types:
 
       this.weapon = 'simple';
 
-      this.crossSwitch = 1; // This will flip the animation of the cross-like
-      bullets
+      this.shootSwitch = 1; // This will flip the animation of the spherical
+      bullets, and the position of individual energy bolts
 
 
       //ct.emitters.append(this, 'Shield');
@@ -108,22 +108,23 @@ types:
       // create a new laser bullet depending on a weapon type
 
       if (ct.actions.Shoot.down) {
-          if (this.weapon === 'simple' && this.shootTimer > 15) {
-              ct.types.copy('Laser_Simple_Blue', this.x, this.y);
+          if (this.weapon === 'simple' && this.shootTimer > 10) {
+              ct.types.copy('Laser_Simple_Blue', this.x + 75*this.shootSwitch, this.y);
+              this.shootSwitch *= -1;
               ct.sound.spawn('Laser_Small');
               // Reset shooting delay
               this.shootTimer = 0;
           }
           if (this.weapon === 'spread' && this.shootTimer > 15) {
               // create three laser bolts
-              ct.types.copy('Laser_Simple_Blue', this.x-40, this.y);
+              ct.types.copy('Laser_Simple_Blue', this.x-75, this.y);
               ct.types.copy('Laser_Simple_Blue', this.x, this.y - 20);
-              ct.types.copy('Laser_Simple_Blue', this.x+40, this.y);
+              ct.types.copy('Laser_Simple_Blue', this.x+75, this.y);
               ct.sound.spawn('Laser_Small');
               // Reset shooting delay
               this.shootTimer = 0;
           }
-          if (this.weapon === 'bolt' && this.shootTimer > 60) {
+          if (this.weapon === 'bolt' && this.shootTimer > 40) {
               // slow, but powerful
               ct.types.copy('Laser_Bolt_Blue', this.x, this.y);
               ct.sound.spawn('Laser_Medium');
@@ -133,8 +134,8 @@ types:
           if (this.weapon === 'cross' && this.shootTimer > 10) {
               // this one shoots much faster
               var bullet = ct.types.copy('Laser_Cross_Blue', this.x, this.y);
-              bullet.scale.x = this.crossSwitch;
-              this.crossSwitch *= -1;
+              bullet.scale.x = this.shootSwitch;
+              this.shootSwitch *= -1;
               ct.sound.spawn('Laser_Medium');
               // Reset shooting delay
               this.shootTimer = 0;
@@ -187,7 +188,7 @@ types:
       ct.u.wait(2999)
       .then(() => ct.rooms.switch('RetryScreen'));
     uid: 1fab434d-0976-4b65-8390-d013695aba8c
-    lastmod: 1583893470849
+    lastmod: 1584415314540
     extends: {}
     texture: e1452137-8cfa-4eec-b54a-0f2660326b48
   - name: Laser_Simple_Blue
@@ -197,6 +198,8 @@ types:
       this.direction = 90;
       this.rotation = this.direction;
       this.ctype = 'BulletsHeroes';
+
+      this.damage = 5;
     onstep: |-
       if (this.y < -48) {
           this.kill = true;
@@ -206,7 +209,7 @@ types:
     ondraw: ''
     ondestroy: ''
     uid: 92e6ec14-1de0-483a-84b8-a8669ac65937
-    lastmod: 1583893192672
+    lastmod: 1584415349120
     extends: {}
     texture: e6148099-65e7-4d2b-acf1-3e6b3a8fc033
   - name: Asteroid
@@ -231,33 +234,23 @@ types:
 
       var obstacle = ct.place.occupied(this, this.x, this.y, 'BulletsHeroes');
       if (obstacle) {
-
-          if (obstacle.type !== 'Laser_Bolt_Blue') { // Bolts will dash through enemies
-              obstacle.kill = true;
+          if (obstacle) {
+              calculateDamage(this, obstacle);
           }
-
-          this.health--;
-          if (this.health <= 0) {
-              this.kill = true;
-              ct.room.score += 15;
-          } else {
-              this.addSpeed(obstacle.speed * 0.1, obstacle.direction);
-          }
-          
-          // Add some score points
+          this.addSpeed(obstacle.speed * 0.1, obstacle.direction);
       }
 
-      if (this.x < -100 ||
-          this.x > ct.camera.width + 100 ||
-          this.y < -120 ||
-          this.y > ct.camera.height + 100
+      if (this.x < -200 ||
+          this.x > ct.camera.width + 200 ||
+          this.y < -200 ||
+          this.y > ct.camera.height + 200
       ) {
           this.kill = true;
       }
     ondraw: ''
     ondestroy: 'ct.emitters.fire(''ChunkBurst'', this.x, this.y);'
     uid: 1fa16a0f-e9a0-4117-9c28-87fa72b33d2b
-    lastmod: 1584061869049
+    lastmod: 1584415881093
     extends: {}
     texture: 1a904383-2edd-4435-a37b-17148f44e0e0
   - name: Laser_Cross_Blue
@@ -268,6 +261,8 @@ types:
       this.phase = 0;
       this.rotation = ct.random.deg();
       ct.emitters.follow(this, 'Electricity');
+
+      this.damage = 7.5;
     onstep: |-
       if (this.y < -48) {
           this.kill = true;
@@ -281,7 +276,7 @@ types:
     ondraw: ''
     ondestroy: ''
     uid: 140f8bde-bd06-4b2d-a5f2-87427848252e
-    lastmod: 1584061887803
+    lastmod: 1584415649118
     extends: {}
     texture: 4b86d5c4-ae3c-4edf-90d7-79a6778e9a29
   - name: GameController
@@ -419,7 +414,7 @@ types:
     ondraw: ''
     ondestroy: ''
     uid: bc01cee1-1b8b-4418-aeb9-a7c5eac2cd51
-    lastmod: 1583191538092
+    lastmod: 1584413383926
     extends: {}
     texture: 25fb712b-0aca-4b18-8e10-7c545d4bca8d
   - name: Enemy_Shooter
@@ -445,6 +440,8 @@ types:
 
       this.shootTimer = 2 * ct.speed;
 
+      this.health = 20;
+
 
       ct.emitters.append(this, 'JetFlame', {
           position: {
@@ -463,13 +460,7 @@ types:
 
       var obstacle = ct.place.occupied(this, this.x, this.y, 'BulletsHeroes');
       if (obstacle) {
-          this.kill = true;
-          if (obstacle.type !== 'Laser_Bolt_Blue') { // Bolts will dash through enemies
-              obstacle.kill = true;
-          }
-          
-          // Add some score points
-          ct.room.score += 25;
+          calculateDamage(this, obstacle);
       }
 
       if (this.y > ct.viewHeight + 100) {
@@ -487,7 +478,7 @@ types:
           ct.types.copy('AbstractBonus', this.x, this.y);
       }
     uid: 500fd472-19aa-41a0-9504-123c37540702
-    lastmod: 1583893255096
+    lastmod: 1584415675277
     extends: {}
     texture: 048b77d3-e7e3-4817-99ee-8b7c0a6da8bf
   - name: EnemyBullet
@@ -508,13 +499,13 @@ types:
     ondraw: ''
     ondestroy: ''
     uid: 65a71d76-039a-4e20-8433-d20277dd2402
-    lastmod: 1583892897087
+    lastmod: 1584414150830
     extends: {}
     texture: fc3e2f9b-61af-4ae4-9375-dcfae65f6a34
   - name: Enemy_Wiggler
     depth: 2
-    oncreate: |2-
-          // This mob will move in a sine wave and emit projectiles randomly
+    oncreate: |-
+      // This mob will move in a sine wave and emit projectiles randomly
       this.phase = this.phase || 0;
 
       this.ctype = 'Enemy';
@@ -526,6 +517,8 @@ types:
               y: 100
           }
       });
+
+      this.health = 10;
     onstep: >-
       this.phase += 1 / 60 * ct.delta;
 
@@ -551,13 +544,7 @@ types:
       var obstacle = ct.place.occupied(this, this.x, this.y, 'BulletsHeroes');
 
       if (obstacle) {
-          this.kill = true;
-          if (obstacle.type !== 'Laser_Bolt_Blue') { // Bolts will dash through enemies
-              obstacle.kill = true;
-          }
-          
-          // Add some score points
-          ct.room.score += 30;
+          calculateDamage(this, obstacle);
       }
 
 
@@ -576,7 +563,7 @@ types:
           ct.types.copy('AbstractBonus', this.x, this.y);
       }
     uid: 9d0992a4-d0ef-4c5e-9d17-2e5167f26598
-    lastmod: 1583893400899
+    lastmod: 1584415655891
     extends: {}
     texture: 16c209a9-25b2-41e4-b0d5-21cb22fd1421
   - name: Laser_Bolt_Blue
@@ -585,6 +572,9 @@ types:
       this.speed = 25;
       this.direction = 90;
       this.ctype = 'BulletsHeroes';
+      ct.emitters.follow(this, 'PowerBoltTrail');
+
+      this.damage = 20;
     onstep: |-
       if (this.y < -48) {
           this.kill = true;
@@ -594,7 +584,7 @@ types:
     ondraw: ''
     ondestroy: ''
     uid: 912af24f-1569-46a3-9194-fbf0384f3b0e
-    lastmod: 1552044696093
+    lastmod: 1584415954706
     extends: {}
     texture: c12edc06-ad3f-49f4-b9d4-3d33226e9ecc
   - name: Enemy_Bomber
@@ -614,7 +604,7 @@ types:
       });
 
       // this mob will be quite sturdy
-      this.health = 30;
+      this.health = 120;
 
       this.jumpTimer = ct.speed * 2;
     onstep: |-
@@ -645,17 +635,7 @@ types:
 
       var obstacle = ct.place.occupied(this, this.x, this.y, 'BulletsHeroes');
       if (obstacle) {
-          if (obstacle.type === 'Laser_Bolt_Blue') { // Bolts will do additional damage
-              this.health -= 5;
-          } else {
-              this.health -= 1;
-          }
-          obstacle.kill = true;
-          if (this.health <= 0) {
-              this.kill = true;
-              // Add some score points
-              ct.rooms.current.score += 125;
-          }    
+          calculateDamage(this, obstacle);
       }
     ondraw: ''
     ondestroy: >-
@@ -666,7 +646,7 @@ types:
 
       ct.types.copy('AbstractBonus', this.x, this.y);
     uid: ebfeaaab-f16a-48fa-b97c-687945f99668
-    lastmod: 1584060061074
+    lastmod: 1584415668901
     extends: {}
     texture: 771c5c1f-ffdc-4b50-a1ce-aed472e44557
   - name: Laser_Cross_Red
@@ -930,6 +910,15 @@ rooms:
       - x: 600
         'y': 650
         uid: 1fab434d-0976-4b65-8390-d013695aba8c
+      - x: 500
+        'y': 300
+        uid: bc01cee1-1b8b-4418-aeb9-a7c5eac2cd51
+      - x: 750
+        'y': 300
+        uid: bc01cee1-1b8b-4418-aeb9-a7c5eac2cd51
+      - x: 1150
+        'y': 300
+        uid: bc01cee1-1b8b-4418-aeb9-a7c5eac2cd51
   - name: MainMenu
     oncreate: >-
       //ct.sound.spawn('Music', {
@@ -1088,7 +1077,20 @@ palette:
   - '#70C4FF'
   - '#00345E'
 startroom: 6c75cdb8-cfb4-4dcc-887a-f76ae98b5499
-scripts: []
+scripts:
+  - name: calculateDamage
+    code: |-
+      const calculateDamage = function(ship, bullet) {
+          ship.health -= bullet.damage;
+          if (bullet.type === 'Laser_Bolt_Blue' && ship.health < 0) { // Bolts may survive the collision do additional damage
+              bullet.damage = -this.health; // bring overkill damage back to the bullet
+          } else {
+              bullet.kill = true;
+          }
+          if (ship.health <= 0) {
+              ship.kill = true;
+          }
+      }
 ctjsVersion: 1.3.0
 fonts: []
 skeletons: []
@@ -1289,33 +1291,35 @@ textures:
     uid: 4b86d5c4-ae3c-4edf-90d7-79a6778e9a29
     padding: 1
     source: /home/comigo/Desktop/EnergyBall_Blue.png
-    lastmod: 1583892620592
+    lastmod: 1584413069075
   - name: Laser_Bolt_Blue
     untill: 0
     grid:
       - 1
       - 1
     axis:
-      - 6
-      - 28
+      - 19.75
+      - 18.5
     marginx: 0
     marginy: 0
     offx: 0
     offy: 0
-    origname: i5.png
-    shape: rect
+    origname: ic12edc06-ad3f-49f4-b9d4-3d33226e9ecc.png
+    shape: circle
     left: 6
     right: 7
     top: 28
     bottom: 29
     frames: 1
-    width: 13
-    height: 57
-    imgWidth: 13
-    imgHeight: 57
-    lastmod: 1508497007651
+    width: 39
+    height: 111
+    imgWidth: 39
+    imgHeight: 111
+    lastmod: 1584414116760
     uid: c12edc06-ad3f-49f4-b9d4-3d33226e9ecc
     padding: 1
+    source: /home/comigo/Downloads/PowerBolt.png
+    r: 13
   - name: StartButton
     untill: 0
     grid:
@@ -1377,104 +1381,108 @@ textures:
       - 1
       - 1
     axis:
-      - 26
-      - 26
+      - 47
+      - 66
     marginx: 0
     marginy: 0
     offx: 0
     offy: 0
-    origname: i20.png
+    origname: i25fb712b-0aca-4b18-8e10-7c545d4bca8d.png
     shape: rect
-    left: 26
+    left: 25
     right: 26
-    top: 26
-    bottom: 26
+    top: 24
+    bottom: 24
     frames: 1
-    width: 52
-    height: 52
-    imgWidth: 52
-    imgHeight: 52
-    lastmod: 1583212446061
+    width: 94
+    height: 103
+    imgWidth: 94
+    imgHeight: 103
+    lastmod: 1584413219533
     uid: 25fb712b-0aca-4b18-8e10-7c545d4bca8d
     padding: 1
+    source: /home/comigo/Downloads/Bonus_Repair.png
   - name: Bonus_Spread
     untill: 0
     grid:
       - 1
       - 1
     axis:
-      - 26
-      - 26
+      - 37.25
+      - 72.75
     marginx: 0
     marginy: 0
     offx: 0
     offy: 0
-    origname: i21.png
+    origname: i5180fa6f-778b-44ac-883f-0f55a294292f.png
     shape: rect
-    left: 26
+    left: 25
     right: 26
-    top: 26
-    bottom: 26
+    top: 25
+    bottom: 23
     frames: 1
-    width: 52
-    height: 52
-    imgWidth: 52
-    imgHeight: 52
-    lastmod: 1521786327821
+    width: 74
+    height: 109
+    imgWidth: 74
+    imgHeight: 109
+    lastmod: 1584413200845
     uid: 5180fa6f-778b-44ac-883f-0f55a294292f
     padding: 1
+    source: /home/comigo/Downloads/Bonus_Tripple.png
   - name: Bonus_Bolt
     untill: 0
     grid:
       - 1
       - 1
     axis:
-      - 26
-      - 27
+      - 37
+      - 77.25
     marginx: 0
     marginy: 0
     offx: 0
     offy: 0
-    origname: i22.png
+    origname: ic7305cd4-3a22-4f4d-b42e-adbd8651ffe0.png
     shape: rect
-    left: 26
+    left: 25
     right: 26
-    top: 27
-    bottom: 28
+    top: 23
+    bottom: 26
     frames: 1
-    width: 52
-    height: 55
-    imgWidth: 52
-    imgHeight: 55
-    lastmod: 1521786348095
+    width: 74
+    height: 116
+    imgWidth: 74
+    imgHeight: 116
+    lastmod: 1584415079306
     uid: c7305cd4-3a22-4f4d-b42e-adbd8651ffe0
     padding: 1
+    source: /home/comigo/Downloads/Bonus_PowerBolt.png
   - name: Bonus_Cross
     untill: 0
     grid:
       - 1
       - 1
     axis:
-      - 26
-      - 26
+      - 37
+      - 72
     marginx: 0
     marginy: 0
     offx: 0
     offy: 0
-    origname: i23.png
+    origname: i3d364ae5-40e9-4c13-b1c7-9e0415273865.png
     shape: rect
-    left: 26
+    left: 25
     right: 26
-    top: 26
-    bottom: 26
+    top: 24
+    bottom: 24
     frames: 1
-    width: 52
-    height: 52
-    imgWidth: 52
-    imgHeight: 52
-    lastmod: 1521786359659
+    width: 74
+    height: 109
+    imgWidth: 74
+    imgHeight: 109
+    lastmod: 1584413183394
     uid: 3d364ae5-40e9-4c13-b1c7-9e0415273865
     padding: 1
+    source: /home/comigo/Downloads/Bonus_EnergyBall.png
   - name: Enemy_Wiggler
     untill: 0
     grid:
@@ -2998,3 +3006,154 @@ emitterTandems:
           delay: 0
           noRotation: false
         uid: 15abdb0e-27b1-4cd6-b48c-7aa51ef35f42
+  - name: PowerBoltTrail
+    origname: ptd33169b439d4
+    emitters:
+      - texture: c12edc06-ad3f-49f4-b9d4-3d33226e9ecc
+        openedTabs:
+          - texture
+          - shape
+          - spawning
+          - velocity
+          - direction
+        settings:
+          alpha:
+            list:
+              - value: 0
+                time: 0
+              - time: 0.14799999999999996
+                value: 0.47
+              - value: 0.58
+                time: 0.436
+              - value: 0
+                time: 1
+            isStepped: false
+          scale:
+            list:
+              - value: 1
+                time: 0
+              - value: 1
+                time: 1
+            isStepped: false
+          color:
+            list:
+              - value: ffffff
+                time: 0
+              - time: 0.14799999999999996
+                value: 94FFFB
+              - value: ffffff
+                time: 0.436
+              - value: ffffff
+                time: 1
+            isStepped: false
+          blendMode: add
+          speed:
+            list:
+              - value: 412.5
+                time: 0
+              - value: 225
+                time: 1
+            isStepped: false
+          startRotation:
+            min: 270
+            max: 270
+          rotationSpeed:
+            min: 0
+            max: 0
+          rotationAcceleration: 0
+          lifetime:
+            min: 0.25
+            max: 0.75
+          frequency: 0.028
+          spawnChance: 1
+          particlesPerWave: 1
+          angleStart: 270
+          emitterLifetime: 0
+          maxParticles: 1000
+          maxSpeed: 0
+          pos:
+            x: 0
+            'y': 0
+          acceleration:
+            x: 0
+            'y': 0
+          addAtBack: false
+          spawnType: circle
+          spawnCircle:
+            x: 0
+            'y': 0
+            r: 17
+          delay: 0
+          noRotation: true
+        uid: 7e2dca34-17cf-4c57-ae6d-382b174c0db2
+      - texture: 4b86d5c4-ae3c-4edf-90d7-79a6778e9a29
+        openedTabs:
+          - texture
+          - scaling
+          - velocity
+        settings:
+          alpha:
+            list:
+              - value: 0
+                time: 0
+              - value: 1
+                time: 0.5
+              - value: 0
+                time: 1
+            isStepped: false
+          scale:
+            list:
+              - value: 0.275
+                time: 0
+              - value: 0
+                time: 1
+            isStepped: false
+          color:
+            list:
+              - value: ffffff
+                time: 0
+              - value: ffffff
+                time: 0.5
+              - value: ffffff
+                time: 1
+            isStepped: false
+          blendMode: normal
+          speed:
+            list:
+              - value: 237.49999999999994
+                time: 0
+              - value: 362.5
+                time: 1
+            isStepped: false
+          startRotation:
+            min: 0
+            max: 360
+          rotationSpeed:
+            min: 0
+            max: 0
+          rotationAcceleration: 0
+          lifetime:
+            min: 0.11
+            max: 0.33
+          frequency: 0.008
+          spawnChance: 1
+          particlesPerWave: 1
+          angleStart: 270
+          emitterLifetime: 0
+          maxParticles: 1000
+          maxSpeed: 0
+          pos:
+            x: 0
+            'y': 0
+          acceleration:
+            x: 0
+            'y': 0
+          addAtBack: false
+          spawnType: circle
+          spawnCircle:
+            x: 0
+            'y': 0
+            r: 32
+          delay: 0
+          noRotation: true
+        uid: f7b5ca35-38aa-456c-8bbd-a455a3ff097c
