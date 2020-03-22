@@ -652,10 +652,10 @@ types:
 
 
 
-      if (ct.place.occupied(this, 'Obstacle') && this.tex === 'PotatoCat' || //
-      If it bumped into something solid, or
+      if (!this.gameover && (ct.place.occupied(this, 'Obstacle') || // If it
+      bumped into something solid, or
           this.y > ct.camera.bottom - 325 || // if it got too low so it touched ground, or
-          this.y < ct.camera.top // if it flew to space and left upper camera boundary
+          this.y < ct.camera.top) // if it flew to space and left upper camera boundary
       ) {
           // Change the texture
           this.tex = 'PotatoCat_Stunned';
@@ -695,7 +695,7 @@ types:
     uid: 8f93611e-6e95-49c4-8e2b-4cc067be2924
     texture: eb24c2bc-a36c-4118-b33e-a7348c00e5bb
     extends: {}
-    lastmod: 1584411123557
+    lastmod: 1584503535091
   - name: Tube
     depth: 0
     oncreate: |-
@@ -994,7 +994,7 @@ rooms:
     thumbnail: a891fb029f6b
     gridX: 108
     gridY: 64
-    lastmod: 1584326149478
+    lastmod: 1584496269570
   - name: UI_InGame
     oncreate: ''
     onstep: ''
