@@ -419,16 +419,6 @@ ct.u.ext(ct.u, {// make aliases
 });
 
 (() => {
-    const removeKilledCopies = (array) => {
-        let j = 0;
-        for (let i = 0; i < array.length; i++) {
-            if (!array[i].kill) {
-                array[j++] = array[i];
-            }
-        }
-        array.length = j;
-        return array;
-    };
     const killRecursive = copy => {
         copy.kill = true;
         if (copy.onDestroy) {
@@ -440,6 +430,17 @@ ct.u.ext(ct.u, {// make aliases
                 killRecursive(child);
             }
         }
+        const stackIndex = ct.stack.indexOf(copy);
+        if (stackIndex !== -1) {
+            ct.stack.splice(stackIndex, 1);
+        }
+        if (copy.type) {
+            const typelistIndex = ct.types.list[copy.type].indexOf(copy);
+            if (typelistIndex !== -1) {
+                ct.types.list[copy.type].splice(typelistIndex, 1);
+            }
+        }
+        deadPool.push(copy);
     };
     const manageCamera = () => {
         if (ct.camera) {
@@ -468,24 +469,12 @@ ct.u.ext(ct.u, {// make aliases
             ct.rooms.afterStep.apply(item);
         }
         // copies
-        for (let i = 0; i < ct.stack.length; i++) {
-            // eslint-disable-next-line no-underscore-dangle
-            if (ct.stack[i].kill && !ct.stack[i]._destroyed) {
-                killRecursive(ct.stack[i]); // This will also allow a parent to eject children to a new container before they are destroyed as well
-                ct.stack[i].destroy({children: true});
-            }
-        }
         for (const copy of ct.stack) {
             // eslint-disable-next-line no-underscore-dangle
-            if (copy._destroyed) {
-                deadPool.push(copy);
+            if (copy.kill && !copy._destroyed) {
+                killRecursive(copy); // This will also allow a parent to eject children to a new container before they are destroyed as well
+                copy.destroy({children: true});
             }
-        }
-        removeKilledCopies(ct.stack);
-
-        // ct.types.list[type: String]
-        for (const i in ct.types.list) {
-            removeKilledCopies(ct.types.list[i]);
         }
 
         for (const cont of ct.stage.children) {
