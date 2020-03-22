@@ -136,6 +136,8 @@ class Tileset extends PIXI.Container {
  * @property {number} depth The relative position of a copy in a drawing stack. Higher values will draw the copy on top of those with lower ones
  * @property {number} xprev The horizontal location of a copy in the previous frame
  * @property {number} yprev The vertical location of a copy in the previous frame
+ * @property {number} xstart The starting location of a copy, meaning the point where it was created — either by placing it in a room with ct.IDE or by calling `ct.types.copy`.
+ * @property {number} ystart The starting location of a copy, meaning the point where it was created — either by placing it in a room with ct.IDE or by calling `ct.types.copy`.
  * @property {number} hspeed The horizontal speed of a copy
  * @property {number} vspeed The vertical speed of a copy
  * @property {number} gravity The acceleration that pulls a copy at each frame
