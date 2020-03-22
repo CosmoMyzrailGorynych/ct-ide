@@ -96,7 +96,7 @@
         e.preventDefault();
     };
     ct.mouse.listenerWheel = function (e) {
-        setKey('Wheel', e.wheelDelta || -e.detail < 0? -1 : 1);
+        setKey('Wheel', ((e.wheelDelta || -e.detail) < 0)? -1 : 1);
         //e.preventDefault();
     };
 
