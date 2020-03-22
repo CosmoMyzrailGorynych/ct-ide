@@ -221,6 +221,9 @@ type-editor.panel.view.flexrow
                 this.type.texture = -1;
             } else {
                 this.type.texture = texture.uid;
+                if (!this.type.lastmod && this.type.name === 'Type_' + this.type.uid.split('-').pop()) {
+                    this.type.name = texture.name;
+                }
             }
             this.selectingTexture = false;
             this.parent.fillTypeMap();
