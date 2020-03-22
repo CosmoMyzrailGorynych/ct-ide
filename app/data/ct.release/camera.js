@@ -38,6 +38,7 @@ class Camera extends PIXI.DisplayObject {
         this.followX = this.followY = true;
         this.targetX = this.x = x;
         this.targetY = this.y = y;
+        this.z = 500;
         this.width = w || 1920;
         this.height = h || 1080;
         this.shiftX = this.shiftY = this.interpolatedShiftX = this.interpolatedShiftY = 0;
