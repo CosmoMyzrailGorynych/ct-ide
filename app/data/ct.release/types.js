@@ -208,6 +208,9 @@ const Copy = (function () {
                     onDestroy: t.onDestroy,
                     shape: t.texture ? ct.res.registry[t.texture].shape : {}
                 });
+                if (exts && exts.depth !== void 0) {
+                    this.depth = exts.depth;
+                }
                 if (ct.types.list[type]) {
                     ct.types.list[type].push(this);
                 } else {
