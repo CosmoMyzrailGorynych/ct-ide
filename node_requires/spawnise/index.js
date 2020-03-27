@@ -5,6 +5,7 @@ const spawnise = {
     fromLines: (lines, opts) => {
         const commands = lines.split('\n')
             .map(str => str.trim())
+            .filter(str => str)
             .map(str => str.split(' '))
             .map(arrs => [arrs[0], [...arrs.slice(1)]]);
         return Promise.all(commands.map(set => spawnise.spawn(set[0], set[1], opts)));

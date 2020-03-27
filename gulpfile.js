@@ -23,6 +23,17 @@ const path = require('path'),
 const argv = minimist(process.argv.slice(2));
 const npm = (/^win/).test(process.platform) ? 'npm.cmd' : 'npm';
 
+const targets = [
+    'darwin-x64',
+    'linux-arm64',
+    'linux-armv7l',
+    'linux-ia32',
+    'linux-x64',
+    'win32-arm64',
+    'win32-ia32',
+    'win32-x64'
+];
+
 const pack = require('./app/package.json');
 
 var channelPostfix = argv.channel || false;
@@ -339,16 +350,79 @@ const build = gulp.parallel([
 ]);
 
 const bakePackages = async () => {
-    const builder = require('electron-builder');
+    const packager = require('electron-packager');
     await fs.remove(path.join('./build', `ctjs - v${pack.version}`));
-    await builder.build({// @see https://github.com/electron-userland/electron-builder/blob/master/packages/app-builder-lib/src/packagerApi.ts
-        projectDir: './app',
-        //mac: pack.build.mac.target || ['default'],
-        //win: pack.build.win.target,
-        //linux: pack.build.linux.target
-    });
+    const baseOptions = {
+        // Build parameters
+        dir: './app',
+        out: './build',
+        asar: true,
+        overwrite: true,
+        icon: './buildAssets/icon',
+
+        appCategoryType: 'public.app-category.developer-tools',
+
+        name: 'ct.js',
+        executableName: 'ctjs',
+        appCopyright: `Copyright © Cosmo Myzrail Gorynych ${(new Date()).getFullYear()} and contributors. Distributed under MIT license.`,
+        win32metadata: {
+            CompanyName: 'Cosmo Myzrail Gorynych aka ComigoGames',
+            FileDescription: 'A free, open-source 2D game editor that is easy to learn and fun to use'
+        },
+
+        ignore: [
+            /app\/data\/ct\.(libs|release)/,
+            /app\/data\/docs/,
+            /app\/data\/i18n/
+        ],
+
+        all: true
+    };
+
+    // wtf and why do I need it? @see https://github.com/electron/electron-packager/issues/875
+    // process.noAsar = true;
+
+    const paths = await packager(baseOptions);
+    console.log('Built to these locations:', paths);
 };
 
+const passthroughBundle = async () => {
+    await Promise.all(targets.map(target => Promise.all([
+        'data/ct.release',
+        'data/ct.libs',
+        'data/docs',
+        'data/i18n'
+    ].map(subpath => fs.copy(
+        path.join('./app', subpath),
+        path.join('./build/', `ct.js-${target}`, subpath)
+    )))));
+};
+
+//const flatpak = done => {
+//    const installer = require('electron-installer-flatpak');
+//    const options = {
+//        src: 'build/ct.js-linux-x64',
+//        dest: 'dist/',
+//        arch: 'x64',
+//        icon: 'app/ct_ide.png',
+//        categories: ['Development']
+//    };
+//
+//    console.log('Creating flatpak package… (this may take a while)');
+//
+//    installer(options, function (err) {
+//        if (err) {
+//            throw err;
+//        }
+//        console.log('Successfully created package at ' + options.dest);
+//        done();
+//    });
+//};
+
+const zipPackages = async () => {
+    await Promise.all(targets.map(target => fs.remove(`./build/ct.js-${target}.zip`)));
+    await Promise.all(targets.map(target => spawnise.fromLines(`zip -r -y ./build/ct.js-${target}.zip ./build/ct.js-${target}`)));
+};
 
 const examples = () => gulp.src('./src/examples/**/*')
     .pipe(gulp.dest('./app/examples'));
@@ -381,7 +455,10 @@ const packages = gulp.series([
     docs,
     patronsCache,
     examples,
-    bakePackages
+    bakePackages,
+    passthroughBundle,
+    zipPackages
+    //flatpak
 ]);
 
 const deployOnly = () => {

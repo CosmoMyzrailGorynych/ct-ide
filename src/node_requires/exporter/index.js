@@ -124,7 +124,7 @@ const exportCtProject = async (project, projdir) => {
         await fs.copyFile(basePath + 'ct.release/pixi.min.js', path.join(writeDir, '/pixi.min.js'));
     }
     if (currentProject.emitterTandems && currentProject.emitterTandems.length) {
-        await fs.copyFile('node_modules/pixi-particles/dist/pixi-particles.min.js', path.join(writeDir, '/pixi-particles.min.js'));
+        await fs.copyFile(basePath + 'ct.release/pixi-particles.min.js', path.join(writeDir, '/pixi-particles.min.js'));
     }
 
     const startroom = getStartingRoom(currentProject);
