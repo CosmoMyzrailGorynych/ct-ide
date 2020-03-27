@@ -91,52 +91,7 @@ project-selector
          */
         this.newProject = async (way, codename) => {
             sessionStorage.showOnboarding = true;
-            var projectData = {
-                ctjsVersion: this.ctjsVersion,
-                notes: '/* empty */',
-                libs: {
-                    place: {
-                        gridX: 512,
-                        gridY: 512
-                    },
-                    fittoscreen: {
-                        mode: "scaleFit"
-                    },
-                    mouse: {},
-                    keyboard: {},
-                    'keyboard.polyfill': {},
-                    'sound.howler': {}
-                },
-                textures: [],
-                skeletons: [],
-                types: [],
-                sounds: [],
-                styles: [],
-                rooms: [],
-                actions: [],
-                emitterTandems: [],
-                starting: 0,
-                settings: {
-                    minifyhtmlcss: false,
-                    minifyjs: false,
-                    fps: 60,
-                    version: [0, 0, 0],
-                    versionPostfix: '',
-                    export: {
-                        windows64: true,
-                        windows32: true,
-                        linux64: true,
-                        linux32: true,
-                        mac64: true,
-                        debug: false
-                    },
-                    branding: {
-                        icon: -1,
-                        accent: '#446adb', // ct.js' crystal blue
-                        invertPreloaderScheme: true
-                    }
-                }
-            };
+            const projectData = require('./data/node_requires/resources/projects/defaultProject').get();
             const YAML = require('js-yaml');
             const data = YAML.safeDump(projectData);
             fs.outputFile(path.join(way, codename + '.ict'), data)
