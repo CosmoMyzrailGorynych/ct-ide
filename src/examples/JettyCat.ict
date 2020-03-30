@@ -607,7 +607,7 @@ types:
     uid: 25ac0f9b-57ff-461d-8eb7-a9ce800b9c71
     texture: 775ba15c-b1aa-4707-bc1e-d0811846a893
     extends: {}
-    lastmod: 1584411047797
+    lastmod: 1585538428974
   - name: PotatoCat
     depth: 0
     oncreate: |-
@@ -673,17 +673,8 @@ types:
           ct.u.wait(1000)
           .then(() => {
               // Add a layer with "Lose" UI
-              const room = ct.rooms.append('UI_OhNo', {
+              ct.rooms.append('UI_OhNo', {
                   isUi: true
-              });
-              // Add a transition from fully transparent to opaque layer
-              room.alpha = 0;
-              ct.tween.add({
-                  obj: room,
-                  fields: {
-                      alpha: 1
-                  },
-                  duration: 350
               });
           });
       }
@@ -695,7 +686,7 @@ types:
     uid: 8f93611e-6e95-49c4-8e2b-4cc067be2924
     texture: eb24c2bc-a36c-4118-b33e-a7348c00e5bb
     extends: {}
-    lastmod: 1584503535091
+    lastmod: 1585538104024
   - name: Tube
     depth: 0
     oncreate: |-
@@ -766,7 +757,7 @@ types:
     uid: 6a532c9b-7e32-4070-b72b-86012306c7fb
     texture: 343c1f60-adad-4233-bfcf-c13b8aade974
     extends: {}
-    lastmod: 1584411129135
+    lastmod: 1585538425962
   - name: Paused_Heading
     depth: 0
     oncreate: ''
@@ -782,23 +773,33 @@ types:
     oncreate: ''
     onstep: |-
       if (ct.touch.collideUi(this)) {
-          ct.rooms.remove(this.getRoom());
-          ct.tween.add({
-              obj: ct.pixiApp.ticker,
-              fields: {
-                  speed: 1
-              },
-              duration: 1000
-          });
-          // // Without transition:
-          // ct.pixiApp.ticker.speed = 1;
+          if (!this.pressed) {
+              this.pressed = true;
+              ct.tween.add({
+                  obj: this.getRoom(),
+                  fields: {
+                      alpha: 0
+                  },
+                  duration: 1000
+              })
+              .then(() => {
+                  ct.tween.add({
+                      obj: ct.pixiApp.ticker,
+                      fields: {
+                          speed: 1
+                      },
+                      duration: 1000
+                  });
+                  ct.rooms.remove(this.getRoom());
+              });
+          }
       }
     ondraw: ''
     ondestroy: ''
     uid: 43938432-cf0b-416d-91e9-8bc9a1f8abcf
     texture: 775ba15c-b1aa-4707-bc1e-d0811846a893
     extends: {}
-    lastmod: 1584411395205
+    lastmod: 1585540754831
   - name: OhNo_Heading
     depth: 0
     oncreate: ''
@@ -1021,7 +1022,16 @@ rooms:
     gridY: 64
     lastmod: 1584325850996
   - name: UI_Paused
-    oncreate: ''
+    oncreate: |-
+      this.alpha = 0;
+
+      ct.tween.add({
+          obj: this,
+          fields: {
+              alpha: 1
+          },
+          duration: 500
+      });
     onstep: ''
     ondraw: ''
     onleave: ''
@@ -1042,9 +1052,18 @@ rooms:
     thumbnail: 7d775aefe864
     gridX: 540
     gridY: 64
-    lastmod: 1584410832924
+    lastmod: 1585537872918
   - name: UI_OhNo
-    oncreate: ''
+    oncreate: |-
+      this.alpha = 0;
+
+      ct.tween.add({
+          obj: this,
+          fields: {
+              alpha: 1
+          },
+          duration: 500
+      });
     onstep: ''
     ondraw: ''
     onleave: ''
@@ -1068,7 +1087,7 @@ rooms:
     thumbnail: e38a4cd0cc21
     gridX: 540
     gridY: 64
-    lastmod: 1584410828908
+    lastmod: 1585537893376
 actions:
   - name: Poof
     methods:
@@ -1080,7 +1099,6 @@ emitterTandems:
       - texture: 74cac7dc-7259-4729-8494-53ed00563c2b
         openedTabs:
           - texture
-          - direction
           - scaling
           - colors
           - spawning
@@ -1090,8 +1108,8 @@ emitterTandems:
             list:
               - value: 0
                 time: 0
-              - value: 0.82
-                time: 0.228
+              - value: 0.835
+                time: 0.24000000000000002
               - value: 0
                 time: 1
             isStepped: false
@@ -1107,7 +1125,7 @@ emitterTandems:
               - value: ffffff
                 time: 0
               - value: ffffff
-                time: 0.228
+                time: 0.24000000000000002
               - value: ffffff
                 time: 1
             isStepped: false
