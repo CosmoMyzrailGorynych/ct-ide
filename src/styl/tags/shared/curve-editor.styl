@@ -11,6 +11,10 @@ curve-editor
     line-height 0
     .aDragger
         transform translate(-50%, -50%)
+        .safecolors &
+            box-shadow 0 0 0 2px white, 0 0 0 4px bd, 0 0.1rem 0.2rem 4px rgba(0, 0, 0, 0.5)
+            &.selected
+                box-shadow 0 0 0 2px bl, 0 0 0 4px act, 0 0.1rem 0.2rem 4px rgba(0, 0, 0, 0.5)
 .curve-editor-aGrid
     stroke bl
     stroke-width 1px

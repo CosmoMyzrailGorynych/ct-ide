@@ -88,6 +88,15 @@ class CtAction {
         this.value = Math.max(-1, Math.min(this.value, 1));
     }
     /**
+     * Resets the state of this action, setting its value to `0`
+     * and its pressed, down, released states to `false`.
+     *
+     * @returns {void}
+     */
+    reset() {
+        this.prevValue = this.value = 0;
+    }
+    /**
      * Returns whether the action became active in the current frame,
      * either by a button just pressed or by using a scalar input.
      *

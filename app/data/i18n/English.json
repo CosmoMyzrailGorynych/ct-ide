@@ -404,13 +404,17 @@
         "radius": "Radius:",
         "starPoints": "Points:",
         "startAngle": "Rotate, deg.:",
+        "showShapeVisualizer": "Show shape visualizer",
         "relativeEmitterPosition": "Position relative to other emitters",
 
         "addEmitter": "Add another emitter",
         "reset": "Reset preview",
         "changeBg": "Change background",
         "inspectorComplete": "Complete!",
-        "alreadyHasAnImportingTexture": "You already have a texture named $1. Either delete it or rename it; though you must be importing the same texture you've added before :)"
+        "alreadyHasAnImportingTexture": "You already have a texture named $1. Either delete it or rename it; though you must be importing the same texture you've added before :)",
+        "changeGrid": "Set grid size",
+        "newGridSize": "New grid size:",
+        "setPreviewTexture": "Set preview texture"
     },
     "types": {
         "create": "Create"

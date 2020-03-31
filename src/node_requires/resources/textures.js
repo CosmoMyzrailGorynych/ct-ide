@@ -305,11 +305,22 @@ const importImageToTexture = async src => {
     return obj;
 };
 
+const getTexturePivot = (texture, inPixels) => {
+    if (typeof texture === 'string') {
+        texture = getTextureFromId(texture);
+    }
+    if (inPixels) {
+        return [texture.axis[0], texture.axis[1]];
+    }
+    return [texture.axis[0] / texture.width, texture.axis[1] / texture.height];
+};
+
 module.exports = {
     clearPixiTextureCache,
     getTextureFromId,
     getTextureFromName,
     getTexturePreview,
+    getTexturePivot,
     getTextureOrig,
     getPixiTexture,
     getDOMImage,

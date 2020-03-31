@@ -19,7 +19,6 @@
   },
   "license": "MIT",
   "dependencies": {
-    "electron-installer-flatpak": "^0.8.0",
     "electron-packager": "^14.2.1",
     "electron-winstaller": "^4.0.0",
     "fs-extra": "9.0.0",
@@ -46,5 +45,8 @@
     "stylint-stylish": "^2.0.0",
     "stylus": "^0.54.7",
     "tsd-jsdoc": "^2.4.0"
+  },
+  "optionalDependencies": {
+    "electron-installer-flatpak": "^0.8.0"
   }
 }
