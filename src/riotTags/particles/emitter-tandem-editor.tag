@@ -33,7 +33,13 @@ emitter-tandem-editor.panel.view.flexrow
             button.nogrow.emitter-tandem-editor-aResetEmittersButton(onclick="{resetEmitters}")
                 span {voc.reset}
             .spacer
+            button.nogrow.emitter-tandem-editor-aChangeGridButton(onclick="{openPreviewTexturePicker}")
+                svg.feather
+                    use(xlink:href="data/icons.svg#coin")
+                span {voc.setPreviewTexture}
             button.nogrow.emitter-tandem-editor-aChangeGridButton(onclick="{changeGrid}")
+                svg.feather
+                    use(xlink:href="data/icons.svg#grid")
                 span {voc.changeGrid}
             button.nogrow.emitter-tandem-editor-aChangeBgButton(onclick="{changePreviewBg}")
                 svg.feather
@@ -53,6 +59,7 @@ emitter-tandem-editor.panel.view.flexrow
         hidealpha="true"
         color="{previewColor}" onapply="{updatePreviewColor}" onchanged="{updatePreviewColor}" oncancel="{cancelPreviewColor}"
     )
+    texture-selector(if="{pickingPreviewTexture}" showempty="yes" onselected="{onPreviewTexturePicked}" oncancelled="{onPreviewTextureCancel}")
     script.
         const Color = net.brehaut.Color;
 
@@ -155,10 +162,26 @@ emitter-tandem-editor.panel.view.flexrow
                 canvas.width = Math.round(box.width);
                 canvas.height = Math.round(box.height);
                 this.renderer.resize(canvas.width, canvas.height);
-                this.emitterContainer.x = this.visualizersContainer.x = canvas.width / 2;
-                this.emitterContainer.y = this.visualizersContainer.y = canvas.height / 2;
-                this.emitterContainer.scale.x = this.emitterContainer.scale.y = this.visualizersContainer.scale.x = this.visualizersContainer.scale.y = this.zoom;
+                this.emitterContainer.x = this.visualizersContainer.x = this.previewTexture.x = canvas.width / 2;
+                this.emitterContainer.y = this.visualizersContainer.y = this.previewTexture.y = canvas.height / 2;
+                this.emitterContainer.scale.x =
+                    this.emitterContainer.scale.y =
+                    this.visualizersContainer.scale.x =
+                    this.visualizersContainer.scale.y =
+                    this.visualizersContainer.scale.x =
+                    this.visualizersContainer.scale.y =
+                        this.zoom;
                 this.updateGrid();
+            }
+            if (this.tandem.previewTexture && this.tandem.previewTexture !== -1) {
+                const textures = require('./data/node_requires/resources/textures');
+                const pivot = textures.getTexturePivot(this.tandem.previewTexture);
+                [this.previewTexture.anchor.x, this.previewTexture.anchor.y] = pivot;
+                textures.getPixiTexture(this.tandem.previewTexture, 0).then(tex => {
+                    this.previewTexture.texture = tex;
+                });
+            } else {
+                this.previewTexture.texture = PIXI.Texture.EMPTY;
             }
         };
 
@@ -222,7 +245,6 @@ emitter-tandem-editor.panel.view.flexrow
             }
 
             const dark = Color(this.previewColor).getLuminance() > 0.5;
-
             this.grid.blendMode = dark? PIXI.BLEND_MODES.MULTIPLY : PIXI.BLEND_MODES.ADD;
 
             this.grid.width = this.refs.canvas.width;
@@ -255,11 +277,11 @@ emitter-tandem-editor.panel.view.flexrow
                 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
             }
 
-            this.visualizersContainer = new PIXI.Container();
-
             this.renderer.renderer.backgroundColor = Number('0x'+this.previewColor.slice(1));
+            this.visualizersContainer = new PIXI.Container();
+            this.previewTexture = new PIXI.Sprite(PIXI.Texture.EMPTY);
+            this.previewTexture.alpha = 0.5;
             this.emitterContainer = new PIXI.Container();
-            this.renderer.stage.addChild(this.emitterContainer);
             this.inspector = new PIXI.Text('', {
                 fill: 0xFFFFFF,
                 dropShadow: true,
@@ -274,8 +296,9 @@ emitter-tandem-editor.panel.view.flexrow
                     this.emitterInstances.map(e => `${e.particleCount} / ${e.maxParticles}`).join('\n') +
                     (this.complete? '\n'+this.voc.inspectorComplete : '');
             });
-
+            this.renderer.stage.addChild(this.previewTexture);
             this.renderer.stage.addChild(this.grid);
+            this.renderer.stage.addChild(this.emitterContainer);
             this.renderer.stage.addChild(this.inspector);
             this.renderer.stage.addChild(this.visualizersContainer);
 
@@ -339,7 +362,21 @@ emitter-tandem-editor.panel.view.flexrow
                     this.updateGrid();
                 }
             });
-        }
+        };
+
+        this.openPreviewTexturePicker = e => {
+            this.pickingPreviewTexture = true;
+        };
+        this.onPreviewTexturePicked = texture => e => {
+            this.tandem.previewTexture = texture.uid;
+            this.pickingPreviewTexture = false;
+            this.updatePreviewLayout();
+            this.update();
+        };
+        this.onPreviewTextureCancel = () => {
+            this.pickingPreviewTexture = false;
+            this.update();
+        };
 
         /* Zoom in/out by clicking buttons and scrolling mouse wheel */
 
@@ -378,7 +415,13 @@ emitter-tandem-editor.panel.view.flexrow
                     this.zoom = 0.125;
                 }
             }
-            this.emitterContainer.scale.x = this.emitterContainer.scale.y = this.visualizersContainer.scale.x = this.visualizersContainer.scale.y = this.zoom;
+            this.emitterContainer.scale.x =
+                this.emitterContainer.scale.y =
+                this.visualizersContainer.scale.x =
+                this.visualizersContainer.scale.y =
+                this.previewTexture.scale.x =
+                this.previewTexture.scale.y =
+                    this.zoom;
             this.updateGrid();
         };
 
