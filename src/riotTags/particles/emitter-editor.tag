@@ -366,6 +366,14 @@ emitter-editor.panel.pad
                 )
             .clear
 
+        fieldset
+            label.checkbox
+                input(
+                    type="checkbox" checked="{parent.opts.emitter.showShapeVisualizer}"
+                    onchange="{parent.wireAndReset('this.opts.emitter.showShapeVisualizer')}"
+                )
+                b {parent.voc.showShapeVisualizer}
+
         fieldset(if="{parent.opts.emitter.settings.spawnType === 'burst'}")
             label
                 b {parent.voc.starPoints}

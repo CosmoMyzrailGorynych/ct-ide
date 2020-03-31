@@ -112,6 +112,7 @@ emitter-tandem-editor.panel.view.flexrow
         };
         // Recreates all the emitters
         this.resetEmitters = async () => {
+            this.visualizersContainer.removeChildren();
             this.awaitCompletion = [];
             this.complete = false;
             if (this.resetOnCompletionTimeout) {
@@ -131,6 +132,12 @@ emitter-tandem-editor.panel.view.flexrow
             ).then(emitters =>
                 this.emitterInstances.push(...emitters)
             );
+            if (this.refs.canvas) {
+                const box = this.refs.canvas.getBoundingClientRect();
+                this.visualizersContainer.x = box.width / 2;
+                this.visualizersContainer.y = box.height / 2;
+            }
+            this.generateShapeVisualizers();
             this.update(); // Need to update the riot tag so that editors get their link to emitter instances
         };
         // Advances emitter simulation by a given amount of seconds
@@ -148,10 +155,64 @@ emitter-tandem-editor.panel.view.flexrow
                 canvas.width = Math.round(box.width);
                 canvas.height = Math.round(box.height);
                 this.renderer.resize(canvas.width, canvas.height);
-                this.emitterContainer.x = canvas.width / 2;
-                this.emitterContainer.y = canvas.height / 2;
-                this.emitterContainer.scale.x = this.emitterContainer.scale.y = this.zoom;
+                this.emitterContainer.x = this.visualizersContainer.x = canvas.width / 2;
+                this.emitterContainer.y = this.visualizersContainer.y = canvas.height / 2;
+                this.emitterContainer.scale.x = this.emitterContainer.scale.y = this.visualizersContainer.scale.x = this.visualizersContainer.scale.y = this.zoom;
                 this.updateGrid();
+            }
+        };
+
+        this.generateShapeVisualizers = () => {
+            for (const emitter of this.tandem.emitters) {
+                if (!emitter.showShapeVisualizer) {
+                    continue;
+                }
+                if (emitter.settings.spawnType === 'point') {
+                    const crosshair = new PIXI.Graphics();
+                    crosshair.lineStyle(2, 0x446adb, 1);
+                    crosshair.moveTo(0, -64);
+                    crosshair.lineTo(0, 64);
+                    crosshair.moveTo(-64, 0);
+                    crosshair.lineTo(64, 0);
+                    crosshair.x = emitter.settings.pos.x;
+                    crosshair.y = emitter.settings.pos.y;
+                    this.visualizersContainer.addChild(crosshair);
+                } else if (emitter.settings.spawnType === 'circle' || emitter.settings.spawnType === 'ring') {
+                    const circle = new PIXI.Graphics();
+                    circle.lineStyle(2, 0x446adb, 1);
+                    circle.beginFill(0x446adb, 0.27);
+                    circle.drawCircle(emitter.settings.pos.x, emitter.settings.pos.y, emitter.settings.spawnCircle.r);
+                    if (emitter.settings.spawnType === 'ring') {
+                        circle.beginHole();
+                        circle.drawCircle(emitter.settings.pos.x, emitter.settings.pos.y, emitter.settings.spawnCircle.minR);
+                        circle.endHole();
+                    }
+                    circle.endFill();
+                    this.visualizersContainer.addChild(circle);
+                } else if (emitter.settings.spawnType === 'rect') {
+                    const rect = new PIXI.Graphics();
+                    rect.lineStyle(2, 0x446adb, 1);
+                    rect.beginFill(0x446adb, 0.27);
+                    rect.drawRect(
+                        emitter.settings.pos.x + emitter.settings.spawnRect.x,
+                        emitter.settings.pos.y + emitter.settings.spawnRect.y,
+                        emitter.settings.spawnRect.w,
+                        emitter.settings.spawnRect.h,
+                    );
+                    rect.endFill();
+                    this.visualizersContainer.addChild(rect);
+                } else if (emitter.settings.spawnType === 'burst') {
+                    const crosshair = new PIXI.Graphics();
+                    crosshair.lineStyle(2, 0x446adb, 1);
+                    crosshair.drawStar(
+                        emitter.settings.pos.x,
+                        emitter.settings.pos.y,
+                        emitter.settings.particlesPerWave,
+                        64, 16,
+                        Math.PI * (0.5 + emitter.settings.angleStart / 180)
+                    );
+                    this.visualizersContainer.addChild(crosshair);
+                }
             }
         };
 
@@ -194,7 +255,7 @@ emitter-tandem-editor.panel.view.flexrow
                 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
             }
 
-            this.renderer.stage.addChild(this.grid);
+            this.visualizersContainer = new PIXI.Container();
 
             this.renderer.renderer.backgroundColor = Number('0x'+this.previewColor.slice(1));
             this.emitterContainer = new PIXI.Container();
@@ -213,7 +274,10 @@ emitter-tandem-editor.panel.view.flexrow
                     this.emitterInstances.map(e => `${e.particleCount} / ${e.maxParticles}`).join('\n') +
                     (this.complete? '\n'+this.voc.inspectorComplete : '');
             });
+
+            this.renderer.stage.addChild(this.grid);
             this.renderer.stage.addChild(this.inspector);
+            this.renderer.stage.addChild(this.visualizersContainer);
 
             this.resetEmitters();
             this.updatePreviewLayout();
@@ -314,7 +378,7 @@ emitter-tandem-editor.panel.view.flexrow
                     this.zoom = 0.125;
                 }
             }
-            this.emitterContainer.scale.x = this.emitterContainer.scale.y = this.zoom;
+            this.emitterContainer.scale.x = this.emitterContainer.scale.y = this.visualizersContainer.scale.x = this.visualizersContainer.scale.y = this.zoom;
             this.updateGrid();
         };
 
@@ -325,11 +389,16 @@ emitter-tandem-editor.panel.view.flexrow
             for (const emitter of this.emitterInstances) {
                 emitter.updateOwnerPos(dx, dy);
             }
+            this.visualizersContainer.x = e.offsetX;
+            this.visualizersContainer.y = e.offsetY;
         };
         this.resetEmitterPositioning = e => {
             for (const emitter of this.emitterInstances) {
                 emitter.updateOwnerPos(0, 0);
             }
+            const box = this.refs.canvas.getBoundingClientRect();
+            this.visualizersContainer.x = box.width / 2;
+            this.visualizersContainer.y = box.height / 2;
         };
 
         /*

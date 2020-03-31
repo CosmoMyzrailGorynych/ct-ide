@@ -404,6 +404,7 @@
         "radius": "Radius:",
         "starPoints": "Points:",
         "startAngle": "Rotate, deg.:",
+        "showShapeVisualizer": "Show shape visualizer",
         "relativeEmitterPosition": "Position relative to other emitters",
 
         "addEmitter": "Add another emitter",
