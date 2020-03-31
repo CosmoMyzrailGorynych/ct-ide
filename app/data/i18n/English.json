@@ -410,7 +410,9 @@
         "reset": "Reset preview",
         "changeBg": "Change background",
         "inspectorComplete": "Complete!",
-        "alreadyHasAnImportingTexture": "You already have a texture named $1. Either delete it or rename it; though you must be importing the same texture you've added before :)"
+        "alreadyHasAnImportingTexture": "You already have a texture named $1. Either delete it or rename it; though you must be importing the same texture you've added before :)",
+        "changeGrid": "Set grid size",
+        "newGridSize": "New grid size:"
     },
     "types": {
         "create": "Create"

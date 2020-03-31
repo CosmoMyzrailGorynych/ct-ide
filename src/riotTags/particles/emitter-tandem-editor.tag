@@ -29,12 +29,16 @@ emitter-tandem-editor.panel.view.flexrow
             onpointermove="{onCanvasMove}"
             onpointerout="{resetEmitterPositioning}"
         )
-        button.emitter-tandem-editor-aResetEmittersButton(onclick="{resetEmitters}")
-            span {voc.reset}
-        button.emitter-tandem-editor-aChangeBgButton(onclick="{changePreviewBg}")
-            svg.feather
-                use(xlink:href="data/icons.svg#droplet")
-            span {voc.changeBg}
+        .emitter-tandem-editor-Tools.flexrow
+            button.nogrow.emitter-tandem-editor-aResetEmittersButton(onclick="{resetEmitters}")
+                span {voc.reset}
+            .spacer
+            button.nogrow.emitter-tandem-editor-aChangeGridButton(onclick="{changeGrid}")
+                span {voc.changeGrid}
+            button.nogrow.emitter-tandem-editor-aChangeBgButton(onclick="{changePreviewBg}")
+                svg.feather
+                    use(xlink:href="data/icons.svg#droplet")
+                span {voc.changeBg}
         .zoom
             b(if="{window.innerWidth - panelWidth > 500}") {vocGlob.zoom}
             div.button-stack
@@ -50,6 +54,8 @@ emitter-tandem-editor.panel.view.flexrow
         color="{previewColor}" onapply="{updatePreviewColor}" onchanged="{updatePreviewColor}" oncancel="{cancelPreviewColor}"
     )
     script.
+        const Color = net.brehaut.Color;
+
         this.tandem = this.opts.tandem;
 
         this.namespace = 'particleEmitters';
@@ -58,6 +64,11 @@ emitter-tandem-editor.panel.view.flexrow
 
         this.previewColor = localStorage.tandemEditorPreviewBg || '#cccccc';
         this.complete = false;
+
+        this.gridSize = [64, 64];
+        if ('tandemEditorGridSize' in localStorage) {
+            this.gridSize = JSON.parse(localStorage.tandemEditorGridSize);
+        }
 
         /*
             Rendering and spawning emitters
@@ -140,13 +151,37 @@ emitter-tandem-editor.panel.view.flexrow
                 this.emitterContainer.x = canvas.width / 2;
                 this.emitterContainer.y = canvas.height / 2;
                 this.emitterContainer.scale.x = this.emitterContainer.scale.y = this.zoom;
+                this.updateGrid();
             }
+        };
+
+        this.updateGrid = size => {
+            if (!this.grid || !this.emitterContainer) {
+                return;
+            }
+
+            const dark = Color(this.previewColor).getLuminance() > 0.5;
+
+            this.grid.blendMode = dark? PIXI.BLEND_MODES.MULTIPLY : PIXI.BLEND_MODES.ADD;
+
+            this.grid.width = this.refs.canvas.width;
+            this.grid.height = this.refs.canvas.height;
+            this.grid.tilePosition.x = Math.round(this.emitterContainer.x);
+            this.grid.tilePosition.y = Math.round(this.emitterContainer.y);
+
+            this.grid.texture = this.gridGen([
+                this.gridSize[0] * this.zoom,
+                this.gridSize[1] * this.zoom
+            ], dark? '#ddd' : '#222');
         };
 
         this.on('mount', () => {
             window.addEventListener('resize', this.updatePreviewLayout);
 
             const box = this.refs.preview.getBoundingClientRect();
+
+            this.gridGen = require('./data/node_requires/generators/gridTexture').generatePixiTextureGrid;
+            this.grid = new PIXI.TilingSprite(this.gridGen());
 
             this.renderer = new PIXI.Application({
                 width: Math.round(box.width),
@@ -158,6 +193,8 @@ emitter-tandem-editor.panel.view.flexrow
                 PIXI.settings.ROUND_PIXELS = true;
                 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
             }
+
+            this.renderer.stage.addChild(this.grid);
 
             this.renderer.renderer.backgroundColor = Number('0x'+this.previewColor.slice(1));
             this.emitterContainer = new PIXI.Container();
@@ -218,6 +255,7 @@ emitter-tandem-editor.panel.view.flexrow
             if (evtype === 'onapply') {
                 this.changingPreviewColor = false;
             }
+            this.updateGrid();
             this.update();
         };
         this.cancelPreviewColor = () => {
@@ -226,6 +264,18 @@ emitter-tandem-editor.panel.view.flexrow
             this.renderer.renderer.backgroundColor = Number('0x'+this.previewColor.slice(1));
             this.update();
         };
+        this.changeGrid = e => {
+            alertify
+            .confirm(`${this.voc.newGridSize}<br/><input type="number" value="${this.gridSize[0]}" style="width: 6rem;" min=2 id="theGridSizeX"> x <input type="number" value="${this.gridSize[1]}" style="width: 6rem;" min=2 id="theGridSizeY">`)
+            .then(e => {
+                if (e.buttonClicked === 'ok') {
+                    this.gridSize[0] = Number(document.getElementById('theGridSizeX').value);
+                    this.gridSize[1] = Number(document.getElementById('theGridSizeY').value);
+                    localStorage.tandemEditorGridSize = JSON.stringify(this.gridSize);
+                    this.updateGrid();
+                }
+            });
+        }
 
         /* Zoom in/out by clicking buttons and scrolling mouse wheel */
 
@@ -265,6 +315,7 @@ emitter-tandem-editor.panel.view.flexrow
                 }
             }
             this.emitterContainer.scale.x = this.emitterContainer.scale.y = this.zoom;
+            this.updateGrid();
         };
 
         this.onCanvasMove = e => {
