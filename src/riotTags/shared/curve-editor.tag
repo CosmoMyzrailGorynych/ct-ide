@@ -142,9 +142,9 @@ curve-editor(ref="root")
             }
         };
         this.updateTime = e => {
-            this.wireAndChange('this.selectedPoint.time');
+            this.wireAndChange('this.selectedPoint.time')(e);
             if (this.opts.type === 'color') {
-                this.wireAndChange('this.selectedColorPoint.time');
+                this.wireAndChange('this.selectedColorPoint.time')(e);
             }
         };
         this.updateColor = e => {
