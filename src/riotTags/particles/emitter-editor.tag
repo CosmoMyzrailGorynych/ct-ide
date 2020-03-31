@@ -37,7 +37,7 @@ emitter-editor.panel.pad
                     lockstarttime="true" lockendtime="true"
                     onchange="{parent.updateColorCurve}"
                     type="color"
-                )
+                ).safecolors
         fieldset
             label.checkbox
                 input(
@@ -70,7 +70,7 @@ emitter-editor.panel.pad
             label
                 b {parent.voc.scale}
                 curve-editor(
-                    min="0" max="5"
+                    min="0" max="2"
                     valuestep="0.1"
                     easing="{parent.opts.emitter.settings.scale.isStepped? 'none' : 'linear'}"
                     curve="{parent.opts.emitter.settings.scale.list}"
