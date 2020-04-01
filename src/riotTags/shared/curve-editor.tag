@@ -46,6 +46,12 @@ curve-editor(ref="root")
                 span(each="{pos in [1, 0.8, 0.6, 0.4, 0.2, 0]}") {niceNumber(min + (pos * (max - min)))}
             svg(xmlns="http://www.w3.org/2000/svg" riot-viewbox="0 0 {width} {height}" ref="graph" onmousemove="{onGraphMouseMove}")
                 defs
+                    filter#greyOutlineEffect
+                        feMorphology(in="SourceAlpha" result="MORPH" operator="dilate" radius="2")
+                        feColorMatrix(in="MORPH" result="WHITENED" type="matrix" values="-1 0 0 0.8 0, 0 -1 0 0.8 0, 0 0 -1 0.8 0, 0 0 0 1 0")
+                        feMerge
+                            feMergeNode(in="WHITENED")
+                            feMergeNode(in="SourceGraphic")
                     linearGradient(
                         each="{point, ind in opts.colorcurve}"
                         if="{opts.type === 'color' && (ind < opts.curve.length - 1)}"
@@ -80,6 +86,7 @@ curve-editor(ref="root")
                             {getPointLeft(curve[ind+1])},{getPointTop(parent.opts.easing === 'none'? point : curve[ind+1]) + 0.00001}\
                         "
                         stroke="{parent.opts.type === 'color' && 'url(#'+uid+'grad'+ind+'to'+(ind+1)+')'}"
+                        filter="{parent.opts.type === 'color'? 'url(#greyOutlineEffect)' : ''}"
                         if="{ind !== curve.length - 1}"
                         onmousedown="{addPointOnSegment}"
                         title="{voc.curveLineHint}"
