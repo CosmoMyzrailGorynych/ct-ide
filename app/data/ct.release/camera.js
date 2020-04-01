@@ -156,7 +156,7 @@ class Camera extends PIXI.DisplayObject {
      * @readonly
      */
     get left() {
-        return this.computedX + (this.width / 2) * this.scale.x;
+        return this.computedX - (this.width / 2) * this.scale.x;
     }
     /**
      * Returns the position of the top edge where the visible rectangle ends, in game coordinates.
