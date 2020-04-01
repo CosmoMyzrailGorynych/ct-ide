@@ -576,7 +576,7 @@ textures:
     bottom: 134
     uid: df915202-237f-498c-bec0-25116fc17008
     padding: 1
-    lastmod: 1584329714392
+    lastmod: 1585717811993
 skeletons: []
 types:
   - name: Logo
@@ -620,12 +620,7 @@ types:
       ct.camera.followY = false;
       ct.camera.shiftX = 250;
 
-      this.jet = ct.emitters.follow(this, 'Jet', {
-          position: {
-              x: -120,
-              y: 100
-          }
-      });
+      this.jet = ct.emitters.follow(this, 'Jet');
     onstep: >-
       if (this.gameover) {
           this.gravity = this.gravityAcceleration;
@@ -681,12 +676,12 @@ types:
 
 
       this.move();
-    ondraw: this.rotation = this.vspeed * 0.25;
+    ondraw: this.rotation = this.vspeed * 0.3;
     ondestroy: ''
     uid: 8f93611e-6e95-49c4-8e2b-4cc067be2924
     texture: eb24c2bc-a36c-4118-b33e-a7348c00e5bb
     extends: {}
-    lastmod: 1585538104024
+    lastmod: 1585703857293
   - name: Tube
     depth: 0
     oncreate: |-
@@ -707,21 +702,21 @@ types:
     lastmod: 1584315308762
   - name: Star
     depth: 0
-    oncreate: this.rotationPhase = 0;
+    oncreate: this.wiggleTime = 0;
     onstep: |-
       if (ct.place.meet(this, 'PotatoCat')) {
           this.kill = true;
           ct.room.stars ++;
       }
     ondraw: |-
-      this.rotationPhase += ct.delta * 0.2;
-      this.rotation = Math.sin(this.rotationPhase) * 5;
+      this.wiggleTime += ct.delta * 0.2;
+      this.rotation = Math.sin(this.wiggleTime) * 5;
     ondestroy: 'ct.emitters.fire(''Stars'', this.x, this.y);'
     uid: b7362b5c-811d-438c-b164-f53213eaefa7
     texture: 4e0a0e06-81ea-4cd2-8f3d-569a8ad3e947
     extends:
       ctype: Collectible
-    lastmod: 1584326821108
+    lastmod: 1585717224654
   - name: StarCounter
     depth: 0
     oncreate: |-
@@ -812,17 +807,11 @@ types:
     lastmod: 1584329570933
   - name: PressHint
     depth: 50
-    oncreate: |-
-      this.pulsePhase = 0;
-
-      this.speed = 10;
-      this.direction = 0;
+    oncreate: this.pulsePhase = 0;
     onstep: |-
       this.pulsePhase += ct.delta * 0.2;
 
       this.scale.x = this.scale.y = 1 + Math.sin(this.pulsePhase) * 0.1;
-
-      this.move();
 
       if (ct.actions.Poof.pressed) {
           this.kill = true;
@@ -832,7 +821,7 @@ types:
     uid: ba73f80b-0995-40b6-94d5-3e82712b5ecf
     texture: df915202-237f-498c-bec0-25116fc17008
     extends: {}
-    lastmod: 1584330352695
+    lastmod: 1585719186144
   - name: EndGame_Star_Counter
     depth: 0
     oncreate: |-
@@ -953,9 +942,6 @@ rooms:
         uid: 8f93611e-6e95-49c4-8e2b-4cc067be2924
         tx: 0.65
         ty: 0.65
-      - x: 448
-        'y': 1024
-        uid: ba73f80b-0995-40b6-94d5-3e82712b5ecf
     tiles:
       - depth: -10
         tiles: []
@@ -963,7 +949,7 @@ rooms:
     thumbnail: 332dab64a25a
     gridX: 64
     gridY: 64
-    lastmod: 1584330347748
+    lastmod: 1585703848844
   - name: MainMenu
     oncreate: ''
     onstep: ''
@@ -1013,6 +999,9 @@ rooms:
       - x: 960
         'y': 128
         uid: 6a532c9b-7e32-4070-b72b-86012306c7fb
+      - x: 512
+        'y': 960
+        uid: ba73f80b-0995-40b6-94d5-3e82712b5ecf
     tiles:
       - depth: -10
         tiles: []
@@ -1020,7 +1009,7 @@ rooms:
     thumbnail: 9c2c4e48f46a
     gridX: 64
     gridY: 64
-    lastmod: 1584325850996
+    lastmod: 1585703854723
   - name: UI_Paused
     oncreate: |-
       this.alpha = 0;
@@ -1099,10 +1088,8 @@ emitterTandems:
       - texture: 74cac7dc-7259-4729-8494-53ed00563c2b
         openedTabs:
           - texture
-          - scaling
-          - colors
           - spawning
-          - velocity
+          - shape
         settings:
           alpha:
             list:
@@ -1155,8 +1142,8 @@ emitterTandems:
           maxParticles: 1000
           maxSpeed: 0
           pos:
-            x: 0
-            'y': 0
+            x: -144
+            'y': 88
           acceleration:
             x: 0
             'y': 0
@@ -1169,23 +1156,27 @@ emitterTandems:
           delay: 0
           minimumScaleMultiplier: 0.16
         uid: d6a3c617-6986-40e6-b8de-116e91dd6bc2
+        showShapeVisualizer: true
+    previewTexture: eb24c2bc-a36c-4118-b33e-a7348c00e5bb
   - name: Stars
     origname: pt550aaadb2b36
     emitters:
       - texture: 4e0a0e06-81ea-4cd2-8f3d-569a8ad3e947
         openedTabs:
           - texture
-          - shape
-          - spawning
-          - direction
-          - gravity
+          - colors
           - scaling
           - velocity
+          - gravity
+          - shape
+          - spawning
         settings:
           alpha:
             list:
               - value: 0
                 time: 0
+              - time: 0.11600000000000002
+                value: 0.6600000000000001
               - value: 1
                 time: 0.5
               - value: 0
@@ -1193,7 +1184,7 @@ emitterTandems:
             isStepped: false
           scale:
             list:
-              - value: 0
+              - value: 0.19
                 time: 0
               - time: 0.21999999999999995
                 value: 0.4
@@ -1208,6 +1199,8 @@ emitterTandems:
             list:
               - value: ffffff
                 time: 0
+              - time: 0.11600000000000002
+                value: FFFFFF
               - value: ffffff
                 time: 0.5
               - value: ffffff
@@ -1240,20 +1233,23 @@ emitterTandems:
           maxSpeed: 0
           pos:
             x: 0
-            'y': 0
+            'y': 8
           acceleration:
             x: 0
             'y': 1376
           addAtBack: false
-          spawnType: point
+          spawnType: circle
           spawnCircle:
             x: 0
             'y': 0
-            r: 32
+            r: 65
+            minR: 100
           delay: 0
           minimumSpeedMultiplier: 0.1
           noRotation: true
         uid: 9066d3fa-7519-4097-9023-e941e8835745
+        showShapeVisualizer: true
+    previewTexture: 4e0a0e06-81ea-4cd2-8f3d-569a8ad3e947
 starting: 0
 settings:
   minifyhtmlcss: false
