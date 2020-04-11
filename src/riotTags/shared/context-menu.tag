@@ -14,7 +14,7 @@
 
             type?: 'checkbox'|'separator'|any,
             click?: function,
-            checked?: boolean, // valid for 'checkbox' type
+            checked?: boolean|Function<boolean>, // valid for 'checkbox' type
             submenu?: Array<IMenuItem>,
 
             hotkey?: string, // E.g. 'Control+c'
@@ -37,9 +37,9 @@ context-menu(class="{opened: opts.menu.opened}" ref="root")
         tabindex="{'-1': item.type === 'separator'}"
         data-hotkey="{item.hotkey}"
     )
-        svg.feather.context-menu-anIcon(if="{item.icon && item.type !== 'separator' && item.type !== 'checkbox'}")
+        svg.context-menu-anIcon(if="{item.icon && item.type !== 'separator' && item.type !== 'checkbox'}" class="{item.iconClass || 'feather'}")
             use(xlink:href="data/icons.svg#{item.icon instanceof Function? item.icon() : item.icon}")
-        input(type="checkbox" checked="{item.checked}" if="{item.type === 'checkbox'}")
+        input(type="checkbox" checked="{item.checked instanceof Function? item.checked() : item.checked}" if="{item.type === 'checkbox'}")
         span(if="{!item.type !== 'separator'}") {item.label}
         span.hotkey(if="{!item.type !== 'separator' && item.hotkey}") ({item.hotkeyLabel || item.hotkey})
         svg.feather.context-menu-aChevron(if="{item.submenu && item.type !== 'separator'}")

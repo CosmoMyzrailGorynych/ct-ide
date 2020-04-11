@@ -1,5 +1,10 @@
 /* eslint-disable camelcase */
 const {app, dialog, BrowserWindow} = require('electron');
+const fs = require('fs-extra');
+
+if (fs.existsSync('./pleaseCtJSLoadWithoutGPUAccelerationMmkay')) {
+    app.disableHardwareAcceleration();
+}
 
 app.commandLine.appendSwitch('remote-debugging-port', '18364');
 app.allowRendererProcessReuse = true;

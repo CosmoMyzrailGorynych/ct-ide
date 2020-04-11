@@ -176,7 +176,15 @@
         "codeFont": "Font for code",
         "codeLigatures": "Ligatures",
         "codeDense": "Dense layout",
-        "openIncludeFolder": "Open \"include\" folder"
+        "openIncludeFolder": "Open \"include\" folder",
+        "troubleshooting": "Troubleshooting",
+        "toggleDevTools": "Toggle Dev Tools",
+        "copySystemInfo": "Copy system information",
+        "systemInfoWait": "Wait a bit, I'm gathering the data…",
+        "systemInfoDone": "Done!",
+        "disableAcceleration": "Disable graphics acceleration (needs restart)",
+        "visitDiscordForGamedevSupport": "Join Discord server for gamedev support",
+        "postAnIssue": "Post an issue on Github"
     },
     "onboarding": {
         "hoorayHeader": "Wow! You've just created a project!",
