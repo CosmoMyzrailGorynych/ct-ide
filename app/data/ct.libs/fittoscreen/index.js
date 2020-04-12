@@ -1,40 +1,63 @@
 (function (ct) {
-    var width,
-        height;
+    document.body.style.overflow = 'hidden';
     var canv = ct.pixiApp.view;
     var resize = function() {
         const {mode} = ct.fittoscreen;
-        width = window.innerWidth;
-        height = window.innerHeight;
-        var kw = width / ct.roomWidth,
-            kh = height / ct.roomHeight;
-        var k = Math.min(kw, kh);
-        if (mode === 'fastScale') {
-            canv.style.transform = 'scale(' + k + ')';
-            canv.style.position = 'absolute';
-            canv.style.left = (width - ct.width) / 2 + 'px';
-            canv.style.top = (height - ct.height) / 2 + 'px';
+        const pixelScaleModifier = ct.highDensity? (window.devicePixelRatio || 1) : 1;
+        const kw = window.innerWidth / ct.roomWidth,
+              kh = window.innerHeight / ct.roomHeight;
+        const k = Math.min(kw, kh);
+        var canvasWidth, canvasHeight,
+            cameraWidth, cameraHeight;
+        if (mode === 'expandViewport' || mode === 'expand') {
+            canvasWidth = Math.ceil(window.innerWidth * pixelScaleModifier);
+            canvasHeight = Math.ceil(window.innerHeight * pixelScaleModifier);
+            cameraWidth = window.innerWidth;
+            cameraHeight = window.innerHeight;
+        } else if (mode === 'fastScale') {
+            canvasWidth = Math.ceil(ct.roomWidth * pixelScaleModifier);
+            canvasHeight = Math.ceil(ct.roomHeight * pixelScaleModifier);
+            cameraWidth = ct.roomWidth;
+            cameraHeight = ct.roomHeight;
+        } else if (mode === 'scaleFit' || mode === 'scaleFill') {
+            if (mode === 'scaleFill') {
+                canvasWidth = Math.ceil(ct.roomWidth * kw * pixelScaleModifier);
+                canvasHeight = Math.ceil(ct.roomHeight * kh * pixelScaleModifier);
+                cameraWidth = window.innerWidth / k;
+                cameraHeight = window.innerHeight / k;
+            } else { // scaleFit
+                canvasWidth = Math.ceil(ct.roomWidth * k * pixelScaleModifier);
+                canvasHeight = Math.ceil(ct.roomHeight * k * pixelScaleModifier);
+                cameraWidth = ct.roomWidth;
+                cameraHeight = ct.roomHeight;
+            }
+        }
+
+        ct.pixiApp.renderer.resize(canvasWidth, canvasHeight);
+        if (mode !== 'scaleFill' && mode !== 'scaleFit') {
+            ct.pixiApp.stage.scale.x = ct.pixiApp.stage.scale.y = pixelScaleModifier;
         } else {
-            if (mode === 'expandViewport' || mode === 'expand') {
-                ct.camera.width = width;
-                ct.camera.height = height;
-            }
-            if (mode !== 'scaleFit') {
-                ct.pixiApp.renderer.resize(width, height);
-                if (mode === 'scaleFill') {
-                    ct.camera.width = Math.ceil(width / k);
-                    ct.camera.height = Math.ceil(height / k);
-                }
-            } else {
-                ct.pixiApp.renderer.resize(Math.floor(ct.camera.width * k), Math.floor(ct.camera.height * k));
-                canv.style.position = 'absolute';
-                canv.style.left = (width - ct.width) / 2 + 'px';
-                canv.style.top = (height - ct.height) / 2 + 'px';
-            }
-            if (mode === 'scaleFill' || mode === 'scaleFit') {
-                ct.pixiApp.stage.scale.x = k;
-                ct.pixiApp.stage.scale.y = k;
-            }
+            ct.pixiApp.stage.scale.x = ct.pixiApp.stage.scale.y = pixelScaleModifier * k;
+        }
+        canv.style.width = Math.ceil(canvasWidth / pixelScaleModifier) + 'px';
+        canv.style.height = Math.ceil(canvasHeight / pixelScaleModifier) + 'px';
+        ct.camera.width = cameraWidth;
+        ct.camera.height = cameraHeight;
+
+        if (mode === 'fastScale') {
+            canv.style.transform = `translate(-50%, -50%) scale(${k})`;
+            canv.style.position = 'absolute';
+            canv.style.top = '50%';
+            canv.style.left = '50%';
+        } else if (mode === 'expandViewport' || mode === 'expand' || mode === 'scaleFill') {
+            canv.style.position = 'static';
+            canv.style.top = 'unset';
+            canv.style.left = 'unset';
+        } else if (mode === 'scaleFit') {
+            canv.style.transform = 'translate(-50%, -50%)';
+            canv.style.position = 'absolute';
+            canv.style.top = '50%';
+            canv.style.left = '50%';
         }
     };
     var toggleFullscreen = function () {
@@ -65,8 +88,6 @@
         document.addEventListener('keyup', queuedFullscreen);
         document.addEventListener('click', queuedFullscreen);
     };
-    width = window.innerWidth;
-    height = window.innerHeight;
     window.addEventListener('resize', resize);
     ct.fittoscreen = resize;
     ct.fittoscreen.toggleFullscreen = queueFullscreen;
@@ -75,9 +96,6 @@
         configurable: false,
         enumerable: true,
         set(value) {
-            if ($mode === 'fastScale' && value !== 'fastScale') {
-                canv.style.transform = '';
-            }
             $mode = value;
         },
         get() {

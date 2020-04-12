@@ -154,6 +154,7 @@ const exportCtProject = async (project, projdir) => {
         .replace(/\/\*@startwidth@\*\//g, startroom.width)
         .replace(/\/\*@startheight@\*\//g, startroom.height)
         .replace(/\/\*@pixelatedrender@\*\//g, Boolean(currentProject.settings.pixelatedrender))
+        .replace(/\/\*@highDensity@\*\//g, Boolean(currentProject.settings.highDensity))
         .replace(/\/\*@maxfps@\*\//g, Number(currentProject.settings.maxFPS))
         .replace(/\/\*@ctversion@\*\//g, require('electron').remote.app.getVersion())
         .replace(/\/\*@projectmeta@\*\//g, JSON.stringify({

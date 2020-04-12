@@ -1070,6 +1070,7 @@ settings:
     icon: e1452137-8cfa-4eec-b54a-0f2660326b48
     accent: '#446adb'
     invertPreloaderScheme: true
+  highDensity: true
 palette:
   - '#FFFFFF'
   - '#10102E'
