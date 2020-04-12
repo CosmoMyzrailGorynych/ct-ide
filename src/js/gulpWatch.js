@@ -5,7 +5,8 @@
         const reload = () => {
             if (!reloading) {
                 reloading = true;
-                location.reload();
+                const {getCurrentWindow} = require('electron').remote;
+                getCurrentWindow().reload();
             }
         };
         gulp.watch(['./data/theme*.css', './index.html', './data/bundle.js', './data/js/**.js', './data/node_requires/**/*.js'], reload);

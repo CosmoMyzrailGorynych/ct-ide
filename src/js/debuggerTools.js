@@ -59,12 +59,13 @@
         } else if (message === 'closeDebugger') {
             // close both windows
             if (previewWindow) {
-                previewWindow.destroy();
+                previewWindow.close();
+                previewWindow = null;
             }
             if (toolbarWindow) {
-                toolbarWindow.destroy();
+                toolbarWindow.close();
+                toolbarWindow = null;
             }
-            previewWindow = toolbarWindow = null;
         } else if (message === 'toggleDevTools') {
             previewWindow.webContents.toggleDevTools();
         } else if (message === 'openQrCodes') {
@@ -106,11 +107,11 @@
     window.openDebugger = function(link) {
         // Clean up previous instances of a toolbar and a debugger
         if (previewWindow) {
-            previewWindow.destroy();
+            previewWindow.close();
             previewWindow = null;
         }
         if (toolbarWindow) {
-            toolbarWindow.destroy();
+            toolbarWindow.close();
             toolbarWindow = null;
         }
 
@@ -179,13 +180,13 @@
         });
         //toolbarWindow.webContents.openDevTools();
 
-        // listeners for events when one of the windows is closed; destroy both
+        // listeners for events when one of the windows is closed; close both
         const closer = () => {
             if (previewWindow) {
-                previewWindow.destroy();
+                previewWindow.close();
             }
             if (toolbarWindow) {
-                toolbarWindow.destroy();
+                toolbarWindow.close();
             }
             toolbarWindow = previewWindow = null;
         };
