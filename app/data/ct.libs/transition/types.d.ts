@@ -10,12 +10,12 @@ declare namespace ct {
          * The arguments `duration` and `color` are optional,
          * and default to `500` (0.5 seconds) and `0x000000` (black color).
          */
-        function fadeOut(duration: number, color: number): Promise<void>;
+        function fadeOut(duration?: number, color?: number): Promise<void>;
         /**
          * The end of a fading transition. The arguments `duration` and `color` are optional,
          * and default to `500` (0.5 seconds) and `0x000000` (black color).
          */
-        function fadeIn(duration: number, color: number): Promise<void>;
+        function fadeIn(duration?: number, color?: number): Promise<void>;
 
         /**
          * Scales the camera by a given coefficient while also fading to a specified color
@@ -24,7 +24,7 @@ declare namespace ct {
          * The arguments `duration` and `color` are optional, and default to `500` (0.5 seconds)
          * and `0x000000` (black color).
          */
-        function scaleOut(duration: number, scaling: number, color: number): Promise<void>;
+        function scaleOut(duration?: number, scaling?: number, color?: number): Promise<void>;
         /**
          * Scales the camera by a given coefficient and turns back to normal,
          * while also fading in from a specified color (similar to `ct.transition.fadeIn`).
@@ -32,7 +32,7 @@ declare namespace ct {
          * than `1` will zoom out instead. The arguments `duration` and `color` are optional,
          * and default to `500` (0.5 seconds) and `0x000000` (black color).
          */
-        function scaleIn(duration: number, scaling: number, color: number): Promise<void>;
+        function scaleIn(duration?: number, scaling?: number, color?: number): Promise<void>;
 
         /**
          * The beginning of a sliding transition. A rectangle will smoothly move
@@ -41,7 +41,7 @@ declare namespace ct {
          * The arguments `duration` and `color` are optional, and
          * default to `500` (0.5 seconds) and `0x000000` (black color).
          */
-        function slideOut(duration: number, direction: CtTransitionDirection, color: number): Promise<void>;
+        function slideOut(duration?: number, direction?: CtTransitionDirection, color?: number): Promise<void>;
         /**
          * The end of a sliding transition. A rectangle will smoothly move
          * from one edge of the screen to the opposite, in the given direction,
@@ -49,7 +49,7 @@ declare namespace ct {
          * The arguments `duration` and `color` are optional,
          * and default to `500` (0.5 seconds) and `0x000000` (black color).
          */
-        function slideIn(duration: number, direction: CtTransitionDirection, color: number): Promise<void>;
+        function slideIn(duration?: number, direction?: CtTransitionDirection, color?: number): Promise<void>;
 
         /**
          * The beginning of a circle-shaped transition. This will create a circle
@@ -57,14 +57,14 @@ declare namespace ct {
          * in a given opaque color. The arguments `duration` and `color` are optional,
          * and default to `500` (0.5 seconds) and `0x000000` (black color).
          */
-        function circleOut(duration: number, color: number): Promise<void>;
+        function circleOut(duration?: number, color?: number): Promise<void>;
         /**
          * The end of a circle-shaped transition. This will create a circle
          * that covers the whole screen in a given opaque color but smoothly
          * shrinks to a point. The arguments `duration` and `color` are optional,
          * and default to `500` (0.5 seconds) and `0x000000` (black color).
          */
-        function circleIn(duration: number, color: number): Promise<void>;
+        function circleIn(duration?: number, color?: number): Promise<void>;
     }
 
 }
