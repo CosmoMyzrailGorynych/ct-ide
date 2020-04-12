@@ -19,9 +19,9 @@ libs:
   keyboard.polyfill: {}
   mouse: {}
   tween: {}
-  transition: {}
   vkeys: {}
   touch: {}
+  transition: {}
 types:
   - name: Player_Blue
     depth: 5
@@ -701,7 +701,7 @@ types:
     ondraw: ''
     ondestroy: ''
     uid: 73759c16-fba4-4134-b048-e53aa4d2f34b
-    lastmod: 1586163409409
+    lastmod: 1586669367104
     extends: {}
     texture: 071162b9-d836-4145-9515-586ce289ef14
   - name: Joystick
@@ -939,18 +939,18 @@ rooms:
     backgrounds:
       - depth: '-20'
         extends:
-          movementY: 0.5
+          movementY: 0.125
           scaleX: 1
           shiftX: -288
         texture: 3935eebf-4e66-456f-9ca8-e2dc1d6a9383
       - depth: -19
         texture: f52c0c03-bee0-4984-a936-08aeb0dab1eb
         extends:
-          movementY: 1
+          movementY: 0.25
       - depth: -18
         texture: e86811b4-8d80-4d2a-8003-b490165fa078
         extends:
-          movementY: 2
+          movementY: 0.5
     uid: 2e5bf702-9eac-4fef-8282-07d2dd0a9bac
     lastmod: 1586162618949
     grid: 50
