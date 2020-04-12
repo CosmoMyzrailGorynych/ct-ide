@@ -183,6 +183,7 @@
         "systemInfoWait": "Wait a bit, I'm gathering the data…",
         "systemInfoDone": "Done!",
         "disableAcceleration": "Disable graphics acceleration (needs restart)",
+        "disableBuiltInDebugger": "Disable built-in debugger",
         "visitDiscordForGamedevSupport": "Join Discord server for gamedev support",
         "postAnIssue": "Post an issue on Github"
     },

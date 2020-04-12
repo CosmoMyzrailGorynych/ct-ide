@@ -183,7 +183,12 @@ main-menu.flexcol
             const runCtExport = require('./data/node_requires/exporter');
             runCtExport(currentProject, sessionStorage.projdir)
             .then(path => {
-                window.openDebugger(`http://localhost:${server.address().port}`);
+                if (localStorage.disableBuiltInDebugger === 'yes') {
+                    const shell = require('electron').shell;
+                    shell.openExternal(`http://localhost:${server.address().port}/`);
+                } else {
+                    window.openDebugger(`http://localhost:${server.address().port}`);
+                }
             })
             .catch(e => {
                 window.alertify.error(e);
@@ -307,6 +312,17 @@ main-menu.flexcol
                         await fs.outputFile('./pleaseCtJSLoadWithoutGPUAccelerationMmkay', 'Do it.');
                     }
                     this.update();
+                }
+            }, {
+                label: window.languageJSON.menu.disableBuiltInDebugger,
+                type: 'checkbox',
+                checked: () => localStorage.disableBuiltInDebugger === 'yes',
+                click: () => {
+                    if (localStorage.disableBuiltInDebugger === 'yes') {
+                        localStorage.disableBuiltInDebugger = 'no';
+                    } else {
+                        localStorage.disableBuiltInDebugger = 'yes';
+                    }
                 }
             }, {
                 type: 'separator'
