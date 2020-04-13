@@ -58,11 +58,11 @@
             previewWindow.webContents.executeJavaScript(`ct.rooms.switch('${room}')`);
         } else if (message === 'closeDebugger') {
             // close both windows
-            if (previewWindow) {
+            if (previewWindow && !previewWindow.isDestroyed()) {
                 previewWindow.close();
                 previewWindow = null;
             }
-            if (toolbarWindow) {
+            if (toolbarWindow && !toolbarWindow.isDestroyed()) {
                 toolbarWindow.close();
                 toolbarWindow = null;
             }
@@ -106,11 +106,11 @@
 
     window.openDebugger = function(link) {
         // Clean up previous instances of a toolbar and a debugger
-        if (previewWindow) {
+        if (previewWindow && !previewWindow.isDestroyed()) {
             previewWindow.close();
             previewWindow = null;
         }
-        if (toolbarWindow) {
+        if (toolbarWindow && !toolbarWindow.isDestroyed()) {
             toolbarWindow.close();
             toolbarWindow = null;
         }
@@ -182,10 +182,10 @@
 
         // listeners for events when one of the windows is closed; close both
         const closer = () => {
-            if (previewWindow) {
+            if (previewWindow && !previewWindow.isDestroyed()) {
                 previewWindow.close();
             }
-            if (toolbarWindow) {
+            if (toolbarWindow && !toolbarWindow.isDestroyed()) {
                 toolbarWindow.close();
             }
             toolbarWindow = previewWindow = null;
