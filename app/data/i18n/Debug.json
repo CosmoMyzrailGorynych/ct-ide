@@ -46,7 +46,9 @@
         "wrongFormat": "common.wrongFormat",
         "yes": "common.yes",
         "loading": "common.loading",
-        "zoom": "common.zoom"
+        "zoom": "common.zoom",
+        "zoomIn": "common.zoomIn",
+        "zoomOut": "common.zoomOut"
     },
     "actionsEditor": {
         "actions": "actionsEditor.actions",

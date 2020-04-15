@@ -46,7 +46,9 @@
         "wrongFormat": "错误的文件格式",
         "yes": "是",
         "loading": "加载中...",
-        "zoom": "缩放:"
+        "zoom": "缩放:",
+        "zoomIn": "放大缩小字体功能 放大缩小字体功能",
+        "zoomOut": "放大缩小字体功能 放大缩小字体功能"
     },
     "actionsEditor": {
         "actions": "动作",

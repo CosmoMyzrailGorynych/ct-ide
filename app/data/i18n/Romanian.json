@@ -45,7 +45,9 @@
         "wrongFormat": "Format de fișier greșit",
         "yes": "Da",
         "contribute": "",
-        "zoom": "Zoom"
+        "zoom": "Zoom",
+        "zoomIn": "Mărire",
+        "zoomOut": "Micșorare"
     },
     "actionsEditor": {
         "actions": "Acțiuni",

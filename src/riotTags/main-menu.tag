@@ -378,6 +378,44 @@ main-menu.flexcol
             }, {
                 type: 'separator'
             }, {
+                label: window.languageJSON.common.zoomIn,
+                icon: 'zoom-in',
+                click: e => {
+                    const {webFrame} = require('electron');
+                    let zoom = webFrame.getZoomFactor() + 0.1;
+                    if (Number.isNaN(zoom) || !zoom || !Number.isFinite(zoom)) {
+                        zoom = 1;
+                    } else if (zoom > 5) {
+                        zoom = 5;
+                    }
+                    webFrame.setZoomFactor(zoom);
+
+                    console.debug('Zoom in to ', zoom);
+                    localStorage.editorZooming = zoom;
+                },
+                hotkey: 'Control+=',
+                hotkeyLabel: 'Ctrl+='
+            }, {
+                label: window.languageJSON.common.zoomOut,
+                icon: 'zoom-out',
+                click: e => {
+                    const {webFrame} = require('electron');
+                    let zoom = webFrame.getZoomFactor() - 0.1;
+                    if (Number.isNaN(zoom) || !zoom || !Number.isFinite(zoom)) {
+                        zoom = 1;
+                    } else if (zoom < 0.2) { // technically, the lowest point is 25%, but setting it to 20% allows a user to bring zoom level back to 1
+                        zoom = 0.2;
+                    }
+                    webFrame.setZoomFactor(zoom);
+
+                    console.debug('Zoom out to ', zoom);
+                    localStorage.editorZooming = zoom;
+                },
+                hotkey: 'Control+-',
+                hotkeyLabel: 'Ctrl+-'
+            }, {
+                type: 'separator'
+            }, {
                 label: window.languageJSON.menu.startScreen,
                 click: (e) => {
                     if (!confirm(window.languageJSON.common.reallyexit)) {
