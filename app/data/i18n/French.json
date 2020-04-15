@@ -73,7 +73,9 @@
         "tilelayer": "Couche de Tuile",
         "wrongFormat": "Mauvais format de fichier",
         "yes": "Oui",
-        "zoom": "Zoom"
+        "zoom": "Zoom",
+        "zoomIn": "Zoom sur",
+        "zoomOut": "Zoom sur"
     },
     "exportPanel": {
         "hide": "Cacher",

@@ -47,7 +47,9 @@
         "tilelayer": "tile layer",
         "wrongFormat": "Wrong file format",
         "yes": "Yes",
-        "zoom": "Zoom"
+        "zoom": "Zoom",
+        "zoomIn": "Zoom in",
+        "zoomOut": "Zoom out"
     },
     "actionsEditor": {
         "actions": "Actions",

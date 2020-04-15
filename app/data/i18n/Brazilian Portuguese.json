@@ -51,7 +51,9 @@
         "cannotBeEmpty": "",
         "contribute": "",
         "translateToYourLanguage": "",
-        "zoom": "Zoom:"
+        "zoom": "Zoom:",
+        "zoomIn": "Ampliar",
+        "zoomOut": "Diminuir o zoom"
     },
     "exportPanel": {
         "hide": "Ocultar",
