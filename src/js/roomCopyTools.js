@@ -68,7 +68,7 @@
                     for (const copy of this.selectedCopies) {
                         var x = this.xToRoom(this.startx),
                             y = this.yToRoom(this.starty);
-                        const {g} = glob.texturemap[window.currentProject.types[glob.typemap[copy.uid]].texture];
+                        const {g} = glob.texturemap[global.currentProject.types[glob.typemap[copy.uid]].texture];
                         if (x > copy.x - g.axis[0] && y > copy.y - g.axis[1] &&
                             x < copy.x - g.axis[0] + g.width && y < copy.y - g.axis[1] + g.height) {
                             this.movingStuff = true;
@@ -92,7 +92,7 @@
                     ymin = Math.min(y1, y2),
                     ymax = Math.max(y1, y2);
                 for (const copy of this.room.copies) {
-                    const {g} = glob.texturemap[window.currentProject.types[glob.typemap[copy.uid]].texture];
+                    const {g} = glob.texturemap[global.currentProject.types[glob.typemap[copy.uid]].texture];
                     const x1 = copy.x - g.axis[0] * (copy.tx || 1),
                           x2 = copy.x - (g.axis[0] - g.width) * (copy.tx || 1),
                           y1 = copy.y - g.axis[1] * (copy.ty || 1),
@@ -257,7 +257,7 @@
                 // Сначала ищется ближайшая к курсору копия. Если слоёв в комнате нет, то всё отменяется
                 if (!this.room.copies.length) { return; }
                 var copy = selectACopyAt.apply(this, [e]),
-                    type = window.currentProject.types[glob.typemap[copy.uid]];
+                    type = global.currentProject.types[glob.typemap[copy.uid]];
                 this.closestType = type;
                 this.closestPos = this.room.copies.indexOf(copy);
 

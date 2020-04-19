@@ -156,7 +156,7 @@ const exportCtProject = async (project, projdir) => {
         .replace(/\/\*@pixelatedrender@\*\//g, Boolean(currentProject.settings.pixelatedrender))
         .replace(/\/\*@highDensity@\*\//g, Boolean(currentProject.settings.highDensity))
         .replace(/\/\*@maxfps@\*\//g, Number(currentProject.settings.maxFPS))
-        .replace(/\/\*@ctversion@\*\//g, require('electron').remote.app.getVersion())
+        .replace(/\/\*@ctversion@\*\//g, require('package.json').version)
         .replace(/\/\*@projectmeta@\*\//g, JSON.stringify({
             name: currentProject.settings.title,
             author: currentProject.settings.author,

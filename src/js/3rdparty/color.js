@@ -994,6 +994,7 @@ c = Color(str);
         return length > 0;
     };
     net.brehaut.Color = Color;
+    global.brehautColor = Color;
 }).call(net.brehaut);
 
 /* Export to CommonJS

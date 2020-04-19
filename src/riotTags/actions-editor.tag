@@ -4,20 +4,20 @@ actions-editor.panel.view.pad
             h1
                 | {voc.actionsEditor}
                 docs-shortcut(path="/actions.html")
-            p(if="{!currentProject.actions || !currentProject.actions.length}") {voc.noActionsYet}
-        .flexfix-body(if="{!currentProject.actions || !currentProject.actions.length}")
+            p(if="{!global.currentProject.actions || !global.currentProject.actions.length}") {voc.noActionsYet}
+        .flexfix-body(if="{!global.currentProject.actions || !global.currentProject.actions.length}")
             button.nml(onclick="{addNewAction}")
                 svg.feather
                     use(xlink:href="data/icons.svg#plus")
                 span   {vocGlob.add}
-        .flexfix-body.aStrippedList.nmt(if="{currentProject.actions && currentProject.actions.length}")
+        .flexfix-body.aStrippedList.nmt(if="{global.currentProject.actions && global.currentProject.actions.length}")
             li.hide800.npl.npr
                 .c4.npt.npb.npl
                     b {voc.actions}
                 .c8.npt.npb.npr
                     b {voc.methods}
                 .clear
-            li.npl.npt(each="{action, ind in currentProject.actions}")
+            li.npl.npt(each="{action, ind in global.currentProject.actions}")
                 .c4.npl.breakon800
                     .flexrow.middle
                         div.relative.wide
@@ -32,14 +32,14 @@ actions-editor.panel.view.pad
                         li.flexrow.middle.npl(each="{method, mInd in action.methods}")
                             .fifty.npt.npl.npb
                                 code.inline {method.code}
-                                svg.feather.orange(if="{!(method.code.split('.')[0] in currentProject.libs)}" title="{voc.methodModuleMissing}")
+                                svg.feather.orange(if="{!(method.code.split('.')[0] in global.currentProject.libs)}" title="{voc.methodModuleMissing}")
                                     use(xlink:href="data/icons.svg#alert-circle")
                             .fifty.npt.npr.npb
                                 b {voc.multiplier}:
                                 input.short(
                                     type="number" step="0.1"
                                     value="{method.multiplier === void 0? 1 : method.multiplier}"
-                                    onchange="{wire('window.currentProject.actions.'+ ind +'.methods.'+ mInd +'.multiplier')}"
+                                    onchange="{wire('global.currentProject.actions.'+ ind +'.methods.'+ mInd +'.multiplier')}"
                                 )
                             svg.feather.a(title="{voc.deleteMethod}" onclick="{deleteMethod(action)}")
                                 use(xlink:href="data/icons.svg#x")
@@ -61,19 +61,19 @@ actions-editor.panel.view.pad
     .dimmer(show="{addingMethod}")
         method-selector(action="{editedAction}" ref="methodSelector")
     script.
-        currentProject.actions = currentProject.actions || [];
+        global.currentProject.actions = global.currentProject.actions || [];
         this.namespace = 'actionsEditor';
         this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
         this.addNewAction = e => {
-            currentProject.actions.push({
+            global.currentProject.actions.push({
                 name: 'NewAction',
                 methods: []
             });
         };
         this.deleteAction = e => {
-            const ind = currentProject.actions.indexOf(e.item.action);
-            currentProject.actions.splice(ind, 1);
+            const ind = global.currentProject.actions.indexOf(e.item.action);
+            global.currentProject.actions.splice(ind, 1);
         };
         this.addMethod = e => {
             this.addingMethod = true;
@@ -90,7 +90,7 @@ actions-editor.panel.view.pad
             console.log(e);
             this.nameTaken = void 0;
             e.item.action.name = e.currentTarget.value.trim();
-            if (currentProject.actions.find(action => action !== e.item.action && action.name === e.item.action.name)) {
+            if (global.currentProject.actions.find(action => action !== e.item.action && action.name === e.item.action.name)) {
                 this.nameTaken = e.item.action.name;
             }
         };

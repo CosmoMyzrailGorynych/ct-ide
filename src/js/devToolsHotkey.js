@@ -1,8 +1,12 @@
 (() => {
     const hotkeyListener = function (e) {
         if (e.key === 'C' && e.ctrlKey && e.shiftKey) {
-            const {remote} = require('electron');
-            remote.getCurrentWindow().webContents.openDevTools();
+            const win = nw.Window.get();
+            if (win.isDevToolsOpen()) {
+                win.closeDevTools();
+            } else {
+                win.showDevTools();
+            }
         }
     };
     document.addEventListener('keydown', hotkeyListener);

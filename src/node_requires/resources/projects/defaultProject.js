@@ -1,5 +1,5 @@
 const defaultProjectTemplate = {
-    ctjsVersion: require('electron').remote.app.getVersion(),
+    ctjsVersion: require('package.json').version,
     notes: '/* empty */',
     libs: {
         place: {

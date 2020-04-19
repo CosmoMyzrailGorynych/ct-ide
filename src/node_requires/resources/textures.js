@@ -1,12 +1,10 @@
-/* global currentProject */
-
 /**
  * Gets the ct.js texture object by its id.
  * @param {string} id The id of the texture
  * @returns {ITexture} The ct.js texture object
  */
 const getTextureFromId = id => {
-    const texture = currentProject.textures.find(tex => tex.uid === id);
+    const texture = global.currentProject.textures.find(tex => tex.uid === id);
     if (!texture) {
         throw new Error(`Attempt to get a non-existent texture with ID ${id}`);
     }
@@ -28,9 +26,9 @@ const getTexturePreview = function (texture, x2, fs) {
         texture = getTextureFromId(texture);
     }
     if (fs) {
-        return `${sessionStorage.projdir}/img/${texture.origname}_prev${x2? '@2' : ''}.png`;
+        return `${global.projdir}/img/${texture.origname}_prev${x2? '@2' : ''}.png`;
     }
-    return `file://${sessionStorage.projdir}/img/${texture.origname}_prev${x2? '@2' : ''}.png?cache=${texture.lastmod}`;
+    return `file://${global.projdir}/img/${texture.origname}_prev${x2? '@2' : ''}.png?cache=${texture.lastmod}`;
 };
 
 /**
@@ -47,18 +45,16 @@ const getTextureOrig = function(texture, fs) {
         texture = getTextureFromId(texture);
     }
     if (fs) {
-        return `${sessionStorage.projdir}/img/${texture.origname}`;
+        return `${global.projdir}/img/${texture.origname}`;
     }
-    return `file://${sessionStorage.projdir}/img/${texture.origname}?cache=${texture.lastmod}`;
+    return `file://${global.projdir}/img/${texture.origname}?cache=${texture.lastmod}`;
 };
 
 const loadBaseTextureForCtTexture = texture => new Promise((resolve, reject) => {
-    const PIXI = require('pixi.js-legacy');
-
     const textureLoader = new PIXI.Loader();
     const {resources} = textureLoader;
 
-    const path = 'file://' + sessionStorage.projdir + '/img/' + texture.origname + '?' + texture.lastmod;
+    const path = 'file://' + global.projdir + '/img/' + texture.origname + '?' + texture.lastmod;
 
     textureLoader.add(texture.uid, path);
     textureLoader.onError.add(reject);
@@ -79,7 +75,6 @@ const clearPixiTextureCache = function () {
  */
 const textureArrayFromCtTexture = async function (tex) {
     const frames = [];
-    const PIXI = require('pixi.js-legacy');
     const baseTexture = await loadBaseTextureForCtTexture(tex);
     for (let col = 0; col < tex.grid[1]; col++) {
         for (let row = 0; row < tex.grid[0]; row++) {
@@ -113,7 +108,7 @@ const getDOMImage = function(texture, deflt) {
         if (typeof texture === 'string') {
             texture = getTextureFromId(texture);
         }
-        path = 'file://' + sessionStorage.projdir + '/img/' + texture.origname + '?' + texture.lastmod;
+        path = 'file://' + global.projdir + '/img/' + texture.origname + '?' + texture.lastmod;
     }
     img.src = path;
     return new Promise((resolve, reject) => {
@@ -131,7 +126,6 @@ const getDOMImage = function(texture, deflt) {
 const getPixiTexture = async function (texture, frame, allowMinusOne) {
     if (allowMinusOne && texture === -1) {
         if (!defaultTexture) {
-            const PIXI = require('pixi.js-legacy');
             defaultTexture = PIXI.Texture.from('data/img/unknown.png');
         }
         if (frame || frame === 0) {
@@ -238,7 +232,7 @@ const importImageToTexture = async src => {
           path = require('path'),
           generateGUID = require('./../generateGUID');
     const id = generateGUID();
-    const dest = path.join(sessionStorage.projdir, 'img', `i${id}${path.extname(src)}`);
+    const dest = path.join(global.projdir, 'img', `i${id}${path.extname(src)}`);
     await fs.copy(src, dest);
     const image = document.createElement('img');
     // Wait while the image is loading
@@ -300,7 +294,7 @@ const importImageToTexture = async src => {
         obj.tiled = true;
     }
 
-    window.currentProject.textures.push(obj);
+    global.currentProject.textures.push(obj);
     window.signals.trigger('textureImported');
     return obj;
 };

@@ -53,7 +53,7 @@ project-selector
     script.
         const fs = require('fs-extra'),
               path = require('path');
-        this.ctjsVersion = require('electron').remote.app.getVersion();
+        this.ctjsVersion = require('package.json').version;
         this.requirePath = path;
         this.namespace = 'intro';
         this.mixin(window.riotVoc);
@@ -85,7 +85,7 @@ project-selector
             this.projectSplash = 'file://' + path.dirname(projectPath) + '/' + path.basename(projectPath, '.ict') + '/img/splash.png';
         };
         /**
-         * Creates a mew project.
+         * Creates a new project.
          * Technically it creates an empty project in-memory, then saves it to a directory.
          * Creates basic directories for sounds and textures.
          */
@@ -99,13 +99,13 @@ project-selector
                 alertify.error(this.voc.unableToWriteToFolders + '\n' + e);
                 throw e;
             });
-            sessionStorage.projdir = path.join(way, codename);
+            global.projdir = path.join(way, codename);
             sessionStorage.projname = codename + '.ict';
-            await fs.ensureDir(path.join(sessionStorage.projdir, '/img'));
-            fs.ensureDir(path.join(sessionStorage.projdir, '/snd'));
-            fs.ensureDir(path.join(sessionStorage.projdir, '/include'));
+            await fs.ensureDir(path.join(global.projdir, '/img'));
+            fs.ensureDir(path.join(global.projdir, '/snd'));
+            fs.ensureDir(path.join(global.projdir, '/include'));
             setTimeout(() => { // for some reason, it must be done through setTimeout; otherwise it fails
-                fs.copy('./data/img/notexture.png', path.join(sessionStorage.projdir + '/img/splash.png'), e => {
+                fs.copy('./data/img/notexture.png', path.join(global.projdir + '/img/splash.png'), e => {
                     if (e) {
                         alertify.error(e);
                         console.error(e);
@@ -135,16 +135,16 @@ project-selector
         /**
          * Handler for a manual search for a project folder, triggered by an input[type="file"]
          */
-        this.chooseProjectFolder = e => {
-            const {dialog, BrowserWindow} = require('electron').remote;
-            const [path] = dialog.showOpenDialogSync(BrowserWindow.getFocusedWindow(), {
+        this.chooseProjectFolder = async e => {
+            const defaultProjectDir = require('./data/node_requires/resources/projects').getDefaultProjectDir();
+            const projPath = await window.showOpenDialog({
                 title: this.voc.newProject.selectProjectFolder,
-                defaultPath: 'projects/',
+                defaultPath: defaultProjectDir,
                 buttonLabel: this.voc.newProject.saveProjectHere,
-                properties: ['openDirectory']
-            }) || [];
-            if (path) {
-                this.newProject(path, this.refs.projectname.value);
+                openDirectory: true
+            });
+            if (projPath) {
+                this.newProject(projPath, this.refs.projectname.value);
             }
         };
 
@@ -160,23 +160,19 @@ project-selector
         /**
          * Handler for a manual search for a project, triggered by an input[type="file"]
          */
-        this.openProjectFind = e => {
-            const {dialog, BrowserWindow} = require('electron').remote;
-            const [proj] = dialog.showOpenDialogSync(BrowserWindow.getFocusedWindow(), {
-                filters: [{
-                    name: 'Ct.js project',
-                    extensions: ['ict']
-                }],
-                defaultPath: 'projects/',
-                properties: ['openFile']
-            }) || [];
+        this.openProjectFind = async e => {
+            const defaultProjectDir = require('./data/node_requires/resources/projects').getDefaultProjectDir();
+            const proj = await window.showOpenDialog({
+                filter: '.ict',
+                defaultPath: defaultProjectDir
+            });
             if (!proj) {
                 return;
             }
             if (path.extname(proj).toLowerCase() === '.ict') {
                 window.loadProject(proj);
                 sessionStorage.projname = path.basename(proj);
-                sessionStorage.projdir = path.dirname(proj) + path.sep + path.basename(proj, '.ict');
+                global.projdir = path.dirname(proj) + path.sep + path.basename(proj, '.ict');
             } else {
                 alertify.error(languageJSON.common.wrongFormat);
             }
@@ -202,8 +198,7 @@ project-selector
         }, 0);
 
         this.openExternal = link => e => {
-            const {shell} = require('electron');
-            shell.openExternal(link);
+            nw.Shell.openExternal(link);
             e.stopPropagation();
             e.preventDefault();
         };

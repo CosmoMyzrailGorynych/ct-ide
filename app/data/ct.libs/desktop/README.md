@@ -1,0 +1,1 @@
+Currently just has a method `ct.desktop.quit()`, which exits the game when packaged into executables.

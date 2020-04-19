@@ -25,15 +25,15 @@ rooms-panel.panel.view
         ul.cards.rooms.flexfix-body(class="{list: localStorage.roomsLayout === 'list'}")
             li(
                 each="{room in (searchResults? searchResults : rooms)}"
-                class="{starting: window.currentProject.startroom === room.uid}"
+                class="{starting: global.currentProject.startroom === room.uid}"
                 onclick="{openRoom(room)}"
                 oncontextmenu="{menuPopup(room)}"
                 onlong-press="{menuPopup(room)}"
             )
-                img(src="file://{sessionStorage.projdir + '/img/r' + room.thumbnail + '.png?' + room.lastmod}")
+                img(src="file://{global.projdir + '/img/r' + room.thumbnail + '.png?' + room.lastmod}")
                 span {room.name}
                 span.date(if="{room.lastmod}") {niceTime(room.lastmod)}
-                svg.feather(if="{window.currentProject.startroom === room.uid}")
+                svg.feather(if="{global.currentProject.startroom === room.uid}")
                     use(xlink:href="data/icons.svg#play")
     room-editor(if="{editing}" room="{editingRoom}")
     context-menu(menu="{roomMenu}" ref="roomMenu")
@@ -48,7 +48,7 @@ rooms-panel.panel.view
         this.sortReverse = false;
 
         this.updateList = () => {
-            this.rooms = [...window.currentProject.rooms];
+            this.rooms = [...global.currentProject.rooms];
             if (this.sort === 'name') {
                 this.rooms.sort((a, b) => {
                     return a.name.localeCompare(b.name);
@@ -114,7 +114,7 @@ rooms-panel.panel.view
             }
             var guid = generateGUID(),
                 thumbnail = guid.split('-').pop();
-            fs.copy('./data/img/notexture.png', path.join(sessionStorage.projdir, '/img/r' + thumbnail + '.png'), () => {
+            fs.copy('./data/img/notexture.png', path.join(global.projdir, '/img/r' + thumbnail + '.png'), () => {
                 var newRoom = {
                     name: 'Room_' + thumbnail,
                     oncreate: '',
@@ -129,7 +129,7 @@ rooms-panel.panel.view
                     uid: guid,
                     thumbnail: thumbnail
                 };
-                window.currentProject.rooms.push(newRoom);
+                global.currentProject.rooms.push(newRoom);
                 this.openRoom(newRoom)();
                 this.updateList();
                 this.update();
@@ -144,7 +144,7 @@ rooms-panel.panel.view
             items: [{
                 label: this.voc.makestarting,
                 click: () => {
-                    window.currentProject.startroom = this.editingRoom.uid;
+                    global.currentProject.startroom = this.editingRoom.uid;
                     this.update();
                 }
             }, {
@@ -156,8 +156,7 @@ rooms-panel.panel.view
             }, {
                 label: languageJSON.common.copyName,
                 click: e => {
-                    const {clipboard} = require('electron');
-                    clipboard.writeText(this.editingRoom.name);
+                    nw.Clipboard.get().set(this.editingRoom.name, 'text');
                 }
             }, {
                 label: window.languageJSON.common.duplicate,
@@ -171,10 +170,10 @@ rooms-panel.panel.view
                                 thumbnail = guid.split('-').pop();
                             var newRoom = JSON.parse(JSON.stringify(this.editingRoom));
                             newRoom.name = e.inputValue;
-                            window.currentProject.rooms.push(newRoom);
+                            global.currentProject.rooms.push(newRoom);
                             newRoom.uid = guid;
                             newRoom.thumbnail = thumbnail;
-                            fs.linkSync(sessionStorage.projdir + '/img/r' + this.editingRoom.thumbnail + '.png', sessionStorage.projdir + '/img/r' + thumbnail + '.png')
+                            fs.linkSync(global.projdir + '/img/r' + this.editingRoom.thumbnail + '.png', global.projdir + '/img/r' + thumbnail + '.png')
                             this.updateList();
                             this.update();
                         }
@@ -203,8 +202,8 @@ rooms-panel.panel.view
                     .confirm(window.languageJSON.common.confirmDelete.replace('{0}', this.editingRoom.name))
                     .then(e => {
                         if (e.buttonClicked === 'ok') {
-                            var ind = window.currentProject.rooms.indexOf(this.editingRoom);
-                            window.currentProject.rooms.splice(ind, 1);
+                            var ind = global.currentProject.rooms.indexOf(this.editingRoom);
+                            global.currentProject.rooms.splice(ind, 1);
                             this.updateList();
                             this.update();
                             alertify

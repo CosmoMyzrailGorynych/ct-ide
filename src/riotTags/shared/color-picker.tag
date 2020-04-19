@@ -32,7 +32,7 @@ color-picker
                     | +
             h4 {voc.projectPalette}
             .Swatches(ref="localSwatches")
-                .aSwatch(each="{colr in window.currentProject.palette}" style="background-color: {colr};" onclick="{onSwatchClick}")
+                .aSwatch(each="{colr in global.currentProject.palette}" style="background-color: {colr};" onclick="{onSwatchClick}")
                 button.anAddSwatchButton(onclick="{addAsLocal}")
                     | +
         .c6.npt.npr.npb
@@ -83,8 +83,8 @@ color-picker
         };
         this.loadColor(this.opts.color || '#ffffff');
 
-        if (!('palette' in window.currentProject)) {
-            window.currentProject.palette = [];
+        if (!('palette' in global.currentProject)) {
+            global.currentProject.palette = [];
         }
         if ('globalPalette' in window.localStorage) {
             this.globalPalette = JSON.parse(localStorage.globalPalette);
@@ -124,7 +124,7 @@ color-picker
         this.onSwatchClick = e => {
             if (e.ctrlKey) {
                 if (e.target.parentNode === this.refs.localSwatches) {
-                    window.currentProject.palette.splice(window.currentProject.palette.indexOf(e.item.colr), 1);
+                    global.currentProject.palette.splice(global.currentProject.palette.indexOf(e.item.colr), 1);
                 } else {
                     this.globalPalette.splice(this.globalPalette.indexOf(e.item.colr), 1);
                     localStorage.globalPalette = JSON.stringify(this.globalPalette);
@@ -139,7 +139,7 @@ color-picker
             localStorage.globalPalette = JSON.stringify(this.globalPalette);
         };
         this.addAsLocal = e => {
-            window.currentProject.palette.push(this.color.toString());
+            global.currentProject.palette.push(this.color.toString());
         };
 
         this.notifyUpdates = () => {

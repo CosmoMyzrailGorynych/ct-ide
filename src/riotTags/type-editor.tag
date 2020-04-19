@@ -85,7 +85,7 @@ type-editor.panel.view.flexrow
         this.libExtends = [];
         this.refreshExtends = () => {
             this.libExtends = [];
-            for (const lib in currentProject.libs) {
+            for (const lib in global.currentProject.libs) {
                 fs.readJSON(path.join(libsDir, lib, 'module.json'), (err, data) => {
                     if (err) {
                         return;
@@ -197,7 +197,7 @@ type-editor.panel.view.flexrow
             }, 0);
         });
         this.on('update', () => {
-            if (window.currentProject.types.find(type =>
+            if (global.currentProject.types.find(type =>
                 this.type.name === type.name && this.type !== type
             )) {
                 this.nameTaken = true;

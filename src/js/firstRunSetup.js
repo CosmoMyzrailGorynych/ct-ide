@@ -4,7 +4,7 @@
         lastProjects: '',
         notes: '',
         appLanguage: 'English',
-        editorZooming: require('electron').webFrame.getZoomFactor() || 1
+        editorZooming: 0
     };
     for (const key in defaults) {
         if (!(key in localStorage)) {

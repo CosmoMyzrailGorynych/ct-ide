@@ -8,8 +8,8 @@ modules-panel.panel.view
                     span {module}
             ul#modulelist
                 li(each="{module in allModules}" onclick="{renderModule(module)}")
-                    svg.feather(class="{(module in window.currentProject.libs)? 'success on' : 'off'}")
-                        use(xlink:href="data/icons.svg#{(module in window.currentProject.libs)? 'check' : 'ctmod'}")
+                    svg.feather(class="{(module in global.currentProject.libs)? 'success on' : 'off'}")
+                        use(xlink:href="data/icons.svg#{(module in global.currentProject.libs)? 'check' : 'ctmod'}")
                     span {module}
             label.file.flexfix-footer.nmb
                 input(
@@ -27,7 +27,7 @@ modules-panel.panel.view
                     svg.feather
                         use(xlink:href="data/icons.svg#info")
                     span {voc.info}
-                li#modsettings(if="{currentModule.fields && currentModuleName in currentProject.libs}" onclick="{changeTab('modulesettings')}" class="{active: tab === 'modulesettings'}")
+                li#modsettings(if="{currentModule.fields && currentModuleName in global.currentProject.libs}" onclick="{changeTab('modulesettings')}" class="{active: tab === 'modulesettings'}")
                     svg.feather
                         use(xlink:href="data/icons.svg#settings")
                     span {voc.settings}
@@ -41,9 +41,9 @@ modules-panel.panel.view
                     span {voc.logs}
             div.flexfix-body
                 #moduleinfo.tabbed.nbt(show="{tab === 'moduleinfo'}")
-                    label.bigpower(onclick="{toggleModule(currentModuleName)}" class="{off: !(currentModuleName in currentProject.libs)}")
+                    label.bigpower(onclick="{toggleModule(currentModuleName)}" class="{off: !(currentModuleName in global.currentProject.libs)}")
                         svg.feather
-                            use(xlink:href="data/icons.svg#{currentModuleName in currentProject.libs? 'check' : 'x'}")
+                            use(xlink:href="data/icons.svg#{currentModuleName in global.currentProject.libs? 'check' : 'x'}")
                         span
                     h1#modname
                         span {currentModule.main.name}
@@ -67,9 +67,9 @@ modules-panel.panel.view
                         .spacer
                         b {voc.dependencies}
                         .inlineblock(each="{dependency in currentModule.dependencies}")
-                            svg.feather(if="{dependency in currentProject.libs}").success
+                            svg.feather(if="{dependency in global.currentProject.libs}").success
                                 use(xlink:href="data/icons.svg#check")
-                            svg.feather(if="{!(dependency in currentProject.libs)}").error
+                            svg.feather(if="{!(dependency in global.currentProject.libs)}").error
                                 use(xlink:href="data/icons.svg#alert-circle")
                             span   {dependency}
 
@@ -77,9 +77,9 @@ modules-panel.panel.view
                         .spacer
                         b {voc.optionalDependencies}
                         .inlineblock(each="{dependency in currentModule.optionalDependencies}")
-                            svg.feather(if="{dependency in currentProject.libs}").success
+                            svg.feather(if="{dependency in global.currentProject.libs}").success
                                 use(xlink:href="data/icons.svg#check")
-                            svg.feather(if="{!(dependency in currentProject.libs)}").warning
+                            svg.feather(if="{!(dependency in global.currentProject.libs)}").warning
                                 use(xlink:href="data/icons.svg#alert-triangle")
                             span   {dependency}
 
@@ -89,14 +89,14 @@ modules-panel.panel.view
                     pre(if="{currentModuleLicense}")
                         code {currentModuleLicense}
 
-                #modulesettings.tabbed.nbt(show="{tab === 'modulesettings'}" if="{currentModule.fields && currentModuleName in currentProject.libs}")
+                #modulesettings.tabbed.nbt(show="{tab === 'modulesettings'}" if="{currentModule.fields && currentModuleName in global.currentProject.libs}")
                     dl(each="{field in currentModule.fields}")
                         dt
                             label.block.checkbox(if="{field.type === 'checkbox'}")
                                 input(
                                     type="checkbox"
-                                    checked="{window.currentProject.libs[currentModuleName][field.id]}"
-                                    onchange="{wire('window.currentProject.libs.' + escapeDots(currentModuleName) + '.' + field.id)}"
+                                    checked="{global.currentProject.libs[currentModuleName][field.id]}"
+                                    onchange="{wire('global.currentProject.libs.' + escapeDots(currentModuleName) + '.' + field.id)}"
                                 )
                                 |   {field.name}
                             span(if="{field.type !== 'checkbox'}")
@@ -104,21 +104,21 @@ modules-panel.panel.view
                         dd
                             textarea(
                                 if="{field.type === 'textfield'}"
-                                value="{window.currentProject.libs[currentModuleName][field.id]}"
-                                onchange="{wire('window.currentProject.libs.' + escapeDots(currentModuleName) + '.' + field.id)}"
+                                value="{global.currentProject.libs[currentModuleName][field.id]}"
+                                onchange="{wire('global.currentProject.libs.' + escapeDots(currentModuleName) + '.' + field.id)}"
                             )
                             input(
                                 if="{field.type === 'number'}"
                                 type="number"
-                                value="{window.currentProject.libs[currentModuleName][field.id]}"
-                                onchange="{wire('window.currentProject.libs.' + escapeDots(currentModuleName) + '.' + field.id)}"
+                                value="{global.currentProject.libs[currentModuleName][field.id]}"
+                                onchange="{wire('global.currentProject.libs.' + escapeDots(currentModuleName) + '.' + field.id)}"
                             )
                             label.block.checkbox(if="{field.type === 'radio'}" each="{option in field.options}")
                                 input(
                                     type="radio"
                                     value="{option.value}"
-                                    checked="{window.currentProject.libs[currentModuleName][field.id] === option.value}"
-                                    onchange="{wire('window.currentProject.libs.' + escapeDots(currentModuleName) + '.' + field.id)}"
+                                    checked="{global.currentProject.libs[currentModuleName][field.id] === option.value}"
+                                    onchange="{wire('global.currentProject.libs.' + escapeDots(currentModuleName) + '.' + field.id)}"
                                 )
                                 |   {option.name}
                                 div(class="desc" if="{option.help}")
@@ -126,8 +126,8 @@ modules-panel.panel.view
                             input(
                                 if="{['checkbox', 'number', 'textfield', 'radio'].indexOf(field.type) === -1}"
                                 type="text"
-                                value="{window.currentProject.libs[currentModuleName][field.id]}"
-                                onchange="{wire('window.currentProject.libs.' + escapeDots(currentModuleName) + '.' + field.id)}"
+                                value="{global.currentProject.libs[currentModuleName][field.id]}"
+                                onchange="{wire('global.currentProject.libs.' + escapeDots(currentModuleName) + '.' + field.id)}"
                             )
                             //- That's a bad idea!!!
                             div(class="desc" if="{field.help}")
@@ -176,7 +176,7 @@ modules-panel.panel.view
         this.allModules = [];
         this.on('update', () => {
             this.enabledModules = [];
-            for (let i in window.currentProject.libs) {
+            for (let i in global.currentProject.libs) {
                 this.enabledModules.push(i);
             }
         });
@@ -184,7 +184,7 @@ modules-panel.panel.view
         this.escapeDots = str => str.replace(/\./g, '\\.');
 
         const tryLoadTypedefs = moduleName => {
-            if (!(moduleName in currentProject.libs)) {
+            if (!(moduleName in global.currentProject.libs)) {
                 return;
             }
             const typedefPath = path.join(libsDir, moduleName, 'types.d.ts');
@@ -233,25 +233,25 @@ modules-panel.panel.view
             this.update();
         });
         this.toggleModule = moduleName => e => {
-            if (window.currentProject.libs[moduleName]) {
-                delete window.currentProject.libs[moduleName];
+            if (global.currentProject.libs[moduleName]) {
+                delete global.currentProject.libs[moduleName];
                 removeTypedefs(moduleName);
             } else {
-                window.currentProject.libs[moduleName] = {};
+                global.currentProject.libs[moduleName] = {};
                 tryLoadTypedefs(moduleName);
                 // 'Settings' page
-                if (this.currentModule.fields && currentProject.libs[name]) {
+                if (this.currentModule.fields && global.currentProject.libs[name]) {
                     for (const field of this.currentModule.fields) {
-                        if (!currentProject.libs[name][field.key]) {
+                        if (!global.currentProject.libs[name][field.key]) {
                             if (field.default) {
-                                currentProject.libs[name][field.key] = field.default;
+                                global.currentProject.libs[name][field.key] = field.default;
                             } else {
                                 if (field.type == 'number') {
-                                    currentProject.libs[name][field.key] = 0;
+                                    global.currentProject.libs[name][field.key] = 0;
                                 } else if (field.type == 'checkbox') {
-                                    currentProject.libs[name][field.key] = false;
+                                    global.currentProject.libs[name][field.key] = false;
                                 } else {
-                                    currentProject.libs[name][field.key] = '';
+                                    global.currentProject.libs[name][field.key] = '';
                                 }
                             }
                         }
@@ -266,8 +266,8 @@ modules-panel.panel.view
             fs.readJSON(path.join(libsDir, name, 'module.json'), (err, data) => {
                 if (err) {
                     alertify.error(err);
-                    if (name in window.currentProject.libs) {
-                        delete window.currentProject.libs[name];
+                    if (name in global.currentProject.libs) {
+                        delete global.currentProject.libs[name];
                     }
                     this.currentModule = false;
                     this.update();

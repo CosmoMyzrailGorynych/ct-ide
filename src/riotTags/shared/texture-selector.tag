@@ -35,7 +35,7 @@ texture-selector.panel.view
                     no-reorder
                 )
                     span {texture.name}
-                    img(src="file://{sessionStorage.projdir + '/img/' + texture.origname + '_prev.png'}")
+                    img(src="file://{global.projdir + '/img/' + texture.origname + '_prev.png'}")
         .flexfix-footer(if="{oncancelled}")
             button(onclick="{oncancelled}") {window.languageJSON.common.cancel}
     script.
@@ -48,7 +48,7 @@ texture-selector.panel.view
         this.searchResults = false;
 
         this.updateList = () => {
-            this.textures = [...window.currentProject.textures];
+            this.textures = [...global.currentProject.textures];
             if (this.sort === 'name') {
                 this.textures.sort((a, b) => {
                     return a.name.localeCompare(b.name);

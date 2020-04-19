@@ -5,7 +5,7 @@ root-tag
     script.
         this.selectorVisible = true;
         window.signals.on('resetAll', () => {
-            window.currentProject = false;
+            global.currentProject = false;
             this.selectorVisible = true;
             riot.update();
         });

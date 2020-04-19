@@ -477,7 +477,7 @@ emitter-editor.panel.pad
         this.updateScaleCurve = curve => {
             if (this.opts.emittermap && (this.opts.emitter.uid in this.opts.emittermap)) {
                 const emtInst = this.opts.emittermap[this.opts.emitter.uid];
-                const {PropertyNode} = require('pixi-particles');
+                const {PropertyNode} = PIXI.particles;
                 emtInst.startScale = PropertyNode.createList(this.opts.emitter.settings.scale);
             } else {
                 window.signals.trigger('emitterResetRequest');
@@ -486,7 +486,7 @@ emitter-editor.panel.pad
         this.updateSpeedCurve = curve => {
             if (this.opts.emittermap && (this.opts.emitter.uid in this.opts.emittermap)) {
                 const emtInst = this.opts.emittermap[this.opts.emitter.uid];
-                const {PropertyNode} = require('pixi-particles');
+                const {PropertyNode} = PIXI.particles;
                 emtInst.startSpeed = PropertyNode.createList(this.opts.emitter.settings.speed);
             } else {
                 window.signals.trigger('emitterResetRequest');
@@ -495,7 +495,7 @@ emitter-editor.panel.pad
         this.updateColorCurve = (alphaCurve, colorCurve) => {
             if (this.opts.emittermap && (this.opts.emitter.uid in this.opts.emittermap)) {
                 const emtInst = this.opts.emittermap[this.opts.emitter.uid];
-                const {PropertyNode} = require('pixi-particles');
+                const {PropertyNode} = PIXI.particles;
 
                 emtInst.startColor = PropertyNode.createList(this.opts.emitter.settings.color);
                 emtInst.startAlpha = PropertyNode.createList(this.opts.emitter.settings.alpha);

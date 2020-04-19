@@ -19,9 +19,9 @@
   },
   "license": "MIT",
   "dependencies": {
-    "electron-packager": "^14.2.1",
-    "electron-winstaller": "^4.0.0",
-    "fs-extra": "9.0.0",
+    "filemode": "^3.0.0",
+    "fs-extra": "^9.0.0",
+    "globby": "^11.0.0",
     "gulp": "^4.0.2",
     "gulp-append-prepend": "^1.0.8",
     "gulp-chmod": "^3.0.0",
@@ -35,18 +35,17 @@
     "gulp-stylint": "^4.0.2",
     "gulp-stylus": "^2.7.0",
     "gulp-svgstore": "^7.0.1",
+    "gulp-zip": "^5.0.1",
     "jsdoc-x": "^4.1.0",
     "minimist": "^1.2.5",
     "node-notifier": "^5.4.3",
+    "nw-builder": "^3.5.7",
     "pug": "^2.0.4",
     "pug-lint-config-clock": "^2.0.0",
     "riot": "^3.13.2",
     "streamqueue": "^1.1.2",
     "stylint-stylish": "^2.0.0",
     "stylus": "^0.54.7",
-    "tsd-jsdoc": "^2.4.0"
-  },
-  "optionalDependencies": {
-    "electron-installer-flatpak": "^0.8.0"
+    "tsd-jsdoc": "^2.5.0"
   }
 }

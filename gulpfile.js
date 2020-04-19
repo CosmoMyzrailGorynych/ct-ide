@@ -11,6 +11,9 @@ const path = require('path'),
       riot = require('gulp-riot'),
       pug = require('gulp-pug'),
       sprite = require('gulp-svgstore'),
+      globby = require('globby'),
+      filemode = require('filemode'),
+      zip = require('gulp-zip'),
 
       jsdocx = require('jsdoc-x'),
 
@@ -20,19 +23,12 @@ const path = require('path'),
 
       spawnise = require('./node_requires/spawnise');
 
+const nwVersion = '0.45.1',
+      platforms = ['osx64', 'win32', 'win64', 'linux32', 'linux64'],
+      nwFiles = ['./app/**', '!./app/export/**', '!./app/projects/**', '!./app/exportDesktop/**', '!./app/cache/**', '!./app/.vscode/**', '!./app/JamGames/**'];
+
 const argv = minimist(process.argv.slice(2));
 const npm = (/^win/).test(process.platform) ? 'npm.cmd' : 'npm';
-
-const targets = [
-    'darwin-x64',
-    'linux-arm64',
-    'linux-armv7l',
-    'linux-ia32',
-    'linux-x64',
-    'win32-arm64',
-    'win32-ia32',
-    'win32-x64'
-];
 
 const pack = require('./app/package.json');
 
@@ -220,9 +216,19 @@ const lintI18n = () => require('./node_requires/i18n')().then(console.log);
 const lint = gulp.series(lintJS, lintStylus, lintI18n);
 
 const launchApp = () => {
-    spawnise.spawn(npm, ['run', 'start'], {
-        cwd: './app'
-    }).then(launchApp);
+    const NwBuilder = require('nw-builder');
+    const nw = new NwBuilder({
+        files: nwFiles,
+        version: nwVersion,
+        platforms,
+        flavor: 'sdk'
+    });
+    return nw.run()
+    .catch(function (error) {
+        showErrorBox();
+        console.error(error);
+    })
+    .then(launchApp);
 };
 
 const docs = async () => {
@@ -350,79 +356,105 @@ const build = gulp.parallel([
 ]);
 
 const bakePackages = async () => {
-    const packager = require('electron-packager');
+    const NwBuilder = require('nw-builder');
     await fs.remove(path.join('./build', `ctjs - v${pack.version}`));
-    const baseOptions = {
-        // Build parameters
-        dir: './app',
-        out: './build',
-        asar: true,
-        overwrite: true,
-        icon: './buildAssets/icon',
-
-        appCategoryType: 'public.app-category.developer-tools',
-
-        name: 'ct.js',
-        executableName: 'ctjs',
-        appCopyright: `Copyright © Cosmo Myzrail Gorynych ${(new Date()).getFullYear()} and contributors. Distributed under MIT license.`,
-        win32metadata: {
-            CompanyName: 'Cosmo Myzrail Gorynych aka ComigoGames',
-            FileDescription: 'A free, open-source 2D game editor that is easy to learn and fun to use'
-        },
-
-        ignore: [
-            /app\/data\/ct\.(libs|release)/,
-            /app\/data\/docs/,
-            /app\/data\/i18n/
-        ],
-
-        all: true
-    };
-
-    // wtf and why do I need it? @see https://github.com/electron/electron-packager/issues/875
-    // process.noAsar = true;
-
-    const paths = await packager(baseOptions);
-    console.log('Built to these locations:', paths);
+    var nw = new NwBuilder({
+        files: nwFiles,
+        platforms,
+        version: nwVersion,
+        flavor: 'sdk',
+        buildType: 'versioned',
+        // forceDownload: true,
+        zip: false,
+        macIcns: './app/ct.ide.icns'
+    });
+    await nw.build();
+    console.log('Built to this location:', path.join('./build', `ctjs - v${pack.version}`));
 };
 
-const passthroughBundle = async () => {
-    await Promise.all(targets.map(target => Promise.all([
-        'data/ct.release',
-        'data/ct.libs',
-        'data/docs',
-        'data/i18n'
-    ].map(subpath => fs.copy(
-        path.join('./app', subpath),
-        path.join('./build/', `ct.js-${target}`, subpath)
-    )))));
+// a workaround for https://github.com/nwjs-community/nw-builder/issues/289
+const fixPermissions = () => {
+    if (platforms.indexOf('osx64') === -1) {
+        return Promise.resolve(); // skip the fix if not building for macos
+    }
+    const baseDir = path.posix.join('./build', `ctjs - v${pack.version}`, 'osx64', 'ctjs.app/Contents');
+
+    const globs = [
+        baseDir + '/MacOS/nwjs',
+        baseDir + '/Versions/*/nwjs Framework.framework/Versions/A/nwjs Framework',
+        baseDir + '/Versions/*/nwjs Helper.app/Contents/MacOS/nwjs Helper'
+    ];
+    return globby(globs)
+    .then(files => {
+        console.log('overriding permissions for', files);
+        return Promise.all(files.map(file => filemode(file, '777')));
+    });
 };
 
-//const flatpak = done => {
-//    const installer = require('electron-installer-flatpak');
-//    const options = {
-//        src: 'build/ct.js-linux-x64',
-//        dest: 'dist/',
-//        arch: 'x64',
-//        icon: 'app/ct_ide.png',
-//        categories: ['Development']
-//    };
-//
-//    console.log('Creating flatpak package… (this may take a while)');
-//
-//    installer(options, function (err) {
-//        if (err) {
-//            throw err;
-//        }
-//        console.log('Successfully created package at ' + options.dest);
-//        done();
-//    });
-//};
-
-const zipPackages = async () => {
-    await Promise.all(targets.map(target => fs.remove(`./build/ct.js-${target}.zip`)));
-    await Promise.all(targets.map(target => spawnise.fromLines(`zip -r -y ./build/ct.js-${target}.zip ./build/ct.js-${target}`)));
+const oldSymlink = fs.symlink;
+fs.symlink = (target, destination) => {
+    console.log('link', target, '<==', destination);
+    return oldSymlink(target, destination);
 };
+
+const abortOnWindows = done => {
+    if ((/^win/).test(process.platform) && platforms.indexOf('osx64') !== -1) {
+        throw new Error('Sorry, but building ct.js for mac is not possible on Windows due to Windows\' specifics. You can edit `platforms` at gulpfile.js if you don\'t need a package for mac.');
+    }
+    done();
+};
+// Based on solution at https://github.com/strawbees/desktop-packager/blob/master/commands/darwin/bundle.js
+const fixSymlinks = async () => {
+    if (platforms.indexOf('osx64') === -1) {
+        return; // skip the fix if not building for macos
+    }
+    const baseDir = path.posix.join('./build', `ctjs - v${pack.version}`, 'osx64', 'ctjs.app/Contents');
+
+    // the actual directory depends on nw version, so let's find the needed dir with a glob
+    const glob = baseDir + '/Versions/*/nwjs Framework.framework/*';
+    const execute = require('./node_requires/execute');
+    const frameworkDir = path.dirname((await globby([glob]))[0]);
+
+    console.log('fixing symlinks at', frameworkDir);
+
+    execute(async ({exec}) => {
+        await exec(`
+            cd "${frameworkDir}"
+            rm "Versions/Current" && ln -s "./A" "./Versions/Current"
+            rm "Helpers" && ln -s "./Versions/Current/Helpers"
+            rm "Internet Plug-Ins" && ln -s "./Versions/Current/Internet Plug-Ins"
+            rm "Libraries" && ln -s "./Versions/Current/Libraries"
+            rm "nwjs Framework" && ln -s "./Versions/Current/nwjs Framework"
+            rm "Resources" && ln -s "./Versions/Current/Resources"
+            rm "XPCServices" && ln -s "./Versions/Current/XPCServices"
+        `);
+    });
+};
+exports.fixPermissions = fixPermissions;
+exports.fixSymlinks = fixSymlinks;
+
+
+let zipPackages;
+if ((/^win/).test(process.platform)) {
+    const zipsForAllPlatforms = platforms.map(platform => () =>
+        gulp.src(`./build/ctjs - v${pack.version}/${platform}/**`)
+        .pipe(zip(`ct.js v${pack.version} for ${platform}.zip`))
+        .pipe(gulp.dest(`./build/ctjs - v${pack.version}/`))
+    );
+    zipPackages = gulp.parallel(zipsForAllPlatforms);
+} else {
+    const execute = require('./node_requires/execute');
+    zipPackages = () => Promise.all(platforms.map(platform =>
+        // `r` for dirs,
+        // `q` for preventing spamming to stdout,
+        // and `y` for preserving symlinks
+        execute(({exec}) => exec(`
+            cd "./build/ctjs - v${pack.version}/"
+            zip -rqy "ct.js v${pack.version} for ${platform}.zip" "./${platform}"
+        `))
+    ));
+}
+
 
 const examples = () => gulp.src('./src/examples/**/*')
     .pipe(gulp.dest('./app/examples'));
@@ -451,14 +483,15 @@ const patronsCache = done => {
 
 const packages = gulp.series([
     lint,
+    abortOnWindows,
     build,
     docs,
     patronsCache,
-    examples,
     bakePackages,
-    passthroughBundle,
+    fixSymlinks,
+    fixPermissions,
+    examples,
     zipPackages
-    //flatpak
 ]);
 
 const deployOnly = () => {

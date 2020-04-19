@@ -1,5 +1,5 @@
 {
-  "main": "index.js",
+  "main": "index.html",
   "name": "ctjs",
   "description": "ct.js — a free 2D game engine",
   "version": "1.3.0",
@@ -10,9 +10,27 @@
     "url": "https://github.com/cosmomyzrailgorynych"
   },
   "license": "MIT",
+  "user-agent": "ct.js game engine %name/%ver (%osinfo) NW.js/%nwver AppleWebkit/%webkit_ver Chromium/%chromium_ver",
   "window": {
+    "icon": "ct_ide.png",
     "toolbar": true,
-    "frame": true
+    "frame": true,
+    "width": 1024,
+    "height": 720,
+    "position": "center",
+    "min_width": 380,
+    "min_height": 380,
+    "resizable": true,
+    "fullscreen": false,
+    "title": "ctjs"
+  },
+  "webview": {
+    "partitions": [
+       {
+         "name": "trusted",
+         "accessible_resources": [ "<all_urls>" ]
+       }
+    ]
   },
   "repository": {
     "type": "git",
@@ -31,12 +49,12 @@
   "webkit": {
     "plugin": false
   },
-  "chromium-args": "--force-color-profile=srgb --disable-features=ColorCorrectRendering",
+  "chromium-args": "--enable-features=nw2 --load-extensions --force-color-profile=srgb --disable-features=ColorCorrectRendering",
   "dependencies": {
     "archiver": "^3.1.1",
     "csswring": "7.0.0",
     "electron-packager": "^14.2.1",
-    "fs-extra": "^8.0.0",
+    "fs-extra": "^9.0.0",
     "fuse.js": "^3.4.6",
     "google-closure-compiler": "^20191111.0.0",
     "highlight.js": "^9.18.1",
@@ -44,7 +62,7 @@
     "js-yaml": "^3.13.1",
     "markdown-it": "3.1.0",
     "maxrects-packer": "^2.6.0",
-    "monaco-editor": "^0.18.1",
+    "monaco-editor": "^0.20.0",
     "monaco-themes": "^0.3.3",
     "node-static": "^0.7.11",
     "pixi-particles": "^4.2.0",
@@ -52,78 +70,5 @@
     "png2icons": "^2.0.1",
     "ttf2woff": "^2.0.1",
     "unzipper": "^0.10.10"
-  },
-  "devDependencies": {
-    "electron": "8.0.2"
-  },
-  "build": {
-    "appId": "rocks.ctjs.ide",
-    "publish": [],
-    "directories": {
-      "output": "./../build",
-      "buildResources": "./../buildAssets"
-    },
-    "extraFiles": [
-      "Changelog.md",
-      {
-        "from": "./data/i18n",
-        "to": "./data/i18n"
-      },
-      {
-        "from": "./data/ct.libs",
-        "to": "./data/ct.libs"
-      },
-      {
-        "from": "./data/ct.release",
-        "to": "./data/ct.release"
-      },
-      {
-        "from": "./data/docs",
-        "to": "./data/docs"
-      },
-      "examples"
-    ],
-    "files": [
-      "**/*",
-      "!/cache",
-      "!/Changelog.md",
-      "!/data/i18n",
-      "!/data/ct.libs",
-      "!/data/ct.release",
-      "!/data/docs",
-      "!../src/examples"
-    ],
-    "linux": {
-      "target": [
-        "AppImage",
-        "zip"
-      ],
-      "category": "Development",
-      "maintainer": "Cosmo Myzrail Gorynych",
-      "synopsis": "A free 2D game editor"
-    },
-    "win": {
-      "target": [
-        "nsis",
-        "portable",
-        "zip"
-      ],
-      "icon": "ct.ide.ico"
-    },
-    "mac": {
-      "target": [
-        "zip",
-        "dir"
-      ],
-      "category": "public.app-category.developer-tools",
-      "icon": "./ct.ide.icns"
-    },
-    "dmg": {
-      "backgroundColor": "#446adb",
-      "background": "dmgBg.png"
-    },
-    "appImage": {
-      "license": "./LICENSE"
-    }
   }
 }

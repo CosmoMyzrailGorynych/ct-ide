@@ -1,6 +1,6 @@
 types-panel.panel.view
     asset-viewer(
-        collection="{currentProject.types}"
+        collection="{global.currentProject.types}"
         contextmenu="{onTypeContextMenu}"
         namespace="types"
         click="{openType}"
@@ -48,8 +48,8 @@ types-panel.panel.view
         this.fillTypeMap = () => {
             delete glob.typemap;
             glob.typemap = {};
-            for (let i = 0; i < window.currentProject.types.length; i++) {
-                glob.typemap[currentProject.types[i].uid] = i;
+            for (let i = 0; i < global.currentProject.types.length; i++) {
+                glob.typemap[global.currentProject.types[i].uid] = i;
             }
         };
         this.typeCreate = e => {
@@ -69,7 +69,7 @@ types-panel.panel.view
                 texture: -1,
                 extends: {}
             };
-            window.currentProject.types.push(obj);
+            global.currentProject.types.push(obj);
             this.refs.types.updateList();
             this.openType(obj)(e);
             window.signals.trigger('typesChanged');
@@ -93,8 +93,7 @@ types-panel.panel.view
             }, {
                 label: languageJSON.common.copyName,
                 click: e => {
-                    const {clipboard} = require('electron');
-                    clipboard.writeText(this.currentType.name);
+                    nw.Clipboard.get().set(this.currentType.name, 'text');
                 }
             }, {
                 label: window.languageJSON.common.duplicate,
@@ -107,7 +106,7 @@ types-panel.panel.view
                             var tp = JSON.parse(JSON.stringify(this.currentType));
                             tp.name = e.inputValue;
                             tp.uid = generateGUID();
-                            currentProject.types.push(tp);
+                            global.currentProject.types.push(tp);
                             this.fillTypeMap();
                             this.refs.types.updateList();
                             this.update();
@@ -138,7 +137,7 @@ types-panel.panel.view
                     .confirm(window.languageJSON.common.confirmDelete.replace('{0}', this.currentType.name))
                     .then(e => {
                         if (e.buttonClicked === 'ok') {
-                            for (const room of window.currentProject.rooms) {
+                            for (const room of global.currentProject.rooms) {
                                 let i = 0;
                                 while (i < room.copies.length) {
                                     if (room.copies[i].uid === this.currentType.uid) {
@@ -149,8 +148,8 @@ types-panel.panel.view
                                 }
                             }
 
-                            let ind = window.currentProject.types.indexOf(this.currentType);
-                            window.currentProject.types.splice(ind, 1);
+                            let ind = global.currentProject.types.indexOf(this.currentType);
+                            global.currentProject.types.splice(ind, 1);
                             this.refs.types.updateList();
                             this.fillTypeMap();
                             this.update();

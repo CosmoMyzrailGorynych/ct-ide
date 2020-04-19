@@ -64,7 +64,7 @@ room-editor.panel.view
                 span {voc[room.gridX > 0? 'gridoff' : 'grid']}
         .center
             button#roomcenter(onclick="{roomToCenter}") {voc.tocenter}
-            span.aMouseCoord(if="{window.innerWidth - sidebarWidth > 470}") ({mouseX}:{mouseY})
+            span.aMouseCoord(if="{window.innerWidth - sidebarWidth > 470}" ref="mousecoords") ({mouseX}:{mouseY})
     room-events-editor(if="{editingCode}" room="{room}")
     context-menu(menu="{roomCanvasCopiesMenu}" ref="roomCanvasCopiesMenu")
     context-menu(menu="{roomCanvasMenu}" ref="roomCanvasMenu")
@@ -144,7 +144,7 @@ room-editor.panel.view
             setTimeout(this.refreshRoomCanvas, 10);
         };
         this.on('update', () => {
-            if (window.currentProject.rooms.find(room =>
+            if (global.currentProject.rooms.find(room =>
                 this.room.name === room.name && this.room !== room
             )) {
                 this.nameTaken = true;
@@ -298,10 +298,12 @@ room-editor.panel.view
                 this.mouseX = Math.round(dx / this.room.gridX) * this.room.gridX;
                 this.mouseY = Math.round(dy / this.room.gridY) * this.room.gridY;
             }
+            this.refs.mousecoords.innerHTML = `(${this.mouseX}:${this.mouseY})`;
         };
 
         /** Начинаем перемещение, или же показываем предварительное расположение новой копии */
         this.onCanvasMove = e => {
+            e.preventUpdate = true;
             if (this.dragging && !this.movingStuff) {
                 // перетаскивание
                 this.roomx -= ~~(e.movementX / this.zoomFactor);
@@ -434,8 +436,8 @@ room-editor.panel.view
             // Make an array of all the backgrounds, tile layers and copies, and then sort it.
             this.stack = this.room.copies.concat(this.room.backgrounds).concat(this.room.tiles);
             this.stack.sort((a, b) => {
-                let depthA = a.depth !== void 0? a.depth : window.currentProject.types[glob.typemap[a.uid]].depth,
-                    depthB = b.depth !== void 0? b.depth : window.currentProject.types[glob.typemap[b.uid]].depth;
+                let depthA = a.depth !== void 0? a.depth : global.currentProject.types[glob.typemap[a.uid]].depth,
+                    depthB = b.depth !== void 0? b.depth : global.currentProject.types[glob.typemap[b.uid]].depth;
                 return depthA - depthB;
             });
         };
@@ -469,7 +471,7 @@ room-editor.panel.view
             canvas.x.translate(~~(canvas.width / 2), ~~(canvas.height / 2));
             canvas.x.scale(this.zoomFactor,this.zoomFactor);
             canvas.x.translate(-this.roomx, -this.roomy);
-            canvas.x.imageSmoothingEnabled = !currentProject.settings.pixelatedrender;
+            canvas.x.imageSmoothingEnabled = !global.currentProject.settings.pixelatedrender;
 
             if (this.stack.length > 0) { // есть слои вообще?
                 // копии
@@ -514,7 +516,7 @@ room-editor.panel.view
                         }
                     } else { // Это копия
                         let copy = this.stack[i],
-                            type = window.currentProject.types[glob.typemap[copy.uid]];
+                            type = global.currentProject.types[glob.typemap[copy.uid]];
                         let texture, gra, w, h, ox, oy,
                             grax, gray; // Центр рисовки графики
                         if (type.texture != -1) {
@@ -583,7 +585,7 @@ room-editor.panel.view
         this.drawSelection = (x1, y1, x2, y2) => {
             if (typeof x1 !== 'number') {
                 const copy = x1,
-                      type = window.currentProject.types[glob.typemap[copy.uid]],
+                      type = global.currentProject.types[glob.typemap[copy.uid]],
                       texture = glob.texturemap[type.texture].g;
                 var left, top, height, width;
                 if (type.texture !== -1) {
@@ -639,7 +641,7 @@ room-editor.panel.view
                 );
                 var data = c.toDataURL().replace(/^data:image\/\w+;base64,/, '');
                 var buf = new Buffer(data, 'base64');
-                var nam = sessionStorage.projdir + '/img/r' + this.room.thumbnail + '.png';
+                var nam = global.projdir + '/img/r' + this.room.thumbnail + '.png';
                 fs.writeFile(nam, buf, function(err) {
                     if (err) {
                         decline(err);
@@ -647,7 +649,7 @@ room-editor.panel.view
                         accept(nam);
                     }
                 });
-                var nam2 = sessionStorage.projdir + '/img/splash.png';
+                var nam2 = global.projdir + '/img/splash.png';
                 fs.writeFile(nam2, buf, function(err) {
                     if (err) {
                         decline(err);

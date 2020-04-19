@@ -1,6 +1,6 @@
 fx-panel.panel.view
     asset-viewer.tall(
-        collection="{currentProject.emitterTandems}"
+        collection="{global.currentProject.emitterTandems}"
         contextmenu="{showTandemPopup}"
         vocspace="particleEmitters"
         namespace="emitterTandems"
@@ -48,7 +48,7 @@ fx-panel.panel.view
                 emitters: [defaultEmitter]
             };
 
-            currentProject.emitterTandems.push(tandem);
+            global.currentProject.emitterTandems.push(tandem);
             this.editingTandem = true;
             this.editedTandem = tandem;
         };
@@ -84,8 +84,7 @@ fx-panel.panel.view
             }, {
                 label: languageJSON.common.copyName,
                 click: e => {
-                    const {clipboard} = require('electron');
-                    clipboard.writeText(this.editedTandem.name);
+                    nw.Clipboard.get().set(this.editedTandem.name, 'text');
                 }
             }, {
                 label: window.languageJSON.common.duplicate,
@@ -102,7 +101,7 @@ fx-panel.panel.view
                             newTandem.name = e.inputValue;
                             newTandem.origname = 'pt' + slice;
                             newTandem.uid = id;
-                            window.currentProject.emitterTandems.push(newTandem);
+                            global.currentProject.emitterTandems.push(newTandem);
                             this.editedTandemId = id;
                             this.editedTandem = newTandem;
                             this.editingStyle = true;
@@ -135,8 +134,8 @@ fx-panel.panel.view
                     .confirm(window.languageJSON.common.confirmDelete.replace('{0}', this.editedTandem.name))
                     .then(e => {
                         if (e.buttonClicked === 'ok') {
-                            const ind = window.currentProject.emitterTandems.indexOf(this.editedTandem);
-                            window.currentProject.emitterTandems.splice(ind, 1);
+                            const ind = global.currentProject.emitterTandems.indexOf(this.editedTandem);
+                            global.currentProject.emitterTandems.splice(ind, 1);
                             this.refs.emitterTandems.updateList();
                             this.update();
                             alertify

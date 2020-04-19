@@ -7,17 +7,17 @@ export-panel
             p {voc.firstrunnotice}
             fieldset
                 label.checkbox
-                    input(type="checkbox" checked="{currentProject.settings.export.linux}" onchange="{wire('window.currentProject.settings.export.linux')}")
+                    input(type="checkbox" checked="{global.currentProject.settings.export.linux}" onchange="{wire('global.currentProject.settings.export.linux')}")
                     svg.icon
                         use(xlink:href="data/icons.svg#linux")
                     |   Linux
                 label.checkbox(disabled="{process.platform === 'win32'}" title="{process.platform === 'win32' && voc.cannotBuildForMacOnWin}")
-                    input(type="checkbox" checked="{currentProject.settings.export.mac}" onchange="{wire('window.currentProject.settings.export.mac')}")
+                    input(type="checkbox" checked="{global.currentProject.settings.export.mac}" onchange="{wire('global.currentProject.settings.export.mac')}")
                     svg.icon
                         use(xlink:href="data/icons.svg#apple")
                     |   MacOS
                 label.checkbox
-                    input(type="checkbox" checked="{currentProject.settings.export.windows}" onchange="{wire('window.currentProject.settings.export.windows')}")
+                    input(type="checkbox" checked="{global.currentProject.settings.export.windows}" onchange="{wire('global.currentProject.settings.export.windows')}")
                     svg.icon
                         use(xlink:href="data/icons.svg#windows")
                     |   Windows
@@ -25,9 +25,9 @@ export-panel
                 b {voc.launchMode}
                 each key in ['maximized', 'fullscreen', 'windowed']
                     label.checkbox
-                        input(type="radio" value=key checked=`{currentProject.settings.desktopMode === '${key}'}` onchange="{wire('window.currentProject.settings.desktopMode')}")
+                        input(type="radio" value=key checked=`{global.currentProject.settings.desktopMode === '${key}'}` onchange="{wire('global.currentProject.settings.desktopMode')}")
                         span=`{voc.launchModes.${key}}`
-            p.warning(if="{currentProject.settings.export.windows && process.platform !== 'win32'}")
+            p.warning(if="{global.currentProject.settings.export.windows && process.platform !== 'win32'}")
                 svg.feather
                     use(xlink:href="data/icons.svg#alert-triangle")
                 |
@@ -57,7 +57,7 @@ export-panel
         this.mixin(window.riotWired);
         this.working = false;
         this.log = [];
-        currentProject.settings.export = currentProject.settings.export || {};
+        global.currentProject.settings.export = global.currentProject.settings.export || {};
 
         this.close = function () {
             this.parent.showExporter = false;
@@ -78,13 +78,13 @@ export-panel
                 const {getWritableDir} = require('./data/node_requires/platformUtils');
                 const runCtExport = require('./data/node_requires/exporter');
                 const writable = await getWritableDir(),
-                      projectDir = sessionStorage.projdir,
+                      projectDir = global.projdir,
                       exportDir = path.join(writable, 'export'),
                       buildDir = path.join(writable, 'builds');
 
                 this.log.push('Exporting the project…');
                 this.update();
-                await runCtExport(currentProject, projectDir);
+                await runCtExport(global.currentProject, projectDir);
                 this.log.push('Adding desktop resources…');
                 this.update();
                 await fs.copy('./data/ct.release/desktopPack/', exportDir);
@@ -93,31 +93,31 @@ export-panel
                 this.log.push('Preparing build metadata…');
                 this.update();
                 const packageJson = fs.readJSONSync('./data/ct.release/desktopPack/package.json');
-                const version = currentProject.settings.version.join('.') + currentProject.settings.versionPostfix;
+                const version = global.currentProject.settings.version.join('.') + global.currentProject.settings.versionPostfix;
                 packageJson.version = version;
-                if (currentProject.settings.title) {
-                    packageJson.name = currentProject.settings.title;
-                    packageJson.window.title = currentProject.settings.title;
+                if (global.currentProject.settings.title) {
+                    packageJson.name = global.currentProject.settings.title;
+                    packageJson.window.title = global.currentProject.settings.title;
                 }
-                const startingRoom = currentProject.rooms.find(room => room.uid === currentProject.startroom) || currentProject.rooms[0];
+                const startingRoom = global.currentProject.rooms.find(room => room.uid === global.currentProject.startroom) || global.currentProject.rooms[0];
                 packageJson.window.width = startingRoom.width;
                 packageJson.window.height = startingRoom.height;
-                packageJson.window.mode = currentProject.settings.desktopMode || 'maximized';
+                packageJson.window.mode = global.currentProject.settings.desktopMode || 'maximized';
                 await fs.outputJSON(path.join(exportDir, 'package.json'), packageJson);
 
                 this.log.push('Baking icons…');
                 this.update();
                 const png2icons = require('png2icons'),
                       {getTextureOrig} = require('./data/node_requires/resources/textures');
-                const iconPath = getTextureOrig(currentProject.settings.branding.icon || -1, true),
+                const iconPath = getTextureOrig(global.currentProject.settings.branding.icon || -1, true),
                       icon = await fs.readFile(iconPath);
                 await fs.outputFile(path.join(exportDir, 'icon.icns'), png2icons.createICNS(
                     icon,
-                    currentProject.settings.pixelatedrender? png2icons.BILINEAR : png2icons.HERMITE
+                    global.currentProject.settings.pixelatedrender? png2icons.BILINEAR : png2icons.HERMITE
                 ));
                 await fs.outputFile(path.join(exportDir, 'icon.ico'), png2icons.createICO(
                     icon,
-                    currentProject.settings.antialias? png2icons.BILINEAR : png2icons.HERMITE,
+                    global.currentProject.settings.antialias? png2icons.BILINEAR : png2icons.HERMITE,
                     0, true, true
                 ));
 
@@ -130,18 +130,18 @@ export-panel
                     out: buildDir,
                     asar: true,
                     overwrite: true,
-                    electronVersion: process.versions.electron,
+                    electronVersion: '8.2.2',
                     icon: path.join(exportDir, 'icon'),
 
                     // generic data
                     appCategoryType: 'public.app-category.games',
 
                     // Game-specific metadata
-                    executableName: currentProject.settings.title || 'ct.js game',
-                    appCopyright: currentProject.settings.author && `Copyright © ${currentProject.settings.author} ${(new Date()).getFullYear()}`,
-                    win32metadata: currentProject.settings.author && {
-                        CompanyName: currentProject.settings.author,
-                        FileDescription: currentProject.settings.description || 'A cool game made in ct.js game editor'
+                    executableName: global.currentProject.settings.title || 'ct.js game',
+                    appCopyright: global.currentProject.settings.author && `Copyright © ${global.currentProject.settings.author} ${(new Date()).getFullYear()}`,
+                    win32metadata: global.currentProject.settings.author && {
+                        CompanyName: global.currentProject.settings.author,
+                        FileDescription: global.currentProject.settings.description || 'A cool game made in ct.js game editor'
                     }
                 };
 
@@ -149,7 +149,7 @@ export-panel
                 process.noAsar = true;
 
                 console.info('Messages "Packaging app for platform *" are not errors, this is how electron-packer works ¯\\_(ツ)_/¯');
-                if (currentProject.settings.export.linux) {
+                if (global.currentProject.settings.export.linux) {
                     this.log.push('Building for Linux…');
                     const paths = await packager(Object.assign({}, baseOptions, {
                         platform: 'linux',
@@ -158,7 +158,7 @@ export-panel
                     this.log.push(`Linux builds are ready at these paths:\n  ${paths.join('\n  ')}`);
                     this.update();
                 }
-                if (currentProject.settings.export.mac && process.platform !== 'win32') {
+                if (global.currentProject.settings.export.mac && process.platform !== 'win32') {
                     this.log.push('Building for MacOS…');
                     this.update();
                     const paths = await packager(Object.assign({}, baseOptions, {
@@ -168,7 +168,7 @@ export-panel
                     this.log.push(`Mac builds are ready at these paths:\n  ${paths.join('\n  ')}`);
                     this.update();
                 }
-                if (currentProject.settings.export.windows) {
+                if (global.currentProject.settings.export.windows) {
                     this.log.push('Building for Windows…');
                     const paths = await packager(Object.assign({}, baseOptions, {
                         platform: 'win32',
@@ -182,8 +182,7 @@ export-panel
                 alertify.success(`Success! Exported to ${buildDir}`);
                 this.working = false;
                 this.update();
-                const {shell} = require('electron');
-                shell.openItem(buildDir);
+                nw.Shell.openItem(buildDir);
             } catch (e) {
                 this.log.push(e);
                 this.working = false;
@@ -194,6 +193,5 @@ export-panel
         };
 
         this.copyLog = e => {
-            const {clipboard} = require('electron');
-            clipboard.writeText(this.log.join('\n'));
+            nw.Clipboard.get().set(this.log.join('\n'), 'text');
         };

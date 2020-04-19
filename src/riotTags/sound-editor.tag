@@ -12,7 +12,7 @@ sound-editor.panel.view
         audio(
             if="{sound && sound.origname}"
             ref="audio" controls loop
-            src="file://{sessionStorage.projdir + '/snd/' + sound.origname + '?' + sound.lastmod}"
+            src="file://{global.projdir + '/snd/' + sound.origname + '?' + sound.lastmod}"
             onplay="{notifyPlayerPlays}"
         )
         p
@@ -39,7 +39,7 @@ sound-editor.panel.view
         this.playing = false;
         this.sound = this.opts.sound;
         this.on('update', () => {
-            if (window.currentProject.sounds.find(sound =>
+            if (global.currentProject.sounds.find(sound =>
                 this.sound.name === sound.name && this.sound !== sound
             )) {
                 this.nameTaken = true;
@@ -68,7 +68,7 @@ sound-editor.panel.view
         };
         this.changeSoundFile = () => {
             const val = this.refs.inputsound.files[0].path;
-            fs.copy(val, sessionStorage.projdir + '/snd/s' + this.sound.uid + path.extname(val), e => {
+            fs.copy(val, global.projdir + '/snd/s' + this.sound.uid + path.extname(val), e => {
                 if (e) {
                     console.error(e);
                     alertify.error(e);

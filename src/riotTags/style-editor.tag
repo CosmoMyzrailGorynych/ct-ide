@@ -146,7 +146,6 @@ style-editor.panel.view
             this.tab = tab;
         };
         this.on('mount', e => {
-            const PIXI = require('pixi.js-legacy');
             const width = 800;
             const height = 500;
             this.pixiApp = new PIXI.Application({
@@ -178,7 +177,7 @@ style-editor.panel.view
             this.refreshStyleTexture();
         });
         this.on('update', () => {
-            if (window.currentProject.styles.find(style =>
+            if (global.currentProject.styles.find(style =>
                 this.styleobj.name === style.name && this.styleobj !== style
             )) {
                 this.nameTaken = true;
@@ -245,8 +244,8 @@ style-editor.panel.view
                 return false;
             }
             this.styleobj.lastmod = +(new Date());
-            this.styleGenPreview(sessionStorage.projdir + '/img/' + this.styleobj.origname + '_prev@2.png', 128);
-            this.styleGenPreview(sessionStorage.projdir + '/img/' + this.styleobj.origname + '_prev.png', 64).then(() => {
+            this.styleGenPreview(global.projdir + '/img/' + this.styleobj.origname + '_prev@2.png', 128);
+            this.styleGenPreview(global.projdir + '/img/' + this.styleobj.origname + '_prev.png', 64).then(() => {
                 this.parent.editingStyle = false;
                 this.parent.update();
             });

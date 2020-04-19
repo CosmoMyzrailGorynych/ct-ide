@@ -246,10 +246,10 @@ texture-editor.panel.view
                 console.error(e);
                 this.textureSave();
             };
-            img.src = path.join('file://', sessionStorage.projdir, '/img/', texture.origname) + '?' + Math.random();
+            img.src = path.join('file://', global.projdir, '/img/', texture.origname) + '?' + Math.random();
         });
         this.on('update', () => {
-            if (window.currentProject.textures.find(texture =>
+            if (global.currentProject.textures.find(texture =>
                 this.texture.name === texture.name && this.texture !== texture
             )) {
                 this.nameTaken = true;
@@ -273,7 +273,7 @@ texture-editor.panel.view
                 this.loadImg(
                     this.texture.uid,
                     val,
-                    sessionStorage.projdir + '/img/i' + this.texture.uid + path.extname(val)
+                    global.projdir + '/img/i' + this.texture.uid + path.extname(val)
                 );
                 this.texture.source = val;
             } else {
@@ -286,7 +286,7 @@ texture-editor.panel.view
             this.loadImg(
                 this.texture.uid,
                 this.texture.source,
-                sessionStorage.projdir + '/img/i' + this.texture.uid + path.extname(this.texture.source)
+                global.projdir + '/img/i' + this.texture.uid + path.extname(this.texture.source)
             );
         }
 
@@ -729,8 +729,8 @@ texture-editor.panel.view
             this.parent.fillTextureMap();
             glob.modified = true;
             this.texture.lastmod = +(new Date());
-            this.textureGenPreview(sessionStorage.projdir + '/img/' + this.texture.origname + '_prev@2.png', 128);
-            this.textureGenPreview(sessionStorage.projdir + '/img/' + this.texture.origname + '_prev.png', 64)
+            this.textureGenPreview(global.projdir + '/img/' + this.texture.origname + '_prev@2.png', 128);
+            this.textureGenPreview(global.projdir + '/img/' + this.texture.origname + '_prev.png', 64)
             .then(() => {
                 this.parent.editing = false;
                 this.parent.update();

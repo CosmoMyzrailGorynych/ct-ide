@@ -23,48 +23,43 @@ html
             } catch (e) {
                 void e;
             }
-        // script(src="node_modules/pixi.js-legacy/dist/pixi-legacy.min.js")
-        // script(src="data/ct.release/DragonBones.min.js")
-        // script(src="node_modules/pixi-particles/dist/pixi-particles.min.js")
-        // script.
+        script(src="node_modules/pixi.js-legacy/dist/pixi-legacy.min.js")
+        script(src="data/ct.release/DragonBones.min.js")
+        script(src="node_modules/pixi-particles/dist/pixi-particles.min.js")
+        script.
             /* So that WebGL contexts are taken from one page,
                even if PIXI was called from the background page,
                which is used for node modules
             */
             global.PIXI = PIXI;
+        script.
+            // A polyfill for different nw.js versions
+            if (!window.__dirname) {
+                window.__dirname = global.__dirname;
+            }
         include includes/footer.pug
         script.
-            // Monaco uses a custom amd loader that over-rides node's require.
-            // Keep a reference to node's require so we can restore it after executing the amd loader file.
-            var nodeRequire = require;
-        script.
-            // @see https://github.com/microsoft/monaco-editor-samples/blob/master/electron-amd/electron-index.html
+            // @see https://github.com/microsoft/monaco-editor-samples/blob/master/nwjs-amd-v2/index.html
             (function() {
-                const path = require('path');
-                const amdLoader = require('monaco-editor/min/vs/loader.js');
-                const amdRequire = amdLoader.require;
-                const amdDefine = amdLoader.require.define;
-                function uriFromPath(_path) {
-                    var pathName = path.resolve(_path).replace(/\\/g, '/');
-                    if (pathName.length > 0 && pathName.charAt(0) !== '/') {
-                        pathName = '/' + pathName;
-                    }
-                    return encodeURI('file://' + pathName);
-                }
-                amdRequire.config({
-                    baseUrl: uriFromPath(path.join(__dirname, 'node_modules/monaco-editor/min'))
+               var ERequire = require('node_modules/monaco-editor/min/vs/loader.js');
+                //__dirname == root path of you application
+                ERequire.config({
+                    baseUrl: 'file:///'+global.__dirname.replace(/\\/g, '\\\\')+'/node_modules/monaco-editor/min/'
                 });
                 // workaround monaco-css not understanding the environment
                 self.module = undefined;
-                amdRequire(['vs/editor/editor.main'], function() {
-                    window.signals = window.signals || riot.observable({});
-                    window.signals.trigger('monacoBooted');
+                // workaround monaco-typescript not understanding the environment
+                self.process.browser = true;
+                ERequire(['vs/editor/editor.main'], function() {
                     const tomorrow = require('./data/node_requires/monaco-themes/tomorrow.json');
                     const horizon = require('./data/node_requires/monaco-themes/horizon.json');
                     const ambiance = require('./data/node_requires/monaco-themes/ambiance.json');
+                    window.monaco = global.monaco;
                     monaco.editor.defineTheme('tomorrow', tomorrow);
                     monaco.editor.defineTheme('horizon', horizon);
                     monaco.editor.defineTheme('ambiance', ambiance);
+                    window.signals = window.signals || riot.observable({});
+                    window.signals.trigger('monacoBooted');
                 });
             })();
         script.

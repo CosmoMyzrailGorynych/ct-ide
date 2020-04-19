@@ -40,7 +40,7 @@ room-type-picker.room-editor-TypeSwatches.tabbed.tall
         this.getTypeTextureRevision = type => glob.texturemap[type.texture].g.lastmod;
 
         this.updateTypeList = () => {
-            this.types = [...window.currentProject.types];
+            this.types = [...global.currentProject.types];
             this.types.sort((a, b) => a.name.localeCompare(b.name));
             this.fuseSearch();
         };

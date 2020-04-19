@@ -5,7 +5,7 @@
         if (!process) {
             throw new Error(`Cannot find migration code for version ${version}`);
         }
-        process.process(window.currentProject)
+        process.process(global.currentProject)
         .then(() => window.alertify.success(`Applied migration code for version ${version}`, 'success', 3000));
     };
 
@@ -89,7 +89,7 @@
         // @see https://github.com/eslint/eslint/issues/11900
         // @see https://github.com/eslint/eslint/issues/11899
         // eslint-disable-next-line require-atomic-updates
-        project.ctjsVersion = require('electron').remote.app.getVersion();
+        project.ctjsVersion = require('package.json').version;
     };
 
     /**
@@ -100,21 +100,21 @@
      */
     var loadProject = async projectData => {
         const glob = require('./data/node_requires/glob');
-        window.currentProject = projectData;
+        global.currentProject = projectData;
         window.alertify.log(window.languageJSON.intro.loadingProject);
         glob.modified = false;
 
         try {
             await adapter(projectData);
-            fs.ensureDir(sessionStorage.projdir);
-            fs.ensureDir(sessionStorage.projdir + '/img');
-            fs.ensureDir(sessionStorage.projdir + '/snd');
+            fs.ensureDir(global.projdir);
+            fs.ensureDir(global.projdir + '/img');
+            fs.ensureDir(global.projdir + '/snd');
 
             const lastProjects = localStorage.lastProjects? localStorage.lastProjects.split(';') : [];
-            if (lastProjects.indexOf(path.normalize(sessionStorage.projdir + '.ict')) !== -1) {
-                lastProjects.splice(lastProjects.indexOf(path.normalize(sessionStorage.projdir + '.ict')), 1);
+            if (lastProjects.indexOf(path.normalize(global.projdir + '.ict')) !== -1) {
+                lastProjects.splice(lastProjects.indexOf(path.normalize(global.projdir + '.ict')), 1);
             }
-            lastProjects.unshift(path.normalize(sessionStorage.projdir + '.ict'));
+            lastProjects.unshift(path.normalize(global.projdir + '.ict'));
             if (lastProjects.length > 15) {
                 lastProjects.pop();
             }
@@ -122,8 +122,8 @@
             window.signals.trigger('hideProjectSelector');
             window.signals.trigger('projectLoaded');
 
-            if (window.currentProject.settings.title) {
-                document.title = window.currentProject.settings.title + ' — ct.js';
+            if (global.currentProject.settings.title) {
+                document.title = global.currentProject.settings.title + ' — ct.js';
             }
 
             setTimeout(() => {
@@ -177,7 +177,7 @@
 
     window.loadProject = proj => {
         sessionStorage.projname = path.basename(proj);
-        sessionStorage.projdir = path.dirname(proj) + path.sep + path.basename(proj, '.ict');
+        global.projdir = path.dirname(proj) + path.sep + path.basename(proj, '.ict');
 
         fs.stat(proj + '.recovery', (err, stat) => {
             if (!err && stat.isFile()) {

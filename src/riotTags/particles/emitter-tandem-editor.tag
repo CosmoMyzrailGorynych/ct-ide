@@ -80,13 +80,12 @@ emitter-tandem-editor.panel.view.flexrow
         /*
             Rendering and spawning emitters
         */
-        const PIXI = require('pixi.js-legacy');
         this.uidToEmitterMap = {};
 
         this.awaitCompletion = [];
         // Creates a new emitter
         this.spawnEmitter = async (emitterData, container) => {
-            const particles = require('pixi-particles');
+            const {particles} = PIXI;
             const {getPixiTexture} = require('./data/node_requires/resources/textures');
             const textures = await getPixiTexture(emitterData.texture, null, true);
             const emitter = new particles.Emitter(
@@ -270,9 +269,9 @@ emitter-tandem-editor.panel.view.flexrow
                 width: Math.round(box.width),
                 height: Math.round(box.height),
                 view: this.refs.canvas,
-                antialias: !currentProject.settings.pixelatedrender
+                antialias: !global.currentProject.settings.pixelatedrender
             });
-            if (currentProject.settings.pixelatedrender) {
+            if (global.currentProject.settings.pixelatedrender) {
                 PIXI.settings.ROUND_PIXELS = true;
                 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
             }
@@ -388,6 +387,7 @@ emitter-tandem-editor.panel.view.flexrow
             }
         };
         this.onCanvasWheel = e => {
+            e.preventUpdate = true;
             if (e.wheelDelta > 0) {
                 // in
                 if (this.zoom === 2) {
@@ -426,6 +426,7 @@ emitter-tandem-editor.panel.view.flexrow
         };
 
         this.onCanvasMove = e => {
+            e.preventUpdate = true;
             const box = this.refs.canvas.getBoundingClientRect();
             const dx = (e.offsetX - box.width / 2) / this.zoom,
                   dy = (e.offsetY - box.height / 2) / this.zoom;
@@ -436,6 +437,7 @@ emitter-tandem-editor.panel.view.flexrow
             this.visualizersContainer.y = e.offsetY;
         };
         this.resetEmitterPositioning = e => {
+            e.preventUpdate = true;
             for (const emitter of this.emitterInstances) {
                 emitter.updateOwnerPos(0, 0);
             }

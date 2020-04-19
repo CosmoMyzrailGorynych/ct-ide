@@ -1,6 +1,6 @@
 styles-panel.tall.fifty
     asset-viewer(
-        collection="{currentProject.styles}"
+        collection="{global.currentProject.styles}"
         contextmenu="{onStyleContextMenu}"
         namespace="styles"
         click="{openStyle}"
@@ -23,7 +23,7 @@ styles-panel.tall.fifty
         this.namespace = 'styles';
         this.mixin(window.riotVoc);
 
-        this.thumbnails = style => `file://${window.sessionStorage.projdir}/img/${style.origname}_prev.png?${style.lastmod}`;
+        this.thumbnails = style => `file://${window.global.projdir}/img/${style.origname}_prev.png?${style.lastmod}`;
 
         this.styleCreate = e => {
             if (this.editingStyle) {
@@ -31,13 +31,13 @@ styles-panel.tall.fifty
             }
             let id = generateGUID(),
                 slice = id.split('-').pop();
-            window.currentProject.styletick ++;
+            global.currentProject.styletick ++;
             let obj = {
                 name: "Style_" + slice,
                 uid: id,
                 origname: 's' + slice
             };
-            window.currentProject.styles.push(obj);
+            global.currentProject.styles.push(obj);
             this.editedStyle = obj;
             this.editingStyle = true;
             this.refs.styles.updateList();
@@ -78,8 +78,7 @@ styles-panel.tall.fifty
             }, {
                 label: languageJSON.common.copyName,
                 click: e => {
-                    const {clipboard} = require('electron');
-                    clipboard.writeText(this.editedStyle.name);
+                    nw.Clipboard.get().set(this.editedStyle.name, 'text');
                 }
             }, {
                 label: window.languageJSON.common.duplicate,
@@ -95,7 +94,7 @@ styles-panel.tall.fifty
                             newStyle.name = e.inputValue;
                             newStyle.origname = 's' + slice;
                             newStyle.uid = id;
-                            window.currentProject.styles.push(newStyle);
+                            global.currentProject.styles.push(newStyle);
                             this.editedStyleId = id;
                             this.editedStyle = newStyle;
                             this.editingStyle = true;
@@ -128,8 +127,8 @@ styles-panel.tall.fifty
                     .confirm(window.languageJSON.common.confirmDelete.replace('{0}', this.editedStyle.name))
                     .then(e => {
                         if (e.buttonClicked === 'ok') {
-                            const ind = window.currentProject.styles.indexOf(this.editedStyle);
-                            window.currentProject.styles.splice(ind, 1);
+                            const ind = global.currentProject.styles.indexOf(this.editedStyle);
+                            global.currentProject.styles.splice(ind, 1);
                             this.refs.styles.updateList();
                             this.update();
                             alertify

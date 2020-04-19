@@ -1,37 +1,39 @@
+/* global nw */
+
 (function () {
     if (!document.body.hasAttribute('data-manage-window')) {
         return;
     }
-    const {remote} = require('electron');
-    const win = remote.getCurrentWindow();
+    var maximized = false;
+    const win = nw.Window.get();
 
     const saveState = function () {
         let lastState = 'center';
-        if (win.isFullScreen()) {
+        if (win.isFullscreen) {
             lastState = 'fullscreen';
-        } else if (win.isMaximized()) {
+        } else if (maximized) {
             lastState = 'maximized';
         }
         localStorage.windowSettings = JSON.stringify({
-            mode: win.isFullScreen()? 'fullscreen' : lastState
+            mode: win.isFullscreen? 'fullscreen' : lastState
         });
     };
     win.on('restore', () => {
+        maximized = false;
         saveState();
     });
     win.on('maximize', () => {
-        saveState();
-    });
-    win.on('unmaximize', function () {
-        saveState();
+        maximized = true;
     });
     win.on('move', function () {
+        maximized = false;
         saveState();
     });
     window.addEventListener('resize', function () {
+        maximized = false;
         saveState();
     });
-    win.on('close', function () {
+    win.on('closed', function () {
         saveState();
     });
 
@@ -39,10 +41,10 @@
         mode: 'center'
     };
     if (settings.mode === 'fullscreen') {
-        win.setFullScreen(true);
+        win.enterFullscreen();
     } else if (settings.mode === 'maximized') {
         win.maximize();
     } else {
-        win.center();
+        win.setPosition('center');
     }
 })();
