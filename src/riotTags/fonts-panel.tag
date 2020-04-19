@@ -156,6 +156,7 @@ fonts-panel.flexfix.tall.fifty
                 setTimeout(() => {
                     this.fontGenPreview(dest, dest + '_prev.png', 64, obj)
                     .then(dataUrl => {
+                        this.refs.fonts.updateList();
                         this.update();
                     });
                 }, 250)
