@@ -130,7 +130,7 @@ textures-panel.panel.view
                         id,
                         files[i],
                         global.projdir + '/img/skdb' + id + '_ske.json'
-                    )
+                    );
                 }
             }
             e.srcElement.value = '';
@@ -151,7 +151,6 @@ textures-panel.panel.view
                 })
                 this.skelGenPreview(dest, dest + '_prev.png', [64, 128])
                 .then(dataUrl => {
-                    this.refs.textures.updateList();
                     this.refs.skeletons.updateList();
                     this.update();
                 });
