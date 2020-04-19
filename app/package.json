@@ -49,7 +49,7 @@
   "webkit": {
     "plugin": false
   },
-  "chromium-args": "--enable-features=nw2 --load-extensions --force-color-profile=srgb --disable-features=ColorCorrectRendering",
+  "chromium-args": "--mixed-context --enable-features=nw2 --load-extensions --force-color-profile=srgb --disable-features=ColorCorrectRendering",
   "dependencies": {
     "archiver": "^3.1.1",
     "csswring": "7.0.0",
