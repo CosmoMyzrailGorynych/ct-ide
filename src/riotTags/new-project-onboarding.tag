@@ -16,6 +16,10 @@ new-project-onboarding
                     svg.feather
                         use(xlink:href="data/icons.svg#platformer")
                     span {voc.openPlatformerTutorial}
+                li(onclick="{openDocs('/tut-making-jettycat.html')}")
+                    svg.feather
+                        use(xlink:href="data/icons.svg#jettycat")
+                    span {voc.openJettyCatTutorial}
                 li(onclick="{close}")
                     svg.feather
                         use(xlink:href="data/icons.svg#chevron-right")

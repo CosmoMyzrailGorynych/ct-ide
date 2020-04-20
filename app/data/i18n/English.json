@@ -194,6 +194,7 @@
         "nowWhatParagraph": "Now, what should we do?",
         "openSpaceShooterTutorial": "Learn how to make a space shooter",
         "openPlatformerTutorial": "Learn how to make a platformer",
+        "openJettyCatTutorial": "Learn how to make a Jetty Cat",
         "doNothing": "Skip this screen",
         "showOnboardingCheckbox": "Show this screen when creating a new project"
     },
