@@ -1,5 +1,3 @@
-/* global nw */
-
 (function () {
     if (!document.body.hasAttribute('data-manage-window')) {
         return;

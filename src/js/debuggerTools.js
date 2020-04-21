@@ -1,5 +1,3 @@
-/* global nw */
-
 (function () {
     var toolbarWindow;
 

@@ -1,4 +1,3 @@
-/* global nw */
 const defaultProject = require('./defaultProject');
 
 const getDefaultProjectDir = function () {

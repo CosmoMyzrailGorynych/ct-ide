@@ -36,7 +36,7 @@ window.showOpenDialog = function(options = {}) {
             resolve(false);
             document.body.removeChild(input);
         };
-        input.onchange = e => {
+        input.onchange = () => {
             if (options.multiple) {
                 resolve(input.value.split(';'));
             } else {

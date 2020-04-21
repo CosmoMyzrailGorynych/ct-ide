@@ -160,7 +160,7 @@ const getPixiTexture = async function (texture, frame, allowMinusOne) {
  * @return {boolean} True if the texture exists.
  */
 const getTextureFromName = function(name) {
-    const texture = currentProject.textures.find(tex => tex.name === name);
+    const texture = global.currentProject.textures.find(tex => tex.name === name);
     if (!texture) {
         throw new Error(`Attempt to get a non-existent texture with name ${name}`);
     }

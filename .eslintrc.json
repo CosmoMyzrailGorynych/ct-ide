@@ -5,6 +5,10 @@
     "es6": true,
     "node": true
   },
+  "globals": {
+    "nw": true,
+    "PIXI": true
+  },
   "parserOptions": {
     "ecmaVersion": 2018
   },
