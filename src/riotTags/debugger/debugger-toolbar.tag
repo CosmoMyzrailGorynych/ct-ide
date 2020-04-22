@@ -48,14 +48,14 @@ debugger-toolbar
         setTimeout(() => {
             const win = nw.Window.get();
             // Make sure the window does not distort due to inconsistencies in title size on different OS
-            win.resizeTo(Math.round(480 * window.devicePixelRatio), Math.round(40 * window.devicePixelRatio));
+            win.resizeTo(Math.round(480 * (1 + win.zoomLevel * 0.2)), Math.round(40 * (1 + win.zoomLevel * 0.2)));
         }, 0);
 
         const menu = new nw.Menu();
-        global.currentProject.rooms.map(room => ({
-            label: room.name,
+        window.gameRooms.map(room => ({
+            label: room,
             click: () => {
-                this.switchRoom(room.name);
+                this.switchRoom(room);
             }
         })).forEach(entry => menu.append(new nw.MenuItem(entry)));
 
@@ -123,7 +123,13 @@ debugger-toolbar
             // Ask for game canvas geometry
             const rect = this.previewWindow.window.document.querySelector('#ct canvas').getBoundingClientRect();
             this.previewWindow.captureScreenshot({
-                clip: rect
+                clip: {
+                    x: rect.x,
+                    y: rect.y,
+                    width: rect.width,
+                    height: rect.height,
+                    scale: 1
+                }
             }, (err, base64) => {
                 if (err) {
                     window.alertify.error(err);
@@ -132,14 +138,18 @@ debugger-toolbar
                 const fs = require('fs-extra'),
                       path = require('path');
                 const now = new Date(),
-                      timestring = `${now.getFullYear()}-${('0'+now.getMonth()+1).slice(-2)}-${('0'+now.getDate()).slice(-2)} ${(new Date()).getHours()}-${('0'+now.getMinutes()).slice(-2)}-${('0'+now.getSeconds()).slice(-2)}`,
-                      name = `Screenshot of ${global.currentProject.settings.title || 'ct.js game'} at ${timestring}.png`,
+                      timestring = `${now.getFullYear()}-${('0'+(now.getMonth()+1)).slice(-2)}-${('0'+now.getDate()).slice(-2)} ${(new Date()).getHours()}-${('0'+now.getMinutes()).slice(-2)}-${('0'+now.getSeconds()).slice(-2)}`,
+                      name = `Screenshot of ${window.gameName || 'ct.js game'} at ${timestring}.png`,
                       fullPath = path.join(__dirname, name);
                 const data = base64.replace(/^data:image\/\w+;base64,/, '');
                 const buff = new Buffer(data, 'base64');
                 const stream = fs.createWriteStream(fullPath);
                 stream.on('finish', () => {
-                    window.alertify.success(`Saved to ${fullPath}`);
+                    soundbox.play('Success');
+                    new Notification('Done!', {
+                        body: `Saved to ${fullPath} 👌`,
+                        icon: 'ct_ide.png'
+                    });
                 });
                 stream.on('error', err => {
                     window.alertify.error(err);

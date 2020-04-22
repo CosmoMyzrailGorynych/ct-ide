@@ -14,8 +14,8 @@
         const builtIn = screens.find(screen => screen.isBuiltIn);
         const targetScreen = builtIn || screens[1] || screens[0];
         // Align the toolbar to top-center position
-        const x = targetScreen.work_area.x + (targetScreen.work_area.width - 480) / 2,
-              {y} = targetScreen.work_area;
+        const x = Math.round(targetScreen.work_area.x + (targetScreen.work_area.width - 480) / 2),
+              {y} = Math.round(targetScreen.work_area);
 
         // Create a toolbar that provides additional game-related tools
         nw.Window.open('debuggerToolbar.html', {
@@ -34,8 +34,13 @@
             show_in_taskbar: false,
             id: 'ctjsToolbar'
         }, newWindow => {
-            newWindow.eval(null, `window.gameLink = "${link}";`);
+            newWindow.eval(null, `
+                window.gameLink = "${link}";
+                window.gameRooms = (${JSON.stringify(global.currentProject.rooms.map(room => room.name))});
+                window.gameName = (${JSON.stringify(global.currentProject.settings.title || 'ct.js game')});
+            `);
         });
+
         /* This is the approach that was initially planned, but got cancelled due to a bug in nw.js
            See https://github.com/nwjs/nw.js/issues/7119 */
         /*

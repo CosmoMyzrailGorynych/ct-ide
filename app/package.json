@@ -26,10 +26,12 @@
   },
   "webview": {
     "partitions": [
-       {
-         "name": "trusted",
-         "accessible_resources": [ "<all_urls>" ]
-       }
+      {
+        "name": "trusted",
+        "accessible_resources": [
+          "<all_urls>"
+        ]
+      }
     ]
   },
   "repository": {
