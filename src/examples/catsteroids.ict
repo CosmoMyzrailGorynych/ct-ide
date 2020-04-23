@@ -188,7 +188,7 @@ types:
       ct.u.wait(2999)
       .then(() => ct.rooms.switch('RetryScreen'));
     uid: 1fab434d-0976-4b65-8390-d013695aba8c
-    lastmod: 1586014368119
+    lastmod: 1587618724423
     extends: {}
     texture: e1452137-8cfa-4eec-b54a-0f2660326b48
   - name: Laser_Simple_Blue
@@ -484,7 +484,7 @@ types:
           ct.types.copy('AbstractBonus', this.x, this.y);
       }
     uid: 500fd472-19aa-41a0-9504-123c37540702
-    lastmod: 1584415675277
+    lastmod: 1587618732184
     extends: {}
     texture: 048b77d3-e7e3-4817-99ee-8b7c0a6da8bf
   - name: EnemyBullet
@@ -505,7 +505,7 @@ types:
     ondraw: ''
     ondestroy: ''
     uid: 65a71d76-039a-4e20-8433-d20277dd2402
-    lastmod: 1584414150830
+    lastmod: 1587619831150
     extends: {}
     texture: fc3e2f9b-61af-4ae4-9375-dcfae65f6a34
   - name: Enemy_Wiggler
@@ -569,7 +569,7 @@ types:
           ct.types.copy('AbstractBonus', this.x, this.y);
       }
     uid: 9d0992a4-d0ef-4c5e-9d17-2e5167f26598
-    lastmod: 1584415655891
+    lastmod: 1587618755251
     extends: {}
     texture: 16c209a9-25b2-41e4-b0d5-21cb22fd1421
   - name: Laser_Bolt_Blue
@@ -652,7 +652,7 @@ types:
 
       ct.types.copy('AbstractBonus', this.x, this.y);
     uid: ebfeaaab-f16a-48fa-b97c-687945f99668
-    lastmod: 1584415668901
+    lastmod: 1587613163192
     extends: {}
     texture: 771c5c1f-ffdc-4b50-a1ce-aed472e44557
   - name: Laser_Cross_Red
@@ -662,7 +662,9 @@ types:
       this.direction = ct.random.range(270-45, 270+45);
 
       this.ctype = 'EnemyBullet';
-      ct.sound.spawn('Laser_Big');
+      if (!this.noSound) {
+          ct.sound.spawn('Laser_Big');
+      }
 
       this.rotation = ct.random.deg();
     onstep: |-
@@ -676,7 +678,7 @@ types:
     ondraw: ''
     ondestroy: ''
     uid: 45f606db-1ce3-4b21-bc14-b84e35543509
-    lastmod: 1551428574853
+    lastmod: 1587619641014
     extends: {}
     texture: dc0d71ec-6da8-40e8-afe8-90c81f7f269a
   - name: OhNo
@@ -747,6 +749,256 @@ types:
     texture: 13433dd6-9fec-4244-8188-d6ec14a51974
     extends: {}
     lastmod: 1586163311182
+  - name: DatBoss
+    depth: 3
+    oncreate: >-
+      this.rotation = -180;
+
+
+      this.health = 3000;
+
+
+      this.shootTimer = 0;
+
+
+      ct.emitters.append(this, 'JetFlame', {
+          position: {
+              x: -75,
+              y: 150
+          }
+      });
+
+      ct.emitters.append(this, 'JetFlame', {
+          position: {
+              x: 75,
+              y: 150
+          }
+      });
+
+
+
+      // This will define what the boss currently does
+
+      // stage 0: drive to the starting location
+
+      // stage 1: drive to the right/left edge and spawn bullets in all
+      directions while sliding to the opposite edge, creating valleys of
+      negative space
+
+      // stage 2: spawn two symmetrical waves of wigglers
+
+      // stage 3: start pulling everything into its path and shoot in random
+      directions
+
+      // stage 4: float a bit to left and right and pew pew continuously at the
+      player's ship
+
+      this.stage = 0;
+
+
+      this.stageSelector = () => new Promise(resolve => {
+          // stage 0: drive to the starting location
+          if (this.stage === 0) {
+              return ct.tween.add({
+                  obj: this,
+                  fields: {
+                      x : ct.camera.width / 2,
+                      y: ct.camera.height * 0.15
+                  },
+                  duration: 3000
+              }).then(() => {
+                  this.stage = ct.random.dice(1, 2, 3, 4);
+              }).then(() => this.stageSelector());
+          }
+          // stage 1: drive to the right/left edge and spawn bullets in all directions while sliding to the opposite edge, creating valleys of negative space
+          if (this.stage === 1) {
+              const startLocationX = ct.random.dice(
+                  ct.camera.width * 0.2,
+                  ct.camera.width * 0.8
+              ), endLocationX = ct.camera.width - startLocationX;
+              return ct.tween.add({
+                  obj: this,
+                  fields: {
+                      x: startLocationX
+                  },
+                  duration: 1000
+              })
+              .then(() => {
+                  this.shootStar = true;
+              })
+              .then(() => ct.tween.add({
+                  obj: this,
+                  fields: {
+                      x: endLocationX
+                  },
+                  duration: 8000
+              })).then(() => {
+                  this.shootStar = false;
+                  this.stage = 0;
+                  return this.stageSelector();
+              });
+          }
+          // stage 2: spawn two symmetrical waves of wigglers
+          // and wiggle by itself as well
+          if (this.stage === 2) {
+              spawnWigglers(0);
+              spawnWigglers(Math.PI / 2);
+              return ct.tween.add({
+                  obj: this,
+                  fields: {
+                      x: ct.camera.width * 0.4
+                  },
+                  duration: 2000
+              }).then(() => ct.tween.add({
+                  obj: this,
+                  fields: {
+                      x: ct.camera.width * 0.6
+                  },
+                  duration: 2000
+              }))
+              .then(() => ct.tween.add({
+                  obj: this,
+                  fields: {
+                      x: ct.camera.width * 0.4
+                  },
+                  duration: 2000
+              }))
+              .then(() => ct.tween.add({
+                  obj: this,
+                  fields: {
+                      x: ct.camera.width * 0.5
+                  },
+                  duration: 1500
+              }))
+              .then(() => {
+                  this.stage = ct.random.dice(1, 3, 4);
+              })
+              .then(() => this.stageSelector());
+          }
+          // stage 3: start pulling everything into its path and shoot in random directions
+          // for 10 seconds
+          if (this.stage === 3) {
+              ct.emitters.follow(this, 'BlackHole');
+              ct.room.pullPlayerIn = true;
+              this.shootRandom = true;
+              return ct.u.wait(10*1000)
+              .then(() => {
+                  ct.room.pullPlayerIn = false;
+                  this.shootRandom = false;
+                  this.stage = ct.random.dice(1, 2, 4);
+                  return this.stageSelector();
+              });
+          }
+
+          // stage 4: float a bit to left and right and pew pew continuously at the player's ship
+          // We will also eat a bit of player's space
+          if (this.stage === 4) {
+              this.shootAtPlayer = true;
+              return ct.tween.add({
+                  obj: this,
+                  fields: {
+                      x: ct.camera.width * 0.25,
+                      y: ct.camera.height * 0.2
+                  },
+                  duration: 3000
+              }).then(() => ct.tween.add({
+                  obj: this,
+                  fields: {
+                      x: ct.camera.width * 0.75,
+                      y: ct.camera.height * 0.25
+                  },
+                  duration: 3000
+              }))
+              .then(() => ct.tween.add({
+                  obj: this,
+                  fields: {
+                      x: ct.camera.width * 0.25,
+                      y: ct.camera.height * 0.3
+                  },
+                  duration: 3000
+              }))
+              .then(() => ct.tween.add({
+                  obj: this,
+                  fields: {
+                      x: ct.camera.width * 0.75,
+                      y: ct.camera.height * 0.35
+                  },
+                  duration: 3000
+              }))
+              .then(() => {
+                  this.stage = 0;
+                  this.shootAtPlayer = false;
+              })
+              .then(() => this.stageSelector());
+          }
+      });
+
+
+      this.stageSelector();
+    onstep: |-
+      if (this.shootRandom || this.shootAtPlayer || this.shootStar) {
+          this.shootTimer -= ct.delta;
+          if (this.shootTimer <= 0) {
+              if (this.shootRandom) {
+                  const bullet = ct.types.copy('Laser_Cross_Red', this.x, this.y - 80);
+                  bullet.direction = ct.random.range(300, 60);
+                  this.shootTimer += 10;
+              } else if (this.shootAtPlayer && ct.types.list['Player_Blue'].length) {
+                  this.shootTimer += 40;
+                  const bullet = ct.types.copy('Laser_Cross_Red', this.x, this.y - 80);
+                  const player = ct.types.list['Player_Blue'][0];
+                  bullet.direction = ct.u.pdn(this.x, this.y, player.x, player.y);
+              } else if (this.shootStar) {
+                  for (let i = 180; i < 360; i += 30) {
+                      const bullet = ct.types.copy('Laser_Cross_Red', this.x, this.y - 80, {
+                          noSound: true
+                      });
+                      ct.sound.spawn('Laser_Big');
+                      bullet.direction = i;
+                  }
+                  this.shootTimer += 10;
+              }
+          }
+      }
+
+      var obstacle = ct.place.occupied(this, this.x, this.y, 'BulletsHeroes');
+      if (obstacle) {
+          calculateDamage(this, obstacle);
+      }
+
+      if (ct.room.pullPlayerIn && ct.types.list['Player_Blue'].length) {
+          const player = ct.types.list['Player_Blue'][0];
+          player.addSpeed(ct.delta * 0.9, ct.u.pdn(player.x, player.y, this.x, this.y));
+      }
+    ondraw: ''
+    ondestroy: ''
+    uid: 1ef4f56c-b0cc-497b-bd3f-e06eb1c2308d
+    texture: afba4114-e7bc-4b35-8386-d9ca108ca777
+    extends: {}
+    lastmod: 1587619977759
+  - name: Healthbar_Base_Player
+    depth: 0
+    oncreate: >-
+      this.healthBar = new PIXI.NineSlicePlane(
+          ct.res.getTexture('Healthbar_Bar', 0),
+          10 + 8, 6 + 8, 20, 6 + 8); /* this can be also written in one line */
+      this.addChild(this.healthBar);
+
+      this.healthBar.x = 90;
+
+      this.healthBar.y = 24; /* where to place this bar */
+
+      this.healthBar.height = 52;
+
+      this.healthBar.width = 500; // Assuming that the max health is 100 and you
+      want 100×2 = 200px wide bar
+    onstep: this.move();
+    ondraw: ''
+    ondestroy: ''
+    uid: 1011221c-4f7b-45e7-b45a-ce886851d32c
+    texture: 850854a8-47dd-4041-9412-b4cca854dd90
+    extends: {}
+    lastmod: 1587620264241
 sounds:
   - name: Laser_Small
     uid: 684d983f-9827-4ac8-9915-bd498154c5f4
@@ -827,8 +1079,10 @@ rooms:
   - name: InGame
     oncreate: >-
       if (ct.touch.enabled) {
-          ct.rooms.append("Controls_Layer", {isUi: true});
+          ct.rooms.append('Controls_Layer', {isUi: true});
       }
+
+      ct.rooms.append('UI_Layer', {isUi: true});
 
 
       this.score = 0;
@@ -887,37 +1141,9 @@ rooms:
       this.waveTimer -= ct.delta;
       if (this.waveTimer <= 0) {
           this.waveTimer = ct.random.range(ct.speed * 20, ct.speed * 45);
-
           const startingPhase = ct.random.dice(0, Math.PI / 2);
-
-          // create 5 enemies, one by one in 1.4 seconds
-          ct.types.copy('Enemy_Wiggler', 0, -100, {
-              phase: startingPhase
-          });
-          ct.u.wait(350)
-          .then(() => {
-              ct.types.copy('Enemy_Wiggler', 0, -100, {
-                  phase: startingPhase
-              });
-          })
-          .then(() => ct.u.wait(350))
-          .then(() => {
-              ct.types.copy('Enemy_Wiggler', 0, -100, {
-                  phase: startingPhase
-              });
-          })
-          .then(() => ct.u.wait(350))
-          .then(() => {
-              ct.types.copy('Enemy_Wiggler', 0, -100, {
-                  phase: startingPhase
-              });
-          })
-          .then(() => ct.u.wait(350))
-          .then(() => {
-              ct.types.copy('Enemy_Wiggler', 0, -100, {
-                  phase: startingPhase
-              });
-          });
+          // See it in the "Settings" tab > Scripts
+          spawnWigglers(startingPhase);
       }
 
       this.bomberTimer -= ct.delta;
@@ -952,7 +1178,7 @@ rooms:
         extends:
           movementY: 0.5
     uid: 2e5bf702-9eac-4fef-8282-07d2dd0a9bac
-    lastmod: 1586162618949
+    lastmod: 1587620303589
     grid: 50
     thumbnail: 1
     gridX: 50
@@ -1010,7 +1236,7 @@ rooms:
           movementX: -0.5
     uid: 6c75cdb8-cfb4-4dcc-887a-f76ae98b5499
     grid: 64
-    lastmod: 1586162699710
+    lastmod: 1587620277841
     thumbnail: 2
     gridX: 64
     gridY: 64
@@ -1108,7 +1334,109 @@ rooms:
     thumbnail: 23d3934bc7d0
     gridX: 64
     gridY: 64
-    lastmod: 1586162687698
+    lastmod: 1587620212901
+  - name: BossTestingRoom
+    oncreate: >-
+      if (ct.touch.enabled) {
+          ct.rooms.append("Controls_Layer", {isUi: true});
+      }
+
+      ct.rooms.append('UI_Layer', {isUi: true});
+
+
+      this.score = 0;
+
+
+      this.scoreLabel = new PIXI.Text('Score: ' + this.score,
+      ct.styles.get('ScoreText'));
+
+      this.scoreLabel.x = this.scoreLabel.y = 20;
+
+      this.scoreLabel.depth = 100;
+
+      this.addChild(this.scoreLabel);
+
+
+      this.shipIcons = [];
+
+      // Draw small ship icons in a top-right corner
+
+      for (var i = 0; i < 3; i++) {
+          var icon = new PIXI.Sprite(ct.res.getTexture('PlayerShip_Blue', 0));
+          icon.x = ct.width - 32 - i*48;
+          icon.y = 32;
+          icon.scale.x = icon.scale.y = 0.3;
+          icon.depth = 100;
+          this.addChild(icon);
+          this.shipIcons.push(icon);
+      }
+
+
+
+      ct.transition.fadeIn();
+    onstep: ''
+    ondraw: |-
+      this.scoreLabel.text = 'Score: ' + this.score;
+
+      if (ct.types.list.Player_Blue.length) {
+          for (var i = 0; i < 3; i++) {
+              this.shipIcons[i].visible = ct.types.list.Player_Blue[0].lives > i;
+          }
+      }
+    onleave: ''
+    width: 1920
+    height: 1080
+    backgrounds:
+      - depth: '-20'
+        extends:
+          movementY: 0.125
+          scaleX: 1
+          shiftX: -288
+        texture: 3935eebf-4e66-456f-9ca8-e2dc1d6a9383
+      - depth: -19
+        texture: f52c0c03-bee0-4984-a936-08aeb0dab1eb
+        extends:
+          movementY: 0.25
+      - depth: -18
+        texture: e86811b4-8d80-4d2a-8003-b490165fa078
+        extends:
+          movementY: 0.5
+    uid: 0716a171-8c7a-4112-bae8-85703255320d
+    lastmod: 1587618851158
+    grid: 50
+    thumbnail: 85703255320d
+    gridX: 50
+    gridY: 50
+    tiles:
+      - depth: -10
+        tiles: []
+    copies:
+      - x: 950
+        'y': 850
+        uid: 1fab434d-0976-4b65-8390-d013695aba8c
+      - x: 950
+        'y': -300
+        uid: 1ef4f56c-b0cc-497b-bd3f-e06eb1c2308d
+  - name: UI_Layer
+    oncreate: ''
+    onstep: ''
+    ondraw: ''
+    onleave: ''
+    width: 1920
+    height: 1080
+    backgrounds: []
+    copies:
+      - x: 960
+        'y': 1080
+        uid: 1011221c-4f7b-45e7-b45a-ce886851d32c
+    tiles:
+      - depth: -10
+        tiles: []
+    uid: 3123a227-4b15-4b4e-83cd-bb45e24b4389
+    thumbnail: bb45e24b4389
+    gridX: 64
+    gridY: 1080
+    lastmod: 1587620251455
 soundtick: 9
 roomtick: 3
 typetick: 19
@@ -1145,14 +1473,18 @@ palette:
   - '#F5A225'
   - '#70C4FF'
   - '#00345E'
-startroom: 6c75cdb8-cfb4-4dcc-887a-f76ae98b5499
+  - '#FF0004'
+startroom: 0716a171-8c7a-4112-bae8-85703255320d
 scripts:
   - name: calculateDamage
     code: |-
       const calculateDamage = function(ship, bullet) {
           ship.health -= bullet.damage;
-          if (bullet.type === 'Laser_Bolt_Blue' && ship.health < 0) { // Bolts may survive the collision do additional damage
+          if (bullet.type === 'Laser_Bolt_Blue') { // Bolts may survive the collision do additional damage
               bullet.damage = -this.health; // bring overkill damage back to the bullet
+              if (bullet.damage <= 0) {
+                  bullet.kill = true;
+              }
           } else {
               bullet.kill = true;
           }
@@ -1160,6 +1492,38 @@ scripts:
               ship.kill = true;
           }
       }
+  - name: spawnWigglers
+    code: |-
+      const spawnWigglers = function(startingPhase) {
+          // create 5 enemies, one by one in 1.4 seconds
+          ct.types.copy('Enemy_Wiggler', 0, -100, {
+              phase: startingPhase
+          });
+          ct.u.wait(350)
+          .then(() => {
+              ct.types.copy('Enemy_Wiggler', 0, -100, {
+                  phase: startingPhase
+              });
+          })
+          .then(() => ct.u.wait(350))
+          .then(() => {
+              ct.types.copy('Enemy_Wiggler', 0, -100, {
+                  phase: startingPhase
+              });
+          })
+          .then(() => ct.u.wait(350))
+          .then(() => {
+              ct.types.copy('Enemy_Wiggler', 0, -100, {
+                  phase: startingPhase
+              });
+          })
+          .then(() => ct.u.wait(350))
+          .then(() => {
+              ct.types.copy('Enemy_Wiggler', 0, -100, {
+                  phase: startingPhase
+              });
+          });
+      };
 ctjsVersion: 1.3.0
 fonts: []
 skeletons: []
@@ -2515,6 +2879,84 @@ textures:
     padding: 1
     lastmod: 1586163544302
     r: 57
+  - name: Healthbar_BossBar
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 10.25
+      - 5.25
+    marginx: 0
+    marginy: 0
+    imgWidth: 52
+    imgHeight: 52
+    width: 52
+    height: 52
+    offx: 0
+    offy: 0
+    origname: ibbc6028c-d720-4f9f-be65-ced741e2ac9a.png
+    source: /home/comigo/Downloads/Healthbar_Bar(1).png
+    shape: rect
+    left: 10
+    right: 41
+    top: 5
+    bottom: 46
+    uid: bbc6028c-d720-4f9f-be65-ced741e2ac9a
+    padding: 1
+    lastmod: 1587619955903
+  - name: Healthbar_Bar
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 10
+      - 6
+    marginx: 0
+    marginy: 0
+    imgWidth: 52
+    imgHeight: 52
+    width: 52
+    height: 52
+    offx: 0
+    offy: 0
+    origname: i43c9e15f-1c71-48a0-96fb-fb5ee2d24e59.png
+    source: /home/comigo/Downloads/Healthbar_Bar.png
+    shape: rect
+    left: 10
+    right: 42
+    top: 6
+    bottom: 46
+    uid: 43c9e15f-1c71-48a0-96fb-fb5ee2d24e59
+    padding: 1
+    lastmod: 1587620132728
+  - name: Healthbar_Base
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 488
+      - 71
+    marginx: 0
+    marginy: 0
+    imgWidth: 977
+    imgHeight: 71
+    width: 977
+    height: 71
+    offx: 0
+    offy: 0
+    origname: i850854a8-47dd-4041-9412-b4cca854dd90.png
+    source: /home/comigo/Downloads/Healthbar_Base.png
+    shape: rect
+    left: 488
+    right: 489
+    top: 71
+    bottom: 0
+    uid: 850854a8-47dd-4041-9412-b4cca854dd90
+    padding: 1
+    lastmod: 1587620161743
 texturetick: 32
 emitterTandems:
   - name: Explosion
@@ -3321,3 +3763,230 @@ emitterTandems:
           noRotation: true
         uid: f7b5ca35-38aa-456c-8bbd-a455a3ff097c
     previewTexture: c12edc06-ad3f-49f4-b9d4-3d33226e9ecc
+  - name: BlackHole
+    origname: pt6e1d42625999
+    emitters:
+      - texture: 7b0c966f-2635-4138-8628-2e634af72e2f
+        openedTabs:
+          - texture
+          - direction
+          - shape
+          - colors
+        settings:
+          alpha:
+            list:
+              - value: 0
+                time: 0
+              - value: 1
+                time: 0.5
+              - value: 1
+                time: 1
+            isStepped: false
+          scale:
+            list:
+              - value: 1.61
+                time: 0
+              - time: 0.596
+                value: 0.24999999999999994
+              - value: 0.019999999999999962
+                time: 1
+            isStepped: false
+          color:
+            list:
+              - value: ffffff
+                time: 0
+              - value: ffffff
+                time: 0.5
+              - value: ffffff
+                time: 1
+            isStepped: false
+          blendMode: normal
+          speed:
+            list:
+              - value: 375
+                time: 0
+              - value: 775
+                time: 1
+            isStepped: false
+          startRotation:
+            min: -190
+            max: -210
+          rotationSpeed:
+            min: -180
+            max: 180
+          rotationAcceleration: 3000
+          lifetime:
+            min: 0.4
+            max: 0.8
+          frequency: 0.012
+          spawnChance: 1
+          particlesPerWave: 1
+          angleStart: 270
+          emitterLifetime: 10
+          maxParticles: 1000
+          maxSpeed: 0
+          pos:
+            x: 0
+            'y': -8
+          acceleration:
+            x: 0
+            'y': 0
+          addAtBack: false
+          spawnType: ring
+          spawnCircle:
+            x: 0
+            'y': 0
+            r: 350
+            minR: 200
+          delay: 0
+          minimumScaleMultiplier: 0.28
+        uid: a322c711-6ee0-4ef0-a899-d2ee9595fd1c
+        showShapeVisualizer: false
+      - texture: 09da6761-b1dd-49bb-9560-69c639bc3167
+        openedTabs:
+          - texture
+          - shape
+          - colors
+          - spawning
+          - scaling
+          - velocity
+          - rotation
+        settings:
+          alpha:
+            list:
+              - value: 0
+                time: 0
+              - value: 1
+                time: 0.5
+              - value: 0
+                time: 1
+            isStepped: false
+          scale:
+            list:
+              - value: 1
+                time: 0
+              - value: 0.31999999999999995
+                time: 1
+            isStepped: false
+          color:
+            list:
+              - value: '000000'
+                time: 0
+              - value: '000000'
+                time: 0.5
+              - value: '000000'
+                time: 1
+            isStepped: false
+          blendMode: multiply
+          speed:
+            list:
+              - value: 1
+                time: 0
+              - value: 1
+                time: 1
+            isStepped: false
+          startRotation:
+            min: 0
+            max: 360
+          rotationSpeed:
+            min: 0
+            max: 960
+          rotationAcceleration: 0
+          lifetime:
+            min: 0.5
+            max: 0.5
+          frequency: 0.03
+          spawnChance: 1
+          particlesPerWave: 1
+          angleStart: 270
+          emitterLifetime: 10
+          maxParticles: 1000
+          maxSpeed: 0
+          pos:
+            x: 0
+            'y': -8
+          acceleration:
+            x: 0
+            'y': 0
+          addAtBack: false
+          spawnType: point
+          spawnCircle:
+            x: 0
+            'y': 0
+            r: 32
+          delay: 0
+          minimumScaleMultiplier: 0.21
+        uid: 09bef405-f1f9-4935-b953-d405dea0e064
+        showShapeVisualizer: true
+      - texture: 0abe6432-3fe2-4155-a39c-f054bb898c6e
+        openedTabs:
+          - texture
+          - spawning
+          - colors
+        settings:
+          alpha:
+            list:
+              - value: 0
+                time: 0
+              - value: 1
+                time: 0.5
+              - value: 0
+                time: 1
+            isStepped: false
+          scale:
+            list:
+              - value: 0.15
+                time: 0
+              - value: 0.15
+                time: 1
+            isStepped: false
+          color:
+            list:
+              - value: FF0004
+                time: 0
+              - value: FF0004
+                time: 0.5
+              - value: FF0004
+                time: 1
+            isStepped: false
+          blendMode: add
+          speed:
+            list:
+              - value: 0
+                time: 0
+              - value: 0
+                time: 1
+            isStepped: false
+          startRotation:
+            min: 0
+            max: 360
+          rotationSpeed:
+            min: 0
+            max: 0
+          rotationAcceleration: 0
+          lifetime:
+            min: 0.5
+            max: 0.5
+          frequency: 0.5
+          spawnChance: 1
+          particlesPerWave: 1
+          angleStart: 270
+          emitterLifetime: 10
+          maxParticles: 1000
+          maxSpeed: 0
+          pos:
+            x: 0
+            'y': -8
+          acceleration:
+            x: 0
+            'y': 0
+          addAtBack: false
+          spawnType: point
+          spawnCircle:
+            x: 0
+            'y': 0
+            r: 32
+          delay: 0
+          minimumSpeedMultiplier: 1
+        uid: d750d9b0-e2db-447e-a9fa-1bed03c60830
+    previewTexture: afba4114-e7bc-4b35-8386-d9ca108ca777
