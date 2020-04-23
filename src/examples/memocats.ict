@@ -1,439 +1,519 @@
-{
-  "notes": "/* empty */",
-  "libs": {
-    "random": {},
-    "mouse": {},
-    "fittoscreen": {
-      "mode": "scaleFit"
-    },
-    "tween": {}
-  },
-  "types": [
-    {
-      "name": "Card",
-      "depth": 0,
-      "oncreate": "// Make a smooth scale-in animation\nthis.scale.x = this.scale.y = 0;\nct.tween.add({\n    obj: this.scale,\n    fields: {\n        x: 1,\n        y: 1\n    },\n    duration: 350\n});\n\nthis.drop = false;\nthis.block = false;\nthis.flipped = false;\n\n// These variables will be used only when a card is dropped. See OnStep for that\n// A card will jump above and then fall down\n// 90° = move to top, but we will create a 30° spread around it.\nthis.rotationSpeed = ct.random.range(-12, 12);\nthis.speed = 25;\nthis.direction = ct.random.range(60, 120);\nthis.gravity = 1.5;\nthis.gravityDir = 270;",
-      "onstep": "/*\n    Scenario:\n        Select a card;\n        Select another card.\n            If the cards match, block them and drop after 0.5 seconds\n            If they don't, block them, but unblock and flip after 0.5 seconds.\n            \n    Blocked cards may not be selected.\n    If we select the same card twice, it flips back.\n*/\n\n// If mouse was clicked and the card isn't blocked…\nif (ct.mouse.pressed && !this.block) {\n    // …if player clicked exactly this card…\n    if (ct.u.pointRectangle(ct.mouse.x, ct.mouse.y, this)) {\n        // Flip a card\n        this.flipped = !this.flipped;\n        ct.sound.spawn('Paper');\n        if (this.flipped) { // Is a picture visible now?\n            if (ct.room.card) { // Is another card was already selected?\n                // remember our cards\n                var card1 = this,\n                    card2 = ct.room.card;\n                // Block them\n                card1.block = true;\n                card2.block = true;\n                // Allow new cards to be selected\n                ct.room.card = false;\n                \n                // Do the cards match?\n                if (card1.backFrame === card2.backFrame) {\n                    if (ct.types.list['Card'].length > 2) {\n                        ct.sound.spawn('Match');\n                    } else {\n                        ct.sound.spawn('Victory');\n                    }\n                    ct.u.wait(500)\n                    .then(() => {\n                        ct.sound.spawn('Swoosh');\n                        card1.drop = true;\n                        card2.drop = true;\n                    });\n                } else {\n                    ct.u.wait(500)\n                    .then(() => {\n                        ct.sound.spawn('Rollback');\n                        card1.block = false;\n                        card2.block = false;\n                        \n                        card1.flipped = false;\n                        card2.flipped = false;\n                    });\n                }\n            } else {\n                ct.room.card = this;\n            }\n        } else {\n            ct.room.card = false;\n        }\n    }\n}\n\nif (this.drop) {\n    ct.types.move(this);\n    this.rotation += this.rotationSpeed * ct.delta;\n    if (this.y > ct.height + 160) {\n        this.kill = true;\n    }\n}",
-      "ondraw": "if (this.flipped) {\n    this.gotoAndStop(this.backFrame);\n} else {\n    this.gotoAndStop(0);\n}",
-      "ondestroy": "",
-      "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c",
-      "lastmod": 1566575039596,
-      "extends": {},
-      "texture": "366c01b5-4ed5-4ca5-bf01-8731a04be2c4"
-    }
-  ],
-  "sounds": [
-    {
-      "name": "Match",
-      "uid": "96dbce18-a291-41b6-9707-ff2dc2bb5b77",
-      "origname": "s0.wav",
-      "lastmod": 1522740214929
-    },
-    {
-      "name": "Swoosh",
-      "uid": "1385f5fc-28ce-4b52-b668-12e3c75ff3b8",
-      "origname": "s1.wav",
-      "lastmod": 1522740231845
-    },
-    {
-      "name": "Rollback",
-      "uid": "af72e78c-ff23-4016-8179-ca7b5f66d11e",
-      "origname": "s2.wav",
-      "lastmod": 1522740243655
-    },
-    {
-      "name": "Paper",
-      "uid": "efe16fbe-0baf-40af-be62-5138085a2682",
-      "origname": "s3.wav",
-      "lastmod": 1522740287935
-    },
-    {
-      "name": "Victory",
-      "uid": "a1a8f820-66b3-4849-9a22-a81b31e32605",
-      "origname": "s4.wav",
-      "lastmod": 1522740953176
-    },
-    {
-      "name": "NewLevel",
-      "uid": "4adfa410-6689-4594-8c9e-d8cde988894d",
-      "origname": "s5.wav",
-      "lastmod": 1522740963586
-    }
-  ],
-  "styles": [],
-  "rooms": [
-    {
-      "name": "Room1",
-      "oncreate": "// Grabbed from this: https://stackoverflow.com/a/6274381 (community wiki)\nvar shuffle = function(a) {\n    var j, x, i;\n    for (i = a.length - 1; i > 0; i--) {\n        j = Math.floor(Math.random() * (i + 1));\n        x = a[i];\n        a[i] = a[j];\n        a[j] = x;\n    }\n};\n\n// This will be an array of all the possible pictures from Memocats asset\nthis.pictures = [];\nfor (var i = 1; i < 21; i++) {\n    this.pictures.push(i);\n}\nshuffle(this.pictures);\n\n// Get a list of all the Cards in the room and make a copy of that\nthis.cards = ct.types.list['Card'].slice(0);\nshuffle(this.cards);\n\n// Now, select cards by pairs and set them a unique picture.\nfor (var i = 0; i < this.cards.length; i += 2) {\n    this.cards[i].backFrame = this.pictures[0];\n    this.cards[i+1].backFrame = this.pictures[0];\n    // Remove a picture at this.pictures[0]\n    this.pictures.shift();\n}",
-      "onstep": "if (ct.types.list['Card'].length === 0) {\n    ct.rooms.switch('Room2');\n}",
-      "ondraw": "",
-      "onleave": "",
-      "width": 980,
-      "height": 700,
-      "backgrounds": [
-        {
-          "depth": "-10",
-          "texture": "c1b1284b-8dba-4886-9bf7-52b66cc08911"
-        }
-      ],
-      "uid": "3827e721-5331-49b2-a37a-f868e15cae0d",
-      "grid": 70,
-      "lastmod": 1522741617797,
-      "thumbnail": 1,
-      "gridX": 70,
-      "gridY": 70,
-      "tiles": [
-        {
-          "depth": -10,
-          "tiles": []
-        }
-      ],
-      "copies": [
-        {
-          "x": 490,
-          "y": 210,
-          "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
-        },
-        {
-          "x": 350,
-          "y": 210,
-          "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
-        },
-        {
-          "x": 210,
-          "y": 210,
-          "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
-        },
-        {
-          "x": 630,
-          "y": 210,
-          "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
-        },
-        {
-          "x": 770,
-          "y": 210,
-          "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
-        },
-        {
-          "x": 210,
-          "y": 420,
-          "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
-        },
-        {
-          "x": 350,
-          "y": 420,
-          "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
-        },
-        {
-          "x": 490,
-          "y": 420,
-          "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
-        },
-        {
-          "x": 630,
-          "y": 420,
-          "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
-        },
-        {
-          "x": 770,
-          "y": 420,
-          "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
-        }
-      ]
-    },
-    {
-      "name": "Room2",
-      "oncreate": "ct.sound.spawn('NewLevel');\n\n// Grabbed from this: https://stackoverflow.com/a/6274381 (community wiki)\nvar shuffle = function(a) {\n    var j, x, i;\n    for (i = a.length - 1; i > 0; i--) {\n        j = Math.floor(Math.random() * (i + 1));\n        x = a[i];\n        a[i] = a[j];\n        a[j] = x;\n    }\n};\n\n// This will be an array of all the possible pictures from Memocats asset\nthis.pictures = [];\nfor (var i = 1; i < 21; i++) {\n    this.pictures.push(i);\n}\nshuffle(this.pictures);\n\n// Get a list of all the Cards in the room and make a copy of that\nthis.cards = ct.types.list['Card'].slice(0);\nshuffle(this.cards);\n\n// Now, select cards by pairs and set them a unique picture.\nfor (var i = 0; i < this.cards.length; i += 2) {\n    this.cards[i].backFrame = this.pictures[0];\n    this.cards[i+1].backFrame = this.pictures[0];\n    // Remove a picture at this.pictures[0]\n    this.pictures.shift();\n}",
-      "onstep": "if (ct.types.list['Card'].length === 0) {\n    ct.rooms.switch('Room3');\n}",
-      "ondraw": "",
-      "onleave": "",
-      "width": 980,
-      "height": 700,
-      "backgrounds": [
-        {
-          "depth": "-10",
-          "texture": "c1b1284b-8dba-4886-9bf7-52b66cc08911"
-        }
-      ],
-      "uid": "a751fef2-0632-4105-b90b-51ffba3f38f5",
-      "grid": 70,
-      "lastmod": 1522741609956,
-      "thumbnail": 2,
-      "copies": [
-        {
-          "x": 560,
-          "y": 140,
-          "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
-        },
-        {
-          "x": 420,
-          "y": 140,
-          "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
-        },
-        {
-          "x": 280,
-          "y": 140,
-          "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
-        },
-        {
-          "x": 700,
-          "y": 140,
-          "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
-        },
-        {
-          "x": 840,
-          "y": 140,
-          "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
-        },
-        {
-          "x": 140,
-          "y": 140,
-          "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
-        },
-        {
-          "x": 140,
-          "y": 350,
-          "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
-        },
-        {
-          "x": 280,
-          "y": 350,
-          "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
-        },
-        {
-          "x": 420,
-          "y": 350,
-          "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
-        },
-        {
-          "x": 560,
-          "y": 350,
-          "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
-        },
-        {
-          "x": 700,
-          "y": 350,
-          "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
-        },
-        {
-          "x": 840,
-          "y": 350,
-          "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
-        },
-        {
-          "x": 420,
-          "y": 560,
-          "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
-        },
-        {
-          "x": 560,
-          "y": 560,
-          "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
-        }
-      ]
-    },
-    {
-      "name": "Room3",
-      "oncreate": "ct.sound.spawn('NewLevel');\n\n// Grabbed from this: https://stackoverflow.com/a/6274381 (community wiki)\nvar shuffle = function(a) {\n    var j, x, i;\n    for (i = a.length - 1; i > 0; i--) {\n        j = Math.floor(Math.random() * (i + 1));\n        x = a[i];\n        a[i] = a[j];\n        a[j] = x;\n    }\n};\n\n// This will be an array of all the possible pictures from Memocats asset\nthis.pictures = [];\nfor (var i = 1; i < 21; i++) {\n    this.pictures.push(i);\n}\nshuffle(this.pictures);\n\n// Get a list of all the Cards in the room and make a copy of that\nthis.cards = ct.types.list['Card'].slice(0);\nshuffle(this.cards);\n\n// Now, select cards by pairs and set them a unique picture.\nfor (var i = 0; i < this.cards.length; i += 2) {\n    this.cards[i].backFrame = this.pictures[0];\n    this.cards[i+1].backFrame = this.pictures[0];\n    // Remove a picture at this.pictures[0]\n    this.pictures.shift();\n}",
-      "onstep": "if (ct.types.list['Card'].length === 0) {\n    ct.rooms.switch('Room3');\n}",
-      "ondraw": "",
-      "onleave": "",
-      "width": 980,
-      "height": 700,
-      "backgrounds": [
-        {
-          "depth": "-10",
-          "texture": "c1b1284b-8dba-4886-9bf7-52b66cc08911"
-        }
-      ],
-      "uid": "4cd06702-30ed-4d80-8609-c1128f14f6a8",
-      "grid": 70,
-      "lastmod": 1522741558307,
-      "thumbnail": 3,
-      "copies": [
-        {
-          "x": 420,
-          "y": 140,
-          "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
-        },
-        {
-          "x": 560,
-          "y": 140,
-          "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
-        },
-        {
-          "x": 700,
-          "y": 140,
-          "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
-        },
-        {
-          "x": 840,
-          "y": 140,
-          "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
-        },
-        {
-          "x": 280,
-          "y": 140,
-          "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
-        },
-        {
-          "x": 140,
-          "y": 140,
-          "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
-        },
-        {
-          "x": 140,
-          "y": 350,
-          "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
-        },
-        {
-          "x": 280,
-          "y": 350,
-          "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
-        },
-        {
-          "x": 420,
-          "y": 350,
-          "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
-        },
-        {
-          "x": 560,
-          "y": 350,
-          "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
-        },
-        {
-          "x": 700,
-          "y": 350,
-          "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
-        },
-        {
-          "x": 840,
-          "y": 350,
-          "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
-        },
-        {
-          "x": 840,
-          "y": 560,
-          "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
-        },
-        {
-          "x": 700,
-          "y": 560,
-          "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
-        },
-        {
-          "x": 560,
-          "y": 560,
-          "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
-        },
-        {
-          "x": 420,
-          "y": 560,
-          "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
-        },
-        {
-          "x": 280,
-          "y": 560,
-          "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
-        },
-        {
-          "x": 140,
-          "y": 560,
-          "uid": "2120f62d-54b7-4ab1-8788-7f70b59d3c0c"
-        }
-      ]
-    }
-  ],
-  "soundtick": 6,
-  "roomtick": 3,
-  "typetick": 1,
-  "styletick": 0,
-  "starting": 0,
-  "settings": {
-    "minifyhtmlcss": false,
-    "minifyjs": false,
-    "title": "Memocats",
-    "author": "Cosmo Myzrail Gorynych",
-    "site": "https://ctjs.rocks",
-    "fps": 30,
-    "version": [
-      0,
-      0,
-      0
-    ],
-    "versionPostfix": "",
-    "export": {
-      "windows64": true,
-      "windows32": true,
-      "linux64": true,
-      "linux32": true,
-      "mac64": true,
-      "debug": false
-    }
-  },
-  "startroom": "3827e721-5331-49b2-a37a-f868e15cae0d",
-  "ctjsVersion": "1.0.0",
-  "scripts": [],
-  "fonts": [],
-  "skeletons": [],
-  "actions": [],
-  "textures": [
-    {
-      "name": "Memocats",
-      "untill": 0,
-      "grid": [
-        7,
-        3
-      ],
-      "axis": [
-        64,
-        98
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "imgWidth": 896,
-      "imgHeight": 588,
-      "width": 128,
-      "height": 196,
-      "offx": 0,
-      "offy": 0,
-      "origname": "i1.png",
-      "shape": "rect",
-      "left": 64,
-      "right": 64,
-      "top": 98,
-      "bottom": 98,
-      "lastmod": 1543394164568,
-      "uid": "366c01b5-4ed5-4ca5-bf01-8731a04be2c4"
-    },
-    {
-      "name": "Bg",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        0,
-        0
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "imgWidth": 980,
-      "imgHeight": 700,
-      "width": 980,
-      "height": 700,
-      "offx": 0,
-      "offy": 0,
-      "origname": "i2.png",
-      "shape": "rect",
-      "left": 0,
-      "right": 980,
-      "top": 0,
-      "bottom": 700,
-      "lastmod": 1522741667520,
-      "uid": "c1b1284b-8dba-4886-9bf7-52b66cc08911"
-    }
-  ],
-  "texturetick": 2
-}
+notes: /* empty */
+libs:
+  random: {}
+  mouse: {}
+  fittoscreen:
+    mode: scaleFit
+  tween: {}
+types:
+  - name: Card
+    depth: 0
+    oncreate: >-
+      // Make a smooth scale-in animation
+
+      this.scale.x = this.scale.y = 0;
+
+      ct.tween.add({
+          obj: this.scale,
+          fields: {
+              x: 0.5,
+              y: 0.5
+          },
+          duration: 350
+      });
+
+
+      this.drop = false;
+
+      this.block = false;
+
+      this.flipped = false;
+
+
+      // These variables will be used only when a card is dropped. See OnStep
+      for that
+
+      // A card will jump above and then fall down
+
+      // 90° = move to top, but we will create a 30° spread around it.
+
+      this.rotationSpeed = ct.random.range(-12, 12);
+
+      this.speed = 25;
+
+      this.direction = ct.random.range(60, 120);
+
+      this.gravity = 1.5;
+
+      this.gravityDir = 270;
+    onstep: |-
+      /*
+          Scenario:
+              Select a card;
+              Select another card.
+                  If the cards match, block them and drop after 0.5 seconds
+                  If they don't, block them, but unblock and flip after 0.5 seconds.
+                  
+          Blocked cards may not be selected.
+          If we select the same card twice, it flips back.
+      */
+
+      // If mouse was clicked and the card isn't blocked…
+      if (ct.mouse.pressed && !this.block) {
+          // …if player clicked exactly this card…
+          if (ct.u.pointRectangle(ct.mouse.x, ct.mouse.y, this)) {
+              // Flip a card
+              this.flipped = !this.flipped;
+              ct.sound.spawn('Paper');
+              if (this.flipped) { // Is a picture visible now?
+                  if (ct.room.card) { // Is another card was already selected?
+                      // remember our cards
+                      var card1 = this,
+                          card2 = ct.room.card;
+                      // Block them
+                      card1.block = true;
+                      card2.block = true;
+                      // Allow new cards to be selected
+                      ct.room.card = false;
+                      
+                      // Do the cards match?
+                      if (card1.backFrame === card2.backFrame) {
+                          if (ct.types.list['Card'].length > 2) {
+                              ct.sound.spawn('Match');
+                          } else {
+                              ct.sound.spawn('Victory');
+                          }
+                          ct.u.wait(500)
+                          .then(() => {
+                              ct.sound.spawn('Swoosh');
+                              card1.drop = true;
+                              card2.drop = true;
+                          });
+                      } else {
+                          ct.u.wait(500)
+                          .then(() => {
+                              ct.sound.spawn('Rollback');
+                              card1.block = false;
+                              card2.block = false;
+                              
+                              card1.flipped = false;
+                              card2.flipped = false;
+                          });
+                      }
+                  } else {
+                      ct.room.card = this;
+                  }
+              } else {
+                  ct.room.card = false;
+              }
+          }
+      }
+
+      if (this.drop) {
+          ct.types.move(this);
+          this.rotation += this.rotationSpeed * ct.delta;
+          if (this.y > ct.height + 160) {
+              this.kill = true;
+          }
+      }
+    ondraw: |-
+      if (this.flipped) {
+          this.gotoAndStop(this.backFrame);
+      } else {
+          this.gotoAndStop(0);
+      }
+    ondestroy: ''
+    uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+    lastmod: 1566575039596
+    extends: {}
+    texture: 366c01b5-4ed5-4ca5-bf01-8731a04be2c4
+sounds:
+  - name: Match
+    uid: 96dbce18-a291-41b6-9707-ff2dc2bb5b77
+    origname: s0.wav
+    lastmod: 1522740214929
+  - name: Swoosh
+    uid: 1385f5fc-28ce-4b52-b668-12e3c75ff3b8
+    origname: s1.wav
+    lastmod: 1522740231845
+  - name: Rollback
+    uid: af72e78c-ff23-4016-8179-ca7b5f66d11e
+    origname: s2.wav
+    lastmod: 1522740243655
+  - name: Paper
+    uid: efe16fbe-0baf-40af-be62-5138085a2682
+    origname: s3.wav
+    lastmod: 1522740287935
+  - name: Victory
+    uid: a1a8f820-66b3-4849-9a22-a81b31e32605
+    origname: s4.wav
+    lastmod: 1522740953176
+  - name: NewLevel
+    uid: 4adfa410-6689-4594-8c9e-d8cde988894d
+    origname: s5.wav
+    lastmod: 1522740963586
+styles: []
+rooms:
+  - name: Room1
+    oncreate: |-
+      // Grabbed from this: https://stackoverflow.com/a/6274381 (community wiki)
+      var shuffle = function(a) {
+          var j, x, i;
+          for (i = a.length - 1; i > 0; i--) {
+              j = Math.floor(Math.random() * (i + 1));
+              x = a[i];
+              a[i] = a[j];
+              a[j] = x;
+          }
+      };
+
+      // This will be an array of all the possible pictures from Memocats asset
+      this.pictures = [];
+      for (var i = 1; i < 21; i++) {
+          this.pictures.push(i);
+      }
+      shuffle(this.pictures);
+
+      // Get a list of all the Cards in the room and make a copy of that
+      this.cards = ct.types.list['Card'].slice(0);
+      shuffle(this.cards);
+
+      // Now, select cards by pairs and set them a unique picture.
+      for (var i = 0; i < this.cards.length; i += 2) {
+          this.cards[i].backFrame = this.pictures[0];
+          this.cards[i+1].backFrame = this.pictures[0];
+          // Remove a picture at this.pictures[0]
+          this.pictures.shift();
+      }
+    onstep: |-
+      if (ct.types.list['Card'].length === 0) {
+          ct.rooms.switch('Room2');
+      }
+    ondraw: ''
+    onleave: ''
+    width: 980
+    height: 700
+    backgrounds:
+      - depth: '-10'
+        texture: c1b1284b-8dba-4886-9bf7-52b66cc08911
+        extends: {}
+    uid: 3827e721-5331-49b2-a37a-f868e15cae0d
+    grid: 70
+    lastmod: 1522741617797
+    thumbnail: 1
+    gridX: 70
+    gridY: 70
+    tiles:
+      - depth: -10
+        tiles: []
+    copies:
+      - x: 490
+        'y': 210
+        uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+      - x: 350
+        'y': 210
+        uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+      - x: 210
+        'y': 210
+        uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+      - x: 630
+        'y': 210
+        uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+      - x: 770
+        'y': 210
+        uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+      - x: 210
+        'y': 420
+        uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+      - x: 350
+        'y': 420
+        uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+      - x: 490
+        'y': 420
+        uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+      - x: 630
+        'y': 420
+        uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+      - x: 770
+        'y': 420
+        uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+  - name: Room2
+    oncreate: |-
+      ct.sound.spawn('NewLevel');
+
+      // Grabbed from this: https://stackoverflow.com/a/6274381 (community wiki)
+      var shuffle = function(a) {
+          var j, x, i;
+          for (i = a.length - 1; i > 0; i--) {
+              j = Math.floor(Math.random() * (i + 1));
+              x = a[i];
+              a[i] = a[j];
+              a[j] = x;
+          }
+      };
+
+      // This will be an array of all the possible pictures from Memocats asset
+      this.pictures = [];
+      for (var i = 1; i < 21; i++) {
+          this.pictures.push(i);
+      }
+      shuffle(this.pictures);
+
+      // Get a list of all the Cards in the room and make a copy of that
+      this.cards = ct.types.list['Card'].slice(0);
+      shuffle(this.cards);
+
+      // Now, select cards by pairs and set them a unique picture.
+      for (var i = 0; i < this.cards.length; i += 2) {
+          this.cards[i].backFrame = this.pictures[0];
+          this.cards[i+1].backFrame = this.pictures[0];
+          // Remove a picture at this.pictures[0]
+          this.pictures.shift();
+      }
+    onstep: |-
+      if (ct.types.list['Card'].length === 0) {
+          ct.rooms.switch('Room3');
+      }
+    ondraw: ''
+    onleave: ''
+    width: 980
+    height: 700
+    backgrounds:
+      - depth: '-10'
+        texture: c1b1284b-8dba-4886-9bf7-52b66cc08911
+    uid: a751fef2-0632-4105-b90b-51ffba3f38f5
+    grid: 70
+    lastmod: 1522741609956
+    thumbnail: 2
+    copies:
+      - x: 560
+        'y': 140
+        uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+      - x: 420
+        'y': 140
+        uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+      - x: 280
+        'y': 140
+        uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+      - x: 700
+        'y': 140
+        uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+      - x: 840
+        'y': 140
+        uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+      - x: 140
+        'y': 140
+        uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+      - x: 140
+        'y': 350
+        uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+      - x: 280
+        'y': 350
+        uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+      - x: 420
+        'y': 350
+        uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+      - x: 560
+        'y': 350
+        uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+      - x: 700
+        'y': 350
+        uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+      - x: 840
+        'y': 350
+        uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+      - x: 420
+        'y': 560
+        uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+      - x: 560
+        'y': 560
+        uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+  - name: Room3
+    oncreate: |-
+      ct.sound.spawn('NewLevel');
+
+      // Grabbed from this: https://stackoverflow.com/a/6274381 (community wiki)
+      var shuffle = function(a) {
+          var j, x, i;
+          for (i = a.length - 1; i > 0; i--) {
+              j = Math.floor(Math.random() * (i + 1));
+              x = a[i];
+              a[i] = a[j];
+              a[j] = x;
+          }
+      };
+
+      // This will be an array of all the possible pictures from Memocats asset
+      this.pictures = [];
+      for (var i = 1; i < 21; i++) {
+          this.pictures.push(i);
+      }
+      shuffle(this.pictures);
+
+      // Get a list of all the Cards in the room and make a copy of that
+      this.cards = ct.types.list['Card'].slice(0);
+      shuffle(this.cards);
+
+      // Now, select cards by pairs and set them a unique picture.
+      for (var i = 0; i < this.cards.length; i += 2) {
+          this.cards[i].backFrame = this.pictures[0];
+          this.cards[i+1].backFrame = this.pictures[0];
+          // Remove a picture at this.pictures[0]
+          this.pictures.shift();
+      }
+    onstep: |-
+      if (ct.types.list['Card'].length === 0) {
+          ct.rooms.switch('Room3');
+      }
+    ondraw: ''
+    onleave: ''
+    width: 980
+    height: 700
+    backgrounds:
+      - depth: '-10'
+        texture: c1b1284b-8dba-4886-9bf7-52b66cc08911
+    uid: 4cd06702-30ed-4d80-8609-c1128f14f6a8
+    grid: 70
+    lastmod: 1522741558307
+    thumbnail: 3
+    copies:
+      - x: 420
+        'y': 140
+        uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+      - x: 560
+        'y': 140
+        uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+      - x: 700
+        'y': 140
+        uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+      - x: 840
+        'y': 140
+        uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+      - x: 280
+        'y': 140
+        uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+      - x: 140
+        'y': 140
+        uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+      - x: 140
+        'y': 350
+        uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+      - x: 280
+        'y': 350
+        uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+      - x: 420
+        'y': 350
+        uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+      - x: 560
+        'y': 350
+        uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+      - x: 700
+        'y': 350
+        uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+      - x: 840
+        'y': 350
+        uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+      - x: 840
+        'y': 560
+        uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+      - x: 700
+        'y': 560
+        uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+      - x: 560
+        'y': 560
+        uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+      - x: 420
+        'y': 560
+        uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+      - x: 280
+        'y': 560
+        uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+      - x: 140
+        'y': 560
+        uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+soundtick: 6
+roomtick: 3
+typetick: 1
+styletick: 0
+starting: 0
+settings:
+  minifyhtmlcss: false
+  minifyjs: false
+  title: Memocats
+  author: Cosmo Myzrail Gorynych
+  site: 'https://ctjs.rocks'
+  fps: 30
+  version:
+    - 0
+    - 0
+    - 0
+  versionPostfix: ''
+  export:
+    linux: true
+    windows: true
+    mac: true
+  branding:
+    icon: -1
+    accent: '#446adb'
+    invertPreloaderScheme: true
+  desktopMode: maximized
+startroom: 3827e721-5331-49b2-a37a-f868e15cae0d
+ctjsVersion: 1.3.0
+scripts: []
+fonts: []
+skeletons: []
+actions: []
+textures:
+  - name: Memocats
+    untill: 0
+    grid:
+      - 7
+      - 3
+    axis:
+      - 128
+      - 196
+    marginx: 0
+    marginy: 0
+    imgWidth: 1792
+    imgHeight: 1176
+    width: 256
+    height: 392
+    offx: 0
+    offy: 0
+    origname: i366c01b5-4ed5-4ca5-bf01-8731a04be2c4.png
+    shape: rect
+    left: 128
+    right: 128
+    top: 196
+    bottom: 196
+    lastmod: 1587612594276
+    uid: 366c01b5-4ed5-4ca5-bf01-8731a04be2c4
+    padding: 1
+    source: /home/comigo/Desktop/Memocats.png
+  - name: Bg
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 0
+      - 0
+    marginx: 0
+    marginy: 0
+    imgWidth: 980
+    imgHeight: 700
+    width: 980
+    height: 700
+    offx: 0
+    offy: 0
+    origname: i2.png
+    shape: rect
+    left: 0
+    right: 980
+    top: 0
+    bottom: 700
+    lastmod: 1522741667520
+    uid: c1b1284b-8dba-4886-9bf7-52b66cc08911
+    padding: 1
+texturetick: 2
+emitterTandems: []
