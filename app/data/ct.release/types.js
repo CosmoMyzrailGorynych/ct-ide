@@ -224,9 +224,9 @@ const Copy = (function () {
         }
 
         /**
-         * The name of the current copy's texture
+         * The name of the current copy's texture, or -1 for an empty texture.
          * @param {string} value The name of the new texture
-         * @type {string}
+         * @type {(string|number)}
          */
         set tex(value) {
             this.textures = ct.res.getTexture(value);
