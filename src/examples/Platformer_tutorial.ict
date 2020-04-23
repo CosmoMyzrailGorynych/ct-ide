@@ -4107,7 +4107,7 @@ scripts:
               isUi: true
           });
       };
-startroom: 0ffb39a3-4f03-4c9a-b9ee-f86ff9e2fc3d
+startroom: 184045cc-2e0e-47be-8a20-411cb6f9c751
 styletick: null
 palette: []
 fonts: []
@@ -4643,7 +4643,7 @@ emitterTandems:
           frequency: 0.056
           spawnChance: 1
           particlesPerWave: 1
-          emitterLifetime: 0
+          emitterLifetime: 0.5
           maxParticles: 1000
           maxSpeed: 200
           pos:
