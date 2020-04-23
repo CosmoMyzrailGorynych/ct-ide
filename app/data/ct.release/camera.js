@@ -135,13 +135,19 @@ class Camera extends PIXI.DisplayObject {
         this.y = this.y || 0;
     }
 
-    /** Returns the current camera position plus the screen shake effect. */
+    /**
+     * Returns the current camera position plus the screen shake effect.
+     * @type {number}
+     */
     get computedX() {
         const dx = (Math.sin(this.shakePhaseX) + Math.sin(this.shakePhaseX * 3.1846)*0.25) / 1.25;
         const x = this.x + dx * this.shake * Math.max(this.width, this.height) / 100 * this.shakeX;
         return x + this.interpolatedShiftX;
     }
-    /** Returns the current camera position plus the screen shake effect. */
+    /**
+     * Returns the current camera position plus the screen shake effect.
+     * @type {number}
+     */
     get computedY() {
         const dy = (Math.sin(this.shakePhaseY) + Math.sin(this.shakePhaseY * 2.8948)*0.25) / 1.25;
         const y = this.y + dy * this.shake * Math.max(this.width, this.height) / 100 * this.shakeY;
@@ -153,6 +159,7 @@ class Camera extends PIXI.DisplayObject {
      * This can be used for UI positioning in game coordinates. This does not count for rotations, though.
      * For rotated and/or scaled viewports, see `getTopLeftCorner` and `getBottomLeftCorner` methods.
      * @returns {number} The location of the left edge.
+     * @type {number}
      * @readonly
      */
     get left() {
@@ -163,6 +170,7 @@ class Camera extends PIXI.DisplayObject {
      * This can be used for UI positioning in game coordinates. This does not count for rotations, though.
      * For rotated and/or scaled viewports, see `getTopLeftCorner` and `getTopRightCorner` methods.
      * @returns {number} The location of the top edge.
+     * @type {number}
      * @readonly
      */
     get top() {
@@ -173,6 +181,7 @@ class Camera extends PIXI.DisplayObject {
      * This can be used for UI positioning in game coordinates. This does not count for rotations, though.
      * For rotated and/or scaled viewports, see `getTopRightCorner` and `getBottomRightCorner` methods.
      * @returns {number} The location of the right edge.
+     * @type {number}
      * @readonly
      */
     get right() {
@@ -183,6 +192,7 @@ class Camera extends PIXI.DisplayObject {
      * This can be used for UI positioning in game coordinates. This does not count for rotations, though.
      * For rotated and/or scaled viewports, see `getBottomLeftCorner` and `getBottomRightCorner` methods.
      * @returns {number} The location of the bottom edge.
+     * @type {number}
      * @readonly
      */
     get bottom() {
