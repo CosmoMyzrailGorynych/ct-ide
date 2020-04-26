@@ -34,6 +34,7 @@
             show_in_taskbar: false,
             id: 'ctjsToolbar'
         }, newWindow => {
+            toolbarWindow = newWindow;
             newWindow.eval(null, `
                 window.gameLink = "${link}";
                 window.gameRooms = (${JSON.stringify(global.currentProject.rooms.map(room => room.name))});
