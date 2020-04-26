@@ -40,7 +40,7 @@ types:
       this.shootTimer = 0;
 
 
-      this.lives = 3;
+      this.lives = 100;
 
       this.invulnerable = -1;
 
@@ -148,15 +148,19 @@ types:
       var obstacle = ct.place.occupied(this, this.x, this.y, 'Enemy') 
                   || ct.place.occupied(this, this.x, this.y, 'EnemyBullet');
       if (obstacle && this.invulnerable < 0) {
-          this.lives--;
+          if (obstacle.ctype === 'Enemy') {
+              this.lives -= 25;
+          } else {
+              this.lives -= 5;
+          }
           obstacle.kill = true;
           
           // Are we completely, like, dead?
           if (this.lives < 0) {
               this.kill = true;
           } else {
-              // Set invulnerability for 3 seconds
-              this.invulnerable = 60 * 3;
+              // Set invulnerability for one second
+              this.invulnerable = ct.speed;
           }
       }
 
@@ -167,16 +171,15 @@ types:
       // If we are invulnerable, alternate between full and partial opacity each
       10 frames
 
-      // `this.invulnerable % 20` means 'get a fraction remainder when dividing
-      by 20'
+      // `this.invulnerable % 10` means 'get a fraction remainder when dividing
+      by 10'
 
       // `statement? 0.5 : 1` means that we pick 0.5 if the statement is true,
       or 1 otherwise
 
       if (this.invulnerable > 0) {
-          var damaged = this.invulnerable % 20 > 10; 
-          this.alpha = damaged? 0.5 : 1;
-          this.tint = damaged? 0xFF9999 : 0xFFFFFF;
+          var damaged = this.invulnerable % 10 > 5; 
+          this.tint = damaged? 0xFF6666 : 0xFFFFFF;
       } else {
           this.alpha = 1;
       }
@@ -188,7 +191,7 @@ types:
       ct.u.wait(2999)
       .then(() => ct.rooms.switch('RetryScreen'));
     uid: 1fab434d-0976-4b65-8390-d013695aba8c
-    lastmod: 1587618724423
+    lastmod: 1587780339488
     extends: {}
     texture: e1452137-8cfa-4eec-b54a-0f2660326b48
   - name: Laser_Simple_Blue
@@ -383,7 +386,7 @@ types:
     oncreate: |-
       // get the player
       var player = ct.types.list['Player_Blue'][0];
-      if (player.lives < 3) {
+      if (player.lives < 90) {
           // add a chance to spawn a life bonus if there is 2 or less lives
           this.tex = ct.random.dice('Bonus_Lives', 'Bonus_Spread', 'Bonus_Bolt', 'Bonus_Cross');
       } else {
@@ -400,7 +403,11 @@ types:
       if (player) {
           ct.sound.spawn('Bonus');
           if (this.tex === 'Bonus_Lives') {
-              player.lives ++;
+              player.lives += 25;
+              // Don't allow the health to overflow
+              if (player.lives > 100) {
+                  player.lives = 100;
+              }
           } else {
               var graphToWeaponMap = {
                   'Bonus_Spread': 'spread',
@@ -420,7 +427,7 @@ types:
     ondraw: ''
     ondestroy: ''
     uid: bc01cee1-1b8b-4418-aeb9-a7c5eac2cd51
-    lastmod: 1584413383926
+    lastmod: 1587780745483
     extends: {}
     texture: 25fb712b-0aca-4b18-8e10-7c545d4bca8d
   - name: Enemy_Shooter
@@ -975,30 +982,97 @@ types:
     uid: 1ef4f56c-b0cc-497b-bd3f-e06eb1c2308d
     texture: afba4114-e7bc-4b35-8386-d9ca108ca777
     extends: {}
-    lastmod: 1587619977759
+    lastmod: 1587630552496
   - name: Healthbar_Base_Player
     depth: 0
     oncreate: >-
       this.healthBar = new PIXI.NineSlicePlane(
           ct.res.getTexture('Healthbar_Bar', 0),
-          10 + 8, 6 + 8, 20, 6 + 8); /* this can be also written in one line */
-      this.addChild(this.healthBar);
+          15, 15, 15, 15
+      );
 
-      this.healthBar.x = 90;
+      /* this can be also written in one line */
 
-      this.healthBar.y = 24; /* where to place this bar */
+
+      /* where to place this bar */
+
+      this.healthBar.x = -397-10;
+
+      this.healthBar.y = -46-6;
+
+      /* Precise placing made with the aid of graphics editor */
+
+
+      const player = ct.types.list['Player_Blue'][0]
 
       this.healthBar.height = 52;
 
-      this.healthBar.width = 500; // Assuming that the max health is 100 and you
-      want 100×2 = 200px wide bar
+      this.healthBar.width = player.lives / 100 * (794 + 20); // Assuming that
+      the max health is 100
+
+      this.addChild(this.healthBar);
     onstep: this.move();
-    ondraw: ''
+    ondraw: |-
+      if (ct.types.list['Player_Blue'].length) {
+          const player = ct.types.list['Player_Blue'][0];
+          // calculate the needed length 
+          const width = player.lives / 100 * (794 + 20);
+          // blend current and target length
+          this.healthBar.width = this.healthBar.width * 0.9 + width * 0.1;
+      } else {
+          // shrink to nothing
+          this.healthBar.width = this.healthBar.width * 0.9;
+      }
     ondestroy: ''
     uid: 1011221c-4f7b-45e7-b45a-ce886851d32c
     texture: 850854a8-47dd-4041-9412-b4cca854dd90
     extends: {}
-    lastmod: 1587620264241
+    lastmod: 1587781256804
+  - name: Healthbar_Base_Boss
+    depth: 0
+    oncreate: >-
+      this.healthBar = new PIXI.NineSlicePlane(
+          ct.res.getTexture('Healthbar_Bar', 0),
+          15, 15, 15, 15
+      );
+
+      /* this can be also written in one line */
+
+
+      /* where to place this bar */
+
+      this.healthBar.x = -397-10;
+
+      this.healthBar.y = -46-6;
+
+      /* Precise placing made with the aid of graphics editor */
+
+
+      const player = ct.types.list['Player_Blue'][0]
+
+      this.healthBar.height = 52;
+
+      this.healthBar.width = player.lives / 100 * (794 + 20); // Assuming that
+      the max health is 100
+
+      this.addChild(this.healthBar);
+    onstep: this.move();
+    ondraw: |-
+      if (ct.types.list['Player_Blue'].length) {
+          const player = ct.types.list['Player_Blue'][0];
+          // calculate the needed length 
+          const width = player.lives / 100 * (794 + 20);
+          // blend current and target length
+          this.healthBar.width = this.healthBar.width * 0.9 + width * 0.1;
+      } else {
+          // shrink to nothing
+          this.healthBar.width = this.healthBar.width * 0.9;
+      }
+    ondestroy: ''
+    uid: c465904b-7b03-4f27-8f28-f378e7bdd9cf
+    texture: 850854a8-47dd-4041-9412-b4cca854dd90
+    extends: {}
+    lastmod: 1587781256804
 sounds:
   - name: Laser_Small
     uid: 684d983f-9827-4ac8-9915-bd498154c5f4
@@ -1436,7 +1510,7 @@ rooms:
     thumbnail: bb45e24b4389
     gridX: 64
     gridY: 1080
-    lastmod: 1587620251455
+    lastmod: 1587779900244
 soundtick: 9
 roomtick: 3
 typetick: 19
@@ -2930,7 +3004,8 @@ textures:
     bottom: 46
     uid: 43c9e15f-1c71-48a0-96fb-fb5ee2d24e59
     padding: 1
-    lastmod: 1587620132728
+    lastmod: 1587630534480
+    tiled: true
   - name: Healthbar_Base
     untill: 0
     grid:
@@ -2956,7 +3031,7 @@ textures:
     bottom: 0
     uid: 850854a8-47dd-4041-9412-b4cca854dd90
     padding: 1
-    lastmod: 1587620161743
+    lastmod: 1587631050015
 texturetick: 32
 emitterTandems:
   - name: Explosion
@@ -3772,6 +3847,8 @@ emitterTandems:
           - direction
           - shape
           - colors
+          - spawning
+          - velocity
         settings:
           alpha:
             list:
@@ -3805,7 +3882,7 @@ emitterTandems:
             list:
               - value: 375
                 time: 0
-              - value: 775
+              - value: 1162.5
                 time: 1
             isStepped: false
           startRotation:
@@ -3822,7 +3899,7 @@ emitterTandems:
           spawnChance: 1
           particlesPerWave: 1
           angleStart: 270
-          emitterLifetime: 10
+          emitterLifetime: 9.5
           maxParticles: 1000
           maxSpeed: 0
           pos:
@@ -3836,8 +3913,8 @@ emitterTandems:
           spawnCircle:
             x: 0
             'y': 0
-            r: 350
-            minR: 200
+            r: 521
+            minR: 353
           delay: 0
           minimumScaleMultiplier: 0.28
         uid: a322c711-6ee0-4ef0-a899-d2ee9595fd1c
@@ -3848,9 +3925,9 @@ emitterTandems:
           - shape
           - colors
           - spawning
-          - scaling
           - velocity
           - rotation
+          - scaling
         settings:
           alpha:
             list:
@@ -3858,12 +3935,14 @@ emitterTandems:
                 time: 0
               - value: 1
                 time: 0.5
+              - time: 0.8160000000000001
+                value: 0.7500000000000001
               - value: 0
                 time: 1
             isStepped: false
           scale:
             list:
-              - value: 1
+              - value: 1.46
                 time: 0
               - value: 0.31999999999999995
                 time: 1
@@ -3874,6 +3953,8 @@ emitterTandems:
                 time: 0
               - value: '000000'
                 time: 0.5
+              - time: 0.8160000000000001
+                value: '000000'
               - value: '000000'
                 time: 1
             isStepped: false
@@ -3915,14 +3996,12 @@ emitterTandems:
             'y': 0
             r: 32
           delay: 0
-          minimumScaleMultiplier: 0.21
+          minimumScaleMultiplier: 0.4
         uid: 09bef405-f1f9-4935-b953-d405dea0e064
         showShapeVisualizer: true
       - texture: 0abe6432-3fe2-4155-a39c-f054bb898c6e
         openedTabs:
           - texture
-          - spawning
-          - colors
         settings:
           alpha:
             list:
@@ -3969,7 +4048,7 @@ emitterTandems:
             max: 0.5
           frequency: 0.5
           spawnChance: 1
-          particlesPerWave: 1
+          particlesPerWave: 2
           angleStart: 270
           emitterLifetime: 10
           maxParticles: 1000
@@ -3988,5 +4067,86 @@ emitterTandems:
             r: 32
           delay: 0
           minimumSpeedMultiplier: 1
+          particleSpacing: 180
         uid: d750d9b0-e2db-447e-a9fa-1bed03c60830
+      - texture: d4d167ee-e343-4af8-857b-691906585543
+        openedTabs:
+          - texture
+          - colors
+          - scaling
+          - spawning
+        settings:
+          alpha:
+            list:
+              - value: 0
+                time: 0
+              - time: 0.27599999999999997
+                value: 1
+              - value: 0.99
+                time: 0.728
+              - value: 0
+                time: 1
+            isStepped: false
+          scale:
+            list:
+              - value: 0.1
+                time: 0
+              - value: 0.15000000000000002
+                time: 1
+            isStepped: false
+          color:
+            list:
+              - value: FF0004
+                time: 0
+              - time: 0.27599999999999997
+                value: FF0004
+              - value: FF0004
+                time: 0.728
+              - value: FF0004
+                time: 1
+            isStepped: false
+          blendMode: add
+          speed:
+            list:
+              - value: 1
+                time: 0
+              - value: 1
+                time: 1
+            isStepped: false
+          startRotation:
+            min: 0
+            max: 360
+          rotationSpeed:
+            min: 0
+            max: 0
+          rotationAcceleration: 0
+          lifetime:
+            min: 0.1
+            max: 0.1
+          frequency: 0.008
+          spawnChance: 1
+          particlesPerWave: 3
+          angleStart: 270
+          emitterLifetime: 9.5
+          maxParticles: 1000
+          maxSpeed: 0
+          pos:
+            x: 0
+            'y': 0
+          acceleration:
+            x: 0
+            'y': 0
+          addAtBack: false
+          spawnType: ring
+          spawnCircle:
+            x: 0
+            'y': 0
+            r: 249
+            minR: 89
+          delay: 0
+          noRotation: false
+          minimumScaleMultiplier: 0.04
+          particleSpacing: 120
+        uid: 57c92f27-a9b5-45d5-8dee-7874399cacc8
+        showShapeVisualizer: false
     previewTexture: afba4114-e7bc-4b35-8386-d9ca108ca777
