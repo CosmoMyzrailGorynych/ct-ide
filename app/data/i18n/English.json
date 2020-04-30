@@ -231,7 +231,9 @@
             "addNew": "Add a New Script",
             "deleteScript": "Delete the script",
             "header": "Scripts",
-            "newScriptComment": "Use scripts to define frequent functions and import small libraries"
+            "newScriptComment": "Use scripts to define frequent functions and import small libraries",
+            "moveUp": "Move up",
+            "moveDown": "Move down"
         }
     },
     "modules": {

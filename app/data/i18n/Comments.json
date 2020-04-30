@@ -165,7 +165,9 @@
             "addNew": "",
             "deleteScript": "",
             "header": "",
-            "newScriptComment": ""
+            "newScriptComment": "",
+            "moveUp": "",
+            "moveDown": ""
         }
     },
     "modules": {

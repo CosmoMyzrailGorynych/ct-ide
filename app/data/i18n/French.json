@@ -201,7 +201,9 @@
             "addNew": "Ajouter un nouveau Script",
             "deleteScript": "Supprimer le Script",
             "header": "Vos Scripts",
-            "newScriptComment": "Utilisez des scripts pour définir des fonctions fréquentes et importer de petites bibliothèques"
+            "newScriptComment": "Utilisez des scripts pour définir des fonctions fréquentes et importer de petites bibliothèques",
+            "moveUp": "Montez",
+            "moveDown": "Déplacez-vous vers le bas"
         }
         
     },

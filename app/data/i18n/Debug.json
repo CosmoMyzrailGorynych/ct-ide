@@ -175,7 +175,9 @@
             "addNew": "settings.scripts.addNew",
             "deleteScript": "settings.scripts.deleteScript",
             "header": "settings.scripts.header",
-            "newScriptComment": "settings.scripts.newScriptComment"
+            "newScriptComment": "settings.scripts.newScriptComment",
+            "moveUp": "settings.scripts.moveUp",
+            "moveDown": "settings.scripts.moveDown"
         },
         "usePixiLegacy": "settings.usePixiLegacy"
     },

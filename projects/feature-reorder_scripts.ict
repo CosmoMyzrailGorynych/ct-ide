@@ -1,0 +1,67 @@
+ctjsVersion: 1.3.0
+notes: /* empty */
+libs:
+  place:
+    gridX: 1024
+    gridY: 1024
+  fittoscreen:
+    mode: scaleFit
+  mouse: {}
+  keyboard: {}
+  keyboard.polyfill: {}
+  sound.howler: {}
+textures: []
+skeletons: []
+types: []
+sounds: []
+styles: []
+rooms:
+  - name: test
+    oncreate: ''
+    onstep: ''
+    ondraw: ''
+    onleave: ''
+    width: 800
+    height: 600
+    backgrounds: []
+    copies: []
+    tiles:
+      - depth: -10
+        tiles: []
+    uid: 6ac37fc8-0e11-4500-b8ef-38b6b59e1b24
+    thumbnail: 38b6b59e1b24
+    gridX: 64
+    gridY: 64
+actions: []
+emitterTandems: []
+starting: 0
+settings:
+  minifyhtmlcss: false
+  minifyjs: false
+  fps: 60
+  version:
+    - 0
+    - 0
+    - 0
+  versionPostfix: ''
+  usePixiLegacy: true
+  export:
+    windows: true
+    linux: true
+    mac: true
+  branding:
+    icon: -1
+    accent: '#446adb'
+    invertPreloaderScheme: true
+scripts:
+  - name: New Script 3
+    code: |-
+      /* Use scripts to define frequent functions and import small libraries */
+      ree
+  - name: New Script 1
+    code: /* Use scripts to define frequent functions and import small libraries */
+  - name: New Script 2
+    code: |-
+      /* Use scripts to define frequent functions and import small libraries */
+      lol
+fonts: []
