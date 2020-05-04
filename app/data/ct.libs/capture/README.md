@@ -1,4 +1,6 @@
-Provides two methods to capture stuff in your game and let users save it as an image:
+Provides two methods to capture stuff in your game and let users save it as an image.
+
+**Note:** this module doesn't work in the ct.js debugger at the moment.
 
 ### `ct.capture.screen(name?: string)`
 
