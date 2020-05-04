@@ -9,7 +9,7 @@ debugger-screen(class="{opts.class} {flexrow: verticalLayout, flexcol: !vertical
     )
         webview.tall.flexfix-body(
             partition="persist:trusted" src="empty.html"
-            ref="devtoolsView" allownw
+            ref="devtoolsView" allownw nwfaketop
             style="overflow: hidden;"
         )
         .flexfix-footer.aDebuggerToolbar.noshrink(
