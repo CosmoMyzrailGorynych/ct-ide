@@ -183,7 +183,9 @@
             "addNew": "Dodaj nowy skrypt",
             "deleteScript": "Usuń skrypt",
             "header": "Skrypty",
-            "newScriptComment": "Uzyj skryptów do definiowania często używanych funkcji i importowania małych bibliotek"
+            "newScriptComment": "Uzyj skryptów do definiowania często używanych funkcji i importowania małych bibliotek",
+            "moveUp": "Przechodzenie w górę",
+            "moveDown": "Przechodzenie w dół"
         }
     },
     "modules": {

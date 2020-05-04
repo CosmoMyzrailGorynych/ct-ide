@@ -145,7 +145,9 @@
             "addNew": "Adicionar um Novo Script",
             "deleteScript": "Apagar o script",
             "header": "Scripts",
-            "newScriptComment": "Usar scripts para definir funções frequentes e importar pequenas bibliotecas"
+            "newScriptComment": "Usar scripts para definir funções frequentes e importar pequenas bibliotecas",
+            "moveUp": "Mova-se para cima",
+            "moveDown": "Mova-se para baixo"
         },
         "actions": "",
         "editActions": "",

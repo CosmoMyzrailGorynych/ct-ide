@@ -174,7 +174,9 @@
             "addNew": "添加新脚本",
             "deleteScript": "删除脚本",
             "header": "脚本",
-            "newScriptComment": "使用脚本定义常用函数并导入小型库"
+            "newScriptComment": "使用脚本定义常用函数并导入小型库",
+            "moveUp": "向上移动",
+            "moveDown": "向下移动"
         },
         "usePixiLegacy": "添加基于画布的旧版渲染器以支持较旧的浏览器和图形卡 (在您的游戏中最多增加20kb)"
     },

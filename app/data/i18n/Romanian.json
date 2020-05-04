@@ -166,7 +166,9 @@
             "addNew": "Adaugă un nou script",
             "deleteScript": "Șterge script-ul",
             "header": "Script-uri",
-            "newScriptComment": "Folosește script-uri pentru a defini funcții frecvente și pentru a importa biblioteci mici"
+            "newScriptComment": "Folosește script-uri pentru a defini funcții frecvente și pentru a importa biblioteci mici",
+            "moveUp": "Mută-te în sus.",
+            "moveDown": "Mutare în jos"
         },
         "highDensity": "",
         "maxFPS": ""

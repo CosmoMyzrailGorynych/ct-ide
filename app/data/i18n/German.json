@@ -213,7 +213,9 @@
             "addNew": "Neues Skript hinzufügen",
             "deleteScript": "Skript löschen",
             "header": "Skripte",
-            "newScriptComment": "Nutzen Sie Skripte um häufige Funktionen zu definieren und Bibliotheken zu importieren"
+            "newScriptComment": "Nutzen Sie Skripte um häufige Funktionen zu definieren und Bibliotheken zu importieren",
+            "moveUp": "Bewegen Sie sich nach oben",
+            "moveDown": "Bewegen Sie sich nach unten"
         }
     },
     "modules": {

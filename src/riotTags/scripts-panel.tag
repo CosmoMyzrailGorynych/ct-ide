@@ -1,11 +1,18 @@
 scripts-panel
     h1.flexfix-header {voc.header}
     ul.menu.flexfix-body
-        li(each="{script in global.currentProject.scripts}" onclick="{selectScript}")
+        li(each="{script, index in global.currentProject.scripts}" onclick="{selectScript}")
             code {script.name}
-            div.toright(onclick="{deleteScript}" title="{voc.deleteScript}")
+            div.toright.scripts-panel-aDeleteButton(onclick="{deleteScript}" title="{voc.deleteScript}")
                 svg.feather.dim
                     use(xlink:href="data/icons.svg#delete")
+            // Use opacity to keep nice layout
+            div.toright(onclick="{moveDown}"  style="opacity: {index === global.currentProject.scripts.length - 1? 0 : 1};" title="{voc.moveDown}")
+                svg.feather.dim
+                    use(xlink:href="data/icons.svg#arrow-down")
+            div.toright(onclick="{moveUp}" title="{voc.moveUp}" style="opacity: {index === 0? 0 : 1};")
+                svg.feather.dim
+                    use(xlink:href="data/icons.svg#arrow-up")
     button.flexfix-footer(onclick="{addNewScript}")
         svg.feather
             use(xlink:href="data/icons.svg#plus")
@@ -37,6 +44,48 @@ scripts-panel
             }
             delete glob.scriptTypings[script.name];
             e.stopPropagation();
+        };
+
+        this.moveUp = e => {
+            e.stopPropagation();
+            let script = e.item.script;
+            let topPush = true;
+            let top = [];
+            let bottom = [];
+            for (const element of this.currentProject.scripts) {
+                if (element === script) {
+                    topPush = false;
+                } else if (topPush) {
+                    top.push(element);
+                } else {
+                    bottom.push(element);
+                }
+            }
+            top.splice(top.length - 1, 0, script);
+            const out = [...top, ...bottom];
+            console.debug(out);
+            this.currentProject.scripts = out;
+        };
+
+        this.moveDown = e => {
+            e.stopPropagation();
+            let script = e.item.script;
+            let topPush = true;
+            let top = [];
+            let bottom = [];
+            for (const element of this.currentProject.scripts) {
+                if (element === script) {
+                    topPush = false;
+                } else if (topPush) {
+                    top.push(element);
+                } else {
+                    bottom.push(element);
+                }
+            }
+            bottom.splice(1, 0, script);
+            const out = [...top, ...bottom];
+            console.debug(out);
+            this.currentProject.scripts = out;
         };
 
         const glob = require('./data/node_requires/glob');
