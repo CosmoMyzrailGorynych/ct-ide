@@ -1,0 +1,194 @@
+ctjsVersion: 1.3.0
+notes: /* empty */
+libs:
+  place:
+    gridX: 1024
+    gridY: 1024
+  fittoscreen:
+    mode: scaleFit
+  mouse: {}
+  keyboard: {}
+  keyboard.polyfill: {}
+  sound.howler: {}
+  flow: {}
+  tween: {}
+textures:
+  - name: Robot_Idle
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 0
+      - 0
+    marginx: 0
+    marginy: 0
+    imgWidth: 96
+    imgHeight: 96
+    width: 96
+    height: 96
+    offx: 0
+    offy: 0
+    origname: i17142445-0a78-4191-a02d-528bcd40e136.png
+    source: >-
+      /Users/aidandj/Library/Mobile
+      Documents/com~apple~CloudDocs/Code/ct-js/src/examples/Platformer_assets/Robot_Idle.png
+    shape: rect
+    left: 0
+    right: 96
+    top: 0
+    bottom: 96
+    uid: 17142445-0a78-4191-a02d-528bcd40e136
+    padding: 1
+skeletons: []
+types:
+  - name: test
+    depth: 0
+    oncreate: |-
+      ct.tween.add({
+          obj: this,
+          fields: {
+              x: this.x + 100,
+              y: this.y + 150
+          },
+          duration: 1000,
+          curve: ct.tween.easeInOutCirc
+      });
+    onstep: this.move();
+    ondraw: ''
+    ondestroy: ''
+    uid: 52954eac-7257-4f70-a490-0e46be2914e7
+    texture: 17142445-0a78-4191-a02d-528bcd40e136
+    extends: {}
+    lastmod: 1587492564967
+sounds: []
+styles:
+  - name: default
+    uid: ff53e951-ccf0-481c-bf41-c8c103bdced8
+    origname: sc8c103bdced8
+    font:
+      family: sans-serif
+      size: 12
+      weight: 400
+      italic: false
+    lastmod: 1586047198425
+    fill:
+      type: '0'
+rooms:
+  - name: test
+    oncreate: |2-
+          this.text = new PIXI.Text('delta: ' + ct.delta + "\ndeltaUi: " + ct.deltaUi + "\ntimerOn: " + this.timerOn, ct.styles.get('default'));
+          this.text.x = 32;
+          this.text.y = 32;
+
+          this.addChild(this.text);
+
+          this.timerOn = false;
+          this.timerAdded = false;
+
+          this.timer = new CtTimer("a", 5000, true).then(() => {
+              console.warn("ajshdjakshdjahskjdhjkh +++++++++++++++++++");
+          });
+
+          this.flowTimer = ct.flow.timer(() => {
+              console.warn("a");
+          }, 5000);
+    onstep: ''
+    ondraw: |2-
+          if (ct.actions.Test.down) {
+              //ct.delta = 0;
+              //ct.deltaUi = 0;
+              if (this.timerOn == false) {
+                  this.timerOn = true;
+                  ct.u.wait(1000).then(() => {
+                      this.timerOn = false;
+                  });
+              }
+              if (this.timerAdded == false) {
+                  //ct.timer.addTimer("a");
+                  this.timerAdded = true;
+              }
+          }
+          console.log(this.timerOn);
+          console.log(ct.timer.timers["a"]);
+          if (this.timerOn == false) {
+              this.timerOn = true;
+              ct.u.wait(5000).then(() => {
+                  console.warn("done yay");
+                  //this.timerOn = false;
+              });
+          }
+          this.flowTimer();
+          //console.log(ct.timer._timersInternal["ct.u.wait"] / 60);
+
+          this.text.x = 32;
+          this.text.y = 32;
+          this.text.text = 'delta: ' + ct.delta + "\ndeltaUi: " + ct.deltaUi + "\ntimerOn: " + this.timerOn;
+    onleave: ''
+    width: 800
+    height: 600
+    backgrounds: []
+    copies:
+      - x: 128
+        'y': 64
+        uid: 52954eac-7257-4f70-a490-0e46be2914e7
+    tiles:
+      - depth: -10
+        tiles: []
+    uid: ef9f0643-be19-44d7-8ff1-0079a0731f6f
+    thumbnail: 0079a0731f6f
+    gridX: 64
+    gridY: 64
+    lastmod: 1587428032702
+  - name: test2
+    oncreate: ''
+    onstep: ''
+    ondraw: ''
+    onleave: ''
+    width: 800
+    height: 600
+    backgrounds: []
+    copies: []
+    tiles:
+      - depth: -10
+        tiles: []
+    uid: cfcbbd02-8895-4083-885d-318bf434ecf1
+    thumbnail: 318bf434ecf1
+    gridX: 64
+    gridY: 64
+    lastmod: 1587428043720
+actions:
+  - name: Test
+    methods:
+      - code: mouse.Left
+        multiplier: 1
+      - code: keyboard.KeyT
+emitterTandems: []
+starting: 0
+settings:
+  minifyhtmlcss: false
+  minifyjs: false
+  fps: 60
+  version:
+    - 0
+    - 0
+    - 0
+  versionPostfix: ''
+  usePixiLegacy: true
+  export:
+    windows: true
+    linux: true
+    mac: true
+  branding:
+    icon: -1
+    accent: '#446adb'
+    invertPreloaderScheme: true
+  title: u.wait_delta
+  author: naturecodevoid
+  site: 'https://ctjs.rocks'
+  maxFPS: 60
+scripts: []
+fonts: []
+styletick: .nan
+palette: []
+startroom: ef9f0643-be19-44d7-8ff1-0079a0731f6f

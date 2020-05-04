@@ -142,7 +142,8 @@ const exportCtProject = async (project, projdir) => {
         'rooms.js',
         'sound.js',
         'styles.js',
-        'types.js'
+        'types.js',
+        'timer.js'
     ];
     for (const file of sourcesList) {
         sources[file] = fs.readFile(path.join(basePath, 'ct.release', file), {
@@ -237,6 +238,9 @@ const exportCtProject = async (project, projdir) => {
     var sounds = stringifySounds(currentProject);
     buffer += (await sources['sound.js'])
         .replace('/*@sound@*/', sounds);
+
+    buffer += (await sources['timer.js']);
+    buffer += '\n';
 
     const fonts = await bundleFonts(currentProject, projdir, writeDir);
     buffer += fonts.js;
