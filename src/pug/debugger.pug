@@ -2,35 +2,9 @@ doctype html
 html
     include includes/head.pug
     body.tall
-        preview-screen.flexrow.tall
-            webview.tall#thePreview(autosize allownw partition="trusted" src="empty.html" style="border: 0; flex: 1 1 100%; line-height: 0; overflow: hidden;")
-            .aResizer.vertical
-            .flexfix(style="width: 500px;")
-                webview.tall.flexfix-body#theDebugger(autosize allownw partition="trusted" style="width: 500px; border: 0; line-height: 0; overflow: hidden;")
-                .flexfix-footer
-                    preview-bottom-panel
+        debugger-screen.tall
         script(src="./data/bundle.js")
         script.
-            //var title = /\?title=([\s\S]+)/g.exec(location.search)[1] || 'ct.js Game';
-            //document.title = title + ' — ct.js debugger';
-            //var game = document.getElementById('thePreview'),
-            //    devTools = document.getElementById('theDebugger');
-            //game.addEventListener('contentload', e => {
-            //    game.showDevTools(true, devTools);
-            //    game.focus();
-            //});
-            //window.signals = {};
-            //riot.observable(window.signals);
-            //riot.mount('*');
-            const webView = document.querySelector('#thePreview');
-            console.log(webView);
-            webView.addEventListener('loadstop', () => {
-                webView.executeScript({
-                    code: 'window.iAmInCtIdeDebugger = true;',
-                    mainWorld: true
-                });
-                webView.showDevTools(true, document.querySelector('#theDebugger'));
-            }, {
-                once: true
-            });
-            //webView.src = link;
+            window.signals = {};
+            riot.observable(window.signals);
+            riot.mount('*');

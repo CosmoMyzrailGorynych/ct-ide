@@ -89,7 +89,7 @@
         // @see https://github.com/eslint/eslint/issues/11900
         // @see https://github.com/eslint/eslint/issues/11899
         // eslint-disable-next-line require-atomic-updates
-        project.ctjsVersion = require('package.json').version;
+        project.ctjsVersion = process.versions.ctjs;
     };
 
     /**

@@ -1,3 +1,4 @@
+// Not used due to bugs in nw.js
 debugger-toolbar
     .debugger-toolbar-aDragger.feather
         svg.feather
@@ -79,7 +80,7 @@ debugger-toolbar
             // eslint-disable-next-line camelcase
             // new_instance: true
         }, newWindow => {
-            this.previewWindow = newWindow;
+            this.previewWindow = window.previewWindow = newWindow;
             this.previewWindow.on('close', this.closeItself);
             this.previewWindow.maximize();
             this.previewWindow.focus();
@@ -89,6 +90,7 @@ debugger-toolbar
             })
         });
 
+        /* Helper methods for buttons */
         this.switchRoom = room => {
             this.previewWindow.eval(null, `ct.rooms.switch('${room}')`);
         };
@@ -96,6 +98,7 @@ debugger-toolbar
             menu.popup(e.clientX, e.clientY);
         };
 
+        /* Buttons' event listeners */
         this.togglePause = e => {
             // hidden negation is semantically hidden here
             this.gamePaused = this.previewWindow.window.PIXI.Ticker.shared.started;

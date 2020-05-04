@@ -23,6 +23,8 @@ html
             } catch (e) {
                 void e;
             }
+        script.
+            process.versions.ctjs = require('./package.json').version;
         script(src="node_modules/pixi.js-legacy/dist/pixi-legacy.min.js")
         script(src="data/ct.release/DragonBones.min.js")
         script(src="node_modules/pixi-particles/dist/pixi-particles.min.js")
@@ -41,7 +43,7 @@ html
         script.
             // @see https://github.com/microsoft/monaco-editor-samples/blob/master/nwjs-amd-v2/index.html
             (function() {
-               var ERequire = require('node_modules/monaco-editor/min/vs/loader.js');
+               var ERequire = require('monaco-editor/min/vs/loader.js');
                 //__dirname == root path of you application
                 ERequire.config({
                     baseUrl: 'file:///'+global.__dirname.replace(/\\/g, '\\\\')+'/node_modules/monaco-editor/min/'

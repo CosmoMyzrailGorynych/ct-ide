@@ -29,18 +29,35 @@ debugger-toolbar
     .&-aButton
         color act
         cursor pointer
+        background white
+        if (themeDark)
+            background transparent
         {trans}
-        svg
-            position relative
-            top 0
-            transition 0.15s ease top
-        &:hover
-            color accent1
-            svg
-                top -0.125rem
-        &:active
+        &:hover, &.active
+            background acttext
             color white
-            background act
+            {transshort}
+            if (themeDark)
+                color black
+            if (!themeDark)
+                border-color accent1
+            svg
+                color white
+            if (themeDark)
+                color black
+                svg
+                    color black
+        &:active, &.selected
+            {transshort}
+            border-color accent1
+            background accent1
+            color white
+            svg
+                color white
+            if (themeDark)
+                color black
+                svg
+                    color black
         &:last-child
             border-radius 0 br br 0
     .&-aDivider

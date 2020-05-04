@@ -53,7 +53,7 @@ project-selector
     script.
         const fs = require('fs-extra'),
               path = require('path');
-        this.ctjsVersion = require('package.json').version;
+        this.ctjsVersion = process.versions.ctjs;
         this.requirePath = path;
         this.namespace = 'intro';
         this.mixin(window.riotVoc);

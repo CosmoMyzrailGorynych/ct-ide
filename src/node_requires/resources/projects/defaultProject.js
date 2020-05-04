@@ -1,5 +1,5 @@
 const defaultProjectTemplate = {
-    ctjsVersion: require('package.json').version,
+    ctjsVersion: process.versions.ctjs,
     notes: '/* empty */',
     libs: {
         place: {
