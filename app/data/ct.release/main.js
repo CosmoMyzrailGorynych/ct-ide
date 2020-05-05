@@ -399,9 +399,7 @@ ct.u = {
      * @returns {CtTimer} The timer, which you can call `.then()` to
      */
     wait(time) {
-        const id = ct.timer.counter;
-        ct.timer.counter++;
-        return new CtTimer('ct.u.wait' + id, time);
+        return ct.timer.add(time);
     },
     /**
      * Returns a Promise that resolves after the given time.
@@ -410,9 +408,7 @@ ct.u = {
      * @returns {CtTimer} The timer, which you can call `.then()` to
      */
     waitUi(time) {
-        const id = ct.timer.counter;
-        ct.timer.counter++;
-        return new CtTimer('ct.u.wait' + id, time, true);
+        return ct.timer.addUi(time);
     }
 };
 ct.u.ext(ct.u, {// make aliases

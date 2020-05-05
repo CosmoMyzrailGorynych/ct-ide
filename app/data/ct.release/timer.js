@@ -140,13 +140,22 @@
         /**
          * Adds a new timer with a given name
          *
-         * @param {string|false} name The name of the timer, which you use to access it from `ct.timer.timers`.
-         * @param {number} [timeMs=0] The length of the timer, **in milliseconds**
-         * @param {boolean} [uiDelta=false] If `true`, it will use `ct.deltaUi` for counting time. if `false`, it will use `ct.delta` for counting time.
+         * @param {number} timeMs The length of the timer, **in milliseconds**
+         * @param {string|false} [name=false] The name of the timer, which you use to access it from `ct.timer.timers`.
          * @returns {CtTimer} The timer
          */
-        add(name=false, timeMs = 0, uiDelta = false) {
-            return new CtTimer(name, timeMs, uiDelta, true);
+        add(timeMs, name=false) {
+            return new CtTimer(timeMs, name, false);
+        },
+        /**
+         * Adds a new timer with a given name that runs in a UI time scale
+         *
+         * @param {number} timeMs The length of the timer, **in milliseconds**
+         * @param {string|false} [name=false] The name of the timer, which you use to access it from `ct.timer.timers`.
+         * @returns {CtTimer} The timer
+         */
+        addUi(timeMs, name=false) {
+            return new CtTimer(timeMs, name, true);
         },
         /**
          * Updates the timers. **DONT CALL THIS UNLESS YOU KNOW WHAT YOU ARE DOING**
