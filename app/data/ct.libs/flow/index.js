@@ -158,9 +158,6 @@
                             timer = false;
                         });
                     }
-                    /*timer = setTimeout(() => {
-                        timer = false;
-                    }, ms);*/
                     func();
                 }
             };
