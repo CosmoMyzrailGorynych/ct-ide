@@ -149,9 +149,15 @@
             var delay = function () {
                 if (!timer) {
                     timer = true;
-                    ct.u.wait(ms, useUiDelta).then(() => {
-                        timer = false;
-                    });
+                    if (useUiDelta) {
+                        ct.u.waitUi(ms).then(() => {
+                            timer = false;
+                        });
+                    } else {
+                        ct.u.wait(ms).then(() => {
+                            timer = false;
+                        });
+                    }
                     /*timer = setTimeout(() => {
                         timer = false;
                     }, ms);*/
