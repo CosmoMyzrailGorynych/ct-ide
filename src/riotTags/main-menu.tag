@@ -277,19 +277,17 @@ main-menu.flexcol
                 hotkeyLabel: 'Ctrl+Shift+C',
                 click: () => {
                     const win = nw.Window.get();
-                    if (win.isDevToolsOpen()) {
-                        win.closeDevTools();
-                    } else {
-                        win.showDevTools();
-                    }
+                    win.showDevTools();
                 }
             }, {
                 label: window.languageJSON.menu.copySystemInfo,
                 icon: 'file-text',
                 click: async () => {
-                    const os = require('os');
+                    const os = require('os'),
+                          path = require('path');
                     const YAML = require('js-yaml');
-                    const report = `Ct.js v${remote.app.getVersion()} 😽 ${remote.app.isPackaged? '(packaged)' : '(runs from sources)'}\n\n` +
+                    const packaged = path.basename(process.execPath, path.extname(process.execPath)) !== 'nw';
+                    const report = `Ct.js v${process.versions.ctjs} 😽 ${packaged? '(packaged)' : '(runs from sources)'}\n\n` +
                           `NW.JS v${process.versions.nw}\n` +
                           `Chromium v${process.versions.chromium}\n` +
                           `Node.js v${process.versions.node}\n` +
@@ -297,7 +295,7 @@ main-menu.flexcol
                           `OS ${process.platform} ${process.arch} // ${os.type()} ${os.release()}`;
                     nw.Clipboard.get().set(report, 'text');
                 }
-            }, {
+            }, /*{
                 label: window.languageJSON.menu.disableAcceleration,
                 type: 'checkbox',
                 checked: () => fs.existsSync('./pleaseCtJSLoadWithoutGPUAccelerationMmkay'),
@@ -309,7 +307,7 @@ main-menu.flexcol
                     }
                     this.update();
                 }
-            }, {
+            },*/ {
                 label: window.languageJSON.menu.disableBuiltInDebugger,
                 type: 'checkbox',
                 checked: () => localStorage.disableBuiltInDebugger === 'yes',
@@ -339,89 +337,8 @@ main-menu.flexcol
             }]
         };
 
-        this.catMenu = {
+        const settingsSubmenu = {
             items: [{
-                label: window.languageJSON.common.save,
-                icon: 'save',
-                click: this.saveProject,
-                hotkey: 'Control+s',
-                hotkeyLabel: 'Ctrl+S'
-            }, {
-                label: this.voc.openIncludeFolder,
-                click: e => {
-                    fs.ensureDir(path.join(global.projdir, '/include'))
-                    .then(() => {
-                        nw.Shell.openItem(path.join(global.projdir, '/include'));
-                    });
-                }
-            }, {
-                label: this.voc.zipProject,
-                click: this.zipProject
-            }, {
-                label: this.voc.zipExport,
-                click: this.zipExport,
-                icon: 'upload-cloud'
-            }, {
-                label: this.voc.exportDesktop,
-                click: e => {
-                    this.showExporter = true;
-                    this.update();
-                },
-                icon: 'package'
-            }, {
-                type: 'separator'
-            }, {
-                label: window.languageJSON.common.zoomIn,
-                icon: 'zoom-in',
-                click: e => {
-                    const win = nw.Window.get();
-                    let zoom = win.zoomLevel + 0.5;
-                    if (Number.isNaN(zoom) || !zoom || !Number.isFinite(zoom)) {
-                        zoom = 0;
-                    } else if (zoom > 5) {
-                        zoom = 5;
-                    }
-                    win.zoomLevel = zoom;
-
-                    console.debug('Zoom in to ', zoom);
-                    localStorage.editorZooming = zoom;
-                },
-                hotkey: 'Control+=',
-                hotkeyLabel: 'Ctrl+='
-            }, {
-                label: window.languageJSON.common.zoomOut,
-                icon: 'zoom-out',
-                click: e => {
-                    const win = nw.Window.get();
-                    let zoom = win.zoomLevel - 0.5;
-                    if (Number.isNaN(zoom) || !zoom || !Number.isFinite(zoom)) {
-                        zoom = 0;
-                    } else if (zoom < -3) {
-                        zoom = -3;
-                    }
-                    win.zoomLevel = zoom;
-
-                    console.debug('Zoom out to ', zoom);
-                    localStorage.editorZooming = zoom;
-                },
-                hotkey: 'Control+-',
-                hotkeyLabel: 'Ctrl+-'
-            }, {
-                type: 'separator'
-            }, {
-                label: window.languageJSON.menu.startScreen,
-                click: (e) => {
-                    if (!confirm(window.languageJSON.common.reallyexit)) {
-                        return false;
-                    }
-                    window.signals.trigger('resetAll');
-                }
-            }, {
-                label: window.languageJSON.intro.latest,
-                submenu: recentProjectsSubmenu
-            }, {
-                type: 'separator'
-            }, {
                 label: window.languageJSON.common.language,
                 submenu: languageSubmenu
             }, {
@@ -506,6 +423,93 @@ main-menu.flexcol
                 }
             }, {
                 type: 'separator'
+            }, {
+                label: window.languageJSON.common.zoomIn,
+                icon: 'zoom-in',
+                click: e => {
+                    const win = nw.Window.get();
+                    let zoom = win.zoomLevel + 0.5;
+                    if (Number.isNaN(zoom) || !zoom || !Number.isFinite(zoom)) {
+                        zoom = 0;
+                    } else if (zoom > 5) {
+                        zoom = 5;
+                    }
+                    win.zoomLevel = zoom;
+
+                    console.debug('Zoom in to ', zoom);
+                    localStorage.editorZooming = zoom;
+                },
+                hotkey: 'Control+=',
+                hotkeyLabel: 'Ctrl+='
+            }, {
+                label: window.languageJSON.common.zoomOut,
+                icon: 'zoom-out',
+                click: e => {
+                    const win = nw.Window.get();
+                    let zoom = win.zoomLevel - 0.5;
+                    if (Number.isNaN(zoom) || !zoom || !Number.isFinite(zoom)) {
+                        zoom = 0;
+                    } else if (zoom < -3) {
+                        zoom = -3;
+                    }
+                    win.zoomLevel = zoom;
+
+                    console.debug('Zoom out to ', zoom);
+                    localStorage.editorZooming = zoom;
+                },
+                hotkey: 'Control+-',
+                hotkeyLabel: 'Ctrl+-'
+            }]
+        };
+
+        this.catMenu = {
+            items: [{
+                label: window.languageJSON.common.save,
+                icon: 'save',
+                click: this.saveProject,
+                hotkey: 'Control+s',
+                hotkeyLabel: 'Ctrl+S'
+            }, {
+                label: this.voc.exportDesktop,
+                click: e => {
+                    this.showExporter = true;
+                    this.update();
+                },
+                icon: 'package'
+            }, {
+                label: this.voc.zipExport,
+                click: this.zipExport,
+                icon: 'upload-cloud'
+            }, {
+                label: this.voc.zipProject,
+                click: this.zipProject
+            }, {
+                label: this.voc.openIncludeFolder,
+                click: e => {
+                    fs.ensureDir(path.join(global.projdir, '/include'))
+                    .then(() => {
+                        nw.Shell.openItem(path.join(global.projdir, '/include'));
+                    });
+                }
+            }, {
+                type: 'separator'
+            }, {
+                label: window.languageJSON.menu.startScreen,
+                click: (e) => {
+                    if (!confirm(window.languageJSON.common.reallyexit)) {
+                        return false;
+                    }
+                    window.signals.trigger('resetAll');
+                }
+            }, {
+                label: window.languageJSON.intro.latest,
+                submenu: recentProjectsSubmenu
+            }, {
+                type: 'separator'
+            }, {
+                label: window.languageJSON.menu.settings,
+                submenu: settingsSubmenu,
+                icon: 'settings'
             }, {
                 label: window.languageJSON.common.contribute,
                 click: function () {
