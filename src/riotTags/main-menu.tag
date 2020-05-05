@@ -101,7 +101,8 @@ main-menu.flexcol
         };
 
         const languageSubmenu = {
-            items: []
+            items: [],
+            columns: 2
         };
         const recentProjectsSubmenu = {
             items: []

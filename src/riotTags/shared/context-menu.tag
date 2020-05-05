@@ -5,7 +5,8 @@
         Expects a following structure:
         {
             opened: boolean, // mutable by a context-menu instance
-            items: Array<IMenuItem>
+            items: Array<IMenuItem>,
+            columns: number
         }
         IMenuItem is:
         {
@@ -27,7 +28,7 @@
     @method open
     @method close
 
-context-menu(class="{opened: opts.menu.opened}" ref="root")
+context-menu(class="{opened: opts.menu.opened}" ref="root" style="{opts.menu.columns? 'columns: '+opts.menu.columns+';' : ''}")
     a(
         each="{item in opts.menu.items}"
         href="javascript: void 0;"
