@@ -345,13 +345,30 @@
                                 <input id="copyscaley" type="number" value="${copy.ty || 1}" />
                             </label>
                         `)
-                            .then(e => {
-                                if (e.buttonClicked === 'ok') {
-                                    copy.tx = Number(document.getElementById('copyscalex').value) || 1;
-                                    copy.ty = Number(document.getElementById('copyscaley').value) || 1;
-                                    this.refreshRoomCanvas();
-                                }
-                            });
+                        .then(e => {
+                            if (e.buttonClicked === 'ok') {
+                                copy.tx = Number(document.getElementById('copyscalex').value) || 1;
+                                copy.ty = Number(document.getElementById('copyscaley').value) || 1;
+                                this.refreshRoomCanvas();
+                            }
+                        });
+                    }
+                }, {
+                    label: window.languageJSON.roomview.changecopyrotation,
+                    click: () => {
+                        var copy = this.room.copies[this.closestPos];
+                        window.alertify.confirm(`
+                            ${window.languageJSON.roomview.changecopyrotation}
+                            <label class="block">
+                                <input id="copyrotation" type="number" value="${copy.tr || 0}" />
+                            </label>
+                        `)
+                        .then(e => {
+                            if (e.buttonClicked === 'ok') {
+                                copy.tr = Number(document.getElementById('copyrotation').value) || 0;
+                                this.refreshRoomCanvas();
+                            }
+                        });
                     }
                 }, {
                     label: window.languageJSON.roomview.shiftcopy,

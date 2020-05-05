@@ -493,6 +493,7 @@
         "shiftCopies": "Shift copies",
         "selectAndMove": "Select and Move",
         "changecopyscale": "Change scale",
+        "changecopyrotation": "Rotate",
         "shiftcopy": "Set coordinates",
         "deletetile": "Delete a tile",
         "deletetiles": "Delete tiles",

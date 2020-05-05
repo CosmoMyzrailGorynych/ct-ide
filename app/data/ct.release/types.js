@@ -192,6 +192,9 @@ const Copy = (function () {
                     this.scale.x = exts.tx;
                     this.scale.y = exts.ty;
                 }
+                if (exts.tr) {
+                    this.rotation = exts.tr;
+                }
             }
             this.position.set(x || 0, y || 0);
             this.xprev = this.xstart = this.x;

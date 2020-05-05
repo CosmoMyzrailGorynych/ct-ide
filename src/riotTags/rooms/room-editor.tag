@@ -534,14 +534,15 @@ room-editor.panel.view
                             grax = gray = 16;
                             ox = oy = 0;
                         }
-                        if (copy.tx || copy.ty) {
+                        if (copy.tx || copy.ty || copy.tr) {
                             canvas.x.save();
-                            canvas.x.translate(copy.x - grax * (copy.tx || 1), copy.y - gray * (copy.ty || 1));
+                            canvas.x.translate(copy.x, copy.y);
+                            canvas.x.rotate((copy.tr || 0) * Math.PI / -180);
                             canvas.x.scale(copy.tx || 1, copy.ty || 1);
                             canvas.x.drawImage(
                                 texture,
                                 ox, oy, w, h,
-                                0, 0, w, h
+                                -grax * (copy.tx || 1), -gray * (copy.ty || 1), w, h
                             );
                             canvas.x.restore();
                         } else {
@@ -583,11 +584,32 @@ room-editor.panel.view
             this.drawSelection(-1.5, -1.5, this.room.width+1.5, this.room.height+1.5);
         };
         this.drawSelection = (x1, y1, x2, y2) => {
+            const cx = this.refs.canvas.x;
+            cx.lineJoin = 'round';
+            cx.lineCap = 'round';
             if (typeof x1 !== 'number') {
                 const copy = x1,
                       type = global.currentProject.types[glob.typemap[copy.uid]],
                       texture = glob.texturemap[type.texture].g;
                 var left, top, height, width;
+                if (copy.tr) {
+                    cx.strokeStyle = localStorage.UItheme === 'Night'? '#44dbb5' : '#446adb';
+                    cx.lineWidth = 3;
+                    cx.beginPath();
+                    cx.moveTo(copy.x - 32, copy.y);
+                    cx.lineTo(copy.x + 32, copy.y);
+                    cx.moveTo(copy.x, copy.y - 32);
+                    cx.lineTo(copy.x, copy.y + 32);
+                    cx.stroke();
+                    cx.strokeStyle = localStorage.UItheme === 'Night'? '#1C2B42' : '#fff';
+                    cx.lineWidth = 1;
+                    cx.moveTo(copy.x - 32, copy.y);
+                    cx.lineTo(copy.x + 32, copy.y);
+                    cx.moveTo(copy.x, copy.y - 32);
+                    cx.lineTo(copy.x, copy.y + 32);
+                    cx.stroke();
+                    return;
+                }
                 if (type.texture !== -1) {
                     left = copy.x - texture.axis[0] * (copy.tx || 1) - 1.5;
                     top = copy.y - texture.axis[1] * (copy.ty || 1) - 1.5;
@@ -604,13 +626,12 @@ room-editor.panel.view
                 x2 = left + width;
                 y2 = top + height;
             }
-            this.refs.canvas.x.lineJoin = 'round';
-            this.refs.canvas.x.strokeStyle = localStorage.UItheme === 'Night'? '#44dbb5' : '#446adb';
-            this.refs.canvas.x.lineWidth = 3;
-            this.refs.canvas.x.strokeRect(x1, y1, x2-x1, y2-y1);
-            this.refs.canvas.x.strokeStyle = localStorage.UItheme === 'Night'? '#1C2B42' : '#fff';
-            this.refs.canvas.x.lineWidth = 1;
-            this.refs.canvas.x.strokeRect(x1, y1, x2-x1, y2-y1);
+            cx.strokeStyle = localStorage.UItheme === 'Night'? '#44dbb5' : '#446adb';
+            cx.lineWidth = 3;
+            cx.strokeRect(x1, y1, x2-x1, y2-y1);
+            cx.strokeStyle = localStorage.UItheme === 'Night'? '#1C2B42' : '#fff';
+            cx.lineWidth = 1;
+            cx.strokeRect(x1, y1, x2-x1, y2-y1);
         };
 
         /**

@@ -37,7 +37,8 @@ class Room extends PIXI.Container {
             for (let i = 0, li = template.objects.length; i < li; i++) {
                 ct.types.make(template.objects[i].type, template.objects[i].x, template.objects[i].y, {
                     tx: template.objects[i].tx,
-                    ty: template.objects[i].ty
+                    ty: template.objects[i].ty,
+                    tr: template.objects[i].tr,
                 }, this);
             }
         }
@@ -231,7 +232,8 @@ class Room extends PIXI.Container {
             for (const t of template.objects) {
                 const c = ct.types.make(t.type, t.x, t.y, {
                     tx: t.tx || 1,
-                    ty: t.ty || 1
+                    ty: t.ty || 1,
+                    tr: t.tr || 0
                 }, target);
                 generated.copies.push(c);
             }
