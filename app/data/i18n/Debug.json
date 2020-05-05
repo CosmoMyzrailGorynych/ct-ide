@@ -46,6 +46,7 @@
         "wrongFormat": "common.wrongFormat",
         "yes": "common.yes",
         "loading": "common.loading",
+        "select": "common.select",
         "zoom": "common.zoom",
         "zoomIn": "common.zoomIn",
         "zoomOut": "common.zoomOut"
@@ -79,7 +80,15 @@
         "export": "exportPanel.export",
         "exportPanel": "exportPanel.exportPanel",
         "firstrunnotice": "exportPanel.firstrunnotice",
-        "log": "exportPanel.log"
+        "log": "exportPanel.log",
+        "windowsCrossBuildWarning": "exportPanel.windowsCrossBuildWarning",
+        "launchMode": "exportPanel.launchMode",
+        "launchModes": {
+            "maximized": "exportPanel.launchModes.maximized",
+            "fullscreen": "exportPanel.launchModes.fullscreen",
+            "windowed": "exportPanel.launchModes.windowed"
+        },
+        "cannotBuildForMacOnWin": "exportPanel.cannotBuildForMacOnWin"
     },
     "inputMethodSelector": {
         "select": "inputMethodSelector.select"
@@ -149,7 +158,16 @@
         "launchHotkeys": "menu.launchHotkeys",
         "patrons": "menu.patrons",
         "fx": "menu.fx",
-        "openIncludeFolder": "menu.openIncludeFolder"
+        "openIncludeFolder": "menu.openIncludeFolder",
+        "troubleshooting": "menu.troubleshooting",
+        "toggleDevTools": "menu.toggleDevTools",
+        "copySystemInfo": "menu.copySystemInfo",
+        "systemInfoWait": "menu.systemInfoWait",
+        "systemInfoDone": "menu.systemInfoDone",
+        "disableAcceleration": "menu.disableAcceleration",
+        "disableBuiltInDebugger": "menu.disableBuiltInDebugger",
+        "visitDiscordForGamedevSupport": "menu.visitDiscordForGamedevSupport",
+        "postAnIssue": "menu.postAnIssue"
     },
     "settings": {
         "actions": "settings.actions",
@@ -179,7 +197,15 @@
             "moveUp": "settings.scripts.moveUp",
             "moveDown": "settings.scripts.moveDown"
         },
-        "usePixiLegacy": "settings.usePixiLegacy"
+        "usePixiLegacy": "settings.usePixiLegacy",
+        "branding": {
+            "heading": "settings.branding.heading",
+            "icon": "settings.branding.icon",
+            "iconNotice": "settings.branding.iconNotice",
+            "accent": "settings.branding.accent",
+            "accentNotice": "settings.branding.accentNotice",
+            "invertPreloaderScheme": "settings.branding.invertPreloaderScheme"
+        }
     },
     "modules": {
         "author": "modules.author",
@@ -194,6 +220,8 @@
         "parameters": "modules.parameters",
         "logs2": "modules.logs2",
         "settings": "modules.settings",
+        "dependencies": "modules.dependencies",
+        "optionalDependencies": "modules.optionalDependencies",
         "importModules": "modules.importModules"
     },
     "texture": {
@@ -234,7 +262,9 @@
         "addPoint": "textureview.addPoint",
         "moveCenter": "textureview.moveCenter",
         "movePoint": "textureview.movePoint",
-        "symmetryTool": "textureview.symmetryTool"
+        "symmetryTool": "textureview.symmetryTool",
+        "padding": "textureview.padding",
+        "paddingNotice": "textureview.paddingNotice"
     },
     "sounds": {
         "create": "sounds.create"
@@ -360,7 +390,8 @@
         "deletetiles": "roomview.deletetiles",
         "movetilestolayer": "roomview.movetilestolayer",
         "shifttiles": "roomview.shifttiles",
-        "findTileset": "roomview.findTileset"
+        "findTileset": "roomview.findTileset",
+        "changecopyrotation": "roomview.changecopyrotation"
     },
     "notepad": {
         "local": "notepad.local",
@@ -368,6 +399,7 @@
         "helppages": "notepad.helppages",
         "backToHome": "notepad.backToHome"
     },
+    "preview": {},
     "curveEditor": {
         "curveLineHint": "curveEditor.curveLineHint",
         "dragPointHint": "curveEditor.dragPointHint",
@@ -393,6 +425,7 @@
         "nowWhatParagraph": "onboarding.nowWhatParagraph",
         "openSpaceShooterTutorial": "onboarding.openSpaceShooterTutorial",
         "openPlatformerTutorial": "onboarding.openPlatformerTutorial",
+        "openJettyCatTutorial": "onboarding.openJettyCatTutorial",
         "doNothing": "onboarding.doNothing",
         "showOnboardingCheckbox": "onboarding.showOnboardingCheckbox"
     },
@@ -453,12 +486,16 @@
         "radius": "particleEmitters.radius",
         "starPoints": "particleEmitters.starPoints",
         "startAngle": "particleEmitters.startAngle",
+        "showShapeVisualizer": "particleEmitters.showShapeVisualizer",
         "relativeEmitterPosition": "particleEmitters.relativeEmitterPosition",
         "addEmitter": "particleEmitters.addEmitter",
         "reset": "particleEmitters.reset",
         "changeBg": "particleEmitters.changeBg",
         "inspectorComplete": "particleEmitters.inspectorComplete",
-        "alreadyHasAnImportingTexture": "particleEmitters.alreadyHasAnImportingTexture"
+        "alreadyHasAnImportingTexture": "particleEmitters.alreadyHasAnImportingTexture",
+        "changeGrid": "particleEmitters.changeGrid",
+        "newGridSize": "particleEmitters.newGridSize",
+        "setPreviewTexture": "particleEmitters.setPreviewTexture"
     },
     "patreon": {
         "aboutPatrons": "patreon.aboutPatrons",

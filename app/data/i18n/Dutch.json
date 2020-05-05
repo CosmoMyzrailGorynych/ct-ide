@@ -484,8 +484,7 @@
         "deletetiles": "Verwijder tegels",
         "movetilestolayer": "Beweeg naar laag",
         "shifttiles": "Verschuif tegels",
-        "findTileset": "Zoek een tegelset",
-        "zoom": ""
+        "findTileset": "Zoek een tegelset"
     },
     "notepad": {
         "local": "Project's notitieblok",
@@ -528,11 +527,5 @@
             "brengt licht en hoop 🌞",
             "is elegant en mooi 🎩"
         ]
-    },
-    "preview": {
-        "reload": "",
-        "roomRestart": "",
-        "openExternal": "",
-        "getQR": ""
     }
 }

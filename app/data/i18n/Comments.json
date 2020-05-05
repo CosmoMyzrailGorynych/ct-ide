@@ -44,7 +44,12 @@
         "sort": "",
         "tilelayer": "",
         "wrongFormat": "",
-        "yes": ""
+        "yes": "",
+        "loading": "",
+        "select": "",
+        "zoom": "",
+        "zoomIn": "",
+        "zoomOut": ""
     },
     "actionsEditor": {
         "actions": "",
@@ -75,7 +80,15 @@
         "export": "A verb",
         "exportPanel": "",
         "firstrunnotice": "",
-        "log": ""
+        "log": "",
+        "windowsCrossBuildWarning": "",
+        "launchMode": "A label before options that set initial game state: maximized, windowed, full-screen",
+        "launchModes": {
+            "maximized": "",
+            "fullscreen": "",
+            "windowed": ""
+        },
+        "cannotBuildForMacOnWin": ""
     },
     "inputMethodSelector": {
         "select": ""
@@ -86,7 +99,9 @@
             "button": "",
             "input": "",
             "text": "",
-            "nameerr": ""
+            "nameerr": "",
+            "saveProjectHere": "",
+            "selectProjectFolder": ""
         },
         "recovery": {
             "message": "",
@@ -139,7 +154,20 @@
         "newFont": "",
         "codeFont": "",
         "codeLigatures": "",
-        "codeDense": ""
+        "codeDense": "",
+        "launchHotkeys": "",
+        "patrons": "",
+        "fx": "",
+        "openIncludeFolder": "",
+        "troubleshooting": "",
+        "toggleDevTools": "",
+        "copySystemInfo": "",
+        "systemInfoWait": "",
+        "systemInfoDone": "",
+        "disableAcceleration": "",
+        "disableBuiltInDebugger": "",
+        "visitDiscordForGamedevSupport": "",
+        "postAnIssue": ""
     },
     "settings": {
         "actions": "",
@@ -168,6 +196,15 @@
             "newScriptComment": "",
             "moveUp": "",
             "moveDown": ""
+        },
+        "usePixiLegacy": "",
+        "branding": {
+            "heading": "",
+            "icon": "",
+            "iconNotice": "",
+            "accent": "",
+            "accentNotice": "",
+            "invertPreloaderScheme": ""
         }
     },
     "modules": {
@@ -182,7 +219,10 @@
         "methods": "",
         "parameters": "",
         "logs2": "A title for a changelog of a module.",
-        "settings": ""
+        "settings": "",
+        "dependencies": "",
+        "optionalDependencies": "",
+        "importModules": ""
     },
     "texture": {
         "create": "",
@@ -222,7 +262,9 @@
         "addPoint": "",
         "moveCenter": "",
         "movePoint": "",
-        "symmetryTool": ""
+        "symmetryTool": "",
+        "padding": "",
+        "paddingNotice": ""
     },
     "sounds": {
         "create": ""
@@ -324,7 +366,6 @@
         "add": "",
         "none": "",
         "done": "",
-        "zoom": "",
         "grid": "",
         "gridoff": "",
         "gridsize": "",
@@ -349,7 +390,8 @@
         "deletetiles": "",
         "movetilestolayer": "",
         "shifttiles": "",
-        "findTileset": ""
+        "findTileset": "",
+        "changecopyrotation": ""
     },
     "notepad": {
         "local": "",
@@ -357,10 +399,138 @@
         "helppages": "",
         "backToHome": ""
     },
-    "preview": {
-        "reload": "",
-        "roomRestart": "",
+    "preview": {},
+    "curveEditor": {
+        "curveLineHint": "",
+        "dragPointHint": "",
+        "pointTime": "",
+        "pointValue": ""
+    },
+    "debuggerToolbar": {
+        "pause": "",
+        "resume": "",
+        "restartGame": "",
+        "restartRoom": "",
+        "switchRoom": "",
+        "toggleDevTools": "",
+        "screenshot": "",
+        "enterFullscreen": "",
+        "exitFullscreen": "",
+        "links": "",
         "openExternal": "",
-        "getQR": ""
+        "close": ""
+    },
+    "onboarding": {
+        "hoorayHeader": "",
+        "nowWhatParagraph": "",
+        "openSpaceShooterTutorial": "",
+        "openPlatformerTutorial": "",
+        "openJettyCatTutorial": "",
+        "doNothing": "",
+        "showOnboardingCheckbox": ""
+    },
+    "particleEmitters": {
+        "emittersHeading": "",
+        "emitterHeading": "",
+        "from": "",
+        "to": "",
+        "textureHeading": "",
+        "selectTexture": "",
+        "importBuiltin": "",
+        "colorAndOpacityHeading": "",
+        "stepped": "",
+        "steppedColor": "",
+        "steppedAlpha": "",
+        "blendMode": "",
+        "regular": "",
+        "darken": "",
+        "lighten": "",
+        "burn": "",
+        "scalingHeading": "",
+        "scale": "",
+        "minimumSize": "",
+        "minimumSizeHint": "",
+        "velocityHeading": "",
+        "velocity": "",
+        "minimumSpeed": "",
+        "minimumSpeedHint": "",
+        "maxSpeed": "",
+        "gravityHeading": "",
+        "gravityNotice": "",
+        "directionHeading": "",
+        "startingDirection": "",
+        "preserveTextureDirection": "",
+        "rotationHeading": "",
+        "rotationSpeed": "",
+        "rotationAcceleration": "",
+        "spawningHeading": "",
+        "timeBetweenBursts": "",
+        "spawnAtOnce": "",
+        "chanceToSpawn": "",
+        "maxParticles": "",
+        "lifetime": "",
+        "emitterLifetime": "",
+        "prewarmDelay": "",
+        "prewarmDelayNotice": "",
+        "shapeAndPositioningHeading": "",
+        "spawnType": "",
+        "spawnShapes": {
+            "point": "",
+            "rectangle": "",
+            "circle": "",
+            "ring": "",
+            "star": ""
+        },
+        "width": "",
+        "height": "",
+        "radius": "",
+        "starPoints": "",
+        "startAngle": "",
+        "showShapeVisualizer": "",
+        "relativeEmitterPosition": "",
+        "addEmitter": "",
+        "reset": "",
+        "changeBg": "",
+        "inspectorComplete": "",
+        "alreadyHasAnImportingTexture": "",
+        "changeGrid": "",
+        "newGridSize": "",
+        "setPreviewTexture": ""
+    },
+    "patreon": {
+        "aboutPatrons": "",
+        "patronsHeader": "",
+        "businessShuttles": "",
+        "noShuttlesYet": "",
+        "shuttlesDescription": "",
+        "spacePirates": "",
+        "noPiratesYet": "",
+        "piratesDescription": "",
+        "spaceProgrammers": "",
+        "programmersDescription": "",
+        "aspiringAstronauts": "",
+        "noAstronautsYet": "",
+        "astronautsDescription": "",
+        "thankAllPatrons": "",
+        "becomeAPatron": "",
+        "aboutFillers": [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+        ]
     }
 }
