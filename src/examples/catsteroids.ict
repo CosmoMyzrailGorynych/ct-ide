@@ -18,10 +18,10 @@ libs:
   keyboard: {}
   keyboard.polyfill: {}
   mouse: {}
-  tween: {}
   vkeys: {}
   touch: {}
   transition: {}
+  tween: {}
 types:
   - name: Player_Blue
     depth: 5
@@ -77,10 +77,10 @@ types:
       this.vspeed += ct.actions.MoveY.value * this.flyspeed;
 
 
-      // Limit speed
+      // Limit speed, but allow for faster movement on slowmo effect
 
       this.speed = Math.max(Math.min(this.speed, this.speed - this.friction,
-      this.maxspeed), 0);
+      this.maxspeed / ct.pixiApp.ticker.speed), 0);
 
       ct.types.move(this);
 
@@ -99,7 +99,7 @@ types:
       /* Shooting */
 
 
-      this.shootTimer += ct.delta;
+      this.shootTimer += ct.deltaUi;
 
 
       // If the spacebar is pressed and at least a quarter of second has
@@ -191,7 +191,7 @@ types:
       ct.u.wait(2999)
       .then(() => ct.rooms.switch('RetryScreen'));
     uid: 1fab434d-0976-4b65-8390-d013695aba8c
-    lastmod: 1587780339488
+    lastmod: 1588678928942
     extends: {}
     texture: e1452137-8cfa-4eec-b54a-0f2660326b48
   - name: Laser_Simple_Blue
@@ -227,7 +227,7 @@ types:
       this.rotation = ct.random.deg();
       this.scale.x = this.scale.y = ct.random.range(0.5, 1);
 
-      this.health = this.scale.x * 10;
+      this.health = this.scale.x * 30;
 
       this.ctype = 'Enemy';
     onstep: |-
@@ -236,6 +236,9 @@ types:
       this.rotation += this.rotateSpeed * ct.delta; 
 
       var obstacle = ct.place.occupied(this, this.x, this.y, 'BulletsHeroes');
+      if (!obstacle) {
+          obstacle = ct.place.occupied(this, this.x, this.y, 'EnemyBullet');
+      }
       if (obstacle) {
           if (obstacle) {
               calculateDamage(this, obstacle);
@@ -249,11 +252,17 @@ types:
           this.y > ct.camera.height + 200
       ) {
           this.kill = true;
+          this.skipOnDestroy = true;
       }
     ondraw: ''
-    ondestroy: 'ct.emitters.fire(''ChunkBurst'', this.x, this.y);'
+    ondestroy: |-
+      if (this.skipOnDestroy) {
+          return;
+      }
+      ct.emitters.fire('ChunkBurst', this.x, this.y);
+      ct.room.score += 10;
     uid: 1fa16a0f-e9a0-4117-9c28-87fa72b33d2b
-    lastmod: 1584415881093
+    lastmod: 1588679462219
     extends: {}
     texture: 1a904383-2edd-4435-a37b-17148f44e0e0
   - name: Laser_Cross_Blue
@@ -276,7 +285,7 @@ types:
     ondraw: ''
     ondestroy: ''
     uid: 140f8bde-bd06-4b2d-a5f2-87427848252e
-    lastmod: 1584415649118
+    lastmod: 1588678931174
     extends: {}
     texture: 4b86d5c4-ae3c-4edf-90d7-79a6778e9a29
   - name: GameController
@@ -351,7 +360,7 @@ types:
       this.y = this.ystart + Math.sin(this.phase) * 8;
     ondestroy: ''
     uid: 319c6995-59f3-4267-a1de-cf58f77614d3
-    lastmod: 1586163349237
+    lastmod: 1588678830916
     extends: {}
     texture: 968baf79-5ff3-443b-8834-fa3b55638500
   - name: StartButton
@@ -378,7 +387,7 @@ types:
     ondraw: ''
     ondestroy: ''
     uid: 972bb4d9-7cfc-4dbe-bc30-883562271057
-    lastmod: 1586185849459
+    lastmod: 1588676925041
     extends: {}
     texture: 2a454e11-3441-4f57-bfb6-ce837acd7881
   - name: AbstractBonus
@@ -388,9 +397,9 @@ types:
       var player = ct.types.list['Player_Blue'][0];
       if (player.lives < 90) {
           // add a chance to spawn a life bonus if there is 2 or less lives
-          this.tex = ct.random.dice('Bonus_Lives', 'Bonus_Spread', 'Bonus_Bolt', 'Bonus_Cross');
+          this.tex = ct.random.dice('Bonus_Lives', 'Bonus_Spread', 'Bonus_Bolt', 'Bonus_Cross', 'Bonus_Slowmo');
       } else {
-          this.tex = ct.random.dice('Bonus_Spread', 'Bonus_Bolt', 'Bonus_Cross');
+          this.tex = ct.random.dice('Bonus_Spread', 'Bonus_Bolt', 'Bonus_Cross', 'Bonus_Slowmo');
       }
 
       this.speed = 3;
@@ -408,6 +417,25 @@ types:
               if (player.lives > 100) {
                   player.lives = 100;
               }
+          } else if (this.tex === 'Bonus_Slowmo') {
+              ct.sound.spawn('SlowmoEffect');
+              ct.tween.add({
+                  obj: ct.pixiApp.ticker,
+                  fields: {
+                      speed: 0.2
+                  },
+                  duration: 1000,
+                  useUiDelta: true 
+              })
+              .then(() => ct.u.waitUi(5000))
+              .then(() => ct.tween.add({
+                  obj: ct.pixiApp.ticker,
+                  fields: {
+                      speed: 1
+                  },
+                  duration: 1000,
+                  useUiDelta: true 
+              }));
           } else {
               var graphToWeaponMap = {
                   'Bonus_Spread': 'spread',
@@ -427,7 +455,7 @@ types:
     ondraw: ''
     ondestroy: ''
     uid: bc01cee1-1b8b-4418-aeb9-a7c5eac2cd51
-    lastmod: 1587780745483
+    lastmod: 1588673035582
     extends: {}
     texture: 25fb712b-0aca-4b18-8e10-7c545d4bca8d
   - name: Enemy_Shooter
@@ -478,9 +506,14 @@ types:
 
       if (this.y > ct.viewHeight + 100) {
           this.kill = true;
+          this.skipOnDestroy = true;
       }
     ondraw: ''
     ondestroy: >-
+      if (this.skipOnDestroy) {
+          return;
+      }
+
       ct.emitters.fire('Explosion', this.x, this.y);
 
       ct.sound.spawn(ct.random.dice('Explosion_01', 'Explosion_02',
@@ -490,17 +523,20 @@ types:
       if (ct.random.chance(10)) {
           ct.types.copy('AbstractBonus', this.x, this.y);
       }
+
+
+      ct.room.score += 100;
     uid: 500fd472-19aa-41a0-9504-123c37540702
-    lastmod: 1587618732184
+    lastmod: 1588676587505
     extends: {}
     texture: 048b77d3-e7e3-4817-99ee-8b7c0a6da8bf
   - name: EnemyBullet
     depth: -1
     oncreate: |-
       this.speed = 10;
+      this.damage = 5;
       this.direction = this.direction || 270;
       this.rotation = this.direction;
-      this.ctype = 'EnemyBullet';
       ct.sound.spawn('Laser_Big');
     onstep: |-
       ct.types.move(this);
@@ -512,8 +548,9 @@ types:
     ondraw: ''
     ondestroy: ''
     uid: 65a71d76-039a-4e20-8433-d20277dd2402
-    lastmod: 1587619831150
-    extends: {}
+    lastmod: 1588678944192
+    extends:
+      ctype: EnemyBullet
     texture: fc3e2f9b-61af-4ae4-9375-dcfae65f6a34
   - name: Enemy_Wiggler
     depth: 2
@@ -542,11 +579,9 @@ types:
       / 2;
 
 
-
-
       this.shootTimer -= ct.delta;
 
-      if (this.shootTimer < 0) {
+      if (this.shootTimer < 0 && ct.types.list['Player_Blue'].length) {
           const hero = ct.types.list['Player_Blue'][0];
           const bullet = ct.types.copy('EnemyBullet', this.x, this.y);
           bullet.direction = bullet.rotation = ct.u.pdn(this.x, this.y, hero.x, hero.y)
@@ -563,9 +598,15 @@ types:
 
       if (this.y > ct.camera.height + 100) {
           this.kill = true;
+          this.skipOnDestroy = true;
       }
     ondraw: 'this.rotation = ct.u.pdn(this.xprev, this.yprev, this.x, this.y) - 90;'
     ondestroy: >-
+      if (this.skipOnDestroy) {
+          return;
+      }
+
+
       ct.emitters.fire('Explosion', this.x, this.y);
 
       ct.sound.spawn(ct.random.dice('Explosion_01', 'Explosion_02',
@@ -575,8 +616,11 @@ types:
       if (ct.random.chance(10)) {
           ct.types.copy('AbstractBonus', this.x, this.y);
       }
+
+
+      ct.room.score += 75;
     uid: 9d0992a4-d0ef-4c5e-9d17-2e5167f26598
-    lastmod: 1587618755251
+    lastmod: 1588677934345
     extends: {}
     texture: 16c209a9-25b2-41e4-b0d5-21cb22fd1421
   - name: Laser_Bolt_Blue
@@ -659,16 +703,16 @@ types:
 
       ct.types.copy('AbstractBonus', this.x, this.y);
     uid: ebfeaaab-f16a-48fa-b97c-687945f99668
-    lastmod: 1587613163192
+    lastmod: 1588676559273
     extends: {}
     texture: 771c5c1f-ffdc-4b50-a1ce-aed472e44557
   - name: Laser_Cross_Red
     depth: 0
     oncreate: |-
       this.speed = 10;
+      this.damage = 5;
       this.direction = ct.random.range(270-45, 270+45);
 
-      this.ctype = 'EnemyBullet';
       if (!this.noSound) {
           ct.sound.spawn('Laser_Big');
       }
@@ -685,8 +729,9 @@ types:
     ondraw: ''
     ondestroy: ''
     uid: 45f606db-1ce3-4b21-bc14-b84e35543509
-    lastmod: 1587619641014
-    extends: {}
+    lastmod: 1588679171726
+    extends:
+      ctype: EnemyBullet
     texture: dc0d71ec-6da8-40e8-afe8-90c81f7f269a
   - name: OhNo
     depth: 0
@@ -695,7 +740,7 @@ types:
     ondraw: ''
     ondestroy: ''
     uid: a6d37145-b35c-42d2-95c6-765069857ada
-    lastmod: 1543397136519
+    lastmod: 1588676502096
     extends: {}
     texture: e81fc53e-4f0a-443d-a4fb-e5e11a4a98d2
   - name: RetryButton
@@ -704,13 +749,15 @@ types:
     onstep: |-
       if (ct.actions.Touch.pressed) {
           if (ct.mouse.hovers(this) || ct.touch.collide(this)) {
+              ct.sound.stop('Music_BossTheme');
+              ct.sound.stop('Music_MainTheme');
               ct.rooms.switch('InGame');
           }
       }
     ondraw: ''
     ondestroy: ''
     uid: 73759c16-fba4-4134-b048-e53aa4d2f34b
-    lastmod: 1586669367104
+    lastmod: 1588676975337
     extends: {}
     texture: 071162b9-d836-4145-9515-586ce289ef14
   - name: Joystick
@@ -755,14 +802,25 @@ types:
     uid: b334b5ec-69b4-4c0d-bd50-709cf9bfa60d
     texture: 13433dd6-9fec-4244-8188-d6ec14a51974
     extends: {}
-    lastmod: 1586163311182
+    lastmod: 1588678468799
   - name: DatBoss
     depth: 3
     oncreate: >-
       this.rotation = -180;
 
 
-      this.health = 3000;
+      this.health = 1500;
+
+      ct.types.copy('Healthbar_Base_Boss', 0, 0, {},
+      ct.rooms.list['UI_Layer'][0]);
+
+
+      ct.sound.spawn('Music_BossTheme', {
+          loop: true,
+          volume: 0.6
+      });
+
+      ct.sound.stop('Music_MainTheme');
 
 
       this.shootTimer = 0;
@@ -885,6 +943,7 @@ types:
           // stage 3: start pulling everything into its path and shoot in random directions
           // for 10 seconds
           if (this.stage === 3) {
+              ct.sound.spawn('BlackHole');
               ct.emitters.follow(this, 'BlackHole');
               ct.room.pullPlayerIn = true;
               this.shootRandom = true;
@@ -948,7 +1007,7 @@ types:
           if (this.shootTimer <= 0) {
               if (this.shootRandom) {
                   const bullet = ct.types.copy('Laser_Cross_Red', this.x, this.y - 80);
-                  bullet.direction = ct.random.range(300, 60);
+                  bullet.direction = ct.random.range(-240, 60);
                   this.shootTimer += 10;
               } else if (this.shootAtPlayer && ct.types.list['Player_Blue'].length) {
                   this.shootTimer += 40;
@@ -960,9 +1019,9 @@ types:
                       const bullet = ct.types.copy('Laser_Cross_Red', this.x, this.y - 80, {
                           noSound: true
                       });
-                      ct.sound.spawn('Laser_Big');
                       bullet.direction = i;
                   }
+                  ct.sound.spawn('Laser_Big');
                   this.shootTimer += 10;
               }
           }
@@ -978,14 +1037,26 @@ types:
           player.addSpeed(ct.delta * 0.9, ct.u.pdn(player.x, player.y, this.x, this.y));
       }
     ondraw: ''
-    ondestroy: ''
+    ondestroy: |-
+      ct.room.score += 10000;
+
+      ct.emitters.fire('Explosion_Boss', this.x, this.y);
+      ct.sound.spawn('Explosion_02');
+
+      ct.u.wait(1000 * 5)
+      .then(() => {
+          ct.rooms.switch('VictoryScreen');
+      });
     uid: 1ef4f56c-b0cc-497b-bd3f-e06eb1c2308d
     texture: afba4114-e7bc-4b35-8386-d9ca108ca777
     extends: {}
-    lastmod: 1587630552496
+    lastmod: 1588679303757
   - name: Healthbar_Base_Player
     depth: 0
     oncreate: >-
+      this.scale.y = 0.8;
+
+
       this.healthBar = new PIXI.NineSlicePlane(
           ct.res.getTexture('Healthbar_Bar', 0),
           15, 15, 15, 15
@@ -1027,14 +1098,30 @@ types:
     uid: 1011221c-4f7b-45e7-b45a-ce886851d32c
     texture: 850854a8-47dd-4041-9412-b4cca854dd90
     extends: {}
-    lastmod: 1587781256804
+    lastmod: 1588679321850
   - name: Healthbar_Base_Boss
     depth: 0
     oncreate: >-
+      this.scale.y = -0.8;
+
       this.healthBar = new PIXI.NineSlicePlane(
-          ct.res.getTexture('Healthbar_Bar', 0),
+          ct.res.getTexture('Healthbar_BossBar', 0),
           15, 15, 15, 15
       );
+
+
+      this.x = ct.camera.width / 2;
+
+      this.y = -100;
+
+      ct.tween.add({
+          obj: this,
+          fields: {
+              y: 0
+          },
+          duration: 1000
+      });
+
 
       /* this can be also written in one line */
 
@@ -1048,31 +1135,51 @@ types:
       /* Precise placing made with the aid of graphics editor */
 
 
-      const player = ct.types.list['Player_Blue'][0]
+      const boss = ct.types.list['DatBoss'][0]
 
       this.healthBar.height = 52;
 
-      this.healthBar.width = player.lives / 100 * (794 + 20); // Assuming that
-      the max health is 100
+      this.healthBar.width = boss.health / 1500 * (794 + 20); // Assuming that
+      the max health is 3000
 
       this.addChild(this.healthBar);
     onstep: this.move();
     ondraw: |-
-      if (ct.types.list['Player_Blue'].length) {
-          const player = ct.types.list['Player_Blue'][0];
+      if (ct.types.list['DatBoss'].length) {
+          const boss = ct.types.list['DatBoss'][0];
           // calculate the needed length 
-          const width = player.lives / 100 * (794 + 20);
+          const width = boss.health / 1500 * (794 + 20);
           // blend current and target length
-          this.healthBar.width = this.healthBar.width * 0.9 + width * 0.1;
+          this.healthBar.width = width;
       } else {
           // shrink to nothing
-          this.healthBar.width = this.healthBar.width * 0.9;
+          this.healthBar.width = 0;
       }
     ondestroy: ''
     uid: c465904b-7b03-4f27-8f28-f378e7bdd9cf
     texture: 850854a8-47dd-4041-9412-b4cca854dd90
     extends: {}
-    lastmod: 1587781256804
+    lastmod: 1588679312168
+  - name: Victory
+    depth: 0
+    oncreate: |-
+      // The logo floats vertically. Let's use a sine function for that. 
+      // We will need a variable to change its phase
+
+      this.phase = 0;
+    onstep: ct.types.move(this);
+    ondraw: |-
+      this.phase += 2.5 / 60 * ct.delta;
+      if (this.phase > Math.PI * 2) {
+          this.phase -= Math.PI * 2;
+      }
+
+      this.y = this.ystart + Math.sin(this.phase) * 8;
+    ondestroy: ''
+    uid: ffbec9fc-299c-4aea-a4f1-1c4b27859fb6
+    lastmod: 1588678848655
+    extends: {}
+    texture: 91f10290-e71c-4052-a64b-7aec34086e64
 sounds:
   - name: Laser_Small
     uid: 684d983f-9827-4ac8-9915-bd498154c5f4
@@ -1105,12 +1212,29 @@ sounds:
     uid: 8104f996-d422-4157-921f-76e2ffff3b49
     origname: s7.wav
     lastmod: 1522762020572
-  - name: Music
+  - name: Music_MainMenu
     uid: c5397f40-b674-4bfe-a500-91f32466e49b
-    origname: s8.mp3
-    lastmod: 1533189183845
+    origname: sc5397f40-b674-4bfe-a500-91f32466e49b.mp3
+    lastmod: 1588675539728
     isMusic: true
     poolSize: 1
+  - name: SlowmoEffect
+    uid: db12b1db-1b93-45eb-84f4-a14c131c8ca0
+    origname: sdb12b1db-1b93-45eb-84f4-a14c131c8ca0.mp3
+    lastmod: 1588673411582
+  - name: BlackHole
+    uid: c8ee5675-8608-40fa-b04e-ad9ccc36c777
+    origname: sc8ee5675-8608-40fa-b04e-ad9ccc36c777.mp3
+    lastmod: 1588673818748
+  - name: Music_MainTheme
+    uid: 8759a7a8-ffb1-4998-ad6f-ae7300b90d3c
+    isMusic: true
+    origname: s8759a7a8-ffb1-4998-ad6f-ae7300b90d3c.mp3
+    lastmod: 1588675552336
+  - name: Music_BossTheme
+    uid: 97158431-4c4f-4f9c-96b9-06da025fb98a
+    origname: s97158431-4c4f-4f9c-96b9-06da025fb98a.mp3
+    lastmod: 1588675569033
 styles:
   - name: ScoreText
     fill:
@@ -1122,7 +1246,7 @@ styles:
       color: '#70C4FF'
     font:
       family: '''Press Start 2P'', sans-serif'
-      size: 24
+      size: 32
       weight: '900'
       italic: true
       valign: top
@@ -1134,24 +1258,31 @@ styles:
       x: -3
       'y': -2
       blur: 0
-    lastmod: 1583195828706
+    lastmod: 1588679096929
   - name: Blue12
     uid: dea27cc4-bf65-4501-b855-06cbfc835321
     origname: s2
     font:
       family: '''Press Start 2P'', sans-serif'
-      size: 12
+      size: 18
       weight: 400
       italic: false
       valign: middle
       halign: center
+      lineHeight: 36
     fill:
       type: '0'
       color: '#70C4FF'
-    lastmod: 1543395030461
+    lastmod: 1588679110248
 rooms:
   - name: InGame
     oncreate: >-
+      ct.sound.spawn('Music_MainTheme', {
+          loop: true,
+          volume: 0.25
+      });
+
+
       if (ct.touch.enabled) {
           ct.rooms.append('Controls_Layer', {isUi: true});
       }
@@ -1172,30 +1303,15 @@ rooms:
       this.addChild(this.scoreLabel);
 
 
-      this.shipIcons = [];
-
-      // Draw small ship icons in a top-right corner
-
-      for (var i = 0; i < 3; i++) {
-          var icon = new PIXI.Sprite(ct.res.getTexture('PlayerShip_Blue', 0));
-          icon.x = ct.width - 32 - i*48;
-          icon.y = 32;
-          icon.scale.x = icon.scale.y = 0.3;
-          icon.depth = 100;
-          this.addChild(icon);
-          this.shipIcons.push(icon);
-      }
-
-
       this.asteroidTimer = ct.speed * 3;
 
       this.encounterTimer = ct.speed * 10;
 
       this.waveTimer = ct.speed * 30;
 
-      //this.bomberTimer = ct.speed * 75;
+      this.bomberTimer = ct.speed * 75;
 
-      this.bomberTimer = ct.speed * 5;
+      this.bossTimer = ct.speed * 60 * 3;
 
 
       ct.transition.fadeIn();
@@ -1206,6 +1322,10 @@ rooms:
           ct.types.copy('Asteroid', ct.random(ct.camera.width), -100);
       }
 
+      if (this.bossEncountered) {
+          // Stop spawning new entities if a boss has arrived
+          return;
+      }
       this.encounterTimer -= ct.delta;
       if (this.encounterTimer <= 0) {
           this.encounterTimer = ct.random.range(ct.speed * 4, ct.speed * 7);
@@ -1225,14 +1345,13 @@ rooms:
           this.bomberTimer = ct.random.range(ct.speed * 60, ct.speed * 90);
           ct.types.copy('Enemy_Bomber', ct.random(ct.camera.width), -100);
       }
-    ondraw: |-
-      this.scoreLabel.text = 'Score: ' + this.score;
 
-      if (ct.types.list.Player_Blue.length) {
-          for (var i = 0; i < 3; i++) {
-              this.shipIcons[i].visible = ct.types.list.Player_Blue[0].lives > i;
-          }
+      this.bossTimer -= ct.delta;
+      if (this.bossTimer <= 0) {
+          this.bossEncountered = true;
+          ct.types.copy('DatBoss', ct.camera.width / 2, -300);
       }
+    ondraw: 'this.scoreLabel.text = ''Score: '' + this.score;'
     onleave: ''
     width: 1920
     height: 1080
@@ -1252,7 +1371,7 @@ rooms:
         extends:
           movementY: 0.5
     uid: 2e5bf702-9eac-4fef-8282-07d2dd0a9bac
-    lastmod: 1587620303589
+    lastmod: 1588677882762
     grid: 50
     thumbnail: 1
     gridX: 50
@@ -1266,13 +1385,10 @@ rooms:
         uid: 1fab434d-0976-4b65-8390-d013695aba8c
   - name: MainMenu
     oncreate: >-
-      //ct.sound.spawn('Music', {
-
-      //    loop: true,
-
-      //    volume: 0.5
-
-      //});
+      ct.sound.spawn('Music_MainMenu', {
+          loop: true,
+          volume: 0.5
+      });
 
 
       this.ctjsNotice = new PIXI.Text('Make Great Games in a Free Game
@@ -1289,7 +1405,7 @@ rooms:
       this.ctjsNotice.anchor.y = 0.5;
     onstep: ''
     ondraw: ''
-    onleave: ''
+    onleave: ct.sound.stop('Music_MainMenu');
     width: 1920
     height: 1080
     backgrounds:
@@ -1310,7 +1426,7 @@ rooms:
           movementX: -0.5
     uid: 6c75cdb8-cfb4-4dcc-887a-f76ae98b5499
     grid: 64
-    lastmod: 1587620277841
+    lastmod: 1588677352152
     thumbnail: 2
     gridX: 64
     gridY: 64
@@ -1339,9 +1455,9 @@ rooms:
 
       this.addChild(this.scoreText);
 
-      this.scoreText.x = ct.width / 2;
+      this.scoreText.x = ct.camera.width / 2;
 
-      this.scoreText.y = ct.height / 2;
+      this.scoreText.y = ct.camera.height / 2;
 
       this.scoreText.anchor.x = 0.5;
 
@@ -1350,12 +1466,12 @@ rooms:
 
       this.authorsNotice = new PIXI.Text('This demo was made in ct.js editor:
       more at https://ctjs.rocks/\n'+ 
-          'Music by Jukedeck: www.jukedeck.com', ct.styles.get('Blue12'));
+          'Music by MAZMATERIALS: soundcloud.com/user-813284330', ct.styles.get('Blue12'));
       this.addChild(this.authorsNotice);
 
-      this.authorsNotice.x = ct.width / 2;
+      this.authorsNotice.x = ct.camera.width / 2;
 
-      this.authorsNotice.y = ct.height - 50;
+      this.authorsNotice.y = ct.camera.height - 50;
 
       this.authorsNotice.anchor.x = 0.5;
 
@@ -1363,8 +1479,8 @@ rooms:
     onstep: ''
     ondraw: ''
     onleave: ''
-    width: 1280
-    height: 768
+    width: 1920
+    height: 1080
     backgrounds:
       - depth: -5
         extends:
@@ -1372,7 +1488,7 @@ rooms:
         texture: 3935eebf-4e66-456f-9ca8-e2dc1d6a9383
     uid: cc1e53b3-f7e6-48fe-9716-b05877538e52
     grid: 64
-    lastmod: 1583208918869
+    lastmod: 1588678494660
     thumbnail: 3
     gridX: 64
     gridY: 64
@@ -1380,12 +1496,12 @@ rooms:
       - depth: -10
         tiles: []
     copies:
-      - x: 640
+      - x: 960
+        'y': 832
+        uid: 73759c16-fba4-4134-b048-e53aa4d2f34b
+      - x: 960
         'y': 192
         uid: a6d37145-b35c-42d2-95c6-765069857ada
-      - x: 640
-        'y': 512
-        uid: 73759c16-fba4-4134-b048-e53aa4d2f34b
   - name: Controls_Layer
     oncreate: ''
     onstep: ''
@@ -1476,7 +1592,7 @@ rooms:
         extends:
           movementY: 0.5
     uid: 0716a171-8c7a-4112-bae8-85703255320d
-    lastmod: 1587618851158
+    lastmod: 1588676886528
     grid: 50
     thumbnail: 85703255320d
     gridX: 50
@@ -1491,6 +1607,27 @@ rooms:
       - x: 950
         'y': -300
         uid: 1ef4f56c-b0cc-497b-bd3f-e06eb1c2308d
+      - x: 550
+        'y': 400
+        uid: bc01cee1-1b8b-4418-aeb9-a7c5eac2cd51
+      - x: 750
+        'y': 400
+        uid: bc01cee1-1b8b-4418-aeb9-a7c5eac2cd51
+      - x: 650
+        'y': 550
+        uid: bc01cee1-1b8b-4418-aeb9-a7c5eac2cd51
+      - x: 650
+        'y': 250
+        uid: bc01cee1-1b8b-4418-aeb9-a7c5eac2cd51
+      - x: 450
+        'y': 250
+        uid: bc01cee1-1b8b-4418-aeb9-a7c5eac2cd51
+      - x: 350
+        'y': 400
+        uid: bc01cee1-1b8b-4418-aeb9-a7c5eac2cd51
+      - x: 450
+        'y': 550
+        uid: bc01cee1-1b8b-4418-aeb9-a7c5eac2cd51
   - name: UI_Layer
     oncreate: ''
     onstep: ''
@@ -1510,7 +1647,84 @@ rooms:
     thumbnail: bb45e24b4389
     gridX: 64
     gridY: 1080
-    lastmod: 1587779900244
+    lastmod: 1588678190829
+  - name: VictoryScreen
+    oncreate: >-
+      ct.sound.spawn('Music_MainMenu', {
+          loop: true,
+          volume: 0.5
+      });
+
+      ct.sound.stop('Music_MainMenu');
+
+      ct.sound.stop('Music_BossTheme');
+
+
+      this.score = Number(localStorage.score);
+
+      this.highscore = Number(localStorage.highscore || 0);
+
+
+      localStorage.highscore = Math.max(this.highscore, this.score);
+
+
+      this.scoreText = new PIXI.Text('Score: '+ this.score + '\n' + 'Highscore:
+      '+ this.highscore, ct.styles.get('ScoreText'));
+
+      this.addChild(this.scoreText);
+
+      this.scoreText.x = ct.camera.width / 2;
+
+      this.scoreText.y = ct.camera.height / 2;
+
+      this.scoreText.anchor.x = 0.5;
+
+      this.scoreText.anchor.y = 0.5;
+
+
+      this.authorsNotice = new PIXI.Text('This demo was made in ct.js editor:
+      more at https://ctjs.rocks/\n'+ 
+          'Music by MAZMATERIALS: soundcloud.com/user-813284330', ct.styles.get('Blue12'));
+      this.addChild(this.authorsNotice);
+
+      this.authorsNotice.x = ct.camera.width / 2;
+
+      this.authorsNotice.y = ct.camera.height - 50;
+
+      this.authorsNotice.anchor.x = 0.5;
+
+      this.authorsNotice.anchor.y = 0.5;
+    onstep: ''
+    ondraw: ''
+    onleave: ''
+    width: 1920
+    height: 1080
+    backgrounds:
+      - depth: -5
+        extends:
+          movementY: 0.5
+        texture: 3935eebf-4e66-456f-9ca8-e2dc1d6a9383
+      - depth: -4
+        texture: f52c0c03-bee0-4984-a936-08aeb0dab1eb
+        extends:
+          movementY: 1
+      - depth: -3
+        texture: e86811b4-8d80-4d2a-8003-b490165fa078
+        extends:
+          movementY: 2
+    uid: 980b838d-93b0-429f-94ef-2acf783c9516
+    grid: 64
+    lastmod: 1588678817490
+    thumbnail: 2acf783c9516
+    gridX: 64
+    gridY: 64
+    tiles:
+      - depth: -10
+        tiles: []
+    copies:
+      - x: 960
+        'y': 256
+        uid: ffbec9fc-299c-4aea-a4f1-1c4b27859fb6
 soundtick: 9
 roomtick: 3
 typetick: 19
@@ -1548,15 +1762,20 @@ palette:
   - '#70C4FF'
   - '#00345E'
   - '#FF0004'
-startroom: 0716a171-8c7a-4112-bae8-85703255320d
+  - '#4F4444'
+startroom: 6c75cdb8-cfb4-4dcc-887a-f76ae98b5499
 scripts:
   - name: calculateDamage
     code: |-
       const calculateDamage = function(ship, bullet) {
           ship.health -= bullet.damage;
           if (bullet.type === 'Laser_Bolt_Blue') { // Bolts may survive the collision do additional damage
-              bullet.damage = -this.health; // bring overkill damage back to the bullet
-              if (bullet.damage <= 0) {
+              if (ship.health < 0) {
+                  bullet.damage += ship.health; // bring overkill damage back to the bullet
+                  if (bullet.damage <= 0) {
+                      bullet.kill = true;
+                  }
+              } else {
                   bullet.kill = true;
               }
           } else {
@@ -1968,7 +2187,7 @@ textures:
     height: 116
     imgWidth: 74
     imgHeight: 116
-    lastmod: 1584415079306
+    lastmod: 1588671842185
     uid: c7305cd4-3a22-4f4d-b42e-adbd8651ffe0
     padding: 1
     source: /home/comigo/Downloads/Bonus_PowerBolt.png
@@ -2266,8 +2485,8 @@ textures:
       - 1
       - 1
     axis:
-      - 299
-      - 186
+      - 377
+      - 258
     marginx: 0
     marginy: 0
     offx: 0
@@ -2279,14 +2498,14 @@ textures:
     top: 186
     bottom: 187
     frames: 1
-    width: 598
-    height: 373
-    imgWidth: 598
-    imgHeight: 373
-    lastmod: 1583195592488
+    width: 755
+    height: 474
+    imgWidth: 755
+    imgHeight: 474
+    lastmod: 1588676230377
     uid: e81fc53e-4f0a-443d-a4fb-e5e11a4a98d2
     padding: 1
-    source: /home/comigo/Desktop/OhNo.png
+    source: 'C:\Users\Master\Desktop\OhNo.png'
   - name: Stars_Big
     untill: 0
     grid:
@@ -2453,7 +2672,7 @@ textures:
         'y': -105.5
     closedStrip: true
     symmetryStrip: true
-    lastmod: 1583889938126
+    lastmod: 1588671390395
   - name: Enemy_Bomber
     untill: 0
     grid:
@@ -3032,6 +3251,58 @@ textures:
     uid: 850854a8-47dd-4041-9412-b4cca854dd90
     padding: 1
     lastmod: 1587631050015
+  - name: Bonus_Slowmo
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 36.75
+      - 82.5
+    marginx: 0
+    marginy: 0
+    imgWidth: 74
+    imgHeight: 125
+    width: 74
+    height: 125
+    offx: 0
+    offy: 0
+    origname: id8204c3b-f004-4dc4-b7bb-2727c81b8855.png
+    source: 'C:\Users\Master\Desktop\Bonus_Slowmo.png'
+    shape: rect
+    left: 25
+    right: 26
+    top: 18
+    bottom: 30
+    uid: d8204c3b-f004-4dc4-b7bb-2727c81b8855
+    padding: 1
+    lastmod: 1588671870516
+  - name: Victory
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 418
+      - 271
+    marginx: 0
+    marginy: 0
+    imgWidth: 872
+    imgHeight: 490
+    width: 872
+    height: 490
+    offx: 0
+    offy: 0
+    origname: i91f10290-e71c-4052-a64b-7aec34086e64.png
+    source: 'C:\Users\Master\Desktop\Victory.png'
+    shape: rect
+    left: 418
+    right: 454
+    top: 271
+    bottom: 219
+    uid: 91f10290-e71c-4052-a64b-7aec34086e64
+    padding: 1
+    lastmod: 1588676239105
 texturetick: 32
 emitterTandems:
   - name: Explosion
@@ -4150,3 +4421,330 @@ emitterTandems:
         uid: 57c92f27-a9b5-45d5-8dee-7874399cacc8
         showShapeVisualizer: false
     previewTexture: afba4114-e7bc-4b35-8386-d9ca108ca777
+  - name: Explosion_Boss
+    origname: pt7579996e55b4
+    emitters:
+      - texture: 3d256840-cbd1-4241-a8c2-4d5432e6b9ce
+        openedTabs:
+          - texture
+          - colors
+          - scaling
+          - direction
+          - spawning
+        settings:
+          alpha:
+            list:
+              - value: 0
+                time: 0
+              - time: 0.112
+                value: 0.30500000000000005
+              - time: 0.236
+                value: 0.5050000000000001
+              - value: 0.5900000000000001
+                time: 0.392
+              - time: 0.572
+                value: 0.5
+              - value: 0
+                time: 1
+            isStepped: false
+          scale:
+            list:
+              - value: 0.050000000000000044
+                time: 0
+              - value: 1.9999999999999998
+                time: 1
+            isStepped: false
+          color:
+            list:
+              - value: FF3C00
+                time: 0
+              - time: 0.112
+                value: FF551A
+              - time: 0.236
+                value: FF682E
+              - value: FF7B42
+                time: 0.392
+              - time: 0.572
+                value: FFD599
+              - value: FF5F19
+                time: 1
+            isStepped: false
+          blendMode: add
+          speed:
+            list:
+              - value: 0
+                time: 0
+              - value: 0
+                time: 1
+            isStepped: false
+          startRotation:
+            min: 0
+            max: 360
+          rotationSpeed:
+            min: 0
+            max: 0
+          rotationAcceleration: 0
+          lifetime:
+            min: 0.25
+            max: 0.5
+          frequency: 0.015
+          spawnChance: 1
+          particlesPerWave: 1
+          angleStart: 270
+          emitterLifetime: 0.1
+          maxParticles: 1000
+          maxSpeed: 0
+          pos:
+            x: 0
+            'y': 0
+          acceleration:
+            x: 0
+            'y': 0
+          addAtBack: false
+          spawnType: point
+          spawnCircle:
+            x: 0
+            'y': 0
+            r: 64
+            minR: 32
+          delay: 0
+          particleSpacing: 360
+          noRotation: false
+        uid: 5099d52e-3df7-4c85-b8bb-4fc7a42026ee
+      - texture: a27fae91-d007-4683-910b-020b4fb76d72
+        openedTabs:
+          - texture
+          - spawning
+          - colors
+          - shape
+          - velocity
+          - scaling
+        settings:
+          alpha:
+            list:
+              - value: 0
+                time: 0
+              - time: 0.16
+                value: 0.08999999999999997
+              - time: 0.32
+                value: 0.5499999999999999
+              - value: 0.71
+                time: 0.572
+              - value: 0
+                time: 1
+            isStepped: false
+          scale:
+            list:
+              - value: 0.55
+                time: 0
+              - value: 1.93
+                time: 1
+            isStepped: false
+          color:
+            list:
+              - value: '595959'
+                time: 0
+              - time: 0.16
+                value: '383838'
+              - time: 0.32
+                value: '292929'
+              - value: 2E2E2E
+                time: 0.572
+              - value: '363636'
+                time: 1
+            isStepped: false
+          blendMode: normal
+          speed:
+            list:
+              - value: 0
+                time: 0
+              - value: 0
+                time: 1
+            isStepped: false
+          startRotation:
+            min: 0
+            max: 360
+          rotationSpeed:
+            min: -60
+            max: 60
+          rotationAcceleration: 0
+          lifetime:
+            min: 3
+            max: 5
+          frequency: 0.01
+          spawnChance: 1
+          particlesPerWave: 1
+          angleStart: 270
+          emitterLifetime: 0.1
+          maxParticles: 1000
+          maxSpeed: 0
+          pos:
+            x: 0
+            'y': 0
+          acceleration:
+            x: 0
+            'y': 0
+          addAtBack: false
+          spawnType: circle
+          spawnCircle:
+            x: 0
+            'y': 0
+            r: 105
+            minR: 100
+          delay: 0
+          minimumScaleMultiplier: 0.25
+        uid: 84917cf1-bdcd-41f1-8a6a-37a972d6e17b
+        showShapeVisualizer: false
+      - texture: d4d167ee-e343-4af8-857b-691906585543
+        openedTabs:
+          - texture
+          - colors
+          - spawning
+          - velocity
+          - shape
+        settings:
+          alpha:
+            list:
+              - value: 0.665
+                time: 0
+              - value: 1
+                time: 0.5
+              - value: 0.005
+                time: 1
+            isStepped: false
+          scale:
+            list:
+              - value: 0.08999999999999996
+                time: 0
+              - value: 0.08999999999999997
+                time: 1
+            isStepped: false
+          color:
+            list:
+              - value: FF0004
+                time: 0
+              - value: FF0004
+                time: 0.5
+              - value: FF0004
+                time: 1
+            isStepped: false
+          blendMode: add
+          speed:
+            list:
+              - value: 1
+                time: 0
+              - value: 1
+                time: 1
+            isStepped: false
+          startRotation:
+            min: 0
+            max: 360
+          rotationSpeed:
+            min: -3000
+            max: 3000
+          rotationAcceleration: 0
+          lifetime:
+            min: 0.05
+            max: 0.05
+          frequency: 0.008
+          spawnChance: 1
+          particlesPerWave: 1
+          angleStart: 270
+          emitterLifetime: 2.6
+          maxParticles: 1000
+          maxSpeed: 0
+          pos:
+            x: 0
+            'y': 0
+          acceleration:
+            x: 0
+            'y': 0
+          addAtBack: false
+          spawnType: circle
+          spawnCircle:
+            x: 0
+            'y': 0
+            r: 193
+          delay: 0
+        uid: 9a5de025-33dd-4de2-a570-e67fc99ff763
+        showShapeVisualizer: false
+      - texture: 7b0c966f-2635-4138-8628-2e634af72e2f
+        openedTabs:
+          - texture
+          - colors
+          - velocity
+          - rotation
+        settings:
+          alpha:
+            list:
+              - value: 0.010000000000000009
+                time: 0
+              - value: 0.995
+                time: 0.10399999999999998
+              - time: 0.8360000000000001
+                value: 1
+              - value: 0
+                time: 1
+            isStepped: false
+          scale:
+            list:
+              - value: 1.9600000000000002
+                time: 0
+              - value: 1.9700000000000002
+                time: 1
+            isStepped: false
+          color:
+            list:
+              - value: 4F4444
+                time: 0
+              - value: 4F4444
+                time: 0.10399999999999998
+              - time: 0.8360000000000001
+                value: 4F4444
+              - value: 4F4444
+                time: 1
+            isStepped: false
+          blendMode: normal
+          speed:
+            list:
+              - value: 500
+                time: 0
+              - value: 100
+                time: 1
+            isStepped: false
+          startRotation:
+            min: 0
+            max: 360
+          rotationSpeed:
+            min: -720
+            max: 720
+          rotationAcceleration: 0
+          lifetime:
+            min: 1.01
+            max: 3
+          frequency: 0.008
+          spawnChance: 1
+          particlesPerWave: 1
+          angleStart: 270
+          emitterLifetime: 0.2
+          maxParticles: 1000
+          maxSpeed: 0
+          pos:
+            x: 0
+            'y': 0
+          acceleration:
+            x: 0
+            'y': 0
+          addAtBack: false
+          spawnType: circle
+          spawnCircle:
+            x: 0
+            'y': 0
+            r: 105
+          delay: 0
+          minimumScaleMultiplier: 0.06
+          minimumSpeedMultiplier: 0.06
+        uid: 968ed96e-3965-4019-a112-3562b4b0d43d
+        showShapeVisualizer: false
+    previewTexture: afba4114-e7bc-4b35-8386-d9ca108ca777
+    uid: a329eefd-0d65-4f4c-a02a-7579996e55b4

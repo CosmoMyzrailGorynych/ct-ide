@@ -364,7 +364,7 @@ const Copy = (function () {
          * @returns {Copy} the created copy.
          * @alias ct.types.copy
          */
-        make(type, x, y, exts, container) {
+        make(type, x=0, y=0, exts, container) {
             // An advanced constructor. Returns a Copy
             if (exts instanceof PIXI.Container) {
                 container = exts;
