@@ -366,7 +366,7 @@ const bakePackages = async () => {
         buildType: 'versioned',
         // forceDownload: true,
         zip: false,
-        macIcns: './app/ct.ide.icns'
+        macIcns: './buildAssets/icon.icns'
     });
     await nw.build();
     console.log('Built to this location:', path.join('./build', `ctjs - v${pack.version}`));
