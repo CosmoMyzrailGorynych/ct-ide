@@ -487,10 +487,10 @@ const packages = gulp.series([
     build,
     docs,
     patronsCache,
+    examples,
     bakePackages,
     fixSymlinks,
     fixPermissions,
-    examples,
     zipPackages
 ]);
 
