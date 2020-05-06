@@ -1,3 +1,5 @@
+// $ comigoji-changelog ./comigojiChangelog.js > Changelog.md
+
 const gitCommand = 'git log --max-count=1 --tags --simplify-by-decoration --pretty="format:%cI"';
 const {exec} = require('child_process');
 
@@ -23,13 +25,13 @@ module.exports = new Promise((resolve, reject) => {
                 branch: 'develop'
             }, {
                 since,
-                repo: './../docs.ctjs.rocks',
+                repo: './docs',
                 branch: 'master',
                 forceCategory: 'docs',
                 forceCategoryStrip: /^:(books|pencil|pencil2|memo):/
             }, {
                 since,
-                repo: './../ctjs-site',
+                repo: './../ctjsSite',
                 branch: 'master',
                 forceCategory: 'website'
             }],
