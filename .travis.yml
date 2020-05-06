@@ -14,9 +14,9 @@ stages:
   - name: lint
   - name: build
   - name: pack
-    if: (branch = master) AND (tag IS present)
+    if: tag IS present
   - name: deploy
-    if: (branch = master) AND (tag IS present)
+    if: tag IS present
 
 jobs:
   include:
