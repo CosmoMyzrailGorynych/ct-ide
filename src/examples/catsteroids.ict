@@ -1352,7 +1352,7 @@ rooms:
           ct.types.copy('DatBoss', ct.camera.width / 2, -300);
       }
     ondraw: 'this.scoreLabel.text = ''Score: '' + this.score;'
-    onleave: ''
+    onleave: localStorage.score = this.score;
     width: 1920
     height: 1080
     backgrounds:
@@ -1371,7 +1371,7 @@ rooms:
         extends:
           movementY: 0.5
     uid: 2e5bf702-9eac-4fef-8282-07d2dd0a9bac
-    lastmod: 1588677882762
+    lastmod: 1588761914721
     grid: 50
     thumbnail: 1
     gridX: 50
@@ -1714,7 +1714,7 @@ rooms:
           movementY: 2
     uid: 980b838d-93b0-429f-94ef-2acf783c9516
     grid: 64
-    lastmod: 1588678817490
+    lastmod: 1588761926668
     thumbnail: 2acf783c9516
     gridX: 64
     gridY: 64
