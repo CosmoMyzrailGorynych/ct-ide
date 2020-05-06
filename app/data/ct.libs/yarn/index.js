@@ -41,7 +41,7 @@
             if (!ms && ms !== 0) {
                 throw Error(`Invalid command ${command}: wrong number format.`);
             }
-            ct.u.wait(ms)
+            ct.u.waitUi(ms)
             .then(() => story.next());
             return 'async';
         }

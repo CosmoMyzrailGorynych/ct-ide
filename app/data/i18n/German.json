@@ -11,13 +11,13 @@
         "cancel": "Abbrechen",
         "cannotBeEmpty": "Dies darf nicht leer sein",
         "confirmDelete": "Möchten Sie {0} wirklich löschen? Dies kann nicht rückgängig gemacht werden.",
-        "contribute": "Mitwirken 💻",
+        "contribute": "Mitwirken",
         "copy": "Kopieren",
         "copyName": "Namen kopieren",
         "ctsite": "ct.js Homepage",
         "cut": "Ausschneiden",
         "delete": "Löschen",
-        "donate": "Spenden ❤️",
+        "donate": "Spenden",
         "done": "Fertig!",
         "duplicate": "Duplizieren",
         "exit": "Beenden",
@@ -42,10 +42,14 @@
         "save": "Speichern",
         "savedcomm": "Das Projekt wurde erfolgreich gespeichert.",
         "saveproject": "Project speichern",
+        "select": "Auswählen",
         "sort": "Sortieren:",
         "tilelayer": "Tile Ebene",
         "wrongFormat": "Falsches Dateiformat",
-        "yes": "Ja"
+        "yes": "Ja",
+        "zoom": "Zoom",
+        "zoomIn": "Zoomen in",
+        "zoomOut": "Verkleinern"
     },
     "actionsEditor": {
         "actions": "Actions",
@@ -66,6 +70,26 @@
         "old": "Alt",
         "projectPalette": "Projekt Palette"
     },
+    "curveEditor": {
+        "curveLineHint": "Klicken Sie auf die Kurve um einen Punkt hinzuzufügen",
+        "dragPointHint": "Ziehen um den Punkt zu bewegen, Rechtsklick um ihn zu löschen",
+        "pointTime": "Zeit:",
+        "pointValue": "Wert:"
+    },
+    "debuggerToolbar": {
+        "pause": "Pause",
+        "resume": "Spiel fortsetzen",
+        "restartGame": "Spiel neu starten",
+        "restartRoom": "Raum neu starten",
+        "switchRoom": "Zu Raum wechseln…",
+        "toggleDevTools": "Entwicklertools umschalten",
+        "screenshot": "Screenshot speichern",
+        "enterFullscreen": "Vollbildmodus aktivieren",
+        "exitFullscreen": "Vollbildmodus deaktivieren",
+        "links": "Links und QR-Codes",
+        "openExternal": "Im Browser öffnen",
+        "close": "Schließen"
+    },
     "docsShortcut": {
         "openDocs": "Dokumentation öffnen"
     },
@@ -83,12 +107,13 @@
     },
     "intro": {
         "loading": "Bitte warten: Kätzchen werden auf Lichtgeschwindigkeit beschleunigt!",
-        "loadingProject": "Projekt wird geladen...",
         "newProject": {
             "button": "Erstellen",
             "input": "Projektname (Buchstaben und Zahlen)",
             "text": "Neues Projekt erstellen",
-            "nameerr": "Falscher Projektname"
+            "nameerr": "Falscher Projektname",
+            "selectProjectFolder": "Projekt hier speichern",
+            "saveProjectHere": "Projektverzeichnis auswählen"
         },
         "recovery": {
             "message": "<h2 class=\"nmt\">Wiederherstellung</h2><p>ct.js hat eine Wiederherstellungsdatei gefunden. Ihr Projekt wurde möglicherweise nicht richtig gespeichert oder ct.js wurde unerwartet beendet. Letzte Änderung der Datei:</p><p>Wählen Sie eine Datei: {0} {1}<br/>Wiederherstellungs Datei: {2} {3}</p><p>Welche Datei soll ct.js öffnen?</p>",
@@ -97,6 +122,8 @@
             "newer": "<b>(neuer)</b>",
             "older": "(älter)"
         },
+        "loadingProject": "Projekt wird geladen...",
+        "loadingProjectError": "Das Projekt kann aufgrund des folgenden Fehlers nicht geladen werden: ",
         "homepage": "Homepage",
         "latestVersion": "Version $1 ist verfügbar",
         "forgetProject": "Vergiss dieses Projekt",
@@ -104,8 +131,7 @@
         "latest": "Letzte Projekte",
         "unableToWriteToFolders": "Ct.js konnte keinen geeigneten Ort zum speichern der Projekte finden! Bitte stellen Sie sicher, dass Sie die ct.js App in einem Verzeichnis ablegen in dem Sie über Schreibrechte verfügen.",
         "twitter": "Twitter Channel",
-        "discord": "Discord Community",
-        "loadingProjectError": ""
+        "discord": "Discord Community"
     },
     "licensepanel": {
         "ctjslicense": "Ct.js Lizenz (MIT)"
@@ -114,7 +140,8 @@
         "ctIDE": "ct.IDE",
         "exportDesktop": "Desktop Export",
         "texture": "Texturen",
-        "launch": "Kompilieren",
+        "launch": "Kompilieren und starten",
+        "launchHotkeys": "(F5; Alt+F5 zum Öffnen im Standardbrowser)",
         "license": "Lizenz",
         "min": "Fenster",
         "modules": "Catmods",
@@ -128,20 +155,30 @@
         "successZipExport": "Erfolgreich exportiert nach {0}.",
         "successZipProject": "Projekt erfolgreich gezippt nach {0}.",
         "ui": "UI",
+        "fx": "FX",
         "theme": "Thema",
         "themeDay": "Hell",
         "themeNight": "Dunkel",
         "types": "Types",
         "zipExport": "Als .zip Exportieren",
         "zipProject": "Projekt als .zip komprimieren",
-        "codeFontDefault": "",
-        "codeFontOldSchool": "",
-        "codeFontSystem": "",
-        "codeFontCustom": "",
-        "newFont": "",
-        "codeFont": "",
-        "codeLigatures": "",
-        "codeDense": ""
+        "codeFontDefault": "Standard (Iosevka Light)",
+        "codeFontOldSchool": "Old School",
+        "codeFontSystem": "System",
+        "codeFontCustom": "Benutzerdefiniert",
+        "newFont": "Neue Schrift",
+        "codeFont": "Schrift für Code",
+        "codeLigatures": "Ligaturen",
+        "codeDense": "Kondensiertes Layout",
+        "openIncludeFolder": "\"include\" Ordner öffnen"
+    },
+    "onboarding": {
+        "hoorayHeader": "Wow! Sie haben gerade ein Projekt erstellt!",
+        "nowWhatParagraph": "Nun, was sollen wir als nächstes tun?",
+        "openSpaceShooterTutorial": "Lasst uns einen Space Shooter entwickeln",
+        "openPlatformerTutorial": "Lasst uns ein Jump'n Run entwickeln",
+        "doNothing": "Diesen Schritt überspringen",
+        "showOnboardingCheckbox": "Diesen Bildschirm anzeigen wenn ein neues Projekt erstellt wird"
     },
     "settings": {
         "actions": "Actions und Eingabemethoden",
@@ -156,6 +193,7 @@
         "maxFPS": "Max Framerate:",
         "minifyhtmlcss": "HTML and CSS komprimieren",
         "minifyjs": "JavaScript komprimieren und in ES5 konvertieren (langsam; Sinnvoll für das Release)",
+        "usePixiLegacy": "Füge einen Canvas basierten Renderer hinzu, um ältere Browser und Grafikkarten zu unterstützen (Spiele wachsen um ca. 20kb)",
         "pixelatedrender": "Image Smoothing hier und im exportierten Projekt deaktivieren (scharfe Pixel beibehalten)",
         "renderoptions": "Render Optionen",
         "settings": "Project Einstellungen",
@@ -163,11 +201,21 @@
         "title": "Name:",
         "version": "Version:",
         "versionpostfix": "Postfix:",
+        "branding": {
+            "heading": "Branding",
+            "icon": "Icon:",
+            "iconNotice": "Bitte verwenden Sie eine quadratische Textur (nur ein Frame) von mindestens 256x256 Pixeln.",
+            "accent": "Akzent:",
+            "accentNotice": "Legt die Farbe des Preloaders fest, wirkt sich bei mobilen Apps auch auf weitere Bereiche aus.",
+            "invertPreloaderScheme": "Farbschema des Preloaders invertieren"
+        },
         "scripts": {
             "addNew": "Neues Skript hinzufügen",
             "deleteScript": "Skript löschen",
             "header": "Skripte",
-            "newScriptComment": "Nutzen Sie Skripte um häufige Funktionen zu definieren und Bibliotheken zu importieren"
+            "newScriptComment": "Nutzen Sie Skripte um häufige Funktionen zu definieren und Bibliotheken zu importieren",
+            "moveUp": "Bewegen Sie sich nach oben",
+            "moveDown": "Bewegen Sie sich nach unten"
         }
     },
     "modules": {
@@ -182,7 +230,8 @@
         "methods": "Methods",
         "parameters": "Parameter",
         "logs2": "Changelog",
-        "settings": "Einstellungen"
+        "settings": "Einstellungen",
+        "importModules": "Module importieren"
     },
     "texture": {
         "create": "Erstellen",
@@ -280,6 +329,81 @@
         "italic": "Ist kursiv?",
         "reimport": "Reimport"
     },
+    "particleEmitters": {
+        "emittersHeading": "Partikel Emitter",
+        "emitterHeading": "Emitter",
+
+        "from": "Von:",
+        "to": "Zu:",
+
+        "textureHeading": "Textur",
+        "selectTexture": "Auswählen…",
+        "importBuiltin": "Standard importieren…",
+
+        "colorAndOpacityHeading": "Farbe und Transparenz",
+        "stepped": "Schrittweise",
+        "steppedColor": "Schrittweise Farbe",
+        "steppedAlpha": "Schrittweise Transparenz",
+        "blendMode": "Blend Modus:",
+        "regular": "Normal",
+        "darken": "Abdunkeln",
+        "lighten": "Aufhellen",
+        "burn": "Nachbelichten",
+
+        "scalingHeading": "Skalieren",
+        "scale": "Skalierung:",
+        "minimumSize": "Mindestgröße:",
+        "minimumSizeHint": "Niedrige Werte sorgen für zufälligere Größe der Partikel. Je geringer die Werte, desto stärker der Effekt.",
+
+        "velocityHeading": "Geschwindigkeit",
+        "velocity": "Geschwindigkeit:",
+        "minimumSpeed": "Minimale Geschwindigkeit:",
+        "minimumSpeedHint": "Niedrige Werte sorgen für zufälligere Geschwindigkeit der Partikel.  Je geringer die Werte, desto langsamer werden die Partikel.",
+        "maxSpeed": "Maximale Geschwindigkeit:",
+
+        "gravityHeading": "Gravitation",
+        "gravityNotice": "Sollte der Wert von (0;0) abweichen, wird die Interpolation der Geschwindigkeit deaktiviert. In diesem Fall wirkt der Effekt nur auf den ersten Knoten des Geschwindigkeitsgraphen.",
+
+        "directionHeading": "Richtung",
+        "startingDirection": "Startrichtung",
+        "preserveTextureDirection": "Rotation der Textur beibehalten",
+
+        "rotationHeading": "Rotation",
+        "rotationSpeed": "Rotationsgeschwindigkeit",
+        "rotationAcceleration": "Rotationsbeschleunigung:",
+
+        "spawningHeading": "Erzeugung",
+        "timeBetweenBursts": "Zeit zwischen Erzeugungen:",
+        "spawnAtOnce": "Gleichzeitig erzeugen:",
+        "chanceToSpawn": "Erzeugungswahrscheinlichkeit:",
+        "maxParticles": "Maximale Partikel:",
+        "lifetime": "Partikel Lebenszeit (sek)",
+        "emitterLifetime": "Emitter Lebenszeit (sek):",
+        "prewarmDelay": "Vorberechnen / Verzögerung (sek):",
+        "prewarmDelayNotice": "Negative Werte sorgen für eine Vorberechnung der Partikel im Emitter bevor diese angezeigt werden. Dies ist nützlich für langsame Effekte wie Nebel-Partikel die bereits beim Start des Raums sichtbar sein sollen; positive Werte verzögern die Simulation.",
+
+        "shapeAndPositioningHeading": "Form und Positionierung",
+        "spawnType": "Form-Typ:",
+        "spawnShapes": {
+            "point": "Punkt",
+            "rectangle": "Rechteck",
+            "circle": "Kreis",
+            "ring": "Ring",
+            "star": "Stern"
+        },
+        "width": "Breite:",
+        "height": "Höhe:",
+        "radius": "Radius:",
+        "starPoints": "Punkte:",
+        "startAngle": "Rotation, (Grad).:",
+        "relativeEmitterPosition": "Rel. Position zu anderen Emittern",
+
+        "addEmitter": "Weiteren Emitter hinzufügen",
+        "reset": "Vorschau zurücksetzen",
+        "changeBg": "Hintergrund ändern",
+        "inspectorComplete": "Fertig!",
+        "alreadyHasAnImportingTexture": "Es existiret bereits eine Textur mit dem Namen $1. Benennen Sie diese um oder löschen Sie sie; Die selbe Textur muss anschließend erneut importiert werden :)"
+    },
     "types": {
         "create": "Erstellen"
     },
@@ -324,7 +448,6 @@
         "add": "Hinzufügen",
         "none": "Nichts",
         "done": "Fertig",
-        "zoom": "Zoom:",
         "grid": "Raster konfigurieren",
         "gridoff": "Raster deaktivieren",
         "gridsize": "Rastergröße:",
@@ -392,11 +515,5 @@
             "bringt Licht und Hoffnung 🌞",
             "ist schön und elegant 🎩"
         ]
-    },
-    "preview": {
-        "reload": "Neu laden",
-        "roomRestart": "Raum neu starten",
-        "openExternal": "Im Browser öffnen",
-        "getQR": "QR Codes und lokale Server URL"
     }
 }

@@ -1,5 +1,5 @@
 {
-  "ctjsVersion": "1.0.0-next-3",
+  "ctjsVersion": "1.3.0",
   "notes": "/* empty */",
   "libs": {
     "fittoscreen": {
@@ -226,14 +226,14 @@
     {
       "name": "Spaceship",
       "depth": 10,
-      "oncreate": "this.maxSpeed = 10;\n\nct.vkeys.button({\n    key: 'Vk1',\n    texNormal: 'ShootKey',\n    texHover: 'ShootKey',\n    texActive: 'ShootKey_Active',\n    x: () => ct.room.x + ct.viewWidth - 130,\n    y: () => ct.room.y + ct.viewHeight - 130,\n    depth: 100\n});\nct.vkeys.joystick({\n    tex: 'Trackpad',\n    trackballTex: 'Trackball_Active',\n    depth: 100,\n    x: () => ct.room.x + 212,\n    y: () => ct.room.y + ct.viewHeight - 212\n});",
+      "oncreate": "this.maxSpeed = 10;\nct.camera.follow = this;",
       "onstep": "this.hspeed = ct.actions.MoveX.value * this.maxSpeed;\nthis.vspeed = ct.actions.MoveY.value * this.maxSpeed;\n\nif (this.speed > 0) {\n    this.rotation = ct.u.pdn(0, 0, this.hspeed, this.vspeed);\n    this.gotoAndStop(0);\n} else {\n    this.gotoAndStop(1);\n}\n\nthis.move();\n\nif (ct.actions.Shoot.pressed) {\n    var laser = ct.types.copy('Laser', this.x, this.y);\n    laser.direction = this.rotation;\n    laser.rotation = this.rotation;\n}",
       "ondraw": "",
       "ondestroy": "",
       "uid": "664e9c6d-d93e-4c6f-bd74-43a234fced2f",
       "texture": "5ba33a86-8a84-441f-9471-4f578009a199",
       "extends": {},
-      "lastmod": 1566187997448
+      "lastmod": 1582098384642
     },
     {
       "name": "Laser",
@@ -253,7 +253,7 @@
   "rooms": [
     {
       "name": "Room",
-      "oncreate": "",
+      "oncreate": "ct.rooms.append('LayerUI', {\n    isUi: true\n});",
       "onstep": "",
       "ondraw": "",
       "onleave": "",
@@ -285,7 +285,30 @@
       "uid": "c0344eeb-df47-4364-a0e7-327605a96468",
       "thumbnail": "327605a96468",
       "gridX": 64,
-      "gridY": 64
+      "gridY": 64,
+      "lastmod": 1582098249329
+    },
+    {
+      "name": "LayerUI",
+      "oncreate": "ct.vkeys.button({\n    key: 'Vk1',\n    texNormal: 'ShootKey',\n    texHover: 'ShootKey',\n    texActive: 'ShootKey_Active',\n    x: ct.camera.width - 130,\n    y: ct.camera.height - 130,\n    depth: 100,\n    container: this\n});\nct.vkeys.joystick({\n    key: 'Vjoy1',\n    tex: 'Trackpad',\n    trackballTex: 'Trackball_Active',\n    depth: 100,\n    x: 212,\n    y: ct.camera.height - 212,\n    container: this\n});",
+      "onstep": "",
+      "ondraw": "",
+      "onleave": "",
+      "width": 1920,
+      "height": 1080,
+      "backgrounds": [],
+      "copies": [],
+      "tiles": [
+        {
+          "depth": -10,
+          "tiles": []
+        }
+      ],
+      "uid": "c8500f93-bc8e-45f7-aac8-d898171008c4",
+      "thumbnail": "d898171008c4",
+      "gridX": 64,
+      "gridY": 64,
+      "lastmod": 1582098224676
     }
   ],
   "starting": 0,
@@ -337,5 +360,6 @@
     }
   ],
   "scripts": [],
-  "fonts": []
+  "fonts": [],
+  "emitterTandems": []
 }

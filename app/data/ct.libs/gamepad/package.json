@@ -1,0 +1,14 @@
+{
+  "name": "gamepad",
+  "version": "1.0.0",
+  "description": "gamepad support",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^6.5.1"
+  }
+}

@@ -35,19 +35,24 @@ bower_components
 temp/
 desktop\.ini
 *.png~
+.directory
 
 # Generated files
 src/typedefs/ct.js/types.d.ts
+app/examples
 app/data/bundle.js
 app/data/bundle.css
 app/data/node_requires/**/*
 app/data/fonts/style/.css
 app/data/theme*.css
 app/data/typedefs/global.d.ts
+app/data/typedefs/pixi.js.d.ts
 /app/data/docs
 app/index.html
 app/preview.html
 app/empty.html
+app/debuggerToolbar.html
+app/qrCodePanel.html
 app/exportDesktop
 app/temp
 /temp
@@ -63,9 +68,11 @@ error_screenshots/
 reports/
 
 # ct specific
+/projects
 /export
 app/zipexport
 app/*.ict.zip
+app/Screenshot of *.png
 app/export.zip
 app/export
 *.ict.recovery
@@ -77,3 +84,9 @@ app/export
 docs/db.json
 docs/node_modules
 docs/public
+app/data/icons.svg
+export.zip
+app/pleaseCtJSLoadWithoutGPUAccelerationMmkay
+app/debugger.html
+
+**/**/*.orig

@@ -1,7 +1,4 @@
-/* global ct */
-
 var i = 0;
-var newTime = Number(new Date());
 while (i < ct.tween.tweens.length) {
     var tween = ct.tween.tweens[i];
     if (tween.obj.kill) {
@@ -12,7 +9,7 @@ while (i < ct.tween.tweens.length) {
         ct.tween.tweens.splice(i, 1);
         continue;
     }
-    var a = (newTime - tween.registered) / tween.duration;
+    var a = tween.timer.time / tween.duration;
     if (a > 1) {
         a = 1;
     }

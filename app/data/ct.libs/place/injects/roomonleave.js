@@ -1,2 +1,3 @@
-ct.place.grid = {};
-ct.place.ctypeCollections = {};
+if (this === ct.room) {
+    ct.place.grid = {};
+}

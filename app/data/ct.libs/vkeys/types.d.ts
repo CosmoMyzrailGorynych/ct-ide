@@ -18,6 +18,8 @@ interface IVkeysButtonOptions {
     y: number | VkeysReturnNumber;
     /** The depth value. */
     depth: number;
+    /** The container to attach the button to. Defaults to the current room. */
+    container?: PIXI.DisplayObject;
 }
 interface VkeysButton extends Copy {
     opts: IVkeysButtonOptions;
@@ -37,6 +39,8 @@ interface IVkeysJoystickOptions {
     y: number | VkeysReturnNumber;
     /** The depth value. */
     depth: number;
+    /** The container to attach the joystick to. Defaults to the current room. */
+    container?: PIXI.DisplayObject;
 }
 interface VkeysJoystick extends Copy {
     opts: IVkeysJoystickOptions;

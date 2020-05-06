@@ -5,11 +5,10 @@
         if (!process) {
             throw new Error(`Cannot find migration code for version ${version}`);
         }
-        process.process(window.currentProject)
+        process.process(global.currentProject)
         .then(() => window.alertify.success(`Applied migration code for version ${version}`, 'success', 3000));
     };
 
-    /* global nw */
     const fs = require('fs-extra'),
           path = require('path');
     // @see https://semver.org/
@@ -85,11 +84,12 @@
             // eslint-disable-next-line no-await-in-loop
             await migration.process(project);
         }
+
         // Unfortunately, recent versions of eslint give false positives on this line
         // @see https://github.com/eslint/eslint/issues/11900
         // @see https://github.com/eslint/eslint/issues/11899
         // eslint-disable-next-line require-atomic-updates
-        project.ctjsVersion = nw.App.manifest.version;
+        project.ctjsVersion = process.versions.ctjs;
     };
 
     /**
@@ -100,21 +100,21 @@
      */
     var loadProject = async projectData => {
         const glob = require('./data/node_requires/glob');
-        window.currentProject = projectData;
+        global.currentProject = projectData;
         window.alertify.log(window.languageJSON.intro.loadingProject);
         glob.modified = false;
 
         try {
             await adapter(projectData);
-            fs.ensureDir(sessionStorage.projdir);
-            fs.ensureDir(sessionStorage.projdir + '/img');
-            fs.ensureDir(sessionStorage.projdir + '/snd');
+            fs.ensureDir(global.projdir);
+            fs.ensureDir(global.projdir + '/img');
+            fs.ensureDir(global.projdir + '/snd');
 
             const lastProjects = localStorage.lastProjects? localStorage.lastProjects.split(';') : [];
-            if (lastProjects.indexOf(path.normalize(sessionStorage.projdir + '.ict')) !== -1) {
-                lastProjects.splice(lastProjects.indexOf(path.normalize(sessionStorage.projdir + '.ict')), 1);
+            if (lastProjects.indexOf(path.normalize(global.projdir + '.ict')) !== -1) {
+                lastProjects.splice(lastProjects.indexOf(path.normalize(global.projdir + '.ict')), 1);
             }
-            lastProjects.unshift(path.normalize(sessionStorage.projdir + '.ict'));
+            lastProjects.unshift(path.normalize(global.projdir + '.ict'));
             if (lastProjects.length > 15) {
                 lastProjects.pop();
             }
@@ -122,8 +122,8 @@
             window.signals.trigger('hideProjectSelector');
             window.signals.trigger('projectLoaded');
 
-            if (window.currentProject.settings.title) {
-                document.title = window.currentProject.settings.title + ' — ct.js';
+            if (global.currentProject.settings.title) {
+                document.title = global.currentProject.settings.title + ' — ct.js';
             }
 
             setTimeout(() => {
@@ -140,28 +140,44 @@
      * @param {String} proj The path to the file.
      * @returns {void}
      */
-    var loadProjectFile = proj => {
-        fs.readJSON(proj, (err, projectData) => {
-            if (err) {
-                window.alertify.error(err);
-                return;
+    var loadProjectFile = async proj => {
+        const data = await fs.readFile(proj, 'utf8');
+        let projectData;
+        // Before v1.3, projects were stored in JSON format
+        try {
+            if (data.indexOf('{') === 0) { // First, make a silly check for JSON files
+                projectData = JSON.parse(data);
+            } else {
+                try {
+                    const YAML = require('js-yaml');
+                    projectData = YAML.safeLoad(data);
+                } catch (e) {
+                    // whoopsie, wrong window
+                    // eslint-disable-next-line no-console
+                    console.warn(`Tried to load a file ${proj} as a YAML, but got an error (see below). Falling back to JSON.`);
+                    console.error(e);
+                    projectData = JSON.parse(data);
+                }
             }
-            if (!projectData) {
-                window.alertify.error(window.languageJSON.common.wrongFormat);
-                return;
-            }
-            try {
-                loadProject(projectData);
-            } catch (e) {
-                window.alertify.error(e);
-                console.error(e);
-            }
-        });
+        } catch (e) {
+            window.alertify.error(e);
+            throw e;
+        }
+        if (!projectData) {
+            window.alertify.error(window.languageJSON.common.wrongFormat);
+            return;
+        }
+        try {
+            loadProject(projectData);
+        } catch (e) {
+            window.alertify.error(e);
+            throw e;
+        }
     };
 
     window.loadProject = proj => {
         sessionStorage.projname = path.basename(proj);
-        sessionStorage.projdir = path.dirname(proj) + path.sep + path.basename(proj, '.ict');
+        global.projdir = path.dirname(proj) + path.sep + path.basename(proj, '.ict');
 
         fs.stat(proj + '.recovery', (err, stat) => {
             if (!err && stat.isFile()) {

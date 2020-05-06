@@ -2,7 +2,7 @@ type-editor.panel.view.flexrow
     .c3.tall.flexfix
         .flexfix-header
             #typetexture.panel(onclick="{changeSprite}")
-                img.ohchangeme(src="{type.texture === -1? '/data/img/notexture.png' : (glob.texturemap[type.texture].src.split('?')[0] + '_prev@2.png?' + getTypeTextureRevision(type)) + getTypeTextureRevision(type)}")
+                img.ohchangeme(src="{type.texture === -1? 'data/img/notexture.png' : (glob.texturemap[type.texture].src.split('?')[0] + '_prev@2.png?' + getTypeTextureRevision(type)) + getTypeTextureRevision(type)}")
                 div {voc.change}
             b {voc.name}
             input#typename.wide(type="text" onchange="{wire('this.type.name')}" value="{type.name}")
@@ -38,22 +38,27 @@ type-editor.panel.view.flexrow
             docs-shortcut(path="/ct.types.html" button="true" wide="true" title="{voc.learnAboutTypes}")
         .flexfix-footer
             button#typedone.wide(onclick="{typeSave}" title="Shift+Control+S" data-hotkey="Control+S")
-                i.icon.icon-confirm
+                svg.feather
+                    use(xlink:href="data/icons.svg#check")
                 span {voc.done}
     .c9.tall.borderleft
         .tabwrap.tall(style="position: relative")
             ul.tabs.nav.nogrow.noshrink
                 li(onclick="{changeTab('typeoncreate')}" class="{active: tab === 'typeoncreate'}" title="{voc.create} (Control+Q)" data-hotkey="Control+q")
-                    i.icon.icon-sun
+                    svg.feather
+                        use(xlink:href="data/icons.svg#sun")
                     span {voc.create}
                 li(onclick="{changeTab('typeonstep')}" class="{active: tab === 'typeonstep'}" title="{voc.step} (Control+W)" data-hotkey="Control+w")
-                    i.icon.icon-next
+                    svg.feather
+                        use(xlink:href="data/icons.svg#skip-forward")
                     span {voc.step}
                 li(onclick="{changeTab('typeondraw')}" class="{active: tab === 'typeondraw'}" title="{voc.draw} (Control+E)" data-hotkey="Control+e")
-                    i.icon.icon-edit-2
+                    svg.feather
+                        use(xlink:href="data/icons.svg#edit-2")
                     span {voc.draw}
                 li(onclick="{changeTab('typeondestroy')}" class="{active: tab === 'typeondestroy'}" title="{voc.destroy} (Control+R)" data-hotkey="Control+r")
-                    i.icon.icon-trash
+                    svg.feather
+                        use(xlink:href="data/icons.svg#trash")
                     span {voc.destroy}
             div
                 #typeoncreate.tabbed(show="{tab === 'typeoncreate'}")
@@ -80,7 +85,7 @@ type-editor.panel.view.flexrow
         this.libExtends = [];
         this.refreshExtends = () => {
             this.libExtends = [];
-            for (const lib in currentProject.libs) {
+            for (const lib in global.currentProject.libs) {
                 fs.readJSON(path.join(libsDir, lib, 'module.json'), (err, data) => {
                     if (err) {
                         return;
@@ -192,7 +197,7 @@ type-editor.panel.view.flexrow
             }, 0);
         });
         this.on('update', () => {
-            if (window.currentProject.types.find(type =>
+            if (global.currentProject.types.find(type =>
                 this.type.name === type.name && this.type !== type
             )) {
                 this.nameTaken = true;
@@ -216,6 +221,9 @@ type-editor.panel.view.flexrow
                 this.type.texture = -1;
             } else {
                 this.type.texture = texture.uid;
+                if (!this.type.lastmod && this.type.name === 'Type_' + this.type.uid.split('-').pop()) {
+                    this.type.name = texture.name;
+                }
             }
             this.selectingTexture = false;
             this.parent.fillTypeMap();

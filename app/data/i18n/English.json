@@ -11,13 +11,13 @@
         "cancel": "Cancel",
         "cannotBeEmpty": "This cannot be empty",
         "confirmDelete": "Are you sure you want to delete {0}? It cannot be undone.",
-        "contribute": "Contribute 💻",
+        "contribute": "Contribute",
         "copy": "Copy",
         "copyName": "Copy the name",
         "ctsite": "ct.js homepage",
         "cut": "Cut",
         "delete": "Delete",
-        "donate": "Donate ❤️",
+        "donate": "Donate",
         "done": "Done!",
         "duplicate": "Duplicate",
         "exit": "Exit",
@@ -35,17 +35,21 @@
         "notfoundorunknown": "Unknown file. Make sure the file really exists",
         "ok": "Ok",
         "open": "Open",
-        "openproject": "Open project...",
+        "openproject": "Open project…",
         "paste": "Paste",
         "reallyexit": "Are you sure you want to exit? All unsaved changes will be lost.",
         "rename": "Rename",
         "save": "Save",
         "savedcomm": "Your project was succesfully saved.",
         "saveproject": "Save project",
+        "select": "Select…",
         "sort": "Sort:",
         "tilelayer": "tile layer",
         "wrongFormat": "Wrong file format",
-        "yes": "Yes"
+        "yes": "Yes",
+        "zoom": "Zoom",
+        "zoomIn": "Zoom in",
+        "zoomOut": "Zoom out"
     },
     "actionsEditor": {
         "actions": "Actions",
@@ -66,6 +70,26 @@
         "old": "Old",
         "projectPalette": "Project's Palette"
     },
+    "curveEditor": {
+        "curveLineHint": "Click the curve to add a point",
+        "dragPointHint": "Drag to move the point, right-click to delete it",
+        "pointTime": "Time:",
+        "pointValue": "Value:"
+    },
+    "debuggerToolbar": {
+        "pause": "Pause",
+        "resume": "Resume the game",
+        "restartGame": "Restart the game",
+        "restartRoom": "Restart the room",
+        "switchRoom": "Go to room…",
+        "toggleDevTools": "Toggle dev. tools",
+        "screenshot": "Take a screenshot",
+        "enterFullscreen": "Enter fullscreen",
+        "exitFullscreen": "Exit fullscreen",
+        "links": "Links and QR-codes",
+        "openExternal": "Open in browser",
+        "close": "Close"
+    },
     "docsShortcut": {
         "openDocs": "Open the documentation"
     },
@@ -76,7 +100,15 @@
         "export": "Export",
         "exportPanel": "Export the Project",
         "firstrunnotice": "The first run for each platform will be slow as ct.js will download and save additional libraries needed for packing. It will take some time, but next times will be almost instant.",
-        "log": "Message Log"
+        "log": "Message Log",
+        "windowsCrossBuildWarning": "To build for Windows from Linux/MacOS, you need Wine installed in your system. Install instructions are all different for various platforms, so you better google it yourself :)",
+        "launchMode": "Launch mode:",
+        "launchModes": {
+            "maximized": "Maximized",
+            "fullscreen": "Fullscreen",
+            "windowed": "Windowed"
+        },
+        "cannotBuildForMacOnWin": "Unfortunately, Windows can only produce broken Mac packages. Try using a Linux machine; for example, in a virtual one. It is 100% free!"
     },
     "inputMethodSelector": {
         "select": "Select"
@@ -88,6 +120,7 @@
             "input": "Project's name (letters and digits)",
             "text": "Create new",
             "nameerr": "Wrong project name",
+            "saveProjectHere": "Save the project here",
             "selectProjectFolder": "Select a folder in which to store your project"
         },
         "recovery": {
@@ -130,11 +163,12 @@
         "successZipExport": "Successfully exported to {0}.",
         "successZipProject": "Successfully zipped the project to {0}.",
         "ui": "UI",
+        "fx": "FX",
         "theme": "Theme",
         "themeDay": "Light",
         "themeNight": "Dark",
         "types": "Types",
-        "zipExport": "Export to .zip",
+        "zipExport": "Export for web",
         "zipProject": "Pack project to .zip",
         "codeFontDefault": "Default (Iosevka Light)",
         "codeFontOldSchool": "Old school",
@@ -144,7 +178,25 @@
         "codeFont": "Font for code",
         "codeLigatures": "Ligatures",
         "codeDense": "Dense layout",
-        "openIncludeFolder": "Open \"include\" folder"
+        "openIncludeFolder": "Open \"include\" folder",
+        "troubleshooting": "Troubleshooting",
+        "toggleDevTools": "Toggle Dev Tools",
+        "copySystemInfo": "Copy system information",
+        "systemInfoWait": "Wait a bit, I'm gathering the data…",
+        "systemInfoDone": "Done!",
+        "disableAcceleration": "Disable graphics acceleration (needs restart)",
+        "disableBuiltInDebugger": "Disable built-in debugger",
+        "visitDiscordForGamedevSupport": "Join Discord server for gamedev support",
+        "postAnIssue": "Post an issue on Github"
+    },
+    "onboarding": {
+        "hoorayHeader": "Wow! You've just created a project!",
+        "nowWhatParagraph": "Now, what should we do?",
+        "openSpaceShooterTutorial": "Learn how to make a space shooter",
+        "openPlatformerTutorial": "Learn how to make a platformer",
+        "openJettyCatTutorial": "Learn how to make a Jetty Cat",
+        "doNothing": "Skip this screen",
+        "showOnboardingCheckbox": "Show this screen when creating a new project"
     },
     "settings": {
         "actions": "Actions and input methods",
@@ -167,15 +219,26 @@
         "title": "Name:",
         "version": "Version:",
         "versionpostfix": "Postfix:",
+        "branding": {
+            "heading": "Branding",
+            "icon": "Game's icon:",
+            "iconNotice": "It should be a square, one-frame texture that is at least 256x256px large.",
+            "accent": "Accent:",
+            "accentNotice": "Sets the color of the preloader, as well as of some other places if used as a mobile app.",
+            "invertPreloaderScheme": "Invert preloader's color scheme"
+        },
         "scripts": {
             "addNew": "Add a New Script",
             "deleteScript": "Delete the script",
             "header": "Scripts",
-            "newScriptComment": "Use scripts to define frequent functions and import small libraries"
+            "newScriptComment": "Use scripts to define frequent functions and import small libraries",
+            "moveUp": "Move up",
+            "moveDown": "Move down"
         }
     },
     "modules": {
         "author": "Author of this catmod",
+        "dependencies": "Dependencies:",
         "hasfields": "Configurable",
         "hasinjects": "Has injections",
         "hasinputmethods": "Provides additional input methods",
@@ -184,6 +247,7 @@
         "license": "License",
         "logs": "Changelog",
         "methods": "Methods",
+        "optionalDependencies": "Optional dependencies:",
         "parameters": "Parameters",
         "logs2": "Changelog",
         "settings": "Settings",
@@ -227,7 +291,9 @@
         "addPoint": "Add a point",
         "moveCenter": "Move axis",
         "movePoint": "Move this point",
-        "symmetryTool": "Symmetry tool"
+        "symmetryTool": "Symmetry tool",
+        "padding": "Padding:",
+        "paddingNotice": "This affects how a texture is exported: it adds duplicate pixels on edges and prevents bleeding artifacts on tiled and scaled textures. The default value is usually enough, but, if you shrink textures strongly, the bleeding may re-appear. Increment this value if this texture has artifacts while in-game."
     },
     "sounds": {
         "create": "Create"
@@ -285,6 +351,85 @@
         "italic": "Is italic?",
         "reimport": "Reimport"
     },
+    "particleEmitters": {
+        "emittersHeading": "Particle emitters",
+        "emitterHeading": "Emitter",
+
+        "from": "From:",
+        "to": "To:",
+
+        "textureHeading": "Texture",
+        "selectTexture": "Select…",
+        "importBuiltin": "Import default…",
+
+        "colorAndOpacityHeading": "Color and Opacity",
+        "stepped": "Stepped",
+        "steppedColor": "Stepped color",
+        "steppedAlpha": "Stepped opacity",
+        "blendMode": "Blend mode:",
+        "regular": "Regular",
+        "darken": "Darken",
+        "lighten": "Lighten",
+        "burn": "Burn",
+
+        "scalingHeading": "Scaling",
+        "scale": "Scale:",
+        "minimumSize": "Minimum size:",
+        "minimumSizeHint": "Setting it to lower values will randomize the size of each particle. The lower the values, the stronger the effect.",
+
+        "velocityHeading": "Velocity",
+        "velocity": "Velocity:",
+        "minimumSpeed": "Minimum speed:",
+        "minimumSpeedHint": "Setting it to lower values will randomize the speed of each particle; the lower the value, the slower the particle may be.",
+        "maxSpeed": "Max speed:",
+
+        "gravityHeading": "Gravity",
+        "gravityNotice": "Note that if it differs from (0;0), velocity interpolation will be disabled, meaning that only the first node of the velocity graph will have the effect.",
+
+        "directionHeading": "Direction",
+        "startingDirection": "Starting direction",
+        "preserveTextureDirection": "Preserve texture rotation",
+
+        "rotationHeading": "Rotation",
+        "rotationSpeed": "Rotation speed",
+        "rotationAcceleration": "Rotation acceleration:",
+
+        "spawningHeading": "Spawning",
+        "timeBetweenBursts": "Time between bursts:",
+        "spawnAtOnce": "Spawn at once:",
+        "chanceToSpawn": "Chance to spawn a particle:",
+        "maxParticles": "Max particles:",
+        "lifetime": "Particle lifetime, sec.",
+        "emitterLifetime": "Emitter lifetime, sec.:",
+        "prewarmDelay": "Prewarm / delay, sec.:",
+        "prewarmDelayNotice": "Negative values will prepare the particles of the emitter before showing it, which is useful for long effects like dust particles or mist that should already be visible on room start; positive values will delay the simulation.",
+
+        "shapeAndPositioningHeading": "Shape and Positioning",
+        "spawnType": "Shape type:",
+        "spawnShapes": {
+            "point": "Point",
+            "rectangle": "Rectangle",
+            "circle": "Circle",
+            "ring": "Ring",
+            "star": "Star"
+        },
+        "width": "Width:",
+        "height": "Height:",
+        "radius": "Radius:",
+        "starPoints": "Points:",
+        "startAngle": "Rotate, deg.:",
+        "showShapeVisualizer": "Show shape visualizer",
+        "relativeEmitterPosition": "Position relative to other emitters",
+
+        "addEmitter": "Add another emitter",
+        "reset": "Reset preview",
+        "changeBg": "Change background",
+        "inspectorComplete": "Complete!",
+        "alreadyHasAnImportingTexture": "You already have a texture named $1. Either delete it or rename it; though you must be importing the same texture you've added before :)",
+        "changeGrid": "Set grid size",
+        "newGridSize": "New grid size:",
+        "setPreviewTexture": "Set preview texture"
+    },
     "types": {
         "create": "Create"
     },
@@ -329,7 +474,6 @@
         "add": "Add",
         "none": "Nothing",
         "done": "Done",
-        "zoom": "Zoom:",
         "grid": "Set grid",
         "gridoff": "Disable grid",
         "gridsize": "Grid size:",
@@ -349,6 +493,7 @@
         "shiftCopies": "Shift copies",
         "selectAndMove": "Select and Move",
         "changecopyscale": "Change scale",
+        "changecopyrotation": "Rotate",
         "shiftcopy": "Set coordinates",
         "deletetile": "Delete a tile",
         "deletetiles": "Delete tiles",
@@ -397,11 +542,5 @@
             "brings light and hope 🌞",
             "is elegant and beautiful 🎩"
         ]
-    },
-    "preview": {
-        "reload": "Reload",
-        "roomRestart": "Restart the room",
-        "openExternal": "Open in browser",
-        "getQR": "QR codes and local server URL"
     }
 }

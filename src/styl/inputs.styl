@@ -50,7 +50,7 @@ input[type="reset"],
 .button,
 .selectbox
     padding 0.5em 1em
-    margin 0 0.3em
+    margin 0 0.3em 0 0
     border 1px solid act
     color acttext
     font inherit
@@ -71,22 +71,22 @@ input[type="reset"],
             color black
         if (!themeDark)
             border-color accent1
-        i
+        svg
             color white
         if (themeDark)
             color black
-            i
+            svg
                 color black
     &:active, &.selected
         {transshort}
         border-color accent1
         background accent1
         color white
-        i
+        svg
             color white
         if (themeDark)
             color black
-            i
+            svg
                 color black
     &.inline
         padding 0.2em 0.8em
@@ -99,20 +99,17 @@ input[type="reset"],
     &.square.inline
         padding 0.3em
         margin-left 0
+    &.wide + &.wide
+        margin-top 0.5rem
+    .flexrow > &.wide + &.wide
+        margin-top 0
 
 .aSearchWrap
     position relative
     display inline-block
-    &::after
-        @extends .icon-search:before
-        font-family 'icomoon' !important
-        speak none
-        font-style normal
-        font-weight normal
-        font-variant normal
-        text-transform none
-        line-height 1
-        font-size 24px
+    svg
+        width 1.5rem
+        height 1.5rem
         position absolute
         right 0.5rem
         top 50%
@@ -143,15 +140,14 @@ siz = 4em
         right 4px
         border-radius 100%
         content " "
-        background accent2
-    i
-        font-size 2em
-        line-height 1.5
+        background success
+    svg
+        width 3.5rem
+        height 3.5rem
+        padding 0.75rem
+        margin 0.25rem
         display block
-        width 80%
-        height 80%
-        margin 10%
-        position relativ
+        position relative
         border-radius 100%
         border 1px solid
         box-sizing border-box
@@ -172,7 +168,7 @@ siz = 4em
             border-radius 100%
             top 50%
             margin -0.05em
-            margin-left -1.7em
+            margin-left -1.8em
             content " "
             background success
     &.off
@@ -182,7 +178,7 @@ siz = 4em
             display none
         span:after
             background error
-        i
+        svg
             color error
         &:after
             background error
@@ -208,16 +204,15 @@ input[type="submit"],
 input[type="reset"],
 .button,
 .nav
-    i
+    svg
         {trans}
         color act
-        vertical-align sub // выглядит более отцентрованно
         &:first-child
-            margin-right 0.25em
+            margin-right 0.5em
         &:only-child
             margin-right 0
 
-select, label
+select, label, .label
     cursor pointer
 select
     line-height 2
@@ -247,13 +242,13 @@ select
         border-bottom-right-radius 0
         ul
             display block
-    i
+    svg
         transform rotate(90deg) translate(-50%, 0)
         position absolute
         right 0.5em
         top 50%
 
-label
+label, .label
     & + &
         margin-top 0.5rem
     &.file
@@ -261,44 +256,51 @@ label
         position relative
         [type="file"]
             display none
-    &.checkbox
-        position relative
-        padding-left 1.5rem
-        margin-top 0
-        display block
-        [type="checkbox"], [type="radio"]
-            -webkit-appearance none
-            appearance none
-            margin 0
+
+fieldset
+    margin-bottom 0.5rem
+    &:last-child
+        margin-bottom 0
+
+.checkbox
+    position relative
+    padding-left 1.5rem
+    margin-top 0
+    display block
+    [type="checkbox"], [type="radio"]
+        -webkit-appearance none
+        appearance none
+        margin 0
+        width 1rem
+        height 1rem
+        left 0
+        top 0.5rem
+        border 1px solid act
+        box-sizing border-box
+        position absolute
+        border-radius br
+        {trans}
+        &::after
+            content ''
+            icon(check, white)
             width 1rem
             height 1rem
-            left 0
-            top 0.5rem
-            border 1px solid act
-            box-sizing border-box
             position absolute
-            border-radius br
+            top -0.025rem
+            left -0.05rem
+            line-height 1
+            color white
+            opacity 0
             {trans}
+        &:checked
+            background act
+            border-color accent1
+            {transshort}
             &::after
-                @extends .icon-check:before
-                font-family 'icomoon' !important
-                font-size 1rem
-                position absolute
-                top -0.025rem
-                left -0.05rem
-                line-height 1
-                color white
-                opacity 0
-                {trans}
-            &:checked
-                background act
-                border-color accent1
                 {transshort}
-                &::after
-                    {transshort}
-                    opacity 1
-        [type="radio"]
-            border-radius 100%
+                opacity 1
+    [type="radio"]
+        border-radius 100%
 fieldset
     border 0
     padding 0
@@ -323,14 +325,20 @@ input[type="range"]
         height 24px
         cursor pointer
         background snow
+        if (themeDark) // dark themes use an inverted color scheme in sense of variables
+            background white
         border-radius br
         border 1px solid bl
+        if (themeDark)
+            border 1px solid bd
     &::-webkit-slider-thumb
         border 1px solid bd
         height 40px
         width 19px
         border-radius br
         background white
+        if (themeDark)
+            background snow
         cursor pointer
         -webkit-appearance none
         margin-top -9px
@@ -363,8 +371,9 @@ input[type="range"]
     background act
     border-radius 100%
     cursor move
-    margin 1rem
     {shad}
+    &.selected
+        box-shadow 0 0 0 2px bl, 0 0 0 4px act, 0 0.1rem 0.2rem 4px rgba(0, 0, 0, 0.5)
 
 .aClicker
     height 0.75rem
@@ -393,7 +402,7 @@ input[type="range"]
     background-repeat repeat-x, repeat-x, repeat-y, repeat-y
     background-position 0 0, 0 bottom, right 0, 0 0
     text-align center
-    i
+    svg
         font-size 5rem
         color accent1
     h2
@@ -406,3 +415,38 @@ input[type="range"]
         height 100%
         opacity 0
         cursor -webkit-grabbing
+
+.aResizer
+    background snow
+    flex 0 0 auto
+    width 0.75rem
+    height 0.75rem
+    border 1px solid bd
+    position relative
+    cursor move
+    &::before
+        content ''
+        width 1.5rem
+        height 2px
+        box-sizing content-box
+        border 1px solid bl
+        if (themeDark)
+            border 1px solid bd
+        border-left 0
+        border-right 0
+        position absolute
+        left 50%
+        top 50%
+        transform translate(-50%, -50%)
+    &.vertical
+        height 100%
+        border-top 0
+        border-bottom 0
+        cursor ew-resize
+        &::before
+            transform translate(-50%, -50%) rotate(90deg)
+    &.horizontal
+        width 100%
+        border-right 0
+        border-left 0
+        cursor ns-resize

@@ -1,0 +1,10 @@
+doctype html
+html
+    include includes/head.pug
+    body.tall
+        debugger-screen.tall
+        script(src="./data/bundle.js")
+        script.
+            window.signals = {};
+            riot.observable(window.signals);
+            riot.mount('*');

@@ -3,10 +3,9 @@
         var reloading = false;
         const gulp = require('gulp');
         const reload = () => {
-            /* global nw */
             if (!reloading) {
                 reloading = true;
-                nw.App.quit();
+                nw.Window.get().reload();
             }
         };
         gulp.watch(['./data/theme*.css', './index.html', './data/bundle.js', './data/js/**.js', './data/node_requires/**/*.js'], reload);

@@ -16,7 +16,7 @@
         "ctsite": "Pagina principală ct.js",
         "cut": "Taie",
         "delete": "Șterge",
-        "donate": "Donează ❤️",
+        "donate": "Donează",
         "done": "Finalizat!",
         "duplicate": "Dublează",
         "exit": "Ieși",
@@ -44,7 +44,10 @@
         "tilelayer": "tile layer",
         "wrongFormat": "Format de fișier greșit",
         "yes": "Da",
-        "contribute": ""
+        "contribute": "",
+        "zoom": "Zoom",
+        "zoomIn": "Mărire",
+        "zoomOut": "Micșorare"
     },
     "actionsEditor": {
         "actions": "Acțiuni",
@@ -163,7 +166,9 @@
             "addNew": "Adaugă un nou script",
             "deleteScript": "Șterge script-ul",
             "header": "Script-uri",
-            "newScriptComment": "Folosește script-uri pentru a defini funcții frecvente și pentru a importa biblioteci mici"
+            "newScriptComment": "Folosește script-uri pentru a defini funcții frecvente și pentru a importa biblioteci mici",
+            "moveUp": "Mută-te în sus.",
+            "moveDown": "Mutare în jos"
         },
         "highDensity": "",
         "maxFPS": ""
@@ -322,7 +327,6 @@
         "add": "Adaugă",
         "none": "Nimic",
         "done": "Gata",
-        "zoom": "Zoom:",
         "grid": "Setează grilă",
         "gridoff": "Dezactivează grilă",
         "gridsize": "Mărimea grilei:",
@@ -354,11 +358,5 @@
         "global": "Carnețel Global",
         "helppages": "Ajutor",
         "backToHome": "Înapoi la pagina principală a documentației"
-    },
-    "preview": {
-        "reload": "Reîncarcă",
-        "roomRestart": "Restartează camera",
-        "openExternal": "Deschide în browser",
-        "getQR": "Coduri QR și URL-ul server-ului local"
     }
 }

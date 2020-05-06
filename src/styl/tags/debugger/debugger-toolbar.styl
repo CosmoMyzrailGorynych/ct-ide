@@ -1,0 +1,67 @@
+#theDebuggerToolbarWindow
+    &, & body
+        position relative
+        width 100%
+        height 100%
+        overflow hidden
+        background transparent
+
+debugger-toolbar
+    width 100%
+    height 100%
+    border-radius br
+    border 1px solid bd
+    background white
+    display flex
+    box-sizing border-box
+    align-items stretch
+    justify-content space-around
+    line-height 38px
+    .&-aDragger, .&-aButton
+        height 100%
+        align-content stretch
+        padding 0 0.5rem
+    .&-aDragger
+        color bd
+        cursor move
+        -webkit-app-region drag
+        app-region drag
+    .&-aButton
+        color act
+        cursor pointer
+        background white
+        if (themeDark)
+            background transparent
+        {trans}
+        &:hover, &.active
+            background acttext
+            color white
+            {transshort}
+            if (themeDark)
+                color black
+            if (!themeDark)
+                border-color accent1
+            svg
+                color white
+            if (themeDark)
+                color black
+                svg
+                    color black
+        &:active, &.selected
+            {transshort}
+            border-color accent1
+            background accent1
+            color white
+            svg
+                color white
+            if (themeDark)
+                color black
+                svg
+                    color black
+        &:last-child
+            border-radius 0 br br 0
+    .&-aDivider
+        border-right 1px solid bd
+        height 100%
+        width 0
+        margin 0 0.5rem

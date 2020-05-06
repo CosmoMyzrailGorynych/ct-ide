@@ -1,13 +1,16 @@
 notepad-panel#notepad.panel.dockright(class="{opened: opened}")
-    ul.nav.tabs.nogrow
+    ul.nav.tabs.nogrow.nb
         li(onclick="{changeTab('notepadlocal')}" class="{active: tab === 'notepadlocal'}")
-            i.icon.icon-edit
+            svg.feather
+                use(xlink:href="data/icons.svg#edit")
             span {voc.local}
         li(onclick="{changeTab('notepadglobal')}" class="{active: tab === 'notepadglobal'}")
-            i.icon.icon-clipboard
+            svg.feather
+                use(xlink:href="data/icons.svg#clipboard")
             span {voc.global}
         li(onclick="{changeTab('helppages')}" class="{active: tab === 'helppages'}")
-            i.icon.icon-life-buoy
+            svg.feather
+                use(xlink:href="data/icons.svg#life-buoy")
             span {voc.helppages}
     div
         div(show="{tab === 'notepadlocal'}")
@@ -15,12 +18,14 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
         div(show="{tab === 'notepadglobal'}")
             .aCodeEditor(ref="notepadglobal")
         div(show="{tab === 'helppages'}")
-            iframe(src="http://localhost:{server.address().port}/" ref="helpIframe" nwdisable nwfaketop)
+            iframe(src="http://localhost:{server.address().port}/{getIfDarkTheme()? '?darkTheme=yep' : ''}" ref="helpIframe" nwdisable nwfaketop)
             button.aHomeButton(title="{voc.backToHome}" onclick="{backToHome}")
-                i.icon-home
+                svg.feather
+                    use(xlink:href="data/icons.svg#home")
 
     button.vertical.dockleft(onclick="{notepadToggle}")
-        i.icon(class="icon-{opened? 'chevron-right' : 'chevron-left'}")
+        svg.feather
+            use(xlink:href="data/icons.svg#{opened? 'chevron-right' : 'chevron-left'}")
     script.
         const glob = require('./data/node_requires/glob');
         const hotkey = require('./data/node_requires/hotkeys')(document);
@@ -43,7 +48,7 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
         };
         this.on('update', () => {
             setTimeout(() => {
-                if (this.tab && this.refs[this.tab].codeEditor) {
+                if (this.tab && this.refs[this.tab] && this.refs[this.tab].codeEditor) {
                     this.refs[this.tab].codeEditor.layout();
                     this.refs[this.tab].codeEditor.focus();
                 }
@@ -59,12 +64,16 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
             window.removeEventListener('resize', updateEditorSize);
         });
 
+        this.getIfDarkTheme = () => {
+            return localStorage.UItheme === 'Night' || localStorage.UItheme === 'Horizon';
+        };
+
         this.backToHome = e => {
             this.refs.helpIframe.contentWindow.location = `http://localhost:${this.server.address().port}/`;
         };
 
         this.on('update', () => {
-            this.notepadlocal.setValue(window.currentProject.notes || '');
+            this.notepadlocal.setValue(global.currentProject.notes || '');
         });
 
         this.on('mount', () => {
@@ -77,7 +86,7 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
                 });
 
                 this.notepadlocal.onDidChangeModelContent((e) => {
-                    window.currentProject.notes = this.notepadlocal.getValue();
+                    global.currentProject.notes = this.notepadlocal.getValue();
                     glob.modified = true;
                 });
                 this.notepadglobal.onDidChangeModelContent((e) => {

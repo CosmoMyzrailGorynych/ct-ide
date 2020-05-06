@@ -96,9 +96,12 @@ Similar to `ct.flow.delay`, this method will return a new function that will lim
 the execution of the `func` to max once in `ms` period. It will call the function first
 and then block the execution for `ms` time, though.
 
+It takes into account `ct.delta` or `ct.deltaUi`.
+
 **Returns**: `function` - a new triggerable function  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | func | `function` | The function to limit |
 | ms | `Number` | The period to wait, in milliseconds |
+| [useUiDelta=false] | `Boolean` | If true, use `ct.deltaUi` instead of `ct.delta` |

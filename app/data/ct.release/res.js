@@ -1,7 +1,7 @@
 (function (ct) {
     const loader = new PIXI.Loader();
-    const loadingLabel = ct.pixiApp.view.previousSibling,
-          loadingBar = loadingLabel.querySelector('.ct-aLoadingBar');
+    const loadingScreen = document.querySelector('.ct-aLoadingScreen'),
+          loadingBar = loadingScreen.querySelector('.ct-aLoadingBar');
     /* global dragonBones */
     const dbFactory = window.dragonBones? dragonBones.PixiFactory.factory : null;
     /**
@@ -57,16 +57,18 @@
         /**
          * Creates a DragonBones skeleton, ready to be added to your copies.
          * @param {string} name The name of the skeleton asset
+         * @param {string} [skin] Optional; allows you to specify the used skin
          * @returns {object} The created skeleton
          */
-        makeSkeleton(name) {
+        makeSkeleton(name, skin) {
             const r = ct.res.skelRegistry[name],
-                  skel = dbFactory.buildArmatureDisplay('Armature', r.data.name);
+                  skel = dbFactory.buildArmatureDisplay('Armature', r.data.name, skin);
             skel.ctName = name;
             skel.on(dragonBones.EventObject.SOUND_EVENT, function (event) {
                 if (ct.sound.exists(event.name)) {
                     ct.sound.spawn(event.name);
                 } else {
+                    // eslint-disable-next-line no-console
                     console.warn(`Skeleton ${skel.ctName} tries to play a non-existing sound ${event.name} at animation ${skel.animation.lastAnimationName}`);
                 }
             });
@@ -75,7 +77,7 @@
     };
 
     PIXI.Loader.shared.onLoad.add(e => {
-        loadingLabel.setAttribute('data-progress', e.progress);
+        loadingScreen.setAttribute('data-progress', e.progress);
         loadingBar.style.width = e.progress + '%';
     });
     PIXI.Loader.shared.onComplete.add(() => {
@@ -102,10 +104,10 @@
             ct.res.skelRegistry[skel].data = PIXI.Loader.shared.resources[ct.res.skelRegistry[skel].origname + '_ske.json'].data;
         }
         /*%resload%*/
-        loadingLabel.classList.add('hidden');
+        loadingScreen.classList.add('hidden');
         setTimeout(() => {
             /*%start%*/
-            ct.pixiApp.ticker.add(ct.loop);
+            PIXI.Ticker.shared.add(ct.loop);
             ct.rooms.forceSwitch(ct.rooms.starting);
         }, 0);
     });

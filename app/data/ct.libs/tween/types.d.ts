@@ -12,6 +12,7 @@ interface ITweenOptions {
     fields: object
     curve?: TweenCurveFunction;
     duration: number;
+    useUiDelta?: boolean;
 }
 
 declare namespace ct {

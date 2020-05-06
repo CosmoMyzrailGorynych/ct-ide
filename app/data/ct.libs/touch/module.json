@@ -29,5 +29,6 @@
         "DeltaRotation": "Rotation",
         "PanX": "Panning by X",
         "PanY": "Panning by Y"
-    }
+    },
+    "optionalDependencies": ["place"]
 }

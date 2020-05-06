@@ -3,11 +3,13 @@ modules-panel.panel.view
         .c3.borderright.tall
             ul#moduleincluded
                 li(each="{module in enabledModules}" onclick="{renderModule(module)}")
-                    i.icon-confirm
+                    svg.feather.success
+                        use(xlink:href="data/icons.svg#check")
                     span {module}
             ul#modulelist
                 li(each="{module in allModules}" onclick="{renderModule(module)}")
-                    i.icon(class="icon-{(module in window.currentProject.libs)? 'confirm on' : 'mod off'}")
+                    svg.feather(class="{(module in global.currentProject.libs)? 'success on' : 'off'}")
+                        use(xlink:href="data/icons.svg#{(module in global.currentProject.libs)? 'check' : 'ctmod'}")
                     span {module}
             label.file.flexfix-footer.nmb
                 input(
@@ -16,51 +18,85 @@ modules-panel.panel.view
                     accept=".zip"
                     onchange="{importModules}")
                 .button.wide.inline.nml.nmr
-                    i.icon.icon-folder
+                    svg.feather
+                        use(xlink:href="data/icons.svg#folder")
                     span {voc.importModules}
         .c9.tall.flexfix(if="{currentModule}")
             ul.nav.tabs.flexfix-header.noshrink
                 li#modinfo(onclick="{changeTab('moduleinfo')}" class="{active: tab === 'moduleinfo'}")
-                    i.icon-info
+                    svg.feather
+                        use(xlink:href="data/icons.svg#info")
                     span {voc.info}
-                li#modsettings(if="{currentModule.fields && currentModuleName in currentProject.libs}" onclick="{changeTab('modulesettings')}" class="{active: tab === 'modulesettings'}")
-                    i.icon-settings
+                li#modsettings(if="{currentModule.fields && currentModuleName in global.currentProject.libs}" onclick="{changeTab('modulesettings')}" class="{active: tab === 'modulesettings'}")
+                    svg.feather
+                        use(xlink:href="data/icons.svg#settings")
                     span {voc.settings}
                 li#modhelp( if="{currentModuleDocs}" onclick="{changeTab('modulehelp')}" class="{active: tab === 'modulehelp'}")
-                    i.icon-document
+                    svg.feather
+                        use(xlink:href="data/icons.svg#file-text")
                     span {voc.help}
                 li#modlogs(if="{currentModuleLogs}" onclick="{changeTab('modulelogs')}" class="{active: tab === 'modulelogs'}")
-                    i.icon-list
+                    svg.feather
+                        use(xlink:href="data/icons.svg#list")
                     span {voc.logs}
             div.flexfix-body
                 #moduleinfo.tabbed.nbt(show="{tab === 'moduleinfo'}")
-                    label.bigpower(onclick="{toggleModule(currentModuleName)}" class="{off: !(currentModuleName in currentProject.libs)}")
-                        i(class="icon-{currentModuleName in currentProject.libs? 'confirm' : 'delete'}")
+                    label.bigpower(onclick="{toggleModule(currentModuleName)}" class="{off: !(currentModuleName in global.currentProject.libs)}")
+                        svg.feather
+                            use(xlink:href="data/icons.svg#{currentModuleName in global.currentProject.libs? 'check' : 'x'}")
                         span
                     h1#modname
                         span {currentModule.main.name}
                         span.version {currentModule.main.version}
                     a.external(each="{author in currentModule.main.authors}" title="{voc.author}" href="{author.site || 'mailto:'+author.mail}")
-                        i.icon-user
+                        svg.feather
+                            use(xlink:href="data/icons.svg#user")
                         span#modauthor {author.name}
-                    i#modinjects.icon-zap.warning(title="{voc.hasinjects}" show="{currentModule.injects}")
-                    i#modconfigurable.icon-settings.success(title="{voc.hasfields}" show="{currentModule.fields}")
-                    i#modinputmethods.icon-airplay.success(title="{voc.hasinputmethods}" show="{currentModule.inputMethods}")
 
-                    #modinfohtml(if="{currentModuleHelp}")
+                    span(title="{voc.hasinjects}" show="{currentModule.injects}")
+                        svg.feather.warning#modinjects
+                            use(xlink:href="data/icons.svg#zap")
+                    span(title="{voc.hasfields}" show="{currentModule.fields}")
+                        svg.feather.success
+                            use(xlink:href="data/icons.svg#settings")
+                    span(title="{voc.hasinputmethods}" show="{currentModule.inputMethods}")
+                        svg.feather.success
+                            use(xlink:href="data/icons.svg#airplay")
+
+                    div(if="{currentModule.dependencies && currentModule.dependencies.length}")
+                        .spacer
+                        b {voc.dependencies}
+                        .inlineblock(each="{dependency in currentModule.dependencies}")
+                            svg.feather(if="{dependency in global.currentProject.libs}").success
+                                use(xlink:href="data/icons.svg#check")
+                            svg.feather(if="{!(dependency in global.currentProject.libs)}").error
+                                use(xlink:href="data/icons.svg#alert-circle")
+                            span   {dependency}
+
+                    div(if="{currentModule.optionalDependencies && currentModule.optionalDependencies.length}")
+                        .spacer
+                        b {voc.optionalDependencies}
+                        .inlineblock(each="{dependency in currentModule.optionalDependencies}")
+                            svg.feather(if="{dependency in global.currentProject.libs}").success
+                                use(xlink:href="data/icons.svg#check")
+                            svg.feather(if="{!(dependency in global.currentProject.libs)}").warning
+                                use(xlink:href="data/icons.svg#alert-triangle")
+                            span   {dependency}
+
+                    #modinfohtml(if="{currentModuleHelp}" oncontextmenu="{onContextMenu}")
                         raw(ref="raw" content="{currentModuleHelp}")
                     h1(if="{currentModuleLicense}") {voc.license}
                     pre(if="{currentModuleLicense}")
                         code {currentModuleLicense}
 
-                #modulesettings.tabbed.nbt(show="{tab === 'modulesettings'}" if="{currentModule.fields && currentModuleName in currentProject.libs}")
+                #modulesettings.tabbed.nbt(show="{tab === 'modulesettings'}" if="{currentModule.fields && currentModuleName in global.currentProject.libs}")
                     dl(each="{field in currentModule.fields}")
                         dt
                             label.block.checkbox(if="{field.type === 'checkbox'}")
                                 input(
                                     type="checkbox"
-                                    checked="{window.currentProject.libs[currentModuleName][field.id]}"
-                                    onchange="{wire('window.currentProject.libs.' + escapeDots(currentModuleName) + '.' + field.id)}"
+                                    checked="{global.currentProject.libs[currentModuleName][field.id]}"
+                                    onchange="{wire('global.currentProject.libs.' + escapeDots(currentModuleName) + '.' + field.id)}"
                                 )
                                 |   {field.name}
                             span(if="{field.type !== 'checkbox'}")
@@ -68,21 +104,21 @@ modules-panel.panel.view
                         dd
                             textarea(
                                 if="{field.type === 'textfield'}"
-                                value="{window.currentProject.libs[currentModuleName][field.id]}"
-                                onchange="{wire('window.currentProject.libs.' + escapeDots(currentModuleName) + '.' + field.id)}"
+                                value="{global.currentProject.libs[currentModuleName][field.id]}"
+                                onchange="{wire('global.currentProject.libs.' + escapeDots(currentModuleName) + '.' + field.id)}"
                             )
                             input(
                                 if="{field.type === 'number'}"
                                 type="number"
-                                value="{window.currentProject.libs[currentModuleName][field.id]}"
-                                onchange="{wire('window.currentProject.libs.' + escapeDots(currentModuleName) + '.' + field.id)}"
+                                value="{global.currentProject.libs[currentModuleName][field.id]}"
+                                onchange="{wire('global.currentProject.libs.' + escapeDots(currentModuleName) + '.' + field.id)}"
                             )
                             label.block.checkbox(if="{field.type === 'radio'}" each="{option in field.options}")
                                 input(
                                     type="radio"
                                     value="{option.value}"
-                                    checked="{window.currentProject.libs[currentModuleName][field.id] === option.value}"
-                                    onchange="{wire('window.currentProject.libs.' + escapeDots(currentModuleName) + '.' + field.id)}"
+                                    checked="{global.currentProject.libs[currentModuleName][field.id] === option.value}"
+                                    onchange="{wire('global.currentProject.libs.' + escapeDots(currentModuleName) + '.' + field.id)}"
                                 )
                                 |   {option.name}
                                 div(class="desc" if="{option.help}")
@@ -90,14 +126,14 @@ modules-panel.panel.view
                             input(
                                 if="{['checkbox', 'number', 'textfield', 'radio'].indexOf(field.type) === -1}"
                                 type="text"
-                                value="{window.currentProject.libs[currentModuleName][field.id]}"
-                                onchange="{wire('window.currentProject.libs.' + escapeDots(currentModuleName) + '.' + field.id)}"
+                                value="{global.currentProject.libs[currentModuleName][field.id]}"
+                                onchange="{wire('global.currentProject.libs.' + escapeDots(currentModuleName) + '.' + field.id)}"
                             )
                             //- That's a bad idea!!!
                             div(class="desc" if="{field.help}")
                                 raw(ref="raw" content="{md.render(field.help)}")
                 #modulehelp.tabbed.nbt(show="{tab === 'modulehelp'}" if="{currentModuleDocs}")
-                    raw(ref="raw" content="{currentModuleDocs}")
+                    raw(ref="raw" content="{currentModuleDocs}" oncontextmenu="{onContextMenu}")
                 #modulelogs.tabbed.nbt(show="{tab === 'modulelogs'}" if="{currentModuleLogs}")
                     h1 {voc.logs2}
                     raw(ref="raw" content="{currentModuleLogs}")
@@ -105,7 +141,6 @@ modules-panel.panel.view
     script.
         const path = require('path'),
               fs = require('fs-extra'),
-              gui = require('nw.gui'),
               unzipper = require('unzipper');
         const md = require('markdown-it')({
             html: false,
@@ -141,7 +176,7 @@ modules-panel.panel.view
         this.allModules = [];
         this.on('update', () => {
             this.enabledModules = [];
-            for (let i in window.currentProject.libs) {
+            for (let i in global.currentProject.libs) {
                 this.enabledModules.push(i);
             }
         });
@@ -149,7 +184,7 @@ modules-panel.panel.view
         this.escapeDots = str => str.replace(/\./g, '\\.');
 
         const tryLoadTypedefs = moduleName => {
-            if (!(moduleName in currentProject.libs)) {
+            if (!(moduleName in global.currentProject.libs)) {
                 return;
             }
             const typedefPath = path.join(libsDir, moduleName, 'types.d.ts');
@@ -198,25 +233,25 @@ modules-panel.panel.view
             this.update();
         });
         this.toggleModule = moduleName => e => {
-            if (window.currentProject.libs[moduleName]) {
-                delete window.currentProject.libs[moduleName];
+            if (global.currentProject.libs[moduleName]) {
+                delete global.currentProject.libs[moduleName];
                 removeTypedefs(moduleName);
             } else {
-                window.currentProject.libs[moduleName] = {};
+                global.currentProject.libs[moduleName] = {};
                 tryLoadTypedefs(moduleName);
                 // 'Settings' page
-                if (this.currentModule.fields && currentProject.libs[name]) {
+                if (this.currentModule.fields && global.currentProject.libs[name]) {
                     for (const field of this.currentModule.fields) {
-                        if (!currentProject.libs[name][field.key]) {
+                        if (!global.currentProject.libs[name][field.key]) {
                             if (field.default) {
-                                currentProject.libs[name][field.key] = field.default;
+                                global.currentProject.libs[name][field.key] = field.default;
                             } else {
                                 if (field.type == 'number') {
-                                    currentProject.libs[name][field.key] = 0;
+                                    global.currentProject.libs[name][field.key] = 0;
                                 } else if (field.type == 'checkbox') {
-                                    currentProject.libs[name][field.key] = false;
+                                    global.currentProject.libs[name][field.key] = false;
                                 } else {
-                                    currentProject.libs[name][field.key] = '';
+                                    global.currentProject.libs[name][field.key] = '';
                                 }
                             }
                         }
@@ -231,8 +266,8 @@ modules-panel.panel.view
             fs.readJSON(path.join(libsDir, name, 'module.json'), (err, data) => {
                 if (err) {
                     alertify.error(err);
-                    if (name in window.currentProject.libs) {
-                        delete window.currentProject.libs[name];
+                    if (name in global.currentProject.libs) {
+                        delete global.currentProject.libs[name];
                     }
                     this.currentModule = false;
                     this.update();
@@ -275,31 +310,25 @@ modules-panel.panel.view
             this.tab = 'moduleinfo';
         };
 
-        var clipboard = nw.Clipboard.get();
-        var copymeMenu = new gui.Menu();
-        copymeMenu.append(new gui.MenuItem({
-            label: window.languageJSON.common.copy,
-            click: e => {
-                clipboard.set(this.currentFragment, 'text');
-            }
-        }));
-        copymeMenu.append(new gui.MenuItem({
-            label: window.languageJSON.common.addtonotes,
-            click: e => {
-                currentProject.notes += '\n' + this.currentFragment;
-            }
-        }));
-        this.showCopyMenu = e => {
-            this.currentFragment = `ct.${this.currentModuleName}.${e.item.name || e.item.parameter || e.item.method}`;
-            copymeMenu.popup(e.pageX, e.pageY);
-            e.preventDefault();
+        this.onContextMenu = e => {
+            console.log(e);
+        };
+        this.contextMenu = {
+            items: [{
+                label: window.languageJSON.common.copy,
+                icon: 'copy',
+                click: () => {
+
+                }
+            }]
         };
 
         this.importModules = async (e) => {
-            const value = e.target.value;
-            if (value.length === 0) {
+            const files = e.target.files;
+            if (files.length === 0) {
                 return;
             }
+            const value = files[0].path;
             e.target.value = '';
             let parentName = null;
             let moduleName = null;
@@ -322,6 +351,8 @@ modules-panel.panel.view
             })
             .on('finish', async () => {
                 if (moduleName !== null) {
+                    // okay, let's create parent directory
+                    await fs.ensureDir(path.join(libsDir, moduleName));
                     for (let entry of entries) {
                         const filePath = entry.path;
                         const indexOf = filePath.indexOf('/')
@@ -360,4 +391,4 @@ modules-panel.panel.view
                     this.update();
                 }
             });
-        }
+        };

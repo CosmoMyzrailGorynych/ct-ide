@@ -1,5 +1,4 @@
 (function () {
-    const gui = require('nw.gui');
     const clickThreshold = 16;
     const glob = require('./data/node_requires/glob');
 
@@ -19,6 +18,7 @@
             [grax, gray] = texture.axis;
         } else {
             img = glob.texturemap[-1];
+            texture = img.g;
             w = h = 32;
             ox = oy = 0;
             grax = gray = 16;
@@ -68,7 +68,7 @@
                     for (const copy of this.selectedCopies) {
                         var x = this.xToRoom(this.startx),
                             y = this.yToRoom(this.starty);
-                        const {g} = glob.texturemap[window.currentProject.types[glob.typemap[copy.uid]].texture];
+                        const {g} = glob.texturemap[global.currentProject.types[glob.typemap[copy.uid]].texture];
                         if (x > copy.x - g.axis[0] && y > copy.y - g.axis[1] &&
                             x < copy.x - g.axis[0] + g.width && y < copy.y - g.axis[1] + g.height) {
                             this.movingStuff = true;
@@ -92,7 +92,7 @@
                     ymin = Math.min(y1, y2),
                     ymax = Math.max(y1, y2);
                 for (const copy of this.room.copies) {
-                    const {g} = glob.texturemap[window.currentProject.types[glob.typemap[copy.uid]].texture];
+                    const {g} = glob.texturemap[global.currentProject.types[glob.typemap[copy.uid]].texture];
                     const x1 = copy.x - g.axis[0] * (copy.tx || 1),
                           x2 = copy.x - (g.axis[0] - g.width) * (copy.tx || 1),
                           y1 = copy.y - g.axis[1] * (copy.ty || 1),
@@ -257,7 +257,7 @@
                 // Сначала ищется ближайшая к курсору копия. Если слоёв в комнате нет, то всё отменяется
                 if (!this.room.copies.length) { return; }
                 var copy = selectACopyAt.apply(this, [e]),
-                    type = window.currentProject.types[glob.typemap[copy.uid]];
+                    type = global.currentProject.types[glob.typemap[copy.uid]];
                 this.closestType = type;
                 this.closestPos = this.room.copies.indexOf(copy);
 
@@ -270,80 +270,81 @@
                     this.forbidDrawing = false;
                 }, 500);
                 this.roomCanvasMenu.items[0].label = window.languageJSON.roomview.deletecopy.replace('{0}', type.name);
-                this.roomCanvasMenu.popup(e.clientX, e.clientY);
+                this.refs.roomCanvasMenu.popup(e.clientX, e.clientY);
             };
 
-            this.roomCanvasCopiesMenu = new gui.Menu();
-            this.roomCanvasCopiesMenu.append(new gui.MenuItem({
-                label: window.languageJSON.roomview.deleteCopies,
-                click: () => {
-                    for (const copy of this.selectedCopies) {
-                        this.room.copies.splice(this.room.copies.indexOf(copy), 1);
-                    }
-                    this.selectedCopies = false;
-                    this.resortRoom();
-                    this.refreshRoomCanvas();
-                },
-                key: 'Delete'
-            }));
-            this.roomCanvasCopiesMenu.append(new gui.MenuItem({
-                label: window.languageJSON.roomview.shiftCopies,
-                click: () => {
-                    window.alertify.confirm(`
-                        ${window.languageJSON.roomview.shiftCopies}
-                        <label class="block">X:
-                            <input id="copiespositionx" type="number" value="${this.room.gridX}" />
-                        </label>
-                        <label class="block">Y:
-                            <input id="copiespositiony" type="number" value="${this.room.gridY}" />
-                        </label>
-                    `)
-                        .then(e => {
-                            if (e.buttonClicked === 'ok') {
-                                var x = Number(document.getElementById('copiespositionx').value) || 0,
-                                    y = Number(document.getElementById('copiespositiony').value) || 0;
-                                for (const copy of this.selectedCopies) {
-                                    copy.x += x;
-                                    copy.y += y;
+            this.roomCanvasCopiesMenu = {
+                opened: false,
+                item: [{
+                    label: window.languageJSON.roomview.deleteCopies,
+                    click: () => {
+                        for (const copy of this.selectedCopies) {
+                            this.room.copies.splice(this.room.copies.indexOf(copy), 1);
+                        }
+                        this.selectedCopies = false;
+                        this.resortRoom();
+                        this.refreshRoomCanvas();
+                    },
+                    key: 'Delete'
+                }, {
+                    label: window.languageJSON.roomview.shiftCopies,
+                    click: () => {
+                        window.alertify.confirm(`
+                            ${window.languageJSON.roomview.shiftCopies}
+                            <label class="block">X:
+                                <input id="copiespositionx" type="number" value="${this.room.gridX}" />
+                            </label>
+                            <label class="block">Y:
+                                <input id="copiespositiony" type="number" value="${this.room.gridY}" />
+                            </label>
+                        `)
+                            .then(e => {
+                                if (e.buttonClicked === 'ok') {
+                                    var x = Number(document.getElementById('copiespositionx').value) || 0,
+                                        y = Number(document.getElementById('copiespositiony').value) || 0;
+                                    for (const copy of this.selectedCopies) {
+                                        copy.x += x;
+                                        copy.y += y;
+                                    }
+                                    this.refreshRoomCanvas();
                                 }
-                                this.refreshRoomCanvas();
-                            }
-                        });
-                }
-            }));
+                            });
+                    }
+                }]
+            };
             this.onCanvasContextMenuMultipleCopies = e => {
                 this.forbidDrawing = true;
                 setTimeout(() => {
                     this.forbidDrawing = false;
                 }, 500);
-                this.roomCanvasCopiesMenu.popup(e.clientX, e.clientY);
+                this.refs.roomCanvasCopiesMenu.popup(e.clientX, e.clientY);
                 e.preventDefault();
             };
 
             // Контекстное меню по нажатию на холст
-            this.roomCanvasMenu = new gui.Menu();
-            this.roomCanvasMenu.append(new gui.MenuItem({
-                label: window.languageJSON.roomview.deletecopy.replace('{0}', this.closestType),
-                click: () => {
-                    this.room.copies.splice(this.closestPos, 1);
-                    this.resortRoom();
-                    this.refreshRoomCanvas();
-                },
-                key: 'Delete'
-            }));
-            this.roomCanvasMenu.append(new gui.MenuItem({
-                label: window.languageJSON.roomview.changecopyscale,
-                click: () => {
-                    var copy = this.room.copies[this.closestPos];
-                    window.alertify.confirm(`
-                        ${window.languageJSON.roomview.changecopyscale}
-                        <label class="block">X:
-                            <input id="copyscalex" type="number" value="${copy.tx || 1}" />
-                        </label>
-                        <label class="block">Y:
-                            <input id="copyscaley" type="number" value="${copy.ty || 1}" />
-                        </label>
-                    `)
+            this.roomCanvasMenu = {
+                opened: false,
+                items: [{
+                    label: window.languageJSON.roomview.deletecopy.replace('{0}', this.closestType),
+                    click: () => {
+                        this.room.copies.splice(this.closestPos, 1);
+                        this.resortRoom();
+                        this.refreshRoomCanvas();
+                    },
+                    key: 'Delete'
+                }, {
+                    label: window.languageJSON.roomview.changecopyscale,
+                    click: () => {
+                        var copy = this.room.copies[this.closestPos];
+                        window.alertify.confirm(`
+                            ${window.languageJSON.roomview.changecopyscale}
+                            <label class="block">X:
+                                <input id="copyscalex" type="number" value="${copy.tx || 1}" />
+                            </label>
+                            <label class="block">Y:
+                                <input id="copyscaley" type="number" value="${copy.ty || 1}" />
+                            </label>
+                        `)
                         .then(e => {
                             if (e.buttonClicked === 'ok') {
                                 copy.tx = Number(document.getElementById('copyscalex').value) || 1;
@@ -351,30 +352,47 @@
                                 this.refreshRoomCanvas();
                             }
                         });
-                }
-            }));
-            this.roomCanvasMenu.append(new gui.MenuItem({
-                label: window.languageJSON.roomview.shiftcopy,
-                click: () => {
-                    var copy = this.room.copies[this.closestPos];
-                    window.alertify.confirm(`
-                        ${window.languageJSON.roomview.shiftcopy}
-                        <label class="block">X:
-                            <input id="copypositionx" type="number" value="${copy.x}" />
-                        </label>
-                        <label class="block">Y:
-                            <input id="copypositiony" type="number" value="${copy.y}" />
-                        </label>
-                    `)
-                    .then(e => {
-                        if (e.buttonClicked === 'ok') {
-                            copy.x = Number(document.getElementById('copypositionx').value) || 0;
-                            copy.y = Number(document.getElementById('copypositiony').value) || 0;
-                            this.refreshRoomCanvas();
-                        }
-                    });
-                }
-            }));
+                    }
+                }, {
+                    label: window.languageJSON.roomview.changecopyrotation,
+                    click: () => {
+                        var copy = this.room.copies[this.closestPos];
+                        window.alertify.confirm(`
+                            ${window.languageJSON.roomview.changecopyrotation}
+                            <label class="block">
+                                <input id="copyrotation" type="number" value="${copy.tr || 0}" />
+                            </label>
+                        `)
+                        .then(e => {
+                            if (e.buttonClicked === 'ok') {
+                                copy.tr = Number(document.getElementById('copyrotation').value) || 0;
+                                this.refreshRoomCanvas();
+                            }
+                        });
+                    }
+                }, {
+                    label: window.languageJSON.roomview.shiftcopy,
+                    click: () => {
+                        var copy = this.room.copies[this.closestPos];
+                        window.alertify.confirm(`
+                            ${window.languageJSON.roomview.shiftcopy}
+                            <label class="block">X:
+                                <input id="copypositionx" type="number" value="${copy.x}" />
+                            </label>
+                            <label class="block">Y:
+                                <input id="copypositiony" type="number" value="${copy.y}" />
+                            </label>
+                        `)
+                        .then(e => {
+                            if (e.buttonClicked === 'ok') {
+                                copy.x = Number(document.getElementById('copypositionx').value) || 0;
+                                copy.y = Number(document.getElementById('copypositiony').value) || 0;
+                                this.refreshRoomCanvas();
+                            }
+                        });
+                    }
+                }]
+            };
         }
     };
 })();

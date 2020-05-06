@@ -16,7 +16,7 @@
         "ctsite": "Página de Inicio de ct.js",
         "cut": "Cortar",
         "delete": "Borrar",
-        "donate": "Donar ❤️",
+        "donate": "Donar",
         "done": "¡Hecho!",
         "duplicate": "Duplicar",
         "exit": "Salir",
@@ -44,7 +44,10 @@
         "tilelayer": "capa de baldosas",
         "wrongFormat": "Formato de archivo incorrecto",
         "yes": "Si",
-        "contribute": ""
+        "contribute": "",
+        "zoom": "Zoom:",
+        "zoomIn": "Acercar",
+        "zoomOut": "Alejar"
     },
     "actionsEditor": {
         "actions": "Acciones",
@@ -163,7 +166,9 @@
             "addNew": "Agregar un nuevo script",
             "deleteScript": "Eliminar el script",
             "header": "Scripts",
-            "newScriptComment": "Use scripts para definir funciones frecuentes e importar pequeñas bibliotecas"
+            "newScriptComment": "Use scripts para definir funciones frecuentes e importar pequeñas bibliotecas",
+            "moveUp": "Subir",
+            "moveDown": "Muévete hacia abajo"
         },
         "highDensity": "",
         "maxFPS": ""
@@ -322,7 +327,6 @@
         "add": "Añadir",
         "none": "Nada",
         "done": "Hecho",
-        "zoom": "Zoom:",
         "grid": "Establecer cuadrícula",
         "gridoff": "Deshabilitar cuadrícula",
         "gridsize": "Tamaño de la cuadrícula:",
@@ -354,11 +358,5 @@
         "global": "Bloc de notas global",
         "helppages": "Ayuda",
         "backToHome": "Volver a la página de inicio de los documentos"
-    },
-    "preview": {
-        "reload": "Recargar",
-        "roomRestart": "Reiniciar Room",
-        "openExternal": "Abrir en el navegador",
-        "getQR": "Códigos QR y URL del servidor local"
     }
 }

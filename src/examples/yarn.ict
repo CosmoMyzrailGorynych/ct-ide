@@ -1,411 +1,644 @@
-{
-  "ctjsVersion": "1.0.2",
-  "notes": "There is a number of interesting places to start learning the demo:\n\n— rooms' OnCreate events\n— Settings > Scripts > storyEngine\n— OptionButton and NextButton types, as they advance the story by player's interactions.",
-  "libs": {
-    "place": {
-      "gridX": 512,
-      "gridY": 512
-    },
-    "fittoscreen": {
-      "mode": "scaleFit"
-    },
-    "mouse": {},
-    "keyboard": {},
-    "keyboard.polyfill": {},
-    "sound.howler": {},
-    "akatemplate": {
-      "csscss": "body {\n    background: #fff;\n}"
-    },
-    "yarn": {
-      "skipEmpty": true,
-      "magic": true
-    },
-    "tween": {}
-  },
-  "textures": [
-    {
-      "name": "CatThoughtful",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        396,
-        462
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "imgWidth": 793,
-      "imgHeight": 924,
-      "width": 793,
-      "height": 924,
-      "offx": 0,
-      "offy": 0,
-      "origname": "i5aabca45-bbbd-4792-b3a9-ba79bd4a66fd.png",
-      "source": "/home/comigo/Рабочий стол/CatThoughtful.png",
-      "shape": "rect",
-      "left": 396,
-      "right": 397,
-      "top": 462,
-      "bottom": 462,
-      "uid": "5aabca45-bbbd-4792-b3a9-ba79bd4a66fd",
-      "lastmod": 1569837312550
-    },
-    {
-      "name": "CatNormal",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        396,
-        462
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "imgWidth": 793,
-      "imgHeight": 924,
-      "width": 793,
-      "height": 924,
-      "offx": 0,
-      "offy": 0,
-      "origname": "iec75835b-2afd-4f96-9373-804b4f80a84d.png",
-      "source": "/home/comigo/Рабочий стол/CatNormal.png",
-      "shape": "rect",
-      "left": 396,
-      "right": 397,
-      "top": 462,
-      "bottom": 462,
-      "uid": "ec75835b-2afd-4f96-9373-804b4f80a84d",
-      "lastmod": 1569837308602
-    },
-    {
-      "name": "CatHappy",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        396,
-        462
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "imgWidth": 793,
-      "imgHeight": 924,
-      "width": 793,
-      "height": 924,
-      "offx": 0,
-      "offy": 0,
-      "origname": "i4a04ffe6-c92a-428e-9fe4-5e8d2ce9c835.png",
-      "source": "/home/comigo/Рабочий стол/CatHappy.png",
-      "shape": "rect",
-      "left": 396,
-      "right": 397,
-      "top": 462,
-      "bottom": 462,
-      "uid": "4a04ffe6-c92a-428e-9fe4-5e8d2ce9c835",
-      "lastmod": 1569837304762
-    },
-    {
-      "name": "Button",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        512,
-        50
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "imgWidth": 1024,
-      "imgHeight": 100,
-      "width": 1024,
-      "height": 100,
-      "offx": 0,
-      "offy": 0,
-      "origname": "ie0cbccef-93ee-4c8a-ab19-4fcef639963c.png",
-      "source": "/home/comigo/Рабочий стол/Button.png",
-      "shape": "rect",
-      "left": 512,
-      "right": 512,
-      "top": 50,
-      "bottom": 50,
-      "uid": "e0cbccef-93ee-4c8a-ab19-4fcef639963c",
-      "lastmod": 1569837505628
-    },
-    {
-      "name": "TheGirl",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        173,
-        800
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "imgWidth": 346,
-      "imgHeight": 800,
-      "width": 346,
-      "height": 800,
-      "offx": 0,
-      "offy": 0,
-      "origname": "ibc65f552-4e0c-407e-aee0-9dedd834b727.png",
-      "source": "C:\\Users\\Master\\Desktop\\TheGirl.png",
-      "shape": "rect",
-      "left": 173,
-      "right": 173,
-      "top": 800,
-      "bottom": 0,
-      "uid": "bc65f552-4e0c-407e-aee0-9dedd834b727",
-      "lastmod": 1570088487141
-    }
-  ],
-  "skeletons": [],
-  "types": [
-    {
-      "name": "TheCat",
-      "depth": 0,
-      "oncreate": "",
-      "onstep": "this.move();",
-      "ondraw": "",
-      "ondestroy": "",
-      "uid": "9e7aec96-1ad3-4679-a248-01180284e78e",
-      "texture": "ec75835b-2afd-4f96-9373-804b4f80a84d",
-      "extends": {},
-      "lastmod": 1569837324744
-    },
-    {
-      "name": "OptionButton",
-      "depth": 0,
-      "oncreate": "this.text = new PIXI.Text(this.option, {\n    fill: 0x446ADB,\n    fontWeight: 600,\n    fontSize: 32,\n    wordWrap: true,\n    wordWrapWidth: 900,\n    align: 'center'\n});\nthis.text.anchor.x = this.text.anchor.y = 0.5;\nthis.addChild(this.text);\n\nthis.scale.x = this.scale.y = 0;\nct.tween.add({\n    obj: this.scale,\n    fields: {\n        x: 1,\n        y: 1\n    },\n    duration: 350,\n    curve: ct.tween.easeOutQuad\n});\n    ",
-      "onstep": "if (ct.mouse.hovers(this)) {\n    if (ct.mouse.pressed) {\n        ct.room.story.say(this.option);\n    }\n}",
-      "ondraw": "",
-      "ondestroy": "",
-      "uid": "cf5c44b2-f55a-4e18-a941-f7cdf5aecd0f",
-      "texture": "e0cbccef-93ee-4c8a-ab19-4fcef639963c",
-      "extends": {},
-      "lastmod": 1570008110224
-    },
-    {
-      "name": "NextButton",
-      "depth": 0,
-      "oncreate": "this.text = new PIXI.Text(this.option, {\n    fill: 0x446ADB,\n    fontWeight: 600,\n    fontSize: 32,\n    wordWrap: true,\n    wordWrapWidth: 900,\n    align: 'center'\n});\nthis.text.anchor.x = this.text.anchor.y = 0.5;\nthis.addChild(this.text);\n\nthis.scale.x = this.scale.y = 0;\nct.tween.add({\n    obj: this.scale,\n    fields: {\n        x: 1,\n        y: 1\n    },\n    duration: 350,\n    curve: ct.tween.easeOutQuad\n});\n    ",
-      "onstep": "if (ct.mouse.hovers(this)) {\n    if (ct.mouse.pressed) {\n        ct.room.story.next();\n        this.kill = true;\n    }\n}",
-      "ondraw": "",
-      "ondestroy": "",
-      "uid": "4340a6a4-65fa-4bcf-b950-38716097f29e",
-      "texture": "e0cbccef-93ee-4c8a-ab19-4fcef639963c",
-      "extends": {},
-      "lastmod": 1570008068600
-    },
-    {
-      "name": "Blurb",
-      "depth": 0,
-      "oncreate": "this.text = new PIXI.Text(this.blurb, {\n    fill: this.blurbColor || 0x446ADB,\n    fontSize: 32,\n    wordWrap: true,\n    wordWrapWidth: this.blurbWidth || 1024\n});\nthis.addChild(this.text);\nthis.alpha = 0;\nthis.y += 50;\n\nct.tween.add({\n    obj: this,\n    fields: {\n        y: this.y - 50,\n        alpha: 1\n    },\n    duration: 500,\n    curve: ct.tween.easeOutQuad\n})\n.then(() => {\n    ct.room.story.next();\n});",
-      "onstep": "this.move();",
-      "ondraw": "",
-      "ondestroy": "",
-      "uid": "04a0aea0-f448-4920-97ad-f98906ac0d7c",
-      "texture": -1,
-      "extends": {},
-      "lastmod": 1570089644788
-    },
-    {
-      "name": "RestartButton",
-      "depth": 0,
-      "oncreate": "this.text = new PIXI.Text('Restart', {\n    fill: 0x446ADB,\n    fontWeight: 600,\n    fontSize: 32,\n    wordWrap: true,\n    wordWrapWidth: 900,\n    align: 'center'\n});\nthis.text.anchor.x = this.text.anchor.y = 0.5;\nthis.addChild(this.text);\n\nthis.scale.x = this.scale.y = 0;\nct.tween.add({\n    obj: this.scale,\n    fields: {\n        x: 1,\n        y: 1\n    },\n    duration: 350,\n    curve: ct.tween.easeOutQuad\n});\n    ",
-      "onstep": "if (ct.mouse.hovers(this)) {\n    if (ct.mouse.pressed) {\n        ct.rooms.switch(ct.room.name);\n        this.kill = true;\n    }\n}",
-      "ondraw": "",
-      "ondestroy": "",
-      "uid": "9a5d6ecd-82b4-4b26-827b-08904fbaf962",
-      "texture": "e0cbccef-93ee-4c8a-ab19-4fcef639963c",
-      "extends": {},
-      "lastmod": 1570008107016
-    },
-    {
-      "name": "TheGirl",
-      "depth": 0,
-      "oncreate": "ct.tween.add({\n    obj: this,\n    fields: {\n        x: ct.viewWidth * 0.15\n    },\n    duration: 500,\n    curve: ct.tween.easeOutQuad\n});\n\nthis.scale.x = this.scale.y = 1.2;",
-      "onstep": "this.move();",
-      "ondraw": "",
-      "ondestroy": "",
-      "uid": "3c91a07b-0497-4623-a244-071a4e1951d8",
-      "texture": "bc65f552-4e0c-407e-aee0-9dedd834b727",
-      "extends": {},
-      "lastmod": 1570089992509
-    }
-  ],
-  "sounds": [
-    {
-      "name": "Hehe",
-      "uid": "0bd4a1eb-b5f1-4047-a8dd-56feca282803",
-      "origname": "s0bd4a1eb-b5f1-4047-a8dd-56feca282803.mp3",
-      "lastmod": 1570005238168
-    }
-  ],
-  "styles": [],
-  "rooms": [
-    {
-      "name": "Main",
-      "oncreate": "var latestBlurb; // we will need it to accurately position text lines\n\nct.yarn.openFromFile('theStory.json?q=' + Math.random())\n.then(story => {\n    this.story = story;\n    storyEngine(story); // see it in the Settings tab -> Scripts\n});\n\n\nthis.nodeTitle = new PIXI.Text('Loading the awesomeness…', {\n    fill: 0x446ADB,\n    fontSize: 24,\n    wordWrap: true,\n    wordWrapWidth: 1024\n});\nthis.nodeTitle.x = 100;\nthis.nodeTitle.y = 50;\nthis.addChild(this.nodeTitle);",
-      "onstep": "",
-      "ondraw": "",
-      "onleave": "",
-      "width": 1920,
-      "height": 1080,
-      "backgrounds": [],
-      "copies": [
-        {
-          "x": 1536,
-          "y": 576,
-          "uid": "9e7aec96-1ad3-4679-a248-01180284e78e",
-          "tx": 0.75,
-          "ty": 0.75
-        }
-      ],
-      "tiles": [
-        {
-          "depth": -10,
-          "tiles": []
-        }
-      ],
-      "uid": "d21d2804-d690-4c65-9657-7a1486b7f1d9",
-      "thumbnail": "7a1486b7f1d9",
-      "gridX": 64,
-      "gridY": 64,
-      "lastmod": 1570007451105
-    },
-    {
-      "name": "Micro",
-      "oncreate": "var latestBlurb; // we will need it to accurately position text lines\n\nct.yarn.openFromFile('micro.json?q=' + Math.random())\n.then(story => {\n    this.story = story;\n    storyEngine(story); // see it in the Settings tab -> Scripts\n});\n\n\nthis.nodeTitle = new PIXI.Text('Loading the awesomeness…', {\n    fill: 0x446ADB,\n    fontSize: 24,\n    wordWrap: true,\n    wordWrapWidth: 1024\n});\nthis.nodeTitle.x = 100;\nthis.nodeTitle.y = 50;\nthis.addChild(this.nodeTitle);",
-      "onstep": "",
-      "ondraw": "",
-      "onleave": "",
-      "width": 1920,
-      "height": 1080,
-      "backgrounds": [],
-      "copies": [
-        {
-          "x": 1536,
-          "y": 448,
-          "uid": "9e7aec96-1ad3-4679-a248-01180284e78e",
-          "tx": 0.75,
-          "ty": 0.75
-        }
-      ],
-      "tiles": [
-        {
-          "depth": -10,
-          "tiles": []
-        }
-      ],
-      "uid": "cb9565fc-6666-4f0c-bc6c-b49f813ea9ce",
-      "thumbnail": "b49f813ea9ce",
-      "gridX": 64,
-      "gridY": 64,
-      "lastmod": 1570007519025
-    },
-    {
-      "name": "Stop",
-      "oncreate": "var latestBlurb; // we will need it to accurately position text lines\n\nct.yarn.openFromFile('stop.json?q=' + Math.random())\n.then(story => {\n    this.story = story;\n    storyEngine(story); // see it in the Settings tab -> Scripts\n});\n\n\nthis.nodeTitle = new PIXI.Text('Loading the awesomeness…', {\n    fill: 0x446ADB,\n    fontSize: 24,\n    wordWrap: true,\n    wordWrapWidth: 1024\n});\nthis.nodeTitle.x = 100;\nthis.nodeTitle.y = 50;\nthis.addChild(this.nodeTitle);",
-      "onstep": "",
-      "ondraw": "",
-      "onleave": "",
-      "width": 1920,
-      "height": 1080,
-      "backgrounds": [],
-      "copies": [
-        {
-          "x": 1536,
-          "y": 448,
-          "uid": "9e7aec96-1ad3-4679-a248-01180284e78e",
-          "tx": 0.75,
-          "ty": 0.75
-        }
-      ],
-      "tiles": [
-        {
-          "depth": -10,
-          "tiles": []
-        }
-      ],
-      "uid": "95f73a99-6402-4848-81a7-d96488130d15",
-      "thumbnail": "d96488130d15",
-      "gridX": 64,
-      "gridY": 64,
-      "lastmod": 1570013323128
-    },
-    {
-      "name": "Wait",
-      "oncreate": "var latestBlurb; // we will need it to accurately position text lines\n\nct.yarn.openFromFile('wait.json?q=' + Math.random())\n.then(story => {\n    this.story = story;\n    storyEngine(story); // see it in the Settings tab -> Scripts\n});\n\n\nthis.nodeTitle = new PIXI.Text('Loading the awesomeness…', {\n    fill: 0x446ADB,\n    fontSize: 24,\n    wordWrap: true,\n    wordWrapWidth: 1024\n});\nthis.nodeTitle.x = 100;\nthis.nodeTitle.y = 50;\nthis.addChild(this.nodeTitle);",
-      "onstep": "",
-      "ondraw": "",
-      "onleave": "",
-      "width": 1920,
-      "height": 1080,
-      "backgrounds": [],
-      "copies": [
-        {
-          "x": 1536,
-          "y": 448,
-          "uid": "9e7aec96-1ad3-4679-a248-01180284e78e",
-          "tx": 0.75,
-          "ty": 0.75
-        }
-      ],
-      "tiles": [
-        {
-          "depth": -10,
-          "tiles": []
-        }
-      ],
-      "uid": "48b25b49-58b8-44ee-b4c5-cc6b9ea24c38",
-      "thumbnail": "cc6b9ea24c38",
-      "gridX": 64,
-      "gridY": 64,
-      "lastmod": 1570056924685
-    }
-  ],
-  "actions": [],
-  "starting": 0,
-  "settings": {
-    "minifyhtmlcss": false,
-    "minifyjs": false,
-    "fps": 30,
-    "version": [
-      0,
-      0,
-      0
-    ],
-    "versionPostfix": "",
-    "export": {
-      "windows64": true,
-      "windows32": true,
-      "linux64": true,
-      "linux32": true,
-      "mac64": true,
-      "debug": false
-    }
-  },
-  "scripts": [
-    {
-      "name": "storyEngine",
-      "code": "var storyEngine = function (story) {\n    var latestBlurb; // used to position lines nicely, see below at story.on('options')\n    var spacing = true;\n\n    story.on('newnode', () => {\n        // Clear the previous buttons and blurbs\n        for (const button of ct.types.list['NextButton']) {\n            button.kill = true;\n        }\n        for (const button of ct.types.list['OptionButton']) {\n            button.kill = true;\n        }\n        for (const blurb of ct.types.list['Blurb']) {\n            blurb.kill = true;\n        }\n        // Update the node's title\n        ct.room.nodeTitle.text = story.title;\n    });\n\n    story.on('text', text => {\n        // Yarn does not support single dialogue options, but we will fake\n        // them to add a better feeling of authority\n        if (story.character === 'Player') {\n            // Clear the previous buttons\n            for (const button of ct.types.list['NextButton']) {\n                button.kill = true;\n            }\n            ct.types.copy('NextButton', ct.viewWidth / 2, ct.viewHeight - 60, {\n                option: story.body // it will appear in button's OnCreate event as this.option\n            });\n        } else {\n            let blurbY = 150; // the default blurb location\n            // Get the latest blurb's bottom line, if any\n            if (latestBlurb && !latestBlurb.kill) {\n                blurbY = latestBlurb.y + latestBlurb.text.height + (spacing? 32 : 0);\n            }\n            if (story.character === 'Girl') {\n                latestBlurb = ct.types.copy('Blurb', 500, blurbY, {\n                    blurb: story.body, // it will appear in Blurb's OnCreate event as this.blurb\n                    blurbColor: 0xDB449A,\n                    blurbWidth: 800\n                });\n            } else {\n                // Assume it is the cat's line\n                latestBlurb = ct.types.copy('Blurb', 100, blurbY, {\n                    blurb: story.body // it will appear in Blurb's OnCreate event as this.blurb\n                });\n            }\n        }\n    });\n\n    story.on('options', options => {\n        let buttonY = ct.viewHeight - 60;\n        for (const option of options) {\n            ct.types.copy('OptionButton', ct.viewWidth / 2, buttonY, {\n                option: option // it will appear in button's OnCreate event as this.option\n            });\n            buttonY -= 120;\n        }\n    });\n\n    story.on('command', command => {\n        const cat = ct.types.list['TheCat'][0];\n        if (command === 'cat happy') {\n            cat.tex = 'CatHappy';\n        } else if (command === 'cat thoughtful') {\n            cat.tex = 'CatThoughtful';\n        } else if (command === 'cat normal') {\n            cat.tex = 'CatNormal';\n        } else if (command === 'disable spacing') {\n            spacing = false;\n        } else if (command === 'enable spacing') {\n            spacing = true;\n        } else if (command === 'a girl walks in') {\n            // Create it offscreen. The copy has an animation in its \n            // OnCreate code and will roll in \n            ct.types.copy('TheGirl', -200, ct.viewHeight);\n        } else if (command === 'a girl walks out') {\n            const theGirl = ct.types.list['TheGirl'][0];\n            ct.tween.add({\n                obj: theGirl,\n                fields: {\n                    x: -200\n                },\n                duration: 500\n            }).then(() => {\n                theGirl.kill = true;\n            });\n        } else {\n            console.warn(`Unknown command \"${command}\"`);\n        }\n        story.next();\n    });\n\n    // The story has enden\n    story.on('drained', () => {\n        // Clear the previous buttons and blurbs\n        for (const button of ct.types.list['NextButton']) {\n            button.kill = true;\n        }\n        for (const button of ct.types.list['OptionButton']) {\n            button.kill = true;\n        }\n        for (const blurb of ct.types.list['Blurb']) {\n            blurb.kill = true;\n        }\n        ct.types.copy('RestartButton', ct.viewWidth / 2, ct.viewHeight - 60);\n    });\n    \n    story.start();\n}"
-    },
-    {
-      "name": "Background color",
-      "code": "ct.pixiApp.renderer.backgroundColor = 0xffffff;"
-    }
-  ],
-  "fonts": [],
-  "startroom": "d21d2804-d690-4c65-9657-7a1486b7f1d9"
-}
+ctjsVersion: 1.3.0
+notes: >-
+  There is a number of interesting places to start learning the demo:
+
+
+  — rooms' OnCreate events
+
+  — Settings > Scripts > storyEngine
+
+  — OptionButton and NextButton types, as they advance the story by player's
+  interactions.
+libs:
+  place:
+    gridX: 512
+    gridY: 512
+  fittoscreen:
+    mode: scaleFit
+  mouse: {}
+  keyboard: {}
+  keyboard.polyfill: {}
+  sound.howler: {}
+  akatemplate:
+    csscss: |-
+      body {
+          background: #fff;
+      }
+  yarn:
+    skipEmpty: true
+    magic: true
+  tween: {}
+textures:
+  - name: CatThoughtful
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 396
+      - 462
+    marginx: 0
+    marginy: 0
+    imgWidth: 793
+    imgHeight: 924
+    width: 793
+    height: 924
+    offx: 0
+    offy: 0
+    origname: i5aabca45-bbbd-4792-b3a9-ba79bd4a66fd.png
+    source: /home/comigo/Рабочий стол/CatThoughtful.png
+    shape: rect
+    left: 396
+    right: 397
+    top: 462
+    bottom: 462
+    uid: 5aabca45-bbbd-4792-b3a9-ba79bd4a66fd
+    lastmod: 1569837312550
+    padding: 1
+  - name: CatNormal
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 396
+      - 462
+    marginx: 0
+    marginy: 0
+    imgWidth: 793
+    imgHeight: 924
+    width: 793
+    height: 924
+    offx: 0
+    offy: 0
+    origname: iec75835b-2afd-4f96-9373-804b4f80a84d.png
+    source: /home/comigo/Рабочий стол/CatNormal.png
+    shape: rect
+    left: 396
+    right: 397
+    top: 462
+    bottom: 462
+    uid: ec75835b-2afd-4f96-9373-804b4f80a84d
+    lastmod: 1569837308602
+    padding: 1
+  - name: CatHappy
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 396
+      - 462
+    marginx: 0
+    marginy: 0
+    imgWidth: 793
+    imgHeight: 924
+    width: 793
+    height: 924
+    offx: 0
+    offy: 0
+    origname: i4a04ffe6-c92a-428e-9fe4-5e8d2ce9c835.png
+    source: /home/comigo/Рабочий стол/CatHappy.png
+    shape: rect
+    left: 396
+    right: 397
+    top: 462
+    bottom: 462
+    uid: 4a04ffe6-c92a-428e-9fe4-5e8d2ce9c835
+    lastmod: 1569837304762
+    padding: 1
+  - name: Button
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 512
+      - 50
+    marginx: 0
+    marginy: 0
+    imgWidth: 1024
+    imgHeight: 100
+    width: 1024
+    height: 100
+    offx: 0
+    offy: 0
+    origname: ie0cbccef-93ee-4c8a-ab19-4fcef639963c.png
+    source: /home/comigo/Рабочий стол/Button.png
+    shape: rect
+    left: 512
+    right: 512
+    top: 50
+    bottom: 50
+    uid: e0cbccef-93ee-4c8a-ab19-4fcef639963c
+    lastmod: 1569837505628
+    padding: 1
+  - name: TheGirl
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 173
+      - 800
+    marginx: 0
+    marginy: 0
+    imgWidth: 346
+    imgHeight: 800
+    width: 346
+    height: 800
+    offx: 0
+    offy: 0
+    origname: ibc65f552-4e0c-407e-aee0-9dedd834b727.png
+    source: 'C:\Users\Master\Desktop\TheGirl.png'
+    shape: rect
+    left: 173
+    right: 173
+    top: 800
+    bottom: 0
+    uid: bc65f552-4e0c-407e-aee0-9dedd834b727
+    lastmod: 1588660086800
+    padding: 1
+skeletons: []
+types:
+  - name: TheCat
+    depth: 0
+    oncreate: ''
+    onstep: this.move();
+    ondraw: ''
+    ondestroy: ''
+    uid: 9e7aec96-1ad3-4679-a248-01180284e78e
+    texture: ec75835b-2afd-4f96-9373-804b4f80a84d
+    extends: {}
+    lastmod: 1588660076302
+  - name: OptionButton
+    depth: 0
+    oncreate: |-
+      this.text = new PIXI.Text(this.option, {
+          fill: 0x446ADB,
+          fontWeight: 600,
+          fontSize: 32,
+          wordWrap: true,
+          wordWrapWidth: 900,
+          align: 'center'
+      });
+      this.text.anchor.x = this.text.anchor.y = 0.5;
+      this.addChild(this.text);
+
+      this.scale.x = this.scale.y = 0;
+      ct.tween.add({
+          obj: this.scale,
+          fields: {
+              x: 1,
+              y: 1
+          },
+          duration: 350,
+          curve: ct.tween.easeOutQuad
+      });
+          
+    onstep: |-
+      if (ct.mouse.hovers(this)) {
+          if (ct.mouse.pressed) {
+              ct.room.story.say(this.option);
+          }
+      }
+    ondraw: ''
+    ondestroy: ''
+    uid: cf5c44b2-f55a-4e18-a941-f7cdf5aecd0f
+    texture: e0cbccef-93ee-4c8a-ab19-4fcef639963c
+    extends: {}
+    lastmod: 1588660056438
+  - name: NextButton
+    depth: 0
+    oncreate: |-
+      this.text = new PIXI.Text(this.option, {
+          fill: 0x446ADB,
+          fontWeight: 600,
+          fontSize: 32,
+          wordWrap: true,
+          wordWrapWidth: 900,
+          align: 'center'
+      });
+      this.text.anchor.x = this.text.anchor.y = 0.5;
+      this.addChild(this.text);
+
+      this.scale.x = this.scale.y = 0;
+      ct.tween.add({
+          obj: this.scale,
+          fields: {
+              x: 1,
+              y: 1
+          },
+          duration: 350,
+          curve: ct.tween.easeOutQuad
+      });
+          
+    onstep: |-
+      if (ct.mouse.hovers(this)) {
+          if (ct.mouse.pressed) {
+              ct.room.story.next();
+              this.kill = true;
+          }
+      }
+    ondraw: ''
+    ondestroy: ''
+    uid: 4340a6a4-65fa-4bcf-b950-38716097f29e
+    texture: e0cbccef-93ee-4c8a-ab19-4fcef639963c
+    extends: {}
+    lastmod: 1588660050897
+  - name: Blurb
+    depth: 0
+    oncreate: |-
+      this.text = new PIXI.Text(this.blurb, {
+          fill: this.blurbColor || 0x446ADB,
+          fontSize: 32,
+          wordWrap: true,
+          wordWrapWidth: this.blurbWidth || 1024
+      });
+      this.addChild(this.text);
+      this.alpha = 0;
+      this.y += 50;
+
+      ct.tween.add({
+          obj: this,
+          fields: {
+              y: this.y - 50,
+              alpha: 1
+          },
+          duration: 500,
+          curve: ct.tween.easeOutQuad
+      })
+      .then(() => {
+          ct.room.story.next();
+      });
+    onstep: this.move();
+    ondraw: ''
+    ondestroy: ''
+    uid: 04a0aea0-f448-4920-97ad-f98906ac0d7c
+    texture: -1
+    extends: {}
+    lastmod: 1588660073072
+  - name: RestartButton
+    depth: 0
+    oncreate: |-
+      this.text = new PIXI.Text('Restart', {
+          fill: 0x446ADB,
+          fontWeight: 600,
+          fontSize: 32,
+          wordWrap: true,
+          wordWrapWidth: 900,
+          align: 'center'
+      });
+      this.text.anchor.x = this.text.anchor.y = 0.5;
+      this.addChild(this.text);
+
+      this.scale.x = this.scale.y = 0;
+      ct.tween.add({
+          obj: this.scale,
+          fields: {
+              x: 1,
+              y: 1
+          },
+          duration: 350,
+          curve: ct.tween.easeOutQuad
+      });
+          
+    onstep: |-
+      if (ct.mouse.hovers(this)) {
+          if (ct.mouse.pressed) {
+              ct.rooms.switch(ct.room.name);
+              this.kill = true;
+          }
+      }
+    ondraw: ''
+    ondestroy: ''
+    uid: 9a5d6ecd-82b4-4b26-827b-08904fbaf962
+    texture: e0cbccef-93ee-4c8a-ab19-4fcef639963c
+    extends: {}
+    lastmod: 1588660066003
+  - name: TheGirl
+    depth: 0
+    oncreate: |-
+      ct.tween.add({
+          obj: this,
+          fields: {
+              x: ct.camera.width * 0.15
+          },
+          duration: 500,
+          curve: ct.tween.easeOutQuad
+      });
+
+      this.scale.x = this.scale.y = 1.2;
+    onstep: this.move();
+    ondraw: ''
+    ondestroy: ''
+    uid: 3c91a07b-0497-4623-a244-071a4e1951d8
+    texture: bc65f552-4e0c-407e-aee0-9dedd834b727
+    extends: {}
+    lastmod: 1588660091645
+sounds:
+  - name: Hehe
+    uid: 0bd4a1eb-b5f1-4047-a8dd-56feca282803
+    origname: s0bd4a1eb-b5f1-4047-a8dd-56feca282803.mp3
+    lastmod: 1570005238168
+styles: []
+rooms:
+  - name: Main
+    oncreate: |-
+      var latestBlurb; // we will need it to accurately position text lines
+
+      ct.yarn.openFromFile('theStory.json?q=' + Math.random())
+      .then(story => {
+          this.story = story;
+          storyEngine(story); // see it in the Settings tab -> Scripts
+      });
+
+
+      this.nodeTitle = new PIXI.Text('Loading the awesomeness…', {
+          fill: 0x446ADB,
+          fontSize: 24,
+          wordWrap: true,
+          wordWrapWidth: 1024
+      });
+      this.nodeTitle.x = 100;
+      this.nodeTitle.y = 50;
+      this.addChild(this.nodeTitle);
+    onstep: ''
+    ondraw: ''
+    onleave: ''
+    width: 1920
+    height: 1080
+    backgrounds: []
+    copies:
+      - x: 1536
+        'y': 576
+        uid: 9e7aec96-1ad3-4679-a248-01180284e78e
+        tx: 0.75
+        ty: 0.75
+    tiles:
+      - depth: -10
+        tiles: []
+    uid: d21d2804-d690-4c65-9657-7a1486b7f1d9
+    thumbnail: 7a1486b7f1d9
+    gridX: 64
+    gridY: 64
+    lastmod: 1570007451105
+  - name: Micro
+    oncreate: |-
+      var latestBlurb; // we will need it to accurately position text lines
+
+      ct.yarn.openFromFile('micro.json?q=' + Math.random())
+      .then(story => {
+          this.story = story;
+          storyEngine(story); // see it in the Settings tab -> Scripts
+      });
+
+
+      this.nodeTitle = new PIXI.Text('Loading the awesomeness…', {
+          fill: 0x446ADB,
+          fontSize: 24,
+          wordWrap: true,
+          wordWrapWidth: 1024
+      });
+      this.nodeTitle.x = 100;
+      this.nodeTitle.y = 50;
+      this.addChild(this.nodeTitle);
+    onstep: ''
+    ondraw: ''
+    onleave: ''
+    width: 1920
+    height: 1080
+    backgrounds: []
+    copies:
+      - x: 1536
+        'y': 448
+        uid: 9e7aec96-1ad3-4679-a248-01180284e78e
+        tx: 0.75
+        ty: 0.75
+    tiles:
+      - depth: -10
+        tiles: []
+    uid: cb9565fc-6666-4f0c-bc6c-b49f813ea9ce
+    thumbnail: b49f813ea9ce
+    gridX: 64
+    gridY: 64
+    lastmod: 1570007519025
+  - name: Stop
+    oncreate: |-
+      var latestBlurb; // we will need it to accurately position text lines
+
+      ct.yarn.openFromFile('stop.json?q=' + Math.random())
+      .then(story => {
+          this.story = story;
+          storyEngine(story); // see it in the Settings tab -> Scripts
+      });
+
+
+      this.nodeTitle = new PIXI.Text('Loading the awesomeness…', {
+          fill: 0x446ADB,
+          fontSize: 24,
+          wordWrap: true,
+          wordWrapWidth: 1024
+      });
+      this.nodeTitle.x = 100;
+      this.nodeTitle.y = 50;
+      this.addChild(this.nodeTitle);
+    onstep: ''
+    ondraw: ''
+    onleave: ''
+    width: 1920
+    height: 1080
+    backgrounds: []
+    copies:
+      - x: 1536
+        'y': 448
+        uid: 9e7aec96-1ad3-4679-a248-01180284e78e
+        tx: 0.75
+        ty: 0.75
+    tiles:
+      - depth: -10
+        tiles: []
+    uid: 95f73a99-6402-4848-81a7-d96488130d15
+    thumbnail: d96488130d15
+    gridX: 64
+    gridY: 64
+    lastmod: 1570013323128
+  - name: Wait
+    oncreate: |-
+      var latestBlurb; // we will need it to accurately position text lines
+
+      ct.yarn.openFromFile('wait.json?q=' + Math.random())
+      .then(story => {
+          this.story = story;
+          storyEngine(story); // see it in the Settings tab -> Scripts
+      });
+
+
+      this.nodeTitle = new PIXI.Text('Loading the awesomeness…', {
+          fill: 0x446ADB,
+          fontSize: 24,
+          wordWrap: true,
+          wordWrapWidth: 1024
+      });
+      this.nodeTitle.x = 100;
+      this.nodeTitle.y = 50;
+      this.addChild(this.nodeTitle);
+    onstep: ''
+    ondraw: ''
+    onleave: ''
+    width: 1920
+    height: 1080
+    backgrounds: []
+    copies:
+      - x: 1536
+        'y': 448
+        uid: 9e7aec96-1ad3-4679-a248-01180284e78e
+        tx: 0.75
+        ty: 0.75
+    tiles:
+      - depth: -10
+        tiles: []
+    uid: 48b25b49-58b8-44ee-b4c5-cc6b9ea24c38
+    thumbnail: cc6b9ea24c38
+    gridX: 64
+    gridY: 64
+    lastmod: 1570056924685
+actions: []
+starting: 0
+settings:
+  minifyhtmlcss: false
+  minifyjs: false
+  fps: 30
+  version:
+    - 0
+    - 0
+    - 0
+  versionPostfix: ''
+  export:
+    linux: true
+    windows: true
+    mac: true
+  branding:
+    icon: -1
+    accent: '#446adb'
+    invertPreloaderScheme: true
+  desktopMode: maximized
+scripts:
+  - name: storyEngine
+    code: |-
+      var storyEngine = function (story) {
+          var latestBlurb; // used to position lines nicely, see below at story.on('options')
+          var spacing = true;
+
+          story.on('newnode', () => {
+              // Clear the previous buttons and blurbs
+              for (const button of ct.types.list['NextButton']) {
+                  button.kill = true;
+              }
+              for (const button of ct.types.list['OptionButton']) {
+                  button.kill = true;
+              }
+              for (const blurb of ct.types.list['Blurb']) {
+                  blurb.kill = true;
+              }
+              // Update the node's title
+              ct.room.nodeTitle.text = story.title;
+          });
+
+          story.on('text', text => {
+              // Yarn does not support single dialogue options, but we will fake
+              // them to add a better feeling of authority
+              if (story.character === 'Player') {
+                  // Clear the previous buttons
+                  for (const button of ct.types.list['NextButton']) {
+                      button.kill = true;
+                  }
+                  ct.types.copy('NextButton', ct.camera.width / 2, ct.camera.height - 60, {
+                      option: story.body // it will appear in button's OnCreate event as this.option
+                  });
+              } else {
+                  let blurbY = 150; // the default blurb location
+                  // Get the latest blurb's bottom line, if any
+                  if (latestBlurb && !latestBlurb.kill) {
+                      blurbY = latestBlurb.y + latestBlurb.text.height + (spacing? 32 : 0);
+                  }
+                  if (story.character === 'Girl') {
+                      latestBlurb = ct.types.copy('Blurb', 500, blurbY, {
+                          blurb: story.body, // it will appear in Blurb's OnCreate event as this.blurb
+                          blurbColor: 0xDB449A,
+                          blurbWidth: 800
+                      });
+                  } else {
+                      // Assume it is the cat's line
+                      latestBlurb = ct.types.copy('Blurb', 100, blurbY, {
+                          blurb: story.body // it will appear in Blurb's OnCreate event as this.blurb
+                      });
+                  }
+              }
+          });
+
+          story.on('options', options => {
+              let buttonY = ct.camera.height - 60;
+              for (const option of options) {
+                  ct.types.copy('OptionButton', ct.camera.width / 2, buttonY, {
+                      option: option // it will appear in button's OnCreate event as this.option
+                  });
+                  buttonY -= 120;
+              }
+          });
+
+          story.on('command', command => {
+              const cat = ct.types.list['TheCat'][0];
+              if (command === 'cat happy') {
+                  cat.tex = 'CatHappy';
+              } else if (command === 'cat thoughtful') {
+                  cat.tex = 'CatThoughtful';
+              } else if (command === 'cat normal') {
+                  cat.tex = 'CatNormal';
+              } else if (command === 'disable spacing') {
+                  spacing = false;
+              } else if (command === 'enable spacing') {
+                  spacing = true;
+              } else if (command === 'a girl walks in') {
+                  // Create it offscreen. The copy has an animation in its 
+                  // OnCreate code and will roll in 
+                  ct.types.copy('TheGirl', -200, ct.viewHeight);
+              } else if (command === 'a girl walks out') {
+                  const theGirl = ct.types.list['TheGirl'][0];
+                  ct.tween.add({
+                      obj: theGirl,
+                      fields: {
+                          x: -200
+                      },
+                      duration: 500
+                  }).then(() => {
+                      theGirl.kill = true;
+                  });
+              } else {
+                  console.warn(`Unknown command "${command}"`);
+              }
+              story.next();
+          });
+
+          // The story has enden
+          story.on('drained', () => {
+              // Clear the previous buttons and blurbs
+              for (const button of ct.types.list['NextButton']) {
+                  button.kill = true;
+              }
+              for (const button of ct.types.list['OptionButton']) {
+                  button.kill = true;
+              }
+              for (const blurb of ct.types.list['Blurb']) {
+                  blurb.kill = true;
+              }
+              ct.types.copy('RestartButton', ct.camera.width / 2, ct.camera.height - 60);
+          });
+          
+          story.start();
+      }
+  - name: Background color
+    code: ct.pixiApp.renderer.backgroundColor = 0xffffff;
+fonts: []
+startroom: d21d2804-d690-4c65-9657-7a1486b7f1d9
+emitterTandems: []

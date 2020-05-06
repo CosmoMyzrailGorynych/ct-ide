@@ -1,0 +1,34 @@
+rooms-panel
+    display block
+    padding 1em
+    overflow-x hidden
+
+.cards.rooms
+    li
+        text-align center
+        position relative
+    img
+        float none
+        max-width 13.5em
+        max-height 10em
+        margin 0 0 0.5em
+        width auto
+        height auto
+    span
+        font-family consolas, monospace
+        width 15em
+        text-overflow ellipsis
+        white-space nowrap
+        overflow hidden
+    .starting svg
+        position absolute
+        right 0.5em
+        top 0.5em
+        color warning
+    &.list
+        .starting svg
+            position static
+            margin 0 0.5rem
+            order 5
+        img
+            width auto

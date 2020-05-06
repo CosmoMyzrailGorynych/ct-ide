@@ -39,7 +39,7 @@ method-selector
         this.refreshModules = e => {
             this.inputProviders = [];
             const promises = [];
-            for (const modName in currentProject.libs) {
+            for (const modName in global.currentProject.libs) {
                 promises.push(
                     fs.readJSON(path.join(libsDir, modName, 'module.json'))
                     .then(data => {

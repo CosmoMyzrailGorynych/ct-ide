@@ -7,11 +7,26 @@
 
 Ct.js is a 2D game editor that makes its bet on good documentation, visual tools and smooth workflow.
 
+---
+
 For bugs, feature requests, developing questions, please use [GitHub issues](https://github.com/ct-js/ct-js/issues) so we can better track  them. For general support about making games, ask a question at our [discord server](https://discord.gg/CggbPkb).
+
+---
+
+## Contributors needed!
+
+Ct.js is a project maintained by CoMiGo, and programmed mainly by them as well, with little support from [dear contributors](https://github.com/ct-js/ct-js/graphs/contributors) and translators. And *it sucks!* Ct.js is a good game editor, but can be the best one, and one developer is not enough to transition it from a dream to a reality.
+
+If you are willing to participate in ct.js' future, contact me at Discord (CoMiGo#7821) or Telegram (@CoMiGo). Or jump straightly to the [main dev board](https://github.com/orgs/ct-js/projects/1) for current issues.
+
+## Support ct.js on product-hunting sites:
+
+* [Like ct.js on AlternativeTo](https://alternativeto.net/software/ct-js/)
+* [Rate ct.js on Slant in different questions](https://www.slant.co/options/30242/~ct-js-review)
 
 # Repo structure & tools
 
-* `app` — an [NW.js app](https://nwjs.io/), with its configs and static files.
+* `app` — an [Electron app](https://electronjs.org/), with its configs and static files.
     * `data`
         * `ct.release` — the ct.js game library, aka its "core"
         * `ct.libs` — catmods (modules) that ship with ct.js. Feel free to create a pull request with your module!

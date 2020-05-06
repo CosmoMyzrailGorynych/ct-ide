@@ -1,0 +1,15 @@
+{
+  "main": "ctGame.js",
+  "name": "ctjs-game",
+  "version": "0.0.0",
+  "homepage": "https://ctjs.rocks/",
+  "window": {
+    "width": 1024,
+    "height": 720,
+    "mode": "maximized",
+    "title": "ct.js game"
+  },
+  "webkit": {
+    "plugin": false
+  }
+}

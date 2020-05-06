@@ -9,11 +9,15 @@ Note that Internet Explorer, Edge and Safari do not support such events. Mobile 
 * `id` is a unique number that identifies a touch;
 * `x` is the horizontal position at which a touch occures;
 * `y` is the vertical position at which a touch occures;
+* `xui` is the horizontal position at which a touch occures in UI coordinates;
+* `yui` is the vertical position at which a touch occures in UI coordinates;
 * `r` is the size of a touch, in game pixels. Sometimes this variable is not available and is equal to `0`;
 * `xprev` is the horizontal position at which a touch occured in the previous frame;
 * `yprev` is the vertical position at which a touch occured in the previous frame.
+* `xuiprev` is the horizontal position at which a touch occured in the previous frame, but in UI coordinates;
+* `yuiprev` is the vertical position at which a touch occured in the previous frame, but in UI coordinates.
 
-There are also variables `ct.touch.x` and `ct.touch.y`. They represent the position at which a surface was pressed lastly.
+There are also variables `ct.touch.x`, `ct.touch.y`, `ct.touch.xui` and `ct.touch.yui`. They represent the position at which a surface was pressed lastly.
 
 Here, the whole process of pressing a surface with one finger (or stylus, whatever), moving it, and finally releasing is called a **touch event**.
 
@@ -33,11 +37,11 @@ You can generalize mouse and touch events by enabling a corresponding option at 
 
 ## Checking button touches
 
-`ct.touch.collide(copy, id)`, **which is dependant on `ct.place` catmod**, checks whether there is a collision between a copy and a touch event of a particular id. You can also omit `id` to check against all possible touch events.
+`ct.touch.collide(copy, id)`, **which is dependant on `ct.place` catmod**, checks whether there is a collision between a copy and a touch event of a particular id. You can also omit `id` to check against all possible touch events. `ct.touch.collideUi` does the same, but in UI coordinates.
 
-A variant of this method is `ct.touch.hovers(copy, id)`, that also checks for mouse.
+There are ariants of this method that also check for mouse, `ct.touch.hovers(copy, id)` and `ct.touch.hoversUi(copy, id)`.
 
-`ct.touch.hovers(copy)` and `ct.touch.collide(copy, id)` don't work well with just released touches (because they become inactive), and a special version of `ct.touch.hovers` exists for handling such events: `ct.touch.hovers(copy, id, true)`. You can set `id` to `false` if you don't need it.
+`ct.touch.hovers(copy)` and `ct.touch.collide(copy, id)` don't work well with just released touches (because they become inactive), and a special version of `ct.touch.hovers` exists for handling such events: `ct.touch.hovers(copy, id, true)`. You can set `id` to `false` if you don't need it. The same goes for `ct.touch.hoversUi`.
 
 As this variant combines both hover event and release one, writing a code for a button is very simple:
 

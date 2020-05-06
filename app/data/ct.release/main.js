@@ -1,4 +1,7 @@
 /* Made with ct.js http://ctjs.rocks/ */
+
+/* global CtTimer */
+
 const deadPool = []; // a pool of `kill`-ed copies for delaying frequent garbage collection
 const copyTypeSymbol = Symbol('I am a ct.js copy');
 setInterval(function () {
@@ -6,24 +9,14 @@ setInterval(function () {
 }, 1000 * 60);
 
 /**
- * @typedef ILibMeta
- *
- * @property {string} name
- * @property {string} version
- * @property {string} [info]
- * @property {Array} authors
- */
-
-/**
  * The ct.js library
  * @namespace
  */
 const ct = {
     /**
-     * An array with metadata of all the modules used in a ct.js game
-     * @type {Object.<string,ILibMeta>}
+     * A target number of frames per second. It can be interpreted as a second in timers.
+     * @type {number}
      */
-    libs: [/*@libs@*/][0],
     speed: [/*@maxfps@*/][0] || 60,
     types: {},
     snd: {},
@@ -48,6 +41,22 @@ const ct = {
      */
     delta: 1,
     /**
+     * A measure of how long a frame took time to draw, usually equal to 1 and larger on lags.
+     * For example, if it is equal to 2, it means that the previous frame took twice as much time
+     * compared to expected FPS rate.
+     *
+     * This is a version for UI elements, as it is not affected by time scaling, and thus works well
+     * both with slow-mo effects and game pause.
+     *
+     * @type {number}
+     */
+    deltaUi: 1,
+    /**
+     * The camera that outputs its view to the renderer.
+     * @type {Camera}
+     */
+    camera: null,
+    /**
      * ct.js version in form of a string `X.X.X`.
      * @type {string}
      */
@@ -67,7 +76,7 @@ const ct = {
      * @type {number}
      */
     set width(value) {
-        ct.viewWidth = ct.roomWidth = value;
+        ct.camera.width = ct.roomWidth = value;
         if (!ct.fittoscreen || ct.fittoscreen.mode === 'fastScale') {
             ct.pixiApp.renderer.resize(value, ct.height);
         }
@@ -86,7 +95,7 @@ const ct = {
      * @type {number}
      */
     set height(value) {
-        ct.viewHeight = ct.roomHeight = value;
+        ct.camera.height = ct.roomHeight = value;
         if (!ct.fittoscreen || ct.fittoscreen.mode === 'fastScale') {
             ct.pixiApp.renderer.resize(ct.width, value);
         }
@@ -96,37 +105,55 @@ const ct = {
         return value;
     },
     /**
-     * The width of the current view, in game units
+     * The width of the current view, in UI units
      * @type {number}
+     * @deprecated Since v1.3.0. See `ct.camera.width`.
      */
-    viewWidth: null,
+    get viewWidth() {
+        return ct.camera.width;
+    },
     /**
-     * The height of the current view, in game units
+     * The height of the current view, in UI units
      * @type {number}
+     * @deprecated Since v1.3.0. See `ct.camera.height`.
      */
-    viewHeight: null
+    get viewHeight() {
+        return ct.camera.height;
+    }
 };
 
 // eslint-disable-next-line no-console
-console.table({
-    '😺 Made with:': 'ct.js game editor',
-    '🙀 Version:': `v${ct.version}`,
-    '😻 Website:': 'https://ctjs.rocks/',
-});
+console.log(
+    `%c 😺 %c ct.js game editor %c v${ct.version} %c https://ctjs.rocks/ `,
+    'background: #446adb; color: #fff; padding: 0.5em 0;',
+    'background: #5144db; color: #fff; padding: 0.5em 0;',
+    'background: #446adb; color: #fff; padding: 0.5em 0;',
+    'background: #5144db; color: #fff; padding: 0.5em 0;',
+);
 
 ct.highDensity = [/*@highDensity@*/][0];
-/**
- * The PIXI.Application that runs ct.js game
- * @type {PIXI.Application}
- */
-ct.pixiApp = new PIXI.Application({
+const pixiAppSettings = {
     width: [/*@startwidth@*/][0],
     height: [/*@startheight@*/][0],
     antialias: ![/*@pixelatedrender@*/][0],
     powerPreference: 'high-performance',
     sharedTicker: true,
     sharedLoader: true
-});
+};
+try {
+    /**
+     * The PIXI.Application that runs ct.js game
+     * @type {PIXI.Application}
+     */
+    ct.pixiApp = new PIXI.Application(pixiAppSettings);
+} catch (e) {
+    console.error(e);
+    // eslint-disable-next-line no-console
+    console.warn('[ct.js] Something bad has just happened. This is usually due to hardware problems. I\'ll try to fix them now, but if the game still doesn\'t run, try including a legacy renderer in the project\'s settings.');
+    PIXI.settings.SPRITE_MAX_TEXTURES = Math.min(PIXI.settings.SPRITE_MAX_TEXTURES, 16);
+    ct.pixiApp = new PIXI.Application(pixiAppSettings);
+}
+
 PIXI.settings.ROUND_PIXELS = [/*@pixelatedrender@*/][0];
 PIXI.Ticker.shared.maxFPS = [/*@maxfps@*/][0] || 0;
 if (!ct.pixiApp.renderer.options.antialias) {
@@ -265,7 +292,7 @@ ct.u = {
      * @returns {number} The result of the interpolation
      */
     lerp(a, b, alpha) {
-        return a + (b-a)*alpha;
+        return a + (b - a) * alpha;
     },
     /**
      * Returns the position of a given value in a given range. Opposite to linear interpolation.
@@ -276,6 +303,24 @@ ct.u = {
      */
     unlerp(a, b, val) {
         return (val - a) / (b - a);
+    },
+    /**
+     * Translates a point from UI space to game space.
+     * @param {number} x The x coordinate in UI space.
+     * @param {number} y The y coordinate in UI space.
+     * @returns {Array<number>} A pair of new `x` and `y` coordinates.
+     */
+    uiToGameCoord(x, y) {
+        return ct.camera.uiToGameCoord(x, y);
+    },
+    /**
+     * Translates a point from fame space to UI space.
+     * @param {number} x The x coordinate in game space.
+     * @param {number} y The y coordinate in game space.
+     * @returns {Array<number>} A pair of new `x` and `y` coordinates.
+     */
+    gameToUiCoord(x, y) {
+        return ct.camera.gameToUiCoord(x, y);
     },
     /**
      * Tests whether a given point is inside the given rectangle (it can be either a copy or an array)
@@ -319,7 +364,7 @@ ct.u = {
      * @param {any} [arr] An optional array of properties to copy. If not specified, all the properties will be copied.
      * @returns {object} The modified destination object
      */
-    ext (o1, o2, arr) {
+    ext(o1, o2, arr) {
         if (arr) {
             for (const i in arr) {
                 if (o2[arr[i]]) {
@@ -348,22 +393,22 @@ ct.u = {
         document.getElementsByTagName('head')[0].appendChild(script);
     },
     /**
-     * Returns a Promise that resolves after the given time
+     * Returns a Promise that resolves after the given time.
+     * This timer is run in gameplay time scale, meaning that it is affected by time stretching.
      * @param {number} time Time to wait, in milliseconds
-     * @returns {Promise<void>} The promise with no data
+     * @returns {CtTimer} The timer, which you can call `.then()` to
      */
     wait(time) {
-        var room = ct.room.name;
-        return new Promise((resolve, reject) => setTimeout(() => {
-            if (ct.room.name === room) {
-                resolve();
-            } else {
-                reject({
-                    info: 'Room switch',
-                    from: 'ct.u.wait'
-                });
-            }
-        }, time));
+        return ct.timer.add(time);
+    },
+    /**
+     * Returns a Promise that resolves after the given time.
+     * This timer runs in UI time scale and is not sensitive to time stretching.
+     * @param {number} time Time to wait, in milliseconds
+     * @returns {CtTimer} The timer, which you can call `.then()` to
+     */
+    waitUi(time) {
+        return ct.timer.addUi(time);
     }
 };
 ct.u.ext(ct.u, {// make aliases
@@ -376,119 +421,97 @@ ct.u.ext(ct.u, {// make aliases
     extend: ct.u.ext
 });
 
-const removeKilledCopies = (array) => {
-    let j = 0;
-    for (let i = 0; i < array.length; i++) {
-        if (!array[i].kill) {
-            array[j++] = array[i];
+(() => {
+    const killRecursive = copy => {
+        copy.kill = true;
+        if (copy.onDestroy) {
+            ct.types.onDestroy.apply(copy);
+            copy.onDestroy.apply(copy);
         }
-    }
-
-    array.length = j;
-    return array;
-};
-const killRecursive = copy => {
-    copy.kill = true;
-    ct.types.onDestroy.apply(copy);
-    copy.onDestroy.apply(copy);
-    for (const child of copy.children) {
-        if (child[copyTypeSymbol]) {
-            killRecursive(child);
-        }
-    }
-};
-ct.loop = function(delta) {
-    ct.delta = delta;
-    ct.inputs.updateActions();
-    for (let i = 0, li = ct.stack.length; i < li; i++) {
-        ct.types.beforeStep.apply(ct.stack[i]);
-        ct.stack[i].onStep.apply(ct.stack[i]);
-        ct.types.afterStep.apply(ct.stack[i]);
-    }
-
-    ct.rooms.beforeStep.apply(ct.room);
-    ct.room.onStep.apply(ct.room);
-    ct.rooms.afterStep.apply(ct.room);
-    // copies
-    for (let i = 0; i < ct.stack.length; i++) {
-        // eslint-disable-next-line no-underscore-dangle
-        if (ct.stack[i].kill && !ct.stack[i]._destroyed) {
-            killRecursive(ct.stack[i]); // This will also allow a parent to eject children to a new container before they are destroyed as well
-            ct.stack[i].destroy({children: true});
-        }
-    }
-    for (const copy of ct.stack) {
-        // eslint-disable-next-line no-underscore-dangle
-        if (copy._destroyed) {
-            deadPool.push(copy);
-        }
-    }
-    removeKilledCopies(ct.stack);
-
-    // ct.types.list[type: String]
-    for (const i in ct.types.list) {
-        removeKilledCopies(ct.types.list[i]);
-    }
-
-    for (const cont of ct.stage.children) {
-        cont.children.sort((a, b) =>
-            ((a.depth || 0) - (b.depth || 0)) || ((a.uid || 0) - (b.uid || 0)) || 0
-        );
-    }
-    const r = ct.room;
-    if (r.follow) {
-        const speed = Math.min(1, (1-r.followDrift)*ct.delta);
-        if (r.follow.kill) {
-            delete r.follow;
-        } else if (r.center) {
-            r.x += speed * (r.follow.x + r.followShiftX - r.x - ct.viewWidth / 2);
-            r.y += speed * (r.follow.y + r.followShiftY - r.y - ct.viewHeight / 2);
-        } else {
-            let cx = 0,
-                cy = 0,
-                w = 0,
-                h = 0;
-            w = Math.min(r.borderX, ct.viewWidth / 2);
-            h = Math.min(r.borderY, ct.viewHeight / 2);
-            if (r.follow.x + r.followShiftX - r.x < w) {
-                cx = r.follow.x + r.followShiftX - r.x - w;
+        for (const child of copy.children) {
+            if (child[copyTypeSymbol]) {
+                killRecursive(child);
             }
-            if (r.follow.y + r.followShiftY - r.y < h) {
-                cy = r.follow.y + r.followShiftY - r.y - h;
-            }
-            if (r.follow.x + r.followShiftX - r.x > ct.viewWidth - w) {
-                cx = r.follow.x + r.followShiftX - r.x - ct.viewWidth + w;
-            }
-            if (r.follow.y + r.followShiftY - r.y > ct.viewHeight - h) {
-                cy = r.follow.y + r.followShiftY - r.y - ct.viewHeight + h;
-            }
-            r.x = Math.floor(r.x + speed * cx);
-            r.y = Math.floor(r.y + speed * cy);
         }
-    }
-    r.x = r.x || 0;
-    r.y = r.y || 0;
-    r.x = Math.round(r.x);
-    r.y = Math.round(r.y);
+        const stackIndex = ct.stack.indexOf(copy);
+        if (stackIndex !== -1) {
+            ct.stack.splice(stackIndex, 1);
+        }
+        if (copy.type) {
+            const typelistIndex = ct.types.list[copy.type].indexOf(copy);
+            if (typelistIndex !== -1) {
+                ct.types.list[copy.type].splice(typelistIndex, 1);
+            }
+        }
+        deadPool.push(copy);
+    };
+    const manageCamera = () => {
+        if (ct.camera) {
+            ct.camera.update(ct.delta);
+            ct.camera.manageStage();
+        }
+    };
 
-    // console.log("loop")
-    for (let i = 0, li = ct.stack.length; i < li; i++) {
-        // console.log(ct.stack[i].type);
-        ct.types.beforeDraw.apply(ct.stack[i]);
-        ct.stack[i].onDraw.apply(ct.stack[i]);
-        ct.types.afterDraw.apply(ct.stack[i]);
-        ct.stack[i].xprev = ct.stack[i].x;
-        ct.stack[i].yprev = ct.stack[i].y;
-    }
+    ct.loop = function (delta) {
+        ct.delta = delta;
+        ct.deltaUi = PIXI.Ticker.shared.elapsedMS / (1000 / (PIXI.Ticker.shared.maxFPS || 60));
+        ct.inputs.updateActions();
+        ct.timer.updateTimers();
+        for (let i = 0, li = ct.stack.length; i < li; i++) {
+            ct.types.beforeStep.apply(ct.stack[i]);
+            ct.stack[i].onStep.apply(ct.stack[i]);
+            ct.types.afterStep.apply(ct.stack[i]);
+        }
+        // There may be a number of rooms stacked on top of each other.
+        // Loop through them and filter out everything that is not a room.
+        for (const item of ct.stage.children) {
+            if (!(item instanceof Room)) {
+                continue;
+            }
+            ct.rooms.beforeStep.apply(item);
+            item.onStep.apply(item);
+            ct.rooms.afterStep.apply(item);
+        }
+        // copies
+        for (const copy of ct.stack) {
+            // eslint-disable-next-line no-underscore-dangle
+            if (copy.kill && !copy._destroyed) {
+                killRecursive(copy); // This will also allow a parent to eject children to a new container before they are destroyed as well
+                copy.destroy({children: true});
+            }
+        }
 
-    ct.rooms.beforeDraw.apply(r);
-    ct.room.onDraw.apply(r);
-    ct.rooms.afterDraw.apply(r);
+        for (const cont of ct.stage.children) {
+            cont.children.sort((a, b) =>
+                ((a.depth || 0) - (b.depth || 0)) || ((a.uid || 0) - (b.uid || 0)) || 0
+            );
+        }
 
-    ct.main.fpstick++;
-    if (ct.rooms.switching) {
-        ct.rooms.forceSwitch();
-    }
-};
+        manageCamera();
+
+        for (let i = 0, li = ct.stack.length; i < li; i++) {
+            ct.types.beforeDraw.apply(ct.stack[i]);
+            ct.stack[i].onDraw.apply(ct.stack[i]);
+            ct.types.afterDraw.apply(ct.stack[i]);
+            ct.stack[i].xprev = ct.stack[i].x;
+            ct.stack[i].yprev = ct.stack[i].y;
+        }
+
+        for (const item of ct.stage.children) {
+            if (!(item instanceof Room)) {
+                continue;
+            }
+            ct.rooms.beforeDraw.apply(item);
+            item.onDraw.apply(item);
+            ct.rooms.afterDraw.apply(item);
+        }
+
+        ct.main.fpstick++;
+        if (ct.rooms.switching) {
+            ct.rooms.forceSwitch();
+        }
+    };
+})();
+
 
 /*%load%*/

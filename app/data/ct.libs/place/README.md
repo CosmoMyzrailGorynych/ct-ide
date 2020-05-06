@@ -1,10 +1,17 @@
-Checks collisions between copies.
+Checks collisions between copies. See the "Reference" tab for the methods.
+
+
+# Collisions in sense of UI and game coordinates
+
+`ct.place` calculates collisions relative to a copy's parent. As UI layers and game layers live in different coordinates, you cannot reliably check collisions between copies of different coordinate spaces. Due to that, use different collision groups for UI elements and gameplay copies.
+
 
 # Additions to copies
 
 You can call `this.moveContinuous('CollisionGroup');` at any copy to perform precise movement with collision checks. It takes gravity into account, too, and uses the `ct.place.moveAlong` method.
 
 Additional field in the type editor "Collision group" defines the `ctype` property used in most ct.place methods.
+
 
 # Preparing types
 
@@ -22,6 +29,7 @@ this.shape = {
 It is important to create a new `shape` object and not to change existing one, because, e.g., changing `this.shape.r = 10;` will affect the graphic asset a Copy is currently using, which will change the behaviour of all other Copies.
 
 Besides the `shape` parameter, each Copy can have a `ctype` parameter. It is used for grouping Copies into different collision groups, like 'Enemies', 'HeroBullets', 'Obstacles' etc.
+
 
 # Collision shapes
 

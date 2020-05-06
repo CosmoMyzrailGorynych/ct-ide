@@ -6,6 +6,11 @@ main-menu
     bottom 0
     & > .flexrow > nav
         flex-flow row wrap
+    li
+        position relative
+#theCatMenu
+    top 100%
+    left 0
 #fullscreen
     flex 0 0 3rem
 #app
@@ -29,5 +34,5 @@ body.restored
 @media (max-width 1000px)
     #mainnav span
         display none
-    #mainnav i:first-child
+    #mainnav svg:first-child
         margin-right 0

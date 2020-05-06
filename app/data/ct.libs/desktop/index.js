@@ -1,19 +1,20 @@
-(function (ct) {
-    ct.desktop = {
-        quit() {
-            try {
+/* global nw */
+ct.desktop = {
+    quit() {
+        if (window.nw && window.nw.App) {
+            if (window.iAmInCtIdeDebugger) {
+                nw.Window.get().close();
+            } else {
                 nw.App.quit();
-                return true;
-            } catch (e) {
-                console.error('[ct.desktop] Cannot exit. Are you running in browser?');
-                return false;
             }
+            return true;
         }
-    };
-    /* global nw */
-    try {
-        ct.desktop.platform = process.platform || 'browser';
-    } catch (e) {
-        ct.desktop.platform = 'browser';
+        try {
+            require('electron').remote.getCurrentWindow().close();
+            return true;
+        } catch (e) {
+            console.error('Could not exit the game :c Are we in a browser?');
+            return false;
+        }
     }
-})(ct);
+};

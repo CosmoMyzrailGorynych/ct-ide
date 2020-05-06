@@ -15,13 +15,14 @@ project-selector
                             onclick="{updatePreview(project)}"
                             ondblclick="{loadRecentProject}"
                         )
-                            .toright
-                                i.icon-x(onclick="{forgetProject}" title="{voc.forgetProject}")
+                            .toright(onclick="{forgetProject}" title="{voc.forgetProject}")
+                                svg.feather
+                                    use(xlink:href="data/icons.svg#x")
                             span {project}
                     label.file.flexfix-footer.nmb
-                        input(type="file" ref="fileexternal" accept=".ict" onchange="{openProjectFind}")
-                        .button.wide.inline.nml.nmr
-                            i.icon.icon-folder
+                        button.wide.inline.nml.nmr(onclick="{openProjectFind}")
+                            svg.feather
+                                use(xlink:href="data/icons.svg#folder")
                             span {voc.browse}
             #newProject.inset.flexrow.flexmiddle
                 .c4.npl.npt.npb
@@ -34,22 +35,15 @@ project-selector
                         ref="projectname"
                     ).wide
                 .c3.npr.npt.npb
-                    input(
-                        type="file",
-                        ref="choosefolder",
-                        style="display:none",
-                        onchange="{chooseProjectFolder}"
-                        nwdirectory
-                        nwworkingdir="projects/ThisFolderWillHopefullyNeverExistButItWillGoInsideTheProjectsDir"
-                        nwdirectorydesc="{voc.newProject.selectProjectFolder}"
-                    )
                     button.nm.wide.inline(onclick="{openProjectFolder}") {voc.newProject.button}
     .aVersionNumber
         a(href="https://discord.gg/CggbPkb" title="{voc.discord}" onclick="{openExternal('https://discord.gg/CggbPkb')}")
-            i.icon-discord
+            svg.icon
+                use(xlink:href="data/icons.svg#discord")
         a(href="https://twitter.com/ctjsrocks" title="{voc.twitter}" onclick="{openExternal('https://twitter.com/ctjsrocks')}")
-            i.icon-twitter
-        .inlineblock v{nw.App.manifest.version}.
+            svg.icon
+                use(xlink:href="data/icons.svg#twitter")
+        .inlineblock v{ctjsVersion}.
         |
         |
         // as itch releases are always in sync with the fetched version number, let's route users to itch.io page
@@ -59,6 +53,7 @@ project-selector
     script.
         const fs = require('fs-extra'),
               path = require('path');
+        this.ctjsVersion = process.versions.ctjs;
         this.requirePath = path;
         this.namespace = 'intro';
         this.mixin(window.riotVoc);
@@ -72,7 +67,7 @@ project-selector
         this.on('unmount', () => {
             window.signals.off('hideProjectSelector', hideProjectSelector);
         });
-        this.projectSplash = '/data/img/notexture.png';
+        this.projectSplash = 'data/img/notexture.png';
         this.newVersion = false;
 
         // Loads recently opened projects
@@ -89,69 +84,28 @@ project-selector
         this.updatePreview = projectPath => e => {
             this.projectSplash = 'file://' + path.dirname(projectPath) + '/' + path.basename(projectPath, '.ict') + '/img/splash.png';
         };
-
         /**
-         * Creates a mew project.
+         * Creates a new project.
          * Technically it creates an empty project in-memory, then saves it to a directory.
          * Creates basic directories for sounds and textures.
          */
         this.newProject = async (way, codename) => {
-            var projectData = {
-                ctjsVersion: nw.App.manifest.version,
-                notes: '/* empty */',
-                libs: {
-                    place: {
-                        gridX: 512,
-                        gridY: 512
-                    },
-                    fittoscreen: {
-                        mode: "scaleFit"
-                    },
-                    mouse: {},
-                    keyboard: {},
-                    'keyboard.polyfill': {},
-                    'sound.howler': {},
-                    akatemplate: {
-                        csscss: "body {\n    background: #000;\n}"
-                    }
-                },
-                textures: [],
-                skeletons: [],
-                types: [],
-                sounds: [],
-                styles: [],
-                rooms: [],
-                actions: [],
-                starting: 0,
-                settings: {
-                    minifyhtmlcss: false,
-                    minifyjs: false,
-                    fps: 30,
-                    version: [0, 0, 0],
-                    versionPostfix: '',
-                    export: {
-                        windows64: true,
-                        windows32: true,
-                        linux64: true,
-                        linux32: true,
-                        mac64: true,
-                        debug: false
-                    }
-                }
-            };
-            fs.writeJSON(path.join(way, codename + '.ict'), projectData, function(e) {
-                if (e) {
-                    alertify.error(this.voc.unableToWriteToFolders + '\n' + e);
-                    throw e;
-                }
+            sessionStorage.showOnboarding = true;
+            const projectData = require('./data/node_requires/resources/projects/defaultProject').get();
+            const YAML = require('js-yaml');
+            const data = YAML.safeDump(projectData);
+            fs.outputFile(path.join(way, codename + '.ict'), data)
+            .catch(e => {
+                alertify.error(this.voc.unableToWriteToFolders + '\n' + e);
+                throw e;
             });
-            sessionStorage.projdir = path.join(way, codename);
+            global.projdir = path.join(way, codename);
             sessionStorage.projname = codename + '.ict';
-            await fs.ensureDir(sessionStorage.projdir + '/img');
-            fs.ensureDir(sessionStorage.projdir + '/snd');
-            fs.ensureDir(sessionStorage.projdir + '/include');
+            await fs.ensureDir(path.join(global.projdir, '/img'));
+            fs.ensureDir(path.join(global.projdir, '/snd'));
+            fs.ensureDir(path.join(global.projdir, '/include'));
             setTimeout(() => { // for some reason, it must be done through setTimeout; otherwise it fails
-                fs.copy('./data/img/notexture.png', path.join(sessionStorage.projdir + '/img/splash.png'), e => {
+                fs.copy('./data/img/notexture.png', path.join(global.projdir + '/img/splash.png'), e => {
                     if (e) {
                         alertify.error(e);
                         console.error(e);
@@ -181,8 +135,17 @@ project-selector
         /**
          * Handler for a manual search for a project folder, triggered by an input[type="file"]
          */
-        this.chooseProjectFolder = e => {
-            this.newProject(e.target.value, this.refs.projectname.value);
+        this.chooseProjectFolder = async e => {
+            const defaultProjectDir = require('./data/node_requires/resources/projects').getDefaultProjectDir();
+            const projPath = await window.showOpenDialog({
+                title: this.voc.newProject.selectProjectFolder,
+                defaultPath: defaultProjectDir,
+                buttonLabel: this.voc.newProject.saveProjectHere,
+                openDirectory: true
+            });
+            if (projPath) {
+                this.newProject(projPath, this.refs.projectname.value);
+            }
         };
 
         this.openProjectFolder = e => {
@@ -191,23 +154,28 @@ project-selector
                 alertify.error(this.voc.newProject.nameerr);
                 return;
             }
-            this.refs.choosefolder.click();
+            this.chooseProjectFolder();
         };
 
         /**
          * Handler for a manual search for a project, triggered by an input[type="file"]
          */
-        this.openProjectFind = e => {
-            var fe = this.refs.fileexternal,
-                proj = fe.value;
+        this.openProjectFind = async e => {
+            const defaultProjectDir = require('./data/node_requires/resources/projects').getDefaultProjectDir();
+            const proj = await window.showOpenDialog({
+                filter: '.ict',
+                defaultPath: defaultProjectDir
+            });
+            if (!proj) {
+                return;
+            }
             if (path.extname(proj).toLowerCase() === '.ict') {
                 window.loadProject(proj);
                 sessionStorage.projname = path.basename(proj);
-                sessionStorage.projdir = path.dirname(proj) + path.sep + path.basename(proj, '.ict');
+                global.projdir = path.dirname(proj) + path.sep + path.basename(proj, '.ict');
             } else {
                 alertify.error(languageJSON.common.wrongFormat);
             }
-            fe.value = '';
         };
 
         // Checking for updates
@@ -218,7 +186,7 @@ project-selector
             .then(data => data.json())
             .then(json => {
                 if (!json.errors) {
-                    if (nw.App.manifest.version != json.latest) {
+                    if (this.ctjsVersion != json.latest) {
                         this.newVersion = this.voc.latestVersion.replace('$1', json.latest);
                         this.update();
                     }

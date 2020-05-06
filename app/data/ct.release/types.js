@@ -4,8 +4,8 @@
 class Background extends PIXI.TilingSprite {
     constructor(bgName, frame, depth, exts) {
         exts = exts || {};
-        var width = ct.viewWidth,
-            height = ct.viewHeight;
+        var width = ct.camera.width,
+            height = ct.camera.height;
         if (exts.repeat === 'no-repeat' || exts.repeat === 'repeat-x') {
             height = ct.res.getTexture(bgName, frame || 0).orig.height * (exts.scaleY || 1);
         }
@@ -27,24 +27,31 @@ class Background extends PIXI.TilingSprite {
         if (this.scaleY) {
             this.tileScale.y = Number(this.scaleY);
         }
+        this.reposition();
     }
     onStep() {
         this.shiftX += ct.delta * this.movementX;
         this.shiftY += ct.delta * this.movementY;
     }
-    onDraw() {
+    reposition() {
+        const cameraBounds = ct.camera.getBoundingBox();
         if (this.repeat !== 'repeat-x' && this.repeat !== 'no-repeat') {
-            this.y = ct.room.y;
+            this.y = cameraBounds.y;
             this.tilePosition.y = -this.y*this.parallaxY + this.shiftY;
+            this.height = cameraBounds.height;
         } else {
-            this.y = this.shiftY + ct.room.y * (this.parallaxY - 1);
+            this.y = this.shiftY + cameraBounds.y * (this.parallaxY - 1);
         }
         if (this.repeat !== 'repeat-y' && this.repeat !== 'no-repeat') {
-            this.x = ct.room.x;
+            this.x = cameraBounds.x;
             this.tilePosition.x = -this.x*this.parallaxX + this.shiftX;
+            this.width = cameraBounds.width;
         } else {
-            this.x = this.shiftX + ct.room.x * (this.parallaxX - 1);
+            this.x = this.shiftX + cameraBounds.x * (this.parallaxX - 1);
         }
+    }
+    onDraw() {
+        this.reposition();
     }
     static onCreate() {
         void 0;
@@ -126,8 +133,11 @@ class Tileset extends PIXI.Container {
  * @class
  * @property {string} type The name of the type from which the copy was created
  * @property {IShapeTemplate} shape The collision shape of a copy
+ * @property {number} depth The relative position of a copy in a drawing stack. Higher values will draw the copy on top of those with lower ones
  * @property {number} xprev The horizontal location of a copy in the previous frame
  * @property {number} yprev The vertical location of a copy in the previous frame
+ * @property {number} xstart The starting location of a copy, meaning the point where it was created — either by placing it in a room with ct.IDE or by calling `ct.types.copy`.
+ * @property {number} ystart The starting location of a copy, meaning the point where it was created — either by placing it in a room with ct.IDE or by calling `ct.types.copy`.
  * @property {number} hspeed The horizontal speed of a copy
  * @property {number} vspeed The vertical speed of a copy
  * @property {number} gravity The acceleration that pulls a copy at each frame
@@ -145,9 +155,11 @@ const Copy = (function () {
          * @param {number} [y] The y coordinate of a new copy. Defaults to 0.
          * @param {object} [exts] An optional object with additional properties
          * that will exist prior to a copy's OnCreate event
+         * @param {PIXI.DisplayObject|Room} [container] A container to set as copy's parent before its OnCreate event. Defaults to ct.room.
          * @memberof Copy
          */
-        constructor(type, x, y, exts) {
+        constructor(type, x, y, exts, container) {
+            container = container || ct.room;
             var t;
             if (type) {
                 if (!(type in ct.types.templates)) {
@@ -164,6 +176,7 @@ const Copy = (function () {
                     super([PIXI.Texture.EMPTY]);
                 }
                 this.type = type;
+                this.parent = container;
                 if (t.extends) {
                     ct.u.ext(this, t.extends);
                 }
@@ -178,6 +191,9 @@ const Copy = (function () {
                 if (exts.tx) {
                     this.scale.x = exts.tx;
                     this.scale.y = exts.ty;
+                }
+                if (exts.tr) {
+                    this.rotation = exts.tr;
                 }
             }
             this.position.set(x || 0, y || 0);
@@ -197,6 +213,9 @@ const Copy = (function () {
                     onDestroy: t.onDestroy,
                     shape: t.texture ? ct.res.registry[t.texture].shape : {}
                 });
+                if (exts && exts.depth !== void 0) {
+                    this.depth = exts.depth;
+                }
                 if (ct.types.list[type]) {
                     ct.types.list[type].push(this);
                 } else {
@@ -208,9 +227,9 @@ const Copy = (function () {
         }
 
         /**
-         * The name of the current copy's texture
+         * The name of the current copy's texture, or -1 for an empty texture.
          * @param {string} value The name of the new texture
-         * @type {string}
+         * @type {(string|number)}
          */
         set tex(value) {
             this.textures = ct.res.getTexture(value);
@@ -292,6 +311,18 @@ const Copy = (function () {
             this.hspeed += spd * Math.cos(dir*Math.PI/-180);
             this.vspeed += spd * Math.sin(dir*Math.PI/-180);
         }
+
+        /**
+         * Returns the room that owns the current copy
+         * @returns {Room} The room that owns the current copy
+         */
+        getRoom() {
+            let parent = this.parent;
+            while (!(parent instanceof Room)) {
+                parent = parent.parent;
+            }
+            return parent;
+        }
     }
     return Copy;
 })();
@@ -333,7 +364,7 @@ const Copy = (function () {
          * @returns {Copy} the created copy.
          * @alias ct.types.copy
          */
-        make(type, x, y, exts, container) {
+        make(type, x=0, y=0, exts, container) {
             // An advanced constructor. Returns a Copy
             if (exts instanceof PIXI.Container) {
                 container = exts;
@@ -385,6 +416,21 @@ const Copy = (function () {
          */
         'with'(obj, func) {
             func.apply(obj, this);
+        },
+        /**
+         * Checks whether a given object exists in game's world.
+         * Intended to be applied to copies, but may be used with other PIXI entities.
+         * @param {Copy|Pixi.DisplayObject|any} obj The copy which existence needs to be checked.
+         * @returns {boolean} Returns `true` if a copy exists; `false` otherwise.
+         */
+        exists(obj) {
+            if (obj instanceof Copy) {
+                return !obj.kill;
+            }
+            if (obj instanceof PIXI.DisplayObject) {
+                return Boolean(obj.position);
+            }
+            return Boolean(obj);
         }
     };
     ct.types.copy = ct.types.make;

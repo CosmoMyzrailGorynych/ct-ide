@@ -9,6 +9,14 @@ const argv = minimist(process.argv.slice(2));
 
 spawnise.logs = argv.logs || false; // gulp --logs
 
+const cleanup = () => {
+    const fs = require('fs-extra');
+    return Promise.all([
+        fs.remove('./app/data/node_requires'),
+        fs.remove('./app/data/docs')
+    ]);
+};
+
 const npmInstall = path => done => {
     console.log(`Running 'npm install' for ${path}…`);
     spawnise.spawn((/^win/).test(process.platform) ? 'npm.cmd' : 'npm', ['install'], {
@@ -21,6 +29,16 @@ const npmInstall = path => done => {
     });
 };
 
+const bakeDocs = async () => {
+    const npm = (/^win/).test(process.platform) ? 'npm.cmd' : 'npm';
+    const fs = require('fs-extra');
+    await fs.remove('./app/data/docs/');
+    await spawnise.spawn(npm, ['run', 'build'], {
+        cwd: './docs'
+    });
+    await fs.copy('./docs/docs/.vuepress/dist', './app/data/docs/');
+};
+
 const updateGitSubmodules = () =>
     spawnise.spawn('git', ['submodule', 'update', '--init', '--recursive']);
 
@@ -30,7 +48,9 @@ const defaultTask = gulp.series([
         npmInstall('./'),
         npmInstall('./app'),
         npmInstall('./docs')
-    ])
+    ]),
+    cleanup,
+    bakeDocs
 ]);
 
 gulp.task('default', defaultTask);

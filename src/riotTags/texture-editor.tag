@@ -19,8 +19,10 @@ texture-editor.panel.view
                     .flexrow
                         button.wide.nml(onclick="{textureCenter}")
                             span   {voc.setcenter}
+                        .spacer
                         button.square.nmr(onclick="{textureIsometrify}" title="{voc.isometrify}")
-                            i.icon-map-pin
+                            svg.feather
+                                use(xlink:href="data/icons.svg#map-pin")
                 fieldset
                     b {voc.form}
                     label.checkbox
@@ -46,7 +48,8 @@ texture-editor.panel.view
                         br
                         input.short(type="number" value="{opts.texture.bottom}" onchange="{wire('this.texture.bottom')}" oninput="{wire('this.texture.bottom')}")
                     button.wide(onclick="{textureFillRect}")
-                        i.icon-maximize
+                        svg.feather
+                            use(xlink:href="data/icons.svg#maximize")
                         span {voc.fill}
                 fieldset(if="{opts.texture.shape === 'strip'}")
                     .flexrow.aStripPointRow(each="{point, ind in getMovableStripPoints()}")
@@ -54,7 +57,8 @@ texture-editor.panel.view
                         span   ×
                         input.short(type="number" value="{point.y}" oninput="{wire('this.texture.stripPoints.'+ ind + '.y')}")
                         button.square.inline(title="{voc.removePoint}" onclick="{removeStripPoint}")
-                            i.icon-minus
+                            svg.feather
+                                use(xlink:href="data/icons.svg#minus")
                     label.checkbox
                         input(type="checkbox" checked="{opts.texture.closedStrip}" onchange="{onClosedStripChange}" )
                         span   {voc.closeShape}
@@ -62,7 +66,8 @@ texture-editor.panel.view
                         input(type="checkbox" checked="{opts.texture.symmetryStrip}" onchange="{onSymmetryChange}")
                         span   {voc.symmetryTool}
                     button.wide(onclick="{addStripPoint}")
-                        i.icon-plus
+                        svg.feather
+                            use(xlink:href="data/icons.svg#plus")
                         span   {voc.addPoint}
                 fieldset
                     label.checkbox
@@ -70,7 +75,8 @@ texture-editor.panel.view
                         span   {voc.showmask}
             .flexfix-footer
                 button.wide(onclick="{textureSave}" title="Shift+Control+S" data-hotkey="Control+S")
-                    i.icon-save
+                    svg.feather
+                        use(xlink:href="data/icons.svg#save")
                     span {window.languageJSON.common.save}
         .texture-editor-anAtlas.tall(
             if="{opts.texture}"
@@ -106,10 +112,12 @@ texture-editor.panel.view
                     label.file(title="{voc.replacetexture}")
                         input(type="file" ref="textureReplacer" accept=".png,.jpg,.jpeg,.bmp,.gif" onchange="{textureReplace}")
                         .button.inline
-                            i.icon-folder
+                            svg.feather
+                                use(xlink:href="data/icons.svg#folder")
                             span {voc.replacetexture}
                     .button.inline(title="{voc.reimport}" if="{opts.texture.source}" onclick="{reimport}")
-                        i.icon-refresh-ccw
+                        svg.feather
+                            use(xlink:href="data/icons.svg#refresh-ccw")
             .textureview-zoom
                 div.button-stack.inlineblock
                     button#texturezoom25.inline(onclick="{textureToggleZoom(0.25)}" class="{active: zoomFactor === 0.25}") 25%
@@ -119,73 +127,86 @@ texture-editor.panel.view
                     button#texturezoom400.inline(onclick="{textureToggleZoom(4)}" class="{active: zoomFactor === 4}") 400%
         .column.column2.borderleft.tall.flexfix.nogrow.noshrink(show="{!opts.texture.tiled}")
             .flexfix-body
-                .flexrow
-                    div
-                        b {voc.cols}
-                        br
-                        input.wide(type="number" value="{opts.texture.grid[0]}" onchange="{wire('this.texture.grid.0')}" oninput="{wire('this.texture.grid.0')}")
-                    span &nbsp;
-                    div
-                        b {voc.rows}
-                        br
-                        input.wide(type="number" value="{opts.texture.grid[1]}" onchange="{wire('this.texture.grid.1')}" oninput="{wire('this.texture.grid.1')}")
-                .flexrow
-                    div
-                        b {voc.width}
-                        br
-                        input.wide(type="number" value="{opts.texture.width}" onchange="{wire('this.texture.width')}" oninput="{wire('this.texture.width')}")
-                    span &nbsp;
-                    div
-                        b {voc.height}
-                        br
-                        input.wide(type="number" value="{opts.texture.height}" onchange="{wire('this.texture.height')}" oninput="{wire('this.texture.height')}")
-                .flexrow
-                    div
-                        b {voc.marginx}
-                        br
-                        input.wide(type="number" value="{opts.texture.marginx}" onchange="{wire('this.texture.marginx')}" oninput="{wire('this.texture.marginx')}")
-                    span &nbsp;
-                    div
-                        b {voc.marginy}
-                        br
-                        input.wide(type="number" value="{opts.texture.marginy}" onchange="{wire('this.texture.marginy')}" oninput="{wire('this.texture.marginy')}")
-                .flexrow
-                    div
-                        b {voc.offx}
-                        br
-                        input.wide(type="number" value="{opts.texture.offx}" onchange="{wire('this.texture.offx')}" oninput="{wire('this.texture.offx')}")
-                    span &nbsp;
-                    div
-                        b {voc.offy}
-                        br
-                        input.wide(type="number" value="{opts.texture.offy}" onchange="{wire('this.texture.offy')}" oninput="{wire('this.texture.offy')}")
-                b {voc.frames}
-                br
-                input#textureframes.wide(type="number" value="{opts.texture.untill}" onchange="{wire('this.texture.untill')}" oninput="{wire('this.texture.untill')}")
+                fieldset
+                    .flexrow
+                        div
+                            b {voc.cols}
+                            br
+                            input.wide(type="number" value="{opts.texture.grid[0]}" onchange="{wire('this.texture.grid.0')}" oninput="{wire('this.texture.grid.0')}")
+                        span &nbsp;
+                        div
+                            b {voc.rows}
+                            br
+                            input.wide(type="number" value="{opts.texture.grid[1]}" onchange="{wire('this.texture.grid.1')}" oninput="{wire('this.texture.grid.1')}")
+                    .flexrow
+                        div
+                            b {voc.width}
+                            br
+                            input.wide(type="number" value="{opts.texture.width}" onchange="{wire('this.texture.width')}" oninput="{wire('this.texture.width')}")
+                        span &nbsp;
+                        div
+                            b {voc.height}
+                            br
+                            input.wide(type="number" value="{opts.texture.height}" onchange="{wire('this.texture.height')}" oninput="{wire('this.texture.height')}")
+                    .flexrow
+                        div
+                            b {voc.marginx}
+                            br
+                            input.wide(type="number" value="{opts.texture.marginx}" onchange="{wire('this.texture.marginx')}" oninput="{wire('this.texture.marginx')}")
+                        span &nbsp;
+                        div
+                            b {voc.marginy}
+                            br
+                            input.wide(type="number" value="{opts.texture.marginy}" onchange="{wire('this.texture.marginy')}" oninput="{wire('this.texture.marginy')}")
+                    .flexrow
+                        div
+                            b {voc.offx}
+                            br
+                            input.wide(type="number" value="{opts.texture.offx}" onchange="{wire('this.texture.offx')}" oninput="{wire('this.texture.offx')}")
+                        span &nbsp;
+                        div
+                            b {voc.offy}
+                            br
+                            input.wide(type="number" value="{opts.texture.offy}" onchange="{wire('this.texture.offy')}" oninput="{wire('this.texture.offy')}")
+                fieldset
+                    b {voc.frames}
+                    br
+                    input#textureframes.wide(type="number" value="{opts.texture.untill}" onchange="{wire('this.texture.untill')}" oninput="{wire('this.texture.untill')}")
+                fieldset
+                    b
+                        span {voc.padding}
+                        hover-hint(text="{voc.paddingNotice}")
+                    br
+                    input.wide(type="number" min="0" max="128" step="1" value="{opts.texture.padding}" onchange="{wire('this.texture.padding')}")
             .preview.bordertop.flexfix-footer
                 #preview(ref="preview" style="background-color: {previewColor};")
                     canvas(ref="grprCanvas")
                 .flexrow
                     button#textureplay.square.inline(onclick="{currentTexturePreviewPlay}")
-                        i(class="icon-{this.prevPlaying? 'pause' : 'play'}")
+                        svg.feather
+                            use(xlink:href="data/icons.svg#{prevPlaying? 'pause' : 'play'}")
                     span(ref="textureviewframe") 0 / 1
                     .filler
                     button#textureviewback.square.inline(onclick="{currentTexturePreviewBack}")
-                        i.icon-back
+                        svg.feather
+                            use(xlink:href="data/icons.svg#skip-back")
                     button#textureviewnext.square.inline.nmr(onclick="{currentTexturePreviewNext}")
-                        i.icon-next
+                        svg.feather
+                            use(xlink:href="data/icons.svg#skip-forward")
                 .flexrow
                     b {voc.speed}
                     .filler
                     input#grahpspeed.short(type="number" min="1" value="{prevSpeed}" onchange="{wire('this.prevSpeed')}" oninput="{wire('this.prevSpeed')}")
                 .relative
                     button#texturecolor.inline.wide(onclick="{changeTexturePreviewColor}")
-                        i.icon-drop
+                        svg.feather
+                            use(xlink:href="data/icons.svg#droplet")
                         span {voc.bgcolor}
                 input.color.rgb#previewbgcolor
 
     color-picker(
         ref="previewBackgroundColor" if="{changingTexturePreviewColor}"
+        hidealpha="true"
         color="{previewColor}" onapply="{updatePreviewColor}" onchanged="{updatePreviewColor}" oncancel="{cancelPreviewColor}"
     )
     script.
@@ -225,10 +246,10 @@ texture-editor.panel.view
                 console.error(e);
                 this.textureSave();
             };
-            img.src = path.join('file://', sessionStorage.projdir, '/img/', texture.origname) + '?' + Math.random();
+            img.src = path.join('file://', global.projdir, '/img/', texture.origname) + '?' + Math.random();
         });
         this.on('update', () => {
-            if (window.currentProject.textures.find(texture =>
+            if (global.currentProject.textures.find(texture =>
                 this.texture.name === texture.name && this.texture !== texture
             )) {
                 this.nameTaken = true;
@@ -247,16 +268,17 @@ texture-editor.panel.view
         });
 
         this.textureReplace = e => {
-            if (/\.(jpg|gif|png|jpeg)/gi.test(this.refs.textureReplacer.value)) {
+            const val = this.refs.textureReplacer.files[0].path;
+            if (/\.(jpg|gif|png|jpeg)/gi.test(val)) {
                 this.loadImg(
                     this.texture.uid,
-                    this.refs.textureReplacer.value,
-                    sessionStorage.projdir + '/img/i' + this.texture.uid + path.extname(this.refs.textureReplacer.value)
+                    val,
+                    global.projdir + '/img/i' + this.texture.uid + path.extname(val)
                 );
-                this.texture.source = this.refs.textureReplacer.value;
+                this.texture.source = val;
             } else {
                 alertify.error(window.languageJSON.common.wrongFormat);
-                console.log(this.refs.textureReplacer.value, 'NOT passed');
+                console.log(val, 'NOT passed');
             }
             this.refs.textureReplacer.value = '';
         };
@@ -264,7 +286,7 @@ texture-editor.panel.view
             this.loadImg(
                 this.texture.uid,
                 this.texture.source,
-                sessionStorage.projdir + '/img/i' + this.texture.uid + path.extname(this.refs.textureReplacer.value)
+                global.projdir + '/img/i' + this.texture.uid + path.extname(this.texture.source)
             );
         }
 
@@ -281,15 +303,24 @@ texture-editor.panel.view
                 image.onload = () => {
                     this.texture.imgWidth = image.width;
                     this.texture.imgHeight = image.height;
+                    if (this.texture.tiled || (
+                        this.texture.grid[0] === 1 &&
+                        this.texture.grid[1] === 1 &&
+                        this.texture.offx === 0 &&
+                        this.texture.offy === 0
+                    )) {
+                        this.texture.width = this.texture.imgWidth;
+                        this.texture.height = this.texture.imgHeight;
+                    }
                     this.texture.origname = path.basename(dest);
                     textureCanvas.img = image;
                     this.texture.lastmod = +(new Date());
-                    this.parent.imgGenPreview(dest, dest + '_prev.png', 64, () => {
+
+                    const {imgGenPreview} = require('./data/node_requires/resources/textures');
+                    imgGenPreview(dest, dest + '_prev.png', 64, () => {
                         this.update();
                     });
-                    this.parent.imgGenPreview(dest, dest + '_prev@2.png', 128, () => {
-
-                    });
+                    imgGenPreview(dest, dest + '_prev@2.png', 128, () => {});
                     setTimeout(() => {
                         this.refreshTextureCanvas();
                         this.parent.fillTextureMap();
@@ -698,8 +729,8 @@ texture-editor.panel.view
             this.parent.fillTextureMap();
             glob.modified = true;
             this.texture.lastmod = +(new Date());
-            this.textureGenPreview(sessionStorage.projdir + '/img/' + this.texture.origname + '_prev@2.png', 128);
-            this.textureGenPreview(sessionStorage.projdir + '/img/' + this.texture.origname + '_prev.png', 64)
+            this.textureGenPreview(global.projdir + '/img/' + this.texture.origname + '_prev@2.png', 128);
+            this.textureGenPreview(global.projdir + '/img/' + this.texture.origname + '_prev.png', 64)
             .then(() => {
                 this.parent.editing = false;
                 this.parent.update();
@@ -732,7 +763,7 @@ texture-editor.panel.view
                     w*k, h*k
                 );
                 var data = c.toDataURL().replace(/^data:image\/\w+;base64,/, '');
-                var buf = new Buffer(data, 'base64');
+                var buf = Buffer.from(data, 'base64');
                 fs.writeFile(destination, buf, function(err) {
                     if (err) {
                         console.log(err);

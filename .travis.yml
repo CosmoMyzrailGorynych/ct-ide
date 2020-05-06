@@ -11,9 +11,12 @@ install:
   - npm install
 
 stages:
-  - lint
-  - build
-  - deploy
+  - name: lint
+  - name: build
+  - name: pack
+    if: (branch = master) AND (tag IS present)
+  - name: deploy
+    if: (branch = master) AND (tag IS present)
 
 jobs:
   include:
@@ -25,10 +28,7 @@ jobs:
       script:
         - gulp build
       skip_cleanup: true
-    - stage: build
-      on:
-        branch: master
-        tags: true
+    - stage: pack
       script:
         - gulp -f devSetup.gulpfile.js
         - gulp packages
@@ -42,13 +42,7 @@ jobs:
           file: ./build/ctjs - $TRAVIS_TAG/ct.js $TRAVIS_TAG for *.zip
           skip_cleanup: true
           draft: true
-          on:
-            tags: true
-            branch: master
         # Push to comigo.itch.io/ct
         - provider: script
           script: gulp deployOnly
           skip_cleanup: true
-          on:
-            tags: true
-            branch: master
