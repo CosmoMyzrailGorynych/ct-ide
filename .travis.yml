@@ -14,9 +14,9 @@ stages:
   - name: lint
   - name: build
   - name: pack
-    if: (branch = master) AND (tag IS present)
+    if: tag IS present
   - name: deploy
-    if: (branch = master) AND (tag IS present)
+    if: tag IS present
 
 jobs:
   include:
@@ -42,7 +42,11 @@ jobs:
           file: ./build/ctjs - $TRAVIS_TAG/ct.js $TRAVIS_TAG for *.zip
           skip_cleanup: true
           draft: true
+          on:
+            all_branches: true
         # Push to comigo.itch.io/ct
         - provider: script
           script: gulp deployOnly
           skip_cleanup: true
+          on:
+            all_branches: true
