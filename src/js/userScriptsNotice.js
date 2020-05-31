@@ -1,4 +1,4 @@
-(function () {
+(function userScriptsNotice() {
     try {
         // Is it a ct.js in a dev folder?
         require('gulp');

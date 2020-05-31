@@ -42,9 +42,9 @@ const stringifyRooms = proj => {
                             const texture = glob.texturemap[tile.texture].g;
                             layer.tiles.push({
                                 texture: texture.name,
-                                frame: tile.grid[0] + x + (y+tile.grid[1])*texture.grid[0],
-                                x: tile.x + x*(texture.width + texture.marginx),
-                                y: tile.y + y*(texture.height + texture.marginy),
+                                frame: tile.grid[0] + x + (y + tile.grid[1]) * texture.grid[0],
+                                x: tile.x + x * (texture.width + texture.marginx),
+                                y: tile.y + y * (texture.height + texture.marginy),
                                 width: texture.width,
                                 height: texture.height
                             });

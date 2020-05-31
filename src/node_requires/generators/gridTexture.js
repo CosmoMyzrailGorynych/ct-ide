@@ -1,5 +1,4 @@
-const generateCanvasGrid = function(size, color) {
-
+const generateCanvasGrid = function (size, color) {
     color = color || '#666';
     if (typeof size === 'number') {
         size = [size, size];
@@ -24,7 +23,7 @@ const generateCanvasGrid = function(size, color) {
     return canvas;
 };
 
-const generatePixiTextureGrid = function(size, color) {
+const generatePixiTextureGrid = function (size, color) {
     const canvas = generateCanvasGrid(size, color);
     return PIXI.Texture.from(canvas);
 };

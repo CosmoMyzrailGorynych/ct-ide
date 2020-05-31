@@ -83,7 +83,7 @@ modules-panel.panel.view
                                 use(xlink:href="data/icons.svg#alert-triangle")
                             span   {dependency}
 
-                    #modinfohtml(if="{currentModuleHelp}" oncontextmenu="{onContextMenu}")
+                    #modinfohtml(if="{currentModuleHelp}")
                         raw(ref="raw" content="{currentModuleHelp}")
                     h1(if="{currentModuleLicense}") {voc.license}
                     pre(if="{currentModuleLicense}")
@@ -133,7 +133,7 @@ modules-panel.panel.view
                             div(class="desc" if="{field.help}")
                                 raw(ref="raw" content="{md.render(field.help)}")
                 #modulehelp.tabbed.nbt(show="{tab === 'modulehelp'}" if="{currentModuleDocs}")
-                    raw(ref="raw" content="{currentModuleDocs}" oncontextmenu="{onContextMenu}")
+                    raw(ref="raw" content="{currentModuleDocs}")
                 #modulelogs.tabbed.nbt(show="{tab === 'modulelogs'}" if="{currentModuleLogs}")
                     h1 {voc.logs2}
                     raw(ref="raw" content="{currentModuleLogs}")
@@ -145,12 +145,14 @@ modules-panel.panel.view
         const md = require('markdown-it')({
             html: false,
             linkify: true,
-            highlight: function (str, lang) {
+            highlight: function highlight(str, lang) {
                 const hljs = require('highlight.js');
                 if (lang && hljs.getLanguage(lang)) {
                     try {
                         return hljs.highlight(lang, str).value;
-                    } catch (__) {}
+                    } catch (oO) {
+                        void 0;
+                    }
                 }
                 return ''; // use external default escaping
             }
@@ -161,7 +163,6 @@ modules-panel.panel.view
         this.mixin(window.riotWired);
         this.namespace = 'modules';
         this.mixin(window.riotVoc);
-        var exec = path.dirname(process.execPath).replace(/\\/g,'/');
 
         this.currentModule = false;
         this.currentModuleHelp = '';
@@ -169,14 +170,14 @@ modules-panel.panel.view
         this.currentModuleLicense = '';
 
         this.tab = 'moduleinfo';
-        this.changeTab = tab => e => {
+        this.changeTab = tab => () => {
             this.tab = tab;
         };
 
         this.allModules = [];
         this.on('update', () => {
             this.enabledModules = [];
-            for (let i in global.currentProject.libs) {
+            for (const i in global.currentProject.libs) {
                 this.enabledModules.push(i);
             }
         });
@@ -190,20 +191,21 @@ modules-panel.panel.view
             const typedefPath = path.join(libsDir, moduleName, 'types.d.ts');
             fs.pathExists(typedefPath)
             .then(exists => {
+                const ts = monaco.languages.typescript;
                 if (!exists) {
                     // generate dummy typedefs if none were provided by the module
-                    const data = `declare namespace ct {\n/** Sorry, no in-code docs for this module :c */\n var ${moduleName}: any; }`;
+                    const catmodTypedefs = `declare namespace ct {\n/** Sorry, no in-code docs for this module :c */\n var ${moduleName}: any; }`;
                     glob.moduleTypings[moduleName] = [
-                        monaco.languages.typescript.javascriptDefaults.addExtraLib(data),
-                        monaco.languages.typescript.typescriptDefaults.addExtraLib(data)
+                        ts.javascriptDefaults.addExtraLib(catmodTypedefs),
+                        ts.typescriptDefaults.addExtraLib(catmodTypedefs)
                     ];
                     return;
                 }
                 fs.readFile(typedefPath, 'utf8')
-                .then(data => {
+                .then(catmodTypedefs => {
                     glob.moduleTypings[moduleName] = [
-                        monaco.languages.typescript.javascriptDefaults.addExtraLib(data),
-                        monaco.languages.typescript.typescriptDefaults.addExtraLib(data)
+                        ts.javascriptDefaults.addExtraLib(catmodTypedefs),
+                        ts.typescriptDefaults.addExtraLib(catmodTypedefs)
                     ];
                 });
             });
@@ -232,6 +234,23 @@ modules-panel.panel.view
             this.renderModule(this.allModules[0])();
             this.update();
         });
+
+        const addDefaults = moduleName => {
+            for (const field of this.currentModule.fields) {
+                if (!global.currentProject.libs[moduleName][field.key]) {
+                    if (field.default) {
+                        global.currentProject.libs[moduleName][field.key] = field.default;
+                    } else if (field.type === 'number') {
+                        global.currentProject.libs[moduleName][field.key] = 0;
+                    } else if (field.type === 'checkbox') {
+                        global.currentProject.libs[moduleName][field.key] = false;
+                    } else {
+                        global.currentProject.libs[moduleName][field.key] = '';
+                    }
+                }
+            }
+        };
+
         this.toggleModule = moduleName => e => {
             if (global.currentProject.libs[moduleName]) {
                 delete global.currentProject.libs[moduleName];
@@ -240,30 +259,16 @@ modules-panel.panel.view
                 global.currentProject.libs[moduleName] = {};
                 tryLoadTypedefs(moduleName);
                 // 'Settings' page
-                if (this.currentModule.fields && global.currentProject.libs[name]) {
-                    for (const field of this.currentModule.fields) {
-                        if (!global.currentProject.libs[name][field.key]) {
-                            if (field.default) {
-                                global.currentProject.libs[name][field.key] = field.default;
-                            } else {
-                                if (field.type == 'number') {
-                                    global.currentProject.libs[name][field.key] = 0;
-                                } else if (field.type == 'checkbox') {
-                                    global.currentProject.libs[name][field.key] = false;
-                                } else {
-                                    global.currentProject.libs[name][field.key] = '';
-                                }
-                            }
-                        }
-                    }
+                if (this.currentModule.fields) {
+                    addDefaults(moduleName);
                 }
             }
             this.renderModule(moduleName)(e);
             window.signals.trigger('modulesChanged');
             glob.modified = true;
         };
-        this.renderModule = name => e => {
-            fs.readJSON(path.join(libsDir, name, 'module.json'), (err, data) => {
+        this.renderModule = name => () => {
+            fs.readJSON(path.join(libsDir, name, 'module.json'), (err, catmod) => {
                 if (err) {
                     alertify.error(err);
                     if (name in global.currentProject.libs) {
@@ -273,7 +278,7 @@ modules-panel.panel.view
                     this.update();
                     return;
                 }
-                this.currentModule = data;
+                this.currentModule = catmod;
                 this.currentModuleName = name;
 
                 if (fs.pathExistsSync(path.join(libsDir, name, 'README.md'))) {
@@ -310,21 +315,8 @@ modules-panel.panel.view
             this.tab = 'moduleinfo';
         };
 
-        this.onContextMenu = e => {
-            console.log(e);
-        };
-        this.contextMenu = {
-            items: [{
-                label: window.languageJSON.common.copy,
-                icon: 'copy',
-                click: () => {
-
-                }
-            }]
-        };
-
-        this.importModules = async (e) => {
-            const files = e.target.files;
+        this.importModules = e => {
+            const {files} = e.target;
             if (files.length === 0) {
                 return;
             }
@@ -335,10 +327,11 @@ modules-panel.panel.view
             const entries = [];
             fs.createReadStream(value)
             .pipe(unzipper.Parse())
-            .on('entry', async (entry) => {
+            .on('entry', async entry => {
                 const fileName = entry.path.toLowerCase();
                 if (path.basename(fileName) === 'module.json') {
-                    // okay, we consumes the entry by buffering the contents into memory.
+                    // consume the entry by buffering the contents into memory.
+                    // eslint-disable-next-line require-atomic-updates
                     const content = entry.tmpContent = await entry.buffer();
                     const json = JSON.parse(content.toString());
                     moduleName = json.main.packageName || path.basename(value, '.zip');
@@ -351,11 +344,11 @@ modules-panel.panel.view
             })
             .on('finish', async () => {
                 if (moduleName !== null) {
-                    // okay, let's create parent directory
+                    // create a parent directory
                     await fs.ensureDir(path.join(libsDir, moduleName));
-                    for (let entry of entries) {
+                    for (const entry of entries) {
                         const filePath = entry.path;
-                        const indexOf = filePath.indexOf('/')
+                        const indexOf = filePath.indexOf('/');
                         if (filePath === parentName) {
                             continue;
                         }
@@ -368,21 +361,22 @@ modules-panel.panel.view
                         } else {
                             entry.path = `${moduleName}/${filePath}`;
                         }
-                        entry.path =  path.join(libsDir, entry.path);
+                        entry.path = path.join(libsDir, entry.path);
                          // 'Directory' or 'File'
                         if (entry.type === 'Directory') {
+                            // eslint-disable-next-line no-await-in-loop
                             await fs.ensureDir(entry.path);
                         } else {
                             const fileName = entry.path.toLowerCase();
-                            if (fileName.endsWith("module.json")) {
+                            if (fileName.endsWith('module.json')) {
                                 const content = entry.tmpContent;
+                                // eslint-disable-next-line no-await-in-loop
                                 await fs.writeFile(entry.path, content);
                             } else {
                                 entry.pipe(fs.createWriteStream(entry.path))
                                 .on('error', (e) => {
                                     alertify.error(e);
-                                    console.log(e);
-                                    return;
+                                    console.error(e);
                                 });
                             }
                         }

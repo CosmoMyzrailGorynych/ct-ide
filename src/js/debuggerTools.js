@@ -1,7 +1,7 @@
-(function () {
+(function ctDebuggerTools() {
     var previewWindow;
 
-    window.openDebugger = function(link) {
+    window.openDebugger = function openDebugger(link) {
         if (previewWindow) {
             var nwWin = nw.Window.get(previewWindow);
             nwWin.show();
@@ -14,7 +14,7 @@
             new_instance: false,
             id: 'ctPreview',
             title: 'ct.IDE Debugger'
-        }, function(newWin) {
+        }, function onDebuggerOpen(newWin) {
             var wind = newWin.window;
             previewWindow = wind;
             newWin.once('loaded', () => {

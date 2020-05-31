@@ -74,7 +74,8 @@ debugger-screen(class="{opts.class} {flexrow: verticalLayout, flexcol: !vertical
         this.width = Math.max(minSizeW, Math.min(getMaxSizeW(), localStorage.debuggerWidth || 500));
         this.height = Math.max(minSizeH, Math.min(getMaxSizeH(), localStorage.debuggerHeight || 300));
 
-        // iframes and webviews capture mousemove events needed for resize gutter; this overlay will prevent it
+        // iframes and webviews capture mousemove events needed for resize gutter;
+        // this overlay will prevent it
         const catcher = document.createElement('div');
         const s = catcher.style;
         s.position = 'fixed';
@@ -82,9 +83,9 @@ debugger-screen(class="{opts.class} {flexrow: verticalLayout, flexcol: !vertical
         s.zIndex = 100;
         s.cursor = 'ew-resize';
 
-        this.gutterMouseDown = e => {
+        this.gutterMouseDown = () => {
             this.dragging = true;
-            s.cursor = this.verticalLayout? 'ew-resize' : 'ns-resize';
+            s.cursor = this.verticalLayout ? 'ew-resize' : 'ns-resize';
             document.body.appendChild(catcher);
         };
         document.addEventListener('mousemove', e => {
@@ -112,11 +113,11 @@ debugger-screen(class="{opts.class} {flexrow: verticalLayout, flexcol: !vertical
 
         /* Bootstrap preview and debug views */
         this.on('mount', () => {
-            this.refs.gameView.addEventListener('contentload', e => {
+            this.refs.gameView.addEventListener('contentload', () => {
                 this.refs.gameView.showDevTools(true, this.refs.devtoolsView);
                 setTimeout(() => {
                     this.refs.devtoolsView.executeScript({
-                        code: `DevToolsAPI.showPanel('console')`,
+                        code: 'DevToolsAPI.showPanel(\'console\')',
                         mainWorld: true
                     });
                 }, 1000);
@@ -136,7 +137,7 @@ debugger-screen(class="{opts.class} {flexrow: verticalLayout, flexcol: !vertical
             const menu = new nw.Menu();
             // Query for in-game rooms
             this.refs.gameView.executeScript({
-                code: `JSON.stringify(Object.keys(ct.rooms.templates));`,
+                code: 'JSON.stringify(Object.keys(ct.rooms.templates));',
                 mainWorld: true
             }, rooms => {
                 JSON.parse(rooms).map(room => ({
@@ -144,13 +145,14 @@ debugger-screen(class="{opts.class} {flexrow: verticalLayout, flexcol: !vertical
                     click: () => {
                         this.switchRoom(room);
                     }
-                })).forEach(entry => menu.append(new nw.MenuItem(entry)));
+                }))
+                .forEach(entry => menu.append(new nw.MenuItem(entry)));
                 menu.popup(e.clientX, e.clientY);
             });
         };
 
         /* Buttons' event listeners */
-        this.togglePause = e => {
+        this.togglePause = () => {
             this.refs.gameView.executeScript({
                 code: `
                     if (PIXI.Ticker.shared.started) {
@@ -162,7 +164,7 @@ debugger-screen(class="{opts.class} {flexrow: verticalLayout, flexcol: !vertical
                 `,
                 mainWorld: true
             }, paused => {
-                if (paused == 'false') {
+                if (paused === 'false' || paused === false) {
                     this.gamePaused = false;
                 } else {
                     this.gamePaused = true;
@@ -170,16 +172,16 @@ debugger-screen(class="{opts.class} {flexrow: verticalLayout, flexcol: !vertical
                 this.update();
             });
         };
-        this.restartGame = e => {
+        this.restartGame = () => {
             this.refs.gameView.reload();
         };
-        this.restartRoom = e => {
+        this.restartRoom = () => {
             this.refs.gameView.executeScript({
                 code: 'ct.rooms.switch(ct.room.name);',
                 mainWorld: true
             });
         };
-        this.makeScreenshot = e => {
+        this.makeScreenshot = () => {
             this.refs.gameView.executeScript({
                 code: `
                     var renderTexture = PIXI.RenderTexture.create({
@@ -202,24 +204,24 @@ debugger-screen(class="{opts.class} {flexrow: verticalLayout, flexcol: !vertical
                     if (!filename) {
                         return;
                     }
-                    const data = dataURL.replace(/^data:image\/\w+;base64,/, '');
-                    const buf = Buffer.from(data, 'base64');
+                    const screenshotBase64 = dataURL.replace(/^data:image\/\w+;base64,/, '');
+                    const buf = Buffer.from(screenshotBase64, 'base64');
                     const stream = fs.createWriteStream(filename);
                     stream.end(buf);
-                })
+                });
             });
         };
-        this.toggleFullscreen = e => {
+        this.toggleFullscreen = () => {
             this.gameFullscreen = !this.gameFullscreen;
             if (this.gameFullscreen) {
-                this.previewWindow.enterFullscreen()
+                this.previewWindow.enterFullscreen();
             } else {
                 this.previewWindow.leaveFullscreen();
             }
         };
-        this.openQrCodes = e => {
+        this.openQrCodes = () => {
             this.showNetworkingModal = !this.showNetworkingModal;
         };
-        this.openExternal = e => {
+        this.openExternal = () => {
             nw.Shell.openExternal(window.gameLink);
         };

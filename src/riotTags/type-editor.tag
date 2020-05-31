@@ -86,12 +86,12 @@ type-editor.panel.view.flexrow
         this.refreshExtends = () => {
             this.libExtends = [];
             for (const lib in global.currentProject.libs) {
-                fs.readJSON(path.join(libsDir, lib, 'module.json'), (err, data) => {
+                fs.readJSON(path.join(libsDir, lib, 'module.json'), (err, moduleJson) => {
                     if (err) {
                         return;
                     }
-                    if (data.typeExtends) {
-                        this.libExtends.push(...data.typeExtends);
+                    if (moduleJson.typeExtends) {
+                        this.libExtends.push(...moduleJson.typeExtends);
                     }
                     this.update();
                 });
@@ -108,19 +108,19 @@ type-editor.panel.view.flexrow
 
         const tabToEditor = tab => {
             tab = tab || this.tab;
-            if (this.tab === 'typeonstep') {
+            if (tab === 'typeonstep') {
                 return this.typeonstep;
-            } else if (this.tab === 'typeondraw') {
+            } else if (tab === 'typeondraw') {
                 return this.typeondraw;
-            } else if (this.tab === 'typeondestroy') {
+            } else if (tab === 'typeondestroy') {
                 return this.typeondestroy;
-            } else if (this.tab === 'typeoncreate') {
+            } else if (tab === 'typeoncreate') {
                 return this.typeoncreate;
             }
             return null;
         };
 
-        this.changeTab = tab => e => {
+        this.changeTab = tab => () => {
             this.tab = tab;
             const editor = tabToEditor(tab);
             setTimeout(() => {
@@ -181,16 +181,16 @@ type-editor.panel.view.flexrow
                     })
                 );
 
-                this.typeoncreate.onDidChangeModelContent(e => {
+                this.typeoncreate.onDidChangeModelContent(() => {
                     this.type.oncreate = this.typeoncreate.getPureValue();
                 });
-                this.typeonstep.onDidChangeModelContent(e => {
+                this.typeonstep.onDidChangeModelContent(() => {
                     this.type.onstep = this.typeonstep.getPureValue();
                 });
-                this.typeondraw.onDidChangeModelContent(e => {
+                this.typeondraw.onDidChangeModelContent(() => {
                     this.type.ondraw = this.typeondraw.getPureValue();
                 });
-                this.typeondestroy.onDidChangeModelContent(e => {
+                this.typeondestroy.onDidChangeModelContent(() => {
                     this.type.ondestroy = this.typeondestroy.getPureValue();
                 });
                 this.typeoncreate.focus();
@@ -198,8 +198,7 @@ type-editor.panel.view.flexrow
         });
         this.on('update', () => {
             if (global.currentProject.types.find(type =>
-                this.type.name === type.name && this.type !== type
-            )) {
+                this.type.name === type.name && this.type !== type)) {
                 this.nameTaken = true;
             } else {
                 this.nameTaken = false;
@@ -213,10 +212,10 @@ type-editor.panel.view.flexrow
             this.typeondestroy.dispose();
         });
 
-        this.changeSprite = e => {
+        this.changeSprite = () => {
             this.selectingTexture = true;
         };
-        this.applyTexture = texture => e => {
+        this.applyTexture = texture => () => {
             if (texture === -1) {
                 this.type.texture = -1;
             } else {
@@ -229,11 +228,11 @@ type-editor.panel.view.flexrow
             this.parent.fillTypeMap();
             this.update();
         };
-        this.cancelTexture = e => {
+        this.cancelTexture = () => {
             this.selectingTexture = false;
             this.update();
         };
-        this.typeSave = e => {
+        this.typeSave = () => {
             if (this.nameTaken) {
                 // animate the error notice
                 require('./data/node_requires/jellify')(this.refs.errorNotice);
@@ -241,9 +240,10 @@ type-editor.panel.view.flexrow
                 return false;
             }
             glob.modified = true;
-            this.type.lastmod = +(new Date());
+            this.type.lastmod = Number(new Date());
             this.parent.editingType = false;
             this.parent.fillTypeMap();
             this.parent.update();
             window.signals.trigger('typesChanged');
+            return true;
         };

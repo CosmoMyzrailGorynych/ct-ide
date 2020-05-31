@@ -654,7 +654,7 @@ license-panel.modal.pad
     script.
         this.namespace = 'licensepanel';
         this.mixin(window.riotVoc);
-        this.closeModal = e => {
+        this.closeModal = () => {
             this.parent.showLicense = false;
             this.parent.update();
         };

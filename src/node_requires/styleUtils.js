@@ -3,7 +3,7 @@ const mod = {
         const o = {
             fontFamily: s.font.family,
             fontSize: s.font.size,
-            fontStyle: s.font.italic? 'italic' : 'normal',
+            fontStyle: s.font.italic ? 'italic' : 'normal',
             fontWeight: s.font.weight,
             align: s.font.halign,
             lineJoin: 'round',

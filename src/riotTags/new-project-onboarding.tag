@@ -32,18 +32,18 @@ new-project-onboarding
         this.namespace = 'onboarding';
         this.mixin(window.riotVoc);
 
-        this.close = e => {
+        this.close = () => {
             delete sessionStorage.showOnboarding;
             this.parent.update();
         };
 
-        this.openDocs = link => e => {
+        this.openDocs = link => () => {
             window.signals.trigger('openDocs', {
                 path: link || '/'
             });
             this.close();
         };
 
-        this.toggleOnboarding = e => {
-            localStorage.showOnboarding = localStorage.showOnboarding !== 'off'? 'off' : 'on';
+        this.toggleOnboarding = () => {
+            localStorage.showOnboarding = localStorage.showOnboarding !== 'off' ? 'off' : 'on';
         };

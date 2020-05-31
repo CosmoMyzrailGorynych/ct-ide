@@ -1,4 +1,4 @@
-(function () {
+(function gulpWatch() {
     try {
         var reloading = false;
         const gulp = require('gulp');
@@ -9,5 +9,7 @@
             }
         };
         gulp.watch(['./data/theme*.css', './index.html', './data/bundle.js', './data/js/**.js', './data/node_requires/**/*.js'], reload);
-    } catch (e) { void 0; }
+    } catch (e) {
+        void 0;
+    }
 })();

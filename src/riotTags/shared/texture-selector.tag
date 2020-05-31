@@ -50,19 +50,15 @@ texture-selector.panel.view
         this.updateList = () => {
             this.textures = [...global.currentProject.textures];
             if (this.sort === 'name') {
-                this.textures.sort((a, b) => {
-                    return a.name.localeCompare(b.name);
-                });
+                this.textures.sort((a, b) => a.name.localeCompare(b.name));
             } else {
-                this.textures.sort((a, b) => {
-                    return b.lastmod - a.lastmod;
-                });
+                this.textures.sort((a, b) => b.lastmod - a.lastmod);
             }
             if (this.sortReverse) {
                 this.textures.reverse();
             }
         };
-        this.switchSort = sort => e => {
+        this.switchSort = sort => () => {
             if (this.sort === sort) {
                 this.sortReverse = !this.sortReverse;
             } else {

@@ -39,25 +39,25 @@ sound-editor.panel.view
         this.playing = false;
         this.sound = this.opts.sound;
         this.on('update', () => {
-            if (global.currentProject.sounds.find(sound =>
-                this.sound.name === sound.name && this.sound !== sound
-            )) {
+            const sound = global.currentProject.sounds.find(sound =>
+                this.sound.name === sound.name && this.sound !== sound);
+            if (sound) {
                 this.nameTaken = true;
             } else {
                 this.nameTaken = false;
             }
-        })
-        this.notifyPlayerPlays = e => {
+        });
+        this.notifyPlayerPlays = () => {
             this.playing = true;
         };
-        this.soundSave = e => {
+        this.soundSave = () => {
             if (this.playing) {
                 this.togglePlay();
             }
             this.parent.editing = false;
             this.parent.update();
         };
-        this.togglePlay = function () {
+        this.togglePlay = function togglePlay() {
             if (this.playing) {
                 this.playing = false;
                 this.refs.audio.pause();
@@ -78,7 +78,7 @@ sound-editor.panel.view
                     this.sound.name = path.basename(val, path.extname(val));
                 }
                 this.sound.origname = 's' + this.sound.uid + path.extname(val);
-                this.sound.lastmod = +(new Date());
+                this.sound.lastmod = Number(new Date());
                 this.update();
             });
             this.refs.inputsound.value = '';

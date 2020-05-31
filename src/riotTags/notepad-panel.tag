@@ -32,7 +32,7 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
         this.opened = false;
         this.namespace = 'notepad';
         this.mixin(window.riotVoc);
-        this.notepadToggle = function() {
+        this.notepadToggle = function notepadToggle() {
             this.opened = !this.opened;
         };
 
@@ -43,7 +43,7 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
         });
 
         this.tab = 'notepadlocal';
-        this.changeTab = tab => e => {
+        this.changeTab = tab => () => {
             this.tab = tab;
         };
         this.on('update', () => {
@@ -64,11 +64,10 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
             window.removeEventListener('resize', updateEditorSize);
         });
 
-        this.getIfDarkTheme = () => {
-            return localStorage.UItheme === 'Night' || localStorage.UItheme === 'Horizon';
-        };
+        this.getIfDarkTheme = () =>
+            localStorage.UItheme === 'Night' || localStorage.UItheme === 'Horizon';
 
-        this.backToHome = e => {
+        this.backToHome = () => {
             this.refs.helpIframe.contentWindow.location = `http://localhost:${this.server.address().port}/`;
         };
 
@@ -85,11 +84,11 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
                     language: 'typescript'
                 });
 
-                this.notepadlocal.onDidChangeModelContent((e) => {
+                this.notepadlocal.onDidChangeModelContent(() => {
                     global.currentProject.notes = this.notepadlocal.getValue();
                     glob.modified = true;
                 });
-                this.notepadglobal.onDidChangeModelContent((e) => {
+                this.notepadglobal.onDidChangeModelContent(() => {
                     localStorage.notes = this.notepadglobal.getValue();
                 });
                 this.notepadglobal.setValue(localStorage.notes);
@@ -107,8 +106,8 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
             serverInfo: 'ctjsgameeditor'
         });
 
-        this.server = require('http').createServer(function (request, response) {
-            request.addListener('end', function () {
+        this.server = require('http').createServer(function staticServerHandler(request, response) {
+            request.addListener('end', function serveFile() {
                 fileServer.serve(request, response);
             }).resume();
         });

@@ -1,6 +1,6 @@
 const textures = require('../resources/textures');
 
-const stringifyTypes = function(proj) {
+const stringifyTypes = function (proj) {
     /* Stringify types */
     var types = '';
     for (const k in proj.types) {
@@ -8,7 +8,7 @@ const stringifyTypes = function(proj) {
         types += `
 ct.types.templates["${type.name}"] = {
     depth: ${type.depth},
-    ${type.texture !== -1? 'texture: "'+ textures.getTextureFromId(type.texture).name + '",' : ''}
+    ${type.texture !== -1 ? 'texture: "' + textures.getTextureFromId(type.texture).name + '",' : ''}
     onStep: function () {
         ${type.onstep}
     },
@@ -23,10 +23,11 @@ ct.types.templates["${type.name}"] = {
     },
     extends: ${JSON.stringify(type.extends || {})}
 };
-ct.types.list['${type.name}'] = [];`
-        ;
+ct.types.list['${type.name}'] = [];`;
     }
     return types;
 };
 
-module.exports = {stringifyTypes};
+module.exports = {
+    stringifyTypes
+};

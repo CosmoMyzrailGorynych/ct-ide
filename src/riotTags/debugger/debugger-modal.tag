@@ -15,7 +15,7 @@ debugger-modal.view
         Object.keys(interfaces).forEach(ifname => {
             var alias = 0;
             interfaces[ifname].forEach(iface => {
-                if ('IPv4' !== iface.family || iface.internal !== false) {
+                if (iface.family !== 'IPv4' || iface.internal !== false) {
                     // skip over internal (i.e. 127.0.0.1) and non-ipv4 addresses
                     return;
                 }
@@ -40,18 +40,19 @@ debugger-modal.view
             Day: ['#446adb', '#ffffff'],
             Night: ['#121822', '#44dbb5'],
             Horizon: ['#1C1E26', '#E95378']
-        }
+        };
         this.on('mount', () => {
             setTimeout(() => {
-                for (div of (Array.isArray(this.refs.qr)? this.refs.qr : [this.refs.qr])) {
-                    console.log(div);
-                    var qrcode = new QRCode(div, {
+                for (const div of (Array.isArray(this.refs.qr) ? this.refs.qr : [this.refs.qr])) {
+                    const themedColors = palette[localStorage.UItheme];
+                    // eslint-disable-next-line no-new
+                    new QRCode(div, {
                         text: div.getAttribute('data-address'),
                         width: 256,
                         height: 256,
-                        colorDark : palette[localStorage.UItheme]? palette[localStorage.UItheme][0] : palette.Day[0],
-                        colorLight : palette[localStorage.UItheme]? palette[localStorage.UItheme][1] : palette.Day[1],
-                        correctLevel : QRCode.CorrectLevel.H
+                        colorDark: themedColors ? themedColors[0] : palette.Day[0],
+                        colorLight: themedColors ? themedColors[1] : palette.Day[1],
+                        correctLevel: QRCode.CorrectLevel.H
                     });
                 }
             }, 0);

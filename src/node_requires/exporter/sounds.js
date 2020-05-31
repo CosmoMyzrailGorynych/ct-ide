@@ -10,9 +10,9 @@ const stringifySounds = proj => {
             ogg = s.origname.slice(-4) === '.ogg';
         sounds += `
 ct.sound.init('${s.name}', {
-    wav: ${wav? '\'./snd/'+s.uid+'.wav\'' : false},
-    mp3: ${mp3? '\'./snd/'+s.uid+'.mp3\'' : false},
-    ogg: ${ogg? '\'./snd/'+s.uid+'.ogg\'' : false}
+    wav: ${wav ? '\'./snd/' + s.uid + '.wav\'' : false},
+    mp3: ${mp3 ? '\'./snd/' + s.uid + '.mp3\'' : false},
+    ogg: ${ogg ? '\'./snd/' + s.uid + '.ogg\'' : false}
 }, {
     poolSize: ${s.poolSize || 5},
     music: ${Boolean(s.isMusic)}
@@ -21,4 +21,6 @@ ct.sound.init('${s.name}', {
     return sounds;
 };
 
-module.exports = {stringifySounds};
+module.exports = {
+    stringifySounds
+};

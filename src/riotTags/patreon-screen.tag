@@ -69,9 +69,25 @@ patreon-screen.view(style="z-index: 100;")
         this.mixin(window.riotVoc);
         this.loading = true;
         this.emojis = [
-            '😊', '😋', '😍', '😘', '🥰', '😗', '😙', '😚',
-            '🥳', '🤪', '🐱', '😻', ' 😽', '😸', '🎂', '🥂',
-            '🌞', '🎊', '🎉'
+            '😊',
+            '😋',
+            '😍',
+            '😘',
+            '🥰',
+            '😗',
+            '😙',
+            '😚',
+            '🥳',
+            '🤪',
+            '🐱',
+            '😻',
+            '😽',
+            '😸',
+            '🎂',
+            '🥂',
+            '🌞',
+            '🎊',
+            '🎉'
         ];
         this.confettiColors = [
             '#ffd300',
@@ -84,23 +100,23 @@ patreon-screen.view(style="z-index: 100;")
             astronauts: [],
             programmers: []
         };
-        const getMagicNumber = str => {
-            return str.split('').map(char => char.codePointAt(0)).reduce((sum, x) => sum + x);
-        };
-        this.getEmoji = str => {
-            return this.emojis[getMagicNumber(str) % this.emojis.length];
-        };
-        this.getFiller = str => {
-            return this.voc.aboutFillers[getMagicNumber(str) % this.voc.aboutFillers.length];
-        };
-        this.getConfettiColor = () => this.confettiColors[Math.floor(Math.random() * this.confettiColors.length)];
+        const getMagicNumber = str =>
+            str.split('')
+            .map(char => char.codePointAt(0))
+            .reduce((sum, x) => sum + x);
+        this.getEmoji = str =>
+            this.emojis[getMagicNumber(str) % this.emojis.length];
+        this.getFiller = str =>
+            this.voc.aboutFillers[getMagicNumber(str) % this.voc.aboutFillers.length];
+        this.getConfettiColor = () =>
+            this.confettiColors[Math.floor(Math.random() * this.confettiColors.length)];
 
         this.importPatronData = text => {
             const patrons = [];
             var table = text.split('\r\n').map(row => row.split(','));
             for (let i = 1, l = table.length; i < l; i++) {
                 const obj = {},
-                    row = table[i];
+                      row = table[i];
                 for (let j = 0; j < row.length; j++) {
                     obj[table[0][j].trim()] = row[j];
                 }
@@ -129,7 +145,7 @@ patreon-screen.view(style="z-index: 100;")
         this.loadPatrons = () => {
             this.loading = true;
             window.fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vTUMd6nvY0if8MuVDm5-zMfAxWCSWpUzOc81SehmBVZ6mytFkoB3y9i9WlUufhIMteMDc00O9EqifI3/pub?output=csv')
-            .then(data => data.text())
+            .then(response => response.text())
             .then(this.importPatronData)
             .catch(e => {
                 console.error(e);
@@ -145,6 +161,6 @@ patreon-screen.view(style="z-index: 100;")
         };
         this.loadPatrons();
 
-        this.openPatreon = e => {
+        this.openPatreon = () => {
             nw.Shell.openExternal('https://www.patreon.com/comigo');
-        }
+        };

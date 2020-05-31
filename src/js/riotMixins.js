@@ -1,4 +1,4 @@
-(function () {
+(function riotMixins() {
     const glob = require('./data/node_requires/glob');
     var wire = (that, field, update) => e => {
         var way = field.split(/(?<!\\)\./gi),
@@ -41,10 +41,10 @@
         }
     };
 
-    var voc = tag => {
+    var voc = riotTag => {
         const updateLocales = () => {
-            if (tag.namespace) {
-                const way = tag.namespace.split(/(?<!\\)\./gi);
+            if (riotTag.namespace) {
+                const way = riotTag.namespace.split(/(?<!\\)\./gi);
                 for (let i = 0, l = way.length; i < l; i++) {
                     way[i] = way[i].replace(/\\./g, '.');
                 }
@@ -52,13 +52,13 @@
                 for (const partial of way) {
                     space = space[partial];
                 }
-                tag.voc = space;
+                riotTag.voc = space;
             }
-            tag.vocGlob = window.languageJSON.common;
+            riotTag.vocGlob = window.languageJSON.common;
         };
         updateLocales();
         window.signals.on('updateLocales', updateLocales);
-        tag.on('unmount', () => {
+        riotTag.on('unmount', () => {
             window.signals.off('updateLocales', updateLocales);
         });
     };
@@ -68,7 +68,7 @@
         }
     };
 
-    var niceTime = function(date) {
+    var niceTime = function (date) {
         if (!(date instanceof Date)) {
             date = new Date(date);
         }

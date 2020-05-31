@@ -36,22 +36,22 @@ method-selector
               path = require('path');
         const libsDir = './data/ct.libs';
 
-        this.refreshModules = e => {
+        this.refreshModules = () => {
             this.inputProviders = [];
             const promises = [];
             for (const modName in global.currentProject.libs) {
-                promises.push(
+                const promise =
                     fs.readJSON(path.join(libsDir, modName, 'module.json'))
-                    .then(data => {
-                        if (data.inputMethods) {
+                    .then(catmod => {
+                        if (catmod.inputMethods) {
                             this.inputProviders.push({
-                                name: data.main.name,
+                                name: catmod.main.name,
                                 code: modName,
-                                methods: data.inputMethods
+                                methods: catmod.inputMethods
                             });
                         }
-                    })
-                );
+                    });
+                promises.push(promise);
             }
             Promise.all(promises)
             .finally(() => {
@@ -65,16 +65,16 @@ method-selector
             window.signals.off('modulesChanged', this.refreshModules);
         });
 
-        this.selectMethod = code => e => {
+        this.selectMethod = code => () => {
             this.selectedMethod = code;
         };
-        this.cancel = e => {
+        this.cancel = () => {
             this.searchString = '';
             this.selectedMethod = '';
             this.parent.addingMethod = false;
             this.parent.update();
         };
-        this.apply = e => {
+        this.apply = () => {
             this.opts.action.methods.push({
                 code: this.selectedMethod
             });

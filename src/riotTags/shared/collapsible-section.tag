@@ -18,7 +18,7 @@ collapsible-section
     .collapsible-section-aWrapper(if="{opened}")
         <yield/>
     script.
-        this.opened = this.opts.defaultstate === 'opened'? true : false;
+        this.opened = this.opts.defaultstate === 'opened';
         this.toggle = () => {
             this.opened = !this.opened;
             if (this.opts.ontoggle) {

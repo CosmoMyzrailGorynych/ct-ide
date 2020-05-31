@@ -24,7 +24,16 @@ scripts-panel
         this.currentProject = global.currentProject;
         this.currentProject.scripts = this.currentProject.scripts || [];
 
-        this.addNewScript = e => {
+        const glob = require('./data/node_requires/glob');
+        glob.scriptTypings = glob.scriptTypings || {};
+        for (const script of global.currentProject.scripts) {
+            glob.scriptTypings[script.name] = [
+                monaco.languages.typescript.javascriptDefaults.addExtraLib(script.code),
+                monaco.languages.typescript.typescriptDefaults.addExtraLib(script.code)
+            ];
+        }
+
+        this.addNewScript = () => {
             var script = {
                 name: 'New Script',
                 code: `/* ${this.voc.newScriptComment} */`
@@ -36,7 +45,7 @@ scripts-panel
             this.currentScript = e.item.script;
         };
         this.deleteScript = e => {
-            const script = e.item.script,
+            const {script} = e.item,
                   ind = this.currentProject.scripts.indexOf(script);
             this.currentProject.scripts.splice(ind, 1);
             for (const lib of glob.scriptTypings[script.name]) {
@@ -48,51 +57,40 @@ scripts-panel
 
         this.moveUp = e => {
             e.stopPropagation();
-            let script = e.item.script;
+            const clickedScript = e.item.script;
+            const top = [];
+            const bottom = [];
             let topPush = true;
-            let top = [];
-            let bottom = [];
-            for (const element of this.currentProject.scripts) {
-                if (element === script) {
+            for (const projScript of this.currentProject.scripts) {
+                if (projScript === clickedScript) {
                     topPush = false;
                 } else if (topPush) {
-                    top.push(element);
+                    top.push(projScript);
                 } else {
-                    bottom.push(element);
+                    bottom.push(projScript);
                 }
             }
-            top.splice(top.length - 1, 0, script);
+            top.splice(top.length - 1, 0, clickedScript);
             const out = [...top, ...bottom];
-            console.debug(out);
             this.currentProject.scripts = out;
         };
 
         this.moveDown = e => {
             e.stopPropagation();
-            let script = e.item.script;
+            const clickedScript = e.item.script;
+            const top = [];
+            const bottom = [];
             let topPush = true;
-            let top = [];
-            let bottom = [];
-            for (const element of this.currentProject.scripts) {
-                if (element === script) {
+            for (const projScript of this.currentProject.scripts) {
+                if (projScript === clickedScript) {
                     topPush = false;
                 } else if (topPush) {
-                    top.push(element);
+                    top.push(projScript);
                 } else {
-                    bottom.push(element);
+                    bottom.push(projScript);
                 }
             }
-            bottom.splice(1, 0, script);
+            bottom.splice(1, 0, clickedScript);
             const out = [...top, ...bottom];
-            console.debug(out);
             this.currentProject.scripts = out;
         };
-
-        const glob = require('./data/node_requires/glob');
-        glob.scriptTypings = glob.scriptTypings || {};
-        for (const script of global.currentProject.scripts) {
-            glob.scriptTypings[script.name] = [
-                monaco.languages.typescript.javascriptDefaults.addExtraLib(script.code),
-                monaco.languages.typescript.typescriptDefaults.addExtraLib(script.code)
-            ];
-        }

@@ -23,13 +23,13 @@ script-editor.view.panel
             window.removeEventListener('resize', updateEditorSize);
             window.signals.off('settingsFocus', updateEditorSizeDeferred);
         });
-        this.on('mount', e => {
+        this.on('mount', () => {
             setTimeout(() => {
                 var editorOptions = {
                     language: 'javascript'
                 };
                 this.editor = window.setupCodeEditor(this.refs.editor, editorOptions);
-                this.editor.onDidChangeModelContent(e => {
+                this.editor.onDidChangeModelContent(() => {
                     this.script.code = this.editor.getValue();
                 });
                 this.editor.setValue(this.script.code);
@@ -43,7 +43,7 @@ script-editor.view.panel
             this.editor.dispose();
         });
 
-        this.saveScript = e => {
+        this.saveScript = () => {
             const glob = require('./data/node_requires/glob');
             if (glob.scriptTypings[this.oldName]) {
                 for (const lib of glob.scriptTypings[this.oldName]) {
@@ -59,4 +59,6 @@ script-editor.view.panel
             this.parent.update();
         };
 
-        this.updateScriptName = e => this.script.name = e.target.value.trim();
+        this.updateScriptName = e => {
+            this.script.name = e.target.value.trim();
+        };

@@ -29,11 +29,11 @@ styles-panel.tall.fifty
             if (this.editingStyle) {
                 return;
             }
-            let id = generateGUID(),
-                slice = id.split('-').pop();
-            global.currentProject.styletick ++;
-            let obj = {
-                name: "Style_" + slice,
+            const id = generateGUID(),
+                  slice = id.split('-').pop();
+            global.currentProject.styletick++;
+            const obj = {
+                name: 'Style_' + slice,
                 uid: id,
                 origname: 's' + slice
             };
@@ -46,11 +46,11 @@ styles-panel.tall.fifty
                 this.update();
             }
         };
-        this.openStyle = style => e => {
+        this.openStyle = style => () => {
             this.editingStyle = true;
             this.editedStyle = style;
         };
-        this.setUpPanel = e => {
+        this.setUpPanel = () => {
             this.refs.styles.updateList();
             this.editingStyle = false;
             this.editedStyle = null;
@@ -71,13 +71,13 @@ styles-panel.tall.fifty
         this.styleMenu = {
             items: [{
                 label: window.languageJSON.common.open,
-                click: e => {
+                click: () => {
                     this.editingStyle = true;
                     this.update();
                 }
             }, {
-                label: languageJSON.common.copyName,
-                click: e => {
+                label: window.languageJSON.common.copyName,
+                click: () => {
                     nw.Clipboard.get().set(this.editedStyle.name, 'text');
                 }
             }, {

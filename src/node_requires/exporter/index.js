@@ -14,15 +14,15 @@ const {stringifyTypes} = require('./types');
 const {bundleFonts} = require('./fonts');
 const {bakeFavicons} = require('./icons');
 
-const parseKeys = function(data, str, lib) {
+const parseKeys = function (catmod, str, lib) {
     var str2 = str;
-    if (data.fields) {
-        for (const field in data.fields) {
-            const val = currentProject.libs[lib][data.fields[field].key];
-            if (data.fields[field].type === 'checkbox' && !val) {
-                str2 = str2.replace(RegExp('(/\\*)?%' + data.fields[field].key + '%(\\*/)?', 'g'), 'false');
+    if (catmod.fields) {
+        for (const field in catmod.fields) {
+            const val = currentProject.libs[lib][catmod.fields[field].key];
+            if (catmod.fields[field].type === 'checkbox' && !val) {
+                str2 = str2.replace(RegExp('(/\\*)?%' + catmod.fields[field].key + '%(\\*/)?', 'g'), 'false');
             } else {
-                str2 = str2.replace(RegExp('(/\\*)?%' + data.fields[field].key + '%(\\*/)?', 'g'), val || '');
+                str2 = str2.replace(RegExp('(/\\*)?%' + catmod.fields[field].key + '%(\\*/)?', 'g'), val || '');
             }
         }
     }
@@ -31,12 +31,12 @@ const parseKeys = function(data, str, lib) {
 
 const addModules = async () => { // async
     const pieces = await Promise.all(Object.keys(currentProject.libs).map(async lib => {
-        const data = await fs.readJSON(path.join(basePath + 'ct.libs/', lib, 'module.json'), {
-            'encoding': 'utf8'
+        const moduleJSON = await fs.readJSON(path.join(basePath + 'ct.libs/', lib, 'module.json'), {
+            encoding: 'utf8'
         });
         if (await fs.pathExists(path.join(basePath + 'ct.libs/', lib, 'index.js'))) {
-            return parseKeys(data, await fs.readFile(path.join(basePath + 'ct.libs/', lib, 'index.js'), {
-                'encoding': 'utf8'
+            return parseKeys(moduleJSON, await fs.readFile(path.join(basePath + 'ct.libs/', lib, 'index.js'), {
+                encoding: 'utf8'
             }), lib);
         }
         return '';
@@ -47,7 +47,7 @@ const addModules = async () => { // async
 const injectModules = injects => // async
     Promise.all(Object.keys(currentProject.libs).map(async lib => {
         const libData = await fs.readJSON(path.join(basePath + 'ct.libs/', lib, 'module.json'), {
-            'encoding': 'utf8'
+            encoding: 'utf8'
         });
         if (await fs.pathExists(path.join(basePath + 'ct.libs/', lib, 'injects'))) {
             const injectFiles = await fs.readdir(path.join(basePath + 'ct.libs/', lib, 'injects')),
@@ -69,6 +69,7 @@ const makeWritableDir = async () => {
     const {getWritableDir} = require('./../platformUtils');
     writeDir = path.join(await getWritableDir(), 'export');
 };
+// eslint-disable-next-line max-lines-per-function
 const exportCtProject = async (project, projdir) => {
     const {languageJSON} = require('./../i18n');
     currentProject = project;
@@ -87,7 +88,7 @@ const exportCtProject = async (project, projdir) => {
     const injects = {
         load: '',
         start: '',
-        'switch': '',
+        switch: '',
 
         oncreate: '',
         ondestroy: '',
@@ -147,7 +148,7 @@ const exportCtProject = async (project, projdir) => {
     ];
     for (const file of sourcesList) {
         sources[file] = fs.readFile(path.join(basePath, 'ct.release', file), {
-            'encoding': 'utf8'
+            encoding: 'utf8'
         });
     }
 
@@ -269,6 +270,7 @@ const exportCtProject = async (project, projdir) => {
         const compiler = new ClosureCompiler({
             /* eslint-disable camelcase */
             compilation_level: 'SIMPLE',
+            // eslint-disable-next-line id-length
             use_types_for_optimization: false,
             jscomp_off: '*', // Disable warnings to not to booo users
             language_out: 'ECMASCRIPT3',
@@ -315,10 +317,10 @@ const exportCtProject = async (project, projdir) => {
         const csswring = require('csswring');
         const htmlMinify = require('html-minifier').minify;
         const htmlUnminified = fs.readFile(path.join(writeDir, '/index.html'), {
-            'encoding': 'utf8'
+            encoding: 'utf8'
         });
         const cssUnminified = fs.readFile(path.join(writeDir, '/ct.css'), {
-            'encoding': 'utf8'
+            encoding: 'utf8'
         });
         await Promise.all([
             fs.writeFile(
@@ -336,7 +338,7 @@ const exportCtProject = async (project, projdir) => {
         await fs.copy(path.join(projdir, '/snd/', sound.origname), path.join(writeDir, '/snd/', sound.uid + ext));
     }));
 
-    return path.join(writeDir, `/index.${currentProject.settings.minifyhtml? 'min.': ''}html`);
+    return path.join(writeDir, `/index.${currentProject.settings.minifyhtml ? 'min.' : ''}html`);
 };
 
 module.exports = exportCtProject;

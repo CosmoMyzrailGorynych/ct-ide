@@ -50,19 +50,15 @@ rooms-panel.panel.view
         this.updateList = () => {
             this.rooms = [...global.currentProject.rooms];
             if (this.sort === 'name') {
-                this.rooms.sort((a, b) => {
-                    return a.name.localeCompare(b.name);
-                });
+                this.rooms.sort((a, b) => a.name.localeCompare(b.name));
             } else {
-                this.rooms.sort((a, b) => {
-                    return b.lastmod - a.lastmod;
-                });
+                this.rooms.sort((a, b) => b.lastmod - a.lastmod);
             }
             if (this.sortReverse) {
                 this.rooms.reverse();
             }
         };
-        this.switchSort = sort => e => {
+        this.switchSort = sort => () => {
             if (this.sort === sort) {
                 this.sortReverse = !this.sortReverse;
             } else {
@@ -71,8 +67,8 @@ rooms-panel.panel.view
             }
             this.updateList();
         };
-        this.switchLayout = e => {
-            localStorage.roomsLayout = localStorage.roomsLayout === 'list'? 'grid' : 'list';
+        this.switchLayout = () => {
+            localStorage.roomsLayout = localStorage.roomsLayout === 'list' ? 'grid' : 'list';
         };
         const fuseOptions = {
             shouldSort: true,
@@ -93,7 +89,7 @@ rooms-panel.panel.view
                 this.searchResults = null;
             }
         };
-        this.setUpPanel = e => {
+        this.setUpPanel = () => {
             this.updateList();
             this.searchResults = null;
             this.editing = false;
@@ -108,7 +104,7 @@ rooms-panel.panel.view
 
         const fs = require('fs-extra'),
               path = require('path');
-        this.roomCreate = function (e) {
+        this.roomCreate = function roomCreate() {
             if (this.editing) {
                 return false;
             }
@@ -127,15 +123,16 @@ rooms-panel.panel.view
                     copies: [],
                     tiles: [],
                     uid: guid,
-                    thumbnail: thumbnail
+                    thumbnail
                 };
                 global.currentProject.rooms.push(newRoom);
                 this.openRoom(newRoom)();
                 this.updateList();
                 this.update();
             });
+            return true;
         };
-        this.openRoom = room => e => {
+        this.openRoom = room => () => {
             this.editingRoom = room;
             this.editing = true;
         };
@@ -154,18 +151,18 @@ rooms-panel.panel.view
                     this.update();
                 }
             }, {
-                label: languageJSON.common.copyName,
-                click: e => {
+                label: window.languageJSON.common.copyName,
+                click: () => {
                     nw.Clipboard.get().set(this.editingRoom.name, 'text');
                 }
             }, {
                 label: window.languageJSON.common.duplicate,
                 click: () => {
-                    alertify
+                    window.alertify
                     .defaultValue(this.editingRoom.name + '_dup')
                     .prompt(window.languageJSON.common.newname)
                     .then(e => {
-                        if (e.inputValue != '' && e.buttonClicked !== 'cancel') {
+                        if (e.inputValue !== '' && e.buttonClicked !== 'cancel') {
                             var guid = generateGUID(),
                                 thumbnail = guid.split('-').pop();
                             var newRoom = JSON.parse(JSON.stringify(this.editingRoom));
@@ -173,7 +170,7 @@ rooms-panel.panel.view
                             global.currentProject.rooms.push(newRoom);
                             newRoom.uid = guid;
                             newRoom.thumbnail = thumbnail;
-                            fs.linkSync(global.projdir + '/img/r' + this.editingRoom.thumbnail + '.png', global.projdir + '/img/r' + thumbnail + '.png')
+                            fs.linkSync(global.projdir + '/img/r' + this.editingRoom.thumbnail + '.png', global.projdir + '/img/r' + thumbnail + '.png');
                             this.updateList();
                             this.update();
                         }
@@ -182,11 +179,11 @@ rooms-panel.panel.view
             }, {
                 label: window.languageJSON.common.rename,
                 click: () => {
-                    alertify
+                    window.alertify
                     .defaultValue(this.editingRoom.name)
                     .prompt(window.languageJSON.common.newname)
                     .then(e => {
-                        if (e.inputValue != '' && e.buttonClicked !== 'cancel') {
+                        if (e.inputValue !== '' && e.buttonClicked !== 'cancel') {
                             var nam = e.inputValue;
                             this.editingRoom.name = nam;
                             this.update();
@@ -198,7 +195,7 @@ rooms-panel.panel.view
             }, {
                 label: window.languageJSON.common.delete,
                 click: () => {
-                    alertify
+                    window.alertify
                     .confirm(window.languageJSON.common.confirmDelete.replace('{0}', this.editingRoom.name))
                     .then(e => {
                         if (e.buttonClicked === 'ok') {
@@ -206,7 +203,7 @@ rooms-panel.panel.view
                             global.currentProject.rooms.splice(ind, 1);
                             this.updateList();
                             this.update();
-                            alertify
+                            window.alertify
                             .okBtn(window.languageJSON.common.ok)
                             .cancelBtn(window.languageJSON.common.cancel);
                         }

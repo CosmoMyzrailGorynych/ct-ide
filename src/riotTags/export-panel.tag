@@ -42,7 +42,7 @@ export-panel
                 div(each="{text in log}") {text.toString()}
         .flexfix-footer
             .flexrow
-                button(onclick="{close}") {voc.hide}
+                button(onclick="{closeExporter}") {voc.hide}
                 button(onclick="{export}")
                     span.inlineblock.rotateccw(if="{working}")
                         svg.feather
@@ -59,11 +59,30 @@ export-panel
         this.log = [];
         global.currentProject.settings.export = global.currentProject.settings.export || {};
 
-        this.close = function () {
+        this.closeExporter = function closeExporter() {
             this.parent.showExporter = false;
             this.parent.update();
         };
-        this.export = async e => {
+        const bakeIcons = async exportDir => {
+            const path = require('path'),
+                  fs = require('fs-extra');
+
+            const png2icons = require('png2icons'),
+                  {getTextureOrig} = require('./data/node_requires/resources/textures');
+            const iconPath = getTextureOrig(global.currentProject.settings.branding.icon || -1, true),
+                  icon = await fs.readFile(iconPath);
+            await fs.outputFile(path.join(exportDir, 'icon.icns'), png2icons.createICNS(
+                icon,
+                global.currentProject.settings.pixelatedrender ? png2icons.BILINEAR : png2icons.HERMITE
+            ));
+            await fs.outputFile(path.join(exportDir, 'icon.ico'), png2icons.createICO(
+                icon,
+                global.currentProject.settings.antialias ? png2icons.BILINEAR : png2icons.HERMITE,
+                0, true, true
+            ));
+        };
+        // eslint-disable-next-line max-lines-per-function
+        this.export = async () => {
             if (this.working) {
                 return;
             }
@@ -99,7 +118,8 @@ export-panel
                     packageJson.name = global.currentProject.settings.title;
                     packageJson.window.title = global.currentProject.settings.title;
                 }
-                const startingRoom = global.currentProject.rooms.find(room => room.uid === global.currentProject.startroom) || global.currentProject.rooms[0];
+                const startingRoom = global.currentProject.rooms.find(room =>
+                    room.uid === global.currentProject.startroom) || global.currentProject.rooms[0];
                 packageJson.window.width = startingRoom.width;
                 packageJson.window.height = startingRoom.height;
                 packageJson.window.mode = global.currentProject.settings.desktopMode || 'maximized';
@@ -107,22 +127,10 @@ export-panel
 
                 this.log.push('Baking icons…');
                 this.update();
-                const png2icons = require('png2icons'),
-                      {getTextureOrig} = require('./data/node_requires/resources/textures');
-                const iconPath = getTextureOrig(global.currentProject.settings.branding.icon || -1, true),
-                      icon = await fs.readFile(iconPath);
-                await fs.outputFile(path.join(exportDir, 'icon.icns'), png2icons.createICNS(
-                    icon,
-                    global.currentProject.settings.pixelatedrender? png2icons.BILINEAR : png2icons.HERMITE
-                ));
-                await fs.outputFile(path.join(exportDir, 'icon.ico'), png2icons.createICO(
-                    icon,
-                    global.currentProject.settings.antialias? png2icons.BILINEAR : png2icons.HERMITE,
-                    0, true, true
-                ));
-
+                await bakeIcons(exportDir);
                 this.log.push('Ready to bake packages. Be patient!');
                 this.update();
+
                 const packager = require('electron-packager');
                 const baseOptions = {
                     // Build parameters
@@ -148,40 +156,36 @@ export-panel
                 // wtf and why do I need it? @see https://github.com/electron/electron-packager/issues/875
                 process.noAsar = true;
 
+                // eslint-disable-next-line  no-console
                 console.info('Messages "Packaging app for platform *" are not errors, this is how electron-packer works ¯\\_(ツ)_/¯');
-                if (global.currentProject.settings.export.linux) {
-                    this.log.push('Building for Linux…');
+
+                const platformMap = {
+                    linux: 'linux',
+                    mac: 'darwin',
+                    windows: 'win32'
+                };
+                for (const settingKey in platformMap) {
+                    if (!global.currentProject.settings.export[settingKey]) {
+                        continue;
+                    }
+                    const platform = platformMap[settingKey];
+                    this.log.push(`Building for ${settingKey}…`);
+                    // eslint-disable-next-line no-await-in-loop
                     const paths = await packager(Object.assign({}, baseOptions, {
-                        platform: 'linux',
+                        platform,
                         arch: 'all'
                     }));
-                    this.log.push(`Linux builds are ready at these paths:\n  ${paths.join('\n  ')}`);
+                    this.log.push(`${settingKey} builds are ready at these paths:\n  ${paths.join('\n  ')}`);
                     this.update();
                 }
-                if (global.currentProject.settings.export.mac && process.platform !== 'win32') {
-                    this.log.push('Building for MacOS…');
-                    this.update();
-                    const paths = await packager(Object.assign({}, baseOptions, {
-                        platform: 'darwin',
-                        arch: 'all'
-                    }));
-                    this.log.push(`Mac builds are ready at these paths:\n  ${paths.join('\n  ')}`);
-                    this.update();
-                }
-                if (global.currentProject.settings.export.windows) {
-                    this.log.push('Building for Windows…');
-                    const paths = await packager(Object.assign({}, baseOptions, {
-                        platform: 'win32',
-                        arch: 'all'
-                    }));
-                    this.log.push(`Windows builds are ready at these paths:\n  ${paths.join('\n  ')}`);
-                    this.update();
-                }
-                this.log.push('Success!');
+
+                this.log.push('Success! Exported to:');
                 this.log.push(buildDir);
                 alertify.success(`Success! Exported to ${buildDir}`);
+
                 this.working = false;
                 this.update();
+
                 nw.Shell.openItem(buildDir);
             } catch (e) {
                 this.log.push(e);
@@ -192,6 +196,6 @@ export-panel
             }
         };
 
-        this.copyLog = e => {
+        this.copyLog = () => {
             nw.Clipboard.get().set(this.log.join('\n'), 'text');
         };

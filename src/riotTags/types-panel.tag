@@ -25,11 +25,11 @@ types-panel.panel.view
         this.sort = 'name';
         this.sortReverse = false;
 
-        this.thumbnails = type => type.texture !== -1 ?
+        this.thumbnails = type => (type.texture !== -1 ?
             `${glob.texturemap[type.texture].src.split('?')[0]}_prev.png?cache=${this.getTypeTextureRevision(type)}` :
-            'data/img/notexture.png';
+            'data/img/notexture.png');
 
-        this.setUpPanel = e => {
+        this.setUpPanel = () => {
             this.fillTypeMap();
             this.refs.types.updateList();
             this.searchResults = null;
@@ -77,8 +77,9 @@ types-panel.panel.view
             if (!e) {
                 this.update();
             }
+            return true;
         };
-        this.openType = type => e => {
+        this.openType = type => () => {
             this.editingType = true;
             this.editedType = type;
         };
@@ -91,8 +92,8 @@ types-panel.panel.view
                     this.update();
                 }
             }, {
-                label: languageJSON.common.copyName,
-                click: e => {
+                label: window.languageJSON.common.copyName,
+                click: () => {
                     nw.Clipboard.get().set(this.currentType.name, 'text');
                 }
             }, {
@@ -102,7 +103,7 @@ types-panel.panel.view
                     .defaultValue(this.currentType.name + '_dup')
                     .prompt(window.languageJSON.common.newname)
                     .then(e => {
-                        if (e.inputValue != '' && e.buttonClicked !== 'cancel') {
+                        if (e.inputValue !== '' && e.buttonClicked !== 'cancel') {
                             var tp = JSON.parse(JSON.stringify(this.currentType));
                             tp.name = e.inputValue;
                             tp.uid = generateGUID();
@@ -115,12 +116,12 @@ types-panel.panel.view
                 }
             }, {
                 label: window.languageJSON.common.rename,
-                click:  () => {
+                click: () => {
                     alertify
                     .defaultValue(this.currentType.name)
                     .prompt(window.languageJSON.common.newname)
                     .then(e => {
-                        if (e.inputValue != '' && e.buttonClicked !== 'cancel') {
+                        if (e.inputValue !== '' && e.buttonClicked !== 'cancel') {
                             this.currentType.name = e.inputValue;
                             this.update();
                         }
@@ -148,7 +149,7 @@ types-panel.panel.view
                                 }
                             }
 
-                            let ind = global.currentProject.types.indexOf(this.currentType);
+                            const ind = global.currentProject.types.indexOf(this.currentType);
                             global.currentProject.types.splice(ind, 1);
                             this.refs.types.updateList();
                             this.fillTypeMap();

@@ -81,7 +81,7 @@ project-selector
         /**
          * Update a splash image of a selected project
          */
-        this.updatePreview = projectPath => e => {
+        this.updatePreview = projectPath => () => {
             this.projectSplash = 'file://' + path.dirname(projectPath) + '/' + path.basename(projectPath, '.ict') + '/img/splash.png';
         };
         /**
@@ -91,10 +91,10 @@ project-selector
          */
         this.newProject = async (way, codename) => {
             sessionStorage.showOnboarding = true;
-            const projectData = require('./data/node_requires/resources/projects/defaultProject').get();
+            const defaultProject = require('./data/node_requires/resources/projects/defaultProject').get();
             const YAML = require('js-yaml');
-            const data = YAML.safeDump(projectData);
-            fs.outputFile(path.join(way, codename + '.ict'), data)
+            const projectYAML = YAML.safeDump(defaultProject);
+            fs.outputFile(path.join(way, codename + '.ict'), projectYAML)
             .catch(e => {
                 alertify.error(this.voc.unableToWriteToFolders + '\n' + e);
                 throw e;
@@ -119,23 +119,23 @@ project-selector
          * Opens a recent project when an item in the Recent Project list is double-clicked
          */
         this.loadRecentProject = e => {
-            var projectPath = e.item.project;
+            const projectPath = e.item.project;
             window.loadProject(projectPath);
         };
         /**
          * Removes a project from the recents list
          */
         this.forgetProject = e => {
-            var project = e.item.project;
+            const {project} = e.item;
             this.lastProjects.splice(this.lastProjects.indexOf(project), 1);
             localStorage.lastProjects = this.lastProjects.join(';');
             e.stopPropagation();
-        }
+        };
 
         /**
          * Handler for a manual search for a project folder, triggered by an input[type="file"]
          */
-        this.chooseProjectFolder = async e => {
+        this.chooseProjectFolder = async () => {
             const defaultProjectDir = require('./data/node_requires/resources/projects').getDefaultProjectDir();
             const projPath = await window.showOpenDialog({
                 title: this.voc.newProject.selectProjectFolder,
@@ -148,7 +148,7 @@ project-selector
             }
         };
 
-        this.openProjectFolder = e => {
+        this.openProjectFolder = () => {
             const codename = this.refs.projectname.value;
             if (codename.length === 0) {
                 alertify.error(this.voc.newProject.nameerr);
@@ -160,7 +160,7 @@ project-selector
         /**
          * Handler for a manual search for a project, triggered by an input[type="file"]
          */
-        this.openProjectFind = async e => {
+        this.openProjectFind = async () => {
             const defaultProjectDir = require('./data/node_requires/resources/projects').getDefaultProjectDir();
             const proj = await window.showOpenDialog({
                 filter: '.ict',
@@ -174,25 +174,30 @@ project-selector
                 sessionStorage.projname = path.basename(proj);
                 global.projdir = path.dirname(proj) + path.sep + path.basename(proj, '.ict');
             } else {
-                alertify.error(languageJSON.common.wrongFormat);
+                alertify.error(window.languageJSON.common.wrongFormat);
             }
         };
 
         // Checking for updates
         setTimeout(() => {
             const {isWin, isLinux} = require('./data/node_requires/platformUtils.js');
-            const channel = isWin? 'win64' : (isLinux? 'linux64': 'osx64');
+            let channel = 'osx64';
+            if (isWin) {
+                channel = 'win64';
+            } else if (isLinux) {
+                channel = 'linux64';
+            }
             fetch(`https://itch.io/api/1/x/wharf/latest?target=comigo/ct&channel_name=${channel}`)
-            .then(data => data.json())
+            .then(response => response.json())
             .then(json => {
                 if (!json.errors) {
-                    if (this.ctjsVersion != json.latest) {
+                    if (this.ctjsVersion !== json.latest) {
                         this.newVersion = this.voc.latestVersion.replace('$1', json.latest);
                         this.update();
                     }
                 } else {
                     console.error('Update check failed:');
-                    console.log(json.errors);
+                    console.error(json.errors);
                 }
             });
         }, 0);

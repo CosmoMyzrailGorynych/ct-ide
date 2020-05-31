@@ -1,4 +1,4 @@
-(function () {
+(function roomCopyTools() {
     const clickThreshold = 16;
     const glob = require('./data/node_requires/glob');
 
@@ -27,18 +27,21 @@
             this.refs.canvas.x.drawImage(
                 img,
                 ox, oy, w, h,
-                e.offsetX / this.zoomFactor - grax, e.offsetY / this.zoomFactor - gray, w, h);
+                e.offsetX / this.zoomFactor - grax, e.offsetY / this.zoomFactor - gray, w, h
+            );
         } else {
             // если есть сетка, то координаты предварительной копии нужно отснэпить по сетке
             var dx = this.xToRoom(e.offsetX),
                 dy = this.yToRoom(e.offsetY);
             w = texture.width;
             h = texture.height;
+            const {room} = this;
             this.refs.canvas.x.drawImage(
                 img, ox, oy, w, h,
-                this.xToCanvas(Math.round(dx / this.room.gridX) * this.room.gridX) / this.zoomFactor - grax,
-                this.yToCanvas(Math.round(dy / this.room.gridY) * this.room.gridY) / this.zoomFactor - gray,
-                w, h);
+                this.xToCanvas(Math.round(dx / room.gridX) * room.gridX) / this.zoomFactor - grax,
+                this.yToCanvas(Math.round(dy / room.gridY) * room.gridY) / this.zoomFactor - gray,
+                w, h
+            );
         }
     };
     const selectACopyAt = function (e) {
@@ -50,7 +53,7 @@
         const layerCopies = this.room.copies;
         for (let j = 0, lj = layerCopies.length; j < lj; j++) {
             const xp = layerCopies[j].x - fromx,
-                yp = layerCopies[j].y - fromy;
+                  yp = layerCopies[j].y - fromy;
             l = Math.sqrt(xp * xp + yp * yp);
             if (l < length) {
                 length = l;
@@ -60,28 +63,32 @@
         return this.room.copies[pos];
     };
 
+    const onCanvasPressCopies = function (e) {
+        if (this.selectedCopies && !e.shiftKey && e.button === 0) {
+            for (const copy of this.selectedCopies) {
+                var x = this.xToRoom(this.startx),
+                    y = this.yToRoom(this.starty);
+                const textureId = global.currentProject.types[glob.typemap[copy.uid]].texture;
+                const {g} = glob.texturemap[textureId];
+                if (x > copy.x - g.axis[0] && y > copy.y - g.axis[1] &&
+                    x < copy.x - g.axis[0] + g.width && y < copy.y - g.axis[1] + g.height) {
+                    this.movingStuff = true;
+                    for (const copy of this.selectedCopies) {
+                        copy.lastX = copy.x;
+                        copy.lastY = copy.y;
+                    }
+                    return true;
+                }
+            }
+        }
+        return false;
+    };
+
     window.roomCopyTools = {
+        // eslint-disable-next-line max-lines-per-function
         init() {
             this.currentType = -1;
-            this.onCanvasPressCopies = e => {
-                if (this.selectedCopies && !e.shiftKey && e.button === 0) {
-                    for (const copy of this.selectedCopies) {
-                        var x = this.xToRoom(this.startx),
-                            y = this.yToRoom(this.starty);
-                        const {g} = glob.texturemap[global.currentProject.types[glob.typemap[copy.uid]].texture];
-                        if (x > copy.x - g.axis[0] && y > copy.y - g.axis[1] &&
-                            x < copy.x - g.axis[0] + g.width && y < copy.y - g.axis[1] + g.height) {
-                            this.movingStuff = true;
-                            for (const copy of this.selectedCopies) {
-                                copy.lastX = copy.x;
-                                copy.lastY = copy.y;
-                            }
-                            return true;
-                        }
-                    }
-                }
-                return false;
-            };
+            this.onCanvasPressCopies = onCanvasPressCopies;
             const selectCopies = e => {
                 var x1 = this.xToRoom(this.startx),
                     y1 = this.yToRoom(this.starty),
@@ -92,7 +99,8 @@
                     ymin = Math.min(y1, y2),
                     ymax = Math.max(y1, y2);
                 for (const copy of this.room.copies) {
-                    const {g} = glob.texturemap[global.currentProject.types[glob.typemap[copy.uid]].texture];
+                    const textureId = global.currentProject.types[glob.typemap[copy.uid]].texture;
+                    const {g} = glob.texturemap[textureId];
                     const x1 = copy.x - g.axis[0] * (copy.tx || 1),
                           x2 = copy.x - (g.axis[0] - g.width) * (copy.tx || 1),
                           y1 = copy.y - g.axis[1] * (copy.ty || 1),
@@ -112,7 +120,8 @@
             };
             this.onCanvasMouseUpCopies = e => {
                 if (e.button === 0 && this.currentType === -1 && e.shiftKey) {
-                    if (Math.hypot(e.offsetX - this.startx, e.offsetY - this.starty) > clickThreshold) {
+                    const dragLength = Math.hypot(e.offsetX - this.startx, e.offsetY - this.starty);
+                    if (dragLength > clickThreshold) {
                         // Было прямоугольное выделение
                         if (!this.selectedCopies) {
                             this.selectedCopies = [];
@@ -123,7 +132,9 @@
                         }
                     } else {
                         // Был единичный выбор
-                        if (!this.room.copies.length) { return; }
+                        if (!this.room.copies.length) {
+                            return;
+                        }
                         const copy = selectACopyAt.apply(this, [e]);
                         if (this.selectedCopies) {
                             const ind = this.selectedCopies.indexOf(copy);
@@ -145,21 +156,23 @@
                 }
                 this.refreshRoomCanvas();
             };
-            // При клике на канвас помещает копию на соответствующий слой
+            // Place a copy on click
             this.onCanvasClickCopies = e => {
-                if (
-                    Math.hypot(e.offsetX - this.startx, e.offsetY - this.starty) > clickThreshold &&
+                if (Math.hypot(e.offsetX - this.startx, e.offsetY - this.starty) > clickThreshold &&
                     !e.shiftKey
                 ) {
                     return; // this looks neither like a regular click nor like a Shift+drag
                 }
-                // Отмена выделения копий, если таковые были, при клике
-                if (this.selectedCopies && !this.movingStuff && !(e.shiftKey && this.currentType === -1)) {
+                // Cancel copy selection on click
+                if (this.selectedCopies &&
+                    !this.movingStuff &&
+                    !(e.shiftKey && this.currentType === -1)
+                ) {
                     this.selectedCopies = false;
                     this.refreshRoomCanvas();
                     return;
                 }
-                // Если не выбран тип создаваемой копии, или идёт удаление копий, то ничего не делаем
+                // If no type was picked or we delete stuff, do nothing
                 if ((this.currentType === -1 || e.ctrlKey) && e.button === 0) {
                     return;
                 }
@@ -216,7 +229,8 @@
                     }
                     this.drawDeleteCircle(e);
                 } else if (this.mouseDown && e.shiftKey) {
-                    if (Math.hypot(e.offsetX - this.startx, e.offsetY - this.starty) > clickThreshold) {
+                    const dragLength = Math.hypot(e.offsetX - this.startx, e.offsetY - this.starty);
+                    if (dragLength > clickThreshold) {
                         this.refreshRoomCanvas(e);
                         // рисовка прямоугольного выделения
                         const x1 = this.xToRoom(this.startx),
@@ -243,7 +257,11 @@
                     this.refreshRoomCanvas(e);
                 } else if (this.currentType !== -1) {
                     drawInsertPreview.apply(this, [e]);
-                } else if (this.mouseDown && e.shift && Math.hypot(e.offsetX - this.startx, e.offsetY - this.starty) > clickThreshold) {
+                } else if (
+                    this.mouseDown &&
+                    e.shift &&
+                    Math.hypot(e.offsetX - this.startx, e.offsetY - this.starty) > clickThreshold
+                ) {
                     this.refreshRoomCanvas(e);
                     // рисовка прямоугольного выделения
                     const x1 = this.xToRoom(this.startx),
@@ -253,9 +271,12 @@
                     this.drawSelection(x1, y1, x2, y2);
                 }
             };
+            // eslint-disable-next-line id-length
             this.onCanvasContextMenuCopies = e => {
-                // Сначала ищется ближайшая к курсору копия. Если слоёв в комнате нет, то всё отменяется
-                if (!this.room.copies.length) { return; }
+                // Find the closest copy. If there are no copies, abort
+                if (!this.room.copies.length) {
+                    return;
+                }
                 var copy = selectACopyAt.apply(this, [e]),
                     type = global.currentProject.types[glob.typemap[copy.uid]];
                 this.closestType = type;
@@ -312,6 +333,7 @@
                     }
                 }]
             };
+            // eslint-disable-next-line id-length
             this.onCanvasContextMenuMultipleCopies = e => {
                 this.forbidDrawing = true;
                 setTimeout(() => {

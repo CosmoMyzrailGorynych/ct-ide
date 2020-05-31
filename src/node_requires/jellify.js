@@ -7,14 +7,14 @@ const jelloEnded = Symbol('jelloEnded');
  * @param {HTMLElement} element The element that should be animated
  * @returns {void}
 */
-module.exports = function(element) {
-    if (jelloEnded in element) {
+module.exports = function jellify(htmlTag) {
+    if (jelloEnded in htmlTag) {
         return;
     }
-    element[jelloEnded] = false;
-    element.classList.add('jello');
+    htmlTag[jelloEnded] = false;
+    htmlTag.classList.add('jello');
     setTimeout(() => {
-        element.classList.remove('jello');
-        delete element[jelloEnded];
+        htmlTag.classList.remove('jello');
+        delete htmlTag[jelloEnded];
     }, 1000);
 };

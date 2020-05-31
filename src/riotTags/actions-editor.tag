@@ -65,7 +65,7 @@ actions-editor.panel.view.pad
         this.namespace = 'actionsEditor';
         this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
-        this.addNewAction = e => {
+        this.addNewAction = () => {
             global.currentProject.actions.push({
                 name: 'NewAction',
                 methods: []
@@ -87,17 +87,18 @@ actions-editor.panel.view.pad
             action.methods.splice(ind, 1);
         };
         this.checkActionNameAndSave = e => {
-            console.log(e);
             this.nameTaken = void 0;
             e.item.action.name = e.currentTarget.value.trim();
-            if (global.currentProject.actions.find(action => action !== e.item.action && action.name === e.item.action.name)) {
+            const existingAction = global.currentProject.actions.find(action =>
+                action !== e.item.action && action.name === e.item.action.name);
+            if (existingAction) {
                 this.nameTaken = e.item.action.name;
             }
         };
 
-        this.saveActions = e => {
+        this.saveActions = () => {
             if ((Array.isArray(this.refs.errors) && this.refs.errors.length) || this.refs.errors) {
-                let errors = this.refs.errors;
+                let {errors} = this.refs;
                 if (!Array.isArray(errors)) {
                     errors = [errors];
                 }
@@ -111,4 +112,5 @@ actions-editor.panel.view.pad
             }
             this.parent.editingActions = false;
             this.parent.update();
+            return true;
         };

@@ -90,19 +90,15 @@ asset-viewer.flexfix(class="{opts.namespace} {opts.class}")
         this.updateList = () => {
             this.collection = [...(this.opts.collection || [])];
             if (this.sort === 'name') {
-                this.collection.sort((a, b) => {
-                    return a.name.localeCompare(b.name);
-                });
+                this.collection.sort((a, b) => a.name.localeCompare(b.name));
             } else {
-                this.collection.sort((a, b) => {
-                    return b.lastmod - a.lastmod;
-                });
+                this.collection.sort((a, b) => b.lastmod - a.lastmod);
             }
             if (this.sortReverse) {
                 this.collection.reverse();
             }
         };
-        this.switchSort = sort => e => {
+        this.switchSort = sort => () => {
             if (this.sort === sort) {
                 this.sortReverse = !this.sortReverse;
             } else {
@@ -120,7 +116,7 @@ asset-viewer.flexfix(class="{opts.namespace} {opts.class}")
                 this.searchResults = null;
             }
         };
-        this.switchLayout = e => {
-            const key = this.opts.namespace? (this.opts.namespace+'Layout') : 'defaultAssetLayout';
-            localStorage[key] = localStorage[key] === 'list'? 'grid' : 'list';
+        this.switchLayout = () => {
+            const key = this.opts.namespace ? (this.opts.namespace + 'Layout') : 'defaultAssetLayout';
+            localStorage[key] = localStorage[key] === 'list' ? 'grid' : 'list';
         };

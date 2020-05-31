@@ -13,4 +13,6 @@ ct.styles.new(
     return styles;
 };
 
-module.exports = {stringifyStyles};
+module.exports = {
+    stringifyStyles
+};

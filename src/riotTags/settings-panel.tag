@@ -90,6 +90,6 @@ settings-panel.panel.view
         this.updateGameIcon = tex => {
             global.currentProject.settings.branding.icon = tex.uid;
         };
-        this.openActionsEditor = e => {
+        this.openActionsEditor = () => {
             this.editingActions = true;
         };

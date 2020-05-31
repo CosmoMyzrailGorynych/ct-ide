@@ -28,10 +28,10 @@ texture-input
         this.getTextureFromId = getTextureFromId;
 
         this.val = this.opts.val || -1;
-        this.openSelector = e => {
+        this.openSelector = () => {
             this.selectingTexture = true;
         };
-        this.onSelected = texture => e => {
+        this.onSelected = texture => () => {
             if (this.opts.onselected) {
                 this.opts.onselected(texture, texture.uid);
             }

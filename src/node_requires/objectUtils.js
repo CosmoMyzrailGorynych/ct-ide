@@ -3,7 +3,7 @@
  * @module
  */
 
-const extend = function(destination, source) {
+const extend = function (destination, source) {
     for (var property in source) {
         if (destination[property] &&
             typeof destination[property] === 'object' &&
@@ -24,7 +24,7 @@ const extend = function(destination, source) {
  * @param {Object|Array} source The object from which to copy new properties
  * @returns {Object|Array} The extended destination object
  */
-const extendValid = function(destination, source) {
+const extendValid = function (destination, source) {
     /* Considering JSON-valid objects */
     for (const key in source) {
         // it is either a generic object or an array
@@ -46,7 +46,7 @@ const extendValid = function(destination, source) {
     return destination;
 };
 
-const equal = function(one, two) {
+const equal = function (one, two) {
     for (const property in one) {
         if (one[property] !== two[property]) {
             return false;

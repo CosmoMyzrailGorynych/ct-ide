@@ -1,6 +1,6 @@
-(function (window) {
+(function addLoadProjectMethod(window) {
     window.migrationProcess = window.migrationProcess || [];
-    window.applyMigrationCode = function (version) {
+    window.applyMigrationCode = function applyMigrationCode(version) {
         const process = window.migrationProcess.find(process => process.version === version);
         if (!process) {
             throw new Error(`Cannot find migration code for version ${version}`);
@@ -21,7 +21,7 @@
             raw[3],
             // -next- versions and other postfixes will count as a fourth component.
             // They all will apply before regular versions
-            raw[4]? raw[5] || 1 : null
+            raw[4] ? raw[5] || 1 : null
         ];
     };
 
@@ -110,7 +110,7 @@
             fs.ensureDir(global.projdir + '/img');
             fs.ensureDir(global.projdir + '/snd');
 
-            const lastProjects = localStorage.lastProjects? localStorage.lastProjects.split(';') : [];
+            const lastProjects = localStorage.lastProjects ? localStorage.lastProjects.split(';') : [];
             if (lastProjects.indexOf(path.normalize(global.projdir + '.ict')) !== -1) {
                 lastProjects.splice(lastProjects.indexOf(path.normalize(global.projdir + '.ict')), 1);
             }
@@ -141,22 +141,22 @@
      * @returns {void}
      */
     var loadProjectFile = async proj => {
-        const data = await fs.readFile(proj, 'utf8');
+        const textProjData = await fs.readFile(proj, 'utf8');
         let projectData;
         // Before v1.3, projects were stored in JSON format
         try {
-            if (data.indexOf('{') === 0) { // First, make a silly check for JSON files
-                projectData = JSON.parse(data);
+            if (textProjData.indexOf('{') === 0) { // First, make a silly check for JSON files
+                projectData = JSON.parse(textProjData);
             } else {
                 try {
                     const YAML = require('js-yaml');
-                    projectData = YAML.safeLoad(data);
+                    projectData = YAML.safeLoad(textProjData);
                 } catch (e) {
                     // whoopsie, wrong window
                     // eslint-disable-next-line no-console
                     console.warn(`Tried to load a file ${proj} as a YAML, but got an error (see below). Falling back to JSON.`);
                     console.error(e);
-                    projectData = JSON.parse(data);
+                    projectData = JSON.parse(textProjData);
                 }
             }
         } catch (e) {
@@ -193,10 +193,9 @@
                 */
                 .confirm(voc.message
                     .replace('{0}', targetStat.mtime.toLocaleString())
-                    .replace('{1}', targetStat.mtime < stat.mtime? voc.older : voc.newer)
+                    .replace('{1}', targetStat.mtime < stat.mtime ? voc.older : voc.newer)
                     .replace('{2}', stat.mtime.toLocaleString())
-                    .replace('{3}', stat.mtime < targetStat.mtime? voc.older : voc.newer)
-                )
+                    .replace('{3}', stat.mtime < targetStat.mtime ? voc.older : voc.newer))
                 .then(e => {
                     if (e.buttonClicked === 'ok') {
                         loadProjectFile(proj + '.recovery');

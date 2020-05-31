@@ -28,7 +28,7 @@ font-editor.panel.view
         this.mixin(window.riotWired);
         this.fontobj = this.opts.fontobj;
         this.oldTypefaceName = this.fontobj.typefaceName;
-        this.fontSave = e => {
+        this.fontSave = () => {
             this.parent.editingFont = false;
             this.parent.update();
             this.parent.loadFonts();
@@ -38,7 +38,7 @@ font-editor.panel.view
                 if (font.family === 'CTPROJFONT' + this.oldTypefaceName) {
                     this.oldTypefaceName = this.fontobj.typefaceName;
                     font.family = this.fontobj.typefaceName;
-                    font.style = this.fontobj.italic? 'italic': 'normal';
+                    font.style = this.fontobj.italic ? 'italic' : 'normal';
                     font.weight = this.fontobj.weight;
                     this.parent.loadFonts();
                     break;

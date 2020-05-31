@@ -40,9 +40,9 @@ fonts-panel.flexfix.tall.fifty
               path = require('path');
 
         this.thumbnails = font => `file://${window.global.projdir}/fonts/${font.origname}_prev.png?cache=${font.lastmod}`;
-        this.names = font => `${font.typefaceName} ${font.weight} ${font.italic? this.voc.italic : ''}`;
+        this.names = font => `${font.typefaceName} ${font.weight} ${font.italic ? this.voc.italic : ''}`;
 
-        this.setUpPanel = e => {
+        this.setUpPanel = () => {
             global.currentProject.fonts = global.currentProject.fonts || [];
             this.fonts = global.currentProject.fonts;
             this.editingFont = false;
@@ -56,7 +56,7 @@ fonts-panel.flexfix.tall.fifty
             window.signals.off('projectLoaded', this.setUpPanel);
         });
 
-        this.openFont = font => e => {
+        this.openFont = font => () => {
             this.editingFont = true;
             this.editedFont = font;
         };
@@ -65,13 +65,13 @@ fonts-panel.flexfix.tall.fifty
         this.fontMenu = {
             items: [{
                 label: window.languageJSON.common.open,
-                click: e => {
+                click: () => {
                     this.editingFont = true;
                     this.update();
                 }
             }, {
-                label: languageJSON.common.copyName,
-                click: e => {
+                label: window.languageJSON.common.copyName,
+                click: () => {
                     nw.Clipboard.get().set(this.editedFont.name, 'text');
                 }
             }, {
@@ -96,7 +96,7 @@ fonts-panel.flexfix.tall.fifty
                     alertify
                     .okBtn(window.languageJSON.common.delete)
                     .cancelBtn(window.languageJSON.common.cancel)
-                    .confirm(window.languageJSON.common.confirmDelete.replace('{0}', `${this.editedFont.typefaceName} ${this.editedFont.weight} ${this.editedFont.italic? voc.italic : ''}`))
+                    .confirm(window.languageJSON.common.confirmDelete.replace('{0}', `${this.editedFont.typefaceName} ${this.editedFont.weight} ${this.editedFont.italic ? this.voc.italic : ''}`))
                     .then(e => {
                         if (e.buttonClicked === 'ok') {
                             const ind = global.currentProject.fonts.indexOf(this.editedFont);
@@ -126,7 +126,7 @@ fonts-panel.flexfix.tall.fifty
             e.target.value = '';
             for (let i = 0; i < files.length; i++) {
                 if (/\.ttf/gi.test(files[i])) {
-                    let id = generateGUID();
+                    const id = generateGUID();
                     this.loadFont(
                         id,
                         files[i],
@@ -134,43 +134,46 @@ fonts-panel.flexfix.tall.fifty
                         true
                     );
                 } else {
-                    // ¯\_(ツ)_/¯
+                    alertify.log(`Skipped ${files[i]} as it is not a .ttf file.`);
+                    void 0;
                 }
             }
             this.dropping = false;
-            e.srcElement.value = ""; // clear input value that prevent to upload the same filename again
+            e.srcElement.value = ''; // clear input value that prevent to upload the same filename again
             e.preventDefault();
         };
-        this.loadFont = (uid, filename, dest, imprt) => {
+        this.loadFont = (uid, filename, dest) => {
             fs.copy(filename, dest, e => {
-                if (e) throw e;
+                if (e) {
+                    throw e;
+                }
                 var obj = {
                     typefaceName: path.basename(filename).replace('.ttf', ''),
                     weight: 400,
                     italic: false,
-                    uid: uid,
                     origname: path.basename(dest),
-                    lastmod: +(new Date())
+                    lastmod: Number(new Date()),
+                    uid
                 };
                 global.currentProject.fonts.push(obj);
                 setTimeout(() => {
                     this.fontGenPreview(dest, dest + '_prev.png', 64, obj)
-                    .then(dataUrl => {
+                    .then(() => {
                         this.refs.fonts.updateList();
                         this.update();
                     });
-                }, 250)
+                }, 250);
             });
         };
-        this.fontGenPreview = (source, destFile, size, obj) => new Promise ((resolve, reject) => {
-            var template = {
+        this.fontGenPreview = (source, destFile, size, obj) => new Promise((resolve, reject) => {
+            const template = {
                 weight: obj.weight,
-                style: obj.italic? 'italic' : 'normal'
+                style: obj.italic ? 'italic' : 'normal'
             };
             // we clean the source url from the possible space and the \ to / (windows specific)
-            var cleanedSource = source.replace(/ /g, '%20').replace(/\\/g, '/');
-            var face = new FontFace('CTPROJFONT' + obj.typefaceName, `url(file://${cleanedSource})`, template);
-            var elt = document.createElement('span');
+            const cleanedSource = source.replace(/ /g, '%20').replace(/\\/g, '/');
+            const face = new FontFace('CTPROJFONT' + obj.typefaceName, `url(file://${cleanedSource})`, template);
+            const elt = document.createElement('span');
             elt.innerHTML = 'testString';
             elt.style.fontFamily = obj.typefaceName;
             document.body.appendChild(elt);
@@ -179,19 +182,18 @@ fonts-panel.flexfix.tall.fifty
                 loaded.external = true;
                 loaded.ctId = face.ctId = obj.uid;
                 document.fonts.add(loaded);
-                var c = document.createElement('canvas'),
-                    w, h;
+                const c = document.createElement('canvas');
                 c.x = c.getContext('2d');
                 c.width = c.height = size;
                 c.x.clearRect(0, 0, size, size);
-                c.x.font = `${obj.italic? 'italic ' : ''}${obj.weight} ${Math.floor(size * 0.75)}px "${loaded.family}"`;
+                c.x.font = `${obj.italic ? 'italic ' : ''}${obj.weight} ${Math.floor(size * 0.75)}px "${loaded.family}"`;
                 c.x.fillStyle = '#000';
                 c.x.fillText('Aa', size * 0.05, size * 0.75);
                 // strip off the data:image url prefix to get just the base64-encoded bytes
-                var dataURL = c.toDataURL();
-                var data = dataURL.replace(/^data:image\/\w+;base64,/, '');
-                var buf = new Buffer(data, 'base64');
-                var stream = fs.createWriteStream(destFile);
+                const dataURL = c.toDataURL();
+                const previewBuffer = dataURL.replace(/^data:image\/\w+;base64,/, '');
+                const buf = new Buffer(previewBuffer, 'base64');
+                const stream = fs.createWriteStream(destFile);
                 stream.on('finish', () => {
                     setTimeout(() => { // WHY THE HECK I EVER NEED THIS?!
                         resolve(destFile);
@@ -210,7 +212,7 @@ fonts-panel.flexfix.tall.fifty
         var dragTimer;
         this.onDragOver = e => {
             var dt = e.dataTransfer;
-            if (dt.types && (dt.types.indexOf ? dt.types.indexOf('Files') != -1 : dt.types.contains('Files'))) {
+            if (dt.types && (dt.types.indexOf ? dt.types.indexOf('Files') !== -1 : dt.types.contains('Files'))) {
                 this.dropping = true;
                 this.update();
                 window.clearTimeout(dragTimer);
@@ -219,12 +221,12 @@ fonts-panel.flexfix.tall.fifty
             e.stopPropagation();
         };
         this.onDrop = e => {
-             e.stopPropagation();
+            e.stopPropagation();
         };
         this.onDragLeave = e => {
             dragTimer = window.setTimeout(() => {
                 this.dropping = false;
-                this.update()
+                this.update();
             }, 25);
             e.preventDefault();
             e.stopPropagation();
@@ -241,20 +243,20 @@ fonts-panel.flexfix.tall.fifty
         });
 
         this.loadFonts = () => {
-            var fonts = global.currentProject.fonts;
+            const {fonts} = global.currentProject;
             for (const font of document.fonts) {
                 if (font.external) {
                     document.fonts.delete(font);
                 }
             }
             for (const font of fonts) {
-                var template = {
-                        weight: font.weight,
-                        style: font.italic? 'italic' : 'normal'
-                    },
-                    source = `${global.projdir}/fonts/${font.origname}`;
-                    var cleanedSource = source.replace(/ /g, '%20').replace(/\\/g, '/');
-                var face = new FontFace('CTPROJFONT' + font.typefaceName, `url(file://${cleanedSource})`, template);
+                const template = {
+                    weight: font.weight,
+                    style: font.italic ? 'italic' : 'normal'
+                };
+                const source = `${global.projdir}/fonts/${font.origname}`,
+                      cleanedSource = source.replace(/ /g, '%20').replace(/\\/g, '/');
+                const face = new FontFace('CTPROJFONT' + font.typefaceName, `url(file://${cleanedSource})`, template);
                 face.load()
                 .then(loaded => {
                     loaded.external = true;

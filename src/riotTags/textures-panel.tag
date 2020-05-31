@@ -85,11 +85,11 @@ textures-panel.panel.view
                 imgWidth: 32,
                 imgHeight: 32,
                 closedStrip: true
-            }
+            };
             img.src = 'data/img/unknown.png';
         };
 
-        this.setUpPanel = e => {
+        this.setUpPanel = () => {
             this.fillTextureMap();
             this.refs.textures.updateList();
             this.refs.skeletons.updateList();
@@ -115,17 +115,17 @@ textures-panel.panel.view
         });
 
         /**
-         * An event fired when user attempts to add files from a file manager (by clicking an "Import" button)
+         * An event fired when user attempts to add files from a file manager
+         * (by clicking an "Import" button)
          */
         this.textureImport = e => { // input[type="file"]
             const {importImageToTexture} = require('./data/node_requires/resources/textures');
             const files = [...e.target.files].map(file => file.path);
             for (let i = 0; i < files.length; i++) {
                 if (/\.(jpg|gif|png|jpeg)/gi.test(files[i])) {
-                    let id = generateGUID();
                     importImageToTexture(files[i]);
                 } else if (/_ske\.json/i.test(files[i])) {
-                    let id = generateGUID();
+                    const id = generateGUID();
                     this.loadSkeleton(
                         id,
                         files[i],
@@ -147,10 +147,10 @@ textures-panel.panel.view
                     name: path.basename(filename).replace('_ske.json', ''),
                     origname: path.basename(dest),
                     from: 'dragonbones',
-                    uid: uid
-                })
+                    uid
+                });
                 this.skelGenPreview(dest, dest + '_prev.png', [64, 128])
-                .then(dataUrl => {
+                .then(() => {
                     this.refs.skeletons.updateList();
                     this.update();
                 });
@@ -161,10 +161,12 @@ textures-panel.panel.view
          *  Generates a square preview for a given skeleton
          * @param {String} source Path to the source _ske.json file
          * @param {String} destFile Path to the destinating image
-         * @param {Number} size Size of the square thumbnail, in pixels
-         * @returns {Promise} Resolves after creating a thumbnail. On success, passes data-url of the created thumbnail.
+         * @param {Array<Number>} sizes Size of the square thumbnail, in pixels
+         * @returns {Promise} Resolves after creating a thumbnail. On success,
+         * passes data-url of the created thumbnail.
          */
         this.skelGenPreview = (source, destFile, sizes) => {
+            // TODO: Actually generate previews of different sizes
             const loader = new PIXI.loaders.Loader(),
                   dbf = dragonBones.PixiFactory.factory;
             const slice = 'file://' + source.replace('_ske.json', '');
@@ -176,11 +178,11 @@ textures-panel.panel.view
                     dbf.parseDragonBonesData(loader.resources[`${slice}_ske.json`].data);
                     dbf.parseTextureAtlasData(loader.resources[`${slice}_tex.json`].data, loader.resources[`${slice}_tex.png`].texture);
                     const skel = dbf.buildArmatureDisplay('Armature', loader.resources[`${slice}_ske.json`].data.name);
-                    const promises = sizes.map(size => new Promise((resolve, reject) => {
+                    const promises = sizes.map(() => new Promise((resolve, reject) => {
                         const app = new PIXI.Application();
-                        const base64 = app.renderer.plugins.extract.base64(skel)
-                        const data = base64.replace(/^data:image\/\w+;base64,/, '');
-                        const buf = new Buffer(data, 'base64');
+                        const rawSkelBase64 = app.renderer.plugins.extract.base64(skel);
+                        const skelBase64 = rawSkelBase64.replace(/^data:image\/\w+;base64,/, '');
+                        const buf = new Buffer(skelBase64, 'base64');
                         const stream = fs.createWriteStream(destFile);
                         stream.on('finish', () => {
                             setTimeout(() => { // WHY THE HECK I EVER NEED THIS?!
@@ -194,7 +196,9 @@ textures-panel.panel.view
                     }));
                     Promise.all(promises)
                     .then(() => {
+                        // eslint-disable-next-line no-underscore-dangle
                         delete dbf._dragonBonesDataMap[loader.resources[`${slice}_ske.json`].data.name];
+                        // eslint-disable-next-line no-underscore-dangle
                         delete dbf._textureAtlasDataMap[loader.resources[`${slice}_ske.json`].data.name];
                     })
                     .then(resolve)
@@ -203,32 +207,66 @@ textures-panel.panel.view
             });
         };
 
+        const deleteCurrentTexture = () => {
+            for (const type of global.currentProject.types) {
+                if (type.texture === this.currentTexture.uid) {
+                    type.texture = -1;
+                }
+            }
+            for (const room of global.currentProject.rooms) {
+                if ('tiles' in room) {
+                    for (const layer of room.tiles) {
+                        layer.tiles = layer.tiles.filter(tile => tile.texture !== this.currentTexture.uid);
+                    }
+                }
+                if ('backgrounds' in room) {
+                    let i = 0;
+                    while (i < room.backgrounds.length) {
+                        if (room.backgrounds[i].texture === this.currentTexture.uid) {
+                            room.backgrounds.splice(i, 1);
+                        } else {
+                            i++;
+                        }
+                    }
+                }
+            }
+            for (const tandem of global.currentProject.emitterTandems) {
+                for (const emitter of tandem.emitters) {
+                    if (emitter.texture === this.currentTexture.uid) {
+                        emitter.texture = -1;
+                    }
+                }
+            }
+            if (global.currentProject.settings.icon === this.currentTexture.uid) {
+                delete global.currentProject.settings.icon;
+            }
+            global.currentProject.textures.splice(this.currentTextureId, 1);
+        };
+
         // Creates a context menu that will appear on RMB click on texture cards
         this.textureMenu = {
             opened: false,
             items: [{
-                label: languageJSON.common.open,
-                click: e => {
-                    if (this.currentTextureType === 'skeleton') {
-                        this.openSkeleton(this.currentTexture)();
-                    } else {
+                label: window.languageJSON.common.open,
+                click: () => {
+                    if (this.currentTextureType !== 'skeleton') {
                         this.openTexture(this.currentTexture)();
                     }
                     this.update();
                 }
             }, {
-                label: languageJSON.common.copyName,
-                click: e => {
+                label: window.languageJSON.common.copyName,
+                click: () => {
                     nw.Clipboard.get().set(this.currentTexture.name, 'text');
                 }
             }, {
                 label: window.languageJSON.common.rename,
-                click: e => {
+                click: () => {
                     alertify
                     .defaultValue(this.currentTexture.name)
                     .prompt(window.languageJSON.common.newname)
                     .then(e => {
-                        if (e.inputValue && e.inputValue != '' && e.buttonClicked !== 'cancel') {
+                        if (e.inputValue && e.inputValue !== '' && e.buttonClicked !== 'cancel') {
                             this.currentTexture.name = e.inputValue;
                             this.update();
                         }
@@ -238,7 +276,7 @@ textures-panel.panel.view
                 type: 'separator'
             }, {
                 label: window.languageJSON.common.delete,
-                click: e => {
+                click: () => {
                     alertify
                     .okBtn(window.languageJSON.common.delete)
                     .cancelBtn(window.languageJSON.common.cancel)
@@ -248,46 +286,7 @@ textures-panel.panel.view
                             if (this.currentTextureType === 'skeleton') {
                                 global.currentProject.skeletons.splice(this.currentTextureId, 1);
                             } else {
-                                for (const type of global.currentProject.types) {
-                                    if (type.texture === this.currentTexture.uid) {
-                                        type.texture = -1;
-                                    }
-                                }
-                                for (const room of global.currentProject.rooms) {
-                                    if ('tiles' in room) {
-                                        for (const layer of room.tiles) {
-                                            let i = 0;
-                                            while (i < layer.tiles.length) {
-                                                if (layer.tiles[i].texture === this.currentTexture.uid) {
-                                                    layer.tiles.splice(i, 1);
-                                                } else {
-                                                    i++;
-                                                }
-                                            }
-                                        }
-                                    }
-                                    if ('backgrounds' in room) {
-                                        let i = 0;
-                                        while (i < room.backgrounds.length) {
-                                            if (room.backgrounds[i].texture === this.currentTexture.uid) {
-                                                room.backgrounds.splice(i, 1);
-                                            } else {
-                                                i++;
-                                            }
-                                        }
-                                    }
-                                }
-                                for (const tandem of global.currentProject.emitterTandems) {
-                                    for (const emitter of tandem.emitters) {
-                                        if (emitter.texture === this.currentTexture.uid) {
-                                            emitter.texture = -1;
-                                        }
-                                    }
-                                }
-                                if (global.currentProject.settings.icon === this.currentTexture.uid) {
-                                    delete global.currentProject.settings.icon;
-                                }
-                                global.currentProject.textures.splice(this.currentTextureId, 1);
+                                deleteCurrentTexture();
                             }
                             this.refs.textures.updateList();
                             this.refs.skeletons.updateList();
@@ -304,7 +303,7 @@ textures-panel.panel.view
          * Shows the context menu created above
          */
         this.showTexturePopup = (texture, isSkeleton) => e => {
-            this.currentTextureType = isSkeleton? 'skeleton' : 'texture';
+            this.currentTextureType = isSkeleton ? 'skeleton' : 'texture';
             if (isSkeleton) {
                 this.currentTextureId = global.currentProject.skeletons.indexOf(texture);
             } else {
@@ -321,13 +320,10 @@ textures-panel.panel.view
         /**
          * Opens an editor for the given texture
          */
-        this.openTexture = texture => e => {
+        this.openTexture = texture => () => {
             this.currentTexture = texture;
             this.currentTextureId = global.currentProject.textures.indexOf(texture);
             this.editing = true;
-        };
-        this.openSkeleton = skel => e => {
-
         };
 
         /*
@@ -336,7 +332,7 @@ textures-panel.panel.view
         var dragTimer;
         this.onDragOver = e => {
             var dt = e.dataTransfer;
-            if (dt.types && (dt.types.indexOf ? dt.types.indexOf('Files') != -1 : dt.types.contains('Files'))) {
+            if (dt.types && (dt.types.indexOf ? dt.types.indexOf('Files') !== -1 : dt.types.contains('Files'))) {
                 this.dropping = true;
                 this.update();
                 window.clearTimeout(dragTimer);
@@ -345,12 +341,12 @@ textures-panel.panel.view
             e.stopPropagation();
         };
         this.onDrop = e => {
-             e.stopPropagation();
+            e.stopPropagation();
         };
         this.onDragLeave = e => {
             dragTimer = window.setTimeout(() => {
                 this.dropping = false;
-                this.update()
+                this.update();
             }, 25);
             e.preventDefault();
             e.stopPropagation();

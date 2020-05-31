@@ -47,5 +47,9 @@
     "stylint-stylish": "^2.0.0",
     "stylus": "^0.54.7",
     "tsd-jsdoc": "^2.5.0"
+  },
+  "devDependencies": {
+    "eslint-plugin-pug": "^1.2.2",
+    "gulp-ext-replace": "^0.3.0"
   }
 }

@@ -6,9 +6,9 @@ const stringifyFont = font => `
     src: url('fonts/${font.origname}.woff') format('woff'),
          url('fonts/${font.origname}') format('truetype');
     font-weight: ${font.weight};
-    font-style: ${font.italic? 'italic' : 'normal'};
+    font-style: ${font.italic ? 'italic' : 'normal'};
 }`;
-const bundleFonts = async function(proj, projdir, writeDir) {
+const bundleFonts = async function (proj, projdir, writeDir) {
     let css = '',
         js = '';
     const writePromises = [];
@@ -23,10 +23,10 @@ const bundleFonts = async function(proj, projdir, writeDir) {
             try {
                 woff = new Buffer(ttf2woff(ttf).buffer);
             } catch (e) {
-                window.alertify.error(`Whoah! A buggy ttf file in the font ${font.typefaceName} ${font.weight} ${font.italic? 'italic' : 'normal'}. You should either fix it or find a new one.`);
+                window.alertify.error(`Whoah! A buggy ttf file in the font ${font.typefaceName} ${font.weight} ${font.italic ? 'italic' : 'normal'}. You should either fix it or find a new one.`);
                 throw e;
             }
-            writePromises.push(fs.copy(`${projdir}/fonts/${font.origname}` , writeDir + '/fonts/' + font.origname));
+            writePromises.push(fs.copy(`${projdir}/fonts/${font.origname}`, writeDir + '/fonts/' + font.origname));
             writePromises.push(fs.writeFile(writeDir + '/fonts/' + font.origname + '.woff', woff));
             css += stringifyFont(font);
         }));
