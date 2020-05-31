@@ -228,8 +228,7 @@ texture-editor.panel.view
         var textureCanvas, grprCanvas;
 
         this.on('mount', () => {
-            textureCanvas = this.refs.textureCanvas;
-            grprCanvas = this.refs.grprCanvas;
+            ({textureCanvas, grprCanvas} = this.refs);
             textureCanvas.x = textureCanvas.getContext('2d');
             grprCanvas.x = grprCanvas.getContext('2d');
             var texture = this.texture = this.opts.texture;
