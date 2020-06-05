@@ -15,7 +15,8 @@
 texture-selector.panel.view
     .flexfix.tall
         .flexfix-header
-            h1(if="{header}") {header}
+            .toleft
+                h1(if="{opts.header}") {opts.header}
             .toright
                 b {vocGlob.sort}
                 button.inline.square(onclick="{switchSort('date')}" class="{selected: sort === 'date' && !searchResults}")
