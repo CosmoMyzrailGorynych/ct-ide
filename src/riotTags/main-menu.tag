@@ -21,10 +21,10 @@ main-menu.flexcol
                     use(xlink:href="data/icons.svg#play")
 
         ul#mainnav.nav.tabs
-            li(onclick="{changeTab('settings')}" class="{active: tab === 'settings'}" data-hotkey="Control+1" title="Control+1")
+            li(onclick="{changeTab('project')}" class="{active: tab === 'project'}" data-hotkey="Control+1" title="Control+1")
                 svg.feather
-                    use(xlink:href="data/icons.svg#settings")
-                span {voc.settings}
+                    use(xlink:href="data/icons.svg#sliders")
+                span {voc.project}
             li(onclick="{changeTab('modules')}" class="{active: tab === 'modules'}" data-hotkey="Control+2" title="Control+2")
                 svg.feather
                     use(xlink:href="data/icons.svg#ctmod")
@@ -54,7 +54,7 @@ main-menu.flexcol
                     use(xlink:href="data/icons.svg#room")
                 span {voc.rooms}
     div.flexitem.relative(if="{global.currentProject}")
-        settings-panel(show="{tab === 'settings'}" data-hotkey-scope="settings")
+        project-settings(show="{tab === 'project'}" data-hotkey-scope="project")
         modules-panel(show="{tab === 'modules'}" data-hotkey-scope="modules")
         textures-panel(show="{tab === 'texture'}" data-hotkey-scope="texture")
         ui-panel(show="{tab === 'ui'}" data-hotkey-scope="ui")
@@ -81,7 +81,7 @@ main-menu.flexcol
         this.namespace = 'menu';
         this.mixin(window.riotVoc);
 
-        this.tab = 'settings';
+        this.tab = 'project';
         this.changeTab = tab => () => {
             this.tab = tab;
             hotkey.cleanScope();

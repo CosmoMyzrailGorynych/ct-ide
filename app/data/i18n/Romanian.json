@@ -49,19 +49,6 @@
         "zoomIn": "Mărire",
         "zoomOut": "Micșorare"
     },
-    "actionsEditor": {
-        "actions": "Acțiuni",
-        "actionsEditor": "Editor de acțiuni",
-        "addAction": "Adaugă o acțiune",
-        "addMethod": "Adaugă o metodă de introducere",
-        "deleteAction": "Șterge această acțiune",
-        "deleteMethod": "Șterge această metodă",
-        "inputActionNamePlaceholder": "Numele acțiunii",
-        "methodModuleMissing": "Modulul necesar pentru această metodă lipsește",
-        "methods": "Metode de introducere",
-        "multiplier": "Coeficient",
-        "noActionsYet": "Acțiunile le permit dezvoltatorilor să captureze numeroase metode de introducere în același timp și să le schimbe dinamic, totul cu un singur API uniform. Citește mai mult făcând click pe iconița pentru documentație de mai sus."
-    },
     "colorPicker": {
         "current": "Nou",
         "globalPalette": "Paletă globală",
@@ -79,9 +66,6 @@
         "exportPanel": "Exportă proiectul",
         "firstrunnotice": "Prima rulare pentru fiecare platformă va fi lentă deoarece ct.js va descărca și salva bibliotecile necesare pentru împachetare. Va dura ceva timp, dar data viitoare va fi aproape instant.",
         "log": "Jurnal de mesaje"
-    },
-    "inputMethodSelector": {
-        "select": "Selectează"
     },
     "intro": {
         "loading": "Vă rugăm așteptați: pisicuțele accelerează la viteza luminii!",
@@ -145,33 +129,40 @@
         "codeDense": ""
     },
     "settings": {
-        "actions": "Acțiuni și metode de introducere",
-        "author": "Numele autorului:",
-        "authoring": "Informații despre autor",
-        "cover": "Cover:",
-        "editActions": "Editează acțiunile",
-        "exportparams": "Exportă parametrii",
-        "framerate": "Framerate:",
-        "getfile": "Alege",
-        "minifyhtmlcss": "Comprimă HTML și CSS",
-        "minifyjs": "Comprimă JavaScript și convertește în ES5 (lent; folosește pentru lansări)",
-        "pixelatedrender": "Dezactivează netezirea imaginii aici și în proiectul exportat (conservă pixelii clari)",
-        "renderoptions": "Opțiuni de randare",
-        "settings": "Setările proiectului",
-        "site": "Pagină principală:",
-        "title": "Nume:",
-        "version": "Versiune:",
-        "versionpostfix": "Postfix:",
+        "actions": {
+            "heading": "Acțiuni și metode de introducere",
+            "actions": "Acțiuni",
+            "addAction": "Adaugă o acțiune",
+            "addMethod": "Adaugă o metodă de introducere",
+            "deleteAction": "Șterge această acțiune",
+            "deleteMethod": "Șterge această metodă",
+            "inputActionNamePlaceholder": "Numele acțiunii",
+            "methodModuleMissing": "Modulul necesar pentru această metodă lipsește",
+            "methods": "Metode de introducere",
+            "multiplier": "Coeficient",
+            "noActionsYet": "Acțiunile le permit dezvoltatorilor să captureze numeroase metode de introducere în același timp și să le schimbe dinamic, totul cu un singur API uniform. Citește mai mult făcând click pe iconița pentru documentație de mai sus."
+        },
+        "authoring": {
+            "heading": "Informații despre autor",
+            "author": "Numele autorului:",
+            "site": "Pagină principală:",
+            "title": "Nume:",
+            "version": "Versiune:",
+            "versionpostfix": "Postfix:"
+        },
+        "rendering": {
+            "heading": "Opțiuni de randare",
+            "framerate": "Framerate:",
+            "pixelatedrender": "Dezactivează netezirea imaginii aici și în proiectul exportat (conservă pixelii clari)"
+        },
         "scripts": {
+            "heading": "Script-uri",
             "addNew": "Adaugă un nou script",
             "deleteScript": "Șterge script-ul",
-            "header": "Script-uri",
             "newScriptComment": "Folosește script-uri pentru a defini funcții frecvente și pentru a importa biblioteci mici",
             "moveUp": "Mută-te în sus.",
             "moveDown": "Mutare în jos"
-        },
-        "highDensity": "",
-        "maxFPS": ""
+        }
     },
     "modules": {
         "author": "Autorul acestui catmod",

@@ -50,19 +50,6 @@
         "zoomIn": "Powiększanie",
         "zoomOut": "Pomniejszanie"
     },
-    "actionsEditor": {
-        "actions": "Akcje",
-        "actionsEditor": "Edytor akcji",
-        "addAction": "Dodaj akcję",
-        "addMethod": "Dodaj metodę wejścia",
-        "deleteAction": "Usuń tę akcję",
-        "deleteMethod": "Usuń tę metodę",
-        "inputActionNamePlaceholder": "Nazwa akcji",
-        "methodModuleMissing": "Brak modułu potrzebnego tej metodzie",
-        "methods": "Metody wejścia",
-        "multiplier": "Mnożnik",
-        "noActionsYet": "Akcje pozwalają deweloperom na nasłuchiwanie licznych metod wejścia jednocześnie i na dynamiczną ich zmianę, wszystko za pomocą jednolitego API. Przeczytaj więcej klikając ikonę dokumentu na górze."
-    },
     "colorPicker": {
         "current": "Nowy",
         "globalPalette": "Paleta Globalna",
@@ -80,9 +67,6 @@
         "exportPanel": "Eksportuj Projekt",
         "firstrunnotice": "Pierwsze uruchomienie dla każdej platformy będzie wolne, ponieważ ct.js będzie pobierać i zapisywać dodatkowe biblioteki wymagane do spakowania gry. Może to zająć trochę czasu, ale następne razy będą nimal natychmiastowe.",
         "log": "Log Wiadomości"
-    },
-    "inputMethodSelector": {
-        "select": "Wybierz"
     },
     "intro": {
         "loading": "Please wait: kittens are gathering speed of light!",
@@ -159,30 +143,39 @@
         "showOnboardingCheckbox": "Pokaż ten ekran przy tworzeniu nowego projektu"
     },
     "settings": {
-        "actions": "Akcje i metody wejścia",
-        "author": "Autor:",
-        "authoring": "Authoring",
-        "cover": "Okładka:",
-        "editActions": "Edytuj akcje",
-        "exportparams": "Eksportuj parametry",
-        "framerate": "Klatki na sekundę:",
-        "getfile": "Wybierz",
-        "highDensity": "Wspieraj dużą gęstość pikseli (np. na wyświetlaczach retina)",
-        "maxFPS": "Maksymalna ilość klatek na sekundę:",
-        "minifyhtmlcss": "Kompresuj HTML i CSS",
-        "minifyjs": "Kompresuj JavaScript i konwertuj go do ES5 (wolne; używać do publikowania)",
-        "usePixiLegacy": "Dodaj szeroko wspierany, bazujący na canvasie renderer żeby wspierać stare przeglądarki i karty graficzne (dodaje ~20kb do twojej gry)",
-        "pixelatedrender": "Zablokuj wygładzanie obrazu tu i w eksportowanym projekcie (zachowaj ostre piksele)",
-        "renderoptions": "Opcje renderowania",
-        "settings": "Ustawienia projektu",
-        "site": "Strona domowa:",
-        "title": "Nazwa:",
-        "version": "Wersja:",
-        "versionpostfix": "Postfiks:",
+        "actions": {
+            "heading": "Akcje i metody wejścia",
+            "actions": "Akcje",
+            "addAction": "Dodaj akcję",
+            "addMethod": "Dodaj metodę wejścia",
+            "deleteAction": "Usuń tę akcję",
+            "deleteMethod": "Usuń tę metodę",
+            "inputActionNamePlaceholder": "Nazwa akcji",
+            "methodModuleMissing": "Brak modułu potrzebnego tej metodzie",
+            "methods": "Metody wejścia",
+            "multiplier": "Mnożnik",
+            "noActionsYet": "Akcje pozwalają deweloperom na nasłuchiwanie licznych metod wejścia jednocześnie i na dynamiczną ich zmianę, wszystko za pomocą jednolitego API. Przeczytaj więcej klikając ikonę dokumentu na górze."
+        },
+        "authoring":  {
+            "heading": "Authoring",
+            "author": "Autor:",
+            "site": "Strona domowa:",
+            "title": "Nazwa:",
+            "version": "Wersja:",
+            "versionpostfix": "Postfiks:"
+        },
+        "rendering":  {
+            "heading": "Opcje renderowania",
+            "framerate": "Klatki na sekundę:",
+            "highDensity": "Wspieraj dużą gęstość pikseli (np. na wyświetlaczach retina)",
+            "maxFPS": "Maksymalna ilość klatek na sekundę:",
+            "usePixiLegacy": "Dodaj szeroko wspierany, bazujący na canvasie renderer żeby wspierać stare przeglądarki i karty graficzne (dodaje ~20kb do twojej gry)",
+            "pixelatedrender": "Zablokuj wygładzanie obrazu tu i w eksportowanym projekcie (zachowaj ostre piksele)"
+        },
         "scripts": {
             "addNew": "Dodaj nowy skrypt",
             "deleteScript": "Usuń skrypt",
-            "header": "Skrypty",
+            "heading": "Skrypty",
             "newScriptComment": "Uzyj skryptów do definiowania często używanych funkcji i importowania małych bibliotek",
             "moveUp": "Przechodzenie w górę",
             "moveDown": "Przechodzenie w dół"

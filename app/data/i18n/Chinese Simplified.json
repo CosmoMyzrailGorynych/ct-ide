@@ -50,19 +50,6 @@
         "zoomIn": "放大缩小字体功能 放大缩小字体功能",
         "zoomOut": "放大缩小字体功能 放大缩小字体功能"
     },
-    "actionsEditor": {
-        "actions": "动作",
-        "actionsEditor": "动作编辑器",
-        "addAction": "添加动作",
-        "addMethod": "添加输入方法",
-        "deleteAction": "删除这个动作",
-        "deleteMethod": "删除这个方法",
-        "inputActionNamePlaceholder": "动作名称",
-        "methodModuleMissing": "缺少此方法所需的模块",
-        "methods": "输入方法",
-        "multiplier": "乘数",
-        "noActionsYet": "动作允许开发人员一次监听多个输入方法并动态地更改它们, 所有这些操作都使用一个统一的API. 点击上面的文档图标来阅读更多内容"
-    },
     "colorPicker": {
         "current": "新建",
         "globalPalette": "全局调色盘",
@@ -80,9 +67,6 @@
         "exportPanel": "导出项目",
         "firstrunnotice": "每个平台的第一次运行会比较慢, 因为ct.js会下载并保存打包所需的额外库. 这需要一些时间, 但下一次几乎是瞬间的.",
         "log": "消息日志"
-    },
-    "inputMethodSelector": {
-        "select": "选择"
     },
     "intro": {
         "loading": "请稍等: 小猫正在聚集光速!",
@@ -151,34 +135,43 @@
         "openIncludeFolder": "打开\"include\"文件夹"
     },
     "settings": {
-        "actions": "动作和输入方法",
-        "author": "作者姓名",
-        "authoring": "创作",
-        "cover": "封面:",
-        "editActions": "编辑动作",
-        "exportparams": "导出参数",
-        "framerate": "帧率:",
-        "getfile": "选择",
-        "highDensity": "支持高像素密度(例如在视网膜屏幕上)",
-        "maxFPS": "最大帧率:",
-        "minifyhtmlcss": "压缩HTML和CSS",
-        "minifyjs": "压缩JavaScript并将其转换为ES5 (缓慢; 用于发行版)",
-        "pixelatedrender": "在此处和导出的项目中禁用图像平滑 (保留清晰像素)",
-        "renderoptions": "渲染选项",
-        "settings": "项目设置",
-        "site": "主页:",
-        "title": "名称:",
-        "version": "版本:",
-        "versionpostfix": "后缀:",
+        "actions": {
+            "heading": "动作和输入方法",
+            "actions": "动作",
+            "addAction": "添加动作",
+            "addMethod": "添加输入方法",
+            "deleteAction": "删除这个动作",
+            "deleteMethod": "删除这个方法",
+            "inputActionNamePlaceholder": "动作名称",
+            "methodModuleMissing": "缺少此方法所需的模块",
+            "methods": "输入方法",
+            "multiplier": "乘数",
+            "noActionsYet": "动作允许开发人员一次监听多个输入方法并动态地更改它们, 所有这些操作都使用一个统一的API. 点击上面的文档图标来阅读更多内容"
+        },
+        "authoring": {
+            "author": "作者姓名",
+            "heading": "创作",
+            "site": "主页:",
+            "title": "名称:",
+            "version": "版本:",
+            "versionpostfix": "后缀:"
+        },
+        "rendering": {
+            "heading": "渲染选项",
+            "framerate": "帧率:",
+            "usePixiLegacy": "添加基于画布的旧版渲染器以支持较旧的浏览器和图形卡 (在您的游戏中最多增加20kb)",
+            "highDensity": "支持高像素密度(例如在视网膜屏幕上)",
+            "maxFPS": "最大帧率:",
+            "pixelatedrender": "在此处和导出的项目中禁用图像平滑 (保留清晰像素)"
+        },
         "scripts": {
+            "heading": "脚本",
             "addNew": "添加新脚本",
             "deleteScript": "删除脚本",
-            "header": "脚本",
             "newScriptComment": "使用脚本定义常用函数并导入小型库",
             "moveUp": "向上移动",
             "moveDown": "向下移动"
-        },
-        "usePixiLegacy": "添加基于画布的旧版渲染器以支持较旧的浏览器和图形卡 (在您的游戏中最多增加20kb)"
+        }
     },
     "modules": {
         "author": "这个cat模组的作者",

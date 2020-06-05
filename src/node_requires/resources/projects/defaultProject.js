@@ -24,12 +24,20 @@ const defaultProjectTemplate = {
     emitterTandems: [],
     starting: 0,
     settings: {
-        minifyhtmlcss: false,
-        minifyjs: false,
-        fps: 60,
-        version: [0, 0, 0],
-        versionPostfix: '',
-        usePixiLegacy: true,
+        authoring: {
+            author: '',
+            site: '',
+            title: '',
+            version: [0, 0, 0],
+            versionPostfix: ''
+        },
+        rendering: {
+            usePixiLegacy: true,
+            maxFPS: 60,
+            pixelatedrender: false,
+            highDensity: true,
+            desktopMode: 'maximized'
+        },
         export: {
             windows: true,
             linux: true,

@@ -1,13 +1,15 @@
-method-selector
+actions-input-selector
     .panel.flexfix
         .flexfix-header
             .aSearchWrap.wide
                 input.wide(
-                    type="text" 
+                    type="text"
                     ref="searchField"
                     value="{searchString}"
                     onkeyup="{wire('this.searchString')}"
                 )
+                svg.feather
+                    use(xlink:href="data/icons.svg#search")
         .flexfix-body
             virtual(each="{module in inputProviders}")
                 h2 {module.name}
@@ -24,11 +26,11 @@ method-selector
         .flexfix-footer
             .flexrow
                 button.nml.secondary(onclick="{cancel}")
-                    span {vocGlob.cancel}
+                    span {voc.cancel}
                 button.nml.secondary(onclick="{apply}" disabled="{!selectedMethod}")
                     span {voc.select}
     script.
-        this.namespace = 'inputMethodSelector';
+        this.namespace = 'common';
         this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
 

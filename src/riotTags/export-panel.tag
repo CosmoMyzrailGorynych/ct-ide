@@ -7,27 +7,21 @@ export-panel
             p {voc.firstrunnotice}
             fieldset
                 label.checkbox
-                    input(type="checkbox" checked="{global.currentProject.settings.export.linux}" onchange="{wire('global.currentProject.settings.export.linux')}")
+                    input(type="checkbox" checked="{projSettings.export.linux}" onchange="{wire('projSettings.export.linux')}")
                     svg.icon
                         use(xlink:href="data/icons.svg#linux")
                     |   Linux
                 label.checkbox(disabled="{process.platform === 'win32'}" title="{process.platform === 'win32' && voc.cannotBuildForMacOnWin}")
-                    input(type="checkbox" checked="{global.currentProject.settings.export.mac}" onchange="{wire('global.currentProject.settings.export.mac')}")
+                    input(type="checkbox" checked="{projSettings.export.mac}" onchange="{wire('projSettings.export.mac')}")
                     svg.icon
                         use(xlink:href="data/icons.svg#apple")
                     |   MacOS
                 label.checkbox
-                    input(type="checkbox" checked="{global.currentProject.settings.export.windows}" onchange="{wire('global.currentProject.settings.export.windows')}")
+                    input(type="checkbox" checked="{projSettings.export.windows}" onchange="{wire('projSettings.export.windows')}")
                     svg.icon
                         use(xlink:href="data/icons.svg#windows")
                     |   Windows
-            fieldset
-                b {voc.launchMode}
-                each key in ['maximized', 'fullscreen', 'windowed']
-                    label.checkbox
-                        input(type="radio" value=key checked=`{global.currentProject.settings.desktopMode === '${key}'}` onchange="{wire('global.currentProject.settings.desktopMode')}")
-                        span=`{voc.launchModes.${key}}`
-            p.warning(if="{global.currentProject.settings.export.windows && process.platform !== 'win32'}")
+            p.warning(if="{projSettings.export.windows && process.platform !== 'win32'}")
                 svg.feather
                     use(xlink:href="data/icons.svg#alert-triangle")
                 |
@@ -57,7 +51,11 @@ export-panel
         this.mixin(window.riotWired);
         this.working = false;
         this.log = [];
+
         global.currentProject.settings.export = global.currentProject.settings.export || {};
+        const projSettings = global.currentProject.settings;
+        this.projSettings = global.currentProject.settings;
+
 
         this.closeExporter = function closeExporter() {
             this.parent.showExporter = false;
@@ -69,15 +67,15 @@ export-panel
 
             const png2icons = require('png2icons'),
                   {getTextureOrig} = require('./data/node_requires/resources/textures');
-            const iconPath = getTextureOrig(global.currentProject.settings.branding.icon || -1, true),
+            const iconPath = getTextureOrig(projSettings.branding.icon || -1, true),
                   icon = await fs.readFile(iconPath);
             await fs.outputFile(path.join(exportDir, 'icon.icns'), png2icons.createICNS(
                 icon,
-                global.currentProject.settings.pixelatedrender ? png2icons.BILINEAR : png2icons.HERMITE
+                projSettings.rendering.pixelatedrender ? png2icons.BILINEAR : png2icons.HERMITE
             ));
             await fs.outputFile(path.join(exportDir, 'icon.ico'), png2icons.createICO(
                 icon,
-                global.currentProject.settings.antialias ? png2icons.BILINEAR : png2icons.HERMITE,
+                projSettings.rendering.antialias ? png2icons.BILINEAR : png2icons.HERMITE,
                 0, true, true
             ));
         };
@@ -112,17 +110,17 @@ export-panel
                 this.log.push('Preparing build metadata…');
                 this.update();
                 const packageJson = fs.readJSONSync('./data/ct.release/desktopPack/package.json');
-                const version = global.currentProject.settings.version.join('.') + global.currentProject.settings.versionPostfix;
+                const version = projSettings.authoring.version.join('.') + projSettings.authoring.versionPostfix;
                 packageJson.version = version;
-                if (global.currentProject.settings.title) {
-                    packageJson.name = global.currentProject.settings.title;
-                    packageJson.window.title = global.currentProject.settings.title;
+                if (projSettings.authoring.title) {
+                    packageJson.name = projSettings.authoring.title;
+                    packageJson.window.title = projSettings.authoring.title;
                 }
                 const startingRoom = global.currentProject.rooms.find(room =>
                     room.uid === global.currentProject.startroom) || global.currentProject.rooms[0];
                 packageJson.window.width = startingRoom.width;
                 packageJson.window.height = startingRoom.height;
-                packageJson.window.mode = global.currentProject.settings.desktopMode || 'maximized';
+                packageJson.window.mode = projSettings.rendering.desktopMode || 'maximized';
                 await fs.outputJSON(path.join(exportDir, 'package.json'), packageJson);
 
                 this.log.push('Baking icons…');
@@ -145,11 +143,11 @@ export-panel
                     appCategoryType: 'public.app-category.games',
 
                     // Game-specific metadata
-                    executableName: global.currentProject.settings.title || 'ct.js game',
-                    appCopyright: global.currentProject.settings.author && `Copyright © ${global.currentProject.settings.author} ${(new Date()).getFullYear()}`,
-                    win32metadata: global.currentProject.settings.author && {
-                        CompanyName: global.currentProject.settings.author,
-                        FileDescription: global.currentProject.settings.description || 'A cool game made in ct.js game editor'
+                    executableName: projSettings.authoring.title || 'ct.js game',
+                    appCopyright: projSettings.authoring.author && `Copyright © ${projSettings.authoring.author} ${(new Date()).getFullYear()}`,
+                    win32metadata: projSettings.authoring.author && {
+                        CompanyName: projSettings.authoring.author,
+                        FileDescription: projSettings.authoring.description || 'A cool game made in ct.js game editor'
                     }
                 };
 
@@ -165,7 +163,7 @@ export-panel
                     windows: 'win32'
                 };
                 for (const settingKey in platformMap) {
-                    if (!global.currentProject.settings.export[settingKey]) {
+                    if (!projSettings.export[settingKey]) {
                         continue;
                     }
                     const platform = platformMap[settingKey];

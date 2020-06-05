@@ -51,19 +51,6 @@
         "zoomIn": "Zoom in",
         "zoomOut": "Zoom uit"
     },
-    "actionsEditor": {
-        "actions": "Acties",
-        "actionsEditor": "Acties editor",
-        "addAction": "Toevoegen van een actie",
-        "addMethod": "Toevoegen van een input methode",
-        "deleteAction": "Verwijder deze actie",
-        "deleteMethod": "Verwijder deze methode",
-        "inputActionNamePlaceholder": "Actie naam",
-        "methodModuleMissing": "The benodigde module voor deze methode mist",
-        "methods": "Invoermethoden",
-        "multiplier": "Vermenigvuldiger",
-        "noActionsYet": "Met acties kunnen ontwikkelaars naar verschillende invoermethoden tegelijk luisteren en deze dynamisch wijzigen, allemaal met een uniforme API. Lees meer door op het documentatie-pictogram hierboven te klikken."
-    },
     "colorPicker": {
         "current": "New",
         "globalPalette": "Globaal Palet",
@@ -102,16 +89,7 @@
         "firstrunnotice": "De eerste run voor elk platform zal traag zijn, omdat ct.js extra bibliotheken zal downloaden en degene opslaan die nodig zijn voor het inpakken. Het zal even duren, maar de volgende keer zal bijna onmiddellijk zijn.",
         "log": "Berichtenlog",
         "windowsCrossBuildWarning": "Om vanaf Linux / MacOS voor Windows te bouwen, moet Wine op uw systeem zijn geïnstalleerd. Installatie-instructies zijn verschillend voor verschillende platforms, dus u kunt het beter zelf googlen :)",
-        "launchMode": "Lanceer modes:",
-        "launchModes": {
-            "maximized": "Maximaliseren",
-            "fullscreen": "Volledig scherm",
-            "windowed": "Windowed"
-        },
         "cannotBuildForMacOnWin": "Helaas kan Windows alleen kapotte Mac-pakketten produceren. Probeer een Linux-machine te gebruiken; bijvoorbeeld als een virtuele machine. Dit kan 100% gratis!"
-    },
-    "inputMethodSelector": {
-        "select": "Selecteer"
     },
     "intro": {
         "loading": "Even geduld: kittens verzamelen lichtsnelheid!",
@@ -198,26 +176,41 @@
         "showOnboardingCheckbox": "Laat dit scherm zien wanneer er een nieuw project wordt gecreëerd"
     },
     "settings": {
-        "actions": "Acties en Invoermethoden",
-        "author": "Auteru naam:",
-        "authoring": "Auteur",
-        "cover": "Dek:",
-        "editActions": "Acties aanpassen",
-        "exportparams": "Exporteer parameters",
-        "framerate": "Framerate:",
-        "getfile": "Kiezen",
-        "highDensity": "Ondersteuning voor hoge pixeldichtheid (bijv. Op retina-schermen)",
-        "maxFPS": "Maximale framerate:",
-        "minifyhtmlcss": "Comprimeer HTML en CSS",
-        "minifyjs": "Comprimeer JavaScript en converteer het naar ES5 (langzaam; gebruik voor releases)",
-        "usePixiLegacy": "Voeg een verouderde, canvasgebaseerde renderer toe om oudere browsers en grafische kaarten te ondersteunen (voegt ~20kb toe aan je spel)",
-        "pixelatedrender": "Schakel het vloeiend maken van afbeeldingen hier en in een geëxporteerd project uit (behoud scherpe pixels)",
-        "renderoptions": "Render Opties",
-        "settings": "Project instellingen",
-        "site": "Thuispagina:",
-        "title": "Naam:",
-        "version": "Versie:",
-        "versionpostfix": "Postfix:",
+        "actions": {
+            "heading": "Acties en Invoermethoden",
+            "actions": "Acties",
+            "addAction": "Toevoegen van een actie",
+            "addMethod": "Toevoegen van een input methode",
+            "deleteAction": "Verwijder deze actie",
+            "deleteMethod": "Verwijder deze methode",
+            "inputActionNamePlaceholder": "Actie naam",
+            "methodModuleMissing": "The benodigde module voor deze methode mist",
+            "methods": "Invoermethoden",
+            "multiplier": "Vermenigvuldiger",
+            "noActionsYet": "Met acties kunnen ontwikkelaars naar verschillende invoermethoden tegelijk luisteren en deze dynamisch wijzigen, allemaal met een uniforme API. Lees meer door op het documentatie-pictogram hierboven te klikken."
+        },
+        "authoring": {
+            "heading": "Auteur",
+            "author": "Auteru naam:",
+            "site": "Thuispagina:",
+            "title": "Naam:",
+            "version": "Versie:",
+            "versionpostfix": "Postfix:"
+        },
+        "rendering": {
+            "heading": "Render Opties",
+            "framerate": "Framerate:",
+            "highDensity": "Ondersteuning voor hoge pixeldichtheid (bijv. Op retina-schermen)",
+            "maxFPS": "Maximale framerate:",
+            "usePixiLegacy": "Voeg een verouderde, canvasgebaseerde renderer toe om oudere browsers en grafische kaarten te ondersteunen (voegt ~20kb toe aan je spel)",
+            "pixelatedrender": "Schakel het vloeiend maken van afbeeldingen hier en in een geëxporteerd project uit (behoud scherpe pixels)",
+            "launchMode": "Lanceer modes:",
+            "launchModes": {
+                "maximized": "Maximaliseren",
+                "fullscreen": "Volledig scherm",
+                "windowed": "Windowed"
+            }
+        },
         "branding": {
             "heading": "Branding",
             "icon": "Game's icoon:",
@@ -229,7 +222,7 @@
         "scripts": {
             "addNew": "Toevoegen van een nieuw Script",
             "deleteScript": "Verwijder een Script",
-            "header": "Scripts",
+            "heading": "Scripts",
             "newScriptComment": "Gebruik scripts om veelgebruikte functies te definiëren en kleine bibliotheken te importeren"
         }
     },

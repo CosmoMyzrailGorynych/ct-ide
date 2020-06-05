@@ -85,13 +85,7 @@
         "exportPanel": "Exporter le Projet",
         "firstrunnotice": "Le premier lancement pour chaque plateforme sera lent car ct.js va télécharger et sauvegarder les librairies additionnels requises pour les rassembler. Cela va prendre un certain temps, mais les prochaines fois ce sera presque instantané.",
         "log": "Journal des logs",
-        "windowsCrossBuildWarning": "Pour construire pour windows depuis Linux/MacOS, vous avez besoin de Wine :)",
-        "launchMode": "Mode de lancement:",
-        "launchModes": {
-            "maximized": "Maximiser",
-            "fullscreen": "Plein écran",
-            "windowed": "Fenêtré"
-        }
+        "windowsCrossBuildWarning": "Pour construire pour windows depuis Linux/MacOS, vous avez besoin de Wine :)"
     },
     "intro": {
         "loading": "Veuillez patientez: des chatons ",
@@ -169,26 +163,41 @@
         "showOnboardingCheckbox": "Afficher cet écran lors de la création d'un nouveau projet"
     },
     "settings": {
-        "author": "Nom de l'auteur:",
-        "authoring": "Auteur",
-        "cover": "Couverture:",
-        "exportparams": "Paramétres d'exportation",
-        "framerate": "Taux d'image:",
-        "getfile": "Choisir",
-        "maxFPS": "Max framerate:",
-        "minifyhtmlcss": "Compresse le HTML et CSS",
-        "minifyjs": "Compresse le JavaScript et converti en ES5 (lent; utilisé pour la publication)",
-        "usePixiLegacy": "Ajoute un rendu hérité basé sur canvas pour prendre en charge les anciens navigateurs et cartes graphiques (ajoute environ 20 Ko à votre jeu)",
-        "pixelatedrender": "Désactive le lissage d'image ici et dans le projet exporté (conservez les pixels net)",
-        "renderoptions": "Options de rendu",
-        "settings": "Paramètres du projet",
-        "site": "Page d'accueil du projet:",
-        "title": "Nom du projet:",
-        "version": "Version:",
-        "versionpostfix": "Postfix:",
-        "actions": "Réglages des touches",
-        "editActions": "Configurer des touches",
-        "highDensity": "Prend en charge une densité de pixels élevée (par exemple sur les écrans rétina)",
+        "actions": {
+            "heading": "Réglages des touches",
+            "actions": "Actions",
+            "addAction": "Ajouter une action",
+            "addMethod": "Ajouter une méthode d'entrée",
+            "deleteAction": "Supprimer une action",
+            "deleteMethod": "Supprimer une méthode",
+            "inputActionNamePlaceholder": "Nom de l'action",
+            "methodModuleMissing": "Le module pour cette méthode est introuvable",
+            "methods": "Méthode d'entrée",
+            "multiplier": "Multiplier",
+            "noActionsYet": "Les actions permettent aux développeurs d'écouter de nombreuses méthodes d'entrée à la fois et de les modifier dynamiquement, le tout avec une API uniforme. En savoir plus en cliquant sur l'icône des documents ci-dessus"
+        },
+        "authoring": {
+            "heading": "Auteur",
+            "author": "Nom de l'auteur:",
+            "site": "Page d'accueil du projet:",
+            "title": "Nom du projet:",
+            "version": "Version:",
+            "versionpostfix": "Postfix:"
+        },
+        "rendering": {
+            "heading": "Options de rendu",
+            "highDensity": "Prend en charge une densité de pixels élevée (par exemple sur les écrans rétina)",
+            "framerate": "Taux d'image:",
+            "maxFPS": "Max framerate:",
+            "usePixiLegacy": "Ajoute un rendu hérité basé sur canvas pour prendre en charge les anciens navigateurs et cartes graphiques (ajoute environ 20 Ko à votre jeu)",
+            "pixelatedrender": "Désactive le lissage d'image ici et dans le projet exporté (conservez les pixels net)",
+            "launchMode": "Mode de lancement:",
+            "launchModes": {
+                "maximized": "Maximiser",
+                "fullscreen": "Plein écran",
+                "windowed": "Fenêtré"
+            }
+        },
         "branding": {
             "heading": "Étiqueter",
             "icon": "Logo du jeu",
@@ -198,14 +207,13 @@
             "invertPreloaderScheme":"Inverser le schéma de couleurs du chargement"
         },
         "scripts": {
+            "heading": "Vos Scripts",
             "addNew": "Ajouter un nouveau Script",
             "deleteScript": "Supprimer le Script",
-            "header": "Vos Scripts",
             "newScriptComment": "Utilisez des scripts pour définir des fonctions fréquentes et importer de petites bibliothèques",
             "moveUp": "Montez",
             "moveDown": "Déplacez-vous vers le bas"
         }
-        
     },
     "modules": {
         "author": "Auteur de ce CatMod",
@@ -471,24 +479,8 @@
         "helppages": "Aides",
         "backToHome": "Retourner à la documentations"
     },
-    "actionsEditor": {
-        "actions": "Actions",
-        "actionsEditor": "Editeur d'actions",
-        "addAction": "Ajouter une action",
-        "addMethod": "Ajouter une méthode d'entrée",
-        "deleteAction": "Supprimer une action",
-        "deleteMethod": "Supprimer une méthode",
-        "inputActionNamePlaceholder": "Nom de l'action",
-        "methodModuleMissing": "Le module pour cette méthode est introuvable",
-        "methods": "Méthode d'entrée",
-        "multiplier": "Multiplier",
-        "noActionsYet": "Les actions permettent aux développeurs d'écouter de nombreuses méthodes d'entrée à la fois et de les modifier dynamiquement, le tout avec une API uniforme. En savoir plus en cliquant sur l'icône des documents ci-dessus"
-    },
     "docsShortcut": {
         "openDocs": "Ouvrir la documentation"
-    },
-    "inputMethodSelector": {
-        "select": "Sélect"
     },
     "patreon": {
         "aboutPatrons": "Les Patrons sont des personnes qui manifestent leur soutien à CamigoGames, sous forme de dons récurrents, tout les donnateurs ne viennent pas forcément de Ct.js certain(e)s utilisent d'autres support créer par ComigoGames. Astuces si vous faites un don à ComigoGames via Patreon, vous obtiendrez un lien vers votre projet ici - c'est ma petite aide pour vos créations :)",

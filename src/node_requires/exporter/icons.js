@@ -32,13 +32,13 @@ const bakeFavicons = async function (proj, writeDir) {
     const img = await getDOMImage(proj.settings.branding.icon, 'ct_ide.png'),
           fsPath = proj.settings.branding.icon ? getTextureOrig(proj.settings.branding.icon, true) : path.resolve('ct_ide.png');
     const promises = [];
-    const soft = !proj.settings.pixelatedrender;
+    const soft = !proj.settings.rendering.pixelatedrender;
     for (const name in iconMap) {
         for (const size of iconMap[name]) {
             promises.push(resizeTo(img, size, path.join(writeDir, `${name}-${size}x${size}.png`), soft));
         }
     }
-    const interpolation = proj.settings.pixelatedrender ? png2icons.BILINEAR : png2icons.HERMITE;
+    const interpolation = soft ? png2icons.HERMITE : png2icons.BILINEAR;
     promises.push(fs.readFile(fsPath)
         .then(buff => png2icons.createICO(buff, interpolation))
         .then(buff => fs.outputFile(path.join(writeDir, 'favicon.ico'), buff)));

@@ -1,6 +1,6 @@
-scripts-panel
-    h1.flexfix-header {voc.header}
-    ul.menu.flexfix-body
+scripts-settings
+    h1 {voc.heading}
+    ul.menu
         li(each="{script, index in global.currentProject.scripts}" onclick="{selectScript}")
             code {script.name}
             div.toright.scripts-panel-aDeleteButton(onclick="{deleteScript}" title="{voc.deleteScript}")
@@ -13,7 +13,7 @@ scripts-panel
             div.toright(onclick="{moveUp}" title="{voc.moveUp}" style="opacity: {index === 0? 0 : 1};")
                 svg.feather.dim
                     use(xlink:href="data/icons.svg#arrow-up")
-    button.flexfix-footer(onclick="{addNewScript}")
+    button(onclick="{addNewScript}")
         svg.feather
             use(xlink:href="data/icons.svg#plus")
         span {voc.addNew}

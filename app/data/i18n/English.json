@@ -25,7 +25,7 @@
         "fastimport": "Fast Import",
         "language": "Language",
         "loading": "Loading…",
-        "translateToYourLanguage": "Translate ct.js to your language!",
+        "translateToYourLanguage": "Translate ct.js!",
         "name": "Name:",
         "nametaken": "This name is already taken",
         "newname": "New name:",
@@ -42,7 +42,8 @@
         "save": "Save",
         "savedcomm": "Your project was succesfully saved.",
         "saveproject": "Save project",
-        "select": "Select…",
+        "selectDialogue": "Select…",
+        "select": "Select",
         "sort": "Sort:",
         "tilelayer": "tile layer",
         "wrongFormat": "Wrong file format",
@@ -50,19 +51,6 @@
         "zoom": "Zoom",
         "zoomIn": "Zoom in",
         "zoomOut": "Zoom out"
-    },
-    "actionsEditor": {
-        "actions": "Actions",
-        "actionsEditor": "Actions editor",
-        "addAction": "Add an action",
-        "addMethod": "Add an input method",
-        "deleteAction": "Delete this action",
-        "deleteMethod": "Delete this method",
-        "inputActionNamePlaceholder": "Action name",
-        "methodModuleMissing": "The required module for this method is missing",
-        "methods": "Input methods",
-        "multiplier": "Multiplier",
-        "noActionsYet": "Actions allow developers to listen to numerous input methods at once and dynamically change them, all with one uniform API. Read more by clicking on the docs icon above."
     },
     "colorPicker": {
         "current": "New",
@@ -102,16 +90,7 @@
         "firstrunnotice": "The first run for each platform will be slow as ct.js will download and save additional libraries needed for packing. It will take some time, but next times will be almost instant.",
         "log": "Message Log",
         "windowsCrossBuildWarning": "To build for Windows from Linux/MacOS, you need Wine installed in your system. Install instructions are all different for various platforms, so you better google it yourself :)",
-        "launchMode": "Launch mode:",
-        "launchModes": {
-            "maximized": "Maximized",
-            "fullscreen": "Fullscreen",
-            "windowed": "Windowed"
-        },
         "cannotBuildForMacOnWin": "Unfortunately, Windows can only produce broken Mac packages. Try using a Linux machine; for example, in a virtual one. It is 100% free!"
-    },
-    "inputMethodSelector": {
-        "select": "Select"
     },
     "intro": {
         "loading": "Please wait: kittens are gathering speed of light!",
@@ -158,6 +137,7 @@
         "rooms": "Rooms",
         "save": "Save project",
         "startScreen": "Return to the starting screen",
+        "project": "Project",
         "settings": "Settings",
         "sounds": "Sounds",
         "successZipExport": "Successfully exported to {0}.",
@@ -199,41 +179,57 @@
         "showOnboardingCheckbox": "Show this screen when creating a new project"
     },
     "settings": {
-        "actions": "Actions and input methods",
-        "author": "Author name:",
-        "authoring": "Authoring",
-        "cover": "Cover:",
-        "editActions": "Edit actions",
-        "exportparams": "Export parameters",
-        "framerate": "Framerate:",
-        "getfile": "Choose",
-        "highDensity": "Support high pixel density (e.g. on retina screens)",
-        "maxFPS": "Max framerate:",
-        "minifyhtmlcss": "Compress HTML and CSS",
-        "minifyjs": "Compress JavaScript and convert it to ES5 (slow; use for releases)",
-        "usePixiLegacy": "Add a legacy, canvas-based renderer to support older browsers and graphics cards (adds ~20kb up to your game)",
-        "pixelatedrender": "Disable image smoothing here and in exported project (preserve crisp pixels)",
-        "renderoptions": "Render Options",
-        "settings": "Project settings",
-        "site": "Homepage:",
-        "title": "Name:",
-        "version": "Version:",
-        "versionpostfix": "Postfix:",
+        "actions": {
+            "heading": "Actions and input methods",
+            "actions": "Actions",
+            "addAction": "Add an action",
+            "addMethod": "Add an input method",
+            "deleteAction": "Delete this action",
+            "deleteMethod": "Delete this method",
+            "inputActionNamePlaceholder": "Action name",
+            "methodModuleMissing": "The required module for this method is missing",
+            "methods": "Input methods",
+            "multiplier": "Multiplier",
+            "noActionsYet": "Actions allow developers to listen to numerous input methods at once and dynamically change them, all with one uniform API. Read more by clicking on the docs icon above."
+        },
+        "authoring": {
+            "heading": "Authoring",
+            "author": "Author name:",
+            "site": "Homepage:",
+            "title": "Name:",
+            "version": "Version:",
+            "versionpostfix": "Postfix:"
+        },
         "branding": {
             "heading": "Branding",
-            "icon": "Game's icon:",
-            "iconNotice": "It should be a square, one-frame texture that is at least 256x256px large.",
             "accent": "Accent:",
             "accentNotice": "Sets the color of the preloader, as well as of some other places if used as a mobile app.",
+            "icon": "Game's icon:",
+            "iconNotice": "It should be a square, one-frame texture that is at least 256x256px large.",
             "invertPreloaderScheme": "Invert preloader's color scheme"
         },
+        "rendering": {
+            "heading": "Render Options",
+            "framerate": "Framerate:",
+            "highDensity": "Support high pixel density (e.g. on retina screens)",
+            "maxFPS": "Max framerate:",
+            "pixelatedrender": "Disable image smoothing here and in exported project (preserve crisp pixels)",
+            "usePixiLegacy": "Add a legacy, canvas-based renderer to support older browsers and graphics cards (adds ~20kb up to your game)",
+            "desktopBuilds": "Desktop builds",
+            "launchMode": "Launch mode:",
+            "launchModes": {
+                "maximized": "Maximized",
+                "fullscreen": "Fullscreen",
+                "windowed": "Windowed"
+            }
+        },
         "scripts": {
+            "heading": "Custom scripts",
             "addNew": "Add a New Script",
             "deleteScript": "Delete the script",
-            "header": "Scripts",
-            "newScriptComment": "Use scripts to define frequent functions and import small libraries",
+            "moveDown": "Move down",
             "moveUp": "Move up",
-            "moveDown": "Move down"
+            "newScriptComment": "Use scripts to define frequent functions and import small libraries"
         }
     },
     "modules": {

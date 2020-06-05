@@ -51,19 +51,6 @@
         "zoomIn": "Zoomen in",
         "zoomOut": "Verkleinern"
     },
-    "actionsEditor": {
-        "actions": "Actions",
-        "actionsEditor": "Actions Editor",
-        "addAction": "Eine Action hinzufügen",
-        "addMethod": "Eine Eingabemethode hinzufügen",
-        "deleteAction": "Diese Action löschen",
-        "deleteMethod": "Diese Method löschen",
-        "inputActionNamePlaceholder": "Action Name",
-        "methodModuleMissing": "Das für diese Methode benötigte Modul existiert nicht",
-        "methods": "Eingabemethoden",
-        "multiplier": "Multiplier",
-        "noActionsYet": "Actions erlauben Entwicklern auf zahlreiche Eingabemethoden gleichzeitig zu zuzugreifen und sie dynamisch zu verändern. Alles mit der gleichen API. Klicken Sie oben auf das Doks-Icon um mehr darüber zu erfahren."
-    },
     "colorPicker": {
         "current": "Neu",
         "globalPalette": "Globale Palette",
@@ -101,9 +88,6 @@
         "exportPanel": "Projekt exportieren",
         "firstrunnotice": "Die erste Ausführung wird pro Plattform etwas länger dauern, da ct.js zusätzliche Bibliotheken zum Paketieren herunterladen muss. Dies wird einige Zeit dauern, beim nächsten Mal geht es deutlich schneller.",
         "log": "Nachrichten Log"
-    },
-    "inputMethodSelector": {
-        "select": "Auswählen"
     },
     "intro": {
         "loading": "Bitte warten: Kätzchen werden auf Lichtgeschwindigkeit beschleunigt!",
@@ -181,26 +165,35 @@
         "showOnboardingCheckbox": "Diesen Bildschirm anzeigen wenn ein neues Projekt erstellt wird"
     },
     "settings": {
-        "actions": "Actions und Eingabemethoden",
-        "author": "Name des Autors:",
-        "authoring": "Autor",
-        "cover": "Cover:",
-        "editActions": "Actions bearbeiten",
-        "exportparams": "Export Parameter",
-        "framerate": "Framerate:",
-        "getfile": "Auswählen",
-        "highDensity": "Hochauflösende Bildschirme unterstützen (z.B. Retina Displays)",
-        "maxFPS": "Max Framerate:",
-        "minifyhtmlcss": "HTML and CSS komprimieren",
-        "minifyjs": "JavaScript komprimieren und in ES5 konvertieren (langsam; Sinnvoll für das Release)",
-        "usePixiLegacy": "Füge einen Canvas basierten Renderer hinzu, um ältere Browser und Grafikkarten zu unterstützen (Spiele wachsen um ca. 20kb)",
-        "pixelatedrender": "Image Smoothing hier und im exportierten Projekt deaktivieren (scharfe Pixel beibehalten)",
-        "renderoptions": "Render Optionen",
-        "settings": "Project Einstellungen",
-        "site": "Homepage:",
-        "title": "Name:",
-        "version": "Version:",
-        "versionpostfix": "Postfix:",
+        "actions": {
+            "heading": "Actions und Eingabemethoden",
+            "actions": "Actions",
+            "addAction": "Eine Action hinzufügen",
+            "addMethod": "Eine Eingabemethode hinzufügen",
+            "deleteAction": "Diese Action löschen",
+            "deleteMethod": "Diese Method löschen",
+            "inputActionNamePlaceholder": "Action Name",
+            "methodModuleMissing": "Das für diese Methode benötigte Modul existiert nicht",
+            "methods": "Eingabemethoden",
+            "multiplier": "Multiplier",
+            "noActionsYet": "Actions erlauben Entwicklern auf zahlreiche Eingabemethoden gleichzeitig zu zuzugreifen und sie dynamisch zu verändern. Alles mit der gleichen API. Klicken Sie oben auf das Doks-Icon um mehr darüber zu erfahren."
+        },
+        "authoring": {
+            "heading": "Autor",
+            "author": "Name des Autors:",
+            "site": "Homepage:",
+            "title": "Name:",
+            "version": "Version:",
+            "versionpostfix": "Postfix:"
+        },
+        "rendering": {
+            "heading": "Render Optionen",
+            "framerate": "Framerate:",
+            "highDensity": "Hochauflösende Bildschirme unterstützen (z.B. Retina Displays)",
+            "maxFPS": "Max Framerate:",
+            "usePixiLegacy": "Füge einen Canvas basierten Renderer hinzu, um ältere Browser und Grafikkarten zu unterstützen (Spiele wachsen um ca. 20kb)",
+            "pixelatedrender": "Image Smoothing hier und im exportierten Projekt deaktivieren (scharfe Pixel beibehalten)"
+        },
         "branding": {
             "heading": "Branding",
             "icon": "Icon:",
@@ -210,9 +203,9 @@
             "invertPreloaderScheme": "Farbschema des Preloaders invertieren"
         },
         "scripts": {
+            "heading": "Skripte",
             "addNew": "Neues Skript hinzufügen",
             "deleteScript": "Skript löschen",
-            "header": "Skripte",
             "newScriptComment": "Nutzen Sie Skripte um häufige Funktionen zu definieren und Bibliotheken zu importieren",
             "moveUp": "Bewegen Sie sich nach oben",
             "moveDown": "Bewegen Sie sich nach unten"

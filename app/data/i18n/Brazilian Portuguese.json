@@ -126,33 +126,27 @@
         "codeDense": ""
     },
     "settings": {
-        "author": "Nome do autor:",
-        "authoring": "Autoria",
-        "cover": "Capa",
-        "exportparams": "Exportar parâmetros",
-        "framerate": "Taxa de quadros",
-        "getfile": "Escolher",
-        "minifyhtmlcss": "Compactar HTML e CSS",
-        "minifyjs": "Compactar Javascript e converter para ES5 (lento; usar para releases)",
-        "pixelatedrender": "Desabilitar suavização de imagem aqui e no projeto exportado (preserva pixels nítidos)",
-        "renderoptions": "Opções de Renderização",
-        "settings": "Configurações do Projeto",
-        "site": "Página inicial",
-        "title": "Nome:",
-        "version": "Versão:",
-        "versionpostfix": "Postfix:",
+        "authoring": {
+            "author": "Nome do autor:",
+            "heading": "Autoria",
+            "site": "Página inicial",
+            "title": "Nome:",
+            "version": "Versão:",
+            "versionpostfix": "Postfix:"
+        },
+        "rendering": {
+            "heading": "Opções de Renderização",
+            "pixelatedrender": "Desabilitar suavização de imagem aqui e no projeto exportado (preserva pixels nítidos)",
+            "framerate": "Taxa de quadros"
+        },
         "scripts": {
+            "heading": "Scripts",
             "addNew": "Adicionar um Novo Script",
             "deleteScript": "Apagar o script",
-            "header": "Scripts",
             "newScriptComment": "Usar scripts para definir funções frequentes e importar pequenas bibliotecas",
             "moveUp": "Mova-se para cima",
             "moveDown": "Mova-se para baixo"
-        },
-        "actions": "",
-        "editActions": "",
-        "highDensity": "",
-        "maxFPS": ""
+        }
     },
     "modules": {
         "author": "Autor deste catmod",
@@ -340,23 +334,7 @@
         "helppages": "Ajuda",
         "backToHome": "Voltar para a página inicial da documentação"
     },
-    "actionsEditor": {
-        "actions": "",
-        "actionsEditor": "",
-        "addAction": "",
-        "addMethod": "",
-        "deleteAction": "",
-        "deleteMethod": "",
-        "inputActionNamePlaceholder": "",
-        "methodModuleMissing": "",
-        "methods": "",
-        "multiplier": "",
-        "noActionsYet": ""
-    },
     "docsShortcut": {
         "openDocs": ""
-    },
-    "inputMethodSelector": {
-        "select": ""
     }
 }

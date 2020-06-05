@@ -1,4 +1,4 @@
-script-editor.view.panel
+script-editor
     .flexfix.tall
         div.flexfix-header
             b {voc.name}

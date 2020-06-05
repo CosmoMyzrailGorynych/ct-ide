@@ -49,19 +49,6 @@
         "zoomIn": "Acercar",
         "zoomOut": "Alejar"
     },
-    "actionsEditor": {
-        "actions": "Acciones",
-        "actionsEditor": "Editor de acciones",
-        "addAction": "Agregar una acción",
-        "addMethod": "Agrega un método de entrada",
-        "deleteAction": "Eliminar esta acción",
-        "deleteMethod": "Eliminar este método",
-        "inputActionNamePlaceholder": "Nombre de acción",
-        "methodModuleMissing": "Falta el módulo requerido para este método",
-        "methods": "Métodos de entrada",
-        "multiplier": "Multiplicador",
-        "noActionsYet": "Las acciones permiten a los desarrolladores escuchar numerosos métodos de entrada a la vez y cambiarlos dinámicamente, todo con una API uniforme. Lea más haciendo clic en el icono de documentos arriba."
-    },
     "colorPicker": {
         "current": "Nuevo",
         "globalPalette": "Paleta Global",
@@ -79,9 +66,6 @@
         "exportPanel": "Exportar el proyecto",
         "firstrunnotice": "La primera ejecución para cada plataforma será lenta ya que ct.js descargará y guardará las bibliotecas adicionales necesarias para empacar. Tomará algún tiempo, pero las próximas veces serán casi instantáneas.",
         "log": "Registro de mensajes"
-    },
-    "inputMethodSelector": {
-        "select": "Seleccionar"
     },
     "intro": {
         "loading": "Por favor espere: ¡los gatitos están ganando velocidad con la luz!",
@@ -145,33 +129,40 @@
         "codeDense": ""
     },
     "settings": {
-        "actions": "Acciones y métodos de entrada",
-        "author": "Nombre del autor:",
-        "authoring": "Autoría",
-        "cover": "Cubrir:",
-        "editActions": "Editar acciones",
-        "exportparams": "Parámetros de exportación",
-        "framerate": "Cuadros por segundo:",
-        "getfile": "Escoger",
-        "minifyhtmlcss": "Comprimir HTML y CSS",
-        "minifyjs": "Comprima JavaScript y conviértalo a ES5 (lento; uso para versiones)",
-        "pixelatedrender": "Deshabilite el suavizado de imagen aquí y en el proyecto exportado (conserve píxeles nítidos)",
-        "renderoptions": "Opciones de render",
-        "settings": "Configuración del proyecto",
-        "site": "Página principal:",
-        "title": "Nombre:",
-        "version": "Version:",
-        "versionpostfix": "Sufijo:",
+        "actions": {
+            "heading": "Acciones y métodos de entrada",
+            "actions": "Acciones",
+            "addAction": "Agregar una acción",
+            "addMethod": "Agrega un método de entrada",
+            "deleteAction": "Eliminar esta acción",
+            "deleteMethod": "Eliminar este método",
+            "inputActionNamePlaceholder": "Nombre de acción",
+            "methodModuleMissing": "Falta el módulo requerido para este método",
+            "methods": "Métodos de entrada",
+            "multiplier": "Multiplicador",
+            "noActionsYet": "Las acciones permiten a los desarrolladores escuchar numerosos métodos de entrada a la vez y cambiarlos dinámicamente, todo con una API uniforme. Lea más haciendo clic en el icono de documentos arriba."
+        },
+        "authoring": {
+            "heading": "Autoría",
+            "author": "Nombre del autor:",
+            "site": "Página principal:",
+            "title": "Nombre:",
+            "version": "Version:",
+            "versionpostfix": "Sufijo:"
+        },
+        "rendering": {
+            "heading": "Opciones de render",
+            "framerate": "Cuadros por segundo:",
+            "pixelatedrender": "Deshabilite el suavizado de imagen aquí y en el proyecto exportado (conserve píxeles nítidos)"
+        },
         "scripts": {
+            "heading": "Scripts",
             "addNew": "Agregar un nuevo script",
             "deleteScript": "Eliminar el script",
-            "header": "Scripts",
             "newScriptComment": "Use scripts para definir funciones frecuentes e importar pequeñas bibliotecas",
             "moveUp": "Subir",
             "moveDown": "Muévete hacia abajo"
-        },
-        "highDensity": "",
-        "maxFPS": ""
+        }
     },
     "modules": {
         "author": "Autor de este catmod",

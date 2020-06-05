@@ -72,10 +72,10 @@ const makeWritableDir = async () => {
 // eslint-disable-next-line max-lines-per-function
 const exportCtProject = async (project, projdir) => {
     const {languageJSON} = require('./../i18n');
-    currentProject = project;
+    const {settings} = project;
     await makeWritableDir();
 
-    if (currentProject.rooms.length < 1) {
+    if (project.rooms.length < 1) {
         throw new Error(languageJSON.common.norooms);
     }
 
@@ -119,16 +119,16 @@ const exportCtProject = async (project, projdir) => {
     await injectModules(injects);
 
     /* Pixi.js */
-    if (currentProject.settings.usePixiLegacy) {
+    if (settings.rendering.usePixiLegacy) {
         await fs.copyFile(basePath + 'ct.release/pixi-legacy.min.js', path.join(writeDir, '/pixi.min.js'));
     } else {
         await fs.copyFile(basePath + 'ct.release/pixi.min.js', path.join(writeDir, '/pixi.min.js'));
     }
-    if (currentProject.emitterTandems && currentProject.emitterTandems.length) {
+    if (project.emitterTandems && project.emitterTandems.length) {
         await fs.copyFile(basePath + 'ct.release/pixi-particles.min.js', path.join(writeDir, '/pixi-particles.min.js'));
     }
 
-    const startroom = getStartingRoom(currentProject);
+    const startroom = getStartingRoom(project);
 
     /* Load source files in parallel */
     const sources = {};
@@ -155,21 +155,21 @@ const exportCtProject = async (project, projdir) => {
     let buffer = (await sources['main.js'])
         .replace(/\/\*@startwidth@\*\//g, startroom.width)
         .replace(/\/\*@startheight@\*\//g, startroom.height)
-        .replace(/\/\*@pixelatedrender@\*\//g, Boolean(currentProject.settings.pixelatedrender))
-        .replace(/\/\*@highDensity@\*\//g, Boolean(currentProject.settings.highDensity))
-        .replace(/\/\*@maxfps@\*\//g, Number(currentProject.settings.maxFPS))
+        .replace(/\/\*@pixelatedrender@\*\//g, Boolean(settings.rendering.pixelatedrender))
+        .replace(/\/\*@highDensity@\*\//g, Boolean(settings.rendering.highDensity))
+        .replace(/\/\*@maxfps@\*\//g, Number(settings.rendering.maxFPS))
         .replace(/\/\*@ctversion@\*\//g, process.versions.ctjs)
         .replace(/\/\*@projectmeta@\*\//g, JSON.stringify({
-            name: currentProject.settings.title,
-            author: currentProject.settings.author,
-            site: currentProject.settings.site,
-            version: currentProject.settings.version.join('.') + currentProject.settings.versionPostfix
+            name: settings.authoring.title,
+            author: settings.authoring.author,
+            site: settings.authoring.site,
+            version: settings.authoring.version.join('.') + settings.authoring.versionPostfix
         }));
 
     buffer += '\n';
 
     let actionsSetup = '';
-    for (const action of currentProject.actions) {
+    for (const action of project.actions) {
         actionsSetup += `ct.inputs.addAction('${action.name}', ${JSON.stringify(action.methods)});\n`;
     }
 
@@ -180,11 +180,11 @@ const exportCtProject = async (project, projdir) => {
     buffer += await addModules(buffer);
 
     /* User-defined scripts */
-    for (const script of currentProject.scripts) {
+    for (const script of project.scripts) {
         buffer += script.code + ';\n';
     }
 
-    const roomsCode = stringifyRooms(currentProject);
+    const roomsCode = stringifyRooms(project);
 
     buffer += (await sources['rooms.js'])
         .replace('@startroom@', startroom.name)
@@ -195,28 +195,28 @@ const exportCtProject = async (project, projdir) => {
         .replace('/*%roomonleave%*/', injects.roomonleave);
     buffer += '\n';
 
-    const styles = stringifyStyles(currentProject);
+    const styles = stringifyStyles(project);
     buffer += (await sources['styles.js'])
         .replace('/*@styles@*/', styles)
         .replace('/*%styles%*/', injects.styles);
     buffer += '\n';
 
-    if (currentProject.emitterTandems && currentProject.emitterTandems.length) {
-        const templates = stringifyTandems(currentProject);
+    if (project.emitterTandems && project.emitterTandems.length) {
+        const templates = stringifyTandems(project);
         buffer += (await sources['emitters.js'])
             .replace('/*@tandemTemplates@*/', templates);
     }
 
     /* assets — run in parallel */
-    const texturesTask = packImages(currentProject, writeDir);
-    const skeletonsTask = packSkeletons(currentProject, projdir, writeDir);
-    const favicons = bakeFavicons(currentProject, writeDir);
+    const texturesTask = packImages(project, writeDir);
+    const skeletonsTask = packSkeletons(project, projdir, writeDir);
+    const favicons = bakeFavicons(project, writeDir);
     const textures = await texturesTask;
     const skeletons = await skeletonsTask;
     await favicons;
 
     buffer += (await sources['res.js'])
-        .replace('/*@sndtotal@*/', currentProject.sounds.length)
+        .replace('/*@sndtotal@*/', project.sounds.length)
         .replace('/*@res@*/', textures.res + '\n' + skeletons.loaderScript)
         .replace('/*@textureregistry@*/', textures.registry)
         .replace('/*@textureatlases@*/', JSON.stringify(textures.atlases))
@@ -225,7 +225,7 @@ const exportCtProject = async (project, projdir) => {
         .replace('/*%res%*/', injects.res);
     buffer += '\n';
 
-    const types = stringifyTypes(currentProject);
+    const types = stringifyTypes(project);
 
     buffer += (await sources['types.js'])
         .replace('/*%oncreate%*/', injects.oncreate)
@@ -236,14 +236,14 @@ const exportCtProject = async (project, projdir) => {
     buffer += '\n';
 
     buffer += '\n';
-    var sounds = stringifySounds(currentProject);
+    var sounds = stringifySounds(project);
     buffer += (await sources['sound.js'])
         .replace('/*@sound@*/', sounds);
 
     buffer += (await sources['timer.js']);
     buffer += '\n';
 
-    const fonts = await bundleFonts(currentProject, projdir, writeDir);
+    const fonts = await bundleFonts(project, projdir, writeDir);
     buffer += fonts.js;
     /* eslint-enable require-atomic-updates */
 
@@ -251,7 +251,7 @@ const exportCtProject = async (project, projdir) => {
     if (await fs.exists(projdir + '/include/')) {
         await fs.copy(projdir + '/include/', writeDir);
     }
-    await Promise.all(Object.keys(currentProject.libs).map(async lib => {
+    await Promise.all(Object.keys(project.libs).map(async lib => {
         if (await fs.exists(path.join(basePath, `./ct.libs/${lib}/includes/`))) {
             await fs.copy(path.join(basePath, `./ct.libs/${lib}/includes/`), writeDir);
         }
@@ -262,83 +262,36 @@ const exportCtProject = async (project, projdir) => {
         buffer = buffer.replace(`/*%${i}%*/`, injects[i]);
     }
 
-    /* Final touches and script output */
-    if (currentProject.settings.minifyjs) {
-        const preamble = '/* Made with ct.js http://ctjs.rocks/ */\n';
-        const ClosureCompiler = require('google-closure-compiler').jsCompiler;
-
-        const compiler = new ClosureCompiler({
-            /* eslint-disable camelcase */
-            compilation_level: 'SIMPLE',
-            // eslint-disable-next-line id-length
-            use_types_for_optimization: false,
-            jscomp_off: '*', // Disable warnings to not to booo users
-            language_out: 'ECMASCRIPT3',
-            language_in: 'ECMASCRIPT_NEXT',
-            warning_level: 'QUIET'
-            /* eslint-enable camelcase */
-        });
-        const out = await new Promise((resolve, reject) => {
-            compiler.run([{
-                path: path.join(writeDir, '/ct.js'),
-                src: buffer
-            }], (exitCode, stdout, stderr) => {
-                if (stderr && !stdout) {
-                    reject(stderr);
-                    return;
-                }
-                resolve(stdout[0]);
-                if (stderr) {
-                    console.error(stderr);
-                }
-            });
-        });
-        await fs.writeFile(path.join(writeDir, '/ct.js'), preamble + out.src);
-        await fs.writeFile(path.join(writeDir, '/ct.js.map'), out.sourceMap);
-    } else {
-        await fs.writeFile(path.join(writeDir, '/ct.js'), buffer);
-    }
 
     /* HTML & CSS */
     const {substituteHtmlVars} = require('./html');
     const {substituteCssVars} = require('./css');
-    const html = substituteHtmlVars(await sources['index.html'], currentProject, injects);
-
-    let css = substituteCssVars(await sources['ct.css'], currentProject, injects);
+    const html = substituteHtmlVars(await sources['index.html'], project, injects);
+    let css = substituteCssVars(await sources['ct.css'], project, injects);
 
     css += fonts.css;
 
+    // Output minified HTML & CSS
+    const csswring = require('csswring');
+    const htmlMinify = require('html-minifier').minify;
     await Promise.all([
-        fs.writeFile(path.join(writeDir, '/index.html'), html),
-        fs.writeFile(path.join(writeDir, '/ct.css'), css)
+        fs.writeFile(
+            path.join(writeDir, '/index.html'),
+            htmlMinify(html, {
+                removeComments: true,
+                collapseWhitespace: true
+            })
+        ),
+        fs.writeFile(path.join(writeDir, '/ct.css'), csswring.wring(css).css),
+        fs.writeFile(path.join(writeDir, '/ct.js'), buffer)
     ]);
 
-    if (currentProject.settings.minifyhtmlcss) {
-        const csswring = require('csswring');
-        const htmlMinify = require('html-minifier').minify;
-        const htmlUnminified = fs.readFile(path.join(writeDir, '/index.html'), {
-            encoding: 'utf8'
-        });
-        const cssUnminified = fs.readFile(path.join(writeDir, '/ct.css'), {
-            encoding: 'utf8'
-        });
-        await Promise.all([
-            fs.writeFile(
-                path.join(writeDir, '/index.html'),
-                htmlMinify(await htmlUnminified, {
-                    removeComments: true,
-                    collapseWhitespace: true
-                })
-            ),
-            fs.writeFile(path.join(writeDir, '/ct.css'), csswring.wring(await cssUnminified).css)
-        ]);
-    }
-    await Promise.all(currentProject.sounds.map(async sound => {
+    await Promise.all(project.sounds.map(async sound => {
         const ext = sound.origname.slice(-4);
         await fs.copy(path.join(projdir, '/snd/', sound.origname), path.join(writeDir, '/snd/', sound.uid + ext));
     }));
 
-    return path.join(writeDir, `/index.${currentProject.settings.minifyhtml ? 'min.' : ''}html`);
+    return path.join(writeDir, '/index.html');
 };
 
 module.exports = exportCtProject;
