@@ -1,10 +1,5 @@
 main-menu.flexcol
     nav.nogrow.flexrow(if="{global.currentProject}")
-        ul#fullscreen.nav
-            li.nbr(onclick="{toggleFullscreen}" title="{voc.min} (F11)")
-                svg.feather
-                    use(xlink:href="data/icons.svg#{fullscreen? 'minimize-2' : 'maximize-2'}" data-hotkey="F11")
-
         ul#app.nav.tabs
             li.it30#ctlogo(onclick="{ctClick}" title="{voc.ctIDE}")
                 svg.feather.nmr
@@ -88,16 +83,6 @@ main-menu.flexcol
             hotkey.push(tab);
             window.signals.trigger('globalTabChanged');
             window.signals.trigger(`${tab}Focus`);
-        };
-
-        this.fullscreen = false;
-        this.toggleFullscreen = function toggleFullscreen() {
-            this.fullscreen = !this.fullscreen;
-            if (this.fullscreen) {
-                nw.Window.get().enterFullscreen();
-            } else {
-                nw.Window.get().leaveFullscreen();
-            }
         };
 
         const languageSubmenu = {
