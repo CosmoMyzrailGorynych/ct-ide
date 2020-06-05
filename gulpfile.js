@@ -528,7 +528,10 @@ const launchDevMode = done => {
 };
 const defaultTask = gulp.series(build, launchDevMode);
 
-
+exports.lintJS = lintJS;
+exports.lintTags = lintTags;
+exports.lintStylus = lintStylus;
+exports.lintI18n = lintI18n;
 exports.lint = lint;
 exports.packages = packages;
 exports.patronsCache = patronsCache;
