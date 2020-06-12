@@ -71,6 +71,8 @@ const makeWritableDir = async () => {
 };
 // eslint-disable-next-line max-lines-per-function
 const exportCtProject = async (project, projdir) => {
+    currentProject = project;
+
     const {languageJSON} = require('./../i18n');
     const {settings} = project;
     await makeWritableDir();

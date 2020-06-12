@@ -223,5 +223,8 @@ debugger-screen(class="{opts.class} {flexrow: verticalLayout, flexcol: !vertical
             this.showNetworkingModal = !this.showNetworkingModal;
         };
         this.openExternal = () => {
-            nw.Shell.openExternal(window.gameLink);
+            const passedParams = new URLSearchParams(window.location.search);
+            if (passedParams.has('link')) {
+                nw.Shell.openExternal(passedParams.get('link'));
+            }
         };
