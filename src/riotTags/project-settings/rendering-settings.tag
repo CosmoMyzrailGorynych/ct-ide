@@ -4,7 +4,7 @@ rendering-settings
         label.block
             b {voc.maxFPS}
             br
-            input.short(type="number" min="1" value="{renderSettings.maxFPS || 60}" onchange="{wire('this.currentProject.settings.maxFPS')}")
+            input.short(type="number" min="1" value="{renderSettings.maxFPS || 60}" onchange="{wire('this.renderSettings.maxFPS')}")
     fieldset
         label.block.checkbox
             input(type="checkbox" value="{renderSettings.pixelatedrender}" checked="{renderSettings.pixelatedrender}" onchange="{wire('this.renderSettings.pixelatedrender')}")
