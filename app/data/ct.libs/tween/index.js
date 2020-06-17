@@ -22,8 +22,7 @@ ct.tween = {
             fields: options.fields || {},
             curve: options.curve || ct.tween.ease,
             duration: options.duration || 1000,
-            useUiDelta: options.useUiDelta || false,
-            timer: new CtTimer('ct.tween', this.duration, this.useUiDelta)
+            timer: new CtTimer(this.duration, false, options.useUiDelta || false)
         };
         var promise = new Promise((resolve, reject) => {
             tween.resolve = resolve;
