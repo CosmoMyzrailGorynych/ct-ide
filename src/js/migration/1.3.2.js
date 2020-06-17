@@ -9,11 +9,11 @@ window.migrationProcess.push({
         const s = project.settings;
 
         s.rendering = s.rendering || {
-            maxFPS: s.maxFPS,
-            pixelatedrender: s.pixelatedrender,
-            highDensity: s.highDensity,
-            usePixiLegacy: s.usePixiLegacy,
-            desktopMode: s.desktopMode
+            maxFPS: s.maxFPS || 60,
+            pixelatedrender: s.pixelatedrender || false,
+            highDensity: s.highDensity === (void 0) ? true : s.highDensity,
+            usePixiLegacy: s.usePixiLegacy === (void 0) ? true : s.usePixiLegacy,
+            desktopMode: s.desktopMode || 'maximized'
         };
         delete s.maxFPS;
         delete s.fps; // A legacy config that was relevant prior to v1.
