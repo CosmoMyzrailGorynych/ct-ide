@@ -6,8 +6,8 @@ class CtAction {
     /**
      * This is a custom action defined in the Settings tab → Edit actions section.
      * Actions are used to abstract different input methods into one gameplay-related interface:
-     * for example, joystick movement, WASD keys and arrows can be turned into two actions: `MoveHorizontally`
-     * and `MoveVertically`.
+     * for example, joystick movement, WASD keys and arrows can be turned into two actions:
+     * `MoveHorizontally` and `MoveVertically`.
      * @param {string} name The name of the new action.
      */
     constructor(name) {
@@ -32,13 +32,14 @@ class CtAction {
      * Adds a new input method to listen.
      *
      * @param {string} code The input method's code to listen to. Must be unique per action.
-     * @param {number} [multiplier] An optional multiplier, e.g. to flip its value. Often used with two buttons to combine them into a scalar input identical to joysticks
+     * @param {number} [multiplier] An optional multiplier, e.g. to flip its value.
+     * Often used with two buttons to combine them into a scalar input identical to joysticks.
      * @returns {void}
      */
     addMethod(code, multiplier) {
         if (this.methodCodes.indexOf(code) === -1) {
             this.methodCodes.push(code);
-            this.methodMultipliers.push(multiplier !== void 0? multiplier : 1);
+            this.methodMultipliers.push(multiplier !== void 0 ? multiplier : 1);
         } else {
             throw new Error(`[ct.inputs] An attempt to add an already added input "${code}" to an action "${name}".`);
         }
@@ -83,7 +84,8 @@ class CtAction {
         this.prevValue = this.value;
         this.value = 0;
         for (let i = 0, l = this.methodCodes.length; i < l; i++) {
-            this.value += (ct.inputs.registry[this.methodCodes[i]] || 0) * this.methodMultipliers[i];
+            const rawValue = ct.inputs.registry[this.methodCodes[i]] || 0;
+            this.value += rawValue * this.methodMultipliers[i];
         }
         this.value = Math.max(-1, Math.min(this.value, 1));
     }

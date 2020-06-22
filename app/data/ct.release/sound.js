@@ -16,7 +16,8 @@ if (!ct.sound) {
          * Creates a new Sound object and puts it in resource object
          *
          * @param {string} name Sound's name
-         * @param {object} formats A collection of sound files of specified extension, in format `extension: path`
+         * @param {object} formats A collection of sound files of specified extension,
+         * in format `extension: path`
          * @param {string} [formats.ogg] Local path to the sound in ogg format
          * @param {string} [formats.wav] Local path to the sound in wav format
          * @param {string} [formats.mp3] Local path to the sound in mp3 format
@@ -42,8 +43,8 @@ if (!ct.sound) {
             };
             if (src !== '') {
                 ct.res.soundsLoaded++;
-                audio.direct.preload = options.music? 'metadata' : 'auto';
-                audio.direct.onerror = audio.direct.onabort = function () {
+                audio.direct.preload = options.music ? 'metadata' : 'auto';
+                audio.direct.onerror = audio.direct.onabort = function onabort() {
                     console.error('[ct.sound] Oh no! We couldn\'t load ' + src + '!');
                     audio.buggy = true;
                     ct.res.soundsError++;
@@ -80,7 +81,7 @@ if (!ct.sound) {
                     ct.u.ext(a, opts);
                 }
                 s.pool.push(a);
-                a.addEventListener('ended', function (e) {
+                a.addEventListener('ended', function soundEnded(e) {
                     s.pool.splice(s.pool.indexOf(a), 1);
                     if (cb) {
                         cb(true, e);

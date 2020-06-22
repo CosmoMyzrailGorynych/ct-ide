@@ -24,7 +24,12 @@ class Room extends PIXI.Container {
             this.template = template;
             this.name = template.name;
             for (let i = 0, li = template.bgs.length; i < li; i++) {
-                const bg = new ct.types.Background(template.bgs[i].texture, null, template.bgs[i].depth, template.bgs[i].extends);
+                const bg = new ct.types.Background(
+                    template.bgs[i].texture,
+                    null,
+                    template.bgs[i].depth,
+                    template.bgs[i].extends
+                );
                 this.backgrounds.push(bg);
                 ct.stack.push(bg);
                 this.addChild(bg);
@@ -35,31 +40,37 @@ class Room extends PIXI.Container {
                 this.addChild(tl);
             }
             for (let i = 0, li = template.objects.length; i < li; i++) {
-                ct.types.make(template.objects[i].type, template.objects[i].x, template.objects[i].y, {
-                    tx: template.objects[i].tx,
-                    ty: template.objects[i].ty,
-                    tr: template.objects[i].tr,
-                }, this);
+                ct.types.make(
+                    template.objects[i].type,
+                    template.objects[i].x,
+                    template.objects[i].y,
+                    {
+                        tx: template.objects[i].tx,
+                        ty: template.objects[i].ty,
+                        tr: template.objects[i].tr
+                    },
+                    this
+                );
             }
         }
         return this;
     }
-    get x () {
+    get x() {
         return -this.position.x;
     }
-    set x (value) {
+    set x(value) {
         this.position.x = -value;
         return value;
     }
-    get y () {
+    get y() {
         return -this.position.y;
     }
-    set y (value) {
+    set y(value) {
         this.position.y = -value;
         return value;
     }
 }
-(function () {
+(function roomsAddon() {
     /* global deadPool */
     var nextRoom;
     /**
@@ -111,10 +122,12 @@ class Room extends PIXI.Container {
         },
         /**
          * This method safely removes a previously appended/prepended room from the stage.
-         * It will trigger "On Leave" for a room and "On Destroy" event for all the copies of the removed room.
+         * It will trigger "On Leave" for a room and "On Destroy" event
+         * for all the copies of the removed room.
          * The room will also have `this.kill` set to `true` in its event, if it comes in handy.
          * This method cannot remove `ct.room`, the main room.
-         * @param {Room} room The `room` argument must be a reference to the previously created room.
+         * @param {Room} room The `room` argument must be a reference
+         * to the previously created room.
          * @returns {void}
          */
         remove(room) {
@@ -153,10 +166,12 @@ class Room extends PIXI.Container {
         },
         switching: false,
         /**
-         * Creates a new room and adds it to the stage, separating its draw stack from existing ones.
+         * Creates a new room and adds it to the stage, separating its draw stack
+         * from existing ones.
          * This room is added to `ct.stage` after all the other rooms.
          * @param {string} roomName The name of the room to be appended
-         * @param {object} [exts] Any additional parameters applied to the new room. Useful for passing settings and data to new widgets and prefabs.
+         * @param {object} [exts] Any additional parameters applied to the new room.
+         * Useful for passing settings and data to new widgets and prefabs.
          * @returns {Room} A newly created room
          */
         append(roomName, exts) {
@@ -175,10 +190,12 @@ class Room extends PIXI.Container {
             return room;
         },
         /**
-         * Creates a new room and adds it to the stage, separating its draw stack from existing ones.
+         * Creates a new room and adds it to the stage, separating its draw stack
+         * from existing ones.
          * This room is added to `ct.stage` before all the other rooms.
          * @param {string} roomName The name of the room to be prepended
-         * @param {object} [exts] Any additional parameters applied to the new room. Useful for passing settings and data to new widgets and prefabs.
+         * @param {object} [exts] Any additional parameters applied to the new room.
+         * Useful for passing settings and data to new widgets and prefabs.
          * @returns {Room} A newly created room
          */
         prepend(roomName, exts) {
@@ -201,8 +218,8 @@ class Room extends PIXI.Container {
          *
          * @param {string} roomName The name of the room that needs to be merged
          * @returns {IRoomMergeResult} Arrays of created copies, backgrounds, tile layers,
-         * added to the current room (`ct.room`). Note: it does not get updated, so beware of memory leaks
-         * if you keep a reference to this array for a long time!
+         * added to the current room (`ct.room`). Note: it does not get updated,
+         * so beware of memory leaks if you keep a reference to this array for a long time!
          */
         merge(roomName) {
             if (!(roomName in ct.rooms.templates)) {
@@ -253,7 +270,12 @@ class Room extends PIXI.Container {
             var template = ct.rooms.templates[roomName];
             ct.roomWidth = template.width;
             ct.roomHeight = template.height;
-            ct.camera = new Camera(ct.roomWidth / 2, ct.roomHeight / 2, ct.roomWidth, ct.roomHeight);
+            ct.camera = new Camera(
+                ct.roomWidth / 2,
+                ct.roomHeight / 2,
+                ct.roomWidth,
+                ct.roomHeight
+            );
             ct.pixiApp.renderer.resize(template.width, template.height);
             /*%beforeroomoncreate%*/
             ct.rooms.current = ct.room = new Room(template);
@@ -285,16 +307,16 @@ class Room extends PIXI.Container {
  */
 ct.room = null;
 
-ct.rooms.beforeStep = function () {
+ct.rooms.beforeStep = function beforeStep() {
     /*%beforeroomstep%*/
 };
-ct.rooms.afterStep = function () {
+ct.rooms.afterStep = function afterStep() {
     /*%afterroomstep%*/
 };
-ct.rooms.beforeDraw = function () {
+ct.rooms.beforeDraw = function beforeDraw() {
     /*%beforeroomdraw%*/
 };
-ct.rooms.afterDraw = function () {
+ct.rooms.afterDraw = function afterDraw() {
     /*%afterroomdraw%*/
 };
 

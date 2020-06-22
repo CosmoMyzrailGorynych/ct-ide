@@ -7,29 +7,55 @@
  * @extends {PIXI.DisplayObject}
  * @class
  *
- * @property {number} x The real x-coordinate of the camera. It does not have a screen shake effect applied, as well as may differ from `targetX` if the camera is in transition.
- * @property {number} y The real y-coordinate of the camera. It does not have a screen shake effect applied, as well as may differ from `targetY` if the camera is in transition.
- * @property {number} width The width of the unscaled shown region. This is the base, unscaled value. Use ct.camera.scale.x to get a scaled version. To change this value, see `ct.width` property.
- * @property {number} height The width of the unscaled shown region. This is the base, unscaled value. Use ct.camera.scale.y to get a scaled version. To change this value, see `ct.height` property.
- * @property {number} targetX The x-coordinate of the target location. Moving it instead of just using the `x` parameter will trigger the drift effect.
- * @property {number} targetY The y-coordinate of the target location. Moving it instead of just using the `y` parameter will trigger the drift effect.
+ * @property {number} x The real x-coordinate of the camera.
+ * It does not have a screen shake effect applied, as well as may differ from `targetX`
+ * if the camera is in transition.
+ * @property {number} y The real y-coordinate of the camera.
+ * It does not have a screen shake effect applied, as well as may differ from `targetY`
+ * if the camera is in transition.
+ * @property {number} width The width of the unscaled shown region.
+ * This is the base, unscaled value. Use ct.camera.scale.x to get a scaled version.
+ * To change this value, see `ct.width` property.
+ * @property {number} height The width of the unscaled shown region.
+ * This is the base, unscaled value. Use ct.camera.scale.y to get a scaled version.
+ * To change this value, see `ct.height` property.
+ * @property {number} targetX The x-coordinate of the target location.
+ * Moving it instead of just using the `x` parameter will trigger the drift effect.
+ * @property {number} targetY The y-coordinate of the target location.
+ * Moving it instead of just using the `y` parameter will trigger the drift effect.
  *
  * @property {Copy|false} follow If set, the camera will follow the given copy.
- * @property {boolean} followX Works if `follow` is set to a copy. Enables following in X axis. Set it to `false` and followY to `true` to limit automatic camera movement to vertical axis.
- * @property {boolean} followY Works if `follow` is set to a copy. Enables following in Y axis. Set it to `false` and followX to `true` to limit automatic camera movement to horizontal axis.
- * @property {number|null} borderX Works if `follow` is set to a copy. Sets the frame inside which the copy will be kept, in game pixels. Can be set to `null` so the copy is set to the center of the screen.
- * @property {number|null} borderY Works if `follow` is set to a copy. Sets the frame inside which the copy will be kept, in game pixels. Can be set to `null` so the copy is set to the center of the screen.
- * @property {number} shiftX Displaces the camera horizontally but does not change x and y parameters.
- * @property {number} shiftY Displaces the camera vertically but does not change x and y parameters.
- * @property {number} drift Works if `follow` is set to a copy. If set to a value between 0 and 1, it will make camera movement smoother
+ * @property {boolean} followX Works if `follow` is set to a copy.
+ * Enables following in X axis. Set it to `false` and followY to `true`
+ * to limit automatic camera movement to vertical axis.
+ * @property {boolean} followY Works if `follow` is set to a copy.
+ * Enables following in Y axis. Set it to `false` and followX to `true`
+ * to limit automatic camera movement to horizontal axis.
+ * @property {number|null} borderX Works if `follow` is set to a copy.
+ * Sets the frame inside which the copy will be kept, in game pixels.
+ * Can be set to `null` so the copy is set to the center of the screen.
+ * @property {number|null} borderY Works if `follow` is set to a copy.
+ * Sets the frame inside which the copy will be kept, in game pixels.
+ * Can be set to `null` so the copy is set to the center of the screen.
+ * @property {number} shiftX Displaces the camera horizontally
+ * but does not change x and y parameters.
+ * @property {number} shiftY Displaces the camera vertically
+ * but does not change x and y parameters.
+ * @property {number} drift Works if `follow` is set to a copy.
+ * If set to a value between 0 and 1, it will make camera movement smoother
  *
- * @property {number} shake The current power of a screen shake effect, relative to the screen's max side (100 is 100% of screen shake). If set to 0 or less, it, disables the effect.
+ * @property {number} shake The current power of a screen shake effect,
+ * relative to the screen's max side (100 is 100% of screen shake).
+ * If set to 0 or less, it, disables the effect.
  * @property {number} shakePhase The current phase of screen shake oscillation.
  * @property {number} shakeDecay The amount of `shake` units substracted in a second. Default is 5.
  * @property {number} shakeFrequency The base frequency of the screen shake effect. Default is 50.
- * @property {number} shakeX A multiplier applied to the horizontal screen shake effect. Default is 1.
- * @property {number} shakeY A multiplier applied to the vertical screen shake effect. Default is 1.
- * @property {number} shakeMax The maximum possible value for the `shake` property to protect players from losing their monitor, in `shake` units. Default is 10.
+ * @property {number} shakeX A multiplier applied to the horizontal screen shake effect.
+ * Default is 1.
+ * @property {number} shakeY A multiplier applied to the vertical screen shake effect.
+ * Default is 1.
+ * @property {number} shakeMax The maximum possible value for the `shake` property
+ * to protect players from losing their monitor, in `shake` units. Default is 10.
  */
 class Camera extends PIXI.DisplayObject {
     constructor(x, y, w, h) {
@@ -97,16 +123,21 @@ class Camera extends PIXI.DisplayObject {
         if (this.shakeMax) {
             this.shake = Math.min(this.shake, this.shakeMax);
         }
-        this.shakePhase += sec * this.shakeFrequency;
-        this.shakePhaseX += sec * this.shakeFrequency * (1 + Math.sin(this.shakePhase * 0.1489) * 0.25); // no logic in these constants
-        this.shakePhaseY += sec * this.shakeFrequency * (1 + Math.sin(this.shakePhase * 0.1734) * 0.25); // They are used to desync fluctuations and remove repetitive circular movements
+        const phaseDelta = sec * this.shakeFrequency;
+        this.shakePhase += phaseDelta;
+        // no logic in these constants
+        // They are used to desync fluctuations and remove repetitive circular movements
+        this.shakePhaseX += phaseDelta * (1 + Math.sin(this.shakePhase * 0.1489) * 0.25);
+        this.shakePhaseY += phaseDelta * (1 + Math.sin(this.shakePhase * 0.1734) * 0.25);
 
         // The speed of drift movement
-        const speed = this.drift? Math.min(1, (1-this.drift)*delta) : 1;
+        const speed = this.drift ? Math.min(1, (1 - this.drift) * delta) : 1;
 
         if (this.follow && ('x' in this.follow) && ('y' in this.follow)) {
-            const bx = this.borderX === null? this.width / 2 : Math.min(this.borderX, this.width / 2),
-                  by = this.borderY === null? this.height / 2 : Math.min(this.borderY, this.height / 2);
+            // eslint-disable-next-line max-len
+            const bx = this.borderX === null ? this.width / 2 : Math.min(this.borderX, this.width / 2),
+                  // eslint-disable-next-line max-len
+                  by = this.borderY === null ? this.height / 2 : Math.min(this.borderY, this.height / 2);
             const tl = this.uiToGameCoord(bx, by),
                   br = this.uiToGameCoord(this.width - bx, this.height - by);
 
@@ -126,10 +157,10 @@ class Camera extends PIXI.DisplayObject {
             }
         }
 
-        this.x = this.targetX * speed + this.x * (1-speed);
-        this.y = this.targetY * speed + this.y * (1-speed);
-        this.interpolatedShiftX = this.shiftX * speed + this.interpolatedShiftX * (1-speed);
-        this.interpolatedShiftY = this.shiftY * speed + this.interpolatedShiftY * (1-speed);
+        this.x = this.targetX * speed + this.x * (1 - speed);
+        this.y = this.targetY * speed + this.y * (1 - speed);
+        this.interpolatedShiftX = this.shiftX * speed + this.interpolatedShiftX * (1 - speed);
+        this.interpolatedShiftY = this.shiftY * speed + this.interpolatedShiftY * (1 - speed);
 
         this.x = this.x || 0;
         this.y = this.y || 0;
@@ -140,7 +171,7 @@ class Camera extends PIXI.DisplayObject {
      * @type {number}
      */
     get computedX() {
-        const dx = (Math.sin(this.shakePhaseX) + Math.sin(this.shakePhaseX * 3.1846)*0.25) / 1.25;
+        const dx = (Math.sin(this.shakePhaseX) + Math.sin(this.shakePhaseX * 3.1846) * 0.25) / 1.25;
         const x = this.x + dx * this.shake * Math.max(this.width, this.height) / 100 * this.shakeX;
         return x + this.interpolatedShiftX;
     }
@@ -149,15 +180,17 @@ class Camera extends PIXI.DisplayObject {
      * @type {number}
      */
     get computedY() {
-        const dy = (Math.sin(this.shakePhaseY) + Math.sin(this.shakePhaseY * 2.8948)*0.25) / 1.25;
+        const dy = (Math.sin(this.shakePhaseY) + Math.sin(this.shakePhaseY * 2.8948) * 0.25) / 1.25;
         const y = this.y + dy * this.shake * Math.max(this.width, this.height) / 100 * this.shakeY;
         return y + this.interpolatedShiftY;
     }
 
     /**
      * Returns the position of the left edge where the visible rectangle ends, in game coordinates.
-     * This can be used for UI positioning in game coordinates. This does not count for rotations, though.
-     * For rotated and/or scaled viewports, see `getTopLeftCorner` and `getBottomLeftCorner` methods.
+     * This can be used for UI positioning in game coordinates.
+     * This does not count for rotations, though.
+     * For rotated and/or scaled viewports, see `getTopLeftCorner`
+     * and `getBottomLeftCorner` methods.
      * @returns {number} The location of the left edge.
      * @type {number}
      * @readonly
@@ -167,7 +200,8 @@ class Camera extends PIXI.DisplayObject {
     }
     /**
      * Returns the position of the top edge where the visible rectangle ends, in game coordinates.
-     * This can be used for UI positioning in game coordinates. This does not count for rotations, though.
+     * This can be used for UI positioning in game coordinates.
+     * This does not count for rotations, though.
      * For rotated and/or scaled viewports, see `getTopLeftCorner` and `getTopRightCorner` methods.
      * @returns {number} The location of the top edge.
      * @type {number}
@@ -178,8 +212,10 @@ class Camera extends PIXI.DisplayObject {
     }
     /**
      * Returns the position of the right edge where the visible rectangle ends, in game coordinates.
-     * This can be used for UI positioning in game coordinates. This does not count for rotations, though.
-     * For rotated and/or scaled viewports, see `getTopRightCorner` and `getBottomRightCorner` methods.
+     * This can be used for UI positioning in game coordinates.
+     * This does not count for rotations, though.
+     * For rotated and/or scaled viewports, see `getTopRightCorner`
+     * and `getBottomRightCorner` methods.
      * @returns {number} The location of the right edge.
      * @type {number}
      * @readonly
@@ -188,9 +224,11 @@ class Camera extends PIXI.DisplayObject {
         return this.computedX + (this.width / 2) * this.scale.x;
     }
     /**
-     * Returns the position of the bottom edge where the visible rectangle ends, in game coordinates.
-     * This can be used for UI positioning in game coordinates. This does not count for rotations, though.
-     * For rotated and/or scaled viewports, see `getBottomLeftCorner` and `getBottomRightCorner` methods.
+     * Returns the position of the bottom edge where the visible rectangle ends,
+     * in game coordinates. This can be used for UI positioning in game coordinates.
+     * This does not count for rotations, though.
+     * For rotated and/or scaled viewports, see `getBottomLeftCorner`
+     * and `getBottomRightCorner` methods.
      * @returns {number} The location of the bottom edge.
      * @type {number}
      * @readonly
@@ -229,7 +267,8 @@ class Camera extends PIXI.DisplayObject {
     }
     /**
      * Gets the position of the top-left corner of the viewport in game coordinates.
-     * This is useful for positioning UI elements in game coordinates, especially with rotated viewports.
+     * This is useful for positioning UI elements in game coordinates,
+     * especially with rotated viewports.
      * @returns {Array<number>} A pair of `x` and `y` coordinates.
      */
     getTopLeftCorner() {
@@ -238,7 +277,8 @@ class Camera extends PIXI.DisplayObject {
 
     /**
      * Gets the position of the top-right corner of the viewport in game coordinates.
-     * This is useful for positioning UI elements in game coordinates, especially with rotated viewports.
+     * This is useful for positioning UI elements in game coordinates,
+     * especially with rotated viewports.
      * @returns {Array<number>} A pair of `x` and `y` coordinates.
      */
     getTopRightCorner() {
@@ -247,7 +287,8 @@ class Camera extends PIXI.DisplayObject {
 
     /**
      * Gets the position of the bottom-left corner of the viewport in game coordinates.
-     * This is useful for positioning UI elements in game coordinates, especially with rotated viewports.
+     * This is useful for positioning UI elements in game coordinates,
+     * especially with rotated viewports.
      * @returns {Array<number>} A pair of `x` and `y` coordinates.
      */
     getBottomLeftCorner() {
@@ -256,7 +297,8 @@ class Camera extends PIXI.DisplayObject {
 
     /**
      * Gets the position of the bottom-right corner of the viewport in game coordinates.
-     * This is useful for positioning UI elements in game coordinates, especially with rotated viewports.
+     * This is useful for positioning UI elements in game coordinates,
+     * especially with rotated viewports.
      * @returns {Array<number>} A pair of `x` and `y` coordinates.
      */
     getBottomRightCorner() {
@@ -298,7 +340,8 @@ class Camera extends PIXI.DisplayObject {
      * Realigns all the copies in a room so that they distribute proportionally
      * to a new camera size based on their `xstart` and `ystart` coordinates.
      * Will throw an error if the given room is not in UI space (if `room.isUi` is not `true`).
-     * You can skip the realignment for some copies if you set their `skipRealign` parameter to `true`.
+     * You can skip the realignment for some copies
+     * if you set their `skipRealign` parameter to `true`.
      * @param {Room} room The room which copies will be realigned.
      * @returns {void}
      */
@@ -324,8 +367,8 @@ class Camera extends PIXI.DisplayObject {
     manageStage() {
         const px = this.computedX,
               py = this.computedY,
-              sx = 1 / (isNaN(this.scale.x)? 1 : this.scale.x),
-              sy = 1 / (isNaN(this.scale.y)? 1 : this.scale.y);
+              sx = 1 / (isNaN(this.scale.x) ? 1 : this.scale.x),
+              sy = 1 / (isNaN(this.scale.y) ? 1 : this.scale.y);
         for (const item of ct.stage.children) {
             if (!item.isUi && item.pivot) {
                 item.x = -this.width / 2;

@@ -1,9 +1,8 @@
-(function (ct) {
+(function resAddon(ct) {
     const loader = new PIXI.Loader();
     const loadingScreen = document.querySelector('.ct-aLoadingScreen'),
           loadingBar = loadingScreen.querySelector('.ct-aLoadingBar');
-    /* global dragonBones */
-    const dbFactory = window.dragonBones? dragonBones.PixiFactory.factory : null;
+    const dbFactory = window.dragonBones ? dragonBones.PixiFactory.factory : null;
     /**
      * An utility object that managess and stores textures and other entities
      * @namespace
@@ -34,12 +33,16 @@
             PIXI.Loader.shared.load();
         },
         /*
-         * Gets a pixi.js texture from a ct.js' texture name, so that it can be used in pixi.js objects.
+         * Gets a pixi.js texture from a ct.js' texture name,
+         so that it can be used in pixi.js objects.
          * @param {string} name The name of the ct.js texture
          * @param {number} [frame] The frame to extract
-         * @returns {PIXI.Texture|Array<PIXI.Texture>} If `frame` was specified, returns a single PIXI.Texture. Otherwise, returns an array with all the frames of this ct.js' texture.
+         * @returns {PIXI.Texture|Array<PIXI.Texture>} If `frame` was specified,
+         * returns a single PIXI.Texture. Otherwise, returns an array
+         * with all the frames of this ct.js' texture.
          *
-         * @note Formatted as a non-jsdoc comment as it requires a better ts declaration than the auto-generated one
+         * @note Formatted as a non-jsdoc comment as it requires a better ts declaration
+         * than the auto-generated one
          */
         getTexture(name, frame) {
             if (name === -1) {
@@ -64,7 +67,7 @@
             const r = ct.res.skelRegistry[name],
                   skel = dbFactory.buildArmatureDisplay('Armature', r.data.name, skin);
             skel.ctName = name;
-            skel.on(dragonBones.EventObject.SOUND_EVENT, function (event) {
+            skel.on(dragonBones.EventObject.SOUND_EVENT, function skeletonSound(event) {
                 if (ct.sound.exists(event.name)) {
                     ct.sound.spawn(event.name);
                 } else {
@@ -88,8 +91,7 @@
                 for (let i = 0; i < reg.frames; i++) {
                     const frame = `${texture}@frame${i}`;
                     const atlas = PIXI.Loader.shared.resources[ct.res.atlases.find(atlas =>
-                        frame in PIXI.Loader.shared.resources[atlas].textures
-                    )];
+                        frame in PIXI.Loader.shared.resources[atlas].textures)];
                     const tex = atlas.textures[frame];
                     tex.defaultAnchor = new PIXI.Point(reg.anchor.x, reg.anchor.y);
                     reg.textures.push(tex);
@@ -101,6 +103,7 @@
             }
         }
         for (const skel in ct.res.skelRegistry) {
+            // eslint-disable-next-line id-blacklist
             ct.res.skelRegistry[skel].data = PIXI.Loader.shared.resources[ct.res.skelRegistry[skel].origname + '_ske.json'].data;
         }
         /*%resload%*/
