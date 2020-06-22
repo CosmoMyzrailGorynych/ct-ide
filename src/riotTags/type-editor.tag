@@ -11,29 +11,8 @@ type-editor.panel.view.flexrow
             b {voc.depth}
             input#typedepth.wide(type="number" onchange="{wire('this.type.depth')}" value="{type.depth}")
         .flexfix-body
-            virtual(each="{extend in libExtends}")
-                label.block
-                    input.wide(
-                        type="checkbox"
-                        value="{type.extends[extend.key] || extend.default}"
-                        onchange="{wire('this.type.extends.'+ extend.key)}"
-                        if="{extend.type === 'checkbox'}"
-                    )
-                    b {extend.name}
-                    span(if="{extend.type !== 'checkbox'}") :
-                    input.wide(
-                        type="text"
-                        value="{type.extends[extend.key] || extend.default}"
-                        onchange="{wire('this.type.extends.'+ extend.key)}"
-                        if="{extend.type === 'text'}"
-                    )
-                    input.wide(
-                        type="number"
-                        value="{type.extends[extend.key] || extend.default}"
-                        onchange="{wire('this.type.extends.'+ extend.key)}"
-                        if="{extend.type === 'number'}"
-                    )
-                    .dim(if="{extend.help}") {extend.help}
+            extensions-editor(type="type" entity="{type.extends}")
+            br
             br
             docs-shortcut(path="/ct.types.html" button="true" wide="true" title="{voc.learnAboutTypes}")
         .flexfix-footer
@@ -78,30 +57,6 @@ type-editor.panel.view.flexrow
         this.mixin(window.riotWired);
 
         this.getTypeTextureRevision = type => glob.texturemap[type.texture].g.lastmod;
-
-        const libsDir = './data/ct.libs';
-        const fs = require('fs-extra'),
-              path = require('path');
-        this.libExtends = [];
-        this.refreshExtends = () => {
-            this.libExtends = [];
-            for (const lib in global.currentProject.libs) {
-                fs.readJSON(path.join(libsDir, lib, 'module.json'), (err, moduleJson) => {
-                    if (err) {
-                        return;
-                    }
-                    if (moduleJson.typeExtends) {
-                        this.libExtends.push(...moduleJson.typeExtends);
-                    }
-                    this.update();
-                });
-            }
-        };
-        window.signals.on('modulesChanged', this.refreshExtends);
-        this.on('unmount', () => {
-            window.signals.off('modulesChanged', this.refreshExtends);
-        });
-        this.refreshExtends();
 
         this.type = this.opts.type;
         this.tab = 'typeoncreate';

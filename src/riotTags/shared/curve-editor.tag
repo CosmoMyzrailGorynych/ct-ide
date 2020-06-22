@@ -10,30 +10,30 @@
         Called when a user drags a curve's point.
         Passes the whole curve and an edited point as its arguments.
 
-    @attribute lockstarttime (atomic)
+    @attribute [lockstarttime] (atomic)
         Locks the time of the firts point in the curve.
         Also, it forbids the deletion of this point.
-    @attribute lockendtime (atomic)
+    @attribute [lockendtime] (atomic)
         Locks the time of the last point in the curve.
         Also, it forbids the deletion of this point.
-    @attribute lockstartvalue (atomic)
+    @attribute [lockstartvalue] (atomic)
         Locks the value of the first point in the curve.
         Also, it forbids the deletion of this point.
-    @attribute lockendvalue (atomic)
+    @attribute [lockendvalue] (atomic)
         Locks the value of the last point in the curve.
         Also, it forbids the deletion of this point.
 
-    @attribute timestep (number)
+    @attribute [timestep] (number)
         A step size for a manual point editor. Defaults to 0.01.
-    @attribute valuestep (number)
+    @attribute [valuestep] (number)
         A step size for a manual point editor. Defaults to 0.01.
 
-    @attribute type (string, 'float'|'color')
+    @attribute [type] (string, 'float'|'color')
         Defaults to 'float'; if set to 'color', requires
         an attribute `colorcurve` to be set and allows for color editing.
-    @attribute easing (string, 'linear'|'none')
+    @attribute [easing] (string, 'linear'|'none')
         Defaults to 'linear'.
-    @attribute coloreasing (string, 'linear'|'none')
+    @attribute [coloreasing] (string, 'linear'|'none')
         Defaults to 'linear'.
 
 curve-editor(ref="root")
