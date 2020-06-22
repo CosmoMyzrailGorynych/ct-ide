@@ -322,7 +322,13 @@ main-menu.flexcol
                             this.switchTheme('Day');
                         }
                     }, {
-                        label: window.languageJSON.menu.themeNight,
+                        label: window.languageJSON.menu.themeSpringStream || 'Spring Stream',
+                        icon: () => localStorage.UItheme === 'SpringStream' && 'check',
+                        click: () => {
+                            this.switchTheme('SpringStream');
+                        }
+                    }, {
+                        label: window.languageJSON.menu.themeNight || 'Night',
                         icon: () => localStorage.UItheme === 'Night' && 'check',
                         click: () => {
                             this.switchTheme('Night');

@@ -147,6 +147,7 @@
         "theme": "Theme",
         "themeDay": "Light",
         "themeNight": "Dark",
+        "themeSpringSream": "Spring Stream",
         "types": "Types",
         "zipExport": "Export for web",
         "zipProject": "Pack project to .zip",

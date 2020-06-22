@@ -226,6 +226,7 @@
         Day: 'tomorrow',
         Night: 'ambiance',
         Horizon: 'horizon',
+        SpringStream: 'spring',
         default: 'tomorrow'
     };
     const glob = require('./data/node_requires/glob');

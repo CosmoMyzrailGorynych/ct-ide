@@ -57,10 +57,12 @@ html
                     const tomorrow = require('./data/node_requires/monaco-themes/tomorrow.json');
                     const horizon = require('./data/node_requires/monaco-themes/horizon.json');
                     const ambiance = require('./data/node_requires/monaco-themes/ambiance.json');
+                    const spring = require('./data/node_requires/monaco-themes/spring.json');
                     window.monaco = global.monaco;
                     monaco.editor.defineTheme('tomorrow', tomorrow);
                     monaco.editor.defineTheme('horizon', horizon);
                     monaco.editor.defineTheme('ambiance', ambiance);
+                    monaco.editor.defineTheme('spring', spring);
                     window.signals = window.signals || riot.observable({});
                     window.signals.trigger('monacoBooted');
                 });
