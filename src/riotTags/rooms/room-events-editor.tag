@@ -1,4 +1,4 @@
-room-events-editor.view.panel
+room-events-editor.view
     .tabwrap
         ul.tabs.nav.nogrow.noshrink.nb
             li(onclick="{switchTab('roomcreate')}" class="{active: tab === 'roomcreate'}" title="Control-Q" data-hotkey="Control+q")
