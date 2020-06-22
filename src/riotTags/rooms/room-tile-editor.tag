@@ -27,6 +27,8 @@ room-tile-editor.room-editor-Tiles.tabbed.tall.flexfix
             span.act(title="{vocGlob.add}" onclick="{addTileLayer}")
                 svg.feather
                     use(xlink:href="data/icons.svg#plus")
+        .block
+            extensions-editor(type="tileLayer" entity="{parent.currentTileLayer.extends}" compact="yep")
     texture-selector(ref="tilesetPicker" if="{pickingTileset}" oncancelled="{onTilesetCancel}" onselected="{onTilesetSelected}")
     script.
         this.parent.tileX = 0;

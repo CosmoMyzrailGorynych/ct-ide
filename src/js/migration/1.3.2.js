@@ -1,11 +1,11 @@
 window.migrationProcess = window.migrationProcess || [];
 
-/**
- * Project settings got reorganized, logically and visually
- */
 window.migrationProcess.push({
     version: '1.3.2',
     process: project => new Promise(resolve => {
+        /**
+         * Project settings got reorganized, logically and visually
+         */
         const s = project.settings;
 
         s.rendering = s.rendering || {
@@ -37,6 +37,16 @@ window.migrationProcess.push({
 
         delete s.minifyhtmlcss; // Now doesn't have an option, HTML and CSS are always minified.
         delete s.minifyjs; // This one never worked properly.
+
+        /**
+         * Tile layers at rooms can now be extended and have an object `exts`.
+         */
+        for (const room of project.rooms) {
+            for (const layer of room.tiles) {
+                layer.extends = layer.extends || {};
+                delete layer.exts; // Leftovers from development of v1.3.2
+            }
+        }
 
         resolve();
     })

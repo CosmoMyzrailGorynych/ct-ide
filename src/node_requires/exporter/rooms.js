@@ -34,7 +34,8 @@ const stringifyRooms = proj => {
             for (const tileLayer of r.tiles) {
                 const layer = {
                     depth: tileLayer.depth,
-                    tiles: []
+                    tiles: [],
+                    extends: tileLayer.extends
                 };
                 for (const tile of tileLayer.tiles) {
                     for (let x = 0; x < tile.grid[2]; x++) {
