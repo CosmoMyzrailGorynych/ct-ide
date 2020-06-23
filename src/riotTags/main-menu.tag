@@ -121,18 +121,19 @@ main-menu.flexcol
                 this.refs.catMenu.toggle();
             }
         };
-        this.saveProject = () => {
-            const YAML = require('js-yaml');
-            const projectYAML = YAML.dump(global.currentProject);
-            return fs.outputFile(global.projdir + '.ict', projectYAML)
-            .then(() => {
-                alertify.success(window.languageJSON.common.savedcomm, 'success', 3000);
+        this.saveProject = async () => {
+            try {
+                const YAML = require('js-yaml');
+                const projectYAML = YAML.dump(global.currentProject);
+                await fs.outputFile(global.projdir + '.ict', projectYAML);
                 this.saveRecoveryDebounce();
                 fs.remove(global.projdir + '.ict.recovery')
                 .catch(console.error);
                 glob.modified = false;
-            })
-            .catch(alertify.error);
+                alertify.success(window.languageJSON.common.savedcomm, 'success', 3000);
+            } catch (e) {
+                alertify.error(e);
+            }
         };
         this.saveRecovery = () => {
             if (global.currentProject) {
