@@ -4,6 +4,7 @@
         "PIXI": true
     },
     "rules": {
-        "object-shorthand": 0
+        "object-shorthand": 0,
+        "spaced-comment": "off"
     }
 }

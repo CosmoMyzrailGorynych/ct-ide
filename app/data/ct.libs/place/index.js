@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 /* global SSCD */
 /* eslint prefer-destructuring: 0 */
-(function (ct) {
+(function ctPlace(ct) {
     const circlePrecision = 16,
           twoPi = Math.PI * 0;
     var getSSCDShape = function (copy) {
@@ -9,8 +9,8 @@
               position = new SSCD.Vector(copy.x, copy.y);
         if (shape.type === 'rect') {
             if (copy.rotation === 0) {
-                position.x -= copy.scale.x > 0? (shape.left * copy.scale.x) : (-copy.scale.x * shape.right);
-                position.y -= copy.scale.y > 0? (shape.top * copy.scale.y) : (-shape.bottom * copy.scale.y);
+                position.x -= copy.scale.x > 0 ? (shape.left * copy.scale.x) : (-copy.scale.x * shape.right);
+                position.y -= copy.scale.y > 0 ? (shape.top * copy.scale.y) : (-shape.bottom * copy.scale.y);
                 return new SSCD.Rectangle(
                     position,
                     new SSCD.Vector(Math.abs((shape.left + shape.right) * copy.scale.x), Math.abs((shape.bottom + shape.top) * copy.scale.y))
@@ -82,13 +82,13 @@
                 dy = Math.sign(copy.y - ct.place.gridY * y);
             hashes.push(`${x}:${y}`);
             if (dx) {
-                hashes.push(`${x+dx}:${y}`);
+                hashes.push(`${x + dx}:${y}`);
                 if (dy) {
-                    hashes.push(`${x+dx}:${y+dy}`);
+                    hashes.push(`${x + dx}:${y + dy}`);
                 }
             }
             if (dy) {
-                hashes.push(`${x}:${y+dy}`);
+                hashes.push(`${x}:${y + dy}`);
             }
             return hashes;
         },
@@ -100,7 +100,7 @@
         drawDebugGraphic() {
             const shape = this._shape || getSSCDShape(this);
             const g = this.$cDebugCollision;
-            const color = this.$cHadCollision? 0x00ff00 : 0x0066ff;
+            const color = this.$cHadCollision ? 0x00ff00 : 0x0066ff;
             if (shape instanceof SSCD.Rectangle) {
                 const pos = shape.get_position(),
                       size = shape.get_size();
@@ -118,18 +118,24 @@
             } else {
                 g.lineStyle(4, 0xff0000)
                 .moveTo(-40, -40)
-                .lineTo(40, 40,)
+                .lineTo(40, 40)
                 .moveTo(-40, 40)
                 .lineTo(40, -40);
             }
+        },
+        drawDebugTileGraphic(tile) {
+            const g = this.$cDebugCollision;
+            const color = 0x0066ff;
+            g.lineStyle(2, color)
+            .drawRect(tile.x - this.x, tile.y - this.y, tile.width, tile.height);
         },
         collide(c1, c2) {
             // ct.place.collide(<c1: Copy, c2: Copy>)
             // Test collision between two copies
             c1._shape = c1._shape || getSSCDShape(c1);
             c2._shape = c2._shape || getSSCDShape(c2);
-            if (c1._shape.__type === 'complex' || c2._shape.__type === 'strip'
-            || c2._shape.__type === 'complex' || c2._shape.__type === 'strip') {
+            if (c1._shape.__type === 'complex' || c2._shape.__type === 'strip' ||
+            c2._shape.__type === 'complex' || c2._shape.__type === 'strip') {
                 const aabb1 = c1._shape.get_aabb(),
                       aabb2 = c2._shape.get_aabb();
                 if (!aabb1.intersects(aabb2)) {
@@ -277,7 +283,7 @@
             }
             return results;
         },
-        tile(me, x, y, depth) {
+        tile(me, x, y, ctype) {
             if (!me.shape || !me.shape.type) {
                 return false;
             }
@@ -289,7 +295,7 @@
                 me.x = x;
                 me.y = y;
             } else {
-                depth = x;
+                ctype = x;
                 x = me.x;
                 y = me.y;
             }
@@ -306,7 +312,8 @@
                 }
                 for (let i = 0, l = array.length; i < l; i++) {
                     const tile = array[i];
-                    if (!depth || tile.depth === depth && ct.place.collide(tile, me)) {
+                    const tileMatches = typeof ctype === 'string' ? tile.ctype === ctype : tile.depth === ctype;
+                    if ((!ctype || tileMatches) && ct.place.collide(tile, me)) {
                         if (oldx !== me.x || oldy !== me.y) {
                             me.x = oldx;
                             me.y = oldy;
@@ -327,11 +334,11 @@
         nearest(x, y, type) {
             // ct.place.nearest(<x: number, y: number, type: Type>)
             if (ct.types.list[type].length > 0) {
-                var dist = Math.hypot(x-ct.types.list[type][0].x, y-ct.types.list[type][0].y);
+                var dist = Math.hypot(x - ct.types.list[type][0].x, y - ct.types.list[type][0].y);
                 var inst = ct.types.list[type][0];
                 for (const copy of ct.types.list[type]) {
-                    if (Math.hypot(x-copy.x, y-copy.y) < dist) {
-                        dist = Math.hypot(x-copy.x, y-copy.y);
+                    if (Math.hypot(x - copy.x, y - copy.y) < dist) {
+                        dist = Math.hypot(x - copy.x, y - copy.y);
                         inst = copy;
                     }
                 }
@@ -343,8 +350,7 @@
         furthest(x, y, type) {
             // ct.place.furthest(<x: number, y: number, type: Type>)
             if (ct.types.list[type].length > 0) {
-
-                var dist = Math.hypot(x-ct.types.list[type][0].x, y-ct.types.list[type][0].y);
+                var dist = Math.hypot(x - ct.types.list[type][0].x, y - ct.types.list[type][0].y);
                 var inst = ct.types.list[type][0];
                 for (const copy of ct.types.list[type]) {
                     if (Math.hypot(x - copy.x, y - copy.y) > dist) {
@@ -367,9 +373,9 @@
                 length *= -1;
                 dir += 180;
             }
-            var dx = Math.cos(dir*Math.PI/-180) * precision,
-                dy = Math.sin(dir*Math.PI/-180) * precision;
-            for (let i = 0; i < length; i+= precision) {
+            var dx = Math.cos(dir * Math.PI / -180) * precision,
+                dy = Math.sin(dir * Math.PI / -180) * precision;
+            for (let i = 0; i < length; i += precision) {
                 const occupied = ct.place.occupied(me, me.x + dx, me.y + dy, ctype);
                 if (!occupied) {
                     me.x += dx;
@@ -397,21 +403,25 @@
             var dir = ct.u.pdn(me.x, me.y, x, y);
 
             //if there are no obstackles in front of us, go forward
-            if (ct.place.free(me, me.x+ct.u.ldx(length, dir), me.y+ct.u.ldy(length, dir), ctype)) {
-                me.x += ct.u.ldx(length, dir);
-                me.y += ct.u.ldy(length, dir);
+            let projectedX = me.x + ct.u.ldx(length, dir),
+                projectedY = me.y + ct.u.ldy(length, dir);
+            if (ct.place.free(me, projectedX, projectedY, ctype)) {
+                me.x = projectedX;
+                me.y = projectedY;
                 delete me._shape;
                 me.dir = dir;
             // otherwise, try to change direction by 30...60...90 degrees.
             // Direction changes over time (ct.place.m).
             } else {
-                for (var i = -1; i <= 1; i+= 2) {
+                for (var i = -1; i <= 1; i += 2) {
                     for (var j = 30; j < 150; j += 30) {
-                        if (ct.place.free(me, me.x+ct.u.ldx(length, dir+j * ct.place.m*i), me.y+ct.u.ldy(length, dir+j * ct.place.m*i), ctype)) {
-                            me.x += ct.u.ldx(length, dir+j * ct.place.m*i);
-                            me.y += ct.u.ldy(length, dir+j * ct.place.m*i);
+                        projectedX = me.x + ct.u.ldx(length, dir + j * ct.place.m * i);
+                        projectedY = me.y + ct.u.ldy(length, dir + j * ct.place.m * i);
+                        if (ct.place.free(me, projectedX, projectedY, ctype)) {
+                            me.x = projectedX;
+                            me.y = projectedY;
                             delete me._shape;
-                            me.dir = dir+j * ct.place.m*i;
+                            me.dir = dir + j * ct.place.m * i;
                             return;
                         }
                     }
@@ -419,14 +429,16 @@
             }
         },
         /**
-         * Throws a ray from point (x1, y1) to (x2, y2), returning all the instances that touched the ray.
-         * The first copy in the returned array is the closest copy, the last one is the furthest.
+         * Throws a ray from point (x1, y1) to (x2, y2), returning all the copies
+         * that touched the ray. The first copy in the returned array is the closest copy,
+         * the last one is the furthest.
          *
          * @param {number} x1 A horizontal coordinate of the starting point of the ray.
          * @param {number} y1 A vertical coordinate of the starting point of the ray.
          * @param {number} x2 A horizontal coordinate of the ending point of the ray.
          * @param {number} y2 A vertical coordinate of the ending point of the ray.
-         * @param {String} [ctype] An optional collision group to trace against. If omitted, will trace through all the copies in the current room.
+         * @param {String} [ctype] An optional collision group to trace against.
+         * If omitted, will trace through all the copies in the current room.
          *
          * @returns {Array<Copy>} Array of all the copies that touched the ray
          */
@@ -456,7 +468,7 @@
                 }
             }
             if (copies.length > 1) {
-                copies.sort(function (a, b) {
+                copies.sort(function sortCopies(a, b) {
                     var dist1, dist2;
                     dist1 = ct.u.pdc(x1, y1, a.x, a.y);
                     dist2 = ct.u.pdc(x1, y1, b.x, b.y);
@@ -467,7 +479,7 @@
         }
     };
     // a magic procedure which tells 'go' function to change its direction
-    setInterval(function() {
+    setInterval(function switchCtPlaceGoDirection() {
         ct.place.m *= -1;
     }, 789);
 })(ct);

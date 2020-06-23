@@ -1,7 +1,7 @@
 {
     "main": {
         "name": "ct.place",
-        "version": "3.0.0",
+        "version": "3.1.0",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",
             "mail": "admin@nersta.ru"
@@ -40,6 +40,14 @@
         "name": "Collision group",
         "type": "text",
         "collect": true,
+        "collectScope": "place::ctype",
+        "key": "ctype"
+    }],
+    "tileLayerExtends": [{
+        "name": "Collision group",
+        "type": "text",
+        "collect": true,
+        "collectScope": "place::ctype",
         "key": "ctype"
     }]
 }

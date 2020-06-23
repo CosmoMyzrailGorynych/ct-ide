@@ -21,9 +21,11 @@ If `multiple` is `true`, the function will find all the possible collisions, and
 
 Returns `true` if there is a collision between `c1` and `c2` Copies.
 
-## ct.place.tile(me, [x, y, depth])
+## ct.place.tile(me, [x, y, ctype])
 
-Checks for a collision between a copy `me` and a tile layer of a given `depth`. Depth of a tile layer is equal to what you set in the room editor. If `x` and `y` are skipped, the current coordinates of `me` will be used.
+Checks for a collision between a copy `me` and a tile layer of a given collision group (`ctype`). If `ctype` is not set for a tile layer, then ct.place will compare against a tile layer's depth. (This is made for compatibility with older versions of ct.place and ct.js as is.)
+
+If `x` and `y` are skipped, the current coordinates of `me` will be used.
 
 > **Warning:** Each tile is considered a rectangle, and a possible collision mask defined in the graphics asset (in the tileset) is ignored.
 
