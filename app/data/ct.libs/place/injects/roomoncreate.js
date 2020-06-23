@@ -23,7 +23,7 @@ if (ct.types.list.TILELAYER) {
         }
         if ([/*%debugMode%*/][0]) {
             for (let i = 0; i < layer.tiles.length; i++) {
-                const pixiTile = layer.children[i],
+                const pixiTile = layer.pixiTiles[i],
                       logicTile = layer.tiles[i];
                 pixiTile.$cDebugCollision = new PIXI.Graphics();
                 ct.place.drawDebugTileGraphic.apply(pixiTile, [logicTile]);

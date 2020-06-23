@@ -70,6 +70,7 @@ class Tileset extends PIXI.Container {
         this.tiles = template.tiles.map(tile => ({
             ...tile
         }));
+        this.pixiTiles = [];
         if (template.extends) {
             Object.assign(this, template.extends);
         }
@@ -79,48 +80,30 @@ class Tileset extends PIXI.Container {
             const sprite = new PIXI.Sprite(textures[template.tiles[i].frame]);
             sprite.anchor.x = sprite.anchor.y = 0;
             this.addChild(sprite);
+            this.pixiTiles.push(sprite);
             sprite.x = template.tiles[i].x;
             sprite.y = template.tiles[i].y;
         }
+        // Divide tiles into a grid of larger cells so that we can cache these cells as
         const bounds = this.getLocalBounds();
         const cols = Math.ceil(bounds.width / 1024),
               rows = Math.ceil(bounds.height / 1024);
-        if (cols < 2 && rows < 2) {
-            if (this.width > 0 && this.height > 0) {
-                this.cacheAsBitmap = true;
-            }
-            return this;
-        }
-        /*const mask = new PIXI.Graphics();
-        mask.lineStyle(0);
-        mask.beginFill(0xffffff);
-        mask.drawRect(0, 0, 1024, 1024);
-        mask.endFill();*/
         this.cells = [];
         for (let y = 0; y < rows; y++) {
             for (let x = 0; x < cols; x++) {
                 const cell = new PIXI.Container();
-                //cell.x = x * 1024 + bounds.x;
-                //cell.y = y * 1024 + bounds.y;
                 this.cells.push(cell);
             }
         }
-        for (let i = 0, l = template.tiles.length; i < l; i++) {
+        for (let i = 0, l = this.tiles.length; i < l; i++) {
             const tile = this.children[0],
                   x = Math.floor((tile.x - bounds.x) / 1024),
                   y = Math.floor((tile.y - bounds.y) / 1024);
             this.cells[y * cols + x].addChild(tile);
-            /*if (tile.x - x * 1024 + tile.width > 1024) {
-                this.cells[y*cols + x + 1].addChild(tile);
-                if (tile.y - y * 1024 + tile.height > 1024) {
-                    this.cells[(y+1)*cols + x + 1].addChild(tile);
-                }
-            }
-            if (tile.y - y * 1024 + tile.height > 1024) {
-                this.cells[(y+1)*cols + x].addChild(tile);
-            }*/
         }
         this.removeChildren();
+
+        // Filter out empty cells, cache filled ones
         for (let i = 0, l = this.cells.length; i < l; i++) {
             if (this.cells[i].children.length === 0) {
                 this.cells.splice(i, 1);
@@ -128,7 +111,6 @@ class Tileset extends PIXI.Container {
                 l--;
                 continue;
             }
-            //this.cells[i].mask = mask;
             this.addChild(this.cells[i]);
             this.cells[i].cacheAsBitmap = true;
         }
