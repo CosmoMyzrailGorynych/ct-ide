@@ -1,7 +1,6 @@
 /* global SSCD */
 ct.place.tileGrid = {};
 if (ct.types.list.TILELAYER) {
-    console.log(ct.types.list.TILELAYER.length);
     for (const layer of ct.types.list.TILELAYER) {
         for (let i = 0, l = layer.tiles.length; i < l; i++) {
             const t = layer.tiles[i];
