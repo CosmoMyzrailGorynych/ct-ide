@@ -67,7 +67,12 @@ class Tileset extends PIXI.Container {
     constructor(template) {
         super();
         this.depth = template.depth;
-        this.tiles = template.tiles;
+        this.tiles = template.tiles.map(tile => ({
+            ...tile
+        }));
+        if (template.extends) {
+            Object.assign(this, template.extends);
+        }
         ct.types.list.TILELAYER.push(this);
         for (let i = 0, l = template.tiles.length; i < l; i++) {
             const textures = ct.res.getTexture(template.tiles[i].texture);
