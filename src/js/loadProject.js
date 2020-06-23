@@ -150,7 +150,7 @@
             } else {
                 try {
                     const YAML = require('js-yaml');
-                    projectData = YAML.safeLoad(textProjData);
+                    projectData = YAML.load(textProjData);
                 } catch (e) {
                     // whoopsie, wrong window
                     // eslint-disable-next-line no-console

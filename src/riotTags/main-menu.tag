@@ -123,7 +123,7 @@ main-menu.flexcol
         };
         this.saveProject = () => {
             const YAML = require('js-yaml');
-            const projectYAML = YAML.safeDump(global.currentProject);
+            const projectYAML = YAML.dump(global.currentProject);
             return fs.outputFile(global.projdir + '.ict', projectYAML)
             .then(() => {
                 alertify.success(window.languageJSON.common.savedcomm, 'success', 3000);
@@ -137,7 +137,7 @@ main-menu.flexcol
         this.saveRecovery = () => {
             if (global.currentProject) {
                 const YAML = require('js-yaml');
-                const recoveryYAML = YAML.safeDump(global.currentProject);
+                const recoveryYAML = YAML.dump(global.currentProject);
                 fs.outputFile(global.projdir + '.ict.recovery', recoveryYAML);
             }
             this.saveRecoveryDebounce();
