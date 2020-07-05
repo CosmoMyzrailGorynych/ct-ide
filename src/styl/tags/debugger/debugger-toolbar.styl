@@ -10,8 +10,8 @@ debugger-toolbar
     width 100%
     height 100%
     border-radius br
-    border 1px solid bd
-    background white
+    border 1px solid borderBright
+    background background
     display flex
     box-sizing border-box
     align-items stretch
@@ -22,46 +22,46 @@ debugger-toolbar
         align-content stretch
         padding 0 0.5rem
     .&-aDragger
-        color bd
+        color borderBright
         cursor move
         -webkit-app-region drag
         app-region drag
     .&-aButton
         color act
         cursor pointer
-        background white
+        background background
         if (themeDark)
             background transparent
         {trans}
         &:hover, &.active
             background acttext
-            color white
+            color background
             {transshort}
             if (themeDark)
-                color black
+                color foreground
             if (!themeDark)
                 border-color accent1
             svg
-                color white
+                color background
             if (themeDark)
-                color black
+                color foreground
                 svg
-                    color black
+                    color foreground
         &:active, &.selected
             {transshort}
             border-color accent1
             background accent1
-            color white
+            color background
             svg
-                color white
+                color background
             if (themeDark)
-                color black
+                color foreground
                 svg
-                    color black
+                    color foreground
         &:last-child
             border-radius 0 br br 0
     .&-aDivider
-        border-right 1px solid bd
+        border-right 1px solid borderBright
         height 100%
         width 0
         margin 0 0.5rem

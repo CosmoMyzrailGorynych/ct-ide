@@ -1,6 +1,8 @@
 @charset "utf-8"
 
-// The minimum width of ct.js = 380px
+foreground = #fff
+background = #1C1E26
+shadows = #E95378
 
 /* handy blocks */
 trans =
@@ -8,9 +10,9 @@ trans =
 transshort =
     transition 0.15s ease all
 shad =
-    box-shadow 0 0.1rem 0.2rem rgba(0, 0, 0, 0.5)
+    box-shadow 0 0.1rem 0.2rem rgba(shadows, 0.5)
 shadamb =
-    box-shadow 0 0 0.35rem rgba(0, 0, 0, 0.5)
+    box-shadow 0 0 0.35rem rgba(shadows, 0.5)
 
 /* Fonts */
 fonts = font = 'Open Sans', sans-serif, serif
@@ -20,8 +22,6 @@ br = 0.2rem
 iconsize = 1.5rem
 
 /* Basic colors & accents */
-black = #fff
-white = #1C1E26
 act = #E95378
 acttext = act
 accent1 = #E95378
@@ -45,11 +45,11 @@ themeDark = true
 .warning
     color warning
 
-bl = #252732
-bd = #2F3038
+borderPale = #252732
+borderBright = #2F3038
 
 text = #D5D8DA
-snow = mix(white, bl, 50%)
+backgroundDeeper = mix(background, borderPale, 50%)
 
 @require 'hvost.styl'
 
@@ -72,7 +72,7 @@ input[type="reset"],
     border-width 2px
 
 .view
-    background white
+    background background
 
 .tabbed, .nav
     border 0
@@ -80,7 +80,7 @@ input[type="reset"],
     border-right 0
     border-left 0
     &:hover, &.active
-        color black
+        color foreground
 
 #moduleinfo .bigpower:not(.off)
     border-color success

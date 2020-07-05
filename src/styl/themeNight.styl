@@ -1,27 +1,27 @@
 @charset "utf-8"
 
-// минимальная ширина шаблона - 380 пикс
+foreground = #fff
+background = #08080D
+shadows = #000
 
-/* частотники */
+/* Frequently used properties */
 trans =
     transition 0.35s ease all
 transshort =
     transition 0.15s ease all
 shad =
-    box-shadow 0 0.1rem 0.2rem rgba(0, 0, 0, 0.5)
+    box-shadow 0 0.1rem 0.2rem rgba(shadows, 0.5)
 shadamb =
-    box-shadow 0 0 0.35rem rgba(0, 0, 0, 0.5)
+    box-shadow 0 0 0.35rem rgba(shadows, 0.5)
 
-/* шрифты */
+/* Base fonts for UI */
 fonts = font = 'Open Sans', sans-serif, serif
 font-mono = mono = Iosevka, monospace
 
 br = 0.2rem
 iconsize = 1.5rem
 
-/* цвета */
-black = #fff
-white = #08080D
+/* Colors used by this theme */
 act = #44dbb5
 acttext = act
 accent1 = #44dbb5
@@ -43,11 +43,11 @@ themeDark = true
 .warning
     color warning
 
-bl = #121822
-bd = #1C2B42
+borderPale = #121822
+borderBright = #1C2B42
 
 text = #C8CECD
-snow = mix(white, bl, 50%)
+backgroundDeeper = mix(background, borderPale, 50%)
 
 @require 'hvost.styl'
 

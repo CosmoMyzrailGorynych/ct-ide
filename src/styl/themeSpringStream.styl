@@ -1,18 +1,20 @@
 @charset "utf-8"
 
-// минимальная ширина шаблона - 380 пикс
+background = #fff
+foreground = #555
+shadows = #000
 
-/* частотники */
+/* Frequently used properties */
 trans =
     transition 0.35s ease all
 transshort =
     transition 0.15s ease all
 shad =
-    box-shadow 0 0.1rem 0.35rem rgba(0, 0, 0, 0.25)
+    box-shadow 0 0.1rem 0.35rem rgba(shadows, 0.25)
 shadamb =
-    box-shadow 0 0.25rem 1rem rgba(0, 0, 0, 0.15)
+    box-shadow 0 0.25rem 1rem rgba(shadows, 0.15)
 
-/* шрифты */
+/* Base fonts for UI */
 fonts = font = 'Open Sans', sans-serif, serif
 fontsHeaders = fontHeader = Comfortaa, 'Open Sans', sans-serif, serif
 font-mono = mono = Iosevka, monospace
@@ -20,7 +22,7 @@ font-mono = mono = Iosevka, monospace
 br = 0.35rem
 iconsize = 1.5rem
 
-/* цвета */
+/* Colors used by this theme */
 act = #00c09e
 acttext = #009170
 accent1 = #00c09e
@@ -42,11 +44,11 @@ themeDark = false
 .warning
     color warning
 
-bl = #d6dedd
-bd = #d6dedd
+borderPale = #d6dedd
+borderBright = #d6dedd
 
 text = #555
-snow = #fafafa
+backgroundDeeper = #fafafa
 
 introBg = #f2fcfa
 
@@ -84,9 +86,9 @@ input[type="reset"],
     font-weight 900
     border-width 0
     background accent1
-    color white
+    color background
     svg
-        color white
+        color background
     &.selected
         background acttext
 
@@ -99,4 +101,4 @@ input[type="reset"],
     gap 0.75rem
     li
         {shad}
-        border-color white
+        border-color background

@@ -5,25 +5,25 @@ curve-editor
     cursor default
 .curve-editor-aGraphWrap
     position relative
-    outline solid 1px bd
+    outline solid 1px borderBright
     if (themeDark)
-        outline solid 1px mix(bd, text, 85%)
+        outline solid 1px mix(borderBright, text, 85%)
     line-height 0
     .aDragger
         transform translate(-50%, -50%)
         .safecolors &
-            box-shadow 0 0 0 2px white, 0 0 0 4px bd, 0 0.1rem 0.2rem 4px rgba(0, 0, 0, 0.5)
+            box-shadow 0 0 0 2px background, 0 0 0 4px borderBright, 0 0.1rem 0.2rem 4px rgba(0, 0, 0, 0.5)
             &.selected
-                box-shadow 0 0 0 2px bl, 0 0 0 4px act, 0 0.1rem 0.2rem 4px rgba(0, 0, 0, 0.5)
+                box-shadow 0 0 0 2px borderPale, 0 0 0 4px act, 0 0.1rem 0.2rem 4px rgba(0, 0, 0, 0.5)
 .curve-editor-aGrid
-    stroke bl
+    stroke borderPale
     stroke-width 1px
     if (themeDark)
-        stroke bd
+        stroke borderBright
     .aMiddleLine
-        stroke bd
+        stroke borderBright
         if (themeDark)
-            stroke mix(bd, text, 85%)
+            stroke mix(borderBright, text, 85%)
 .curve-editor-aCurve
     stroke act
     stroke-width 4px

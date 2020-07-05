@@ -6,10 +6,10 @@ context-menu
     visibility hidden
     {shad}
     border-radius br
-    border 1px solid bd
-    background white
+    border 1px solid borderBright
+    background background
     if (themeDark)
-        background bl
+        background borderPale
     z-index 900
     width max-content
     height max-content
@@ -54,10 +54,10 @@ context-menu
             width 1.125rem
             height @width
         &:hover, &:focus
-            color white
+            color background
             background-color act
             & > svg
-                color white
+                color background
             {transshort}
         &:active
             background-color accent1
@@ -66,9 +66,9 @@ context-menu
             right 0.5rem
             top 0.5rem
             position absolute
-            color bd
+            color borderBright
             if (themeDark)
-                color mix(bd, text, 85%)
+                color mix(borderBright, text, 85%)
     a, a.checkbox
         display block
         position relative
@@ -79,9 +79,9 @@ context-menu
         [type="checkbox"], [type="radio"]
             left 1rem
             top 0.75rem
-            background white
+            background background
     .separator
         padding 0
         margin 0.5rem 0
-        border-top 1px solid bd
+        border-top 1px solid borderBright
         cursor initial

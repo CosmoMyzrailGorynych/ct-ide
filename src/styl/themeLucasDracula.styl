@@ -1,0 +1,64 @@
+@charset "utf-8"
+
+
+/* Frequently used properties */
+trans =
+    transition 0.35s ease all
+transshort =
+    transition 0.15s ease all
+shad =
+    box-shadow 0 0.1rem 0.2rem rgba(0, 0, 0, 0.5)
+shadamb =
+    box-shadow 0 0 0.35rem rgba(0, 0, 0, 0.5)
+
+/* Base fonts for UI */
+fonts = font = 'Open Sans', sans-serif, serif
+font-mono = mono = Iosevka, monospace
+
+br = 0.2rem
+iconsize = 1.5rem
+
+/* Colors used by this theme */
+foreground = #f6f3fc
+background = #161526
+act = #FFCFD4
+acttext = act
+accent1 = #FF70B1
+accent2 = #FFCFD4
+error = #FF5370
+red = error
+success = #2DE4A1
+green = success
+warning = #f07178
+orange = warning
+
+theme = 'LucasDracula'
+themeDark = true
+
+.error
+    color error
+.success
+    color success
+.warning
+    color warning
+
+text = #DAD6DA
+backgroundDeeper = #282646
+
+borderBright = #4D4985
+borderPale = mix(backgroundDeeper, borderBright, 50%)
+
+
+@require 'hvost.styl'
+
+@require '3rdParty/*.styl'
+@require './../../app/node_modules/highlight.js/styles/atom-one-dark.css'
+
+@require 'common.styl'
+@require 'inputs.styl'
+@require 'typography.styl'
+@require 'confetti.styl'
+@require 'buildingBlocks.styl'
+@require 'tabs.styl'
+
+@require 'tags/**/*.styl'
