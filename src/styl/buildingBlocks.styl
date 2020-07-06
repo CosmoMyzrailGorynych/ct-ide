@@ -16,11 +16,7 @@
 .modal, .panel
     box-sizing border-box
     background background
-    if (themeDark)
-        background borderPale
-    border 1px solid borderPale
-    if (themeDark)
-        border 1px solid borderBright
+    border 1px solid borderBright
     border-radius br
     position relative
     &.pad
@@ -40,8 +36,6 @@
 .view
     overflow auto
     background backgroundDeeper
-    if (themeDark)
-        background background
     position absolute
     left 0
     right 0
@@ -52,10 +46,10 @@
         border 0
 
 .inset
-    background borderPale
+    background backgroundDeeper
     padding 1rem
     margin 0 -1rem
-    border-top 1px solid borderBright
+    border-top 1px solid borderPale
 
 .aStrippedList
     margin 0.5rem 0
@@ -65,8 +59,6 @@
         padding 0.2em 0.8em
         margin 0
         border-bottom 1px solid borderPale
-        if (themeDark)
-            border-bottom 1px solid borderBright
 
 
 // Меню выбора - список
@@ -93,8 +85,6 @@
 // панели управления
 .nav
     background background
-    if (themeDark)
-        background borderPale
     border-radius br
     border-top 1px solid borderBright
     border-left 1px solid borderBright
@@ -110,7 +100,7 @@
     li
         text-align center
         cursor pointer
-        border-right 1px solid borderBright
+        border-right 1px solid borderPale
         border-bottom 1px solid borderBright
         flex auto
         list-style none
@@ -118,8 +108,6 @@
         margin 0
         {trans}
         box-shadow 0 0 background inset
-        if (themeDark)
-            background borderPale
         &:hover, &.active
             {transshort}
             color acttext
@@ -142,6 +130,7 @@
     &.vertical li
         text-align initial
         border-right 0
+        border-bottom 1px solid borderPale
         padding 0.25rem 1rem
         overflow hidden
         text-overflow ellipsis

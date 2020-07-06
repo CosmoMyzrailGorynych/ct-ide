@@ -1,4 +1,4 @@
-emitter-editor.panel.pad
+emitter-editor.panel.pad.nb
     .emitter-editor-aHeader
         img.emitter-editor-aTexture(src="{getPreview()}")
         h3 {voc.emitterHeading} {opts.emitter.uid.split('-').pop()}

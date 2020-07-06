@@ -1,7 +1,7 @@
 emitter-tandem-editor.panel.view.flexrow
     .flexfix(style="width: {panelWidth}px")
         .flexfix-header
-            .panel.pad
+            .panel.pad.nbt.nbl.nbr
                 b {vocGlob.name}
                 br
                 input.wide(type="text" value="{tandem.name}" onchange="{wire('this.tandem.name')}")

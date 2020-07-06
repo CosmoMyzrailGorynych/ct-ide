@@ -26,8 +26,6 @@ textarea
     padding 0.1em 0.8em
     background background
     border 1px solid borderPale
-    if (themeDark)
-        border 1px solid borderBright
     border-radius br
     font inherit
     color inherit
@@ -421,6 +419,8 @@ input[type="range"]
 
 .aResizer
     background backgroundDeeper
+    if (darkTheme)
+        background background // should be greyish on all themes
     flex 0 0 auto
     width 0.75rem
     height 0.75rem
