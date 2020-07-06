@@ -36,14 +36,23 @@ type-editor
                 border-radius 0 0 br br
     .tabwrap
         height 100%
+    display flex
+    flex-flow row nowrap
+    padding 1rem
+    .type-editor-Properties
+        flex 0 0 19rem
+        margin-right 1rem
+    .type-editor-aCodeEditor
+        flex 1 1 auto
 
-#typetexture
+.type-editor-aTexturePicker
     width 130px
     height 130px
     margin 0.5em auto
     position relative
     cursor pointer
     {trans}
+    background backgroundDeeper
     div
         position absolute
         left 0

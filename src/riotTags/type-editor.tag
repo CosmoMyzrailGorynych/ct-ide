@@ -1,26 +1,27 @@
 type-editor.panel.view.flexrow
-    .c3.tall.flexfix
-        .flexfix-header
-            #typetexture.panel(onclick="{changeSprite}")
-                img.ohchangeme(src="{type.texture === -1? 'data/img/notexture.png' : (glob.texturemap[type.texture].src.split('?')[0] + '_prev@2.png?' + getTypeTextureRevision(type)) + getTypeTextureRevision(type)}")
-                div {voc.change}
-            b {voc.name}
-            input#typename.wide(type="text" onchange="{wire('this.type.name')}" value="{type.name}")
-            .anErrorNotice(if="{nameTaken}" ref="errorNotice") {vocGlob.nametaken}
-            br
-            b {voc.depth}
-            input#typedepth.wide(type="number" onchange="{wire('this.type.depth')}" value="{type.depth}")
-        .flexfix-body
-            extensions-editor(type="type" entity="{type.extends}")
-            br
-            br
-            docs-shortcut(path="/ct.types.html" button="true" wide="true" title="{voc.learnAboutTypes}")
-        .flexfix-footer
-            button#typedone.wide(onclick="{typeSave}" title="Shift+Control+S" data-hotkey="Control+S")
-                svg.feather
-                    use(xlink:href="data/icons.svg#check")
-                span {voc.done}
-    .c9.tall.borderleft
+    .type-editor-Properties
+        .tall.flexfix.panel.pad
+            .flexfix-header
+                .type-editor-aTexturePicker.panel(onclick="{changeSprite}")
+                    img.ohchangeme(src="{type.texture === -1? 'data/img/notexture.png' : (glob.texturemap[type.texture].src.split('?')[0] + '_prev@2.png?' + getTypeTextureRevision(type)) + getTypeTextureRevision(type)}")
+                    div {voc.change}
+                b {voc.name}
+                input.wide(type="text" onchange="{wire('this.type.name')}" value="{type.name}")
+                .anErrorNotice(if="{nameTaken}" ref="errorNotice") {vocGlob.nametaken}
+                br
+                b {voc.depth}
+                input.wide(type="number" onchange="{wire('this.type.depth')}" value="{type.depth}")
+            .flexfix-body
+                extensions-editor(type="type" entity="{type.extends}")
+                br
+                br
+                docs-shortcut(path="/ct.types.html" button="true" wide="true" title="{voc.learnAboutTypes}")
+            .flexfix-footer
+                button#typedone.wide(onclick="{typeSave}" title="Shift+Control+S" data-hotkey="Control+S")
+                    svg.feather
+                        use(xlink:href="data/icons.svg#check")
+                    span {voc.done}
+    .type-editor-aCodeEditor
         .tabwrap.tall(style="position: relative")
             ul.tabs.nav.nogrow.noshrink
                 li(onclick="{changeTab('typeoncreate')}" class="{active: tab === 'typeoncreate'}" title="{voc.create} (Control+Q)" data-hotkey="Control+q")
