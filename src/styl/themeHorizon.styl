@@ -1,8 +1,13 @@
 @charset "utf-8"
 
 foreground = #fff
+text = #D5D8DA
 background = #1C1E26
+backgroundDeeper = #1C1E26
 shadows = #E95378
+
+borderPale = #2F3038
+borderBright = #2F3038
 
 /* handy blocks */
 trans =
@@ -10,15 +15,15 @@ trans =
 transshort =
     transition 0.15s ease all
 shad =
-    box-shadow 0 0.1rem 0.2rem rgba(shadows, 0.5)
+    box-shadow 0 0.15rem 0.35rem rgba(shadows, 0.35)
 shadamb =
-    box-shadow 0 0 0.35rem rgba(shadows, 0.5)
+    box-shadow 0 0.25rem 1.5rem -0.3rem  rgba(shadows, 0.5)
 
 /* Fonts */
 fonts = font = 'Open Sans', sans-serif, serif
 font-mono = mono = Iosevka, monospace
 
-br = 0.2rem
+br = 0.25rem
 iconsize = 1.5rem
 
 /* Basic colors & accents */
@@ -45,11 +50,6 @@ themeDark = true
 .warning
     color warning
 
-borderPale = #252732
-borderBright = #2F3038
-
-text = #D5D8DA
-backgroundDeeper = mix(background, borderPale, 50%)
 
 @require 'hvost.styl'
 
@@ -74,8 +74,6 @@ input[type="reset"],
 .view
     background background
 
-.tabbed, .nav
-    border 0
 .nav li
     border-right 0
     border-left 0
@@ -88,3 +86,9 @@ input[type="reset"],
         background success
 
 @require 'tags/**/*.styl'
+
+gradCore = #733041
+gradTransition = #2e2233
+gradOuter = #1c1e26
+#bg
+    background radial-gradient(ellipse at bottom, gradCore 0%, gradTransition 50%, gradOuter 100%)
