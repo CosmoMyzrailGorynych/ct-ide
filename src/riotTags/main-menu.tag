@@ -329,6 +329,8 @@ main-menu.flexcol
                             this.switchTheme('SpringStream');
                         }
                     }, {
+                        type: 'separator'
+                    }, {
                         label: window.languageJSON.menu.themeNight || 'Night',
                         icon: () => localStorage.UItheme === 'Night' && 'check',
                         click: () => {
@@ -339,6 +341,12 @@ main-menu.flexcol
                         icon: () => localStorage.UItheme === 'Horizon' && 'check',
                         click: () => {
                             this.switchTheme('Horizon');
+                        }
+                    }, {
+                        label: window.languageJSON.menu.themeLucasDracula || 'LucasDracula',
+                        icon: () => localStorage.UItheme === 'LucasDracula' && 'check',
+                        click: () => {
+                            this.switchTheme('LucasDracula');
                         }
                     }]
                 }

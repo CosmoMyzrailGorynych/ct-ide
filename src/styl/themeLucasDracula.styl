@@ -1,5 +1,11 @@
 @charset "utf-8"
 
+foreground = #DAD6DA
+text = #DAD6DA
+background = #161427
+backgroundDeeper = #11111f
+borderBright = #282646
+borderPale = mix(background, borderBright, 50%)
 
 /* Frequently used properties */
 trans =
@@ -19,15 +25,13 @@ br = 0.2rem
 iconsize = 1.5rem
 
 /* Colors used by this theme */
-foreground = #f6f3fc
-background = #161526
 act = #FFCFD4
 acttext = act
 accent1 = #FF70B1
-accent2 = #FFCFD4
+accent2 = #c38bf7
 error = #FF5370
 red = error
-success = #2DE4A1
+success = #26E19F
 green = success
 warning = #f07178
 orange = warning
@@ -42,11 +46,6 @@ themeDark = true
 .warning
     color warning
 
-text = #DAD6DA
-backgroundDeeper = #282646
-
-borderBright = #4D4985
-borderPale = mix(backgroundDeeper, borderBright, 50%)
 
 
 @require 'hvost.styl'
@@ -60,5 +59,16 @@ borderPale = mix(backgroundDeeper, borderBright, 50%)
 @require 'confetti.styl'
 @require 'buildingBlocks.styl'
 @require 'tabs.styl'
+
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+.button,
+.selectbox
+    &:hover, &.active, &:active, &.selected
+        color backgroundDeeper
+        svg
+            color backgroundDeeper
 
 @require 'tags/**/*.styl'

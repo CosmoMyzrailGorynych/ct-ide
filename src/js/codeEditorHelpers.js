@@ -227,6 +227,7 @@
         Night: 'ambiance',
         Horizon: 'horizon',
         SpringStream: 'spring',
+        LucasDracula: 'lucasdracula',
         default: 'tomorrow'
     };
     const glob = require('./data/node_requires/glob');
