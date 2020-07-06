@@ -1,4 +1,4 @@
-project-settings.panel.view
+project-settings.panel.view.pad.flexrow
     -
         var tabs = ['authoring', 'actions', 'branding', 'rendering', 'scripts'];
         var iconMap = {
@@ -9,7 +9,7 @@ project-settings.panel.view
             scripts: 'terminal',
             default: 'settings'
         };
-    aside
+    aside.nogrow.noshrink
         ul.nav.tabs.vertical
             // A bit of Pug sorcery, destroyed by Riot.js syntax
             // Iterate over an array of sections. Template out Riot syntax inside `these` backticks.

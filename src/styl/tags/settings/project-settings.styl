@@ -1,20 +1,20 @@
 project-settings
-    display flex
-    flex-flow row nowrap
     h1
         margin 0.5rem 0
     aside, main
         height 100%
         overflow auto
     aside
-        flex 0 0 auto
         width 18rem
-        .tabs li
-            padding-top 0.35rem !important
-            padding-bottom @padding-top
+        .nav.tabs
+            border 1px solid borderBright
+            border-right 0
+            border-radius br 0 0 br
+            li
+                padding-top 0.35rem !important
+                padding-bottom @padding-top
     main
         flex 1 1 auto
         padding 0.5rem 1.5rem
-        border-width 0 0 0 1px
-        border-radius 0
+        border-radius 0 br br br
         @extends .panel
