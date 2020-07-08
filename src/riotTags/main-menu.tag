@@ -26,11 +26,11 @@ main-menu.flexcol
                 span {voc.modules}
             li(onclick="{changeTab('texture')}" class="{active: tab === 'texture'}" data-hotkey="Control+3" title="Control+3")
                 svg.feather
-                    use(xlink:href="data/icons.svg#coin")
+                    use(xlink:href="data/icons.svg#texture")
                 span {voc.texture}
             li(onclick="{changeTab('ui')}" class="{active: tab === 'ui'}" data-hotkey="Control+4" title="Control+4")
                 svg.feather
-                    use(xlink:href="data/icons.svg#droplet")
+                    use(xlink:href="data/icons.svg#ui")
                 span {voc.ui}
             li(onclick="{changeTab('fx')}" class="{active: tab === 'fx'}" data-hotkey="Control+5" title="Control+5")
                 svg.feather
@@ -42,7 +42,7 @@ main-menu.flexcol
                 span {voc.sounds}
             li(onclick="{changeTab('types')}" class="{active: tab === 'types'}" data-hotkey="Control+7" title="Control+7")
                 svg.feather
-                    use(xlink:href="data/icons.svg#user")
+                    use(xlink:href="data/icons.svg#type")
                 span {voc.types}
             li(onclick="{changeTab('rooms')}" class="{active: tab === 'rooms'}" data-hotkey="Control+8" title="Control+8")
                 svg.feather
