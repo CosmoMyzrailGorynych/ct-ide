@@ -254,7 +254,8 @@
     "texture": {
         "create": "Create",
         "import": "Import",
-        "skeletons": "Skeletal Animation"
+        "skeletons": "Skeletal Animation",
+        "createType": "Create a type from it"
     },
     "textureview": {
         "bgcolor": "Change bg color",

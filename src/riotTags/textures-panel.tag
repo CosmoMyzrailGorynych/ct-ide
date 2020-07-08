@@ -247,6 +247,21 @@ textures-panel.panel.view
         this.textureMenu = {
             opened: false,
             items: [{
+                icon: 'loader',
+                label: this.voc.createType,
+                click: () => {
+                    const typesAPI = require('./data/node_requires/resources/types/');
+                    const type = typesAPI.createNewType(this.currentTexture.name);
+                    type.texture = this.currentTexture.uid;
+                    const mainMenu = document.getElementsByTagName('main-menu')[0]._tag;
+                    mainMenu.changeTab('types')();
+                    mainMenu.update();
+                    const typesPanel = document.getElementsByTagName('types-panel')[0]._tag;
+                    typesPanel.refs.types.updateList();
+                    typesPanel.openType(type)();
+                    typesPanel.update();
+                }
+            }, {
                 label: window.languageJSON.common.open,
                 click: () => {
                     if (this.currentTextureType !== 'skeleton') {

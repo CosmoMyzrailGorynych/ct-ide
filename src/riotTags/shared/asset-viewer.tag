@@ -90,7 +90,12 @@ asset-viewer.flexfix(class="{opts.namespace} {opts.class}")
         this.updateList = () => {
             this.collection = [...(this.opts.collection || [])];
             if (this.sort === 'name') {
-                this.collection.sort((a, b) => a.name.localeCompare(b.name));
+                if (this.opts.names) {
+                    const accessor = this.opts.names;
+                    this.collection.sort((a, b) => accessor(a).localeCompare(accessor(b)));
+                } else {
+                    this.collection.sort((a, b) => a.name.localeCompare(b.name));
+                }
             } else {
                 this.collection.sort((a, b) => b.lastmod - a.lastmod);
             }

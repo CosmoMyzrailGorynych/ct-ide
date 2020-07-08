@@ -19,7 +19,6 @@ types-panel.panel.view
         this.mixin(window.riotVoc);
         this.mixin(window.riotNiceTime);
         const glob = require('./data/node_requires/glob');
-        const generateGUID = require('./data/node_requires/generateGUID');
         this.glob = glob;
         this.editingType = false;
         this.sort = 'name';
@@ -56,23 +55,11 @@ types-panel.panel.view
             if (this.editingType) {
                 return false;
             }
-            var id = generateGUID(),
-                slice = id.split('-').pop();
-            var obj = {
-                name: 'Type_' + slice,
-                depth: 0,
-                oncreate: '',
-                onstep: 'this.move();',
-                ondraw: '',
-                ondestroy: '',
-                uid: id,
-                texture: -1,
-                extends: {}
-            };
-            global.currentProject.types.push(obj);
+
+            const typesAPI = require('./data/node_requires/resources/types/');
+            const type = typesAPI.createNewType();
             this.refs.types.updateList();
-            this.openType(obj)(e);
-            window.signals.trigger('typesChanged');
+            this.openType(type)(e);
 
             if (!e) {
                 this.update();
@@ -104,7 +91,8 @@ types-panel.panel.view
                     .prompt(window.languageJSON.common.newname)
                     .then(e => {
                         if (e.inputValue !== '' && e.buttonClicked !== 'cancel') {
-                            var tp = JSON.parse(JSON.stringify(this.currentType));
+                            const generateGUID = require('./data/node_requires/generateGUID');
+                            const tp = JSON.parse(JSON.stringify(this.currentType));
                             tp.name = e.inputValue;
                             tp.uid = generateGUID();
                             global.currentProject.types.push(tp);
