@@ -54,17 +54,32 @@ html
                 // workaround monaco-typescript not understanding the environment
                 self.process.browser = true;
                 eRequire(['vs/editor/editor.main'], function onMonacoLoad() {
+                    window.monaco = global.monaco;
+
+                    // Custom themes
                     const tomorrow = require('./data/node_requires/monaco-themes/tomorrow.json');
                     const horizon = require('./data/node_requires/monaco-themes/horizon.json');
                     const ambiance = require('./data/node_requires/monaco-themes/ambiance.json');
                     const spring = require('./data/node_requires/monaco-themes/spring.json');
                     const lucasdracula = require('./data/node_requires/monaco-themes/lucasdracula.json');
-                    window.monaco = global.monaco;
                     monaco.editor.defineTheme('tomorrow', tomorrow);
                     monaco.editor.defineTheme('horizon', horizon);
                     monaco.editor.defineTheme('ambiance', ambiance);
                     monaco.editor.defineTheme('spring', spring);
                     monaco.editor.defineTheme('lucasdracula', lucasdracula);
+
+                    // Extended typescript tokenizer
+                    const typescript = require('./data/node_requires/typescriptTokenizer.js').language;
+                    // I have no guilt of this solution
+                    // @see https://github.com/microsoft/monaco-editor/issues/884
+                    monaco.editor.create(document.createElement('textarea'), {
+                        language: 'typescript',
+                        value: '(:'
+                    });
+                    setTimeout(() => {
+                        monaco.languages.setMonarchTokensProvider('typescript', typescript);
+                    }, 1000);
+
                     window.signals = window.signals || riot.observable({});
                     window.signals.trigger('monacoBooted');
                 });

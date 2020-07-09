@@ -6,13 +6,21 @@
         "background": "#11111f",
         "foreground": "#DAD6DA"
     }, {
-        "foreground": "#f0fff850",
+        "foreground": "#595d68",
         "fontStyle": "italic",
         "token": "comment"
     },
     {
-        "token": "delimiter.parenthesis delimiter.parenthesis.js delimiter.parenthesis.ts",
-        "foreground": "#f07178"
+        "token": "delimiter.parenthesis",
+        "foreground": "#DAD6DA"
+    },
+    {
+        "token": "delimiter.bracket",
+        "foreground": "#C38BF7"
+    },
+    {
+        "token": "delimiter.square",
+        "foreground": "#F07178"
     },
     {
         "token": "delimiter",
@@ -23,7 +31,11 @@
         "foreground": "#FF67B1"
     },
     {
-        "foreground": "#ffabb5",
+        "foreground": "#2DE4A1",
+        "token": "pointsOfInterest"
+    },
+    {
+        "foreground": "#FF67B1",
         "token": "constant"
     },
     {
@@ -31,12 +43,16 @@
         "token": "entity"
     },
     {
-        "foreground": "#B289F1",
+        "foreground": "#C38BF7",
         "token": "keyword"
     },
     {
         "foreground": "#B289F1",
         "token": "storage"
+    },
+    {
+        "foreground": "#FFDF89",
+        "token": "type.identifier"
     },
     {
         "foreground": "#ffabb5",

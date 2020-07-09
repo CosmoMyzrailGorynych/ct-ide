@@ -195,7 +195,16 @@
             "foreground": "3e999f",
             "fontStyle": "italic",
             "token": "meta.diff.range"
-        }
+        },
+    {
+        "foreground": "#C82829",
+        "fontStyle": "italic",
+        "token": "pointsOfInterest"
+    },
+    {
+        "foreground": "#24a2ad",
+        "token": "type"
+    }
     ],
     "colors": {
         "editor.foreground": "#4D4D4C",

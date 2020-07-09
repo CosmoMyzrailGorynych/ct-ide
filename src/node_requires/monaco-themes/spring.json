@@ -2,176 +2,173 @@
     "base": "vs",
     "inherit": true,
     "rules": [{
-            "foreground": "8e908c",
+            "foreground": "#8e908c",
             "token": "comment"
         },
         {
-            "foreground": "666969",
+            "foreground": "#008bad",
             "token": "keyword.operator.class"
         },
         {
-            "foreground": "666969",
+            "foreground": "#666969",
             "token": "constant.other"
         },
         {
-            "foreground": "666969",
+            "foreground": "#666969",
             "token": "source.php.embedded.line"
         },
         {
-            "foreground": "c82829",
+            "foreground": "#c82829",
             "token": "variable"
         },
         {
-            "foreground": "c82829",
+            "foreground": "#c82829",
             "token": "support.other.variable"
         },
         {
-            "foreground": "c82829",
+            "foreground": "#ce5a24",
             "token": "string.other.link"
         },
         {
-            "foreground": "c82829",
+            "foreground": "#ce5a24",
             "token": "string.regexp"
         },
         {
-            "foreground": "c82829",
+            "foreground": "#c82829",
             "token": "entity.name.tag"
         },
         {
-            "foreground": "c82829",
+            "foreground": "#c82829",
             "token": "entity.other.attribute-name"
         },
         {
-            "foreground": "c82829",
+            "foreground": "#c82829",
             "token": "meta.tag"
         },
         {
-            "foreground": "c82829",
+            "foreground": "#c82829",
             "token": "declaration.tag"
         },
         {
-            "foreground": "c82829",
+            "foreground": "#c82829",
             "token": "markup.deleted.git_gutter"
         },
         {
             "token": "number",
-            "foreground": "008bad"
+            "foreground": "#008bad"
         },
         {
-            "foreground": "009170",
+            "foreground": "#009170",
             "token": "constant.numeric"
         },
         {
-            "foreground": "009170",
+            "foreground": "#009170",
             "token": "constant.language"
         },
         {
-            "foreground": "009170",
+            "foreground": "#009170",
             "token": "support.constant"
         },
         {
-            "foreground": "009170",
+            "foreground": "#009170",
             "token": "constant.character"
         },
         {
-            "foreground": "009170",
+            "foreground": "#009170",
             "token": "variable.parameter"
         },
         {
-            "foreground": "009170",
+            "foreground": "#009170",
             "token": "punctuation.section.embedded"
         },
         {
-            "foreground": "009170",
-            "token": "keyword.other.unit"
-        },
-        {
-            "foreground": "c99e00",
+            "foreground": "#c99e00",
             "token": "entity.name.class"
         },
         {
-            "foreground": "c99e00",
+            "foreground": "#c99e00",
             "token": "entity.name.type.class"
         },
         {
-            "foreground": "c99e00",
+            "foreground": "#c99e00",
             "token": "support.type"
         },
         {
-            "foreground": "c99e00",
+            "foreground": "#c99e00",
             "token": "support.class"
         },
         {
-            "foreground": "ce5a24",
+            "foreground": "#ce5a24",
             "token": "string"
         },
         {
-            "foreground": "ce5a24",
+            "foreground": "#ce5a24",
             "token": "constant.other.symbol"
         },
         {
-            "foreground": "ce5a24",
+            "foreground": "#ce5a24",
             "token": "entity.other.inherited-class"
         },
         {
-            "foreground": "ce5a24",
+            "foreground": "#ce5a24",
             "token": "markup.heading"
         },
         {
-            "foreground": "ce5a24",
+            "foreground": "#ce5a24",
             "token": "markup.inserted.git_gutter"
         },
         {
-            "foreground": "3e999f",
+            "foreground": "#008bad",
             "token": "keyword.operator"
         },
         {
-            "foreground": "3e999f",
+            "foreground": "#3e999f",
             "token": "constant.other.color"
         },
         {
-            "foreground": "4271ae",
+            "foreground": "#4271ae",
             "token": "entity.name.function"
         },
         {
-            "foreground": "4271ae",
+            "foreground": "#4271ae",
             "token": "meta.function-call"
         },
         {
-            "foreground": "4271ae",
+            "foreground": "#4271ae",
             "token": "support.function"
         },
         {
-            "foreground": "4271ae",
+            "foreground": "#008bad",
             "token": "keyword.other.special-method"
         },
         {
-            "foreground": "4271ae",
+            "foreground": "#4271ae",
             "token": "meta.block-level"
         },
         {
-            "foreground": "4271ae",
+            "foreground": "#4271ae",
             "token": "markup.changed.git_gutter"
         },
         {
-            "foreground": "8959a8",
-            "token": "keyword"
+            "foreground": "#00c09e",
+            "token": "keyword",
+            "fontStyle": "bold"
         },
         {
-            "foreground": "8959a8",
+            "foreground": "#8959a8",
             "token": "storage"
         },
         {
-            "foreground": "8959a8",
+            "foreground": "#8959a8",
             "token": "storage.type"
         },
         {
-            "foreground": "c82829",
+            "foreground": "#c82829",
             "background": "c82829",
             "token": "invalid"
         },
         {
-            "foreground": "c82829",
+            "foreground": "#c82829",
             "background": "8959a8",
             "token": "invalid.deprecated"
         },
@@ -192,9 +189,19 @@
             "token": "meta.diff.header.from-file"
         },
         {
-            "foreground": "3e999f",
+            "foreground": "#3e999f",
             "fontStyle": "italic",
             "token": "meta.diff.range"
+        },
+        {
+            "foreground": "#dd3b98",
+            "fontStyle": "bold",
+            "token": "pointsOfInterest"
+        },
+        {
+            "foreground": "#008bad",
+            "fontStyle": "bold",
+            "token": "type"
         }
     ],
     "colors": {

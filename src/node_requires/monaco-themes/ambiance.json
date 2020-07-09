@@ -35,7 +35,7 @@
         "token": "entity"
     },
     {
-        "foreground": "#aac6e3",
+        "foreground": "#cda869",
         "token": "keyword"
     },
     {
@@ -94,23 +94,23 @@
         "token": "keyword.type.variant"
     },
     {
-        "foreground": "#fa8d6a",
+        "foreground": "#cda869",
         "token": "source.ocaml keyword.operator.symbol"
     },
     {
-        "foreground": "#fa8d6a",
+        "foreground": "#cda869",
         "token": "source.ocaml keyword.operator.symbol.infix"
     },
     {
-        "foreground": "#fa8d6a",
+        "foreground": "#cda869",
         "token": "source.ocaml keyword.operator.symbol.prefix"
     },
     {
-        "fontStyle": "#fa8d6a",
+        "fontStyle": "#cda869",
         "token": "source.ocaml keyword.operator.symbol.infix.floating-point"
     },
     {
-        "fontStyle": "#fa8d6a",
+        "fontStyle": "#cda869",
         "token": "source.ocaml keyword.operator.symbol.prefix.floating-point"
     },
     {
@@ -136,6 +136,14 @@
     {
         "foreground": "#cda869",
         "token": "keyword.operator"
+    },
+    {
+        "foreground": "#c296c6",
+        "token": "pointsOfInterest"
+    },
+    {
+        "foreground": "#24a2ad",
+        "token": "type"
     }],
     "colors": {
         "editor.foreground": "#E6E1DC",
