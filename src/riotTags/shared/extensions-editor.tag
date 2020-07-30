@@ -66,6 +66,26 @@ extensions-editor
                     val="{parent.opts.entity[ext.key] || ext.default}"
                     onselected="{writeUid(ext.key)}"
                 )
+                .aPoint2DInput(if="{ext.type === 'point2D'}" class="{compact: parent.opts.compact, wide: parent.opts.wide}")
+                    label
+                        span X:
+                        input(
+                            class="{compact: parent.opts.compact}"
+                            type="number"
+                            step="8"
+                            value="{parent.opts.entity[ext.key]? parent.opts.entity[ext.key][0] : ext.default[0]}"
+                            onchange="{wire('this.opts.entity.'+ ext.key + '.0')}"
+                        )
+                    .spacer
+                    label
+                        span.nogrow Y:
+                        input(
+                            class="{compact: parent.opts.compact}"
+                            type="number"
+                            step="8"
+                            value="{parent.opts.entity[ext.key]? parent.opts.entity[ext.key][1] : ext.default[1]}"
+                            onchange="{wire('this.opts.entity.'+ ext.key + '.1')}"
+                        )
                 type-input(
                     if="{ext.type === 'type'}"
                     class="{compact: parent.opts.compact, wide: parent.opts.wide}"
