@@ -1,0 +1,11 @@
+{
+  "main": {
+    "name": "ct.assert",
+    "version": "1.0.0",
+    "packageName": "assert",
+    "authors": [{
+      "name": "Comigo",
+      "mail": "admin@nersta.ru"
+    }]
+  }
+}
