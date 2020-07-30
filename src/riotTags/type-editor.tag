@@ -9,9 +9,9 @@ type-editor.panel.view.flexrow
                 input.wide(type="text" onchange="{wire('this.type.name')}" value="{type.name}")
                 .anErrorNotice(if="{nameTaken}" ref="errorNotice") {vocGlob.nametaken}
                 br
+            .flexfix-body
                 b {voc.depth}
                 input.wide(type="number" onchange="{wire('this.type.depth')}" value="{type.depth}")
-            .flexfix-body
                 extensions-editor(type="type" entity="{type.extends}" wide="yep" compact="probably")
                 br
                 br
