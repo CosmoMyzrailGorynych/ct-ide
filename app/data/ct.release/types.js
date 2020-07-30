@@ -215,6 +215,7 @@ const Copy = (function Copy() {
                 } else {
                     ct.types.list[type] = [this];
                 }
+                this.onBeforeCreateModifier();
                 ct.types.templates[type].onCreate.apply(this);
             }
             return this;
@@ -317,6 +318,12 @@ const Copy = (function Copy() {
                 parent = parent.parent;
             }
             return parent;
+        }
+
+        // eslint-disable-next-line class-methods-use-this
+        onBeforeCreateModifier() {
+            // Filled by ct.IDE and catmods
+            /*%onbeforecreate%*/
         }
     }
     return Copy;

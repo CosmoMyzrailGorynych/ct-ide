@@ -92,6 +92,7 @@ const exportCtProject = async (project, projdir) => {
         start: '',
         switch: '',
 
+        onbeforecreate: '',
         oncreate: '',
         ondestroy: '',
 
