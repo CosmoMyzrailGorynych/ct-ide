@@ -3,8 +3,10 @@
 
     @slot
         Can use nested tags. Yields the passed markup as a header of an asset viewer.
+
     @attribute class (string)
         This tag has its own CSS classes, but allows arbitrary ones added as an attribute.
+
     @attribute namespace (string)
         A unique namespace used to store settings. Fallbacks to 'default'.
     @attribute vocspace (string)
@@ -125,3 +127,5 @@ asset-viewer.flexfix(class="{opts.namespace} {opts.class}")
             const key = this.opts.namespace ? (this.opts.namespace + 'Layout') : 'defaultAssetLayout';
             localStorage[key] = localStorage[key] === 'list' ? 'grid' : 'list';
         };
+
+        this.updateList();

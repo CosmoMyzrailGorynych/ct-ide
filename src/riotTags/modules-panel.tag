@@ -90,48 +90,7 @@ modules-panel.panel.view
                         code {currentModuleLicense}
 
                 #modulesettings.tabbed.nbt(show="{tab === 'modulesettings'}" if="{currentModule.fields && currentModuleName in global.currentProject.libs}")
-                    dl(each="{field in currentModule.fields}")
-                        dt
-                            label.block.checkbox(if="{field.type === 'checkbox'}")
-                                input(
-                                    type="checkbox"
-                                    checked="{global.currentProject.libs[currentModuleName][field.id]}"
-                                    onchange="{wire('global.currentProject.libs.' + escapeDots(currentModuleName) + '.' + field.id)}"
-                                )
-                                |   {field.name}
-                            span(if="{field.type !== 'checkbox'}")
-                                |   {field.name}
-                        dd
-                            textarea(
-                                if="{field.type === 'textfield'}"
-                                value="{global.currentProject.libs[currentModuleName][field.id]}"
-                                onchange="{wire('global.currentProject.libs.' + escapeDots(currentModuleName) + '.' + field.id)}"
-                            )
-                            input(
-                                if="{field.type === 'number'}"
-                                type="number"
-                                value="{global.currentProject.libs[currentModuleName][field.id]}"
-                                onchange="{wire('global.currentProject.libs.' + escapeDots(currentModuleName) + '.' + field.id)}"
-                            )
-                            label.block.checkbox(if="{field.type === 'radio'}" each="{option in field.options}")
-                                input(
-                                    type="radio"
-                                    value="{option.value}"
-                                    checked="{global.currentProject.libs[currentModuleName][field.id] === option.value}"
-                                    onchange="{wire('global.currentProject.libs.' + escapeDots(currentModuleName) + '.' + field.id)}"
-                                )
-                                |   {option.name}
-                                div(class="desc" if="{option.help}")
-                                    raw(ref="raw" content="{md.render(option.help)}")
-                            input(
-                                if="{['checkbox', 'number', 'textfield', 'radio'].indexOf(field.type) === -1}"
-                                type="text"
-                                value="{global.currentProject.libs[currentModuleName][field.id]}"
-                                onchange="{wire('global.currentProject.libs.' + escapeDots(currentModuleName) + '.' + field.id)}"
-                            )
-                            //- That's a bad idea!!!
-                            div(class="desc" if="{field.help}")
-                                raw(ref="raw" content="{md.render(field.help)}")
+                    extensions-editor(customextends="{currentModule.fields}" entity="{global.currentProject.libs[currentModuleName]}")
                 #modulehelp.tabbed.nbt(show="{tab === 'modulehelp'}" if="{currentModuleDocs}")
                     raw(ref="raw" content="{currentModuleDocs}")
                 #modulelogs.tabbed.nbt(show="{tab === 'modulelogs'}" if="{currentModuleLogs}")

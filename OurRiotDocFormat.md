@@ -25,7 +25,7 @@ At `./src/riotTags`, use this syntax at the top of the file to document tags:
         A description of a tag's method that can be safely called for inter-module communications.
 
     @property propertyName (type, typeSpecificator)
-        A descriotion of an exposed property of a tag.
+        A description of an exposed property of a tag.
 ```
 
 Optional attributes are inside square brackets.

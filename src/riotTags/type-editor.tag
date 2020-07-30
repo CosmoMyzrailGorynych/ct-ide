@@ -12,7 +12,7 @@ type-editor.panel.view.flexrow
                 b {voc.depth}
                 input.wide(type="number" onchange="{wire('this.type.depth')}" value="{type.depth}")
             .flexfix-body
-                extensions-editor(type="type" entity="{type.extends}")
+                extensions-editor(type="type" entity="{type.extends}" wide="yep" compact="probably")
                 br
                 br
                 docs-shortcut(path="/ct.types.html" button="true" wide="true" title="{voc.learnAboutTypes}")

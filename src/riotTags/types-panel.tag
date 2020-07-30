@@ -24,9 +24,7 @@ types-panel.panel.view
         this.sort = 'name';
         this.sortReverse = false;
 
-        this.thumbnails = type => (type.texture !== -1 ?
-            `${glob.texturemap[type.texture].src.split('?')[0]}_prev.png?cache=${this.getTypeTextureRevision(type)}` :
-            'data/img/notexture.png');
+        this.thumbnails = require('./data/node_requires/resources/types').getTypePreview;
 
         this.setUpPanel = () => {
             this.fillTypeMap();

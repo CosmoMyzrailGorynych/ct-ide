@@ -1,6 +1,6 @@
 project-settings.panel.view.pad.flexrow
     -
-        var tabs = ['authoring', 'actions', 'branding', 'rendering', 'scripts'];
+        var tabs = ['authoring', 'actions', 'branding', 'scripts', 'rendering'];
         var iconMap = {
             authoring: 'edit',
             actions: 'airplay',

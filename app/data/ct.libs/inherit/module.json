@@ -1,0 +1,15 @@
+{
+    "main": {
+        "name": "Type inheritance",
+        "version": "1.0.0",
+        "authors": [{
+            "name": "Cosmo Myzrail Gorynych",
+            "mail": "admin@nersta.ru"
+        }]
+    },
+    "typeExtends": [{
+        "name": "Parent",
+        "type": "type",
+        "key": "inheritedType@@type"
+    }]
+}

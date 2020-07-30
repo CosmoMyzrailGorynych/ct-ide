@@ -1,0 +1,369 @@
+ctjsVersion: 1.3.2
+notes: /* empty */
+libs:
+  place:
+    gridX: 1024
+    gridY: 1024
+  fittoscreen:
+    mode: scaleFit
+  mouse: {}
+  keyboard: {}
+  keyboard.polyfill: {}
+  sound.howler: {}
+  assert: {}
+  inherit: {}
+textures:
+  - name: robot_greenDrive1
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 79
+      - 60
+    marginx: 0
+    marginy: 0
+    imgWidth: 158
+    imgHeight: 120
+    width: 158
+    height: 120
+    offx: 0
+    offy: 0
+    origname: i5ae654a1-1d13-4f67-ac3d-cccec7b01cc4.png
+    source: >-
+      /home/comigo/Downloads/kenney)robot-pack/PNG/Side
+      view/robot_greenDrive1.png
+    shape: rect
+    left: 79
+    right: 79
+    top: 60
+    bottom: 60
+    uid: 5ae654a1-1d13-4f67-ac3d-cccec7b01cc4
+    padding: 1
+    lastmod: 1595996924807
+  - name: robot_redDrive2
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 90
+      - 73
+    marginx: 0
+    marginy: 0
+    imgWidth: 180
+    imgHeight: 146
+    width: 180
+    height: 146
+    offx: 0
+    offy: 0
+    origname: i15293c51-6bdc-4a62-941e-0b08656796a7.png
+    source: /home/comigo/Downloads/kenney)robot-pack/PNG/Side view/robot_redDrive2.png
+    shape: rect
+    left: 90
+    right: 90
+    top: 73
+    bottom: 73
+    uid: 15293c51-6bdc-4a62-941e-0b08656796a7
+    padding: 1
+    lastmod: 1595996927142
+  - name: magicMid
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 0
+      - 0
+    marginx: 0
+    marginy: 0
+    imgWidth: 70
+    imgHeight: 105
+    width: 70
+    height: 105
+    offx: 0
+    offy: 0
+    origname: i387786ba-1c6d-4020-8aa5-1268faa5cbeb.png
+    source: /home/comigo/Downloads/kenney_platformerbricks_updated/PNG/magicMid.png
+    shape: rect
+    left: 0
+    right: 70
+    top: 0
+    bottom: 105
+    uid: 387786ba-1c6d-4020-8aa5-1268faa5cbeb
+    padding: 1
+skeletons: []
+types:
+  - name: AbstractMonster
+    depth: 0
+    oncreate: |-
+      this.speed = 10;
+      this.direction = 180;
+      this.depth = this.y;
+    onstep: |-
+      this.move();
+
+      if (ct.place.occupied(this, 'Solid')) {
+          this.x = this.xprev;
+          this.y = this.yprev;
+          this.direction += 180;
+      }
+
+      if (this.hspeed > 0) {
+          this.scale.x = 1;
+      } else {
+          this.scale.x = -1;
+      }
+    ondraw: ''
+    ondestroy: ''
+    texture: 5ae654a1-1d13-4f67-ac3d-cccec7b01cc4
+    extends:
+      ctype: Monster
+    uid: 4af80a30-74f1-4a68-b7e4-286c7b74e76e
+    lastmod: 1596073035148
+  - name: Wall
+    depth: 0
+    oncreate: this.depth = this.y;
+    onstep: this.move();
+    ondraw: ''
+    ondestroy: ''
+    texture: 387786ba-1c6d-4020-8aa5-1268faa5cbeb
+    extends:
+      ctype: Solid
+    uid: 5d8f84e7-0b1f-4b3e-8d1a-33d12038ce3d
+    lastmod: 1596073038085
+  - name: Monster_Red
+    depth: 0
+    oncreate: this.inherit.onCreate();
+    onstep: this.inherit.onStep();
+    ondraw: ''
+    ondestroy: ''
+    texture: 15293c51-6bdc-4a62-941e-0b08656796a7
+    extends:
+      ctype: Monster
+      inheritedType@@type: 4af80a30-74f1-4a68-b7e4-286c7b74e76e
+    uid: 8abcc9f5-e912-46a6-9a3f-ac3e254a4b95
+    lastmod: 1596073030644
+  - name: Monster_Green
+    depth: 0
+    oncreate: this.inherit.onCreate();
+    onstep: this.inherit.onStep();
+    ondraw: ''
+    ondestroy: ''
+    texture: 5ae654a1-1d13-4f67-ac3d-cccec7b01cc4
+    extends:
+      ctype: Monster
+      inheritedType@@type: 4af80a30-74f1-4a68-b7e4-286c7b74e76e
+    uid: 78739be5-145e-45aa-8e4b-473b92c19551
+    lastmod: 1596073032003
+  - name: Monster_Red_Squished
+    depth: 0
+    oncreate: |-
+      this.inherit.onCreate();
+      this.scale.y = 0.5;
+      this.speed = 20;
+    onstep: this.inherit.onStep();
+    ondraw: ''
+    ondestroy: ''
+    texture: 15293c51-6bdc-4a62-941e-0b08656796a7
+    extends:
+      inheritedType@@type: 8abcc9f5-e912-46a6-9a3f-ac3e254a4b95
+      ctype: Monster
+    uid: 48c1951e-071c-47ef-a710-ef2ef0978017
+    lastmod: 1596073029453
+sounds: []
+styles: []
+rooms:
+  - name: Room_428ea16b4401
+    oncreate: >-
+      console.log('Each bot should run from wall to wall, and everything below
+      this text should be green.');
+
+      ct.assert(
+          ct.inherit.isParent('AbstractMonster', 'Monster_Red_Squished'),
+          'ct.inherit.isParent works with two types (two strings)'
+      );
+
+      ct.assert(
+          ct.inherit.isChild('Monster_Green', 'AbstractMonster'),
+          'ct.inherit.isChild works with two types (two strings)'
+      );
+
+      ct.assert(
+          ct.inherit.list('AbstractMonster').length === 3,
+          'ct.inherit.list gets all the monsters'
+      );
+
+      ct.assert(
+          ct.inherit.isChild(ct.types.list['Monster_Green'][0], 'AbstractMonster'),
+          'ct.inherit.isChild works against a copy and a type'
+      );
+
+      ct.assert(
+          ct.inherit.isChild(ct.types.list['Monster_Red_Squished'][0], ct.types.list['Monster_Red'][0]),
+          'ct.inherit.isChild works against two copies'
+      );
+
+      ct.assert(
+          ct.types.list['Monster_Red_Squished'][0].depth !== 0,
+          'Monster_Red_Squished has a proper depth, which means that its grandparent\'s code was executed'
+      );
+
+      ct.assert.summary();
+    onstep: ''
+    ondraw: ''
+    onleave: ''
+    width: 700
+    height: 600
+    backgrounds: []
+    copies:
+      - x: 0
+        'y': 0
+        uid: 5d8f84e7-0b1f-4b3e-8d1a-33d12038ce3d
+      - x: 70
+        'y': 0
+        uid: 5d8f84e7-0b1f-4b3e-8d1a-33d12038ce3d
+      - x: 140
+        'y': 0
+        uid: 5d8f84e7-0b1f-4b3e-8d1a-33d12038ce3d
+      - x: 210
+        'y': 0
+        uid: 5d8f84e7-0b1f-4b3e-8d1a-33d12038ce3d
+      - x: 280
+        'y': 0
+        uid: 5d8f84e7-0b1f-4b3e-8d1a-33d12038ce3d
+      - x: 350
+        'y': 0
+        uid: 5d8f84e7-0b1f-4b3e-8d1a-33d12038ce3d
+      - x: 420
+        'y': 0
+        uid: 5d8f84e7-0b1f-4b3e-8d1a-33d12038ce3d
+      - x: 490
+        'y': 0
+        uid: 5d8f84e7-0b1f-4b3e-8d1a-33d12038ce3d
+      - x: 560
+        'y': 0
+        uid: 5d8f84e7-0b1f-4b3e-8d1a-33d12038ce3d
+      - x: 630
+        'y': 0
+        uid: 5d8f84e7-0b1f-4b3e-8d1a-33d12038ce3d
+      - x: 630
+        'y': 0
+        uid: 5d8f84e7-0b1f-4b3e-8d1a-33d12038ce3d
+      - x: 630
+        'y': 70
+        uid: 5d8f84e7-0b1f-4b3e-8d1a-33d12038ce3d
+      - x: 630
+        'y': 140
+        uid: 5d8f84e7-0b1f-4b3e-8d1a-33d12038ce3d
+      - x: 630
+        'y': 210
+        uid: 5d8f84e7-0b1f-4b3e-8d1a-33d12038ce3d
+      - x: 630
+        'y': 280
+        uid: 5d8f84e7-0b1f-4b3e-8d1a-33d12038ce3d
+      - x: 630
+        'y': 350
+        uid: 5d8f84e7-0b1f-4b3e-8d1a-33d12038ce3d
+      - x: 630
+        'y': 420
+        uid: 5d8f84e7-0b1f-4b3e-8d1a-33d12038ce3d
+      - x: 630
+        'y': 490
+        uid: 5d8f84e7-0b1f-4b3e-8d1a-33d12038ce3d
+      - x: 0
+        'y': 70
+        uid: 5d8f84e7-0b1f-4b3e-8d1a-33d12038ce3d
+      - x: 0
+        'y': 140
+        uid: 5d8f84e7-0b1f-4b3e-8d1a-33d12038ce3d
+      - x: 0
+        'y': 210
+        uid: 5d8f84e7-0b1f-4b3e-8d1a-33d12038ce3d
+      - x: 0
+        'y': 280
+        uid: 5d8f84e7-0b1f-4b3e-8d1a-33d12038ce3d
+      - x: 0
+        'y': 350
+        uid: 5d8f84e7-0b1f-4b3e-8d1a-33d12038ce3d
+      - x: 0
+        'y': 420
+        uid: 5d8f84e7-0b1f-4b3e-8d1a-33d12038ce3d
+      - x: 0
+        'y': 490
+        uid: 5d8f84e7-0b1f-4b3e-8d1a-33d12038ce3d
+      - x: 0
+        'y': 490
+        uid: 5d8f84e7-0b1f-4b3e-8d1a-33d12038ce3d
+      - x: 70
+        'y': 490
+        uid: 5d8f84e7-0b1f-4b3e-8d1a-33d12038ce3d
+      - x: 140
+        'y': 490
+        uid: 5d8f84e7-0b1f-4b3e-8d1a-33d12038ce3d
+      - x: 210
+        'y': 490
+        uid: 5d8f84e7-0b1f-4b3e-8d1a-33d12038ce3d
+      - x: 280
+        'y': 490
+        uid: 5d8f84e7-0b1f-4b3e-8d1a-33d12038ce3d
+      - x: 350
+        'y': 490
+        uid: 5d8f84e7-0b1f-4b3e-8d1a-33d12038ce3d
+      - x: 420
+        'y': 490
+        uid: 5d8f84e7-0b1f-4b3e-8d1a-33d12038ce3d
+      - x: 490
+        'y': 490
+        uid: 5d8f84e7-0b1f-4b3e-8d1a-33d12038ce3d
+      - x: 560
+        'y': 490
+        uid: 5d8f84e7-0b1f-4b3e-8d1a-33d12038ce3d
+      - x: 350
+        'y': 210
+        uid: 78739be5-145e-45aa-8e4b-473b92c19551
+      - x: 441
+        'y': 380
+        uid: 8abcc9f5-e912-46a6-9a3f-ac3e254a4b95
+      - x: 210
+        'y': 280
+        uid: 48c1951e-071c-47ef-a710-ef2ef0978017
+        tx: 1
+        ty: 0.5
+    tiles:
+      - depth: -10
+        tiles: []
+    uid: bf117e14-2f8b-4457-b418-428ea16b4401
+    thumbnail: 428ea16b4401
+    gridX: 70
+    gridY: 70
+actions: []
+emitterTandems: []
+starting: 0
+settings:
+  authoring:
+    author: CoMiGo Games
+    site: 'https://ctjs.rocks/'
+    title: Inheritance test
+    version:
+      - 0
+      - 0
+      - 0
+    versionPostfix: ''
+  rendering:
+    usePixiLegacy: true
+    maxFPS: 60
+    pixelatedrender: false
+    highDensity: true
+    desktopMode: maximized
+  export:
+    windows: true
+    linux: true
+    mac: true
+  branding:
+    icon: -1
+    accent: '#446adb'
+    invertPreloaderScheme: true
+  fps: 30
+fonts: []
+scripts: []

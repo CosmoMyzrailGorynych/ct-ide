@@ -1,4 +1,5 @@
 const glob = require('./../glob');
+const {getUnwrappedExtends} = require('./utils');
 
 const getStartingRoom = proj => {
     let [startroom] = proj.rooms; // picks the first room by default
@@ -35,7 +36,7 @@ const stringifyRooms = proj => {
                 const layer = {
                     depth: tileLayer.depth,
                     tiles: [],
-                    extends: tileLayer.extends
+                    extends: tileLayer.extends ? getUnwrappedExtends(tileLayer.extends) : {}
                 };
                 for (const tile of tileLayer.tiles) {
                     for (let x = 0; x < tile.grid[2]; x++) {

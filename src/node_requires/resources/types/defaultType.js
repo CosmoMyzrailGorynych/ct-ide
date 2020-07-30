@@ -15,6 +15,7 @@ module.exports = {
     get() {
         return ({
             ...defaultTypeTemplate,
+            extends: {},
             uid: generateGUID()
         });
     }

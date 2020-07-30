@@ -10,6 +10,7 @@
         "apply": "Apply",
         "cancel": "Cancel",
         "cannotBeEmpty": "This cannot be empty",
+        "clear": "Clear",
         "confirmDelete": "Are you sure you want to delete {0}? It cannot be undone.",
         "contribute": "Contribute",
         "copy": "Copy",
@@ -177,7 +178,7 @@
         "openSpaceShooterTutorial": "Learn how to make a space shooter",
         "openPlatformerTutorial": "Learn how to make a platformer",
         "openJettyCatTutorial": "Learn how to make a Jetty Cat",
-        "doNothing": "Skip this screen",
+        "doNothing": "Skip this screen and make a great game!",
         "showOnboardingCheckbox": "Show this screen when creating a new project"
     },
     "settings": {
