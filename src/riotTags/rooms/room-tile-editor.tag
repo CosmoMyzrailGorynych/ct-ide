@@ -38,7 +38,8 @@ room-tile-editor.room-editor-Tiles.tabbed.tall.flexfix
         if (!('tiles' in this.opts.room) || !this.opts.room.tiles.length) {
             this.opts.room.tiles = [{
                 depth: -10,
-                tiles: []
+                tiles: [],
+                extends: {}
             }];
         }
         [this.parent.currentTileLayer] = this.opts.room.tiles;
@@ -94,7 +95,8 @@ room-tile-editor.room-editor-Tiles.tabbed.tall.flexfix
                 if (e.inputValue && Number(e.inputValue)) {
                     var layer = {
                         depth: Number(e.inputValue),
-                        tiles: []
+                        tiles: [],
+                        extends: {}
                     };
                     this.opts.room.tiles.push(layer);
                     this.parent.currentTileLayer = layer;
@@ -110,6 +112,9 @@ room-tile-editor.room-editor-Tiles.tabbed.tall.flexfix
         };
         this.changeTileLayer = e => {
             this.parent.currentTileLayer = this.opts.room.tiles[Number(e.target.value)];
+            if (!this.parent.currentTileLayer.extends) {
+                this.parent.currentTileLayer.extends = {};
+            }
             this.parent.currentTileLayerId = Number(e.target.value);
         };
         this.switchTiledImage = () => {
