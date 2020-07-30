@@ -33,7 +33,6 @@
         "type": "checkbox"
     }, {
         "name": "Debug text size",
-        "help": "",
         "key": "debugText",
         "default": 16,
         "type": "number"
