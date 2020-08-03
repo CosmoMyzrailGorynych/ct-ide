@@ -5,7 +5,11 @@
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",
             "mail": "admin@nersta.ru"
-        }]
+        }],
+        "categories": [
+            "utilities",
+            "desktop"
+        ]
     },
     "fields": [{
         "name": "Mode",

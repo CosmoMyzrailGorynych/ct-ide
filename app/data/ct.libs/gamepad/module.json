@@ -15,6 +15,9 @@
         "name": "Comigo",
         "mail": "admin@nersta.ru"
       }
+    ],
+    "categories": [
+      "inputs"
     ]
   },
   "inputMethods": {

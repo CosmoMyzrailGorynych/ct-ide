@@ -6,6 +6,9 @@
     "authors": [{
       "name": "Comigo",
       "mail": "admin@nersta.ru"
-    }]
+    }],
+    "categories": [
+      "utilities"
+    ]
   }
 }

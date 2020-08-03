@@ -5,7 +5,10 @@
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",
             "mail": "admin@nersta.ru"
-        }]
+        }],
+        "categories": [
+            "inputs"
+        ]
     },
     "inputMethods": {
         "Left": "Left mouse button",

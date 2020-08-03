@@ -5,7 +5,10 @@
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",
             "mail": "admin@nersta.ru"
-        }]
+        }],
+        "categories": [
+            "media"
+        ]
     },
     "fields": [{
         "name": "Sprite definitions",

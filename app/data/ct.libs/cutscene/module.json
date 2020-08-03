@@ -5,6 +5,9 @@
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",
             "mail": "admin@nersta.ru"
-        }]
+        }],
+        "categories": [
+            "media"
+        ]
     }
 }

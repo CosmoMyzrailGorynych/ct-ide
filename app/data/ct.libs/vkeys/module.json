@@ -5,7 +5,11 @@
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",
             "mail": "admin@nersta.ru"
-        }]
+        }],
+        "categories": [
+            "inputs",
+            "mobile"
+        ]
     },
     "inputMethods": {
         "Vk1": "Virtual key 1",

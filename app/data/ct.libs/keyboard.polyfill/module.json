@@ -7,6 +7,9 @@
             "mail": "admin@nersta.ru"
         }, {
             "name": "Joshua Bell"
-        }]
+        }],
+        "categories": [
+            "inputs"
+        ]
     }
 }
