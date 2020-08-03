@@ -9,9 +9,18 @@ a, .a
     color act
     cursor pointer
     text-decoration none
-    trans
+    {trans}
     &:hover
         color accent1
+    &.error
+        color error
+    &.success
+        color success
+    &.warning
+        color warning
+    .error, .success, .warning
+        &:hover
+            opacity 0.8
 dd
     margin 0
 dt

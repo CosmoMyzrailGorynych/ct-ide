@@ -23,7 +23,7 @@ const path = require('path'),
 
       spawnise = require('./node_requires/spawnise');
 
-const nwVersion = '0.34.5',
+const nwVersion = '0.45.6',
       platforms = ['osx64', 'win32', 'win64', 'linux32', 'linux64'],
       nwFiles = ['./app/**', '!./app/export/**', '!./app/projects/**', '!./app/exportDesktop/**', '!./app/cache/**', '!./app/.vscode/**', '!./app/JamGames/**'];
 
@@ -118,7 +118,9 @@ const concatScripts = () =>
         gulp.src(['./src/js/**', '!./src/js/3rdparty/riot.min.js']),
         gulp.src('./temp/riot.js')
     )
-    .pipe(sourcemaps.init())
+    .pipe(sourcemaps.init({
+        largeFile: true
+    }))
     .pipe(concat('bundle.js'))
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('./app/data/'))
@@ -135,12 +137,18 @@ const concatScripts = () =>
     .on('change', fileChangeNotifier);
 const copyRequires = () =>
     gulp.src('./src/node_requires/**/*')
+    .pipe(sourcemaps.init())
+    // ¯\_(ツ)_/¯
+    .pipe(sourcemaps.mapSources((sourcePath) => '../../src/' + sourcePath))
+    .pipe(sourcemaps.write())
     .pipe(gulp.dest('./app/data/node_requires'));
 
 const compileScripts = gulp.series(compileRiot, concatScripts);
 
 const icons = () =>
-    gulp.src('./src/icons/**/*.svg')
+    gulp.src('./src/icons/**/*.svg', {
+        base: './src/icons'
+    })
     .pipe(sprite())
     .pipe(gulp.dest('./app/data'));
 
@@ -528,7 +536,12 @@ const launchDevMode = done => {
     launchApp();
     done();
 };
+const launchDevModeNoNW = done => {
+    watch();
+    done();
+};
 const defaultTask = gulp.series(build, launchDevMode);
+const devNoNW = gulp.series(build, launchDevModeNoNW);
 
 exports.lintJS = lintJS;
 exports.lintTags = lintTags;
@@ -542,5 +555,6 @@ exports.build = build;
 exports.deploy = deploy;
 exports.deployOnly = deployOnly;
 exports.default = defaultTask;
+exports.dev = devNoNW;
 exports.bakeCompletions = bakeCompletions;
 exports.bakeTypedefs = bakeTypedefs;

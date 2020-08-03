@@ -48,6 +48,17 @@ window.migrationProcess.push({
             }
         }
 
+        /**
+         * Fonts can now be exported as bitmap fonts
+         */
+        for (const font of project.fonts) {
+            font.bitmapFont = font.bitmapFont || false;
+            font.bitmapFontSize = font.bitmapFontSize || 16;
+            font.bitmapFontLineHeight = font.bitmapFontLineHeight || 18;
+            font.charsets = font.charsets || ['allInFont'];
+            font.customCharset = font.customCharset || '';
+        }
+
         resolve();
     })
 });

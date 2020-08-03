@@ -78,7 +78,7 @@ app/export
 *.ict.recovery
 
 # editor-specific
-/.vscode
+.vscode/settings.json
 
 # docs
 docs/db.json

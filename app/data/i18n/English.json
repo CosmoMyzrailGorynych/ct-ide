@@ -126,15 +126,16 @@
     },
     "menu": {
         "ctIDE": "ct.IDE",
-        "exportDesktop": "Export for desktop",
+        "exportDesktop": "Export for desktop…",
         "texture": "Textures",
-        "launch": "Compile and run",
+        "launch": "Launch",
         "launchHotkeys": "(F5; Alt+F5 to run in your default browser)",
         "license": "License",
         "min": "Windowed",
         "modules": "Catmods",
         "patrons": "Patrons",
         "recentProjects": "Recent projects",
+        "restart": "Restart",
         "rooms": "Rooms",
         "save": "Save project",
         "startScreen": "Return to the starting screen",
@@ -170,7 +171,9 @@
         "disableAcceleration": "Disable graphics acceleration (needs restart)",
         "disableBuiltInDebugger": "Disable built-in debugger",
         "visitDiscordForGamedevSupport": "Join Discord server for gamedev support",
-        "postAnIssue": "Post an issue on Github"
+        "postAnIssue": "Post an issue on Github…",
+        "openProject": "Open a project…",
+        "openExample": "Open an example project…"
     },
     "onboarding": {
         "hoorayHeader": "Wow! You've just created a project!",
@@ -349,7 +352,23 @@
         "typefacename": "Typeface name:",
         "fontweight": "Font weight:",
         "italic": "Is italic?",
-        "reimport": "Reimport"
+        "reimport": "Reimport",
+        "generateBitmapFont": "Also generate a bitmap font",
+        "bitmapFont": "Bitmap font",
+        "bitmapFontSize": "Font size:",
+        "bitmapFontLineHeight": "Line height:",
+        "resultingBitmapFontName": "Resource name",
+        "charset": "Charset:",
+        "charsets": {
+            "punctuation": "Digits and punctuation (you usually do need this)",
+            "basicLatin": "Basic Latin",
+            "latinExtended": "Latin extended",
+            "cyrillic": "Cyrillic",
+            "greekCoptic": "Greek and Coptic",
+            "custom": "Custom",
+            "allInFont": "Draw everything the font supports"
+        },
+        "customCharsetHint": "Type all the letters you want to include, both in upper and lower case."
     },
     "particleEmitters": {
         "emittersHeading": "Particle emitters",

@@ -153,6 +153,11 @@ fonts-panel.flexfix.tall.fifty
                     italic: false,
                     origname: path.basename(dest),
                     lastmod: Number(new Date()),
+                    pixelFont: false,
+                    pixelFontSize: 16,
+                    pixelFontLineHeight: 18,
+                    charsets: ['allInFont'],
+                    customCharset: '',
                     uid
                 };
                 global.currentProject.fonts.push(obj);

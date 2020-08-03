@@ -11,11 +11,13 @@ main-menu.flexcol
             li.it30(onclick="{saveProject}" title="{voc.save} (Control+S)" data-hotkey="Control+s")
                 svg.feather
                     use(xlink:href="data/icons.svg#save")
-            li.nbr.it30(onclick="{runProject}" title="{voc.launch} {voc.launchHotkeys}" data-hotkey="F5")
-                svg.feather
-                    use(xlink:href="data/icons.svg#play")
 
         ul#mainnav.nav.tabs
+            li.nbl.it30(onclick="{runProject}" class="{active: tab === 'debug'}" title="{voc.launch} {voc.launchHotkeys}" data-hotkey="F5")
+                svg.feather
+                    use(xlink:href="data/icons.svg#play")
+                span(if="{tab !== 'debug'}") {voc.launch}
+                span(if="{tab === 'debug'}") {voc.restart}
             li(onclick="{changeTab('project')}" class="{active: tab === 'project'}" data-hotkey="Control+1" title="Control+1")
                 svg.feather
                     use(xlink:href="data/icons.svg#sliders")
@@ -49,6 +51,7 @@ main-menu.flexcol
                     use(xlink:href="data/icons.svg#room")
                 span {voc.rooms}
     div.flexitem.relative(if="{global.currentProject}")
+        debugger-screen-embedded(if="{tab === 'debug'}" params="{debugParams}" data-hotkey-scope="play" ref="debugger")
         project-settings(show="{tab === 'project'}" data-hotkey-scope="project")
         modules-panel(show="{tab === 'modules'}" data-hotkey-scope="modules")
         textures-panel(show="{tab === 'texture'}" data-hotkey-scope="texture")
@@ -173,9 +176,19 @@ main-menu.flexcol
             runCtExport(global.currentProject, global.projdir)
             .then(() => {
                 if (localStorage.disableBuiltInDebugger === 'yes') {
+                    // Open in default browser
                     nw.Shell.openExternal(`http://localhost:${server.address().port}/`);
+                } else if (this.tab === 'debug') {
+                    // Restart the game as we already have the tab opened
+                    this.refs.debugger.restartGame();
                 } else {
-                    window.openDebugger(`http://localhost:${server.address().port}`);
+                    // Open the debugger as usual
+                    this.tab = 'debug';
+                    this.debugParams = {
+                        title: global.currentProject.settings.authoring.title,
+                        link: `http://localhost:${server.address().port}/`
+                    };
+                    this.update();
                 }
             })
             .catch(e => {
@@ -478,6 +491,46 @@ main-menu.flexcol
             }, {
                 type: 'separator'
             }, {
+                label: window.languageJSON.menu.openProject,
+                icon: 'folder',
+                click: () => {
+                    alertify.confirm(window.languageJSON.common.reallyexit, () => {
+                        window.showOpenDialog({
+                            defaultPath: require('./data/node_requires/resources/projects').getDefaultProjectDir(),
+                            title: window.languageJSON.menu.openProject,
+                            filter: '.ict'
+                        })
+                        .then(projFile => {
+                            if (!projFile) {
+                                return;
+                            }
+                            window.signals.trigger('resetAll');
+                            window.loadProject(projFile);
+                        });
+                    });
+                }
+            }, { // The same as "Open project" item, but shows an examples' folder first
+                label: window.languageJSON.menu.openExample,
+                click: () => {
+                    alertify.confirm(window.languageJSON.common.reallyexit, () => {
+                        window.showOpenDialog({
+                            defaultPath: require('./data/node_requires/resources/projects').getExamplesDir(),
+                            title: window.languageJSON.menu.openProject,
+                            filter: '.ict'
+                        })
+                        .then(projFile => {
+                            if (!projFile) {
+                                return;
+                            }
+                            window.signals.trigger('resetAll');
+                            window.loadProject(projFile);
+                        });
+                    });
+                }
+            }, {
+                label: window.languageJSON.intro.latest,
+                submenu: recentProjectsSubmenu
+            }, {
                 label: window.languageJSON.menu.startScreen,
                 click: () => {
                     alertify.confirm(window.languageJSON.common.reallyexit, e => {
@@ -486,9 +539,6 @@ main-menu.flexcol
                         }
                     });
                 }
-            }, {
-                label: window.languageJSON.intro.latest,
-                submenu: recentProjectsSubmenu
             }, {
                 type: 'separator'
             }, {

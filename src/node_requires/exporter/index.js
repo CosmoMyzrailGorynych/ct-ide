@@ -11,7 +11,7 @@ const {stringifyRooms, getStartingRoom} = require('./rooms');
 const {stringifyStyles} = require('./styles');
 const {stringifyTandems} = require('./emitterTandems');
 const {stringifyTypes} = require('./types');
-const {bundleFonts} = require('./fonts');
+const {bundleFonts, bakeBitmapFonts} = require('./fonts');
 const {bakeFavicons} = require('./icons');
 
 const parseKeys = function (catmod, str, lib) {
@@ -213,14 +213,16 @@ const exportCtProject = async (project, projdir) => {
     /* assets — run in parallel */
     const texturesTask = packImages(project, writeDir);
     const skeletonsTask = packSkeletons(project, projdir, writeDir);
+    const bitmapFontsTask = bakeBitmapFonts(project, projdir, writeDir);
     const favicons = bakeFavicons(project, writeDir);
     const textures = await texturesTask;
     const skeletons = await skeletonsTask;
+    const bitmapFonts = await bitmapFontsTask;
     await favicons;
 
     buffer += (await sources['res.js'])
         .replace('/*@sndtotal@*/', project.sounds.length)
-        .replace('/*@res@*/', textures.res + '\n' + skeletons.loaderScript)
+        .replace('/*@res@*/', textures.res + '\n' + skeletons.loaderScript + '\n' + bitmapFonts.loaderScript)
         .replace('/*@textureregistry@*/', textures.registry)
         .replace('/*@textureatlases@*/', JSON.stringify(textures.atlases))
         .replace('/*@skeletonregistry@*/', skeletons.registry)

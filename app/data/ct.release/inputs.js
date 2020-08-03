@@ -71,7 +71,9 @@ class CtAction {
         if (ind !== -1) {
             this.methodMultipliers[ind] = multiplier;
         } else {
+            // eslint-disable-next-line no-console
             console.warning(`[ct.inputs] An attempt to change multiplier of a non-existent method "${code}" at event ${this.name}`);
+            // eslint-disable-next-line no-console
             console.trace();
         }
     }

@@ -6,7 +6,7 @@
         "background": "#11111f",
         "foreground": "#DAD6DA"
     }, {
-        "foreground": "#595d68",
+        "foreground": "#4f4c58",
         "fontStyle": "italic",
         "token": "comment"
     },
