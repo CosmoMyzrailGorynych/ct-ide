@@ -1,6 +1,7 @@
 {
     "main": {
         "name": "Fit to Screen",
+        "tagline": "An essencial module that manages fullscreen scaling for you",
         "version": "4.0.0",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",

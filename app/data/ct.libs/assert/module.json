@@ -1,6 +1,7 @@
 {
   "main": {
     "name": "ct.assert",
+    "tagline": "Provides a method ct.assert that helps making quick tests in ct.js projects",
     "version": "1.0.0",
     "packageName": "assert",
     "authors": [{

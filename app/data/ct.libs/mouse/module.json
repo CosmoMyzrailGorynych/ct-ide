@@ -1,6 +1,7 @@
 {
     "main": {
         "name": "Mouse Input",
+        "tagline": "Provides input methods for mouse",
         "version": "3.0.0",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",

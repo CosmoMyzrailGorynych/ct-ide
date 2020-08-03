@@ -1,6 +1,7 @@
 {
     "main": {
         "name": "Touch",
+        "tagline": "Input methods for touch devices, plus methods to check on-screen button presses",
         "version": "2.0.0",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",

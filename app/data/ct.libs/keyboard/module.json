@@ -1,6 +1,7 @@
 {
     "main": {
         "name": "Keyboard",
+        "tagline": "Provides input methods for keyboards",
         "version": "3.0.0",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",

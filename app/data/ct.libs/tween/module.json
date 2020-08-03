@@ -1,6 +1,7 @@
 {
     "main": {
         "name": "ct.tween",
+        "tagline": "Methods to smoothly animate values through time",
         "version": "0.0.1",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",

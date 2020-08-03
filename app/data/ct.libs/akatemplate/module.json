@@ -1,6 +1,7 @@
 {
     "main": {
         "name": "Basic Template",
+        "tagline": "Add custom HTML and CSS to exported games",
         "version": "1.0.0",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",

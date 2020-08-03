@@ -1,6 +1,7 @@
 {
     "main": {
         "name": "Desktop's file system",
+        "tagline": "A file system layer that simplifies Node.js API and lets you focus on your data",
         "version": "1.0.0",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",

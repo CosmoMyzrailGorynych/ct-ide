@@ -1,6 +1,7 @@
 {
     "main": {
         "name": "ct.transition",
+        "tagline": "Creates nice and smooth transitions between levels, or when you need them",
         "version": "1.0.0",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",

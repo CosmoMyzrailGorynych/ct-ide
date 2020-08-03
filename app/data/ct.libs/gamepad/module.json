@@ -1,6 +1,7 @@
 {
   "main": {
     "name": "Gamepad",
+    "tagline": "Provides all the input methods for gamepads",
     "version": "1.0.0",
     "packageName": "gamepad",
     "authors": [

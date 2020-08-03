@@ -1,6 +1,7 @@
 {
     "main": {
         "name": "Type inheritance",
+        "tagline": "Works on top of ct.js v1.4 to bring type inheritance and make your code DRY",
         "version": "1.0.0",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",
