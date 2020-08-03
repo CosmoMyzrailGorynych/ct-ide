@@ -8,13 +8,15 @@ main-menu.flexcol
             li.it30(onclick="{changeTab('patrons')}" title="{voc.patrons}" class="{active: tab === 'patrons'}")
                 svg.feather
                     use(xlink:href="data/icons.svg#heart")
-            li.it30(onclick="{saveProject}" title="{voc.save} (Control+S)" data-hotkey="Control+s")
+            li.it30.nbr(onclick="{saveProject}" title="{voc.save} (Control+S)" data-hotkey="Control+s")
                 svg.feather
                     use(xlink:href="data/icons.svg#save")
 
         ul#mainnav.nav.tabs
             li.nbl.it30(onclick="{runProject}" class="{active: tab === 'debug'}" title="{voc.launch} {voc.launchHotkeys}" data-hotkey="F5")
-                svg.feather
+                svg.feather.rotateccw(show="{exportingProject}")
+                    use(xlink:href="data/icons.svg#refresh-ccw")
+                svg.feather(hide="{exportingProject}")
                     use(xlink:href="data/icons.svg#play")
                 span(if="{tab !== 'debug'}") {voc.launch}
                 span(if="{tab === 'debug'}") {voc.restart}
@@ -168,11 +170,13 @@ main-menu.flexcol
             });
             fileServer.listen(0, () => {
                 console.info(`[ct.debugger] Running dev server at http://localhost:${fileServer.address().port}`);
-        });
+            });
         });
 
         this.runProject = () => {
             document.body.style.cursor = 'progress';
+            this.exportingProject = true;
+            this.update();
             const runCtExport = require('./data/node_requires/exporter');
             runCtExport(global.currentProject, global.projdir)
             .then(() => {
@@ -189,7 +193,6 @@ main-menu.flexcol
                         title: global.currentProject.settings.authoring.title,
                         link: `http://localhost:${fileServer.address().port}/`
                     };
-                    this.update();
                 }
             })
             .catch(e => {
@@ -198,6 +201,8 @@ main-menu.flexcol
             })
             .finally(() => {
                 document.body.style.cursor = '';
+                this.exportingProject = false;
+                this.update();
             });
         };
         this.runProjectAlt = () => {
