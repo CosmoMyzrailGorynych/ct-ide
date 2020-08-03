@@ -153,22 +153,23 @@ main-menu.flexcol
         });
         this.saveRecoveryDebounce();
 
-        const {getWritableDir} = require('./data/node_requires/platformUtils');
+        const {getExportDir} = require('./data/node_requires/platformUtils');
         // Run a local server for ct.js games
         let fileServer;
-        getWritableDir().then(dir => {
-            const nstatic = require('node-static');
-            fileServer = new nstatic.Server(path.join(dir, '/export/'), {
-                cache: false,
-                serverInfo: 'ctjsgameeditor'
+        getExportDir().then(dir => {
+            console.log(dir);
+            const fileServerSettings = {
+                public: dir,
+                cleanUrls: true
+            };
+            const handler = require('serve-handler');
+            fileServer = require('http').createServer((request, response) => {
+                return handler(request, response, fileServerSettings);
             });
+            fileServer.listen(0, () => {
+                console.info(`[ct.debugger] Running dev server at http://localhost:${fileServer.address().port}`);
         });
-        const server = require('http').createServer((request, response) => {
-            request.addListener('end', () => {
-                fileServer.serve(request, response);
-            }).resume();
         });
-        server.listen(0);
 
         this.runProject = () => {
             document.body.style.cursor = 'progress';
@@ -177,7 +178,7 @@ main-menu.flexcol
             .then(() => {
                 if (localStorage.disableBuiltInDebugger === 'yes') {
                     // Open in default browser
-                    nw.Shell.openExternal(`http://localhost:${server.address().port}/`);
+                    nw.Shell.openExternal(`http://localhost:${fileServer.address().port}/`);
                 } else if (this.tab === 'debug') {
                     // Restart the game as we already have the tab opened
                     this.refs.debugger.restartGame();
@@ -186,7 +187,7 @@ main-menu.flexcol
                     this.tab = 'debug';
                     this.debugParams = {
                         title: global.currentProject.settings.authoring.title,
-                        link: `http://localhost:${server.address().port}/`
+                        link: `http://localhost:${fileServer.address().port}/`
                     };
                     this.update();
                 }
@@ -203,7 +204,7 @@ main-menu.flexcol
             const runCtExport = require('./data/node_requires/exporter');
             runCtExport(global.currentProject, global.projdir)
             .then(() => {
-                nw.Shell.openExternal(`http://localhost:${server.address().port}/`);
+                nw.Shell.openExternal(`http://localhost:${fileServer.address().port}/`);
             });
         };
         hotkey.on('Alt+F5', this.runProjectAlt);

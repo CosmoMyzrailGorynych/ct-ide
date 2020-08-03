@@ -64,4 +64,23 @@ const mod = {
         });
     }
 };
+
+{
+    let exportDir, exportDirPromise;
+    // We compute a directory once and store it forever
+    mod.getExportDir = () => {
+        if (exportDir) {
+            return Promise.resolve(exportDir);
+        }
+        if (exportDirPromise) {
+            return exportDirPromise;
+        }
+        exportDirPromise = mod.getWritableDir().then(dir => {
+            exportDir = require('path').join(dir, 'export');
+            return exportDir;
+        });
+        return exportDirPromise;
+    };
+}
+
 module.exports = mod;

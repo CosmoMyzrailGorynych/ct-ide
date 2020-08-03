@@ -65,17 +65,14 @@ const injectModules = injects => // async
         }
     }));
 
-const makeWritableDir = async () => {
-    const {getWritableDir} = require('./../platformUtils');
-    writeDir = path.join(await getWritableDir(), 'export');
-};
 // eslint-disable-next-line max-lines-per-function
 const exportCtProject = async (project, projdir) => {
     currentProject = project;
 
     const {languageJSON} = require('./../i18n');
     const {settings} = project;
-    await makeWritableDir();
+    const {getExportDir} = require('./../platformUtils');
+    writeDir = await getExportDir();
 
     if (project.rooms.length < 1) {
         throw new Error(languageJSON.common.norooms);

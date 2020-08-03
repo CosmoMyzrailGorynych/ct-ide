@@ -68,7 +68,7 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
             localStorage.UItheme === 'Night' || localStorage.UItheme === 'Horizon';
 
         this.backToHome = () => {
-            this.refs.helpIframe.contentWindow.location = `http://localhost:${this.server.address().port}/`;
+            this.refs.helpIframe.contentWindow.location = `http://localhost:${fileServer.address().port}/`;
         };
 
         this.on('update', () => {
@@ -100,22 +100,22 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
             this.notepadglobal.dispose();
         });
 
-        const nstatic = require('node-static');
-        const fileServer = new nstatic.Server('data/docs/', {
-            cache: false,
-            serverInfo: 'ctjsgameeditor'
+        const fileServerSettings = {
+            public: 'data/docs/',
+            cleanUrls: true
+        };
+        const handler = require('serve-handler');
+        fileServer = require('http').createServer((request, response) => {
+            return handler(request, response, fileServerSettings);
         });
-
-        this.server = require('http').createServer(function staticServerHandler(request, response) {
-            request.addListener('end', function serveFile() {
-                fileServer.serve(request, response);
-            }).resume();
+        fileServer.listen(0, () => {
+            console.info(`[ct.docs] Running docs server at http://localhost:${fileServer.address().port}`);
         });
-        this.server.listen(0);
+        this.server = fileServer;
 
         var openDocs = e => {
             this.changeTab('helppages')();
-            this.refs.helpIframe.contentWindow.location = `http://localhost:${this.server.address().port}${e.path || '/'}`;
+            this.refs.helpIframe.contentWindow.location = `http://localhost:${fileServer.address().port}${e.path || '/'}`;
             this.opened = true;
             this.update();
         };

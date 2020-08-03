@@ -39,7 +39,7 @@
     "url": "https://github.com/ct-js/ct-js.git"
   },
   "scripts": {
-    "start": "electron ."
+    "start": "gulp"
   },
   "maintainers": [
     {
@@ -66,11 +66,11 @@
     "maxrects-packer": "^2.6.0",
     "monaco-editor": "^0.20.0",
     "monaco-themes": "^0.3.3",
-    "node-static": "^0.7.11",
     "opentype.js": "^1.3.3",
     "pixi-particles": "^4.2.1",
     "pixi.js-legacy": "5.1.2",
     "png2icons": "^2.0.1",
+    "serve-handler": "^6.1.3",
     "ttf2woff": "^2.0.2",
     "unzipper": "^0.10.11"
   }

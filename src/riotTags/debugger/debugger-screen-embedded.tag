@@ -116,13 +116,14 @@ debugger-screen-embedded(class="{opts.class} {flexrow: verticalLayout, flexcol: 
         /* Bootstrap preview and debug views */
         this.on('mount', () => {
             this.refs.gameView.addEventListener('contentload', () => {
-                this.refs.gameView.showDevTools(true, this.refs.devtoolsView);
-                setTimeout(() => {
+                this.refs.devtoolsView.addEventListener('contentload', () => {
                     this.refs.devtoolsView.executeScript({
                         code: 'DevToolsAPI.showPanel(\'console\')',
                         mainWorld: true
                     });
-                }, 1000);
+                    this.refs.gameView.focus();
+                });
+                this.refs.gameView.showDevTools(true, this.refs.devtoolsView);
                 this.refs.gameView.focus();
             });
             this.refs.gameView.setAttribute('src', passedParams.link);
