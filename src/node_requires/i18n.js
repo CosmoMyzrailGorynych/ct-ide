@@ -6,7 +6,6 @@ var i18n;
 
 const loadLanguage = lang => {
     var voc;
-    console.log('hello');
     try {
         voc = fs.readJSONSync(`./data/i18n/${lang}.json`);
     } catch (e) {
