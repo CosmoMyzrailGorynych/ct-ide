@@ -1,9 +1,9 @@
-(function (ct) {
+(function fittoscreen(ct) {
     document.body.style.overflow = 'hidden';
     var canv = ct.pixiApp.view;
-    var resize = function() {
+    var resize = function resize() {
         const {mode} = ct.fittoscreen;
-        const pixelScaleModifier = ct.highDensity? (window.devicePixelRatio || 1) : 1;
+        const pixelScaleModifier = ct.highDensity ? (window.devicePixelRatio || 1) : 1;
         const kw = window.innerWidth / ct.roomWidth,
               kh = window.innerHeight / ct.roomHeight;
         const k = Math.min(kw, kh);
@@ -61,15 +61,24 @@
         }
     };
     var toggleFullscreen = function () {
-        var element = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement,
+        var canvas = document.fullscreenElement ||
+                     document.webkitFullscreenElement ||
+                     document.mozFullScreenElement ||
+                     document.msFullscreenElement,
             requester = document.getElementById('ct'),
-            request = requester.requestFullscreen || requester.webkitRequestFullscreen || requester.mozRequestFullScreen || requester.msRequestFullscreen,
-            exit = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
-        if (!element) {
+            request = requester.requestFullscreen ||
+                      requester.webkitRequestFullscreen ||
+                      requester.mozRequestFullScreen ||
+                      requester.msRequestFullscreen,
+            exit = document.exitFullscreen ||
+                   document.webkitExitFullscreen ||
+                   document.mozCancelFullScreen ||
+                   document.msExitFullscreen;
+        if (!canvas) {
             var promise = request.call(requester);
             if (promise) {
                 promise
-                .catch(function (err) {
+                .catch(function fullscreenError(err) {
                     console.error('[ct.fittoscreen]', err);
                 });
             }
@@ -77,13 +86,13 @@
             exit.call(document);
         }
     };
-    var queuedFullscreen = function () {
+    var queuedFullscreen = function queuedFullscreen() {
         toggleFullscreen();
         document.removeEventListener('mouseup', queuedFullscreen);
         document.removeEventListener('keyup', queuedFullscreen);
         document.removeEventListener('click', queuedFullscreen);
     };
-    var queueFullscreen = function() {
+    var queueFullscreen = function queueFullscreen() {
         document.addEventListener('mouseup', queuedFullscreen);
         document.addEventListener('keyup', queuedFullscreen);
         document.addEventListener('click', queuedFullscreen);
@@ -103,7 +112,7 @@
         }
     });
     ct.fittoscreen.mode = $mode;
-    ct.fittoscreen.getIsFullscreen = function () {
+    ct.fittoscreen.getIsFullscreen = function getIsFullscreen() {
         return document.fullscreen || document.webkitIsFullScreen || document.mozFullScreen;
     };
 })(ct);
