@@ -126,6 +126,10 @@
                 document.title = global.currentProject.settings.title + ' — ct.js';
             }
 
+            const {loadAllTypedefs, resetTypedefs} = require('./data/node_requires/resources/modules/typedefs');
+            resetTypedefs();
+            loadAllTypedefs();
+
             setTimeout(() => {
                 window.riot.update();
             }, 0);

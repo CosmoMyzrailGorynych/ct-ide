@@ -52,39 +52,15 @@ module-meta(onclick="{toggleModule(opts.module.name)}")
         const glob = require('./data/node_requires/glob');
 
         const tryLoadTypedefs = () => {
-            const fs = require('fs-extra'),
-                  path = require('path');
             if (!(this.opts.module.name in global.currentProject.libs)) {
                 return;
             }
-            const typedefPath = path.join(this.opts.module.path, 'types.d.ts');
-            fs.pathExists(typedefPath)
-            .then(exists => {
-                const ts = monaco.languages.typescript;
-                if (!exists) {
-                    // generate dummy typedefs if none were provided by the module
-                    const catmodTypedefs = `declare namespace ct {\n/** Sorry, no in-code docs for this module :c */\n var ${this.opts.module.name}: any; }`;
-                    glob.moduleTypings[this.opts.module.name] = [
-                        ts.javascriptDefaults.addExtraLib(catmodTypedefs),
-                        ts.typescriptDefaults.addExtraLib(catmodTypedefs)
-                    ];
-                    return;
-                }
-                fs.readFile(typedefPath, 'utf8')
-                .then(catmodTypedefs => {
-                    glob.moduleTypings[this.opts.module.name] = [
-                        ts.javascriptDefaults.addExtraLib(catmodTypedefs),
-                        ts.typescriptDefaults.addExtraLib(catmodTypedefs)
-                    ];
-                });
-            });
+            const {addTypedefs} = require('./data/node_requires/resources/modules/typedefs');
+            addTypedefs(this.opts.module);
         };
         const removeTypedefs = () => {
-            if (glob.moduleTypings[this.opts.module.name]) {
-                for (const lib of glob.moduleTypings[this.opts.module.name]) {
-                    lib.dispose();
-                }
-            }
+            const {removeTypedefs} = require('./data/node_requires/resources/modules/typedefs');
+            removeTypedefs(this.opts.module);
         };
         const addDefaults = () => {
             const {name} = this.opts.module;
