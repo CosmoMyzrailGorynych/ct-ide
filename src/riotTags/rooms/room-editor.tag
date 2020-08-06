@@ -497,7 +497,7 @@ room-editor.panel.view
                             );
                         }
                     }
-                } else if (this.stack[i].texture) { // это слой-фон
+                } else if (this.stack[i].texture) { // a background layer
                     if (this.stack[i].texture !== -1) {
                         if (!('extends' in this.stack[i])) {
                             this.stack[i].extends = {};

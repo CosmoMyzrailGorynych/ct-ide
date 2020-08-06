@@ -41,6 +41,7 @@ room-tile-editor.room-editor-Tiles.tabbed.tall.flexfix
                 tiles: [],
                 extends: {}
             }];
+            this.parent.resortRoom();
         }
         [this.parent.currentTileLayer] = this.opts.room.tiles;
         this.parent.currentTileLayerId = 0;
