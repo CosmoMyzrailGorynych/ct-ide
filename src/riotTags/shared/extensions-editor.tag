@@ -153,7 +153,8 @@ extensions-editor
         this.on('update', () => {
             if (!this.opts.entity) {
                 console.error('extension-editor tag did not receive its `entity` object for editing!');
-                console.log(this);
+                // eslint-disable-next-line no-console
+                console.warn(this);
             }
             if (this.opts.customextends && this.opts.customextends !== this.extensions) {
                 this.extensions = this.opts.customextends;

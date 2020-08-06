@@ -130,7 +130,6 @@
         "launchHotkeys": "(F5; Alt+F5 om in uw standaard browser te draaien)",
         "license": "License",
         "min": "Windowed",
-        "modules": "Catmods",
         "patrons": "Patrons",
         "recentProjects": "Recente projecten",
         "rooms": "Kamers",
@@ -229,9 +228,6 @@
     "modules": {
         "author": "Auteru van deze catmod",
         "dependencies": "Afhankelijkheden:",
-        "hasfields": "Configurable",
-        "hasinjects": "Has injections",
-        "hasinputmethods": "Provides additional input methods",
         "help": "Reference",
         "info": "Info",
         "license": "License",

@@ -12,6 +12,10 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
             svg.feather
                 use(xlink:href="data/icons.svg#life-buoy")
             span {voc.helppages}
+        li(onclick="{changeTab('modulespages')}" class="{active: tab === 'modulespages'}")
+            svg.feather
+                use(xlink:href="data/icons.svg#ctmod")
+            span {voc.modulespages}
     div
         div(show="{tab === 'notepadlocal'}")
             .aCodeEditor(ref="notepadlocal")
@@ -22,6 +26,8 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
             button.aHomeButton(title="{voc.backToHome}" onclick="{backToHome}")
                 svg.feather
                     use(xlink:href="data/icons.svg#home")
+        div(show="{tab === 'modulespages'}")
+            docs-panel
 
     button.vertical.dockleft(onclick="{notepadToggle}")
         svg.feather
@@ -67,10 +73,6 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
         this.getIfDarkTheme = () =>
             localStorage.UItheme === 'Night' || localStorage.UItheme === 'Horizon';
 
-        this.backToHome = () => {
-            this.refs.helpIframe.contentWindow.location = `http://localhost:${fileServer.address().port}/`;
-        };
-
         this.on('update', () => {
             this.notepadlocal.setValue(global.currentProject.notes || '');
         });
@@ -105,10 +107,10 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
             cleanUrls: true
         };
         const handler = require('serve-handler');
-        fileServer = require('http').createServer((request, response) => {
-            return handler(request, response, fileServerSettings);
-        });
+        const fileServer = require('http').createServer((request, response) =>
+            handler(request, response, fileServerSettings));
         fileServer.listen(0, () => {
+            // eslint-disable-next-line no-console
             console.info(`[ct.docs] Running docs server at http://localhost:${fileServer.address().port}`);
         });
         this.server = fileServer;
@@ -119,6 +121,11 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
             this.opened = true;
             this.update();
         };
+
+        this.backToHome = () => {
+            this.refs.helpIframe.contentWindow.location = `http://localhost:${fileServer.address().port}/`;
+        };
+
         window.signals.on('openDocs', openDocs);
         this.on('unmount', () => {
             window.signals.off('openDocs', openDocs);

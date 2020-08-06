@@ -1,7 +1,7 @@
 {
     "main": {
         "name": "Type inheritance",
-        "tagline": "Works on top of ct.js v1.4 to bring type inheritance and make your code DRY",
+        "tagline": "Avoid repeating code by adding parent-child relationships between your types.",
         "version": "1.0.0",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",

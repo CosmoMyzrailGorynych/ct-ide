@@ -106,7 +106,6 @@
         "launch": "编译并运行",
         "license": "许可证",
         "min": "窗口化",
-        "modules": "Cat模组",
         "recentProjects": "最近的项目",
         "rooms": "房间",
         "save": "保存项目",
@@ -175,9 +174,6 @@
     },
     "modules": {
         "author": "这个cat模组的作者",
-        "hasfields": "可配置",
-        "hasinjects": "有注入",
-        "hasinputmethods": "提供额外的输入方法",
         "help": "参考",
         "info": "信息",
         "license": "许可证",

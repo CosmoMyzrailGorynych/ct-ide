@@ -1,7 +1,7 @@
 {
   "main": {
     "name": "Gamepad",
-    "tagline": "Provides all the input methods for gamepads",
+    "tagline": "Connect your gamepad to the Actions system.",
     "version": "1.0.0",
     "packageName": "gamepad",
     "authors": [

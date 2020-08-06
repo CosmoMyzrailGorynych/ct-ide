@@ -1,7 +1,7 @@
 {
     "main": {
         "name": "ct.tween",
-        "tagline": "Methods to smoothly animate values through time",
+        "tagline": "Animate values through time with different interpolation curves.",
         "version": "0.0.1",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",

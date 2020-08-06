@@ -24,10 +24,6 @@ main-menu.flexcol
                 svg.feather
                     use(xlink:href="data/icons.svg#sliders")
                 span {voc.project}
-            li(onclick="{changeTab('modules')}" class="{active: tab === 'modules'}" data-hotkey="Control+2" title="Control+2")
-                svg.feather
-                    use(xlink:href="data/icons.svg#ctmod")
-                span {voc.modules}
             li(onclick="{changeTab('texture')}" class="{active: tab === 'texture'}" data-hotkey="Control+3" title="Control+3")
                 svg.feather
                     use(xlink:href="data/icons.svg#texture")
@@ -55,7 +51,6 @@ main-menu.flexcol
     div.flexitem.relative(if="{global.currentProject}")
         debugger-screen-embedded(if="{tab === 'debug'}" params="{debugParams}" data-hotkey-scope="play" ref="debugger")
         project-settings(show="{tab === 'project'}" data-hotkey-scope="project")
-        modules-panel(show="{tab === 'modules'}" data-hotkey-scope="modules")
         textures-panel(show="{tab === 'texture'}" data-hotkey-scope="texture")
         ui-panel(show="{tab === 'ui'}" data-hotkey-scope="ui")
         fx-panel(show="{tab === 'fx'}" data-hotkey-scope="fx")
@@ -159,16 +154,15 @@ main-menu.flexcol
         // Run a local server for ct.js games
         let fileServer;
         getExportDir().then(dir => {
-            console.log(dir);
             const fileServerSettings = {
                 public: dir,
                 cleanUrls: true
             };
             const handler = require('serve-handler');
-            fileServer = require('http').createServer((request, response) => {
-                return handler(request, response, fileServerSettings);
-            });
+            fileServer = require('http').createServer((request, response) =>
+                handler(request, response, fileServerSettings));
             fileServer.listen(0, () => {
+                // eslint-disable-next-line no-console
                 console.info(`[ct.debugger] Running dev server at http://localhost:${fileServer.address().port}`);
             });
         });
@@ -218,6 +212,7 @@ main-menu.flexcol
             try {
                 const os = require('os');
                 const path = require('path');
+                const {getWritableDir} = require('./data/node_requires/platformUtils');
 
                 const writable = await getWritableDir();
                 const inDir = await fs.mkdtemp(path.join(os.tmpdir(), 'ctZipProject-')),
@@ -246,6 +241,7 @@ main-menu.flexcol
             }
         };
         this.zipExport = async () => {
+            const {getWritableDir} = require('./data/node_requires/platformUtils');
             const writable = await getWritableDir();
             const runCtExport = require('./data/node_requires/exporter');
             const exportFile = path.join(writable, '/export.zip'),

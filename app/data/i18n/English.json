@@ -24,6 +24,7 @@
         "exit": "Exit",
         "exitconfirm": "Are you sure you want to exit?<br/>All the unsaved changes will be lost!",
         "fastimport": "Fast Import",
+        "filter": "Filter:",
         "language": "Language",
         "loading": "Loading…",
         "translateToYourLanguage": "Translate ct.js!",
@@ -45,6 +46,7 @@
         "saveproject": "Save project",
         "selectDialogue": "Select…",
         "select": "Select",
+        "search": "Search:",
         "sort": "Sort:",
         "tilelayer": "tile layer",
         "wrongFormat": "Wrong file format",
@@ -81,6 +83,10 @@
     },
     "docsShortcut": {
         "openDocs": "Open the documentation"
+    },
+    "docsPanel": {
+        "documentation": "Documentation",
+        "reference": "Reference"
     },
     "exportPanel": {
         "hide": "Hide",
@@ -132,7 +138,6 @@
         "launchHotkeys": "(F5; Alt+F5 to run in your default browser)",
         "license": "License",
         "min": "Windowed",
-        "modules": "Catmods",
         "patrons": "Patrons",
         "recentProjects": "Recent projects",
         "restart": "Restart",
@@ -214,6 +219,9 @@
             "iconNotice": "It should be a square, one-frame texture that is at least 256x256px large.",
             "invertPreloaderScheme": "Invert preloader's color scheme"
         },
+        "modules": {
+            "heading": "Catmods"
+        },
         "rendering": {
             "heading": "Render Options",
             "framerate": "Framerate:",
@@ -236,14 +244,12 @@
             "moveDown": "Move down",
             "moveUp": "Move up",
             "newScriptComment": "Use scripts to define frequent functions and import small libraries"
-        }
+        },
+        "catmodsSettings": "Catmods' settings"
     },
     "modules": {
         "author": "Author of this catmod",
         "dependencies": "Dependencies:",
-        "hasfields": "Configurable",
-        "hasinjects": "Has injections",
-        "hasinputmethods": "Provides additional input methods",
         "help": "Reference",
         "info": "Info",
         "license": "License",
@@ -253,7 +259,24 @@
         "parameters": "Parameters",
         "logs2": "Changelog",
         "settings": "Settings",
-        "importModules": "Import Modules"
+        "importModules": "Import Modules",
+        "enabledModules": "Enabled modules",
+        "availableModules": "Available modules",
+        "filter": "Filter",
+        "categories": {
+            "customization": "Customization",
+            "utilities": "Utilities",
+            "media": "Multimedia",
+            "misc": "Other",
+            "desktop": "Desktop builds",
+            "motionPlanning": "Motion planning",
+            "inputs": "Input methods",
+            "fx": "FX",
+            "mobile": "Mobile devices",
+            "integrations": "Integrations",
+            "tweaks": "Tweaks",
+            "networking": "Networking"
+        }
     },
     "texture": {
         "create": "Create",
@@ -523,8 +546,9 @@
     "notepad": {
         "local": "Project's notepad",
         "global": "Global notepad",
-        "helppages": "Help",
-        "backToHome": "Back to docs' homepage"
+        "helppages": "Learn",
+        "backToHome": "Back to docs' homepage",
+        "modulespages": "Modules' docs"
     },
     "patreon": {
         "aboutPatrons": "Patrons are people who show their support to ComigoGames at Patreon, in form of recurring donations. Not everyone there comes from ct.js; some are using other apps from ComigoGames. Tip: if you are a creator and donate to ComigoGames via Patreon, you will get a link to your page here — that's my little help to your creations :)",

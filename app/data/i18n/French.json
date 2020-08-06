@@ -126,7 +126,6 @@
         "launchHotkeys":"(F5/ Alt+F5 pour lancer votre navigateur par défaut",
         "license": "Licence",
         "min": "Fenêtré",
-        "modules": "Catmods",
         "patrons": "Patrons",
         "recentProjects": "Projets récents",
         "rooms": "Salons",
@@ -217,9 +216,6 @@
     },
     "modules": {
         "author": "Auteur de ce CatMod",
-        "hasfields": "Configurable",
-        "hasinjects": "A des injections",
-        "hasinputmethods": "Fournit des méthodes de saisie supplémentaires",
         "help": "Référence",
         "info": "Info",
         "license": "Licence",

@@ -103,7 +103,6 @@
         "launch": "Compilar",
         "license": "Licencia",
         "min": "Modo Ventana",
-        "modules": "Catmods",
         "recentProjects": "Proyectos recientes",
         "rooms": "Rooms",
         "save": "Guardar proyecto",
@@ -166,9 +165,6 @@
     },
     "modules": {
         "author": "Autor de este catmod",
-        "hasfields": "Configurable",
-        "hasinjects": "Tiene inyecciones",
-        "hasinputmethods": "Proporciona métodos de entrada adicionales.",
         "help": "Referencia",
         "info": "Info",
         "license": "Licencia",

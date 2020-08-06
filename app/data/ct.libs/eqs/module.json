@@ -1,7 +1,7 @@
 {
     "main": {
         "name": "ct.eqs",
-        "tagline": "Environment querying system: apply logic to find the best (or worst) place for positioning",
+        "tagline": "Aka Environment Querying System. Apply logic to find the best (or worst) place for positioning.",
         "version": "0.0.0",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",

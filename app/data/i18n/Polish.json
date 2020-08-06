@@ -107,7 +107,6 @@
         "launchHotkeys": "(F5; Alt+F5 żeby uruchomić w twojej domyślnej przeglądarce)",
         "license": "Licencja",
         "min": "W oknie",
-        "modules": "Catmody",
         "patrons": "Patroni",
         "recentProjects": "Ostatnie projekty",
         "rooms": "Pokoje",
@@ -183,9 +182,6 @@
     },
     "modules": {
         "author": "Autor tego catmodu",
-        "hasfields": "Konfigurowalny",
-        "hasinjects": "Posiada injecty",
-        "hasinputmethods": "Zapewnia dodatkowe metody wejścia",
         "help": "Odnośnik",
         "info": "Informacje",
         "license": "Licencja",

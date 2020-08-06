@@ -1,3 +1,9 @@
+# Collision checks with `ct.place`
+
+`ct.place` checks collisions with the methods listed below. Most of the time, it uses a collision group (aka `ctype`) to check against a specific, defined by you, subset of copies, as well as tile layers. After enabling this module, you will find additional fields in type editor and for tile layers in the room editor, where you can set this collision group.
+
+While runnning a game, you can change a copy's `this.ctype` parameter so `ct.place` detects it under a different collision group. Think of a one-way platform or a barrier that can be turned off.
+
 ## ct.place.free(me, [x, y, ctype])
 
 Checks whether there is a free place at (x;y) for a copy `me`. `ctype` is optional and filters collision by using `ctype` parameter). If `x` and `y` are skipped, the current coordinates of `me` will be used.
@@ -19,7 +25,7 @@ If `multiple` is `true`, the function will find all the possible collisions, and
 
 ## ct.place.collide(c1, c2)
 
-Returns `true` if there is a collision between `c1` and `c2` Copies.
+Returns `true` if there is a collision between `c1` and `c2` Copies. This is rarely used on its own, as it is often more appropriate to use `ct.place.occupied` or `ct.place.meet`.
 
 ## ct.place.tile(me, [x, y, ctype])
 
@@ -30,34 +36,6 @@ If `x` and `y` are skipped, the current coordinates of `me` will be used.
 > **Warning:** Each tile is considered a rectangle, and a possible collision mask defined in the graphics asset (in the tileset) is ignored.
 
 This method returns either `true` (a copy collides with a tile layer) or `false` (no collision).
-
-## ct.place.moveAlong(me, direction, maxLength, [ctype, stepSize])
-
-Moves a copy by `stepSize` in a given `direction` untill a `maxLength` is reached or a copy is next to another colliding copy. You can filter collided copies with `ctype`, and set precision with `stepSize` (default is `1`, which means pixel-by-pixel movement). This function is especially useful for side-view games and any fast-moving copies, as it allows precise movement without clipping or passing through surfaces.
-
-
-## ct.place.nearest(x, y, type)
-
-Gets the nearest Copy of a given `type`.
-
-
-## ct.place.furthest(x, y, type)
-
-Gets the furthest Copy of a given `type`.
-
-
-## ct.place.lastdist
-
-Returns the latest distance after calling `ct.place.furthest` or `ct.place.nearest`.
-
-
-## ct.place.go(me, x, y, length, [ctype])
-
-Tries to reach the target with a simple obstacle avoidance algorithm.
-
-`me` is a copy to move around, `x` and `y` is a target point; `length` is the maximum amount of pixels to move in one step. `ctype` is an option parameter that tells to test collisions against a certain collision group.
-
-This function doesn't require the `ct.types.move(this);` call.
 
 ## ct.place.trace(x1, y1, x2, y2, [ctype])
 

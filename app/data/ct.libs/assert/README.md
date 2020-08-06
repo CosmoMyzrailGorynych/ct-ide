@@ -1,10 +1,12 @@
-A tiny module that provides a method `ct.assert(condition, message)` to help making readable tests in ct.js projects.
+# assert
+
+`assert` is a tiny module that provides a method `ct.assert(condition, message)` to help making readable tests in ct.js projects.
 
 The `condition` may be either boolean or a function — other values (numbers, strings) will fail. Functions are executed first and then tested against their returned result.
 
 There is also a `ct.assert.summary();` call, that shows counted amount of passed and failed tests.
 
-Usage example:
+## Usage example
 
 ```js
 ct.assert(

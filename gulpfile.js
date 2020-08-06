@@ -143,6 +143,10 @@ const copyRequires = () =>
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('./app/data/node_requires'));
 
+const copyInEditorDocs = () =>
+    gulp.src('./docs/docs/ct.*.md')
+    .pipe(gulp.dest('./app/data/node_requires'));
+
 const compileScripts = gulp.series(compileRiot, concatScripts);
 
 const icons = () =>
@@ -379,6 +383,7 @@ const build = gulp.parallel([
     compileStylus,
     compileScripts,
     copyRequires,
+    copyInEditorDocs,
     icons,
     bakeTypedefs
 ]);

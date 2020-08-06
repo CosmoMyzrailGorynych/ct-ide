@@ -100,7 +100,6 @@
         "launch": "Compilar",
         "license": "Licença",
         "min": "Modo janela",
-        "modules": "Catmods",
         "recentProjects": "Projetos recentes",
         "rooms": "Salas",
         "save": "Salvar projeto",
@@ -150,8 +149,6 @@
     },
     "modules": {
         "author": "Autor deste catmod",
-        "hasfields": "Configurável",
-        "hasinjects": "Tem injeções",
         "help": "Referência",
         "info": "Info",
         "license": "Licença",
@@ -159,8 +156,7 @@
         "methods": "Métodos",
         "parameters": "Parâmetros",
         "logs2": "Logs",
-        "settings": "Configurações ",
-        "hasinputmethods": ""
+        "settings": "Configurações "
     },
     "texture": {
         "create": "Criar",

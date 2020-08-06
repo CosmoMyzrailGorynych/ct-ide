@@ -103,7 +103,6 @@
         "launch": "Compilează",
         "license": "Licență",
         "min": "Windowed",
-        "modules": "Catmod-uri",
         "recentProjects": "Proiecte recente",
         "rooms": "Camere",
         "save": "Salvează proiectul",
@@ -166,9 +165,6 @@
     },
     "modules": {
         "author": "Autorul acestui catmod",
-        "hasfields": "Configurabil",
-        "hasinjects": "Are injecții",
-        "hasinputmethods": "Furnizează metode de introducere adiționale",
         "help": "Referință",
         "info": "Info",
         "license": "Licență",

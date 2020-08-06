@@ -1,7 +1,7 @@
 {
     "main": {
         "name": "Keyboard Polyfill",
-        "tagline": "A polyfill for ct.keyboard so that it works in older browsers",
+        "tagline": "Make ct.keyboard work with older browsers.",
         "version": "1.0.0",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",

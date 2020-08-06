@@ -1,7 +1,7 @@
 {
     "main": {
         "name": "Desktop's file system",
-        "tagline": "A file system layer that simplifies Node.js API and lets you focus on your data",
+        "tagline": "Save and read JSON and text data, scan directories and manage files.",
         "version": "1.0.0",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",

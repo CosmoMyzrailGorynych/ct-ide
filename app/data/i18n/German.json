@@ -128,7 +128,6 @@
         "launchHotkeys": "(F5; Alt+F5 zum Öffnen im Standardbrowser)",
         "license": "Lizenz",
         "min": "Fenster",
-        "modules": "Catmods",
         "patrons": "Patrons",
         "recentProjects": "Letzte Projekte",
         "rooms": "Räume",
@@ -213,9 +212,6 @@
     },
     "modules": {
         "author": "Autor dieses Catmods",
-        "hasfields": "Konfigurierbar",
-        "hasinjects": "Nutzt Injections",
-        "hasinputmethods": "Bietet zusätzliche Eingabemethoden",
         "help": "Hilfe",
         "info": "Info",
         "license": "Lizenz",

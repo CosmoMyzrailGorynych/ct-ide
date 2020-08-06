@@ -1,7 +1,7 @@
 {
     "main": {
         "name": "Mouse Input",
-        "tagline": "Provides input methods for mouse",
+        "tagline": "Get mouse position and read its events in Actions system.",
         "version": "3.0.0",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",

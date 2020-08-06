@@ -1,7 +1,7 @@
 {
     "main": {
         "name": "Sprite Composer",
-        "tagline": "Creates new animations from one sprite, freeing you from the necessity to split and stitch frames manually",
+        "tagline": "Create new animations from one sprite, freeing yourself from the necessity to split and stitch frames manually.",
         "version": "1.0.0",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",

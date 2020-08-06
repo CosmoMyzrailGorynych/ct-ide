@@ -1,0 +1,40 @@
+.view modules-settings
+    padding 1em
+    display block
+    background background
+    .desc p
+        margin-top 0
+    .aModuleList
+        display grid
+        grid-template-columns repeat(auto-fill, minmax(25em, 1fr))
+        grid-gap 1rem
+        module-meta
+            height 100%
+            display flex
+            flex-flow column nowrap
+            & > *
+                flex 0 0 auto
+            .filler
+                flex 1 1 auto
+    .aModuleCard
+        @extends .panel
+        padding 1rem 1rem 1rem 1.5rem
+        cursor pointer
+        {trans}
+        {shad}
+        &:hover
+            transform translate(0, -0.125rem)
+            border-color act
+            {transshort}
+            {shadamb}
+    .aModuleFilter
+        button
+            margin-top 0.3em
+        .feather
+            color act
+    .aModuleFilterColumns
+        column-width 14rem
+        column-gap 1rem
+        margin-left 2rem
+    .aSearchWrap
+        margin 1rem 0

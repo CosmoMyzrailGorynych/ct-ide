@@ -1,7 +1,7 @@
 {
     "main": {
         "name": "Flow control and timing",
-        "tagline": "Additional high-level methods to work with asynchronous events, e.g. gate, cumulative delay, retriggerable delay",
+        "tagline": "Add high-level methods for asynchronous events, e.g. gate, cumulative delay, retriggerable delay.",
         "version": "0.0.0",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",

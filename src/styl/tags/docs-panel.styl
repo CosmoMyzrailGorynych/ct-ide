@@ -1,0 +1,52 @@
+docs-panel
+    & > .flexrow
+        height 100%
+    .&-aNavigation
+        padding 1rem 0 1rem 1rem
+        overflow auto
+        box-sizing border-box
+        width 20rem
+        flex 0 0 auto
+        height 100%
+        line-height 1.75
+        h3
+            &:first-child
+                margin-top 0
+            &:not(.a)
+                color text
+    .&-Docs
+        overflow auto
+        height 100%
+        padding 1rem 2rem 2rem
+        box-sizing border-box
+
+    aside
+        ul
+            padding 0.25rem 0 0.25rem 1.25rem
+            margin 0
+            list-style none
+            line-height 1.5
+        li.a
+            margin-top 0.5rem
+            padding-right 1.5rem
+            color text
+            transition 0.35s ease color
+            &.active
+                font-weight bold
+                color accent1
+                border-right 2px solid
+        h3
+            margin 1.25rem 0 0
+            &.a
+                transition 0.35s ease color
+            &.active
+                font-weight bold
+                color accent1
+                border-right 2px solid
+
+    .&-DocsWidthLimiter
+        max-width 60rem
+        margin 0 auto
+
+    table
+        @extends .nicetable
