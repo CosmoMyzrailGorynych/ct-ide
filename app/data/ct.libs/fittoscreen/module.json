@@ -33,7 +33,7 @@
         }],
         "key": "mode",
         "id": "mode",
-        "default": "scaleCover",
+        "default": "scaleFit",
         "type": "radio"
     }]
 }
