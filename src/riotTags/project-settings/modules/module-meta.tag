@@ -1,12 +1,9 @@
-module-meta
+module-meta(onclick="{toggleModule(opts.module.name)}")
     .flexrow
         div
             h1 {opts.module.manifest.main.name}
             code {opts.module.name} v{opts.module.manifest.main.version}
-        label.bigpower(
-            onclick="{toggleModule(opts.module.name)}"
-            class="{off: !(opts.module.name in global.currentProject.libs)}"
-        ).nogrow
+        label.nogrow.bigpower(class="{off: !(opts.module.name in global.currentProject.libs)}")
             svg.feather
                 use(xlink:href="data/icons.svg#{opts.module.name in global.currentProject.libs? 'check' : 'x'}")
             span
@@ -33,7 +30,12 @@ module-meta
 
     .flexrow
         .aModuleAuthorList
-            a.external(each="{author in opts.module.manifest.main.authors}" title="{voc.author}" href="{author.site || 'mailto:'+author.mail}")
+            a.external(
+                each="{author in opts.module.manifest.main.authors}"
+                onclick="{stopPropagation}"
+                title="{voc.author}"
+                href="{author.site || 'mailto:'+author.mail}"
+            )
                 svg.feather
                     use(xlink:href="data/icons.svg#user")
                 span {author.name}
@@ -115,5 +117,9 @@ module-meta
             }
             window.signals.trigger('modulesChanged');
             glob.modified = true;
+            e.stopPropagation();
+        };
+
+        this.stopPropagation = e => {
             e.stopPropagation();
         };
