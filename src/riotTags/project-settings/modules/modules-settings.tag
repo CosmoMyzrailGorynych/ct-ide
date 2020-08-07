@@ -61,105 +61,54 @@ modules-settings.panel.view
         this.filterCategories.splice(this.filterCategories.indexOf('default'), 1);
         this.categoryToIconMap = categoryToIconMap;
 
-        const path = require('path'),
-              fs = require('fs-extra'),
-              unzipper = require('unzipper');
-
         this.resortEnabledModules = () => {
             this.enabledModules = this.allModules
                 .filter(module => module.name in global.currentProject.libs);
         };
-        loadModules().then(modules => {
-            // Sort by their codename (folder name)
-            this.allModules = modules.sort((a, b) => a.name.localeCompare(b.name));
-            this.categoriesCounter = {};
-            for (const category of this.filterCategories) {
-                this.categoriesCounter[category] = 0;
-            }
-            for (const module of this.allModules) {
-                if (module.manifest.main.categories) {
-                    for (const category of module.manifest.main.categories) {
-                        if (this.filterCategories.includes(category)) {
-                            this.categoriesCounter[category]++;
+        this.refreshModules = () => {
+            loadModules().then(modules => {
+                // Sort by their codename (folder name)
+                this.allModules = modules.sort((a, b) => a.name.localeCompare(b.name));
+                this.categoriesCounter = {};
+                for (const category of this.filterCategories) {
+                    this.categoriesCounter[category] = 0;
+                }
+                for (const module of this.allModules) {
+                    if (module.manifest.main.categories) {
+                        for (const category of module.manifest.main.categories) {
+                            if (this.filterCategories.includes(category)) {
+                                this.categoriesCounter[category]++;
+                            }
                         }
                     }
                 }
-            }
-            this.resortEnabledModules();
-            this.update();
-        });
+                this.resortEnabledModules();
+                this.update();
+            });
+        };
+        this.refreshModules();
 
-
-        this.importModules = e => {
-            const {files} = e.target;
+        this.importModules = async e => {
+            const files = [...e.target.files];
+            e.target.value = '';
             if (files.length === 0) {
                 return;
             }
-            const value = files[0].path;
-            e.target.value = '';
-            let parentName = null;
-            let moduleName = null;
-            const entries = [];
-            fs.createReadStream(value)
-            .pipe(unzipper.Parse())
-            .on('entry', async entry => {
-                const fileName = entry.path.toLowerCase();
-                if (path.basename(fileName) === 'module.json') {
-                    // consume the entry by buffering the contents into memory.
-                    // eslint-disable-next-line require-atomic-updates
-                    const content = entry.tmpContent = await entry.buffer();
-                    const json = JSON.parse(content.toString());
-                    moduleName = json.main.packageName || path.basename(value, '.zip');
-                    const indexOf = fileName.indexOf('/');
-                    if (indexOf !== -1) {
-                        parentName = fileName.substring(0, indexOf);
-                    }
-                }
-                entries.push(entry);
-            })
-            .on('finish', async () => {
-                if (moduleName !== null) {
-                    // create a parent directory
-                    await fs.ensureDir(path.join(moduleDir, moduleName));
-                    for (const entry of entries) {
-                        const filePath = entry.path;
-                        const indexOf = filePath.indexOf('/');
-                        if (filePath === parentName) {
-                            continue;
-                        }
-                        if (indexOf !== -1) {
-                            if (parentName !== null) {
-                                entry.path = `${moduleName}${filePath.substring(indexOf)}`;
-                            } else {
-                                entry.path = `${moduleName}/${filePath}`;
-                            }
-                        } else {
-                            entry.path = `${moduleName}/${filePath}`;
-                        }
-                        entry.path = path.join(moduleDir, entry.path);
-                         // 'Directory' or 'File'
-                        if (entry.type === 'Directory') {
-                            // eslint-disable-next-line no-await-in-loop
-                            await fs.ensureDir(entry.path);
-                        } else {
-                            const fileName = entry.path.toLowerCase();
-                            if (fileName.endsWith('module.json')) {
-                                const content = entry.tmpContent;
-                                // eslint-disable-next-line no-await-in-loop
-                                await fs.writeFile(entry.path, content);
-                            } else {
-                                entry.pipe(fs.createWriteStream(entry.path))
-                                .on('error', (e) => {
-                                    alertify.error(e);
-                                    console.error(e);
-                                });
-                            }
-                        }
-                    }
-                    this.allModules.push(moduleName);
-                    this.update();
-                }
-            });
+
+            const path = require('path'),
+                fs = require('fs-extra'),
+                extract = require('extract-zip');
+
+            const unpackPromises = [];
+
+            for (const file of files) {
+                const zip = file.path;
+                unpackPromises.push(extract(zip, {
+                    dir: path.resolve(path.join(moduleDir, path.basename(zip, path.extname(zip))))
+                }));
+            }
+            await Promise.all(unpackPromises);
+            this.refreshModules();
         };
 
         this.searchValue = '';
