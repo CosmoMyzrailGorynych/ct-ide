@@ -7,17 +7,17 @@ export-panel
             p {voc.firstrunnotice}
             fieldset
                 label.checkbox
-                    input(type="checkbox" checked="{projSettings.export.linux}" onchange="{wire('projSettings.export.linux')}")
+                    input(type="checkbox" checked="{projSettings.export.linux}" onchange="{wire('this.projSettings.export.linux')}")
                     svg.icon
                         use(xlink:href="data/icons.svg#linux")
                     |   Linux
                 label.checkbox(disabled="{process.platform === 'win32'}" title="{process.platform === 'win32' && voc.cannotBuildForMacOnWin}")
-                    input(type="checkbox" checked="{projSettings.export.mac}" onchange="{wire('projSettings.export.mac')}")
+                    input(type="checkbox" checked="{projSettings.export.mac}" onchange="{wire('this.projSettings.export.mac')}")
                     svg.icon
                         use(xlink:href="data/icons.svg#apple")
                     |   MacOS
                 label.checkbox
-                    input(type="checkbox" checked="{projSettings.export.windows}" onchange="{wire('projSettings.export.windows')}")
+                    input(type="checkbox" checked="{projSettings.export.windows}" onchange="{wire('this.projSettings.export.windows')}")
                     svg.icon
                         use(xlink:href="data/icons.svg#windows")
                     |   Windows
