@@ -115,6 +115,11 @@ debugger-screen-embedded(class="{opts.class} {flexrow: verticalLayout, flexcol: 
 
         /* Bootstrap preview and debug views */
         this.on('mount', () => {
+            this.refs.gameView.addEventListener('permissionrequest', function(e) {
+                if (e.permission === 'fullscreen') {
+                    e.request.allow();
+                }
+            });
             this.refs.gameView.addEventListener('contentload', () => {
                 this.refs.devtoolsView.addEventListener('contentload', () => {
                     this.refs.devtoolsView.executeScript({

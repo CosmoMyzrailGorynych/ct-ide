@@ -285,21 +285,17 @@ types:
     depth: 100
     oncreate: ''
     onstep: |-
-      if (ct.mouse.pressed) {
-          if (ct.u.prect(ct.mouse.x, ct.mouse.y, this)) {
-              ct.fittoscreen.toggleFullscreen();
-          }
+      if (ct.mouse.pressed && ct.mouse.hoversUi(this)) {
+          ct.fittoscreen.toggleFullscreen();
       }
 
-      if (ct.touch.enabled) {
-          if (ct.u.prect(ct.touch.x, ct.touch.y, this)) {
-              ct.fittoscreen.toggleFullscreen();
-          }
+      if (ct.touch.enabled && ct.touch.hoversUi(this)) {
+          ct.fittoscreen.toggleFullscreen();
       }
     ondraw: 'this.gotoAndStop(ct.fittoscreen.getIsFullscreen()? 1 : 0);'
     ondestroy: ''
     uid: 8a4b8de4-7729-4936-bc7b-bc277a512975
-    lastmod: 1586186372422
+    lastmod: 1596761320719
     extends: {}
     texture: d161a39a-203e-4099-99e2-41385d94f975
   - name: CoinWidget
@@ -387,7 +383,7 @@ types:
     uid: 86f037f0-9a1c-4306-9d67-00be01bbd793
     texture: b5121b5f-8109-45c0-9fa4-44f9f10ce88c
     extends: {}
-    lastmod: 1586656259157
+    lastmod: 1596761326225
   - name: TryAgain
     depth: 0
     oncreate: ''
@@ -495,7 +491,7 @@ rooms:
         texture: fd9d7012-6826-4368-8fe5-0385b72bc902
     uid: b0f0ff4d-a155-4d68-a86e-5bb7ed8973ab
     grid: 35
-    lastmod: 1586161145705
+    lastmod: 1596761297056
     thumbnail: 1
     tiles:
       - depth: -10
@@ -1340,6 +1336,7 @@ rooms:
               - 1
               - 1
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
+        extends: {}
       - depth: -20
         tiles:
           - x: 70
@@ -1470,6 +1467,7 @@ rooms:
               - 1
               - 1
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
+        extends: {}
     gridX: 35
     gridY: 35
     copies:
@@ -1679,6 +1677,7 @@ rooms:
     tiles:
       - depth: -10
         tiles: []
+        extends: {}
     copies:
       - x: 512
         'y': 256
@@ -1738,6 +1737,7 @@ rooms:
     tiles:
       - depth: -10
         tiles: []
+        extends: {}
     copies:
       - x: 512
         'y': 256
@@ -1802,39 +1802,41 @@ rooms:
     tiles:
       - depth: -10
         tiles: []
+        extends: {}
     uid: cc861d50-35d6-4687-b789-5768eedfd438
     thumbnail: 5768eedfd438
     gridX: 32
     gridY: 64
-    lastmod: 1586161332969
+    lastmod: 1596761311993
 soundtick: 6
 roomtick: 3
 typetick: 12
 styletick: 4
 starting: 0
 settings:
-  minifyhtmlcss: true
-  minifyjs: false
-  title: Catformer
-  author: Cosmo Myzrail Gorynych
-  site: 'https://ctjs.rocks'
-  fps: 30
-  version:
-    - 0
-    - 0
-    - 0
-  versionPostfix: ''
   export:
     linux: true
-    windows: true
-    mac: true
-  maxFPS: 60
-  highDensity: true
+    windows: false
+    mac: false
   branding:
     icon: -1
     accent: '#446adb'
     invertPreloaderScheme: true
-  desktopMode: maximized
+  rendering:
+    maxFPS: 60
+    pixelatedrender: false
+    highDensity: true
+    usePixiLegacy: true
+    desktopMode: maximized
+  authoring:
+    title: Catformer
+    author: Cosmo Myzrail Gorynych
+    site: 'https://ctjs.rocks'
+    version:
+      - 0
+      - 0
+      - 0
+    versionPostfix: ''
 palette:
   - '#257073'
 startroom: b0f0ff4d-a155-4d68-a86e-5bb7ed8973ab
@@ -1873,7 +1875,7 @@ scripts:
               depth: 1000
           });
       }
-ctjsVersion: 1.3.0
+ctjsVersion: 1.3.2
 fonts: []
 skeletons: []
 actions:
