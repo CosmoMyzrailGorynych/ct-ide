@@ -81,6 +81,19 @@ class Camera extends PIXI.DisplayObject {
         this.getBounds = this.getBoundingBox;
     }
 
+    get scale() {
+        return this.transform.scale;
+    }
+    set scale(value) {
+        if (typeof value === 'number') {
+            value = {
+                x: value,
+                y: value
+            };
+        }
+        this.transform.scale.copyFrom(value);
+    }
+
     /**
      * Moves the camera to a new position. It will have a smooth transition
      * if a `drift` parameter is set.
