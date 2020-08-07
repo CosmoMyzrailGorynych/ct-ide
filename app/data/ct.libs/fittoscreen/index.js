@@ -61,6 +61,14 @@
         }
     };
     var toggleFullscreen = function () {
+        try {
+            // Are we in Electron?
+            const win = require('electron').remote.BrowserWindow.getFocusedWindow();
+            win.setFullScreen(!win.isFullScreen());
+            return;
+        } catch (e) {
+            void e; // Continue with web approach
+        }
         var canvas = document.fullscreenElement ||
                      document.webkitFullscreenElement ||
                      document.mozFullScreenElement ||
@@ -113,6 +121,13 @@
     });
     ct.fittoscreen.mode = $mode;
     ct.fittoscreen.getIsFullscreen = function getIsFullscreen() {
+        try {
+            // Are we in Electron?
+            const win = require('electron').remote.BrowserWindow.getFocusedWindow;
+            return win.isFullScreen;
+        } catch (e) {
+            void e; // Continue with web approach
+        }
         return document.fullscreen || document.webkitIsFullScreen || document.mozFullScreen;
     };
 })(ct);
