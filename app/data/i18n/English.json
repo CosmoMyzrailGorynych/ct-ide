@@ -364,7 +364,8 @@
         "strokeweight": "Line weight:",
         "testtext": "Test text 0123 +",
         "textWrap": "Word wrap",
-        "textWrapWidth": "Max width:"
+        "textWrapWidth": "Max width:",
+        "useCustomFont": "Use custom font…"
     },
     "fonts": {
         "fonts": "Fonts",

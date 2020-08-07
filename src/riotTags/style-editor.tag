@@ -15,13 +15,19 @@ style-editor.panel.view
             #stylefont.tabbed(show="{tab === 'stylefont'}")
                 #stylefontinner
                     fieldset
-                        b {voc.fontfamily}
-                        input#fontfamily.wide(type="text" value="{styleobj.font.family || 'sans-serif'}" onchange="{wire('this.styleobj.font.family')}")
-                        .fifty.npl.npt
+                        label
+                            b {voc.fontfamily}
+                            input#fontfamily.wide(type="text" value="{styleobj.font.family || 'sans-serif'}" onchange="{wire('this.styleobj.font.family')}")
+                        button(onclick="{openCustomFontSelector}")
+                            svg.feather
+                                use(xlink:href="data/icons.svg#font")
+                            span {voc.useCustomFont}
+                        .clear
+                        label.fifty.npl.nmt
                             b {voc.fontsize}
                             br
                             input#fontsize.wide(type="number" value="{styleobj.font.size || '12'}" onchange="{wire('this.styleobj.font.size')}" oninput="{wire('this.styleobj.font.size')}" step="1")
-                        .fifty.npr.npt
+                        label.fifty.npr.nmt
                             b {voc.fontweight}
                             br
                             select.wide(value="{styleobj.font.weight}" onchange="{wire('this.styleobj.font.weight')}")
@@ -125,7 +131,7 @@ style-editor.panel.view
                     use(xlink:href="data/icons.svg#check")
                 span {voc.apply}
     #stylepreview.tall(ref="canvasSlot")
-    texture-selector(if="{selectingTexture}" onselected="{applyTexture}" ref="textureselector")
+    font-selector(if="{selectingFont}" onselected="{applyFont}" oncancelled="{cancelCustomFontSelector}")
     script.
         const fs = require('fs-extra');
 
@@ -189,6 +195,21 @@ style-editor.panel.view
         });
 
         this.selectingTexture = false;
+
+        this.openCustomFontSelector = () => {
+            this.selectingFont = true;
+        };
+        this.cancelCustomFontSelector = () => {
+            this.selectingFont = false;
+            this.update();
+        };
+        this.applyFont = font => () => {
+            this.selectingFont = false;
+            this.styleobj.font.family = `"CTPROJFONT${font.typefaceName}", "${font.typefaceName}", sans-serif`;
+            this.styleobj.font.weight = font.weight;
+            this.styleobj.font.italic = font.italic;
+            this.update();
+        };
 
         this.styleSetAlign = align => () => {
             this.styleobj.font.halign = align;
