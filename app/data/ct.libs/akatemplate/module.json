@@ -17,21 +17,21 @@
             "key": "toptop",
             "id": "toptop",
             "default": " ",
-            "type": "textfield"
+            "type": "code"
         },
         {
             "name": "HTML bottom",
             "key": "botbot",
             "id": "botbot",
             "default": " ",
-            "type": "textfield"
+            "type": "code"
         },
         {
             "name": "CSS",
             "key": "csscss",
             "id": "csscss",
             "default": " ",
-            "type": "textfield"
+            "type": "code"
         }
     ]
 }

@@ -17,6 +17,6 @@
         "id": "spritedef",
         "desc": "Place your `ct.sprite` calls here",
         "default": "",
-        "type": "textfield"
+        "type": "code"
     }]
 }

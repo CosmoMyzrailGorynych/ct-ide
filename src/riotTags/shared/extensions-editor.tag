@@ -22,7 +22,7 @@
     declare interface IExtensionField {
         name: string, // the displayed name.
         // Below 'h1', 'h2', 'h3', 'h4' are purely decorational, for grouping fields. Others denote the type of an input field.
-        type: 'h1' | 'h2' | 'h3' | 'h4' | 'text' | 'textbox' | 'number' | 'point2D' | 'checkbox' | 'radio' | 'texture' | 'type',
+        type: 'h1' | 'h2' | 'h3' | 'h4' | 'text' | 'textfield' | 'code' | 'number' | 'point2D' | 'checkbox' | 'radio' | 'texture' | 'type',
         key?: string, // the name of a JSON key to write into the `opts.entity`. Not needed for hN types, but required otherwise
                       // The key may have special suffixes that tell the exporter to unwrap foreign keys (resources' UIDs) into asset names.
                       // These are supposed to always be used with `'type'` and `'texture'` input types.
@@ -101,6 +101,12 @@ extensions-editor
                 )
                 textarea(
                     if="{ext.type === 'textfield'}"
+                    class="{compact: parent.opts.compact, wide: parent.opts.wide}"
+                    value="{parent.opts.entity[ext.key] || ext.default}"
+                    onchange="{wire('this.opts.entity.'+ ext.key)}"
+                )
+                textarea.monospace(
+                    if="{ext.type === 'code'}"
                     class="{compact: parent.opts.compact, wide: parent.opts.wide}"
                     value="{parent.opts.entity[ext.key] || ext.default}"
                     onchange="{wire('this.opts.entity.'+ ext.key)}"
