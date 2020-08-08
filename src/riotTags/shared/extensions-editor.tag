@@ -4,7 +4,7 @@
 
     @attribute entity (riot object)
         An object to which apply editing to.
-    @attribute type (string, 'type'|'tileLayer')
+    @attribute type (string, 'type'|'tileLayer'|'room')
         The type of the edited asset. Not needed if customextends is set.
 
     @attribute [compact] (atomic)

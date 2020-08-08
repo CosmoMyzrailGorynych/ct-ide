@@ -17,12 +17,16 @@ class Room extends PIXI.Container {
             ct.room = ct.rooms.current = this;
         }
         if (template) {
+            if (template.extends) {
+                ct.u.ext(this, template.extends);
+            }
             this.onCreate = template.onCreate;
             this.onStep = template.onStep;
             this.onDraw = template.onDraw;
             this.onLeave = template.onLeave;
             this.template = template;
             this.name = template.name;
+            /*%beforeroomoncreate%*/
             for (let i = 0, li = template.bgs.length; i < li; i++) {
                 const bg = new ct.types.Background(
                     template.bgs[i].texture,
@@ -277,7 +281,6 @@ class Room extends PIXI.Container {
                 ct.roomHeight
             );
             ct.pixiApp.renderer.resize(template.width, template.height);
-            /*%beforeroomoncreate%*/
             ct.rooms.current = ct.room = new Room(template);
             ct.stage.addChild(ct.room);
             ct.room.onCreate();

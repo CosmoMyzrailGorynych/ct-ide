@@ -5,15 +5,6 @@ room-editor.panel.view
             br
             input.wide(type="text" value="{room.name}" onchange="{wire('this.room.name')}")
             .anErrorNotice(if="{nameTaken}" ref="errorNotice") {vocGlob.nametaken}
-            .fifty.npt.npb.npl
-                b {voc.width}
-                br
-                input.wide(type="number" value="{room.width}" onchange="{wire('this.room.width')}")
-            .fifty.npt.npb.npr
-                b {voc.height}
-                br
-                input.wide(type="number" value="{room.height}" onchange="{wire('this.room.height')}")
-            br
             button.wide(onclick="{openRoomEvents}")
                 svg.feather(if="{room.oncreate || room.onstep || room.ondestroy || room.ondraw}")
                     use(xlink:href="data/icons.svg#check")
@@ -21,13 +12,38 @@ room-editor.panel.view
         .palette
             .tabwrap
                 ul.tabs.nav.noshrink.nogrow
-                    li(onclick="{changeTab('roomcopies')}" class="{active: tab === 'roomcopies'}") {voc.copies}
-                    li(onclick="{changeTab('roombackgrounds')}" class="{active: tab === 'roombackgrounds'}") {voc.backgrounds}
-                    li(onclick="{changeTab('roomtiles')}" class="{active: tab === 'roomtiles'}") {voc.tiles}
+                    li(onclick="{changeTab('roomcopies')}" title="{voc.copies}" class="{active: tab === 'roomcopies'}")
+                        svg.feather
+                            use(xlink:href="data/icons.svg#type")
+                        span(show="{sidebarWidth > 500}") {voc.copies}
+                    li(onclick="{changeTab('roombackgrounds')}" title="{voc.backgrounds}" class="{active: tab === 'roombackgrounds'}")
+                        svg.feather
+                            use(xlink:href="data/icons.svg#image")
+                        span(show="{sidebarWidth > 500}") {voc.backgrounds}
+                    li(onclick="{changeTab('roomtiles')}" title="{voc.tiles}" class="{active: tab === 'roomtiles'}")
+                        svg.feather
+                            use(xlink:href="data/icons.svg#texture")
+                        span(show="{sidebarWidth > 500}") {voc.tiles}
+                    li(onclick="{changeTab('properties')}" title="{voc.properties}" class="{active: tab === 'properties'}")
+                        svg.feather
+                            use(xlink:href="data/icons.svg#settings")
+                        span(show="{sidebarWidth > 500}") {voc.properties}
                 .relative
                     room-type-picker(show="{tab === 'roomcopies'}" current="{currentType}")
                     room-backgrounds-editor(show="{tab === 'roombackgrounds'}" room="{room}")
                     room-tile-editor(show="{tab === 'roomtiles'}" room="{room}")
+                    .pad.panel(show="{tab === 'properties'}")
+                        .fifty.npt.npb.npl
+                            b {voc.width}
+                            br
+                            input.wide(type="number" value="{room.width}" onchange="{wire('this.room.width')}")
+                        .fifty.npt.npb.npr
+                            b {voc.height}
+                            br
+                            input.wide(type="number" value="{room.height}" onchange="{wire('this.room.height')}")
+                        .clear
+                        extensions-editor(entity="{this.room.extends}" type="room" wide="aye" compact="sure")
+
         .done.nogrow
             button.wide#roomviewdone(onclick="{roomSave}")
                 svg.feather
@@ -121,6 +137,9 @@ room-editor.panel.view
         this.mixin(window.roomTileTools);
 
         this.room = this.opts.room;
+        if (!this.room.extends) {
+            this.room.extends = {};
+        }
 
         this.mouseX = this.mouseY = 0;
         this.roomx = this.room.width / 2;

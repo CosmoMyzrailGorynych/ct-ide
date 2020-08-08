@@ -77,7 +77,8 @@ ct.rooms.templates['${r.name}'] = {
     },
     onCreate() {
         ${proj.rooms[k].oncreate}
-    }
+    },
+    extends: ${proj.rooms[k].extends ? JSON.stringify(getUnwrappedExtends(proj.rooms[k].extends), null, 4) : '{}'}
 }`;
     }
     return roomsCode;
