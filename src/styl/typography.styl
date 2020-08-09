@@ -1,39 +1,53 @@
 h1, h2, h3, h4, h5, h6
     margin-bottom 0
     color accent1
-h3, h4, h5, h6, h2
+h2, h3
     font-weight 400
+h4, h5, h6
+    font-weight 700
 h1
     font-weight 300
 a, .a
     color act
     cursor pointer
     text-decoration none
-    trans
+    {trans}
     &:hover
         color accent1
+    &.error
+        color error
+    &.success
+        color success
+    &.warning
+        color warning
+    .error, .success, .warning
+        &:hover
+            opacity 0.8
 dd
     margin 0
 dt
     font-weight 500
 
 pre
-    background snow
-    border 1px solid bd
+    background backgroundDeeper
+    border 1px solid borderBright
     border-radius br
     padding 0.4em 0.8em
     font-family font-mono
     overflow auto
     max-height 30rem
+textarea.monospace
+    font-family font-mono
+    width 100%
 code
     font-family font-mono
     &.inline, p > &, li > &
         padding 1.5px 0.5rem
         margin 0 0.25rem
         border-radius br
-        background bl
-        border 1px solid bd
-        text-shadow 0 1px 0 rgba(white, 0.65)
+        background borderPale
+        border 1px solid borderBright
+        text-shadow 0 1px 0 rgba(background, 0.65)
         .active &
             color act
 
@@ -41,3 +55,12 @@ code
     line-height 1.5
     opacity 0.8
     margin 0
+
+blockquote
+    border-left 2px solid accent1
+    margin 1rem 0
+    padding 1rem 2rem
+    p:first-child
+        margin-top 0
+    p:last-child
+        margin-bottom 0

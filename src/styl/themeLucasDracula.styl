@@ -1,0 +1,70 @@
+@charset "utf-8"
+
+foreground = #DAD6DA
+text = #DAD6DA
+background = #161427
+backgroundDeeper = #11111f
+borderBright = #282646
+borderPale = mix(background, borderBright, 50%)
+
+/* Frequently used properties */
+trans =
+    transition 0.35s ease all
+transshort =
+    transition 0.15s ease all
+shad =
+    box-shadow 0 0.1rem 0.2rem rgba(0, 0, 0, 0.5)
+shadamb =
+    box-shadow 0 0 0.35rem rgba(0, 0, 0, 0.5)
+
+/* Base fonts for UI */
+fonts = font = 'Open Sans', sans-serif, serif
+font-mono = mono = Iosevka, monospace
+
+br = 0.2rem
+iconsize = 1.5rem
+
+/* Colors used by this theme */
+act = #FFCFD4
+acttext = act
+accent1 = #FF70B1
+accent2 = #c38bf7
+error = #FF5370
+red = error
+success = #26E19F
+green = success
+warning = #f07178
+orange = warning
+
+theme = 'LucasDracula'
+themeDark = true
+
+@require 'hvost.styl'
+
+@require '3rdParty/*.styl'
+@require './../../app/node_modules/highlight.js/styles/atom-one-dark.css'
+
+@require 'common.styl'
+@require 'inputs.styl'
+@require 'typography.styl'
+@require 'confetti.styl'
+@require 'buildingBlocks.styl'
+@require 'tabs.styl'
+
+#moduleinfo .bigpower:not(.off)
+    border-color success
+    &:after
+        background success
+
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+.button,
+.selectbox
+    &:hover, &.active, &:active, &.selected
+        color backgroundDeeper
+        svg
+            color backgroundDeeper
+
+@require 'tags/**/*.styl'

@@ -54,7 +54,7 @@ module.exports = new Promise((resolve, reject) => {
                 },
                 assets: {
                     pattern: /^:(briefcase|bento):/,
-                    header: '### 🍱 Demos and Stuff'
+                    header: '### 🍱 Demos, Dependencies and Stuff'
                 },
                 docs: {
                     pattern: /^:(books|pencil|pencil2|memo):/,

@@ -1,4 +1,5 @@
 const glob = require('./../glob');
+const {getUnwrappedExtends} = require('./utils');
 
 const getStartingRoom = proj => {
     let [startroom] = proj.rooms; // picks the first room by default
@@ -34,7 +35,8 @@ const stringifyRooms = proj => {
             for (const tileLayer of r.tiles) {
                 const layer = {
                     depth: tileLayer.depth,
-                    tiles: []
+                    tiles: [],
+                    extends: tileLayer.extends ? getUnwrappedExtends(tileLayer.extends) : {}
                 };
                 for (const tile of tileLayer.tiles) {
                     for (let x = 0; x < tile.grid[2]; x++) {
@@ -42,9 +44,9 @@ const stringifyRooms = proj => {
                             const texture = glob.texturemap[tile.texture].g;
                             layer.tiles.push({
                                 texture: texture.name,
-                                frame: tile.grid[0] + x + (y+tile.grid[1])*texture.grid[0],
-                                x: tile.x + x*(texture.width + texture.marginx),
-                                y: tile.y + y*(texture.height + texture.marginy),
+                                frame: tile.grid[0] + x + (y + tile.grid[1]) * texture.grid[0],
+                                x: tile.x + x * (texture.width + texture.marginx),
+                                y: tile.y + y * (texture.height + texture.marginy),
                                 width: texture.width,
                                 height: texture.height
                             });
@@ -75,7 +77,8 @@ ct.rooms.templates['${r.name}'] = {
     },
     onCreate() {
         ${proj.rooms[k].oncreate}
-    }
+    },
+    extends: ${proj.rooms[k].extends ? JSON.stringify(getUnwrappedExtends(proj.rooms[k].extends), null, 4) : '{}'}
 }`;
     }
     return roomsCode;

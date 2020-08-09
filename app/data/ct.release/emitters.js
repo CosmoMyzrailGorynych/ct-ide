@@ -9,19 +9,20 @@
  *
  * @property {ISimplePoint} [scale] Optional scaling object with `x` and `y` parameters.
  * @property {ISimplePoint} [position] Set this to additionally shift the emitter tandem relative
- *           to the copy it was attached to, or relative to the copy it follows.
+ * to the copy it was attached to, or relative to the copy it follows.
  * @property {number} [prewarmDelay] Optional; if less than 0, it will prewarm the emitter tandem,
- *           meaning that it will simulate a given number of seconds before
- *           showing particles in the world. If greater than 0, will postpone
- *           the effect for the specified number of seconds.
+ * meaning that it will simulate a given number of seconds before
+ * showing particles in the world. If greater than 0, will postpone
+ * the effect for the specified number of seconds.
  * @property {number} [tint] Optional tint to the whole effect.
  * @property {number} [alpha] Optional opacity set to the whole effect.
  * @property {number} [rotation] Optional rotation in degrees.
  * @property {boolean} [isUi] If set to true, will use the time scale of UI layers. This affects
- *           how an effect is simulated during slowmo effects and game pause.
- * @property {number} [depth] The depth of the tandem. Defaults to Infinity (will overlay everything).
- * @property {Room} [room] The room to attach the effect to. Defaults to the current main room (ct.room);
- *           has no effect if attached to a copy.
+ * how an effect is simulated during slowmo effects and game pause.
+ * @property {number} [depth] The depth of the tandem. Defaults to Infinity
+ * (will overlay everything).
+ * @property {Room} [room] The room to attach the effect to.
+ * Defaults to the current main room (ct.room); has no effect if attached to a copy.
  */
 
 /**
@@ -33,7 +34,8 @@
  */
 class EmitterTandem extends PIXI.Container {
     /**
-     * Creates a new emitter tandem. This method should not be called directly; better use the methods of `ct.emitters`.
+     * Creates a new emitter tandem. This method should not be called directly;
+     * better use the methods of `ct.emitters`.
      * @param {object} tandemData The template object of the tandem, as it was exported from ct.IDE.
      * @param {ITandemSettings} opts Additional settings applied to the tandem
      * @constructor
@@ -103,7 +105,7 @@ class EmitterTandem extends PIXI.Container {
             }
         }
         // eslint-disable-next-line no-underscore-dangle
-       if ((this.appendant && this.appendant._destroyed) || this.kill || !this.emitters.length) {
+        if ((this.appendant && this.appendant._destroyed) || this.kill || !this.emitters.length) {
             this.emit('done');
             if (this.isUi) {
                 ct.emitters.uiTandems.splice(ct.emitters.uiTandems.indexOf(this), 1);
@@ -116,7 +118,7 @@ class EmitterTandem extends PIXI.Container {
         if (this.frozen) {
             return;
         }
-        const s = (this.isUi? PIXI.Ticker.shared.elapsedMS : PIXI.Ticker.shared.deltaMS) / 1000;
+        const s = (this.isUi ? PIXI.Ticker.shared.elapsedMS : PIXI.Ticker.shared.deltaMS) / 1000;
         for (const delayed of this.delayed) {
             delayed.value -= s;
             if (delayed.value <= 0) {
@@ -205,10 +207,9 @@ class EmitterTandem extends PIXI.Container {
             emitter.updateSpawnPos(ownDelta[0], ownDelta[1]);
         }
     }
-
 }
 
-(function () {
+(function emittersAddon() {
     const defaultSettings = {
         prewarmDelay: 0,
         scale: {
@@ -270,7 +271,8 @@ class EmitterTandem extends PIXI.Container {
             return tandem;
         },
         /**
-         * Creates a new emitter tandem and attaches it to the given copy (or to any other DisplayObject).
+         * Creates a new emitter tandem and attaches it to the given copy
+         * (or to any other DisplayObject).
          * @param {Copy|PIXI.DisplayObject} parent The parent of the created tandem.
          * @param {string} name The name of the tandem template.
          * @param {ITandemSettings} [settings] Additional options for the created tandem.

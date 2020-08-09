@@ -10,30 +10,30 @@
         Called when a user drags a curve's point.
         Passes the whole curve and an edited point as its arguments.
 
-    @attribute lockstarttime (atomic)
+    @attribute [lockstarttime] (atomic)
         Locks the time of the firts point in the curve.
         Also, it forbids the deletion of this point.
-    @attribute lockendtime (atomic)
+    @attribute [lockendtime] (atomic)
         Locks the time of the last point in the curve.
         Also, it forbids the deletion of this point.
-    @attribute lockstartvalue (atomic)
+    @attribute [lockstartvalue] (atomic)
         Locks the value of the first point in the curve.
         Also, it forbids the deletion of this point.
-    @attribute lockendvalue (atomic)
+    @attribute [lockendvalue] (atomic)
         Locks the value of the last point in the curve.
         Also, it forbids the deletion of this point.
 
-    @attribute timestep (number)
+    @attribute [timestep] (number)
         A step size for a manual point editor. Defaults to 0.01.
-    @attribute valuestep (number)
+    @attribute [valuestep] (number)
         A step size for a manual point editor. Defaults to 0.01.
 
-    @attribute type (string, 'float'|'color')
+    @attribute [type] (string, 'float'|'color')
         Defaults to 'float'; if set to 'color', requires
         an attribute `colorcurve` to be set and allows for color editing.
-    @attribute easing (string, 'linear'|'none')
+    @attribute [easing] (string, 'linear'|'none')
         Defaults to 'linear'.
-    @attribute coloreasing (string, 'linear'|'none')
+    @attribute [coloreasing] (string, 'linear'|'none')
         Defaults to 'linear'.
 
 curve-editor(ref="root")
@@ -135,10 +135,11 @@ curve-editor(ref="root")
                 )
             .clear
     script.
+        /* global net */
         this.namespace = 'curveEditor';
         this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
-        const Color = net.brehaut.Color;
+        const brehautColor = net.brehaut.Color;
 
         this.uid = require('./data/node_requires/generateGUID')();
 
@@ -162,7 +163,7 @@ curve-editor(ref="root")
             this.update();
         };
 
-        this.selectedPoint = this.opts.curve[0];
+        [this.selectedPoint] = this.opts.curve;
 
         this.niceNumber = number => {
             if (number < 10 && number > -10) {
@@ -171,9 +172,9 @@ curve-editor(ref="root")
             return Math.round(number);
         };
         this.updateLayout = () => {
-            this.selectedPoint = this.opts.curve[0];
+            [this.selectedPoint] = this.opts.curve;
             if (this.opts.colorcurve) {
-                this.selectedColorPoint = this.opts.colorcurve[0];
+                [this.selectedColorPoint] = this.opts.colorcurve;
             }
             const box = this.refs.root.getBoundingClientRect();
             this.curve = this.opts.curve || [{
@@ -193,10 +194,6 @@ curve-editor(ref="root")
         };
         setTimeout(this.updateLayout, 0);
 
-        const pointToLocation = point => ({
-            x: point.time * this.width,
-            y: (1 - (point.value - this.min) / this.max) * height
-        });
         let startMoveX, startMoveY, oldTime, oldValue;
         this.startMoving = point => e => {
             this.selectedPoint = point;
@@ -259,19 +256,25 @@ curve-editor(ref="root")
                 // Find the two points surrounding a new one for blending
                 for (let i = 1; i < this.opts.curve.length; i++) {
                     if (this.opts.colorcurve[i].time > point.time) {
-                        fromPoint = this.opts.colorcurve[i-1];
-                        toPoint = this.opts.colorcurve[i]
+                        fromPoint = this.opts.colorcurve[i - 1];
+                        toPoint = this.opts.colorcurve[i];
                         break;
                     }
                 }
                 if (!fromPoint || !toPoint) {
                     return;
                 }
-                const color1 = Color('#' + fromPoint.value),
-                      color2 = Color('#' + toPoint.value);
+                // eslint-disable-next-line new-cap
+                const color1 = brehautColor('#' + fromPoint.value),
+                      // eslint-disable-next-line new-cap
+                      color2 = brehautColor('#' + toPoint.value);
+                const mixedColor = (point.time - fromPoint.time) / (toPoint.time - fromPoint.time);
                 this.opts.colorcurve.push({
                     time: point.time,
-                    value: color1.blend(color2, (point.time - fromPoint.time) / (toPoint.time - fromPoint.time)).toString().slice(1)
+                    value: color1
+                        .blend(color2, mixedColor)
+                        .toString()
+                        .slice(1)
                 });
                 this.opts.colorcurve.sort((a, b) => a.time - b.time);
             }
@@ -298,9 +301,9 @@ curve-editor(ref="root")
                     o.colorcurve.splice(ind, 1);
                 }
                 if (spliced[0] === this.selectedPoint) {
-                    this.selectedPoint = o.curve[0];
+                    [this.selectedPoint] = o.curve;
                     if (this.opts.type === 'color') {
-                        this.selectedColorPoint = o.colorcurve[0];
+                        [this.selectedColorPoint] = o.colorcurve;
                     }
                 }
                 if (this.opts.onchange) {
@@ -309,7 +312,7 @@ curve-editor(ref="root")
             }
         };
 
-        const onMouseUp = e => {
+        const onMouseUp = () => {
             this.movedPoint = false;
         };
         this.on('mount', () => {
@@ -319,8 +322,7 @@ curve-editor(ref="root")
             document.removeEventListener('mouseup', onMouseUp);
         });
 
-        this.getPointTop = point => {
-            return (1 - (point.value - this.min) / (this.max-this.min)) * this.height;
-        };
+        this.getPointTop = point =>
+            (1 - (point.value - this.min) / (this.max - this.min)) * this.height;
         this.getPointLeft = point =>
             (point.time - this.minTime) / this.maxTime * this.width;

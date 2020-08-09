@@ -1,6 +1,7 @@
 {
   "main": {
     "name": "Gamepad",
+    "tagline": "Connect your gamepad to the Actions system.",
     "version": "1.0.0",
     "packageName": "gamepad",
     "authors": [
@@ -15,6 +16,9 @@
         "name": "Comigo",
         "mail": "admin@nersta.ru"
       }
+    ],
+    "categories": [
+      "inputs"
     ]
   },
   "inputMethods": {

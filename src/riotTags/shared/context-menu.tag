@@ -53,7 +53,9 @@ context-menu(class="{opened: opts.menu.opened}" ref="root" style="{opts.menu.col
             if (e.item.item.submenu && e.target.closest('context-menu') === this.root) { // prevent closing if a label with a submenu was clicked *directly*
                 e.stopPropagation();
             }
-            if (e.item.item.click) { // first `item` is a riot's reference to all looped vars, second is var's name in markup
+            // first `item` is a riot's reference to all looped vars,
+            // second is var's name in markup
+            if (e.item.item.click) {
                 e.item.item.click();
                 e.stopPropagation();
             }
@@ -109,7 +111,7 @@ context-menu(class="{opened: opts.menu.opened}" ref="root" style="{opts.menu.col
             } else {
                 e.stopPropagation();
             }
-        }
+        };
         this.on('mount', () => {
             document.addEventListener('click', clickListener);
         });

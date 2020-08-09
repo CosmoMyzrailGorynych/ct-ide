@@ -1,27 +1,33 @@
 @charset "utf-8"
 
-// минимальная ширина шаблона - 380 пикс
+foreground = #fff
+text = #C8CECD
+background = #0c0d17
+backgroundDeeper = #07060E
+shadows = #000
 
-/* частотники */
+borderPale = #142035
+borderBright = #213548
+
+
+/* Frequently used properties */
 trans =
     transition 0.35s ease all
 transshort =
     transition 0.15s ease all
 shad =
-    box-shadow 0 0.1rem 0.2rem rgba(0, 0, 0, 0.5)
+    box-shadow 0 0.1rem 0.2rem rgba(shadows, 0.5)
 shadamb =
-    box-shadow 0 0 0.35rem rgba(0, 0, 0, 0.5)
+    box-shadow 0 0 0.35rem rgba(shadows, 0.5)
 
-/* шрифты */
+/* Base fonts for UI */
 fonts = font = 'Open Sans', sans-serif, serif
 font-mono = mono = Iosevka, monospace
 
 br = 0.2rem
 iconsize = 1.5rem
 
-/* цвета */
-black = #fff
-white = #08080D
+/* Colors used by this theme */
 act = #44dbb5
 acttext = act
 accent1 = #44dbb5
@@ -36,19 +42,6 @@ orange = warning
 theme = 'Night'
 themeDark = true
 
-.error
-    color error
-.success
-    color success
-.warning
-    color warning
-
-bl = #121822
-bd = #1C2B42
-
-text = #C8CECD
-snow = mix(white, bl, 50%)
-
 @require 'hvost.styl'
 
 @require '3rdParty/*.styl'
@@ -62,3 +55,12 @@ snow = mix(white, bl, 50%)
 @require 'tabs.styl'
 
 @require 'tags/**/*.styl'
+
+grad1 = #079880
+grad2 = #30918b
+grad3 = #286774
+grad4 = #1a3541
+grad5 = #0C0D18
+
+#bg
+    background radial-gradient(ellipse at bottom, grad1 0, grad2 9%, grad3 22%, grad4 43%, grad5 74%)

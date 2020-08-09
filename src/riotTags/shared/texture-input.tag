@@ -5,6 +5,8 @@
         If set, allows to pick an empty texture.
     @attribute val (texture's uid or -1)
         Current input's value
+    @attribute header (string)
+        Passed to the texture selector, showing a header in the top-left corner.
     @attribute onselected (riot function)
         A callback that is called when a texture is selected.
         Passes the texture object and its ID as two arguments.
@@ -18,7 +20,9 @@ texture-input
         if="{selectingTexture}"
         showempty="{opts.showempty}"
         onselected="{onSelected}"
-        oncancelled="{onCancelled}")
+        oncancelled="{onCancelled}"
+        header="{opts.header}"
+    )
     script.
         this.namespace = 'common';
         this.mixin(window.riotVoc);
@@ -28,10 +32,10 @@ texture-input
         this.getTextureFromId = getTextureFromId;
 
         this.val = this.opts.val || -1;
-        this.openSelector = e => {
+        this.openSelector = () => {
             this.selectingTexture = true;
         };
-        this.onSelected = texture => e => {
+        this.onSelected = texture => () => {
             if (this.opts.onselected) {
                 this.opts.onselected(texture, texture.uid);
             }

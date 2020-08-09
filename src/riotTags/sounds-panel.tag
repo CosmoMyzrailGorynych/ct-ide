@@ -21,9 +21,9 @@ sounds-panel.panel.view
         this.sort = 'name';
         this.sortReverse = false;
 
-        this.thumbnails = sound => `data/img/${sound.isMusic? 'music' : 'wave'}.png`;
+        this.thumbnails = sound => `data/img/${sound.isMusic ? 'music' : 'wave'}.png`;
 
-        this.setUpPanel = e => {
+        this.setUpPanel = () => {
             this.searchResults = null;
             this.editing = false;
             this.editedSound = null;
@@ -36,7 +36,7 @@ sounds-panel.panel.view
             window.signals.off('projectLoaded', this.setUpPanel);
         });
 
-        this.soundNew = e => {
+        this.soundNew = () => {
             if (this.editing) {
                 return false;
             }
@@ -50,8 +50,9 @@ sounds-panel.panel.view
             global.currentProject.sounds.push(newSound);
             this.refs.sounds.updateList();
             this.openSound(newSound)();
+            return true;
         };
-        this.openSound = sound => e => {
+        this.openSound = sound => () => {
             this.editedSound = sound;
             this.editing = true;
             this.update();
@@ -65,8 +66,8 @@ sounds-panel.panel.view
                     this.openSound(this.editedSound)();
                 }
             }, {
-                label: languageJSON.common.copyName,
-                click: e => {
+                label: window.languageJSON.common.copyName,
+                click: () => {
                     nw.Clipboard.get().set(this.editedSound.name, 'text');
                 }
             }, {

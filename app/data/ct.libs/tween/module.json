@@ -1,10 +1,15 @@
 {
     "main": {
         "name": "ct.tween",
+        "tagline": "Animate values through time with different interpolation curves.",
         "version": "0.0.1",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",
             "mail": "admin@nersta.ru"
-        }]
+        }],
+        "categories": [
+            "fx",
+            "utilities"
+        ]
     }
 }

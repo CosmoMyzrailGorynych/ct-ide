@@ -49,20 +49,11 @@
         "select": "common.select",
         "zoom": "common.zoom",
         "zoomIn": "common.zoomIn",
-        "zoomOut": "common.zoomOut"
-    },
-    "actionsEditor": {
-        "actions": "actionsEditor.actions",
-        "actionsEditor": "actionsEditor.actionsEditor",
-        "addAction": "actionsEditor.addAction",
-        "addMethod": "actionsEditor.addMethod",
-        "deleteAction": "actionsEditor.deleteAction",
-        "deleteMethod": "actionsEditor.deleteMethod",
-        "inputActionNamePlaceholder": "actionsEditor.inputActionNamePlaceholder",
-        "methodModuleMissing": "actionsEditor.methodModuleMissing",
-        "methods": "actionsEditor.methods",
-        "multiplier": "actionsEditor.multiplier",
-        "noActionsYet": "actionsEditor.noActionsYet"
+        "zoomOut": "common.zoomOut",
+        "clear": "common.clear",
+        "filter": "common.filter",
+        "selectDialogue": "common.selectDialogue",
+        "search": "common.search"
     },
     "colorPicker": {
         "current": "colorPicker.current",
@@ -82,16 +73,7 @@
         "firstrunnotice": "exportPanel.firstrunnotice",
         "log": "exportPanel.log",
         "windowsCrossBuildWarning": "exportPanel.windowsCrossBuildWarning",
-        "launchMode": "exportPanel.launchMode",
-        "launchModes": {
-            "maximized": "exportPanel.launchModes.maximized",
-            "fullscreen": "exportPanel.launchModes.fullscreen",
-            "windowed": "exportPanel.launchModes.windowed"
-        },
         "cannotBuildForMacOnWin": "exportPanel.cannotBuildForMacOnWin"
-    },
-    "inputMethodSelector": {
-        "select": "inputMethodSelector.select"
     },
     "intro": {
         "loading": "intro.loading",
@@ -131,12 +113,10 @@
         "launch": "menu.launch",
         "license": "menu.license",
         "min": "menu.min",
-        "modules": "menu.modules",
         "recentProjects": "menu.recentProjects",
         "rooms": "menu.rooms",
         "save": "menu.save",
         "startScreen": "menu.startScreen",
-        "settings": "menu.settings",
         "sounds": "menu.sounds",
         "successZipExport": "menu.successZipExport",
         "successZipProject": "menu.successZipProject",
@@ -167,51 +147,17 @@
         "disableAcceleration": "menu.disableAcceleration",
         "disableBuiltInDebugger": "menu.disableBuiltInDebugger",
         "visitDiscordForGamedevSupport": "menu.visitDiscordForGamedevSupport",
-        "postAnIssue": "menu.postAnIssue"
-    },
-    "settings": {
-        "actions": "settings.actions",
-        "author": "settings.author",
-        "authoring": "settings.authoring",
-        "cover": "settings.cover",
-        "editActions": "settings.editActions",
-        "exportparams": "settings.exportparams",
-        "framerate": "settings.framerate",
-        "getfile": "settings.getfile",
-        "highDensity": "settings.highDensity",
-        "maxFPS": "settings.maxFPS",
-        "minifyhtmlcss": "settings.minifyhtmlcss",
-        "minifyjs": "settings.minifyjs",
-        "pixelatedrender": "settings.pixelatedrender",
-        "renderoptions": "settings.renderoptions",
-        "settings": "settings.settings",
-        "site": "settings.site",
-        "title": "settings.title",
-        "version": "settings.version",
-        "versionpostfix": "settings.versionpostfix",
-        "scripts": {
-            "addNew": "settings.scripts.addNew",
-            "deleteScript": "settings.scripts.deleteScript",
-            "header": "settings.scripts.header",
-            "newScriptComment": "settings.scripts.newScriptComment",
-            "moveUp": "settings.scripts.moveUp",
-            "moveDown": "settings.scripts.moveDown"
-        },
-        "usePixiLegacy": "settings.usePixiLegacy",
-        "branding": {
-            "heading": "settings.branding.heading",
-            "icon": "settings.branding.icon",
-            "iconNotice": "settings.branding.iconNotice",
-            "accent": "settings.branding.accent",
-            "accentNotice": "settings.branding.accentNotice",
-            "invertPreloaderScheme": "settings.branding.invertPreloaderScheme"
-        }
+        "postAnIssue": "menu.postAnIssue",
+        "restart": "menu.restart",
+        "project": "menu.project",
+        "settings": "menu.settings",
+        "themeSpringSream": "menu.themeSpringSream",
+        "themeLucasDracula": "menu.themeLucasDracula",
+        "openProject": "menu.openProject",
+        "openExample": "menu.openExample"
     },
     "modules": {
         "author": "modules.author",
-        "hasfields": "modules.hasfields",
-        "hasinjects": "modules.hasinjects",
-        "hasinputmethods": "modules.hasinputmethods",
         "help": "modules.help",
         "info": "modules.info",
         "license": "modules.license",
@@ -222,12 +168,30 @@
         "settings": "modules.settings",
         "dependencies": "modules.dependencies",
         "optionalDependencies": "modules.optionalDependencies",
-        "importModules": "modules.importModules"
+        "importModules": "modules.importModules",
+        "enabledModules": "modules.enabledModules",
+        "availableModules": "modules.availableModules",
+        "filter": "modules.filter",
+        "categories": {
+            "customization": "modules.categories.customization",
+            "utilities": "modules.categories.utilities",
+            "media": "modules.categories.media",
+            "misc": "modules.categories.misc",
+            "desktop": "modules.categories.desktop",
+            "motionPlanning": "modules.categories.motionPlanning",
+            "inputs": "modules.categories.inputs",
+            "fx": "modules.categories.fx",
+            "mobile": "modules.categories.mobile",
+            "integrations": "modules.categories.integrations",
+            "tweaks": "modules.categories.tweaks",
+            "networking": "modules.categories.networking"
+        }
     },
     "texture": {
         "create": "texture.create",
         "import": "texture.import",
-        "skeletons": "texture.skeletons"
+        "skeletons": "texture.skeletons",
+        "createType": "texture.createType"
     },
     "textureview": {
         "bgcolor": "textureview.bgcolor",
@@ -309,7 +273,8 @@
         "strokeweight": "styleview.strokeweight",
         "testtext": "styleview.testtext",
         "textWrap": "styleview.textWrap",
-        "textWrapWidth": "styleview.textWrapWidth"
+        "textWrapWidth": "styleview.textWrapWidth",
+        "useCustomFont": "styleview.useCustomFont"
     },
     "fonts": {
         "fonts": "fonts.fonts",
@@ -320,7 +285,23 @@
         "typefacename": "fontview.typefacename",
         "fontweight": "fontview.fontweight",
         "italic": "fontview.italic",
-        "reimport": "fontview.reimport"
+        "reimport": "fontview.reimport",
+        "generateBitmapFont": "fontview.generateBitmapFont",
+        "bitmapFont": "fontview.bitmapFont",
+        "bitmapFontSize": "fontview.bitmapFontSize",
+        "bitmapFontLineHeight": "fontview.bitmapFontLineHeight",
+        "resultingBitmapFontName": "fontview.resultingBitmapFontName",
+        "charset": "fontview.charset",
+        "charsets": {
+            "punctuation": "fontview.charsets.punctuation",
+            "basicLatin": "fontview.charsets.basicLatin",
+            "latinExtended": "fontview.charsets.latinExtended",
+            "cyrillic": "fontview.charsets.cyrillic",
+            "greekCoptic": "fontview.charsets.greekCoptic",
+            "custom": "fontview.charsets.custom",
+            "allInFont": "fontview.charsets.allInFont"
+        },
+        "customCharsetHint": "fontview.customCharsetHint"
     },
     "types": {
         "create": "types.create"
@@ -391,15 +372,16 @@
         "movetilestolayer": "roomview.movetilestolayer",
         "shifttiles": "roomview.shifttiles",
         "findTileset": "roomview.findTileset",
-        "changecopyrotation": "roomview.changecopyrotation"
+        "changecopyrotation": "roomview.changecopyrotation",
+        "properties": "roomview.properties"
     },
     "notepad": {
         "local": "notepad.local",
         "global": "notepad.global",
         "helppages": "notepad.helppages",
-        "backToHome": "notepad.backToHome"
+        "backToHome": "notepad.backToHome",
+        "modulespages": "notepad.modulespages"
     },
-    "preview": {},
     "curveEditor": {
         "curveLineHint": "curveEditor.curveLineHint",
         "dragPointHint": "curveEditor.dragPointHint",
@@ -532,5 +514,67 @@
             "patreon.aboutFillers.15",
             "patreon.aboutFillers.16"
         ]
+    },
+    "docsPanel": {
+        "documentation": "docsPanel.documentation",
+        "reference": "docsPanel.reference"
+    },
+    "settings": {
+        "actions": {
+            "heading": "settings.actions.heading",
+            "actions": "settings.actions.actions",
+            "addAction": "settings.actions.addAction",
+            "addMethod": "settings.actions.addMethod",
+            "deleteAction": "settings.actions.deleteAction",
+            "deleteMethod": "settings.actions.deleteMethod",
+            "inputActionNamePlaceholder": "settings.actions.inputActionNamePlaceholder",
+            "methodModuleMissing": "settings.actions.methodModuleMissing",
+            "methods": "settings.actions.methods",
+            "multiplier": "settings.actions.multiplier",
+            "noActionsYet": "settings.actions.noActionsYet"
+        },
+        "authoring": {
+            "heading": "settings.authoring.heading",
+            "author": "settings.authoring.author",
+            "site": "settings.authoring.site",
+            "title": "settings.authoring.title",
+            "version": "settings.authoring.version",
+            "versionpostfix": "settings.authoring.versionpostfix"
+        },
+        "branding": {
+            "heading": "settings.branding.heading",
+            "accent": "settings.branding.accent",
+            "accentNotice": "settings.branding.accentNotice",
+            "icon": "settings.branding.icon",
+            "iconNotice": "settings.branding.iconNotice",
+            "invertPreloaderScheme": "settings.branding.invertPreloaderScheme"
+        },
+        "modules": {
+            "heading": "settings.modules.heading"
+        },
+        "rendering": {
+            "heading": "settings.rendering.heading",
+            "framerate": "settings.rendering.framerate",
+            "highDensity": "settings.rendering.highDensity",
+            "maxFPS": "settings.rendering.maxFPS",
+            "pixelatedrender": "settings.rendering.pixelatedrender",
+            "usePixiLegacy": "settings.rendering.usePixiLegacy",
+            "desktopBuilds": "settings.rendering.desktopBuilds",
+            "launchMode": "settings.rendering.launchMode",
+            "launchModes": {
+                "maximized": "settings.rendering.launchModes.maximized",
+                "fullscreen": "settings.rendering.launchModes.fullscreen",
+                "windowed": "settings.rendering.launchModes.windowed"
+            }
+        },
+        "scripts": {
+            "heading": "settings.scripts.heading",
+            "addNew": "settings.scripts.addNew",
+            "deleteScript": "settings.scripts.deleteScript",
+            "moveDown": "settings.scripts.moveDown",
+            "moveUp": "settings.scripts.moveUp",
+            "newScriptComment": "settings.scripts.newScriptComment"
+        },
+        "catmodsSettings": "settings.catmodsSettings"
     }
 }

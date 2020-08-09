@@ -1,11 +1,15 @@
 {
     "main": {
         "name": "ct.transition",
+        "tagline": "Add nice and smooth transitions between levels, or whenever you need them.",
         "version": "1.0.0",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",
             "mail": "admin@nersta.ru"
-        }]
+        }],
+        "categories": [
+            "fx"
+        ]
     },
     "dependencies": ["tween"]
 }

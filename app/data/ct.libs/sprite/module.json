@@ -1,11 +1,15 @@
 {
     "main": {
         "name": "Sprite Composer",
+        "tagline": "Create new animations from one sprite, freeing yourself from the necessity to split and stitch frames manually.",
         "version": "1.0.0",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",
             "mail": "admin@nersta.ru"
-        }]
+        }],
+        "categories": [
+            "media"
+        ]
     },
     "fields": [{
         "name": "Sprite definitions",
@@ -13,6 +17,6 @@
         "id": "spritedef",
         "desc": "Place your `ct.sprite` calls here",
         "default": "",
-        "type": "textfield"
+        "type": "code"
     }]
 }

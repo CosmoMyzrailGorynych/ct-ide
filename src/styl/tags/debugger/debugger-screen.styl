@@ -2,7 +2,7 @@
     display flex
     flex-flow row nowrap
     padding 0 0.5rem
-    border-top 1px solid bd
+    border-top 1px solid borderBright
     .debugger-toolbar-aButton
         padding 0.15rem 0.5rem
         flex 1 1 auto
@@ -13,5 +13,8 @@
         height auto
     &.tight .debugger-toolbar-aButton > span
         display none
-debugger-screen #thePreview
-    overflow hidden
+debugger-screen, debugger-screen-embedded
+    #thePreview
+        overflow hidden
+debugger-screen-embedded
+    @extends .tall

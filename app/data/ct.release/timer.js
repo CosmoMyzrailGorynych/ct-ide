@@ -1,4 +1,4 @@
-(function () {
+(function timerAddon() {
     const ctTimerTime = Symbol('time');
     const ctTimerRoomName = Symbol('roomName');
     const ctTimerTimeLeftOriginal = Symbol('timeLeftOriginal');
@@ -15,7 +15,8 @@
          *
          * @param {number} timeMs The length of the timer, **in milliseconds**
          * @param {string|false} [name=false] The name of the timer
-         * @param {boolean} [uiDelta=false] If `true`, it will use `ct.deltaUi` for counting time. if `false`, it will use `ct.delta` for counting time.
+         * @param {boolean} [uiDelta=false] If `true`, it will use `ct.deltaUi` for counting time.
+         * if `false`, it will use `ct.delta` for counting time.
          */
         constructor(timeMs, name = false, uiDelta = false) {
             this[ctTimerRoomName] = ct.room.name || '';
@@ -141,20 +142,22 @@
          * Adds a new timer with a given name
          *
          * @param {number} timeMs The length of the timer, **in milliseconds**
-         * @param {string|false} [name=false] The name of the timer, which you use to access it from `ct.timer.timers`.
+         * @param {string|false} [name=false] The name of the timer, which you use
+         * to access it from `ct.timer.timers`.
          * @returns {CtTimer} The timer
          */
-        add(timeMs, name=false) {
+        add(timeMs, name = false) {
             return new CtTimer(timeMs, name, false);
         },
         /**
          * Adds a new timer with a given name that runs in a UI time scale
          *
          * @param {number} timeMs The length of the timer, **in milliseconds**
-         * @param {string|false} [name=false] The name of the timer, which you use to access it from `ct.timer.timers`.
+         * @param {string|false} [name=false] The name of the timer, which you use
+         * to access it from `ct.timer.timers`.
          * @returns {CtTimer} The timer
          */
-        addUi(timeMs, name=false) {
+        addUi(timeMs, name = false) {
             return new CtTimer(timeMs, name, true);
         },
         /**

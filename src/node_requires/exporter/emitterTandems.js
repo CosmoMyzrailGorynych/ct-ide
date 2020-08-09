@@ -15,4 +15,6 @@ const stringifyTandems = project => {
     return JSON.stringify(tandems, null, '    ');
 };
 
-module.exports = {stringifyTandems};
+module.exports = {
+    stringifyTandems
+};

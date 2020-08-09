@@ -1,10 +1,14 @@
 {
     "main": {
         "name": "ct.random",
+        "tagline": "Compute random stuff!",
         "version": "1.1.0",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",
             "mail": "admin@nersta.ru"
-        }]
+        }],
+        "categories": [
+            "utilities"
+        ]
     }
 }

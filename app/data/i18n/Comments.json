@@ -49,20 +49,11 @@
         "select": "",
         "zoom": "",
         "zoomIn": "",
-        "zoomOut": ""
-    },
-    "actionsEditor": {
-        "actions": "",
-        "actionsEditor": "",
-        "addAction": "",
-        "addMethod": "",
-        "deleteAction": "",
-        "deleteMethod": "",
-        "inputActionNamePlaceholder": "",
-        "methodModuleMissing": "",
-        "methods": "",
-        "multiplier": "",
-        "noActionsYet": ""
+        "zoomOut": "",
+        "clear": "",
+        "filter": "A verb",
+        "selectDialogue": "A verb",
+        "search": "Shown next to a search field"
     },
     "colorPicker": {
         "current": "",
@@ -82,16 +73,7 @@
         "firstrunnotice": "",
         "log": "",
         "windowsCrossBuildWarning": "",
-        "launchMode": "A label before options that set initial game state: maximized, windowed, full-screen",
-        "launchModes": {
-            "maximized": "",
-            "fullscreen": "",
-            "windowed": ""
-        },
         "cannotBuildForMacOnWin": ""
-    },
-    "inputMethodSelector": {
-        "select": ""
     },
     "intro": {
         "loading": "",
@@ -131,12 +113,10 @@
         "launch": "",
         "license": "",
         "min": "",
-        "modules": "",
         "recentProjects": "",
         "rooms": "",
         "save": "",
         "startScreen": "",
-        "settings": "",
         "sounds": "",
         "successZipExport": "",
         "successZipProject": "",
@@ -167,52 +147,18 @@
         "disableAcceleration": "",
         "disableBuiltInDebugger": "",
         "visitDiscordForGamedevSupport": "",
-        "postAnIssue": ""
-    },
-    "settings": {
-        "actions": "",
-        "author": "",
-        "authoring": "",
-        "cover": "",
-        "editActions": "",
-        "exportparams": "",
-        "framerate": "",
-        "getfile": "",
-        "highDensity": "",
-        "maxFPS": "",
-        "minifyhtmlcss": "",
-        "minifyjs": "",
-        "pixelatedrender": "",
-        "renderoptions": "",
+        "postAnIssue": "",
+        "restart": "",
+        "project": "",
         "settings": "",
-        "site": "",
-        "title": "",
-        "version": "",
-        "versionpostfix": "",
-        "scripts": {
-            "addNew": "",
-            "deleteScript": "",
-            "header": "",
-            "newScriptComment": "",
-            "moveUp": "",
-            "moveDown": ""
-        },
-        "usePixiLegacy": "",
-        "branding": {
-            "heading": "",
-            "icon": "",
-            "iconNotice": "",
-            "accent": "",
-            "accentNotice": "",
-            "invertPreloaderScheme": ""
-        }
+        "themeSpringSream": "",
+        "themeLucasDracula": "",
+        "openProject": "",
+        "openExample": ""
     },
     "modules": {
         "author": "",
-        "hasfields": "",
-        "hasinjects": "",
-        "hasinputmethods": "",
-        "help": "",
+        "help": "As a documentation page that has all the methods and properties described",
         "info": "",
         "license": "",
         "logs": "A title of a tab that shows a changelof of a module, when clicked. It can be shorter than modules.log2",
@@ -222,12 +168,30 @@
         "settings": "",
         "dependencies": "",
         "optionalDependencies": "",
-        "importModules": ""
+        "importModules": "",
+        "enabledModules": "",
+        "availableModules": "",
+        "filter": "A noun; a title of the collapsible section with a filtering form inside it",
+        "categories": {
+            "customization": "",
+            "utilities": "",
+            "media": "",
+            "misc": "As \"miscellaneous\"; a noun",
+            "desktop": "",
+            "motionPlanning": "",
+            "inputs": "",
+            "fx": "",
+            "mobile": "",
+            "integrations": "",
+            "tweaks": "",
+            "networking": ""
+        }
     },
     "texture": {
         "create": "",
         "import": "A verb",
-        "skeletons": ""
+        "skeletons": "",
+        "createType": ""
     },
     "textureview": {
         "bgcolor": "",
@@ -309,7 +273,8 @@
         "strokeweight": "",
         "testtext": "It is recommended that you include both a string in your language and in English, as it will help with picking fonts that have multilingual support.",
         "textWrap": "",
-        "textWrapWidth": ""
+        "textWrapWidth": "",
+        "useCustomFont": "Can be worded differently to become shorter; this is a label of a button that opens a dialog with imported TTF fonts."
     },
     "fonts": {
         "fonts": "",
@@ -320,7 +285,23 @@
         "typefacename": "",
         "fontweight": "",
         "italic": "",
-        "reimport": ""
+        "reimport": "",
+        "generateBitmapFont": "",
+        "bitmapFont": "",
+        "bitmapFontSize": "",
+        "bitmapFontLineHeight": "",
+        "resultingBitmapFontName": "",
+        "charset": "",
+        "charsets": {
+            "punctuation": "",
+            "basicLatin": "",
+            "latinExtended": "",
+            "cyrillic": "",
+            "greekCoptic": "",
+            "custom": "Describing a custom set of symbols",
+            "allInFont": ""
+        },
+        "customCharsetHint": ""
     },
     "types": {
         "create": ""
@@ -391,13 +372,15 @@
         "movetilestolayer": "",
         "shifttiles": "",
         "findTileset": "",
-        "changecopyrotation": ""
+        "changecopyrotation": "",
+        "properties": ""
     },
     "notepad": {
         "local": "",
         "global": "",
         "helppages": "",
-        "backToHome": ""
+        "backToHome": "",
+        "modulespages": ""
     },
     "preview": {},
     "curveEditor": {
@@ -532,5 +515,67 @@
             "",
             ""
         ]
+    },
+    "docsPanel": {
+        "documentation": "",
+        "reference": "A document with all the properties and methods described in it"
+    },
+    "settings": {
+        "actions": {
+            "heading": "",
+            "actions": "",
+            "addAction": "",
+            "addMethod": "",
+            "deleteAction": "",
+            "deleteMethod": "",
+            "inputActionNamePlaceholder": "",
+            "methodModuleMissing": "",
+            "methods": "",
+            "multiplier": "",
+            "noActionsYet": ""
+        },
+        "authoring": {
+            "heading": "",
+            "author": "",
+            "site": "",
+            "title": "",
+            "version": "",
+            "versionpostfix": ""
+        },
+        "branding": {
+            "heading": "",
+            "accent": "",
+            "accentNotice": "",
+            "icon": "",
+            "iconNotice": "",
+            "invertPreloaderScheme": ""
+        },
+        "modules": {
+            "heading": ""
+        },
+        "rendering": {
+            "heading": "",
+            "framerate": "",
+            "highDensity": "",
+            "maxFPS": "",
+            "pixelatedrender": "",
+            "usePixiLegacy": "",
+            "desktopBuilds": "",
+            "launchMode": "",
+            "launchModes": {
+                "maximized": "",
+                "fullscreen": "",
+                "windowed": ""
+            }
+        },
+        "scripts": {
+            "heading": "",
+            "addNew": "",
+            "deleteScript": "",
+            "moveDown": "",
+            "moveUp": "",
+            "newScriptComment": ""
+        },
+        "catmodsSettings": ""
     }
 }

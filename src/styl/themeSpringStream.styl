@@ -1,0 +1,123 @@
+@charset "utf-8"
+
+background = #fff
+foreground = #555
+shadows = #000
+
+/* Frequently used properties */
+trans =
+    transition 0.35s ease all
+transshort =
+    transition 0.15s ease all
+shad =
+    box-shadow 0 0.1rem 0.35rem rgba(shadows, 0.25)
+shadamb =
+    box-shadow 0 0.125rem 0.3rem rgba(shadows, 0.08), 0 0.25rem 0.7rem rgba(shadows, 0.06), 0 0.5rem 1rem rgba(shadows, 0.04)
+
+@font-face
+    font-family 'Comfortaa'
+    src url('../data/fonts/Comfortaa-Bold.ttf')
+    font-weight 700
+    font-style normal
+@font-face
+    font-family 'Comfortaa'
+    src url('../data/fonts/Comfortaa-SemiBold.ttf')
+    font-weight 600
+    font-style normal
+@font-face
+    font-family 'Comfortaa'
+    src url('../data/fonts/Comfortaa-Medium.ttf')
+    font-weight 500
+    font-style normal
+@font-face
+    font-family 'Comfortaa'
+    src url('../data/fonts/Comfortaa-Regular.ttf')
+    font-weight 400
+    font-style normal
+@font-face
+    font-family 'Comfortaa'
+    src url('../data/fonts/Comfortaa-Light.ttf')
+    font-weight 300
+    font-style normal
+
+/* Base fonts for UI */
+fonts = font = 'Open Sans', sans-serif, serif
+fontsHeaders = fontHeader = Comfortaa, 'Open Sans', sans-serif, serif
+font-mono = mono = Iosevka, monospace
+
+br = 0.35rem
+iconsize = 1.5rem
+
+/* Colors used by this theme */
+act = #00c09e
+acttext = #009170
+accent1 = #00c09e
+accent2 = #008bad
+error = #dd3b98
+red = error
+success = #009170
+green = success
+warning = #ce5a24
+orange = warning
+
+theme = 'Spring Stream'
+themeDark = false
+
+borderPale = #d6dedd
+borderBright = #d6dedd
+
+text = #555
+backgroundDeeper = #fafafa
+
+introBg = #f2fcfa
+
+@require 'hvost.styl'
+
+@require '3rdParty/*.styl'
+@require './../../app/node_modules/highlight.js/styles/tomorrow.css'
+
+@require 'common.styl'
+@require 'inputs.styl'
+@require 'typography.styl'
+@require 'confetti.styl'
+@require 'buildingBlocks.styl'
+@require 'tabs.styl'
+
+@require 'tags/**/*.styl'
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, button, .button
+    font-family fontsHeaders
+    font-weight 300
+
+
+h2, .h2
+    font-weight 600
+
+h3, h4, h5, h6, .h3, .h4, .h5, .h6
+    font-weight 900
+
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+.button,
+.selectbox
+    font-weight 900
+    border-width 0
+    background accent1
+    color background
+    svg
+        color background
+    &.selected
+        background acttext
+
+#bg
+    background introBg
+
+.cards
+    box-sizing border-box
+    padding 0.25rem
+    gap 0.75rem
+    li
+        {shad}
+        border-color background

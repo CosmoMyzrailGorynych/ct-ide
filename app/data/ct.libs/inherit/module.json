@@ -1,0 +1,19 @@
+{
+    "main": {
+        "name": "Type inheritance",
+        "tagline": "Avoid repeating code by adding parent-child relationships between your types.",
+        "version": "1.0.0",
+        "authors": [{
+            "name": "Cosmo Myzrail Gorynych",
+            "mail": "admin@nersta.ru"
+        }],
+        "categories": [
+            "utilities"
+        ]
+    },
+    "typeExtends": [{
+        "name": "Parent",
+        "type": "type",
+        "key": "inheritedType@@type"
+    }]
+}

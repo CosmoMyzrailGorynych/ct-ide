@@ -15,13 +15,19 @@ style-editor.panel.view
             #stylefont.tabbed(show="{tab === 'stylefont'}")
                 #stylefontinner
                     fieldset
-                        b {voc.fontfamily}
-                        input#fontfamily.wide(type="text" value="{styleobj.font.family || 'sans-serif'}" onchange="{wire('this.styleobj.font.family')}")
-                        .fifty.npl.npt
+                        label
+                            b {voc.fontfamily}
+                            input#fontfamily.wide(type="text" value="{styleobj.font.family || 'sans-serif'}" onchange="{wire('this.styleobj.font.family')}")
+                        button(onclick="{openCustomFontSelector}")
+                            svg.feather
+                                use(xlink:href="data/icons.svg#font")
+                            span {voc.useCustomFont}
+                        .clear
+                        label.fifty.npl.nmt
                             b {voc.fontsize}
                             br
                             input#fontsize.wide(type="number" value="{styleobj.font.size || '12'}" onchange="{wire('this.styleobj.font.size')}" oninput="{wire('this.styleobj.font.size')}" step="1")
-                        .fifty.npr.npt
+                        label.fifty.npr.nmt
                             b {voc.fontweight}
                             br
                             select.wide(value="{styleobj.font.weight}" onchange="{wire('this.styleobj.font.weight')}")
@@ -125,7 +131,7 @@ style-editor.panel.view
                     use(xlink:href="data/icons.svg#check")
                 span {voc.apply}
     #stylepreview.tall(ref="canvasSlot")
-    texture-selector(if="{selectingTexture}" onselected="{applyTexture}" ref="textureselector")
+    font-selector(if="{selectingFont}" onselected="{applyFont}" oncancelled="{cancelCustomFontSelector}")
     script.
         const fs = require('fs-extra');
 
@@ -142,10 +148,10 @@ style-editor.panel.view
 
         this.changingAnyColor = false;
         this.tab = 'stylefont';
-        this.changeTab = tab => e => {
+        this.changeTab = tab => () => {
             this.tab = tab;
         };
-        this.on('mount', e => {
+        this.on('mount', () => {
             const width = 800;
             const height = 500;
             this.pixiApp = new PIXI.Application({
@@ -155,8 +161,8 @@ style-editor.panel.view
             });
             this.refs.canvasSlot.appendChild(this.pixiApp.view);
 
-            var labelShort = languageJSON.styleview.testtext,
-                labelMultiline = languageJSON.styleview.testtext.repeat(2) + '\n' + languageJSON.styleview.testtext.repeat(3) + '\n' + languageJSON.styleview.testtext,
+            var labelShort = window.languageJSON.styleview.testtext,
+                labelMultiline = window.languageJSON.styleview.testtext.repeat(2) + '\n' + window.languageJSON.styleview.testtext.repeat(3) + '\n' + window.languageJSON.styleview.testtext,
                 labelLong = 'A quick blue cat jumps over the lazy frog. 0123456789 '.repeat(3),
                 labelThumbnail = 'Aa';
             this.pixiStyle = new PIXI.TextStyle();
@@ -177,33 +183,45 @@ style-editor.panel.view
             this.refreshStyleTexture();
         });
         this.on('update', () => {
-            if (global.currentProject.styles.find(style =>
-                this.styleobj.name === style.name && this.styleobj !== style
-            )) {
+            const {styles} = global.currentProject;
+            if (styles.find(style => this.styleobj.name === style.name && this.styleobj !== style)) {
                 this.nameTaken = true;
             } else {
                 this.nameTaken = false;
             }
         });
-        this.on('updated', e => {
+        this.on('updated', () => {
             this.refreshStyleTexture();
         });
 
         this.selectingTexture = false;
 
-        this.styleSetAlign = align => e => {
+        this.openCustomFontSelector = () => {
+            this.selectingFont = true;
+        };
+        this.cancelCustomFontSelector = () => {
+            this.selectingFont = false;
+            this.update();
+        };
+        this.applyFont = font => () => {
+            this.selectingFont = false;
+            this.styleobj.font.family = `"CTPROJFONT${font.typefaceName}", "${font.typefaceName}", sans-serif`;
+            this.styleobj.font.weight = font.weight;
+            this.styleobj.font.italic = font.italic;
+            this.update();
+        };
+
+        this.styleSetAlign = align => () => {
             this.styleobj.font.halign = align;
         };
         this.styleToggleFill = () => {
             if (this.styleobj.fill) {
                 delete this.styleobj.fill;
             } else {
-                this.styleobj.fill = {
-
-                };
+                this.styleobj.fill = {};
             }
         };
-        this.styleToggleStroke = function() {
+        this.styleToggleStroke = function styleToggleStroke() {
             if (this.styleobj.stroke) {
                 delete this.styleobj.stroke;
             } else {
@@ -213,7 +231,7 @@ style-editor.panel.view
                 };
             }
         };
-        this.styleToggleShadow = function() {
+        this.styleToggleShadow = function styleToggleShadow() {
             if (this.styleobj.shadow) {
                 delete this.styleobj.shadow;
             } else {
@@ -228,40 +246,43 @@ style-editor.panel.view
         // Render a preview image in the editor
         const {extend} = require('./data/node_requires/objectUtils');
         const {styleToTextStyle} = require('./data/node_requires/styleUtils');
-        this.refreshStyleTexture = e => {
+        this.refreshStyleTexture = () => {
             this.pixiStyle.reset();
             extend(this.pixiStyle, styleToTextStyle(this.styleobj));
             for (const label of this.labels) {
+                // this forces to redraw the pixi label
+                // eslint-disable-next-line no-self-assign
                 label.text = label.text;
             }
             this.pixiApp.render();
         };
-        this.styleSave = function() {
+        this.styleSave = function styleSave() {
             if (this.nameTaken) {
                 // animate the error notice
                 require('./data/node_requires/jellify')(this.refs.errorNotice);
                 soundbox.play('Failure');
                 return false;
             }
-            this.styleobj.lastmod = +(new Date());
+            this.styleobj.lastmod = Number(new Date());
             this.styleGenPreview(global.projdir + '/img/' + this.styleobj.origname + '_prev@2.png', 128);
             this.styleGenPreview(global.projdir + '/img/' + this.styleobj.origname + '_prev.png', 64).then(() => {
                 this.parent.editingStyle = false;
                 this.parent.update();
             });
+            return true;
         };
 
         /**
          * Generates a thumbnail for the current style
          * @returns {Promise}
          */
-        this.styleGenPreview = function(destination, size) {
+        this.styleGenPreview = function styleGenPreview(destination) {
             return new Promise((accept, decline) => {
                 var img = this.pixiApp.renderer.plugins.extract.base64(this.labelThumbnail);
 
-                var data = img.replace(/^data:image\/\w+;base64,/, '');
-                var buf = new Buffer(data, 'base64'); // TODO: replace as plain Buffer constructor is deprecated
-                fs.writeFile(destination, buf, function(err) {
+                var thumbnailBase64 = img.replace(/^data:image\/\w+;base64,/, '');
+                var buf = Buffer.from(thumbnailBase64, 'base64');
+                fs.writeFile(destination, buf, err => {
                     if (err) {
                         console.error(err);
                         decline(err);

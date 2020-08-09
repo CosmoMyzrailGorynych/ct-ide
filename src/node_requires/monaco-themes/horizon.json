@@ -8,7 +8,7 @@
         "foreground": "#cf4f6d"
     },
     {
-        "foreground": "#BBBBBB4D",
+        "foreground": "#4c4d53",
         "fontStyle": "italic",
         "token": "comment"
     },
@@ -19,6 +19,10 @@
     {
         "foreground": "#FAC29AE6",
         "token": "entity"
+    },
+    {
+        "foreground": "#e4b28f",
+        "token": "pointsOfInterest"
     },
     {
         "name": "Function names",
@@ -36,7 +40,7 @@
         "fontStyle": "italic"
     },
     {
-        "foreground": "#FAB795",
+        "foreground": "#a96ec9",
         "token": "keyword"
     },
     {
@@ -92,6 +96,10 @@
         "fontStyle": "bold",
         "foreground": "#B877DBE6",
         "token": "keyword.type.variant"
+    },
+    {
+        "foreground": "#24a2ad",
+        "token": "type"
     },
     {
         "foreground": "#BBBBBB",

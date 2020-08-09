@@ -9,6 +9,7 @@
         "Camera": false
     },
     "rules": {
-        "prefer-destructuring": "off"
+        "prefer-destructuring": "off",
+        "spaced-comment": "off"
     }
 }

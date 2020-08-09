@@ -19,11 +19,11 @@ fx-panel.panel.view
         this.namespace = 'particleEmitters';
         this.mixin(window.riotVoc);
 
-        this.thumbnails = tandem => `data/img/particles.png`;
+        this.thumbnails = () => 'data/img/particles.png';
 
         // Technically we edit a number of emitters at once — a "tandem",
         // but to not overcomplicate it all, let's call them "emitters" in UI anyways.
-        this.openTandem = tandem => e => {
+        this.openTandem = tandem => () => {
             this.editingTandem = true;
             this.editedTandem = tandem;
             this.update();
@@ -35,16 +35,15 @@ fx-panel.panel.view
             e.preventDefault();
         };
 
-        this.emitterTandemCreate = e => {
+        this.emitterTandemCreate = () => {
             const defaultEmitter = require('./data/node_requires/resources/particles/defaultEmitter').get();
             const generateGUID = require('./data/node_requires/generateGUID');
-            let id = generateGUID(),
-                slice = id.split('-').pop();
+            const id = generateGUID(),
+                  slice = id.split('-').pop();
 
             const tandem = {
                 name: 'Tandem_' + slice,
                 origname: 'pt' + slice,
-
                 emitters: [defaultEmitter]
             };
 
@@ -53,13 +52,13 @@ fx-panel.panel.view
             this.editedTandem = tandem;
         };
 
-        this.setUpPanel = e => {
+        this.setUpPanel = () => {
             this.refs.emitterTandems.updateList();
             this.editingTandem = false;
             this.editedTandem = null;
             this.update();
         };
-        this.updatePanel = e => {
+        this.updatePanel = () => {
             if (this.refs.emitterTandems) {
                 this.refs.emitterTandems.updateList();
                 this.update();
@@ -77,19 +76,19 @@ fx-panel.panel.view
         this.tandemMenu = {
             items: [{
                 label: window.languageJSON.common.open,
-                click: e => {
+                click: () => {
                     this.editingTandem = true;
                     this.update();
                 }
             }, {
-                label: languageJSON.common.copyName,
-                click: e => {
+                label: window.languageJSON.common.copyName,
+                click: () => {
                     nw.Clipboard.get().set(this.editedTandem.name, 'text');
                 }
             }, {
                 label: window.languageJSON.common.duplicate,
                 click: () => {
-                    alertify
+                    window.alertify
                     .defaultValue(this.editedTandem.name + '_dup')
                     .prompt(window.languageJSON.common.newname)
                     .then(e => {
@@ -113,7 +112,7 @@ fx-panel.panel.view
             }, {
                 label: window.languageJSON.common.rename,
                 click: () => {
-                    alertify
+                    window.alertify
                     .defaultValue(this.editedTandem.name)
                     .prompt(window.languageJSON.common.newname)
                     .then(e => {
@@ -128,7 +127,7 @@ fx-panel.panel.view
             }, {
                 label: window.languageJSON.common.delete,
                 click: () => {
-                    alertify
+                    window.alertify
                     .okBtn(window.languageJSON.common.delete)
                     .cancelBtn(window.languageJSON.common.cancel)
                     .confirm(window.languageJSON.common.confirmDelete.replace('{0}', this.editedTandem.name))
@@ -138,7 +137,7 @@ fx-panel.panel.view
                             global.currentProject.emitterTandems.splice(ind, 1);
                             this.refs.emitterTandems.updateList();
                             this.update();
-                            alertify
+                            window.alertify
                             .okBtn(window.languageJSON.common.ok)
                             .cancelBtn(window.languageJSON.common.cancel);
                         }

@@ -72,14 +72,15 @@ color-picker
                     use(xlink:href="data/icons.svg#apply")
                 span  {vocGlob.apply}
     script.
-        const Color = net.brehaut.Color;
+        /* global net */
+        const brehautColor = net.brehaut.Color;
         this.namespace = 'colorPicker';
         this.mixin(window.riotVoc);
 
         this.loadColor = color => {
-            this.color = Color(color);
+            this.color = brehautColor(color);
             this.color = this.color.setValue(this.color.getValue());
-            this.oldColor = Color(color);
+            this.oldColor = brehautColor(color);
         };
         this.loadColor(this.opts.color || '#ffffff');
 
@@ -116,29 +117,30 @@ color-picker
             e.stopPropagation();
         };
         this.tryInputColor = e => {
-            this.color = Color(e.target.value);
+            this.color = brehautColor(e.target.value);
             this.notifyUpdates();
             e.stopPropagation();
         };
 
         this.onSwatchClick = e => {
-            if (e.ctrlKey) {
+            if (e.ctrlKey) { // deletes a swatch
                 if (e.target.parentNode === this.refs.localSwatches) {
-                    global.currentProject.palette.splice(global.currentProject.palette.indexOf(e.item.colr), 1);
+                    const ind = global.currentProject.palette.indexOf(e.item.colr);
+                    global.currentProject.palette.splice(ind, 1);
                 } else {
                     this.globalPalette.splice(this.globalPalette.indexOf(e.item.colr), 1);
                     localStorage.globalPalette = JSON.stringify(this.globalPalette);
                 }
             } else {
-                this.color = Color(e.item.colr);
+                this.color = brehautColor(e.item.colr);
                 this.notifyUpdates();
             }
         };
-        this.addAsGlobal = e => {
+        this.addAsGlobal = () => {
             this.globalPalette.push(this.color.toString());
             localStorage.globalPalette = JSON.stringify(this.globalPalette);
         };
-        this.addAsLocal = e => {
+        this.addAsLocal = () => {
             global.currentProject.palette.push(this.color.toString());
         };
 
@@ -148,13 +150,13 @@ color-picker
                 this.opts.onchanged(this.color.toString(), 'onchanged');
             }
         };
-        this.applyColor = e => {
+        this.applyColor = () => {
             this.dark = this.color.getLuminance() < 0.5;
             if (this.opts.onapply) {
                 this.opts.onapply(this.color.toString(), 'onapply');
             }
         };
-        this.cancelColor = e => {
+        this.cancelColor = () => {
             if (this.opts.oncancel) {
                 this.opts.oncancel(this.color.toString(), 'oncancel');
             }

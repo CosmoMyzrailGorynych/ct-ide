@@ -1,0 +1,15 @@
+{
+  "main": {
+    "name": "ct.assert",
+    "tagline": "Make quick tests in ct.js projects with ct.assert method.",
+    "version": "1.0.0",
+    "packageName": "assert",
+    "authors": [{
+      "name": "Comigo",
+      "mail": "admin@nersta.ru"
+    }],
+    "categories": [
+      "utilities"
+    ]
+  }
+}

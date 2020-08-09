@@ -1,4 +1,4 @@
-room-events-editor.view.panel
+room-events-editor.view
     .tabwrap
         ul.tabs.nav.nogrow.noshrink.nb
             li(onclick="{switchTab('roomcreate')}" class="{active: tab === 'roomcreate'}" title="Control-Q" data-hotkey="Control+q")
@@ -48,7 +48,7 @@ room-events-editor.view.panel
             }
             return null;
         };
-        this.switchTab = tab => e => {
+        this.switchTab = tab => () => {
             this.tab = tab;
             const editor = tabToEditor(tab);
             setTimeout(() => {
@@ -73,7 +73,7 @@ room-events-editor.view.panel
             window.signals.off('roomsFocus', updateEditorSizeDeferred);
             window.removeEventListener('resize', updateEditorSize);
         });
-        this.on('mount', e => {
+        this.on('mount', () => {
             this.room = this.opts.room;
             setTimeout(() => {
                 var editorOptions = {
@@ -87,34 +87,37 @@ room-events-editor.view.panel
                         wrapper: ['function onCreate(this: Room) {', '}']
                     })
                 );
-                this.roomonstep = window.setupCodeEditor(this.refs.roomonstep,
+                this.roomonstep = window.setupCodeEditor(
+                    this.refs.roomonstep,
                     Object.assign({}, editorOptions, {
                         value: this.room.onstep,
                         wrapper: ['function onStep(this: Room) {', '}']
                     })
                 );
-                this.roomondraw = window.setupCodeEditor(this.refs.roomondraw,
+                this.roomondraw = window.setupCodeEditor(
+                    this.refs.roomondraw,
                     Object.assign({}, editorOptions, {
                         value: this.room.ondraw,
                         wrapper: ['function onDraw(this: Room) {', '}']
                     })
                 );
-                this.roomonleave = window.setupCodeEditor(this.refs.roomonleave,
+                this.roomonleave = window.setupCodeEditor(
+                    this.refs.roomonleave,
                     Object.assign({}, editorOptions, {
                         value: this.room.onleave,
                         wrapper: ['function onLeave(this: Room) {', '}']
                     })
                 );
-                this.roomoncreate.onDidChangeModelContent(e => {
+                this.roomoncreate.onDidChangeModelContent(() => {
                     this.room.oncreate = this.roomoncreate.getPureValue();
                 });
-                this.roomonstep.onDidChangeModelContent(e => {
+                this.roomonstep.onDidChangeModelContent(() => {
                     this.room.onstep = this.roomonstep.getPureValue();
                 });
-                this.roomondraw.onDidChangeModelContent(e => {
+                this.roomondraw.onDidChangeModelContent(() => {
                     this.room.ondraw = this.roomondraw.getPureValue();
                 });
-                this.roomonleave.onDidChangeModelContent(e => {
+                this.roomonleave.onDidChangeModelContent(() => {
                     this.room.onleave = this.roomonleave.getPureValue();
                 });
             }, 0);
@@ -127,7 +130,7 @@ room-events-editor.view.panel
             this.roomonleave.dispose();
         });
 
-        this.roomSaveEvents = e => {
+        this.roomSaveEvents = () => {
             this.parent.editingCode = false;
             this.parent.update();
         };

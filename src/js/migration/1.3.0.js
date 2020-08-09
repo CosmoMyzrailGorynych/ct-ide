@@ -11,13 +11,14 @@ window.migrationProcess.push({
         };
         for (const texture of project.textures) {
             if (!('padding' in texture)) {
-                texture.padding = texture.tiled? 0 : 1;
+                texture.padding = texture.tiled ? 0 : 1;
             }
         }
+        const oldSettings = project.settings.export;
         project.settings.export = {
-            linux: project.settings.export.linux || project.settings.export.linux64 || project.settings.export.linux32,
-            windows: project.settings.export.windows || project.settings.export.windows64 || project.settings.export.windows32,
-            mac: project.settings.export.mac || project.settings.export.mac64
+            linux: oldSettings.linux || oldSettings.linux64 || oldSettings.linux32,
+            windows: oldSettings.windows || oldSettings.windows64 || oldSettings.windows32,
+            mac: oldSettings.mac || oldSettings.mac64
         };
         project.settings.desktopMode = project.settings.desktopMode || 'maximized';
         resolve();

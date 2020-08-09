@@ -20,11 +20,12 @@ color-input
         onapply="{applyColor}" onchanged="{changeColor}" oncancel="{cancelColor}"
     )
     script.
-        const Color = net.brehaut.Color;
+        /* global net */
+        const brehautColor = net.brehaut.Color;
         this.opened = false;
         this.value = this.lastValue = this.opts.color || '#FFFFFF';
-        this.dark = Color(this.value).getLuminance() < 0.5;
-        this.openPicker = e => {
+        this.dark = brehautColor(this.value).getLuminance() < 0.5;
+        this.openPicker = () => {
             this.opened = !this.opened;
         };
         this.changeColor = color => {
@@ -58,7 +59,7 @@ color-input
             this.update();
         };
         this.on('update', () => {
-            if (this.lastValue != this.opts.color) {
+            if (this.lastValue !== this.opts.color) {
                 this.value = this.lastValue = this.opts.color || '#FFFFFF';
             }
         });

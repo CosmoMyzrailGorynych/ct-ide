@@ -1,11 +1,16 @@
 {
     "main": {
         "name": "Fit to Screen",
+        "tagline": "Do nothing and watch your game adapt to any resolution :)",
         "version": "4.0.0",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",
             "mail": "admin@nersta.ru"
-        }]
+        }],
+        "categories": [
+            "utilities",
+            "desktop"
+        ]
     },
     "fields": [{
         "name": "Mode",
@@ -28,7 +33,7 @@
         }],
         "key": "mode",
         "id": "mode",
-        "default": "scaleCover",
+        "default": "scaleFit",
         "type": "radio"
     }]
 }

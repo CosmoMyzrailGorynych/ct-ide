@@ -68,23 +68,23 @@ room-backgrounds-editor.room-editor-Backgrounds.tabbed.tall
                 this.parent.refreshRoomCanvas();
             }
         });
-        this.onTextureSelected = texture => e => {
+        this.onTextureSelected = texture => () => {
             this.editingBackground.texture = texture.uid;
             this.pickingBackground = false;
             this.creatingBackground = false;
             this.update();
         };
-        this.onTextureCancel = e => {
+        this.onTextureCancel = () => {
             this.pickingBackground = false;
             if (this.creatingBackground) {
-                let bgs = this.opts.room.backgrounds;
+                const bgs = this.opts.room.backgrounds;
                 bgs.splice(bgs.indexOf(this.editingBackground), 1);
                 this.parent.resortRoom();
                 this.creatingBackground = false;
             }
             this.update();
         };
-        this.addBg = function () {
+        this.addBg = () => {
             var newBg = {
                 depth: 0,
                 texture: -1,
@@ -94,9 +94,7 @@ room-backgrounds-editor.room-editor-Backgrounds.tabbed.tall
             this.editingBackground = newBg;
             this.pickingBackground = true;
             this.creatingBackground = true;
-            this.opts.room.backgrounds.sort(function (a, b) {
-                return a.depth - b.depth;
-            });
+            this.opts.room.backgrounds.sort((a, b) => a.depth - b.depth);
             this.parent.resortRoom();
             this.update();
         };
@@ -123,9 +121,7 @@ room-backgrounds-editor.room-editor-Backgrounds.tabbed.tall
         };
         this.onChangeBgDepth = e => {
             e.item.background.depth = Number(e.target.value);
-            this.opts.room.backgrounds.sort(function (a, b) {
-                return a.depth - b.depth;
-            });
+            this.opts.room.backgrounds.sort((a, b) => a.depth - b.depth);
             this.parent.resortRoom();
         };
 

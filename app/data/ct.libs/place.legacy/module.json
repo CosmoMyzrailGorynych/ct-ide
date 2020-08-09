@@ -1,11 +1,15 @@
 {
     "main": {
         "name": "ct.place",
+        "tagline": "Old, unoptimized version of collision library.",
         "version": "2.1.0",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",
             "mail": "admin@nersta.ru"
-        }]
+        }],
+        "categories": [
+            "motionPlanning"
+        ]
     },
     "fields": [{
         "name": "Grid size X",

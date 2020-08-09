@@ -7,7 +7,7 @@ color-picker
     top 10rem
     .panel
         padding 1rem
-        box-shadow 0 1rem 2rem rgba(black, 0.35)
+        box-shadow 0 1rem 2rem rgba(foreground, 0.35)
     .aRangePipeStack
         width 15rem
         margin-right 0.5rem
@@ -26,30 +26,30 @@ color-picker
 .huebar
     background: linear-gradient(to right, hsl(0, 100%, 50%) 0, hsl(18, 100%, 50%) 5%, hsl(36, 100%, 50%) 10%, hsl(54, 100%, 50%) 15%, hsl(60, 100%, 50%) 16.667%, hsl(72, 100%, 50%) 20%, hsl(90, 100%, 50%) 25%, hsl(108, 100%, 50%) 30%, hsl(108, 100%, 50%) 35%, hsl(144, 100%, 50%) 40%, hsl(162, 100%, 50%) 45%, hsl(180, 100%, 50%) 50%, hsl(198, 100%, 50%) 55%, hsl(216, 100%, 50%) 60%, hsl(240, 100%, 50%) 66%, hsl(257, 100%, 50%) 70%, hsl(270, 100%, 50%) 75%, hsl(288, 100%, 50%) 80%, hsl(300, 100%, 50%) 83.333%, hsl(306, 100%, 50%) 85%, hsl(324, 100%, 50%) 90%, hsl(342, 100%, 50%) 95%, hsl(0, 100%, 50%) 100%)
 .alphabar
-    background linear-gradient(to bottom right, white 0, white 24%, text 25%, text 49%, white 50%, white 74%, text 75%, text 99%, white 100%)
+    background linear-gradient(to bottom right, background 0, background 24%, text 25%, text 49%, background 50%, background 74%, text 75%, text 99%, background 100%)
     background-size 0.5rem 0.5rem
 
 .color-picker-aBackgroundToggler
     float right
-    border 0.15rem bl solid
+    border 0.15rem borderPale solid
     width 1rem
     height 1rem
     box-sizing border-box
-    background black
+    background foreground
     cursor pointer
     border-radius 100%
     position absolute
     right 0.5rem
     top 0.5rem
     &:hover
-        background white
+        background background
 .color-picker-aBackgoundWell
     padding 1rem
     margin -1rem -1rem 1rem
-    background white
+    background background
     border-radius br
     :hover + &
-        background black
+        background foreground
     .c6
         border-radius br
         text-align center
@@ -63,7 +63,7 @@ color-picker
     border-radius br
     display inline-block
     margin 0 0.5rem 0.5rem 0
-    border 1px bd solid
+    border 1px borderBright solid
     box-sizing border-box
     vertical-align middle
     cursor pointer

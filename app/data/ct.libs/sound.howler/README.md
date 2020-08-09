@@ -1,6 +1,8 @@
+# ct.sound.howler
+
 This module replaces the functionality of ct.sound with [Howler.js library](https://github.com/goldfire/howler.js). It creates a more reliable sound system with additional functions like spacial audio, fading, volume changing.
 
-Includes [Howler.js](https://github.com/goldfire/howler.js) v2.1.2.
+Includes [Howler.js](https://github.com/goldfire/howler.js) v2.2.0.
 
 ## Is it compatible with the default `ct.sound` library?
 

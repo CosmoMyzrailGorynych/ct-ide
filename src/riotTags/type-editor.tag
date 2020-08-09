@@ -1,47 +1,27 @@
 type-editor.panel.view.flexrow
-    .c3.tall.flexfix
-        .flexfix-header
-            #typetexture.panel(onclick="{changeSprite}")
-                img.ohchangeme(src="{type.texture === -1? 'data/img/notexture.png' : (glob.texturemap[type.texture].src.split('?')[0] + '_prev@2.png?' + getTypeTextureRevision(type)) + getTypeTextureRevision(type)}")
-                div {voc.change}
-            b {voc.name}
-            input#typename.wide(type="text" onchange="{wire('this.type.name')}" value="{type.name}")
-            .anErrorNotice(if="{nameTaken}" ref="errorNotice") {vocGlob.nametaken}
-            br
-            b {voc.depth}
-            input#typedepth.wide(type="number" onchange="{wire('this.type.depth')}" value="{type.depth}")
-        .flexfix-body
-            virtual(each="{extend in libExtends}")
-                label.block
-                    input.wide(
-                        type="checkbox"
-                        value="{type.extends[extend.key] || extend.default}"
-                        onchange="{wire('this.type.extends.'+ extend.key)}"
-                        if="{extend.type === 'checkbox'}"
-                    )
-                    b {extend.name}
-                    span(if="{extend.type !== 'checkbox'}") :
-                    input.wide(
-                        type="text"
-                        value="{type.extends[extend.key] || extend.default}"
-                        onchange="{wire('this.type.extends.'+ extend.key)}"
-                        if="{extend.type === 'text'}"
-                    )
-                    input.wide(
-                        type="number"
-                        value="{type.extends[extend.key] || extend.default}"
-                        onchange="{wire('this.type.extends.'+ extend.key)}"
-                        if="{extend.type === 'number'}"
-                    )
-                    .dim(if="{extend.help}") {extend.help}
-            br
-            docs-shortcut(path="/ct.types.html" button="true" wide="true" title="{voc.learnAboutTypes}")
-        .flexfix-footer
-            button#typedone.wide(onclick="{typeSave}" title="Shift+Control+S" data-hotkey="Control+S")
-                svg.feather
-                    use(xlink:href="data/icons.svg#check")
-                span {voc.done}
-    .c9.tall.borderleft
+    .type-editor-Properties
+        .tall.flexfix.panel.pad
+            .flexfix-header
+                .type-editor-aTexturePicker.panel(onclick="{changeSprite}")
+                    img.ohchangeme(src="{type.texture === -1? 'data/img/notexture.png' : (glob.texturemap[type.texture].src.split('?')[0] + '_prev@2.png?' + getTypeTextureRevision(type)) + getTypeTextureRevision(type)}")
+                    div {voc.change}
+                b {voc.name}
+                input.wide(type="text" onchange="{wire('this.type.name')}" value="{type.name}")
+                .anErrorNotice(if="{nameTaken}" ref="errorNotice") {vocGlob.nametaken}
+                br
+            .flexfix-body
+                b {voc.depth}
+                input.wide(type="number" onchange="{wire('this.type.depth')}" value="{type.depth}")
+                extensions-editor(type="type" entity="{type.extends}" wide="yep" compact="probably")
+                br
+                br
+                docs-shortcut(path="/ct.types.html" button="true" wide="true" title="{voc.learnAboutTypes}")
+            .flexfix-footer
+                button#typedone.wide(onclick="{typeSave}" title="Shift+Control+S" data-hotkey="Control+S")
+                    svg.feather
+                        use(xlink:href="data/icons.svg#check")
+                    span {voc.done}
+    .type-editor-aCodeEditor
         .tabwrap.tall(style="position: relative")
             ul.tabs.nav.nogrow.noshrink
                 li(onclick="{changeTab('typeoncreate')}" class="{active: tab === 'typeoncreate'}" title="{voc.create} (Control+Q)" data-hotkey="Control+q")
@@ -79,48 +59,24 @@ type-editor.panel.view.flexrow
 
         this.getTypeTextureRevision = type => glob.texturemap[type.texture].g.lastmod;
 
-        const libsDir = './data/ct.libs';
-        const fs = require('fs-extra'),
-              path = require('path');
-        this.libExtends = [];
-        this.refreshExtends = () => {
-            this.libExtends = [];
-            for (const lib in global.currentProject.libs) {
-                fs.readJSON(path.join(libsDir, lib, 'module.json'), (err, data) => {
-                    if (err) {
-                        return;
-                    }
-                    if (data.typeExtends) {
-                        this.libExtends.push(...data.typeExtends);
-                    }
-                    this.update();
-                });
-            }
-        };
-        window.signals.on('modulesChanged', this.refreshExtends);
-        this.on('unmount', () => {
-            window.signals.off('modulesChanged', this.refreshExtends);
-        });
-        this.refreshExtends();
-
         this.type = this.opts.type;
         this.tab = 'typeoncreate';
 
         const tabToEditor = tab => {
             tab = tab || this.tab;
-            if (this.tab === 'typeonstep') {
+            if (tab === 'typeonstep') {
                 return this.typeonstep;
-            } else if (this.tab === 'typeondraw') {
+            } else if (tab === 'typeondraw') {
                 return this.typeondraw;
-            } else if (this.tab === 'typeondestroy') {
+            } else if (tab === 'typeondestroy') {
                 return this.typeondestroy;
-            } else if (this.tab === 'typeoncreate') {
+            } else if (tab === 'typeoncreate') {
                 return this.typeoncreate;
             }
             return null;
         };
 
-        this.changeTab = tab => e => {
+        this.changeTab = tab => () => {
             this.tab = tab;
             const editor = tabToEditor(tab);
             setTimeout(() => {
@@ -181,16 +137,16 @@ type-editor.panel.view.flexrow
                     })
                 );
 
-                this.typeoncreate.onDidChangeModelContent(e => {
+                this.typeoncreate.onDidChangeModelContent(() => {
                     this.type.oncreate = this.typeoncreate.getPureValue();
                 });
-                this.typeonstep.onDidChangeModelContent(e => {
+                this.typeonstep.onDidChangeModelContent(() => {
                     this.type.onstep = this.typeonstep.getPureValue();
                 });
-                this.typeondraw.onDidChangeModelContent(e => {
+                this.typeondraw.onDidChangeModelContent(() => {
                     this.type.ondraw = this.typeondraw.getPureValue();
                 });
-                this.typeondestroy.onDidChangeModelContent(e => {
+                this.typeondestroy.onDidChangeModelContent(() => {
                     this.type.ondestroy = this.typeondestroy.getPureValue();
                 });
                 this.typeoncreate.focus();
@@ -198,8 +154,7 @@ type-editor.panel.view.flexrow
         });
         this.on('update', () => {
             if (global.currentProject.types.find(type =>
-                this.type.name === type.name && this.type !== type
-            )) {
+                this.type.name === type.name && this.type !== type)) {
                 this.nameTaken = true;
             } else {
                 this.nameTaken = false;
@@ -213,10 +168,10 @@ type-editor.panel.view.flexrow
             this.typeondestroy.dispose();
         });
 
-        this.changeSprite = e => {
+        this.changeSprite = () => {
             this.selectingTexture = true;
         };
-        this.applyTexture = texture => e => {
+        this.applyTexture = texture => () => {
             if (texture === -1) {
                 this.type.texture = -1;
             } else {
@@ -229,11 +184,11 @@ type-editor.panel.view.flexrow
             this.parent.fillTypeMap();
             this.update();
         };
-        this.cancelTexture = e => {
+        this.cancelTexture = () => {
             this.selectingTexture = false;
             this.update();
         };
-        this.typeSave = e => {
+        this.typeSave = () => {
             if (this.nameTaken) {
                 // animate the error notice
                 require('./data/node_requires/jellify')(this.refs.errorNotice);
@@ -241,9 +196,10 @@ type-editor.panel.view.flexrow
                 return false;
             }
             glob.modified = true;
-            this.type.lastmod = +(new Date());
+            this.type.lastmod = Number(new Date());
             this.parent.editingType = false;
             this.parent.fillTypeMap();
             this.parent.update();
             window.signals.trigger('typesChanged');
+            return true;
         };

@@ -103,20 +103,23 @@ declare namespace ct {
         function meet(me: Copy, type: string, multiple?: false|void): Copy | false;
 
         /**
-         * Checks for a collision between a copy `me` and a tile layer of a given `depth`.
-         * Depth of a tile layer is equal to what you set in the room editor.
+         * Checks for a collision between a copy `me` and a tile layer of a given collision group (`ctype`).
+         * If `ctype` is not set for a tile layer, then ct.place will compare against a tile layer's depth.
+         *
+         * If `x` and `y` are skipped, the current coordinates of `me` will be used.
+         *
          * Each tile is considered a rectangle, and a possible collision mask defined in the graphics asset
          * (in the tileset) is ignored. If `x` and `y` are skipped, the current coordinates of `me` will be used.
          *
          * This method returns either `true` (a copy collides with a tile layer) or `false` (no collision).
          *
          * @param {Copy} me The copy to calculate collisions for
-         * @param {number} [x] The x coordinate to check, as if `me` was placed there
-         * @param {number} [y] The y coordinate to check, as if `me` was placed there
-         * @param {number} depth The depth of a tile layer to test collisions against
+         * @param {number} [x] The x coordinate to check, as if `me` was placed there.
+         * @param {number} [y] The y coordinate to check, as if `me` was placed there.
+         * @param {number} ctype The collision group of tile layers to test against.
          */
-        function tile(me: Copy, x: number, y: number, depth: number): boolean;
-        function tile(me: Copy, depth: number): boolean;
+        function tile(me: Copy, x: number, y: number, ctype: string): boolean;
+        function tile(me: Copy, ctype: string): boolean;
 
         /**
          * Returns the latest distance after calling `ct.place.furthest` or `ct.place.nearest`.

@@ -1,12 +1,12 @@
 head
-	title ct.js
+    title ct.js
 
-	meta(charset='utf-8')
-	meta(name='description', content='IDE')
-	meta(name='viewport', content='width=device-width, initial-scale=1')
+    meta(charset='utf-8')
+    meta(name='description', content='IDE')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
 
-	link(href='data/themeDay.css' id="themeCSS" rel='stylesheet')
-	script(type="text/javascript").
-		localStorage.UItheme = localStorage.UItheme || 'Day';
-		var theme = localStorage.UItheme;
-		document.getElementById('themeCSS').href = `data/theme${theme}.css`;
+    link(href='data/themeDay.css' id="themeCSS" rel='stylesheet')
+    script(type="text/javascript").
+        localStorage.UItheme = localStorage.UItheme || 'Day';
+        var theme = localStorage.UItheme;
+        document.getElementById('themeCSS').href = `data/theme${theme}.css`;

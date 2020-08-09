@@ -1,11 +1,15 @@
 {
     "main": {
         "name": "ct.sound.howler",
+        "tagline": "Add 3D sounds, sound transitions, load music dynamically and apply effects.",
         "version": "1.2.0",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",
             "mail": "admin@nersta.ru"
-        }]
+        }],
+        "categories": [
+            "media"
+        ]
     },
     "fields": [{
         "name": "Default max hearing distance",

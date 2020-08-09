@@ -1,6 +1,13 @@
 @charset "utf-8"
 
-// The minimum width of ct.js = 380px
+foreground = #fff
+text = #D5D8DA
+background = #1C1E26
+backgroundDeeper = #1C1E26
+shadows = #E95378
+
+borderPale = #2F3038
+borderBright = #2F3038
 
 /* handy blocks */
 trans =
@@ -8,20 +15,18 @@ trans =
 transshort =
     transition 0.15s ease all
 shad =
-    box-shadow 0 0.1rem 0.2rem rgba(0, 0, 0, 0.5)
+    box-shadow 0 0.15rem 0.35rem rgba(shadows, 0.35)
 shadamb =
-    box-shadow 0 0 0.35rem rgba(0, 0, 0, 0.5)
+    box-shadow 0 0.25rem 1.5rem -0.3rem  rgba(shadows, 0.5)
 
 /* Fonts */
 fonts = font = 'Open Sans', sans-serif, serif
 font-mono = mono = Iosevka, monospace
 
-br = 0.2rem
+br = 0.25rem
 iconsize = 1.5rem
 
 /* Basic colors & accents */
-black = #fff
-white = #1C1E26
 act = #E95378
 acttext = act
 accent1 = #E95378
@@ -37,19 +42,6 @@ cyan = #59E1E3
 
 theme = 'Horizon'
 themeDark = true
-
-.error
-    color error
-.success
-    color success
-.warning
-    color warning
-
-bl = #252732
-bd = #2F3038
-
-text = #D5D8DA
-snow = mix(white, bl, 50%)
 
 @require 'hvost.styl'
 
@@ -72,15 +64,13 @@ input[type="reset"],
     border-width 2px
 
 .view
-    background white
+    background background
 
-.tabbed, .nav
-    border 0
 .nav li
     border-right 0
     border-left 0
     &:hover, &.active
-        color black
+        color foreground
 
 #moduleinfo .bigpower:not(.off)
     border-color success
@@ -88,3 +78,9 @@ input[type="reset"],
         background success
 
 @require 'tags/**/*.styl'
+
+gradCore = #733041
+gradTransition = #2e2233
+gradOuter = #1c1e26
+#bg
+    background radial-gradient(ellipse at bottom, gradCore 0, gradTransition 50%, gradOuter 100%)

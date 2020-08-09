@@ -1,4 +1,4 @@
-emitter-editor.panel.pad
+emitter-editor.panel.pad.nb
     .emitter-editor-aHeader
         img.emitter-editor-aTexture(src="{getPreview()}")
         h3 {voc.emitterHeading} {opts.emitter.uid.split('-').pop()}
@@ -426,9 +426,7 @@ emitter-editor.panel.pad
         this.mixin(window.riotWired);
 
         const {getTexturePreview, getTextureFromName, importImageToTexture} = require('./data/node_requires/resources/textures');
-        this.getPreview = () => {
-            return getTexturePreview(this.opts.emitter.texture);
-        };
+        this.getPreview = () => getTexturePreview(this.opts.emitter.texture);
 
         this.wireAndReset = path => e => {
             this.wire(path)(e);
@@ -440,7 +438,8 @@ emitter-editor.panel.pad
                 const emtInst = this.opts.emittermap[this.opts.emitter.uid];
                 if (useDirectValue) {
                     if (field === '_frequency') {
-                        emtInst[field] = Math.max(0.001, val); // otherwise it results into an infinite loop + crash
+                        // otherwise it results into an infinite loop + crash
+                        emtInst[field] = Math.max(0.001, val);
                     } else {
                         emtInst[field] = val;
                     }
@@ -474,7 +473,7 @@ emitter-editor.panel.pad
             window.signals.trigger('emitterResetRequest');
         };
 
-        this.updateScaleCurve = curve => {
+        this.updateScaleCurve = () => {
             if (this.opts.emittermap && (this.opts.emitter.uid in this.opts.emittermap)) {
                 const emtInst = this.opts.emittermap[this.opts.emitter.uid];
                 const {PropertyNode} = PIXI.particles;
@@ -483,7 +482,7 @@ emitter-editor.panel.pad
                 window.signals.trigger('emitterResetRequest');
             }
         };
-        this.updateSpeedCurve = curve => {
+        this.updateSpeedCurve = () => {
             if (this.opts.emittermap && (this.opts.emitter.uid in this.opts.emittermap)) {
                 const emtInst = this.opts.emittermap[this.opts.emitter.uid];
                 const {PropertyNode} = PIXI.particles;
@@ -492,7 +491,7 @@ emitter-editor.panel.pad
                 window.signals.trigger('emitterResetRequest');
             }
         };
-        this.updateColorCurve = (alphaCurve, colorCurve) => {
+        this.updateColorCurve = () => {
             if (this.opts.emittermap && (this.opts.emitter.uid in this.opts.emittermap)) {
                 const emtInst = this.opts.emittermap[this.opts.emitter.uid];
                 const {PropertyNode} = PIXI.particles;
@@ -505,12 +504,13 @@ emitter-editor.panel.pad
         };
         /* Expects color and alpha to be the same length */
         this.combineAlphaAndColors = () => {
-            const Color = net.brehaut.Color;
+            /* global net */
+            const brehautColor = net.brehaut.Color;
             const combinedList = [];
             const emt = this.opts.emitter.settings;
             const l = Math.min(emt.color.list.length, emt.alpha.list.length);
             for (let i = 0; i < l; i++) {
-                const color = Color('#'+emt.color.list[i].value);
+                const color = brehautColor('#' + emt.color.list[i].value);
                 color.alpha = emt.alpha.list[i].value;
                 combinedList.push({
                     value: color.toString(),
@@ -538,7 +538,7 @@ emitter-editor.panel.pad
                     y: 0,
                     r: 200,
                     minR: 100
-                }
+                };
             } else if (type === 'burst') {
                 emt.particlesPerWave = 5;
                 emt.particleSpacing = 360 / 5;
@@ -549,24 +549,24 @@ emitter-editor.panel.pad
             window.signals.trigger('emitterResetRequest');
         };
 
-        this.saveSectionState = (opened, tag) => {
+        this.saveSectionState = (opened, sectionTag) => {
             if (opened) {
-                if (!this.opts.emitter.openedTabs.includes(tag.opts.key)) {
-                    this.opts.emitter.openedTabs.push(tag.opts.key);
+                if (!this.opts.emitter.openedTabs.includes(sectionTag.opts.key)) {
+                    this.opts.emitter.openedTabs.push(sectionTag.opts.key);
                 }
             } else {
-                const ind = this.opts.emitter.openedTabs.indexOf(tag.opts.key);
+                const ind = this.opts.emitter.openedTabs.indexOf(sectionTag.opts.key);
                 if (ind !== -1) {
                     this.opts.emitter.openedTabs.splice(ind, 1);
                 }
             }
         };
 
-        this.showTexturesSelector = e => {
+        this.showTexturesSelector = () => {
             this.pickingTexture = true;
             this.update();
         };
-        this.onTexturePicked = texture => e => {
+        this.onTexturePicked = texture => () => {
             const emt = this.opts.emitter;
             emt.texture = texture.uid;
             this.pickingTexture = false;
@@ -578,15 +578,15 @@ emitter-editor.panel.pad
             this.update();
         };
 
-        this.showTextureImport = e => {
+        this.showTextureImport = () => {
             this.importingTexture = true;
             this.update();
         };
-        this.onTextureImport = texture => e => {
+        this.onTextureImport = texture => () => {
             try {
                 getTextureFromName(texture.name);
                 // a texture with the same name already exists; show an error
-                alertify.error(this.voc.alreadyHasAnImportingTexture.replace('$1', texture.name));
+                window.alertify.error(this.voc.alreadyHasAnImportingTexture.replace('$1', texture.name));
                 return false;
             } catch (e) {
                 // No such texture; add it.
@@ -597,14 +597,15 @@ emitter-editor.panel.pad
                     this.update();
                     window.signals.trigger('emitterResetRequest');
                 });
+                return true;
             }
         };
-        this.onTextureImportCancel = e => {
+        this.onTextureImportCancel = () => {
             this.importingTexture = false;
             this.update();
         };
 
 
-        this.deleteEmitter = e => {
+        this.deleteEmitter = () => {
             this.parent.deleteEmitter(this.opts.emitter);
         };

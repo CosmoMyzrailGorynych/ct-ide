@@ -12,6 +12,10 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
             svg.feather
                 use(xlink:href="data/icons.svg#life-buoy")
             span {voc.helppages}
+        li(onclick="{changeTab('modulespages')}" class="{active: tab === 'modulespages'}")
+            svg.feather
+                use(xlink:href="data/icons.svg#ctmod")
+            span {voc.modulespages}
     div
         div(show="{tab === 'notepadlocal'}")
             .aCodeEditor(ref="notepadlocal")
@@ -22,6 +26,8 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
             button.aHomeButton(title="{voc.backToHome}" onclick="{backToHome}")
                 svg.feather
                     use(xlink:href="data/icons.svg#home")
+        div(show="{tab === 'modulespages'}")
+            docs-panel
 
     button.vertical.dockleft(onclick="{notepadToggle}")
         svg.feather
@@ -32,7 +38,7 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
         this.opened = false;
         this.namespace = 'notepad';
         this.mixin(window.riotVoc);
-        this.notepadToggle = function() {
+        this.notepadToggle = function notepadToggle() {
             this.opened = !this.opened;
         };
 
@@ -43,7 +49,7 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
         });
 
         this.tab = 'notepadlocal';
-        this.changeTab = tab => e => {
+        this.changeTab = tab => () => {
             this.tab = tab;
         };
         this.on('update', () => {
@@ -64,13 +70,8 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
             window.removeEventListener('resize', updateEditorSize);
         });
 
-        this.getIfDarkTheme = () => {
-            return localStorage.UItheme === 'Night' || localStorage.UItheme === 'Horizon';
-        };
-
-        this.backToHome = e => {
-            this.refs.helpIframe.contentWindow.location = `http://localhost:${this.server.address().port}/`;
-        };
+        this.getIfDarkTheme = () =>
+            localStorage.UItheme === 'Night' || localStorage.UItheme === 'Horizon';
 
         this.on('update', () => {
             this.notepadlocal.setValue(global.currentProject.notes || '');
@@ -85,11 +86,11 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
                     language: 'typescript'
                 });
 
-                this.notepadlocal.onDidChangeModelContent((e) => {
+                this.notepadlocal.onDidChangeModelContent(() => {
                     global.currentProject.notes = this.notepadlocal.getValue();
                     glob.modified = true;
                 });
-                this.notepadglobal.onDidChangeModelContent((e) => {
+                this.notepadglobal.onDidChangeModelContent(() => {
                     localStorage.notes = this.notepadglobal.getValue();
                 });
                 this.notepadglobal.setValue(localStorage.notes);
@@ -101,25 +102,30 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
             this.notepadglobal.dispose();
         });
 
-        const nstatic = require('node-static');
-        const fileServer = new nstatic.Server('data/docs/', {
-            cache: false,
-            serverInfo: 'ctjsgameeditor'
+        const fileServerSettings = {
+            public: 'data/docs/',
+            cleanUrls: true
+        };
+        const handler = require('serve-handler');
+        const fileServer = require('http').createServer((request, response) =>
+            handler(request, response, fileServerSettings));
+        fileServer.listen(0, () => {
+            // eslint-disable-next-line no-console
+            console.info(`[ct.docs] Running docs server at http://localhost:${fileServer.address().port}`);
         });
-
-        this.server = require('http').createServer(function (request, response) {
-            request.addListener('end', function () {
-                fileServer.serve(request, response);
-            }).resume();
-        });
-        this.server.listen(0);
+        this.server = fileServer;
 
         var openDocs = e => {
             this.changeTab('helppages')();
-            this.refs.helpIframe.contentWindow.location = `http://localhost:${this.server.address().port}${e.path || '/'}`;
+            this.refs.helpIframe.contentWindow.location = `http://localhost:${fileServer.address().port}${e.path || '/'}`;
             this.opened = true;
             this.update();
         };
+
+        this.backToHome = () => {
+            this.refs.helpIframe.contentWindow.location = `http://localhost:${fileServer.address().port}/`;
+        };
+
         window.signals.on('openDocs', openDocs);
         this.on('unmount', () => {
             window.signals.off('openDocs', openDocs);

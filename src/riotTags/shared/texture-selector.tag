@@ -4,6 +4,8 @@
 
     @attribute showempty (any string or empty)
         If set, allows users to pick an empty texture (to reset texture).
+    @attribute header (any string or empty)
+        An optional header shown in the top-left corner
     @attribute onselected (riot function)
         A two-fold function (texture => e => {…}). Calls the funtion with the selected
         ct texture as the only argument in the first function, and MouseEvent in the second.
@@ -13,6 +15,8 @@
 texture-selector.panel.view
     .flexfix.tall
         .flexfix-header
+            .toleft
+                h1(if="{opts.header}") {opts.header}
             .toright
                 b {vocGlob.sort}
                 button.inline.square(onclick="{switchSort('date')}" class="{selected: sort === 'date' && !searchResults}")
@@ -50,19 +54,15 @@ texture-selector.panel.view
         this.updateList = () => {
             this.textures = [...global.currentProject.textures];
             if (this.sort === 'name') {
-                this.textures.sort((a, b) => {
-                    return a.name.localeCompare(b.name);
-                });
+                this.textures.sort((a, b) => a.name.localeCompare(b.name));
             } else {
-                this.textures.sort((a, b) => {
-                    return b.lastmod - a.lastmod;
-                });
+                this.textures.sort((a, b) => b.lastmod - a.lastmod);
             }
             if (this.sortReverse) {
                 this.textures.reverse();
             }
         };
-        this.switchSort = sort => e => {
+        this.switchSort = sort => () => {
             if (this.sort === sort) {
                 this.sortReverse = !this.sortReverse;
             } else {

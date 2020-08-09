@@ -1,9 +1,15 @@
 {
     "globals": {
         "ct": false,
-        "PIXI": true
+        "PIXI": false,
+        "Room": false,
+        "Background": false,
+        "Tileset": false,
+        "Copy": false,
+        "Camera": false
     },
     "rules": {
-        "object-shorthand": 0
+        "object-shorthand": 0,
+        "spaced-comment": "off"
     }
 }

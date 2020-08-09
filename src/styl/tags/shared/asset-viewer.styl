@@ -2,3 +2,9 @@ asset-viewer
     display block
     h1, h2
         margin-bottom 1rem
+    &.fonts
+        if (themeDark)
+            .cards li img
+                filter invert(1)
+                &:hover
+                    background transparent

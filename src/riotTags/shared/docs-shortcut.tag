@@ -19,7 +19,7 @@ docs-shortcut
     script.
         this.namespace = 'docsShortcut';
         this.mixin(window.riotVoc);
-        this.navigateToDocs = e => {
+        this.navigateToDocs = () => {
             window.signals.trigger('openDocs', {
                 path: this.opts.path || '/'
             });

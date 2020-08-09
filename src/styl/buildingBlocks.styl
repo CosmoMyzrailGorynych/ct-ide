@@ -15,12 +15,8 @@
 
 .modal, .panel
     box-sizing border-box
-    background white
-    if (themeDark)
-        background bl
-    border 1px solid bl
-    if (themeDark)
-        border 1px solid bd
+    background background
+    border 1px solid borderBright
     border-radius br
     position relative
     &.pad
@@ -39,9 +35,7 @@
 
 .view
     overflow auto
-    background snow
-    if (themeDark)
-        background white
+    background backgroundDeeper
     position absolute
     left 0
     right 0
@@ -52,10 +46,10 @@
         border 0
 
 .inset
-    background bl
+    background backgroundDeeper
     padding 1rem
     margin 0 -1rem
-    border-top 1px solid bd
+    border-top 1px solid borderPale
 
 .aStrippedList
     margin 0.5rem 0
@@ -64,9 +58,7 @@
         list-style none
         padding 0.2em 0.8em
         margin 0
-        border-bottom 1px solid bl
-        if (themeDark)
-            border-bottom 1px solid bd
+        border-bottom 1px solid borderPale
 
 
 // Меню выбора - список
@@ -82,40 +74,40 @@
         {trans}
         &:hover, &.hover
             {transshort}
-            border-bottom-color bd
+            border-bottom-color borderBright
             color acttext
             padding 0.2em 0.5em 0.2em 1.1em
         &:active, &.active
             background act
             border-bottom-color transparent
-            color white
+            color background
 
 // панели управления
 .nav
-    background white
-    if (themeDark)
-        background bl
+    background background
     border-radius br
-    border-top 1px solid bd
-    border-left 1px solid bd
+    border-top 1px solid borderBright
+    border-left 1px solid borderBright
+    &.vertical
+        border 0
+        border-radius 0
     padding 0
     margin 0
     display flex
     flex-direction row
+    &.vertical
+        display block
     li
         text-align center
         cursor pointer
-        border-right 1px solid bd
-        border-bottom 1px solid bd
+        border-right 1px solid borderPale
+        border-bottom 1px solid borderBright
         flex auto
         list-style none
         padding 0.25em
         margin 0
-        display inline-block
         {trans}
-        box-shadow 0 0 white inset
-        if (themeDark)
-            background bl
+        box-shadow 0 0 background inset
         &:hover, &.active
             {transshort}
             color acttext
@@ -125,16 +117,30 @@
             box-shadow 0 -2px accent1 inset
         &:active
             background acttext
-            color white
+            color background
             box-shadow 0 -2px acttext inset
             & > svg
-                color white
+                color background
         &:first-child
             border-top-left-radius inherit
             border-bottom-left-radius inherit
         &:last-child
             border-top-right-radius inherit
             border-bottom-right-radius inherit
+    &.vertical li
+        text-align initial
+        border-right 0
+        border-bottom 1px solid borderPale
+        padding 0.25rem 1rem
+        overflow hidden
+        text-overflow ellipsis
+        white-space nowrap
+        &:hover, &.active
+            box-shadow -2px 0 accent1 inset
+        &:active
+            box-shadow -2px 0 acttext inset
+        &:last-child
+            border-bottom 0
 
 
 // resource cards
@@ -146,11 +152,11 @@
     grid-gap 0.3em
     flex-grow 0
     li
-        background white
+        background background
         padding 0.8em
         margin 0
         box-sizing border-box
-        border 1px solid bl
+        border 1px solid borderPale
         border-radius 3px
         display inline-block
         vertical-align top
@@ -161,7 +167,7 @@
         &:active
             border-color accent1
             background act
-            color white
+            color background
         span
             font-family consolas, monospace
             width calc(14.5em - 64px)
@@ -190,7 +196,7 @@
         width auto
         &:hover
             background act
-            color white
+            color background
         span
             flex 1 1 auto
             order 4
@@ -224,7 +230,7 @@ sounds-panel, rooms-panel
         background none
 
 .anErrorNotice
-    background mix(error, white, 10%)
+    background mix(error, background, 10%)
     border 1px solid error
     border-radius br
     padding 0.5rem 1rem
@@ -235,7 +241,7 @@ sounds-panel, rooms-panel
     z-index 100
     transform-origin 50% -0.5rem
     &::before
-        background mix(error, white, 10%)
+        background mix(error, background, 10%)
         content ''
         left 50%
         top -0.33rem
@@ -246,9 +252,9 @@ sounds-panel, rooms-panel
         border-top 1px solid error
         transform translate(-0.25rem, 0) rotate(45deg)
 
-.nicetable, #moduleinfo table, #modulesettings table, #modulehelp table
+.nicetable
     margin 1rem 0
-    border 1px solid bd
+    border 1px solid borderBright
     border-radius br
     border-spacing 0
     {shadamb}
@@ -256,5 +262,5 @@ sounds-panel, rooms-panel
         padding 0.5rem 1.5rem
         margin 0
     th
-        border-bottom 1px solid bd
+        border-bottom 1px solid borderBright
         text-align left

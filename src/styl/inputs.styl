@@ -24,19 +24,20 @@ input[type="password"],
 select,
 textarea
     padding 0.1em 0.8em
-    background white
-    border 1px solid bl
-    if (themeDark)
-        border 1px solid bd
+    background background
+    border 1px solid borderPale
     border-radius br
     font inherit
     color inherit
     {trans}
     &:hover
-        border-color bd
+        border-color borderBright
         {transshort}
     &:focus
         border-color acttext
+    .compact
+        padding 0.2em 0.3em
+        line-height 1
 
 input[type="number"]
     padding-right 0
@@ -56,7 +57,7 @@ input[type="reset"],
     font inherit
     font-weight 400
     border-radius br
-    background white
+    background background
     if (themeDark)
         background transparent
     display inline-block
@@ -65,29 +66,29 @@ input[type="reset"],
     {trans}
     &:hover, &.active
         background acttext
-        color white
+        color background
         {transshort}
         if (themeDark)
-            color black
+            color foreground
         if (!themeDark)
             border-color accent1
         svg
-            color white
+            color background
         if (themeDark)
-            color black
+            color foreground
             svg
-                color black
+                color foreground
     &:active, &.selected
         {transshort}
         border-color accent1
         background accent1
-        color white
+        color background
         svg
-            color white
+            color background
         if (themeDark)
-            color black
+            color foreground
             svg
-                color black
+                color foreground
     &.inline
         padding 0.2em 0.8em
         display inline-block
@@ -115,18 +116,17 @@ input[type="reset"],
         top 50%
         transform translate(0, -50%)
 
-/* Большой переключатель */
-siz = 4em
+/* Large checkbox/toggle as seen in the modules tab */
 .bigpower
     cursor pointer
     display block
     float left
-    width siz
-    height siz
+    width 4em
+    height @width
     border-radius 50% 10% 50% 50%
-    background -webkit-linear-gradient(top, white 0, bl 100%)
-    box-shadow 0 0 0.2em snow inset
-    border 1px solid bd
+    background -webkit-linear-gradient(top, background 0, borderPale 100%)
+    box-shadow 0 0 0.2em backgroundDeeper inset
+    border 1px solid borderBright
     if (themeDark)
         border-color act
     text-align center
@@ -151,7 +151,7 @@ siz = 4em
         border-radius 100%
         border 1px solid
         box-sizing border-box
-        background -webkit-linear-gradient(top, bl 0, white 100%)
+        background -webkit-linear-gradient(top, borderPale 0, background 100%)
         color success
     span
         position absolute
@@ -227,9 +227,9 @@ select
         left -1px // why?
         right -1px
         top 100%
-        background white
+        background background
         color text
-        border 1px solid bd
+        border 1px solid borderBright
         border-radius 0 0 br br
         border-bottom 0
         border-top 1px solid act
@@ -282,14 +282,14 @@ fieldset
         {trans}
         &::after
             content ''
-            icon(check, white)
+            icon(check, background)
             width 1rem
             height 1rem
             position absolute
             top -0.025rem
             left -0.05rem
             line-height 1
-            color white
+            color background
             opacity 0
             {trans}
         &:checked
@@ -324,26 +324,26 @@ input[type="range"]
         width 100%
         height 24px
         cursor pointer
-        background snow
+        background backgroundDeeper
         if (themeDark) // dark themes use an inverted color scheme in sense of variables
-            background white
+            background background
         border-radius br
-        border 1px solid bl
+        border 1px solid borderPale
         if (themeDark)
-            border 1px solid bd
+            border 1px solid borderBright
     &::-webkit-slider-thumb
-        border 1px solid bd
+        border 1px solid borderBright
         height 40px
         width 19px
         border-radius br
-        background white
+        background background
         if (themeDark)
-            background snow
+            background backgroundDeeper
         cursor pointer
         -webkit-appearance none
         margin-top -9px
     &:focus::-webkit-slider-runnable-track
-        background white
+        background background
     &.transparent
         &::-webkit-slider-runnable-track, &:focus::-webkit-slider-runnable-track
             background transparent
@@ -373,7 +373,7 @@ input[type="range"]
     cursor move
     {shad}
     &.selected
-        box-shadow 0 0 0 2px bl, 0 0 0 4px act, 0 0.1rem 0.2rem 4px rgba(0, 0, 0, 0.5)
+        box-shadow 0 0 0 2px borderPale, 0 0 0 4px act, 0 0.1rem 0.2rem 4px rgba(0, 0, 0, 0.5)
 
 .aClicker
     height 0.75rem
@@ -390,7 +390,7 @@ input[type="range"]
     right 0
     top 0
     bottom 0
-    background rgba(white, 0.65)
+    background rgba(background, 0.65)
     // @stylint off
     background-image:
         linear-gradient(to right, accent1 0, accent1 35%, transparent 35%, transparent 100%),
@@ -417,11 +417,13 @@ input[type="range"]
         cursor -webkit-grabbing
 
 .aResizer
-    background snow
+    background backgroundDeeper
+    if (darkTheme)
+        background background // should be greyish on all themes
     flex 0 0 auto
     width 0.75rem
     height 0.75rem
-    border 1px solid bd
+    border 1px solid borderBright
     position relative
     cursor move
     &::before
@@ -429,9 +431,9 @@ input[type="range"]
         width 1.5rem
         height 2px
         box-sizing content-box
-        border 1px solid bl
+        border 1px solid borderPale
         if (themeDark)
-            border 1px solid bd
+            border 1px solid borderBright
         border-left 0
         border-right 0
         position absolute
@@ -450,3 +452,22 @@ input[type="range"]
         border-right 0
         border-left 0
         cursor ns-resize
+
+.aPoint2DInput
+    display flex
+    flex-flow row nowrap
+    width 20rem
+    max-width 100%
+    label
+        flex 1 1 auto
+    input
+        max-width 100%
+        width calc(100% - 3rem)
+    &.compact
+        width 15rem
+    &.wide
+        width 100%
+    span
+        margin-right 0.5rem
+    .spacer
+        flex 0 0 auto

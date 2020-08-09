@@ -10,6 +10,7 @@
         "apply": "Apply",
         "cancel": "Cancel",
         "cannotBeEmpty": "This cannot be empty",
+        "clear": "Clear",
         "confirmDelete": "Are you sure you want to delete {0}? It cannot be undone.",
         "contribute": "Contribute",
         "copy": "Copy",
@@ -23,9 +24,10 @@
         "exit": "Exit",
         "exitconfirm": "Are you sure you want to exit?<br/>All the unsaved changes will be lost!",
         "fastimport": "Fast Import",
+        "filter": "Filter:",
         "language": "Language",
         "loading": "Loading…",
-        "translateToYourLanguage": "Translate ct.js to your language!",
+        "translateToYourLanguage": "Translate ct.js!",
         "name": "Name:",
         "nametaken": "This name is already taken",
         "newname": "New name:",
@@ -42,7 +44,9 @@
         "save": "Save",
         "savedcomm": "Your project was succesfully saved.",
         "saveproject": "Save project",
-        "select": "Select…",
+        "selectDialogue": "Select…",
+        "select": "Select",
+        "search": "Search:",
         "sort": "Sort:",
         "tilelayer": "tile layer",
         "wrongFormat": "Wrong file format",
@@ -50,19 +54,6 @@
         "zoom": "Zoom",
         "zoomIn": "Zoom in",
         "zoomOut": "Zoom out"
-    },
-    "actionsEditor": {
-        "actions": "Actions",
-        "actionsEditor": "Actions editor",
-        "addAction": "Add an action",
-        "addMethod": "Add an input method",
-        "deleteAction": "Delete this action",
-        "deleteMethod": "Delete this method",
-        "inputActionNamePlaceholder": "Action name",
-        "methodModuleMissing": "The required module for this method is missing",
-        "methods": "Input methods",
-        "multiplier": "Multiplier",
-        "noActionsYet": "Actions allow developers to listen to numerous input methods at once and dynamically change them, all with one uniform API. Read more by clicking on the docs icon above."
     },
     "colorPicker": {
         "current": "New",
@@ -93,6 +84,10 @@
     "docsShortcut": {
         "openDocs": "Open the documentation"
     },
+    "docsPanel": {
+        "documentation": "Documentation",
+        "reference": "Reference"
+    },
     "exportPanel": {
         "hide": "Hide",
         "working": "Working…",
@@ -102,16 +97,7 @@
         "firstrunnotice": "The first run for each platform will be slow as ct.js will download and save additional libraries needed for packing. It will take some time, but next times will be almost instant.",
         "log": "Message Log",
         "windowsCrossBuildWarning": "To build for Windows from Linux/MacOS, you need Wine installed in your system. Install instructions are all different for various platforms, so you better google it yourself :)",
-        "launchMode": "Launch mode:",
-        "launchModes": {
-            "maximized": "Maximized",
-            "fullscreen": "Fullscreen",
-            "windowed": "Windowed"
-        },
         "cannotBuildForMacOnWin": "Unfortunately, Windows can only produce broken Mac packages. Try using a Linux machine; for example, in a virtual one. It is 100% free!"
-    },
-    "inputMethodSelector": {
-        "select": "Select"
     },
     "intro": {
         "loading": "Please wait: kittens are gathering speed of light!",
@@ -146,18 +132,19 @@
     },
     "menu": {
         "ctIDE": "ct.IDE",
-        "exportDesktop": "Export for desktop",
+        "exportDesktop": "Export for desktop…",
         "texture": "Textures",
-        "launch": "Compile and run",
+        "launch": "Launch",
         "launchHotkeys": "(F5; Alt+F5 to run in your default browser)",
         "license": "License",
         "min": "Windowed",
-        "modules": "Catmods",
         "patrons": "Patrons",
         "recentProjects": "Recent projects",
+        "restart": "Restart",
         "rooms": "Rooms",
         "save": "Save project",
         "startScreen": "Return to the starting screen",
+        "project": "Project",
         "settings": "Settings",
         "sounds": "Sounds",
         "successZipExport": "Successfully exported to {0}.",
@@ -167,6 +154,8 @@
         "theme": "Theme",
         "themeDay": "Light",
         "themeNight": "Dark",
+        "themeSpringSream": "Spring Stream",
+        "themeLucasDracula": "Lucas Dracula",
         "types": "Types",
         "zipExport": "Export for web",
         "zipProject": "Pack project to .zip",
@@ -187,7 +176,9 @@
         "disableAcceleration": "Disable graphics acceleration (needs restart)",
         "disableBuiltInDebugger": "Disable built-in debugger",
         "visitDiscordForGamedevSupport": "Join Discord server for gamedev support",
-        "postAnIssue": "Post an issue on Github"
+        "postAnIssue": "Post an issue on Github…",
+        "openProject": "Open a project…",
+        "openExample": "Open an example project…"
     },
     "onboarding": {
         "hoorayHeader": "Wow! You've just created a project!",
@@ -195,53 +186,70 @@
         "openSpaceShooterTutorial": "Learn how to make a space shooter",
         "openPlatformerTutorial": "Learn how to make a platformer",
         "openJettyCatTutorial": "Learn how to make a Jetty Cat",
-        "doNothing": "Skip this screen",
+        "doNothing": "Skip this screen and make a great game!",
         "showOnboardingCheckbox": "Show this screen when creating a new project"
     },
     "settings": {
-        "actions": "Actions and input methods",
-        "author": "Author name:",
-        "authoring": "Authoring",
-        "cover": "Cover:",
-        "editActions": "Edit actions",
-        "exportparams": "Export parameters",
-        "framerate": "Framerate:",
-        "getfile": "Choose",
-        "highDensity": "Support high pixel density (e.g. on retina screens)",
-        "maxFPS": "Max framerate:",
-        "minifyhtmlcss": "Compress HTML and CSS",
-        "minifyjs": "Compress JavaScript and convert it to ES5 (slow; use for releases)",
-        "usePixiLegacy": "Add a legacy, canvas-based renderer to support older browsers and graphics cards (adds ~20kb up to your game)",
-        "pixelatedrender": "Disable image smoothing here and in exported project (preserve crisp pixels)",
-        "renderoptions": "Render Options",
-        "settings": "Project settings",
-        "site": "Homepage:",
-        "title": "Name:",
-        "version": "Version:",
-        "versionpostfix": "Postfix:",
+        "actions": {
+            "heading": "Actions and input methods",
+            "actions": "Actions",
+            "addAction": "Add an action",
+            "addMethod": "Add an input method",
+            "deleteAction": "Delete this action",
+            "deleteMethod": "Delete this method",
+            "inputActionNamePlaceholder": "Action name",
+            "methodModuleMissing": "The required module for this method is missing",
+            "methods": "Input methods",
+            "multiplier": "Multiplier",
+            "noActionsYet": "Actions allow developers to listen to numerous input methods at once and dynamically change them, all with one uniform API. Read more by clicking on the docs icon above."
+        },
+        "authoring": {
+            "heading": "Authoring",
+            "author": "Author name:",
+            "site": "Homepage:",
+            "title": "Name:",
+            "version": "Version:",
+            "versionpostfix": "Postfix:"
+        },
         "branding": {
             "heading": "Branding",
-            "icon": "Game's icon:",
-            "iconNotice": "It should be a square, one-frame texture that is at least 256x256px large.",
             "accent": "Accent:",
             "accentNotice": "Sets the color of the preloader, as well as of some other places if used as a mobile app.",
+            "icon": "Game's icon:",
+            "iconNotice": "It should be a square, one-frame texture that is at least 256x256px large.",
             "invertPreloaderScheme": "Invert preloader's color scheme"
         },
+        "modules": {
+            "heading": "Catmods"
+        },
+        "rendering": {
+            "heading": "Render Options",
+            "framerate": "Framerate:",
+            "highDensity": "Support high pixel density (e.g. on retina screens)",
+            "maxFPS": "Max framerate:",
+            "pixelatedrender": "Disable image smoothing here and in exported project (preserve crisp pixels)",
+            "usePixiLegacy": "Add a legacy, canvas-based renderer to support older browsers and graphics cards (adds ~20kb up to your game)",
+            "desktopBuilds": "Desktop builds",
+            "launchMode": "Launch mode:",
+            "launchModes": {
+                "maximized": "Maximized",
+                "fullscreen": "Fullscreen",
+                "windowed": "Windowed"
+            }
+        },
         "scripts": {
+            "heading": "Custom scripts",
             "addNew": "Add a New Script",
             "deleteScript": "Delete the script",
-            "header": "Scripts",
-            "newScriptComment": "Use scripts to define frequent functions and import small libraries",
+            "moveDown": "Move down",
             "moveUp": "Move up",
-            "moveDown": "Move down"
-        }
+            "newScriptComment": "Use scripts to define frequent functions and import small libraries"
+        },
+        "catmodsSettings": "Catmods' settings"
     },
     "modules": {
         "author": "Author of this catmod",
         "dependencies": "Dependencies:",
-        "hasfields": "Configurable",
-        "hasinjects": "Has injections",
-        "hasinputmethods": "Provides additional input methods",
         "help": "Reference",
         "info": "Info",
         "license": "License",
@@ -251,12 +259,30 @@
         "parameters": "Parameters",
         "logs2": "Changelog",
         "settings": "Settings",
-        "importModules": "Import Modules"
+        "importModules": "Import Modules",
+        "enabledModules": "Enabled modules",
+        "availableModules": "Available modules",
+        "filter": "Filter",
+        "categories": {
+            "customization": "Customization",
+            "utilities": "Utilities",
+            "media": "Multimedia",
+            "misc": "Other",
+            "desktop": "Desktop builds",
+            "motionPlanning": "Motion planning",
+            "inputs": "Input methods",
+            "fx": "FX",
+            "mobile": "Mobile devices",
+            "integrations": "Integrations",
+            "tweaks": "Tweaks",
+            "networking": "Networking"
+        }
     },
     "texture": {
         "create": "Create",
         "import": "Import",
-        "skeletons": "Skeletal Animation"
+        "skeletons": "Skeletal Animation",
+        "createType": "Create a type from it"
     },
     "textureview": {
         "bgcolor": "Change bg color",
@@ -338,7 +364,8 @@
         "strokeweight": "Line weight:",
         "testtext": "Test text 0123 +",
         "textWrap": "Word wrap",
-        "textWrapWidth": "Max width:"
+        "textWrapWidth": "Max width:",
+        "useCustomFont": "Use custom font…"
     },
     "fonts": {
         "fonts": "Fonts",
@@ -349,7 +376,23 @@
         "typefacename": "Typeface name:",
         "fontweight": "Font weight:",
         "italic": "Is italic?",
-        "reimport": "Reimport"
+        "reimport": "Reimport",
+        "generateBitmapFont": "Also generate a bitmap font",
+        "bitmapFont": "Bitmap font",
+        "bitmapFontSize": "Font size:",
+        "bitmapFontLineHeight": "Line height:",
+        "resultingBitmapFontName": "Resource name",
+        "charset": "Charset:",
+        "charsets": {
+            "punctuation": "Digits and punctuation (you usually do need this)",
+            "basicLatin": "Basic Latin",
+            "latinExtended": "Latin extended",
+            "cyrillic": "Cyrillic",
+            "greekCoptic": "Greek and Coptic",
+            "custom": "Custom",
+            "allInFont": "Draw everything the font supports"
+        },
+        "customCharsetHint": "Type all the letters you want to include, both in upper and lower case."
     },
     "particleEmitters": {
         "emittersHeading": "Particle emitters",
@@ -471,6 +514,7 @@
         "copies": "Copies",
         "backgrounds": "Backgrounds",
         "tiles": "Tiles",
+        "properties": "Properties",
         "add": "Add",
         "none": "Nothing",
         "done": "Done",
@@ -504,8 +548,9 @@
     "notepad": {
         "local": "Project's notepad",
         "global": "Global notepad",
-        "helppages": "Help",
-        "backToHome": "Back to docs' homepage"
+        "helppages": "Learn",
+        "backToHome": "Back to docs' homepage",
+        "modulespages": "Modules' docs"
     },
     "patreon": {
         "aboutPatrons": "Patrons are people who show their support to ComigoGames at Patreon, in form of recurring donations. Not everyone there comes from ct.js; some are using other apps from ComigoGames. Tip: if you are a creator and donate to ComigoGames via Patreon, you will get a link to your page here — that's my little help to your creations :)",

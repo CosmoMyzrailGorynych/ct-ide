@@ -1,11 +1,15 @@
 {
     "main": {
         "name": "Touch",
+        "tagline": "Check on-screen button presses and integrate touch events with Actions system.",
         "version": "2.0.0",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",
             "mail": "admin@nersta.ru"
-        }]
+        }],
+        "categories": [
+            "inputs"
+        ]
     },
     "fields": [{
         "name": "Detect mouse events as touch events",

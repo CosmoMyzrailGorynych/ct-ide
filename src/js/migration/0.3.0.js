@@ -10,7 +10,7 @@ window.migrationProcess.push({
         /* replace numerical IDs with RFC4122 version 4 UIDs */
         let startingRoom;
         const graphmap = {},
-            typemap = {};
+              typemap = {};
         for (const graph of project.graphs) {
             graph.uid = generateGUID();
             graphmap[graph.origname] = graph.uid;

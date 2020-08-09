@@ -6,6 +6,7 @@ html
         script.
             try {
                 require('gulp');
+                /* eslint no-console: 0 */
                 console.log(`
             ╭──────────────────────────────────────────╮
             │                                          ├──╮
@@ -42,24 +43,43 @@ html
         include includes/footer.pug
         script.
             // @see https://github.com/microsoft/monaco-editor-samples/blob/master/nwjs-amd-v2/index.html
-            (function() {
-               var ERequire = require('monaco-editor/min/vs/loader.js');
-                //__dirname == root path of you application
-                ERequire.config({
-                    baseUrl: 'file:///'+global.__dirname.replace(/\\/g, '\\\\')+'/node_modules/monaco-editor/min/'
+            (function loadMonaco() {
+                var eRequire = require('monaco-editor/min/vs/loader.js');
+                // __dirname == root path of you application
+                eRequire.config({
+                    baseUrl: 'file:///' + global.__dirname.replace(/\\/g, '\\\\') + '/node_modules/monaco-editor/min/'
                 });
                 // workaround monaco-css not understanding the environment
-                self.module = undefined;
+                self.module = void 0;
                 // workaround monaco-typescript not understanding the environment
                 self.process.browser = true;
-                ERequire(['vs/editor/editor.main'], function() {
+                eRequire(['vs/editor/editor.main'], function onMonacoLoad() {
+                    window.monaco = global.monaco;
+
+                    // Custom themes
                     const tomorrow = require('./data/node_requires/monaco-themes/tomorrow.json');
                     const horizon = require('./data/node_requires/monaco-themes/horizon.json');
                     const ambiance = require('./data/node_requires/monaco-themes/ambiance.json');
-                    window.monaco = global.monaco;
+                    const spring = require('./data/node_requires/monaco-themes/spring.json');
+                    const lucasdracula = require('./data/node_requires/monaco-themes/lucasdracula.json');
                     monaco.editor.defineTheme('tomorrow', tomorrow);
                     monaco.editor.defineTheme('horizon', horizon);
                     monaco.editor.defineTheme('ambiance', ambiance);
+                    monaco.editor.defineTheme('spring', spring);
+                    monaco.editor.defineTheme('lucasdracula', lucasdracula);
+
+                    // Extended typescript tokenizer
+                    const typescript = require('./data/node_requires/typescriptTokenizer.js').language;
+                    // I have no guilt of this solution
+                    // @see https://github.com/microsoft/monaco-editor/issues/884
+                    monaco.editor.create(document.createElement('textarea'), {
+                        language: 'typescript',
+                        value: '(:'
+                    });
+                    setTimeout(() => {
+                        monaco.languages.setMonarchTokensProvider('typescript', typescript);
+                    }, 1000);
+
                     window.signals = window.signals || riot.observable({});
                     window.signals.trigger('monacoBooted');
                 });
@@ -70,4 +90,4 @@ html
             riot.mount('*');
             setTimeout(() => {
                 document.getElementById('loading').classList.add('fadeout');
-            }, 0)
+            }, 0);

@@ -1,10 +1,14 @@
 {
     "main": {
         "name": "Desktop's file system",
+        "tagline": "Save and read JSON and text data, scan directories and manage files.",
         "version": "1.0.0",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",
             "mail": "admin@nersta.ru"
-        }]
+        }],
+        "categories": [
+            "desktop"
+        ]
     }
 }

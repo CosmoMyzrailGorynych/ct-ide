@@ -1,11 +1,11 @@
 /* From @github/hotkey
     see https://github.com/github/hotkey/ */
-const isFormField = function(element) {
-    if (!(element instanceof HTMLElement)) {
+const isFormField = function (inputElement) {
+    if (!(inputElement instanceof HTMLElement)) {
         return false;
     }
-    var name = element.nodeName.toLowerCase();
-    var type = (element.getAttribute('type') || '').toLowerCase();
+    var name = inputElement.nodeName.toLowerCase();
+    var type = (inputElement.getAttribute('type') || '').toLowerCase();
     /* eslint no-mixed-operators: off*/
     return name === 'select' ||
             name === 'textarea' ||
@@ -14,12 +14,12 @@ const isFormField = function(element) {
             type !== 'reset' &&
             type !== 'checkbox' &&
             type !== 'radio' ||
-            element.isContentEditable;
+            inputElement.isContentEditable;
 };
 
 const getCode = e => ''
-    .concat(e.ctrlKey? 'Control+' : '')
-    .concat(e.altKey? 'Alt+' : '')
+    .concat(e.ctrlKey ? 'Control+' : '')
+    .concat(e.altKey ? 'Alt+' : '')
     .concat(e.metaKey ? 'Meta+' : '')
     .concat(e.key);
 
@@ -139,7 +139,7 @@ class Hotkeys {
     }
 }
 
-module.exports = function (doc) {
+module.exports = function mountHotkeys(doc) {
     doc = doc || document;
     if (!doc) {
         throw new Error('Can\'t find the document object! Am I in a bare node.js context?!');

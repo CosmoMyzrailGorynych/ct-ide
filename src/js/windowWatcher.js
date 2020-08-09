@@ -1,4 +1,4 @@
-(function () {
+(function windowWatcher() {
     if (!document.body.hasAttribute('data-manage-window')) {
         return;
     }
@@ -13,7 +13,7 @@
             lastState = 'maximized';
         }
         localStorage.windowSettings = JSON.stringify({
-            mode: win.isFullscreen? 'fullscreen' : lastState
+            mode: win.isFullscreen ? 'fullscreen' : lastState
         });
     };
     win.on('restore', () => {
@@ -23,21 +23,23 @@
     win.on('maximize', () => {
         maximized = true;
     });
-    win.on('move', function () {
+    win.on('move', function windowMoveListener() {
         maximized = false;
         saveState();
     });
-    window.addEventListener('resize', function () {
+    window.addEventListener('resize', function windowResizeListener() {
         maximized = false;
         saveState();
     });
-    win.on('closed', function () {
+    win.on('closed', function windowCloseListener() {
         saveState();
     });
 
-    const settings = localStorage.windowSettings? JSON.parse(localStorage.windowSettings) : {
-        mode: 'center'
-    };
+    const settings = localStorage.windowSettings ?
+        JSON.parse(localStorage.windowSettings) :
+        {
+            mode: 'center'
+        };
     if (settings.mode === 'fullscreen') {
         win.enterFullscreen();
     } else if (settings.mode === 'maximized') {

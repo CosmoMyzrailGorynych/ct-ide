@@ -1,3 +1,80 @@
+## v1.4.0
+
+*Sun Aug 09 2020*
+
+### ✨ New Features
+
+* Bitmap fonts — see new docs on how to use them. These fonts solve issues with blurry pixelart fonts in games, and also provide higher performance for dynamic text!
+* `ct.assert` module for readable checks in ct.js projects
+* `ct.camera` now supports direct assignment for its scale, e.g. `ct.camera.scale = 1.5;`
+* `ct.inherit` module that allows you to call parents' code and keep things DRY
+* Custom font selector in the style editor
+* Lucas Dracula theme — A rough port of Arkham theme for VSCode by @lucasmsa
+* Modding: `onbeforecreate` injection
+* Modding: A `code` input type for monospace text input
+* Modding: Add `point2D` input type for modules' settings and injections
+* Modding: Add extensions for rooms with `roomExtends` field
+* Modding: Add extensions to tile layers with `tileLayerExtends` field
+* Modding: Both module settings and asset extensions now can use all the input fields that were previously exclusive to either modules' settings or type extensions
+* Module's settings are now parts of the Project Settings' tab
+* Quickly create a new type by right-clicking an asset in the textures panel
+* Unified module's docs in the side panel
+
+### ⚡️ General Improvements
+
+* Allow `ct.fittoscreen` to toggle fullscreen mode while being in an electron app (in a desktop build)
+  Closes #155
+* Allow games enter fullscreen while being in debugger
+  See #155
+* Better project selector background for night themes
+* Better layout of a type editor
+* Change `ct.place.tile` to check against collision groups (new!) instead of depth
+* Improve Horizon theme
+* Make the structural behavior of TileLayer consistent. Fixes drawing issues with tiles and `ct.place` debug mode
+* Minor UI fixes for the project selector
+* More logical color hierarchy — you will see subtle changes in how certain panels are colored in dark and light themes, and all themes should now have uniform look and feel
+* Move depth input at the type editor into a scrollbox, on par with module-provided fields
+* New icons for the top panel
+* Refurbish project's settings screen
+* Remove empty "help" field from ct.place > module.json
+* Replace node-static for dev and docs servers with serve-handler. Solves rare race conditions while loading docs or a game.
+* Show a loading icon while exporting project
+* The left button group at the topmost tab bar now occupies less space on wider screens
+* Update Russian UI translation
+* Update Spanish translation for ct.IDE. Update by Stuck Up Creations from the Discord server :sparkles:
+* Update debug translation file and comments file
+* Use less restrictive YAML reader/writer to allow some minor save file errors
+
+### 🐛 Bug Fixes
+
+* Do not reuse tiles directly from room templates
+  Closes #191
+* Fix blank autocompletion list at room-events-editor
+  Closes #195
+* Fix `ct.tween.add` not working as expected for useUiDelta
+  See #198
+* Fix the first tile layer not being added into a drawing stack at room-editor, which made tiles invisible unless a copy or background was added
+  Closes #206
+* Fix wrong default setting for `ct.fittoscreen` module
+* Replace unzipper module and fix issues with module imports
+
+### 🍱 Demos, dependencies and Stuff
+
+* Update Howler.js to v2.2.0
+
+### 📝 Docs
+
+* Split "Making catmods" docs into several pages;
+* Document the usage of new asset extensions and input types;
+* Document the usage of BitmapFonts;
+* Update screenshots and directions for tutorials, to reflect UI changes in v1.4.
+
+### 👾 Misc
+
+* :fire: Remove export options: HTML and CSS are now always minified, and JS conversion never worked correctly
+* :fire: Remove a button in the nav that toggles fullscreen view
+* Minor fixes to the debugger files (#197 by @leedigital)
+
 ## v1.3.0
 
 *Wed May 06 2020*

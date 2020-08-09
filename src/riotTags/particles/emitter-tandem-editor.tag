@@ -1,7 +1,7 @@
 emitter-tandem-editor.panel.view.flexrow
     .flexfix(style="width: {panelWidth}px")
         .flexfix-header
-            .panel.pad
+            .panel.pad.nbt.nbl.nbr
                 b {vocGlob.name}
                 br
                 input.wide(type="text" value="{tandem.name}" onchange="{wire('this.tandem.name')}")
@@ -61,7 +61,8 @@ emitter-tandem-editor.panel.view.flexrow
     )
     texture-selector(if="{pickingPreviewTexture}" showempty="yes" onselected="{onPreviewTexturePicked}" oncancelled="{onPreviewTextureCancel}")
     script.
-        const Color = net.brehaut.Color;
+        /* global net */
+        const brehautColor = net.brehaut.Color;
 
         this.tandem = this.opts.tandem;
 
@@ -98,7 +99,9 @@ emitter-tandem-editor.panel.view.flexrow
                 emitter.update(-emitterData.settings.delay);
             } else if (emitterData.settings.delay > 0) { // this needs to be delayed
                 emitter.emit = false;
-                setTimeout(() => { // will capture the emitter in memory and create a temporary leak, but if delays are not longer than hours, we can ignore it
+                // will capture the emitter in memory and create a temporary leak,
+                // but if delays are not longer than hours, we can ignore it
+                setTimeout(() => {
                     emitter.emit = true;
                 }, emitterData.settings.delay * 1000);
             }
@@ -132,19 +135,19 @@ emitter-tandem-editor.panel.view.flexrow
             }
             this.emitterInstances = [];
             this.uidToEmitterMap = {};
-            await Promise.all(
-                this.tandem.emitters
-                .map(emitterData => this.spawnEmitter(emitterData, this.emitterContainer))
-            ).then(emitters =>
-                this.emitterInstances.push(...emitters)
-            );
+            const promisesSpawnEmitters = this.tandem.emitters
+                  .map(emitterData => this.spawnEmitter(emitterData, this.emitterContainer));
+            await Promise.all(promisesSpawnEmitters)
+                  .then(emitters => this.emitterInstances.push(...emitters));
             if (this.refs.canvas) {
                 const box = this.refs.canvas.getBoundingClientRect();
                 this.visualizersContainer.x = box.width / 2;
                 this.visualizersContainer.y = box.height / 2;
             }
             this.generateShapeVisualizers();
-            this.update(); // Need to update the riot tag so that editors get their link to emitter instances
+            // Need to update the riot tag
+            // so that editors get their link to emitter instances
+            this.update();
         };
         // Advances emitter simulation by a given amount of seconds
         this.updateEmitters = seconds => {
@@ -157,12 +160,14 @@ emitter-tandem-editor.panel.view.flexrow
         this.updatePreviewLayout = () => {
             if (this.renderer && this.refs.canvas) {
                 const box = this.refs.preview.getBoundingClientRect();
-                const canvas = this.refs.canvas;
+                const {canvas} = this.refs;
                 canvas.width = Math.round(box.width);
                 canvas.height = Math.round(box.height);
                 this.renderer.resize(canvas.width, canvas.height);
-                this.emitterContainer.x = this.visualizersContainer.x = this.previewTexture.x = canvas.width / 2;
-                this.emitterContainer.y = this.visualizersContainer.y = this.previewTexture.y = canvas.height / 2;
+                this.emitterContainer.x = canvas.width / 2;
+                this.emitterContainer.y = canvas.height / 2;
+                this.visualizersContainer.x = this.previewTexture.x = this.emitterContainer.x;
+                this.visualizersContainer.y = this.previewTexture.y = this.emitterContainer.y;
                 this.emitterContainer.scale.x =
                     this.emitterContainer.scale.y =
                     this.visualizersContainer.scale.x =
@@ -189,6 +194,8 @@ emitter-tandem-editor.panel.view.flexrow
                 if (!emitter.showShapeVisualizer) {
                     continue;
                 }
+                const emitterX = emitter.settings.pos.x,
+                      emitterY = emitter.settings.pos.y;
                 if (emitter.settings.spawnType === 'point') {
                     const crosshair = new PIXI.Graphics();
                     crosshair.lineStyle(2, 0x446adb, 1);
@@ -196,17 +203,17 @@ emitter-tandem-editor.panel.view.flexrow
                     crosshair.lineTo(0, 64);
                     crosshair.moveTo(-64, 0);
                     crosshair.lineTo(64, 0);
-                    crosshair.x = emitter.settings.pos.x;
-                    crosshair.y = emitter.settings.pos.y;
+                    crosshair.x = emitterX;
+                    crosshair.y = emitterY;
                     this.visualizersContainer.addChild(crosshair);
                 } else if (emitter.settings.spawnType === 'circle' || emitter.settings.spawnType === 'ring') {
                     const circle = new PIXI.Graphics();
                     circle.lineStyle(2, 0x446adb, 1);
                     circle.beginFill(0x446adb, 0.27);
-                    circle.drawCircle(emitter.settings.pos.x, emitter.settings.pos.y, emitter.settings.spawnCircle.r);
+                    circle.drawCircle(emitterX, emitterY, emitter.settings.spawnCircle.r);
                     if (emitter.settings.spawnType === 'ring') {
                         circle.beginHole();
-                        circle.drawCircle(emitter.settings.pos.x, emitter.settings.pos.y, emitter.settings.spawnCircle.minR);
+                        circle.drawCircle(emitterX, emitterY, emitter.settings.spawnCircle.minR);
                         circle.endHole();
                     }
                     circle.endFill();
@@ -216,10 +223,10 @@ emitter-tandem-editor.panel.view.flexrow
                     rect.lineStyle(2, 0x446adb, 1);
                     rect.beginFill(0x446adb, 0.27);
                     rect.drawRect(
-                        emitter.settings.pos.x + emitter.settings.spawnRect.x,
-                        emitter.settings.pos.y + emitter.settings.spawnRect.y,
+                        emitterX + emitter.settings.spawnRect.x,
+                        emitterY + emitter.settings.spawnRect.y,
                         emitter.settings.spawnRect.w,
-                        emitter.settings.spawnRect.h,
+                        emitter.settings.spawnRect.h
                     );
                     rect.endFill();
                     this.visualizersContainer.addChild(rect);
@@ -227,8 +234,7 @@ emitter-tandem-editor.panel.view.flexrow
                     const crosshair = new PIXI.Graphics();
                     crosshair.lineStyle(2, 0x446adb, 1);
                     crosshair.drawStar(
-                        emitter.settings.pos.x,
-                        emitter.settings.pos.y,
+                        emitterX, emitterY,
                         emitter.settings.particlesPerWave,
                         64, 16,
                         Math.PI * (0.5 + emitter.settings.angleStart / 180)
@@ -238,13 +244,13 @@ emitter-tandem-editor.panel.view.flexrow
             }
         };
 
-        this.updateGrid = size => {
+        this.updateGrid = () => {
             if (!this.grid || !this.emitterContainer) {
                 return;
             }
 
-            const dark = Color(this.previewColor).getLuminance() > 0.5;
-            this.grid.blendMode = dark? PIXI.BLEND_MODES.MULTIPLY : PIXI.BLEND_MODES.ADD;
+            const dark = brehautColor(this.previewColor).getLuminance() > 0.5;
+            this.grid.blendMode = dark ? PIXI.BLEND_MODES.MULTIPLY : PIXI.BLEND_MODES.ADD;
 
             this.grid.width = this.refs.canvas.width;
             this.grid.height = this.refs.canvas.height;
@@ -254,7 +260,7 @@ emitter-tandem-editor.panel.view.flexrow
             this.grid.texture = this.gridGen([
                 this.gridSize[0] * this.zoom,
                 this.gridSize[1] * this.zoom
-            ], dark? '#ddd' : '#222');
+            ], dark ? '#ddd' : '#222');
         };
 
         this.on('mount', () => {
@@ -276,7 +282,7 @@ emitter-tandem-editor.panel.view.flexrow
                 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
             }
 
-            this.renderer.renderer.backgroundColor = Number('0x'+this.previewColor.slice(1));
+            this.renderer.renderer.backgroundColor = Number('0x' + this.previewColor.slice(1));
             this.visualizersContainer = new PIXI.Container();
             this.previewTexture = new PIXI.Sprite(PIXI.Texture.EMPTY);
             this.previewTexture.alpha = 0.5;
@@ -293,7 +299,7 @@ emitter-tandem-editor.panel.view.flexrow
                 this.updateEmitters(delta / (this.renderer.ticker.maxFPS || 60));
                 this.inspector.text = `FPS: ${Math.round(1 / this.renderer.ticker.deltaMS * 1000)} / ${this.renderer.ticker.maxFPS || 60}\n` +
                     this.emitterInstances.map(e => `${e.particleCount} / ${e.maxParticles}`).join('\n') +
-                    (this.complete? '\n'+this.voc.inspectorComplete : '');
+                    (this.complete ? '\n' + this.voc.inspectorComplete : '');
             });
             this.renderer.stage.addChild(this.previewTexture);
             this.renderer.stage.addChild(this.grid);
@@ -324,12 +330,12 @@ emitter-tandem-editor.panel.view.flexrow
         /*
             UI events
         */
-        this.addEmitter = e => {
+        this.addEmitter = () => {
             const defaultEmitter = require('./data/node_requires/resources/particles/defaultEmitter').get();
             this.tandem.emitters.push(defaultEmitter);
             this.resetEmitters();
         };
-        this.changePreviewBg = e => {
+        this.changePreviewBg = () => {
             this.changingPreviewColor = !this.changingPreviewColor;
             if (this.changingPreviewColor) {
                 this.oldPreviewColor = this.previewColor;
@@ -337,7 +343,7 @@ emitter-tandem-editor.panel.view.flexrow
         };
         this.updatePreviewColor = (color, evtype) => {
             this.previewColor = localStorage.tandemEditorPreviewBg = color;
-            this.renderer.renderer.backgroundColor = Number('0x'+color.slice(1));
+            this.renderer.renderer.backgroundColor = Number('0x' + color.slice(1));
             if (evtype === 'onapply') {
                 this.changingPreviewColor = false;
             }
@@ -347,11 +353,11 @@ emitter-tandem-editor.panel.view.flexrow
         this.cancelPreviewColor = () => {
             this.changingPreviewColor = false;
             this.previewColor = localStorage.tandemEditorPreviewBg = this.oldPreviewColor;
-            this.renderer.renderer.backgroundColor = Number('0x'+this.previewColor.slice(1));
+            this.renderer.renderer.backgroundColor = Number('0x' + this.previewColor.slice(1));
             this.update();
         };
-        this.changeGrid = e => {
-            alertify
+        this.changeGrid = () => {
+            window.alertify
             .confirm(`${this.voc.newGridSize}<br/><input type="number" value="${this.gridSize[0]}" style="width: 6rem;" min=2 id="theGridSizeX"> x <input type="number" value="${this.gridSize[1]}" style="width: 6rem;" min=2 id="theGridSizeY">`)
             .then(e => {
                 if (e.buttonClicked === 'ok') {
@@ -363,10 +369,10 @@ emitter-tandem-editor.panel.view.flexrow
             });
         };
 
-        this.openPreviewTexturePicker = e => {
+        this.openPreviewTexturePicker = () => {
             this.pickingPreviewTexture = true;
         };
-        this.onPreviewTexturePicked = texture => e => {
+        this.onPreviewTexturePicked = texture => () => {
             this.tandem.previewTexture = texture.uid;
             this.pickingPreviewTexture = false;
             this.updatePreviewLayout();
@@ -380,7 +386,7 @@ emitter-tandem-editor.panel.view.flexrow
         /* Zoom in/out by clicking buttons and scrolling mouse wheel */
 
         this.zoom = 1;
-        this.setZoom = zoom => e => {
+        this.setZoom = zoom => () => {
             this.zoom = zoom;
             if (this.emitterContainer) {
                 this.emitterContainer.scale.x = this.emitterContainer.scale.y = this.zoom;
@@ -401,19 +407,16 @@ emitter-tandem-editor.panel.view.flexrow
                 } else if (this.zoom === 0.125) {
                     this.zoom = 0.25;
                 }
-            } else {
-                // out
-                if (this.zoom === 4) {
-                    this.zoom = 2;
-                } else if (this.zoom === 2) {
-                    this.zoom = 1;
-                } else if (this.zoom === 1) {
-                    this.zoom = 0.5;
-                } else if (this.zoom === 0.5) {
-                    this.zoom = 0.25;
-                } else if (this.zoom === 0.25) {
-                    this.zoom = 0.125;
-                }
+            } else if (this.zoom === 4) { // out
+                this.zoom = 2;
+            } else if (this.zoom === 2) {
+                this.zoom = 1;
+            } else if (this.zoom === 1) {
+                this.zoom = 0.5;
+            } else if (this.zoom === 0.5) {
+                this.zoom = 0.25;
+            } else if (this.zoom === 0.25) {
+                this.zoom = 0.125;
             }
             this.emitterContainer.scale.x =
                 this.emitterContainer.scale.y =
@@ -451,8 +454,9 @@ emitter-tandem-editor.panel.view.flexrow
         */
         const minSizeW = 20 * 16;
         const getMaxSizeW = () => window.innerWidth - 128;
-        this.panelWidth = Math.max(minSizeW, Math.min(getMaxSizeW(), localStorage.particlesPanelWidth || 20 * 32));
-        this.gutterMouseDown = e => {
+        const savedPanelWidth = localStorage.particlesPanelWidth || (20 * 32);
+        this.panelWidth = Math.max(minSizeW, Math.min(savedPanelWidth, getMaxSizeW()));
+        this.gutterMouseDown = () => {
             this.draggingGutter = true;
         };
         const gutterMove = e => {
@@ -476,7 +480,7 @@ emitter-tandem-editor.panel.view.flexrow
             document.removeEventListener('mouseup', gutterUp);
         });
 
-        this.apply = e => {
+        this.apply = () => {
             this.parent.editingTandem = false;
             this.parent.update();
             window.signals.trigger('tandemUpdated', this.tandem);

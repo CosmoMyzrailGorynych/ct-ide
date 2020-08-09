@@ -64,7 +64,7 @@ room-type-picker.room-editor-TypeSwatches.tabbed.tall
         };
         const Fuse = require('fuse.js');
         this.fuseSearch = e => {
-            var val = (e? e.target.value : this.refs.fusesearch.value).trim();
+            var val = (e ? e.target.value : this.refs.fusesearch.value).trim();
             if (val) {
                 var fuse = new Fuse(this.types, fuseOptions);
                 this.searchResults = fuse.search(val);
@@ -72,7 +72,7 @@ room-type-picker.room-editor-TypeSwatches.tabbed.tall
                 this.searchResults = null;
             }
         };
-        this.selectType = type => e => {
+        this.selectType = type => () => {
             this.parent.currentType = type;
             this.parent.selectedCopies = false;
         };

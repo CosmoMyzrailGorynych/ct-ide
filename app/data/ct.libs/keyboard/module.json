@@ -1,11 +1,15 @@
 {
     "main": {
         "name": "Keyboard",
+        "tagline": "Add keyboard events to the Actions system.",
         "version": "3.0.0",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",
             "mail": "admin@nersta.ru"
-        }]
+        }],
+        "categories": [
+            "inputs"
+        ]
     },
     "inputMethods": {
         "KeyA": "A",
@@ -36,10 +40,10 @@
         "KeyZ": "Z",
 
         "Space": "Space",
-        "ArrowLeft": "Left Arrow", 
-        "ArrowUp": "Up Arrow", 
-        "ArrowRight": "Right Arrow", 
-        "ArrowDown": "Down Arrow", 
+        "ArrowLeft": "Left Arrow",
+        "ArrowUp": "Up Arrow",
+        "ArrowRight": "Right Arrow",
+        "ArrowDown": "Down Arrow",
 
         "Backspace": "Backspace",
         "Delete": "Delete",
@@ -113,7 +117,7 @@
         "Numpad Add": "Numpad +",
         "Numpad Decimal": "Numpad .",
         "Numpad Enter": "Numpad Enter",
-        
+
         "NumLock": "NumLock",
 
         "Unknown": "Unknown"
