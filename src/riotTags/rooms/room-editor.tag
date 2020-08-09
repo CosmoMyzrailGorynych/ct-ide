@@ -237,7 +237,7 @@ room-editor.panel.view
         this.tab = 'roomcopies';
         this.changeTab = tab => () => {
             this.tab = tab;
-            if (tab === 'roombackgrounds') {
+            if (tab === 'roombackgrounds' || tab === 'properties') {
                 this.roomUnpickType();
             }
         };
