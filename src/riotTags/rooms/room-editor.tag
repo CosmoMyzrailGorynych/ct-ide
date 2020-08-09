@@ -15,19 +15,19 @@ room-editor.panel.view
                     li(onclick="{changeTab('roomcopies')}" title="{voc.copies}" class="{active: tab === 'roomcopies'}")
                         svg.feather
                             use(xlink:href="data/icons.svg#type")
-                        span(show="{sidebarWidth > 500}") {voc.copies}
+                        span(if="{sidebarWidth > 500}") {voc.copies}
                     li(onclick="{changeTab('roombackgrounds')}" title="{voc.backgrounds}" class="{active: tab === 'roombackgrounds'}")
                         svg.feather
                             use(xlink:href="data/icons.svg#image")
-                        span(show="{sidebarWidth > 500}") {voc.backgrounds}
+                        span(if="{sidebarWidth > 500}") {voc.backgrounds}
                     li(onclick="{changeTab('roomtiles')}" title="{voc.tiles}" class="{active: tab === 'roomtiles'}")
                         svg.feather
                             use(xlink:href="data/icons.svg#texture")
-                        span(show="{sidebarWidth > 500}") {voc.tiles}
+                        span(if="{sidebarWidth > 500}") {voc.tiles}
                     li(onclick="{changeTab('properties')}" title="{voc.properties}" class="{active: tab === 'properties'}")
                         svg.feather
                             use(xlink:href="data/icons.svg#settings")
-                        span(show="{sidebarWidth > 500}") {voc.properties}
+                        span(if="{sidebarWidth > 500}") {voc.properties}
                 .relative
                     room-type-picker(show="{tab === 'roomcopies'}" current="{currentType}")
                     room-backgrounds-editor(show="{tab === 'roombackgrounds'}" room="{room}")
@@ -237,7 +237,7 @@ room-editor.panel.view
         this.tab = 'roomcopies';
         this.changeTab = tab => () => {
             this.tab = tab;
-            if (tab === 'roombackgrounds') {
+            if (tab === 'roombackgrounds' || tab === 'properties') {
                 this.roomUnpickType();
             }
         };

@@ -25,13 +25,6 @@ scripts-settings
         this.currentProject.scripts = this.currentProject.scripts || [];
 
         const glob = require('./data/node_requires/glob');
-        glob.scriptTypings = glob.scriptTypings || {};
-        for (const script of global.currentProject.scripts) {
-            glob.scriptTypings[script.name] = [
-                monaco.languages.typescript.javascriptDefaults.addExtraLib(script.code),
-                monaco.languages.typescript.typescriptDefaults.addExtraLib(script.code)
-            ];
-        }
 
         this.addNewScript = () => {
             var script = {
