@@ -1,7 +1,7 @@
 window.migrationProcess = window.migrationProcess || [];
 
 window.migrationProcess.push({
-    version: '1.3.2',
+    version: '1.4.0',
     process: project => new Promise(resolve => {
         /**
          * Project settings got reorganized, logically and visually
