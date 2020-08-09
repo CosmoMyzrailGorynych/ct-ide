@@ -520,8 +520,8 @@ const packages = gulp.series([
     patronsCache,
     examples,
     bakePackages,
-    fixSymlinks,
-    fixPermissions,
+//    fixSymlinks,
+//    fixPermissions,
     zipPackages
 ]);
 
