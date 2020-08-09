@@ -115,7 +115,7 @@ debugger-screen-embedded(class="{opts.class} {flexrow: verticalLayout, flexcol: 
 
         /* Bootstrap preview and debug views */
         this.on('mount', () => {
-            this.refs.gameView.addEventListener('permissionrequest', function(e) {
+            this.refs.gameView.addEventListener('permissionrequest', function permissionrequest(e) {
                 if (e.permission === 'fullscreen') {
                     e.request.allow();
                 }

@@ -96,8 +96,7 @@ modules-settings.panel.view
             }
 
             const path = require('path'),
-                fs = require('fs-extra'),
-                extract = require('extract-zip');
+                  extract = require('extract-zip');
 
             const unpackPromises = [];
 
