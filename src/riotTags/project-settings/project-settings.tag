@@ -36,6 +36,7 @@ project-settings.panel.view.pad.flexrow
                 // This outputs a templated tag name. Magic!
                 #{name + '-settings'}
         .pad(if="{currentModule}")
+            h1 {currentModule.manifest.main.name}
             extensions-editor(customextends="{currentModule.manifest.fields}" entity="{global.currentProject.libs[currentModule.name]}")
     script.
         this.namespace = 'settings';
