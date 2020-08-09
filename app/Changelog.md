@@ -1,3 +1,15 @@
+## v1.4.1
+
+*Sun Aug 10 2020*
+
+### 🐛 Bug Fixes
+
+* Fix indefinite behavior after placing copies and switching to the properties tab in the room editor
+* Fix loading error while migrating a project without tile layers to v1.4.0
+* Fix regression with custom script typings: they were not loaded on project load
+* Fix type picker being empty right after opening the room editor
+* Icons in the room editor, on the left side, should be centered if no labels are shown next to them.
+
 ## v1.4.0
 
 *Sun Aug 09 2020*
