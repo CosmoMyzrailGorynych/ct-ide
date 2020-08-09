@@ -126,6 +126,14 @@
                 document.title = global.currentProject.settings.title + ' — ct.js';
             }
 
+            glob.scriptTypings = {};
+            for (const script of global.currentProject.scripts) {
+                glob.scriptTypings[script.name] = [
+                    monaco.languages.typescript.javascriptDefaults.addExtraLib(script.code),
+                    monaco.languages.typescript.typescriptDefaults.addExtraLib(script.code)
+                ];
+            }
+
             const {loadAllTypedefs, resetTypedefs} = require('./data/node_requires/resources/modules/typedefs');
             resetTypedefs();
             loadAllTypedefs();
