@@ -39,10 +39,6 @@ room-type-picker.room-editor-TypeSwatches.tabbed.tall
 
         this.getTypeTextureRevision = type => glob.texturemap[type.texture].g.lastmod;
 
-        window.signals.on('typesChanged', typesChanged);
-        this.on('unmount', () => {
-            window.signals.off('typesChanged', typesChanged);
-        });
         const fuseOptions = {
             shouldSort: true,
             tokenize: true,
@@ -82,6 +78,11 @@ room-type-picker.room-editor-TypeSwatches.tabbed.tall
             this.updateTypeList();
             this.update();
         };
+
+        window.signals.on('typesChanged', typesChanged);
+        this.on('unmount', () => {
+            window.signals.off('typesChanged', typesChanged);
+        });
 
         this.on('mount', () => {
             this.mounted = true;
