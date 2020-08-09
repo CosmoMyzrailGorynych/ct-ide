@@ -39,15 +39,6 @@ room-type-picker.room-editor-TypeSwatches.tabbed.tall
 
         this.getTypeTextureRevision = type => glob.texturemap[type.texture].g.lastmod;
 
-        this.updateTypeList = () => {
-            this.types = [...global.currentProject.types];
-            this.types.sort((a, b) => a.name.localeCompare(b.name));
-            this.fuseSearch();
-        };
-        var typesChanged = () => {
-            this.updateTypeList();
-            this.update();
-        };
         window.signals.on('typesChanged', typesChanged);
         this.on('unmount', () => {
             window.signals.off('typesChanged', typesChanged);
@@ -64,6 +55,10 @@ room-type-picker.room-editor-TypeSwatches.tabbed.tall
         };
         const Fuse = require('fuse.js');
         this.fuseSearch = e => {
+            if (!this.mounted) {
+                this.searchResults = null;
+                return;
+            }
             var val = (e ? e.target.value : this.refs.fusesearch.value).trim();
             if (val) {
                 var fuse = new Fuse(this.types, fuseOptions);
@@ -76,4 +71,18 @@ room-type-picker.room-editor-TypeSwatches.tabbed.tall
             this.parent.currentType = type;
             this.parent.selectedCopies = false;
         };
-        this.on('mount', this.updateTypeList);
+
+        this.updateTypeList = () => {
+            this.types = [...global.currentProject.types];
+            this.types.sort((a, b) => a.name.localeCompare(b.name));
+            this.fuseSearch();
+        };
+        this.updateTypeList();
+        var typesChanged = () => {
+            this.updateTypeList();
+            this.update();
+        };
+
+        this.on('mount', () => {
+            this.mounted = true;
+        });

@@ -42,6 +42,10 @@ window.migrationProcess.push({
          * Tile layers at rooms can now be extended and have an object `exts`.
          */
         for (const room of project.rooms) {
+            if (!room.tiles) {
+                room.tiles = [];
+                continue;
+            }
             for (const layer of room.tiles) {
                 layer.extends = layer.extends || {};
                 delete layer.exts; // Leftovers from development of v1.3.2
