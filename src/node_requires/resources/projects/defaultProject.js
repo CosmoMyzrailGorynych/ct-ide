@@ -22,6 +22,7 @@ const defaultProjectTemplate = {
     rooms: [],
     actions: [],
     emitterTandems: [],
+    scripts: [],
     starting: 0,
     settings: {
         authoring: {
