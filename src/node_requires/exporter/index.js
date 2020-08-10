@@ -271,6 +271,10 @@ const exportCtProject = async (project, projdir) => {
     const html = substituteHtmlVars(await sources['index.html'], project, injects);
     let css = substituteCssVars(await sources['ct.css'], project, injects);
 
+    if (settings.rendering.pixelatedrender) {
+        css += '#ct canvas{image-rendering: pixelated;}';
+    }
+
     css += fonts.css;
 
     // Output minified HTML & CSS
