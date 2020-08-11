@@ -432,7 +432,9 @@ room-editor.panel.view
             if (this.nameTaken) {
                 // animate the error notice
                 require('./data/node_requires/jellify')(this.refs.errorNotice);
-                window.soundbox.play('Failure');
+                if (localStorage.disableSounds !== 'on') {
+                    window.soundbox.play('Failure');
+                }
                 return false;
             }
             this.room.lastmod = Number(new Date());

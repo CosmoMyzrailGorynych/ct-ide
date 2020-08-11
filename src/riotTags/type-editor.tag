@@ -192,7 +192,9 @@ type-editor.panel.view.flexrow
             if (this.nameTaken) {
                 // animate the error notice
                 require('./data/node_requires/jellify')(this.refs.errorNotice);
-                soundbox.play('Failure');
+                if (localStorage.disableSounds !== 'on') {
+                    soundbox.play('Failure');
+                }
                 return false;
             }
             glob.modified = true;

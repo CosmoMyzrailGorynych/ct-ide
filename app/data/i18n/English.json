@@ -167,6 +167,7 @@
         "codeFont": "Font for code",
         "codeLigatures": "Ligatures",
         "codeDense": "Dense layout",
+        "disableSounds": "Disable UI sounds",
         "openIncludeFolder": "Open \"include\" folder",
         "troubleshooting": "Troubleshooting",
         "toggleDevTools": "Toggle Dev Tools",

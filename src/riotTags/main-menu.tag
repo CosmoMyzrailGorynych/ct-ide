@@ -425,6 +425,15 @@ main-menu.flexcol
             }, {
                 type: 'separator'
             }, {
+                label: window.languageJSON.menu.disableSounds,
+                type: 'checkbox',
+                checked: () => localStorage.disableSounds === 'on',
+                click: () => {
+                    localStorage.disableSounds = (localStorage.disableSounds || 'off') === 'off' ? 'on' : 'off';
+                }
+            }, {
+                type: 'separator'
+            }, {
                 label: window.languageJSON.common.zoomIn,
                 icon: 'zoom-in',
                 click: () => {
