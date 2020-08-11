@@ -18,6 +18,11 @@ const getUnwrappedExtends = function getUnwrappedExtends(exts) {
         }
         const postfix = split.pop();
         const key = split.join('@@');
+        if ((postfix === 'type' || postfix === 'texture') &&
+            (exts[i] === void 0 || exts[i] === -1)) {
+            // Skip unset values
+            continue;
+        }
         if (postfix === 'type') {
             try {
                 out[key] = getTypeFromId(exts[i]).name;
