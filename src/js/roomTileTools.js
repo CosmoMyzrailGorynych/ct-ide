@@ -80,14 +80,14 @@
                 this.refs.canvas.x.drawImage(
                     img,
                     sx, sy, w, h,
-                    e.offsetX / this.zoomFactor,
-                    e.offsetY / this.zoomFactor,
+                    (e.offsetX) / this.zoomFactor - w / 2,
+                    (e.offsetY) / this.zoomFactor - h / 2,
                     w, h
                 );
             } else {
                 // snap coordinates to a grid if it is enabled
-                const dx = this.xToRoom(e.offsetX),
-                      dy = this.yToRoom(e.offsetY);
+                const dx = this.xToRoom(e.offsetX - w / 2 * this.zoomFactor),
+                      dy = this.yToRoom(e.offsetY - h / 2 * this.zoomFactor);
                 this.refs.canvas.x.drawImage(
                     img,
                     sx, sy, w, h,
@@ -121,12 +121,16 @@
             return;
         }
         // insert tiles
+
+        const tex = this.currentTileset;
+        const w = (tex.width + tex.marginx) * this.tileSpanX - tex.marginx,
+              h = (tex.height + tex.marginy) * this.tileSpanY - tex.marginy;
         if (Number(this.room.gridX) === 0 || e.altKey) {
-            if (this.lastTileX !== Math.floor(this.xToRoom(e.offsetX)) ||
-                this.lastTileY !== Math.floor(this.yToRoom(e.offsetY))
+            if (this.lastTileX !== Math.floor(this.xToRoom(e.offsetX) - w / 2) ||
+                this.lastTileY !== Math.floor(this.yToRoom(e.offsetY) - h / 2)
             ) {
-                this.lastTileX = Math.floor(this.xToRoom(e.offsetX));
-                this.lastTileY = Math.floor(this.yToRoom(e.offsetY));
+                this.lastTileX = Math.floor(this.xToRoom(e.offsetX) - w / 2);
+                this.lastTileY = Math.floor(this.yToRoom(e.offsetY) - h / 2);
                 this.currentTileLayer.tiles.push({
                     x: this.lastTileX,
                     y: this.lastTileY,
@@ -135,8 +139,8 @@
                 });
             }
         } else {
-            var x = Math.floor(this.xToRoom(e.offsetX)),
-                y = Math.floor(this.yToRoom(e.offsetY));
+            var x = Math.floor(this.xToRoom(e.offsetX - w / 2 * this.zoomFactor)),
+                y = Math.floor(this.yToRoom(e.offsetY - h / 2 * this.zoomFactor));
             if (this.lastTileX !== Math.round(x / this.room.gridX) * this.room.gridX ||
                 this.lastTileY !== Math.round(y / this.room.gridY) * this.room.gridY
             ) {
