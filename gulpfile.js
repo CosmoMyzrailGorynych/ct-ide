@@ -540,11 +540,11 @@ const packages = gulp.series([
 const deployOnly = () => {
     console.log(`For channel ${channelPostfix}`);
     if (nightly) {
-        return spawnise.spawn('./butler', ['push', `./build/ctjs - v${pack.version}/linux32`, `comigo/ct:linux32${channelPostfix ? '-' + channelPostfix : ''}`, '--userversion', buildNumber])
-        .then(() => spawnise.spawn('./butler', ['push', `./build/ctjs - v${pack.version}/linux64`, `comigo/ct:linux64${channelPostfix ? '-' + channelPostfix : ''}`, '--userversion', buildNumber]))
-        .then(() => spawnise.spawn('./butler', ['push', `./build/ctjs - v${pack.version}/osx64`, `comigo/ct:osx64${channelPostfix ? '-' + channelPostfix : ''}`, '--userversion', buildNumber]))
-        .then(() => spawnise.spawn('./butler', ['push', `./build/ctjs - v${pack.version}/win32`, `comigo/ct:win32${channelPostfix ? '-' + channelPostfix : ''}`, '--userversion', buildNumber]))
-        .then(() => spawnise.spawn('./butler', ['push', `./build/ctjs - v${pack.version}/win64`, `comigo/ct:win64${channelPostfix ? '-' + channelPostfix : ''}`, '--userversion', buildNumber]));
+        return spawnise.spawn('./butler', ['push', `./build/ctjs - v${pack.version}/linux32`, `comigo/ct-nightly:linux32${channelPostfix ? '-' + channelPostfix : ''}`, '--userversion', buildNumber])
+        .then(() => spawnise.spawn('./butler', ['push', `./build/ctjs - v${pack.version}/linux64`, `comigo/ct-nightly:linux64${channelPostfix ? '-' + channelPostfix : ''}`, '--userversion', buildNumber]))
+        .then(() => spawnise.spawn('./butler', ['push', `./build/ctjs - v${pack.version}/osx64`, `comigo/ct-nightly:osx64${channelPostfix ? '-' + channelPostfix : ''}`, '--userversion', buildNumber]))
+        .then(() => spawnise.spawn('./butler', ['push', `./build/ctjs - v${pack.version}/win32`, `comigo/ct-nightly:win32${channelPostfix ? '-' + channelPostfix : ''}`, '--userversion', buildNumber]))
+        .then(() => spawnise.spawn('./butler', ['push', `./build/ctjs - v${pack.version}/win64`, `comigo/ct-nightly:win64${channelPostfix ? '-' + channelPostfix : ''}`, '--userversion', buildNumber]));
     }
     return spawnise.spawn('./butler', ['push', `./build/ctjs - v${pack.version}/linux32`, `comigo/ct:linux32${channelPostfix ? '-' + channelPostfix : ''}`, '--userversion', pack.version])
     .then(() => spawnise.spawn('./butler', ['push', `./build/ctjs - v${pack.version}/linux64`, `comigo/ct:linux64${channelPostfix ? '-' + channelPostfix : ''}`, '--userversion', pack.version]))
