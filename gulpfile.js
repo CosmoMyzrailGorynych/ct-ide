@@ -33,7 +33,13 @@ const npm = (/^win/).test(process.platform) ? 'npm.cmd' : 'npm';
 const pack = require('./app/package.json');
 
 var channelPostfix = argv.channel || false,
-    fixEnabled = argv.fix || false;
+    fixEnabled = argv.fix || false,
+    nightly = argv.nightly || false,
+    buildNumber = argv.buildNum || false;
+
+if (nightly) {
+    channelPostfix = 'nightly';
+}
 
 let errorBoxShown = false;
 const showErrorBox = function () {
@@ -390,6 +396,12 @@ const build = gulp.parallel([
 
 const bakePackages = async () => {
     const NwBuilder = require('nw-builder');
+    // Use the appropriate icon for each release channel
+    if (nightly) {
+        await fs.copy('./buildAssets/icon.png', './app/ct_ide.png');
+    } else {
+        await fs.copy('./buildAssets/nightly.png', './app/ct_ide.png');
+    }
     await fs.remove(path.join('./build', `ctjs - v${pack.version}`));
     var nw = new NwBuilder({
         files: nwFiles,
@@ -399,7 +411,7 @@ const bakePackages = async () => {
         buildType: 'versioned',
         // forceDownload: true,
         zip: false,
-        macIcns: './buildAssets/icon.icns'
+        macIcns: nightly ? './buildAssets/nightly.icns' : './buildAssets/icon.icns'
     });
     await nw.build();
     console.log('Built to this location:', path.join('./build', `ctjs - v${pack.version}`));
@@ -527,6 +539,13 @@ const packages = gulp.series([
 
 const deployOnly = () => {
     console.log(`For channel ${channelPostfix}`);
+    if (nightly) {
+        return spawnise.spawn('./butler', ['push', `./build/ctjs - v${pack.version}/linux32`, `comigo/ct:linux32${channelPostfix ? '-' + channelPostfix : ''}`, '--userversion', buildNumber])
+        .then(() => spawnise.spawn('./butler', ['push', `./build/ctjs - v${pack.version}/linux64`, `comigo/ct:linux64${channelPostfix ? '-' + channelPostfix : ''}`, '--userversion', buildNumber]))
+        .then(() => spawnise.spawn('./butler', ['push', `./build/ctjs - v${pack.version}/osx64`, `comigo/ct:osx64${channelPostfix ? '-' + channelPostfix : ''}`, '--userversion', buildNumber]))
+        .then(() => spawnise.spawn('./butler', ['push', `./build/ctjs - v${pack.version}/win32`, `comigo/ct:win32${channelPostfix ? '-' + channelPostfix : ''}`, '--userversion', buildNumber]))
+        .then(() => spawnise.spawn('./butler', ['push', `./build/ctjs - v${pack.version}/win64`, `comigo/ct:win64${channelPostfix ? '-' + channelPostfix : ''}`, '--userversion', buildNumber]));
+    }
     return spawnise.spawn('./butler', ['push', `./build/ctjs - v${pack.version}/linux32`, `comigo/ct:linux32${channelPostfix ? '-' + channelPostfix : ''}`, '--userversion', pack.version])
     .then(() => spawnise.spawn('./butler', ['push', `./build/ctjs - v${pack.version}/linux64`, `comigo/ct:linux64${channelPostfix ? '-' + channelPostfix : ''}`, '--userversion', pack.version]))
     .then(() => spawnise.spawn('./butler', ['push', `./build/ctjs - v${pack.version}/osx64`, `comigo/ct:osx64${channelPostfix ? '-' + channelPostfix : ''}`, '--userversion', pack.version]))

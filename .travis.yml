@@ -14,12 +14,13 @@ stages:
   - name: lint
   - name: build
   - name: pack
-    if: tag IS present
-  - name: deploy
-    if: tag IS present
+    if: (tag IS present) AND (type != cron)
+  - name: packNightly
+    if: (branch = develop) AND (type = cron)
 
 jobs:
   include:
+
     - stage: lint
       script:
         - gulp lint
@@ -28,6 +29,7 @@ jobs:
       script:
         - gulp build
       skip_cleanup: true
+
     - stage: pack
       script:
         - gulp -f devSetup.gulpfile.js
@@ -47,6 +49,19 @@ jobs:
         # Push to comigo.itch.io/ct
         - provider: script
           script: gulp deployOnly
+          skip_cleanup: true
+          on:
+            all_branches: true
+
+    - stage: packNightly
+      script:
+        - gulp -f devSetup.gulpfile.js
+        - gulp packages --nightly --buildNum=$TRAVIS_BUILD_NUMBER
+      skip_cleanup: true
+      deploy:
+        # Push to comigo.itch.io/ct
+        - provider: script
+          script: gulp deployOnly --nightly --buildNum=$TRAVIS_BUILD_NUMBER
           skip_cleanup: true
           on:
             all_branches: true
