@@ -17,6 +17,9 @@ window.showOpenDialog = function showOpenDialog(options = {}) {
     const input = document.createElement('input');
     input.setAttribute('type', 'file');
     input.style.opacity = 0;
+    input.style.position = 'fixed';
+    input.style.right = '100%';
+    input.style.bottom = '100%';
     document.body.appendChild(input);
     if (options.openDirectory) {
         input.setAttribute('nwdirectory', 'nwdirectory');
