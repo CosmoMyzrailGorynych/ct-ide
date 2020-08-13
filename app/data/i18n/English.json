@@ -499,7 +499,10 @@
         "parallax": "Parallax (X, Y):",
         "repeat": "Repeat:",
         "scale": "Scaling (X, Y):",
-        "shift": "Shift (X, Y):"
+        "shift": "Shift (X, Y):",
+        "notBackgroundTextureWarning": "This texture is not marked as a background. It will have gaps when exported.",
+        "fixBackground": "Fix it.",
+        "dismissWarning": "Dismiss."
     },
     "roomtiles": {
         "moveTileLayer": "Move to a new depth",
