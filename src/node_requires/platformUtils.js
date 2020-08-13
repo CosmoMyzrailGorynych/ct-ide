@@ -66,7 +66,10 @@ const mod = {
 };
 
 {
-    let exportDir, exportDirPromise;
+    let exportDir,
+        exportDirPromise,
+        buildDir,
+        buildDirPromise;
     // We compute a directory once and store it forever
     mod.getExportDir = () => {
         if (exportDir) {
@@ -80,6 +83,19 @@ const mod = {
             return exportDir;
         });
         return exportDirPromise;
+    };
+    mod.getBuildDir = () => {
+        if (buildDir) {
+            return Promise.resolve(buildDir);
+        }
+        if (buildDirPromise) {
+            return buildDirPromise;
+        }
+        buildDirPromise = mod.getWritableDir().then(dir => {
+            buildDir = require('path').join(dir, 'build');
+            return buildDir;
+        });
+        return buildDirPromise;
     };
 }
 

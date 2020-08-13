@@ -241,11 +241,11 @@ main-menu.flexcol
             }
         };
         this.zipExport = async () => {
-            const {getWritableDir} = require('./data/node_requires/platformUtils');
+            const {getWritableDir, getExportDir} = require('./data/node_requires/platformUtils');
             const writable = await getWritableDir();
             const runCtExport = require('./data/node_requires/exporter');
             const exportFile = path.join(writable, '/export.zip'),
-                  inDir = path.join(writable, '/export/');
+                  inDir = await getExportDir();
             await fs.remove(exportFile);
             runCtExport(global.currentProject, global.projdir)
             .then(() => {
