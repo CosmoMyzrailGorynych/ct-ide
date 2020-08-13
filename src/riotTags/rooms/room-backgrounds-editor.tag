@@ -148,11 +148,11 @@ room-backgrounds-editor.room-editor-Backgrounds.tabbed.tall
             }
         };
 
-        this.fixTexture = background => e => {
+        this.fixTexture = background => () => {
             const tex = getTextureFromId(background.texture);
             tex.tiled = true;
         };
-        this.dismissWarning = background => e => {
+        this.dismissWarning = background => () => {
             const tex = getTextureFromId(background.texture);
             tex.ignoreTiledUse = true;
         };
