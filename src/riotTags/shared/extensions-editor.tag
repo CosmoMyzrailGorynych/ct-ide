@@ -50,7 +50,7 @@ extensions-editor
                     input.nogrow(
                         if="{ext.type === 'checkbox'}"
                         type="checkbox"
-                        value="{parent.opts.entity[ext.key] || ext.default}"
+                        checked="{parent.opts.entity[ext.key] || ext.default}"
                         onchange="{wire('this.opts.entity.'+ ext.key)}"
                     )
                     span   {ext.name}
