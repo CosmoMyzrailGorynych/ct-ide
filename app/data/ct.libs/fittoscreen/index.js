@@ -6,7 +6,10 @@
         const pixelScaleModifier = ct.highDensity ? (window.devicePixelRatio || 1) : 1;
         const kw = window.innerWidth / ct.roomWidth,
               kh = window.innerHeight / ct.roomHeight;
-        const k = Math.min(kw, kh);
+        let k = Math.min(kw, kh);
+        if (mode === 'fastScaleInteger') {
+            k = k < 1 ? k : Math.floor(k);
+        }
         var canvasWidth, canvasHeight,
             cameraWidth, cameraHeight;
         if (mode === 'expandViewport' || mode === 'expand') {
@@ -14,7 +17,7 @@
             canvasHeight = Math.ceil(window.innerHeight * pixelScaleModifier);
             cameraWidth = window.innerWidth;
             cameraHeight = window.innerHeight;
-        } else if (mode === 'fastScale') {
+        } else if (mode === 'fastScale' || mode === 'fastScaleInteger') {
             canvasWidth = Math.ceil(ct.roomWidth * pixelScaleModifier);
             canvasHeight = Math.ceil(ct.roomHeight * pixelScaleModifier);
             cameraWidth = ct.roomWidth;
@@ -44,7 +47,7 @@
         ct.camera.width = cameraWidth;
         ct.camera.height = cameraHeight;
 
-        if (mode === 'fastScale') {
+        if (mode === 'fastScale' || mode === 'fastScaleInteger') {
             canv.style.transform = `translate(-50%, -50%) scale(${k})`;
             canv.style.position = 'absolute';
             canv.style.top = '50%';
