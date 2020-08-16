@@ -501,7 +501,7 @@ room-editor.panel.view
             canvas.x.clearRect(0, 0, canvas.width, canvas.height);
             // Fill it with a background color
             canvas.x.fillStyle = this.room.backgroundColor || '#000000';
-            canvas.x.fillRect(0, 0, canvas.width, canvas.height)
+            canvas.x.fillRect(0, 0, canvas.width, canvas.height);
 
             // Apply camera movement + zoom
             canvas.x.translate(Math.floor(canvas.width / 2), Math.floor(canvas.height / 2));
