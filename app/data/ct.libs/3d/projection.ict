@@ -157,7 +157,7 @@ types:
     uid: 0ae31f06-ea0f-446a-9caa-22dba4d7cad9
     lastmod: 1597380836327
   - name: Comigo
-    depth: 20
+    depth: -40
     oncreate: ''
     onstep: this.move();
     ondraw: ''
@@ -169,7 +169,7 @@ types:
     uid: 312c8e4f-52cb-4f54-a3a6-9711048504d2
     lastmod: 1597381479959
   - name: Lamp
-    depth: 20
+    depth: -40
     oncreate: ''
     onstep: this.move();
     ondraw: ''
@@ -179,7 +179,7 @@ types:
       threeDOrientation: xNegative
       threeDEnabled: true
     uid: 93de9f6e-dc74-4277-a778-b9b9ded16c37
-    lastmod: 1597379858109
+    lastmod: 1597541560523
   - name: SandCellSquare
     depth: 0
     oncreate: ''
