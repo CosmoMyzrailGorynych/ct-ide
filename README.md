@@ -24,6 +24,14 @@ If you are willing to participate in ct.js' future, contact me at Discord (CoMiG
 * [Like ct.js on AlternativeTo](https://alternativeto.net/software/ct-js/)
 * [Rate ct.js on Slant in different questions](https://www.slant.co/options/30242/~ct-js-review)
 
+# Production builds
+
+See the [releases page](https://github.com/ct-js/ct-js/releases) or [jump to itch.io page](https://comigo.itch.io/ct). Available for Windows, Mac and Linux.
+
+# Nightly builds
+
+We have [daily builds at itch.io](https://comigo.itch.io/ct-nightly). This page will have nightly versions that are built from the `develop` branch from our repository. It means that you will get the latest features, improvement, bug fixes, and new bugs daily, out of the oven. [Itch.io app](https://itch.io/app) is strongly recommended.
+
 # Repo structure & tools
 
 * `app` — an [NW.js app](nwjs.io/), with its configs and static files.
