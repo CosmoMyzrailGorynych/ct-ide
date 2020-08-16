@@ -26,6 +26,7 @@ class Room extends PIXI.Container {
             this.onLeave = template.onLeave;
             this.template = template;
             this.name = template.name;
+            ct.pixiApp.renderer.backgroundColor = Number('0x' + this.template.backgroundColor.slice(1));
             /*%beforeroomoncreate%*/
             for (let i = 0, li = template.bgs.length; i < li; i++) {
                 const bg = new ct.types.Background(

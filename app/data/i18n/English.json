@@ -517,6 +517,7 @@
         "events": "Room events",
         "copies": "Copies",
         "backgrounds": "Backgrounds",
+        "backgroundColor": "Background color:",
         "tiles": "Tiles",
         "properties": "Properties",
         "add": "Add",
