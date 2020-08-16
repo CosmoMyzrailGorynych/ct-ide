@@ -26,7 +26,7 @@ If you are willing to participate in ct.js' future, contact me at Discord (CoMiG
 
 # Repo structure & tools
 
-* `app` — an [Electron app](https://electronjs.org/), with its configs and static files.
+* `app` — an [NW.js app](nwjs.io/), with its configs and static files.
     * `data`
         * `ct.release` — the ct.js game library, aka its "core"
         * `ct.libs` — catmods (modules) that ship with ct.js. Feel free to create a pull request with your module!
