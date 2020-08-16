@@ -18,7 +18,7 @@
         "key": "threeDEnabled"
     }, {
         "name": "3D orientation",
-        "type": "radio",
+        "type": "select",
         "default": "zPositive",
         "key": "threeDOrientation",
         "options": [{

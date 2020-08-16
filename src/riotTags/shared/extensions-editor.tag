@@ -128,6 +128,17 @@ extensions-editor
                     |   {option.name}
                     div.desc(if="{option.help}") {option.help}
                 .dim(if="{ext.help && !parent.opts.compact}") {ext.help}
+                select(
+                    if="{ext.type === 'select'}"
+                    onchange="{wire('this.opts.entity.'+ ext.key)}"
+                    class="{wide: parent.opts.wide}"
+                )
+                    option(
+                        each="{option in ext.options}"
+                        value="{option.value}"
+                        selected="{parent.parent.opts.entity[ext.key] === option.value}"
+                    ) {option.name}
+                .dim(if="{ext.help && !parent.opts.compact}") {ext.help}
     script.
         const libsDir = './data/ct.libs';
         const fs = require('fs-extra'),
