@@ -42,6 +42,9 @@ room-editor.panel.view
                             br
                             input.wide(type="number" value="{room.height}" onchange="{wire('this.room.height')}")
                         .clear
+                        b {voc.backgroundColor}
+                        br
+                        color-input.wide(onchange="{updateRoomBackground}" color="{room.backgroundColor || '#000000'}")
                         extensions-editor(entity="{this.room.extends}" type="room" wide="aye" compact="sure")
 
         .done.nogrow
@@ -149,6 +152,11 @@ room-editor.panel.view
         this.room.gridY = this.room.gridY || this.room.grid || 64;
         this.dragging = false;
         this.tab = 'roomcopies';
+
+        this.updateRoomBackground = (e, color) => {
+            this.room.backgroundColor = color;
+            this.refreshRoomCanvas();
+        };
 
         var updateCanvasSize = () => {
             // Firstly, check that we don't need to reflow the layout due to window shrinking
@@ -491,6 +499,9 @@ room-editor.panel.view
             canvas.x.globalAlpha = 1;
             // Clear the canvas
             canvas.x.clearRect(0, 0, canvas.width, canvas.height);
+            // Fill it with a background color
+            canvas.x.fillStyle = this.room.backgroundColor || '#000000';
+            canvas.x.fillRect(0, 0, canvas.width, canvas.height)
 
             // Apply camera movement + zoom
             canvas.x.translate(Math.floor(canvas.width / 2), Math.floor(canvas.height / 2));
