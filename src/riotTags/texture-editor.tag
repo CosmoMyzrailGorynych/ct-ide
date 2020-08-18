@@ -120,12 +120,17 @@ texture-editor.panel.view
                             use(xlink:href="data/icons.svg#refresh-ccw")
             .textureview-zoom
                 div.button-stack.inlineblock
-                    button#texturezoom25.inline(onclick="{textureToggleZoom(0.25)}" class="{active: zoomFactor === 0.25}") 25%
-                    button#texturezoom50.inline(onclick="{textureToggleZoom(0.5)}" class="{active: zoomFactor === 0.5}") 50%
-                    button#texturezoom100.inline(onclick="{textureToggleZoom(1)}" class="{active: zoomFactor === 1}") 100%
-                    button#texturezoom200.inline(onclick="{textureToggleZoom(2)}" class="{active: zoomFactor === 2}") 200%
-                    button#texturezoom400.inline(onclick="{textureToggleZoom(4)}" class="{active: zoomFactor === 4}") 400%
-                    button#texturezoom400.inline(onclick="{textureToggleZoom(8)}" class="{active: zoomFactor === 8}") 800%
+                    button.inline(onclick="{textureToggleZoom(0.25)}" class="{active: zoomFactor === 0.25}") 25%
+                    button.inline(onclick="{textureToggleZoom(0.5)}" class="{active: zoomFactor === 0.5}") 50%
+                    button.inline(onclick="{textureToggleZoom(1)}" class="{active: zoomFactor === 1}") 100%
+                    button.inline(onclick="{textureToggleZoom(2)}" class="{active: zoomFactor === 2}") 200%
+                    button.inline(onclick="{textureToggleZoom(4)}" class="{active: zoomFactor === 4}") 400%
+                    button.inline(onclick="{textureToggleZoom(8)}" class="{active: zoomFactor === 8}") 800%
+            .textureview-bg
+                button.inline(onclick="{changePreviewBg}")
+                    svg.feather
+                        use(xlink:href="data/icons.svg#droplet")
+                    span {voc.bgcolor}
         .column.column2.borderleft.tall.flexfix.nogrow.noshrink(show="{!opts.texture.tiled}")
             .flexfix-body
                 fieldset
@@ -149,6 +154,7 @@ texture-editor.panel.view
                             b {voc.height}
                             br
                             input.wide(type="number" value="{opts.texture.height}" onchange="{wire('this.texture.height')}" oninput="{wire('this.texture.height')}")
+                fieldset
                     .flexrow
                         div
                             b {voc.marginx}
@@ -183,27 +189,22 @@ texture-editor.panel.view
                 #preview(ref="preview" style="background-color: {previewColor};")
                     canvas(ref="grprCanvas")
                 .flexrow
-                    button#textureplay.square.inline(onclick="{previewPlayPause}")
+                    button.nogrow.square.inline(onclick="{previewPlayPause}")
                         svg.feather
                             use(xlink:href="data/icons.svg#{prevPlaying? 'pause' : 'play'}")
                     span(ref="textureviewframe") 0 / 1
-                    .filler
-                    button#textureviewback.square.inline(onclick="{previewBack}")
+                    button.nogrow.square.inline(onclick="{previewBack}")
                         svg.feather
                             use(xlink:href="data/icons.svg#skip-back")
-                    button#textureviewnext.square.inline.nmr(onclick="{previewNext}")
+                    button.nogrow.square.inline.nmr(onclick="{previewNext}")
                         svg.feather
                             use(xlink:href="data/icons.svg#skip-forward")
                 .flexrow
-                    b {voc.speed}
+                    b.alignmiddle {voc.speed}
                     .filler
                     input#grahpspeed.short(type="number" min="1" value="{prevSpeed}" onchange="{wire('this.prevSpeed')}" oninput="{wire('this.prevSpeed')}")
-                .relative
-                    button#texturecolor.inline.wide(onclick="{changePreviewBg}")
-                        svg.feather
-                            use(xlink:href="data/icons.svg#droplet")
-                        span {voc.bgcolor}
-                input.color.rgb#previewbgcolor
+                p
+                .aNotice {voc.previewAnimationNotice}
 
     color-picker(
         ref="previewBackgroundColor" if="{changingPreviewBg}"
