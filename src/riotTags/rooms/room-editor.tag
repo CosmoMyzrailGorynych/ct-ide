@@ -332,15 +332,15 @@ room-editor.panel.view
             this.refs.mousecoords.innerHTML = `(${this.mouseX}:${this.mouseY})`;
         };
 
-        /** Начинаем перемещение, или же показываем предварительное расположение новой копии */
+        /** Start moving or show a placement preview **/
         this.onCanvasMove = e => {
             e.preventUpdate = true;
             if (this.dragging && !this.movingStuff) {
-                // перетаскивание
-                this.roomx -= Math.floor(e.movementX / this.zoomFactor);
-                this.roomy -= Math.floor(e.movementY / this.zoomFactor);
+                // Drag the viewport
+                this.roomx -= Math.round(e.movementX / this.zoomFactor);
+                this.roomy -= Math.round(e.movementY / this.zoomFactor);
                 this.refreshRoomCanvas(e);
-            } else if ( // если зажата мышь и клавиша Shift, то создавать больше копий/тайлов
+            } else if ( // Make more tiles or copies if Shift key is down
                 e.shiftKey && this.mouseDown &&
                 (
                     (this.tab === 'roomcopies' && this.currentType !== -1) ||
