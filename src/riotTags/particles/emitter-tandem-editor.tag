@@ -275,9 +275,9 @@ emitter-tandem-editor.panel.view.flexrow
                 width: Math.round(box.width),
                 height: Math.round(box.height),
                 view: this.refs.canvas,
-                antialias: !global.currentProject.settings.pixelatedrender
+                antialias: !global.currentProject.settings.rendering.pixelatedrender
             });
-            if (global.currentProject.settings.pixelatedrender) {
+            if (global.currentProject.settings.rendering.pixelatedrender) {
                 PIXI.settings.ROUND_PIXELS = true;
                 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
             }

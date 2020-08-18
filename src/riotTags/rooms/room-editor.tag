@@ -509,7 +509,7 @@ room-editor.panel.view
             canvas.x.translate(-this.roomx, -this.roomy);
 
             // Disable pixel interpolation, if needed
-            canvas.x.imageSmoothingEnabled = !global.currentProject.settings.pixelatedrender;
+            canvas.x.imageSmoothingEnabled = !global.currentProject.settings.rendering.pixelatedrender;
 
             for (let i = 0, li = this.stack.length; i < li; i++) {
                 if (this.stack[i].tiles) { // a tile layer
