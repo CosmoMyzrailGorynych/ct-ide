@@ -125,6 +125,7 @@ texture-editor.panel.view
                     button#texturezoom100.inline(onclick="{textureToggleZoom(1)}" class="{active: zoomFactor === 1}") 100%
                     button#texturezoom200.inline(onclick="{textureToggleZoom(2)}" class="{active: zoomFactor === 2}") 200%
                     button#texturezoom400.inline(onclick="{textureToggleZoom(4)}" class="{active: zoomFactor === 4}") 400%
+                    button#texturezoom400.inline(onclick="{textureToggleZoom(8)}" class="{active: zoomFactor === 8}") 800%
         .column.column2.borderleft.tall.flexfix.nogrow.noshrink(show="{!opts.texture.tiled}")
             .flexfix-body
                 fieldset
@@ -340,7 +341,9 @@ texture-editor.panel.view
         this.onMouseWheel = e => {
             if (e.wheelDelta > 0) {
                 // in
-                if (this.zoomFactor === 2) {
+                if (this.zoomFactor === 4) {
+                    this.zoomFactor = 8;
+                } else if (this.zoomFactor === 2) {
                     this.zoomFactor = 4;
                 } else if (this.zoomFactor === 1) {
                     this.zoomFactor = 2;
@@ -349,6 +352,8 @@ texture-editor.panel.view
                 } else if (this.zoomFactor === 0.25) {
                     this.zoomFactor = 0.5;
                 }
+            } else if (this.zoomFactor === 8) { // out
+                this.zoomFactor = 4;
             } else if (this.zoomFactor === 4) { // out
                 this.zoomFactor = 2;
             } else if (this.zoomFactor === 2) {

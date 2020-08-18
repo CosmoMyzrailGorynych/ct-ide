@@ -78,6 +78,7 @@ room-editor.panel.view
                 button#roomzoom100.inline(onclick="{roomToggleZoom(1)}" class="{active: zoomFactor === 1}") 100%
                 button#roomzoom200.inline(onclick="{roomToggleZoom(2)}" class="{active: zoomFactor === 2}") 200%
                 button#roomzoom400.inline(if="{window.innerWidth - sidebarWidth > 470}" onclick="{roomToggleZoom(4)}" class="{active: zoomFactor === 4}") 400%
+                button#roomzoom800.inline(if="{window.innerWidth - sidebarWidth > 470}" onclick="{roomToggleZoom(8)}" class="{active: zoomFactor === 8}") 800%
         .grid
             button#roomgrid(onclick="{roomToggleGrid}" class="{active: room.gridX > 0}")
                 span {voc[room.gridX > 0? 'gridoff' : 'grid']}
@@ -359,7 +360,9 @@ room-editor.panel.view
         this.onCanvasWheel = e => {
             if (e.wheelDelta > 0) {
                 // in
-                if (this.zoomFactor === 2) {
+                if (this.zoomFactor === 4) {
+                    this.zoomFactor = 8;
+                } else if (this.zoomFactor === 2) {
                     this.zoomFactor = 4;
                 } else if (this.zoomFactor === 1) {
                     this.zoomFactor = 2;
@@ -370,6 +373,8 @@ room-editor.panel.view
                 } else if (this.zoomFactor === 0.125) {
                     this.zoomFactor = 0.25;
                 }
+            } else if (this.zoomFactor === 8) {
+                this.zoomFactor = 4;
             } else if (this.zoomFactor === 4) {
                 this.zoomFactor = 2;
             } else if (this.zoomFactor === 2) {
