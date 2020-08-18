@@ -170,59 +170,48 @@ const getTextureFromName = function (name) {
     }
     return texture;
 };
+const textureGenPreview = async function textureGenPreview(texture, destination, size) {
+    if (typeof texture === 'string') {
+        texture = getTextureFromId(texture);
+    }
 
-/**
- * Generates a square preview for a given skeleton
- * @param {string} source Path to the image
- * @param {string} destFile Path to the destinating image
- * @param {number} size Size of the square thumbnail, in pixels
- * @returns {Promise<string>} Resolves after creating a thumbnail.
- * On success, passes `destFile`, the path to the created thumbnail.
- */
-const imgGenPreview = (source, destFile, size) => {
-    const thumbnail = document.createElement('img');
+    const source = await getDOMImage(texture);
+
+    const c = document.createElement('canvas');
+    c.x = c.getContext('2d');
+    c.width = c.height = size;
+    c.x.clearRect(0, 0, size, size);
+
+    const x = texture.offx,
+          y = texture.offy,
+          w = texture.width,
+          h = texture.height;
+
+    let k;
+    if (w > h) {
+        k = size / w;
+    } else {
+        k = size / h;
+    }
+    if (k > 1) {
+        if (global.currentProject.settings.rendering.pixelatedrender) {
+            k = Math.floor(k);
+            c.x.imageSmoothingEnabled = false;
+        } else {
+            k = 1;
+        }
+    }
+    c.x.drawImage(
+        source,
+        x, y, w, h,
+        (size - w * k) / 2, (size - h * k) / 2,
+        w * k, h * k
+    );
+    const thumbnailBase64 = c.toDataURL().replace(/^data:image\/\w+;base64,/, '');
+    const buf = Buffer.from(thumbnailBase64, 'base64');
     const fs = require('fs-extra');
-    return new Promise((accept, reject) => {
-        thumbnail.onload = () => {
-            var c = document.createElement('canvas'),
-                w, h, k;
-            c.x = c.getContext('2d');
-            c.width = c.height = size;
-            c.x.clearRect(0, 0, size, size);
-            w = thumbnail.width;
-            h = thumbnail.height;
-            if (w > h) {
-                k = size / w;
-            } else {
-                k = size / h;
-            }
-            if (k > 1) {
-                k = 1;
-            }
-            c.x.drawImage(
-                thumbnail,
-                (size - thumbnail.width * k) / 2,
-                (size - thumbnail.height * k) / 2,
-                thumbnail.width * k,
-                thumbnail.height * k
-            );
-            // strip off the data:image url prefix to get just the base64-encoded bytes
-            var dataURL = c.toDataURL();
-            var base64data = dataURL.replace(/^data:image\/\w+;base64,/, '');
-            var buf = new Buffer(base64data, 'base64');
-            var stream = fs.createWriteStream(destFile);
-            stream.on('finish', () => {
-                setTimeout(() => { // WHY THE HECK I EVER NEED THIS?!
-                    accept(destFile);
-                }, 100);
-            });
-            stream.on('error', err => {
-                reject(err);
-            });
-            stream.end(buf);
-        };
-        thumbnail.src = 'file://' + source;
-    });
+    await fs.writeFile(destination, buf);
+    return destination;
 };
 
 const texturePostfixParser = /_(?<cols>\d+)x(?<rows>\d+)(?:@(?<until>\d+))?$/;
@@ -251,13 +240,9 @@ const importImageToTexture = async src => {
         };
         image.src = 'file://' + dest + '?' + Math.random();
     });
-    await Promise.all([
-        imgGenPreview(dest, dest + '_prev.png', 64),
-        imgGenPreview(dest, dest + '_prev@2.png', 128)
-    ]);
     const texName = path.basename(src)
-                        .replace(/\.(jpg|gif|png|jpeg)/gi, '')
-                        .replace(/\s/g, '_');
+                    .replace(/\.(jpg|gif|png|jpeg)/gi, '')
+                    .replace(/\s/g, '_');
     const obj = {
         name: texName,
         untill: 0,
@@ -300,7 +285,13 @@ const importImageToTexture = async src => {
         obj.tiled = true;
     }
 
+    await Promise.all([
+        textureGenPreview(obj, dest + '_prev.png', 64),
+        textureGenPreview(obj, dest + '_prev@2.png', 128)
+    ]);
+
     global.currentProject.textures.push(obj);
+
     window.signals.trigger('textureImported');
     return obj;
 };
@@ -325,5 +316,5 @@ module.exports = {
     getPixiTexture,
     getDOMImage,
     importImageToTexture,
-    imgGenPreview
+    textureGenPreview
 };

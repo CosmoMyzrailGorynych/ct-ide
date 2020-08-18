@@ -317,11 +317,11 @@ texture-editor.panel.view
                     textureCanvas.img = image;
                     this.texture.lastmod = Number(new Date());
 
-                    const {imgGenPreview} = require('./data/node_requires/resources/textures');
-                    imgGenPreview(dest, dest + '_prev.png', 64, () => {
+                    const {textureGenPreview} = require('./data/node_requires/resources/textures');
+                    textureGenPreview(this.texture, dest + '_prev.png', 64, () => {
                         this.update();
                     });
-                    imgGenPreview(dest, dest + '_prev@2.png', 128);
+                    textureGenPreview(this.texture, dest + '_prev@2.png', 128);
                     setTimeout(() => {
                         this.refreshTextureCanvas();
                         this.parent.fillTextureMap();
@@ -771,57 +771,15 @@ texture-editor.panel.view
             this.parent.fillTextureMap();
             glob.modified = true;
             this.texture.lastmod = Number(new Date());
-            this.textureGenPreview(global.projdir + '/img/' + this.texture.origname + '_prev@2.png', 128);
-            this.textureGenPreview(global.projdir + '/img/' + this.texture.origname + '_prev.png', 64)
+            const {textureGenPreview} = require('./data/node_requires/resources/textures');
+            textureGenPreview(this.texture, global.projdir + '/img/' + this.texture.origname + '_prev@2.png', 128);
+            textureGenPreview(this.texture, global.projdir + '/img/' + this.texture.origname + '_prev.png', 64)
             .then(() => {
                 this.parent.editing = false;
                 this.parent.update();
             });
             return true;
         };
-
-        /**
-         * Генерирует превьюху первого кадра графики
-         * @returns {Promise} Промис
-         */
-        this.textureGenPreview = function textureGenPreview(destination, size) {
-            return new Promise((accept, decline) => {
-                var c = document.createElement('canvas');
-                const x = this.texture.offx,
-                      y = this.texture.offy,
-                      w = this.texture.width,
-                      h = this.texture.height;
-                let k;
-                c.x = c.getContext('2d');
-                c.width = c.height = size;
-                c.x.clearRect(0, 0, size, size);
-                if (w > h) {
-                    k = size / w;
-                } else {
-                    k = size / h;
-                }
-                if (k > 1) {
-                    k = 1;
-                }
-                c.x.drawImage(
-                    textureCanvas.img,
-                    x, y, w, h,
-                    (size - w * k) / 2, (size - h * k) / 2,
-                    w * k, h * k
-                );
-                var thumbnailBase64 = c.toDataURL().replace(/^data:image\/\w+;base64,/, '');
-                var buf = Buffer.from(thumbnailBase64, 'base64');
-                fs.writeFile(destination, buf, err => {
-                    if (err) {
-                        console.error(err);
-                        decline(err);
-                    } else {
-                        accept(destination);
-                    }
-                });
-            });
-        };
-
 
         this.changePreviewBg = () => {
             this.changingPreviewBg = !this.changingPreviewBg;
