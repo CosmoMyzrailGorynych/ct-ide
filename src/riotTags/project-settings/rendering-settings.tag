@@ -15,6 +15,10 @@ rendering-settings
         label.block.checkbox
             input(type="checkbox" value="{renderSettings.usePixiLegacy}" checked="{renderSettings.usePixiLegacy}" onchange="{wire('this.renderSettings.usePixiLegacy')}")
             span {voc.usePixiLegacy}
+    fieldset
+        label.block.checkbox
+            input(type="checkbox" checked="{renderSettings.hideCursor}" onchange="{wire('this.renderSettings.hideCursor')}")
+            span {voc.hideCursor}
     h2 {voc.desktopBuilds}
     fieldset
         b {voc.launchMode}
