@@ -398,21 +398,23 @@
                 y: false
             };
             precision = Math.abs(precision || 1);
-            for (let i = 0; i < Math.abs(dx); i += precision) {
+            while (Math.abs(dx) > precision) {
                 if (ct.place.free(me, me.x + Math.sign(dx) * precision, me.y, ctype) &&
                     !ct.place.tile(me, me.x + Math.sign(dx) * precision, me.y, ctype)
                 ) {
                     me.x += Math.sign(dx) * precision;
+                    dx -= Math.sign(dx) * precision;
                 } else {
                     obstacles.x = true;
                     break;
                 }
             }
-            for (let i = 0; i < Math.abs(dy); i += precision) {
+            while (Math.abs(dy) > precision) {
                 if (ct.place.free(me, me.x, me.y + Math.sign(dy) * precision, ctype) &&
                     !ct.place.tile(me, me.x, me.y + Math.sign(dy) * precision, ctype)
                 ) {
                     me.y += Math.sign(dy) * precision;
+                    dy -= Math.sign(dy) * precision;
                 } else {
                     obstacles.y = true;
                     break;
