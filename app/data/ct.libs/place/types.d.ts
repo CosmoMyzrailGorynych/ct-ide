@@ -144,18 +144,44 @@ declare namespace ct {
 
         /**
          * Moves a copy by `stepSize` in a given `direction` untill a `maxLength` is reached
-         * or a copy is next to another colliding copy. You can filter collided copies with `ctype`,
+         * or a copy is next to an obstacle. You can filter collided copies and tiles with `ctype`,
          * and set precision with `stepSize` (default is `1`, which means pixel-by-pixel movement).
          * This function is especially useful for side-view games and any fast-moving copies,
          * as it allows precise movement without clipping or passing through surfaces.
          *
+         * @remarks
+         * You will usually need to premultiply `maxLength` with `ct.delta` so that the speed is consistent
+         * under different FPS rates.
+         *
          * @param {Copy} me The copy that needs to be moved
-         * @param {number} direction The irection in which to perform a movement
+         * @param {number} direction The direction in which to perform a movement
          * @param {number} maxLength The maximum distance a copy can traverse
          * @param {string} [ctype] A collision group to test against. Tests against every copy if no collision group was specified
          * @param {number} [stepSize=1] Precision of movement
+         * @returns {Copy|boolean} If there was no collision and a copy reached its target, returns `false`.
+         * If a copy met an obstacle as another copy, returns this copy. If there was a tile, returns `true`.
          */
-        function moveAlong(me: Copy, direction: number, maxLength: number, ctype?: string, stepSize?: number): Copy | false;
+        function moveAlong(me: Copy, direction: number, maxLength: number, ctype?: string, stepSize?: number): Copy | boolean;
+
+        /**
+         * Similar to ct.place.moveAlong, this method moves a copy by X and Y axes until dx and dy are reached
+         * or a copy meets an obstacle on both axes. If an obstacle was met on one axis, a copy may continue
+         * moving by another axis. You can filter collided copies with `ctype`,
+         * and set precision with `stepSize` (default is `1`, which means pixel-by-pixel movement).
+         * This movement suits characters in top-down and side-view worlds.
+         *
+         * @remarks
+         * You will usually need to premultiply `dx` and `dy` with `ct.delta` so that the speed is consistent
+         * under different FPS rates.
+         *
+         * @param {Copy} me The copy that needs to be moved
+         * @param {number} dx Amount of pixels to move by X axis
+         * @param {number} dy Amount of pixels to move by Y axis
+         * @param {string} [ctype] A collision group to test against. Tests against every copy if no collision group was specified
+         * @param {number} [stepSize=1] Precision of movement
+         * @returns {false|ISeparateMovementResult} `false` if it reached its target, an object with each axis specified otherwise.
+         */
+        function moveByAxes(me: Copy, dx: number, dy: number, ctype?: string, stepSize?: number): false | ISeparateMovementResult;
 
         /**
          * Tries to reach the target with a simple obstacle avoidance algorithm.
@@ -189,4 +215,24 @@ declare namespace ct {
          */
         function trace(x1: number, y1: number, x2: number, y2: number, ctype?: string): Copy[];
     }
+}
+
+interface ISeparateMovementResult {
+    x: boolean;
+    y: boolean;
+}
+
+interface Copy {
+    /** The current collision group of a copy */
+    ctype: string;
+    /**
+     * Call to perform precise movement with collision checks. It takes gravity
+     * and `ct.delta` into account, too, and uses the `ct.place.moveAlong` method.
+     */
+    moveContinuous(ctype: string, precision?: number): void;
+    /**
+     * Call to perform precise movement with collision checks. It takes gravity
+     * and `ct.delta` into account, too, and uses the `ct.place.moveByAxes` method.
+     */
+    moveContinuousByAxes(ctype: string, precision?: number): void;
 }

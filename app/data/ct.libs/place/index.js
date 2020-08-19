@@ -376,7 +376,8 @@
             var dx = Math.cos(dir * Math.PI / -180) * precision,
                 dy = Math.sin(dir * Math.PI / -180) * precision;
             for (let i = 0; i < length; i += precision) {
-                const occupied = ct.place.occupied(me, me.x + dx, me.y + dy, ctype);
+                const occupied = ct.place.occupied(me, me.x + dx, me.y + dy, ctype) ||
+                                 ct.place.tile(me, me.x + dx, me.y + dy, ctype);
                 if (!occupied) {
                     me.x += dx;
                     me.y += dy;
@@ -386,6 +387,41 @@
                 }
             }
             return false;
+        },
+        moveByAxes(me, dx, dy, ctype, precision) {
+            if (typeof ctype === 'number') {
+                precision = ctype;
+                ctype = void 0;
+            }
+            const obstacles = {
+                x: false,
+                y: false
+            };
+            precision = Math.abs(precision || 1);
+            for (let i = 0; i < Math.abs(dx); i += precision) {
+                if (ct.place.free(me, me.x + Math.sign(dx) * precision, me.y, ctype) &&
+                    !ct.place.tile(me, me.x + Math.sign(dx) * precision, me.y, ctype)
+                ) {
+                    me.x += Math.sign(dx) * precision;
+                } else {
+                    obstacles.x = true;
+                    break;
+                }
+            }
+            for (let i = 0; i < Math.abs(dy); i += precision) {
+                if (ct.place.free(me, me.x, me.y + Math.sign(dy) * precision, ctype) &&
+                    !ct.place.tile(me, me.x, me.y + Math.sign(dy) * precision, ctype)
+                ) {
+                    me.y += Math.sign(dy) * precision;
+                } else {
+                    obstacles.y = true;
+                    break;
+                }
+            }
+            if (!obstacles.x && !obstacles.y) {
+                return false;
+            }
+            return obstacles;
         },
         go(me, x, y, length, ctype) {
             // ct.place.go(<me: Copy, x: number, y: number, length: number>[, ctype: String])
