@@ -229,6 +229,7 @@
             "highDensity": "Support high pixel density (e.g. on retina screens)",
             "maxFPS": "Max framerate:",
             "pixelatedrender": "Disable image smoothing here and in exported project (preserve crisp pixels)",
+            "hideCursor": "Hide system cursor",
             "usePixiLegacy": "Add a legacy, canvas-based renderer to support older browsers and graphics cards (adds ~20kb up to your game)",
             "desktopBuilds": "Desktop builds",
             "launchMode": "Launch mode:",
