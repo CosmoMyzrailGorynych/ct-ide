@@ -3,6 +3,7 @@
         "name": "Keyboard (legacy)",
         "tagline": "The old implementation of ct.keyboard that did not support Actions system.",
         "version": "2.0.0",
+        "deprecated": true,
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",
             "mail": "admin@nersta.ru"

@@ -2,7 +2,7 @@
     "main": {
         "name": "Flow control and timing",
         "tagline": "Add high-level methods for asynchronous events, e.g. gate, cumulative delay, retriggerable delay.",
-        "version": "0.0.0",
+        "version": "1.0.0",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",
             "mail": "admin@nersta.ru"

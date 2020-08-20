@@ -3,6 +3,7 @@
         "name": "Mouse Input (legacy)",
         "tagline": "A deprecated module to listen to mouse events; does not work with Actions system.",
         "version": "1.0.0",
+        "deprecated": true,
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",
             "mail": "admin@nersta.ru"
