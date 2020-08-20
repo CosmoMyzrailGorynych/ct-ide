@@ -218,7 +218,7 @@ const texturePostfixParser = /_(?<cols>\d+)x(?<rows>\d+)(?:@(?<until>\d+))?$/;
 const isBgPostfixTester = /@bg$/;
 /**
  * Tries to load an image, then adds it to the projects and creates a thumbnail
- * @param {string} src A path to the source image
+ * @param {string|Buffer} src A path to the source image, or a Buffer of an already read image.
  * @returns {Promise<object>} A promise that resolves into the resulting texture object.
  */
 const importImageToTexture = async src => {
@@ -226,8 +226,14 @@ const importImageToTexture = async src => {
           path = require('path'),
           generateGUID = require('./../generateGUID');
     const id = generateGUID();
-    const dest = path.join(global.projdir, 'img', `i${id}${path.extname(src)}`);
-    await fs.copy(src, dest);
+    let dest;
+    if (src instanceof Buffer) {
+        dest = path.join(global.projdir, 'img', `i${id}.png}`);
+        await fs.writeFile(dest, src);
+    } else {
+        dest = path.join(global.projdir, 'img', `i${id}${path.extname(src)}`);
+        await fs.copy(src, dest);
+    }
     const image = document.createElement('img');
     // Wait while the image is loading
     await new Promise((resolve, reject) => {
@@ -240,9 +246,14 @@ const importImageToTexture = async src => {
         };
         image.src = 'file://' + dest + '?' + Math.random();
     });
-    const texName = path.basename(src)
-                    .replace(/\.(jpg|gif|png|jpeg)/gi, '')
-                    .replace(/\s/g, '_');
+    let texName;
+    if (src instanceof Buffer) {
+        texName = 'NewTexture';
+    } else {
+        texName = path.basename(src)
+            .replace(/\.(jpg|gif|png|jpeg)/gi, '')
+            .replace(/\s/g, '_');
+    }
     const obj = {
         name: texName,
         untill: 0,

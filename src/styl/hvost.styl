@@ -112,13 +112,14 @@ textarea
     border-radius 100%
 
 /* display modifiers */
-.block
+/* use double-classing to ensure higher priority over other user-defined CSS rules */
+.block.block
     display block
-.inline
+.inline.inline
     display inline
-.inlineblock
+.inlineblock.inlineblock
     display inline-block
-.relative
+.relative.relative
     position relative
 /* color modifiers */
 .red

@@ -10,7 +10,7 @@ textures-panel.panel.view
                 thumbnails="{thumbnails}"
                 ref="textures"
             )
-                label.file.flexfix-header
+                label.file.inlineblock
                     input(type="file" multiple
                         accept=".png,.jpg,.jpeg,.bmp,.gif,.json"
                         onchange="{parent.textureImport}")
@@ -18,6 +18,14 @@ textures-panel.panel.view
                         svg.feather
                             use(xlink:href="data/icons.svg#download")
                         span {voc.import}
+                button(
+                    onclick="{parent.pasteTexture}"
+                    title="{voc.importFromClipboard}"
+                    data-hotkey="Control+v"
+                    data-hotkey-require-scope="texture"
+                )
+                    svg.feather
+                        use(xlink:href="data/icons.svg#clipboard")
             asset-viewer(
                 collection="{global.currentProject.skeletons}"
                 contextmenu="{showSkeletonPopup}"
@@ -136,6 +144,19 @@ textures-panel.panel.view
             e.srcElement.value = '';
             this.dropping = false;
             e.preventDefault();
+        };
+
+        this.pasteTexture = () => {
+            const png = nw.Clipboard.get().get('png');
+            if (!png) {
+                alertify.error(this.vocGlob.couldNotLoadFromClipboard);
+                return;
+            }
+            const imageBase64 = png.replace(/^data:image\/\w+;base64,/, '');
+            const imageBuffer = new Buffer(imageBase64, 'base64');
+            const {importImageToTexture} = require('./data/node_requires/resources/textures');
+            importImageToTexture(imageBuffer);
+            alertify.success(this.vocGlob.pastedFromClipboard);
         };
 
         this.loadSkeleton = (uid, filename, dest) => {

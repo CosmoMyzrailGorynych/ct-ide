@@ -15,6 +15,7 @@
         "contribute": "Contribute",
         "copy": "Copy",
         "copyName": "Copy the name",
+        "couldNotLoadFromClipboard": "Could not load data from clipboard",
         "ctsite": "ct.js homepage",
         "cut": "Cut",
         "delete": "Delete",
@@ -39,6 +40,7 @@
         "open": "Open",
         "openproject": "Open project…",
         "paste": "Paste",
+        "pastedFromClipboard": "Pasted from clipboard",
         "reallyexit": "Are you sure you want to exit? All unsaved changes will be lost.",
         "rename": "Rename",
         "save": "Save",
@@ -284,7 +286,8 @@
         "create": "Create",
         "import": "Import",
         "skeletons": "Skeletal Animation",
-        "createType": "Create a type from it"
+        "createType": "Create a type from it",
+        "importFromClipboard": "Import from clipboard"
     },
     "textureview": {
         "bgcolor": "Change bg color",
@@ -305,6 +308,7 @@
         "speed": "Framerate:",
         "tiled": "Use as a background?",
         "replacetexture": "Replace…",
+        "updateFromClipboard": "Update from clipboard",
         "corrupted": "File is corrupted or missing! Closing now.",
         "showmask": "Show mask",
         "width": "Width:",
