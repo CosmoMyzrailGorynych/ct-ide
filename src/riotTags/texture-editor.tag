@@ -300,7 +300,7 @@ texture-editor.panel.view
                 global.projdir + '/img/i' + this.texture.uid + path.extname(this.texture.source)
             );
         };
-        this.paste = async () => {
+        this.paste = () => {
             const png = nw.Clipboard.get().get('png');
             if (!png) {
                 alertify.error(this.vocGlob.couldNotLoadFromClipboard);
@@ -360,7 +360,6 @@ texture-editor.panel.view
                     alertify.error(e);
                 };
                 image.src = 'file://' + dest + '?' + Math.random();
-
             } catch (e) {
                 alertify.error(e);
                 throw e;
