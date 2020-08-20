@@ -155,9 +155,9 @@ types:
       threeDOrientation: zPositive
       threeDEnabled: true
     uid: 0ae31f06-ea0f-446a-9caa-22dba4d7cad9
-    lastmod: 1597380836327
+    lastmod: 1597543642495
   - name: Comigo
-    depth: -40
+    depth: 20
     oncreate: ''
     onstep: this.move();
     ondraw: ''
@@ -167,9 +167,9 @@ types:
       threeDEnabled: true
       threeDOrientation: faceCamera
     uid: 312c8e4f-52cb-4f54-a3a6-9711048504d2
-    lastmod: 1597381479959
+    lastmod: 1597543647148
   - name: Lamp
-    depth: -40
+    depth: 40
     oncreate: ''
     onstep: this.move();
     ondraw: ''
@@ -179,7 +179,7 @@ types:
       threeDOrientation: xNegative
       threeDEnabled: true
     uid: 93de9f6e-dc74-4277-a778-b9b9ded16c37
-    lastmod: 1597541560523
+    lastmod: 1597543640263
   - name: SandCellSquare
     depth: 0
     oncreate: ''
@@ -191,7 +191,7 @@ types:
       threeDEnabled: true
       threeDOrientation: yPositive
     uid: 69835ba5-5fb8-49f3-bbdf-039611ba03d4
-    lastmod: 1597381468223
+    lastmod: 1597543644918
 sounds: []
 styles: []
 rooms:
@@ -311,7 +311,8 @@ rooms:
       threeDFlipYZ: false
     gridX: 64
     gridY: 64
-    lastmod: 1597381077221
+    lastmod: 1597543621151
+    backgroundColor: '#85C2FF'
   - name: Room_TopView
     oncreate: ''
     onstep: ''
@@ -373,7 +374,8 @@ rooms:
       threeDFlipYZ: true
     gridX: 64
     gridY: 64
-    lastmod: 1597381569664
+    lastmod: 1597543695973
+    backgroundColor: '#72A0AB'
 actions: []
 emitterTandems: []
 scripts: []
@@ -404,3 +406,4 @@ settings:
     invertPreloaderScheme: true
   fps: 30
 fonts: []
+palette: []

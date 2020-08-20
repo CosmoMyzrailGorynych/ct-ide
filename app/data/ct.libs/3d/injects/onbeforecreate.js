@@ -16,9 +16,9 @@ if (this.threeDEnabled) {
         this.euler.z = ct.camera3d.euler.z;
     }
     if (!ct.room.threeDFlipYZ) {
-        this.position3d.set(this.x, this.y, this.depth);
+        this.position3d.set(this.x, this.y, -this.depth);
     } else {
-        this.position3d.set(this.x, this.depth, this.y);
+        this.position3d.set(this.x, -this.depth, this.y);
     }
     this.position.set(0);
 }
