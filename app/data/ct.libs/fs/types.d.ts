@@ -36,6 +36,16 @@ declare namespace ct {
          */
         var forceLocal: boolean;
 
+        /**
+         * When set to `false`, the game is running in a way that disallows access to the filesystem (such as a web release)
+         */
+        var isAvailable: boolean;
+
+        /**
+         * The base location for application data. Not for normal usage.
+         */
+        var gameFolder: string;
+
         /** Saves an object/array to a file. */
         function save(filename: string, data: object|any[]): Promise<void>;
 
