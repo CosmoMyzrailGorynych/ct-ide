@@ -119,8 +119,6 @@
                 lastProjects.pop();
             }
             localStorage.lastProjects = lastProjects.join(';');
-            window.signals.trigger('hideProjectSelector');
-            window.signals.trigger('projectLoaded');
 
             if (global.currentProject.settings.title) {
                 document.title = global.currentProject.settings.title + ' — ct.js';
@@ -138,6 +136,7 @@
             resetTypedefs();
             loadAllTypedefs();
 
+            window.signals.trigger('projectLoaded');
             setTimeout(() => {
                 window.riot.update();
             }, 0);
@@ -187,7 +186,7 @@
         }
     };
 
-    window.loadProject = proj => {
+    window.loadProject = async proj => {
         if (!proj) {
             const baseMessage = 'An attempt to open a project with an empty path.';
             alertify.error(baseMessage + ' See the console for the call stack.');
@@ -197,36 +196,37 @@
         sessionStorage.projname = path.basename(proj);
         global.projdir = path.dirname(proj) + path.sep + path.basename(proj, '.ict');
 
-        fs.stat(proj + '.recovery', (err, stat) => {
-            if (!err && stat.isFile()) {
-                var targetStat = fs.statSync(proj),
-                    voc = window.languageJSON.intro.recovery;
-                window.alertify
-                .okBtn(voc.loadRecovery)
-                .cancelBtn(voc.loadTarget)
-                /* {0} — target file date
-                   {1} — target file state (newer/older)
-                   {2} — recovery file date
-                   {3} — recovery file state (newer/older)
-                */
-                .confirm(voc.message
-                    .replace('{0}', targetStat.mtime.toLocaleString())
-                    .replace('{1}', targetStat.mtime < stat.mtime ? voc.older : voc.newer)
-                    .replace('{2}', stat.mtime.toLocaleString())
-                    .replace('{3}', stat.mtime < targetStat.mtime ? voc.older : voc.newer))
-                .then(e => {
-                    if (e.buttonClicked === 'ok') {
-                        loadProjectFile(proj + '.recovery');
-                    } else {
-                        loadProjectFile(proj);
-                    }
-                    window.alertify
-                    .okBtn(window.languageJSON.common.ok)
-                    .cancelBtn(window.languageJSON.common.cancel);
-                });
-            } else {
-                loadProjectFile(proj);
+        let recoveryStat;
+        try {
+            recoveryStat = await fs.stat(proj + '.recovery');
+        } catch (err) {
+            // no recovery file found
+            void 0;
+        }
+        if (recoveryStat && recoveryStat.isFile()) {
+            const targetStat = await fs.stat(proj);
+            const voc = window.languageJSON.intro.recovery;
+            const userResponse = await window.alertify
+            .okBtn(voc.loadRecovery)
+            .cancelBtn(voc.loadTarget)
+            /* {0} — target file date
+                {1} — target file state (newer/older)
+                {2} — recovery file date
+                {3} — recovery file state (newer/older)
+            */
+            .confirm(voc.message
+                .replace('{0}', targetStat.mtime.toLocaleString())
+                .replace('{1}', targetStat.mtime < recoveryStat.mtime ? voc.older : voc.newer)
+                .replace('{2}', recoveryStat.mtime.toLocaleString())
+                .replace('{3}', recoveryStat.mtime < targetStat.mtime ? voc.older : voc.newer));
+            window.alertify
+            .okBtn(window.languageJSON.common.ok)
+            .cancelBtn(window.languageJSON.common.cancel);
+            if (userResponse.buttonClicked === 'ok') {
+                return loadProjectFile(proj + '.recovery');
             }
-        });
+            return loadProjectFile(proj);
+        }
+        return loadProjectFile(proj);
     };
 })(this);

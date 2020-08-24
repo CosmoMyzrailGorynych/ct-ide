@@ -1,13 +1,18 @@
 root-tag
-    main-menu(if="{!selectorVisible}")
-    notepad-panel(if="{!selectorVisible}")
-    project-selector(if="{selectorVisible}")
+    main-menu(if="{projectOpened}")
+    notepad-panel(if="{projectOpened}")
+    dnd-processor(if="{projectOpened}")
+    project-selector(if="{!projectOpened}")
     script.
-        this.selectorVisible = true;
+        this.projectOpened = false;
         window.signals.on('resetAll', () => {
             global.currentProject = false;
-            this.selectorVisible = true;
+            this.projectOpened = false;
             riot.update();
+        });
+        window.signals.on('projectLoaded', () => {
+            this.projectOpened = true;
+            this.update();
         });
 
         const stylesheet = document.createElement('style');

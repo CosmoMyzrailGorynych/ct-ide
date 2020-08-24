@@ -300,7 +300,7 @@ texture-editor.panel.view
                 global.projdir + '/img/i' + this.texture.uid + path.extname(this.texture.source)
             );
         };
-        this.paste = () => {
+        this.paste = async () => {
             const png = nw.Clipboard.get().get('png');
             if (!png) {
                 alertify.error(this.vocGlob.couldNotLoadFromClipboard);
@@ -308,7 +308,7 @@ texture-editor.panel.view
             }
             const imageBase64 = png.replace(/^data:image\/\w+;base64,/, '');
             const imageBuffer = new Buffer(imageBase64, 'base64');
-            this.loadImg(
+            await this.loadImg(
                 imageBuffer,
                 global.projdir + '/img/i' + this.texture.uid + '.png'
             );
