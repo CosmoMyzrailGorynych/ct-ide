@@ -241,11 +241,14 @@ main-menu.flexcol
             }
         };
         this.zipExport = async () => {
-            const {getWritableDir, getExportDir} = require('./data/node_requires/platformUtils');
-            const writable = await getWritableDir();
+            const {getBuildDir, getExportDir} = require('./data/node_requires/platformUtils');
+            const buildFolder = await getBuildDir();
             const runCtExport = require('./data/node_requires/exporter');
-            const exportFile = path.join(writable, '/export.zip'),
-                  inDir = await getExportDir();
+            const exportFile = path.join(
+                buildFolder,
+                `${currentProject.settings.authoring.title || 'ct.js game'}.zip`
+            );
+            const inDir = await getExportDir();
             await fs.remove(exportFile);
             runCtExport(global.currentProject, global.projdir)
             .then(() => {

@@ -1,8 +1,12 @@
 const defaultProject = require('./defaultProject');
 
+/**
+ * @returns {Promise<string>} A promise that resolves into the absolute path
+ * to the projects' directory
+ */
 const getDefaultProjectDir = function () {
-    const path = require('path');
-    return path.join(nw.App.startPath, 'projects');
+    const {getProjectsDir} = require('./../../platformUtils');
+    return getProjectsDir();
 };
 
 const getExamplesDir = function () {
