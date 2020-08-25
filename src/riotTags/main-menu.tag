@@ -246,7 +246,7 @@ main-menu.flexcol
             const runCtExport = require('./data/node_requires/exporter');
             const exportFile = path.join(
                 buildFolder,
-                `${currentProject.settings.authoring.title || 'ct.js game'}.zip`
+                `${global.currentProject.settings.authoring.title || 'ct.js game'}.zip`
             );
             const inDir = await getExportDir();
             await fs.remove(exportFile);

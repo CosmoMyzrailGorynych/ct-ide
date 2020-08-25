@@ -76,9 +76,9 @@ const importTtfToFont = async function importTtfToFont(src) {
         italic: false,
         origname: `f${uid}.ttf`,
         lastmod: Number(new Date()),
-        pixelFont: false,
-        pixelFontSize: 16,
-        pixelFontLineHeight: 18,
+        bitmapFont: false,
+        bitmapFontSize: 16,
+        bitmapFontLineHeight: 18,
         charsets: ['allInFont'],
         customCharset: '',
         uid
