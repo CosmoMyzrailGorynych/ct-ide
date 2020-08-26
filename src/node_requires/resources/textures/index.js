@@ -259,7 +259,6 @@ const importImageToTexture = async (src, name) => {
             .replace(/\.(jpg|gif|png|jpeg)/gi, '')
             .replace(/\s/g, '_');
     }
-    console.log(texName, name);
     const obj = {
         name: texName,
         untill: 0,
