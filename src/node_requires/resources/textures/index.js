@@ -219,12 +219,15 @@ const isBgPostfixTester = /@bg$/;
 /**
  * Tries to load an image, then adds it to the projects and creates a thumbnail
  * @param {string|Buffer} src A path to the source image, or a Buffer of an already read image.
+ * @param {string} [name] The name of the texture. Optional, defaults to 'NewTexture'
+ * or file's basename.
  * @returns {Promise<object>} A promise that resolves into the resulting texture object.
  */
-const importImageToTexture = async src => {
+// eslint-disable-next-line max-lines-per-function
+const importImageToTexture = async (src, name) => {
     const fs = require('fs-extra'),
           path = require('path'),
-          generateGUID = require('./../generateGUID');
+          generateGUID = require('./../../generateGUID');
     const id = generateGUID();
     let dest;
     if (src instanceof Buffer) {
@@ -247,13 +250,16 @@ const importImageToTexture = async src => {
         image.src = 'file://' + dest + '?' + Math.random();
     });
     let texName;
-    if (src instanceof Buffer) {
+    if (name) {
+        texName = name;
+    } else if (src instanceof Buffer) {
         texName = 'NewTexture';
     } else {
         texName = path.basename(src)
             .replace(/\.(jpg|gif|png|jpeg)/gi, '')
             .replace(/\s/g, '_');
     }
+    console.log(texName, name);
     const obj = {
         name: texName,
         untill: 0,
@@ -268,7 +274,6 @@ const importImageToTexture = async src => {
         offx: 0,
         offy: 0,
         origname: path.basename(dest),
-        source: src,
         shape: 'rect',
         left: 0,
         right: image.width,
@@ -277,6 +282,9 @@ const importImageToTexture = async src => {
         uid: id,
         padding: 1
     };
+    if (!(src instanceof Buffer)) {
+        obj.source = src;
+    }
 
     // Test if this has a postfix _NxM@K or _NxM
     const exec = texturePostfixParser.exec(obj.name);

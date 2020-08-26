@@ -11,6 +11,7 @@
         "cancel": "Cancel",
         "cannotBeEmpty": "This cannot be empty",
         "clear": "Clear",
+        "close": "Close",
         "confirmDelete": "Are you sure you want to delete {0}? It cannot be undone.",
         "contribute": "Contribute",
         "copy": "Copy",
@@ -287,7 +288,20 @@
         "import": "Import",
         "skeletons": "Skeletal Animation",
         "createType": "Create a type from it",
-        "importFromClipboard": "Import from clipboard"
+        "importFromClipboard": "Import from clipboard",
+        "generatePlaceholder": "Generate a placeholder"
+    },
+    "textureGenerator": {
+        "name": "Texture's name:",
+        "width": "Width:",
+        "height": "Height:",
+        "color": "Background color:",
+        "label": "Label:",
+        "optional": "(optional)",
+        "createAndClose": "Create and close",
+        "createAndContinue": "Create and add another",
+        "scalingAtX4": "Scaling by x4 for a small texture",
+        "generationSuccessMessage": "Successfully added $1 texture to your project."
     },
     "textureview": {
         "bgcolor": "Change bg color",
