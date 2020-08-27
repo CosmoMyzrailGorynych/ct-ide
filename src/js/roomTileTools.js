@@ -2,12 +2,30 @@
     const clickThreshold = 16;
     const glob = require('./data/node_requires/glob');
 
+    const selectATileAt = function (e) {
+        var pos = 0,
+            length = Infinity,
+            l,
+            fromx = this.xToRoom(e.offsetX),
+            fromy = this.yToRoom(e.offsetY);
+        for (let i = 0, li = this.currentTileLayer.tiles.length; i < li; i++) {
+            const xp = this.currentTileLayer.tiles[i].x - fromx,
+                  yp = this.currentTileLayer.tiles[i].y - fromy;
+            l = Math.sqrt(xp * xp + yp * yp);
+            if (l < length) {
+                length = l;
+                pos = i;
+            }
+        }
+        return this.currentTileLayer.tiles[pos];
+    };
+
     const onCanvasMouseUpTiles = function (e) {
         if (e.button === 0 &&
             this.currentTileLayer &&
             Math.hypot(e.offsetX - this.startx, e.offsetY - this.starty) > clickThreshold
         ) {
-            // Было прямоугольное выделение
+            // There was a rectangular selection
             this.selectedTiles = [];
             var x1 = this.xToRoom(this.startx),
                 y1 = this.yToRoom(this.starty),
@@ -101,10 +119,30 @@
 
     const onCanvasClickTiles = function (e) {
         if (
-            Math.hypot(e.offsetX - this.startx, e.offsetY - this.starty) > clickThreshold &&
+            Math.hypot(
+                e.offsetX - this.startx,
+                e.offsetY - this.starty
+            ) > clickThreshold &&
             !e.shiftKey
         ) {
             return; // this looks neither like a regular click nor like a Shift+drag
+        }
+
+        if (
+            Math.hypot(
+                e.offsetX - this.startx,
+                e.offsetY - this.starty
+            ) <= clickThreshold &&
+            e.shiftKey
+        ) {
+            // It is a shift + click. Select the nearest copy
+            if (!this.currentTileLayer.tiles.length) {
+                return;
+            }
+            var tile = selectATileAt.apply(this, [e]);
+            this.selectedTiles = [tile];
+            this.refreshRoomCanvas();
+            return;
         }
 
         // cancel potential tile selection on click
@@ -181,23 +219,9 @@
                 if (!this.room.tiles.length || !this.currentTileLayer.tiles.length) {
                     return false;
                 }
-                var pos = 0,
-                    length = Infinity,
-                    l,
-                    fromx = this.xToRoom(e.offsetX),
-                    fromy = this.yToRoom(e.offsetY);
-                for (let i = 0, li = this.currentTileLayer.tiles.length; i < li; i++) {
-                    const xp = this.currentTileLayer.tiles[i].x - fromx,
-                          yp = this.currentTileLayer.tiles[i].y - fromy;
-                    l = Math.sqrt(xp * xp + yp * yp);
-                    if (l < length) {
-                        length = l;
-                        pos = i;
-                    }
-                }
-                var tile = this.currentTileLayer.tiles[pos],
+                var tile = selectATileAt.apply(this, [e]),
                     tex = glob.texturemap[tile.texture].g;
-                this.closestPos = pos;
+                this.closestPos = this.currentTileLayer.tiles.indexOf(tile);
                 // draw the tile preview
                 this.refreshRoomCanvas();
                 var left = tile.x - 1.5,
