@@ -132,14 +132,10 @@ texture-editor.panel.view
                     )
                         svg.feather
                             use(xlink:href="data/icons.svg#refresh-ccw")
-            .textureview-zoom
-                div.button-stack.inlineblock
-                    button.inline(onclick="{textureToggleZoom(0.25)}" class="{active: zoomFactor === 0.25}") 25%
-                    button.inline(onclick="{textureToggleZoom(0.5)}" class="{active: zoomFactor === 0.5}") 50%
-                    button.inline(onclick="{textureToggleZoom(1)}" class="{active: zoomFactor === 1}") 100%
-                    button.inline(onclick="{textureToggleZoom(2)}" class="{active: zoomFactor === 2}") 200%
-                    button.inline(onclick="{textureToggleZoom(4)}" class="{active: zoomFactor === 4}") 400%
-                    button.inline(onclick="{textureToggleZoom(8)}" class="{active: zoomFactor === 8}") 800%
+            .textureview-zoom.flexrow
+                b {Math.round(zoomFactor * 100)}%
+                .spacer
+                zoom-slider(onchanged="{setZoom}" ref="zoomslider" value="{zoomFactor}")
             .textureview-bg
                 button.inline(onclick="{changePreviewBg}")
                     svg.feather
@@ -366,34 +362,16 @@ texture-editor.panel.view
             }
         };
 
-        this.textureToggleZoom = zoom => () => {
+        this.setZoom = zoom => {
             this.zoomFactor = zoom;
+            this.update();
         };
         /** Change zoomFactor on mouse wheel roll */
         this.onMouseWheel = e => {
             if (e.wheelDelta > 0) {
-                // in
-                if (this.zoomFactor === 4) {
-                    this.zoomFactor = 8;
-                } else if (this.zoomFactor === 2) {
-                    this.zoomFactor = 4;
-                } else if (this.zoomFactor === 1) {
-                    this.zoomFactor = 2;
-                } else if (this.zoomFactor === 0.5) {
-                    this.zoomFactor = 1;
-                } else if (this.zoomFactor === 0.25) {
-                    this.zoomFactor = 0.5;
-                }
-            } else if (this.zoomFactor === 8) { // out
-                this.zoomFactor = 4;
-            } else if (this.zoomFactor === 4) { // out
-                this.zoomFactor = 2;
-            } else if (this.zoomFactor === 2) {
-                this.zoomFactor = 1;
-            } else if (this.zoomFactor === 1) {
-                this.zoomFactor = 0.5;
-            } else if (this.zoomFactor === 0.5) {
-                this.zoomFactor = 0.25;
+                this.refs.zoomslider.zoomIn();
+            } else {
+                this.refs.zoomslider.zoomOut();
             }
             e.preventDefault();
             this.update();
