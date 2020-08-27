@@ -1,0 +1,26 @@
+{
+    "main": {
+        "name": "Tags",
+        "tagline": "Add tags (this.tag) to your rooms and individual copies!",
+        "version": "1.0.0",
+        "authors": [{
+            "name": "Cosmo Myzrail Gorynych",
+            "mail": "admin@nersta.ru"
+        }],
+        "categories": [
+            "utilities"
+        ]
+    },
+    "roomExtends": [{
+        "name": "Tag",
+        "type": "text",
+        "default": "",
+        "key": "tag"
+    }],
+    "copyExtends": [{
+        "name": "Tag",
+        "type": "text",
+        "default": "",
+        "key": "tag"
+    }]
+}
