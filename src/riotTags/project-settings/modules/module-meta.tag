@@ -1,8 +1,12 @@
 module-meta(onclick="{toggleModule(opts.module.name)}")
     .flexrow
         div
-            h1 {opts.module.manifest.main.name}
-            code {opts.module.name} v{opts.module.manifest.main.version}
+            h1.nmt {opts.module.manifest.main.name}
+            code
+                | {opts.module.name} v{opts.module.manifest.main.version}
+                |
+                span(if="{opts.module.manifest.main.version.indexOf(0) === 0}") {voc.preview}
+
         label.nogrow.bigpower(class="{off: !(opts.module.name in global.currentProject.libs)}")
             svg.feather
                 use(xlink:href="data/icons.svg#{opts.module.name in global.currentProject.libs? 'check' : 'x'}")
@@ -29,6 +33,12 @@ module-meta(onclick="{toggleModule(opts.module.name)}")
     .filler
 
     .flexrow
+        span.nogrow.module-meta-aWarningIcon(title="{voc.deprecatedTooltip}" if="{opts.module.manifest.main.deprecated}")
+            svg.feather.error
+                use(xlink:href="data/icons.svg#alert-circle")
+        span.nogrow.module-meta-aWarningIcon(title="{voc.previewTooltip}" if="{opts.module.manifest.main.version.indexOf(0) === 0}")
+            svg.feather.warning
+                use(xlink:href="data/icons.svg#alert-triangle")
         .aModuleAuthorList
             a.external(
                 each="{author in opts.module.manifest.main.authors}"

@@ -1,4 +1,8 @@
 module-meta
+    display flex
+    flex-flow column nowrap
+    & > *
+        flex 0 0 auto
     h1
         margin 0 0 0.35rem
     .bigpower
@@ -10,7 +14,6 @@ module-meta
         float right
         opacity 0.65
     .aModuleAuthorList
-        margin-top 0.75rem
         font-size 90%
         a
             margin-right 1rem
@@ -28,6 +31,12 @@ module-meta
         margin-left 1rem
         flex 0 0 auto
         align-self flex-end
+    .&-aWarningIcon
+        align-self center
+        margin-right 0.5rem
     .hsub
         line-height 1.5
         margin 0.5rem 0
+    .filler
+        flex 1 1 auto
+        padding-top 0.75rem

@@ -68,23 +68,38 @@ room-editor.panel.view
             button.inline.square(title="{voc.shift}" onclick="{roomShift}")
                 svg.feather
                     use(xlink:href="data/icons.svg#move")
-            span(if="{window.innerWidth - sidebarWidth > 840}") {voc.hotkeysNotice}
-        .zoom
-            b(if="{window.innerWidth - sidebarWidth > 840}") {vocGlob.zoom}
-            div.button-stack
-                button#roomzoom12.inline(if="{window.innerWidth - sidebarWidth > 470}" onclick="{roomToggleZoom(0.125)}" class="{active: zoomFactor === 0.125}") 12%
-                button#roomzoom25.inline(onclick="{roomToggleZoom(0.25)}" class="{active: zoomFactor === 0.25}") 25%
-                button#roomzoom50.inline(if="{window.innerWidth - sidebarWidth > 470}" onclick="{roomToggleZoom(0.5)}" class="{active: zoomFactor === 0.5}") 50%
-                button#roomzoom100.inline(onclick="{roomToggleZoom(1)}" class="{active: zoomFactor === 1}") 100%
-                button#roomzoom200.inline(onclick="{roomToggleZoom(2)}" class="{active: zoomFactor === 2}") 200%
-                button#roomzoom400.inline(if="{window.innerWidth - sidebarWidth > 470}" onclick="{roomToggleZoom(4)}" class="{active: zoomFactor === 4}") 400%
-                button#roomzoom800.inline(if="{window.innerWidth - sidebarWidth > 470}" onclick="{roomToggleZoom(8)}" class="{active: zoomFactor === 8}") 800%
+            button.inline.square(
+                title="{voc.sortHorizontally}"
+                onclick="{sortHorizontally}"
+                if="{tab === 'roomcopies' || tab === 'roomtiles'}"
+            )
+                svg.feather
+                    use(xlink:href="data/icons.svg#sort-horizontal")
+            button.inline.square(
+                title="{voc.sortVertically}"
+                onclick="{sortVertically}"
+                if="{tab === 'roomcopies' || tab === 'roomtiles'}"
+            )
+                svg.feather
+                    use(xlink:href="data/icons.svg#sort-vertical")
+            span(if="{window.innerWidth - sidebarWidth > 940}") {voc.hotkeysNotice}
+        .zoom.flexrow
+            b(if="{window.innerWidth - sidebarWidth > 980}") {vocGlob.zoom}:
+            .spacer
+            b {Math.round(zoomFactor * 100)}%
+            .spacer
+            zoom-slider(onchanged="{setZoom}" ref="zoomslider" value="{zoomFactor}")
         .grid
             button#roomgrid(onclick="{roomToggleGrid}" class="{active: room.gridX > 0}")
                 span {voc[room.gridX > 0? 'gridoff' : 'grid']}
         .center
             button#roomcenter(onclick="{roomToCenter}") {voc.tocenter}
-            span.aMouseCoord(if="{window.innerWidth - sidebarWidth > 470}" ref="mousecoords") ({mouseX}:{mouseY})
+            span.aMouseCoord(show="{window.innerWidth - sidebarWidth > 470}" ref="mousecoords") ({mouseX}:{mouseY})
+        room-copy-properties(
+            if="{this.selectedCopies && this.selectedCopies.length === 1}"
+            copy="{this.selectedCopies[0]}"
+            onchange="{refreshRoomCanvas}" oninput="{refreshRoomCanvas}"
+        )
     room-events-editor(if="{editingCode}" room="{room}")
     context-menu(menu="{roomCanvasCopiesMenu}" ref="roomCanvasCopiesMenu")
     context-menu(menu="{roomCanvasMenu}" ref="roomCanvasMenu")
@@ -246,6 +261,7 @@ room-editor.panel.view
         this.tab = 'roomcopies';
         this.changeTab = tab => () => {
             this.tab = tab;
+            this.selectedCopies = this.selectedTiles = false;
             if (tab === 'roombackgrounds' || tab === 'properties') {
                 this.roomUnpickType();
             }
@@ -293,6 +309,9 @@ room-editor.panel.view
             this.lastTileY = null;
             if (this.dragging) {
                 this.dragging = false;
+                this.roomx = Math.round(this.roomx);
+                this.roomy = Math.round(this.roomy);
+                this.refreshRoomCanvas();
             } else if (this.tab === 'roomtiles') {
                 this.onCanvasMouseUpTiles(e);
             } else if (this.tab === 'roomcopies') {
@@ -337,8 +356,8 @@ room-editor.panel.view
             e.preventUpdate = true;
             if (this.dragging && !this.movingStuff) {
                 // Drag the viewport
-                this.roomx -= Math.round(e.movementX / this.zoomFactor);
-                this.roomy -= Math.round(e.movementY / this.zoomFactor);
+                this.roomx -= e.movementX / this.zoomFactor;
+                this.roomy -= e.movementY / this.zoomFactor;
                 this.refreshRoomCanvas(e);
             } else if ( // Make more tiles or copies if Shift key is down
                 e.shiftKey && this.mouseDown &&
@@ -356,40 +375,21 @@ room-editor.panel.view
             this.updateMouseCoords(e);
         };
 
-        /** При прокрутке колёсиком меняем фактор зума */
+        /** Change zoom on mouse wheel */
         this.onCanvasWheel = e => {
             if (e.wheelDelta > 0) {
-                // in
-                if (this.zoomFactor === 4) {
-                    this.zoomFactor = 8;
-                } else if (this.zoomFactor === 2) {
-                    this.zoomFactor = 4;
-                } else if (this.zoomFactor === 1) {
-                    this.zoomFactor = 2;
-                } else if (this.zoomFactor === 0.5) {
-                    this.zoomFactor = 1;
-                } else if (this.zoomFactor === 0.25) {
-                    this.zoomFactor = 0.5;
-                } else if (this.zoomFactor === 0.125) {
-                    this.zoomFactor = 0.25;
-                }
-            } else if (this.zoomFactor === 8) {
-                this.zoomFactor = 4;
-            } else if (this.zoomFactor === 4) {
-                this.zoomFactor = 2;
-            } else if (this.zoomFactor === 2) {
-                this.zoomFactor = 1;
-            } else if (this.zoomFactor === 1) {
-                this.zoomFactor = 0.5;
-            } else if (this.zoomFactor === 0.5) {
-                this.zoomFactor = 0.25;
-            } else if (this.zoomFactor === 0.25) {
-                this.zoomFactor = 0.125;
+                this.refs.zoomslider.zoomIn();
+            } else {
+                this.refs.zoomslider.zoomOut();
             }
-            this.redrawGrid();
-            this.refreshRoomCanvas(e);
-            this.updateMouseCoords(e);
         };
+        this.setZoom = zoom => {
+            this.zoomFactor = zoom;
+            this.update();
+            this.redrawGrid();
+            this.refreshRoomCanvas();
+        };
+
         this.onCanvasContextMenu = e => {
             this.dragging = false;
             this.mouseDown = false;
@@ -464,6 +464,27 @@ room-editor.panel.view
                 this.parent.update();
             });
             return true;
+        };
+
+        this.sortHorizontally = () => {
+            if (this.tab === 'roomcopies') {
+                this.room.copies.sort((a, b) => a.x - b.x);
+            } else {
+                // tiles
+                this.currentTileLayer.tiles.sort((a, b) => a.x - b.x);
+            }
+            this.resortRoom();
+            this.refreshRoomCanvas();
+        };
+        this.sortVertically = () => {
+            if (this.tab === 'roomcopies') {
+                this.room.copies.sort((a, b) => a.y - b.y);
+            } else {
+                // tiles
+                this.currentTileLayer.tiles.sort((a, b) => a.y - b.y);
+            }
+            this.resortRoom();
+            this.refreshRoomCanvas();
         };
 
         this.resortRoom = () => {
@@ -581,7 +602,7 @@ room-editor.panel.view
                         canvas.x.drawImage(
                             texture,
                             ox, oy, w, h,
-                            -grax * (copy.tx || 1), -gray * (copy.ty || 1), w, h
+                            -grax, -gray, w, h
                         );
                         canvas.x.restore();
                     } else {

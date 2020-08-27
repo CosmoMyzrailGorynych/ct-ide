@@ -35,7 +35,7 @@ color-picker
                 .aSwatch(each="{colr in global.currentProject.palette}" style="background-color: {colr};" onclick="{onSwatchClick}")
                 button.anAddSwatchButton(onclick="{addAsLocal}")
                     | +
-        .c6.npt.npr.npb
+        .c6.np
             .flexrow
                 .aRangePipeStack
                     .pipe.huebar

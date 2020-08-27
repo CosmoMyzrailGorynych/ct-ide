@@ -3,6 +3,9 @@
 When set to `true`, any operations towards files outside the game's save directory will fail.
 Set to `true` by default.
 
+## `ct.fs.isAvailable: boolean`
+When set to `false`, the game is running in a way that disallows access to the filesystem (such as a web release)
+
 ## `ct.fs.save(filename: string, data: object|Array): Promise<void>`
 
 Saves an object/array to a file.

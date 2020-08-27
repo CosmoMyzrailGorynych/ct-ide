@@ -115,17 +115,27 @@ texture-editor.panel.view
                             svg.feather
                                 use(xlink:href="data/icons.svg#folder")
                             span {voc.replacetexture}
-                    .button.inline(title="{voc.reimport}" if="{opts.texture.source}" onclick="{reimport}")
+                    .button.inline(
+                        title="{voc.updateFromClipboard} (Control+V)"
+                        onclick="{paste}"
+                        data-hotkey="Control+v"
+                        data-hotkey-require-scope="texture"
+                        data-hotkey-priority="10"
+                    )
+                        svg.feather
+                            use(xlink:href="data/icons.svg#clipboard")
+                    .button.inline(
+                        if="{opts.texture.source}"
+                        title="{voc.reimport} (Control+R)"
+                        onclick="{reimport}"
+                        data-hotkey="Control+r"
+                    )
                         svg.feather
                             use(xlink:href="data/icons.svg#refresh-ccw")
-            .textureview-zoom
-                div.button-stack.inlineblock
-                    button.inline(onclick="{textureToggleZoom(0.25)}" class="{active: zoomFactor === 0.25}") 25%
-                    button.inline(onclick="{textureToggleZoom(0.5)}" class="{active: zoomFactor === 0.5}") 50%
-                    button.inline(onclick="{textureToggleZoom(1)}" class="{active: zoomFactor === 1}") 100%
-                    button.inline(onclick="{textureToggleZoom(2)}" class="{active: zoomFactor === 2}") 200%
-                    button.inline(onclick="{textureToggleZoom(4)}" class="{active: zoomFactor === 4}") 400%
-                    button.inline(onclick="{textureToggleZoom(8)}" class="{active: zoomFactor === 8}") 800%
+            .textureview-zoom.flexrow
+                b {Math.round(zoomFactor * 100)}%
+                .spacer
+                zoom-slider(onchanged="{setZoom}" ref="zoomslider" value="{zoomFactor}")
             .textureview-bg
                 button.inline(onclick="{changePreviewBg}")
                     svg.feather
@@ -271,7 +281,6 @@ texture-editor.panel.view
             const val = this.refs.textureReplacer.files[0].path;
             if (/\.(jpg|gif|png|jpeg)/gi.test(val)) {
                 this.loadImg(
-                    this.texture.uid,
                     val,
                     global.projdir + '/img/i' + this.texture.uid + path.extname(val)
                 );
@@ -283,22 +292,37 @@ texture-editor.panel.view
         };
         this.reimport = () => {
             this.loadImg(
-                this.texture.uid,
                 this.texture.source,
                 global.projdir + '/img/i' + this.texture.uid + path.extname(this.texture.source)
             );
         };
+        this.paste = async () => {
+            const png = nw.Clipboard.get().get('png');
+            if (!png) {
+                alertify.error(this.vocGlob.couldNotLoadFromClipboard);
+                return;
+            }
+            const imageBase64 = png.replace(/^data:image\/\w+;base64,/, '');
+            const imageBuffer = new Buffer(imageBase64, 'base64');
+            await this.loadImg(
+                imageBuffer,
+                global.projdir + '/img/i' + this.texture.uid + '.png'
+            );
+            alertify.success(this.vocGlob.pastedFromClipboard);
+        };
 
         /**
-         * Загружает изображение в редактор и генерирует квадратную превьюху из исходного изображения
-         * @param {Number} uid Идентификатор изображения
-         * @param {String} filename Путь к исходному изображению
-         * @param {Sting} dest Путь к изображению в папке проекта
+         * Loads an image into the project, generating thumbnails and updating the preview.
+         * @param {String|Buffer} filename A source image. It can be either a full path in a file system,
+         * or a buffer.
+         * @param {Sting} dest The path to write to.
          */
-        this.loadImg = (uid, filename, dest) => {
-            fs.copy(filename, dest, e => {
-                if (e) {
-                    throw e;
+        this.loadImg = async (filename, dest) => {
+            try {
+                if (filename instanceof Buffer) {
+                    await fs.writeFile(dest, filename);
+                } else {
+                    await fs.copy(filename, dest);
                 }
                 const image = document.createElement('img');
                 image.onload = () => {
@@ -332,37 +356,22 @@ texture-editor.panel.view
                     alertify.error(e);
                 };
                 image.src = 'file://' + dest + '?' + Math.random();
-            });
+            } catch (e) {
+                alertify.error(e);
+                throw e;
+            }
         };
 
-        this.textureToggleZoom = zoom => () => {
+        this.setZoom = zoom => {
             this.zoomFactor = zoom;
+            this.update();
         };
         /** Change zoomFactor on mouse wheel roll */
         this.onMouseWheel = e => {
             if (e.wheelDelta > 0) {
-                // in
-                if (this.zoomFactor === 4) {
-                    this.zoomFactor = 8;
-                } else if (this.zoomFactor === 2) {
-                    this.zoomFactor = 4;
-                } else if (this.zoomFactor === 1) {
-                    this.zoomFactor = 2;
-                } else if (this.zoomFactor === 0.5) {
-                    this.zoomFactor = 1;
-                } else if (this.zoomFactor === 0.25) {
-                    this.zoomFactor = 0.5;
-                }
-            } else if (this.zoomFactor === 8) { // out
-                this.zoomFactor = 4;
-            } else if (this.zoomFactor === 4) { // out
-                this.zoomFactor = 2;
-            } else if (this.zoomFactor === 2) {
-                this.zoomFactor = 1;
-            } else if (this.zoomFactor === 1) {
-                this.zoomFactor = 0.5;
-            } else if (this.zoomFactor === 0.5) {
-                this.zoomFactor = 0.25;
+                this.refs.zoomslider.zoomIn();
+            } else {
+                this.refs.zoomslider.zoomOut();
             }
             e.preventDefault();
             this.update();

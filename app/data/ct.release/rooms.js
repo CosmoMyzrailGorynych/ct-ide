@@ -47,6 +47,7 @@ class Room extends PIXI.Container {
                 this.addChild(tl);
             }
             for (let i = 0, li = template.objects.length; i < li; i++) {
+                const exts = template.objects[i].exts || {};
                 ct.types.make(
                     template.objects[i].type,
                     template.objects[i].x,
@@ -54,7 +55,8 @@ class Room extends PIXI.Container {
                     {
                         tx: template.objects[i].tx,
                         ty: template.objects[i].ty,
-                        tr: template.objects[i].tr
+                        tr: template.objects[i].tr,
+                        ...exts
                     },
                     this
                 );

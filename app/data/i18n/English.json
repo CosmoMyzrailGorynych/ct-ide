@@ -11,10 +11,12 @@
         "cancel": "Cancel",
         "cannotBeEmpty": "This cannot be empty",
         "clear": "Clear",
+        "close": "Close",
         "confirmDelete": "Are you sure you want to delete {0}? It cannot be undone.",
         "contribute": "Contribute",
         "copy": "Copy",
         "copyName": "Copy the name",
+        "couldNotLoadFromClipboard": "Could not load data from clipboard",
         "ctsite": "ct.js homepage",
         "cut": "Cut",
         "delete": "Delete",
@@ -39,6 +41,7 @@
         "open": "Open",
         "openproject": "Open project…",
         "paste": "Paste",
+        "pastedFromClipboard": "Pasted from clipboard",
         "reallyexit": "Are you sure you want to exit? All unsaved changes will be lost.",
         "rename": "Rename",
         "save": "Save",
@@ -206,7 +209,7 @@
         },
         "authoring": {
             "heading": "Authoring",
-            "author": "Author name:",
+            "author": "Developer:",
             "site": "Homepage:",
             "title": "Name:",
             "version": "Version:",
@@ -265,6 +268,9 @@
         "enabledModules": "Enabled modules",
         "availableModules": "Available modules",
         "filter": "Filter",
+        "preview": "(preview)",
+        "previewTooltip": "This module has not yet been released and is for preview purposes.",
+        "deprecatedTooltip": "This module is deprecated and will be removed in a future version.",
         "categories": {
             "customization": "Customization",
             "utilities": "Utilities",
@@ -284,7 +290,21 @@
         "create": "Create",
         "import": "Import",
         "skeletons": "Skeletal Animation",
-        "createType": "Create a type from it"
+        "createType": "Create a type from it",
+        "importFromClipboard": "Import from clipboard",
+        "generatePlaceholder": "Generate a placeholder"
+    },
+    "textureGenerator": {
+        "name": "Texture's name:",
+        "width": "Width:",
+        "height": "Height:",
+        "color": "Background color:",
+        "label": "Label:",
+        "optional": "(optional)",
+        "createAndClose": "Create and close",
+        "createAndContinue": "Create and add another",
+        "scalingAtX4": "Scaling by x4 for a small texture",
+        "generationSuccessMessage": "Successfully added $1 texture to your project."
     },
     "textureview": {
         "bgcolor": "Change bg color",
@@ -305,6 +325,7 @@
         "speed": "Framerate:",
         "tiled": "Use as a background?",
         "replacetexture": "Replace…",
+        "updateFromClipboard": "Update from clipboard",
         "corrupted": "File is corrupted or missing! Closing now.",
         "showmask": "Show mask",
         "width": "Width:",
@@ -542,6 +563,8 @@
         "deletecopy": "Delete copy {0}",
         "deleteCopies": "Delete copies",
         "shiftCopies": "Shift copies",
+        "sortHorizontally": "Sort horizontally",
+        "sortVertically": "Sort vertically",
         "selectAndMove": "Select and Move",
         "changecopyscale": "Change scale",
         "changecopyrotation": "Rotate",
@@ -550,7 +573,12 @@
         "deletetiles": "Delete tiles",
         "movetilestolayer": "Move to layer",
         "shifttiles": "Shift tiles",
-        "findTileset": "Find a tileset"
+        "findTileset": "Find a tileset",
+        "copyProperties": {
+            "position": "Position",
+            "rotation": "Rotation",
+            "scale": "Scale"
+        }
     },
     "notepad": {
         "local": "Project's notepad",

@@ -218,16 +218,25 @@ const texturePostfixParser = /_(?<cols>\d+)x(?<rows>\d+)(?:@(?<until>\d+))?$/;
 const isBgPostfixTester = /@bg$/;
 /**
  * Tries to load an image, then adds it to the projects and creates a thumbnail
- * @param {string} src A path to the source image
+ * @param {string|Buffer} src A path to the source image, or a Buffer of an already read image.
+ * @param {string} [name] The name of the texture. Optional, defaults to 'NewTexture'
+ * or file's basename.
  * @returns {Promise<object>} A promise that resolves into the resulting texture object.
  */
-const importImageToTexture = async src => {
+// eslint-disable-next-line max-lines-per-function
+const importImageToTexture = async (src, name) => {
     const fs = require('fs-extra'),
           path = require('path'),
-          generateGUID = require('./../generateGUID');
+          generateGUID = require('./../../generateGUID');
     const id = generateGUID();
-    const dest = path.join(global.projdir, 'img', `i${id}${path.extname(src)}`);
-    await fs.copy(src, dest);
+    let dest;
+    if (src instanceof Buffer) {
+        dest = path.join(global.projdir, 'img', `i${id}.png}`);
+        await fs.writeFile(dest, src);
+    } else {
+        dest = path.join(global.projdir, 'img', `i${id}${path.extname(src)}`);
+        await fs.copy(src, dest);
+    }
     const image = document.createElement('img');
     // Wait while the image is loading
     await new Promise((resolve, reject) => {
@@ -240,9 +249,16 @@ const importImageToTexture = async src => {
         };
         image.src = 'file://' + dest + '?' + Math.random();
     });
-    const texName = path.basename(src)
-                    .replace(/\.(jpg|gif|png|jpeg)/gi, '')
-                    .replace(/\s/g, '_');
+    let texName;
+    if (name) {
+        texName = name;
+    } else if (src instanceof Buffer) {
+        texName = 'NewTexture';
+    } else {
+        texName = path.basename(src)
+            .replace(/\.(jpg|gif|png|jpeg)/gi, '')
+            .replace(/\s/g, '_');
+    }
     const obj = {
         name: texName,
         untill: 0,
@@ -257,7 +273,6 @@ const importImageToTexture = async src => {
         offx: 0,
         offy: 0,
         origname: path.basename(dest),
-        source: src,
         shape: 'rect',
         left: 0,
         right: image.width,
@@ -266,6 +281,9 @@ const importImageToTexture = async src => {
         uid: id,
         padding: 1
     };
+    if (!(src instanceof Buffer)) {
+        obj.source = src;
+    }
 
     // Test if this has a postfix _NxM@K or _NxM
     const exec = texturePostfixParser.exec(obj.name);

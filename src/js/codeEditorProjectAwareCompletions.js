@@ -19,11 +19,38 @@
         })).sort((a, b) => a.label.localeCompare(b.label));
     };
 
+    const createRoomProposals = function createRoomProposals(range) {
+        return global.currentProject.rooms.map(room => ({
+            label: room.name,
+            kind: monaco.languages.CompletionItemKind.Value,
+            insertText: `'${room.name}'`,
+            range
+        })).sort((a, b) => a.label.localeCompare(b.label));
+    };
+
     const createSoundProposals = function createSoundProposals(range) {
         return global.currentProject.sounds.map(sound => ({
             label: sound.name,
             kind: monaco.languages.CompletionItemKind.Value,
             insertText: `'${sound.name}'`,
+            range
+        })).sort((a, b) => a.label.localeCompare(b.label));
+    };
+
+    const createActionProposals = function createActionProposals(range) {
+        return global.currentProject.actions.map(action => ({
+            label: action.name,
+            kind: monaco.languages.CompletionItemKind.Property,
+            insertText: action.name,
+            range
+        })).sort((a, b) => a.label.localeCompare(b.label));
+    };
+
+    const createPSProposals = function createPSProposals(range) {
+        return global.currentProject.emitterTandems.map(et => ({
+            label: et.name,
+            kind: monaco.languages.CompletionItemKind.Value,
+            insertText: `'${et.name}'`,
             range
         })).sort((a, b) => a.label.localeCompare(b.label));
     };
@@ -39,7 +66,7 @@
     };
 
     const provideTypeNames = function provideTypeNames(model, position) {
-        if (!checkMatch(model, position, /ct\.types\.((make|copy)\(|list\[)$/)) {
+        if (!checkMatch(model, position, /ct\.types\.((make|copy)\(|list\[|templates\[)$/)) {
             return {
                 suggestions: []
             };
@@ -47,6 +74,18 @@
         const range = getInsertRange(model, position);
         return {
             suggestions: createTypeProposals(range)
+        };
+    };
+
+    const provideRoomNames = function provideRoomNames(model, position) {
+        if (!checkMatch(model, position, /ct\.rooms\.((switch|append|prepend|merge)\(|templates\[)$/)) {
+            return {
+                suggestions: []
+            };
+        }
+        const range = getInsertRange(model, position);
+        return {
+            suggestions: createRoomProposals(range)
         };
     };
 
@@ -62,6 +101,30 @@
         };
     };
 
+    const provideActionNames = function provideActionNames(model, position) {
+        if (!checkMatch(model, position, /ct\.actions\.$/)) {
+            return {
+                suggestions: []
+            };
+        }
+        const range = getInsertRange(model, position);
+        return {
+            suggestions: createActionProposals(range)
+        };
+    };
+
+    const providePSNames = function providePSNames(model, position) {
+        if (!checkMatch(model, position, /ct\.emitters\.(fire|append|follow)\($/)) {
+            return {
+                suggestions: []
+            };
+        }
+        const range = getInsertRange(model, position);
+        return {
+            suggestions: createPSProposals(range)
+        };
+    };
+
     window.signals.on('monacoBooted', () => {
         monaco.languages.registerCompletionItemProvider('typescript', {
             provideCompletionItems: provideTypeNames,
@@ -69,6 +132,18 @@
         });
         monaco.languages.registerCompletionItemProvider('typescript', {
             provideCompletionItems: provideSoundNames,
+            triggerCharacters: ['(']
+        });
+        monaco.languages.registerCompletionItemProvider('typescript', {
+            provideCompletionItems: provideActionNames,
+            triggerCharacters: ['.']
+        });
+        monaco.languages.registerCompletionItemProvider('typescript', {
+            provideCompletionItems: provideRoomNames,
+            triggerCharacters: ['(', '[']
+        });
+        monaco.languages.registerCompletionItemProvider('typescript', {
+            provideCompletionItems: providePSNames,
             triggerCharacters: ['(']
         });
     });

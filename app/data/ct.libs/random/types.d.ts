@@ -23,5 +23,14 @@ declare namespace ct {
 
         /** When given both `x` and `y`, randomly returns `true` approximately `x` times out of `y`. When given only a value between 0…100, returns `true` approximately `x` times out of 100. E.g. `ct.random.chance(30)` means a 30% success rate. */
         function chance(x: number, y?: number): boolean;
+
+        /** Returns next seeded random number. */
+        function seeded(): number;
+
+        /** Sets the seed of the `ct.random.seeded()` method. */
+        function setSeed(seed: number): void;
+
+        /** Creates a new seeded random number generator. It is a function that you can store and use in the same way as `ct.random.seeded()`. */
+        function createSeededRandomizer(seed: number): Function;
     }
 }

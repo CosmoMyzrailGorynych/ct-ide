@@ -414,6 +414,26 @@ const bakePackages = async () => {
         macIcns: nightly ? './buildAssets/nightly.icns' : './buildAssets/icon.icns'
     });
     await nw.build();
+
+    // Copy .itch.toml files for each target platform
+    await Promise.all(platforms.map(platform => {
+        if (platform.indexOf('win') === 0) {
+            return fs.copy(
+                './buildAssets/windows.itch.toml',
+                path.join(`./build/ctjs - v${pack.version}`, platform, '.itch.toml')
+            );
+        }
+        if (platform === 'osx64') {
+            return fs.copy(
+                './buildAssets/mac.itch.toml',
+                path.join(`./build/ctjs - v${pack.version}`, platform, '.itch.toml')
+            );
+        }
+        return fs.copy(
+            './buildAssets/linux.itch.toml',
+            path.join(`./build/ctjs - v${pack.version}`, platform, '.itch.toml')
+        );
+    }));
     console.log('Built to this location:', path.join('./build', `ctjs - v${pack.version}`));
 };
 

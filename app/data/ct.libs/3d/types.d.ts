@@ -623,3 +623,7 @@ declare module PIXI.projection.utils {
     function getIntersectionFactor(p1: IPoint, p2: IPoint, p3: IPoint, p4: IPoint, out: IPoint): number;
     function getPositionFromQuad(p: Array<IPoint>, anchor: IPoint, out: IPoint): IPoint;
 }
+
+namespace ct {
+    camera3d: Camera3d
+}
