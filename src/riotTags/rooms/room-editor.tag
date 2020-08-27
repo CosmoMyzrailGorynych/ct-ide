@@ -581,7 +581,7 @@ room-editor.panel.view
                         canvas.x.drawImage(
                             texture,
                             ox, oy, w, h,
-                            -grax * (copy.tx || 1), -gray * (copy.ty || 1), w, h
+                            -grax, -gray, w, h
                         );
                         canvas.x.restore();
                     } else {
