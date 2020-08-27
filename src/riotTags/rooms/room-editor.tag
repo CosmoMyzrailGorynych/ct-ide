@@ -68,23 +68,37 @@ room-editor.panel.view
             button.inline.square(title="{voc.shift}" onclick="{roomShift}")
                 svg.feather
                     use(xlink:href="data/icons.svg#move")
-            span(if="{window.innerWidth - sidebarWidth > 840}") {voc.hotkeysNotice}
+            button.inline.square(
+                title="{voc.sortHorizontally}"
+                onclick="{sortHorizontally}"
+                if="{tab === 'roomcopies' || tab === 'roomtiles'}"
+            )
+                svg.feather
+                    use(xlink:href="data/icons.svg#sort-horizontal")
+            button.inline.square(
+                title="{voc.sortVertically}"
+                onclick="{sortVertically}"
+                if="{tab === 'roomcopies' || tab === 'roomtiles'}"
+            )
+                svg.feather
+                    use(xlink:href="data/icons.svg#sort-vertical")
+            span(if="{window.innerWidth - sidebarWidth > 940}") {voc.hotkeysNotice}
         .zoom
-            b(if="{window.innerWidth - sidebarWidth > 840}") {vocGlob.zoom}
+            b(if="{window.innerWidth - sidebarWidth > 980}") {vocGlob.zoom}
             div.button-stack
-                button#roomzoom12.inline(if="{window.innerWidth - sidebarWidth > 470}" onclick="{roomToggleZoom(0.125)}" class="{active: zoomFactor === 0.125}") 12%
+                button#roomzoom12.inline(if="{window.innerWidth - sidebarWidth > 620}" onclick="{roomToggleZoom(0.125)}" class="{active: zoomFactor === 0.125}") 12%
                 button#roomzoom25.inline(onclick="{roomToggleZoom(0.25)}" class="{active: zoomFactor === 0.25}") 25%
-                button#roomzoom50.inline(if="{window.innerWidth - sidebarWidth > 470}" onclick="{roomToggleZoom(0.5)}" class="{active: zoomFactor === 0.5}") 50%
+                button#roomzoom50.inline(if="{window.innerWidth - sidebarWidth > 620}" onclick="{roomToggleZoom(0.5)}" class="{active: zoomFactor === 0.5}") 50%
                 button#roomzoom100.inline(onclick="{roomToggleZoom(1)}" class="{active: zoomFactor === 1}") 100%
                 button#roomzoom200.inline(onclick="{roomToggleZoom(2)}" class="{active: zoomFactor === 2}") 200%
-                button#roomzoom400.inline(if="{window.innerWidth - sidebarWidth > 470}" onclick="{roomToggleZoom(4)}" class="{active: zoomFactor === 4}") 400%
-                button#roomzoom800.inline(if="{window.innerWidth - sidebarWidth > 470}" onclick="{roomToggleZoom(8)}" class="{active: zoomFactor === 8}") 800%
+                button#roomzoom400.inline(if="{window.innerWidth - sidebarWidth > 620}" onclick="{roomToggleZoom(4)}" class="{active: zoomFactor === 4}") 400%
+                button#roomzoom800.inline(if="{window.innerWidth - sidebarWidth > 620}" onclick="{roomToggleZoom(8)}" class="{active: zoomFactor === 8}") 800%
         .grid
             button#roomgrid(onclick="{roomToggleGrid}" class="{active: room.gridX > 0}")
                 span {voc[room.gridX > 0? 'gridoff' : 'grid']}
         .center
             button#roomcenter(onclick="{roomToCenter}") {voc.tocenter}
-            span.aMouseCoord(if="{window.innerWidth - sidebarWidth > 470}" ref="mousecoords") ({mouseX}:{mouseY})
+            span.aMouseCoord(show="{window.innerWidth - sidebarWidth > 470}" ref="mousecoords") ({mouseX}:{mouseY})
         room-copy-properties(
             if="{this.selectedCopies && this.selectedCopies.length === 1}"
             copy="{this.selectedCopies[0]}"
@@ -470,6 +484,27 @@ room-editor.panel.view
                 this.parent.update();
             });
             return true;
+        };
+
+        this.sortHorizontally = () => {
+            if (this.tab === 'roomcopies') {
+                this.room.copies.sort((a, b) => a.x - b.x);
+            } else {
+                // tiles
+                this.currentTileLayer.tiles.sort((a, b) => a.x - b.x);
+            }
+            this.resortRoom();
+            this.refreshRoomCanvas();
+        };
+        this.sortVertically = () => {
+            if (this.tab === 'roomcopies') {
+                this.room.copies.sort((a, b) => a.y - b.y);
+            } else {
+                // tiles
+                this.currentTileLayer.tiles.sort((a, b) => a.y - b.y);
+            }
+            this.resortRoom();
+            this.refreshRoomCanvas();
         };
 
         this.resortRoom = () => {

@@ -563,6 +563,8 @@
         "deletecopy": "Delete copy {0}",
         "deleteCopies": "Delete copies",
         "shiftCopies": "Shift copies",
+        "sortHorizontally": "Sort horizontally",
+        "sortVertically": "Sort vertically",
         "selectAndMove": "Select and Move",
         "changecopyscale": "Change scale",
         "changecopyrotation": "Rotate",
