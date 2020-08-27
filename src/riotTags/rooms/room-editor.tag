@@ -309,6 +309,9 @@ room-editor.panel.view
             this.lastTileY = null;
             if (this.dragging) {
                 this.dragging = false;
+                this.roomx = Math.round(this.roomx);
+                this.roomy = Math.round(this.roomy);
+                this.refreshRoomCanvas();
             } else if (this.tab === 'roomtiles') {
                 this.onCanvasMouseUpTiles(e);
             } else if (this.tab === 'roomcopies') {
@@ -353,8 +356,8 @@ room-editor.panel.view
             e.preventUpdate = true;
             if (this.dragging && !this.movingStuff) {
                 // Drag the viewport
-                this.roomx -= Math.round(e.movementX / this.zoomFactor);
-                this.roomy -= Math.round(e.movementY / this.zoomFactor);
+                this.roomx -= e.movementX / this.zoomFactor;
+                this.roomy -= e.movementY / this.zoomFactor;
                 this.refreshRoomCanvas(e);
             } else if ( // Make more tiles or copies if Shift key is down
                 e.shiftKey && this.mouseDown &&
