@@ -85,6 +85,11 @@ room-editor.panel.view
         .center
             button#roomcenter(onclick="{roomToCenter}") {voc.tocenter}
             span.aMouseCoord(if="{window.innerWidth - sidebarWidth > 470}" ref="mousecoords") ({mouseX}:{mouseY})
+        room-copy-properties(
+            if="{this.selectedCopies && this.selectedCopies.length === 1}"
+            copy="{this.selectedCopies[0]}"
+            onchange="{refreshRoomCanvas}" oninput="{refreshRoomCanvas}"
+        )
     room-events-editor(if="{editingCode}" room="{room}")
     context-menu(menu="{roomCanvasCopiesMenu}" ref="roomCanvasCopiesMenu")
     context-menu(menu="{roomCanvasMenu}" ref="roomCanvasMenu")
@@ -246,6 +251,7 @@ room-editor.panel.view
         this.tab = 'roomcopies';
         this.changeTab = tab => () => {
             this.tab = tab;
+            this.selectedCopies = this.selectedTiles = false;
             if (tab === 'roombackgrounds' || tab === 'properties') {
                 this.roomUnpickType();
             }

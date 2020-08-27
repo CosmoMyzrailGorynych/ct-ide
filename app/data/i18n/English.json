@@ -571,7 +571,12 @@
         "deletetiles": "Delete tiles",
         "movetilestolayer": "Move to layer",
         "shifttiles": "Shift tiles",
-        "findTileset": "Find a tileset"
+        "findTileset": "Find a tileset",
+        "copyProperties": {
+            "position": "Position",
+            "rotation": "Rotation",
+            "scale": "Scale"
+        }
     },
     "notepad": {
         "local": "Project's notepad",
