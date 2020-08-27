@@ -52,7 +52,7 @@ room-copy-properties.panel
                 value="{opts.copy.tr || 0}"
                 oninput="{wire('this.opts.copy.tr')}"
             )
-    extensions-editor(entity="{opts.copy}" type="copy" compact="yes" wide="yup")
+    extensions-editor(entity="{opts.copy.exts}" type="copy" compact="yes" wide="yup")
     script.
         this.namespace = 'roomview.copyProperties';
         this.mixin(window.riotVoc);
