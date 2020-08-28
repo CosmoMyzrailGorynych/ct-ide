@@ -87,6 +87,7 @@ html
         script.
             'use strict';
             window.signals = window.signals || riot.observable({});
+            window.hotkeys = require('./data/node_requires/hotkeys')(document);
             riot.mount('*');
             setTimeout(() => {
                 document.getElementById('loading').classList.add('fadeout');

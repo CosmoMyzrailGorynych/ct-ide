@@ -34,7 +34,6 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
             use(xlink:href="data/icons.svg#{opened? 'chevron-right' : 'chevron-left'}")
     script.
         const glob = require('./data/node_requires/glob');
-        const hotkey = require('./data/node_requires/hotkeys')(document);
         this.opened = false;
         this.namespace = 'notepad';
         this.mixin(window.riotVoc);
@@ -42,10 +41,14 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
             this.opened = !this.opened;
         };
 
-        hotkey.on('F1', () => {
+        const openHelp = () => {
             this.opened = true;
             this.tab = 'helppages';
             this.update();
+        };
+        window.hotkeys.on('F1', openHelp);
+        this.on('unmount', () => {
+            window.hotkeys.off('F1', openHelp);
         });
 
         this.tab = 'notepadlocal';
