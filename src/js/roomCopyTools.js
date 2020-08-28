@@ -1,5 +1,5 @@
 (function roomCopyTools() {
-    const clickThreshold = 16;
+    const clickThreshold = 10;
     const glob = require('./data/node_requires/glob');
 
     const drawInsertPreview = function (e) {
