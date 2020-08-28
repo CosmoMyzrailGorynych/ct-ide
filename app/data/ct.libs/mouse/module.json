@@ -2,7 +2,7 @@
     "main": {
         "name": "Mouse Input",
         "tagline": "Get mouse position and read its events in Actions system.",
-        "version": "3.0.0",
+        "version": "3.0.1",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",
             "mail": "admin@nersta.ru"
