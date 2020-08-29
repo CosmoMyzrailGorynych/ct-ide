@@ -92,12 +92,11 @@ export-panel
                 this.working = true;
                 this.update();
 
-                const {getWritableDir} = require('./data/node_requires/platformUtils');
+                const {getBuildDir, getExportDir} = require('./data/node_requires/platformUtils');
                 const runCtExport = require('./data/node_requires/exporter');
-                const writable = await getWritableDir(),
-                      projectDir = global.projdir,
-                      exportDir = path.join(writable, 'export'),
-                      buildDir = path.join(writable, 'builds');
+                const projectDir = global.projdir,
+                      exportDir = await getExportDir(),
+                      buildDir = await getBuildDir();
 
                 this.log.push('Exporting the project…');
                 this.update();

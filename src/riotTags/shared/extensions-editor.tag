@@ -4,7 +4,7 @@
 
     @attribute entity (riot object)
         An object to which apply editing to.
-    @attribute type (string, 'type'|'tileLayer'|'room')
+    @attribute type (string, 'type'|'tileLayer'|'room'|'copy')
         The type of the edited asset. Not needed if customextends is set.
 
     @attribute [compact] (atomic)
@@ -22,7 +22,8 @@
     declare interface IExtensionField {
         name: string, // the displayed name.
         // Below 'h1', 'h2', 'h3', 'h4' are purely decorational, for grouping fields. Others denote the type of an input field.
-        type: 'h1' | 'h2' | 'h3' | 'h4' | 'text' | 'textfield' | 'code' | 'number' | 'point2D' | 'checkbox' | 'radio' | 'texture' | 'type',
+        type: 'h1' | 'h2' | 'h3' | 'h4' | 'text' | 'textfield' | 'code' | 'number' |
+              'slider' | 'sliderAndNumber' | 'point2D' | 'checkbox' | 'radio' | 'texture' | 'type',
         key?: string, // the name of a JSON key to write into the `opts.entity`. Not needed for hN types, but required otherwise
                       // The key may have special suffixes that tell the exporter to unwrap foreign keys (resources' UIDs) into asset names.
                       // These are supposed to always be used with `'type'` and `'texture'` input types.
@@ -50,7 +51,7 @@ extensions-editor
                     input.nogrow(
                         if="{ext.type === 'checkbox'}"
                         type="checkbox"
-                        value="{parent.opts.entity[ext.key] || ext.default}"
+                        checked="{parent.opts.entity[ext.key] || ext.default}"
                         onchange="{wire('this.opts.entity.'+ ext.key)}"
                     )
                     span   {ext.name}
@@ -117,7 +118,41 @@ extensions-editor
                     type="number"
                     value="{parent.opts.entity[ext.key] || ext.default}"
                     onchange="{wire('this.opts.entity.'+ ext.key)}"
+                    min="{ext.min}"
+                    max="{ext.max}"
+                    step="{ext.step}"
                 )
+                .aSliderWrap(if="{ext.type === 'slider'}")
+                    input(
+                        class="{compact: parent.opts.compact, wide: parent.opts.wide}"
+                        type="range"
+                        value="{parent.opts.entity[ext.key] || ext.default}"
+                        onchange="{wire('this.opts.entity.'+ ext.key)}"
+                        min="{ext.min}"
+                        max="{ext.max}"
+                        step="{ext.step}"
+                    )
+                .flexrow(if="{ext.type === 'sliderAndNumber'}")
+                    .aSliderWrap
+                        input(
+                            class="{compact: parent.opts.compact}"
+                            type="range"
+                            value="{parent.opts.entity[ext.key] || ext.default}"
+                            onchange="{wire('this.opts.entity.'+ ext.key)}"
+                            min="{ext.min}"
+                            max="{ext.max}"
+                            step="{ext.step}"
+                        )
+                    .spacer
+                    input(
+                        class="{compact: parent.opts.compact}"
+                        type="number"
+                        value="{parent.opts.entity[ext.key] || ext.default}"
+                        onchange="{wire('this.opts.entity.'+ ext.key)}"
+                        min="{ext.min}"
+                        max="{ext.max}"
+                        step="{ext.step}"
+                    )
                 label.block.checkbox(if="{ext.type === 'radio'}" each="{option in ext.options}")
                     input(
                         type="radio"
@@ -127,6 +162,16 @@ extensions-editor
                     )
                     |   {option.name}
                     div.desc(if="{option.help}") {option.help}
+                select(
+                    if="{ext.type === 'select'}"
+                    onchange="{wire('this.opts.entity.'+ ext.key)}"
+                    class="{wide: parent.opts.wide}"
+                )
+                    option(
+                        each="{option in ext.options}"
+                        value="{option.value}"
+                        selected="{parent.parent.opts.entity[ext.key] === option.value}"
+                    ) {option.name}
                 .dim(if="{ext.help && !parent.opts.compact}") {ext.help}
     script.
         const libsDir = './data/ct.libs';

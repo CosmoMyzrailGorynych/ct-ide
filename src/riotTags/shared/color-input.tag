@@ -8,6 +8,9 @@
         Calls the funtion when a user changes the color while working with the color picker.
         Passes an object `{target: RiotTag}` as one argument and a value (an rgba/HEX string).
 
+    @attribute color (string)
+        The preset color.
+
     @attribute hidealpha (atomic)
         Passed as is to color-picker. Disables alpha input.
 

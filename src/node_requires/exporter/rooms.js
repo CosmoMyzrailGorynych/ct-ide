@@ -66,6 +66,7 @@ ct.rooms.templates['${r.name}'] = {
     objects: JSON.parse('${JSON.stringify(objs)}'),
     bgs: JSON.parse('${JSON.stringify(bgsCopy)}'),
     tiles: JSON.parse('${JSON.stringify(tileLayers)}'),
+    backgroundColor: '${r.backgroundColor || '#000000'}',
     onStep() {
         ${proj.rooms[k].onstep}
     },

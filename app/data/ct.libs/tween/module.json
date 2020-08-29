@@ -2,7 +2,7 @@
     "main": {
         "name": "ct.tween",
         "tagline": "Animate values through time with different interpolation curves.",
-        "version": "0.0.1",
+        "version": "1.0.0",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",
             "mail": "admin@nersta.ru"

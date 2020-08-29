@@ -159,7 +159,9 @@ debugger-toolbar
                 const buff = new Buffer(shotBase64, 'base64');
                 const stream = fs.createWriteStream(fullPath);
                 stream.on('finish', () => {
-                    window.soundbox.play('Success');
+                    if (localStorage.disableSounds !== 'on') {
+                        window.soundbox.play('Success');
+                    }
                     // eslint-disable-next-line no-new
                     new Notification('Done!', {
                         body: `Saved to ${fullPath} 👌`,

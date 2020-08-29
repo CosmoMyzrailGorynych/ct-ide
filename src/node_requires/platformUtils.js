@@ -7,6 +7,7 @@ const isMac = !(isWin || isLinux);
 
 const mod = {
     isWin,
+    isWindows: isWin,
     isLinux,
     isMac,
 
@@ -48,17 +49,22 @@ const mod = {
         return new Promise((resolve, reject) => {
             // writing to an exec path on Mac is not a good idea,
             // as it will be hidden inside an app's directory, which is shown as one file.
-            if (isMac || !(execWritable)) {
-                if (!homeWritable) {
-                    reject(new Error(`Could not write to folders ${home} and ${exec}.`));
-                } else {
-                    fs.ensureDir(path.join(home, 'ct.js'))
-                    .then(() => {
-                        resolve(path.join(home, 'ct.js'));
-                    })
-                    .catch(reject);
-                }
+            if (isMac && !homeWritable) {
+                reject(new Error(`Could not write to folder ${home}. It is needed to create builds and run debugger. Check rights to these folders, and tweak sandbox settings if it is used.`));
+                return;
+            }
+            // Home directory takes priority
+            if (homeWritable) {
+                fs.ensureDir(path.join(home, 'ct.js'))
+                .then(() => {
+                    resolve(path.join(home, 'ct.js'));
+                })
+                .catch(reject);
             } else {
+                if (!execWritable) {
+                    reject(new Error(`Could not write to folders ${home} and ${exec}. A folder is needed to create builds and run debugger. Check access rights to these folders, and tweak sandbox settings if it is used.`));
+                    return;
+                }
                 resolve(exec);
             }
         });
@@ -66,7 +72,12 @@ const mod = {
 };
 
 {
-    let exportDir, exportDirPromise;
+    let exportDir,
+        exportDirPromise,
+        buildDir,
+        buildDirPromise,
+        projectsDir,
+        projectsDirPromise;
     // We compute a directory once and store it forever
     mod.getExportDir = () => {
         if (exportDir) {
@@ -75,11 +86,43 @@ const mod = {
         if (exportDirPromise) {
             return exportDirPromise;
         }
-        exportDirPromise = mod.getWritableDir().then(dir => {
-            exportDir = require('path').join(dir, 'export');
+        exportDirPromise = mod.getWritableDir().then(async ctjsDir => {
+            const dir = require('path').join(ctjsDir, 'Exported');
+            await fs.ensureDir(dir);
+            exportDir = dir;
             return exportDir;
         });
         return exportDirPromise;
+    };
+    mod.getBuildDir = () => {
+        if (buildDir) {
+            return Promise.resolve(buildDir);
+        }
+        if (buildDirPromise) {
+            return buildDirPromise;
+        }
+        buildDirPromise = mod.getWritableDir().then(async ctjsDir => {
+            const dir = require('path').join(ctjsDir, 'Builds');
+            await fs.ensureDir(dir);
+            buildDir = dir;
+            return buildDir;
+        });
+        return buildDirPromise;
+    };
+    mod.getProjectsDir = () => {
+        if (projectsDir) {
+            return Promise.resolve(projectsDir);
+        }
+        if (projectsDirPromise) {
+            return projectsDirPromise;
+        }
+        projectsDirPromise = mod.getWritableDir().then(async ctjsDir => {
+            const dir = require('path').join(ctjsDir, 'Projects');
+            await fs.ensureDir(dir);
+            projectsDir = dir;
+            return projectsDir;
+        });
+        return projectsDirPromise;
     };
 }
 

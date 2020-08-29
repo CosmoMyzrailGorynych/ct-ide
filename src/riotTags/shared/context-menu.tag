@@ -69,10 +69,19 @@ context-menu(class="{opened: opts.menu.opened}" ref="root" style="{opts.menu.col
             setTimeout(() => {
                 noFakeClicks = false;
             }, 100);
-            y -= this.root.parentNode.getBoundingClientRect().y;
+            this.root.style.left = this.root.style.top = this.root.style.right = this.root.style.bottom = 'unset';
+            this.root.style.position = 'fixed';
             if (x !== void 0 && y !== void 0) {
-                this.root.style.left = x + 'px';
-                this.root.style.top = y + 'px';
+                if (x < window.innerWidth / 2) {
+                    this.root.style.left = x + 'px';
+                } else {
+                    this.root.style.right = (window.innerWidth - x) + 'px';
+                }
+                if (y < window.innerHeight / 2) {
+                    this.root.style.top = y + 'px';
+                } else {
+                    this.root.style.bottom = (window.innerHeight - y) + 'px';
+                }
             }
             this.opts.menu.opened = true;
             this.update();

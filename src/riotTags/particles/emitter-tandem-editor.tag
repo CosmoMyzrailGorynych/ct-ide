@@ -45,15 +45,12 @@ emitter-tandem-editor.panel.view.flexrow
                 svg.feather
                     use(xlink:href="data/icons.svg#droplet")
                 span {voc.changeBg}
-        .zoom
-            b(if="{window.innerWidth - panelWidth > 500}") {vocGlob.zoom}
-            div.button-stack
-                button.inline(if="{window.innerWidth - panelWidth > 320}" onclick="{setZoom(0.125)}" class="{active: zoom === 0.125}") 12%
-                button.inline(onclick="{setZoom(0.25)}" class="{active: zoom === 0.25}") 25%
-                button.inline(if="{window.innerWidth - panelWidth > 320}" onclick="{setZoom(0.5)}" class="{active: zoom === 0.5}") 50%
-                button.inline(onclick="{setZoom(1)}" class="{active: zoom === 1}") 100%
-                button.inline(onclick="{setZoom(2)}" class="{active: zoom === 2}") 200%
-                button.inline(if="{window.innerWidth - panelWidth > 320}" onclick="{setZoom(4)}" class="{active: zoom === 4}") 400%
+        .zoom.flexrow
+            b(if="{window.innerWidth - panelWidth > 550}") {vocGlob.zoom}
+            .spacer
+            b {Math.round(zoom * 100)}%
+            .spacer
+            zoom-slider(onchanged="{setZoom}" ref="zoomslider" value="{zoom}")
     color-picker(
         ref="previewBackgroundColor" if="{changingPreviewColor}"
         hidealpha="true"
@@ -275,9 +272,9 @@ emitter-tandem-editor.panel.view.flexrow
                 width: Math.round(box.width),
                 height: Math.round(box.height),
                 view: this.refs.canvas,
-                antialias: !global.currentProject.settings.pixelatedrender
+                antialias: !global.currentProject.settings.rendering.pixelatedrender
             });
-            if (global.currentProject.settings.pixelatedrender) {
+            if (global.currentProject.settings.rendering.pixelatedrender) {
                 PIXI.settings.ROUND_PIXELS = true;
                 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
             }
@@ -386,37 +383,10 @@ emitter-tandem-editor.panel.view.flexrow
         /* Zoom in/out by clicking buttons and scrolling mouse wheel */
 
         this.zoom = 1;
-        this.setZoom = zoom => () => {
+        this.setZoom = zoom => {
             this.zoom = zoom;
             if (this.emitterContainer) {
                 this.emitterContainer.scale.x = this.emitterContainer.scale.y = this.zoom;
-            }
-        };
-        this.onCanvasWheel = e => {
-            e.preventUpdate = true;
-            if (e.wheelDelta > 0) {
-                // in
-                if (this.zoom === 2) {
-                    this.zoom = 4;
-                } else if (this.zoom === 1) {
-                    this.zoom = 2;
-                } else if (this.zoom === 0.5) {
-                    this.zoom = 1;
-                } else if (this.zoom === 0.25) {
-                    this.zoom = 0.5;
-                } else if (this.zoom === 0.125) {
-                    this.zoom = 0.25;
-                }
-            } else if (this.zoom === 4) { // out
-                this.zoom = 2;
-            } else if (this.zoom === 2) {
-                this.zoom = 1;
-            } else if (this.zoom === 1) {
-                this.zoom = 0.5;
-            } else if (this.zoom === 0.5) {
-                this.zoom = 0.25;
-            } else if (this.zoom === 0.25) {
-                this.zoom = 0.125;
             }
             this.emitterContainer.scale.x =
                 this.emitterContainer.scale.y =
@@ -426,6 +396,14 @@ emitter-tandem-editor.panel.view.flexrow
                 this.previewTexture.scale.y =
                     this.zoom;
             this.updateGrid();
+            this.update();
+        };
+        this.onCanvasWheel = e => {
+            if (e.wheelDelta > 0) {
+                this.refs.zoomslider.zoomIn();
+            } else {
+                this.refs.zoomslider.zoomOut();
+            }
         };
 
         this.onCanvasMove = e => {

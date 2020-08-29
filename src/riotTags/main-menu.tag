@@ -24,27 +24,27 @@ main-menu.flexcol
                 svg.feather
                     use(xlink:href="data/icons.svg#sliders")
                 span {voc.project}
-            li(onclick="{changeTab('texture')}" class="{active: tab === 'texture'}" data-hotkey="Control+3" title="Control+3")
+            li(onclick="{changeTab('texture')}" class="{active: tab === 'texture'}" data-hotkey="Control+2" title="Control+2")
                 svg.feather
                     use(xlink:href="data/icons.svg#texture")
                 span {voc.texture}
-            li(onclick="{changeTab('ui')}" class="{active: tab === 'ui'}" data-hotkey="Control+4" title="Control+4")
+            li(onclick="{changeTab('ui')}" class="{active: tab === 'ui'}" data-hotkey="Control+3" title="Control+3")
                 svg.feather
                     use(xlink:href="data/icons.svg#ui")
                 span {voc.ui}
-            li(onclick="{changeTab('fx')}" class="{active: tab === 'fx'}" data-hotkey="Control+5" title="Control+5")
+            li(onclick="{changeTab('fx')}" class="{active: tab === 'fx'}" data-hotkey="Control+4" title="Control+4")
                 svg.feather
                     use(xlink:href="data/icons.svg#sparkles")
                 span {voc.fx}
-            li(onclick="{changeTab('sounds')}" class="{active: tab === 'sounds'}" data-hotkey="Control+6" title="Control+6")
+            li(onclick="{changeTab('sounds')}" class="{active: tab === 'sounds'}" data-hotkey="Control+5" title="Control+5")
                 svg.feather
                     use(xlink:href="data/icons.svg#headphones")
                 span {voc.sounds}
-            li(onclick="{changeTab('types')}" class="{active: tab === 'types'}" data-hotkey="Control+7" title="Control+7")
+            li(onclick="{changeTab('types')}" class="{active: tab === 'types'}" data-hotkey="Control+6" title="Control+6")
                 svg.feather
                     use(xlink:href="data/icons.svg#type")
                 span {voc.types}
-            li(onclick="{changeTab('rooms')}" class="{active: tab === 'rooms'}" data-hotkey="Control+8" title="Control+8")
+            li(onclick="{changeTab('rooms')}" class="{active: tab === 'rooms'}" data-hotkey="Control+7" title="Control+7")
                 svg.feather
                     use(xlink:href="data/icons.svg#room")
                 span {voc.rooms}
@@ -67,20 +67,14 @@ main-menu.flexcol
         const archiver = require('archiver');
         const glob = require('./data/node_requires/glob');
 
-        // Mounts the hotkey plugins, enabling hotkeys on elements with data-hotkey attributes
-        const hotkey = require('./data/node_requires/hotkeys')(document);
-        this.on('unmount', () => {
-            hotkey.unmount();
-        });
-
         this.namespace = 'menu';
         this.mixin(window.riotVoc);
 
         this.tab = 'project';
         this.changeTab = tab => () => {
             this.tab = tab;
-            hotkey.cleanScope();
-            hotkey.push(tab);
+            window.hotkeys.cleanScope();
+            window.hotkeys.push(tab);
             window.signals.trigger('globalTabChanged');
             window.signals.trigger(`${tab}Focus`);
         };
@@ -206,7 +200,7 @@ main-menu.flexcol
                 nw.Shell.openExternal(`http://localhost:${fileServer.address().port}/`);
             });
         };
-        hotkey.on('Alt+F5', this.runProjectAlt);
+        window.hotkeys.on('Alt+F5', this.runProjectAlt);
 
         this.zipProject = async () => {
             try {
@@ -241,11 +235,14 @@ main-menu.flexcol
             }
         };
         this.zipExport = async () => {
-            const {getWritableDir} = require('./data/node_requires/platformUtils');
-            const writable = await getWritableDir();
+            const {getBuildDir, getExportDir} = require('./data/node_requires/platformUtils');
+            const buildFolder = await getBuildDir();
             const runCtExport = require('./data/node_requires/exporter');
-            const exportFile = path.join(writable, '/export.zip'),
-                  inDir = path.join(writable, '/export/');
+            const exportFile = path.join(
+                buildFolder,
+                `${global.currentProject.settings.authoring.title || 'ct.js game'}.zip`
+            );
+            const inDir = await getExportDir();
             await fs.remove(exportFile);
             runCtExport(global.currentProject, global.projdir)
             .then(() => {
@@ -421,6 +418,15 @@ main-menu.flexcol
                             window.signals.trigger('codeFontUpdated');
                         }
                     }]
+                }
+            }, {
+                type: 'separator'
+            }, {
+                label: window.languageJSON.menu.disableSounds,
+                type: 'checkbox',
+                checked: () => localStorage.disableSounds === 'on',
+                click: () => {
+                    localStorage.disableSounds = (localStorage.disableSounds || 'off') === 'off' ? 'on' : 'off';
                 }
             }, {
                 type: 'separator'

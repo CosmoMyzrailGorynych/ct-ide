@@ -2,7 +2,7 @@
   "main": "index.html",
   "name": "ctjs",
   "description": "ct.js — a free 2D game engine",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "homepage": "https://ctjs.rocks/",
   "author": {
     "name": "Cosmo Myzrail Gorynych",
@@ -55,7 +55,7 @@
   "dependencies": {
     "archiver": "^3.1.1",
     "csswring": "7.0.0",
-    "electron-packager": "^14.2.1",
+    "electron-packager": "^15.0.0",
     "extract-zip": "^2.0.1",
     "fs-extra": "^9.0.1",
     "fuse.js": "^3.6.1",

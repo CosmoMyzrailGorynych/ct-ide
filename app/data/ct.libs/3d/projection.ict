@@ -1,0 +1,409 @@
+ctjsVersion: 1.4.1
+notes: /* empty */
+libs:
+  place:
+    gridX: 1024
+    gridY: 1024
+  fittoscreen:
+    mode: scaleFit
+  mouse: {}
+  keyboard: {}
+  keyboard.polyfill: {}
+  sound.howler: {}
+  3d: {}
+textures:
+  - name: PlayerShip
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 150
+      - 150
+    marginx: 0
+    marginy: 0
+    imgWidth: 300
+    imgHeight: 300
+    width: 300
+    height: 300
+    offx: 0
+    offy: 0
+    origname: ia91db6dd-3773-4b88-8d5c-e80080cb0b82.png
+    source: /home/comigo/Desktop/PlayerShip.png
+    shape: rect
+    left: 150
+    right: 150
+    top: 150
+    bottom: 150
+    uid: a91db6dd-3773-4b88-8d5c-e80080cb0b82
+    padding: 1
+    lastmod: 1597371073697
+  - name: Comigo_Standing
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 83
+      - 373
+    marginx: 0
+    marginy: 0
+    imgWidth: 189
+    imgHeight: 394
+    width: 189
+    height: 394
+    offx: 0
+    offy: 0
+    origname: i059e8892-2ffd-40c8-a97b-7645b40b3db5.png
+    source: /home/comigo/Downloads/Comigo_Standing.png
+    shape: rect
+    left: 83
+    right: 106
+    top: 373
+    bottom: 21
+    uid: 059e8892-2ffd-40c8-a97b-7645b40b3db5
+    padding: 1
+    lastmod: 1597376745239
+  - name: LightPost
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 90
+      - 492
+    marginx: 0
+    marginy: 0
+    imgWidth: 171
+    imgHeight: 544
+    width: 171
+    height: 544
+    offx: 0
+    offy: 0
+    origname: i2b15568d-6e42-4ecc-a301-e580291e0a9b.png
+    source: /home/comigo/Downloads/LightPost.png
+    shape: rect
+    left: 90
+    right: 81
+    top: 492
+    bottom: 52
+    uid: 2b15568d-6e42-4ecc-a301-e580291e0a9b
+    padding: 1
+    lastmod: 1597376750753
+  - name: SandCell
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 128
+      - 32
+    marginx: 0
+    marginy: 0
+    imgWidth: 256
+    imgHeight: 64
+    width: 256
+    height: 64
+    offx: 0
+    offy: 0
+    origname: i33bda9f8-75f1-4255-b86d-e5973350fd2b.png
+    source: /home/comigo/Downloads/SandCell(2).png
+    shape: rect
+    left: 128
+    right: 128
+    top: 32
+    bottom: 32
+    uid: 33bda9f8-75f1-4255-b86d-e5973350fd2b
+    padding: 1
+    lastmod: 1597379213488
+  - name: SandCellSquare
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 128
+      - 128
+    marginx: 0
+    marginy: 0
+    imgWidth: 256
+    imgHeight: 256
+    width: 256
+    height: 256
+    offx: 0
+    offy: 0
+    origname: i8217ffc8-5969-4237-8506-a5458d4d5e6c.png
+    source: /home/comigo/Downloads/SandCell.png
+    shape: rect
+    left: 128
+    right: 128
+    top: 128
+    bottom: 128
+    uid: 8217ffc8-5969-4237-8506-a5458d4d5e6c
+    padding: 1
+    lastmod: 1597380952030
+skeletons: []
+types:
+  - name: Sand
+    depth: 0
+    oncreate: this.depth = (Math.random() - 0.5) * 20;
+    onstep: this.move();
+    ondraw: ''
+    ondestroy: ''
+    texture: 33bda9f8-75f1-4255-b86d-e5973350fd2b
+    extends:
+      threeDOrientation: zPositive
+      threeDEnabled: true
+    uid: 0ae31f06-ea0f-446a-9caa-22dba4d7cad9
+    lastmod: 1597543642495
+  - name: Comigo
+    depth: 20
+    oncreate: ''
+    onstep: this.move();
+    ondraw: ''
+    ondestroy: ''
+    texture: 059e8892-2ffd-40c8-a97b-7645b40b3db5
+    extends:
+      threeDEnabled: true
+      threeDOrientation: faceCamera
+    uid: 312c8e4f-52cb-4f54-a3a6-9711048504d2
+    lastmod: 1597543647148
+  - name: Lamp
+    depth: 40
+    oncreate: ''
+    onstep: this.move();
+    ondraw: ''
+    ondestroy: ''
+    texture: 2b15568d-6e42-4ecc-a301-e580291e0a9b
+    extends:
+      threeDOrientation: xNegative
+      threeDEnabled: true
+    uid: 93de9f6e-dc74-4277-a778-b9b9ded16c37
+    lastmod: 1597543640263
+  - name: SandCellSquare
+    depth: 0
+    oncreate: ''
+    onstep: this.move();
+    ondraw: ''
+    ondestroy: ''
+    texture: 8217ffc8-5969-4237-8506-a5458d4d5e6c
+    extends:
+      threeDEnabled: true
+      threeDOrientation: yPositive
+    uid: 69835ba5-5fb8-49f3-bbdf-039611ba03d4
+    lastmod: 1597543644918
+sounds: []
+styles: []
+rooms:
+  - name: Room_SideView
+    oncreate: ''
+    onstep: ''
+    ondraw: >-
+      ct.camera3d.euler.yaw += ct.delta * 0.02;
+
+      //ct.camera3d.euler.roll = ct.u.degToRad(90);
+
+      //ct.camera3d.euler.pitch = ct.u.degToRad(30);
+
+      ct.camera3d.position3d.x = ct.u.ldx(1000,
+      ct.u.radToDeg(-ct.camera3d.euler.yaw) + 90) + ct.camera.width / 2;
+
+      ct.camera3d.position3d.z = ct.u.ldy(1000,
+      ct.u.radToDeg(-ct.camera3d.euler.yaw) + 90) + ct.camera.height / 2;
+    onleave: ''
+    width: 1280
+    height: 720
+    backgrounds: []
+    copies:
+      - x: 192
+        'y': 640
+        uid: 0ae31f06-ea0f-446a-9caa-22dba4d7cad9
+      - x: 448
+        'y': 640
+        uid: 0ae31f06-ea0f-446a-9caa-22dba4d7cad9
+      - x: 704
+        'y': 640
+        uid: 0ae31f06-ea0f-446a-9caa-22dba4d7cad9
+      - x: 960
+        'y': 640
+        uid: 0ae31f06-ea0f-446a-9caa-22dba4d7cad9
+      - x: 1216
+        'y': 640
+        uid: 0ae31f06-ea0f-446a-9caa-22dba4d7cad9
+      - x: 192
+        'y': 576
+        uid: 0ae31f06-ea0f-446a-9caa-22dba4d7cad9
+      - x: 192
+        'y': 512
+        uid: 0ae31f06-ea0f-446a-9caa-22dba4d7cad9
+      - x: 192
+        'y': 448
+        uid: 0ae31f06-ea0f-446a-9caa-22dba4d7cad9
+      - x: 192
+        'y': 384
+        uid: 0ae31f06-ea0f-446a-9caa-22dba4d7cad9
+      - x: 192
+        'y': 320
+        uid: 0ae31f06-ea0f-446a-9caa-22dba4d7cad9
+      - x: 192
+        'y': 256
+        uid: 0ae31f06-ea0f-446a-9caa-22dba4d7cad9
+      - x: 192
+        'y': 192
+        uid: 0ae31f06-ea0f-446a-9caa-22dba4d7cad9
+      - x: 192
+        'y': 128
+        uid: 0ae31f06-ea0f-446a-9caa-22dba4d7cad9
+      - x: 192
+        'y': 64
+        uid: 0ae31f06-ea0f-446a-9caa-22dba4d7cad9
+      - x: 448
+        'y': 64
+        uid: 0ae31f06-ea0f-446a-9caa-22dba4d7cad9
+      - x: 704
+        'y': 64
+        uid: 0ae31f06-ea0f-446a-9caa-22dba4d7cad9
+      - x: 960
+        'y': 64
+        uid: 0ae31f06-ea0f-446a-9caa-22dba4d7cad9
+      - x: 1216
+        'y': 64
+        uid: 0ae31f06-ea0f-446a-9caa-22dba4d7cad9
+      - x: 1216
+        'y': 128
+        uid: 0ae31f06-ea0f-446a-9caa-22dba4d7cad9
+      - x: 1216
+        'y': 192
+        uid: 0ae31f06-ea0f-446a-9caa-22dba4d7cad9
+      - x: 1216
+        'y': 256
+        uid: 0ae31f06-ea0f-446a-9caa-22dba4d7cad9
+      - x: 1216
+        'y': 320
+        uid: 0ae31f06-ea0f-446a-9caa-22dba4d7cad9
+      - x: 1216
+        'y': 384
+        uid: 0ae31f06-ea0f-446a-9caa-22dba4d7cad9
+      - x: 1216
+        'y': 448
+        uid: 0ae31f06-ea0f-446a-9caa-22dba4d7cad9
+      - x: 1216
+        'y': 576
+        uid: 0ae31f06-ea0f-446a-9caa-22dba4d7cad9
+      - x: 1216
+        'y': 512
+        uid: 0ae31f06-ea0f-446a-9caa-22dba4d7cad9
+      - x: 411
+        'y': 609
+        uid: 312c8e4f-52cb-4f54-a3a6-9711048504d2
+      - x: 994
+        'y': 592
+        uid: 93de9f6e-dc74-4277-a778-b9b9ded16c37
+    tiles:
+      - depth: -10
+        tiles: []
+        extends: {}
+    uid: 30515cf2-9b52-401c-8dc0-6ab031e8b734
+    thumbnail: 6ab031e8b734
+    extends:
+      twoPointFiveDEnabled: true
+      threeDCameraZ: 320
+      threeDFlipYZ: false
+    gridX: 64
+    gridY: 64
+    lastmod: 1597543621151
+    backgroundColor: '#85C2FF'
+  - name: Room_TopView
+    oncreate: ''
+    onstep: ''
+    ondraw: >-
+      ct.camera3d.euler.yaw += ct.delta * 0.02;
+
+      //ct.camera3d.euler.roll = ct.u.degToRad(90);
+
+      //ct.camera3d.euler.pitch = ct.u.degToRad(30);
+
+      ct.camera3d.position3d.y = -400;
+
+      ct.camera3d.position3d.x = ct.u.ldx(1000,
+      ct.u.radToDeg(-ct.camera3d.euler.yaw) + 90) + ct.camera.width / 2;
+
+      ct.camera3d.position3d.z = ct.u.ldy(1000,
+      ct.u.radToDeg(-ct.camera3d.euler.yaw) + 90) + ct.camera.height / 2;
+    onleave: ''
+    width: 1280
+    height: 720
+    backgrounds: []
+    copies:
+      - x: 576
+        'y': 128
+        uid: 69835ba5-5fb8-49f3-bbdf-039611ba03d4
+      - x: 576
+        'y': 384
+        uid: 69835ba5-5fb8-49f3-bbdf-039611ba03d4
+      - x: 576
+        'y': 640
+        uid: 69835ba5-5fb8-49f3-bbdf-039611ba03d4
+      - x: 320
+        'y': 256
+        uid: 69835ba5-5fb8-49f3-bbdf-039611ba03d4
+      - x: 320
+        'y': 512
+        uid: 69835ba5-5fb8-49f3-bbdf-039611ba03d4
+      - x: 832
+        'y': 512
+        uid: 69835ba5-5fb8-49f3-bbdf-039611ba03d4
+      - x: 832
+        'y': 256
+        uid: 69835ba5-5fb8-49f3-bbdf-039611ba03d4
+      - x: 704
+        'y': 256
+        uid: 93de9f6e-dc74-4277-a778-b9b9ded16c37
+      - x: 384
+        'y': 512
+        uid: 312c8e4f-52cb-4f54-a3a6-9711048504d2
+    tiles:
+      - depth: -10
+        tiles: []
+        extends: {}
+    uid: ec52dfa5-9395-44df-b2b5-e2209288edd5
+    thumbnail: e2209288edd5
+    extends:
+      twoPointFiveDEnabled: true
+      threeDCameraZ: -400
+      threeDFlipYZ: true
+    gridX: 64
+    gridY: 64
+    lastmod: 1597543695973
+    backgroundColor: '#72A0AB'
+actions: []
+emitterTandems: []
+scripts: []
+starting: 0
+settings:
+  authoring:
+    author: ''
+    site: ''
+    title: ''
+    version:
+      - 0
+      - 0
+      - 0
+    versionPostfix: ''
+  rendering:
+    usePixiLegacy: true
+    maxFPS: 60
+    pixelatedrender: false
+    highDensity: true
+    desktopMode: maximized
+  export:
+    windows: true
+    linux: true
+    mac: true
+  branding:
+    icon: -1
+    accent: '#446adb'
+    invertPreloaderScheme: true
+  fps: 30
+fonts: []
+palette: []

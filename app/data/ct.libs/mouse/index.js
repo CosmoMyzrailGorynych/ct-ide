@@ -1,6 +1,6 @@
-(function () {
+(function ctMouse() {
     var keyPrefix = 'mouse.';
-    var setKey = function(key, value) {
+    var setKey = function (key, value) {
         ct.inputs.registry[keyPrefix + key] = value;
     };
     var buttonMap = {
@@ -61,22 +61,31 @@
         },
         show() {
             ct.pixiApp.renderer.view.style.cursor = '';
+        },
+        get x() {
+            return ct.u.uiToGameCoord(ct.mouse.xui, ct.mouse.yui)[0];
+        },
+        get y() {
+            return ct.u.uiToGameCoord(ct.mouse.xui, ct.mouse.yui)[1];
         }
     };
 
-    ct.mouse.listenerMove = function(e) {
+    ct.mouse.listenerMove = function listenerMove(e) {
         var rect = ct.pixiApp.view.getBoundingClientRect();
         ct.mouse.xui = (e.clientX - rect.left) * ct.camera.width / rect.width;
         ct.mouse.yui = (e.clientY - rect.top) * ct.camera.height / rect.height;
-        [ct.mouse.x, ct.mouse.y] = ct.u.uiToGameCoord(ct.mouse.xui, ct.mouse.yui);
-        if (ct.mouse.xui > 0 && ct.mouse.yui > 0 && ct.mouse.yui < ct.camera.height && ct.mouse.xui < ct.camera.width) {
+        if (ct.mouse.xui > 0 &&
+            ct.mouse.yui > 0 &&
+            ct.mouse.yui < ct.camera.height &&
+            ct.mouse.xui < ct.camera.width
+        ) {
             ct.mouse.inside = true;
         } else {
             ct.mouse.inside = false;
         }
         window.focus();
     };
-    ct.mouse.listenerDown = function (e) {
+    ct.mouse.listenerDown = function listenerDown(e) {
         setKey(buttonMap[e.button] || buttonMap.unknown, 1);
         ct.mouse.pressed = true;
         ct.mouse.down = true;
@@ -84,7 +93,7 @@
         window.focus();
         e.preventDefault();
     };
-    ct.mouse.listenerUp = function (e) {
+    ct.mouse.listenerUp = function listenerUp(e) {
         setKey(buttonMap[e.button] || buttonMap.unknown, 0);
         ct.mouse.released = true;
         ct.mouse.down = false;
@@ -92,15 +101,15 @@
         window.focus();
         e.preventDefault();
     };
-    ct.mouse.listenerContextMenu = function (e) {
+    ct.mouse.listenerContextMenu = function listenerContextMenu(e) {
         e.preventDefault();
     };
-    ct.mouse.listenerWheel = function (e) {
-        setKey('Wheel', ((e.wheelDelta || -e.detail) < 0)? -1 : 1);
+    ct.mouse.listenerWheel = function listenerWheel(e) {
+        setKey('Wheel', ((e.wheelDelta || -e.detail) < 0) ? -1 : 1);
         //e.preventDefault();
     };
 
-    ct.mouse.setupListeners = function () {
+    ct.mouse.setupListeners = function setupListeners() {
         if (document.addEventListener) {
             document.addEventListener('mousemove', ct.mouse.listenerMove, false);
             document.addEventListener('mouseup', ct.mouse.listenerUp, false);

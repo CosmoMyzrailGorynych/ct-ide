@@ -2,7 +2,7 @@
     "main": {
         "name": "Fit to Screen",
         "tagline": "Do nothing and watch your game adapt to any resolution :)",
-        "version": "4.0.0",
+        "version": "4.1.0",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",
             "mail": "admin@nersta.ru"
@@ -18,6 +18,10 @@
             "value": "fastScale",
             "name": "Fast scaling with letterboxing",
             "help": "This will not change variables `ct.width` and `ct.height` and will try to fit the drawing canvas to the screen. This may result in a blurry image, but you can disable image smoothing in your project's settigs."
+        }, {
+            "value": "fastScaleInteger",
+            "name": "Fast integer scaling with letterboxing",
+            "help": "Similar to fast scaling, but it will try to scale by whole numbers: x1, x2, x3 and so on. It will often leave gaps around the game, but will show the best of your pixelart skills."
         }, {
             "value": "expand",
             "name": "Expand",

@@ -11,10 +11,12 @@
         "cancel": "Cancel",
         "cannotBeEmpty": "This cannot be empty",
         "clear": "Clear",
+        "close": "Close",
         "confirmDelete": "Are you sure you want to delete {0}? It cannot be undone.",
         "contribute": "Contribute",
         "copy": "Copy",
         "copyName": "Copy the name",
+        "couldNotLoadFromClipboard": "Could not load data from clipboard",
         "ctsite": "ct.js homepage",
         "cut": "Cut",
         "delete": "Delete",
@@ -39,6 +41,7 @@
         "open": "Open",
         "openproject": "Open project…",
         "paste": "Paste",
+        "pastedFromClipboard": "Pasted from clipboard",
         "reallyexit": "Are you sure you want to exit? All unsaved changes will be lost.",
         "rename": "Rename",
         "save": "Save",
@@ -167,6 +170,7 @@
         "codeFont": "Font for code",
         "codeLigatures": "Ligatures",
         "codeDense": "Dense layout",
+        "disableSounds": "Disable UI sounds",
         "openIncludeFolder": "Open \"include\" folder",
         "troubleshooting": "Troubleshooting",
         "toggleDevTools": "Toggle Dev Tools",
@@ -205,7 +209,7 @@
         },
         "authoring": {
             "heading": "Authoring",
-            "author": "Author name:",
+            "author": "Developer:",
             "site": "Homepage:",
             "title": "Name:",
             "version": "Version:",
@@ -228,6 +232,7 @@
             "highDensity": "Support high pixel density (e.g. on retina screens)",
             "maxFPS": "Max framerate:",
             "pixelatedrender": "Disable image smoothing here and in exported project (preserve crisp pixels)",
+            "hideCursor": "Hide system cursor",
             "usePixiLegacy": "Add a legacy, canvas-based renderer to support older browsers and graphics cards (adds ~20kb up to your game)",
             "desktopBuilds": "Desktop builds",
             "launchMode": "Launch mode:",
@@ -263,6 +268,9 @@
         "enabledModules": "Enabled modules",
         "availableModules": "Available modules",
         "filter": "Filter",
+        "preview": "(preview)",
+        "previewTooltip": "This module has not yet been released and is for preview purposes.",
+        "deprecatedTooltip": "This module is deprecated and will be removed in a future version.",
         "categories": {
             "customization": "Customization",
             "utilities": "Utilities",
@@ -282,7 +290,21 @@
         "create": "Create",
         "import": "Import",
         "skeletons": "Skeletal Animation",
-        "createType": "Create a type from it"
+        "createType": "Create a type from it",
+        "importFromClipboard": "Import from clipboard",
+        "generatePlaceholder": "Generate a placeholder"
+    },
+    "textureGenerator": {
+        "name": "Texture's name:",
+        "width": "Width:",
+        "height": "Height:",
+        "color": "Background color:",
+        "label": "Label:",
+        "optional": "(optional)",
+        "createAndClose": "Create and close",
+        "createAndContinue": "Create and add another",
+        "scalingAtX4": "Scaling by x4 for a small texture",
+        "generationSuccessMessage": "Successfully added $1 texture to your project."
     },
     "textureview": {
         "bgcolor": "Change bg color",
@@ -303,6 +325,7 @@
         "speed": "Framerate:",
         "tiled": "Use as a background?",
         "replacetexture": "Replace…",
+        "updateFromClipboard": "Update from clipboard",
         "corrupted": "File is corrupted or missing! Closing now.",
         "showmask": "Show mask",
         "width": "Width:",
@@ -319,7 +342,8 @@
         "movePoint": "Move this point",
         "symmetryTool": "Symmetry tool",
         "padding": "Padding:",
-        "paddingNotice": "This affects how a texture is exported: it adds duplicate pixels on edges and prevents bleeding artifacts on tiled and scaled textures. The default value is usually enough, but, if you shrink textures strongly, the bleeding may re-appear. Increment this value if this texture has artifacts while in-game."
+        "paddingNotice": "This affects how a texture is exported: it adds duplicate pixels on edges and prevents bleeding artifacts on tiled and scaled textures. The default value is usually enough, but, if you shrink textures strongly, the bleeding may re-appear. Increment this value if this texture has artifacts while in-game.",
+        "previewAnimationNotice": "This is a preview. Use this.animationSpeed property to change it for real copies."
     },
     "sounds": {
         "create": "Create"
@@ -498,7 +522,10 @@
         "parallax": "Parallax (X, Y):",
         "repeat": "Repeat:",
         "scale": "Scaling (X, Y):",
-        "shift": "Shift (X, Y):"
+        "shift": "Shift (X, Y):",
+        "notBackgroundTextureWarning": "This texture is not marked as a background. It will have gaps when exported.",
+        "fixBackground": "Fix it.",
+        "dismissWarning": "Dismiss."
     },
     "roomtiles": {
         "moveTileLayer": "Move to a new depth",
@@ -513,6 +540,7 @@
         "events": "Room events",
         "copies": "Copies",
         "backgrounds": "Backgrounds",
+        "backgroundColor": "Background color:",
         "tiles": "Tiles",
         "properties": "Properties",
         "add": "Add",
@@ -535,6 +563,8 @@
         "deletecopy": "Delete copy {0}",
         "deleteCopies": "Delete copies",
         "shiftCopies": "Shift copies",
+        "sortHorizontally": "Sort horizontally",
+        "sortVertically": "Sort vertically",
         "selectAndMove": "Select and Move",
         "changecopyscale": "Change scale",
         "changecopyrotation": "Rotate",
@@ -543,7 +573,12 @@
         "deletetiles": "Delete tiles",
         "movetilestolayer": "Move to layer",
         "shifttiles": "Shift tiles",
-        "findTileset": "Find a tileset"
+        "findTileset": "Find a tileset",
+        "copyProperties": {
+            "position": "Position",
+            "rotation": "Rotation",
+            "scale": "Scale"
+        }
     },
     "notepad": {
         "local": "Project's notepad",

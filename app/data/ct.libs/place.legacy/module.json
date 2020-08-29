@@ -3,6 +3,7 @@
         "name": "ct.place",
         "tagline": "Old, unoptimized version of collision library.",
         "version": "2.1.0",
+        "deprecated": true,
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",
             "mail": "admin@nersta.ru"

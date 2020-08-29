@@ -136,7 +136,8 @@ project-selector
          * Handler for a manual search for a project folder, triggered by an input[type="file"]
          */
         this.chooseProjectFolder = async () => {
-            const defaultProjectDir = require('./data/node_requires/resources/projects').getDefaultProjectDir();
+            const {getProjectsDir} = require('./data/node_requires/platformUtils');
+            const defaultProjectDir = await getProjectsDir() + '/';
             const projPath = await window.showOpenDialog({
                 title: this.voc.newProject.selectProjectFolder,
                 defaultPath: defaultProjectDir,

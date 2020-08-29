@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 const fs = require('fs').promises;
 
-const calculateCanvasSize = function calculateCanvasSize(text, charWidth, charHeight) {
+const calculateCanvasSize = function calculateCanvasSize(text, charWidth, charHeight, margin) {
     if (charWidth <= 0 || charHeight <= 0) {
         return {
             width: -1, height: -1
@@ -12,13 +12,13 @@ const calculateCanvasSize = function calculateCanvasSize(text, charWidth, charHe
     var canvasSquareSideSize = 1;
 
     // Find the length of the side of a square that can contain characters
-    while ((canvasSquareSideSize / charWidth) * (canvasSquareSideSize / charHeight) < textSize) {
+    while ((canvasSquareSideSize / (charWidth + margin * 2)) * (canvasSquareSideSize / (charHeight + margin * 2)) < textSize) {
         canvasSquareSideSize *= 2;
     }
     var canvasWidth = canvasSquareSideSize;
 
     // CanvasSquareSideSize cannot be used because it may not be square
-    var tmpCanvasHeight = Math.ceil(textSize / Math.floor(canvasWidth / charWidth)) * charHeight;
+    var tmpCanvasHeight = Math.ceil(textSize / Math.floor(canvasWidth / (charWidth + margin * 2))) * (charHeight + margin * 2);
     var canvasHeight = 1;
     while (canvasHeight < tmpCanvasHeight) {
         canvasHeight *= 2;
@@ -29,34 +29,35 @@ const calculateCanvasSize = function calculateCanvasSize(text, charWidth, charHe
     };
 };
 
-const canGoIn = function canGoIn(canvasSize, glyphList, charHeight) {
-    var drawX = 0;
-    var drawY = 0;
+const canGoIn = function canGoIn(canvasSize, glyphList, charHeight, margin) {
+    var drawX = 1;
+    var drawY = 1;
 
     glyphList.forEach(glyph => {
-        if (drawX + glyph.width > canvasSize.width) {
-            drawX = 0;
-            drawY += charHeight;
+        if (drawX + glyph.width + margin * 2 > canvasSize.width) {
+            drawX = 1;
+            drawY += charHeight + margin * 2;
         }
-        drawX += glyph.width;
+        drawX += glyph.width + margin * 2;
     });
 
-    return drawY + charHeight < canvasSize.height;
+    return drawY + charHeight + margin * 2 < canvasSize.height;
 };
 
 const calculateCanvasSizeProp = function calculateCanvasSizeProp(
     text,
     glyphList,
     height,
-    charHeight
+    charHeight,
+    margin
 ) {
     var widthAverage = 0;
     var widthMax = 0;
     glyphList.forEach(glyph => {
-        if (glyph.width > widthMax) {
-            widthMax = glyph.width;
+        if (glyph.width + margin * 2 > widthMax) {
+            widthMax = glyph.width + margin * 2;
         }
-        widthAverage += glyph.width;
+        widthAverage += glyph.width + margin * 2;
     });
     widthAverage /= glyphList.length;
 
@@ -66,9 +67,9 @@ const calculateCanvasSizeProp = function calculateCanvasSizeProp(
         };
     }
     // Use the average value to calculate the approximate size
-    var canvasSize = calculateCanvasSize(text, widthAverage, height);
+    var canvasSize = calculateCanvasSize(text, widthAverage, height, margin);
     // Increase the vertical width until the text can be entered
-    while (!canGoIn(canvasSize, glyphList, charHeight)) {
+    while (!canGoIn(canvasSize, glyphList, charHeight, margin)) {
         canvasSize.height *= 2;
     }
     return canvasSize;

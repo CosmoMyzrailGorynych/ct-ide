@@ -5,8 +5,8 @@ const opentype = require('opentype.js');
 const draw = function draw(ctx, glyphList, descend, options) {
     var dict = {};
 
-    var drawX = 0;
-    var drawY = 0;
+    var drawX = 1;
+    var drawY = 1;
     var drawHeight = options.baseline + descend;
     var mg;
 
@@ -25,8 +25,8 @@ const draw = function draw(ctx, glyphList, descend, options) {
                 drawWidth = g.width;
             }
             if (drawX + drawWidth > ctx.canvas.width) {
-                drawX = 0;
-                drawY += drawHeight + options.margin;
+                drawX = 1;
+                drawY += drawHeight + options.margin * 2;
             }
             var path = g.glyph.getPath(drawX + (drawWidth / 2) - (g.width / 2), drawY + options.baseline, options.height);
             path.fill = options.fill;
@@ -43,7 +43,7 @@ const draw = function draw(ctx, glyphList, descend, options) {
                     };
                 });
             }
-            drawX += drawWidth + options.margin;
+            drawX += drawWidth + options.margin * 2;
         }
     });
 
@@ -52,6 +52,7 @@ const draw = function draw(ctx, glyphList, descend, options) {
     };
 };
 
+// eslint-disable-next-line max-lines-per-function
 const generateBitmapFont = async function generateBitmapFont(fontSrc, outputPath, options, callback) {
     const fs = require('fs-extra');
     const buffer = await fs.readFile(fontSrc);
@@ -66,6 +67,7 @@ const generateBitmapFont = async function generateBitmapFont(fontSrc, outputPath
 
     var lostChars = [];
     var glyphList = [];
+
     Array.from(options.list).forEach((char) => {
         const [glyph] = font.stringToGlyphs(char);
         glyph.font = font;
@@ -107,9 +109,20 @@ const generateBitmapFont = async function generateBitmapFont(fontSrc, outputPath
     // Calculate the required canvas size
     var canvasSize;
     if (options.width === void 0) {
-        canvasSize = util.calculateCanvasSizeProp(options.list, glyphList, adjustedHeight, options.baseline + descend);
+        canvasSize = util.calculateCanvasSizeProp(
+            options.list,
+            glyphList,
+            adjustedHeight,
+            options.baseline + descend,
+            options.margin || 1
+        );
     } else {
-        canvasSize = util.calculateCanvasSize(options.list, options.width, adjustedHeight);
+        canvasSize = util.calculateCanvasSize(
+            options.list,
+            options.width,
+            adjustedHeight,
+            options.margin || 1
+        );
     }
 
     // Check if the created canvas size is valid
@@ -141,6 +154,7 @@ const generateBitmapFont = async function generateBitmapFont(fontSrc, outputPath
             'Try Using other font or characters.');
     }
     await util.outputBitmapFont(outputPath, canvas, callback);
+
     return {
         map: drawResult.map,
         missingGlyph: drawResult.missingGlyph,

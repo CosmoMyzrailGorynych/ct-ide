@@ -1,13 +1,20 @@
 room-backgrounds-editor.room-editor-Backgrounds.tabbed.tall
     ul
         li.bg(each="{background, ind in opts.room.backgrounds}" oncontextmenu="{onContextMenu}")
-            img(src="{background.texture === -1? 'data/img/notexture.png' : (glob.texturemap[background.texture].src.split('?')[0] + '_prev.png?' + glob.texturemap[background.texture].g.lastmod)}" onclick="{onChangeBgTexture}")
+            img(src="{getTexturePreview(background.texture)}" onclick="{onChangeBgTexture}")
             span
                 span(class="{active: detailedBackground === background}" onclick="{editBackground}")
                     svg.feather
                         use(xlink:href="data/icons.svg#settings")
-                | {glob.texturemap[background.texture].g.name} ({background.depth})
+                | {getTextureFromId(background.texture).name} ({background.depth})
             .clear
+            .anErrorNotice(if="{background.texture && background.texture !== -1 && !getTextureFromId(background.texture).tiled && !getTextureFromId(background.texture).ignoreTiledUse}")
+                | {voc.notBackgroundTextureWarning}
+                |
+                span.a(onclick="{fixTexture(background)}") {voc.fixBackground}
+                |
+                |
+                span.a(onclick="{dismissWarning(background)}") {voc.dismissWarning}
             div(if="{detailedBackground === background}")
                 .clear
                 label
@@ -59,6 +66,11 @@ room-backgrounds-editor.room-editor-Backgrounds.tabbed.tall
     script.
         const glob = require('./data/node_requires/glob');
         this.glob = glob;
+
+        const {getTextureFromId, getTexturePreview} = require('./data/node_requires/resources/textures');
+        this.getTextureFromId = getTextureFromId;
+        this.getTexturePreview = getTexturePreview;
+
         this.pickingBackground = false;
         this.namespace = 'roombackgrounds';
         this.mixin(window.riotVoc);
@@ -134,4 +146,13 @@ room-backgrounds-editor.room-editor-Backgrounds.tabbed.tall
                     this.detailedBackground.extends = {};
                 }
             }
+        };
+
+        this.fixTexture = background => () => {
+            const tex = getTextureFromId(background.texture);
+            tex.tiled = true;
+        };
+        this.dismissWarning = background => () => {
+            const tex = getTextureFromId(background.texture);
+            tex.ignoreTiledUse = true;
         };

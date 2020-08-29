@@ -26,6 +26,9 @@ class Room extends PIXI.Container {
             this.onLeave = template.onLeave;
             this.template = template;
             this.name = template.name;
+            if (this === ct.room) {
+                ct.pixiApp.renderer.backgroundColor = Number('0x' + this.template.backgroundColor.slice(1));
+            }
             /*%beforeroomoncreate%*/
             for (let i = 0, li = template.bgs.length; i < li; i++) {
                 const bg = new ct.types.Background(
@@ -44,6 +47,7 @@ class Room extends PIXI.Container {
                 this.addChild(tl);
             }
             for (let i = 0, li = template.objects.length; i < li; i++) {
+                const exts = template.objects[i].exts || {};
                 ct.types.make(
                     template.objects[i].type,
                     template.objects[i].x,
@@ -51,7 +55,8 @@ class Room extends PIXI.Container {
                     {
                         tx: template.objects[i].tx,
                         ty: template.objects[i].ty,
-                        tr: template.objects[i].tr
+                        tr: template.objects[i].tr,
+                        ...exts
                     },
                     this
                 );

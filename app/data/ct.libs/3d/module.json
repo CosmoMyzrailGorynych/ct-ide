@@ -1,0 +1,58 @@
+{
+    "main": {
+        "name": "Pseudo-3D",
+        "tagline": "Create a 3D-ish world from a 2D game!",
+        "version": "0.0.0",
+        "authors": [{
+            "name": "Cosmo Myzrail Gorynych",
+            "mail": "admin@nersta.ru"
+        }],
+        "categories": [
+            "fx"
+        ]
+    },
+    "typeExtends": [{
+        "name": "3D enabled",
+        "type": "checkbox",
+        "default": false,
+        "key": "threeDEnabled"
+    }, {
+        "name": "3D orientation",
+        "type": "select",
+        "default": "zPositive",
+        "key": "threeDOrientation",
+        "options": [{
+            "value": "xPositive",
+            "name": "X positive"
+        }, {
+            "value": "xNegative",
+            "name": "X negative"
+        }, {
+            "value": "yPositive",
+            "name": "Y positive"
+        }, {
+            "value": "yNegative",
+            "name": "Y negative"
+        }, {
+            "value": "zPositive",
+            "name": "Z positive"
+        }, {
+            "value": "zNegative",
+            "name": "Z negative"
+        }, {
+            "value": "faceCamera",
+            "name": "Face camera"
+        }]
+    }],
+    "roomExtends": [{
+        "name": "Camera Z position",
+        "type": "number",
+        "default": 500,
+        "key": "threeDCameraZ"
+    }, {
+        "name": "Flip Y and Z (use it when you design 2D view as a top-down map)",
+        "type": "checkbox",
+        "default": false,
+        "key": "threeDFlipYZ"
+    }]
+}

@@ -1,5 +1,5 @@
 (function roomCopyTools() {
-    const clickThreshold = 16;
+    const clickThreshold = 10;
     const glob = require('./data/node_requires/glob');
 
     const drawInsertPreview = function (e) {
@@ -158,10 +158,30 @@
             };
             // Place a copy on click
             this.onCanvasClickCopies = e => {
-                if (Math.hypot(e.offsetX - this.startx, e.offsetY - this.starty) > clickThreshold &&
+                if (
+                    Math.hypot(
+                        e.offsetX - this.startx,
+                        e.offsetY - this.starty
+                    ) > clickThreshold &&
                     !e.shiftKey
                 ) {
                     return; // this looks neither like a regular click nor like a Shift+drag
+                }
+                if (
+                    Math.hypot(
+                        e.offsetX - this.startx,
+                        e.offsetY - this.starty
+                    ) <= clickThreshold &&
+                    e.shiftKey
+                ) {
+                    // It is a shift + click. Select the nearest copy
+                    if (!this.room.copies.length) {
+                        return;
+                    }
+                    var copy = selectACopyAt.apply(this, [e]);
+                    this.selectedCopies = [copy];
+                    this.refreshRoomCanvas();
+                    return;
                 }
                 // Cancel copy selection on click
                 if (this.selectedCopies &&

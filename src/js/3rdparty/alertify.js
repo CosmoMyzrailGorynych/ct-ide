@@ -1,20 +1,22 @@
+/* eslint-disable func-names */
+/* eslint-disable max-lines-per-function */
+/* eslint-disable max-len */
+/* eslint-disable id-length */
 /* eslint {
     'no-underscore-dangle': 'off',
     max-params: 'off'
 } */
 
-(function() {
-
+(function alertify() {
     'use strict';
 
     var TRANSITION_FALLBACK_DURATION = 500;
-    var hideElement = function(el) {
-
+    var hideElement = function (el) {
         if (!el) {
             return;
         }
 
-        var removeThis = function() {
+        var removeThis = function () {
             if (el && el.parentNode) {
                 el.parentNode.removeChild(el);
             }
@@ -26,11 +28,9 @@
 
         // Fallback for no transitions.
         setTimeout(removeThis, TRANSITION_FALLBACK_DURATION);
-
     };
 
-    var Alertify = function () {
-
+    var Alertify = function Alertify() {
         /**
          * Alertify private object
          * @type {Object}
@@ -82,7 +82,6 @@
              * @return {String}         An HTML string of the message box
              */
             build(item) {
-
                 var btnTxt = this.dialogs.buttons.ok;
                 var html = '<div class=\'dialog\'><div>' + this.dialogs.message.replace('{{message}}', item.message);
 
@@ -100,7 +99,6 @@
                     .replace('{{cancel}}', this.cancelLabel);
 
                 return html;
-
             },
 
             setCloseLogOnClick(bool) {
@@ -116,9 +114,8 @@
              * @return {undefined}
              */
             close(elem, wait) {
-
                 if (this.closeLogOnClick) {
-                    elem.addEventListener('click', function() {
+                    elem.addEventListener('click', function () {
                         hideElement(elem);
                     });
                 }
@@ -128,11 +125,10 @@
                 if (wait < 0) {
                     hideElement(elem);
                 } else if (wait > 0) {
-                    setTimeout(function() {
+                    setTimeout(function () {
                         hideElement(elem);
                     }, wait);
                 }
-
             },
 
             /**
@@ -164,7 +160,6 @@
              * @return {void}
              */
             log(message, type, click) {
-
                 var existing = document.querySelectorAll('.alertify-logs > div');
                 if (existing) {
                     var diff = existing.length - this.maxLogItems;
@@ -183,7 +178,6 @@
             },
 
             setupLogContainer() {
-
                 var elLog = document.querySelector('.alertify-logs');
                 var className = this.logContainerClass;
                 if (!elLog) {
@@ -198,7 +192,6 @@
                 }
 
                 return elLog;
-
             },
 
             /**
@@ -213,7 +206,6 @@
              * @return {undefined}
              */
             notify(message, type, click) {
-
                 var elLog = this.setupLogContainer();
                 var log = document.createElement('div');
 
@@ -230,12 +222,11 @@
                 }
 
                 elLog.appendChild(log);
-                setTimeout(function() {
+                setTimeout(function () {
                     log.className += ' show';
                 }, 10);
 
                 this.close(log, this.delay);
-
             },
 
             /**
@@ -246,14 +237,13 @@
              * @return {undefined}
              */
             setup(item) {
-
                 var el = document.createElement('div');
                 el.className = 'alertify hide';
                 el.innerHTML = this.build(item);
 
                 var btnOK = el.querySelector('.ok');
                 var btnCancel = el.querySelector('.cancel');
-                var input = item.type === 'prompt'? el.querySelector('input') : null;
+                var input = item.type === 'prompt' ? el.querySelector('input') : null;
 
                 // Set default value/placeholder of input
                 if (input) {
@@ -262,14 +252,16 @@
                     }
                 }
 
-                var setupHandlers = function(resolve) {
+                var setupHandlers = function (resolve) {
                     if (typeof resolve !== 'function') {
                         // promises are not available so resolve is a no-op
-                        resolve = function () {void 0;};
+                        resolve = function () {
+                            void 0;
+                        };
                     }
 
                     if (btnOK) {
-                        btnOK.addEventListener('click', function(ev) {
+                        btnOK.addEventListener('click', function (ev) {
                             if (item.onOkay && typeof item.onOkay === 'function') {
                                 if (input) {
                                     item.onOkay(input.value, ev);
@@ -296,7 +288,7 @@
                     }
 
                     if (btnCancel) {
-                        btnCancel.addEventListener('click', function(ev) {
+                        btnCancel.addEventListener('click', function (ev) {
                             if (item.onCancel && typeof item.onCancel === 'function') {
                                 item.onCancel(ev);
                             }
@@ -311,7 +303,7 @@
                     }
 
                     if (input) {
-                        input.addEventListener('keyup', function(ev) {
+                        input.addEventListener('keyup', function (ev) {
                             if (ev.which === 13) {
                                 btnOK.click();
                             }
@@ -328,14 +320,14 @@
                 }
 
                 this.parent.appendChild(el);
-                setTimeout(function() {
+                setTimeout(function () {
                     el.classList.remove('hide');
                     if (input && item.type && item.type === 'prompt') {
                         input.select();
                         input.focus();
                     } else if (btnOK) {
-                            btnOK.focus();
-                        }
+                        btnOK.focus();
+                    }
                 }, 100);
 
                 return promise;
@@ -431,12 +423,16 @@
             },
             success(message, click) {
                 _alertify.log(message, 'success', click);
-                soundbox.play('Success');
+                if (localStorage.disableSounds !== 'on') {
+                    soundbox.play('Success');
+                }
                 return this;
             },
             error(message, click) {
                 _alertify.log(message, 'error', click);
-                soundbox.play('Failure');
+                if (localStorage.disableSounds !== 'on') {
+                    soundbox.play('Failure');
+                }
                 return this;
             },
             cancelBtn(label) {
@@ -484,7 +480,6 @@
     };
 
     window.alertify = new Alertify();
-
 }());
 
 window.alertify.reset();

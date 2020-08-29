@@ -1,0 +1,16 @@
+{
+    "main": {
+        "name": "Multistyle text",
+        "tagline": "Make multi-style text with pixi-multistyle-text package, in ct.js.",
+        "version": "1.0.0",
+        "authors": [{
+            "name": "Cosmo Myzrail Gorynych",
+            "mail": "admin@nersta.ru"
+        }, {
+            "name": "Tommy Leunen"
+        }],
+        "categories": [
+            "misc"
+        ]
+    }
+}

@@ -115,16 +115,32 @@ texture-editor.panel.view
                             svg.feather
                                 use(xlink:href="data/icons.svg#folder")
                             span {voc.replacetexture}
-                    .button.inline(title="{voc.reimport}" if="{opts.texture.source}" onclick="{reimport}")
+                    .button.inline(
+                        title="{voc.updateFromClipboard} (Control+V)"
+                        onclick="{paste}"
+                        data-hotkey="Control+v"
+                        data-hotkey-require-scope="texture"
+                        data-hotkey-priority="10"
+                    )
+                        svg.feather
+                            use(xlink:href="data/icons.svg#clipboard")
+                    .button.inline(
+                        if="{opts.texture.source}"
+                        title="{voc.reimport} (Control+R)"
+                        onclick="{reimport}"
+                        data-hotkey="Control+r"
+                    )
                         svg.feather
                             use(xlink:href="data/icons.svg#refresh-ccw")
-            .textureview-zoom
-                div.button-stack.inlineblock
-                    button#texturezoom25.inline(onclick="{textureToggleZoom(0.25)}" class="{active: zoomFactor === 0.25}") 25%
-                    button#texturezoom50.inline(onclick="{textureToggleZoom(0.5)}" class="{active: zoomFactor === 0.5}") 50%
-                    button#texturezoom100.inline(onclick="{textureToggleZoom(1)}" class="{active: zoomFactor === 1}") 100%
-                    button#texturezoom200.inline(onclick="{textureToggleZoom(2)}" class="{active: zoomFactor === 2}") 200%
-                    button#texturezoom400.inline(onclick="{textureToggleZoom(4)}" class="{active: zoomFactor === 4}") 400%
+            .textureview-zoom.flexrow
+                b {Math.round(zoomFactor * 100)}%
+                .spacer
+                zoom-slider(onchanged="{setZoom}" ref="zoomslider" value="{zoomFactor}")
+            .textureview-bg
+                button.inline(onclick="{changePreviewBg}")
+                    svg.feather
+                        use(xlink:href="data/icons.svg#droplet")
+                    span {voc.bgcolor}
         .column.column2.borderleft.tall.flexfix.nogrow.noshrink(show="{!opts.texture.tiled}")
             .flexfix-body
                 fieldset
@@ -148,6 +164,7 @@ texture-editor.panel.view
                             b {voc.height}
                             br
                             input.wide(type="number" value="{opts.texture.height}" onchange="{wire('this.texture.height')}" oninput="{wire('this.texture.height')}")
+                fieldset
                     .flexrow
                         div
                             b {voc.marginx}
@@ -182,27 +199,22 @@ texture-editor.panel.view
                 #preview(ref="preview" style="background-color: {previewColor};")
                     canvas(ref="grprCanvas")
                 .flexrow
-                    button#textureplay.square.inline(onclick="{previewPlayPause}")
+                    button.nogrow.square.inline(onclick="{previewPlayPause}")
                         svg.feather
                             use(xlink:href="data/icons.svg#{prevPlaying? 'pause' : 'play'}")
                     span(ref="textureviewframe") 0 / 1
-                    .filler
-                    button#textureviewback.square.inline(onclick="{previewBack}")
+                    button.nogrow.square.inline(onclick="{previewBack}")
                         svg.feather
                             use(xlink:href="data/icons.svg#skip-back")
-                    button#textureviewnext.square.inline.nmr(onclick="{previewNext}")
+                    button.nogrow.square.inline.nmr(onclick="{previewNext}")
                         svg.feather
                             use(xlink:href="data/icons.svg#skip-forward")
                 .flexrow
-                    b {voc.speed}
+                    b.alignmiddle {voc.speed}
                     .filler
                     input#grahpspeed.short(type="number" min="1" value="{prevSpeed}" onchange="{wire('this.prevSpeed')}" oninput="{wire('this.prevSpeed')}")
-                .relative
-                    button#texturecolor.inline.wide(onclick="{changePreviewBg}")
-                        svg.feather
-                            use(xlink:href="data/icons.svg#droplet")
-                        span {voc.bgcolor}
-                input.color.rgb#previewbgcolor
+                p
+                .aNotice {voc.previewAnimationNotice}
 
     color-picker(
         ref="previewBackgroundColor" if="{changingPreviewBg}"
@@ -269,7 +281,6 @@ texture-editor.panel.view
             const val = this.refs.textureReplacer.files[0].path;
             if (/\.(jpg|gif|png|jpeg)/gi.test(val)) {
                 this.loadImg(
-                    this.texture.uid,
                     val,
                     global.projdir + '/img/i' + this.texture.uid + path.extname(val)
                 );
@@ -281,22 +292,37 @@ texture-editor.panel.view
         };
         this.reimport = () => {
             this.loadImg(
-                this.texture.uid,
                 this.texture.source,
                 global.projdir + '/img/i' + this.texture.uid + path.extname(this.texture.source)
             );
         };
+        this.paste = async () => {
+            const png = nw.Clipboard.get().get('png');
+            if (!png) {
+                alertify.error(this.vocGlob.couldNotLoadFromClipboard);
+                return;
+            }
+            const imageBase64 = png.replace(/^data:image\/\w+;base64,/, '');
+            const imageBuffer = new Buffer(imageBase64, 'base64');
+            await this.loadImg(
+                imageBuffer,
+                global.projdir + '/img/i' + this.texture.uid + '.png'
+            );
+            alertify.success(this.vocGlob.pastedFromClipboard);
+        };
 
         /**
-         * Загружает изображение в редактор и генерирует квадратную превьюху из исходного изображения
-         * @param {Number} uid Идентификатор изображения
-         * @param {String} filename Путь к исходному изображению
-         * @param {Sting} dest Путь к изображению в папке проекта
+         * Loads an image into the project, generating thumbnails and updating the preview.
+         * @param {String|Buffer} filename A source image. It can be either a full path in a file system,
+         * or a buffer.
+         * @param {Sting} dest The path to write to.
          */
-        this.loadImg = (uid, filename, dest) => {
-            fs.copy(filename, dest, e => {
-                if (e) {
-                    throw e;
+        this.loadImg = async (filename, dest) => {
+            try {
+                if (filename instanceof Buffer) {
+                    await fs.writeFile(dest, filename);
+                } else {
+                    await fs.copy(filename, dest);
                 }
                 const image = document.createElement('img');
                 image.onload = () => {
@@ -315,11 +341,11 @@ texture-editor.panel.view
                     textureCanvas.img = image;
                     this.texture.lastmod = Number(new Date());
 
-                    const {imgGenPreview} = require('./data/node_requires/resources/textures');
-                    imgGenPreview(dest, dest + '_prev.png', 64, () => {
+                    const {textureGenPreview} = require('./data/node_requires/resources/textures');
+                    textureGenPreview(this.texture, dest + '_prev.png', 64, () => {
                         this.update();
                     });
-                    imgGenPreview(dest, dest + '_prev@2.png', 128);
+                    textureGenPreview(this.texture, dest + '_prev@2.png', 128);
                     setTimeout(() => {
                         this.refreshTextureCanvas();
                         this.parent.fillTextureMap();
@@ -330,33 +356,22 @@ texture-editor.panel.view
                     alertify.error(e);
                 };
                 image.src = 'file://' + dest + '?' + Math.random();
-            });
+            } catch (e) {
+                alertify.error(e);
+                throw e;
+            }
         };
 
-        this.textureToggleZoom = zoom => () => {
+        this.setZoom = zoom => {
             this.zoomFactor = zoom;
+            this.update();
         };
         /** Change zoomFactor on mouse wheel roll */
         this.onMouseWheel = e => {
             if (e.wheelDelta > 0) {
-                // in
-                if (this.zoomFactor === 2) {
-                    this.zoomFactor = 4;
-                } else if (this.zoomFactor === 1) {
-                    this.zoomFactor = 2;
-                } else if (this.zoomFactor === 0.5) {
-                    this.zoomFactor = 1;
-                } else if (this.zoomFactor === 0.25) {
-                    this.zoomFactor = 0.5;
-                }
-            } else if (this.zoomFactor === 4) { // out
-                this.zoomFactor = 2;
-            } else if (this.zoomFactor === 2) {
-                this.zoomFactor = 1;
-            } else if (this.zoomFactor === 1) {
-                this.zoomFactor = 0.5;
-            } else if (this.zoomFactor === 0.5) {
-                this.zoomFactor = 0.25;
+                this.refs.zoomslider.zoomIn();
+            } else {
+                this.refs.zoomslider.zoomOut();
             }
             e.preventDefault();
             this.update();
@@ -757,63 +772,23 @@ texture-editor.panel.view
             if (this.nameTaken) {
                 // animate the error notice
                 require('./data/node_requires/jellify')(this.refs.errorNotice);
-                soundbox.play('Failure');
+                if (localStorage.disableSounds !== 'on') {
+                    soundbox.play('Failure');
+                }
                 return false;
             }
             this.parent.fillTextureMap();
             glob.modified = true;
             this.texture.lastmod = Number(new Date());
-            this.textureGenPreview(global.projdir + '/img/' + this.texture.origname + '_prev@2.png', 128);
-            this.textureGenPreview(global.projdir + '/img/' + this.texture.origname + '_prev.png', 64)
+            const {textureGenPreview} = require('./data/node_requires/resources/textures');
+            textureGenPreview(this.texture, global.projdir + '/img/' + this.texture.origname + '_prev@2.png', 128);
+            textureGenPreview(this.texture, global.projdir + '/img/' + this.texture.origname + '_prev.png', 64)
             .then(() => {
                 this.parent.editing = false;
                 this.parent.update();
             });
             return true;
         };
-
-        /**
-         * Генерирует превьюху первого кадра графики
-         * @returns {Promise} Промис
-         */
-        this.textureGenPreview = function textureGenPreview(destination, size) {
-            return new Promise((accept, decline) => {
-                var c = document.createElement('canvas');
-                const x = this.texture.offx,
-                      y = this.texture.offy,
-                      w = this.texture.width,
-                      h = this.texture.height;
-                let k;
-                c.x = c.getContext('2d');
-                c.width = c.height = size;
-                c.x.clearRect(0, 0, size, size);
-                if (w > h) {
-                    k = size / w;
-                } else {
-                    k = size / h;
-                }
-                if (k > 1) {
-                    k = 1;
-                }
-                c.x.drawImage(
-                    textureCanvas.img,
-                    x, y, w, h,
-                    (size - w * k) / 2, (size - h * k) / 2,
-                    w * k, h * k
-                );
-                var thumbnailBase64 = c.toDataURL().replace(/^data:image\/\w+;base64,/, '');
-                var buf = Buffer.from(thumbnailBase64, 'base64');
-                fs.writeFile(destination, buf, err => {
-                    if (err) {
-                        console.error(err);
-                        decline(err);
-                    } else {
-                        accept(destination);
-                    }
-                });
-            });
-        };
-
 
         this.changePreviewBg = () => {
             this.changingPreviewBg = !this.changingPreviewBg;
