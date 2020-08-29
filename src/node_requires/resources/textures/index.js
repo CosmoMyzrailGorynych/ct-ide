@@ -28,7 +28,7 @@ const getTexturePreview = function (texture, x2, fs) {
     if (fs) {
         return `${global.projdir}/img/${texture.origname}_prev${x2 ? '@2' : ''}.png`;
     }
-    return `file://${global.projdir}/img/${texture.origname}_prev${x2 ? '@2' : ''}.png?cache=${texture.lastmod}`;
+    return `file://${global.projdir.replace(/\\/g, '/')}/img/${texture.origname}_prev${x2 ? '@2' : ''}.png?cache=${texture.lastmod}`;
 };
 
 /**
@@ -47,14 +47,14 @@ const getTextureOrig = function (texture, fs) {
     if (fs) {
         return `${global.projdir}/img/${texture.origname}`;
     }
-    return `file://${global.projdir}/img/${texture.origname}?cache=${texture.lastmod}`;
+    return `file://${global.projdir.replace(/\\/g, '/')}/img/${texture.origname}?cache=${texture.lastmod}`;
 };
 
 const baseTextureFromTexture = texture => new Promise((resolve, reject) => {
     const textureLoader = new PIXI.Loader();
     const {resources} = textureLoader;
 
-    const path = 'file://' + global.projdir + '/img/' + texture.origname + '?' + texture.lastmod;
+    const path = 'file://' + global.projdir.replace(/\\/g, '/') + '/img/' + texture.origname + '?' + texture.lastmod;
 
     textureLoader.add(texture.uid, path);
     textureLoader.onError.add(reject);
@@ -111,7 +111,7 @@ const getDOMImage = function (texture, deflt) {
         if (typeof texture === 'string') {
             texture = getTextureFromId(texture);
         }
-        path = 'file://' + global.projdir + '/img/' + texture.origname + '?' + texture.lastmod;
+        path = 'file://' + global.projdir.replace(/\\/g, '/') + '/img/' + texture.origname + '?' + texture.lastmod;
     }
     img.src = path;
     return new Promise((resolve, reject) => {

@@ -54,6 +54,7 @@
 * Fix overflow issues and wrong initial values for bitmap font generator.
 * Fix regression from v1.4 with blurry particle editor and room view when pixelart rendering was enabled.
 * Fix `user-select` CSS parameter on modules' docs panel.
+* Hotfix: fix font import issues on Windows, as well as fix potential similar issues for other asset types
 
 ### 🍱 Demos, Dependencies and Stuff
 
