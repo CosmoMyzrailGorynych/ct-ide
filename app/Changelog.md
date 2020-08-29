@@ -57,8 +57,18 @@
 
 ### 🍱 Demos, Dependencies and Stuff
 
-* Bump various catmods' versions
+* Add the missing link to the bitmap fonts page in the navigation panel.
+* At the platformer tutorial, fix a typo in collectibles title.
+* Bump various catmods' versions.
+* Fix small error in describing key input in the asteroid shooter tutorial.
+* Fixed bitmap fonts docs. The `font` in the constructor should be an object.
+* Specify the tab for enemy/asteroid generation code at space shooter tutorial.
 * Update electron-packager to v15.0.0. Fixes build issues for Windows.
+
+### 📝 Docs
+
+* Add info about moddable copies' extensions
+* Document new input types `slider` and `sliderAndNumber`, as well as additional settings for them
 
 ### 🌐 Website
 
