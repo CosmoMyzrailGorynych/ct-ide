@@ -373,27 +373,6 @@ const Copy = (function Copy() {
             return obj;
         },
         /**
-         * Calls `move` on a given copy, recalculating its position based on its speed.
-         * @param {Copy} o The copy to move
-         * @returns {void}
-         * @deprecated
-         */
-        move(o) {
-            o.move();
-        },
-        /**
-         * Applies an acceleration to the copy, with a given additive speed and direction.
-         * Technically, calls copy's `addSpeed(spd, dir)` method.
-         * @param {any} o The copy to accelerate
-         * @param {any} spd The speed to add
-         * @param {any} dir The direction in which to push the copy
-         * @returns {void}
-         * @deprecated
-         */
-        addSpeed(o, spd, dir) {
-            o.addSpeed(spd, dir);
-        },
-        /**
          * Applies a function to each copy in the current room
          * @param {Function} func The function to apply
          * @returns {void}
