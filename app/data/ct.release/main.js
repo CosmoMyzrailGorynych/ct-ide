@@ -177,7 +177,7 @@ ct.u = {
      * @returns {number} The length of the projection
      */
     ldx(l, d) {
-        return l * Math.cos(d * Math.PI / -180);
+        return l * Math.cos(d * Math.PI / 180);
     },
     /**
      * Returns the length of a vector projection onto an Y axis.
@@ -186,7 +186,7 @@ ct.u = {
      * @returns {number} The length of the projection
      */
     ldy(l, d) {
-        return l * Math.sin(d * Math.PI / -180);
+        return l * Math.sin(d * Math.PI / 180);
     },
     /**
      * Returns the direction of a vector that points from the first point to the second one.
@@ -197,7 +197,7 @@ ct.u = {
      * @returns {number} The angle of the resulting vector, in degrees
      */
     pdn(x1, y1, x2, y2) {
-        return (Math.atan2(y2 - y1, x2 - x1) * -180 / Math.PI + 360) % 360;
+        return (Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI + 360) % 360;
     },
     // Point-point DistanCe
     /**
@@ -217,7 +217,7 @@ ct.u = {
      * @returns {number} The resulting radian value
      */
     degToRad(deg) {
-        return deg * Math.PI / -180;
+        return deg * Math.PI / 180;
     },
     /**
      * Convers radians to degrees
@@ -225,7 +225,7 @@ ct.u = {
      * @returns {number} The resulting degree
      */
     radToDeg(rad) {
-        return rad / Math.PI * -180;
+        return rad / Math.PI * 180;
     },
     /**
      * Rotates a vector (x; y) by `deg` around (0; 0)

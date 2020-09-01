@@ -69,7 +69,7 @@ this.scale.y = this.scale.x;
 `touch.DeltaRotation` returns a value between `-1` and `1`, describing the rotation amount in the last frame in radians. A proper way of using this can look like this:
 
 ```js
-this.rotation += ct.actions.Rotate.value;
+this.angle += ct.u.radToDeg(ct.actions.Rotate.value);
 ```
 
 `touch.DeltaRotation` uses the first two touch events for its calculations, ignoring third and next fingers.

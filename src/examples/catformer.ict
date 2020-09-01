@@ -159,7 +159,7 @@ types:
       // Math.sign returns -1 if a number is negative, 1 if positive and 0 if it
       is 0.
 
-      // Math.abs turns everything into a positive number. 
+      // Math.abs turns everything into a positive number.
 
       // Combined, Math.abs and Math.sign allow to loop in any direction.
 
@@ -239,7 +239,7 @@ types:
     depth: 0
     oncreate: |-
       this.speed = 1;
-      this.direction = 180;
+      this.direction = -180;
 
       this.animationSpeed = 4 / 60;
       this.play();
@@ -247,9 +247,9 @@ types:
       var freeBelow = !ct.place.tile(this, this.x + ct.u.ldx(70,
       this.direction), this.y + 35, -10) &&
                       ct.place.free(this, this.x + ct.u.ldx(70, this.direction), this.y + 35, 'Solid');
-                      
+
       var occupiedInFront = ct.place.tile(this, this.x + ct.u.ldx(10,
-      this.direction), this.y, -10) || 
+      this.direction), this.y, -10) ||
                             ct.place.occupied(this, this.x + ct.u.ldx(10, this.direction), this.y, 'Solid');
 
       if (freeBelow || occupiedInFront) {

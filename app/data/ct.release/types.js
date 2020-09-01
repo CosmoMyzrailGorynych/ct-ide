@@ -187,7 +187,7 @@ const Copy = (function Copy() {
                     this.scale.y = exts.ty;
                 }
                 if (exts.tr) {
-                    this.rotation = exts.tr;
+                    this.angle = exts.tr;
                 }
             }
             this.position.set(x || 0, y || 0);
@@ -256,7 +256,7 @@ const Copy = (function Copy() {
             this.vspeed *= multiplier;
         }
         get direction() {
-            return (Math.atan2(this.vspeed, this.hspeed) * -180 / Math.PI + 360) % 360;
+            return (Math.atan2(this.vspeed, this.hspeed) * 180 / Math.PI + 360) % 360;
         }
         /**
          * The moving direction of the copy, in degrees, starting with 0 at the right side
@@ -267,20 +267,8 @@ const Copy = (function Copy() {
          */
         set direction(value) {
             var speed = this.speed;
-            this.hspeed = speed * Math.cos(value * Math.PI / -180);
-            this.vspeed = speed * Math.sin(value * Math.PI / -180);
-            return value;
-        }
-        get rotation() {
-            return this.transform.rotation / Math.PI * -180;
-        }
-        /**
-         * The direction of a copy's texture.
-         * @param {number} value New rotation value
-         * @type {number}
-         */
-        set rotation(value) {
-            this.transform.rotation = value * Math.PI / -180;
+            this.hspeed = speed * Math.cos(value * Math.PI / 180);
+            this.vspeed = speed * Math.sin(value * Math.PI / 180);
             return value;
         }
 
@@ -290,8 +278,8 @@ const Copy = (function Copy() {
          */
         move() {
             if (this.gravity) {
-                this.hspeed += this.gravity * ct.delta * Math.cos(this.gravityDir * Math.PI / -180);
-                this.vspeed += this.gravity * ct.delta * Math.sin(this.gravityDir * Math.PI / -180);
+                this.hspeed += this.gravity * ct.delta * Math.cos(this.gravityDir * Math.PI / 180);
+                this.vspeed += this.gravity * ct.delta * Math.sin(this.gravityDir * Math.PI / 180);
             }
             this.x += this.hspeed * ct.delta;
             this.y += this.vspeed * ct.delta;
@@ -304,8 +292,8 @@ const Copy = (function Copy() {
          * @returns {void}
          */
         addSpeed(spd, dir) {
-            this.hspeed += spd * Math.cos(dir * Math.PI / -180);
-            this.vspeed += spd * Math.sin(dir * Math.PI / -180);
+            this.hspeed += spd * Math.cos(dir * Math.PI / 180);
+            this.vspeed += spd * Math.sin(dir * Math.PI / 180);
         }
 
         /**

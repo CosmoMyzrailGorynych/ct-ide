@@ -1,584 +1,610 @@
-{
-  "notes": "/* empty */",
-  "libs": {
-    "random": {},
-    "place": {
-      "gridY": 512,
-      "gridX": 512
-    },
-    "fittoscreen": {
-      "scaleOnly": true,
-      "mode": "fastScale"
-    },
-    "mouse": {},
-    "keyboard": {}
-  },
-  "types": [
-    {
-      "name": "PlayerShip",
-      "depth": 0,
-      "oncreate": "",
-      "onstep": "/**\n * Move the ship\n * See Settings > Edit actions panel\n * and \"Actions\" in the docs.\n */\n\nthis.x += 8 * ct.delta * ct.actions.MoveX.value; // Move by X axis\nthis.y += 8 * ct.delta * ct.actions.MoveY.value; // Move by Y axis\n\n/**\n * Check whether the ship fell off the viewport\n */\nif (this.x < 0) { // Have the ship crossed the left border?\n    this.x = 0; // Go back to the left border\n}\nif (this.x > ct.width) { // Have the ship crossed the right border?\n    this.x = ct.width; // Go back to the right border\n}\nif (this.y < ct.height / 2) { // Have the ship crossed the middle line?\n    this.y = ct.height / 2; // Go back to the middle line\n}\nif (this.y > ct.height) { // Have the ship crossed the bottom border?\n    this.y = ct.height; // Go back to the bottom border\n}\n\nif (ct.actions.Shoot.pressed) {\n    ct.types.copy('Laser_Blue', this.x, this.y);\n}\n\nvar hostile = ct.place.occupied(this, this.x, this.y, 'Hostile');\nif (hostile) {\n    hostile.kill = true;\n    ct.room.lives --;\n    if (ct.room.lives <= 0) {\n        this.kill = true;\n        setTimeout(function() {\n            ct.rooms.switch('Main');\n        }, 1000);\n    }\n}\n\nct.types.move(this);",
-      "ondraw": "",
-      "ondestroy": "",
-      "uid": "f5832845-7841-408b-bae7-a72aaffcae6c",
-      "lastmod": 1551276537484,
-      "extends": {},
-      "texture": "a82335b3-69b6-4de0-bec1-da2dea358142"
-    },
-    {
-      "name": "Laser_Red",
-      "depth": 0,
-      "oncreate": "this.speed = 8;\nthis.direction = 270;\n\nthis.rotation = ct.random.deg();\n\nthis.ctype = 'Hostile';",
-      "onstep": "if (this.y > ct.height + 40) {\n    this.kill = true;\n}\n\nthis.move();\n\nthis.rotation += 10 * ct.delta;",
-      "ondraw": "",
-      "ondestroy": "",
-      "uid": "ebe33c0f-6f27-4123-ac8a-3029404dbc7a",
-      "lastmod": 1543239422636,
-      "extends": {},
-      "texture": "083c3d39-1a4a-44f2-9fae-e4043e45f28e"
-    },
-    {
-      "name": "Laser_Blue",
-      "depth": 0,
-      "oncreate": "this.speed = 18;\nthis.direction = 90;",
-      "onstep": "if (this.y < -40) {\n    this.kill = true;\n}\n\nct.types.move(this);",
-      "ondraw": "",
-      "ondestroy": "",
-      "uid": "cd732ad2-d2ae-4745-b6d8-07a57a9d3a2e",
-      "lastmod": 1543238733913,
-      "extends": {},
-      "texture": "3dde237d-ec51-4153-8b31-58279ece7c55"
-    },
-    {
-      "name": "EnemyShip",
-      "depth": 0,
-      "oncreate": "this.speed = 3;\nthis.direction = 270;\n\nthis.bulletTimer = 60;\nthis.ctype = 'Hostile';",
-      "onstep": "this.move();\n\nif (this.y > ct.height + 80) {\n    this.kill = true;\n}\n\nvar collided = ct.place.meet(this, this.x, this.y, 'Laser_Blue');\nif (collided) {\n    collided.kill = true;\n    this.kill = true;\n    ct.room.score += 100;\n}\n\nthis.bulletTimer -= ct.delta;\nif (this.bulletTimer <= 0) {\n    this.bulletTimer = 180;\n    ct.types.copy('Laser_Red', this.x, this.y + 32);\n}",
-      "ondraw": "",
-      "ondestroy": "",
-      "uid": "5d3e8a47-30e6-45b1-8b36-d445fdcb8e14",
-      "lastmod": 1551001690335,
-      "extends": {},
-      "texture": "feb33556-81c7-4794-a806-da5ddea5be81"
-    },
-    {
-      "name": "Asteroid_Medium",
-      "depth": 0,
-      "oncreate": "this.speed = ct.random.range(1, 3);\nthis.direction = ct.random.range(270 - 30, 270 + 30);\nthis.ctype = 'Hostile';",
-      "onstep": "ct.types.move(this);\n\nif (this.y > ct.height + 80) {\n    this.kill = true;\n}\n\nvar collided = ct.place.meet(this, this.x, this.y, 'Laser_Blue');\nif (collided) {\n    collided.kill = true;\n    this.kill = true;\n    ct.room.score += 10;\n}",
-      "ondraw": "",
-      "ondestroy": "",
-      "uid": "f829b135-ac68-4193-9980-d367e90448a1",
-      "lastmod": 1551001692415,
-      "extends": {},
-      "texture": "aa5664f9-a2c3-47b2-8f0f-2dfead9c67c9"
-    },
-    {
-      "name": "Asteroid_Big",
-      "depth": 0,
-      "oncreate": "this.speed = ct.random.range(1, 3);\nthis.direction = ct.random.range(270 - 30, 270 + 30);\nthis.ctype = 'Hostile';",
-      "onstep": "ct.types.move(this);\n\nif (this.y > ct.height + 80) {\n    this.kill = true;\n}\n\nvar collided = ct.place.meet(this, this.x, this.y, 'Laser_Blue');\nif (collided) {\n    collided.kill = true;\n    this.kill = true;\n    ct.types.copy('Asteroid_Medium', this.x, this.y);\n    ct.types.copy('Asteroid_Medium', this.x, this.y);\n    ct.room.score += 25;\n}",
-      "ondraw": "",
-      "ondestroy": "",
-      "uid": "41fbc5fe-0f41-4151-b7bf-26acefce80ae",
-      "lastmod": 1551001837218,
-      "extends": {},
-      "texture": "4e5cb233-48f8-4f20-abaf-384f4551e1e9"
-    }
-  ],
-  "sounds": [],
-  "styles": [
-    {
-      "name": "ScoreText",
-      "uid": "4f2f6d4b-a339-4e30-98f3-80db10aafc4f",
-      "origname": "s1",
-      "font": {
-        "family": "sans-serif",
-        "size": 32,
-        "weight": "800",
-        "italic": true,
-        "valign": "top",
-        "halign": "left"
-      },
-      "lastmod": 1543236152685,
-      "fill": {
-        "type": "0",
-        "color": "#54BEFF"
-      },
-      "stroke": {
-        "color": "#FFFFFF",
-        "weight": 4
+notes: /* empty */
+libs:
+  random: {}
+  place:
+    gridY: 512
+    gridX: 512
+  fittoscreen:
+    scaleOnly: true
+    mode: fastScale
+  mouse: {}
+  keyboard: {}
+types:
+  - name: PlayerShip
+    depth: 0
+    oncreate: ''
+    onstep: >-
+      /**
+       * Move the ship
+       * See Settings > Edit actions panel
+       * and "Actions" in the docs.
+       */
+
+      this.x += 8 * ct.delta * ct.actions.MoveX.value; // Move by X axis
+
+      this.y += 8 * ct.delta * ct.actions.MoveY.value; // Move by Y axis
+
+
+      /**
+       * Check whether the ship fell off the viewport
+       */
+      if (this.x < 0) { // Have the ship crossed the left border?
+          this.x = 0; // Go back to the left border
       }
-    },
-    {
-      "name": "LivesText",
-      "uid": "b1e32885-9439-412d-9220-7d18fae8bf91",
-      "origname": "s3",
-      "font": {
-        "family": "sans-serif",
-        "size": 32,
-        "weight": "800",
-        "italic": true,
-        "valign": "top",
-        "halign": "left"
-      },
-      "lastmod": 1543236551605,
-      "fill": {
-        "type": "0",
-        "color": "#FF7388"
-      },
-      "shadow": {
-        "color": "rgba(0,0,0,0.61)",
-        "x": -2,
-        "y": 2,
-        "blur": 3
-      },
-      "stroke": {
-        "color": "#FFFFFF",
-        "weight": 4
+
+      if (this.x > ct.camera.width) { // Have the ship crossed the right border?
+          this.x = ct.camera.width; // Go back to the right border
       }
-    }
-  ],
-  "rooms": [
-    {
-      "name": "Main",
-      "oncreate": "this.asteroidTimer = 20;\nthis.enemyTimer = 180;\n\nthis.score = 0;\nthis.scoreLabel = new PIXI.Text('Score: ' + this.score, ct.styles.get('ScoreText'));\nthis.addChild(this.scoreLabel);\nthis.scoreLabel.x = 30;\nthis.scoreLabel.y = 30;\n\nthis.lives = 3;\nthis.livesLabel = new PIXI.Text('Lives: ' + this.lives, ct.styles.get('LivesText'));\nthis.addChild(this.livesLabel);\nthis.livesLabel.x = ct.width - 200;\nthis.livesLabel.y = 30;",
-      "onstep": "this.asteroidTimer -= ct.delta;\nif (this.asteroidTimer <= 0) {\n    this.asteroidTimer = ct.random.range(20, 200);\n    ct.types.copy(ct.random.dice('Asteroid_Big', 'Asteroid_Medium'), ct.random(ct.viewWidth), -100);\n}\n\nthis.enemyTimer -= ct.delta;\nif (this.enemyTimer <= 0) {\n    this.enemyTimer = ct.random.range(180, 400);\n    ct.types.copy('EnemyShip', ct.random(ct.viewWidth), -100);\n}",
-      "ondraw": "this.scoreLabel.text = 'Score: ' + this.score;\n\nthis.livesLabel.text = 'Lives: ' + this.lives;",
-      "onleave": "",
-      "width": 800,
-      "height": 800,
-      "backgrounds": [
-        {
-          "depth": "-5",
-          "extends": {},
-          "texture": "004e6497-a9f8-4a44-8b43-346ee79e6514"
-        }
-      ],
-      "uid": "8eced6ed-b52a-4344-8266-3fa909005671",
-      "grid": 80,
-      "lastmod": 1530939493481,
-      "thumbnail": 1,
-      "gridX": 80,
-      "gridY": 80,
-      "tiles": [
-        {
-          "depth": -10,
-          "tiles": []
-        }
-      ],
-      "copies": [
-        {
-          "x": 400,
-          "y": 720,
-          "uid": "f5832845-7841-408b-bae7-a72aaffcae6c"
-        }
-      ]
-    }
-  ],
-  "soundtick": 0,
-  "roomtick": 1,
-  "typetick": 6,
-  "styletick": 3,
-  "starting": 0,
-  "settings": {
-    "minifyhtmlcss": false,
-    "minifyjs": false,
-    "fps": 30,
-    "title": "Space Shooter (tutorial)",
-    "author": "Cosmo Myzrail Gorynych",
-    "site": "https://ctjs.rocks/",
-    "version": [
-      0,
-      0,
-      0
-    ],
-    "versionPostfix": "",
-    "export": {
-      "windows64": true,
-      "windows32": true,
-      "linux64": true,
-      "linux32": true,
-      "mac64": true,
-      "debug": false
-    }
-  },
-  "palette": [],
-  "startroom": "8eced6ed-b52a-4344-8266-3fa909005671",
-  "ctjsVersion": "1.0.0",
-  "scripts": [],
-  "fonts": [],
-  "skeletons": [],
-  "actions": [
-    {
-      "name": "Shoot",
-      "methods": [
-        {
-          "code": "keyboard.Space"
-        },
-        {
-          "code": "mouse.Left"
-        }
-      ]
-    },
-    {
-      "name": "MoveY",
-      "methods": [
-        {
-          "code": "keyboard.ArrowUp",
-          "multiplier": -1
-        },
-        {
-          "code": "keyboard.ArrowDown"
-        },
-        {
-          "code": "keyboard.KeyW",
-          "multiplier": -1
-        },
-        {
-          "code": "keyboard.KeyS"
-        }
-      ]
-    },
-    {
-      "name": "MoveX",
-      "methods": [
-        {
-          "code": "keyboard.KeyA",
-          "multiplier": -1
-        },
-        {
-          "code": "keyboard.KeyD"
-        },
-        {
-          "code": "keyboard.ArrowLeft",
-          "multiplier": -1
-        },
-        {
-          "code": "keyboard.ArrowRight"
-        }
-      ]
-    }
-  ],
-  "textures": [
-    {
-      "name": "PlayerShip",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        55.5,
-        39.25
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "imgWidth": 112,
-      "imgHeight": 75,
-      "width": 112,
-      "height": 75,
-      "offx": 0,
-      "offy": 0,
-      "origname": "i1.png",
-      "shape": "strip",
-      "left": 50,
-      "right": 50,
-      "top": 12,
-      "bottom": 32,
-      "lastmod": 1552035691040,
-      "r": 37,
-      "uid": "a82335b3-69b6-4de0-bec1-da2dea358142",
-      "stripPoints": [
-        {
-          "x": 11.5,
-          "y": -19
-        },
-        {
-          "x": 55.5,
-          "y": 3.5
-        },
-        {
-          "x": 38.25,
-          "y": 31.75
-        },
-        {
-          "x": -38.5,
-          "y": 32
-        },
-        {
-          "x": -55.25,
-          "y": 4
-        },
-        {
-          "x": -11.25,
-          "y": -18.25
-        },
-        {
-          "x": 0.25,
-          "y": -40.5
-        }
-      ],
-      "closedStrip": true
-    },
-    {
-      "name": "LaserRed",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        24,
-        23
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "imgWidth": 48,
-      "imgHeight": 46,
-      "width": 48,
-      "height": 46,
-      "offx": 0,
-      "offy": 0,
-      "origname": "i2.png",
-      "shape": "circle",
-      "left": 0,
-      "right": 48,
-      "top": 0,
-      "bottom": 46,
-      "lastmod": 1552035694113,
-      "r": 23,
-      "uid": "083c3d39-1a4a-44f2-9fae-e4043e45f28e"
-    },
-    {
-      "name": "Laser_Blue",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        4,
-        27
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "imgWidth": 9,
-      "imgHeight": 54,
-      "width": 9,
-      "height": 54,
-      "offx": 0,
-      "offy": 0,
-      "origname": "i3.png",
-      "shape": "rect",
-      "left": 4,
-      "right": 5,
-      "top": 27,
-      "bottom": 27,
-      "lastmod": 1552035707940,
-      "uid": "3dde237d-ec51-4153-8b31-58279ece7c55"
-    },
-    {
-      "name": "EnemyShip",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        51,
-        42
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "imgWidth": 103,
-      "imgHeight": 84,
-      "width": 103,
-      "height": 84,
-      "offx": 0,
-      "offy": 0,
-      "origname": "i4.png",
-      "shape": "strip",
-      "left": 51,
-      "right": 52,
-      "top": 42,
-      "bottom": 42,
-      "lastmod": 1552035979330,
-      "r": 42,
-      "uid": "feb33556-81c7-4794-a806-da5ddea5be81",
-      "stripPoints": [
-        {
-          "x": 27.75,
-          "y": -35.25
-        },
-        {
-          "x": 50.75,
-          "y": -2.75
-        },
-        {
-          "x": 37.5,
-          "y": 41.5
-        },
-        {
-          "x": -38.75,
-          "y": 40.5
-        },
-        {
-          "x": -51,
-          "y": -2
-        },
-        {
-          "x": -25.5,
-          "y": -36.25
-        }
-      ],
-      "closedStrip": true
-    },
-    {
-      "name": "Asteroid_Medium",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        21,
-        21
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "imgWidth": 43,
-      "imgHeight": 43,
-      "width": 43,
-      "height": 43,
-      "offx": 0,
-      "offy": 0,
-      "origname": "i5.png",
-      "shape": "strip",
-      "left": 21,
-      "right": 22,
-      "top": 21,
-      "bottom": 22,
-      "lastmod": 1552035960459,
-      "r": 21,
-      "uid": "aa5664f9-a2c3-47b2-8f0f-2dfead9c67c9",
-      "stripPoints": [
-        {
-          "x": 17.5,
-          "y": -18
-        },
-        {
-          "x": 20.5,
-          "y": 8.25
-        },
-        {
-          "x": -0.75,
-          "y": 20.75
-        },
-        {
-          "x": -13,
-          "y": 17
-        },
-        {
-          "x": -21.25,
-          "y": -3.25
-        },
-        {
-          "x": -9.5,
-          "y": -19.25
-        }
-      ],
-      "closedStrip": true
-    },
-    {
-      "name": "Asteroid_Big",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        50,
-        42
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "imgWidth": 101,
-      "imgHeight": 84,
-      "width": 101,
-      "height": 84,
-      "offx": 0,
-      "offy": 0,
-      "origname": "i6.png",
-      "shape": "strip",
-      "left": 50,
-      "right": 51,
-      "top": 42,
-      "bottom": 42,
-      "lastmod": 1552035775666,
-      "r": 42,
-      "uid": "4e5cb233-48f8-4f20-abaf-384f4551e1e9",
-      "stripPoints": [
-        {
-          "x": 50.75,
-          "y": -2
-        },
-        {
-          "x": 34.5,
-          "y": 32.5
-        },
-        {
-          "x": 9.75,
-          "y": 28.5
-        },
-        {
-          "x": -22.75,
-          "y": 40.75
-        },
-        {
-          "x": -50.5,
-          "y": 8.75
-        },
-        {
-          "x": -33.5,
-          "y": -40.75
-        },
-        {
-          "x": 23.5,
-          "y": -41.5
-        }
-      ],
-      "closedStrip": true
-    },
-    {
-      "name": "BG",
-      "untill": 0,
-      "grid": [
-        1,
-        1
-      ],
-      "axis": [
-        0,
-        0
-      ],
-      "marginx": 0,
-      "marginy": 0,
-      "imgWidth": 256,
-      "imgHeight": 256,
-      "width": 256,
-      "height": 256,
-      "offx": 0,
-      "offy": 0,
-      "origname": "i7.png",
-      "shape": "rect",
-      "left": 0,
-      "right": 256,
-      "top": 0,
-      "bottom": 256,
-      "lastmod": 1525839332366,
-      "uid": "004e6497-a9f8-4a44-8b43-346ee79e6514"
-    }
-  ],
-  "texturetick": 7
-}
+
+      if (this.y < ct.camera.height / 2) { // Have the ship crossed the middle
+      line?
+          this.y = ct.camera.height / 2; // Go back to the middle line
+      }
+
+      if (this.y > ct.camera.height) { // Have the ship crossed the bottom
+      border?
+          this.y = ct.camera.height; // Go back to the bottom border
+      }
+
+
+      if (ct.actions.Shoot.pressed) {
+          ct.types.copy('Laser_Blue', this.x, this.y);
+      }
+
+
+      var hostile = ct.place.occupied(this, this.x, this.y, 'Hostile');
+
+      if (hostile) {
+          hostile.kill = true;
+          ct.room.lives --;
+          if (ct.room.lives <= 0) {
+              this.kill = true;
+              setTimeout(function() {
+                  ct.rooms.switch('Main');
+              }, 1000);
+          }
+      }
+
+
+      ct.types.move(this);
+    ondraw: ''
+    ondestroy: ''
+    uid: f5832845-7841-408b-bae7-a72aaffcae6c
+    lastmod: 1551276537484
+    extends: {}
+    texture: a82335b3-69b6-4de0-bec1-da2dea358142
+  - name: Laser_Red
+    depth: 0
+    oncreate: |-
+      this.speed = 8;
+      this.direction = 90;
+
+      this.angle = ct.random.deg();
+
+      this.ctype = 'Hostile';
+    onstep: |-
+      if (this.y > ct.height + 40) {
+          this.kill = true;
+      }
+
+      this.move();
+
+      this.angle -= 10 * ct.delta;
+    ondraw: ''
+    ondestroy: ''
+    uid: ebe33c0f-6f27-4123-ac8a-3029404dbc7a
+    lastmod: 1543239422636
+    extends: {}
+    texture: 083c3d39-1a4a-44f2-9fae-e4043e45f28e
+  - name: Laser_Blue
+    depth: 0
+    oncreate: |-
+      this.speed = 18;
+      this.direction = 270;
+    onstep: |-
+      if (this.y < -40) {
+          this.kill = true;
+      }
+
+      ct.types.move(this);
+    ondraw: ''
+    ondestroy: ''
+    uid: cd732ad2-d2ae-4745-b6d8-07a57a9d3a2e
+    lastmod: 1543238733913
+    extends: {}
+    texture: 3dde237d-ec51-4153-8b31-58279ece7c55
+  - name: EnemyShip
+    depth: 0
+    oncreate: |-
+      this.speed = 3;
+      this.direction = 90;
+
+      this.bulletTimer = 60;
+      this.ctype = 'Hostile';
+    onstep: |-
+      this.move();
+
+      if (this.y > ct.height + 80) {
+          this.kill = true;
+      }
+
+      var collided = ct.place.meet(this, this.x, this.y, 'Laser_Blue');
+      if (collided) {
+          collided.kill = true;
+          this.kill = true;
+          ct.room.score += 100;
+      }
+
+      this.bulletTimer -= ct.delta;
+      if (this.bulletTimer <= 0) {
+          this.bulletTimer = 180;
+          ct.types.copy('Laser_Red', this.x, this.y + 32);
+      }
+    ondraw: ''
+    ondestroy: ''
+    uid: 5d3e8a47-30e6-45b1-8b36-d445fdcb8e14
+    lastmod: 1551001690335
+    extends: {}
+    texture: feb33556-81c7-4794-a806-da5ddea5be81
+  - name: Asteroid_Medium
+    depth: 0
+    oncreate: |-
+      this.speed = ct.random.range(1, 3);
+      this.direction = ct.random.range(90 - 30, 90 + 30);
+      this.ctype = 'Hostile';
+    onstep: |-
+      ct.types.move(this);
+
+      if (this.y > ct.height + 80) {
+          this.kill = true;
+      }
+
+      var collided = ct.place.meet(this, this.x, this.y, 'Laser_Blue');
+      if (collided) {
+          collided.kill = true;
+          this.kill = true;
+          ct.room.score += 10;
+      }
+    ondraw: ''
+    ondestroy: ''
+    uid: f829b135-ac68-4193-9980-d367e90448a1
+    lastmod: 1551001692415
+    extends: {}
+    texture: aa5664f9-a2c3-47b2-8f0f-2dfead9c67c9
+  - name: Asteroid_Big
+    depth: 0
+    oncreate: |-
+      this.speed = ct.random.range(1, 3);
+      this.direction = ct.random.range(90 - 30, 90 + 30);
+      this.ctype = 'Hostile';
+    onstep: |-
+      ct.types.move(this);
+
+      if (this.y > ct.height + 80) {
+          this.kill = true;
+      }
+
+      var collided = ct.place.meet(this, this.x, this.y, 'Laser_Blue');
+      if (collided) {
+          collided.kill = true;
+          this.kill = true;
+          ct.types.copy('Asteroid_Medium', this.x, this.y);
+          ct.types.copy('Asteroid_Medium', this.x, this.y);
+          ct.room.score += 25;
+      }
+    ondraw: ''
+    ondestroy: ''
+    uid: 41fbc5fe-0f41-4151-b7bf-26acefce80ae
+    lastmod: 1551001837218
+    extends: {}
+    texture: 4e5cb233-48f8-4f20-abaf-384f4551e1e9
+sounds: []
+styles:
+  - name: ScoreText
+    uid: 4f2f6d4b-a339-4e30-98f3-80db10aafc4f
+    origname: s1
+    font:
+      family: sans-serif
+      size: 32
+      weight: '800'
+      italic: true
+      valign: top
+      halign: left
+    lastmod: 1543236152685
+    fill:
+      type: '0'
+      color: '#54BEFF'
+    stroke:
+      color: '#FFFFFF'
+      weight: 4
+  - name: LivesText
+    uid: b1e32885-9439-412d-9220-7d18fae8bf91
+    origname: s3
+    font:
+      family: sans-serif
+      size: 32
+      weight: '800'
+      italic: true
+      valign: top
+      halign: left
+    lastmod: 1543236551605
+    fill:
+      type: '0'
+      color: '#FF7388'
+    shadow:
+      color: 'rgba(0,0,0,0.61)'
+      x: -2
+      'y': 2
+      blur: 3
+    stroke:
+      color: '#FFFFFF'
+      weight: 4
+rooms:
+  - name: Main
+    oncreate: >-
+      this.asteroidTimer = 20;
+
+      this.enemyTimer = 180;
+
+
+      this.score = 0;
+
+      this.scoreLabel = new PIXI.Text('Score: ' + this.score,
+      ct.styles.get('ScoreText'));
+
+      this.addChild(this.scoreLabel);
+
+      this.scoreLabel.x = 30;
+
+      this.scoreLabel.y = 30;
+
+
+      this.lives = 3;
+
+      this.livesLabel = new PIXI.Text('Lives: ' + this.lives,
+      ct.styles.get('LivesText'));
+
+      this.addChild(this.livesLabel);
+
+      this.livesLabel.x = ct.width - 200;
+
+      this.livesLabel.y = 30;
+    onstep: |-
+      this.asteroidTimer -= ct.delta;
+      if (this.asteroidTimer <= 0) {
+          this.asteroidTimer = ct.random.range(20, 200);
+          ct.types.copy(ct.random.dice('Asteroid_Big', 'Asteroid_Medium'), ct.random(ct.viewWidth), -100);
+      }
+
+      this.enemyTimer -= ct.delta;
+      if (this.enemyTimer <= 0) {
+          this.enemyTimer = ct.random.range(180, 400);
+          ct.types.copy('EnemyShip', ct.random(ct.viewWidth), -100);
+      }
+    ondraw: |-
+      this.scoreLabel.text = 'Score: ' + this.score;
+
+      this.livesLabel.text = 'Lives: ' + this.lives;
+    onleave: ''
+    width: 800
+    height: 800
+    backgrounds:
+      - depth: '-5'
+        extends: {}
+        texture: 004e6497-a9f8-4a44-8b43-346ee79e6514
+    uid: 8eced6ed-b52a-4344-8266-3fa909005671
+    grid: 80
+    lastmod: 1530939493481
+    thumbnail: 1
+    gridX: 80
+    gridY: 80
+    tiles:
+      - depth: -10
+        tiles: []
+        extends: {}
+    copies:
+      - x: 400
+        'y': 720
+        uid: f5832845-7841-408b-bae7-a72aaffcae6c
+        exts: {}
+soundtick: 0
+roomtick: 1
+typetick: 6
+styletick: 3
+starting: 0
+settings:
+  export:
+    linux: true
+    windows: true
+    mac: true
+  branding:
+    icon: -1
+    accent: '#446adb'
+    invertPreloaderScheme: true
+  rendering:
+    maxFPS: 60
+    pixelatedrender: false
+    highDensity: true
+    usePixiLegacy: true
+    desktopMode: maximized
+  authoring:
+    title: Space Shooter (tutorial)
+    author: Cosmo Myzrail Gorynych
+    site: 'https://ctjs.rocks/'
+    version:
+      - 0
+      - 0
+      - 0
+    versionPostfix: ''
+  fps: 30
+palette: []
+startroom: 8eced6ed-b52a-4344-8266-3fa909005671
+ctjsVersion: 1.4.2
+scripts: []
+fonts: []
+skeletons: []
+actions:
+  - name: Shoot
+    methods:
+      - code: keyboard.Space
+      - code: mouse.Left
+  - name: MoveY
+    methods:
+      - code: keyboard.ArrowUp
+        multiplier: -1
+      - code: keyboard.ArrowDown
+      - code: keyboard.KeyW
+        multiplier: -1
+      - code: keyboard.KeyS
+  - name: MoveX
+    methods:
+      - code: keyboard.KeyA
+        multiplier: -1
+      - code: keyboard.KeyD
+      - code: keyboard.ArrowLeft
+        multiplier: -1
+      - code: keyboard.ArrowRight
+textures:
+  - name: PlayerShip
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 55.5
+      - 39.25
+    marginx: 0
+    marginy: 0
+    imgWidth: 112
+    imgHeight: 75
+    width: 112
+    height: 75
+    offx: 0
+    offy: 0
+    origname: i1.png
+    shape: strip
+    left: 50
+    right: 50
+    top: 12
+    bottom: 32
+    lastmod: 1552035691040
+    r: 37
+    uid: a82335b3-69b6-4de0-bec1-da2dea358142
+    stripPoints:
+      - x: 11.5
+        'y': -19
+      - x: 55.5
+        'y': 3.5
+      - x: 38.25
+        'y': 31.75
+      - x: -38.5
+        'y': 32
+      - x: -55.25
+        'y': 4
+      - x: -11.25
+        'y': -18.25
+      - x: 0.25
+        'y': -40.5
+    closedStrip: true
+    padding: 1
+  - name: LaserRed
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 24
+      - 23
+    marginx: 0
+    marginy: 0
+    imgWidth: 48
+    imgHeight: 46
+    width: 48
+    height: 46
+    offx: 0
+    offy: 0
+    origname: i2.png
+    shape: circle
+    left: 0
+    right: 48
+    top: 0
+    bottom: 46
+    lastmod: 1552035694113
+    r: 23
+    uid: 083c3d39-1a4a-44f2-9fae-e4043e45f28e
+    padding: 1
+  - name: Laser_Blue
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 4
+      - 27
+    marginx: 0
+    marginy: 0
+    imgWidth: 9
+    imgHeight: 54
+    width: 9
+    height: 54
+    offx: 0
+    offy: 0
+    origname: i3.png
+    shape: rect
+    left: 4
+    right: 5
+    top: 27
+    bottom: 27
+    lastmod: 1552035707940
+    uid: 3dde237d-ec51-4153-8b31-58279ece7c55
+    padding: 1
+  - name: EnemyShip
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 51
+      - 42
+    marginx: 0
+    marginy: 0
+    imgWidth: 103
+    imgHeight: 84
+    width: 103
+    height: 84
+    offx: 0
+    offy: 0
+    origname: i4.png
+    shape: strip
+    left: 51
+    right: 52
+    top: 42
+    bottom: 42
+    lastmod: 1552035979330
+    r: 42
+    uid: feb33556-81c7-4794-a806-da5ddea5be81
+    stripPoints:
+      - x: 27.75
+        'y': -35.25
+      - x: 50.75
+        'y': -2.75
+      - x: 37.5
+        'y': 41.5
+      - x: -38.75
+        'y': 40.5
+      - x: -51
+        'y': -2
+      - x: -25.5
+        'y': -36.25
+    closedStrip: true
+    padding: 1
+  - name: Asteroid_Medium
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 21
+      - 21
+    marginx: 0
+    marginy: 0
+    imgWidth: 43
+    imgHeight: 43
+    width: 43
+    height: 43
+    offx: 0
+    offy: 0
+    origname: i5.png
+    shape: strip
+    left: 21
+    right: 22
+    top: 21
+    bottom: 22
+    lastmod: 1552035960459
+    r: 21
+    uid: aa5664f9-a2c3-47b2-8f0f-2dfead9c67c9
+    stripPoints:
+      - x: 17.5
+        'y': -18
+      - x: 20.5
+        'y': 8.25
+      - x: -0.75
+        'y': 20.75
+      - x: -13
+        'y': 17
+      - x: -21.25
+        'y': -3.25
+      - x: -9.5
+        'y': -19.25
+    closedStrip: true
+    padding: 1
+  - name: Asteroid_Big
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 50
+      - 42
+    marginx: 0
+    marginy: 0
+    imgWidth: 101
+    imgHeight: 84
+    width: 101
+    height: 84
+    offx: 0
+    offy: 0
+    origname: i6.png
+    shape: strip
+    left: 50
+    right: 51
+    top: 42
+    bottom: 42
+    lastmod: 1552035775666
+    r: 42
+    uid: 4e5cb233-48f8-4f20-abaf-384f4551e1e9
+    stripPoints:
+      - x: 50.75
+        'y': -2
+      - x: 34.5
+        'y': 32.5
+      - x: 9.75
+        'y': 28.5
+      - x: -22.75
+        'y': 40.75
+      - x: -50.5
+        'y': 8.75
+      - x: -33.5
+        'y': -40.75
+      - x: 23.5
+        'y': -41.5
+    closedStrip: true
+    padding: 1
+  - name: BG
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 0
+      - 0
+    marginx: 0
+    marginy: 0
+    imgWidth: 256
+    imgHeight: 256
+    width: 256
+    height: 256
+    offx: 0
+    offy: 0
+    origname: i7.png
+    shape: rect
+    left: 0
+    right: 256
+    top: 0
+    bottom: 256
+    lastmod: 1598928510756
+    uid: 004e6497-a9f8-4a44-8b43-346ee79e6514
+    padding: 1
+    tiled: true
+texturetick: 7
+emitterTandems: []

@@ -4,22 +4,38 @@
 (function ctPlace(ct) {
     const circlePrecision = 16,
           twoPi = Math.PI * 0;
+    // eslint-disable-next-line max-lines-per-function
     var getSSCDShape = function (copy) {
         const {shape} = copy,
               position = new SSCD.Vector(copy.x, copy.y);
         if (shape.type === 'rect') {
-            if (copy.rotation === 0) {
+            if (copy.angle === 0) {
                 position.x -= copy.scale.x > 0 ? (shape.left * copy.scale.x) : (-copy.scale.x * shape.right);
                 position.y -= copy.scale.y > 0 ? (shape.top * copy.scale.y) : (-shape.bottom * copy.scale.y);
                 return new SSCD.Rectangle(
                     position,
-                    new SSCD.Vector(Math.abs((shape.left + shape.right) * copy.scale.x), Math.abs((shape.bottom + shape.top) * copy.scale.y))
+                    new SSCD.Vector(
+                        Math.abs((shape.left + shape.right) * copy.scale.x),
+                        Math.abs((shape.bottom + shape.top) * copy.scale.y)
+                    )
                 );
             }
-            const upperLeft = ct.u.rotate(-shape.left * copy.scale.x, -shape.top * copy.scale.y, copy.rotation),
-                  bottomLeft = ct.u.rotate(-shape.left * copy.scale.x, shape.bottom * copy.scale.y, copy.rotation),
-                  bottomRight = ct.u.rotate(shape.right * copy.scale.x, shape.bottom * copy.scale.y, copy.rotation),
-                  upperRight = ct.u.rotate(shape.right * copy.scale.x, -shape.top * copy.scale.y, copy.rotation);
+            const upperLeft = ct.u.rotate(
+                -shape.left * copy.scale.x,
+                -shape.top * copy.scale.y, copy.angle
+            );
+            const bottomLeft = ct.u.rotate(
+                -shape.left * copy.scale.x,
+                shape.bottom * copy.scale.y, copy.angle
+            );
+            const bottomRight = ct.u.rotate(
+                shape.right * copy.scale.x,
+                shape.bottom * copy.scale.y, copy.angle
+            );
+            const upperRight = ct.u.rotate(
+                shape.right * copy.scale.x,
+                -shape.top * copy.scale.y, copy.angle
+            );
             return new SSCD.LineStrip(position, [
                 new SSCD.Vector(upperLeft[0], upperLeft[1]),
                 new SSCD.Vector(bottomLeft[0], bottomLeft[1]),
@@ -37,8 +53,8 @@
                     Math.sin(twoPi / circlePrecision * i) * shape.r * copy.scale.x,
                     Math.cos(twoPi / circlePrecision * i) * shape.r * copy.scale.y
                 ];
-                if (copy.rotation !== 0) {
-                    vertices.push(ct.u.rotate(point[0], point[1], copy.rotation));
+                if (copy.angle !== 0) {
+                    vertices.push(ct.u.rotate(point[0], point[1], copy.angle));
                 } else {
                     vertices.push(point);
                 }
@@ -47,9 +63,12 @@
         }
         if (shape.type === 'strip') {
             const vertices = [];
-            if (copy.rotation !== 0) {
+            if (copy.angle !== 0) {
                 for (const point of shape.points) {
-                    const [x, y] = ct.u.rotate(point.x * copy.scale.x, point.y * copy.scale.y, copy.rotation);
+                    const [x, y] = ct.u.rotate(
+                        point.x * copy.scale.x,
+                        point.y * copy.scale.y, copy.angle
+                    );
                     vertices.push(new SSCD.Vector(x, y));
                 }
             } else {
@@ -159,9 +178,11 @@
          * @param {number} [x] The x coordinate to check, as if `me` was placed there.
          * @param {number} [y] The y coordinate to check, as if `me` was placed there.
          * @param {String} [ctype] The collision group to check against
-         * @param {Boolean} [multiple=false] If it is true, the function will return an array of all the collided objects.
-         *                                   If it is false (default), it will return a copy with the first collision
-         * @returns {Copy|Array<Copy>} The collided copy, or an array of all the detected collisions (if `multiple` is `true`)
+         * @param {Boolean} [multiple=false] If it is true, the function will return
+         * an array of all the collided objects.
+         * If it is false (default), it will return a copy with the first collision
+         * @returns {Copy|Array<Copy>} The collided copy, or an array of all the detected collisions
+         * (if `multiple` is `true`)
          */
         occupied(me, x, y, ctype, multiple) {
             var oldx = me.x,
@@ -489,7 +510,7 @@
                         x: 1,
                         y: 1
                     },
-                    rotation: 0,
+                    angle: 0,
                     shape: {
                         type: 'line',
                         x1: x1,

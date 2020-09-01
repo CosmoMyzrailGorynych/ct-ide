@@ -98,7 +98,7 @@ types:
     depth: 0
     oncreate: |-
       this.speed = 10;
-      this.direction = 180;
+      this.direction = 0;
       this.depth = this.y;
     onstep: |-
       this.move();

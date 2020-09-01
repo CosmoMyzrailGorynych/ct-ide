@@ -16,7 +16,8 @@
  * the effect for the specified number of seconds.
  * @property {number} [tint] Optional tint to the whole effect.
  * @property {number} [alpha] Optional opacity set to the whole effect.
- * @property {number} [rotation] Optional rotation in degrees.
+ * @property {number} [rotation] Optional rotation in radians.
+ * @property {number} [angle] Optional rotation in degrees.
  * @property {boolean} [isUi] If set to true, will use the time scale of UI layers. This affects
  * how an effect is simulated during slowmo effects and game pause.
  * @property {number} [depth] The depth of the tandem. Defaults to Infinity
@@ -77,7 +78,7 @@ class EmitterTandem extends PIXI.Container {
         this.scale.x = opts.scale.x;
         this.scale.y = opts.scale.y;
         if (opts.rotation) {
-            this.rotation = ct.u.radToDeg(opts.rotation);
+            this.rotation = opts.rotation;
         } else if (opts.angle) {
             this.angle = opts.angle;
         }
