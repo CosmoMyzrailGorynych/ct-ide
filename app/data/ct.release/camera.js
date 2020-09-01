@@ -332,10 +332,10 @@ class Camera extends PIXI.DisplayObject {
               tr = this.getTopRightCorner(),
               bl = this.getBottomLeftCorner(),
               br = this.getBottomRightCorner();
-        bb.addPoint(new PIXI.Point(tl[0], tl[1]));
-        bb.addPoint(new PIXI.Point(tr[0], tr[1]));
-        bb.addPoint(new PIXI.Point(bl[0], bl[1]));
-        bb.addPoint(new PIXI.Point(br[0], br[1]));
+        bb.addPoint(new PIXI.Point(tl.x, tl.y));
+        bb.addPoint(new PIXI.Point(tr.x, tr.y));
+        bb.addPoint(new PIXI.Point(bl.x, bl.y));
+        bb.addPoint(new PIXI.Point(br.x, br.y));
         return bb.getRectangle();
     }
 
