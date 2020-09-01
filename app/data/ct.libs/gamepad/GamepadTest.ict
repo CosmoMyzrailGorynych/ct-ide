@@ -672,7 +672,7 @@
   "rooms": [
     {
       "name": "TestSuite",
-      "oncreate": "this.anyText = new PIXI.Text('Any button', {\n    fontWeight: 800,\n    fontSize: 32,\n    fill: 0x78909c\n});\n\nthis.anyText.anchor.x = 0.5;\nthis.anyText.x = ct.viewWidth / 2;\nthis.anyText.y = ct.viewHeight - 64;\n\nthis.addChild(this.anyText);",
+      "oncreate": "this.anyText = new PIXI.Text('Any button', {\n    fontWeight: 800,\n    fontSize: 32,\n    fill: 0x78909c\n});\n\nthis.anyText.anchor.x = 0.5;\nthis.anyText.x = ct.camera.width / 2;\nthis.anyText.y = ct.camera.height - 64;\n\nthis.addChild(this.anyText);",
       "onstep": "this.anyText.tint = ct.actions.Any.down? 0x000000 : 0xffffff;",
       "ondraw": "",
       "onleave": "",
