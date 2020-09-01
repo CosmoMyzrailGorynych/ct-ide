@@ -199,13 +199,13 @@ class EmitterTandem extends PIXI.Container {
             -this.follow.angle
         );
         for (const emitter of this.emitters) {
-            emitter.updateOwnerPos(this.follow.x + delta[0], this.follow.y + delta[1]);
+            emitter.updateOwnerPos(this.follow.x + delta.x, this.follow.y + delta.y);
             const ownDelta = ct.u.rotate(
                 emitter.initialDeltaPos.x * this.follow.scale.x,
                 emitter.initialDeltaPos.y * this.follow.scale.y,
                 -this.follow.angle
             );
-            emitter.updateSpawnPos(ownDelta[0], ownDelta[1]);
+            emitter.updateSpawnPos(ownDelta.x, ownDelta.y);
         }
     }
 }

@@ -22,12 +22,12 @@
         const positionGame = ct.u.uiToGameCoord(xui, yui);
         const touch = {
             id: e.identifier,
-            x: positionGame[0],
-            y: positionGame[1],
+            x: positionGame.x,
+            y: positionGame.y,
             xui: xui,
             yui: yui,
-            xprev: positionGame[0],
-            yprev: positionGame[1],
+            xprev: positionGame.x,
+            yprev: positionGame.y,
             xuiprev: xui,
             yuiprev: yui,
             r: e.radiusX ? Math.max(e.radiusX, e.radiusY) : 0
@@ -75,7 +75,7 @@
                 const rect = ct.pixiApp.view.getBoundingClientRect();
                 upd.xui = (touch.clientX - rect.left) / rect.width * ct.camera.width;
                 upd.yui = (touch.clientY - rect.top) / rect.height * ct.camera.height;
-                [upd.x, upd.y] = ct.u.uiToGameCoord(upd.xui, upd.yui);
+                ({x: upd.x, y: upd.y} = ct.u.uiToGameCoord(upd.xui, upd.yui));
                 upd.r = touch.radiusX ? Math.max(touch.radiusX, touch.radiusY) : 0;
                 ct.touch.x = upd.x;
                 ct.touch.y = upd.y;
@@ -105,7 +105,7 @@
             yui: (e.clientY - rect.top) * ct.camera.height / rect.height,
             r: 0
         };
-        [touch.x, touch.y] = ct.u.uiToGameCoord(touch.xui, touch.yui);
+        ({x: touch.x, y: touch.y} = ct.u.uiToGameCoord(touch.xui, touch.yui));
         ct.touch.events.push(touch);
         ct.touch.x = touch.x;
         ct.touch.y = touch.y;
@@ -119,7 +119,7 @@
         if (touch) {
             touch.xui = (e.clientX - rect.left) * ct.camera.width / rect.width;
             touch.yui = (e.clientY - rect.top) * ct.camera.height / rect.height;
-            [touch.x, touch.y] = ct.u.uiToGameCoord(touch.xui, touch.yui);
+            ({x: touch.x, y: touch.y} = ct.u.uiToGameCoord(touch.xui, touch.yui));
             ct.touch.x = touch.x;
             ct.touch.y = touch.y;
             ct.touch.xui = touch.xui;

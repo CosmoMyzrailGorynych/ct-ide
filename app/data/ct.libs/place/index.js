@@ -10,8 +10,12 @@
               position = new SSCD.Vector(copy.x, copy.y);
         if (shape.type === 'rect') {
             if (copy.angle === 0) {
-                position.x -= copy.scale.x > 0 ? (shape.left * copy.scale.x) : (-copy.scale.x * shape.right);
-                position.y -= copy.scale.y > 0 ? (shape.top * copy.scale.y) : (-shape.bottom * copy.scale.y);
+                position.x -= copy.scale.x > 0 ?
+                    (shape.left * copy.scale.x) :
+                    (-copy.scale.x * shape.right);
+                position.y -= copy.scale.y > 0 ?
+                    (shape.top * copy.scale.y) :
+                    (-shape.bottom * copy.scale.y);
                 return new SSCD.Rectangle(
                     position,
                     new SSCD.Vector(
@@ -37,10 +41,10 @@
                 -shape.top * copy.scale.y, copy.angle
             );
             return new SSCD.LineStrip(position, [
-                new SSCD.Vector(upperLeft[0], upperLeft[1]),
-                new SSCD.Vector(bottomLeft[0], bottomLeft[1]),
-                new SSCD.Vector(bottomRight[0], bottomRight[1]),
-                new SSCD.Vector(upperRight[0], upperRight[1])
+                new SSCD.Vector(upperLeft.x, upperLeft.y),
+                new SSCD.Vector(bottomLeft.x, bottomLeft.y),
+                new SSCD.Vector(bottomRight.x, bottomRight.y),
+                new SSCD.Vector(upperRight.x, upperRight.y)
             ], true);
         }
         if (shape.type === 'circle') {
@@ -54,7 +58,8 @@
                     Math.cos(twoPi / circlePrecision * i) * shape.r * copy.scale.y
                 ];
                 if (copy.angle !== 0) {
-                    vertices.push(ct.u.rotate(point[0], point[1], copy.angle));
+                    const {x, y} = ct.u.rotate(point[0], point[1], copy.angle);
+                    vertices.push(x, y);
                 } else {
                     vertices.push(point);
                 }
@@ -65,7 +70,7 @@
             const vertices = [];
             if (copy.angle !== 0) {
                 for (const point of shape.points) {
-                    const [x, y] = ct.u.rotate(
+                    const {x, y} = ct.u.rotate(
                         point.x * copy.scale.x,
                         point.y * copy.scale.y, copy.angle
                     );
@@ -281,7 +286,10 @@
                     continue;
                 }
                 for (let i = 0, l = array.length; i < l; i++) {
-                    if (array[i].type === type && array[i] !== me && ct.place.collide(me, array[i])) {
+                    if (array[i].type === type &&
+                        array[i] !== me &&
+                        ct.place.collide(me, array[i])
+                    ) {
                         if (!multiple) {
                             if (oldx !== me.x || oldy !== me.y) {
                                 me._shape = shapeCashed;

@@ -216,7 +216,7 @@ ct.u = {
      * @param {number} x The x component
      * @param {number} y The y component
      * @param {number} deg The degree to rotate by
-     * @returns {Array<number>} A pair of new `x` and `y` parameters.
+     * @returns {PIXI.Point} A pair of new `x` and `y` parameters.
      */
     rotate(x, y, deg) {
         return ct.u.rotateRad(x, y, ct.u.degToRad(deg));
@@ -226,15 +226,15 @@ ct.u = {
      * @param {number} x The x component
      * @param {number} y The y component
      * @param {number} rad The radian value to rotate around
-     * @returns {Array<number>} A pair of new `x` and `y` parameters.
+     * @returns {PIXI.Point} A pair of new `x` and `y` parameters.
      */
     rotateRad(x, y, rad) {
         const sin = Math.sin(rad),
               cos = Math.cos(rad);
-        return [
+        return new PIXI.Point(
             cos * x - sin * y,
             cos * y + sin * x
-        ];
+        );
     },
     /**
      * Gets the most narrow angle between two vectors of given directions
@@ -292,7 +292,7 @@ ct.u = {
      * Translates a point from UI space to game space.
      * @param {number} x The x coordinate in UI space.
      * @param {number} y The y coordinate in UI space.
-     * @returns {Array<number>} A pair of new `x` and `y` coordinates.
+     * @returns {PIXI.Point} A pair of new `x` and `y` coordinates.
      */
     uiToGameCoord(x, y) {
         return ct.camera.uiToGameCoord(x, y);
@@ -301,7 +301,7 @@ ct.u = {
      * Translates a point from fame space to UI space.
      * @param {number} x The x coordinate in game space.
      * @param {number} y The y coordinate in game space.
-     * @returns {Array<number>} A pair of new `x` and `y` coordinates.
+     * @returns {PIXI.Point} A pair of new `x` and `y` coordinates.
      */
     gameToUiCoord(x, y) {
         return ct.camera.gameToUiCoord(x, y);
