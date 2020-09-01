@@ -102,22 +102,6 @@ const ct = {
             ct.fittoscreen();
         }
         return value;
-    },
-    /**
-     * The width of the current view, in UI units
-     * @type {number}
-     * @deprecated Since v1.3.0. See `ct.camera.width`.
-     */
-    get viewWidth() {
-        return ct.camera.width;
-    },
-    /**
-     * The height of the current view, in UI units
-     * @type {number}
-     * @deprecated Since v1.3.0. See `ct.camera.height`.
-     */
-    get viewHeight() {
-        return ct.camera.height;
     }
 };
 
