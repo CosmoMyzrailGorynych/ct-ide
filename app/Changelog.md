@@ -1,3 +1,86 @@
+## v1.4.2
+
+*Sat Aug 29 2020*
+
+### ✨ New Features
+
+* Add `tag` catmod, for adding tags for individual copies and rooms.
+* Add a properties panel for tweaking parameters of an individual copy.
+* Add `PIXI.MultiStyleText` module.
+* Add support for moddable extensions for individual copies.
+* Add texture generator for placeholders.
+* Background color control for rooms (finally!)
+* Code completions now suggest names of types, rooms, sounds, actions, and emitters.
+* `ct.place.moveByAxes` and `this.moveContinuousByAxes` for easy movement at platformers and top-down games.
+* `ct.place.moveAlong` now checks against tiles too
+* Fast integer scaling mode for `ct.fittoscreen`, for purely pixelart projects.
+* Hide default cursor at Project -> Render Options -> Hide system cursor
+* Import a texture by pasting it from a clipboard. Will update an existing opened texture as well!
+* In the room editor, Shift+Click now selects the nearest copy or tile.
+* New `select` input type for catmods, as an alternative to `radio`
+* Nightly builds at comigo.itch.io/ct-nightly.
+* Seeded random for `ct.random` module
+* `slider`, `sliderAndNumber` input types for extensions, and additional settings for them and `number` inputs.
+* Sort copies or tiles inside a room with two new buttons at the top-left corner of the room editor. Extremely handy for isometric games!
+* Toggle UI sounds in the Main menu -> Settings
+
+### ⚡️ General Improvements
+
+* A popup to quickly fix backgrounds at the room editor if their texture is not marked for tiled use.
+* Add .itch.toml to simplify run dialog on Linux.
+* Add `dnd-processor` tag that solves edge cases with drag-and-drop behavior and allows dropping any supported files on any tab.
+* Add icons that highlight deprecated and preview modules more clearly.
+* Better zooming controls for room, texture, and emitter editors.
+* Change build, projects', export folders to be stored under the `~/ct.js/` directory.
+* Change `ct.fs` to use app data directories for Linux, Windows, macOS (#226 by @JulianWebb).
+* Decrease threshold that differentiated clicks and drags in room editor, improving placing behavior of multiple tiles/copies.
+* Improve preview making process for textures.
+* Improve tile positioning algorithm for the room editor.
+* Minor UI improvements for the texture viewer.
+* Position context menus so that they don't exceed viewport's size.
+* Rename "Author" field at settings into "Developer" (i18n strings only).
+* Scale smaller tilesets to fit the tile picker, at the room editor.
+* Update Russian UI translation.
+
+### 🐛 Bug Fixes
+
+* A workaround for 'oncancel' not being fired on `input(type="file")` tags. Fixes an issue with invisible inputs overlaying the main menu.
+* Add the missing CSS directive for pixelated projects.
+* Fix checkboxes at extensions and module settings not showing the actual value's state
+* Fix `ct.mouse` returning old coordinates if a camera has moved, but a cursor hasn't.
+* Fix incorrect drawing of scaled copies in the room editor.
+* Fix issues with camera movement at room editor with extreme zooming factors.
+* Fix modules' extensions being parsed at the exporter if they have undefined or unset (equal to -1) secondary keys.
+* Fix overflow issues and wrong initial values for bitmap font generator.
+* Fix regression from v1.4 with blurry particle editor and room view when pixelart rendering was enabled.
+* Fix `user-select` CSS parameter on modules' docs panel.
+* Hotfix: fix font import issues on Windows, as well as fix potential similar issues for other asset types
+
+### 🍱 Demos, Dependencies and Stuff
+
+* Add the missing link to the bitmap fonts page in the navigation panel.
+* At the platformer tutorial, fix a typo in collectibles title.
+* Bump various catmods' versions.
+* Fix small error in describing key input in the asteroid shooter tutorial.
+* Fixed bitmap fonts docs. The `font` in the constructor should be an object.
+* Specify the tab for enemy/asteroid generation code at space shooter tutorial.
+* Update electron-packager to v15.0.0. Fixes build issues for Windows.
+
+### 📝 Docs
+
+* Add info about moddable copies' extensions
+* Document new input types `slider` and `sliderAndNumber`, as well as additional settings for them
+
+### 🌐 Website
+
+* :sparkles: Presskit
+
+### 🌚 Misc
+
+* :fire: Remove keymage.js, as it is not used anymore
+* :fire: Remove keymaster.js, as it is not used anymore
+
+
 ## v1.4.1
 
 *Sun Aug 10 2020*

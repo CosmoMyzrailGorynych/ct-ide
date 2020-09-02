@@ -25,7 +25,7 @@ const getSkeletonPreview = function getSkeletonPreview(skeleton, fs) {
     if (fs) {
         return path.join(global.projdir, 'img', `${skeleton.origname}_prev.png`);
     }
-    return `file://${global.projdir}/img/${skeleton.origname}_prev.png`;
+    return `file://${global.projdir.replace(/\\/g, '/')}/img/${skeleton.origname}_prev.png`;
 };
 
 /**
