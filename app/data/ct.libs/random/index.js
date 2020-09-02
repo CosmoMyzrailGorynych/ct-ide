@@ -7,6 +7,31 @@ ct.u.ext(ct.random, {
     dice(...variants) {
         return variants[Math.floor(Math.random() * variants.length)];
     },
+    histogram(...histogram) {
+        const coeffs = [...histogram];
+        let sumCoeffs = 0;
+        for (let i = 0; i < coeffs.length; i++) {
+            sumCoeffs += coeffs[i];
+            if (i > 0) {
+                coeffs[i] += coeffs[i - 1];
+            }
+        }
+        const bucketPosition = Math.random() * sumCoeffs;
+        var i;
+        for (i = 0; i < coeffs.length; i++) {
+            if (coeffs[i] > bucketPosition) {
+                break;
+            }
+        }
+        return i / coeffs.length + Math.random() / coeffs.length;
+    },
+    optimistic(exp) {
+        return 1 - ct.random.pessimistic(exp);
+    },
+    pessimistic(exp) {
+        exp = exp || 2;
+        return Math.random() ** exp;
+    },
     range(x1, x2) {
         return x1 + Math.random() * (x2 - x1);
     },
