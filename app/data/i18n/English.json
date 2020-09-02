@@ -182,7 +182,8 @@
         "visitDiscordForGamedevSupport": "Join Discord server for gamedev support",
         "postAnIssue": "Post an issue on Github…",
         "openProject": "Open a project…",
-        "openExample": "Open an example project…"
+        "openExample": "Open an example project…",
+        "openIconList": "Open the list of icons"
     },
     "onboarding": {
         "hoorayHeader": "Wow! You've just created a project!",
