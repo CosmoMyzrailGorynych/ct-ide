@@ -153,15 +153,17 @@
         },
         /**
          * Determines if the place in (x,y) is occupied.
-         * Optionally can take 'ctype' as a filter for obstackles' collision group (not shape type)
+         * Optionally can take 'ctype' as a filter for obstackles' collision group (not shape type).
          *
-         * @param {Copy} me The object to check collisions on
+         * @param {Copy} me The object to check collisions on.
          * @param {number} [x] The x coordinate to check, as if `me` was placed there.
          * @param {number} [y] The y coordinate to check, as if `me` was placed there.
-         * @param {String} [ctype] The collision group to check against
-         * @param {Boolean} [multiple=false] If it is true, the function will return an array of all the collided objects.
-         *                                   If it is false (default), it will return a copy with the first collision
-         * @returns {Copy|Array<Copy>} The collided copy, or an array of all the detected collisions (if `multiple` is `true`)
+         * @param {String} [ctype] The collision group to check against.
+         * @param {Boolean} [multiple=false] If it is true, the function will return
+         * an array of all the collided objects. If it is false (default), it will return
+         * a copy with the first collision.
+         * @returns {Copy|Array<Copy>} The collided copy, or an array of
+         * all the detected collisions (if `multiple` is `true`)
          */
         occupied(me, x, y, ctype, multiple) {
             var oldx = me.x,
@@ -399,25 +401,40 @@
             };
             precision = Math.abs(precision || 1);
             while (Math.abs(dx) > precision) {
-                if (ct.place.free(me, me.x + Math.sign(dx) * precision, me.y, ctype) &&
-                    !ct.place.tile(me, me.x + Math.sign(dx) * precision, me.y, ctype)
-                ) {
+                const occupied = ct.place.occupied(me, me.x + Math.sign(dx) * precision, me.y, ctype) ||
+                      ct.place.tile(me, me.x + Math.sign(dx) * precision, me.y, ctype);
+                if (!occupied) {
                     me.x += Math.sign(dx) * precision;
                     dx -= Math.sign(dx) * precision;
                 } else {
-                    obstacles.x = true;
+                    obstacles.x = occupied;
                     break;
                 }
             }
             while (Math.abs(dy) > precision) {
-                if (ct.place.free(me, me.x, me.y + Math.sign(dy) * precision, ctype) &&
-                    !ct.place.tile(me, me.x, me.y + Math.sign(dy) * precision, ctype)
-                ) {
+                const occupied = ct.place.occupied(me, me.x, me.y + Math.sign(dy) * precision, ctype) ||
+                      ct.place.tile(me, me.x, me.y + Math.sign(dy) * precision, ctype);
+                if (!occupied) {
                     me.y += Math.sign(dy) * precision;
                     dy -= Math.sign(dy) * precision;
                 } else {
-                    obstacles.y = true;
+                    obstacles.y = occupied;
                     break;
+                }
+            }
+            // A fraction of precision may be left but completely reachable; jump to this point.
+            if (Math.abs(dx) < precision) {
+                if (ct.place.free(me, me.x + dx, me.y, ctype) &&
+                    !ct.place.tile(me, me.x + dx, me.y, ctype)
+                ) {
+                    me.x += dx;
+                }
+            }
+            if (Math.abs(dy) < precision) {
+                if (ct.place.free(me, me.x, me.y + dy, ctype) &&
+                    !ct.place.tile(me, me.x, me.y + dy, ctype)
+                ) {
+                    me.y += dy;
                 }
             }
             if (!obstacles.x && !obstacles.y) {

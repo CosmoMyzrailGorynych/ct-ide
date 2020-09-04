@@ -53,7 +53,7 @@ declare namespace ct {
          */
         function occupied(me: Copy, x: number, y: number, ctype?: string, multiple?: false|void): Copy | false;
 
-        function occupied(me: Copy, ctype?: string, multiple: true): Copy[];
+        function occupied(me: Copy, ctype?: string, multiple?: true): Copy[];
         /**
          * Determines if the copy is in an occupied place.
          * Optionally can take 'ctype' as a filter for obstacles' collision group (not shape type)
@@ -218,8 +218,8 @@ declare namespace ct {
 }
 
 interface ISeparateMovementResult {
-    x: boolean;
-    y: boolean;
+    x: boolean | Copy;
+    y: boolean | Copy;
 }
 
 interface Copy {
@@ -229,10 +229,10 @@ interface Copy {
      * Call to perform precise movement with collision checks. It takes gravity
      * and `ct.delta` into account, too, and uses the `ct.place.moveAlong` method.
      */
-    moveContinuous(ctype: string, precision?: number): void;
+    moveContinuous(ctype: string, precision?: number): false|Copy;
     /**
      * Call to perform precise movement with collision checks. It takes gravity
      * and `ct.delta` into account, too, and uses the `ct.place.moveByAxes` method.
      */
-    moveContinuousByAxes(ctype: string, precision?: number): void;
+    moveContinuousByAxes(ctype: string, precision?: number): false|ISeparateMovementResult;
 }
