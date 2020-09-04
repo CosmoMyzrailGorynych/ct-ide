@@ -435,6 +435,14 @@ const Copy = (function Copy() {
                 return Boolean(obj.position);
             }
             return Boolean(obj);
+        },
+        /**
+         * Checks whether a given object is a ct.js copy.
+         * @param {any} obj The object which needs to be checked.
+         * @returns {boolean} Returns `true` if the passed object is a copy; `false` otherwise.
+         */
+        isCopy(obj) {
+            return obj instanceof Copy;
         }
     };
     ct.types.copy = ct.types.make;
