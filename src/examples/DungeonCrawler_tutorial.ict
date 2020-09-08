@@ -1,4 +1,4 @@
-ctjsVersion: 1.4.1
+ctjsVersion: 1.4.2
 notes: /* empty */
 libs:
   fittoscreen:
@@ -121,7 +121,8 @@ textures:
     bottom: 8
     uid: fe8cc3f9-d37b-402d-aa5a-18cf1a55d1ab
     padding: 3
-    lastmod: 1598587220893
+    lastmod: 1599528859794
+    tiled: true
   - name: HazardousTube_Debris
     untill: 0
     grid:
@@ -155,7 +156,7 @@ textures:
       - 1
     axis:
       - 8
-      - 16
+      - 13
     marginx: 0
     marginy: 0
     imgWidth: 32
@@ -169,11 +170,11 @@ textures:
     shape: rect
     left: 7
     right: 7
-    top: 13
-    bottom: -3
+    top: 9
+    bottom: 0
     uid: 4733fb53-5e41-4cf8-b9a8-91ad700f2246
     padding: 1
-    lastmod: 1597726344405
+    lastmod: 1599530639304
   - name: Panel
     untill: 0
     grid:
@@ -407,7 +408,7 @@ textures:
     bottom: 16
     uid: 4f8a6124-427b-410b-a467-ac42afec3644
     padding: 1
-    lastmod: 1597815252394
+    lastmod: 1599528760547
   - name: Horselike_Vertical
     untill: 0
     grid:
@@ -459,7 +460,7 @@ textures:
     bottom: 8
     uid: bdf46b11-ef42-4c45-af01-a0b918ee9587
     padding: 1
-    lastmod: 1597799319743
+    lastmod: 1599528855312
   - name: Cat_Left
     untill: 0
     grid:
@@ -513,16 +514,16 @@ textures:
     padding: 1
     lastmod: 1597803968174
   - name: Door
-    untill: 5
+    untill: 0
     grid:
-      - 3
+      - 2
       - 2
     axis:
       - 16
       - 32
     marginx: 0
     marginy: 0
-    imgWidth: 96
+    imgWidth: 64
     imgHeight: 64
     width: 32
     height: 32
@@ -537,7 +538,7 @@ textures:
     bottom: -6
     uid: 3a7c7928-a731-4940-9854-17936b3c9a46
     padding: 1
-    lastmod: 1597811273914
+    lastmod: 1599528744595
   - name: Gap
     untill: 0
     grid:
@@ -693,6 +694,133 @@ textures:
     padding: 1
     source: /home/comigo/UNWORK/Tileset/StartButton.png
     lastmod: 1598577786741
+  - name: Door_Base
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 16
+      - 16
+    marginx: 0
+    marginy: 0
+    imgWidth: 32
+    imgHeight: 16
+    width: 32
+    height: 16
+    offx: 0
+    offy: 0
+    origname: iae954867-1039-43f6-bf6d-d8684cb58612.png
+    shape: rect
+    left: 16
+    right: 16
+    top: 16
+    bottom: 0
+    uid: ae954867-1039-43f6-bf6d-d8684cb58612
+    padding: 1
+    source: /home/comigo/UNWORK/Tileset/Door_Base.png
+    lastmod: 1599528776390
+  - name: Medkit
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 0
+      - 0
+    marginx: 0
+    marginy: 0
+    imgWidth: 16
+    imgHeight: 16
+    width: 16
+    height: 16
+    offx: 0
+    offy: 0
+    origname: ic61a44b6-1f4d-43c2-9356-7288658947a9.png
+    shape: rect
+    left: 0
+    right: 16
+    top: 0
+    bottom: 16
+    uid: c61a44b6-1f4d-43c2-9356-7288658947a9
+    padding: 1
+    source: /home/comigo/UNWORK/Tileset/Medkit.png
+  - name: Particle_White
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 0
+      - 0
+    marginx: 0
+    marginy: 0
+    imgWidth: 16
+    imgHeight: 16
+    width: 16
+    height: 16
+    offx: 0
+    offy: 0
+    origname: id9107804-cf88-4bd9-913c-c9ac1a4d5f05.png
+    shape: rect
+    left: 0
+    right: 16
+    top: 0
+    bottom: 16
+    uid: d9107804-cf88-4bd9-913c-c9ac1a4d5f05
+    padding: 1
+    source: /home/comigo/UNWORK/Tileset/Particle_White.png
+  - name: PinkProjectile
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 0
+      - 0
+    marginx: 0
+    marginy: 0
+    imgWidth: 16
+    imgHeight: 16
+    width: 16
+    height: 16
+    offx: 0
+    offy: 0
+    origname: ic9920917-97ee-46c6-a36b-a95ac586e10b.png
+    shape: rect
+    left: 0
+    right: 16
+    top: 0
+    bottom: 16
+    uid: c9920917-97ee-46c6-a36b-a95ac586e10b
+    padding: 1
+    source: /home/comigo/UNWORK/Tileset/PinkProjectile.png
+  - name: Cat_Death
+    untill: 0
+    grid:
+      - 2
+      - 1
+    axis:
+      - 8
+      - 16
+    marginx: 0
+    marginy: 0
+    imgWidth: 32
+    imgHeight: 16
+    width: 16
+    height: 16
+    offx: 0
+    offy: 0
+    origname: i8a6a1aa5-60f6-4f9a-9c54-7e5e7641bda1.png
+    shape: rect
+    left: 8
+    right: 8
+    top: 16
+    bottom: 0
+    uid: 8a6a1aa5-60f6-4f9a-9c54-7e5e7641bda1
+    padding: 1
+    source: /home/comigo/UNWORK/Tileset/Cat_Death.png
+    lastmod: 1599531850969
 skeletons: []
 types:
   - name: Elevator
@@ -708,12 +836,12 @@ types:
               });
           }
       }
-    ondraw: ''
+    ondraw: this.depth = this.y;
     ondestroy: ''
     texture: 2637e46e-06b2-4ca0-b17d-4bbf6eca44b7
     extends: {}
     uid: 7fea051e-83e5-4e54-848b-ab3ca861e5cb
-    lastmod: 1598583323698
+    lastmod: 1599528051175
   - name: Cat
     depth: 5
     oncreate: |-
@@ -722,9 +850,8 @@ types:
       this.maxSpeed = 2;
 
       this.animationSpeed = 5 / ct.speed;
+      this.invincibleTimer = 0;
       this.play();
-
-      ct.types.copy('Crosshair', 0, 0);
     onstep: |-
       this.vspeed = ct.actions.MoveY.value * this.maxSpeed;
       this.hspeed = ct.actions.MoveX.value * this.maxSpeed;
@@ -746,8 +873,15 @@ types:
           ct.room.checkpointY = checkpoint.y;
       }
 
-      if (ct.place.meet(this, 'Trap')) {
-          // TODO:
+      if (this.invincibleTimer <= 0) {
+          const trap = ct.place.meet(this, 'Trap');
+          if (trap && trap.active) {
+              this.invincibleTimer = ct.speed;
+              ct.room.lives --;
+              if (ct.room.lives <= 0) {
+                  this.kill = true;
+              }
+          }
       }
     ondraw: |-
       if (this.x < ct.mouse.x && this.tex !== 'Cat_Right') {
@@ -758,15 +892,16 @@ types:
           this.tex = 'Cat_Left';
           this.play();
       }
+      this.depth = this.y;
     ondestroy: ''
     texture: 4822a271-cc3c-4d88-b7a0-b2aa4cab0a96
     extends:
       ctype: ''
     uid: c40336ea-2846-45d5-97ba-d51852d3f6c5
-    lastmod: 1598587329930
+    lastmod: 1599531791897
   - name: Crate
     depth: 0
-    oncreate: ''
+    oncreate: this.depth = this.y;
     onstep: |-
       if (ct.place.occupied(this, 'Bullet')) {
           this.kill = true;
@@ -779,7 +914,7 @@ types:
     extends:
       ctype: Solid
     uid: 4e473462-8009-438e-9f53-1032e3a335cf
-    lastmod: 1597802186186
+    lastmod: 1599528085727
   - name: HazardousTube
     depth: 0
     oncreate: ''
@@ -799,7 +934,7 @@ types:
     lastmod: 1597811713144
   - name: Barrier
     depth: 0
-    oncreate: ''
+    oncreate: this.depth = this.y;
     onstep: this.move();
     ondraw: ''
     ondestroy: ''
@@ -807,10 +942,12 @@ types:
     extends:
       ctype: Solid
     uid: 2ddbb67c-f77a-49c1-aa08-f33cf3b9e00f
-    lastmod: 1597794307544
+    lastmod: 1599528110567
   - name: Panel
     depth: 0
-    oncreate: this.toggled = false;
+    oncreate: |-
+      this.toggled = false;
+      this.depth = this.y;
     onstep: |-
       if (!this.toggled && ct.place.meet(this, 'Cat')) {
           this.toggled = true;
@@ -824,7 +961,7 @@ types:
     texture: 0fa0c04d-b13c-4d0a-a1e8-8289d21186aa
     extends: {}
     uid: 4733d0d7-686b-4106-af3b-e7b995cfac12
-    lastmod: 1597794429440
+    lastmod: 1599528091175
   - name: Bullet
     depth: 0
     oncreate: |-
@@ -837,7 +974,7 @@ types:
       ) {
           this.kill = true;
       }
-    ondraw: ''
+    ondraw: this.depth = this.y;
     ondestroy: |-
       ct.sound.spawn('SmallHit');
       ct.emitters.fire('RedSparks', this.x, this.y);
@@ -845,21 +982,21 @@ types:
     extends:
       ctype: Bullet
     uid: 57f03679-dc98-4ebc-87ef-a4ca7b275731
-    lastmod: 1597811103838
+    lastmod: 1599528114513
   - name: Crosshair
-    depth: 1000
+    depth: 100000
     oncreate: ''
     onstep: this.move();
     ondraw: |-
-      this.x = ct.mouse.x;
-      this.y = ct.mouse.y;
+      this.x = ct.mouse.xui;
+      this.y = ct.mouse.yui;
     ondestroy: ''
     texture: bdf46b11-ef42-4c45-af01-a0b918ee9587
     extends: {}
     uid: ff0f561c-a96c-4205-a083-01d2a60ebb67
-    lastmod: 1598587328179
+    lastmod: 1599528916282
   - name: Crate_Debris
-    depth: -5
+    depth: -6500
     oncreate: ''
     onstep: this.move();
     ondraw: ''
@@ -867,9 +1004,9 @@ types:
     texture: d25aebb8-d135-4b9c-b2b5-844298c35a62
     extends: {}
     uid: 9fc1fec8-50bb-49e6-8fb4-c10ad589bf0b
-    lastmod: 1597801356823
+    lastmod: 1599528375450
   - name: HazardousTube_Debris
-    depth: -5
+    depth: -6500
     oncreate: 'this.rotation = ct.random.dice(-90, 0, 90);'
     onstep: this.move();
     ondraw: ''
@@ -877,7 +1014,7 @@ types:
     texture: 80bab2bc-c12d-4ce6-8d6f-033e0d5d3bdc
     extends: {}
     uid: 5e40076f-8a61-4dfd-a517-a6c943ab9991
-    lastmod: 1597811283736
+    lastmod: 1599528345681
   - name: Door
     depth: 1
     oncreate: this.opened = false;
@@ -893,13 +1030,13 @@ types:
               this.play();
           }
       }
-    ondraw: ''
+    ondraw: this.depth = this.y;
     ondestroy: ''
     texture: 3a7c7928-a731-4940-9854-17936b3c9a46
     extends:
       ctype: Solid
     uid: c701a029-af09-4fcf-9712-0fcdaa3581be
-    lastmod: 1598587332963
+    lastmod: 1599528863044
   - name: Slime
     depth: 0
     oncreate: |-
@@ -924,13 +1061,13 @@ types:
       if (ct.place.meet(this, 'Gap')) {
           this.kill = true;
       }
-    ondraw: ''
-    ondestroy: ''
+    ondraw: this.depth = this.y;
+    ondestroy: 'ct.emitters.fire(''Slime_Dead'', this.x, this.y);'
     texture: 4733fb53-5e41-4cf8-b9a8-91ad700f2246
     extends:
       ctype: Solid
     uid: 173dfb94-5133-4bbc-9e7d-6ed8c9fef330
-    lastmod: 1598580251013
+    lastmod: 1599531072646
   - name: Gap
     depth: 0
     oncreate: this.visible = false;
@@ -972,7 +1109,7 @@ types:
     lastmod: 1598575422828
   - name: StartButton
     depth: 0
-    oncreate: ''
+    oncreate: this.blinkTimer = 0;
     onstep: |-
       if (ct.mouse.hovers(this) && ct.mouse.pressed) {
           ct.transition.slideOut(750)
@@ -980,14 +1117,23 @@ types:
               ct.rooms.switch('Level_01');
           });
       }
-    ondraw: ''
+    ondraw: |-
+      this.blinkTimer += ct.delta;
+      if (this.blinkTimer > ct.speed / 2) {
+          this.alpha = 0;
+      } else {
+          this.alpha = 1;
+      }
+      if (this.blinkTimer > ct.speed) {
+          this.blinkTimer = 0;
+      }
     ondestroy: ''
     texture: a5745819-e057-4d67-a114-b64249a0f701
     extends: {}
     uid: 38f86691-8fcc-44e4-a201-8479ca64935f
-    lastmod: 1598578524632
+    lastmod: 1599529122735
   - name: Trap
-    depth: 0
+    depth: -5000
     oncreate: this.spikeTimer = 0;
     onstep: |-
       this.spikeTimer += ct.delta;
@@ -995,15 +1141,29 @@ types:
       if (this.spikeTimer > ct.speed * 3) {
           this.gotoAndStop(0);
           this.spikeTimer = 0;
+          this.active = false;
       } else if (this.spikeTimer > ct.speed * 2) {
           this.gotoAndStop(1);
+          this.active = true;
       }
     ondraw: ''
     ondestroy: ''
     texture: 6c23e805-94b6-4e3a-8606-682c36960233
     extends: {}
     uid: 36c82b3e-f5c1-4fff-b24a-417fa9509c96
-    lastmod: 1598583519555
+    lastmod: 1599531331432
+  - name: Cat_Death
+    depth: 0
+    oncreate: |-
+      this.depth = this.y;
+      this.animationSpeed = 1 / ct.speed;
+    onstep: this.move();
+    ondraw: ''
+    ondestroy: ''
+    texture: 8a6a1aa5-60f6-4f9a-9c54-7e5e7641bda1
+    extends: {}
+    uid: f11d4e26-8450-4187-8163-b70facceca7e
+    lastmod: 1599531868617
 sounds:
   - name: Shoot
     uid: 97baf84a-32d3-450c-a52e-25a770565520
@@ -1045,10 +1205,11 @@ rooms:
           loop: true,
           volume: 0.3
       });
-
-      ct.transition.slideIn(750);
-
       this.nextLevel = 'Level_02';
+
+      ct.rooms.append('UI_InGame', {
+          isUi: true
+      });
     onstep: ''
     ondraw: ''
     onleave: ''
@@ -1089,7 +1250,7 @@ rooms:
         uid: c701a029-af09-4fcf-9712-0fcdaa3581be
         exts: {}
     tiles:
-      - depth: -10
+      - depth: -6000
         tiles:
           - x: 48
             'y': 32
@@ -1989,7 +2150,8 @@ rooms:
               - 1
         extends:
           ctype: Solid
-      - depth: -20
+        hidden: false
+      - depth: -7000
         tiles:
           - x: 64
             'y': 64
@@ -2727,19 +2889,31 @@ rooms:
               - 2
               - 1
               - 1
+          - x: 80
+            'y': 144
+            texture: ae954867-1039-43f6-bf6d-d8684cb58612
+            grid:
+              - 0
+              - 0
+              - 1
+              - 1
         extends:
           ctype: Decor
+        hidden: false
     uid: 326893eb-b9c2-4616-aaee-bb4641e0423e
     thumbnail: bb4641e0423e
     extends: {}
     gridX: 16
     gridY: 16
     backgroundColor: '#000337'
-    lastmod: 1598579441808
+    lastmod: 1599529322564
   - name: Level_02
-    oncreate: |
+    oncreate: |-
       this.nextLevel = 'Level_03';
-      ct.transition.slideIn(750);
+
+      ct.rooms.append('UI_InGame', {
+          isUi: true
+      });
     onstep: ''
     ondraw: ''
     onleave: ''
@@ -2900,7 +3074,7 @@ rooms:
         uid: 469b9eef-6117-43a5-87d3-7151da7eba06
         exts: {}
     tiles:
-      - depth: -10
+      - depth: -6000
         tiles:
           - x: 64
             'y': 32
@@ -4497,7 +4671,7 @@ rooms:
         extends:
           ctype: Solid
         hidden: false
-      - depth: -20
+      - depth: -7000
         tiles:
           - x: 96
             'y': 208
@@ -6083,6 +6257,14 @@ rooms:
               - 2
               - 1
               - 1
+          - x: 336
+            'y': 128
+            texture: ae954867-1039-43f6-bf6d-d8684cb58612
+            grid:
+              - 0
+              - 0
+              - 1
+              - 1
         extends:
           ctype: Decor
         hidden: false
@@ -6091,7 +6273,7 @@ rooms:
     extends: {}
     gridX: 8
     gridY: 8
-    lastmod: 1598584066484
+    lastmod: 1599529229924
     backgroundColor: '#000337'
   - name: MainMenu
     oncreate: ''
@@ -6136,11 +6318,10 @@ rooms:
     gridX: 16
     gridY: 16
     backgroundColor: '#000337'
-    lastmod: 1598578312271
+    lastmod: 1599529149966
   - name: Level_03
     oncreate: |-
       this.nextLevel = 'Level_03';
-      ct.transition.slideIn(750);
 
       ct.rooms.append('UI_InGame', {
           isUi: true
@@ -6252,8 +6433,8 @@ rooms:
         'y': 360
         uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
         exts: {}
-      - x: 193
-        'y': 366
+      - x: 181
+        'y': 362
         uid: 3b6057ca-f175-4449-ac24-1c5630e0af7c
         exts: {}
       - x: 205
@@ -6396,7 +6577,7 @@ rooms:
         'y': 624
         uid: c701a029-af09-4fcf-9712-0fcdaa3581be
         exts: {}
-      - x: 105
+      - x: 113
         'y': 636
         uid: 173dfb94-5133-4bbc-9e7d-6ed8c9fef330
         exts: {}
@@ -6416,16 +6597,16 @@ rooms:
         'y': 672
         uid: 7fea051e-83e5-4e54-848b-ab3ca861e5cb
         exts: {}
-      - x: 90
-        'y': 688
+      - x: 74
+        'y': 680
         uid: 173dfb94-5133-4bbc-9e7d-6ed8c9fef330
         exts: {}
       - x: 154
-        'y': 690
+        'y': 682
         uid: 173dfb94-5133-4bbc-9e7d-6ed8c9fef330
         exts: {}
     tiles:
-      - depth: -10
+      - depth: -6000
         tiles:
           - x: 48
             'y': 48
@@ -7405,7 +7586,7 @@ rooms:
               - 1
         extends:
           ctype: Solid
-      - depth: -20
+      - depth: -7000
         tiles:
           - x: 208
             'y': 352
@@ -8471,6 +8652,22 @@ rooms:
               - 2
               - 1
               - 1
+          - x: 96
+            'y': 112
+            texture: ae954867-1039-43f6-bf6d-d8684cb58612
+            grid:
+              - 0
+              - 0
+              - 1
+              - 1
+          - x: 96
+            'y': 608
+            texture: ae954867-1039-43f6-bf6d-d8684cb58612
+            grid:
+              - 0
+              - 0
+              - 1
+              - 1
         extends:
           ctype: Decor
     uid: ae6bb30c-9ad9-4390-b632-127493eb58cf
@@ -8479,7 +8676,7 @@ rooms:
     gridX: 8
     gridY: 8
     backgroundColor: '#000337'
-    lastmod: 1598587073623
+    lastmod: 1599530937427
   - name: UI_InGame
     oncreate: >-
       ct.room.lives = 3;
@@ -8492,13 +8689,19 @@ rooms:
       this.hearts.x = this.hearts.y = 4;
 
       this.addChild(this.hearts);
+
+
+      ct.transition.slideIn(750);
     onstep: ''
     ondraw: this.hearts.width = 16 * ct.room.lives;
     onleave: ''
     width: 240
     height: 160
     backgrounds: []
-    copies: []
+    copies:
+      - x: 96
+        'y': 88
+        uid: ff0f561c-a96c-4205-a083-01d2a60ebb67
     tiles:
       - depth: -10
         tiles: []
@@ -8509,7 +8712,7 @@ rooms:
     gridX: 8
     gridY: 8
     backgroundColor: '#000337'
-    lastmod: 1598585789154
+    lastmod: 1599529155679
 actions:
   - name: MoveX
     methods:
@@ -8694,6 +8897,90 @@ emitterTandems:
         uid: 4f1c4b6a-d8a7-428b-a7f2-c7ce01c0f162
     previewTexture: 8bef1226-7fb8-4bf5-8120-ac6e53d81ea5
     uid: eeee43af-201a-483c-8c2f-edde43ecfba6
+  - name: Slime_Dead
+    origname: ptb58af8b29aed
+    emitters:
+      - texture: d9107804-cf88-4bd9-913c-c9ac1a4d5f05
+        openedTabs:
+          - texture
+          - colors
+          - scaling
+          - velocity
+        settings:
+          alpha:
+            list:
+              - value: 1
+                time: 0
+              - time: 0.6661227595367217
+                value: 1
+              - value: 0
+                time: 1
+            isStepped: false
+          scale:
+            list:
+              - value: 0.0599650728599917
+                time: 0
+              - time: 0.07533531209046257
+                value: 0.6299996284346806
+              - value: 0.38001411948213104
+                time: 1
+            isStepped: false
+          color:
+            list:
+              - value: 4FE77F
+                time: 0
+              - time: 0.6661227595367217
+                value: 4FE77F
+              - value: 4FE77F
+                time: 1
+            isStepped: false
+          blendMode: normal
+          speed:
+            list:
+              - value: 162.48745967047574
+                time: 0
+              - value: 100
+                time: 1
+            isStepped: false
+          startRotation:
+            min: -51
+            max: -137
+          rotationSpeed:
+            min: 0
+            max: 0
+          rotationAcceleration: 0
+          lifetime:
+            min: 0.22
+            max: 0.38
+          frequency: 0.015
+          spawnChance: 1
+          particlesPerWave: 1
+          angleStart: 270
+          emitterLifetime: 0.1
+          maxParticles: 1000
+          maxSpeed: 0
+          pos:
+            x: 0
+            'y': -2
+          acceleration:
+            x: 0
+            'y': 864
+          addAtBack: false
+          spawnType: rect
+          spawnCircle:
+            x: 0
+            'y': 0
+            r: 9
+          delay: 0
+          spawnRect:
+            x: -4
+            'y': -0.5
+            w: 8
+            h: 1
+          minimumSpeedMultiplier: 0.8
+        uid: 0e491f30-ae29-4653-8750-6cfc60976637
+        showShapeVisualizer: false
+    previewTexture: 4733fb53-5e41-4cf8-b9a8-91ad700f2246
 scripts: []
 starting: 0
 settings:
@@ -8725,4 +9012,5 @@ settings:
 fonts: []
 palette:
   - '#000337'
-startroom: ae6bb30c-9ad9-4390-b632-127493eb58cf
+  - '#4FE77F'
+startroom: 1cd7a8ef-febb-4174-ad90-42846504b06f
