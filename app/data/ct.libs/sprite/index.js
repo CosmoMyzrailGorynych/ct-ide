@@ -1,10 +1,10 @@
-ct.sprite = function (source, name, frames) {
-    var gr = ct.res.registry[source];
+ct.sprite = function sprite(source, name, frames) {
+    const gr = ct.res.textures[source];
     if (!gr) {
         console.error('[ct.sprite] Graphic asset does not exist: ' + source);
         return false;
     }
-    if (ct.res.registry[name]) {
+    if (ct.res.textures[name]) {
         console.error('[ct.sprite] Graphic asset with this name already exists: ' + name);
         return false;
     }
@@ -16,14 +16,14 @@ ct.sprite = function (source, name, frames) {
         atlas: gr.atlas,
         frames: frames.length,
         shape: gr.shape,
-        textures: frames.map(function (id) {
+        textures: frames.map(function mapSpriteFrames(id) {
             if (gr.textures[id]) {
                 return gr.textures[id];
             }
-            console.error('[ct.sprite] Frame '+ id + ' does not exist in the asset: '+ source);
+            console.error(`[ct.sprite] Frame #${id} does not exist in the asset ${source}`);
             return gr.textures[0];
-        }),
+        })
     };
-    ct.res.registry[name] = spr;
+    ct.res.textures[name] = spr;
     return true;
 };

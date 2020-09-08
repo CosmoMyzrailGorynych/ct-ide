@@ -242,8 +242,7 @@ const packImages = async (proj, writeDir) => {
     await Promise.all(writePromises);
     return {
         res,
-        registry,
-        atlases
+        registry
     };
 };
 

@@ -221,7 +221,6 @@ const exportCtProject = async (project, projdir) => {
         .replace('/*@sndtotal@*/', project.sounds.length)
         .replace('/*@res@*/', textures.res + '\n' + skeletons.loaderScript + '\n' + bitmapFonts.loaderScript)
         .replace('/*@textureregistry@*/', textures.registry)
-        .replace('/*@textureatlases@*/', JSON.stringify(textures.atlases))
         .replace('/*@skeletonregistry@*/', skeletons.registry)
         .replace('/*%resload%*/', injects.resload + '\n' + skeletons.startScript)
         .replace('/*%res%*/', injects.res);

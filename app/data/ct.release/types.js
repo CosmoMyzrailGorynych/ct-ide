@@ -205,7 +205,7 @@ const Copy = (function Copy() {
                     onDraw: t.onDraw,
                     onCreate: t.onCreate,
                     onDestroy: t.onDestroy,
-                    shape: t.texture ? ct.res.registry[t.texture].shape : {}
+                    shape: ct.res.getTextureShape(t.texture || -1)
                 });
                 if (exts && exts.depth !== void 0) {
                     this.depth = exts.depth;
@@ -229,7 +229,7 @@ const Copy = (function Copy() {
         set tex(value) {
             this.textures = ct.res.getTexture(value);
             this[textureAccessor] = value;
-            this.shape = value !== -1 ? ct.res.registry[value].shape : {};
+            this.shape = ct.res.getTextureShape(value);
             this.anchor.x = this.textures[0].defaultAnchor.x;
             this.anchor.y = this.textures[0].defaultAnchor.y;
             return value;
