@@ -113,7 +113,8 @@
                 for (let i = 0; i < tex.frames; i++) {
                     const frameName = `${texture}@frame${i}`;
                     // Each frame may be in a random atlas as a result of bin packing
-                    const atlasName = loadedAtlases.find(atlas => frameName in PIXI.Loader.shared.resources[atlas].textures);
+                    const atlasName = loadedAtlases
+                        .find(atlas => frameName in PIXI.Loader.shared.resources[atlas].textures);
                     const atlas = PIXI.Loader.shared.resources[atlasName];
                     const framePixiTexture = atlas.textures[frameName];
                     framePixiTexture.defaultAnchor = new PIXI.Point(tex.anchor.x, tex.anchor.y);
