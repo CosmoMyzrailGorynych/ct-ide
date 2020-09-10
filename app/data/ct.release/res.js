@@ -59,10 +59,13 @@
             }
             return tex.pixiTextures;
         },
-        /**
+        /*
          * Returns the collision shape of the given texture.
          * @param {string|-1} name The name of the ct.js texture, or -1 for an empty collision shape
          * @returns {object}
+         *
+         * @note Formatted as a non-jsdoc comment as it requires a better ts declaration
+         * than the auto-generated one
          */
         getTextureShape(name) {
             if (name === -1) {
