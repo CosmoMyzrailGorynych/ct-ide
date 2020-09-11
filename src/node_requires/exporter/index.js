@@ -219,9 +219,10 @@ const exportCtProject = async (project, projdir) => {
 
     buffer += (await sources['res.js'])
         .replace('/*@sndtotal@*/', project.sounds.length)
-        .replace('/*@res@*/', textures.res + '\n' + skeletons.loaderScript + '\n' + bitmapFonts.loaderScript)
+        .replace('/*@atlases@*/', textures.atlases)
+        .replace('/*@tiledImages@*/', textures.tiledImages)
+        //+ '\n' + skeletons.loaderScript + '\n' + bitmapFonts.loaderScript)
         .replace('/*@textureregistry@*/', textures.registry)
-        .replace('/*@textureatlases@*/', JSON.stringify(textures.atlases))
         .replace('/*@skeletonregistry@*/', skeletons.registry)
         .replace('/*%resload%*/', injects.resload + '\n' + skeletons.startScript)
         .replace('/*%res%*/', injects.res);

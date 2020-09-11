@@ -155,16 +155,16 @@ class Camera extends PIXI.DisplayObject {
                   br = this.uiToGameCoord(this.width - bx, this.height - by);
 
             if (this.followX) {
-                if (this.follow.x < tl[0] - this.interpolatedShiftX) {
+                if (this.follow.x < tl.x - this.interpolatedShiftX) {
                     this.targetX = this.follow.x - bx + this.width / 2;
-                } else if (this.follow.x > br[0] - this.interpolatedShiftX) {
+                } else if (this.follow.x > br.x - this.interpolatedShiftX) {
                     this.targetX = this.follow.x + bx - this.width / 2;
                 }
             }
             if (this.followY) {
-                if (this.follow.y < tl[1] - this.interpolatedShiftY) {
+                if (this.follow.y < tl.y - this.interpolatedShiftY) {
                     this.targetY = this.follow.y - by + this.height / 2;
-                } else if (this.follow.y > br[1] - this.interpolatedShiftY) {
+                } else if (this.follow.y > br.y - this.interpolatedShiftY) {
                     this.targetY = this.follow.y + by - this.height / 2;
                 }
             }
@@ -254,35 +254,38 @@ class Camera extends PIXI.DisplayObject {
      * Translates a point from UI space to game space.
      * @param {number} x The x coordinate in UI space.
      * @param {number} y The y coordinate in UI space.
-     * @returns {Array<number>} A pair of new `x` and `y` coordinates.
+     * @returns {PIXI.Point} A pair of new `x` and `y` coordinates.
      */
     uiToGameCoord(x, y) {
         const modx = (x - this.width / 2) * this.scale.x,
               mody = (y - this.height / 2) * this.scale.y;
-        const result = ct.u.rotate(modx, mody, this.rotation);
-        return [result[0] + this.computedX, result[1] + this.computedY];
+        const result = ct.u.rotate(modx, mody, this.angle);
+        return new PIXI.Point(
+            result.x + this.computedX,
+            result.y + this.computedY
+        );
     }
 
     /**
      * Translates a point from game space to UI space.
      * @param {number} x The x coordinate in game space.
      * @param {number} y The y coordinate in game space.
-     * @returns {Array<number>} A pair of new `x` and `y` coordinates.
+     * @returns {PIXI.Point} A pair of new `x` and `y` coordinates.
      */
     gameToUiCoord(x, y) {
         const relx = x - this.computedX,
               rely = y - this.computedY;
-        const unrotated = ct.u.rotate(relx, rely, -this.rotation);
-        return [
-            unrotated[0] / this.scale.x + this.width / 2,
-            unrotated[1] / this.scale.y + this.height / 2
-        ];
+        const unrotated = ct.u.rotate(relx, rely, -this.angle);
+        return new PIXI.Point(
+            unrotated.x / this.scale.x + this.width / 2,
+            unrotated.y / this.scale.y + this.height / 2
+        );
     }
     /**
      * Gets the position of the top-left corner of the viewport in game coordinates.
      * This is useful for positioning UI elements in game coordinates,
      * especially with rotated viewports.
-     * @returns {Array<number>} A pair of `x` and `y` coordinates.
+     * @returns {PIXI.Point} A pair of `x` and `y` coordinates.
      */
     getTopLeftCorner() {
         return this.uiToGameCoord(0, 0);
@@ -292,7 +295,7 @@ class Camera extends PIXI.DisplayObject {
      * Gets the position of the top-right corner of the viewport in game coordinates.
      * This is useful for positioning UI elements in game coordinates,
      * especially with rotated viewports.
-     * @returns {Array<number>} A pair of `x` and `y` coordinates.
+     * @returns {PIXI.Point} A pair of `x` and `y` coordinates.
      */
     getTopRightCorner() {
         return this.uiToGameCoord(this.width, 0);
@@ -302,7 +305,7 @@ class Camera extends PIXI.DisplayObject {
      * Gets the position of the bottom-left corner of the viewport in game coordinates.
      * This is useful for positioning UI elements in game coordinates,
      * especially with rotated viewports.
-     * @returns {Array<number>} A pair of `x` and `y` coordinates.
+     * @returns {PIXI.Point} A pair of `x` and `y` coordinates.
      */
     getBottomLeftCorner() {
         return this.uiToGameCoord(0, this.height);
@@ -312,7 +315,7 @@ class Camera extends PIXI.DisplayObject {
      * Gets the position of the bottom-right corner of the viewport in game coordinates.
      * This is useful for positioning UI elements in game coordinates,
      * especially with rotated viewports.
-     * @returns {Array<number>} A pair of `x` and `y` coordinates.
+     * @returns {PIXI.Point} A pair of `x` and `y` coordinates.
      */
     getBottomRightCorner() {
         return this.uiToGameCoord(this.width, this.height);
@@ -329,24 +332,11 @@ class Camera extends PIXI.DisplayObject {
               tr = this.getTopRightCorner(),
               bl = this.getBottomLeftCorner(),
               br = this.getBottomRightCorner();
-        bb.addPoint(new PIXI.Point(tl[0], tl[1]));
-        bb.addPoint(new PIXI.Point(tr[0], tr[1]));
-        bb.addPoint(new PIXI.Point(bl[0], bl[1]));
-        bb.addPoint(new PIXI.Point(br[0], br[1]));
+        bb.addPoint(new PIXI.Point(tl.x, tl.y));
+        bb.addPoint(new PIXI.Point(tr.x, tr.y));
+        bb.addPoint(new PIXI.Point(bl.x, bl.y));
+        bb.addPoint(new PIXI.Point(br.x, br.y));
         return bb.getRectangle();
-    }
-
-    get rotation() {
-        return this.transform.rotation / Math.PI * -180;
-    }
-    /**
-     * The rotation angle of a camera.
-     * @param {number} value New rotation value
-     * @type {number}
-     */
-    set rotation(value) {
-        this.transform.rotation = value * Math.PI / -180;
-        return value;
     }
 
     /**

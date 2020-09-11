@@ -47,6 +47,8 @@ app/data/fonts/style/.css
 app/data/theme*.css
 app/data/typedefs/global.d.ts
 app/data/typedefs/pixi.js.d.ts
+app/data/icons.svg
+app/data/icons.json
 /app/data/docs
 app/index.html
 app/preview.html
@@ -84,7 +86,6 @@ app/export
 docs/db.json
 docs/node_modules
 docs/public
-app/data/icons.svg
 export.zip
 app/pleaseCtJSLoadWithoutGPUAccelerationMmkay
 app/debugger.html

@@ -33,40 +33,40 @@ types:
     ondraw: ''
     ondestroy: ''
     uid: b7a528f8-655c-4920-900f-f191533f411d
-    lastmod: 1586011935546
+    lastmod: 1599533973742
     extends:
       ctype: Solid
     texture: d8dd2bfd-0f9d-495a-bbfd-0e65b80153b9
   - name: Logs
     depth: 0
     oncreate: ''
-    onstep: ct.types.move(this);
+    onstep: ''
     ondraw: ''
     ondestroy: ''
     uid: 1026c1c8-90e4-4b93-bb6a-568f53918097
-    lastmod: 1586186509272
+    lastmod: 1599533998391
     extends:
       ctype: Solid
     texture: f3de5077-0e66-43de-93f2-d3a75184aa2e
   - name: Grass
     depth: 0
     oncreate: ''
-    onstep: ct.types.move(this);
+    onstep: ''
     ondraw: ''
     ondestroy: ''
     uid: 5ff42cc3-0b4a-47e9-b6f1-06d3b3b91bb0
-    lastmod: 1547470587709
+    lastmod: 1599533992399
     extends:
       ctype: Solid
     texture: 9968de05-f39d-4455-aaed-175c03728bb1
   - name: Spikes
     depth: 0
     oncreate: ''
-    onstep: ct.types.move(this);
+    onstep: ''
     ondraw: ''
     ondestroy: ''
     uid: 036a2de1-89b0-48e3-b26f-d608ce2079fd
-    lastmod: 1547470605572
+    lastmod: 1599534008535
     extends:
       ctype: Enemy
     texture: eed6bb2f-301f-460a-8d91-93396d103b4e
@@ -159,7 +159,7 @@ types:
       // Math.sign returns -1 if a number is negative, 1 if positive and 0 if it
       is 0.
 
-      // Math.abs turns everything into a positive number. 
+      // Math.abs turns everything into a positive number.
 
       // Combined, Math.abs and Math.sign allow to loop in any direction.
 
@@ -206,7 +206,7 @@ types:
       ct.camera.shiftX = this.scale.x * 150;
     ondestroy: ''
     uid: 00664f77-21c6-4b06-b310-88640b1beaf9
-    lastmod: 1586656249664
+    lastmod: 1599533948967
     extends:
       ctype: Player
     texture: ad390b6e-4c2c-412f-8143-1c70b9c16fc0
@@ -222,7 +222,7 @@ types:
     ondraw: ''
     ondestroy: ''
     uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
-    lastmod: 1580524813404
+    lastmod: 1599533985967
     extends: {}
     texture: 62be2903-9782-49fc-b551-ef2e641091c9
   - name: Greed
@@ -232,14 +232,14 @@ types:
     ondraw: ''
     ondestroy: ''
     uid: 2d29a0d5-d88d-493d-bece-8d52ed476273
-    lastmod: 1586656066727
+    lastmod: 1599533995511
     extends: {}
     texture: e90eb23b-547a-4d96-a203-ffe63c00cf9b
   - name: Slime
     depth: 0
     oncreate: |-
       this.speed = 1;
-      this.direction = 180;
+      this.direction = -180;
 
       this.animationSpeed = 4 / 60;
       this.play();
@@ -247,9 +247,9 @@ types:
       var freeBelow = !ct.place.tile(this, this.x + ct.u.ldx(70,
       this.direction), this.y + 35, -10) &&
                       ct.place.free(this, this.x + ct.u.ldx(70, this.direction), this.y + 35, 'Solid');
-                      
+
       var occupiedInFront = ct.place.tile(this, this.x + ct.u.ldx(10,
-      this.direction), this.y, -10) || 
+      this.direction), this.y, -10) ||
                             ct.place.occupied(this, this.x + ct.u.ldx(10, this.direction), this.y, 'Solid');
 
       if (freeBelow || occupiedInFront) {
@@ -263,22 +263,22 @@ types:
       }
 
 
-      ct.types.move(this);
+      this.move();
     ondraw: ''
     ondestroy: ''
     uid: 1f91fd7d-2d6c-4542-aead-78b8010b835b
-    lastmod: 1580621292127
+    lastmod: 1599534005279
     extends:
       ctype: Enemy
     texture: 703fb5d5-cf20-4450-b760-0b1cd037a5ad
   - name: Rich
     depth: 0
     oncreate: ''
-    onstep: ct.types.move(this);
+    onstep: ''
     ondraw: ''
     ondestroy: ''
     uid: b658efa2-360e-4a62-8640-3e3281156f4e
-    lastmod: 1585943142181
+    lastmod: 1599534002727
     extends: {}
     texture: 1da28af4-53f1-4958-82b2-a696778f910f
   - name: ToggleFullscreen
@@ -295,7 +295,7 @@ types:
     ondraw: 'this.gotoAndStop(ct.fittoscreen.getIsFullscreen()? 1 : 0);'
     ondestroy: ''
     uid: 8a4b8de4-7729-4936-bc7b-bc277a512975
-    lastmod: 1596761320719
+    lastmod: 1599534011351
     extends: {}
     texture: d161a39a-203e-4099-99e2-41385d94f975
   - name: CoinWidget
@@ -305,7 +305,7 @@ types:
       this.coinsCounter.x = 40;
       this.coinsCounter.anchor.y = 0.5;
       this.addChild(this.coinsCounter);
-    onstep: this.move();
+    onstep: ''
     ondraw: |-
       if (this.coinsCounter.text != ct.room.coins + ' / 33') {
           this.coinsCounter.text = ct.room.coins + ' / 33';
@@ -314,7 +314,7 @@ types:
     uid: 1f73eb4f-8795-4234-af61-2c44c3fba073
     texture: 62be2903-9782-49fc-b551-ef2e641091c9
     extends: {}
-    lastmod: 1585943971312
+    lastmod: 1599533989223
   - name: ButtonLeft
     depth: 0
     oncreate: |-
@@ -329,7 +329,7 @@ types:
       });
       this.alpha = 0.5;
       this.button.visible = false;
-    onstep: this.move();
+    onstep: ''
     ondraw: |-
       this.button.x = this.x;
       this.button.y = this.y;
@@ -337,7 +337,7 @@ types:
     uid: 45a6ee81-34af-494e-914e-51ec9d414314
     texture: e706498a-bfef-4366-9481-687b01ff7bf1
     extends: {}
-    lastmod: 1586161306439
+    lastmod: 1599533982687
   - name: ButtonRight
     depth: 0
     oncreate: |-
@@ -352,7 +352,7 @@ types:
       });
       this.alpha = 0.5;
       this.button.visible = false;
-    onstep: this.move();
+    onstep: ''
     ondraw: |-
       this.button.x = this.x;
       this.button.y = this.y;
@@ -360,7 +360,7 @@ types:
     uid: 03773b4b-e444-4a2d-9891-3ddf9575cc87
     texture: 8f3b23d8-3aed-429a-a66e-9572cad7919a
     extends: {}
-    lastmod: 1586161193203
+    lastmod: 1599533980063
   - name: ButtonJump
     depth: 0
     oncreate: |-
@@ -383,7 +383,7 @@ types:
     uid: 86f037f0-9a1c-4306-9d67-00be01bbd793
     texture: b5121b5f-8109-45c0-9fa4-44f9f10ce88c
     extends: {}
-    lastmod: 1596761326225
+    lastmod: 1599533976511
   - name: TryAgain
     depth: 0
     oncreate: ''
@@ -397,7 +397,7 @@ types:
     uid: 64fac189-737e-4e56-a8fc-15eccae6bf2a
     texture: 0298d848-efe7-48e5-8d68-9128ba8b4e02
     extends: {}
-    lastmod: 1586655954819
+    lastmod: 1599534015095
 sounds:
   - name: BodyFall
     uid: 64f57367-eae3-40e1-8769-e11bd3c90f62
@@ -1474,165 +1474,219 @@ rooms:
       - x: 980
         'y': 280
         uid: b7a528f8-655c-4920-900f-f191533f411d
+        exts: {}
       - x: 1225
         'y': 770
         uid: 036a2de1-89b0-48e3-b26f-d608ce2079fd
+        exts: {}
       - x: 1295
         'y': 770
         uid: 036a2de1-89b0-48e3-b26f-d608ce2079fd
+        exts: {}
       - x: 1470
         'y': 280
         uid: b7a528f8-655c-4920-900f-f191533f411d
+        exts: {}
       - x: 350
         'y': 490
         uid: 1026c1c8-90e4-4b93-bb6a-568f53918097
+        exts: {}
       - x: 420
         'y': 490
         uid: 1026c1c8-90e4-4b93-bb6a-568f53918097
+        exts: {}
       - x: 490
         'y': 490
         uid: 1026c1c8-90e4-4b93-bb6a-568f53918097
+        exts: {}
       - x: 420
         'y': 840
         uid: 036a2de1-89b0-48e3-b26f-d608ce2079fd
+        exts: {}
       - x: 490
         'y': 840
         uid: 036a2de1-89b0-48e3-b26f-d608ce2079fd
+        exts: {}
       - x: 910
         'y': 840
         uid: 036a2de1-89b0-48e3-b26f-d608ce2079fd
+        exts: {}
       - x: 980
         'y': 840
         uid: 036a2de1-89b0-48e3-b26f-d608ce2079fd
+        exts: {}
       - x: 70
         'y': 350
         uid: 00664f77-21c6-4b06-b310-88640b1beaf9
+        exts: {}
       - x: 385
         'y': 140
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
+        exts: {}
       - x: 420
         'y': 420
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
+        exts: {}
       - x: 490
         'y': 420
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
+        exts: {}
       - x: 1645
         'y': 245
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
+        exts: {}
       - x: 1645
         'y': 175
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
+        exts: {}
       - x: 1645
         'y': 105
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
+        exts: {}
       - x: 1295
         'y': 385
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
+        exts: {}
       - x: 1295
         'y': 490
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
+        exts: {}
       - x: 1295
         'y': 595
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
+        exts: {}
       - x: 1295
         'y': 700
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
+        exts: {}
       - x: 1120
         'y': 770
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
+        exts: {}
       - x: 980
         'y': 700
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
+        exts: {}
       - x: 840
         'y': 770
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
+        exts: {}
       - x: 595
         'y': 770
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
+        exts: {}
       - x: 490
         'y': 700
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
+        exts: {}
       - x: 385
         'y': 770
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
+        exts: {}
       - x: 175
         'y': 770
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
+        exts: {}
       - x: 140
         'y': 735
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
+        exts: {}
       - x: 175
         'y': 700
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
+        exts: {}
       - x: 210
         'y': 735
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
+        exts: {}
       - x: 175
         'y': 735
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
+        exts: {}
       - x: 385
         'y': 560
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
+        exts: {}
       - x: 455
         'y': 560
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
+        exts: {}
       - x: 525
         'y': 560
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
+        exts: {}
       - x: 1645
         'y': 35
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
+        exts: {}
       - x: 315
         'y': 140
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
+        exts: {}
       - x: 350
         'y': 105
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
+        exts: {}
       - x: 700
         'y': 840
         uid: 1f91fd7d-2d6c-4542-aead-78b8010b835b
+        exts: {}
       - x: 1015
         'y': 490
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
+        exts: {}
       - x: 1015
         'y': 455
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
+        exts: {}
       - x: 1050
         'y': 455
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
+        exts: {}
       - x: 1050
         'y': 490
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
+        exts: {}
       - x: 840
         'y': 350
         uid: 1026c1c8-90e4-4b93-bb6a-568f53918097
+        exts: {}
       - x: 910
         'y': 350
         uid: 1026c1c8-90e4-4b93-bb6a-568f53918097
+        exts: {}
       - x: 980
         'y': 350
         uid: 1026c1c8-90e4-4b93-bb6a-568f53918097
+        exts: {}
       - x: 1050
         'y': 350
         uid: 1026c1c8-90e4-4b93-bb6a-568f53918097
+        exts: {}
       - x: 280
         'y': 105
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
+        exts: {}
       - x: 245
         'y': 140
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
+        exts: {}
       - x: 315
         'y': 210
         uid: 1f91fd7d-2d6c-4542-aead-78b8010b835b
+        exts: {}
       - x: 1120
         'y': 560
         uid: 1f91fd7d-2d6c-4542-aead-78b8010b835b
+        exts: {}
       - x: -70
         'y': 280
         uid: 1026c1c8-90e4-4b93-bb6a-568f53918097
+        exts: {}
       - x: 245
         'y': 770
         uid: b7a528f8-655c-4920-900f-f191533f411d
+        exts: {}
   - name: DeadScreen
     oncreate: >-
       ct.sound.spawn('Failure');
@@ -1682,12 +1736,15 @@ rooms:
       - x: 512
         'y': 256
         uid: 2d29a0d5-d88d-493d-bece-8d52ed476273
+        exts: {}
       - x: 992
         'y': 669
         uid: 8a4b8de4-7729-4936-bc7b-bc277a512975
+        exts: {}
       - x: 512
         'y': 640
         uid: 64fac189-737e-4e56-a8fc-15eccae6bf2a
+        exts: {}
   - name: RichScreen
     oncreate: >-
       ct.sound.spawn('Victory');
@@ -1742,9 +1799,11 @@ rooms:
       - x: 512
         'y': 256
         uid: b658efa2-360e-4a62-8640-3e3281156f4e
+        exts: {}
       - x: 992
         'y': 670
         uid: 8a4b8de4-7729-4936-bc7b-bc277a512975
+        exts: {}
   - name: UI_Layer
     oncreate: |2-
           /*this.touchControl = {};
@@ -1787,18 +1846,23 @@ rooms:
       - x: 992
         'y': 689
         uid: 8a4b8de4-7729-4936-bc7b-bc277a512975
+        exts: {}
       - x: 44
         'y': 46
         uid: 1f73eb4f-8795-4234-af61-2c44c3fba073
+        exts: {}
       - x: 96
         'y': 640
         uid: 45a6ee81-34af-494e-914e-51ec9d414314
+        exts: {}
       - x: 224
         'y': 640
         uid: 03773b4b-e444-4a2d-9891-3ddf9575cc87
+        exts: {}
       - x: 832
         'y': 640
         uid: 86f037f0-9a1c-4306-9d67-00be01bbd793
+        exts: {}
     tiles:
       - depth: -10
         tiles: []
@@ -1837,6 +1901,7 @@ settings:
       - 0
       - 0
     versionPostfix: ''
+  fps: 30
 palette:
   - '#257073'
 startroom: b0f0ff4d-a155-4d68-a86e-5bb7ed8973ab
@@ -1875,7 +1940,7 @@ scripts:
               depth: 1000
           });
       }
-ctjsVersion: 1.3.2
+ctjsVersion: 1.4.2
 fonts: []
 skeletons: []
 actions:

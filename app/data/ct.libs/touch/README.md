@@ -69,14 +69,14 @@ this.scale.y = this.scale.x;
 `touch.DeltaRotation` returns a value between `-1` and `1`, describing the rotation amount in the last frame in radians. A proper way of using this can look like this:
 
 ```js
-this.rotation += ct.actions.Rotate.value;
+this.angle += ct.u.radToDeg(ct.actions.Rotate.value);
 ```
 
 `touch.DeltaRotation` uses the first two touch events for its calculations, ignoring third and next fingers.
 
 ### Panning
 
-`touch.PanX` and `touch.PanY` describe the movement of fingers on screen in the last frame. They return a value between `-1` and `1`. These are relative to the view's size: for example, if a value of an action returns 0.1 for an X axis, then it means that fingers moved to `0.1 * ct.viewWidth` pixels in the last frame.
+`touch.PanX` and `touch.PanY` describe the movement of fingers on screen in the last frame. They return a value between `-1` and `1`. These are relative to the view's size: for example, if a value of an action returns 0.1 for an X axis, then it means that fingers moved to `0.1 * ct.camera.width` pixels in the last frame.
 
 ## Any touch, double touch and triple touch inputs
 

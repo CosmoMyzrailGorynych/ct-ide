@@ -63,10 +63,10 @@
             ct.pixiApp.renderer.view.style.cursor = '';
         },
         get x() {
-            return ct.u.uiToGameCoord(ct.mouse.xui, ct.mouse.yui)[0];
+            return ct.u.uiToGameCoord(ct.mouse.xui, ct.mouse.yui).x;
         },
         get y() {
-            return ct.u.uiToGameCoord(ct.mouse.xui, ct.mouse.yui)[1];
+            return ct.u.uiToGameCoord(ct.mouse.xui, ct.mouse.yui).y;
         }
     };
 

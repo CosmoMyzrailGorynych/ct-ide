@@ -34,7 +34,7 @@ A new object `ct.camera3d` is added. Use it to position the camera in the 3D wor
 
 ## 3D transforms
 
-`this.x`, `this.y`, `this.position`, `this.rotation` and `this.scale` still exist, but they should not be used. Instead,
+`this.x`, `this.y`, `this.position`, `this.angle`, and `this.scale` still exist, but they should not be used. Instead,
 
 * Use `this.position3d` with `x`, `y` and `z` parameters to position objects.
 * Use `this.euler` with `pitch`, `yaw` and `roll` parameters to rotate them.

@@ -227,7 +227,7 @@
       "name": "Spaceship",
       "depth": 10,
       "oncreate": "this.maxSpeed = 10;\nct.camera.follow = this;",
-      "onstep": "this.hspeed = ct.actions.MoveX.value * this.maxSpeed;\nthis.vspeed = ct.actions.MoveY.value * this.maxSpeed;\n\nif (this.speed > 0) {\n    this.rotation = ct.u.pdn(0, 0, this.hspeed, this.vspeed);\n    this.gotoAndStop(0);\n} else {\n    this.gotoAndStop(1);\n}\n\nthis.move();\n\nif (ct.actions.Shoot.pressed) {\n    var laser = ct.types.copy('Laser', this.x, this.y);\n    laser.direction = this.rotation;\n    laser.rotation = this.rotation;\n}",
+      "onstep": "this.hspeed = ct.actions.MoveX.value * this.maxSpeed;\nthis.vspeed = ct.actions.MoveY.value * this.maxSpeed;\n\nif (this.speed > 0) {\n    this.angle = ct.u.pdn(0, 0, this.hspeed, this.vspeed);\n    this.gotoAndStop(0);\n} else {\n    this.gotoAndStop(1);\n}\n\nthis.move();\n\nif (ct.actions.Shoot.pressed) {\n    var laser = ct.types.copy('Laser', this.x, this.y);\n    laser.direction = this.angle;\n    laser.angle = this.angle;\n}",
       "ondraw": "",
       "ondestroy": "",
       "uid": "664e9c6d-d93e-4c6f-bd74-43a234fced2f",

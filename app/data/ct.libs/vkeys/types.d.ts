@@ -59,8 +59,8 @@ declare namespace ct {
          *     key: 'Vk1',
          *     texNormal: 'Key_Normal',
          *     texHover: 'Key_Active',
-         *     x: () => ct.room.x + ct.viewWidth - 130,
-         *     y: () => ct.room.y + ct.viewHeight - 130,
+         *     x: () => ct.room.x + ct.camera.width - 130,
+         *     y: () => ct.room.y + ct.camera.height - 130,
          *     depth: 14000
          * });
          * ```

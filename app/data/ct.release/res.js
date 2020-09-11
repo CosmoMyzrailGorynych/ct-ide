@@ -1,5 +1,9 @@
+/**
+ * @typedef {ITextureOptions}
+ * @property {} []
+ */
+
 (function resAddon(ct) {
-    const loader = new PIXI.Loader();
     const loadingScreen = document.querySelector('.ct-aLoadingScreen'),
           loadingBar = loadingScreen.querySelector('.ct-aLoadingBar');
     const dbFactory = window.dragonBones ? dragonBones.PixiFactory.factory : null;
@@ -12,30 +16,146 @@
         soundsTotal: [/*@sndtotal@*/][0],
         soundsError: 0,
         sounds: {},
-        registry: [/*@textureregistry@*/][0],
-        atlases: [/*@textureatlases@*/][0],
+        textures: {},
         skelRegistry: [/*@skeletonregistry@*/][0],
-        fetchImage(url, callback) {
-            loader.add(url, url);
-            loader.load((loader, resources) => {
-                callback(resources);
+        /**
+         * Loads and executes a script by its URL
+         * @param {string} url The URL of the script file, with its extension.
+         * Can be relative or absolute.
+         * @returns {Promise<void>}
+         * @async
+         */
+        loadScript: function loadScript(url) {
+            var script = document.createElement('script');
+            script.src = url;
+            const promise = new Promise((resolve, reject) => {
+                script.onload = () => {
+                    resolve();
+                };
+                script.onerror = () => {
+                    reject();
+                };
             });
-            loader.onError((loader, resources) => {
-                loader.add(url, 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVQIW2NkAAIAAAoAAggA9GkAAAAASUVORK5CYII=');
-                console.error('[ct.res] An image from ' + resources + ' wasn\'t loaded :( Maybe refreshing the page will solve this problem…');
-                ct.res.texturesError++;
+            document.getElementsByTagName('head')[0].appendChild(script);
+            return promise;
+        },
+        /**
+         * Loads an individual image as a named ct.js texture.
+         * @param {string} url The path to the source image.
+         * @param {string} name The name of the resulting ct.js texture
+         * as it will be used in your code.
+         * @param {ITextureOptions} textureOptions Information about texture's axis
+         * and collision shape.
+         * @returns {Promise<Array<PIXI.Texture>>}
+         */
+        loadTexture: function loadTexture(url, name, textureOptions) {
+            const loader = new PIXI.Loader();
+            loader.add(url, url);
+            return new Promise((resolve, reject) => {
+                loader.load((loader, resources) => {
+                    resolve(resources);
+                });
+                loader.onError.add(() => {
+                    reject(() => new Error(`[ct.res] Could not load image ${url}`));
+                });
+            })
+            .then(resources => {
+                const tex = [resources[url].texture];
+                tex.shape = tex[0].shape = textureOptions.shape || {};
+                tex[0].defaultAnchor = new PIXI.Point(
+                    textureOptions.anchor.x || 0,
+                    textureOptions.anchor.x || 0
+                );
+                ct.res.textures[name] = tex;
+                return tex;
             });
         },
-        parseImages() {
-            // filled by IDE and catmods. As usual, atlases are splitted here.
+        /**
+         * Loads a Texture Packer compatible .json file with its source image,
+         * adding ct.js textures to the game.
+         * @param {string} url The path to the JSON file that describes the atlas' textures.
+         * @returns {Promise<Array<String>>} A promise that resolves into an array
+         * of all the loaded textures.
+         */
+        loadAtlas: function loadAtlas(url) {
+            const loader = new PIXI.Loader();
+            loader.add(url, url);
+            return new Promise((resolve, reject) => {
+                loader.load((loader, resources) => {
+                    resolve(resources);
+                });
+                loader.onError.add(() => {
+                    reject(() => new Error(`[ct.res] Could not load atlas ${url}`));
+                });
+            })
+            .then(resources => {
+                const sheet = resources[url].spritesheet;
+                for (const animation in sheet.animations) {
+                    const tex = sheet.animations[animation];
+                    tex.shape = tex[0].shape || {};
+                    ct.res.textures[animation] = tex;
+                }
+                console.log(Object.keys(sheet.animations));
+                return Object.keys(sheet.animations);
+            });
+        },
+        loadGame() {
+            // !! This method is intended to be filled by ct.IDE and be executed
+            // exactly once at game startup. Don't put your code here.
+            const changeProgress = percents => {
+                loadingScreen.setAttribute('data-progress', percents);
+                loadingBar.style.width = percents + '%';
+            };
+
+            const atlases = [/*@atlases@*/][0];
+            const tiledImages = [/*@tiledImages@*/][0];
+
+            const totalAssets = atlases.length;
+            let assetsLoaded = 0;
+            const loadingPromises = [];
+
+            loadingPromises.push(...atlases.map(atlas =>
+                ct.res.loadAtlas(atlas)
+                .then(texturesNames => {
+                    assetsLoaded++;
+                    changeProgress(assetsLoaded / totalAssets * 100);
+                    return texturesNames;
+                })));
+
+            for (const name in tiledImages) {
+                loadingPromises.push(ct.res.loadTexture(
+                    tiledImages[name].source,
+                    name,
+                    {
+                        anchor: tiledImages[name].anchor,
+                        shape: tiledImages[name].shape
+                    }
+                ));
+            }
+            console.log('ads');
+
             /*@res@*/
             /*%res%*/
-            PIXI.Loader.shared.load();
+
+            console.log(loadingPromises);
+            Promise.all(loadingPromises)
+            .then(() => {
+                /*%start%*/
+                loadingScreen.classList.add('hidden');
+                PIXI.Ticker.shared.add(ct.loop);
+                ct.rooms.forceSwitch(ct.rooms.starting);
+            })
+            .catch (console.error);
+
+            for (const skel in ct.res.skelRegistry) {
+                // eslint-disable-next-line id-blacklist
+                ct.res.skelRegistry[skel].data = PIXI.Loader.shared.resources[ct.res.skelRegistry[skel].origname + '_ske.json'].data;
+            }
         },
         /*
          * Gets a pixi.js texture from a ct.js' texture name,
-         so that it can be used in pixi.js objects.
-         * @param {string} name The name of the ct.js texture
+         * so that it can be used in pixi.js objects.
+         * @param {string|-1} name The name of the ct.js texture, or -1 for an empty texture
          * @param {number} [frame] The frame to extract
          * @returns {PIXI.Texture|Array<PIXI.Texture>} If `frame` was specified,
          * returns a single PIXI.Texture. Otherwise, returns an array
@@ -51,11 +171,31 @@
                 }
                 return [PIXI.Texture.EMPTY];
             }
-            const reg = ct.res.registry[name];
-            if (frame !== void 0) {
-                return reg.textures[frame];
+            if (!(name in ct.res.textures)) {
+                throw new Error(`Attempt to get a non-existent texture ${name}`);
             }
-            return reg.textures;
+            const tex = ct.res.textures[name];
+            if (frame !== void 0) {
+                return tex[frame];
+            }
+            return tex;
+        },
+        /*
+         * Returns the collision shape of the given texture.
+         * @param {string|-1} name The name of the ct.js texture, or -1 for an empty collision shape
+         * @returns {object}
+         *
+         * @note Formatted as a non-jsdoc comment as it requires a better ts declaration
+         * than the auto-generated one
+         */
+        getTextureShape(name) {
+            if (name === -1) {
+                return {};
+            }
+            if (!(name in ct.res.textures)) {
+                throw new Error(`Attempt to get a shape of a non-existent texture ${name}`);
+            }
+            return ct.res.textures[name].shape;
         },
         /**
          * Creates a DragonBones skeleton, ready to be added to your copies.
@@ -79,40 +219,5 @@
         }
     };
 
-    PIXI.Loader.shared.onLoad.add(e => {
-        loadingScreen.setAttribute('data-progress', e.progress);
-        loadingBar.style.width = e.progress + '%';
-    });
-    PIXI.Loader.shared.onComplete.add(() => {
-        for (const texture in ct.res.registry) {
-            const reg = ct.res.registry[texture];
-            reg.textures = [];
-            if (reg.frames) {
-                for (let i = 0; i < reg.frames; i++) {
-                    const frame = `${texture}@frame${i}`;
-                    const atlas = PIXI.Loader.shared.resources[ct.res.atlases.find(atlas =>
-                        frame in PIXI.Loader.shared.resources[atlas].textures)];
-                    const tex = atlas.textures[frame];
-                    tex.defaultAnchor = new PIXI.Point(reg.anchor.x, reg.anchor.y);
-                    reg.textures.push(tex);
-                }
-            } else {
-                const texture = PIXI.Loader.shared.resources[reg.atlas].texture;
-                texture.defaultAnchor = new PIXI.Point(reg.anchor.x, reg.anchor.y);
-                reg.textures.push(texture);
-            }
-        }
-        for (const skel in ct.res.skelRegistry) {
-            // eslint-disable-next-line id-blacklist
-            ct.res.skelRegistry[skel].data = PIXI.Loader.shared.resources[ct.res.skelRegistry[skel].origname + '_ske.json'].data;
-        }
-        /*%resload%*/
-        loadingScreen.classList.add('hidden');
-        setTimeout(() => {
-            /*%start%*/
-            PIXI.Ticker.shared.add(ct.loop);
-            ct.rooms.forceSwitch(ct.rooms.starting);
-        }, 0);
-    });
-    ct.res.parseImages();
+    ct.res.loadGame();
 })(ct);

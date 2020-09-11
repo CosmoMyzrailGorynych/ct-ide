@@ -41,11 +41,11 @@ types:
 
       this.speed = 25;
 
-      this.direction = ct.random.range(60, 120);
+      this.direction = ct.random.range(-60, -120);
 
       this.gravity = 1.5;
 
-      this.gravityDir = 270;
+      this.gravityDir = 90;
     onstep: |-
       /*
           Scenario:
@@ -53,7 +53,7 @@ types:
               Select another card.
                   If the cards match, block them and drop after 0.5 seconds
                   If they don't, block them, but unblock and flip after 0.5 seconds.
-                  
+
           Blocked cards may not be selected.
           If we select the same card twice, it flips back.
       */
@@ -75,7 +75,7 @@ types:
                       card2.block = true;
                       // Allow new cards to be selected
                       ct.room.card = false;
-                      
+
                       // Do the cards match?
                       if (card1.backFrame === card2.backFrame) {
                           if (ct.types.list['Card'].length > 2) {
@@ -95,7 +95,7 @@ types:
                               ct.sound.spawn('Rollback');
                               card1.block = false;
                               card2.block = false;
-                              
+
                               card1.flipped = false;
                               card2.flipped = false;
                           });
@@ -111,7 +111,7 @@ types:
 
       if (this.drop) {
           ct.types.move(this);
-          this.rotation += this.rotationSpeed * ct.delta;
+          this.angle += this.rotationSpeed * ct.delta;
           if (this.y > ct.height + 160) {
               this.kill = true;
           }
@@ -206,37 +206,48 @@ rooms:
     tiles:
       - depth: -10
         tiles: []
+        extends: {}
     copies:
       - x: 490
         'y': 210
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+        exts: {}
       - x: 350
         'y': 210
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+        exts: {}
       - x: 210
         'y': 210
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+        exts: {}
       - x: 630
         'y': 210
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+        exts: {}
       - x: 770
         'y': 210
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+        exts: {}
       - x: 210
         'y': 420
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+        exts: {}
       - x: 350
         'y': 420
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+        exts: {}
       - x: 490
         'y': 420
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+        exts: {}
       - x: 630
         'y': 420
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+        exts: {}
       - x: 770
         'y': 420
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+        exts: {}
   - name: Room2
     oncreate: |-
       ct.sound.spawn('NewLevel');
@@ -289,45 +300,60 @@ rooms:
       - x: 560
         'y': 140
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+        exts: {}
       - x: 420
         'y': 140
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+        exts: {}
       - x: 280
         'y': 140
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+        exts: {}
       - x: 700
         'y': 140
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+        exts: {}
       - x: 840
         'y': 140
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+        exts: {}
       - x: 140
         'y': 140
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+        exts: {}
       - x: 140
         'y': 350
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+        exts: {}
       - x: 280
         'y': 350
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+        exts: {}
       - x: 420
         'y': 350
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+        exts: {}
       - x: 560
         'y': 350
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+        exts: {}
       - x: 700
         'y': 350
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+        exts: {}
       - x: 840
         'y': 350
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+        exts: {}
       - x: 420
         'y': 560
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+        exts: {}
       - x: 560
         'y': 560
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+        exts: {}
+    tiles: []
   - name: Room3
     oncreate: |-
       ct.sound.spawn('NewLevel');
@@ -380,74 +406,82 @@ rooms:
       - x: 420
         'y': 140
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+        exts: {}
       - x: 560
         'y': 140
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+        exts: {}
       - x: 700
         'y': 140
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+        exts: {}
       - x: 840
         'y': 140
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+        exts: {}
       - x: 280
         'y': 140
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+        exts: {}
       - x: 140
         'y': 140
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+        exts: {}
       - x: 140
         'y': 350
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+        exts: {}
       - x: 280
         'y': 350
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+        exts: {}
       - x: 420
         'y': 350
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+        exts: {}
       - x: 560
         'y': 350
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+        exts: {}
       - x: 700
         'y': 350
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+        exts: {}
       - x: 840
         'y': 350
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+        exts: {}
       - x: 840
         'y': 560
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+        exts: {}
       - x: 700
         'y': 560
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+        exts: {}
       - x: 560
         'y': 560
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+        exts: {}
       - x: 420
         'y': 560
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+        exts: {}
       - x: 280
         'y': 560
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+        exts: {}
       - x: 140
         'y': 560
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
+        exts: {}
+    tiles: []
 soundtick: 6
 roomtick: 3
 typetick: 1
 styletick: 0
 starting: 0
 settings:
-  minifyhtmlcss: false
-  minifyjs: false
-  title: Memocats
-  author: Cosmo Myzrail Gorynych
-  site: 'https://ctjs.rocks'
-  fps: 30
-  version:
-    - 0
-    - 0
-    - 0
-  versionPostfix: ''
   export:
     linux: true
     windows: true
@@ -456,9 +490,24 @@ settings:
     icon: -1
     accent: '#446adb'
     invertPreloaderScheme: true
-  desktopMode: maximized
+  rendering:
+    maxFPS: 60
+    pixelatedrender: false
+    highDensity: true
+    usePixiLegacy: true
+    desktopMode: maximized
+  authoring:
+    title: Memocats
+    author: Cosmo Myzrail Gorynych
+    site: 'https://ctjs.rocks'
+    version:
+      - 0
+      - 0
+      - 0
+    versionPostfix: ''
+  fps: 30
 startroom: 3827e721-5331-49b2-a37a-f868e15cae0d
-ctjsVersion: 1.3.0
+ctjsVersion: 1.4.2
 scripts: []
 fonts: []
 skeletons: []

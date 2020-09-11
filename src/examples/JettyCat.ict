@@ -658,7 +658,7 @@ types:
           this.gameover = true;
           // Jump to the left
           this.speed = 25;
-          this.direction = 135;
+          this.direction = -135;
           // Stop camera movement
           ct.camera.follow = false;
 
@@ -676,7 +676,7 @@ types:
 
 
       this.move();
-    ondraw: this.rotation = this.vspeed * 0.3;
+    ondraw: this.angle = -this.vspeed * 0.3;
     ondestroy: ''
     uid: 8f93611e-6e95-49c4-8e2b-4cc067be2924
     texture: eb24c2bc-a36c-4118-b33e-a7348c00e5bb
@@ -710,7 +710,7 @@ types:
       }
     ondraw: |-
       this.wiggleTime += ct.delta * 0.2;
-      this.rotation = Math.sin(this.wiggleTime) * 5;
+      this.angle = Math.sin(this.wiggleTime) * 5;
     ondestroy: 'ct.emitters.fire(''Stars'', this.x, this.y);'
     uid: b7362b5c-811d-438c-b164-f53213eaefa7
     texture: 4e0a0e06-81ea-4cd2-8f3d-569a8ad3e947
