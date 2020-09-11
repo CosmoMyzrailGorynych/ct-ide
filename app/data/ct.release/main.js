@@ -155,6 +155,46 @@ document.getElementById('ct').appendChild(ct.pixiApp.view);
  */
 ct.u = {
     /**
+     * Get the environment the game runs on.
+     * @returns {string} Either 'ct.ide', or 'nw', or 'electron', or 'browser'.
+     */
+    getEnvironment() {
+        if (window.name === 'ct.js debugger') {
+            return 'ct.ide';
+        }
+        try {
+            if (nw.require) {
+                return 'nw';
+            }
+        } catch (oO) {
+            void 0;
+        }
+        try {
+            require('electron');
+            return 'electron';
+        } catch (Oo) {
+            void 0;
+        }
+        return 'browser';
+    },
+    /**
+     * Get the current operating system the game runs on.
+     * @returns {string} One of 'windows', 'darwin' (which is MacOS), 'linux', or 'unknown'.
+     */
+    getOS() {
+        const ua = window.navigator.userAgent;
+        if (ua.indexOf('Windows') !== -1) {
+            return 'windows';
+        }
+        if (ua.indexOf('Linux') !== -1) {
+            return 'linux';
+        }
+        if (ua.indexOf('Mac') !== -1) {
+            return 'darwin';
+        }
+        return 'unknown';
+    },
+    /**
      * Returns the length of a vector projection onto an X axis.
      * @param {number} l The length of the vector
      * @param {number} d The direction of the vector
@@ -405,6 +445,7 @@ ct.u = {
     }
 };
 ct.u.ext(ct.u, {// make aliases
+    getOs: ct.u.getOS,
     lengthDirX: ct.u.ldx,
     lengthDirY: ct.u.ldy,
     pointDirection: ct.u.pdn,
