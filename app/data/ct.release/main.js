@@ -442,6 +442,28 @@ ct.u = {
      */
     waitUi(time) {
         return ct.timer.addUi(time);
+    },
+    /**
+     * Creates a new function that returns a promise, based
+     * on a function with a regular (err, result) => {...} callback.
+     * @param {Function} f The function that needs to be promisified
+     * @see https://javascript.info/promisify
+     */
+    promisify(f) {
+        // eslint-disable-next-line func-names
+        return function (...args) {
+            return new Promise((resolve, reject) => {
+                const callback = function callback(err, result) {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(result);
+                    }
+                };
+                args.push(callback);
+                f.call(this, ...args);
+            });
+        };
     }
 };
 ct.u.ext(ct.u, {// make aliases
