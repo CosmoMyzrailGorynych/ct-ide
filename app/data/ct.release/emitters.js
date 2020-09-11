@@ -83,7 +83,7 @@ class EmitterTandem extends PIXI.Container {
         }
         this.deltaPosition = opts.position;
         this.depth = opts.depth;
-        this.paused = this.frozen = false;
+        this.frozen = false;
 
         if (this.isUi) {
             ct.emitters.uiTandems.push(this);
@@ -160,8 +160,10 @@ class EmitterTandem extends PIXI.Container {
      */
     pause() {
         for (const emt of this.emitters) {
-            emt.oldMaxParticles = emt.maxParticles;
-            emt.maxParticles = 0;
+            if (emt.maxParticles !== 0) {
+                emt.oldMaxParticles = emt.maxParticles;
+                emt.maxParticles = 0;
+            }
         }
     }
     /**
