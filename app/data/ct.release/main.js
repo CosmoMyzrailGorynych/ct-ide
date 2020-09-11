@@ -411,21 +411,6 @@ ct.u = {
         return o1;
     },
     /**
-     * Loads and executes a script by its URL, optionally with a callback
-     * @param {string} url The URL of the script file, with its extension.
-     * Can be relative or absolute.
-     * @param {Function} callback An optional callback that fires when the script is loaded
-     * @returns {void}
-     */
-    load(url, callback) {
-        var script = document.createElement('script');
-        script.src = url;
-        if (callback) {
-            script.onload = callback;
-        }
-        document.getElementsByTagName('head')[0].appendChild(script);
-    },
-    /**
      * Returns a Promise that resolves after the given time.
      * This timer is run in gameplay time scale, meaning that it is affected by time stretching.
      * @param {number} time Time to wait, in milliseconds

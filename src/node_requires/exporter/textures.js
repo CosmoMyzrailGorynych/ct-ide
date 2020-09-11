@@ -243,8 +243,8 @@ const atlasWidth = 2048,
       atlasHeight = atlasWidth;
 const packerSettings = [atlasWidth, atlasHeight, 0, {
     pot: true,
-    square: true,
-    allowRotation: true
+    square: true
+    // allowRotation: true
 }];
 
 // eslint-disable-next-line max-lines-per-function
@@ -331,11 +331,10 @@ const packImages = async (proj, writeDir) => {
         atlases.push(`./img/a${ind}.json`);
     });
 
-    const tiledMeta = {};
+    const tiledImages = {};
     let tiledCounter = 0;
     for (const tex of tiledTextures) {
-        tiledMeta[tex.name] = {
-            frames: 0,
+        tiledImages[tex.name] = {
             source: `./img/t${tiledCounter}.png`,
             shape: getTextureShape(tex),
             anchor: {
@@ -357,7 +356,7 @@ const packImages = async (proj, writeDir) => {
     await Promise.all(writePromises);
     return {
         atlases: JSON.stringify(atlases),
-        tiledMeta: JSON.stringify(tiledMeta)
+        tiledImages: JSON.stringify(tiledImages)
     };
 };
 

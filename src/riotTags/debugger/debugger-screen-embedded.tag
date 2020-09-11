@@ -4,6 +4,7 @@ debugger-screen-embedded(class="{opts.class} {flexrow: verticalLayout, flexcol: 
     webview.tall#thePreview(
         partition="persist:trusted"
         ref="gameView" allownw
+        name="ct.js debugger"
     )
     .aResizer(ref="gutter" onmousedown="{gutterMouseDown}" class="{vertical: verticalLayout, horizontal: !verticalLayout}")
     .flexfix(
