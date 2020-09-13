@@ -149,7 +149,8 @@ const drawAtlasFromBin = (bin, binInd) => {
             anchor: {
                 x: tex.axis[0] / tex.width,
                 y: tex.axis[1] / tex.height
-            }
+            },
+            shape: getTextureShape(tex)
         };
     }
 

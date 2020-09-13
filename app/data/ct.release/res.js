@@ -92,10 +92,15 @@
                 const sheet = resources[url].spritesheet;
                 for (const animation in sheet.animations) {
                     const tex = sheet.animations[animation];
+                    const animData = sheet.data.animations;
+                    for (let i = 0, l = animData[animation].length; i < l; i++) {
+                        const a = animData[animation],
+                              f = a[i];
+                        tex[i].shape = sheet.data.frames[f].shape;
+                    }
                     tex.shape = tex[0].shape || {};
                     ct.res.textures[animation] = tex;
                 }
-                console.log(Object.keys(sheet.animations));
                 return Object.keys(sheet.animations);
             });
         },
