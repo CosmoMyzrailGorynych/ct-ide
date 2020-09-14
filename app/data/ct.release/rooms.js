@@ -306,7 +306,7 @@ class Room extends PIXI.Container {
          * The name of the starting room, as it was set in ct.IDE.
          * @type {string}
          */
-        starting: '@startroom@'
+        starting: '/*@startroom@*/'
     };
 })();
 /**

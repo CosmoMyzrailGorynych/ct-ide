@@ -114,6 +114,7 @@
 
             const atlases = [/*@atlases@*/][0];
             const tiledImages = [/*@tiledImages@*/][0];
+            const sounds = [/*@sounds@*/][0];
 
             const totalAssets = atlases.length;
             let assetsLoaded = 0;
@@ -137,12 +138,21 @@
                     }
                 ));
             }
-            console.log('ads');
+
+            for (const sound of sounds) {
+                ct.sound.init(sound.name, {
+                    wav: sound.wav || false,
+                    mp3: sound.mp3 || false,
+                    ogg: sound.ogg || false
+                }, {
+                    poolSize: sound.poolSize,
+                    music: sound.isMusic
+                });
+            }
 
             /*@res@*/
             /*%res%*/
 
-            console.log(loadingPromises);
             Promise.all(loadingPromises)
             .then(() => {
                 /*%start%*/
@@ -150,7 +160,7 @@
                 PIXI.Ticker.shared.add(ct.loop);
                 ct.rooms.forceSwitch(ct.rooms.starting);
             })
-            .catch (console.error);
+            .catch(console.error);
 
             for (const skel in ct.res.skelRegistry) {
                 // eslint-disable-next-line id-blacklist

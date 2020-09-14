@@ -105,5 +105,3 @@ if (!ct.sound) {
     ct.sound.mp3 = ct.sound.detect('audio/mpeg;');
     ct.sound.ogg = ct.sound.detect('audio/ogg;');
 }
-
-/*@sound@*/

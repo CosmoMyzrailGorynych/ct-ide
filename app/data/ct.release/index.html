@@ -4,7 +4,7 @@
 	<meta charset="utf-8" />
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-	<title><!-- %gametitle% --></title>
+	<title><!-- @gametitle@ --></title>
 	<meta http-equiv="content-script-type" content="text/javascript" />
 	<meta http-equiv="content-style-type" content="text/css" />
 	<meta name="generator" content="ct.js Game Editor">
@@ -12,8 +12,8 @@
 
 	<!-- icons and brand metadata go here -->
 
-	<meta name="theme-color" content="<!-- %accent% -->">
-	<meta name="application-name" content="<!-- %gametitle% -->">
+	<meta name="theme-color" content="<!-- @accent@ -->">
+	<meta name="application-name" content="<!-- @gametitle@ -->">
 
 	<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
 	<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
@@ -21,7 +21,7 @@
 	<link rel="icon" type="image/png" sizes="64x64" href="favicon-64x64.png">
 
 	<meta name="apple-mobile-web-app-capable" content="yes">
-	<meta name="apple-mobile-web-app-title" content="<!-- %gametitle% -->">
+	<meta name="apple-mobile-web-app-title" content="<!-- @gametitle@ -->">
 	<meta name="apple-mobile-web-app-status-bar-style" content="default">
 
 	<link rel="apple-touch-icon" sizes="57x57" href="apple-touch-icon-57x57.png">
@@ -39,7 +39,7 @@
 	<!-- Opera Coast-->
 	<link rel="icon" type="image/png" sizes="228x228" href="coast-228x228.png">
 
-	<meta name="msapplication-TileColor" content="<!-- %accent% -->">
+	<meta name="msapplication-TileColor" content="<!-- @accent@ -->">
 	<meta name="msapplication-TileImage" content="mstile-144x144.png">
 </head>
 <body>
@@ -53,8 +53,12 @@
 		</div>
 	</div>
 	<script src="pixi.min.js"></script>
-	<!-- %dragonbones% -->
-	<!-- %particleEmitters% -->
+	<!-- if @includeDragonBones@ -->
+		<script src="DragonBones.min.js"></script>
+	<!-- endif @includeDragonBones@ -->
+	<!-- if @particleEmitters@ -->
+		<script src="pixi-particles.min.js"></script>
+	<!-- endif @particleEmitters@ -->
 	<script async src="ct.js"></script>
 	<!-- %htmlbottom% -->
 </body>
