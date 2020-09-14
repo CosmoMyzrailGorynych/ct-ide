@@ -56,7 +56,7 @@
                     resolve(resources);
                 });
                 loader.onError.add(() => {
-                    reject(() => new Error(`[ct.res] Could not load image ${url}`));
+                    reject(new Error(`[ct.res] Could not load image ${url}`));
                 });
             })
             .then(resources => {
@@ -74,7 +74,7 @@
          * Loads a Texture Packer compatible .json file with its source image,
          * adding ct.js textures to the game.
          * @param {string} url The path to the JSON file that describes the atlas' textures.
-         * @returns {Promise<Array<String>>} A promise that resolves into an array
+         * @returns {Promise<Array<string>>} A promise that resolves into an array
          * of all the loaded textures.
          */
         loadAtlas: function loadAtlas(url) {
@@ -85,7 +85,7 @@
                     resolve(resources);
                 });
                 loader.onError.add(() => {
-                    reject(() => new Error(`[ct.res] Could not load atlas ${url}`));
+                    reject(new Error(`[ct.res] Could not load atlas ${url}`));
                 });
             })
             .then(resources => {
@@ -104,6 +104,25 @@
                 return Object.keys(sheet.animations);
             });
         },
+        /**
+         * Loads a bitmap font by its XML file.
+         * @param {string} url The path to the XML file that describes the bitmap fonts.
+         * @param {string} name The name of the font.
+         * @returns {Promise<string>} A promise that resolves into the font's name
+         * (the one you've passed with `name`).
+         */
+        loadBitmapFont(url, name) {
+            const loader = new PIXI.Loader();
+            loader.add(name, url);
+            return new Promise((resolve, reject) => {
+                loader.load((loader, resources) => {
+                    resolve(resources);
+                });
+                loader.onError.add(() => {
+                    reject(new Error(`[ct.res] Could not load bitmap font ${url}`));
+                });
+            });
+        },
         loadGame() {
             // !! This method is intended to be filled by ct.IDE and be executed
             // exactly once at game startup. Don't put your code here.
@@ -115,6 +134,7 @@
             const atlases = [/*@atlases@*/][0];
             const tiledImages = [/*@tiledImages@*/][0];
             const sounds = [/*@sounds@*/][0];
+            const bitmapFonts = [/*@bitmapFonts@*/][0];
 
             const totalAssets = atlases.length;
             let assetsLoaded = 0;
@@ -137,6 +157,9 @@
                         shape: tiledImages[name].shape
                     }
                 ));
+            }
+            for (const font in bitmapFonts) {
+                loadingPromises.push(ct.res.loadBitmapFont(bitmapFonts[font], font));
             }
 
             for (const sound of sounds) {

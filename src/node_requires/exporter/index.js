@@ -291,6 +291,7 @@ const exportCtProject = async (project, projdir) => {
     const skeletons = await skeletonsTask;
     const bitmapFonts = await bitmapFontsTask;
     const sounds = getSounds(project);
+    console.log(bitmapFonts);
     buffer += template(await sources['res.js'], {
         atlases,
         tiledImages,
