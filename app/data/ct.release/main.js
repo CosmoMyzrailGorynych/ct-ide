@@ -449,6 +449,17 @@ ct.u = {
                 f.call(this, ...args);
             });
         };
+    },
+    required(paramName, method) {
+        let str = 'The parameter ';
+        if (paramName) {
+            str += `${paramName} `;
+        }
+        if (method) {
+            str += `of ${method} `;
+        }
+        str += 'is required.';
+        throw new Error(str);
     }
 };
 ct.u.ext(ct.u, {// make aliases

@@ -17,7 +17,7 @@
         soundsError: 0,
         sounds: {},
         textures: {},
-        skelRegistry: [/*@skeletonregistry@*/][0],
+        skeletons: {},
         /**
          * Loads and executes a script by its URL
          * @param {string} url The URL of the script file, with its extension.
@@ -25,7 +25,7 @@
          * @returns {Promise<void>}
          * @async
          */
-        loadScript: function loadScript(url) {
+        loadScript(url = ct.u.required('url', 'ct.res.loadScript')) {
             var script = document.createElement('script');
             script.src = url;
             const promise = new Promise((resolve, reject) => {
@@ -48,7 +48,7 @@
          * and collision shape.
          * @returns {Promise<Array<PIXI.Texture>>}
          */
-        loadTexture: function loadTexture(url, name, textureOptions) {
+        loadTexture(url = ct.u.required('url', 'ct.res.loadTexture'), name = ct.u.required('name', 'ct.res.loadTexture'), textureOptions = {}) {
             const loader = new PIXI.Loader();
             loader.add(url, url);
             return new Promise((resolve, reject) => {
@@ -71,13 +71,47 @@
             });
         },
         /**
+         * Loads a skeleton made in DragonBones into the game
+         * @param {string} ske Path to the _ske.json file that contains
+         * the armature and animations.
+         * @param {string} tex Path to the _tex.json file that describes the atlas
+         * with a skeleton's textures.
+         * @param {string} png Path to the _tex.png atlas that contains
+         * all the textures of the skeleton.
+         * @param {string} name The name of the skeleton as it will be used in ct.js game
+         */
+        loadDragonBonesSkeleton(ske, tex, png, name = ct.u.required('name', 'ct.res.loadDragonBonesSkeleton')) {
+            const dbf = dragonBones.PixiFactory.factory;
+            const loader = new PIXI.Loader();
+            loader
+                .add(ske, ske)
+                .add(tex, tex)
+                .add(png, png);
+            return new Promise((resolve, reject) => {
+                loader.load(() => {
+                    resolve();
+                });
+                loader.onError.add(() => {
+                    reject(new Error(`[ct.res] Could not load skeleton with _ske.json: ${ske}, _tex.json: ${tex}, _tex.png: ${png}.`));
+                });
+            }).then(() => {
+                dbf.parseDragonBonesData(loader.resources[ske].data);
+                dbf.parseTextureAtlasData(
+                    loader.resources[tex].data,
+                    loader.resources[png].texture
+                );
+                // eslint-disable-next-line id-blacklist
+                ct.res.skeletons[name] = loader.resources[ske].data;
+            });
+        },
+        /**
          * Loads a Texture Packer compatible .json file with its source image,
          * adding ct.js textures to the game.
          * @param {string} url The path to the JSON file that describes the atlas' textures.
          * @returns {Promise<Array<string>>} A promise that resolves into an array
          * of all the loaded textures.
          */
-        loadAtlas: function loadAtlas(url) {
+        loadAtlas(url = ct.u.required('url', 'ct.res.loadAtlas')) {
             const loader = new PIXI.Loader();
             loader.add(url, url);
             return new Promise((resolve, reject) => {
@@ -111,7 +145,7 @@
          * @returns {Promise<string>} A promise that resolves into the font's name
          * (the one you've passed with `name`).
          */
-        loadBitmapFont(url, name) {
+        loadBitmapFont(url = ct.u.required('url', 'ct.res.loadBitmapFont'), name = ct.u.required('name', 'ct.res.loadBitmapFont')) {
             const loader = new PIXI.Loader();
             loader.add(name, url);
             return new Promise((resolve, reject) => {
@@ -135,6 +169,7 @@
             const tiledImages = [/*@tiledImages@*/][0];
             const sounds = [/*@sounds@*/][0];
             const bitmapFonts = [/*@bitmapFonts@*/][0];
+            const dbSkeletons = [/*@dbSkeletons@*/][0]; // DB means DragonBones
 
             const totalAssets = atlases.length;
             let assetsLoaded = 0;
@@ -161,6 +196,9 @@
             for (const font in bitmapFonts) {
                 loadingPromises.push(ct.res.loadBitmapFont(bitmapFonts[font], font));
             }
+            for (const skel of dbSkeletons) {
+                ct.res.loadDragonBonesSkeleton(...skel);
+            }
 
             for (const sound of sounds) {
                 ct.sound.init(sound.name, {
@@ -184,11 +222,6 @@
                 ct.rooms.forceSwitch(ct.rooms.starting);
             })
             .catch(console.error);
-
-            for (const skel in ct.res.skelRegistry) {
-                // eslint-disable-next-line id-blacklist
-                ct.res.skelRegistry[skel].data = PIXI.Loader.shared.resources[ct.res.skelRegistry[skel].origname + '_ske.json'].data;
-            }
         },
         /*
          * Gets a pixi.js texture from a ct.js' texture name,
@@ -242,8 +275,8 @@
          * @returns {object} The created skeleton
          */
         makeSkeleton(name, skin) {
-            const r = ct.res.skelRegistry[name],
-                  skel = dbFactory.buildArmatureDisplay('Armature', r.data.name, skin);
+            const r = ct.res.skeletons[name],
+                  skel = dbFactory.buildArmatureDisplay('Armature', r.name, skin);
             skel.ctName = name;
             skel.on(dragonBones.EventObject.SOUND_EVENT, function skeletonSound(event) {
                 if (ct.sound.exists(event.name)) {

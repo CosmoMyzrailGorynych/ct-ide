@@ -88,9 +88,23 @@ const parseKeys = function (catmod, str, lib) {
     return str2;
 };
 
+const removeBrokenModules = async function removeBrokenModules(project) {
+    await Promise.all(Object.keys(project.libs).map(async key => {
+        const moduleJSONPath = path.join(basePath + 'ct.libs/', key, 'module.json');
+        if (!(await fs.pathExists(moduleJSONPath))) {
+            const message = `Removing an absent catmod ${key} from the project.`;
+            window.alertify.log(message);
+            // eslint-disable-next-line no-console
+            console.warn(message);
+            delete project.libs[key];
+        }
+    }));
+};
+
 const addModules = async () => { // async
     const pieces = await Promise.all(Object.keys(currentProject.libs).map(async lib => {
-        const moduleJSON = await fs.readJSON(path.join(basePath + 'ct.libs/', lib, 'module.json'), {
+        const moduleJSONPath = path.join(basePath + 'ct.libs/', lib, 'module.json');
+        const moduleJSON = await fs.readJSON(moduleJSONPath, {
             encoding: 'utf8'
         });
         if (await fs.pathExists(path.join(basePath + 'ct.libs/', lib, 'index.js'))) {
@@ -98,9 +112,9 @@ const addModules = async () => { // async
                 encoding: 'utf8'
             }), lib);
         }
-        return '';
+        return false;
     }));
-    return pieces.join('\n');
+    return pieces.filter(t => t).join('\n');
 };
 
 const getInjections = async () => {
@@ -160,6 +174,7 @@ const getInjections = async () => {
 // eslint-disable-next-line max-lines-per-function
 const exportCtProject = async (project, projdir) => {
     currentProject = project;
+    await removeBrokenModules(project);
 
     const {languageJSON} = require('./../i18n');
     const {settings} = project;
@@ -296,7 +311,7 @@ const exportCtProject = async (project, projdir) => {
         atlases,
         tiledImages,
         bitmapFonts,
-        skeletons,
+        dbSkeletons: skeletons.skeletonsDB,
         sounds
     }, injections);
     buffer += '\n';
