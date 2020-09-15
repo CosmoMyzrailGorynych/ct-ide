@@ -32,3 +32,7 @@ if (ct.types.list.TILELAYER) {
         }
     }
 }
+const debugTraceGraphics = new PIXI.Graphics();
+debugTraceGraphics.depth = 100000; // Why not. Overlap everything.
+ct.room.addChild(debugTraceGraphics);
+ct.place.debugTraceGraphics = debugTraceGraphics;

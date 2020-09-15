@@ -211,9 +211,12 @@ declare namespace ct {
          * @param {number} y2 A vertical coordinate of the ending point of the ray.
          * @param {String} [ctype] An optional collision group to trace against. If omitted, will trace through all the copies in the current room.
          *
+         * @deprecated Since v1.4.3. Use ct.place.traceLine instead.
          * @returns {Array<Copy>} Array of all the copies that touched the ray
          */
         function trace(x1: number, y1: number, x2: number, y2: number, ctype?: string): Copy[];
+
+
     }
 }
 

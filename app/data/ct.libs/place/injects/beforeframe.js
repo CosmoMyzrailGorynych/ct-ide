@@ -1,0 +1,1 @@
+ct.place.debugTraceGraphics.clear();
