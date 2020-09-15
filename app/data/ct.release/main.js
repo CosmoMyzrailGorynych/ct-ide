@@ -467,6 +467,7 @@ ct.u.ext(ct.u, {// make aliases
         ct.deltaUi = PIXI.Ticker.shared.elapsedMS / (1000 / (PIXI.Ticker.shared.maxFPS || 60));
         ct.inputs.updateActions();
         ct.timer.updateTimers();
+        /*%beforeframe%*/
         for (let i = 0, li = ct.stack.length; i < li; i++) {
             ct.types.beforeStep.apply(ct.stack[i]);
             ct.stack[i].onStep.apply(ct.stack[i]);
@@ -517,7 +518,7 @@ ct.u.ext(ct.u, {// make aliases
             item.onDraw.apply(item);
             ct.rooms.afterDraw.apply(item);
         }
-
+        /*%afterframe%*/
         ct.main.fpstick++;
         if (ct.rooms.switching) {
             ct.rooms.forceSwitch();

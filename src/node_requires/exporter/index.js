@@ -44,7 +44,7 @@ const addModules = async () => { // async
     return pieces.join('\n');
 };
 
-const injectModules = injects => // async
+const injectModules = injections => // async
     Promise.all(Object.keys(currentProject.libs).map(async lib => {
         const libData = await fs.readJSON(path.join(basePath + 'ct.libs/', lib, 'module.json'), {
             encoding: 'utf8'
@@ -53,13 +53,13 @@ const injectModules = injects => // async
             const injectFiles = await fs.readdir(path.join(basePath + 'ct.libs/', lib, 'injects')),
                   injectKeys = injectFiles.map(fname => path.basename(fname, path.extname(fname)));
             await Promise.all(injectKeys.map(async (key, ind) => {
-                if (key in injects) {
+                if (key in injections) {
                     const injection = await fs.readFile(path.join(basePath + 'ct.libs/', lib, 'injects', injectFiles[ind]), {
                         encoding: 'utf8'
                     });
                     // false positive??
                     // eslint-disable-next-line require-atomic-updates
-                    injects[key] += parseKeys(libData, injection, lib);
+                    injections[key] += parseKeys(libData, injection, lib);
                 }
             }));
         }
@@ -84,7 +84,7 @@ const exportCtProject = async (project, projdir) => {
         fs.ensureDir(path.join(writeDir, '/snd/'))
     ]);
 
-    const injects = {
+    const injections = {
         load: '',
         start: '',
         switch: '',
@@ -92,6 +92,9 @@ const exportCtProject = async (project, projdir) => {
         onbeforecreate: '',
         oncreate: '',
         ondestroy: '',
+
+        beforeframe: '',
+        afterframe: '',
 
         beforedraw: '',
         beforestep: '',
@@ -116,7 +119,7 @@ const exportCtProject = async (project, projdir) => {
         htmlbottom: ''
     };
 
-    await injectModules(injects);
+    await injectModules(injections);
 
     /* Pixi.js */
     if (settings.rendering.usePixiLegacy) {
@@ -164,7 +167,9 @@ const exportCtProject = async (project, projdir) => {
             author: settings.authoring.author,
             site: settings.authoring.site,
             version: settings.authoring.version.join('.') + settings.authoring.versionPostfix
-        }));
+        }))
+        .replace('/*%beforeframe%*/', injections.beforeframe)
+        .replace('/*%afterframe%*/', injections.afterframe);
 
     buffer += '\n';
 
@@ -189,16 +194,16 @@ const exportCtProject = async (project, projdir) => {
     buffer += (await sources['rooms.js'])
         .replace('@startroom@', startroom.name)
         .replace('/*@rooms@*/', roomsCode)
-        .replace('/*%switch%*/', injects.switch)
-        .replace('/*%beforeroomoncreate%*/', injects.beforeroomoncreate)
-        .replace('/*%roomoncreate%*/', injects.roomoncreate)
-        .replace('/*%roomonleave%*/', injects.roomonleave);
+        .replace('/*%switch%*/', injections.switch)
+        .replace('/*%beforeroomoncreate%*/', injections.beforeroomoncreate)
+        .replace('/*%roomoncreate%*/', injections.roomoncreate)
+        .replace('/*%roomonleave%*/', injections.roomonleave);
     buffer += '\n';
 
     const styles = stringifyStyles(project);
     buffer += (await sources['styles.js'])
         .replace('/*@styles@*/', styles)
-        .replace('/*%styles%*/', injects.styles);
+        .replace('/*%styles%*/', injections.styles);
     buffer += '\n';
 
     if (project.emitterTandems && project.emitterTandems.length) {
@@ -223,15 +228,15 @@ const exportCtProject = async (project, projdir) => {
         .replace('/*@textureregistry@*/', textures.registry)
         .replace('/*@textureatlases@*/', JSON.stringify(textures.atlases))
         .replace('/*@skeletonregistry@*/', skeletons.registry)
-        .replace('/*%resload%*/', injects.resload + '\n' + skeletons.startScript)
-        .replace('/*%res%*/', injects.res);
+        .replace('/*%resload%*/', injections.resload + '\n' + skeletons.startScript)
+        .replace('/*%res%*/', injections.res);
     buffer += '\n';
 
     const types = stringifyTypes(project);
 
     buffer += (await sources['types.js'])
-        .replace('/*%oncreate%*/', injects.oncreate)
-        .replace('/*%types%*/', injects.types)
+        .replace('/*%oncreate%*/', injections.oncreate)
+        .replace('/*%types%*/', injections.types)
         .replace('/*@types@*/', types);
 
     buffer += (await sources['camera.js']);
@@ -259,17 +264,17 @@ const exportCtProject = async (project, projdir) => {
         }
     }));
 
-    /* Global injects, provided by modules */
-    for (const i in injects) {
-        buffer = buffer.replace(`/*%${i}%*/`, injects[i]);
+    /* Global injections, provided by modules */
+    for (const i in injections) {
+        buffer = buffer.replace(`/*%${i}%*/`, injections[i]);
     }
 
 
     /* HTML & CSS */
     const {substituteHtmlVars} = require('./html');
     const {substituteCssVars} = require('./css');
-    const html = substituteHtmlVars(await sources['index.html'], project, injects);
-    let css = substituteCssVars(await sources['ct.css'], project, injects);
+    const html = substituteHtmlVars(await sources['index.html'], project, injections);
+    let css = substituteCssVars(await sources['ct.css'], project, injections);
 
     css += fonts.css;
 
