@@ -11,12 +11,17 @@
  */
 /**
  * @typedef ICtPlaceLineSegment
- * @property {number} x1 A horizontal coordinate of the starting point of the ray.
- * @property {number} y1 A vertical coordinate of the starting point of the ray.
- * @property {number} x2 A horizontal coordinate of the ending point of the ray.
- * @property {number} y2 A vertical coordinate of the ending point of the ray.
+ * @property {number} x1 The horizontal coordinate of the starting point of the ray.
+ * @property {number} y1 The vertical coordinate of the starting point of the ray.
+ * @property {number} x2 The horizontal coordinate of the ending point of the ray.
+ * @property {number} y2 The vertical coordinate of the ending point of the ray.
  */
-
+/**
+ * @typedef ICtPlaceCircle
+ * @property {number} x The horizontal coordinate of the circle's center.
+ * @property {number} y The vertical coordinate of the circle's center.
+ * @property {number} radius The radius of the circle.
+ */
 /* eslint-disable no-underscore-dangle */
 /* global SSCD */
 /* eslint prefer-destructuring: 0 */
@@ -183,7 +188,7 @@
                         g.lineTo(shape.__points[i].x + this.x, shape.__points[i].y + this.y);
                     }
                 }
-            } else if (shape instanceof SSCD.Circle) {
+            } else if (shape instanceof SSCD.Circle && shape.get_radius() > 0) {
                 g.beginFill(color, 0.1);
                 if (!absolute) {
                     g.drawCircle(0, 0, shape.get_radius());
@@ -207,15 +212,15 @@
                     .lineTo(p2.x, p2.y);
                 }
             } else if (!absolute) { // Treat as a point
-                g.moveTo(-40, -40)
-                .lineTo(40, 40)
-                .moveTo(-40, 40)
-                .lineTo(40, -40);
+                g.moveTo(-16, -16)
+                .lineTo(16, 16)
+                .moveTo(-16, 16)
+                .lineTo(16, -16);
             } else {
-                g.moveTo(-40 + this.x, -40 + this.y)
-                .lineTo(40 + this.x, 40 + this.y)
-                .moveTo(-40 + this.x, 40 + this.y)
-                .lineTo(40 + this.x, -40 + this.y);
+                g.moveTo(-16 + this.x, -16 + this.y)
+                .lineTo(16 + this.x, 16 + this.y)
+                .moveTo(-16 + this.x, 16 + this.y)
+                .lineTo(16 + this.x, -16 + this.y);
             }
         },
         drawDebugTileGraphic(tile) {
@@ -652,7 +657,6 @@
                     y2: line.y2 - line.y1
                 }
             };
-            console.log(shape);
             const result = ct.place.traceCustom(shape, oversized, cgroup, getAll);
             if (getAll) {
                 // An approximate sorting by distance
@@ -711,6 +715,18 @@
             };
             return ct.place.traceCustom(shape, oversized, cgroup, getAll);
         },
+        /**
+         * Tests for intersections with a filled circle.
+         * If `getAll` is set to `true`, returns all the copies that intersect
+         * the circle; otherwise, returns the first one that fits the conditions.
+         *
+         * @param {ICtPlaceCircle} rect An object that describes the line segment.
+         * @param {string} [ctype] An optional collision group to trace against.
+         * If omitted, will trace through all the copies in the current room.
+         * @param {boolean} [getAll] Whether to return all the intersections (true),
+         * or return the first one.
+         * @returns {Copy|Array<Copy>}
+         */
         traceCircle(circle, cgroup, getAll) {
             let oversized = false;
             if (circle.radius * 2 > ct.place.gridX || circle.radius * 2 > ct.place.gridY) {
@@ -730,6 +746,20 @@
             };
             return ct.place.traceCustom(shape, oversized, cgroup, getAll);
         },
+        /**
+         * Tests for intersections with a polyline. It is a hollow shape made
+         * of connected line segments. The shape is not closed unless you add
+         * the closing point by yourself.
+         * If `getAll` is set to `true`, returns all the copies that intersect
+         * the polyline; otherwise, returns the first one that fits the conditions.
+         *
+         * @param {Array<IPoint>} polyline An array of objects with `x` and `y` properties.
+         * @param {string} [ctype] An optional collision group to trace against.
+         * If omitted, will trace through all the copies in the current room.
+         * @param {boolean} [getAll] Whether to return all the intersections (true),
+         * or return the first one.
+         * @returns {Copy|Array<Copy>}
+         */
         tracePolyline(polyline, cgroup, getAll) {
             const shape = {
                 x: 0,

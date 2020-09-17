@@ -36,12 +36,3 @@ If `x` and `y` are skipped, the current coordinates of `me` will be used.
 > **Warning:** Each tile is considered a rectangle, and a possible collision mask defined in the graphics asset (in the tileset) is ignored.
 
 This method returns either `true` (a copy collides with a tile layer) or `false` (no collision).
-
-## ct.place.trace(x1, y1, x2, y2, [ctype])
-
-Throws a ray from point (x1, y1) to (x2, y2), returning all the copies that touched the ray.
-The first copy in the returned array is the closest copy, the last one is the furthest. The order is not always exact, especially with overlapping shapes.
-
-`ctype` is an optional collision group to trace against. If omitted, ct.place will trace through all the copies in the current room.
-
-**This is an expensive operation.**
