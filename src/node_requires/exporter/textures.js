@@ -48,6 +48,8 @@ const getTextureFrameCrops = tex => {
                     },
                     key
                 },
+                // eslint-disable-next-line id-blacklist
+                tag: tex.name,
                 width: tex.width + tex.padding * 2,
                 height: tex.height + tex.padding * 2
             });
@@ -160,108 +162,20 @@ const drawAtlasFromBin = (bin, binInd) => {
     };
 };
 
-const MRP = require('maxrects-packer');
-const Packer = MRP.MaxRectsPacker;
-const savePacker = function savePacker() {
-    const saveBins = [];
-    // eslint-disable-next-line no-underscore-dangle
-    saveBins._currentBinIndex = this._currentBinIndex;
-    this.bins.forEach((bin => {
-        const saveBin = {
-            width: bin.width,
-            height: bin.height,
-            maxWidth: bin.maxWidth,
-            maxHeight: bin.maxHeight,
-            oversized: bin.oversized,
-            freeRects: [],
-            rects: [],
-            options: bin.options,
-            // eslint-disable-next-line id-blacklist
-            data: bin.data
-        };
-        if (bin.tag) {
-            // eslint-disable-next-line id-blacklist
-            saveBin.tag = bin.tag;
-        }
-        bin.freeRects.forEach(r => {
-            saveBin.freeRects.push({
-                x: r.x,
-                y: r.y,
-                width: r.width,
-                height: r.height
-            });
-        });
-        bin.rects.forEach(r => {
-            saveBin.rects.push({
-                x: r.x,
-                y: r.y,
-                width: r.width,
-                height: r.height,
-                // eslint-disable-next-line id-blacklist
-                data: r.data
-            });
-        });
-        saveBins.push(saveBin);
-    }));
-    return saveBins;
-};
-const loadPacker = function loadPacker(bins) {
-    this.reset();
-    // eslint-disable-next-line no-underscore-dangle
-    this._currentBinIndex = bins._currentBinIndex;
-    bins.forEach((bin, index) => {
-        if (bin.maxWidth > this.width || bin.maxHeight > this.height || bin.oversized) {
-            this.bins.push(new MRP.OversizedElementBin(bin.width, bin.height, bin.data));
-        } else {
-            const newBin = new MRP.MaxRectsBin(
-                this.width,
-                this.height,
-                this.padding
-            );
-            newBin.freeRects.splice(0);
-            newBin.rects.splice(0);
-            bin.freeRects.forEach(r => {
-                newBin.freeRects.push(new MRP.Rectangle(r.width, r.height, r.x, r.y));
-            });
-            bin.rects.forEach(r => {
-                const rect = new MRP.Rectangle(r.width, r.height, r.x, r.y);
-                // eslint-disable-next-line id-blacklist
-                rect.data = r.data;
-                newBin.rects.push(rect);
-            });
-            newBin.width = bin.width;
-            newBin.height = bin.height;
-            if (bin.tag) {
-                // eslint-disable-next-line id-blacklist
-                newBin.tag = bin.tag;
-            }
-            this.bins[index] = newBin;
-        }
-    }, this);
-};
+const Packer = require('maxrects-packer').MaxRectsPacker;
 
 const atlasWidth = 2048,
       atlasHeight = atlasWidth;
 const packerSettings = [atlasWidth, atlasHeight, 0, {
+    // allowRotation: true,
     pot: true,
-    square: true
-    // allowRotation: true
+    square: true,
+    // eslint-disable-next-line id-blacklist
+    tag: true,
+    exclusiveTag: false
 }];
 
-// eslint-disable-next-line max-lines-per-function
 const packImages = async (proj, writeDir) => {
-    /*
-    So here is the algorithm:
-
-    (1) We sort all the ct.js textures in an array A by the max length
-        of either side of a frame (thus enforcers go first).
-    (2) Then we create a bin B
-    (3) We put the first texture from the beginning of A to B
-    (4) Then we add textures from the end of A one by one until the B is filled
-    (5) Once B is filled, it gets closed (read-only), and we repeat the algorithm from (2).
-
-    (*) Tiled sprites are copied separately as is
-    */
     const spritedTextures = proj.textures.filter(texture => !texture.tiled),
           tiledTextures = proj.textures.filter(texture => texture.tiled);
 
@@ -269,58 +183,12 @@ const packImages = async (proj, writeDir) => {
     // and this array will block the finalization of the function
     const writePromises = [];
 
-    const packer = new Packer(...packerSettings); // (2)
+    const packer = new Packer(...packerSettings);
 
-    // (1): Sort the textures by their longest side
-    const animations = spritedTextures
-        .sort((a, b) =>
-            Math.max(b.width, b.height) -
-            Math.max(a.width, a.height))
+    const animationsByTextures = spritedTextures
         .map(getTextureFrameCrops);
-
-    while (animations.length) {
-        const enforcers = animations.shift(); // (3)
-        const previousSize = packer.bins.length;
-        packer.addArray(enforcers);
-        if (packer.bins.length > previousSize + 1) {
-            // We expected this texture to fit into one bin. Throw an error.
-            throw new Error(`The texture ${enforcers[0].data.name} cannot be fit into maximum atlas size of ${atlasWidth}×${atlasHeight}px. Consider resizing it or splitting into individual frames.`);
-        }
-        // We still have cases with one individual big texture that is an atlas itself,
-        // and they are okayish as they can still be exported to standard json map.
-        if (packer.bins[packer.bins.length - 1].oversized) {
-            packer.next(); // Close the latest bin
-            continue;
-        }
-        while (animations.length) {
-            const previousState = savePacker.call(packer);
-            const previousSize = previousState.length;
-            const tail = animations.pop();
-            packer.addArray(tail);
-            // Bin count should not change!
-            if (packer.bins.length > previousSize) {
-                // Oh no, we got an overflow! Revert
-                loadPacker.call(packer, previousState);
-                // We will repack the latest bin and try to squeeze the latest sprite again
-                // Make sure every in except the last one is frozen
-                for (let i = 0; i < packer.bins.length - 1; i++) {
-                    packer.bins[i].dirty = false;
-                }
-                packer.bins[packer.bins.length - 1].dirty = true;
-                packer.repack();
-                // Try again
-                packer.addArray(tail);
-                if (packer.bins.length > previousSize) {
-                    // Give up, revert
-                    loadPacker.call(packer, previousState);
-                    packer.next(); // Close the latest bin
-                    // Bring the smallest animation back into array
-                    animations.push(tail);
-                    break; // (5)
-                }
-            }
-        }
-    }
+    const animations = [].concat(...animationsByTextures);
+    packer.addArray(animations);
 
     // Output all the atlases into JSON and PNG files
     const atlases = [];
