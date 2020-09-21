@@ -323,7 +323,7 @@ room-editor.panel.view
         };
         this.drawDeleteCircle = e => {
             // Рисовка кружка для удаления копий
-            var maxdist = Math.max(this.room.gridX, this.room.gridY);
+            var maxdist = Math.max(this.room.gridX, this.room.gridY) || 32;
             this.refreshRoomCanvas(e);
             var cx = this.refs.canvas.x;
             cx.fillStyle = '#F00';

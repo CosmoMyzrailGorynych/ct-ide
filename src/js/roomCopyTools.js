@@ -235,7 +235,7 @@
                         var l,
                             fromx = this.xToRoom(e.offsetX),
                             fromy = this.yToRoom(e.offsetY);
-                        var maxdist = Math.max(this.room.gridX, this.room.gridY);
+                        var maxdist = Math.max(this.room.gridX, this.room.gridY) || 32;
                         for (let j = 0, lj = this.room.copies.length; j < lj; j++) {
                             const xp = this.room.copies[j].x - fromx,
                                   yp = this.room.copies[j].y - fromy;
