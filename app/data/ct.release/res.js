@@ -168,9 +168,9 @@
             const bitmapFonts = [/*@bitmapFonts@*/][0];
             const dbSkeletons = [/*@dbSkeletons@*/][0]; // DB means DragonBones
 
-            //if (sounds.length && !ct.sounds) {
-            //    throw new Error('[ct.res] No sound system found. Make sure you enable one of the `sound` catmods. If you don\'t need sounds, remove them from your ct.js project.');
-            //}
+            if (sounds.length && !ct.sounds) {
+                throw new Error('[ct.res] No sound system found. Make sure you enable one of the `sound` catmods. If you don\'t need sounds, remove them from your ct.js project.');
+            }
 
             const totalAssets = atlases.length;
             let assetsLoaded = 0;
