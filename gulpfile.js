@@ -3,6 +3,7 @@
 /* eslint no-console: 0 */
 const path = require('path'),
       gulp = require('gulp'),
+      changed = require('gulp-changed'),
       concat = require('gulp-concat'),
       replace = require('gulp-replace'),
       sourcemaps = require('gulp-sourcemaps'),
@@ -106,14 +107,22 @@ const compilePug = () =>
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('./app/'));
 
+const riotSettings = {
+    compact: false,
+    template: 'pug'
+};
 const compileRiot = () =>
     gulp.src('./src/riotTags/**')
-    .pipe(riot({
-        compact: false,
-        template: 'pug'
-    }))
+    .pipe(riot(riotSettings))
     .pipe(concat('riot.js'))
     .pipe(gulp.dest('./temp/'));
+
+const compileRiotPartial = path => {
+    console.log(`Updating tag at ${path}…`);
+    return gulp.src(path)
+    .pipe(riot(riotSettings))
+    .pipe(gulp.dest('./app/data/hotLoadTags/'));
+};
 
 const concatScripts = () =>
     streamQueue(
@@ -178,12 +187,12 @@ const watchScripts = () => {
     .on('change', fileChangeNotifier);
 };
 const watchRiot = () => {
-    gulp.watch('./src/riotTags/**/*', gulp.series(compileScripts))
-    .on('error', err => {
+    const watcher = gulp.watch('./src/riotTags/**/*');
+    watcher.on('error', err => {
         notifier.notify(makeErrorObj('Riot failure', err));
         console.error('[pug error]', err);
-    })
-    .on('change', fileChangeNotifier);
+    });
+    watcher.on('change', compileRiotPartial);
 };
 const watchStylus = () => {
     gulp.watch('./src/styl/**/*', compileStylus)

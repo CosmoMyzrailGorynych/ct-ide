@@ -110,13 +110,16 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
             cleanUrls: true
         };
         const handler = require('serve-handler');
-        const fileServer = require('http').createServer((request, response) =>
-            handler(request, response, fileServerSettings));
-        fileServer.listen(0, () => {
-            // eslint-disable-next-line no-console
-            console.info(`[ct.docs] Running docs server at http://localhost:${fileServer.address().port}`);
-        });
-        this.server = fileServer;
+        if (!this.docServerStarted) {
+            const fileServer = require('http').createServer((request, response) =>
+                handler(request, response, fileServerSettings));
+            fileServer.listen(0, () => {
+                // eslint-disable-next-line no-console
+                console.info(`[ct.docs] Running docs server at http://localhost:${fileServer.address().port}`);
+            });
+            this.server = fileServer;
+            this.docServerStarted = true;
+        }
 
         var openDocs = e => {
             this.changeTab('helppages')();
