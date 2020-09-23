@@ -104,6 +104,6 @@ if (!ct.sound) {
     ct.sound.wav = ct.sound.detect('audio/wav; codecs="1"');
     ct.sound.mp3 = ct.sound.detect('audio/mpeg;');
     ct.sound.ogg = ct.sound.detect('audio/ogg;');
+} else {
+    console.error('Another sound system is already enabled. Disable `sound.basic` module in your ct.js project.');
 }
-
-/*@sound@*/

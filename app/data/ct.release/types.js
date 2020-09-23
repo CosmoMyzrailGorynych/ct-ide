@@ -389,12 +389,25 @@ const Copy = (function Copy() {
             func.apply(obj, this);
         },
         /**
+         * Checks whether there are any copies of this type's name.
+         * Will throw an error if you pass an invalid type name.
+         * @param {string} type The name of a type to check.
+         * @returns {boolean} Returns `true` if at least one copy exists in a room;
+         * `false` otherwise.
+         */
+        exists(type) {
+            if (!(type in ct.types.templates)) {
+                throw new Error(`[ct.types] ct.types.exists: There is no such type ${type}.`);
+            }
+            return ct.types.list[type].length > 0;
+        },
+        /**
          * Checks whether a given object exists in game's world.
          * Intended to be applied to copies, but may be used with other PIXI entities.
          * @param {Copy|Pixi.DisplayObject|any} obj The copy which existence needs to be checked.
          * @returns {boolean} Returns `true` if a copy exists; `false` otherwise.
          */
-        exists(obj) {
+        valid(obj) {
             if (obj instanceof Copy) {
                 return !obj.kill;
             }
