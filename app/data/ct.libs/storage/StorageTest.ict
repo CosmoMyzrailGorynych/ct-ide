@@ -1,0 +1,67 @@
+ctjsVersion: 1.4.2
+notes: /* empty */
+libs:
+  place:
+    gridX: 1024
+    gridY: 1024
+  fittoscreen:
+    mode: scaleFit
+  mouse: {}
+  keyboard: {}
+  keyboard.polyfill: {}
+  sound.howler: {}
+  storage: {}
+textures: []
+skeletons: []
+types: []
+sounds: []
+styles: []
+rooms:
+  - name: Room_9fd8cb99e8fa
+    oncreate: ct.storage.get(1);
+    onstep: ''
+    ondraw: ''
+    onleave: ''
+    width: 800
+    height: 600
+    backgrounds: []
+    copies: []
+    tiles:
+      - depth: -10
+        tiles: []
+        extends: {}
+    uid: 7a3a5194-ffcd-4811-8075-9fd8cb99e8fa
+    thumbnail: 9fd8cb99e8fa
+    extends: {}
+    gridX: 64
+    gridY: 64
+actions: []
+emitterTandems: []
+scripts: []
+starting: 0
+settings:
+  authoring:
+    author: ''
+    site: ''
+    title: ''
+    version:
+      - 0
+      - 0
+      - 0
+    versionPostfix: ''
+  rendering:
+    usePixiLegacy: true
+    maxFPS: 60
+    pixelatedrender: false
+    highDensity: true
+    desktopMode: maximized
+  export:
+    windows: true
+    linux: true
+    mac: true
+  branding:
+    icon: -1
+    accent: '#446adb'
+    invertPreloaderScheme: true
+  fps: 30
+fonts: []
