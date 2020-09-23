@@ -61,62 +61,6 @@ class Background extends PIXI.TilingSprite {
     }
 }
 /**
- * @extends {PIXI.Container}
- */
-class Tileset extends PIXI.Container {
-    constructor(template) {
-        super();
-        this.depth = template.depth;
-        this.tiles = template.tiles.map(tile => ({
-            ...tile
-        }));
-        this.pixiTiles = [];
-        if (template.extends) {
-            Object.assign(this, template.extends);
-        }
-        ct.types.list.TILELAYER.push(this);
-        for (let i = 0, l = template.tiles.length; i < l; i++) {
-            const textures = ct.res.getTexture(template.tiles[i].texture);
-            const sprite = new PIXI.Sprite(textures[template.tiles[i].frame]);
-            sprite.anchor.x = sprite.anchor.y = 0;
-            this.addChild(sprite);
-            this.pixiTiles.push(sprite);
-            sprite.x = template.tiles[i].x;
-            sprite.y = template.tiles[i].y;
-        }
-        // Divide tiles into a grid of larger cells so that we can cache these cells as
-        const bounds = this.getLocalBounds();
-        const cols = Math.ceil(bounds.width / 1024),
-              rows = Math.ceil(bounds.height / 1024);
-        this.cells = [];
-        for (let y = 0; y < rows; y++) {
-            for (let x = 0; x < cols; x++) {
-                const cell = new PIXI.Container();
-                this.cells.push(cell);
-            }
-        }
-        for (let i = 0, l = this.tiles.length; i < l; i++) {
-            const tile = this.children[0],
-                  x = Math.floor((tile.x - bounds.x) / 1024),
-                  y = Math.floor((tile.y - bounds.y) / 1024);
-            this.cells[y * cols + x].addChild(tile);
-        }
-        this.removeChildren();
-
-        // Filter out empty cells, cache filled ones
-        for (let i = 0, l = this.cells.length; i < l; i++) {
-            if (this.cells[i].children.length === 0) {
-                this.cells.splice(i, 1);
-                i--;
-                l--;
-                continue;
-            }
-            this.addChild(this.cells[i]);
-            this.cells[i].cacheAsBitmap = true;
-        }
-    }
-}
-/**
  * @extends {PIXI.AnimatedSprite}
  * @class
  * @property {string} type The name of the type from which the copy was created
@@ -342,14 +286,13 @@ const Copy = (function Copy() {
     ct.types = {
         Copy,
         Background,
-        Tileset,
         /**
          * An object that contains arrays of copies of all types.
          * @type {Object.<string,Array<Copy>>}
          */
         list: {
             BACKGROUND: [],
-            TILELAYER: []
+            TILEMAP: []
         },
         /**
          * A map of all the templates of types exported from ct.IDE.

@@ -473,6 +473,31 @@
             }
             return false;
         },
+        enableTilemapCollisions(tilemap, ctype) {
+            if (tilemap.addedCollisions) {
+                throw new Error('[ct.place] The tilemap already has collisions enabled.');
+            }
+            for (let i = 0, l = tilemap.tiles.length; i < l; i++) {
+                const t = tilemap.tiles[i];
+                // eslint-disable-next-line no-underscore-dangle
+                t._shape = new SSCD.Rectangle(
+                    new SSCD.Vector(t.x, t.y),
+                    new SSCD.Vector(t.width, t.height)
+                );
+                t.ctype = ctype || tilemap.ctype;
+                t.$chashes = ct.place.getHashes(t);
+                /* eslint max-depth: 0 */
+                for (const hash of t.$chashes) {
+                    if (!(hash in ct.place.tileGrid)) {
+                        ct.place.tileGrid[hash] = [t];
+                    } else {
+                        ct.place.tileGrid[hash].push(t);
+                    }
+                }
+                t.depth = tilemap.depth;
+            }
+            tilemap.addedCollisions = true;
+        },
         moveAlong(me, dir, length, ctype, precision) {
             if (typeof ctype === 'number') {
                 precision = ctype;

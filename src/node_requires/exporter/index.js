@@ -147,6 +147,7 @@ const exportCtProject = async (project, projdir) => {
         'sound.js',
         'styles.js',
         'types.js',
+        'tilemaps.js',
         'timer.js'
     ];
     for (const file of sourcesList) {
@@ -238,6 +239,9 @@ const exportCtProject = async (project, projdir) => {
         .replace('/*%oncreate%*/', injections.oncreate)
         .replace('/*%types%*/', injections.types)
         .replace('/*@types@*/', types);
+
+    buffer += (await sources['tilemaps.js']);
+    buffer += '\n';
 
     buffer += (await sources['camera.js']);
     buffer += '\n';

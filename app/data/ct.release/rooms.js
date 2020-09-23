@@ -42,7 +42,8 @@ class Room extends PIXI.Container {
                 this.addChild(bg);
             }
             for (let i = 0, li = template.tiles.length; i < li; i++) {
-                const tl = ct.rooms.addTileLayer(template.tiles[i]);
+                const tl = new Tilemap(template.tiles[i]);
+                tl.cache();
                 this.tileLayers.push(tl);
                 this.addChild(tl);
             }
@@ -109,9 +110,10 @@ class Room extends PIXI.Container {
          * Adds a new empty tile layer to the room, at the given depth
          * @param {number} layer The depth of the layer
          * @returns {Tileset} The created tile layer
+         * @deprecated Use ct.tilemaps.create instead.
          */
         addTileLayer(layer) {
-            return new ct.types.Tileset(layer);
+            return ct.tilemaps.create(layer);
         },
         /**
          * Clears the current stage, removing all rooms with copies, tile layers, backgrounds,
@@ -250,10 +252,11 @@ class Room extends PIXI.Container {
                 generated.backgrounds.push(bg);
             }
             for (const t of template.tiles) {
-                const tl = ct.rooms.addTileLayer(t);
+                const tl = new Tilemap(t);
                 target.tileLayers.push(tl);
                 target.addChild(tl);
                 generated.tileLayers.push(tl);
+                tl.cache();
             }
             for (const t of template.objects) {
                 const c = ct.types.make(t.type, t.x, t.y, {

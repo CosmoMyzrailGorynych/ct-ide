@@ -4,7 +4,7 @@
         "PIXI": false,
         "Room": false,
         "Background": false,
-        "Tileset": false,
+        "Tilemap": false,
         "Copy": false,
         "Camera": false
     },
