@@ -43,6 +43,7 @@ app/examples
 app/data/bundle.js
 app/data/bundle.css
 app/data/node_requires/**/*
+app/data/hotLoadTags
 app/data/fonts/style/.css
 app/data/theme*.css
 app/data/typedefs/global.d.ts

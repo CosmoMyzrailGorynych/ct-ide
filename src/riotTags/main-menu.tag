@@ -147,19 +147,22 @@ main-menu.flexcol
         const {getExportDir} = require('./data/node_requires/platformUtils');
         // Run a local server for ct.js games
         let fileServer;
-        getExportDir().then(dir => {
-            const fileServerSettings = {
-                public: dir,
-                cleanUrls: true
-            };
-            const handler = require('serve-handler');
-            fileServer = require('http').createServer((request, response) =>
-                handler(request, response, fileServerSettings));
-            fileServer.listen(0, () => {
-                // eslint-disable-next-line no-console
-                console.info(`[ct.debugger] Running dev server at http://localhost:${fileServer.address().port}`);
+        if (!this.debugServerStarted) {
+            getExportDir().then(dir => {
+                const fileServerSettings = {
+                    public: dir,
+                    cleanUrls: true
+                };
+                const handler = require('serve-handler');
+                fileServer = require('http').createServer((request, response) =>
+                    handler(request, response, fileServerSettings));
+                fileServer.listen(0, () => {
+                    // eslint-disable-next-line no-console
+                    console.info(`[ct.debugger] Running dev server at http://localhost:${fileServer.address().port}`);
+                });
+                this.debugServerStarted = true;
             });
-        });
+        }
 
         this.runProject = () => {
             document.body.style.cursor = 'progress';
@@ -359,6 +362,12 @@ main-menu.flexcol
                         icon: () => localStorage.UItheme === 'LucasDracula' && 'check',
                         click: () => {
                             this.switchTheme('LucasDracula');
+                        }
+                    }, {
+                        label: window.languageJSON.menu.highContrastBlack || 'High Contrast (black)',
+                        icon: () => localStorage.UItheme === 'hcBlack' && 'check',
+                        click: () => {
+                            this.switchTheme('hcBlack');
                         }
                     }]
                 }
