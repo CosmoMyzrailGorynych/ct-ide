@@ -474,6 +474,7 @@
             return false;
         },
         enableTilemapCollisions(tilemap, ctype) {
+            const cgroup = ctype || tilemap.ctyle;
             if (tilemap.addedCollisions) {
                 throw new Error('[ct.place] The tilemap already has collisions enabled.');
             }
@@ -484,7 +485,7 @@
                     new SSCD.Vector(t.x, t.y),
                     new SSCD.Vector(t.width, t.height)
                 );
-                t.ctype = ctype || tilemap.ctype;
+                t.ctype = cgroup;
                 t.$chashes = ct.place.getHashes(t);
                 /* eslint max-depth: 0 */
                 for (const hash of t.$chashes) {

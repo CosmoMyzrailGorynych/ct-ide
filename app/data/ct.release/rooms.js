@@ -2,7 +2,7 @@
  * @typedef IRoomMergeResult
  *
  * @property {Array<Copy>} copies
- * @property {Array<Tileset>} tileLayers
+ * @property {Array<Tilemap>} tileLayers
  * @property {Array<Background>} backgrounds
  */
 
