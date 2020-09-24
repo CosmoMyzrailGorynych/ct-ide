@@ -1,5 +1,6 @@
 /**
  * @extends {PIXI.TilingSprite}
+ * @class
  */
 class Background extends PIXI.TilingSprite {
     constructor(bgName, frame, depth, exts) {

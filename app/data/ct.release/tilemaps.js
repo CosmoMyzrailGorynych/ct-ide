@@ -1,5 +1,6 @@
 /**
  * @extends {PIXI.Container}
+ * @class
  */
 class Tilemap extends PIXI.Container {
     /**
@@ -8,12 +9,12 @@ class Tilemap extends PIXI.Container {
      */
     constructor(template) {
         super();
+        this.pixiTiles = [];
         if (template) {
             this.depth = template.depth;
             this.tiles = template.tiles.map(tile => ({
                 ...tile
             }));
-            this.pixiTiles = [];
             if (template.extends) {
                 Object.assign(this, template.extends);
             }
@@ -27,6 +28,8 @@ class Tilemap extends PIXI.Container {
                 sprite.x = template.tiles[i].x;
                 sprite.y = template.tiles[i].y;
             }
+        } else {
+            this.tiles = [];
         }
     }
     /**
@@ -94,6 +97,9 @@ class Tilemap extends PIXI.Container {
 }
 ct.types.Tilemap = Tilemap;
 
+/**
+ * @namespace
+ */
 ct.tilemaps = {
     /**
      * Creates a new tilemap at a specified depth, and adds it to the main room (ct.room).
@@ -104,6 +110,7 @@ ct.tilemaps = {
         const tilemap = new Tilemap();
         tilemap.depth = depth;
         ct.room.addChild(tilemap);
+        return tilemap;
     },
     /**
      * Adds a tile to the specified tilemap. It is the same as
