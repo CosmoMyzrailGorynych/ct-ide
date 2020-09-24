@@ -18,7 +18,6 @@ class Tilemap extends PIXI.Container {
             if (template.extends) {
                 Object.assign(this, template.extends);
             }
-            ct.types.list.TILEMAP.push(this);
             for (let i = 0, l = template.tiles.length; i < l; i++) {
                 const textures = ct.res.getTexture(template.tiles[i].texture);
                 const sprite = new PIXI.Sprite(textures[template.tiles[i].frame]);
@@ -31,6 +30,7 @@ class Tilemap extends PIXI.Container {
         } else {
             this.tiles = [];
         }
+        ct.types.list.TILEMAP.push(this);
     }
     /**
      * Adds a tile to the tilemap. Will throw an error if a tilemap is cached.
@@ -48,6 +48,14 @@ class Tilemap extends PIXI.Container {
         sprite.anchor.x = sprite.anchor.y = 0;
         sprite.x = x;
         sprite.y = y;
+        this.tiles.push({
+            texture: textureName,
+            frame,
+            x,
+            y,
+            width: sprite.width,
+            height: sprite.height
+        });
         this.addChild(sprite);
         this.pixiTiles.push(sprite);
     }
