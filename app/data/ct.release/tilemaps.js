@@ -38,6 +38,7 @@ class Tilemap extends PIXI.Container {
      * @param {number} x The horizontal location of the tile
      * @param {number} y The vertical location of the tile
      * @param {number} [frame] The frame to pick from the source texture. Defaults to 0.
+     * @returns {PIXI.Sprite} The created tile
      */
     addTile(textureName, x, y, frame = 0) {
         if (this.cached) {
@@ -58,6 +59,7 @@ class Tilemap extends PIXI.Container {
         });
         this.addChild(sprite);
         this.pixiTiles.push(sprite);
+        return sprite;
     }
     /**
      * Enables caching on this tileset, freezing it and turning it
@@ -128,9 +130,10 @@ ct.tilemaps = {
      * @param {number} x The horizontal location of the tile.
      * @param {number} y The vertical location of the tile.
      * @param {number} [frame] The frame to pick from the source texture. Defaults to 0.
+     * @returns {PIXI.Sprite} The created tile
      */
     addTile(tilemap, textureName, x, y, frame = 0) {
-        tilemap.addTile(textureName, x, y, frame);
+        return tilemap.addTile(textureName, x, y, frame);
     },
     /**
      * Enables caching on this tileset, freezing it and turning it
