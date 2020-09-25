@@ -497,6 +497,15 @@
                 }
                 t.depth = tilemap.depth;
             }
+            if (debugMode) {
+                for (let i = 0; i < tilemap.tiles.length; i++) {
+                    const pixiTile = tilemap.pixiTiles[i],
+                          logicTile = tilemap.tiles[i];
+                    pixiTile.$cDebugCollision = new PIXI.Graphics();
+                    ct.place.drawDebugTileGraphic.apply(pixiTile, [logicTile]);
+                    pixiTile.addChild(pixiTile.$cDebugCollision);
+                }
+            }
             tilemap.addedCollisions = true;
         },
         moveAlong(me, dir, length, ctype, precision) {
