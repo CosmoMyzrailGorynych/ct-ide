@@ -330,6 +330,13 @@ declare namespace ct {
          * @returns {Array<Copy>} Array of all the copies that touched the ray
          */
         function trace(x1: number, y1: number, x2: number, y2: number, ctype?: string): Copy[];
+
+        /**
+         * Enables collision checks on the specified tilemap, with an optional collision group.
+         * @param {Tilemap} tilemap The tilemap on which to enable collisions.
+         * @param {string} ctype Collision group.
+         */
+        function enableTilemapCollisions(tilemap: Tilemap, ctype?: string): void;
     }
 }
 
@@ -355,4 +362,12 @@ interface Copy {
      * and `ct.delta` into account, too, and uses the `ct.place.moveByAxes` method.
      */
     moveContinuousByAxes(ctype: string, precision?: number): false|ISeparateMovementResult;
+}
+
+interface Tilemap {
+    /**
+     * Enables collision checks on the specified tilemap, with an optional collision group.
+     * @param {string} ctype Collision group.
+     */
+    enableCollisions(ctype?: string): void;
 }
