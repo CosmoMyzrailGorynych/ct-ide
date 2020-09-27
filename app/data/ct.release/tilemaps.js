@@ -66,15 +66,15 @@ class Tilemap extends PIXI.Container {
      * into a series of bitmap textures. This proides great speed boost,
      * but prevents further editing.
      */
-    cache() {
+    cache(chunkSize = 1024) {
         if (this.cached) {
             throw new Error('[ct.tiles] Attempt to cache an already cached tilemap.');
         }
 
         // Divide tiles into a grid of larger cells so that we can cache these cells as
         const bounds = this.getLocalBounds();
-        const cols = Math.ceil(bounds.width / 1024),
-              rows = Math.ceil(bounds.height / 1024);
+        const cols = Math.ceil(bounds.width / chunkSize),
+              rows = Math.ceil(bounds.height / chunkSize);
         this.cells = [];
         for (let y = 0; y < rows; y++) {
             for (let x = 0; x < cols; x++) {
@@ -84,8 +84,8 @@ class Tilemap extends PIXI.Container {
         }
         for (let i = 0, l = this.tiles.length; i < l; i++) {
             const tile = this.children[0],
-                  x = Math.floor((tile.x - bounds.x) / 1024),
-                  y = Math.floor((tile.y - bounds.y) / 1024);
+                  x = Math.floor((tile.x - bounds.x) / chunkSize),
+                  y = Math.floor((tile.y - bounds.y) / chunkSize);
             this.cells[y * cols + x].addChild(tile);
         }
         this.removeChildren();
@@ -144,7 +144,7 @@ ct.tilemaps = {
      *
      * @param {Tilemap} tilemap The tilemap which needs to be cached.
      */
-    cache(tilemap) {
-        tilemap.cache();
+    cache(tilemap, chunkSize) {
+        tilemap.cache(chunkSize);
     }
 };
