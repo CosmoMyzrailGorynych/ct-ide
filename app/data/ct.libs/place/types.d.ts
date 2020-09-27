@@ -75,7 +75,7 @@ declare namespace ct {
          */
         function free(me: Copy, ctype?: string): boolean;
 
-        function occupied(me: Copy, x: number, y: number, ctype?: string, multiple: true): Copy[];
+        function occupied(me: Copy, x: number, y: number, ctype: string|false, multiple: true): Copy[];
         /**
          * Determines if the place in (x,y) is occupied.
          * Optionally can take 'ctype' as a filter for obstacles' collision group (not shape type)
@@ -88,7 +88,7 @@ declare namespace ct {
          *                                   If it is false (default), it will return a copy with the first collision
          * @returns {Copy|Array<Copy>} The collided copy, or an array of all the detected collisions (if `multiple` is `true`)
          */
-        function occupied(me: Copy, x: number, y: number, ctype?: string, multiple?: false|void): Copy | false;
+        function occupied(me: Copy, x: number, y: number, ctype?: string): Copy | false;
 
         function occupied(me: Copy, ctype?: string, multiple?: true): Copy[];
         /**
@@ -250,8 +250,9 @@ declare namespace ct {
          * @param {boolean} [getAll] Whether to return all the intersections (true),
          * or return the first one.
          */
-        function traceLine(line: ICtPlaceLineSegment, cgroup?: string, getAll: true): Array<Copy>;
-        function traceLine(line: ICtPlaceLineSegment, cgroup?: string, getAll?: false): Copy|false;
+        function traceLine(line: ICtPlaceLineSegment, cgroup: string|false, getAll: true): Array<Copy>;
+        function traceLine(line: ICtPlaceLineSegment, cgroup: string|false, getAll: false): Copy|false;
+        function traceLine(line: ICtPlaceLineSegment, cgroup?: string): Copy|false;
 
         /**
          * Tests for intersections with a filled rectangle.
@@ -264,8 +265,9 @@ declare namespace ct {
          * @param {boolean} [getAll] Whether to return all the intersections (true),
          * or return the first one.
          */
-        function traceRect(rect: ICtPlaceRectangle, cgroup?: string, getAll: true): Array<Copy>;
-        function traceRect(rect: ICtPlaceRectangle, cgroup?: string, getAll?: false): Copy|false;
+        function traceRect(rect: ICtPlaceRectangle, cgroup: string, getAll: true): Array<Copy>;
+        function traceRect(rect: ICtPlaceRectangle, cgroup: string, getAll: false): Copy|false;
+        function traceRect(rect: ICtPlaceRectangle, cgroup?: string): Copy|false;
 
         /**
          * Tests for intersections with a filled circle.
@@ -278,8 +280,9 @@ declare namespace ct {
          * @param {boolean} [getAll] Whether to return all the intersections (true),
          * or return the first one.
          */
-        function traceCircle(circle: ICtPlaceCircle, cgroup?: string, getAll: true): Array<Copy>;
-        function traceCircle(circle: ICtPlaceCircle, cgroup?: string, getAll?: false): Copy|false;
+        function traceCircle(circle: ICtPlaceCircle, cgroup: string|false, getAll: true): Array<Copy>;
+        function traceCircle(circle: ICtPlaceCircle, cgroup: string|false, getAll: false): Copy|false;
+        function traceCircle(circle: ICtPlaceCircle, cgroup?: string): Copy|false;
 
         /**
          * Tests for intersections with a polyline. It is a hollow shape made
@@ -294,8 +297,9 @@ declare namespace ct {
          * @param {boolean} [getAll] Whether to return all the intersections (true),
          * or return the first one.
          */
-        function tracePolyline(polyline: Array<IPoint>, cgroup?: string, getAll: true): Array<Copy>;
-        function tracePolyline(polyline: Array<IPoint>, cgroup?: string, getAll?: false): Copy|false;
+        function tracePolyline(polyline: Array<IPoint>, cgroup: string|false, getAll: true): Array<Copy>;
+        function tracePolyline(polyline: Array<IPoint>, cgroup: string|false, getAll: false): Copy|false;
+        function tracePolyline(polyline: Array<IPoint>, cgroup?: string): Copy|false;
 
         /**
          * Tests for intersections with a point.
@@ -308,8 +312,9 @@ declare namespace ct {
          * @param {boolean} [getAll] Whether to return all the intersections (true),
          * or return the first one.
          */
-        function tracePoint(point: IPoint, cgroup?: string, getAll: true): Array<Copy>;
-        function tracePoint(point: IPoint, cgroup?: string, getAll?: false): Copy|false;
+        function tracePoint(point: IPoint, cgroup: string|false, getAll: true): Array<Copy>;
+        function tracePoint(point: IPoint, cgroup: string|false, getAll: false): Copy|false;
+        function tracePoint(point: IPoint, cgroup?: string): Copy|false;
 
         /**
          * Throws a ray from point (x1, y1) to (x2, y2), returning all the instances that touched the ray.
