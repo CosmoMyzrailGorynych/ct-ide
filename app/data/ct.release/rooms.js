@@ -31,13 +31,13 @@ class Room extends PIXI.Container {
             }
             /*%beforeroomoncreate%*/
             for (let i = 0, li = template.bgs.length; i < li; i++) {
+                // Need to put extensions here, so we don't use ct.backgrounds.add
                 const bg = new ct.types.Background(
                     template.bgs[i].texture,
                     null,
                     template.bgs[i].depth,
                     template.bgs[i].extends
                 );
-                this.backgrounds.push(bg);
                 ct.stack.push(bg);
                 this.addChild(bg);
             }
@@ -123,7 +123,10 @@ class Room extends PIXI.Container {
         clear() {
             ct.stage.children = [];
             ct.stack = [];
-            for (var i in ct.types.list) {
+            for (const i in ct.types.list) {
+                ct.types.list[i] = [];
+            }
+            for (const i in ct.backgrounds.list) {
                 ct.types.list[i] = [];
             }
             ct.rooms.list = {};

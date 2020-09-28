@@ -136,6 +136,7 @@ const exportCtProject = async (project, projdir) => {
     /* Load source files in parallel */
     const sources = {};
     const sourcesList = [
+        'backgrounds.js',
         'camera.js',
         'ct.css',
         'emitters.js',
@@ -240,6 +241,8 @@ const exportCtProject = async (project, projdir) => {
         .replace('/*%types%*/', injections.types)
         .replace('/*@types@*/', types);
 
+    buffer += (await sources['backgrounds.js']);
+    buffer += '\n';
     buffer += (await sources['tilemaps.js']);
     buffer += '\n';
 

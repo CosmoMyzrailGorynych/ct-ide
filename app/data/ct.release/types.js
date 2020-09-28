@@ -1,67 +1,4 @@
 /**
- * @extends {PIXI.TilingSprite}
- * @class
- */
-class Background extends PIXI.TilingSprite {
-    constructor(bgName, frame, depth, exts) {
-        exts = exts || {};
-        var width = ct.camera.width,
-            height = ct.camera.height;
-        if (exts.repeat === 'no-repeat' || exts.repeat === 'repeat-x') {
-            height = ct.res.getTexture(bgName, frame || 0).orig.height * (exts.scaleY || 1);
-        }
-        if (exts.repeat === 'no-repeat' || exts.repeat === 'repeat-y') {
-            width = ct.res.getTexture(bgName, frame || 0).orig.width * (exts.scaleX || 1);
-        }
-        super(ct.res.getTexture(bgName, frame || 0), width, height);
-        ct.types.list.BACKGROUND.push(this);
-        this.anchor.x = this.anchor.y = 0;
-        this.depth = depth;
-        this.shiftX = this.shiftY = this.movementX = this.movementY = 0;
-        this.parallaxX = this.parallaxY = 1;
-        if (exts) {
-            ct.u.extend(this, exts);
-        }
-        if (this.scaleX) {
-            this.tileScale.x = Number(this.scaleX);
-        }
-        if (this.scaleY) {
-            this.tileScale.y = Number(this.scaleY);
-        }
-        this.reposition();
-    }
-    onStep() {
-        this.shiftX += ct.delta * this.movementX;
-        this.shiftY += ct.delta * this.movementY;
-    }
-    reposition() {
-        const cameraBounds = ct.camera.getBoundingBox();
-        if (this.repeat !== 'repeat-x' && this.repeat !== 'no-repeat') {
-            this.y = cameraBounds.y;
-            this.tilePosition.y = -this.y * this.parallaxY + this.shiftY;
-            this.height = cameraBounds.height;
-        } else {
-            this.y = this.shiftY + cameraBounds.y * (this.parallaxY - 1);
-        }
-        if (this.repeat !== 'repeat-y' && this.repeat !== 'no-repeat') {
-            this.x = cameraBounds.x;
-            this.tilePosition.x = -this.x * this.parallaxX + this.shiftX;
-            this.width = cameraBounds.width;
-        } else {
-            this.x = this.shiftX + cameraBounds.x * (this.parallaxX - 1);
-        }
-    }
-    onDraw() {
-        this.reposition();
-    }
-    static onCreate() {
-        void 0;
-    }
-    static onDestroy() {
-        void 0;
-    }
-}
-/**
  * @extends {PIXI.AnimatedSprite}
  * @class
  * @property {string} type The name of the type from which the copy was created
@@ -286,7 +223,6 @@ const Copy = (function Copy() {
      */
     ct.types = {
         Copy,
-        Background,
         /**
          * An object that contains arrays of copies of all types.
          * @type {Object.<string,Array<Copy>>}
