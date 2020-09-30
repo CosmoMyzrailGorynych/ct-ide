@@ -38,7 +38,6 @@ class Room extends PIXI.Container {
                     template.bgs[i].depth,
                     template.bgs[i].extends
                 );
-                ct.stack.push(bg);
                 this.addChild(bg);
             }
             for (let i = 0, li = template.tiles.length; i < li; i++) {
@@ -127,7 +126,7 @@ class Room extends PIXI.Container {
                 ct.types.list[i] = [];
             }
             for (const i in ct.backgrounds.list) {
-                ct.types.list[i] = [];
+                ct.backgrounds.list[i] = [];
             }
             ct.rooms.list = {};
             for (const name in ct.rooms.templates) {
@@ -250,7 +249,6 @@ class Room extends PIXI.Container {
             for (const t of template.bgs) {
                 const bg = new ct.types.Background(t.texture, null, t.depth, t.extends);
                 target.backgrounds.push(bg);
-                ct.stack.push(bg);
                 target.addChild(bg);
                 generated.backgrounds.push(bg);
             }
