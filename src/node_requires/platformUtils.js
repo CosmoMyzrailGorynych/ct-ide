@@ -36,6 +36,9 @@ const mod = {
      * @returns {Promise<String>} A writable directory
      */
     async getWritableDir() {
+        if (localStorage.customWritableDir) {
+            return localStorage.customWritableDir;
+        }
         const path = require('path');
 
         const exec = path.dirname(process.cwd()).replace(/\\/g, '/');
@@ -46,28 +49,24 @@ const mod = {
         const homeWritable = mod.checkWritable(home);
         await execWritable; // Run in parallel
         await homeWritable;
-        return new Promise((resolve, reject) => {
-            // writing to an exec path on Mac is not a good idea,
-            // as it will be hidden inside an app's directory, which is shown as one file.
-            if (isMac && !homeWritable) {
-                reject(new Error(`Could not write to folder ${home}. It is needed to create builds and run debugger. Check rights to these folders, and tweak sandbox settings if it is used.`));
-                return;
+        // writing to an exec path on Mac is not a good idea,
+        // as it will be hidden inside an app's directory, which is shown as one file.
+        if (isMac && !homeWritable) {
+            throw new Error(`Could not write to folder ${home}. It is needed to create builds and run debugger. Check rights to these folders, and tweak sandbox settings if it is used.`);
+        }
+        // Home directory takes priority
+        if (homeWritable) {
+            const ctFolder = path.join(home, 'ct.js');
+            await fs.ensureDir(ctFolder);
+            if (await mod.checkWritable(ctFolder)) {
+                return ctFolder;
             }
-            // Home directory takes priority
-            if (homeWritable) {
-                fs.ensureDir(path.join(home, 'ct.js'))
-                .then(() => {
-                    resolve(path.join(home, 'ct.js'));
-                })
-                .catch(reject);
-            } else {
-                if (!execWritable) {
-                    reject(new Error(`Could not write to folders ${home} and ${exec}. A folder is needed to create builds and run debugger. Check access rights to these folders, and tweak sandbox settings if it is used.`));
-                    return;
-                }
-                resolve(exec);
-            }
-        });
+            throw new Error(`The ct.js folder ${ctFolder} is read-only, though its parent isn't. Check your access rights on this folder`);
+        }
+        if (!execWritable) {
+            throw new Error(`Could not write to folders ${home} and ${exec}. A folder is needed to create builds and run debugger. Check access rights to these folders, and tweak sandbox settings if it is used.`);
+        }
+        return exec;
     }
 };
 
