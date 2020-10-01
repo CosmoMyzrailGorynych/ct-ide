@@ -39,7 +39,7 @@ writable-folder-prompt
                 } catch (e) {
                     window.alertify.error(this.voc.folderNotWritable);
                 }
-            } catch(e) {
+            } catch (e) {
                 window.alertify.error(this.voc.folderDoesNotExist);
             }
         };
