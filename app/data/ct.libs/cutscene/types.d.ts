@@ -9,7 +9,7 @@ interface ICutscene extends Promise<void>{
     /**
      * The url of a video that is currently playing
      */
-    url: string;
+    url: string|object;
 
     /**
      * A reference to the player; its types depends on the vide provider that is used.
@@ -33,7 +33,7 @@ declare namespace ct {
          * * `https://awesomegames.rock/trailers/catmintide.mp4`
          * * `./myVideo.mp4` (if you put it inside your `project/include` folder)
          */
-        function show(url: string): ICutscene;
+        function show(url: string|object): ICutscene;
 
         /**
          * Use this to manually remove the player. If the video ends,
