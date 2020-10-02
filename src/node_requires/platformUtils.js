@@ -37,6 +37,9 @@ const mod = {
      */
     async getWritableDir() {
         if (localStorage.customWritableDir) {
+            if (!(await mod.checkWritable(localStorage.customWritableDir))) {
+                throw new Error(`Custom data folder ${localStorage.customWritableDir} is read-only`);
+            }
             return localStorage.customWritableDir;
         }
         const path = require('path');
@@ -122,6 +125,32 @@ const mod = {
             return projectsDir;
         });
         return projectsDirPromise;
+    };
+    mod.requestWritableDir = async () => {
+        const voc = window.languageJSON.writableFolderSelector;
+        const folder = await window.showOpenDialog({
+            openDirectory: true,
+            title: voc.headerSelectFolderForData
+        });
+        const fs = require('fs-extra');
+        try {
+            const lstat = await fs.lstat(folder);
+            if (!lstat.isDirectory()) {
+                window.alertify.error(voc.notADirectory);
+                return false;
+            }
+            try {
+                await fs.access(folder, fs.constants.W_OK);
+                localStorage.customWritableDir = folder;
+                window.alertify.success(voc.complete);
+                return true;
+            } catch (e) {
+                window.alertify.error(voc.folderNotWritable);
+            }
+        } catch (e) {
+            window.alertify.error(voc.folderDoesNotExist);
+        }
+        return false;
     };
 }
 

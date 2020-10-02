@@ -420,7 +420,10 @@ main-menu.flexcol
                     }]
                 }
             }, {
-                type: 'separator'
+                label: window.languageJSON.menu.changeDataFolder,
+                click: () => {
+                    require('./data/node_requires/platformUtils').requestWritableDir();
+                }
             }, {
                 label: window.languageJSON.menu.disableSounds,
                 type: 'checkbox',

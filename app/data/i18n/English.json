@@ -171,6 +171,7 @@
         "codeLigatures": "Ligatures",
         "codeDense": "Dense layout",
         "disableSounds": "Disable UI sounds",
+        "changeDataFolder": "Set data folder location",
         "openIncludeFolder": "Open \"include\" folder",
         "troubleshooting": "Troubleshooting",
         "toggleDevTools": "Toggle Dev Tools",
@@ -626,11 +627,13 @@
     "writableFolderPrompt": {
         "headerSelectFolderForData": "Select a folder for ct.js data",
         "paragraphCouldNotPickDirectory": "Oh noes! Ct.js could not find a folder for your projects, package builds, and for debugging. Ct.js usually finds one automatically, but this time all the folders it was looking for are read-only!",
-        "paragraphDirectoryDirections": "This can be fixed, though. Click the button below and select a folder at which to store data. If you are unsure, pick your Documents folder.",
-        "selectFolder": "Select folder…",
+        "paragraphDirectoryDirections": "This can be fixed, though. Click the button below and select a folder at which to store data. If you are unsure, create a \"ct.js\" directory in your Documents folder.",
+        "selectFolder": "Select folder…"
+    },
+    "writableFolderSelector": {
         "folderDoesNotExist": "It seems that this folder does not exist… How did you do that?",
         "notADirectory": "This doesn't seem to be a directory! How did you do that?",
         "folderNotWritable": "You don't have access to write to this folder. Pick another one.",
-        "complete": "Wonderful! 👏 Now, let's make great games!"
+        "complete": "Folder was set, all is good ✅"
     }
 }
