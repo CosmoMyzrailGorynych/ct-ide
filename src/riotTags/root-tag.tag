@@ -18,7 +18,6 @@ root-tag
 
         require('./data/node_requires/platformUtils')
         .getWritableDir()
-        .then(console.log)
         .catch(e => {
             console.error(e);
             this.showWritableFolderPrompt = true;

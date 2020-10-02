@@ -18,5 +18,10 @@ writable-folder-prompt
         this.mixin(window.riotVoc);
 
         this.openDirectoryPicker = async () => {
-            require('./data/node_requires/platformUtils').requestWritableDir();
+            const {requestWritableDir} = require('./data/node_requires/platformUtils');
+            if (await requestWritableDir()) {
+                if (this.opts.onsuccess) {
+                    this.opts.onsuccess();
+                }
+            }
         };
