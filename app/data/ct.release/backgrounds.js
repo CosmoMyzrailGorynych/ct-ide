@@ -36,7 +36,7 @@ class Background extends PIXI.TilingSprite {
         if (exts.repeat === 'no-repeat' || exts.repeat === 'repeat-y') {
             width = ct.res.getTexture(texName, frame).orig.width * (exts.scaleX || 1);
         }
-        super(ct.res.getTexture(texName, frame), width, height);
+        super(ct.res.getTexture(texName, frame || 0), width, height);
         if (!ct.backgrounds.list[texName]) {
             ct.backgrounds.list[texName] = [];
         }
