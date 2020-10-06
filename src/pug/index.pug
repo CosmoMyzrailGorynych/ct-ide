@@ -81,6 +81,7 @@ html
                     }, 1000);
 
                     window.signals = window.signals || riot.observable({});
+                    window.orders = window.orders || riot.observable({});
                     window.signals.trigger('monacoBooted');
                 });
             })();

@@ -624,6 +624,10 @@
             "is elegant and beautiful 🎩"
         ]
     },
+    "textureInput": {
+        "jumpToTexture": "Jump to the texture",
+        "changeTexture": "Change texture"
+    },
     "writableFolderPrompt": {
         "headerSelectFolderForData": "Select a folder for ct.js data",
         "paragraphCouldNotPickDirectory": "Oh noes! Ct.js could not find a folder for your projects, package builds, and for debugging. Ct.js usually finds one automatically, but this time all the folders it was looking for are read-only!",

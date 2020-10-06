@@ -117,6 +117,26 @@ textures-panel.panel.view
             window.signals.off('skeletonImported', this.updateTextureData);
         });
 
+        const assetListener = asset => {
+            const [assetType, assetId] = asset.split('/');
+            if (assetType !== 'textures') {
+                return;
+            }
+            if (this.editing) {
+                // Reset texture editor
+                this.editing = this.currentTexture = this.currentTextureId = false;
+                this.update();
+            }
+            this.editing = true;
+            this.currentTexture = window.currentProject.textures.find(t => t.uid === assetId);
+            this.currentTextureId = assetId;
+            this.update();
+        };
+        window.orders.on('openAsset', assetListener);
+        this.on('unmount', () => {
+            window.orders.off('openAsset', assetListener);
+        });
+
         /**
          * An event fired when user attempts to add files from a file manager
          * (by clicking an "Import" button)

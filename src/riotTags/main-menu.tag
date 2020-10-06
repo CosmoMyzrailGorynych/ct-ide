@@ -24,7 +24,7 @@ main-menu.flexcol
                 svg.feather
                     use(xlink:href="data/icons.svg#sliders")
                 span {voc.project}
-            li(onclick="{changeTab('texture')}" class="{active: tab === 'texture'}" data-hotkey="Control+2" title="Control+2")
+            li(onclick="{changeTab('textures')}" class="{active: tab === 'textures'}" data-hotkey="Control+2" title="Control+2")
                 svg.feather
                     use(xlink:href="data/icons.svg#texture")
                 span {voc.texture}
@@ -51,7 +51,7 @@ main-menu.flexcol
     div.flexitem.relative(if="{global.currentProject}")
         debugger-screen-embedded(if="{tab === 'debug'}" params="{debugParams}" data-hotkey-scope="play" ref="debugger")
         project-settings(show="{tab === 'project'}" data-hotkey-scope="project")
-        textures-panel(show="{tab === 'texture'}" data-hotkey-scope="texture")
+        textures-panel(show="{tab === 'textures'}" data-hotkey-scope="textures")
         ui-panel(show="{tab === 'ui'}" data-hotkey-scope="ui")
         fx-panel(show="{tab === 'fx'}" data-hotkey-scope="fx")
         sounds-panel(show="{tab === 'sounds'}" data-hotkey-scope="sounds")
@@ -78,6 +78,15 @@ main-menu.flexcol
             window.signals.trigger('globalTabChanged');
             window.signals.trigger(`${tab}Focus`);
         };
+        const assetListener = asset => {
+            const [assetType] = asset.split('/');
+            this.changeTab(assetType)();
+            this.update();
+        };
+        window.orders.on('openAsset', assetListener);
+        this.on('unmount', () => {
+            window.orders.off('openAsset', assetListener);
+        });
 
         const languageSubmenu = {
             items: [],
