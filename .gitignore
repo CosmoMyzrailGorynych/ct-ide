@@ -41,6 +41,7 @@ desktop\.ini
 src/typedefs/ct.js/types.d.ts
 app/examples
 app/data/bundle.js
+app/data/riotTags.js
 app/data/bundle.css
 app/data/node_requires/**/*
 app/data/hotLoadTags

@@ -40,7 +40,9 @@ html
             if (!window.__dirname) {
                 window.__dirname = global.__dirname;
             }
-        include includes/footer.pug
+        div#loading Loading…
+        script(src="data/bundle.js")
+        script(src="data/riotTags.js")
         script.
             // @see https://github.com/microsoft/monaco-editor-samples/blob/master/nwjs-amd-v2/index.html
             (function loadMonaco() {

@@ -114,8 +114,8 @@ const riotSettings = {
 const compileRiot = () =>
     gulp.src('./src/riotTags/**')
     .pipe(riot(riotSettings))
-    .pipe(concat('riot.js'))
-    .pipe(gulp.dest('./temp/'));
+    .pipe(concat('riotTags.js'))
+    .pipe(gulp.dest('./data/'));
 
 const compileRiotPartial = path => {
     console.log(`Updating tag at ${path}…`);
@@ -130,8 +130,7 @@ const concatScripts = () =>
             objectMode: true
         },
         gulp.src('./src/js/3rdparty/riot.min.js'),
-        gulp.src(['./src/js/**', '!./src/js/3rdparty/riot.min.js']),
-        gulp.src('./temp/riot.js')
+        gulp.src(['./src/js/**', '!./src/js/3rdparty/riot.min.js'])
     )
     .pipe(sourcemaps.init({
         largeFile: true
@@ -180,7 +179,7 @@ const watchScripts = () => {
     .on('change', fileChangeNotifier);
 };
 const watchRiot = () => {
-    const watcher = gulp.watch('./src/riotTags/**/*');
+    const watcher = gulp.watch('./src/riotTags/**/*', compileRiot);
     watcher.on('error', err => {
         notifier.notify(makeErrorObj('Riot failure', err));
         console.error('[pug error]', err);
