@@ -1,7 +1,7 @@
 const generateGUID = require('./../../generateGUID');
 
 const defaultTypeTemplate = {
-    name: 'New Type',
+    name: 'NewType',
     depth: 0,
     oncreate: '',
     onstep: 'this.move();',
