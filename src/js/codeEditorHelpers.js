@@ -228,6 +228,7 @@
         Horizon: 'horizon',
         SpringStream: 'spring',
         LucasDracula: 'lucasdracula',
+        Forest: 'forest',
         default: 'tomorrow'
     };
     const glob = require('./data/node_requires/glob');

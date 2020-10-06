@@ -1,0 +1,71 @@
+@charset "utf-8"
+
+foreground = #d8caac
+text = #d8caac
+background = #3c474d
+backgroundDeeper = #323d43
+shadows = #000
+
+borderPale = #505a60
+borderBright = #576268
+
+
+/* Frequently used properties */
+trans =
+    transition 0.35s ease all
+transshort =
+    transition 0.15s ease all
+shad =
+    box-shadow 0 0.1rem 0 rgba(shadows, 0.25)
+shadamb =
+    box-shadow 0 0.25rem 0 rgba(shadows, 0.25)
+
+/* Base fonts for UI */
+fonts = font = 'Open Sans', sans-serif, serif
+font-mono = mono = Iosevka, monospace
+
+br = 0
+iconsize = 1.5rem
+
+/* Colors used by this theme */
+act = #a7c080
+acttext = act
+accent1 = #d8caac
+accent2 = #83b6af
+error = #e68183
+red = error
+success = #a7c080
+green = success
+warning = #d9bb80
+orange = warning
+
+theme = 'Forest'
+themeDark = true
+
+@require 'hvost.styl'
+
+@require '3rdParty/*.styl'
+@require './../../app/node_modules/highlight.js/styles/atom-one-dark.css'
+
+@require 'common.styl'
+@require 'inputs.styl'
+@require 'typography.styl'
+@require 'confetti.styl'
+@require 'buildingBlocks.styl'
+@require 'tabs.styl'
+
+@require 'tags/**/*.styl'
+
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+.button,
+.selectbox
+    &:hover, &.active, &:active, &.selected
+        color backgroundDeeper
+        svg
+            color backgroundDeeper
+
+#bg
+    background backgroundDeeper

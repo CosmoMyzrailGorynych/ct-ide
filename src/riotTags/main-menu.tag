@@ -355,6 +355,12 @@ main-menu.flexcol
                     }, {
                         type: 'separator'
                     }, {
+                        label: window.languageJSON.menu.themeSpringStream || 'Forest',
+                        icon: () => localStorage.UItheme === 'Forest' && 'check',
+                        click: () => {
+                            this.switchTheme('Forest');
+                        }
+                    }, {
                         label: window.languageJSON.menu.themeNight || 'Night',
                         icon: () => localStorage.UItheme === 'Night' && 'check',
                         click: () => {
