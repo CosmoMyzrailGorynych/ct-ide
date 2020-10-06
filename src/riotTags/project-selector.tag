@@ -165,7 +165,7 @@ project-selector
             const defaultProjectDir = require('./data/node_requires/resources/projects').getDefaultProjectDir();
             const proj = await window.showOpenDialog({
                 filter: '.ict',
-                defaultPath: defaultProjectDir
+                defaultPath: await defaultProjectDir
             });
             if (!proj) {
                 return;
