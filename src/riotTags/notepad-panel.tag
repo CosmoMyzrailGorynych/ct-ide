@@ -123,13 +123,13 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
 
         var openDocs = e => {
             this.changeTab('helppages')();
-            this.refs.helpIframe.contentWindow.location = `http://localhost:${fileServer.address().port}${e.path || '/'}`;
+            this.refs.helpIframe.contentWindow.location = `http://localhost:${this.server.address().port}${e.path || '/'}`;
             this.opened = true;
             this.update();
         };
 
         this.backToHome = () => {
-            this.refs.helpIframe.contentWindow.location = `http://localhost:${fileServer.address().port}/`;
+            this.refs.helpIframe.contentWindow.location = `http://localhost:${this.server.address().port}/`;
         };
 
         window.signals.on('openDocs', openDocs);

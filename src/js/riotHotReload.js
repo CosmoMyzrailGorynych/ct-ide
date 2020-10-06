@@ -55,7 +55,4 @@
 
     riot.observable(reload);
     riot.reload = reload;
-    //if (riot.default) {
-    //    riot.default.reload = reload;
-    //}
 })();
