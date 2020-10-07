@@ -15,14 +15,14 @@ context-menu
     transform translate(0, 0.5rem)
     {transshort}
     transition-property visibility, opacity, transform
-    &.opened, & > a:hover > &, & > a:focus > &
+    &.opened, & > a:hover > &, & > a:focus > &, & > a:focus-within > &
         opacity 1
         visibility visible
         transform translate(0, 0)
     context-menu
         transition 0.35s 0.25s ease all
         transform translate(-0.5rem, 0)
-        &.opened, context-menu a:hover context-menu, context-menu a:focus context-menu
+        &.opened, context-menu a:hover context-menu, context-menu a:focus context-menu, context-menu a:focus-within context-menu
             transition 0.15s 0.15s ease all
     a context-menu
         left 100%
