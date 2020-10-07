@@ -151,7 +151,7 @@
         "restart": "menu.restart",
         "project": "menu.project",
         "settings": "menu.settings",
-        "themeSpringSream": "menu.themeSpringSream",
+        "themeSpringStream": "menu.themeSpringStream",
         "themeLucasDracula": "menu.themeLucasDracula",
         "openProject": "menu.openProject",
         "openExample": "menu.openExample"
