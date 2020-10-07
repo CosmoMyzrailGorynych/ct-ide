@@ -272,12 +272,6 @@ main-menu.flexcol
             })
             .catch(alertify.error);
         };
-        localStorage.UItheme = localStorage.UItheme || 'Day';
-        this.switchTheme = theme => {
-            localStorage.UItheme = theme;
-            document.getElementById('themeCSS').href = `./data/theme${theme}.css`;
-            window.signals.trigger('UIThemeChanged', theme);
-        };
 
         const troubleshootingSubmenu = {
             items: [{
@@ -333,59 +327,24 @@ main-menu.flexcol
             }]
         };
 
+        const themeManager = require('./data/node_requires/themes');
+        const themesSubmenu = {
+            items: themeManager.getThemeList().map(theme => ({
+                label: theme.translated,
+                icon: () => localStorage.UItheme === theme.name && 'check',
+                click: async () => {
+                    await themeManager.switchToTheme(theme.name);
+                    this.update();
+                }
+            }))
+        };
         const settingsSubmenu = {
             items: [{
                 label: window.languageJSON.common.language,
                 submenu: languageSubmenu
             }, {
                 label: window.languageJSON.menu.theme,
-                submenu: {
-                    items: [{
-                        label: window.languageJSON.menu.themeDay,
-                        icon: () => localStorage.UItheme === 'Day' && 'check',
-                        click: () => {
-                            this.switchTheme('Day');
-                        }
-                    }, {
-                        label: window.languageJSON.menu.themeSpringStream || 'Spring Stream',
-                        icon: () => localStorage.UItheme === 'SpringStream' && 'check',
-                        click: () => {
-                            this.switchTheme('SpringStream');
-                        }
-                    }, {
-                        type: 'separator'
-                    }, {
-                        label: window.languageJSON.menu.themeSpringStream || 'Forest',
-                        icon: () => localStorage.UItheme === 'Forest' && 'check',
-                        click: () => {
-                            this.switchTheme('Forest');
-                        }
-                    }, {
-                        label: window.languageJSON.menu.themeNight || 'Night',
-                        icon: () => localStorage.UItheme === 'Night' && 'check',
-                        click: () => {
-                            this.switchTheme('Night');
-                        }
-                    }, {
-                        label: window.languageJSON.menu.themeHorizon || 'Horizon',
-                        icon: () => localStorage.UItheme === 'Horizon' && 'check',
-                        click: () => {
-                            this.switchTheme('Horizon');
-                        }
-                    }, {
-                        label: window.languageJSON.menu.themeLucasDracula || 'LucasDracula',
-                        icon: () => localStorage.UItheme === 'LucasDracula' && 'check',
-                        click: () => {
-                            this.switchTheme('LucasDracula');
-                        }
-                    }, {
-                        label: window.languageJSON.menu.highContrastBlack || 'High Contrast (black)',
-                        icon: () => localStorage.UItheme === 'hcBlack' && 'check',
-                        click: () => {
-                            this.switchTheme('hcBlack');
-                        }
-                    }]
-                }
+                submenu: themesSubmenu
             }, {
                 label: window.languageJSON.menu.codeFont,
                 submenu: {

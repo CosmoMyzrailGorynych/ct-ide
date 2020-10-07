@@ -1,0 +1,60 @@
+@charset "utf-8"
+
+foreground = #fff
+text = #fff
+background = #07060E
+backgroundDeeper = #000
+shadows = #000
+
+borderPale = #333
+borderBright = #666
+
+
+/* Frequently used properties */
+trans =
+    transition 0.35s ease all
+transshort =
+    transition 0.15s ease all
+shad =
+    box-shadow 0 0.1rem 0.2rem rgba(shadows, 0.5)
+shadamb =
+    box-shadow 0 0 0.35rem rgba(shadows, 0.5)
+
+/* Base fonts for UI */
+fonts = font = 'Open Sans', sans-serif, serif
+font-mono = mono = Iosevka, monospace
+
+br = 0.2rem
+iconsize = 1.5rem
+
+/* Colors used by this theme */
+act = #ffff00
+acttext = act
+accent1 = #00ffff
+accent2 = #0099ff
+error = #ff3333
+red = error
+success = #33ff33
+green = success
+warning = #ff9900
+orange = warning
+
+theme = 'HCBlack'
+themeDark = true
+
+@require 'hvost.styl'
+
+@require '3rdParty/*.styl'
+@require './../../app/node_modules/highlight.js/styles/atom-one-dark.css'
+
+@require 'common.styl'
+@require 'inputs.styl'
+@require 'typography.styl'
+@require 'confetti.styl'
+@require 'buildingBlocks.styl'
+@require 'tabs.styl'
+
+@require 'tags/**/*.styl'
+
+button, .button
+    border-width 2px

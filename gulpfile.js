@@ -3,11 +3,11 @@
 /* eslint no-console: 0 */
 const path = require('path'),
       gulp = require('gulp'),
-      changed = require('gulp-changed'),
       concat = require('gulp-concat'),
       replace = require('gulp-replace'),
       sourcemaps = require('gulp-sourcemaps'),
       minimist = require('minimist'),
+      ts = require('gulp-typescript'),
       stylus = require('gulp-stylus'),
       riot = require('gulp-riot'),
       pug = require('gulp-pug'),
@@ -149,13 +149,28 @@ const concatScripts = () =>
         console.error('[scripts error]', err);
     })
     .on('change', fileChangeNotifier);
+
 const copyRequires = () =>
-    gulp.src('./src/node_requires/**/*')
+    gulp.src([
+        './src/node_requires/**/*',
+        '!./src/node_requires/**/*.ts'
+    ])
     .pipe(sourcemaps.init())
     // ¯\_(ツ)_/¯
     .pipe(sourcemaps.mapSources((sourcePath) => '../../src/' + sourcePath))
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('./app/data/node_requires'));
+
+const tsProject = ts.createProject('tsconfig.json');
+
+const processRequiresTS = () =>
+    gulp.src('./src/node_requires/**/*.ts')
+    .pipe(sourcemaps.init())
+    .pipe(tsProject())
+    .pipe(sourcemaps.write())
+    .pipe(gulp.dest('./app/data/node_requires'));
+
+const processRequires = gulp.series(copyRequires, processRequiresTS);
 
 const copyInEditorDocs = () =>
     gulp.src('./docs/docs/ct.*.md')
@@ -195,7 +210,7 @@ const watchStylus = () => {
     .on('change', fileChangeNotifier);
 };
 const watchPug = () => {
-    gulp.watch('./src/pug/*.pug', compilePug)
+    gulp.watch('./src/pug/**/*.pug', compilePug)
     .on('change', fileChangeNotifier)
     .on('error', err => {
         notifier.notify(makeErrorObj('Pug failure', err));
@@ -203,7 +218,7 @@ const watchPug = () => {
     });
 };
 const watchRequires = () => {
-    gulp.watch('./src/node_requires/**/*', copyRequires)
+    gulp.watch('./src/node_requires/**/*', processRequires)
     .on('change', fileChangeNotifier)
     .on('error', err => {
         notifier.notify(makeErrorObj('Failure of node_requires', err));
@@ -396,7 +411,7 @@ const build = gulp.parallel([
     compilePug,
     compileStylus,
     compileScripts,
-    copyRequires,
+    processRequires,
     copyInEditorDocs,
     icons,
     bakeTypedefs

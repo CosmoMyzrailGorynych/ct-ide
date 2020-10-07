@@ -4,9 +4,24 @@ head
     meta(charset='utf-8')
     meta(name='description', content='IDE')
     meta(name='viewport', content='width=device-width, initial-scale=1')
-
-    link(href='data/themeDay.css' id="themeCSS" rel='stylesheet')
+    style.
+        #loading {
+            position: fixed;
+            font-family: sans-serif;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            line-height: 86vh;
+            text-align: center;
+            z-index: 50;
+            background: #fff;
+            color: #333;
+            font-size: 4vw;
+            font-weight: 300;
+        }
+    link(href='./data/themeDay.css' id="themeCSS" rel='stylesheet')
     script(type="text/javascript").
         localStorage.UItheme = localStorage.UItheme || 'Day';
         var theme = localStorage.UItheme;
-        document.getElementById('themeCSS').href = `data/theme${theme}.css`;
+        document.getElementById('themeCSS').href = `./data/theme${theme}.css`;
