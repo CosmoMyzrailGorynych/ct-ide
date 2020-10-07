@@ -112,10 +112,10 @@ const riotSettings = {
     template: 'pug'
 };
 const compileRiot = () =>
-    gulp.src('./src/riotTags/**')
+    gulp.src('./src/riotTags/**/*.tag')
     .pipe(riot(riotSettings))
     .pipe(concat('riotTags.js'))
-    .pipe(gulp.dest('./data/'));
+    .pipe(gulp.dest('./app/data/'));
 
 const compileRiotPartial = path => {
     console.log(`Updating tag at ${path}…`);
