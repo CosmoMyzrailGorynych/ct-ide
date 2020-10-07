@@ -1,0 +1,12 @@
+{
+    "base": "hc-black",
+    "inherit": true,
+    "rules": [{
+        "foreground": "#ff9999",
+        "fontStyle": "bold",
+        "token": "pointsOfInterest"
+    }, {
+        "fontStyle": "bold",
+        "token": "keyword"
+    }]
+}
