@@ -538,6 +538,7 @@
         "name": "Name:",
         "width": "View width:",
         "height": "View height:",
+        "isUi": "Is a UI layer?",
         "events": "Room events",
         "copies": "Copies",
         "backgrounds": "Backgrounds",

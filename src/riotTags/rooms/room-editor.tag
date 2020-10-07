@@ -45,7 +45,10 @@ room-editor.panel.view
                         b {voc.backgroundColor}
                         br
                         color-input.wide(onchange="{updateRoomBackground}" color="{room.backgroundColor || '#000000'}")
-                        extensions-editor(entity="{this.room.extends}" type="room" wide="aye" compact="sure")
+                        extensions-editor(entity="{room.extends}" type="room" wide="aye" compact="sure")
+                        label.block.checkbox
+                            input(type="checkbox" checked="{room.extends.isUi}" onchange="{wire('this.room.extends.isUi')}")
+                            b {voc.isUi}
 
         .done.nogrow
             button.wide#roomviewdone(onclick="{roomSave}")
