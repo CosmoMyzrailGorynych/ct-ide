@@ -496,317 +496,197 @@ rooms:
     height: 1200
     backgrounds: []
     copies:
-      - x: 1472
-        'y': 576
+      - x: 1536
+        'y': 512
         uid: 933bd8f5-8e3f-44d4-9060-eabf1bc4ce93
-      - x: 320
-        'y': 576
-        uid: bf3a489b-333c-4171-b5ca-5a8699dfc176
       - x: 384
-        'y': 768
+        'y': 512
+        uid: bf3a489b-333c-4171-b5ca-5a8699dfc176
+      - x: 448
+        'y': 704
         uid: d8b121c6-2f4f-4427-ac7d-7f2b7e7e625d
-      - x: 256
-        'y': 384
-        uid: d8b121c6-2f4f-4427-ac7d-7f2b7e7e625d
-      - x: 512
-        'y': 448
-        uid: d5a61d71-f85f-4287-9269-ce2fbc7206e1
-      - x: 576
+      - x: 320
         'y': 320
+        uid: d8b121c6-2f4f-4427-ac7d-7f2b7e7e625d
+      - x: 576
+        'y': 384
+        uid: d5a61d71-f85f-4287-9269-ce2fbc7206e1
+      - x: 640
+        'y': 256
+        uid: b96007c1-e46d-4ae9-b809-3d49ef2f22b4
+      - x: 640
+        'y': 640
+        uid: b96007c1-e46d-4ae9-b809-3d49ef2f22b4
+      - x: 768
+        'y': 768
         uid: b96007c1-e46d-4ae9-b809-3d49ef2f22b4
       - x: 576
-        'y': 704
-        uid: b96007c1-e46d-4ae9-b809-3d49ef2f22b4
-      - x: 704
         'y': 832
-        uid: b96007c1-e46d-4ae9-b809-3d49ef2f22b4
-      - x: 512
-        'y': 896
         uid: d8b121c6-2f4f-4427-ac7d-7f2b7e7e625d
-      - x: 896
-        'y': 704
-        uid: da879283-739b-4a62-850d-760d00789463
-      - x: 768
-        'y': 448
-        uid: da879283-739b-4a62-850d-760d00789463
       - x: 960
-        'y': 960
-        uid: 245b4e21-93e1-41dd-839e-546810d68a23
-      - x: 1152
-        'y': 576
+        'y': 640
+        uid: da879283-739b-4a62-850d-760d00789463
+      - x: 832
+        'y': 384
         uid: da879283-739b-4a62-850d-760d00789463
       - x: 1024
-        'y': 384
+        'y': 896
+        uid: 245b4e21-93e1-41dd-839e-546810d68a23
+      - x: 1216
+        'y': 512
+        uid: da879283-739b-4a62-850d-760d00789463
+      - x: 1088
+        'y': 320
         uid: d8b121c6-2f4f-4427-ac7d-7f2b7e7e625d
     tiles:
       - depth: -10
         tiles:
-          - x: 64
-            'y': 128
+          - x: 128
+            'y': 64
             texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
             grid:
               - 0
               - 0
               - 2
               - 2
-          - x: 64
-            'y': 1024
-            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
-            grid:
-              - 0
-              - 4
-              - 2
-              - 2
-          - x: 1216
-            'y': 1024
-            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
-            grid:
-              - 4
-              - 4
-              - 2
-              - 2
-          - x: 1216
-            'y': 128
-            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
-            grid:
-              - 4
-              - 0
-              - 2
-              - 2
-          - x: 1216
-            'y': 384
+          - x: 128
+            'y': 960
             texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
             grid:
               - 0
               - 4
               - 2
               - 2
-          - x: 1216
-            'y': 640
+          - x: 1280
+            'y': 960
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 4
+              - 4
+              - 2
+              - 2
+          - x: 1280
+            'y': 64
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 4
+              - 0
+              - 2
+              - 2
+          - x: 1280
+            'y': 320
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 0
+              - 4
+              - 2
+              - 2
+          - x: 1280
+            'y': 576
             texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
             grid:
               - 0
               - 0
               - 2
               - 2
-          - x: 1600
-            'y': 384
+          - x: 1664
+            'y': 320
             texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
             grid:
               - 4
               - 0
               - 2
               - 6
-          - x: 320
-            'y': 1024
-            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
-            grid:
-              - 16
-              - 0
-              - 2
-              - 2
-          - x: 448
-            'y': 1024
-            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
-            grid:
-              - 16
-              - 0
-              - 2
-              - 2
-          - x: 576
-            'y': 1024
-            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
-            grid:
-              - 16
-              - 0
-              - 2
-              - 2
-          - x: 704
-            'y': 1024
-            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
-            grid:
-              - 16
-              - 0
-              - 2
-              - 2
-          - x: 832
-            'y': 1024
-            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
-            grid:
-              - 16
-              - 0
-              - 2
-              - 2
-          - x: 960
-            'y': 1024
-            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
-            grid:
-              - 16
-              - 0
-              - 2
-              - 2
-          - x: 320
-            'y': 128
-            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
-            grid:
-              - 16
-              - 0
-              - 2
-              - 2
-          - x: 448
-            'y': 128
-            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
-            grid:
-              - 16
-              - 0
-              - 2
-              - 2
-          - x: 576
-            'y': 128
-            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
-            grid:
-              - 16
-              - 0
-              - 2
-              - 2
-          - x: 704
-            'y': 128
-            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
-            grid:
-              - 16
-              - 0
-              - 2
-              - 2
-          - x: 832
-            'y': 128
-            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
-            grid:
-              - 16
-              - 0
-              - 2
-              - 2
-          - x: 960
-            'y': 128
-            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
-            grid:
-              - 16
-              - 0
-              - 2
-              - 2
-          - x: 192
-            'y': 128
-            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
-            grid:
-              - 2
-              - 0
-              - 1
-              - 2
-          - x: 1344
-            'y': 640
-            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
-            grid:
-              - 2
-              - 0
-              - 1
-              - 2
-          - x: 192
-            'y': 1024
-            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
-            grid:
-              - 2
-              - 4
-              - 1
-              - 2
-          - x: 64
-            'y': 256
-            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
-            grid:
-              - 0
-              - 2
-              - 2
-              - 1
-          - x: 64
+          - x: 384
             'y': 960
             texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
             grid:
-              - 0
-              - 3
-              - 2
-              - 1
-          - x: 1216
-            'y': 320
-            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
-            grid:
-              - 0
-              - 3
-              - 2
-              - 1
-          - x: 1216
-            'y': 256
-            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
-            grid:
-              - 4
-              - 2
-              - 2
-              - 1
-          - x: 1152
-            'y': 128
-            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
-            grid:
-              - 3
-              - 0
-              - 1
-              - 2
-          - x: 1152
-            'y': 1024
-            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
-            grid:
-              - 3
-              - 4
-              - 1
-              - 2
-          - x: 1216
-            'y': 768
-            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
-            grid:
+              - 16
               - 0
               - 2
               - 2
-              - 1
-          - x: 1344
-            'y': 768
-            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
-            grid:
-              - 2
-              - 2
-              - 1
-              - 1
-          - x: 1344
-            'y': 320
-            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
-            grid:
-              - 2
-              - 3
-              - 1
-              - 1
-          - x: 1344
-            'y': 384
-            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
-            grid:
-              - 2
-              - 4
-              - 1
-              - 2
-          - x: 1408
-            'y': 640
+          - x: 512
+            'y': 960
             texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
             grid:
               - 16
               - 0
               - 2
               - 2
-          - x: 1408
-            'y': 384
+          - x: 640
+            'y': 960
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 2
+              - 2
+          - x: 768
+            'y': 960
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 2
+              - 2
+          - x: 896
+            'y': 960
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 2
+              - 2
+          - x: 1024
+            'y': 960
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 2
+              - 2
+          - x: 384
+            'y': 64
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 2
+              - 2
+          - x: 512
+            'y': 64
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 2
+              - 2
+          - x: 640
+            'y': 64
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 2
+              - 2
+          - x: 768
+            'y': 64
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 2
+              - 2
+          - x: 896
+            'y': 64
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 2
+              - 2
+          - x: 1024
+            'y': 64
             texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
             grid:
               - 16
@@ -814,103 +694,223 @@ rooms:
               - 2
               - 2
           - x: 256
-            'y': 128
+            'y': 64
             texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
             grid:
-              - 16
+              - 2
               - 0
               - 1
               - 2
-          - x: 1088
-            'y': 128
-            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
-            grid:
-              - 16
-              - 0
-              - 1
-              - 2
-          - x: 1088
-            'y': 1024
-            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
-            grid:
-              - 16
-              - 0
-              - 1
-              - 2
-          - x: 256
-            'y': 1024
-            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
-            grid:
-              - 16
-              - 0
-              - 1
-              - 2
-          - x: 64
-            'y': 320
-            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
-            grid:
-              - 12
-              - 2
-              - 2
-              - 2
-          - x: 64
-            'y': 448
-            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
-            grid:
-              - 12
-              - 2
-              - 2
-              - 2
-          - x: 64
+          - x: 1408
             'y': 576
             texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
             grid:
-              - 12
               - 2
+              - 0
+              - 1
               - 2
-              - 2
-          - x: 64
-            'y': 704
-            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
-            grid:
-              - 12
-              - 2
-              - 2
-              - 2
-          - x: 64
-            'y': 832
-            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
-            grid:
-              - 12
-              - 2
-              - 2
-              - 2
-          - x: 1216
-            'y': 832
-            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
-            grid:
-              - 12
-              - 2
-              - 2
-              - 2
-          - x: 1216
+          - x: 256
             'y': 960
             texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
             grid:
+              - 2
               - 4
+              - 1
+              - 2
+          - x: 128
+            'y': 192
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 0
+              - 2
+              - 2
+              - 1
+          - x: 128
+            'y': 896
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 0
               - 3
               - 2
               - 1
-          - x: 1536
-            'y': 384
+          - x: 1280
+            'y': 256
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 0
+              - 3
+              - 2
+              - 1
+          - x: 1280
+            'y': 192
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 4
+              - 2
+              - 2
+              - 1
+          - x: 1216
+            'y': 64
             texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
             grid:
               - 3
               - 0
               - 1
               - 2
-          - x: 1536
+          - x: 1216
+            'y': 960
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 3
+              - 4
+              - 1
+              - 2
+          - x: 1280
+            'y': 704
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 0
+              - 2
+              - 2
+              - 1
+          - x: 1408
+            'y': 704
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 2
+              - 2
+              - 1
+              - 1
+          - x: 1408
+            'y': 256
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 2
+              - 3
+              - 1
+              - 1
+          - x: 1408
+            'y': 320
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 2
+              - 4
+              - 1
+              - 2
+          - x: 1472
+            'y': 576
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 2
+              - 2
+          - x: 1472
+            'y': 320
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 2
+              - 2
+          - x: 320
+            'y': 64
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 1
+              - 2
+          - x: 1152
+            'y': 64
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 1
+              - 2
+          - x: 1152
+            'y': 960
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 1
+              - 2
+          - x: 320
+            'y': 960
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 1
+              - 2
+          - x: 128
+            'y': 256
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 12
+              - 2
+              - 2
+              - 2
+          - x: 128
+            'y': 384
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 12
+              - 2
+              - 2
+              - 2
+          - x: 128
+            'y': 512
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 12
+              - 2
+              - 2
+              - 2
+          - x: 128
             'y': 640
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 12
+              - 2
+              - 2
+              - 2
+          - x: 128
+            'y': 768
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 12
+              - 2
+              - 2
+              - 2
+          - x: 1280
+            'y': 768
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 12
+              - 2
+              - 2
+              - 2
+          - x: 1280
+            'y': 896
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 4
+              - 3
+              - 2
+              - 1
+          - x: 1600
+            'y': 320
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 3
+              - 0
+              - 1
+              - 2
+          - x: 1600
+            'y': 576
             texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
             grid:
               - 3
@@ -922,48 +922,48 @@ rooms:
         hidden: false
       - depth: -11
         tiles:
-          - x: 1152
-            'y': 960
+          - x: 1216
+            'y': 896
             texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
             grid:
               - 7
               - 1
               - 1
               - 1
-          - x: 1152
-            'y': 256
+          - x: 1216
+            'y': 192
             texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
             grid:
               - 7
               - 4
               - 1
               - 1
-          - x: 1536
+          - x: 1600
+            'y': 448
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 7
+              - 4
+              - 1
+              - 1
+          - x: 1600
             'y': 512
             texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
             grid:
               - 7
-              - 4
-              - 1
-              - 1
-          - x: 1536
-            'y': 576
-            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
-            grid:
-              - 7
               - 1
               - 1
               - 1
-          - x: 192
-            'y': 256
+          - x: 256
+            'y': 192
             texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
             grid:
               - 10
               - 4
               - 1
               - 1
-          - x: 192
-            'y': 960
+          - x: 256
+            'y': 896
             texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
             grid:
               - 10
@@ -978,7 +978,7 @@ rooms:
     gridX: 64
     gridY: 64
     backgroundColor: '#461212'
-    lastmod: 1602212965648
+    lastmod: 1602214362314
   - name: PuzzleBlocks_Simple
     oncreate: ''
     onstep: ''
