@@ -8,6 +8,7 @@ Creates a new tween effect and adds it to the game loop.
     * `options.curve` An interpolating function. You can write your own, or use default ones written below. The default one is `ct.tween.ease`.
     * `options.duration` The duration of easing, in milliseconds.
     * `options.useUiDelta` If true, use `ct.deltaUi` instead of `ct.delta`. The default is `false`.
+    * `options.silent` If set to true, suppresses errors when the timer was interrupted or stopped manually.
 
 Returns a Promise which is resolved if the effect was fully played, or rejected if it was interrupted manually by code, room switching or Copy kill.
 
