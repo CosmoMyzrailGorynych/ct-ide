@@ -474,7 +474,7 @@
             return false;
         },
         enableTilemapCollisions(tilemap, ctype) {
-            const cgroup = ctype || tilemap.ctyle;
+            const cgroup = ctype || tilemap.ctype;
             if (tilemap.addedCollisions) {
                 throw new Error('[ct.place] The tilemap already has collisions enabled.');
             }
