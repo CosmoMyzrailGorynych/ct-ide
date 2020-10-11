@@ -7,7 +7,8 @@ const builtInThemes = [
     'Forest',
     'Horizon',
     'LucasDracula',
-    'Night'
+    'Night',
+    'HCBlack'
 ];
 interface ITheme {
     name: string;

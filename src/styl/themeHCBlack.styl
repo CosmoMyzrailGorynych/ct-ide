@@ -2,7 +2,7 @@
 
 foreground = #fff
 text = #fff
-background = #07060E
+background = #080808
 backgroundDeeper = #000
 shadows = #000
 
@@ -56,5 +56,12 @@ themeDark = true
 
 @require 'tags/**/*.styl'
 
-button, .button
+button, .button, select, input[type="text"], input[type="number"], input[type="url"], input[type="password"], textarea, .panel
     border-width 2px
+button, .button
+    &:hover, &:focus, &:active, &.selected
+        &, & svg
+            color backgroundDeeper
+
+#bg
+    background backgroundDeeper
