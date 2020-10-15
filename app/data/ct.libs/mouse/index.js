@@ -17,6 +17,8 @@
     };
 
     ct.mouse = {
+        xui: 0,
+        yui: 0,
         xprev: 0,
         yprev: 0,
         xuiprev: 0,
