@@ -217,6 +217,14 @@ main-menu.flexcol
             window.hotkeys.off('Alt+F5', this.runProjectAlt);
         });
 
+        this.toggleFullscreen = function toggleFullscreen() {
+            nw.Window.get().toggleFullscreen();
+        };
+        window.hotkeys.on('F11', this.toggleFullscreen);
+        this.on('unmount', () => {
+            window.hotkeys.off('F11', this.toggleFullscreen);
+        });
+
         this.zipProject = async () => {
             try {
                 const os = require('os');
