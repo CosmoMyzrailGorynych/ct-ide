@@ -26,7 +26,7 @@ texture-input(class="{large: opts.large} {opts.class}")
         img(src="{getTexturePreview(val || -1, true)}")
         div(if="{val === -1}") {vocGlob.select}
         div(if="{val !== -1}") {getTextureFromId(val).name}
-    button.square(if="{val !== -1 && opts.large}" title="{voc.jumpToTexture}" onclick="{openTexture}")
+    button.tiny(if="{val !== -1 && opts.large}" title="{voc.jumpToTexture}" onclick="{openTexture}")
         svg.feather
             use(xlink:href="data/icons.svg#external-link")
     texture-selector(

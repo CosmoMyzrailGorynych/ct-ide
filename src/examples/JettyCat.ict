@@ -1,4 +1,4 @@
-ctjsVersion: 1.3.0
+ctjsVersion: 1.4.2
 notes: /* empty */
 libs:
   place:
@@ -942,14 +942,17 @@ rooms:
         uid: 8f93611e-6e95-49c4-8e2b-4cc067be2924
         tx: 0.65
         ty: 0.65
+        exts: {}
     tiles:
       - depth: -10
         tiles: []
+        extends: {}
     uid: c51bc37f-69c9-4eec-8c2b-332dab64a25a
     thumbnail: 332dab64a25a
     gridX: 64
     gridY: 64
-    lastmod: 1585703848844
+    lastmod: 1602729483658
+    extends: {}
   - name: MainMenu
     oncreate: ''
     onstep: ''
@@ -971,17 +974,21 @@ rooms:
       - x: 540
         'y': 384
         uid: 6cd7876a-4918-47a7-8100-75f0375986ef
+        exts: {}
       - x: 540
         'y': 960
         uid: 25ac0f9b-57ff-461d-8eb7-a9ce800b9c71
+        exts: {}
     tiles:
       - depth: -10
         tiles: []
+        extends: {}
     uid: 8677472b-4549-48b5-a5a8-a891fb029f6b
     thumbnail: a891fb029f6b
     gridX: 108
     gridY: 64
-    lastmod: 1584496269570
+    lastmod: 1602729490329
+    extends: {}
   - name: UI_InGame
     oncreate: ''
     onstep: ''
@@ -996,15 +1003,19 @@ rooms:
         uid: d4c02f18-93d0-4ad4-8e5b-62fb9a0f0af9
         tx: 0.75
         ty: 0.75
+        exts: {}
       - x: 960
         'y': 128
         uid: 6a532c9b-7e32-4070-b72b-86012306c7fb
+        exts: {}
       - x: 512
         'y': 960
         uid: ba73f80b-0995-40b6-94d5-3e82712b5ecf
+        exts: {}
     tiles:
       - depth: -10
         tiles: []
+        extends: {}
     uid: dd0ac376-10c7-4619-9593-9c2c4e48f46a
     thumbnail: 9c2c4e48f46a
     gridX: 64
@@ -1031,12 +1042,15 @@ rooms:
       - x: 540
         'y': 1088
         uid: 43938432-cf0b-416d-91e9-8bc9a1f8abcf
+        exts: {}
       - x: 540
         'y': 576
         uid: ee7454ca-ba35-4d79-9b78-83e763fd81f5
+        exts: {}
     tiles:
       - depth: -10
         tiles: []
+        extends: {}
     uid: 78d3dac5-253d-4792-a85d-7d775aefe864
     thumbnail: 7d775aefe864
     gridX: 540
@@ -1063,15 +1077,19 @@ rooms:
       - x: 540
         'y': 384
         uid: 92049024-c0ef-41ae-8512-851ce20cad3a
+        exts: {}
       - x: 540
         'y': 1344
         uid: 25ac0f9b-57ff-461d-8eb7-a9ce800b9c71
+        exts: {}
       - x: 540
         'y': 832
         uid: 8748598b-4494-433f-9f18-fbe985c2a583
+        exts: {}
     tiles:
       - depth: -10
         tiles: []
+        extends: {}
     uid: 158a085c-c48c-4b57-8e64-e38a4cd0cc21
     thumbnail: e38a4cd0cc21
     gridX: 540
@@ -1252,14 +1270,6 @@ emitterTandems:
     previewTexture: 4e0a0e06-81ea-4cd2-8f3d-569a8ad3e947
 starting: 0
 settings:
-  minifyhtmlcss: false
-  minifyjs: false
-  fps: 60
-  version:
-    - 1
-    - 0
-    - 0
-  versionPostfix: ''
   export:
     windows64: true
     windows32: true
@@ -1271,9 +1281,22 @@ settings:
     icon: eb24c2bc-a36c-4118-b33e-a7348c00e5bb
     accent: '#446adb'
     invertPreloaderScheme: true
-  title: JettyCat
-  site: 'https://ctjs.rocks/'
-  author: ComigoGames
+  rendering:
+    maxFPS: 60
+    pixelatedrender: false
+    highDensity: true
+    usePixiLegacy: true
+    desktopMode: maximized
+  authoring:
+    title: JettyCat
+    author: ComigoGames
+    site: 'https://ctjs.rocks/'
+    version:
+      - 1
+      - 0
+      - 0
+    versionPostfix: ''
+  fps: 30
 scripts: []
 fonts: []
 startroom: 8677472b-4549-48b5-a5a8-a891fb029f6b

@@ -57,6 +57,7 @@
  * @property {number} shakeMax The maximum possible value for the `shake` property
  * to protect players from losing their monitor, in `shake` units. Default is 10.
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 class Camera extends PIXI.DisplayObject {
     constructor(x, y, w, h) {
         super();

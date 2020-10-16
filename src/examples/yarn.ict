@@ -1,4 +1,4 @@
-ctjsVersion: 1.3.0
+ctjsVersion: 1.4.2
 notes: >-
   There is a number of interesting places to start learning the demo:
 
@@ -375,14 +375,18 @@ rooms:
         uid: 9e7aec96-1ad3-4679-a248-01180284e78e
         tx: 0.75
         ty: 0.75
+        exts: {}
     tiles:
       - depth: -10
         tiles: []
+        extends: {}
     uid: d21d2804-d690-4c65-9657-7a1486b7f1d9
     thumbnail: 7a1486b7f1d9
     gridX: 64
     gridY: 64
-    lastmod: 1570007451105
+    lastmod: 1602729464201
+    extends: {}
+    backgroundColor: '#FFFFFF'
   - name: Micro
     oncreate: |-
       var latestBlurb; // we will need it to accurately position text lines
@@ -415,14 +419,18 @@ rooms:
         uid: 9e7aec96-1ad3-4679-a248-01180284e78e
         tx: 0.75
         ty: 0.75
+        exts: {}
     tiles:
       - depth: -10
         tiles: []
+        extends: {}
     uid: cb9565fc-6666-4f0c-bc6c-b49f813ea9ce
     thumbnail: b49f813ea9ce
     gridX: 64
     gridY: 64
-    lastmod: 1570007519025
+    lastmod: 1602729449081
+    extends: {}
+    backgroundColor: '#FFFFFF'
   - name: Stop
     oncreate: |-
       var latestBlurb; // we will need it to accurately position text lines
@@ -455,14 +463,18 @@ rooms:
         uid: 9e7aec96-1ad3-4679-a248-01180284e78e
         tx: 0.75
         ty: 0.75
+        exts: {}
     tiles:
       - depth: -10
         tiles: []
+        extends: {}
     uid: 95f73a99-6402-4848-81a7-d96488130d15
     thumbnail: d96488130d15
     gridX: 64
     gridY: 64
-    lastmod: 1570013323128
+    lastmod: 1602729455043
+    extends: {}
+    backgroundColor: '#FFFFFF'
   - name: Wait
     oncreate: |-
       var latestBlurb; // we will need it to accurately position text lines
@@ -495,25 +507,21 @@ rooms:
         uid: 9e7aec96-1ad3-4679-a248-01180284e78e
         tx: 0.75
         ty: 0.75
+        exts: {}
     tiles:
       - depth: -10
         tiles: []
+        extends: {}
     uid: 48b25b49-58b8-44ee-b4c5-cc6b9ea24c38
     thumbnail: cc6b9ea24c38
     gridX: 64
     gridY: 64
-    lastmod: 1570056924685
+    lastmod: 1602729461377
+    extends: {}
+    backgroundColor: '#FFFFFF'
 actions: []
 starting: 0
 settings:
-  minifyhtmlcss: false
-  minifyjs: false
-  fps: 30
-  version:
-    - 0
-    - 0
-    - 0
-  versionPostfix: ''
   export:
     linux: true
     windows: true
@@ -522,7 +530,22 @@ settings:
     icon: -1
     accent: '#446adb'
     invertPreloaderScheme: true
-  desktopMode: maximized
+  rendering:
+    maxFPS: 60
+    pixelatedrender: false
+    highDensity: true
+    usePixiLegacy: true
+    desktopMode: maximized
+  authoring:
+    title: !<tag:yaml.org,2002:js/undefined> ''
+    author: !<tag:yaml.org,2002:js/undefined> ''
+    site: !<tag:yaml.org,2002:js/undefined> ''
+    version:
+      - 0
+      - 0
+      - 0
+    versionPostfix: ''
+  fps: 30
 scripts:
   - name: storyEngine
     code: |-
@@ -642,3 +665,4 @@ scripts:
 fonts: []
 startroom: d21d2804-d690-4c65-9657-7a1486b7f1d9
 emitterTandems: []
+palette: []
