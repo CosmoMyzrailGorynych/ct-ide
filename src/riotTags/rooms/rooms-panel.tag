@@ -22,7 +22,7 @@ rooms-panel.panel.view
                         svg.feather
                             use(xlink:href="data/icons.svg#plus")
                         span {voc.create}
-        ul.cards.rooms.flexfix-body(class="{list: localStorage.roomsLayout === 'list'}")
+        ul.pad.cards.largeicons.flexfix-body(class="{list: localStorage.roomsLayout === 'list'}")
             li(
                 each="{room in (searchResults? searchResults : rooms)}"
                 class="{starting: global.currentProject.startroom === room.uid}"

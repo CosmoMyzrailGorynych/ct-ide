@@ -19,8 +19,6 @@
     border 1px solid borderBright
     border-radius br
     position relative
-    &.pad
-        padding 1rem
 
 .modal
     position fixed
@@ -144,14 +142,14 @@
 
 
 // resource cards
-.cards
+.cards, .Cards
     list-style none
     padding 0
     display grid
     grid-template-columns repeat(auto-fill, minmax(17em, 1fr))
     grid-gap 0.3em
     flex-grow 0
-    li
+    li, .aCard
         background background
         padding 0.8em
         margin 0
@@ -225,6 +223,32 @@
         &:last-child
             border-bottom-left-radius br
             border-bottom-right-radius br
+    &.largeicons
+        grid-template-columns repeat(auto-fill, minmax(15em, 1fr))
+        li
+            text-align center
+            position relative
+        img
+            float none
+            max-width 13.5em
+            max-height 10em
+            margin 0
+            width auto
+            height auto
+        span
+            font-family consolas, monospace
+            width 12.5em
+            text-overflow ellipsis
+            white-space nowrap
+            overflow hidden
+.aCard-Actions
+    position absolute
+    top 0.5rem
+    right 0.5rem
+    opacity 0
+    {trans}
+    .aCard:hover &, .aCard:focus &
+        opacity 1
 sounds-panel, rooms-panel
     .cards li img:hover
         background none

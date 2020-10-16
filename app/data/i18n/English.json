@@ -126,9 +126,11 @@
         "forgetProject": "Forget this project",
         "browse": "Browse",
         "latest": "Latest projects",
+        "examples": "Examples",
         "unableToWriteToFolders": "Ct.js could not find an appropriate place for projects! Make sure you store ct.js app inside a folder you have access to write to.",
         "twitter": "Twitter channel",
-        "discord": "Discord community"
+        "discord": "Discord community",
+        "createOrBrowseJunction": "or"
     },
     "licensepanel": {
         "ctjslicense": "Ct.js License (MIT)"

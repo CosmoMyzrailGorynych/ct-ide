@@ -10,23 +10,18 @@ project-selector
     label.file
         margin 1em 0
     .panel
-        width 48rem
+        width 50rem
         max-width 95%
+        max-height calc(100% - 10rem)
         margin 0 auto 2rem
-        padding 1rem
         background background
-        flex-flow column nowrap
         z-index 35
         {shadamb}
+        h2
+            align-self flex-end
     .inset
-        margin 0 -1rem -1rem
+        margin 0
         border-radius 0 0 br br
-    .menu
-        max-height 15rem
-        li
-            direction rtl
-        svg
-            margin-left 1rem
     .aVersionNumber
         position absolute
         bottom 0
@@ -52,14 +47,14 @@ project-selector
         max-width 100%
         max-height 20em
 
-#recent
-    height 15em
-    span
-        overflow hidden
-        white-space nowrap
-        width 100%
-        display block
-        text-overflow ellipsis
+#newProject
+    align-items center
+    justify-content center
+    h3, button, input
+        flex 0 0 auto
+    input
+        margin 0 1rem
+        width 16rem
 #bg
     background url('../data/img/bg.png')
     background-size cover
@@ -71,5 +66,3 @@ project-selector
 
 #id
     width 14.75em
-#newproj
-    margin-right 0
