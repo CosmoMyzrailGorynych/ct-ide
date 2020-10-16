@@ -213,6 +213,9 @@ main-menu.flexcol
             });
         };
         window.hotkeys.on('Alt+F5', this.runProjectAlt);
+        this.on('unmount', () => {
+            window.hotkeys.off('Alt+F5', this.runProjectAlt);
+        });
 
         this.zipProject = async () => {
             try {
