@@ -22,8 +22,6 @@
  * values larger than 1 will do the opposite, making the background appear closer than the rest
  * of object.
  * This property is for vertical movement.
- * @property {boolean} isUi Set it to `true` for backgrounds that are added to UI layers.
- * It is needed for proper alignment of background layers.
  * @class
  */
 class Background extends PIXI.TilingSprite {
@@ -95,6 +93,9 @@ class Background extends PIXI.TilingSprite {
     }
     static onDestroy() {
         void 0;
+    }
+    get isUi() {
+        return this.parent ? Boolean(this.parent.isUi) : false;
     }
 }
 /**
