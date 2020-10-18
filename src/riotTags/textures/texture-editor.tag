@@ -382,8 +382,19 @@ texture-editor.panel.view
          */
         this.textureCenter = () => {
             const {texture} = this;
+            let needsRefilling = false;
+            if (texture.left === Math.floor(texture.axis[0]) &&
+                texture.top === Math.floor(texture.axis[1]) &&
+                texture.right === Math.ceil(texture.width - texture.axis[0]) &&
+                texture.bottom === Math.ceil(texture.height - texture.axis[1])
+            ) {
+                needsRefilling = true;
+            }
             texture.axis[0] = Math.floor(texture.width / 2);
             texture.axis[1] = Math.floor(texture.height / 2);
+            if (needsRefilling) {
+                this.textureFillRect();
+            }
         };
         /**
          * Заполнить всё изображение маской-квадратом
