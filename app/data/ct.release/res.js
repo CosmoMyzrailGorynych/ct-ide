@@ -45,6 +45,9 @@
          * than the auto-generated one
          */
         getTexture(name, frame) {
+            if (frame === null) {
+                frame = void 0;
+            }
             if (name === -1) {
                 if (frame !== void 0) {
                     return PIXI.Texture.EMPTY;

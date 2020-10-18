@@ -22,21 +22,20 @@
  * values larger than 1 will do the opposite, making the background appear closer than the rest
  * of object.
  * This property is for vertical movement.
- * @property {boolean} isUi Set it to `true` for backgrounds that are added to UI layers.
- * It is needed for proper alignment of background layers.
  * @class
  */
 class Background extends PIXI.TilingSprite {
     constructor(texName, frame = 0, depth = 0, exts = {}) {
         var width = ct.camera.width,
             height = ct.camera.height;
+        const texture = ct.res.getTexture(texName, frame || 0);
         if (exts.repeat === 'no-repeat' || exts.repeat === 'repeat-x') {
-            height = ct.res.getTexture(texName, frame).orig.height * (exts.scaleY || 1);
+            height = texture.height * (exts.scaleY || 1);
         }
         if (exts.repeat === 'no-repeat' || exts.repeat === 'repeat-y') {
-            width = ct.res.getTexture(texName, frame).orig.width * (exts.scaleX || 1);
+            width = texture.width * (exts.scaleX || 1);
         }
-        super(ct.res.getTexture(texName, frame || 0), width, height);
+        super(texture, width, height);
         if (!ct.backgrounds.list[texName]) {
             ct.backgrounds.list[texName] = [];
         }
@@ -47,7 +46,6 @@ class Background extends PIXI.TilingSprite {
         this.depth = depth;
         this.shiftX = this.shiftY = this.movementX = this.movementY = 0;
         this.parallaxX = this.parallaxY = 1;
-        this.isUi = false;
         if (exts) {
             ct.u.extend(this, exts);
         }
@@ -75,14 +73,14 @@ class Background extends PIXI.TilingSprite {
         if (this.repeat !== 'repeat-x' && this.repeat !== 'no-repeat') {
             this.y = cameraBounds.y;
             this.tilePosition.y = -this.y * this.parallaxY + this.shiftY;
-            this.height = cameraBounds.height;
+            this.height = cameraBounds.height + 1;
         } else {
             this.y = this.shiftY + cameraBounds.y * (this.parallaxY - 1);
         }
         if (this.repeat !== 'repeat-y' && this.repeat !== 'no-repeat') {
             this.x = cameraBounds.x;
             this.tilePosition.x = -this.x * this.parallaxX + this.shiftX;
-            this.width = cameraBounds.width;
+            this.width = cameraBounds.width + 1;
         } else {
             this.x = this.shiftX + cameraBounds.x * (this.parallaxX - 1);
         }
@@ -95,6 +93,9 @@ class Background extends PIXI.TilingSprite {
     }
     static onDestroy() {
         void 0;
+    }
+    get isUi() {
+        return this.parent ? Boolean(this.parent.isUi) : false;
     }
 }
 /**

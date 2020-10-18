@@ -57,7 +57,6 @@
  * @property {number} shakeMax The maximum possible value for the `shake` property
  * to protect players from losing their monitor, in `shake` units. Default is 10.
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 class Camera extends PIXI.DisplayObject {
     constructor(x, y, w, h) {
         super();
@@ -348,6 +347,22 @@ class Camera extends PIXI.DisplayObject {
     set rotation(value) {
         this.transform.rotation = value * Math.PI / -180;
         return value;
+    }
+
+    /**
+     * Checks whether a given object (or any Pixi's DisplayObject)
+     * is potentially visible, meaning that its bounding box intersects
+     * the camera's bounding box.
+     * @param {PIXI.DisplayObject} copy An object to check for.
+     * @returns {boolean} `true` if an object is visible, `false` otherwise.
+     */
+    contains(copy) {
+        // `true` skips transforms recalculations, boosting performance
+        const bounds = copy.getBounds(true);
+        return bounds.right > 0 &&
+               bounds.left < this.width * this.scale.x &&
+               bounds.bottom > 0 &&
+               bounds.top < this.width * this.scale.y;
     }
 
     /**

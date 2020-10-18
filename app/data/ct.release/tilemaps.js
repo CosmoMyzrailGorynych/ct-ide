@@ -46,7 +46,6 @@ class Tilemap extends PIXI.Container {
         }
         const texture = ct.res.getTexture(textureName, frame);
         const sprite = new PIXI.Sprite(texture);
-        sprite.anchor.x = sprite.anchor.y = 0;
         sprite.x = x;
         sprite.y = y;
         this.tiles.push({
@@ -104,6 +103,54 @@ class Tilemap extends PIXI.Container {
 
         this.cached = true;
     }
+    /**
+     * Enables caching on this tileset, freezing it and turning it
+     * into a series of bitmap textures. This proides great speed boost,
+     * but prevents further editing.
+     *
+     * This version packs tiles into rhombus-shaped chunks, and sorts them
+     * from top to bottom. This fixes seam issues for isometric games.
+     */
+    cacheDiamond(chunkSize = 1024) {
+        if (this.cached) {
+            throw new Error('[ct.tiles] Attempt to cache an already cached tilemap.');
+        }
+
+        this.cells = [];
+        this.diamondCellMap = {};
+        for (let i = 0, l = this.tiles.length; i < l; i++) {
+            const tile = this.children[0];
+            const [xNormalized, yNormalized] = ct.u.rotate(tile.x, tile.y * 2, -45);
+            const x = Math.floor(xNormalized / chunkSize),
+                  y = Math.floor(yNormalized / chunkSize),
+                  key = `${x}:${y}`;
+            if (!(key in this.diamondCellMap)) {
+                const chunk = new PIXI.Container();
+                chunk.chunkX = x;
+                chunk.chunkY = y;
+                this.diamondCellMap[key] = chunk;
+                this.cells.push(chunk);
+            }
+            this.diamondCellMap[key].addChild(tile);
+        }
+        this.removeChildren();
+
+        this.cells.sort((a, b) => {
+            const maxA = Math.max(a.chunkY, a.chunkX),
+                  maxB = Math.max(b.chunkY, b.chunkX);
+            if (maxA === maxB) {
+                return b.chunkX - a.chunkX;
+            }
+            return maxA - maxB;
+        });
+
+        for (let i = 0, l = this.cells.length; i < l; i++) {
+            this.addChild(this.cells[i]);
+            this.cells[i].cacheAsBitmap = true;
+        }
+
+        this.cached = true;
+    }
 }
 ct.types.Tilemap = Tilemap;
 
@@ -143,8 +190,28 @@ ct.tilemaps = {
      * This is the same as calling `tilemap.cache();`
      *
      * @param {Tilemap} tilemap The tilemap which needs to be cached.
+     * @param {number} chunkSize The size of one chunk.
      */
     cache(tilemap, chunkSize) {
         tilemap.cache(chunkSize);
+    },
+    /**
+     * Enables caching on this tileset, freezing it and turning it
+     * into a series of bitmap textures. This proides great speed boost,
+     * but prevents further editing.
+     *
+     * This version packs tiles into rhombus-shaped chunks, and sorts them
+     * from top to bottom. This fixes seam issues for isometric games.
+     * Note that tiles should be placed on a flat plane for the proper sorting.
+     * If you need an effect of elevation, consider shifting each tile with
+     * tile.pivot.y property.
+     *
+     * This is the same as calling `tilemap.cacheDiamond();`
+     *
+     * @param {Tilemap} tilemap The tilemap which needs to be cached.
+     * @param {number} chunkSize The size of one chunk.
+     */
+    cacheDiamond(tilemap, chunkSize) {
+        tilemap.cacheDiamond(chunkSize);
     }
 };
