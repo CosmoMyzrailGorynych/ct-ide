@@ -34,7 +34,7 @@ const imageContain = function (image: GenericImage, w: number, h: number): HTMLC
     const cx = canvas.getContext('2d');
     cx.clearRect(0, 0, w, h);
     let k;
-    if (w / image.width > h / image.height) {
+    if (w / image.width < h / image.height) {
         k = w / image.width;
     } else {
         k = h / image.height;
