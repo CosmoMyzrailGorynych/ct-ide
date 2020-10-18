@@ -46,7 +46,6 @@ class Tilemap extends PIXI.Container {
         }
         const texture = ct.res.getTexture(textureName, frame);
         const sprite = new PIXI.Sprite(texture);
-        sprite.anchor.x = sprite.anchor.y = 0;
         sprite.x = x;
         sprite.y = y;
         this.tiles.push({
