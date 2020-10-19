@@ -9,6 +9,7 @@
         "addtonotes": "Adicionar às notas",
         "apply": "Aplicar",
         "cancel": "Cancelar",
+        "clear": "Limpar",
         "confirmDelete": "Você tem certeza que deseja remover {0}? Não poderá ser desfeita.",
         "copy": "Copiar",
         "copyName": "Copiar o nome",
@@ -21,7 +22,9 @@
         "exit": "Sair",
         "exitconfirm": "Você tem certeza que deseja sair?<br/>Todas as alterações que não foram salvas serão perdidas!",
         "fastimport": "Importação Rápida",
+        "filter": "Filtro:",
         "language": "Língua",
+        "loading": "Carregando…",
         "name": "Nome:",
         "nametaken": "Este nome já está em uso",
         "newname": "Novo nome:",
@@ -38,13 +41,16 @@
         "save": "Salvar",
         "savedcomm": "Seu projeto foi salvo",
         "saveproject": "Salvar projeto",
+        "selectDialogue": "Selecione…",
+        "select": "Selecione…",
+        "search": "Busque:",
         "sort": "Ordenar:",
         "tilelayer": "Camada de tile",
         "wrongFormat": "Formato de arquivo incorreto",
         "yes": "Sim",
-        "cannotBeEmpty": "",
-        "contribute": "",
-        "translateToYourLanguage": "",
+        "cannotBeEmpty": "Isso não pode ser vazio",
+        "contribute": "Contribua",
+        "translateToYourLanguage": "Traduza o ct.js!",
         "zoom": "Zoom:",
         "zoomIn": "Ampliar",
         "zoomOut": "Diminuir o zoom"
@@ -72,7 +78,7 @@
         "enterFullscreen": "Entrar na tela cheia",
         "exitFullscreen": "Sair da tela cheia",
         "links": "Links e QR-codes",
-        "openExternal": "Abrir no browser",
+        "openExternal": "Abrir no navegador",
         "close": "Fechar"
     },
     "docsShortcut": {
@@ -129,18 +135,27 @@
         "exportDesktop": "Exportar para a área de trabalho",
         "texture": "Gráficos",
         "launch": "Compilar",
+        "launchHotkeys": "(F5; Alt+F5 para rodar no seu navegador padrão)",
         "license": "Licença",
         "min": "Modo janela",
+        "patrons": "Patrões",
         "recentProjects": "Projetos recentes",
+        "restart": "Reiniciar",
         "rooms": "Salas",
         "save": "Salvar projeto",
         "startScreen": "Retornar à tela inicial",
+        "project": "Projeto",
         "settings": "Configurações",
         "sounds": "Sons",
+        "successZipExport": "Exportado com sucesso para {0}.",
+        "successZipProject": "Projeto zipado com sucesso para {0}.",
         "ui": "UI",
+        "fx": "FX",
         "theme": "Tema",
         "themeDay": "Claro",
         "themeNight": "Escuro",
+        "themeSpringSream": "Spring Stream",
+        "themeLucasDracula": "Lucas Dracula",
         "types": "Tipos",
         "zipExport": "Exportar para .zip",
         "zipProject": "Empacotar projeto para .zip",
@@ -214,7 +229,7 @@
             "highDensity": "Suporte a densidade de altos pixels (ex. em telas de retina)",
             "maxFPS": "Máximo framerate:",
             "pixelatedrender": "Desabilitar suavização de imagem, inclusive no projeto buildado (preservar crisp pixels)",
-            "usePixiLegacy": "Adicionar o antigo, renderização baseado em canvas para suporte em browser antigos e placas gráficas (adiciona ~20kb no seu jogo)",
+            "usePixiLegacy": "Adicionar o antigo, renderização baseado em canvas para suporte para navegadores antigos e placas gráficas (adiciona ~20kb no seu jogo)",
             "desktopBuilds": "Build de Desktop",
             "launchMode": "Modo de lançamento:",
             "launchModes": {
@@ -235,11 +250,13 @@
     },
     "modules": {
         "author": "Autor deste catmod",
+        "dependencies": "Dependências:",
         "help": "Referência",
         "info": "Info",
         "license": "Licença",
         "logs": "Logs",
         "methods": "Métodos",
+        "optionalDependencies": "Dependências opcionais:",
         "parameters": "Parâmetros",
         "logs2": "Logs",
         "settings": "Configurações ",
@@ -378,9 +395,6 @@
         },
         "customCharsetHint": "Digite todas as letras que deseja incluir, tanto em maiúsculas como em minúsculas."
     },
-    "types": {
-        "create": "Criar"
-    },
     "typeview": {
         "change": "Alterar sprite",
         "create": "Ao Criar",
@@ -390,7 +404,7 @@
         "draw": "Desenhar",
         "name": "Nome:",
         "step": "Passo",
-        "learnAboutTypes": ""
+        "learnAboutTypes": "Aprenda sobre programar tipos"
     },
     "rooms": {
         "create": "Adicionar novo",
@@ -419,6 +433,7 @@
         "copies": "Cópias",
         "backgrounds": "Planos de fundo",
         "tiles": "Tiles",
+        "properties": "Propriedades",
         "add": "Adicionar",
         "none": "Nada",
         "done": "Feito",
@@ -441,18 +456,20 @@
         "shiftCopies": "Trocar cópias",
         "selectAndMove": "Selecionar e Mover",
         "changecopyscale": "Trocar escala",
+        "changecopyrotation": "Rotacionar",
         "shiftcopy": "Definir coordenadas",
         "deletetile": "Remover um tile",
         "deletetiles": "Remover tiles",
         "movetilestolayer": "Mover para camada",
         "shifttiles": "Trocar tiles",
-        "findTileset": ""
+        "findTileset": "Encontrar o conjunto de tiles"
     },
     "notepad": {
         "local": "Bloco de notas do projeto",
         "global": "Bloco de notas global",
-        "helppages": "Ajuda",
-        "backToHome": "Voltar para a página inicial da documentação"
+        "helppages": "Aprenda",
+        "backToHome": "Voltar para a página inicial da documentação",
+        "modulespages": "Documentações dos módulos"
     },
     "particleEmitters": {
         "emittersHeading": "Emissores de partículas",
@@ -571,8 +588,5 @@
             "traz luz e esperança 🌞",
             "é elegante e bonito 🎩"
         ]
-    },
-    "docsShortcut": {
-        "openDocs": ""
     }
 }
