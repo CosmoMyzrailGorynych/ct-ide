@@ -100,7 +100,7 @@ export-panel
 
                 this.log.push('Exporting the project…');
                 this.update();
-                await runCtExport(global.currentProject, projectDir);
+                await runCtExport(global.currentProject, projectDir, true);
                 this.log.push('Adding desktop resources…');
                 this.update();
                 await fs.copy('./data/ct.release/desktopPack/', exportDir);

@@ -267,7 +267,7 @@ main-menu.flexcol
             );
             const inDir = await getExportDir();
             await fs.remove(exportFile);
-            runCtExport(global.currentProject, global.projdir)
+            runCtExport(global.currentProject, global.projdir, true)
             .then(() => {
                 const archive = archiver('zip'),
                       output = fs.createWriteStream(exportFile);
@@ -317,6 +317,17 @@ main-menu.flexcol
                         localStorage.disableBuiltInDebugger = 'no';
                     } else {
                         localStorage.disableBuiltInDebugger = 'yes';
+                    }
+                }
+            }, {
+                label: window.languageJSON.menu.forceProductionForDebug,
+                type: 'checkbox',
+                checked: () => localStorage.forceProductionForDebug === 'yes',
+                click: () => {
+                    if (localStorage.forceProductionForDebug === 'yes') {
+                        localStorage.forceProductionForDebug = 'no';
+                    } else {
+                        localStorage.forceProductionForDebug = 'yes';
                     }
                 }
             }, {
