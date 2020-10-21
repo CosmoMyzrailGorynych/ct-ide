@@ -288,6 +288,7 @@ curve-editor(ref="root")
             this.startMoving(point)(e);
         };
         this.deletePoint = e => {
+            e.preventDefault();
             const o = this.opts;
             if (e.item.point === this.curve[0] && (o.lockstarttime || o.lockstartvalue)) {
                 return;
