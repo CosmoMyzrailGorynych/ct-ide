@@ -514,7 +514,8 @@
         "draw": "Draw",
         "learnAboutTypes": "Learn about coding types",
         "name": "Name:",
-        "step": "On Step"
+        "step": "On Step",
+        "visible": "Visible"
     },
     "rooms": {
         "create": "Add new",
