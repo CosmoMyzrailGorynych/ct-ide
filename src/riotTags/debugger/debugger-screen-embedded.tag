@@ -3,7 +3,7 @@
 debugger-screen-embedded(class="{opts.class} {flexrow: verticalLayout, flexcol: !verticalLayout}")
     webview.tall#thePreview(
         partition="persist:trusted"
-        ref="gameView" allownw
+        ref="gameView" allownw nwfaketop
     )
     .aResizer(ref="gutter" onmousedown="{gutterMouseDown}" class="{vertical: verticalLayout, horizontal: !verticalLayout}")
     .flexfix(
@@ -116,7 +116,7 @@ debugger-screen-embedded(class="{opts.class} {flexrow: verticalLayout, flexcol: 
         /* Bootstrap preview and debug views */
         this.on('mount', () => {
             this.refs.gameView.addEventListener('permissionrequest', function permissionrequest(e) {
-                if (e.permission === 'fullscreen') {
+                if (['fullscreen', 'media', 'download', 'pointerLock'].indexOf(e.permission) !== -1) {
                     e.request.allow();
                 }
             });

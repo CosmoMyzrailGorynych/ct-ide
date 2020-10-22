@@ -46,7 +46,7 @@ curve-editor(ref="root")
                 span(each="{pos in [1, 0.8, 0.6, 0.4, 0.2, 0]}") {niceNumber(min + (pos * (max - min)))}
             svg(xmlns="http://www.w3.org/2000/svg" riot-viewbox="0 0 {width} {height}" ref="graph" onmousemove="{onGraphMouseMove}")
                 defs
-                    filter#greyOutlineEffect
+                    filter#greyOutlineEffect(x="-50%" y="-50%" width="200%" height="200%" filterUnits="userSpaceOnUse")
                         feMorphology(in="SourceAlpha" result="MORPH" operator="dilate" radius="2")
                         feColorMatrix(in="MORPH" result="WHITENED" type="matrix" values="-1 0 0 0.8 0, 0 -1 0 0.8 0, 0 0 -1 0.8 0, 0 0 0 1 0")
                         feMerge
@@ -57,6 +57,7 @@ curve-editor(ref="root")
                         if="{opts.type === 'color' && (ind < opts.curve.length - 1)}"
                         riot-id="{uid}grad{ind}to{ind+1}"
                         x1="0%" y1="0%" x2="100%" y2="0%"
+                        spreadMethod="pad"
                     )
                         stop(offset="0%" style="\
                             stop-color:#{point.value};\
@@ -287,6 +288,7 @@ curve-editor(ref="root")
             this.startMoving(point)(e);
         };
         this.deletePoint = e => {
+            e.preventDefault();
             const o = this.opts;
             if (e.item.point === this.curve[0] && (o.lockstarttime || o.lockstartvalue)) {
                 return;

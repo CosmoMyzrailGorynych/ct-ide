@@ -22,7 +22,7 @@ const parseKeys = function (catmod, str, lib) {
             if (catmod.fields[field].type === 'checkbox' && !val) {
                 str2 = str2.replace(RegExp('(/\\*)?%' + catmod.fields[field].key + '%(\\*/)?', 'g'), 'false');
             } else {
-                str2 = str2.replace(RegExp('(/\\*)?%' + catmod.fields[field].key + '%(\\*/)?', 'g'), val || '');
+                str2 = str2.replace(RegExp('(/\\*)?%' + catmod.fields[field].key + '%(\\*/)?', 'g'), () => (val || ''));
             }
         }
     }
@@ -66,7 +66,7 @@ const injectModules = injections => // async
     }));
 
 // eslint-disable-next-line max-lines-per-function
-const exportCtProject = async (project, projdir) => {
+const exportCtProject = async (project, projdir, production) => {
     currentProject = project;
 
     const {languageJSON} = require('./../i18n');
@@ -76,6 +76,10 @@ const exportCtProject = async (project, projdir) => {
 
     if (project.rooms.length < 1) {
         throw new Error(languageJSON.common.norooms);
+    }
+
+    if (localStorage.forceProductionForDebug === 'yes') {
+        production = true;
     }
 
     await fs.remove(writeDir);
@@ -157,21 +161,24 @@ const exportCtProject = async (project, projdir) => {
         });
     }
 
+    // .replace(stuff, () => string) prevents pattern substitution, notably
+    // it doesn't break syntax around this.text = '$'
+    // @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace#Specifying_a_string_as_a_parameter
     let buffer = (await sources['main.js'])
         .replace(/\/\*@startwidth@\*\//g, startroom.width)
         .replace(/\/\*@startheight@\*\//g, startroom.height)
         .replace(/\/\*@pixelatedrender@\*\//g, Boolean(settings.rendering.pixelatedrender))
         .replace(/\/\*@highDensity@\*\//g, Boolean(settings.rendering.highDensity))
         .replace(/\/\*@maxfps@\*\//g, Number(settings.rendering.maxFPS))
-        .replace(/\/\*@ctversion@\*\//g, process.versions.ctjs)
-        .replace(/\/\*@projectmeta@\*\//g, JSON.stringify({
+        .replace(/\/\*@ctversion@\*\//g, () => process.versions.ctjs)
+        .replace(/\/\*@projectmeta@\*\//g, () => JSON.stringify({
             name: settings.authoring.title,
             author: settings.authoring.author,
             site: settings.authoring.site,
             version: settings.authoring.version.join('.') + settings.authoring.versionPostfix
         }))
-        .replace('/*%beforeframe%*/', injections.beforeframe)
-        .replace('/*%afterframe%*/', injections.afterframe);
+        .replace('/*%beforeframe%*/', () => injections.beforeframe)
+        .replace('/*%afterframe%*/', () => injections.afterframe);
 
     buffer += '\n';
 
@@ -194,18 +201,18 @@ const exportCtProject = async (project, projdir) => {
     const roomsCode = stringifyRooms(project);
 
     buffer += (await sources['rooms.js'])
-        .replace('@startroom@', startroom.name)
-        .replace('/*@rooms@*/', roomsCode)
-        .replace('/*%switch%*/', injections.switch)
-        .replace('/*%beforeroomoncreate%*/', injections.beforeroomoncreate)
-        .replace('/*%roomoncreate%*/', injections.roomoncreate)
-        .replace('/*%roomonleave%*/', injections.roomonleave);
+        .replace('@startroom@', () => startroom.name)
+        .replace('/*@rooms@*/', () => roomsCode)
+        .replace('/*%switch%*/', () => injections.switch)
+        .replace('/*%beforeroomoncreate%*/', () => injections.beforeroomoncreate)
+        .replace('/*%roomoncreate%*/', () => injections.roomoncreate)
+        .replace('/*%roomonleave%*/', () => injections.roomonleave);
     buffer += '\n';
 
     const styles = stringifyStyles(project);
     buffer += (await sources['styles.js'])
-        .replace('/*@styles@*/', styles)
-        .replace('/*%styles%*/', injections.styles);
+        .replace('/*@styles@*/', () => styles)
+        .replace('/*%styles%*/', () => injections.styles);
     buffer += '\n';
 
     if (project.emitterTandems && project.emitterTandems.length) {
@@ -225,21 +232,21 @@ const exportCtProject = async (project, projdir) => {
     await favicons;
 
     buffer += (await sources['res.js'])
-        .replace('/*@sndtotal@*/', project.sounds.length)
-        .replace('/*@res@*/', textures.res + '\n' + skeletons.loaderScript + '\n' + bitmapFonts.loaderScript)
-        .replace('/*@textureregistry@*/', textures.registry)
-        .replace('/*@textureatlases@*/', JSON.stringify(textures.atlases))
-        .replace('/*@skeletonregistry@*/', skeletons.registry)
-        .replace('/*%resload%*/', injections.resload + '\n' + skeletons.startScript)
-        .replace('/*%res%*/', injections.res);
+        .replace('/*@sndtotal@*/', () => project.sounds.length)
+        .replace('/*@res@*/', () => textures.res + '\n' + skeletons.loaderScript + '\n' + bitmapFonts.loaderScript)
+        .replace('/*@textureregistry@*/', () => textures.registry)
+        .replace('/*@textureatlases@*/', () => JSON.stringify(textures.atlases))
+        .replace('/*@skeletonregistry@*/', () => skeletons.registry)
+        .replace('/*%resload%*/', () => injections.resload + '\n' + skeletons.startScript)
+        .replace('/*%res%*/', () => injections.res);
     buffer += '\n';
 
     const types = stringifyTypes(project);
 
     buffer += (await sources['types.js'])
-        .replace('/*%oncreate%*/', injections.oncreate)
-        .replace('/*%types%*/', injections.types)
-        .replace('/*@types@*/', types);
+        .replace('/*%oncreate%*/', () => injections.oncreate)
+        .replace('/*%types%*/', () => injections.types)
+        .replace('/*@types@*/', () => types);
 
     buffer += (await sources['backgrounds.js']);
     buffer += '\n';
@@ -252,7 +259,7 @@ const exportCtProject = async (project, projdir) => {
     buffer += '\n';
     var sounds = stringifySounds(project);
     buffer += (await sources['sound.js'])
-        .replace('/*@sound@*/', sounds);
+        .replace('/*@sound@*/', () => sounds);
 
     buffer += (await sources['timer.js']);
     buffer += '\n';
@@ -273,7 +280,7 @@ const exportCtProject = async (project, projdir) => {
 
     /* Global injections, provided by modules */
     for (const i in injections) {
-        buffer = buffer.replace(`/*%${i}%*/`, injections[i]);
+        buffer = buffer.replace(`/*%${i}%*/`, () => injections[i]);
     }
 
 
@@ -284,6 +291,30 @@ const exportCtProject = async (project, projdir) => {
     let css = substituteCssVars(await sources['ct.css'], project, injections);
 
     css += fonts.css;
+
+    // JS minify
+    if (production && currentProject.settings.export.codeModifier === 'minify') {
+        buffer = await (await require('terser').minify(buffer, {
+            mangle: {
+                reserved: ['ct']
+            },
+            format: {
+                comments: '/^! Made with ct.js /'
+            }
+        })).code;
+    }
+
+    // JS obfuscator
+    if (production && currentProject.settings.export.codeModifier === 'obfuscate') {
+        buffer = require('javascript-obfuscator')
+            .obfuscate(buffer)
+            .getObfuscatedCode();
+    }
+
+    // Wrap in function
+    if (production && currentProject.settings.export.functionWrap) {
+        buffer = `(function() {\n${buffer}\n})();`;
+    }
 
     // Output minified HTML & CSS
     const csswring = require('csswring');

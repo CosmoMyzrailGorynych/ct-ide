@@ -92,7 +92,7 @@ texture-editor.panel.view
                     each="{seg, ind in getStripSegments()}"
                     style="left: {seg.left}px; top: {seg.top}px; width: {seg.width}px; transform: translate(0, -50%) rotate({seg.angle}deg);"
                     title="{voc.addPoint}"
-                    onclick="{addStripPointOnSegment}"
+                    onmousedown="{addStripPointOnSegment}"
                 )
                 .aDragger(
                     if="{prevShowMask}"
@@ -106,6 +106,7 @@ texture-editor.panel.view
                     style="left: {(point.x + texture.axis[0]) * zoomFactor}px; top: {(point.y + texture.axis[1]) * zoomFactor}px;"
                     title="{voc.movePoint}"
                     onmousedown="{startMoving('point')}"
+                    oncontextmenu="{removeStripPoint}"
                 )
             .textureview-tools
                 .toright
@@ -592,6 +593,7 @@ texture-editor.panel.view
                 this.texture.stripPoints.pop();
             }
             this.texture.stripPoints.splice(e.item.ind, 1);
+            e.preventDefault();
         };
         this.addStripPoint = function addStripPoint() {
             this.texture.stripPoints.push({
@@ -601,14 +603,16 @@ texture-editor.panel.view
         };
         this.addStripPointOnSegment = e => {
             const {top, left} = textureCanvas.getBoundingClientRect();
-            this.texture.stripPoints.splice(e.item.ind + 1, 0, {
+            const point = {
                 x: (e.pageX - left) / this.zoomFactor - this.texture.axis[0],
                 y: (e.pageY - top) / this.zoomFactor - this.texture.axis[1]
-            });
+            };
+            this.texture.stripPoints.splice(e.item.ind + 1, 0, point);
             if (this.texture.symmetryStrip) {
                 // Add an extra point (the symetrical point)
                 this.addStripPoint();
             }
+            this.startMoving('point', point)(e);
         };
         this.pointToLine = (linePoint1, linePoint2, point) => {
             const dlx = linePoint2.x - linePoint1.x;
@@ -648,7 +652,10 @@ texture-editor.panel.view
             this.texture.symmetryStrip = !this.texture.symmetryStrip;
             this.update();
         };
-        this.startMoving = which => e => {
+        this.startMoving = (which, point) => e => {
+            if (e.button !== 0) {
+                return;
+            }
             const startX = e.screenX,
                   startY = e.screenY;
             if (which === 'axis') {
@@ -665,8 +672,8 @@ texture-editor.panel.view
                 document.addEventListener('mousemove', func);
                 document.addEventListener('mouseup', func2);
             } else if (which === 'point') {
-                const {point} = e.item,
-                      oldX = point.x,
+                point = point || e.item.point;
+                const oldX = point.x,
                       oldY = point.y;
                 let hasMoved = false;
                 const func = e => {

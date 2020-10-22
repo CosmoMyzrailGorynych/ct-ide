@@ -1,4 +1,4 @@
-/* Made with ct.js http://ctjs.rocks/ */
+/*! Made with ct.js http://ctjs.rocks/ */
 
 const deadPool = []; // a pool of `kill`-ed copies for delaying frequent garbage collection
 const copyTypeSymbol = Symbol('I am a ct.js copy');

@@ -7,11 +7,15 @@ const substituteCssVars = (str, project, injects) => {
         [color1, color2] = [color2, color1];
     }
     return str
-        .replace('/*@pixelatedrender@*/', project.settings.rendering.pixelatedrender ? 'canvas,img{image-rendering:optimizeSpeed;image-rendering:-moz-crisp-edges;image-rendering:-webkit-optimize-contrast;image-rendering:optimize-contrast;image-rendering:pixelated;ms-interpolation-mode:nearest-neighbor}' : '')
-        .replace('/*@hidecursor@*/', project.settings.rendering.hideCursor ? '#ct { cursor: none; }' : '')
+        .replace('/*@pixelatedrender@*/', () => (project.settings.rendering.pixelatedrender ?
+            'canvas,img{image-rendering:optimizeSpeed;image-rendering:-moz-crisp-edges;image-rendering:-webkit-optimize-contrast;image-rendering:optimize-contrast;image-rendering:pixelated;ms-interpolation-mode:nearest-neighbor}' :
+            ''))
+        .replace('/*@hidecursor@*/', () => (project.settings.rendering.hideCursor ?
+            '#ct { cursor: none; }' :
+            ''))
         .replace(/\/\*@preloaderforeground@\*\//g, color1)
         .replace(/\/\*@preloaderbackground@\*\//g, color2)
-        .replace('/*%css%*/', injects.css);
+        .replace('/*%css%*/', () => injects.css);
 };
 module.exports = {
     substituteCssVars

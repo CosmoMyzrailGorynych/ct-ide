@@ -9004,6 +9004,8 @@ settings:
     windows: true
     linux: true
     mac: true
+    functionWrap: true
+    codeModifier: obfuscate
   branding:
     icon: -1
     accent: '#446adb'
