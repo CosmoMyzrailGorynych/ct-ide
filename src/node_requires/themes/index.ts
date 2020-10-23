@@ -71,8 +71,11 @@ const mod = {
             await mod.switchToTheme(defaultTheme);
         }
     },
-    async loadTheme() {
-        mod.switchToTheme(localStorage.UItheme);
+    /**
+     * @async
+     */
+    loadTheme() {
+        return mod.switchToTheme(localStorage.UItheme);
     },
     getThemeList(): ITheme[] {
         return [...registeredThemes];
