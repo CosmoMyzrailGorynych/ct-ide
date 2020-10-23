@@ -14,6 +14,10 @@ type-editor.panel.view.flexrow
             .flexfix-body
                 b {voc.depth}
                 input.wide(type="number" onchange="{wire('this.type.depth')}" value="{type.depth}")
+                br
+                label.block.checkbox
+                    input(type="checkbox" checked="{type.extends.visible === void 0 ? true : type.extends.visible}" onchange="{wire('this.type.extends.visible')}")
+                    span {voc.visible}
                 extensions-editor(type="type" entity="{type.extends}" wide="yep" compact="probably")
                 br
                 br

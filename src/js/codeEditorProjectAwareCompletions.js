@@ -78,7 +78,7 @@
     };
 
     const provideRoomNames = function provideRoomNames(model, position) {
-        if (!checkMatch(model, position, /ct\.rooms\.((switch|append|prepend|merge)\(|templates\[)$/)) {
+        if (!checkMatch(model, position, /ct\.rooms\.((switch|append|prepend|merge)\(|templates\[|list\[)$/)) {
             return {
                 suggestions: []
             };
