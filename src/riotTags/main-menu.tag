@@ -75,7 +75,7 @@ main-menu.flexcol
             this.tab = tab;
             window.hotkeys.cleanScope();
             window.hotkeys.push(tab);
-            window.signals.trigger('globalTabChanged');
+            window.signals.trigger('globalTabChanged', tab);
             window.signals.trigger(`${tab}Focus`);
         };
         const assetListener = asset => {
