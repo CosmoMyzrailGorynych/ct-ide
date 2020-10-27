@@ -13,16 +13,34 @@ const {stringifyTandems} = require('./emitterTandems');
 const {stringifyTypes} = require('./types');
 const {bundleFonts, bakeBitmapFonts} = require('./fonts');
 const {bakeFavicons} = require('./icons');
+const {getUnwrappedExtends, getCleanKey} = require('./utils');
 
+const getSubstitution = value => {
+    if (!value) {
+        return '';
+    }
+    if (typeof value === 'object') {
+        return JSON.stringify(value);
+    }
+    return value;
+};
 const parseKeys = function (catmod, str, lib) {
     var str2 = str;
     if (catmod.fields) {
-        for (const field in catmod.fields) {
-            const val = currentProject.libs[lib][catmod.fields[field].key];
-            if (catmod.fields[field].type === 'checkbox' && !val) {
-                str2 = str2.replace(RegExp('(/\\*)?%' + catmod.fields[field].key + '%(\\*/)?', 'g'), 'false');
+        const {fields} = catmod,
+              values = getUnwrappedExtends(currentProject.libs[lib] || {});
+
+        for (const field of fields) {
+            if (!field.key) {
+                // Skip invalid/decorative fields
+                continue;
+            }
+            const cleanKey = getCleanKey(field.key);
+            const val = values[cleanKey];
+            if (field.type === 'checkbox' && !val) {
+                str2 = str2.replace(RegExp('(/\\*)?%' + cleanKey + '%(\\*/)?', 'g'), 'false');
             } else {
-                str2 = str2.replace(RegExp('(/\\*)?%' + catmod.fields[field].key + '%(\\*/)?', 'g'), () => (val || ''));
+                str2 = str2.replace(RegExp('(/\\*)?%' + cleanKey + '%(\\*/)?', 'g'), () => getSubstitution(val));
             }
         }
     }
