@@ -322,7 +322,11 @@
         "createAndClose": "Create and close",
         "createAndContinue": "Create and add another",
         "scalingAtX4": "Scaling by x4 for a small texture",
-        "generationSuccessMessage": "Successfully added $1 texture to your project."
+        "generationSuccessMessage": "Successfully added $1 texture to your project.",
+        "filler": "Filler:",
+        "fillerNone": "None",
+        "fillerCross": "Cross",
+        "fillerLabel": "Text label"
     },
     "textureview": {
         "bgcolor": "Change bg color",
