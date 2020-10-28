@@ -24,7 +24,7 @@ const path = require('path'),
 
       spawnise = require('./node_requires/spawnise');
 
-const nwVersion = '0.45.6',
+const nwVersion = '0.49.1',
       platforms = ['osx64', 'win32', 'win64', 'linux32', 'linux64'],
       nwFiles = ['./app/**', '!./app/export/**', '!./app/projects/**', '!./app/exportDesktop/**', '!./app/cache/**', '!./app/.vscode/**', '!./app/JamGames/**'];
 
