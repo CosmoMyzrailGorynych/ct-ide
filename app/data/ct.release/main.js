@@ -322,6 +322,12 @@ ct.u = {
     gameToUiCoord(x, y) {
         return ct.camera.gameToUiCoord(x, y);
     },
+    hexToPixi(hex) {
+        return Number('0x' + hex.slice(1));
+    },
+    pixiToHex(pixi) {
+        return '#' + (pixi).toString(16).padStart(6, 0);
+    },
     /**
      * Tests whether a given point is inside the given rectangle
      * (it can be either a copy or an array).
