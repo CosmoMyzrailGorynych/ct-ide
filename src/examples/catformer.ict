@@ -491,7 +491,7 @@ rooms:
         texture: fd9d7012-6826-4368-8fe5-0385b72bc902
     uid: b0f0ff4d-a155-4d68-a86e-5bb7ed8973ab
     grid: 35
-    lastmod: 1596761297056
+    lastmod: 1600924124983
     thumbnail: 1
     tiles:
       - depth: -10
@@ -1336,7 +1336,8 @@ rooms:
               - 1
               - 1
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
-        extends: {}
+        extends:
+          ctype: Solid
       - depth: -20
         tiles:
           - x: 70

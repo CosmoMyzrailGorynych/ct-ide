@@ -1,0 +1,16 @@
+{
+    "main": {
+        "name": "Noise: Perlin & Simplex",
+        "tagline": "Get smooth but random values on a 2D plane (or 3D volume!).",
+        "version": "1.0.0",
+        "authors": [{
+            "name": "Cosmo Myzrail Gorynych",
+            "mail": "admin@nersta.ru"
+        }, {
+            "name": "Joseph Gentle"
+        }],
+        "categories": [
+            "utilities"
+        ]
+    }
+}

@@ -31,3 +31,9 @@ Object.defineProperty(ct.types.Copy.prototype, 'moveContinuousByAxes', {
         );
     }
 });
+
+Object.defineProperty(ct.types.Tilemap.prototype, 'enableCollisions', {
+    value: function (ctype) {
+        ct.place.enableTilemapCollisions(this, ctype);
+    }
+});

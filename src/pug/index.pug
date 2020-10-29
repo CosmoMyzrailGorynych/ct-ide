@@ -3,6 +3,7 @@ html
     include includes/head.pug
     body.maximized(data-manage-window)
         root-tag
+        div#loading Loading…
         script.
             try {
                 require('gulp');
@@ -40,7 +41,8 @@ html
             if (!window.__dirname) {
                 window.__dirname = global.__dirname;
             }
-        include includes/footer.pug
+        script(src="data/bundle.js")
+        script(src="data/riotTags.js")
         script.
             // @see https://github.com/microsoft/monaco-editor-samples/blob/master/nwjs-amd-v2/index.html
             (function loadMonaco() {
@@ -56,17 +58,10 @@ html
                 eRequire(['vs/editor/editor.main'], function onMonacoLoad() {
                     window.monaco = global.monaco;
 
-                    // Custom themes
-                    const tomorrow = require('./data/node_requires/monaco-themes/tomorrow.json');
-                    const horizon = require('./data/node_requires/monaco-themes/horizon.json');
-                    const ambiance = require('./data/node_requires/monaco-themes/ambiance.json');
-                    const spring = require('./data/node_requires/monaco-themes/spring.json');
-                    const lucasdracula = require('./data/node_requires/monaco-themes/lucasdracula.json');
-                    monaco.editor.defineTheme('tomorrow', tomorrow);
-                    monaco.editor.defineTheme('horizon', horizon);
-                    monaco.editor.defineTheme('ambiance', ambiance);
-                    monaco.editor.defineTheme('spring', spring);
-                    monaco.editor.defineTheme('lucasdracula', lucasdracula);
+                    const themeManager = require('./data/node_requires/themes');
+                    themeManager.loadBuiltInThemes();
+                    // To rollback to a default theme if the set one is inaccessible ⤵
+                    themeManager.loadTheme();
 
                     // Extended typescript tokenizer
                     const typescript = require('./data/node_requires/typescriptTokenizer.js').language;
@@ -81,6 +76,7 @@ html
                     }, 1000);
 
                     window.signals = window.signals || riot.observable({});
+                    window.orders = window.orders || riot.observable({});
                     window.signals.trigger('monacoBooted');
                 });
             })();

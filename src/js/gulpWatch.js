@@ -16,7 +16,17 @@
                 }
             }
         };
-        gulp.watch(['./data/theme*.css', './index.html', './data/bundle.js', './data/js/**.js', './data/node_requires/**/*.js'], reload);
+        gulp.watch(['./index.html', './data/bundle.js', './data/js/**.js', './data/node_requires/**/*.js'], reload);
+
+        const themeWatcher = gulp.watch(['./data/theme*.css']);
+        themeWatcher.on('change', src => {
+            const incoming = src.split(/[/\\]/).pop();
+            if (incoming === `theme${localStorage.UItheme}.css`) {
+                const link = document.getElementById('themeCSS');
+                link.href = link.href.replace(/\?.*|$/, '?' + Date.now());
+                window.alertify.success('Updated theme ✅');
+            }
+        });
 
         const tagWatcher = gulp.watch(['./data/hotLoadTags/**/*.js']);
         const onChange = src => {

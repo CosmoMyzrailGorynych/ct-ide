@@ -1,55 +1,74 @@
 project-selector
-    #bg.stretch.middle
-        #intro.panel.middleinner
-            div.flexrow
-                .c4.np
-                .c8.npt.npb
-                    h2 {voc.latest}
-            div.flexrow
-                .c4.npl.npt.project-selector-aPreview.center
-                    img(src="{projectSplash}")
-                .c8.npr.npt.npl.flexfix
-                    ul.menu.flexfix-body
-                        li(
-                            each="{project in lastProjects}" title="{requirePath.basename(project,'.json')}"
-                            onclick="{updatePreview(project)}"
-                            ondblclick="{loadRecentProject}"
-                        )
-                            .toright(onclick="{forgetProject}" title="{voc.forgetProject}")
-                                svg.feather
-                                    use(xlink:href="data/icons.svg#x")
-                            span {project}
-                    label.file.flexfix-footer.nmb
-                        button.wide.inline.nml.nmr(onclick="{openProjectFind}")
+    #bg.stretch.flexcol
+        .spacer
+        #intro.panel.flexfix.nogrow
+            ul.nav.tabs.flexfix-header.nb
+                li(class="{active: tab === 'projects'}" onclick="{changeTab('projects')}")
+                    span {voc.latest}
+                li(class="{active: tab === 'examples'}" onclick="{changeTab('examples')}")
+                    span {voc.examples}
+            .flexfix-body.pad(show="{tab === 'projects'}")
+                .flexrow
+                    h2.nmt {voc.latest}
+                    label.file.nm.nogrow
+                        button.inline.nml.nmr(onclick="{openProjectFind}")
                             svg.feather
                                 use(xlink:href="data/icons.svg#folder")
                             span {voc.browse}
-            #newProject.inset.flexrow.flexmiddle
-                .c4.npl.npt.npb
-                    h3.nm.right {voc.newProject.text}
-                .c5.np
-                    input(
-                        type='text'
-                        placeholder='{voc.newProject.input}'
-                        pattern='[a-zA-Z_0-9]\\{1,\\}'
-                        ref="projectname"
-                    ).wide
-                .c3.npr.npt.npb
-                    button.nm.wide.inline(onclick="{openProjectFolder}") {voc.newProject.button}
-    .aVersionNumber
-        a(href="https://discord.gg/CggbPkb" title="{voc.discord}" onclick="{openExternal('https://discord.gg/CggbPkb')}")
-            svg.icon
-                use(xlink:href="data/icons.svg#discord")
-        a(href="https://twitter.com/ctjsrocks" title="{voc.twitter}" onclick="{openExternal('https://twitter.com/ctjsrocks')}")
-            svg.icon
-                use(xlink:href="data/icons.svg#twitter")
-        .inlineblock v{ctjsVersion}.
-        |
-        |
-        // as itch releases are always in sync with the fetched version number, let's route users to itch.io page
-        a.inlineblock(if="{newVersion}" href="https://comigo.itch.io/ct#download" onclick="{openExternal}")
-            | {newVersion}
-            img(src="data/img/partycarrot.gif" if="{newVersion}").aPartyCarrot
+                .clear
+                ul.Cards.largeicons.nmb
+                    li.aCard(
+                        each="{project in latestProjects}"
+                        onclick="{loadRecentProject}"
+                        title="{project}"
+                    )
+                        img(src="{getProjectThumbnail(project)}")
+                        span {getProjectName(project)}
+                        .aCard-Actions(onclick="{forgetProject}" title="{voc.forgetProject}")
+                            button.tiny
+                                svg.feather
+                                    use(xlink:href="data/icons.svg#x")
+            .flexfix-body.pad(show="{tab === 'examples'}")
+                .flexrow
+                    h2.nmt {voc.examples}
+                    label.file.nm.nogrow
+                        button.inline.nml.nmr(onclick="{openProjectFind}")
+                            svg.feather
+                                use(xlink:href="data/icons.svg#folder")
+                            span {voc.browse}
+                .clear
+                ul.Cards.largeicons.nmb
+                    li.aCard(
+                        each="{project in exampleProjects}"
+                        onclick="{loadRecentProject}"
+                        title="{project}"
+                    )
+                        img(src="{getProjectThumbnail(project)}")
+                        span {getProjectName(project)}
+            #newProject.inset.flexfix-footer.flexrow
+                h3.nm.inline {voc.newProject.text}
+                input(
+                    type='text'
+                    placeholder='{voc.newProject.input}'
+                    pattern='[a-zA-Z_0-9]\\{1,\\}'
+                    ref="projectname"
+                )
+                button.nm.inline(onclick="{openProjectFolder}") {voc.newProject.button}
+        .spacer
+        .aVersionNumber.nogrow
+            a(href="https://discord.gg/CggbPkb" title="{voc.discord}" onclick="{openExternal('https://discord.gg/CggbPkb')}")
+                svg.icon
+                    use(xlink:href="data/icons.svg#discord")
+            a(href="https://twitter.com/ctjsrocks" title="{voc.twitter}" onclick="{openExternal('https://twitter.com/ctjsrocks')}")
+                svg.icon
+                    use(xlink:href="data/icons.svg#twitter")
+            .inlineblock v{ctjsVersion}.
+            |
+            |
+            // as itch releases are always in sync with the fetched version number, let's route users to itch.io page
+            a.inlineblock(if="{newVersion}" href="https://comigo.itch.io/ct#download" onclick="{openExternal}")
+                | {newVersion}
+                img(src="data/img/partycarrot.gif" if="{newVersion}").aPartyCarrot
     script.
         const fs = require('fs-extra'),
               path = require('path');
@@ -57,6 +76,13 @@ project-selector
         this.requirePath = path;
         this.namespace = 'intro';
         this.mixin(window.riotVoc);
+
+        this.tab = 'projects';
+        this.changeTab = tab => () => {
+            this.tab = tab;
+        };
+        this.getProjectName = project => path.basename(project, path.extname(project));
+
         this.visible = true;
         var hideProjectSelector = () => {
             this.visible = false;
@@ -73,11 +99,43 @@ project-selector
         // Loads recently opened projects
         if (('lastProjects' in localStorage) &&
             (localStorage.lastProjects !== '')) {
-            this.lastProjects = localStorage.lastProjects.split(';');
+            this.latestProjects = localStorage.lastProjects.split(';');
+            let removedNonexistent = false;
+            Promise.all(this.latestProjects.map(proj => fs.pathExists(proj)
+                .then(exists => {
+                    if (!exists) {
+                        this.latestProjects.splice(this.latestProjects.indexOf(proj), 1);
+                        removedNonexistent = true;
+                    }
+                })
+                .catch(err => {
+                    alertify.log(`Got a strange error while trying to access ${proj}. See the console for more details.`);
+                    console.error(err);
+                })))
+            .then(() => {
+                if (removedNonexistent) {
+                    alertify.log('Removed some projects from the list, as they no longer exist.');
+                    localStorage.lastProjects = this.latestProjects.join(';');
+                }
+                this.update();
+            });
         } else {
-            this.lastProjects = [];
+            this.latestProjects = [];
         }
+        const projects = require('./data/node_requires/resources/projects');
+        this.exampleProjects = [];
+        // Loads examples
+        fs.readdir(projects.getExamplesDir(), {
+            withFileTypes: true
+        })
+        .then(entries => entries.filter(entry => entry.isFile() && (/\.ict$/i).test(entry.name)))
+        .then(entries => entries.map(entry => path.join(projects.getExamplesDir(), entry.name)))
+        .then(projects => {
+            this.exampleProjects = projects;
+            this.update();
+        });
 
+        this.getProjectThumbnail = projects.getProjectThumbnail;
         /**
          * Update a splash image of a selected project
          */
@@ -127,8 +185,8 @@ project-selector
          */
         this.forgetProject = e => {
             const {project} = e.item;
-            this.lastProjects.splice(this.lastProjects.indexOf(project), 1);
-            localStorage.lastProjects = this.lastProjects.join(';');
+            this.latestProjects.splice(this.latestProjects.indexOf(project), 1);
+            localStorage.lastProjects = this.latestProjects.join(';');
             e.stopPropagation();
         };
 
@@ -165,7 +223,7 @@ project-selector
             const defaultProjectDir = require('./data/node_requires/resources/projects').getDefaultProjectDir();
             const proj = await window.showOpenDialog({
                 filter: '.ict',
-                defaultPath: defaultProjectDir
+                defaultPath: await defaultProjectDir
             });
             if (!proj) {
                 return;

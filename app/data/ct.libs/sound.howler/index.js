@@ -134,7 +134,9 @@
      * @returns {void}
      */
     ct.sound.stop = function stop(name, id) {
-        ct.res.sounds[name].stop(id);
+        if (ct.sound.playing(name, id)) {
+            ct.res.sounds[name].stop(id);
+        }
     };
 
     /**
@@ -206,9 +208,17 @@
      * @returns {void}
      */
     ct.sound.fade = function fade(name, newVolume, duration, id) {
-        var howl = ct.res.sounds[name],
-            oldVolume = id ? howl.volume(id) : howl.volume;
-        howl.fade(oldVolume, newVolume, duration, id);
+        if (ct.sound.playing(name, id)) {
+            var howl = ct.res.sounds[name],
+                oldVolume = id ? howl.volume(id) : howl.volume;
+            try {
+                howl.fade(oldVolume, newVolume, duration, id);
+            } catch (e) {
+                // eslint-disable-next-line no-console
+                console.warn('Could not reliably fade a sound, reason:', e);
+                ct.sound.volume(name, newVolume, id);
+            }
+        }
     };
 
     /**
@@ -239,9 +249,11 @@
      * @returns {void}
      */
     ct.sound.position = function position(name, id, x, y, z) {
-        var howl = ct.res.sounds[name],
-            oldPosition = howl.pos(id);
-        howl.pos(x, y, z || oldPosition[2], id);
+        if (ct.sound.playing(name, id)) {
+            var howl = ct.res.sounds[name],
+                oldPosition = howl.pos(id);
+            howl.pos(x, y, z || oldPosition[2], id);
+        }
     };
 
     /**

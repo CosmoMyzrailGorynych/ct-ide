@@ -42,7 +42,9 @@ const defaultProjectTemplate = {
         export: {
             windows: true,
             linux: true,
-            mac: true
+            mac: true,
+            functionWrap: false,
+            codeModifier: 'none'
         },
         branding: {
             icon: -1,

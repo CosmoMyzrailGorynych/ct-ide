@@ -1,0 +1,1483 @@
+ctjsVersion: 1.4.2
+notes: |-
+  /*
+      Things to note here:
+
+      — Most of the logic is described at the AbstractTile type.
+      — Other types inherit this logic thanks to the `ct.inherit` module.
+      — The "win" state is triggered by KeySpot's OnStep event.
+
+  */
+libs:
+  place:
+    gridX: 1024
+    gridY: 1024
+    debugMode: false
+  fittoscreen:
+    mode: scaleFit
+  keyboard: {}
+  keyboard.polyfill: {}
+  sound.howler: {}
+  inherit: {}
+  touch:
+    mousetouch: true
+    preventdefault: false
+  tween: {}
+textures:
+  - name: Pipe_H2
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 128
+      - 64
+    marginx: 0
+    marginy: 0
+    imgWidth: 256
+    imgHeight: 128
+    width: 256
+    height: 128
+    offx: 0
+    offy: 0
+    origname: i5084d2e9-a66e-4e22-9828-ee936473cbfc.png
+    shape: rect
+    left: 128
+    right: 128
+    top: 64
+    bottom: 64
+    uid: 5084d2e9-a66e-4e22-9828-ee936473cbfc
+    padding: 1
+    source: /home/comigo/Downloads/Pipe_H2.png
+    lastmod: 1602208428086
+  - name: Pipe_H3
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 192
+      - 64
+    marginx: 0
+    marginy: 0
+    imgWidth: 384
+    imgHeight: 128
+    width: 384
+    height: 128
+    offx: 0
+    offy: 0
+    origname: i614ef931-af6d-4da3-8147-6fb3c0457dac.png
+    shape: rect
+    left: 192
+    right: 192
+    top: 64
+    bottom: 64
+    uid: 614ef931-af6d-4da3-8147-6fb3c0457dac
+    padding: 1
+    source: /home/comigo/Downloads/Pipe_H3.png
+    lastmod: 1602208430869
+  - name: Pipe_V2
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 64
+      - 128
+    marginx: 0
+    marginy: 0
+    imgWidth: 128
+    imgHeight: 256
+    width: 128
+    height: 256
+    offx: 0
+    offy: 0
+    origname: i84deaf6c-1e30-46ab-9770-ad7f20c54158.png
+    shape: rect
+    left: 64
+    right: 64
+    top: 128
+    bottom: 128
+    uid: 84deaf6c-1e30-46ab-9770-ad7f20c54158
+    padding: 1
+    source: /home/comigo/Downloads/Pipe_V2.png
+    lastmod: 1602208437575
+  - name: Pipe_H4
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 256
+      - 64
+    marginx: 0
+    marginy: 0
+    imgWidth: 512
+    imgHeight: 128
+    width: 512
+    height: 128
+    offx: 0
+    offy: 0
+    origname: ife8ec368-af9d-4351-917e-b0527c7470c4.png
+    shape: rect
+    left: 256
+    right: 256
+    top: 64
+    bottom: 64
+    uid: fe8ec368-af9d-4351-917e-b0527c7470c4
+    padding: 1
+    source: /home/comigo/Downloads/Pipe_H4.png
+    lastmod: 1602208433173
+  - name: Tileset
+    untill: 0
+    grid:
+      - 20
+      - 6
+    axis:
+      - 0
+      - 0
+    marginx: 0
+    marginy: 0
+    imgWidth: 1280
+    imgHeight: 384
+    width: 64
+    height: 64
+    offx: 0
+    offy: 0
+    origname: i028aa481-64ef-4b75-85b8-2f9c88eecf4b.png
+    shape: rect
+    left: 0
+    right: 1280
+    top: 0
+    bottom: 384
+    uid: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+    padding: 1
+    source: /home/comigo/Downloads/Tileset.png
+    lastmod: 1602197348085
+  - name: Pipe_V3
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 64
+      - 192
+    marginx: 0
+    marginy: 0
+    imgWidth: 128
+    imgHeight: 384
+    width: 128
+    height: 384
+    offx: 0
+    offy: 0
+    origname: i7e9843af-2842-414b-9063-14c08f547c6b.png
+    shape: rect
+    left: 64
+    right: 64
+    top: 192
+    bottom: 192
+    uid: 7e9843af-2842-414b-9063-14c08f547c6b
+    padding: 1
+    source: /home/comigo/Downloads/Pipe_V3.png
+    lastmod: 1602208435437
+  - name: KeyTile
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 128
+      - 64
+    marginx: 0
+    marginy: 0
+    imgWidth: 256
+    imgHeight: 128
+    width: 256
+    height: 128
+    offx: 0
+    offy: 0
+    origname: i25177c05-61f8-491f-be4f-c82bc90ed58c.png
+    shape: rect
+    left: 128
+    right: 128
+    top: 64
+    bottom: 64
+    uid: 25177c05-61f8-491f-be4f-c82bc90ed58c
+    padding: 1
+    source: /home/comigo/Downloads/KeyTile.png
+    lastmod: 1602208425575
+  - name: Pipe_V4
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 64
+      - 256
+    marginx: 0
+    marginy: 0
+    imgWidth: 128
+    imgHeight: 512
+    width: 128
+    height: 512
+    offx: 0
+    offy: 0
+    origname: i2f19f39b-25bb-43cd-ab03-108bd9418695.png
+    shape: rect
+    left: 64
+    right: 64
+    top: 256
+    bottom: 256
+    uid: 2f19f39b-25bb-43cd-ab03-108bd9418695
+    padding: 1
+    source: /home/comigo/Downloads/Pipe_V4.png
+    lastmod: 1602208440224
+  - name: KeySpot
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 128
+      - 64
+    marginx: 0
+    marginy: 0
+    imgWidth: 256
+    imgHeight: 128
+    width: 256
+    height: 128
+    offx: 0
+    offy: 0
+    origname: i04dbb554-54cd-439a-8d17-4d06366151dc.png
+    shape: rect
+    left: 128
+    right: 128
+    top: 64
+    bottom: 64
+    uid: 04dbb554-54cd-439a-8d17-4d06366151dc
+    padding: 1
+    source: /home/comigo/Downloads/KeySpot.png
+    lastmod: 1602197160973
+skeletons: []
+types:
+  - name: KeySpot
+    depth: -10
+    oncreate: ''
+    onstep: |-
+      var tile = ct.place.meet(this, 'KeyTile');
+      if (tile && !this.victory) {
+          this.victory = true;
+          tile.dragging = false;
+          tile.locked = true;
+          ct.tween.add({
+              obj: tile,
+              fields: {
+                  x: this.x,
+                  y: this.y
+              },
+              duration: 650,
+              silent: true
+          });
+          ct.sound.spawn('Success');
+
+          // Fire an asynchronous task, will trigger in 1.5s
+          ct.u.wait(1500)
+          .then(() => {
+              ct.rooms.switch('PuzzleBlocks');
+          });
+      }
+    ondraw: ''
+    ondestroy: ''
+    texture: 04dbb554-54cd-439a-8d17-4d06366151dc
+    extends: {}
+    uid: 933bd8f5-8e3f-44d4-9060-eabf1bc4ce93
+    lastmod: 1602213799510
+  - name: AbstractTile
+    depth: 0
+    oncreate: |-
+      this.vertical = false;
+      this.dragging = false;
+    onstep: |-
+      // Cancel dragging on release, even if the event occured outside this tile
+      if (ct.actions.Press.released && this.dragging) {
+          this.dragging = false;
+          // Check if we need to snap to the grid.
+          if (this.x !== this.x % 64 ||
+              this.y !== this.y % 64
+          ) {
+              // Smoothly move to snap to the grid
+              ct.tween.add({
+                  obj: this,
+                  fields: {
+                      x: Math.round(this.x / 64) * 64,
+                      y: Math.round(this.y / 64) * 64
+                  },
+                  duration: 250,
+                  silent: true
+              });
+          }
+      }
+      // Start dragging when a user presses this tile
+      if (ct.actions.Press.pressed) {
+          if (ct.touch.hovers(this)) {
+              this.dragging = true;
+              ct.sound.spawn('Wood_Start');
+              // Record relative position to the mouse to avoid jittery snapping to tile's center
+              this.relativeX = ct.touch.x - this.x;
+              this.relativeY = ct.touch.y - this.y;
+          }
+      }
+
+      // Perform actual movement if dragging is in process
+      if (this.dragging) {
+
+          // We will record whether a tile touched other objects here
+          var collisionResult;
+
+          // For vertical tiles…
+          if (this.vertical) {
+              var targetY = ct.touch.y - this.relativeY;
+              // We need ct.place.moveByAxes to prevent tiles from teleporting over other objects,
+              // and also to provide pixel-perfect collisions.
+              collisionResult = ct.place.moveByAxes(this, 0, targetY - this.y, 'Solid');
+          }
+          // For horizontal tiles…
+          if (!this.vertical) {
+              var targetX = ct.touch.x - this.relativeX;
+              collisionResult = ct.place.moveByAxes(this, targetX - this.x, 0, 'Solid');
+          }
+          // Check whether we collided with something
+          // recording the previous collider
+          // to play sounds on impact.
+          if (collisionResult) {
+              if (this.vertical) {
+                  if (collisionResult.y) {
+                      if (this.previousCollider !== collisionResult.y) {
+                          ct.sound.spawn('Wood_End');
+                          this.previousCollider = collisionResult.y;
+                      }
+                  }
+              } else {
+                  if (collisionResult.x) {
+                      if (this.previousCollider !== collisionResult.x) {
+                          ct.sound.spawn('Wood_End');
+                          this.previousCollider = collisionResult.x;
+                      }
+                  }
+              }
+          } else {
+              this.previousCollider = false;
+          }
+      }
+    ondraw: ''
+    ondestroy: ''
+    texture: -1
+    extends:
+      ctype: Solid
+    uid: 411a7b98-9916-4e4b-8466-abe66eb75e2e
+    lastmod: 1602213776083
+  - name: Pipe_H2
+    depth: 0
+    oncreate: this.inherit.onCreate();
+    onstep: this.inherit.onStep();
+    ondraw: ''
+    ondestroy: ''
+    texture: 5084d2e9-a66e-4e22-9828-ee936473cbfc
+    extends:
+      inheritedType@@type: 411a7b98-9916-4e4b-8466-abe66eb75e2e
+      ctype: Solid
+    uid: b96007c1-e46d-4ae9-b809-3d49ef2f22b4
+    lastmod: 1602213425483
+  - name: Pipe_H3
+    depth: 0
+    oncreate: this.inherit.onCreate();
+    onstep: this.inherit.onStep();
+    ondraw: ''
+    ondestroy: ''
+    texture: 614ef931-af6d-4da3-8147-6fb3c0457dac
+    extends:
+      inheritedType@@type: 411a7b98-9916-4e4b-8466-abe66eb75e2e
+      ctype: Solid
+    uid: d5a61d71-f85f-4287-9269-ce2fbc7206e1
+    lastmod: 1602199753219
+  - name: Pipe_H4
+    depth: 0
+    oncreate: this.inherit.onCreate();
+    onstep: this.inherit.onStep();
+    ondraw: ''
+    ondestroy: ''
+    texture: fe8ec368-af9d-4351-917e-b0527c7470c4
+    extends:
+      inheritedType@@type: 411a7b98-9916-4e4b-8466-abe66eb75e2e
+      ctype: Solid
+    uid: 245b4e21-93e1-41dd-839e-546810d68a23
+    lastmod: 1602199754611
+  - name: Pipe_V2
+    depth: 0
+    oncreate: |-
+      this.inherit.onCreate();
+      this.vertical = true;
+    onstep: this.inherit.onStep();
+    ondraw: ''
+    ondestroy: ''
+    texture: 84deaf6c-1e30-46ab-9770-ad7f20c54158
+    extends:
+      inheritedType@@type: 411a7b98-9916-4e4b-8466-abe66eb75e2e
+      ctype: Solid
+    uid: d8b121c6-2f4f-4427-ac7d-7f2b7e7e625d
+    lastmod: 1602199756147
+  - name: Pipe_V3
+    depth: 0
+    oncreate: |-
+      this.inherit.onCreate();
+      this.vertical = true;
+    onstep: this.inherit.onStep();
+    ondraw: ''
+    ondestroy: ''
+    texture: 7e9843af-2842-414b-9063-14c08f547c6b
+    extends:
+      inheritedType@@type: 411a7b98-9916-4e4b-8466-abe66eb75e2e
+      ctype: Solid
+    uid: da879283-739b-4a62-850d-760d00789463
+    lastmod: 1602199765123
+  - name: Pipe_V4
+    depth: 0
+    oncreate: |-
+      this.inherit.onCreate();
+      this.vertical = true;
+    onstep: this.inherit.onStep();
+    ondraw: ''
+    ondestroy: ''
+    texture: 2f19f39b-25bb-43cd-ab03-108bd9418695
+    extends:
+      inheritedType@@type: 411a7b98-9916-4e4b-8466-abe66eb75e2e
+      ctype: Solid
+    uid: 6ac451bc-3183-44c7-9872-ac72cc5d4e79
+    lastmod: 1602199759771
+  - name: KeyTile
+    depth: 0
+    oncreate: this.inherit.onCreate();
+    onstep: |-
+      if (this.locked) {
+          // Prevent execution when the tile is locked
+          // (when the victory animation starts playing)
+          return;
+      }
+      this.inherit.onStep();
+    ondraw: ''
+    ondestroy: ''
+    texture: 25177c05-61f8-491f-be4f-c82bc90ed58c
+    extends:
+      ctype: Solid
+      inheritedType@@type: 411a7b98-9916-4e4b-8466-abe66eb75e2e
+    uid: bf3a489b-333c-4171-b5ca-5a8699dfc176
+    lastmod: 1602213431467
+sounds:
+  - name: Wood_Start
+    uid: 42e768ce-6c19-4c34-9f14-11e257ecff18
+    origname: s42e768ce-6c19-4c34-9f14-11e257ecff18.ogg
+    lastmod: 1602211510307
+  - name: Wood_End
+    uid: 55aa6dac-1071-4725-bdc8-b68d98ac72bf
+    origname: s55aa6dac-1071-4725-bdc8-b68d98ac72bf.ogg
+    lastmod: 1602211530441
+  - name: Success
+    uid: 2e225de2-b896-4a53-a302-4d2b7ad26dee
+    origname: s2e225de2-b896-4a53-a302-4d2b7ad26dee.ogg
+    lastmod: 1602212139829
+styles: []
+rooms:
+  - name: PuzzleBlocks
+    oncreate: ''
+    onstep: ''
+    ondraw: ''
+    onleave: ''
+    width: 1920
+    height: 1200
+    backgrounds: []
+    copies:
+      - x: 1536
+        'y': 512
+        uid: 933bd8f5-8e3f-44d4-9060-eabf1bc4ce93
+      - x: 384
+        'y': 512
+        uid: bf3a489b-333c-4171-b5ca-5a8699dfc176
+      - x: 448
+        'y': 704
+        uid: d8b121c6-2f4f-4427-ac7d-7f2b7e7e625d
+      - x: 320
+        'y': 320
+        uid: d8b121c6-2f4f-4427-ac7d-7f2b7e7e625d
+      - x: 576
+        'y': 384
+        uid: d5a61d71-f85f-4287-9269-ce2fbc7206e1
+      - x: 640
+        'y': 256
+        uid: b96007c1-e46d-4ae9-b809-3d49ef2f22b4
+      - x: 640
+        'y': 640
+        uid: b96007c1-e46d-4ae9-b809-3d49ef2f22b4
+      - x: 768
+        'y': 768
+        uid: b96007c1-e46d-4ae9-b809-3d49ef2f22b4
+      - x: 576
+        'y': 832
+        uid: d8b121c6-2f4f-4427-ac7d-7f2b7e7e625d
+      - x: 960
+        'y': 640
+        uid: da879283-739b-4a62-850d-760d00789463
+      - x: 832
+        'y': 384
+        uid: da879283-739b-4a62-850d-760d00789463
+      - x: 1024
+        'y': 896
+        uid: 245b4e21-93e1-41dd-839e-546810d68a23
+      - x: 1216
+        'y': 512
+        uid: da879283-739b-4a62-850d-760d00789463
+      - x: 1088
+        'y': 320
+        uid: d8b121c6-2f4f-4427-ac7d-7f2b7e7e625d
+    tiles:
+      - depth: -10
+        tiles:
+          - x: 128
+            'y': 64
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 0
+              - 0
+              - 2
+              - 2
+          - x: 128
+            'y': 960
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 0
+              - 4
+              - 2
+              - 2
+          - x: 1280
+            'y': 960
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 4
+              - 4
+              - 2
+              - 2
+          - x: 1280
+            'y': 64
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 4
+              - 0
+              - 2
+              - 2
+          - x: 1280
+            'y': 320
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 0
+              - 4
+              - 2
+              - 2
+          - x: 1280
+            'y': 576
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 0
+              - 0
+              - 2
+              - 2
+          - x: 1664
+            'y': 320
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 4
+              - 0
+              - 2
+              - 6
+          - x: 384
+            'y': 960
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 2
+              - 2
+          - x: 512
+            'y': 960
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 2
+              - 2
+          - x: 640
+            'y': 960
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 2
+              - 2
+          - x: 768
+            'y': 960
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 2
+              - 2
+          - x: 896
+            'y': 960
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 2
+              - 2
+          - x: 1024
+            'y': 960
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 2
+              - 2
+          - x: 384
+            'y': 64
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 2
+              - 2
+          - x: 512
+            'y': 64
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 2
+              - 2
+          - x: 640
+            'y': 64
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 2
+              - 2
+          - x: 768
+            'y': 64
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 2
+              - 2
+          - x: 896
+            'y': 64
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 2
+              - 2
+          - x: 1024
+            'y': 64
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 2
+              - 2
+          - x: 256
+            'y': 64
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 2
+              - 0
+              - 1
+              - 2
+          - x: 1408
+            'y': 576
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 2
+              - 0
+              - 1
+              - 2
+          - x: 256
+            'y': 960
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 2
+              - 4
+              - 1
+              - 2
+          - x: 128
+            'y': 192
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 0
+              - 2
+              - 2
+              - 1
+          - x: 128
+            'y': 896
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 0
+              - 3
+              - 2
+              - 1
+          - x: 1280
+            'y': 256
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 0
+              - 3
+              - 2
+              - 1
+          - x: 1280
+            'y': 192
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 4
+              - 2
+              - 2
+              - 1
+          - x: 1216
+            'y': 64
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 3
+              - 0
+              - 1
+              - 2
+          - x: 1216
+            'y': 960
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 3
+              - 4
+              - 1
+              - 2
+          - x: 1280
+            'y': 704
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 0
+              - 2
+              - 2
+              - 1
+          - x: 1408
+            'y': 704
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 2
+              - 2
+              - 1
+              - 1
+          - x: 1408
+            'y': 256
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 2
+              - 3
+              - 1
+              - 1
+          - x: 1408
+            'y': 320
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 2
+              - 4
+              - 1
+              - 2
+          - x: 1472
+            'y': 576
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 2
+              - 2
+          - x: 1472
+            'y': 320
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 2
+              - 2
+          - x: 320
+            'y': 64
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 1
+              - 2
+          - x: 1152
+            'y': 64
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 1
+              - 2
+          - x: 1152
+            'y': 960
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 1
+              - 2
+          - x: 320
+            'y': 960
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 1
+              - 2
+          - x: 128
+            'y': 256
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 12
+              - 2
+              - 2
+              - 2
+          - x: 128
+            'y': 384
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 12
+              - 2
+              - 2
+              - 2
+          - x: 128
+            'y': 512
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 12
+              - 2
+              - 2
+              - 2
+          - x: 128
+            'y': 640
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 12
+              - 2
+              - 2
+              - 2
+          - x: 128
+            'y': 768
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 12
+              - 2
+              - 2
+              - 2
+          - x: 1280
+            'y': 768
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 12
+              - 2
+              - 2
+              - 2
+          - x: 1280
+            'y': 896
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 4
+              - 3
+              - 2
+              - 1
+          - x: 1600
+            'y': 320
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 3
+              - 0
+              - 1
+              - 2
+          - x: 1600
+            'y': 576
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 3
+              - 4
+              - 1
+              - 2
+        extends:
+          ctype: Solid
+        hidden: false
+      - depth: -11
+        tiles:
+          - x: 1216
+            'y': 896
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 7
+              - 1
+              - 1
+              - 1
+          - x: 1216
+            'y': 192
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 7
+              - 4
+              - 1
+              - 1
+          - x: 1600
+            'y': 448
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 7
+              - 4
+              - 1
+              - 1
+          - x: 1600
+            'y': 512
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 7
+              - 1
+              - 1
+              - 1
+          - x: 256
+            'y': 192
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 10
+              - 4
+              - 1
+              - 1
+          - x: 256
+            'y': 896
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 10
+              - 1
+              - 1
+              - 1
+        extends: {}
+        hidden: false
+    uid: db143552-7289-41b0-af65-62f14320e2c3
+    thumbnail: 62f14320e2c3
+    extends: {}
+    gridX: 64
+    gridY: 64
+    backgroundColor: '#461212'
+    lastmod: 1602729638788
+  - name: PuzzleBlocks_Simple
+    oncreate: ''
+    onstep: ''
+    ondraw: ''
+    onleave: ''
+    width: 1920
+    height: 1200
+    backgrounds: []
+    copies:
+      - x: 1472
+        'y': 576
+        uid: 933bd8f5-8e3f-44d4-9060-eabf1bc4ce93
+      - x: 320
+        'y': 576
+        uid: bf3a489b-333c-4171-b5ca-5a8699dfc176
+      - x: 704
+        'y': 832
+        uid: b96007c1-e46d-4ae9-b809-3d49ef2f22b4
+      - x: 768
+        'y': 448
+        uid: da879283-739b-4a62-850d-760d00789463
+      - x: 960
+        'y': 960
+        uid: 245b4e21-93e1-41dd-839e-546810d68a23
+    tiles:
+      - depth: -10
+        tiles:
+          - x: 64
+            'y': 128
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 0
+              - 0
+              - 2
+              - 2
+          - x: 64
+            'y': 1024
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 0
+              - 4
+              - 2
+              - 2
+          - x: 1216
+            'y': 1024
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 4
+              - 4
+              - 2
+              - 2
+          - x: 1216
+            'y': 128
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 4
+              - 0
+              - 2
+              - 2
+          - x: 1216
+            'y': 384
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 0
+              - 4
+              - 2
+              - 2
+          - x: 1216
+            'y': 640
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 0
+              - 0
+              - 2
+              - 2
+          - x: 1600
+            'y': 384
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 4
+              - 0
+              - 2
+              - 6
+          - x: 320
+            'y': 1024
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 2
+              - 2
+          - x: 448
+            'y': 1024
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 2
+              - 2
+          - x: 576
+            'y': 1024
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 2
+              - 2
+          - x: 704
+            'y': 1024
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 2
+              - 2
+          - x: 832
+            'y': 1024
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 2
+              - 2
+          - x: 960
+            'y': 1024
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 2
+              - 2
+          - x: 320
+            'y': 128
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 2
+              - 2
+          - x: 448
+            'y': 128
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 2
+              - 2
+          - x: 576
+            'y': 128
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 2
+              - 2
+          - x: 704
+            'y': 128
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 2
+              - 2
+          - x: 832
+            'y': 128
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 2
+              - 2
+          - x: 960
+            'y': 128
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 2
+              - 2
+          - x: 192
+            'y': 128
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 2
+              - 0
+              - 1
+              - 2
+          - x: 1344
+            'y': 640
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 2
+              - 0
+              - 1
+              - 2
+          - x: 192
+            'y': 1024
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 2
+              - 4
+              - 1
+              - 2
+          - x: 64
+            'y': 256
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 0
+              - 2
+              - 2
+              - 1
+          - x: 64
+            'y': 960
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 0
+              - 3
+              - 2
+              - 1
+          - x: 1216
+            'y': 320
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 0
+              - 3
+              - 2
+              - 1
+          - x: 1216
+            'y': 256
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 4
+              - 2
+              - 2
+              - 1
+          - x: 1152
+            'y': 128
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 3
+              - 0
+              - 1
+              - 2
+          - x: 1152
+            'y': 1024
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 3
+              - 4
+              - 1
+              - 2
+          - x: 1216
+            'y': 768
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 0
+              - 2
+              - 2
+              - 1
+          - x: 1344
+            'y': 768
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 2
+              - 2
+              - 1
+              - 1
+          - x: 1344
+            'y': 320
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 2
+              - 3
+              - 1
+              - 1
+          - x: 1344
+            'y': 384
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 2
+              - 4
+              - 1
+              - 2
+          - x: 1408
+            'y': 640
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 2
+              - 2
+          - x: 1408
+            'y': 384
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 2
+              - 2
+          - x: 256
+            'y': 128
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 1
+              - 2
+          - x: 1088
+            'y': 128
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 1
+              - 2
+          - x: 1088
+            'y': 1024
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 1
+              - 2
+          - x: 256
+            'y': 1024
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 16
+              - 0
+              - 1
+              - 2
+          - x: 64
+            'y': 320
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 12
+              - 2
+              - 2
+              - 2
+          - x: 64
+            'y': 448
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 12
+              - 2
+              - 2
+              - 2
+          - x: 64
+            'y': 576
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 12
+              - 2
+              - 2
+              - 2
+          - x: 64
+            'y': 704
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 12
+              - 2
+              - 2
+              - 2
+          - x: 64
+            'y': 832
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 12
+              - 2
+              - 2
+              - 2
+          - x: 1216
+            'y': 832
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 12
+              - 2
+              - 2
+              - 2
+          - x: 1216
+            'y': 960
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 4
+              - 3
+              - 2
+              - 1
+          - x: 1536
+            'y': 384
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 3
+              - 0
+              - 1
+              - 2
+          - x: 1536
+            'y': 640
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 3
+              - 4
+              - 1
+              - 2
+        extends:
+          ctype: Solid
+        hidden: false
+      - depth: -11
+        tiles:
+          - x: 1152
+            'y': 960
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 7
+              - 1
+              - 1
+              - 1
+          - x: 1152
+            'y': 256
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 7
+              - 4
+              - 1
+              - 1
+          - x: 1536
+            'y': 512
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 7
+              - 4
+              - 1
+              - 1
+          - x: 1536
+            'y': 576
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 7
+              - 1
+              - 1
+              - 1
+          - x: 192
+            'y': 256
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 10
+              - 4
+              - 1
+              - 1
+          - x: 192
+            'y': 960
+            texture: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
+            grid:
+              - 10
+              - 1
+              - 1
+              - 1
+        extends: {}
+        hidden: false
+    uid: 85ee48e4-eb33-428b-8132-b1dbec7a36a6
+    thumbnail: b1dbec7a36a6
+    extends: {}
+    gridX: 64
+    gridY: 64
+    backgroundColor: '#461212'
+    lastmod: 1602213024409
+actions:
+  - name: Press
+    methods:
+      - code: touch.Any
+emitterTandems: []
+scripts:
+  - name: New Script
+    code: "console.log('Btw the puzzle is solvable \U0001F61B');"
+starting: 0
+settings:
+  authoring:
+    author: CoMiGo Games
+    site: 'https://ctjs.rocks/'
+    title: DragNDrop example
+    version:
+      - 1
+      - 0
+      - 0
+    versionPostfix: ''
+  rendering:
+    usePixiLegacy: true
+    maxFPS: 60
+    pixelatedrender: false
+    highDensity: true
+    desktopMode: maximized
+  export:
+    windows: true
+    linux: true
+    mac: true
+  branding:
+    icon: 25177c05-61f8-491f-be4f-c82bc90ed58c
+    accent: '#446adb'
+    invertPreloaderScheme: true
+  fps: 30
+fonts: []
+palette: []
+startroom: db143552-7289-41b0-af65-62f14320e2c3

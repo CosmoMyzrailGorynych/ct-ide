@@ -174,41 +174,18 @@ const textureGenPreview = async function textureGenPreview(texture, destination,
     if (typeof texture === 'string') {
         texture = getTextureFromId(texture);
     }
+    const {imageContain, toBuffer, crop} = require('../../imageUtils');
 
     const source = await getDOMImage(texture);
-
-    const c = document.createElement('canvas');
-    c.x = c.getContext('2d');
-    c.width = c.height = size;
-    c.x.clearRect(0, 0, size, size);
-
-    const x = texture.offx,
-          y = texture.offy,
-          w = texture.width,
-          h = texture.height;
-
-    let k;
-    if (w > h) {
-        k = size / w;
-    } else {
-        k = size / h;
-    }
-    if (k > 1) {
-        if (global.currentProject.settings.rendering.pixelatedrender) {
-            k = Math.floor(k);
-            c.x.imageSmoothingEnabled = false;
-        } else {
-            k = 1;
-        }
-    }
-    c.x.drawImage(
+    const frame = crop(
         source,
-        x, y, w, h,
-        (size - w * k) / 2, (size - h * k) / 2,
-        w * k, h * k
+        texture.offx,
+        texture.offy,
+        texture.width,
+        texture.height
     );
-    const thumbnailBase64 = c.toDataURL().replace(/^data:image\/\w+;base64,/, '');
-    const buf = Buffer.from(thumbnailBase64, 'base64');
+    const c = imageContain(frame, size, size);
+    const buf = toBuffer(c);
     const fs = require('fs-extra');
     await fs.writeFile(destination, buf);
     return destination;

@@ -2,9 +2,11 @@ type-editor.panel.view.flexrow
     .type-editor-Properties
         .tall.flexfix.panel.pad
             .flexfix-header
-                .type-editor-aTexturePicker.panel(onclick="{changeSprite}")
-                    img.ohchangeme(src="{type.texture === -1? 'data/img/notexture.png' : (glob.texturemap[type.texture].src.split('?')[0] + '_prev@2.png?' + getTypeTextureRevision(type)) + getTypeTextureRevision(type)}")
-                    div {voc.change}
+                texture-input.wide(
+                    large="yup" showempty="da"
+                    val="{type.texture}"
+                    onselected="{applyTexture}"
+                )
                 b {voc.name}
                 input.wide(type="text" onchange="{wire('this.type.name')}" value="{type.name}")
                 .anErrorNotice(if="{nameTaken}" ref="errorNotice") {vocGlob.nametaken}
@@ -12,6 +14,10 @@ type-editor.panel.view.flexrow
             .flexfix-body
                 b {voc.depth}
                 input.wide(type="number" onchange="{wire('this.type.depth')}" value="{type.depth}")
+                br
+                label.block.checkbox
+                    input(type="checkbox" checked="{type.extends.visible === void 0 ? true : type.extends.visible}" onchange="{wire('this.type.extends.visible')}")
+                    span {voc.visible}
                 extensions-editor(type="type" entity="{type.extends}" wide="yep" compact="probably")
                 br
                 br
@@ -49,7 +55,6 @@ type-editor.panel.view.flexrow
                     .aCodeEditor(ref="typeondraw")
                 #typeondestroy.tabbed(show="{tab === 'typeondestroy'}")
                     .aCodeEditor(ref="typeondestroy")
-    texture-selector(if="{selectingTexture}" onselected="{applyTexture}" oncancelled="{cancelTexture}" ref="textureselector" showempty="sure")
     script.
         const glob = require('./data/node_requires/glob');
         this.glob = glob;
@@ -171,12 +176,12 @@ type-editor.panel.view.flexrow
         this.changeSprite = () => {
             this.selectingTexture = true;
         };
-        this.applyTexture = texture => () => {
+        this.applyTexture = texture => {
             if (texture === -1) {
                 this.type.texture = -1;
             } else {
                 this.type.texture = texture.uid;
-                if (!this.type.lastmod && this.type.name === 'Type_' + this.type.uid.split('-').pop()) {
+                if (!this.type.lastmod && this.type.name === 'NewType') {
                     this.type.name = texture.name;
                 }
             }

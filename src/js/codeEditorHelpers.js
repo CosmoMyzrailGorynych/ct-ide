@@ -222,19 +222,6 @@
         }]);
     };
 
-    const themeMappings = {
-        Day: 'tomorrow',
-        Night: 'ambiance',
-        Horizon: 'horizon',
-        SpringStream: 'spring',
-        LucasDracula: 'lucasdracula',
-        default: 'tomorrow'
-    };
-    const glob = require('./data/node_requires/glob');
-    glob.codeEditorThemeMappings = themeMappings;
-    window.signals.on('UIThemeChanged', theme => {
-        monaco.editor.setTheme(themeMappings[theme] ? themeMappings[theme] : themeMappings.default);
-    });
     window.signals.on('codeFontUpdated', () => {
         const editorWrappers = document.querySelectorAll('.aCodeEditor');
         for (const editorWrap of editorWrappers) {
@@ -261,9 +248,7 @@
             return localStorage.fontFamily || 'Iosevka, monospace';
         },
         get theme() {
-            return themeMappings[localStorage.UItheme] ?
-                themeMappings[localStorage.UItheme] :
-                themeMappings.default;
+            return localStorage.UItheme || 'Day';
         },
         get fontLigatures() {
             return localStorage.codeLigatures !== 'off';
@@ -300,9 +285,7 @@
         textarea.codeEditor = codeEditor;
         // eslint-disable-next-line id-blacklist
         codeEditor.tag = textarea;
-        textarea.classList.add(themeMappings[localStorage.UItheme] ?
-            themeMappings[localStorage.UItheme] :
-            themeMappings.default);
+        textarea.classList.add(localStorage.UItheme || 'Day');
 
         codeEditor.getModel()._options.defaultEOL = monaco.editor.DefaultEndOfLine.LF;
 

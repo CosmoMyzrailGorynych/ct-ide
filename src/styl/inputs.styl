@@ -97,6 +97,12 @@ input[type="reset"],
     &.square
         padding 0.7em
         line-height 1
+    &.tiny
+        padding 0.35rem
+        line-height 1em
+        svg
+            width 1rem
+            height 1rem
     &.square.inline
         padding 0.3em
         margin-left 0
@@ -183,7 +189,7 @@ input[type="reset"],
         &:after
             background error
 
-.button-stack
+.aButtonGroup
     display inline-flex
     margin 0 0.5em
     button, .button
@@ -340,11 +346,11 @@ fieldset
         &::after
             content ''
             icon(check, background)
-            width 1rem
+            width 0.85rem
             height 1rem
             position absolute
-            top -0.025rem
-            left -0.05rem
+            top -0.035rem
+            left -0.045rem
             line-height 1
             color background
             opacity 0
@@ -525,3 +531,15 @@ fieldset
         margin-right 0.5rem
     .spacer
         flex 0 0 auto
+
+.anActionableIcon
+    color act
+    {trans}
+    opacity 0.35
+    cursor pointer
+    margin 0
+    display inline-block
+    &:hover, &:focus, .menu li:hover &, .menu li:focus &, tr:hover &
+        opacity 1
+    & + &
+        margin-left 0.35rem

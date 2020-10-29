@@ -168,7 +168,7 @@
             const bitmapFonts = [/*@bitmapFonts@*/][0];
             const dbSkeletons = [/*@dbSkeletons@*/][0]; // DB means DragonBones
 
-            if (sounds.length && !ct.sounds) {
+            if (sounds.length && !ct.sound) {
                 throw new Error('[ct.res] No sound system found. Make sure you enable one of the `sound` catmods. If you don\'t need sounds, remove them from your ct.js project.');
             }
 
@@ -237,6 +237,9 @@
          * than the auto-generated one
          */
         getTexture(name, frame) {
+            if (frame === null) {
+                frame = void 0;
+            }
             if (name === -1) {
                 if (frame !== void 0) {
                     return PIXI.Texture.EMPTY;

@@ -45,9 +45,9 @@ room-backgrounds-editor.room-editor-Backgrounds.tabbed.tall
                 b {voc.parallax}
                 .clear
                 label.fifty.npl.npt
-                    input.wide(type="number" value="{background.extends.parallaxX || 1}" step="0.01" oninput="{wire('this.detailedBackground.extends.parallaxX')}")
+                    input.wide(type="number" value="{background.extends.parallaxX !== void 0 ? background.extends.parallaxX : 1}" step="0.01" oninput="{wire('this.detailedBackground.extends.parallaxX')}")
                 label.fifty.npr.npt
-                    input.wide(type="number" value="{background.extends.parallaxY || 1}" step="0.01" oninput="{wire('this.detailedBackground.extends.parallaxY')}")
+                    input.wide(type="number" value="{background.extends.parallaxY !== void 0 ? background.extends.parallaxY : 1}" step="0.01" oninput="{wire('this.detailedBackground.extends.parallaxY')}")
                 .clear
 
                 b {voc.repeat}

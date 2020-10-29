@@ -13,12 +13,10 @@ const {stringifyTandems} = require('./emitterTandems');
 const {stringifyTypes} = require('./types');
 const {bundleFonts, bakeBitmapFonts} = require('./fonts');
 const {bakeFavicons} = require('./icons');
+const {getUnwrappedExtends, getCleanKey} = require('./utils');
 
 const ifMatcher = (varName, symbol = '@') => new RegExp(`/\\* ?if +${symbol}${varName}${symbol} ?\\*/([\\s\\S]*)(?:/\\* ?else +${symbol}${varName}${symbol} ?\\*/([\\s\\S]*?))?/\\* ?endif +${symbol}${varName}${symbol} ?\\*/`, 'g');
 const varMatcher = (varName, symbol = '@') => new RegExp(`/\\* ?${symbol}${varName}${symbol} ?\\*/`, 'g');
-
-const ifHTMLMatcher = (varName, symbol = '@') => new RegExp(`<!-- ?if +${symbol}${varName}${symbol} ?-->([\\s\\S]*)(?:<!-- ?else +${symbol}${varName}${symbol} ?-->([\\s\\S]*?))?<!-- ?endif +${symbol}${varName}${symbol} ?-->`, 'g');
-const varHTMLMatcher = (varName, symbol = '@') => new RegExp(`<!-- ?${symbol}${varName}${symbol} ?-->`, 'g');
 
 /**
  * A little home-brewn string templating function for JS and CSS.
@@ -35,53 +33,44 @@ const varHTMLMatcher = (varName, symbol = '@') => new RegExp(`<!-- ?${symbol}${v
 const template = (input, vars, injections = {}) => {
     let output = input;
     for (const i in vars) {
-        output = output.replace(varMatcher(i), typeof vars[i] === 'object' ? JSON.stringify(vars[i]) : vars[i]);
+        // .replace(stuff, () => string) prevents pattern substitution, notably
+        // it doesn't break syntax around this.text = '$'
+        // @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace#Specifying_a_string_as_a_parameter
+        output = output.replace(varMatcher(i), () => (typeof vars[i] === 'object' ? JSON.stringify(vars[i]) : vars[i]));
         output = output.replace(ifMatcher(i), (Array.isArray(vars[i]) ? vars[i].length : vars[i]) ? '$1' : '$2');
     }
     for (const i in injections) {
-        output = output.replace(varMatcher(i, '%'), typeof injections[i] === 'object' ? JSON.stringify(injections[i]) : injections[i]);
-    }
-    return output;
-};
-/**
- * A little home-brewn string templating function for HTML.
- * Example of a variable mark: <!-- @variable@ --> and <!-- %variable% --> for injections.
- *
- * Example of if/else:
- * <!-- if @variable@ -->
- *    (code)
- * <!-- else @variable@ -->
- *    (code)
- * <!-- endif @variable@ -->
- *
- * Injections use %variable% instead of @variable@.
- * In if/else blocks, empty arrays are treated as `false`.
- *
- * @param {string} input The source string with template tags
- * @param {object<string,string|Array|object>} vars The variables to substitute
- * @param {object<string,string|Array|object>} injections Module-provided injections to substitute
- */
-const templateHTML = (input, vars, injections = {}) => {
-    let output = input;
-    for (const i in vars) {
-        output = output.replace(varHTMLMatcher(i), typeof vars[i] === 'object' ? JSON.stringify(vars[i]) : vars[i]);
-        output = output.replace(ifHTMLMatcher(i), (Array.isArray(vars[i]) ? vars[i].length : vars[i]) ? '$1' : '$2');
-    }
-    for (const i in injections) {
-        output = output.replace(varHTMLMatcher(i, '%'), typeof injections[i] === 'object' ? JSON.stringify(injections[i]) : injections[i]);
+        output = output.replace(varMatcher(i, '%'), () => (typeof injections[i] === 'object' ? JSON.stringify(injections[i]) : injections[i]));
     }
     return output;
 };
 
+const getSubstitution = value => {
+    if (!value) {
+        return '';
+    }
+    if (typeof value === 'object') {
+        return JSON.stringify(value);
+    }
+    return value;
+};
 const parseKeys = function (catmod, str, lib) {
     var str2 = str;
     if (catmod.fields) {
-        for (const field in catmod.fields) {
-            const val = currentProject.libs[lib][catmod.fields[field].key];
-            if (catmod.fields[field].type === 'checkbox' && !val) {
-                str2 = str2.replace(RegExp('(/\\*)?%' + catmod.fields[field].key + '%(\\*/)?', 'g'), 'false');
+        const {fields} = catmod,
+              values = getUnwrappedExtends(currentProject.libs[lib] || {});
+
+        for (const field of fields) {
+            if (!field.key) {
+                // Skip invalid/decorative fields
+                continue;
+            }
+            const cleanKey = getCleanKey(field.key);
+            const val = values[cleanKey];
+            if (field.type === 'checkbox' && !val) {
+                str2 = str2.replace(RegExp('(/\\*)?%' + cleanKey + '%(\\*/)?', 'g'), 'false');
             } else {
-                str2 = str2.replace(RegExp('(/\\*)?%' + catmod.fields[field].key + '%(\\*/)?', 'g'), val || '');
+                str2 = str2.replace(RegExp('(/\\*)?%' + cleanKey + '%(\\*/)?', 'g'), () => getSubstitution(val));
             }
         }
     }
@@ -172,7 +161,7 @@ const getInjections = async () => {
 };
 
 // eslint-disable-next-line max-lines-per-function
-const exportCtProject = async (project, projdir) => {
+const exportCtProject = async (project, projdir, production) => {
     currentProject = project;
     await removeBrokenModules(project);
 
@@ -183,6 +172,10 @@ const exportCtProject = async (project, projdir) => {
 
     if (project.rooms.length < 1) {
         throw new Error(languageJSON.common.norooms);
+    }
+
+    if (localStorage.forceProductionForDebug === 'yes') {
+        production = true;
     }
 
     await fs.remove(writeDir);
@@ -208,6 +201,7 @@ const exportCtProject = async (project, projdir) => {
     /* Load source files in parallel */
     const sources = {};
     const sourcesList = [
+        'backgrounds.js',
         'camera.js',
         'ct.css',
         'emitters.js',
@@ -218,6 +212,7 @@ const exportCtProject = async (project, projdir) => {
         'rooms.js',
         'styles.js',
         'types.js',
+        'tilemaps.js',
         'timer.js'
     ];
     for (const file of sourcesList) {
@@ -225,7 +220,6 @@ const exportCtProject = async (project, projdir) => {
             encoding: 'utf8'
         });
     }
-
     /* assets — run in parallel */
     const texturesTask = packImages(project, writeDir);
     const skeletonsTask = packSkeletons(project, projdir, writeDir);
@@ -246,7 +240,6 @@ const exportCtProject = async (project, projdir) => {
             version: settings.authoring.version.join('.') + settings.authoring.versionPostfix
         }
     }, injections);
-
     buffer += '\n';
 
     let actionsSetup = '';
@@ -265,6 +258,7 @@ const exportCtProject = async (project, projdir) => {
         startroom: startroom.name,
         rooms: roomsCode
     }, injections);
+    buffer += '\n';
 
     const styles = stringifyStyles(project);
     buffer += template(await sources['styles.js'], {
@@ -284,11 +278,11 @@ const exportCtProject = async (project, projdir) => {
         types
     }, injections);
 
-    buffer += await sources['camera.js'];
-    buffer += '\n';
-
-    buffer += await sources['timer.js'];
-    buffer += '\n';
+    // Add four files in a sequence, without additional transforms
+    buffer += (
+        await Promise.all(['backgrounds.js', 'tilemaps.js', 'camera.js', 'timer.js']
+            .map(source => sources[source]))
+    ).join('\n');
 
     const fonts = await bundleFonts(project, projdir, writeDir);
     buffer += fonts.js;
@@ -327,12 +321,8 @@ const exportCtProject = async (project, projdir) => {
     }));
 
     /* HTML & CSS */
-    const html = templateHTML(await sources['index.html'], {
-        gametitle: project.settings.authoring.title || 'ct.js game',
-        accent: project.settings.branding.accent || '#446adb',
-        particleEmitters: project.emitterTandems,
-        includeDragonBones: project.skeletons.some(s => s.from === 'dragonbones')
-    }, injections);
+    const {substituteHtmlVars} = require('./html');
+    const html = substituteHtmlVars(await sources['index.html'], project, injections);
 
     let preloaderColor1 = project.settings.branding.accent,
         preloaderColor2 = (global.brehautColor(preloaderColor1).getLuminance() < 0.5) ? '#ffffff' : '#000000';
@@ -347,7 +337,29 @@ const exportCtProject = async (project, projdir) => {
         fonts: fonts.css
     }, injections);
 
-    await favicons;
+    // JS minify
+    if (production && currentProject.settings.export.codeModifier === 'minify') {
+        buffer = await (await require('terser').minify(buffer, {
+            mangle: {
+                reserved: ['ct']
+            },
+            format: {
+                comments: '/^! Made with ct.js /'
+            }
+        })).code;
+    }
+
+    // JS obfuscator
+    if (production && currentProject.settings.export.codeModifier === 'obfuscate') {
+        buffer = require('javascript-obfuscator')
+            .obfuscate(buffer)
+            .getObfuscatedCode();
+    }
+
+    // Wrap in function
+    if (production && currentProject.settings.export.functionWrap) {
+        buffer = `(function() {\n${buffer}\n})();`;
+    }
 
     // Output minified HTML & CSS
     const csswring = require('csswring');
@@ -368,6 +380,8 @@ const exportCtProject = async (project, projdir) => {
         const ext = sound.origname.slice(-4);
         await fs.copy(path.join(projdir, '/snd/', sound.origname), path.join(writeDir, '/snd/', sound.uid + ext));
     }));
+
+    await favicons;
 
     return path.join(writeDir, '/index.html');
 };

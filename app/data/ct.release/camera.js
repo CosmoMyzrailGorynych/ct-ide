@@ -340,6 +340,22 @@ class Camera extends PIXI.DisplayObject {
     }
 
     /**
+     * Checks whether a given object (or any Pixi's DisplayObject)
+     * is potentially visible, meaning that its bounding box intersects
+     * the camera's bounding box.
+     * @param {PIXI.DisplayObject} copy An object to check for.
+     * @returns {boolean} `true` if an object is visible, `false` otherwise.
+     */
+    contains(copy) {
+        // `true` skips transforms recalculations, boosting performance
+        const bounds = copy.getBounds(true);
+        return bounds.right > 0 &&
+               bounds.left < this.width * this.scale.x &&
+               bounds.bottom > 0 &&
+               bounds.top < this.width * this.scale.y;
+    }
+
+    /**
      * Realigns all the copies in a room so that they distribute proportionally
      * to a new camera size based on their `xstart` and `ystart` coordinates.
      * Will throw an error if the given room is not in UI space (if `room.isUi` is not `true`).

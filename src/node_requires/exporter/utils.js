@@ -11,6 +11,11 @@ const {getTextureFromId} = require('./../resources/textures');
 const getUnwrappedExtends = function getUnwrappedExtends(exts) {
     const out = {};
     for (const i in exts) {
+        if (Array.isArray(exts[i])) {
+            // Recursively unwrap complex objects
+            out[i] = exts[i].map(getUnwrappedExtends);
+            continue;
+        }
         const split = i.split('@@');
         if (split.length === 1) {
             out[i] = exts[i];
@@ -51,6 +56,15 @@ const getUnwrappedExtends = function getUnwrappedExtends(exts) {
     return out;
 };
 
+const getCleanKey = i => {
+    const split = i.split('@@');
+    if (split.length > 1) {
+        split.pop();
+    }
+    return split.join('@@');
+};
+
 module.exports = {
-    getUnwrappedExtends
+    getUnwrappedExtends,
+    getCleanKey
 };

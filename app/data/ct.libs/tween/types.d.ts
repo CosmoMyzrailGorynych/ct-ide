@@ -8,11 +8,18 @@ interface ITween extends Promise<void> {
 type TweenCurveFunction = (value: number) => number;
 
 interface ITweenOptions {
-    obj: object
-    fields: object
+    /** An object to animate. All objects are supported. */
+    obj: object;
+    /** A map with pairs `fieldName: newValue`. Values must be of numerical type. */
+    fields: object;
+    /** An interpolating function. You can write your own, or use default ones written below. The default one is `ct.tween.ease`. */
     curve?: TweenCurveFunction;
+    /** The duration of easing, in milliseconds. */
     duration: number;
+    /** If true, use `ct.deltaUi` instead of `ct.delta`. The default is `false`. */
     useUiDelta?: boolean;
+    /** Suppresses errors when the timer was interrupted or stopped manually. */
+    silent?: boolean;
 }
 
 declare namespace ct {

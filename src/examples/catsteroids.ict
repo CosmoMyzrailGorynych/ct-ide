@@ -82,17 +82,17 @@ types:
       this.speed = Math.max(Math.min(this.speed, this.speed - this.friction,
       this.maxspeed / ct.pixiApp.ticker.speed), 0);
 
-      ct.types.move(this);
+      this.move();
 
 
       // Check if the ship is out of the view
 
-      if (this.x < 0 || this.x > ct.viewWidth ||
-          this.y < 0 || this.y > ct.viewHeight) {
+      if (this.x < 0 || this.x > ct.camera.width ||
+          this.y < 0 || this.y > ct.camera.height) {
           // Return back if the ship is outside the room
           this.speed = 0;
-          this.x = Math.max(Math.min(this.x, ct.viewWidth), 0);
-          this.y = Math.max(Math.min(this.y, ct.viewHeight), 0);
+          this.x = Math.max(Math.min(this.x, ct.camera.width), 0);
+          this.y = Math.max(Math.min(this.y, ct.camera.height), 0);
       }
 
 
@@ -102,8 +102,7 @@ types:
       this.shootTimer += ct.deltaUi;
 
 
-      // If the spacebar is pressed and at least a quarter of second has
-      passed,
+      // If the spacebar is pressed and at least a quarter of second has passed,
 
       // create a new laser bullet depending on a weapon type
 
@@ -191,7 +190,7 @@ types:
       ct.u.wait(2999)
       .then(() => ct.rooms.switch('RetryScreen'));
     uid: 1fab434d-0976-4b65-8390-d013695aba8c
-    lastmod: 1588678928942
+    lastmod: 1603949003131
     extends: {}
     texture: e1452137-8cfa-4eec-b54a-0f2660326b48
   - name: Laser_Simple_Blue
@@ -208,11 +207,11 @@ types:
           this.kill = true;
       }
 
-      ct.types.move(this);
+      this.move();
     ondraw: ''
     ondestroy: ''
     uid: 92e6ec14-1de0-483a-84b8-a8669ac65937
-    lastmod: 1584415349120
+    lastmod: 1603949021756
     extends: {}
     texture: e6148099-65e7-4d2b-acf1-3e6b3a8fc033
   - name: Asteroid
@@ -231,7 +230,7 @@ types:
 
       this.ctype = 'Enemy';
     onstep: |-
-      ct.types.move(this);
+      this.move();
 
       this.angle += this.rotateSpeed * ct.delta;
 
@@ -262,7 +261,7 @@ types:
       ct.emitters.fire('ChunkBurst', this.x, this.y);
       ct.room.score += 10;
     uid: 1fa16a0f-e9a0-4117-9c28-87fa72b33d2b
-    lastmod: 1588679462219
+    lastmod: 1603949085987
     extends: {}
     texture: 1a904383-2edd-4435-a37b-17148f44e0e0
   - name: Laser_Cross_Blue
@@ -281,11 +280,11 @@ types:
 
       this.phase += ct.delta * 0.1;
       this.x = this.xstart + Math.sin(this.phase) * 75 * this.scale.x;
-      ct.types.move(this);
+      this.move();
     ondraw: ''
     ondestroy: ''
     uid: 140f8bde-bd06-4b2d-a5f2-87427848252e
-    lastmod: 1588678931174
+    lastmod: 1603949097147
     extends: {}
     texture: 4b86d5c4-ae3c-4edf-90d7-79a6778e9a29
   - name: GameController
@@ -299,13 +298,13 @@ types:
       this.asteroidTimer -= ct.delta;
       if (this.asteroidTimer <= 0) {
           this.asteroidTimer = ct.random.range(ct.speed * 0.5, ct.speed * 3);
-          ct.types.copy('AbstractMeteor', ct.random(ct.viewWidth), -100);
+          ct.types.copy('AbstractMeteor', ct.random(ct.camera.width), -100);
       }
 
       this.encounterTimer -= ct.delta;
       if (this.encounterTimer <= 0) {
           this.encounterTimer = ct.random.range(ct.speed * 4, ct.speed * 7);
-          ct.types.copy('Enemy_Shooter', ct.random(ct.viewWidth), -100);
+          ct.types.copy('Enemy_Shooter', ct.random(ct.camera.width), -100);
       }
 
       this.waveTimer -= ct.delta;
@@ -335,12 +334,12 @@ types:
       this.ufoTimer -= ct.delta;
       if (this.ufoTimer <= 0) {
           this.ufoTimer = ct.random.range(ct.speed * 60, ct.speed * 90);
-          ct.types.copy('Enemy_Ufo', ct.random(ct.viewWidth), -100);
+          ct.types.copy('Enemy_Ufo', ct.random(ct.camera.width), -100);
       }
     ondraw: ''
     ondestroy: ''
     uid: ca579f27-f97b-4ca2-98f6-c1c3e13acad5
-    lastmod: 1586013629068
+    lastmod: 1603949150947
     extends: {}
     texture: -1
   - name: Logo
@@ -360,7 +359,7 @@ types:
       this.y = this.ystart + Math.sin(this.phase) * 8;
     ondestroy: ''
     uid: 319c6995-59f3-4267-a1de-cf58f77614d3
-    lastmod: 1588678830916
+    lastmod: 1603949138461
     extends: {}
     texture: 968baf79-5ff3-443b-8834-fa3b55638500
   - name: StartButton
@@ -387,7 +386,7 @@ types:
     ondraw: ''
     ondestroy: ''
     uid: 972bb4d9-7cfc-4dbe-bc30-883562271057
-    lastmod: 1588676925041
+    lastmod: 1603949128699
     extends: {}
     texture: 2a454e11-3441-4f57-bfb6-ce837acd7881
   - name: AbstractBonus
@@ -406,7 +405,7 @@ types:
       this.direction = 90;
       console.log(this.tex);
     onstep: |-
-      ct.types.move(this);
+      this.move();
 
       var player = ct.place.meet(this, this.x, this.y, 'Player_Blue');
       if (player) {
@@ -449,13 +448,13 @@ types:
       }
 
       // Destroy bonus if it fell off the screen
-      if (this.y > ct.room.height + 48) {
+      if (this.y > ct.camera.height + 48) {
           this.kill = true;
       }
     ondraw: ''
     ondestroy: ''
     uid: bc01cee1-1b8b-4418-aeb9-a7c5eac2cd51
-    lastmod: 1588673035582
+    lastmod: 1603949079971
     extends: {}
     texture: 25fb712b-0aca-4b18-8e10-7c545d4bca8d
   - name: Enemy_Shooter
@@ -491,7 +490,7 @@ types:
           }
       });
     onstep: |-
-      ct.types.move(this);
+      this.move();
 
       this.shootTimer -= ct.delta;
       if (this.shootTimer < 0) {
@@ -504,7 +503,7 @@ types:
           calculateDamage(this, obstacle);
       }
 
-      if (this.y > ct.viewHeight + 100) {
+      if (this.y > ct.camera.height + 100) {
           this.kill = true;
           this.skipOnDestroy = true;
       }
@@ -527,7 +526,7 @@ types:
 
       ct.room.score += 100;
     uid: 500fd472-19aa-41a0-9504-123c37540702
-    lastmod: 1588676587505
+    lastmod: 1603949065410
     extends: {}
     texture: 048b77d3-e7e3-4817-99ee-8b7c0a6da8bf
   - name: EnemyBullet
@@ -539,16 +538,16 @@ types:
       this.angle = this.direction;
       ct.sound.spawn('Laser_Big');
     onstep: |-
-      ct.types.move(this);
+      this.move();
 
       // Destroy a bullet if it fell off the screen
-      if (this.y > ct.viewHeight + 32) {
+      if (this.y > ct.camera.height + 32) {
           this.kill = true;
       }
     ondraw: ''
     ondestroy: ''
     uid: 65a71d76-039a-4e20-8433-d20277dd2402
-    lastmod: 1588678944192
+    lastmod: 1603949111947
     extends:
       ctype: EnemyBullet
     texture: fc3e2f9b-61af-4ae4-9375-dcfae65f6a34
@@ -620,7 +619,7 @@ types:
 
       ct.room.score += 75;
     uid: 9d0992a4-d0ef-4c5e-9d17-2e5167f26598
-    lastmod: 1588677934345
+    lastmod: 1603949092067
     extends: {}
     texture: 16c209a9-25b2-41e4-b0d5-21cb22fd1421
   - name: Laser_Bolt_Blue
@@ -637,17 +636,17 @@ types:
           this.kill = true;
       }
 
-      ct.types.move(this);
+      this.move();
     ondraw: ''
     ondestroy: ''
     uid: 912af24f-1569-46a3-9194-fbf0384f3b0e
-    lastmod: 1584415954706
+    lastmod: 1603949101051
     extends: {}
     texture: c12edc06-ad3f-49f4-b9d4-3d33226e9ecc
   - name: Enemy_Bomber
     depth: 3
     oncreate: |-
-      this.targetx = ct.random.range(75, ct.viewWidth - 150);
+      this.targetx = ct.random.range(75, ct.camera.width - 150);
       this.targety = ct.random.range(75, 300);
       this.angle = -180;
 
@@ -703,7 +702,7 @@ types:
 
       ct.types.copy('AbstractBonus', this.x, this.y);
     uid: ebfeaaab-f16a-48fa-b97c-687945f99668
-    lastmod: 1588676559273
+    lastmod: 1603949043730
     extends: {}
     texture: 771c5c1f-ffdc-4b50-a1ce-aed472e44557
   - name: Laser_Cross_Red
@@ -720,27 +719,27 @@ types:
       this.angle = ct.random.deg();
     onstep: |-
       this.angle -= 4.5 * ct.delta;
-      ct.types.move(this);
+      this.move();
 
       // Destroy a bullet if it fell off the screen
-      if (this.y > ct.viewHeight + 32) {
+      if (this.y > ct.camera.height + 32) {
           this.kill = true;
       }
     ondraw: ''
     ondestroy: ''
     uid: 45f606db-1ce3-4b21-bc14-b84e35543509
-    lastmod: 1588679171726
+    lastmod: 1603949122763
     extends:
       ctype: EnemyBullet
     texture: dc0d71ec-6da8-40e8-afe8-90c81f7f269a
   - name: OhNo
     depth: 0
     oncreate: ''
-    onstep: ct.types.move(this);
+    onstep: this.move();
     ondraw: ''
     ondestroy: ''
     uid: a6d37145-b35c-42d2-95c6-765069857ada
-    lastmod: 1588676502096
+    lastmod: 1603949135651
     extends: {}
     texture: e81fc53e-4f0a-443d-a4fb-e5e11a4a98d2
   - name: RetryButton
@@ -757,7 +756,7 @@ types:
     ondraw: ''
     ondestroy: ''
     uid: 73759c16-fba4-4134-b048-e53aa4d2f34b
-    lastmod: 1588676975337
+    lastmod: 1603949126108
     extends: {}
     texture: 071162b9-d836-4145-9515-586ce289ef14
   - name: Joystick
@@ -1098,7 +1097,7 @@ types:
     uid: 1011221c-4f7b-45e7-b45a-ce886851d32c
     texture: 850854a8-47dd-4041-9412-b4cca854dd90
     extends: {}
-    lastmod: 1588679321850
+    lastmod: 1603949023522
   - name: Healthbar_Base_Boss
     depth: 0
     oncreate: >-
@@ -1167,7 +1166,7 @@ types:
       // We will need a variable to change its phase
 
       this.phase = 0;
-    onstep: ct.types.move(this);
+    onstep: this.move();
     ondraw: |-
       this.phase += 2.5 / 60 * ct.delta;
       if (this.phase > Math.PI * 2) {
@@ -1177,7 +1176,7 @@ types:
       this.y = this.ystart + Math.sin(this.phase) * 8;
     ondestroy: ''
     uid: ffbec9fc-299c-4aea-a4f1-1c4b27859fb6
-    lastmod: 1588678848655
+    lastmod: 1603949132771
     extends: {}
     texture: 91f10290-e71c-4052-a64b-7aec34086e64
 sounds:
@@ -1371,7 +1370,7 @@ rooms:
         extends:
           movementY: 0.5
     uid: 2e5bf702-9eac-4fef-8282-07d2dd0a9bac
-    lastmod: 1588761914721
+    lastmod: 1603949209540
     grid: 50
     thumbnail: 1
     gridX: 50
@@ -1379,10 +1378,13 @@ rooms:
     tiles:
       - depth: -10
         tiles: []
+        extends: {}
     copies:
       - x: 950
         'y': 850
         uid: 1fab434d-0976-4b65-8390-d013695aba8c
+        exts: {}
+    extends: {}
   - name: MainMenu
     oncreate: >-
       ct.sound.spawn('Music_MainMenu', {
@@ -1426,20 +1428,24 @@ rooms:
           movementX: -0.5
     uid: 6c75cdb8-cfb4-4dcc-887a-f76ae98b5499
     grid: 64
-    lastmod: 1588677352152
+    lastmod: 1603949155404
     thumbnail: 2
     gridX: 64
     gridY: 64
     tiles:
       - depth: -10
         tiles: []
+        extends: {}
     copies:
       - x: 960
         'y': 704
         uid: 972bb4d9-7cfc-4dbe-bc30-883562271057
+        exts: {}
       - x: 960
         'y': 320
         uid: 319c6995-59f3-4267-a1de-cf58f77614d3
+        exts: {}
+    extends: {}
   - name: RetryScreen
     oncreate: >-
       this.score = Number(localStorage.score);
@@ -1495,13 +1501,16 @@ rooms:
     tiles:
       - depth: -10
         tiles: []
+        extends: {}
     copies:
       - x: 960
         'y': 832
         uid: 73759c16-fba4-4134-b048-e53aa4d2f34b
+        exts: {}
       - x: 960
         'y': 192
         uid: a6d37145-b35c-42d2-95c6-765069857ada
+        exts: {}
   - name: Controls_Layer
     oncreate: ''
     onstep: ''
@@ -1514,17 +1523,21 @@ rooms:
       - x: 1722
         'y': 898
         uid: b334b5ec-69b4-4c0d-bd50-709cf9bfa60d
+        exts: {}
       - x: 210
         'y': 872
         uid: c78818a4-c20e-46b9-8a39-9fbb5a83eabe
+        exts: {}
     tiles:
       - depth: -10
         tiles: []
+        extends: {}
     uid: 459c3f03-a31e-465a-a3fd-23d3934bc7d0
     thumbnail: 23d3934bc7d0
     gridX: 64
     gridY: 64
     lastmod: 1587620212901
+    extends: {}
   - name: BossTestingRoom
     oncreate: >-
       if (ct.touch.enabled) {
@@ -1592,7 +1605,7 @@ rooms:
         extends:
           movementY: 0.5
     uid: 0716a171-8c7a-4112-bae8-85703255320d
-    lastmod: 1588676886528
+    lastmod: 1602729535763
     grid: 50
     thumbnail: 85703255320d
     gridX: 50
@@ -1600,34 +1613,45 @@ rooms:
     tiles:
       - depth: -10
         tiles: []
+        extends: {}
     copies:
       - x: 950
         'y': 850
         uid: 1fab434d-0976-4b65-8390-d013695aba8c
+        exts: {}
       - x: 950
         'y': -300
         uid: 1ef4f56c-b0cc-497b-bd3f-e06eb1c2308d
+        exts: {}
       - x: 550
         'y': 400
         uid: bc01cee1-1b8b-4418-aeb9-a7c5eac2cd51
+        exts: {}
       - x: 750
         'y': 400
         uid: bc01cee1-1b8b-4418-aeb9-a7c5eac2cd51
+        exts: {}
       - x: 650
         'y': 550
         uid: bc01cee1-1b8b-4418-aeb9-a7c5eac2cd51
+        exts: {}
       - x: 650
         'y': 250
         uid: bc01cee1-1b8b-4418-aeb9-a7c5eac2cd51
+        exts: {}
       - x: 450
         'y': 250
         uid: bc01cee1-1b8b-4418-aeb9-a7c5eac2cd51
+        exts: {}
       - x: 350
         'y': 400
         uid: bc01cee1-1b8b-4418-aeb9-a7c5eac2cd51
+        exts: {}
       - x: 450
         'y': 550
         uid: bc01cee1-1b8b-4418-aeb9-a7c5eac2cd51
+        exts: {}
+    extends: {}
   - name: UI_Layer
     oncreate: ''
     onstep: ''
@@ -1640,9 +1664,11 @@ rooms:
       - x: 960
         'y': 1080
         uid: 1011221c-4f7b-45e7-b45a-ce886851d32c
+        exts: {}
     tiles:
       - depth: -10
         tiles: []
+        extends: {}
     uid: 3123a227-4b15-4b4e-83cd-bb45e24b4389
     thumbnail: bb45e24b4389
     gridX: 64
@@ -1721,27 +1747,18 @@ rooms:
     tiles:
       - depth: -10
         tiles: []
+        extends: {}
     copies:
       - x: 960
         'y': 256
         uid: ffbec9fc-299c-4aea-a4f1-1c4b27859fb6
+        exts: {}
 soundtick: 9
 roomtick: 3
 typetick: 19
 styletick: 2
 starting: 0
 settings:
-  minifyhtmlcss: true
-  minifyjs: false
-  title: Catsteroids
-  author: CoMiGo Games
-  site: 'http://comigogames.ru/'
-  fps: 30
-  version:
-    - 0
-    - 0
-    - 0
-  versionPostfix: ''
   export:
     windows64: true
     windows32: true
@@ -1749,12 +1766,28 @@ settings:
     linux32: true
     mac64: true
     debug: false
-  pixelatedrender: false
+    functionWrap: false
+    codeModifier: none
   branding:
     icon: e1452137-8cfa-4eec-b54a-0f2660326b48
     accent: '#446adb'
     invertPreloaderScheme: true
-  highDensity: true
+  rendering:
+    maxFPS: 60
+    pixelatedrender: false
+    highDensity: true
+    usePixiLegacy: true
+    desktopMode: maximized
+  authoring:
+    title: Catsteroids
+    author: CoMiGo Games
+    site: 'http://comigogames.ru/'
+    version:
+      - 0
+      - 0
+      - 0
+    versionPostfix: ''
+  fps: 30
 palette:
   - '#FFFFFF'
   - '#10102E'
@@ -1817,7 +1850,7 @@ scripts:
               });
           });
       };
-ctjsVersion: 1.3.0
+ctjsVersion: 1.4.2
 fonts: []
 skeletons: []
 actions:
