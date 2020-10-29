@@ -22,6 +22,7 @@
  */
 const Copy = (function Copy() {
     const textureAccessor = Symbol('texture');
+    let uid = 0;
     class Copy extends PIXI.AnimatedSprite {
         /**
          * Creates an instance of Copy.
@@ -78,7 +79,7 @@ const Copy = (function Copy() {
             this.speed = this.direction = this.gravity = this.hspeed = this.vspeed = 0;
             this.gravityDir = 270;
             this.depth = 0;
-            this.uid = ++ct.room.uid;
+            this.uid = ++uid;
             if (type) {
                 ct.u.ext(this, {
                     type,

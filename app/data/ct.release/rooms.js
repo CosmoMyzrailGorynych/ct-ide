@@ -7,10 +7,15 @@
  */
 
 class Room extends PIXI.Container {
+    static getNewId() {
+        this.roomId++;
+        return this.roomId;
+    }
+
     constructor(template) {
         super();
         this.x = this.y = 0;
-        this.uid = 0;
+        this.uid = Room.getNewId();
         this.tileLayers = [];
         this.backgrounds = [];
         if (!ct.room) {
@@ -79,6 +84,8 @@ class Room extends PIXI.Container {
         return value;
     }
 }
+Room.roomId = 0;
+
 (function roomsAddon() {
     /* global deadPool */
     var nextRoom;
