@@ -276,18 +276,26 @@ sounds-panel, rooms-panel
         border-top 1px solid error
         transform translate(-0.25rem, 0) rotate(45deg)
 
-.nicetable
+.nicetable, .aNiceTable
     margin 1rem 0
     border 1px solid borderBright
     border-radius br
     border-spacing 0
     {shadamb}
     td, th
-        padding 0.5rem 1.5rem
+        padding 0.5rem 0.75rem
         margin 0
+        &:first-child
+            padding-left 1.5rem
+        &:last-child
+            padding-right 1.5rem
     th
         border-bottom 1px solid borderBright
         text-align left
+.aTableWrap
+    overflow-y auto
+    .nicetable, .aNiceTable
+        width max-content
 
 .anIllustration
     color act

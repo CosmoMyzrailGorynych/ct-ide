@@ -101,6 +101,9 @@
          * @returns {void}
          */
         resolve() {
+            if (this.settled) {
+                return;
+            }
             this.done = true;
             this.settled = true;
             this[promiseResolve]();
@@ -112,6 +115,9 @@
          * @returns {void}
          */
         reject(message) {
+            if (this.settled) {
+                return;
+            }
             this.rejected = true;
             this.settled = true;
             this[promiseReject](message);

@@ -38,8 +38,8 @@ ct.tween = {
             ct.tween.tweens.push(tween);
         });
         if (options.silent) {
-            promise.catch(e => void e);
-            tween.timer.catch(e => void e);
+            promise.catch(() => void 0);
+            tween.timer.catch(() => void 0);
         }
         promise.stop = function stop() {
             tween.reject({

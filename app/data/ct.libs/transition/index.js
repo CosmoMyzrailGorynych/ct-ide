@@ -1,5 +1,5 @@
-(function () {
-    const makeGenericTransition = function(name, exts) {
+(function ctTransition() {
+    const makeGenericTransition = function makeGenericTransition(name, exts) {
         ct.rooms.templates.CTTRANSITIONEMPTYROOM.width = ct.camera.width;
         ct.rooms.templates.CTTRANSITIONEMPTYROOM.height = ct.camera.height;
         const room = ct.rooms.append('CTTRANSITIONEMPTYROOM', {
@@ -9,7 +9,8 @@
             name, 0, 0,
             Object.assign({
                 room
-            }, exts), room);
+            }, exts), room
+        );
         return transition.promise;
     };
     ct.transition = {

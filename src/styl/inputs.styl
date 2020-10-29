@@ -189,7 +189,7 @@ input[type="reset"],
         &:after
             background error
 
-.button-stack
+.aButtonGroup
     display inline-flex
     margin 0 0.5em
     button, .button
@@ -531,3 +531,15 @@ fieldset
         margin-right 0.5rem
     .spacer
         flex 0 0 auto
+
+.anActionableIcon
+    color act
+    {trans}
+    opacity 0.35
+    cursor pointer
+    margin 0
+    display inline-block
+    &:hover, &:focus, .menu li:hover &, .menu li:focus &, tr:hover &
+        opacity 1
+    & + &
+        margin-left 0.35rem

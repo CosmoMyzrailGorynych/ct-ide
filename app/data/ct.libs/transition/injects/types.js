@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 (function ctTransitionTypes() {
     const devourer = () => {
         void 0;
@@ -25,7 +26,8 @@
                 fields: {
                     alpha: this.in ? 0 : 1
                 },
-                duration: this.duration
+                duration: this.duration,
+                silent: true
             }).then(() => {
                 this.kill = true;
             });
@@ -63,7 +65,8 @@
                     x: endX,
                     y: endY
                 },
-                duration: this.duration
+                duration: this.duration,
+                silent: true
             }).then(() => {
                 ct.camera.scale.x = sourceX;
                 ct.camera.scale.y = sourceY;
@@ -74,7 +77,8 @@
                 fields: {
                     alpha: this.in ? 0 : 1
                 },
-                duration: this.duration
+                duration: this.duration,
+                silent: true
             })
             .catch(devourer);
         }
@@ -104,7 +108,8 @@
                         x: this.in ? 0 : 1
                     },
                     duration: this.duration,
-                    curve: ct.tween.easeOutQuart
+                    curve: ct.tween.easeOutQuart,
+                    silent: true
                 }).then(() => {
                     this.kill = true;
                 });
@@ -116,7 +121,8 @@
                         y: this.in ? 0 : 1
                     },
                     duration: this.duration,
-                    curve: ct.tween.easeOutQuart
+                    curve: ct.tween.easeOutQuart,
+                    silent: true
                 }).then(() => {
                     this.kill = true;
                 });
@@ -129,7 +135,8 @@
                         x: 0
                     },
                     duration: this.duration,
-                    curve: ct.tween.easeOutQuart
+                    curve: ct.tween.easeOutQuart,
+                    silent: true
                 })
                 .catch(devourer);
             }
@@ -141,7 +148,8 @@
                         y: 0
                     },
                     duration: this.duration,
-                    curve: ct.tween.easeOutQuart
+                    curve: ct.tween.easeOutQuart,
+                    silent: true
                 })
                 .catch(devourer);
             }
@@ -152,7 +160,8 @@
                         x: (ct.camera.width + 1)
                     },
                     duration: this.duration,
-                    curve: ct.tween.easeOutQuart
+                    curve: ct.tween.easeOutQuart,
+                    silent: true
                 })
                 .catch(devourer);
             }
@@ -163,7 +172,8 @@
                         y: (ct.camera.height + 1)
                     },
                     duration: this.duration,
-                    curve: ct.tween.easeOutQuart
+                    curve: ct.tween.easeOutQuart,
+                    silent: true
                 })
                 .catch(devourer);
             }
@@ -202,7 +212,8 @@
                     x: this.in ? 1 : 0,
                     y: this.in ? 1 : 0
                 },
-                duration: this.duration
+                duration: this.duration,
+                silent: true
             }).then(() => {
                 this.kill = true;
             });

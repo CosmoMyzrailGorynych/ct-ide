@@ -1,12 +1,9 @@
-/* global ct */
-/* eslint {"no-multi-spaces": "off", "object-property-newline": "off"} */
-
-(function() {
+(function ctKeyboard() {
     var keyPrefix = 'keyboard.';
-    var setKey = function(key, value) {
+    var setKey = function (key, value) {
         ct.inputs.registry[keyPrefix + key] = value;
     };
-    
+
     ct.keyboard = {
         string: '',
         lastKey: '',
@@ -57,7 +54,7 @@
             e.preventDefault();
         }
     };
-    
+
     if (document.addEventListener) {
         document.addEventListener('keydown', ct.keyboard.onDown, false);
         document.addEventListener('keyup', ct.keyboard.onUp, false);

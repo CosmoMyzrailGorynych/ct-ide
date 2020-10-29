@@ -32,7 +32,7 @@ class Room extends PIXI.Container {
             this.template = template;
             this.name = template.name;
             if (this === ct.room) {
-                ct.pixiApp.renderer.backgroundColor = Number('0x' + this.template.backgroundColor.slice(1));
+                ct.pixiApp.renderer.backgroundColor = ct.u.hexToPixi(this.template.backgroundColor);
             }
             /*%beforeroomoncreate%*/
             for (let i = 0, li = template.bgs.length; i < li; i++) {
