@@ -46,5 +46,8 @@ declare class Room extends PIXI.Container {
     /** The name of the room, as defined in ct.IDE */
     name: string;
 
+    /** The unique identifier of a room. Can be used to differentiate rooms without capturing them in a closure. */
+    uid: number;
+
     [key: string]: any
 }
