@@ -276,7 +276,7 @@ extensions-editor
             }
             const row = {};
             for (const field of ext.fields) {
-                row[field.key]  = field.default;
+                row[field.key] = field.default;
             }
             this.opts.entity[ext.key].push(row);
         };
@@ -288,18 +288,16 @@ extensions-editor
             const array = this.opts.entity[field.key],
                   ind = array.indexOf(row);
             [array[ind - 1], array[ind]] = [array[ind], array[ind - 1]];
-            //this.update();
         };
-        this.moveDown = (field, row) => e => {
+        this.moveDown = (field, row) => () => {
             const array = this.opts.entity[field.key],
                   ind = array.indexOf(row);
             if (ind >= array.length - 1) {
                 return;
             }
             [array[ind], array[ind + 1]] = [array[ind + 1], array[ind]];
-            //this.update();
         };
-        this.deleteRow = (field, row) => e => {
+        this.deleteRow = (field, row) => () => {
             const array = this.opts.entity[field.key],
                   ind = array.indexOf(row);
             array.splice(ind, 1);

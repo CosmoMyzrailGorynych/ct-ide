@@ -28,7 +28,6 @@
             return;
         }
         client.setActivity(activity)
-        .then(console.log)
         .catch(console.error);
     }, 1000 * 15);
 
