@@ -1,0 +1,76 @@
+{
+    "main": {
+        "name": "Splash screen",
+        "tagline": "Create splash screens at project settings.",
+        "version": "0.0.0",
+        "authors": [{
+            "name": "Cosmo Myzrail Gorynych",
+            "mail": "admin@nersta.ru"
+        }],
+        "categories": [
+            "customization"
+        ]
+    },
+    "dependencies": ["tween", "transition"],
+    "fields": [{
+        "name": "Slide duration, ms",
+        "key": "slideDuration",
+        "default": 4000,
+        "type": "number",
+        "help": "Includes transitions, so it should be at least twice as much as \"Transition duration\" value.",
+        "min": 0
+    }, {
+        "name": "Transition duration, ms",
+        "key": "transitionDuration",
+        "default": 1000,
+        "type": "number",
+        "min": 0
+    }, {
+        "name": "Background color",
+        "key": "backgroundColor",
+        "default": "#000000",
+        "type": "color"
+    }, {
+        "name": "Transition color",
+        "key": "transitionColor",
+        "default": "#000000",
+        "type": "color"
+    }, {
+        "name": "Skip slides on mouse click / touch / key press / gamepad input. (Requires at least one of the modules that provide inputs for these.)",
+        "key": "skippable",
+        "default": true,
+        "type": "checkbox"
+    }, {
+        "name": "Slides",
+        "key": "slides",
+        "default": [],
+        "type": "table",
+        "fields": [{
+            "name": "Logo texture",
+            "key": "texture@@texture",
+            "default": -1,
+            "type": "texture"
+        }, {
+            "name": "Effect",
+            "key": "effect",
+            "type": "select",
+            "default": "none",
+            "options": [{
+                "value": "none",
+                "name": "None"
+            }, {
+                "value": "zoomIn",
+                "name": "Zoom in"
+            }, {
+                "value": "zoomOut",
+                "name": "Zoom out"
+            }]
+        }, {
+            "name": "Fill",
+            "key": "fill",
+            "type": "checkbox",
+            "default": false,
+            "help": "If enabled, the logo will occupy the whole screen stretching proportionally; otherwise, it will be twice as small and placed at the center of the screen."
+        }]
+    }]
+}
