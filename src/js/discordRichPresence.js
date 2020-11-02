@@ -1,79 +1,116 @@
+/* eslint-disable no-console */
 (function discordRichPresence() {
     const appId = '749670101904785502';
     const startTimestamp = new Date();
     let available = false;
+    let failed = false;
 
     const RPC = require('discord-rpc');
     const client = new RPC.Client({
         transport: 'ipc'
     });
 
-    const limitRate = function limitRate(func, ms) {
-        // The same may be done with ct.flow.gate + ct.flow.
-        var timer;
-        var delay = function (...args) {
-            if (!timer) {
-                timer = true;
-                setTimeout(() => {
-                    timer = false;
-                }, ms);
-                func(...args);
-            }
-        };
-        return delay;
+    const notifyFailed = () => {
+        if (!failed) {
+            failed = true;
+            console.error('Could not enable Discord Rich Presence.');
+            setTimeout(() => {
+                alertify.log('Could not enable Discord Rich Presence.');
+            }, 1750);
+        }
+    };
+    const setActivity = status => {
+        client.setActivity(status)
+        .then(() => console.debug('[discord] Successfully changed rich presence.'))
+        .catch((...err) => {
+            console.error(...err);
+            notifyFailed();
+        });
     };
 
-    const setActivity = limitRate(function setActivity(activity) {
-        if (!available) {
-            return;
+    let scheduledTimeout = false,
+        scheduledStatus = false;
+    const tryStatusUpdate = () => {
+        if (!scheduledTimeout && scheduledStatus) {
+            setActivity(scheduledStatus);
+            scheduledStatus = false;
+            // eslint-disable-next-line no-use-before-define
+            delay();
         }
-        client.setActivity(activity)
-        .catch(console.error);
-    }, 1000 * 15);
+    };
+    const delay = () => {
+        console.debug('[discord] Delaying status update…');
+        // Extra 100ms to avoid race conditions due to network issues
+        scheduledTimeout = setTimeout(() => {
+            scheduledTimeout = false;
+            tryStatusUpdate();
+        }, 15100);
+    };
+    const requestStatusUpdate = status => {
+        scheduledStatus = status;
+        tryStatusUpdate(scheduledStatus);
+    };
 
-    client.login({
+    const activityMap = {
+        debug: 'Testing a game',
+        project: 'Configuring a project',
+        textures: 'Working with textures',
+        ui: 'Editing fonts and styles',
+        fx: 'Creating particle systems',
+        sounds: 'Managing sounds',
+        types: 'Coding types',
+        rooms: 'Designing rooms'
+    };
+
+    const changeDiscordStatus = (tab) => {
+        let details, state;
+        if (!tab) {
+            state = 'Start screen';
+            details = void 0;
+        } else {
+            details = window.currentProject ? window.currentProject.settings.authoring.title : null;
+            state = activityMap[tab];
+        }
+        const activity = {
+            startTimestamp,
+            state,
+            largeImageKey: 'icon-lg',
+            largeImageText: 'ct.js',
+            smallImageKey: `icon-small-${tab}`,
+            smallImageText: state,
+            instance: false
+        };
+        if (details) {
+            activity.details = details;
+        }
+        requestStatusUpdate(activity);
+    };
+
+    window.signals.on('globalTabChanged', (tab) => {
+        changeDiscordStatus(tab);
+    });
+    window.signals.on('resetAll', () => {
+        changeDiscordStatus();
+    });
+
+    client
+    .login({
         clientId: appId
     })
-    .catch(console.error);
+    .catch((...err) => {
+        console.error(...err);
+        notifyFailed();
+    });
+
     client.on('ready', () => {
         available = true;
-        setActivity({
+        console.debug('[discord] Ready to use discord rich presence!');
+        requestStatusUpdate({
             startTimestamp,
             details: 'Just launched',
             largeImageKey: 'icon-lg',
+            largeImageText: 'ct.js',
             instance: false
         });
-    });
-
-    /**
-     * {
-            details: 'Testing',
-            state: 'Rich Presence',
-            smartTimestamp: new Date(),
-            largeImageText: 'Hello world',
-            smallImageText: 'Hello smaller world'
-        }
-     */
-    const activityMap = {
-        debug: 'Tests a game',
-        project: 'Configures project\'s settings',
-        textures: 'Works with textures',
-        ui: 'Edits fonts and styles',
-        fx: 'Creates particle systems',
-        sounds: 'Manages sounds',
-        types: 'Codes types',
-        rooms: 'Designs levels'
-    };
-    window.signals.on('globalTabChanged', tab => {
-        const activity = {
-            startTimestamp,
-            details: window.currentProject.settings.authoring.title || void 0,
-            state: activityMap[tab],
-            largeImageKey: 'icon-lg',
-            smallImageKey: `icon-small-${tab}`,
-            smallImageText: activityMap[tab],
-            instance: false
-        };
-        setActivity(activity);
     });
 })();
