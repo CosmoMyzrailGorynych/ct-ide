@@ -188,7 +188,9 @@ const packImages = async (proj, writeDir) => {
     const animationsByTextures = spritedTextures
         .map(getTextureFrameCrops);
     const animations = [].concat(...animationsByTextures);
-    packer.addArray(animations);
+    if (animations.length) {
+        packer.addArray(animations);
+    }
 
     // Output all the atlases into JSON and PNG files
     const atlases = [];
