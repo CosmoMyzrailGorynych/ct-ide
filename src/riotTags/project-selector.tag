@@ -203,12 +203,12 @@ project-selector
                 openDirectory: true
             });
             if (projPath) {
-                this.newProject(projPath, this.refs.projectname.value);
+                this.newProject(projPath, this.refs.projectname.value.trim());
             }
         };
 
         this.openProjectFolder = () => {
-            const codename = this.refs.projectname.value;
+            const codename = this.refs.projectname.value.trim();
             if (codename.length === 0) {
                 alertify.error(this.voc.newProject.nameerr);
                 return;
