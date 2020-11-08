@@ -175,32 +175,6 @@ textures:
     uid: 4733fb53-5e41-4cf8-b9a8-91ad700f2246
     padding: 1
     lastmod: 1599530639304
-  - name: Panel
-    untill: 0
-    grid:
-      - 2
-      - 1
-    axis:
-      - 8
-      - 16
-    marginx: 0
-    marginy: 0
-    imgWidth: 32
-    imgHeight: 16
-    width: 16
-    height: 16
-    offx: 0
-    offy: 0
-    origname: i0fa0c04d-b13c-4d0a-a1e8-8289d21186aa.png
-    source: /home/comigo/UNWORK/Tileset/Panel.png
-    shape: rect
-    left: 8
-    right: 8
-    top: 16
-    bottom: 0
-    uid: 0fa0c04d-b13c-4d0a-a1e8-8289d21186aa
-    padding: 1
-    lastmod: 1597726316518
   - name: HazardousTube
     untill: 0
     grid:
@@ -227,32 +201,6 @@ textures:
     uid: 1f0fbe96-38aa-4db4-a011-c0cf34b91d00
     padding: 1
     lastmod: 1597811281802
-  - name: Barrier
-    untill: 0
-    grid:
-      - 2
-      - 1
-    axis:
-      - 8
-      - 16
-    marginx: 0
-    marginy: 0
-    imgWidth: 32
-    imgHeight: 16
-    width: 16
-    height: 16
-    offx: 0
-    offy: 0
-    origname: if46dd4de-46d5-4df4-8dd0-086f2e9f5ae6.png
-    source: /home/comigo/UNWORK/Tileset/Barrier.png
-    shape: rect
-    left: 8
-    right: 8
-    top: 16
-    bottom: 0
-    uid: f46dd4de-46d5-4df4-8dd0-086f2e9f5ae6
-    padding: 1
-    lastmod: 1597726170462
   - name: Crate_Debris
     untill: 0
     grid:
@@ -357,32 +305,6 @@ textures:
     uid: 6c23e805-94b6-4e3a-8606-682c36960233
     padding: 1
     lastmod: 1597726354223
-  - name: Horselike_Horizontal
-    untill: 0
-    grid:
-      - 2
-      - 1
-    axis:
-      - 8
-      - 16
-    marginx: 0
-    marginy: 0
-    imgWidth: 32
-    imgHeight: 16
-    width: 16
-    height: 16
-    offx: 0
-    offy: 0
-    origname: id814390a-6f7c-4dce-81f3-ad6f892e8d46.png
-    source: /home/comigo/UNWORK/Tileset/Horselike_Horizontal.png
-    shape: rect
-    left: 8
-    right: 8
-    top: 16
-    bottom: 0
-    uid: d814390a-6f7c-4dce-81f3-ad6f892e8d46
-    padding: 1
-    lastmod: 1597726299417
   - name: Tileset
     untill: 0
     grid:
@@ -409,32 +331,6 @@ textures:
     uid: 4f8a6124-427b-410b-a467-ac42afec3644
     padding: 1
     lastmod: 1599528760547
-  - name: Horselike_Vertical
-    untill: 0
-    grid:
-      - 2
-      - 1
-    axis:
-      - 8
-      - 16
-    marginx: 0
-    marginy: 0
-    imgWidth: 32
-    imgHeight: 16
-    width: 16
-    height: 16
-    offx: 0
-    offy: 0
-    origname: i87252b6c-5985-4ed8-be59-2a4025924c59.png
-    source: /home/comigo/UNWORK/Tileset/Horselike_Vertical.png
-    shape: rect
-    left: 8
-    right: 8
-    top: 16
-    bottom: 0
-    uid: 87252b6c-5985-4ed8-be59-2a4025924c59
-    padding: 1
-    lastmod: 1597726307077
   - name: Crosshair
     untill: 0
     grid:
@@ -770,31 +666,6 @@ textures:
     uid: d9107804-cf88-4bd9-913c-c9ac1a4d5f05
     padding: 1
     source: /home/comigo/UNWORK/Tileset/Particle_White.png
-  - name: PinkProjectile
-    untill: 0
-    grid:
-      - 1
-      - 1
-    axis:
-      - 0
-      - 0
-    marginx: 0
-    marginy: 0
-    imgWidth: 16
-    imgHeight: 16
-    width: 16
-    height: 16
-    offx: 0
-    offy: 0
-    origname: ic9920917-97ee-46c6-a36b-a95ac586e10b.png
-    shape: rect
-    left: 0
-    right: 16
-    top: 0
-    bottom: 16
-    uid: c9920917-97ee-46c6-a36b-a95ac586e10b
-    padding: 1
-    source: /home/comigo/UNWORK/Tileset/PinkProjectile.png
   - name: Cat_Death
     untill: 0
     grid:
@@ -874,14 +745,28 @@ types:
       }
 
       if (this.invincibleTimer <= 0) {
-          const trap = ct.place.meet(this, 'Trap');
+          const trap = ct.place.meet(this, 'Trap'),
+                enemy = ct.place.meet(this, 'Slime');
+          var damaged = false;
           if (trap && trap.active) {
+              damaged = true;
+          }
+          if (enemy) {
+              damaged = true;
+          }
+          if (damaged) {
+              ct.emitters.fire('Cat_Damage', this.x, this.y);
+              ct.sound.spawn('CatDamage');
               this.invincibleTimer = ct.speed;
               ct.room.lives --;
               if (ct.room.lives <= 0) {
                   this.kill = true;
+                  ct.types.copy('Cat_Death', this.x, this.y);
               }
+              return;
           }
+      } else {
+          this.invincibleTimer -= ct.delta;
       }
     ondraw: |-
       if (this.x < ct.mouse.x && this.tex !== 'Cat_Right') {
@@ -893,12 +778,18 @@ types:
           this.play();
       }
       this.depth = this.y;
+
+      if (this.invincibleTimer > 0 && this.invincibleTimer % 20 > 10) {
+          this.opacity = 0.5;
+      } else {
+          this.opacity = 1;
+      }
     ondestroy: ''
     texture: 4822a271-cc3c-4d88-b7a0-b2aa4cab0a96
     extends:
       ctype: ''
     uid: c40336ea-2846-45d5-97ba-d51852d3f6c5
-    lastmod: 1599531791897
+    lastmod: 1604821276344
   - name: Crate
     depth: 0
     oncreate: this.depth = this.y;
@@ -932,36 +823,6 @@ types:
       ctype: Solid
     uid: 3b6057ca-f175-4449-ac24-1c5630e0af7c
     lastmod: 1597811713144
-  - name: Barrier
-    depth: 0
-    oncreate: this.depth = this.y;
-    onstep: this.move();
-    ondraw: ''
-    ondestroy: ''
-    texture: f46dd4de-46d5-4df4-8dd0-086f2e9f5ae6
-    extends:
-      ctype: Solid
-    uid: 2ddbb67c-f77a-49c1-aa08-f33cf3b9e00f
-    lastmod: 1599528110567
-  - name: Panel
-    depth: 0
-    oncreate: |-
-      this.toggled = false;
-      this.depth = this.y;
-    onstep: |-
-      if (!this.toggled && ct.place.meet(this, 'Cat')) {
-          this.toggled = true;
-          for (const barrier of ct.types.list['Barrier']) {
-              barrier.gotoAndStop(1);
-              barrier.ctype = '';
-          }
-      }
-    ondraw: ''
-    ondestroy: ''
-    texture: 0fa0c04d-b13c-4d0a-a1e8-8289d21186aa
-    extends: {}
-    uid: 4733d0d7-686b-4106-af3b-e7b995cfac12
-    lastmod: 1599528091175
   - name: Bullet
     depth: 0
     oncreate: |-
@@ -1036,7 +897,7 @@ types:
     extends:
       ctype: Solid
     uid: c701a029-af09-4fcf-9712-0fcdaa3581be
-    lastmod: 1599528863044
+    lastmod: 1604819851791
   - name: Slime
     depth: 0
     oncreate: |-
@@ -1046,8 +907,12 @@ types:
       const cat = ct.types.list['Cat'][0];
       if (ct.types.exists(cat)) {
           if (this.aggroed) {
-              this.speed = 1.5;
-              this.direction = ct.u.pdn(this.x, this.y, cat.x, cat.y);
+              if (ct.u.pdc(this.x, this.y, cat.x, cat.y) > 7) {
+                  this.speed = 1.5;
+                  this.direction = ct.u.pdn(this.x, this.y, cat.x, cat.y);
+              } else {
+                  this.speed = 0;
+              }
           } else if (ct.u.pdc(this.x, this.y, cat.x, cat.y) < this.aggroRange) {
               this.aggroed = true;
           }
@@ -1062,12 +927,14 @@ types:
           this.kill = true;
       }
     ondraw: this.depth = this.y;
-    ondestroy: 'ct.emitters.fire(''Slime_Dead'', this.x, this.y);'
+    ondestroy: |-
+      ct.emitters.fire('Slime_Dead', this.x, this.y);
+      ct.sound.spawn('SlimeExplosion');
     texture: 4733fb53-5e41-4cf8-b9a8-91ad700f2246
     extends:
       ctype: Solid
     uid: 173dfb94-5133-4bbc-9e7d-6ed8c9fef330
-    lastmod: 1599531072646
+    lastmod: 1604821390654
   - name: Gap
     depth: 0
     oncreate: this.visible = false;
@@ -1102,11 +969,17 @@ types:
       if (this.scale.x <= 0) {
           this.kill = true;
       }
-    ondestroy: 'ct.types.copy(''Cat'', ct.room.checkpointX, ct.room.checkpointY);'
+    ondestroy: |
+      if (ct.room.lives > 0) {
+          ct.room.lives --;
+          ct.types.copy('Cat', ct.room.checkpointX, ct.room.checkpointY);
+      } else {
+          ct.rooms.switch(ct.room.name);
+      }
     texture: 96121d6f-6483-48f8-841b-b307befc7d42
     extends: {}
     uid: c480ea86-1545-4048-8f2e-1ded726cfa92
-    lastmod: 1598575422828
+    lastmod: 1604820858604
   - name: StartButton
     depth: 0
     oncreate: this.blinkTimer = 0;
@@ -1156,14 +1029,36 @@ types:
     depth: 0
     oncreate: |-
       this.depth = this.y;
-      this.animationSpeed = 1 / ct.speed;
+      this.animationSpeed = 0.7 / ct.speed;
+      this.loop = false;
+      this.onComplete = () => {
+          this.kill = true;
+          ct.rooms.switch(ct.room.name);
+      };
+      this.play();
     onstep: this.move();
     ondraw: ''
     ondestroy: ''
     texture: 8a6a1aa5-60f6-4f9a-9c54-7e5e7641bda1
     extends: {}
     uid: f11d4e26-8450-4187-8163-b70facceca7e
-    lastmod: 1599531868617
+    lastmod: 1604820801526
+  - name: Medkit
+    depth: 0
+    oncreate: ''
+    onstep: |-
+      if (ct.place.meet(this, 'Cat')) {
+          if (ct.room.lives < 3) {
+              ct.room.lives++;
+              this.kill = true;
+          }
+      }
+    ondraw: ''
+    ondestroy: ct.sound.spawn('Powerup');
+    texture: c61a44b6-1f4d-43c2-9356-7288658947a9
+    extends: {}
+    uid: b336d91c-2876-4686-b8b4-901045a86ac7
+    lastmod: 1604820879663
 sounds:
   - name: Shoot
     uid: 97baf84a-32d3-450c-a52e-25a770565520
@@ -1173,7 +1068,7 @@ sounds:
     uid: aeec04ae-d50c-4c47-bcd9-89d8f90f736a
     origname: saeec04ae-d50c-4c47-bcd9-89d8f90f736a.wav
     lastmod: 1597802132227
-  - name: Complete
+  - name: Powerup
     uid: d06c5cd6-41eb-42c0-9caa-3306e2558b19
     origname: sd06c5cd6-41eb-42c0-9caa-3306e2558b19.wav
     lastmod: 1597802137473
@@ -1197,6 +1092,14 @@ sounds:
     uid: 8074a9ef-0215-4e02-a107-cb20d1fc5de9
     origname: s8074a9ef-0215-4e02-a107-cb20d1fc5de9.wav
     lastmod: 1598574519318
+  - name: CatDamage
+    uid: 1cc5a5e0-765c-4bba-a006-8b597802ace6
+    origname: s1cc5a5e0-765c-4bba-a006-8b597802ace6.wav
+    lastmod: 1604821169342
+  - name: SlimeExplosion
+    uid: fdd0ec77-ba8d-4999-adba-20ea72d6f5ad
+    origname: sfdd0ec77-ba8d-4999-adba-20ea72d6f5ad.wav
+    lastmod: 1604821340637
 styles: []
 rooms:
   - name: Level_01
@@ -2132,22 +2035,6 @@ rooms:
               - 1
               - 1
               - 1
-          - x: 224
-            'y': 64
-            texture: 4f8a6124-427b-410b-a467-ac42afec3644
-            grid:
-              - 1
-              - 2
-              - 1
-              - 1
-          - x: 256
-            'y': 64
-            texture: 4f8a6124-427b-410b-a467-ac42afec3644
-            grid:
-              - 1
-              - 3
-              - 1
-              - 1
         extends:
           ctype: Solid
         hidden: false
@@ -2897,6 +2784,22 @@ rooms:
               - 0
               - 1
               - 1
+          - x: 224
+            'y': 64
+            texture: 4f8a6124-427b-410b-a467-ac42afec3644
+            grid:
+              - 1
+              - 2
+              - 1
+              - 1
+          - x: 256
+            'y': 64
+            texture: 4f8a6124-427b-410b-a467-ac42afec3644
+            grid:
+              - 1
+              - 3
+              - 1
+              - 1
         extends:
           ctype: Decor
         hidden: false
@@ -2906,7 +2809,7 @@ rooms:
     gridX: 16
     gridY: 16
     backgroundColor: '#000337'
-    lastmod: 1599529322564
+    lastmod: 1604820670562
   - name: Level_02
     oncreate: |-
       this.nextLevel = 'Level_03';
@@ -3073,6 +2976,9 @@ rooms:
         'y': 96
         uid: 469b9eef-6117-43a5-87d3-7151da7eba06
         exts: {}
+      - x: 352
+        'y': 208
+        uid: b336d91c-2876-4686-b8b4-901045a86ac7
     tiles:
       - depth: -6000
         tiles:
@@ -6273,7 +6179,7 @@ rooms:
     extends: {}
     gridX: 8
     gridY: 8
-    lastmod: 1599529229924
+    lastmod: 1604818796350
     backgroundColor: '#000337'
   - name: MainMenu
     oncreate: ''
@@ -6318,17 +6224,22 @@ rooms:
     gridX: 16
     gridY: 16
     backgroundColor: '#000337'
-    lastmod: 1599529149966
+    lastmod: 1604820946644
   - name: Level_03
     oncreate: |-
-      this.nextLevel = 'Level_03';
+      this.nextLevel = 'MainMenu';
 
       ct.rooms.append('UI_InGame', {
           isUi: true
       });
     onstep: ''
     ondraw: ''
-    onleave: ''
+    onleave: >-
+      ct.sound.stop('InGameTheme');
+
+
+      console.log('This demo is a work in progress, stay tuned for more levels
+      :)');
     width: 240
     height: 160
     backgrounds: []
@@ -6605,6 +6516,9 @@ rooms:
         'y': 682
         uid: 173dfb94-5133-4bbc-9e7d-6ed8c9fef330
         exts: {}
+      - x: 96
+        'y': 416
+        uid: b336d91c-2876-4686-b8b4-901045a86ac7
     tiles:
       - depth: -6000
         tiles:
@@ -8676,7 +8590,7 @@ rooms:
     gridX: 8
     gridY: 8
     backgroundColor: '#000337'
-    lastmod: 1599530937427
+    lastmod: 1604822242023
   - name: UI_InGame
     oncreate: >-
       ct.room.lives = 3;
@@ -8712,7 +8626,7 @@ rooms:
     gridX: 8
     gridY: 8
     backgroundColor: '#000337'
-    lastmod: 1599529155679
+    lastmod: 1604818771543
 actions:
   - name: MoveX
     methods:
@@ -8937,6 +8851,92 @@ emitterTandems:
           blendMode: normal
           speed:
             list:
+              - value: 199.98745967047574
+                time: 0
+              - value: 100
+                time: 1
+            isStepped: false
+          startRotation:
+            min: -51
+            max: -137
+          rotationSpeed:
+            min: 0
+            max: 0
+          rotationAcceleration: 0
+          lifetime:
+            min: 0.22
+            max: 0.38
+          frequency: 0.015
+          spawnChance: 1
+          particlesPerWave: 2
+          angleStart: 270
+          emitterLifetime: 0.1
+          maxParticles: 1000
+          maxSpeed: 0
+          pos:
+            x: 0
+            'y': -2
+          acceleration:
+            x: 0
+            'y': 864
+          addAtBack: false
+          spawnType: rect
+          spawnCircle:
+            x: 0
+            'y': 0
+            r: 9
+          delay: 0
+          spawnRect:
+            x: -4
+            'y': -0.5
+            w: 8
+            h: 1
+          minimumSpeedMultiplier: 0.34
+          particleSpacing: 180
+        uid: 0e491f30-ae29-4653-8750-6cfc60976637
+        showShapeVisualizer: false
+    previewTexture: 4733fb53-5e41-4cf8-b9a8-91ad700f2246
+  - name: Cat_Damage
+    origname: pta8f6693e58be
+    emitters:
+      - texture: d9107804-cf88-4bd9-913c-c9ac1a4d5f05
+        openedTabs:
+          - texture
+          - colors
+          - scaling
+          - velocity
+          - shape
+        settings:
+          alpha:
+            list:
+              - value: 1
+                time: 0
+              - time: 0.6700910135049757
+                value: 1
+              - value: 0
+                time: 1
+            isStepped: false
+          scale:
+            list:
+              - value: 0.0599650728599917
+                time: 0
+              - time: 0.07930356605871654
+                value: 0.4299996284346806
+              - value: 0.18001411948213103
+                time: 1
+            isStepped: false
+          color:
+            list:
+              - value: E74F4F
+                time: 0
+              - time: 0.6700910135049757
+                value: E74F4F
+              - value: E74F4F
+                time: 1
+            isStepped: false
+          blendMode: normal
+          speed:
+            list:
               - value: 162.48745967047574
                 time: 0
               - value: 100
@@ -8961,7 +8961,7 @@ emitterTandems:
           maxSpeed: 0
           pos:
             x: 0
-            'y': -2
+            'y': -8
           acceleration:
             x: 0
             'y': 864
@@ -8974,13 +8974,14 @@ emitterTandems:
           delay: 0
           spawnRect:
             x: -4
-            'y': -0.5
+            'y': -4
             w: 8
-            h: 1
+            h: 8
           minimumSpeedMultiplier: 0.8
         uid: 0e491f30-ae29-4653-8750-6cfc60976637
-        showShapeVisualizer: false
-    previewTexture: 4733fb53-5e41-4cf8-b9a8-91ad700f2246
+        showShapeVisualizer: true
+    previewTexture: 4822a271-cc3c-4d88-b7a0-b2aa4cab0a96
+    uid: fa469921-6f9c-43c7-928a-a8f6693e58be
 scripts: []
 starting: 0
 settings:
@@ -9015,4 +9016,4 @@ fonts: []
 palette:
   - '#000337'
   - '#4FE77F'
-startroom: 1cd7a8ef-febb-4174-ad90-42846504b06f
+startroom: eed8a427-1c70-425d-b633-7b6ea00c7b7c
