@@ -1,4 +1,4 @@
-/* Made with ct.js http://ctjs.rocks/ */
+/*! Made with ct.js http://ctjs.rocks/ */
 
 const deadPool = []; // a pool of `kill`-ed copies for delaying frequent garbage collection
 const copyTypeSymbol = Symbol('I am a ct.js copy');
@@ -322,6 +322,12 @@ ct.u = {
     gameToUiCoord(x, y) {
         return ct.camera.gameToUiCoord(x, y);
     },
+    hexToPixi(hex) {
+        return Number('0x' + hex.slice(1));
+    },
+    pixiToHex(pixi) {
+        return '#' + (pixi).toString(16).padStart(6, 0);
+    },
     /**
      * Tests whether a given point is inside the given rectangle
      * (it can be either a copy or an array).
@@ -467,6 +473,7 @@ ct.u.ext(ct.u, {// make aliases
         ct.deltaUi = PIXI.Ticker.shared.elapsedMS / (1000 / (PIXI.Ticker.shared.maxFPS || 60));
         ct.inputs.updateActions();
         ct.timer.updateTimers();
+        /*%beforeframe%*/
         for (let i = 0, li = ct.stack.length; i < li; i++) {
             ct.types.beforeStep.apply(ct.stack[i]);
             ct.stack[i].onStep.apply(ct.stack[i]);
@@ -517,7 +524,7 @@ ct.u.ext(ct.u, {// make aliases
             item.onDraw.apply(item);
             ct.rooms.afterDraw.apply(item);
         }
-
+        /*%afterframe%*/
         ct.main.fpstick++;
         if (ct.rooms.switching) {
             ct.rooms.forceSwitch();

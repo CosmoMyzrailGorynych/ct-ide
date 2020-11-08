@@ -1,11 +1,12 @@
 {
+  "root": true,
   "env": {
     "browser": true,
     "commonjs": true,
     "es6": true,
     "node": true
   },
-  "plugins": ["pug"],
+  "plugins": ["pug", "@typescript-eslint"],
   "globals": {
     "alertify": true,
     "dragonBones": true,
@@ -16,11 +17,17 @@
     "riot": true,
     "soundbox": true
   },
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": 2018
   },
-  "extends": "eslint:recommended",
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
   "rules": {
+    "@typescript-eslint/no-var-requires": "off",
     "accessor-pairs": "error",
     "array-bracket-spacing": ["error", "never"],
     "array-callback-return": "error",

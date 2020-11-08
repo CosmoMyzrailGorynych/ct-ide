@@ -1,6 +1,6 @@
 project-settings.panel.view.pad.flexrow
     -
-        var tabs = ['authoring', 'actions', 'branding', 'modules', 'scripts', 'rendering'];
+        var tabs = ['authoring', 'actions', 'branding', 'modules', 'scripts', 'rendering', 'export'];
         var iconMap = {
             authoring: 'edit',
             actions: 'airplay',
@@ -8,6 +8,7 @@ project-settings.panel.view.pad.flexrow
             modules: 'ctmod',
             rendering: 'room',
             scripts: 'terminal',
+            export: 'settings',
             default: 'settings'
         };
     aside.nogrow.noshrink

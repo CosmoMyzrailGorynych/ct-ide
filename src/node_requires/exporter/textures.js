@@ -199,7 +199,7 @@ const packImages = async (proj, writeDir) => {
         writePromises.push(fs.outputJSON(`${writeDir}/img/a${ind}.json`, atlas.json));
         res += `\n.add('./img/a${ind}.json')`;
         var atlasBase64 = atlas.canvas.toDataURL().replace(/^data:image\/\w+;base64,/, '');
-        var buf = new Buffer(atlasBase64, 'base64');
+        var buf = Buffer.from(atlasBase64, 'base64');
         writePromises.push(fs.writeFile(`${writeDir}/img/a${ind}.png`, buf));
         atlases.push(`./img/a${ind}.json`);
     });

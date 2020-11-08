@@ -1,0 +1,13 @@
+{
+    "main": {
+        "name": "Storage",
+        "tagline": "Utilities for saving/loading from `localStorage` and `sessionStorage`",
+        "version": "1.0.0",
+        "authors": [
+            {
+                "name": "naturecodevoid"
+            }
+        ],
+        "categories": ["utilities"]
+    }
+}

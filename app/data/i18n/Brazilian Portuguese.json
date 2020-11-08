@@ -1,14 +1,8 @@
 {
     "me": {
         "id": "Pt-Br",
-        "native": "Portugais Brésilien",
+        "native": "Português Brasileiro",
         "eng": "Brazilian Portuguese"
-    },
-    "colorPicker": {
-        "current": "Novo",
-        "globalPalette": "Paleta Global",
-        "old": "Antigo",
-        "projectPalette": "Paleta do Projeto"
     },
     "common": {
         "add": "Adicionar",
@@ -55,6 +49,39 @@
         "zoomIn": "Ampliar",
         "zoomOut": "Diminuir o zoom"
     },
+    "colorPicker": {
+        "current": "Novo",
+        "globalPalette": "Paleta Global",
+        "old": "Antigo",
+        "projectPalette": "Paleta do Projeto"
+    },
+    "curveEditor": {
+        "curveLineHint": "Clique na curva para adicionar um ponto",
+        "dragPointHint": "Mova o ponto, botão direito para excluir",
+        "pointTime": "Tempo:",
+        "pointValue": "Valor:"
+    },
+    "debuggerToolbar": {
+        "pause": "Pausar",
+        "resume": "Voltar o jogo",
+        "restartGame": "Reiniciar o jogo",
+        "restartRoom": "Reiniciar a sala",
+        "switchRoom": "Ir para sala…",
+        "toggleDevTools": "Esconder/Mostrar ferramentas de dev.",
+        "screenshot": "Tirar uma captura de tela",
+        "enterFullscreen": "Entrar na tela cheia",
+        "exitFullscreen": "Sair da tela cheia",
+        "links": "Links e QR-codes",
+        "openExternal": "Abrir no browser",
+        "close": "Fechar"
+    },
+    "docsShortcut": {
+        "openDocs": "Abrir a documentação"
+    },
+    "docsPanel": {
+        "documentation": "Documentação",
+        "reference": "Referência"
+    },
     "exportPanel": {
         "hide": "Ocultar",
         "working": "Em progresso...",
@@ -62,7 +89,9 @@
         "export": "Exportar",
         "exportPanel": "Exportar o Projeto",
         "firstrunnotice": "A primeira execução para cada plataforma será lenta, já que o ct.js fará o download e salvará bibliotecas adicionais necessárias para o empacotamento. Levará algum tempo, mas as próximas vezes serão quase instantâneas.",
-        "log": "Log de Mensagens"
+        "log": "Log de Mensagens",
+        "windowsCrossBuildWarning": "Para buildar para windows em um Linux/MacOS, você precisa de wine instalado no seu sistema. Instruções para instalar são diferentes em todos sistemas, então é melhor você pesquisar por você mesmo :)",
+        "cannotBuildForMacOnWin": "Infelizmente, Windows só pode buildar quebrado para Mac. Tente usar uma maquina linux; por exemplo, em uma maquina virtual. é 100% grátis!"
     },
     "intro": {
         "loading": "Por favor, aguarde: gatinhos estão adquirindo a velocidade da luz!",
@@ -70,7 +99,9 @@
             "button": "Criar",
             "input": "Nome do projeto (letras e dígitos)",
             "text": "Criar novo",
-            "nameerr": "Nome errado do projeto."
+            "nameerr": "Nome errado do projeto.",
+            "saveProjectHere": "Salvar o projeto aqui",
+            "selectProjectFolder": "Selecione a pasta onde contém seu projeto"
         },
         "recovery": {
             "message": "<h2 class=\"nmt\">Recuperação</h2><p>ct.js encontrou um arquivo de recuperação. Possivelmente seu projeto não foi salvo corretamente ou o ct.js foi fechado por conta de alguma emergência. Aqui está a última vez em que estes arquivos foram modificados:</p><p>Seu arquivo escolhido: {0} {1}<br/>Recuperar arquivo: {2} {3}</p><p>Qual arquivo o ct.js deveria abrir?</p>",
@@ -79,19 +110,19 @@
             "newer": "<b>(mais novo)</b>",
             "older": "(mais antigo)"
         },
+        "loadingProject": "Carregando um projeto…",
+        "loadingProjectError": "Você não pode abrir esse projeto por causa desse erro: ",
         "homepage": "Página inicial",
         "latestVersion": "Versão $1 está disponível",
-        "forgetProject": "Esquecer este projeto",
-        "browse": "Procurar",
-        "latest": "Projetos mais recentes",
-        "twitter": "Canal no Twitter",
-        "discord": "Comunidade no Discord",
-        "loadingProject": "",
-        "loadingProjectError": "",
-        "unableToWriteToFolders": ""
+        "forgetProject": "Esqueça esse projeto",
+        "browse": "Pesquisar",
+        "latest": "Últimos projetos",
+        "unableToWriteToFolders": "Ct.js não conseguiu achar um lugar apropriado para seus projetos! Tenha certeza de colocar o ct.js dentro de uma pasta que você tenha permissão para escrever.",
+        "twitter": "Página do Twitter",
+        "discord": "Comunidade do Discord"
     },
     "licensepanel": {
-        "ctjslicense": ""
+        "ctjslicense": "Licença do Ct.js (MIT)"
     },
     "menu": {
         "ctIDE": "ct.IDE",
@@ -113,18 +144,51 @@
         "types": "Tipos",
         "zipExport": "Exportar para .zip",
         "zipProject": "Empacotar projeto para .zip",
-        "successZipExport": "",
-        "successZipProject": "",
-        "codeFontDefault": "",
-        "codeFontOldSchool": "",
-        "codeFontSystem": "",
-        "codeFontCustom": "",
-        "newFont": "",
-        "codeFont": "",
-        "codeLigatures": "",
-        "codeDense": ""
+        "codeFontDefault": "Padrão (Iosevka Light)",
+        "codeFontOldSchool": "Old school",
+        "codeFontSystem": "Sistema",
+        "codeFontCustom": "Personalizada…",
+        "newFont": "Nova fonte:",
+        "codeFont": "Fonte para código",
+        "codeLigatures": "Ligatures",
+        "codeDense": "Layout Denso",
+        "disableSounds": "Desabilitar sons de UI",
+        "openIncludeFolder": "Abra a pasta \"include\"",
+        "troubleshooting": "Solução de problemas",
+        "toggleDevTools": "Mostrar/Esconder Ferramentas de Dev.",
+        "copySystemInfo": "Copiar as informações de sistema",
+        "systemInfoWait": "Espere um pouco, Eu estou pegando os dados…",
+        "systemInfoDone": "Feito!",
+        "disableAcceleration": "Desabilitar a aceleração gráfica (precisa reiniciar)",
+        "disableBuiltInDebugger": "Desabilitar built-in debugger",
+        "visitDiscordForGamedevSupport": "Entre no server do Discord para ter suporte no desenvolvimento de jogos",
+        "postAnIssue": "Postar um erro no Github…",
+        "openProject": "Abrir um projeto…",
+        "openExample": "Abrir um projeto de exemplo…"
+    },
+    "onboarding": {
+        "hoorayHeader": "Wow! Você acabou de criar um projeto!",
+        "nowWhatParagraph": "Agora, o que precisamos fazer?",
+        "openSpaceShooterTutorial": "Aprenda a como fazer um space shooter",
+        "openPlatformerTutorial": "Aprenda a como fazer um platformer",
+        "openJettyCatTutorial": "Aprenda a como fazer um Jetty Cat",
+        "doNothing": "Pule essa tela e tenha um bom jogo!",
+        "showOnboardingCheckbox": "Mostre esse tela criando um novo projeto"
     },
     "settings": {
+        "actions": {
+            "heading": "Métodos de ações e entradas",
+            "actions": "Ações",
+            "addAction": "Adicionar uma ação",
+            "addMethod": "Adicionar um método de entrada",
+            "deleteAction": "Deletar essa ação",
+            "deleteMethod": "Deletar esse método",
+            "inputActionNamePlaceholder": "Nome da ação",
+            "methodModuleMissing": "O modulo obrigatório para esse método não foi encontrado!",
+            "methods": "Métodos de entrada",
+            "multiplier": "Multiplicador",
+            "noActionsYet": "Ações permite desenvolvedores escutar varios métodos de entrada de um vez e mudar eles dinamicamente, todos em uma API uniforme. Leia mais clicando nos icones acima."
+        },
         "authoring": {
             "author": "Nome do autor:",
             "heading": "Autoria",
@@ -133,10 +197,31 @@
             "version": "Versão:",
             "versionpostfix": "Postfix:"
         },
+        "branding": {
+            "heading": "Branding",
+            "accent": "Sotaque:",
+            "accentNotice": "Escolha a cor do preloader, também usado em alguns aplicativos mobile.",
+            "icon": "Icone do jogo:",
+            "iconNotice": "Precisava ser um quadrado, textura de um frame com no mínimo 256x256px",
+            "invertPreloaderScheme": "Inverter esquema de cor do preloader"
+        },
+        "modules": {
+            "heading": "Catmods"
+        },
         "rendering": {
-            "heading": "Opções de Renderização",
-            "pixelatedrender": "Desabilitar suavização de imagem aqui e no projeto exportado (preserva pixels nítidos)",
-            "framerate": "Taxa de quadros"
+            "heading": "Opções de renderização",
+            "framerate": "Framerate:",
+            "highDensity": "Suporte a densidade de altos pixels (ex. em telas de retina)",
+            "maxFPS": "Máximo framerate:",
+            "pixelatedrender": "Desabilitar suavização de imagem, inclusive no projeto buildado (preservar crisp pixels)",
+            "usePixiLegacy": "Adicionar o antigo, renderização baseado em canvas para suporte em browser antigos e placas gráficas (adiciona ~20kb no seu jogo)",
+            "desktopBuilds": "Build de Desktop",
+            "launchMode": "Modo de lançamento:",
+            "launchModes": {
+                "maximized": "Maximizado",
+                "fullscreen": "Tela cheia",
+                "windowed": "Janela"
+            }
         },
         "scripts": {
             "heading": "Scripts",
@@ -145,7 +230,8 @@
             "newScriptComment": "Usar scripts para definir funções frequentes e importar pequenas bibliotecas",
             "moveUp": "Mova-se para cima",
             "moveDown": "Mova-se para baixo"
-        }
+        },
+        "catmodsSettings": "Configurações de Catmods"
     },
     "modules": {
         "author": "Autor deste catmod",
@@ -156,12 +242,31 @@
         "methods": "Métodos",
         "parameters": "Parâmetros",
         "logs2": "Logs",
-        "settings": "Configurações "
+        "settings": "Configurações ",
+        "importModules": "Importar Modulos",
+        "enabledModules": "Ativar modulos",
+        "availableModules": "Modules Disponíveis",
+        "filter": "Filtro",
+        "categories": {
+            "customization": "Customizações",
+            "utilities": "Utilidades",
+            "media": "Multimedia",
+            "misc": "Outros",
+            "desktop": "Builds para desktop",
+            "motionPlanning": "Planejamento de movimento",
+            "inputs": "Métodos de entrada",
+            "fx": "FX",
+            "mobile": "Dispositivos mobile",
+            "integrations": "Integrações",
+            "tweaks": "Ajustes",
+            "networking": "Networking"
+        }
     },
     "texture": {
         "create": "Criar",
         "import": "Importar",
-        "skeletons": "Animação Esquelética"
+        "skeletons": "Animação Esquelética",
+        "createType": "Criar um tipo disso"
     },
     "textureview": {
         "bgcolor": "Mudar cor de fundo",
@@ -196,7 +301,9 @@
         "addPoint": "Adicionar um ponto",
         "moveCenter": "Mover o eixo",
         "movePoint": "Mover este ponto",
-        "symmetryTool": ""
+        "symmetryTool": "Ferramenta de simetria",
+        "padding": "Preenchimento:",
+        "paddingNotice": "Isso afeta como uma textura é exportada: adiciona pixels duplicados nas bordas e evita artefatos sangrentos em texturas ladrilhadas e dimensionadas. O valor padrão geralmente é suficiente, mas, se você encolher as texturas fortemente, o sangramento pode reaparecer. Aumente este valor se esta textura tiver artefatos durante o jogo."
     },
     "sounds": {
         "create": "Criar"
@@ -241,7 +348,8 @@
         "strokeweight": "Espessura da linha:",
         "testtext": "Teste texto 0123 +",
         "textWrap": "Quebra de linha",
-        "textWrapWidth": "Largura máxima:"
+        "textWrapWidth": "Largura máxima:",
+        "useCustomFont": "Usar uma fonte customizada..."
     },
     "fonts": {
         "fonts": "Fontes",
@@ -252,7 +360,23 @@
         "typefacename": "Nome do typeface:",
         "fontweight": "Espessura da fonte:",
         "italic": "É itálico?",
-        "reimport": "Reimportar"
+        "reimport": "Reimportar",
+        "generateBitmapFont": "Tamém gera uma fonte bitmap",
+        "bitmapFont": "Fonte Bitmap",
+        "bitmapFontSize": "Tamanho da fonte:",
+        "bitmapFontLineHeight": "Tamanho da linha:",
+        "resultingBitmapFontName": "Nome do recurso",
+        "charset": "Charset:",
+        "charsets": {
+            "punctuation": "Dígitos e pontuação (você geralmente precisa disso)",
+            "basicLatin": "Latin Básico",
+            "latinExtended": "Latin extendido",
+            "cyrillic": "Cirílico",
+            "greekCoptic": "Grego e copta",
+            "custom": "Personalizado",
+            "allInFont": "Desenhe tudo que a fonte suporta"
+        },
+        "customCharsetHint": "Digite todas as letras que deseja incluir, tanto em maiúsculas como em minúsculas."
     },
     "types": {
         "create": "Criar"
@@ -329,6 +453,124 @@
         "global": "Bloco de notas global",
         "helppages": "Ajuda",
         "backToHome": "Voltar para a página inicial da documentação"
+    },
+    "particleEmitters": {
+        "emittersHeading": "Emissores de partículas",
+        "emitterHeading": "Emissor",
+
+        "from": "De:",
+        "to": "Para:",
+
+        "textureHeading": "Textura",
+        "selectTexture": "Selecionar…",
+        "importBuiltin": "Importar padrão…",
+
+        "colorAndOpacityHeading": "Cor e opacidade",
+        "stepped": "Escalonado",
+        "steppedColor": "Cor escalonada",
+        "steppedAlpha": "Opacidade escalonada",
+        "blendMode": "Modo de mistura:",
+        "regular": "Regular",
+        "darken": "Escuro",
+        "lighten": "Claro",
+        "burn": "Quente",
+
+        "scalingHeading": "Dimensionamento",
+        "scale": "Dimensão:",
+        "minimumSize": "Tamanho mínimo:",
+        "minimumSizeHint": "Configurá-lo para valores mais baixos irá randomizar o tamanho de cada partícula. Quanto mais baixos os valores, mais forte é o efeito.",
+
+        "velocityHeading": "Velocidade",
+        "velocity": "Velocidade:",
+        "minimumSpeed": "Velocidade mínima:",
+        "minimumSpeedHint": "Configurá-lo para valores mais baixos irá randomizar a velocidade de cada partícula; quanto menor o valor, mais lenta a partícula pode ser.",
+        "maxSpeed": "Velocidade máxima:",
+
+        "gravityHeading": "Gravidade",
+        "gravityNotice": "Observe que se for diferente de (0;0), a interpolação de velocidade será desabilitada, o que significa que apenas o primeiro nó do gráfico de velocidade terá o efeito.",
+
+        "directionHeading": "Direção",
+        "startingDirection": "Direção inicial",
+        "preserveTextureDirection": "Preserve texture rotation",
+
+        "rotationHeading": "Rotação",
+        "rotationSpeed": "Velocidade de rotação",
+        "rotationAcceleration": "Aceleração de rotação:",
+
+        "spawningHeading": "Invocando",
+        "timeBetweenBursts": "Tempo entre rajadas:",
+        "spawnAtOnce": "Invocar uma vez:",
+        "chanceToSpawn": "Chande de invocar a partícula:",
+        "maxParticles": "Máximo de partícula:",
+        "lifetime": "Tempo de vida da partícula, seg.",
+        "emitterLifetime": "Tempo de vida do emissor, seg.:",
+        "prewarmDelay": "Pré-aquecido / delay, sec.:",
+        "prewarmDelayNotice": "Valores negativos irão preparar as partículas do emissor antes de mostrá-lo, o que é útil para efeitos longos, como partículas de poeira ou névoa que já deveriam estar visíveis no início da sala; valores positivos atrasarão a simulação.",
+
+        "shapeAndPositioningHeading": "Forma e posicionamento",
+        "spawnType": "Tipo da forma:",
+        "spawnShapes": {
+            "point": "Ponto",
+            "rectangle": "Retângulo",
+            "circle": "Círculo",
+            "ring": "Anel",
+            "star": "Estrela"
+        },
+        "width": "Largura:",
+        "height": "Altura:",
+        "radius": "Raio:",
+        "starPoints": "Pontos:",
+        "startAngle": "Rotacionar, deg.:",
+        "showShapeVisualizer": "Mostrar o visualizador de forma",
+        "relativeEmitterPosition": "Posição relativa para outros emissores",
+
+        "addEmitter": "Adicionar outro emissor",
+        "reset": "Resetar prévia",
+        "changeBg": "Mudar o fundo",
+        "inspectorComplete": "Completo!",
+        "alreadyHasAnImportingTexture": "Você já tem uma textura chamada $1. Exclua ou renomeie; embora você deva importar a mesma textura que adicionou antes :)",
+        "changeGrid": "Definir o tamanho da grid",
+        "newGridSize": "Novo tamanho da grid:",
+        "setPreviewTexture": "Definir textura de prévia"
+    },
+    "types": {
+        "create": "Criar"
+    },
+    "patreon": {
+        "aboutPatrons": "Patrons são pessoas que mostram seu apoio à ComigoGames no Patreon, na forma de doações recorrentes. Nem todo mundo vem de ct.js; alguns estão usando outros aplicativos da ComigoGames. Dica: se você é um criador e doa para ComigoGames via Patreon, você receberá um link para sua página aqui - essa é minha pequena ajuda para suas criações :)",
+        "patronsHeader": "Nossos patrões",
+        "businessShuttles": "Ônibus de negócios",
+        "noShuttlesYet": "Ainda não há ônibus de negócios: c Sua empresa pode ser a primeira!",
+        "shuttlesDescription": "Os ônibus de negócios são considerados parceiros da ct.js. Eles estão listados na página inicial do ct.js e nas páginas da loja.",
+        "spacePirates": "Piratas espaciais",
+        "noPiratesYet": "Não temos piratas espaciais ainda :c",
+        "piratesDescription": "Os Piratas do Espaço recebem suporte prioritário no servidor Discord com uma função legal e são listados aqui.",
+        "spaceProgrammers": "Programadores espaciais",
+        "programmersDescription": "\" Space Programmer \"é uma camada de legado que estava disponível antes de ct.js se tornar o código-fonte aberto e trazer fontes de jam games aos usuários.",
+        "aspiringAstronauts": "Aspirantes a astronautas",
+        "noAstronautsYet": "Ainda não há Aspirantes a Astronautas: c",
+        "astronautsDescription": "Os astronautas ganham um papel especial no Discord e são listados aqui!",
+        "thankAllPatrons": "Obrigado a todos os usuários da ComigoGames, atuais e antigos, pois seu apoio mantém a Comigo avançando e fazendo aplicativos ainda melhores! :)",
+        "becomeAPatron": "Torne-se um patrão",
+        "aboutFillers": [
+            "é bem legal 😎",
+            "é bom conversar com 🤗",
+            "ainda não se tornou uma estrela 💫",
+            "é apenas um prodígio ⭐️",
+            "é um bom amigo 🤝",
+            "é confiável 🙏",
+            "tem um coração de ouro 🧡",
+            "é um mago 🔮",
+            "está aqui para ajudar! 💪",
+            "é um super-herói 🦸‍",
+            "ainda não apareceu 🦹‍",
+            "é um mistério não resolvido 🔍",
+            "é épico! ✨",
+            "provavelmente é um robô 🤖",
+            "é como um fogo ardente! 🔥",
+            "traz luz e esperança 🌞",
+            "é elegante e bonito 🎩"
+        ]
     },
     "docsShortcut": {
         "openDocs": ""

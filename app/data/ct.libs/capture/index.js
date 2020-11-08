@@ -22,7 +22,7 @@
                 width: ct.pixiApp.renderer.width,
                 height: ct.pixiApp.renderer.height
             });
-            ct.pixiApp.renderer.render(renderTexture, name);
+            ct.pixiApp.renderer.render(ct.pixiApp.stage, renderTexture);
             var canvas = ct.pixiApp.renderer.extract.canvas(renderTexture);
             downloadTexture(canvas, name);
         },

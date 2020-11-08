@@ -21,6 +21,17 @@ texture-generator.view
                         b {voc.color}
                     color-input(onchange="{changeColor}" color="{textureColor}")
                 fieldset
+                    b {voc.filler}
+                    label.block.checkbox
+                        input(type="radio" value="none" checked="{filler === 'none'}" onchange="{wire('this.filler')}")
+                        span {voc.fillerNone}
+                    label.block.checkbox
+                        input(type="radio" value="cross" checked="{filler === 'cross'}" onchange="{wire('this.filler')}")
+                        span {voc.fillerCross}
+                    label.block.checkbox
+                        input(type="radio" value="label" checked="{filler === 'label'}" onchange="{wire('this.filler')}")
+                        span {voc.fillerLabel}
+                fieldset(if="{filler === 'label'}")
                     label.block
                         b {voc.label}
                         |
@@ -52,6 +63,7 @@ texture-generator.view
         this.textureWidth = this.textureHeight = 64;
         this.textureColor = '#446adb';
         this.textureLabel = '';
+        this.filler = 'label';
 
         this.changeColor = e => {
             this.wire('this.textureColor')(e);
@@ -72,29 +84,40 @@ texture-generator.view
             x.fillStyle = this.textureColor;
             x.fillRect(0, 0, canvas.width, canvas.height);
 
-            let label;
-            if (this.textureLabel.trim()) {
-                label = this.textureLabel.trim();
-            } else {
-                label = `${canvas.width}×${canvas.height}`;
-            }
-
-            // Fit the text into 80% of canvas' width
-            x.font = '100px Iosevka';
-            const measure = x.measureText(label).width;
-            let k = canvas.width * 0.8 / measure;
-            // Cannot exceed canvas' height
-            if (k * 100 > canvas.height * 0.8) {
-                k = canvas.height * 0.8 / 100;
-            }
-
-            x.font = `${Math.round(k * 100)}px Iosevka`;
-            x.textBaseline = 'middle';
-            x.textAlign = 'center';
-
             const dark = window.brehautColor(this.textureColor).getLuminance() < 0.5;
-            x.fillStyle = dark ? '#fff' : '#000';
-            x.fillText(label, canvas.width / 2, canvas.height / 2);
+
+            if (this.filler === 'label') {
+                let label;
+                if (this.textureLabel.trim()) {
+                    label = this.textureLabel.trim();
+                } else {
+                    label = `${canvas.width}×${canvas.height}`;
+                }
+
+                // Fit the text into 80% of canvas' width
+                x.font = '100px Iosevka';
+                const measure = x.measureText(label).width;
+                let k = canvas.width * 0.8 / measure;
+                // Cannot exceed canvas' height
+                if (k * 100 > canvas.height * 0.8) {
+                    k = canvas.height * 0.8 / 100;
+                }
+
+                x.font = `${Math.round(k * 100)}px Iosevka`;
+                x.textBaseline = 'middle';
+                x.textAlign = 'center';
+
+                x.fillStyle = dark ? '#fff' : '#000';
+                x.fillText(label, canvas.width / 2, canvas.height / 2);
+            } else if (this.filler === 'cross') {
+                x.strokeStyle = dark ? '#fff' : '#000';
+                x.lineWidth = (canvas.width > 16 && canvas.height > 16) ? 2 : 1;
+                x.moveTo(0, 0);
+                x.lineTo(canvas.width, canvas.height);
+                x.moveTo(canvas.width, 0);
+                x.lineTo(0, canvas.height);
+                x.stroke();
+            }
         };
 
         this.on('mount', this.refreshCanvas);

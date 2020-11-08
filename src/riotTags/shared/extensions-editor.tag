@@ -23,7 +23,8 @@
         name: string, // the displayed name.
         // Below 'h1', 'h2', 'h3', 'h4' are purely decorational, for grouping fields. Others denote the type of an input field.
         type: 'h1' | 'h2' | 'h3' | 'h4' | 'text' | 'textfield' | 'code' | 'number' |
-              'slider' | 'sliderAndNumber' | 'point2D' | 'checkbox' | 'radio' | 'texture' | 'type',
+              'slider' | 'sliderAndNumber' | 'point2D' | 'checkbox' | 'radio' | 'texture' | 'type' |
+              'color',
         key?: string, // the name of a JSON key to write into the `opts.entity`. Not needed for hN types, but required otherwise
                       // The key may have special suffixes that tell the exporter to unwrap foreign keys (resources' UIDs) into asset names.
                       // These are supposed to always be used with `'type'` and `'texture'` input types.
@@ -35,6 +36,7 @@
             name: string,
             help?: string
         }>,
+        array?: boolean, // Whether to display an editable list instead of just one field.
         collect?: boolean, // Whether to collect values and suggest them later as an auto-completion results. (Not yet implemented)
         collectScope?: string // The name of a category under which to store suggestions from `collect`.
     }
@@ -46,7 +48,7 @@ extensions-editor
         h3(if="{ext.type === 'h3'}") {ext.name}
         h4(if="{ext.type === 'h4'}") {ext.name}
         dl(class="{compact: compact}" if="{['h1', 'h2', 'h3', 'h4'].indexOf(ext.type) === -1}")
-            dt
+            dt(if="{!parent.opts.intable}")
                 label.block.checkbox(if="{ext.type === 'checkbox'}")
                     input.nogrow(
                         if="{ext.type === 'checkbox'}"
@@ -60,7 +62,44 @@ extensions-editor
                     b {ext.name}
                     b :
                     hover-hint(if="{ext.help && parent.opts.compact}" text="{ext.help}")
-            dd
+            dd(if="{ext.type === 'table'}")
+                .aTableWrap
+                    table.nicetable
+                        tr
+                            th.center(if="{!parent.opts.compact}") №
+                            th(each="{field in ext.fields}")
+                                | {field.name}
+                                hover-hint(if="{field.help}" text="{field.help}")
+                            th Actions
+                        tr(each="{entry, ind in parent.opts.entity[ext.key]}" no-reorder)
+                            td.center(if="{!parent.opts.compact}")
+                                code {ind}
+                            td(each="{field in ext.fields}")
+                                extensions-editor(intable="true" compact="compact" entity="{entry}" customextends="{[field]}")
+                            td
+                                // Use opacity to keep nice layout
+                                .anActionableIcon(onclick="{moveUp(ext, entry)}" title="{voc.moveUp}" style="{ind === 0 ? 'opacity: 0;' : ''}")
+                                    svg.feather
+                                        use(xlink:href="data/icons.svg#arrow-up")
+                                .anActionableIcon(onclick="{moveDown(ext, entry)}"  style="{ind === parent.parent.opts.entity[ext.key].length - 1 ? 'opacity: 0;' : ''}" title="{voc.moveDown}")
+                                    svg.feather
+                                        use(xlink:href="data/icons.svg#arrow-down")
+                                .anActionableIcon(onclick="{deleteRow(ext, entry)}" title="{voc.deleteScript}")
+                                    svg.feather.red
+                                        use(xlink:href="data/icons.svg#delete")
+                            tr(if="{!parent.opts.entity[ext.key] || !parent.opts.entity[ext.key].length}")
+                                td(colspan="{ext.fields.length + (parent.opts.compact ? 1 : 2)}") {parent.voc.noEntries}
+                button(onclick="{parent.addRow}")
+                    svg.feather
+                        use(xlink:href="data/icons.svg#plus")
+                    span {parent.voc.addRow}
+            dd(if="{ext.type !== 'table'}")
+                input.nogrow(
+                    if="{ext.type === 'checkbox' && parent.opts.intable}"
+                    type="checkbox"
+                    checked="{parent.opts.entity[ext.key] || ext.default}"
+                    onchange="{wire('this.opts.entity.'+ ext.key)}"
+                )
                 texture-input(
                     if="{ext.type === 'texture'}"
                     class="{compact: parent.opts.compact, wide: parent.opts.wide}"
@@ -92,6 +131,13 @@ extensions-editor
                     class="{compact: parent.opts.compact, wide: parent.opts.wide}"
                     val="{parent.opts.entity[ext.key] || ext.default}"
                     onselected="{writeUid(ext.key)}"
+                )
+                color-input(
+                    if="{ext.type === 'color'}"
+                    class="{compact: parent.opts.compact, wide: parent.opts.wide}"
+                    color="{parent.opts.entity[ext.key] || ext.default}"
+                    hidealpha="{ext.noalpha ? 'noalpha' : ''}"
+                    onapply="{wire('this.opts.entity.'+ ext.key)}"
                 )
                 input(
                     if="{ext.type === 'text'}"
@@ -179,6 +225,8 @@ extensions-editor
               path = require('path');
 
         this.mixin(window.riotWired);
+        this.namespace = 'extensionsEditor';
+        this.mixin(window.riotVoc);
 
         this.extensions = [];
         this.refreshExtends = () => {
@@ -219,6 +267,40 @@ extensions-editor
                 this.opts.entity[field] = -1;
             }
             this.update();
+        };
+
+        this.addRow = e => {
+            const {ext} = e.item;
+            if (!this.opts.entity[ext.key]) {
+                this.opts.entity[ext.key] = [];
+            }
+            const row = {};
+            for (const field of ext.fields) {
+                row[field.key] = field.default;
+            }
+            this.opts.entity[ext.key].push(row);
+        };
+
+        this.moveUp = (field, row) => e => {
+            if (e.item.ind === 0) {
+                return;
+            }
+            const array = this.opts.entity[field.key],
+                  ind = array.indexOf(row);
+            [array[ind - 1], array[ind]] = [array[ind], array[ind - 1]];
+        };
+        this.moveDown = (field, row) => () => {
+            const array = this.opts.entity[field.key],
+                  ind = array.indexOf(row);
+            if (ind >= array.length - 1) {
+                return;
+            }
+            [array[ind], array[ind + 1]] = [array[ind + 1], array[ind]];
+        };
+        this.deleteRow = (field, row) => () => {
+            const array = this.opts.entity[field.key],
+                  ind = array.indexOf(row);
+            array.splice(ind, 1);
         };
 
         window.signals.on('modulesChanged', this.refreshExtends);

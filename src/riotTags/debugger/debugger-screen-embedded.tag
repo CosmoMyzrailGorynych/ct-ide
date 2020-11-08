@@ -3,7 +3,7 @@
 debugger-screen-embedded(class="{opts.class} {flexrow: verticalLayout, flexcol: !verticalLayout}")
     webview.tall#thePreview(
         partition="persist:trusted"
-        ref="gameView" allownw
+        ref="gameView" allownw nwfaketop
     )
     .aResizer(ref="gutter" onmousedown="{gutterMouseDown}" class="{vertical: verticalLayout, horizontal: !verticalLayout}")
     .flexfix(
@@ -90,7 +90,7 @@ debugger-screen-embedded(class="{opts.class} {flexrow: verticalLayout, flexcol: 
             s.cursor = this.verticalLayout ? 'ew-resize' : 'ns-resize';
             document.body.appendChild(catcher);
         };
-        document.addEventListener('mousemove', e => {
+        const mousemoveListener = e => {
             if (!this.dragging) {
                 return;
             }
@@ -102,12 +102,18 @@ debugger-screen-embedded(class="{opts.class} {flexrow: verticalLayout, flexcol: 
                 localStorage.debuggerHeight = this.height;
             }
             this.update();
-        });
-        document.addEventListener('mouseup', () => {
+        };
+        const mouseupListener = () => {
             if (this.dragging) {
                 this.dragging = false;
                 document.body.removeChild(catcher);
             }
+        };
+        document.addEventListener('mousemove', mousemoveListener);
+        document.addEventListener('mouseup', mouseupListener);
+        this.on('unmount', () => {
+            document.removeEventListener('mousemove', mousemoveListener);
+            document.removeEventListener('mouseup', mouseupListener);
         });
         this.flipLayout = () => {
             this.verticalLayout = !this.verticalLayout;
@@ -116,7 +122,7 @@ debugger-screen-embedded(class="{opts.class} {flexrow: verticalLayout, flexcol: 
         /* Bootstrap preview and debug views */
         this.on('mount', () => {
             this.refs.gameView.addEventListener('permissionrequest', function permissionrequest(e) {
-                if (e.permission === 'fullscreen') {
+                if (['fullscreen', 'media', 'download', 'pointerLock'].indexOf(e.permission) !== -1) {
                     e.request.allow();
                 }
             });
@@ -127,9 +133,13 @@ debugger-screen-embedded(class="{opts.class} {flexrow: verticalLayout, flexcol: 
                         mainWorld: true
                     });
                     this.refs.gameView.focus();
+                }, {
+                    once: true
                 });
                 this.refs.gameView.showDevTools(true, this.refs.devtoolsView);
                 this.refs.gameView.focus();
+            }, {
+                once: true
             });
             this.refs.gameView.setAttribute('src', passedParams.link);
         });

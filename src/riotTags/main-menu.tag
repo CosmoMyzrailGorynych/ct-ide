@@ -24,7 +24,7 @@ main-menu.flexcol
                 svg.feather
                     use(xlink:href="data/icons.svg#sliders")
                 span {voc.project}
-            li(onclick="{changeTab('texture')}" class="{active: tab === 'texture'}" data-hotkey="Control+2" title="Control+2")
+            li(onclick="{changeTab('textures')}" class="{active: tab === 'textures'}" data-hotkey="Control+2" title="Control+2")
                 svg.feather
                     use(xlink:href="data/icons.svg#texture")
                 span {voc.texture}
@@ -51,7 +51,7 @@ main-menu.flexcol
     div.flexitem.relative(if="{global.currentProject}")
         debugger-screen-embedded(if="{tab === 'debug'}" params="{debugParams}" data-hotkey-scope="play" ref="debugger")
         project-settings(show="{tab === 'project'}" data-hotkey-scope="project")
-        textures-panel(show="{tab === 'texture'}" data-hotkey-scope="texture")
+        textures-panel(show="{tab === 'textures'}" data-hotkey-scope="textures")
         ui-panel(show="{tab === 'ui'}" data-hotkey-scope="ui")
         fx-panel(show="{tab === 'fx'}" data-hotkey-scope="fx")
         sounds-panel(show="{tab === 'sounds'}" data-hotkey-scope="sounds")
@@ -75,9 +75,20 @@ main-menu.flexcol
             this.tab = tab;
             window.hotkeys.cleanScope();
             window.hotkeys.push(tab);
-            window.signals.trigger('globalTabChanged');
+            window.signals.trigger('globalTabChanged', tab);
             window.signals.trigger(`${tab}Focus`);
         };
+        this.changeTab(this.tab)();
+
+        const assetListener = asset => {
+            const [assetType] = asset.split('/');
+            this.changeTab(assetType)();
+            this.update();
+        };
+        window.orders.on('openAsset', assetListener);
+        this.on('unmount', () => {
+            window.orders.off('openAsset', assetListener);
+        });
 
         const languageSubmenu = {
             items: [],
@@ -147,19 +158,22 @@ main-menu.flexcol
         const {getExportDir} = require('./data/node_requires/platformUtils');
         // Run a local server for ct.js games
         let fileServer;
-        getExportDir().then(dir => {
-            const fileServerSettings = {
-                public: dir,
-                cleanUrls: true
-            };
-            const handler = require('serve-handler');
-            fileServer = require('http').createServer((request, response) =>
-                handler(request, response, fileServerSettings));
-            fileServer.listen(0, () => {
-                // eslint-disable-next-line no-console
-                console.info(`[ct.debugger] Running dev server at http://localhost:${fileServer.address().port}`);
+        if (!this.debugServerStarted) {
+            getExportDir().then(dir => {
+                const fileServerSettings = {
+                    public: dir,
+                    cleanUrls: true
+                };
+                const handler = require('serve-handler');
+                fileServer = require('http').createServer((request, response) =>
+                    handler(request, response, fileServerSettings));
+                fileServer.listen(0, () => {
+                    // eslint-disable-next-line no-console
+                    console.info(`[ct.debugger] Running dev server at http://localhost:${fileServer.address().port}`);
+                });
+                this.debugServerStarted = true;
             });
-        });
+        }
 
         this.runProject = () => {
             document.body.style.cursor = 'progress';
@@ -201,6 +215,17 @@ main-menu.flexcol
             });
         };
         window.hotkeys.on('Alt+F5', this.runProjectAlt);
+        this.on('unmount', () => {
+            window.hotkeys.off('Alt+F5', this.runProjectAlt);
+        });
+
+        this.toggleFullscreen = function toggleFullscreen() {
+            nw.Window.get().toggleFullscreen();
+        };
+        window.hotkeys.on('F11', this.toggleFullscreen);
+        this.on('unmount', () => {
+            window.hotkeys.off('F11', this.toggleFullscreen);
+        });
 
         this.zipProject = async () => {
             try {
@@ -244,7 +269,7 @@ main-menu.flexcol
             );
             const inDir = await getExportDir();
             await fs.remove(exportFile);
-            runCtExport(global.currentProject, global.projdir)
+            runCtExport(global.currentProject, global.projdir, true)
             .then(() => {
                 const archive = archiver('zip'),
                       output = fs.createWriteStream(exportFile);
@@ -259,12 +284,6 @@ main-menu.flexcol
                 archive.finalize();
             })
             .catch(alertify.error);
-        };
-        localStorage.UItheme = localStorage.UItheme || 'Day';
-        this.switchTheme = theme => {
-            localStorage.UItheme = theme;
-            document.getElementById('themeCSS').href = `./data/theme${theme}.css`;
-            window.signals.trigger('UIThemeChanged', theme);
         };
 
         const troubleshootingSubmenu = {
@@ -303,6 +322,17 @@ main-menu.flexcol
                     }
                 }
             }, {
+                label: window.languageJSON.menu.forceProductionForDebug,
+                type: 'checkbox',
+                checked: () => localStorage.forceProductionForDebug === 'yes',
+                click: () => {
+                    if (localStorage.forceProductionForDebug === 'yes') {
+                        localStorage.forceProductionForDebug = 'no';
+                    } else {
+                        localStorage.forceProductionForDebug = 'yes';
+                    }
+                }
+            }, {
                 type: 'separator'
             }, {
                 icon: 'discord',
@@ -321,47 +351,24 @@ main-menu.flexcol
             }]
         };
 
+        const themeManager = require('./data/node_requires/themes');
+        const themesSubmenu = {
+            items: themeManager.getThemeList().map(theme => ({
+                label: theme.translated,
+                icon: () => localStorage.UItheme === theme.name && 'check',
+                click: async () => {
+                    await themeManager.switchToTheme(theme.name);
+                    this.update();
+                }
+            }))
+        };
         const settingsSubmenu = {
             items: [{
                 label: window.languageJSON.common.language,
                 submenu: languageSubmenu
             }, {
                 label: window.languageJSON.menu.theme,
-                submenu: {
-                    items: [{
-                        label: window.languageJSON.menu.themeDay,
-                        icon: () => localStorage.UItheme === 'Day' && 'check',
-                        click: () => {
-                            this.switchTheme('Day');
-                        }
-                    }, {
-                        label: window.languageJSON.menu.themeSpringStream || 'Spring Stream',
-                        icon: () => localStorage.UItheme === 'SpringStream' && 'check',
-                        click: () => {
-                            this.switchTheme('SpringStream');
-                        }
-                    }, {
-                        type: 'separator'
-                    }, {
-                        label: window.languageJSON.menu.themeNight || 'Night',
-                        icon: () => localStorage.UItheme === 'Night' && 'check',
-                        click: () => {
-                            this.switchTheme('Night');
-                        }
-                    }, {
-                        label: window.languageJSON.menu.themeHorizon || 'Horizon',
-                        icon: () => localStorage.UItheme === 'Horizon' && 'check',
-                        click: () => {
-                            this.switchTheme('Horizon');
-                        }
-                    }, {
-                        label: window.languageJSON.menu.themeLucasDracula || 'LucasDracula',
-                        icon: () => localStorage.UItheme === 'LucasDracula' && 'check',
-                        click: () => {
-                            this.switchTheme('LucasDracula');
-                        }
-                    }]
-                }
+                submenu: themesSubmenu
             }, {
                 label: window.languageJSON.menu.codeFont,
                 submenu: {
@@ -420,7 +427,10 @@ main-menu.flexcol
                     }]
                 }
             }, {
-                type: 'separator'
+                label: window.languageJSON.menu.changeDataFolder,
+                click: () => {
+                    require('./data/node_requires/platformUtils').requestWritableDir();
+                }
             }, {
                 label: window.languageJSON.menu.disableSounds,
                 type: 'checkbox',

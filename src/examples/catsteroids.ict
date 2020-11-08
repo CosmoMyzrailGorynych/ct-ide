@@ -1371,7 +1371,7 @@ rooms:
         extends:
           movementY: 0.5
     uid: 2e5bf702-9eac-4fef-8282-07d2dd0a9bac
-    lastmod: 1588761914721
+    lastmod: 1602729541705
     grid: 50
     thumbnail: 1
     gridX: 50
@@ -1379,10 +1379,13 @@ rooms:
     tiles:
       - depth: -10
         tiles: []
+        extends: {}
     copies:
       - x: 950
         'y': 850
         uid: 1fab434d-0976-4b65-8390-d013695aba8c
+        exts: {}
+    extends: {}
   - name: MainMenu
     oncreate: >-
       ct.sound.spawn('Music_MainMenu', {
@@ -1426,20 +1429,24 @@ rooms:
           movementX: -0.5
     uid: 6c75cdb8-cfb4-4dcc-887a-f76ae98b5499
     grid: 64
-    lastmod: 1588677352152
+    lastmod: 1602729545401
     thumbnail: 2
     gridX: 64
     gridY: 64
     tiles:
       - depth: -10
         tiles: []
+        extends: {}
     copies:
       - x: 960
         'y': 704
         uid: 972bb4d9-7cfc-4dbe-bc30-883562271057
+        exts: {}
       - x: 960
         'y': 320
         uid: 319c6995-59f3-4267-a1de-cf58f77614d3
+        exts: {}
+    extends: {}
   - name: RetryScreen
     oncreate: >-
       this.score = Number(localStorage.score);
@@ -1495,13 +1502,16 @@ rooms:
     tiles:
       - depth: -10
         tiles: []
+        extends: {}
     copies:
       - x: 960
         'y': 832
         uid: 73759c16-fba4-4134-b048-e53aa4d2f34b
+        exts: {}
       - x: 960
         'y': 192
         uid: a6d37145-b35c-42d2-95c6-765069857ada
+        exts: {}
   - name: Controls_Layer
     oncreate: ''
     onstep: ''
@@ -1514,12 +1524,15 @@ rooms:
       - x: 1722
         'y': 898
         uid: b334b5ec-69b4-4c0d-bd50-709cf9bfa60d
+        exts: {}
       - x: 210
         'y': 872
         uid: c78818a4-c20e-46b9-8a39-9fbb5a83eabe
+        exts: {}
     tiles:
       - depth: -10
         tiles: []
+        extends: {}
     uid: 459c3f03-a31e-465a-a3fd-23d3934bc7d0
     thumbnail: 23d3934bc7d0
     gridX: 64
@@ -1592,7 +1605,7 @@ rooms:
         extends:
           movementY: 0.5
     uid: 0716a171-8c7a-4112-bae8-85703255320d
-    lastmod: 1588676886528
+    lastmod: 1602729535763
     grid: 50
     thumbnail: 85703255320d
     gridX: 50
@@ -1600,34 +1613,45 @@ rooms:
     tiles:
       - depth: -10
         tiles: []
+        extends: {}
     copies:
       - x: 950
         'y': 850
         uid: 1fab434d-0976-4b65-8390-d013695aba8c
+        exts: {}
       - x: 950
         'y': -300
         uid: 1ef4f56c-b0cc-497b-bd3f-e06eb1c2308d
+        exts: {}
       - x: 550
         'y': 400
         uid: bc01cee1-1b8b-4418-aeb9-a7c5eac2cd51
+        exts: {}
       - x: 750
         'y': 400
         uid: bc01cee1-1b8b-4418-aeb9-a7c5eac2cd51
+        exts: {}
       - x: 650
         'y': 550
         uid: bc01cee1-1b8b-4418-aeb9-a7c5eac2cd51
+        exts: {}
       - x: 650
         'y': 250
         uid: bc01cee1-1b8b-4418-aeb9-a7c5eac2cd51
+        exts: {}
       - x: 450
         'y': 250
         uid: bc01cee1-1b8b-4418-aeb9-a7c5eac2cd51
+        exts: {}
       - x: 350
         'y': 400
         uid: bc01cee1-1b8b-4418-aeb9-a7c5eac2cd51
+        exts: {}
       - x: 450
         'y': 550
         uid: bc01cee1-1b8b-4418-aeb9-a7c5eac2cd51
+        exts: {}
+    extends: {}
   - name: UI_Layer
     oncreate: ''
     onstep: ''
@@ -1640,9 +1664,11 @@ rooms:
       - x: 960
         'y': 1080
         uid: 1011221c-4f7b-45e7-b45a-ce886851d32c
+        exts: {}
     tiles:
       - depth: -10
         tiles: []
+        extends: {}
     uid: 3123a227-4b15-4b4e-83cd-bb45e24b4389
     thumbnail: bb45e24b4389
     gridX: 64
@@ -1721,27 +1747,18 @@ rooms:
     tiles:
       - depth: -10
         tiles: []
+        extends: {}
     copies:
       - x: 960
         'y': 256
         uid: ffbec9fc-299c-4aea-a4f1-1c4b27859fb6
+        exts: {}
 soundtick: 9
 roomtick: 3
 typetick: 19
 styletick: 2
 starting: 0
 settings:
-  minifyhtmlcss: true
-  minifyjs: false
-  title: Catsteroids
-  author: CoMiGo Games
-  site: 'http://comigogames.ru/'
-  fps: 30
-  version:
-    - 0
-    - 0
-    - 0
-  versionPostfix: ''
   export:
     windows64: true
     windows32: true
@@ -1749,12 +1766,26 @@ settings:
     linux32: true
     mac64: true
     debug: false
-  pixelatedrender: false
   branding:
     icon: e1452137-8cfa-4eec-b54a-0f2660326b48
     accent: '#446adb'
     invertPreloaderScheme: true
-  highDensity: true
+  rendering:
+    maxFPS: 60
+    pixelatedrender: false
+    highDensity: true
+    usePixiLegacy: true
+    desktopMode: maximized
+  authoring:
+    title: Catsteroids
+    author: CoMiGo Games
+    site: 'http://comigogames.ru/'
+    version:
+      - 0
+      - 0
+      - 0
+    versionPostfix: ''
+  fps: 30
 palette:
   - '#FFFFFF'
   - '#10102E'
@@ -1817,7 +1848,7 @@ scripts:
               });
           });
       };
-ctjsVersion: 1.3.0
+ctjsVersion: 1.4.2
 fonts: []
 skeletons: []
 actions:

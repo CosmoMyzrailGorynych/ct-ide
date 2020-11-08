@@ -166,5 +166,8 @@ declare namespace ct {
          * @returns {void}
          */
         function moveListener(x: number, y: number, z?: number): void;
+
+        /** A copy to set listener's position to. Used with 3D sounds. */
+        var follow: Copy | PIXI.DisplayObject;
     }
 }

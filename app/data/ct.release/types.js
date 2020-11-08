@@ -1,122 +1,4 @@
 /**
- * @extends {PIXI.TilingSprite}
- */
-class Background extends PIXI.TilingSprite {
-    constructor(bgName, frame, depth, exts) {
-        exts = exts || {};
-        var width = ct.camera.width,
-            height = ct.camera.height;
-        if (exts.repeat === 'no-repeat' || exts.repeat === 'repeat-x') {
-            height = ct.res.getTexture(bgName, frame || 0).orig.height * (exts.scaleY || 1);
-        }
-        if (exts.repeat === 'no-repeat' || exts.repeat === 'repeat-y') {
-            width = ct.res.getTexture(bgName, frame || 0).orig.width * (exts.scaleX || 1);
-        }
-        super(ct.res.getTexture(bgName, frame || 0), width, height);
-        ct.types.list.BACKGROUND.push(this);
-        this.anchor.x = this.anchor.y = 0;
-        this.depth = depth;
-        this.shiftX = this.shiftY = this.movementX = this.movementY = 0;
-        this.parallaxX = this.parallaxY = 1;
-        if (exts) {
-            ct.u.extend(this, exts);
-        }
-        if (this.scaleX) {
-            this.tileScale.x = Number(this.scaleX);
-        }
-        if (this.scaleY) {
-            this.tileScale.y = Number(this.scaleY);
-        }
-        this.reposition();
-    }
-    onStep() {
-        this.shiftX += ct.delta * this.movementX;
-        this.shiftY += ct.delta * this.movementY;
-    }
-    reposition() {
-        const cameraBounds = ct.camera.getBoundingBox();
-        if (this.repeat !== 'repeat-x' && this.repeat !== 'no-repeat') {
-            this.y = cameraBounds.y;
-            this.tilePosition.y = -this.y * this.parallaxY + this.shiftY;
-            this.height = cameraBounds.height;
-        } else {
-            this.y = this.shiftY + cameraBounds.y * (this.parallaxY - 1);
-        }
-        if (this.repeat !== 'repeat-y' && this.repeat !== 'no-repeat') {
-            this.x = cameraBounds.x;
-            this.tilePosition.x = -this.x * this.parallaxX + this.shiftX;
-            this.width = cameraBounds.width;
-        } else {
-            this.x = this.shiftX + cameraBounds.x * (this.parallaxX - 1);
-        }
-    }
-    onDraw() {
-        this.reposition();
-    }
-    static onCreate() {
-        void 0;
-    }
-    static onDestroy() {
-        void 0;
-    }
-}
-/**
- * @extends {PIXI.Container}
- */
-class Tileset extends PIXI.Container {
-    constructor(template) {
-        super();
-        this.depth = template.depth;
-        this.tiles = template.tiles.map(tile => ({
-            ...tile
-        }));
-        this.pixiTiles = [];
-        if (template.extends) {
-            Object.assign(this, template.extends);
-        }
-        ct.types.list.TILELAYER.push(this);
-        for (let i = 0, l = template.tiles.length; i < l; i++) {
-            const textures = ct.res.getTexture(template.tiles[i].texture);
-            const sprite = new PIXI.Sprite(textures[template.tiles[i].frame]);
-            sprite.anchor.x = sprite.anchor.y = 0;
-            this.addChild(sprite);
-            this.pixiTiles.push(sprite);
-            sprite.x = template.tiles[i].x;
-            sprite.y = template.tiles[i].y;
-        }
-        // Divide tiles into a grid of larger cells so that we can cache these cells as
-        const bounds = this.getLocalBounds();
-        const cols = Math.ceil(bounds.width / 1024),
-              rows = Math.ceil(bounds.height / 1024);
-        this.cells = [];
-        for (let y = 0; y < rows; y++) {
-            for (let x = 0; x < cols; x++) {
-                const cell = new PIXI.Container();
-                this.cells.push(cell);
-            }
-        }
-        for (let i = 0, l = this.tiles.length; i < l; i++) {
-            const tile = this.children[0],
-                  x = Math.floor((tile.x - bounds.x) / 1024),
-                  y = Math.floor((tile.y - bounds.y) / 1024);
-            this.cells[y * cols + x].addChild(tile);
-        }
-        this.removeChildren();
-
-        // Filter out empty cells, cache filled ones
-        for (let i = 0, l = this.cells.length; i < l; i++) {
-            if (this.cells[i].children.length === 0) {
-                this.cells.splice(i, 1);
-                i--;
-                l--;
-                continue;
-            }
-            this.addChild(this.cells[i]);
-            this.cells[i].cacheAsBitmap = true;
-        }
-    }
-}
-/**
  * @extends {PIXI.AnimatedSprite}
  * @class
  * @property {string} type The name of the type from which the copy was created
@@ -140,6 +22,7 @@ class Tileset extends PIXI.Container {
  */
 const Copy = (function Copy() {
     const textureAccessor = Symbol('texture');
+    let uid = 0;
     class Copy extends PIXI.AnimatedSprite {
         /**
          * Creates an instance of Copy.
@@ -196,7 +79,7 @@ const Copy = (function Copy() {
             this.speed = this.direction = this.gravity = this.hspeed = this.vspeed = 0;
             this.gravityDir = 270;
             this.depth = 0;
-            this.uid = ++ct.room.uid;
+            this.uid = ++uid;
             if (type) {
                 ct.u.ext(this, {
                     type,
@@ -341,15 +224,13 @@ const Copy = (function Copy() {
      */
     ct.types = {
         Copy,
-        Background,
-        Tileset,
         /**
          * An object that contains arrays of copies of all types.
          * @type {Object.<string,Array<Copy>>}
          */
         list: {
             BACKGROUND: [],
-            TILELAYER: []
+            TILEMAP: []
         },
         /**
          * A map of all the templates of types exported from ct.IDE.
@@ -411,8 +292,11 @@ const Copy = (function Copy() {
          * @returns {void}
          */
         each(func) {
-            for (const i in ct.stack) {
-                func.apply(ct.stack[i], this);
+            for (const copy of ct.stack) {
+                if (!(copy instanceof Copy)) {
+                    continue; // Skip backgrounds and tile layers
+                }
+                func.apply(copy, this);
             }
         },
         /*
@@ -435,6 +319,14 @@ const Copy = (function Copy() {
                 return Boolean(obj.position);
             }
             return Boolean(obj);
+        },
+        /**
+         * Checks whether a given object is a ct.js copy.
+         * @param {any} obj The object which needs to be checked.
+         * @returns {boolean} Returns `true` if the passed object is a copy; `false` otherwise.
+         */
+        isCopy(obj) {
+            return obj instanceof Copy;
         }
     };
     ct.types.copy = ct.types.make;

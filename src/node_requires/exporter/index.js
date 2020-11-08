@@ -13,16 +13,34 @@ const {stringifyTandems} = require('./emitterTandems');
 const {stringifyTypes} = require('./types');
 const {bundleFonts, bakeBitmapFonts} = require('./fonts');
 const {bakeFavicons} = require('./icons');
+const {getUnwrappedExtends, getCleanKey} = require('./utils');
 
+const getSubstitution = value => {
+    if (!value) {
+        return '';
+    }
+    if (typeof value === 'object') {
+        return JSON.stringify(value);
+    }
+    return value;
+};
 const parseKeys = function (catmod, str, lib) {
     var str2 = str;
     if (catmod.fields) {
-        for (const field in catmod.fields) {
-            const val = currentProject.libs[lib][catmod.fields[field].key];
-            if (catmod.fields[field].type === 'checkbox' && !val) {
-                str2 = str2.replace(RegExp('(/\\*)?%' + catmod.fields[field].key + '%(\\*/)?', 'g'), 'false');
+        const {fields} = catmod,
+              values = getUnwrappedExtends(currentProject.libs[lib] || {});
+
+        for (const field of fields) {
+            if (!field.key) {
+                // Skip invalid/decorative fields
+                continue;
+            }
+            const cleanKey = getCleanKey(field.key);
+            const val = values[cleanKey];
+            if (field.type === 'checkbox' && !val) {
+                str2 = str2.replace(RegExp('(/\\*)?%' + cleanKey + '%(\\*/)?', 'g'), 'false');
             } else {
-                str2 = str2.replace(RegExp('(/\\*)?%' + catmod.fields[field].key + '%(\\*/)?', 'g'), val || '');
+                str2 = str2.replace(RegExp('(/\\*)?%' + cleanKey + '%(\\*/)?', 'g'), () => getSubstitution(val));
             }
         }
     }
@@ -44,7 +62,7 @@ const addModules = async () => { // async
     return pieces.join('\n');
 };
 
-const injectModules = injects => // async
+const injectModules = injections => // async
     Promise.all(Object.keys(currentProject.libs).map(async lib => {
         const libData = await fs.readJSON(path.join(basePath + 'ct.libs/', lib, 'module.json'), {
             encoding: 'utf8'
@@ -53,20 +71,20 @@ const injectModules = injects => // async
             const injectFiles = await fs.readdir(path.join(basePath + 'ct.libs/', lib, 'injects')),
                   injectKeys = injectFiles.map(fname => path.basename(fname, path.extname(fname)));
             await Promise.all(injectKeys.map(async (key, ind) => {
-                if (key in injects) {
+                if (key in injections) {
                     const injection = await fs.readFile(path.join(basePath + 'ct.libs/', lib, 'injects', injectFiles[ind]), {
                         encoding: 'utf8'
                     });
                     // false positive??
                     // eslint-disable-next-line require-atomic-updates
-                    injects[key] += parseKeys(libData, injection, lib);
+                    injections[key] += parseKeys(libData, injection, lib);
                 }
             }));
         }
     }));
 
 // eslint-disable-next-line max-lines-per-function
-const exportCtProject = async (project, projdir) => {
+const exportCtProject = async (project, projdir, production) => {
     currentProject = project;
 
     const {languageJSON} = require('./../i18n');
@@ -78,13 +96,17 @@ const exportCtProject = async (project, projdir) => {
         throw new Error(languageJSON.common.norooms);
     }
 
+    if (localStorage.forceProductionForDebug === 'yes') {
+        production = true;
+    }
+
     await fs.remove(writeDir);
     await Promise.all([
         fs.ensureDir(path.join(writeDir, '/img/')),
         fs.ensureDir(path.join(writeDir, '/snd/'))
     ]);
 
-    const injects = {
+    const injections = {
         load: '',
         start: '',
         switch: '',
@@ -92,6 +114,9 @@ const exportCtProject = async (project, projdir) => {
         onbeforecreate: '',
         oncreate: '',
         ondestroy: '',
+
+        beforeframe: '',
+        afterframe: '',
 
         beforedraw: '',
         beforestep: '',
@@ -116,7 +141,7 @@ const exportCtProject = async (project, projdir) => {
         htmlbottom: ''
     };
 
-    await injectModules(injects);
+    await injectModules(injections);
 
     /* Pixi.js */
     if (settings.rendering.usePixiLegacy) {
@@ -133,6 +158,7 @@ const exportCtProject = async (project, projdir) => {
     /* Load source files in parallel */
     const sources = {};
     const sourcesList = [
+        'backgrounds.js',
         'camera.js',
         'ct.css',
         'emitters.js',
@@ -144,6 +170,7 @@ const exportCtProject = async (project, projdir) => {
         'sound.js',
         'styles.js',
         'types.js',
+        'tilemaps.js',
         'timer.js'
     ];
     for (const file of sourcesList) {
@@ -152,19 +179,24 @@ const exportCtProject = async (project, projdir) => {
         });
     }
 
+    // .replace(stuff, () => string) prevents pattern substitution, notably
+    // it doesn't break syntax around this.text = '$'
+    // @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace#Specifying_a_string_as_a_parameter
     let buffer = (await sources['main.js'])
         .replace(/\/\*@startwidth@\*\//g, startroom.width)
         .replace(/\/\*@startheight@\*\//g, startroom.height)
         .replace(/\/\*@pixelatedrender@\*\//g, Boolean(settings.rendering.pixelatedrender))
         .replace(/\/\*@highDensity@\*\//g, Boolean(settings.rendering.highDensity))
         .replace(/\/\*@maxfps@\*\//g, Number(settings.rendering.maxFPS))
-        .replace(/\/\*@ctversion@\*\//g, process.versions.ctjs)
-        .replace(/\/\*@projectmeta@\*\//g, JSON.stringify({
+        .replace(/\/\*@ctversion@\*\//g, () => process.versions.ctjs)
+        .replace(/\/\*@projectmeta@\*\//g, () => JSON.stringify({
             name: settings.authoring.title,
             author: settings.authoring.author,
             site: settings.authoring.site,
             version: settings.authoring.version.join('.') + settings.authoring.versionPostfix
-        }));
+        }))
+        .replace('/*%beforeframe%*/', () => injections.beforeframe)
+        .replace('/*%afterframe%*/', () => injections.afterframe);
 
     buffer += '\n';
 
@@ -187,18 +219,18 @@ const exportCtProject = async (project, projdir) => {
     const roomsCode = stringifyRooms(project);
 
     buffer += (await sources['rooms.js'])
-        .replace('@startroom@', startroom.name)
-        .replace('/*@rooms@*/', roomsCode)
-        .replace('/*%switch%*/', injects.switch)
-        .replace('/*%beforeroomoncreate%*/', injects.beforeroomoncreate)
-        .replace('/*%roomoncreate%*/', injects.roomoncreate)
-        .replace('/*%roomonleave%*/', injects.roomonleave);
+        .replace('@startroom@', () => startroom.name)
+        .replace('/*@rooms@*/', () => roomsCode)
+        .replace('/*%switch%*/', () => injections.switch)
+        .replace('/*%beforeroomoncreate%*/', () => injections.beforeroomoncreate)
+        .replace('/*%roomoncreate%*/', () => injections.roomoncreate)
+        .replace('/*%roomonleave%*/', () => injections.roomonleave);
     buffer += '\n';
 
     const styles = stringifyStyles(project);
     buffer += (await sources['styles.js'])
-        .replace('/*@styles@*/', styles)
-        .replace('/*%styles%*/', injects.styles);
+        .replace('/*@styles@*/', () => styles)
+        .replace('/*%styles%*/', () => injections.styles);
     buffer += '\n';
 
     if (project.emitterTandems && project.emitterTandems.length) {
@@ -218,21 +250,26 @@ const exportCtProject = async (project, projdir) => {
     await favicons;
 
     buffer += (await sources['res.js'])
-        .replace('/*@sndtotal@*/', project.sounds.length)
-        .replace('/*@res@*/', textures.res + '\n' + skeletons.loaderScript + '\n' + bitmapFonts.loaderScript)
-        .replace('/*@textureregistry@*/', textures.registry)
-        .replace('/*@textureatlases@*/', JSON.stringify(textures.atlases))
-        .replace('/*@skeletonregistry@*/', skeletons.registry)
-        .replace('/*%resload%*/', injects.resload + '\n' + skeletons.startScript)
-        .replace('/*%res%*/', injects.res);
+        .replace('/*@sndtotal@*/', () => project.sounds.length)
+        .replace('/*@res@*/', () => textures.res + '\n' + skeletons.loaderScript + '\n' + bitmapFonts.loaderScript)
+        .replace('/*@textureregistry@*/', () => textures.registry)
+        .replace('/*@textureatlases@*/', () => JSON.stringify(textures.atlases))
+        .replace('/*@skeletonregistry@*/', () => skeletons.registry)
+        .replace('/*%resload%*/', () => injections.resload + '\n' + skeletons.startScript)
+        .replace('/*%res%*/', () => injections.res);
     buffer += '\n';
 
     const types = stringifyTypes(project);
 
     buffer += (await sources['types.js'])
-        .replace('/*%oncreate%*/', injects.oncreate)
-        .replace('/*%types%*/', injects.types)
-        .replace('/*@types@*/', types);
+        .replace('/*%oncreate%*/', () => injections.oncreate)
+        .replace('/*%types%*/', () => injections.types)
+        .replace('/*@types@*/', () => types);
+
+    buffer += (await sources['backgrounds.js']);
+    buffer += '\n';
+    buffer += (await sources['tilemaps.js']);
+    buffer += '\n';
 
     buffer += (await sources['camera.js']);
     buffer += '\n';
@@ -240,7 +277,7 @@ const exportCtProject = async (project, projdir) => {
     buffer += '\n';
     var sounds = stringifySounds(project);
     buffer += (await sources['sound.js'])
-        .replace('/*@sound@*/', sounds);
+        .replace('/*@sound@*/', () => sounds);
 
     buffer += (await sources['timer.js']);
     buffer += '\n';
@@ -259,19 +296,43 @@ const exportCtProject = async (project, projdir) => {
         }
     }));
 
-    /* Global injects, provided by modules */
-    for (const i in injects) {
-        buffer = buffer.replace(`/*%${i}%*/`, injects[i]);
+    /* Global injections, provided by modules */
+    for (const i in injections) {
+        buffer = buffer.replace(`/*%${i}%*/`, () => injections[i]);
     }
 
 
     /* HTML & CSS */
     const {substituteHtmlVars} = require('./html');
     const {substituteCssVars} = require('./css');
-    const html = substituteHtmlVars(await sources['index.html'], project, injects);
-    let css = substituteCssVars(await sources['ct.css'], project, injects);
+    const html = substituteHtmlVars(await sources['index.html'], project, injections);
+    let css = substituteCssVars(await sources['ct.css'], project, injections);
 
     css += fonts.css;
+
+    // JS minify
+    if (production && currentProject.settings.export.codeModifier === 'minify') {
+        buffer = await (await require('terser').minify(buffer, {
+            mangle: {
+                reserved: ['ct']
+            },
+            format: {
+                comments: '/^! Made with ct.js /'
+            }
+        })).code;
+    }
+
+    // JS obfuscator
+    if (production && currentProject.settings.export.codeModifier === 'obfuscate') {
+        buffer = require('javascript-obfuscator')
+            .obfuscate(buffer)
+            .getObfuscatedCode();
+    }
+
+    // Wrap in function
+    if (production && currentProject.settings.export.functionWrap) {
+        buffer = `(function() {\n${buffer}\n})();`;
+    }
 
     // Output minified HTML & CSS
     const csswring = require('csswring');

@@ -102,6 +102,10 @@
         "windowsCrossBuildWarning": "To build for Windows from Linux/MacOS, you need Wine installed in your system. Install instructions are all different for various platforms, so you better google it yourself :)",
         "cannotBuildForMacOnWin": "Unfortunately, Windows can only produce broken Mac packages. Try using a Linux machine; for example, in a virtual one. It is 100% free!"
     },
+    "extensionsEditor": {
+        "noEntries": "No entries yet.",
+        "addRow": "Add a row"
+    },
     "intro": {
         "loading": "Please wait: kittens are gathering speed of light!",
         "newProject": {
@@ -126,9 +130,11 @@
         "forgetProject": "Forget this project",
         "browse": "Browse",
         "latest": "Latest projects",
+        "examples": "Examples",
         "unableToWriteToFolders": "Ct.js could not find an appropriate place for projects! Make sure you store ct.js app inside a folder you have access to write to.",
         "twitter": "Twitter channel",
-        "discord": "Discord community"
+        "discord": "Discord community",
+        "createOrBrowseJunction": "or"
     },
     "licensepanel": {
         "ctjslicense": "Ct.js License (MIT)"
@@ -155,9 +161,11 @@
         "ui": "UI",
         "fx": "FX",
         "theme": "Theme",
-        "themeDay": "Light",
-        "themeNight": "Dark",
-        "themeSpringSream": "Spring Stream",
+        "themeDay": "Day",
+        "themeNight": "Night",
+        "themeHorizon": "Horizon",
+        "themeHCBlack": "High-contrast Black",
+        "themeSpringStream": "Spring Stream",
         "themeLucasDracula": "Lucas Dracula",
         "types": "Types",
         "zipExport": "Export for web",
@@ -171,6 +179,7 @@
         "codeLigatures": "Ligatures",
         "codeDense": "Dense layout",
         "disableSounds": "Disable UI sounds",
+        "changeDataFolder": "Set data folder location",
         "openIncludeFolder": "Open \"include\" folder",
         "troubleshooting": "Troubleshooting",
         "toggleDevTools": "Toggle Dev Tools",
@@ -179,6 +188,7 @@
         "systemInfoDone": "Done!",
         "disableAcceleration": "Disable graphics acceleration (needs restart)",
         "disableBuiltInDebugger": "Disable built-in debugger",
+        "forceProductionForDebug": "Force production tasks for debug exports",
         "visitDiscordForGamedevSupport": "Join Discord server for gamedev support",
         "postAnIssue": "Post an issue on Github…",
         "openProject": "Open a project…",
@@ -250,6 +260,18 @@
             "moveUp": "Move up",
             "newScriptComment": "Use scripts to define frequent functions and import small libraries"
         },
+        "export": {
+            "heading": "Export settings",
+            "functionWrap": "Wrap all the code in a function. (Makes debugging harder, but isolates the game's code from outer context. Do not enable while developing the game.)",
+            "codeModifier": "Code transformations",
+            "obfuscateWarning": "This option will make your code run 15-80% slower, but will make your code extremely hard to revert back to the original.",
+            "codeModifierAndWrapNote": "Note that these settings only work for exported projects (Export for web and Export for desktop commands) as they noticeably slow packaging and make debugging harder. You can force them, though, in the Main menu → Troubleshooting → Force production tasks for debug exports.",
+            "codeModifiers": {
+                "none": "None",
+                "minify": "Minify",
+                "obfuscate": "Obfuscate"
+            }
+        },
         "catmodsSettings": "Catmods' settings"
     },
     "modules": {
@@ -304,7 +326,11 @@
         "createAndClose": "Create and close",
         "createAndContinue": "Create and add another",
         "scalingAtX4": "Scaling by x4 for a small texture",
-        "generationSuccessMessage": "Successfully added $1 texture to your project."
+        "generationSuccessMessage": "Successfully added $1 texture to your project.",
+        "filler": "Filler:",
+        "fillerNone": "None",
+        "fillerCross": "Cross",
+        "fillerLabel": "Text label"
     },
     "textureview": {
         "bgcolor": "Change bg color",
@@ -509,7 +535,8 @@
         "draw": "Draw",
         "learnAboutTypes": "Learn about coding types",
         "name": "Name:",
-        "step": "On Step"
+        "step": "On Step",
+        "visible": "Visible"
     },
     "rooms": {
         "create": "Add new",
@@ -537,6 +564,7 @@
         "name": "Name:",
         "width": "View width:",
         "height": "View height:",
+        "isUi": "Is a UI layer?",
         "events": "Room events",
         "copies": "Copies",
         "backgrounds": "Backgrounds",
@@ -622,5 +650,21 @@
             "brings light and hope 🌞",
             "is elegant and beautiful 🎩"
         ]
+    },
+    "textureInput": {
+        "jumpToTexture": "Jump to the texture",
+        "changeTexture": "Change texture"
+    },
+    "writableFolderPrompt": {
+        "headerSelectFolderForData": "Select a folder for ct.js data",
+        "paragraphCouldNotPickDirectory": "Oh noes! Ct.js could not find a folder for your projects, package builds, and for debugging. Ct.js usually finds one automatically, but this time all the folders it was looking for are read-only!",
+        "paragraphDirectoryDirections": "This can be fixed, though. Click the button below and select a folder at which to store data. If you are unsure, create a \"ct.js\" directory in your Documents folder.",
+        "selectFolder": "Select folder…"
+    },
+    "writableFolderSelector": {
+        "folderDoesNotExist": "It seems that this folder does not exist… How did you do that?",
+        "notADirectory": "This doesn't seem to be a directory! How did you do that?",
+        "folderNotWritable": "You don't have access to write to this folder. Pick another one.",
+        "complete": "Folder was set, all is good ✅"
     }
 }

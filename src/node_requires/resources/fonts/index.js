@@ -30,7 +30,7 @@ const fontGenPreview = async function fontGenPreview(font) {
         style: font.italic ? 'italic' : 'normal'
     };
     const fs = require('fs-extra');
-    const face = new FontFace('CTPROJFONT' + font.typefaceName, `url(${getPathToTtf(font)})`, template);
+    const face = new FontFace('CTPROJFONT' + font.typefaceName, `url('${getPathToTtf(font)}')`, template);
 
     // Trigger font loading by creating an invisible label with this font
     // const elt = document.createElement('span');

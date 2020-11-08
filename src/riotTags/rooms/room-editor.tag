@@ -45,7 +45,10 @@ room-editor.panel.view
                         b {voc.backgroundColor}
                         br
                         color-input.wide(onchange="{updateRoomBackground}" color="{room.backgroundColor || '#000000'}")
-                        extensions-editor(entity="{this.room.extends}" type="room" wide="aye" compact="sure")
+                        extensions-editor(entity="{room.extends}" type="room" wide="aye" compact="sure")
+                        label.block.checkbox
+                            input(type="checkbox" checked="{room.extends.isUi}" onchange="{wire('this.room.extends.isUi')}")
+                            b {voc.isUi}
 
         .done.nogrow
             button.wide#roomviewdone(onclick="{roomSave}")
@@ -323,7 +326,7 @@ room-editor.panel.view
         };
         this.drawDeleteCircle = e => {
             // Рисовка кружка для удаления копий
-            var maxdist = Math.max(this.room.gridX, this.room.gridY);
+            var maxdist = Math.max(this.room.gridX, this.room.gridY) || 32;
             this.refreshRoomCanvas(e);
             var cx = this.refs.canvas.x;
             cx.fillStyle = '#F00';
@@ -705,43 +708,20 @@ room-editor.panel.view
          * Генерирует миниатюру комнаты
          */
         this.roomGenSplash = function roomGenSplash() {
+            const {imageCover, toBuffer} = require('./data/node_requires/imageUtils');
             return new Promise((accept, decline) => {
-                var c = document.createElement('canvas'),
-                    w, h, k;
-                c.x = c.getContext('2d');
-                c.width = 340;
-                c.height = 256;
-                c.x.clearRect(0, 0, c.width, c.height);
-                w = this.refs.canvas.width;
-                h = this.refs.canvas.height;
-                if (w / c.width > h / c.height) {
-                    k = c.width / w;
-                } else {
-                    k = c.height / h;
-                }
-                if (k > 1) {
-                    k = 1;
-                }
-                c.x.drawImage(
-                    this.refs.canvas,
-                    0, 0, this.refs.canvas.width, this.refs.canvas.height,
-                    (c.width - this.refs.canvas.width * k) / 2,
-                    (c.height - this.refs.canvas.height * k) / 2,
-                    this.refs.canvas.width * k,
-                    this.refs.canvas.height * k
-                );
-                var splashBase64 = c.toDataURL().replace(/^data:image\/\w+;base64,/, '');
-                var buf = new Buffer(splashBase64, 'base64');
-                var nam = global.projdir + '/img/r' + this.room.thumbnail + '.png';
-                fs.writeFile(nam, buf, function roomGenSplashCallback(err) {
+                const c = imageCover(this.refs.canvas, 340, 256);
+                const buf = toBuffer(c);
+                const roomSplashName = global.projdir + '/img/r' + this.room.thumbnail + '.png';
+                fs.writeFile(roomSplashName, buf, err => {
                     if (err) {
                         decline(err);
                     } else {
-                        accept(nam);
+                        accept(roomSplashName);
                     }
                 });
-                var nam2 = global.projdir + '/img/splash.png';
-                fs.writeFile(nam2, buf, function projGenSplashCallback(err) {
+                const projSplashName = global.projdir + '/img/splash.png';
+                fs.writeFile(projSplashName, buf, err => {
                     if (err) {
                         decline(err);
                     }

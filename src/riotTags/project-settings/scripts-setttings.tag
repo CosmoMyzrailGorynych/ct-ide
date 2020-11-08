@@ -3,16 +3,17 @@ scripts-settings
     ul.menu
         li(each="{script, index in global.currentProject.scripts}" onclick="{selectScript}")
             code {script.name}
-            div.toright.scripts-panel-aDeleteButton(onclick="{deleteScript}" title="{voc.deleteScript}")
-                svg.feather.dim
-                    use(xlink:href="data/icons.svg#delete")
-            // Use opacity to keep nice layout
-            div.toright(onclick="{moveDown}"  style="opacity: {index === global.currentProject.scripts.length - 1? 0 : 1};" title="{voc.moveDown}")
-                svg.feather.dim
-                    use(xlink:href="data/icons.svg#arrow-down")
-            div.toright(onclick="{moveUp}" title="{voc.moveUp}" style="opacity: {index === 0? 0 : 1};")
-                svg.feather.dim
-                    use(xlink:href="data/icons.svg#arrow-up")
+            .toright
+                // Use forced opacity to keep nice layout
+                div.anActionableIcon(onclick="{moveUp}" title="{voc.moveUp}" style="{index === 0? 'opacity: 0;' : ''}")
+                    svg.feather
+                        use(xlink:href="data/icons.svg#arrow-up")
+                div.anActionableIcon(onclick="{moveDown}"  style="{index === global.currentProject.scripts.length - 1 ? 'opacity: 0;' : ''}" title="{voc.moveDown}")
+                    svg.feather
+                        use(xlink:href="data/icons.svg#arrow-down")
+                div.anActionableIcon(onclick="{deleteScript}" title="{voc.deleteScript}")
+                    svg.feather.red
+                        use(xlink:href="data/icons.svg#delete")
     button(onclick="{addNewScript}")
         svg.feather
             use(xlink:href="data/icons.svg#plus")

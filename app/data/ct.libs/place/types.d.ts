@@ -1,3 +1,40 @@
+interface ICtPlaceLineSegment {
+    /** The horizontal coordinate of the starting point of the ray. */
+    x1: number,
+    /** The vertical coordinate of the starting point of the ray. */
+    y1: number,
+    /** The horizontal coordinate of the ending point of the ray. */
+    x2: number,
+    /** The vertical coordinate of the ending point of the ray. */
+    y2: number
+}
+interface ICtPlaceRectangle {
+    /** The left side of the rectangle. */
+    x1?: number,
+    /** The upper side of the rectangle. */
+    y1?: number,
+    /** The right side of the rectangle. */
+    x2?: number,
+    /** The bottom side of the rectangle. */
+    y2?: number,
+    /** The left side of the rectangle. */
+    x?: number,
+    /** The upper side of the rectangle. */
+    y?: number,
+    /** The right side of the rectangle. */
+    width?: number,
+    /** The bottom side of the rectangle. */
+    height?: number
+}
+interface ICtPlaceCircle {
+    /** The horizontal coordinate of the circle's center. */
+    x: number,
+    /** The vertical coordinate of the circle's center. */
+    y: number,
+    /** The radius of the circle. */
+    radius: number
+}
+
 declare namespace ct {
     /**
      * A module for handling collisions.
@@ -38,7 +75,7 @@ declare namespace ct {
          */
         function free(me: Copy, ctype?: string): boolean;
 
-        function occupied(me: Copy, x: number, y: number, ctype?: string, multiple: true): Copy[];
+        function occupied(me: Copy, x: number, y: number, ctype: string|false, multiple: true): Copy[];
         /**
          * Determines if the place in (x,y) is occupied.
          * Optionally can take 'ctype' as a filter for obstacles' collision group (not shape type)
@@ -51,9 +88,9 @@ declare namespace ct {
          *                                   If it is false (default), it will return a copy with the first collision
          * @returns {Copy|Array<Copy>} The collided copy, or an array of all the detected collisions (if `multiple` is `true`)
          */
-        function occupied(me: Copy, x: number, y: number, ctype?: string, multiple?: false|void): Copy | false;
+        function occupied(me: Copy, x: number, y: number, ctype?: string): Copy | false;
 
-        function occupied(me: Copy, ctype?: string, multiple: true): Copy[];
+        function occupied(me: Copy, ctype?: string, multiple?: true): Copy[];
         /**
          * Determines if the copy is in an occupied place.
          * Optionally can take 'ctype' as a filter for obstacles' collision group (not shape type)
@@ -201,6 +238,84 @@ declare namespace ct {
          */
         function go(me: Copy, x: number, y: number, length: number, ctype?: string): void;
 
+
+        /**
+         * Tests for intersections with a line segment.
+         * If `getAll` is set to `true`, returns all the copies that intersect
+         * the line segment; otherwise, returns the first one that fits the conditions.
+         *
+         * @param {ICtPlaceLineSegment} line An object that describes the line segment.
+         * @param {string} [ctype] An optional collision group to trace against.
+         * If omitted, will trace through all the copies in the current room.
+         * @param {boolean} [getAll] Whether to return all the intersections (true),
+         * or return the first one.
+         */
+        function traceLine(line: ICtPlaceLineSegment, cgroup: string|false, getAll: true): Array<Copy>;
+        function traceLine(line: ICtPlaceLineSegment, cgroup: string|false, getAll: false): Copy|false;
+        function traceLine(line: ICtPlaceLineSegment, cgroup?: string): Copy|false;
+
+        /**
+         * Tests for intersections with a filled rectangle.
+         * If `getAll` is set to `true`, returns all the copies that intersect
+         * the rectangle; otherwise, returns the first one that fits the conditions.
+         *
+         * @param {ICtPlaceRectangle} rect An object that describes the line segment.
+         * @param {string} [ctype] An optional collision group to trace against.
+         * If omitted, will trace through all the copies in the current room.
+         * @param {boolean} [getAll] Whether to return all the intersections (true),
+         * or return the first one.
+         */
+        function traceRect(rect: ICtPlaceRectangle, cgroup: string, getAll: true): Array<Copy>;
+        function traceRect(rect: ICtPlaceRectangle, cgroup: string, getAll: false): Copy|false;
+        function traceRect(rect: ICtPlaceRectangle, cgroup?: string): Copy|false;
+
+        /**
+         * Tests for intersections with a filled circle.
+         * If `getAll` is set to `true`, returns all the copies that intersect
+         * the circle; otherwise, returns the first one that fits the conditions.
+         *
+         * @param {ICtPlaceCircle} rect An object that describes the line segment.
+         * @param {string} [ctype] An optional collision group to trace against.
+         * If omitted, will trace through all the copies in the current room.
+         * @param {boolean} [getAll] Whether to return all the intersections (true),
+         * or return the first one.
+         */
+        function traceCircle(circle: ICtPlaceCircle, cgroup: string|false, getAll: true): Array<Copy>;
+        function traceCircle(circle: ICtPlaceCircle, cgroup: string|false, getAll: false): Copy|false;
+        function traceCircle(circle: ICtPlaceCircle, cgroup?: string): Copy|false;
+
+        /**
+         * Tests for intersections with a polyline. It is a hollow shape made
+         * of connected line segments. The shape is not closed unless you add
+         * the closing point by yourself.
+         * If `getAll` is set to `true`, returns all the copies that intersect
+         * the polyline; otherwise, returns the first one that fits the conditions.
+         *
+         * @param {Array<IPoint>} polyline An array of objects with `x` and `y` properties.
+         * @param {string} [ctype] An optional collision group to trace against.
+         * If omitted, will trace through all the copies in the current room.
+         * @param {boolean} [getAll] Whether to return all the intersections (true),
+         * or return the first one.
+         */
+        function tracePolyline(polyline: Array<IPoint>, cgroup: string|false, getAll: true): Array<Copy>;
+        function tracePolyline(polyline: Array<IPoint>, cgroup: string|false, getAll: false): Copy|false;
+        function tracePolyline(polyline: Array<IPoint>, cgroup?: string): Copy|false;
+
+        /**
+         * Tests for intersections with a point.
+         * If `getAll` is set to `true`, returns all the copies that intersect
+         * the point; otherwise, returns the first one that fits the conditions.
+         *
+         * @param {object} point An object with `x` and `y` properties.
+         * @param {string} [ctype] An optional collision group to trace against.
+         * If omitted, will trace through all the copies in the current room.
+         * @param {boolean} [getAll] Whether to return all the intersections (true),
+         * or return the first one.
+         */
+        function tracePoint(point: IPoint, cgroup: string|false, getAll: true): Array<Copy>;
+        function tracePoint(point: IPoint, cgroup: string|false, getAll: false): Copy|false;
+        function tracePoint(point: IPoint, cgroup?: string): Copy|false;
+
         /**
          * Throws a ray from point (x1, y1) to (x2, y2), returning all the instances that touched the ray.
          * The first copy in the returned array is the closest copy, the last one is the furthest.
@@ -211,15 +326,27 @@ declare namespace ct {
          * @param {number} y2 A vertical coordinate of the ending point of the ray.
          * @param {String} [ctype] An optional collision group to trace against. If omitted, will trace through all the copies in the current room.
          *
+         * @deprecated Since v1.4.3. Use ct.place.traceLine instead.
          * @returns {Array<Copy>} Array of all the copies that touched the ray
          */
         function trace(x1: number, y1: number, x2: number, y2: number, ctype?: string): Copy[];
+
+        /**
+         * Enables collision checks on the specified tilemap, with an optional collision group.
+         * @param {Tilemap} tilemap The tilemap on which to enable collisions.
+         * @param {string} ctype Collision group.
+         */
+        function enableTilemapCollisions(tilemap: Tilemap, ctype?: string): void;
     }
 }
 
+interface IPoint {
+    x: number;
+    y: number;
+}
 interface ISeparateMovementResult {
-    x: boolean;
-    y: boolean;
+    x: boolean | Copy;
+    y: boolean | Copy;
 }
 
 interface Copy {
@@ -229,10 +356,18 @@ interface Copy {
      * Call to perform precise movement with collision checks. It takes gravity
      * and `ct.delta` into account, too, and uses the `ct.place.moveAlong` method.
      */
-    moveContinuous(ctype: string, precision?: number): void;
+    moveContinuous(ctype: string, precision?: number): false|Copy;
     /**
      * Call to perform precise movement with collision checks. It takes gravity
      * and `ct.delta` into account, too, and uses the `ct.place.moveByAxes` method.
      */
-    moveContinuousByAxes(ctype: string, precision?: number): void;
+    moveContinuousByAxes(ctype: string, precision?: number): false|ISeparateMovementResult;
+}
+
+interface Tilemap {
+    /**
+     * Enables collision checks on the specified tilemap, with an optional collision group.
+     * @param {string} ctype Collision group.
+     */
+    enableCollisions(ctype?: string): void;
 }

@@ -7,6 +7,7 @@ const path = require('path'),
       replace = require('gulp-replace'),
       sourcemaps = require('gulp-sourcemaps'),
       minimist = require('minimist'),
+      ts = require('gulp-typescript'),
       stylus = require('gulp-stylus'),
       riot = require('gulp-riot'),
       pug = require('gulp-pug'),
@@ -23,7 +24,7 @@ const path = require('path'),
 
       spawnise = require('./node_requires/spawnise');
 
-const nwVersion = '0.45.6',
+const nwVersion = '0.49.2',
       platforms = ['osx64', 'win32', 'win64', 'linux32', 'linux64'],
       nwFiles = ['./app/**', '!./app/export/**', '!./app/projects/**', '!./app/exportDesktop/**', '!./app/cache/**', '!./app/.vscode/**', '!./app/JamGames/**'];
 
@@ -106,14 +107,22 @@ const compilePug = () =>
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('./app/'));
 
+const riotSettings = {
+    compact: false,
+    template: 'pug'
+};
 const compileRiot = () =>
-    gulp.src('./src/riotTags/**')
-    .pipe(riot({
-        compact: false,
-        template: 'pug'
-    }))
-    .pipe(concat('riot.js'))
-    .pipe(gulp.dest('./temp/'));
+    gulp.src('./src/riotTags/**/*.tag')
+    .pipe(riot(riotSettings))
+    .pipe(concat('riotTags.js'))
+    .pipe(gulp.dest('./app/data/'));
+
+const compileRiotPartial = path => {
+    console.log(`Updating tag at ${path}…`);
+    return gulp.src(path)
+    .pipe(riot(riotSettings))
+    .pipe(gulp.dest('./app/data/hotLoadTags/'));
+};
 
 const concatScripts = () =>
     streamQueue(
@@ -121,8 +130,7 @@ const concatScripts = () =>
             objectMode: true
         },
         gulp.src('./src/js/3rdparty/riot.min.js'),
-        gulp.src(['./src/js/**', '!./src/js/3rdparty/riot.min.js']),
-        gulp.src('./temp/riot.js')
+        gulp.src(['./src/js/**', '!./src/js/3rdparty/riot.min.js'])
     )
     .pipe(sourcemaps.init({
         largeFile: true
@@ -141,13 +149,28 @@ const concatScripts = () =>
         console.error('[scripts error]', err);
     })
     .on('change', fileChangeNotifier);
+
 const copyRequires = () =>
-    gulp.src('./src/node_requires/**/*')
+    gulp.src([
+        './src/node_requires/**/*',
+        '!./src/node_requires/**/*.ts'
+    ])
     .pipe(sourcemaps.init())
     // ¯\_(ツ)_/¯
     .pipe(sourcemaps.mapSources((sourcePath) => '../../src/' + sourcePath))
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('./app/data/node_requires'));
+
+const tsProject = ts.createProject('tsconfig.json');
+
+const processRequiresTS = () =>
+    gulp.src('./src/node_requires/**/*.ts')
+    .pipe(sourcemaps.init())
+    .pipe(tsProject())
+    .pipe(sourcemaps.write())
+    .pipe(gulp.dest('./app/data/node_requires'));
+
+const processRequires = gulp.series(copyRequires, processRequiresTS);
 
 const copyInEditorDocs = () =>
     gulp.src('./docs/docs/ct.*.md')
@@ -171,12 +194,12 @@ const watchScripts = () => {
     .on('change', fileChangeNotifier);
 };
 const watchRiot = () => {
-    gulp.watch('./src/riotTags/**/*', gulp.series(compileScripts))
-    .on('error', err => {
+    const watcher = gulp.watch('./src/riotTags/**/*', compileRiot);
+    watcher.on('error', err => {
         notifier.notify(makeErrorObj('Riot failure', err));
         console.error('[pug error]', err);
-    })
-    .on('change', fileChangeNotifier);
+    });
+    watcher.on('change', compileRiotPartial);
 };
 const watchStylus = () => {
     gulp.watch('./src/styl/**/*', compileStylus)
@@ -187,7 +210,7 @@ const watchStylus = () => {
     .on('change', fileChangeNotifier);
 };
 const watchPug = () => {
-    gulp.watch('./src/pug/*.pug', compilePug)
+    gulp.watch('./src/pug/**/*.pug', compilePug)
     .on('change', fileChangeNotifier)
     .on('error', err => {
         notifier.notify(makeErrorObj('Pug failure', err));
@@ -195,7 +218,7 @@ const watchPug = () => {
     });
 };
 const watchRequires = () => {
-    gulp.watch('./src/node_requires/**/*', copyRequires)
+    gulp.watch('./src/node_requires/**/*', processRequires)
     .on('change', fileChangeNotifier)
     .on('error', err => {
         notifier.notify(makeErrorObj('Failure of node_requires', err));
@@ -388,7 +411,7 @@ const build = gulp.parallel([
     compilePug,
     compileStylus,
     compileScripts,
-    copyRequires,
+    processRequires,
     copyInEditorDocs,
     icons,
     bakeTypedefs

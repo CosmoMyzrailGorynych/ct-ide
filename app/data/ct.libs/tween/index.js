@@ -6,11 +6,15 @@ ct.tween = {
      *
      * @param {Object} options An object with options:
      * @param {Object|Copy} options.obj An object to animate. All objects are supported.
-     * @param {Object} options.fields A map with pairs `fieldName: newValue`. Values must be of numerical type.
+     * @param {Object} options.fields A map with pairs `fieldName: newValue`.
+     * Values must be of numerical type.
      * @param {Function} options.curve An interpolating function. You can write your own,
      * or use default ones (see methods in `ct.tween`). The default one is `ct.tween.ease`.
      * @param {Number} options.duration The duration of easing, in milliseconds.
-     * @param {Number} options.useUiDelta If true, use ct.deltaUi instead of ct.delta. The default is `false`.
+     * @param {Number} options.useUiDelta If true, use ct.deltaUi instead of ct.delta.
+     * The default is `false`.
+     * @param {boolean} options.silent If true, will not throw errors if the animation
+     * was interrupted.
      *
      * @returns {Promise} A promise which is resolved if the effect was fully played,
      * or rejected if it was interrupted manually by code, room switching or instance kill.
@@ -33,7 +37,11 @@ ct.tween = {
             }
             ct.tween.tweens.push(tween);
         });
-        promise.stop = function () {
+        if (options.silent) {
+            promise.catch(() => void 0);
+            tween.timer.catch(() => void 0);
+        }
+        promise.stop = function stop() {
             tween.reject({
                 code: 0,
                 info: 'Stopped by game logic',
