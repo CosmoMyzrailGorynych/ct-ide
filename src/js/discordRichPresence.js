@@ -2,7 +2,6 @@
 (function discordRichPresence() {
     const appId = '749670101904785502';
     const startTimestamp = new Date();
-    let available = false;
     let failed = false;
 
     const RPC = require('discord-rpc');
@@ -103,7 +102,6 @@
     });
 
     client.on('ready', () => {
-        available = true;
         console.debug('[discord] Ready to use discord rich presence!');
         requestStatusUpdate({
             startTimestamp,
