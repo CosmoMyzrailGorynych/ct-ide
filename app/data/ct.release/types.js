@@ -259,8 +259,11 @@ const Copy = (function Copy() {
          * @returns {void}
          */
         each(func) {
-            for (const i in ct.stack) {
-                func.apply(ct.stack[i], this);
+            for (const copy of ct.stack) {
+                if (!(copy instanceof Copy)) {
+                    continue; // Skip backgrounds and tile layers
+                }
+                func.apply(copy, this);
             }
         },
         /*
