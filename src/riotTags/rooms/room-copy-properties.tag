@@ -57,3 +57,9 @@ room-copy-properties.panel
         this.namespace = 'roomview.copyProperties';
         this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
+
+        this.on('update', () => {
+            if (this.opts.copy && !this.opts.copy.exts) {
+                this.opts.copy.exts = {};
+            }
+        });
