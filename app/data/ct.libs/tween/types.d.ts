@@ -12,7 +12,10 @@ interface ITweenOptions {
     obj: object;
     /** A map with pairs `fieldName: newValue`. Values must be of numerical type. */
     fields: object;
-    /** An interpolating function. You can write your own, or use default ones written below. The default one is `ct.tween.ease`. */
+    /**
+     * An interpolating function. You can write your own,
+     * or use default ones written below. The default one is `ct.tween.ease`.
+     */
     curve?: TweenCurveFunction;
     /** The duration of easing, in milliseconds. */
     duration: number;
@@ -50,5 +53,14 @@ declare namespace ct {
         var easeInOutCirc: TweenCurveFunction;
         var easeInCirc: TweenCurveFunction;
         var easeOutCirc: TweenCurveFunction;
+        var easeOutBack: TweenCurveFunction;
+        var easeInBack: TweenCurveFunction;
+        var easeInOutBack: TweenCurveFunction;
+        var easeInElastic: TweenCurveFunction;
+        var easeOutElastic: TweenCurveFunction;
+        var easeInOutElastic: TweenCurveFunction;
+        var easeOutBounce: TweenCurveFunction;
+        var easeInBounce: TweenCurveFunction;
+        var easeInOutBounce: TweenCurveFunction;
     }
 }
