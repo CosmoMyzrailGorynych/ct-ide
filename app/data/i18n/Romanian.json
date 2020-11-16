@@ -22,8 +22,6 @@
         "exit": "Ieși",
         "exitconfirm": "Ești sigur că vrei să ieși?<br/>Toate modificările nesalvate se vor pierde!",
         "fastimport": "Import Rapid",
-        "language": "Limbă",
-        "translateToYourLanguage": "Tradu ct.js în limba ta!",
         "name": "Nume:",
         "nametaken": "Acest nume este deja în uz",
         "newname": "Nume nou:",
@@ -47,7 +45,16 @@
         "contribute": "",
         "zoom": "Zoom",
         "zoomIn": "Mărire",
-        "zoomOut": "Micșorare"
+        "zoomOut": "Micșorare",
+        "loading": "",
+        "select": "",
+        "clear": "",
+        "filter": "",
+        "selectDialogue": "",
+        "search": "",
+        "close": "",
+        "couldNotLoadFromClipboard": "",
+        "pastedFromClipboard": ""
     },
     "colorPicker": {
         "current": "Nou",
@@ -65,7 +72,9 @@
         "export": "Exportă",
         "exportPanel": "Exportă proiectul",
         "firstrunnotice": "Prima rulare pentru fiecare platformă va fi lentă deoarece ct.js va descărca și salva bibliotecile necesare pentru împachetare. Va dura ceva timp, dar data viitoare va fi aproape instant.",
-        "log": "Jurnal de mesaje"
+        "log": "Jurnal de mesaje",
+        "windowsCrossBuildWarning": "",
+        "cannotBuildForMacOnWin": ""
     },
     "intro": {
         "loading": "Vă rugăm așteptați: pisicuțele accelerează la viteza luminii!",
@@ -73,7 +82,9 @@
             "button": "Crează",
             "input": "Numele proiectului (litere și cifre)",
             "text": "Crează un nou proiect",
-            "nameerr": "Numele proiectului este greșit"
+            "nameerr": "Numele proiectului este greșit",
+            "saveProjectHere": "",
+            "selectProjectFolder": ""
         },
         "recovery": {
             "message": "<h2 class=\"nmt\">Recuperare</h2><p>ct.js a găsit un fișier de recuperare. Probabil că proiectul tău nu a fost salvat corect sau ct.js a fost oprit forțat. Iată când au fost modificate ultima dată aceste fișiere:</p><p>Fișiere alese: {0} {1}<br/>Fișiere de recuperare: {2} {3}</p><p>Ce fișier ar trebui să deschida ct.js?</p>",
@@ -91,41 +102,12 @@
         "discord": "Comunitatea pe Discord",
         "loadingProject": "",
         "loadingProjectError": "",
-        "unableToWriteToFolders": ""
+        "unableToWriteToFolders": "",
+        "examples": "",
+        "createOrBrowseJunction": ""
     },
     "licensepanel": {
         "ctjslicense": ""
-    },
-    "menu": {
-        "ctIDE": "ct.IDE",
-        "exportDesktop": "Exportă pentru desktop",
-        "texture": "Texturi",
-        "launch": "Compilează",
-        "license": "Licență",
-        "min": "Windowed",
-        "recentProjects": "Proiecte recente",
-        "rooms": "Camere",
-        "save": "Salvează proiectul",
-        "startScreen": "Întoarce-te la ecranul de pornire",
-        "settings": "Setări",
-        "sounds": "Sunete",
-        "successZipExport": "Exportat cu succes în {0}.",
-        "successZipProject": "Proiectul a fost arhivat (zip) cu succes în {0}.",
-        "ui": "Interfață",
-        "theme": "Temă",
-        "themeDay": "Deschisă",
-        "themeNight": "Întunecată",
-        "types": "Tipuri",
-        "zipExport": "Exportă .zip",
-        "zipProject": "Împachetază proiectul în .zip",
-        "codeFontDefault": "",
-        "codeFontOldSchool": "",
-        "codeFontSystem": "",
-        "codeFontCustom": "",
-        "newFont": "",
-        "codeFont": "",
-        "codeLigatures": "",
-        "codeDense": ""
     },
     "settings": {
         "actions": {
@@ -152,7 +134,18 @@
         "rendering": {
             "heading": "Opțiuni de randare",
             "framerate": "Framerate:",
-            "pixelatedrender": "Dezactivează netezirea imaginii aici și în proiectul exportat (conservă pixelii clari)"
+            "pixelatedrender": "Dezactivează netezirea imaginii aici și în proiectul exportat (conservă pixelii clari)",
+            "highDensity": "",
+            "maxFPS": "",
+            "usePixiLegacy": "",
+            "desktopBuilds": "",
+            "launchMode": "",
+            "launchModes": {
+                "maximized": "",
+                "fullscreen": "",
+                "windowed": ""
+            },
+            "hideCursor": ""
         },
         "scripts": {
             "heading": "Script-uri",
@@ -161,6 +154,30 @@
             "newScriptComment": "Folosește script-uri pentru a defini funcții frecvente și pentru a importa biblioteci mici",
             "moveUp": "Mută-te în sus.",
             "moveDown": "Mutare în jos"
+        },
+        "branding": {
+            "heading": "",
+            "accent": "",
+            "accentNotice": "",
+            "icon": "",
+            "iconNotice": "",
+            "invertPreloaderScheme": ""
+        },
+        "modules": {
+            "heading": ""
+        },
+        "catmodsSettings": "",
+        "export": {
+            "heading": "",
+            "functionWrap": "",
+            "codeModifier": "",
+            "obfuscateWarning": "",
+            "codeModifierAndWrapNote": "",
+            "codeModifiers": {
+                "none": "",
+                "minify": "",
+                "obfuscate": ""
+            }
         }
     },
     "modules": {
@@ -172,12 +189,38 @@
         "methods": "Metode",
         "parameters": "Parametri",
         "logs2": "Jurnalul schimbărilor",
-        "settings": "Setări"
+        "settings": "Setări",
+        "dependencies": "",
+        "optionalDependencies": "",
+        "importModules": "",
+        "enabledModules": "",
+        "availableModules": "",
+        "filter": "",
+        "categories": {
+            "customization": "",
+            "utilities": "",
+            "media": "",
+            "misc": "",
+            "desktop": "",
+            "motionPlanning": "",
+            "inputs": "",
+            "fx": "",
+            "mobile": "",
+            "integrations": "",
+            "tweaks": "",
+            "networking": ""
+        },
+        "preview": "",
+        "previewTooltip": "",
+        "deprecatedTooltip": ""
     },
     "texture": {
         "create": "Crează",
         "import": "Importă",
-        "skeletons": "Animație scheletică"
+        "skeletons": "Animație scheletică",
+        "createType": "",
+        "importFromClipboard": "",
+        "generatePlaceholder": ""
     },
     "textureview": {
         "bgcolor": "Schimbă culoarea fundalului",
@@ -212,7 +255,11 @@
         "addPoint": "Adaugă un punct",
         "moveCenter": "Mută axa",
         "movePoint": "Mută punctul",
-        "symmetryTool": "Instrument de simetrie"
+        "symmetryTool": "Instrument de simetrie",
+        "padding": "",
+        "paddingNotice": "",
+        "updateFromClipboard": "",
+        "previewAnimationNotice": ""
     },
     "sounds": {
         "create": "Crează"
@@ -257,7 +304,8 @@
         "strokeweight": "Greutatea liniei:",
         "testtext": "Test text 0123 +",
         "textWrap": "Word wrap",
-        "textWrapWidth": "Lățime maximă:"
+        "textWrapWidth": "Lățime maximă:",
+        "useCustomFont": ""
     },
     "fonts": {
         "fonts": "Font-uri",
@@ -268,7 +316,23 @@
         "typefacename": "Numele tipului de caractere:",
         "fontweight": "Greutatea font-ului:",
         "italic": "Este italic?",
-        "reimport": "Re-importă"
+        "reimport": "Re-importă",
+        "generateBitmapFont": "",
+        "bitmapFont": "",
+        "bitmapFontSize": "",
+        "bitmapFontLineHeight": "",
+        "resultingBitmapFontName": "",
+        "charset": "",
+        "charsets": {
+            "punctuation": "",
+            "basicLatin": "",
+            "latinExtended": "",
+            "cyrillic": "",
+            "greekCoptic": "",
+            "custom": "",
+            "allInFont": ""
+        },
+        "customCharsetHint": ""
     },
     "types": {
         "create": "Crează"
@@ -282,7 +346,8 @@
         "draw": "Desenare",
         "learnAboutTypes": "Învață despre programarea tipurilor",
         "name": "Nume:",
-        "step": "La Fiecare Pas"
+        "step": "La Fiecare Pas",
+        "visible": ""
     },
     "rooms": {
         "create": "Adaugă o nouă cameră",
@@ -295,7 +360,10 @@
         "parallax": "Paralaxă (X, Y):",
         "repeat": "Repetare:",
         "scale": "Scalare (X, Y):",
-        "shift": "Deplasare (X, Y):"
+        "shift": "Deplasare (X, Y):",
+        "notBackgroundTextureWarning": "",
+        "fixBackground": "",
+        "dismissWarning": ""
     },
     "roomtiles": {
         "moveTileLayer": "Mută la o nouă adâncime",
@@ -338,12 +406,271 @@
         "deletetiles": "Șterge tile-urile",
         "movetilestolayer": "Mută în layer",
         "shifttiles": "Deplasează tile-urile",
-        "findTileset": ""
+        "findTileset": "",
+        "changecopyrotation": "",
+        "properties": "",
+        "isUi": "",
+        "backgroundColor": "",
+        "sortHorizontally": "",
+        "sortVertically": "",
+        "copyProperties": {
+            "position": "",
+            "rotation": "",
+            "scale": ""
+        }
     },
     "notepad": {
         "local": "Carnețelul Proiectului",
         "global": "Carnețel Global",
         "helppages": "Ajutor",
-        "backToHome": "Înapoi la pagina principală a documentației"
+        "backToHome": "Înapoi la pagina principală a documentației",
+        "modulespages": ""
+    },
+    "curveEditor": {
+        "curveLineHint": "",
+        "dragPointHint": "",
+        "pointTime": "",
+        "pointValue": ""
+    },
+    "debuggerToolbar": {
+        "pause": "",
+        "resume": "",
+        "restartGame": "",
+        "restartRoom": "",
+        "switchRoom": "",
+        "toggleDevTools": "",
+        "screenshot": "",
+        "enterFullscreen": "",
+        "exitFullscreen": "",
+        "links": "",
+        "openExternal": "",
+        "close": ""
+    },
+    "onboarding": {
+        "hoorayHeader": "",
+        "nowWhatParagraph": "",
+        "openSpaceShooterTutorial": "",
+        "openPlatformerTutorial": "",
+        "openJettyCatTutorial": "",
+        "doNothing": "",
+        "showOnboardingCheckbox": ""
+    },
+    "particleEmitters": {
+        "emittersHeading": "",
+        "emitterHeading": "",
+        "from": "",
+        "to": "",
+        "textureHeading": "",
+        "selectTexture": "",
+        "importBuiltin": "",
+        "colorAndOpacityHeading": "",
+        "stepped": "",
+        "steppedColor": "",
+        "steppedAlpha": "",
+        "blendMode": "",
+        "regular": "",
+        "darken": "",
+        "lighten": "",
+        "burn": "",
+        "scalingHeading": "",
+        "scale": "",
+        "minimumSize": "",
+        "minimumSizeHint": "",
+        "velocityHeading": "",
+        "velocity": "",
+        "minimumSpeed": "",
+        "minimumSpeedHint": "",
+        "maxSpeed": "",
+        "gravityHeading": "",
+        "gravityNotice": "",
+        "directionHeading": "",
+        "startingDirection": "",
+        "preserveTextureDirection": "",
+        "rotationHeading": "",
+        "rotationSpeed": "",
+        "rotationAcceleration": "",
+        "spawningHeading": "",
+        "timeBetweenBursts": "",
+        "spawnAtOnce": "",
+        "chanceToSpawn": "",
+        "maxParticles": "",
+        "lifetime": "",
+        "emitterLifetime": "",
+        "prewarmDelay": "",
+        "prewarmDelayNotice": "",
+        "shapeAndPositioningHeading": "",
+        "spawnType": "",
+        "spawnShapes": {
+            "point": "",
+            "rectangle": "",
+            "circle": "",
+            "ring": "",
+            "star": ""
+        },
+        "width": "",
+        "height": "",
+        "radius": "",
+        "starPoints": "",
+        "startAngle": "",
+        "showShapeVisualizer": "",
+        "relativeEmitterPosition": "",
+        "addEmitter": "",
+        "reset": "",
+        "changeBg": "",
+        "inspectorComplete": "",
+        "alreadyHasAnImportingTexture": "",
+        "changeGrid": "",
+        "newGridSize": "",
+        "setPreviewTexture": ""
+    },
+    "patreon": {
+        "aboutPatrons": "",
+        "patronsHeader": "",
+        "businessShuttles": "",
+        "noShuttlesYet": "",
+        "shuttlesDescription": "",
+        "spacePirates": "",
+        "noPiratesYet": "",
+        "piratesDescription": "",
+        "spaceProgrammers": "",
+        "programmersDescription": "",
+        "aspiringAstronauts": "",
+        "noAstronautsYet": "",
+        "astronautsDescription": "",
+        "thankAllPatrons": "",
+        "becomeAPatron": "",
+        "aboutFillers": [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+        ]
+    },
+    "docsPanel": {
+        "documentation": "",
+        "reference": ""
+    },
+    "extensionsEditor": {
+        "noEntries": "",
+        "addRow": ""
+    },
+    "textureGenerator": {
+        "name": "",
+        "width": "",
+        "height": "",
+        "color": "",
+        "label": "",
+        "optional": "",
+        "createAndClose": "",
+        "createAndContinue": "",
+        "scalingAtX4": "",
+        "generationSuccessMessage": "",
+        "filler": "",
+        "fillerNone": "",
+        "fillerCross": "",
+        "fillerLabel": ""
+    },
+    "textureInput": {
+        "jumpToTexture": "",
+        "changeTexture": ""
+    },
+    "writableFolderPrompt": {
+        "headerSelectFolderForData": "",
+        "paragraphCouldNotPickDirectory": "",
+        "paragraphDirectoryDirections": "",
+        "selectFolder": ""
+    },
+    "writableFolderSelector": {
+        "folderDoesNotExist": "",
+        "notADirectory": "",
+        "folderNotWritable": "",
+        "complete": ""
+    },
+    "mainMenu": {
+        "troubleshooting": {
+            "toggleDevTools": "",
+            "copySystemInfo": "",
+            "systemInfoWait": "",
+            "systemInfoDone": "",
+            "disableAcceleration": "",
+            "disableBuiltInDebugger": "",
+            "postAnIssue": "",
+            "heading": ""
+        },
+        "deploy": {
+            "exportDesktop": "Exportă pentru desktop",
+            "successZipExport": "Exportat cu succes în {0}.",
+            "zipExport": "Exportă .zip"
+        },
+        "latestProjects": {
+            "recentProjects": "Proiecte recente"
+        },
+        "settings": {
+            "language": "Limbă",
+            "translateToYourLanguage": "Tradu ct.js în limba ta!",
+            "theme": "Temă",
+            "themes": {
+                "Day": "Deschisă",
+                "Night": "Întunecată",
+                "SpringStream": "",
+                "LucasDracula": "",
+                "Horizon": "",
+                "HCBlack": ""
+            },
+            "codeFontDefault": "",
+            "codeFontOldSchool": "",
+            "codeFontSystem": "",
+            "codeFontCustom": "",
+            "newFont": "",
+            "codeFont": "",
+            "codeLigatures": "",
+            "codeDense": "",
+            "heading": "Setări",
+            "disableSounds": "",
+            "changeDataFolder": "",
+            "forceProductionForDebug": ""
+        },
+        "project": {
+            "save": "Salvează proiectul",
+            "openIncludeFolder": "",
+            "openProject": "",
+            "openExample": "",
+            "startScreen": "Întoarce-te la ecranul de pornire",
+            "successZipProject": "Proiectul a fost arhivat (zip) cu succes în {0}.",
+            "zipProject": "Împachetază proiectul în .zip"
+        },
+        "meta": {
+            "license": "Licență",
+            "visitDiscordForGamedevSupport": "",
+            "openIconList": ""
+        }
+    },
+    "appView": {
+        "ctIDE": "ct.IDE",
+        "texture": "Texturi",
+        "launch": "Compilează",
+        "min": "Windowed",
+        "rooms": "Camere",
+        "sounds": "Sunete",
+        "ui": "Interfață",
+        "types": "Tipuri",
+        "launchHotkeys": "",
+        "patrons": "",
+        "fx": "",
+        "restart": "",
+        "project": ""
     }
 }

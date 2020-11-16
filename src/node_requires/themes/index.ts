@@ -31,7 +31,7 @@ const mod = {
         const theme = {
             name,
             get translated() {
-                return (window as any).languageJSON.menu[`theme${name}`] || name;
+                return (window as any).languageJSON.mainMenu.settings.themes[name] || name;
             },
             monacoTheme,
             css

@@ -1,0 +1,20 @@
+main-menu
+    @extends .view
+    overflow-x hidden
+    overflow-y scroll
+    .&-aGrid
+        display grid
+        grid-template-columns repeat(auto-fill, minmax(20em, 1fr))
+        grid-auto-rows minmax(3rem, auto)
+        grid-auto-flow dense
+        padding 2rem
+        grid-gap 3rem
+    .&-aDoubleSection
+        grid-row-end span 2
+    .&-aTripleSection
+        grid-row-end span 3
+    .&-aQuadrupleSection
+        grid-row-end span 4
+    .&-aSection, .&-aDoubleSection, .&-aTripleSection, .&-aQuadrupleSection
+        & > h1:first-child
+            margin 0 0 1rem 0.65rem

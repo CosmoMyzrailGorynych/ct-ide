@@ -36,7 +36,7 @@ export-panel
                 div(each="{text in log}") {text.toString()}
         .flexfix-footer
             .flexrow
-                button(onclick="{closeExporter}") {voc.hide}
+                button(onclick="{opts.onclose}") {voc.hide}
                 button(onclick="{export}")
                     span.inlineblock.rotateccw(if="{working}")
                         svg.feather
@@ -56,11 +56,6 @@ export-panel
         const projSettings = global.currentProject.settings;
         this.projSettings = global.currentProject.settings;
 
-
-        this.closeExporter = function closeExporter() {
-            this.parent.showExporter = false;
-            this.parent.update();
-        };
         const bakeIcons = async exportDir => {
             const path = require('path'),
                   fs = require('fs-extra');

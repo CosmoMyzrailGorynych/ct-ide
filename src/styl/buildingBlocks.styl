@@ -1,4 +1,4 @@
-.spacer
+.spacer, .aSpacer
     width 1rem
     height @width
 
@@ -49,7 +49,7 @@
     margin 0 -1rem
     border-top 1px solid borderPale
 
-.aStrippedList
+.aStripedList
     margin 0.5rem 0
     padding 0
     li
@@ -57,13 +57,17 @@
         padding 0.2em 0.8em
         margin 0
         border-bottom 1px solid borderPale
+        &:last-child
+            border-bottom 0
 
 
 // Меню выбора - список
-.menu
-    @extends .aStrippedList
+.aMenu
+    @extends .aStripedList
     overflow auto
     font-weight 400
+    & + &
+        margin-top 1rem
     li
         cursor pointer
         overflow hidden
@@ -75,10 +79,20 @@
             border-bottom-color borderBright
             color acttext
             padding 0.2em 0.5em 0.2em 1.1em
+        & > svg:first-child, & > .spacer:first-child
+            color act
+            margin-right 0.5rem
+            {trans}
+        & > .spacer:first-child
+            width 1.5rem
+            height 1.5rem
+            display inline-block
         &:active, &.active
             background act
             border-bottom-color transparent
             color background
+            & > svg:first-child, & > .spacer:first-child
+                color background
 
 // панели управления
 .nav

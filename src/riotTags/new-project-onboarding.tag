@@ -7,7 +7,7 @@ new-project-onboarding
                     use(xlink:href="data/img/onboardingIllustration.svg#illustration")
                 h1 {voc.hoorayHeader}
                 p {voc.nowWhatParagraph}
-            ul.menu
+            ul.aMenu
                 li(onclick="{openDocs('/tut-making-shooter.html')}")
                     svg.feather
                         use(xlink:href="data/icons.svg#space-shooter")

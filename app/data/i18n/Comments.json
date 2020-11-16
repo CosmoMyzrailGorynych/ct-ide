@@ -53,7 +53,10 @@
         "clear": "",
         "filter": "A verb",
         "selectDialogue": "A verb",
-        "search": "Shown next to a search field"
+        "search": "Shown next to a search field",
+        "close": "",
+        "couldNotLoadFromClipboard": "",
+        "pastedFromClipboard": ""
     },
     "colorPicker": {
         "current": "",
@@ -101,60 +104,12 @@
         "latest": "",
         "unableToWriteToFolders": "",
         "twitter": "",
-        "discord": ""
+        "discord": "",
+        "examples": "",
+        "createOrBrowseJunction": ""
     },
     "licensepanel": {
         "ctjslicense": ""
-    },
-    "menu": {
-        "ctIDE": "",
-        "exportDesktop": "",
-        "texture": "",
-        "launch": "",
-        "license": "",
-        "min": "",
-        "recentProjects": "",
-        "rooms": "",
-        "save": "",
-        "startScreen": "",
-        "sounds": "",
-        "successZipExport": "",
-        "successZipProject": "",
-        "ui": "",
-        "theme": "",
-        "themeDay": "",
-        "themeNight": "",
-        "types": "",
-        "zipExport": "",
-        "zipProject": "",
-        "codeFontDefault": "",
-        "codeFontOldSchool": "",
-        "codeFontSystem": "",
-        "codeFontCustom": "",
-        "newFont": "",
-        "codeFont": "",
-        "codeLigatures": "",
-        "codeDense": "",
-        "launchHotkeys": "",
-        "patrons": "",
-        "fx": "",
-        "openIncludeFolder": "",
-        "troubleshooting": "",
-        "toggleDevTools": "",
-        "copySystemInfo": "",
-        "systemInfoWait": "",
-        "systemInfoDone": "",
-        "disableAcceleration": "",
-        "disableBuiltInDebugger": "",
-        "visitDiscordForGamedevSupport": "",
-        "postAnIssue": "",
-        "restart": "",
-        "project": "",
-        "settings": "",
-        "themeSpringStream": "",
-        "themeLucasDracula": "",
-        "openProject": "",
-        "openExample": ""
     },
     "modules": {
         "author": "",
@@ -185,13 +140,18 @@
             "integrations": "",
             "tweaks": "",
             "networking": ""
-        }
+        },
+        "preview": "",
+        "previewTooltip": "",
+        "deprecatedTooltip": ""
     },
     "texture": {
         "create": "",
         "import": "A verb",
         "skeletons": "",
-        "createType": ""
+        "createType": "",
+        "importFromClipboard": "",
+        "generatePlaceholder": ""
     },
     "textureview": {
         "bgcolor": "",
@@ -228,7 +188,9 @@
         "movePoint": "",
         "symmetryTool": "",
         "padding": "",
-        "paddingNotice": ""
+        "paddingNotice": "",
+        "updateFromClipboard": "",
+        "previewAnimationNotice": ""
     },
     "sounds": {
         "create": ""
@@ -315,7 +277,8 @@
         "draw": "",
         "learnAboutTypes": "",
         "name": "",
-        "step": ""
+        "step": "",
+        "visible": ""
     },
     "rooms": {
         "create": "",
@@ -328,7 +291,10 @@
         "parallax": "",
         "repeat": "",
         "scale": "",
-        "shift": ""
+        "shift": "",
+        "notBackgroundTextureWarning": "",
+        "fixBackground": "",
+        "dismissWarning": ""
     },
     "roomtiles": {
         "moveTileLayer": "",
@@ -373,7 +339,16 @@
         "shifttiles": "",
         "findTileset": "",
         "changecopyrotation": "",
-        "properties": ""
+        "properties": "",
+        "isUi": "",
+        "backgroundColor": "",
+        "sortHorizontally": "",
+        "sortVertically": "",
+        "copyProperties": {
+            "position": "",
+            "rotation": "",
+            "scale": ""
+        }
     },
     "notepad": {
         "local": "",
@@ -382,7 +357,6 @@
         "backToHome": "",
         "modulespages": ""
     },
-    "preview": {},
     "curveEditor": {
         "curveLineHint": "",
         "dragPointHint": "",
@@ -566,7 +540,8 @@
                 "maximized": "",
                 "fullscreen": "",
                 "windowed": ""
-            }
+            },
+            "hideCursor": ""
         },
         "scripts": {
             "heading": "",
@@ -576,6 +551,126 @@
             "moveUp": "",
             "newScriptComment": ""
         },
-        "catmodsSettings": ""
+        "catmodsSettings": "",
+        "export": {
+            "heading": "",
+            "functionWrap": "",
+            "codeModifier": "",
+            "obfuscateWarning": "",
+            "codeModifierAndWrapNote": "",
+            "codeModifiers": {
+                "none": "",
+                "minify": "",
+                "obfuscate": ""
+            }
+        }
+    },
+    "extensionsEditor": {
+        "noEntries": "",
+        "addRow": ""
+    },
+    "textureGenerator": {
+        "name": "",
+        "width": "",
+        "height": "",
+        "color": "",
+        "label": "",
+        "optional": "",
+        "createAndClose": "",
+        "createAndContinue": "",
+        "scalingAtX4": "",
+        "generationSuccessMessage": "",
+        "filler": "",
+        "fillerNone": "",
+        "fillerCross": "",
+        "fillerLabel": ""
+    },
+    "textureInput": {
+        "jumpToTexture": "",
+        "changeTexture": ""
+    },
+    "writableFolderPrompt": {
+        "headerSelectFolderForData": "",
+        "paragraphCouldNotPickDirectory": "",
+        "paragraphDirectoryDirections": "",
+        "selectFolder": ""
+    },
+    "writableFolderSelector": {
+        "folderDoesNotExist": "",
+        "notADirectory": "",
+        "folderNotWritable": "",
+        "complete": ""
+    },
+    "mainMenu": {
+        "troubleshooting": {
+            "toggleDevTools": "",
+            "copySystemInfo": "",
+            "systemInfoWait": "",
+            "systemInfoDone": "",
+            "disableAcceleration": "",
+            "disableBuiltInDebugger": "",
+            "postAnIssue": "",
+            "heading": ""
+        },
+        "deploy": {
+            "exportDesktop": "",
+            "successZipExport": "",
+            "zipExport": ""
+        },
+        "latestProjects": {
+            "recentProjects": ""
+        },
+        "settings": {
+            "theme": "",
+            "themes": {
+                "Day": "",
+                "Night": "",
+                "SpringStream": "",
+                "LucasDracula": "",
+                "Horizon": "",
+                "HCBlack": ""
+            },
+            "codeFontDefault": "",
+            "codeFontOldSchool": "",
+            "codeFontSystem": "",
+            "codeFontCustom": "",
+            "newFont": "",
+            "codeFont": "",
+            "codeLigatures": "",
+            "codeDense": "",
+            "settings": "",
+            "disableSounds": "",
+            "changeDataFolder": "",
+            "forceProductionForDebug": ""
+        },
+        "project": {
+            "save": "",
+            "openIncludeFolder": "",
+            "openProject": "",
+            "openExample": "",
+            "startScreen": "",
+            "successZipProject": "",
+            "zipProject": ""
+        },
+        "meta": {
+            "license": "",
+            "visitDiscordForGamedevSupport": "",
+            "openIconList": ""
+        }
+    },
+    "appView": {
+        "ctIDE": "",
+        "texture": "",
+        "launch": "",
+        "min": "",
+        "rooms": "",
+        "sounds": "",
+        "ui": "",
+        "types": "",
+        "launchHotkeys": "",
+        "patrons": "",
+        "fx": "",
+        "restart": "",
+        "project": ""
     }
 }

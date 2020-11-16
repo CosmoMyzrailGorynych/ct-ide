@@ -1,4 +1,7 @@
 icon-panel.view.pad
+    .toright
+        button(onclick="{opts.onclose}") {vocGlob.close}
+    .clear
     ul.cards
         li(
             each="{icon in iconList}"
@@ -9,6 +12,9 @@ icon-panel.view.pad
             svg.feather
                 use(xlink:href="data/icons.svg#{icon}")
     script.
+        this.namespace = 'common';
+        this.mixin(window.riotVoc);
+
         const fs = require('fs-extra');
         fs.readJSON('./data/icons.json')
         .then(json => {
@@ -18,4 +24,5 @@ icon-panel.view.pad
 
         this.copy = string => () => {
             nw.Clipboard.get().set(string);
+            alertify.success('Copied!');
         };

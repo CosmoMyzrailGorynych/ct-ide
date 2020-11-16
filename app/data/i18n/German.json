@@ -23,9 +23,7 @@
         "exit": "Beenden",
         "exitconfirm": "Möchten Sie das Programm wirklich beenden?<br/>Alle ungespeicherten Änderungen gehen dabei verlohren!",
         "fastimport": "Schneller Import",
-        "language": "Sprache",
         "loading": "Lade...",
-        "translateToYourLanguage": "Übersetzen Sie ct.js in Ihre Sprache!",
         "name": "Name:",
         "nametaken": "Dieser Name wird bereits verwendet",
         "newname": "Neuer Name:",
@@ -49,7 +47,14 @@
         "yes": "Ja",
         "zoom": "Zoom",
         "zoomIn": "Zoomen in",
-        "zoomOut": "Verkleinern"
+        "zoomOut": "Verkleinern",
+        "clear": "",
+        "filter": "",
+        "selectDialogue": "",
+        "search": "",
+        "close": "",
+        "couldNotLoadFromClipboard": "",
+        "pastedFromClipboard": ""
     },
     "colorPicker": {
         "current": "Neu",
@@ -87,7 +92,9 @@
         "export": "Export",
         "exportPanel": "Projekt exportieren",
         "firstrunnotice": "Die erste Ausführung wird pro Plattform etwas länger dauern, da ct.js zusätzliche Bibliotheken zum Paketieren herunterladen muss. Dies wird einige Zeit dauern, beim nächsten Mal geht es deutlich schneller.",
-        "log": "Nachrichten Log"
+        "log": "Nachrichten Log",
+        "windowsCrossBuildWarning": "",
+        "cannotBuildForMacOnWin": ""
     },
     "intro": {
         "loading": "Bitte warten: Kätzchen werden auf Lichtgeschwindigkeit beschleunigt!",
@@ -115,45 +122,12 @@
         "latest": "Letzte Projekte",
         "unableToWriteToFolders": "Ct.js konnte keinen geeigneten Ort zum speichern der Projekte finden! Bitte stellen Sie sicher, dass Sie die ct.js App in einem Verzeichnis ablegen in dem Sie über Schreibrechte verfügen.",
         "twitter": "Twitter Channel",
-        "discord": "Discord Community"
+        "discord": "Discord Community",
+        "examples": "",
+        "createOrBrowseJunction": ""
     },
     "licensepanel": {
         "ctjslicense": "Ct.js Lizenz (MIT)"
-    },
-    "menu": {
-        "ctIDE": "ct.IDE",
-        "exportDesktop": "Desktop Export",
-        "texture": "Texturen",
-        "launch": "Kompilieren und starten",
-        "launchHotkeys": "(F5; Alt+F5 zum Öffnen im Standardbrowser)",
-        "license": "Lizenz",
-        "min": "Fenster",
-        "patrons": "Patrons",
-        "recentProjects": "Letzte Projekte",
-        "rooms": "Räume",
-        "save": "Projekt speichern",
-        "startScreen": "Zum Startbildschirm zurückkehren",
-        "settings": "Einstellungen",
-        "sounds": "Sounds",
-        "successZipExport": "Erfolgreich exportiert nach {0}.",
-        "successZipProject": "Projekt erfolgreich gezippt nach {0}.",
-        "ui": "UI",
-        "fx": "FX",
-        "theme": "Thema",
-        "themeDay": "Hell",
-        "themeNight": "Dunkel",
-        "types": "Types",
-        "zipExport": "Als .zip Exportieren",
-        "zipProject": "Projekt als .zip komprimieren",
-        "codeFontDefault": "Standard (Iosevka Light)",
-        "codeFontOldSchool": "Old School",
-        "codeFontSystem": "System",
-        "codeFontCustom": "Benutzerdefiniert",
-        "newFont": "Neue Schrift",
-        "codeFont": "Schrift für Code",
-        "codeLigatures": "Ligaturen",
-        "codeDense": "Kondensiertes Layout",
-        "openIncludeFolder": "\"include\" Ordner öffnen"
     },
     "onboarding": {
         "hoorayHeader": "Wow! Sie haben gerade ein Projekt erstellt!",
@@ -161,7 +135,8 @@
         "openSpaceShooterTutorial": "Lasst uns einen Space Shooter entwickeln",
         "openPlatformerTutorial": "Lasst uns ein Jump'n Run entwickeln",
         "doNothing": "Diesen Schritt überspringen",
-        "showOnboardingCheckbox": "Diesen Bildschirm anzeigen wenn ein neues Projekt erstellt wird"
+        "showOnboardingCheckbox": "Diesen Bildschirm anzeigen wenn ein neues Projekt erstellt wird",
+        "openJettyCatTutorial": ""
     },
     "settings": {
         "actions": {
@@ -191,7 +166,15 @@
             "highDensity": "Hochauflösende Bildschirme unterstützen (z.B. Retina Displays)",
             "maxFPS": "Max Framerate:",
             "usePixiLegacy": "Füge einen Canvas basierten Renderer hinzu, um ältere Browser und Grafikkarten zu unterstützen (Spiele wachsen um ca. 20kb)",
-            "pixelatedrender": "Image Smoothing hier und im exportierten Projekt deaktivieren (scharfe Pixel beibehalten)"
+            "pixelatedrender": "Image Smoothing hier und im exportierten Projekt deaktivieren (scharfe Pixel beibehalten)",
+            "desktopBuilds": "",
+            "launchMode": "",
+            "launchModes": {
+                "maximized": "",
+                "fullscreen": "",
+                "windowed": ""
+            },
+            "hideCursor": ""
         },
         "branding": {
             "heading": "Branding",
@@ -208,6 +191,22 @@
             "newScriptComment": "Nutzen Sie Skripte um häufige Funktionen zu definieren und Bibliotheken zu importieren",
             "moveUp": "Bewegen Sie sich nach oben",
             "moveDown": "Bewegen Sie sich nach unten"
+        },
+        "modules": {
+            "heading": ""
+        },
+        "catmodsSettings": "",
+        "export": {
+            "heading": "",
+            "functionWrap": "",
+            "codeModifier": "",
+            "obfuscateWarning": "",
+            "codeModifierAndWrapNote": "",
+            "codeModifiers": {
+                "none": "",
+                "minify": "",
+                "obfuscate": ""
+            }
         }
     },
     "modules": {
@@ -220,12 +219,37 @@
         "parameters": "Parameter",
         "logs2": "Changelog",
         "settings": "Einstellungen",
-        "importModules": "Module importieren"
+        "importModules": "Module importieren",
+        "dependencies": "",
+        "optionalDependencies": "",
+        "enabledModules": "",
+        "availableModules": "",
+        "filter": "",
+        "categories": {
+            "customization": "",
+            "utilities": "",
+            "media": "",
+            "misc": "",
+            "desktop": "",
+            "motionPlanning": "",
+            "inputs": "",
+            "fx": "",
+            "mobile": "",
+            "integrations": "",
+            "tweaks": "",
+            "networking": ""
+        },
+        "preview": "",
+        "previewTooltip": "",
+        "deprecatedTooltip": ""
     },
     "texture": {
         "create": "Erstellen",
         "import": "Importieren",
-        "skeletons": "Skelett Animation"
+        "skeletons": "Skelett Animation",
+        "createType": "",
+        "importFromClipboard": "",
+        "generatePlaceholder": ""
     },
     "textureview": {
         "bgcolor": "Hintergrundfarbe ändern",
@@ -260,7 +284,11 @@
         "addPoint": "Punkt hinzufügen",
         "moveCenter": "Achse verschieben",
         "movePoint": "Punkt verschieben",
-        "symmetryTool": "Symmetrie-Werkzeug"
+        "symmetryTool": "Symmetrie-Werkzeug",
+        "padding": "",
+        "paddingNotice": "",
+        "updateFromClipboard": "",
+        "previewAnimationNotice": ""
     },
     "sounds": {
         "create": "Erstellen"
@@ -305,7 +333,8 @@
         "strokeweight": "Konturstärke:",
         "testtext": "Test Text 0123 +",
         "textWrap": "Zeilenumbruch",
-        "textWrapWidth": "Max Breite:"
+        "textWrapWidth": "Max Breite:",
+        "useCustomFont": ""
     },
     "fonts": {
         "fonts": "Schriften",
@@ -316,19 +345,32 @@
         "typefacename": "Typeface Name:",
         "fontweight": "Schriftstärke:",
         "italic": "Ist kursiv?",
-        "reimport": "Reimport"
+        "reimport": "Reimport",
+        "generateBitmapFont": "",
+        "bitmapFont": "",
+        "bitmapFontSize": "",
+        "bitmapFontLineHeight": "",
+        "resultingBitmapFontName": "",
+        "charset": "",
+        "charsets": {
+            "punctuation": "",
+            "basicLatin": "",
+            "latinExtended": "",
+            "cyrillic": "",
+            "greekCoptic": "",
+            "custom": "",
+            "allInFont": ""
+        },
+        "customCharsetHint": ""
     },
     "particleEmitters": {
         "emittersHeading": "Partikel Emitter",
         "emitterHeading": "Emitter",
-
         "from": "Von:",
         "to": "Zu:",
-
         "textureHeading": "Textur",
         "selectTexture": "Auswählen…",
         "importBuiltin": "Standard importieren…",
-
         "colorAndOpacityHeading": "Farbe und Transparenz",
         "stepped": "Schrittweise",
         "steppedColor": "Schrittweise Farbe",
@@ -338,29 +380,23 @@
         "darken": "Abdunkeln",
         "lighten": "Aufhellen",
         "burn": "Nachbelichten",
-
         "scalingHeading": "Skalieren",
         "scale": "Skalierung:",
         "minimumSize": "Mindestgröße:",
         "minimumSizeHint": "Niedrige Werte sorgen für zufälligere Größe der Partikel. Je geringer die Werte, desto stärker der Effekt.",
-
         "velocityHeading": "Geschwindigkeit",
         "velocity": "Geschwindigkeit:",
         "minimumSpeed": "Minimale Geschwindigkeit:",
         "minimumSpeedHint": "Niedrige Werte sorgen für zufälligere Geschwindigkeit der Partikel.  Je geringer die Werte, desto langsamer werden die Partikel.",
         "maxSpeed": "Maximale Geschwindigkeit:",
-
         "gravityHeading": "Gravitation",
         "gravityNotice": "Sollte der Wert von (0;0) abweichen, wird die Interpolation der Geschwindigkeit deaktiviert. In diesem Fall wirkt der Effekt nur auf den ersten Knoten des Geschwindigkeitsgraphen.",
-
         "directionHeading": "Richtung",
         "startingDirection": "Startrichtung",
         "preserveTextureDirection": "Rotation der Textur beibehalten",
-
         "rotationHeading": "Rotation",
         "rotationSpeed": "Rotationsgeschwindigkeit",
         "rotationAcceleration": "Rotationsbeschleunigung:",
-
         "spawningHeading": "Erzeugung",
         "timeBetweenBursts": "Zeit zwischen Erzeugungen:",
         "spawnAtOnce": "Gleichzeitig erzeugen:",
@@ -370,7 +406,6 @@
         "emitterLifetime": "Emitter Lebenszeit (sek):",
         "prewarmDelay": "Vorberechnen / Verzögerung (sek):",
         "prewarmDelayNotice": "Negative Werte sorgen für eine Vorberechnung der Partikel im Emitter bevor diese angezeigt werden. Dies ist nützlich für langsame Effekte wie Nebel-Partikel die bereits beim Start des Raums sichtbar sein sollen; positive Werte verzögern die Simulation.",
-
         "shapeAndPositioningHeading": "Form und Positionierung",
         "spawnType": "Form-Typ:",
         "spawnShapes": {
@@ -386,12 +421,15 @@
         "starPoints": "Punkte:",
         "startAngle": "Rotation, (Grad).:",
         "relativeEmitterPosition": "Rel. Position zu anderen Emittern",
-
         "addEmitter": "Weiteren Emitter hinzufügen",
         "reset": "Vorschau zurücksetzen",
         "changeBg": "Hintergrund ändern",
         "inspectorComplete": "Fertig!",
-        "alreadyHasAnImportingTexture": "Es existiret bereits eine Textur mit dem Namen $1. Benennen Sie diese um oder löschen Sie sie; Die selbe Textur muss anschließend erneut importiert werden :)"
+        "alreadyHasAnImportingTexture": "Es existiret bereits eine Textur mit dem Namen $1. Benennen Sie diese um oder löschen Sie sie; Die selbe Textur muss anschließend erneut importiert werden :)",
+        "showShapeVisualizer": "",
+        "changeGrid": "",
+        "newGridSize": "",
+        "setPreviewTexture": ""
     },
     "types": {
         "create": "Erstellen"
@@ -405,7 +443,8 @@
         "draw": "Draw",
         "learnAboutTypes": "Lernen Sie Types zu programmieren",
         "name": "Name:",
-        "step": "On Step"
+        "step": "On Step",
+        "visible": ""
     },
     "rooms": {
         "create": "Neuer Raum",
@@ -418,7 +457,10 @@
         "parallax": "Parallax (X, Y):",
         "repeat": "Wiederholen:",
         "scale": "Skallieren (X, Y):",
-        "shift": "Verschieben (X, Y):"
+        "shift": "Verschieben (X, Y):",
+        "notBackgroundTextureWarning": "",
+        "fixBackground": "",
+        "dismissWarning": ""
     },
     "roomtiles": {
         "moveTileLayer": "Auf andere Ebene verschieben",
@@ -461,13 +503,25 @@
         "deletetiles": "Tiles löschen ",
         "movetilestolayer": "Auf Ebene verschieben",
         "shifttiles": "Tiles verschieben",
-        "findTileset": ""
+        "findTileset": "",
+        "changecopyrotation": "",
+        "properties": "",
+        "isUi": "",
+        "backgroundColor": "",
+        "sortHorizontally": "",
+        "sortVertically": "",
+        "copyProperties": {
+            "position": "",
+            "rotation": "",
+            "scale": ""
+        }
     },
     "notepad": {
         "local": "Projekt Notizen",
         "global": "Globale Notizen",
         "helppages": "Hilfe",
-        "backToHome": "Zurück zu Doks' Homepage"
+        "backToHome": "Zurück zu Doks' Homepage",
+        "modulespages": ""
     },
     "patreon": {
         "aboutPatrons": "Patrons sind Menschen, die ComigoGames auf Patreon mit einer regelmäßigen Spende unterstützen. Nicht jeder kommt dort von ct.js. Einige nutzen andere Apps von ComigoGames. Tipp: Creators welche Patreon nutzen um für ComigoGames zu spenden erhalten hier einen Link auf ihre Page — Dies ist mein kleiner Beitrag für euch. :)",
@@ -504,5 +558,119 @@
             "bringt Licht und Hoffnung 🌞",
             "ist schön und elegant 🎩"
         ]
+    },
+    "docsPanel": {
+        "documentation": "",
+        "reference": ""
+    },
+    "extensionsEditor": {
+        "noEntries": "",
+        "addRow": ""
+    },
+    "textureGenerator": {
+        "name": "",
+        "width": "",
+        "height": "",
+        "color": "",
+        "label": "",
+        "optional": "",
+        "createAndClose": "",
+        "createAndContinue": "",
+        "scalingAtX4": "",
+        "generationSuccessMessage": "",
+        "filler": "",
+        "fillerNone": "",
+        "fillerCross": "",
+        "fillerLabel": ""
+    },
+    "textureInput": {
+        "jumpToTexture": "",
+        "changeTexture": ""
+    },
+    "writableFolderPrompt": {
+        "headerSelectFolderForData": "",
+        "paragraphCouldNotPickDirectory": "",
+        "paragraphDirectoryDirections": "",
+        "selectFolder": ""
+    },
+    "writableFolderSelector": {
+        "folderDoesNotExist": "",
+        "notADirectory": "",
+        "folderNotWritable": "",
+        "complete": ""
+    },
+    "mainMenu": {
+        "troubleshooting": {
+            "toggleDevTools": "",
+            "copySystemInfo": "",
+            "systemInfoWait": "",
+            "systemInfoDone": "",
+            "disableAcceleration": "",
+            "disableBuiltInDebugger": "",
+            "postAnIssue": "",
+            "heading": ""
+        },
+        "deploy": {
+            "exportDesktop": "Desktop Export",
+            "successZipExport": "Erfolgreich exportiert nach {0}.",
+            "zipExport": "Als .zip Exportieren"
+        },
+        "latestProjects": {
+            "recentProjects": "Letzte Projekte"
+        },
+        "settings": {
+            "language": "Sprache",
+            "translateToYourLanguage": "Übersetzen Sie ct.js in Ihre Sprache!",
+            "theme": "Thema",
+            "themes": {
+                "Day": "Hell",
+                "Night": "Dunkel",
+                "SpringStream": "",
+                "LucasDracula": "",
+                "Horizon": "",
+                "HCBlack": ""
+            },
+            "codeFontDefault": "Standard (Iosevka Light)",
+            "codeFontOldSchool": "Old School",
+            "codeFontSystem": "System",
+            "codeFontCustom": "Benutzerdefiniert",
+            "newFont": "Neue Schrift",
+            "codeFont": "Schrift für Code",
+            "codeLigatures": "Ligaturen",
+            "codeDense": "Kondensiertes Layout",
+            "heading": "Einstellungen",
+            "disableSounds": "",
+            "changeDataFolder": "",
+            "forceProductionForDebug": ""
+        },
+        "project": {
+            "save": "Projekt speichern",
+            "openIncludeFolder": "\"include\" Ordner öffnen",
+            "openProject": "",
+            "openExample": "",
+            "startScreen": "Zum Startbildschirm zurückkehren",
+            "successZipProject": "Projekt erfolgreich gezippt nach {0}.",
+            "zipProject": "Projekt als .zip komprimieren"
+        },
+        "meta": {
+            "license": "Lizenz",
+            "visitDiscordForGamedevSupport": "",
+            "openIconList": ""
+        }
+    },
+    "appView": {
+        "ctIDE": "ct.IDE",
+        "texture": "Texturen",
+        "launch": "Kompilieren und starten",
+        "launchHotkeys": "(F5; Alt+F5 zum Öffnen im Standardbrowser)",
+        "min": "Fenster",
+        "patrons": "Patrons",
+        "rooms": "Räume",
+        "sounds": "Sounds",
+        "ui": "UI",
+        "fx": "FX",
+        "types": "Types",
+        "restart": "",
+        "project": ""
     }
 }
