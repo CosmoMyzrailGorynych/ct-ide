@@ -26,7 +26,7 @@ actions-settings
                     svg.feather.a(title="{voc.deleteAction}" onclick="{deleteAction}")
                         use(xlink:href="data/icons.svg#x")
             .c8.npr.npl.breakon800
-                ul.aStrippedList.nmt
+                ul.aStripedList.nmt
                     li.flexrow.middle.npl(each="{method, mInd in action.methods}")
                         .fifty.npt.npl.npb
                             code.inline {method.code}

@@ -22,6 +22,8 @@
         "exitconfirm": "Você tem certeza que deseja sair?<br/>Todas as alterações que não foram salvas serão perdidas!",
         "fastimport": "Importação Rápida",
         "language": "Língua",
+        "filter": "Filtro:",
+        "loading": "Carregando…",
         "name": "Nome:",
         "nametaken": "Este nome já está em uso",
         "newname": "Novo nome:",
@@ -42,12 +44,14 @@
         "tilelayer": "Camada de tile",
         "wrongFormat": "Formato de arquivo incorreto",
         "yes": "Sim",
-        "cannotBeEmpty": "",
-        "contribute": "",
-        "translateToYourLanguage": "",
+        "cannotBeEmpty": "Isso não pode ser vazio",
+        "contribute": "Contribua",
         "zoom": "Zoom:",
         "zoomIn": "Ampliar",
-        "zoomOut": "Diminuir o zoom"
+        "zoomOut": "Diminuir o zoom",
+        "close": "",
+        "couldNotLoadFromClipboard": "",
+        "pastedFromClipboard": ""
     },
     "colorPicker": {
         "current": "Novo",
@@ -119,52 +123,12 @@
         "latest": "Últimos projetos",
         "unableToWriteToFolders": "Ct.js não conseguiu achar um lugar apropriado para seus projetos! Tenha certeza de colocar o ct.js dentro de uma pasta que você tenha permissão para escrever.",
         "twitter": "Página do Twitter",
-        "discord": "Comunidade do Discord"
+        "discord": "Comunidade do Discord",
+        "examples": "",
+        "createOrBrowseJunction": ""
     },
     "licensepanel": {
         "ctjslicense": "Licença do Ct.js (MIT)"
-    },
-    "menu": {
-        "ctIDE": "ct.IDE",
-        "exportDesktop": "Exportar para a área de trabalho",
-        "texture": "Gráficos",
-        "launch": "Compilar",
-        "license": "Licença",
-        "min": "Modo janela",
-        "recentProjects": "Projetos recentes",
-        "rooms": "Salas",
-        "save": "Salvar projeto",
-        "startScreen": "Retornar à tela inicial",
-        "settings": "Configurações",
-        "sounds": "Sons",
-        "ui": "UI",
-        "theme": "Tema",
-        "themeDay": "Claro",
-        "themeNight": "Escuro",
-        "types": "Tipos",
-        "zipExport": "Exportar para .zip",
-        "zipProject": "Empacotar projeto para .zip",
-        "codeFontDefault": "Padrão (Iosevka Light)",
-        "codeFontOldSchool": "Old school",
-        "codeFontSystem": "Sistema",
-        "codeFontCustom": "Personalizada…",
-        "newFont": "Nova fonte:",
-        "codeFont": "Fonte para código",
-        "codeLigatures": "Ligatures",
-        "codeDense": "Layout Denso",
-        "disableSounds": "Desabilitar sons de UI",
-        "openIncludeFolder": "Abra a pasta \"include\"",
-        "troubleshooting": "Solução de problemas",
-        "toggleDevTools": "Mostrar/Esconder Ferramentas de Dev.",
-        "copySystemInfo": "Copiar as informações de sistema",
-        "systemInfoWait": "Espere um pouco, Eu estou pegando os dados…",
-        "systemInfoDone": "Feito!",
-        "disableAcceleration": "Desabilitar a aceleração gráfica (precisa reiniciar)",
-        "disableBuiltInDebugger": "Desabilitar built-in debugger",
-        "visitDiscordForGamedevSupport": "Entre no server do Discord para ter suporte no desenvolvimento de jogos",
-        "postAnIssue": "Postar um erro no Github…",
-        "openProject": "Abrir um projeto…",
-        "openExample": "Abrir um projeto de exemplo…"
     },
     "onboarding": {
         "hoorayHeader": "Wow! Você acabou de criar um projeto!",
@@ -221,7 +185,8 @@
                 "maximized": "Maximizado",
                 "fullscreen": "Tela cheia",
                 "windowed": "Janela"
-            }
+            },
+            "hideCursor": ""
         },
         "scripts": {
             "heading": "Scripts",
@@ -231,7 +196,19 @@
             "moveUp": "Mova-se para cima",
             "moveDown": "Mova-se para baixo"
         },
-        "catmodsSettings": "Configurações de Catmods"
+        "catmodsSettings": "Configurações de Catmods",
+        "export": {
+            "heading": "",
+            "functionWrap": "",
+            "codeModifier": "",
+            "obfuscateWarning": "",
+            "codeModifierAndWrapNote": "",
+            "codeModifiers": {
+                "none": "",
+                "minify": "",
+                "obfuscate": ""
+            }
+        }
     },
     "modules": {
         "author": "Autor deste catmod",
@@ -260,13 +237,18 @@
             "integrations": "Integrações",
             "tweaks": "Ajustes",
             "networking": "Networking"
-        }
+        },
+        "preview": "",
+        "previewTooltip": "",
+        "deprecatedTooltip": ""
     },
     "texture": {
         "create": "Criar",
         "import": "Importar",
         "skeletons": "Animação Esquelética",
-        "createType": "Criar um tipo disso"
+        "createType": "Criar um tipo disso",
+        "importFromClipboard": "",
+        "generatePlaceholder": ""
     },
     "textureview": {
         "bgcolor": "Mudar cor de fundo",
@@ -303,7 +285,9 @@
         "movePoint": "Mover este ponto",
         "symmetryTool": "Ferramenta de simetria",
         "padding": "Preenchimento:",
-        "paddingNotice": "Isso afeta como uma textura é exportada: adiciona pixels duplicados nas bordas e evita artefatos sangrentos em texturas ladrilhadas e dimensionadas. O valor padrão geralmente é suficiente, mas, se você encolher as texturas fortemente, o sangramento pode reaparecer. Aumente este valor se esta textura tiver artefatos durante o jogo."
+        "paddingNotice": "Isso afeta como uma textura é exportada: adiciona pixels duplicados nas bordas e evita artefatos sangrentos em texturas ladrilhadas e dimensionadas. O valor padrão geralmente é suficiente, mas, se você encolher as texturas fortemente, o sangramento pode reaparecer. Aumente este valor se esta textura tiver artefatos durante o jogo.",
+        "updateFromClipboard": "",
+        "previewAnimationNotice": ""
     },
     "sounds": {
         "create": "Criar"
@@ -390,7 +374,8 @@
         "draw": "Desenhar",
         "name": "Nome:",
         "step": "Passo",
-        "learnAboutTypes": ""
+        "learnAboutTypes": "Aprenda sobre programar tipos",
+        "visible": ""
     },
     "rooms": {
         "create": "Adicionar novo",
@@ -403,7 +388,10 @@
         "parallax": "Parallax (X, Y):",
         "repeat": "Repetir:",
         "scale": "Escala (X, Y):",
-        "shift": "Trocar (X, Y):"
+        "shift": "Trocar (X, Y):",
+        "notBackgroundTextureWarning": "",
+        "fixBackground": "",
+        "dismissWarning": ""
     },
     "roomtiles": {
         "moveTileLayer": "Mover para uma nova profundidade:",
@@ -446,7 +434,16 @@
         "deletetiles": "Remover tiles",
         "movetilestolayer": "Mover para camada",
         "shifttiles": "Trocar tiles",
-        "findTileset": ""
+        "findTileset": "Encontrar o conjunto de tiles",
+        "isUi": "",
+        "backgroundColor": "",
+        "sortHorizontally": "",
+        "sortVertically": "",
+        "copyProperties": {
+            "position": "",
+            "rotation": "",
+            "scale": ""
+        }
     },
     "notepad": {
         "local": "Bloco de notas do projeto",
@@ -457,14 +454,11 @@
     "particleEmitters": {
         "emittersHeading": "Emissores de partículas",
         "emitterHeading": "Emissor",
-
         "from": "De:",
         "to": "Para:",
-
         "textureHeading": "Textura",
         "selectTexture": "Selecionar…",
         "importBuiltin": "Importar padrão…",
-
         "colorAndOpacityHeading": "Cor e opacidade",
         "stepped": "Escalonado",
         "steppedColor": "Cor escalonada",
@@ -474,29 +468,23 @@
         "darken": "Escuro",
         "lighten": "Claro",
         "burn": "Quente",
-
         "scalingHeading": "Dimensionamento",
         "scale": "Dimensão:",
         "minimumSize": "Tamanho mínimo:",
         "minimumSizeHint": "Configurá-lo para valores mais baixos irá randomizar o tamanho de cada partícula. Quanto mais baixos os valores, mais forte é o efeito.",
-
         "velocityHeading": "Velocidade",
         "velocity": "Velocidade:",
         "minimumSpeed": "Velocidade mínima:",
         "minimumSpeedHint": "Configurá-lo para valores mais baixos irá randomizar a velocidade de cada partícula; quanto menor o valor, mais lenta a partícula pode ser.",
         "maxSpeed": "Velocidade máxima:",
-
         "gravityHeading": "Gravidade",
         "gravityNotice": "Observe que se for diferente de (0;0), a interpolação de velocidade será desabilitada, o que significa que apenas o primeiro nó do gráfico de velocidade terá o efeito.",
-
         "directionHeading": "Direção",
         "startingDirection": "Direção inicial",
         "preserveTextureDirection": "Preserve texture rotation",
-
         "rotationHeading": "Rotação",
         "rotationSpeed": "Velocidade de rotação",
         "rotationAcceleration": "Aceleração de rotação:",
-
         "spawningHeading": "Invocando",
         "timeBetweenBursts": "Tempo entre rajadas:",
         "spawnAtOnce": "Invocar uma vez:",
@@ -506,7 +494,6 @@
         "emitterLifetime": "Tempo de vida do emissor, seg.:",
         "prewarmDelay": "Pré-aquecido / delay, sec.:",
         "prewarmDelayNotice": "Valores negativos irão preparar as partículas do emissor antes de mostrá-lo, o que é útil para efeitos longos, como partículas de poeira ou névoa que já deveriam estar visíveis no início da sala; valores positivos atrasarão a simulação.",
-
         "shapeAndPositioningHeading": "Forma e posicionamento",
         "spawnType": "Tipo da forma:",
         "spawnShapes": {
@@ -523,7 +510,6 @@
         "startAngle": "Rotacionar, deg.:",
         "showShapeVisualizer": "Mostrar o visualizador de forma",
         "relativeEmitterPosition": "Posição relativa para outros emissores",
-
         "addEmitter": "Adicionar outro emissor",
         "reset": "Resetar prévia",
         "changeBg": "Mudar o fundo",
@@ -532,9 +518,6 @@
         "changeGrid": "Definir o tamanho da grid",
         "newGridSize": "Novo tamanho da grid:",
         "setPreviewTexture": "Definir textura de prévia"
-    },
-    "types": {
-        "create": "Criar"
     },
     "patreon": {
         "aboutPatrons": "Patrons são pessoas que mostram seu apoio à ComigoGames no Patreon, na forma de doações recorrentes. Nem todo mundo vem de ct.js; alguns estão usando outros aplicativos da ComigoGames. Dica: se você é um criador e doa para ComigoGames via Patreon, você receberá um link para sua página aqui - essa é minha pequena ajuda para suas criações :)",
@@ -572,7 +555,114 @@
             "é elegante e bonito 🎩"
         ]
     },
-    "docsShortcut": {
-        "openDocs": ""
+    "extensionsEditor": {
+        "noEntries": "",
+        "addRow": ""
+    },
+    "textureGenerator": {
+        "name": "",
+        "width": "",
+        "height": "",
+        "color": "",
+        "label": "",
+        "optional": "",
+        "createAndClose": "",
+        "createAndContinue": "",
+        "scalingAtX4": "",
+        "generationSuccessMessage": "",
+        "filler": "",
+        "fillerNone": "",
+        "fillerCross": "",
+        "fillerLabel": ""
+    },
+    "textureInput": {
+        "jumpToTexture": "",
+        "changeTexture": ""
+    },
+    "writableFolderPrompt": {
+        "headerSelectFolderForData": "",
+        "paragraphCouldNotPickDirectory": "",
+        "paragraphDirectoryDirections": "",
+        "selectFolder": ""
+    },
+    "writableFolderSelector": {
+        "folderDoesNotExist": "",
+        "notADirectory": "",
+        "folderNotWritable": "",
+        "complete": ""
+    },
+    "mainMenu": {
+        "troubleshooting": {
+            "toggleDevTools": "Mostrar/Esconder Ferramentas de Dev.",
+            "copySystemInfo": "Copiar as informações de sistema",
+            "systemInfoWait": "Espere um pouco, Eu estou pegando os dados…",
+            "systemInfoDone": "Feito!",
+            "disableAcceleration": "Desabilitar a aceleração gráfica (precisa reiniciar)",
+            "disableBuiltInDebugger": "Desabilitar built-in debugger",
+            "postAnIssue": "Postar um erro no Github…",
+            "heading": "Solução de problemas"
+        },
+        "deploy": {
+            "exportDesktop": "Exportar para a área de trabalho",
+            "successZipExport": "Exportado com sucesso para {0}.",
+            "zipExport": "Exportar para .zip"
+        },
+        "latestProjects": {
+            "recentProjects": "Projetos recentes"
+        },
+        "settings": {
+            "theme": "Tema",
+            "themes": {
+                "Day": "Claro",
+                "Night": "Escuro",
+                "SpringStream": "Spring Stream",
+                "LucasDracula": "Lucas Dracula",
+                "Horizon": "",
+                "HCBlack": ""
+            },
+            "codeFontDefault": "Padrão (Iosevka Light)",
+            "codeFontOldSchool": "Old school",
+            "codeFontSystem": "Sistema",
+            "codeFontCustom": "Personalizada…",
+            "newFont": "Nova fonte:",
+            "codeFont": "Fonte para código",
+            "codeLigatures": "Ligatures",
+            "codeDense": "Layout Denso",
+            "heading": "Configurações",
+            "language": "Língua",
+            "translateToYourLanguage": "Traduza o ct.js!",
+            "disableSounds": "Desabilitar sons de UI",
+            "changeDataFolder": "",
+            "forceProductionForDebug": ""
+        },
+        "project": {
+            "save": "Salvar projeto",
+            "openIncludeFolder": "Abra a pasta \"include\"",
+            "openProject": "Abrir um projeto…",
+            "openExample": "Abrir um projeto de exemplo…",
+            "startScreen": "Retornar à tela inicial",
+            "successZipProject": "Projeto zipado com sucesso para {0}.",
+            "zipProject": "Empacotar projeto para .zip"
+        },
+        "meta": {
+            "license": "Licença",
+            "visitDiscordForGamedevSupport": "Entre no server do Discord para ter suporte no desenvolvimento de jogos",
+            "openIconList": ""
+        }
+    },
+    "appView": {
+        "ctIDE": "ct.IDE",
+        "texture": "Gráficos",
+        "launch": "Compilar",
+        "launchHotkeys": "(F5; Alt+F5 para rodar no seu navegador padrão)",
+        "min": "Modo janela",
+        "patrons": "Patrões",
+        "restart": "Reiniciar",
+        "rooms": "Salas",
+        "project": "Projeto",
+        "sounds": "Sons",
+        "ui": "UI",
+        "fx": "FX",
+        "types": "Tipos"
     }
 }

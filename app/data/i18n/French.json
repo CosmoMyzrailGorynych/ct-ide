@@ -11,9 +11,9 @@
         "projectPalette": "Palette de Projets"
     },
     "curveEditor": {
-        "curveLineHint":"Cliquez sur la courbe pour ajouter un point",
-        "dragPointHint":"Faites glisser pour déplacer le point, faites un clic droit pour le supprimer",
-        "pointTime":"Temps:",
+        "curveLineHint": "Cliquez sur la courbe pour ajouter un point",
+        "dragPointHint": "Faites glisser pour déplacer le point, faites un clic droit pour le supprimer",
+        "pointTime": "Temps:",
         "pointValue": "Valeur:"
     },
     "debuggerToolbar": {
@@ -49,9 +49,7 @@
         "exit": "Quitter",
         "exitconfirm": "Êtes-vous sur de vouloir quitter ?<br/>Tout les changements non sauvegardé seront perdu!",
         "fastimport": "Import Rapide",
-        "language": "Langue",
         "loading": "Chargement…",
-        "translateToYourLanguage":"Traduisez ct.js dans votre langue!",
         "name": "Nom:",
         "nametaken": "Ce nom est déjà pris",
         "newname": "Nouveau nom:",
@@ -75,7 +73,14 @@
         "yes": "Oui",
         "zoom": "Zoom",
         "zoomIn": "Zoom sur",
-        "zoomOut": "Zoom sur"
+        "zoomOut": "Zoom sur",
+        "clear": "",
+        "filter": "",
+        "selectDialogue": "",
+        "search": "",
+        "close": "",
+        "couldNotLoadFromClipboard": "",
+        "pastedFromClipboard": ""
     },
     "exportPanel": {
         "hide": "Cacher",
@@ -85,7 +90,8 @@
         "exportPanel": "Exporter le Projet",
         "firstrunnotice": "Le premier lancement pour chaque plateforme sera lent car ct.js va télécharger et sauvegarder les librairies additionnels requises pour les rassembler. Cela va prendre un certain temps, mais les prochaines fois ce sera presque instantané.",
         "log": "Journal des logs",
-        "windowsCrossBuildWarning": "Pour construire pour windows depuis Linux/MacOS, vous avez besoin de Wine :)"
+        "windowsCrossBuildWarning": "Pour construire pour windows depuis Linux/MacOS, vous avez besoin de Wine :)",
+        "cannotBuildForMacOnWin": ""
     },
     "intro": {
         "loading": "Veuillez patientez: des chatons ",
@@ -94,8 +100,8 @@
             "input": "Nom du projet (Lettres et chiffres)",
             "text": "Créer un nouveau",
             "nameerr": "Mauvais nom de projet.",
-            "saveProjectHere":"Sauvegarder le projet ici",
-            "selectProjectFolder":"Choisissez un fichier pour sauvegarder votre projet"
+            "saveProjectHere": "Sauvegarder le projet ici",
+            "selectProjectFolder": "Choisissez un fichier pour sauvegarder votre projet"
         },
         "recovery": {
             "message": "<h2 class=\"nmt\">Recovery</h2><p>ct.js has found a recovery file. Possibly, your project was not saved correctly or ct.js was shut down in case of some emergency. Here is when these files were lastly modified:</p><p>Your chosen file: {0} {1}<br/>Recovery file: {2} {3}</p><p>What file should ct.js open?</p>",
@@ -113,45 +119,12 @@
         "latest": "Derniers projets",
         "twitter": "Chaîne Twitter",
         "discord": "Communauté Discord",
-        "unableToWriteToFolders": "Ct.js n'a pas pu trouver un endroit approprié pour vos projets! Assurez-vous de stocker l'application ct.js dans un dossier dans lequel vous avez accès à l'écriture."
+        "unableToWriteToFolders": "Ct.js n'a pas pu trouver un endroit approprié pour vos projets! Assurez-vous de stocker l'application ct.js dans un dossier dans lequel vous avez accès à l'écriture.",
+        "examples": "",
+        "createOrBrowseJunction": ""
     },
     "licensepanel": {
         "ctjslicense": "Ct.js License (MIT)"
-    },
-    "menu": {
-        "ctIDE": "ct.IDE",
-        "exportDesktop": "Exporter pour le bureau",
-        "texture": "Graphiques",
-        "launch": "Compiler",
-        "launchHotkeys":"(F5/ Alt+F5 pour lancer votre navigateur par défaut",
-        "license": "Licence",
-        "min": "Fenêtré",
-        "patrons": "Patrons",
-        "recentProjects": "Projets récents",
-        "rooms": "Salons",
-        "save": "Sauvegarder le projet",
-        "startScreen": "Retourner à l'écran de démarrage",
-        "settings": "Paramètres",
-        "sounds": "Sons",
-        "ui": "IU",
-        "fx": "FX",
-        "theme": "Thème",
-        "themeDay": "Clair",
-        "themeNight": "Sombre",
-        "types": "Types",
-        "zipExport": "Exporter en .zip",
-        "zipProject": "Compresser le projet en .zip",
-        "successZipExport": "Exporté avec succès vers {0}",
-        "successZipProject": "Le projet à été compressé avec succès vers {0}",
-        "codeFontDefault": "Font par défault (Iosevka Light)",
-        "codeFontOldSchool": "Old school",
-        "codeFontSystem": "Système",
-        "codeFontCustom": "Customiser..",
-        "newFont": "Nouvelle font:",
-        "codeFont": "Font pour codé",
-        "codeLigatures": "Liaisons",
-        "codeDense": "Épaisse disposition",
-        "openIncludeFolder": "Ouvrir le dossier \"include\""
     },
     "onboarding": {
         "hoorayHeader": "Wow! Vous venez de créer un projet!",
@@ -159,7 +132,8 @@
         "openSpaceShooterTutorial": "Apprendre comment créer un jeu Space-Shooter",
         "openPlatformerTutorial": "Apprendre comment créer un jeu de plate-forme",
         "doNothing": "Passer cette étape",
-        "showOnboardingCheckbox": "Afficher cet écran lors de la création d'un nouveau projet"
+        "showOnboardingCheckbox": "Afficher cet écran lors de la création d'un nouveau projet",
+        "openJettyCatTutorial": ""
     },
     "settings": {
         "actions": {
@@ -195,15 +169,17 @@
                 "maximized": "Maximiser",
                 "fullscreen": "Plein écran",
                 "windowed": "Fenêtré"
-            }
+            },
+            "desktopBuilds": "",
+            "hideCursor": ""
         },
         "branding": {
             "heading": "Étiqueter",
             "icon": "Logo du jeu",
-            "iconNotice":"Votre logo doit faire au minimum 256x256 pixels.",
+            "iconNotice": "Votre logo doit faire au minimum 256x256 pixels.",
             "accent": "Votre colorie",
-            "accentNotice":"Définit la couleur du chargement, ainsi que de certains autres endroits s'il est utilisé comme application mobile.",
-            "invertPreloaderScheme":"Inverser le schéma de couleurs du chargement"
+            "accentNotice": "Définit la couleur du chargement, ainsi que de certains autres endroits s'il est utilisé comme application mobile.",
+            "invertPreloaderScheme": "Inverser le schéma de couleurs du chargement"
         },
         "scripts": {
             "heading": "Vos Scripts",
@@ -212,6 +188,22 @@
             "newScriptComment": "Utilisez des scripts pour définir des fonctions fréquentes et importer de petites bibliothèques",
             "moveUp": "Montez",
             "moveDown": "Déplacez-vous vers le bas"
+        },
+        "modules": {
+            "heading": ""
+        },
+        "catmodsSettings": "",
+        "export": {
+            "heading": "",
+            "functionWrap": "",
+            "codeModifier": "",
+            "obfuscateWarning": "",
+            "codeModifierAndWrapNote": "",
+            "codeModifiers": {
+                "none": "",
+                "minify": "",
+                "obfuscate": ""
+            }
         }
     },
     "modules": {
@@ -224,12 +216,37 @@
         "parameters": "Paramétres",
         "logs2": "Changelog",
         "settings": "Réglages",
-        "importModules": "Importer un module"
+        "importModules": "Importer un module",
+        "dependencies": "",
+        "optionalDependencies": "",
+        "enabledModules": "",
+        "availableModules": "",
+        "filter": "",
+        "categories": {
+            "customization": "",
+            "utilities": "",
+            "media": "",
+            "misc": "",
+            "desktop": "",
+            "motionPlanning": "",
+            "inputs": "",
+            "fx": "",
+            "mobile": "",
+            "integrations": "",
+            "tweaks": "",
+            "networking": ""
+        },
+        "preview": "",
+        "previewTooltip": "",
+        "deprecatedTooltip": ""
     },
     "texture": {
         "create": "Créer",
         "import": "Importer",
-        "skeletons": "Animation squelettique"
+        "skeletons": "Animation squelettique",
+        "createType": "",
+        "importFromClipboard": "",
+        "generatePlaceholder": ""
     },
     "textureview": {
         "bgcolor": "Changer la couleur du background",
@@ -266,7 +283,9 @@
         "movePoint": "Déplacer ce point",
         "symmetryTool": "Outil de symétrie",
         "padding": "Remplissage",
-        "paddingNotice": "Cela affecte la façon dont une texture est exportée: elle ajoute des pixels en double sur les bords et empêche les artefacts de saignement sur les textures en mosaïque et à l'échelle. La valeur par défaut est généralement suffisante, mais si vous réduisez fortement les textures, le saignement peut réapparaître. Augmentez cette valeur si cette texture contient des artefacts pendant le jeu."
+        "paddingNotice": "Cela affecte la façon dont une texture est exportée: elle ajoute des pixels en double sur les bords et empêche les artefacts de saignement sur les textures en mosaïque et à l'échelle. La valeur par défaut est généralement suffisante, mais si vous réduisez fortement les textures, le saignement peut réapparaître. Augmentez cette valeur si cette texture contient des artefacts pendant le jeu.",
+        "updateFromClipboard": "",
+        "previewAnimationNotice": ""
     },
     "sounds": {
         "create": "Créer"
@@ -311,7 +330,8 @@
         "strokeweight": "Épaisseur du contour",
         "testtext": "Test texte 0123 +",
         "textWrap": "Retour à la ligne",
-        "textWrapWidth": "Retour maximum:"
+        "textWrapWidth": "Retour maximum:",
+        "useCustomFont": ""
     },
     "fonts": {
         "fonts": "Polices",
@@ -322,19 +342,32 @@
         "typefacename": "Nom de la police",
         "fontweight": "Épaisseur de la police",
         "italic": "Format italique ?",
-        "reimport": "Ré-importer"
+        "reimport": "Ré-importer",
+        "generateBitmapFont": "",
+        "bitmapFont": "",
+        "bitmapFontSize": "",
+        "bitmapFontLineHeight": "",
+        "resultingBitmapFontName": "",
+        "charset": "",
+        "charsets": {
+            "punctuation": "",
+            "basicLatin": "",
+            "latinExtended": "",
+            "cyrillic": "",
+            "greekCoptic": "",
+            "custom": "",
+            "allInFont": ""
+        },
+        "customCharsetHint": ""
     },
     "particleEmitters": {
         "emittersHeading": "Émetteur de particules",
         "emitterHeading": "Émetteur",
-
         "from": "Depuis:",
         "to": "Pour:",
-
         "textureHeading": "Texture",
         "selectTexture": "Sélect…",
         "importBuiltin": "Défaut importation…",
-
         "colorAndOpacityHeading": "Couleur et Opacitée",
         "stepped": "Palette",
         "steppedColor": "Couleur",
@@ -344,29 +377,23 @@
         "darken": "Sombre",
         "lighten": "Lumineux",
         "burn": "Enflammer",
-
         "scalingHeading": "Mise à l'échelle",
         "scale": "Échelle:",
         "minimumSize": "Taille minimum:",
         "minimumSizeHint": "Si vous le réglez sur des valeurs inférieures, la taille de chaque particule sera aléatoire. Plus les valeurs sont faibles, plus l'effet est fort.",
-
         "velocityHeading": "Velocité",
         "velocity": "Velocité:",
         "minimumSpeed": "Vitesse minimum:",
         "minimumSpeedHint": "Régler sur des petite valeurs réduit la vitesse des particules.",
         "maxSpeed": "Vitesse maximal:",
-
         "gravityHeading": "Gravité",
         "gravityNotice": "Notez que s'il diffère de (0; 0), l'interpolation de la vitesse sera désactivée, ce qui signifie que seul le premier nœud du graphique de vitesse aura l'effet.",
-
         "directionHeading": "Direction",
         "startingDirection": "Direction de départ",
         "preserveTextureDirection": "Préservé la rotation de la texture",
-
         "rotationHeading": "Rotation",
         "rotationSpeed": "Vitesse de rotation",
         "rotationAcceleration": "Accélération de la rotation:",
-
         "spawningHeading": "Multiplication",
         "timeBetweenBursts": "Temps entre les rafales:",
         "spawnAtOnce": "Apparition immédiate:",
@@ -376,7 +403,6 @@
         "emitterLifetime": "Temps de vie de l'émetteur, en seconde.:",
         "prewarmDelay": "Prewarm / delay, sec.:",
         "prewarmDelayNotice": "Negative values will prepare the particles of the emitter before showing it, which is useful for long effects like dust particles or mist that should already be visible on room start; positive values will delay the simulation.",
-
         "shapeAndPositioningHeading": "Forme et Positionnement",
         "spawnType": "Type de formes:",
         "spawnShapes": {
@@ -392,12 +418,15 @@
         "starPoints": "Points:",
         "startAngle": "Rotation, deg.:",
         "relativeEmitterPosition": "Position relative pour un autre émetteur",
-
         "addEmitter": "Ajouter un nouveau émetteur",
         "reset": "Réinitialiser la prévisualisation",
         "changeBg": "Changer le background",
         "inspectorComplete": "Complet!",
-        "alreadyHasAnImportingTexture": "Vous avez déjà une texture nommer $1. Supprimez-le ou renommez-le :)"
+        "alreadyHasAnImportingTexture": "Vous avez déjà une texture nommer $1. Supprimez-le ou renommez-le :)",
+        "showShapeVisualizer": "",
+        "changeGrid": "",
+        "newGridSize": "",
+        "setPreviewTexture": ""
     },
     "types": {
         "create": "Créer"
@@ -411,7 +440,8 @@
         "draw": "Draw",
         "name": "Nom:",
         "step": "On Step",
-        "learnAboutTypes": "En apprendre plus sur les types de codage"
+        "learnAboutTypes": "En apprendre plus sur les types de codage",
+        "visible": ""
     },
     "rooms": {
         "create": "Ajouter",
@@ -424,7 +454,10 @@
         "parallax": "Parallaxe (X, Y):",
         "repeat": "Répétition",
         "scale": "Échelle: (X, Y):",
-        "shift": "Décalage (X, Y):"
+        "shift": "Décalage (X, Y):",
+        "notBackgroundTextureWarning": "",
+        "fixBackground": "",
+        "dismissWarning": ""
     },
     "roomtiles": {
         "moveTileLayer": "Déplacer vers une nouvelle profondeur",
@@ -467,13 +500,25 @@
         "deletetiles": "Supprimer les Tiles",
         "movetilestolayer": "Déplacer le calque",
         "shifttiles": "Déplacer les Tiles",
-        "findTileset": "Trouver un Tile"
+        "findTileset": "Trouver un Tile",
+        "changecopyrotation": "",
+        "properties": "",
+        "isUi": "",
+        "backgroundColor": "",
+        "sortHorizontally": "",
+        "sortVertically": "",
+        "copyProperties": {
+            "position": "",
+            "rotation": "",
+            "scale": ""
+        }
     },
     "notepad": {
         "local": "Note du projet",
         "global": "Toutes les notes",
         "helppages": "Aides",
-        "backToHome": "Retourner à la documentations"
+        "backToHome": "Retourner à la documentations",
+        "modulespages": ""
     },
     "docsShortcut": {
         "openDocs": "Ouvrir la documentation"
@@ -513,5 +558,119 @@
             "brings light and hope 🌞",
             "is elegant and beautiful 🎩"
         ]
+    },
+    "docsPanel": {
+        "documentation": "",
+        "reference": ""
+    },
+    "extensionsEditor": {
+        "noEntries": "",
+        "addRow": ""
+    },
+    "textureGenerator": {
+        "name": "",
+        "width": "",
+        "height": "",
+        "color": "",
+        "label": "",
+        "optional": "",
+        "createAndClose": "",
+        "createAndContinue": "",
+        "scalingAtX4": "",
+        "generationSuccessMessage": "",
+        "filler": "",
+        "fillerNone": "",
+        "fillerCross": "",
+        "fillerLabel": ""
+    },
+    "textureInput": {
+        "jumpToTexture": "",
+        "changeTexture": ""
+    },
+    "writableFolderPrompt": {
+        "headerSelectFolderForData": "",
+        "paragraphCouldNotPickDirectory": "",
+        "paragraphDirectoryDirections": "",
+        "selectFolder": ""
+    },
+    "writableFolderSelector": {
+        "folderDoesNotExist": "",
+        "notADirectory": "",
+        "folderNotWritable": "",
+        "complete": ""
+    },
+    "mainMenu": {
+        "troubleshooting": {
+            "toggleDevTools": "",
+            "copySystemInfo": "",
+            "systemInfoWait": "",
+            "systemInfoDone": "",
+            "disableAcceleration": "",
+            "disableBuiltInDebugger": "",
+            "postAnIssue": "",
+            "heading": ""
+        },
+        "deploy": {
+            "exportDesktop": "Exporter pour le bureau",
+            "successZipExport": "Exporté avec succès vers {0}",
+            "zipExport": "Exporter en .zip"
+        },
+        "latestProjects": {
+            "recentProjects": "Projets récents"
+        },
+        "settings": {
+            "language": "Langue",
+            "translateToYourLanguage": "Traduisez ct.js dans votre langue!",
+            "theme": "Thème",
+            "themes": {
+                "Day": "Clair",
+                "Night": "Sombre",
+                "SpringStream": "",
+                "LucasDracula": "",
+                "Horizon": "",
+                "HCBlack": ""
+            },
+            "codeFontDefault": "Font par défault (Iosevka Light)",
+            "codeFontOldSchool": "Old school",
+            "codeFontSystem": "Système",
+            "codeFontCustom": "Customiser..",
+            "newFont": "Nouvelle font:",
+            "codeFont": "Font pour codé",
+            "codeLigatures": "Liaisons",
+            "codeDense": "Épaisse disposition",
+            "heading": "Paramètres",
+            "disableSounds": "",
+            "changeDataFolder": "",
+            "forceProductionForDebug": ""
+        },
+        "project": {
+            "save": "Sauvegarder le projet",
+            "openIncludeFolder": "Ouvrir le dossier \"include\"",
+            "openProject": "",
+            "openExample": "",
+            "startScreen": "Retourner à l'écran de démarrage",
+            "successZipProject": "Le projet à été compressé avec succès vers {0}",
+            "zipProject": "Compresser le projet en .zip"
+        },
+        "meta": {
+            "license": "Licence",
+            "visitDiscordForGamedevSupport": "",
+            "openIconList": ""
+        }
+    },
+    "appView": {
+        "ctIDE": "ct.IDE",
+        "texture": "Graphiques",
+        "launch": "Compiler",
+        "launchHotkeys": "(F5/ Alt+F5 pour lancer votre navigateur par défaut",
+        "min": "Fenêtré",
+        "patrons": "Patrons",
+        "rooms": "Salons",
+        "sounds": "Sons",
+        "ui": "IU",
+        "fx": "FX",
+        "types": "Types",
+        "restart": "",
+        "project": ""
     }
 }

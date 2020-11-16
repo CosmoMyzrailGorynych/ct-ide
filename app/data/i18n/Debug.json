@@ -53,7 +53,10 @@
         "clear": "common.clear",
         "filter": "common.filter",
         "selectDialogue": "common.selectDialogue",
-        "search": "common.search"
+        "search": "common.search",
+        "close": "common.close",
+        "couldNotLoadFromClipboard": "common.couldNotLoadFromClipboard",
+        "pastedFromClipboard": "common.pastedFromClipboard"
     },
     "colorPicker": {
         "current": "colorPicker.current",
@@ -101,60 +104,12 @@
         "latest": "intro.latest",
         "unableToWriteToFolders": "intro.unableToWriteToFolders",
         "twitter": "intro.twitter",
-        "discord": "intro.discord"
+        "discord": "intro.discord",
+        "examples": "intro.examples",
+        "createOrBrowseJunction": "intro.createOrBrowseJunction"
     },
     "licensepanel": {
         "ctjslicense": "licensepanel.ctjslicense"
-    },
-    "menu": {
-        "ctIDE": "menu.ctIDE",
-        "exportDesktop": "menu.exportDesktop",
-        "texture": "menu.texture",
-        "launch": "menu.launch",
-        "license": "menu.license",
-        "min": "menu.min",
-        "recentProjects": "menu.recentProjects",
-        "rooms": "menu.rooms",
-        "save": "menu.save",
-        "startScreen": "menu.startScreen",
-        "sounds": "menu.sounds",
-        "successZipExport": "menu.successZipExport",
-        "successZipProject": "menu.successZipProject",
-        "ui": "menu.ui",
-        "theme": "menu.theme",
-        "themeDay": "menu.themeDay",
-        "themeNight": "menu.themeNight",
-        "types": "menu.types",
-        "zipExport": "menu.zipExport",
-        "zipProject": "menu.zipProject",
-        "codeFontDefault": "menu.codeFontDefault",
-        "codeFontOldSchool": "menu.codeFontOldSchool",
-        "codeFontSystem": "menu.codeFontSystem",
-        "codeFontCustom": "menu.codeFontCustom",
-        "newFont": "menu.newFont",
-        "codeFont": "menu.codeFont",
-        "codeLigatures": "menu.codeLigatures",
-        "codeDense": "menu.codeDense",
-        "launchHotkeys": "menu.launchHotkeys",
-        "patrons": "menu.patrons",
-        "fx": "menu.fx",
-        "openIncludeFolder": "menu.openIncludeFolder",
-        "troubleshooting": "menu.troubleshooting",
-        "toggleDevTools": "menu.toggleDevTools",
-        "copySystemInfo": "menu.copySystemInfo",
-        "systemInfoWait": "menu.systemInfoWait",
-        "systemInfoDone": "menu.systemInfoDone",
-        "disableAcceleration": "menu.disableAcceleration",
-        "disableBuiltInDebugger": "menu.disableBuiltInDebugger",
-        "visitDiscordForGamedevSupport": "menu.visitDiscordForGamedevSupport",
-        "postAnIssue": "menu.postAnIssue",
-        "restart": "menu.restart",
-        "project": "menu.project",
-        "settings": "menu.settings",
-        "themeSpringStream": "menu.themeSpringStream",
-        "themeLucasDracula": "menu.themeLucasDracula",
-        "openProject": "menu.openProject",
-        "openExample": "menu.openExample"
     },
     "modules": {
         "author": "modules.author",
@@ -185,13 +140,18 @@
             "integrations": "modules.categories.integrations",
             "tweaks": "modules.categories.tweaks",
             "networking": "modules.categories.networking"
-        }
+        },
+        "preview": "modules.preview",
+        "previewTooltip": "modules.previewTooltip",
+        "deprecatedTooltip": "modules.deprecatedTooltip"
     },
     "texture": {
         "create": "texture.create",
         "import": "texture.import",
         "skeletons": "texture.skeletons",
-        "createType": "texture.createType"
+        "createType": "texture.createType",
+        "importFromClipboard": "texture.importFromClipboard",
+        "generatePlaceholder": "texture.generatePlaceholder"
     },
     "textureview": {
         "bgcolor": "textureview.bgcolor",
@@ -228,7 +188,9 @@
         "movePoint": "textureview.movePoint",
         "symmetryTool": "textureview.symmetryTool",
         "padding": "textureview.padding",
-        "paddingNotice": "textureview.paddingNotice"
+        "paddingNotice": "textureview.paddingNotice",
+        "updateFromClipboard": "textureview.updateFromClipboard",
+        "previewAnimationNotice": "textureview.previewAnimationNotice"
     },
     "sounds": {
         "create": "sounds.create"
@@ -315,7 +277,8 @@
         "draw": "typeview.draw",
         "learnAboutTypes": "typeview.learnAboutTypes",
         "name": "typeview.name",
-        "step": "typeview.step"
+        "step": "typeview.step",
+        "visible": "typeview.visible"
     },
     "rooms": {
         "create": "rooms.create",
@@ -328,7 +291,10 @@
         "parallax": "roombackgrounds.parallax",
         "repeat": "roombackgrounds.repeat",
         "scale": "roombackgrounds.scale",
-        "shift": "roombackgrounds.shift"
+        "shift": "roombackgrounds.shift",
+        "notBackgroundTextureWarning": "roombackgrounds.notBackgroundTextureWarning",
+        "fixBackground": "roombackgrounds.fixBackground",
+        "dismissWarning": "roombackgrounds.dismissWarning"
     },
     "roomtiles": {
         "moveTileLayer": "roomtiles.moveTileLayer",
@@ -373,7 +339,16 @@
         "shifttiles": "roomview.shifttiles",
         "findTileset": "roomview.findTileset",
         "changecopyrotation": "roomview.changecopyrotation",
-        "properties": "roomview.properties"
+        "properties": "roomview.properties",
+        "isUi": "roomview.isUi",
+        "backgroundColor": "roomview.backgroundColor",
+        "sortHorizontally": "roomview.sortHorizontally",
+        "sortVertically": "roomview.sortVertically",
+        "copyProperties": {
+            "position": "roomview.copyProperties.position",
+            "rotation": "roomview.copyProperties.rotation",
+            "scale": "roomview.copyProperties.scale"
+        }
     },
     "notepad": {
         "local": "notepad.local",
@@ -565,7 +540,8 @@
                 "maximized": "settings.rendering.launchModes.maximized",
                 "fullscreen": "settings.rendering.launchModes.fullscreen",
                 "windowed": "settings.rendering.launchModes.windowed"
-            }
+            },
+            "hideCursor": "settings.rendering.hideCursor"
         },
         "scripts": {
             "heading": "settings.scripts.heading",
@@ -575,6 +551,126 @@
             "moveUp": "settings.scripts.moveUp",
             "newScriptComment": "settings.scripts.newScriptComment"
         },
-        "catmodsSettings": "settings.catmodsSettings"
+        "catmodsSettings": "settings.catmodsSettings",
+        "export": {
+            "heading": "settings.export.heading",
+            "functionWrap": "settings.export.functionWrap",
+            "codeModifier": "settings.export.codeModifier",
+            "obfuscateWarning": "settings.export.obfuscateWarning",
+            "codeModifierAndWrapNote": "settings.export.codeModifierAndWrapNote",
+            "codeModifiers": {
+                "none": "settings.export.codeModifiers.none",
+                "minify": "settings.export.codeModifiers.minify",
+                "obfuscate": "settings.export.codeModifiers.obfuscate"
+            }
+        }
+    },
+    "extensionsEditor": {
+        "noEntries": "extensionsEditor.noEntries",
+        "addRow": "extensionsEditor.addRow"
+    },
+    "textureGenerator": {
+        "name": "textureGenerator.name",
+        "width": "textureGenerator.width",
+        "height": "textureGenerator.height",
+        "color": "textureGenerator.color",
+        "label": "textureGenerator.label",
+        "optional": "textureGenerator.optional",
+        "createAndClose": "textureGenerator.createAndClose",
+        "createAndContinue": "textureGenerator.createAndContinue",
+        "scalingAtX4": "textureGenerator.scalingAtX4",
+        "generationSuccessMessage": "textureGenerator.generationSuccessMessage",
+        "filler": "textureGenerator.filler",
+        "fillerNone": "textureGenerator.fillerNone",
+        "fillerCross": "textureGenerator.fillerCross",
+        "fillerLabel": "textureGenerator.fillerLabel"
+    },
+    "textureInput": {
+        "jumpToTexture": "textureInput.jumpToTexture",
+        "changeTexture": "textureInput.changeTexture"
+    },
+    "writableFolderPrompt": {
+        "headerSelectFolderForData": "writableFolderPrompt.headerSelectFolderForData",
+        "paragraphCouldNotPickDirectory": "writableFolderPrompt.paragraphCouldNotPickDirectory",
+        "paragraphDirectoryDirections": "writableFolderPrompt.paragraphDirectoryDirections",
+        "selectFolder": "writableFolderPrompt.selectFolder"
+    },
+    "writableFolderSelector": {
+        "folderDoesNotExist": "writableFolderSelector.folderDoesNotExist",
+        "notADirectory": "writableFolderSelector.notADirectory",
+        "folderNotWritable": "writableFolderSelector.folderNotWritable",
+        "complete": "writableFolderSelector.complete"
+    },
+    "mainMenu": {
+        "troubleshooting": {
+            "toggleDevTools": "mainMenu.troubleshooting.toggleDevTools",
+            "copySystemInfo": "mainMenu.troubleshooting.copySystemInfo",
+            "systemInfoWait": "mainMenu.troubleshooting.systemInfoWait",
+            "systemInfoDone": "mainMenu.troubleshooting.systemInfoDone",
+            "disableAcceleration": "mainMenu.troubleshooting.disableAcceleration",
+            "disableBuiltInDebugger": "mainMenu.troubleshooting.disableBuiltInDebugger",
+            "postAnIssue": "mainMenu.troubleshooting.postAnIssue",
+            "heading": "mainMenu.troubleshooting.heading"
+        },
+        "deploy": {
+            "exportDesktop": "mainMenu.deploy.exportDesktop",
+            "successZipExport": "mainMenu.deploy.successZipExport",
+            "zipExport": "mainMenu.deploy.zipExport"
+        },
+        "latestProjects": {
+            "recentProjects": "mainMenu.latestProjects.recentProjects"
+        },
+        "settings": {
+            "theme": "mainMenu.settings.theme",
+            "themes": {
+                "Day": "mainMenu.settings.themes.themeDay",
+                "Night": "mainMenu.settings.themes.themeNight",
+                "SpringStream": "mainMenu.settings.themes.themeSpringStream",
+                "LucasDracula": "mainMenu.settings.themes.themeLucasDracula",
+                "Horizon": "mainMenu.settings.themes.themeHorizon",
+                "HCBlack": "mainMenu.settings.themes.themeHCBlack"
+            },
+            "codeFontDefault": "mainMenu.settings.codeFontDefault",
+            "codeFontOldSchool": "mainMenu.settings.codeFontOldSchool",
+            "codeFontSystem": "mainMenu.settings.codeFontSystem",
+            "codeFontCustom": "mainMenu.settings.codeFontCustom",
+            "newFont": "mainMenu.settings.newFont",
+            "codeFont": "mainMenu.settings.codeFont",
+            "codeLigatures": "mainMenu.settings.codeLigatures",
+            "codeDense": "mainMenu.settings.codeDense",
+            "settings": "mainMenu.settings.settings",
+            "disableSounds": "mainMenu.settings.disableSounds",
+            "changeDataFolder": "mainMenu.settings.changeDataFolder",
+            "forceProductionForDebug": "mainMenu.settings.forceProductionForDebug"
+        },
+        "project": {
+            "save": "mainMenu.project.save",
+            "openIncludeFolder": "mainMenu.project.openIncludeFolder",
+            "openProject": "mainMenu.project.openProject",
+            "openExample": "mainMenu.project.openExample",
+            "startScreen": "mainMenu.project.startScreen",
+            "successZipProject": "mainMenu.project.successZipProject",
+            "zipProject": "mainMenu.project.zipProject"
+        },
+        "meta": {
+            "license": "mainMenu.meta.license",
+            "visitDiscordForGamedevSupport": "mainMenu.meta.visitDiscordForGamedevSupport",
+            "openIconList": "mainMenu.meta.openIconList"
+        }
+    },
+    "appView": {
+        "ctIDE": "appView.ctIDE",
+        "texture": "appView.texture",
+        "launch": "appView.launch",
+        "min": "appView.min",
+        "rooms": "appView.rooms",
+        "sounds": "appView.sounds",
+        "ui": "appView.ui",
+        "types": "appView.types",
+        "launchHotkeys": "appView.launchHotkeys",
+        "patrons": "appView.patrons",
+        "fx": "appView.fx",
+        "restart": "appView.restart",
+        "project": "appView.project"
     }
 }

@@ -25,9 +25,7 @@
         "exit": "Выход",
         "exitconfirm": "Вы уверены, что хотите выйти?<br/>Все несохранённые данные будут потеряны!",
         "fastimport": "Быстрый импорт",
-        "language": "Язык",
         "loading": "Загрузка…",
-        "translateToYourLanguage": "Переведите ct.js на свой язык!",
         "name": "Название:",
         "nametaken": "Это имя уже занято",
         "newname": "Новое имя:",
@@ -55,7 +53,8 @@
         "zoomOut": "Уменьшить",
         "filter": "Отфильтровать:",
         "selectDialogue": "Выбрать…",
-        "search": "Поиск:"
+        "search": "Поиск:",
+        "close": ""
     },
     "colorPicker": {
         "old": "Старый",
@@ -103,63 +102,12 @@
         "twitter": "Канал в Twitter",
         "discord": "Сообщество в Discord",
         "loadingProjectError": "Не удаётся открыть проект из-за следующей ошибки:",
-        "unableToWriteToFolders": "Ct.js не удалось найти подходящее место для проектов! Убедитесь, что папка ct.js находится в каталоге, доступном для чтения."
+        "unableToWriteToFolders": "Ct.js не удалось найти подходящее место для проектов! Убедитесь, что папка ct.js находится в каталоге, доступном для чтения.",
+        "examples": "",
+        "createOrBrowseJunction": ""
     },
     "licensepanel": {
         "ctjslicense": "Лицензия Ct.js (MIT)"
-    },
-    "menu": {
-        "ctIDE": "ct.IDE",
-        "exportDesktop": "Экспортировать для ПК",
-        "texture": "Текстуры",
-        "launch": "Скомпилировать и запустить",
-        "launchHotkeys": "(F5, или Alt+F5, чтобы запустить в браузере по-умолчанию)",
-        "license": "Лицензия",
-        "min": "Переключить полноэкранный режим",
-        "patrons": "Патроны-покровители",
-        "recentProjects": "Последние проекты",
-        "rooms": "Комнаты",
-        "save": "Сохранить проект",
-        "startScreen": "К стартовому экрану",
-        "project": "Проект",
-        "settings": "Настройки",
-        "sounds": "Звуки",
-        "successZipExport": "Успешно экспортировано в {0}.",
-        "successZipProject": "Проект успешно упакован в {0}.",
-        "ui": "Интерфейс",
-        "fx": "Эффекты",
-        "theme": "Тема",
-        "themeDay": "Дневная",
-        "themeNight": "Ночная",
-        "themeHCBlack": "Высококонтрастная чёрная",
-        "themeHorizon": "Горизонт",
-        "themeLucasDracula": "Люкас Дракула",
-        "themeSpringStream": "Весенний ручей",
-        "types": "Типы",
-        "zipExport": "Экспорт в .zip",
-        "zipProject": "Упаковать проект в .zip",
-        "codeFontDefault": "По умолчанию (Iosevka Light)",
-        "codeFontOldSchool": "Старый-добрый",
-        "codeFontSystem": "Системный",
-        "codeFontCustom": "Пользовательский…",
-        "newFont": "Новый шрифт:",
-        "codeFont": "Шрифт для кода",
-        "codeLigatures": "Лигатуры",
-        "codeDense": "Меньшая высота линии",
-        "openIncludeFolder": "Открыть папку include",
-        "troubleshooting": "В случае неполадок",
-        "toggleDevTools": "Открыть девтулзы",
-        "copySystemInfo": "Скопировать данные о системе",
-        "systemInfoWait": "Сейчас, собираю данные…",
-        "systemInfoDone": "Готово!",
-        "disableAcceleration": "Отключить графическое ускорение (требует перезапуск)",
-        "disableBuiltInDebugger": "Выключить встроенный отладчик игр",
-        "visitDiscordForGamedevSupport": "Присоединиться к Discord-серверу для помощи в разработке",
-        "postAnIssue": "Зайти на GitHub",
-        "restart": "Перезапустить",
-        "openProject": "Открыть проект…",
-        "openExample": "Открыть пример…",
-        "disableSounds": "Отключить звуки интерфейса"
     },
     "onboarding": {
         "hoorayHeader": "Ух-ты! Мы сделали новый проект!",
@@ -227,7 +175,19 @@
         "modules": {
             "heading": "Котомоды"
         },
-        "catmodsSettings": "Настройки котомодов"
+        "catmodsSettings": "Настройки котомодов",
+        "export": {
+            "heading": "",
+            "functionWrap": "",
+            "codeModifier": "",
+            "obfuscateWarning": "",
+            "codeModifierAndWrapNote": "",
+            "codeModifiers": {
+                "none": "",
+                "minify": "",
+                "obfuscate": ""
+            }
+        }
     },
     "modules": {
         "author": "Автор котомода",
@@ -258,14 +218,18 @@
             "integrations": "Интеграции",
             "tweaks": "Настройки",
             "networking": "Сеть"
-        }
+        },
+        "preview": "",
+        "previewTooltip": "",
+        "deprecatedTooltip": ""
     },
     "texture": {
         "create": "Создать",
         "import": "Импорт",
         "skeletons": "Скелетная анимация",
         "createType": "Создать тип с этой текстурой",
-        "importFromClipboard": "Импортировать из буфера обмена"
+        "importFromClipboard": "Импортировать из буфера обмена",
+        "generatePlaceholder": ""
     },
     "textureview": {
         "bgcolor": "Сменить цвет фона",
@@ -459,7 +423,8 @@
         "draw": "Прорисовка",
         "learnAboutTypes": "Кодинг типов",
         "name": "Имя:",
-        "step": "Кадр"
+        "step": "Кадр",
+        "visible": ""
     },
     "rooms": {
         "create": "Добавить",
@@ -521,7 +486,15 @@
         "movetilestolayer": "Переместить в другой слой",
         "shifttiles": "Сместить плитки",
         "changecopyrotation": "Повернуть",
-        "properties": "Свойства"
+        "properties": "Свойства",
+        "isUi": "",
+        "sortHorizontally": "",
+        "sortVertically": "",
+        "copyProperties": {
+            "position": "",
+            "rotation": "",
+            "scale": ""
+        }
     },
     "notepad": {
         "local": "Блокнот проекта",
@@ -589,5 +562,115 @@
     "docsPanel": {
         "documentation": "Документация",
         "reference": "Список методов"
+    },
+    "extensionsEditor": {
+        "noEntries": "",
+        "addRow": ""
+    },
+    "textureGenerator": {
+        "name": "",
+        "width": "",
+        "height": "",
+        "color": "",
+        "label": "",
+        "optional": "",
+        "createAndClose": "",
+        "createAndContinue": "",
+        "scalingAtX4": "",
+        "generationSuccessMessage": "",
+        "filler": "",
+        "fillerNone": "",
+        "fillerCross": "",
+        "fillerLabel": ""
+    },
+    "textureInput": {
+        "jumpToTexture": "",
+        "changeTexture": ""
+    },
+    "writableFolderPrompt": {
+        "headerSelectFolderForData": "",
+        "paragraphCouldNotPickDirectory": "",
+        "paragraphDirectoryDirections": "",
+        "selectFolder": ""
+    },
+    "writableFolderSelector": {
+        "folderDoesNotExist": "",
+        "notADirectory": "",
+        "folderNotWritable": "",
+        "complete": ""
+    },
+    "mainMenu": {
+        "troubleshooting": {
+            "toggleDevTools": "Открыть девтулзы",
+            "copySystemInfo": "Скопировать данные о системе",
+            "systemInfoWait": "Сейчас, собираю данные…",
+            "systemInfoDone": "Готово!",
+            "disableAcceleration": "Отключить графическое ускорение (требует перезапуск)",
+            "disableBuiltInDebugger": "Выключить встроенный отладчик игр",
+            "postAnIssue": "Зайти на GitHub",
+            "heading": "В случае неполадок"
+        },
+        "deploy": {
+            "exportDesktop": "Экспортировать для ПК",
+            "successZipExport": "Успешно экспортировано в {0}.",
+            "zipExport": "Экспорт в .zip"
+        },
+        "latestProjects": {
+            "recentProjects": "Последние проекты"
+        },
+        "settings": {
+            "theme": "Тема",
+            "themes": {
+                "Day": "Дневная",
+                "Night": "Ночная",
+                "SpringStream": "Весенний ручей",
+                "LucasDracula": "Люкас Дракула",
+                "Horizon": "Горизонт",
+                "HCBlack": "Высококонтрастная чёрная"
+            },
+            "codeFontDefault": "По умолчанию (Iosevka Light)",
+            "codeFontOldSchool": "Старый-добрый",
+            "codeFontSystem": "Системный",
+            "codeFontCustom": "Пользовательский…",
+            "newFont": "Новый шрифт:",
+            "codeFont": "Шрифт для кода",
+            "codeLigatures": "Лигатуры",
+            "codeDense": "Меньшая высота линии",
+            "heading": "Настройки",
+            "language": "Язык",
+            "translateToYourLanguage": "Переведите ct.js на свой язык!",
+            "disableSounds": "Отключить звуки интерфейса",
+            "changeDataFolder": "",
+            "forceProductionForDebug": ""
+        },
+        "project": {
+            "save": "Сохранить проект",
+            "openIncludeFolder": "Открыть папку include",
+            "openProject": "Открыть проект…",
+            "openExample": "Открыть пример…",
+            "startScreen": "К стартовому экрану",
+            "successZipProject": "Проект успешно упакован в {0}.",
+            "zipProject": "Упаковать проект в .zip"
+        },
+        "meta": {
+            "license": "Лицензия",
+            "visitDiscordForGamedevSupport": "Присоединиться к Discord-серверу для помощи в разработке",
+            "openIconList": ""
+        }
+    },
+    "appView": {
+        "ctIDE": "ct.IDE",
+        "texture": "Текстуры",
+        "launch": "Скомпилировать и запустить",
+        "launchHotkeys": "(F5, или Alt+F5, чтобы запустить в браузере по-умолчанию)",
+        "min": "Переключить полноэкранный режим",
+        "patrons": "Патроны-покровители",
+        "rooms": "Комнаты",
+        "project": "Проект",
+        "sounds": "Звуки",
+        "ui": "Интерфейс",
+        "fx": "Эффекты",
+        "types": "Типы",
+        "restart": "Перезапустить"
     }
 }

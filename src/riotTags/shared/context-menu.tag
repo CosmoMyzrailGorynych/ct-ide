@@ -121,6 +121,7 @@ context-menu(class="{opened: opts.menu.opened}" ref="root" style="{opts.menu.col
                 e.stopPropagation();
             }
         };
+
         this.on('mount', () => {
             document.addEventListener('click', clickListener);
         });

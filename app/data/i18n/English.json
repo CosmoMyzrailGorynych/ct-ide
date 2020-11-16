@@ -27,9 +27,7 @@
         "exitconfirm": "Are you sure you want to exit?<br/>All the unsaved changes will be lost!",
         "fastimport": "Fast Import",
         "filter": "Filter:",
-        "language": "Language",
         "loading": "Loading…",
-        "translateToYourLanguage": "Translate ct.js!",
         "name": "Name:",
         "nametaken": "This name is already taken",
         "newname": "New name:",
@@ -138,63 +136,6 @@
     },
     "licensepanel": {
         "ctjslicense": "Ct.js License (MIT)"
-    },
-    "menu": {
-        "ctIDE": "ct.IDE",
-        "exportDesktop": "Export for desktop…",
-        "texture": "Textures",
-        "launch": "Launch",
-        "launchHotkeys": "(F5; Alt+F5 to run in your default browser)",
-        "license": "License",
-        "min": "Windowed",
-        "patrons": "Patrons",
-        "recentProjects": "Recent projects",
-        "restart": "Restart",
-        "rooms": "Rooms",
-        "save": "Save project",
-        "startScreen": "Return to the starting screen",
-        "project": "Project",
-        "settings": "Settings",
-        "sounds": "Sounds",
-        "successZipExport": "Successfully exported to {0}.",
-        "successZipProject": "Successfully zipped the project to {0}.",
-        "ui": "UI",
-        "fx": "FX",
-        "theme": "Theme",
-        "themeDay": "Day",
-        "themeNight": "Night",
-        "themeHorizon": "Horizon",
-        "themeHCBlack": "High-contrast Black",
-        "themeSpringStream": "Spring Stream",
-        "themeLucasDracula": "Lucas Dracula",
-        "themePooxelGreen": "Pooxel Green",
-        "themePooxelBlue": "Pooxel Blue",
-        "types": "Types",
-        "zipExport": "Export for web",
-        "zipProject": "Pack project to .zip",
-        "codeFontDefault": "Default (Iosevka Light)",
-        "codeFontOldSchool": "Old school",
-        "codeFontSystem": "System",
-        "codeFontCustom": "Custom…",
-        "newFont": "New font:",
-        "codeFont": "Font for code",
-        "codeLigatures": "Ligatures",
-        "codeDense": "Dense layout",
-        "disableSounds": "Disable UI sounds",
-        "changeDataFolder": "Set data folder location",
-        "openIncludeFolder": "Open \"include\" folder",
-        "troubleshooting": "Troubleshooting",
-        "toggleDevTools": "Toggle Dev Tools",
-        "copySystemInfo": "Copy system information",
-        "systemInfoWait": "Wait a bit, I'm gathering the data…",
-        "systemInfoDone": "Done!",
-        "disableAcceleration": "Disable graphics acceleration (needs restart)",
-        "disableBuiltInDebugger": "Disable built-in debugger",
-        "forceProductionForDebug": "Force production tasks for debug exports",
-        "visitDiscordForGamedevSupport": "Join Discord server for gamedev support",
-        "postAnIssue": "Post an issue on Github…",
-        "openProject": "Open a project…",
-        "openExample": "Open an example project…"
     },
     "onboarding": {
         "hoorayHeader": "Wow! You've just created a project!",
@@ -449,14 +390,11 @@
     "particleEmitters": {
         "emittersHeading": "Particle emitters",
         "emitterHeading": "Emitter",
-
         "from": "From:",
         "to": "To:",
-
         "textureHeading": "Texture",
         "selectTexture": "Select…",
         "importBuiltin": "Import default…",
-
         "colorAndOpacityHeading": "Color and Opacity",
         "stepped": "Stepped",
         "steppedColor": "Stepped color",
@@ -466,29 +404,23 @@
         "darken": "Darken",
         "lighten": "Lighten",
         "burn": "Burn",
-
         "scalingHeading": "Scaling",
         "scale": "Scale:",
         "minimumSize": "Minimum size:",
         "minimumSizeHint": "Setting it to lower values will randomize the size of each particle. The lower the values, the stronger the effect.",
-
         "velocityHeading": "Velocity",
         "velocity": "Velocity:",
         "minimumSpeed": "Minimum speed:",
         "minimumSpeedHint": "Setting it to lower values will randomize the speed of each particle; the lower the value, the slower the particle may be.",
         "maxSpeed": "Max speed:",
-
         "gravityHeading": "Gravity",
         "gravityNotice": "Note that if it differs from (0;0), velocity interpolation will be disabled, meaning that only the first node of the velocity graph will have the effect.",
-
         "directionHeading": "Direction",
         "startingDirection": "Starting direction",
         "preserveTextureDirection": "Preserve texture rotation",
-
         "rotationHeading": "Rotation",
         "rotationSpeed": "Rotation speed",
         "rotationAcceleration": "Rotation acceleration:",
-
         "spawningHeading": "Spawning",
         "timeBetweenBursts": "Time between bursts:",
         "spawnAtOnce": "Spawn at once:",
@@ -498,7 +430,6 @@
         "emitterLifetime": "Emitter lifetime, sec.:",
         "prewarmDelay": "Prewarm / delay, sec.:",
         "prewarmDelayNotice": "Negative values will prepare the particles of the emitter before showing it, which is useful for long effects like dust particles or mist that should already be visible on room start; positive values will delay the simulation.",
-
         "shapeAndPositioningHeading": "Shape and Positioning",
         "spawnType": "Shape type:",
         "spawnShapes": {
@@ -515,7 +446,6 @@
         "startAngle": "Rotate, deg.:",
         "showShapeVisualizer": "Show shape visualizer",
         "relativeEmitterPosition": "Position relative to other emitters",
-
         "addEmitter": "Add another emitter",
         "reset": "Reset preview",
         "changeBg": "Change background",
@@ -668,5 +598,82 @@
         "notADirectory": "This doesn't seem to be a directory! How did you do that?",
         "folderNotWritable": "You don't have access to write to this folder. Pick another one.",
         "complete": "Folder was set, all is good ✅"
+    },
+    "mainMenu": {
+        "troubleshooting": {
+            "toggleDevTools": "Toggle Dev Tools",
+            "copySystemInfo": "Copy system information",
+            "systemInfoWait": "Wait a bit, I'm gathering the data…",
+            "systemInfoDone": "Done!",
+            "disableAcceleration": "Disable graphics acceleration (needs restart)",
+            "disableBuiltInDebugger": "Disable built-in debugger",
+            "postAnIssue": "Post an issue on Github…",
+            "heading": "Troubleshooting"
+        },
+        "deploy": {
+            "heading": "Deploy",
+            "exportDesktop": "Export for desktop…",
+            "successZipExport": "Successfully exported to {0}.",
+            "zipExport": "Export for web"
+        },
+        "latestProjects": {
+            "recentProjects": "Recent projects"
+        },
+        "settings": {
+            "heading": "Settings",
+            "theme": "Theme",
+            "themes": {
+                "Day": "Day",
+                "Night": "Night",
+                "SpringStream": "Spring Stream",
+                "LucasDracula": "Lucas Dracula",
+                "Horizon": "Horizon",
+                "HCBlack": "High-contrast Black"
+            },
+            "language": "Language",
+            "translateToYourLanguage": "Translate ct.js!",
+            "codeFontDefault": "Default (Iosevka Light)",
+            "codeFontOldSchool": "Old school",
+            "codeFontSystem": "System",
+            "codeFontCustom": "Custom…",
+            "newFont": "New font:",
+            "codeFont": "Font for code",
+            "codeLigatures": "Ligatures",
+            "codeDense": "Dense layout",
+            "disableSounds": "Disable UI sounds",
+            "changeDataFolder": "Set data folder location",
+            "forceProductionForDebug": "Force production tasks for debug exports"
+        },
+        "project": {
+            "heading": "Project",
+            "save": "Save project",
+            "openIncludeFolder": "Open \"include\" folder",
+            "openProject": "Open a project…",
+            "openExample": "Open an example project…",
+            "startScreen": "Return to the starting screen",
+            "successZipProject": "Successfully zipped the project to {0}.",
+            "zipProject": "Pack project to .zip"
+        },
+        "meta": {
+            "heading": "Meta",
+            "license": "License",
+            "visitDiscordForGamedevSupport": "Join Discord server for gamedev support",
+            "openIconList": "Open the list of icons"
+        }
+    },
+    "appView": {
+        "ctIDE": "ct.IDE",
+        "texture": "Textures",
+        "launch": "Launch",
+        "launchHotkeys": "(F5; Alt+F5 to run in your default browser)",
+        "min": "Windowed",
+        "patrons": "Patrons",
+        "restart": "Restart",
+        "rooms": "Rooms",
+        "project": "Project",
+        "sounds": "Sounds",
+        "ui": "UI",
+        "fx": "FX",
+        "types": "Types"
     }
 }

@@ -22,8 +22,6 @@
         "exit": "Salir",
         "exitconfirm": "¿Está seguro de que desea salir? <br/> ¡Todos los cambios no guardados se perderán!",
         "fastimport": "Importar Rápido",
-        "language": "Lenguaje",
-        "translateToYourLanguage": "¡Traduce ct.js a tu idioma!",
         "name": "Nombre:",
         "nametaken": "Este nombre ya está tomado",
         "newname": "Nombre Nuevo:",
@@ -51,7 +49,12 @@
         "clear": "Limpiar",
         "loading": "Cargando...",
         "selectDialogue": "Seleccionar...",
-        "select": "Seleccionar"
+        "select": "Seleccionar",
+        "filter": "",
+        "search": "",
+        "close": "",
+        "couldNotLoadFromClipboard": "",
+        "pastedFromClipboard": ""
     },
     "colorPicker": {
         "current": "Nuevo",
@@ -99,60 +102,12 @@
         "discord": "Comunidad de Discord",
         "loadingProject": "Cargando el proyecto...",
         "loadingProjectError": "Este proyecto no se puede abrir debido al siguiente error:",
-        "unableToWriteToFolders": "¡Ct.js no pudo encontrar un lugar apropiado para tus proyectos! Asegúrece de guardar la aplicación de ct.js en un folder donde tenga permisos para modificar."
+        "unableToWriteToFolders": "¡Ct.js no pudo encontrar un lugar apropiado para tus proyectos! Asegúrece de guardar la aplicación de ct.js en un folder donde tenga permisos para modificar.",
+        "examples": "",
+        "createOrBrowseJunction": ""
     },
     "licensepanel": {
         "ctjslicense": "Licencia Ct.js (MIT)"
-    },
-    "menu": {
-        "ctIDE": "ct.IDE",
-        "exportDesktop": "Exportar para escritorio",
-        "texture": "Texturas",
-        "launch": "Compilar",
-        "license": "Licencia",
-        "min": "Modo Ventana",
-        "recentProjects": "Proyectos recientes",
-        "rooms": "Cuartos",
-        "save": "Guardar proyecto",
-        "startScreen": "Regresar a la pantalla de inicio",
-        "settings": "Configuración",
-        "sounds": "Sonidos",
-        "successZipExport": "Exportado exitosamente a {0}.",
-        "successZipProject": "El proyecto se comprimió con éxito en {0}.",
-        "ui": "UI",
-        "theme": "Tema",
-        "themeDay": "Claro",
-        "themeNight": "Oscuro",
-        "types": "Tipos",
-        "zipExport": "Exportar para la web",
-        "zipProject": "Comprimir proyecto en .zip",
-        "codeFontDefault": "Predeterminado (Iosevka Light)",
-        "codeFontOldSchool": "Vieja Escuela",
-        "codeFontSystem": "Sistema",
-        "codeFontCustom": "Personalizado...",
-        "newFont": "Fuente nueva:",
-        "codeFont": "Fuente para el código",
-        "codeLigatures": "Ligaduras",
-        "codeDense": "Diseño Denso",
-        "launchHotkeys": "(F5; Alt+F5 para ejecutar en el navegador predeterminado)",
-        "patrons": "Patrons",
-        "restart": "Reiniciar",
-        "project": "Proyecto",
-        "fx": "Effectos",
-        "themeSpringStream": "Corriente de Primavera",
-        "themeLucasDracula": "Lucas Dracula",
-        "openIncludeFolder": "Abrir folder \"incluir\"",
-        "troubleshooting": "Solución de problemas",
-        "toggleDevTools": "Activar/Desactivar las herramientas de desarrollador",
-        "copySystemInfo": "Copiar información del sistema",
-        "systemInfoWait": "Un momento, Estoy recolectando la información...",
-        "systemInfoDone": "¡Terminado!",
-        "disableAcceleration": "Deshabilitar aceleración gráfica (reinicio necesario)",
-        "disableBuiltInDebugger": "Deshabilitar el depurador integrado",
-        "visitDiscordForGamedevSupport": "Unete a nuestro servidor de Discord para obtener ayuda",
-        "postAnIssue": "Reportar un problema en Github...",
-        "openProject": "Abrir proyecto...",
-        "openExample": "Abrir un proyecto de ejemplo..."
     },
     "settings": {
         "actions": {
@@ -189,7 +144,8 @@
                 "maximized": "Maximizado",
                 "fullscreen": "Pantalla completa",
                 "windowed": "Ventana"
-            }
+            },
+            "hideCursor": ""
         },
         "scripts": {
             "heading": "Scripts personalizados",
@@ -206,6 +162,22 @@
             "icon": "Icono del juego:",
             "iconNotice": "Deberia ser un cuadro, una textura de un fotograma que sea por lo menos 256x256px de tamaño.",
             "invertPreloaderScheme": "Invertir el color del esquema del precargador"
+        },
+        "modules": {
+            "heading": ""
+        },
+        "catmodsSettings": "",
+        "export": {
+            "heading": "",
+            "functionWrap": "",
+            "codeModifier": "",
+            "obfuscateWarning": "",
+            "codeModifierAndWrapNote": "",
+            "codeModifiers": {
+                "none": "",
+                "minify": "",
+                "obfuscate": ""
+            }
         }
     },
     "modules": {
@@ -220,13 +192,35 @@
         "settings": "Configuración",
         "dependencies": "Dependencias:",
         "optionalDependencies": "Dependencias opcionales:",
-        "importModules": "Módulos a Importar"
+        "importModules": "Módulos a Importar",
+        "enabledModules": "",
+        "availableModules": "",
+        "filter": "",
+        "categories": {
+            "customization": "",
+            "utilities": "",
+            "media": "",
+            "misc": "",
+            "desktop": "",
+            "motionPlanning": "",
+            "inputs": "",
+            "fx": "",
+            "mobile": "",
+            "integrations": "",
+            "tweaks": "",
+            "networking": ""
+        },
+        "preview": "",
+        "previewTooltip": "",
+        "deprecatedTooltip": ""
     },
     "texture": {
         "create": "Crear",
         "import": "Importar",
         "skeletons": "Animacion de esqueleto",
-        "createType": "Crear tipo de esta"
+        "createType": "Crear tipo de esta",
+        "importFromClipboard": "",
+        "generatePlaceholder": ""
     },
     "textureview": {
         "bgcolor": "Cambiar color de fondo",
@@ -263,7 +257,9 @@
         "movePoint": "Mueve este punto",
         "symmetryTool": "Herramienta de simetría",
         "padding": "Padding:",
-        "paddingNotice": "Esto afecta la forma en que la textura es exportada: añade pixeles duplicados en las orillas y previene errores de colado en texturas tile y agrandadas. El valor predeterminado usualmente es suficiente, pero, si se encogen las texturas lo suficiente, el colado puede reaparecer. Incrementa este valor si la textura tiene errores durante el juego."
+        "paddingNotice": "Esto afecta la forma en que la textura es exportada: añade pixeles duplicados en las orillas y previene errores de colado en texturas tile y agrandadas. El valor predeterminado usualmente es suficiente, pero, si se encogen las texturas lo suficiente, el colado puede reaparecer. Incrementa este valor si la textura tiene errores durante el juego.",
+        "updateFromClipboard": "",
+        "previewAnimationNotice": ""
     },
     "sounds": {
         "create": "Crear"
@@ -308,7 +304,8 @@
         "strokeweight": "Grosor de línea:",
         "testtext": "Texto de prueba 0123 +",
         "textWrap": "Ajuste de línea",
-        "textWrapWidth": "Anchura máxima:"
+        "textWrapWidth": "Anchura máxima:",
+        "useCustomFont": ""
     },
     "fonts": {
         "fonts": "Fuentes",
@@ -349,7 +346,8 @@
         "draw": "Dibujar",
         "learnAboutTypes": "Aprenda sobre los tipos de código",
         "name": "Nombre:",
-        "step": "En cada paso"
+        "step": "En cada paso",
+        "visible": ""
     },
     "rooms": {
         "create": "Añadir nuevo",
@@ -362,7 +360,10 @@
         "parallax": "Paralaje (X, Y):",
         "repeat": "Repetir:",
         "scale": "Escala (X, Y):",
-        "shift": "Cambio (X, Y):"
+        "shift": "Cambio (X, Y):",
+        "notBackgroundTextureWarning": "",
+        "fixBackground": "",
+        "dismissWarning": ""
     },
     "roomtiles": {
         "moveTileLayer": "Mover a una nueva profundidad",
@@ -406,13 +407,24 @@
         "movetilestolayer": "Mover a capa",
         "shifttiles": "Cambiar tiles",
         "findTileset": "Encontrar tileset",
-        "changecopyrotation": "Rotar"
+        "changecopyrotation": "Rotar",
+        "properties": "",
+        "isUi": "",
+        "backgroundColor": "",
+        "sortHorizontally": "",
+        "sortVertically": "",
+        "copyProperties": {
+            "position": "",
+            "rotation": "",
+            "scale": ""
+        }
     },
     "notepad": {
         "local": "Bloc de notas del proyecto",
         "global": "Bloc de notas global",
         "helppages": "Ayuda",
-        "backToHome": "Volver a la página de inicio"
+        "backToHome": "Volver a la página de inicio",
+        "modulespages": ""
     },
     "curveEditor": {
         "curveLineHint": "Puede hacer click en la curva para añadir un punto",
@@ -546,5 +558,119 @@
             "trae luz y esperanza 🌞",
             "es elegante y hermos@ 🎩"
         ]
+    },
+    "docsPanel": {
+        "documentation": "",
+        "reference": ""
+    },
+    "extensionsEditor": {
+        "noEntries": "",
+        "addRow": ""
+    },
+    "textureGenerator": {
+        "name": "",
+        "width": "",
+        "height": "",
+        "color": "",
+        "label": "",
+        "optional": "",
+        "createAndClose": "",
+        "createAndContinue": "",
+        "scalingAtX4": "",
+        "generationSuccessMessage": "",
+        "filler": "",
+        "fillerNone": "",
+        "fillerCross": "",
+        "fillerLabel": ""
+    },
+    "textureInput": {
+        "jumpToTexture": "",
+        "changeTexture": ""
+    },
+    "writableFolderPrompt": {
+        "headerSelectFolderForData": "",
+        "paragraphCouldNotPickDirectory": "",
+        "paragraphDirectoryDirections": "",
+        "selectFolder": ""
+    },
+    "writableFolderSelector": {
+        "folderDoesNotExist": "",
+        "notADirectory": "",
+        "folderNotWritable": "",
+        "complete": ""
+    },
+    "mainMenu": {
+        "troubleshooting": {
+            "toggleDevTools": "Activar/Desactivar las herramientas de desarrollador",
+            "copySystemInfo": "Copiar información del sistema",
+            "systemInfoWait": "Un momento, Estoy recolectando la información...",
+            "systemInfoDone": "¡Terminado!",
+            "disableAcceleration": "Deshabilitar aceleración gráfica (reinicio necesario)",
+            "disableBuiltInDebugger": "Deshabilitar el depurador integrado",
+            "postAnIssue": "Reportar un problema en Github...",
+            "heading": "Solución de problemas"
+        },
+        "deploy": {
+            "exportDesktop": "Exportar para escritorio",
+            "successZipExport": "Exportado exitosamente a {0}.",
+            "zipExport": "Exportar para la web"
+        },
+        "latestProjects": {
+            "recentProjects": "Proyectos recientes"
+        },
+        "settings": {
+            "heading": "Configuración",
+            "language": "Lenguaje",
+            "translateToYourLanguage": "¡Traduce ct.js a tu idioma!",
+            "theme": "Tema",
+            "themes": {
+                "Day": "Claro",
+                "Night": "Oscuro",
+                "SpringStream": "Corriente de Primavera",
+                "LucasDracula": "Lucas Dracula",
+                "Horizon": "",
+                "HCBlack": ""
+            },
+            "codeFontDefault": "Predeterminado (Iosevka Light)",
+            "codeFontOldSchool": "Vieja Escuela",
+            "codeFontSystem": "Sistema",
+            "codeFontCustom": "Personalizado...",
+            "newFont": "Fuente nueva:",
+            "codeFont": "Fuente para el código",
+            "codeLigatures": "Ligaduras",
+            "codeDense": "Diseño Denso",
+            "disableSounds": "",
+            "changeDataFolder": "",
+            "forceProductionForDebug": ""
+        },
+        "project": {
+            "save": "Guardar proyecto",
+            "openIncludeFolder": "Abrir folder \"incluir\"",
+            "openProject": "Abrir proyecto...",
+            "openExample": "Abrir un proyecto de ejemplo...",
+            "startScreen": "Regresar a la pantalla de inicio",
+            "successZipProject": "El proyecto se comprimió con éxito en {0}.",
+            "zipProject": "Comprimir proyecto en .zip"
+        },
+        "meta": {
+            "license": "Licencia",
+            "visitDiscordForGamedevSupport": "Unete a nuestro servidor de Discord para obtener ayuda",
+            "openIconList": ""
+        }
+    },
+    "appView": {
+        "ctIDE": "ct.IDE",
+        "texture": "Texturas",
+        "launch": "Compilar",
+        "min": "Modo Ventana",
+        "rooms": "Cuartos",
+        "sounds": "Sonidos",
+        "ui": "UI",
+        "types": "Tipos",
+        "launchHotkeys": "(F5; Alt+F5 para ejecutar en el navegador predeterminado)",
+        "patrons": "Patrons",
+        "restart": "Reiniciar",
+        "project": "Proyecto",
+        "fx": "Effectos"
     }
 }

@@ -1,6 +1,6 @@
 scripts-settings
     h1 {voc.heading}
-    ul.menu
+    ul.aMenu
         li(each="{script, index in global.currentProject.scripts}" onclick="{selectScript}")
             code {script.name}
             .toright
