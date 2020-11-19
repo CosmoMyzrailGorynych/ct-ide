@@ -1,11 +1,14 @@
 const path = require('path');
 
 const defaultTheme = 'Day';
+const defaultMonacoTheme = defaultTheme;
 const builtInThemes = [
     'Day',
     'SpringStream',
     'Forest',
     'Horizon',
+    'PooxelGreen',
+    'PooxelBlue',
     'LucasDracula',
     'Night',
     'HCBlack'
@@ -13,7 +16,7 @@ const builtInThemes = [
 interface ITheme {
     name: string;
     translated: string;
-    monacoTheme: object;
+    monacoTheme: Record<string, unknown>;
     css: string;
 }
 
@@ -25,8 +28,15 @@ const mod = {
         if (mod.getTheme(name)) {
             throw new Error(`A theme called ${name} is already registered.`);
         }
-        const monacoTheme = require(path.join('./data/node_requires/monaco-themes', `${name}.json`));
-        (window as any).monaco.editor.defineTheme(name, monacoTheme);
+        let monacoTheme;
+        try {
+            monacoTheme = require(path.join('./data/node_requires/monaco-themes', `${name}.json`));
+            (window as any).monaco.editor.defineTheme(name, monacoTheme);
+        } catch (e) {
+            console.warn('Could not load a monaco theme due to an error:', e, '\nFalling back to the default theme.');
+            monacoTheme = require(path.join('./data/node_requires/monaco-themes', `${defaultMonacoTheme}.json`));
+            (window as any).monaco.editor.defineTheme(name, monacoTheme);
+        }
         const css = `./data/theme${name}.css`;
         const theme = {
             name,

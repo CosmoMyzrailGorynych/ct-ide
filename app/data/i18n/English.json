@@ -167,6 +167,8 @@
         "themeHCBlack": "High-contrast Black",
         "themeSpringStream": "Spring Stream",
         "themeLucasDracula": "Lucas Dracula",
+        "themePooxelGreen": "Pooxel Green",
+        "themePooxelBlue": "Pooxel Blue",
         "types": "Types",
         "zipExport": "Export for web",
         "zipProject": "Pack project to .zip",

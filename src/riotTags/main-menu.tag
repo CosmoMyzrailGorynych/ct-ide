@@ -379,6 +379,13 @@ main-menu.flexcol
                             localStorage.fontFamily = '';
                             window.signals.trigger('codeFontUpdated');
                         }
+                    },{
+                        label: 'Basis (Pooxel)',
+                        icon: () => localStorage.fontFamily === 'Basis, monospace' && 'check',
+                        click: () => {
+                            localStorage.fontFamily = 'Basis, monospace';
+                            window.signals.trigger('codeFontUpdated');
+                        }
                     }, {
                         label: window.languageJSON.menu.codeFontOldSchool,
                         icon: () => localStorage.fontFamily === 'Monaco, Menlo, "Ubuntu Mono", Consolas, source-code-pro, monospace' && 'check',

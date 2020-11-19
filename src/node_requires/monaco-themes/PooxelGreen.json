@@ -1,0 +1,9 @@
+{
+    "base": "vs-dark",
+    "inherit": true,
+    "rules": [{
+        "foreground": "#00d059",
+        "token": "pointsOfInterest"
+    }],
+    "colors": {}
+}
