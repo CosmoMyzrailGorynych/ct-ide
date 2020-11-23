@@ -379,7 +379,7 @@ main-menu.flexcol
                             localStorage.fontFamily = '';
                             window.signals.trigger('codeFontUpdated');
                         }
-                    },{
+                    }, {
                         label: 'Basis (Pooxel)',
                         icon: () => localStorage.fontFamily === 'Basis, monospace' && 'check',
                         click: () => {

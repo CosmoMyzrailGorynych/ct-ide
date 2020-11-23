@@ -51,7 +51,12 @@
         "loading": "加载中...",
         "zoom": "缩放:",
         "zoomIn": "放大",
-        "zoomOut": "缩小"
+        "zoomOut": "缩小",
+        "clear": "清空",
+        "close": "关闭",
+        "couldNotLoadFromClipboard": "无法从剪贴板加载数据",
+        "filter": "过滤:",
+        "pastedFromClipboard": "从剪贴板粘贴"
     },
     "colorPicker": {
         "current": "新建",
@@ -89,7 +94,9 @@
         "export": "导出",
         "exportPanel": "导出项目",
         "firstrunnotice": "每个平台的第一次运行会比较慢, 因为ct.js会下载并保存打包所需的额外库. 这需要一些时间, 但下一次几乎是瞬间的.",
-        "log": "消息日志"
+        "log": "消息日志",
+        "windowsCrossBuildWarning": "要从Linux/MacOS为Windows构建, 需要在系统中安装Wine. 安装说明对于不同的平台都是不一样的，所以你最好自己搜索一下:)",
+        "cannotBuildForMacOnWin": "糟糕, Windows只会生成坏掉的Mac包. 尝试使用Linux机器;例如, 在虚拟机里, 它是100%免费的!"
     },
     "intro": {
         "loading": "请稍等: 小猫正在聚集光速!",
@@ -118,7 +125,8 @@
         "examples": "示例",
         "unableToWriteToFolders": "Ct.js找不到合适的项目位置! 确保将ct.js应用存储在您有权写入的文件夹中.",
         "twitter": "Twitter 频道",
-        "discord": "Discord 社区"
+        "discord": "Discord 社区",
+        "createOrBrowseJunction": "或"
     },
     "licensepanel": {
         "ctjslicense": "Ct.js 许可证 (MIT)"
@@ -173,7 +181,12 @@
         "visitDiscordForGamedevSupport": "加入 Discord 服务器以获得游戏开发支持",
         "postAnIssue": "在Github上提交issue…",
         "openProject": "打开项目…",
-        "openExample": "打开示例项目…"
+        "openExample": "打开示例项目…",
+        "themePooxelGreen": "Pooxel绿",
+        "themePooxelBlue": "Pooxel蓝",
+        "systemInfoWait": "等一下, 我正在收集数据…",
+        "systemInfoDone": "完成!",
+        "disableAcceleration": "禁用图形加速(需要重启)"
     },
     "onboarding": {
         "hoorayHeader": "赞! 您成功创建了一个项目!",
@@ -270,12 +283,32 @@
         "importModules": "载入模组",
         "enabledModules": "已启用模组",
         "availableModules": "可用模组",
-        "filter": "过滤器"
+        "filter": "过滤器",
+        "preview": "(预览)",
+        "previewTooltip": "这个模组还没有发布, 只是用于预览",
+        "deprecatedTooltip": "此模组已被弃用, 将在将来的版本中删除",
+        "categories": {
+            "customization": "自定义",
+            "utilities": "工具",
+            "media": "多媒体",
+            "misc": "其他",
+            "desktop": "桌面构建",
+            "motionPlanning": "动作规划",
+            "inputs": "输入方法",
+            "fx": "特效",
+            "mobile": "移动设备",
+            "integrations": "集成",
+            "tweaks": "微调",
+            "networking": "网络"
+        }
     },
     "texture": {
         "create": "创建",
         "import": "导入",
-        "skeletons": "骨骼动画"
+        "skeletons": "骨骼动画",
+        "createType": "从中创建一个类型",
+        "importFromClipboard": "从剪贴板导入",
+        "generatePlaceholder": "生成一个占位符"
     },
     "textureview": {
         "bgcolor": "改变背景颜色",
@@ -310,7 +343,11 @@
         "addPoint": "添加点",
         "moveCenter": "移动轴",
         "movePoint": "移动这个点",
-        "symmetryTool": "对称工具"
+        "symmetryTool": "对称工具",
+        "updateFromClipboard": "从剪贴板更新",
+        "padding": "内边距:",
+        "paddingNotice": "这将影响纹理的导出方式:它在边缘上添加重复的像素, 并防止平铺和缩放纹理上的失真. 默认值通常是足够的, 但是, 如果你强烈地收缩纹理，流血可能会再次出现. 如果这个纹理在游戏中有工件, 就增加这个值.",
+        "previewAnimationNotice": "这是一个预览. 用this.animationSpeed属性改变它的真实拷贝."
     },
     "sounds": {
         "create": "创建"
@@ -355,7 +392,8 @@
         "strokeweight": "线宽:",
         "testtext": "测试文本 0123 +",
         "textWrap": "自动换行",
-        "textWrapWidth": "最大宽度:"
+        "textWrapWidth": "最大宽度:",
+        "useCustomFont": "使用自定义字体…"
     },
     "fonts": {
         "fonts": "字体",
@@ -366,19 +404,32 @@
         "typefacename": "字体名称:",
         "fontweight": "字体粗细:",
         "italic": "是否斜体?",
-        "reimport": "重新导入"
+        "reimport": "重新导入",
+        "generateBitmapFont": "同时生成位图字体",
+        "bitmapFont": "位图字体",
+        "bitmapFontSize": "字体大小:",
+        "bitmapFontLineHeight": "字体行高:",
+        "resultingBitmapFontName": "资源名",
+        "charset": "字符集:",
+        "charsets": {
+            "punctuation": "数字和标点符号(你通常需要这些)",
+            "basicLatin": "基本拉丁文",
+            "latinExtended": "拉丁文扩展",
+            "cyrillic": "西里尔字母",
+            "greekCoptic": "希腊语和埃及语",
+            "custom": "自定义",
+            "allInFont": "绘制字体支持的所有内容"
+        },
+        "customCharsetHint": "输入所有你想包含的字母, 包括大写和小写."
     },
     "particleEmitters": {
         "emittersHeading": "粒子发射器",
         "emitterHeading": "发射器",
-
         "from": "开始:",
         "to": "结束:",
-
         "textureHeading": "纹理",
         "selectTexture": "选择…",
         "importBuiltin": "导入默认纹理…",
-
         "colorAndOpacityHeading": "颜色和不透明度",
         "stepped": "阶梯式",
         "steppedColor": "阶梯色彩",
@@ -388,29 +439,23 @@
         "darken": "变暗",
         "lighten": "变亮",
         "burn": "燃烧",
-
         "scalingHeading": "缩放",
         "scale": "缩放:",
         "minimumSize": "最小尺寸:",
         "minimumSizeHint": "将其设置为较低的值将随机化每个粒子的大小. 值越低，效果越强.",
-
         "velocityHeading": "速度",
         "velocity": "速度:",
         "minimumSpeed": "最小速度:",
         "minimumSpeedHint": "将其设置为较低的值将随机化每个粒子的速度;该值越低，粒子可能越慢.",
         "maxSpeed": "最大速度:",
-
         "gravityHeading": "重力",
         "gravityNotice": "注意，如果它不同于(0;0)，速度插值将被禁用，这意味着只有速度图的第一个节点将有效果.",
-
         "directionHeading": "方向",
         "startingDirection": "开始方向",
         "preserveTextureDirection": "保持纹理旋转方向",
-
         "rotationHeading": "旋转",
         "rotationSpeed": " 旋转速度",
         "rotationAcceleration": " 旋转加速度:",
-
         "spawningHeading": "增殖",
         "timeBetweenBursts": "发射间隔时间:",
         "spawnAtOnce": "同时增殖:",
@@ -420,7 +465,6 @@
         "emitterLifetime": "发射器生命周期, 秒数.:",
         "prewarmDelay": "预热 / 延迟, 秒数.:",
         "prewarmDelayNotice": "负值将在显示之前准备发射器的粒子，这对于像灰尘粒子或雾这样在房间开始时应该已经可见的长期效果是有用的;正值将延迟模拟.",
-
         "shapeAndPositioningHeading": "形状和位置",
         "spawnType": "形态类型:",
         "spawnShapes": {
@@ -437,7 +481,6 @@
         "startAngle": "旋转, 角度.:",
         "showShapeVisualizer": "显示形状可视化工具",
         "relativeEmitterPosition": "相对于其他发射器的位置",
-
         "addEmitter": "添加另一个发射器",
         "reset": "重置预览",
         "changeBg": "更换背景",
@@ -459,7 +502,8 @@
         "draw": "绘制",
         "learnAboutTypes": "了解编码类型",
         "name": "名称:",
-        "step": "同步"
+        "step": "同步",
+        "visible": "显示"
     },
     "rooms": {
         "create": "添加新的",
@@ -472,7 +516,10 @@
         "parallax": "视差 (X, Y):",
         "repeat": "重复:",
         "scale": "缩放比例 (X, Y):",
-        "shift": "移位 (X, Y):"
+        "shift": "移位 (X, Y):",
+        "notBackgroundTextureWarning": "这个纹理没有被标记为背景. 它在导出时会有缺口.",
+        "fixBackground": "修复.",
+        "dismissWarning": "忽略."
     },
     "roomtiles": {
         "moveTileLayer": "移动到一个新的深度",
@@ -515,13 +562,25 @@
         "deletetiles": "删除图块",
         "movetilestolayer": "移至图层",
         "shifttiles": "移动瓷砖",
-        "findTileset": "查找一个图集"
+        "findTileset": "查找一个图集",
+        "isUi": "是否为UI层?",
+        "backgroundColor": "背景颜色:",
+        "properties": "属性",
+        "sortHorizontally": "水平排序",
+        "sortVertically": "垂直排序",
+        "changecopyrotation": "旋转",
+        "copyProperties": {
+            "position": "位置",
+            "rotation": "旋转",
+            "scale": "缩放"
+        }
     },
     "notepad": {
         "local": "项目记事本",
         "global": "全局记事本",
         "helppages": "帮助",
-        "backToHome": "回到文档主页"
+        "backToHome": "回到文档主页",
+        "modulespages": "模组文档"
     },
     "patreon": {
         "aboutPatrons": "赞助人是以经常性捐赠的形式表示对Patreon的ComigoGames的支持. 并不是每个人都来自ct.js. 有些是正在使用ComigoGames的其他应用程序. 提示: 如果您是创作者, 并通过Patreon捐赠给ComigoGames, 您将在此处找到指向您页面的链接 — 这就是我对您的创作的小小帮助 :)",
@@ -558,5 +617,45 @@
             "带来光明和希望 🌞",
             "优雅而美丽 🎩"
         ]
+    },
+    "docsPanel": {
+        "documentation": "文档",
+        "reference": "参考"
+    },
+    "extensionsEditor": {
+        "noEntries": "没有条目.",
+        "addRow": "添加一行"
+    },
+    "textureGenerator": {
+        "name": "纹理名称:",
+        "width": "宽度:",
+        "height": "高度:",
+        "color": "背景颜色:",
+        "label": "标签:",
+        "optional": "(可选)",
+        "createAndClose": "创建并关闭",
+        "createAndContinue": "创建并添加另一个",
+        "scalingAtX4": "缩放x4的小纹理",
+        "generationSuccessMessage": "成功地为你的项目添加了 $1 的纹理",
+        "filler": "过滤:",
+        "fillerNone": "无",
+        "fillerCross": "交叉",
+        "fillerLabel": "文本标签"
+    },
+    "textureInput": {
+        "jumpToTexture": "跳转到纹理",
+        "changeTexture": "更换纹理"
+    },
+    "writableFolderPrompt": {
+        "headerSelectFolderForData": "选择文件夹保存 ct.js 数据",
+        "paragraphCouldNotPickDirectory": "噢, 不! Ct.js无法找到用于项目, 包构建和调试的文件夹. Ct.js通常会自动找到一个文件夹, 但这次它寻找的所有文件夹都是只读的",
+        "paragraphDirectoryDirections": "这个问题是可以解决的. 单击下面的按钮并选择要存储数据的文件夹. 如果您不确定, 可以在您的文档目录中创建一个\"ct.js\"的文件夹.",
+        "selectFolder": "选择文件夹…"
+    },
+    "writableFolderSelector": {
+        "folderDoesNotExist": "看上去这个文件夹不存在…你怎么做到的?",
+        "notADirectory": "这看上去不是一个目录! 你怎么做到的?",
+        "folderNotWritable": "您没有权限写入这个文件夹. 选择其他试试",
+        "complete": "文件夹已设置, 一切正常✅"
     }
 }
