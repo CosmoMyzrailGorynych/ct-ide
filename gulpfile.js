@@ -24,7 +24,28 @@ const path = require('path'),
 
       spawnise = require('./node_requires/spawnise');
 
-const nwVersion = '0.49.2',
+/**
+ * To download NW.js binaries from a different place (for example, from live builds),
+ * do the following:
+ *
+ * 1) Publish a customNwManifest.json with the needed version as its latest one.
+ *    See https://nwjs.io/versions.json
+ * 2) Set nwSource to the directory with a folder for this version.
+ *    For example, if your binaries for each platform are at
+ *    https://dl.nwjs.io/live-build/nw50/20201223-162000/6a3f52427/v0.50.3/,
+ *    then you should specify the URL
+ *    https://dl.nwjs.io/live-build/nw50/20201223-162000/6a3f52427/.
+ * 3) Set nwVersion to `undefined` so that nw-builder loads the needed version from
+ *    the created manifest and downloads it from a given source.
+ *
+ * For some reason, setting nwVersion to a specific version doesn't work, even with
+ * a custom manifest.
+ *
+ * Also note that you may need to clear the `ct-js/cache` folder.
+ */
+const nwSource = 'https://dl.nwjs.io/live-build/nw50/20201215-162000/25eea59e1/';
+const nwManifest = 'https://raw.githubusercontent.com/ct-js/ct-js/v1.x/customNwManifest.json';
+const nwVersion = void 0,
       platforms = ['osx64', 'win32', 'win64', 'linux32', 'linux64'],
       nwFiles = ['./app/**', '!./app/export/**', '!./app/projects/**', '!./app/exportDesktop/**', '!./app/cache/**', '!./app/.vscode/**', '!./app/JamGames/**'];
 
@@ -283,6 +304,8 @@ const launchApp = () => {
     const nw = new NwBuilder({
         files: nwFiles,
         version: nwVersion,
+        downloadUrl: nwSource,
+        manifestUrl: nwManifest,
         platforms,
         flavor: 'sdk'
     });
@@ -430,6 +453,8 @@ const bakePackages = async () => {
         files: nwFiles,
         platforms,
         version: nwVersion,
+        downloadUrl: nwSource,
+        manifestUrl: nwManifest,
         flavor: 'sdk',
         buildType: 'versioned',
         // forceDownload: true,
