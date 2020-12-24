@@ -33,7 +33,7 @@ rooms-panel.panel.view
                 img(src="file://{global.projdir + '/img/r' + room.thumbnail + '.png?' + room.lastmod}")
                 span {room.name}
                 span.date(if="{room.lastmod}") {niceTime(room.lastmod)}
-                svg.feather(if="{global.currentProject.startroom === room.uid}")
+                svg.feather.aStartingRoomIcon(if="{global.currentProject.startroom === room.uid}")
                     use(xlink:href="data/icons.svg#play")
     room-editor(if="{editing}" room="{editingRoom}")
     context-menu(menu="{roomMenu}" ref="roomMenu")
