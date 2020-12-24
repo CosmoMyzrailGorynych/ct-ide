@@ -32,7 +32,7 @@ for (const enemy of copies) {
 
 Tests for intersections with a filled rectangle.
 
-A rectangle is an object with either `x1, `y1`, `x2`, `y2` properties, or `x`, `y`, `width`, `height` properties.
+A rectangle is an object with either `x1`, `y1`, `x2`, `y2` properties, or `x`, `y`, `width`, `height` properties.
 
 If `getAll` is set to `true`, returns all the copies that intersect
 the rectangle; otherwise, returns the first one that fits the conditions.
