@@ -71,11 +71,11 @@ Tests for intersections with a point.
 
 If `getAll` is set to `true`, returns all the copies that intersect the point; otherwise, returns the first one that fits the conditions.
 
-## `ct.place.trace(x1, y1, x2, y2, [ctype])`
+## `ct.place.trace(x1, y1, x2, y2, [cgroup])`
 
 > `ct.place.trace` is **deprecated** since v1.4.3. Use `ct.place.traceLine` instead.
 
 Throws a ray from point (x1, y1) to (x2, y2), returning all the copies that touched the ray.
 The first copy in the returned array is the closest copy, the last one is the furthest. The order is not always exact, especially with overlapping shapes.
 
-`ctype` is an optional collision group to trace against. If omitted, ct.place will trace through all the copies in the current room.
+`cgroup` is an optional collision group to trace against. If omitted, ct.place will trace through all the copies in the current room.
