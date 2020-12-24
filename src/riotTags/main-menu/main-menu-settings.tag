@@ -5,19 +5,15 @@ main-menu-settings
             svg.feather
                 use(xlink:href="data/icons.svg#droplet")
             span {voc.theme}
-        li(onclick="{toggleLanguageSelector}").relative
+        li(onclick="{toggleLanguageSelector}")
             svg.feather
                 use(xlink:href="data/icons.svg#translate")
             span {voc.language}
+        li(onclick="{toggleCodeFontSelector}")
+            svg.feather
+                use(xlink:href="data/icons.svg#font")
+            span {voc.codeFont}
     ul.aMenu
-        li(onclick="{toggleDenseCode}")
-            svg.feather
-                use(xlink:href="data/icons.svg#{localStorage.codeDense === 'on' ? 'check-square' : 'square'}")
-            span {voc.codeDense}
-        li(onclick="{toggleLigatures}")
-            svg.feather
-                use(xlink:href="data/icons.svg#{localStorage.codeLigatures === 'off' ? 'square' : 'check-square'}")
-            span {voc.codeLigatures}
         li(onclick="{toggleSounds}")
             svg.feather
                 use(xlink:href="data/icons.svg#{localStorage.disableSounds === 'on' ? 'check-square' : 'square'}")
@@ -42,6 +38,7 @@ main-menu-settings
             span {voc.changeDataFolder}
     context-menu(menu="{themesSubmenu}" ref="themeslist")
     context-menu(menu="{languagesSubmenu}" ref="languageslist")
+    context-menu(menu="{codeFontSubmenu}" ref="codesettings")
     script.
         this.namespace = 'mainMenu.settings';
         this.mixin(window.riotVoc);
@@ -166,9 +163,75 @@ main-menu-settings
             alertify.alert('Could not get i18n files: ' + e);
         });
 
+        this.codeFontSubmenu = {
+            items: [{
+                label: window.languageJSON.mainMenu.settings.codeFontDefault,
+                icon: () => !localStorage.fontFamily && 'check',
+                click: () => {
+                    localStorage.fontFamily = '';
+                    window.signals.trigger('codeFontUpdated');
+                }
+            }, {
+                label: 'Basis (Pooxel)',
+                icon: () => localStorage.fontFamily === 'Basis, monospace' && 'check',
+                click: () => {
+                    localStorage.fontFamily = 'Basis, monospace';
+                    window.signals.trigger('codeFontUpdated');
+                }
+            }, {
+                label: window.languageJSON.mainMenu.settings.codeFontOldSchool,
+                icon: () => localStorage.fontFamily === 'Monaco, Menlo, "Ubuntu Mono", Consolas, source-code-pro, monospace' && 'check',
+                click: () => {
+                    localStorage.fontFamily = 'Monaco, Menlo, "Ubuntu Mono", Consolas, source-code-pro, monospace';
+                    window.signals.trigger('codeFontUpdated');
+                }
+            }, {
+                label: window.languageJSON.mainMenu.settings.codeFontSystem,
+                icon: () => localStorage.fontFamily === 'monospace' && 'check',
+                click: () => {
+                    localStorage.fontFamily = 'monospace';
+                    window.signals.trigger('codeFontUpdated');
+                }
+            }, {
+                label: window.languageJSON.mainMenu.settings.codeFontCustom,
+                click: () => {
+                    alertify
+                    .defaultValue(localStorage.fontFamily || '')
+                    .prompt(window.languageJSON.mainMenu.settings.newFont)
+                    .then(e => {
+                        if (e.inputValue && e.buttonClicked !== 'cancel') {
+                            localStorage.fontFamily = `"${e.inputValue}", monospace`;
+                        }
+                        window.signals.trigger('codeFontUpdated');
+                    });
+                }
+            }, {
+                type: 'separator'
+            }, {
+                label: window.languageJSON.mainMenu.settings.codeLigatures,
+                type: 'checkbox',
+                checked: () => localStorage.codeLigatures !== 'off',
+                click: () => {
+                    localStorage.codeLigatures = localStorage.codeLigatures === 'off' ? 'on' : 'off';
+                    window.signals.trigger('codeFontUpdated');
+                }
+            }, {
+                label: window.languageJSON.mainMenu.settings.codeDense,
+                type: 'checkbox',
+                checked: () => localStorage.codeDense === 'on',
+                click: () => {
+                    localStorage.codeDense = localStorage.codeDense === 'off' ? 'on' : 'off';
+                    window.signals.trigger('codeFontUpdated');
+                }
+            }]
+        };
+
         this.toggleThemeSelector = e => {
             this.refs.themeslist.popup(e.clientX, e.clientY);
         };
         this.toggleLanguageSelector = e => {
             this.refs.languageslist.popup(e.clientX, e.clientY);
+        };
+        this.toggleCodeFontSelector = e => {
+            this.refs.codesettings.popup(e.clientX, e.clientY);
         };
