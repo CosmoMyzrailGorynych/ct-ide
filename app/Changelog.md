@@ -1,3 +1,32 @@
+
+## v1.5.1
+
+*Thu Dec 24 2020*
+
+### ✨ New Features
+
+* New tweening functions (elastic, bounce, and with backwards motion) for ct.tween by kkornushin
+* Two UI themes Pooxel Green and Pooxel Blue for that retro feel 👾
+
+### ⚡️ General Improvements
+
+* Chinese Simplified 100% translated for branch v1.x (#246 & #248 by @emaoshushu)
+* Use nw.js' nightly build 25eea59. Solves issue with restarting ct.js after running a game in it.
+
+### 🐛 Bug Fixes
+
+* Fix `exts` object missing on newly created copies.
+* Fix formatting problem at ct.place docs > Tracing functions > ct.place.traceRect.
+* Partially fix memory leaks in paricle emitter editors.
+
+### 📝 Docs
+
+* Use cgroup instead of ctype in ct.place typings and docs to remove ambiguity with ctypes and regular types
+* :bug: Fix wrong function names at ct.noise
+
+
+## v1.5.0
+
 *Sun Nov 08 2020*
 
 ### ✨ New Features
