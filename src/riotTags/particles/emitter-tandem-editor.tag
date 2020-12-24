@@ -262,7 +262,13 @@ emitter-tandem-editor.panel.view.flexrow
 
         this.on('mount', () => {
             window.addEventListener('resize', this.updatePreviewLayout);
-
+            window.signals.on('emitterResetRequest', this.resetEmitters);
+        });
+        this.on('unmount', () => {
+            window.removeEventListener('resize', this.updatePreviewLayout);
+            window.signals.off('emitterResetRequest', this.resetEmitters);
+        });
+        this.on('mount', () => {
             const box = this.refs.preview.getBoundingClientRect();
 
             this.gridGen = require('./data/node_requires/generators/gridTexture').generatePixiTextureGrid;
@@ -271,6 +277,7 @@ emitter-tandem-editor.panel.view.flexrow
             this.renderer = new PIXI.Application({
                 width: Math.round(box.width),
                 height: Math.round(box.height),
+                sharedTicker: false,
                 view: this.refs.canvas,
                 antialias: !global.currentProject.settings.rendering.pixelatedrender
             });
@@ -306,12 +313,17 @@ emitter-tandem-editor.panel.view.flexrow
 
             this.resetEmitters();
             this.updatePreviewLayout();
-
-            window.signals.on('emitterResetRequest', this.resetEmitters);
         });
         this.on('unmount', () => {
-            window.removeEventListener('resize', this.updatePreviewLayout);
-            window.signals.off('emitterResetRequest', this.resetEmitters);
+            this.emitterContainer = void 0;
+            if (this.renderer) {
+                this.renderer.ticker.stop();
+                this.renderer.destroy();
+            }
+            if (this.resetOnCompletionTimeout) {
+                clearTimeout(this.resetOnCompletionTimeout);
+                this.resetOnCompletionTimeout = null;
+            }
         });
 
         this.deleteEmitter = emitter => {
