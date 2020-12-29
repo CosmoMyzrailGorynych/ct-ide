@@ -157,13 +157,16 @@ type-editor.panel.view.flexrow
                 this.typeoncreate.focus();
             }, 0);
         });
-        this.on('update', () => {
+        this.checkNames = () => {
             if (global.currentProject.types.find(type =>
                 this.type.name === type.name && this.type !== type)) {
                 this.nameTaken = true;
             } else {
                 this.nameTaken = false;
             }
+        };
+        this.on('update', () => {
+            this.checkNames();
         });
         this.on('unmount', () => {
             // Manually destroy code editors, to free memory
@@ -194,7 +197,9 @@ type-editor.panel.view.flexrow
             this.update();
         };
         this.typeSave = () => {
+            this.checkNames();
             if (this.nameTaken) {
+                this.update();
                 // animate the error notice
                 require('./data/node_requires/jellify')(this.refs.errorNotice);
                 if (localStorage.disableSounds !== 'on') {

@@ -223,15 +223,7 @@ textures-panel.panel.view
                     const typesAPI = require('./data/node_requires/resources/types/');
                     const type = typesAPI.createNewType(this.currentTexture.name);
                     type.texture = this.currentTexture.uid;
-                    // eslint-disable-next-line no-underscore-dangle
-                    const mainMenu = document.getElementsByTagName('main-menu')[0]._tag;
-                    mainMenu.changeTab('types')();
-                    mainMenu.update();
-                    // eslint-disable-next-line no-underscore-dangle
-                    const typesPanel = document.getElementsByTagName('types-panel')[0]._tag;
-                    typesPanel.refs.types.updateList();
-                    typesPanel.openType(type)();
-                    typesPanel.update();
+                    window.orders.trigger('openAsset', `types/${type.uid}`);
                 }
             }, {
                 label: window.languageJSON.common.open,
