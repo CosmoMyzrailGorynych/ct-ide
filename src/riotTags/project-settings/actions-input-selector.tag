@@ -10,25 +10,29 @@ actions-input-selector
                 )
                 svg.feather
                     use(xlink:href="data/icons.svg#search")
+
         .flexfix-body
             virtual(each="{module in inputProviders}")
                 h2 {module.name}
-                .anActionMethod(
-                    onclick="{selectMethod(module.code+'.'+code)}"
+                label.anActionMethod.checkbox(
                     each="{name, code in module.methods}"
-                    class="{active: selectedMethod === module.code+'.'+code}"
-                    if="{!searchString || code.toLowerCase().indexOf(searchString.toLowerCase()) !== -1 || name.toLowerCase().indexOf(searchString.toLowerCase()) !== -1}"
-                ).npl
-                    code.inline.toright {module.code}.{code}
-                    span   {name}
-                    .clear
+                    if="{!searchString || code.toLowerCase().includes(searchString.toLowerCase()) || name.toLowerCase().indexOf(searchString.toLowerCase()) !== -1}"
+                    )
+                        input(
+                        onchange="{selectMethod(module.code+'.'+code)}"
+                            checked="{selectedMethods.includes(module.code+'.'+code)}"
+                            type="checkbox"
+                        )
+                        code.inline.toright {module.code}.{code}
+                        span   {name}
+                        .clear
 
         .flexfix-footer
             .flexrow
                 button.nml.secondary(onclick="{cancel}")
                     span {voc.cancel}
-                button.nml.secondary(onclick="{apply}" disabled="{!selectedMethod}")
-                    span {voc.select}
+                button.nml.secondary(onclick="{apply}" disabled="{selectedMethods.length === 0}")
+                    span {voc.select} {selectedMethods.length || ''}
     script.
         this.namespace = 'common';
         this.mixin(window.riotVoc);
@@ -37,6 +41,8 @@ actions-input-selector
         const fs = require('fs-extra'),
               path = require('path');
         const libsDir = './data/ct.libs';
+
+        this.selectedMethods = [];
 
         this.refreshModules = () => {
             this.inputProviders = [];
@@ -61,27 +67,42 @@ actions-input-selector
             });
         };
         this.refreshModules();
-        
+
         window.signals.on('modulesChanged', this.refreshModules);
         this.on('unmount', () => {
             window.signals.off('modulesChanged', this.refreshModules);
         });
 
-        this.selectMethod = code => () => {
-            this.selectedMethod = code;
+        this.selectMethod = (code) => () => {
+            if (this.selectedMethods) {
+                const ind = this.selectedMethods.indexOf(code);
+                if (ind > -1) {
+                    this.selectedMethods.splice(ind, 1);
+                } else {
+                    this.selectedMethods.push(code);
+                }
+            } else {
+                this.selectedMethods = [code];
+            }
         };
         this.cancel = () => {
             this.searchString = '';
-            this.selectedMethod = '';
+            this.selectedMethods = [];
             this.parent.addingMethod = false;
             this.parent.update();
         };
         this.apply = () => {
-            this.opts.action.methods.push({
-                code: this.selectedMethod
+            this.selectedMethods.forEach((code) => {
+                // Skip input methods that already exist in the action
+                if (this.opts.action.methods.some(method => method.code === code)) {
+                    return;
+                }
+                this.opts.action.methods.push({
+                    code
+                });
             });
             this.searchString = '';
-            this.selectedMethod = '';
+            this.selectedMethods = [];
             this.parent.addingMethod = false;
             this.parent.update();
         };
