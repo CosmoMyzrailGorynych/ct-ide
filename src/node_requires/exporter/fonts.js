@@ -78,7 +78,7 @@ const generateXML = function generateXML(fontData, ctFont, typefaceName) {
 
     XMLTemplate += `
     </chars>
-    <kernings count="0"></kerings>
+    <kernings count="0"></kernings>
 </font>`;
 
     return XMLTemplate;
