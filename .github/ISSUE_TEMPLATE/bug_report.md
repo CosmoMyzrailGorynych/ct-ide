@@ -1,5 +1,5 @@
 ---
-name: Bug report
+name: 🐞 Bug report
 about: Create a report to help us improve
 title: ''
 labels: type:bug
@@ -19,6 +19,9 @@ Steps to reproduce the behavior:
 
 **Expected behavior**
 A clear and concise description of what you expected to happen.
+
+**System information report**
+Open the hamburger menu at the top-left corner and click "Copy system information" in the "Troubleshooting" section. Paste the copied report here.
 
 **Screenshots (recommended)**
 If applicable, add screenshots to help explain your problem.
