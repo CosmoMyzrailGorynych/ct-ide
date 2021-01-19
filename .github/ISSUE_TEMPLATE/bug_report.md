@@ -28,7 +28,3 @@ If applicable, add screenshots to help explain your problem.
 
 **Example project (strongly recommended)**
 Upload a minimal zipped project that showcases the bug.
-
-**Versions:**
- - OS: [e.g. Windows 10]
- - ct.js version [see at the bottom of the starting screen]
