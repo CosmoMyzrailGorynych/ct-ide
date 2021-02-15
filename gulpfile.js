@@ -43,9 +43,9 @@ const path = require('path'),
  *
  * Also note that you may need to clear the `ct-js/cache` folder.
  */
-const nwSource = 'https://dl.nwjs.io/live-build/nw50/20201215-162000/25eea59e1/';
-const nwManifest = 'https://raw.githubusercontent.com/ct-js/ct-js/v1.x/customNwManifest.json';
-const nwVersion = void 0,
+const nwSource = void 0;
+const nwManifest = void 0;
+const nwVersion = '0.51.1',
       platforms = ['osx64', 'win32', 'win64', 'linux32', 'linux64'],
       nwFiles = ['./app/**', '!./app/export/**', '!./app/projects/**', '!./app/exportDesktop/**', '!./app/cache/**', '!./app/.vscode/**', '!./app/JamGames/**'];
 
