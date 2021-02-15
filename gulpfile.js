@@ -444,9 +444,9 @@ const bakePackages = async () => {
     const NwBuilder = require('nw-builder');
     // Use the appropriate icon for each release channel
     if (nightly) {
-        await fs.copy('./buildAssets/icon.png', './app/ct_ide.png');
-    } else {
         await fs.copy('./buildAssets/nightly.png', './app/ct_ide.png');
+    } else {
+        await fs.copy('./buildAssets/icon.png', './app/ct_ide.png');
     }
     await fs.remove(path.join('./build', `ctjs - v${pack.version}`));
     var nw = new NwBuilder({
