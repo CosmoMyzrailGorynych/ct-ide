@@ -105,6 +105,7 @@ extensions-editor
                     class="{compact: parent.opts.compact, wide: parent.opts.wide}"
                     val="{parent.opts.entity[ext.key] || ext.default}"
                     onselected="{writeUid(ext.key)}"
+                    showempty="yep"
                 )
                 .aPoint2DInput(if="{ext.type === 'point2D'}" class="{compact: parent.opts.compact, wide: parent.opts.wide}")
                     label
@@ -131,6 +132,7 @@ extensions-editor
                     class="{compact: parent.opts.compact, wide: parent.opts.wide}"
                     val="{parent.opts.entity[ext.key] || ext.default}"
                     onselected="{writeUid(ext.key)}"
+                    showempty="yep"
                 )
                 color-input(
                     if="{ext.type === 'color'}"
