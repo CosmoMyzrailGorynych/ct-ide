@@ -99,6 +99,10 @@ gulp deploy
 
 The first run will be slow as it will download nw.js binaries. Next runs will use cached files.
 
-## Naming conventions for commits
+## Naming conventions and references
 
 Use [Gitmoji-flavored Comigoji](https://comigo.gitlab.io/comigoji/#gitmoji) for naming your commits.
+
+Use [Comigo's CSS naming guide](https://cosmomyzrailgorynych.github.io/css-naming-guide/) for styling
+
+We have some references for ct.js' internals on [our wiki](https://github.com/ct-js/ct-js/wiki).
