@@ -1,5 +1,5 @@
 ---
-name: No template
+name: 📃 No template
 about: For discussing general stuff and quick notes
 title: ''
 labels: ''
