@@ -3,7 +3,6 @@
 /* eslint no-console: 0 */
 const path = require('path'),
       gulp = require('gulp'),
-      changed = require('gulp-changed'),
       concat = require('gulp-concat'),
       replace = require('gulp-replace'),
       sourcemaps = require('gulp-sourcemaps'),
@@ -25,7 +24,28 @@ const path = require('path'),
 
       spawnise = require('./node_requires/spawnise');
 
-const nwVersion = '0.49.2',
+/**
+ * To download NW.js binaries from a different place (for example, from live builds),
+ * do the following:
+ *
+ * 1) Publish a customNwManifest.json with the needed version as its latest one.
+ *    See https://nwjs.io/versions.json
+ * 2) Set nwSource to the directory with a folder for this version.
+ *    For example, if your binaries for each platform are at
+ *    https://dl.nwjs.io/live-build/nw50/20201223-162000/6a3f52427/v0.50.3/,
+ *    then you should specify the URL
+ *    https://dl.nwjs.io/live-build/nw50/20201223-162000/6a3f52427/.
+ * 3) Set nwVersion to `undefined` so that nw-builder loads the needed version from
+ *    the created manifest and downloads it from a given source.
+ *
+ * For some reason, setting nwVersion to a specific version doesn't work, even with
+ * a custom manifest.
+ *
+ * Also note that you may need to clear the `ct-js/cache` folder.
+ */
+const nwSource = void 0;
+const nwManifest = void 0;
+const nwVersion = '0.51.2',
       platforms = ['osx64', 'win32', 'win64', 'linux32', 'linux64'],
       nwFiles = ['./app/**', '!./app/export/**', '!./app/projects/**', '!./app/exportDesktop/**', '!./app/cache/**', '!./app/.vscode/**', '!./app/JamGames/**'];
 
@@ -286,12 +306,25 @@ const lintI18n = () => require('./node_requires/i18n')().then(console.log);
 
 const lint = gulp.series(lintJS, lintTags, lintStylus, lintI18n);
 
+const processToPlatformMap = {
+    'darwin-x64': 'darwin',
+    'win32-x32': 'win32',
+    'win32-x64': 'win64',
+    'linux-x32': 'linux32',
+    'linux-x64': 'linux64'
+};
 const launchApp = () => {
     const NwBuilder = require('nw-builder');
+    const platformKey = `${process.platform}-${process.arch}`;
+    if (!(platformKey in processToPlatformMap)) {
+        throw new Error(`Combination of OS and architecture ${process.platform}-${process.arch} is not supported by NW.js.`);
+    }
     const nw = new NwBuilder({
         files: nwFiles,
         version: nwVersion,
-        platforms,
+        downloadUrl: nwSource,
+        manifestUrl: nwManifest,
+        platforms: [processToPlatformMap[platformKey]],
         flavor: 'sdk'
     });
     return nw.run()
