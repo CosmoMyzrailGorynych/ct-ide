@@ -24,7 +24,7 @@
         // Below 'h1', 'h2', 'h3', 'h4' are purely decorational, for grouping fields. Others denote the type of an input field.
         type: 'h1' | 'h2' | 'h3' | 'h4' | 'text' | 'textfield' | 'code' | 'number' |
               'slider' | 'sliderAndNumber' | 'point2D' | 'checkbox' | 'radio' | 'texture' | 'type' |
-              'color',
+              'color' | 'group',
         key?: string, // the name of a JSON key to write into the `opts.entity`. Not needed for hN types, but required otherwise
                       // The key may have special suffixes that tell the exporter to unwrap foreign keys (resources' UIDs) into asset names.
                       // These are supposed to always be used with `'type'` and `'texture'` input types.
@@ -37,17 +37,33 @@
             help?: string
         }>,
         array?: boolean, // Whether to display an editable list instead of just one field.
+        items?: Array<IExtensionField>, // For type === 'group', the grouped items.
         collect?: boolean, // Whether to collect values and suggest them later as an auto-completion results. (Not yet implemented)
         collectScope?: string // The name of a category under which to store suggestions from `collect`.
     }
 
 extensions-editor
     virtual(each="{ext in extensions}")
+        // ext="{ext}" is a workaround to lost loop variables in yields
+        collapsible-section.panel(
+            ext="{ext}"
+            if="{ext.type === 'group'}"
+            heading="{ext.name}"
+            hlevel="{parent.opts.compact? 4 : 3}"
+            defaultstate="{ext.openedByDefault? 'opened' : 'closed'}"
+            storestatekey="catmod-{ext.lsKey}"
+        )
+            extensions-editor(
+                entity="{parent.opts.entity}"
+                customextends="{opts.ext.items}"
+                compact="{parent.opts.compact || void 0}"
+                wide="{parent.opts.wide || void 0}"
+            )
         h1(if="{ext.type === 'h1'}") {ext.name}
         h2(if="{ext.type === 'h2'}") {ext.name}
         h3(if="{ext.type === 'h3'}") {ext.name}
         h4(if="{ext.type === 'h4'}") {ext.name}
-        dl(class="{compact: compact}" if="{['h1', 'h2', 'h3', 'h4'].indexOf(ext.type) === -1}")
+        dl(class="{compact: compact}" if="{['h1', 'h2', 'h3', 'h4', 'group'].indexOf(ext.type) === -1}")
             dt(if="{!parent.opts.intable}")
                 label.block.checkbox(if="{ext.type === 'checkbox'}")
                     input.nogrow(
