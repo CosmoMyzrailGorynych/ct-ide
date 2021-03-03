@@ -1,5 +1,6 @@
 //
     A small block that displays a section with an h3 header that can be collapsed.
+    Supports .panel modifier (CSS class), but also works by itself
 
     @attribute heading (string)
         The heading to display
@@ -17,7 +18,7 @@
         A callback that triggers when a user folds/unfolds the section. Passes the new state
         and this tag as two arguments.
 
-collapsible-section
+collapsible-section(class="{opts.class} {opened ? 'opened' : 'closed'}")
     .flexrow(onclick="{toggle}")
         h1(if="{opts.hlevel == 1}") {opts.heading}
         h2(if="{opts.hlevel == 2}") {opts.heading}
