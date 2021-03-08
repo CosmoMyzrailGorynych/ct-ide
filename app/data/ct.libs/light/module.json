@@ -1,0 +1,48 @@
+{
+    "main": {
+        "name": "Light System",
+        "tagline": "Create dynamic lights with textures that follow your copies.",
+        "version": "1.0.0",
+        "authors": [{
+            "name": "Cosmo Myzrail Gorynych",
+            "mail": "admin@nersta.ru"
+        }],
+        "categories": [
+            "fx"
+        ]
+    },
+    "typeExtends": [{
+        "type": "group",
+        "name": "Light emitter",
+        "openedByDefault": false,
+        "lsKey": "light.general",
+        "items": [{
+            "name": "Light",
+            "type": "texture",
+            "key": "lightTexture@@texture",
+            "default": -1
+        }, {
+            "name": "Light color",
+            "type": "color",
+            "key": "lightColor",
+            "default": "#FFFFFF"
+        }, {
+            "name": "Light copies opacity",
+            "type": "checkbox",
+            "key": "lightOpacity",
+            "default": true
+        }, {
+            "name": "Light scale",
+            "type": "number",
+            "step": 0.1,
+            "key": "lightScale",
+            "default": 1
+        }]
+    }],
+    "roomExtends": [{
+        "name": "Ambient color",
+        "type": "color",
+        "key": "lightAmbientColor",
+        "default": "#FFFFFF"
+    }]
+}
