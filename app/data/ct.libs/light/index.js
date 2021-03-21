@@ -60,21 +60,24 @@
             }
             renderer.render(lightLayer, renderTexture);
         },
+        updateOne(light) {
+            if (light.owner) {
+                if (!ct.types.exists(light.owner)) {
+                    ct.light.remove(light);
+                    return;
+                }
+                light.transform.setFromMatrix(light.owner.worldTransform);
+                light.scale.x *= light.scaleFactor || 1;
+                light.scale.y *= light.scaleFactor || 1;
+                light.angle -= light.rotationFactor || 0;
+                if (light.copyOpacity) {
+                    light.alpha = light.owner.alpha;
+                }
+            }
+        },
         update() {
             for (const light of ct.light.lights) {
-                if (light.owner) {
-                    if (!ct.types.exists(light.owner)) {
-                        ct.light.remove(light);
-                        continue;
-                    }
-                    light.transform.setFromMatrix(light.owner.worldTransform);
-                    light.scale.x *= light.scaleFactor || 1;
-                    light.scale.y *= light.scaleFactor || 1;
-                    light.angle -= light.rotationFactor || 0;
-                    if (light.copyOpacity) {
-                        light.alpha = light.owner.alpha;
-                    }
-                }
+                ct.light.updateOne(light);
             }
         },
         clear() {
