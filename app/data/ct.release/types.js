@@ -67,6 +67,8 @@ const Copy = (function Copy() {
                 ct.u.ext(this, exts);
                 if (exts.tx) {
                     this.scale.x = exts.tx;
+                }
+                if (exts.ty) {
                     this.scale.y = exts.ty;
                 }
                 if (exts.tr) {
