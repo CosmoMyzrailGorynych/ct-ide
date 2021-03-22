@@ -1,0 +1,38 @@
+{
+  "name": "ct.nakama",
+  "version": "0.0.2",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "zip": "npm-build-zip --source=. --destination=./dist/",
+    "build": "webpack && npm-build-zip --source=. --destination=./dist/",
+    "test": "jest --watch --verbose false",
+    "test-coverage": "jest --coverage --collectCoverageFrom=src/**/*.{js,jsx}"
+  },
+  "jest": {
+    "resetMocks": false,
+    "setupFiles": [
+      "jest-localstorage-mock"
+    ]
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/runtime": "^7.12.13",
+    "@heroiclabs/nakama-js": "^2.1.4",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.16",
+    "@babel/plugin-proposal-class-properties": "^7.12.13",
+    "@babel/plugin-transform-runtime": "^7.12.15",
+    "@babel/preset-env": "^7.12.16",
+    "babel-loader": "^8.2.2",
+    "eslint": "^7.20.0",
+    "jest": "^26.6.3",
+    "jest-localstorage-mock": "^2.4.7",
+    "npm-build-zip": "^1.0.3",
+    "webpack": "^5.22.0",
+    "webpack-cli": "^4.5.0"
+  }
+}
