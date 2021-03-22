@@ -9,6 +9,10 @@
 const {getTypeFromId} = require('./../resources/types');
 const {getTextureFromId} = require('./../resources/textures');
 const getUnwrappedExtends = function getUnwrappedExtends(exts) {
+    if (typeof exts !== 'object') {
+        // This is a primitive value
+        return exts;
+    }
     const out = {};
     for (const i in exts) {
         if (Array.isArray(exts[i])) {

@@ -129,9 +129,9 @@ extensions-editor
                         input(
                             class="{compact: parent.opts.compact}"
                             type="number"
-                            step="8"
+                            step="{ext.step || 8}"
                             value="{parent.opts.entity[ext.key]? parent.opts.entity[ext.key][0] : ext.default[0]}"
-                            onchange="{wire('this.opts.entity.'+ ext.key + '.0')}"
+                            onchange="{ensurePoint2DAndWire(parent.opts.entity, ext.key, ext.default, 'this.opts.entity.'+ ext.key + '.0')}"
                         )
                     .spacer
                     label
@@ -139,9 +139,9 @@ extensions-editor
                         input(
                             class="{compact: parent.opts.compact}"
                             type="number"
-                            step="8"
+                            step="{ext.step || 8}"
                             value="{parent.opts.entity[ext.key]? parent.opts.entity[ext.key][1] : ext.default[1]}"
-                            onchange="{wire('this.opts.entity.'+ ext.key + '.1')}"
+                            onchange="{ensurePoint2DAndWire(parent.opts.entity, ext.key, ext.default, 'this.opts.entity.'+ ext.key + '.1')}"
                         )
                 type-input(
                     if="{ext.type === 'type'}"
@@ -286,6 +286,13 @@ extensions-editor
             }
             this.update();
         };
+
+        this.ensurePoint2DAndWire = (obj, field, def, way) => e => {
+            if (!obj[field]) {
+                obj[field] = [...def];
+            }
+            this.wire(way)(e);
+        }
 
         this.addRow = e => {
             const {ext} = e.item;
