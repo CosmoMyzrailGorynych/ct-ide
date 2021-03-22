@@ -55,8 +55,8 @@
                 renderTexture.resize(ct.pixiApp.screen.width, ct.pixiApp.screen.height);
                 bg.width = ct.pixiApp.screen.width;
                 bg.height = ct.pixiApp.screen.height;
-                lightSprite.width = ct.camera.width;
-                lightSprite.height = ct.camera.height;
+                lightSprite.width = Math.ceil(ct.camera.width);
+                lightSprite.height = Math.ceil(ct.camera.height);
             }
             renderer.render(lightLayer, renderTexture);
         },
@@ -76,6 +76,7 @@
             }
         },
         update() {
+            ct.room.updateTransform();
             for (const light of ct.light.lights) {
                 ct.light.updateOne(light);
             }
