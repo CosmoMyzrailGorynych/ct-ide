@@ -538,7 +538,12 @@
             "position": "Position",
             "rotation": "Rotation",
             "scale": "Scale"
-        }
+        },
+        "restrictCamera": "Keep camera in a rectangle",
+        "minimumX": "Min X",
+        "minimumY": "Min Y",
+        "maximumX": "Max X",
+        "maximumY": "Max Y"
     },
     "notepad": {
         "local": "Project's notepad",
