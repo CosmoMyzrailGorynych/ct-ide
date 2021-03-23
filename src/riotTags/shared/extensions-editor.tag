@@ -292,7 +292,7 @@ extensions-editor
                 obj[field] = [...def];
             }
             this.wire(way)(e);
-        }
+        };
 
         this.addRow = e => {
             const {ext} = e.item;
