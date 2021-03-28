@@ -1,0 +1,127 @@
+{
+    "main": {
+        "name": "Matter.js physics library",
+        "tagline": "Add realtime 2D physics engine to your project.",
+        "version": "0.0.0",
+        "authors": [{
+            "name": "Cosmo Myzrail Gorynych",
+            "mail": "admin@nersta.ru"
+        }],
+        "categories": [
+            "motionPlanning"
+        ]
+    },
+
+    "fields": [{
+        "name": "Use static delta time",
+        "type": "checkbox",
+        "default": true,
+        "help": "Uses a constant frame time instead of ct.delta to make world updates more deterministic and stable. Disabling this option may result in an unstable, jiggly physics behavior.",
+        "key": "matterUseStaticDeltaTime"
+    }],
+
+    "typeExtends": [{
+        "type": "group",
+        "name": "Physics",
+        "openedByDefault": false,
+        "lsKey": "physics.general",
+        "items": [{
+            "name": "Enable",
+            "type": "checkbox",
+            "default": false,
+            "key": "matterEnable"
+        }, {
+            "name": "Is static",
+            "type": "checkbox",
+            "key": "matterStatic",
+            "default": false
+        }, {
+            "name": "Is a sensor",
+            "type": "checkbox",
+            "key": "matterSensor",
+            "default": false,
+            "help": "When turned on, the copy won't prevent others' movement but will be able to trigger collisions"
+        }, {
+            "name": "Density",
+            "type": "number",
+            "key": "matterDensity",
+            "hint": "How each pixel of this object contributes to its mass. The larger and more dense an object, the more heavy it is.",
+            "default": 0.001
+        }, {
+            "name": "Bounciness",
+            "type": "number",
+            "key": "matterRestitution",
+            "default": 0.1,
+            "min": 0,
+            "max": 1,
+            "step": 0.1
+        }, {
+            "name": "Friction",
+            "type": "number",
+            "key": "matterFriction",
+            "default": 1
+        }, {
+            "name": "Static friction",
+            "type": "number",
+            "key": "matterFrictionStatic",
+            "default": 0.1
+        }, {
+            "name": "Air friction",
+            "type": "number",
+            "key": "matterFrictionAir",
+            "default": 0.01
+        }, {
+            "name": "Fix pivot",
+            "type": "point2D",
+            "key": "matterFixPivot",
+            "help": "Shifts the texture. Helps with polygonal shapes where the module cannot align center of mass and texture automatically.",
+            "step": 1,
+            "default": [0, 0]
+        }]
+    }, {
+        "type": "group",
+        "name": "Physics constraints",
+        "openedByDefault": false,
+        "lsKey": "physics.constraints",
+        "items": [{
+            "name": "Type",
+            "type": "radio",
+            "options": [{
+                "value": "none",
+                "name": "None"
+            }, {
+                "value": "pinpoint",
+                "name": "Pin in place",
+                "help": "Keeps position but allows rotation"
+            }, {
+                "value": "rope",
+                "name": "Rope",
+                "help": "Creates a rope with a defined length"
+            }],
+            "default": "none",
+            "key": "matterConstraint"
+        }, {
+            "name": "Rope length",
+            "type": "number",
+            "default": 64,
+            "key": "matterRopeLength"
+        }, {
+            "name": "Rope stiffness",
+            "type": "number",
+            "default": 0.05,
+            "key": "matterRopeStiffness"
+        }, {
+            "name": "Rope damping",
+            "type": "number",
+            "default": 0.05,
+            "key": "matterRopeDamping"
+        }]
+    }],
+    "roomExtends": [{
+        "name": "Gravity",
+        "type": "point2D",
+        "key": "matterGravity",
+        "step": 0.1,
+        "default": [0, 9.8]
+    }]
+}

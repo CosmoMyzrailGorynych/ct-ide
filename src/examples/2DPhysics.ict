@@ -1,0 +1,1157 @@
+ctjsVersion: 1.5.1
+notes: /* empty */
+libs:
+  fittoscreen:
+    mode: scaleFit
+  mouse: {}
+  sound.howler: {}
+  matter:
+    matterUseStaticDeltaTime: true
+textures:
+  - name: Star
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 64.5
+      - 67.5
+    marginx: 0
+    marginy: 0
+    imgWidth: 128
+    imgHeight: 128
+    width: 128
+    height: 128
+    offx: 0
+    offy: 0
+    origname: ibfbb5de9-367a-438a-8cab-ea88479c51be.png
+    shape: strip
+    left: 0
+    right: 787
+    top: 0
+    bottom: 692
+    uid: bfbb5de9-367a-438a-8cab-ea88479c51be
+    padding: 1
+    source: 'D:\JettyCat\img\ic9a62030-151c-429e-a2ce-3e829a79cb05.png_prev@2.png'
+    lastmod: 1615542695704
+    stripPoints:
+      - x: -0.75
+        'y': -65.75
+      - x: 11
+        'y': -58.25
+      - x: 24
+        'y': -33.25
+      - x: 60.75
+        'y': -24.5
+      - x: 64.5
+        'y': -10
+      - x: 39.75
+        'y': 15.25
+      - x: 44.25
+        'y': 49.25
+      - x: 29
+        'y': 59.75
+      - x: -0.5
+        'y': 42.75
+      - x: -29.921346167118823
+        'y': 59.885763470431215
+      - x: -45.2195710804483
+        'y': 49.45615108543885
+      - x: -40.87630005786883
+        'y': 15.43577488492599
+      - x: -65.74239608827918
+        'y': -9.699902313160635
+      - x: -62.05925582802869
+        'y': -24.21702936445152
+      - x: -25.349968411049232
+        'y': -33.13629039536623
+      - x: -12.465313208428675
+        'y': -58.19593245804509
+    closedStrip: true
+    symmetryStrip: true
+  - name: WoodenPlank
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 110
+      - 35
+    marginx: 0
+    marginy: 0
+    imgWidth: 220
+    imgHeight: 70
+    width: 220
+    height: 70
+    offx: 0
+    offy: 0
+    origname: i9afd54d7-1265-4ba0-b5de-5226b3c7e2fb.png
+    shape: rect
+    left: 110
+    right: 110
+    top: 35
+    bottom: 35
+    uid: 9afd54d7-1265-4ba0-b5de-5226b3c7e2fb
+    padding: 1
+    source: 'D:\Downloads\physicspack\PNG\Wood elements\elementWood012.png'
+    lastmod: 1616891166294
+  - name: WoodenSquare
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 35
+      - 35
+    marginx: 0
+    marginy: 0
+    imgWidth: 70
+    imgHeight: 70
+    width: 70
+    height: 70
+    offx: 0
+    offy: 0
+    origname: i41f7c3b3-abc8-4940-8919-9114a884d7f2.png
+    shape: rect
+    left: 35
+    right: 35
+    top: 35
+    bottom: 35
+    uid: 41f7c3b3-abc8-4940-8919-9114a884d7f2
+    padding: 1
+    source: 'D:\Downloads\physicspack\PNG\Wood elements\elementWood010.png'
+    lastmod: 1616891205921
+    tiled: false
+  - name: alienPink_square
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 35
+      - 35
+    marginx: 0
+    marginy: 0
+    imgWidth: 70
+    imgHeight: 70
+    width: 70
+    height: 70
+    offx: 0
+    offy: 0
+    origname: i6c8a3edf-d5fe-4916-b63c-2201c099d28f.png
+    shape: rect
+    left: 35
+    right: 35
+    top: 35
+    bottom: 35
+    uid: 6c8a3edf-d5fe-4916-b63c-2201c099d28f
+    padding: 1
+    source: 'D:\Downloads\physicspack\PNG\Aliens\alienPink_square.png'
+    lastmod: 1616890309571
+  - name: alienGreen_round
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 35
+      - 35
+    marginx: 0
+    marginy: 0
+    imgWidth: 70
+    imgHeight: 70
+    width: 70
+    height: 70
+    offx: 0
+    offy: 0
+    origname: i8a5f385a-d547-4d2d-9641-b1856738c62a.png
+    shape: circle
+    left: 35
+    right: 35
+    top: 35
+    bottom: 35
+    uid: 8a5f385a-d547-4d2d-9641-b1856738c62a
+    padding: 1
+    source: 'D:\Downloads\physicspack\PNG\Aliens\alienGreen_round.png'
+    r: 35
+    lastmod: 1616890345324
+  - name: colored_grass
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 0
+      - 0
+    marginx: 0
+    marginy: 0
+    imgWidth: 1024
+    imgHeight: 1024
+    width: 1024
+    height: 1024
+    offx: 0
+    offy: 0
+    origname: if6a40cf4-e9c0-47ff-afa8-6cdc259ef17e.png
+    shape: rect
+    left: 0
+    right: 1024
+    top: 0
+    bottom: 1024
+    uid: f6a40cf4-e9c0-47ff-afa8-6cdc259ef17e
+    padding: 1
+    source: 'D:\Downloads\physicspack\PNG\Backgrounds\blue_grass.png'
+    tiled: true
+    lastmod: 1616891207354
+  - name: grass
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 35
+      - 35
+    marginx: 0
+    marginy: 0
+    imgWidth: 70
+    imgHeight: 70
+    width: 70
+    height: 70
+    offx: 0
+    offy: 0
+    origname: i375a4a5e-64e5-410f-aa6f-3bcfc9804519.png
+    shape: rect
+    left: 35
+    right: 35
+    top: 35
+    bottom: 35
+    uid: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+    padding: 1
+    source: 'D:\Downloads\physicspack\PNG\Other\grass.png'
+    lastmod: 1615556407594
+  - name: WoodenTriangle
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 70
+      - 43
+    marginx: 0
+    marginy: 0
+    imgWidth: 140
+    imgHeight: 70
+    width: 140
+    height: 70
+    offx: 0
+    offy: 0
+    origname: i0f0e39f3-05bd-47e1-88d2-7dbf7bc3596b.png
+    shape: strip
+    left: 70
+    right: 70
+    top: 35
+    bottom: 35
+    uid: 0f0e39f3-05bd-47e1-88d2-7dbf7bc3596b
+    padding: 1
+    source: 'D:\Downloads\physicspack\PNG\Wood elements\elementWood054.png'
+    stripPoints:
+      - x: -0.0
+        'y': -43
+      - x: 70
+        'y': 26
+      - x: -70
+        'y': 26
+    closedStrip: true
+    lastmod: 1616891300000
+  - name: elementMetal013
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 110
+      - 35
+    marginx: 0
+    marginy: 0
+    imgWidth: 220
+    imgHeight: 70
+    width: 220
+    height: 70
+    offx: 0
+    offy: 0
+    origname: i56ab43ae-1b27-4b5e-9e49-fbbe74d42597.png
+    shape: rect
+    left: 110
+    right: 110
+    top: 35
+    bottom: 35
+    uid: 56ab43ae-1b27-4b5e-9e49-fbbe74d42597
+    padding: 1
+    source: 'D:\Downloads\physicspack\PNG\Metal elements\elementMetal013.png'
+    lastmod: 1615557926300
+  - name: Slingshot
+    untill: 0
+    grid:
+      - 2
+      - 1
+    axis:
+      - 70
+      - 60
+    marginx: 0
+    marginy: 0
+    imgWidth: 304
+    imgHeight: 221
+    width: 152
+    height: 221
+    offx: 0
+    offy: 0
+    origname: i37dfad62-8372-4804-8416-765039343b61.png
+    shape: rect
+    left: 70
+    right: 82
+    top: 60
+    bottom: 161
+    uid: 37dfad62-8372-4804-8416-765039343b61
+    padding: 1
+    source: 'C:\Users\Master\Desktop\Slingshot.png'
+    lastmod: 1616892923665
+  - name: elementMetal001
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 35
+      - 35
+    marginx: 0
+    marginy: 0
+    imgWidth: 70
+    imgHeight: 70
+    width: 70
+    height: 70
+    offx: 0
+    offy: 0
+    origname: ic4d4030a-b640-44be-bded-26a5c030f542.png
+    shape: circle
+    left: 35
+    right: 35
+    top: 35
+    bottom: 35
+    uid: c4d4030a-b640-44be-bded-26a5c030f542
+    padding: 1
+    source: 'D:\Downloads\physicspack\PNG\Metal elements\elementMetal001.png'
+    r: 35
+    lastmod: 1615704333828
+  - name: elementMetal000
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 35
+      - 35
+    marginx: 0
+    marginy: 0
+    imgWidth: 70
+    imgHeight: 70
+    width: 70
+    height: 70
+    offx: 0
+    offy: 0
+    origname: i3a4eba8d-8b33-478e-95e5-3833099c1a03.png
+    shape: strip
+    left: 0
+    right: 140
+    top: 0
+    bottom: 70
+    uid: 3a4eba8d-8b33-478e-95e5-3833099c1a03
+    padding: 3
+    source: 'D:\Downloads\physicspack\PNG\Metal elements\elementMetal002.png'
+    lastmod: 1616892926979
+    stripPoints:
+      - x: -35
+        'y': -35
+      - x: 35
+        'y': 35
+      - x: -35
+        'y': 35
+    closedStrip: true
+  - name: Confetti
+    untill: 0
+    grid:
+      - 2
+      - 2
+    axis:
+      - 0
+      - 0
+    marginx: 0
+    marginy: 0
+    imgWidth: 1024
+    imgHeight: 1024
+    width: 512
+    height: 512
+    offx: 0
+    offy: 0
+    origname: if878c588-3c26-486b-a20f-b23ffab4d579.png
+    shape: rect
+    left: 0
+    right: 512
+    top: 0
+    bottom: 512
+    uid: f878c588-3c26-486b-a20f-b23ffab4d579
+    padding: 3
+    source: data\particles\Confetti_2x2.png
+    lastmod: 1616895609998
+  - name: WoodenSquare_Damaged
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 35
+      - 35
+    marginx: 0
+    marginy: 0
+    imgWidth: 70
+    imgHeight: 70
+    width: 70
+    height: 70
+    offx: 0
+    offy: 0
+    origname: iabdeba09-af47-4b39-a276-fa2e59b164aa.png
+    shape: rect
+    left: 35
+    right: 35
+    top: 35
+    bottom: 35
+    uid: abdeba09-af47-4b39-a276-fa2e59b164aa
+    padding: 1
+    source: 'D:\Downloads\physicspack\PNG\Wood elements\elementWood045.png'
+    lastmod: 1616891224599
+  - name: WoodenTriangle_Damaged
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 70
+      - 43
+    marginx: 0
+    marginy: 0
+    imgWidth: 140
+    imgHeight: 70
+    width: 140
+    height: 70
+    offx: 0
+    offy: 0
+    origname: ifc52b049-910a-4e96-adcf-378553c0818c.png
+    shape: strip
+    left: 70
+    right: 70
+    top: 43
+    bottom: 27
+    uid: fc52b049-910a-4e96-adcf-378553c0818c
+    padding: 1
+    source: 'D:\Downloads\physicspack\PNG\Wood elements\elementWood043.png'
+    lastmod: 1616891305648
+    stripPoints:
+      - x: 0
+        'y': -43
+      - x: 70
+        'y': 26
+      - x: -70
+        'y': 26
+    closedStrip: true
+  - name: WoodenPlank_Damaged
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 110
+      - 35
+    marginx: 0
+    marginy: 0
+    imgWidth: 220
+    imgHeight: 70
+    width: 220
+    height: 70
+    offx: 0
+    offy: 0
+    origname: i03040255-0c4f-4605-aa7f-8a146a75675f.png
+    shape: rect
+    left: 110
+    right: 110
+    top: 35
+    bottom: 35
+    uid: 03040255-0c4f-4605-aa7f-8a146a75675f
+    padding: 1
+    source: 'D:\Downloads\physicspack\PNG\Wood elements\elementWood047.png'
+    lastmod: 1616891232841
+skeletons: []
+types:
+  - name: Alien_Launched
+    depth: 0
+    oncreate: |-
+      this.tag = 'Alien';
+
+      this.timeout = ct.speed * 5;
+    onstep: |-
+      this.timeout--;
+      if (this.timeout <= 0) {
+          this.kill = true;
+      }
+    ondraw: ''
+    ondestroy: |-
+      ct.emitters.fire('FX_Burst', this.xprev, this.yprev, {
+          tint: 0x6EBA9D
+      });
+    texture: 8a5f385a-d547-4d2d-9641-b1856738c62a
+    extends:
+      matterEnable: true
+      matterRestitution: 0.7
+      matterMass: 5
+      matterDensity: 0.003
+    uid: 556178d8-6886-4718-a5dd-b7dbf74e4547
+    lastmod: 1616894158784
+  - name: AlienTarget
+    depth: 0
+    oncreate: this.tag = 'Alien';
+    onstep: this.move();
+    ondraw: ''
+    ondestroy: |-
+      ct.emitters.fire('FX_Burst', this.xprev, this.yprev, {
+          tint: 0xFF85DA
+      });
+    texture: 6c8a3edf-d5fe-4916-b63c-2201c099d28f
+    extends:
+      matterEnable: true
+    uid: beb36708-4cce-4b50-a3c3-f7e2edc1d994
+    lastmod: 1616890301062
+  - name: WoodenSquare
+    depth: 0
+    oncreate: |-
+      this.tag = 'Wooden';
+      this.damage = 0;
+    onstep: |-
+      if (this.damage > 150) {
+          this.kill = true;
+      }
+    ondraw: |-
+      if (this.damage > 75 && this.tex !== 'WoodenSquare_damaged') {
+          this.tex = 'WoodenSquare_Damaged';
+      }
+    ondestroy: |-
+      ct.emitters.fire('FX_Burst', this.xprev, this.yprev, {
+          tint: 0xAB763E
+      });
+    texture: 41f7c3b3-abc8-4940-8919-9114a884d7f2
+    extends:
+      matterEnable: true
+      matterRestitution: 0.4
+      matterFriction: 10
+      matterFrictionStatic: 3.1
+      matterFrictionAir: 0.05
+      matterMass: 1
+    uid: 6fd118b6-633f-4beb-93ec-2dd5c965fdd5
+    lastmod: 1616891394690
+  - name: WoodenPlank
+    depth: 0
+    oncreate: |-
+      this.tag = 'Wooden';
+      this.damage = 0;
+    onstep: |-
+      if (this.damage > 300) {
+          this.kill = true;
+      }
+    ondraw: |-
+      if (this.damage > 100 && this.tex !== 'WoodenPlank_damaged') {
+          this.tex = 'WoodenPlank_Damaged';
+      }
+    ondestroy: |-
+      ct.emitters.fire('FX_Burst', this.xprev, this.yprev, {
+          tint: 0xAB763E
+      });
+    texture: 9afd54d7-1265-4ba0-b5de-5226b3c7e2fb
+    extends:
+      matterEnable: true
+      matterRestitution: 0.4
+      matterMass: 1
+      matterFriction: 10
+      matterFrictionStatic: 3.1
+      matterFrictionAir: 0.05
+    uid: 256006c5-c853-40a5-a277-3bc1df64d226
+    lastmod: 1616895635325
+  - name: grass
+    depth: 0
+    oncreate: ''
+    onstep: this.move();
+    ondraw: ''
+    ondestroy: ''
+    texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+    extends:
+      matterEnable: true
+      matterStatic: true
+      matterMass: 10000
+      matterFriction: 15
+    uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
+    lastmod: 1615557554543
+  - name: WoodenTriangle
+    depth: 0
+    oncreate: |-
+      this.tag = 'Wooden';
+      this.damage = 0;
+    onstep: |-
+      if (this.damage > 250) {
+          this.kill = true;
+      }
+    ondraw: |-
+      if (this.damage > 100 && this.tex !== 'WoodenTriangle_damaged') {
+          this.tex = 'WoodenTriangle_Damaged';
+      }
+    ondestroy: |-
+      ct.emitters.fire('FX_Burst', this.xprev, this.yprev, {
+          tint: 0xAB763E
+      });
+    texture: 0f0e39f3-05bd-47e1-88d2-7dbf7bc3596b
+    extends:
+      matterEnable: true
+      matterFriction: 10
+      matterFrictionStatic: 3.1
+      matterFrictionAir: 0.05
+      matterMass: 1
+      matterFixPivot:
+        - 0
+        - 11
+    uid: 7f79638a-a14f-4ec8-8826-981ff954c738
+    lastmod: 1616895639247
+  - name: Slingshot
+    depth: 0
+    oncreate: ''
+    onstep: |-
+      if (ct.actions.Pointer.pressed && ct.mouse.hovers(this)) {
+          ct.types.copy('Alien_Dragging', this.x, this.y);
+      }
+    ondraw: ''
+    ondestroy: ''
+    texture: 37dfad62-8372-4804-8416-765039343b61
+    extends: {}
+    uid: 070d18cf-978a-4874-ba4d-1aadd0d4f58a
+    lastmod: 1616892056278
+  - name: Alien_Dragging
+    depth: 0
+    oncreate: ''
+    onstep: |-
+      if (ct.actions.Pointer.released) {
+          const speedModifier = 0.3,
+                maxSpeed = 50;
+          this.kill = true;
+          const missile = ct.types.copy('Alien_Launched', this.x, this.y);
+          const slingshot = ct.types.list['Slingshot'][0];
+          var hspeed = (slingshot.x - this.x) * speedModifier,
+              vspeed = (slingshot.y - this.y) * speedModifier,
+              l = ct.u.pdc(0, 0, hspeed, vspeed);
+          if (l > maxSpeed) {
+              hspeed /= l / maxSpeed;
+              vspeed /= l / maxSpeed;
+          }
+          ct.matter.launch(missile, hspeed, vspeed);
+      }
+    ondraw: |
+      const slingshot = ct.types.list['Slingshot'][0],
+            maxLength = 150;
+      let dx = ct.mouse.x - slingshot.x,
+          dy = ct.mouse.y - slingshot.y,
+          l = ct.u.pdc(0, 0, dx, dy);
+
+      if (l > maxLength) {
+          dx /= l / maxLength,
+          dy /= l / maxLength;
+      }
+
+      this.x = slingshot.x + dx;
+      this.y = slingshot.y + dy;
+    ondestroy: ''
+    texture: 8a5f385a-d547-4d2d-9641-b1856738c62a
+    extends:
+      matterEnable: false
+      matterRestitution: 0.7
+    uid: 5b9b41e7-52db-44a2-b5d2-016407e259dc
+    lastmod: 1616891549758
+  - name: elementMetal013
+    depth: 0
+    oncreate: this.tag = 'Metal';
+    onstep: this.move();
+    ondraw: ''
+    ondestroy: ''
+    texture: 56ab43ae-1b27-4b5e-9e49-fbbe74d42597
+    extends:
+      matterEnable: true
+      matterConstraint: pinpoint
+      matterFrictionStatic: 0.1
+      matterFrictionAir: 0.1
+      matterDensity: 0.01
+      matterRestitution: 0.6
+    uid: 8e4e1fe0-54f6-4c9f-a468-99a94b05803f
+    lastmod: 1616892744865
+  - name: elementMetal011
+    depth: 0
+    oncreate: this.tag = 'Metal';
+    onstep: this.move();
+    ondraw: ''
+    ondestroy: ''
+    texture: c4d4030a-b640-44be-bded-26a5c030f542
+    extends:
+      matterMass: 10
+      matterEnable: true
+      matterDensity: 0.005
+      matterRestitution: 0.6
+    uid: 54e149bb-f36a-48c0-98f5-181451bac20c
+    lastmod: 1616892752365
+  - name: elementMetal000
+    depth: 0
+    oncreate: this.tag = 'Metal';
+    onstep: this.move();
+    ondraw: ''
+    ondestroy: ''
+    texture: 3a4eba8d-8b33-478e-95e5-3833099c1a03
+    extends:
+      matterStatic: true
+      matterEnable: true
+      matterDensity: 0.005
+      matterRestitution: 0.5
+      matterFixPivot:
+        - 4
+        - 4
+    uid: 82c03796-7419-4f22-944c-78c1209c6874
+    lastmod: 1616892936227
+sounds:
+  - name: Impact_Wooden
+    uid: ccfe7f50-d4d3-4570-95e9-75d5d73bef0a
+    origname: sccfe7f50-d4d3-4570-95e9-75d5d73bef0a.ogg
+    lastmod: 1616407436515
+  - name: Impact_Metal
+    uid: cbca4dd5-7369-48d5-b3b7-e9b0055e2eda
+    origname: scbca4dd5-7369-48d5-b3b7-e9b0055e2eda.ogg
+    lastmod: 1616407498544
+  - name: Impact_Alien
+    uid: 3142b705-6de5-4f57-9b70-c9bc3fb4cdad
+    origname: s3142b705-6de5-4f57-9b70-c9bc3fb4cdad.ogg
+    lastmod: 1616407549522
+styles: []
+rooms:
+  - name: HolericAliens
+    oncreate: |
+      // Listen for collisions in the world
+      ct.matter.on('collisionStart', e => {
+          // Loop over every collision in a frame
+          for (const pair of e.pairs) {
+              // Get how strong the impact was
+              // We will use it for damage calculation to aliens and wooden blocks
+              const impact = ct.matter.getImpact(pair);
+
+              // Each pair has bodyA and bodyB — two objects that has collided.
+              // This little loop applies checks for both bodies
+              const bodies = [pair.bodyA, pair.bodyB];
+              for (const body of bodies) {
+                  // Does a body belong to a copy of type "AlienTarget"?
+                  if (body.copy.type === 'AlienTarget') {
+                      // If it was too strong, destroy the alien.
+                      if (impact > 75) {
+                          body.copy.kill = true;
+                      }
+                  }
+
+                  // Apply cumulative damage for wooden blocks
+                  // Tags are set in types' On Create code
+                  if (body.copy.tag === 'Wooden') {
+                      // Ignore weak strikes
+                      if (impact >= 25) {
+                          // I apply a damage multiplier 0.35 bc initial values turned out to be too destructive,
+                          // and I'm too lazy to walk over three blocks and change damage thresholds there.
+                          body.copy.damage += impact * 0.35;
+                          // Texture change and destruction are coded in types' On Step and Draw events.
+                      }
+                  }
+
+                  // Play sounds on considerable collisions
+                  if (impact >= 25) {
+                      if (body.copy.tag) {
+                          ct.sound.spawn('Impact_' + body.copy.tag);
+                      }
+                  }
+              }
+          }
+      });
+    onstep: ''
+    ondraw: ''
+    onleave: ''
+    width: 1640
+    height: 900
+    backgrounds:
+      - depth: -10
+        texture: f6a40cf4-e9c0-47ff-afa8-6cdc259ef17e
+        extends: {}
+    copies:
+      - x: 905
+        'y': 770
+        uid: 6fd118b6-633f-4beb-93ec-2dd5c965fdd5
+        exts: {}
+      - x: 905
+        'y': 700
+        uid: 6fd118b6-633f-4beb-93ec-2dd5c965fdd5
+        exts: {}
+      - x: 905
+        'y': 630
+        uid: 6fd118b6-633f-4beb-93ec-2dd5c965fdd5
+        exts: {}
+      - x: 980
+        'y': 560
+        uid: 256006c5-c853-40a5-a277-3bc1df64d226
+        exts: {}
+      - x: 1054
+        'y': 770
+        uid: 6fd118b6-633f-4beb-93ec-2dd5c965fdd5
+        exts: {}
+      - x: 1054
+        'y': 700
+        uid: 6fd118b6-633f-4beb-93ec-2dd5c965fdd5
+        exts: {}
+      - x: 1054
+        'y': 630
+        uid: 6fd118b6-633f-4beb-93ec-2dd5c965fdd5
+        exts: {}
+      - x: 980
+        'y': 766
+        uid: beb36708-4cce-4b50-a3c3-f7e2edc1d994
+        exts: {}
+      - x: 1050
+        'y': 490
+        uid: 6fd118b6-633f-4beb-93ec-2dd5c965fdd5
+        exts: {}
+      - x: 980
+        'y': 490
+        uid: beb36708-4cce-4b50-a3c3-f7e2edc1d994
+        exts: {}
+      - x: 1120
+        'y': 350
+        uid: 256006c5-c853-40a5-a277-3bc1df64d226
+        exts: {}
+      - x: 1190
+        'y': 420
+        uid: 6fd118b6-633f-4beb-93ec-2dd5c965fdd5
+        exts: {}
+      - x: 1190
+        'y': 490
+        uid: 6fd118b6-633f-4beb-93ec-2dd5c965fdd5
+        exts: {}
+      - x: 1190
+        'y': 700
+        uid: 6fd118b6-633f-4beb-93ec-2dd5c965fdd5
+        exts: {}
+      - x: 1190
+        'y': 770
+        uid: 6fd118b6-633f-4beb-93ec-2dd5c965fdd5
+        exts: {}
+      - x: 1260
+        'y': 630
+        uid: 256006c5-c853-40a5-a277-3bc1df64d226
+        exts: {}
+      - x: 1330
+        'y': 700
+        uid: 6fd118b6-633f-4beb-93ec-2dd5c965fdd5
+        exts: {}
+      - x: 1330
+        'y': 770
+        uid: 6fd118b6-633f-4beb-93ec-2dd5c965fdd5
+        exts: {}
+      - x: 1120
+        'y': 280
+        uid: 6fd118b6-633f-4beb-93ec-2dd5c965fdd5
+        exts: {}
+      - x: 1190
+        'y': 560
+        uid: 6fd118b6-633f-4beb-93ec-2dd5c965fdd5
+        exts: {}
+      - x: 1288
+        'y': 559
+        uid: beb36708-4cce-4b50-a3c3-f7e2edc1d994
+        exts: {}
+      - x: 910
+        'y': 840
+        uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
+        exts: {}
+      - x: 980
+        'y': 840
+        uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
+        exts: {}
+      - x: 1050
+        'y': 840
+        uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
+        exts: {}
+      - x: 1120
+        'y': 840
+        uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
+        exts: {}
+      - x: 1190
+        'y': 840
+        uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
+        exts: {}
+      - x: 1260
+        'y': 840
+        uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
+        exts: {}
+      - x: 1330
+        'y': 840
+        uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
+        exts: {}
+      - x: 1400
+        'y': 840
+        uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
+        exts: {}
+      - x: 1470
+        'y': 840
+        uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
+        exts: {}
+      - x: 1540
+        'y': 840
+        uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
+        exts: {}
+      - x: 1610
+        'y': 840
+        uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
+        exts: {}
+      - x: 840
+        'y': 840
+        uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
+        exts: {}
+      - x: 770
+        'y': 840
+        uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
+        exts: {}
+      - x: 700
+        'y': 840
+        uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
+        exts: {}
+      - x: 560
+        'y': 840
+        uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
+        exts: {}
+      - x: 630
+        'y': 840
+        uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
+        exts: {}
+      - x: 490
+        'y': 840
+        uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
+        exts: {}
+      - x: 420
+        'y': 840
+        uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
+        exts: {}
+      - x: 350
+        'y': 840
+        uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
+        exts: {}
+      - x: 280
+        'y': 840
+        uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
+        exts: {}
+      - x: 210
+        'y': 840
+        uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
+        exts: {}
+      - x: 140
+        'y': 840
+        uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
+        exts: {}
+      - x: 70
+        'y': 840
+        uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
+        exts: {}
+      - x: 0
+        'y': 840
+        uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
+        exts: {}
+      - x: 1680
+        'y': 840
+        uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
+        exts: {}
+      - x: 1120
+        'y': 210
+        uid: 7f79638a-a14f-4ec8-8826-981ff954c738
+        exts: {}
+      - x: 1024
+        'y': 278
+        uid: beb36708-4cce-4b50-a3c3-f7e2edc1d994
+        exts: {}
+      - x: 700
+        'y': 140
+        uid: 8e4e1fe0-54f6-4c9f-a468-99a94b05803f
+        exts: {}
+      - x: 630
+        'y': 70
+        uid: 54e149bb-f36a-48c0-98f5-181451bac20c
+        exts: {}
+      - x: 770
+        'y': 70
+        uid: 54e149bb-f36a-48c0-98f5-181451bac20c
+        exts: {}
+      - x: 225
+        'y': 646
+        uid: 070d18cf-978a-4874-ba4d-1aadd0d4f58a
+        exts: {}
+      - x: 568
+        'y': 770
+        uid: 7f79638a-a14f-4ec8-8826-981ff954c738
+        exts: {}
+      - x: 700
+        'y': 770
+        uid: 7f79638a-a14f-4ec8-8826-981ff954c738
+        exts: {}
+      - x: 1050
+        'y': 420
+        uid: 6fd118b6-633f-4beb-93ec-2dd5c965fdd5
+        exts: {}
+      - x: 630
+        'y': 700
+        uid: 54e149bb-f36a-48c0-98f5-181451bac20c
+        exts: {}
+        tx: 2.2
+        ty: 1
+    tiles:
+      - depth: -10
+        tiles: []
+        extends: {}
+    uid: 125036f1-3a14-4fc3-ae95-2d29a5c56244
+    thumbnail: 2d29a5c56244
+    extends:
+      matterGravity:
+        - 0
+        - 1
+    gridX: 70
+    gridY: 70
+    lastmod: 1616896076747
+actions:
+  - name: Pointer
+    methods:
+      - code: mouse.Left
+emitterTandems:
+  - name: FX_Burst
+    origname: pta85a19f1cde1
+    emitters:
+      - texture: f878c588-3c26-486b-a20f-b23ffab4d579
+        openedTabs:
+          - texture
+          - spawning
+          - gravity
+          - scaling
+          - colors
+        settings:
+          alpha:
+            list:
+              - value: 0
+                time: 0
+              - time: 0.15079365079365079
+                value: 0.75
+              - value: 1
+                time: 0.5
+              - value: 0
+                time: 1
+            isStepped: false
+          scale:
+            list:
+              - value: 0.18000000000000002
+                time: 0
+              - value: 0.039999999999999994
+                time: 1
+            isStepped: false
+          color:
+            list:
+              - value: FF85DA
+                time: 0
+              - time: 0.15079365079365079
+                value: FFFFFF
+              - value: FFFFFF
+                time: 0.5
+              - value: FFFFFF
+                time: 1
+            isStepped: false
+          blendMode: normal
+          speed:
+            list:
+              - value: 675
+                time: 0
+              - value: 100
+                time: 1
+            isStepped: false
+          startRotation:
+            min: 0
+            max: 360
+          rotationSpeed:
+            min: 0
+            max: 0
+          rotationAcceleration: 0
+          lifetime:
+            min: 0.35
+            max: 1
+          frequency: 0.008
+          spawnChance: 1
+          particlesPerWave: 1
+          angleStart: 270
+          emitterLifetime: 0.1
+          maxParticles: 1000
+          maxSpeed: 0
+          pos:
+            x: 0
+            'y': 0
+          acceleration:
+            x: 0
+            'y': 1000
+          addAtBack: false
+          spawnType: circle
+          spawnCircle:
+            x: 0
+            'y': 0
+            r: 41
+          delay: 0
+          particleSpacing: 360
+          minimumScaleMultiplier: 0.26
+          minimumSpeedMultiplier: 0.15
+        uid: 02de95c8-e4d6-41a2-aced-793d64657985
+        showShapeVisualizer: false
+    previewTexture: 6c8a3edf-d5fe-4916-b63c-2201c099d28f
+scripts: []
+starting: 0
+settings:
+  authoring:
+    author: ''
+    site: ''
+    title: ''
+    version:
+      - 0
+      - 0
+      - 0
+    versionPostfix: ''
+  rendering:
+    usePixiLegacy: true
+    maxFPS: 60
+    pixelatedrender: false
+    highDensity: true
+    desktopMode: maximized
+  export:
+    windows: true
+    linux: true
+    mac: true
+    functionWrap: false
+    codeModifier: none
+  branding:
+    icon: -1
+    accent: '#446adb'
+    invertPreloaderScheme: true
+  fps: 30
+fonts: []
+palette:
+  - '#FF85DA'
+  - '#6EBA9D'
+  - '#9E703F'
+startroom: 125036f1-3a14-4fc3-ae95-2d29a5c56244
