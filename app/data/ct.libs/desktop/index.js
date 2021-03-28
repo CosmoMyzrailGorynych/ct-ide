@@ -1,20 +1,27 @@
-/* global nw */
 ct.desktop = {
+    isNw: window.nw && window.nw.App,
+    isElectron: null,
     quit() {
-        if (window.nw && window.nw.App) {
+        if (ct.desktop.isNw) {
             if (window.iAmInCtIdeDebugger) {
-                nw.Window.get().close();
+                // eslint-disable-next-line no-console
+                console.warn('We don\'t quit because ct.js would quit as well. Let\'s imagine that the game has exited! :D');
             } else {
                 nw.App.quit();
             }
-            return true;
-        }
-        try {
+        } else if (ct.desktop.isElectron) {
             require('electron').remote.getCurrentWindow().close();
-            return true;
-        } catch (e) {
-            console.error('Could not exit the game :c Are we in a browser?');
-            return false;
+        } else {
+            console.error('[ct.desktop/quit] Unknown environment :c Are we in a browser?');
         }
     }
 };
+
+try {
+    require('electron');
+    ct.desktop.isElectron = true;
+} catch (e) {
+    ct.desktop.isElectron = false;
+}
+
+ct.desktop.isDesktop = ct.desktop.isNw || ct.desktop.isElectron;

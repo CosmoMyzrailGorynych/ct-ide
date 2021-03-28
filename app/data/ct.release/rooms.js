@@ -296,6 +296,12 @@ Room.roomId = 0;
                 ct.roomWidth,
                 ct.roomHeight
             );
+            if (template.cameraConstraints) {
+                ct.camera.minX = template.cameraConstraints.x1;
+                ct.camera.maxX = template.cameraConstraints.x2;
+                ct.camera.minY = template.cameraConstraints.y1;
+                ct.camera.maxY = template.cameraConstraints.y2;
+            }
             ct.pixiApp.renderer.resize(template.width, template.height);
             ct.rooms.current = ct.room = new Room(template);
             ct.stage.addChild(ct.room);

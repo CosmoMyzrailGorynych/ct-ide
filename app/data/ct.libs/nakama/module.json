@@ -1,0 +1,52 @@
+{
+    "main": {
+        "name": "ct.nakama",
+        "tagline": "Implementation of heroiclabs/nakama to enable multiplayer games",
+        "version": "0.0.2",
+        "authors": [
+            {
+                "name": "Alexandar Gyurov",
+                "mail": "hello@alexandar.me"
+            }
+        ],
+        "categories": [
+            "networking"
+        ]
+    },
+    "fields": [
+        {
+            "name": "Client",
+            "type": "h2"
+        },
+        {
+            "name": "Host",
+            "key": "clientHost",
+            "default": "127.0.0.1",
+            "type": "code"
+        },
+        {
+            "name": "Port",
+            "key": "clientPort",
+            "default": 7350,
+            "type": "number"
+        },
+        {
+            "name": "Secure Mode (useSSL)",
+            "help": "Whether to use SSL to connect to the client.",
+            "key": "useSSL",
+            "default": false,
+            "type": "checkbox"
+        },
+        {
+            "name": "Development",
+            "type": "h2"
+        },
+        {
+            "name": "Debug Mode",
+            "help": "Logs useful information to the console",
+            "key": "debugMode",
+            "default": true,
+            "type": "checkbox"
+        }
+    ]
+}

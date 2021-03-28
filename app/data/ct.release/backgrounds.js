@@ -28,7 +28,9 @@ class Background extends PIXI.TilingSprite {
     constructor(texName, frame = 0, depth = 0, exts = {}) {
         var width = ct.camera.width,
             height = ct.camera.height;
-        const texture = ct.res.getTexture(texName, frame || 0);
+        const texture = texName instanceof PIXI.Texture ?
+            texName :
+            ct.res.getTexture(texName, frame || 0);
         if (exts.repeat === 'no-repeat' || exts.repeat === 'repeat-x') {
             height = texture.height * (exts.scaleY || 1);
         }

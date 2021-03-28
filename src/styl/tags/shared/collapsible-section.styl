@@ -8,7 +8,7 @@ collapsible-section
         align-items  center
         cursor pointer
         border-bottom 1px solid borderBright
-        h3
+        h1, h2, h3, h4, h5, h6
             padding 0
             margin 0
             flex 1 1 auto
@@ -24,3 +24,13 @@ collapsible-section
                 transform rotate(180deg)
     .&-aWrapper
         padding 1rem 0 0.5rem
+    &.panel
+        & > .flexrow
+            h1, h2, h3, h4, h5, h6
+                margin 0 1rem
+            svg
+                margin-right 0.5rem
+        &.closed > .flexrow
+            border-bottom 0
+        .collapsible-section-aWrapper
+            padding 1rem

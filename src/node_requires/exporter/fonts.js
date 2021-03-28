@@ -21,7 +21,7 @@ const bundleFonts = async function (proj, projdir, writeDir) {
             var ttf = new Uint8Array(fontData);
             let woff;
             try {
-                woff = new Buffer(ttf2woff(ttf).buffer);
+                woff = Buffer.from(ttf2woff(ttf).buffer);
             } catch (e) {
                 window.alertify.error(`Whoah! A buggy ttf file in the font ${font.typefaceName} ${font.weight} ${font.italic ? 'italic' : 'normal'}. You should either fix it or find a new one.`);
                 throw e;
@@ -78,7 +78,7 @@ const generateXML = function generateXML(fontData, ctFont, typefaceName) {
 
     XMLTemplate += `
     </chars>
-    <kernings count="0"></kerings>
+    <kernings count="0"></kernings>
 </font>`;
 
     return XMLTemplate;

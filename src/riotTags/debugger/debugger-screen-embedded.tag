@@ -2,18 +2,21 @@
     Exposes this.reloadGame
 debugger-screen-embedded(class="{opts.class} {flexrow: verticalLayout, flexcol: !verticalLayout}")
     webview.tall#thePreview(
+        ref="gameView"
         partition="persist:trusted"
-        ref="gameView" allownw nwfaketop
+        allownw nwfaketop
     )
     .aResizer(ref="gutter" onmousedown="{gutterMouseDown}" class="{vertical: verticalLayout, horizontal: !verticalLayout}")
     .flexfix(
         style="flex: 0 0 auto; {verticalLayout? 'width:'+width+'px' : 'height:'+height+'px'}"
     )
         webview.tall.flexfix-body(
-            partition="persist:trusted" src="empty.html"
-            ref="devtoolsView" allownw nwfaketop
+            ref="devtoolsView"
+            src="empty.html"
+            partition="persist:trusted"
             style="overflow: hidden;"
         )
+        //allownw nwfaketop
         .flexfix-footer.aDebuggerToolbar.noshrink(
             class="{vertical: verticalLayout} {tight: (verticalLayout && width < 1000) || (!verticalLayout && window.innerWidth < 1000)}"
         )

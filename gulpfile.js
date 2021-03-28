@@ -43,9 +43,9 @@ const path = require('path'),
  *
  * Also note that you may need to clear the `ct-js/cache` folder.
  */
-const nwSource = 'https://dl.nwjs.io/live-build/nw50/20201215-162000/25eea59e1/';
-const nwManifest = 'https://raw.githubusercontent.com/ct-js/ct-js/v1.x/customNwManifest.json';
-const nwVersion = void 0,
+const nwSource = void 0;
+const nwManifest = void 0;
+const nwVersion = '0.51.2',
       platforms = ['osx64', 'win32', 'win64', 'linux32', 'linux64'],
       nwFiles = ['./app/**', '!./app/export/**', '!./app/projects/**', '!./app/exportDesktop/**', '!./app/cache/**', '!./app/.vscode/**', '!./app/JamGames/**'];
 
@@ -299,14 +299,25 @@ const lintI18n = () => require('./node_requires/i18n')().then(console.log);
 
 const lint = gulp.series(lintJS, lintTags, lintStylus, lintI18n);
 
+const processToPlatformMap = {
+    'darwin-x64': 'darwin',
+    'win32-x32': 'win32',
+    'win32-x64': 'win64',
+    'linux-x32': 'linux32',
+    'linux-x64': 'linux64'
+};
 const launchApp = () => {
     const NwBuilder = require('nw-builder');
+    const platformKey = `${process.platform}-${process.arch}`;
+    if (!(platformKey in processToPlatformMap)) {
+        throw new Error(`Combination of OS and architecture ${process.platform}-${process.arch} is not supported by NW.js.`);
+    }
     const nw = new NwBuilder({
         files: nwFiles,
         version: nwVersion,
         downloadUrl: nwSource,
         manifestUrl: nwManifest,
-        platforms,
+        platforms: [processToPlatformMap[platformKey]],
         flavor: 'sdk'
     });
     return nw.run()
@@ -444,9 +455,9 @@ const bakePackages = async () => {
     const NwBuilder = require('nw-builder');
     // Use the appropriate icon for each release channel
     if (nightly) {
-        await fs.copy('./buildAssets/icon.png', './app/ct_ide.png');
-    } else {
         await fs.copy('./buildAssets/nightly.png', './app/ct_ide.png');
+    } else {
+        await fs.copy('./buildAssets/icon.png', './app/ct_ide.png');
     }
     await fs.remove(path.join('./build', `ctjs - v${pack.version}`));
     var nw = new NwBuilder({

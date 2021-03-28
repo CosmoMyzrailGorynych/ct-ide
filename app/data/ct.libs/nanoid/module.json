@@ -1,0 +1,14 @@
+{
+  "main": {
+    "name": "Nano ID",
+    "tagline": "A tiny, secure, URL-friendly, unique string ID generator for JavaScript, bundled for ct.js.",
+    "version": "3.1.20",
+    "packageName": "nanoid",
+    "authors": [{
+      "name": "Andrey Sitnik and contributors"
+    }],
+    "categories": [
+      "utilities"
+    ]
+  }
+}

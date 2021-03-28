@@ -1,0 +1,16 @@
+{
+  "main": {
+    "name": "Filters",
+    "tagline": "Add filters and custom shaders to create special effects on your copies or whole viewport",
+    "version": "1.0.0",
+    "packageName": "filters",
+    "authors": [
+      {
+        "name": "SN"
+      }
+    ],
+    "categories": [
+      "FX"
+    ]
+  }
+}

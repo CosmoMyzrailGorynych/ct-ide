@@ -69,6 +69,23 @@ types-panel.panel.view
             this.editedType = type;
         };
 
+        const assetListener = asset => {
+            const [assetType, uid] = asset.split('/');
+            if (assetType !== 'types') {
+                return;
+            }
+            const type = global.currentProject.types.find(type => type.uid === uid);
+            this.openType(type)();
+            this.refs.types.updateList();
+            if (this.parent) {
+                this.parent.update();
+            }
+        };
+        window.orders.on('openAsset', assetListener);
+        this.on('unmount', () => {
+            window.orders.off('openAsset', assetListener);
+        });
+
         this.typeMenu = {
             items: [{
                 label: window.languageJSON.common.open,

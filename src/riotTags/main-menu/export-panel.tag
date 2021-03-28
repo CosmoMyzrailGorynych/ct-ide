@@ -130,7 +130,7 @@ export-panel
                     out: buildDir,
                     asar: true,
                     overwrite: true,
-                    electronVersion: '8.2.2',
+                    electronVersion: '11.1.1',
                     icon: path.join(exportDir, 'icon'),
 
                     // generic data
