@@ -2,7 +2,7 @@
     "main": {
         "name": "Matter.js physics library",
         "tagline": "Add realtime 2D physics engine to your project.",
-        "version": "0.0.0",
+        "version": "1.0.0",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",
             "mail": "admin@nersta.ru"
