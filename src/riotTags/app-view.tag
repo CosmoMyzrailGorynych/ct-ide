@@ -78,7 +78,6 @@ app-view.flexcol
         const assetListener = asset => {
             const [assetType] = asset.split('/');
             this.changeTab(assetType)();
-            console.log(assetType, asset);
             this.update();
         };
         window.orders.on('openAsset', assetListener);

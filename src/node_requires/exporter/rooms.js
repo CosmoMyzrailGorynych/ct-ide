@@ -11,6 +11,28 @@ const getStartingRoom = proj => {
     }
     return startroom;
 };
+const getConstraints = r => {
+    if (r.restrictCamera) {
+        let x1 = r.restrictMinX || 0,
+            y1 = r.restrictMinY || 0,
+            x2 = r.restrictMaxX === void 0 ? r.width : r.restrictMaxX,
+            y2 = r.restrictMaxX === void 0 ? r.height : r.restrictMaxY;
+        if (x1 > x2) {
+            [x1, x2] = [x2, x1];
+        }
+        if (y1 > y2) {
+            [y1, y2] = [y2, y1];
+        }
+        return {
+            x1,
+            y1,
+            x2,
+            y2
+        };
+    }
+    return false;
+};
+
 const stringifyRooms = proj => {
     let roomsCode = '';
     for (const k in proj.rooms) {
@@ -57,6 +79,8 @@ const stringifyRooms = proj => {
             }
         }
 
+        const constraints = getConstraints(r);
+
         roomsCode += `
 ct.rooms.templates['${r.name}'] = {
     name: '${r.name}',
@@ -67,6 +91,7 @@ ct.rooms.templates['${r.name}'] = {
     bgs: JSON.parse('${JSON.stringify(bgsCopy)}'),
     tiles: JSON.parse('${JSON.stringify(tileLayers)}'),
     backgroundColor: '${r.backgroundColor || '#000000'}',
+    ${constraints ? 'cameraConstraints: ' + JSON.stringify(constraints) + ',' : ''}
     onStep() {
         ${proj.rooms[k].onstep}
     },
