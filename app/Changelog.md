@@ -1,3 +1,54 @@
+## v1.6.0
+
+*Sun Mar 28 2021*
+
+### ✨ New Features
+
+* Add `ct.filters` module by SN frrom our Discord server. The module allows creating special visual effects with filters or custom shaders, applied to your copies or a whole viewport
+* Add `ct.light` module for adding ambient lighting and textured lights
+* Add `ct.matter` module for 2D physics. See the new example!
+* Bundle `ct.nakama` module by @alexandargyurov — you can now create online games with ct.js!
+* Group modded fields into collapsible sections with a new field type
+* Nano ID catmod of the same-named tiny library by Andrei Sitnik
+* Optionally make a camera stay inside a specific rectangle with new rooms' settings.
+
+### ⚡️ General Improvements
+
+* :bento: Update Electron used in desktop builds to v11.1.1
+* Allow Background class to accept a pixi.js texture
+* Modify emitter tandems to use `PIXI.ParticleContainer`. Provides better performance, and also fixes issue with un-tintable emitters.
+* Renovate `ct.desktop` -> quit method
+* Select only the needed Nw.js version for debugging
+
+### 🐛 Bug Fixes
+
+* Allow resetting values in type and texture inputs at modded fields
+* Fix "}" at the end of some texture files' names
+* Fix bitmap font's XML ("kerings" typo")
+* Fix broken context menu entry for textures to create a type from them
+* Fix crashes of built-in debugger; disable nw and node in the devtools
+* Fix `ct.place.meet` returning duplicated references to copies if querying for multiple obstacles
+* Fix icons for nightly and regular releases
+* Fix Point2D initialization for modded fields
+* In rooms' copy spawning code, check for scaling extensions separately
+* Remove the old main-menu tag
+
+### 🍱 Demos, Dependencies and Stuff
+
+* Update  nw.js to v0.51.1
+
+### 📝 Docs
+
+*  Add "Dragging Copies Around" tutorial by @qewer33
+* :bug: Add missing methods `ct.types.isCopy`, `ct.u.hexToPixi`, `ct.u.pixiToHex`
+* :bug: Add `moveTo` and `teleportTo` methods in `ct.camera` (#49 by @firecakes)
+* :sparkles: Add a list of gamedev resources
+* :zap: Add categories to ct.u methods list
+* :zap: Minor edits for JS intro, pt. 1
+* :zap: Refurbish the home page. Move most old content to "Basic concepts". Add links to tutorials and the cheatsheet.
+* 🐛 remove duplicate instruction to draw `scoreLabel`.
+* Add a memo about `ct.desktop.isNw` and `ct.desktop.isElectron`
+* Fixed typos in the Space Shooter tutorial by @sarturodev
 
 ## v1.5.1
 
