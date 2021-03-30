@@ -1,4 +1,4 @@
-ctjsVersion: 1.5.1
+ctjsVersion: 1.6.1
 notes: /* empty */
 libs:
   fittoscreen:
@@ -8,67 +8,6 @@ libs:
   matter:
     matterUseStaticDeltaTime: true
 textures:
-  - name: Star
-    untill: 0
-    grid:
-      - 1
-      - 1
-    axis:
-      - 64.5
-      - 67.5
-    marginx: 0
-    marginy: 0
-    imgWidth: 128
-    imgHeight: 128
-    width: 128
-    height: 128
-    offx: 0
-    offy: 0
-    origname: ibfbb5de9-367a-438a-8cab-ea88479c51be.png
-    shape: strip
-    left: 0
-    right: 787
-    top: 0
-    bottom: 692
-    uid: bfbb5de9-367a-438a-8cab-ea88479c51be
-    padding: 1
-    source: 'D:\JettyCat\img\ic9a62030-151c-429e-a2ce-3e829a79cb05.png_prev@2.png'
-    lastmod: 1615542695704
-    stripPoints:
-      - x: -0.75
-        'y': -65.75
-      - x: 11
-        'y': -58.25
-      - x: 24
-        'y': -33.25
-      - x: 60.75
-        'y': -24.5
-      - x: 64.5
-        'y': -10
-      - x: 39.75
-        'y': 15.25
-      - x: 44.25
-        'y': 49.25
-      - x: 29
-        'y': 59.75
-      - x: -0.5
-        'y': 42.75
-      - x: -29.921346167118823
-        'y': 59.885763470431215
-      - x: -45.2195710804483
-        'y': 49.45615108543885
-      - x: -40.87630005786883
-        'y': 15.43577488492599
-      - x: -65.74239608827918
-        'y': -9.699902313160635
-      - x: -62.05925582802869
-        'y': -24.21702936445152
-      - x: -25.349968411049232
-        'y': -33.13629039536623
-      - x: -12.465313208428675
-        'y': -58.19593245804509
-    closedStrip: true
-    symmetryStrip: true
   - name: WoodenPlank
     untill: 0
     grid:
