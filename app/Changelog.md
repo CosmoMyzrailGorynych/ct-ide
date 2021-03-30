@@ -1,3 +1,11 @@
+## v1.6.1
+
+*Sun Mar 29 2021*
+
+### 🐛 Bug Fixes
+
+* Fix teleport, spin, rotate, and rotateBy methods in ct.matter module
+
 ## v1.6.0
 
 *Sun Mar 28 2021*

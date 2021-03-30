@@ -7,7 +7,10 @@ ct.matter = {
     },
 
     teleport(copy, x, y) {
-        Matter.Body.setPosition(copy.matterBody, x, y);
+        Matter.Body.setPosition(copy.matterBody, {
+            x,
+            y
+        });
         copy.x = x;
         copy.y = y;
     },
@@ -28,13 +31,13 @@ ct.matter = {
         }
     },
     spin(copy, speed) {
-        Matter.Body.setAngularVelocity(copy.matterBody, -ct.u.radToDeg(speed));
+        Matter.Body.setAngularVelocity(copy.matterBody, ct.u.degToRad(speed));
     },
     rotate(copy, angle) {
-        Matter.Body.setAmgle(copy.matterBody, -ct.u.radToDeg(angle));
+        Matter.Body.setAngle(copy.matterBody, ct.u.degToRad(angle));
     },
     rotateBy(copy, angle) {
-        Matter.Body.rotate(copy.matterBody, -ct.u.radToDeg(angle));
+        Matter.Body.rotate(copy.matterBody, ct.u.degToRad(angle));
     },
     scale(copy, x, y) {
         Matter.Body.scale(copy, x, y);
