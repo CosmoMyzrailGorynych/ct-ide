@@ -146,8 +146,10 @@ const exportCtProject = async (project, projdir, production) => {
     /* Pixi.js */
     if (settings.rendering.usePixiLegacy) {
         await fs.copyFile(basePath + 'ct.release/pixi-legacy.min.js', path.join(writeDir, '/pixi.min.js'));
+        await fs.copyFile(basePath + 'ct.release/pixi-legacy.min.js.map', path.join(writeDir, '/pixi-legacy.min.js.map'));
     } else {
         await fs.copyFile(basePath + 'ct.release/pixi.min.js', path.join(writeDir, '/pixi.min.js'));
+        await fs.copyFile(basePath + 'ct.release/pixi.min.js.map', path.join(writeDir, '/pixi.min.js.map'));
     }
     if (project.emitterTandems && project.emitterTandems.length) {
         await fs.copyFile(basePath + 'ct.release/pixi-particles.min.js', path.join(writeDir, '/pixi-particles.min.js'));
@@ -287,11 +289,11 @@ const exportCtProject = async (project, projdir, production) => {
     /* eslint-enable require-atomic-updates */
 
     /* passthrough copy of files in the `include` folder */
-    if (await fs.exists(projdir + '/include/')) {
+    if (await fs.pathExists(projdir + '/include/')) {
         await fs.copy(projdir + '/include/', writeDir);
     }
     await Promise.all(Object.keys(project.libs).map(async lib => {
-        if (await fs.exists(path.join(basePath, `./ct.libs/${lib}/includes/`))) {
+        if (await fs.pathExists(path.join(basePath, `./ct.libs/${lib}/includes/`))) {
             await fs.copy(path.join(basePath, `./ct.libs/${lib}/includes/`), writeDir);
         }
     }));
