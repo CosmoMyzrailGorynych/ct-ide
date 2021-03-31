@@ -32,7 +32,7 @@
  * @property {Copy|DisplayObject} follow A copy to follow
  * @extends PIXI.Container
  */
-class EmitterTandem extends PIXI.ParticleContainer {
+class EmitterTandem extends PIXI.Container {
     /**
      * Creates a new emitter tandem. This method should not be called directly;
      * better use the methods of `ct.emitters`.
@@ -41,19 +41,7 @@ class EmitterTandem extends PIXI.ParticleContainer {
      * @constructor
      */
     constructor(tandemData, opts) {
-        let batchSize = 0;
-        for (const emt of tandemData) {
-            batchSize += Math.min(
-                emt.settings.maxParticles,
-                emt.settings.lifetime.max / emt.settings.frequency
-            );
-        }
-        super(batchSize, {
-            vertices: true,
-            position: true,
-            rotation: true,
-            tint: true
-        });
+        super();
         this.emitters = [];
         this.delayed = [];
 
@@ -96,7 +84,6 @@ class EmitterTandem extends PIXI.ParticleContainer {
         this.deltaPosition = opts.position;
         this.depth = opts.depth;
         this.paused = this.frozen = false;
-        this.tint = opts.tint;
 
         if (this.isUi) {
             ct.emitters.uiTandems.push(this);
@@ -229,7 +216,7 @@ class EmitterTandem extends PIXI.ParticleContainer {
             x: 1,
             y: 1
         },
-        tint: 0xff0fff,
+        tint: 0xffffff,
         alpha: 1,
         position: {
             x: 0,

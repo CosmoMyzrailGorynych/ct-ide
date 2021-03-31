@@ -1,3 +1,21 @@
+## v1.6.2
+
+*Wed Mar 31 2021*
+
+### ⚡️ General Improvements
+
+* Add JS map files for pixi.js
+* Update pixi.js to v5.3.8
+
+### 🐛 Bug Fixes
+
+* :bento: Fix 2DPhysics example
+
+### 🐉 Misc
+
+* Revert "Modify emitter tandems to use ParticleContainer"
+  This reverts commit b8a47f4273fb08e8377c5489ef8e30464bf41845.
+
 ## v1.6.1
 
 *Sun Mar 29 2021*
