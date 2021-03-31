@@ -31,7 +31,7 @@ module.exports = new Promise((resolve, reject) => {
                 forceCategoryStrip: /^:(books|pencil|pencil2|memo):/
             }, {
                 since,
-                repo: './ctjs-site',
+                repo: './../ctjs-site',
                 branch: 'master',
                 forceCategory: 'website'
             }],
