@@ -329,6 +329,18 @@ ct.u = {
         return (val - a) / (b - a);
     },
     /**
+     * Re-maps the given value from one number range to another.
+     * @param  {number} val The value to be mapped
+     * @param  {number} inMin Lower bound of the value's current range
+     * @param  {number} inMax Upper bound of the value's current range
+     * @param  {number} outMin Lower bound of the value's target range
+     * @param  {number} outMax Upper bound of the value's target range
+     * @returns {number} The mapped value.
+     */
+    map(val, inMin, inMax, outMin, outMax) {
+        return (val - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
+    },
+    /**
      * Translates a point from UI space to game space.
      * @param {number} x The x coordinate in UI space.
      * @param {number} y The y coordinate in UI space.
