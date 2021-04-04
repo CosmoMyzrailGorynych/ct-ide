@@ -56,12 +56,21 @@ project-selector
                 button.nm.inline(onclick="{openProjectFolder}") {voc.newProject.button}
         .spacer
         .aVersionNumber.nogrow
+            a(href="https://comigo.itch.io/ct" title="{voc.itch}" onclick="{openExternal('https://comigo.itch.io/ct')}")
+                svg.icon
+                    use(xlink:href="data/icons.svg#itch-dot-io")
             a(href="https://discord.gg/CggbPkb" title="{voc.discord}" onclick="{openExternal('https://discord.gg/CggbPkb')}")
                 svg.icon
                     use(xlink:href="data/icons.svg#discord")
             a(href="https://twitter.com/ctjsrocks" title="{voc.twitter}" onclick="{openExternal('https://twitter.com/ctjsrocks')}")
                 svg.icon
                     use(xlink:href="data/icons.svg#twitter")
+            a(href="https://vk.com/ctjsrocks" title="{voc.vkontakte}" onclick="{openExternal('https://vk.com/ctjsrocks')}")
+                svg.icon
+                    use(xlink:href="data/icons.svg#vk")
+            a(href="https:/patreon.com/comigo" title="{voc.patreon}" onclick="{openExternal('https:/patreon.com/comigo')}")
+                svg.icon
+                    use(xlink:href="data/icons.svg#patreon")
             .inlineblock v{ctjsVersion}.
             |
             |
