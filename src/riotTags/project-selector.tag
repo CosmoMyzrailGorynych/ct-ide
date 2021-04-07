@@ -56,6 +56,9 @@ project-selector
                 button.nm.inline(onclick="{openProjectFolder}") {voc.newProject.button}
         .spacer
         .aVersionNumber.nogrow
+            a(href="https://github.com/orgs/ct-js/" title="{voc.github}" onclick="{openExternal('https://github.com/orgs/ct-js/')}")
+                svg.icon
+                    use(xlink:href="data/icons.svg#github")
             a(href="https://comigo.itch.io/ct" title="{voc.itch}" onclick="{openExternal('https://comigo.itch.io/ct')}")
                 svg.icon
                     use(xlink:href="data/icons.svg#itch-dot-io")
