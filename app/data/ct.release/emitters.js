@@ -160,8 +160,10 @@ class EmitterTandem extends PIXI.Container {
      */
     pause() {
         for (const emt of this.emitters) {
-            emt.oldMaxParticles = emt.maxParticles;
-            emt.maxParticles = 0;
+            if (emt.maxParticles !== 0) {
+                emt.oldMaxParticles = emt.maxParticles;
+                emt.maxParticles = 0;
+            }
         }
     }
     /**
