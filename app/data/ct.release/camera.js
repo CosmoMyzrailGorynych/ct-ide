@@ -98,20 +98,24 @@ const Camera = (function Camera() {
     };
     const restrictInRect = function restrictInRect(camera) {
         if (camera.minX !== void 0) {
-            camera.x = Math.max(camera.minX + camera.width * camera.scale.x * 0.5, camera.x);
-            camera.targetX = Math.max(camera.minX, camera.targetX);
+            const boundary = camera.minX + camera.width * camera.scale.x * 0.5;
+            camera.x = Math.max(boundary, camera.x);
+            camera.targetX = Math.max(boundary, camera.targetX);
         }
         if (camera.maxX !== void 0) {
-            camera.x = Math.min(camera.maxX - camera.width * camera.scale.x * 0.5, camera.x);
-            camera.targetX = Math.min(camera.maxX, camera.targetX);
+            const boundary = camera.maxX - camera.width * camera.scale.x * 0.5;
+            camera.x = Math.min(boundary, camera.x);
+            camera.targetX = Math.min(boundary, camera.targetX);
         }
         if (camera.minY !== void 0) {
-            camera.y = Math.max(camera.minY + camera.height * camera.scale.y * 0.5, camera.y);
-            camera.targetY = Math.max(camera.minY, camera.targetY);
+            const boundary = camera.minY + camera.height * camera.scale.y * 0.5;
+            camera.y = Math.max(boundary, camera.y);
+            camera.targetY = Math.max(boundary, camera.targetY);
         }
         if (camera.maxY !== void 0) {
-            camera.y = Math.min(camera.maxY - camera.height * camera.scale.y * 0.5, camera.y);
-            camera.targetY = Math.min(camera.maxY, camera.targetY);
+            const boundary = camera.maxY - camera.height * camera.scale.y * 0.5;
+            camera.y = Math.min(boundary, camera.y);
+            camera.targetY = Math.min(boundary, camera.targetY);
         }
     };
     class Camera extends PIXI.DisplayObject {

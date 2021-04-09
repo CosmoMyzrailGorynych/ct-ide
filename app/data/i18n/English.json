@@ -132,6 +132,10 @@
         "unableToWriteToFolders": "Ct.js could not find an appropriate place for projects! Make sure you store ct.js app inside a folder you have access to write to.",
         "twitter": "Twitter channel",
         "discord": "Discord community",
+        "github": "Ct.js at Github",
+        "itch": "Ct.js' store page on itch.io",
+        "vkontakte": "Vkontakte public community",
+        "patreon": "Support ct.js on Patreon!",
         "createOrBrowseJunction": "or"
     },
     "licensepanel": {
@@ -662,8 +666,11 @@
         "meta": {
             "heading": "Meta",
             "license": "License",
-            "visitDiscordForGamedevSupport": "Join Discord server for gamedev support",
-            "openIconList": "Open the list of icons"
+            "visitDiscordForGamedevSupport": "Discord server",
+            "openIconList": "Open the list of icons",
+            "twitter": "Twitter channel",
+            "vkontakte": "Vkontakte public community",
+            "ctjsForum": "Join ct.js forum"
         }
     },
     "appView": {
