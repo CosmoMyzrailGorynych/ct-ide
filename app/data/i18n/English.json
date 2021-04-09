@@ -178,7 +178,8 @@
             "accentNotice": "Sets the color of the preloader, as well as of some other places if used as a mobile app.",
             "icon": "Game's icon:",
             "iconNotice": "It should be a square, one-frame texture that is at least 256x256px large.",
-            "invertPreloaderScheme": "Invert preloader's color scheme"
+            "invertPreloaderScheme": "Invert preloader's color scheme",
+            "hideLoadingLogo": "Hide \"Made with ct.js\" graphics on the loading screen"
         },
         "modules": {
             "heading": "Catmods"

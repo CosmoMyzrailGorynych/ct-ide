@@ -21,6 +21,9 @@ branding-settings
     .block.checkbox
         input(type="checkbox" value="{global.currentProject.settings.branding.invertPreloaderScheme}" checked="{global.currentProject.settings.branding.invertPreloaderScheme}" onchange="{wire('this.currentProject.settings.branding.invertPreloaderScheme')}")
         span {voc.invertPreloaderScheme}
+    .block.checkbox
+        input(type="checkbox" value="{global.currentProject.settings.branding.hideLoadingLogo}" checked="{global.currentProject.settings.branding.hideLoadingLogo}" onchange="{wire('this.currentProject.settings.branding.hideLoadingLogo')}")
+        span {voc.hideLoadingLogo}
     script.
         this.namespace = 'settings.branding';
         this.mixin(window.riotVoc);
