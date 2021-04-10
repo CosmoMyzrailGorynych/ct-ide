@@ -1,5 +1,6 @@
 room-editor.panel.view
     .toolbar.tall(style="width: {sidebarWidth}px")
+        copy-custom-properties-modal(if="{showCopyPropertiesModal}" closestcopy="{closestCopy}" showme="{toggleCopyProperties}")
         .settings.nogrow.noshrink
             b {voc.name}
             br
@@ -223,6 +224,12 @@ room-editor.panel.view
         this.dragging = false;
         this.tab = 'roomcopies';
 
+        this.toggleCopyProperties = value => {
+            this.showCopyPropertiesModal = value;
+            this.update();
+            this.refreshRoomCanvas();
+        };
+
         this.updateRoomBackground = (e, color) => {
             this.room.backgroundColor = color;
             this.refreshRoomCanvas();
@@ -318,6 +325,9 @@ room-editor.panel.view
             this.selectedCopies = this.selectedTiles = false;
             if (tab === 'roombackgrounds' || tab === 'properties') {
                 this.roomUnpickType();
+            }
+            if (tab !== 'roomcopies') {
+                this.toggleCopyProperties(false);
             }
         };
         this.roomUnpickType = () => {

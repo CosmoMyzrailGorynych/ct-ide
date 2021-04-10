@@ -290,36 +290,36 @@ const Camera = (function Camera() {
             return this.computedY + (this.height / 2) * this.scale.y;
         }
 
-    /**
-     * Translates a point from UI space to game space.
-     * @param {number} x The x coordinate in UI space.
-     * @param {number} y The y coordinate in UI space.
-     * @returns {PIXI.Point} A pair of new `x` and `y` coordinates.
-     */
-    uiToGameCoord(x, y) {
-        const modx = (x - this.width / 2) * this.scale.x,
-              mody = (y - this.height / 2) * this.scale.y;
-        const result = ct.u.rotate(modx, mody, this.angle);
-        return new PIXI.Point(
-            result.x + this.computedX,
-            result.y + this.computedY
-        );
-    }
+        /**
+         * Translates a point from UI space to game space.
+         * @param {number} x The x coordinate in UI space.
+         * @param {number} y The y coordinate in UI space.
+         * @returns {PIXI.Point} A pair of new `x` and `y` coordinates.
+         */
+        uiToGameCoord(x, y) {
+            const modx = (x - this.width / 2) * this.scale.x,
+                  mody = (y - this.height / 2) * this.scale.y;
+            const result = ct.u.rotate(modx, mody, this.angle);
+            return new PIXI.Point(
+                result.x + this.computedX,
+                result.y + this.computedY
+            );
+        }
 
         /**
          * Translates a point from game space to UI space.
          * @param {number} x The x coordinate in game space.
          * @param {number} y The y coordinate in game space.
-     * @returns {PIXI.Point} A pair of new `x` and `y` coordinates.
+         * @returns {PIXI.Point} A pair of new `x` and `y` coordinates.
          */
         gameToUiCoord(x, y) {
             const relx = x - this.computedX,
                   rely = y - this.computedY;
-        const unrotated = ct.u.rotate(relx, rely, -this.angle);
-        return new PIXI.Point(
-            unrotated.x / this.scale.x + this.width / 2,
-            unrotated.y / this.scale.y + this.height / 2
-        );
+            const unrotated = ct.u.rotate(relx, rely, -this.angle);
+            return new PIXI.Point(
+                unrotated.x / this.scale.x + this.width / 2,
+                unrotated.y / this.scale.y + this.height / 2
+            );
         }
         /**
          * Gets the position of the top-left corner of the viewport in game coordinates.
@@ -372,10 +372,10 @@ const Camera = (function Camera() {
                   tr = this.getTopRightCorner(),
                   bl = this.getBottomLeftCorner(),
                   br = this.getBottomRightCorner();
-        bb.addPoint(new PIXI.Point(tl.x, tl.y));
-        bb.addPoint(new PIXI.Point(tr.x, tr.y));
-        bb.addPoint(new PIXI.Point(bl.x, bl.y));
-        bb.addPoint(new PIXI.Point(br.x, br.y));
+            bb.addPoint(new PIXI.Point(tl.x, tl.y));
+            bb.addPoint(new PIXI.Point(tr.x, tr.y));
+            bb.addPoint(new PIXI.Point(bl.x, bl.y));
+            bb.addPoint(new PIXI.Point(br.x, br.y));
             return bb.getRectangle();
         }
 

@@ -56,6 +56,13 @@
         "zoomIn": "Zoom in",
         "zoomOut": "Zoom out"
     },
+    "copyCustomProperties": {
+        "customProperties": "Custom Properties",
+        "addProperty": "Add Property",
+        "property": "Property",
+        "value": "Value",
+        "delete": "Delete"
+    },
     "colorPicker": {
         "current": "New",
         "globalPalette": "Global Palette",
@@ -529,6 +536,7 @@
         "changecopyscale": "Change scale",
         "changecopyrotation": "Rotate",
         "shiftcopy": "Set coordinates",
+        "customProperties": "Custom Properties",
         "deletetile": "Delete a tile",
         "deletetiles": "Delete tiles",
         "movetilestolayer": "Move to layer",
