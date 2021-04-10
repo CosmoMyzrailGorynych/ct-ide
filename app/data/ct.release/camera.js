@@ -314,7 +314,7 @@ const Camera = (function Camera() {
          * Translates a point from game space to UI space.
          * @param {number} x The x coordinate in game space.
          * @param {number} y The y coordinate in game space.
-     * @returns {PIXI.Point} A pair of new `x` and `y` coordinates.
+         * @returns {PIXI.Point} A pair of new `x` and `y` coordinates.
          */
         gameToUiCoord(x, y) {
             const relx = x - this.computedX,
