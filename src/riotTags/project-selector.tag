@@ -24,8 +24,11 @@ project-selector
                     )
                         img(src="{getProjectThumbnail(project)}")
                         span {getProjectName(project)}
-                        .aCard-Actions(onclick="{forgetProject}" title="{voc.forgetProject}")
-                            button.tiny
+                        .aCard-Actions
+                            button.tiny(onclick="{cloneProject}" title="{voc.cloneProject}")
+                                svg.feather
+                                    use(xlink:href="data/icons.svg#copy")
+                            button.tiny(onclick="{forgetProject}" title="{voc.forgetProject}")
                                 svg.feather
                                     use(xlink:href="data/icons.svg#x")
             .flexfix-body.pad(show="{tab === 'examples'}")
@@ -45,6 +48,10 @@ project-selector
                     )
                         img(src="{getProjectThumbnail(project)}")
                         span {getProjectName(project)}
+                        .aCard-Actions
+                            button.tiny(onclick="{cloneProject}" title="{voc.cloneProject}")
+                                svg.feather
+                                    use(xlink:href="data/icons.svg#copy")
             #newProject.inset.flexfix-footer.flexrow
                 h3.nm.inline {voc.newProject.text}
                 input(
@@ -191,6 +198,30 @@ project-selector
         this.loadRecentProject = e => {
             const projectPath = e.item.project;
             window.loadProject(projectPath);
+        };
+        /**
+         * Prompts user to clone a project into a different folder/under a different name.
+         */
+        this.cloneProject = e => {
+            e.stopPropagation();
+            // Should create a separate async function; otherwise e.stopPropagation(); won't work
+            (async () => {
+                const {getProjectsDir} = require('./data/node_requires/platformUtils');
+                const defaultProjectDir = await getProjectsDir() + '/';
+                const {project} = e.item;
+                console.log(project);
+                let newIctLocation = await window.showSaveDialog({
+                    defaultPath: defaultProjectDir,
+                    buttonLabel: this.voc.newProject.saveProjectHere,
+                    filter: '.ict'
+                });
+                if (!newIctLocation.endsWith('.ict')) {
+                    newIctLocation += '.ict';
+                }
+                await fs.copy(project, newIctLocation);
+                await fs.copy(project.slice(0, -4), newIctLocation.slice(0, -4));
+                window.loadProject(newIctLocation);
+            })();
         };
         /**
          * Removes a project from the recents list
