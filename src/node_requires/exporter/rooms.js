@@ -87,9 +87,9 @@ ct.rooms.templates['${r.name}'] = {
     width: ${r.width},
     height: ${r.height},
     /* JSON.parse allows for a much faster loading of big objects */
-    objects: JSON.parse('${JSON.stringify(objs)}'),
-    bgs: JSON.parse('${JSON.stringify(bgsCopy)}'),
-    tiles: JSON.parse('${JSON.stringify(tileLayers)}'),
+    objects: JSON.parse('${JSON.stringify(objs).replace(/\\/g, '\\\\')}'),
+    bgs: JSON.parse('${JSON.stringify(bgsCopy).replace(/\\/g, '\\\\')}'),
+    tiles: JSON.parse('${JSON.stringify(tileLayers).replace(/\\/g, '\\\\')}'),
     backgroundColor: '${r.backgroundColor || '#000000'}',
     ${constraints ? 'cameraConstraints: ' + JSON.stringify(constraints) + ',' : ''}
     onStep() {

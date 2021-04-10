@@ -13,6 +13,9 @@ const substituteCssVars = (str, project, injects) => {
         .replace('/*@hidecursor@*/', () => (project.settings.rendering.hideCursor ?
             '#ct { cursor: none; }' :
             ''))
+        .replace('/*@hidemadewithctjs@*/', () => (project.settings.branding.hideLoadingLogo ?
+            '.ct-aMadeWithImage { display: none; }' :
+            ''))
         .replace(/\/\*@preloaderforeground@\*\//g, color1)
         .replace(/\/\*@preloaderbackground@\*\//g, color2)
         .replace('/*%css%*/', () => injects.css);

@@ -207,8 +207,8 @@ textures-panel.panel.view
                     }
                 }
             }
-            if (global.currentProject.settings.icon === this.currentTexture.uid) {
-                delete global.currentProject.settings.icon;
+            if (global.currentProject.settings.branding.icon === this.currentTexture.uid) {
+                delete global.currentProject.settings.branding.icon;
             }
             global.currentProject.textures.splice(this.currentTextureId, 1);
         };

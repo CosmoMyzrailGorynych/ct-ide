@@ -9,6 +9,10 @@ main-menu-meta
             svg.feather
                 use(xlink:href="data/icons.svg#code")
             span {vocGlob.contribute}
+        li(onclick="{() => nw.Shell.openExternal('https://forum.ctjs.rocks/')}")
+            svg.feather
+                use(xlink:href="data/icons.svg#message-circle")
+            span {voc.ctjsForum}
         li(onclick="{() => nw.Shell.openExternal('https://ctjs.rocks/')}")
             svg.feather
                 use(xlink:href="data/icons.svg#globe-alt")
@@ -17,6 +21,14 @@ main-menu-meta
             svg.icon
                 use(xlink:href="data/icons.svg#discord")
             span {voc.visitDiscordForGamedevSupport}
+        li(onclick="{() => nw.Shell.openExternal('https://twitter.com/ctjsrocks')}")
+            svg.icon
+                use(xlink:href="data/icons.svg#twitter")
+            span {voc.twitter}
+        li(onclick="{() => nw.Shell.openExternal('https://vk.com/ctjsrocks')}")
+            svg.icon
+                use(xlink:href="data/icons.svg#vk")
+            span {voc.vkontakte}
     ul.aMenu
         li(onclick="{showLicense}")
             svg.feather

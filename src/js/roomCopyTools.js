@@ -435,6 +435,12 @@
                             }
                         });
                     }
+                }, {
+                    label: window.languageJSON.roomview.customProperties,
+                    click: () => {
+                        this.closestCopy = this.room.copies[this.closestPos];
+                        this.toggleCopyProperties(true);
+                    }
                 }]
             };
         }

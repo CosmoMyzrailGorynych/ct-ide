@@ -56,6 +56,13 @@
         "zoomIn": "Zoom in",
         "zoomOut": "Zoom out"
     },
+    "copyCustomProperties": {
+        "customProperties": "Custom Properties",
+        "addProperty": "Add Property",
+        "property": "Property",
+        "value": "Value",
+        "delete": "Delete"
+    },
     "colorPicker": {
         "current": "New",
         "globalPalette": "Global Palette",
@@ -107,7 +114,7 @@
     "intro": {
         "loading": "Please wait: kittens are gathering speed of light!",
         "newProject": {
-            "button": "Create",
+            "button": "Select folder and create",
             "input": "Project's name (letters and digits)",
             "text": "Create new",
             "nameerr": "Wrong project name",
@@ -126,12 +133,17 @@
         "homepage": "Homepage",
         "latestVersion": "Version $1 is available",
         "forgetProject": "Forget this project",
+        "cloneProject": "Clone this project into a new location",
         "browse": "Browse",
         "latest": "Latest projects",
         "examples": "Examples",
         "unableToWriteToFolders": "Ct.js could not find an appropriate place for projects! Make sure you store ct.js app inside a folder you have access to write to.",
         "twitter": "Twitter channel",
         "discord": "Discord community",
+        "github": "Ct.js at Github",
+        "itch": "Ct.js' store page on itch.io",
+        "vkontakte": "Vkontakte public community",
+        "patreon": "Support ct.js on Patreon!",
         "createOrBrowseJunction": "or"
     },
     "licensepanel": {
@@ -174,7 +186,8 @@
             "accentNotice": "Sets the color of the preloader, as well as of some other places if used as a mobile app.",
             "icon": "Game's icon:",
             "iconNotice": "It should be a square, one-frame texture that is at least 256x256px large.",
-            "invertPreloaderScheme": "Invert preloader's color scheme"
+            "invertPreloaderScheme": "Invert preloader's color scheme",
+            "hideLoadingLogo": "Hide \"Made with ct.js\" graphics on the loading screen"
         },
         "modules": {
             "heading": "Catmods"
@@ -208,7 +221,7 @@
             "functionWrap": "Wrap all the code in a function. (Makes debugging harder, but isolates the game's code from outer context. Do not enable while developing the game.)",
             "codeModifier": "Code transformations",
             "obfuscateWarning": "This option will make your code run 15-80% slower, but will make your code extremely hard to revert back to the original.",
-            "codeModifierAndWrapNote": "Note that these settings only work for exported projects (Export for web and Export for desktop commands) as they noticeably slow packaging and make debugging harder. You can force them, though, in the Main menu → Troubleshooting → Force production tasks for debug exports.",
+            "codeModifierAndWrapNote": "Note that these settings only work for exported projects (Export for web and Export for desktop commands) as they noticeably slow packaging and make debugging harder. You can force them, though, in the Main menu → Settings → Force production tasks for debug exports.",
             "codeModifiers": {
                 "none": "None",
                 "minify": "Minify",
@@ -529,6 +542,7 @@
         "changecopyscale": "Change scale",
         "changecopyrotation": "Rotate",
         "shiftcopy": "Set coordinates",
+        "customProperties": "Custom Properties",
         "deletetile": "Delete a tile",
         "deletetiles": "Delete tiles",
         "movetilestolayer": "Move to layer",
@@ -662,8 +676,11 @@
         "meta": {
             "heading": "Meta",
             "license": "License",
-            "visitDiscordForGamedevSupport": "Join Discord server for gamedev support",
-            "openIconList": "Open the list of icons"
+            "visitDiscordForGamedevSupport": "Discord server",
+            "openIconList": "Open the list of icons",
+            "twitter": "Twitter channel",
+            "vkontakte": "Vkontakte public community",
+            "ctjsForum": "Join ct.js forum"
         }
     },
     "appView": {

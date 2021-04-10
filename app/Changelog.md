@@ -1,3 +1,51 @@
+## v1.7.0
+
+*Sat Apr 10 2021*
+
+### ✨ New Features
+
+* Add custom properties modal for copies (#275 by @firecakes)
+* Added map() function to ct.u (#274 by @qewer33)
+* Clone projects from the starting screen
+
+### ⚡️ General Improvements
+
+* 🌐 Update Russian i18n file
+* Add an optional "Made with ct.js" logo shown while a game is loading. Can be turned off in Project tab -> Branding section
+* Add more social icons to the starting screen
+
+### 🐛 Bug Fixes
+
+* Fix `emitterTandem.pause()` stopping completely if called several times before calling `emitterTandem.resume()`
+* Fix game's icon not being reset when its texture is deleted
+* Fix page name and app color for exported games
+* Fix targetX and targetY handling for cameras' boundary restrictions
+
+### 🌐 Website
+
+* :bug: Add the missing link to the German translation to the footer
+* :zap: Add a link to Vkontakte to footer
+* :zap: Update "What's next" block
+* :zap: Update navigation bar
+
+## v1.6.2
+
+*Wed Mar 31 2021*
+
+### ⚡️ General Improvements
+
+* Add JS map files for pixi.js
+* Update pixi.js to v5.3.8
+
+### 🐛 Bug Fixes
+
+* :bento: Fix 2DPhysics example
+
+### 🐉 Misc
+
+* Revert "Modify emitter tandems to use ParticleContainer"
+  This reverts commit b8a47f4273fb08e8377c5489ef8e30464bf41845.
+
 ## v1.6.1
 
 *Sun Mar 29 2021*

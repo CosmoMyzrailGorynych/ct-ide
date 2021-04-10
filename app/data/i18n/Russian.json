@@ -54,7 +54,7 @@
         "filter": "Отфильтровать:",
         "selectDialogue": "Выбрать…",
         "search": "Поиск:",
-        "close": ""
+        "close": "Закрыть"
     },
     "colorPicker": {
         "old": "Старый",
@@ -103,8 +103,13 @@
         "discord": "Сообщество в Discord",
         "loadingProjectError": "Не удаётся открыть проект из-за следующей ошибки:",
         "unableToWriteToFolders": "Ct.js не удалось найти подходящее место для проектов! Убедитесь, что папка ct.js находится в каталоге, доступном для чтения.",
-        "examples": "",
-        "createOrBrowseJunction": ""
+        "examples": "Примеры",
+        "createOrBrowseJunction": "или",
+        "cloneProject": "Склонировать проект в новое место",
+        "github": "Котэ на Гитхабе",
+        "itch": "Страница ct.js на itch.io",
+        "vkontakte": "Паблик Вконтакте",
+        "patreon": "Поддержи кота на Патреоне!"
     },
     "licensepanel": {
         "ctjslicense": "Лицензия Ct.js (MIT)"
@@ -146,7 +151,8 @@
             "accentNotice": "Определяет цвет экрана загрузки, а также некоторых мест на мобильных устройствах.",
             "icon": "Иконка игры:",
             "iconNotice": "Это должна быть квадратная текстура с одним кадром и размером минимум 256x256 пикселей.",
-            "invertPreloaderScheme": "Инвертировать цветовую схему экрана загрузки"
+            "invertPreloaderScheme": "Инвертировать цветовую схему экрана загрузки",
+            "hideLoadingLogo": "Спрятать лого \"Сделано с ct.js\" на экране загрузки игры"
         },
         "rendering": {
             "heading": "Настройки графики",
@@ -177,15 +183,15 @@
         },
         "catmodsSettings": "Настройки котомодов",
         "export": {
-            "heading": "",
-            "functionWrap": "",
-            "codeModifier": "",
-            "obfuscateWarning": "",
-            "codeModifierAndWrapNote": "",
+            "heading": "Настройки экспорта",
+            "functionWrap": "Обернуть весь код в функцию. Делает отладку сложнее, но изолирует код игры от остального окружения. Не рекомендуется включать во время разработки.",
+            "codeModifier": "Трансформирование кода",
+            "obfuscateWarning": "Код будет работать на 15-80% медленнее, но его будет очень сложно вернуть к исходному виду.",
+            "codeModifierAndWrapNote": "Обратите внимание, что эти настройки работают только для экспортированных проектов (\"Экспорт для веб\" и \"Экспорт для ПК\"), т.к. иначе они замедляют экспорт и осложняют отладку. Вы можете заставить применять эти функции для отладки в Главном меню → Настройки →  Включить релизные функции для дебаг-экспортов",
             "codeModifiers": {
-                "none": "",
-                "minify": "",
-                "obfuscate": ""
+                "none": "Никакие",
+                "minify": "Сжать",
+                "obfuscate": "Обфусфировать"
             }
         }
     },
@@ -219,9 +225,9 @@
             "tweaks": "Настройки",
             "networking": "Сеть"
         },
-        "preview": "",
-        "previewTooltip": "",
-        "deprecatedTooltip": ""
+        "preview": "(ранний дрступ)",
+        "previewTooltip": "Этот модуль ещё не был выпущен и предоставлен для раннего доступа.",
+        "deprecatedTooltip": "Этот модуль не поддерживается и будет удалён в будущих версиях."
     },
     "texture": {
         "create": "Создать",
@@ -229,7 +235,7 @@
         "skeletons": "Скелетная анимация",
         "createType": "Создать тип с этой текстурой",
         "importFromClipboard": "Импортировать из буфера обмена",
-        "generatePlaceholder": ""
+        "generatePlaceholder": "Создать заглушку"
     },
     "textureview": {
         "bgcolor": "Сменить цвет фона",
@@ -424,7 +430,7 @@
         "learnAboutTypes": "Кодинг типов",
         "name": "Имя:",
         "step": "Кадр",
-        "visible": ""
+        "visible": "Отображать"
     },
     "rooms": {
         "create": "Добавить",
@@ -487,14 +493,20 @@
         "shifttiles": "Сместить плитки",
         "changecopyrotation": "Повернуть",
         "properties": "Свойства",
-        "isUi": "",
-        "sortHorizontally": "",
-        "sortVertically": "",
+        "isUi": "Слой для графического интерфейса",
+        "sortHorizontally": "Отсортировать по горизонтали",
+        "sortVertically": "Отсортировать по вертикали",
         "copyProperties": {
-            "position": "",
-            "rotation": "",
-            "scale": ""
-        }
+            "position": "Позиция",
+            "rotation": "Поворот",
+            "scale": "Размер"
+        },
+        "customProperties": "Пользовательские поля",
+        "restrictCamera": "Ограничить камеру в прямоугольнике",
+        "minimumX": "Мин. Х",
+        "minimumY": "Мин. Y",
+        "maximumX": "Макс. X",
+        "maximumY": "Макс. Y"
     },
     "notepad": {
         "local": "Блокнот проекта",
@@ -564,40 +576,40 @@
         "reference": "Список методов"
     },
     "extensionsEditor": {
-        "noEntries": "",
-        "addRow": ""
+        "noEntries": "Ещё нет записей.",
+        "addRow": "Добавить строку"
     },
     "textureGenerator": {
-        "name": "",
-        "width": "",
-        "height": "",
-        "color": "",
-        "label": "",
-        "optional": "",
-        "createAndClose": "",
-        "createAndContinue": "",
-        "scalingAtX4": "",
-        "generationSuccessMessage": "",
-        "filler": "",
-        "fillerNone": "",
-        "fillerCross": "",
-        "fillerLabel": ""
+        "name": "Имя текстуры:",
+        "width": "Ширина:",
+        "height": "Высота:",
+        "color": "Цвет фона:",
+        "label": "Надпись:",
+        "optional": "(опционально)",
+        "createAndClose": "Создать и закрыть",
+        "createAndContinue": "Создать и добавить ещё",
+        "scalingAtX4": "Масштабирование х4 для маленькой текстуры",
+        "generationSuccessMessage": "Успешно добавили текстуру $1 в проект.",
+        "filler": "Филлер:",
+        "fillerNone": "Ничего",
+        "fillerCross": "Перекрестие",
+        "fillerLabel": "Текст"
     },
     "textureInput": {
-        "jumpToTexture": "",
-        "changeTexture": ""
+        "jumpToTexture": "Перейти к текстуре",
+        "changeTexture": "Сменить текстуру"
     },
     "writableFolderPrompt": {
-        "headerSelectFolderForData": "",
-        "paragraphCouldNotPickDirectory": "",
-        "paragraphDirectoryDirections": "",
-        "selectFolder": ""
+        "headerSelectFolderForData": "Выберите папку для данных ct.js",
+        "paragraphCouldNotPickDirectory": "О нет! Ct.js не смог подобрать папку для ваших проектов, билдов, и для отладки. Обычно ct.js сам находит такую папку, но на этот раз все кандидаты оказались заблокированы для записи.",
+        "paragraphDirectoryDirections": "Это можно исправить. Нажмите на кнопку ниже и выберите папку, в которых ct.js будет хранить такие данные. Если не уверены, создайте папку ct.js в папке Документы.",
+        "selectFolder": "Выбрать папку…"
     },
     "writableFolderSelector": {
-        "folderDoesNotExist": "",
-        "notADirectory": "",
-        "folderNotWritable": "",
-        "complete": ""
+        "folderDoesNotExist": "Кажется, такой папки не существует… Как вам это удалось?",
+        "notADirectory": "Кажется, это не папка, а файл. Как вам это удалось?",
+        "folderNotWritable": "У вас нет прав на запись в этой папке. Выберите другую.",
+        "complete": "Настройки приняты, всё хорошо ✅"
     },
     "mainMenu": {
         "troubleshooting": {
@@ -613,7 +625,8 @@
         "deploy": {
             "exportDesktop": "Экспортировать для ПК",
             "successZipExport": "Успешно экспортировано в {0}.",
-            "zipExport": "Экспорт в .zip"
+            "zipExport": "Экспорт в .zip",
+            "heading": "Экспорт"
         },
         "latestProjects": {
             "recentProjects": "Последние проекты"
@@ -640,8 +653,8 @@
             "language": "Язык",
             "translateToYourLanguage": "Переведите ct.js на свой язык!",
             "disableSounds": "Отключить звуки интерфейса",
-            "changeDataFolder": "",
-            "forceProductionForDebug": ""
+            "changeDataFolder": "Изменить папку данных ct.js",
+            "forceProductionForDebug": "  Включить релизные функции для дебаг-экспортов"
         },
         "project": {
             "save": "Сохранить проект",
@@ -650,18 +663,23 @@
             "openExample": "Открыть пример…",
             "startScreen": "К стартовому экрану",
             "successZipProject": "Проект успешно упакован в {0}.",
-            "zipProject": "Упаковать проект в .zip"
+            "zipProject": "Упаковать проект в .zip",
+            "heading": "Проект"
         },
         "meta": {
             "license": "Лицензия",
-            "visitDiscordForGamedevSupport": "Присоединиться к Discord-серверу для помощи в разработке",
-            "openIconList": ""
+            "visitDiscordForGamedevSupport": "Discord-сервер",
+            "openIconList": "Открыть список значков",
+            "heading": "Мета",
+            "twitter": "Канал  в Twitter",
+            "vkontakte": "Паблик Вконтакте",
+            "ctjsForum": "Присоединиться к форуму ct.js"
         }
     },
     "appView": {
         "ctIDE": "ct.IDE",
         "texture": "Текстуры",
-        "launch": "Скомпилировать и запустить",
+        "launch": "Пуск",
         "launchHotkeys": "(F5, или Alt+F5, чтобы запустить в браузере по-умолчанию)",
         "min": "Переключить полноэкранный режим",
         "patrons": "Патроны-покровители",
@@ -672,5 +690,12 @@
         "fx": "Эффекты",
         "types": "Типы",
         "restart": "Перезапустить"
+    },
+    "copyCustomProperties": {
+        "customProperties": "Пользовательские поля",
+        "addProperty": "Добавить поле",
+        "property": "Имя поля",
+        "value": "Значение",
+        "delete": "Удалить"
     }
 }
