@@ -221,7 +221,7 @@
             "functionWrap": "Wrap all the code in a function. (Makes debugging harder, but isolates the game's code from outer context. Do not enable while developing the game.)",
             "codeModifier": "Code transformations",
             "obfuscateWarning": "This option will make your code run 15-80% slower, but will make your code extremely hard to revert back to the original.",
-            "codeModifierAndWrapNote": "Note that these settings only work for exported projects (Export for web and Export for desktop commands) as they noticeably slow packaging and make debugging harder. You can force them, though, in the Main menu → Troubleshooting → Force production tasks for debug exports.",
+            "codeModifierAndWrapNote": "Note that these settings only work for exported projects (Export for web and Export for desktop commands) as they noticeably slow packaging and make debugging harder. You can force them, though, in the Main menu → Settings → Force production tasks for debug exports.",
             "codeModifiers": {
                 "none": "None",
                 "minify": "Minify",
