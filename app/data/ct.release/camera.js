@@ -82,36 +82,40 @@ const Camera = (function Camera() {
               br = camera.uiToGameCoord(camera.width - bx, camera.height - by);
 
         if (camera.followX) {
-            if (camera.follow.x < tl[0] - camera.interpolatedShiftX) {
+            if (camera.follow.x < tl.x - camera.interpolatedShiftX) {
                 camera.targetX = camera.follow.x - bx + camera.width / 2;
-            } else if (camera.follow.x > br[0] - camera.interpolatedShiftX) {
+            } else if (camera.follow.x > br.x - camera.interpolatedShiftX) {
                 camera.targetX = camera.follow.x + bx - camera.width / 2;
             }
         }
         if (camera.followY) {
-            if (camera.follow.y < tl[1] - camera.interpolatedShiftY) {
+            if (camera.follow.y < tl.y - camera.interpolatedShiftY) {
                 camera.targetY = camera.follow.y - by + camera.height / 2;
-            } else if (camera.follow.y > br[1] - camera.interpolatedShiftY) {
+            } else if (camera.follow.y > br.y - camera.interpolatedShiftY) {
                 camera.targetY = camera.follow.y + by - camera.height / 2;
             }
         }
     };
     const restrictInRect = function restrictInRect(camera) {
         if (camera.minX !== void 0) {
-            camera.x = Math.max(camera.minX + camera.width * camera.scale.x * 0.5, camera.x);
-            camera.targetX = Math.max(camera.minX, camera.targetX);
+            const boundary = camera.minX + camera.width * camera.scale.x * 0.5;
+            camera.x = Math.max(boundary, camera.x);
+            camera.targetX = Math.max(boundary, camera.targetX);
         }
         if (camera.maxX !== void 0) {
-            camera.x = Math.min(camera.maxX - camera.width * camera.scale.x * 0.5, camera.x);
-            camera.targetX = Math.min(camera.maxX, camera.targetX);
+            const boundary = camera.maxX - camera.width * camera.scale.x * 0.5;
+            camera.x = Math.min(boundary, camera.x);
+            camera.targetX = Math.min(boundary, camera.targetX);
         }
         if (camera.minY !== void 0) {
-            camera.y = Math.max(camera.minY + camera.height * camera.scale.y * 0.5, camera.y);
-            camera.targetY = Math.max(camera.minY, camera.targetY);
+            const boundary = camera.minY + camera.height * camera.scale.y * 0.5;
+            camera.y = Math.max(boundary, camera.y);
+            camera.targetY = Math.max(boundary, camera.targetY);
         }
         if (camera.maxY !== void 0) {
-            camera.y = Math.min(camera.maxY - camera.height * camera.scale.y * 0.5, camera.y);
-            camera.targetY = Math.min(camera.maxY, camera.targetY);
+            const boundary = camera.maxY - camera.height * camera.scale.y * 0.5;
+            camera.y = Math.min(boundary, camera.y);
+            camera.targetY = Math.min(boundary, camera.targetY);
         }
     };
     class Camera extends PIXI.DisplayObject {
@@ -290,21 +294,21 @@ const Camera = (function Camera() {
             return this.computedY + (this.height / 2) * this.scale.y;
         }
 
-    /**
-     * Translates a point from UI space to game space.
-     * @param {number} x The x coordinate in UI space.
-     * @param {number} y The y coordinate in UI space.
-     * @returns {PIXI.Point} A pair of new `x` and `y` coordinates.
-     */
-    uiToGameCoord(x, y) {
-        const modx = (x - this.width / 2) * this.scale.x,
-              mody = (y - this.height / 2) * this.scale.y;
-        const result = ct.u.rotate(modx, mody, this.angle);
-        return new PIXI.Point(
-            result.x + this.computedX,
-            result.y + this.computedY
-        );
-    }
+        /**
+         * Translates a point from UI space to game space.
+         * @param {number} x The x coordinate in UI space.
+         * @param {number} y The y coordinate in UI space.
+         * @returns {PIXI.Point} A pair of new `x` and `y` coordinates.
+         */
+        uiToGameCoord(x, y) {
+            const modx = (x - this.width / 2) * this.scale.x,
+                  mody = (y - this.height / 2) * this.scale.y;
+            const result = ct.u.rotate(modx, mody, this.angle);
+            return new PIXI.Point(
+                result.x + this.computedX,
+                result.y + this.computedY
+            );
+        }
 
         /**
          * Translates a point from game space to UI space.
@@ -315,11 +319,11 @@ const Camera = (function Camera() {
         gameToUiCoord(x, y) {
             const relx = x - this.computedX,
                   rely = y - this.computedY;
-        const unrotated = ct.u.rotate(relx, rely, -this.angle);
-        return new PIXI.Point(
-            unrotated.x / this.scale.x + this.width / 2,
-            unrotated.y / this.scale.y + this.height / 2
-        );
+            const unrotated = ct.u.rotate(relx, rely, -this.angle);
+            return new PIXI.Point(
+                unrotated.x / this.scale.x + this.width / 2,
+                unrotated.y / this.scale.y + this.height / 2
+            );
         }
         /**
          * Gets the position of the top-left corner of the viewport in game coordinates.
@@ -335,7 +339,7 @@ const Camera = (function Camera() {
          * Gets the position of the top-right corner of the viewport in game coordinates.
          * This is useful for positioning UI elements in game coordinates,
          * especially with rotated viewports.
-     * @returns {PIXI.Point} A pair of `x` and `y` coordinates.
+         * @returns {PIXI.Point} A pair of `x` and `y` coordinates.
          */
         getTopRightCorner() {
             return this.uiToGameCoord(this.width, 0);
@@ -372,10 +376,10 @@ const Camera = (function Camera() {
                   tr = this.getTopRightCorner(),
                   bl = this.getBottomLeftCorner(),
                   br = this.getBottomRightCorner();
-        bb.addPoint(new PIXI.Point(tl.x, tl.y));
-        bb.addPoint(new PIXI.Point(tr.x, tr.y));
-        bb.addPoint(new PIXI.Point(bl.x, bl.y));
-        bb.addPoint(new PIXI.Point(br.x, br.y));
+            bb.addPoint(new PIXI.Point(tl.x, tl.y));
+            bb.addPoint(new PIXI.Point(tr.x, tr.y));
+            bb.addPoint(new PIXI.Point(bl.x, bl.y));
+            bb.addPoint(new PIXI.Point(br.x, br.y));
             return bb.getRectangle();
         }
 
