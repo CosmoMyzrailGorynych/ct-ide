@@ -46,7 +46,7 @@
     "minimist": "^1.2.5",
     "node-notifier": "^5.4.3",
     "nw-builder": "^3.5.7",
-    "pug": "^2.0.4",
+    "pug": "^3.0.1",
     "pug-lint-config-clock": "^2.0.0",
     "riot": "^3.13.2",
     "streamqueue": "^1.1.2",
