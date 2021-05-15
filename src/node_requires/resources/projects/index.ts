@@ -16,6 +16,10 @@ const getExamplesDir = function (): string {
         // Most likely, we are in a dev environment
         return path.join((nw.App as any).startPath, 'src/examples');
     } catch (e) {
+        const {isMac} = require('./../../platformUtils');
+        if (isMac) {
+            return path.join(process.cwd(), 'examples');
+        }
         return path.join((nw.App as any).startPath, 'examples');
     }
 };

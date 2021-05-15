@@ -45,7 +45,7 @@ const path = require('path'),
  */
 const nwSource = void 0;
 const nwManifest = void 0;
-const nwVersion = '0.51.2',
+const nwVersion = '0.53.1',
       platforms = ['osx64', 'win32', 'win64', 'linux32', 'linux64'],
       nwFiles = ['./app/**', '!./app/export/**', '!./app/projects/**', '!./app/exportDesktop/**', '!./app/cache/**', '!./app/.vscode/**', '!./app/JamGames/**'];
 
@@ -307,7 +307,7 @@ const lintI18n = () => require('./node_requires/i18n')().then(console.log);
 const lint = gulp.series(lintJS, lintTags, lintStylus, lintI18n);
 
 const processToPlatformMap = {
-    'darwin-x64': 'darwin',
+    'darwin-x64': 'osx64',
     'win32-x32': 'win32',
     'win32-x64': 'win64',
     'linux-x32': 'linux32',
