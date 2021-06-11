@@ -4,6 +4,7 @@ libs:
   mouse: {}
   fittoscreen:
     mode: scaleFit
+  sound.howler: {}
   tween: {}
 types:
   - name: Card
@@ -110,7 +111,7 @@ types:
       }
 
       if (this.drop) {
-          ct.types.move(this);
+          this.move();
           this.angle += this.rotationSpeed * ct.delta;
           if (this.y > ct.height + 160) {
               this.kill = true;

@@ -9,6 +9,7 @@ libs:
   keyboard.polyfill: {}
   keyboard: {}
   vkeys: {}
+  sound.howler: {}
   touch: {}
 types:
   - name: Box

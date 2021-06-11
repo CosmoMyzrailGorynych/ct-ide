@@ -153,7 +153,7 @@ types:
   - name: Water
     depth: 0
     oncreate: ''
-    onstep: ct.types.move(this);
+    onstep: ''
     ondraw: ''
     ondestroy: ''
     uid: c1aaae5f-3e4c-4e41-8e24-4c2dfe4d43b6
@@ -164,7 +164,7 @@ types:
   - name: Water_Top
     depth: 0
     oncreate: ''
-    onstep: ct.types.move(this);
+    onstep: ''
     ondraw: ''
     ondestroy: ''
     uid: 807691ae-10c5-4cf6-ba0f-6f53d83367ff

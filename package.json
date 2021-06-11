@@ -6,6 +6,7 @@
     "doc": "docs"
   },
   "scripts": {
+    "start": "gulp",
     "lint": "gulp lint",
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",

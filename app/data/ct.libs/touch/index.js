@@ -127,10 +127,7 @@
         }
     };
     var mouseUp = function () {
-        var ind = findTouchId(-1);
-        if (ind !== -1) {
-            ct.touch.events.splice(ind, 1);
-        }
+        ct.touch.events = ct.touch.events.filter(x => x.id !== -1);
         countTouches();
     };
     ct.touch = {
