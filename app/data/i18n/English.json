@@ -310,6 +310,7 @@
         "updateFromClipboard": "Update from clipboard",
         "corrupted": "File is corrupted or missing! Closing now.",
         "showmask": "Show mask",
+        "showFrameIndices": "Show frame indices",
         "width": "Width:",
         "height": "Height:",
         "marginx": "Margin X:",

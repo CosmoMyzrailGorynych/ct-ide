@@ -73,6 +73,9 @@ texture-editor.panel.view
                     label.checkbox
                         input(checked="{prevShowMask}" onchange="{wire('this.prevShowMask')}" type="checkbox")
                         span   {voc.showmask}
+                    label.checkbox(if="{opts.texture.width > 10 && opts.texture.height > 10}")
+                        input(checked="{prevShowFrameIndices}" onchange="{wire('this.prevShowFrameIndices')}" type="checkbox")
+                        span   {voc.showFrameIndices}
             .flexfix-footer
                 button.wide(onclick="{textureSave}" title="Shift+Control+S" data-hotkey="Control+S")
                     svg.feather
@@ -234,7 +237,7 @@ texture-editor.panel.view
         this.prevPlaying = true;
         this.prevPos = 0;
         this.prevSpeed = 10;
-        this.prevShowMask = true;
+        this.prevShowMask = this.prevShowFrameIndices = true;
         this.previewColor = localStorage.UItheme === 'Day' ? '#ffffff' : '#08080D';
         this.zoomFactor = 1;
 
@@ -700,14 +703,17 @@ texture-editor.panel.view
          * Redraws the canvas with the full image, its collision mask, and its slicing grid
          */
         this.refreshTextureCanvas = () => {
-            textureCanvas.width = textureCanvas.img.width;
-            textureCanvas.height = textureCanvas.img.height;
-            textureCanvas.x.strokeStyle = '#0ff';
-            textureCanvas.x.lineWidth = 1;
-            textureCanvas.x.globalCompositeOperation = 'source-over';
-            textureCanvas.x.clearRect(0, 0, textureCanvas.width, textureCanvas.height);
-            textureCanvas.x.drawImage(textureCanvas.img, 0, 0);
-            textureCanvas.x.globalAlpha = 0.5;
+            var tc = textureCanvas;
+            tc.width = tc.img.width;
+            tc.height = tc.img.height;
+            tc.x.strokeStyle = '#0ff';
+            tc.x.lineWidth = 1;
+            tc.x.font = '10px sans-serif';
+            tc.x.textAlign = 'left';
+            tc.x.textBaseline = 'top';
+            tc.x.globalCompositeOperation = 'source-over';
+            tc.x.clearRect(0, 0, tc.width, tc.height);
+            tc.x.drawImage(tc.img, 0, 0);
             if (!this.texture.tiled) {
                 const l = Math.min(
                     this.texture.grid[0] * this.texture.grid[1],
@@ -720,45 +726,57 @@ texture-editor.panel.view
                           y = this.texture.offy + yy * (this.texture.marginy + this.texture.height),
                           w = this.texture.width,
                           h = this.texture.height;
-                    textureCanvas.x.strokeRect(x, y, w, h);
+                    tc.x.globalAlpha = 0.5;
+                    tc.x.strokeStyle = '#0ff';
+                    tc.x.lineWidth = 1;
+                    tc.x.strokeRect(x, y, w, h);
+                    if (this.prevShowFrameIndices && opts.texture.width > 10 && opts.texture.height > 10) {
+                        tc.x.lineWidth = 2;
+                        tc.x.globalAlpha = 1;
+                        tc.x.strokeStyle = '#000';
+                        tc.x.fillStyle = '#fff';
+                        tc.x.strokeText(i, x + 2, y + 2);
+                        tc.x.fillText(i, x + 2, y + 2);
+                    }
                 }
             }
             if (this.prevShowMask) {
-                textureCanvas.x.fillStyle = '#ff0';
+                tc.x.fillStyle = '#ff0';
+                tc.x.globalAlpha = 0.5;
                 if (this.texture.shape === 'rect') {
-                    textureCanvas.x.fillRect(
+                    tc.x.fillRect(
                         this.texture.axis[0] - this.texture.left,
                         this.texture.axis[1] - this.texture.top,
                         this.texture.right + this.texture.left,
                         this.texture.bottom + this.texture.top
                     );
                 } else if (this.texture.shape === 'circle') {
-                    textureCanvas.x.beginPath();
-                    textureCanvas.x.arc(
+                    tc.x.beginPath();
+                    tc.x.arc(
                         this.texture.axis[0],
                         this.texture.axis[1],
                         this.texture.r,
                         0, 2 * Math.PI
                     );
-                    textureCanvas.x.fill();
+                    tc.x.fill();
                 } else if (this.texture.shape === 'strip' && this.texture.stripPoints.length) {
-                    textureCanvas.x.strokeStyle = '#ff0';
-                    textureCanvas.x.lineWidth = 3;
-                    textureCanvas.x.beginPath();
-                    textureCanvas.x.moveTo(
+                    tc.x.strokeStyle = '#ff0';
+                    tc.x.lineWidth = 3;
+                    tc.x.beginPath();
+                    tc.x.moveTo(
                         this.texture.stripPoints[0].x + this.texture.axis[0],
                         this.texture.stripPoints[0].y + this.texture.axis[1]
                     );
                     for (let i = 1, l = this.texture.stripPoints.length; i < l; i++) {
-                        textureCanvas.x.lineTo(
+                        tc.x.lineTo(
                             this.texture.stripPoints[i].x + this.texture.axis[0],
                             this.texture.stripPoints[i].y + this.texture.axis[1]
                         );
                     }
                     if (this.texture.closedStrip) {
-                        textureCanvas.x.closePath();
+                        tc.x.closePath();
                     }
-                    textureCanvas.x.stroke();
+                    tc.x.stroke();
 
                     if (this.texture.symmetryStrip) {
                         const movablePoints = this.getMovableStripPoints();
@@ -766,18 +784,18 @@ texture-editor.panel.view
                         const axisPoint2 = movablePoints[movablePoints.length - 1];
 
                         // Draw symmetry axis
-                        textureCanvas.x.strokeStyle = '#f00';
-                        textureCanvas.x.lineWidth = 3;
-                        textureCanvas.x.beginPath();
-                        textureCanvas.x.moveTo(
+                        tc.x.strokeStyle = '#f00';
+                        tc.x.lineWidth = 3;
+                        tc.x.beginPath();
+                        tc.x.moveTo(
                             axisPoint1.x + this.texture.axis[0],
                             axisPoint1.y + this.texture.axis[1]
                         );
-                        textureCanvas.x.lineTo(
+                        tc.x.lineTo(
                             axisPoint2.x + this.texture.axis[0],
                             axisPoint2.y + this.texture.axis[1]
                         );
-                        textureCanvas.x.stroke();
+                        tc.x.stroke();
                     }
                 }
             }
