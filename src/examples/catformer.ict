@@ -10,22 +10,49 @@ libs:
   keyboard: {}
   vkeys: {}
   touch: {}
+  sprite:
+    spritedef: |-
+      ct.sprite(
+          'Player', 'Player_Idle',
+          [7]
+      );
+      ct.sprite(
+          'Player', 'Player_Walking',
+          [0, 1, 2, 3, 4, 5, 6]
+      );
+      ct.sprite(
+          'Player', 'Player_Jumping',
+          [12]
+      );
+      ct.sprite(
+          'Player', 'Player_Falling',
+          [11]
+      );
 types:
   - name: Box
     depth: 0
     oncreate: ''
-    onstep: |-
+    onstep: >-
+      // Move the box to the left if there is a player on the right and no
+      obstacles on the left
+
       if (ct.place.meet(this, this.x + 5, this.y, 'Player') &&
-          !ct.place.tile(this, this.x - 10, this.y, -10) &&
+          !ct.place.tile(this, this.x - 10, this.y, 'Solid') &&
           ct.place.free(this, this.x - 10, this.y, 'Solid')) {
           this.x -= 10;
       }
+
+      // Same but in reverse
+
       if (ct.place.meet(this, this.x - 5, this.y, 'Player') &&
-          !ct.place.tile(this, this.x + 10, this.y, -10) &&
+          !ct.place.tile(this, this.x + 10, this.y, 'Solid') &&
           ct.place.free(this, this.x + 10, this.y, 'Solid')) {
           this.x += 10;
       }
-      if (!ct.place.tile(this, this.x, this.y + 10, -10) &&
+
+      // If there is no obstacles underneath, fall down.
+
+      if (!ct.place.tile(this, this.x, this.y + 10, 'Solid') &&
           ct.place.free(this, this.x, this.y + 10, 'Solid')
       ) {
           this.y += 10;
@@ -33,7 +60,7 @@ types:
     ondraw: ''
     ondestroy: ''
     uid: b7a528f8-655c-4920-900f-f191533f411d
-    lastmod: 1586011935546
+    lastmod: 1632021063633
     extends:
       ctype: Solid
     texture: d8dd2bfd-0f9d-495a-bbfd-0e65b80153b9
@@ -73,14 +100,18 @@ types:
   - name: Player
     depth: 0
     oncreate: |
+      // Set up animation
+
       this.animationSpeed = 15 / 60;
+      this.tex = 'Player_Idle';
+      this.play();
 
       // Traditional speed/dir movement system works badly with platformers.
       // We will set up our own variables and write own movement code.
 
       this.maxspeed = 5; // this will be our max horizontal speed
       this.acceleration = 1; // this is walking acceleration
-      this.jumpPower = 12; // this is our jumping velocity
+      this.jumpPower = 12.5; // this is our jumping velocity
       this.gravity = 0.5;
 
 
@@ -98,7 +129,7 @@ types:
       // layer at -20.
 
       var onGround = ct.place.occupied(this, this.x, this.y + 1, 'Solid') ||
-                     ct.place.tile(this, this.x, this.y + 1, -10);
+                     ct.place.tile(this, this.x, this.y + 1, 'Solid');
 
       // Move right or left
 
@@ -106,32 +137,17 @@ types:
           if (this.hspeed < this.maxspeed) {
               this.hspeed += this.acceleration;
           }
-          if ((this.currentFrame > 10 || !this.playing) && onGround) {
-              this.gotoAndPlay(0);
-          }
       } else if (ct.actions.Move.value < 0) {
           if (this.hspeed > -this.maxspeed) {
               this.hspeed -= this.acceleration;
           }
-          if ((this.currentFrame > 10 || !this.playing) && onGround) {
-              this.gotoAndPlay(0);
-          }
       } else { // Slow down if we are on the ground and we don't move.
           if (onGround) {
               this.speed = Math.max(0, this.speed - this.maxspeed);
-              this.gotoAndStop(9);
           } else if (!ct.actions.Move.pressed) {
               // Don't move if we are not pressing the move button
               this.hspeed = 0;
           }
-      }
-
-
-
-      // If we are not on the ground, add gravity
-
-      if (!onGround) {
-          this.vspeed += this.gravity * ct.delta;
       }
 
 
@@ -141,53 +157,32 @@ types:
           // Jump only if we stay on the ground
           if (onGround) {
               this.vspeed = -this.jumpPower;
-              this.gotoAndStop(12);
           }
       }
 
 
-      // Move pixel by pixel until we meet a colliding object next to us
+      // this.moveContinuousByAxes moves the copy by two axes separately, so you
+      can slide
 
-      //
+      // along surfaces. It also returns its collision results on x and y, if
+      any have occured.
 
-      // Premultiply the target speed with ct.delta to ensure the same movement
+      var collisions = this.moveContinuousByAxes('Solid');
 
-      // over different FPS.
+      // Were there any collisions?
 
-      //
-
-      // Math.sign returns -1 if a number is negative, 1 if positive and 0 if it
-      is 0.
-
-      // Math.abs turns everything into a positive number. 
-
-      // Combined, Math.abs and Math.sign allow to loop in any direction.
-
-      for (var i = 0; i < Math.abs(this.hspeed * ct.delta); i++) {
-          if (ct.place.free(this, this.x + Math.sign(this.hspeed), this.y, 'Solid') &&
-              !ct.place.tile(this, this.x + Math.sign(this.hspeed), this.y, -10)
-          ) {
-              this.x += Math.sign(this.hspeed);
-          } else {
+      if (collisions) {
+          // Were we colliding horizontally?
+          if (collisions.x) {
+              // Stop horizontal movement
               this.hspeed = 0;
-              break;
           }
-      }
-
-
-      // Do the same for vertical speed
-
-      for (var i = 0; i < Math.abs(this.vspeed * ct.delta); i++) {
-          if (ct.place.free(this, this.x, this.y + Math.sign(this.vspeed), 'Solid') &&
-              !ct.place.tile(this, this.x, this.y + Math.sign(this.vspeed), -10)
-          ) {
-              this.y += Math.sign(this.vspeed);
-          } else {
+          // Were we colliding vertically?
+          if (collisions.y) {
+              // Stop vertical movement
               this.vspeed = 0;
-              break;
           }
       }
-
 
       // Check if we collide with spikes
 
@@ -196,17 +191,54 @@ types:
           // move to a 'death' screen
           ct.rooms.switch('DeadScreen');
       }
-    ondraw: |-
-      if (this.hspeed < 0) {
+    ondraw: >-
+      // Here and below we use the result of the motion by comparing new
+      coordinates
+
+      // with the ones from the previous frame. This is to prevent walking
+      animation
+
+      // when the charecter tries to walk into a wall.
+
+
+      // Flip the sprite so it follows the movement
+
+      if (this.x < this.xprev) {
           this.scale.x = -1;
-      } else if (this.hspeed > 0) {
+      } else if (this.x > this.xprev) {
           this.scale.x = 1;
       }
+
+
+      // Animation logic
+
+      // All the textures are defined with the catmod "Sprite composer",
+
+      // in Project tab -> Sprite Composer -> Sprite definitions.
+
+      // See its docs in the sliding panel on the right for examples and
+      explanations.
+
+      if (ct.place.occupied(this, this.x, this.y + 1, 'Solid') ||
+          ct.place.tile(this, this.x, this.y + 1, 'Solid')) {
+          if (this.x !== this.xprev) {
+              this.tex = 'Player_Walking';
+          } else {
+              this.tex = 'Player_Idle';
+          }
+      } else if (this.vspeed > 0) {
+          this.tex = 'Player_Falling';
+      } else {
+          this.tex = 'Player_Jumping';
+      }
+
+
+      // Shift camera to the side where the character looks
 
       ct.camera.shiftX = this.scale.x * 150;
     ondestroy: ''
     uid: 00664f77-21c6-4b06-b310-88640b1beaf9
-    lastmod: 1586656249664
+    lastmod: 1632020995526
     extends:
       ctype: Player
     texture: ad390b6e-4c2c-412f-8143-1c70b9c16fc0
@@ -491,7 +523,7 @@ rooms:
         texture: fd9d7012-6826-4368-8fe5-0385b72bc902
     uid: b0f0ff4d-a155-4d68-a86e-5bb7ed8973ab
     grid: 35
-    lastmod: 1600924124983
+    lastmod: 1632021081256
     thumbnail: 1
     tiles:
       - depth: -10
@@ -1600,10 +1632,6 @@ rooms:
         'y': 735
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
-      - x: 175
-        'y': 735
-        uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
-        exts: {}
       - x: 385
         'y': 560
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
@@ -1884,6 +1912,8 @@ settings:
     linux: true
     windows: false
     mac: false
+    functionWrap: false
+    codeModifier: none
   branding:
     icon: -1
     accent: '#446adb'
@@ -1942,7 +1972,7 @@ scripts:
               depth: 1000
           });
       }
-ctjsVersion: 1.4.2
+ctjsVersion: 1.6.2
 fonts: []
 skeletons: []
 actions:
