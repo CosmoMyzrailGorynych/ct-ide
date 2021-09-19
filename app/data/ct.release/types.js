@@ -112,11 +112,18 @@ const Copy = (function Copy() {
          * @type {(string|number)}
          */
         set tex(value) {
+            if (this[textureAccessor] === value) {
+                return value;
+            }
+            var {playing} = this;
             this.textures = ct.res.getTexture(value);
             this[textureAccessor] = value;
             this.shape = value !== -1 ? ct.res.registry[value].shape : {};
             this.anchor.x = this.textures[0].defaultAnchor.x;
             this.anchor.y = this.textures[0].defaultAnchor.y;
+            if (playing) {
+                this.play();
+            }
             return value;
         }
         get tex() {
