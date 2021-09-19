@@ -172,3 +172,34 @@ icon(icon = 'slash', color = act)
     stroke-linecap round
     stroke-linejoin round
     fill none
+
+/* Color swatches */
+[css-swatch="act"]
+    color act
+[css-swatch="act-contrast"]
+    if dark(act)
+        color white
+    else
+        color black
+[css-swatch="acttext"]
+    color acttext
+[css-swatch="acttext-contrast"]
+    if dark(acttext)
+        color white
+    else
+        color black
+[css-swatch="accent1"]
+    color accent1
+[css-swatch="accent1-contrast"]
+    if dark(accent1)
+        color white
+    else
+        color black
+[css-swatch="borderPale"]
+    color borderPale
+[css-swatch="borderBright"]
+    color borderBright
+[css-swatch="text"]
+    color text
+[css-swatch="backgroundDeeper"]
+    color backgroundDeeper
