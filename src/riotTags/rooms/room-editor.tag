@@ -11,8 +11,8 @@ room-editor.panel.view
                     use(xlink:href="data/icons.svg#check")
                 span {voc.events}
         .palette
-            .tabwrap
-                ul.tabs.nav.noshrink.nogrow
+            .tabwrap.flexfix
+                ul.tabs.nav.noshrink.nogrow.flexfix-header
                     li(onclick="{changeTab('roomcopies')}" title="{voc.copies}" class="{active: tab === 'roomcopies'}")
                         svg.feather
                             use(xlink:href="data/icons.svg#type")
@@ -29,7 +29,7 @@ room-editor.panel.view
                         svg.feather
                             use(xlink:href="data/icons.svg#settings")
                         span(if="{sidebarWidth > 500}") {voc.properties}
-                .relative
+                .relative.flexfix-body
                     room-type-picker(show="{tab === 'roomcopies'}" current="{currentType}")
                     room-backgrounds-editor(show="{tab === 'roombackgrounds'}" room="{room}")
                     room-tile-editor(show="{tab === 'roomtiles'}" room="{room}")
