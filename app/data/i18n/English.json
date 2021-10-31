@@ -329,7 +329,8 @@
         "previewAnimationNotice": "This is a preview. Use this.animationSpeed property to change it for real copies."
     },
     "sounds": {
-        "create": "Create"
+        "create": "Create",
+        "record": "Record"
     },
     "soundview": {
         "import": "Import",
@@ -337,6 +338,15 @@
         "save": "Save",
         "isMusicFile": "This is a musical track",
         "poolSize": "Pool size:"
+    },
+    "soundRecorder": {
+        "recorderHeading": "Recorder",
+        "record": "Start recording",
+        "stopRecording": "Stop recorder",
+        "discardRecording": "Discard the recording",
+        "finishRecording": "Finish recording",
+        "cannotRecordSound": "Cannot start recorder: check your audio configuration and the recording device.",
+        "troubleshootingWindows": "On Windows, also go to Settings -> Privacy -> Microphone and check that apps are allowed to access your microphone."
     },
     "styles": {
         "create": "Create",

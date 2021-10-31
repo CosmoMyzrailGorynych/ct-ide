@@ -66,20 +66,13 @@ sound-editor.panel.view
                 this.refs.audio.play();
             }
         };
-        this.changeSoundFile = () => {
+        this.changeSoundFile = async () => {
             const val = this.refs.inputsound.files[0].path;
-            fs.copy(val, global.projdir + '/snd/s' + this.sound.uid + path.extname(val), e => {
-                if (e) {
-                    console.error(e);
-                    alertify.error(e);
-                    return;
-                }
-                if (!this.sound.lastmod && this.sound.name === 'Sound_' + this.sound.uid.split('-').pop()) {
-                    this.sound.name = path.basename(val, path.extname(val));
-                }
-                this.sound.origname = 's' + this.sound.uid + path.extname(val);
-                this.sound.lastmod = Number(new Date());
-                this.update();
-            });
             this.refs.inputsound.value = '';
+            const sounds = require('./data/node_requires/resources/sounds');
+            if (!this.sound.lastmod && this.sound.name === 'Sound_' + this.sound.uid.split('-').pop()) {
+                this.sound.name = path.basename(val, path.extname(val));
+            }
+            await sounds.addSoundFile(this.sound, val);
+            this.update();
         };
