@@ -283,9 +283,14 @@
         "createAndContinue": "Create and add another",
         "scalingAtX4": "Scaling by x4 for a small texture",
         "generationSuccessMessage": "Successfully added $1 texture to your project.",
+        "form": "Form",
+        "formRectangular": "Rectangular",
+        "formRound": "Round",
+        "formDiamond": "Diamond",
         "filler": "Filler:",
         "fillerNone": "None",
         "fillerCross": "Cross",
+        "fillerArrow": "Arrow",
         "fillerLabel": "Text label"
     },
     "textureview": {
