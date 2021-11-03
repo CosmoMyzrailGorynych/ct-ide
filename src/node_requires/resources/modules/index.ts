@@ -1,24 +1,24 @@
+const path = require('path');
 const moduleDir = './data/ct.libs';
+const getModulePathByName = (moduleName: string): string => path.join(moduleDir, moduleName);
 
 /* async */
-const loadModule = dir => {
-    const fs = require('fs-extra'),
-          path = require('path');
-    return fs.readJSON(dir, path.join(dir, 'module.json'));
+const loadModule = (moduleDir: string): Promise<ICatmodManifest> => {
+    const fs = require('fs-extra');
+    return fs.readJSON(path.join(moduleDir, 'module.json'));
 };
+
 /* async */
-const loadModuleByName = name => {
-    const path = require('path');
-    return loadModule(path.join(moduleDir, name));
-};
-const loadModules = async () => {
+const loadModuleByName = (moduleName: string): Promise<ICatmodManifest> =>
+    loadModule(getModulePathByName(moduleName));
+const loadModules = async (): Promise<ICatmod[]> => {
     const fs = require('fs-extra'),
           path = require('path');
 
     // Reads the modules directory
     const files = await fs.readdir(moduleDir);
 
-    const modules = (await Promise.all(files.map(async file => {
+    const modules = (await Promise.all(files.map(async (file: string) => {
         // We include only those folders that have `module.json` inside
         if (await fs.pathExists(path.join(moduleDir, file, 'module.json'))) {
             const moduleName = file;
@@ -26,15 +26,20 @@ const loadModules = async () => {
                 name: moduleName,
                 path: path.join(moduleDir, file),
                 manifest: await fs.readJSON(path.join(moduleDir, file, 'module.json'))
-            };
+            } as ICatmod;
         }
         return false;
-    }))).filter(module => module); // Remove `false` results from array
+    }))).filter(module => module) as ICatmod[]; // Remove `false` results from array
 
     return modules;
 };
 
-const getModuleDocStructure = async module => {
+declare interface IModuleDocStructure {
+    name?: string,
+    vocKey?: string,
+    path?: string
+}
+const getModuleDocStructure = async (module: ICatmod): Promise<IModuleDocStructure[]> => {
     const path = require('path'),
           fs = require('fs-extra');
     const docStructure = [];
@@ -57,7 +62,7 @@ const getModuleDocStructure = async module => {
     try { // Search for a docs folder and add its items
         if ((await docsStat).isDirectory()) {
             const files = (await fs.readdir(path.join(module.path, 'docs')))
-                .filter(file => /\.md$/.test(file));
+                .filter((file: string) => /\.md$/.test(file));
             for (const file of files) {
                 docStructure.push({
                     name: path.basename(file, path.extname(file)),
@@ -84,7 +89,7 @@ const getModuleDocStructure = async module => {
 /**
  * A mapping of general module categories to their icons.
  */
-const categoryToIconMap = {
+const categoryToIconMap: Record<string, string> = {
     customization: 'droplet',
     utilities: 'tool',
     media: 'tv',
@@ -100,7 +105,7 @@ const categoryToIconMap = {
     default: 'ctmod'
 };
 
-const getIcon = module => {
+const getIcon = (module: ICatmod): string => {
     const {categories} = module.manifest.main;
     if (!categories || categories.length === 0) {
         return categoryToIconMap.default;
@@ -111,12 +116,56 @@ const getIcon = module => {
     return categoryToIconMap.default;
 };
 
-module.exports = {
+const addDefaults = async (moduleName: string, moduleData?: ICatmodManifest) => {
+    if (!moduleData) {
+        moduleData = await loadModuleByName(moduleName);
+    }
+    if (!moduleData.fields) {
+        return;
+    }
+    for (const field of moduleData.fields) {
+        if (!global.currentProject.libs[moduleName][field.key]) {
+            if (field.default) {
+                global.currentProject.libs[moduleName][field.key] = field.default;
+            } else if (field.type === 'number') {
+                global.currentProject.libs[moduleName][field.key] = 0;
+            } else if (field.type === 'checkbox') {
+                global.currentProject.libs[moduleName][field.key] = false;
+            } else {
+                global.currentProject.libs[moduleName][field.key] = '';
+            }
+        }
+    }
+};
+const {removeTypedefs, addTypedefs} = require('./typedefs');
+const isModuleEnabled = (moduleName: string): boolean =>
+    (moduleName in global.currentProject.libs);
+const enableModule = async (moduleName: string): Promise<void> => {
+    global.currentProject.libs[moduleName] = {};
+    await addDefaults(moduleName);
+    addTypedefs({
+        name: moduleName,
+        path: getModulePathByName(moduleName)
+    }); // Loaded asynchronously, but isn't awaited so it doesn't block UI much
+};
+const disableModule = (moduleName: string): void => {
+    delete global.currentProject.libs[moduleName];
+    removeTypedefs({
+        name: moduleName,
+        path: getModulePathByName(moduleName)
+    });
+};
+
+export {
     loadModule,
     loadModuleByName,
     loadModules,
     moduleDir,
     getModuleDocStructure,
+    getModulePathByName,
     categoryToIconMap,
-    getIcon
+    getIcon,
+    isModuleEnabled,
+    enableModule,
+    disableModule
 };
