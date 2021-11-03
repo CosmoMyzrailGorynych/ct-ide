@@ -170,7 +170,11 @@
             "methodModuleMissing": "The required module for this method is missing",
             "methods": "Input methods",
             "multiplier": "Multiplier",
-            "noActionsYet": "Actions allow developers to listen to numerous input methods at once and dynamically change them, all with one uniform API. Read more by clicking on the docs icon above."
+            "noActionsYet": "Actions allow developers to listen to numerous input methods at once and dynamically change them, all with one uniform API. Read more by clicking on the docs icon above.",
+            "makeFromScratch": "Make from scratch",
+            "orPickPreset": "or pick a preset:",
+            "presetXYMovement": "Generic XY movement",
+            "presetTouchAndMouse": "Mouse & Touch"
         },
         "authoring": {
             "heading": "Authoring",

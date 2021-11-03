@@ -7,7 +7,16 @@ actions-settings
         button.nml(onclick="{addNewAction}")
             svg.feather
                 use(xlink:href="data/icons.svg#plus")
-            span   {vocGlob.add}
+            span {voc.makeFromScratch}
+        i.dim {voc.orPickPreset}
+        button.nml(onclick="{addXYMovementPreset}")
+            svg.feather
+                use(xlink:href="data/icons.svg#move")
+            span {voc.presetXYMovement}
+        button.nml(onclick="{addTouchAndMousePreset}")
+            svg.feather
+                use(xlink:href="data/icons.svg#smartphone")
+            span {voc.presetTouchAndMouse}
     div(if="{global.currentProject.actions && global.currentProject.actions.length}")
         li.hide800.npl.npr
             .c4.npt.npb.npl
@@ -87,4 +96,137 @@ actions-settings
             if (existingAction) {
                 this.nameTaken = e.item.action.name;
             }
+        };
+
+        const checkOrLoadModules = async (moduleNames) => {
+            const modules = require('./data/node_requires/resources/modules');
+            const promises = [];
+            for (let i of moduleNames) {
+                if (!modules.isModuleEnabled(i)) {
+                    promises.push(modules.enableModule(i));
+                }
+            }
+            if (promises.length) {
+                await Promise.all(promises);
+            }
+        };
+        // Presets
+        this.addXYMovementPreset = async () => {
+            await checkOrLoadModules(['touch', 'mouse', 'gamepad', 'keyboard', 'vkeys']);
+            currentProject.actions = [{
+                name: 'MoveX',
+                methods: [{
+                    code: 'keyboard.KeyD'
+                }, {
+                    code: 'keyboard.KeyA',
+                    multiplier: -1
+                }, {
+                    code: 'keyboard.ArrowRight'
+                }, {
+                    code: 'keyboard.ArrowLeft',
+                    multiplier: -1
+                }, {
+                    code: 'gamepad.Right'
+                }, {
+                    code: 'gamepad.Left',
+                    multiplier: -1
+                }, {
+                    code: 'gamepad.LStickX'
+                }, {
+                    code: 'vkeys.Vjoy1X'
+                }]
+            }, {
+                name: 'MoveY',
+                methods: [{
+                    code: 'keyboard.KeyW',
+                    multiplier: -1
+                }, {
+                    code: 'keyboard.KeyS'
+                }, {
+                    code: 'keyboard.ArrowUp',
+                    multiplier: -1
+                }, {
+                    code: 'keyboard.ArrowDown'
+                }, {
+                    code: 'gamepad.Up',
+                    multiplier: -1
+                }, {
+                    code: 'gamepad.Down'
+                }, {
+                    code: 'gamepad.LStickY'
+                }, {
+                    code: 'vkeys.Vjoy1Y'
+                }]
+            }, {
+                name: 'Jump',
+                methods: [{
+                    code: 'keyboard.Space'
+                }, {
+                    code: 'vkeys.Vk2'
+                }, {
+                    code: 'gamepad.Button1'
+                }]
+            }, {
+                name: 'Sprint',
+                methods: [{
+                    code: 'keyboard.ShiftLeft'
+                }, {
+                    code: 'keyboard.ShiftRight'
+                }, {
+                    code: 'vkeys.Vk3'
+                }, {
+                    code: 'gamepad.Button2'
+                }]
+            }, {
+                name: 'Crouch',
+                methods: [{
+                    code: 'keyboard.ControlLeft'
+                }, {
+                    code: 'keyboard.ControlRight'
+                }, {
+                    code: 'vkeys.Vk4'
+                }, {
+                    code: 'gamepad.Button3'
+                }]
+            }, {
+                name: 'Shoot',
+                methods: [{
+                    code: 'mouse.Left'
+                }, {
+                    code: 'vkeys.Vk1'
+                }, {
+                    code: 'gamepad.L2'
+                }, {
+                    code: 'gamepad.R2'
+                }]
+            }];
+            this.update();
+            this.methodSelector.update();
+        };
+        this.addTouchAndMousePreset = async () => {
+            await checkOrLoadModules(['touch', 'mouse']);
+            currentProject.actions = [{
+                name: 'Press',
+                methods: [{
+                    code: 'touch.Any'
+                }, {
+                    code: 'mouse.Left'
+                }]
+            }, {
+                name: 'AltPress',
+                methods: [{
+                    code: 'touch.Double'
+                }, {
+                    code: 'mouse.Right'
+                }]
+            }, {
+                name: 'Scale',
+                methods: [{
+                    code: 'touch.DeltaPinch'
+                }, {
+                    code: 'mouse.Wheel'
+                }]
+            }];
+            this.update();
+            this.methodSelector.update();
         };
