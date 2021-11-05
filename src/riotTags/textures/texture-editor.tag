@@ -39,14 +39,18 @@ texture-editor.panel.view
                     br
                     input.wide(type="number" value="{opts.texture.r}" onchange="{wire('this.texture.r')}" oninput="{wire('this.texture.r')}")
                 fieldset(if="{opts.texture.shape === 'rect'}")
-                    .center
-                        input.short(type="number" value="{opts.texture.top}" onchange="{wire('this.texture.top')}" oninput="{wire('this.texture.top')}")
+                    .center.aDashedMaskMarker
+                        input.center.short(type="number" value="{opts.texture.top}" onchange="{wire('this.texture.top')}" oninput="{wire('this.texture.top')}")
                         br
-                        input.short(type="number" value="{opts.texture.left}" onchange="{wire('this.texture.left')}" oninput="{wire('this.texture.left')}")
-                        span   ×
-                        input.short(type="number" value="{opts.texture.right}" onchange="{wire('this.texture.right')}" oninput="{wire('this.texture.right')}")
+                        input.center.short(type="number" value="{opts.texture.left}" onchange="{wire('this.texture.left')}" oninput="{wire('this.texture.left')}")
+                        |
+                        |
+                        span.aPivotSymbol
+                        |
+                        |
+                        input.center.short(type="number" value="{opts.texture.right}" onchange="{wire('this.texture.right')}" oninput="{wire('this.texture.right')}")
                         br
-                        input.short(type="number" value="{opts.texture.bottom}" onchange="{wire('this.texture.bottom')}" oninput="{wire('this.texture.bottom')}")
+                        input.center.short(type="number" value="{opts.texture.bottom}" onchange="{wire('this.texture.bottom')}" oninput="{wire('this.texture.bottom')}")
                     button.wide(onclick="{textureFillRect}")
                         svg.feather
                             use(xlink:href="data/icons.svg#maximize")
@@ -59,16 +63,17 @@ texture-editor.panel.view
                         button.square.inline(title="{voc.removePoint}" onclick="{removeStripPoint}")
                             svg.feather
                                 use(xlink:href="data/icons.svg#minus")
+                    button.wide(onclick="{addStripPoint}")
+                        svg.feather
+                            use(xlink:href="data/icons.svg#plus")
+                        span   {voc.addPoint}
+                fieldset(if="{opts.texture.shape === 'strip'}")
                     label.checkbox
                         input(type="checkbox" checked="{opts.texture.closedStrip}" onchange="{onClosedStripChange}" )
                         span   {voc.closeShape}
                     label.checkbox
                         input(type="checkbox" checked="{opts.texture.symmetryStrip}" onchange="{onSymmetryChange}")
                         span   {voc.symmetryTool}
-                    button.wide(onclick="{addStripPoint}")
-                        svg.feather
-                            use(xlink:href="data/icons.svg#plus")
-                        span   {voc.addPoint}
                 fieldset
                     label.checkbox
                         input(checked="{prevShowMask}" onchange="{wire('this.prevShowMask')}" type="checkbox")
