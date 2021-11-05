@@ -11,7 +11,8 @@ const builtInThemes = [
     'PooxelBlue',
     'LucasDracula',
     'Night',
-    'HCBlack'
+    'HCBlack',
+    'Nord'
 ];
 interface ITheme {
     name: string;
