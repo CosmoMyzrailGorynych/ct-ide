@@ -11,6 +11,7 @@ const loadModule = (moduleDir: string): Promise<ICatmodManifest> => {
 /* async */
 const loadModuleByName = (moduleName: string): Promise<ICatmodManifest> =>
     loadModule(getModulePathByName(moduleName));
+
 const loadModules = async (): Promise<ICatmod[]> => {
     const fs = require('fs-extra'),
           path = require('path');
@@ -138,6 +139,19 @@ const addDefaults = async (moduleName: string, moduleData?: ICatmodManifest) => 
     }
 };
 const {removeTypedefs, addTypedefs} = require('./typedefs');
+const checkModulesExistence = async (moduleNames: string[]): Promise<true|string[]> => {
+    const installedModules = await loadModules();
+    const nonInstalled = [];
+    for (const moduleName of moduleNames) {
+        if (!installedModules.some(module => module.name === moduleName)) {
+            nonInstalled.push(moduleName);
+        }
+    }
+    if (nonInstalled.length === 0) {
+        return true;
+    }
+    return nonInstalled;
+};
 const isModuleEnabled = (moduleName: string): boolean =>
     (moduleName in global.currentProject.libs);
 const enableModule = async (moduleName: string): Promise<void> => {
@@ -166,6 +180,7 @@ export {
     categoryToIconMap,
     getIcon,
     isModuleEnabled,
+    checkModulesExistence,
     enableModule,
     disableModule
 };

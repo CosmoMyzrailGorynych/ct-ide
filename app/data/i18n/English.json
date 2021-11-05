@@ -172,9 +172,13 @@
             "multiplier": "Multiplier",
             "noActionsYet": "Actions allow developers to listen to numerous input methods at once and dynamically change them, all with one uniform API. Read more by clicking on the docs icon above.",
             "makeFromScratch": "Make from scratch",
-            "orPickPreset": "or pick a preset:",
+            "presets": "Presets",
             "presetXYMovement": "Generic XY movement",
-            "presetTouchAndMouse": "Mouse & Touch"
+            "presetTouchAndMouse": "Mouse & Touch",
+            "presetCustom": "Import your own",
+            "exportActionPreset": "Export as a preset",
+            "importErrorMissingModules": "Cannot import action preset as your ct.js installation lacks following modules: $1.",
+            "importErrorNotCtJsPreset": "This file doesn't look like ct.js' actions preset."
         },
         "authoring": {
             "heading": "Authoring",
