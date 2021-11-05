@@ -68,34 +68,34 @@ sound-recorder.panel.view
                 c.x.clearRect(0, 0, w, h);
                 c.x.fillStyle = swatches.act;
                 const pipeWidth = 12;
-                for(let x = 0; x < w; x += pipeWidth * 1.5) {
-                    let v = Math.abs(dataArray[Math.floor(x / w * dataArray.length)] - 128) / 128 * h + 12;
-                    canvasRoundRect(
+                for (let x = 0; x < w; x += pipeWidth * 1.5) {
+                    const l = dataArray.length;
+                    const v = Math.abs(dataArray[Math.floor(x / w * l)] - 128) / 128 * h + 12;
+                    window.canvasRoundRect(
                         c.x,
                         x, (h - v) / 2,
                         pipeWidth, v, Math.min(6, v / 2), true, false
                     );
                 }
-            }
+            };
             animationFrame = requestAnimationFrame(drawWaveform);
         };
         // Set up audio recorder
         this.on('mount', () => {
             ({previewWaveform} = this.refs);
             previewWaveform.x = previewWaveform.getContext('2d');
-            const constraints = { audio: true };
-            let chunks = [];
-            let onSuccess = (stream) => {
-                // TODO:
+            const constraints = {
+                audio: true
+            };
+            const onSuccess = (stream) => {
                 visualize(stream);
-                console.log('visualizing');
                 this.stream = stream;
-            }
-            let onError = (err) => {
-                console.log('The following error occured: ' + err);
+            };
+            const onError = (err) => {
+                console.error('The following error occured: ' + err);
                 this.state = 'error';
                 this.update();
-            }
+            };
             navigator.mediaDevices.getUserMedia(constraints).then(onSuccess, onError);
         });
         this.on('unmount', () => {
@@ -106,7 +106,7 @@ sound-recorder.panel.view
             }
         });
 
-        var chunks, mp3Recorder;
+        var mp3Recorder;
         const Microm = require('microm');
         this.on('unmount', () => {
             if (mp3Recorder) {
@@ -115,7 +115,6 @@ sound-recorder.panel.view
             }
         });
         this.startRecording = async () => {
-            chunks = [];
             mp3Recorder = new Microm();
             try {
                 await mp3Recorder.record();
@@ -126,7 +125,6 @@ sound-recorder.panel.view
             }
             this.update();
         };
-        var recording;
         this.stopRecording = async () => {
             this.state = 'loading';
             this.update();
@@ -137,7 +135,7 @@ sound-recorder.panel.view
         };
         this.discardRecording = () => {
             this.state = 'ready';
-        }
+        };
         this.finishRecording = async () => {
             this.state = 'loading';
             this.update();
@@ -145,7 +143,7 @@ sound-recorder.panel.view
             const path = require('path'),
                   fs = require('fs-extra');
             const newSound = sounds.createNewSound();
-            const base64 = (await mp3Recorder.getBase64()).replace('data:audio/mp3;base64,', '')
+            const base64 = (await mp3Recorder.getBase64()).replace('data:audio/mp3;base64,', '');
             const buffer = Buffer.from(base64, 'base64');
             const temp = await require('./data/node_requires/platformUtils').getTempDir();
             await fs.writeFile(path.join(temp.dir, 'recording.mp3'), buffer);

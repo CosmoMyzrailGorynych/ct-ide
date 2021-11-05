@@ -85,6 +85,26 @@ texture-generator.view
             this.update();
         };
 
+        const drawForm = (c, x) => {
+            const w = c.width;
+            const h = c.height;
+            x.fillStyle = this.textureColor;
+            if (this.form === 'rect') {
+                x.fillRect(0, 0, w, h);
+            } else if (this.form === 'round') {
+                x.beginPath();
+                x.ellipse(w / 2, h / 2, w / 2, h / 2, 0, 0, Math.PI * 2);
+                x.closePath();
+                x.fill();
+            } else if (this.form === 'diamond') {
+                x.moveTo(w / 2, 0);
+                x.lineTo(w, h / 2);
+                x.lineTo(w / 2, h);
+                x.lineTo(0, h / 2);
+                x.closePath();
+                x.fill();
+            }
+        };
         this.refreshCanvas = () => {
             const {canvas} = this.refs;
             if (!canvas.x) {
@@ -94,50 +114,27 @@ texture-generator.view
             this.small = this.textureWidth < 64 && this.textureHeight < 64;
             canvas.width = this.textureWidth;
             canvas.height = this.textureHeight;
-            x.clearRect(0, 0, canvas.width, canvas.height);
-
-            x.fillStyle = this.textureColor;
-            if (this.form === 'rect') {
-                x.fillRect(0, 0, canvas.width, canvas.height);
-            } else if (this.form === 'round') {
-                x.beginPath();
-                x.ellipse(
-                    canvas.width / 2,
-                    canvas.height / 2,
-                    canvas.width / 2,
-                    canvas.height / 2,
-                    0,
-                    0,
-                    Math.PI * 2
-                );
-                x.closePath();
-                x.fill();
-            } else if (this.form === 'diamond') {
-                x.moveTo(canvas.width / 2, 0);
-                x.lineTo(canvas.width, canvas.height / 2);
-                x.lineTo(canvas.width / 2, canvas.height);
-                x.lineTo(0, canvas.height / 2);
-                x.closePath();
-                x.fill();
-            }
+            const w = canvas.width;
+            const h = canvas.height;
+            x.clearRect(0, 0, w, h);
+            drawForm(canvas, x);
 
             const dark = window.brehautColor(this.textureColor).getLuminance() < 0.5;
-
             if (this.filler === 'label') {
                 let label;
                 if (this.textureLabel.trim()) {
                     label = this.textureLabel.trim();
                 } else {
-                    label = `${canvas.width}×${canvas.height}`;
+                    label = `${w}×${h}`;
                 }
 
                 // Fit the text into 80% of canvas' width
                 x.font = '100px Iosevka';
                 const measure = x.measureText(label).width;
-                let k = canvas.width * 0.8 / measure;
+                let k = w * 0.8 / measure;
                 // Cannot exceed canvas' height
-                if (k * 100 > canvas.height * 0.8) {
-                    k = canvas.height * 0.8 / 100;
+                if (k * 100 > h * 0.8) {
+                    k = h * 0.8 / 100;
                 }
 
                 x.font = `${Math.round(k * 100)}px Iosevka`;
@@ -145,40 +142,40 @@ texture-generator.view
                 x.textAlign = 'center';
 
                 x.fillStyle = dark ? '#fff' : '#000';
-                x.fillText(label, canvas.width / 2, canvas.height / 2);
+                x.fillText(label, w / 2, h / 2);
             } else if (this.filler === 'cross') {
                 x.beginPath();
                 x.strokeStyle = dark ? '#fff' : '#000';
-                x.lineWidth = (canvas.width > 16 && canvas.height > 16) ? 2 : 1;
+                x.lineWidth = (w > 16 && h > 16) ? 2 : 1;
                 if (this.form === 'rect') {
                     x.moveTo(0, 0);
-                    x.lineTo(canvas.width, canvas.height);
-                    x.moveTo(canvas.width, 0);
-                    x.lineTo(0, canvas.height);
+                    x.lineTo(w, h);
+                    x.moveTo(w, 0);
+                    x.lineTo(0, h);
                 } else if (this.form === 'round') {
-                    let dx = Math.cos(Math.PI / 4) * canvas.width / 2;
-                    let dy = Math.sin(Math.PI / 4) * canvas.height / 2;
-                    x.moveTo(canvas.width / 2 + dx, canvas.height / 2 + dy);
-                    x.lineTo(canvas.width / 2 - dx, canvas.height / 2 - dy);
-                    x.moveTo(canvas.width / 2 - dx, canvas.height / 2 + dy);
-                    x.lineTo(canvas.width / 2 + dx, canvas.height / 2 - dy);
+                    const dx = Math.cos(Math.PI / 4) * w / 2;
+                    const dy = Math.sin(Math.PI / 4) * h / 2;
+                    x.moveTo(w / 2 + dx, h / 2 + dy);
+                    x.lineTo(w / 2 - dx, h / 2 - dy);
+                    x.moveTo(w / 2 - dx, h / 2 + dy);
+                    x.lineTo(w / 2 + dx, h / 2 - dy);
                 } else if (this.form === 'diamond') {
-                    x.moveTo(canvas.width * 0.25, canvas.height * 0.25);
-                    x.lineTo(canvas.width * 0.75, canvas.height * 0.75);
-                    x.moveTo(canvas.width * 0.75, canvas.height * 0.25);
-                    x.lineTo(canvas.width * 0.25, canvas.height * 0.75);
+                    x.moveTo(w * 0.25, h * 0.25);
+                    x.lineTo(w * 0.75, h * 0.75);
+                    x.moveTo(w * 0.75, h * 0.25);
+                    x.lineTo(w * 0.25, h * 0.75);
                 }
                 x.stroke();
             } else if (this.filler === 'arrow') {
-                let arrowSize = Math.min(canvas.width, canvas.height) * 0.2;
+                const arrowSize = Math.min(w, h) * 0.2;
                 x.beginPath();
                 x.strokeStyle = dark ? '#fff' : '#000';
-                x.lineWidth = (canvas.width > 16 && canvas.height > 16) ? 2 : 1;
-                x.moveTo(canvas.width * 0.3, canvas.height * 0.5);
-                x.lineTo(canvas.width * 0.7, canvas.height * 0.5);
-                x.moveTo(canvas.width * 0.7 - arrowSize, canvas.height * 0.5 - arrowSize);
-                x.lineTo(canvas.width * 0.7, canvas.height * 0.5);
-                x.lineTo(canvas.width * 0.7 - arrowSize, canvas.height * 0.5 + arrowSize);
+                x.lineWidth = (w > 16 && h > 16) ? 2 : 1;
+                x.moveTo(w * 0.3, h * 0.5);
+                x.lineTo(w * 0.7, h * 0.5);
+                x.moveTo(w * 0.7 - arrowSize, h * 0.5 - arrowSize);
+                x.lineTo(w * 0.7, h * 0.5);
+                x.lineTo(w * 0.7 - arrowSize, h * 0.5 + arrowSize);
                 x.stroke();
             }
         };

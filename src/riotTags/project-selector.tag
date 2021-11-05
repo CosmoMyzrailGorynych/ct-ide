@@ -209,7 +209,6 @@ project-selector
                 const {getProjectsDir} = require('./data/node_requires/platformUtils');
                 const defaultProjectDir = await getProjectsDir() + '/';
                 const {project} = e.item;
-                console.log(project);
                 let newIctLocation = await window.showSaveDialog({
                     defaultPath: defaultProjectDir,
                     buttonLabel: this.voc.newProject.saveProjectHere,

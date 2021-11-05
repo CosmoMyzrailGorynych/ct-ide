@@ -699,11 +699,72 @@ texture-editor.panel.view
                 document.addEventListener('mouseup', func2);
             }
         };
+
+        this.drawMask = () => {
+            const tc = textureCanvas;
+            tc.x.fillStyle = '#ff0';
+            tc.x.globalAlpha = 0.5;
+            if (this.texture.shape === 'rect') {
+                tc.x.fillRect(
+                    this.texture.axis[0] - this.texture.left,
+                    this.texture.axis[1] - this.texture.top,
+                    this.texture.right + this.texture.left,
+                    this.texture.bottom + this.texture.top
+                );
+            } else if (this.texture.shape === 'circle') {
+                tc.x.beginPath();
+                tc.x.arc(
+                    this.texture.axis[0],
+                    this.texture.axis[1],
+                    this.texture.r,
+                    0, 2 * Math.PI
+                );
+                tc.x.fill();
+            } else if (this.texture.shape === 'strip' && this.texture.stripPoints.length) {
+                tc.x.strokeStyle = '#ff0';
+                tc.x.lineWidth = 3;
+                tc.x.beginPath();
+                tc.x.moveTo(
+                    this.texture.stripPoints[0].x + this.texture.axis[0],
+                    this.texture.stripPoints[0].y + this.texture.axis[1]
+                );
+                for (let i = 1, l = this.texture.stripPoints.length; i < l; i++) {
+                    tc.x.lineTo(
+                        this.texture.stripPoints[i].x + this.texture.axis[0],
+                        this.texture.stripPoints[i].y + this.texture.axis[1]
+                    );
+                }
+                if (this.texture.closedStrip) {
+                    tc.x.closePath();
+                }
+                tc.x.stroke();
+
+                if (this.texture.symmetryStrip) {
+                    const movablePoints = this.getMovableStripPoints();
+                    const [axisPoint1] = movablePoints;
+                    const axisPoint2 = movablePoints[movablePoints.length - 1];
+
+                    // Draw symmetry axis
+                    tc.x.strokeStyle = '#f00';
+                    tc.x.lineWidth = 3;
+                    tc.x.beginPath();
+                    tc.x.moveTo(
+                        axisPoint1.x + this.texture.axis[0],
+                        axisPoint1.y + this.texture.axis[1]
+                    );
+                    tc.x.lineTo(
+                        axisPoint2.x + this.texture.axis[0],
+                        axisPoint2.y + this.texture.axis[1]
+                    );
+                    tc.x.stroke();
+                }
+            }
+        };
         /**
          * Redraws the canvas with the full image, its collision mask, and its slicing grid
          */
         this.refreshTextureCanvas = () => {
-            var tc = textureCanvas;
+            const tc = textureCanvas;
             tc.width = tc.img.width;
             tc.height = tc.img.height;
             tc.x.strokeStyle = '#0ff';
@@ -730,7 +791,10 @@ texture-editor.panel.view
                     tc.x.strokeStyle = '#0ff';
                     tc.x.lineWidth = 1;
                     tc.x.strokeRect(x, y, w, h);
-                    if (this.prevShowFrameIndices && opts.texture.width > 10 && opts.texture.height > 10) {
+                    if (this.prevShowFrameIndices &&
+                        this.opts.texture.width > 10 &&
+                        this.opts.texture.height > 10
+                    ) {
                         tc.x.lineWidth = 2;
                         tc.x.globalAlpha = 1;
                         tc.x.strokeStyle = '#000';
@@ -741,63 +805,7 @@ texture-editor.panel.view
                 }
             }
             if (this.prevShowMask) {
-                tc.x.fillStyle = '#ff0';
-                tc.x.globalAlpha = 0.5;
-                if (this.texture.shape === 'rect') {
-                    tc.x.fillRect(
-                        this.texture.axis[0] - this.texture.left,
-                        this.texture.axis[1] - this.texture.top,
-                        this.texture.right + this.texture.left,
-                        this.texture.bottom + this.texture.top
-                    );
-                } else if (this.texture.shape === 'circle') {
-                    tc.x.beginPath();
-                    tc.x.arc(
-                        this.texture.axis[0],
-                        this.texture.axis[1],
-                        this.texture.r,
-                        0, 2 * Math.PI
-                    );
-                    tc.x.fill();
-                } else if (this.texture.shape === 'strip' && this.texture.stripPoints.length) {
-                    tc.x.strokeStyle = '#ff0';
-                    tc.x.lineWidth = 3;
-                    tc.x.beginPath();
-                    tc.x.moveTo(
-                        this.texture.stripPoints[0].x + this.texture.axis[0],
-                        this.texture.stripPoints[0].y + this.texture.axis[1]
-                    );
-                    for (let i = 1, l = this.texture.stripPoints.length; i < l; i++) {
-                        tc.x.lineTo(
-                            this.texture.stripPoints[i].x + this.texture.axis[0],
-                            this.texture.stripPoints[i].y + this.texture.axis[1]
-                        );
-                    }
-                    if (this.texture.closedStrip) {
-                        tc.x.closePath();
-                    }
-                    tc.x.stroke();
-
-                    if (this.texture.symmetryStrip) {
-                        const movablePoints = this.getMovableStripPoints();
-                        const [axisPoint1] = movablePoints;
-                        const axisPoint2 = movablePoints[movablePoints.length - 1];
-
-                        // Draw symmetry axis
-                        tc.x.strokeStyle = '#f00';
-                        tc.x.lineWidth = 3;
-                        tc.x.beginPath();
-                        tc.x.moveTo(
-                            axisPoint1.x + this.texture.axis[0],
-                            axisPoint1.y + this.texture.axis[1]
-                        );
-                        tc.x.lineTo(
-                            axisPoint2.x + this.texture.axis[0],
-                            axisPoint2.y + this.texture.axis[1]
-                        );
-                        tc.x.stroke();
-                    }
-                }
+                this.drawMask();
             }
         };
 

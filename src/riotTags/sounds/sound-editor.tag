@@ -32,7 +32,6 @@ sound-editor.panel.view
                 span {voc.save}
     script.
         const path = require('path');
-        const fs = require('fs-extra');
         this.namespace = 'soundview';
         this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
