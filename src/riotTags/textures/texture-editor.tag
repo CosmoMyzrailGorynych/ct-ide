@@ -24,7 +24,14 @@ texture-editor.panel.view
                             svg.feather
                                 use(xlink:href="data/icons.svg#map-pin")
                 fieldset
-                    b {voc.form}
+                    .toright
+                        button.tiny.nmt(if="{sessionStorage.copiedCollisionMask}" onclick="{pasteCollisionMask}" title="{voc.pasteCollisionMask}")
+                            svg.feather
+                                use(xlink:href="data/icons.svg#clipboard")
+                        button.tiny.nmt(onclick="{copyCollisionMask}" title="{voc.copyCollisionMask}")
+                            svg.feather
+                                use(xlink:href="data/icons.svg#copy")
+                    h3.nmt {voc.form}
                     label.checkbox
                         input(type="radio" name="collisionform" checked="{opts.texture.shape === 'circle'}" onclick="{textureSelectCircle}")
                         span {voc.round}
@@ -421,6 +428,25 @@ texture-editor.panel.view
             texture.axis[1] = texture.height;
             this.textureFillRect();
         };
+        this.pasteCollisionMask = () => {
+            if (!sessionStorage.copiedCollisionMask) {
+                return;
+            }
+            Object.assign(this.texture, JSON.parse(sessionStorage.copiedCollisionMask));
+        };
+        this.copyCollisionMask = () => {
+            const {texture} = this;
+            sessionStorage.copiedCollisionMask = JSON.stringify({
+                shape: texture.shape,
+                stripPoints: texture.stripPoints,
+                left: texture.left,
+                right: texture.right,
+                top: texture.top,
+                bottom: texture.bottom,
+                r: texture.r
+            });
+        };
+
         /**
          * Запустить предпросмотр анимации
          */

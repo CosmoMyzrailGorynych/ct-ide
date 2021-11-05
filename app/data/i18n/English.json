@@ -307,7 +307,7 @@
         "cols": "Columns:",
         "done": "Apply",
         "fill": "Fill",
-        "form": "Collision shape:",
+        "form": "Collision shape",
         "frames": "Frame count:",
         "isometrify": "Isometrify: Move the axis to the middle bottom point, fill the whole sprite with a collision mask",
         "name": "Name:",
@@ -339,7 +339,9 @@
         "symmetryTool": "Symmetry tool",
         "padding": "Padding:",
         "paddingNotice": "This affects how a texture is exported: it adds duplicate pixels on edges and prevents bleeding artifacts on tiled and scaled textures. The default value is usually enough, but, if you shrink textures strongly, the bleeding may re-appear. Increment this value if this texture has artifacts while in-game.",
-        "previewAnimationNotice": "This is a preview. Use this.animationSpeed property to change it for real copies."
+        "previewAnimationNotice": "This is a preview. Use this.animationSpeed property to change it for real copies.",
+        "pasteCollisionMask": "Paste a collision mask",
+        "copyCollisionMask": "Copy the collision mask"
     },
     "sounds": {
         "create": "Create",
