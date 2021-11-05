@@ -39,7 +39,7 @@ This works cumulatively with light owner's rotation.
 
 **Do your lights align weirdly?** Make sure you've set up the axis of a used texture.
 
-**To change light's color,** set its tint value similar to copies. For example, this line will make the ligth red:
+**To change light's color,** set its tint value similar to copies. For example, this line will make the light red:
 
 ```js
 this.light.tint = 0xff0000;
@@ -85,7 +85,7 @@ ct.light.add(
 );
 ```
 
-This will create a ligth based on the first (zeroish) frame of a texture called `AlarmGlowMask`, and make it red.
+This will create a light based on the first (zeroish) frame of a texture called `AlarmGlowMask`, and make it red.
 
 You can **remove a light** with a method `ct.light.remove(copyOrLight);`.
 You can either pass an owning copy or the light itself.
