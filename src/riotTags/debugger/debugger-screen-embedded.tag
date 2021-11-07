@@ -57,7 +57,7 @@ debugger-screen-embedded(class="{opts.class} {flexrow: verticalLayout, flexcol: 
             .debugger-toolbar-aButton(onclick="{flipLayout}")
                 svg.feather
                     use(xlink:href="data/icons.svg#layout-{verticalLayout? 'horizontal' : 'vertical'}")
-    debugger-modal(if="{showNetworkingModal}")
+    debugger-modal(if="{showNetworkingModal}" params="{opts.params}")
     script.
         this.namespace = 'debuggerToolbar';
         this.mixin(window.riotVoc);
