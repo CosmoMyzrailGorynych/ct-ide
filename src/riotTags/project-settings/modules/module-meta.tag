@@ -55,55 +55,22 @@ module-meta(onclick="{toggleModule(opts.module.name)}")
         this.namespace = 'modules';
         this.mixin(window.riotVoc);
 
-        const {getIcon} = require('./data/node_requires/resources/modules');
+        const {getIcon, isModuleEnabled, enableModule, disableModule} = require('./data/node_requires/resources/modules');
 
         this.getIcon = getIcon;
 
         const glob = require('./data/node_requires/glob');
 
-        const tryLoadTypedefs = () => {
-            if (!(this.opts.module.name in global.currentProject.libs)) {
-                return;
-            }
-            const {addTypedefs} = require('./data/node_requires/resources/modules/typedefs');
-            addTypedefs(this.opts.module);
-        };
-        const removeTypedefs = () => {
-            const {removeTypedefs} = require('./data/node_requires/resources/modules/typedefs');
-            removeTypedefs(this.opts.module);
-        };
-        const addDefaults = () => {
-            const {name} = this.opts.module;
-            for (const field of this.opts.module.manifest.fields) {
-                if (!global.currentProject.libs[name][field.key]) {
-                    if (field.default) {
-                        global.currentProject.libs[name][field.key] = field.default;
-                    } else if (field.type === 'number') {
-                        global.currentProject.libs[name][field.key] = 0;
-                    } else if (field.type === 'checkbox') {
-                        global.currentProject.libs[name][field.key] = false;
-                    } else {
-                        global.currentProject.libs[name][field.key] = '';
-                    }
-                }
-            }
-        };
-
-        this.toggleModule = () => e => {
-            if (global.currentProject.libs[this.opts.module.name]) {
-                delete global.currentProject.libs[this.opts.module.name];
-                removeTypedefs();
+        this.toggleModule = () => async e => {
+            e.stopPropagation();
+            if (isModuleEnabled(this.opts.module.name)) {
+                disableModule(this.opts.module.name);
             } else {
-                global.currentProject.libs[this.opts.module.name] = {};
-                tryLoadTypedefs();
-                // 'Settings' page
-                if (this.opts.module.manifest.fields) {
-                    addDefaults();
-                }
+                await enableModule(this.opts.module.name);
             }
             window.signals.trigger('modulesChanged');
             glob.modified = true;
-            e.stopPropagation();
+            this.update();
         };
 
         this.stopPropagation = e => {

@@ -170,7 +170,15 @@
             "methodModuleMissing": "The required module for this method is missing",
             "methods": "Input methods",
             "multiplier": "Multiplier",
-            "noActionsYet": "Actions allow developers to listen to numerous input methods at once and dynamically change them, all with one uniform API. Read more by clicking on the docs icon above."
+            "noActionsYet": "Actions allow developers to listen to numerous input methods at once and dynamically change them, all with one uniform API. Read more by clicking on the docs icon above.",
+            "makeFromScratch": "Make from scratch",
+            "presets": "Presets",
+            "presetXYMovement": "Generic XY movement",
+            "presetTouchAndMouse": "Mouse & Touch",
+            "presetCustom": "Import your own",
+            "exportActionPreset": "Export as a preset",
+            "importErrorMissingModules": "Cannot import action preset as your ct.js installation lacks following modules: $1.",
+            "importErrorNotCtJsPreset": "This file doesn't look like ct.js' actions preset."
         },
         "authoring": {
             "heading": "Authoring",
@@ -283,9 +291,14 @@
         "createAndContinue": "Create and add another",
         "scalingAtX4": "Scaling by x4 for a small texture",
         "generationSuccessMessage": "Successfully added $1 texture to your project.",
+        "form": "Form",
+        "formRectangular": "Rectangular",
+        "formRound": "Round",
+        "formDiamond": "Diamond",
         "filler": "Filler:",
         "fillerNone": "None",
         "fillerCross": "Cross",
+        "fillerArrow": "Arrow",
         "fillerLabel": "Text label"
     },
     "textureview": {
@@ -294,7 +307,7 @@
         "cols": "Columns:",
         "done": "Apply",
         "fill": "Fill",
-        "form": "Collision shape:",
+        "form": "Collision shape",
         "frames": "Frame count:",
         "isometrify": "Isometrify: Move the axis to the middle bottom point, fill the whole sprite with a collision mask",
         "name": "Name:",
@@ -326,10 +339,13 @@
         "symmetryTool": "Symmetry tool",
         "padding": "Padding:",
         "paddingNotice": "This affects how a texture is exported: it adds duplicate pixels on edges and prevents bleeding artifacts on tiled and scaled textures. The default value is usually enough, but, if you shrink textures strongly, the bleeding may re-appear. Increment this value if this texture has artifacts while in-game.",
-        "previewAnimationNotice": "This is a preview. Use this.animationSpeed property to change it for real copies."
+        "previewAnimationNotice": "This is a preview. Use this.animationSpeed property to change it for real copies.",
+        "pasteCollisionMask": "Paste a collision mask",
+        "copyCollisionMask": "Copy the collision mask"
     },
     "sounds": {
-        "create": "Create"
+        "create": "Create",
+        "record": "Record"
     },
     "soundview": {
         "import": "Import",
@@ -337,6 +353,15 @@
         "save": "Save",
         "isMusicFile": "This is a musical track",
         "poolSize": "Pool size:"
+    },
+    "soundRecorder": {
+        "recorderHeading": "Recorder",
+        "record": "Start recording",
+        "stopRecording": "Stop recorder",
+        "discardRecording": "Discard the recording",
+        "finishRecording": "Finish recording",
+        "cannotRecordSound": "Cannot start recorder: check your audio configuration and the recording device.",
+        "troubleshootingWindows": "On Windows, also go to Settings -> Privacy -> Microphone and check that apps are allowed to access your microphone."
     },
     "styles": {
         "create": "Create",

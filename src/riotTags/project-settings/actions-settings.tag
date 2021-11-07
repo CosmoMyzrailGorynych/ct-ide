@@ -7,7 +7,20 @@ actions-settings
         button.nml(onclick="{addNewAction}")
             svg.feather
                 use(xlink:href="data/icons.svg#plus")
-            span   {vocGlob.add}
+            span {voc.makeFromScratch}
+        h2 {voc.presets}
+        button.nml(onclick="{addXYMovementPreset}")
+            svg.feather
+                use(xlink:href="data/icons.svg#move")
+            span {voc.presetXYMovement}
+        button.nml(onclick="{addTouchAndMousePreset}")
+            svg.feather
+                use(xlink:href="data/icons.svg#smartphone")
+            span {voc.presetTouchAndMouse}
+        button.nml(onclick="{importCustomPreset}")
+            svg.feather
+                use(xlink:href="data/icons.svg#download")
+            span {voc.presetCustom}
     div(if="{global.currentProject.actions && global.currentProject.actions.length}")
         li.hide800.npl.npr
             .c4.npt.npb.npl
@@ -50,7 +63,11 @@ actions-settings
             button.nml(onclick="{addNewAction}")
                 svg.feather
                     use(xlink:href="data/icons.svg#plus")
-                span   {voc.addAction}
+                span {voc.addAction}
+            button.nml(onclick="{exportActionPreset}")
+                svg.feather
+                    use(xlink:href="data/icons.svg#upload")
+                span {voc.exportActionPreset}
     .dimmer(show="{addingMethod}")
         actions-input-selector(action="{editedAction}" ref="methodSelector")
     script.
@@ -87,4 +104,190 @@ actions-settings
             if (existingAction) {
                 this.nameTaken = e.item.action.name;
             }
+        };
+
+        const checkOrLoadModules = async (moduleNames) => {
+            const modules = require('./data/node_requires/resources/modules');
+            const promises = [];
+            for (const i of moduleNames) {
+                if (!modules.isModuleEnabled(i)) {
+                    promises.push(modules.enableModule(i));
+                }
+            }
+            if (promises.length) {
+                await Promise.all(promises);
+            }
+        };
+        // Presets
+        // eslint-disable-next-line max-lines-per-function
+        this.addXYMovementPreset = async () => {
+            await checkOrLoadModules(['touch', 'mouse', 'gamepad', 'keyboard', 'vkeys']);
+            window.currentProject.actions = [{
+                name: 'MoveX',
+                methods: [{
+                    code: 'keyboard.KeyD'
+                }, {
+                    code: 'keyboard.KeyA',
+                    multiplier: -1
+                }, {
+                    code: 'keyboard.ArrowRight'
+                }, {
+                    code: 'keyboard.ArrowLeft',
+                    multiplier: -1
+                }, {
+                    code: 'gamepad.Right'
+                }, {
+                    code: 'gamepad.Left',
+                    multiplier: -1
+                }, {
+                    code: 'gamepad.LStickX'
+                }, {
+                    code: 'vkeys.Vjoy1X'
+                }]
+            }, {
+                name: 'MoveY',
+                methods: [{
+                    code: 'keyboard.KeyW',
+                    multiplier: -1
+                }, {
+                    code: 'keyboard.KeyS'
+                }, {
+                    code: 'keyboard.ArrowUp',
+                    multiplier: -1
+                }, {
+                    code: 'keyboard.ArrowDown'
+                }, {
+                    code: 'gamepad.Up',
+                    multiplier: -1
+                }, {
+                    code: 'gamepad.Down'
+                }, {
+                    code: 'gamepad.LStickY'
+                }, {
+                    code: 'vkeys.Vjoy1Y'
+                }]
+            }, {
+                name: 'Jump',
+                methods: [{
+                    code: 'keyboard.Space'
+                }, {
+                    code: 'vkeys.Vk2'
+                }, {
+                    code: 'gamepad.Button1'
+                }]
+            }, {
+                name: 'Sprint',
+                methods: [{
+                    code: 'keyboard.ShiftLeft'
+                }, {
+                    code: 'keyboard.ShiftRight'
+                }, {
+                    code: 'vkeys.Vk3'
+                }, {
+                    code: 'gamepad.Button2'
+                }]
+            }, {
+                name: 'Crouch',
+                methods: [{
+                    code: 'keyboard.ControlLeft'
+                }, {
+                    code: 'keyboard.ControlRight'
+                }, {
+                    code: 'vkeys.Vk4'
+                }, {
+                    code: 'gamepad.Button3'
+                }]
+            }, {
+                name: 'Shoot',
+                methods: [{
+                    code: 'mouse.Left'
+                }, {
+                    code: 'vkeys.Vk1'
+                }, {
+                    code: 'gamepad.L2'
+                }, {
+                    code: 'gamepad.R2'
+                }]
+            }];
+            this.update();
+            this.methodSelector.update();
+        };
+        this.addTouchAndMousePreset = async () => {
+            await checkOrLoadModules(['touch', 'mouse']);
+            window.currentProject.actions = [{
+                name: 'Press',
+                methods: [{
+                    code: 'touch.Any'
+                }, {
+                    code: 'mouse.Left'
+                }]
+            }, {
+                name: 'AltPress',
+                methods: [{
+                    code: 'touch.Double'
+                }, {
+                    code: 'mouse.Right'
+                }]
+            }, {
+                name: 'Scale',
+                methods: [{
+                    code: 'touch.DeltaPinch'
+                }, {
+                    code: 'mouse.Wheel'
+                }]
+            }];
+            this.update();
+            this.methodSelector.update();
+        };
+
+        this.importCustomPreset = async () => {
+            const filePath = await window.showOpenDialog({
+                title: '',
+                filter: '.json'
+            });
+            if (!filePath) {
+                return;
+            }
+            const fs = require('fs-extra');
+            const preset = await fs.readJSON(filePath);
+            if (!preset || !preset.inputModules || !preset.actions) {
+                window.alertify.error(this.voc.importErrorNotCtJsPreset);
+                return;
+            }
+            const modules = require('./data/node_requires/resources/modules');
+            const notInstalled = await modules.checkModulesExistence(preset.inputModules);
+            if (notInstalled instanceof Array) {
+                window.alertify.error(this.voc.importErrorMissingModules.replace('$1', notInstalled.join(', ')));
+                return;
+            }
+            await checkOrLoadModules(preset.inputModules);
+            // eslint-disable-next-line require-atomic-updates
+            window.currentProject.actions = preset.actions;
+            this.update();
+        };
+        this.exportActionPreset = async () => {
+            const filePath = await window.showSaveDialog({
+                defaultName: `Actions from ${window.currentProject.settings.authoring.title || 'a ct.js project'}.json`,
+                filter: '.json'
+            });
+            if (!filePath) {
+                return;
+            }
+            const writeData = {
+                inputModules: [],
+                actions: window.currentProject.actions
+            };
+            for (const action of window.currentProject.actions) {
+                for (const method of action.methods) {
+                    const partial = method.code.split('.');
+                    partial.pop();
+                    const moduleName = partial.join('.');
+                    if (!writeData.inputModules.find(e => e === moduleName)) {
+                        writeData.inputModules.push(moduleName);
+                    }
+                }
+            }
+            const fs = require('fs-extra');
+            await fs.outputJSON(filePath, writeData);
+            window.alertify.success(this.vocGlob.done);
         };

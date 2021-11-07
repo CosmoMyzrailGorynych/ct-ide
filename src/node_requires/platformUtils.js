@@ -1,5 +1,6 @@
 const fs = require('fs-extra');
 const os = require('os');
+const path = require('path');
 
 const isWin = (/win[0-9]+/).test(os.platform());
 const isLinux = os.platform() === 'linux';
@@ -70,6 +71,15 @@ const mod = {
             throw new Error(`Could not write to folders ${home} and ${exec}. A folder is needed to create builds and run debugger. Check access rights to these folders, and tweak sandbox settings if it is used.`);
         }
         return exec;
+    },
+    async getTempDir() {
+        const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'ctjs-'));
+        return {
+            dir,
+            remove() {
+                return fs.remove(dir);
+            }
+        };
     }
 };
 

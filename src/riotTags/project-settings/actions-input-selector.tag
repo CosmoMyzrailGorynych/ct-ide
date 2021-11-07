@@ -17,7 +17,7 @@ actions-input-selector
                     onclick="{selectMethod(module.code+'.'+code)}"
                     each="{name, code in module.methods}"
                     class="{active: selectedMethod === module.code+'.'+code}"
-                    if="{!searchString || code.toLowerCase().indexOf(searchString.toLowerCase()) !== -1 || name.toLowerCase().indexOf(searchString.toLowerCase()) !== -1}"
+                    if="{!searchString || matchAny([name, code, module.name])}"
                 ).npl
                     code.inline.toright {module.code}.{code}
                     span   {name}
@@ -37,6 +37,9 @@ actions-input-selector
         const fs = require('fs-extra'),
               path = require('path');
         const libsDir = './data/ct.libs';
+
+        this.matchAny = strings =>
+            strings.some(string => string.toLowerCase().indexOf(this.searchString.toLowerCase()) !== -1);
 
         this.refreshModules = () => {
             this.inputProviders = [];
@@ -61,7 +64,7 @@ actions-input-selector
             });
         };
         this.refreshModules();
-        
+
         window.signals.on('modulesChanged', this.refreshModules);
         this.on('unmount', () => {
             window.signals.off('modulesChanged', this.refreshModules);

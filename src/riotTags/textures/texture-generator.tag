@@ -21,6 +21,17 @@ texture-generator.view
                         b {voc.color}
                     color-input(onchange="{changeColor}" color="{textureColor}")
                 fieldset
+                    b {voc.form}
+                    label.block.checkbox
+                        input(type="radio" value="rect" checked="{form === 'rect'}" onchange="{wire('this.form')}")
+                        span {voc.formRectangular}
+                    label.block.checkbox
+                        input(type="radio" value="round" checked="{form === 'round'}" onchange="{wire('this.form')}")
+                        span {voc.formRound}
+                    label.block.checkbox
+                        input(type="radio" value="diamond" checked="{form === 'diamond'}" onchange="{wire('this.form')}")
+                        span {voc.formDiamond}
+                fieldset
                     b {voc.filler}
                     label.block.checkbox
                         input(type="radio" value="none" checked="{filler === 'none'}" onchange="{wire('this.filler')}")
@@ -28,6 +39,9 @@ texture-generator.view
                     label.block.checkbox
                         input(type="radio" value="cross" checked="{filler === 'cross'}" onchange="{wire('this.filler')}")
                         span {voc.fillerCross}
+                    label.block.checkbox
+                        input(type="radio" value="arrow" checked="{filler === 'arrow'}" onchange="{wire('this.filler')}")
+                        span {voc.fillerArrow}
                     label.block.checkbox
                         input(type="radio" value="label" checked="{filler === 'label'}" onchange="{wire('this.filler')}")
                         span {voc.fillerLabel}
@@ -63,6 +77,7 @@ texture-generator.view
         this.textureWidth = this.textureHeight = 64;
         this.textureColor = '#446adb';
         this.textureLabel = '';
+        this.form = 'rect';
         this.filler = 'label';
 
         this.changeColor = e => {
@@ -70,6 +85,26 @@ texture-generator.view
             this.update();
         };
 
+        const drawForm = (c, x) => {
+            const w = c.width;
+            const h = c.height;
+            x.fillStyle = this.textureColor;
+            if (this.form === 'rect') {
+                x.fillRect(0, 0, w, h);
+            } else if (this.form === 'round') {
+                x.beginPath();
+                x.ellipse(w / 2, h / 2, w / 2, h / 2, 0, 0, Math.PI * 2);
+                x.closePath();
+                x.fill();
+            } else if (this.form === 'diamond') {
+                x.moveTo(w / 2, 0);
+                x.lineTo(w, h / 2);
+                x.lineTo(w / 2, h);
+                x.lineTo(0, h / 2);
+                x.closePath();
+                x.fill();
+            }
+        };
         this.refreshCanvas = () => {
             const {canvas} = this.refs;
             if (!canvas.x) {
@@ -79,28 +114,27 @@ texture-generator.view
             this.small = this.textureWidth < 64 && this.textureHeight < 64;
             canvas.width = this.textureWidth;
             canvas.height = this.textureHeight;
-            x.clearRect(0, 0, canvas.width, canvas.height);
-
-            x.fillStyle = this.textureColor;
-            x.fillRect(0, 0, canvas.width, canvas.height);
+            const w = canvas.width;
+            const h = canvas.height;
+            x.clearRect(0, 0, w, h);
+            drawForm(canvas, x);
 
             const dark = window.brehautColor(this.textureColor).getLuminance() < 0.5;
-
             if (this.filler === 'label') {
                 let label;
                 if (this.textureLabel.trim()) {
                     label = this.textureLabel.trim();
                 } else {
-                    label = `${canvas.width}×${canvas.height}`;
+                    label = `${w}×${h}`;
                 }
 
                 // Fit the text into 80% of canvas' width
                 x.font = '100px Iosevka';
                 const measure = x.measureText(label).width;
-                let k = canvas.width * 0.8 / measure;
+                let k = w * 0.8 / measure;
                 // Cannot exceed canvas' height
-                if (k * 100 > canvas.height * 0.8) {
-                    k = canvas.height * 0.8 / 100;
+                if (k * 100 > h * 0.8) {
+                    k = h * 0.8 / 100;
                 }
 
                 x.font = `${Math.round(k * 100)}px Iosevka`;
@@ -108,14 +142,40 @@ texture-generator.view
                 x.textAlign = 'center';
 
                 x.fillStyle = dark ? '#fff' : '#000';
-                x.fillText(label, canvas.width / 2, canvas.height / 2);
+                x.fillText(label, w / 2, h / 2);
             } else if (this.filler === 'cross') {
+                x.beginPath();
                 x.strokeStyle = dark ? '#fff' : '#000';
-                x.lineWidth = (canvas.width > 16 && canvas.height > 16) ? 2 : 1;
-                x.moveTo(0, 0);
-                x.lineTo(canvas.width, canvas.height);
-                x.moveTo(canvas.width, 0);
-                x.lineTo(0, canvas.height);
+                x.lineWidth = (w > 16 && h > 16) ? 2 : 1;
+                if (this.form === 'rect') {
+                    x.moveTo(0, 0);
+                    x.lineTo(w, h);
+                    x.moveTo(w, 0);
+                    x.lineTo(0, h);
+                } else if (this.form === 'round') {
+                    const dx = Math.cos(Math.PI / 4) * w / 2;
+                    const dy = Math.sin(Math.PI / 4) * h / 2;
+                    x.moveTo(w / 2 + dx, h / 2 + dy);
+                    x.lineTo(w / 2 - dx, h / 2 - dy);
+                    x.moveTo(w / 2 - dx, h / 2 + dy);
+                    x.lineTo(w / 2 + dx, h / 2 - dy);
+                } else if (this.form === 'diamond') {
+                    x.moveTo(w * 0.25, h * 0.25);
+                    x.lineTo(w * 0.75, h * 0.75);
+                    x.moveTo(w * 0.75, h * 0.25);
+                    x.lineTo(w * 0.25, h * 0.75);
+                }
+                x.stroke();
+            } else if (this.filler === 'arrow') {
+                const arrowSize = Math.min(w, h) * 0.2;
+                x.beginPath();
+                x.strokeStyle = dark ? '#fff' : '#000';
+                x.lineWidth = (w > 16 && h > 16) ? 2 : 1;
+                x.moveTo(w * 0.3, h * 0.5);
+                x.lineTo(w * 0.7, h * 0.5);
+                x.moveTo(w * 0.7 - arrowSize, h * 0.5 - arrowSize);
+                x.lineTo(w * 0.7, h * 0.5);
+                x.lineTo(w * 0.7 - arrowSize, h * 0.5 + arrowSize);
                 x.stroke();
             }
         };

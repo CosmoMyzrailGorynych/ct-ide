@@ -1,13 +1,17 @@
-const loadedTypings = {};
+interface IDisposable {
+    dispose(): void;
+}
 
-const addTypedefs = async function addTypedefs(module) {
+const loadedTypings: Record<string, Array<IDisposable>> = {};
+
+const addTypedefs = async function addTypedefs(module: ICatmodMeta): Promise<void> {
     const fs = require('fs-extra'),
           path = require('path');
     const typedefPath = path.join(module.path, 'types.d.ts');
-    const ts = monaco.languages.typescript;
+    const ts = (window as any).monaco.languages.typescript;
     if (await fs.pathExists(typedefPath)) {
         fs.readFile(typedefPath, 'utf8')
-        .then(catmodTypedefs => {
+        .then((catmodTypedefs: IDisposable) => {
             loadedTypings[module.name] = [
                 ts.javascriptDefaults.addExtraLib(catmodTypedefs),
                 ts.typescriptDefaults.addExtraLib(catmodTypedefs)
@@ -23,7 +27,7 @@ const addTypedefs = async function addTypedefs(module) {
     }
 };
 
-const removeTypedefs = function removeTypedefs(module) {
+const removeTypedefs = function removeTypedefs(module: ICatmodMeta): void {
     if (loadedTypings[module.name]) {
         for (const lib of loadedTypings[module.name]) {
             lib.dispose();
@@ -32,7 +36,7 @@ const removeTypedefs = function removeTypedefs(module) {
     delete loadedTypings[module.name];
 };
 
-const loadAllTypedefs = async function loadAllTypedefs() {
+const loadAllTypedefs = async function loadAllTypedefs(): Promise<void> {
     const {loadModules} = require('.');
     for (const module of await loadModules()) {
         if (!(module.name in global.currentProject.libs)) {
@@ -42,7 +46,7 @@ const loadAllTypedefs = async function loadAllTypedefs() {
     }
 };
 
-const resetTypedefs = function () {
+const resetTypedefs = function resetTypedefs(): void {
     for (const i in loadedTypings) {
         for (const lib of loadedTypings[i]) {
             lib.dispose();
@@ -51,7 +55,7 @@ const resetTypedefs = function () {
     }
 };
 
-module.exports = {
+export = {
     addTypedefs,
     removeTypedefs,
     loadAllTypedefs,
