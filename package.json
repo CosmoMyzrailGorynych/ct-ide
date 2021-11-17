@@ -58,5 +58,6 @@
   "devDependencies": {
     "eslint-plugin-pug": "^1.2.2",
     "gulp-ext-replace": "^0.3.0"
-  }
+  },
+  "main": "index.html"
 }

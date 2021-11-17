@@ -8,9 +8,12 @@
             "type": "nwjs",
             "request": "launch",
             "name": "Launch ct.js",
-            "nwjsVersion": "0.34.5",
-            "webRoot": "${workspaceFolder}/app",
-            "reloadAfterAttached": true
+            "nwjsVersion": "0.51.2",
+            "runtimeArgs": [
+                "--nwapp=${workspaceFolder}/app"
+            ],
+            "webRoot": "${workspaceFolder}",
+            "reloadAfterAttached": false
         }
     ]
 }
