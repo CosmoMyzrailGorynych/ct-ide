@@ -91,7 +91,7 @@ const makeErrorObj = (title, err) => {
         message: err.toString(),
         icon: path.join(__dirname, 'error.png'),
         sound: true,
-        wait: true
+        wait: false
     };
 };
 
