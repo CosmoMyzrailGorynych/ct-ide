@@ -33,7 +33,7 @@
     "gulp-concat": "^2.6.1",
     "gulp-eslint": "^6.0.0",
     "gulp-if": "^2.0.2",
-    "gulp-pug": "^3.3.0",
+    "gulp-pug": "^5.0.0",
     "gulp-replace": "^1.0.0",
     "gulp-riot": "^1.1.5",
     "gulp-sourcemaps": "^2.6.5",
