@@ -15,7 +15,7 @@ debugger-modal.view
                 ({port} = url);
             }
         } else {
-            const url = new URL( this.opts.params.link);
+            const url = new URL(this.opts.params.link);
             ({port} = url);
         }
         this.interfaces = [];
