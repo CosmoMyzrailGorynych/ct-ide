@@ -1,0 +1,84 @@
+default:
+  image: node:16
+  # Caching settigns for NPM, according to https://docs.gitlab.com/ee/ci/caching/index.html#cache-nodejs-dependencies
+  before_script:
+    - npm ci --cache .npm --prefer-offline
+  cache:
+    key: $CI_COMMIT_REF_SLUG
+    paths:
+      - node_modules
+      - app/node_modules
+      - .npm/
+stages:
+  - test
+  - pack
+
+workflow:
+  rules:
+    # Skip WIPs
+    - if: $CI_COMMIT_MESSAGE =~ /WIP/
+      when: never
+    # Include PRs
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    # Skip duplication for merge requests to develop, master, v1.x
+    - if: '$CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS'
+      when: never
+    # Include develop, master, v1.x direct pushes
+    - if: $CI_COMMIT_BRANCH == "develop"
+    - if: $CI_COMMIT_BRANCH == "master"
+    - if: $CI_COMMIT_BRANCH == "v1.x"
+    # For testing
+    - if: $CI_COMMIT_BRANCH == "gitlab-ci"
+
+preinstall:
+  stage: .pre
+  script:
+    - "npm i -g gulp-cli"
+    - "npm install"
+    - "gulp -f devSetup.gulpfile.js"
+
+lint:
+  needs: ["preinstall"]
+  stage: test
+  script:
+    - npm i -g gulp-cli
+    - gulp lint
+
+build:
+  needs: ["preinstall"]
+  stage: test
+  script:
+    - npm i -g gulp-cli
+    - gulp build
+
+pack-deploy-release:
+  stage: pack
+  needs: ["lint", "build"]
+  script:
+    - npm i -g gulp-cli
+    - gulp -f devSetup.gulpfile.js
+    - gulp packages
+  rules:
+    # Build for tags on master only
+    - if: $CI_COMMIT_BRANCH == "master" && $CI_COMMIT_TAG != null && $CI_PIPELINE_SOURCE == "push"
+  artifacts:
+    expire_in: 30 days
+    name: "$CI_COMMIT_REF_NAME"
+    paths:
+      - "build/"
+
+pack-deploy-nightly:
+  stage: pack
+  needs: ["lint", "build"]
+  rules:
+    - if: $CI_COMMIT_BRANCH == "develop"
+  script:
+    - npm i -g gulp-cli
+    - gulp -f devSetup.gulpfile.js
+    - gulp packages --nightly --buildNum=$CI_COMMIT_SHORT_SHA
+    - gulp deployOnly --nightly --buildNum=$CI_COMMIT_SHORT_SHA
+  artifacts:
+    expire_in: 3 days
+    name: "$CI_COMMIT_REF_NAME $CI_COMMIT_SHORT_SHA"
+    paths:
+      - "build/"
