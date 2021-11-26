@@ -76,7 +76,9 @@ gulp -f devSetup.gulpfile.js
 gulp
 ```
 
-VSCode can use [this extension](https://marketplace.visualstudio.com/items?itemName=ruakr.vsc-nwjs) to run ct.js with an attached debugger. Use `gulp dev` instead of just `gulp` to run a dev service with live-reloading without opening ct.js in its default manner.
+Use `gulp dev` instead of just `gulp` to run a dev service with live-reloading without opening ct.js in its default manner. In either case, you can stop this service in the usual manner for your terminal, e.g. `Ctrl+C`. If you are encountering unexplained issues, especially when switching to a new branch, run `gulp -f devSetup.gulpfile.js` again.
+
+VSCode can use [this extension](https://marketplace.visualstudio.com/items?itemName=ruakr.vsc-nwjs) to run ct.js with an attached debugger. Before running the debugger, to allow live-reloading, run `gulp dev`.
 
 ## Releasing ct.js
 
