@@ -11,6 +11,11 @@ At `./src/riotTags`, use this syntax at the top of the file to document tags:
     @slot
         This means that the tag yields the passed markup inside itself.
         A description of how the tag does it would be appropriate.
+    @slot slotName
+        Sometimes there can be several slots, with or without the default (root) slot.
+        They can be defined with yield(from="slotName") inside the nesting tag,
+        and used with yield(to="slotName") when using such a tag. See collapsible-section
+        as an example.
 
     @attribute attributeName (type)
         A descriotion of an attribute.
