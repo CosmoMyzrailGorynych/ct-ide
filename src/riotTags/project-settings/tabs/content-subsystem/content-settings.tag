@@ -93,7 +93,6 @@ content-settings
         };
 
         this.confirmDeletion = e => {
-            console.log(e.item);
             window.alertify.confirm(this.voc.confirmDeletionMessage)
             .then(a => {
                 if (a.buttonClicked === 'ok') {
