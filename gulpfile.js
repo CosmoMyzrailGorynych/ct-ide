@@ -199,12 +199,19 @@ const copyInEditorDocs = () =>
 
 const compileScripts = gulp.series(compileRiot, concatScripts);
 
-const icons = () =>
+const makeIconAtlas = () =>
     gulp.src('./src/icons/**/*.svg', {
         base: './src/icons'
     })
     .pipe(sprite())
     .pipe(gulp.dest('./app/data'));
+
+const writeIconList = () => fs.readdir('./src/icons')
+    .then(files => files.filter(file => path.extname(file) === '.svg'))
+    .then(files => files.map(file => path.basename(file, '.svg')))
+    .then(files => fs.outputJSON('./app/data/icons.json', files));
+
+const icons = gulp.series(makeIconAtlas, writeIconList);
 
 const watchScripts = () => {
     gulp.watch('./src/js/**/*', gulp.series(compileScripts))
