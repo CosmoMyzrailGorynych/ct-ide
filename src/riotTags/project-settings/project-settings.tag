@@ -20,10 +20,10 @@ project-settings.panel.view.pad.flexrow
                     svg.feather
                         use(xlink:href=`data/icons.svg#${(name in iconMap)? iconMap[name] : iconMap.default}`)
                     span='{voc.' + name + '.heading}'
-        h3(if="{modulesWithDocs.length}") {voc.catmodsSettings}
-        ul(if="{modulesWithDocs.length}").nav.tabs.vertical
+        h3(if="{modulesWithFields.length}") {voc.catmodsSettings}
+        ul(if="{modulesWithFields.length}").nav.tabs.vertical
             li(
-                each="{module in modulesWithDocs}"
+                each="{module in modulesWithFields}"
                 onclick="{openModuleSettings(module)}"
                 class="{active: tab === 'moduleSettings' && currentModule === module}"
                 title="{module.manifest.main.name}"
@@ -55,17 +55,17 @@ project-settings.panel.view.pad.flexrow
         const {loadModules, getIcon} = require('./data/node_requires/resources/modules');
         this.getIcon = getIcon;
 
-        this.modulesWithDocs = [];
-        this.updateModulesWithDocs = async () => {
-            this.modulesWithDocs = (await loadModules())
+        this.modulesWithFields = [];
+        this.updateModulesWithFields = async () => {
+            this.modulesWithFields = (await loadModules())
                 .filter(module => module.name in global.currentProject.libs)
                 .filter(module => module.manifest.fields);
             this.update();
         };
-        this.updateModulesWithDocs();
-        window.signals.on('modulesChanged', this.updateModulesWithDocs);
+        this.updateModulesWithFields();
+        window.signals.on('modulesChanged', this.updateModulesWithFields);
         this.on('unmount', () => {
-            window.signals.off('modulesChanged', this.updateModulesWithDocs);
+            window.signals.off('modulesChanged', this.updateModulesWithFields);
         });
 
         this.openModuleSettings = module => () => {
