@@ -76,8 +76,8 @@ texture-editor.panel.view
             .flexfix-footer
                 button.wide(onclick="{textureSave}" title="Shift+Control+S" data-hotkey="Control+S")
                     svg.feather
-                        use(xlink:href="data/icons.svg#save")
-                    span {window.languageJSON.common.save}
+                        use(xlink:href="data/icons.svg#check")
+                    span {vocGlob.apply}
         .texture-editor-anAtlas.tall(
             if="{opts.texture}"
             style="background-color: {previewColor};"

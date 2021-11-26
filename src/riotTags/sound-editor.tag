@@ -29,7 +29,7 @@ sound-editor.panel.view
             button.wide(onclick="{soundSave}" title="Shift+Control+S" data-hotkey="Control+S")
                 svg.feather
                     use(xlink:href="data/icons.svg#check")
-                span {voc.save}
+                span {vocGlob.apply}
     script.
         const path = require('path');
         const fs = require('fs-extra');
