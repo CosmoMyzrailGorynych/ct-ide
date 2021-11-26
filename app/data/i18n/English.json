@@ -42,19 +42,41 @@
         "pastedFromClipboard": "Pasted from clipboard",
         "reallyexit": "Are you sure you want to exit? All unsaved changes will be lost.",
         "rename": "Rename",
+        "required": "Required",
         "save": "Save",
         "savedcomm": "Your project was succesfully saved.",
         "saveproject": "Save project",
         "selectDialogue": "Select…",
         "select": "Select",
         "search": "Search:",
+        "settings": "Settings",
         "sort": "Sort:",
         "tilelayer": "tile layer",
         "wrongFormat": "Wrong file format",
         "yes": "Yes",
         "zoom": "Zoom",
         "zoomIn": "Zoom in",
-        "zoomOut": "Zoom out"
+        "zoomOut": "Zoom out",
+        "fieldTypes": {
+            "checkbox": "Checkbox",
+            "code": "Codebox",
+            "color": "Color",
+            "group": "Group of fields",
+            "h1": "Header of 1st level",
+            "h2": "Header of 2nd level",
+            "h3": "Header of 3rd level",
+            "h4": "Header of 4th level",
+            "number": "Number",
+            "point2D": "2D point",
+            "radio": "Radio buttons",
+            "slider": "Slider",
+            "sliderAndNumber": "Slider with a number input",
+            "table": "Table",
+            "text": "Short text",
+            "textfield": "Textbox",
+            "texture": "Texture",
+            "type": "Type"
+        }
     },
     "copyCustomProperties": {
         "customProperties": "Custom Properties",
@@ -197,6 +219,27 @@
             "invertPreloaderScheme": "Invert preloader's color scheme",
             "hideLoadingLogo": "Hide \"Made with ct.js\" graphics on the loading screen"
         },
+        "content": {
+            "heading": "Content type editor",
+            "addContentType": "Add a type",
+            "missingTypeName": "Unnamed content type",
+            "unnamedContentTypeHint": "This content type is unnamed. It will not be usable in-game unless you add the name.",
+            "typeName": "Content type name",
+            "typeNameHint": "The name of your content type as it will be used in code. Examples: GearItems, EnemySkills, Cities.",
+            "typeReadableName": "Readable name",
+            "typeReadableNameHint": "The readable name of your content type, which is shown here and in content editors.",
+            "icon": "Icon",
+            "typeSpecification": "Content schema",
+            "fieldName": "Name",
+            "fieldNameHint": "The name of the field as it will be used in code. For example: power, hp, spawnType.",
+            "fieldReadableName": "Readable name",
+            "fieldReadableNameHint": "The readable version of the name, which is used in the content editor.",
+            "fieldType": "Type",
+            "deleteContentType": "Delete this content type",
+            "confirmDeletionMessage": "Are you sure you want to delete this content type? It is irreversible and will also delete all the entries of this content type.",
+            "gotoEntries": "Go to entries",
+            "entries": "Entries"
+        },
         "modules": {
             "heading": "Catmods"
         },
@@ -236,7 +279,8 @@
                 "obfuscate": "Obfuscate"
             }
         },
-        "catmodsSettings": "Catmods' settings"
+        "catmodsSettings": "Catmods' settings",
+        "contentTypes": "Content Types"
     },
     "modules": {
         "author": "Author of this catmod",

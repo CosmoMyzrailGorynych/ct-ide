@@ -38,6 +38,15 @@ textarea
     .compact
         padding 0.2em 0.3em
         line-height 1
+    &.invalid
+        border-color error
+
+input[type="text"],
+input[type="number"],
+input[type="url"],
+input[type="password"]
+    &.compact
+        max-width 8em
 
 input[type="number"]
     padding-right 0
@@ -339,6 +348,8 @@ fieldset
         left 0
         top 0.5rem
         border 1px solid act
+        &.invalid
+            border-color error
         box-sizing border-box
         position absolute
         border-radius br

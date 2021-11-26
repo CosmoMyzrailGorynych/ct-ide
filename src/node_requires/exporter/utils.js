@@ -60,6 +60,56 @@ const getUnwrappedExtends = function getUnwrappedExtends(exts) {
     return out;
 };
 
+/**
+ * Supports flat objects only.
+ * A helper for a content function; unwraps IDs for assets
+ * according to the provided specification for this content type.
+ *
+ * @param {object} exts The object which fields should be unwrapped.
+ * @param {object} spec The field schema for this particular content type.
+ *
+ * @returns {object} The unwrapped object.
+ */
+const getUnwrappedBySpec = function getUnwrappedBySpec(exts, spec) {
+    const fieldMap = {};
+    for (const field of spec) {
+        fieldMap[field.name || field.readableName] = field;
+    }
+    const out = {};
+    for (const i in exts) {
+        if ((fieldMap[i].type === 'type' || fieldMap[i].type === 'texture') &&
+            (exts[i] === void 0 || exts[i] === -1)) {
+            // Skip unset values
+            continue;
+        }
+        if (fieldMap[i].type === 'type') {
+            try {
+                out[i] = getTypeFromId(exts[i]).name;
+            } catch (e) {
+                alertify.error(`Could not resolve UID ${exts[i]} for field ${i} as a type. Returning -1. Full object: ${JSON.stringify(exts)}`);
+                console.error(e);
+                // eslint-disable-next-line no-console
+                console.trace();
+                out[i] = -1;
+            }
+        } else if (fieldMap[i].type === 'texture') {
+            try {
+                out[i] = getTextureFromId(exts[i]).name;
+            } catch (e) {
+                alertify.error(`Could not resolve UID ${exts[i]} for field ${i} as a texture. Returning -1. Full object: ${JSON.stringify(exts)}`);
+                console.error(e);
+                // eslint-disable-next-line no-console
+                console.trace();
+                out[i] = -1;
+            }
+        } else {
+            // Seems to be a plain value. Output the old key as is.
+            out[i] = exts[i];
+        }
+    }
+    return out;
+};
+
 const getCleanKey = i => {
     const split = i.split('@@');
     if (split.length > 1) {
@@ -70,5 +120,6 @@ const getCleanKey = i => {
 
 module.exports = {
     getUnwrappedExtends,
+    getUnwrappedBySpec,
     getCleanKey
 };

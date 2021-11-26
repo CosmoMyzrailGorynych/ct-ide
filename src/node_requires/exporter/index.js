@@ -11,6 +11,7 @@ const {stringifyRooms, getStartingRoom} = require('./rooms');
 const {stringifyStyles} = require('./styles');
 const {stringifyTandems} = require('./emitterTandems');
 const {stringifyTypes} = require('./types');
+const {stringifyContent} = require('./content');
 const {bundleFonts, bakeBitmapFonts} = require('./fonts');
 const {bakeFavicons} = require('./icons');
 const {getUnwrappedExtends, getCleanKey} = require('./utils');
@@ -162,6 +163,7 @@ const exportCtProject = async (project, projdir, production) => {
     const sourcesList = [
         'backgrounds.js',
         'camera.js',
+        'content.js',
         'ct.css',
         'emitters.js',
         'index.html',
@@ -212,6 +214,11 @@ const exportCtProject = async (project, projdir, production) => {
     buffer += (await sources['inputs.js']).replace('/*@actions@*/', actionsSetup);
     buffer += '\n';
     buffer += await addModules(buffer);
+    buffer += '\n';
+
+    const content = stringifyContent(project);
+    buffer += (await sources['content.js']).replace('/*@contentTypes@*/', `'${content}'`);
+    buffer += '\n';
 
     /* User-defined scripts */
     for (const script of project.scripts) {
