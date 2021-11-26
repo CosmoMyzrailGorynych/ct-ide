@@ -13,7 +13,7 @@
     @attribute [wide] (atomic)
         Whether to prefer a full-width layout. Useful for making neat columns of editable fields.
 
-    @attribute [customextends] (riot Array<object>)
+    @attribute [customextends] (riot Array<IExtensionField>)
         Instead of reading modules' directory, use these extends specification instead.
         Useful for quickly generating markup for built-in fields.
 
@@ -23,21 +23,22 @@
         name: string, // the displayed name.
         // Below 'h1', 'h2', 'h3', 'h4' are purely decorational, for grouping fields. Others denote the type of an input field.
         type: 'h1' | 'h2' | 'h3' | 'h4' | 'text' | 'textfield' | 'code' | 'number' |
-              'slider' | 'sliderAndNumber' | 'point2D' | 'checkbox' | 'radio' | 'texture' | 'type' |
-              'color' | 'group',
+              'slider' | 'sliderAndNumber' | 'point2D' | 'checkbox' | 'radio' | 'select' | 'texture' | 'type' |
+              'color' | 'group' | 'table',
         key?: string, // the name of a JSON key to write into the `opts.entity`. Not needed for hN types, but required otherwise
                       // The key may have special suffixes that tell the exporter to unwrap foreign keys (resources' UIDs) into asset names.
                       // These are supposed to always be used with `'type'` and `'texture'` input types.
                       // Example: 'enemyClass@@type', 'background@@texture'.
         default?: any, // the default value; it is not written to the `opts.entity`, but is shown in inputs.
         help?: string, // a text label describing the purpose of a field
-        options?: Array<{ // Used with type === 'radio'.
+        options?: Array<{ // Used with type === 'radio' and type === 'select'.
             value: any,
             name: string,
             help?: string
         }>,
         array?: boolean, // Whether to display an editable list instead of just one field.
         items?: Array<IExtensionField>, // For type === 'group', the grouped items.
+        fields?: Array<IExtensionField>, // For type === 'table'
         collect?: boolean, // Whether to collect values and suggest them later as an auto-completion results. (Not yet implemented)
         collectScope?: string // The name of a category under which to store suggestions from `collect`.
     }
