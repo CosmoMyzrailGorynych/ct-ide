@@ -123,15 +123,23 @@ texture-editor.panel.view
                     onmousedown="{startMoving('point')}"
                     oncontextmenu="{removeStripPoint}"
                 )
-            .textureview-tools
+            .texture-editor-Tools
                 .toright
                     label.file(title="{voc.replacetexture}")
                         input(type="file" ref="textureReplacer" accept=".png,.jpg,.jpeg,.bmp,.gif" onchange="{textureReplace}")
-                        .button.inline
+                        .button.inline.forcebackground
                             svg.feather
                                 use(xlink:href="data/icons.svg#folder")
                             span {voc.replacetexture}
-                    .button.inline(
+                    .button.inline.forcebackground(
+                        if="{opts.texture.source}"
+                        title="{voc.reimport} (Control+R)"
+                        onclick="{reimport}"
+                        data-hotkey="Control+r"
+                    )
+                        svg.feather
+                            use(xlink:href="data/icons.svg#refresh-ccw")
+                    .button.inline.forcebackground(
                         title="{voc.updateFromClipboard} (Control+V)"
                         onclick="{paste}"
                         data-hotkey="Control+v"
@@ -140,20 +148,12 @@ texture-editor.panel.view
                     )
                         svg.feather
                             use(xlink:href="data/icons.svg#clipboard")
-                    .button.inline(
-                        if="{opts.texture.source}"
-                        title="{voc.reimport} (Control+R)"
-                        onclick="{reimport}"
-                        data-hotkey="Control+r"
-                    )
-                        svg.feather
-                            use(xlink:href="data/icons.svg#refresh-ccw")
             .textureview-zoom.flexrow
-                b {Math.round(zoomFactor * 100)}%
+                b.aContrastingPlaque {Math.round(zoomFactor * 100)}%
                 .spacer
                 zoom-slider(onchanged="{setZoom}" ref="zoomslider" value="{zoomFactor}")
             .textureview-bg
-                button.inline(onclick="{changePreviewBg}")
+                button.inline.forcebackground(onclick="{changePreviewBg}")
                     svg.feather
                         use(xlink:href="data/icons.svg#droplet")
                     span {voc.bgcolor}

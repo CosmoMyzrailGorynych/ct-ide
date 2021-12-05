@@ -30,25 +30,27 @@ emitter-tandem-editor.panel.view.flexrow
             onpointerout="{resetEmitterPositioning}"
         )
         .emitter-tandem-editor-Tools.flexrow
-            button.nogrow.emitter-tandem-editor-aResetEmittersButton(onclick="{resetEmitters}")
+            button.nogrow.forcebackground(onclick="{resetEmitters}")
                 span {voc.reset}
             .spacer
-            button.nogrow.emitter-tandem-editor-aChangeGridButton(onclick="{openPreviewTexturePicker}")
+            button.nogrow.forcebackground(onclick="{openPreviewTexturePicker}")
                 svg.feather
                     use(xlink:href="data/icons.svg#texture")
                 span {voc.setPreviewTexture}
-            button.nogrow.emitter-tandem-editor-aChangeGridButton(onclick="{changeGrid}")
+            button.nogrow.forcebackground(onclick="{changeGrid}")
                 svg.feather
                     use(xlink:href="data/icons.svg#grid")
                 span {voc.changeGrid}
-            button.nogrow.emitter-tandem-editor-aChangeBgButton(onclick="{changePreviewBg}")
+            button.nogrow.forcebackground(onclick="{changePreviewBg}")
                 svg.feather
                     use(xlink:href="data/icons.svg#droplet")
                 span {voc.changeBg}
         .zoom.flexrow
-            b(if="{window.innerWidth - panelWidth > 550}") {vocGlob.zoom}
-            .spacer
-            b {Math.round(zoom * 100)}%
+            b.aContrastingPlaque
+                span(if="{window.innerWidth - panelWidth > 550}") {vocGlob.zoom}
+                |
+                |
+                b {Math.round(zoom * 100)}%
             .spacer
             zoom-slider(onchanged="{setZoom}" ref="zoomslider" value="{zoom}")
     color-picker(
