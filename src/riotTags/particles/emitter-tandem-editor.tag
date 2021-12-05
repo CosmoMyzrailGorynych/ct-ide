@@ -35,7 +35,7 @@ emitter-tandem-editor.panel.view.flexrow
             .spacer
             button.nogrow.emitter-tandem-editor-aChangeGridButton(onclick="{openPreviewTexturePicker}")
                 svg.feather
-                    use(xlink:href="data/icons.svg#coin")
+                    use(xlink:href="data/icons.svg#texture")
                 span {voc.setPreviewTexture}
             button.nogrow.emitter-tandem-editor-aChangeGridButton(onclick="{changeGrid}")
                 svg.feather
