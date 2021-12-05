@@ -31,7 +31,6 @@ styles-panel.tall.fifty
             }
             const id = generateGUID(),
                   slice = id.split('-').pop();
-            global.currentProject.styletick++;
             const obj = {
                 name: 'Style_' + slice,
                 uid: id,
