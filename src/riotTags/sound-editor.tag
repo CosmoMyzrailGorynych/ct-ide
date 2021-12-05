@@ -3,7 +3,7 @@ sound-editor.panel.view
         b {voc.name}
         br
         input.wide(type="text" value="{sound.name}" onchange="{wire('this.sound.name')}")
-        .anErrorNotice(if="{nameTaken}") {vocGlob.nametaken}
+        .anErrorNotice(if="{nameTaken}" ref="errorNotice") {vocGlob.nametaken}
         br
         p
             label
@@ -51,11 +51,22 @@ sound-editor.panel.view
             this.playing = true;
         };
         this.soundSave = () => {
+            if (this.nameTaken) {
+                // animate the error notice
+                require('./data/node_requires/jellify')(this.refs.errorNotice);
+                if (localStorage.disableSounds !== 'on') {
+                    soundbox.play('Failure');
+                }
+                return false;
+            }
+
             if (this.playing) {
                 this.togglePlay();
             }
             this.parent.editing = false;
             this.parent.update();
+
+            return true;
         };
         this.togglePlay = function togglePlay() {
             if (this.playing) {
