@@ -13,7 +13,7 @@ emitter-editor.panel.pad.nb
     )
         button.wide(onclick="{parent.showTexturesSelector}")
             svg.feather
-                use(xlink:href="data/icons.svg#coin")
+                use(xlink:href="data/icons.svg#texture")
             span {parent.voc.selectTexture}
         button.wide(onclick="{parent.showTextureImport}")
             svg.feather
