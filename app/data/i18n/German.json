@@ -21,7 +21,6 @@
         "done": "Fertig!",
         "duplicate": "Duplizieren",
         "exit": "Beenden",
-        "exitconfirm": "Möchten Sie das Programm wirklich beenden?<br/>Alle ungespeicherten Änderungen gehen dabei verlohren!",
         "fastimport": "Schneller Import",
         "loading": "Lade...",
         "name": "Name:",
