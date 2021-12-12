@@ -217,7 +217,7 @@ const exportCtProject = async (project, projdir, production) => {
     buffer += '\n';
 
     const content = stringifyContent(project);
-    buffer += (await sources['content.js']).replace('/*@contentTypes@*/', `'${content}'`);
+    buffer += (await sources['content.js']).replace('/*@contentTypes@*/', `"${content}"`);
     buffer += '\n';
 
     /* User-defined scripts */
