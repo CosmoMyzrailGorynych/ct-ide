@@ -132,7 +132,28 @@
     {
         "foreground": "#81A1C1",
         "token": "source.plist keyword.operator"
-    }],
+    },
+	{
+        "foreground": "#B48EAD",
+        "token": "regexp.ts"
+    },
+	{
+		"foreground": "#B48EAD",
+        "token": "regexp.escape.ts"
+    },
+	{
+		"foreground": "#B48EAD",
+        "token": "number.ts"
+    },
+	{
+		"foreground": "#B48EAD",
+        "token": "number.hex.ts"
+    },
+	{
+        "foreground": "#8FBCBB",
+        "token": "identifier.ts"
+    }
+	],
     "colors": {
 		"activityBar.activeBackground": "#3b4252",
 		"activityBar.activeBorder": "#88c0d0",

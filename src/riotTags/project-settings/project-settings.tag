@@ -19,7 +19,7 @@ project-settings.panel.view.pad.flexrow
             each name in tabs
                 li(onclick=`{openTab('${name}')}` class=`{active: tab === '${name}'}` title=`{voc.${name}.heading}`)
                     svg.feather
-                        use(xlink:href=`data/icons.svg#${(name in iconMap)? iconMap[name] : iconMap.default}`)
+                        use(xlink:href=`#${(name in iconMap)? iconMap[name] : iconMap.default}`)
                     span='{voc.' + name + '.heading}'
         h3(if="{modulesWithFields.length}") {voc.catmodsSettings}
         ul(if="{modulesWithFields.length}").nav.tabs.vertical
@@ -30,7 +30,7 @@ project-settings.panel.view.pad.flexrow
                 title="{module.manifest.main.name}"
             )
                 svg.feather
-                    use(xlink:href=`data/icons.svg#{getIcon(module)}`)
+                    use(xlink:href=`#{getIcon(module)}`)
                 span {module.manifest.main.name}
         h3(if="{currentProject.contentTypes && currentProject.contentTypes.length}") {voc.contentTypes}
         ul(if="{currentProject.contentTypes && currentProject.contentTypes.length}").nav.tabs.vertical
@@ -41,7 +41,7 @@ project-settings.panel.view.pad.flexrow
                 title="{contentType.readableName || contentType.name || voc.content.missingTypeName}"
             )
                 svg.feather
-                    use(xlink:href=`data/icons.svg#{contentType.icon || 'copy'}`)
+                    use(xlink:href=`#{contentType.icon || 'copy'}`)
                 span {contentType.readableName || contentType.name || voc.content.missingTypeName}
     main
         each name in tabs

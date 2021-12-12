@@ -115,37 +115,39 @@ room-editor.panel.view
             onmousewheel="{onCanvasWheel}"
             oncontextmenu="{onCanvasContextMenu}"
         )
-        .shift
-            button.inline.square(title="{voc.shift}" onclick="{roomShift}")
+        .shift.flexrow
+            button.inline.square.forcebackground(title="{voc.shift}" onclick="{roomShift}")
                 svg.feather
                     use(xlink:href="#move")
-            button.inline.square(
+            button.inline.square.forcebackground(
                 title="{voc.sortHorizontally}"
                 onclick="{sortHorizontally}"
                 if="{tab === 'roomcopies' || tab === 'roomtiles'}"
             )
                 svg.feather
                     use(xlink:href="#sort-horizontal")
-            button.inline.square(
+            button.inline.square.forcebackground(
                 title="{voc.sortVertically}"
                 onclick="{sortVertically}"
                 if="{tab === 'roomcopies' || tab === 'roomtiles'}"
             )
                 svg.feather
                     use(xlink:href="#sort-vertical")
-            span(if="{window.innerWidth - sidebarWidth > 940}") {voc.hotkeysNotice}
+            span.aContrastingPlaque(if="{window.innerWidth - sidebarWidth > 940}") {voc.hotkeysNotice}
         .zoom.flexrow
-            b(if="{window.innerWidth - sidebarWidth > 980}") {vocGlob.zoom}:
-            .spacer
-            b {Math.round(zoomFactor * 100)}%
+            b.aContrastingPlaque
+                span(if="{window.innerWidth - sidebarWidth > 980}") {vocGlob.zoom}:
+                |
+                |
+                span {Math.round(zoomFactor * 100)}%
             .spacer
             zoom-slider(onchanged="{setZoom}" ref="zoomslider" value="{zoomFactor}")
         .grid
-            button#roomgrid(onclick="{roomToggleGrid}" class="{active: room.gridX > 0}")
+            button#roomgrid.forcebackground(onclick="{roomToggleGrid}" class="{active: room.gridX > 0}")
                 span {voc[room.gridX > 0? 'gridoff' : 'grid']}
         .center
-            button#roomcenter(onclick="{roomToCenter}") {voc.tocenter}
-            span.aMouseCoord(show="{window.innerWidth - sidebarWidth > 470}" ref="mousecoords") ({mouseX}:{mouseY})
+            button#roomcenter.forcebackground(onclick="{roomToCenter}") {voc.tocenter}
+            b.aMouseCoord.aContrastingPlaque(show="{window.innerWidth - sidebarWidth > 470}" ref="mousecoords") ({mouseX}:{mouseY})
         room-copy-properties(
             if="{this.selectedCopies && this.selectedCopies.length === 1}"
             copy="{this.selectedCopies[0]}"
