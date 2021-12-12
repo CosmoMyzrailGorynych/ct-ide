@@ -76,10 +76,6 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
         this.getIfDarkTheme = () =>
             localStorage.UItheme === 'Night' || localStorage.UItheme === 'Horizon';
 
-        this.on('update', () => {
-            this.notepadlocal.setValue(global.currentProject.notes || '');
-        });
-
         this.on('mount', () => {
             setTimeout(() => {
                 this.notepadlocal = window.setupCodeEditor(this.refs.notepadlocal, {
@@ -89,6 +85,8 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
                     language: 'typescript'
                 });
 
+                this.notepadglobal.setValue(localStorage.notes);
+                this.notepadlocal.setValue(global.currentProject.notes || '');
                 this.notepadlocal.onDidChangeModelContent(() => {
                     global.currentProject.notes = this.notepadlocal.getValue();
                     glob.modified = true;
@@ -96,7 +94,6 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
                 this.notepadglobal.onDidChangeModelContent(() => {
                     localStorage.notes = this.notepadglobal.getValue();
                 });
-                this.notepadglobal.setValue(localStorage.notes);
             }, 0);
         });
         this.on('unmount', () => {

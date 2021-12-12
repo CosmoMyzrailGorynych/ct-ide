@@ -271,6 +271,7 @@ style-editor.panel.view
                 this.parent.editingStyle = false;
                 this.parent.update();
             });
+            require('./data/node_requires/glob').modified = true;
             return true;
         };
 

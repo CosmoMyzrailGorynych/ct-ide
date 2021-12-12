@@ -89,12 +89,13 @@ app-view.flexcol
             try {
                 const fs = require('fs-extra');
                 const YAML = require('js-yaml');
+                const glob = require('./data/node_requires/glob');
                 const projectYAML = YAML.dump(global.currentProject);
                 await fs.outputFile(global.projdir + '.ict', projectYAML);
                 this.saveRecoveryDebounce();
                 fs.remove(global.projdir + '.ict.recovery')
                 .catch(console.error);
-                // TODO: glob.modified = false;
+                glob.modified = false;
                 alertify.success(window.languageJSON.common.savedcomm, 'success', 3000);
             } catch (e) {
                 alertify.error(e);

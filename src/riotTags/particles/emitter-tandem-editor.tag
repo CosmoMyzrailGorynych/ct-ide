@@ -475,5 +475,6 @@ emitter-tandem-editor.panel.view.flexrow
         this.apply = () => {
             this.parent.editingTandem = false;
             this.parent.update();
+            require('./data/node_requires/glob').modified = true;
             window.signals.trigger('tandemUpdated', this.tandem);
         };

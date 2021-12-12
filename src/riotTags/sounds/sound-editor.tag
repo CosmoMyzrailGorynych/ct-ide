@@ -64,6 +64,7 @@ sound-editor.panel.view
             }
             this.parent.editing = false;
             this.parent.update();
+            require('./data/node_requires/glob').modified = true;
 
             return true;
         };

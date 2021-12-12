@@ -83,6 +83,7 @@ font-editor.panel.view
             this.parent.editingFont = false;
             this.parent.update();
             this.parent.loadFonts();
+            require('./data/node_requires/glob').modified = true;
         };
         this.on('update', () => {
             for (const font of document.fonts) {

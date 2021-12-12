@@ -125,6 +125,7 @@
         };
     };
 
+    window.signals = window.signals || riot.observable({});
     window.signals.on('monacoBooted', () => {
         monaco.languages.registerCompletionItemProvider('typescript', {
             provideCompletionItems: provideTypeNames,

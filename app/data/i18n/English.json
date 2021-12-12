@@ -24,7 +24,6 @@
         "done": "Done!",
         "duplicate": "Duplicate",
         "exit": "Exit",
-        "exitconfirm": "Are you sure you want to exit?<br/>All the unsaved changes will be lost!",
         "fastimport": "Fast Import",
         "filter": "Filter:",
         "loading": "Loading…",

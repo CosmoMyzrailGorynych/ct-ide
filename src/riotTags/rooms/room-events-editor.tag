@@ -33,6 +33,7 @@ room-events-editor.view
     script.
         this.namespace = 'roomview';
         this.mixin(window.riotVoc);
+        const glob = require('./data/node_requires/glob');
 
         this.tab = 'roomcreate';
         const tabToEditor = tab => {
@@ -110,15 +111,19 @@ room-events-editor.view
                 );
                 this.roomoncreate.onDidChangeModelContent(() => {
                     this.room.oncreate = this.roomoncreate.getPureValue();
+                    glob.modified = true;
                 });
                 this.roomonstep.onDidChangeModelContent(() => {
                     this.room.onstep = this.roomonstep.getPureValue();
+                    glob.modified = true;
                 });
                 this.roomondraw.onDidChangeModelContent(() => {
                     this.room.ondraw = this.roomondraw.getPureValue();
+                    glob.modified = true;
                 });
                 this.roomonleave.onDidChangeModelContent(() => {
                     this.room.onleave = this.roomonleave.getPureValue();
+                    glob.modified = true;
                 });
             }, 0);
         });

@@ -76,37 +76,59 @@ main-menu-project
         };
 
         this.openProjectSelector = path => {
-            alertify.confirm(window.languageJSON.common.reallyexit)
-            .then(e => {
-                if (e.buttonClicked === 'ok') {
-                    window.showOpenDialog({
-                        defaultPath: path,
-                        title: window.languageJSON.mainMenu.project.openProject,
-                        filter: '.ict'
-                    })
-                    .then(projFile => {
-                        if (!projFile) {
-                            return;
-                        }
-                        window.signals.trigger('resetAll');
-                        window.loadProject(projFile);
-                    });
+            window.showOpenDialog({
+                defaultPath: path,
+                title: window.languageJSON.mainMenu.project.openProject,
+                filter: '.ict'
+            })
+            .then(projFile => {
+                if (!projFile) {
+                    return;
                 }
+                window.signals.trigger('resetAll');
+                window.loadProject(projFile);
             });
         };
 
         this.openProject = async () => {
-            this.openProjectSelector(await require('./data/node_requires/resources/projects').getDefaultProjectDir());
+            const glob = require('./data/node_requires/glob');
+            const projects = require('./data/node_requires/resources/projects');
+            if (!glob.modified) {
+                this.openProjectSelector(await projects.getDefaultProjectDir());
+            } else {
+                alertify.confirm(this.vocGlob.reallyexit)
+                .then(async e => {
+                    if (e.buttonClicked === 'ok') {
+                        this.openProjectSelector(await projects.getDefaultProjectDir());
+                    }
+                });
+            }
         };
 
         this.openExample = async () => {
-            this.openProjectSelector(await require('./data/node_requires/resources/projects').getExamplesDir());
+            const glob = require('./data/node_requires/glob');
+            const projects = require('./data/node_requires/resources/projects');
+            if (!glob.modified) {
+                this.openProjectSelector(await projects.getExamplesDir());
+            } else {
+                alertify.confirm(this.vocGlob.reallyexit)
+                .then(async e => {
+                    if (e.buttonClicked === 'ok') {
+                        this.openProjectSelector(await projects.getExamplesDir());
+                    }
+                });
+            }
         };
 
         this.toStartScreen = () => {
-            alertify.confirm(window.languageJSON.common.reallyexit, e => {
-                if (e) {
-                    window.signals.trigger('resetAll');
-                }
-            });
+            const glob = require('./data/node_requires/glob');
+            if (!glob.modified) {
+                window.signals.trigger('resetAll');
+            } else {
+                alertify.confirm(this.vocGlob.reallyexit, e => {
+                    if (e) {
+                        window.signals.trigger('resetAll');
+                    }
+                });
+            }
         };
