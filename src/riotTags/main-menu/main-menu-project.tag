@@ -76,19 +76,22 @@ main-menu-project
         };
 
         this.openProjectSelector = path => {
-            alertify.confirm(window.languageJSON.common.reallyexit, () => {
-                window.showOpenDialog({
-                    defaultPath: path,
-                    title: window.languageJSON.mainMenu.project.openProject,
-                    filter: '.ict'
-                })
-                .then(projFile => {
-                    if (!projFile) {
-                        return;
-                    }
-                    window.signals.trigger('resetAll');
-                    window.loadProject(projFile);
-                });
+            alertify.confirm(window.languageJSON.common.reallyexit)
+            .then(e => {
+                if (e.buttonClicked === 'ok') {
+                    window.showOpenDialog({
+                        defaultPath: path,
+                        title: window.languageJSON.mainMenu.project.openProject,
+                        filter: '.ict'
+                    })
+                    .then(projFile => {
+                        if (!projFile) {
+                            return;
+                        }
+                        window.signals.trigger('resetAll');
+                        window.loadProject(projFile);
+                    });
+                }
             });
         };
 
