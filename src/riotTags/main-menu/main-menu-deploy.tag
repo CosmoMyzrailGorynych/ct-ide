@@ -3,11 +3,11 @@ main-menu-deploy
     ul.aMenu
         li(onclick="{exportForWeb}")
             svg.feather
-                use(xlink:href="data/icons.svg#globe-alt")
+                use(xlink:href="#globe-alt")
             span {voc.zipExport}
         li(onclick="{toggleExporter}")
             svg.feather
-                use(xlink:href="data/icons.svg#package")
+                use(xlink:href="#package")
             span {voc.exportDesktop}
     export-panel(show="{showExporter}" onclose="{hideExporter}")
     script.

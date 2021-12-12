@@ -2,19 +2,19 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
     ul.nav.tabs.nogrow.nb
         li(onclick="{changeTab('notepadlocal')}" class="{active: tab === 'notepadlocal'}")
             svg.feather
-                use(xlink:href="data/icons.svg#edit")
+                use(xlink:href="#edit")
             span {voc.local}
         li(onclick="{changeTab('notepadglobal')}" class="{active: tab === 'notepadglobal'}")
             svg.feather
-                use(xlink:href="data/icons.svg#clipboard")
+                use(xlink:href="#clipboard")
             span {voc.global}
         li(onclick="{changeTab('helppages')}" class="{active: tab === 'helppages'}")
             svg.feather
-                use(xlink:href="data/icons.svg#life-buoy")
+                use(xlink:href="#life-buoy")
             span {voc.helppages}
         li(onclick="{changeTab('modulespages')}" class="{active: tab === 'modulespages'}")
             svg.feather
-                use(xlink:href="data/icons.svg#ctmod")
+                use(xlink:href="#ctmod")
             span {voc.modulespages}
     div
         div(show="{tab === 'notepadlocal'}")
@@ -25,13 +25,13 @@ notepad-panel#notepad.panel.dockright(class="{opened: opened}")
             iframe(src="http://localhost:{server.address().port}/{getIfDarkTheme()? '?darkTheme=yep' : ''}" ref="helpIframe" nwdisable nwfaketop)
             button.aHomeButton(title="{voc.backToHome}" onclick="{backToHome}")
                 svg.feather
-                    use(xlink:href="data/icons.svg#home")
+                    use(xlink:href="#home")
         div(show="{tab === 'modulespages'}")
             docs-panel
 
     button.vertical.dockleft(onclick="{notepadToggle}")
         svg.feather
-            use(xlink:href="data/icons.svg#{opened? 'chevron-right' : 'chevron-left'}")
+            use(xlink:href="#{opened? 'chevron-right' : 'chevron-left'}")
     script.
         const glob = require('./data/node_requires/glob');
         this.opened = false;

@@ -9,7 +9,7 @@ actions-input-selector
                     onkeyup="{wire('this.searchString')}"
                 )
                 svg.feather
-                    use(xlink:href="data/icons.svg#search")
+                    use(xlink:href="#search")
         .flexfix-body
             virtual(each="{module in inputProviders}")
                 h2 {module.name}

@@ -2,7 +2,7 @@ dnd-processor
     .aDropzone(if="{dropping}")
         .middleinner
             svg.feather
-                use(xlink:href="data/icons.svg#download")
+                use(xlink:href="#download")
             h2 {languageJSON.common.fastimport}
             input(
                 type="file" multiple

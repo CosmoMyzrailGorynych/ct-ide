@@ -42,20 +42,20 @@ asset-viewer.flexfix(class="{opts.namespace} {opts.class}")
                 class="{selected: sort === 'date' && !searchResults}"
             )
                 svg.feather
-                    use(xlink:href="data/icons.svg#clock")
+                    use(xlink:href="#clock")
             button.inline.square(
                 onclick="{switchSort('name')}"
                 class="{selected: sort === 'name' && !searchResults}"
             )
                 svg.feather
-                    use(xlink:href="data/icons.svg#sort-alphabetically")
+                    use(xlink:href="#sort-alphabetically")
             .aSearchWrap
                 input.inline(type="text" onkeyup="{fuseSearch}")
                 svg.feather
-                    use(xlink:href="data/icons.svg#search")
+                    use(xlink:href="#search")
             button.inline.square(onclick="{switchLayout}")
                 svg.feather
-                    use(xlink:href="data/icons.svg#{localStorage[opts.namespace? (opts.namespace+'Layout') : 'defaultAssetLayout'] === 'list'? 'grid' : 'list'}")
+                    use(xlink:href="#{localStorage[opts.namespace? (opts.namespace+'Layout') : 'defaultAssetLayout'] === 'list'? 'grid' : 'list'}")
         .toleft
             <yield/>
         .clear

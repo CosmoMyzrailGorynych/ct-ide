@@ -3,20 +3,20 @@ main-menu-troubleshooting
     ul.aMenu
         li(onclick="{toggleDevTools}")
             svg.feather
-                use(xlink:href="data/icons.svg#terminal")
+                use(xlink:href="#terminal")
             span {voc.toggleDevTools}
         li(onclick="{copySystemInfo}")
             svg.feather
-                use(xlink:href="data/icons.svg#file-text")
+                use(xlink:href="#file-text")
             span {voc.copySystemInfo}
         li(onclick="{toggleBuiltInDebugger}")
             svg.feather
-                use(xlink:href="data/icons.svg#{localStorage.disableBuiltInDebugger === 'yes' ? 'check-square' : 'square'}")
+                use(xlink:href="#{localStorage.disableBuiltInDebugger === 'yes' ? 'check-square' : 'square'}")
             span {voc.disableBuiltInDebugger}
     ul.aMenu
         li(onclick="{() => nw.Shell.openExternal('https://github.com/ct-js/ct-js/issues/new/choose')}")
             svg.icon
-                use(xlink:href="data/icons.svg#github")
+                use(xlink:href="#github")
             span {voc.postAnIssue}
     script.
         this.namespace = 'mainMenu.troubleshooting';

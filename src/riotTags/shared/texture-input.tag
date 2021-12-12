@@ -21,18 +21,18 @@ texture-input(class="{large: opts.large} {opts.class}")
             span(if="{val !== -1}") {getTextureFromId(val).name}
         button.square(if="{val !== -1}" title="{voc.jumpToTexture}" onclick="{openTexture}")
             svg.feather
-                use(xlink:href="data/icons.svg#external-link")
+                use(xlink:href="#external-link")
         button.square(if="{val !== -1 && opts.showempty}" title="{vocGlob.clear}" onclick="{clearTexture}")
             svg.feather
-                use(xlink:href="data/icons.svg#x")
+                use(xlink:href="#x")
     .texture-input-aBigInput(if="{opts.large}" onclick="{openSelector}" title="{voc.changeTexture}")
         .texture-input-TexturesTinyTools
             button.tiny(if="{val !== -1}" title="{voc.jumpToTexture}" onclick="{openTexture}")
                 svg.feather
-                    use(xlink:href="data/icons.svg#external-link")
+                    use(xlink:href="#external-link")
             button.tiny(if="{val !== -1 && opts.showempty}" title="{vocGlob.clear}" onclick="{clearTexture}")
                 svg.feather
-                    use(xlink:href="data/icons.svg#x")
+                    use(xlink:href="#x")
         img(src="{getTexturePreview(val || -1, true)}")
         .texture-input-aTextureLabel(if="{val === -1}") {vocGlob.select}
         .texture-input-aTextureLabel(if="{val !== -1}") {getTextureFromId(val).name}

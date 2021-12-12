@@ -11,7 +11,7 @@
 icon-input
     button(onclick="{openSelector}" title="{voc.changeTexture}")
         svg.feather
-            use(xlink:href="data/icons.svg#{val}")
+            use(xlink:href="#{val}")
         span {vocGlob.select}
     icon-selector(
         if="{selectingIcon}"

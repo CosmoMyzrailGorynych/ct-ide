@@ -37,7 +37,7 @@ collapsible-section(class="{opts.class} {opened ? 'opened' : 'closed'}")
             h7(if="{opts.hlevel == 7}") {opts.heading}
         yield(from="header")
         svg.feather.a(class="{rotated: this.opened}")
-            use(xlink:href="data/icons.svg#chevron-up")
+            use(xlink:href="#chevron-up")
     .collapsible-section-aWrapper(if="{opened || opts.preservedom}" hide="{!opened && opts.preservedom}")
         <yield/>
     script.

@@ -108,18 +108,18 @@ extensions-editor
                                 // Use opacity to keep nice layout
                                 .anActionableIcon(onclick="{moveUp(ext, entry)}" title="{voc.moveUp}" style="{ind === 0 ? 'opacity: 0;' : ''}")
                                     svg.feather
-                                        use(xlink:href="data/icons.svg#arrow-up")
+                                        use(xlink:href="#arrow-up")
                                 .anActionableIcon(onclick="{moveDown(ext, entry)}"  style="{ind === parent.parent.opts.entity[ext.key].length - 1 ? 'opacity: 0;' : ''}" title="{voc.moveDown}")
                                     svg.feather
-                                        use(xlink:href="data/icons.svg#arrow-down")
+                                        use(xlink:href="#arrow-down")
                                 .anActionableIcon(onclick="{deleteRow(ext, entry)}" title="{voc.deleteScript}")
                                     svg.feather.red
-                                        use(xlink:href="data/icons.svg#delete")
+                                        use(xlink:href="#delete")
                             tr(if="{!parent.opts.entity[ext.key] || !parent.opts.entity[ext.key].length}")
                                 td(colspan="{ext.fields.length + (parent.opts.compact ? 1 : 2)}") {parent.voc.noEntries}
                 button(onclick="{parent.addRow}")
                     svg.feather
-                        use(xlink:href="data/icons.svg#plus")
+                        use(xlink:href="#plus")
                     span {parent.voc.addRow}
             dd(if="{ext.type !== 'table'}")
                 input.nogrow(

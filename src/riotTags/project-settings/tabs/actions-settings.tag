@@ -6,20 +6,20 @@ actions-settings
     div(if="{!global.currentProject.actions || !global.currentProject.actions.length}")
         button.nml(onclick="{addNewAction}")
             svg.feather
-                use(xlink:href="data/icons.svg#plus")
+                use(xlink:href="#plus")
             span {voc.makeFromScratch}
         h2 {voc.presets}
         button.nml(onclick="{addXYMovementPreset}")
             svg.feather
-                use(xlink:href="data/icons.svg#move")
+                use(xlink:href="#move")
             span {voc.presetXYMovement}
         button.nml(onclick="{addTouchAndMousePreset}")
             svg.feather
-                use(xlink:href="data/icons.svg#smartphone")
+                use(xlink:href="#smartphone")
             span {voc.presetTouchAndMouse}
         button.nml(onclick="{importCustomPreset}")
             svg.feather
-                use(xlink:href="data/icons.svg#download")
+                use(xlink:href="#download")
             span {voc.presetCustom}
     div(if="{global.currentProject.actions && global.currentProject.actions.length}")
         li.hide800.npl.npr
@@ -37,14 +37,14 @@ actions-settings
                         .anErrorNotice(if="{action.name.trim() === ''}" ref="errors") {vocGlob.cannotBeEmpty}
                     .spacer
                     svg.feather.a(title="{voc.deleteAction}" onclick="{deleteAction}")
-                        use(xlink:href="data/icons.svg#x")
+                        use(xlink:href="#x")
             .c8.npr.npl.breakon800
                 ul.aStripedList.nmt
                     li.flexrow.middle.npl(each="{method, mInd in action.methods}")
                         .fifty.npt.npl.npb
                             code.inline {method.code}
                             svg.feather.orange(if="{!(method.code.split('.')[0] in global.currentProject.libs)}" title="{voc.methodModuleMissing}")
-                                use(xlink:href="data/icons.svg#alert-circle")
+                                use(xlink:href="#alert-circle")
                         .fifty.npt.npr.npb
                             b {voc.multiplier}:
                             input.short(
@@ -53,20 +53,20 @@ actions-settings
                                 onchange="{wire('global.currentProject.actions.'+ ind +'.methods.'+ mInd +'.multiplier')}"
                             )
                         svg.feather.a(title="{voc.deleteMethod}" onclick="{deleteMethod(action)}")
-                            use(xlink:href="data/icons.svg#x")
+                            use(xlink:href="#x")
                 button.nml(onclick="{addMethod}")
                     svg.feather
-                        use(xlink:href="data/icons.svg#plus")
+                        use(xlink:href="#plus")
                     span   {voc.addMethod}
             .clear
         p
             button.nml(onclick="{addNewAction}")
                 svg.feather
-                    use(xlink:href="data/icons.svg#plus")
+                    use(xlink:href="#plus")
                 span {voc.addAction}
             button.nml(onclick="{exportActionPreset}")
                 svg.feather
-                    use(xlink:href="data/icons.svg#upload")
+                    use(xlink:href="#upload")
                 span {voc.exportActionPreset}
     .dimmer(show="{addingMethod}")
         actions-input-selector(action="{editedAction}" ref="methodSelector")

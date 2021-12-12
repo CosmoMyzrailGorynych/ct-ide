@@ -14,12 +14,12 @@ emitter-tandem-editor.panel.view.flexrow
             )
             button.emitter-tandem-editor-anAddEmitterButton(onclick="{addEmitter}")
                 svg.feather
-                    use(xlink:href="data/icons.svg#plus")
+                    use(xlink:href="#plus")
                 span {voc.addEmitter}
         .flexfix-footer
             button.wide(onclick="{apply}")
                 svg.feather
-                    use(xlink:href="data/icons.svg#check")
+                    use(xlink:href="#check")
                 span {vocGlob.apply}
     .aResizer.vertical(onmousedown="{gutterMouseDown}")
     div(ref="preview")
@@ -35,15 +35,15 @@ emitter-tandem-editor.panel.view.flexrow
             .spacer
             button.nogrow.emitter-tandem-editor-aChangeGridButton(onclick="{openPreviewTexturePicker}")
                 svg.feather
-                    use(xlink:href="data/icons.svg#coin")
+                    use(xlink:href="#coin")
                 span {voc.setPreviewTexture}
             button.nogrow.emitter-tandem-editor-aChangeGridButton(onclick="{changeGrid}")
                 svg.feather
-                    use(xlink:href="data/icons.svg#grid")
+                    use(xlink:href="#grid")
                 span {voc.changeGrid}
             button.nogrow.emitter-tandem-editor-aChangeBgButton(onclick="{changePreviewBg}")
                 svg.feather
-                    use(xlink:href="data/icons.svg#droplet")
+                    use(xlink:href="#droplet")
                 span {voc.changeBg}
         .zoom.flexrow
             b(if="{window.innerWidth - panelWidth > 550}") {vocGlob.zoom}

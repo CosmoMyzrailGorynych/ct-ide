@@ -8,7 +8,7 @@ writable-folder-prompt
                     p {voc.paragraphDirectoryDirections}
                     button(onclick="{openDirectoryPicker}")
                         svg.feather
-                            use(xlink:href="data/icons.svg#search")
+                            use(xlink:href="#search")
                         span {voc.selectFolder}
                 .fourty.npt.npr
                     svg.anIllustration.wide.tall

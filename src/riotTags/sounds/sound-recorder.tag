@@ -3,7 +3,7 @@ sound-recorder.panel.view
         .toright
             button.square.inline(onclick="{opts.onclose}" title="{vocGlob.close}")
                 svg.feather
-                    use(xlink:href="data/icons.svg#x")
+                    use(xlink:href="#x")
         h2.nmt {voc.recorderHeading}
         p
         p(if="{state === 'error'}") {voc.cannotRecordSound}
@@ -12,11 +12,11 @@ sound-recorder.panel.view
         .center(if="{state === 'ready'}")
             button.round.square.huge(title="{voc.record}" onclick="{startRecording}")
                 svg.feather
-                    use(xlink:href="data/icons.svg#mic")
+                    use(xlink:href="#mic")
         .center(if="{state === 'recording'}")
             button.round.square.huge(title="{voc.stopRecording}" onclick="{stopRecording}")
                 svg.feather
-                    use(xlink:href="data/icons.svg#square")
+                    use(xlink:href="#square")
         .center(if="{state === 'editing'}")
             audio.wide(
                 ref="audio" controls loop
@@ -25,13 +25,13 @@ sound-recorder.panel.view
             p
             button.round.square.huge(title="{voc.discardRecording}" onclick="{discardRecording}")
                 svg.feather
-                    use(xlink:href="data/icons.svg#x")
+                    use(xlink:href="#x")
             button.round.square.huge(title="{voc.finishRecording}" onclick="{finishRecording}")
                 svg.feather
-                    use(xlink:href="data/icons.svg#check")
+                    use(xlink:href="#check")
         .center(if="{state === 'loading'}")
             svg.feather.rotate(if="{state === 'loading'}")
-                use(xlink:href="data/icons.svg#loader")
+                use(xlink:href="#loader")
     script.
         this.namespace = 'soundRecorder';
         this.mixin(window.riotVoc);

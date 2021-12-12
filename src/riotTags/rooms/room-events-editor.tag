@@ -3,19 +3,19 @@ room-events-editor.view
         ul.tabs.nav.nogrow.noshrink.nb
             li(onclick="{switchTab('roomcreate')}" class="{active: tab === 'roomcreate'}" title="Control-Q" data-hotkey="Control+q")
                 svg.feather
-                    use(xlink:href="data/icons.svg#sun")
+                    use(xlink:href="#sun")
                 span {voc.create}
             li(onclick="{switchTab('roomstep')}" class="{active: tab === 'roomstep'}" title="Control-W" data-hotkey="Control+w")
                 svg.feather
-                    use(xlink:href="data/icons.svg#skip-forward")
+                    use(xlink:href="#skip-forward")
                 span {voc.step}
             li(onclick="{switchTab('roomdraw')}" class="{active: tab === 'roomdraw'}" title="Control-E" data-hotkey="Control+e")
                 svg.feather
-                    use(xlink:href="data/icons.svg#edit-2")
+                    use(xlink:href="#edit-2")
                 span {voc.draw}
             li(onclick="{switchTab('roomleave')}" class="{active: tab === 'roomleave'}" title="Control-R" data-hotkey="Control+r")
                 svg.feather
-                    use(xlink:href="data/icons.svg#trash")
+                    use(xlink:href="#trash")
                 span {voc.leave}
         div(style="position: relative;")
             .tabbed(show="{tab === 'roomcreate'}")
@@ -28,7 +28,7 @@ room-events-editor.view
                 .aCodeEditor(ref="roomonleave")
     button.wide.nogrow.noshrink(onclick="{roomSaveEvents}")
         svg.feather
-            use(xlink:href="data/icons.svg#check")
+            use(xlink:href="#check")
         span {voc.done}
     script.
         this.namespace = 'roomview';

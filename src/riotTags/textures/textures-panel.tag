@@ -16,7 +16,7 @@ textures-panel.panel.view
                         onchange="{parent.textureImport}")
                     .button
                         svg.feather
-                            use(xlink:href="data/icons.svg#download")
+                            use(xlink:href="#download")
                         span {voc.import}
                 button(
                     onclick="{parent.pasteTexture}"
@@ -25,13 +25,13 @@ textures-panel.panel.view
                     data-hotkey-require-scope="texture"
                 )
                     svg.feather
-                        use(xlink:href="data/icons.svg#clipboard")
+                        use(xlink:href="#clipboard")
                 button(
                     onclick="{parent.openGenerator}"
                     title="{voc.generatePlaceholder}"
                 )
                     svg.feather
-                        use(xlink:href="data/icons.svg#loader")
+                        use(xlink:href="#loader")
             asset-viewer(
                 collection="{global.currentProject.skeletons}"
                 contextmenu="{showSkeletonPopup}"
@@ -49,7 +49,7 @@ textures-panel.panel.view
                         onchange="{parent.textureImport}")
                     .button
                         svg.feather
-                            use(xlink:href="data/icons.svg#download")
+                            use(xlink:href="#download")
                         span {voc.import}
     texture-editor(if="{editing}" texture="{currentTexture}")
     texture-generator(if="{generating}" onclose="{closeGenerator}")

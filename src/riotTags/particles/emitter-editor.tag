@@ -3,7 +3,7 @@ emitter-editor.panel.pad.nb
         img.emitter-editor-aTexture(src="{getPreview()}")
         h3 {voc.emitterHeading} {opts.emitter.uid.split('-').pop()}
         svg.feather.act(title="{vocGlob.delete}" onclick="{deleteEmitter}")
-            use(xlink:href="data/icons.svg#trash")
+            use(xlink:href="#trash")
 
     collapsible-section(
         heading="{voc.textureHeading}"
@@ -13,11 +13,11 @@ emitter-editor.panel.pad.nb
     )
         button.wide(onclick="{parent.showTexturesSelector}")
             svg.feather
-                use(xlink:href="data/icons.svg#coin")
+                use(xlink:href="#coin")
             span {parent.voc.selectTexture}
         button.wide(onclick="{parent.showTextureImport}")
             svg.feather
-                use(xlink:href="data/icons.svg#download")
+                use(xlink:href="#download")
             span {parent.voc.importBuiltin}
 
     collapsible-section(

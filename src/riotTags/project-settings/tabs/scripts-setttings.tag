@@ -7,16 +7,16 @@ scripts-settings
                 // Use forced opacity to keep nice layout
                 div.anActionableIcon(onclick="{moveUp}" title="{voc.moveUp}" style="{index === 0? 'opacity: 0;' : ''}")
                     svg.feather
-                        use(xlink:href="data/icons.svg#arrow-up")
+                        use(xlink:href="#arrow-up")
                 div.anActionableIcon(onclick="{moveDown}"  style="{index === global.currentProject.scripts.length - 1 ? 'opacity: 0;' : ''}" title="{voc.moveDown}")
                     svg.feather
-                        use(xlink:href="data/icons.svg#arrow-down")
+                        use(xlink:href="#arrow-down")
                 div.anActionableIcon(onclick="{deleteScript}" title="{voc.deleteScript}")
                     svg.feather.red
-                        use(xlink:href="data/icons.svg#delete")
+                        use(xlink:href="#delete")
     button(onclick="{addNewScript}")
         svg.feather
-            use(xlink:href="data/icons.svg#plus")
+            use(xlink:href="#plus")
         span {voc.addNew}
     script-editor(if="{currentScript}" script="{currentScript}")
     script.

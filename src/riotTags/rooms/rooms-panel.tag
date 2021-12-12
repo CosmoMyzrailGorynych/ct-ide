@@ -6,21 +6,21 @@ rooms-panel.panel.view
                     b {vocGlob.sort}
                     button.inline.square(onclick="{switchSort('date')}" class="{selected: sort === 'date' && !searchResults}")
                         svg.feather
-                            use(xlink:href="data/icons.svg#clock")
+                            use(xlink:href="#clock")
                     button.inline.square(onclick="{switchSort('name')}" class="{selected: sort === 'name' && !searchResults}")
                         svg.feather
-                            use(xlink:href="data/icons.svg#sort-alphabetically")
+                            use(xlink:href="#sort-alphabetically")
                     .aSearchWrap
                         input.inline(type="text" onkeyup="{fuseSearch}")
                         svg.feather
-                            use(xlink:href="data/icons.svg#search")
+                            use(xlink:href="#search")
                     button.inline.square(onclick="{switchLayout}")
                         svg.feather
-                            use(xlink:href="data/icons.svg#{localStorage.roomsLayout === 'list'? 'grid' : 'list'}")
+                            use(xlink:href="#{localStorage.roomsLayout === 'list'? 'grid' : 'list'}")
                 .toleft
                     button#roomcreate(onclick="{roomCreate}" data-hotkey="Control+n" title="Control+N")
                         svg.feather
-                            use(xlink:href="data/icons.svg#plus")
+                            use(xlink:href="#plus")
                         span {voc.create}
         ul.pad.cards.largeicons.flexfix-body(class="{list: localStorage.roomsLayout === 'list'}")
             li(
@@ -34,7 +34,7 @@ rooms-panel.panel.view
                 span {room.name}
                 span.date(if="{room.lastmod}") {niceTime(room.lastmod)}
                 svg.feather.aStartingRoomIcon(if="{global.currentProject.startroom === room.uid}")
-                    use(xlink:href="data/icons.svg#play")
+                    use(xlink:href="#play")
     room-editor(if="{editing}" room="{editingRoom}")
     context-menu(menu="{roomMenu}" ref="roomMenu")
     script.

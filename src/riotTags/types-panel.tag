@@ -10,7 +10,7 @@ types-panel.panel.view
     )
         button#typecreate(onclick="{parent.typeCreate}" title="Control+N" data-hotkey="Control+n")
             svg.feather
-                use(xlink:href="data/icons.svg#plus")
+                use(xlink:href="#plus")
             span {voc.create}
     type-editor(if="{editingType}" type="{editedType}")
     context-menu(menu="{typeMenu}" ref="typeMenu")

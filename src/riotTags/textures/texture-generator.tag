@@ -58,15 +58,15 @@ texture-generator.view
         .flexrow.nogrow
             button(onclick="{close}")
                 svg.feather
-                    use(xlink:href="data/icons.svg#x")
+                    use(xlink:href="#x")
                 span {vocGlob.close}
             button(onclick="{createAndClose}")
                 svg.feather
-                    use(xlink:href="data/icons.svg#check")
+                    use(xlink:href="#check")
                 span {voc.createAndClose}
             button(onclick="{create}")
                 svg.feather
-                    use(xlink:href="data/icons.svg#loader")
+                    use(xlink:href="#loader")
                 span {voc.createAndContinue}
     script.
         this.namespace = 'textureGenerator';

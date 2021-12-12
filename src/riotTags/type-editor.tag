@@ -25,26 +25,26 @@ type-editor.panel.view.flexrow
             .flexfix-footer
                 button#typedone.wide(onclick="{typeSave}" title="Shift+Control+S" data-hotkey="Control+S")
                     svg.feather
-                        use(xlink:href="data/icons.svg#check")
+                        use(xlink:href="#check")
                     span {voc.done}
     .type-editor-aCodeEditor
         .tabwrap.tall(style="position: relative")
             ul.tabs.nav.nogrow.noshrink
                 li(onclick="{changeTab('typeoncreate')}" class="{active: tab === 'typeoncreate'}" title="{voc.create} (Control+Q)" data-hotkey="Control+q")
                     svg.feather
-                        use(xlink:href="data/icons.svg#sun")
+                        use(xlink:href="#sun")
                     span {voc.create}
                 li(onclick="{changeTab('typeonstep')}" class="{active: tab === 'typeonstep'}" title="{voc.step} (Control+W)" data-hotkey="Control+w")
                     svg.feather
-                        use(xlink:href="data/icons.svg#skip-forward")
+                        use(xlink:href="#skip-forward")
                     span {voc.step}
                 li(onclick="{changeTab('typeondraw')}" class="{active: tab === 'typeondraw'}" title="{voc.draw} (Control+E)" data-hotkey="Control+e")
                     svg.feather
-                        use(xlink:href="data/icons.svg#edit-2")
+                        use(xlink:href="#edit-2")
                     span {voc.draw}
                 li(onclick="{changeTab('typeondestroy')}" class="{active: tab === 'typeondestroy'}" title="{voc.destroy} (Control+R)" data-hotkey="Control+r")
                     svg.feather
-                        use(xlink:href="data/icons.svg#trash")
+                        use(xlink:href="#trash")
                     span {voc.destroy}
             div
                 #typeoncreate.tabbed(show="{tab === 'typeoncreate'}")

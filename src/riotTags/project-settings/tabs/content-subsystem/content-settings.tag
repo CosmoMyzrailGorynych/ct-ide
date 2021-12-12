@@ -2,7 +2,7 @@ content-settings
     h1 {voc.heading}
     button(onclick="{addContentType}" if="{contentTypes.length}")
         svg.feather
-            use(xlink:href="data/icons.svg#plus")
+            use(xlink:href="#plus")
         span {voc.addContentType}
 
     // References to `this` get weird here.
@@ -11,7 +11,7 @@ content-settings
         yield(to="header")
             h3
                 svg.feather
-                    use(xlink:href="data/icons.svg#{type.icon || 'copy'}")
+                    use(xlink:href="#{type.icon || 'copy'}")
                 | {type.readableName || type.name || parent.voc.missingTypeName}
                 | (
                 code {type.name}
@@ -20,16 +20,16 @@ content-settings
         p
         button(onclick="{parent.gotoEntries(type)}")
             svg.feather
-                use(xlink:href="data/icons.svg#arrow-right")
+                use(xlink:href="#arrow-right")
             span {parent.voc.gotoEntries}
         button(onclick="{parent.confirmDeletion}")
             svg.feather
-                use(xlink:href="data/icons.svg#trash")
+                use(xlink:href="#trash")
             span {parent.voc.deleteContentType}
     p
     button(onclick="{addContentType}")
         svg.feather
-            use(xlink:href="data/icons.svg#plus")
+            use(xlink:href="#plus")
         span {voc.addContentType}
     script.
         this.namespace = 'settings.content';

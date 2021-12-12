@@ -3,11 +3,11 @@ main-menu-project
     ul.aMenu
         li(onclick="{saveProject}")
             svg.feather
-                use(xlink:href="data/icons.svg#save")
+                use(xlink:href="#save")
             span {vocGlob.save}
         li(onclick="{zipProject}")
             svg.feather
-                use(xlink:href="data/icons.svg#package")
+                use(xlink:href="#package")
             span {voc.zipProject}
         li(onclick="{openIncludeFolder}")
             .spacer
@@ -15,7 +15,7 @@ main-menu-project
     ul.aMenu
         li(onclick="{openProject}")
             svg.feather
-                use(xlink:href="data/icons.svg#folder")
+                use(xlink:href="#folder")
             span {voc.openProject}
         li(onclick="{openExample}")
             .spacer

@@ -22,15 +22,15 @@ texture-editor.panel.view
                         .spacer
                         button.square.nmr(onclick="{textureIsometrify}" title="{voc.isometrify}")
                             svg.feather
-                                use(xlink:href="data/icons.svg#map-pin")
+                                use(xlink:href="#map-pin")
                 fieldset
                     .toright
                         button.tiny.nmt(if="{sessionStorage.copiedCollisionMask}" onclick="{pasteCollisionMask}" title="{voc.pasteCollisionMask}")
                             svg.feather
-                                use(xlink:href="data/icons.svg#clipboard")
+                                use(xlink:href="#clipboard")
                         button.tiny.nmt(onclick="{copyCollisionMask}" title="{voc.copyCollisionMask}")
                             svg.feather
-                                use(xlink:href="data/icons.svg#copy")
+                                use(xlink:href="#copy")
                     h3.nmt {voc.form}
                     label.checkbox
                         input(type="radio" name="collisionform" checked="{opts.texture.shape === 'circle'}" onclick="{textureSelectCircle}")
@@ -60,7 +60,7 @@ texture-editor.panel.view
                         input.center.short(type="number" value="{opts.texture.bottom}" onchange="{wire('this.texture.bottom')}" oninput="{wire('this.texture.bottom')}")
                     button.wide(onclick="{textureFillRect}")
                         svg.feather
-                            use(xlink:href="data/icons.svg#maximize")
+                            use(xlink:href="#maximize")
                         span {voc.fill}
                 fieldset(if="{opts.texture.shape === 'strip'}")
                     .flexrow.aStripPointRow(each="{point, ind in getMovableStripPoints()}")
@@ -69,10 +69,10 @@ texture-editor.panel.view
                         input.short(type="number" value="{point.y}" oninput="{wire('this.texture.stripPoints.'+ ind + '.y')}")
                         button.square.inline(title="{voc.removePoint}" onclick="{removeStripPoint}")
                             svg.feather
-                                use(xlink:href="data/icons.svg#minus")
+                                use(xlink:href="#minus")
                     button.wide(onclick="{addStripPoint}")
                         svg.feather
-                            use(xlink:href="data/icons.svg#plus")
+                            use(xlink:href="#plus")
                         span   {voc.addPoint}
                 fieldset(if="{opts.texture.shape === 'strip'}")
                     label.checkbox
@@ -91,7 +91,7 @@ texture-editor.panel.view
             .flexfix-footer
                 button.wide(onclick="{textureSave}" title="Shift+Control+S" data-hotkey="Control+S")
                     svg.feather
-                        use(xlink:href="data/icons.svg#save")
+                        use(xlink:href="#save")
                     span {window.languageJSON.common.save}
         .texture-editor-anAtlas.tall(
             if="{opts.texture}"
@@ -129,7 +129,7 @@ texture-editor.panel.view
                         input(type="file" ref="textureReplacer" accept=".png,.jpg,.jpeg,.bmp,.gif" onchange="{textureReplace}")
                         .button.inline
                             svg.feather
-                                use(xlink:href="data/icons.svg#folder")
+                                use(xlink:href="#folder")
                             span {voc.replacetexture}
                     .button.inline(
                         title="{voc.updateFromClipboard} (Control+V)"
@@ -139,7 +139,7 @@ texture-editor.panel.view
                         data-hotkey-priority="10"
                     )
                         svg.feather
-                            use(xlink:href="data/icons.svg#clipboard")
+                            use(xlink:href="#clipboard")
                     .button.inline(
                         if="{opts.texture.source}"
                         title="{voc.reimport} (Control+R)"
@@ -147,7 +147,7 @@ texture-editor.panel.view
                         data-hotkey="Control+r"
                     )
                         svg.feather
-                            use(xlink:href="data/icons.svg#refresh-ccw")
+                            use(xlink:href="#refresh-ccw")
             .textureview-zoom.flexrow
                 b {Math.round(zoomFactor * 100)}%
                 .spacer
@@ -155,7 +155,7 @@ texture-editor.panel.view
             .textureview-bg
                 button.inline(onclick="{changePreviewBg}")
                     svg.feather
-                        use(xlink:href="data/icons.svg#droplet")
+                        use(xlink:href="#droplet")
                     span {voc.bgcolor}
         .column.column2.borderleft.tall.flexfix.nogrow.noshrink(show="{!opts.texture.tiled}")
             .flexfix-body
@@ -217,14 +217,14 @@ texture-editor.panel.view
                 .flexrow
                     button.nogrow.square.inline(onclick="{previewPlayPause}")
                         svg.feather
-                            use(xlink:href="data/icons.svg#{prevPlaying? 'pause' : 'play'}")
+                            use(xlink:href="#{prevPlaying? 'pause' : 'play'}")
                     span(ref="textureviewframe") 0 / 1
                     button.nogrow.square.inline(onclick="{previewBack}")
                         svg.feather
-                            use(xlink:href="data/icons.svg#skip-back")
+                            use(xlink:href="#skip-back")
                     button.nogrow.square.inline.nmr(onclick="{previewNext}")
                         svg.feather
-                            use(xlink:href="data/icons.svg#skip-forward")
+                            use(xlink:href="#skip-forward")
                 .flexrow
                     b.alignmiddle {voc.speed}
                     .filler

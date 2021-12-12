@@ -3,38 +3,38 @@ main-menu-settings
     ul.aMenu
         li(onclick="{toggleThemeSelector}")
             svg.feather
-                use(xlink:href="data/icons.svg#droplet")
+                use(xlink:href="#droplet")
             span {voc.theme}
         li(onclick="{toggleLanguageSelector}")
             svg.feather
-                use(xlink:href="data/icons.svg#translate")
+                use(xlink:href="#translate")
             span {voc.language}
         li(onclick="{toggleCodeFontSelector}")
             svg.feather
-                use(xlink:href="data/icons.svg#font")
+                use(xlink:href="#font")
             span {voc.codeFont}
     ul.aMenu
         li(onclick="{toggleSounds}")
             svg.feather
-                use(xlink:href="data/icons.svg#{localStorage.disableSounds === 'on' ? 'check-square' : 'square'}")
+                use(xlink:href="#{localStorage.disableSounds === 'on' ? 'check-square' : 'square'}")
             span {voc.disableSounds}
         li(onclick="{toggleProdProcedures}")
             svg.feather
-                use(xlink:href="data/icons.svg#{localStorage.forceProductionForDebug === 'yes' ? 'check-square' : 'square'}")
+                use(xlink:href="#{localStorage.forceProductionForDebug === 'yes' ? 'check-square' : 'square'}")
             span {voc.forceProductionForDebug}
     ul.aMenu
         li(onclick="{zoomIn}")
             svg.feather
-                use(xlink:href="data/icons.svg#zoom-in")
+                use(xlink:href="#zoom-in")
             span {vocGlob.zoomIn}
         li(onclick="{zoomOut}")
             svg.feather
-                use(xlink:href="data/icons.svg#zoom-out")
+                use(xlink:href="#zoom-out")
             span {vocGlob.zoomOut}
     ul.aMenu
         li(onclick="{requestDataFolderChange}")
             svg.feather
-                use(xlink:href="data/icons.svg#folder")
+                use(xlink:href="#folder")
             span {voc.changeDataFolder}
     context-menu(menu="{themesSubmenu}" ref="themeslist")
     context-menu(menu="{languagesSubmenu}" ref="languageslist")

@@ -3,41 +3,41 @@ main-menu-meta
     ul.aMenu
         li(onclick="{() => nw.Shell.openExternal('https://www.patreon.com/comigo')}")
             svg.feather
-                use(xlink:href="data/icons.svg#heart")
+                use(xlink:href="#heart")
             span {vocGlob.donate}
         li(onclick="{() => nw.Shell.openExternal('https://github.com/ct-js/ct-js')}")
             svg.feather
-                use(xlink:href="data/icons.svg#code")
+                use(xlink:href="#code")
             span {vocGlob.contribute}
         li(onclick="{() => nw.Shell.openExternal('https://forum.ctjs.rocks/')}")
             svg.feather
-                use(xlink:href="data/icons.svg#message-circle")
+                use(xlink:href="#message-circle")
             span {voc.ctjsForum}
         li(onclick="{() => nw.Shell.openExternal('https://ctjs.rocks/')}")
             svg.feather
-                use(xlink:href="data/icons.svg#globe-alt")
+                use(xlink:href="#globe-alt")
             span {vocGlob.ctsite}
         li(onclick="{() => nw.Shell.openExternal('https://discord.gg/3f7TsRC')}")
             svg.icon
-                use(xlink:href="data/icons.svg#discord")
+                use(xlink:href="#discord")
             span {voc.visitDiscordForGamedevSupport}
         li(onclick="{() => nw.Shell.openExternal('https://twitter.com/ctjsrocks')}")
             svg.icon
-                use(xlink:href="data/icons.svg#twitter")
+                use(xlink:href="#twitter")
             span {voc.twitter}
         li(onclick="{() => nw.Shell.openExternal('https://vk.com/ctjsrocks')}")
             svg.icon
-                use(xlink:href="data/icons.svg#vk")
+                use(xlink:href="#vk")
             span {voc.vkontakte}
     ul.aMenu
         li(onclick="{showLicense}")
             svg.feather
-                use(xlink:href="data/icons.svg#file-text")
+                use(xlink:href="#file-text")
             span {voc.license}
     ul.aMenu
         li(onclick="{showIconList}")
             svg.feather
-                use(xlink:href="data/icons.svg#image")
+                use(xlink:href="#image")
             span {voc.openIconList}
     icon-panel(if="{iconsOpened}" data-hotkey-scope="icons" onclose="{closeIcons}")
     license-panel(if="{licenseOpened}" onclose="{hideLicense}")

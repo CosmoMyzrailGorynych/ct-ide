@@ -2,7 +2,7 @@ license-panel.modal.pad
     .toright(title="{vocGlob.close}")
         span(onclick="{opts.onclose}")
             svg.feather
-                use(xlink:href="data/icons.svg#x")
+                use(xlink:href="#x")
     h1 {voc.ctjslicense}
     pre
         code.

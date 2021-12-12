@@ -51,7 +51,7 @@ font-editor.panel.view
         .flexfix-footer
             button.wide(onclick="{fontSave}")
                 svg.feather
-                    use(xlink:href="data/icons.svg#check")
+                    use(xlink:href="#check")
                 span {vocGlob.apply}
     .right.tall(style="font-weight: {fontobj.weight}; font-style: {fontobj.italic? 'italic' : 'normal'}")
         each val in [8, 9, 10, 11, 12, 14, 16, 21, 24, 32, 48, 60, 72]

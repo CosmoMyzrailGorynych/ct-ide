@@ -10,7 +10,7 @@ icon-panel.view.pad
         )
             span {icon}
             svg.feather
-                use(xlink:href="data/icons.svg#{icon}")
+                use(xlink:href="#{icon}")
     script.
         this.namespace = 'common';
         this.mixin(window.riotVoc);

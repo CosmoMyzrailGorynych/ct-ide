@@ -7,7 +7,7 @@ modules-settings.panel.view
                 .aSearchWrap.nm
                     input.inline(type="text" value="{parent.searchValue}" onkeyup="{parent.searchMod}")
                     svg.feather
-                        use(xlink:href="data/icons.svg#search")
+                        use(xlink:href="#search")
             .aModuleFilterColumns
                 // The "if" clause in the label hides categories with 0 items
                 label.checkbox(
@@ -20,7 +20,7 @@ modules-settings.panel.view
                         onchange="{parent.parent.toggleCategory(category)}"
                     )
                     svg.feather.accent1
-                        use(xlink:href="data/icons.svg#{parent.parent.categoryToIconMap[category]}")
+                        use(xlink:href="#{parent.parent.categoryToIconMap[category]}")
                     span   {parent.parent.voc.categories[category]} ({parent.parent.categoriesCounter[category]})
     collapsible-section(preservedom="yes" hlevel="1" heading="{voc.enabledModules}" defaultstate="opened" storestatekey="modulesEnabled")
         .aModuleList
@@ -47,7 +47,7 @@ modules-settings.panel.view
         )
         .button.wide.inline.nml.nmr
             svg.feather
-                use(xlink:href="data/icons.svg#folder")
+                use(xlink:href="#folder")
             span {voc.importModules}
     module-viewer(if="{openedModule}" module="{openedModule}" onclose="{closeModule}")
     script.

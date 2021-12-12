@@ -9,7 +9,7 @@ module-meta(onclick="{toggleModule(opts.module.name)}")
 
         label.nogrow.bigpower(class="{off: !(opts.module.name in global.currentProject.libs)}")
             svg.feather
-                use(xlink:href="data/icons.svg#{opts.module.name in global.currentProject.libs? 'check' : 'x'}")
+                use(xlink:href="#{opts.module.name in global.currentProject.libs? 'check' : 'x'}")
             span
     .hsub(if="{opts.module.manifest.main.tagline}") {opts.module.manifest.main.tagline}
 
@@ -17,17 +17,17 @@ module-meta(onclick="{toggleModule(opts.module.name)}")
         b {voc.dependencies}
         .inlineblock(each="{dependency in opts.module.manifest.dependencies}")
             svg.feather(if="{dependency in global.currentProject.libs}").success
-                use(xlink:href="data/icons.svg#check")
+                use(xlink:href="#check")
             svg.feather(if="{!(dependency in global.currentProject.libs)}").error
-                use(xlink:href="data/icons.svg#alert-circle")
+                use(xlink:href="#alert-circle")
             span   {dependency}
     div(if="{opts.module.manifest.optionalDependencies && opts.module.manifest.optionalDependencies.length}")
         b {voc.optionalDependencies}
         .inlineblock(each="{dependency in opts.module.manifest.optionalDependencies}")
             svg.feather(if="{dependency in global.currentProject.libs}").success
-                use(xlink:href="data/icons.svg#check")
+                use(xlink:href="#check")
             svg.feather(if="{!(dependency in global.currentProject.libs)}").warning
-                use(xlink:href="data/icons.svg#alert-triangle")
+                use(xlink:href="#alert-triangle")
             span   {dependency}
 
     .filler
@@ -35,10 +35,10 @@ module-meta(onclick="{toggleModule(opts.module.name)}")
     .flexrow
         span.nogrow.module-meta-aWarningIcon(title="{voc.deprecatedTooltip}" if="{opts.module.manifest.main.deprecated}")
             svg.feather.error
-                use(xlink:href="data/icons.svg#alert-circle")
+                use(xlink:href="#alert-circle")
         span.nogrow.module-meta-aWarningIcon(title="{voc.previewTooltip}" if="{opts.module.manifest.main.version.indexOf(0) === 0}")
             svg.feather.warning
-                use(xlink:href="data/icons.svg#alert-triangle")
+                use(xlink:href="#alert-triangle")
         .aModuleAuthorList
             a.external(
                 each="{author in opts.module.manifest.main.authors}"
@@ -47,10 +47,10 @@ module-meta(onclick="{toggleModule(opts.module.name)}")
                 href="{author.site || 'mailto:'+author.mail}"
             )
                 svg.feather
-                    use(xlink:href="data/icons.svg#user")
+                    use(xlink:href="#user")
                 span {author.name}
         svg.feather.aModuleIcon
-            use(xlink:href="data/icons.svg#{getIcon(opts.module)}")
+            use(xlink:href="#{getIcon(opts.module)}")
     script.
         this.namespace = 'modules';
         this.mixin(window.riotVoc);
