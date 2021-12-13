@@ -8,28 +8,28 @@ room-editor.panel.view
             .anErrorNotice(if="{nameTaken}" ref="errorNotice") {vocGlob.nametaken}
             button.wide(onclick="{openRoomEvents}")
                 svg.feather(if="{room.oncreate || room.onstep || room.ondestroy || room.ondraw}")
-                    use(xlink:href="data/icons.svg#check")
+                    use(xlink:href="#check")
                 span {voc.events}
         .palette
-            .tabwrap
-                ul.tabs.nav.noshrink.nogrow
+            .tabwrap.flexfix
+                ul.tabs.nav.noshrink.nogrow.flexfix-header
                     li(onclick="{changeTab('roomcopies')}" title="{voc.copies}" class="{active: tab === 'roomcopies'}")
                         svg.feather
-                            use(xlink:href="data/icons.svg#type")
+                            use(xlink:href="#type")
                         span(if="{sidebarWidth > 500}") {voc.copies}
                     li(onclick="{changeTab('roombackgrounds')}" title="{voc.backgrounds}" class="{active: tab === 'roombackgrounds'}")
                         svg.feather
-                            use(xlink:href="data/icons.svg#image")
+                            use(xlink:href="#image")
                         span(if="{sidebarWidth > 500}") {voc.backgrounds}
                     li(onclick="{changeTab('roomtiles')}" title="{voc.tiles}" class="{active: tab === 'roomtiles'}")
                         svg.feather
-                            use(xlink:href="data/icons.svg#texture")
+                            use(xlink:href="#texture")
                         span(if="{sidebarWidth > 500}") {voc.tiles}
                     li(onclick="{changeTab('properties')}" title="{voc.properties}" class="{active: tab === 'properties'}")
                         svg.feather
-                            use(xlink:href="data/icons.svg#settings")
+                            use(xlink:href="#settings")
                         span(if="{sidebarWidth > 500}") {voc.properties}
-                .relative
+                .relative.flexfix-body
                     room-type-picker(show="{tab === 'roomcopies'}" current="{currentType}")
                     room-backgrounds-editor(show="{tab === 'roombackgrounds'}" room="{room}")
                     room-tile-editor(show="{tab === 'roomtiles'}" room="{room}")
@@ -101,8 +101,8 @@ room-editor.panel.view
         .done.nogrow
             button.wide#roomviewdone(onclick="{roomSave}")
                 svg.feather
-                    use(xlink:href="data/icons.svg#check")
-                span {vocGlob.apply}
+                    use(xlink:href="#check")
+                span {voc.done}
     .aResizer.vertical(ref="gutter" onmousedown="{gutterMouseDown}")
     .editor(ref="canvaswrap")
         canvas(
@@ -118,21 +118,21 @@ room-editor.panel.view
         .shift.flexrow
             button.inline.square.forcebackground(title="{voc.shift}" onclick="{roomShift}")
                 svg.feather
-                    use(xlink:href="data/icons.svg#move")
+                    use(xlink:href="#move")
             button.inline.square.forcebackground(
                 title="{voc.sortHorizontally}"
                 onclick="{sortHorizontally}"
                 if="{tab === 'roomcopies' || tab === 'roomtiles'}"
             )
                 svg.feather
-                    use(xlink:href="data/icons.svg#sort-horizontal")
+                    use(xlink:href="#sort-horizontal")
             button.inline.square.forcebackground(
                 title="{voc.sortVertically}"
                 onclick="{sortVertically}"
                 if="{tab === 'roomcopies' || tab === 'roomtiles'}"
             )
                 svg.feather
-                    use(xlink:href="data/icons.svg#sort-vertical")
+                    use(xlink:href="#sort-vertical")
             span.aContrastingPlaque(if="{window.innerWidth - sidebarWidth > 940}") {voc.hotkeysNotice}
         .zoom.flexrow
             b.aContrastingPlaque

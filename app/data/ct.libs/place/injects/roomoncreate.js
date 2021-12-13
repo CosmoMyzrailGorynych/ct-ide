@@ -1,5 +1,4 @@
 if (this === ct.room) {
-    ct.place.tileGrid = {};
     const debugTraceGraphics = new PIXI.Graphics();
     debugTraceGraphics.depth = 10000000; // Why not. Overlap everything.
     ct.room.addChild(debugTraceGraphics);

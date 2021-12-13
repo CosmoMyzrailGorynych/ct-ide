@@ -2,7 +2,7 @@ room-type-picker.room-editor-TypeSwatches.tabbed.tall
     .aSearchWrap
         input.inline(type="text" onkeyup="{fuseSearch}" ref="fusesearch")
         svg.feather
-            use(xlink:href="data/icons.svg#search")
+            use(xlink:href="#search")
     .room-editor-aTypeSwatch(
         if="{!searchResults}"
         onclick="{parent.roomUnpickType}"
@@ -10,7 +10,7 @@ room-type-picker.room-editor-TypeSwatches.tabbed.tall
     )
         span {voc.selectAndMove}
         svg.feather
-            use(xlink:href="data/icons.svg#move")
+            use(xlink:href="#move")
     .room-editor-aTypeSwatch(
         each="{type in (searchResults? searchResults : types)}"
         title="{type.name}"

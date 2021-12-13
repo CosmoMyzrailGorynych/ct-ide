@@ -9,23 +9,18 @@ actions-input-selector
                     onkeyup="{wire('this.searchString')}"
                 )
                 svg.feather
-                    use(xlink:href="data/icons.svg#search")
-
+                    use(xlink:href="#search")
         .flexfix-body
             virtual(each="{module in inputProviders}")
                 h2 {module.name}
                 label.anActionMethod.checkbox(
                     each="{name, code in module.methods}"
-                    if="{!searchString || code.toLowerCase().includes(searchString.toLowerCase()) || name.toLowerCase().indexOf(searchString.toLowerCase()) !== -1}"
-                    )
-                        input(
-                        onchange="{selectMethod(module.code+'.'+code)}"
-                            checked="{selectedMethods.includes(module.code+'.'+code)}"
-                            type="checkbox"
-                        )
-                        code.inline.toright {module.code}.{code}
-                        span   {name}
-                        .clear
+                    class="{active: selectedMethod === module.code+'.'+code}"
+                    if="{!searchString || matchAny([name, code, module.name])}"
+                ).npl
+                    code.inline.toright {module.code}.{code}
+                    span   {name}
+                    .clear
 
         .flexfix-footer
             .flexrow
@@ -43,6 +38,9 @@ actions-input-selector
         const libsDir = './data/ct.libs';
 
         this.selectedMethods = [];
+
+        this.matchAny = strings =>
+            strings.some(string => string.toLowerCase().indexOf(this.searchString.toLowerCase()) !== -1);
 
         this.refreshModules = () => {
             this.inputProviders = [];

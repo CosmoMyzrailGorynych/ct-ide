@@ -208,7 +208,7 @@ const importImageToTexture = async (src, name) => {
     const id = generateGUID();
     let dest;
     if (src instanceof Buffer) {
-        dest = path.join(global.projdir, 'img', `i${id}.png}`);
+        dest = path.join(global.projdir, 'img', `i${id}.png`);
         await fs.writeFile(dest, src);
     } else {
         dest = path.join(global.projdir, 'img', `i${id}${path.extname(src)}`);

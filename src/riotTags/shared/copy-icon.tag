@@ -6,7 +6,7 @@
 
 copy-icon(onclick="{copy}")
     svg.feather.a(class="{success: copied}")
-        use(xlink:href="data/icons.svg#{copied ? 'check' : 'copy'}")
+        use(xlink:href="#{copied ? 'check' : 'copy'}")
     script.
         const defaultText = 'There should have been some useful text, but something wrong happened. Please report about it.';
         this.copy = () => {

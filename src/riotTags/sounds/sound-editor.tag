@@ -22,17 +22,16 @@ sound-editor.panel.view
         label.file
             .button.wide.nml
                 svg.feather
-                    use(xlink:href="data/icons.svg#plus")
+                    use(xlink:href="#plus")
                 span {voc.import}
             input(type="file" ref="inputsound" accept=".mp3,.ogg,.wav" onchange="{changeSoundFile}")
         p.nmb
             button.wide(onclick="{soundSave}" title="Shift+Control+S" data-hotkey="Control+S")
                 svg.feather
-                    use(xlink:href="data/icons.svg#check")
-                span {vocGlob.apply}
+                    use(xlink:href="#check")
+                span {voc.save}
     script.
         const path = require('path');
-        const fs = require('fs-extra');
         this.namespace = 'soundview';
         this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
@@ -65,6 +64,7 @@ sound-editor.panel.view
             }
             this.parent.editing = false;
             this.parent.update();
+            require('./data/node_requires/glob').modified = true;
 
             return true;
         };
@@ -77,20 +77,13 @@ sound-editor.panel.view
                 this.refs.audio.play();
             }
         };
-        this.changeSoundFile = () => {
+        this.changeSoundFile = async () => {
             const val = this.refs.inputsound.files[0].path;
-            fs.copy(val, global.projdir + '/snd/s' + this.sound.uid + path.extname(val), e => {
-                if (e) {
-                    console.error(e);
-                    alertify.error(e);
-                    return;
-                }
-                if (!this.sound.lastmod && this.sound.name === 'Sound_' + this.sound.uid.split('-').pop()) {
-                    this.sound.name = path.basename(val, path.extname(val));
-                }
-                this.sound.origname = 's' + this.sound.uid + path.extname(val);
-                this.sound.lastmod = Number(new Date());
-                this.update();
-            });
             this.refs.inputsound.value = '';
+            const sounds = require('./data/node_requires/resources/sounds');
+            if (!this.sound.lastmod && this.sound.name === 'Sound_' + this.sound.uid.split('-').pop()) {
+                this.sound.name = path.basename(val, path.extname(val));
+            }
+            await sounds.addSoundFile(this.sound, val);
+            this.update();
         };

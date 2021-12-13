@@ -22,9 +22,16 @@ texture-editor.panel.view
                         .spacer
                         button.square.nmr(onclick="{textureIsometrify}" title="{voc.isometrify}")
                             svg.feather
-                                use(xlink:href="data/icons.svg#map-pin")
+                                use(xlink:href="#map-pin")
                 fieldset
-                    b {voc.form}
+                    .toright
+                        button.tiny.nmt(if="{sessionStorage.copiedCollisionMask}" onclick="{pasteCollisionMask}" title="{voc.pasteCollisionMask}")
+                            svg.feather
+                                use(xlink:href="#clipboard")
+                        button.tiny.nmt(onclick="{copyCollisionMask}" title="{voc.copyCollisionMask}")
+                            svg.feather
+                                use(xlink:href="#copy")
+                    h3.nmt {voc.form}
                     label.checkbox
                         input(type="radio" name="collisionform" checked="{opts.texture.shape === 'circle'}" onclick="{textureSelectCircle}")
                         span {voc.round}
@@ -39,17 +46,21 @@ texture-editor.panel.view
                     br
                     input.wide(type="number" value="{opts.texture.r}" onchange="{wire('this.texture.r')}" oninput="{wire('this.texture.r')}")
                 fieldset(if="{opts.texture.shape === 'rect'}")
-                    .center
-                        input.short(type="number" value="{opts.texture.top}" onchange="{wire('this.texture.top')}" oninput="{wire('this.texture.top')}")
+                    .center.aDashedMaskMarker
+                        input.center.short(type="number" value="{opts.texture.top}" onchange="{wire('this.texture.top')}" oninput="{wire('this.texture.top')}")
                         br
-                        input.short(type="number" value="{opts.texture.left}" onchange="{wire('this.texture.left')}" oninput="{wire('this.texture.left')}")
-                        span   ×
-                        input.short(type="number" value="{opts.texture.right}" onchange="{wire('this.texture.right')}" oninput="{wire('this.texture.right')}")
+                        input.center.short(type="number" value="{opts.texture.left}" onchange="{wire('this.texture.left')}" oninput="{wire('this.texture.left')}")
+                        |
+                        |
+                        span.aPivotSymbol
+                        |
+                        |
+                        input.center.short(type="number" value="{opts.texture.right}" onchange="{wire('this.texture.right')}" oninput="{wire('this.texture.right')}")
                         br
-                        input.short(type="number" value="{opts.texture.bottom}" onchange="{wire('this.texture.bottom')}" oninput="{wire('this.texture.bottom')}")
+                        input.center.short(type="number" value="{opts.texture.bottom}" onchange="{wire('this.texture.bottom')}" oninput="{wire('this.texture.bottom')}")
                     button.wide(onclick="{textureFillRect}")
                         svg.feather
-                            use(xlink:href="data/icons.svg#maximize")
+                            use(xlink:href="#maximize")
                         span {voc.fill}
                 fieldset(if="{opts.texture.shape === 'strip'}")
                     .flexrow.aStripPointRow(each="{point, ind in getMovableStripPoints()}")
@@ -58,26 +69,30 @@ texture-editor.panel.view
                         input.short(type="number" value="{point.y}" oninput="{wire('this.texture.stripPoints.'+ ind + '.y')}")
                         button.square.inline(title="{voc.removePoint}" onclick="{removeStripPoint}")
                             svg.feather
-                                use(xlink:href="data/icons.svg#minus")
+                                use(xlink:href="#minus")
+                    button.wide(onclick="{addStripPoint}")
+                        svg.feather
+                            use(xlink:href="#plus")
+                        span   {voc.addPoint}
+                fieldset(if="{opts.texture.shape === 'strip'}")
                     label.checkbox
                         input(type="checkbox" checked="{opts.texture.closedStrip}" onchange="{onClosedStripChange}" )
                         span   {voc.closeShape}
                     label.checkbox
                         input(type="checkbox" checked="{opts.texture.symmetryStrip}" onchange="{onSymmetryChange}")
                         span   {voc.symmetryTool}
-                    button.wide(onclick="{addStripPoint}")
-                        svg.feather
-                            use(xlink:href="data/icons.svg#plus")
-                        span   {voc.addPoint}
                 fieldset
                     label.checkbox
                         input(checked="{prevShowMask}" onchange="{wire('this.prevShowMask')}" type="checkbox")
                         span   {voc.showmask}
+                    label.checkbox(if="{opts.texture.width > 10 && opts.texture.height > 10}")
+                        input(checked="{prevShowFrameIndices}" onchange="{wire('this.prevShowFrameIndices')}" type="checkbox")
+                        span   {voc.showFrameIndices}
             .flexfix-footer
                 button.wide(onclick="{textureSave}" title="Shift+Control+S" data-hotkey="Control+S")
                     svg.feather
-                        use(xlink:href="data/icons.svg#check")
-                    span {vocGlob.apply}
+                        use(xlink:href="#save")
+                    span {window.languageJSON.common.save}
         .texture-editor-anAtlas.tall(
             if="{opts.texture}"
             style="background-color: {previewColor};"
@@ -114,7 +129,7 @@ texture-editor.panel.view
                         input(type="file" ref="textureReplacer" accept=".png,.jpg,.jpeg,.bmp,.gif" onchange="{textureReplace}")
                         .button.inline.forcebackground
                             svg.feather
-                                use(xlink:href="data/icons.svg#folder")
+                                use(xlink:href="#folder")
                             span {voc.replacetexture}
                     .button.inline.forcebackground(
                         if="{opts.texture.source}"
@@ -123,7 +138,7 @@ texture-editor.panel.view
                         data-hotkey="Control+r"
                     )
                         svg.feather
-                            use(xlink:href="data/icons.svg#refresh-ccw")
+                            use(xlink:href="#refresh-ccw")
                     .button.inline.forcebackground(
                         title="{voc.updateFromClipboard} (Control+V)"
                         onclick="{paste}"
@@ -132,7 +147,7 @@ texture-editor.panel.view
                         data-hotkey-priority="10"
                     )
                         svg.feather
-                            use(xlink:href="data/icons.svg#clipboard")
+                            use(xlink:href="#clipboard")
             .textureview-zoom.flexrow
                 b.aContrastingPlaque {Math.round(zoomFactor * 100)}%
                 .spacer
@@ -140,7 +155,7 @@ texture-editor.panel.view
             .textureview-bg
                 button.inline.forcebackground(onclick="{changePreviewBg}")
                     svg.feather
-                        use(xlink:href="data/icons.svg#droplet")
+                        use(xlink:href="#droplet")
                     span {voc.bgcolor}
         .column.column2.borderleft.tall.flexfix.nogrow.noshrink(show="{!opts.texture.tiled}")
             .flexfix-body
@@ -202,14 +217,14 @@ texture-editor.panel.view
                 .flexrow
                     button.nogrow.square.inline(onclick="{previewPlayPause}")
                         svg.feather
-                            use(xlink:href="data/icons.svg#{prevPlaying? 'pause' : 'play'}")
+                            use(xlink:href="#{prevPlaying? 'pause' : 'play'}")
                     span(ref="textureviewframe") 0 / 1
                     button.nogrow.square.inline(onclick="{previewBack}")
                         svg.feather
-                            use(xlink:href="data/icons.svg#skip-back")
+                            use(xlink:href="#skip-back")
                     button.nogrow.square.inline.nmr(onclick="{previewNext}")
                         svg.feather
-                            use(xlink:href="data/icons.svg#skip-forward")
+                            use(xlink:href="#skip-forward")
                 .flexrow
                     b.alignmiddle {voc.speed}
                     .filler
@@ -234,7 +249,7 @@ texture-editor.panel.view
         this.prevPlaying = true;
         this.prevPos = 0;
         this.prevSpeed = 10;
-        this.prevShowMask = true;
+        this.prevShowMask = this.prevShowFrameIndices = true;
         this.previewColor = localStorage.UItheme === 'Day' ? '#ffffff' : '#08080D';
         this.zoomFactor = 1;
 
@@ -413,6 +428,25 @@ texture-editor.panel.view
             texture.axis[1] = texture.height;
             this.textureFillRect();
         };
+        this.pasteCollisionMask = () => {
+            if (!sessionStorage.copiedCollisionMask) {
+                return;
+            }
+            Object.assign(this.texture, JSON.parse(sessionStorage.copiedCollisionMask));
+        };
+        this.copyCollisionMask = () => {
+            const {texture} = this;
+            sessionStorage.copiedCollisionMask = JSON.stringify({
+                shape: texture.shape,
+                stripPoints: texture.stripPoints,
+                left: texture.left,
+                right: texture.right,
+                top: texture.top,
+                bottom: texture.bottom,
+                r: texture.r
+            });
+        };
+
         /**
          * Запустить предпросмотр анимации
          */
@@ -696,18 +730,82 @@ texture-editor.panel.view
                 document.addEventListener('mouseup', func2);
             }
         };
+
+        this.drawMask = () => {
+            const tc = textureCanvas;
+            tc.x.fillStyle = '#ff0';
+            tc.x.globalAlpha = 0.5;
+            if (this.texture.shape === 'rect') {
+                tc.x.fillRect(
+                    this.texture.axis[0] - this.texture.left,
+                    this.texture.axis[1] - this.texture.top,
+                    this.texture.right + this.texture.left,
+                    this.texture.bottom + this.texture.top
+                );
+            } else if (this.texture.shape === 'circle') {
+                tc.x.beginPath();
+                tc.x.arc(
+                    this.texture.axis[0],
+                    this.texture.axis[1],
+                    this.texture.r,
+                    0, 2 * Math.PI
+                );
+                tc.x.fill();
+            } else if (this.texture.shape === 'strip' && this.texture.stripPoints.length) {
+                tc.x.strokeStyle = '#ff0';
+                tc.x.lineWidth = 3;
+                tc.x.beginPath();
+                tc.x.moveTo(
+                    this.texture.stripPoints[0].x + this.texture.axis[0],
+                    this.texture.stripPoints[0].y + this.texture.axis[1]
+                );
+                for (let i = 1, l = this.texture.stripPoints.length; i < l; i++) {
+                    tc.x.lineTo(
+                        this.texture.stripPoints[i].x + this.texture.axis[0],
+                        this.texture.stripPoints[i].y + this.texture.axis[1]
+                    );
+                }
+                if (this.texture.closedStrip) {
+                    tc.x.closePath();
+                }
+                tc.x.stroke();
+
+                if (this.texture.symmetryStrip) {
+                    const movablePoints = this.getMovableStripPoints();
+                    const [axisPoint1] = movablePoints;
+                    const axisPoint2 = movablePoints[movablePoints.length - 1];
+
+                    // Draw symmetry axis
+                    tc.x.strokeStyle = '#f00';
+                    tc.x.lineWidth = 3;
+                    tc.x.beginPath();
+                    tc.x.moveTo(
+                        axisPoint1.x + this.texture.axis[0],
+                        axisPoint1.y + this.texture.axis[1]
+                    );
+                    tc.x.lineTo(
+                        axisPoint2.x + this.texture.axis[0],
+                        axisPoint2.y + this.texture.axis[1]
+                    );
+                    tc.x.stroke();
+                }
+            }
+        };
         /**
          * Redraws the canvas with the full image, its collision mask, and its slicing grid
          */
         this.refreshTextureCanvas = () => {
-            textureCanvas.width = textureCanvas.img.width;
-            textureCanvas.height = textureCanvas.img.height;
-            textureCanvas.x.strokeStyle = '#0ff';
-            textureCanvas.x.lineWidth = 1;
-            textureCanvas.x.globalCompositeOperation = 'source-over';
-            textureCanvas.x.clearRect(0, 0, textureCanvas.width, textureCanvas.height);
-            textureCanvas.x.drawImage(textureCanvas.img, 0, 0);
-            textureCanvas.x.globalAlpha = 0.5;
+            const tc = textureCanvas;
+            tc.width = tc.img.width;
+            tc.height = tc.img.height;
+            tc.x.strokeStyle = '#0ff';
+            tc.x.lineWidth = 1;
+            tc.x.font = '10px sans-serif';
+            tc.x.textAlign = 'left';
+            tc.x.textBaseline = 'top';
+            tc.x.globalCompositeOperation = 'source-over';
+            tc.x.clearRect(0, 0, tc.width, tc.height);
+            tc.x.drawImage(tc.img, 0, 0);
             if (!this.texture.tiled) {
                 const l = Math.min(
                     this.texture.grid[0] * this.texture.grid[1],
@@ -720,66 +818,25 @@ texture-editor.panel.view
                           y = this.texture.offy + yy * (this.texture.marginy + this.texture.height),
                           w = this.texture.width,
                           h = this.texture.height;
-                    textureCanvas.x.strokeRect(x, y, w, h);
+                    tc.x.globalAlpha = 0.5;
+                    tc.x.strokeStyle = '#0ff';
+                    tc.x.lineWidth = 1;
+                    tc.x.strokeRect(x, y, w, h);
+                    if (this.prevShowFrameIndices &&
+                        this.opts.texture.width > 10 &&
+                        this.opts.texture.height > 10
+                    ) {
+                        tc.x.lineWidth = 2;
+                        tc.x.globalAlpha = 1;
+                        tc.x.strokeStyle = '#000';
+                        tc.x.fillStyle = '#fff';
+                        tc.x.strokeText(i, x + 2, y + 2);
+                        tc.x.fillText(i, x + 2, y + 2);
+                    }
                 }
             }
             if (this.prevShowMask) {
-                textureCanvas.x.fillStyle = '#ff0';
-                if (this.texture.shape === 'rect') {
-                    textureCanvas.x.fillRect(
-                        this.texture.axis[0] - this.texture.left,
-                        this.texture.axis[1] - this.texture.top,
-                        this.texture.right + this.texture.left,
-                        this.texture.bottom + this.texture.top
-                    );
-                } else if (this.texture.shape === 'circle') {
-                    textureCanvas.x.beginPath();
-                    textureCanvas.x.arc(
-                        this.texture.axis[0],
-                        this.texture.axis[1],
-                        this.texture.r,
-                        0, 2 * Math.PI
-                    );
-                    textureCanvas.x.fill();
-                } else if (this.texture.shape === 'strip' && this.texture.stripPoints.length) {
-                    textureCanvas.x.strokeStyle = '#ff0';
-                    textureCanvas.x.lineWidth = 3;
-                    textureCanvas.x.beginPath();
-                    textureCanvas.x.moveTo(
-                        this.texture.stripPoints[0].x + this.texture.axis[0],
-                        this.texture.stripPoints[0].y + this.texture.axis[1]
-                    );
-                    for (let i = 1, l = this.texture.stripPoints.length; i < l; i++) {
-                        textureCanvas.x.lineTo(
-                            this.texture.stripPoints[i].x + this.texture.axis[0],
-                            this.texture.stripPoints[i].y + this.texture.axis[1]
-                        );
-                    }
-                    if (this.texture.closedStrip) {
-                        textureCanvas.x.closePath();
-                    }
-                    textureCanvas.x.stroke();
-
-                    if (this.texture.symmetryStrip) {
-                        const movablePoints = this.getMovableStripPoints();
-                        const [axisPoint1] = movablePoints;
-                        const axisPoint2 = movablePoints[movablePoints.length - 1];
-
-                        // Draw symmetry axis
-                        textureCanvas.x.strokeStyle = '#f00';
-                        textureCanvas.x.lineWidth = 3;
-                        textureCanvas.x.beginPath();
-                        textureCanvas.x.moveTo(
-                            axisPoint1.x + this.texture.axis[0],
-                            axisPoint1.y + this.texture.axis[1]
-                        );
-                        textureCanvas.x.lineTo(
-                            axisPoint2.x + this.texture.axis[0],
-                            axisPoint2.y + this.texture.axis[1]
-                        );
-                        textureCanvas.x.stroke();
-                    }
-                }
+                this.drawMask();
             }
         };
 

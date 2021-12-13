@@ -5,7 +5,7 @@ room-backgrounds-editor.room-editor-Backgrounds.tabbed.tall
             span
                 span(class="{active: detailedBackground === background}" onclick="{editBackground}")
                     svg.feather
-                        use(xlink:href="data/icons.svg#settings")
+                        use(xlink:href="#settings")
                 | {getTextureFromId(background.texture).name} ({background.depth})
             .clear
             .anErrorNotice(if="{background.texture && background.texture !== -1 && !getTextureFromId(background.texture).tiled && !getTextureFromId(background.texture).ignoreTiledUse}")
@@ -59,7 +59,7 @@ room-backgrounds-editor.room-editor-Backgrounds.tabbed.tall
 
     button.inline.wide(onclick="{addBg}")
         svg.feather
-            use(xlink:href="data/icons.svg#plus")
+            use(xlink:href="#plus")
         span {voc.add}
     texture-selector(ref="texturePicker" if="{pickingBackground}" oncancelled="{onTextureCancel}" onselected="{onTextureSelected}")
     context-menu(menu="{roomBgMenu}" ref="roomBgMenu")

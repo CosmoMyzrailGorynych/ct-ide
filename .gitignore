@@ -43,6 +43,8 @@ app/examples
 app/data/bundle.js
 app/data/riotTags.js
 app/data/bundle.css
+app/data/icons.svg
+app/data/icons.json
 app/data/node_requires/**/*
 app/data/hotLoadTags
 app/data/fonts/style/.css
@@ -88,6 +90,7 @@ app/export
 docs/db.json
 docs/node_modules
 docs/public
+
 export.zip
 app/pleaseCtJSLoadWithoutGPUAccelerationMmkay
 app/debugger.html

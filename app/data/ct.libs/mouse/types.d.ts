@@ -15,11 +15,23 @@ declare namespace ct {
         var down: boolean;
         /** Can be either `true` or `false`. Determines whether a mouse button was released. */
         var released: boolean;
-        /** Can be either `true` or `false`. Determines whether there is a cursor inside the drawing canvas. */
+        /** Can be either `true` or `false`. Determines whether there is
+         * a cursor inside the drawing canvas.
+         */
         var inside: boolean;
-        /** Returns `true` if the mouse hovers over a given `copy`. This does **not** take scaling and rotation into account, as well as polygonal shapes (as they are hollow). */
+        /** Returns `true` if the mouse hovers over a given `copy`.
+         * This does **not** take scaling and rotation into account,
+         * as well as polygonal shapes (as they are hollow).
+         */
         function hovers(copy: Copy): boolean;
-        /** Returns `true` if the mouse hovers over a given `copy`. This does **not** take scaling and rotation into account, as well as polygonal shapes (as they are hollow). */
+        /** Returns `true` if the mouse hovers over a given `copy`.
+         * This does **not** take scaling and rotation into account,
+         * as well as polygonal shapes (as they are hollow).
+         */
         function hoversUi(copy: Copy): boolean;
+        /** Hides the system cursor when hovering the game's canvas. */
+        function hide(): void;
+        /** Shows the system cursor. */
+        function show(): void;
     }
 }

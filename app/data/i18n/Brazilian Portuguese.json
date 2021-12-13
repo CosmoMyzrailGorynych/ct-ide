@@ -20,7 +20,6 @@
         "done": "Feito!",
         "duplicate": "Duplicar",
         "exit": "Sair",
-        "exitconfirm": "Você tem certeza que deseja sair?<br/>Todas as alterações que não foram salvas serão perdidas!",
         "fastimport": "Importação Rápida",
         "filter": "Filtro:",
         "loading": "Carregando…",
@@ -523,9 +522,6 @@
         "changeGrid": "Definir o tamanho da grid",
         "newGridSize": "Novo tamanho da grid:",
         "setPreviewTexture": "Definir textura de prévia"
-    },
-    "types": {
-        "create": "Criar"
     },
     "patreon": {
         "aboutPatrons": "Patrons são pessoas que mostram seu apoio à ComigoGames no Patreon, na forma de doações recorrentes. Nem todo mundo vem de ct.js; alguns estão usando outros aplicativos da ComigoGames. Dica: se você é um criador e doa para ComigoGames via Patreon, você receberá um link para sua página aqui - essa é minha pequena ajuda para suas criações :)",

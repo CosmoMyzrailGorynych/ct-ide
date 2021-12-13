@@ -1,4 +1,4 @@
-ctjsVersion: 1.5.0
+ctjsVersion: 2.0.0
 notes: /* empty */
 libs:
   fittoscreen:
@@ -8991,11 +8991,11 @@ scripts: []
 starting: 0
 settings:
   authoring:
-    author: ''
-    site: ''
-    title: ''
+    author: Cosmo Myzrail Gorynych
+    site: 'https://ctjs.rocks/'
+    title: Dungeon Crawler demo
     version:
-      - 0
+      - 1
       - 0
       - 0
     versionPostfix: ''
@@ -9022,3 +9022,4 @@ palette:
   - '#000337'
   - '#4FE77F'
 startroom: eed8a427-1c70-425d-b633-7b6ea00c7b7c
+contentTypes: []

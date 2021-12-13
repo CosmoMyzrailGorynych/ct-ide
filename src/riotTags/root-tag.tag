@@ -8,10 +8,12 @@ root-tag
         this.projectOpened = false;
         window.signals.on('resetAll', () => {
             global.currentProject = false;
+            require('./data/node_requires/glob').modified = false;
             this.projectOpened = false;
             riot.update();
         });
         window.signals.on('projectLoaded', () => {
+            require('./data/node_requires/glob').modified = false;
             this.projectOpened = true;
             this.update();
         });

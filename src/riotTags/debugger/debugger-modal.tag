@@ -7,10 +7,15 @@ debugger-modal.view
             code {address}
     script.
         let port = 0;
-        const passedParams = new URLSearchParams(window.location.search);
-        if (passedParams.has('link')) {
-            const link = passedParams.get('link');
-            const url = new URL(link);
+        if (!this.opts.params) {
+            const passedParams = new URLSearchParams(window.location.search);
+            if (passedParams.has('link')) {
+                const link = passedParams.get('link');
+                const url = new URL(link);
+                ({port} = url);
+            }
+        } else {
+            const url = new URL(this.opts.params.link);
             ({port} = url);
         }
         this.interfaces = [];

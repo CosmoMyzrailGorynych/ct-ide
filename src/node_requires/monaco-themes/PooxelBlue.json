@@ -1,0 +1,15 @@
+{
+    "base": "vs-dark",
+    "inherit": true,
+    "rules": [{
+        "token": "",
+        "background": "#1d1d22",
+        "foreground": "#A9B7C6"
+    }, {
+        "foreground": "#5db9ff",
+        "token": "pointsOfInterest"
+    }],
+    "colors": {
+        "editor.background": "#1d1d22"
+    }
+}

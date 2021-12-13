@@ -21,10 +21,10 @@ texture-selector.panel.view
                 b {vocGlob.sort}
                 button.inline.square(onclick="{switchSort('date')}" class="{selected: sort === 'date' && !searchResults}")
                     svg.feather
-                        use(xlink:href="data/icons.svg#clock")
+                        use(xlink:href="#clock")
                 button.inline.square(onclick="{switchSort('name')}" class="{selected: sort === 'name' && !searchResults}")
                     svg.feather
-                        use(xlink:href="data/icons.svg#sort-alphabetically")
+                        use(xlink:href="#sort-alphabetically")
                 .aSearchWrap
                     input.inline(type="text" onkeyup="{fuseSearch}")
             .clear

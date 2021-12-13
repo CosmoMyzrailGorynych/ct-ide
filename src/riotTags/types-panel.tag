@@ -10,7 +10,7 @@ types-panel.panel.view
     )
         button#typecreate(onclick="{parent.typeCreate}" title="Control+N" data-hotkey="Control+n")
             svg.feather
-                use(xlink:href="data/icons.svg#plus")
+                use(xlink:href="#plus")
             span {voc.create}
     type-editor(if="{editingType}" type="{editedType}")
     context-menu(menu="{typeMenu}" ref="typeMenu")
@@ -68,6 +68,23 @@ types-panel.panel.view
             this.editingType = true;
             this.editedType = type;
         };
+
+        const assetListener = asset => {
+            const [assetType, uid] = asset.split('/');
+            if (assetType !== 'types') {
+                return;
+            }
+            const type = global.currentProject.types.find(type => type.uid === uid);
+            this.openType(type)();
+            this.refs.types.updateList();
+            if (this.parent) {
+                this.parent.update();
+            }
+        };
+        window.orders.on('openAsset', assetListener);
+        this.on('unmount', () => {
+            window.orders.off('openAsset', assetListener);
+        });
 
         this.typeMenu = {
             items: [{

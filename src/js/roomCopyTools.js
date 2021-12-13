@@ -205,7 +205,8 @@
                         this.room.copies.push({
                             x: this.lastCopyX,
                             y: this.lastCopyY,
-                            uid: this.currentType.uid
+                            uid: this.currentType.uid,
+                            exts: {}
                         });
                         this.resortRoom();
                         this.refreshRoomCanvas();
@@ -221,7 +222,8 @@
                         this.room.copies.push({
                             x: this.lastCopyX,
                             y: this.lastCopyY,
-                            uid: this.currentType.uid
+                            uid: this.currentType.uid,
+                            exts: {}
                         });
                         this.resortRoom();
                         this.refreshRoomCanvas();

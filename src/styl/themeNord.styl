@@ -1,0 +1,85 @@
+@charset "utf-8"
+
+foreground = #fff
+text = #D5D8DA
+background = #2E3440
+backgroundDeeper = #2E3440
+shadows = #88C0D0
+
+borderPale = #434C5E
+borderBright = #434C5E
+
+/* handy blocks */
+trans =
+    transition 0.35s ease all
+transshort =
+    transition 0.15s ease all
+shad =
+    box-shadow 0 0.15rem 0.35rem rgba(shadows, 0.35)
+shadamb =
+    box-shadow 0 0.25rem 1.5rem -0.3rem  rgba(shadows, 0.5)
+
+/* Fonts */
+fonts = font = 'Open Sans', sans-serif, serif
+font-mono = mono = Iosevka, monospace
+
+br = 0.25rem
+iconsize = 1.5rem
+
+/* Basic colors & accents */
+act = #88C0D0
+acttext = act
+accent1 = #88C0D0
+error = #BF616A
+red = error
+success = #A3BE8C
+green = success
+warning = #D08770
+orange = warning
+blue = #5E81AC
+cyan = #8FBCBB
+
+theme = 'Nord'
+themeDark = true
+
+@require 'hvost.styl'
+
+@require '3rdParty/*.styl'
+@require './../../app/node_modules/highlight.js/styles/nord.css'
+
+@require 'common.styl'
+@require 'inputs.styl'
+@require 'typography.styl'
+@require 'confetti.styl'
+@require 'buildingBlocks.styl'
+@require 'tabs.styl'
+
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+.button,
+.selectbox
+    border-width 2px
+
+.view
+    background background
+
+.nav li
+    border-right 0
+    border-left 0
+    &:hover, &.active
+        color foreground
+
+#moduleinfo .bigpower:not(.off)
+    border-color success
+    &:after
+        background success
+
+@require 'tags/**/*.styl'
+
+.anErrorNotice
+    a, .a
+        text-decoration underline
+#bg
+    background background

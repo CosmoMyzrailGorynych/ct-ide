@@ -7,7 +7,7 @@ script-editor.view
             .aCodeEditor(ref="editor")
         button.nm.flexfix-footer(onclick="{saveScript}" title="Shift+Control+S" data-hotkey="Control+S")
             svg.feather
-                use(xlink:href="data/icons.svg#check")
+                use(xlink:href="#check")
             span {voc.done}
     script.
         this.namespace = 'common';

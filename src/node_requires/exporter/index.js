@@ -11,6 +11,7 @@ const {stringifyRooms, getStartingRoom} = require('./rooms');
 const {stringifyStyles} = require('./styles');
 const {stringifyTandems} = require('./emitterTandems');
 const {stringifyTypes} = require('./types');
+const {stringifyContent} = require('./content');
 const {bundleFonts, bakeBitmapFonts} = require('./fonts');
 const {bakeFavicons} = require('./icons');
 const {getUnwrappedExtends, getCleanKey} = require('./utils');
@@ -205,6 +206,7 @@ const exportCtProject = async (project, projdir, production) => {
     const sourcesList = [
         'backgrounds.js',
         'camera.js',
+        'content.js',
         'ct.css',
         'emitters.js',
         'index.html',
@@ -307,6 +309,10 @@ const exportCtProject = async (project, projdir, production) => {
     }, injections);
     buffer += '\n';
 
+    const content = stringifyContent(project);
+    buffer += (await sources['content.js']).replace('/*@contentTypes@*/', `"${content}"`);
+    buffer += '\n';
+
     /* User-defined scripts */
     for (const script of project.scripts) {
         buffer += script.code + ';\n';
@@ -334,6 +340,7 @@ const exportCtProject = async (project, projdir, production) => {
     const css = template(await sources['ct.css'], {
         pixelatedrender: project.settings.rendering.pixelatedrender,
         hidecursor: project.settings.rendering.hideCursor,
+        hidemadewithctjs: project.settings.branding.hideLoadingLogo,
         preloaderforeground: preloaderColor1,
         preloaderbackground: preloaderColor2,
         fonts: fonts.css

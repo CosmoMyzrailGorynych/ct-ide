@@ -375,7 +375,9 @@
                             }
                             return array[i];
                         }
-                        results.push(array[i]);
+                        if (!results.includes(array[i])) {
+                            results.push(array[i]);
+                        }
                     }
                 }
             }
@@ -660,7 +662,7 @@
          * the line segment; otherwise, returns the first one that fits the conditions.
          *
          * @param {ICtPlaceLineSegment} line An object that describes the line segment.
-         * @param {string} [ctype] An optional collision group to trace against.
+         * @param {string} [cgroup] An optional collision group to trace against.
          * If omitted, will trace through all the copies in the current room.
          * @param {boolean} [getAll] Whether to return all the intersections (true),
          * or return the first one.
@@ -706,7 +708,7 @@
          * the rectangle; otherwise, returns the first one that fits the conditions.
          *
          * @param {ICtPlaceRectangle} rect An object that describes the line segment.
-         * @param {string} [ctype] An optional collision group to trace against.
+         * @param {string} [cgroup] An optional collision group to trace against.
          * If omitted, will trace through all the copies in the current room.
          * @param {boolean} [getAll] Whether to return all the intersections (true),
          * or return the first one.
@@ -752,7 +754,7 @@
          * the circle; otherwise, returns the first one that fits the conditions.
          *
          * @param {ICtPlaceCircle} rect An object that describes the line segment.
-         * @param {string} [ctype] An optional collision group to trace against.
+         * @param {string} [cgroup] An optional collision group to trace against.
          * If omitted, will trace through all the copies in the current room.
          * @param {boolean} [getAll] Whether to return all the intersections (true),
          * or return the first one.
@@ -785,7 +787,7 @@
          * the polyline; otherwise, returns the first one that fits the conditions.
          *
          * @param {Array<IPoint>} polyline An array of objects with `x` and `y` properties.
-         * @param {string} [ctype] An optional collision group to trace against.
+         * @param {string} [cgroup] An optional collision group to trace against.
          * If omitted, will trace through all the copies in the current room.
          * @param {boolean} [getAll] Whether to return all the intersections (true),
          * or return the first one.
@@ -812,7 +814,7 @@
          * the point; otherwise, returns the first one that fits the conditions.
          *
          * @param {object} point An object with `x` and `y` properties.
-         * @param {string} [ctype] An optional collision group to trace against.
+         * @param {string} [cgroup] An optional collision group to trace against.
          * If omitted, will trace through all the copies in the current room.
          * @param {boolean} [getAll] Whether to return all the intersections (true),
          * or return the first one.

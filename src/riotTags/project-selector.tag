@@ -13,7 +13,7 @@ project-selector
                     label.file.nm.nogrow
                         button.inline.nml.nmr(onclick="{openProjectFind}")
                             svg.feather
-                                use(xlink:href="data/icons.svg#folder")
+                                use(xlink:href="#folder")
                             span {voc.browse}
                 .clear
                 ul.Cards.largeicons.nmb
@@ -24,17 +24,20 @@ project-selector
                     )
                         img(src="{getProjectThumbnail(project)}")
                         span {getProjectName(project)}
-                        .aCard-Actions(onclick="{forgetProject}" title="{voc.forgetProject}")
-                            button.tiny
+                        .aCard-Actions
+                            button.tiny(onclick="{cloneProject}" title="{voc.cloneProject}")
                                 svg.feather
-                                    use(xlink:href="data/icons.svg#x")
+                                    use(xlink:href="#copy")
+                            button.tiny(onclick="{forgetProject}" title="{voc.forgetProject}")
+                                svg.feather
+                                    use(xlink:href="#x")
             .flexfix-body.pad(show="{tab === 'examples'}")
                 .flexrow
                     h2.nmt {voc.examples}
                     label.file.nm.nogrow
                         button.inline.nml.nmr(onclick="{openProjectFind}")
                             svg.feather
-                                use(xlink:href="data/icons.svg#folder")
+                                use(xlink:href="#folder")
                             span {voc.browse}
                 .clear
                 ul.Cards.largeicons.nmb
@@ -45,6 +48,10 @@ project-selector
                     )
                         img(src="{getProjectThumbnail(project)}")
                         span {getProjectName(project)}
+                        .aCard-Actions
+                            button.tiny(onclick="{cloneProject}" title="{voc.cloneProject}")
+                                svg.feather
+                                    use(xlink:href="#copy")
             #newProject.inset.flexfix-footer.flexrow
                 h3.nm.inline {voc.newProject.text}
                 input(
@@ -56,12 +63,24 @@ project-selector
                 button.nm.inline(onclick="{openProjectFolder}") {voc.newProject.button}
         .spacer
         .aVersionNumber.nogrow
+            a(href="https://github.com/orgs/ct-js/" title="{voc.github}" onclick="{openExternal('https://github.com/orgs/ct-js/')}")
+                svg.icon
+                    use(xlink:href="#github")
+            a(href="https://comigo.itch.io/ct" title="{voc.itch}" onclick="{openExternal('https://comigo.itch.io/ct')}")
+                svg.icon
+                    use(xlink:href="#itch-dot-io")
             a(href="https://discord.gg/CggbPkb" title="{voc.discord}" onclick="{openExternal('https://discord.gg/CggbPkb')}")
                 svg.icon
-                    use(xlink:href="data/icons.svg#discord")
+                    use(xlink:href="#discord")
             a(href="https://twitter.com/ctjsrocks" title="{voc.twitter}" onclick="{openExternal('https://twitter.com/ctjsrocks')}")
                 svg.icon
-                    use(xlink:href="data/icons.svg#twitter")
+                    use(xlink:href="#twitter")
+            a(href="https://vk.com/ctjsrocks" title="{voc.vkontakte}" onclick="{openExternal('https://vk.com/ctjsrocks')}")
+                svg.icon
+                    use(xlink:href="#vk")
+            a(href="https:/patreon.com/comigo" title="{voc.patreon}" onclick="{openExternal('https:/patreon.com/comigo')}")
+                svg.icon
+                    use(xlink:href="#patreon")
             .inlineblock v{ctjsVersion}.
             |
             |
@@ -179,6 +198,29 @@ project-selector
         this.loadRecentProject = e => {
             const projectPath = e.item.project;
             window.loadProject(projectPath);
+        };
+        /**
+         * Prompts user to clone a project into a different folder/under a different name.
+         */
+        this.cloneProject = e => {
+            e.stopPropagation();
+            // Should create a separate async function; otherwise e.stopPropagation(); won't work
+            (async () => {
+                const {getProjectsDir} = require('./data/node_requires/platformUtils');
+                const defaultProjectDir = await getProjectsDir() + '/';
+                const {project} = e.item;
+                let newIctLocation = await window.showSaveDialog({
+                    defaultPath: defaultProjectDir,
+                    buttonLabel: this.voc.newProject.saveProjectHere,
+                    filter: '.ict'
+                });
+                if (!newIctLocation.endsWith('.ict')) {
+                    newIctLocation += '.ict';
+                }
+                await fs.copy(project, newIctLocation);
+                await fs.copy(project.slice(0, -4), newIctLocation.slice(0, -4));
+                window.loadProject(newIctLocation);
+            })();
         };
         /**
          * Removes a project from the recents list

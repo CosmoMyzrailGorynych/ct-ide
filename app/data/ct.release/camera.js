@@ -329,7 +329,7 @@ const Camera = (function Camera() {
          * Gets the position of the top-left corner of the viewport in game coordinates.
          * This is useful for positioning UI elements in game coordinates,
          * especially with rotated viewports.
-     * @returns {PIXI.Point} A pair of `x` and `y` coordinates.
+         * @returns {PIXI.Point} A pair of `x` and `y` coordinates.
          */
         getTopLeftCorner() {
             return this.uiToGameCoord(0, 0);
@@ -349,7 +349,7 @@ const Camera = (function Camera() {
          * Gets the position of the bottom-left corner of the viewport in game coordinates.
          * This is useful for positioning UI elements in game coordinates,
          * especially with rotated viewports.
-     * @returns {PIXI.Point} A pair of `x` and `y` coordinates.
+         * @returns {PIXI.Point} A pair of `x` and `y` coordinates.
          */
         getBottomLeftCorner() {
             return this.uiToGameCoord(0, this.height);
@@ -359,7 +359,7 @@ const Camera = (function Camera() {
          * Gets the position of the bottom-right corner of the viewport in game coordinates.
          * This is useful for positioning UI elements in game coordinates,
          * especially with rotated viewports.
-     * @returns {PIXI.Point} A pair of `x` and `y` coordinates.
+         * @returns {PIXI.Point} A pair of `x` and `y` coordinates.
          */
         getBottomRightCorner() {
             return this.uiToGameCoord(this.width, this.height);

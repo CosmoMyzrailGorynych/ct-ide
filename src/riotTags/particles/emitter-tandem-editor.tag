@@ -14,12 +14,12 @@ emitter-tandem-editor.panel.view.flexrow
             )
             button.emitter-tandem-editor-anAddEmitterButton(onclick="{addEmitter}")
                 svg.feather
-                    use(xlink:href="data/icons.svg#plus")
+                    use(xlink:href="#plus")
                 span {voc.addEmitter}
         .flexfix-footer
             button.wide(onclick="{apply}")
                 svg.feather
-                    use(xlink:href="data/icons.svg#check")
+                    use(xlink:href="#check")
                 span {vocGlob.apply}
     .aResizer.vertical(onmousedown="{gutterMouseDown}")
     div(ref="preview")
@@ -35,15 +35,15 @@ emitter-tandem-editor.panel.view.flexrow
             .spacer
             button.nogrow.forcebackground(onclick="{openPreviewTexturePicker}")
                 svg.feather
-                    use(xlink:href="data/icons.svg#texture")
+                    use(xlink:href="#texture")
                 span {voc.setPreviewTexture}
             button.nogrow.forcebackground(onclick="{changeGrid}")
                 svg.feather
-                    use(xlink:href="data/icons.svg#grid")
+                    use(xlink:href="#grid")
                 span {voc.changeGrid}
             button.nogrow.forcebackground(onclick="{changePreviewBg}")
                 svg.feather
-                    use(xlink:href="data/icons.svg#droplet")
+                    use(xlink:href="#droplet")
                 span {voc.changeBg}
         .zoom.flexrow
             b.aContrastingPlaque
@@ -264,7 +264,13 @@ emitter-tandem-editor.panel.view.flexrow
 
         this.on('mount', () => {
             window.addEventListener('resize', this.updatePreviewLayout);
-
+            window.signals.on('emitterResetRequest', this.resetEmitters);
+        });
+        this.on('unmount', () => {
+            window.removeEventListener('resize', this.updatePreviewLayout);
+            window.signals.off('emitterResetRequest', this.resetEmitters);
+        });
+        this.on('mount', () => {
             const box = this.refs.preview.getBoundingClientRect();
 
             this.gridGen = require('./data/node_requires/generators/gridTexture').generatePixiTextureGrid;
@@ -273,6 +279,7 @@ emitter-tandem-editor.panel.view.flexrow
             this.renderer = new PIXI.Application({
                 width: Math.round(box.width),
                 height: Math.round(box.height),
+                sharedTicker: false,
                 view: this.refs.canvas,
                 antialias: !global.currentProject.settings.rendering.pixelatedrender
             });
@@ -308,12 +315,17 @@ emitter-tandem-editor.panel.view.flexrow
 
             this.resetEmitters();
             this.updatePreviewLayout();
-
-            window.signals.on('emitterResetRequest', this.resetEmitters);
         });
         this.on('unmount', () => {
-            window.removeEventListener('resize', this.updatePreviewLayout);
-            window.signals.off('emitterResetRequest', this.resetEmitters);
+            this.emitterContainer = void 0;
+            if (this.renderer) {
+                this.renderer.ticker.stop();
+                this.renderer.destroy();
+            }
+            if (this.resetOnCompletionTimeout) {
+                clearTimeout(this.resetOnCompletionTimeout);
+                this.resetOnCompletionTimeout = null;
+            }
         });
 
         this.deleteEmitter = emitter => {
@@ -463,5 +475,6 @@ emitter-tandem-editor.panel.view.flexrow
         this.apply = () => {
             this.parent.editingTandem = false;
             this.parent.update();
+            require('./data/node_requires/glob').modified = true;
             window.signals.trigger('tandemUpdated', this.tandem);
         };

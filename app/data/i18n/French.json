@@ -47,7 +47,6 @@
         "done": "Fini!",
         "duplicate": "Dupliquer",
         "exit": "Quitter",
-        "exitconfirm": "Êtes-vous sur de vouloir quitter ?<br/>Tout les changements non sauvegardé seront perdu!",
         "fastimport": "Import Rapide",
         "loading": "Chargement…",
         "name": "Nom:",

@@ -24,7 +24,6 @@
         "done": "Done!",
         "duplicate": "Duplicate",
         "exit": "Exit",
-        "exitconfirm": "Are you sure you want to exit?<br/>All the unsaved changes will be lost!",
         "fastimport": "Fast Import",
         "filter": "Filter:",
         "loading": "Loading…",
@@ -42,19 +41,48 @@
         "pastedFromClipboard": "Pasted from clipboard",
         "reallyexit": "Are you sure you want to exit? All unsaved changes will be lost.",
         "rename": "Rename",
+        "required": "Required",
         "save": "Save",
         "savedcomm": "Your project was succesfully saved.",
         "saveproject": "Save project",
         "selectDialogue": "Select…",
         "select": "Select",
         "search": "Search:",
+        "settings": "Settings",
         "sort": "Sort:",
         "tilelayer": "tile layer",
         "wrongFormat": "Wrong file format",
         "yes": "Yes",
         "zoom": "Zoom",
         "zoomIn": "Zoom in",
-        "zoomOut": "Zoom out"
+        "zoomOut": "Zoom out",
+        "fieldTypes": {
+            "checkbox": "Checkbox",
+            "code": "Codebox",
+            "color": "Color",
+            "group": "Group of fields",
+            "h1": "Header of 1st level",
+            "h2": "Header of 2nd level",
+            "h3": "Header of 3rd level",
+            "h4": "Header of 4th level",
+            "number": "Number",
+            "point2D": "2D point",
+            "radio": "Radio buttons",
+            "slider": "Slider",
+            "sliderAndNumber": "Slider with a number input",
+            "table": "Table",
+            "text": "Short text",
+            "textfield": "Textbox",
+            "texture": "Texture",
+            "type": "Type"
+        }
+    },
+    "copyCustomProperties": {
+        "customProperties": "Custom Properties",
+        "addProperty": "Add Property",
+        "property": "Property",
+        "value": "Value",
+        "delete": "Delete"
     },
     "copyCustomProperties": {
         "customProperties": "Custom Properties",
@@ -114,7 +142,7 @@
     "intro": {
         "loading": "Please wait: kittens are gathering speed of light!",
         "newProject": {
-            "button": "Create",
+            "button": "Select folder and create",
             "input": "Project's name (letters and digits)",
             "text": "Create new",
             "nameerr": "Wrong project name",
@@ -133,12 +161,17 @@
         "homepage": "Homepage",
         "latestVersion": "Version $1 is available",
         "forgetProject": "Forget this project",
+        "cloneProject": "Clone this project into a new location",
         "browse": "Browse",
         "latest": "Latest projects",
         "examples": "Examples",
         "unableToWriteToFolders": "Ct.js could not find an appropriate place for projects! Make sure you store ct.js app inside a folder you have access to write to.",
         "twitter": "Twitter channel",
         "discord": "Discord community",
+        "github": "Ct.js at Github",
+        "itch": "Ct.js' store page on itch.io",
+        "vkontakte": "Vkontakte public community",
+        "patreon": "Support ct.js on Patreon!",
         "createOrBrowseJunction": "or"
     },
     "licensepanel": {
@@ -165,7 +198,15 @@
             "methodModuleMissing": "The required module for this method is missing",
             "methods": "Input methods",
             "multiplier": "Multiplier",
-            "noActionsYet": "Actions allow developers to listen to numerous input methods at once and dynamically change them, all with one uniform API. Read more by clicking on the docs icon above."
+            "noActionsYet": "Actions allow developers to listen to numerous input methods at once and dynamically change them, all with one uniform API. Read more by clicking on the docs icon above.",
+            "makeFromScratch": "Make from scratch",
+            "presets": "Presets",
+            "presetXYMovement": "Generic XY movement",
+            "presetTouchAndMouse": "Mouse & Touch",
+            "presetCustom": "Import your own",
+            "exportActionPreset": "Export as a preset",
+            "importErrorMissingModules": "Cannot import action preset as your ct.js installation lacks following modules: $1.",
+            "importErrorNotCtJsPreset": "This file doesn't look like ct.js' actions preset."
         },
         "authoring": {
             "heading": "Authoring",
@@ -181,7 +222,29 @@
             "accentNotice": "Sets the color of the preloader, as well as of some other places if used as a mobile app.",
             "icon": "Game's icon:",
             "iconNotice": "It should be a square, one-frame texture that is at least 256x256px large.",
-            "invertPreloaderScheme": "Invert preloader's color scheme"
+            "invertPreloaderScheme": "Invert preloader's color scheme",
+            "hideLoadingLogo": "Hide \"Made with ct.js\" graphics on the loading screen"
+        },
+        "content": {
+            "heading": "Content type editor",
+            "addContentType": "Add a type",
+            "missingTypeName": "Unnamed content type",
+            "unnamedContentTypeHint": "This content type is unnamed. It will not be usable in-game unless you add the name.",
+            "typeName": "Content type name",
+            "typeNameHint": "The name of your content type as it will be used in code. Examples: GearItems, EnemySkills, Cities.",
+            "typeReadableName": "Readable name",
+            "typeReadableNameHint": "The readable name of your content type, which is shown here and in content editors.",
+            "icon": "Icon",
+            "typeSpecification": "Content schema",
+            "fieldName": "Name",
+            "fieldNameHint": "The name of the field as it will be used in code. For example: power, hp, spawnType.",
+            "fieldReadableName": "Readable name",
+            "fieldReadableNameHint": "The readable version of the name, which is used in the content editor.",
+            "fieldType": "Type",
+            "deleteContentType": "Delete this content type",
+            "confirmDeletionMessage": "Are you sure you want to delete this content type? It is irreversible and will also delete all the entries of this content type.",
+            "gotoEntries": "Go to entries",
+            "entries": "Entries"
         },
         "modules": {
             "heading": "Catmods"
@@ -215,14 +278,15 @@
             "functionWrap": "Wrap all the code in a function. (Makes debugging harder, but isolates the game's code from outer context. Do not enable while developing the game.)",
             "codeModifier": "Code transformations",
             "obfuscateWarning": "This option will make your code run 15-80% slower, but will make your code extremely hard to revert back to the original.",
-            "codeModifierAndWrapNote": "Note that these settings only work for exported projects (Export for web and Export for desktop commands) as they noticeably slow packaging and make debugging harder. You can force them, though, in the Main menu → Troubleshooting → Force production tasks for debug exports.",
+            "codeModifierAndWrapNote": "Note that these settings only work for exported projects (Export for web and Export for desktop commands) as they noticeably slow packaging and make debugging harder. You can force them, though, in the Main menu → Settings → Force production tasks for debug exports.",
             "codeModifiers": {
                 "none": "None",
                 "minify": "Minify",
                 "obfuscate": "Obfuscate"
             }
         },
-        "catmodsSettings": "Catmods' settings"
+        "catmodsSettings": "Catmods' settings",
+        "contentTypes": "Content Types"
     },
     "modules": {
         "author": "Author of this catmod",
@@ -277,9 +341,14 @@
         "createAndContinue": "Create and add another",
         "scalingAtX4": "Scaling by x4 for a small texture",
         "generationSuccessMessage": "Successfully added $1 texture to your project.",
+        "form": "Form",
+        "formRectangular": "Rectangular",
+        "formRound": "Round",
+        "formDiamond": "Diamond",
         "filler": "Filler:",
         "fillerNone": "None",
         "fillerCross": "Cross",
+        "fillerArrow": "Arrow",
         "fillerLabel": "Text label"
     },
     "textureview": {
@@ -288,7 +357,7 @@
         "cols": "Columns:",
         "done": "Apply",
         "fill": "Fill",
-        "form": "Collision shape:",
+        "form": "Collision shape",
         "frames": "Frame count:",
         "isometrify": "Isometrify: Move the axis to the middle bottom point, fill the whole sprite with a collision mask",
         "name": "Name:",
@@ -304,6 +373,7 @@
         "updateFromClipboard": "Update from clipboard",
         "corrupted": "File is corrupted or missing! Closing now.",
         "showmask": "Show mask",
+        "showFrameIndices": "Show frame indices",
         "width": "Width:",
         "height": "Height:",
         "marginx": "Margin X:",
@@ -319,10 +389,13 @@
         "symmetryTool": "Symmetry tool",
         "padding": "Padding:",
         "paddingNotice": "This affects how a texture is exported: it adds duplicate pixels on edges and prevents bleeding artifacts on tiled and scaled textures. The default value is usually enough, but, if you shrink textures strongly, the bleeding may re-appear. Increment this value if this texture has artifacts while in-game.",
-        "previewAnimationNotice": "This is a preview. Use this.animationSpeed property to change it for real copies."
+        "previewAnimationNotice": "This is a preview. Use this.animationSpeed property to change it for real copies.",
+        "pasteCollisionMask": "Paste a collision mask",
+        "copyCollisionMask": "Copy the collision mask"
     },
     "sounds": {
-        "create": "Create"
+        "create": "Create",
+        "record": "Record"
     },
     "soundview": {
         "import": "Import",
@@ -330,6 +403,15 @@
         "save": "Save",
         "isMusicFile": "This is a musical track",
         "poolSize": "Pool size:"
+    },
+    "soundRecorder": {
+        "recorderHeading": "Recorder",
+        "record": "Start recording",
+        "stopRecording": "Stop recorder",
+        "discardRecording": "Discard the recording",
+        "finishRecording": "Finish recording",
+        "cannotRecordSound": "Cannot start recorder: check your audio configuration and the recording device.",
+        "troubleshootingWindows": "On Windows, also go to Settings -> Privacy -> Microphone and check that apps are allowed to access your microphone."
     },
     "styles": {
         "create": "Create",
@@ -670,8 +752,11 @@
         "meta": {
             "heading": "Meta",
             "license": "License",
-            "visitDiscordForGamedevSupport": "Join Discord server for gamedev support",
-            "openIconList": "Open the list of icons"
+            "visitDiscordForGamedevSupport": "Discord server",
+            "openIconList": "Open the list of icons",
+            "twitter": "Twitter channel",
+            "vkontakte": "Vkontakte public community",
+            "ctjsForum": "Join ct.js forum"
         }
     },
     "appView": {

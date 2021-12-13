@@ -11,7 +11,7 @@ fx-panel.panel.view
         h1.nmt {voc.emittersHeading}
         button(onclick="{parent.emitterTandemCreate}" title="Control+N" data-hotkey="Control+n")
             svg.feather
-                use(xlink:href="data/icons.svg#plus")
+                use(xlink:href="#plus")
             span {vocGlob.add}
     emitter-tandem-editor(if="{editingTandem}" tandem="{editedTandem}")
     context-menu(menu="{tandemMenu}" ref="tandemMenu")

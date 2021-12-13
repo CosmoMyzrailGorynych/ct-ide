@@ -9,7 +9,7 @@ room-tile-editor.room-editor-Tiles.tabbed.tall.flexfix
     .flexfix-footer
         button.inline.wide(onclick="{switchTiledImage}")
             svg.feather
-                use(xlink:href="data/icons.svg#search")
+                use(xlink:href="#search")
             span {voc.findTileset}
         .flexrow
             select.wide(onchange="{changeTileLayer}" value="{parent.currentTileLayerId}")
@@ -17,16 +17,16 @@ room-tile-editor.room-editor-Tiles.tabbed.tall.flexfix
 
             span.act(title="{vocGlob.delete}" onclick="{deleteTileLayer}")
                 svg.feather
-                    use(xlink:href="data/icons.svg#trash")
+                    use(xlink:href="#trash")
             span.act(title="{parent.currentTileLayer.hidden? voc.show: voc.hide}" onclick="{toggleTileLayer}")
                 svg.feather
-                    use(xlink:href="data/icons.svg#{parent.currentTileLayer.hidden? 'eye' : 'eye-off'}")
+                    use(xlink:href="#{parent.currentTileLayer.hidden? 'eye' : 'eye-off'}")
             span.act(title="{voc.moveTileLayer}" onclick="{moveTileLayer}")
                 svg.feather
-                    use(xlink:href="data/icons.svg#shuffle")
+                    use(xlink:href="#shuffle")
             span.act(title="{vocGlob.add}" onclick="{addTileLayer}")
                 svg.feather
-                    use(xlink:href="data/icons.svg#plus")
+                    use(xlink:href="#plus")
         .block
             extensions-editor(type="tileLayer" entity="{parent.currentTileLayer.extends}" compact="yep" wide="sure")
     texture-selector(ref="tilesetPicker" if="{pickingTileset}" oncancelled="{onTilesetCancel}" onselected="{onTilesetSelected}")

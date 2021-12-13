@@ -37,18 +37,37 @@ ct.tween.add({
 
 * `ct.tween.linear`
 
+
 * `ct.tween.ease`, or `ct.tween.easeInOutQuad` (alias, default)
 * `ct.tween.easeInQuad`
 * `ct.tween.easeOutQuad`
+
 
 * `ct.tween.easeInOutCubic`
 * `ct.tween.easeInCubic`
 * `ct.tween.easeOutCubic`
 
+
 * `ct.tween.easeInOutQuart`
 * `ct.tween.easeInQuart`
 * `ct.tween.easeOutQuart`
 
+
 * `ct.tween.easeInOutCirc`
 * `ct.tween.easeInCirc`
 * `ct.tween.easeOutCirc`
+
+
+* `ct.tween.easeInOutBack`
+* `ct.tween.easeInBack`
+* `ct.tween.easeOutBack`
+
+
+* `ct.tween.easeInOutElastic`
+* `ct.tween.easeInElastic`
+* `ct.tween.easeOutElastic`
+
+
+* `ct.tween.easeInOutBounce`
+* `ct.tween.easeOutBounce`
+* `ct.tween.easeInBounce`

@@ -21,7 +21,7 @@ type-input
         .spacer(if="{val && val !== -1}")
         button.nmr.square.inline(if="{val && val !== -1}" title="{voc.clear}" onclick="{clearInput}")
             svg.feather
-                use(xlink:href="data/icons.svg#x")
+                use(xlink:href="#x")
     type-selector(
         if="{selectingType}"
         onselected="{onSelected}"

@@ -1,32 +1,60 @@
 const path = require('path');
 
 const defaultTheme = 'Day';
+const defaultMonacoTheme = defaultTheme;
 const builtInThemes = [
     'Day',
     'SpringStream',
     'Forest',
     'Horizon',
+    'PooxelGreen',
+    'PooxelBlue',
     'LucasDracula',
     'Night',
-    'HCBlack'
+    'HCBlack',
+    'Nord'
 ];
 interface ITheme {
     name: string;
     translated: string;
-    monacoTheme: object;
+    monacoTheme: Record<string, unknown>;
     css: string;
 }
 
+var currentSwatches: Record<string, string>;
+
 const registeredThemes: ITheme[] = [];
 localStorage.UItheme = localStorage.UItheme || 'Day';
+
+const updateSwatches = () => {
+    currentSwatches = {};
+    var swatchTester = document.createElement('span');
+    // @see https://bugs.chromium.org/p/chromium/issues/detail?id=558165
+    swatchTester.style.display = 'none';
+    document.body.appendChild(swatchTester);
+    swatchTester.innerText = 'sausage';
+    for (const swatch of ['act', 'acttext', 'accent1', 'borderPale', 'borderBright', 'text', 'backgroundDeeper', 'act-contrast', 'acttext-contrast', 'accent1-contrast']) {
+        swatchTester.setAttribute('css-swatch', swatch);
+        const style = window.getComputedStyle(swatchTester);
+        currentSwatches[swatch] = style.getPropertyValue('color');
+    }
+    document.body.removeChild(swatchTester);
+};
 
 const mod = {
     registerTheme(name: string): ITheme {
         if (mod.getTheme(name)) {
             throw new Error(`A theme called ${name} is already registered.`);
         }
-        const monacoTheme = require(path.join('./data/node_requires/monaco-themes', `${name}.json`));
-        (window as any).monaco.editor.defineTheme(name, monacoTheme);
+        let monacoTheme;
+        try {
+            monacoTheme = require(path.join('./data/node_requires/monaco-themes', `${name}.json`));
+            (window as any).monaco.editor.defineTheme(name, monacoTheme);
+        } catch (e) {
+            console.warn('Could not load a monaco theme due to an error:', e, '\nFalling back to the default theme.');
+            monacoTheme = require(path.join('./data/node_requires/monaco-themes', `${defaultMonacoTheme}.json`));
+            (window as any).monaco.editor.defineTheme(name, monacoTheme);
+        }
         const css = `./data/theme${name}.css`;
         const theme = {
             name,
@@ -59,6 +87,11 @@ const mod = {
             }
             await fs.lstat(theme.css);
             const link = (document.getElementById('themeCSS') as HTMLLinkElement);
+            link.addEventListener('load', () => {
+                updateSwatches();
+            }, {
+                once: true
+            });
             // Avoid flickering on startup theme reloading
             if (link.href !== theme.css) {
                 link.href = theme.css;
@@ -66,7 +99,7 @@ const mod = {
             (window as any).monaco.editor.setTheme(theme.name);
             (window as any).signals.trigger('UIThemeChanged', name);
             localStorage.UItheme = name;
-        } catch (o_O) {
+        } catch (oO) {
             (window as any).alertify.error(`Could not load theme ${name}. Rolling back to the default ${defaultTheme}.`);
             await mod.switchToTheme(defaultTheme);
         }
@@ -79,7 +112,16 @@ const mod = {
     },
     getThemeList(): ITheme[] {
         return [...registeredThemes];
-    }
+    },
+    getSwatches(): Record<string, string> {
+        if (!currentSwatches) {
+            updateSwatches();
+        }
+        return {
+            ...currentSwatches
+        };
+    },
+    updateSwatches
 };
 
 module.exports = mod;

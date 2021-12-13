@@ -1,3 +1,139 @@
+## v1.7.0
+
+*Sat Apr 10 2021*
+
+### ✨ New Features
+
+* Add custom properties modal for copies (#275 by @firecakes)
+* Added map() function to ct.u (#274 by @qewer33)
+* Clone projects from the starting screen
+
+### ⚡️ General Improvements
+
+* 🌐 Update Russian i18n file
+* Add an optional "Made with ct.js" logo shown while a game is loading. Can be turned off in Project tab -> Branding section
+* Add more social icons to the starting screen
+
+### 🐛 Bug Fixes
+
+* Fix `emitterTandem.pause()` stopping completely if called several times before calling `emitterTandem.resume()`
+* Fix game's icon not being reset when its texture is deleted
+* Fix page name and app color for exported games
+* Fix targetX and targetY handling for cameras' boundary restrictions
+
+### 🌐 Website
+
+* :bug: Add the missing link to the German translation to the footer
+* :zap: Add a link to Vkontakte to footer
+* :zap: Update "What's next" block
+* :zap: Update navigation bar
+
+## v1.6.2
+
+*Wed Mar 31 2021*
+
+### ⚡️ General Improvements
+
+* Add JS map files for pixi.js
+* Update pixi.js to v5.3.8
+
+### 🐛 Bug Fixes
+
+* :bento: Fix 2DPhysics example
+
+### 🐉 Misc
+
+* Revert "Modify emitter tandems to use ParticleContainer"
+  This reverts commit b8a47f4273fb08e8377c5489ef8e30464bf41845.
+
+## v1.6.1
+
+*Sun Mar 29 2021*
+
+### 🐛 Bug Fixes
+
+* Fix teleport, spin, rotate, and rotateBy methods in ct.matter module
+
+## v1.6.0
+
+*Sun Mar 28 2021*
+
+### ✨ New Features
+
+* Add `ct.filters` module by SN frrom our Discord server. The module allows creating special visual effects with filters or custom shaders, applied to your copies or a whole viewport
+* Add `ct.light` module for adding ambient lighting and textured lights
+* Add `ct.matter` module for 2D physics. See the new example!
+* Bundle `ct.nakama` module by @alexandargyurov — you can now create online games with ct.js!
+* Group modded fields into collapsible sections with a new field type
+* Nano ID catmod of the same-named tiny library by Andrei Sitnik
+* Optionally make a camera stay inside a specific rectangle with new rooms' settings.
+
+### ⚡️ General Improvements
+
+* :bento: Update Electron used in desktop builds to v11.1.1
+* Allow Background class to accept a pixi.js texture
+* Modify emitter tandems to use `PIXI.ParticleContainer`. Provides better performance, and also fixes issue with un-tintable emitters.
+* Renovate `ct.desktop` -> quit method
+* Select only the needed Nw.js version for debugging
+
+### 🐛 Bug Fixes
+
+* Allow resetting values in type and texture inputs at modded fields
+* Fix "}" at the end of some texture files' names
+* Fix bitmap font's XML ("kerings" typo")
+* Fix broken context menu entry for textures to create a type from them
+* Fix crashes of built-in debugger; disable nw and node in the devtools
+* Fix `ct.place.meet` returning duplicated references to copies if querying for multiple obstacles
+* Fix icons for nightly and regular releases
+* Fix Point2D initialization for modded fields
+* In rooms' copy spawning code, check for scaling extensions separately
+* Remove the old main-menu tag
+
+### 🍱 Demos, Dependencies and Stuff
+
+* Update  nw.js to v0.51.1
+
+### 📝 Docs
+
+*  Add "Dragging Copies Around" tutorial by @qewer33
+* :bug: Add missing methods `ct.types.isCopy`, `ct.u.hexToPixi`, `ct.u.pixiToHex`
+* :bug: Add `moveTo` and `teleportTo` methods in `ct.camera` (#49 by @firecakes)
+* :sparkles: Add a list of gamedev resources
+* :zap: Add categories to ct.u methods list
+* :zap: Minor edits for JS intro, pt. 1
+* :zap: Refurbish the home page. Move most old content to "Basic concepts". Add links to tutorials and the cheatsheet.
+* 🐛 remove duplicate instruction to draw `scoreLabel`.
+* Add a memo about `ct.desktop.isNw` and `ct.desktop.isElectron`
+* Fixed typos in the Space Shooter tutorial by @sarturodev
+
+## v1.5.1
+
+*Thu Dec 24 2020*
+
+### ✨ New Features
+
+* New tweening functions (elastic, bounce, and with backwards motion) for ct.tween by kkornushin
+* Two UI themes Pooxel Green and Pooxel Blue for that retro feel 👾
+
+### ⚡️ General Improvements
+
+* Chinese Simplified 100% translated for branch v1.x (#246 & #248 by @emaoshushu)
+* Use nw.js' nightly build 25eea59. Solves issue with restarting ct.js after running a game in it.
+
+### 🐛 Bug Fixes
+
+* Fix `exts` object missing on newly created copies.
+* Fix formatting problem at ct.place docs > Tracing functions > ct.place.traceRect.
+* Partially fix memory leaks in paricle emitter editors.
+
+### 📝 Docs
+
+* Use cgroup instead of ctype in ct.place typings and docs to remove ambiguity with ctypes and regular types
+* :bug: Fix wrong function names at ct.noise
+
+
+## v1.5.0
+
 *Sun Nov 08 2020*
 
 ### ✨ New Features

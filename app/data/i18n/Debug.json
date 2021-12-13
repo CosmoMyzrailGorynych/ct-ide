@@ -21,7 +21,6 @@
         "done": "common.done",
         "duplicate": "common.duplicate",
         "exit": "common.exit",
-        "exitconfirm": "common.exitconfirm",
         "fastimport": "common.fastimport",
         "language": "common.language",
         "translateToYourLanguage": "common.translateToYourLanguage",

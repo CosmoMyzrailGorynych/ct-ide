@@ -10,9 +10,14 @@ sounds-panel.panel.view
     )
         button#soundcreate(onclick="{parent.soundNew}" title="Control+N" data-hotkey="Control+n")
             svg.feather
-                use(xlink:href="data/icons.svg#plus")
+                use(xlink:href="#plus")
             span {voc.create}
+        button#soundcreate(onclick="{parent.openRecorder}" title="Control+R" data-hotkey="Control+r")
+            svg.feather
+                use(xlink:href="#mic")
+            span {voc.record}
     sound-editor(if="{editing}" sound="{editedSound}")
+    sound-recorder(if="{recorderVisible}" onclose="{onCloseRecorder}")
     context-menu(menu="{soundMenu}" ref="soundMenu")
     script.
         this.namespace = 'sounds';
@@ -20,6 +25,7 @@ sounds-panel.panel.view
         this.mixin(window.riotNiceTime);
         this.sort = 'name';
         this.sortReverse = false;
+        this.recorderVisible = false;
 
         this.thumbnails = sound => `data/img/${sound.isMusic ? 'music' : 'wave'}.png`;
 
@@ -40,14 +46,8 @@ sounds-panel.panel.view
             if (this.editing) {
                 return false;
             }
-            const generateGUID = require('./data/node_requires/generateGUID');
-            var id = generateGUID(),
-                slice = id.split('-').pop();
-            var newSound = {
-                name: 'Sound_' + slice,
-                uid: id
-            };
-            global.currentProject.sounds.push(newSound);
+            const sounds = require('./data/node_requires/resources/sounds');
+            const newSound = sounds.createNewSound();
             this.refs.sounds.updateList();
             this.openSound(newSound)();
             return true;
@@ -55,6 +55,15 @@ sounds-panel.panel.view
         this.openSound = sound => () => {
             this.editedSound = sound;
             this.editing = true;
+            this.update();
+        };
+
+        this.openRecorder = () => {
+            this.recorderVisible = true;
+        };
+        this.onCloseRecorder = () => {
+            this.recorderVisible = false;
+            this.refs.sounds.updateList();
             this.update();
         };
 

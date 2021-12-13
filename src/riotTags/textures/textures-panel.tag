@@ -16,7 +16,7 @@ textures-panel.panel.view
                         onchange="{parent.textureImport}")
                     .button
                         svg.feather
-                            use(xlink:href="data/icons.svg#download")
+                            use(xlink:href="#download")
                         span {voc.import}
                 button(
                     onclick="{parent.pasteTexture}"
@@ -25,13 +25,13 @@ textures-panel.panel.view
                     data-hotkey-require-scope="texture"
                 )
                     svg.feather
-                        use(xlink:href="data/icons.svg#clipboard")
+                        use(xlink:href="#clipboard")
                 button(
                     onclick="{parent.openGenerator}"
                     title="{voc.generatePlaceholder}"
                 )
                     svg.feather
-                        use(xlink:href="data/icons.svg#loader")
+                        use(xlink:href="#loader")
             asset-viewer(
                 collection="{global.currentProject.skeletons}"
                 contextmenu="{showSkeletonPopup}"
@@ -49,7 +49,7 @@ textures-panel.panel.view
                         onchange="{parent.textureImport}")
                     .button
                         svg.feather
-                            use(xlink:href="data/icons.svg#download")
+                            use(xlink:href="#download")
                         span {voc.import}
     texture-editor(if="{editing}" texture="{currentTexture}")
     texture-generator(if="{generating}" onclose="{closeGenerator}")
@@ -207,8 +207,8 @@ textures-panel.panel.view
                     }
                 }
             }
-            if (global.currentProject.settings.icon === this.currentTexture.uid) {
-                delete global.currentProject.settings.icon;
+            if (global.currentProject.settings.branding.icon === this.currentTexture.uid) {
+                delete global.currentProject.settings.branding.icon;
             }
             global.currentProject.textures.splice(this.currentTextureId, 1);
         };
@@ -223,15 +223,7 @@ textures-panel.panel.view
                     const typesAPI = require('./data/node_requires/resources/types/');
                     const type = typesAPI.createNewType(this.currentTexture.name);
                     type.texture = this.currentTexture.uid;
-                    // eslint-disable-next-line no-underscore-dangle
-                    const mainMenu = document.getElementsByTagName('main-menu')[0]._tag;
-                    mainMenu.changeTab('types')();
-                    mainMenu.update();
-                    // eslint-disable-next-line no-underscore-dangle
-                    const typesPanel = document.getElementsByTagName('types-panel')[0]._tag;
-                    typesPanel.refs.types.updateList();
-                    typesPanel.openType(type)();
-                    typesPanel.update();
+                    window.orders.trigger('openAsset', `types/${type.uid}`);
                 }
             }, {
                 label: window.languageJSON.common.open,

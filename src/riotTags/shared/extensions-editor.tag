@@ -13,37 +13,45 @@
     @attribute [wide] (atomic)
         Whether to prefer a full-width layout. Useful for making neat columns of editable fields.
 
-    @attribute [customextends] (riot Array<object>)
+    @attribute [customextends] (riot Array<IExtensionField>)
         Instead of reading modules' directory, use these extends specification instead.
         Useful for quickly generating markup for built-in fields.
+
+    @attribute [onchanged] (riot Function)
+        A callback to call when any of the fields were changed.
 
     Extensions are an array of objects. The format of an extension is as following:
 
     declare interface IExtensionField {
         name: string, // the displayed name.
         // Below 'h1', 'h2', 'h3', 'h4' are purely decorational, for grouping fields. Others denote the type of an input field.
-        type: 'h1' | 'h2' | 'h3' | 'h4' | 'text' | 'textfield' | 'code' | 'number' |
-              'slider' | 'sliderAndNumber' | 'point2D' | 'checkbox' | 'radio' | 'texture' | 'type' |
-              'color' | 'group',
+        type: 'h1' | 'h2' | 'h3' | 'h4' |
+              'text' | 'textfield' | 'code' |
+              'number' | 'slider' | 'sliderAndNumber' | 'point2D' | 'color' |
+              'checkbox' | 'radio' | 'select' |
+              'group' | 'table' |
+              'texture' | 'type' | 'icon',
         key?: string, // the name of a JSON key to write into the `opts.entity`. Not needed for hN types, but required otherwise
                       // The key may have special suffixes that tell the exporter to unwrap foreign keys (resources' UIDs) into asset names.
                       // These are supposed to always be used with `'type'` and `'texture'` input types.
                       // Example: 'enemyClass@@type', 'background@@texture'.
         default?: any, // the default value; it is not written to the `opts.entity`, but is shown in inputs.
         help?: string, // a text label describing the purpose of a field
-        options?: Array<{ // Used with type === 'radio'.
+        required?: boolean, // Adds an asterisk and will mark empty or unchecked fields with red color. ⚠ No other logic provided!
+        if?: string, // Shows the field only when the value for the specified key of the same object is truthy.
+        options?: Array<{ // Used with type === 'radio' and type === 'select'.
             value: any,
             name: string,
             help?: string
         }>,
-        array?: boolean, // Whether to display an editable list instead of just one field.
         items?: Array<IExtensionField>, // For type === 'group', the grouped items.
+        fields?: Array<IExtensionField>, // For type === 'table'
         collect?: boolean, // Whether to collect values and suggest them later as an auto-completion results. (Not yet implemented)
         collectScope?: string // The name of a category under which to store suggestions from `collect`.
     }
 
 extensions-editor
-    virtual(each="{ext in extensions}")
+    virtual(each="{ext in extensions}" if="{!ext.if || opts.entity[ext.if]}")
         // ext="{ext}" is a workaround to lost loop variables in yields
         collapsible-section.panel(
             ext="{ext}"
@@ -70,25 +78,29 @@ extensions-editor
                         if="{ext.type === 'checkbox'}"
                         type="checkbox"
                         checked="{parent.opts.entity[ext.key] || ext.default}"
-                        onchange="{wire('this.opts.entity.'+ ext.key)}"
+                        onchange="{wireAndNotify('this.opts.entity.'+ ext.key)}"
+                        class="{invalid: ext.required && !(parent.opts.entity[ext.key] || ext.default)}"
                     )
                     span   {ext.name}
+                    span.red(if="{ext.required}" title="{vocGlob.required}") *
                     hover-hint(if="{ext.help && parent.opts.compact}" text="{ext.help}")
                 span(if="{ext.type !== 'checkbox'}")
                     b {ext.name}
                     b :
+                    span.red(if="{ext.required}" title="{vocGlob.required}") *
                     hover-hint(if="{ext.help && parent.opts.compact}" text="{ext.help}")
             dd(if="{ext.type === 'table'}")
                 .aTableWrap
-                    table.nicetable
+                    table.nicetable(class="{wide: parent.opts.wide}")
                         tr
                             th.center(if="{!parent.opts.compact}") №
                             th(each="{field in ext.fields}")
                                 | {field.name}
+                                span.red(if="{field.required}" title="{vocGlob.required}") *
                                 hover-hint(if="{field.help}" text="{field.help}")
                             th Actions
                         tr(each="{entry, ind in parent.opts.entity[ext.key]}" no-reorder)
-                            td.center(if="{!parent.opts.compact}")
+                            td.center(if="{!parent.parent.opts.compact}")
                                 code {ind}
                             td(each="{field in ext.fields}")
                                 extensions-editor(intable="true" compact="compact" entity="{entry}" customextends="{[field]}")
@@ -96,32 +108,33 @@ extensions-editor
                                 // Use opacity to keep nice layout
                                 .anActionableIcon(onclick="{moveUp(ext, entry)}" title="{voc.moveUp}" style="{ind === 0 ? 'opacity: 0;' : ''}")
                                     svg.feather
-                                        use(xlink:href="data/icons.svg#arrow-up")
+                                        use(xlink:href="#arrow-up")
                                 .anActionableIcon(onclick="{moveDown(ext, entry)}"  style="{ind === parent.parent.opts.entity[ext.key].length - 1 ? 'opacity: 0;' : ''}" title="{voc.moveDown}")
                                     svg.feather
-                                        use(xlink:href="data/icons.svg#arrow-down")
+                                        use(xlink:href="#arrow-down")
                                 .anActionableIcon(onclick="{deleteRow(ext, entry)}" title="{voc.deleteScript}")
                                     svg.feather.red
-                                        use(xlink:href="data/icons.svg#delete")
+                                        use(xlink:href="#delete")
                             tr(if="{!parent.opts.entity[ext.key] || !parent.opts.entity[ext.key].length}")
                                 td(colspan="{ext.fields.length + (parent.opts.compact ? 1 : 2)}") {parent.voc.noEntries}
                 button(onclick="{parent.addRow}")
                     svg.feather
-                        use(xlink:href="data/icons.svg#plus")
+                        use(xlink:href="#plus")
                     span {parent.voc.addRow}
             dd(if="{ext.type !== 'table'}")
                 input.nogrow(
                     if="{ext.type === 'checkbox' && parent.opts.intable}"
                     type="checkbox"
                     checked="{parent.opts.entity[ext.key] || ext.default}"
-                    onchange="{wire('this.opts.entity.'+ ext.key)}"
+                    onchange="{wireAndNotify('this.opts.entity.'+ ext.key)}"
+                    class="{invalid: ext.required && !(parent.opts.entity[ext.key] || ext.default)}"
                 )
                 texture-input(
                     if="{ext.type === 'texture'}"
-                    class="{compact: parent.opts.compact, wide: parent.opts.wide}"
+                    class="{compact: parent.opts.compact, wide: parent.opts.wide, invalid: ext.required && (parent.opts.entity[ext.key] || ext.default) === -1}"
                     val="{parent.opts.entity[ext.key] || ext.default}"
-                    onselected="{writeUid(ext.key)}"
                     showempty="yep"
+                    onselected="{writeUid(ext.key)}"
                 )
                 .aPoint2DInput(if="{ext.type === 'point2D'}" class="{compact: parent.opts.compact, wide: parent.opts.wide}")
                     label
@@ -145,43 +158,49 @@ extensions-editor
                         )
                 type-input(
                     if="{ext.type === 'type'}"
-                    class="{compact: parent.opts.compact, wide: parent.opts.wide}"
+                    class="{compact: parent.opts.compact, wide: parent.opts.wide, invalid: ext.required && (parent.opts.entity[ext.key] || ext.default) === -1}"
                     val="{parent.opts.entity[ext.key] || ext.default}"
                     onselected="{writeUid(ext.key)}"
                     showempty="yep"
+                )
+                icon-input(
+                    if="{ext.type === 'icon'}"
+                    class="{compact: parent.opts.compact, wide: parent.opts.wide}"
+                    val="{parent.opts.entity[ext.key] || ext.default}"
+                    onselected="{writeAsIs(ext.key)}"
                 )
                 color-input(
                     if="{ext.type === 'color'}"
                     class="{compact: parent.opts.compact, wide: parent.opts.wide}"
                     color="{parent.opts.entity[ext.key] || ext.default}"
                     hidealpha="{ext.noalpha ? 'noalpha' : ''}"
-                    onapply="{wire('this.opts.entity.'+ ext.key)}"
+                    onapply="{wireAndNotify('this.opts.entity.'+ ext.key)}"
                 )
                 input(
                     if="{ext.type === 'text'}"
-                    class="{compact: parent.opts.compact, wide: parent.opts.wide}"
+                    class="{compact: parent.opts.compact, wide: parent.opts.wide, invalid: ext.required && !parent.opts.entity[ext.key]}"
                     type="text"
                     value="{parent.opts.entity[ext.key] || ext.default}"
-                    onchange="{wire('this.opts.entity.'+ ext.key)}"
+                    onchange="{wireAndNotify('this.opts.entity.'+ ext.key)}"
                 )
                 textarea(
                     if="{ext.type === 'textfield'}"
-                    class="{compact: parent.opts.compact, wide: parent.opts.wide}"
+                    class="{compact: parent.opts.compact, wide: parent.opts.wide, invalid: ext.required && !parent.opts.entity[ext.key]}"
                     value="{parent.opts.entity[ext.key] || ext.default}"
-                    onchange="{wire('this.opts.entity.'+ ext.key)}"
+                    onchange="{wireAndNotify('this.opts.entity.'+ ext.key)}"
                 )
                 textarea.monospace(
                     if="{ext.type === 'code'}"
-                    class="{compact: parent.opts.compact, wide: parent.opts.wide}"
+                    class="{compact: parent.opts.compact, wide: parent.opts.wide, invalid: ext.required && !parent.opts.entity[ext.key]}"
                     value="{parent.opts.entity[ext.key] || ext.default}"
-                    onchange="{wire('this.opts.entity.'+ ext.key)}"
+                    onchange="{wireAndNotify('this.opts.entity.'+ ext.key)}"
                 )
                 input(
                     if="{ext.type === 'number'}"
-                    class="{compact: parent.opts.compact, wide: parent.opts.wide}"
+                    class="{compact: parent.opts.compact, wide: parent.opts.wide, invalid: ext.required && !Number.isFinite(parent.opts.entity[ext.key])}"
                     type="number"
                     value="{parent.opts.entity[ext.key] || ext.default}"
-                    onchange="{wire('this.opts.entity.'+ ext.key)}"
+                    onchange="{wireAndNotify('this.opts.entity.'+ ext.key)}"
                     min="{ext.min}"
                     max="{ext.max}"
                     step="{ext.step}"
@@ -191,7 +210,7 @@ extensions-editor
                         class="{compact: parent.opts.compact, wide: parent.opts.wide}"
                         type="range"
                         value="{parent.opts.entity[ext.key] || ext.default}"
-                        onchange="{wire('this.opts.entity.'+ ext.key)}"
+                        onchange="{wireAndNotify('this.opts.entity.'+ ext.key)}"
                         min="{ext.min}"
                         max="{ext.max}"
                         step="{ext.step}"
@@ -202,17 +221,17 @@ extensions-editor
                             class="{compact: parent.opts.compact}"
                             type="range"
                             value="{parent.opts.entity[ext.key] || ext.default}"
-                            onchange="{wire('this.opts.entity.'+ ext.key)}"
+                            onchange="{wireAndNotify('this.opts.entity.'+ ext.key)}"
                             min="{ext.min}"
                             max="{ext.max}"
                             step="{ext.step}"
                         )
                     .spacer
                     input(
-                        class="{compact: parent.opts.compact}"
+                        class="{compact: parent.opts.compact, invalid: ext.required && !Number.isFinite(parent.opts.entity[ext.key])}"
                         type="number"
                         value="{parent.opts.entity[ext.key] || ext.default}"
-                        onchange="{wire('this.opts.entity.'+ ext.key)}"
+                        onchange="{wireAndNotify('this.opts.entity.'+ ext.key)}"
                         min="{ext.min}"
                         max="{ext.max}"
                         step="{ext.step}"
@@ -222,13 +241,13 @@ extensions-editor
                         type="radio"
                         value="{option.value}"
                         checked="{parent.parent.opts.entity[ext.key] === option.value}"
-                        onchange="{wire('this.opts.entity.'+ ext.key)}"
+                        onchange="{wireAndNotify('this.opts.entity.'+ ext.key)}"
                     )
                     |   {option.name}
                     div.desc(if="{option.help}") {option.help}
                 select(
                     if="{ext.type === 'select'}"
-                    onchange="{wire('this.opts.entity.'+ ext.key)}"
+                    onchange="{wireAndNotify('this.opts.entity.'+ ext.key)}"
                     class="{wide: parent.opts.wide}"
                 )
                     option(
@@ -243,6 +262,12 @@ extensions-editor
               path = require('path');
 
         this.mixin(window.riotWired);
+        this.wireAndNotify = (...args1) => (...args2) => {
+            this.wire(...args1)(...args2);
+            if (this.opts.onchanged) {
+                this.opts.onchanged();
+            }
+        };
         this.namespace = 'extensionsEditor';
         this.mixin(window.riotVoc);
 
@@ -285,6 +310,17 @@ extensions-editor
                 this.opts.entity[field] = -1;
             }
             this.update();
+        };
+        this.writeAsIs = field => val => {
+            this.opts.entity[field] = val;
+            this.update();
+        };
+
+        this.ensurePoint2DAndWire = (obj, field, def, way) => e => {
+            if (!obj[field]) {
+                obj[field] = [...def];
+            }
+            this.wire(way)(e);
         };
 
         this.ensurePoint2DAndWire = (obj, field, def, way) => e => {

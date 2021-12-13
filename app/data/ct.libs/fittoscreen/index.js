@@ -1,6 +1,23 @@
 (function fittoscreen(ct) {
     document.body.style.overflow = 'hidden';
     var canv = ct.pixiApp.view;
+    const positionCanvas = function positionCanvas(mode, scale) {
+        if (mode === 'fastScale' || mode === 'fastScaleInteger') {
+            canv.style.transform = `translate(-50%, -50%) scale(${scale})`;
+            canv.style.position = 'absolute';
+            canv.style.top = '50%';
+            canv.style.left = '50%';
+        } else if (mode === 'expandViewport' || mode === 'expand' || mode === 'scaleFill') {
+            canv.style.position = 'static';
+            canv.style.top = 'unset';
+            canv.style.left = 'unset';
+        } else if (mode === 'scaleFit') {
+            canv.style.transform = 'translate(-50%, -50%)';
+            canv.style.position = 'absolute';
+            canv.style.top = '50%';
+            canv.style.left = '50%';
+        }
+    };
     var resize = function resize() {
         const {mode} = ct.fittoscreen;
         const pixelScaleModifier = ct.highDensity ? (window.devicePixelRatio || 1) : 1;
@@ -44,24 +61,11 @@
         }
         canv.style.width = Math.ceil(canvasWidth / pixelScaleModifier) + 'px';
         canv.style.height = Math.ceil(canvasHeight / pixelScaleModifier) + 'px';
-        ct.camera.width = cameraWidth;
-        ct.camera.height = cameraHeight;
-
-        if (mode === 'fastScale' || mode === 'fastScaleInteger') {
-            canv.style.transform = `translate(-50%, -50%) scale(${k})`;
-            canv.style.position = 'absolute';
-            canv.style.top = '50%';
-            canv.style.left = '50%';
-        } else if (mode === 'expandViewport' || mode === 'expand' || mode === 'scaleFill') {
-            canv.style.position = 'static';
-            canv.style.top = 'unset';
-            canv.style.left = 'unset';
-        } else if (mode === 'scaleFit') {
-            canv.style.transform = 'translate(-50%, -50%)';
-            canv.style.position = 'absolute';
-            canv.style.top = '50%';
-            canv.style.left = '50%';
+        if (ct.camera) {
+            ct.camera.width = cameraWidth;
+            ct.camera.height = cameraHeight;
         }
+        positionCanvas(mode, k);
     };
     var toggleFullscreen = function () {
         try {

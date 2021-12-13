@@ -67,6 +67,9 @@ window.showSaveDialog = function showSaveDialog(options = {}) {
     const input = document.createElement('input');
     input.setAttribute('type', 'file');
     input.style.opacity = 0;
+    input.style.position = 'fixed';
+    input.style.right = '100%';
+    input.style.bottom = '100%';
     document.body.appendChild(input);
     if (options.defaultPath) {
         input.setAttribute('nwworkingdir', options.defaultPath);

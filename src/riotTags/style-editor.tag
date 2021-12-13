@@ -20,7 +20,7 @@ style-editor.panel.view
                             input#fontfamily.wide(type="text" value="{styleobj.font.family || 'sans-serif'}" onchange="{wire('this.styleobj.font.family')}")
                         button(onclick="{openCustomFontSelector}")
                             svg.feather
-                                use(xlink:href="data/icons.svg#font")
+                                use(xlink:href="#font")
                             span {voc.useCustomFont}
                         .clear
                         label.fifty.npl.nmt
@@ -42,13 +42,13 @@ style-editor.panel.view
                         .align.buttonselect
                             button#middleleft.inline.nml(onclick="{styleSetAlign('left')}" class="{active: this.styleobj.font.halign === 'left'}")
                                 svg.feather
-                                    use(xlink:href="data/icons.svg#align-left")
+                                    use(xlink:href="#align-left")
                             button#middlecenter.inline(onclick="{styleSetAlign('center')}" class="{active: this.styleobj.font.halign === 'center'}")
                                 svg.feather
-                                    use(xlink:href="data/icons.svg#align-center")
+                                    use(xlink:href="#align-center")
                             button#middleright.inline(onclick="{styleSetAlign('right')}" class="{active: this.styleobj.font.halign === 'right'}")
                                 svg.feather
-                                    use(xlink:href="data/icons.svg#align-right")
+                                    use(xlink:href="#align-right")
                         label
                             b {voc.lineHeight}
                             br
@@ -128,7 +128,7 @@ style-editor.panel.view
         .flexfix-footer
             button.wide.nogrow.noshrink(onclick="{styleSave}" title="Shift+Control+S" data-hotkey="Control+S")
                 svg.feather
-                    use(xlink:href="data/icons.svg#check")
+                    use(xlink:href="#check")
                 span {voc.apply}
     #stylepreview.tall(ref="canvasSlot")
     font-selector(if="{selectingFont}" onselected="{applyFont}" oncancelled="{cancelCustomFontSelector}")
@@ -271,6 +271,7 @@ style-editor.panel.view
                 this.parent.editingStyle = false;
                 this.parent.update();
             });
+            require('./data/node_requires/glob').modified = true;
             return true;
         };
 

@@ -18,7 +18,7 @@ fonts-panel.flexfix.tall.fifty
                     onchange="{parent.fontImport}")
                 .button
                     svg.feather
-                        use(xlink:href="data/icons.svg#download")
+                        use(xlink:href="#download")
                     span {voc.import}
     context-menu(menu="{fontMenu}" ref="fontMenu")
     font-editor(if="{editingFont}" fontobj="{editedFont}")

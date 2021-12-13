@@ -36,6 +36,7 @@ body {
     font-size: 1.5rem;
     font-style: italic;
     padding: 1rem 2rem;
+    text-align: center;
 }
 .ct-aLoadingBar {
     content: '';
@@ -47,6 +48,13 @@ body {
     left: 0;
     bottom: 0;
     transition: 1s cubic-bezier(0.31, 0.59, 0.29, 1) width;
+}
+.ct-aMadeWithImage {
+    margin-bottom: 1rem;
+}
+.ct-aMadeWithImage svg {
+    width: 33vw;
+    height: auto;
 }
 .ct-aLoadingScreen.hidden {
     visibility: hidden;
@@ -69,6 +77,12 @@ canvas, img{
     cursor: none;
 }
 /*endif @hidecursor@*/
+
+/*if @hidemadewithctjs@*/
+.ct-aMadeWithImage {
+    display: none;
+}
+/*endif @hidemadewithctjs@*/
 
 /*@fonts@*/
 

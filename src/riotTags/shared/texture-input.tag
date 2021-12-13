@@ -21,14 +21,21 @@ texture-input(class="{large: opts.large} {opts.class}")
             span(if="{val !== -1}") {getTextureFromId(val).name}
         button.square(if="{val !== -1}" title="{voc.jumpToTexture}" onclick="{openTexture}")
             svg.feather
-                use(xlink:href="data/icons.svg#external-link")
+                use(xlink:href="#external-link")
+        button.square(if="{val !== -1 && opts.showempty}" title="{vocGlob.clear}" onclick="{clearTexture}")
+            svg.feather
+                use(xlink:href="#x")
     .texture-input-aBigInput(if="{opts.large}" onclick="{openSelector}" title="{voc.changeTexture}")
+        .texture-input-TexturesTinyTools
+            button.tiny(if="{val !== -1}" title="{voc.jumpToTexture}" onclick="{openTexture}")
+                svg.feather
+                    use(xlink:href="#external-link")
+            button.tiny(if="{val !== -1 && opts.showempty}" title="{vocGlob.clear}" onclick="{clearTexture}")
+                svg.feather
+                    use(xlink:href="#x")
         img(src="{getTexturePreview(val || -1, true)}")
-        div(if="{val === -1}") {vocGlob.select}
-        div(if="{val !== -1}") {getTextureFromId(val).name}
-    button.tiny(if="{val !== -1 && opts.large}" title="{voc.jumpToTexture}" onclick="{openTexture}")
-        svg.feather
-            use(xlink:href="data/icons.svg#external-link")
+        .texture-input-aTextureLabel(if="{val === -1}") {vocGlob.select}
+        .texture-input-aTextureLabel(if="{val !== -1}") {getTextureFromId(val).name}
     texture-selector(
         if="{selectingTexture}"
         showempty="{opts.showempty}"
@@ -60,8 +67,18 @@ texture-input(class="{large: opts.large} {opts.class}")
             this.selectingTexture = false;
             this.update();
         };
-        this.openTexture = () => {
+        this.openTexture = e => {
+            e.stopPropagation();
             window.orders.trigger('openAsset', `textures/${this.val}`);
+        };
+        this.clearTexture = e => {
+            e.stopPropagation();
+            this.val = -1;
+            if (this.opts.onselected) {
+                this.opts.onselected({
+                    uid: -1
+                }, -1);
+            }
         };
 
         this.on('update', () => {

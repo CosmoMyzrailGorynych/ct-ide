@@ -91,7 +91,7 @@ const makeErrorObj = (title, err) => {
         message: err.toString(),
         icon: path.join(__dirname, 'error.png'),
         sound: true,
-        wait: true
+        wait: false
     };
 };
 
@@ -307,7 +307,7 @@ const lintI18n = () => require('./node_requires/i18n')().then(console.log);
 const lint = gulp.series(lintJS, lintTags, lintStylus, lintI18n);
 
 const processToPlatformMap = {
-    'darwin-x64': 'osx64',
+    'darwin-x64': 'darwin',
     'win32-x32': 'win32',
     'win32-x64': 'win64',
     'linux-x32': 'linux32',
@@ -471,6 +471,8 @@ const bakePackages = async () => {
         files: nwFiles,
         platforms,
         version: nwVersion,
+        downloadUrl: nwSource,
+        manifestUrl: nwManifest,
         flavor: 'sdk',
         buildType: 'versioned',
         // forceDownload: true,

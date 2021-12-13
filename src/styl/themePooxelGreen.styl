@@ -1,0 +1,191 @@
+@charset "utf-8"
+
+@font-face
+    font-family 'Pooxel'
+    src url('../data/fonts/uni0563-webfont.woff')
+    font-weight 700
+    font-style normal
+@font-face
+    font-family 'Pooxel'
+    src url('../data/fonts/uni0553-webfont.woff')
+    font-weight 400
+    font-style normal
+
+/* Base fonts for UI */
+fonts = font = 'Pooxel', sans-serif, serif
+font-mono = mono = Basis, monospace
+
+br = 0
+iconsize = 1.5rem
+
+/* Colors used by this theme */
+unless theme is defined
+    background = #292929
+    foreground = #A9B7C6
+    shadows = #000
+
+    act = #00d059
+    acttext = #00d059
+    accent1 = #00d059
+    error = #ff6970
+    red = error
+    success = #00d059
+    green = success
+    warning = #daae00
+    orange = warning
+
+    borderPale = #333
+    borderBright = #444
+    borderHighlight = #555
+
+    text = #A9B7C6
+    backgroundDeeper = #222222
+
+    theme = 'PooxelGreen'
+    themeDark = true
+
+/* Frequently used properties */
+trans =
+    transition none
+transshort =
+    transition none
+shad =
+    box-shadow 0 4px 0 rgba(shadows, 0.25)
+shadamb =
+    box-shadow 0 10px 0 4px rgba(shadows, 0.25)
+
+
+@require 'hvost.styl'
+
+@require '3rdParty/*.styl'
+@require './../../app/node_modules/highlight.js/styles/tomorrow.css'
+
+@require 'common.styl'
+@require 'inputs.styl'
+@require 'typography.styl'
+@require 'confetti.styl'
+@require 'buildingBlocks.styl'
+@require 'tabs.styl'
+
+@require 'tags/**/*.styl'
+
+/**
+ * Strokes and borders
+ */
+
+button, .button,
+input[type="text"], input[type="number"], input[type="url"], input[type="password"], select, textarea,
+.checkbox [type="checkbox"], .checkbox [type="radio"],
+.modal, .panel, .view modules-settings .aModuleCard, project-settings main, texture-input .texture-input-aBigInput,
+.nav li, .nav.vertical li, project-settings aside .nav.tabs,
+.alertify .dialog > *, .alertify .alert > *,
+.nav
+.bigpower,
+context-menu,
+[type=range]::-webkit-slider-runnable-track,
+code.inline, p > code, li > code, pre
+    border-width 2px
+    border-radius 0
+
+.view
+    border-width 0
+
+audio::-webkit-media-controls-enclosure
+    border-radius 0
+
+.bigpower svg
+    border 0
+    background none
+
+.bigpower:after, .bigpower span
+    display none
+
+.alertify .dialog nav, .alertify .alert nav
+    border-top-width 2px
+
+collapsible-section > .flexrow
+    border-bottom-width 2px
+
+button, .button
+    border 0
+    box-shadow -2px 0 0, 2px 0 0, 0 -2px 0, 0 2px 0
+    margin 2px 8px 2px 2px
+    &.wide
+        width calc(100% - 4px) !important
+        margin-left 2px
+        margin-right 2px
+    &.nm, &.nml
+        margin-left 2px !important
+    &.nm, &.nmr
+        margin-right 2px !important
+    &:hover, &:active, &.active, &.selected
+        color background
+        svg
+            color background
+        box-shadow -2px 0 0 accent1, 2px 0 0 accent1, 0 -2px 0 accent1, 0 2px 0 accent1
+
+.modal, .panel, .view modules-settings .aModuleCard, project-settings main,
+.alertify .dialog > *, .alertify .alert > *
+    border-style outset
+
+project-settings aside .nav.tabs
+    border-style outset
+    border-right 0
+
+.view
+    border-style solid
+
+.bigpower
+    background backgroundDeeper
+
+input[type="text"], input[type="number"], input[type="url"], input[type="password"], select, textarea,
+texture-input .texture-input-aBigInput,
+pre
+    border-style inset
+
+.aCard, .cards li, .Cards li, .cards .aCard, .Cards .aCard
+    border-style outset
+    border-width 2px
+    border-radius 0
+    span
+        font-family fonts
+    &:hover
+        border-color borderHighlight
+
+.feather
+    stroke-linecap square
+    stroke-linejoin bevel
+
+/**
+ * Font fixes
+ */
+.color-input-aPicker
+    font-size 1rem
+h3, .h3, h4, .h4
+    font-size 1rem
+h3, .h3
+    font-weight bold
+h2, .h2
+    font-size 1.5rem
+h1, .h1
+    font-size 2rem
+code, pre, textarea.monospace
+    font-size 1.25em
+    line-height 1em
+
+for i in right left top bottom
+    .border{i}
+        border-{i}-width 2px
+
+/**
+ * Misc
+ */
+[type=range]::-webkit-slider-thumb
+    border-radius 0
+    width 1em
+    height 1em
+    margin-top -.25em
+    box-shadow -2px 0 act, 2px 0 act, 0 2px act, 0 -2px act, -6px 0 0 -2px act, 6px 0 0 -2px act, 0 6px 0 -2px act, 0 -6px 0 -2px act
+
+texture-editor .column
+    width 18em
