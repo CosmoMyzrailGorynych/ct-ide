@@ -1,0 +1,80 @@
+@charset "utf-8"
+
+background = #fff1eb
+foreground = #0a0912
+shadows = #0a0912
+
+/* Frequently used properties */
+trans =
+    transition 0.35s ease all
+transshort =
+    transition 0.15s ease all
+shad =
+    box-shadow 0 0.1rem 0.1rem rgba(shadows, 0.05), 0 0.2rem 0.3rem rgba(shadows, 0.1), 0 0.3rem 0.5rem rgba(shadows, 0.05)
+shadamb =
+    box-shadow 0 0.1rem 0.25rem rgba(shadows, 0.15), 0 0.5rem 0.5rem rgba(shadows, 0.08), 0 1rem 1rem rgba(shadows, 0.05), 0 1.5rem 1.5rem rgba(shadows, 0.03)
+
+/* Base fonts for UI */
+fonts = font = 'Open Sans', sans-serif, serif
+font-mono = mono = Iosevka, monospace
+
+br = 0.35rem
+iconsize = 1.5rem
+
+/* Colors used by this theme */
+act = #70579c
+acttext = #70579c
+accent1 = #654c91
+error = #c24c7d
+red = error
+success = #5c913d
+green = success
+warning = #a36a3b
+orange = warning
+
+theme = 'Ghost'
+themeDark = false
+
+borderPale = #ecc3cd
+borderBright = #e096a8
+
+text = #0a0912
+backgroundDeeper = #f0dfd8
+
+
+@require 'hvost.styl'
+
+@require '3rdParty/*.styl'
+@require './../../app/node_modules/highlight.js/styles/tomorrow.css'
+
+@require 'common.styl'
+@require 'inputs.styl'
+@require 'typography.styl'
+@require 'confetti.styl'
+@require 'buildingBlocks.styl'
+@require 'tabs.styl'
+
+@require 'tags/**/*.styl'
+
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+input[type="text"],
+input[type="password"],
+input[type="number"],
+textarea,
+select,
+.button,
+.selectbox,
+.panel,
+.modal
+    border-width 2px
+.tabbed
+    border-width 2px
+.nav
+    border-top-width 2px
+    border-left-width 2px
+    li
+        border-right-width 2px
+        border-bottom-width 2px

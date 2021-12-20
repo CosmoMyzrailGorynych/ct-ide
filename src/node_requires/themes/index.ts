@@ -5,6 +5,7 @@ const defaultMonacoTheme = defaultTheme;
 const builtInThemes = [
     'Day',
     'SpringStream',
+    'Ghost',
     'Forest',
     'Horizon',
     'PooxelGreen',
