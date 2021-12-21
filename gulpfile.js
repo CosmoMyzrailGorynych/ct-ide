@@ -45,7 +45,7 @@ const path = require('path'),
  */
 const nwSource = void 0;
 const nwManifest = void 0;
-const nwVersion = '0.53.1',
+const nwVersion = '0.59.0',
       platforms = ['osx64', 'win32', 'win64', 'linux32', 'linux64'],
       nwFiles = ['./app/**', '!./app/export/**', '!./app/projects/**', '!./app/exportDesktop/**', '!./app/cache/**', '!./app/.vscode/**', '!./app/JamGames/**'];
 

@@ -8,7 +8,7 @@
             "type": "nwjs",
             "request": "launch",
             "name": "Launch ct.js",
-            "nwjsVersion": "0.53.1",
+            "nwjsVersion": "0.59.0",
             "runtimeArgs": [
                 "--nwapp=${workspaceFolder}/app"
             ],
