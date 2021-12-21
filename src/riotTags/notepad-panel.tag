@@ -1,5 +1,5 @@
-notepad-panel#notepad.panel.dockright(class="{opened: opened}")
-    ul.nav.tabs.nogrow.nb
+notepad-panel#notepad.aPanel.dockright(class="{opened: opened}")
+    ul.aNav.tabs.nogrow.nb
         li(onclick="{changeTab('notepadlocal')}" class="{active: tab === 'notepadlocal'}")
             svg.feather
                 use(xlink:href="#edit")

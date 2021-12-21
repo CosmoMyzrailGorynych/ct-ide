@@ -1,4 +1,4 @@
-types-panel.panel.view
+types-panel.aPanel.aView
     asset-viewer(
         collection="{global.currentProject.types}"
         contextmenu="{onTypeContextMenu}"
@@ -11,7 +11,7 @@ types-panel.panel.view
         button#typecreate(onclick="{parent.typeCreate}" title="Control+N" data-hotkey="Control+n")
             svg.feather
                 use(xlink:href="#plus")
-            span {voc.create}
+            span {parent.voc.create}
     type-editor(if="{editingType}" type="{editedType}")
     context-menu(menu="{typeMenu}" ref="typeMenu")
     script.

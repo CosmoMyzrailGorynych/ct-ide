@@ -1,6 +1,6 @@
 writable-folder-prompt
-    .dimmer
-        .panel(ref="widget")
+    .aDimmer
+        .aPanel(ref="widget")
             h1 {voc.headerSelectFolderForData}
             .flexrow
                 .sixty.npt.npl

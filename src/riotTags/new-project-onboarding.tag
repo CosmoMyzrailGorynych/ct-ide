@@ -1,6 +1,6 @@
 new-project-onboarding
-    .dimmer
-    .panel.flexfix
+    .aDimmer
+    .aPanel.flexfix
         .flexfix-body
             .center
                 svg.anIllustration

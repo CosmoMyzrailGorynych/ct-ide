@@ -1,4 +1,4 @@
-fx-panel.panel.view
+fx-panel.aPanel.aView
     asset-viewer.tall(
         collection="{global.currentProject.emitterTandems}"
         contextmenu="{showTandemPopup}"

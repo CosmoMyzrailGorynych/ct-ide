@@ -35,7 +35,7 @@ actions-settings
                         input.wide(type="text" placeholder="{voc.inputActionNamePlaceholder}" value="{action.name}" onchange="{checkActionNameAndSave}")
                         .anErrorNotice(if="{nameTaken === action.name}" ref="errors") {vocGlob.nametaken}
                         .anErrorNotice(if="{action.name.trim() === ''}" ref="errors") {vocGlob.cannotBeEmpty}
-                    .spacer
+                    .aSpacer
                     svg.feather.a(title="{voc.deleteAction}" onclick="{deleteAction}")
                         use(xlink:href="#x")
             .c8.npr.npl.breakon800
@@ -68,7 +68,7 @@ actions-settings
                 svg.feather
                     use(xlink:href="#upload")
                 span {voc.exportActionPreset}
-    .dimmer(show="{addingMethod}")
+    .aDimmer(show="{addingMethod}")
         actions-input-selector(action="{editedAction}" ref="methodSelector")
     script.
         global.currentProject.actions = global.currentProject.actions || [];

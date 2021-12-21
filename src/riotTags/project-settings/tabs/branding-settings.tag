@@ -11,13 +11,13 @@ branding-settings
             onselected="{updateGameIcon}"
             header="{voc.icon}"
         )
-    .spacer
+    .aSpacer
     .block
         b
             span {voc.accent}
             hover-hint(text="{voc.accentNotice}")
         color-input(onchange="{wire('global.currentProject.settings.branding.accent', true)}" color="{global.currentProject.settings.branding.accent}")
-    .spacer
+    .aSpacer
     .block.checkbox
         input(type="checkbox" value="{global.currentProject.settings.branding.invertPreloaderScheme}" checked="{global.currentProject.settings.branding.invertPreloaderScheme}" onchange="{wire('this.currentProject.settings.branding.invertPreloaderScheme')}")
         span {voc.invertPreloaderScheme}

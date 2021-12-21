@@ -1,4 +1,4 @@
-project-settings.panel.view.pad.flexrow
+project-settings.aPanel.aView.pad.flexrow
     -
         var tabs = ['authoring', 'actions', 'branding', 'content', 'modules', 'scripts', 'rendering', 'export'];
         var iconMap = {
@@ -13,7 +13,7 @@ project-settings.panel.view.pad.flexrow
             default: 'settings'
         };
     aside.nogrow.noshrink
-        ul.nav.tabs.vertical
+        ul.aNav.tabs.vertical
             // A bit of Pug sorcery, destroyed by Riot.js syntax
             // Iterate over an array of sections. Template out Riot syntax inside `these` backticks.
             each name in tabs
@@ -22,7 +22,7 @@ project-settings.panel.view.pad.flexrow
                         use(xlink:href=`#${(name in iconMap)? iconMap[name] : iconMap.default}`)
                     span='{voc.' + name + '.heading}'
         h3(if="{modulesWithFields.length}") {voc.catmodsSettings}
-        ul(if="{modulesWithFields.length}").nav.tabs.vertical
+        ul(if="{modulesWithFields.length}").aNav.tabs.vertical
             li(
                 each="{module in modulesWithFields}"
                 onclick="{openModuleSettings(module)}"
@@ -33,7 +33,7 @@ project-settings.panel.view.pad.flexrow
                     use(xlink:href=`#{getIcon(module)}`)
                 span {module.manifest.main.name}
         h3(if="{currentProject.contentTypes && currentProject.contentTypes.length}") {voc.contentTypes}
-        ul(if="{currentProject.contentTypes && currentProject.contentTypes.length}").nav.tabs.vertical
+        ul(if="{currentProject.contentTypes && currentProject.contentTypes.length}").aNav.tabs.vertical
             li(
                 each="{contentType in currentProject.contentTypes}"
                 onclick="{openContentType(contentType)}"

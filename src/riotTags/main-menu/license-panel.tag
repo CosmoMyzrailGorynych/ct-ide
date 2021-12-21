@@ -1,4 +1,4 @@
-license-panel.modal.pad
+license-panel.aModal.pad
     .toright(title="{vocGlob.close}")
         span(onclick="{opts.onclose}")
             svg.feather

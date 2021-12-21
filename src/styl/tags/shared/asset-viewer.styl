@@ -4,7 +4,16 @@ asset-viewer
         margin-bottom 1rem
     &.fonts
         if (themeDark)
-            .cards li img
+            .Cards li img
                 filter invert(1)
                 &:hover
                     background transparent
+    .Cards .&-Icons, .Cards .&-Icons
+        color act
+        opacity 0.65
+        line-height 1rem
+        svg
+            width 1rem
+            height @width
+            & + svg
+                margin-left 0.5rem

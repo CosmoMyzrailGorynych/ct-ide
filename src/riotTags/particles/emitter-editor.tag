@@ -1,4 +1,4 @@
-emitter-editor.panel.pad.nb
+emitter-editor.aPanel.pad.nb
     .emitter-editor-aHeader
         img.emitter-editor-aTexture(src="{getPreview()}")
         h3 {voc.emitterHeading} {opts.emitter.uid.split('-').pop()}
@@ -302,7 +302,7 @@ emitter-editor.panel.pad.nb
                     value="{parent.opts.emitter.settings.delay}"
                     oninput="{parent.wireAndReset('this.opts.emitter.settings.delay')}"
                 )
-            .spacer
+            .aSpacer
 
     collapsible-section(
         heading="{voc.shapeAndPositioningHeading}"
@@ -392,7 +392,7 @@ emitter-editor.panel.pad.nb
                         value="{parent.opts.emitter.settings.angleStart}"
                         oninput="{parent.wireAndUpdate('this.opts.emitter.settings.angleStart', 'angleStart', true)}"
                     )
-                    .spacer
+                    .aSpacer
                     input.wide(
                         type="range" min="0" max="360" step="1"
                         data-wired-force-minmax="yes"

@@ -10,7 +10,7 @@ main-menu-project
                 use(xlink:href="#package")
             span {voc.zipProject}
         li(onclick="{openIncludeFolder}")
-            .spacer
+            .aSpacer
             span {voc.openIncludeFolder}
     ul.aMenu
         li(onclick="{openProject}")
@@ -18,10 +18,10 @@ main-menu-project
                 use(xlink:href="#folder")
             span {voc.openProject}
         li(onclick="{openExample}")
-            .spacer
+            .aSpacer
             span {voc.openExample}
         li(onclick="{toStartScreen}")
-            .spacer
+            .aSpacer
             span {voc.startScreen}
     script.
         this.namespace = 'mainMenu.project';

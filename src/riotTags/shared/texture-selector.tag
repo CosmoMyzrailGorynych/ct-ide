@@ -12,7 +12,7 @@
     @attribute oncancelled (riot function)
         Calls the funtion when a user presses the "Cancel" button. Passes no arguments.
 
-texture-selector.panel.view
+texture-selector.aPanel.aView
     .flexfix.tall
         .flexfix-header
             .toleft
@@ -29,7 +29,7 @@ texture-selector.panel.view
                     input.inline(type="text" onkeyup="{fuseSearch}")
             .clear
         .flexfix-body
-            ul.cards
+            ul.Cards
                 li(if="{opts.showempty}" onclick="{onselected(-1)}")
                     span {window.languageJSON.common.none}
                     img(src="data/img/notexture.png")

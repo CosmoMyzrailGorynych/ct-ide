@@ -1,7 +1,7 @@
-particle-importer.panel.view
+particle-importer.aPanel.aView
     .flexfix.tall
         .flexfix-body
-            ul.cards
+            ul.Cards
                 li(
                     each="{texture in textures}"
                     onclick="{onselected(texture)}"

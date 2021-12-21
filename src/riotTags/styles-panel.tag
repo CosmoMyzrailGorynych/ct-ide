@@ -8,11 +8,11 @@ styles-panel.tall.fifty
         ref="styles"
         class="tall"
     )
-        h1.nmt {voc.styles}
+        h1.nmt {parent.voc.styles}
         button#stylecreate(onclick="{parent.styleCreate}" title="Control+N" data-hotkey="Control+n")
             svg.feather
                 use(xlink:href="#plus")
-            span {voc.create}
+            span {parent.voc.create}
     style-editor(if="{editingStyle}" styleobj="{editedStyle}")
     context-menu(menu="{styleMenu}" ref="styleMenu")
     script.

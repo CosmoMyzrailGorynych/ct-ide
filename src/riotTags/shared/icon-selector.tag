@@ -10,12 +10,12 @@
     @attribute oncancelled (riot function)
         Calls the funtion when a user presses the "Cancel" button. Passes no arguments.
 
-icon-selector.view.pad
+icon-selector.aView.pad
     .toright
         button(onclick="{opts.oncancelled}") {vocGlob.cancel}
     h1(if="{opts.header}") {opts.header}
     .clear
-    ul.cards
+    ul.Cards
         li(
             each="{icon in iconList}"
             onclick="{parent.opts.onselected(icon)}"

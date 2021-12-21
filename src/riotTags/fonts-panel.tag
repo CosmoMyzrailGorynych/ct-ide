@@ -9,8 +9,8 @@ fonts-panel.flexfix.tall.fifty
         names="{names}"
         ref="fonts"
         class="tall"
-    )
         h1 {voc.fonts}
+        h1 {parent.voc.fonts}
         .toleft
             label.file.flexfix-header
                 input(type="file" multiple
@@ -18,8 +18,8 @@ fonts-panel.flexfix.tall.fifty
                     onchange="{parent.fontImport}")
                 .button
                     svg.feather
-                        use(xlink:href="#download")
                     span {voc.import}
+                    span {parent.voc.import}
     context-menu(menu="{fontMenu}" ref="fontMenu")
     font-editor(if="{editingFont}" fontobj="{editedFont}")
     script.

@@ -1,4 +1,4 @@
-ui-panel.panel.view
+ui-panel.aPanel.aView
     styles-panel
     fonts-panel
     .clear

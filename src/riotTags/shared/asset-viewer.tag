@@ -60,7 +60,7 @@ asset-viewer.flexfix(class="{opts.namespace} {opts.class}")
             <yield/>
         .clear
     .flexfix-body
-        ul.cards(class="{list: localStorage[opts.namespace? (opts.namespace+'Layout') : 'defaultAssetLayout'] === 'list'}")
+        ul.Cards(class="{list: localStorage[opts.namespace? (opts.namespace+'Layout') : 'defaultAssetLayout'] === 'list'}")
             li(
                 each="{asset in (searchResults? searchResults : collection)}"
                 oncontextmenu="{parent.opts.contextmenu && parent.opts.contextmenu(asset)}"
@@ -68,8 +68,11 @@ asset-viewer.flexfix(class="{opts.namespace} {opts.class}")
                 onclick="{parent.opts.click && parent.opts.click(asset)}"
                 no-reorder
             )
-                span {parent.opts.names? parent.opts.names(asset) : asset.name}
-                span.date(if="{asset.lastmod}") {niceTime(asset.lastmod)}
+                .Cards-aThumbnail
+                    img(if="{parent.opts.thumbnails}" src="{parent.opts.thumbnails(asset)}")
+                .Cards-Properties
+                    span {parent.opts.names? parent.opts.names(asset) : asset.name}
+                    span.date(if="{asset.lastmod}") {niceTime(asset.lastmod)}
                 img(if="{parent.opts.thumbnails}" src="{parent.opts.thumbnails(asset)}")
     script.
         this.namespace = this.opts.vocspace || this.opts.namespace;

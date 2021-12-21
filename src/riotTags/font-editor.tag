@@ -1,5 +1,5 @@
-font-editor.panel.view
-    .panel.pad.left.tall.flexfix
+font-editor.aPanel.aView
+    .aPanel.pad.left.tall.flexfix
         .flexfix-body
             fieldset
                 label.block

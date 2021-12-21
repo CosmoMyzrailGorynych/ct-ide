@@ -16,7 +16,7 @@
         Disables alpha input.
 
 color-picker
-    .panel(ref="widget")
+    .aPanel(ref="widget")
         .color-picker-aBackgroundToggler
         .color-picker-aBackgoundWell.flexrow
             .c6.swatch(style="background-color: {oldColor.toString()};")

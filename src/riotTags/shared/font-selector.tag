@@ -9,7 +9,7 @@
     @attribute oncancelled (riot function)
         Calls the funtion when a user presses the "Cancel" button. Passes no arguments.
 
-font-selector.panel.view.flexfix
+font-selector.aPanel.aView.flexfix
     .flexfix-body
         asset-viewer(
             collection="{global.currentProject.fonts}"

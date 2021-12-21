@@ -1,6 +1,6 @@
 export-panel
     .dim
-    .modal.pad.flexfix
+    .aModal.pad.flexfix
         .flexfix-header
             h2.nmt {voc.exportPanel}
         .flexfix-body
@@ -28,7 +28,7 @@ export-panel
                 |
                 span {voc.windowsCrossBuildWarning}
                 span(if="{process.platform === 'darwin'}") {voc.windowsCrossBuildMacOs}
-            .spacer
+            .aSpacer
             h3(if="{log.length}")
                 | {voc.log}
                 .rem.a(onclick="{copyLog}").toright {vocGlob.copy}

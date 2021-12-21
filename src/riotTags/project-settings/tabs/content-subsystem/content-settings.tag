@@ -7,7 +7,7 @@ content-settings
 
     // References to `this` get weird here.
     // See https://v3.riotjs.vercel.app/api/#yield-and-loops
-    collapsible-section.panel(each="{type in contentTypes}" contentType="{type}")
+    collapsible-section.aPanel(each="{type in contentTypes}" contentType="{type}")
         yield(to="header")
             h3
                 svg.feather

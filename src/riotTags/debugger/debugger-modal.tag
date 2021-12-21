@@ -1,4 +1,4 @@
-debugger-modal.view
+debugger-modal.aView
     .center.aQRList
         .aQR(each="{interfaces}")
             div.center(ref="qr" data-address="{address}")

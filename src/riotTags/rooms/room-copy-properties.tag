@@ -1,4 +1,4 @@
-room-copy-properties.panel
+room-copy-properties.aPanel
     b {voc.position}:
     .aPoint2DInput.compact.wide
         label
@@ -9,7 +9,7 @@ room-copy-properties.panel
                 oninput="{wire('this.opts.copy.x')}"
                 value="{opts.copy.x}"
             )
-        .spacer
+        .aSpacer
         label
           span.nogrow Y:
           |
@@ -28,7 +28,7 @@ room-copy-properties.panel
                 oninput="{wire('this.opts.copy.tx')}"
                 value="{opts.copy.tx === void 0 ? 1 : opts.copy.tx}"
             )
-        .spacer
+        .aSpacer
         label
             span.nogrow Y:
             |
@@ -46,7 +46,7 @@ room-copy-properties.panel
                     value="{opts.copy.tr || 0}"
                     oninput="{wire('this.opts.copy.tr')}"
                 )
-            .spacer
+            .aSpacer
             input.compact(
                 min="0" max="360" step="1" type="number"
                 value="{opts.copy.tr || 0}"

@@ -1,7 +1,7 @@
-emitter-tandem-editor.panel.view.flexrow
+emitter-tandem-editor.aPanel.aView.flexrow
     .flexfix(style="width: {panelWidth}px")
         .flexfix-header
-            .panel.pad.nbt.nbl.nbr
+            .aPanel.pad.nbt.nbl.nbr
                 b {vocGlob.name}
                 br
                 input.wide(type="text" value="{tandem.name}" onchange="{wire('this.tandem.name')}")
@@ -32,7 +32,7 @@ emitter-tandem-editor.panel.view.flexrow
         .emitter-tandem-editor-Tools.flexrow
             button.nogrow.forcebackground(onclick="{resetEmitters}")
                 span {voc.reset}
-            .spacer
+            .aSpacer
             button.nogrow.forcebackground(onclick="{openPreviewTexturePicker}")
                 svg.feather
                     use(xlink:href="#texture")
@@ -51,7 +51,7 @@ emitter-tandem-editor.panel.view.flexrow
                 |
                 |
                 b {Math.round(zoom * 100)}%
-            .spacer
+            .aSpacer
             zoom-slider(onchanged="{setZoom}" ref="zoomslider" value="{zoom}")
     color-picker(
         ref="previewBackgroundColor" if="{changingPreviewColor}"

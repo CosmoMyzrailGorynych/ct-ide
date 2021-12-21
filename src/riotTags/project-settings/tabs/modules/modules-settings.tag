@@ -1,4 +1,4 @@
-modules-settings.panel.view
+modules-settings.aPanel.aView
     collapsible-section.aModuleFilter(heading="{voc.filter}" defaultstate="closed" storestatekey="modulesFilter")
         .flexrow
             label.nogrow

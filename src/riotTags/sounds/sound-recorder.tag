@@ -1,5 +1,5 @@
-sound-recorder.panel.view
-    .modal.pad
+sound-recorder.aPanel.aView
+    .aModal.pad
         .toright
             button.square.inline(onclick="{opts.onclose}" title="{vocGlob.close}")
                 svg.feather

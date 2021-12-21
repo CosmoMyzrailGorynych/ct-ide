@@ -1,5 +1,5 @@
-sound-editor.panel.view
-    .modal
+sound-editor.aPanel.aView
+    .aModal
         b {voc.name}
         br
         input.wide(type="text" value="{sound.name}" onchange="{wire('this.sound.name')}")

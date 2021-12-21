@@ -1,8 +1,8 @@
 project-selector
     #bg.stretch.flexcol
-        .spacer
-        #intro.panel.flexfix.nogrow
-            ul.nav.tabs.flexfix-header.nb
+        .aSpacer
+        #intro.aPanel.flexfix.nogrow
+            ul.aNav.tabs.flexfix-header.nb
                 li(class="{active: tab === 'projects'}" onclick="{changeTab('projects')}")
                     span {voc.latest}
                 li(class="{active: tab === 'examples'}" onclick="{changeTab('examples')}")
@@ -46,8 +46,10 @@ project-selector
                         onclick="{loadRecentProject}"
                         title="{project}"
                     )
-                        img(src="{getProjectThumbnail(project)}")
-                        span {getProjectName(project)}
+                        .Cards-aThumbnail
+                            img(src="{getProjectThumbnail(project)}")
+                        .Cards-Properties
+                            span {getProjectName(project)}
                         .aCard-Actions
                             button.tiny(onclick="{cloneProject}" title="{voc.cloneProject}")
                                 svg.feather
@@ -61,7 +63,7 @@ project-selector
                     ref="projectname"
                 )
                 button.nm.inline(onclick="{openProjectFolder}") {voc.newProject.button}
-        .spacer
+        .aSpacer
         .aVersionNumber.nogrow
             a(href="https://github.com/orgs/ct-js/" title="{voc.github}" onclick="{openExternal('https://github.com/orgs/ct-js/')}")
                 svg.icon

@@ -1,13 +1,13 @@
-style-editor.panel.view
+style-editor.aPanel.aView
     #styleleft.tall.flexfix
         .flexfix-header
-            .panel.pad
+            .aPanel.pad
                 b {vocGlob.name}
                 br
                 input.wide(type="text" value="{styleobj.name}" onchange="{wire('this.styleobj.name')}")
                 .anErrorNotice(if="{nameTaken}" ref="errorNotice") {vocGlob.nametaken}
         .tabwrap.flexfix-body
-            ul.nav.tabs.nogrow.noshrink
+            ul.aNav.tabs.nogrow.noshrink
                 li(onclick="{changeTab('stylefont')}" class="{active: tab === 'stylefont'}") {voc.font}
                 li(onclick="{changeTab('stylefill')}" class="{active: tab === 'stylefill'}") {voc.fill}
                 li(onclick="{changeTab('stylestroke')}" class="{active: tab === 'stylestroke'}") {voc.stroke}
@@ -159,7 +159,7 @@ style-editor.panel.view
                 height,
                 transparent: true
             });
-            this.refs.canvasSlot.appendChild(this.pixiApp.view);
+            this.refs.canvasSlot.appendChild(this.pixiApp.aView);
 
             var labelShort = window.languageJSON.styleview.testtext,
                 labelMultiline = window.languageJSON.styleview.testtext.repeat(2) + '\n' + window.languageJSON.styleview.testtext.repeat(3) + '\n' + window.languageJSON.styleview.testtext,

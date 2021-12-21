@@ -1,8 +1,8 @@
-icon-panel.view.pad
+icon-panel.aView.pad
     .toright
         button(onclick="{opts.onclose}") {vocGlob.close}
     .clear
-    ul.cards
+    ul.Cards
         li(
             each="{icon in iconList}"
             onclick="{copy(icon)}"

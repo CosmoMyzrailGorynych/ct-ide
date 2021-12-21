@@ -1,6 +1,6 @@
-room-events-editor.view
+room-events-editor.aView
     .tabwrap
-        ul.tabs.nav.nogrow.noshrink.nb
+        ul.tabs.aNav.nogrow.noshrink.nb
             li(onclick="{switchTab('roomcreate')}" class="{active: tab === 'roomcreate'}" title="Control-Q" data-hotkey="Control+q")
                 svg.feather
                     use(xlink:href="#sun")

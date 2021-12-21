@@ -53,7 +53,7 @@
 extensions-editor
     virtual(each="{ext in extensions}" if="{!ext.if || opts.entity[ext.if]}")
         // ext="{ext}" is a workaround to lost loop variables in yields
-        collapsible-section.panel(
+        collapsible-section.aPanel(
             ext="{ext}"
             if="{ext.type === 'group'}"
             heading="{ext.name}"
@@ -91,7 +91,7 @@ extensions-editor
                     hover-hint(if="{ext.help && parent.opts.compact}" text="{ext.help}")
             dd(if="{ext.type === 'table'}")
                 .aTableWrap
-                    table.nicetable(class="{wide: parent.opts.wide}")
+                    table.aNiceTable(class="{wide: parent.opts.wide}")
                         tr
                             th.center(if="{!parent.opts.compact}") №
                             th(each="{field in ext.fields}")
@@ -146,7 +146,7 @@ extensions-editor
                             value="{parent.opts.entity[ext.key]? parent.opts.entity[ext.key][0] : ext.default[0]}"
                             onchange="{ensurePoint2DAndWire(parent.opts.entity, ext.key, ext.default, 'this.opts.entity.'+ ext.key + '.0')}"
                         )
-                    .spacer
+                    .aSpacer
                     label
                         span.nogrow Y:
                         input(
@@ -226,7 +226,7 @@ extensions-editor
                             max="{ext.max}"
                             step="{ext.step}"
                         )
-                    .spacer
+                    .aSpacer
                     input(
                         class="{compact: parent.opts.compact, invalid: ext.required && !Number.isFinite(parent.opts.entity[ext.key])}"
                         type="number"

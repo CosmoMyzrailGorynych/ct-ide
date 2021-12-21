@@ -1,4 +1,4 @@
-rooms-panel.panel.view
+rooms-panel.aPanel.aView
     .flexfix.tall
         .flexfix-header
             div
@@ -22,7 +22,7 @@ rooms-panel.panel.view
                         svg.feather
                             use(xlink:href="#plus")
                         span {voc.create}
-        ul.pad.cards.largeicons.flexfix-body(class="{list: localStorage.roomsLayout === 'list'}")
+        ul.pad.Cards.largeicons.flexfix-body(class="{list: localStorage.roomsLayout === 'list'}")
             li(
                 each="{room in (searchResults? searchResults : rooms)}"
                 class="{starting: global.currentProject.startroom === room.uid}"

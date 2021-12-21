@@ -1,4 +1,4 @@
-room-editor.panel.view
+room-editor.aPanel.aView
     .toolbar.tall(style="width: {sidebarWidth}px")
         copy-custom-properties-modal(if="{showCopyPropertiesModal}" closestcopy="{closestCopy}" showme="{toggleCopyProperties}")
         .settings.nogrow.noshrink
@@ -12,7 +12,7 @@ room-editor.panel.view
                 span {voc.events}
         .palette
             .tabwrap.flexfix
-                ul.tabs.nav.noshrink.nogrow.flexfix-header
+                ul.tabs.aNav.noshrink.nogrow.flexfix-header
                     li(onclick="{changeTab('roomcopies')}" title="{voc.copies}" class="{active: tab === 'roomcopies'}")
                         svg.feather
                             use(xlink:href="#type")
@@ -33,7 +33,7 @@ room-editor.panel.view
                     room-type-picker(show="{tab === 'roomcopies'}" current="{currentType}")
                     room-backgrounds-editor(show="{tab === 'roombackgrounds'}" room="{room}")
                     room-tile-editor(show="{tab === 'roomtiles'}" room="{room}")
-                    .pad.panel(show="{tab === 'properties'}")
+                    .pad.aPanel(show="{tab === 'properties'}")
                         fieldset
                             .fifty.npt.npb.npl
                                 b {voc.width}
@@ -57,7 +57,7 @@ room-editor.panel.view
                                         oninput="{wireAndRedraw('this.room.restrictMinX')}"
                                         value="{room.restrictMinX === void 0 ? 0 : room.restrictMinX}"
                                     )
-                                .spacer
+                                .aSpacer
                                 label
                                     span.nogrow {voc.minimumY}:
                                     |
@@ -75,7 +75,7 @@ room-editor.panel.view
                                         oninput="{wireAndRedraw('this.room.restrictMaxX')}"
                                         value="{room.restrictMaxX === void 0 ? room.width : room.restrictMaxX}"
                                     )
-                                .spacer
+                                .aSpacer
                                 label
                                     span.nogrow {voc.maximumY}:
                                     |
@@ -140,7 +140,7 @@ room-editor.panel.view
                 |
                 |
                 span {Math.round(zoomFactor * 100)}%
-            .spacer
+            .aSpacer
             zoom-slider(onchanged="{setZoom}" ref="zoomslider" value="{zoomFactor}")
         .grid
             button#roomgrid.forcebackground(onclick="{roomToggleGrid}" class="{active: room.gridX > 0}")

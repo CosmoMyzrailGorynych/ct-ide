@@ -1,6 +1,6 @@
 //
     A small block that displays a section with an h3 header that can be collapsed.
-    Supports .panel modifier (CSS class), but also works by itself
+    Supports .aPanel modifier (CSS class), but also works by itself
 
     @slot
         The insides of the collapsible section.

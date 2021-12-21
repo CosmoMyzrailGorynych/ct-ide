@@ -1,4 +1,4 @@
-sounds-panel.panel.view
+sounds-panel.aPanel.aView
     asset-viewer(
         collection="{global.currentProject.sounds}"
         contextmenu="{popupMenu}"
@@ -11,11 +11,11 @@ sounds-panel.panel.view
         button#soundcreate(onclick="{parent.soundNew}" title="Control+N" data-hotkey="Control+n")
             svg.feather
                 use(xlink:href="#plus")
-            span {voc.create}
+            span {parent.voc.create}
         button#soundcreate(onclick="{parent.openRecorder}" title="Control+R" data-hotkey="Control+r")
             svg.feather
                 use(xlink:href="#mic")
-            span {voc.record}
+            span {parent.voc.record}
     sound-editor(if="{editing}" sound="{editedSound}")
     sound-recorder(if="{recorderVisible}" onclose="{onCloseRecorder}")
     context-menu(menu="{soundMenu}" ref="soundMenu")

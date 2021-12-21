@@ -1,10 +1,10 @@
 //
     @attribute onclose (riot function)
         Called when a user presses the "Close" button. Passes no arguments.
-texture-generator.view
+texture-generator.aView
     .flexcol.tall
         .flexrow.tall
-            .panel.texture-generator-Settings.nogrow
+            .aPanel.texture-generator-Settings.nogrow
                 fieldset
                     label.block
                         b {voc.name}

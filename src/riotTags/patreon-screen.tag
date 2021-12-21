@@ -12,7 +12,7 @@ patron-line
     span(if="{!opts.patron['18+'] && opts.patron.about}") {parent.getEmoji(opts.patron.name)}
     script.
 
-patreon-screen.view(style="z-index: 100;")
+patreon-screen.aView(style="z-index: 100;")
     .Confetti
         .aConfettiPiece(each="{confetti in (new Array(15))}" style="background: {getConfettiColor()}")
     h1 {voc.patronsHeader}

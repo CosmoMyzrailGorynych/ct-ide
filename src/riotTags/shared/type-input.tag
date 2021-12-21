@@ -18,7 +18,7 @@ type-input
             value="{val && val !== -1 ? getTypeFromId(val).name : voc.select}"
             onclick="{openSelector}"
         )
-        .spacer(if="{val && val !== -1}")
+        .aSpacer(if="{val && val !== -1}")
         button.nmr.square.inline(if="{val && val !== -1}" title="{voc.clear}" onclick="{clearInput}")
             svg.feather
                 use(xlink:href="#x")

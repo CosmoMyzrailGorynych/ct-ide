@@ -1,6 +1,6 @@
-type-editor.panel.view.flexrow
+type-editor.aPanel.aView.flexrow
     .type-editor-Properties
-        .tall.flexfix.panel.pad
+        .tall.flexfix.aPanel.pad
             .flexfix-header
                 texture-input.wide(
                     large="yup" showempty="da"
@@ -29,7 +29,7 @@ type-editor.panel.view.flexrow
                     span {voc.done}
     .type-editor-aCodeEditor
         .tabwrap.tall(style="position: relative")
-            ul.tabs.nav.nogrow.noshrink
+            ul.tabs.aNav.nogrow.noshrink
                 li(onclick="{changeTab('typeoncreate')}" class="{active: tab === 'typeoncreate'}" title="{voc.create} (Control+Q)" data-hotkey="Control+q")
                     svg.feather
                         use(xlink:href="#sun")

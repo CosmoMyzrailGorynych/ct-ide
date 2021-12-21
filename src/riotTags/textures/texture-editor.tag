@@ -1,4 +1,4 @@
-texture-editor.panel.view
+texture-editor.aPanel.aView
     .flexrow.tall
         .column.borderright.tall.column1.flexfix.nogrow.noshrink
             .flexfix-body
@@ -19,7 +19,7 @@ texture-editor.panel.view
                     .flexrow
                         button.wide.nml(onclick="{textureCenter}")
                             span   {voc.setcenter}
-                        .spacer
+                        .aSpacer
                         button.square.nmr(onclick="{textureIsometrify}" title="{voc.isometrify}")
                             svg.feather
                                 use(xlink:href="#map-pin")
@@ -150,7 +150,7 @@ texture-editor.panel.view
                             use(xlink:href="#clipboard")
             .textureview-zoom.flexrow
                 b.aContrastingPlaque {Math.round(zoomFactor * 100)}%
-                .spacer
+                .aSpacer
                 zoom-slider(onchanged="{setZoom}" ref="zoomslider" value="{zoomFactor}")
             .textureview-bg
                 button.inline.forcebackground(onclick="{changePreviewBg}")

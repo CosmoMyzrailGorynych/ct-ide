@@ -1,10 +1,10 @@
-textures-panel.panel.view
+textures-panel.aPanel.aView
     .flexfix.tall
         div
             asset-viewer(
                 collection="{global.currentProject.textures}"
                 contextmenu="{showTexturePopup}"
-                vocspace="texture"
+                assettype="textures"
                 namespace="textures"
                 click="{openTexture}"
                 thumbnails="{textureThumbnails}"
@@ -17,10 +17,10 @@ textures-panel.panel.view
                     .button
                         svg.feather
                             use(xlink:href="#download")
-                        span {voc.import}
+                        span {parent.voc.import}
                 button(
                     onclick="{parent.pasteTexture}"
-                    title="{voc.importFromClipboard}"
+                    title="{parent.voc.importFromClipboard}"
                     data-hotkey="Control+v"
                     data-hotkey-require-scope="texture"
                 )
@@ -28,20 +28,20 @@ textures-panel.panel.view
                         use(xlink:href="#clipboard")
                 button(
                     onclick="{parent.openGenerator}"
-                    title="{voc.generatePlaceholder}"
+                    title="{parent.voc.generatePlaceholder}"
                 )
                     svg.feather
                         use(xlink:href="#loader")
             asset-viewer(
                 collection="{global.currentProject.skeletons}"
                 contextmenu="{showSkeletonPopup}"
-                vocspace="texture"
+                assettype="skeletons"
                 namespace="skeletons"
                 thumbnails="{skelThumbnails}"
                 ref="skeletons"
             )
                 h2
-                    span {voc.skeletons}
+                    span {parent.voc.skeletons}
                     docs-shortcut(path="/skeletal-animation.html")
                 label.file.flexfix-header
                     input(type="file" multiple
@@ -50,7 +50,7 @@ textures-panel.panel.view
                     .button
                         svg.feather
                             use(xlink:href="#download")
-                        span {voc.import}
+                        span {parent.voc.import}
     texture-editor(if="{editing}" texture="{currentTexture}")
     texture-generator(if="{generating}" onclose="{closeGenerator}")
     context-menu(menu="{textureMenu}" ref="textureMenu")

@@ -1,5 +1,5 @@
 actions-input-selector
-    .panel.flexfix
+    .aPanel.flexfix
         .flexfix-header
             .aSearchWrap.wide
                 input.wide(

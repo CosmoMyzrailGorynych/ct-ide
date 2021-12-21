@@ -8,7 +8,7 @@
         A function that changes whether this modal is shown
 
 copy-custom-properties-modal
-    .panel.flexfix(ref="widget" style='overflow: auto; max-height: 600px')
+    .aPanel.flexfix(ref="widget" style='overflow: auto; max-height: 600px')
         h2.flexfix-header {voc.customProperties}
         .flexfix-body
             table.wide.aPaddedTable
