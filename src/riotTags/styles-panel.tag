@@ -30,7 +30,7 @@ styles-panel.tall.fifty
                 return;
             }
             const id = generateGUID(),
-                  slice = id.split('-').pop();
+                  slice = id.slice(-6);
             const obj = {
                 name: 'Style_' + slice,
                 uid: id,
@@ -88,7 +88,7 @@ styles-panel.tall.fifty
                     .then(e => {
                         if (e.inputValue !== '' && e.buttonClicked !== 'cancel') {
                             var id = generateGUID(),
-                                slice = id.split('-').pop();
+                                slice = id.slice(-6);
                             var newStyle = JSON.parse(JSON.stringify(this.editedStyle));
                             newStyle.name = e.inputValue;
                             newStyle.origname = 's' + slice;

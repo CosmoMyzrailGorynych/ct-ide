@@ -4,7 +4,7 @@ module.exports = {
     createNewSound() {
         const generateGUID = require('./../../generateGUID');
         var id = generateGUID(),
-            slice = id.split('-').pop();
+            slice = id.slice(-6);
         var newSound = {
             name: 'Sound_' + slice,
             uid: id

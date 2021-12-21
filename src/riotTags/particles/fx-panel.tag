@@ -39,7 +39,7 @@ fx-panel.panel.view
             const defaultEmitter = require('./data/node_requires/resources/particles/defaultEmitter').get();
             const generateGUID = require('./data/node_requires/generateGUID');
             const id = generateGUID(),
-                  slice = id.split('-').pop();
+                  slice = id.slice(-6);
 
             const tandem = {
                 name: 'Tandem_' + slice,
@@ -95,7 +95,7 @@ fx-panel.panel.view
                         if (e.inputValue !== '' && e.buttonClicked !== 'cancel') {
                             const generateGUID = require('./data/node_requires/generateGUID');
                             const id = generateGUID(),
-                                  slice = id.split('-').pop();
+                                  slice = id.slice(-6);
                             const newTandem = JSON.parse(JSON.stringify(this.editedTandem));
                             newTandem.name = e.inputValue;
                             newTandem.origname = 'pt' + slice;

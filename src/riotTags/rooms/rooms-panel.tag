@@ -109,10 +109,10 @@ rooms-panel.panel.view
                 return false;
             }
             var guid = generateGUID(),
-                thumbnail = guid.split('-').pop();
+                thumbnail = guid;
             fs.copy('./data/img/notexture.png', path.join(global.projdir, '/img/r' + thumbnail + '.png'), () => {
                 var newRoom = {
-                    name: 'Room_' + thumbnail,
+                    name: 'Room_' + guid.slice(-6),
                     oncreate: '',
                     onstep: '',
                     ondraw: '',
