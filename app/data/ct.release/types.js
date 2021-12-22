@@ -318,11 +318,23 @@ const Copy = (function Copy() {
                 func.apply(copy, this);
             }
         },
-        /*
+        /**
          * Applies a function to a given object (e.g. to a copy)
+         * @param {Copy} obj The copy to perform function upon.
+         * @param {Function} function The function to be applied.
          */
-        'with'(obj, func) {
+        withCopy(obj, func) {
             func.apply(obj, this);
+        },
+        /**
+         * Applies a function to a given object (e.g. to a copy)
+         * @param {string} type The name of the type to perform function upon.
+         * @param {Function} function The function to be applied.
+         */
+        withType(type, func) {
+            for (const copy of ct.types.list[type]) {
+                func.apply(copy, this);
+            }
         },
         /**
          * Checks whether there are any copies of this type's name.
