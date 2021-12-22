@@ -31,7 +31,6 @@ content-editor
                     return field;
                 })
             }];
-            console.log(this.extends, this.opts);
         };
         this.makeExtends();
 

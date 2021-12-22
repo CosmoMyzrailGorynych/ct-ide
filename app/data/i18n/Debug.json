@@ -532,7 +532,6 @@
             "highDensity": "settings.rendering.highDensity",
             "maxFPS": "settings.rendering.maxFPS",
             "pixelatedrender": "settings.rendering.pixelatedrender",
-            "usePixiLegacy": "settings.rendering.usePixiLegacy",
             "desktopBuilds": "settings.rendering.desktopBuilds",
             "launchMode": "settings.rendering.launchMode",
             "launchModes": {

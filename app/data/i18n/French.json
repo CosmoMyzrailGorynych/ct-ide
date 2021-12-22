@@ -161,7 +161,6 @@
             "highDensity": "Prend en charge une densité de pixels élevée (par exemple sur les écrans rétina)",
             "framerate": "Taux d'image:",
             "maxFPS": "Max framerate:",
-            "usePixiLegacy": "Ajoute un rendu hérité basé sur canvas pour prendre en charge les anciens navigateurs et cartes graphiques (ajoute environ 20 Ko à votre jeu)",
             "pixelatedrender": "Désactive le lissage d'image ici et dans le projet exporté (conservez les pixels net)",
             "launchMode": "Mode de lancement:",
             "launchModes": {

@@ -27,7 +27,7 @@ types-panel.aPanel.aView
         this.sortReverse = false;
 
         this.thumbnails = require('./data/node_requires/resources/types').getTypePreview;
-        this.icons = function(type) {
+        this.icons = function icons(type) {
             const icons = [];
             if (type.oncreate.trim()) {
                 icons.push('sun');

@@ -29,7 +29,7 @@ sounds-panel.aPanel.aView
         this.sortReverse = false;
         this.recorderVisible = false;
 
-        this.thumbnails = sound => sound.isMusic ? 'music' : 'volume-2';
+        this.thumbnails = sound => (sound.isMusic ? 'music' : 'volume-2');
 
         this.setUpPanel = () => {
             this.searchResults = null;

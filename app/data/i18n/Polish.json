@@ -144,7 +144,6 @@
             "framerate": "Klatki na sekundę:",
             "highDensity": "Wspieraj dużą gęstość pikseli (np. na wyświetlaczach retina)",
             "maxFPS": "Maksymalna ilość klatek na sekundę:",
-            "usePixiLegacy": "Dodaj szeroko wspierany, bazujący na canvasie renderer żeby wspierać stare przeglądarki i karty graficzne (dodaje ~20kb do twojej gry)",
             "pixelatedrender": "Zablokuj wygładzanie obrazu tu i w eksportowanym projekcie (zachowaj ostre piksele)",
             "desktopBuilds": "",
             "launchMode": "",

@@ -136,7 +136,6 @@
             "pixelatedrender": "Deshabilite el suavizado de imagen aquí y en el proyecto exportado (conserve píxeles nítidos)",
             "highDensity": "Soporte de alta densidad de pixeles (e.j. pantallas retina)",
             "maxFPS": "Fotogramas máximos:",
-            "usePixiLegacy": "Añade un renderizador basado en lienzo de legado para el soporte de navegadores antiguos y tarjetas graficas (añade ~20kb al juego)",
             "desktopBuilds": "Para escritorio",
             "launchMode": "Modo de lanzamiento:",
             "launchModes": {

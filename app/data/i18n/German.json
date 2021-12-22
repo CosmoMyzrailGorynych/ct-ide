@@ -164,7 +164,6 @@
             "framerate": "Framerate:",
             "highDensity": "Hochauflösende Bildschirme unterstützen (z.B. Retina Displays)",
             "maxFPS": "Max Framerate:",
-            "usePixiLegacy": "Füge einen Canvas basierten Renderer hinzu, um ältere Browser und Grafikkarten zu unterstützen (Spiele wachsen um ca. 20kb)",
             "pixelatedrender": "Image Smoothing hier und im exportierten Projekt deaktivieren (scharfe Pixel beibehalten)",
             "desktopBuilds": "",
             "launchMode": "",

@@ -89,6 +89,7 @@ const importSkeleton = async function importSkeleton(source, group) {
         name: path.basename(source).replace('_ske.json', ''),
         origname: path.basename(partialDest + '_ske.json'),
         from: 'dragonbones',
+        group,
         uid
     };
     await skeletonGenPreview(skel);

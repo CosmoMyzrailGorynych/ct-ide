@@ -136,7 +136,6 @@
             "pixelatedrender": "Dezactivează netezirea imaginii aici și în proiectul exportat (conservă pixelii clari)",
             "highDensity": "",
             "maxFPS": "",
-            "usePixiLegacy": "",
             "desktopBuilds": "",
             "launchMode": "",
             "launchModes": {

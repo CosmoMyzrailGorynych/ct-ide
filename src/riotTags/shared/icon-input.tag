@@ -27,7 +27,7 @@ icon-input
         this.openSelector = () => {
             this.selectingIcon = true;
         };
-        this.onSelected = icon => e => {
+        this.onSelected = icon => () => {
             if (this.opts.onselected) {
                 this.opts.onselected(icon);
             }

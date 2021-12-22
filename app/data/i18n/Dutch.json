@@ -164,7 +164,6 @@
             "framerate": "Framerate:",
             "highDensity": "Ondersteuning voor hoge pixeldichtheid (bijv. Op retina-schermen)",
             "maxFPS": "Maximale framerate:",
-            "usePixiLegacy": "Voeg een verouderde, canvasgebaseerde renderer toe om oudere browsers en grafische kaarten te ondersteunen (voegt ~20kb toe aan je spel)",
             "pixelatedrender": "Schakel het vloeiend maken van afbeeldingen hier en in een geëxporteerd project uit (behoud scherpe pixels)",
             "launchMode": "Lanceer modes:",
             "launchModes": {

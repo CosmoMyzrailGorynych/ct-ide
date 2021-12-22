@@ -177,7 +177,6 @@
             "maxFPS": "最大帧率:",
             "pixelatedrender": "在此处和导出的项目中禁用图像平滑 (保留清晰像素)",
             "hideCursor": "隐藏系统光标指针",
-            "usePixiLegacy": "添加基于画布的旧版渲染器以支持较旧的浏览器和图形卡 (在您的游戏中最多增加20kb)",
             "desktopBuilds": "桌面构建",
             "launchMode": "启动模式:",
             "launchModes": {

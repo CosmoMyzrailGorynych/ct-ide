@@ -180,7 +180,6 @@
             "highDensity": "Suporte a densidade de altos pixels (ex. em telas de retina)",
             "maxFPS": "Máximo framerate:",
             "pixelatedrender": "Desabilitar suavização de imagem, inclusive no projeto buildado (preservar crisp pixels)",
-            "usePixiLegacy": "Adicionar o antigo, renderização baseado em canvas para suporte para navegadores antigos e placas gráficas (adiciona ~20kb no seu jogo)",
             "desktopBuilds": "Build de Desktop",
             "launchMode": "Modo de lançamento:",
             "launchModes": {

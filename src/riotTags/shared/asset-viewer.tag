@@ -170,7 +170,7 @@ asset-viewer.flexfix(class="{opts.namespace} {opts.class}")
         if (n && localStorage[n + 'Layout']) {
             this.currentLayout = localStorage[n + 'Layout'];
         } else if (this.opts.defaultlayout) {
-            setting = this.opts.defaultlayout;
+            this.currentLayout = this.opts.defaultlayout;
         }
         this.switchLayout = () => {
             const idx = (layouts.indexOf(this.currentLayout) + 1) % layouts.length;
@@ -233,14 +233,14 @@ asset-viewer.flexfix(class="{opts.namespace} {opts.class}")
             }
             return collection.filter(i =>
                 this.opts.assettype &&
-                    (!i.group && this.currentGroup.isUngroupedGroup) ||
-                    (i.group === this.currentGroup.uid))
+                    ((!i.group && this.currentGroup.isUngroupedGroup) ||
+                    (i.group === this.currentGroup.uid)));
         };
         this.openGroup = group => () => {
             this.currentGroup = group;
-        }
+        };
         this.addNewGroup = () => {
-            if (!currentProject.groups) {
+            if (!window.currentProject.groups) {
                 window.alertify('No groups initialized in this project. Please run `applyMigrationCode(\'1.8.0\')` for this project.');
                 return false;
             }
@@ -256,9 +256,10 @@ asset-viewer.flexfix(class="{opts.namespace} {opts.class}")
                 colorClass: 'act',
                 uid: require('./data/node_requires/generateGUID')()
             };
-            currentProject.groups[at].push(newGroup);
+            window.currentProject.groups[at].push(newGroup);
             this.editedGroup = newGroup;
             this.showingGroupEditor = true;
+            return true;
         };
         this.closeGroupEditor = () => {
             this.showingGroupEditor = false;
@@ -292,7 +293,7 @@ asset-viewer.flexfix(class="{opts.namespace} {opts.class}")
                                 delete asset.group;
                             }
                         }
-                        const groups = currentProject.groups[this.opts.assettype];
+                        const groups = window.currentProject.groups[this.opts.assettype];
                         groups.splice(groups.indexOf(group), 1);
                         this.update();
                     });
@@ -306,7 +307,6 @@ asset-viewer.flexfix(class="{opts.namespace} {opts.class}")
         };
 
         this.onItemDrag = e => {
-            console.log(e);
             if (!this.opts.assettype) {
                 return;
             }
@@ -318,7 +318,7 @@ asset-viewer.flexfix(class="{opts.namespace} {opts.class}")
             if (dt.split(';')[0] !== 'moveToGroup') {
                 return false;
             }
-            const assetId = dt.split(';')[1];
+            const [, assetId] = dt.split(';');
             const asset = this.opts.collection.find(a => a.uid === assetId);
             if (!e.item) { // this is "Ungrouped" tag which is not in a loop
                 delete asset.group;
@@ -326,4 +326,5 @@ asset-viewer.flexfix(class="{opts.namespace} {opts.class}")
                 const groupId = e.item.group.uid;
                 asset.group = groupId;
             }
+            return true;
         };
