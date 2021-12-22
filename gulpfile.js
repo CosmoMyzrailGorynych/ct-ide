@@ -449,12 +449,11 @@ const bakeTypedefs = gulp.series([bakeCtTypedefs, concatTypedefs, copyPixiTypede
 
 
 const build = gulp.parallel([
-    compilePug,
+    gulp.series(icons, compilePug),
     compileStylus,
     compileScripts,
     processRequires,
     copyInEditorDocs,
-    icons,
     bakeTypedefs
 ]);
 
