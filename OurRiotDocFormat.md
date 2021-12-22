@@ -18,9 +18,9 @@ At `./src/riotTags`, use this syntax at the top of the file to document tags:
         as an example.
 
     @attribute attributeName (type)
-        A descriotion of an attribute.
+        A description of an attribute.
     @attribute [optionalAttributeName] (type, typeSpecificator)
-        A descriotion of an attribute.
+        A description of an attribute.
 
     @method callableMethod(x, y)
         A description of a tag's method that can be safely called for inter-module communications.
