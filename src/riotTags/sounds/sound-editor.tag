@@ -1,4 +1,4 @@
-sound-editor.aPanel.aView
+sound-editor.aDimmer
     .aModal
         b {voc.name}
         br

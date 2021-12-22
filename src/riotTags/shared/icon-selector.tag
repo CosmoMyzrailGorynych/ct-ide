@@ -16,14 +16,16 @@ icon-selector.aView.pad
     h1(if="{opts.header}") {opts.header}
     .clear
     ul.Cards
-        li(
+        li.aCard(
             each="{icon in iconList}"
             onclick="{parent.opts.onselected(icon)}"
             no-reorder
         )
-            span {icon}
-            svg.feather
-                use(xlink:href="#{icon}")
+            .aCard-aThumbnail
+                svg.feather
+                    use(xlink:href="#{icon}")
+            .aCard-Properties
+                span {icon}
     script.
         this.namespace = 'common';
         this.mixin(window.riotVoc);

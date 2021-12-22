@@ -201,7 +201,7 @@ const isBgPostfixTester = /@bg$/;
  * @returns {Promise<object>} A promise that resolves into the resulting texture object.
  */
 // eslint-disable-next-line max-lines-per-function
-const importImageToTexture = async (src, name) => {
+const importImageToTexture = async (src, name, group) => {
     const fs = require('fs-extra'),
           path = require('path'),
           generateGUID = require('./../../generateGUID');
@@ -256,7 +256,8 @@ const importImageToTexture = async (src, name) => {
         top: 0,
         bottom: image.height,
         uid: id,
-        padding: 1
+        padding: 1,
+        group
     };
     if (!(src instanceof Buffer)) {
         obj.source = src;

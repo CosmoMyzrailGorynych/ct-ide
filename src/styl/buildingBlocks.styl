@@ -12,6 +12,10 @@
     width 100%
     height 100%
     z-index 20
+    display flex
+    flex-flow column nowrap
+    align-items center
+    justify-content center
 
 .aModal, .aPanel
     box-sizing border-box
@@ -21,12 +25,6 @@
     position relative
 
 .aModal
-    position fixed
-    left 50%
-    top 50%
-    transform translate(-50%, -50%) translateZ(0)
-    filter blur(0px)
-    backface-visibility hidden
     max-height 90%
     overflow auto
     box-shadow 0 2px 5px rgba(0, 0, 0, 0.35)
@@ -171,60 +169,9 @@
     grid-template-columns repeat(auto-fill, minmax(17em, 1fr))
     grid-gap 0.3em
     flex-grow 0
-    & > li, .aCard
-        background background
-        padding 0.8em
-        margin 0
-        box-sizing border-box
-        border 1px solid borderPale
-        border-radius 3px
-        display inline-block
-        vertical-align top
-        cursor pointer
-        transition 0.35s ease all
-        display flex
-        flex-flow row nowrap
-        align-items center
-        .Cards-aThumbnail
-            width 3rem
-            flex 0 0 3rem
-            margin-right 1rem
-            line-height 0
-            svg
-                width 3rem
-                height 3rem
-                stroke-width 1
-            // Images cheat a bit with negative margins
-            // to occupy a 4rem x 4rem box
-            img
-                width 4rem
-                height 4rem
-                max-width 4rem
-                margin -0.5rem 0 -0.5rem -0.5rem
-                border-radius br
-                &:hover
-                    background rgba(act, 0.35)
-        .Cards-Properties
-            flex 1 1 auto
-            > .date
-                display none
-            span
-                font-family consolas, monospace
-                width 100%
-                display inline-block
-                vertical-align middle
-                text-overflow ellipsis
-                white-space nowrap
-                overflow hidden
-        &:hover, &.active
-            border-color acttext
-        &:active
-            border-color accent1
-            background act
-            color background
     &.list
         display block
-    &.list li
+    &.list .aCard
         display flex
         flex-flow row nowrap
         margin 0
@@ -234,12 +181,16 @@
         &:hover
             background act
             color background
-        span
+        .aCard-Properties
             flex 1 1 auto
             order 4
             line-height 1.5rem
             text-align left
-        > .date
+            display flex
+            flex-flow row nowrap
+        .asset-viewer-Icons
+            flex 0 0 auto
+        .date
             display block
             flex 0 0 auto
             width 6rem
@@ -249,13 +200,18 @@
             order 10
         & + li
             border-top 0
-        & > img
-            float none
-            height 1.5rem
+        .aCard-aThumbnail
             width 1.5rem
-            margin 0 1rem 0 0
-            flex 0 0 auto
-            order 2
+            img, svg
+                height 1.5rem
+                width 1.5rem
+                margin 0
+                flex 0 0 auto
+                order 2
+            img
+                height 2rem
+                width 2rem
+                margin -0.25rem
         &:first-child
             border-top-left-radius br
             border-top-right-radius br
@@ -268,19 +224,79 @@
             text-align center
             position relative
             flex-flow column nowrap
-        img
-            float none
-            max-width 13.5em
-            max-height 10em
-            margin 0
-            width auto
-            height auto
+        .aCard-aThumbnail
+            max-width 100%
+            width unset
+            margin-right 0
+            svg
+                width 6rem
+                height 6rem
+                stroke-width 0.5
+            img
+                width unset
+                height unset
+                max-width 100%
+                max-height 10rem
+                margin 0
         span
             font-family consolas, monospace
             width 12.5em
             text-overflow ellipsis
             white-space nowrap
             overflow hidden
+.aCard
+    background background
+    padding 0.8em
+    margin 0
+    box-sizing border-box
+    border 1px solid borderPale
+    border-radius 3px
+    display inline-block
+    vertical-align top
+    cursor pointer
+    transition 0.35s ease all
+    display flex
+    flex-flow row nowrap
+    align-items center
+    &:hover, &.active
+        border-color acttext
+    &:active
+        border-color accent1
+        background act
+        color background
+.aCard-Properties
+    flex 1 1 auto
+    > .date
+        display none
+    span
+        font-family consolas, monospace
+        width 100%
+        display inline-block
+        vertical-align middle
+        text-overflow ellipsis
+        white-space nowrap
+        overflow hidden
+.aCard-aThumbnail
+    width 3rem
+    flex 0 0 auto
+    margin-right 1rem
+    line-height 0
+    svg
+        width 3rem
+        height 3rem
+        stroke-width 1
+        color act
+    // Images cheat a bit with negative margins
+    // to occupy a 4rem x 4rem box
+    img
+        width 4rem
+        height 4rem
+        max-width 4rem
+        margin -0.5rem 0 -0.5rem -0.5rem
+        border-radius br
+        pointer-events none
+    &:hover img
+        background rgba(act, 0.35)
 .aCard-Actions
     position absolute
     top 0.5rem

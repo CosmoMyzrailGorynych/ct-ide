@@ -3,6 +3,7 @@ styles-panel.tall.fifty
         collection="{global.currentProject.styles}"
         contextmenu="{onStyleContextMenu}"
         namespace="styles"
+        assettype="styles"
         click="{openStyle}"
         thumbnails="{thumbnails}"
         ref="styles"
@@ -36,6 +37,9 @@ styles-panel.tall.fifty
                 uid: id,
                 origname: 's' + slice
             };
+            if (!this.refs.styles.currentGroup.isUngroupedGroup) {
+                obj.group = this.refs.styles.currentGroup.uid;
+            }
             global.currentProject.styles.push(obj);
             this.editedStyle = obj;
             this.editingStyle = true;

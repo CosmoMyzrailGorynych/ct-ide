@@ -73,7 +73,7 @@ const skeletonGenPreview = function (skeleton) {
     });
 };
 
-const importSkeleton = async function importSkeleton(source) {
+const importSkeleton = async function importSkeleton(source, group) {
     const generateGUID = require('./../generateGUID');
     const fs = require('fs-extra');
 

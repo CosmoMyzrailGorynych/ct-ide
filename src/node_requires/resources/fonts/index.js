@@ -61,7 +61,7 @@ const fontGenPreview = async function fontGenPreview(font) {
     await fs.writeFile(getFontPreview(font, true), buf);
 };
 
-const importTtfToFont = async function importTtfToFont(src) {
+const importTtfToFont = async function importTtfToFont(src, group) {
     const fs = require('fs-extra'),
           path = require('path');
     if (path.extname(src).toLowerCase() !== '.ttf') {
@@ -81,6 +81,7 @@ const importTtfToFont = async function importTtfToFont(src) {
         bitmapFontLineHeight: 18,
         charsets: ['allInFont'],
         customCharset: '',
+        group,
         uid
     };
     global.currentProject.fonts.push(obj);

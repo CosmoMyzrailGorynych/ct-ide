@@ -22,13 +22,15 @@ project-selector
                         onclick="{loadRecentProject}"
                         title="{project}"
                     )
-                        img(src="{getProjectThumbnail(project)}")
-                        span {getProjectName(project)}
+                        .aCard-aThumbnail
+                            img(src="{getProjectThumbnail(project)}")
+                        .aCard-Properties
+                            span {getProjectName(project)}
                         .aCard-Actions
-                            button.tiny(onclick="{cloneProject}" title="{voc.cloneProject}")
+                            button.tiny.forcebackground(onclick="{cloneProject}" title="{voc.cloneProject}")
                                 svg.feather
                                     use(xlink:href="#copy")
-                            button.tiny(onclick="{forgetProject}" title="{voc.forgetProject}")
+                            button.tiny.forcebackground(onclick="{forgetProject}" title="{voc.forgetProject}")
                                 svg.feather
                                     use(xlink:href="#x")
             .flexfix-body.pad(show="{tab === 'examples'}")
@@ -46,9 +48,9 @@ project-selector
                         onclick="{loadRecentProject}"
                         title="{project}"
                     )
-                        .Cards-aThumbnail
+                        .aCard-aThumbnail
                             img(src="{getProjectThumbnail(project)}")
-                        .Cards-Properties
+                        .aCard-Properties
                             span {getProjectName(project)}
                         .aCard-Actions
                             button.tiny(onclick="{cloneProject}" title="{voc.cloneProject}")

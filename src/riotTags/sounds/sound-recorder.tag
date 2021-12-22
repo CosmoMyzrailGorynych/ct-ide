@@ -1,4 +1,4 @@
-sound-recorder.aPanel.aView
+sound-recorder.aDimmer
     .aModal.pad
         .toright
             button.square.inline(onclick="{opts.onclose}" title="{vocGlob.close}")
@@ -143,11 +143,12 @@ sound-recorder.aPanel.aView
             const path = require('path'),
                   fs = require('fs-extra');
             const newSound = sounds.createNewSound();
+            newSound.group = this.opts.group;
             const base64 = (await mp3Recorder.getBase64()).replace('data:audio/mp3;base64,', '');
             const buffer = Buffer.from(base64, 'base64');
             const temp = await require('./data/node_requires/platformUtils').getTempDir();
             await fs.writeFile(path.join(temp.dir, 'recording.mp3'), buffer);
-            newSound.name = `Recording_${newSound.uid.split('-').pop()}`;
+            newSound.name = `Recording_${newSound.slice(-6)}`;
             await sounds.addSoundFile(newSound, path.join(temp.dir, 'recording.mp3'));
             temp.remove();
             this.state = 'ready';

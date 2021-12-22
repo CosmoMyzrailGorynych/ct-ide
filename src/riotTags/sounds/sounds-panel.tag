@@ -3,8 +3,10 @@ sounds-panel.aPanel.aView
         collection="{global.currentProject.sounds}"
         contextmenu="{popupMenu}"
         namespace="sounds"
+        assettype="sounds"
         click="{openSound}"
         thumbnails="{thumbnails}"
+        useicons="ye"
         ref="sounds"
         class="tall"
     )
@@ -17,7 +19,7 @@ sounds-panel.aPanel.aView
                 use(xlink:href="#mic")
             span {parent.voc.record}
     sound-editor(if="{editing}" sound="{editedSound}")
-    sound-recorder(if="{recorderVisible}" onclose="{onCloseRecorder}")
+    sound-recorder(if="{recorderVisible}" onclose="{onCloseRecorder}" group="{refs.sounds.currentGroup.uid}")
     context-menu(menu="{soundMenu}" ref="soundMenu")
     script.
         this.namespace = 'sounds';
@@ -27,7 +29,7 @@ sounds-panel.aPanel.aView
         this.sortReverse = false;
         this.recorderVisible = false;
 
-        this.thumbnails = sound => `data/img/${sound.isMusic ? 'music' : 'wave'}.png`;
+        this.thumbnails = sound => sound.isMusic ? 'music' : 'volume-2';
 
         this.setUpPanel = () => {
             this.searchResults = null;
@@ -48,6 +50,9 @@ sounds-panel.aPanel.aView
             }
             const sounds = require('./data/node_requires/resources/sounds');
             const newSound = sounds.createNewSound();
+            if (!this.refs.sounds.currentGroup.isUngroupedGroup) {
+                newSound.group = this.refs.sounds.currentGroup.uid;
+            }
             this.refs.sounds.updateList();
             this.openSound(newSound)();
             return true;

@@ -3,8 +3,10 @@ types-panel.aPanel.aView
         collection="{global.currentProject.types}"
         contextmenu="{onTypeContextMenu}"
         namespace="types"
+        assettype="types"
         click="{openType}"
         thumbnails="{thumbnails}"
+        icons="{icons}"
         ref="types"
         class="tall"
     )
@@ -25,6 +27,22 @@ types-panel.aPanel.aView
         this.sortReverse = false;
 
         this.thumbnails = require('./data/node_requires/resources/types').getTypePreview;
+        this.icons = function(type) {
+            const icons = [];
+            if (type.oncreate.trim()) {
+                icons.push('sun');
+            }
+            if (type.onstep.trim()) {
+                icons.push('skip-forward');
+            }
+            if (type.ondraw.trim()) {
+                icons.push('edit-2');
+            }
+            if (type.ondestroy.trim()) {
+                icons.push('trash');
+            }
+            return icons;
+        };
 
         this.setUpPanel = () => {
             this.fillTypeMap();
@@ -56,6 +74,9 @@ types-panel.aPanel.aView
 
             const typesAPI = require('./data/node_requires/resources/types/');
             const type = typesAPI.createNewType();
+            if (!this.refs.types.currentGroup.isUngroupedGroup) {
+                type.group = this.refs.types.currentGroup.uid;
+            }
             this.refs.types.updateList();
             this.openType(type)(e);
 

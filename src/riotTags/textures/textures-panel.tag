@@ -8,6 +8,7 @@ textures-panel.aPanel.aView
                 namespace="textures"
                 click="{openTexture}"
                 thumbnails="{textureThumbnails}"
+                icons="{textureIcons}"
                 ref="textures"
             )
                 label.file.inlineblock
@@ -62,6 +63,12 @@ textures-panel.aPanel.aView
         this.dropping = false;
 
         this.textureThumbnails = require('./data/node_requires/resources/textures').getTexturePreview;
+        const iconMap = {
+            rect: 'square',
+            circle: 'circle',
+            strip: 'polyline'
+        };
+        this.textureIcons = texture => [iconMap[texture.shape]];
         this.skelThumbnails = require('./data/node_requires/resources/skeletons').getSkeletonPreview;
 
         this.fillTextureMap = () => {
@@ -146,10 +153,10 @@ textures-panel.aPanel.aView
             const files = [...e.target.files].map(file => file.path);
             for (let i = 0; i < files.length; i++) {
                 if (/\.(jpg|gif|png|jpeg)/gi.test(files[i])) {
-                    importImageToTexture(files[i]);
+                    importImageToTexture(files[i], void 0, this.refs.textures.currentGroup.uid);
                 } else if (/_ske\.json/i.test(files[i])) {
                     const {importSkeleton} = require('./data/node_requires/resources/skeletons');
-                    importSkeleton(files[i]);
+                    importSkeleton(files[i], this.refs.skeletons.currentGroup.uid);
                 }
             }
             e.srcElement.value = '';
@@ -165,7 +172,7 @@ textures-panel.aPanel.aView
             const imageBase64 = png.replace(/^data:image\/\w+;base64,/, '');
             const imageBuffer = new Buffer(imageBase64, 'base64');
             const {importImageToTexture} = require('./data/node_requires/resources/textures');
-            importImageToTexture(imageBuffer);
+            importImageToTexture(imageBuffer, void 0, this.refs.textures.currentGroup.uid);
             alertify.success(this.vocGlob.pastedFromClipboard);
         };
 

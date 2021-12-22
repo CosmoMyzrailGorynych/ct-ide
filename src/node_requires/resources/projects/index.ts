@@ -59,7 +59,7 @@ const getProjectIct = function (projPath: string): string {
     return projPath;
 };
 
-module.exports = {
+export {
     defaultProject,
     getDefaultProjectDir,
     getProjectThumbnail,

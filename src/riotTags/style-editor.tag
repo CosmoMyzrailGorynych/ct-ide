@@ -126,6 +126,18 @@ style-editor.aPanel.aView
                         br
                         input#shadowblur(type="number" value="{styleobj.shadow.blur}" min="0" onchange="{wire('this.styleobj.shadow.blur')}" oninput="{wire('this.styleobj.shadow.blur')}")
         .flexfix-footer
+            .aPanel.pad
+                .flexrow
+                    h3 {voc.code}
+                    .aSpacer
+                    button.inline.nogrow(onclick="{copyCode}")
+                        svg.feather
+                            use(xlink:href="#copy")
+                        span {voc.copyCode}
+                textarea.wide(disabled="true" ref="codeField")
+                    | this.textLabel = new PIXI.Text('Your text here', ct.styles.get('{styleobj.name}'));
+                    | {'\n'}this.addChild(this.textLabel);
+
             button.wide.nogrow.noshrink(onclick="{styleSave}" title="Shift+Control+S" data-hotkey="Control+S")
                 svg.feather
                     use(xlink:href="#check")
@@ -209,6 +221,11 @@ style-editor.aPanel.aView
             this.styleobj.font.weight = font.weight;
             this.styleobj.font.italic = font.italic;
             this.update();
+        };
+
+        this.copyCode = () => {
+            nw.Clipboard.get().set(this.refs.codeField.value);
+            alertify.success(this.vocGlob.done);
         };
 
         this.styleSetAlign = align => () => {

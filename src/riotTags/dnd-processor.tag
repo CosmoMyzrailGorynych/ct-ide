@@ -46,6 +46,8 @@ dnd-processor
             e.stopPropagation();
         };
         this.onDrop = e => {
+            this.dropping = false;
+            this.update();
             e.stopPropagation();
         };
         this.onDragLeave = e => {

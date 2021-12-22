@@ -24,6 +24,7 @@
         "done": "Done!",
         "duplicate": "Duplicate",
         "exit": "Exit",
+        "edit": "Edit",
         "fastimport": "Fast Import",
         "filter": "Filter:",
         "loading": "Loading…",
@@ -34,6 +35,7 @@
         "none": "None",
         "norooms": "You need at least one room to compile your app.",
         "notfoundorunknown": "Unknown file. Make sure the file really exists",
+        "nothingToShowFiller": "There is nothing to show here!",
         "ok": "Ok",
         "open": "Open",
         "openproject": "Open project…",
@@ -84,12 +86,11 @@
         "value": "Value",
         "delete": "Delete"
     },
-    "copyCustomProperties": {
-        "customProperties": "Custom Properties",
-        "addProperty": "Add Property",
-        "property": "Property",
-        "value": "Value",
-        "delete": "Delete"
+    "assetViewer": {
+        "addNewGroup": "New Group",
+        "ungrouped": "Show ungrouped",
+        "newGroupName": "New group",
+        "groupDeletionConfirmation": "Are you sure you want to delete this group? All its assets will be ungrouped."
     },
     "colorPicker": {
         "current": "New",
@@ -138,6 +139,11 @@
     "extensionsEditor": {
         "noEntries": "No entries yet.",
         "addRow": "Add a row"
+    },
+    "groupEditor": {
+        "groupEditor": "Group Editor",
+        "icon": "Icon:",
+        "color": "Color:"
     },
     "intro": {
         "loading": "Please wait: kittens are gathering speed of light!",
@@ -447,7 +453,9 @@
         "testtext": "Test text 0123 +",
         "textWrap": "Word wrap",
         "textWrapWidth": "Max width:",
-        "useCustomFont": "Use custom font…"
+        "useCustomFont": "Use custom font…",
+        "code": "Code",
+        "copyCode": "Copy"
     },
     "fonts": {
         "fonts": "Fonts",

@@ -2,13 +2,14 @@ fx-panel.aPanel.aView
     asset-viewer.tall(
         collection="{global.currentProject.emitterTandems}"
         contextmenu="{showTandemPopup}"
-        vocspace="particleEmitters"
         namespace="emitterTandems"
+        assettype="emitterTandems"
         click="{openTandem}"
+        useicons="yup"
         thumbnails="{thumbnails}"
         ref="emitterTandems"
     )
-        h1.nmt {voc.emittersHeading}
+        h1.nmt {parent.voc.emittersHeading}
         button(onclick="{parent.emitterTandemCreate}" title="Control+N" data-hotkey="Control+n")
             svg.feather
                 use(xlink:href="#plus")
@@ -19,7 +20,7 @@ fx-panel.aPanel.aView
         this.namespace = 'particleEmitters';
         this.mixin(window.riotVoc);
 
-        this.thumbnails = () => 'data/img/particles.png';
+        this.thumbnails = () => 'sparkles';
 
         // Technically we edit a number of emitters at once — a "tandem",
         // but to not overcomplicate it all, let's call them "emitters" in UI anyways.
@@ -44,7 +45,8 @@ fx-panel.aPanel.aView
             const tandem = {
                 name: 'Tandem_' + slice,
                 origname: 'pt' + slice,
-                emitters: [defaultEmitter]
+                emitters: [defaultEmitter],
+                group: this.refs.emitterTandems.currentGroup.uid
             };
 
             global.currentProject.emitterTandems.push(tandem);

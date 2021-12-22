@@ -8,11 +8,16 @@ asset-viewer
                 filter invert(1)
                 &:hover
                     background transparent
+    &.types
+        .Cards.largeicons
+            .aCard-aThumbnail
+                img
+                    max-height 8rem
     .Cards .&-Icons, .Cards .&-Icons
         color act
-        opacity 0.65
         line-height 1rem
         svg
+            opacity 0.65
             width 1rem
             height @width
             & + svg
