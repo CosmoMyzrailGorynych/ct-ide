@@ -73,7 +73,7 @@ const Copy = (function Copy() {
             this[vspeedAccessor] = 0;
             this[zeroDirectionAccessor] = 0;
             this.speed = this.direction = this.gravity = 0;
-            this.gravityDir = 270;
+            this.gravityDir = 90;
             this.depth = 0;
             if (exts) {
                 ct.u.ext(this, exts);
