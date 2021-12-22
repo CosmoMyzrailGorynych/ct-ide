@@ -272,32 +272,38 @@ const Copy = (function Copy() {
          */
         templates: { },
         /**
-         * Creates a new copy of a given type.
+         * Creates a new copy of a given type inside a specific room.
+         * @param {string} type The name of the type to use
+         * @param {number} [x] The x coordinate of a new copy. Defaults to 0.
+         * @param {number} [y] The y coordinate of a new copy. Defaults to 0.
+         * @param {Room} [room] The room to which add the copy.
+         * Defaults to the current room.
+         * @param {object} [exts] An optional object which parameters will be applied
+         * to the copy prior to its OnCreate event.
+         * @returns {Copy} the created copy.
+         */
+        copyIntoRoom(type, x = 0, y = 0, room, exts) {
+            // An advanced constructor. Returns a Copy
+            if (!room || !(room instanceof Room)) {
+                throw new Error(`Attempt to spawn a copy of type ${type} inside an invalid room. Room's value provided: ${room}`);
+            }
+            const obj = new Copy(type, x, y, exts);
+            room.addChild(obj);
+            ct.stack.push(obj);
+            onCreateModifier.apply(obj);
+            return obj;
+        },
+        /**
+         * Creates a new copy of a given type inside the current root room.
+         * A shorthand for `ct.types.copyIntoRoom(type, x, y, ct.room, exts)`
          * @param {string} type The name of the type to use
          * @param {number} [x] The x coordinate of a new copy. Defaults to 0.
          * @param {number} [y] The y coordinate of a new copy. Defaults to 0.
          * @param {object} [exts] An optional object which parameters will be applied
          * to the copy prior to its OnCreate event.
-         * @param {PIXI.Container} [container] The container to which add the copy.
-         * Defaults to the current room.
-         * @returns {Copy} the created copy.
-         * @alias ct.types.copy
          */
-        make(type, x = 0, y = 0, exts, container) {
-            // An advanced constructor. Returns a Copy
-            if (exts instanceof PIXI.Container) {
-                container = exts;
-                exts = void 0;
-            }
-            const obj = new Copy(type, x, y, exts);
-            if (container) {
-                container.addChild(obj);
-            } else {
-                ct.room.addChild(obj);
-            }
-            ct.stack.push(obj);
-            onCreateModifier.apply(obj);
-            return obj;
+        copy(type, x = 0, y = 0, exts) {
+            ct.types.copyIntoRoom(type, x, y, ct.room, exts);
         },
         /**
          * Applies a function to each copy in the current room
@@ -355,7 +361,6 @@ const Copy = (function Copy() {
             return obj instanceof Copy;
         }
     };
-    ct.types.copy = ct.types.make;
     ct.types.addSpd = ct.types.addSpeed;
 
     /*@types@*/
