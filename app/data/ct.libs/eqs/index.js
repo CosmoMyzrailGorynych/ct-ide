@@ -184,18 +184,18 @@
         query(params) {
             return new EQSQuery(params);
         },
-        scoreFree(ctype, multiplier) {
+        scoreFree(cgroup, multiplier) {
             multiplier = multiplier || 0;
             return function (point) {
-                if (ct.place.free({shape: {type: 'point'}}, point.x, point.y, ctype)) {
+                if (ct.place.free({shape: {type: 'point'}}, point.x, point.y, cgroup)) {
                     point.score *= multiplier;
                 }
             };
         },
-        scoreOccupied(ctype, multiplier) {
+        scoreOccupied(cgroup, multiplier) {
             multiplier = multiplier || 0;
             return function (point) {
-                if (ct.place.occupied({shape: {type: 'point'}}, point.x, point.y, ctype)) {
+                if (ct.place.occupied({shape: {type: 'point'}}, point.x, point.y, cgroup)) {
                     point.score *= multiplier;
                 }
             };

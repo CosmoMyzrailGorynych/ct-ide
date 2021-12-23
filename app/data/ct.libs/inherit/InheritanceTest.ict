@@ -118,7 +118,7 @@ types:
     ondestroy: ''
     texture: 5ae654a1-1d13-4f67-ac3d-cccec7b01cc4
     extends:
-      ctype: Monster
+      cgroup: Monster
     uid: 4af80a30-74f1-4a68-b7e4-286c7b74e76e
     lastmod: 1596073035148
   - name: Wall
@@ -129,7 +129,7 @@ types:
     ondestroy: ''
     texture: 387786ba-1c6d-4020-8aa5-1268faa5cbeb
     extends:
-      ctype: Solid
+      cgroup: Solid
     uid: 5d8f84e7-0b1f-4b3e-8d1a-33d12038ce3d
     lastmod: 1596073038085
   - name: Monster_Red
@@ -140,7 +140,7 @@ types:
     ondestroy: ''
     texture: 15293c51-6bdc-4a62-941e-0b08656796a7
     extends:
-      ctype: Monster
+      cgroup: Monster
       inheritedType@@type: 4af80a30-74f1-4a68-b7e4-286c7b74e76e
     uid: 8abcc9f5-e912-46a6-9a3f-ac3e254a4b95
     lastmod: 1596073030644
@@ -152,7 +152,7 @@ types:
     ondestroy: ''
     texture: 5ae654a1-1d13-4f67-ac3d-cccec7b01cc4
     extends:
-      ctype: Monster
+      cgroup: Monster
       inheritedType@@type: 4af80a30-74f1-4a68-b7e4-286c7b74e76e
     uid: 78739be5-145e-45aa-8e4b-473b92c19551
     lastmod: 1596073032003
@@ -168,7 +168,7 @@ types:
     texture: 15293c51-6bdc-4a62-941e-0b08656796a7
     extends:
       inheritedType@@type: 8abcc9f5-e912-46a6-9a3f-ac3e254a4b95
-      ctype: Monster
+      cgroup: Monster
     uid: 48c1951e-071c-47ef-a710-ef2ef0978017
     lastmod: 1596073029453
 sounds: []

@@ -373,7 +373,7 @@ types:
     ondestroy: ''
     texture: -1
     extends:
-      ctype: Solid
+      cgroup: Solid
     uid: 411a7b98-9916-4e4b-8466-abe66eb75e2e
     lastmod: 1602213776083
   - name: Pipe_H2
@@ -385,7 +385,7 @@ types:
     texture: 5084d2e9-a66e-4e22-9828-ee936473cbfc
     extends:
       inheritedType@@type: 411a7b98-9916-4e4b-8466-abe66eb75e2e
-      ctype: Solid
+      cgroup: Solid
     uid: b96007c1-e46d-4ae9-b809-3d49ef2f22b4
     lastmod: 1602213425483
   - name: Pipe_H3
@@ -397,7 +397,7 @@ types:
     texture: 614ef931-af6d-4da3-8147-6fb3c0457dac
     extends:
       inheritedType@@type: 411a7b98-9916-4e4b-8466-abe66eb75e2e
-      ctype: Solid
+      cgroup: Solid
     uid: d5a61d71-f85f-4287-9269-ce2fbc7206e1
     lastmod: 1602199753219
   - name: Pipe_H4
@@ -409,7 +409,7 @@ types:
     texture: fe8ec368-af9d-4351-917e-b0527c7470c4
     extends:
       inheritedType@@type: 411a7b98-9916-4e4b-8466-abe66eb75e2e
-      ctype: Solid
+      cgroup: Solid
     uid: 245b4e21-93e1-41dd-839e-546810d68a23
     lastmod: 1602199754611
   - name: Pipe_V2
@@ -423,7 +423,7 @@ types:
     texture: 84deaf6c-1e30-46ab-9770-ad7f20c54158
     extends:
       inheritedType@@type: 411a7b98-9916-4e4b-8466-abe66eb75e2e
-      ctype: Solid
+      cgroup: Solid
     uid: d8b121c6-2f4f-4427-ac7d-7f2b7e7e625d
     lastmod: 1602199756147
   - name: Pipe_V3
@@ -437,7 +437,7 @@ types:
     texture: 7e9843af-2842-414b-9063-14c08f547c6b
     extends:
       inheritedType@@type: 411a7b98-9916-4e4b-8466-abe66eb75e2e
-      ctype: Solid
+      cgroup: Solid
     uid: da879283-739b-4a62-850d-760d00789463
     lastmod: 1602199765123
   - name: Pipe_V4
@@ -451,7 +451,7 @@ types:
     texture: 2f19f39b-25bb-43cd-ab03-108bd9418695
     extends:
       inheritedType@@type: 411a7b98-9916-4e4b-8466-abe66eb75e2e
-      ctype: Solid
+      cgroup: Solid
     uid: 6ac451bc-3183-44c7-9872-ac72cc5d4e79
     lastmod: 1602199759771
   - name: KeyTile
@@ -468,7 +468,7 @@ types:
     ondestroy: ''
     texture: 25177c05-61f8-491f-be4f-c82bc90ed58c
     extends:
-      ctype: Solid
+      cgroup: Solid
       inheritedType@@type: 411a7b98-9916-4e4b-8466-abe66eb75e2e
     uid: bf3a489b-333c-4171-b5ca-5a8699dfc176
     lastmod: 1602213431467
@@ -918,7 +918,7 @@ rooms:
               - 1
               - 2
         extends:
-          ctype: Solid
+          cgroup: Solid
         hidden: false
       - depth: -11
         tiles:
@@ -1383,7 +1383,7 @@ rooms:
               - 1
               - 2
         extends:
-          ctype: Solid
+          cgroup: Solid
         hidden: false
       - depth: -11
         tiles:

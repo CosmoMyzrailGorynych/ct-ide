@@ -698,7 +698,7 @@ types:
     uid: 455b4c7c-2249-4b12-999e-27db667688b5
     texture: 2b5a51ae-c05b-4a94-b9bd-e088bf2e4b1a
     extends:
-      ctype: Obstacle
+      cgroup: Obstacle
     lastmod: 1584315308762
   - name: Star
     depth: 0
@@ -715,7 +715,7 @@ types:
     uid: b7362b5c-811d-438c-b164-f53213eaefa7
     texture: 4e0a0e06-81ea-4cd2-8f3d-569a8ad3e947
     extends:
-      ctype: Collectible
+      cgroup: Collectible
     lastmod: 1585717224654
   - name: StarCounter
     depth: 0

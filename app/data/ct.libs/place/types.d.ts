@@ -351,7 +351,7 @@ interface ISeparateMovementResult {
 
 interface Copy {
     /** The current collision group of a copy */
-    ctype: string;
+    cgroup: string;
     /**
      * Call to perform precise movement with collision checks. It takes gravity
      * and `ct.delta` into account, too, and uses the `ct.place.moveAlong` method.

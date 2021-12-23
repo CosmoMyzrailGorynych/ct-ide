@@ -1,23 +1,23 @@
-Object.defineProperty(ct.types.Copy.prototype, 'ctype', {
+Object.defineProperty(ct.types.Copy.prototype, 'cgroup', {
     set: function (value) {
-        this.$ctype = value;
+        this.$cgroup = value;
     },
     get: function () {
-        return this.$ctype;
+        return this.$cgroup;
     }
 });
 Object.defineProperty(ct.types.Copy.prototype, 'moveContinuous', {
-    value: function (ctype, precision) {
+    value: function (cgroup, precision) {
         if (this.gravity) {
             this.hspeed += this.gravity * ct.delta * Math.cos(this.gravityDir * Math.PI / 180);
             this.vspeed += this.gravity * ct.delta * Math.sin(this.gravityDir * Math.PI / 180);
         }
-        return ct.place.moveAlong(this, this.direction, this.speed * ct.delta, ctype, precision);
+        return ct.place.moveAlong(this, this.direction, this.speed * ct.delta, cgroup, precision);
     }
 });
 
 Object.defineProperty(ct.types.Copy.prototype, 'moveContinuousByAxes', {
-    value: function (ctype, precision) {
+    value: function (cgroup, precision) {
         if (this.gravity) {
             this.hspeed += this.gravity * ct.delta * Math.cos(this.gravityDir * Math.PI / 180);
             this.vspeed += this.gravity * ct.delta * Math.sin(this.gravityDir * Math.PI / 180);
@@ -26,14 +26,14 @@ Object.defineProperty(ct.types.Copy.prototype, 'moveContinuousByAxes', {
             this,
             this.hspeed * ct.delta,
             this.vspeed * ct.delta,
-            ctype,
+            cgroup,
             precision
         );
     }
 });
 
 Object.defineProperty(ct.types.Tilemap.prototype, 'enableCollisions', {
-    value: function (ctype) {
-        ct.place.enableTilemapCollisions(this, ctype);
+    value: function (cgroup) {
+        ct.place.enableTilemapCollisions(this, cgroup);
     }
 });

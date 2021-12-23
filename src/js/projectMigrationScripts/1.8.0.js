@@ -13,6 +13,13 @@ window.migrationProcess.push({
             sounds: [],
             emitterTandems: []
         };
+        // ctype property from ct.place got renamed into cgroup.
+        for (const type of project.types) {
+            if (type.extends && type.extends.ctype) {
+                type.extends.cgroup = type.extends.ctype;
+                delete type.extends.ctype;
+            }
+        }
 
         resolve();
     })

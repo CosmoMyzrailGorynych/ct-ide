@@ -4,7 +4,7 @@ if ([/*%debugMode%*/][0] && this instanceof ct.types.Copy) {
     this.$cDebugText.angle = this.$cDebugCollision.angle = -this.angle;
 
     const newtext = `Partitions: ${this.$chashes.join(', ')}
-Group: ${this.ctype}
+Group: ${this.cgroup}
 Shape: ${this._shape && this._shape.__type}`;
     if (this.$cDebugText.text !== newtext) {
         this.$cDebugText.text = newtext;

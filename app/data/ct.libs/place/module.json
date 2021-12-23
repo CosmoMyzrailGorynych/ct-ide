@@ -45,14 +45,14 @@
         "name": "Collision group",
         "type": "text",
         "collect": true,
-        "collectScope": "place::ctype",
-        "key": "ctype"
+        "collectScope": "place::cgroup",
+        "key": "cgroup"
     }],
     "tileLayerExtends": [{
         "name": "Collision group",
         "type": "text",
         "collect": true,
-        "collectScope": "place::ctype",
-        "key": "ctype"
+        "collectScope": "place::cgroup",
+        "key": "cgroup"
     }]
 }

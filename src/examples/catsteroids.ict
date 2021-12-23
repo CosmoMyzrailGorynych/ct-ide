@@ -147,7 +147,7 @@ types:
       var obstacle = ct.place.occupied(this, this.x, this.y, 'Enemy')
                   || ct.place.occupied(this, this.x, this.y, 'EnemyBullet');
       if (obstacle && this.invulnerable < 0) {
-          if (obstacle.ctype === 'Enemy') {
+          if (obstacle.cgroup === 'Enemy') {
               this.lives -= 25;
           } else {
               this.lives -= 5;
@@ -199,7 +199,7 @@ types:
       this.speed = 20;
       this.direction = -90;
       this.angle = this.direction;
-      this.ctype = 'BulletsHeroes';
+      this.cgroup = 'BulletsHeroes';
 
       this.damage = 5;
     onstep: |-
@@ -228,7 +228,7 @@ types:
 
       this.health = this.scale.x * 30;
 
-      this.ctype = 'Enemy';
+      this.cgroup = 'Enemy';
     onstep: |-
       this.move();
 
@@ -268,7 +268,7 @@ types:
     depth: -1
     oncreate: |-
       this.vspeed = -10;
-      this.ctype = 'BulletsHeroes';
+      this.cgroup = 'BulletsHeroes';
       this.phase = 0;
       ct.emitters.follow(this, 'Electricity');
 
@@ -475,7 +475,7 @@ types:
       this.scale.x = -1;
 
 
-      this.ctype = 'Enemy';
+      this.cgroup = 'Enemy';
 
 
       this.shootTimer = 2 * ct.speed;
@@ -549,7 +549,7 @@ types:
     uid: 65a71d76-039a-4e20-8433-d20277dd2402
     lastmod: 1603949111947
     extends:
-      ctype: EnemyBullet
+      cgroup: EnemyBullet
     texture: fc3e2f9b-61af-4ae4-9375-dcfae65f6a34
   - name: Enemy_Wiggler
     depth: 2
@@ -557,7 +557,7 @@ types:
       // This mob will move in a sine wave and emit projectiles randomly
       this.phase = this.phase || 0;
 
-      this.ctype = 'Enemy';
+      this.cgroup = 'Enemy';
 
       this.shootTimer = 2 * ct.speed;
       ct.emitters.append(this, 'JetFlame', {
@@ -627,7 +627,7 @@ types:
     oncreate: |-
       this.speed = 25;
       this.direction = 270;
-      this.ctype = 'BulletsHeroes';
+      this.cgroup = 'BulletsHeroes';
       ct.emitters.follow(this, 'PowerBoltTrail');
 
       this.damage = 20;
@@ -730,7 +730,7 @@ types:
     uid: 45f606db-1ce3-4b21-bc14-b84e35543509
     lastmod: 1603949122763
     extends:
-      ctype: EnemyBullet
+      cgroup: EnemyBullet
     texture: dc0d71ec-6da8-40e8-afe8-90c81f7f269a
   - name: OhNo
     depth: 0

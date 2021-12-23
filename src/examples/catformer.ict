@@ -63,7 +63,7 @@ types:
     uid: b7a528f8-655c-4920-900f-f191533f411d
     lastmod: 1632021063633
     extends:
-      ctype: Solid
+      cgroup: Solid
     texture: d8dd2bfd-0f9d-495a-bbfd-0e65b80153b9
   - name: Logs
     depth: 0
@@ -74,7 +74,7 @@ types:
     uid: 1026c1c8-90e4-4b93-bb6a-568f53918097
     lastmod: 1599533998391
     extends:
-      ctype: Solid
+      cgroup: Solid
     texture: f3de5077-0e66-43de-93f2-d3a75184aa2e
   - name: Grass
     depth: 0
@@ -85,7 +85,7 @@ types:
     uid: 5ff42cc3-0b4a-47e9-b6f1-06d3b3b91bb0
     lastmod: 1599533992399
     extends:
-      ctype: Solid
+      cgroup: Solid
     texture: 9968de05-f39d-4455-aaed-175c03728bb1
   - name: Spikes
     depth: 0
@@ -96,7 +96,7 @@ types:
     uid: 036a2de1-89b0-48e3-b26f-d608ce2079fd
     lastmod: 1599534008535
     extends:
-      ctype: Enemy
+      cgroup: Enemy
     texture: eed6bb2f-301f-460a-8d91-93396d103b4e
   - name: Player
     depth: 0
@@ -241,7 +241,7 @@ types:
     uid: 00664f77-21c6-4b06-b310-88640b1beaf9
     lastmod: 1632020995526
     extends:
-      ctype: Player
+      cgroup: Player
     texture: ad390b6e-4c2c-412f-8143-1c70b9c16fc0
   - name: Coin
     depth: 0
@@ -302,7 +302,7 @@ types:
     uid: 1f91fd7d-2d6c-4542-aead-78b8010b835b
     lastmod: 1599534005279
     extends:
-      ctype: Enemy
+      cgroup: Enemy
     texture: 703fb5d5-cf20-4450-b760-0b1cd037a5ad
   - name: Rich
     depth: 0
@@ -1370,7 +1370,7 @@ rooms:
               - 1
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
         extends:
-          ctype: Solid
+          cgroup: Solid
       - depth: -20
         tiles:
           - x: 70

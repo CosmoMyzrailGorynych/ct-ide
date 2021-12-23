@@ -1,6 +1,6 @@
 # Collision checks with `ct.place`
 
-`ct.place` checks collisions with the methods listed below. Most of the time, it uses a collision group (aka `cgroup`, or `this.ctype`) to check against a specific, defined by you, subset of copies, as well as tile layers. After enabling this module, you will find additional fields in type editor and for tile layers in the room editor, where you can set this collision group.
+`ct.place` checks collisions with the methods listed below. Most of the time, it uses a collision group (aka `cgroup`, or `this.cgroup`) to check against a specific, defined by you, subset of copies, as well as tile layers. After enabling this module, you will find additional fields in type editor and for tile layers in the room editor, where you can set this collision group.
 
 While runnning a game, you can change a copy's `this.cgroup` parameter so `ct.place` detects it under a different collision group. Think of a one-way platform or a barrier that can be turned off.
 

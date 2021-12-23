@@ -251,12 +251,12 @@
         },
         /**
          * Determines if the place in (x,y) is occupied.
-         * Optionally can take 'ctype' as a filter for obstackles' collision group (not shape type).
+         * Optionally can take 'cgroup' as a filter for obstackles' collision group (not shape type).
          *
          * @param {Copy} me The object to check collisions on.
          * @param {number} [x] The x coordinate to check, as if `me` was placed there.
          * @param {number} [y] The y coordinate to check, as if `me` was placed there.
-         * @param {String} [ctype] The collision group to check against
+         * @param {String} [cgroup] The collision group to check against
          * @param {Boolean} [multiple=false] If it is true, the function will return
          * an array of all the collided objects.
          * If it is false (default), it will return a copy with the first collision
@@ -264,7 +264,7 @@
          * (if `multiple` is `true`)
          */
         // eslint-disable-next-line complexity
-        occupied(me, x, y, ctype, multiple) {
+        occupied(me, x, y, cgroup, multiple) {
             var oldx = me.x,
                 oldy = me.y,
                 shapeCashed = me._shape;
@@ -274,13 +274,13 @@
                 me.x = x;
                 me.y = y;
             } else {
-                ctype = x;
+                cgroup = x;
                 multiple = y;
                 x = me.x;
                 y = me.y;
             }
-            if (typeof ctype === 'boolean') {
-                multiple = ctype;
+            if (typeof cgroup === 'boolean') {
+                multiple = cgroup;
             }
             if (oldx !== me.x || oldy !== me.y) {
                 me._shape = getSSCDShape(me);
@@ -297,7 +297,7 @@
                     continue;
                 }
                 for (let i = 0, l = array.length; i < l; i++) {
-                    if (array[i] !== me && (!ctype || array[i].$ctype === ctype)) {
+                    if (array[i] !== me && (!cgroup || array[i].$cgroup === cgroup)) {
                         if (ct.place.collide(me, array[i])) {
                             /* eslint {"max-depth": "off"} */
                             if (!multiple) {
@@ -325,8 +325,8 @@
             }
             return results;
         },
-        free(me, x, y, ctype) {
-            return !ct.place.occupied(me, x, y, ctype);
+        free(me, x, y, cgroup) {
+            return !ct.place.occupied(me, x, y, cgroup);
         },
         meet(me, x, y, type, multiple) {
             // ct.place.meet(<me: Copy, x: number, y: number>[, type: Type])
@@ -391,7 +391,7 @@
             }
             return results;
         },
-        tile(me, x, y, ctype) {
+        tile(me, x, y, cgroup) {
             if (!me.shape || !me.shape.type) {
                 return false;
             }
@@ -403,7 +403,7 @@
                 me.x = x;
                 me.y = y;
             } else {
-                ctype = x;
+                cgroup = x;
                 x = me.x;
                 y = me.y;
             }
@@ -420,8 +420,8 @@
                 }
                 for (let i = 0, l = array.length; i < l; i++) {
                     const tile = array[i];
-                    const tileMatches = typeof ctype === 'string' ? tile.ctype === ctype : tile.depth === ctype;
-                    if ((!ctype || tileMatches) && ct.place.collide(tile, me)) {
+                    const tileMatches = typeof cgroup === 'string' ? tile.cgroup === cgroup : tile.depth === cgroup;
+                    if ((!cgroup || tileMatches) && ct.place.collide(tile, me)) {
                         if (oldx !== me.x || oldy !== me.y) {
                             me.x = oldx;
                             me.y = oldy;
@@ -471,8 +471,8 @@
             }
             return false;
         },
-        enableTilemapCollisions(tilemap, ctype) {
-            const cgroup = ctype || tilemap.ctype;
+        enableTilemapCollisions(tilemap, cgroup) {
+            const cgroup = cgroup || tilemap.cgroup;
             if (tilemap.addedCollisions) {
                 throw new Error('[ct.place] The tilemap already has collisions enabled.');
             }
@@ -483,7 +483,7 @@
                     new SSCD.Vector(t.x, t.y),
                     new SSCD.Vector(t.width, t.height)
                 );
-                t.ctype = cgroup;
+                t.cgroup = cgroup;
                 t.$chashes = ct.place.getHashes(t);
                 /* eslint max-depth: 0 */
                 for (const hash of t.$chashes) {
@@ -506,10 +506,10 @@
             }
             tilemap.addedCollisions = true;
         },
-        moveAlong(me, dir, length, ctype, precision) {
-            if (typeof ctype === 'number') {
-                precision = ctype;
-                ctype = void 0;
+        moveAlong(me, dir, length, cgroup, precision) {
+            if (typeof cgroup === 'number') {
+                precision = cgroup;
+                cgroup = void 0;
             }
             precision = Math.abs(precision || 1);
             if (length < 0) {
@@ -519,8 +519,8 @@
             var dx = Math.cos(dir * Math.PI / -180) * precision,
                 dy = Math.sin(dir * Math.PI / -180) * precision;
             for (let i = 0; i < length; i += precision) {
-                const occupied = ct.place.occupied(me, me.x + dx, me.y + dy, ctype) ||
-                                 ct.place.tile(me, me.x + dx, me.y + dy, ctype);
+                const occupied = ct.place.occupied(me, me.x + dx, me.y + dy, cgroup) ||
+                                 ct.place.tile(me, me.x + dx, me.y + dy, cgroup);
                 if (!occupied) {
                     me.x += dx;
                     me.y += dy;
@@ -531,10 +531,10 @@
             }
             return false;
         },
-        moveByAxes(me, dx, dy, ctype, precision) {
-            if (typeof ctype === 'number') {
-                precision = ctype;
-                ctype = void 0;
+        moveByAxes(me, dx, dy, cgroup, precision) {
+            if (typeof cgroup === 'number') {
+                precision = cgroup;
+                cgroup = void 0;
             }
             const obstacles = {
                 x: false,
@@ -543,8 +543,8 @@
             precision = Math.abs(precision || 1);
             while (Math.abs(dx) > precision) {
                 const occupied =
-                    ct.place.occupied(me, me.x + Math.sign(dx) * precision, me.y, ctype) ||
-                    ct.place.tile(me, me.x + Math.sign(dx) * precision, me.y, ctype);
+                    ct.place.occupied(me, me.x + Math.sign(dx) * precision, me.y, cgroup) ||
+                    ct.place.tile(me, me.x + Math.sign(dx) * precision, me.y, cgroup);
                 if (!occupied) {
                     me.x += Math.sign(dx) * precision;
                     dx -= Math.sign(dx) * precision;
@@ -555,8 +555,8 @@
             }
             while (Math.abs(dy) > precision) {
                 const occupied =
-                    ct.place.occupied(me, me.x, me.y + Math.sign(dy) * precision, ctype) ||
-                    ct.place.tile(me, me.x, me.y + Math.sign(dy) * precision, ctype);
+                    ct.place.occupied(me, me.x, me.y + Math.sign(dy) * precision, cgroup) ||
+                    ct.place.tile(me, me.x, me.y + Math.sign(dy) * precision, cgroup);
                 if (!occupied) {
                     me.y += Math.sign(dy) * precision;
                     dy -= Math.sign(dy) * precision;
@@ -567,15 +567,15 @@
             }
             // A fraction of precision may be left but completely reachable; jump to this point.
             if (Math.abs(dx) < precision) {
-                if (ct.place.free(me, me.x + dx, me.y, ctype) &&
-                    !ct.place.tile(me, me.x + dx, me.y, ctype)
+                if (ct.place.free(me, me.x + dx, me.y, cgroup) &&
+                    !ct.place.tile(me, me.x + dx, me.y, cgroup)
                 ) {
                     me.x += dx;
                 }
             }
             if (Math.abs(dy) < precision) {
-                if (ct.place.free(me, me.x, me.y + dy, ctype) &&
-                    !ct.place.tile(me, me.x, me.y + dy, ctype)
+                if (ct.place.free(me, me.x, me.y + dy, cgroup) &&
+                    !ct.place.tile(me, me.x, me.y + dy, cgroup)
                 ) {
                     me.y += dy;
                 }
@@ -585,13 +585,13 @@
             }
             return obstacles;
         },
-        go(me, x, y, length, ctype) {
-            // ct.place.go(<me: Copy, x: number, y: number, length: number>[, ctype: String])
+        go(me, x, y, length, cgroup) {
+            // ct.place.go(<me: Copy, x: number, y: number, length: number>[, cgroup: String])
             // tries to reach the target with a simple obstacle avoidance algorithm
 
             // if we are too close to the destination, exit
             if (ct.u.pdc(me.x, me.y, x, y) < length) {
-                if (ct.place.free(me, x, y, ctype)) {
+                if (ct.place.free(me, x, y, cgroup)) {
                     me.x = x;
                     me.y = y;
                     delete me._shape;
@@ -603,7 +603,7 @@
             //if there are no obstackles in front of us, go forward
             let projectedX = me.x + ct.u.ldx(length, dir),
                 projectedY = me.y + ct.u.ldy(length, dir);
-            if (ct.place.free(me, projectedX, projectedY, ctype)) {
+            if (ct.place.free(me, projectedX, projectedY, cgroup)) {
                 me.x = projectedX;
                 me.y = projectedY;
                 delete me._shape;
@@ -615,7 +615,7 @@
                     for (var j = 30; j < 150; j += 30) {
                         projectedX = me.x + ct.u.ldx(length, dir + j * ct.place.m * i);
                         projectedY = me.y + ct.u.ldy(length, dir + j * ct.place.m * i);
-                        if (ct.place.free(me, projectedX, projectedY, ctype)) {
+                        if (ct.place.free(me, projectedX, projectedY, cgroup)) {
                             me.x = projectedX;
                             me.y = projectedY;
                             delete me._shape;
@@ -636,7 +636,7 @@
                 return ct.place.occupied(shape, cgroup, getAll);
             }
             for (var i in ct.stack) {
-                if (!cgroup || ct.stack[i].ctype === cgroup) {
+                if (!cgroup || ct.stack[i].cgroup === cgroup) {
                     if (ct.place.collide(shape, ct.stack[i])) {
                         if (getAll) {
                             copies.push(ct.stack[i]);

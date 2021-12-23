@@ -81,7 +81,7 @@ types:
 
       this.angle = ct.random.deg();
 
-      this.ctype = 'Hostile';
+      this.cgroup = 'Hostile';
     onstep: |-
       if (this.y > ct.height + 40) {
           this.kill = true;
@@ -120,7 +120,7 @@ types:
       this.direction = 90;
 
       this.bulletTimer = 60;
-      this.ctype = 'Hostile';
+      this.cgroup = 'Hostile';
     onstep: |-
       this.move();
 
@@ -151,7 +151,7 @@ types:
     oncreate: |-
       this.speed = ct.random.range(1, 3);
       this.direction = ct.random.range(90 - 30, 90 + 30);
-      this.ctype = 'Hostile';
+      this.cgroup = 'Hostile';
     onstep: |-
       this.move();
 
@@ -176,7 +176,7 @@ types:
     oncreate: |-
       this.speed = ct.random.range(1, 3);
       this.direction = ct.random.range(90 - 30, 90 + 30);
-      this.ctype = 'Hostile';
+      this.cgroup = 'Hostile';
     onstep: |-
       this.move();
 

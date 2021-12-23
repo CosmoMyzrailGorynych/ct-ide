@@ -104,7 +104,7 @@ types:
     uid: 2d07d12b-9798-418c-a420-3a1ef4dc3ae2
     lastmod: 1603946092358
     extends:
-      ctype: Robot
+      cgroup: Robot
     texture: 6deb1d77-24d2-48d6-82ec-045dcbd9eea5
   - name: Rocks
     depth: 0
@@ -115,7 +115,7 @@ types:
     uid: 07e424c6-78c2-42c9-b720-df0af00ab44d
     lastmod: 1603946104269
     extends:
-      ctype: Solid
+      cgroup: Solid
     texture: 9a6d05c0-477d-47f6-85fe-6c0c8d813df3
   - name: Rocks_Top
     depth: 0
@@ -126,7 +126,7 @@ types:
     uid: f1f632f7-ecd9-4724-8a7a-c5136d48520e
     lastmod: 1603946095198
     extends:
-      ctype: Solid
+      cgroup: Solid
     texture: 05db3522-55d5-4358-bf09-5e9a6126ed95
   - name: Rocks_Platform
     depth: 0
@@ -137,7 +137,7 @@ types:
     uid: bf44c3c8-a683-43cd-8925-c5b7e771e152
     lastmod: 1603946100973
     extends:
-      ctype: Solid
+      cgroup: Solid
     texture: 60688c59-ff1e-4550-8525-0fc28c4a3d77
   - name: Spikes
     depth: 0
@@ -148,7 +148,7 @@ types:
     uid: cfa730fa-a010-44af-8e02-d5ad0c86f224
     lastmod: 1603946109293
     extends:
-      ctype: Deadly
+      cgroup: Deadly
     texture: 699ff925-9b32-403f-a292-68ea10034788
   - name: Water
     depth: 0
@@ -159,7 +159,7 @@ types:
     uid: c1aaae5f-3e4c-4e41-8e24-4c2dfe4d43b6
     lastmod: 1547538627465
     extends:
-      ctype: Deadly
+      cgroup: Deadly
     texture: 9fdb39bb-1685-4ca2-b750-ccb15ca765d2
   - name: Water_Top
     depth: 0
@@ -170,7 +170,7 @@ types:
     uid: 807691ae-10c5-4cf6-ba0f-6f53d83367ff
     lastmod: 1547538622609
     extends:
-      ctype: Deadly
+      cgroup: Deadly
     texture: 5749074a-4d92-4aa7-bbde-afb57f1ec4a0
   - name: Checkpoint
     depth: 0
@@ -249,9 +249,9 @@ types:
       var robot = ct.place.meet(this, this.x, this.y, 'Robot');
 
       if (robot) {
-          this.ctype = undefined;
+          this.cgroup = undefined;
       } else {
-          this.ctype = 'Solid';
+          this.cgroup = 'Solid';
           robot = ct.place.occupied(this, this.x, this.y - 1, 'Robot');
           if (robot) {
               robot.x += this.hspeed * ct.delta;
@@ -271,7 +271,7 @@ types:
     uid: 1ae52dda-689d-4780-97ce-c87886fb581a
     lastmod: 1551435993986
     extends:
-      ctype: Solid
+      cgroup: Solid
     texture: 3f19a8ef-4dba-4550-b516-0bcaca131ba6
   - name: CrystalsWidget
     depth: 0

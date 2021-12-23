@@ -166,18 +166,18 @@ declare namespace ct {
         function query(query: EQSQuery): EQSQuery;
 
         /**
-         * Creates a scoring function that tests whether a point collides with a `ctype` group.
+         * Creates a scoring function that tests whether a point collides with a `cgroup` group.
          * `multiplier` is multiplied with a point's `score` value if a point does not collide
          * with a given collision group (default one is `0`).
          */
-        function scoreFree(ctype: string, multiplier: number): EQSScoringFunction;
+        function scoreFree(cgroup: string, multiplier: number): EQSScoringFunction;
 
         /**
-         * Creates a scoring function that tests whether a point collides with a `ctype` group.
+         * Creates a scoring function that tests whether a point collides with a `cgroup` group.
          * `multiplier` is multiplied with a point's `score` value if a point collides
          * with a given collision group (default one is `0`).
          */
-        function scoreOccupied(ctype: string, multiplier: number): EQSScoringFunction;
+        function scoreOccupied(cgroup: string, multiplier: number): EQSScoringFunction;
 
         /**
          * Creates a scoring function that tests whether a point collides with a tile layer.
