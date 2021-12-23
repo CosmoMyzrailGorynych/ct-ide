@@ -5,7 +5,7 @@ room-editor.aPanel.aView
             b {voc.name}
             br
             input.wide(type="text" value="{room.name}" onchange="{wire('this.room.name')}")
-            .anErrorNotice(if="{nameTaken}" ref="errorNotice") {vocGlob.nametaken}
+            .anErrorNotice(if="{nameTaken}" ref="errorNotice") {vocGlob.nameTaken}
             button.wide(onclick="{openRoomEvents}")
                 svg.feather(if="{room.oncreate || room.onstep || room.ondestroy || room.ondraw}")
                     use(xlink:href="#check")
@@ -144,9 +144,9 @@ room-editor.aPanel.aView
             zoom-slider(onchanged="{setZoom}" ref="zoomslider" value="{zoomFactor}")
         .grid
             button#roomgrid.forcebackground(onclick="{roomToggleGrid}" class="{active: room.gridX > 0}")
-                span {voc[room.gridX > 0? 'gridoff' : 'grid']}
+                span {voc[room.gridX > 0? 'gridOff' : 'grid']}
         .center
-            button#roomcenter.forcebackground(onclick="{roomToCenter}") {voc.tocenter}
+            button#roomcenter.forcebackground(onclick="{roomToCenter}") {voc.toCenter}
             b.aMouseCoord.aContrastingPlaque(show="{window.innerWidth - sidebarWidth > 470}" ref="mousecoords") ({mouseX}:{mouseY})
         room-copy-properties(
             if="{this.selectedCopies && this.selectedCopies.length === 1}"
@@ -202,7 +202,7 @@ room-editor.aPanel.aView
         this.forbidDrawing = false;
         const fs = require('fs-extra');
         const glob = require('./data/node_requires/glob');
-        this.namespace = 'roomview';
+        this.namespace = 'roomView';
         this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
         this.mixin(window.roomCopyTools);
@@ -303,7 +303,7 @@ room-editor.aPanel.aView
         this.roomToggleGrid = () => {
             if (this.room.gridX === 0) {
                 window.alertify
-                .confirm(this.voc.gridsize + '<br/><input type="number" value="64" style="width: 6rem;" min=2 id="theGridSizeX"> x <input type="number" value="64" style="width: 6rem;" min=2 id="theGridSizeY">')
+                .confirm(this.voc.gridSize + '<br/><input type="number" value="64" style="width: 6rem;" min=2 id="theGridSizeX"> x <input type="number" value="64" style="width: 6rem;" min=2 id="theGridSizeY">')
                 .then(e => {
                     if (e.buttonClicked === 'ok') {
                         this.room.gridX = Number(document.getElementById('theGridSizeX').value);
@@ -479,7 +479,7 @@ room-editor.aPanel.aView
         // Shifts all the copies in a room at once.
         this.roomShift = () => {
             window.alertify.confirm(`
-                ${window.languageJSON.roomview.shifttext}
+                ${window.languageJSON.roomView.shiftLabel}
                 <label class="block">X:
                     <input id="roomshiftx" type="number" value="${this.room.gridX}" />
                 </label>

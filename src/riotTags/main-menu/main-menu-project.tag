@@ -96,7 +96,7 @@ main-menu-project
             if (!glob.modified) {
                 this.openProjectSelector(await projects.getDefaultProjectDir());
             } else {
-                alertify.confirm(this.vocGlob.reallyexit)
+                alertify.confirm(this.vocGlob.reallyExitConfirm)
                 .then(async e => {
                     if (e.buttonClicked === 'ok') {
                         this.openProjectSelector(await projects.getDefaultProjectDir());
@@ -111,7 +111,7 @@ main-menu-project
             if (!glob.modified) {
                 this.openProjectSelector(await projects.getExamplesDir());
             } else {
-                alertify.confirm(this.vocGlob.reallyexit)
+                alertify.confirm(this.vocGlob.reallyExitConfirm)
                 .then(async e => {
                     if (e.buttonClicked === 'ok') {
                         this.openProjectSelector(await projects.getExamplesDir());
@@ -125,7 +125,7 @@ main-menu-project
             if (!glob.modified) {
                 window.signals.trigger('resetAll');
             } else {
-                alertify.confirm(this.vocGlob.reallyexit, e => {
+                alertify.confirm(this.vocGlob.reallyExitConfirm, e => {
                     if (e) {
                         window.signals.trigger('resetAll');
                     }

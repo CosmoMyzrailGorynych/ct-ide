@@ -33,7 +33,7 @@ room-type-picker.room-editor-TypeSwatches.tabbed.tall
     script.
         const glob = require('./data/node_requires/glob');
         this.glob = glob;
-        this.namespace = 'roomview';
+        this.namespace = 'roomView';
         this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
 

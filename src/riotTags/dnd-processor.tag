@@ -3,7 +3,7 @@ dnd-processor
         .middleinner
             svg.feather
                 use(xlink:href="#download")
-            h2 {languageJSON.common.fastimport}
+            h2 {languageJSON.common.fastImport}
             input(
                 type="file" multiple
                 accept=".png,.jpg,.jpeg,.bmp,.gif,.json,.ttf"

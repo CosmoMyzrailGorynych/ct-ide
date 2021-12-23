@@ -206,7 +206,7 @@
             this.roomCanvasTileMenu = {
                 opened: false,
                 items: [{
-                    label: window.languageJSON.roomview.deletetile,
+                    label: window.languageJSON.roomView.deleteTile,
                     click: () => {
                         this.currentTileLayer.tiles.splice(this.closestPos, 1);
                         this.refreshRoomCanvas();
@@ -234,7 +234,7 @@
                 setTimeout(() => {
                     this.forbidDrawing = false;
                 }, 500);
-                this.roomCanvasTileMenu.items[0].label = window.languageJSON.roomview.deletetile;
+                this.roomCanvasTileMenu.items[0].label = window.languageJSON.roomView.deleteTile;
                 this.refs.roomCanvasTileMenu.popup(e.clientX, e.clientY);
                 e.preventDefault();
                 return true;
@@ -243,7 +243,7 @@
             this.roomCanvasTilesMenu = {
                 opened: false,
                 items: [{
-                    label: window.languageJSON.roomview.deletetiles,
+                    label: window.languageJSON.roomView.deleteTiles,
                     click: () => {
                         for (const tile of this.selectedTiles) {
                             const ind = this.currentTileLayer.tiles.indexOf(tile);
@@ -254,10 +254,10 @@
                     },
                     key: 'Delete'
                 }, {
-                    label: window.languageJSON.roomview.movetilestolayer,
+                    label: window.languageJSON.roomView.moveTilesToLayer,
                     click: () => {
                         window.alertify.confirm(`
-                            ${window.languageJSON.roomview.movetilestolayer}
+                            ${window.languageJSON.roomView.moveTilesToLayer}
                             <label class="block">
                                 <input id="tilesnewdepth" type="number" value="${this.currentTileLayer.depth}" />
                             </label>
@@ -285,10 +285,10 @@
                         });
                     }
                 }, {
-                    label: window.languageJSON.roomview.shifttiles,
+                    label: window.languageJSON.roomView.shiftTiles,
                     click: () => {
                         window.alertify.confirm(`
-                            ${window.languageJSON.roomview.shifttiles}
+                            ${window.languageJSON.roomView.shiftTiles}
                             <label class="block">X:
                                 <input id="tilespositionx" type="number" value="${this.room.gridX}" />
                             </label>

@@ -11,11 +11,11 @@ notepad-panel#notepad.aPanel.dockright(class="{opened: opened}")
         li(onclick="{changeTab('helppages')}" class="{active: tab === 'helppages'}")
             svg.feather
                 use(xlink:href="#life-buoy")
-            span {voc.helppages}
+            span {voc.helpPages}
         li(onclick="{changeTab('modulespages')}" class="{active: tab === 'modulespages'}")
             svg.feather
                 use(xlink:href="#ctmod")
-            span {voc.modulespages}
+            span {voc.modulesPages}
     div
         div(show="{tab === 'notepadlocal'}")
             .aCodeEditor(ref="notepadlocal")

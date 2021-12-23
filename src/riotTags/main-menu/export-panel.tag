@@ -4,7 +4,7 @@ export-panel
         .flexfix-header
             h2.nmt {voc.exportPanel}
         .flexfix-body
-            p {voc.firstrunnotice}
+            p {voc.firstRunNotice}
             fieldset
                 label.checkbox
                     input(type="checkbox" checked="{projSettings.export.linux}" onchange="{wire('this.projSettings.export.linux')}")

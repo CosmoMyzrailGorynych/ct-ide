@@ -88,7 +88,7 @@ styles-panel.tall.fifty
                 click: () => {
                     alertify
                     .defaultValue(this.editedStyle.name + '_dup')
-                    .prompt(window.languageJSON.common.newname)
+                    .prompt(window.languageJSON.common.newName)
                     .then(e => {
                         if (e.inputValue !== '' && e.buttonClicked !== 'cancel') {
                             var id = generateGUID(),
@@ -111,7 +111,7 @@ styles-panel.tall.fifty
                 click: () => {
                     alertify
                     .defaultValue(this.editedStyle.name)
-                    .prompt(window.languageJSON.common.newname)
+                    .prompt(window.languageJSON.common.newName)
                     .then(e => {
                         if (e.inputValue !== '' && e.buttonClicked !== 'cancel') {
                             this.editedStyle.name = e.inputValue;

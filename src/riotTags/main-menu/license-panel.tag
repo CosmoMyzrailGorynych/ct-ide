@@ -3,7 +3,7 @@ license-panel.aModal.pad
         span(onclick="{opts.onclose}")
             svg.feather
                 use(xlink:href="#x")
-    h1 {voc.ctjslicense}
+    h1 {voc.ctjsLicense}
     pre
         code.
             Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -716,7 +716,7 @@ license-panel.aModal.pad
             WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
     script.
-        this.namespace = 'licensepanel';
+        this.namespace = 'licensePanel';
         this.mixin(window.riotVoc);
         this.closeModal = () => {
             this.parent.showLicense = false;

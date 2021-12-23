@@ -31,7 +31,7 @@ room-events-editor.aView
             use(xlink:href="#check")
         span {voc.done}
     script.
-        this.namespace = 'roomview';
+        this.namespace = 'roomView';
         this.mixin(window.riotVoc);
         const glob = require('./data/node_requires/glob');
 

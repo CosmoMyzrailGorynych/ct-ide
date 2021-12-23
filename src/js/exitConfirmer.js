@@ -5,7 +5,7 @@
         if (!glob.modified) {
             win.close(true);
         } else {
-            window.alertify.confirm(window.languageJSON.common.reallyexit)
+            window.alertify.confirm(window.languageJSON.common.reallyExitConfirm)
             .then(e => {
                 if (e.buttonClicked === 'ok') {
                     win.close(true);

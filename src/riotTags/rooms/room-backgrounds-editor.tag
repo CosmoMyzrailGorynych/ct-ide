@@ -72,7 +72,7 @@ room-backgrounds-editor.room-editor-Backgrounds.tabbed.tall
         this.getTexturePreview = getTexturePreview;
 
         this.pickingBackground = false;
-        this.namespace = 'roombackgrounds';
+        this.namespace = 'roomBackgrounds';
         this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
         this.on('update', () => {

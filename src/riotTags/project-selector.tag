@@ -256,7 +256,7 @@ project-selector
         this.openProjectFolder = () => {
             const codename = this.refs.projectname.value.trim();
             if (codename.length === 0) {
-                alertify.error(this.voc.newProject.nameerr);
+                alertify.error(this.voc.newProject.nameError);
                 return;
             }
             this.chooseProjectFolder();

@@ -9,7 +9,7 @@ type-editor.aPanel.aView.flexrow
                 )
                 b {voc.name}
                 input.wide(type="text" onchange="{wire('this.type.name')}" value="{type.name}")
-                .anErrorNotice(if="{nameTaken}" ref="errorNotice") {vocGlob.nametaken}
+                .anErrorNotice(if="{nameTaken}" ref="errorNotice") {vocGlob.nameTaken}
                 br
             .flexfix-body
                 b {voc.depth}
@@ -58,7 +58,7 @@ type-editor.aPanel.aView.flexrow
     script.
         const glob = require('./data/node_requires/glob');
         this.glob = glob;
-        this.namespace = 'typeview';
+        this.namespace = 'typeView';
         this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
 

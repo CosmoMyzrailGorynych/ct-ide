@@ -20,7 +20,7 @@ authoring-settings
     |  .
     input(type="number" style="width: 1.5rem;" value="{authoring.version[2]}" length="3" min="0" onchange="{wire('this.authoring.version.2')}")
     .inlineblock
-        |   {voc.versionpostfix}
+        |   {voc.versionPostfix}
         input(type="text" style="width: 3rem;" value="{authoring.versionPostfix}" length="5" onchange="{wire('this.authoring.versionPostfix')}")
     script.
         this.namespace = 'settings.authoring';

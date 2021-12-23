@@ -48,7 +48,7 @@ rooms-panel.aPanel.aView
         this.roomMenu = {
             items: [{
                 icon: 'play',
-                label: this.voc.makestarting,
+                label: this.voc.makeStarting,
                 click: () => {
                     global.currentProject.startroom = this.editingRoom.uid;
                     this.update();
@@ -69,7 +69,7 @@ rooms-panel.aPanel.aView
                 click: () => {
                     window.alertify
                     .defaultValue(this.editingRoom.name + '_dup')
-                    .prompt(window.languageJSON.common.newname)
+                    .prompt(window.languageJSON.common.newName)
                     .then(e => {
                         if (e.inputValue !== '' && e.buttonClicked !== 'cancel') {
                             var guid = generateGUID(),
@@ -90,7 +90,7 @@ rooms-panel.aPanel.aView
                 click: () => {
                     window.alertify
                     .defaultValue(this.editingRoom.name)
-                    .prompt(window.languageJSON.common.newname)
+                    .prompt(window.languageJSON.common.newName)
                     .then(e => {
                         if (e.inputValue !== '' && e.buttonClicked !== 'cancel') {
                             var nam = e.inputValue;

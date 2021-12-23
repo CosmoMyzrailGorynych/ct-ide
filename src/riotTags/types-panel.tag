@@ -124,7 +124,7 @@ types-panel.aPanel.aView
                 click: () => {
                     alertify
                     .defaultValue(this.currentType.name + '_dup')
-                    .prompt(window.languageJSON.common.newname)
+                    .prompt(window.languageJSON.common.newName)
                     .then(e => {
                         if (e.inputValue !== '' && e.buttonClicked !== 'cancel') {
                             const generateGUID = require('./data/node_requires/generateGUID');
@@ -143,7 +143,7 @@ types-panel.aPanel.aView
                 click: () => {
                     alertify
                     .defaultValue(this.currentType.name)
-                    .prompt(window.languageJSON.common.newname)
+                    .prompt(window.languageJSON.common.newName)
                     .then(e => {
                         if (e.inputValue !== '' && e.buttonClicked !== 'cancel') {
                             this.currentType.name = e.inputValue;

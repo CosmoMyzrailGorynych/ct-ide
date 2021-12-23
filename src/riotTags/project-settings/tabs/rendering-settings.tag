@@ -8,7 +8,7 @@ rendering-settings
     fieldset
         label.block.checkbox
             input(type="checkbox" value="{renderSettings.pixelatedrender}" checked="{renderSettings.pixelatedrender}" onchange="{wire('this.renderSettings.pixelatedrender')}")
-            span {voc.pixelatedrender}
+            span {voc.pixelatedRender}
         label.block.checkbox
             input(type="checkbox" value="{renderSettings.highDensity}" checked="{renderSettings.highDensity}" onchange="{wire('this.renderSettings.highDensity')}")
             span {voc.highDensity}

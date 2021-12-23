@@ -16,7 +16,7 @@ main-menu-meta
         li(onclick="{() => nw.Shell.openExternal('https://ctjs.rocks/')}")
             svg.feather
                 use(xlink:href="#globe-alt")
-            span {vocGlob.ctsite}
+            span {vocGlob.ctSite}
         li(onclick="{() => nw.Shell.openExternal('https://discord.gg/3f7TsRC')}")
             svg.icon
                 use(xlink:href="#discord")

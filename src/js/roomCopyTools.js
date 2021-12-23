@@ -312,14 +312,14 @@
                 setTimeout(() => {
                     this.forbidDrawing = false;
                 }, 500);
-                this.roomCanvasMenu.items[0].label = window.languageJSON.roomview.deletecopy.replace('{0}', type.name);
+                this.roomCanvasMenu.items[0].label = window.languageJSON.roomView.deleteCopy.replace('{0}', type.name);
                 this.refs.roomCanvasMenu.popup(e.clientX, e.clientY);
             };
 
             this.roomCanvasCopiesMenu = {
                 opened: false,
                 item: [{
-                    label: window.languageJSON.roomview.deleteCopies,
+                    label: window.languageJSON.roomView.deleteCopies,
                     click: () => {
                         for (const copy of this.selectedCopies) {
                             this.room.copies.splice(this.room.copies.indexOf(copy), 1);
@@ -330,10 +330,10 @@
                     },
                     key: 'Delete'
                 }, {
-                    label: window.languageJSON.roomview.shiftCopies,
+                    label: window.languageJSON.roomView.shiftCopies,
                     click: () => {
                         window.alertify.confirm(`
-                            ${window.languageJSON.roomview.shiftCopies}
+                            ${window.languageJSON.roomView.shiftCopies}
                             <label class="block">X:
                                 <input id="copiespositionx" type="number" value="${this.room.gridX}" />
                             </label>
@@ -369,7 +369,7 @@
             this.roomCanvasMenu = {
                 opened: false,
                 items: [{
-                    label: window.languageJSON.roomview.deletecopy.replace('{0}', this.closestType),
+                    label: window.languageJSON.roomView.deleteCopy.replace('{0}', this.closestType),
                     click: () => {
                         this.room.copies.splice(this.closestPos, 1);
                         this.resortRoom();
@@ -377,11 +377,11 @@
                     },
                     key: 'Delete'
                 }, {
-                    label: window.languageJSON.roomview.changecopyscale,
+                    label: window.languageJSON.roomView.changeCopyScale,
                     click: () => {
                         var copy = this.room.copies[this.closestPos];
                         window.alertify.confirm(`
-                            ${window.languageJSON.roomview.changecopyscale}
+                            ${window.languageJSON.roomView.changeCopyScale}
                             <label class="block">X:
                                 <input id="copyscalex" type="number" value="${copy.tx || 1}" />
                             </label>
@@ -398,11 +398,11 @@
                         });
                     }
                 }, {
-                    label: window.languageJSON.roomview.changecopyrotation,
+                    label: window.languageJSON.roomView.changeCopyRotation,
                     click: () => {
                         var copy = this.room.copies[this.closestPos];
                         window.alertify.confirm(`
-                            ${window.languageJSON.roomview.changecopyrotation}
+                            ${window.languageJSON.roomView.changeCopyRotation}
                             <label class="block">
                                 <input id="copyrotation" type="number" value="${copy.tr || 0}" />
                             </label>
@@ -415,11 +415,11 @@
                         });
                     }
                 }, {
-                    label: window.languageJSON.roomview.shiftcopy,
+                    label: window.languageJSON.roomView.shiftCopy,
                     click: () => {
                         var copy = this.room.copies[this.closestPos];
                         window.alertify.confirm(`
-                            ${window.languageJSON.roomview.shiftcopy}
+                            ${window.languageJSON.roomView.shiftCopy}
                             <label class="block">X:
                                 <input id="copypositionx" type="number" value="${copy.x}" />
                             </label>
@@ -436,7 +436,7 @@
                         });
                     }
                 }, {
-                    label: window.languageJSON.roomview.customProperties,
+                    label: window.languageJSON.roomView.customProperties,
                     click: () => {
                         this.closestCopy = this.room.copies[this.closestPos];
                         this.toggleCopyProperties(true);

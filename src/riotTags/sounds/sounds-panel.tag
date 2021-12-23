@@ -89,7 +89,7 @@ sounds-panel.aPanel.aView
                 click: () => {
                     alertify
                     .defaultValue(this.editedSound.name)
-                    .prompt(window.languageJSON.common.newname)
+                    .prompt(window.languageJSON.common.newName)
                     .then(e => {
                         if (e.inputValue && e.buttonClicked !== 'cancel') {
                             this.editedSound.name = e.inputValue;

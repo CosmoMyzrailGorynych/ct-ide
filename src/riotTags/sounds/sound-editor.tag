@@ -3,7 +3,7 @@ sound-editor.aDimmer
         b {voc.name}
         br
         input.wide(type="text" value="{sound.name}" onchange="{wire('this.sound.name')}")
-        .anErrorNotice(if="{nameTaken}" ref="errorNotice") {vocGlob.nametaken}
+        .anErrorNotice(if="{nameTaken}" ref="errorNotice") {vocGlob.nameTaken}
         br
         p
             label
@@ -32,7 +32,7 @@ sound-editor.aDimmer
                 span {voc.save}
     script.
         const path = require('path');
-        this.namespace = 'soundview';
+        this.namespace = 'soundView';
         this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
         this.playing = false;

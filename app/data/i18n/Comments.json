@@ -6,7 +6,6 @@
     },
     "common": {
         "add": "",
-        "addtonotes": "",
         "apply": "Usually in modal dialogues, in the meaning \"to apply a change\", \"apply settings\"",
         "cancel": "",
         "cannotBeEmpty": "",
@@ -14,34 +13,23 @@
         "contribute": "",
         "copy": "A verb, \"to create a duplicate\" (not a ct.js Copy!).",
         "copyName": "",
-        "ctsite": "",
         "cut": "",
         "delete": "",
         "donate": "",
         "done": "",
         "duplicate": "A verb",
         "exit": "",
-        "fastimport": "",
         "language": "",
         "translateToYourLanguage": "",
         "name": "",
-        "nametaken": "",
-        "newname": "",
         "no": "",
         "none": "",
-        "norooms": "",
-        "notfoundorunknown": "",
         "ok": "",
         "open": "A verb",
-        "openproject": "",
         "paste": "",
-        "reallyexit": "",
         "rename": "",
         "save": "",
-        "savedcomm": "",
-        "saveproject": "",
         "sort": "",
-        "tilelayer": "",
         "wrongFormat": "",
         "yes": "",
         "loading": "",
@@ -55,7 +43,43 @@
         "search": "Shown next to a search field",
         "close": "",
         "couldNotLoadFromClipboard": "",
-        "pastedFromClipboard": ""
+        "pastedFromClipboard": "",
+        "edit": "",
+        "nothingToShowFiller": "",
+        "required": "",
+        "settings": "",
+        "fieldTypes": {
+            "checkbox": "",
+            "code": "",
+            "color": "",
+            "group": "",
+            "h1": "",
+            "h2": "",
+            "h3": "",
+            "h4": "",
+            "number": "",
+            "point2D": "",
+            "radio": "",
+            "slider": "",
+            "sliderAndNumber": "",
+            "table": "",
+            "text": "",
+            "textfield": "",
+            "texture": "",
+            "type": ""
+        },
+        "newName": "",
+        "saveProject": "",
+        "openProject": "",
+        "savedMessage": "",
+        "reallyExitConfirm": "",
+        "notFoundOrUnknown": "",
+        "nameTaken": "",
+        "fastImport": "",
+        "addToNotes": "",
+        "noRooms": "",
+        "tileLayer": "",
+        "ctSite": ""
     },
     "colorPicker": {
         "current": "",
@@ -72,10 +96,10 @@
         "debug": "",
         "export": "A verb",
         "exportPanel": "",
-        "firstrunnotice": "",
         "log": "",
         "windowsCrossBuildWarning": "",
-        "cannotBuildForMacOnWin": ""
+        "cannotBuildForMacOnWin": "",
+        "firstRunNotice": ""
     },
     "intro": {
         "loading": "",
@@ -83,9 +107,9 @@
             "button": "",
             "input": "",
             "text": "",
-            "nameerr": "",
             "saveProjectHere": "",
-            "selectProjectFolder": ""
+            "selectProjectFolder": "",
+            "nameError": ""
         },
         "recovery": {
             "message": "",
@@ -105,10 +129,12 @@
         "twitter": "",
         "discord": "",
         "examples": "",
-        "createOrBrowseJunction": ""
-    },
-    "licensepanel": {
-        "ctjslicense": ""
+        "createOrBrowseJunction": "",
+        "cloneProject": "",
+        "github": "",
+        "itch": "",
+        "vkontakte": "",
+        "patreon": ""
     },
     "modules": {
         "author": "",
@@ -152,209 +178,32 @@
         "importFromClipboard": "",
         "generatePlaceholder": ""
     },
-    "textureview": {
-        "bgcolor": "",
-        "center": "",
-        "cols": "",
-        "done": "",
-        "fill": "",
-        "form": "",
-        "frames": "",
-        "isometrify": "",
-        "name": "",
-        "radius": "",
-        "rectangle": "",
-        "reimport": "",
-        "round": "",
-        "rows": "",
-        "setcenter": "",
-        "speed": "",
-        "tiled": "",
-        "replacetexture": "",
-        "corrupted": "",
-        "showmask": "",
-        "width": "",
-        "height": "",
-        "marginx": "",
-        "marginy": "",
-        "offx": "",
-        "offy": "",
-        "strip": "",
-        "removePoint": "",
-        "closeShape": "",
-        "addPoint": "",
-        "moveCenter": "",
-        "movePoint": "",
-        "symmetryTool": "",
-        "padding": "",
-        "paddingNotice": "",
-        "updateFromClipboard": "",
-        "previewAnimationNotice": ""
-    },
     "sounds": {
-        "create": ""
-    },
-    "soundview": {
-        "import": "",
-        "name": "",
-        "save": "",
-        "isMusicFile": "",
-        "poolSize": ""
+        "create": "",
+        "record": ""
     },
     "styles": {
         "create": "",
         "styles": ""
-    },
-    "styleview": {
-        "active": "",
-        "alignment": "",
-        "apply": "",
-        "fill": "",
-        "fillcolor": "",
-        "fillcolor1": "",
-        "fillcolor2": "",
-        "fillgrad": "",
-        "fillgradtype": "",
-        "fillhorisontal": "",
-        "fillsolid": "",
-        "filltype": "",
-        "fillvertical": "",
-        "font": "",
-        "fontweight": "",
-        "fontsize": "",
-        "fontfamily": "",
-        "italic": "",
-        "lineHeight": "",
-        "shadow": "",
-        "shadowblur": "",
-        "shadowcolor": "",
-        "shadowshift": "",
-        "stroke": "",
-        "strokecolor": "",
-        "strokeweight": "",
-        "testtext": "It is recommended that you include both a string in your language and in English, as it will help with picking fonts that have multilingual support.",
-        "textWrap": "",
-        "textWrapWidth": "",
-        "useCustomFont": "Can be worded differently to become shorter; this is a label of a button that opens a dialog with imported TTF fonts."
     },
     "fonts": {
         "fonts": "",
         "import": "",
         "italic": ""
     },
-    "fontview": {
-        "typefacename": "",
-        "fontweight": "",
-        "italic": "",
-        "reimport": "",
-        "generateBitmapFont": "",
-        "bitmapFont": "",
-        "bitmapFontSize": "",
-        "bitmapFontLineHeight": "",
-        "resultingBitmapFontName": "",
-        "charset": "",
-        "charsets": {
-            "punctuation": "",
-            "basicLatin": "",
-            "latinExtended": "",
-            "cyrillic": "",
-            "greekCoptic": "",
-            "custom": "Describing a custom set of symbols",
-            "allInFont": ""
-        },
-        "customCharsetHint": ""
-    },
     "types": {
         "create": ""
     },
-    "typeview": {
-        "change": "",
-        "create": "",
-        "depth": "",
-        "destroy": "",
-        "done": "",
-        "draw": "",
-        "learnAboutTypes": "",
-        "name": "",
-        "step": "",
-        "visible": ""
-    },
     "rooms": {
         "create": "",
-        "makestarting": ""
-    },
-    "roombackgrounds": {
-        "add": "",
-        "depth": "",
-        "movement": "",
-        "parallax": "",
-        "repeat": "",
-        "scale": "",
-        "shift": "",
-        "notBackgroundTextureWarning": "",
-        "fixBackground": "",
-        "dismissWarning": ""
-    },
-    "roomtiles": {
-        "moveTileLayer": "",
-        "show": "",
-        "hide": "",
-        "findTileset": ""
-    },
-    "roomview": {
-        "name": "",
-        "width": "",
-        "height": "",
-        "events": "",
-        "copies": "",
-        "backgrounds": "",
-        "tiles": "",
-        "add": "",
-        "none": "",
-        "done": "",
-        "grid": "",
-        "gridoff": "",
-        "gridsize": "",
-        "hotkeysNotice": "",
-        "hotkeysNoticeMovement": "",
-        "tocenter": "",
-        "selectbg": "",
-        "shift": "",
-        "shifttext": "",
-        "step": "",
-        "create": "",
-        "leave": "",
-        "draw": "",
-        "newdepth": "",
-        "deletecopy": "",
-        "deleteCopies": "",
-        "shiftCopies": "",
-        "selectAndMove": "",
-        "changecopyscale": "",
-        "shiftcopy": "",
-        "deletetile": "",
-        "deletetiles": "",
-        "movetilestolayer": "",
-        "shifttiles": "",
-        "findTileset": "",
-        "changecopyrotation": "",
-        "properties": "",
-        "isUi": "",
-        "backgroundColor": "",
-        "sortHorizontally": "",
-        "sortVertically": "",
-        "copyProperties": {
-            "position": "",
-            "rotation": "",
-            "scale": ""
-        }
+        "makeStarting": ""
     },
     "notepad": {
         "local": "",
         "global": "",
-        "helppages": "",
         "backToHome": "",
-        "modulespages": ""
+        "modulesPages": "",
+        "helpPages": ""
     },
     "curveEditor": {
         "curveLineHint": "",
@@ -505,7 +354,15 @@
             "methodModuleMissing": "",
             "methods": "",
             "multiplier": "",
-            "noActionsYet": ""
+            "noActionsYet": "",
+            "makeFromScratch": "",
+            "presets": "",
+            "presetXYMovement": "",
+            "presetTouchAndMouse": "",
+            "presetCustom": "",
+            "exportActionPreset": "",
+            "importErrorMissingModules": "",
+            "importErrorNotCtJsPreset": ""
         },
         "authoring": {
             "heading": "",
@@ -513,7 +370,7 @@
             "site": "",
             "title": "",
             "version": "",
-            "versionpostfix": ""
+            "versionPostfix": ""
         },
         "branding": {
             "heading": "",
@@ -521,7 +378,8 @@
             "accentNotice": "",
             "icon": "",
             "iconNotice": "",
-            "invertPreloaderScheme": ""
+            "invertPreloaderScheme": "",
+            "hideLoadingLogo": ""
         },
         "modules": {
             "heading": ""
@@ -531,7 +389,6 @@
             "framerate": "",
             "highDensity": "",
             "maxFPS": "",
-            "pixelatedrender": "",
             "desktopBuilds": "",
             "launchMode": "",
             "launchModes": {
@@ -539,7 +396,8 @@
                 "fullscreen": "",
                 "windowed": ""
             },
-            "hideCursor": ""
+            "hideCursor": "",
+            "pixelatedRender": ""
         },
         "scripts": {
             "heading": "",
@@ -561,7 +419,29 @@
                 "minify": "",
                 "obfuscate": ""
             }
-        }
+        },
+        "content": {
+            "heading": "",
+            "addContentType": "",
+            "missingTypeName": "",
+            "unnamedContentTypeHint": "",
+            "typeName": "",
+            "typeNameHint": "",
+            "typeReadableName": "",
+            "typeReadableNameHint": "",
+            "icon": "",
+            "typeSpecification": "",
+            "fieldName": "",
+            "fieldNameHint": "",
+            "fieldReadableName": "",
+            "fieldReadableNameHint": "",
+            "fieldType": "",
+            "deleteContentType": "",
+            "confirmDeletionMessage": "",
+            "gotoEntries": "",
+            "entries": ""
+        },
+        "contentTypes": ""
     },
     "extensionsEditor": {
         "noEntries": "",
@@ -581,7 +461,12 @@
         "filler": "",
         "fillerNone": "",
         "fillerCross": "",
-        "fillerLabel": ""
+        "fillerLabel": "",
+        "form": "",
+        "formRectangular": "",
+        "formRound": "",
+        "formDiamond": "",
+        "fillerArrow": ""
     },
     "textureInput": {
         "jumpToTexture": "",
@@ -613,7 +498,8 @@
         "deploy": {
             "exportDesktop": "",
             "successZipExport": "",
-            "zipExport": ""
+            "zipExport": "",
+            "heading": ""
         },
         "latestProjects": {
             "recentProjects": ""
@@ -639,7 +525,10 @@
             "settings": "",
             "disableSounds": "",
             "changeDataFolder": "",
-            "forceProductionForDebug": ""
+            "forceProductionForDebug": "",
+            "heading": "",
+            "language": "",
+            "translateToYourLanguage": ""
         },
         "project": {
             "save": "",
@@ -648,12 +537,17 @@
             "openExample": "",
             "startScreen": "",
             "successZipProject": "",
-            "zipProject": ""
+            "zipProject": "",
+            "heading": ""
         },
         "meta": {
             "license": "",
             "visitDiscordForGamedevSupport": "",
-            "openIconList": ""
+            "openIconList": "",
+            "heading": "",
+            "twitter": "",
+            "vkontakte": "",
+            "ctjsForum": ""
         }
     },
     "appView": {
@@ -670,5 +564,223 @@
         "fx": "",
         "restart": "",
         "project": ""
+    },
+    "copyCustomProperties": {
+        "customProperties": "",
+        "addProperty": "",
+        "property": "",
+        "value": "",
+        "delete": ""
+    },
+    "assetViewer": {
+        "addNewGroup": "",
+        "ungrouped": "",
+        "newGroupName": "",
+        "groupDeletionConfirmation": ""
+    },
+    "groupEditor": {
+        "groupEditor": "",
+        "icon": "",
+        "color": ""
+    },
+    "soundRecorder": {
+        "recorderHeading": "",
+        "record": "",
+        "stopRecording": "",
+        "discardRecording": "",
+        "finishRecording": "",
+        "cannotRecordSound": "",
+        "troubleshootingWindows": ""
+    },
+    "roomBackgrounds": {
+        "add": "",
+        "depth": "",
+        "movement": "",
+        "parallax": "",
+        "repeat": "",
+        "scale": "",
+        "shift": "",
+        "notBackgroundTextureWarning": "",
+        "fixBackground": "",
+        "dismissWarning": ""
+    },
+    "roomTiles": {
+        "moveTileLayer": "",
+        "show": "",
+        "hide": "",
+        "findTileset": ""
+    },
+    "roomView": {
+        "name": "",
+        "width": "",
+        "height": "",
+        "events": "",
+        "copies": "",
+        "backgrounds": "",
+        "tiles": "",
+        "add": "",
+        "none": "",
+        "done": "",
+        "grid": "",
+        "hotkeysNotice": "",
+        "hotkeysNoticeMovement": "",
+        "shift": "",
+        "step": "",
+        "create": "",
+        "leave": "",
+        "draw": "",
+        "deleteCopies": "",
+        "shiftCopies": "",
+        "selectAndMove": "",
+        "findTileset": "",
+        "properties": "",
+        "isUi": "",
+        "backgroundColor": "",
+        "sortHorizontally": "",
+        "sortVertically": "",
+        "copyProperties": {
+            "position": "",
+            "rotation": "",
+            "scale": ""
+        },
+        "customProperties": "",
+        "restrictCamera": "",
+        "minimumX": "",
+        "minimumY": "",
+        "maximumX": "",
+        "maximumY": "",
+        "gridOff": "",
+        "gridSize": "",
+        "toCenter": "",
+        "shiftLabel": "",
+        "newDepth": "",
+        "deleteCopy": "",
+        "changeCopyScale": "",
+        "shiftCopy": "",
+        "deleteTile": "",
+        "deleteTiles": "",
+        "moveTilesToLayer": "",
+        "shiftTiles": "",
+        "changeCopyRotation": ""
+    },
+    "typeView": {
+        "change": "",
+        "create": "",
+        "depth": "",
+        "destroy": "",
+        "done": "",
+        "draw": "",
+        "learnAboutTypes": "",
+        "name": "",
+        "step": "",
+        "visible": ""
+    },
+    "styleView": {
+        "active": "",
+        "alignment": "",
+        "apply": "",
+        "fill": "",
+        "font": "",
+        "italic": "",
+        "lineHeight": "",
+        "shadow": "",
+        "stroke": "",
+        "textWrap": "",
+        "textWrapWidth": "",
+        "useCustomFont": "Can be worded differently to become shorter; this is a label of a button that opens a dialog with imported TTF fonts.",
+        "code": "",
+        "copyCode": "",
+        "fillColor": "",
+        "fillColor1": "",
+        "fillColor2": "",
+        "fillGrad": "",
+        "fillGradType": "",
+        "fillHorizontal": "",
+        "fillSolid": "",
+        "fillType": "",
+        "fillVertical": "",
+        "fontWeight": "",
+        "shadowBlur": "",
+        "shadowColor": "",
+        "shadowShift": "",
+        "strokeColor": "",
+        "strokeWeight": "",
+        "testText": "It is recommended that you include both a string in your language and in English, as it will help with picking fonts that have multilingual support.",
+        "fontFamily": "",
+        "fontSize": ""
+    },
+    "textureView": {
+        "center": "",
+        "cols": "",
+        "done": "",
+        "fill": "",
+        "form": "",
+        "frames": "",
+        "isometrify": "",
+        "name": "",
+        "radius": "",
+        "rectangle": "",
+        "reimport": "",
+        "round": "",
+        "rows": "",
+        "speed": "",
+        "tiled": "",
+        "corrupted": "",
+        "width": "",
+        "height": "",
+        "strip": "",
+        "removePoint": "",
+        "closeShape": "",
+        "addPoint": "",
+        "moveCenter": "",
+        "movePoint": "",
+        "symmetryTool": "",
+        "padding": "",
+        "paddingNotice": "",
+        "updateFromClipboard": "",
+        "previewAnimationNotice": "",
+        "showFrameIndices": "",
+        "pasteCollisionMask": "",
+        "copyCollisionMask": "",
+        "bgColor": "",
+        "setCenter": "",
+        "replaceTexture": "",
+        "showMask": "",
+        "marginX": "",
+        "marginY": "",
+        "offX": "",
+        "offY": ""
+    },
+    "soundView": {
+        "import": "",
+        "name": "",
+        "save": "",
+        "isMusicFile": "",
+        "poolSize": ""
+    },
+    "fontView": {
+        "italic": "",
+        "reimport": "",
+        "generateBitmapFont": "",
+        "bitmapFont": "",
+        "bitmapFontSize": "",
+        "bitmapFontLineHeight": "",
+        "resultingBitmapFontName": "",
+        "charset": "",
+        "charsets": {
+            "punctuation": "",
+            "basicLatin": "",
+            "latinExtended": "",
+            "cyrillic": "",
+            "greekCoptic": "",
+            "custom": "Describing a custom set of symbols",
+            "allInFont": ""
+        },
+        "customCharsetHint": "",
+        "fontWeight": "",
+        "typefaceName": ""
+    },
+    "licensePanel": {
+        "ctjsLicense": ""
     }
 }

@@ -6,39 +6,27 @@
     },
     "common": {
         "add": "Añadir",
-        "addtonotes": "Agregar a notas",
         "apply": "Aplicar",
         "cancel": "Cancelar",
         "cannotBeEmpty": "Esto no debe estar vacío",
         "confirmDelete": "¿Seguro que quiere eliminar {0}? Esta acción no se puede revertir.",
         "copy": "Copiar",
         "copyName": "Copiar el nombre",
-        "ctsite": "Página de Inicio de ct.js",
         "cut": "Cortar",
         "delete": "Borrar",
         "donate": "Donar",
         "done": "¡Hecho!",
         "duplicate": "Duplicar",
         "exit": "Salir",
-        "fastimport": "Importar Rápido",
         "name": "Nombre:",
-        "nametaken": "Este nombre ya está tomado",
-        "newname": "Nombre Nuevo:",
         "no": "No",
         "none": "Ninguno",
-        "norooms": "Se necesita por lo menos un cuarto para compilar la aplicación.",
-        "notfoundorunknown": "Archivo desconocido. Asegúrece de que el archivo exista.",
         "ok": "Ok",
         "open": "Abrir",
-        "openproject": "Abrir Proyecto...",
         "paste": "Pegar",
-        "reallyexit": "¿Seguro que quieres salir? Todos los cambios no guardados se perderán.",
         "rename": "Cambiar Nombre",
         "save": "Guardar",
-        "savedcomm": "Su proyecto fue guardado exitosamente.",
-        "saveproject": "Guardar proyecto",
         "sort": "Ordenar:",
-        "tilelayer": "capa de tiles",
         "wrongFormat": "Formato de archivo incorrecto",
         "yes": "Si",
         "contribute": "Apoya",
@@ -53,7 +41,45 @@
         "search": "",
         "close": "",
         "couldNotLoadFromClipboard": "",
-        "pastedFromClipboard": ""
+        "pastedFromClipboard": "",
+        "language": "",
+        "translateToYourLanguage": "",
+        "edit": "",
+        "nothingToShowFiller": "",
+        "required": "",
+        "settings": "",
+        "fieldTypes": {
+            "checkbox": "",
+            "code": "",
+            "color": "",
+            "group": "",
+            "h1": "",
+            "h2": "",
+            "h3": "",
+            "h4": "",
+            "number": "",
+            "point2D": "",
+            "radio": "",
+            "slider": "",
+            "sliderAndNumber": "",
+            "table": "",
+            "text": "",
+            "textfield": "",
+            "texture": "",
+            "type": ""
+        },
+        "newName": "Nombre Nuevo:",
+        "saveProject": "Guardar proyecto",
+        "openProject": "Abrir Proyecto...",
+        "savedMessage": "Su proyecto fue guardado exitosamente.",
+        "reallyExitConfirm": "¿Seguro que quieres salir? Todos los cambios no guardados se perderán.",
+        "notFoundOrUnknown": "Archivo desconocido. Asegúrece de que el archivo exista.",
+        "nameTaken": "Este nombre ya está tomado",
+        "fastImport": "Importar Rápido",
+        "addToNotes": "Agregar a notas",
+        "noRooms": "Se necesita por lo menos un cuarto para compilar la aplicación.",
+        "tileLayer": "capa de tiles",
+        "ctSite": "Página de Inicio de ct.js"
     },
     "colorPicker": {
         "current": "Nuevo",
@@ -70,10 +96,10 @@
         "debug": "Versión de depuración",
         "export": "Exportar",
         "exportPanel": "Exportar el proyecto",
-        "firstrunnotice": "La primera ejecución para cada plataforma será lenta ya que ct.js descargará y guardará las bibliotecas adicionales necesarias para empacar. Tomará algún tiempo, pero las próximas veces serán casi instantáneas.",
         "log": "Registro de mensajes",
         "windowsCrossBuildWarning": "Para crear para Windows desde Linux/MacOS, es necesario tener Wine instalado en el sistema. Las instrucciones de instalación son diferentes para cada plataforma, las puedes buscar en Google :)",
-        "cannotBuildForMacOnWin": "Desafortunadamente, Windows no es capaz de crear para Mac. Intente utilizando Linux; por ejemplo, en una maquina virtual. ¡Es 100% gratis!"
+        "cannotBuildForMacOnWin": "Desafortunadamente, Windows no es capaz de crear para Mac. Intente utilizando Linux; por ejemplo, en una maquina virtual. ¡Es 100% gratis!",
+        "firstRunNotice": "La primera ejecución para cada plataforma será lenta ya que ct.js descargará y guardará las bibliotecas adicionales necesarias para empacar. Tomará algún tiempo, pero las próximas veces serán casi instantáneas."
     },
     "intro": {
         "loading": "Por favor espere: ¡los gatitos están ganando velocidad con la luz!",
@@ -81,9 +107,9 @@
             "button": "Crear",
             "input": "Nombre del proyecto (letras y dígitos)",
             "text": "Crear nuevo",
-            "nameerr": "Nombre de proyecto incorrecto",
             "saveProjectHere": "Guardar proyecto aquí",
-            "selectProjectFolder": "Seleccionar folder donde guardar su proyecto"
+            "selectProjectFolder": "Seleccionar folder donde guardar su proyecto",
+            "nameError": "Nombre de proyecto incorrecto"
         },
         "recovery": {
             "message": "<h2 class=\"nmt\">Recuperación</h2><p>ct.js ha encontrado un archivo de recuperación. Posiblemente, su proyecto no se guardó correctamente o ct.js se cerró en caso de alguna emergencia. Aquí es cuando estos archivos se modificaron por última vez:</p><p>Su archivo elegido: {0} {1} <br/>Archivo de recuperación: {2} {3} </p><p> ¿Qué archivo debe ct? .js abierto? </p>",
@@ -103,10 +129,12 @@
         "loadingProjectError": "Este proyecto no se puede abrir debido al siguiente error:",
         "unableToWriteToFolders": "¡Ct.js no pudo encontrar un lugar apropiado para tus proyectos! Asegúrece de guardar la aplicación de ct.js en un folder donde tenga permisos para modificar.",
         "examples": "",
-        "createOrBrowseJunction": ""
-    },
-    "licensepanel": {
-        "ctjslicense": "Licencia Ct.js (MIT)"
+        "createOrBrowseJunction": "",
+        "cloneProject": "",
+        "github": "",
+        "itch": "",
+        "vkontakte": "",
+        "patreon": ""
     },
     "settings": {
         "actions": {
@@ -120,7 +148,15 @@
             "methodModuleMissing": "Falta el módulo requerido para este método",
             "methods": "Métodos de entrada",
             "multiplier": "Multiplicador",
-            "noActionsYet": "Las acciones permiten a los desarrolladores escuchar numerosos métodos de entrada a la vez y cambiarlos dinámicamente, todo con una API uniforme. Lea más haciendo clic en el icono de documentos arriba."
+            "noActionsYet": "Las acciones permiten a los desarrolladores escuchar numerosos métodos de entrada a la vez y cambiarlos dinámicamente, todo con una API uniforme. Lea más haciendo clic en el icono de documentos arriba.",
+            "makeFromScratch": "",
+            "presets": "",
+            "presetXYMovement": "",
+            "presetTouchAndMouse": "",
+            "presetCustom": "",
+            "exportActionPreset": "",
+            "importErrorMissingModules": "",
+            "importErrorNotCtJsPreset": ""
         },
         "authoring": {
             "heading": "Autoría",
@@ -128,12 +164,11 @@
             "site": "Página principal:",
             "title": "Nombre:",
             "version": "Version:",
-            "versionpostfix": "Sufijo:"
+            "versionPostfix": "Sufijo:"
         },
         "rendering": {
             "heading": "Opciones de render",
             "framerate": "Fotogramas por segundo:",
-            "pixelatedrender": "Deshabilite el suavizado de imagen aquí y en el proyecto exportado (conserve píxeles nítidos)",
             "highDensity": "Soporte de alta densidad de pixeles (e.j. pantallas retina)",
             "maxFPS": "Fotogramas máximos:",
             "desktopBuilds": "Para escritorio",
@@ -143,7 +178,8 @@
                 "fullscreen": "Pantalla completa",
                 "windowed": "Ventana"
             },
-            "hideCursor": ""
+            "hideCursor": "",
+            "pixelatedRender": "Deshabilite el suavizado de imagen aquí y en el proyecto exportado (conserve píxeles nítidos)"
         },
         "scripts": {
             "heading": "Scripts personalizados",
@@ -159,7 +195,8 @@
             "accentNotice": "Establece el color del precargador, asi como algunos lugares si es usada como aplicación mobil.",
             "icon": "Icono del juego:",
             "iconNotice": "Deberia ser un cuadro, una textura de un fotograma que sea por lo menos 256x256px de tamaño.",
-            "invertPreloaderScheme": "Invertir el color del esquema del precargador"
+            "invertPreloaderScheme": "Invertir el color del esquema del precargador",
+            "hideLoadingLogo": ""
         },
         "modules": {
             "heading": ""
@@ -176,7 +213,29 @@
                 "minify": "",
                 "obfuscate": ""
             }
-        }
+        },
+        "content": {
+            "heading": "",
+            "addContentType": "",
+            "missingTypeName": "",
+            "unnamedContentTypeHint": "",
+            "typeName": "",
+            "typeNameHint": "",
+            "typeReadableName": "",
+            "typeReadableNameHint": "",
+            "icon": "",
+            "typeSpecification": "",
+            "fieldName": "",
+            "fieldNameHint": "",
+            "fieldReadableName": "",
+            "fieldReadableNameHint": "",
+            "fieldType": "",
+            "deleteContentType": "",
+            "confirmDeletionMessage": "",
+            "gotoEntries": "",
+            "entries": ""
+        },
+        "contentTypes": ""
     },
     "modules": {
         "author": "Autor de este catmod",
@@ -220,209 +279,32 @@
         "importFromClipboard": "",
         "generatePlaceholder": ""
     },
-    "textureview": {
-        "bgcolor": "Cambiar color de fondo",
-        "center": "Axis:",
-        "cols": "Columnas:",
-        "done": "Aplicar",
-        "fill": "Llenar",
-        "form": "Forma de colisión:",
-        "frames": "Conteo de cuadros:",
-        "isometrify": "Isometrificar: mueva el eje al punto inferior central, llene todo el sprite con una máscara de colisión",
-        "name": "Nombre:",
-        "radius": "Radio:",
-        "rectangle": "Rectangulo",
-        "reimport": "Reimportar",
-        "round": "Circulo",
-        "rows": "Filas:",
-        "setcenter": "Centro de la imagen",
-        "speed": "Cuadros por segundo:",
-        "tiled": "¿Usar como fondo?",
-        "replacetexture": "Reemplazar…",
-        "corrupted": "¡El archivo está dañado o no existe! Cerrando ahora.",
-        "showmask": "Mostrar máscara",
-        "width": "Anchura:",
-        "height": "Altura:",
-        "marginx": "Margen X:",
-        "marginy": "Margen Y:",
-        "offx": "Compensación X:",
-        "offy": "Compensación Y:",
-        "strip": "Línea / Polígono",
-        "removePoint": "Eliminar punto",
-        "closeShape": "Cerrar forma",
-        "addPoint": "Agrega punto",
-        "moveCenter": "Mover eje",
-        "movePoint": "Mueve este punto",
-        "symmetryTool": "Herramienta de simetría",
-        "padding": "Padding:",
-        "paddingNotice": "Esto afecta la forma en que la textura es exportada: añade pixeles duplicados en las orillas y previene errores de colado en texturas tile y agrandadas. El valor predeterminado usualmente es suficiente, pero, si se encogen las texturas lo suficiente, el colado puede reaparecer. Incrementa este valor si la textura tiene errores durante el juego.",
-        "updateFromClipboard": "",
-        "previewAnimationNotice": ""
-    },
     "sounds": {
-        "create": "Crear"
-    },
-    "soundview": {
-        "import": "Importar",
-        "name": "Nombre:",
-        "save": "Guardar",
-        "isMusicFile": "Esta es una pista musical",
-        "poolSize": "Tamaño del grupo de sonido (pool):"
+        "create": "Crear",
+        "record": ""
     },
     "styles": {
         "create": "Crear",
         "styles": "Estilos de texto"
-    },
-    "styleview": {
-        "active": "Activar",
-        "alignment": "Alineación:",
-        "apply": "Aplicar",
-        "fill": "Llenar",
-        "fillcolor": "Color:",
-        "fillcolor1": "Color 1:",
-        "fillcolor2": "Color 2:",
-        "fillgrad": "Gradiente",
-        "fillgradtype": "Tipo de gradiente:",
-        "fillhorisontal": "Horizontal",
-        "fillsolid": "Difuso",
-        "filltype": "Tipo de relleno:",
-        "fillvertical": "Vertical",
-        "font": "Fuente",
-        "fontweight": "Peso:",
-        "fontsize": "Tamaño de fuente:",
-        "fontfamily": "Familia de Fuente:",
-        "italic": "Italica",
-        "lineHeight": "Altura de la línea:",
-        "shadow": "Sombra",
-        "shadowblur": "Difuminado:",
-        "shadowcolor": "Color de la sombra:",
-        "shadowshift": "Cámbio:",
-        "stroke": "Trazo",
-        "strokecolor": "Color del trazo:",
-        "strokeweight": "Grosor de línea:",
-        "testtext": "Texto de prueba 0123 +",
-        "textWrap": "Ajuste de línea",
-        "textWrapWidth": "Anchura máxima:",
-        "useCustomFont": ""
     },
     "fonts": {
         "fonts": "Fuentes",
         "import": "Importar un TTF",
         "italic": "Italica"
     },
-    "fontview": {
-        "typefacename": "Nombre de tipo de letra:",
-        "fontweight": "Peso de la fuente:",
-        "italic": "Es italica?",
-        "reimport": "Reimportar",
-        "generateBitmapFont": "Tambien generar fuente bitmap",
-        "bitmapFont": "Fuente bitmap",
-        "bitmapFontSize": "Tamaño de fuente:",
-        "bitmapFontLineHeight": "Altura de Línea",
-        "resultingBitmapFontName": "Nombre de recurso",
-        "charset": "Configuración de caracteres:",
-        "charsets": {
-            "punctuation": "Digitos y puntuación (usualmente necesario)",
-            "basicLatin": "Latín Básico",
-            "latinExtended": "Latín Extendido",
-            "cyrillic": "Cirílico",
-            "greekCoptic": "Griego y Copto",
-            "custom": "Personalizado",
-            "allInFont": "Dibujar todo lo que la fuente soporta"
-        },
-        "customCharsetHint": "Escriba todas las letras que deseé incluir, en mayúsculas y minúsculas."
-    },
     "types": {
         "create": "Crear"
     },
-    "typeview": {
-        "change": "Cambiar sprite",
-        "create": "Al Crearse",
-        "depth": "Profundidad:",
-        "destroy": "Al destruirse",
-        "done": "Hécho",
-        "draw": "Dibujar",
-        "learnAboutTypes": "Aprenda sobre los tipos de código",
-        "name": "Nombre:",
-        "step": "En cada paso",
-        "visible": ""
-    },
     "rooms": {
         "create": "Añadir nuevo",
-        "makestarting": "Designar como cuarto inicial"
-    },
-    "roombackgrounds": {
-        "add": "Agregar un fondo",
-        "depth": "Profundidad:",
-        "movement": "Velocidad de movimiento (X, Y):",
-        "parallax": "Paralaje (X, Y):",
-        "repeat": "Repetir:",
-        "scale": "Escala (X, Y):",
-        "shift": "Cambio (X, Y):",
-        "notBackgroundTextureWarning": "",
-        "fixBackground": "",
-        "dismissWarning": ""
-    },
-    "roomtiles": {
-        "moveTileLayer": "Mover a una nueva profundidad",
-        "show": "Mostrar la capa",
-        "hide": "Ocultar la capa",
-        "findTileset": "Encontrar un tileset"
-    },
-    "roomview": {
-        "name": "Nombre:",
-        "width": "Ancho de vista:",
-        "height": "Altura de vista:",
-        "events": "Eventos del cuarto",
-        "copies": "Copias",
-        "backgrounds": "Fondos",
-        "tiles": "Tiles",
-        "add": "Añadir",
-        "none": "Nada",
-        "done": "Hecho",
-        "grid": "Establecer cuadrícula",
-        "gridoff": "Deshabilitar cuadrícula",
-        "gridsize": "Tamaño de la cuadrícula:",
-        "hotkeysNotice": "Ctrl = Eliminar, Alt = Sin cuadrícula, Shift = Múltiple",
-        "hotkeysNoticeMovement": "Ctrl = Eliminar, Shift = Seleccionar",
-        "tocenter": "Al centro",
-        "selectbg": "Seleccionar tileset",
-        "shift": "Cambiar la vista",
-        "shifttext": "Cambiar por:",
-        "step": "En cada paso",
-        "create": "Al crearce",
-        "leave": "Al salir",
-        "draw": "Dibujar",
-        "newdepth": "Nueva profundidad:",
-        "deletecopy": "Eliminar copia {0}",
-        "deleteCopies": "Eliminar copias",
-        "shiftCopies": "Cambiar copias",
-        "selectAndMove": "Seleccionar y mover",
-        "changecopyscale": "Cambiar escala",
-        "shiftcopy": "Establecer coordenadas",
-        "deletetile": "Eliminar un tile",
-        "deletetiles": "Eliminar tiles",
-        "movetilestolayer": "Mover a capa",
-        "shifttiles": "Cambiar tiles",
-        "findTileset": "Encontrar tileset",
-        "changecopyrotation": "Rotar",
-        "properties": "",
-        "isUi": "",
-        "backgroundColor": "",
-        "sortHorizontally": "",
-        "sortVertically": "",
-        "copyProperties": {
-            "position": "",
-            "rotation": "",
-            "scale": ""
-        }
+        "makeStarting": "Designar como cuarto inicial"
     },
     "notepad": {
         "local": "Bloc de notas del proyecto",
         "global": "Bloc de notas global",
-        "helppages": "Ayuda",
         "backToHome": "Volver a la página de inicio",
-        "modulespages": ""
+        "modulesPages": "",
+        "helpPages": "Ayuda"
     },
     "curveEditor": {
         "curveLineHint": "Puede hacer click en la curva para añadir un punto",
@@ -579,7 +461,12 @@
         "filler": "",
         "fillerNone": "",
         "fillerCross": "",
-        "fillerLabel": ""
+        "fillerLabel": "",
+        "form": "",
+        "formRectangular": "",
+        "formRound": "",
+        "formDiamond": "",
+        "fillerArrow": ""
     },
     "textureInput": {
         "jumpToTexture": "",
@@ -611,7 +498,8 @@
         "deploy": {
             "exportDesktop": "Exportar para escritorio",
             "successZipExport": "Exportado exitosamente a {0}.",
-            "zipExport": "Exportar para la web"
+            "zipExport": "Exportar para la web",
+            "heading": ""
         },
         "latestProjects": {
             "recentProjects": "Proyectos recientes"
@@ -639,7 +527,8 @@
             "codeDense": "Diseño Denso",
             "disableSounds": "",
             "changeDataFolder": "",
-            "forceProductionForDebug": ""
+            "forceProductionForDebug": "",
+            "settings": ""
         },
         "project": {
             "save": "Guardar proyecto",
@@ -648,12 +537,17 @@
             "openExample": "Abrir un proyecto de ejemplo...",
             "startScreen": "Regresar a la pantalla de inicio",
             "successZipProject": "El proyecto se comprimió con éxito en {0}.",
-            "zipProject": "Comprimir proyecto en .zip"
+            "zipProject": "Comprimir proyecto en .zip",
+            "heading": ""
         },
         "meta": {
             "license": "Licencia",
             "visitDiscordForGamedevSupport": "Unete a nuestro servidor de Discord para obtener ayuda",
-            "openIconList": ""
+            "openIconList": "",
+            "heading": "",
+            "twitter": "",
+            "vkontakte": "",
+            "ctjsForum": ""
         }
     },
     "appView": {
@@ -670,5 +564,223 @@
         "restart": "Reiniciar",
         "project": "Proyecto",
         "fx": "Effectos"
+    },
+    "copyCustomProperties": {
+        "customProperties": "",
+        "addProperty": "",
+        "property": "",
+        "value": "",
+        "delete": ""
+    },
+    "assetViewer": {
+        "addNewGroup": "",
+        "ungrouped": "",
+        "newGroupName": "",
+        "groupDeletionConfirmation": ""
+    },
+    "groupEditor": {
+        "groupEditor": "",
+        "icon": "",
+        "color": ""
+    },
+    "soundRecorder": {
+        "recorderHeading": "",
+        "record": "",
+        "stopRecording": "",
+        "discardRecording": "",
+        "finishRecording": "",
+        "cannotRecordSound": "",
+        "troubleshootingWindows": ""
+    },
+    "roomBackgrounds": {
+        "add": "Agregar un fondo",
+        "depth": "Profundidad:",
+        "movement": "Velocidad de movimiento (X, Y):",
+        "parallax": "Paralaje (X, Y):",
+        "repeat": "Repetir:",
+        "scale": "Escala (X, Y):",
+        "shift": "Cambio (X, Y):",
+        "notBackgroundTextureWarning": "",
+        "fixBackground": "",
+        "dismissWarning": ""
+    },
+    "roomTiles": {
+        "moveTileLayer": "Mover a una nueva profundidad",
+        "show": "Mostrar la capa",
+        "hide": "Ocultar la capa",
+        "findTileset": "Encontrar un tileset"
+    },
+    "roomView": {
+        "name": "Nombre:",
+        "width": "Ancho de vista:",
+        "height": "Altura de vista:",
+        "events": "Eventos del cuarto",
+        "copies": "Copias",
+        "backgrounds": "Fondos",
+        "tiles": "Tiles",
+        "add": "Añadir",
+        "none": "Nada",
+        "done": "Hecho",
+        "grid": "Establecer cuadrícula",
+        "hotkeysNotice": "Ctrl = Eliminar, Alt = Sin cuadrícula, Shift = Múltiple",
+        "hotkeysNoticeMovement": "Ctrl = Eliminar, Shift = Seleccionar",
+        "shift": "Cambiar la vista",
+        "step": "En cada paso",
+        "create": "Al crearce",
+        "leave": "Al salir",
+        "draw": "Dibujar",
+        "deleteCopies": "Eliminar copias",
+        "shiftCopies": "Cambiar copias",
+        "selectAndMove": "Seleccionar y mover",
+        "findTileset": "Encontrar tileset",
+        "properties": "",
+        "isUi": "",
+        "backgroundColor": "",
+        "sortHorizontally": "",
+        "sortVertically": "",
+        "copyProperties": {
+            "position": "",
+            "rotation": "",
+            "scale": ""
+        },
+        "customProperties": "",
+        "restrictCamera": "",
+        "minimumX": "",
+        "minimumY": "",
+        "maximumX": "",
+        "maximumY": "",
+        "gridOff": "Deshabilitar cuadrícula",
+        "gridSize": "Tamaño de la cuadrícula:",
+        "toCenter": "Al centro",
+        "shiftLabel": "Cambiar por:",
+        "newDepth": "Nueva profundidad:",
+        "deleteCopy": "Eliminar copia {0}",
+        "changeCopyScale": "Cambiar escala",
+        "shiftCopy": "Establecer coordenadas",
+        "deleteTile": "Eliminar un tile",
+        "deleteTiles": "Eliminar tiles",
+        "moveTilesToLayer": "Mover a capa",
+        "shiftTiles": "Cambiar tiles",
+        "changeCopyRotation": "Rotar"
+    },
+    "typeView": {
+        "change": "Cambiar sprite",
+        "create": "Al Crearse",
+        "depth": "Profundidad:",
+        "destroy": "Al destruirse",
+        "done": "Hécho",
+        "draw": "Dibujar",
+        "learnAboutTypes": "Aprenda sobre los tipos de código",
+        "name": "Nombre:",
+        "step": "En cada paso",
+        "visible": ""
+    },
+    "styleView": {
+        "active": "Activar",
+        "alignment": "Alineación:",
+        "apply": "Aplicar",
+        "fill": "Llenar",
+        "font": "Fuente",
+        "italic": "Italica",
+        "lineHeight": "Altura de la línea:",
+        "shadow": "Sombra",
+        "stroke": "Trazo",
+        "textWrap": "Ajuste de línea",
+        "textWrapWidth": "Anchura máxima:",
+        "useCustomFont": "",
+        "code": "",
+        "copyCode": "",
+        "fillColor": "Color:",
+        "fillColor1": "Color 1:",
+        "fillColor2": "Color 2:",
+        "fillGrad": "Gradiente",
+        "fillGradType": "Tipo de gradiente:",
+        "fillHorizontal": "Horizontal",
+        "fillSolid": "Difuso",
+        "fillType": "Tipo de relleno:",
+        "fillVertical": "Vertical",
+        "fontWeight": "Peso:",
+        "shadowBlur": "Difuminado:",
+        "shadowColor": "Color de la sombra:",
+        "shadowShift": "Cámbio:",
+        "strokeColor": "Color del trazo:",
+        "strokeWeight": "Grosor de línea:",
+        "testText": "Texto de prueba 0123 +",
+        "fontFamily": "Familia de Fuente:",
+        "fontSize": "Tamaño de fuente:"
+    },
+    "textureView": {
+        "center": "Axis:",
+        "cols": "Columnas:",
+        "done": "Aplicar",
+        "fill": "Llenar",
+        "form": "Forma de colisión:",
+        "frames": "Conteo de cuadros:",
+        "isometrify": "Isometrificar: mueva el eje al punto inferior central, llene todo el sprite con una máscara de colisión",
+        "name": "Nombre:",
+        "radius": "Radio:",
+        "rectangle": "Rectangulo",
+        "reimport": "Reimportar",
+        "round": "Circulo",
+        "rows": "Filas:",
+        "speed": "Cuadros por segundo:",
+        "tiled": "¿Usar como fondo?",
+        "corrupted": "¡El archivo está dañado o no existe! Cerrando ahora.",
+        "width": "Anchura:",
+        "height": "Altura:",
+        "strip": "Línea / Polígono",
+        "removePoint": "Eliminar punto",
+        "closeShape": "Cerrar forma",
+        "addPoint": "Agrega punto",
+        "moveCenter": "Mover eje",
+        "movePoint": "Mueve este punto",
+        "symmetryTool": "Herramienta de simetría",
+        "padding": "Padding:",
+        "paddingNotice": "Esto afecta la forma en que la textura es exportada: añade pixeles duplicados en las orillas y previene errores de colado en texturas tile y agrandadas. El valor predeterminado usualmente es suficiente, pero, si se encogen las texturas lo suficiente, el colado puede reaparecer. Incrementa este valor si la textura tiene errores durante el juego.",
+        "updateFromClipboard": "",
+        "previewAnimationNotice": "",
+        "showFrameIndices": "",
+        "pasteCollisionMask": "",
+        "copyCollisionMask": "",
+        "bgColor": "Cambiar color de fondo",
+        "setCenter": "Centro de la imagen",
+        "replaceTexture": "Reemplazar…",
+        "showMask": "Mostrar máscara",
+        "marginX": "Margen X:",
+        "marginY": "Margen Y:",
+        "offX": "Compensación X:",
+        "offY": "Compensación Y:"
+    },
+    "soundView": {
+        "import": "Importar",
+        "name": "Nombre:",
+        "save": "Guardar",
+        "isMusicFile": "Esta es una pista musical",
+        "poolSize": "Tamaño del grupo de sonido (pool):"
+    },
+    "fontView": {
+        "italic": "Es italica?",
+        "reimport": "Reimportar",
+        "generateBitmapFont": "Tambien generar fuente bitmap",
+        "bitmapFont": "Fuente bitmap",
+        "bitmapFontSize": "Tamaño de fuente:",
+        "bitmapFontLineHeight": "Altura de Línea",
+        "resultingBitmapFontName": "Nombre de recurso",
+        "charset": "Configuración de caracteres:",
+        "charsets": {
+            "punctuation": "Digitos y puntuación (usualmente necesario)",
+            "basicLatin": "Latín Básico",
+            "latinExtended": "Latín Extendido",
+            "cyrillic": "Cirílico",
+            "greekCoptic": "Griego y Copto",
+            "custom": "Personalizado",
+            "allInFont": "Dibujar todo lo que la fuente soporta"
+        },
+        "customCharsetHint": "Escriba todas las letras que deseé incluir, en mayúsculas y minúsculas.",
+        "fontWeight": "Peso de la fuente:",
+        "typefaceName": "Nombre de tipo de letra:"
+    },
+    "licensePanel": {
+        "ctjsLicense": "Licencia Ct.js (MIT)"
     }
 }

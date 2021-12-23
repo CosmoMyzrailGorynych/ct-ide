@@ -9,7 +9,7 @@ texture-generator.aView
                     label.block
                         b {voc.name}
                         input.wide(type="text" oninput="{wire('this.textureName')}" value="{textureName}")
-                    .anErrorNotice(if="{nameTaken}" ref="errorNotice") {vocGlob.nametaken}
+                    .anErrorNotice(if="{nameTaken}" ref="errorNotice") {vocGlob.nameTaken}
                 fieldset
                     label.block
                         b {voc.width}

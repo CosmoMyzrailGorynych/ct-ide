@@ -5,7 +5,7 @@ emitter-tandem-editor.aPanel.aView.flexrow
                 b {vocGlob.name}
                 br
                 input.wide(type="text" value="{tandem.name}" onchange="{wire('this.tandem.name')}")
-                .anErrorNotice(if="{nameTaken}" ref="errorNotice") {vocGlob.nametaken}
+                .anErrorNotice(if="{nameTaken}" ref="errorNotice") {vocGlob.nameTaken}
         .flexfix-body.flexrow
             emitter-editor(
                 each="{emitter in tandem.emitters}"

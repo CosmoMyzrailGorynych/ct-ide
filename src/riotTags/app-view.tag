@@ -96,7 +96,7 @@ app-view.flexcol
                 fs.remove(global.projdir + '.ict.recovery')
                 .catch(console.error);
                 glob.modified = false;
-                alertify.success(window.languageJSON.common.savedcomm, 'success', 3000);
+                alertify.success(window.languageJSON.common.savedMessage, 'success', 3000);
             } catch (e) {
                 alertify.error(e);
             }

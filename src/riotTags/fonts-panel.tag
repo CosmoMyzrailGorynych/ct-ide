@@ -69,7 +69,7 @@ fonts-panel.flexfix.tall.fifty
                 click: () => {
                     alertify
                     .defaultValue(this.editedFont.typefaceName)
-                    .prompt(window.languageJSON.common.newname)
+                    .prompt(window.languageJSON.common.newName)
                     .then(e => {
                         if (e.inputValue !== '' && e.buttonClicked !== 'cancel') {
                             this.editedFont.typefaceName = e.inputValue;

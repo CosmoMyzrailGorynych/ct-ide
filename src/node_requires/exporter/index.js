@@ -172,7 +172,7 @@ const exportCtProject = async (project, projdir, production) => {
     writeDir = await getExportDir();
 
     if (project.rooms.length < 1) {
-        throw new Error(languageJSON.common.norooms);
+        throw new Error(languageJSON.common.noRooms);
     }
 
     if (localStorage.forceProductionForDebug === 'yes') {

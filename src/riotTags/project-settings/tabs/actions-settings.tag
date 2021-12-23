@@ -33,7 +33,7 @@ actions-settings
                 .flexrow.middle
                     div.relative.wide
                         input.wide(type="text" placeholder="{voc.inputActionNamePlaceholder}" value="{action.name}" onchange="{checkActionNameAndSave}")
-                        .anErrorNotice(if="{nameTaken === action.name}" ref="errors") {vocGlob.nametaken}
+                        .anErrorNotice(if="{nameTaken === action.name}" ref="errors") {vocGlob.nameTaken}
                         .anErrorNotice(if="{action.name.trim() === ''}" ref="errors") {vocGlob.cannotBeEmpty}
                     .aSpacer
                     svg.feather.a(title="{voc.deleteAction}" onclick="{deleteAction}")

@@ -46,7 +46,7 @@ room-tile-editor.room-editor-Tiles.tabbed.tall.flexfix
         [this.parent.currentTileLayer] = this.opts.room.tiles;
         this.parent.currentTileLayerId = 0;
 
-        this.namespace = 'roomtiles';
+        this.namespace = 'roomTiles';
         this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
 
@@ -54,7 +54,7 @@ room-tile-editor.room-editor-Tiles.tabbed.tall.flexfix
             window.alertify
             .okBtn(window.languageJSON.common.delete)
             .cancelBtn(window.languageJSON.common.cancel)
-            .confirm(window.languageJSON.common.confirmDelete.replace('{0}', window.languageJSON.common.tilelayer))
+            .confirm(window.languageJSON.common.confirmDelete.replace('{0}', window.languageJSON.common.tileLayer))
             .then(e => {
                 if (e.buttonClicked === 'ok') {
                     var tiles = this.opts.room;
@@ -78,7 +78,7 @@ room-tile-editor.room-editor-Tiles.tabbed.tall.flexfix
         this.moveTileLayer = () => {
             window.alertify
             .defaultValue(this.parent.currentTileLayer.depth)
-            .prompt(window.languageJSON.roomview.newdepth)
+            .prompt(window.languageJSON.roomView.newDepth)
             .then(e => {
                 if (e.inputValue && Number(e.inputValue)) {
                     this.parent.currentTileLayer.depth = Number(e.inputValue);
@@ -91,7 +91,7 @@ room-tile-editor.room-editor-Tiles.tabbed.tall.flexfix
         this.addTileLayer = () => {
             window.alertify
             .defaultValue(-10)
-            .prompt(window.languageJSON.roomview.newdepth)
+            .prompt(window.languageJSON.roomView.newDepth)
             .then(e => {
                 if (e.inputValue && Number(e.inputValue)) {
                     var layer = {

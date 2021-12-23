@@ -6,7 +6,7 @@ texture-editor.aPanel.aView
                     b {voc.name}
                     br
                     input.wide(type="text" value="{opts.texture.name}" onchange="{wire('this.texture.name')}")
-                    .anErrorNotice(if="{nameTaken}" ref="errorNotice") {vocGlob.nametaken}
+                    .anErrorNotice(if="{nameTaken}" ref="errorNotice") {vocGlob.nameTaken}
                     label.checkbox
                         input#texturetiled(type="checkbox" checked="{opts.texture.tiled}" onchange="{wire('this.texture.tiled')}")
                         span   {voc.tiled}
@@ -18,7 +18,7 @@ texture-editor.aPanel.aView
                         input.short(type="number" value="{opts.texture.axis[1]}" onchange="{wire('this.texture.axis.1')}" oninput="{wire('this.texture.axis.1')}")
                     .flexrow
                         button.wide.nml(onclick="{textureCenter}")
-                            span   {voc.setcenter}
+                            span   {voc.setCenter}
                         .aSpacer
                         button.square.nmr(onclick="{textureIsometrify}" title="{voc.isometrify}")
                             svg.feather
@@ -84,7 +84,7 @@ texture-editor.aPanel.aView
                 fieldset
                     label.checkbox
                         input(checked="{prevShowMask}" onchange="{wire('this.prevShowMask')}" type="checkbox")
-                        span   {voc.showmask}
+                        span   {voc.showMask}
                     label.checkbox(if="{opts.texture.width > 10 && opts.texture.height > 10}")
                         input(checked="{prevShowFrameIndices}" onchange="{wire('this.prevShowFrameIndices')}" type="checkbox")
                         span   {voc.showFrameIndices}
@@ -125,12 +125,12 @@ texture-editor.aPanel.aView
                 )
             .texture-editor-Tools
                 .toright
-                    label.file(title="{voc.replacetexture}")
+                    label.file(title="{voc.replaceTexture}")
                         input(type="file" ref="textureReplacer" accept=".png,.jpg,.jpeg,.bmp,.gif" onchange="{textureReplace}")
                         .button.inline.forcebackground
                             svg.feather
                                 use(xlink:href="#folder")
-                            span {voc.replacetexture}
+                            span {voc.replaceTexture}
                     .button.inline.forcebackground(
                         if="{opts.texture.source}"
                         title="{voc.reimport} (Control+R)"
@@ -156,7 +156,7 @@ texture-editor.aPanel.aView
                 button.inline.forcebackground(onclick="{changePreviewBg}")
                     svg.feather
                         use(xlink:href="#droplet")
-                    span {voc.bgcolor}
+                    span {voc.bgColor}
         .column.column2.borderleft.tall.flexfix.nogrow.noshrink(show="{!opts.texture.tiled}")
             .flexfix-body
                 fieldset
@@ -183,22 +183,22 @@ texture-editor.aPanel.aView
                 fieldset
                     .flexrow
                         div
-                            b {voc.marginx}
+                            b {voc.marginX}
                             br
                             input.wide(type="number" value="{opts.texture.marginx}" onchange="{wire('this.texture.marginx')}" oninput="{wire('this.texture.marginx')}")
                         span &nbsp;
                         div
-                            b {voc.marginy}
+                            b {voc.marginY}
                             br
                             input.wide(type="number" value="{opts.texture.marginy}" onchange="{wire('this.texture.marginy')}" oninput="{wire('this.texture.marginy')}")
                     .flexrow
                         div
-                            b {voc.offx}
+                            b {voc.offX}
                             br
                             input.wide(type="number" value="{opts.texture.offx}" onchange="{wire('this.texture.offx')}" oninput="{wire('this.texture.offx')}")
                         span &nbsp;
                         div
-                            b {voc.offy}
+                            b {voc.offY}
                             br
                             input.wide(type="number" value="{opts.texture.offy}" onchange="{wire('this.texture.offy')}" oninput="{wire('this.texture.offy')}")
                 fieldset
@@ -241,7 +241,7 @@ texture-editor.aPanel.aView
         const path = require('path'),
               fs = require('fs-extra');
         const glob = require('./data/node_requires/glob');
-        this.namespace = 'textureview';
+        this.namespace = 'textureView';
         this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
 
@@ -269,7 +269,7 @@ texture-editor.aPanel.aView
                 }, 0);
             };
             img.onerror = e => {
-                alertify.error(window.languageJSON.textureview.corrupted);
+                alertify.error(window.languageJSON.textureView.corrupted);
                 console.error(e);
                 this.textureSave();
             };

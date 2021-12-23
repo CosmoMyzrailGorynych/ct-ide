@@ -54,7 +54,7 @@ room-copy-properties.aPanel
             )
     extensions-editor(entity="{opts.copy.exts}" type="copy" compact="yes" wide="yup")
     script.
-        this.namespace = 'roomview.copyProperties';
+        this.namespace = 'roomView.copyProperties';
         this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
 
