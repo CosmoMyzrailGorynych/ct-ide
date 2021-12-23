@@ -29,7 +29,7 @@ libs:
           'Player', 'Player_Falling',
           [11]
       );
-types:
+templates:
   - name: Box
     depth: 0
     oncreate: ''
@@ -1904,7 +1904,7 @@ rooms:
     lastmod: 1596761311993
 soundtick: 6
 roomtick: 3
-typetick: 12
+templatetick: 12
 styletick: 4
 starting: 0
 settings:

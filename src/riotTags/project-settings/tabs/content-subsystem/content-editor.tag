@@ -22,7 +22,7 @@ content-editor
                         field.min = 0;
                         field.max = 100;
                         field.step = 1;
-                    } else if (field.type === 'texture' || field.type === 'type') {
+                    } else if (field.type === 'texture' || field.type === 'template') {
                         field.default = -1;
                     }
                     if (field.type === 'number' || field.type === 'sliderAndNumber') {

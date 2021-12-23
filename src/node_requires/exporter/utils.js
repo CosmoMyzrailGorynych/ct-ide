@@ -1,12 +1,12 @@
 /**
  * Creates a copy of an extends object, turning UIDs of resources into the names of these resources.
- * Understands notations of `name@@type` and `name@@texture`.
+ * Understands notations of `name@@template` and `name@@texture`.
  *
  * @param {object} exts A flat map of extends.
  *
  * @returns {object} An object with unwrapped extends.
  */
-const {getTypeFromId} = require('./../resources/types');
+const {getTemplateFromId} = require('./../resources/templates');
 const {getTextureFromId} = require('./../resources/textures');
 const getUnwrappedExtends = function getUnwrappedExtends(exts) {
     if (typeof exts !== 'object') {
@@ -27,16 +27,16 @@ const getUnwrappedExtends = function getUnwrappedExtends(exts) {
         }
         const postfix = split.pop();
         const key = split.join('@@');
-        if ((postfix === 'type' || postfix === 'texture') &&
+        if ((postfix === 'template' || postfix === 'texture') &&
             (exts[i] === void 0 || exts[i] === -1)) {
             // Skip unset values
             continue;
         }
-        if (postfix === 'type') {
+        if (postfix === 'template') {
             try {
-                out[key] = getTypeFromId(exts[i]).name;
+                out[key] = getTemplateFromId(exts[i]).name;
             } catch (e) {
-                alertify.error(`Could not resolve UID ${exts[i]} for field ${key} as a type. Returning -1.`);
+                alertify.error(`Could not resolve UID ${exts[i]} for field ${key} as a template. Returning -1.`);
                 console.error(e);
                 // eslint-disable-next-line no-console
                 console.trace();
@@ -77,16 +77,16 @@ const getUnwrappedBySpec = function getUnwrappedBySpec(exts, spec) {
     }
     const out = {};
     for (const i in exts) {
-        if ((fieldMap[i].type === 'type' || fieldMap[i].type === 'texture') &&
+        if ((fieldMap[i].type === 'template' || fieldMap[i].type === 'texture') &&
             (exts[i] === void 0 || exts[i] === -1)) {
             // Skip unset values
             continue;
         }
-        if (fieldMap[i].type === 'type') {
+        if (fieldMap[i].type === 'template') {
             try {
-                out[i] = getTypeFromId(exts[i]).name;
+                out[i] = getTemplateFromId(exts[i]).name;
             } catch (e) {
-                alertify.error(`Could not resolve UID ${exts[i]} for field ${i} as a type. Returning -1. Full object: ${JSON.stringify(exts)}`);
+                alertify.error(`Could not resolve UID ${exts[i]} for field ${i} as a template. Returning -1. Full object: ${JSON.stringify(exts)}`);
                 console.error(e);
                 // eslint-disable-next-line no-console
                 console.trace();

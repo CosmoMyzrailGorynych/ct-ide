@@ -78,10 +78,10 @@
                     }
                 }
             } else if (type === 'copies') {
-                if (!(validate(options, 'copyType', 'string') in ct.types.list)) {
-                    throw new Error(`[ct.eqs] The '${options.copyType}' type does not exist.`);
+                if (!(validate(options, 'copyTemplate', 'string') in ct.templates.list)) {
+                    throw new Error(`[ct.eqs] The '${options.copyTemplate}' template does not exist.`);
                 }
-                for (const copy of ct.types.list[options.copyType]) {
+                for (const copy of ct.templates.list[options.copyTemplate]) {
                     if (options.limit && ct.u.pdc(copy.x, copy.y, options.x, options.y) > options.limit) {
                         continue;
                     }

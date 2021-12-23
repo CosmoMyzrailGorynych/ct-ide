@@ -1,5 +1,5 @@
 (function () {
-    ct.types.templates.VKEY = {
+    ct.templates.templates.VKEY = {
         onStep: function () {
             var down = false,
                 hover = false;
@@ -43,7 +43,7 @@
         }
     };
 
-    ct.types.templates.VJOYSTICK = {
+    ct.templates.templates.VJOYSTICK = {
         onCreate: function () {
             this.tex = this.opts.tex;
             this.depth = this.opts.depth;

@@ -560,10 +560,7 @@
         "sounds": "Sons",
         "ui": "UI",
         "fx": "FX",
-        "types": "Tipos"
-    },
-    "types": {
-        "create": ""
+        "templates": "Tipos"
     },
     "copyCustomProperties": {
         "customProperties": "",
@@ -662,18 +659,6 @@
         "moveTilesToLayer": "Mover para camada",
         "shiftTiles": "Trocar tiles",
         "changeCopyRotation": "Rotacionar"
-    },
-    "typeView": {
-        "change": "Alterar sprite",
-        "create": "Ao Criar",
-        "depth": "Profundidade:",
-        "destroy": "Ao Destruir",
-        "done": "Feito",
-        "draw": "Desenhar",
-        "name": "Nome:",
-        "step": "Passo",
-        "learnAboutTypes": "Aprenda sobre programar tipos",
-        "visible": ""
     },
     "styleView": {
         "active": "Ativo",
@@ -782,5 +767,20 @@
     },
     "licensePanel": {
         "ctjsLicense": "Licença do Ct.js (MIT)"
+    },
+    "templates": {
+        "create": ""
+    },
+    "templateView": {
+        "change": "Alterar sprite",
+        "create": "Ao Criar",
+        "depth": "Profundidade:",
+        "destroy": "Ao Destruir",
+        "done": "Feito",
+        "draw": "Desenhar",
+        "name": "Nome:",
+        "step": "Passo",
+        "learnAboutTypes": "Aprenda sobre programar tipos",
+        "visible": ""
     }
 }

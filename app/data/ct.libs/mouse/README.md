@@ -25,7 +25,7 @@ Can be either `true` or `false`. Determines whether a mouse button was pressed.
 
 ```js
 if (ct.mouse.pressed) {
-    ct.types.make('Bullet',this.x,this.y);
+    ct.templates.make('Bullet',this.x,this.y);
 }
 ```
 

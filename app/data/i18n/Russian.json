@@ -369,9 +369,6 @@
         "newGridSize": "Новый размер сетки:",
         "setPreviewTexture": "Подложить текстуру"
     },
-    "types": {
-        "create": "Создать"
-    },
     "rooms": {
         "create": "Добавить",
         "makeStarting": "Сделать стартовой комнатой"
@@ -562,8 +559,8 @@
         "sounds": "Звуки",
         "ui": "Интерфейс",
         "fx": "Эффекты",
-        "types": "Типы",
-        "restart": "Перезапустить"
+        "restart": "Перезапустить",
+        "templates": "Шаблоны"
     },
     "copyCustomProperties": {
         "customProperties": "Пользовательские поля",
@@ -662,18 +659,6 @@
         "moveTilesToLayer": "Переместить в другой слой",
         "shiftTiles": "Сместить плитки",
         "changeCopyRotation": "Повернуть"
-    },
-    "typeView": {
-        "change": "Сменить спрайт",
-        "create": "Код создания",
-        "depth": "Глубина:",
-        "destroy": "Код уничтожения",
-        "done": "Готово",
-        "draw": "Прорисовка",
-        "learnAboutTypes": "Кодинг типов",
-        "name": "Имя:",
-        "step": "Кадр",
-        "visible": "Отображать"
     },
     "styleView": {
         "active": "Активно?",
@@ -782,5 +767,20 @@
     },
     "licensePanel": {
         "ctjsLicense": "Лицензия Ct.js (MIT)"
+    },
+    "templates": {
+        "create": "Создать"
+    },
+    "templateView": {
+        "change": "Сменить спрайт",
+        "create": "Код создания",
+        "depth": "Глубина:",
+        "destroy": "Код уничтожения",
+        "done": "Готово",
+        "draw": "Прорисовка",
+        "learnAboutTypes": "Кодинг шаблонов",
+        "name": "Имя:",
+        "step": "Кадр",
+        "visible": "Отображать"
     }
 }

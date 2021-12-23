@@ -251,7 +251,8 @@
         },
         /**
          * Determines if the place in (x,y) is occupied.
-         * Optionally can take 'cgroup' as a filter for obstackles' collision group (not shape type).
+         * Optionally can take 'cgroup' as a filter for obstacles'
+         * collision group (not shape type).
          *
          * @param {Copy} me The object to check collisions on.
          * @param {number} [x] The x coordinate to check, as if `me` was placed there.
@@ -328,9 +329,9 @@
         free(me, x, y, cgroup) {
             return !ct.place.occupied(me, x, y, cgroup);
         },
-        meet(me, x, y, type, multiple) {
-            // ct.place.meet(<me: Copy, x: number, y: number>[, type: Type])
-            // detects collision between a given copy and a copy of a certain type
+        meet(me, x, y, template, multiple) {
+            // ct.place.meet(<me: Copy, x: number, y: number>[, template: Template])
+            // detects collision between a given copy and a copy of a certain template
             var oldx = me.x,
                 oldy = me.y,
                 shapeCashed = me._shape;
@@ -340,13 +341,13 @@
                 me.x = x;
                 me.y = y;
             } else {
-                type = x;
+                template = x;
                 multiple = y;
                 x = me.x;
                 y = me.y;
             }
             if (typeof type === 'boolean') {
-                multiple = type;
+                multiple = template;
             }
             if (oldx !== me.x || oldy !== me.y) {
                 me._shape = getSSCDShape(me);
@@ -363,7 +364,7 @@
                     continue;
                 }
                 for (let i = 0, l = array.length; i < l; i++) {
-                    if (array[i].type === type &&
+                    if (array[i].template === template &&
                         array[i] !== me &&
                         ct.place.collide(me, array[i])
                     ) {
@@ -439,12 +440,13 @@
             return false;
         },
         lastdist: null,
-        nearest(x, y, type) {
-            // ct.place.nearest(<x: number, y: number, type: Type>)
-            if (ct.types.list[type].length > 0) {
-                var dist = Math.hypot(x - ct.types.list[type][0].x, y - ct.types.list[type][0].y);
-                var inst = ct.types.list[type][0];
-                for (const copy of ct.types.list[type]) {
+        nearest(x, y, template) {
+            // ct.place.nearest(<x: number, y: number, template: Template>)
+            const templates = ct.templates.list[template];
+            if (templates.length > 0) {
+                var dist = Math.hypot(x - templates[0].x, y - templates[0].y);
+                var inst = templates[0];
+                for (const copy of templates) {
                     if (Math.hypot(x - copy.x, y - copy.y) < dist) {
                         dist = Math.hypot(x - copy.x, y - copy.y);
                         inst = copy;
@@ -455,12 +457,13 @@
             }
             return false;
         },
-        furthest(x, y, type) {
-            // ct.place.furthest(<x: number, y: number, type: Type>)
-            if (ct.types.list[type].length > 0) {
-                var dist = Math.hypot(x - ct.types.list[type][0].x, y - ct.types.list[type][0].y);
-                var inst = ct.types.list[type][0];
-                for (const copy of ct.types.list[type]) {
+        furthest(x, y, template) {
+            // ct.place.furthest(<x: number, y: number, template: Template>)
+            const templates = ct.templates.list[template];
+            if (templates.length > 0) {
+                var dist = Math.hypot(x - templates[0].x, y - templates[0].y);
+                var inst = templates[0];
+                for (const copy of templates) {
                     if (Math.hypot(x - copy.x, y - copy.y) > dist) {
                         dist = Math.hypot(x - copy.x, y - copy.y);
                         inst = copy;
@@ -471,8 +474,8 @@
             }
             return false;
         },
-        enableTilemapCollisions(tilemap, cgroup) {
-            const cgroup = cgroup || tilemap.cgroup;
+        enableTilemapCollisions(tilemap, exactCgroup) {
+            const cgroup = exactCgroup || tilemap.cgroup;
             if (tilemap.addedCollisions) {
                 throw new Error('[ct.place] The tilemap already has collisions enabled.');
             }

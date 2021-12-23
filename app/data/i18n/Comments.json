@@ -191,9 +191,6 @@
         "import": "",
         "italic": ""
     },
-    "types": {
-        "create": ""
-    },
     "rooms": {
         "create": "",
         "makeStarting": ""
@@ -558,12 +555,12 @@
         "rooms": "",
         "sounds": "",
         "ui": "",
-        "types": "",
         "launchHotkeys": "",
         "patrons": "",
         "fx": "",
         "restart": "",
-        "project": ""
+        "project": "",
+        "templates": ""
     },
     "copyCustomProperties": {
         "customProperties": "",
@@ -662,18 +659,6 @@
         "moveTilesToLayer": "",
         "shiftTiles": "",
         "changeCopyRotation": ""
-    },
-    "typeView": {
-        "change": "",
-        "create": "",
-        "depth": "",
-        "destroy": "",
-        "done": "",
-        "draw": "",
-        "learnAboutTypes": "",
-        "name": "",
-        "step": "",
-        "visible": ""
     },
     "styleView": {
         "active": "",
@@ -782,5 +767,20 @@
     },
     "licensePanel": {
         "ctjsLicense": ""
+    },
+    "templates": {
+        "create": ""
+    },
+    "templateView": {
+        "change": "",
+        "create": "",
+        "depth": "",
+        "destroy": "",
+        "done": "",
+        "draw": "",
+        "learnAboutTypes": "",
+        "name": "",
+        "step": "",
+        "visible": ""
     }
 }

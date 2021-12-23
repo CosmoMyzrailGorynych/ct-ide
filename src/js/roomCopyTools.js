@@ -8,8 +8,8 @@
         this.refreshRoomCanvas();
         this.refs.canvas.x.setTransform(this.zoomFactor, 0, 0, this.zoomFactor, 0, 0);
         this.refs.canvas.x.globalAlpha = 0.5;
-        if (this.currentType.texture !== -1) {
-            img = glob.texturemap[this.currentType.texture];
+        if (this.currentTemplate.texture !== -1) {
+            img = glob.texturemap[this.currentTemplate.texture];
             texture = img.g;
             ox = texture.offx;
             oy = texture.offy;
@@ -68,7 +68,8 @@
             for (const copy of this.selectedCopies) {
                 var x = this.xToRoom(this.startx),
                     y = this.yToRoom(this.starty);
-                const textureId = global.currentProject.types[glob.typemap[copy.uid]].texture;
+                const textureId =
+                    global.currentProject.templates[glob.templatemap[copy.uid]].texture;
                 const {g} = glob.texturemap[textureId];
                 if (x > copy.x - g.axis[0] && y > copy.y - g.axis[1] &&
                     x < copy.x - g.axis[0] + g.width && y < copy.y - g.axis[1] + g.height) {
@@ -87,7 +88,7 @@
     window.roomCopyTools = {
         // eslint-disable-next-line max-lines-per-function
         init() {
-            this.currentType = -1;
+            this.currentTemplate = -1;
             this.onCanvasPressCopies = onCanvasPressCopies;
             const selectCopies = e => {
                 var x1 = this.xToRoom(this.startx),
@@ -99,7 +100,8 @@
                     ymin = Math.min(y1, y2),
                     ymax = Math.max(y1, y2);
                 for (const copy of this.room.copies) {
-                    const textureId = global.currentProject.types[glob.typemap[copy.uid]].texture;
+                    const textureId =
+                        global.currentProject.templates[glob.templatemap[copy.uid]].texture;
                     const {g} = glob.texturemap[textureId];
                     const x1 = copy.x - g.axis[0] * (copy.tx || 1),
                           x2 = copy.x - (g.axis[0] - g.width) * (copy.tx || 1),
@@ -119,7 +121,7 @@
                 }
             };
             this.onCanvasMouseUpCopies = e => {
-                if (e.button === 0 && this.currentType === -1 && e.shiftKey) {
+                if (e.button === 0 && this.currentTemplate === -1 && e.shiftKey) {
                     const dragLength = Math.hypot(e.offsetX - this.startx, e.offsetY - this.starty);
                     if (dragLength > clickThreshold) {
                         // Было прямоугольное выделение
@@ -186,14 +188,14 @@
                 // Cancel copy selection on click
                 if (this.selectedCopies &&
                     !this.movingStuff &&
-                    !(e.shiftKey && this.currentType === -1)
+                    !(e.shiftKey && this.currentTemplate === -1)
                 ) {
                     this.selectedCopies = false;
                     this.refreshRoomCanvas();
                     return;
                 }
-                // If no type was picked or we delete stuff, do nothing
-                if ((this.currentType === -1 || e.ctrlKey) && e.button === 0) {
+                // If no template was picked or we delete stuff, do nothing
+                if ((this.currentTemplate === -1 || e.ctrlKey) && e.button === 0) {
                     return;
                 }
                 if (Number(this.room.gridX) === 0 || e.altKey) {
@@ -205,7 +207,7 @@
                         this.room.copies.push({
                             x: this.lastCopyX,
                             y: this.lastCopyY,
-                            uid: this.currentType.uid,
+                            uid: this.currentTemplate.uid,
                             exts: {}
                         });
                         this.resortRoom();
@@ -222,7 +224,7 @@
                         this.room.copies.push({
                             x: this.lastCopyX,
                             y: this.lastCopyY,
-                            uid: this.currentType.uid,
+                            uid: this.currentTemplate.uid,
                             exts: {}
                         });
                         this.resortRoom();
@@ -277,7 +279,7 @@
                         copy.y = copy.lastY + dy;
                     }
                     this.refreshRoomCanvas(e);
-                } else if (this.currentType !== -1) {
+                } else if (this.currentTemplate !== -1) {
                     drawInsertPreview.apply(this, [e]);
                 } else if (
                     this.mouseDown &&
@@ -300,8 +302,8 @@
                     return;
                 }
                 var copy = selectACopyAt.apply(this, [e]),
-                    type = global.currentProject.types[glob.typemap[copy.uid]];
-                this.closestType = type;
+                    template = global.currentProject.templates[glob.templatemap[copy.uid]];
+                this.closestTemplate = template;
                 this.closestPos = this.room.copies.indexOf(copy);
 
                 // рисовка выделения копии
@@ -312,7 +314,7 @@
                 setTimeout(() => {
                     this.forbidDrawing = false;
                 }, 500);
-                this.roomCanvasMenu.items[0].label = window.languageJSON.roomView.deleteCopy.replace('{0}', type.name);
+                this.roomCanvasMenu.items[0].label = window.languageJSON.roomView.deleteCopy.replace('{0}', template.name);
                 this.refs.roomCanvasMenu.popup(e.clientX, e.clientY);
             };
 
@@ -369,7 +371,7 @@
             this.roomCanvasMenu = {
                 opened: false,
                 items: [{
-                    label: window.languageJSON.roomView.deleteCopy.replace('{0}', this.closestType),
+                    label: window.languageJSON.roomView.deleteCopy.replace('{0}', this.closestTemplate),
                     click: () => {
                         this.room.copies.splice(this.closestPos, 1);
                         this.resortRoom();

@@ -1,4 +1,4 @@
-This module implements type inheritance for your types! Firstly, enable the module, then select the parent for one of your types. Then, use one of these functions to call the parent's logic:
+This module implements template inheritance for your templates! Firstly, enable the module, then select the parent for one of your templates. Then, use one of these functions to call the parent's logic:
 
 * `this.inherit.onCreate();`
 * `this.inherit.onStep();`
@@ -7,20 +7,20 @@ This module implements type inheritance for your types! Firstly, enable the modu
 
 And that's it!
 
-## Checking whether a copy is a child of a particular type
+## Checking whether a copy is a child of a particular template
 
 There are two methods that are the opposites of each other:
 
 * `ct.inherit.isChild(copy, assertedParent)`, and
 * `ct.inherit.isParent(copy, assertedChild)`.
 
-The arguments can be either copies or the names of types, or a mix of both. So you can check `ct.inherit.isChild(this, 'Godwoken')` and get a proper result.
+The arguments can be either copies or the names of templates, or a mix of both. So you can check `ct.inherit.isChild(this, 'Godwoken')` and get a proper result.
 
-> **Note:** if the two arguments belong to one type, both methods will return `true`.
+> **Note:** if the two arguments belong to one template, both methods will return `true`.
 
 ## Getting an array of all the copies of a particular parent
 
-You can get an array of all the copies of a particular type and its children with `ct.inherit.list('typeName')`;
+You can get an array of all the copies of a particular template and its children with `ct.inherit.list('templateName')`;
 
 ```js
 const monsters = ct.inherit.list('GenericMonster');
@@ -30,7 +30,7 @@ for (const monster of monsters) {
 }
 ```
 
-> **Warning:** contrary to `ct.types.list['typeName']`, the returned array is not updated and will be a source of memory leaks with deleted copies if not handled properly. Do store the returned value in `var`, `let` or `const`.
+> **Warning:** contrary to `ct.templates.list['templateName']`, the returned array is not updated and will be a source of memory leaks with deleted copies if not handled properly. Do store the returned value in `var`, `let` or `const`.
 
 ## Things to watch out
 

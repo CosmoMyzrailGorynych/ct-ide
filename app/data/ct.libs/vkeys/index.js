@@ -9,7 +9,7 @@
                 y: 128,
                 container: ct.room
             }, options || {});
-            const copy = ct.types.copy('VKEY', 0, 0, {
+            const copy = ct.templates.copy('VKEY', 0, 0, {
                 opts: opts
             }, opts.container);
             if (typeof options.x === 'function' || typeof options.y === 'function') {
@@ -27,7 +27,7 @@
                 y: 128,
                 container: ct.room
             }, options || {});
-            const copy = ct.types.copy('VJOYSTICK', 0, 0, {
+            const copy = ct.templates.copy('VJOYSTICK', 0, 0, {
                 opts: opts
             }, opts.container);
             if (typeof options.x === 'function' || typeof options.y === 'function') {

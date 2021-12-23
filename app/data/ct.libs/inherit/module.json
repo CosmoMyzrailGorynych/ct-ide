@@ -1,7 +1,7 @@
 {
     "main": {
-        "name": "Type inheritance",
-        "tagline": "Avoid repeating code by adding parent-child relationships between your types.",
+        "name": "Template inheritance",
+        "tagline": "Avoid repeating code by adding parent-child relationships between your templates.",
         "version": "1.0.0",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",
@@ -11,9 +11,9 @@
             "utilities"
         ]
     },
-    "typeExtends": [{
+    "templateExtends": [{
         "name": "Parent",
-        "type": "type",
-        "key": "inheritedType@@type"
+        "type": "template",
+        "key": "inheritedType@@template"
     }]
 }

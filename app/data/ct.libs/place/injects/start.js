@@ -1,4 +1,4 @@
-Object.defineProperty(ct.types.Copy.prototype, 'cgroup', {
+Object.defineProperty(ct.templates.Copy.prototype, 'cgroup', {
     set: function (value) {
         this.$cgroup = value;
     },
@@ -6,7 +6,7 @@ Object.defineProperty(ct.types.Copy.prototype, 'cgroup', {
         return this.$cgroup;
     }
 });
-Object.defineProperty(ct.types.Copy.prototype, 'moveContinuous', {
+Object.defineProperty(ct.templates.Copy.prototype, 'moveContinuous', {
     value: function (cgroup, precision) {
         if (this.gravity) {
             this.hspeed += this.gravity * ct.delta * Math.cos(this.gravityDir * Math.PI / 180);
@@ -16,7 +16,7 @@ Object.defineProperty(ct.types.Copy.prototype, 'moveContinuous', {
     }
 });
 
-Object.defineProperty(ct.types.Copy.prototype, 'moveContinuousByAxes', {
+Object.defineProperty(ct.templates.Copy.prototype, 'moveContinuousByAxes', {
     value: function (cgroup, precision) {
         if (this.gravity) {
             this.hspeed += this.gravity * ct.delta * Math.cos(this.gravityDir * Math.PI / 180);
@@ -32,7 +32,7 @@ Object.defineProperty(ct.types.Copy.prototype, 'moveContinuousByAxes', {
     }
 });
 
-Object.defineProperty(ct.types.Tilemap.prototype, 'enableCollisions', {
+Object.defineProperty(ct.templates.Tilemap.prototype, 'enableCollisions', {
     value: function (cgroup) {
         ct.place.enableTilemapCollisions(this, cgroup);
     }

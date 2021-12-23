@@ -24,7 +24,7 @@ Every action in `ct.fs` is asynchronous so that a game stays responsive even on 
 ct.fs.save('savedGame.json', this.gameData)
 .then(() => {
     // Here our operation has completed, we can add a feedback now
-    ct.types.copy('GenericNotification', 20, 20, {
+    ct.templates.copy('GenericNotification', 20, 20, {
         message: 'Game saved!'
     });
 });
@@ -55,7 +55,7 @@ if (ct.fs.isAvailable) {
 * If you store all your game progression info in one object, you can make your whole save/load system in about 2-3 lines of code with `ct.fs.save` and `ct.fs.load`.
 * You can't simply store copies inside a save file, but you can serialize them by using a bit of js magic:
   ```js
-  const hero = ct.types.list['Hero'][0];
+  const hero = ct.templates.list['Hero'][0];
   const saveData = {
       hero: {
           x: hero.x,
@@ -63,7 +63,7 @@ if (ct.fs.isAvailable) {
       },
       enemies: []
   };
-  for (const enemy of ct.types.list['Enemy']) {
+  for (const enemy of ct.templates.list['Enemy']) {
       saveData.enemies.push({
           x: enemy.x,
           y: enemy.y,
@@ -75,11 +75,11 @@ if (ct.fs.isAvailable) {
   // Later…
 
   ct.fs.load('savegame.json', saveData => {
-      const hero = ct.types.list['Hero'][0];
+      const hero = ct.templates.list['Hero'][0];
       hero.x = saveData.hero.x;
       hero.y = saveData.hero.y;
       for (const enemy of saveData.enemies) {
-          ct.types.copy('Enemy', enemy.x, enemy.y);
+          ct.templates.copy('Enemy', enemy.x, enemy.y);
       }
   });
   ```

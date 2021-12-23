@@ -11,7 +11,7 @@
             "fx"
         ]
     },
-    "typeExtends": [{
+    "templateExtends": [{
         "type": "group",
         "name": "Light emitter",
         "openedByDefault": false,

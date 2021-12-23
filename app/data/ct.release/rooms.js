@@ -37,7 +37,7 @@ class Room extends PIXI.Container {
             /*%beforeroomoncreate%*/
             for (let i = 0, li = template.bgs.length; i < li; i++) {
                 // Need to put extensions here, so we don't use ct.backgrounds.add
-                const bg = new ct.types.Background(
+                const bg = new ct.templates.Background(
                     template.bgs[i].texture,
                     null,
                     template.bgs[i].depth,
@@ -53,17 +53,17 @@ class Room extends PIXI.Container {
             }
             for (let i = 0, li = template.objects.length; i < li; i++) {
                 const exts = template.objects[i].exts || {};
-                ct.types.make(
-                    template.objects[i].type,
+                ct.templates.copyIntoRoom(
+                    template.objects[i].template,
                     template.objects[i].x,
                     template.objects[i].y,
+                    this,
                     {
                         tx: template.objects[i].tx,
                         ty: template.objects[i].ty,
                         tr: template.objects[i].tr,
                         ...exts
-                    },
-                    this
+                    }
                 );
             }
         }
@@ -108,7 +108,7 @@ Room.roomId = 0;
          * @returns {Background} The created background
          */
         addBg(texture, depth) {
-            const bg = new ct.types.Background(texture, null, depth);
+            const bg = new ct.templates.Background(texture, null, depth);
             ct.room.addChild(bg);
             return bg;
         },
@@ -129,8 +129,8 @@ Room.roomId = 0;
         clear() {
             ct.stage.children = [];
             ct.stack = [];
-            for (const i in ct.types.list) {
-                ct.types.list[i] = [];
+            for (const i in ct.templates.list) {
+                ct.templates.list[i] = [];
             }
             for (const i in ct.backgrounds.list) {
                 ct.backgrounds.list[i] = [];
@@ -254,7 +254,7 @@ Room.roomId = 0;
             const template = ct.rooms.templates[roomName];
             const target = ct.room;
             for (const t of template.bgs) {
-                const bg = new ct.types.Background(t.texture, null, t.depth, t.extends);
+                const bg = new ct.templates.Background(t.texture, null, t.depth, t.extends);
                 target.backgrounds.push(bg);
                 target.addChild(bg);
                 generated.backgrounds.push(bg);
@@ -267,11 +267,11 @@ Room.roomId = 0;
                 tl.cache();
             }
             for (const t of template.objects) {
-                const c = ct.types.make(t.type, t.x, t.y, {
+                const c = ct.templates.copyIntoRoom(t.template, t.x, t.y, target, {
                     tx: t.tx || 1,
                     ty: t.ty || 1,
                     tr: t.tr || 0
-                }, target);
+                });
                 generated.copies.push(c);
             }
             return generated;

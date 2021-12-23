@@ -1,4 +1,4 @@
-if ([/*%debugMode%*/][0] && this instanceof ct.types.Copy) {
+if ([/*%debugMode%*/][0] && this instanceof ct.templates.Copy) {
     this.$cDebugText.scale.x = this.$cDebugCollision.scale.x = 1 / this.scale.x;
     this.$cDebugText.scale.y = this.$cDebugCollision.scale.y = 1 / this.scale.y;
     this.$cDebugText.angle = this.$cDebugCollision.angle = -this.angle;

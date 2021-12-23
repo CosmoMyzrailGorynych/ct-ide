@@ -191,9 +191,6 @@
         "import": "fonts.import",
         "italic": "fonts.italic"
     },
-    "types": {
-        "create": "types.create"
-    },
     "rooms": {
         "create": "rooms.create",
         "makeStarting": "rooms.makeStarting"
@@ -558,12 +555,12 @@
         "rooms": "appView.rooms",
         "sounds": "appView.sounds",
         "ui": "appView.ui",
-        "types": "appView.types",
         "launchHotkeys": "appView.launchHotkeys",
         "patrons": "appView.patrons",
         "fx": "appView.fx",
         "restart": "appView.restart",
-        "project": "appView.project"
+        "project": "appView.project",
+        "templates": "appView.templates"
     },
     "copyCustomProperties": {
         "customProperties": "copyCustomProperties.customProperties",
@@ -662,18 +659,6 @@
         "moveTilesToLayer": "roomView.moveTilesToLayer",
         "shiftTiles": "roomView.shiftTiles",
         "changeCopyRotation": "roomView.changeCopyRotation"
-    },
-    "typeView": {
-        "change": "typeView.change",
-        "create": "typeView.create",
-        "depth": "typeView.depth",
-        "destroy": "typeView.destroy",
-        "done": "typeView.done",
-        "draw": "typeView.draw",
-        "learnAboutTypes": "typeView.learnAboutTypes",
-        "name": "typeView.name",
-        "step": "typeView.step",
-        "visible": "typeView.visible"
     },
     "styleView": {
         "active": "styleView.active",
@@ -782,5 +767,20 @@
     },
     "licensePanel": {
         "ctjsLicense": "licensePanel.ctjsLicense"
+    },
+    "templates": {
+        "create": "templates.create"
+    },
+    "templateView": {
+        "change": "templateView.change",
+        "create": "templateView.create",
+        "depth": "templateView.depth",
+        "destroy": "templateView.destroy",
+        "done": "templateView.done",
+        "draw": "templateView.draw",
+        "learnAboutTypes": "templateView.learnAboutTypes",
+        "name": "templateView.name",
+        "step": "templateView.step",
+        "visible": "templateView.visible"
     }
 }

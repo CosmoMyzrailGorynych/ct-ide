@@ -15,7 +15,7 @@ room-editor.aPanel.aView
                 ul.tabs.aNav.noshrink.nogrow.flexfix-header
                     li(onclick="{changeTab('roomcopies')}" title="{voc.copies}" class="{active: tab === 'roomcopies'}")
                         svg.feather
-                            use(xlink:href="#type")
+                            use(xlink:href="#template")
                         span(if="{sidebarWidth > 500}") {voc.copies}
                     li(onclick="{changeTab('roombackgrounds')}" title="{voc.backgrounds}" class="{active: tab === 'roombackgrounds'}")
                         svg.feather
@@ -30,7 +30,7 @@ room-editor.aPanel.aView
                             use(xlink:href="#settings")
                         span(if="{sidebarWidth > 500}") {voc.properties}
                 .relative.flexfix-body
-                    room-type-picker(show="{tab === 'roomcopies'}" current="{currentType}")
+                    room-template-picker(show="{tab === 'roomcopies'}" current="{currentTemplate}")
                     room-backgrounds-editor(show="{tab === 'roombackgrounds'}" room="{room}")
                     room-tile-editor(show="{tab === 'roomtiles'}" room="{room}")
                     .pad.aPanel(show="{tab === 'properties'}")
@@ -326,14 +326,14 @@ room-editor.aPanel.aView
             this.tab = tab;
             this.selectedCopies = this.selectedTiles = false;
             if (tab === 'roombackgrounds' || tab === 'properties') {
-                this.roomUnpickType();
+                this.roomUnpickTemplate();
             }
             if (tab !== 'roomcopies') {
                 this.toggleCopyProperties(false);
             }
         };
-        this.roomUnpickType = () => {
-            this.currentType = -1;
+        this.roomUnpickTemplate = () => {
+            this.currentTemplate = -1;
         };
 
         /** Преобразовать x на канвасе в x на комнате */
@@ -361,7 +361,7 @@ room-editor.aPanel.aView
             if (this.tab === 'roomcopies' && this.onCanvasPressCopies(e)) {
                 return;
             }
-            if ((this.currentType === -1 && !e.shiftKey && this.tab !== 'roomtiles' && e.button === 0 && !e.ctrlKey) ||
+            if ((this.currentTemplate === -1 && !e.shiftKey && this.tab !== 'roomtiles' && e.button === 0 && !e.ctrlKey) ||
                 e.button === 1) {
                 this.dragging = true;
             }
@@ -428,7 +428,7 @@ room-editor.aPanel.aView
             } else if ( // Make more tiles or copies if Shift key is down
                 e.shiftKey && this.mouseDown &&
                 (
-                    (this.tab === 'roomcopies' && this.currentType !== -1) ||
+                    (this.tab === 'roomcopies' && this.currentTemplate !== -1) ||
                     this.tab === 'roomtiles'
                 )
             ) {
@@ -556,21 +556,21 @@ room-editor.aPanel.aView
         this.resortRoom = () => {
             // Make an array of all the backgrounds, tile layers and copies, and then sort it.
             this.stack = this.room.copies.concat(this.room.backgrounds).concat(this.room.tiles);
-            const projTypes = global.currentProject.types;
+            const projTemplates = global.currentProject.templates;
             this.stack.sort((a, b) => {
-                const depthA = a.depth !== void 0 ? a.depth : projTypes[glob.typemap[a.uid]].depth,
-                      depthB = b.depth !== void 0 ? b.depth : projTypes[glob.typemap[b.uid]].depth;
+                const depthA = a.depth !== void 0 ? a.depth : projTemplates[glob.templatemap[a.uid]].depth,
+                      depthB = b.depth !== void 0 ? b.depth : projTemplates[glob.templatemap[b.uid]].depth;
                 return depthA - depthB;
             });
         };
         this.resortRoom();
-        var typesChanged = () => {
-            this.currentType = -1;
+        var templatesChanged = () => {
+            this.currentTemplate = -1;
             this.resortRoom();
         };
-        window.signals.on('typesChanged', typesChanged);
+        window.signals.on('templatesChanged', templatesChanged);
         this.on('unmount', () => {
-            window.signals.off('typesChanged', typesChanged);
+            window.signals.off('templatesChanged', templatesChanged);
         });
         /** Canvas redrawing, with all the backgrounds, tiles and copies */
         // eslint-disable-next-line max-lines-per-function, complexity
@@ -643,12 +643,12 @@ room-editor.aPanel.aView
                     }
                 } else { // A copy
                     const copy = this.stack[i],
-                          type = global.currentProject.types[glob.typemap[copy.uid]];
+                          template = global.currentProject.templates[glob.templatemap[copy.uid]];
                     let texture, gra, w, h, ox, oy,
                         grax, gray; // texture's drawing center
-                    if (type.texture !== -1) {
-                        texture = glob.texturemap[type.texture];
-                        gra = glob.texturemap[type.texture].g;
+                    if (template.texture !== -1) {
+                        texture = glob.texturemap[template.texture];
+                        gra = glob.texturemap[template.texture].g;
                         w = gra.width;
                         h = gra.height;
                         ox = gra.offx;
@@ -672,7 +672,7 @@ room-editor.aPanel.aView
                         );
                         canvas.x.restore();
                     } else {
-                        const tex = glob.texturemap[type.texture].g;
+                        const tex = glob.texturemap[template.texture].g;
                         canvas.x.drawImage(
                             texture,
                             tex.offx, tex.offy, w, h,
@@ -732,8 +732,8 @@ room-editor.aPanel.aView
             cx.lineCap = 'round';
             if (typeof x1 !== 'number') {
                 const copy = x1,
-                      type = global.currentProject.types[glob.typemap[copy.uid]],
-                      texture = glob.texturemap[type.texture].g;
+                      template = global.currentProject.templates[glob.templatemap[copy.uid]],
+                      texture = glob.texturemap[template.texture].g;
                 var left, top, height, width;
                 if (copy.tr) {
                     cx.strokeStyle = localStorage.UItheme === 'Night' ? '#44dbb5' : '#446adb';
@@ -753,7 +753,7 @@ room-editor.aPanel.aView
                     cx.stroke();
                     return;
                 }
-                if (type.texture !== -1) {
+                if (template.texture !== -1) {
                     left = copy.x - texture.axis[0] * (copy.tx || 1) - 1.5;
                     top = copy.y - texture.axis[1] * (copy.ty || 1) - 1.5;
                     width = texture.width * (copy.tx || 1) + 3;

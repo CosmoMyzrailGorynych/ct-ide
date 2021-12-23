@@ -389,9 +389,6 @@
         "newGridSize": "",
         "setPreviewTexture": ""
     },
-    "types": {
-        "create": "Erstellen"
-    },
     "rooms": {
         "create": "Neuer Raum",
         "makeStarting": "Als Startraum festlegen"
@@ -561,9 +558,9 @@
         "sounds": "Sounds",
         "ui": "UI",
         "fx": "FX",
-        "types": "Types",
         "restart": "",
-        "project": ""
+        "project": "",
+        "templates": "Types"
     },
     "copyCustomProperties": {
         "customProperties": "",
@@ -662,18 +659,6 @@
         "moveTilesToLayer": "Auf Ebene verschieben",
         "shiftTiles": "Tiles verschieben",
         "changeCopyRotation": ""
-    },
-    "typeView": {
-        "change": "Sprite tauschen",
-        "create": "On Create",
-        "depth": "Ebene:",
-        "destroy": "On Destroy",
-        "done": "Fertig",
-        "draw": "Draw",
-        "learnAboutTypes": "Lernen Sie Types zu programmieren",
-        "name": "Name:",
-        "step": "On Step",
-        "visible": ""
     },
     "styleView": {
         "active": "Aktiv",
@@ -782,5 +767,20 @@
     },
     "licensePanel": {
         "ctjsLicense": "Ct.js Lizenz (MIT)"
+    },
+    "templates": {
+        "create": "Erstellen"
+    },
+    "templateView": {
+        "change": "Sprite tauschen",
+        "create": "On Create",
+        "depth": "Ebene:",
+        "destroy": "On Destroy",
+        "done": "Fertig",
+        "draw": "Draw",
+        "learnAboutTypes": "Lernen Sie Types zu programmieren",
+        "name": "Name:",
+        "step": "On Step",
+        "visible": ""
     }
 }

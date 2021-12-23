@@ -1,34 +1,34 @@
-room-type-picker.room-editor-TypeSwatches.tabbed.tall
+room-template-picker.room-editor-TemplateSwatches.tabbed.tall
     .aSearchWrap
         input.inline(type="text" onkeyup="{fuseSearch}" ref="fusesearch")
         svg.feather
             use(xlink:href="#search")
-    .room-editor-aTypeSwatch(
+    .room-editor-aTemplateSwatch(
         if="{!searchResults}"
-        onclick="{parent.roomUnpickType}"
+        onclick="{parent.roomUnpickTemplate}"
         class="{active: opts.current === -1}"
     )
         span {voc.selectAndMove}
         svg.feather
             use(xlink:href="#move")
-    .room-editor-aTypeSwatch(
-        each="{type in (searchResults? searchResults : types)}"
-        title="{type.name}"
-        onclick="{selectType(type)}"
-        class="{active: parent.opts.current === type}"
+    .room-editor-aTemplateSwatch(
+        each="{template in (searchResults? searchResults : templates)}"
+        title="{template.name}"
+        onclick="{selectTemplate(template)}"
+        class="{active: parent.opts.current === template}"
     )
-        span {type.name}
+        span {template.name}
         img(
-            src="{type.texture === -1? 'data/img/notexture.png' : (glob.texturemap[type.texture].src.split('?')[0] + '_prev.png?' + getTypeTextureRevision(type))}"
+            src="{template.texture === -1? 'data/img/notexture.png' : (glob.texturemap[template.texture].src.split('?')[0] + '_prev.png?' + getTextureRevision(template))}"
             draggable="false"
         )
-    .room-editor-aTypeSwatch.filler
-    .room-editor-aTypeSwatch.filler
-    .room-editor-aTypeSwatch.filler
-    .room-editor-aTypeSwatch.filler
-    .room-editor-aTypeSwatch.filler
-    .room-editor-aTypeSwatch.filler
-    .room-editor-aTypeSwatch.filler
+    .room-editor-aTemplateSwatch.filler
+    .room-editor-aTemplateSwatch.filler
+    .room-editor-aTemplateSwatch.filler
+    .room-editor-aTemplateSwatch.filler
+    .room-editor-aTemplateSwatch.filler
+    .room-editor-aTemplateSwatch.filler
+    .room-editor-aTemplateSwatch.filler
 
     script.
         const glob = require('./data/node_requires/glob');
@@ -37,7 +37,7 @@ room-type-picker.room-editor-TypeSwatches.tabbed.tall
         this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
 
-        this.getTypeTextureRevision = type => glob.texturemap[type.texture].g.lastmod;
+        this.getTextureRevision = template => glob.texturemap[template.texture].g.lastmod;
 
         const fuseOptions = {
             shouldSort: true,
@@ -57,31 +57,31 @@ room-type-picker.room-editor-TypeSwatches.tabbed.tall
             }
             var val = (e ? e.target.value : this.refs.fusesearch.value).trim();
             if (val) {
-                var fuse = new Fuse(this.types, fuseOptions);
+                var fuse = new Fuse(this.templates, fuseOptions);
                 this.searchResults = fuse.search(val);
             } else {
                 this.searchResults = null;
             }
         };
-        this.selectType = type => () => {
-            this.parent.currentType = type;
+        this.selectTemplate = template => () => {
+            this.parent.currentTemplate = template;
             this.parent.selectedCopies = false;
         };
 
-        this.updateTypeList = () => {
-            this.types = [...global.currentProject.types];
-            this.types.sort((a, b) => a.name.localeCompare(b.name));
+        this.updateTemplateList = () => {
+            this.templates = [...global.currentProject.templates];
+            this.templates.sort((a, b) => a.name.localeCompare(b.name));
             this.fuseSearch();
         };
-        this.updateTypeList();
-        var typesChanged = () => {
-            this.updateTypeList();
+        this.updateTemplateList();
+        var templatesChanged = () => {
+            this.updateTemplateList();
             this.update();
         };
 
-        window.signals.on('typesChanged', typesChanged);
+        window.signals.on('templatesChanged', templatesChanged);
         this.on('unmount', () => {
-            window.signals.off('typesChanged', typesChanged);
+            window.signals.off('templatesChanged', templatesChanged);
         });
 
         this.on('mount', () => {

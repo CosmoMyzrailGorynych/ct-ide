@@ -16,7 +16,7 @@ const defaultProjectTemplate = {
     },
     textures: [],
     skeletons: [],
-    types: [],
+    templates: [],
     sounds: [],
     styles: [],
     rooms: [],

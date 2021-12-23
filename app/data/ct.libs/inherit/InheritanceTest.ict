@@ -93,7 +93,7 @@ textures:
     uid: 387786ba-1c6d-4020-8aa5-1268faa5cbeb
     padding: 1
 skeletons: []
-types:
+templates:
   - name: AbstractMonster
     depth: 0
     oncreate: |-
@@ -141,7 +141,7 @@ types:
     texture: 15293c51-6bdc-4a62-941e-0b08656796a7
     extends:
       cgroup: Monster
-      inheritedType@@type: 4af80a30-74f1-4a68-b7e4-286c7b74e76e
+      inheritedTemplate@@template: 4af80a30-74f1-4a68-b7e4-286c7b74e76e
     uid: 8abcc9f5-e912-46a6-9a3f-ac3e254a4b95
     lastmod: 1596073030644
   - name: Monster_Green
@@ -153,7 +153,7 @@ types:
     texture: 5ae654a1-1d13-4f67-ac3d-cccec7b01cc4
     extends:
       cgroup: Monster
-      inheritedType@@type: 4af80a30-74f1-4a68-b7e4-286c7b74e76e
+      inheritedTemplate@@template: 4af80a30-74f1-4a68-b7e4-286c7b74e76e
     uid: 78739be5-145e-45aa-8e4b-473b92c19551
     lastmod: 1596073032003
   - name: Monster_Red_Squished
@@ -167,7 +167,7 @@ types:
     ondestroy: ''
     texture: 15293c51-6bdc-4a62-941e-0b08656796a7
     extends:
-      inheritedType@@type: 8abcc9f5-e912-46a6-9a3f-ac3e254a4b95
+      inheritedTemplate@@template: 8abcc9f5-e912-46a6-9a3f-ac3e254a4b95
       cgroup: Monster
     uid: 48c1951e-071c-47ef-a710-ef2ef0978017
     lastmod: 1596073029453
@@ -181,12 +181,12 @@ rooms:
 
       ct.assert(
           ct.inherit.isParent('AbstractMonster', 'Monster_Red_Squished'),
-          'ct.inherit.isParent works with two types (two strings)'
+          'ct.inherit.isParent works with two templates (two strings)'
       );
 
       ct.assert(
           ct.inherit.isChild('Monster_Green', 'AbstractMonster'),
-          'ct.inherit.isChild works with two types (two strings)'
+          'ct.inherit.isChild works with two templates (two strings)'
       );
 
       ct.assert(
@@ -195,17 +195,17 @@ rooms:
       );
 
       ct.assert(
-          ct.inherit.isChild(ct.types.list['Monster_Green'][0], 'AbstractMonster'),
-          'ct.inherit.isChild works against a copy and a type'
+          ct.inherit.isChild(ct.templates.list['Monster_Green'][0], 'AbstractMonster'),
+          'ct.inherit.isChild works against a copy and a template'
       );
 
       ct.assert(
-          ct.inherit.isChild(ct.types.list['Monster_Red_Squished'][0], ct.types.list['Monster_Red'][0]),
+          ct.inherit.isChild(ct.templates.list['Monster_Red_Squished'][0], ct.templates.list['Monster_Red'][0]),
           'ct.inherit.isChild works against two copies'
       );
 
       ct.assert(
-          ct.types.list['Monster_Red_Squished'][0].depth !== 0,
+          ct.templates.list['Monster_Red_Squished'][0].depth !== 0,
           'Monster_Red_Squished has a proper depth, which means that its grandparent\'s code was executed'
       );
 

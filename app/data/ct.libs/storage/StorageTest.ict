@@ -13,7 +13,7 @@ libs:
   storage: {}
 textures: []
 skeletons: []
-types: []
+templates: []
 sounds: []
 styles: []
 rooms:

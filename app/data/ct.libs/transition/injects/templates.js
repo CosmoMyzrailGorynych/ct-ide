@@ -1,9 +1,9 @@
 /* eslint-disable max-lines-per-function */
-(function ctTransitionTypes() {
+(function ctTransitionTemplates() {
     const devourer = () => {
         void 0;
     };
-    ct.types.templates.CTTRANSITION_FADE = {
+    ct.templates.templates.CTTRANSITION_FADE = {
         onStep() {
             void 0;
         },
@@ -33,7 +33,7 @@
             });
         }
     };
-    ct.types.templates.CTTRANSITION_SCALE = {
+    ct.templates.templates.CTTRANSITION_SCALE = {
         onStep() {
             void 0;
         },
@@ -83,7 +83,7 @@
             .catch(devourer);
         }
     };
-    ct.types.templates.CTTRANSITION_SLIDE = {
+    ct.templates.templates.CTTRANSITION_SLIDE = {
         onStep() {
             void 0;
         },
@@ -182,7 +182,7 @@
         }
     };
 
-    ct.types.templates.CTTRANSITION_CIRCLE = {
+    ct.templates.templates.CTTRANSITION_CIRCLE = {
         onStep() {
             void 0;
         },

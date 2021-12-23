@@ -1,40 +1,40 @@
-if ((this instanceof ct.types.Copy) && this.inheritedType) {
+if ((this instanceof ct.templates.Copy) && this.inheritedTemplate) {
     this.inherit = {
         onCreate: () => {
-            const oldType = this.type,
-                  oldInherited = this.inheritedType;
-            this.type = this.inheritedType;
-            this.inheritedType = ct.types.templates[this.inheritedType].extends.inheritedType;
-            ct.types.templates[oldInherited].onCreate.apply(this);
-            this.type = oldType;
-            this.inheritedType = oldInherited;
+            const oldTemplate = this.template,
+                  oldInherited = this.inheritedTemplate;
+            this.template = this.inheritedTemplate;
+            this.inheritedTemplate = ct.templates.templates[this.inheritedTemplate].extends.inheritedTemplate;
+            ct.templates.templates[oldInherited].onCreate.apply(this);
+            this.template = oldTemplate;
+            this.inheritedTemplate = oldInherited;
         },
         onStep: () => {
-            const oldType = this.type,
-                  oldInherited = this.inheritedType;
-            this.type = this.inheritedType;
-            this.inheritedType = ct.types.templates[this.inheritedType].extends.inheritedType;
-            ct.types.templates[oldInherited].onStep.apply(this);
-            this.type = oldType;
-            this.inheritedType = oldInherited;
+            const oldTemplate = this.template,
+                  oldInherited = this.inheritedTemplate;
+            this.template = this.inheritedTemplate;
+            this.inheritedTemplate = ct.templates.templates[this.inheritedTemplate].extends.inheritedTemplate;
+            ct.templates.templates[oldInherited].onStep.apply(this);
+            this.template = oldTemplate;
+            this.inheritedTemplate = oldInherited;
         },
         onDraw: () => {
-            const oldType = this.type,
-                  oldInherited = this.inheritedType;
-            this.type = this.inheritedType;
-            this.inheritedType = ct.types.templates[this.inheritedType].extends.inheritedType;
-            ct.types.templates[oldInherited].onDraw.apply(this);
-            this.type = oldType;
-            this.inheritedType = oldInherited;
+            const oldTemplate = this.template,
+                  oldInherited = this.inheritedTemplate;
+            this.template = this.inheritedTemplate;
+            this.inheritedTemplate = ct.templates.templates[this.inheritedTemplate].extends.inheritedTemplate;
+            ct.templates.templates[oldInherited].onDraw.apply(this);
+            this.template = oldTemplate;
+            this.inheritedTemplate = oldInherited;
         },
         onDestroy: () => {
-            const oldType = this.type,
-                  oldInherited = this.inheritedType;
-            this.type = this.inheritedType;
-            this.inheritedType = ct.types.templates[this.inheritedType].extends.inheritedType;
-            ct.types.templates[oldInherited].onDestroy.apply(this);
-            this.type = oldType;
-            this.inheritedType = oldInherited;
+            const oldTemplate = this.template,
+                  oldInherited = this.inheritedTemplate;
+            this.template = this.inheritedTemplate;
+            this.inheritedTemplate = ct.templates.templates[this.inheritedTemplate].extends.inheritedTemplate;
+            ct.templates.templates[oldInherited].onDestroy.apply(this);
+            this.template = oldTemplate;
+            this.inheritedTemplate = oldInherited;
         }
     };
 }

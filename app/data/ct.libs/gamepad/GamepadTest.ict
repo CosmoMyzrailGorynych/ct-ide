@@ -461,7 +461,7 @@
     }
   ],
   "skeletons": [],
-  "types": [
+  "templates": [
     {
       "name": "ThumbL",
       "depth": 0,

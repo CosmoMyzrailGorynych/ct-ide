@@ -292,9 +292,6 @@
         "import": "Importă TTF",
         "italic": "Italic"
     },
-    "types": {
-        "create": "Crează"
-    },
     "rooms": {
         "create": "Adaugă o nouă cameră",
         "makeStarting": "Setază ca și cameră de pornire"
@@ -558,12 +555,12 @@
         "rooms": "Camere",
         "sounds": "Sunete",
         "ui": "Interfață",
-        "types": "Tipuri",
         "launchHotkeys": "",
         "patrons": "",
         "fx": "",
         "restart": "",
-        "project": ""
+        "project": "",
+        "templates": "Tipuri"
     },
     "copyCustomProperties": {
         "customProperties": "",
@@ -662,18 +659,6 @@
         "moveTilesToLayer": "Mută în layer",
         "shiftTiles": "Deplasează tile-urile",
         "changeCopyRotation": ""
-    },
-    "typeView": {
-        "change": "Schimbă sprite-ul",
-        "create": "La Creare",
-        "depth": "Adâncime:",
-        "destroy": "La Distrugere",
-        "done": "Gata",
-        "draw": "Desenare",
-        "learnAboutTypes": "Învață despre programarea tipurilor",
-        "name": "Nume:",
-        "step": "La Fiecare Pas",
-        "visible": ""
     },
     "styleView": {
         "active": "Activ",
@@ -782,5 +767,20 @@
     },
     "licensePanel": {
         "ctjsLicense": ""
+    },
+    "templates": {
+        "create": "Crează"
+    },
+    "templateView": {
+        "change": "Schimbă sprite-ul",
+        "create": "La Creare",
+        "depth": "Adâncime:",
+        "destroy": "La Distrugere",
+        "done": "Gata",
+        "draw": "Desenare",
+        "learnAboutTypes": "Învață despre programarea tipurilor",
+        "name": "Nume:",
+        "step": "La Fiecare Pas",
+        "visible": ""
     }
 }

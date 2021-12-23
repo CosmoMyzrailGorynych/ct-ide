@@ -57,7 +57,7 @@
         ui: 'Editing fonts and styles',
         fx: 'Creating particle systems',
         sounds: 'Managing sounds',
-        types: 'Coding types',
+        templates: 'Coding templates',
         rooms: 'Designing rooms'
     };
 

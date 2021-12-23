@@ -389,9 +389,6 @@
         "newGridSize": "新的网格大小:",
         "setPreviewTexture": "设置预览纹理"
     },
-    "types": {
-        "create": "创建"
-    },
     "rooms": {
         "create": "添加新的",
         "makeStarting": "设置为起始的房间"
@@ -518,7 +515,7 @@
         "restart": "重新启动",
         "launch": "编译并运行",
         "launchHotkeys": "(F5; Alt+F5 在默认浏览器中运行)",
-        "types": "类型"
+        "templates": "类型"
     },
     "docsPanel": {
         "documentation": "文档",
@@ -663,18 +660,6 @@
         "shiftTiles": "移动瓷砖",
         "changeCopyRotation": "旋转"
     },
-    "typeView": {
-        "change": "改变精灵",
-        "create": "创建时",
-        "depth": "深度:",
-        "destroy": "销毁时",
-        "done": "完成",
-        "draw": "绘制",
-        "learnAboutTypes": "了解编码类型",
-        "name": "名称:",
-        "step": "同步",
-        "visible": "显示"
-    },
     "styleView": {
         "active": "激活",
         "alignment": "对齐",
@@ -782,5 +767,20 @@
     },
     "licensePanel": {
         "ctjsLicense": "Ct.js 许可证 (MIT)"
+    },
+    "templates": {
+        "create": "创建"
+    },
+    "templateView": {
+        "change": "改变精灵",
+        "create": "创建时",
+        "depth": "深度:",
+        "destroy": "销毁时",
+        "done": "完成",
+        "draw": "绘制",
+        "learnAboutTypes": "了解编码类型",
+        "name": "名称:",
+        "step": "同步",
+        "visible": "显示"
     }
 }

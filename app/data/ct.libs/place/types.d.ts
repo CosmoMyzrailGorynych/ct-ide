@@ -103,11 +103,11 @@ declare namespace ct {
          */
         function occupied(me: Copy, cgroup?: string, multiple?: false|void): Copy | false;
 
-        function meet(me: Copy, type: string, multiple: true): Array<Copy>;
-        function meet(me: Copy, x: number, y: number, type: string, multiple: true): Array<Copy>;
+        function meet(me: Copy, template: string, multiple: true): Array<Copy>;
+        function meet(me: Copy, x: number, y: number, template: string, multiple: true): Array<Copy>;
         /**
          * Checks whether there is a collision between a Copy `me` and any of the Copies
-         * of a given `type`. If `x` and `y` are skipped, the current coordinates of `me` will be used.
+         * of a given `template`. If `x` and `y` are skipped, the current coordinates of `me` will be used.
          *
          * If `multiple` is `true`, the function will find all the possible collisions,
          * and will always return an array, which is either empty or filled with collided copies.
@@ -116,28 +116,28 @@ declare namespace ct {
          * @param {Copy} me The object to check collisions on
          * @param {number} x The x coordinate to check, as if `me` was placed there
          * @param {number} y The y coordinate to check, as if `me` was placed there
-         * @param {String} [type] The name of the type to check against
+         * @param {String} [template] The name of the template to check against
          * @param {Boolean} [multiple=false] If it is `true`, the function will return an array of all the collided objects.
          *                                   If it is `false` (default), it will return a copy with the first collision
          * @returns {Copy|Array<Copy>} The collided copy, or an array of all the detected collisions (if `multiple` is `true`)
          */
-        function meet(me: Copy, x: number, y: number, type: string, multiple?: false|void): Copy | false;
+        function meet(me: Copy, x: number, y: number, template: string, multiple?: false|void): Copy | false;
 
         /**
          * Checks whether there is a collision between a Copy `me` and any of the Copies
-         * of a given `type`.
+         * of a given `template`.
          *
          * If `multiple` is `true`, the function will find all the possible collisions,
          * and will always return an array, which is either empty or filled with collided copies.
          * Otherwise, it returns `false` or the first Copy which blocked `me`.
          *
          * @param {Copy} me The object to check collisions on
-         * @param {String} [type] The name of the type to check against
+         * @param {String} [template] The name of the template to check against
          * @param {Boolean} [multiple=false] If it is `true`, the function will return an array of all the collided objects.
          *                                   If it is `false` (default), it will return a copy with the first collision
          * @returns {Copy|Array<Copy>} The collided copy, or an array of all the detected collisions (if `multiple` is `true`)
          */
-        function meet(me: Copy, type: string, multiple?: false|void): Copy | false;
+        function meet(me: Copy, template: string, multiple?: false|void): Copy | false;
 
         /**
          * Checks for a collision between a copy `me` and a tile layer of a given collision group (`cgroup`).
@@ -164,20 +164,20 @@ declare namespace ct {
         var lastdist: number;
 
         /**
-         * Gets the nearest Copy of a given `type`.
+         * Gets the nearest Copy of a given `template`.
          * @param {number} x The horizontal position of the starting point
          * @param {number} y The vertical position of the starting point
-         * @param {string} type The name of the type against which copies the distance will be measured
+         * @param {string} template The name of the template against which copies the distance will be measured
          */
-        function nearest(x: number, y: number, type: string): Copy | false;
+        function nearest(x: number, y: number, template: string): Copy | false;
 
         /**
-         * Gets the furthest Copy of a given `type`.
+         * Gets the furthest Copy of a given `template`.
          * @param {number} x The horizontal position of the starting point
          * @param {number} y The vertical position of the starting point
-         * @param {string} type The name of the type against which copies the distance will be measured
+         * @param {string} template The name of the template against which copies the distance will be measured
          */
-        function furthest(x: number, y: number, type: string): Copy | false;
+        function furthest(x: number, y: number, template: string): Copy | false;
 
         /**
          * Moves a copy by `stepSize` in a given `direction` untill a `maxLength` is reached
@@ -228,7 +228,7 @@ declare namespace ct {
          * `cgroup` is an option parameter that tells to test collisions against
          * a certain collision group.
          *
-         * This function doesn't require the `ct.types.move(this);` call.
+         * This function doesn't require the `ct.templates.move(this);` call.
          *
          * @param {Copy} me The copy to move
          * @param {number} x The target x coordinate to reach

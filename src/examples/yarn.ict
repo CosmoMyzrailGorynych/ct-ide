@@ -7,7 +7,7 @@ notes: >-
 
   — Settings > Scripts > storyEngine
 
-  — OptionButton and NextButton types, as they advance the story by player's
+  — OptionButton and NextButton templates, as they advance the story by player's
   interactions.
 libs:
   place:
@@ -160,7 +160,7 @@ textures:
     lastmod: 1588660086800
     padding: 1
 skeletons: []
-types:
+templates:
   - name: TheCat
     depth: 0
     oncreate: ''
@@ -555,13 +555,13 @@ scripts:
 
           story.on('newnode', () => {
               // Clear the previous buttons and blurbs
-              for (const button of ct.types.list['NextButton']) {
+              for (const button of ct.templates.list['NextButton']) {
                   button.kill = true;
               }
-              for (const button of ct.types.list['OptionButton']) {
+              for (const button of ct.templates.list['OptionButton']) {
                   button.kill = true;
               }
-              for (const blurb of ct.types.list['Blurb']) {
+              for (const blurb of ct.templates.list['Blurb']) {
                   blurb.kill = true;
               }
               // Update the node's title
@@ -573,10 +573,10 @@ scripts:
               // them to add a better feeling of authority
               if (story.character === 'Player') {
                   // Clear the previous buttons
-                  for (const button of ct.types.list['NextButton']) {
+                  for (const button of ct.templates.list['NextButton']) {
                       button.kill = true;
                   }
-                  ct.types.copy('NextButton', ct.camera.width / 2, ct.camera.height - 60, {
+                  ct.templates.copy('NextButton', ct.camera.width / 2, ct.camera.height - 60, {
                       option: story.body // it will appear in button's OnCreate event as this.option
                   });
               } else {
@@ -586,14 +586,14 @@ scripts:
                       blurbY = latestBlurb.y + latestBlurb.text.height + (spacing? 32 : 0);
                   }
                   if (story.character === 'Girl') {
-                      latestBlurb = ct.types.copy('Blurb', 500, blurbY, {
+                      latestBlurb = ct.templates.copy('Blurb', 500, blurbY, {
                           blurb: story.body, // it will appear in Blurb's OnCreate event as this.blurb
                           blurbColor: 0xDB449A,
                           blurbWidth: 800
                       });
                   } else {
                       // Assume it is the cat's line
-                      latestBlurb = ct.types.copy('Blurb', 100, blurbY, {
+                      latestBlurb = ct.templates.copy('Blurb', 100, blurbY, {
                           blurb: story.body // it will appear in Blurb's OnCreate event as this.blurb
                       });
                   }
@@ -603,7 +603,7 @@ scripts:
           story.on('options', options => {
               let buttonY = ct.camera.height - 60;
               for (const option of options) {
-                  ct.types.copy('OptionButton', ct.camera.width / 2, buttonY, {
+                  ct.templates.copy('OptionButton', ct.camera.width / 2, buttonY, {
                       option: option // it will appear in button's OnCreate event as this.option
                   });
                   buttonY -= 120;
@@ -611,7 +611,7 @@ scripts:
           });
 
           story.on('command', command => {
-              const cat = ct.types.list['TheCat'][0];
+              const cat = ct.templates.list['TheCat'][0];
               if (command === 'cat happy') {
                   cat.tex = 'CatHappy';
               } else if (command === 'cat thoughtful') {
@@ -625,9 +625,9 @@ scripts:
               } else if (command === 'a girl walks in') {
                   // Create it offscreen. The copy has an animation in its 
                   // OnCreate code and will roll in 
-                  ct.types.copy('TheGirl', -200, ct.viewHeight);
+                  ct.templates.copy('TheGirl', -200, ct.viewHeight);
               } else if (command === 'a girl walks out') {
-                  const theGirl = ct.types.list['TheGirl'][0];
+                  const theGirl = ct.templates.list['TheGirl'][0];
                   ct.tween.add({
                       obj: theGirl,
                       fields: {
@@ -646,16 +646,16 @@ scripts:
           // The story has enden
           story.on('drained', () => {
               // Clear the previous buttons and blurbs
-              for (const button of ct.types.list['NextButton']) {
+              for (const button of ct.templates.list['NextButton']) {
                   button.kill = true;
               }
-              for (const button of ct.types.list['OptionButton']) {
+              for (const button of ct.templates.list['OptionButton']) {
                   button.kill = true;
               }
-              for (const blurb of ct.types.list['Blurb']) {
+              for (const blurb of ct.templates.list['Blurb']) {
                   blurb.kill = true;
               }
-              ct.types.copy('RestartButton', ct.camera.width / 2, ct.camera.height - 60);
+              ct.templates.copy('RestartButton', ct.camera.width / 2, ct.camera.height - 60);
           });
           
           story.start();

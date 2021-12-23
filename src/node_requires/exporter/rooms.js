@@ -41,7 +41,7 @@ const stringifyRooms = proj => {
         const roomCopy = JSON.parse(JSON.stringify(r.copies));
         const objs = [];
         for (const copy of roomCopy) {
-            copy.type = proj.types[glob.typemap[copy.uid]].name;
+            copy.template = proj.templates[glob.templatemap[copy.uid]].name;
             delete copy.uid;
             objs.push(copy);
         }

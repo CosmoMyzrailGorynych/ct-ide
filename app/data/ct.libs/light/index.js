@@ -62,7 +62,7 @@
         },
         updateOne(light) {
             if (light.owner) {
-                if (!ct.types.exists(light.owner)) {
+                if (!ct.templates.exists(light.owner)) {
                     ct.light.remove(light);
                     return;
                 }

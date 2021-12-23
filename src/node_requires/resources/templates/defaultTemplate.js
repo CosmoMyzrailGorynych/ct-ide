@@ -1,7 +1,7 @@
 const generateGUID = require('./../../generateGUID');
 
-const defaultTypeTemplate = {
-    name: 'NewType',
+const defaultTemplate = {
+    name: 'NewTemplate',
     depth: 0,
     oncreate: '',
     onstep: 'this.move();',
@@ -14,7 +14,7 @@ const defaultTypeTemplate = {
 module.exports = {
     get() {
         return ({
-            ...defaultTypeTemplate,
+            ...defaultTemplate,
             extends: {},
             uid: generateGUID()
         });

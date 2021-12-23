@@ -22,7 +22,7 @@ libs:
   touch: {}
   transition: {}
   tween: {}
-types:
+templates:
   - name: Player_Blue
     depth: 5
     oncreate: >-
@@ -104,11 +104,11 @@ types:
 
       // If the spacebar is pressed and at least a quarter of second has passed,
 
-      // create a new laser bullet depending on a weapon type
+      // create a new laser bullet depending on a weapon template
 
       if (ct.actions.Shoot.down) {
           if (this.weapon === 'simple' && this.shootTimer > 10) {
-              ct.types.copy('Laser_Simple_Blue', this.x + 75*this.shootSwitch, this.y);
+              ct.templates.copy('Laser_Simple_Blue', this.x + 75*this.shootSwitch, this.y);
               this.shootSwitch *= -1;
               ct.sound.spawn('Laser_Small');
               // Reset shooting delay
@@ -116,23 +116,23 @@ types:
           }
           if (this.weapon === 'spread' && this.shootTimer > 15) {
               // create three laser bolts
-              ct.types.copy('Laser_Simple_Blue', this.x-75, this.y);
-              ct.types.copy('Laser_Simple_Blue', this.x, this.y - 20);
-              ct.types.copy('Laser_Simple_Blue', this.x+75, this.y);
+              ct.templates.copy('Laser_Simple_Blue', this.x-75, this.y);
+              ct.templates.copy('Laser_Simple_Blue', this.x, this.y - 20);
+              ct.templates.copy('Laser_Simple_Blue', this.x+75, this.y);
               ct.sound.spawn('Laser_Small');
               // Reset shooting delay
               this.shootTimer = 0;
           }
           if (this.weapon === 'bolt' && this.shootTimer > 40) {
               // slow, but powerful
-              ct.types.copy('Laser_Bolt_Blue', this.x, this.y);
+              ct.templates.copy('Laser_Bolt_Blue', this.x, this.y);
               ct.sound.spawn('Laser_Medium');
               // Reset shooting delay
               this.shootTimer = 0;
           }
           if (this.weapon === 'cross' && this.shootTimer > 10) {
               // this one shoots much faster
-              var bullet = ct.types.copy('Laser_Cross_Blue', this.x, this.y);
+              var bullet = ct.templates.copy('Laser_Cross_Blue', this.x, this.y);
               bullet.scale.x = this.shootSwitch;
               this.shootSwitch *= -1;
               ct.sound.spawn('Laser_Medium');
@@ -298,13 +298,13 @@ types:
       this.asteroidTimer -= ct.delta;
       if (this.asteroidTimer <= 0) {
           this.asteroidTimer = ct.random.range(ct.speed * 0.5, ct.speed * 3);
-          ct.types.copy('AbstractMeteor', ct.random(ct.camera.width), -100);
+          ct.templates.copy('AbstractMeteor', ct.random(ct.camera.width), -100);
       }
 
       this.encounterTimer -= ct.delta;
       if (this.encounterTimer <= 0) {
           this.encounterTimer = ct.random.range(ct.speed * 4, ct.speed * 7);
-          ct.types.copy('Enemy_Shooter', ct.random(ct.camera.width), -100);
+          ct.templates.copy('Enemy_Shooter', ct.random(ct.camera.width), -100);
       }
 
       this.waveTimer -= ct.delta;
@@ -312,29 +312,29 @@ types:
           this.waveTimer = ct.random.range(ct.speed * 20, ct.speed * 45);
 
           // create 5 enemies, one by one in 1.4 seconds
-          ct.types.copy('Enemy_Wiggler', 0, -100);
+          ct.templates.copy('Enemy_Wiggler', 0, -100);
           ct.u.wait(350)
           .then(() => {
-              ct.types.copy('Enemy_Wiggler', 0, -100);
+              ct.templates.copy('Enemy_Wiggler', 0, -100);
           })
           .then(() => ct.u.wait(350))
           .then(() => {
-              ct.types.copy('Enemy_Wiggler', 0, -100);
+              ct.templates.copy('Enemy_Wiggler', 0, -100);
           })
           .then(() => ct.u.wait(350))
           .then(() => {
-              ct.types.copy('Enemy_Wiggler', 0, -100);
+              ct.templates.copy('Enemy_Wiggler', 0, -100);
           })
           .then(() => ct.u.wait(350))
           .then(() => {
-              ct.types.copy('Enemy_Wiggler', 0, -100);
+              ct.templates.copy('Enemy_Wiggler', 0, -100);
           });
       }
 
       this.ufoTimer -= ct.delta;
       if (this.ufoTimer <= 0) {
           this.ufoTimer = ct.random.range(ct.speed * 60, ct.speed * 90);
-          ct.types.copy('Enemy_Ufo', ct.random(ct.camera.width), -100);
+          ct.templates.copy('Enemy_Ufo', ct.random(ct.camera.width), -100);
       }
     ondraw: ''
     ondestroy: ''
@@ -393,7 +393,7 @@ types:
     depth: 3
     oncreate: |-
       // get the player
-      var player = ct.types.list['Player_Blue'][0];
+      var player = ct.templates.list['Player_Blue'][0];
       if (player.lives < 90) {
           // add a chance to spawn a life bonus if there is 2 or less lives
           this.tex = ct.random.dice('Bonus_Lives', 'Bonus_Spread', 'Bonus_Bolt', 'Bonus_Cross', 'Bonus_Slowmo');
@@ -494,7 +494,7 @@ types:
 
       this.shootTimer -= ct.delta;
       if (this.shootTimer < 0) {
-          ct.types.copy('EnemyBullet', this.x, this.y);
+          ct.templates.copy('EnemyBullet', this.x, this.y);
           this.shootTimer = 3 * ct.speed;
       }
 
@@ -520,7 +520,7 @@ types:
 
 
       if (ct.random.chance(10)) {
-          ct.types.copy('AbstractBonus', this.x, this.y);
+          ct.templates.copy('AbstractBonus', this.x, this.y);
       }
 
 
@@ -580,9 +580,9 @@ types:
 
       this.shootTimer -= ct.delta;
 
-      if (this.shootTimer < 0 && ct.types.list['Player_Blue'].length) {
-          const hero = ct.types.list['Player_Blue'][0];
-          const bullet = ct.types.copy('EnemyBullet', this.x, this.y);
+      if (this.shootTimer < 0 && ct.templates.list['Player_Blue'].length) {
+          const hero = ct.templates.list['Player_Blue'][0];
+          const bullet = ct.templates.copy('EnemyBullet', this.x, this.y);
           bullet.direction = bullet.angle = ct.u.pdn(this.x, this.y, hero.x, hero.y)
           this.shootTimer = 3 * ct.speed;
       }
@@ -613,7 +613,7 @@ types:
 
 
       if (ct.random.chance(10)) {
-          ct.types.copy('AbstractBonus', this.x, this.y);
+          ct.templates.copy('AbstractBonus', this.x, this.y);
       }
 
 
@@ -679,13 +679,13 @@ types:
               duration: 1500
           });
 
-          var bullet1 = ct.types.copy('Laser_Cross_Red', this.x, this.y);
+          var bullet1 = ct.templates.copy('Laser_Cross_Red', this.x, this.y);
           bullet1.direction = 90 - 30;
-          var bullet2 = ct.types.copy('Laser_Cross_Red', this.x, this.y);
+          var bullet2 = ct.templates.copy('Laser_Cross_Red', this.x, this.y);
           bullet2.direction = 90 + 30;
-          var bullet3 = ct.types.copy('Laser_Cross_Red', this.x, this.y);
+          var bullet3 = ct.templates.copy('Laser_Cross_Red', this.x, this.y);
           bullet3.direction = 90 - 60;
-          var bullet4 = ct.types.copy('Laser_Cross_Red', this.x, this.y);
+          var bullet4 = ct.templates.copy('Laser_Cross_Red', this.x, this.y);
           bullet4.direction = 90 + 60;
       }
 
@@ -700,7 +700,7 @@ types:
       ct.sound.spawn(ct.random.dice('Explosion_01', 'Explosion_02',
       'Explosion_03'));
 
-      ct.types.copy('AbstractBonus', this.x, this.y);
+      ct.templates.copy('AbstractBonus', this.x, this.y);
     uid: ebfeaaab-f16a-48fa-b97c-687945f99668
     lastmod: 1603949043730
     extends: {}
@@ -810,7 +810,7 @@ types:
 
       this.health = 1500;
 
-      ct.types.copy('Healthbar_Base_Boss', 0, 0, {},
+      ct.templates.copy('Healthbar_Base_Boss', 0, 0, {},
       ct.rooms.list['UI_Layer'][0]);
 
 
@@ -1005,17 +1005,17 @@ types:
           this.shootTimer -= ct.delta;
           if (this.shootTimer <= 0) {
               if (this.shootRandom) {
-                  const bullet = ct.types.copy('Laser_Cross_Red', this.x, this.y - 80);
+                  const bullet = ct.templates.copy('Laser_Cross_Red', this.x, this.y - 80);
                   bullet.angle = ct.random.range(240, -60);
                   this.shootTimer += 10;
-              } else if (this.shootAtPlayer && ct.types.list['Player_Blue'].length) {
+              } else if (this.shootAtPlayer && ct.templates.list['Player_Blue'].length) {
                   this.shootTimer += 40;
-                  const bullet = ct.types.copy('Laser_Cross_Red', this.x, this.y - 80);
-                  const player = ct.types.list['Player_Blue'][0];
+                  const bullet = ct.templates.copy('Laser_Cross_Red', this.x, this.y - 80);
+                  const player = ct.templates.list['Player_Blue'][0];
                   bullet.angle = ct.u.pdn(this.x, this.y, player.x, player.y);
               } else if (this.shootStar) {
                   for (let i = 180; i < 360; i += 30) {
-                      const bullet = ct.types.copy('Laser_Cross_Red', this.x, this.y - 80, {
+                      const bullet = ct.templates.copy('Laser_Cross_Red', this.x, this.y - 80, {
                           noSound: true
                       });
                       bullet.angle = i;
@@ -1031,8 +1031,8 @@ types:
           calculateDamage(this, obstacle);
       }
 
-      if (ct.room.pullPlayerIn && ct.types.list['Player_Blue'].length) {
-          const player = ct.types.list['Player_Blue'][0];
+      if (ct.room.pullPlayerIn && ct.templates.list['Player_Blue'].length) {
+          const player = ct.templates.list['Player_Blue'][0];
           player.addSpeed(ct.delta * 0.9, ct.u.pdn(player.x, player.y, this.x, this.y));
       }
     ondraw: ''
@@ -1073,7 +1073,7 @@ types:
       /* Precise placing made with the aid of graphics editor */
 
 
-      const player = ct.types.list['Player_Blue'][0]
+      const player = ct.templates.list['Player_Blue'][0]
 
       this.healthBar.height = 52;
 
@@ -1083,8 +1083,8 @@ types:
       this.addChild(this.healthBar);
     onstep: this.move();
     ondraw: |-
-      if (ct.types.list['Player_Blue'].length) {
-          const player = ct.types.list['Player_Blue'][0];
+      if (ct.templates.list['Player_Blue'].length) {
+          const player = ct.templates.list['Player_Blue'][0];
           // calculate the needed length
           const width = player.lives / 100 * (794 + 20);
           // blend current and target length
@@ -1134,7 +1134,7 @@ types:
       /* Precise placing made with the aid of graphics editor */
 
 
-      const boss = ct.types.list['DatBoss'][0]
+      const boss = ct.templates.list['DatBoss'][0]
 
       this.healthBar.height = 52;
 
@@ -1144,8 +1144,8 @@ types:
       this.addChild(this.healthBar);
     onstep: this.move();
     ondraw: |-
-      if (ct.types.list['DatBoss'].length) {
-          const boss = ct.types.list['DatBoss'][0];
+      if (ct.templates.list['DatBoss'].length) {
+          const boss = ct.templates.list['DatBoss'][0];
           // calculate the needed length
           const width = boss.health / 1500 * (794 + 20);
           // blend current and target length
@@ -1318,7 +1318,7 @@ rooms:
       this.asteroidTimer -= ct.delta;
       if (this.asteroidTimer <= 0) {
           this.asteroidTimer = ct.random.range(ct.speed * 0.5, ct.speed * 3);
-          ct.types.copy('Asteroid', ct.random(ct.camera.width), -100);
+          ct.templates.copy('Asteroid', ct.random(ct.camera.width), -100);
       }
 
       if (this.bossEncountered) {
@@ -1328,7 +1328,7 @@ rooms:
       this.encounterTimer -= ct.delta;
       if (this.encounterTimer <= 0) {
           this.encounterTimer = ct.random.range(ct.speed * 4, ct.speed * 7);
-          ct.types.copy('Enemy_Shooter', ct.random(ct.camera.width), -100);
+          ct.templates.copy('Enemy_Shooter', ct.random(ct.camera.width), -100);
       }
 
       this.waveTimer -= ct.delta;
@@ -1342,13 +1342,13 @@ rooms:
       this.bomberTimer -= ct.delta;
       if (this.bomberTimer <= 0) {
           this.bomberTimer = ct.random.range(ct.speed * 60, ct.speed * 90);
-          ct.types.copy('Enemy_Bomber', ct.random(ct.camera.width), -100);
+          ct.templates.copy('Enemy_Bomber', ct.random(ct.camera.width), -100);
       }
 
       this.bossTimer -= ct.delta;
       if (this.bossTimer <= 0) {
           this.bossEncountered = true;
-          ct.types.copy('DatBoss', ct.camera.width / 2, -300);
+          ct.templates.copy('DatBoss', ct.camera.width / 2, -300);
       }
     ondraw: 'this.scoreLabel.text = ''Score: '' + this.score;'
     onleave: localStorage.score = this.score;
@@ -1581,9 +1581,9 @@ rooms:
     ondraw: |-
       this.scoreLabel.text = 'Score: ' + this.score;
 
-      if (ct.types.list.Player_Blue.length) {
+      if (ct.templates.list.Player_Blue.length) {
           for (var i = 0; i < 3; i++) {
-              this.shipIcons[i].visible = ct.types.list.Player_Blue[0].lives > i;
+              this.shipIcons[i].visible = ct.templates.list.Player_Blue[0].lives > i;
           }
       }
     onleave: ''
@@ -1755,7 +1755,7 @@ rooms:
         exts: {}
 soundtick: 9
 roomtick: 3
-typetick: 19
+templatetick: 19
 styletick: 2
 starting: 0
 settings:
@@ -1802,7 +1802,7 @@ scripts:
     code: |-
       const calculateDamage = function(ship, bullet) {
           ship.health -= bullet.damage;
-          if (bullet.type === 'Laser_Bolt_Blue') { // Bolts may survive the collision do additional damage
+          if (bullet.template === 'Laser_Bolt_Blue') { // Bolts may survive the collision do additional damage
               if (ship.health < 0) {
                   bullet.damage += ship.health; // bring overkill damage back to the bullet
                   if (bullet.damage <= 0) {
@@ -1822,30 +1822,30 @@ scripts:
     code: |-
       const spawnWigglers = function(startingPhase) {
           // create 5 enemies, one by one in 1.4 seconds
-          ct.types.copy('Enemy_Wiggler', 0, -100, {
+          ct.templates.copy('Enemy_Wiggler', 0, -100, {
               phase: startingPhase
           });
           ct.u.wait(350)
           .then(() => {
-              ct.types.copy('Enemy_Wiggler', 0, -100, {
+              ct.templates.copy('Enemy_Wiggler', 0, -100, {
                   phase: startingPhase
               });
           })
           .then(() => ct.u.wait(350))
           .then(() => {
-              ct.types.copy('Enemy_Wiggler', 0, -100, {
+              ct.templates.copy('Enemy_Wiggler', 0, -100, {
                   phase: startingPhase
               });
           })
           .then(() => ct.u.wait(350))
           .then(() => {
-              ct.types.copy('Enemy_Wiggler', 0, -100, {
+              ct.templates.copy('Enemy_Wiggler', 0, -100, {
                   phase: startingPhase
               });
           })
           .then(() => ct.u.wait(350))
           .then(() => {
-              ct.types.copy('Enemy_Wiggler', 0, -100, {
+              ct.templates.copy('Enemy_Wiggler', 0, -100, {
                   phase: startingPhase
               });
           });

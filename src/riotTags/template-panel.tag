@@ -1,55 +1,55 @@
-types-panel.aPanel.aView
+templates-panel.aPanel.aView
     asset-viewer(
-        collection="{global.currentProject.types}"
-        contextmenu="{onTypeContextMenu}"
-        namespace="types"
-        assettype="types"
-        click="{openType}"
+        collection="{global.currentProject.templates}"
+        contextmenu="{onTemplateContextMenu}"
+        namespace="templates"
+        assettype="templates"
+        click="{openTemplate}"
         thumbnails="{thumbnails}"
         icons="{icons}"
-        ref="types"
+        ref="templates"
         class="tall"
     )
-        button#typecreate(onclick="{parent.typeCreate}" title="Control+N" data-hotkey="Control+n")
+        button#templatecreate(onclick="{parent.templateCreate}" title="Control+N" data-hotkey="Control+n")
             svg.feather
                 use(xlink:href="#plus")
             span {parent.voc.create}
-    type-editor(if="{editingType}" type="{editedType}")
-    context-menu(menu="{typeMenu}" ref="typeMenu")
+    template-editor(if="{editingTemplate}" template="{editedTemplate}")
+    context-menu(menu="{templateMenu}" ref="templateMenu")
     script.
-        this.namespace = 'types';
+        this.namespace = 'templates';
         this.mixin(window.riotVoc);
         this.mixin(window.riotNiceTime);
         const glob = require('./data/node_requires/glob');
         this.glob = glob;
-        this.editingType = false;
+        this.editingTemplate = false;
         this.sort = 'name';
         this.sortReverse = false;
 
-        this.thumbnails = require('./data/node_requires/resources/types').getTypePreview;
-        this.icons = function icons(type) {
+        this.thumbnails = require('./data/node_requires/resources/templates').getTemplatePreview;
+        this.icons = function icons(template) {
             const icons = [];
-            if (type.oncreate.trim()) {
+            if (template.oncreate.trim()) {
                 icons.push('sun');
             }
-            if (type.onstep.trim()) {
+            if (template.onstep.trim()) {
                 icons.push('skip-forward');
             }
-            if (type.ondraw.trim()) {
+            if (template.ondraw.trim()) {
                 icons.push('edit-2');
             }
-            if (type.ondestroy.trim()) {
+            if (template.ondestroy.trim()) {
                 icons.push('trash');
             }
             return icons;
         };
 
         this.setUpPanel = () => {
-            this.fillTypeMap();
-            this.refs.types.updateList();
+            this.fillTemplateMap();
+            this.refs.templates.updateList();
             this.searchResults = null;
-            this.editingType = false;
-            this.editedType = null;
+            this.editingTemplate = false;
+            this.editedTemplate = null;
             this.update();
         };
         window.signals.on('projectLoaded', this.setUpPanel);
@@ -58,46 +58,46 @@ types-panel.aPanel.aView
             window.signals.off('projectLoaded', this.setUpPanel);
         });
 
-        this.getTypeTextureRevision = type => glob.texturemap[type.texture].g.lastmod;
+        this.getTextureRevision = template => glob.texturemap[template.texture].g.lastmod;
 
-        this.fillTypeMap = () => {
-            delete glob.typemap;
-            glob.typemap = {};
-            for (let i = 0; i < global.currentProject.types.length; i++) {
-                glob.typemap[global.currentProject.types[i].uid] = i;
+        this.fillTemplateMap = () => {
+            delete glob.templatemap;
+            glob.templatemap = {};
+            for (let i = 0; i < global.currentProject.templates.length; i++) {
+                glob.templatemap[global.currentProject.templates[i].uid] = i;
             }
         };
-        this.typeCreate = e => {
-            if (this.editingType) {
+        this.templateCreate = e => {
+            if (this.editingTemplate) {
                 return false;
             }
 
-            const typesAPI = require('./data/node_requires/resources/types/');
-            const type = typesAPI.createNewType();
-            if (!this.refs.types.currentGroup.isUngroupedGroup) {
-                type.group = this.refs.types.currentGroup.uid;
+            const templatesAPI = require('./data/node_requires/resources/templates/');
+            const template = templatesAPI.createNewTemplate();
+            if (!this.refs.templates.currentGroup.isUngroupedGroup) {
+                template.group = this.refs.templates.currentGroup.uid;
             }
-            this.refs.types.updateList();
-            this.openType(type)(e);
+            this.refs.templates.updateList();
+            this.openTemplate(template)(e);
 
             if (!e) {
                 this.update();
             }
             return true;
         };
-        this.openType = type => () => {
-            this.editingType = true;
-            this.editedType = type;
+        this.openTemplate = template => () => {
+            this.editingTemplate = true;
+            this.editedTemplate = template;
         };
 
         const assetListener = asset => {
             const [assetType, uid] = asset.split('/');
-            if (assetType !== 'types') {
+            if (assetType !== 'templates') {
                 return;
             }
-            const type = global.currentProject.types.find(type => type.uid === uid);
-            this.openType(type)();
-            this.refs.types.updateList();
+            const template = global.currentProject.templates.find(template => template.uid === uid);
+            this.openTemplate(template)();
+            this.refs.templates.updateList();
             if (this.parent) {
                 this.parent.update();
             }
@@ -107,33 +107,33 @@ types-panel.aPanel.aView
             window.orders.off('openAsset', assetListener);
         });
 
-        this.typeMenu = {
+        this.templateMenu = {
             items: [{
                 label: window.languageJSON.common.open,
                 click: () => {
-                    this.openType(this.currentType)();
+                    this.openTemplate(this.currentTemplate)();
                     this.update();
                 }
             }, {
                 label: window.languageJSON.common.copyName,
                 click: () => {
-                    nw.Clipboard.get().set(this.currentType.name, 'text');
+                    nw.Clipboard.get().set(this.currentTemplate.name, 'text');
                 }
             }, {
                 label: window.languageJSON.common.duplicate,
                 click: () => {
                     alertify
-                    .defaultValue(this.currentType.name + '_dup')
+                    .defaultValue(this.currentTemplate.name + '_dup')
                     .prompt(window.languageJSON.common.newName)
                     .then(e => {
                         if (e.inputValue !== '' && e.buttonClicked !== 'cancel') {
                             const generateGUID = require('./data/node_requires/generateGUID');
-                            const tp = JSON.parse(JSON.stringify(this.currentType));
+                            const tp = JSON.parse(JSON.stringify(this.currentTemplate));
                             tp.name = e.inputValue;
                             tp.uid = generateGUID();
-                            global.currentProject.types.push(tp);
-                            this.fillTypeMap();
-                            this.refs.types.updateList();
+                            global.currentProject.templates.push(tp);
+                            this.fillTemplateMap();
+                            this.refs.templates.updateList();
                             this.update();
                         }
                     });
@@ -142,30 +142,30 @@ types-panel.aPanel.aView
                 label: window.languageJSON.common.rename,
                 click: () => {
                     alertify
-                    .defaultValue(this.currentType.name)
+                    .defaultValue(this.currentTemplate.name)
                     .prompt(window.languageJSON.common.newName)
                     .then(e => {
                         if (e.inputValue !== '' && e.buttonClicked !== 'cancel') {
-                            this.currentType.name = e.inputValue;
+                            this.currentTemplate.name = e.inputValue;
                             this.update();
                         }
                     });
                 }
             }, {
-                type: 'separator'
+                template: 'separator'
             }, {
                 label: window.languageJSON.common.delete,
                 click: () => {
                     alertify
                     .okBtn(window.languageJSON.common.delete)
                     .cancelBtn(window.languageJSON.common.cancel)
-                    .confirm(window.languageJSON.common.confirmDelete.replace('{0}', this.currentType.name))
+                    .confirm(window.languageJSON.common.confirmDelete.replace('{0}', this.currentTemplate.name))
                     .then(e => {
                         if (e.buttonClicked === 'ok') {
                             for (const room of global.currentProject.rooms) {
                                 let i = 0;
                                 while (i < room.copies.length) {
-                                    if (room.copies[i].uid === this.currentType.uid) {
+                                    if (room.copies[i].uid === this.currentTemplate.uid) {
                                         room.copies.splice(i, 1);
                                     } else {
                                         i++;
@@ -173,12 +173,12 @@ types-panel.aPanel.aView
                                 }
                             }
 
-                            const ind = global.currentProject.types.indexOf(this.currentType);
-                            global.currentProject.types.splice(ind, 1);
-                            this.refs.types.updateList();
-                            this.fillTypeMap();
+                            const ind = global.currentProject.templates.indexOf(this.currentTemplate);
+                            global.currentProject.templates.splice(ind, 1);
+                            this.refs.templates.updateList();
+                            this.fillTemplateMap();
                             this.update();
-                            window.signals.trigger('typesChanged');
+                            window.signals.trigger('templatesChanged');
                             alertify
                             .okBtn(window.languageJSON.common.ok)
                             .cancelBtn(window.languageJSON.common.cancel);
@@ -187,8 +187,8 @@ types-panel.aPanel.aView
                 }
             }]
         };
-        this.onTypeContextMenu = type => e => {
-            this.currentType = type;
-            this.refs.typeMenu.popup(e.clientX, e.clientY);
+        this.onTemplateContextMenu = template => e => {
+            this.currentTemplate = template;
+            this.refs.templateMenu.popup(e.clientX, e.clientY);
             e.preventDefault();
         };

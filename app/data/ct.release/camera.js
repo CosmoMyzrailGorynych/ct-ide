@@ -447,3 +447,4 @@ const Camera = (function Camera() {
     }
     return Camera;
 })(ct);
+void Camera;

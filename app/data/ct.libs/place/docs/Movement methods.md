@@ -32,4 +32,4 @@ Tries to reach the target with a simple obstacle avoidance algorithm.
 
 `me` is a copy to move around, `x` and `y` is a target point; `length` is the maximum amount of pixels to move in one step. `cgroup` is an option parameter that tells to test collisions against a certain collision group.
 
-This function doesn't require the `ct.types.move(this);` call.
+This function doesn't require the `ct.templates.move(this);` call.

@@ -39,10 +39,10 @@ app-view.flexcol
                 svg.feather
                     use(xlink:href="#headphones")
                 span {voc.sounds}
-            li(onclick="{changeTab('types')}" class="{active: tab === 'types'}" data-hotkey="Control+6" title="Control+6")
+            li(onclick="{changeTab('templates')}" class="{active: tab === 'templates'}" data-hotkey="Control+6" title="Control+6")
                 svg.feather
-                    use(xlink:href="#type")
-                span {voc.types}
+                    use(xlink:href="#template")
+                span {voc.templates}
             li(onclick="{changeTab('rooms')}" class="{active: tab === 'rooms'}" data-hotkey="Control+7" title="Control+7")
                 svg.feather
                     use(xlink:href="#room")
@@ -55,7 +55,7 @@ app-view.flexcol
         ui-panel(show="{tab === 'ui'}" data-hotkey-scope="ui")
         fx-panel(show="{tab === 'fx'}" data-hotkey-scope="fx")
         sounds-panel(show="{tab === 'sounds'}" data-hotkey-scope="sounds")
-        types-panel(show="{tab === 'types'}" data-hotkey-scope="types")
+        templates-panel(show="{tab === 'templates'}" data-hotkey-scope="templates")
         rooms-panel(show="{tab === 'rooms'}" data-hotkey-scope="rooms")
         patreon-screen(if="{tab === 'patrons'}" data-hotkey-scope="patrons")
     new-project-onboarding(if="{sessionStorage.showOnboarding && localStorage.showOnboarding !== 'off'}")

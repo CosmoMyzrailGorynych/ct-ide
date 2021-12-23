@@ -10,7 +10,7 @@ libs:
   keyboard: {}
   fittoscreen:
     mode: scaleFit
-types:
+templates:
   - name: Robot
     depth: 0
     oncreate: |-
@@ -228,7 +228,7 @@ types:
           if (ct.room.lives < 3) {
               ct.room.lives++;
               this.kill = true;
-              ct.emitters.follow(ct.types.list['Robot'][0], 'Trail', {
+              ct.emitters.follow(ct.templates.list['Robot'][0], 'Trail', {
                   position: {
                       x: 0,
                       y: -70
@@ -5319,7 +5319,7 @@ scripts:
     code: |-
       var inGameRoomStart = function (room) {
           room.crystals = 0;
-          room.crystalsTotal = ct.types.list['GreenCrystal'].length;
+          room.crystalsTotal = ct.templates.list['GreenCrystal'].length;
           room.lives = 3;
           ct.rooms.append('LayerUI', {
               isUi: true

@@ -578,7 +578,7 @@ textures:
     padding: 1
     lastmod: 1585717811993
 skeletons: []
-types:
+templates:
   - name: Logo
     depth: 0
     oncreate: ''
@@ -883,7 +883,7 @@ rooms:
       ct.transition.circleIn(500, 0x446ADB);
     onstep: |-
       // If there is no cat in the room…
-      if (!ct.types.list['PotatoCat'].length) {
+      if (!ct.templates.list['PotatoCat'].length) {
           // stop further execution
           return;
       }
@@ -896,8 +896,8 @@ rooms:
           this.obstacleTimer += ct.speed * 2;
 
           // Create two tubes
-          var tube1 = ct.types.copy('Tube', ct.camera.right + 250, ct.camera.bottom - 130); // At the bottom of the camera
-          var tube2 = ct.types.copy('Tube', ct.camera.right + 250, ct.camera.top - 70); // At the top
+          var tube1 = ct.templates.copy('Tube', ct.camera.right + 250, ct.camera.bottom - 130); // At the bottom of the camera
+          var tube2 = ct.templates.copy('Tube', ct.camera.right + 250, ct.camera.top - 70); // At the top
 
           // Change second tube's texture depending on which texture is used in the first tube
           if (tube1.tex === 'Tube_01') { // Shortest tube will result in the longest tube
@@ -916,7 +916,7 @@ rooms:
 
           // Create a star bonus with 30% chance somewhere in between top and bottom edge, with 300px padding.
           if (ct.random.chance(30)) {
-              ct.types.copy('Star', ct.camera.right + 250 + 500, ct.random.range(ct.camera.top + 300, ct.camera.bottom - 300));
+              ct.templates.copy('Star', ct.camera.right + 250 + 500, ct.random.range(ct.camera.top + 300, ct.camera.bottom - 300));
           }
       }
     ondraw: ''

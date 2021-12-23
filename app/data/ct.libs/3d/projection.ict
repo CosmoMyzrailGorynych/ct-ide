@@ -143,7 +143,7 @@ textures:
     padding: 1
     lastmod: 1597380952030
 skeletons: []
-types:
+templates:
   - name: Sand
     depth: 0
     oncreate: this.depth = (Math.random() - 0.5) * 20;

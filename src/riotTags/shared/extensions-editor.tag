@@ -4,7 +4,7 @@
 
     @attribute entity (riot object)
         An object to which apply editing to.
-    @attribute type (string, 'type'|'tileLayer'|'room'|'copy')
+    @attribute type (string, 'template'|'tileLayer'|'room'|'copy')
         The type of the edited asset. Not needed if customextends is set.
 
     @attribute [compact] (atomic)
@@ -30,11 +30,11 @@
               'number' | 'slider' | 'sliderAndNumber' | 'point2D' | 'color' |
               'checkbox' | 'radio' | 'select' |
               'group' | 'table' |
-              'texture' | 'type' | 'icon',
+              'texture' | 'template' | 'icon',
         key?: string, // the name of a JSON key to write into the `opts.entity`. Not needed for hN types, but required otherwise
                       // The key may have special suffixes that tell the exporter to unwrap foreign keys (resources' UIDs) into asset names.
-                      // These are supposed to always be used with `'type'` and `'texture'` input types.
-                      // Example: 'enemyClass@@type', 'background@@texture'.
+                      // These are supposed to always be used with `'template'` and `'texture'` input types.
+                      // Example: 'enemyClass@@template', 'background@@texture'.
         default?: any, // the default value; it is not written to the `opts.entity`, but is shown in inputs.
         help?: string, // a text label describing the purpose of a field
         required?: boolean, // Adds an asterisk and will mark empty or unchecked fields with red color. ⚠ No other logic provided!
@@ -156,8 +156,8 @@ extensions-editor
                             value="{parent.opts.entity[ext.key]? parent.opts.entity[ext.key][1] : ext.default[1]}"
                             onchange="{ensurePoint2DAndWire(parent.opts.entity, ext.key, ext.default, 'this.opts.entity.'+ ext.key + '.1')}"
                         )
-                type-input(
-                    if="{ext.type === 'type'}"
+                template-input(
+                    if="{ext.type === 'template'}"
                     class="{compact: parent.opts.compact, wide: parent.opts.wide, invalid: ext.required && (parent.opts.entity[ext.key] || ext.default) === -1}"
                     val="{parent.opts.entity[ext.key] || ext.default}"
                     onselected="{writeUid(ext.key)}"

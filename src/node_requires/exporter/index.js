@@ -10,7 +10,7 @@ const {getSounds} = require('./sounds');
 const {stringifyRooms, getStartingRoom} = require('./rooms');
 const {stringifyStyles} = require('./styles');
 const {stringifyTandems} = require('./emitterTandems');
-const {stringifyTypes} = require('./types');
+const {stringifyTemplates} = require('./templates');
 const {stringifyContent} = require('./content');
 const {bundleFonts, bakeBitmapFonts} = require('./fonts');
 const {bakeFavicons} = require('./icons');
@@ -133,7 +133,7 @@ const getInjections = async () => {
         css: '',
         res: '',
         resload: '',
-        types: '',
+        templates: '',
         rooms: '',
         styles: '',
         htmltop: '',
@@ -210,7 +210,7 @@ const exportCtProject = async (project, projdir, production) => {
         'res.js',
         'rooms.js',
         'styles.js',
-        'types.js',
+        'templates.js',
         'tilemaps.js',
         'timer.js'
     ];
@@ -272,9 +272,9 @@ const exportCtProject = async (project, projdir, production) => {
         }, injections);
     }
 
-    const types = stringifyTypes(project);
-    buffer += template(await sources['types.js'], {
-        types
+    const templates = stringifyTemplates(project);
+    buffer += template(await sources['templates.js'], {
+        templates
     }, injections);
 
     // Add four files in a sequence, without additional transforms

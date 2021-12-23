@@ -1,7 +1,7 @@
 /**
  * @extends {PIXI.AnimatedSprite}
  * @class
- * @property {string} type The name of the type from which the copy was created
+ * @property {string} template The name of the template from which the copy was created
  * @property {IShapeTemplate} shape The collision shape of a copy
  * @property {number} depth The relative position of a copy in a drawing stack.
  * Higher values will draw the copy on top of those with lower ones
@@ -9,10 +9,10 @@
  * @property {number} yprev The vertical location of a copy in the previous frame
  * @property {number} xstart The starting location of a copy,
  * meaning the point where it was created — either by placing it in a room with ct.IDE
- * or by calling `ct.types.copy`.
+ * or by calling `ct.templates.copy`.
  * @property {number} ystart The starting location of a copy,
  * meaning the point where it was created — either by placing it in a room with ct.IDE
- * or by calling `ct.types.copy`.
+ * or by calling `ct.templates.copy`.
  * @property {number} hspeed The horizontal speed of a copy
  * @property {number} vspeed The vertical speed of a copy
  * @property {number} gravity The acceleration that pulls a copy at each frame
@@ -29,7 +29,7 @@ const Copy = (function Copy() {
     class Copy extends PIXI.AnimatedSprite {
         /**
          * Creates an instance of Copy.
-         * @param {string} type The name of the type to copy
+         * @param {string} template The name of the template to copy
          * @param {number} [x] The x coordinate of a new copy. Defaults to 0.
          * @param {number} [y] The y coordinate of a new copy. Defaults to 0.
          * @param {object} [exts] An optional object with additional properties
@@ -38,14 +38,14 @@ const Copy = (function Copy() {
          * before its OnCreate event. Defaults to ct.room.
          * @memberof Copy
          */
-        constructor(type, x, y, exts, container) {
+        constructor(template, x, y, exts, container) {
             container = container || ct.room;
             var t;
-            if (type) {
-                if (!(type in ct.types.templates)) {
-                    throw new Error(`[ct.types] An attempt to create a copy of a non-existent type \`${type}\` detected. A typo?`);
+            if (template) {
+                if (!(template in ct.templates.templates)) {
+                    throw new Error(`[ct.templates] An attempt to create a copy of a non-existent template \`${template}\` detected. A typo?`);
                 }
-                t = ct.types.templates[type];
+                t = ct.templates.templates[template];
                 if (t.texture && t.texture !== '-1') {
                     const textures = ct.res.getTexture(t.texture);
                     super(textures);
@@ -55,7 +55,7 @@ const Copy = (function Copy() {
                 } else {
                     super([PIXI.Texture.EMPTY]);
                 }
-                this.type = type;
+                this.template = template;
                 this.parent = container;
                 if (t.extends) {
                     ct.u.ext(this, t.extends);
@@ -88,9 +88,9 @@ const Copy = (function Copy() {
                 }
             }
             this.uid = ++uid;
-            if (type) {
+            if (template) {
                 ct.u.ext(this, {
-                    type,
+                    template,
                     depth: t.depth,
                     onStep: t.onStep,
                     onDraw: t.onDraw,
@@ -101,13 +101,13 @@ const Copy = (function Copy() {
                 if (exts && exts.depth !== void 0) {
                     this.depth = exts.depth;
                 }
-                if (ct.types.list[type]) {
-                    ct.types.list[type].push(this);
+                if (ct.templates.list[template]) {
+                    ct.templates.list[template].push(this);
                 } else {
-                    ct.types.list[type] = [this];
+                    ct.templates.list[template] = [this];
                 }
                 this.onBeforeCreateModifier();
-                ct.types.templates[type].onCreate.apply(this);
+                ct.templates.templates[template].onCreate.apply(this);
             }
             return this;
         }
@@ -246,20 +246,20 @@ const Copy = (function Copy() {
     return Copy;
 })();
 
-(function ctTypeAddon(ct) {
+(function ctTemplateAddon(ct) {
     const onCreateModifier = function () {
         /*%oncreate%*/
     };
 
     /**
-     * An object with properties and methods for manipulating types and copies,
+     * An object with properties and methods for manipulating templates and copies,
      * mainly for finding particular copies and creating new ones.
      * @namespace
      */
-    ct.types = {
+    ct.templates = {
         Copy,
         /**
-         * An object that contains arrays of copies of all types.
+         * An object that contains arrays of copies of all templates.
          * @type {Object.<string,Array<Copy>>}
          */
         list: {
@@ -267,13 +267,13 @@ const Copy = (function Copy() {
             TILEMAP: []
         },
         /**
-         * A map of all the templates of types exported from ct.IDE.
+         * A map of all the templates of templates exported from ct.IDE.
          * @type {object}
          */
         templates: { },
         /**
-         * Creates a new copy of a given type inside a specific room.
-         * @param {string} type The name of the type to use
+         * Creates a new copy of a given template inside a specific room.
+         * @param {string} template The name of the template to use
          * @param {number} [x] The x coordinate of a new copy. Defaults to 0.
          * @param {number} [y] The y coordinate of a new copy. Defaults to 0.
          * @param {Room} [room] The room to which add the copy.
@@ -282,28 +282,29 @@ const Copy = (function Copy() {
          * to the copy prior to its OnCreate event.
          * @returns {Copy} the created copy.
          */
-        copyIntoRoom(type, x = 0, y = 0, room, exts) {
+        copyIntoRoom(template, x = 0, y = 0, room, exts) {
             // An advanced constructor. Returns a Copy
             if (!room || !(room instanceof Room)) {
-                throw new Error(`Attempt to spawn a copy of type ${type} inside an invalid room. Room's value provided: ${room}`);
+                throw new Error(`Attempt to spawn a copy of template ${template} inside an invalid room. Room's value provided: ${room}`);
             }
-            const obj = new Copy(type, x, y, exts);
+            const obj = new Copy(template, x, y, exts);
             room.addChild(obj);
             ct.stack.push(obj);
             onCreateModifier.apply(obj);
             return obj;
         },
         /**
-         * Creates a new copy of a given type inside the current root room.
-         * A shorthand for `ct.types.copyIntoRoom(type, x, y, ct.room, exts)`
-         * @param {string} type The name of the type to use
+         * Creates a new copy of a given template inside the current root room.
+         * A shorthand for `ct.templates.copyIntoRoom(template, x, y, ct.room, exts)`
+         * @param {string} template The name of the template to use
          * @param {number} [x] The x coordinate of a new copy. Defaults to 0.
          * @param {number} [y] The y coordinate of a new copy. Defaults to 0.
          * @param {object} [exts] An optional object which parameters will be applied
          * to the copy prior to its OnCreate event.
+         * @returns {Copy} the created copy.
          */
-        copy(type, x = 0, y = 0, exts) {
-            ct.types.copyIntoRoom(type, x, y, ct.room, exts);
+        copy(template, x = 0, y = 0, exts) {
+            return ct.templates.copyIntoRoom(template, x, y, ct.room, exts);
         },
         /**
          * Applies a function to each copy in the current room
@@ -328,26 +329,26 @@ const Copy = (function Copy() {
         },
         /**
          * Applies a function to a given object (e.g. to a copy)
-         * @param {string} type The name of the type to perform function upon.
+         * @param {string} template The name of the template to perform function upon.
          * @param {Function} function The function to be applied.
          */
-        withType(type, func) {
-            for (const copy of ct.types.list[type]) {
+        withTemplate(template, func) {
+            for (const copy of ct.templates.list[template]) {
                 func.apply(copy, this);
             }
         },
         /**
-         * Checks whether there are any copies of this type's name.
-         * Will throw an error if you pass an invalid type name.
-         * @param {string} type The name of a type to check.
+         * Checks whether there are any copies of this template's name.
+         * Will throw an error if you pass an invalid template name.
+         * @param {string} template The name of a template to check.
          * @returns {boolean} Returns `true` if at least one copy exists in a room;
          * `false` otherwise.
          */
-        exists(type) {
-            if (!(type in ct.types.templates)) {
-                throw new Error(`[ct.types] ct.types.exists: There is no such type ${type}.`);
+        exists(template) {
+            if (!(template in ct.templates.templates)) {
+                throw new Error(`[ct.templates] ct.templates.exists: There is no such template ${template}.`);
             }
-            return ct.types.list[type].length > 0;
+            return ct.templates.list[template].length > 0;
         },
         /**
          * Checks whether a given object exists in game's world.
@@ -373,24 +374,23 @@ const Copy = (function Copy() {
             return obj instanceof Copy;
         }
     };
-    ct.types.addSpd = ct.types.addSpeed;
 
-    /*@types@*/
-    /*%types%*/
+    /*@templates@*/
+    /*%templates%*/
 
-    ct.types.beforeStep = function beforeStep() {
+    ct.templates.beforeStep = function beforeStep() {
         /*%beforestep%*/
     };
-    ct.types.afterStep = function afterStep() {
+    ct.templates.afterStep = function afterStep() {
         /*%afterstep%*/
     };
-    ct.types.beforeDraw = function beforeDraw() {
+    ct.templates.beforeDraw = function beforeDraw() {
         /*%beforedraw%*/
     };
-    ct.types.afterDraw = function afterDraw() {
+    ct.templates.afterDraw = function afterDraw() {
         /*%afterdraw%*/
     };
-    ct.types.onDestroy = function onDestroy() {
+    ct.templates.onDestroy = function onDestroy() {
         /*%ondestroy%*/
     };
 })(ct);

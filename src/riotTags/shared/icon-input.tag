@@ -4,7 +4,7 @@
     @attribute val (icon's name)
         Current input's value
     @attribute header (string)
-        Passed to the type selector, showing a header in the top-left corner.
+        Passed to the template selector, showing a header in the top-left corner.
     @attribute onselected (riot function)
         A callback that is called when an icon is selected.
         Passes the icon's name (a string).

@@ -30,7 +30,7 @@ class Tilemap extends PIXI.Container {
         } else {
             this.tiles = [];
         }
-        ct.types.list.TILEMAP.push(this);
+        ct.templates.list.TILEMAP.push(this);
     }
     /**
      * Adds a tile to the tilemap. Will throw an error if a tilemap is cached.
@@ -152,7 +152,7 @@ class Tilemap extends PIXI.Container {
         this.cached = true;
     }
 }
-ct.types.Tilemap = Tilemap;
+ct.templates.Tilemap = Tilemap;
 
 /**
  * @namespace

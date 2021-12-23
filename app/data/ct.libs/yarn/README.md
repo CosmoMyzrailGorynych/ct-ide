@@ -48,7 +48,7 @@ To advance through your story, use `story.say('The answer')`:
 ```js
 ct.room.story.on('options', options => {
     for (const option of options) {
-        ct.types.copy('SpeechButton', 0, 0, {
+        ct.templates.copy('SpeechButton', 0, 0, {
             option: option
         });
     }

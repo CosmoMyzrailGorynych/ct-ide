@@ -693,7 +693,7 @@ textures:
     source: /home/comigo/UNWORK/Tileset/Cat_Death.png
     lastmod: 1599531850969
 skeletons: []
-types:
+templates:
   - name: Elevator
     depth: 0
     oncreate: this.transitionStarted = false;
@@ -729,13 +729,13 @@ types:
       this.moveContinuousByAxes('Solid');
 
       if (ct.actions.Shoot.pressed) {
-          const bullet = ct.types.copy('Bullet', this.x, this.y - 5);
+          const bullet = ct.templates.copy('Bullet', this.x, this.y - 5);
           bullet.direction = ct.u.pdn(this.x, this.y - 5, ct.mouse.x, ct.mouse.y);
       }
 
       if (ct.place.meet(this, 'Gap')) {
           this.kill = true;
-          ct.types.copy('Cat_Falling', this.x, this.y - 8);
+          ct.templates.copy('Cat_Falling', this.x, this.y - 8);
       }
 
       const checkpoint = ct.place.meet(this, 'Checkpoint');
@@ -761,7 +761,7 @@ types:
               ct.room.lives --;
               if (ct.room.lives <= 0) {
                   this.kill = true;
-                  ct.types.copy('Cat_Death', this.x, this.y);
+                  ct.templates.copy('Cat_Death', this.x, this.y);
               }
               return;
           }
@@ -800,7 +800,7 @@ types:
     ondraw: ''
     ondestroy: |-
       ct.sound.spawn('Hit');
-      ct.types.copy('Crate_Debris', this.x, this.y);
+      ct.templates.copy('Crate_Debris', this.x, this.y);
     texture: 31948760-8965-4768-ab1d-2b87d0b7fc3a
     extends:
       cgroup: Solid
@@ -816,7 +816,7 @@ types:
     ondraw: ''
     ondestroy: |-
       ct.sound.spawn('Hit');
-      ct.types.copy('HazardousTube_Debris', this.x, this.y - 4);
+      ct.templates.copy('HazardousTube_Debris', this.x, this.y - 4);
       ct.emitters.fire('BlueSparks', this.x, this.y - 4);
     texture: 1f0fbe96-38aa-4db4-a011-c0cf34b91d00
     extends:
@@ -880,8 +880,8 @@ types:
     depth: 1
     oncreate: this.opened = false;
     onstep: |-
-      const cat = ct.types.list['Cat'][0]
-      if (!this.opened && ct.types.isCopy(cat)) {
+      const cat = ct.templates.list['Cat'][0]
+      if (!this.opened && ct.templates.isCopy(cat)) {
           if (ct.u.pdc(this.x, this.y, cat.x, cat.y) < 48) {
               this.opened = true;
               this.cgroup = '';
@@ -904,8 +904,8 @@ types:
       this.aggroRange = 120;
       this.aggroed = false;
     onstep: |-
-      const cat = ct.types.list['Cat'][0];
-      if (ct.types.isCopy(cat)) {
+      const cat = ct.templates.list['Cat'][0];
+      if (ct.templates.isCopy(cat)) {
           if (this.aggroed) {
               if (ct.u.pdc(this.x, this.y, cat.x, cat.y) > 7) {
                   this.speed = 1.5;
@@ -972,7 +972,7 @@ types:
     ondestroy: |
       if (ct.room.lives > 0) {
           ct.room.lives --;
-          ct.types.copy('Cat', ct.room.checkpointX, ct.room.checkpointY);
+          ct.templates.copy('Cat', ct.room.checkpointX, ct.room.checkpointY);
       } else {
           ct.rooms.switch(ct.room.name);
       }

@@ -301,9 +301,6 @@
         "import": "Importuj TTF",
         "italic": "Pochyła"
     },
-    "types": {
-        "create": "Stwórz"
-    },
     "rooms": {
         "create": "Dodaj nowy",
         "makeStarting": "Ustaw jako pokój startowy"
@@ -560,10 +557,10 @@
         "rooms": "Pokoje",
         "sounds": "Dźwięki",
         "ui": "UI",
-        "types": "Typy",
         "fx": "",
         "restart": "",
-        "project": ""
+        "project": "",
+        "templates": "Typy"
     },
     "copyCustomProperties": {
         "customProperties": "",
@@ -662,18 +659,6 @@
         "moveTilesToLayer": "Przenieś do warstwy",
         "shiftTiles": "Przesuń kafelki",
         "changeCopyRotation": ""
-    },
-    "typeView": {
-        "change": "Zmień sprite",
-        "create": "Przy utworzeniu",
-        "depth": "Głębia:",
-        "destroy": "Przy zniszczeniu",
-        "done": "Gotowe",
-        "draw": "Rysuj",
-        "learnAboutTypes": "Dowiedz się więcej o typach kodowania",
-        "name": "Nazwa:",
-        "step": "Przy kroku",
-        "visible": ""
     },
     "styleView": {
         "active": "Aktywny",
@@ -782,5 +767,20 @@
     },
     "licensePanel": {
         "ctjsLicense": "Licencja Ct.js (MIT)"
+    },
+    "templates": {
+        "create": "Stwórz"
+    },
+    "templateView": {
+        "change": "Zmień sprite",
+        "create": "Przy utworzeniu",
+        "depth": "Głębia:",
+        "destroy": "Przy zniszczeniu",
+        "done": "Gotowe",
+        "draw": "Rysuj",
+        "learnAboutTypes": "Dowiedz się więcej o typach kodowania",
+        "name": "Nazwa:",
+        "step": "Przy kroku",
+        "visible": ""
     }
 }

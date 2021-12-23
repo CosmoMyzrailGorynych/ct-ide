@@ -445,9 +445,6 @@
         "newGridSize": "New grid size:",
         "setPreviewTexture": "Set preview texture"
     },
-    "types": {
-        "create": "Create"
-    },
     "rooms": {
         "create": "Add new",
         "makeStarting": "Set as the starting room"
@@ -590,7 +587,7 @@
         "sounds": "Sounds",
         "ui": "UI",
         "fx": "FX",
-        "types": "Types"
+        "templates": "Templates"
     },
     "roomBackgrounds": {
         "add": "Add a Background",
@@ -662,18 +659,6 @@
         "moveTilesToLayer": "Move to layer",
         "shiftTiles": "Shift tiles",
         "changeCopyRotation": "Rotate"
-    },
-    "typeView": {
-        "change": "Change sprite",
-        "create": "On Create",
-        "depth": "Depth:",
-        "destroy": "On Destroy",
-        "done": "Done",
-        "draw": "Draw",
-        "learnAboutTypes": "Learn about coding types",
-        "name": "Name:",
-        "step": "On Step",
-        "visible": "Visible"
     },
     "styleView": {
         "active": "Active",
@@ -782,5 +767,20 @@
     },
     "licensePanel": {
         "ctjsLicense": "Ct.js License (MIT)"
+    },
+    "templates": {
+        "create": "Create"
+    },
+    "templateView": {
+        "change": "Change sprite",
+        "create": "On Create",
+        "depth": "Depth:",
+        "destroy": "On Destroy",
+        "done": "Done",
+        "draw": "Draw",
+        "learnAboutTypes": "Learn about coding templates",
+        "name": "Name:",
+        "step": "On Step",
+        "visible": "Visible"
     }
 }

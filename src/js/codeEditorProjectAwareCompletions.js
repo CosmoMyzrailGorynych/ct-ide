@@ -9,12 +9,12 @@
         };
     };
 
-    const createTypeProposals = function createTypeProposals(range) {
+    const createTemplateProposals = function createTemplateProposals(range) {
         // filtering is done by the Monaco editor
-        return global.currentProject.types.map(type => ({
-            label: type.name,
+        return global.currentProject.templates.map(template => ({
+            label: template.name,
             kind: monaco.languages.CompletionItemKind.Value,
-            insertText: `'${type.name}'`,
+            insertText: `'${template.name}'`,
             range
         })).sort((a, b) => a.label.localeCompare(b.label));
     };
@@ -65,15 +65,15 @@
         return textUntilPosition.match(regex);
     };
 
-    const provideTypeNames = function provideTypeNames(model, position) {
-        if (!checkMatch(model, position, /ct\.types\.((make|copy)\(|list\[|templates\[)$/)) {
+    const provideTemplateNames = function provideTemplateNames(model, position) {
+        if (!checkMatch(model, position, /ct\.templates\.((make|copy)\(|list\[|templates\[)$/)) {
             return {
                 suggestions: []
             };
         }
         const range = getInsertRange(model, position);
         return {
-            suggestions: createTypeProposals(range)
+            suggestions: createTemplateProposals(range)
         };
     };
 
@@ -127,19 +127,19 @@
 
     window.signals = window.signals || riot.observable({});
     window.signals.on('monacoBooted', () => {
-        monaco.languages.registerCompletionItemProvider('typescript', {
-            provideCompletionItems: provideTypeNames,
+        monaco.languages.registerCompletionItemProvider('templatescript', {
+            provideCompletionItems: provideTemplateNames,
             triggerCharacters: ['(', '[']
         });
-        monaco.languages.registerCompletionItemProvider('typescript', {
+        monaco.languages.registerCompletionItemProvider('templatescript', {
             provideCompletionItems: provideSoundNames,
             triggerCharacters: ['(']
         });
-        monaco.languages.registerCompletionItemProvider('typescript', {
+        monaco.languages.registerCompletionItemProvider('templatescript', {
             provideCompletionItems: provideActionNames,
             triggerCharacters: ['.']
         });
-        monaco.languages.registerCompletionItemProvider('typescript', {
+        monaco.languages.registerCompletionItemProvider('templatescript', {
             provideCompletionItems: provideRoomNames,
             triggerCharacters: ['(', '[']
         });

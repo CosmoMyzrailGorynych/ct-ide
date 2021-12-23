@@ -41,7 +41,7 @@
         "default": 16,
         "type": "number"
     }],
-    "typeExtends": [{
+    "templateExtends": [{
         "name": "Collision group",
         "type": "text",
         "collect": true,

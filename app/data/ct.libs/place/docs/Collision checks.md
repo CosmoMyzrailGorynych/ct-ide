@@ -1,6 +1,6 @@
 # Collision checks with `ct.place`
 
-`ct.place` checks collisions with the methods listed below. Most of the time, it uses a collision group (aka `cgroup`, or `this.cgroup`) to check against a specific, defined by you, subset of copies, as well as tile layers. After enabling this module, you will find additional fields in type editor and for tile layers in the room editor, where you can set this collision group.
+`ct.place` checks collisions with the methods listed below. Most of the time, it uses a collision group (aka `cgroup`, or `this.cgroup`) to check against a specific, defined by you, subset of copies, as well as tile layers. After enabling this module, you will find additional fields in template editor and for tile layers in the room editor, where you can set this collision group.
 
 While runnning a game, you can change a copy's `this.cgroup` parameter so `ct.place` detects it under a different collision group. Think of a one-way platform or a barrier that can be turned off.
 
@@ -17,9 +17,9 @@ The opposite for `ct.place.free`, but it also returns a Copy which blocks `me` a
 
 If `multiple` is `true`, the function will find all the possible collisions, and will always return an array, which is either empty or filled with collided copies. Otherwise, it returns `false` or the first Copy which blocked `me`.
 
-## `ct.place.meet(me, [x, y,] type, [multiple])`
+## `ct.place.meet(me, [x, y,] template, [multiple])`
 
-Checks whether there is a collision between a Copy `me` and any of the Copies of a given `type`. If `x` and `y` are skipped, the current coordinates of `me` will be used.
+Checks whether there is a collision between a Copy `me` and any of the Copies of a given `template`. If `x` and `y` are skipped, the current coordinates of `me` will be used.
 
 If `multiple` is `true`, the function will find all the possible collisions, and will always return an array, which is either empty or filled with collided copies. Otherwise, it returns `false` or the first Copy which blocked `me`.
 

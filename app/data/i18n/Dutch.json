@@ -389,9 +389,6 @@
         "newGridSize": "Nieuwe raster grootte:",
         "setPreviewTexture": "Zet voorbeeld textuur"
     },
-    "types": {
-        "create": "Creëer"
-    },
     "rooms": {
         "create": "Creëer een nieuwe",
         "makeStarting": "Zet als start kamer"
@@ -561,9 +558,9 @@
         "sounds": "Geluiden",
         "ui": "UI",
         "fx": "FX",
-        "types": "Soorten",
         "restart": "",
-        "project": ""
+        "project": "",
+        "templates": "Soorten"
     },
     "copyCustomProperties": {
         "customProperties": "",
@@ -662,18 +659,6 @@
         "moveTilesToLayer": "Beweeg naar laag",
         "shiftTiles": "Verschuif tegels",
         "changeCopyRotation": ""
-    },
-    "typeView": {
-        "change": "Verander de sprite",
-        "create": "Bij Creatie",
-        "depth": "Diepte:",
-        "destroy": "Bij Vernietiging",
-        "done": "Klaar",
-        "draw": "Teken",
-        "learnAboutTypes": "Leren over code types",
-        "name": "Naam:",
-        "step": "Bij Stap",
-        "visible": ""
     },
     "styleView": {
         "active": "Activeer",
@@ -782,5 +767,20 @@
     },
     "licensePanel": {
         "ctjsLicense": "Ct.js-licentie (MIT)"
+    },
+    "templates": {
+        "create": "Creëer"
+    },
+    "templateView": {
+        "change": "Verander de sprite",
+        "create": "Bij Creatie",
+        "depth": "Diepte:",
+        "destroy": "Bij Vernietiging",
+        "done": "Klaar",
+        "draw": "Teken",
+        "learnAboutTypes": "Leren over code types",
+        "name": "Naam:",
+        "step": "Bij Stap",
+        "visible": ""
     }
 }

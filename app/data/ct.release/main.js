@@ -16,7 +16,7 @@ const ct = {
      * @type {number}
      */
     speed: [/*@maxfps@*/][0] || 60,
-    types: {},
+    templates: {},
     snd: {},
     stack: [],
     fps: [/*@maxfps@*/][0] || 60,
@@ -36,7 +36,7 @@ const ct = {
      * this.x += this.windSpeed * ct.delta;
      * ```
      *
-     * @type {number}
+     * @template {number}
      */
     delta: 1,
     /**
@@ -47,17 +47,17 @@ const ct = {
      * This is a version for UI elements, as it is not affected by time scaling, and thus works well
      * both with slow-mo effects and game pause.
      *
-     * @type {number}
+     * @template {number}
      */
     deltaUi: 1,
     /**
      * The camera that outputs its view to the renderer.
-     * @type {Camera}
+     * @template {Camera}
      */
     camera: null,
     /**
      * ct.js version in form of a string `X.X.X`.
-     * @type {string}
+     * @template {string}
      */
     version: '/*@ctversion@*/',
     meta: [/*@projectmeta@*/][0],
@@ -72,7 +72,7 @@ const ct = {
      * Resizes the drawing canvas and viewport to the given value in pixels.
      * When used with ct.fittoscreen, can be used to enlarge/shrink the viewport.
      * @param {number} value New width in pixels
-     * @type {number}
+     * @template {number}
      */
     set width(value) {
         ct.camera.width = ct.roomWidth = value;
@@ -91,7 +91,7 @@ const ct = {
      * Resizes the drawing canvas and viewport to the given value in pixels.
      * When used with ct.fittoscreen, can be used to enlarge/shrink the viewport.
      * @param {number} value New height in pixels
-     * @type {number}
+     * @template {number}
      */
     set height(value) {
         ct.camera.height = ct.roomHeight = value;
@@ -126,7 +126,7 @@ const pixiAppSettings = {
 try {
     /**
      * The PIXI.Application that runs ct.js game
-     * @type {PIXI.Application}
+     * @template {PIXI.Application}
      */
     ct.pixiApp = new PIXI.Application(pixiAppSettings);
 } catch (e) {
@@ -143,7 +143,7 @@ if (!ct.pixiApp.renderer.options.antialias) {
     PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 }
 /**
- * @type PIXI.Container
+ * @template PIXI.Container
  */
 ct.stage = ct.pixiApp.stage;
 ct.pixiApp.renderer.autoDensity = ct.highDensity;
@@ -496,7 +496,7 @@ ct.u.ext(ct.u, {// make aliases
     const killRecursive = copy => {
         copy.kill = true;
         if (copy.onDestroy) {
-            ct.types.onDestroy.apply(copy);
+            ct.templates.onDestroy.apply(copy);
             copy.onDestroy.apply(copy);
         }
         for (const child of copy.children) {
@@ -508,10 +508,10 @@ ct.u.ext(ct.u, {// make aliases
         if (stackIndex !== -1) {
             ct.stack.splice(stackIndex, 1);
         }
-        if (copy.type) {
-            const typelistIndex = ct.types.list[copy.type].indexOf(copy);
-            if (typelistIndex !== -1) {
-                ct.types.list[copy.type].splice(typelistIndex, 1);
+        if (copy.template) {
+            const templatelistIndex = ct.templates.list[copy.template].indexOf(copy);
+            if (templatelistIndex !== -1) {
+                ct.templates.list[copy.template].splice(templatelistIndex, 1);
             }
         }
         deadPool.push(copy);
@@ -530,9 +530,9 @@ ct.u.ext(ct.u, {// make aliases
         ct.timer.updateTimers();
         /*%beforeframe%*/
         for (let i = 0, li = ct.stack.length; i < li; i++) {
-            ct.types.beforeStep.apply(ct.stack[i]);
+            ct.templates.beforeStep.apply(ct.stack[i]);
             ct.stack[i].onStep.apply(ct.stack[i]);
-            ct.types.afterStep.apply(ct.stack[i]);
+            ct.templates.afterStep.apply(ct.stack[i]);
         }
         // There may be a number of rooms stacked on top of each other.
         // Loop through them and filter out everything that is not a room.
@@ -564,9 +564,9 @@ ct.u.ext(ct.u, {// make aliases
         manageCamera();
 
         for (let i = 0, li = ct.stack.length; i < li; i++) {
-            ct.types.beforeDraw.apply(ct.stack[i]);
+            ct.templates.beforeDraw.apply(ct.stack[i]);
             ct.stack[i].onDraw.apply(ct.stack[i]);
-            ct.types.afterDraw.apply(ct.stack[i]);
+            ct.templates.afterDraw.apply(ct.stack[i]);
             ct.stack[i].xprev = ct.stack[i].x;
             ct.stack[i].yprev = ct.stack[i].y;
         }

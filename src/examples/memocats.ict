@@ -6,7 +6,7 @@ libs:
     mode: scaleFit
   sound.howler: {}
   tween: {}
-types:
+templates:
   - name: Card
     depth: 0
     oncreate: >-
@@ -79,7 +79,7 @@ types:
 
                       // Do the cards match?
                       if (card1.backFrame === card2.backFrame) {
-                          if (ct.types.list['Card'].length > 2) {
+                          if (ct.templates.list['Card'].length > 2) {
                               ct.sound.spawn('Match');
                           } else {
                               ct.sound.spawn('Victory');
@@ -176,7 +176,7 @@ rooms:
       shuffle(this.pictures);
 
       // Get a list of all the Cards in the room and make a copy of that
-      this.cards = ct.types.list['Card'].slice(0);
+      this.cards = ct.templates.list['Card'].slice(0);
       shuffle(this.cards);
 
       // Now, select cards by pairs and set them a unique picture.
@@ -187,7 +187,7 @@ rooms:
           this.pictures.shift();
       }
     onstep: |-
-      if (ct.types.list['Card'].length === 0) {
+      if (ct.templates.list['Card'].length === 0) {
           ct.rooms.switch('Room2');
       }
     ondraw: ''
@@ -272,7 +272,7 @@ rooms:
       shuffle(this.pictures);
 
       // Get a list of all the Cards in the room and make a copy of that
-      this.cards = ct.types.list['Card'].slice(0);
+      this.cards = ct.templates.list['Card'].slice(0);
       shuffle(this.cards);
 
       // Now, select cards by pairs and set them a unique picture.
@@ -283,7 +283,7 @@ rooms:
           this.pictures.shift();
       }
     onstep: |-
-      if (ct.types.list['Card'].length === 0) {
+      if (ct.templates.list['Card'].length === 0) {
           ct.rooms.switch('Room3');
       }
     ondraw: ''
@@ -378,7 +378,7 @@ rooms:
       shuffle(this.pictures);
 
       // Get a list of all the Cards in the room and make a copy of that
-      this.cards = ct.types.list['Card'].slice(0);
+      this.cards = ct.templates.list['Card'].slice(0);
       shuffle(this.cards);
 
       // Now, select cards by pairs and set them a unique picture.
@@ -389,7 +389,7 @@ rooms:
           this.pictures.shift();
       }
     onstep: |-
-      if (ct.types.list['Card'].length === 0) {
+      if (ct.templates.list['Card'].length === 0) {
           ct.rooms.switch('Room3');
       }
     ondraw: ''
@@ -479,7 +479,7 @@ rooms:
     tiles: []
 soundtick: 6
 roomtick: 3
-typetick: 1
+templatetick: 1
 styletick: 0
 starting: 0
 settings:

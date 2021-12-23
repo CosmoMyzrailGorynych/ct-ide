@@ -1,9 +1,9 @@
 # Light system
 
-This module adds properties to your rooms and types that allow creating lights and day/night cycle:
+This module adds properties to your rooms and templates that allow creating lights and day/night cycle:
 
 1. Firstly, set the ambient color inside your room's properties. The darker it is, the darker your room will be, and light effects will be more visible.
-2. Then open the types you want to add lights to, and select a light texture. You can later remove it by clicking the texture selector again and picking "None" at the start of the texture list.
+2. Then open the templates you want to add lights to, and select a light texture. You can later remove it by clicking the texture selector again and picking "None" at the start of the texture list.
 3. Adjust the size of the light, as well as its color. If you need to make the light less intensive, change its brightness.
 
 *Tip: you can use colored textures to produce interesting light effects! For example, bloom from a stained glass, or some magical effects.*
@@ -45,7 +45,7 @@ This works cumulatively with light owner's rotation.
 this.light.tint = 0xff0000;
 ```
 
-**To scale a light**, change the property `this.light.scaleFactor`. The initial value matches the one you've set inside your type. A value of `1` means no scaling is applied relative to the owning copy.
+**To scale a light**, change the property `this.light.scaleFactor`. The initial value matches the one you've set inside your template. A value of `1` means no scaling is applied relative to the owning copy.
 
 ## Reading and changing ambient light color
 

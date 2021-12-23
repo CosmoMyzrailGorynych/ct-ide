@@ -9,7 +9,7 @@ libs:
     mode: fastScale
   mouse: {}
   keyboard: {}
-types:
+templates:
   - name: PlayerShip
     depth: 0
     oncreate: ''
@@ -48,7 +48,7 @@ types:
 
 
       if (ct.actions.Shoot.pressed) {
-          ct.types.copy('Laser_Blue', this.x, this.y);
+          ct.templates.copy('Laser_Blue', this.x, this.y);
       }
 
 
@@ -138,7 +138,7 @@ types:
       this.bulletTimer -= ct.delta;
       if (this.bulletTimer <= 0) {
           this.bulletTimer = 180;
-          ct.types.copy('Laser_Red', this.x, this.y + 32);
+          ct.templates.copy('Laser_Red', this.x, this.y + 32);
       }
     ondraw: ''
     ondestroy: ''
@@ -188,8 +188,8 @@ types:
       if (collided) {
           collided.kill = true;
           this.kill = true;
-          ct.types.copy('Asteroid_Medium', this.x, this.y);
-          ct.types.copy('Asteroid_Medium', this.x, this.y);
+          ct.templates.copy('Asteroid_Medium', this.x, this.y);
+          ct.templates.copy('Asteroid_Medium', this.x, this.y);
           ct.room.score += 25;
       }
     ondraw: ''
@@ -273,13 +273,13 @@ rooms:
       this.asteroidTimer -= ct.delta;
       if (this.asteroidTimer <= 0) {
           this.asteroidTimer = ct.random.range(20, 200);
-          ct.types.copy(ct.random.dice('Asteroid_Big', 'Asteroid_Medium'), ct.random(ct.camera.width), -100);
+          ct.templates.copy(ct.random.dice('Asteroid_Big', 'Asteroid_Medium'), ct.random(ct.camera.width), -100);
       }
 
       this.enemyTimer -= ct.delta;
       if (this.enemyTimer <= 0) {
           this.enemyTimer = ct.random.range(180, 400);
-          ct.types.copy('EnemyShip', ct.random(ct.camera.width), -100);
+          ct.templates.copy('EnemyShip', ct.random(ct.camera.width), -100);
       }
     ondraw: |-
       this.scoreLabel.text = 'Score: ' + this.score;
@@ -309,7 +309,7 @@ rooms:
         exts: {}
 soundtick: 0
 roomtick: 1
-typetick: 6
+templatetick: 6
 styletick: 3
 starting: 0
 settings:

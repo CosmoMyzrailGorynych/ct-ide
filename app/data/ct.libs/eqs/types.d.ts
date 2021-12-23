@@ -149,7 +149,7 @@ declare namespace ct {
          *
          * If `type` equals `copies`, then you must provide additional parameters:
          *
-         * * `copyType` — A type's name from which copies to take coordinates
+         * * `copyTemplate` — A template's name from which copies to take coordinates
          * * `limit` — *Optional.* The maximum radius from the center of your query at which your copies are included.
          */
         function query(options: IEQSOptions): EQSQuery;

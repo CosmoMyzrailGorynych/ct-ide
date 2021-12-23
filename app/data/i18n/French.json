@@ -386,9 +386,6 @@
         "newGridSize": "",
         "setPreviewTexture": ""
     },
-    "types": {
-        "create": "Créer"
-    },
     "rooms": {
         "create": "Ajouter",
         "makeStarting": "Définir comme salle de départ"
@@ -561,9 +558,9 @@
         "sounds": "Sons",
         "ui": "IU",
         "fx": "FX",
-        "types": "Types",
         "restart": "",
-        "project": ""
+        "project": "",
+        "templates": "Types"
     },
     "copyCustomProperties": {
         "customProperties": "",
@@ -662,18 +659,6 @@
         "moveTilesToLayer": "Déplacer le calque",
         "shiftTiles": "Déplacer les Tiles",
         "changeCopyRotation": ""
-    },
-    "typeView": {
-        "change": "Changer de sprite",
-        "create": "On Create",
-        "depth": "Fond",
-        "destroy": "Détruire",
-        "done": "Terminez",
-        "draw": "Draw",
-        "name": "Nom:",
-        "step": "On Step",
-        "learnAboutTypes": "En apprendre plus sur les types de codage",
-        "visible": ""
     },
     "styleView": {
         "active": "Activer",
@@ -782,5 +767,20 @@
     },
     "licensePanel": {
         "ctjsLicense": "Ct.js License (MIT)"
+    },
+    "templates": {
+        "create": "Créer"
+    },
+    "templateView": {
+        "change": "Changer de sprite",
+        "create": "On Create",
+        "depth": "Fond",
+        "destroy": "Détruire",
+        "done": "Terminez",
+        "draw": "Draw",
+        "name": "Nom:",
+        "step": "On Step",
+        "learnAboutTypes": "En apprendre plus sur les types de codage",
+        "visible": ""
     }
 }
