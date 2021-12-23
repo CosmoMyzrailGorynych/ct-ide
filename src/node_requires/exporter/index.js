@@ -143,12 +143,12 @@ const getInjections = async () => {
         const libData = await fs.readJSON(path.join(basePath + 'ct.libs/', lib, 'module.json'), {
             encoding: 'utf8'
         });
-        if (await fs.pathExists(path.join(basePath + 'ct.libs/', lib, 'injects'))) {
-            const injectFiles = await fs.readdir(path.join(basePath + 'ct.libs/', lib, 'injects')),
+        if (await fs.pathExists(path.join(basePath + 'ct.libs/', lib, 'injections'))) {
+            const injectFiles = await fs.readdir(path.join(basePath + 'ct.libs/', lib, 'injections')),
                   injectKeys = injectFiles.map(fname => path.basename(fname, path.extname(fname)));
             await Promise.all(injectKeys.map(async (key, ind) => {
                 if (key in injections) {
-                    const injection = await fs.readFile(path.join(basePath + 'ct.libs/', lib, 'injects', injectFiles[ind]), {
+                    const injection = await fs.readFile(path.join(basePath + 'ct.libs/', lib, 'injections', injectFiles[ind]), {
                         encoding: 'utf8'
                     });
                     // false positive??
