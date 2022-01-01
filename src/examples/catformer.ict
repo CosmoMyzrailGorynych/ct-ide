@@ -1915,7 +1915,7 @@ settings:
     functionWrap: false
     codeModifier: none
   branding:
-    icon: -1
+    icon: 1da28af4-53f1-4958-82b2-a696778f910f
     accent: '#446adb'
     invertPreloaderScheme: true
   rendering:

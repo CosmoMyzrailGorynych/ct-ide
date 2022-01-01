@@ -10,6 +10,7 @@ const getTextureFromId = id => {
     }
     return texture;
 };
+const getById = getTextureFromId;
 
 /**
  * Retrieves the full path to a thumbnail of a given texture.
@@ -30,6 +31,7 @@ const getTexturePreview = function (texture, x2, fs) {
     }
     return `file://${global.projdir.replace(/\\/g, '/')}/img/${texture.origname}_prev${x2 ? '@2' : ''}.png?cache=${texture.lastmod}`;
 };
+const getThumbnail = getTexturePreview;
 
 /**
  * Retrieves a full path to the source image of a given texture
@@ -305,8 +307,10 @@ const getTexturePivot = (texture, inPixels) => {
 module.exports = {
     clearPixiTextureCache,
     getTextureFromId,
+    getById,
     getTextureFromName,
     getTexturePreview,
+    getThumbnail,
     getTexturePivot,
     getTextureOrig,
     getPixiTexture,

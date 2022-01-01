@@ -28,6 +28,8 @@
     @attribute useicons (atomic)
         Tells the asset viewer to use SVG icons instead of img tag.
         The `thumbnails` function should then return the name of the SVG icon.
+    @attribute shownone (atomic)
+        If set, shows a "none" asset that returns -1 in opts.click event.
 
     @attribute icons (riot function)
         A mapping funtion that takes a collection object and returns an array of icon names.
@@ -114,6 +116,11 @@ asset-viewer.flexfix(class="{opts.namespace} {opts.class}")
             br
             span {vocGlob.nothingToShowFiller}
         ul.Cards(class="{layoutToClassListMap[currentLayout]}")
+            li.aCard(if="{opts.shownone}" onclick="{opts.click && opts.click(-1)}")
+                .aCard-aThumbnail
+                    img(src="data/img/notexture.png")
+                .aCard-Properties
+                    span {vocGlob.none}
             li.aCard(
                 each="{asset in (searchResults? searchResults : getGrouped(collection))}"
                 oncontextmenu="{parent.opts.contextmenu && parent.opts.contextmenu(asset)}"

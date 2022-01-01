@@ -58,7 +58,13 @@ emitter-tandem-editor.aPanel.aView.flexrow
         hidealpha="true"
         color="{previewColor}" onapply="{updatePreviewColor}" onchanged="{updatePreviewColor}" oncancel="{cancelPreviewColor}"
     )
-    texture-selector(if="{pickingPreviewTexture}" showempty="yes" onselected="{onPreviewTexturePicked}" oncancelled="{onPreviewTextureCancel}")
+    asset-selector(
+        if="{pickingPreviewTexture}"
+        allownone="yes"
+        onselected="{onPreviewTexturePicked}"
+        oncancelled="{onPreviewTextureCancel}"
+        assettype="textures"
+    )
     script.
         /* global net */
         const brehautColor = net.brehaut.Color;
@@ -383,8 +389,8 @@ emitter-tandem-editor.aPanel.aView.flexrow
         this.openPreviewTexturePicker = () => {
             this.pickingPreviewTexture = true;
         };
-        this.onPreviewTexturePicked = texture => () => {
-            this.tandem.previewTexture = texture.uid;
+        this.onPreviewTexturePicked = uid => {
+            this.tandem.previewTexture = uid;
             this.pickingPreviewTexture = false;
             this.updatePreviewLayout();
             this.update();

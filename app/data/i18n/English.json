@@ -81,12 +81,10 @@
         "tileLayer": "tile layer",
         "ctSite": "ct.js homepage"
     },
-    "copyCustomProperties": {
-        "customProperties": "Custom Properties",
-        "addProperty": "Add Property",
-        "property": "Property",
-        "value": "Value",
-        "delete": "Delete"
+    "assetInput": {
+        "changeAsset": "Press to change the asset",
+        "jumpToAsset": "Jump to this asset",
+        "selectAssetHeader": "Select an asset"
     },
     "assetViewer": {
         "addNewGroup": "New Group",
@@ -99,6 +97,13 @@
         "globalPalette": "Global Palette",
         "old": "Old",
         "projectPalette": "Project's Palette"
+    },
+    "copyCustomProperties": {
+        "customProperties": "Custom Properties",
+        "addProperty": "Add Property",
+        "property": "Property",
+        "value": "Value",
+        "delete": "Delete"
     },
     "curveEditor": {
         "curveLineHint": "Click the curve to add a point",

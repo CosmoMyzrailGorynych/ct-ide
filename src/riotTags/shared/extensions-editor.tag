@@ -129,12 +129,13 @@ extensions-editor
                     onchange="{wireAndNotify('this.opts.entity.'+ ext.key)}"
                     class="{invalid: ext.required && !(parent.opts.entity[ext.key] || ext.default)}"
                 )
-                texture-input(
-                    if="{ext.type === 'texture'}"
+                asset-input(
+                    if="{['texture', 'template'].includes(ext.type)}"
+                    assettype="{ext.type}s"
+                    allowclear="yep"
                     class="{compact: parent.opts.compact, wide: parent.opts.wide, invalid: ext.required && (parent.opts.entity[ext.key] || ext.default) === -1}"
-                    val="{parent.opts.entity[ext.key] || ext.default}"
-                    showempty="yep"
-                    onselected="{writeUid(ext.key)}"
+                    assetid="{parent.opts.entity[ext.key] || ext.default}"
+                    onchanged="{writeUid(ext.key)}"
                 )
                 .aPoint2DInput(if="{ext.type === 'point2D'}" class="{compact: parent.opts.compact, wide: parent.opts.wide}")
                     label
@@ -156,13 +157,6 @@ extensions-editor
                             value="{parent.opts.entity[ext.key]? parent.opts.entity[ext.key][1] : ext.default[1]}"
                             onchange="{ensurePoint2DAndWire(parent.opts.entity, ext.key, ext.default, 'this.opts.entity.'+ ext.key + '.1')}"
                         )
-                template-input(
-                    if="{ext.type === 'template'}"
-                    class="{compact: parent.opts.compact, wide: parent.opts.wide, invalid: ext.required && (parent.opts.entity[ext.key] || ext.default) === -1}"
-                    val="{parent.opts.entity[ext.key] || ext.default}"
-                    onselected="{writeUid(ext.key)}"
-                    showempty="yep"
-                )
                 icon-input(
                     if="{ext.type === 'icon'}"
                     class="{compact: parent.opts.compact, wide: parent.opts.wide}"

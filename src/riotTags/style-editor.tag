@@ -143,7 +143,12 @@ style-editor.aPanel.aView
                     use(xlink:href="#check")
                 span {voc.apply}
     #stylepreview.tall(ref="canvasSlot")
-    font-selector(if="{selectingFont}" onselected="{applyFont}" oncancelled="{cancelCustomFontSelector}")
+    asset-selector(
+        if="{selectingFont}"
+        assettype="fonts"
+        onselected="{applyFont}"
+        oncancelled="{cancelCustomFontSelector}"
+    )
     script.
         const fs = require('fs-extra');
 
@@ -215,8 +220,10 @@ style-editor.aPanel.aView
             this.selectingFont = false;
             this.update();
         };
-        this.applyFont = font => () => {
+        const fonts = require('./data/node_requires/resources/fonts');
+        this.applyFont = fontId => {
             this.selectingFont = false;
+            const font = fonts.getById(fontId);
             this.styleobj.font.family = `"CTPROJFONT${font.typefaceName}", "${font.typefaceName}", sans-serif`;
             this.styleobj.font.weight = font.weight;
             this.styleobj.font.italic = font.italic;

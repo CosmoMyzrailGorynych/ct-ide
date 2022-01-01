@@ -1,14 +1,17 @@
 /**
- * @param {object|string} font The font object in ct.js project, or its UID.
- * @param {boolean} fs If set to `true`, returns a clean path in a file system.
- * Otherwise, returns an URL.
+ * Gets the ct.js texture object by its id.
+ * @param {string} id The id of the texture
+ * @returns {ITexture} The ct.js texture object
  */
-const getPathToTtf = function getPathToTtf(font, fs) {
-    const path = require('path');
-    if (fs) {
-        return path.join(global.projdir, 'fonts', font.origname);
+const getById = (id: string): IFont => {
+    const font = global.currentProject.fonts.find((f: IFont) => f.uid === id);
+    if (!font) {
+        throw new Error(`Attempt to get a non-existent font with ID ${id}`);
     }
-    return `file://${global.projdir.replace(/\\/g, '/')}/fonts/${font.origname}`;
+    return font;
+};
+const getName = function getName(font: IFont): string {
+    return `${font.typefaceName} ${font.weight} ${font.italic ? 'Italic' : ''}`;
 };
 
 /**
@@ -16,15 +19,28 @@ const getPathToTtf = function getPathToTtf(font, fs) {
  * @param {boolean} fs If set to `true`, returns a clean path in a file system.
  * Otherwise, returns an URL.
  */
-const getFontPreview = function getFontPreview(font, fs) {
+const getPathToTtf = function getPathToTtf(font: IFont, fs?: boolean): string {
     const path = require('path');
     if (fs) {
-        return path.join(global.projdir, 'fonts', `${font.origname}_prev.png`);
+        return path.join((global as any).projdir, 'fonts', font.origname);
     }
-    return `file://${global.projdir.replace(/\\/g, '/')}/fonts/${font.origname}_prev.png?cache=${font.lastmod}`;
+    return `file://${(global as any).projdir.replace(/\\/g, '/')}/fonts/${font.origname}`;
 };
 
-const fontGenPreview = async function fontGenPreview(font) {
+/**
+ * @param {object|string} font The font object in ct.js project, or its UID.
+ * @param {boolean} fs If set to `true`, returns a clean path in a file system.
+ * Otherwise, returns an URL.
+ */
+const getFontPreview = function getFontPreview(font: IFont, fs?: boolean): string {
+    const path = require('path');
+    if (fs) {
+        return path.join((global as any).projdir, 'fonts', `${font.origname}_prev.png`);
+    }
+    return `file://${(global as any).projdir.replace(/\\/g, '/')}/fonts/${font.origname}_prev.png?cache=${font.lastmod}`;
+};
+
+const fontGenPreview = async function fontGenPreview(font: IFont): Promise<void> {
     const template = {
         weight: font.weight,
         style: font.italic ? 'italic' : 'normal'
@@ -41,18 +57,18 @@ const fontGenPreview = async function fontGenPreview(font) {
     // document.body.appendChild(elt);
 
     const loaded = await face.load();
-    loaded.external = true;
-    loaded.ctId = face.ctId = font.uid;
+    (loaded as any).external = true;
+    (loaded as any).ctId = (face as any).ctId = font.uid;
     document.fonts.add(loaded);
     // document.body.removeChild(elt);
 
     const c = document.createElement('canvas');
-    c.x = c.getContext('2d');
+    const cx = c.getContext('2d');
     c.width = c.height = 64;
-    c.x.clearRect(0, 0, 64, 64);
-    c.x.font = `${font.italic ? 'italic ' : ''}${font.weight} ${Math.floor(64 * 0.75)}px "${loaded.family}"`;
-    c.x.fillStyle = '#000';
-    c.x.fillText('Ab', 64 * 0.05, 64 * 0.75);
+    cx.clearRect(0, 0, 64, 64);
+    cx.font = `${font.italic ? 'italic ' : ''}${font.weight} ${Math.floor(64 * 0.75)}px "${loaded.family}"`;
+    cx.fillStyle = '#000';
+    cx.fillText('Ab', 64 * 0.05, 64 * 0.75);
 
     // strip off the data:image url prefix to get just the base64-encoded bytes
     const dataURL = c.toDataURL();
@@ -61,7 +77,10 @@ const fontGenPreview = async function fontGenPreview(font) {
     await fs.writeFile(getFontPreview(font, true), buf);
 };
 
-const importTtfToFont = async function importTtfToFont(src, group) {
+const importTtfToFont = async function importTtfToFont(
+    src: string,
+    group: string
+): Promise<void> {
     const fs = require('fs-extra'),
           path = require('path');
     if (path.extname(src).toLowerCase() !== '.ttf') {
@@ -69,10 +88,11 @@ const importTtfToFont = async function importTtfToFont(src, group) {
     }
     const generateGUID = require('./../../generateGUID');
     const uid = generateGUID();
-    await fs.copy(src, path.join(global.projdir, '/fonts/f' + uid + '.ttf'));
+    await fs.copy(src, path.join((global as any).projdir, '/fonts/f' + uid + '.ttf'));
     const obj = {
+        type: 'font' as resourceType,
         typefaceName: path.basename(src).replace(/\.ttf$/i, ''),
-        weight: 400,
+        weight: '400' as fontWeight,
         italic: false,
         origname: `f${uid}.ttf`,
         lastmod: Number(new Date()),
@@ -88,9 +108,17 @@ const importTtfToFont = async function importTtfToFont(src, group) {
     await fontGenPreview(obj);
     window.signals.trigger('fontCreated');
 };
-module.exports = {
+
+const getThumbnail = function getThumbnail(font: IFont, x2?: boolean, fs?: boolean): string {
+    return getFontPreview(font, fs);
+};
+
+export {
     importTtfToFont,
     fontGenPreview,
     getFontPreview,
+    getById,
+    getName,
+    getThumbnail,
     getPathToTtf
 };

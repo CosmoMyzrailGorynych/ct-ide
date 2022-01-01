@@ -47,6 +47,8 @@ input[type="url"],
 input[type="password"]
     &.compact
         max-width 8em
+        &.wide
+            max-width 100%
 
 input[type="number"]
     padding-right 0
@@ -214,6 +216,8 @@ input[type="reset"],
             border-top-right-radius br
             border-bottom-right-radius br
             border-right-width 1px
+            if themeThickBorders
+                border-right-width 2px
 
 button,
 input[type="button"],

@@ -2,22 +2,27 @@ template-editor.aPanel.aView.flexrow
     .template-editor-Properties
         .tall.flexfix.aPanel.pad
             .flexfix-header
-                texture-input.wide(
-                    large="yup" showempty="da"
-                    val="{template.texture}"
-                    onselected="{applyTexture}"
+                asset-input.wide(
+                    assettype="textures"
+                    assetid="{template.texture || -1}"
+                    large="yup"
+                    allowclear="da"
+                    onchanged="{applyTexture}"
                 )
-                b {voc.name}
-                input.wide(type="text" onchange="{wire('this.template.name')}" value="{template.name}")
-                .anErrorNotice(if="{nameTaken}" ref="errorNotice") {vocGlob.nameTaken}
-                br
             .flexfix-body
-                b {voc.depth}
-                input.wide(type="number" onchange="{wire('this.template.depth')}" value="{template.depth}")
-                br
-                label.block.checkbox
-                    input(type="checkbox" checked="{template.extends.visible === void 0 ? true : template.extends.visible}" onchange="{wire('this.template.extends.visible')}")
-                    span {voc.visible}
+                .aSpacer
+                fieldset
+                    label.block
+                        b {voc.name}
+                        input.wide(type="text" onchange="{wire('this.template.name')}" value="{template.name}")
+                        .anErrorNotice(if="{nameTaken}" ref="errorNotice") {vocGlob.nameTaken}
+                    label.block
+                        b {voc.depth}
+                        input.wide(type="number" onchange="{wire('this.template.depth')}" value="{template.depth}")
+                fieldset
+                    label.block.checkbox
+                        input(type="checkbox" checked="{template.extends.visible === void 0 ? true : template.extends.visible}" onchange="{wire('this.template.extends.visible')}")
+                        span {voc.visible}
                 extensions-editor(type="template" entity="{template.extends}" wide="yep" compact="probably")
                 br
                 br
@@ -62,7 +67,9 @@ template-editor.aPanel.aView.flexrow
         this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
 
-        this.getTextureRevision = template => glob.texturemap[template.texture].g.lastmod;
+        const textures = require('./data/node_requires/resources/textures');
+
+        this.getTextureRevision = template => textures.getById(template.texture).lastmod;
 
         this.template = this.opts.template;
         this.tab = 'templateoncreate';
@@ -180,12 +187,13 @@ template-editor.aPanel.aView.flexrow
             this.selectingTexture = true;
         };
         this.applyTexture = texture => {
-            if (texture === -1) {
+            console.log('template editor received new texture: ' + texture);
+            if (texture == -1) {
                 this.template.texture = -1;
             } else {
-                this.template.texture = texture.uid;
-                if (!this.template.lastmod && this.template.name === 'NewTemplate') {
-                    this.template.name = texture.name;
+                this.template.texture = texture;
+                if (this.template.name === 'NewTemplate') {
+                    this.template.name = textures.getById(texture).name;
                 }
             }
             this.selectingTexture = false;

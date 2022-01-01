@@ -29,7 +29,13 @@ room-tile-editor.room-editor-Tiles.tabbed.tall.flexfix
                     use(xlink:href="#plus")
         .block
             extensions-editor(type="tileLayer" entity="{parent.currentTileLayer.extends}" compact="yep" wide="sure")
-    texture-selector(ref="tilesetPicker" if="{pickingTileset}" oncancelled="{onTilesetCancel}" onselected="{onTilesetSelected}")
+    asset-selector(
+        ref="tilesetPicker"
+        if="{pickingTileset}"
+        assettype="textures"
+        oncancelled="{onTilesetCancel}"
+        onselected="{onTilesetSelected}"
+    )
     script.
         this.parent.tileX = 0;
         this.parent.tileY = 0;
@@ -125,8 +131,9 @@ room-tile-editor.room-editor-Tiles.tabbed.tall.flexfix
             this.pickingTileset = false;
             this.update();
         };
-        this.onTilesetSelected = texture => () => {
-            this.parent.currentTileset = texture;
+        this.onTilesetSelected = textureId => {
+            const textures = require('./data/node_requires/resources/textures');
+            this.parent.currentTileset = textures.getById(textureId);
             this.pickingTileset = false;
             this.redrawTileset();
             this.update();

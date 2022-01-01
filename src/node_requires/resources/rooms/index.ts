@@ -25,6 +25,7 @@ const getRoomFromId = function getRoomFromId(id: string): IRoom {
     }
     return room;
 };
+const getById = getRoomFromId;
 
 /**
  * Retrieves the full path to a thumbnail of a given room.
@@ -47,9 +48,12 @@ const getRoomPreview = (room: assetRef | IRoom, x2: boolean, fs: boolean): strin
     }
     return `file://${(global as any).projdir}/img/r${room.thumbnail}.png?${room.lastmod}`;
 };
+const getThumbnail = getRoomPreview;
 
 export {
     createNewRoom,
     getRoomFromId,
-    getRoomPreview
+    getById,
+    getRoomPreview,
+    getThumbnail
 };

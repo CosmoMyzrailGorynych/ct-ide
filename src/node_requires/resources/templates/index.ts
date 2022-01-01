@@ -1,6 +1,6 @@
 const getDefaultTemplate = require('./defaultTemplate').get;
 
-const createNewTemplate = function createNewTemplate(name) {
+const createNewTemplate = function createNewTemplate(name: string): ITemplate {
     const template = getDefaultTemplate();
     if (name) {
         template.name = String(name);
@@ -15,13 +15,14 @@ const createNewTemplate = function createNewTemplate(name) {
  * @param {string} id The id of the ct.js template
  * @returns {ITemplate} The ct.js template object
  */
-const getTemplateFromId = function getTemplateFromId(id) {
-    const template = global.currentProject.templates.find(t => t.uid === id);
+const getTemplateFromId = function getTemplateFromId(id: string): ITemplate {
+    const template = global.currentProject.templates.find((t: ITemplate) => t.uid === id);
     if (!template) {
         throw new Error(`Attempt to get a non-existent template with ID ${id}`);
     }
     return template;
 };
+const getById = getTemplateFromId;
 
 /**
  * Retrieves the full path to a thumbnail of a given template.
@@ -30,7 +31,11 @@ const getTemplateFromId = function getTemplateFromId(id) {
  * @param {boolean} [fs] If set to true, returns a file system path, not a URI.
  * @returns {string} The full path to the thumbnail.
  */
-const getTemplatePreview = function getTemplatePreview(template, x2, fs) {
+const getTemplatePreview = function getTemplatePreview(
+    template: ITemplate | assetRef,
+    x2: boolean,
+    fs: boolean
+): string {
     const {getTexturePreview} = require('./../textures');
     if (typeof template === 'string') {
         template = getTemplateFromId(template);
@@ -40,10 +45,13 @@ const getTemplatePreview = function getTemplatePreview(template, x2, fs) {
     }
     return getTexturePreview(template.texture, x2, fs);
 };
+const getThumbnail = getTemplatePreview;
 
-module.exports = {
+export {
     getDefaultTemplate,
     getTemplateFromId,
+    getById,
     getTemplatePreview,
+    getThumbnail,
     createNewTemplate
 };

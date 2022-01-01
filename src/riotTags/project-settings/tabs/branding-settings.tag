@@ -5,10 +5,11 @@ branding-settings
             span {voc.icon}
             hover-hint(text="{voc.iconNotice}")
         br
-        texture-input(
-            val="{global.currentProject.settings.branding.icon || -1}"
-            showempty="yep"
-            onselected="{updateGameIcon}"
+        asset-input(
+            assettype="textures"
+            assetid="{global.currentProject.settings.branding.icon || -1}"
+            allowclear="yep"
+            onchanged="{updateGameIcon}"
             header="{voc.icon}"
         )
     .aSpacer
@@ -30,6 +31,6 @@ branding-settings
         this.mixin(window.riotWired);
         this.currentProject = global.currentProject;
 
-        this.updateGameIcon = tex => {
-            global.currentProject.settings.branding.icon = tex.uid;
+        this.updateGameIcon = id => {
+            global.currentProject.settings.branding.icon = id;
         };

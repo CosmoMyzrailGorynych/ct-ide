@@ -11,10 +11,13 @@ emitter-editor.aPanel.pad.nb
         key="texture"
         defaultstate="{opts.emitter.openedTabs.includes('texture')? 'opened' : 'closed'}"
     )
-        button.wide(onclick="{parent.showTexturesSelector}")
-            svg.feather
-                use(xlink:href="#texture")
-            span {parent.voc.selectTexture}
+        asset-input(
+            assettype="textures"
+            onchanged="{onTexturePicked}"
+            allowclear="yes"
+            assetid="{opts.emitter.texture || -1}"
+            selecttext="{parent.voc.selectTexture}"
+        )
         button.wide(onclick="{parent.showTextureImport}")
             svg.feather
                 use(xlink:href="#download")
@@ -417,8 +420,6 @@ emitter-editor.aPanel.pad.nb
                     oninput="{parent.wireAndReset('this.opts.emitter.settings.pos.y')}"
                 )
             .clear
-
-    texture-selector(if="{pickingTexture}" onselected="{onTexturePicked}" oncancelled="{onTextureCancel}")
     particle-importer(if="{importingTexture}" onselected="{onTextureImport}" oncancelled="{onTextureImportCancel}")
     script.
         this.namespace = 'particleEmitters';
@@ -562,20 +563,11 @@ emitter-editor.aPanel.pad.nb
             }
         };
 
-        this.showTexturesSelector = () => {
-            this.pickingTexture = true;
-            this.update();
-        };
-        this.onTexturePicked = texture => () => {
+        this.onTexturePicked = texture => {
             const emt = this.opts.emitter;
-            emt.texture = texture.uid;
-            this.pickingTexture = false;
+            emt.texture = texture === -1 ? -1 : texture.uid;
             this.update();
             window.signals.trigger('emitterResetRequest');
-        };
-        this.onTextureCancel = () => {
-            this.pickingTexture = false;
-            this.update();
         };
 
         this.showTextureImport = () => {

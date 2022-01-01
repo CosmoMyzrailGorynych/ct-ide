@@ -61,7 +61,13 @@ room-backgrounds-editor.room-editor-Backgrounds.tabbed.tall
         svg.feather
             use(xlink:href="#plus")
         span {voc.add}
-    texture-selector(ref="texturePicker" if="{pickingBackground}" oncancelled="{onTextureCancel}" onselected="{onTextureSelected}")
+    asset-selector(
+        ref="texturePicker"
+        if="{pickingBackground}"
+        assettype="textures"
+        oncancelled="{onTextureCancel}"
+        onselected="{onTextureSelected}"
+    )
     context-menu(menu="{roomBgMenu}" ref="roomBgMenu")
     script.
         const glob = require('./data/node_requires/glob');
@@ -80,8 +86,8 @@ room-backgrounds-editor.room-editor-Backgrounds.tabbed.tall
                 this.parent.refreshRoomCanvas();
             }
         });
-        this.onTextureSelected = texture => () => {
-            this.editingBackground.texture = texture.uid;
+        this.onTextureSelected = textureId => {
+            this.editingBackground.texture = textureId;
             this.pickingBackground = false;
             this.creatingBackground = false;
             this.update();
