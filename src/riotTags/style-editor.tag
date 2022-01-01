@@ -176,7 +176,7 @@ style-editor.aPanel.aView
                 height,
                 transparent: true
             });
-            this.refs.canvasSlot.appendChild(this.pixiApp.aView);
+            this.refs.canvasSlot.appendChild(this.pixiApp.view);
 
             var labelShort = window.languageJSON.styleView.testText,
                 labelMultiline = window.languageJSON.styleView.testText.repeat(2) + '\n' + window.languageJSON.styleView.testText.repeat(3) + '\n' + window.languageJSON.styleView.testText,
