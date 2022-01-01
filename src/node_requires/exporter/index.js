@@ -188,8 +188,13 @@ const exportCtProject = async (project, projdir, production) => {
     const injections = await getInjections();
 
     /* Pixi.js */
-    await fs.copyFile(basePath + 'ct.release/pixi.min.js', path.join(writeDir, '/pixi.min.js'));
-    await fs.copyFile(basePath + 'ct.release/pixi.min.js.map', path.join(writeDir, '/pixi.min.js.map'));
+    if (settings.rendering.usePixiLegacy) {
+        await fs.copyFile(basePath + 'ct.release/pixi-legacy.min.js', path.join(writeDir, '/pixi.min.js'));
+        await fs.copyFile(basePath + 'ct.release/pixi-legacy.min.js.map', path.join(writeDir, '/pixi-legacy.min.js.map'));
+    } else {
+        await fs.copyFile(basePath + 'ct.release/pixi.min.js', path.join(writeDir, '/pixi.min.js'));
+        await fs.copyFile(basePath + 'ct.release/pixi.min.js.map', path.join(writeDir, '/pixi.min.js.map'));
+    }
     if (project.emitterTandems && project.emitterTandems.length) {
         await fs.copyFile(basePath + 'ct.release/pixi-particles.min.js', path.join(writeDir, '/pixi-particles.min.js'));
     }
