@@ -9,7 +9,8 @@ fx-panel.aPanel.aView
         thumbnails="{thumbnails}"
         ref="emitterTandems"
     )
-        h1.nmt {parent.voc.emittersHeading}
+        h1.inlineblock {parent.voc.emittersHeading}
+        .aSpacer.inlineblock
         button(onclick="{parent.emitterTandemCreate}" title="Control+N" data-hotkey="Control+n")
             svg.feather
                 use(xlink:href="#plus")

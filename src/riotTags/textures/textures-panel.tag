@@ -11,6 +11,9 @@ textures-panel.aPanel.aView
                 icons="{textureIcons}"
                 ref="textures"
             )
+                h1.inlineblock
+                    span {parent.voc.textures}
+                .aSpacer.inlineblock
                 label.file.inlineblock
                     input(type="file" multiple
                         accept=".png,.jpg,.jpeg,.bmp,.gif,.json"
@@ -41,10 +44,10 @@ textures-panel.aPanel.aView
                 thumbnails="{skelThumbnails}"
                 ref="skeletons"
             )
-                h2
+                h1.inlineblock
                     span {parent.voc.skeletons}
-                    docs-shortcut(path="/skeletal-animation.html")
-                label.file.flexfix-header
+                .aSpacer.inlineblock
+                label.file.inlineblock
                     input(type="file" multiple
                         accept=".json"
                         onchange="{parent.textureImport}")
@@ -52,6 +55,7 @@ textures-panel.aPanel.aView
                         svg.feather
                             use(xlink:href="#download")
                         span {parent.voc.import}
+                docs-shortcut(path="/skeletal-animation.html" button="yes" title="{vocGlob.docsShort}")
     texture-editor(if="{editing}" texture="{currentTexture}")
     texture-generator(if="{generating}" onclose="{closeGenerator}")
     context-menu(menu="{textureMenu}" ref="textureMenu")

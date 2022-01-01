@@ -18,6 +18,8 @@
         "couldNotLoadFromClipboard": "Could not load data from clipboard",
         "cut": "Cut",
         "delete": "Delete",
+        "docsShort": "Docs",
+        "docsLong": "Documentation",
         "donate": "Donate",
         "done": "Done!",
         "duplicate": "Duplicate",
@@ -335,6 +337,7 @@
         "create": "Create",
         "import": "Import",
         "skeletons": "Skeletal Animation",
+        "textures": "Textures",
         "createType": "Create a type from it",
         "importFromClipboard": "Import from clipboard",
         "generatePlaceholder": "Generate a placeholder"
