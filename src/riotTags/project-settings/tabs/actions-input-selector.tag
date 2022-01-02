@@ -15,10 +15,13 @@ actions-input-selector
                 h2 {module.name}
                 label.anActionMethod.checkbox(
                     each="{name, code in module.methods}"
-                    class="{active: selectedMethod === module.code+'.'+code}"
                     if="{!searchString || matchAny([name, code, module.name])}"
-                ).npl
+                )
                     code.inline.toright {module.code}.{code}
+                    input(
+                        type="checkbox" checked="{selectedMethods.indexOf(module.code+'.'+code) !== -1}"
+                        onchange="{selectMethod(module.code+'.'+code)}"
+                    )
                     span   {name}
                     .clear
 
@@ -26,7 +29,7 @@ actions-input-selector
             .flexrow
                 button.nml.secondary(onclick="{cancel}")
                     span {voc.cancel}
-                button.nml.secondary(onclick="{apply}" disabled="{selectedMethods.length === 0}")
+                button.nml.secondary(onclick="{apply}" disabled="{!selectedMethods || selectedMethods.length === 0}")
                     span {voc.select} {selectedMethods.length || ''}
     script.
         this.namespace = 'common';
@@ -71,7 +74,7 @@ actions-input-selector
             window.signals.off('modulesChanged', this.refreshModules);
         });
 
-        this.selectMethod = (code) => () => {
+        this.selectMethod = (code) => e => {
             if (this.selectedMethods) {
                 const ind = this.selectedMethods.indexOf(code);
                 if (ind > -1) {
