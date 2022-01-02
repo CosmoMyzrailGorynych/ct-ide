@@ -24,6 +24,7 @@ const defaultProjectTemplate = {
     emitterTandems: [],
     scripts: [],
     starting: 0,
+    contentTypes: [],
     groups: {
         fonts: [],
         textures: [],
