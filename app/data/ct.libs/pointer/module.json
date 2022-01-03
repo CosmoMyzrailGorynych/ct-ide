@@ -1,0 +1,46 @@
+{
+    "main": {
+        "name": "Pointer",
+        "tagline": "A uniform API for any type of pointer devices, be it touchscreens, pen tablets, or mouse.",
+        "version": "1.0.0",
+        "authors": [{
+            "name": "Cosmo Myzrail Gorynych",
+            "mail": "admin@nersta.ru"
+        }],
+        "categories": [
+            "inputs"
+        ]
+    },
+    "fields": [{
+        "name": "Do not cancel standard browser events",
+        "key": "preventdefault",
+        "id": "preventdefault",
+        "help": "Will leave browser scrolling, panning, and context menus enabled.",
+        "default": false,
+        "type": "checkbox"
+    }, {
+        "name": "Start with locking mode",
+        "key": "startlocked",
+        "id": "startlocked",
+        "help": "Will lock the first click inside the game. Read about locking mode in sidebar's docs.",
+        "default": false,
+        "type": "checkbox"
+    }],
+    "inputMethods": {
+        "Any": "Any press",
+        "Primary": "Primary button press",
+        "Middle": "Middle button press",
+        "Secondary": "Secondary button press",
+        "ExtraOne": "First extra button press (\"back\" button)",
+        "ExtraTwo": "Second extra button press (\"forward\" button)",
+        "Eraser": "Pen's eraser button",
+        "Double": "Double press",
+        "Triple": "Triple press",
+        "DeltaPinch": "Pinch",
+        "DeltaRotation": "Rotation",
+        "PanX": "Panning by X",
+        "PanY": "Panning by Y",
+        "Wheel": "Mouse wheel"
+    },
+    "optionalDependencies": ["place"]
+}

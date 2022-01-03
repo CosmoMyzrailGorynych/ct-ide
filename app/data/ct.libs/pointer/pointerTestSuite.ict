@@ -1,0 +1,678 @@
+ctjsVersion: 2.0.0
+notes: /* empty */
+libs:
+  place:
+    gridX: 1024
+    gridY: 1024
+  fittoscreen:
+    mode: scaleFit
+  pointer: {}
+textures:
+  - name: Press
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 64
+      - 32
+    marginx: 0
+    marginy: 0
+    imgWidth: 128
+    imgHeight: 64
+    width: 128
+    height: 64
+    offx: 0
+    offy: 0
+    origname: iT3kM653njnNzKf.png
+    shape: rect
+    left: 64
+    right: 64
+    top: 32
+    bottom: 32
+    uid: T3kM653njnNzKf
+    padding: 1
+    group: !<tag:yaml.org,2002:js/undefined> ''
+    lastmod: 1640319078866
+  - name: Release
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 64
+      - 32
+    marginx: 0
+    marginy: 0
+    imgWidth: 128
+    imgHeight: 64
+    width: 128
+    height: 64
+    offx: 0
+    offy: 0
+    origname: i7pM3DLmBcCLKNK.png
+    shape: rect
+    left: 64
+    right: 64
+    top: 32
+    bottom: 32
+    uid: 7pM3DLmBcCLKNK
+    padding: 1
+    group: !<tag:yaml.org,2002:js/undefined> ''
+    lastmod: 1640319081165
+  - name: Hover
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 64
+      - 32
+    marginx: 0
+    marginy: 0
+    imgWidth: 128
+    imgHeight: 64
+    width: 128
+    height: 64
+    offx: 0
+    offy: 0
+    origname: iDjtt24dc8DC67M.png
+    shape: rect
+    left: 64
+    right: 64
+    top: 32
+    bottom: 32
+    uid: Djtt24dc8DC67M
+    padding: 1
+    group: !<tag:yaml.org,2002:js/undefined> ''
+    lastmod: 1640319076860
+  - name: Bg
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 0
+      - 0
+    marginx: 0
+    marginy: 0
+    imgWidth: 1280
+    imgHeight: 720
+    width: 1280
+    height: 720
+    offx: 0
+    offy: 0
+    origname: iCgmBww2DztC53h.png
+    shape: rect
+    left: 0
+    right: 1280
+    top: 0
+    bottom: 720
+    uid: CgmBww2DztC53h
+    padding: 1
+    group: !<tag:yaml.org,2002:js/undefined> ''
+    tiled: true
+  - name: ArrowCircle
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 64
+      - 64
+    marginx: 0
+    marginy: 0
+    imgWidth: 128
+    imgHeight: 128
+    width: 128
+    height: 128
+    offx: 0
+    offy: 0
+    origname: i4fFfFzR1NFzL4G.png
+    shape: circle
+    left: 64
+    right: 64
+    top: 64
+    bottom: 64
+    uid: 4fFfFzR1NFzL4G
+    padding: 1
+    group: !<tag:yaml.org,2002:js/undefined> ''
+    r: 64
+    lastmod: 1641223669019
+  - name: Thing
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 0
+      - 0
+    marginx: 0
+    marginy: 0
+    imgWidth: 128
+    imgHeight: 128
+    width: 128
+    height: 128
+    offx: 0
+    offy: 0
+    origname: ihcrB1tNpWGDb9z.png
+    shape: rect
+    left: 0
+    right: 128
+    top: 0
+    bottom: 128
+    uid: hcrB1tNpWGDb9z
+    padding: 1
+    group: !<tag:yaml.org,2002:js/undefined> ''
+skeletons: []
+templates:
+  - name: Hover
+    depth: 0
+    oncreate: ''
+    onstep: ''
+    ondraw: 'this.tint = ct.pointer.hovers(this) ? 0x666666 : 0xffffff;'
+    ondestroy: ''
+    texture: Djtt24dc8DC67M
+    extends: {}
+    uid: 59pLLrnNj8NjCw
+    lastmod: 1641236046861
+  - name: Press
+    depth: 0
+    oncreate: ''
+    onstep: ''
+    ondraw: |
+      this.tint = ct.pointer.collides(this) ? 0x666666 : 0xffffff;
+    ondestroy: ''
+    texture: T3kM653njnNzKf
+    extends: {}
+    uid: Mrnzw5H89kgcWc
+    lastmod: 1641143596363
+  - name: Release
+    depth: 0
+    oncreate: ''
+    onstep: ''
+    ondraw: |
+      this.tint = ct.pointer.collides(this, false, true) ? 0x666666 : 0xffffff;
+    ondestroy: ''
+    texture: 7pM3DLmBcCLKNK
+    extends: {}
+    uid: L4G83w3cfhtdmp
+    lastmod: 1641145962425
+  - type: template
+    name: CapturingCircle
+    depth: 0
+    oncreate: ct.camera.follow = this;
+    onstep: |-
+      this.angle += ct.pointer.xmovement;
+
+      ct.camera.angle = this.angle + 90;
+      ct.camera.shiftY = ct.u.ldy(300, this.angle);
+      ct.camera.shiftX = ct.u.ldx(300, this.angle);
+    ondraw: ''
+    ondestroy: ''
+    texture: 4fFfFzR1NFzL4G
+    visible: true
+    extends: {}
+    lastmod: 1641235509013
+    uid: GtLKNND354G6FH
+sounds: []
+styles: []
+rooms:
+  - type: room
+    oncreate: >-
+      this.coordText = new PIXI.Text('');
+
+      this.keysText = new PIXI.Text('');
+
+      this.pointersText = new PIXI.Text('', {
+          fontSize: 10
+      });
+
+      this.pointersHoverText = new PIXI.Text('', {
+          fontSize: 10
+      });
+
+
+
+      this.addChild(this.coordText, this.keysText, this.pointersText,
+      this.pointersHoverText);
+
+
+      this.coordText.x = this.coordText.y = 20;
+
+
+      this.keysText.x = 20;
+
+      this.keysText.y = 150;
+
+
+      this.pointersHoverText.x = 850;
+
+      this.pointersHoverText.y = 20;
+
+
+      this.pointersText.x = 1050;
+
+      this.pointersText.y = 20;
+
+
+      this.coordText.depth = this.keysText.depth = this.pointersText.depth = 10;
+    onstep: ''
+    ondraw: |-
+      this.coordText.text = `x: ${ct.pointer.x}
+      y: ${ct.pointer.y}
+      xui: ${ct.pointer.xui}
+      yui: ${ct.pointer.yui}`;
+
+      this.keysText.text = JSON.stringify(ct.inputs.registry, void 0, 2);
+      this.pointersText.text = JSON.stringify(ct.pointer.down, void 0, 2);
+      this.pointersHoverText.text = JSON.stringify(ct.pointer.hover, void 0, 2);
+    onleave: ''
+    gridX: 64
+    gridY: 64
+    width: 1280
+    height: 720
+    name: TestRoom
+    backgrounds:
+      - depth: -10
+        texture: CgmBww2DztC53h
+        extends: {}
+    copies:
+      - x: 576
+        'y': 128
+        uid: 59pLLrnNj8NjCw
+        exts: {}
+      - x: 704
+        'y': 256
+        uid: Mrnzw5H89kgcWc
+        exts: {}
+      - x: 576
+        'y': 384
+        uid: L4G83w3cfhtdmp
+        exts: {}
+      - x: 448
+        'y': 256
+        uid: 59pLLrnNj8NjCw
+        exts: {}
+      - x: 512
+        'y': 512
+        uid: Mrnzw5H89kgcWc
+        exts: {}
+      - x: 768
+        'y': 448
+        uid: L4G83w3cfhtdmp
+        exts: {}
+      - x: 640
+        'y': 640
+        uid: L4G83w3cfhtdmp
+        exts: {}
+    tiles:
+      - depth: -10
+        tiles: []
+        extends: {}
+    extends: {}
+    lastmod: 1641223494587
+    thumbnail: Twr3J22MrT9dg4
+    uid: Twr3J22MrT9dg4
+  - type: room
+    oncreate: >-
+      this.coordText = new PIXI.Text('');
+
+      this.keysText = new PIXI.Text('');
+
+      this.pointersText = new PIXI.Text('', {
+          fontSize: 10
+      });
+
+      this.pointersHoverText = new PIXI.Text('', {
+          fontSize: 10
+      });
+
+
+
+      this.addChild(this.coordText, this.keysText, this.pointersText,
+      this.pointersHoverText);
+
+
+      this.coordText.x = this.coordText.y = 20;
+
+
+      this.keysText.x = 20;
+
+      this.keysText.y = 250;
+
+
+      this.pointersHoverText.x = 850;
+
+      this.pointersHoverText.y = 20;
+
+
+      this.pointersText.x = 1050;
+
+      this.pointersText.y = 20;
+
+
+      this.coordText.depth = this.keysText.depth = this.pointersText.depth = 10;
+
+
+      ct.pointer.lock();
+    onstep: ''
+    ondraw: |-
+      this.coordText.text = `x: ${ct.pointer.x}
+      y: ${ct.pointer.y}
+      xui: ${ct.pointer.xui}
+      yui: ${ct.pointer.yui}
+      xlocked: ${ct.pointer.xlocked}
+      ylocked: ${ct.pointer.ylocked}
+      xmovement: ${ct.pointer.xmovement}
+      ymovement: ${ct.pointer.ymovement}`;
+
+      this.keysText.text = JSON.stringify(ct.inputs.registry, void 0, 2);
+      this.pointersText.text = JSON.stringify(ct.pointer.down, void 0, 2);
+      this.pointersHoverText.text = JSON.stringify(ct.pointer.hover, void 0, 2);
+    onleave: ct.pointer.unlock();
+    gridX: 64
+    gridY: 64
+    width: 1280
+    height: 720
+    name: CaptureTest
+    backgrounds:
+      - depth: -10
+        texture: CgmBww2DztC53h
+        extends: {}
+    copies:
+      - x: 639
+        'y': 358
+        uid: GtLKNND354G6FH
+        exts: {}
+    tiles:
+      - depth: -10
+        tiles:
+          - x: 64
+            'y': 64
+            texture: hcrB1tNpWGDb9z
+            grid:
+              - 0
+              - 0
+              - 1
+              - 1
+          - x: 64
+            'y': 384
+            texture: hcrB1tNpWGDb9z
+            grid:
+              - 0
+              - 0
+              - 1
+              - 1
+          - x: 576
+            'y': 64
+            texture: hcrB1tNpWGDb9z
+            grid:
+              - 0
+              - 0
+              - 1
+              - 1
+          - x: 1024
+            'y': 192
+            texture: hcrB1tNpWGDb9z
+            grid:
+              - 0
+              - 0
+              - 1
+              - 1
+          - x: 1024
+            'y': 384
+            texture: hcrB1tNpWGDb9z
+            grid:
+              - 0
+              - 0
+              - 1
+              - 1
+          - x: 192
+            'y': 640
+            texture: hcrB1tNpWGDb9z
+            grid:
+              - 0
+              - 0
+              - 1
+              - 1
+          - x: 384
+            'y': 768
+            texture: hcrB1tNpWGDb9z
+            grid:
+              - 0
+              - 0
+              - 1
+              - 1
+          - x: 832
+            'y': 704
+            texture: hcrB1tNpWGDb9z
+            grid:
+              - 0
+              - 0
+              - 1
+              - 1
+          - x: 320
+            'y': 0
+            texture: hcrB1tNpWGDb9z
+            grid:
+              - 0
+              - 0
+              - 1
+              - 1
+          - x: 960
+            'y': -0.0
+            texture: hcrB1tNpWGDb9z
+            grid:
+              - 0
+              - 0
+              - 1
+              - 1
+          - x: -64
+            'y': 576
+            texture: hcrB1tNpWGDb9z
+            grid:
+              - 0
+              - 0
+              - 1
+              - 1
+          - x: 512
+            'y': -192
+            texture: hcrB1tNpWGDb9z
+            grid:
+              - 0
+              - 0
+              - 1
+              - 1
+          - x: 768
+            'y': -256
+            texture: hcrB1tNpWGDb9z
+            grid:
+              - 0
+              - 0
+              - 1
+              - 1
+          - x: 1152
+            'y': -192
+            texture: hcrB1tNpWGDb9z
+            grid:
+              - 0
+              - 0
+              - 1
+              - 1
+          - x: 1280
+            'y': 0
+            texture: hcrB1tNpWGDb9z
+            grid:
+              - 0
+              - 0
+              - 1
+              - 1
+          - x: 1344
+            'y': 320
+            texture: hcrB1tNpWGDb9z
+            grid:
+              - 0
+              - 0
+              - 1
+              - 1
+          - x: 1280
+            'y': 576
+            texture: hcrB1tNpWGDb9z
+            grid:
+              - 0
+              - 0
+              - 1
+              - 1
+          - x: 1024
+            'y': 832
+            texture: hcrB1tNpWGDb9z
+            grid:
+              - 0
+              - 0
+              - 1
+              - 1
+          - x: 768
+            'y': 896
+            texture: hcrB1tNpWGDb9z
+            grid:
+              - 0
+              - 0
+              - 1
+              - 1
+          - x: -192
+            'y': 640
+            texture: hcrB1tNpWGDb9z
+            grid:
+              - 0
+              - 0
+              - 1
+              - 1
+          - x: -192
+            'y': 384
+            texture: hcrB1tNpWGDb9z
+            grid:
+              - 0
+              - 0
+              - 1
+              - 1
+          - x: -192
+            'y': 128
+            texture: hcrB1tNpWGDb9z
+            grid:
+              - 0
+              - 0
+              - 1
+              - 1
+          - x: 0
+            'y': -192
+            texture: hcrB1tNpWGDb9z
+            grid:
+              - 0
+              - 0
+              - 1
+              - 1
+          - x: 256
+            'y': -384
+            texture: hcrB1tNpWGDb9z
+            grid:
+              - 0
+              - 0
+              - 1
+              - 1
+          - x: 448
+            'y': -384
+            texture: hcrB1tNpWGDb9z
+            grid:
+              - 0
+              - 0
+              - 1
+              - 1
+          - x: -0.0
+            'y': 896
+            texture: hcrB1tNpWGDb9z
+            grid:
+              - 0
+              - 0
+              - 1
+              - 1
+          - x: 320
+            'y': 1024
+            texture: hcrB1tNpWGDb9z
+            grid:
+              - 0
+              - 0
+              - 1
+              - 1
+          - x: 576
+            'y': 1088
+            texture: hcrB1tNpWGDb9z
+            grid:
+              - 0
+              - 0
+              - 1
+              - 1
+          - x: 1152
+            'y': -384
+            texture: hcrB1tNpWGDb9z
+            grid:
+              - 0
+              - 0
+              - 1
+              - 1
+          - x: 640
+            'y': 640
+            texture: hcrB1tNpWGDb9z
+            grid:
+              - 0
+              - 0
+              - 1
+              - 1
+        extends: {}
+    extends: {}
+    lastmod: 1641225084963
+    thumbnail: z1Cq69LQj8q1WQ
+    uid: z1Cq69LQj8q1WQ
+actions: []
+emitterTandems: []
+scripts: []
+starting: 0
+groups:
+  fonts: []
+  textures: []
+  styles: []
+  rooms: []
+  types: []
+  sounds: []
+  emitterTandems: []
+settings:
+  authoring:
+    author: ''
+    site: ''
+    title: ''
+    version:
+      - 0
+      - 0
+      - 0
+    versionPostfix: ''
+  rendering:
+    usePixiLegacy: true
+    maxFPS: 60
+    pixelatedrender: false
+    highDensity: true
+    desktopMode: maximized
+  export:
+    windows: true
+    linux: true
+    mac: true
+    functionWrap: false
+    codeModifier: none
+  branding:
+    icon: -1
+    accent: '#446adb'
+    invertPreloaderScheme: true
+  fps: 30
+fonts: []
+contentTypes: []
+palette: []
+startroom: Twr3J22MrT9dg4
