@@ -7,15 +7,15 @@ libs:
   keyboard: {}
   keyboard.polyfill: {}
   sound.howler: {}
+  random: {}
+  tween: {}
+  transition: {}
   place:
     undefined: ''
     gridX: 128
     gridY: 128
     debugMode: false
-    debugText: 16
-  random: {}
-  tween: {}
-  transition: {}
+    debugText: 8
 textures:
   - name: Bullet
     untill: 0
@@ -691,7 +691,7 @@ textures:
     uid: 8a6a1aa5-60f6-4f9a-9c54-7e5e7641bda1
     padding: 1
     source: /home/comigo/UNWORK/Tileset/Cat_Death.png
-    lastmod: 1599531850969
+    lastmod: 1641332719583
 skeletons: []
 templates:
   - name: Elevator
@@ -712,7 +712,7 @@ templates:
     texture: 2637e46e-06b2-4ca0-b17d-4bbf6eca44b7
     extends: {}
     uid: 7fea051e-83e5-4e54-848b-ab3ca861e5cb
-    lastmod: 1599528051175
+    lastmod: 1641334138294
   - name: Cat
     depth: 5
     oncreate: |-
@@ -726,7 +726,7 @@ templates:
     onstep: |-
       this.vspeed = ct.actions.MoveY.value * this.maxSpeed;
       this.hspeed = ct.actions.MoveX.value * this.maxSpeed;
-      this.moveContinuousByAxes('Solid');
+      console.log(this.moveContinuousByAxes('Solid'));
 
       if (ct.actions.Shoot.pressed) {
           const bullet = ct.templates.copy('Bullet', this.x, this.y - 5);
@@ -789,7 +789,7 @@ templates:
     extends:
       cgroup: ''
     uid: c40336ea-2846-45d5-97ba-d51852d3f6c5
-    lastmod: 1618035852307
+    lastmod: 1641334773965
   - name: Crate
     depth: 0
     oncreate: this.depth = this.y;
@@ -805,7 +805,7 @@ templates:
     extends:
       cgroup: Solid
     uid: 4e473462-8009-438e-9f53-1032e3a335cf
-    lastmod: 1599528085727
+    lastmod: 1641332423671
   - name: HazardousTube
     depth: 0
     oncreate: ''
@@ -830,9 +830,7 @@ templates:
       this.speed = 4;
     onstep: |-
       this.move();
-      if (ct.place.occupied(this, 'Solid') ||
-          ct.place.tile(this, 'Solid')
-      ) {
+      if (ct.place.occupied(this, 'Solid')) {
           this.kill = true;
       }
     ondraw: this.depth = this.y;
@@ -843,11 +841,11 @@ templates:
     extends:
       cgroup: Bullet
     uid: 57f03679-dc98-4ebc-87ef-a4ca7b275731
-    lastmod: 1599528114513
+    lastmod: 1641332445982
   - name: Crosshair
     depth: 100000
     oncreate: ''
-    onstep: this.move();
+    onstep: ''
     ondraw: |-
       this.x = ct.mouse.xui;
       this.y = ct.mouse.yui;
@@ -855,7 +853,7 @@ templates:
     texture: bdf46b11-ef42-4c45-af01-a0b918ee9587
     extends: {}
     uid: ff0f561c-a96c-4205-a083-01d2a60ebb67
-    lastmod: 1599528916282
+    lastmod: 1641334780836
   - name: Crate_Debris
     depth: -6500
     oncreate: ''
@@ -1042,7 +1040,7 @@ templates:
     texture: 8a6a1aa5-60f6-4f9a-9c54-7e5e7641bda1
     extends: {}
     uid: f11d4e26-8450-4187-8163-b70facceca7e
-    lastmod: 1604820801526
+    lastmod: 1641332285054
   - name: Medkit
     depth: 0
     oncreate: ''

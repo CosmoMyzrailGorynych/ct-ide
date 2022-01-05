@@ -5,7 +5,7 @@
 
 ## ct.place.moveAlong(me, direction, maxLength, [cgroup, stepSize])
 
-Moves a copy by `stepSize` in a given `direction` untill a `maxLength` is reached or a copy is next to another colliding copy. You can filter collided copies with `cgroup`, and set precision with `stepSize` (default is `1`, which means pixel-by-pixel movement). This function is especially useful for side-view games and any fast-moving copies, as it allows precise movement without clipping or passing through surfaces.
+Moves a copy by `stepSize` in a given `direction` untill a `maxLength` is reached or a copy is next to another colliding copy or tile. You can filter collided copies with `cgroup`, and set precision with `stepSize` (default is `1`, which means pixel-by-pixel movement). This function is especially useful for side-view games and any fast-moving copies, as it allows precise movement without clipping or passing through surfaces.
 
 
 ## `ct.place.moveByAxes(me, dx, dy, [cgroup, stepSize])`

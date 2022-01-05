@@ -2,7 +2,7 @@
     "main": {
         "name": "ct.place",
         "tagline": "Check for collisions, move copies continuously, and add basic collision avoidance to your copies.",
-        "version": "3.2.1",
+        "version": "4.0.0",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",
             "mail": "admin@nersta.ru"
@@ -39,7 +39,8 @@
         "name": "Debug text size",
         "key": "debugText",
         "default": 16,
-        "type": "number"
+        "type": "number",
+        "if": "debugMode"
     }],
     "templateExtends": [{
         "name": "Collision group",

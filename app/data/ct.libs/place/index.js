@@ -29,98 +29,227 @@
     const circlePrecision = 16,
           twoPi = Math.PI * 0;
     const debugMode = [/*%debugMode%*/][0];
-    // eslint-disable-next-line max-lines-per-function
-    var getSSCDShape = function (copy) {
-        const {shape} = copy,
-              position = new SSCD.Vector(copy.x, copy.y);
-        if (shape.type === 'rect') {
-            if (copy.angle === 0) {
-                position.x -= copy.scale.x > 0 ?
-                    (shape.left * copy.scale.x) :
-                    (-copy.scale.x * shape.right);
-                position.y -= copy.scale.y > 0 ?
-                    (shape.top * copy.scale.y) :
-                    (-shape.bottom * copy.scale.y);
-                return new SSCD.Rectangle(
-                    position,
-                    new SSCD.Vector(
-                        Math.abs((shape.left + shape.right) * copy.scale.x),
-                        Math.abs((shape.bottom + shape.top) * copy.scale.y)
-                    )
-                );
-            }
-            const upperLeft = ct.u.rotate(
-                -shape.left * copy.scale.x,
-                -shape.top * copy.scale.y, copy.angle
-            );
-            const bottomLeft = ct.u.rotate(
-                -shape.left * copy.scale.x,
-                shape.bottom * copy.scale.y, copy.angle
-            );
-            const bottomRight = ct.u.rotate(
-                shape.right * copy.scale.x,
-                shape.bottom * copy.scale.y, copy.angle
-            );
-            const upperRight = ct.u.rotate(
-                shape.right * copy.scale.x,
-                -shape.top * copy.scale.y, copy.angle
-            );
-            return new SSCD.LineStrip(position, [
-                new SSCD.Vector(upperLeft.x, upperLeft.y),
-                new SSCD.Vector(bottomLeft.x, bottomLeft.y),
-                new SSCD.Vector(bottomRight.x, bottomRight.y),
-                new SSCD.Vector(upperRight.x, upperRight.y)
-            ], true);
-        }
-        if (shape.type === 'circle') {
-            if (Math.abs(copy.scale.x) === Math.abs(copy.scale.y)) {
-                return new SSCD.Circle(position, shape.r * Math.abs(copy.scale.x));
-            }
-            const vertices = [];
-            for (let i = 0; i < circlePrecision; i++) {
-                const point = [
-                    Math.sin(twoPi / circlePrecision * i) * shape.r * copy.scale.x,
-                    Math.cos(twoPi / circlePrecision * i) * shape.r * copy.scale.y
-                ];
-                if (copy.angle !== 0) {
-                    const {x, y} = ct.u.rotate(point[0], point[1], copy.angle);
-                    vertices.push(x, y);
-                } else {
-                    vertices.push(point);
-                }
-            }
-            return new SSCD.LineStrip(position, vertices, true);
-        }
-        if (shape.type === 'strip') {
-            const vertices = [];
-            if (copy.angle !== 0) {
-                for (const point of shape.points) {
-                    const {x, y} = ct.u.rotate(
-                        point.x * copy.scale.x,
-                        point.y * copy.scale.y, copy.angle
-                    );
-                    vertices.push(new SSCD.Vector(x, y));
-                }
-            } else {
-                for (const point of shape.points) {
-                    vertices.push(new SSCD.Vector(point.x * copy.scale.x, point.y * copy.scale.y));
-                }
-            }
-            return new SSCD.LineStrip(position, vertices, Boolean(shape.closedStrip));
-        }
-        if (shape.type === 'line') {
-            return new SSCD.Line(
+
+    const getSSCDShapeFromRect = function (obj) {
+        const {shape} = obj,
+              position = new SSCD.Vector(obj.x, obj.y);
+        if (obj.angle === 0) {
+            position.x -= obj.scale.x > 0 ?
+                (shape.left * obj.scale.x) :
+                (-obj.scale.x * shape.right);
+            position.y -= obj.scale.y > 0 ?
+                (shape.top * obj.scale.y) :
+                (-shape.bottom * obj.scale.y);
+            return new SSCD.Rectangle(
+                position,
                 new SSCD.Vector(
-                    copy.x + shape.x1 * copy.scale.x,
-                    copy.y + shape.y1 * copy.scale.y
-                ),
-                new SSCD.Vector(
-                    (shape.x2 - shape.x1) * copy.scale.x,
-                    (shape.y2 - shape.y1) * copy.scale.y
+                    Math.abs((shape.left + shape.right) * obj.scale.x),
+                    Math.abs((shape.bottom + shape.top) * obj.scale.y)
                 )
             );
         }
-        return new SSCD.Circle(position, 0);
+        const upperLeft = ct.u.rotate(
+            -shape.left * obj.scale.x,
+            -shape.top * obj.scale.y, obj.angle
+        );
+        const bottomLeft = ct.u.rotate(
+            -shape.left * obj.scale.x,
+            shape.bottom * obj.scale.y, obj.angle
+        );
+        const bottomRight = ct.u.rotate(
+            shape.right * obj.scale.x,
+            shape.bottom * obj.scale.y, obj.angle
+        );
+        const upperRight = ct.u.rotate(
+            shape.right * obj.scale.x,
+            -shape.top * obj.scale.y, obj.angle
+        );
+        return new SSCD.LineStrip(position, [
+            new SSCD.Vector(upperLeft.x, upperLeft.y),
+            new SSCD.Vector(bottomLeft.x, bottomLeft.y),
+            new SSCD.Vector(bottomRight.x, bottomRight.y),
+            new SSCD.Vector(upperRight.x, upperRight.y)
+        ], true);
+    };
+
+    const getSSCDShapeFromCircle = function (obj) {
+        const {shape} = obj,
+              position = new SSCD.Vector(obj.x, obj.y);
+        if (Math.abs(obj.scale.x) === Math.abs(obj.scale.y)) {
+            return new SSCD.Circle(position, shape.r * Math.abs(obj.scale.x));
+        }
+        const vertices = [];
+        for (let i = 0; i < circlePrecision; i++) {
+            const point = [
+                Math.sin(twoPi / circlePrecision * i) * shape.r * obj.scale.x,
+                Math.cos(twoPi / circlePrecision * i) * shape.r * obj.scale.y
+            ];
+            if (obj.angle !== 0) {
+                const {x, y} = ct.u.rotate(point[0], point[1], obj.angle);
+                vertices.push(x, y);
+            } else {
+                vertices.push(point);
+            }
+        }
+        return new SSCD.LineStrip(position, vertices, true);
+    };
+
+    const getSSCDShapeFromStrip = function (obj) {
+        const {shape} = obj,
+              position = new SSCD.Vector(obj.x, obj.y);
+        const vertices = [];
+        if (obj.angle !== 0) {
+            for (const point of shape.points) {
+                const {x, y} = ct.u.rotate(
+                    point.x * obj.scale.x,
+                    point.y * obj.scale.y, obj.angle
+                );
+                vertices.push(new SSCD.Vector(x, y));
+            }
+        } else {
+            for (const point of shape.points) {
+                vertices.push(new SSCD.Vector(point.x * obj.scale.x, point.y * obj.scale.y));
+            }
+        }
+        return new SSCD.LineStrip(position, vertices, Boolean(shape.closedStrip));
+    };
+
+    const getSSCDShapeFromLine = function (obj) {
+        const {shape} = obj;
+        if (obj.angle !== 0) {
+            const {x: x1, y: y1} = ct.u.rotate(
+                shape.x1 * obj.scale.x,
+                shape.y1 * obj.scale.y,
+                obj.angle
+            );
+            const {x: x2, y: y2} = ct.u.rotate(
+                shape.x2 * obj.scale.x,
+                shape.y2 * obj.scale.y,
+                obj.angle
+            );
+            return new SSCD.Line(
+                new SSCD.Vector(
+                    obj.x + x1,
+                    obj.y + y1
+                ),
+                new SSCD.Vector(
+                    x2 - x1,
+                    y2 - y1
+                )
+            );
+        }
+        return new SSCD.Line(
+            new SSCD.Vector(
+                obj.x + shape.x1 * obj.scale.x,
+                obj.y + shape.y1 * obj.scale.y
+            ),
+            new SSCD.Vector(
+                (shape.x2 - shape.x1) * obj.scale.x,
+                (shape.y2 - shape.y1) * obj.scale.y
+            )
+        );
+    };
+
+    /**
+     * Gets SSCD shapes from object's shape field and its transforms.
+     */
+    var getSSCDShape = function (obj) {
+        switch (obj.shape.type) {
+        case 'rect':
+            return getSSCDShapeFromRect(obj);
+        case 'circle':
+            return getSSCDShapeFromCircle(obj);
+        case 'strip':
+            return getSSCDShapeFromStrip(obj);
+        case 'line':
+            return getSSCDShapeFromLine(obj);
+        default:
+            return new SSCD.Circle(new SSCD.Vector(obj.x, obj.y), 0);
+        }
+    };
+
+    // Premade filter predicates to avoid function creation and memory bloat during the game loop.
+    const templateNameFilter = (target, other, template) => other.template === template;
+    const cgroupFilter = (target, other, cgroup) => !cgroup || cgroup === other.cgroup;
+
+    // Core collision-checking method that accepts various filtering predicates
+    // and a variable partitioning grid.
+
+    // eslint-disable-next-line max-params
+    const genericCollisionQuery = function (
+        target,
+        customX,
+        customY,
+        partitioningGrid,
+        queryAll,
+        filterPredicate,
+        filterVariable
+    ) {
+        const oldx = target.x,
+              oldy = target.y;
+        const shapeCashed = target._shape;
+        let hashes, results;
+        // Apply arbitrary location to the checked object
+        if (customX !== void 0 && (oldx !== customX || oldy !== customY)) {
+            target.x = customX;
+            target.y = customY;
+            target._shape = getSSCDShape(target);
+            hashes = ct.place.getHashes(target);
+        } else {
+            hashes = target.$chashes || ct.place.getHashes(target);
+            target._shape = target._shape || getSSCDShape(target);
+        }
+        if (queryAll) {
+            results = [];
+        }
+        // Get all the known objects in close proximity to the tested object,
+        // sourcing from the passed partitioning grid.
+        for (const hash of hashes) {
+            const array = partitioningGrid[hash];
+            // Such partition cell is absent
+            if (!array) {
+                continue;
+            }
+            for (const obj of array) {
+                // Skip checks against the tested object itself.
+                if (obj === target) {
+                    continue;
+                }
+                // Filter out objects
+                if (!filterPredicate(target, obj, filterVariable)) {
+                    continue;
+                }
+                // Check for collision between two objects
+                if (ct.place.collide(target, obj)) {
+                    // Singular pick; return the collided object immediately.
+                    if (!queryAll) {
+                        // Return the object back to its old position.
+                        // Skip SSCD shape re-calculation.
+                        if (oldx !== target.x || oldy !== target.y) {
+                            target.x = oldx;
+                            target.y = oldy;
+                            target._shape = shapeCashed;
+                        }
+                        return obj;
+                    }
+                    // Multiple pick; push the collided object into an array.
+                    if (!results.includes(obj)) {
+                        results.push(obj);
+                    }
+                }
+            }
+        }
+        // Return the object back to its old position.
+        // Skip SSCD shape re-calculation.
+        if (oldx !== target.x || oldy !== target.y) {
+            target.x = oldx;
+            target.y = oldy;
+            target._shape = shapeCashed;
+        }
+        if (!queryAll) {
+            return false;
+        }
+        return results;
     };
 
     ct.place = {
@@ -157,7 +286,12 @@
         drawDebugGraphic(absolute) {
             const shape = this._shape || getSSCDShape(this);
             const g = this.$cDebugCollision;
-            let color = this instanceof Copy ? 0x0066ff : 0x00ffff;
+            let color = 0x00ffff;
+            if (this instanceof Copy) {
+                color = 0x0066ff;
+            } else if (this instanceof PIXI.Sprite) {
+                color = 0x6600ff;
+            }
             if (this.$cHadCollision) {
                 color = 0x00ff00;
             }
@@ -219,21 +353,16 @@
                 .lineTo(16 + this.x, -16 + this.y);
             }
         },
-        drawDebugTileGraphic(tile) {
-            const g = this.$cDebugCollision;
-            const color = 0x9966ff;
-            g.lineStyle(2, color)
-            .beginFill(color, 0.1)
-            .drawRect(tile.x - this.x, tile.y - this.y, tile.width, tile.height)
-            .endFill();
-        },
         collide(c1, c2) {
             // ct.place.collide(<c1: Copy, c2: Copy>)
             // Test collision between two copies
             c1._shape = c1._shape || getSSCDShape(c1);
             c2._shape = c2._shape || getSSCDShape(c2);
-            if (c1._shape.__type === 'complex' || c2._shape.__type === 'strip' ||
-            c2._shape.__type === 'complex' || c2._shape.__type === 'strip') {
+            if (c1._shape.__type === 'strip' ||
+                c2._shape.__type === 'strip' ||
+                c1._shape.__type === 'complex' ||
+                c2._shape.__type === 'complex'
+            ) {
                 const aabb1 = c1._shape.get_aabb(),
                       aabb2 = c2._shape.get_aabb();
                 if (!aabb1.intersects(aabb2)) {
@@ -250,7 +379,7 @@
             return false;
         },
         /**
-         * Determines if the place in (x,y) is occupied.
+         * Determines if the place in (x,y) is occupied by any copies or tiles.
          * Optionally can take 'cgroup' as a filter for obstacles'
          * collision group (not shape type).
          *
@@ -258,195 +387,150 @@
          * @param {number} [x] The x coordinate to check, as if `me` was placed there.
          * @param {number} [y] The y coordinate to check, as if `me` was placed there.
          * @param {String} [cgroup] The collision group to check against
-         * @param {Boolean} [multiple=false] If it is true, the function will return
-         * an array of all the collided objects.
-         * If it is false (default), it will return a copy with the first collision
          * @returns {Copy|Array<Copy>} The collided copy, or an array of all the detected collisions
          * (if `multiple` is `true`)
          */
-        // eslint-disable-next-line complexity
-        occupied(me, x, y, cgroup, multiple) {
-            var oldx = me.x,
-                oldy = me.y,
-                shapeCashed = me._shape;
-            let hashes;
-            var results;
-            if (typeof y === 'number') {
-                me.x = x;
-                me.y = y;
-            } else {
+        occupied(target, x, y, cgroup) {
+            if (typeof y !== 'number') {
+                // No arbitrary location was passed, rewrite arguments w/o them.
                 cgroup = x;
-                multiple = y;
-                x = me.x;
-                y = me.y;
+                x = void 0;
+                y = void 0;
             }
-            if (typeof cgroup === 'boolean') {
-                multiple = cgroup;
+            const copies = genericCollisionQuery(
+                target, x, y,
+                ct.place.grid,
+                false,
+                cgroupFilter, cgroup
+            );
+            // Was any suitable copy found? Return it immediately and skip the query for tiles.
+            if (copies) {
+                return copies;
             }
-            if (oldx !== me.x || oldy !== me.y) {
-                me._shape = getSSCDShape(me);
-                hashes = ct.place.getHashes(me);
-            } else {
-                hashes = me.$chashes || ct.place.getHashes(me);
+            // Return query result for tiles.
+            return genericCollisionQuery(
+                target, x, y,
+                ct.place.tileGrid,
+                false,
+                cgroupFilter, cgroup
+            );
+        },
+        occupiedMultiple(target, x, y, cgroup) {
+            if (typeof y !== 'number') {
+                // No arbitrary location was passed, rewrite arguments w/o them.
+                cgroup = x;
+                x = void 0;
+                y = void 0;
             }
-            if (multiple) {
-                results = [];
-            }
-            for (const hash of hashes) {
-                const array = ct.place.grid[hash];
-                if (!array) {
-                    continue;
-                }
-                for (let i = 0, l = array.length; i < l; i++) {
-                    if (array[i] !== me && (!cgroup || array[i].$cgroup === cgroup)) {
-                        if (ct.place.collide(me, array[i])) {
-                            /* eslint {"max-depth": "off"} */
-                            if (!multiple) {
-                                if (oldx !== me.x || oldy !== me.y) {
-                                    me.x = oldx;
-                                    me.y = oldy;
-                                    me._shape = shapeCashed;
-                                }
-                                return array[i];
-                            }
-                            if (!results.includes(array[i])) {
-                                results.push(array[i]);
-                            }
-                        }
-                    }
-                }
-            }
-            if (oldx !== me.x || oldy !== me.y) {
-                me.x = oldx;
-                me.y = oldy;
-                me._shape = shapeCashed;
-            }
-            if (!multiple) {
-                return false;
-            }
-            return results;
+            const copies = genericCollisionQuery(
+                target, x, y,
+                ct.place.grid,
+                true,
+                cgroupFilter, cgroup
+            );
+            const tiles = genericCollisionQuery(
+                target, x, y,
+                ct.place.tileGrid,
+                true,
+                cgroupFilter, cgroup
+            );
+            return copies.concat(tiles);
         },
         free(me, x, y, cgroup) {
             return !ct.place.occupied(me, x, y, cgroup);
         },
-        meet(me, x, y, template, multiple) {
-            // ct.place.meet(<me: Copy, x: number, y: number>[, template: Template])
-            // detects collision between a given copy and a copy of a certain template
-            var oldx = me.x,
-                oldy = me.y,
-                shapeCashed = me._shape;
-            let hashes;
-            var results;
-            if (typeof y === 'number') {
-                me.x = x;
-                me.y = y;
-            } else {
-                template = x;
-                multiple = y;
-                x = me.x;
-                y = me.y;
+        meet(target, x, y, templateName) {
+            if (typeof y !== 'number') {
+                // No arbitrary location was passed, rewrite arguments w/o them.
+                templateName = x;
+                x = void 0;
+                y = void 0;
             }
-            if (typeof type === 'boolean') {
-                multiple = template;
-            }
-            if (oldx !== me.x || oldy !== me.y) {
-                me._shape = getSSCDShape(me);
-                hashes = ct.place.getHashes(me);
-            } else {
-                hashes = me.$chashes || ct.place.getHashes(me);
-            }
-            if (multiple) {
-                results = [];
-            }
-            for (const hash of hashes) {
-                const array = ct.place.grid[hash];
-                if (!array) {
-                    continue;
-                }
-                for (let i = 0, l = array.length; i < l; i++) {
-                    if (array[i].template === template &&
-                        array[i] !== me &&
-                        ct.place.collide(me, array[i])
-                    ) {
-                        if (!multiple) {
-                            if (oldx !== me.x || oldy !== me.y) {
-                                me._shape = shapeCashed;
-                                me.x = oldx;
-                                me.y = oldy;
-                            }
-                            return array[i];
-                        }
-                        if (!results.includes(array[i])) {
-                            results.push(array[i]);
-                        }
-                    }
-                }
-            }
-            if (oldx !== me.x || oldy !== me.y) {
-                me.x = oldx;
-                me.y = oldy;
-                me._shape = shapeCashed;
-            }
-            if (!multiple) {
-                return false;
-            }
-            return results;
+            return genericCollisionQuery(
+                target, x, y,
+                ct.place.grid,
+                false,
+                templateNameFilter, templateName
+            );
         },
-        tile(me, x, y, cgroup) {
-            if (!me.shape || !me.shape.type) {
-                return false;
+        meetMultiple(target, x, y, templateName) {
+            if (typeof y !== 'number') {
+                // No arbitrary location was passed, rewrite arguments w/o them.
+                templateName = x;
+                x = void 0;
+                y = void 0;
             }
-            var oldx = me.x,
-                oldy = me.y,
-                shapeCashed = me._shape;
-            let hashes;
-            if (y !== void 0) {
-                me.x = x;
-                me.y = y;
-            } else {
+            return genericCollisionQuery(
+                target, x, y,
+                ct.place.grid,
+                true,
+                templateNameFilter, templateName
+            );
+        },
+        copies(target, x, y, cgroup) {
+            if (typeof y !== 'number') {
+                // No arbitrary location was passed, rewrite arguments w/o them.
                 cgroup = x;
-                x = me.x;
-                y = me.y;
+                x = void 0;
+                y = void 0;
             }
-            if (oldx !== me.x || oldy !== me.y) {
-                me._shape = getSSCDShape(me);
-                hashes = ct.place.getHashes(me);
-            } else {
-                hashes = me.$chashes || ct.place.getHashes(me);
+            return genericCollisionQuery(
+                target, x, y,
+                ct.place.grid,
+                false,
+                cgroupFilter, cgroup
+            );
+        },
+        copiesMultiple(target, x, y, cgroup) {
+            if (typeof y !== 'number') {
+                // No arbitrary location was passed, rewrite arguments w/o them.
+                cgroup = x;
+                x = void 0;
+                y = void 0;
             }
-            for (const hash of hashes) {
-                const array = ct.place.tileGrid[hash];
-                if (!array) {
-                    continue;
-                }
-                for (let i = 0, l = array.length; i < l; i++) {
-                    const tile = array[i];
-                    const tileMatches = typeof cgroup === 'string' ? tile.cgroup === cgroup : tile.depth === cgroup;
-                    if ((!cgroup || tileMatches) && ct.place.collide(tile, me)) {
-                        if (oldx !== me.x || oldy !== me.y) {
-                            me.x = oldx;
-                            me.y = oldy;
-                            me._shape = shapeCashed;
-                        }
-                        return true;
-                    }
-                }
+            return genericCollisionQuery(
+                target, x, y,
+                ct.place.grid,
+                true,
+                cgroupFilter, cgroup
+            );
+        },
+        tiles(target, x, y, cgroup) {
+            if (typeof y !== 'number') {
+                // No arbitrary location was passed, rewrite arguments w/o them.
+                cgroup = x;
+                x = void 0;
+                y = void 0;
             }
-            if (oldx !== me.x || oldy !== me.y) {
-                me.x = oldx;
-                me.y = oldy;
-                me._shape = shapeCashed;
+            return genericCollisionQuery(
+                target, x, y,
+                ct.place.tileGrid,
+                false,
+                cgroupFilter, cgroup
+            );
+        },
+        tilesMultiple(target, x, y, cgroup) {
+            if (typeof y !== 'number') {
+                // No arbitrary location was passed, rewrite arguments w/o them.
+                cgroup = x;
+                x = void 0;
+                y = void 0;
             }
-            return false;
+            return genericCollisionQuery(
+                target, x, y,
+                ct.place.tileGrid,
+                true,
+                cgroupFilter, cgroup
+            );
         },
         lastdist: null,
-        nearest(x, y, template) {
-            // ct.place.nearest(<x: number, y: number, template: Template>)
-            const templates = ct.templates.list[template];
-            if (templates.length > 0) {
-                var dist = Math.hypot(x - templates[0].x, y - templates[0].y);
-                var inst = templates[0];
-                for (const copy of templates) {
+        nearest(x, y, templateName) {
+            // ct.place.nearest(x: number, y: number, templateName: string)
+            const copies = ct.templates.list[templateName];
+            if (copies.length > 0) {
+                var dist = Math.hypot(x - copies[0].x, y - copies[0].y);
+                var inst = copies[0];
+                for (const copy of copies) {
                     if (Math.hypot(x - copy.x, y - copy.y) < dist) {
                         dist = Math.hypot(x - copy.x, y - copy.y);
                         inst = copy;
@@ -479,37 +563,36 @@
             if (tilemap.addedCollisions) {
                 throw new Error('[ct.place] The tilemap already has collisions enabled.');
             }
-            for (let i = 0, l = tilemap.tiles.length; i < l; i++) {
-                const t = tilemap.tiles[i];
+            tilemap.cgroup = cgroup;
+            // Prebake hashes and SSCD shapes for all the tiles
+            for (const pixiSprite of tilemap.pixiTiles) {
                 // eslint-disable-next-line no-underscore-dangle
-                t._shape = new SSCD.Rectangle(
-                    new SSCD.Vector(t.x, t.y),
-                    new SSCD.Vector(t.width, t.height)
-                );
-                t.cgroup = cgroup;
-                t.$chashes = ct.place.getHashes(t);
+                pixiSprite._shape = getSSCDShape(pixiSprite);
+                pixiSprite.cgroup = cgroup;
+                pixiSprite.$chashes = ct.place.getHashes(pixiSprite);
                 /* eslint max-depth: 0 */
-                for (const hash of t.$chashes) {
+                for (const hash of pixiSprite.$chashes) {
                     if (!(hash in ct.place.tileGrid)) {
-                        ct.place.tileGrid[hash] = [t];
+                        ct.place.tileGrid[hash] = [pixiSprite];
                     } else {
-                        ct.place.tileGrid[hash].push(t);
+                        ct.place.tileGrid[hash].push(pixiSprite);
                     }
                 }
-                t.depth = tilemap.depth;
+                pixiSprite.depth = tilemap.depth;
             }
             if (debugMode) {
-                for (let i = 0; i < tilemap.tiles.length; i++) {
-                    const pixiTile = tilemap.pixiTiles[i],
-                          logicTile = tilemap.tiles[i];
-                    pixiTile.$cDebugCollision = new PIXI.Graphics();
-                    ct.place.drawDebugTileGraphic.apply(pixiTile, [logicTile]);
-                    pixiTile.addChild(pixiTile.$cDebugCollision);
+                for (const pixiSprite of tilemap.pixiTiles) {
+                    pixiSprite.$cDebugCollision = new PIXI.Graphics();
+                    ct.place.drawDebugGraphic.apply(pixiSprite, [false]);
+                    pixiSprite.addChild(pixiSprite.$cDebugCollision);
                 }
             }
             tilemap.addedCollisions = true;
         },
         moveAlong(me, dir, length, cgroup, precision) {
+            if (!length) {
+                return false;
+            }
             if (typeof cgroup === 'number') {
                 precision = cgroup;
                 cgroup = void 0;
@@ -522,8 +605,7 @@
             var dx = Math.cos(dir * Math.PI / -180) * precision,
                 dy = Math.sin(dir * Math.PI / -180) * precision;
             for (let i = 0; i < length; i += precision) {
-                const occupied = ct.place.occupied(me, me.x + dx, me.y + dy, cgroup) ||
-                                 ct.place.tile(me, me.x + dx, me.y + dy, cgroup);
+                const occupied = ct.place.occupied(me, me.x + dx, me.y + dy, cgroup);
                 if (!occupied) {
                     me.x += dx;
                     me.y += dy;
@@ -535,6 +617,9 @@
             return false;
         },
         moveByAxes(me, dx, dy, cgroup, precision) {
+            if (dx === dy === 0) {
+                return false;
+            }
             if (typeof cgroup === 'number') {
                 precision = cgroup;
                 cgroup = void 0;
@@ -546,8 +631,7 @@
             precision = Math.abs(precision || 1);
             while (Math.abs(dx) > precision) {
                 const occupied =
-                    ct.place.occupied(me, me.x + Math.sign(dx) * precision, me.y, cgroup) ||
-                    ct.place.tile(me, me.x + Math.sign(dx) * precision, me.y, cgroup);
+                    ct.place.occupied(me, me.x + Math.sign(dx) * precision, me.y, cgroup);
                 if (!occupied) {
                     me.x += Math.sign(dx) * precision;
                     dx -= Math.sign(dx) * precision;
@@ -558,8 +642,7 @@
             }
             while (Math.abs(dy) > precision) {
                 const occupied =
-                    ct.place.occupied(me, me.x, me.y + Math.sign(dy) * precision, cgroup) ||
-                    ct.place.tile(me, me.x, me.y + Math.sign(dy) * precision, cgroup);
+                    ct.place.occupied(me, me.x, me.y + Math.sign(dy) * precision, cgroup);
                 if (!occupied) {
                     me.y += Math.sign(dy) * precision;
                     dy -= Math.sign(dy) * precision;
@@ -570,16 +653,12 @@
             }
             // A fraction of precision may be left but completely reachable; jump to this point.
             if (Math.abs(dx) < precision) {
-                if (ct.place.free(me, me.x + dx, me.y, cgroup) &&
-                    !ct.place.tile(me, me.x + dx, me.y, cgroup)
-                ) {
+                if (ct.place.free(me, me.x + dx, me.y, cgroup)) {
                     me.x += dx;
                 }
             }
             if (Math.abs(dy) < precision) {
-                if (ct.place.free(me, me.x, me.y + dy, cgroup) &&
-                    !ct.place.tile(me, me.x, me.y + dy, cgroup)
-                ) {
+                if (ct.place.free(me, me.x, me.y + dy, cgroup)) {
                     me.y += dy;
                 }
             }
@@ -630,34 +709,55 @@
             }
         },
         traceCustom(shape, oversized, cgroup, getAll) {
-            const copies = [];
-            if (!oversized) {
-                if (debugMode) {
-                    shape.$cDebugCollision = ct.place.debugTraceGraphics;
-                    ct.place.drawDebugGraphic.apply(shape, [true]);
-                }
-                return ct.place.occupied(shape, cgroup, getAll);
-            }
-            for (var i in ct.stack) {
-                if (!cgroup || ct.stack[i].cgroup === cgroup) {
-                    if (ct.place.collide(shape, ct.stack[i])) {
-                        if (getAll) {
-                            copies.push(ct.stack[i]);
-                        } else {
-                            if (debugMode) {
-                                shape.$cDebugCollision = ct.place.debugTraceGraphics;
-                                ct.place.drawDebugGraphic.apply(shape, [true]);
-                            }
-                            return ct.stack[i];
-                        }
-                    }
-                }
-            }
+            const results = [];
             if (debugMode) {
                 shape.$cDebugCollision = ct.place.debugTraceGraphics;
                 ct.place.drawDebugGraphic.apply(shape, [true]);
             }
-            return copies;
+            // Oversized tracing shapes won't work with partitioning table, and thus
+            // will need to loop over all the copies and tiles in the room.
+            // Non-oversized shapes can use plain ct.place.occupied.
+            if (!oversized) {
+                if (getAll) {
+                    return ct.place.occupiedMultiple(shape, cgroup);
+                }
+                return ct.place.occupied(shape, cgroup);
+            }
+            // Oversized shapes.
+            // Loop over all the copies in the room.
+            for (const copy of ct.stack) {
+                if (!cgroup || copy.cgroup === cgroup) {
+                    if (ct.place.collide(shape, copy)) {
+                        if (getAll) {
+                            results.push(copy);
+                        } else {
+                            return copy;
+                        }
+                    }
+                }
+            }
+            // Additionally, loop over all the tilesets and their tiles.
+            for (const tilemap of ct.templates.list.TILEMAP) {
+                if (!tilemap.addedCollisions) {
+                    continue;
+                }
+                if (cgroup && tilemap.cgroup !== cgroup) {
+                    continue;
+                }
+                for (const tile of tilemap.pixiTiles) {
+                    if (ct.place.collide(shape, tile)) {
+                        if (getAll) {
+                            results.push(tile);
+                        } else {
+                            return tile;
+                        }
+                    }
+                }
+            }
+            if (!getAll) {
+                return false;
+            }
+            return results;
         },
         /**
          * Tests for intersections with a line segment.
@@ -685,6 +785,7 @@
                     x: 1, y: 1
                 },
                 rotation: 0,
+                angle: 0,
                 shape: {
                     type: 'line',
                     x1: 0,
@@ -729,9 +830,7 @@
                 rect.width = rect.x2 - rect.x1;
                 rect.height = rect.y2 - rect.y1;
             }
-            if (Math.abs(rect.width) > ct.place.gridX) {
-                oversized = true;
-            } else if (Math.abs(rect.height) > ct.place.gridY) {
+            if (Math.abs(rect.width) > ct.place.gridX || Math.abs(rect.height) > ct.place.gridY) {
                 oversized = true;
             }
             const shape = {
@@ -741,6 +840,7 @@
                     x: 1, y: 1
                 },
                 rotation: 0,
+                angle: 0,
                 shape: {
                     type: 'rect',
                     left: 0,
@@ -775,6 +875,7 @@
                     x: 1, y: 1
                 },
                 rotation: 0,
+                angle: 0,
                 shape: {
                     type: 'circle',
                     r: circle.radius
@@ -804,6 +905,7 @@
                     x: 1, y: 1
                 },
                 rotation: 0,
+                angle: 0,
                 shape: {
                     type: 'strip',
                     points: polyline
@@ -831,6 +933,7 @@
                     x: 1, y: 1
                 },
                 rotation: 0,
+                angle: 0,
                 shape: {
                     type: 'point'
                 }

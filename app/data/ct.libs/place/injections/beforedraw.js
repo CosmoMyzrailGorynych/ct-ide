@@ -4,8 +4,8 @@ if ([/*%debugMode%*/][0] && this instanceof ct.templates.Copy) {
     this.$cDebugText.angle = this.$cDebugCollision.angle = -this.angle;
 
     const newtext = `Partitions: ${this.$chashes.join(', ')}
-Group: ${this.cgroup}
-Shape: ${this._shape && this._shape.__type}`;
+CGroup: ${this.cgroup || 'unset'}
+Shape: ${(this._shape && this._shape.__type) || 'unused'}`;
     if (this.$cDebugText.text !== newtext) {
         this.$cDebugText.text = newtext;
     }
