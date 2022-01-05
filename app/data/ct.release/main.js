@@ -61,10 +61,6 @@ const ct = {
      */
     version: '/*@ctversion@*/',
     meta: [/*@projectmeta@*/][0],
-    main: {
-        fpstick: 0,
-        pi: 0
-    },
     get width() {
         return ct.pixiApp.renderer.view.width;
     },
@@ -580,7 +576,6 @@ ct.u.ext(ct.u, {// make aliases
             ct.rooms.afterDraw.apply(item);
         }
         /*%afterframe%*/
-        ct.main.fpstick++;
         if (ct.rooms.switching) {
             ct.rooms.forceSwitch();
         }
