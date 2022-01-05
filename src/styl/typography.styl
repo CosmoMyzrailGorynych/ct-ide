@@ -1,12 +1,23 @@
 h1, h2, h3, h4, h5, h6
     margin-bottom 0
     color accent1
+    .docs-panel-Docs &
+        margin-top 1.5em
+        &:first-child
+            margin-top 1rem
 h2, h3
     font-weight 400
 h4, h5, h6
     font-weight 700
 h1
     font-weight 300
+
+p
+    margin 1em 0
+    .docs-panel-Docs &
+        margin 0.75em 0
+        line-heigth 1.5
+
 a, .a
     color act
     cursor pointer
@@ -45,7 +56,7 @@ textarea.monospace
 code
     font-family font-mono
     &.inline, p > &, li > &
-        padding 1.5px 0.5rem
+        padding 0px 0.5rem
         margin 0 0.25rem
         border-radius br
         background borderPale
