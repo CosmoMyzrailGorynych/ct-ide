@@ -1,4 +1,11 @@
 asset-input
+    &.wide
+        .aButtonGroup
+            @extends .aButtonGroup.wide
+            button
+                flex 0 0 auto
+                &:first-child
+                    flex 1 1 auto
     & > .aButtonGroup img
         width 2rem
         margin-right 1rem
