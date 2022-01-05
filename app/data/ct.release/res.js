@@ -219,7 +219,7 @@
             .then(() => {
                 /*%start%*/
                 loadingScreen.classList.add('hidden');
-                PIXI.Ticker.shared.add(ct.loop);
+                ct.pixiApp.ticker.add(ct.loop);
                 ct.rooms.forceSwitch(ct.rooms.starting);
             })
             .catch(console.error);

@@ -116,7 +116,7 @@ const pixiAppSettings = {
     height: [/*@startheight@*/][0],
     antialias: ![/*@pixelatedrender@*/][0],
     powerPreference: 'high-performance',
-    sharedTicker: true,
+    sharedTicker: false,
     sharedLoader: true
 };
 try {
@@ -134,7 +134,7 @@ try {
 }
 
 PIXI.settings.ROUND_PIXELS = [/*@pixelatedrender@*/][0];
-PIXI.Ticker.shared.maxFPS = [/*@maxfps@*/][0] || 0;
+ct.pixiApp.ticker.maxFPS = [/*@maxfps@*/][0] || 0;
 if (!ct.pixiApp.renderer.options.antialias) {
     PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 }
@@ -521,7 +521,7 @@ ct.u.ext(ct.u, {// make aliases
 
     ct.loop = function loop(delta) {
         ct.delta = delta;
-        ct.deltaUi = PIXI.Ticker.shared.elapsedMS / (1000 / (PIXI.Ticker.shared.maxFPS || 60));
+        ct.deltaUi = ct.pixiApp.ticker.elapsedMS / (1000 / (ct.pixiApp.ticker.maxFPS || 60));
         ct.inputs.updateActions();
         ct.timer.updateTimers();
         /*%beforeframe%*/
