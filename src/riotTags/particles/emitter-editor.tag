@@ -11,13 +11,14 @@ emitter-editor.aPanel.pad.nb
         key="texture"
         defaultstate="{opts.emitter.openedTabs.includes('texture')? 'opened' : 'closed'}"
     )
-        asset-input(
+        asset-input.wide(
             assettype="textures"
-            onchanged="{onTexturePicked}"
+            onchanged="{parent.onTexturePicked}"
             allowclear="yes"
-            assetid="{opts.emitter.texture || -1}"
+            assetid="{parent.opts.emitter.texture || -1}"
             selecttext="{parent.voc.selectTexture}"
         )
+        .aSpacer
         button.wide(onclick="{parent.showTextureImport}")
             svg.feather
                 use(xlink:href="#download")
@@ -563,9 +564,9 @@ emitter-editor.aPanel.pad.nb
             }
         };
 
-        this.onTexturePicked = texture => {
+        this.onTexturePicked = textureId => {
             const emt = this.opts.emitter;
-            emt.texture = texture === -1 ? -1 : texture.uid;
+            emt.texture = textureId === -1 ? -1 : textureId;
             this.update();
             window.signals.trigger('emitterResetRequest');
         };
