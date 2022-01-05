@@ -122,6 +122,7 @@ const getInjections = async () => {
         afterdraw: '',
         afterstep: '',
 
+        beforeframe: '',
         beforeroomoncreate: '',
         roomoncreate: '',
         roomonleave: '',
