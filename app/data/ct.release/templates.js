@@ -182,7 +182,7 @@ const Copy = (function Copy() {
             if (this.speed === 0) {
                 return this[zeroDirectionAccessor];
             }
-            return (Math.atan2(this.vspeed, this.hspeed) * -180 / Math.PI + 360) % 360;
+            return (Math.atan2(this.vspeed, this.hspeed) * 180 / Math.PI + 360) % 360;
         }
         /**
          * The moving direction of the copy, in degrees, starting with 0 at the right side
@@ -195,7 +195,7 @@ const Copy = (function Copy() {
             this[zeroDirectionAccessor] = value;
             if (this.speed > 0) {
                 var speed = this.speed;
-                this.hspeed = speed * Math.cos(value * Math.PI / -180);
+                this.hspeed = speed * Math.cos(value * Math.PI / 180);
                 this.vspeed = speed * Math.sin(value * Math.PI / 180);
             }
             return value;
