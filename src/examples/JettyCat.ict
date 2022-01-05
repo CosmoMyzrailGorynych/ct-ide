@@ -1,4 +1,4 @@
-ctjsVersion: 1.4.2
+ctjsVersion: 2.0.0
 notes: /* empty */
 libs:
   place:
@@ -631,7 +631,7 @@ templates:
 
       if (ct.actions.Poof.down) {
           this.gravity = this.gravityAcceleration;
-          this.addSpeed(ct.delta * this.gravityAcceleration * 2, 90);
+          this.addSpeed(ct.delta * this.gravityAcceleration * 2, -90);
           this.jet.resume();
       }
 
@@ -681,7 +681,7 @@ templates:
     uid: 8f93611e-6e95-49c4-8e2b-4cc067be2924
     texture: eb24c2bc-a36c-4118-b33e-a7348c00e5bb
     extends: {}
-    lastmod: 1585703857293
+    lastmod: 1641411061516
   - name: Tube
     depth: 0
     oncreate: |-
@@ -1277,6 +1277,8 @@ settings:
     linux32: true
     mac64: true
     debug: false
+    functionWrap: false
+    codeModifier: none
   branding:
     icon: eb24c2bc-a36c-4118-b33e-a7348c00e5bb
     accent: '#446adb'
@@ -1302,3 +1304,12 @@ fonts: []
 startroom: 8677472b-4549-48b5-a5a8-a891fb029f6b
 palette: []
 styletick: .nan
+contentTypes: []
+groups:
+  fonts: []
+  textures: []
+  styles: []
+  rooms: []
+  types: []
+  sounds: []
+  emitterTandems: []

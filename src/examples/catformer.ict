@@ -4,7 +4,6 @@ libs:
   fittoscreen:
     manageViewport: true
     mode: scaleFill
-  place: {}
   mouse: {}
   keyboard.polyfill: {}
   keyboard: {}
@@ -29,6 +28,12 @@ libs:
           'Player', 'Player_Falling',
           [11]
       );
+  place:
+    undefined: ''
+    gridX: 512
+    gridY: 512
+    debugMode: false
+    debugText: 16
 templates:
   - name: Box
     depth: 0
@@ -38,7 +43,6 @@ templates:
       obstacles on the left
 
       if (ct.place.meet(this, this.x + 5, this.y, 'Player') &&
-          !ct.place.tile(this, this.x - 10, this.y, 'Solid') &&
           ct.place.free(this, this.x - 10, this.y, 'Solid')) {
           this.x -= 10;
       }
@@ -46,15 +50,14 @@ templates:
       // Same but in reverse
 
       if (ct.place.meet(this, this.x - 5, this.y, 'Player') &&
-          !ct.place.tile(this, this.x + 10, this.y, 'Solid') &&
           ct.place.free(this, this.x + 10, this.y, 'Solid')) {
           this.x += 10;
       }
 
       // If there is no obstacles underneath, fall down.
 
-      if (!ct.place.tile(this, this.x, this.y + 10, 'Solid') &&
-          ct.place.free(this, this.x, this.y + 10, 'Solid')
+      if (ct.place.free(this, this.x, this.y + 10, 'Solid')
+
       ) {
           this.y += 10;
       }
@@ -94,7 +97,7 @@ templates:
     ondraw: ''
     ondestroy: ''
     uid: 036a2de1-89b0-48e3-b26f-d608ce2079fd
-    lastmod: 1599534008535
+    lastmod: 1641403084624
     extends:
       cgroup: Enemy
     texture: eed6bb2f-301f-460a-8d91-93396d103b4e
@@ -129,8 +132,8 @@ templates:
 
       // layer at -20.
 
-      var onGround = ct.place.occupied(this, this.x, this.y + 1, 'Solid') ||
-                     ct.place.tile(this, this.x, this.y + 1, 'Solid');
+      var onGround = ct.place.occupied(this, this.x, this.y + 1, 'Solid');
+
 
       // Move right or left
 
@@ -185,9 +188,9 @@ templates:
           }
       }
 
-      // Check if we collide with spikes
+      // Check if we collide with spikes or slimes
 
-      if (ct.place.occupied(this, this.x, this.y, 'Enemy')) {
+      if (ct.place.copies(this, this.x, this.y, 'Enemy')) {
           ct.sound.spawn('BodyFall');
           // move to a 'death' screen
           ct.rooms.switch('DeadScreen');
@@ -220,8 +223,7 @@ templates:
       // See its docs in the sliding panel on the right for examples and
       explanations.
 
-      if (ct.place.occupied(this, this.x, this.y + 1, 'Solid') ||
-          ct.place.tile(this, this.x, this.y + 1, 'Solid')) {
+      if (ct.place.occupied(this, this.x, this.y + 1, 'Solid')) {
           if (this.x !== this.xprev) {
               this.tex = 'Player_Walking';
           } else {
@@ -239,7 +241,7 @@ templates:
       ct.camera.shiftX = this.scale.x * 150;
     ondestroy: ''
     uid: 00664f77-21c6-4b06-b310-88640b1beaf9
-    lastmod: 1632020995526
+    lastmod: 1641403095736
     extends:
       cgroup: Player
     texture: ad390b6e-4c2c-412f-8143-1c70b9c16fc0
@@ -255,7 +257,7 @@ templates:
     ondraw: ''
     ondestroy: ''
     uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
-    lastmod: 1599533985967
+    lastmod: 1641402964112
     extends: {}
     texture: 62be2903-9782-49fc-b551-ef2e641091c9
   - name: Greed
@@ -277,13 +279,13 @@ templates:
       this.animationSpeed = 4 / 60;
       this.play();
     onstep: >-
-      var freeBelow = !ct.place.tile(this, this.x + ct.u.ldx(70,
-      this.direction), this.y + 35, -10) &&
-                      ct.place.free(this, this.x + ct.u.ldx(70, this.direction), this.y + 35, 'Solid');
+      var freeBelow = ct.place.free(this, this.x + ct.u.ldx(70, this.direction),
+      this.y + 35, 'Solid');
 
-      var occupiedInFront = ct.place.tile(this, this.x + ct.u.ldx(10,
-      this.direction), this.y, -10) ||
-                            ct.place.occupied(this, this.x + ct.u.ldx(10, this.direction), this.y, 'Solid');
+
+      var occupiedInFront = ct.place.occupied(this, this.x + ct.u.ldx(10,
+      this.direction), this.y, 'Solid');
+
 
       if (freeBelow || occupiedInFront) {
           if (this.direction === 180) {
@@ -300,7 +302,7 @@ templates:
     ondraw: ''
     ondestroy: ''
     uid: 1f91fd7d-2d6c-4542-aead-78b8010b835b
-    lastmod: 1599534005279
+    lastmod: 1641402957729
     extends:
       cgroup: Enemy
     texture: 703fb5d5-cf20-4450-b760-0b1cd037a5ad
@@ -1972,7 +1974,7 @@ scripts:
               depth: 1000
           });
       }
-ctjsVersion: 1.6.2
+ctjsVersion: 2.0.0
 fonts: []
 skeletons: []
 actions:
@@ -2416,3 +2418,12 @@ textures:
     lastmod: 1586655898140
 texturetick: 15
 emitterTandems: []
+contentTypes: []
+groups:
+  fonts: []
+  textures: []
+  styles: []
+  rooms: []
+  types: []
+  sounds: []
+  emitterTandems: []

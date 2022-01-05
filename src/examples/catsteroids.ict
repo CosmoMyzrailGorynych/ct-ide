@@ -211,7 +211,7 @@ templates:
     ondraw: ''
     ondestroy: ''
     uid: 92e6ec14-1de0-483a-84b8-a8669ac65937
-    lastmod: 1603949021756
+    lastmod: 1641404461586
     extends: {}
     texture: e6148099-65e7-4d2b-acf1-3e6b3a8fc033
   - name: Asteroid
@@ -519,14 +519,14 @@ templates:
       'Explosion_03'));
 
 
-      if (ct.random.chance(10)) {
+      if (ct.random.chance(20)) {
           ct.templates.copy('AbstractBonus', this.x, this.y);
       }
 
 
       ct.room.score += 100;
     uid: 500fd472-19aa-41a0-9504-123c37540702
-    lastmod: 1603949065410
+    lastmod: 1641404176324
     extends: {}
     texture: 048b77d3-e7e3-4817-99ee-8b7c0a6da8bf
   - name: EnemyBullet
@@ -668,7 +668,7 @@ templates:
       if (this.jumpTimer < 0) {
           // Start jumping to a new location
           this.jumpTimer = ct.speed * 2;
-          this.targetx = ct.random.range(75, ct.viewWidth - 150);
+          this.targetx = ct.random.range(75, ct.camera.width - 75);
           this.targety = ct.random.range(75, 300);
           ct.tween.add({
               obj: this,
@@ -702,7 +702,7 @@ templates:
 
       ct.templates.copy('AbstractBonus', this.x, this.y);
     uid: ebfeaaab-f16a-48fa-b97c-687945f99668
-    lastmod: 1603949043730
+    lastmod: 1641404549522
     extends: {}
     texture: 771c5c1f-ffdc-4b50-a1ce-aed472e44557
   - name: Laser_Cross_Red
@@ -1304,13 +1304,13 @@ rooms:
 
       this.asteroidTimer = ct.speed * 3;
 
-      this.encounterTimer = ct.speed * 10;
+      this.encounterTimer = ct.speed * 5;
 
-      this.waveTimer = ct.speed * 30;
+      this.waveTimer = ct.speed * 20;
 
-      this.bomberTimer = ct.speed * 75;
+      this.bomberTimer = ct.speed * 20;
 
-      this.bossTimer = ct.speed * 60 * 3;
+      this.bossTimer = ct.speed * 60 * 1.5;
 
 
       ct.transition.fadeIn();
@@ -1327,13 +1327,13 @@ rooms:
       }
       this.encounterTimer -= ct.delta;
       if (this.encounterTimer <= 0) {
-          this.encounterTimer = ct.random.range(ct.speed * 4, ct.speed * 7);
+          this.encounterTimer = ct.random.range(ct.speed * 2, ct.speed * 7);
           ct.templates.copy('Enemy_Shooter', ct.random(ct.camera.width), -100);
       }
 
       this.waveTimer -= ct.delta;
       if (this.waveTimer <= 0) {
-          this.waveTimer = ct.random.range(ct.speed * 20, ct.speed * 45);
+          this.waveTimer = ct.random.range(ct.speed * 15, ct.speed * 20);
           const startingPhase = ct.random.dice(0, Math.PI / 2);
           // See it in the "Settings" tab > Scripts
           spawnWigglers(startingPhase);
@@ -1341,7 +1341,7 @@ rooms:
 
       this.bomberTimer -= ct.delta;
       if (this.bomberTimer <= 0) {
-          this.bomberTimer = ct.random.range(ct.speed * 60, ct.speed * 90);
+          this.bomberTimer = ct.random.range(ct.speed * 30, ct.speed * 45);
           ct.templates.copy('Enemy_Bomber', ct.random(ct.camera.width), -100);
       }
 
@@ -1850,7 +1850,7 @@ scripts:
               });
           });
       };
-ctjsVersion: 1.4.2
+ctjsVersion: 2.0.0
 fonts: []
 skeletons: []
 actions:
@@ -4781,3 +4781,12 @@ emitterTandems:
         showShapeVisualizer: false
     previewTexture: afba4114-e7bc-4b35-8386-d9ca108ca777
     uid: a329eefd-0d65-4f4c-a02a-7579996e55b4
+contentTypes: []
+groups:
+  fonts: []
+  textures: []
+  styles: []
+  rooms: []
+  types: []
+  sounds: []
+  emitterTandems: []

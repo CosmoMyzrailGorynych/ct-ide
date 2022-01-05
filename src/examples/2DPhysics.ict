@@ -1,4 +1,4 @@
-ctjsVersion: 1.6.1
+ctjsVersion: 2.0.0
 notes: /* empty */
 libs:
   fittoscreen:
@@ -1094,3 +1094,12 @@ palette:
   - '#6EBA9D'
   - '#9E703F'
 startroom: 125036f1-3a14-4fc3-ae95-2d29a5c56244
+contentTypes: []
+groups:
+  fonts: []
+  textures: []
+  styles: []
+  rooms: []
+  types: []
+  sounds: []
+  emitterTandems: []

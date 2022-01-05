@@ -1,4 +1,4 @@
-ctjsVersion: 1.4.2
+ctjsVersion: 2.0.0
 notes: |-
   /*
       Things to note here:
@@ -15,14 +15,12 @@ libs:
     debugMode: false
   fittoscreen:
     mode: scaleFit
-  keyboard: {}
-  keyboard.polyfill: {}
   sound.howler: {}
   inherit: {}
-  touch:
-    mousetouch: true
-    preventdefault: false
   tween: {}
+  pointer:
+    preventdefault: false
+    startlocked: false
 textures:
   - name: Pipe_H2
     untill: 0
@@ -147,13 +145,13 @@ textures:
     origname: i028aa481-64ef-4b75-85b8-2f9c88eecf4b.png
     shape: rect
     left: 0
-    right: 1280
+    right: 64
     top: 0
-    bottom: 384
+    bottom: 64
     uid: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
     padding: 1
     source: /home/comigo/Downloads/Tileset.png
-    lastmod: 1602197348085
+    lastmod: 1641403458361
   - name: Pipe_V3
     untill: 0
     grid:
@@ -291,7 +289,7 @@ templates:
     texture: 04dbb554-54cd-439a-8d17-4d06366151dc
     extends: {}
     uid: 933bd8f5-8e3f-44d4-9060-eabf1bc4ce93
-    lastmod: 1602213799510
+    lastmod: 1641403394663
   - name: AbstractTile
     depth: 0
     oncreate: |-
@@ -319,12 +317,12 @@ templates:
       }
       // Start dragging when a user presses this tile
       if (ct.actions.Press.pressed) {
-          if (ct.touch.hovers(this)) {
+          if (ct.pointer.hovers(this)) {
               this.dragging = true;
               ct.sound.spawn('Wood_Start');
               // Record relative position to the mouse to avoid jittery snapping to tile's center
-              this.relativeX = ct.touch.x - this.x;
-              this.relativeY = ct.touch.y - this.y;
+              this.relativeX = ct.pointer.x - this.x;
+              this.relativeY = ct.pointer.y - this.y;
           }
       }
 
@@ -336,14 +334,14 @@ templates:
 
           // For vertical tiles…
           if (this.vertical) {
-              var targetY = ct.touch.y - this.relativeY;
+              var targetY = ct.pointer.y - this.relativeY;
               // We need ct.place.moveByAxes to prevent tiles from teleporting over other objects,
               // and also to provide pixel-perfect collisions.
               collisionResult = ct.place.moveByAxes(this, 0, targetY - this.y, 'Solid');
           }
           // For horizontal tiles…
           if (!this.vertical) {
-              var targetX = ct.touch.x - this.relativeX;
+              var targetX = ct.pointer.x - this.relativeX;
               collisionResult = ct.place.moveByAxes(this, targetX - this.x, 0, 'Solid');
           }
           // Check whether we collided with something
@@ -375,7 +373,7 @@ templates:
     extends:
       cgroup: Solid
     uid: 411a7b98-9916-4e4b-8466-abe66eb75e2e
-    lastmod: 1602213776083
+    lastmod: 1641403301665
   - name: Pipe_H2
     depth: 0
     oncreate: this.inherit.onCreate();
@@ -1447,7 +1445,7 @@ rooms:
 actions:
   - name: Press
     methods:
-      - code: touch.Any
+      - code: pointer.Any
 emitterTandems: []
 scripts:
   - name: New Script
@@ -1473,6 +1471,8 @@ settings:
     windows: true
     linux: true
     mac: true
+    functionWrap: false
+    codeModifier: none
   branding:
     icon: 25177c05-61f8-491f-be4f-c82bc90ed58c
     accent: '#446adb'
@@ -1481,3 +1481,12 @@ settings:
 fonts: []
 palette: []
 startroom: db143552-7289-41b0-af65-62f14320e2c3
+contentTypes: []
+groups:
+  fonts: []
+  textures: []
+  styles: []
+  rooms: []
+  types: []
+  sounds: []
+  emitterTandems: []
