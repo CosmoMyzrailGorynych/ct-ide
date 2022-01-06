@@ -64,10 +64,11 @@ asset-input
         const updateResourceAPIs = () => {
             this.currentAssetType = this.opts.assettype;
             this.resourceAPI = require(`./data/node_requires/resources/${this.currentAssetType}`);
-            this.names = asset => this.resourceAPI.getName ? this.resourceAPI.getName(asset) : asset.name;
+            this.names = asset => (this.resourceAPI.getName ? this.resourceAPI.getName(asset) : asset.name);
             this.thumbnails = (asset, x2, fs) => this.resourceAPI.getThumbnail(asset, x2, fs);
         };
         updateResourceAPIs();
+        // eslint-disable-next-line eqeqeq
         if (this.opts.assetid && this.opts.assetid != -1) {
             this.currentAsset = this.resourceAPI.getById(this.opts.assetid);
         }
@@ -79,7 +80,7 @@ asset-input
         this.openSelector = () => {
             this.showingSelector = true;
         };
-        this.closeSelector = e => {
+        this.closeSelector = () => {
             this.showingSelector = false;
             this.update();
         };
@@ -107,17 +108,15 @@ asset-input
                 updateResourceAPIs();
             }
             setTimeout(() => {
+                // eslint-disable-next-line eqeqeq
                 if (this.opts.assetid == -1) {
                     if (this.currentAsset) {
                         this.currentAsset = void 0;
                         this.update();
                     }
-                } else {
-                    if (!this.currentAsset ||
-                        this.currentAsset.uid !== this.opts.assetid) {
-                        this.currentAsset = this.resourceAPI.getById(this.opts.assetid);
-                        this.update();
-                    }
+                } else if (!this.currentAsset || this.currentAsset.uid !== this.opts.assetid) {
+                    this.currentAsset = this.resourceAPI.getById(this.opts.assetid);
+                    this.update();
                 }
             }, 0);
         });

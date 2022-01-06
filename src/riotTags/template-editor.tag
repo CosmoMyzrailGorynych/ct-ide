@@ -187,7 +187,7 @@ template-editor.aPanel.aView.flexrow
             this.selectingTexture = true;
         };
         this.applyTexture = texture => {
-            console.log('template editor received new texture: ' + texture);
+            // eslint-disable-next-line eqeqeq
             if (texture == -1) {
                 this.template.texture = -1;
             } else {

@@ -27,6 +27,6 @@ stylebook-section
         });
         this.on('update', () => {
             this.pugified = html2pug(this.refs.example.innerHTML, pugifyOptions);
-            this.pugified = this.pugified.replace(/^((  )+)/gm, '$1$1');
+            this.pugified = this.pugified.replace(/^(( {2})+)/gm, '$1$1');
             this.refs.codeblock.innerHTML = hljs.highlight('pug', this.pugified).value;
         });

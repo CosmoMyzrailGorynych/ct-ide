@@ -42,7 +42,7 @@ asset-selector.aDimmer(onclick="{closeSelector}" ref="dimmer")
         const updateResourceAPIs = () => {
             this.currentAssetType = this.opts.assettype;
             this.resourceAPI = require(`./data/node_requires/resources/${this.currentAssetType}`);
-            this.names = asset => this.resourceAPI.getName ? this.resourceAPI.getName(asset) : asset.name;
+            this.names = asset => (this.resourceAPI.getName ? this.resourceAPI.getName(asset) : asset.name);
             this.thumbnails = (asset, x2, fs) => this.resourceAPI.getThumbnail(asset, x2, fs);
         };
         updateResourceAPIs();
@@ -54,7 +54,7 @@ asset-selector.aDimmer(onclick="{closeSelector}" ref="dimmer")
                 }
             }
         };
-        this.onAssetPicked = asset => e => {
+        this.onAssetPicked = asset => () => {
             if (this.opts.onselected) {
                 if (asset === -1) {
                     this.opts.onselected(-1);

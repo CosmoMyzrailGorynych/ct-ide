@@ -68,8 +68,6 @@
         "close": "",
         "couldNotLoadFromClipboard": "",
         "pastedFromClipboard": "",
-        "language": "",
-        "translateToYourLanguage": "",
         "edit": "",
         "nothingToShowFiller": "",
         "required": "",
@@ -524,8 +522,7 @@
             "heading": "Paramètres",
             "disableSounds": "",
             "changeDataFolder": "",
-            "forceProductionForDebug": "",
-            "settings": ""
+            "forceProductionForDebug": ""
         },
         "project": {
             "save": "Sauvegarder le projet",

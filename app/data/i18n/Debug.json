@@ -19,8 +19,6 @@
         "done": "common.done",
         "duplicate": "common.duplicate",
         "exit": "common.exit",
-        "language": "common.language",
-        "translateToYourLanguage": "common.translateToYourLanguage",
         "name": "common.name",
         "no": "common.no",
         "none": "common.none",

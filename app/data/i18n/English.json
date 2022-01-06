@@ -68,8 +68,6 @@
             "texture": "Texture",
             "type": "Type"
         },
-        "language": "",
-        "translateToYourLanguage": "",
         "newName": "New name:",
         "saveProject": "Save project",
         "openProject": "Open project…",
@@ -560,8 +558,7 @@
             "codeDense": "Dense layout",
             "disableSounds": "Disable UI sounds",
             "changeDataFolder": "Set data folder location",
-            "forceProductionForDebug": "Force production tasks for debug exports",
-            "settings": ""
+            "forceProductionForDebug": "Force production tasks for debug exports"
         },
         "project": {
             "heading": "Project",

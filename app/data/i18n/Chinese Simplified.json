@@ -42,8 +42,6 @@
         "couldNotLoadFromClipboard": "无法从剪贴板加载数据",
         "filter": "过滤:",
         "pastedFromClipboard": "从剪贴板粘贴",
-        "language": "",
-        "translateToYourLanguage": "",
         "edit": "",
         "nothingToShowFiller": "",
         "required": "",
@@ -479,8 +477,7 @@
             "codeDense": "密集布局",
             "disableSounds": "关闭 UI 音效",
             "changeDataFolder": "设置数据文件夹位置",
-            "forceProductionForDebug": "强制生产任务用于调试导出",
-            "settings": ""
+            "forceProductionForDebug": "强制生产任务用于调试导出"
         },
         "project": {
             "heading": "项目",

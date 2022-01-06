@@ -74,7 +74,7 @@ actions-input-selector
             window.signals.off('modulesChanged', this.refreshModules);
         });
 
-        this.selectMethod = (code) => e => {
+        this.selectMethod = (code) => () => {
             if (this.selectedMethods) {
                 const ind = this.selectedMethods.indexOf(code);
                 if (ind > -1) {

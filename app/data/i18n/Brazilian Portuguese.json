@@ -42,8 +42,6 @@
         "close": "",
         "couldNotLoadFromClipboard": "",
         "pastedFromClipboard": "",
-        "language": "",
-        "translateToYourLanguage": "",
         "edit": "",
         "nothingToShowFiller": "",
         "required": "",
@@ -524,8 +522,7 @@
             "translateToYourLanguage": "Traduza o ct.js!",
             "disableSounds": "Desabilitar sons de UI",
             "changeDataFolder": "",
-            "forceProductionForDebug": "",
-            "settings": ""
+            "forceProductionForDebug": ""
         },
         "project": {
             "save": "Salvar projeto",

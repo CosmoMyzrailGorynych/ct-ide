@@ -42,8 +42,6 @@
         "selectDialogue": "Выбрать…",
         "search": "Поиск:",
         "close": "Закрыть",
-        "language": "",
-        "translateToYourLanguage": "",
         "edit": "",
         "nothingToShowFiller": "",
         "required": "",
@@ -524,8 +522,7 @@
             "translateToYourLanguage": "Переведите ct.js на свой язык!",
             "disableSounds": "Отключить звуки интерфейса",
             "changeDataFolder": "Изменить папку данных ct.js",
-            "forceProductionForDebug": "  Включить релизные функции для дебаг-экспортов",
-            "settings": ""
+            "forceProductionForDebug": "  Включить релизные функции для дебаг-экспортов"
         },
         "project": {
             "save": "Сохранить проект",
