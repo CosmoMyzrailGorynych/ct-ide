@@ -35,11 +35,16 @@ main-menu-meta
                 use(xlink:href="#file-text")
             span {voc.license}
     ul.aMenu
+        li(onclick="{showStylebook}")
+            svg.feather
+                use(xlink:href="#droplet")
+            span {voc.openStylebook}
         li(onclick="{showIconList}")
             svg.feather
                 use(xlink:href="#image")
             span {voc.openIconList}
     icon-panel(if="{iconsOpened}" data-hotkey-scope="icons" onclose="{closeIcons}")
+    stylebook-panel(if="{stylebookOpened}" data-hotkey-scope="stylebook" onclose="{closeStylebook}")
     license-panel(if="{licenseOpened}" onclose="{hideLicense}")
     script.
         this.namespace = 'mainMenu.meta';
@@ -62,5 +67,13 @@ main-menu-meta
         };
         this.closeIcons = () => {
             this.iconsOpened = false;
+            this.update();
+        };
+
+        this.showStylebook = () => {
+            this.stylebookOpened = true;
+        };
+        this.closeStylebook = () => {
+            this.stylebookOpened = false;
             this.update();
         };

@@ -70,31 +70,6 @@ body
 .short
     width 4em
 
-// прогрессбары
-.progressbar
-    min-width 10em
-    position relative
-    border-radius br
-    border 1px solid borderBright
-    height 1.5em
-    vertical-align middle
-    display inline-block
-    div
-        border-radius br
-        background act
-        position absolute
-        top 0
-        left 0
-        bottom 0
-        width 50%
-    &.warning div
-        background warning
-    &.success div
-        background success
-    &.error
-        background error
-
-
 // оверлей загрузки
 div#loading
     position fixed
@@ -178,6 +153,10 @@ icon(icon = 'slash', color = act)
     stroke-linecap round
     stroke-linejoin round
     fill none
+
+.stripedbg.stripedbg
+    background linear-gradient(-45deg, background 25%, foreground 25%, foreground 50%, background 50%, background 75%, foreground 75%, foreground)
+    background-size 2rem 2rem
 
 /* Color swatches */
 [css-swatch="act"]

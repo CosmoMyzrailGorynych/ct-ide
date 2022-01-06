@@ -105,8 +105,13 @@
     border-top 1px solid borderBright
     border-left 1px solid borderBright
     &.vertical
-        border 0
-        border-radius 0
+        border 1px solid borderBright
+        &.nbr
+            border-top-right-radius 0
+            border-bottom-right-radius 0
+        &.nbl
+            border-top-left-radius 0
+            border-bottom-left-radius 0
     padding 0
     margin 0
     display flex
@@ -149,7 +154,7 @@
         text-align initial
         border-right 0
         border-bottom 1px solid borderPale
-        padding 0.25rem 1rem
+        padding 0.35rem 1rem
         overflow hidden
         text-overflow ellipsis
         white-space nowrap
@@ -198,7 +203,7 @@
             text-align center
             font-family fonts
             order 10
-        & + li
+        & + .aCard
             border-top 0
         .aCard-aThumbnail
             width 1.5rem
@@ -260,6 +265,10 @@
     align-items center
     &:hover, &.active
         border-color acttext
+        .Cards.list &
+            position relative
+            border-top 1px solid acttext
+            margin-top -1px
     &:active
         border-color accent1
         background act
@@ -358,6 +367,31 @@ sounds-panel, rooms-panel
     overflow-y auto
     .aNiceTable
         width max-content
+
+.aProgressbar
+    min-width 10rem
+    max-width 100%
+    position relative
+    border-radius br
+    border 1px solid borderBright
+    height 1rem
+    vertical-align middle
+    display inline-block
+    div
+        border-radius br
+        background act
+        position absolute
+        top 0
+        left 0
+        bottom 0
+        width 50%
+        {trans}
+    &.warning div
+        background warning
+    &.success div
+        background success
+    &.error div
+        background error
 
 .anIllustration
     color act

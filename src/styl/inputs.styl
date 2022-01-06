@@ -59,8 +59,7 @@ button,
 input[type="button"],
 input[type="submit"],
 input[type="reset"],
-.button,
-.selectbox
+.button
     padding 0.5em 1em
     margin 0 0.3em 0 0
     border 1px solid act
@@ -242,36 +241,6 @@ select, label, .label
 select
     line-height 2
     height calc(2.2rem + 2px)
-.selectbox
-    width 10em
-    position relative
-    li
-        list-style none
-    & > ul
-        position absolute
-        left -1px // why?
-        right -1px
-        top 100%
-        background background
-        color text
-        border 1px solid borderBright
-        border-radius 0 0 br br
-        border-bottom 0
-        border-top 1px solid act
-    ul
-        display none
-        margin 0
-        padding 0
-    &.focus
-        border-bottom-left-radius 0
-        border-bottom-right-radius 0
-        ul
-            display block
-    svg
-        transform rotate(90deg) translate(-50%, 0)
-        position absolute
-        right 0.5em
-        top 50%
 
 [type=range]
     min-height 1.5em
