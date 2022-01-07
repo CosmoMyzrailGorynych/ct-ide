@@ -85,6 +85,7 @@ app/export
 
 # editor-specific
 .vscode/settings.json
+.vscode/launch.json
 
 # docs
 docs/db.json

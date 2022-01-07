@@ -1,5 +1,7 @@
 'use strict';
 
+const versions = require('./versions');
+
 /* eslint no-console: 0 */
 const path = require('path'),
       gulp = require('gulp'),
@@ -45,7 +47,7 @@ const path = require('path'),
  */
 const nwSource = void 0;
 const nwManifest = void 0;
-const nwVersion = '0.59.0',
+const nwVersion = versions.nwjs,
       platforms = ['osx64', 'win32', 'win64', 'linux32', 'linux64'],
       nwFiles = ['./app/**', '!./app/export/**', '!./app/projects/**', '!./app/exportDesktop/**', '!./app/cache/**', '!./app/.vscode/**', '!./app/JamGames/**'];
 
