@@ -12,6 +12,9 @@ rendering-settings
         label.block.checkbox
             input(type="checkbox" value="{renderSettings.highDensity}" checked="{renderSettings.highDensity}" onchange="{wire('this.renderSettings.highDensity')}")
             span {voc.highDensity}
+        label.block.checkbox
+            input(type="checkbox" value="{renderSettings.usePixiLegacy}" checked="{renderSettings.usePixiLegacy}" onchange="{wire('this.renderSettings.usePixiLegacy')}")
+            span {voc.usePixiLegacy}
     fieldset
         label.block.checkbox
             input(type="checkbox" checked="{renderSettings.hideCursor}" onchange="{wire('this.renderSettings.hideCursor')}")
