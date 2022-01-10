@@ -474,6 +474,12 @@ ct.u = {
         }
         str += 'is required.';
         throw new Error(str);
+    },
+    numberedString(prefix, input) {
+        return prefix + '_' + input.toString().padStart(2, '0');
+    },
+    getStringNumber(str) {
+        return Number(str.split('_').pop());
     }
 };
 ct.u.ext(ct.u, {// make aliases
