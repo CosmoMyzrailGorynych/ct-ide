@@ -56,7 +56,7 @@ pack-deploy-release:
   needs: ["lint", "build"]
   script:
     - apt-get update
-    - apt-get install zip unzip
+    - apt-get install zip unzip -y
     - npm i -g gulp-cli
     - gulp -f devSetup.gulpfile.js
     - gulp packages
@@ -76,7 +76,7 @@ pack-deploy-nightly:
     - if: $CI_COMMIT_BRANCH == "develop"
   script:
     - apt-get update
-    - apt-get install zip unzip
+    - apt-get install zip unzip -y
     - npm i -g gulp-cli
     - gulp -f devSetup.gulpfile.js
     - gulp packages --nightly --buildNum=$CI_COMMIT_SHORT_SHA
