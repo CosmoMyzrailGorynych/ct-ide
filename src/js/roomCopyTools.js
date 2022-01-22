@@ -322,6 +322,7 @@
                 opened: false,
                 item: [{
                     label: window.languageJSON.roomView.deleteCopies,
+                    icon: 'trash',
                     click: () => {
                         for (const copy of this.selectedCopies) {
                             this.room.copies.splice(this.room.copies.indexOf(copy), 1);
@@ -332,7 +333,10 @@
                     },
                     key: 'Delete'
                 }, {
+                    type: 'separator'
+                }, {
                     label: window.languageJSON.roomView.shiftCopies,
+                    icon: 'move',
                     click: () => {
                         window.alertify.confirm(`
                             ${window.languageJSON.roomView.shiftCopies}
@@ -372,6 +376,7 @@
                 opened: false,
                 items: [{
                     label: window.languageJSON.roomView.deleteCopy.replace('{0}', this.closestTemplate),
+                    icon: 'trash',
                     click: () => {
                         this.room.copies.splice(this.closestPos, 1);
                         this.resortRoom();
@@ -379,7 +384,10 @@
                     },
                     key: 'Delete'
                 }, {
+                    type: 'separator'
+                }, {
                     label: window.languageJSON.roomView.changeCopyScale,
+                    icon: 'scale',
                     click: () => {
                         var copy = this.room.copies[this.closestPos];
                         window.alertify.confirm(`
@@ -401,6 +409,7 @@
                     }
                 }, {
                     label: window.languageJSON.roomView.changeCopyRotation,
+                    icon: 'rotate-cw',
                     click: () => {
                         var copy = this.room.copies[this.closestPos];
                         window.alertify.confirm(`
@@ -418,6 +427,7 @@
                     }
                 }, {
                     label: window.languageJSON.roomView.shiftCopy,
+                    icon: 'move',
                     click: () => {
                         var copy = this.room.copies[this.closestPos];
                         window.alertify.confirm(`
@@ -438,7 +448,10 @@
                         });
                     }
                 }, {
+                    type: 'separator'
+                }, {
                     label: window.languageJSON.roomView.customProperties,
+                    icon: 'code-alt',
                     click: () => {
                         this.closestCopy = this.room.copies[this.closestPos];
                         this.toggleCopyProperties(true);
