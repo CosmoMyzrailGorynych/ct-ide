@@ -30,7 +30,7 @@ const defaultProjectTemplate = {
         textures: [],
         styles: [],
         rooms: [],
-        types: [],
+        templates: [],
         sounds: [],
         emitterTandems: []
     },

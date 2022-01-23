@@ -27,6 +27,11 @@ window.migrationProcess.push({
             }
         }
 
+        project.groups.templates = project.groups.templates || project.groups.types || [];
+        if ('types' in project.groups) {
+            delete project.groups.types;
+        }
+
         resolve();
     })
 });
