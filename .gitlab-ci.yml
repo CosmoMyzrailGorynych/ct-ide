@@ -81,8 +81,4 @@ pack-deploy-nightly:
     - gulp -f devSetup.gulpfile.js
     - gulp packages --nightly --buildNum=$CI_COMMIT_SHORT_SHA
     - gulp deployOnly --nightly --buildNum=$CI_COMMIT_SHORT_SHA
-  artifacts:
-    expire_in: 3 days
-    name: "$CI_COMMIT_REF_NAME $CI_COMMIT_SHORT_SHA"
-    paths:
-      - "build/"
+
