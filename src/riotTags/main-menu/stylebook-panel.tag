@@ -447,6 +447,15 @@ stylebook-panel.aPanel.aView.pad.flexrow
                 .aSpacer
                 .aPanel.pad
                     span A padded panel.
+                .aSpacer
+                .aPanel.pad.success
+                    span A padded panel with a success message.
+                .aSpacer
+                .aPanel.pad.warning
+                    span A padded panel with a warning.
+                .aSpacer
+                .aPanel.pad.error
+                    span A padded panel with an error message.
         stylebook-section(heading="Views")
             yield(to="example")
                 .aSpacer

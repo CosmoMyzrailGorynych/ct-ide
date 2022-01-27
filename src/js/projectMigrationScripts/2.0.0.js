@@ -31,6 +31,8 @@ window.migrationProcess.push({
         if ('types' in project.groups) {
             delete project.groups.types;
         }
+        const {rendering} = project.settings;
+        rendering.mobileScreenOrientation = rendering.mobileScreenOrientation || 'unspecified';
 
         resolve();
     })

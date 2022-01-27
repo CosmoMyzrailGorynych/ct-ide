@@ -17,7 +17,7 @@ const resizeTo = async function (img, length, dest, soft) {
         img.width * k, img.height * k
     );
     var iconBase64data = canvas.toDataURL().replace(/^data:image\/\w+;base64,/, '');
-    var buf = new Buffer(iconBase64data, 'base64');
+    var buf = Buffer.from(iconBase64data, 'base64');
     await fs.writeFile(dest, buf);
 };
 const bakeFavicons = async function (proj, writeDir) {

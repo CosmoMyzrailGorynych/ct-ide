@@ -1,29 +1,66 @@
 branding-settings
     h1 {voc.heading}
-    .block
-        b
-            span {voc.icon}
-            hover-hint(text="{voc.iconNotice}")
-        br
-        asset-input(
-            assettype="textures"
-            assetid="{global.currentProject.settings.branding.icon || -1}"
-            allowclear="yep"
-            onchanged="{updateGameIcon}"
-            header="{voc.icon}"
+    b
+        span {voc.icon}
+        hover-hint(text="{voc.iconNotice}")
+    br
+    asset-input(
+        assettype="textures"
+        assetid="{global.currentProject.settings.branding.icon || -1}"
+        allowclear="yep"
+        onchanged="{updateGameIcon}"
+        header="{voc.icon}"
+    )
+    .aSpacer
+    b
+        span {voc.splashScreen}
+        hover-hint(text="{voc.splashScreenNotice}")
+    br
+    asset-input(
+        assettype="textures"
+        assetid="{global.currentProject.settings.branding.splashScreen || -1}"
+        allowclear="yep"
+        onchanged="{updateGameSplashScreen}"
+        header="{voc.splashScreen}"
+    )
+    .aSpacer
+    label.block.checkbox
+        input(
+            type="checkbox"
+            value="{global.currentProject.settings.branding.forceSmoothIcons}"
+            checked="{global.currentProject.settings.branding.forceSmoothIcons}"
+            onchange="{wire('this.currentProject.settings.branding.forceSmoothIcons')}"
         )
+        span {voc.forceSmoothIcons}
+    label.block.checkbox
+        input(
+            type="checkbox"
+            value="{global.currentProject.settings.branding.forceSmoothSplashScreen}"
+            checked="{global.currentProject.settings.branding.forceSmoothSplashScreen}"
+            onchange="{wire('this.currentProject.settings.branding.forceSmoothSplashScreen')}"
+        )
+        span {voc.forceSmoothSplashScreen}
     .aSpacer
-    .block
-        b
-            span {voc.accent}
-            hover-hint(text="{voc.accentNotice}")
-        color-input(onchange="{wire('global.currentProject.settings.branding.accent', true)}" color="{global.currentProject.settings.branding.accent}")
+    b
+        span {voc.accent}
+        hover-hint(text="{voc.accentNotice}")
+    color-input(onchange="{wire('global.currentProject.settings.branding.accent', true)}" color="{global.currentProject.settings.branding.accent}")
     .aSpacer
-    .block.checkbox
-        input(type="checkbox" value="{global.currentProject.settings.branding.invertPreloaderScheme}" checked="{global.currentProject.settings.branding.invertPreloaderScheme}" onchange="{wire('this.currentProject.settings.branding.invertPreloaderScheme')}")
+    label.block.checkbox
+        input(
+            type="checkbox"
+            value="{global.currentProject.settings.branding.invertPreloaderScheme}"
+            checked="{global.currentProject.settings.branding.invertPreloaderScheme}"
+            onchange="{wire('this.currentProject.settings.branding.invertPreloaderScheme')}"
+        )
         span {voc.invertPreloaderScheme}
-    .block.checkbox
-        input(type="checkbox" value="{global.currentProject.settings.branding.hideLoadingLogo}" checked="{global.currentProject.settings.branding.hideLoadingLogo}" onchange="{wire('this.currentProject.settings.branding.hideLoadingLogo')}")
+    label.block.checkbox
+        input(
+            type="checkbox"
+            value="{global.currentProject.settings.branding.hideLoadingLogo}"
+            checked="{global.currentProject.settings.branding.hideLoadingLogo}"
+            onchange="{wire('this.currentProject.settings.branding.hideLoadingLogo')}"
+        )
         span {voc.hideLoadingLogo}
     script.
         this.namespace = 'settings.branding';
@@ -33,4 +70,7 @@ branding-settings
 
         this.updateGameIcon = id => {
             global.currentProject.settings.branding.icon = id;
+        };
+        this.updateGameSplashScreen = id => {
+            global.currentProject.settings.branding.splashScreen = id;
         };

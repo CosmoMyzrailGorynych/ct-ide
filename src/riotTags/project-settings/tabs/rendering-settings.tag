@@ -26,6 +26,13 @@ rendering-settings
             label.checkbox
                 input(type="radio" value=key checked=`{renderSettings.desktopMode === '${key}'}` onchange="{wire('this.renderSettings.desktopMode')}")
                 span=`{voc.launchModes.${key}}`
+    h2 {voc.mobileBuilds}
+    fieldset
+        b {voc.screenOrientation}
+        each key in ['unspecified', 'landscape', 'portrait']
+            label.checkbox
+                input(type="radio" value=key checked=`{renderSettings.mobileScreenOrientation === '${key}'}` onchange="{wire('this.renderSettings.mobileScreenOrientation')}")
+                span=`{voc.screenOrientations.${key}}`
 
     script.
         this.namespace = 'settings.rendering';

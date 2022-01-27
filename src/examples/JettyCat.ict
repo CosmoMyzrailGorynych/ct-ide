@@ -1283,12 +1283,14 @@ settings:
     icon: eb24c2bc-a36c-4118-b33e-a7348c00e5bb
     accent: '#446adb'
     invertPreloaderScheme: true
+    splashScreen: 5c680919-3827-4ea7-9e72-a8fc81ddfb45
   rendering:
     maxFPS: 60
     pixelatedrender: false
     highDensity: true
     usePixiLegacy: true
     desktopMode: maximized
+    mobileScreenOrientation: portrait
   authoring:
     title: JettyCat
     author: ComigoGames
@@ -1298,6 +1300,7 @@ settings:
       - 0
       - 0
     versionPostfix: ''
+    appId: rocks.ctjs.jettycat
   fps: 30
 scripts: []
 fonts: []

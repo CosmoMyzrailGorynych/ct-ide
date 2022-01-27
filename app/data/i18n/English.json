@@ -141,6 +141,14 @@
         "log": "Message Log",
         "windowsCrossBuildWarning": "To build for Windows from Linux/MacOS, you need Wine installed in your system. Install instructions are all different for various platforms, so you better google it yourself :)",
         "cannotBuildForMacOnWin": "Unfortunately, Windows can only produce broken Mac packages. Try using a Linux machine; for example, in a virtual one. It is 100% free!",
+        "projectTitleRequired": "You must add a title to your project in the Project tab → Authoring → Name.",
+        "appIdRequired": "You must set a unique appId in the Project tab → Authoring → App ID to distribute this app.",
+        "noAndroidSdkFound": "No Android SDK was found (ANDROID_SDK_ROOT environment variable is not set). You can get Android SDK by installing Android Studio:",
+        "envVarNotice": "You may still need to set this environment variable manually and restart your device.",
+        "downloadAndroidStudio": "Download Android Studio",
+        "requiresInternetNotice": "This operation requires Internet connection to setup each project.",
+        "noJdkFound": "No JDK 11 was found (JAVA_HOME environment variable is not set or doesn't point to JDK 11). You can get JDK 11 here:",
+        "downloadJDK": "Download JDK 11",
         "firstRunNotice": "The first run for each platform will be slow as ct.js will download and save additional libraries needed for packing. It will take some time, but next times will be almost instant."
     },
     "extensionsEditor": {
@@ -224,7 +232,9 @@
             "site": "Homepage:",
             "title": "Name:",
             "version": "Version:",
-            "versionPostfix": "Postfix:"
+            "versionPostfix": "Postfix:",
+            "appId": "App ID",
+            "appIdExplanation": "This is mainly used in mobile builds. It is a unique string that identifies your game. It usually follows the format zone.developer.projectName, and, say, rocks.ctjs.catsteroids is a good example for that."
         },
         "branding": {
             "heading": "Branding",
@@ -232,6 +242,10 @@
             "accentNotice": "Sets the color of the preloader, as well as of some other places if used as a mobile app.",
             "icon": "Game's icon:",
             "iconNotice": "It should be a square, one-frame texture that is at least 256x256px large.",
+            "splashScreen": "Splash screen:",
+            "splashScreenNotice": "This image will be used in mobile builds. It should be at least 1920x1920px large, and will be resized and cropped for portrait and landscape screen orientation, so make sure everything important is in the center square.",
+            "forceSmoothIcons": "Use smooth icons regardless of rendering settings",
+            "forceSmoothSplashScreen": "Use smooth splash screen images regardless of rendering settings",
             "invertPreloaderScheme": "Invert preloader's color scheme",
             "hideLoadingLogo": "Hide \"Made with ct.js\" graphics on the loading screen"
         },
@@ -272,6 +286,13 @@
                 "maximized": "Maximized",
                 "fullscreen": "Fullscreen",
                 "windowed": "Windowed"
+            },
+            "mobileBuilds": "Mobile builds",
+            "screenOrientation": "Screen orientation:",
+            "screenOrientations": {
+                "unspecified": "Any",
+                "landscape": "Landscape",
+                "portrait": "Portrait"
             },
             "pixelatedRender": "Disable image smoothing here and in exported project (preserve crisp pixels)"
         },
@@ -530,7 +551,8 @@
             "heading": "Deploy",
             "exportDesktop": "Export for desktop…",
             "successZipExport": "Successfully exported to {0}.",
-            "zipExport": "Export for web"
+            "zipExport": "Export for web",
+            "exportAndroid": "Export for Android…"
         },
         "latestProjects": {
             "recentProjects": "Recent projects"

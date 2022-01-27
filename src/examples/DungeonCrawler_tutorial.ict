@@ -1082,6 +1082,7 @@ sounds:
     uid: d470f423-a1ed-4189-b117-8ebf7b4eac62
     origname: sd470f423-a1ed-4189-b117-8ebf7b4eac62.ogg
     lastmod: 1597803503502
+    isMusic: true
   - name: Door
     uid: fbe42ee3-6fe6-43ac-a99c-09da748ddc46
     origname: sfbe42ee3-6fe6-43ac-a99c-09da748ddc46.wav
@@ -8997,6 +8998,7 @@ settings:
       - 0
       - 0
     versionPostfix: ''
+    appId: rocks.ctjs.labraid
   rendering:
     usePixiLegacy: true
     maxFPS: 60
@@ -9004,6 +9006,7 @@ settings:
     highDensity: true
     desktopMode: maximized
     hideCursor: true
+    mobileScreenOrientation: unspecified
   export:
     windows: true
     linux: true
@@ -9011,9 +9014,12 @@ settings:
     functionWrap: true
     codeModifier: obfuscate
   branding:
-    icon: -1
+    icon: 4822a271-cc3c-4d88-b7a0-b2aa4cab0a96
     accent: '#446adb'
     invertPreloaderScheme: true
+    splashScreen: dc7b9662-c746-403c-9f3e-67425fd480a3
+    forceSmoothIcons: false
+    forceSmoothSplashScreen: false
   fps: 30
 fonts: []
 palette:

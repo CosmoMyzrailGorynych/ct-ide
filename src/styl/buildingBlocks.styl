@@ -23,6 +23,15 @@
     border 1px solid borderBright
     border-radius br
     position relative
+    &.success
+        border-color success
+        background mix(background, success, 90%)
+    &.warning
+        border-color warning
+        background mix(background, warning, 90%)
+    &.error
+        border-color error
+        background mix(background, error, 90%)
 
 .aModal
     max-height 90%

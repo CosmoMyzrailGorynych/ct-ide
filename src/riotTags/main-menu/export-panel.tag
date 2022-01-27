@@ -1,5 +1,4 @@
-export-panel
-    .dim
+export-panel.aDimmer
     .aModal.pad.flexfix
         .flexfix-header
             h2.nmt {voc.exportPanel}
@@ -32,12 +31,12 @@ export-panel
             h3(if="{log.length}")
                 | {voc.log}
                 .rem.a(onclick="{copyLog}").toright {vocGlob.copy}
-            pre(if="{log.length}")
+            pre.selectable(if="{log.length}")
                 div(each="{text in log}") {text.toString()}
         .flexfix-footer
             .flexrow
                 button(onclick="{opts.onclose}") {voc.hide}
-                button(onclick="{export}")
+                button(onclick="{export}").nmr
                     span.inlineblock.rotateccw(if="{working}")
                         svg.feather
                             use(xlink:href="#refresh-ccw")

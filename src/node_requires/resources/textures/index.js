@@ -104,6 +104,7 @@ const texturesFromCtTexture = async function (tex) {
 
 let defaultTexture;
 
+// async
 const getDOMImage = function (texture, deflt) {
     let path;
     const img = document.createElement('img');

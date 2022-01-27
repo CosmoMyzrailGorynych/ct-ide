@@ -2,15 +2,15 @@ authoring-settings
     h1 {voc.heading}
     b {voc.title}
     br
-    input#gametitle(type="text" value="{authoring.title}" onchange="{changeTitle}")
+    input(type="text" value="{authoring.title}" onchange="{changeTitle}")
     br
     b {voc.author}
     br
-    input#gameauthor(type="text" value="{authoring.author}" onchange="{wire('this.authoring.author')}")
+    input(type="text" value="{authoring.author}" onchange="{wire('this.authoring.author')}")
     br
     b {voc.site}
     br
-    input#gamesite(type="text" value="{authoring.site}" onchange="{wire('this.authoring.site')}")
+    input(type="text" value="{authoring.site}" onchange="{wire('this.authoring.site')}")
     br
     b {voc.version}
     br
@@ -22,6 +22,11 @@ authoring-settings
     .inlineblock
         |   {voc.versionPostfix}
         input(type="text" style="width: 3rem;" value="{authoring.versionPostfix}" length="5" onchange="{wire('this.authoring.versionPostfix')}")
+    br
+    b {voc.appId}
+    hover-hint(text="{voc.appIdExplanation}")
+    br
+    input(type="text" value="{authoring.appId}" onchange="{wire('this.authoring.appId')}")
     script.
         this.namespace = 'settings.authoring';
         this.mixin(window.riotVoc);
