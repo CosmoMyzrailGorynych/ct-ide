@@ -1,5 +1,10 @@
 project-selector
     #bg.stretch.flexcol
+        .pad.left.nogrow
+            button.inline(onclick="{toggleLanguageSelector}")
+                svg.feather
+                    use(xlink:href="#translate")
+                span {window.languageJSON.mainMenu.settings.language}
         .aSpacer
         #intro.aPanel.flexfix.nogrow
             ul.aNav.tabs.flexfix-header.nb
@@ -92,6 +97,7 @@ project-selector
             a.inlineblock(if="{newVersion}" href="https://comigo.itch.io/ct#download" onclick="{openExternal}")
                 | {newVersion}
                 img(src="data/img/partycarrot.gif" if="{newVersion}").aPartyCarrot
+    context-menu(menu="{languagesSubmenu}" ref="languageslist")
     script.
         const fs = require('fs-extra'),
               path = require('path');
@@ -311,4 +317,41 @@ project-selector
             nw.Shell.openExternal(link);
             e.stopPropagation();
             e.preventDefault();
+        };
+
+        this.languagesSubmenu = {
+            items: []
+        };
+        const i18nAPI = require('./data/node_requires/i18n');
+        i18nAPI.getLanguages().then(languages => {
+            for (const language of languages) {
+                if (language.filename === 'Debug.json') {
+                    continue;
+                }
+                this.languagesSubmenu.items.push({
+                    label: `${language.meta.native} (${language.meta.eng})`,
+                    icon: () => localStorage.appLanguage === language.filename.slice(0, -5) && 'check',
+                    click: () => {
+                        this.switchLanguage(language.filename.slice(0, -5));
+                    }
+                });
+            }
+        })
+        .catch(e => {
+            console.error(e);
+            alertify.error(`Error while finding i18n files: ${e}`);
+        });
+        this.switchLanguage = name => {
+            const i18n = require('./data/node_requires/i18n.js');
+            try {
+                window.languageJSON = i18n.loadLanguage(name);
+                localStorage.appLanguage = name;
+                window.signals.trigger('updateLocales');
+                window.riot.update();
+            } catch (e) {
+                alertify.alert('Could not open a language file: ' + e);
+            }
+        };
+        this.toggleLanguageSelector = e => {
+            this.refs.languageslist.popup(e.clientX, e.clientY);
         };
