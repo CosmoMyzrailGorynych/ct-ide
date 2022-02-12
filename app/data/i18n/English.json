@@ -186,6 +186,8 @@
         "browse": "Browse",
         "latest": "Latest projects",
         "examples": "Examples",
+        "templates": "Templates",
+        "templatesInfo": "You can kickstart your game development by using one of these templates. They contain placeholder graphics only but have working mechanics. Selecting a project will open a save directory selector for your new project.",
         "unableToWriteToFolders": "Ct.js could not find an appropriate place for projects! Make sure you store ct.js app inside a folder you have access to write to.",
         "twitter": "Twitter channel",
         "discord": "Discord community",

@@ -273,6 +273,7 @@
                                         hidden: false
                                     };
                                     this.room.tiles.push(layer);
+                                    this.resortRoom();
                                 }
                                 for (const tile of this.selectedTiles) {
                                     const ind = this.currentTileLayer.tiles.indexOf(tile);

@@ -589,6 +589,9 @@ if ((/^win/).test(process.platform)) {
 const examples = () => gulp.src('./src/examples/**/*')
     .pipe(gulp.dest('./app/examples'));
 
+const templates = () => gulp.src('./src/projectTemplates/**/*')
+    .pipe(gulp.dest('./app/templates'));
+
 // eslint-disable-next-line valid-jsdoc
 /**
  * @see https://stackoverflow.com/a/22907134
@@ -614,10 +617,13 @@ const patronsCache = done => {
 const packages = gulp.series([
     lint,
     abortOnWindows,
-    build,
-    docs,
-    patronsCache,
-    examples,
+    gulp.parallel([
+        build,
+        docs,
+        patronsCache,
+        examples,
+        templates
+    ]),
     bakePackages,
 //    fixSymlinks,
 //    fixPermissions,

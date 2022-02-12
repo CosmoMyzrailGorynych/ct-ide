@@ -9,9 +9,17 @@ project-selector
         #intro.aPanel.flexfix.nogrow
             ul.aNav.tabs.flexfix-header.nb
                 li(class="{active: tab === 'projects'}" onclick="{changeTab('projects')}")
+                    svg.feather
+                        use(xlink:href="#folder")
                     span {voc.latest}
                 li(class="{active: tab === 'examples'}" onclick="{changeTab('examples')}")
+                    svg.feather
+                        use(xlink:href="#book-open")
                     span {voc.examples}
+                li(class="{active: tab === 'templates'}" onclick="{changeTab('templates')}")
+                    svg.feather
+                        use(xlink:href="#platformer")
+                    span {voc.templates}
             .flexfix-body.pad(show="{tab === 'projects'}")
                 .flexrow
                     h2.nmt {voc.latest}
@@ -24,7 +32,7 @@ project-selector
                 ul.Cards.largeicons.nmb
                     li.aCard(
                         each="{project in latestProjects}"
-                        onclick="{loadRecentProject}"
+                        onclick="{loadProjectByPath}"
                         title="{project}"
                     )
                         .aCard-aThumbnail
@@ -50,7 +58,31 @@ project-selector
                 ul.Cards.largeicons.nmb
                     li.aCard(
                         each="{project in exampleProjects}"
-                        onclick="{loadRecentProject}"
+                        onclick="{loadProjectByPath}"
+                        title="{project}"
+                    )
+                        .aCard-aThumbnail
+                            img(src="{getProjectThumbnail(project)}")
+                        .aCard-Properties
+                            span {getProjectName(project)}
+                        .aCard-Actions
+                            button.tiny(onclick="{cloneProject}" title="{voc.cloneProject}")
+                                svg.feather
+                                    use(xlink:href="#copy")
+            .flexfix-body.pad(show="{tab === 'templates'}")
+                .flexrow
+                    h2.nmt {voc.templates}
+                    label.file.nm.nogrow
+                        button.inline.nml.nmr(onclick="{openProjectFind}")
+                            svg.feather
+                                use(xlink:href="#folder")
+                            span {voc.browse}
+                p.nmt {voc.templatesInfo}
+                .clear
+                ul.Cards.largeicons.nmb
+                    li.aCard(
+                        each="{project in templateProjects}"
+                        onclick="{cloneProject}"
                         title="{project}"
                     )
                         .aCard-aThumbnail
@@ -151,8 +183,12 @@ project-selector
         } else {
             this.latestProjects = [];
         }
+
         const projects = require('./data/node_requires/resources/projects');
+        this.getProjectThumbnail = projects.getProjectThumbnail;
+
         this.exampleProjects = [];
+        this.templateProjects = [];
         // Loads examples
         fs.readdir(projects.getExamplesDir(), {
             withFileTypes: true
@@ -163,8 +199,16 @@ project-selector
             this.exampleProjects = projects;
             this.update();
         });
+        fs.readdir(projects.getTemplatesDir(), {
+            withFileTypes: true
+        })
+        .then(entries => entries.filter(entry => entry.isFile() && (/\.ict$/i).test(entry.name)))
+        .then(entries => entries.map(entry => path.join(projects.getTemplatesDir(), entry.name)))
+        .then(projects => {
+            this.templateProjects = projects;
+            this.update();
+        });
 
-        this.getProjectThumbnail = projects.getProjectThumbnail;
         /**
          * Update a splash image of a selected project
          */
@@ -205,7 +249,7 @@ project-selector
         /**
          * Opens a recent project when an item in the Recent Project list is double-clicked
          */
-        this.loadRecentProject = e => {
+        this.loadProjectByPath = e => {
             const projectPath = e.item.project;
             window.loadProject(projectPath);
         };
