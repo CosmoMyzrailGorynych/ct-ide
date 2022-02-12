@@ -273,7 +273,7 @@
         "create": "Crear",
         "import": "Importar",
         "skeletons": "Animacion de esqueleto",
-        "createType": "Crear tipo de esta",
+        "createTemplate": "Crear tipo de esta",
         "importFromClipboard": "",
         "generatePlaceholder": ""
     },

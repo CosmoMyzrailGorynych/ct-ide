@@ -273,7 +273,7 @@
         "create": "Crează",
         "import": "Importă",
         "skeletons": "Animație scheletică",
-        "createType": "",
+        "createTemplate": "",
         "importFromClipboard": "",
         "generatePlaceholder": ""
     },

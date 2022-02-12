@@ -358,7 +358,7 @@
         "import": "Import",
         "skeletons": "Skeletal Animation",
         "textures": "Textures",
-        "createType": "Create a type from it",
+        "createTemplate": "Create a template from it",
         "importFromClipboard": "Import from clipboard",
         "generatePlaceholder": "Generate a placeholder"
     },

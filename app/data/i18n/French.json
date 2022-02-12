@@ -299,7 +299,7 @@
         "create": "Créer",
         "import": "Importer",
         "skeletons": "Animation squelettique",
-        "createType": "",
+        "createTemplate": "",
         "importFromClipboard": "",
         "generatePlaceholder": ""
     },

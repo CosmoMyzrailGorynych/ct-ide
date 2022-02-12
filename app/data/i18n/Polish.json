@@ -282,7 +282,7 @@
         "create": "Stwórz",
         "import": "Importuj",
         "skeletons": "Animacja szkieletowa",
-        "createType": "",
+        "createTemplate": "",
         "importFromClipboard": "",
         "generatePlaceholder": ""
     },

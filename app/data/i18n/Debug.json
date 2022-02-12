@@ -172,7 +172,7 @@
         "create": "texture.create",
         "import": "texture.import",
         "skeletons": "texture.skeletons",
-        "createType": "texture.createType",
+        "createTemplate": "texture.createTemplate",
         "importFromClipboard": "texture.importFromClipboard",
         "generatePlaceholder": "texture.generatePlaceholder"
     },

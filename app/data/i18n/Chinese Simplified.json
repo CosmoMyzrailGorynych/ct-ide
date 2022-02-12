@@ -302,7 +302,7 @@
         "create": "创建",
         "import": "导入",
         "skeletons": "骨骼动画",
-        "createType": "从中创建一个类型",
+        "createTemplate": "从中创建一个类型",
         "importFromClipboard": "从剪贴板导入",
         "generatePlaceholder": "生成一个占位符"
     },

@@ -358,7 +358,7 @@
         "import": "インポート",
         "skeletons": "スケルトンアニメーション",
         "textures": "テクスチャ",
-        "createType": "そこから型を作成する",
+        "createTemplate": "そこから型を作成する",
         "importFromClipboard": "クリップボードからインポート",
         "generatePlaceholder": "プレースホルダーを生成する"
     },

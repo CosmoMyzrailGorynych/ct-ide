@@ -302,7 +302,7 @@
         "create": "Creëer",
         "import": "Importeer",
         "skeletons": "Skeletanimatie",
-        "createType": "",
+        "createTemplate": "",
         "importFromClipboard": "",
         "generatePlaceholder": ""
     },

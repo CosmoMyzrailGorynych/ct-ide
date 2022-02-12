@@ -306,7 +306,7 @@
         "create": "Criar",
         "import": "Importar",
         "skeletons": "Animação Esquelética",
-        "createType": "Criar um tipo disso",
+        "createTemplate": "Criar um tipo disso",
         "importFromClipboard": "",
         "generatePlaceholder": ""
     },

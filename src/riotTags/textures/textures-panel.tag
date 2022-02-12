@@ -229,12 +229,12 @@ textures-panel.aPanel.aView
             opened: false,
             items: [{
                 icon: 'loader',
-                label: this.voc.createType,
+                label: this.voc.createTemplate,
                 click: () => {
-                    const typesAPI = require('./data/node_requires/resources/types/');
-                    const type = typesAPI.createNewType(this.currentTexture.name);
-                    type.texture = this.currentTexture.uid;
-                    window.orders.trigger('openAsset', `types/${type.uid}`);
+                    const templatesAPI = require('./data/node_requires/resources/templates/');
+                    const template = templatesAPI.createNewTemplate(this.currentTexture.name);
+                    template.texture = this.currentTexture.uid;
+                    window.orders.trigger('openAsset', `templates/${template.uid}`);
                 }
             }, {
                 label: window.languageJSON.common.open,

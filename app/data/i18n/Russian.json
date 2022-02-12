@@ -282,7 +282,7 @@
         "create": "Создать",
         "import": "Импорт",
         "skeletons": "Скелетная анимация",
-        "createType": "Создать тип с этой текстурой",
+        "createTemplate": "Создать шаблон с этой текстурой",
         "importFromClipboard": "Импортировать из буфера обмена",
         "generatePlaceholder": "Создать заглушку"
     },
