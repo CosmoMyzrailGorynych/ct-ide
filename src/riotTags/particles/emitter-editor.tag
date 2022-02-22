@@ -421,7 +421,7 @@ emitter-editor.aPanel.pad.nb
         this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
 
-        const {getTexturePreview, getTextureFromName} = require('./data/node_requires/resources/textures');
+        const {getTexturePreview} = require('./data/node_requires/resources/textures');
         this.getPreview = () => getTexturePreview(this.opts.emitter.texture);
 
         this.wireAndReset = path => e => {

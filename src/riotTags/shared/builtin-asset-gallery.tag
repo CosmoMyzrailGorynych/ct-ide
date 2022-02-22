@@ -242,10 +242,16 @@ builtin-asset-gallery.aPanel.aView.pad
                         const sound = createNewSound(entry.name);
                         return addSoundFile(sound, entry.path);
                     }
+                    // Unknown asset type
+                    return Promise.resolve();
                 });
             await Promise.all(promises);
-            texturesPresent && window.signals.trigger('textureCreated');
-            soundsPresent && window.signals.trigger('soundCreated');
+            if (texturesPresent) {
+                window.signals.trigger('textureCreated');
+            }
+            if (soundsPresent) {
+                window.signals.trigger('soundCreated');
+            }
             this.massImportInProgress = false;
             window.alertify.success(this.vocGlob.done);
             this.update();
