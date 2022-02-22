@@ -6,6 +6,14 @@ const isWin = (/win[0-9]+/).test(os.platform());
 const isLinux = os.platform() === 'linux';
 const isMac = !(isWin || isLinux);
 
+// We compute a directory once and store it forever
+let exportDir: string,
+    exportDirPromise: Promise<string>,
+    buildDir: string,
+    buildDirPromise: Promise<string>,
+    projectsDir: string,
+    projectsDirPromise: Promise<string>;
+
 const mod = {
     isWin,
     isWindows: isWin,
@@ -18,10 +26,10 @@ const mod = {
      * @param {String} way A path to check against
      * @returns {Promise<Boolean>} Resolves into either `true` (if writable) or `false`
      */
-    checkWritable(way) {
+    checkWritable(way: string): Promise<boolean> {
         return new Promise(resolve => {
             // eslint-disable-next-line no-bitwise
-            fs.access(way, fs.constants.R_OK | fs.constants.W_OK, err => {
+            fs.access(way, fs.constants.R_OK | fs.constants.W_OK, (err: Error) => {
                 if (err) {
                     resolve(false);
                 } else {
@@ -36,7 +44,7 @@ const mod = {
      *
      * @returns {Promise<String>} A writable directory
      */
-    async getWritableDir() {
+    async getWritableDir(): Promise<string> {
         if (localStorage.customWritableDir) {
             if (!(await mod.checkWritable(localStorage.customWritableDir))) {
                 throw new Error(`Custom data folder ${localStorage.customWritableDir} is read-only`);
@@ -72,7 +80,7 @@ const mod = {
         }
         return exec;
     },
-    async getTempDir() {
+    async getTempDir(): Promise<{dir: string, remove: () => void}> {
         const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'ctjs-'));
         return {
             dir,
@@ -80,63 +88,8 @@ const mod = {
                 return fs.remove(dir);
             }
         };
-    }
-};
-
-{
-    let exportDir,
-        exportDirPromise,
-        buildDir,
-        buildDirPromise,
-        projectsDir,
-        projectsDirPromise;
-    // We compute a directory once and store it forever
-    mod.getExportDir = () => {
-        if (exportDir) {
-            return Promise.resolve(exportDir);
-        }
-        if (exportDirPromise) {
-            return exportDirPromise;
-        }
-        exportDirPromise = mod.getWritableDir().then(async ctjsDir => {
-            const dir = require('path').join(ctjsDir, 'Exported');
-            await fs.ensureDir(dir);
-            exportDir = dir;
-            return exportDir;
-        });
-        return exportDirPromise;
-    };
-    mod.getBuildDir = () => {
-        if (buildDir) {
-            return Promise.resolve(buildDir);
-        }
-        if (buildDirPromise) {
-            return buildDirPromise;
-        }
-        buildDirPromise = mod.getWritableDir().then(async ctjsDir => {
-            const dir = require('path').join(ctjsDir, 'Builds');
-            await fs.ensureDir(dir);
-            buildDir = dir;
-            return buildDir;
-        });
-        return buildDirPromise;
-    };
-    mod.getProjectsDir = () => {
-        if (projectsDir) {
-            return Promise.resolve(projectsDir);
-        }
-        if (projectsDirPromise) {
-            return projectsDirPromise;
-        }
-        projectsDirPromise = mod.getWritableDir().then(async ctjsDir => {
-            const dir = require('path').join(ctjsDir, 'Projects');
-            await fs.ensureDir(dir);
-            projectsDir = dir;
-            return projectsDir;
-        });
-        return projectsDirPromise;
-    };
-    mod.requestWritableDir = async () => {
+    },
+    requestWritableDir: async (): Promise<boolean> => {
         const voc = window.languageJSON.writableFolderSelector;
         const folder = await window.showOpenDialog({
             openDirectory: true,
@@ -161,7 +114,58 @@ const mod = {
             window.alertify.error(voc.folderDoesNotExist);
         }
         return false;
-    };
-}
-
-module.exports = mod;
+    },
+    getGalleryDir(createHref?: boolean): string {
+        const path = require('path');
+        if (createHref) {
+            return ('file://' + path.posix.normalize(path.join((nw.App as any).startPath, 'bundledAssets')));
+        }
+        return path.join((nw.App as any).startPath, 'bundledAssets');
+    },
+    getProjectsDir(): Promise<string> {
+        if (projectsDir) {
+            return Promise.resolve(projectsDir);
+        }
+        if (projectsDirPromise) {
+            return projectsDirPromise;
+        }
+        projectsDirPromise = mod.getWritableDir().then(async (ctjsDir: string) => {
+            const dir = require('path').join(ctjsDir, 'Projects');
+            await fs.ensureDir(dir);
+            projectsDir = dir;
+            return projectsDir;
+        });
+        return projectsDirPromise;
+    },
+    getBuildDir(): Promise<string> {
+        if (buildDir) {
+            return Promise.resolve(buildDir);
+        }
+        if (buildDirPromise) {
+            return buildDirPromise;
+        }
+        buildDirPromise = mod.getWritableDir().then(async (ctjsDir: string) => {
+            const dir = require('path').join(ctjsDir, 'Builds');
+            await fs.ensureDir(dir);
+            buildDir = dir;
+            return buildDir;
+        });
+        return buildDirPromise;
+    },
+    getExportDir(): Promise<string> {
+        if (exportDir) {
+            return Promise.resolve(exportDir);
+        }
+        if (exportDirPromise) {
+            return exportDirPromise;
+        }
+        exportDirPromise = mod.getWritableDir().then(async ctjsDir => {
+            const dir = require('path').join(ctjsDir, 'Exported');
+            await fs.ensureDir(dir);
+            exportDir = dir;
+            return exportDir;
+        });
+        return exportDirPromise;
+    }
+};
+export = mod;

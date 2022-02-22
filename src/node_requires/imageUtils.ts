@@ -164,7 +164,7 @@ const outputCanvasToFile = function (canvas: HTMLCanvasElement, targetFile: stri
     return fs.outputFile(targetFile, buffer);
 };
 
-module.exports = {
+export {
     imageCover,
     imageContain,
     imagePlaceInRect,

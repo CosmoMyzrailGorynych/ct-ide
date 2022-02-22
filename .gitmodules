@@ -7,3 +7,6 @@
 [submodule "docs"]
 	path = docs
 	url = https://github.com/ct-js/docs.ctjs.rocks.git
+[submodule "bundledAssets"]
+	path = bundledAssets
+	url = https://github.com/ct-js/bundled-assets.git

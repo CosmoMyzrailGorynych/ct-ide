@@ -11,12 +11,12 @@ const getById = function getById(id: string): ISound {
     return sound;
 };
 
-const createNewSound = function (): ISound {
+const createNewSound = function (name?: string): ISound {
     const generateGUID = require('./../../generateGUID');
     var id = generateGUID(),
         slice = id.slice(-6);
     var newSound = {
-        name: 'Sound_' + slice,
+        name: name || ('Sound_' + slice),
         uid: id,
         isMusic: false,
         type: 'sound' as resourceType,
@@ -36,7 +36,7 @@ const addSoundFile = async function addSoundFile(sound: ISound, file: string): P
         sound.lastmod = Number(new Date());
     } catch (e) {
         console.error(e);
-        alertify.error(e);
+        (window as Window).alertify.error(e);
         throw e;
     }
 };

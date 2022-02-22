@@ -18,11 +18,6 @@ emitter-editor.aPanel.pad.nb
             assetid="{parent.opts.emitter.texture || -1}"
             selecttext="{parent.voc.selectTexture}"
         )
-        .aSpacer
-        button.wide(onclick="{parent.showTextureImport}")
-            svg.feather
-                use(xlink:href="#download")
-            span {parent.voc.importBuiltin}
 
     collapsible-section(
         heading="{voc.colorAndOpacityHeading}"
@@ -421,13 +416,12 @@ emitter-editor.aPanel.pad.nb
                     oninput="{parent.wireAndReset('this.opts.emitter.settings.pos.y')}"
                 )
             .clear
-    particle-importer(if="{importingTexture}" onselected="{onTextureImport}" oncancelled="{onTextureImportCancel}")
     script.
         this.namespace = 'particleEmitters';
         this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
 
-        const {getTexturePreview, getTextureFromName, importImageToTexture} = require('./data/node_requires/resources/textures');
+        const {getTexturePreview, getTextureFromName} = require('./data/node_requires/resources/textures');
         this.getPreview = () => getTexturePreview(this.opts.emitter.texture);
 
         this.wireAndReset = path => e => {
@@ -570,34 +564,6 @@ emitter-editor.aPanel.pad.nb
             this.update();
             window.signals.trigger('emitterResetRequest');
         };
-
-        this.showTextureImport = () => {
-            this.importingTexture = true;
-            this.update();
-        };
-        this.onTextureImport = texture => () => {
-            try {
-                getTextureFromName(texture.name);
-                // a texture with the same name already exists; show an error
-                window.alertify.error(this.voc.alreadyHasAnImportingTexture.replace('$1', texture.name));
-                return false;
-            } catch (e) {
-                // No such texture; add it.
-                importImageToTexture(texture.path)
-                .then(texture => {
-                    this.opts.emitter.texture = texture.uid;
-                    this.importingTexture = false;
-                    this.update();
-                    window.signals.trigger('emitterResetRequest');
-                });
-                return true;
-            }
-        };
-        this.onTextureImportCancel = () => {
-            this.importingTexture = false;
-            this.update();
-        };
-
 
         this.deleteEmitter = () => {
             this.parent.deleteEmitter(this.opts.emitter);

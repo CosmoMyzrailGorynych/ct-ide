@@ -252,6 +252,10 @@
                 max-width 100%
                 max-height 10rem
                 margin 0
+        .aCard-Properties
+            flex 0 0 auto
+            margin 0.5rem 0
+            line-height 1.5
         span
             font-family consolas, monospace
             width 12.5em
@@ -272,6 +276,7 @@
     display flex
     flex-flow row nowrap
     align-items center
+    justify-content center
     &:hover, &.active
         border-color acttext
         .Cards.list &
@@ -310,6 +315,7 @@
         width 4rem
         height 4rem
         max-width 4rem
+        object-fit contain
         margin -0.5rem 0 -0.5rem -0.5rem
         border-radius br
         pointer-events none

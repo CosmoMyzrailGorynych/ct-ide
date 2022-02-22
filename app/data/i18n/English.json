@@ -79,7 +79,18 @@
         "addToNotes": "Add to notes",
         "noRooms": "You need at least one room to compile your app.",
         "tileLayer": "tile layer",
-        "ctSite": "ct.js homepage"
+        "ctSite": "ct.js homepage",
+        "openAssetGallery": "Gallery",
+        "assetTypes": {
+            "textures": ["texture", "textures", "textures"],
+            "templates": ["template", "templates", "templates"],
+            "emitterTandems": ["emitter tandem", "emitter tandems", "emitter tandems"],
+            "rooms": ["room", "rooms", "rooms"],
+            "fonts": ["font", "fonts", "fonts"],
+            "styles": ["style", "styles", "styles"],
+            "sounds": ["sound", "sounds", "sounds"],
+            "skeletons": ["skeletal sprite", "skeletal sprites", "skeletal sprites"]
+        }
     },
     "assetInput": {
         "changeAsset": "Press to change the asset",
@@ -91,6 +102,20 @@
         "ungrouped": "Show ungrouped",
         "newGroupName": "New group",
         "groupDeletionConfirmation": "Are you sure you want to delete this group? All its assets will be ungrouped."
+    },
+    "builtinAssetGallery": {
+        "galleryTip": "This is a free, built-in gallery of various textures and sounds. All the assets are CC0 or WTFPL, or are released under special terms for use in ct.js. In any way, you can use these assets however you like, in commercial and other projects.",
+        "assetGalleryHeader": "Assets",
+        "importIntoProject": "Import into the current project",
+        "importAll": "Import all",
+        "byAuthorPrefix": "by",
+        "cannotImportExplanation": "The name that this asset would take is taken by some other asset. You may need to rename existing assets; or maybe you've already imported this asset?",
+        "nameOccupied": "Name occupied",
+        "cannotImportNameOccupied": "Cannot import $1 as such name is already occupied.",
+        "visitSource": "Open the store page of this asset pack",
+        "visitAuthorsItch": "Visit author's itch.io page",
+        "visitAuthorsTwitter": "Visit author's Twitter page",
+        "tipAuthor": "Tip the author for their hard work :D"
     },
     "colorPicker": {
         "current": "New",

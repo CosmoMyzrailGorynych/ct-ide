@@ -27,7 +27,7 @@ var currentSwatches: Record<string, string>;
 const registeredThemes: ITheme[] = [];
 localStorage.UItheme = localStorage.UItheme || 'Day';
 
-const updateSwatches = () => {
+const updateSwatches = (): void => {
     currentSwatches = {};
     var swatchTester = document.createElement('span');
     // @see https://bugs.chromium.org/p/chromium/issues/detail?id=558165
@@ -50,17 +50,18 @@ const mod = {
         let monacoTheme;
         try {
             monacoTheme = require(path.join('./data/node_requires/monaco-themes', `${name}.json`));
-            (window as any).monaco.editor.defineTheme(name, monacoTheme);
+            (window as Window).monaco.editor.defineTheme(name, monacoTheme);
         } catch (e) {
+            // eslint-disable-next-line no-console
             console.warn('Could not load a monaco theme due to an error:', e, '\nFalling back to the default theme.');
             monacoTheme = require(path.join('./data/node_requires/monaco-themes', `${defaultMonacoTheme}.json`));
-            (window as any).monaco.editor.defineTheme(name, monacoTheme);
+            (window as Window).monaco.editor.defineTheme(name, monacoTheme);
         }
         const css = `./data/theme${name}.css`;
         const theme = {
             name,
             get translated() {
-                return (window as any).languageJSON.mainMenu.settings.themes[name] || name;
+                return (window as Window).languageJSON.mainMenu.settings.themes[name] || name;
             },
             monacoTheme,
             css
@@ -71,7 +72,7 @@ const mod = {
     getTheme(name: string): ITheme | void {
         return registeredThemes.find(t => t.name === name);
     },
-    loadBuiltInThemes() {
+    loadBuiltInThemes(): void {
         for (const themeName of builtInThemes) {
             if (mod.getTheme(themeName)) {
                 continue;
@@ -79,7 +80,7 @@ const mod = {
             mod.registerTheme(themeName);
         }
     },
-    async switchToTheme(name: string) {
+    async switchToTheme(name: string): Promise<void> {
         const fs = require('fs-extra');
         try {
             const theme = mod.getTheme(name);
@@ -97,18 +98,18 @@ const mod = {
             if (link.href !== theme.css) {
                 link.href = theme.css;
             }
-            (window as any).monaco.editor.setTheme(theme.name);
-            (window as any).signals.trigger('UIThemeChanged', name);
+            (window as Window).monaco.editor.setTheme(theme.name);
+            (window as Window).signals.trigger('UIThemeChanged', name);
             localStorage.UItheme = name;
         } catch (oO) {
-            (window as any).alertify.error(`Could not load theme ${name}. Rolling back to the default ${defaultTheme}.`);
+            (window as Window).alertify.error(`Could not load theme ${name}. Rolling back to the default ${defaultTheme}.`);
             await mod.switchToTheme(defaultTheme);
         }
     },
     /**
      * @async
      */
-    loadTheme() {
+    loadTheme(): Promise<void> {
         return mod.switchToTheme(localStorage.UItheme);
     },
     getThemeList(): ITheme[] {
@@ -125,4 +126,4 @@ const mod = {
     updateSwatches
 };
 
-module.exports = mod;
+export = mod;

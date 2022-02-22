@@ -14,6 +14,10 @@ sounds-panel.aPanel.aView
             svg.feather
                 use(xlink:href="#plus")
             span {parent.voc.create}
+        button(onclick="{parent.openGallery}")
+            svg.feather
+                use(xlink:href="#folder")
+            span {parent.vocGlob.openAssetGallery}
         button#soundcreate(onclick="{parent.openRecorder}" title="Control+R" data-hotkey="Control+r")
             svg.feather
                 use(xlink:href="#mic")
@@ -21,6 +25,7 @@ sounds-panel.aPanel.aView
     sound-editor(if="{editing}" sound="{editedSound}")
     sound-recorder(if="{recorderVisible}" onclose="{onCloseRecorder}" group="{refs.sounds.currentGroup.uid}")
     context-menu(menu="{soundMenu}" ref="soundMenu")
+    builtin-asset-gallery(if="{showingGallery}" type="sounds" onclose="{closeGallery}")
     script.
         this.namespace = 'sounds';
         this.mixin(window.riotVoc);
@@ -125,4 +130,12 @@ sounds-panel.aPanel.aView
             this.editedSound = sound;
             this.refs.soundMenu.popup(e.clientX, e.clientY);
             e.preventDefault();
+        };
+
+        this.openGallery = () => {
+            this.showingGallery = true;
+        };
+        this.closeGallery = () => {
+            this.showingGallery = false;
+            this.update();
         };

@@ -4,6 +4,6 @@
         "module": "umd",
         "noImplicitAny": true,
         "moduleResolution": "node",
-        "baseUrl": "./src"
+        "baseUrl": "./"
     }
 }

@@ -55,18 +55,19 @@ asset-viewer.flexfix(class="{opts.namespace} {opts.class}")
     .flexfix-header
         .toright
             b {vocGlob.sort}
-            button.inline.square(
-                onclick="{switchSort('date')}"
-                class="{selected: sort === 'date' && !searchResults}"
-            )
-                svg.feather
-                    use(xlink:href="#clock")
-            button.inline.square(
-                onclick="{switchSort('name')}"
-                class="{selected: sort === 'name' && !searchResults}"
-            )
-                svg.feather
-                    use(xlink:href="#sort-alphabetically")
+            .aButtonGroup
+                button.inline.square(
+                    onclick="{switchSort('date')}"
+                    class="{selected: sort === 'date' && !searchResults}"
+                )
+                    svg.feather
+                        use(xlink:href="#clock")
+                button.inline.square(
+                    onclick="{switchSort('name')}"
+                    class="{selected: sort === 'name' && !searchResults}"
+                )
+                    svg.feather
+                        use(xlink:href="#sort-alphabetically")
             .aSearchWrap
                 input.inline(type="text" onkeyup="{fuseSearch}")
                 svg.feather
@@ -74,7 +75,7 @@ asset-viewer.flexfix(class="{opts.namespace} {opts.class}")
             button.inline.square(onclick="{switchLayout}")
                 svg.feather
                     use(xlink:href="#{layoutToIconMap[currentLayout]}")
-            button.inline.nogrow(onclick="{addNewGroup}")
+            button.inline.square.nogrow(onclick="{addNewGroup}")
                 svg.feather
                     use(xlink:href="#folder-plus")
                 span {voc.addNewGroup}
@@ -231,8 +232,21 @@ asset-viewer.flexfix(class="{opts.namespace} {opts.class}")
                 this.searchResults = null;
             }
         };
-
         this.updateList();
+        {
+            let rememberedAssetType;
+            this.on('mount', () => {
+                if (this.opts.assettype) {
+                    rememberedAssetType = this.opts.assettype;
+                    window.signals.on(`${rememberedAssetType.slice(0, -1)}Created`, this.updateList);
+                }
+            });
+            this.on('unmount', () => {
+                if (rememberedAssetType) {
+                    window.signals.off(`${rememberedAssetType.slice(0, -1)}Created`, this.updateList);
+                }
+            });
+        }
 
         this.getGrouped = collection => {
             if (!this.opts.assettype) {

@@ -32,25 +32,30 @@ texture-editor
         vertical-align middle
         margin 0 0.5rem
         transform initial
-.texture-editor-aCanvasWrap
-    width 100%
-    height 100%
-    overflow scroll
-    position relative
+    .&-anAnimationPreview
+        height 10em
+        overflow hidden
+        margin -0.5rem -1rem 0.5rem
+        padding 0.5rem
+        border-bottom 1px solid borderPale
+        box-sizing border-box
+        @media (max-height 680px)
+            height 6em
+        canvas
+            object-fit contain
+            height 100%
+            width 100%
+    .&-aCanvasWrap
+        width 100%
+        height 100%
+        overflow scroll
+        position relative
 
 #textureviewdone
     bottom 0.5em
     left 1em
     width 13em
     position absolute
-#preview
-    height 10em
-    overflow auto
-    margin -0.5rem -1rem 0.5rem
-    padding 0.5rem
-    border-bottom 1px solid borderPale
-    @media (max-height 680px)
-        height 6em
 
 #grahpspeed
     margin-top 0.25rem

@@ -99,7 +99,10 @@ texture-editor.aPanel.aView
             onmousewheel="{onMouseWheel}"
         )
             .texture-editor-aCanvasWrap
-                canvas.texture-editor-aCanvas(ref="textureCanvas" style="transform: scale({zoomFactor}); image-rendering: {zoomFactor > 1? 'pixelated' : '-webkit-optimize-contrast'}; transform-origin: 0% 0%;")
+                canvas.texture-editor-aCanvas(
+                    ref="textureCanvas"
+                    style="transform: scale({zoomFactor}); image-rendering: {zoomFactor > 1? 'pixelated' : '-webkit-optimize-contrast'}; transform-origin: 0% 0%;"
+                )
                 // This div is needed to cause elements' reflow so the scrollbars update on canvas' size change
                 div(style="width: {zoomFactor}px; height: {zoomFactor}px;")
                 .aClicker(
@@ -212,8 +215,14 @@ texture-editor.aPanel.aView
                     br
                     input.wide(type="number" min="0" max="128" step="1" value="{opts.texture.padding}" onchange="{wire('this.texture.padding')}")
             .preview.bordertop.flexfix-footer
-                #preview(ref="preview" style="background-color: {previewColor};")
-                    canvas(ref="grprCanvas")
+                .texture-editor-anAnimationPreview(
+                    ref="preview"
+                    style="background-color: {previewColor};"
+                )
+                    canvas(
+                        ref="grprCanvas"
+                        style="image-rendering: {currentProject.settings.rendering.pixelatedrender? 'pixelated' : '-webkit-optimize-contrast'};"
+                    )
                 .flexrow
                     button.nogrow.square.inline(onclick="{previewPlayPause}")
                         svg.feather

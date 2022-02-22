@@ -22,6 +22,10 @@ textures-panel.aPanel.aView
                         svg.feather
                             use(xlink:href="#download")
                         span {parent.voc.import}
+                button(onclick="{parent.openGallery}")
+                    svg.feather
+                        use(xlink:href="#folder")
+                    span {parent.vocGlob.openAssetGallery}
                 button(
                     onclick="{parent.pasteTexture}"
                     title="{parent.voc.importFromClipboard}"
@@ -55,10 +59,11 @@ textures-panel.aPanel.aView
                         svg.feather
                             use(xlink:href="#download")
                         span {parent.voc.import}
-                docs-shortcut(path="/skeletal-animation.html" button="yes" title="{vocGlob.docsShort}")
+                docs-shortcut(hidelabel="yes" path="/skeletal-animation.html" button="yes" title="{vocGlob.docsShort}")
     texture-editor(if="{editing}" texture="{currentTexture}")
     texture-generator(if="{generating}" onclose="{closeGenerator}")
     context-menu(menu="{textureMenu}" ref="textureMenu")
+    builtin-asset-gallery(if="{showingGallery}" type="textures" onclose="{closeGallery}")
     script.
         const glob = require('./data/node_requires/glob');
         this.namespace = 'texture';
@@ -314,4 +319,12 @@ textures-panel.aPanel.aView
             this.currentTexture = texture;
             this.currentTextureId = global.currentProject.textures.indexOf(texture);
             this.editing = true;
+        };
+
+        this.openGallery = () => {
+            this.showingGallery = true;
+        };
+        this.closeGallery = () => {
+            this.showingGallery = false;
+            this.update();
         };
