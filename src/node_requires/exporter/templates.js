@@ -9,6 +9,8 @@ const stringifyTemplates = function (proj) {
         templates += `
 ct.templates.templates["${template.name}"] = {
     depth: ${template.depth},
+    blendMode: PIXI.BLEND_MODES.${template.blendMode?.toUpperCase() ?? 'NORMAL'},
+    playAnimationOnStart: ${Boolean(template.playAnimationOnStart)},
     ${template.texture !== -1 ? 'texture: "' + getTextureFromId(template.texture).name + '",' : ''}
     onStep: function () {
         ${template.onstep}

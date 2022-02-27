@@ -16,13 +16,40 @@ template-editor.aPanel.aView.flexrow
                         b {voc.name}
                         input.wide(type="text" onchange="{wire('this.template.name')}" value="{template.name}")
                         .anErrorNotice(if="{nameTaken}" ref="errorNotice") {vocGlob.nameTaken}
-                    label.block
-                        b {voc.depth}
-                        input.wide(type="number" onchange="{wire('this.template.depth')}" value="{template.depth}")
-                fieldset
-                    label.block.checkbox
-                        input(type="checkbox" checked="{template.extends.visible === void 0 ? true : template.extends.visible}" onchange="{wire('this.template.extends.visible')}")
-                        span {voc.visible}
+                collapsible-section.aPanel(
+                    heading="{voc.appearance}"
+                    storestatekey="templateEditorAppearance"
+                    hlevel="4"
+                )
+                    fieldset
+                        label.block
+                            b {parent.voc.depth}
+                            input.wide(
+                                type="number"
+                                onchange="{parent.wire('this.template.depth')}"
+                                value="{parent.template.depth}"
+                            )
+                        label.block
+                            b {parent.voc.opacity}
+                            input.wide(
+                                type="number" min="0" max="1" step="0.1"
+                                onchange="{parent.wire('this.template.extends.alpha')}"
+                                value="{parent.template.extends.alpha ?? 1}"
+                            )
+                        label.block
+                            b {parent.voc.blendMode}
+                            select.wide(onchange="{parent.wire('this.template.blendMode')}")
+                                option(value="normal" selected="{parent.template.blendMode === 'normal' || !parent.template.blendMode}") {parent.voc.blendModes.normal}
+                                option(value="add" selected="{parent.template.blendMode === 'add'}") {parent.voc.blendModes.add}
+                                option(value="multiply" selected="{parent.template.blendMode === 'multiply'}") {parent.voc.blendModes.multiply}
+                                option(value="screen" selected="{parent.template.blendMode === 'screen'}") {parent.voc.blendModes.screen}
+                    fieldset
+                        label.block.checkbox
+                            input(type="checkbox" checked="{parent.template.playAnimationOnStart}" onchange="{parent.wire('this.template.playAnimationOnStart')}")
+                            span {parent.voc.playAnimationOnStart}
+                        label.block.checkbox
+                            input(type="checkbox" checked="{parent.template.extends.visible ?? true}" onchange="{parent.wire('this.template.extends.visible')}")
+                            span {parent.voc.visible}
                 extensions-editor(type="template" entity="{template.extends}" wide="yep" compact="probably")
                 br
                 br

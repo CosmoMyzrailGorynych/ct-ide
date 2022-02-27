@@ -830,13 +830,23 @@
     "templateView": {
         "change": "Change sprite",
         "create": "On Create",
-        "depth": "Depth:",
         "destroy": "On Destroy",
         "done": "Done",
         "draw": "Draw",
         "learnAboutTypes": "Learn about coding templates",
         "name": "Name:",
         "step": "On Step",
-        "visible": "Visible"
+        "appearance": "Appearance",
+        "visible": "Visible",
+        "depth": "Depth:",
+        "opacity": "Opacity:",
+        "blendMode": "Blend mode:",
+        "playAnimationOnStart": "Play animation on start",
+        "blendModes": {
+            "normal": "Normal",
+            "add": "Add (burn)",
+            "multiply": "Multiply (darken)",
+            "screen": "Screen (lighten)"
+        }
     }
 }

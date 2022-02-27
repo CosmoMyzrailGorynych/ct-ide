@@ -57,6 +57,10 @@ const Copy = (function Copy() {
                 }
                 this.template = template;
                 this.parent = container;
+                this.blendMode = t.blendMode || PIXI.BLEND_MODES.NORMAL;
+                if (t.playAnimationOnStart) {
+                    this.play();
+                }
                 if (t.extends) {
                     ct.u.ext(this, t.extends);
                 }
@@ -328,7 +332,7 @@ const Copy = (function Copy() {
             func.apply(obj, this);
         },
         /**
-         * Applies a function to a given object (e.g. to a copy)
+         * Applies a function to every copy of the given template name
          * @param {string} template The name of the template to perform function upon.
          * @param {Function} function The function to be applied.
          */
