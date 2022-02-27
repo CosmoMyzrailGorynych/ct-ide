@@ -119,20 +119,21 @@ room-editor.aPanel.aView
             button.inline.square.forcebackground(title="{voc.shift}" onclick="{roomShift}")
                 svg.feather
                     use(xlink:href="#move")
-            button.inline.square.forcebackground(
-                title="{voc.sortHorizontally}"
-                onclick="{sortHorizontally}"
-                if="{tab === 'roomcopies' || tab === 'roomtiles'}"
-            )
-                svg.feather
-                    use(xlink:href="#sort-horizontal")
-            button.inline.square.forcebackground(
-                title="{voc.sortVertically}"
-                onclick="{sortVertically}"
-                if="{tab === 'roomcopies' || tab === 'roomtiles'}"
-            )
-                svg.feather
-                    use(xlink:href="#sort-vertical")
+            .aButtonGroup
+                button.inline.square.forcebackground(
+                    title="{voc.sortHorizontally}"
+                    onclick="{sortHorizontally}"
+                    if="{tab === 'roomcopies' || tab === 'roomtiles'}"
+                )
+                    svg.feather
+                        use(xlink:href="#sort-horizontal")
+                button.inline.square.forcebackground(
+                    title="{voc.sortVertically}"
+                    onclick="{sortVertically}"
+                    if="{tab === 'roomcopies' || tab === 'roomtiles'}"
+                )
+                    svg.feather
+                        use(xlink:href="#sort-vertical")
             span.aContrastingPlaque(if="{window.innerWidth - sidebarWidth > 940}") {voc.hotkeysNotice}
         .zoom.flexrow
             b.aContrastingPlaque

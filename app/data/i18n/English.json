@@ -680,7 +680,7 @@
         "grid": "Set grid",
         "hotkeysNotice": "Ctrl = Delete, Alt = No grid, Shift = Multiple",
         "hotkeysNoticeMovement": "Ctrl = Delete, Shift = Select",
-        "shift": "Shift the view",
+        "shift": "Shift everything",
         "step": "On Step",
         "create": "On Create",
         "leave": "On Leave",
