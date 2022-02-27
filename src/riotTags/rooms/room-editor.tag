@@ -660,11 +660,13 @@ room-editor.aPanel.aView
                         grax = gray = 16;
                         ox = oy = 0;
                     }
-                    if (copy.tx || copy.ty || copy.tr) {
+                    if ((copy.tx || copy.tx === 0) ||
+                        (copy.ty || copy.ty === 0) ||
+                        (copy.tr && copy.tr !== 0)) {
                         canvas.x.save();
                         canvas.x.translate(copy.x, copy.y);
                         canvas.x.rotate((copy.tr || 0) * Math.PI / -180);
-                        canvas.x.scale(copy.tx || 1, copy.ty || 1);
+                        canvas.x.scale(copy.tx ?? 1, copy.ty ?? 1);
                         canvas.x.drawImage(
                             texture,
                             ox, oy, w, h,
@@ -754,10 +756,10 @@ room-editor.aPanel.aView
                     return;
                 }
                 if (template.texture !== -1) {
-                    left = copy.x - texture.axis[0] * (copy.tx || 1) - 1.5;
-                    top = copy.y - texture.axis[1] * (copy.ty || 1) - 1.5;
-                    width = texture.width * (copy.tx || 1) + 3;
-                    height = texture.height * (copy.ty || 1) + 3;
+                    left = copy.x - texture.axis[0] * (copy.tx ?? 1) - 1.5;
+                    top = copy.y - texture.axis[1] * (copy.ty ?? 1) - 1.5;
+                    width = texture.width * (copy.tx ?? 1) + 3;
+                    height = texture.height * (copy.ty ?? 1) + 3;
                 } else {
                     left = copy.x - 16 - 1.5;
                     top = copy.y - 16 - 1.5;
