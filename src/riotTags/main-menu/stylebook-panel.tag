@@ -166,6 +166,9 @@ stylebook-panel.aPanel.aView.pad.flexrow
                 a.success(href="https://ctjs.rocks/") A success link.
                 br
                 a.warning(href="https://ctjs.rocks/") A warning link.
+        stylebook-section(heading="Monospace text")
+            yield(to="example")
+                .monospace A line of text in a monospace typeface
         stylebook-section(heading="Code blocks")
             yield(to="example")
                 pre
