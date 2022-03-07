@@ -29,8 +29,8 @@
               'text' | 'textfield' | 'code' |
               'number' | 'slider' | 'sliderAndNumber' | 'point2D' | 'color' |
               'checkbox' | 'radio' | 'select' |
-              'group' | 'table' |
-              'texture' | 'template' | 'icon',
+              'group' | 'table' | 'array' |
+              'texture' | 'template' | 'room' | 'sound' | 'icon',
         key?: string, // the name of a JSON key to write into the `opts.entity`. Not needed for hN types, but required otherwise
                       // The key may have special suffixes that tell the exporter to unwrap foreign keys (resources' UIDs) into asset names.
                       // These are supposed to always be used with `'template'` and `'texture'` input types.
@@ -44,6 +44,9 @@
             name: string,
             help?: string
         }>,
+        arrayType?: string, // The type of the fields used for the array editor (when `type` is 'array').
+                            // It supports a subset of fields supported by extensions-editor itself,
+                            // excluding headers, groups, tables, icons, radio, select, and arrays.
         items?: Array<IExtensionField>, // For type === 'group', the grouped items.
         fields?: Array<IExtensionField>, // For type === 'table'
         collect?: boolean, // Whether to collect values and suggest them later as an auto-completion results. (Not yet implemented)
@@ -93,12 +96,12 @@ extensions-editor
                 .aTableWrap
                     table.aNiceTable(class="{wide: parent.opts.wide}")
                         tr
-                            th.center(if="{!parent.opts.compact}") №
+                            th(if="{!parent.opts.compact}") №
                             th(each="{field in ext.fields}")
                                 | {field.name}
                                 span.red(if="{field.required}" title="{vocGlob.required}") *
                                 hover-hint(if="{field.help}" text="{field.help}")
-                            th Actions
+                            th {voc.actions}
                         tr(each="{entry, ind in parent.opts.entity[ext.key]}" no-reorder)
                             td.center(if="{!parent.parent.opts.compact}")
                                 code {ind}
@@ -112,7 +115,7 @@ extensions-editor
                                 .anActionableIcon(onclick="{moveDown(ext, entry)}"  style="{ind === parent.parent.opts.entity[ext.key].length - 1 ? 'opacity: 0;' : ''}" title="{voc.moveDown}")
                                     svg.feather
                                         use(xlink:href="#arrow-down")
-                                .anActionableIcon(onclick="{deleteRow(ext, entry)}" title="{voc.deleteScript}")
+                                .anActionableIcon(onclick="{deleteRow(ext, entry)}" title="{voc.deleteRow}")
                                     svg.feather.red
                                         use(xlink:href="#delete")
                             tr(if="{!parent.opts.entity[ext.key] || !parent.opts.entity[ext.key].length}")
@@ -130,7 +133,7 @@ extensions-editor
                     class="{invalid: ext.required && !(parent.opts.entity[ext.key] || ext.default)}"
                 )
                 asset-input(
-                    if="{['texture', 'template'].includes(ext.type)}"
+                    if="{['texture', 'template', 'room', 'sound'].includes(ext.type)}"
                     assettype="{ext.type}s"
                     allowclear="yep"
                     class="{compact: parent.opts.compact, wide: parent.opts.wide, invalid: ext.required && (parent.opts.entity[ext.key] || ext.default) === -1}"
@@ -249,6 +252,7 @@ extensions-editor
                         value="{option.value}"
                         selected="{parent.parent.opts.entity[ext.key] === option.value}"
                     ) {option.name}
+                array-editor(if="{ext.type === 'array'}" inputtype="{ext.arrayType}" entity="{parent.opts.entity[ext.key]}")
                 .dim(if="{ext.help && !parent.opts.compact}") {ext.help}
     script.
         const libsDir = './data/ct.libs';
@@ -331,7 +335,13 @@ extensions-editor
             }
             const row = {};
             for (const field of ext.fields) {
-                row[field.key] = field.default;
+                if (field.default) {
+                    if (field.default instanceof Function) {
+                        row[field.key] = field.default();
+                    } else {
+                        row[field.key] = field.default;
+                    }
+                }
             }
             this.opts.entity[ext.key].push(row);
         };

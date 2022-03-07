@@ -56,7 +56,6 @@ content-settings
             name: this.voc.typeSpecification,
             type: 'table',
             key: 'specification',
-            array: true,
             fields: [{
                 name: this.voc.fieldName,
                 type: 'text',
@@ -79,7 +78,13 @@ content-settings
             }, {
                 name: this.vocGlob.required,
                 type: 'checkbox',
-                key: 'required'
+                key: 'required',
+                default: false
+            }, {
+                name: this.voc.array,
+                type: 'checkbox',
+                key: 'array',
+                default: false
             }]
         }];
 
