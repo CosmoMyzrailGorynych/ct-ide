@@ -95,6 +95,7 @@ content-settings
                 entries: [],
                 specification: []
             });
+            window.signals.trigger('contentTypeCreated');
         };
 
         this.confirmDeletion = e => {

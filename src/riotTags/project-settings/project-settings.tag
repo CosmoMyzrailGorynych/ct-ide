@@ -91,6 +91,13 @@ project-settings.aPanel.aView.pad.flexrow
         this.on('unmount', () => {
             window.orders.off('openContentEntries', contentEditorListener);
         });
+        this.rerender = () => {
+            this.update();
+        };
+        window.signals.on('contentTypeCreated', this.rerender);
+        this.on('unmount', () => {
+            window.signals.off('contentTypeCreated', this.rerender);
+        });
 
         this.openModuleSettings = module => () => {
             this.currentContentType = null;
