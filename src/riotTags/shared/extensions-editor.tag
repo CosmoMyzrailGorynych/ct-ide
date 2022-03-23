@@ -251,6 +251,7 @@ extensions-editor
                         each="{option in ext.options}"
                         value="{option.value}"
                         selected="{parent.parent.opts.entity[ext.key] === option.value}"
+                        disabled="{option.value === ''}"
                     ) {option.name}
                 array-editor(if="{ext.type === 'array'}" inputtype="{ext.arrayType}" entity="{parent.opts.entity[ext.key]}")
                 .dim(if="{ext.help && !parent.opts.compact}") {ext.help}

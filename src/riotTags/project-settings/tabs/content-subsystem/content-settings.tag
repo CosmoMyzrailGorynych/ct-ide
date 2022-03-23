@@ -70,8 +70,8 @@ content-settings
                 name: this.voc.fieldType,
                 type: 'select',
                 key: 'type',
-                options: ['text', 'textfield', 'code', 'number', 'sliderAndNumber', 'point2D', 'checkbox', 'texture', 'type', 'color'].map(type => ({
-                    name: this.vocGlob.fieldTypes[type],
+                options: ['text', 'textfield', 'code', '', 'number', 'sliderAndNumber', 'point2D', '', 'texture', 'template', 'sound', 'room', 'tandem', '', 'checkbox', 'color'].map(type => ({
+                    name: this.vocGlob.fieldTypes[type] || '',
                     value: type
                 })),
                 default: 'text'
