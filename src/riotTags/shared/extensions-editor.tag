@@ -302,9 +302,9 @@ extensions-editor
             }
         });
 
-        this.writeUid = field => obj => {
-            if (obj) {
-                this.opts.entity[field] = obj.uid;
+        this.writeUid = field => id => {
+            if (id) {
+                this.opts.entity[field] = id;
             } else {
                 this.opts.entity[field] = -1;
             }
