@@ -66,7 +66,10 @@
             "text": "Short text",
             "textfield": "Textbox",
             "texture": "Texture",
-            "type": "Type"
+            "template": "Template",
+            "room": "Room",
+            "sound": "Sound",
+            "tandem": "Particle emitter"
         },
         "newName": "New name:",
         "saveProject": "Save project",
