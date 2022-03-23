@@ -64,7 +64,10 @@
             "text": "",
             "textfield": "",
             "texture": "",
-            "type": ""
+            "template": "",
+            "room": "",
+            "sound": "",
+            "tandem": ""
         },
         "newName": "新名称",
         "saveProject": "保存项目",
@@ -77,7 +80,52 @@
         "addToNotes": "添加到记事本",
         "noRooms": "您需要至少一个房间来编译您的应用.",
         "tileLayer": "平铺层",
-        "ctSite": "ct.js 网站首页"
+        "ctSite": "ct.js 网站首页",
+        "docsShort": "",
+        "docsLong": "",
+        "openAssetGallery": "",
+        "assetTypes": {
+            "textures": [
+                "",
+                "",
+                ""
+            ],
+            "templates": [
+                "",
+                "",
+                ""
+            ],
+            "emitterTandems": [
+                "",
+                "",
+                ""
+            ],
+            "rooms": [
+                "",
+                "",
+                ""
+            ],
+            "fonts": [
+                "",
+                "",
+                ""
+            ],
+            "styles": [
+                "",
+                "",
+                ""
+            ],
+            "sounds": [
+                "",
+                "",
+                ""
+            ],
+            "skeletons": [
+                "",
+                "",
+                ""
+            ]
+        }
     },
     "colorPicker": {
         "current": "新建",
@@ -117,7 +165,15 @@
         "log": "消息日志",
         "windowsCrossBuildWarning": "要从Linux/MacOS为Windows构建, 需要在系统中安装Wine. 安装说明对于不同的平台都是不一样的，所以你最好自己搜索一下:)",
         "cannotBuildForMacOnWin": "糟糕, Windows只会生成坏掉的Mac包. 尝试使用Linux机器;例如, 在虚拟机里, 它是100%免费的!",
-        "firstRunNotice": "每个平台的第一次运行会比较慢, 因为ct.js会下载并保存打包所需的额外库. 这需要一些时间, 但下一次几乎是瞬间的."
+        "firstRunNotice": "每个平台的第一次运行会比较慢, 因为ct.js会下载并保存打包所需的额外库. 这需要一些时间, 但下一次几乎是瞬间的.",
+        "projectTitleRequired": "",
+        "appIdRequired": "",
+        "noAndroidSdkFound": "",
+        "envVarNotice": "",
+        "downloadAndroidStudio": "",
+        "requiresInternetNotice": "",
+        "noJdkFound": "",
+        "downloadJDK": ""
     },
     "intro": {
         "loading": "请稍等: 小猫正在聚集光速!",
@@ -152,7 +208,9 @@
         "github": "",
         "itch": "",
         "vkontakte": "",
-        "patreon": ""
+        "patreon": "",
+        "templates": "",
+        "templatesInfo": ""
     },
     "onboarding": {
         "hoorayHeader": "赞! 您成功创建了一个项目!",
@@ -191,7 +249,9 @@
             "site": "主页:",
             "title": "名称:",
             "version": "版本:",
-            "versionPostfix": "后缀:"
+            "versionPostfix": "后缀:",
+            "appId": "",
+            "appIdExplanation": ""
         },
         "branding": {
             "heading": "图标",
@@ -200,7 +260,11 @@
             "icon": "游戏图标:",
             "iconNotice": "图标应为一个正方形，单帧纹理，至少256x256像素大的图片.",
             "invertPreloaderScheme": "反转预加载器的配色方案",
-            "hideLoadingLogo": ""
+            "hideLoadingLogo": "",
+            "splashScreen": "",
+            "splashScreenNotice": "",
+            "forceSmoothIcons": "",
+            "forceSmoothSplashScreen": ""
         },
         "modules": {
             "heading": "Cat模组"
@@ -218,7 +282,15 @@
                 "fullscreen": "全屏",
                 "windowed": "窗口"
             },
-            "pixelatedRender": "在此处和导出的项目中禁用图像平滑 (保留清晰像素)"
+            "pixelatedRender": "在此处和导出的项目中禁用图像平滑 (保留清晰像素)",
+            "usePixiLegacy": "",
+            "mobileBuilds": "",
+            "screenOrientation": "",
+            "screenOrientations": {
+                "unspecified": "",
+                "landscape": "",
+                "portrait": ""
+            }
         },
         "scripts": {
             "heading": "脚本",
@@ -260,7 +332,8 @@
             "deleteContentType": "",
             "confirmDeletionMessage": "",
             "gotoEntries": "",
-            "entries": ""
+            "entries": "",
+            "array": ""
         },
         "contentTypes": ""
     },
@@ -304,7 +377,8 @@
         "skeletons": "骨骼动画",
         "createTemplate": "从中创建一个类型",
         "importFromClipboard": "从剪贴板导入",
-        "generatePlaceholder": "生成一个占位符"
+        "generatePlaceholder": "生成一个占位符",
+        "textures": ""
     },
     "sounds": {
         "create": "创建",
@@ -449,7 +523,8 @@
             "exportDesktop": "导出到桌面",
             "successZipExport": "已成功导出到{0}.",
             "zipExport": "导出为web",
-            "heading": "部署"
+            "heading": "部署",
+            "exportAndroid": ""
         },
         "latestProjects": {
             "recentProjects": "最近的项目"
@@ -496,7 +571,8 @@
             "heading": "元数据",
             "twitter": "",
             "vkontakte": "",
-            "ctjsForum": ""
+            "ctjsForum": "",
+            "openStylebook": ""
         }
     },
     "appView": {
@@ -520,7 +596,12 @@
     },
     "extensionsEditor": {
         "noEntries": "没有条目.",
-        "addRow": "添加一行"
+        "addRow": "添加一行",
+        "actions": "",
+        "values": "",
+        "moveDown": "",
+        "moveUp": "",
+        "deleteRow": ""
     },
     "textureGenerator": {
         "name": "纹理名称:",
@@ -778,6 +859,35 @@
         "learnAboutTypes": "了解编码类型",
         "name": "名称:",
         "step": "同步",
-        "visible": "显示"
+        "visible": "显示",
+        "appearance": "",
+        "opacity": "",
+        "blendMode": "",
+        "playAnimationOnStart": "",
+        "blendModes": {
+            "normal": "",
+            "add": "",
+            "multiply": "",
+            "screen": ""
+        }
+    },
+    "assetInput": {
+        "changeAsset": "",
+        "jumpToAsset": "",
+        "selectAssetHeader": ""
+    },
+    "builtinAssetGallery": {
+        "galleryTip": "",
+        "assetGalleryHeader": "",
+        "importIntoProject": "",
+        "importAll": "",
+        "byAuthorPrefix": "",
+        "cannotImportExplanation": "",
+        "nameOccupied": "",
+        "cannotImportNameOccupied": "",
+        "visitSource": "",
+        "visitAuthorsItch": "",
+        "visitAuthorsTwitter": "",
+        "tipAuthor": ""
     }
 }

@@ -64,7 +64,10 @@
             "text": "",
             "textfield": "",
             "texture": "",
-            "type": ""
+            "template": "",
+            "room": "",
+            "sound": "",
+            "tandem": ""
         },
         "newName": "Nowa nazwa:",
         "saveProject": "Zapisz projekt",
@@ -77,7 +80,52 @@
         "addToNotes": "Dodaj do notatek",
         "noRooms": "Potrzebujesz przynajmniej jednego pokoju żeby skompilować swoją aplikację.",
         "tileLayer": "warstwa kafelków",
-        "ctSite": "strona domowa ct.js"
+        "ctSite": "strona domowa ct.js",
+        "docsShort": "",
+        "docsLong": "",
+        "openAssetGallery": "",
+        "assetTypes": {
+            "textures": [
+                "",
+                "",
+                ""
+            ],
+            "templates": [
+                "",
+                "",
+                ""
+            ],
+            "emitterTandems": [
+                "",
+                "",
+                ""
+            ],
+            "rooms": [
+                "",
+                "",
+                ""
+            ],
+            "fonts": [
+                "",
+                "",
+                ""
+            ],
+            "styles": [
+                "",
+                "",
+                ""
+            ],
+            "sounds": [
+                "",
+                "",
+                ""
+            ],
+            "skeletons": [
+                "",
+                "",
+                ""
+            ]
+        }
     },
     "colorPicker": {
         "current": "Nowy",
@@ -97,7 +145,15 @@
         "log": "Log Wiadomości",
         "windowsCrossBuildWarning": "",
         "cannotBuildForMacOnWin": "",
-        "firstRunNotice": "Pierwsze uruchomienie dla każdej platformy będzie wolne, ponieważ ct.js będzie pobierać i zapisywać dodatkowe biblioteki wymagane do spakowania gry. Może to zająć trochę czasu, ale następne razy będą nimal natychmiastowe."
+        "firstRunNotice": "Pierwsze uruchomienie dla każdej platformy będzie wolne, ponieważ ct.js będzie pobierać i zapisywać dodatkowe biblioteki wymagane do spakowania gry. Może to zająć trochę czasu, ale następne razy będą nimal natychmiastowe.",
+        "projectTitleRequired": "",
+        "appIdRequired": "",
+        "noAndroidSdkFound": "",
+        "envVarNotice": "",
+        "downloadAndroidStudio": "",
+        "requiresInternetNotice": "",
+        "noJdkFound": "",
+        "downloadJDK": ""
     },
     "intro": {
         "loading": "Please wait: kittens are gathering speed of light!",
@@ -132,7 +188,9 @@
         "github": "",
         "itch": "",
         "vkontakte": "",
-        "patreon": ""
+        "patreon": "",
+        "templates": "",
+        "templatesInfo": ""
     },
     "onboarding": {
         "hoorayHeader": "Wow! Właśnie utworzyłeś projekt!",
@@ -171,7 +229,9 @@
             "site": "Strona domowa:",
             "title": "Nazwa:",
             "version": "Wersja:",
-            "versionPostfix": "Postfiks:"
+            "versionPostfix": "Postfiks:",
+            "appId": "",
+            "appIdExplanation": ""
         },
         "rendering": {
             "heading": "Opcje renderowania",
@@ -186,7 +246,15 @@
                 "windowed": ""
             },
             "hideCursor": "",
-            "pixelatedRender": "Zablokuj wygładzanie obrazu tu i w eksportowanym projekcie (zachowaj ostre piksele)"
+            "pixelatedRender": "Zablokuj wygładzanie obrazu tu i w eksportowanym projekcie (zachowaj ostre piksele)",
+            "usePixiLegacy": "",
+            "mobileBuilds": "",
+            "screenOrientation": "",
+            "screenOrientations": {
+                "unspecified": "",
+                "landscape": "",
+                "portrait": ""
+            }
         },
         "scripts": {
             "addNew": "Dodaj nowy skrypt",
@@ -203,7 +271,11 @@
             "icon": "",
             "iconNotice": "",
             "invertPreloaderScheme": "",
-            "hideLoadingLogo": ""
+            "hideLoadingLogo": "",
+            "splashScreen": "",
+            "splashScreenNotice": "",
+            "forceSmoothIcons": "",
+            "forceSmoothSplashScreen": ""
         },
         "modules": {
             "heading": ""
@@ -240,7 +312,8 @@
             "deleteContentType": "",
             "confirmDeletionMessage": "",
             "gotoEntries": "",
-            "entries": ""
+            "entries": "",
+            "array": ""
         },
         "contentTypes": ""
     },
@@ -284,7 +357,8 @@
         "skeletons": "Animacja szkieletowa",
         "createTemplate": "",
         "importFromClipboard": "",
-        "generatePlaceholder": ""
+        "generatePlaceholder": "",
+        "textures": ""
     },
     "sounds": {
         "create": "Stwórz",
@@ -440,7 +514,12 @@
     },
     "extensionsEditor": {
         "noEntries": "",
-        "addRow": ""
+        "addRow": "",
+        "actions": "",
+        "values": "",
+        "moveDown": "",
+        "moveUp": "",
+        "deleteRow": ""
     },
     "textureGenerator": {
         "name": "",
@@ -494,7 +573,8 @@
             "exportDesktop": "Eksportuj na komputer",
             "successZipExport": "Pomyślnie eksportowano do {0}.",
             "zipExport": "Eksportuj na przeglądarkę",
-            "heading": ""
+            "heading": "",
+            "exportAndroid": ""
         },
         "latestProjects": {
             "recentProjects": "Ostatnie projekty"
@@ -541,7 +621,8 @@
             "heading": "",
             "twitter": "",
             "vkontakte": "",
-            "ctjsForum": ""
+            "ctjsForum": "",
+            "openStylebook": ""
         }
     },
     "appView": {
@@ -778,6 +859,35 @@
         "learnAboutTypes": "Dowiedz się więcej o typach kodowania",
         "name": "Nazwa:",
         "step": "Przy kroku",
-        "visible": ""
+        "visible": "",
+        "appearance": "",
+        "opacity": "",
+        "blendMode": "",
+        "playAnimationOnStart": "",
+        "blendModes": {
+            "normal": "",
+            "add": "",
+            "multiply": "",
+            "screen": ""
+        }
+    },
+    "assetInput": {
+        "changeAsset": "",
+        "jumpToAsset": "",
+        "selectAssetHeader": ""
+    },
+    "builtinAssetGallery": {
+        "galleryTip": "",
+        "assetGalleryHeader": "",
+        "importIntoProject": "",
+        "importAll": "",
+        "byAuthorPrefix": "",
+        "cannotImportExplanation": "",
+        "nameOccupied": "",
+        "cannotImportNameOccupied": "",
+        "visitSource": "",
+        "visitAuthorsItch": "",
+        "visitAuthorsTwitter": "",
+        "tipAuthor": ""
     }
 }

@@ -64,7 +64,10 @@
             "text": "",
             "textfield": "",
             "texture": "",
-            "type": ""
+            "template": "",
+            "room": "",
+            "sound": "",
+            "tandem": ""
         },
         "newName": "Nieuwe naam:",
         "saveProject": "Project opslaan",
@@ -77,7 +80,52 @@
         "addToNotes": "Notitie toevoegen",
         "noRooms": "U heeft minimaal een kamer nodig om de app te compileren.",
         "tileLayer": "tegellaag",
-        "ctSite": "ct.js thuispagina"
+        "ctSite": "ct.js thuispagina",
+        "docsShort": "",
+        "docsLong": "",
+        "openAssetGallery": "",
+        "assetTypes": {
+            "textures": [
+                "",
+                "",
+                ""
+            ],
+            "templates": [
+                "",
+                "",
+                ""
+            ],
+            "emitterTandems": [
+                "",
+                "",
+                ""
+            ],
+            "rooms": [
+                "",
+                "",
+                ""
+            ],
+            "fonts": [
+                "",
+                "",
+                ""
+            ],
+            "styles": [
+                "",
+                "",
+                ""
+            ],
+            "sounds": [
+                "",
+                "",
+                ""
+            ],
+            "skeletons": [
+                "",
+                "",
+                ""
+            ]
+        }
     },
     "colorPicker": {
         "current": "New",
@@ -117,7 +165,15 @@
         "log": "Berichtenlog",
         "windowsCrossBuildWarning": "Om vanaf Linux / MacOS voor Windows te bouwen, moet Wine op uw systeem zijn geïnstalleerd. Installatie-instructies zijn verschillend voor verschillende platforms, dus u kunt het beter zelf googlen :)",
         "cannotBuildForMacOnWin": "Helaas kan Windows alleen kapotte Mac-pakketten produceren. Probeer een Linux-machine te gebruiken; bijvoorbeeld als een virtuele machine. Dit kan 100% gratis!",
-        "firstRunNotice": "De eerste run voor elk platform zal traag zijn, omdat ct.js extra bibliotheken zal downloaden en degene opslaan die nodig zijn voor het inpakken. Het zal even duren, maar de volgende keer zal bijna onmiddellijk zijn."
+        "firstRunNotice": "De eerste run voor elk platform zal traag zijn, omdat ct.js extra bibliotheken zal downloaden en degene opslaan die nodig zijn voor het inpakken. Het zal even duren, maar de volgende keer zal bijna onmiddellijk zijn.",
+        "projectTitleRequired": "",
+        "appIdRequired": "",
+        "noAndroidSdkFound": "",
+        "envVarNotice": "",
+        "downloadAndroidStudio": "",
+        "requiresInternetNotice": "",
+        "noJdkFound": "",
+        "downloadJDK": ""
     },
     "intro": {
         "loading": "Even geduld: kittens verzamelen lichtsnelheid!",
@@ -152,7 +208,9 @@
         "github": "",
         "itch": "",
         "vkontakte": "",
-        "patreon": ""
+        "patreon": "",
+        "templates": "",
+        "templatesInfo": ""
     },
     "onboarding": {
         "hoorayHeader": "Wow! U heeft zojuist een project gecreëerd!",
@@ -191,7 +249,9 @@
             "site": "Thuispagina:",
             "title": "Naam:",
             "version": "Versie:",
-            "versionPostfix": "Postfix:"
+            "versionPostfix": "Postfix:",
+            "appId": "",
+            "appIdExplanation": ""
         },
         "rendering": {
             "heading": "Render Opties",
@@ -206,7 +266,15 @@
             },
             "desktopBuilds": "",
             "hideCursor": "",
-            "pixelatedRender": "Schakel het vloeiend maken van afbeeldingen hier en in een geëxporteerd project uit (behoud scherpe pixels)"
+            "pixelatedRender": "Schakel het vloeiend maken van afbeeldingen hier en in een geëxporteerd project uit (behoud scherpe pixels)",
+            "usePixiLegacy": "",
+            "mobileBuilds": "",
+            "screenOrientation": "",
+            "screenOrientations": {
+                "unspecified": "",
+                "landscape": "",
+                "portrait": ""
+            }
         },
         "branding": {
             "heading": "Branding",
@@ -215,7 +283,11 @@
             "accent": "Accent:",
             "accentNotice": "Stelt de kleur van de preloader in, evenals van enkele andere plaatsen, wanneer project gebruikt wordt als een mobiele app.",
             "invertPreloaderScheme": "Keer het kleurenschema van de preloader om",
-            "hideLoadingLogo": ""
+            "hideLoadingLogo": "",
+            "splashScreen": "",
+            "splashScreenNotice": "",
+            "forceSmoothIcons": "",
+            "forceSmoothSplashScreen": ""
         },
         "scripts": {
             "addNew": "Toevoegen van een nieuw Script",
@@ -260,7 +332,8 @@
             "deleteContentType": "",
             "confirmDeletionMessage": "",
             "gotoEntries": "",
-            "entries": ""
+            "entries": "",
+            "array": ""
         },
         "contentTypes": ""
     },
@@ -304,7 +377,8 @@
         "skeletons": "Skeletanimatie",
         "createTemplate": "",
         "importFromClipboard": "",
-        "generatePlaceholder": ""
+        "generatePlaceholder": "",
+        "textures": ""
     },
     "sounds": {
         "create": "Creëer",
@@ -440,7 +514,12 @@
     },
     "extensionsEditor": {
         "noEntries": "",
-        "addRow": ""
+        "addRow": "",
+        "actions": "",
+        "values": "",
+        "moveDown": "",
+        "moveUp": "",
+        "deleteRow": ""
     },
     "textureGenerator": {
         "name": "",
@@ -494,7 +573,8 @@
             "exportDesktop": "Exporteer voor desktop",
             "successZipExport": "{0} is succesvol geëxporteerd.",
             "zipExport": "Exporteer naar het web",
-            "heading": ""
+            "heading": "",
+            "exportAndroid": ""
         },
         "latestProjects": {
             "recentProjects": "Recente projecten"
@@ -541,7 +621,8 @@
             "heading": "",
             "twitter": "",
             "vkontakte": "",
-            "ctjsForum": ""
+            "ctjsForum": "",
+            "openStylebook": ""
         }
     },
     "appView": {
@@ -778,6 +859,35 @@
         "learnAboutTypes": "Leren over code types",
         "name": "Naam:",
         "step": "Bij Stap",
-        "visible": ""
+        "visible": "",
+        "appearance": "",
+        "opacity": "",
+        "blendMode": "",
+        "playAnimationOnStart": "",
+        "blendModes": {
+            "normal": "",
+            "add": "",
+            "multiply": "",
+            "screen": ""
+        }
+    },
+    "assetInput": {
+        "changeAsset": "",
+        "jumpToAsset": "",
+        "selectAssetHeader": ""
+    },
+    "builtinAssetGallery": {
+        "galleryTip": "",
+        "assetGalleryHeader": "",
+        "importIntoProject": "",
+        "importAll": "",
+        "byAuthorPrefix": "",
+        "cannotImportExplanation": "",
+        "nameOccupied": "",
+        "cannotImportNameOccupied": "",
+        "visitSource": "",
+        "visitAuthorsItch": "",
+        "visitAuthorsTwitter": "",
+        "tipAuthor": ""
     }
 }

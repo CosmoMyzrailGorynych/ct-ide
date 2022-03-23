@@ -85,14 +85,46 @@
         "ctSite": "ct.js homepage",
         "openAssetGallery": "Gallery",
         "assetTypes": {
-            "textures": ["texture", "textures", "textures"],
-            "templates": ["template", "templates", "templates"],
-            "emitterTandems": ["emitter tandem", "emitter tandems", "emitter tandems"],
-            "rooms": ["room", "rooms", "rooms"],
-            "fonts": ["font", "fonts", "fonts"],
-            "styles": ["style", "styles", "styles"],
-            "sounds": ["sound", "sounds", "sounds"],
-            "skeletons": ["skeletal sprite", "skeletal sprites", "skeletal sprites"]
+            "textures": [
+                "texture",
+                "textures",
+                "textures"
+            ],
+            "templates": [
+                "template",
+                "templates",
+                "templates"
+            ],
+            "emitterTandems": [
+                "emitter tandem",
+                "emitter tandems",
+                "emitter tandems"
+            ],
+            "rooms": [
+                "room",
+                "rooms",
+                "rooms"
+            ],
+            "fonts": [
+                "font",
+                "fonts",
+                "fonts"
+            ],
+            "styles": [
+                "style",
+                "styles",
+                "styles"
+            ],
+            "sounds": [
+                "sound",
+                "sounds",
+                "sounds"
+            ],
+            "skeletons": [
+                "skeletal sprite",
+                "skeletal sprites",
+                "skeletal sprites"
+            ]
         }
     },
     "assetInput": {

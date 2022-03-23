@@ -64,7 +64,10 @@
             "text": "",
             "textfield": "",
             "texture": "",
-            "type": ""
+            "template": "",
+            "room": "",
+            "sound": "",
+            "tandem": ""
         },
         "newName": "Новое имя:",
         "saveProject": "Сохранить проект",
@@ -77,7 +80,52 @@
         "addToNotes": "Добавить в заметки",
         "noRooms": "Как бы это ни было печально, вам необходима как минимум одна комната для экспорта :)",
         "tileLayer": "слой тайлов",
-        "ctSite": "Домашняя страница ct.js"
+        "ctSite": "Домашняя страница ct.js",
+        "docsShort": "",
+        "docsLong": "",
+        "openAssetGallery": "",
+        "assetTypes": {
+            "textures": [
+                "",
+                "",
+                ""
+            ],
+            "templates": [
+                "",
+                "",
+                ""
+            ],
+            "emitterTandems": [
+                "",
+                "",
+                ""
+            ],
+            "rooms": [
+                "",
+                "",
+                ""
+            ],
+            "fonts": [
+                "",
+                "",
+                ""
+            ],
+            "styles": [
+                "",
+                "",
+                ""
+            ],
+            "sounds": [
+                "",
+                "",
+                ""
+            ],
+            "skeletons": [
+                "",
+                "",
+                ""
+            ]
+        }
     },
     "colorPicker": {
         "old": "Старый",
@@ -97,7 +145,15 @@
         "log": "Логи",
         "windowsCrossBuildWarning": "Чтобы паковать игры для Windows с Линукса или MacOS, нужно установить Wine. Инструкции по установке Wine разные от системы к системе, так что лучше погуглите сами :)",
         "cannotBuildForMacOnWin": "К сожалению, Windows может делать для маков только сломанные пакеты. Попробуйте сделать билд на линуксе — например, в виртуалке. Это бесплатно!",
-        "firstRunNotice": "При первом экспорте ct.js скачает дополнительные файлы для каждой платформы. Это займёт время, но после этот процесс будет практически мгновенным."
+        "firstRunNotice": "При первом экспорте ct.js скачает дополнительные файлы для каждой платформы. Это займёт время, но после этот процесс будет практически мгновенным.",
+        "projectTitleRequired": "",
+        "appIdRequired": "",
+        "noAndroidSdkFound": "",
+        "envVarNotice": "",
+        "downloadAndroidStudio": "",
+        "requiresInternetNotice": "",
+        "noJdkFound": "",
+        "downloadJDK": ""
     },
     "intro": {
         "loading": "Подождите, коты набирают скорость света…",
@@ -132,7 +188,9 @@
         "github": "Котэ на Гитхабе",
         "itch": "Страница ct.js на itch.io",
         "vkontakte": "Паблик Вконтакте",
-        "patreon": "Поддержи кота на Патреоне!"
+        "patreon": "Поддержи кота на Патреоне!",
+        "templates": "",
+        "templatesInfo": ""
     },
     "onboarding": {
         "hoorayHeader": "Ух-ты! Мы сделали новый проект!",
@@ -171,7 +229,9 @@
             "site": "Сайт автора:",
             "title": "Название:",
             "version": "Версия:",
-            "versionPostfix": "Постфикс:"
+            "versionPostfix": "Постфикс:",
+            "appId": "",
+            "appIdExplanation": ""
         },
         "branding": {
             "heading": "Брендинг",
@@ -180,7 +240,11 @@
             "icon": "Иконка игры:",
             "iconNotice": "Это должна быть квадратная текстура с одним кадром и размером минимум 256x256 пикселей.",
             "invertPreloaderScheme": "Инвертировать цветовую схему экрана загрузки",
-            "hideLoadingLogo": "Спрятать лого \"Сделано с ct.js\" на экране загрузки игры"
+            "hideLoadingLogo": "Спрятать лого \"Сделано с ct.js\" на экране загрузки игры",
+            "splashScreen": "",
+            "splashScreenNotice": "",
+            "forceSmoothIcons": "",
+            "forceSmoothSplashScreen": ""
         },
         "rendering": {
             "heading": "Настройки графики",
@@ -195,7 +259,15 @@
                 "fullscreen": "Полноэкранный",
                 "windowed": "Оконный"
             },
-            "pixelatedRender": "Здесь и в проекте отключать сглаживание (сохранять пиксели)"
+            "pixelatedRender": "Здесь и в проекте отключать сглаживание (сохранять пиксели)",
+            "usePixiLegacy": "",
+            "mobileBuilds": "",
+            "screenOrientation": "",
+            "screenOrientations": {
+                "unspecified": "",
+                "landscape": "",
+                "portrait": ""
+            }
         },
         "scripts": {
             "heading": "Пользовательские скрипты",
@@ -240,7 +312,8 @@
             "deleteContentType": "",
             "confirmDeletionMessage": "",
             "gotoEntries": "",
-            "entries": ""
+            "entries": "",
+            "array": ""
         },
         "contentTypes": ""
     },
@@ -284,7 +357,8 @@
         "skeletons": "Скелетная анимация",
         "createTemplate": "Создать шаблон с этой текстурой",
         "importFromClipboard": "Импортировать из буфера обмена",
-        "generatePlaceholder": "Создать заглушку"
+        "generatePlaceholder": "Создать заглушку",
+        "textures": ""
     },
     "sounds": {
         "create": "Создать",
@@ -440,7 +514,12 @@
     },
     "extensionsEditor": {
         "noEntries": "Ещё нет записей.",
-        "addRow": "Добавить строку"
+        "addRow": "Добавить строку",
+        "actions": "",
+        "values": "",
+        "moveDown": "",
+        "moveUp": "",
+        "deleteRow": ""
     },
     "textureGenerator": {
         "name": "Имя текстуры:",
@@ -494,7 +573,8 @@
             "exportDesktop": "Экспортировать для ПК",
             "successZipExport": "Успешно экспортировано в {0}.",
             "zipExport": "Экспорт в .zip",
-            "heading": "Экспорт"
+            "heading": "Экспорт",
+            "exportAndroid": ""
         },
         "latestProjects": {
             "recentProjects": "Последние проекты"
@@ -541,7 +621,8 @@
             "heading": "Мета",
             "twitter": "Канал  в Twitter",
             "vkontakte": "Паблик Вконтакте",
-            "ctjsForum": "Присоединиться к форуму ct.js"
+            "ctjsForum": "Присоединиться к форуму ct.js",
+            "openStylebook": ""
         }
     },
     "appView": {
@@ -778,6 +859,35 @@
         "learnAboutTypes": "Кодинг шаблонов",
         "name": "Имя:",
         "step": "Кадр",
-        "visible": "Отображать"
+        "visible": "Отображать",
+        "appearance": "",
+        "opacity": "",
+        "blendMode": "",
+        "playAnimationOnStart": "",
+        "blendModes": {
+            "normal": "",
+            "add": "",
+            "multiply": "",
+            "screen": ""
+        }
+    },
+    "assetInput": {
+        "changeAsset": "",
+        "jumpToAsset": "",
+        "selectAssetHeader": ""
+    },
+    "builtinAssetGallery": {
+        "galleryTip": "",
+        "assetGalleryHeader": "",
+        "importIntoProject": "",
+        "importAll": "",
+        "byAuthorPrefix": "",
+        "cannotImportExplanation": "",
+        "nameOccupied": "",
+        "cannotImportNameOccupied": "",
+        "visitSource": "",
+        "visitAuthorsItch": "",
+        "visitAuthorsTwitter": "",
+        "tipAuthor": ""
     }
 }

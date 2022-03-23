@@ -66,7 +66,10 @@
             "text": "テキスト",
             "textfield": "テキストボックス",
             "texture": "テクスチャー",
-            "type": "タイプ"
+            "template": "",
+            "room": "",
+            "sound": "",
+            "tandem": ""
         },
         "newName": "新しい名前:",
         "saveProject": "プロジェクトを保存",
@@ -79,7 +82,50 @@
         "addToNotes": "ノートに追加",
         "noRooms": "アプリのコンパイルには、少なくとも一つのルームが必要です。",
         "tileLayer": "タイトルのレイヤー",
-        "ctSite": "ct.jsのホームページ"
+        "ctSite": "ct.jsのホームページ",
+        "openAssetGallery": "",
+        "assetTypes": {
+            "textures": [
+                "",
+                "",
+                ""
+            ],
+            "templates": [
+                "",
+                "",
+                ""
+            ],
+            "emitterTandems": [
+                "",
+                "",
+                ""
+            ],
+            "rooms": [
+                "",
+                "",
+                ""
+            ],
+            "fonts": [
+                "",
+                "",
+                ""
+            ],
+            "styles": [
+                "",
+                "",
+                ""
+            ],
+            "sounds": [
+                "",
+                "",
+                ""
+            ],
+            "skeletons": [
+                "",
+                "",
+                ""
+            ]
+        }
     },
     "assetInput": {
         "changeAsset": "アセットを変更する",
@@ -153,7 +199,12 @@
     },
     "extensionsEditor": {
         "noEntries": "まだエントリーがありません",
-        "addRow": "行を追加"
+        "addRow": "行を追加",
+        "actions": "",
+        "values": "",
+        "moveDown": "",
+        "moveUp": "",
+        "deleteRow": ""
     },
     "groupEditor": {
         "groupEditor": "グループエディタ",
@@ -193,7 +244,9 @@
         "itch": "itch.ioのCt.jsストアページ",
         "vkontakte": "Vkontakte公開コミュニティ",
         "patreon": "ct.jsをPatreonで応援しよう!",
-        "createOrBrowseJunction": "or"
+        "createOrBrowseJunction": "or",
+        "templates": "",
+        "templatesInfo": ""
     },
     "onboarding": {
         "hoorayHeader": "やったぁ！プロジェクトが出来上がりましたよ！",
@@ -268,7 +321,8 @@
             "deleteContentType": "このコンテンツタイプを削除",
             "confirmDeletionMessage": "このコンテンツタイプを本当に削除してよろしいですか？この操作は元に戻せません。",
             "gotoEntries": "エントリに移動",
-            "entries": "エントリ"
+            "entries": "エントリ",
+            "array": ""
         },
         "modules": {
             "heading": "Catmods(追加機能)"
@@ -428,7 +482,7 @@
         "minimumSizeHint": "低い値に設定すると、各パーティクルの大きさがランダムになります。値が低いほど、効果は強くなります。",
         "velocityHeading": "速度",
         "velocity": "速度:",
-        "minimumSpeed": "速度:", 
+        "minimumSpeed": "速度:",
         "minimumSpeedHint": "低い値を設定すると、各パーティクルの速度がランダムになり、値が低いほどパーティクルの頻度が遅くなる可能性があります。",
         "maxSpeed": "最高速度:",
         "gravityHeading": "重力",
@@ -810,6 +864,30 @@
         "learnAboutTypes": "コーディングテンプレートについて",
         "name": "名前:",
         "step": "ステップ",
-        "visible": "可視"
+        "visible": "可視",
+        "appearance": "",
+        "opacity": "",
+        "blendMode": "",
+        "playAnimationOnStart": "",
+        "blendModes": {
+            "normal": "",
+            "add": "",
+            "multiply": "",
+            "screen": ""
+        }
+    },
+    "builtinAssetGallery": {
+        "galleryTip": "",
+        "assetGalleryHeader": "",
+        "importIntoProject": "",
+        "importAll": "",
+        "byAuthorPrefix": "",
+        "cannotImportExplanation": "",
+        "nameOccupied": "",
+        "cannotImportNameOccupied": "",
+        "visitSource": "",
+        "visitAuthorsItch": "",
+        "visitAuthorsTwitter": "",
+        "tipAuthor": ""
     }
 }

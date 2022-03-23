@@ -64,7 +64,10 @@
             "text": "",
             "textfield": "",
             "texture": "",
-            "type": ""
+            "template": "",
+            "room": "",
+            "sound": "",
+            "tandem": ""
         },
         "newName": "Neuer Name:",
         "saveProject": "Project speichern",
@@ -77,7 +80,52 @@
         "addToNotes": "Zu Notizen hinzufügen",
         "noRooms": "Sie benötigen mindestens einen Raum um die App zu kompilieren.",
         "tileLayer": "Tile Ebene",
-        "ctSite": "ct.js Homepage"
+        "ctSite": "ct.js Homepage",
+        "docsShort": "",
+        "docsLong": "",
+        "openAssetGallery": "",
+        "assetTypes": {
+            "textures": [
+                "",
+                "",
+                ""
+            ],
+            "templates": [
+                "",
+                "",
+                ""
+            ],
+            "emitterTandems": [
+                "",
+                "",
+                ""
+            ],
+            "rooms": [
+                "",
+                "",
+                ""
+            ],
+            "fonts": [
+                "",
+                "",
+                ""
+            ],
+            "styles": [
+                "",
+                "",
+                ""
+            ],
+            "sounds": [
+                "",
+                "",
+                ""
+            ],
+            "skeletons": [
+                "",
+                "",
+                ""
+            ]
+        }
     },
     "colorPicker": {
         "current": "Neu",
@@ -117,7 +165,15 @@
         "log": "Nachrichten Log",
         "windowsCrossBuildWarning": "",
         "cannotBuildForMacOnWin": "",
-        "firstRunNotice": "Die erste Ausführung wird pro Plattform etwas länger dauern, da ct.js zusätzliche Bibliotheken zum Paketieren herunterladen muss. Dies wird einige Zeit dauern, beim nächsten Mal geht es deutlich schneller."
+        "firstRunNotice": "Die erste Ausführung wird pro Plattform etwas länger dauern, da ct.js zusätzliche Bibliotheken zum Paketieren herunterladen muss. Dies wird einige Zeit dauern, beim nächsten Mal geht es deutlich schneller.",
+        "projectTitleRequired": "",
+        "appIdRequired": "",
+        "noAndroidSdkFound": "",
+        "envVarNotice": "",
+        "downloadAndroidStudio": "",
+        "requiresInternetNotice": "",
+        "noJdkFound": "",
+        "downloadJDK": ""
     },
     "intro": {
         "loading": "Bitte warten: Kätzchen werden auf Lichtgeschwindigkeit beschleunigt!",
@@ -152,7 +208,9 @@
         "github": "",
         "itch": "",
         "vkontakte": "",
-        "patreon": ""
+        "patreon": "",
+        "templates": "",
+        "templatesInfo": ""
     },
     "onboarding": {
         "hoorayHeader": "Wow! Sie haben gerade ein Projekt erstellt!",
@@ -191,7 +249,9 @@
             "site": "Homepage:",
             "title": "Name:",
             "version": "Version:",
-            "versionPostfix": "Postfix:"
+            "versionPostfix": "Postfix:",
+            "appId": "",
+            "appIdExplanation": ""
         },
         "rendering": {
             "heading": "Render Optionen",
@@ -206,7 +266,15 @@
                 "windowed": ""
             },
             "hideCursor": "",
-            "pixelatedRender": "Image Smoothing hier und im exportierten Projekt deaktivieren (scharfe Pixel beibehalten)"
+            "pixelatedRender": "Image Smoothing hier und im exportierten Projekt deaktivieren (scharfe Pixel beibehalten)",
+            "usePixiLegacy": "",
+            "mobileBuilds": "",
+            "screenOrientation": "",
+            "screenOrientations": {
+                "unspecified": "",
+                "landscape": "",
+                "portrait": ""
+            }
         },
         "branding": {
             "heading": "Branding",
@@ -215,7 +283,11 @@
             "accent": "Akzent:",
             "accentNotice": "Legt die Farbe des Preloaders fest, wirkt sich bei mobilen Apps auch auf weitere Bereiche aus.",
             "invertPreloaderScheme": "Farbschema des Preloaders invertieren",
-            "hideLoadingLogo": ""
+            "hideLoadingLogo": "",
+            "splashScreen": "",
+            "splashScreenNotice": "",
+            "forceSmoothIcons": "",
+            "forceSmoothSplashScreen": ""
         },
         "scripts": {
             "heading": "Skripte",
@@ -260,7 +332,8 @@
             "deleteContentType": "",
             "confirmDeletionMessage": "",
             "gotoEntries": "",
-            "entries": ""
+            "entries": "",
+            "array": ""
         },
         "contentTypes": ""
     },
@@ -304,7 +377,8 @@
         "skeletons": "Skelett Animation",
         "createTemplate": "",
         "importFromClipboard": "",
-        "generatePlaceholder": ""
+        "generatePlaceholder": "",
+        "textures": ""
     },
     "sounds": {
         "create": "Erstellen",
@@ -440,7 +514,12 @@
     },
     "extensionsEditor": {
         "noEntries": "",
-        "addRow": ""
+        "addRow": "",
+        "actions": "",
+        "values": "",
+        "moveDown": "",
+        "moveUp": "",
+        "deleteRow": ""
     },
     "textureGenerator": {
         "name": "",
@@ -494,7 +573,8 @@
             "exportDesktop": "Desktop Export",
             "successZipExport": "Erfolgreich exportiert nach {0}.",
             "zipExport": "Als .zip Exportieren",
-            "heading": ""
+            "heading": "",
+            "exportAndroid": ""
         },
         "latestProjects": {
             "recentProjects": "Letzte Projekte"
@@ -541,7 +621,8 @@
             "heading": "",
             "twitter": "",
             "vkontakte": "",
-            "ctjsForum": ""
+            "ctjsForum": "",
+            "openStylebook": ""
         }
     },
     "appView": {
@@ -778,6 +859,35 @@
         "learnAboutTypes": "Lernen Sie Types zu programmieren",
         "name": "Name:",
         "step": "On Step",
-        "visible": ""
+        "visible": "",
+        "appearance": "",
+        "opacity": "",
+        "blendMode": "",
+        "playAnimationOnStart": "",
+        "blendModes": {
+            "normal": "",
+            "add": "",
+            "multiply": "",
+            "screen": ""
+        }
+    },
+    "assetInput": {
+        "changeAsset": "",
+        "jumpToAsset": "",
+        "selectAssetHeader": ""
+    },
+    "builtinAssetGallery": {
+        "galleryTip": "",
+        "assetGalleryHeader": "",
+        "importIntoProject": "",
+        "importAll": "",
+        "byAuthorPrefix": "",
+        "cannotImportExplanation": "",
+        "nameOccupied": "",
+        "cannotImportNameOccupied": "",
+        "visitSource": "",
+        "visitAuthorsItch": "",
+        "visitAuthorsTwitter": "",
+        "tipAuthor": ""
     }
 }

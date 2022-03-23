@@ -64,7 +64,10 @@
             "text": "",
             "textfield": "",
             "texture": "",
-            "type": ""
+            "template": "",
+            "room": "",
+            "sound": "",
+            "tandem": ""
         },
         "newName": "Novo nome:",
         "saveProject": "Salvar projeto",
@@ -77,7 +80,52 @@
         "addToNotes": "Adicionar às notas",
         "noRooms": "Você precisa de pelo menos um room para compilar seu app",
         "tileLayer": "Camada de tile",
-        "ctSite": "Página inicial do ct.js"
+        "ctSite": "Página inicial do ct.js",
+        "docsShort": "",
+        "docsLong": "",
+        "openAssetGallery": "",
+        "assetTypes": {
+            "textures": [
+                "",
+                "",
+                ""
+            ],
+            "templates": [
+                "",
+                "",
+                ""
+            ],
+            "emitterTandems": [
+                "",
+                "",
+                ""
+            ],
+            "rooms": [
+                "",
+                "",
+                ""
+            ],
+            "fonts": [
+                "",
+                "",
+                ""
+            ],
+            "styles": [
+                "",
+                "",
+                ""
+            ],
+            "sounds": [
+                "",
+                "",
+                ""
+            ],
+            "skeletons": [
+                "",
+                "",
+                ""
+            ]
+        }
     },
     "colorPicker": {
         "current": "Novo",
@@ -121,7 +169,15 @@
         "log": "Log de Mensagens",
         "windowsCrossBuildWarning": "Para buildar para windows em um Linux/MacOS, você precisa de wine instalado no seu sistema. Instruções para instalar são diferentes em todos sistemas, então é melhor você pesquisar por você mesmo :)",
         "cannotBuildForMacOnWin": "Infelizmente, Windows só pode buildar quebrado para Mac. Tente usar uma maquina linux; por exemplo, em uma maquina virtual. é 100% grátis!",
-        "firstRunNotice": "A primeira execução para cada plataforma será lenta, já que o ct.js fará o download e salvará bibliotecas adicionais necessárias para o empacotamento. Levará algum tempo, mas as próximas vezes serão quase instantâneas."
+        "firstRunNotice": "A primeira execução para cada plataforma será lenta, já que o ct.js fará o download e salvará bibliotecas adicionais necessárias para o empacotamento. Levará algum tempo, mas as próximas vezes serão quase instantâneas.",
+        "projectTitleRequired": "",
+        "appIdRequired": "",
+        "noAndroidSdkFound": "",
+        "envVarNotice": "",
+        "downloadAndroidStudio": "",
+        "requiresInternetNotice": "",
+        "noJdkFound": "",
+        "downloadJDK": ""
     },
     "intro": {
         "loading": "Por favor, aguarde: gatinhos estão adquirindo a velocidade da luz!",
@@ -156,7 +212,9 @@
         "github": "",
         "itch": "",
         "vkontakte": "",
-        "patreon": ""
+        "patreon": "",
+        "templates": "",
+        "templatesInfo": ""
     },
     "onboarding": {
         "hoorayHeader": "Wow! Você acabou de criar um projeto!",
@@ -195,7 +253,9 @@
             "site": "Página inicial",
             "title": "Nome:",
             "version": "Versão:",
-            "versionPostfix": "Postfix:"
+            "versionPostfix": "Postfix:",
+            "appId": "",
+            "appIdExplanation": ""
         },
         "branding": {
             "heading": "Branding",
@@ -204,7 +264,11 @@
             "icon": "Icone do jogo:",
             "iconNotice": "Precisava ser um quadrado, textura de um frame com no mínimo 256x256px",
             "invertPreloaderScheme": "Inverter esquema de cor do preloader",
-            "hideLoadingLogo": ""
+            "hideLoadingLogo": "",
+            "splashScreen": "",
+            "splashScreenNotice": "",
+            "forceSmoothIcons": "",
+            "forceSmoothSplashScreen": ""
         },
         "modules": {
             "heading": "Catmods"
@@ -222,7 +286,15 @@
                 "windowed": "Janela"
             },
             "hideCursor": "",
-            "pixelatedRender": "Desabilitar suavização de imagem, inclusive no projeto buildado (preservar crisp pixels)"
+            "pixelatedRender": "Desabilitar suavização de imagem, inclusive no projeto buildado (preservar crisp pixels)",
+            "usePixiLegacy": "",
+            "mobileBuilds": "",
+            "screenOrientation": "",
+            "screenOrientations": {
+                "unspecified": "",
+                "landscape": "",
+                "portrait": ""
+            }
         },
         "scripts": {
             "heading": "Scripts",
@@ -264,7 +336,8 @@
             "deleteContentType": "",
             "confirmDeletionMessage": "",
             "gotoEntries": "",
-            "entries": ""
+            "entries": "",
+            "array": ""
         },
         "contentTypes": ""
     },
@@ -308,7 +381,8 @@
         "skeletons": "Animação Esquelética",
         "createTemplate": "Criar um tipo disso",
         "importFromClipboard": "",
-        "generatePlaceholder": ""
+        "generatePlaceholder": "",
+        "textures": ""
     },
     "sounds": {
         "create": "Criar",
@@ -440,7 +514,12 @@
     },
     "extensionsEditor": {
         "noEntries": "",
-        "addRow": ""
+        "addRow": "",
+        "actions": "",
+        "values": "",
+        "moveDown": "",
+        "moveUp": "",
+        "deleteRow": ""
     },
     "textureGenerator": {
         "name": "",
@@ -494,7 +573,8 @@
             "exportDesktop": "Exportar para a área de trabalho",
             "successZipExport": "Exportado com sucesso para {0}.",
             "zipExport": "Exportar para .zip",
-            "heading": ""
+            "heading": "",
+            "exportAndroid": ""
         },
         "latestProjects": {
             "recentProjects": "Projetos recentes"
@@ -541,7 +621,8 @@
             "heading": "",
             "twitter": "",
             "vkontakte": "",
-            "ctjsForum": ""
+            "ctjsForum": "",
+            "openStylebook": ""
         }
     },
     "appView": {
@@ -778,6 +859,35 @@
         "name": "Nome:",
         "step": "Passo",
         "learnAboutTypes": "Aprenda sobre programar tipos",
-        "visible": ""
+        "visible": "",
+        "appearance": "",
+        "opacity": "",
+        "blendMode": "",
+        "playAnimationOnStart": "",
+        "blendModes": {
+            "normal": "",
+            "add": "",
+            "multiply": "",
+            "screen": ""
+        }
+    },
+    "assetInput": {
+        "changeAsset": "",
+        "jumpToAsset": "",
+        "selectAssetHeader": ""
+    },
+    "builtinAssetGallery": {
+        "galleryTip": "",
+        "assetGalleryHeader": "",
+        "importIntoProject": "",
+        "importAll": "",
+        "byAuthorPrefix": "",
+        "cannotImportExplanation": "",
+        "nameOccupied": "",
+        "cannotImportNameOccupied": "",
+        "visitSource": "",
+        "visitAuthorsItch": "",
+        "visitAuthorsTwitter": "",
+        "tipAuthor": ""
     }
 }

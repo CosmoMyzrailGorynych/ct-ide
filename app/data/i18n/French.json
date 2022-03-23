@@ -90,7 +90,10 @@
             "text": "",
             "textfield": "",
             "texture": "",
-            "type": ""
+            "template": "",
+            "room": "",
+            "sound": "",
+            "tandem": ""
         },
         "newName": "Nouveau nom:",
         "saveProject": "Sauvegarder le projet",
@@ -103,7 +106,52 @@
         "addToNotes": "Ajouter aux notes",
         "noRooms": "Nécessite au moins une \"room\" pour compiler l'application",
         "tileLayer": "Couche de Tuile",
-        "ctSite": "Page d'accueil de ct.js"
+        "ctSite": "Page d'accueil de ct.js",
+        "docsShort": "",
+        "docsLong": "",
+        "openAssetGallery": "",
+        "assetTypes": {
+            "textures": [
+                "",
+                "",
+                ""
+            ],
+            "templates": [
+                "",
+                "",
+                ""
+            ],
+            "emitterTandems": [
+                "",
+                "",
+                ""
+            ],
+            "rooms": [
+                "",
+                "",
+                ""
+            ],
+            "fonts": [
+                "",
+                "",
+                ""
+            ],
+            "styles": [
+                "",
+                "",
+                ""
+            ],
+            "sounds": [
+                "",
+                "",
+                ""
+            ],
+            "skeletons": [
+                "",
+                "",
+                ""
+            ]
+        }
     },
     "exportPanel": {
         "hide": "Cacher",
@@ -114,7 +162,15 @@
         "log": "Journal des logs",
         "windowsCrossBuildWarning": "Pour construire pour windows depuis Linux/MacOS, vous avez besoin de Wine :)",
         "cannotBuildForMacOnWin": "",
-        "firstRunNotice": "Le premier lancement pour chaque plateforme sera lent car ct.js va télécharger et sauvegarder les librairies additionnels requises pour les rassembler. Cela va prendre un certain temps, mais les prochaines fois ce sera presque instantané."
+        "firstRunNotice": "Le premier lancement pour chaque plateforme sera lent car ct.js va télécharger et sauvegarder les librairies additionnels requises pour les rassembler. Cela va prendre un certain temps, mais les prochaines fois ce sera presque instantané.",
+        "projectTitleRequired": "",
+        "appIdRequired": "",
+        "noAndroidSdkFound": "",
+        "envVarNotice": "",
+        "downloadAndroidStudio": "",
+        "requiresInternetNotice": "",
+        "noJdkFound": "",
+        "downloadJDK": ""
     },
     "intro": {
         "loading": "Veuillez patientez: des chatons ",
@@ -149,7 +205,9 @@
         "github": "",
         "itch": "",
         "vkontakte": "",
-        "patreon": ""
+        "patreon": "",
+        "templates": "",
+        "templatesInfo": ""
     },
     "onboarding": {
         "hoorayHeader": "Wow! Vous venez de créer un projet!",
@@ -188,7 +246,9 @@
             "site": "Page d'accueil du projet:",
             "title": "Nom du projet:",
             "version": "Version:",
-            "versionPostfix": "Postfix:"
+            "versionPostfix": "Postfix:",
+            "appId": "",
+            "appIdExplanation": ""
         },
         "rendering": {
             "heading": "Options de rendu",
@@ -203,7 +263,15 @@
             },
             "desktopBuilds": "",
             "hideCursor": "",
-            "pixelatedRender": "Désactive le lissage d'image ici et dans le projet exporté (conservez les pixels net)"
+            "pixelatedRender": "Désactive le lissage d'image ici et dans le projet exporté (conservez les pixels net)",
+            "usePixiLegacy": "",
+            "mobileBuilds": "",
+            "screenOrientation": "",
+            "screenOrientations": {
+                "unspecified": "",
+                "landscape": "",
+                "portrait": ""
+            }
         },
         "branding": {
             "heading": "Étiqueter",
@@ -212,7 +280,11 @@
             "accent": "Votre colorie",
             "accentNotice": "Définit la couleur du chargement, ainsi que de certains autres endroits s'il est utilisé comme application mobile.",
             "invertPreloaderScheme": "Inverser le schéma de couleurs du chargement",
-            "hideLoadingLogo": ""
+            "hideLoadingLogo": "",
+            "splashScreen": "",
+            "splashScreenNotice": "",
+            "forceSmoothIcons": "",
+            "forceSmoothSplashScreen": ""
         },
         "scripts": {
             "heading": "Vos Scripts",
@@ -257,7 +329,8 @@
             "deleteContentType": "",
             "confirmDeletionMessage": "",
             "gotoEntries": "",
-            "entries": ""
+            "entries": "",
+            "array": ""
         },
         "contentTypes": ""
     },
@@ -301,7 +374,8 @@
         "skeletons": "Animation squelettique",
         "createTemplate": "",
         "importFromClipboard": "",
-        "generatePlaceholder": ""
+        "generatePlaceholder": "",
+        "textures": ""
     },
     "sounds": {
         "create": "Créer",
@@ -440,7 +514,12 @@
     },
     "extensionsEditor": {
         "noEntries": "",
-        "addRow": ""
+        "addRow": "",
+        "actions": "",
+        "values": "",
+        "moveDown": "",
+        "moveUp": "",
+        "deleteRow": ""
     },
     "textureGenerator": {
         "name": "",
@@ -494,7 +573,8 @@
             "exportDesktop": "Exporter pour le bureau",
             "successZipExport": "Exporté avec succès vers {0}",
             "zipExport": "Exporter en .zip",
-            "heading": ""
+            "heading": "",
+            "exportAndroid": ""
         },
         "latestProjects": {
             "recentProjects": "Projets récents"
@@ -541,7 +621,8 @@
             "heading": "",
             "twitter": "",
             "vkontakte": "",
-            "ctjsForum": ""
+            "ctjsForum": "",
+            "openStylebook": ""
         }
     },
     "appView": {
@@ -778,6 +859,35 @@
         "name": "Nom:",
         "step": "On Step",
         "learnAboutTypes": "En apprendre plus sur les types de codage",
-        "visible": ""
+        "visible": "",
+        "appearance": "",
+        "opacity": "",
+        "blendMode": "",
+        "playAnimationOnStart": "",
+        "blendModes": {
+            "normal": "",
+            "add": "",
+            "multiply": "",
+            "screen": ""
+        }
+    },
+    "assetInput": {
+        "changeAsset": "",
+        "jumpToAsset": "",
+        "selectAssetHeader": ""
+    },
+    "builtinAssetGallery": {
+        "galleryTip": "",
+        "assetGalleryHeader": "",
+        "importIntoProject": "",
+        "importAll": "",
+        "byAuthorPrefix": "",
+        "cannotImportExplanation": "",
+        "nameOccupied": "",
+        "cannotImportNameOccupied": "",
+        "visitSource": "",
+        "visitAuthorsItch": "",
+        "visitAuthorsTwitter": "",
+        "tipAuthor": ""
     }
 }

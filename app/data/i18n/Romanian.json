@@ -64,7 +64,10 @@
             "text": "",
             "textfield": "",
             "texture": "",
-            "type": ""
+            "template": "",
+            "room": "",
+            "sound": "",
+            "tandem": ""
         },
         "newName": "Nume nou:",
         "saveProject": "Salvează proiectul",
@@ -77,7 +80,52 @@
         "addToNotes": "Adaugă la notițe",
         "noRooms": "Ai nevoie de cel puțin o cameră pentru a compila aplicația.",
         "tileLayer": "tile layer",
-        "ctSite": "Pagina principală ct.js"
+        "ctSite": "Pagina principală ct.js",
+        "docsShort": "",
+        "docsLong": "",
+        "openAssetGallery": "",
+        "assetTypes": {
+            "textures": [
+                "",
+                "",
+                ""
+            ],
+            "templates": [
+                "",
+                "",
+                ""
+            ],
+            "emitterTandems": [
+                "",
+                "",
+                ""
+            ],
+            "rooms": [
+                "",
+                "",
+                ""
+            ],
+            "fonts": [
+                "",
+                "",
+                ""
+            ],
+            "styles": [
+                "",
+                "",
+                ""
+            ],
+            "sounds": [
+                "",
+                "",
+                ""
+            ],
+            "skeletons": [
+                "",
+                "",
+                ""
+            ]
+        }
     },
     "colorPicker": {
         "current": "Nou",
@@ -97,7 +145,15 @@
         "log": "Jurnal de mesaje",
         "windowsCrossBuildWarning": "",
         "cannotBuildForMacOnWin": "",
-        "firstRunNotice": "Prima rulare pentru fiecare platformă va fi lentă deoarece ct.js va descărca și salva bibliotecile necesare pentru împachetare. Va dura ceva timp, dar data viitoare va fi aproape instant."
+        "firstRunNotice": "Prima rulare pentru fiecare platformă va fi lentă deoarece ct.js va descărca și salva bibliotecile necesare pentru împachetare. Va dura ceva timp, dar data viitoare va fi aproape instant.",
+        "projectTitleRequired": "",
+        "appIdRequired": "",
+        "noAndroidSdkFound": "",
+        "envVarNotice": "",
+        "downloadAndroidStudio": "",
+        "requiresInternetNotice": "",
+        "noJdkFound": "",
+        "downloadJDK": ""
     },
     "intro": {
         "loading": "Vă rugăm așteptați: pisicuțele accelerează la viteza luminii!",
@@ -132,7 +188,9 @@
         "github": "",
         "itch": "",
         "vkontakte": "",
-        "patreon": ""
+        "patreon": "",
+        "templates": "",
+        "templatesInfo": ""
     },
     "settings": {
         "actions": {
@@ -162,7 +220,9 @@
             "site": "Pagină principală:",
             "title": "Nume:",
             "version": "Versiune:",
-            "versionPostfix": "Postfix:"
+            "versionPostfix": "Postfix:",
+            "appId": "",
+            "appIdExplanation": ""
         },
         "rendering": {
             "heading": "Opțiuni de randare",
@@ -177,7 +237,15 @@
                 "windowed": ""
             },
             "hideCursor": "",
-            "pixelatedRender": "Dezactivează netezirea imaginii aici și în proiectul exportat (conservă pixelii clari)"
+            "pixelatedRender": "Dezactivează netezirea imaginii aici și în proiectul exportat (conservă pixelii clari)",
+            "usePixiLegacy": "",
+            "mobileBuilds": "",
+            "screenOrientation": "",
+            "screenOrientations": {
+                "unspecified": "",
+                "landscape": "",
+                "portrait": ""
+            }
         },
         "scripts": {
             "heading": "Script-uri",
@@ -194,7 +262,11 @@
             "icon": "",
             "iconNotice": "",
             "invertPreloaderScheme": "",
-            "hideLoadingLogo": ""
+            "hideLoadingLogo": "",
+            "splashScreen": "",
+            "splashScreenNotice": "",
+            "forceSmoothIcons": "",
+            "forceSmoothSplashScreen": ""
         },
         "modules": {
             "heading": ""
@@ -231,7 +303,8 @@
             "deleteContentType": "",
             "confirmDeletionMessage": "",
             "gotoEntries": "",
-            "entries": ""
+            "entries": "",
+            "array": ""
         },
         "contentTypes": ""
     },
@@ -275,7 +348,8 @@
         "skeletons": "Animație scheletică",
         "createTemplate": "",
         "importFromClipboard": "",
-        "generatePlaceholder": ""
+        "generatePlaceholder": "",
+        "textures": ""
     },
     "sounds": {
         "create": "Crează",
@@ -440,7 +514,12 @@
     },
     "extensionsEditor": {
         "noEntries": "",
-        "addRow": ""
+        "addRow": "",
+        "actions": "",
+        "values": "",
+        "moveDown": "",
+        "moveUp": "",
+        "deleteRow": ""
     },
     "textureGenerator": {
         "name": "",
@@ -494,7 +573,8 @@
             "exportDesktop": "Exportă pentru desktop",
             "successZipExport": "Exportat cu succes în {0}.",
             "zipExport": "Exportă .zip",
-            "heading": ""
+            "heading": "",
+            "exportAndroid": ""
         },
         "latestProjects": {
             "recentProjects": "Proiecte recente"
@@ -541,7 +621,8 @@
             "heading": "",
             "twitter": "",
             "vkontakte": "",
-            "ctjsForum": ""
+            "ctjsForum": "",
+            "openStylebook": ""
         }
     },
     "appView": {
@@ -778,6 +859,35 @@
         "learnAboutTypes": "Învață despre programarea tipurilor",
         "name": "Nume:",
         "step": "La Fiecare Pas",
-        "visible": ""
+        "visible": "",
+        "appearance": "",
+        "opacity": "",
+        "blendMode": "",
+        "playAnimationOnStart": "",
+        "blendModes": {
+            "normal": "",
+            "add": "",
+            "multiply": "",
+            "screen": ""
+        }
+    },
+    "assetInput": {
+        "changeAsset": "",
+        "jumpToAsset": "",
+        "selectAssetHeader": ""
+    },
+    "builtinAssetGallery": {
+        "galleryTip": "",
+        "assetGalleryHeader": "",
+        "importIntoProject": "",
+        "importAll": "",
+        "byAuthorPrefix": "",
+        "cannotImportExplanation": "",
+        "nameOccupied": "",
+        "cannotImportNameOccupied": "",
+        "visitSource": "",
+        "visitAuthorsItch": "",
+        "visitAuthorsTwitter": "",
+        "tipAuthor": ""
     }
 }
