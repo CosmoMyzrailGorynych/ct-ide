@@ -42,32 +42,32 @@
         "selectDialogue": "Выбрать…",
         "search": "Поиск:",
         "close": "Закрыть",
-        "edit": "",
-        "nothingToShowFiller": "",
-        "required": "",
-        "settings": "",
+        "edit": "Изменить",
+        "nothingToShowFiller": "Нечего показывать!",
+        "required": "Требуется",
+        "settings": "Настройки",
         "fieldTypes": {
-            "checkbox": "",
-            "code": "",
-            "color": "",
-            "group": "",
-            "h1": "",
-            "h2": "",
-            "h3": "",
-            "h4": "",
-            "number": "",
-            "point2D": "",
-            "radio": "",
-            "slider": "",
-            "sliderAndNumber": "",
-            "table": "",
-            "text": "",
-            "textfield": "",
-            "texture": "",
-            "template": "",
-            "room": "",
-            "sound": "",
-            "tandem": ""
+            "checkbox": "Чекбокс",
+            "code": "Поле с кодом",
+            "color": "Цвет",
+            "group": "Группа полей",
+            "h1": "Заголовок 1-го уровня",
+            "h2": "Заголовок 2-го уровня",
+            "h3": "Заголовок 3-го уровня",
+            "h4": "Заголовок 4-го уровня",
+            "number": "Число",
+            "point2D": "2D точка",
+            "radio": "Список с выбором",
+            "slider": "Слайдер",
+            "sliderAndNumber": "Слайдер с численным полем",
+            "table": "Таблица",
+            "text": "Короткий текст",
+            "textfield": "Текст",
+            "texture": "Текстура",
+            "template": "Шаблон",
+            "room": "Комната",
+            "sound": "Звук",
+            "tandem": "Система частиц"
         },
         "newName": "Новое имя:",
         "saveProject": "Сохранить проект",
@@ -81,49 +81,49 @@
         "noRooms": "Как бы это ни было печально, вам необходима как минимум одна комната для экспорта :)",
         "tileLayer": "слой тайлов",
         "ctSite": "Домашняя страница ct.js",
-        "docsShort": "",
-        "docsLong": "",
-        "openAssetGallery": "",
+        "docsShort": "Доки",
+        "docsLong": "Документация",
+        "openAssetGallery": "Галерея",
         "assetTypes": {
             "textures": [
-                "",
-                "",
-                ""
+                "текстура",
+                "текстуры",
+                "текстур"
             ],
             "templates": [
-                "",
-                "",
-                ""
+                "шаблон",
+                "шаблона",
+                "шаблонов"
             ],
             "emitterTandems": [
-                "",
-                "",
-                ""
+                "тандем частиц",
+                "тандема частиц",
+                "тандемов частиц"
             ],
             "rooms": [
-                "",
-                "",
-                ""
+                "комната",
+                "комнаты",
+                "комнат"
             ],
             "fonts": [
-                "",
-                "",
-                ""
+                "шрифт",
+                "шрифта",
+                "шрифтов"
             ],
             "styles": [
-                "",
-                "",
-                ""
+                "стиль",
+                "стиля",
+                "стилей"
             ],
             "sounds": [
-                "",
-                "",
-                ""
+                "звук",
+                "звука",
+                "звуков"
             ],
             "skeletons": [
-                "",
-                "",
-                ""
+                "скелетный спрайт",
+                "скелетных спрайта",
+                "скелетных спрайтов"
             ]
         }
     },
@@ -146,14 +146,14 @@
         "windowsCrossBuildWarning": "Чтобы паковать игры для Windows с Линукса или MacOS, нужно установить Wine. Инструкции по установке Wine разные от системы к системе, так что лучше погуглите сами :)",
         "cannotBuildForMacOnWin": "К сожалению, Windows может делать для маков только сломанные пакеты. Попробуйте сделать билд на линуксе — например, в виртуалке. Это бесплатно!",
         "firstRunNotice": "При первом экспорте ct.js скачает дополнительные файлы для каждой платформы. Это займёт время, но после этот процесс будет практически мгновенным.",
-        "projectTitleRequired": "",
-        "appIdRequired": "",
-        "noAndroidSdkFound": "",
-        "envVarNotice": "",
-        "downloadAndroidStudio": "",
-        "requiresInternetNotice": "",
-        "noJdkFound": "",
-        "downloadJDK": ""
+        "projectTitleRequired": "Необходимо добавить название проекта во вкладке Проект  → Авторство → Название проекта.",
+        "appIdRequired": "Для распространения необходимо указать уникальный appID во вкладке Проект  → Авторство → ID приложения.",
+        "noAndroidSdkFound": "Не удалось найти Android SDK  (переменная окружения ANDROID_SDK_ROOT не назначена). Вы можете получить Android SDK путём установки Android Studio:",
+        "envVarNotice": "Возможно, тебе потребуется вручную задать переменные окружения и перезапустить компьютер.",
+        "downloadAndroidStudio": "Скачать  Android Studio",
+        "requiresInternetNotice": "Эта операция требует соединение с интернетом для первоначальной настройки каждого проекта.",
+        "noJdkFound": "Не найден JDK 11. Переменная окружения JAVA_HOME не назначена или не указывает на JDK 11. Вы можете скачать JDK 11 здесь:",
+        "downloadJDK": "Скачать JDK 11"
     },
     "intro": {
         "loading": "Подождите, коты набирают скорость света…",
@@ -189,8 +189,8 @@
         "itch": "Страница ct.js на itch.io",
         "vkontakte": "Паблик Вконтакте",
         "patreon": "Поддержи кота на Патреоне!",
-        "templates": "",
-        "templatesInfo": ""
+        "templates": "Шаблоны",
+        "templatesInfo": "Начни разработку игры с одним из этих шаблонов. В них графика-заглушка, но прекрасно работающие механики. При выборе шаблона откроется выбор папки для твоего нового проекта."
     },
     "onboarding": {
         "hoorayHeader": "Ух-ты! Мы сделали новый проект!",
@@ -214,14 +214,14 @@
             "methods": "Методы ввода",
             "multiplier": "Множитель",
             "noActionsYet": "Действия позволяют разработчику реагировать на события различных методов ввода одновременно, а также динамически менять настройки управления — всё через единый API. Узнайте о них больше, нажав иконку документации выше.",
-            "makeFromScratch": "",
-            "presets": "",
-            "presetXYMovement": "",
-            "presetTouchAndMouse": "",
-            "presetCustom": "",
-            "exportActionPreset": "",
-            "importErrorMissingModules": "",
-            "importErrorNotCtJsPreset": ""
+            "makeFromScratch": "Создать с нуля",
+            "presets": "Шаблоны",
+            "presetXYMovement": "Движение по XY",
+            "presetTouchAndMouse": "Мышь и сенсор",
+            "presetCustom": "Вставить свой",
+            "exportActionPreset": "Экспортировать как шаблон",
+            "importErrorMissingModules": "Не удаётся импортировать шаблон, т.к. в твоей версии ct.js отсутствуют следующие котомоды: $1.",
+            "importErrorNotCtJsPreset": "Кажется, это не файл-шаблон действий для ct.js."
         },
         "authoring": {
             "heading": "Авторство",
@@ -230,8 +230,8 @@
             "title": "Название:",
             "version": "Версия:",
             "versionPostfix": "Постфикс:",
-            "appId": "",
-            "appIdExplanation": ""
+            "appId": "ID приложения",
+            "appIdExplanation": "В основном используется для билдов для мобильных устройств. Это уникальная строка, обозначающая твою игру. Обычно пишется в формате домензона.разработчик.имяпроекта — например,  rocks.ctjs.catsteroids"
         },
         "branding": {
             "heading": "Брендинг",
@@ -241,10 +241,10 @@
             "iconNotice": "Это должна быть квадратная текстура с одним кадром и размером минимум 256x256 пикселей.",
             "invertPreloaderScheme": "Инвертировать цветовую схему экрана загрузки",
             "hideLoadingLogo": "Спрятать лого \"Сделано с ct.js\" на экране загрузки игры",
-            "splashScreen": "",
-            "splashScreenNotice": "",
-            "forceSmoothIcons": "",
-            "forceSmoothSplashScreen": ""
+            "splashScreen": "Обложка:",
+            "splashScreenNotice": "Изображение будет использоваться для билдов под мобильные устройства. Размер изображения — минимум 1920x1920 пикселей. Оно будет менять размер и обрезаться под портретную или ландшафтную ориентацию, поэтому проверь, что самое важное расположено по центру.",
+            "forceSmoothIcons": "Использовать гладкие иконки вопреки настройкам рендера",
+            "forceSmoothSplashScreen": "Использовать гладкую обложку вопреки настройкам рендера"
         },
         "rendering": {
             "heading": "Настройки графики",
@@ -260,13 +260,13 @@
                 "windowed": "Оконный"
             },
             "pixelatedRender": "Здесь и в проекте отключать сглаживание (сохранять пиксели)",
-            "usePixiLegacy": "",
-            "mobileBuilds": "",
-            "screenOrientation": "",
+            "usePixiLegacy": "Добавить старый рендерер, основанный на канвасе, чтобы поддерживать старые браузеры и графические карты (добавляет примерно 20кбайт к игре)",
+            "mobileBuilds": "Билды для мобильных устройств",
+            "screenOrientation": "Положение экрана:",
             "screenOrientations": {
-                "unspecified": "",
-                "landscape": "",
-                "portrait": ""
+                "unspecified": "Любое",
+                "landscape": "Ландшафтное",
+                "portrait": "Портретное"
             }
         },
         "scripts": {
@@ -294,28 +294,28 @@
             }
         },
         "content": {
-            "heading": "",
-            "addContentType": "",
-            "missingTypeName": "",
-            "unnamedContentTypeHint": "",
-            "typeName": "",
-            "typeNameHint": "",
-            "typeReadableName": "",
-            "typeReadableNameHint": "",
-            "icon": "",
-            "typeSpecification": "",
-            "fieldName": "",
-            "fieldNameHint": "",
-            "fieldReadableName": "",
-            "fieldReadableNameHint": "",
-            "fieldType": "",
-            "deleteContentType": "",
-            "confirmDeletionMessage": "",
-            "gotoEntries": "",
-            "entries": "",
-            "array": ""
+            "heading": "Редактор типов контента",
+            "addContentType": "Добавить тип",
+            "missingTypeName": "Неназванный тип контента",
+            "unnamedContentTypeHint": "Этот тип контента не назван. Его нельзя будет использовать игре, пока ты не укажешь ему имя.",
+            "typeName": "Имя типа контента",
+            "typeNameHint": "Имя типа, как оно будет использоваться в коде. Примеры: GearItems, EnemySkills, Cities.",
+            "typeReadableName": "Удобочитаемое имя",
+            "typeReadableNameHint": "Имя для показа в редакторе ct.js",
+            "icon": "Значок",
+            "typeSpecification": "Схема данных",
+            "fieldName": "Имя",
+            "fieldNameHint": "Имя поля, как оно будет использоваться в коде. Например: power, hp, spawnType.",
+            "fieldReadableName": "Удобочитаемое имя",
+            "fieldReadableNameHint": "Будет использоваться в редакторе записей внутри редактора.",
+            "fieldType": "Тип",
+            "deleteContentType": "Удалить этот тип контента",
+            "confirmDeletionMessage": "Ты точно хочешь удалить этот тип контента? Это необратимо, и также удалит все записи этого типа контента.",
+            "gotoEntries": "Перейти к записям",
+            "entries": "Записи",
+            "array": "Массив"
         },
-        "contentTypes": ""
+        "contentTypes": "Типы контента"
     },
     "modules": {
         "author": "Автор котомода",
@@ -358,11 +358,11 @@
         "createTemplate": "Создать шаблон с этой текстурой",
         "importFromClipboard": "Импортировать из буфера обмена",
         "generatePlaceholder": "Создать заглушку",
-        "textures": ""
+        "textures": "Текстуры"
     },
     "sounds": {
         "create": "Создать",
-        "record": ""
+        "record": "Записать"
     },
     "styles": {
         "create": "Создать",
@@ -515,11 +515,11 @@
     "extensionsEditor": {
         "noEntries": "Ещё нет записей.",
         "addRow": "Добавить строку",
-        "actions": "",
-        "values": "",
-        "moveDown": "",
-        "moveUp": "",
-        "deleteRow": ""
+        "actions": "Действия",
+        "values": "Значения",
+        "moveDown": "Вниз",
+        "moveUp": "Вверх",
+        "deleteRow": "Удалить строку"
     },
     "textureGenerator": {
         "name": "Имя текстуры:",
@@ -536,11 +536,11 @@
         "fillerNone": "Ничего",
         "fillerCross": "Перекрестие",
         "fillerLabel": "Текст",
-        "form": "",
-        "formRectangular": "",
-        "formRound": "",
-        "formDiamond": "",
-        "fillerArrow": ""
+        "form": "Форма",
+        "formRectangular": "Прямоугольная",
+        "formRound": "Круглая",
+        "formDiamond": "Ромб",
+        "fillerArrow": "Стрелка"
     },
     "textureInput": {
         "jumpToTexture": "Перейти к текстуре",
@@ -574,7 +574,7 @@
             "successZipExport": "Успешно экспортировано в {0}.",
             "zipExport": "Экспорт в .zip",
             "heading": "Экспорт",
-            "exportAndroid": ""
+            "exportAndroid": "Экспорт на Android…"
         },
         "latestProjects": {
             "recentProjects": "Последние проекты"
@@ -622,7 +622,7 @@
             "twitter": "Канал  в Twitter",
             "vkontakte": "Паблик Вконтакте",
             "ctjsForum": "Присоединиться к форуму ct.js",
-            "openStylebook": ""
+            "openStylebook": "Открыть стайл-бук CSS"
         }
     },
     "appView": {
@@ -648,24 +648,24 @@
         "delete": "Удалить"
     },
     "assetViewer": {
-        "addNewGroup": "",
-        "ungrouped": "",
-        "newGroupName": "",
-        "groupDeletionConfirmation": ""
+        "addNewGroup": "Новая группа",
+        "ungrouped": "Негруппированные",
+        "newGroupName": "Новая группа",
+        "groupDeletionConfirmation": "Ты точно хочешь удалить эту группу? Её ассеты будут разгруппированы."
     },
     "groupEditor": {
-        "groupEditor": "",
-        "icon": "",
-        "color": ""
+        "groupEditor": "Редактор группы",
+        "icon": "Значок:",
+        "color": "Цвет:"
     },
     "soundRecorder": {
-        "recorderHeading": "",
-        "record": "",
-        "stopRecording": "",
-        "discardRecording": "",
-        "finishRecording": "",
-        "cannotRecordSound": "",
-        "troubleshootingWindows": ""
+        "recorderHeading": "Диктофон",
+        "record": "Начать запись",
+        "stopRecording": "Остановить запись",
+        "discardRecording": "Удалить запись",
+        "finishRecording": "Принять",
+        "cannotRecordSound": "Не получается запустить звукозапись: проверьте настройки аудио в системе и само записывающее устройство.",
+        "troubleshootingWindows": "В Windows также проверьте раздел Параметры Windows -> Конфиденциальность -> Микрофон. \"Разрешить приложениям доступ к микрофону\" должно быть включено."
     },
     "roomBackgrounds": {
         "add": "Добавить фон",
@@ -751,8 +751,8 @@
         "textWrap": "Перенос текста",
         "textWrapWidth": "Позиция для переноса:",
         "useCustomFont": "Выбрать шрифт из проекта…",
-        "code": "",
-        "copyCode": "",
+        "code": "Код",
+        "copyCode": "Скопировать",
         "fillColor": "Цвет:",
         "fillColor1": "Цвет 1:",
         "fillColor2": "Цвет 2:",
@@ -803,8 +803,8 @@
         "padding": "Отбивка:",
         "paddingNotice": "Влияет на то, как текстура экспортируется: дублирует пиксели по краям, чтобы избежать артефактов грязных краёв на повторяющихся и уменьшенных изображениях. Обычно значения по-умолчанию достаточно, но если сильно уменьшить текстуру в игре, эффект может вернуться. Увеличьте значение этого поля, если замечаете грязные края у этой текстуры в игре.",
         "previewAnimationNotice": "Это предпросмотр. Чтобы изменить скорость анимации у настоящих копий, используйте this.animationSpeed.",
-        "pasteCollisionMask": "",
-        "copyCollisionMask": "",
+        "pasteCollisionMask": "Вставить форму столкновений",
+        "copyCollisionMask": "Скопировать форму столкновений",
         "bgColor": "Сменить цвет фона",
         "setCenter": "По центру",
         "replaceTexture": "Заменить…",
@@ -860,34 +860,34 @@
         "name": "Имя:",
         "step": "Кадр",
         "visible": "Отображать",
-        "appearance": "",
-        "opacity": "",
-        "blendMode": "",
-        "playAnimationOnStart": "",
+        "appearance": "Внешний вид",
+        "opacity": "Непрозрачность:",
+        "blendMode": "Смешивание:",
+        "playAnimationOnStart": "Играть анимацию при старте",
         "blendModes": {
-            "normal": "",
-            "add": "",
-            "multiply": "",
-            "screen": ""
+            "normal": "Обычное",
+            "add": "Добавить (выгорание)",
+            "multiply": "Умножить (затемнение)",
+            "screen": "Экран (осветление)"
         }
     },
     "assetInput": {
-        "changeAsset": "",
-        "jumpToAsset": "",
-        "selectAssetHeader": ""
+        "changeAsset": "Нажмите, чтобы заменить ассет",
+        "jumpToAsset": "Перейти к ассету",
+        "selectAssetHeader": "Выбрать ассет"
     },
     "builtinAssetGallery": {
-        "galleryTip": "",
-        "assetGalleryHeader": "",
-        "importIntoProject": "",
-        "importAll": "",
-        "byAuthorPrefix": "",
-        "cannotImportExplanation": "",
-        "nameOccupied": "",
-        "cannotImportNameOccupied": "",
-        "visitSource": "",
-        "visitAuthorsItch": "",
-        "visitAuthorsTwitter": "",
-        "tipAuthor": ""
+        "galleryTip": "Это встроенная галерея всяких разных бесплатных текстур и звуков. Они все под лицензией CCO, WTFPL, или на спец. правах для движка ct.js, и ты можешь использовать их как угодно, в коммерческих проектах и не только.",
+        "assetGalleryHeader": "Ассеты",
+        "importIntoProject": "Вставить в проект",
+        "importAll": "Импортировать всё",
+        "byAuthorPrefix": "от",
+        "cannotImportExplanation": "Имя ассета уже занято. Возможно, тебе надо переименовать твои существующие ассеты. Или же в твоём проекте уже есть точно такой же ассет?",
+        "nameOccupied": "Имя занято",
+        "cannotImportNameOccupied": "Не получилось импортировать $1, т.к. имя уже занято.",
+        "visitSource": "Открыть страницу магазина этого набора ассетов",
+        "visitAuthorsItch": "Посетить itch.io автора",
+        "visitAuthorsTwitter": "Посетить Twitter автора",
+        "tipAuthor": "Подарите денюжку автору за их труд :D"
     }
 }
