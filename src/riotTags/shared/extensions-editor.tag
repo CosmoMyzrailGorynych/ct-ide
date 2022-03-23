@@ -109,10 +109,10 @@ extensions-editor
                                 extensions-editor(intable="true" compact="compact" entity="{entry}" customextends="{[field]}")
                             td
                                 // Use opacity to keep nice layout
-                                .anActionableIcon(onclick="{moveUp(ext, entry)}" title="{voc.moveUp}" style="{ind === 0 ? 'opacity: 0;' : ''}")
+                                .anActionableIcon(onclick="{moveUp(ext, entry)}" title="{voc.moveUp}")
                                     svg.feather
                                         use(xlink:href="#arrow-up")
-                                .anActionableIcon(onclick="{moveDown(ext, entry)}"  style="{ind === parent.parent.opts.entity[ext.key].length - 1 ? 'opacity: 0;' : ''}" title="{voc.moveDown}")
+                                .anActionableIcon(onclick="{moveDown(ext, entry)}" title="{voc.moveDown}")
                                     svg.feather
                                         use(xlink:href="#arrow-down")
                                 .anActionableIcon(onclick="{deleteRow(ext, entry)}" title="{voc.deleteRow}")

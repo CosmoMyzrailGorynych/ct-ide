@@ -106,10 +106,10 @@ array-editor
             .aSpacer.nogrow
             .nogrow
                 // Use opacity to keep nice layout
-                .anActionableIcon(onclick="{moveUp(index)}" title="{voc.moveUp}" style="{index === 0 ? 'opacity: 0;' : ''}")
+                .anActionableIcon(onclick="{moveUp(index)}" title="{voc.moveUp}")
                     svg.feather
                         use(xlink:href="#arrow-up")
-                .anActionableIcon(onclick="{moveDown(index)}"  style="{index === parent.opts.entity.length - 1 ? 'opacity: 0;' : ''}" title="{voc.moveDown}")
+                .anActionableIcon(onclick="{moveDown(index)}" title="{voc.moveDown}")
                     svg.feather
                         use(xlink:href="#arrow-down")
                 .anActionableIcon(onclick="{deleteRow(index)}" title="{voc.deleteRow}")
