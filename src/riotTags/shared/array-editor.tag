@@ -9,6 +9,7 @@
     @attribute [onchanged] (riot Function)
         A callback to call when the entity has changed.
     @attribute [wide] (atomic)
+    @attribute [compact] (atomic)
 
 array-editor
     ul.aStripedList
@@ -25,7 +26,7 @@ array-editor
                 if="{['texture', 'template', 'room', 'sound'].includes(parent.opts.inputtype)}"
                 assettype="{parent.opts.inputtype}s"
                 allowclear="yep"
-                class="compact"
+                compact="compact"
                 assetid="{item}"
                 onchanged="{parent.writeUid(index)}"
             )
@@ -115,7 +116,7 @@ array-editor
                 .anActionableIcon(onclick="{deleteRow(index)}" title="{voc.deleteRow}")
                     svg.feather.red
                         use(xlink:href="#delete")
-    button(onclick="{addRow}")
+    button(onclick="{addRow}" class="{inline: opts.compact}")
         svg.feather
             use(xlink:href="#plus")
         span {voc.addRow}

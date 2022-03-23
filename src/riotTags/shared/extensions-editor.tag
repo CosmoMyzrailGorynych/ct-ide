@@ -136,7 +136,8 @@ extensions-editor
                     if="{['texture', 'template', 'room', 'sound'].includes(ext.type)}"
                     assettype="{ext.type}s"
                     allowclear="yep"
-                    class="{compact: parent.opts.compact, wide: parent.opts.wide, invalid: ext.required && (parent.opts.entity[ext.key] || ext.default) === -1}"
+                    compact="{parent.opts.compact}"
+                    class="{wide: parent.opts.wide, invalid: ext.required && (parent.opts.entity[ext.key] || ext.default) === -1}"
                     assetid="{parent.opts.entity[ext.key] || ext.default}"
                     onchanged="{writeUid(ext.key)}"
                 )
@@ -253,7 +254,7 @@ extensions-editor
                         selected="{parent.parent.opts.entity[ext.key] === option.value}"
                         disabled="{option.value === ''}"
                     ) {option.name}
-                array-editor(if="{ext.type === 'array'}" inputtype="{ext.arrayType}" entity="{parent.opts.entity[ext.key]}")
+                array-editor(if="{ext.type === 'array'}" inputtype="{ext.arrayType}" entity="{parent.opts.entity[ext.key]}" compact="{parent.opts.compact}")
                 .dim(if="{ext.help && !parent.opts.compact}") {ext.help}
     script.
         const libsDir = './data/ct.libs';

@@ -14,6 +14,8 @@
 
     @attribute large (atomic)
         Shows a larger asset selector instead of a button stack.
+    @attribute compact (atomic)
+        Makes buttons slimmer. Incompatible with the `large` attribute.
     @attribute selectorheader (string)
         The header shown inside the asset selector.
     @attribute selecttext (string)
@@ -28,14 +30,14 @@
         in the project.
 asset-input
     .aButtonGroup.nml(if="{!opts.large}")
-        button(onclick="{openSelector}" title="{voc.changeAsset}")
+        button(onclick="{openSelector}" title="{voc.changeAsset}" class="{inline: opts.compact}")
             img(src="{thumbnails(currentAsset || -1, false, false)}")
             span(if="{opts.assetid == -1 || opts.assetid === void 0}") {vocGlob.select}
             span(if="{opts.assetid != -1 && opts.assetid !== void 0}") {names(currentAsset)}
-        button.square(if="{opts.assetid != -1 && opts.assetid !== void 0}" title="{voc.jumpToAsset}" onclick="{openAsset}")
+        button.square(if="{opts.assetid != -1 && opts.assetid !== void 0}" title="{voc.jumpToAsset}" onclick="{openAsset}" class="{inline: opts.compact}")
             svg.feather
                 use(xlink:href="#external-link")
-        button.square(if="{(opts.assetid != -1 && opts.assetid !== void 0) && opts.allowclear}" title="{vocGlob.clear}" onclick="{clearAsset}")
+        button.square(if="{(opts.assetid != -1 && opts.assetid !== void 0) && opts.allowclear}" title="{vocGlob.clear}" onclick="{clearAsset}" class="{inline: opts.compact}")
             svg.feather
                 use(xlink:href="#x")
     .asset-input-aBigInput(if="{opts.large}" onclick="{openSelector}" title="{voc.changeAsset}")
