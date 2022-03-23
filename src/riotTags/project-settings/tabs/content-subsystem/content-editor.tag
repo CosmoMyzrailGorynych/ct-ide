@@ -39,7 +39,8 @@ content-editor
         this.fixBrokenEntries = () => {
             for (const entry of this.contentType.entries) {
                 for (const key in entry) {
-                    const field = this.contentType.specification.find(field => (field.name || field.readableName) === key);
+                    const field = this.contentType.specification
+                        .find(field => (field.name || field.readableName) === key);
                     if (!field) {
                         delete entry[key];
                         continue;
