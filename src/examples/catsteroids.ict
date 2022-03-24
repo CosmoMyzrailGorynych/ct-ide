@@ -1778,6 +1778,7 @@ settings:
     highDensity: true
     usePixiLegacy: true
     desktopMode: maximized
+    mobileScreenOrientation: unspecified
   authoring:
     title: Catsteroids
     author: CoMiGo Games
@@ -4787,6 +4788,6 @@ groups:
   textures: []
   styles: []
   rooms: []
-  types: []
   sounds: []
   emitterTandems: []
+  templates: []

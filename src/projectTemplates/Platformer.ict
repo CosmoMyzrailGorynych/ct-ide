@@ -4208,9 +4208,9 @@ groups:
   textures: []
   styles: []
   rooms: []
-  types: []
   sounds: []
   emitterTandems: []
+  templates: []
 settings:
   authoring:
     author: ''
@@ -4227,6 +4227,7 @@ settings:
     pixelatedrender: false
     highDensity: true
     desktopMode: maximized
+    mobileScreenOrientation: unspecified
   export:
     windows: true
     linux: true

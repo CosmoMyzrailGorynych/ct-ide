@@ -1313,6 +1313,6 @@ groups:
   textures: []
   styles: []
   rooms: []
-  types: []
   sounds: []
   emitterTandems: []
+  templates: []

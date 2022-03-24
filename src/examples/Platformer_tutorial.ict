@@ -84,7 +84,7 @@ templates:
     ondraw: ''
     ondestroy: ''
     uid: 2d07d12b-9798-418c-a420-3a1ef4dc3ae2
-    lastmod: 1603946092358
+    lastmod: 1648092625385
     extends:
       cgroup: Robot
     texture: 6deb1d77-24d2-48d6-82ec-045dcbd9eea5
@@ -1482,7 +1482,7 @@ rooms:
         extends: {}
     gridX: 32
     gridY: 32
-    lastmod: 1581890092019
+    lastmod: 1648092596630
     copies:
       - x: 320
         'y': 320
@@ -3216,6 +3216,7 @@ rooms:
         'y': 96
         uid: 3fe668cd-30ee-49ba-8a45-e772bf8832a9
         exts: {}
+    extends: {}
   - name: Level_03
     oncreate: inGameRoomStart(this);
     onstep: ''
@@ -5133,7 +5134,8 @@ rooms:
     thumbnail: 9c07bdb91f3c
     gridX: 32
     gridY: 32
-    lastmod: 1581890111862
+    lastmod: 1648092586494
+    extends: {}
   - name: TestLevel
     oncreate: ''
     onstep: ''
@@ -5286,6 +5288,7 @@ settings:
     highDensity: true
     usePixiLegacy: true
     desktopMode: maximized
+    mobileScreenOrientation: unspecified
   authoring:
     title: Platformer complete tutorial
     author: Cosmo Myzrail Gorynych
@@ -5869,6 +5872,6 @@ groups:
   textures: []
   styles: []
   rooms: []
-  types: []
   sounds: []
   emitterTandems: []
+  templates: []

@@ -9027,3 +9027,11 @@ palette:
   - '#4FE77F'
 startroom: eed8a427-1c70-425d-b633-7b6ea00c7b7c
 contentTypes: []
+groups:
+  fonts: []
+  textures: []
+  styles: []
+  rooms: []
+  sounds: []
+  emitterTandems: []
+  templates: []

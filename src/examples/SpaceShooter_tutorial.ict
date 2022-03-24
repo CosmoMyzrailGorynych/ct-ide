@@ -317,6 +317,8 @@ settings:
     linux: true
     windows: true
     mac: true
+    functionWrap: false
+    codeModifier: none
   branding:
     icon: -1
     accent: '#446adb'
@@ -327,6 +329,7 @@ settings:
     highDensity: true
     usePixiLegacy: true
     desktopMode: maximized
+    mobileScreenOrientation: unspecified
   authoring:
     title: Space Shooter (tutorial)
     author: Cosmo Myzrail Gorynych
@@ -339,7 +342,7 @@ settings:
   fps: 30
 palette: []
 startroom: 8eced6ed-b52a-4344-8266-3fa909005671
-ctjsVersion: 1.4.2
+ctjsVersion: 2.0.0
 scripts: []
 fonts: []
 skeletons: []
@@ -608,3 +611,12 @@ textures:
     tiled: true
 texturetick: 7
 emitterTandems: []
+contentTypes: []
+groups:
+  fonts: []
+  textures: []
+  styles: []
+  rooms: []
+  sounds: []
+  emitterTandems: []
+  templates: []

@@ -469,7 +469,7 @@ templates:
       cgroup: Solid
       inheritedTemplate@@template: 411a7b98-9916-4e4b-8466-abe66eb75e2e
     uid: bf3a489b-333c-4171-b5ca-5a8699dfc176
-    lastmod: 1602213431467
+    lastmod: 1648092462572
 sounds:
   - name: Wood_Start
     uid: 42e768ce-6c19-4c34-9f14-11e257ecff18
@@ -1467,6 +1467,7 @@ settings:
     pixelatedrender: false
     highDensity: true
     desktopMode: maximized
+    mobileScreenOrientation: unspecified
   export:
     windows: true
     linux: true
@@ -1487,6 +1488,6 @@ groups:
   textures: []
   styles: []
   rooms: []
-  types: []
   sounds: []
   emitterTandems: []
+  templates: []

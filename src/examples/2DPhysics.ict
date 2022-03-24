@@ -1077,6 +1077,7 @@ settings:
     pixelatedrender: false
     highDensity: true
     desktopMode: maximized
+    mobileScreenOrientation: unspecified
   export:
     windows: true
     linux: true
@@ -1100,6 +1101,6 @@ groups:
   textures: []
   styles: []
   rooms: []
-  types: []
   sounds: []
   emitterTandems: []
+  templates: []
