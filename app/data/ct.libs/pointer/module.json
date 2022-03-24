@@ -1,7 +1,9 @@
 {
     "main": {
         "name": "Pointer",
+        "name_Ru": "Указатель",
         "tagline": "A uniform API for any type of pointer devices, be it touchscreens, pen tablets, or mouse.",
+        "tagline_Ru": "Единый API для всех видов указателей — мышек, тач-экранов, графических планшетов и т.д.",
         "version": "1.0.0",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",
@@ -13,16 +15,20 @@
     },
     "fields": [{
         "name": "Do not cancel standard browser events",
+        "name_Ru": "Не отключать стандартные действия браузера",
         "key": "preventdefault",
         "id": "preventdefault",
         "help": "Will leave browser scrolling, panning, and context menus enabled.",
+        "help_Ru": "Разрешит прокрутку, перемещение вида, стандартные контекстные меню.",
         "default": false,
         "type": "checkbox"
     }, {
         "name": "Start with locking mode",
+        "name_Ru": "Запустить в режиме захвата",
         "key": "startlocked",
         "id": "startlocked",
         "help": "Will lock the first click inside the game. Read about locking mode in sidebar's docs.",
+        "help_Ru": "Заблокирует курсор при первом клике внутри игры. Узнай больше о работе в режиме захвата в документации к модулю в боковой панели.",
         "default": false,
         "type": "checkbox"
     }],

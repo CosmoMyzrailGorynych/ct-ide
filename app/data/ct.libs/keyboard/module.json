@@ -2,6 +2,8 @@
     "main": {
         "name": "Keyboard",
         "tagline": "Add keyboard events to the Actions system.",
+        "name_Ru": "Клавиатура",
+        "tagline_Ru": "Добавляет события клавиатуры в систему Действий.",
         "version": "3.0.0",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",

@@ -1,7 +1,9 @@
 {
     "main": {
         "name": "Light System",
+        "name_Ru": "Система освещения",
         "tagline": "Create dynamic lights with textures that follow your copies.",
+        "tagline_Ru": "Создавай динамические источники света, прикреплённые к копиям, с помощью текстур.",
         "version": "1.0.0",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",
@@ -14,25 +16,30 @@
     "templateExtends": [{
         "type": "group",
         "name": "Light emitter",
+        "name_Ru": "Источник света",
         "openedByDefault": false,
         "lsKey": "light.general",
         "items": [{
-            "name": "Light",
+            "name": "Light texture",
+            "name_Ru": "Текстура освещения",
             "type": "texture",
             "key": "lightTexture@@texture",
             "default": -1
         }, {
             "name": "Light color",
+            "name_Ru": "Цвет освещения",
             "type": "color",
             "key": "lightColor",
             "default": "#FFFFFF"
         }, {
             "name": "Light copies opacity",
+            "name_Ru": "Сила освещения зависит от прозрачности копии",
             "type": "checkbox",
             "key": "lightOpacity",
             "default": true
         }, {
             "name": "Light scale",
+            "name_Ru": "Размер освещения",
             "type": "number",
             "step": 0.1,
             "key": "lightScale",
@@ -41,6 +48,7 @@
     }],
     "roomExtends": [{
         "name": "Ambient color",
+        "name_Ru": "Освещение",
         "type": "color",
         "key": "lightAmbientColor",
         "default": "#FFFFFF"
