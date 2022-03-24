@@ -45,7 +45,7 @@
     "gulp-typescript": "^6.0.0-alpha.1",
     "gulp-zip": "^5.0.1",
     "jsdoc-x": "^4.1.0",
-    "minimist": "^1.2.5",
+    "minimist": "^1.2.6",
     "node-notifier": "^10.0.0",
     "nw-builder": "^3.5.7",
     "pug": "^3.0.2",
