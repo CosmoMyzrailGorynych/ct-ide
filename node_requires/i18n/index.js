@@ -60,13 +60,14 @@ const recursiveCheck = function recursiveCheck(partial, langNode, referenceNode)
 };
 
 const breakpoints = [
-    [95, '👏  Fabulous!'],
+    [95, '💙  Fabulous!'],
     [85, '✅  Good!'],
     [70, '😕  A decent coverage, but it could be better!'],
     [50, '👎  Meh'],
     [0, '🆘  Someone help, please!']
-], shortBreakpoints = [
-    [95, '👏'],
+];
+const shortBreakpoints = [
+    [95, '💙'],
     [85, '✅'],
     [70, '😕'],
     [50, '👎'],
