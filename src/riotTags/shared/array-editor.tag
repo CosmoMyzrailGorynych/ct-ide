@@ -14,7 +14,7 @@
 array-editor
     ul.aStripedList
         li.flexrow(each="{item, index in opts.entity}")
-            .monospace.nogrow {index}
+            .monospace.nogrow.noshrink {index}
             .aSpacer.nogrow
             input.nogrow(
                 if="{parent.inputtype === 'checkbox'}"
@@ -105,7 +105,7 @@ array-editor
                     min="0" max="100" step="0.1"
                 )
             .aSpacer.nogrow
-            .nogrow
+            .nogrow.noshrink
                 // Use opacity to keep nice layout
                 .anActionableIcon(onclick="{moveUp(index)}" title="{voc.moveUp}")
                     svg.feather

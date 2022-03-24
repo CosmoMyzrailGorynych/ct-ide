@@ -271,27 +271,43 @@ extensions-editor
         this.namespace = 'extensionsEditor';
         this.mixin(window.riotVoc);
 
+        this.fixBrokenArrays = () => {
+            for (const field of this.extensions) {
+                if (!(field.key in this.opts.entity) && ['table', 'array'].includes(field.type)) {
+                    this.opts.entity[field.key] = [];
+                }
+            }
+        };
+
         this.extensions = [];
         this.refreshExtends = () => {
             if (this.opts.customextends) {
                 this.extensions = this.opts.customextends;
+                this.fixBrokenArrays();
                 return;
             }
 
             this.extensions = [];
 
+            const promises = [];
             for (const lib in global.currentProject.libs) {
-                fs.readJSON(path.join(libsDir, lib, 'module.json'))
-                .then(moduleJson => {
-                    const key = this.opts.type + 'Extends';
-                    if (key in moduleJson) {
-                        this.extensions.push(...moduleJson[key]);
-                    }
-                    this.update();
-                });
+                promises.push(
+                    fs.readJSON(path.join(libsDir, lib, 'module.json'))
+                    .then(moduleJson => {
+                        const key = this.opts.type + 'Extends';
+                        if (key in moduleJson) {
+                            this.extensions.push(...moduleJson[key]);
+                        }
+                    })
+                );
             }
+            Promise.all(promises).then(() => {
+                this.fixBrokenArrays();
+                this.update();
+            });
         };
 
+        var cachedEntity;
         this.on('update', () => {
             if (!this.opts.entity) {
                 console.error('extension-editor tag did not receive its `entity` object for editing!');
@@ -300,6 +316,10 @@ extensions-editor
             }
             if (this.opts.customextends && this.opts.customextends !== this.extensions) {
                 this.extensions = this.opts.customextends;
+            }
+            if (this.opts.entity !== cachedEntity) {
+                this.fixBrokenArrays();
+                cachedEntity = this.opts.entity;
             }
         });
 
