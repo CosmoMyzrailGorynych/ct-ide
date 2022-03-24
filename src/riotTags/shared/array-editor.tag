@@ -159,7 +159,7 @@ array-editor
             this.wire(way)(e);
         };
 
-        this.addRow = e => {
+        this.addRow = () => {
             if (['texture', 'template', 'room', 'sound'].includes(this.opts.inputtype)) {
                 this.opts.entity.push(-1);
             } else if (['point2D', 'number', 'slider', 'sliderAndNumber'].includes(this.opts.inputtype)) {

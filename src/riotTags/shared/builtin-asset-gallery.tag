@@ -142,7 +142,6 @@ builtin-asset-gallery.aPanel.aView.pad
                 meta: set[2],
                 name: set[3]
             }));
-            console.log(this.sets);
             this.update();
         });
 

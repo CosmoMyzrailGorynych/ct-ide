@@ -291,15 +291,13 @@ extensions-editor
 
             const promises = [];
             for (const lib in global.currentProject.libs) {
-                promises.push(
-                    fs.readJSON(path.join(libsDir, lib, 'module.json'))
+                promises.push(fs.readJSON(path.join(libsDir, lib, 'module.json'))
                     .then(moduleJson => {
                         const key = this.opts.type + 'Extends';
                         if (key in moduleJson) {
                             this.extensions.push(...moduleJson[key]);
                         }
-                    })
-                );
+                    }));
             }
             Promise.all(promises).then(() => {
                 this.fixBrokenArrays();
