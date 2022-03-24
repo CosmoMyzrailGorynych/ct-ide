@@ -1,7 +1,7 @@
 module-meta(onclick="{toggleModule(opts.module.name)}")
     .flexrow
         div
-            h1.nmt {opts.module.manifest.main.name}
+            h1.nmt {localizeField(opts.module.manifest.main, 'name')}
             code
                 | {opts.module.name} v{opts.module.manifest.main.version}
                 |
@@ -11,7 +11,7 @@ module-meta(onclick="{toggleModule(opts.module.name)}")
             svg.feather
                 use(xlink:href="#{opts.module.name in global.currentProject.libs? 'check' : 'x'}")
             span
-    .hsub(if="{opts.module.manifest.main.tagline}") {opts.module.manifest.main.tagline}
+    .hsub(if="{opts.module.manifest.main.tagline}") {localizeField(opts.module.manifest.main, 'tagline')}
 
     div(if="{opts.module.manifest.dependencies && opts.module.manifest.dependencies.length}")
         b {voc.dependencies}

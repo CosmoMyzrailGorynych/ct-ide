@@ -59,7 +59,7 @@ extensions-editor
         collapsible-section.aPanel(
             ext="{ext}"
             if="{ext.type === 'group'}"
-            heading="{ext.name}"
+            heading="{localizeField(ext, 'name')}"
             hlevel="{parent.opts.compact? 4 : 3}"
             defaultstate="{ext.openedByDefault? 'opened' : 'closed'}"
             storestatekey="catmod-{ext.lsKey}"
@@ -70,10 +70,10 @@ extensions-editor
                 compact="{parent.opts.compact || void 0}"
                 wide="{parent.opts.wide || void 0}"
             )
-        h1(if="{ext.type === 'h1'}") {ext.name}
-        h2(if="{ext.type === 'h2'}") {ext.name}
-        h3(if="{ext.type === 'h3'}") {ext.name}
-        h4(if="{ext.type === 'h4'}") {ext.name}
+        h1(if="{ext.type === 'h1'}") {localizeField(ext, 'name')}
+        h2(if="{ext.type === 'h2'}") {localizeField(ext, 'name')}
+        h3(if="{ext.type === 'h3'}") {localizeField(ext, 'name')}
+        h4(if="{ext.type === 'h4'}") {localizeField(ext, 'name')}
         dl(class="{compact: compact}" if="{['h1', 'h2', 'h3', 'h4', 'group'].indexOf(ext.type) === -1}")
             dt(if="{!parent.opts.intable}")
                 label.block.checkbox(if="{ext.type === 'checkbox'}")
@@ -84,23 +84,23 @@ extensions-editor
                         onchange="{wireAndNotify('this.opts.entity.'+ ext.key)}"
                         class="{invalid: ext.required && !(parent.opts.entity[ext.key] || ext.default)}"
                     )
-                    span   {ext.name}
+                    span {localizeField(ext, 'name')}
                     span.red(if="{ext.required}" title="{vocGlob.required}") *
-                    hover-hint(if="{ext.help && parent.opts.compact}" text="{ext.help}")
+                    hover-hint(if="{ext.help && parent.opts.compact}" text="{localizeField(ext, 'help')}")
                 span(if="{ext.type !== 'checkbox'}")
-                    b {ext.name}
+                    b {localizeField(ext, 'name')}
                     b :
                     span.red(if="{ext.required}" title="{vocGlob.required}") *
-                    hover-hint(if="{ext.help && parent.opts.compact}" text="{ext.help}")
+                    hover-hint(if="{ext.help && parent.opts.compact}" text="{localizeField(ext, 'help')}")
             dd(if="{ext.type === 'table'}")
                 .aTableWrap
                     table.aNiceTable(class="{wide: parent.opts.wide}")
                         tr
                             th(if="{!parent.opts.compact}") №
                             th(each="{field in ext.fields}")
-                                | {field.name}
+                                | {parent.localizeField(field, 'name')}
                                 span.red(if="{field.required}" title="{vocGlob.required}") *
-                                hover-hint(if="{field.help}" text="{field.help}")
+                                hover-hint(if="{field.help}" text="{parent.localizeField(field, 'help')}")
                             th {voc.actions}
                         tr(each="{entry, ind in parent.opts.entity[ext.key]}" no-reorder)
                             td.center(if="{!parent.parent.opts.compact}")
@@ -241,8 +241,8 @@ extensions-editor
                         checked="{parent.parent.opts.entity[ext.key] === option.value}"
                         onchange="{wireAndNotify('this.opts.entity.'+ ext.key)}"
                     )
-                    |   {option.name}
-                    div.desc(if="{option.help}") {option.help}
+                    | {parent.parent.localizeField(option, 'name')}
+                    div.desc(if="{option.help}") {parent.parent.localizeField(option, 'help')}
                 select(
                     if="{ext.type === 'select'}"
                     onchange="{wireAndNotify('this.opts.entity.'+ ext.key)}"
@@ -253,9 +253,9 @@ extensions-editor
                         value="{option.value}"
                         selected="{parent.parent.opts.entity[ext.key] === option.value}"
                         disabled="{option.value === ''}"
-                    ) {option.name}
+                    ) {parent.parent.localizeField(option, 'name')}
                 array-editor(if="{ext.type === 'array'}" inputtype="{ext.arrayType}" entity="{parent.opts.entity[ext.key]}" compact="{parent.opts.compact}")
-                .dim(if="{ext.help && !parent.opts.compact}") {ext.help}
+                .dim(if="{ext.help && !parent.opts.compact}") {localizeField(ext, 'help')}
     script.
         const libsDir = './data/ct.libs';
         const fs = require('fs-extra'),

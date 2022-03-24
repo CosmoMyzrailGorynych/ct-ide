@@ -126,9 +126,11 @@ modules-settings.aPanel.aView
             this.update();
         };
         this.checkVisibility = module => {
+            const name = this.localizeField(module, 'name').toLowerCase(),
+                  tagline = this.localizeField(module.manifest.main, 'tagline').toLowerCase();
             const visibleDueToSearch = !this.searchValue ||
-                  module.name.indexOf(this.searchValue) !== -1 ||
-                  module.manifest.main.tagline.indexOf(this.searchValue) !== -1;
+                  name.indexOf(this.searchValue.toLowerCase()) !== -1 ||
+                  tagline.indexOf(this.searchValue.toLowerCase()) !== -1;
             const visibleDueToFilters = this.pickedCategories.length === 0 ||
                   module.manifest.main.categories.find(c => this.pickedCategories.indexOf(c) !== -1);
             return visibleDueToFilters && visibleDueToSearch;

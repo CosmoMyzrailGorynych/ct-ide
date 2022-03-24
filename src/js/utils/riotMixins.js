@@ -55,6 +55,8 @@
                 riotTag.voc = space;
             }
             riotTag.vocGlob = window.languageJSON.common;
+            riotTag.vocMeta = window.languageJSON.me;
+            riotTag.localizeField = (obj, field) => obj[`${field}_${riotTag.vocMeta.id}`] || obj[field];
         };
         updateLocales();
         window.signals.on('updateLocales', updateLocales);

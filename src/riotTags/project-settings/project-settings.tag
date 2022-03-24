@@ -31,7 +31,7 @@ project-settings.aPanel.aView.pad.flexrow
             )
                 svg.feather
                     use(xlink:href=`#{getIcon(module)}`)
-                span {module.manifest.main.name}
+                span {localizeField(module.manifest.main, 'name')}
         h3(if="{currentProject.contentTypes && currentProject.contentTypes.length}") {voc.contentTypes}
         ul(if="{currentProject.contentTypes && currentProject.contentTypes.length}").aNav.vertical.nbr
             li(
@@ -49,7 +49,7 @@ project-settings.aPanel.aView.pad.flexrow
                 // This outputs a templated tag name. Magic!
                 #{name + '-settings'}
         .pad(if="{tab === 'moduleSettings' && currentModule}")
-            h1 {currentModule.manifest.main.name}
+            h1 {localizeField(currentModule.manifest.main, 'name')}
             extensions-editor(customextends="{currentModule.manifest.fields}" entity="{global.currentProject.libs[currentModule.name]}")
         content-editor(if="{tab === 'contentEntriesEditor' && currentContentType}" contenttype="{currentContentType}")
     script.
