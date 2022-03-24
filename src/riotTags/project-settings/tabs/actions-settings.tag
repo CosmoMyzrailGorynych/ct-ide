@@ -121,7 +121,7 @@ actions-settings
         // Presets
         // eslint-disable-next-line max-lines-per-function
         this.addXYMovementPreset = async () => {
-            await checkOrLoadModules(['touch', 'mouse', 'gamepad', 'keyboard', 'vkeys']);
+            await checkOrLoadModules(['pointer', 'gamepad', 'keyboard', 'vkeys']);
             window.currentProject.actions = [{
                 name: 'MoveX',
                 methods: [{
@@ -200,7 +200,7 @@ actions-settings
             }, {
                 name: 'Shoot',
                 methods: [{
-                    code: 'mouse.Left'
+                    code: 'pointer.Primary'
                 }, {
                     code: 'vkeys.Vk1'
                 }, {
@@ -210,30 +210,28 @@ actions-settings
                 }]
             }];
             this.update();
-            this.methodSelector.update();
+            this.refs.methodSelector.update();
         };
         this.addTouchAndMousePreset = async () => {
-            await checkOrLoadModules(['touch', 'mouse']);
+            await checkOrLoadModules(['pointer']);
             window.currentProject.actions = [{
                 name: 'Press',
                 methods: [{
-                    code: 'touch.Any'
-                }, {
-                    code: 'mouse.Left'
+                    code: 'pointer.Primary'
                 }]
             }, {
                 name: 'AltPress',
                 methods: [{
-                    code: 'touch.Double'
+                    code: 'pointer.Secondary'
                 }, {
-                    code: 'mouse.Right'
+                    code: 'pointer.Double'
                 }]
             }, {
                 name: 'Scale',
                 methods: [{
-                    code: 'touch.DeltaPinch'
+                    code: 'pointer.DeltaPinch'
                 }, {
-                    code: 'mouse.Wheel'
+                    code: 'pointer.Wheel'
                 }]
             }];
             this.update();
