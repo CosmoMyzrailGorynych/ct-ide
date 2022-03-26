@@ -6,7 +6,6 @@
     },
     "common": {
         "add": "Toevoegen",
-        "addtonotes": "Notitie toevoegen",
         "apply": "Toepassen",
         "cancel": "Annuleer",
         "cannotBeEmpty": "Dit kan niet leeg zijn",
@@ -14,35 +13,23 @@
         "contribute": "Bijdragen",
         "copy": "Kopiëren",
         "copyName": "Kopieer de naam",
-        "ctsite": "ct.js thuispagina",
         "cut": "Knippen",
         "delete": "Verwijderen",
         "donate": "Doneren",
         "done": "Klaar!",
         "duplicate": "Dupliceren",
         "exit": "Afsluiten",
-        "exitconfirm": "Weet u zeker dat u wilt afsluiten?<br/>Alle niet opgeslagen veranderingen raken verloren!",
-        "fastimport": "Snelle Import",
         "loading": "Laden…",
         "name": "Naam:",
-        "nametaken": "Deze naam bestaat al",
-        "newname": "Nieuwe naam:",
         "no": "Nee",
         "none": "Geen",
-        "norooms": "U heeft minimaal een kamer nodig om de app te compileren.",
-        "notfoundorunknown": "Onbekend bestand. Zorg ervoor dat het bestand echt bestaat",
         "ok": "Oké",
         "open": "Open",
-        "openproject": "Open project…",
         "paste": "Plakken",
-        "reallyexit": "Weet u zeker dat u wilt afsluiten? Alle niet opgeslagen veranderingen raken verloren!",
         "rename": "Hernoemen",
         "save": "Opslaan",
-        "savedcomm": "Uw project was succesvol opgeslagen.",
-        "saveproject": "Project opslaan",
         "select": "Selecteer…",
         "sort": "Sorteren:",
-        "tilelayer": "tegellaag",
         "wrongFormat": "Verkeerde bestandstype",
         "yes": "Ja",
         "zoom": "Zoom",
@@ -54,7 +41,91 @@
         "search": "",
         "close": "",
         "couldNotLoadFromClipboard": "",
-        "pastedFromClipboard": ""
+        "pastedFromClipboard": "",
+        "edit": "",
+        "nothingToShowFiller": "",
+        "required": "",
+        "settings": "",
+        "fieldTypes": {
+            "checkbox": "",
+            "code": "",
+            "color": "",
+            "group": "",
+            "h1": "",
+            "h2": "",
+            "h3": "",
+            "h4": "",
+            "number": "",
+            "point2D": "",
+            "radio": "",
+            "slider": "",
+            "sliderAndNumber": "",
+            "table": "",
+            "text": "",
+            "textfield": "",
+            "texture": "",
+            "template": "",
+            "room": "",
+            "sound": "",
+            "tandem": ""
+        },
+        "newName": "Nieuwe naam:",
+        "saveProject": "Project opslaan",
+        "openProject": "Open project…",
+        "savedMessage": "Uw project was succesvol opgeslagen.",
+        "reallyExitConfirm": "Weet u zeker dat u wilt afsluiten? Alle niet opgeslagen veranderingen raken verloren!",
+        "notFoundOrUnknown": "Onbekend bestand. Zorg ervoor dat het bestand echt bestaat",
+        "nameTaken": "Deze naam bestaat al",
+        "fastImport": "Snelle Import",
+        "addToNotes": "Notitie toevoegen",
+        "noRooms": "U heeft minimaal een kamer nodig om de app te compileren.",
+        "tileLayer": "tegellaag",
+        "ctSite": "ct.js thuispagina",
+        "docsShort": "",
+        "docsLong": "",
+        "openAssetGallery": "",
+        "assetTypes": {
+            "textures": [
+                "",
+                "",
+                ""
+            ],
+            "templates": [
+                "",
+                "",
+                ""
+            ],
+            "emitterTandems": [
+                "",
+                "",
+                ""
+            ],
+            "rooms": [
+                "",
+                "",
+                ""
+            ],
+            "fonts": [
+                "",
+                "",
+                ""
+            ],
+            "styles": [
+                "",
+                "",
+                ""
+            ],
+            "sounds": [
+                "",
+                "",
+                ""
+            ],
+            "skeletons": [
+                "",
+                "",
+                ""
+            ]
+        }
     },
     "colorPicker": {
         "current": "New",
@@ -91,10 +162,18 @@
         "debug": "Debug-versie",
         "export": "Exporteren",
         "exportPanel": "Exporteer het Project",
-        "firstrunnotice": "De eerste run voor elk platform zal traag zijn, omdat ct.js extra bibliotheken zal downloaden en degene opslaan die nodig zijn voor het inpakken. Het zal even duren, maar de volgende keer zal bijna onmiddellijk zijn.",
         "log": "Berichtenlog",
         "windowsCrossBuildWarning": "Om vanaf Linux / MacOS voor Windows te bouwen, moet Wine op uw systeem zijn geïnstalleerd. Installatie-instructies zijn verschillend voor verschillende platforms, dus u kunt het beter zelf googlen :)",
-        "cannotBuildForMacOnWin": "Helaas kan Windows alleen kapotte Mac-pakketten produceren. Probeer een Linux-machine te gebruiken; bijvoorbeeld als een virtuele machine. Dit kan 100% gratis!"
+        "cannotBuildForMacOnWin": "Helaas kan Windows alleen kapotte Mac-pakketten produceren. Probeer een Linux-machine te gebruiken; bijvoorbeeld als een virtuele machine. Dit kan 100% gratis!",
+        "firstRunNotice": "De eerste run voor elk platform zal traag zijn, omdat ct.js extra bibliotheken zal downloaden en degene opslaan die nodig zijn voor het inpakken. Het zal even duren, maar de volgende keer zal bijna onmiddellijk zijn.",
+        "projectTitleRequired": "",
+        "appIdRequired": "",
+        "noAndroidSdkFound": "",
+        "envVarNotice": "",
+        "downloadAndroidStudio": "",
+        "requiresInternetNotice": "",
+        "noJdkFound": "",
+        "downloadJDK": ""
     },
     "intro": {
         "loading": "Even geduld: kittens verzamelen lichtsnelheid!",
@@ -102,9 +181,9 @@
             "button": "Creëer",
             "input": "Project's naam (letters en nummers)",
             "text": "Creëer nieuwe",
-            "nameerr": "Verkeerde project naam",
             "saveProjectHere": "Sla het project hier op",
-            "selectProjectFolder": "Selecteer een map waar het project opgeslagen kan worden"
+            "selectProjectFolder": "Selecteer een map waar het project opgeslagen kan worden",
+            "nameError": "Verkeerde project naam"
         },
         "recovery": {
             "message": "<h2 class=\"nmt\">Herstel</h2><p>ct.js heeft een herstelbestand gevonden. Mogelijk werd uw project niet correct opgeslagen of werd ct.js afgesloten in geval van nood. Dit is wanneer deze bestanden voor het laatst zijn gewijzigd:</p><p>Het door u gekozen bestand: {0} {1}<br/>Herstelbestand: {2} {3}</p><p>Wlek bestand moet ct.js openen?</p>",
@@ -124,10 +203,14 @@
         "twitter": "Twitter kanaal",
         "discord": "Discord gemeenschap",
         "examples": "",
-        "createOrBrowseJunction": ""
-    },
-    "licensepanel": {
-        "ctjslicense": "Ct.js-licentie (MIT)"
+        "createOrBrowseJunction": "",
+        "cloneProject": "",
+        "github": "",
+        "itch": "",
+        "vkontakte": "",
+        "patreon": "",
+        "templates": "",
+        "templatesInfo": ""
     },
     "onboarding": {
         "hoorayHeader": "Wow! U heeft zojuist een project gecreëerd!",
@@ -150,7 +233,15 @@
             "methodModuleMissing": "The benodigde module voor deze methode mist",
             "methods": "Invoermethoden",
             "multiplier": "Vermenigvuldiger",
-            "noActionsYet": "Met acties kunnen ontwikkelaars naar verschillende invoermethoden tegelijk luisteren en deze dynamisch wijzigen, allemaal met een uniforme API. Lees meer door op het documentatie-pictogram hierboven te klikken."
+            "noActionsYet": "Met acties kunnen ontwikkelaars naar verschillende invoermethoden tegelijk luisteren en deze dynamisch wijzigen, allemaal met een uniforme API. Lees meer door op het documentatie-pictogram hierboven te klikken.",
+            "makeFromScratch": "",
+            "presets": "",
+            "presetXYMovement": "",
+            "presetTouchAndMouse": "",
+            "presetCustom": "",
+            "exportActionPreset": "",
+            "importErrorMissingModules": "",
+            "importErrorNotCtJsPreset": ""
         },
         "authoring": {
             "heading": "Auteur",
@@ -158,15 +249,15 @@
             "site": "Thuispagina:",
             "title": "Naam:",
             "version": "Versie:",
-            "versionpostfix": "Postfix:"
+            "versionPostfix": "Postfix:",
+            "appId": "",
+            "appIdExplanation": ""
         },
         "rendering": {
             "heading": "Render Opties",
             "framerate": "Framerate:",
             "highDensity": "Ondersteuning voor hoge pixeldichtheid (bijv. Op retina-schermen)",
             "maxFPS": "Maximale framerate:",
-            "usePixiLegacy": "Voeg een verouderde, canvasgebaseerde renderer toe om oudere browsers en grafische kaarten te ondersteunen (voegt ~20kb toe aan je spel)",
-            "pixelatedrender": "Schakel het vloeiend maken van afbeeldingen hier en in een geëxporteerd project uit (behoud scherpe pixels)",
             "launchMode": "Lanceer modes:",
             "launchModes": {
                 "maximized": "Maximaliseren",
@@ -174,7 +265,16 @@
                 "windowed": "Windowed"
             },
             "desktopBuilds": "",
-            "hideCursor": ""
+            "hideCursor": "",
+            "pixelatedRender": "Schakel het vloeiend maken van afbeeldingen hier en in een geëxporteerd project uit (behoud scherpe pixels)",
+            "usePixiLegacy": "",
+            "mobileBuilds": "",
+            "screenOrientation": "",
+            "screenOrientations": {
+                "unspecified": "",
+                "landscape": "",
+                "portrait": ""
+            }
         },
         "branding": {
             "heading": "Branding",
@@ -182,7 +282,12 @@
             "iconNotice": "Het moet een vierkant zijn, one-frame afbeelding die minimaal 256x256px groot is.",
             "accent": "Accent:",
             "accentNotice": "Stelt de kleur van de preloader in, evenals van enkele andere plaatsen, wanneer project gebruikt wordt als een mobiele app.",
-            "invertPreloaderScheme": "Keer het kleurenschema van de preloader om"
+            "invertPreloaderScheme": "Keer het kleurenschema van de preloader om",
+            "hideLoadingLogo": "",
+            "splashScreen": "",
+            "splashScreenNotice": "",
+            "forceSmoothIcons": "",
+            "forceSmoothSplashScreen": ""
         },
         "scripts": {
             "addNew": "Toevoegen van een nieuw Script",
@@ -207,7 +312,30 @@
                 "minify": "",
                 "obfuscate": ""
             }
-        }
+        },
+        "content": {
+            "heading": "",
+            "addContentType": "",
+            "missingTypeName": "",
+            "unnamedContentTypeHint": "",
+            "typeName": "",
+            "typeNameHint": "",
+            "typeReadableName": "",
+            "typeReadableNameHint": "",
+            "icon": "",
+            "typeSpecification": "",
+            "fieldName": "",
+            "fieldNameHint": "",
+            "fieldReadableName": "",
+            "fieldReadableNameHint": "",
+            "fieldType": "",
+            "deleteContentType": "",
+            "confirmDeletionMessage": "",
+            "gotoEntries": "",
+            "entries": "",
+            "array": ""
+        },
+        "contentTypes": ""
     },
     "modules": {
         "author": "Auteru van deze catmod",
@@ -247,121 +375,23 @@
         "create": "Creëer",
         "import": "Importeer",
         "skeletons": "Skeletanimatie",
-        "createType": "",
+        "createTemplate": "",
         "importFromClipboard": "",
-        "generatePlaceholder": ""
-    },
-    "textureview": {
-        "bgcolor": "Verander achtergrond kleur",
-        "center": "As:",
-        "cols": "Kolommen:",
-        "done": "Toepassen",
-        "fill": "Vul",
-        "form": "Botsings vorm:",
-        "frames": "Aantal frames:",
-        "isometrify": "Isometrify: Verplaats de as naar het middelste onderste punt, vul de hele sprite met een botsingsmasker",
-        "name": "Naam:",
-        "radius": "Straal:",
-        "rectangle": "Rechthoek",
-        "reimport": "Opnieuw importeren",
-        "round": "Cirkel",
-        "rows": "Rijen:",
-        "setcenter": "Centreer afbeeldingen",
-        "speed": "Framerate:",
-        "tiled": "Gebruik als achtergrond?",
-        "replacetexture": "Vervang…",
-        "corrupted": "Bestand is corrupt of mist! Nu aflsuiten.",
-        "showmask": "Masker tonen",
-        "width": "Lengte:",
-        "height": "Hoogte:",
-        "marginx": "Marge X:",
-        "marginy": "Marge Y:",
-        "offx": "Offset X:",
-        "offy": "Offset Y:",
-        "strip": "Lijnstrip / Veelhoek",
-        "removePoint": "Verwijdern het punt",
-        "closeShape": "Sluit de vorm af",
-        "addPoint": "Toevoegen van een punt",
-        "moveCenter": "Verplaatsen van as",
-        "movePoint": "Verplaats dit punt",
-        "symmetryTool": "Symmetrie tool",
-        "padding": "Opvulling:",
-        "paddingNotice": "Dit heeft invloed op de manier waarop een textuur wordt geëxporteerd: het voegt dubbele pixels toe aan de randen en voorkomt uitvloeiende artefacten op betegelde en geschaalde texturen. De standaardwaarde is meestal voldoende, maar als u texturen sterk verkleint, kan de bloeding opnieuw optreden. Verhoog deze waarde als u textuur artefacten heeft tijdens het spelen.",
-        "updateFromClipboard": "",
-        "previewAnimationNotice": ""
+        "generatePlaceholder": "",
+        "textures": ""
     },
     "sounds": {
-        "create": "Creëer"
-    },
-    "soundview": {
-        "import": "Importeer",
-        "name": "Naam:",
-        "save": "Opslaan",
-        "isMusicFile": "Dit is een muzikale track",
-        "poolSize": "Geheugen pool grootte:"
+        "create": "Creëer",
+        "record": ""
     },
     "styles": {
         "create": "Creëer",
         "styles": "Tekststijlen"
     },
-    "styleview": {
-        "active": "Activeer",
-        "alignment": "Uitlijning:",
-        "apply": "Toepassen",
-        "fill": "Vul",
-        "fillcolor": "Kleur:",
-        "fillcolor1": "Kleur 1:",
-        "fillcolor2": "Kleur 2:",
-        "fillgrad": "Verloop",
-        "fillgradtype": "Verloop type:",
-        "fillhorisontal": "Horizontaal",
-        "fillsolid": "Diffuus",
-        "filltype": "Vul type:",
-        "fillvertical": "Verticaal",
-        "font": "Lettertype",
-        "fontweight": "Breedte:",
-        "fontsize": "Lettertype grootte:",
-        "fontfamily": "Lettertypefamilie:",
-        "italic": "Cursief",
-        "lineHeight": "Linehoogte:",
-        "shadow": "Schaduw",
-        "shadowblur": "Vervaging:",
-        "shadowcolor": "Shaduw kleur:",
-        "shadowshift": "Verschuiving:",
-        "stroke": "Omlijning",
-        "strokecolor": "Omlijning kleur:",
-        "strokeweight": "Lijn breedte:",
-        "testtext": "Test tekst 0123 +",
-        "textWrap": "Woordomloop",
-        "textWrapWidth": "Maximale breedte:",
-        "useCustomFont": ""
-    },
     "fonts": {
         "fonts": "Lettertype",
         "import": "Importeer TTF",
         "italic": "Cursief"
-    },
-    "fontview": {
-        "typefacename": "Lettertype naam:",
-        "fontweight": "Lettertype breedte:",
-        "italic": "Is cursief?",
-        "reimport": "Herimporteer",
-        "generateBitmapFont": "",
-        "bitmapFont": "",
-        "bitmapFontSize": "",
-        "bitmapFontLineHeight": "",
-        "resultingBitmapFontName": "",
-        "charset": "",
-        "charsets": {
-            "punctuation": "",
-            "basicLatin": "",
-            "latinExtended": "",
-            "cyrillic": "",
-            "greekCoptic": "",
-            "custom": "",
-            "allInFont": ""
-        },
-        "customCharsetHint": ""
     },
     "particleEmitters": {
         "emittersHeading": "Deeltjesuitspuger",
@@ -431,97 +461,16 @@
         "newGridSize": "Nieuwe raster grootte:",
         "setPreviewTexture": "Zet voorbeeld textuur"
     },
-    "types": {
-        "create": "Creëer"
-    },
-    "typeview": {
-        "change": "Verander de sprite",
-        "create": "Bij Creatie",
-        "depth": "Diepte:",
-        "destroy": "Bij Vernietiging",
-        "done": "Klaar",
-        "draw": "Teken",
-        "learnAboutTypes": "Leren over code types",
-        "name": "Naam:",
-        "step": "Bij Stap",
-        "visible": ""
-    },
     "rooms": {
         "create": "Creëer een nieuwe",
-        "makestarting": "Zet als start kamer"
-    },
-    "roombackgrounds": {
-        "add": "Voeg een achtergrond toe",
-        "depth": "Diepte:",
-        "movement": "Bewegings snelheid (X, Y):",
-        "parallax": "Parallax (X, Y):",
-        "repeat": "Herhaal:",
-        "scale": "Schaal (X, Y):",
-        "shift": "Verschuif (X, Y):",
-        "notBackgroundTextureWarning": "",
-        "fixBackground": "",
-        "dismissWarning": ""
-    },
-    "roomtiles": {
-        "moveTileLayer": "Beweeg naar een nieuwe diepte",
-        "show": "Laat de laag zien",
-        "hide": "Verberg de laag",
-        "findTileset": "Zoek een tegelset"
-    },
-    "roomview": {
-        "name": "Naam:",
-        "width": "Venster breedte:",
-        "height": "Venster hoogte:",
-        "events": "Kamer evenementen",
-        "copies": "Kopieën",
-        "backgrounds": "Achtergrond",
-        "tiles": "Tegels",
-        "add": "Toevoegen",
-        "none": "Niks",
-        "done": "Klaar",
-        "grid": "Raster instellen",
-        "gridoff": "Raster uitschakelen",
-        "gridsize": "Raster grootte:",
-        "hotkeysNotice": "Ctrl = Verwijder, Alt = Geen raster, Shift = Meerdere",
-        "hotkeysNoticeMovement": "Ctrl = Verwijder, Shift = Selecteer",
-        "tocenter": "Centreren",
-        "selectbg": "Selecteer tegelset",
-        "shift": "Verschuif het venster",
-        "shifttext": "Verschuif met:",
-        "step": "Bij Stap",
-        "create": "Bij Creatie",
-        "leave": "Bij Vertrek",
-        "draw": "Teken",
-        "newdepth": "Nieuwe diepte:",
-        "deletecopy": "Verwijder kopie {0}",
-        "deleteCopies": "Verwijder kopieën",
-        "shiftCopies": "Verschuif kopieën",
-        "selectAndMove": "Selecteer en Beweeg",
-        "changecopyscale": "Verander schaal",
-        "shiftcopy": "Zet coördinaten",
-        "deletetile": "Verwijder een tegel",
-        "deletetiles": "Verwijder tegels",
-        "movetilestolayer": "Beweeg naar laag",
-        "shifttiles": "Verschuif tegels",
-        "findTileset": "Zoek een tegelset",
-        "changecopyrotation": "",
-        "properties": "",
-        "isUi": "",
-        "backgroundColor": "",
-        "sortHorizontally": "",
-        "sortVertically": "",
-        "copyProperties": {
-            "position": "",
-            "rotation": "",
-            "scale": ""
-        }
+        "makeStarting": "Zet als start kamer"
     },
     "notepad": {
         "local": "Project's notitieblok",
         "global": "Globaal notitieblok",
-        "helppages": "Help",
         "backToHome": "Terug naar documentatie thuispagina",
-        "modulespages": ""
+        "modulesPages": "",
+        "helpPages": "Help"
     },
     "patreon": {
         "aboutPatrons": "Patrons zijn mensen die hun steun betuigen aan ComigoGames op Patreon, in de vorm van terugkerende donaties. Niet iedereen daar komt voor ct.js; sommigen gebruiken andere apps van ComigoGames. Tip: als je een maker bent en via Patreon aan ComigoGames doneert, krijg je hier een link naar je pagina - dat is mijn kleine hulp voor je creaties :)",
@@ -565,7 +514,12 @@
     },
     "extensionsEditor": {
         "noEntries": "",
-        "addRow": ""
+        "addRow": "",
+        "actions": "",
+        "values": "",
+        "moveDown": "",
+        "moveUp": "",
+        "deleteRow": ""
     },
     "textureGenerator": {
         "name": "",
@@ -581,7 +535,12 @@
         "filler": "",
         "fillerNone": "",
         "fillerCross": "",
-        "fillerLabel": ""
+        "fillerLabel": "",
+        "form": "",
+        "formRectangular": "",
+        "formRound": "",
+        "formDiamond": "",
+        "fillerArrow": ""
     },
     "textureInput": {
         "jumpToTexture": "",
@@ -613,7 +572,9 @@
         "deploy": {
             "exportDesktop": "Exporteer voor desktop",
             "successZipExport": "{0} is succesvol geëxporteerd.",
-            "zipExport": "Exporteer naar het web"
+            "zipExport": "Exporteer naar het web",
+            "heading": "",
+            "exportAndroid": ""
         },
         "latestProjects": {
             "recentProjects": "Recente projecten"
@@ -650,12 +611,18 @@
             "openExample": "",
             "startScreen": "Keer terug naar het start scherm",
             "successZipProject": "Het project is succesvol naar {0} ingepakt.",
-            "zipProject": "Project inpakken naar .zip"
+            "zipProject": "Project inpakken naar .zip",
+            "heading": ""
         },
         "meta": {
             "license": "License",
             "visitDiscordForGamedevSupport": "Word lid van de Discord-server voor gameontwikkelings-ondersteuning",
-            "openIconList": ""
+            "openIconList": "",
+            "heading": "",
+            "twitter": "",
+            "vkontakte": "",
+            "ctjsForum": "",
+            "openStylebook": ""
         }
     },
     "appView": {
@@ -669,8 +636,258 @@
         "sounds": "Geluiden",
         "ui": "UI",
         "fx": "FX",
-        "types": "Soorten",
         "restart": "",
-        "project": ""
+        "project": "",
+        "templates": "Soorten"
+    },
+    "copyCustomProperties": {
+        "customProperties": "",
+        "addProperty": "",
+        "property": "",
+        "value": "",
+        "delete": ""
+    },
+    "assetViewer": {
+        "addNewGroup": "",
+        "ungrouped": "",
+        "newGroupName": "",
+        "groupDeletionConfirmation": ""
+    },
+    "groupEditor": {
+        "groupEditor": "",
+        "icon": "",
+        "color": ""
+    },
+    "soundRecorder": {
+        "recorderHeading": "",
+        "record": "",
+        "stopRecording": "",
+        "discardRecording": "",
+        "finishRecording": "",
+        "cannotRecordSound": "",
+        "troubleshootingWindows": ""
+    },
+    "roomBackgrounds": {
+        "add": "Voeg een achtergrond toe",
+        "depth": "Diepte:",
+        "movement": "Bewegings snelheid (X, Y):",
+        "parallax": "Parallax (X, Y):",
+        "repeat": "Herhaal:",
+        "scale": "Schaal (X, Y):",
+        "shift": "Verschuif (X, Y):",
+        "notBackgroundTextureWarning": "",
+        "fixBackground": "",
+        "dismissWarning": ""
+    },
+    "roomTiles": {
+        "moveTileLayer": "Beweeg naar een nieuwe diepte",
+        "show": "Laat de laag zien",
+        "hide": "Verberg de laag",
+        "findTileset": "Zoek een tegelset"
+    },
+    "roomView": {
+        "name": "Naam:",
+        "width": "Venster breedte:",
+        "height": "Venster hoogte:",
+        "events": "Kamer evenementen",
+        "copies": "Kopieën",
+        "backgrounds": "Achtergrond",
+        "tiles": "Tegels",
+        "add": "Toevoegen",
+        "none": "Niks",
+        "done": "Klaar",
+        "grid": "Raster instellen",
+        "hotkeysNotice": "Ctrl = Verwijder, Alt = Geen raster, Shift = Meerdere",
+        "hotkeysNoticeMovement": "Ctrl = Verwijder, Shift = Selecteer",
+        "shift": "Verschuif het venster",
+        "step": "Bij Stap",
+        "create": "Bij Creatie",
+        "leave": "Bij Vertrek",
+        "draw": "Teken",
+        "deleteCopies": "Verwijder kopieën",
+        "shiftCopies": "Verschuif kopieën",
+        "selectAndMove": "Selecteer en Beweeg",
+        "findTileset": "Zoek een tegelset",
+        "properties": "",
+        "isUi": "",
+        "backgroundColor": "",
+        "sortHorizontally": "",
+        "sortVertically": "",
+        "copyProperties": {
+            "position": "",
+            "rotation": "",
+            "scale": ""
+        },
+        "customProperties": "",
+        "restrictCamera": "",
+        "minimumX": "",
+        "minimumY": "",
+        "maximumX": "",
+        "maximumY": "",
+        "gridOff": "Raster uitschakelen",
+        "gridSize": "Raster grootte:",
+        "toCenter": "Centreren",
+        "shiftLabel": "Verschuif met:",
+        "newDepth": "Nieuwe diepte:",
+        "deleteCopy": "Verwijder kopie {0}",
+        "changeCopyScale": "Verander schaal",
+        "shiftCopy": "Zet coördinaten",
+        "deleteTile": "Verwijder een tegel",
+        "deleteTiles": "Verwijder tegels",
+        "moveTilesToLayer": "Beweeg naar laag",
+        "shiftTiles": "Verschuif tegels",
+        "changeCopyRotation": ""
+    },
+    "styleView": {
+        "active": "Activeer",
+        "alignment": "Uitlijning:",
+        "apply": "Toepassen",
+        "fill": "Vul",
+        "font": "Lettertype",
+        "italic": "Cursief",
+        "lineHeight": "Linehoogte:",
+        "shadow": "Schaduw",
+        "stroke": "Omlijning",
+        "textWrap": "Woordomloop",
+        "textWrapWidth": "Maximale breedte:",
+        "useCustomFont": "",
+        "code": "",
+        "copyCode": "",
+        "fillColor": "Kleur:",
+        "fillColor1": "Kleur 1:",
+        "fillColor2": "Kleur 2:",
+        "fillGrad": "Verloop",
+        "fillGradType": "Verloop type:",
+        "fillHorizontal": "Horizontaal",
+        "fillSolid": "Diffuus",
+        "fillType": "Vul type:",
+        "fillVertical": "Verticaal",
+        "fontWeight": "Breedte:",
+        "shadowBlur": "Vervaging:",
+        "shadowColor": "Shaduw kleur:",
+        "shadowShift": "Verschuiving:",
+        "strokeColor": "Omlijning kleur:",
+        "strokeWeight": "Lijn breedte:",
+        "testText": "Test tekst 0123 +",
+        "fontFamily": "Lettertypefamilie:",
+        "fontSize": "Lettertype grootte:"
+    },
+    "textureView": {
+        "center": "As:",
+        "cols": "Kolommen:",
+        "done": "Toepassen",
+        "fill": "Vul",
+        "form": "Botsings vorm:",
+        "frames": "Aantal frames:",
+        "isometrify": "Isometrify: Verplaats de as naar het middelste onderste punt, vul de hele sprite met een botsingsmasker",
+        "name": "Naam:",
+        "radius": "Straal:",
+        "rectangle": "Rechthoek",
+        "reimport": "Opnieuw importeren",
+        "round": "Cirkel",
+        "rows": "Rijen:",
+        "speed": "Framerate:",
+        "tiled": "Gebruik als achtergrond?",
+        "corrupted": "Bestand is corrupt of mist! Nu aflsuiten.",
+        "width": "Lengte:",
+        "height": "Hoogte:",
+        "strip": "Lijnstrip / Veelhoek",
+        "removePoint": "Verwijdern het punt",
+        "closeShape": "Sluit de vorm af",
+        "addPoint": "Toevoegen van een punt",
+        "moveCenter": "Verplaatsen van as",
+        "movePoint": "Verplaats dit punt",
+        "symmetryTool": "Symmetrie tool",
+        "padding": "Opvulling:",
+        "paddingNotice": "Dit heeft invloed op de manier waarop een textuur wordt geëxporteerd: het voegt dubbele pixels toe aan de randen en voorkomt uitvloeiende artefacten op betegelde en geschaalde texturen. De standaardwaarde is meestal voldoende, maar als u texturen sterk verkleint, kan de bloeding opnieuw optreden. Verhoog deze waarde als u textuur artefacten heeft tijdens het spelen.",
+        "updateFromClipboard": "",
+        "previewAnimationNotice": "",
+        "showFrameIndices": "",
+        "pasteCollisionMask": "",
+        "copyCollisionMask": "",
+        "bgColor": "Verander achtergrond kleur",
+        "setCenter": "Centreer afbeeldingen",
+        "replaceTexture": "Vervang…",
+        "showMask": "Masker tonen",
+        "marginX": "Marge X:",
+        "marginY": "Marge Y:",
+        "offX": "Offset X:",
+        "offY": "Offset Y:"
+    },
+    "soundView": {
+        "import": "Importeer",
+        "name": "Naam:",
+        "save": "Opslaan",
+        "isMusicFile": "Dit is een muzikale track",
+        "poolSize": "Geheugen pool grootte:"
+    },
+    "fontView": {
+        "italic": "Is cursief?",
+        "reimport": "Herimporteer",
+        "generateBitmapFont": "",
+        "bitmapFont": "",
+        "bitmapFontSize": "",
+        "bitmapFontLineHeight": "",
+        "resultingBitmapFontName": "",
+        "charset": "",
+        "charsets": {
+            "punctuation": "",
+            "basicLatin": "",
+            "latinExtended": "",
+            "cyrillic": "",
+            "greekCoptic": "",
+            "custom": "",
+            "allInFont": ""
+        },
+        "customCharsetHint": "",
+        "fontWeight": "Lettertype breedte:",
+        "typefaceName": "Lettertype naam:"
+    },
+    "licensePanel": {
+        "ctjsLicense": "Ct.js-licentie (MIT)"
+    },
+    "templates": {
+        "create": "Creëer"
+    },
+    "templateView": {
+        "change": "Verander de sprite",
+        "create": "Bij Creatie",
+        "depth": "Diepte:",
+        "destroy": "Bij Vernietiging",
+        "done": "Klaar",
+        "draw": "Teken",
+        "learnAboutTypes": "Leren over code types",
+        "name": "Naam:",
+        "step": "Bij Stap",
+        "visible": "",
+        "appearance": "",
+        "opacity": "",
+        "blendMode": "",
+        "playAnimationOnStart": "",
+        "blendModes": {
+            "normal": "",
+            "add": "",
+            "multiply": "",
+            "screen": ""
+        }
+    },
+    "assetInput": {
+        "changeAsset": "",
+        "jumpToAsset": "",
+        "selectAssetHeader": ""
+    },
+    "builtinAssetGallery": {
+        "galleryTip": "",
+        "assetGalleryHeader": "",
+        "importIntoProject": "",
+        "importAll": "",
+        "byAuthorPrefix": "",
+        "cannotImportExplanation": "",
+        "nameOccupied": "",
+        "cannotImportNameOccupied": "",
+        "visitSource": "",
+        "visitAuthorsItch": "",
+        "visitAuthorsTwitter": "",
+        "tipAuthor": ""
     }
 }

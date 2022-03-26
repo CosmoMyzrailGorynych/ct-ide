@@ -1,5 +1,5 @@
 ---
-name: Enhancement
+name: ⚡️ Enhancement
 about: Suggest an improvement to the existing features
 title: ''
 labels: type:enhancement

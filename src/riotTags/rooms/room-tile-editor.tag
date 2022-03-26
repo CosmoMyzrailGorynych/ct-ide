@@ -9,7 +9,7 @@ room-tile-editor.room-editor-Tiles.tabbed.tall.flexfix
     .flexfix-footer
         button.inline.wide(onclick="{switchTiledImage}")
             svg.feather
-                use(xlink:href="data/icons.svg#search")
+                use(xlink:href="#search")
             span {voc.findTileset}
         .flexrow
             select.wide(onchange="{changeTileLayer}" value="{parent.currentTileLayerId}")
@@ -17,19 +17,25 @@ room-tile-editor.room-editor-Tiles.tabbed.tall.flexfix
 
             span.act(title="{vocGlob.delete}" onclick="{deleteTileLayer}")
                 svg.feather
-                    use(xlink:href="data/icons.svg#trash")
+                    use(xlink:href="#trash")
             span.act(title="{parent.currentTileLayer.hidden? voc.show: voc.hide}" onclick="{toggleTileLayer}")
                 svg.feather
-                    use(xlink:href="data/icons.svg#{parent.currentTileLayer.hidden? 'eye' : 'eye-off'}")
+                    use(xlink:href="#{parent.currentTileLayer.hidden? 'eye' : 'eye-off'}")
             span.act(title="{voc.moveTileLayer}" onclick="{moveTileLayer}")
                 svg.feather
-                    use(xlink:href="data/icons.svg#shuffle")
+                    use(xlink:href="#shuffle")
             span.act(title="{vocGlob.add}" onclick="{addTileLayer}")
                 svg.feather
-                    use(xlink:href="data/icons.svg#plus")
+                    use(xlink:href="#plus")
         .block
             extensions-editor(type="tileLayer" entity="{parent.currentTileLayer.extends}" compact="yep" wide="sure")
-    texture-selector(ref="tilesetPicker" if="{pickingTileset}" oncancelled="{onTilesetCancel}" onselected="{onTilesetSelected}")
+    asset-selector(
+        ref="tilesetPicker"
+        if="{pickingTileset}"
+        assettype="textures"
+        oncancelled="{onTilesetCancel}"
+        onselected="{onTilesetSelected}"
+    )
     script.
         this.parent.tileX = 0;
         this.parent.tileY = 0;
@@ -46,7 +52,7 @@ room-tile-editor.room-editor-Tiles.tabbed.tall.flexfix
         [this.parent.currentTileLayer] = this.opts.room.tiles;
         this.parent.currentTileLayerId = 0;
 
-        this.namespace = 'roomtiles';
+        this.namespace = 'roomTiles';
         this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
 
@@ -54,7 +60,7 @@ room-tile-editor.room-editor-Tiles.tabbed.tall.flexfix
             window.alertify
             .okBtn(window.languageJSON.common.delete)
             .cancelBtn(window.languageJSON.common.cancel)
-            .confirm(window.languageJSON.common.confirmDelete.replace('{0}', window.languageJSON.common.tilelayer))
+            .confirm(window.languageJSON.common.confirmDelete.replace('{0}', window.languageJSON.common.tileLayer))
             .then(e => {
                 if (e.buttonClicked === 'ok') {
                     var tiles = this.opts.room;
@@ -78,7 +84,7 @@ room-tile-editor.room-editor-Tiles.tabbed.tall.flexfix
         this.moveTileLayer = () => {
             window.alertify
             .defaultValue(this.parent.currentTileLayer.depth)
-            .prompt(window.languageJSON.roomview.newdepth)
+            .prompt(window.languageJSON.roomView.newDepth)
             .then(e => {
                 if (e.inputValue && Number(e.inputValue)) {
                     this.parent.currentTileLayer.depth = Number(e.inputValue);
@@ -91,7 +97,7 @@ room-tile-editor.room-editor-Tiles.tabbed.tall.flexfix
         this.addTileLayer = () => {
             window.alertify
             .defaultValue(-10)
-            .prompt(window.languageJSON.roomview.newdepth)
+            .prompt(window.languageJSON.roomView.newDepth)
             .then(e => {
                 if (e.inputValue && Number(e.inputValue)) {
                     var layer = {
@@ -125,8 +131,9 @@ room-tile-editor.room-editor-Tiles.tabbed.tall.flexfix
             this.pickingTileset = false;
             this.update();
         };
-        this.onTilesetSelected = texture => () => {
-            this.parent.currentTileset = texture;
+        this.onTilesetSelected = textureId => {
+            const textures = require('./data/node_requires/resources/textures');
+            this.parent.currentTileset = textures.getById(textureId);
             this.pickingTileset = false;
             this.redrawTileset();
             this.update();

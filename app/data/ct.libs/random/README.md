@@ -44,3 +44,45 @@ console.log(this.randomizer());
 console.log(this.randomizer());
 console.log(this.randomizer());
 ```
+
+## Non-uniform distribution
+
+### `ct.random.histogram(...histogram)`
+
+Returns a weighted random number from 0 to 1 according to a given histogram of frequency.
+Each argument defines the probability of a random value to appear in a bucket.
+Values are uniformly distributed inside each bucket, but overall distribution
+depends on your histogram.
+
+**Examples:**
+
+```js
+// Two arguments create two buckets with ranges [0;0.5) and [0.5;1).
+// The first bucket has a weight of 1, the second one has a weight of 10.
+// This returns values in a range [0.5;1) ten times more often than in [0;0.5).
+console.log(ct.random.histogram(1, 10));
+```
+```js
+// Three arguments make buckets [0;0.333), [0.333;0.667), and [0.667;1).
+// The method will return values in the range [0.333;0.667) ten times more often
+// than in the range [0;0.333) and five times more often than in the range [0.667;1).
+console.log(ct.random.histogram(1, 10, 2));
+```
+```js
+// Four buckets: [0;0.25), [0.25;0.5), [0.5;0.75), and [0.75;1).
+// Because two of the buckets have 0 probability to return a value,
+// you will only get values between [0;0.25) and [0.75;1).
+console.log(ct.random.histogram(1, 0, 0, 1))
+```
+
+### `ct.random.optimistic(exp)`
+
+Returns a random value from 0 to 1 that tends to be close to 1.
+`exp` is an optional value that sets the power of the effect.
+This value should be larger than 1, and equals to 2 by default.
+
+### `ct.random.pessimistic(exp)`
+
+Returns a random value from 0 to 1 that tends to be close to 0.
+`exp` is an optional value that sets the power of the effect.
+This value should be larger than 1, and equals to 2 by default.

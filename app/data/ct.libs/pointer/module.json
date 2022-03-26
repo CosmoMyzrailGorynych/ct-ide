@@ -1,0 +1,52 @@
+{
+    "main": {
+        "name": "Pointer",
+        "name_Ru": "Указатель",
+        "tagline": "A uniform API for any type of pointer devices, be it touchscreens, pen tablets, or mouse.",
+        "tagline_Ru": "Единый API для всех видов указателей — мышек, тач-экранов, графических планшетов и т.д.",
+        "version": "1.0.0",
+        "authors": [{
+            "name": "Cosmo Myzrail Gorynych",
+            "mail": "admin@nersta.ru"
+        }],
+        "categories": [
+            "inputs"
+        ]
+    },
+    "fields": [{
+        "name": "Do not cancel standard browser events",
+        "name_Ru": "Не отключать стандартные действия браузера",
+        "key": "preventdefault",
+        "id": "preventdefault",
+        "help": "Will leave browser scrolling, panning, and context menus enabled.",
+        "help_Ru": "Разрешит прокрутку, перемещение вида, стандартные контекстные меню.",
+        "default": false,
+        "type": "checkbox"
+    }, {
+        "name": "Start with locking mode",
+        "name_Ru": "Запустить в режиме захвата",
+        "key": "startlocked",
+        "id": "startlocked",
+        "help": "Will lock the first click inside the game. Read about locking mode in sidebar's docs.",
+        "help_Ru": "Заблокирует курсор при первом клике внутри игры. Узнай больше о работе в режиме захвата в документации к модулю в боковой панели.",
+        "default": false,
+        "type": "checkbox"
+    }],
+    "inputMethods": {
+        "Any": "Any press",
+        "Primary": "Primary button press",
+        "Middle": "Middle button press",
+        "Secondary": "Secondary button press",
+        "ExtraOne": "First extra button press (\"back\" button)",
+        "ExtraTwo": "Second extra button press (\"forward\" button)",
+        "Eraser": "Pen's eraser button",
+        "Double": "Double press",
+        "Triple": "Triple press",
+        "DeltaPinch": "Pinch",
+        "DeltaRotation": "Rotation",
+        "PanX": "Panning by X",
+        "PanY": "Panning by Y",
+        "Wheel": "Mouse wheel"
+    },
+    "optionalDependencies": ["place"]
+}

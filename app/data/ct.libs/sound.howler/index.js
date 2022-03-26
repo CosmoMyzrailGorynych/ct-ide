@@ -47,16 +47,18 @@
         if (formats.ogg && formats.ogg.slice(-4) === '.ogg') {
             sounds.push(formats.ogg);
         }
+        // Do not use music preferences for ct.js debugger
+        var isMusic = !navigator.userAgent.startsWith('ct.js') && options.music;
         var howl = new Howl({
             src: sounds,
             autoplay: false,
-            preload: !options.music,
-            html5: Boolean(options.music),
+            preload: !isMusic,
+            html5: isMusic,
             loop: options.loop,
             pool: options.poolSize || 5,
 
             onload: function () {
-                if (!options.music) {
+                if (!isMusic) {
                     ct.res.soundsLoaded++;
                 }
             },
@@ -67,7 +69,7 @@
                     (formats.wav || formats.mp3 || formats.ogg) + '!');
             }
         });
-        if (options.music) {
+        if (isMusic) {
             ct.res.soundsLoaded++;
         }
         ct.res.sounds[name] = howl;

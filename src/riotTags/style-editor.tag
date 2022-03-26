@@ -1,13 +1,13 @@
-style-editor.panel.view
+style-editor.aPanel.aView
     #styleleft.tall.flexfix
         .flexfix-header
-            .panel.pad
+            .aPanel.pad
                 b {vocGlob.name}
                 br
                 input.wide(type="text" value="{styleobj.name}" onchange="{wire('this.styleobj.name')}")
-                .anErrorNotice(if="{nameTaken}" ref="errorNotice") {vocGlob.nametaken}
+                .anErrorNotice(if="{nameTaken}" ref="errorNotice") {vocGlob.nameTaken}
         .tabwrap.flexfix-body
-            ul.nav.tabs.nogrow.noshrink
+            ul.aNav.tabs.nogrow.noshrink
                 li(onclick="{changeTab('stylefont')}" class="{active: tab === 'stylefont'}") {voc.font}
                 li(onclick="{changeTab('stylefill')}" class="{active: tab === 'stylefill'}") {voc.fill}
                 li(onclick="{changeTab('stylestroke')}" class="{active: tab === 'stylestroke'}") {voc.stroke}
@@ -16,19 +16,19 @@ style-editor.panel.view
                 #stylefontinner
                     fieldset
                         label
-                            b {voc.fontfamily}
+                            b {voc.fontFamily}
                             input#fontfamily.wide(type="text" value="{styleobj.font.family || 'sans-serif'}" onchange="{wire('this.styleobj.font.family')}")
                         button(onclick="{openCustomFontSelector}")
                             svg.feather
-                                use(xlink:href="data/icons.svg#font")
+                                use(xlink:href="#font")
                             span {voc.useCustomFont}
                         .clear
                         label.fifty.npl.nmt
-                            b {voc.fontsize}
+                            b {voc.fontSize}
                             br
                             input#fontsize.wide(type="number" value="{styleobj.font.size || '12'}" onchange="{wire('this.styleobj.font.size')}" oninput="{wire('this.styleobj.font.size')}" step="1")
                         label.fifty.npr.nmt
-                            b {voc.fontweight}
+                            b {voc.fontWeight}
                             br
                             select.wide(value="{styleobj.font.weight}" onchange="{wire('this.styleobj.font.weight')}")
                                 each val in [100, 200, 300, 400, 500, 600, 700, 800, 900]
@@ -42,13 +42,13 @@ style-editor.panel.view
                         .align.buttonselect
                             button#middleleft.inline.nml(onclick="{styleSetAlign('left')}" class="{active: this.styleobj.font.halign === 'left'}")
                                 svg.feather
-                                    use(xlink:href="data/icons.svg#align-left")
+                                    use(xlink:href="#align-left")
                             button#middlecenter.inline(onclick="{styleSetAlign('center')}" class="{active: this.styleobj.font.halign === 'center'}")
                                 svg.feather
-                                    use(xlink:href="data/icons.svg#align-center")
+                                    use(xlink:href="#align-center")
                             button#middleright.inline(onclick="{styleSetAlign('right')}" class="{active: this.styleobj.font.halign === 'right'}")
                                 svg.feather
-                                    use(xlink:href="data/icons.svg#align-right")
+                                    use(xlink:href="#align-right")
                         label
                             b {voc.lineHeight}
                             br
@@ -67,43 +67,43 @@ style-editor.panel.view
                     span {voc.active}
                 #stylefillinner(if="{styleobj.fill}")
                     fieldset
-                        b {voc.filltype}
+                        b {voc.fillType}
                         label.checkbox
                             input(type="radio" value="0" name="filltype" checked="{styleobj.fill.type == 0}" onchange="{wire('this.styleobj.fill.type')}")
-                            span {voc.fillsolid}
+                            span {voc.fillSolid}
                         label.checkbox
                             input(type="radio" value="1" name="filltype" checked="{styleobj.fill.type == 1}" onchange="{wire('this.styleobj.fill.type')}")
-                            span {voc.fillgrad}
+                            span {voc.fillGrad}
                     fieldset
                         .solidfill(if="{styleobj.fill.type == 0}")
-                            b {voc.fillcolor}
+                            b {voc.fillColor}
                             br
                             color-input(onchange="{wire('this.styleobj.fill.color', true)}" color="{styleobj.fill.color}")
                         .gradientfill(if="{styleobj.fill.type == 1}")
                             .fifty.npl.npt
-                                b {voc.fillcolor1}
+                                b {voc.fillColor1}
                                 color-input(onchange="{wire('this.styleobj.fill.color1', true)}" color="{styleobj.fill.color1}")
                             .fifty.npr.npt
-                                b {voc.fillcolor2}
+                                b {voc.fillColor2}
                                 color-input(onchange="{wire('this.styleobj.fill.color2', true)}" color="{styleobj.fill.color2}")
                             .clear
-                            b {voc.fillgradtype}
+                            b {voc.fillGradType}
                             label.checkbox
                                 input(type="radio" value="2" name="fillgradtype" onchange="{wire('this.styleobj.fill.gradtype')}")
-                                span {voc.fillhorisontal}
+                                span {voc.fillHorizontal}
                             label.checkbox
                                 input(type="radio" value="1" name="fillgradtype" onchange="{wire('this.styleobj.fill.gradtype')}")
-                                span {voc.fillvertical}
+                                span {voc.fillVertical}
             #stylestroke.tabbed(show="{tab === 'stylestroke'}")
                 label.checkbox
                     input#iftochangestroke(type="checkbox" checked="{'stroke' in styleobj}" onchange="{styleToggleStroke}")
                     span {voc.active}
                 #stylestrokeinner(if="{styleobj.stroke}")
                     fieldset
-                        b {voc.strokecolor}
+                        b {voc.strokeColor}
                         color-input(onchange="{wire('this.styleobj.stroke.color', true)}" color="{styleobj.stroke.color}")
                     fieldset
-                        b {voc.strokeweight}
+                        b {voc.strokeWeight}
                         br
                         input#strokeweight(type="number" value="{styleobj.stroke.weight}" onchange="{wire('this.styleobj.stroke.weight')}" oninput="{wire('this.styleobj.stroke.weight')}")
                     #strokeweightslider
@@ -113,29 +113,46 @@ style-editor.panel.view
                     span {voc.active}
                 #styleshadowinner(if="{styleobj.shadow}")
                     fieldset
-                        b {voc.shadowcolor}
+                        b {voc.shadowColor}
                         color-input(onchange="{wire('this.styleobj.shadow.color', true)}" color="{styleobj.shadow.color}")
                     fieldset
-                        b {voc.shadowshift}
+                        b {voc.shadowShift}
                         br
                         input#shadowx.short(type="number" value="{styleobj.shadow.x}" onchange="{wire('this.styleobj.shadow.x')}" oninput="{wire('this.styleobj.shadow.x')}")
                         | ×
                         input#shadowy.short(type="number" value="{styleobj.shadow.y}" onchange="{wire('this.styleobj.shadow.y')}" oninput="{wire('this.styleobj.shadow.y')}")
                     fieldset
-                        b {voc.shadowblur}
+                        b {voc.shadowBlur}
                         br
                         input#shadowblur(type="number" value="{styleobj.shadow.blur}" min="0" onchange="{wire('this.styleobj.shadow.blur')}" oninput="{wire('this.styleobj.shadow.blur')}")
         .flexfix-footer
+            .aPanel.pad
+                .flexrow
+                    h3 {voc.code}
+                    .aSpacer
+                    button.inline.nogrow(onclick="{copyCode}")
+                        svg.feather
+                            use(xlink:href="#copy")
+                        span {voc.copyCode}
+                textarea.wide(disabled="true" ref="codeField")
+                    | this.textLabel = new PIXI.Text('Your text here', ct.styles.get('{styleobj.name}'));
+                    | {'\n'}this.addChild(this.textLabel);
+
             button.wide.nogrow.noshrink(onclick="{styleSave}" title="Shift+Control+S" data-hotkey="Control+S")
                 svg.feather
-                    use(xlink:href="data/icons.svg#check")
+                    use(xlink:href="#check")
                 span {voc.apply}
     #stylepreview.tall(ref="canvasSlot")
-    font-selector(if="{selectingFont}" onselected="{applyFont}" oncancelled="{cancelCustomFontSelector}")
+    asset-selector(
+        if="{selectingFont}"
+        assettype="fonts"
+        onselected="{applyFont}"
+        oncancelled="{cancelCustomFontSelector}"
+    )
     script.
         const fs = require('fs-extra');
 
-        this.namespace = 'styleview';
+        this.namespace = 'styleView';
         this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
         this.styleobj = this.opts.styleobj;
@@ -161,8 +178,8 @@ style-editor.panel.view
             });
             this.refs.canvasSlot.appendChild(this.pixiApp.view);
 
-            var labelShort = window.languageJSON.styleview.testtext,
-                labelMultiline = window.languageJSON.styleview.testtext.repeat(2) + '\n' + window.languageJSON.styleview.testtext.repeat(3) + '\n' + window.languageJSON.styleview.testtext,
+            var labelShort = window.languageJSON.styleView.testText,
+                labelMultiline = window.languageJSON.styleView.testText.repeat(2) + '\n' + window.languageJSON.styleView.testText.repeat(3) + '\n' + window.languageJSON.styleView.testText,
                 labelLong = 'A quick blue cat jumps over the lazy frog. 0123456789 '.repeat(3),
                 labelThumbnail = 'Aa';
             this.pixiStyle = new PIXI.TextStyle();
@@ -203,12 +220,19 @@ style-editor.panel.view
             this.selectingFont = false;
             this.update();
         };
-        this.applyFont = font => () => {
+        const fonts = require('./data/node_requires/resources/fonts');
+        this.applyFont = fontId => {
             this.selectingFont = false;
+            const font = fonts.getById(fontId);
             this.styleobj.font.family = `"CTPROJFONT${font.typefaceName}", "${font.typefaceName}", sans-serif`;
             this.styleobj.font.weight = font.weight;
             this.styleobj.font.italic = font.italic;
             this.update();
+        };
+
+        this.copyCode = () => {
+            nw.Clipboard.get().set(this.refs.codeField.value);
+            alertify.success(this.vocGlob.done);
         };
 
         this.styleSetAlign = align => () => {
@@ -271,6 +295,7 @@ style-editor.panel.view
                 this.parent.editingStyle = false;
                 this.parent.update();
             });
+            require('./data/node_requires/glob').modified = true;
             return true;
         };
 

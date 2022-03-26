@@ -5,7 +5,7 @@ room-backgrounds-editor.room-editor-Backgrounds.tabbed.tall
             span
                 span(class="{active: detailedBackground === background}" onclick="{editBackground}")
                     svg.feather
-                        use(xlink:href="data/icons.svg#settings")
+                        use(xlink:href="#settings")
                 | {getTextureFromId(background.texture).name} ({background.depth})
             .clear
             .anErrorNotice(if="{background.texture && background.texture !== -1 && !getTextureFromId(background.texture).tiled && !getTextureFromId(background.texture).ignoreTiledUse}")
@@ -59,9 +59,15 @@ room-backgrounds-editor.room-editor-Backgrounds.tabbed.tall
 
     button.inline.wide(onclick="{addBg}")
         svg.feather
-            use(xlink:href="data/icons.svg#plus")
+            use(xlink:href="#plus")
         span {voc.add}
-    texture-selector(ref="texturePicker" if="{pickingBackground}" oncancelled="{onTextureCancel}" onselected="{onTextureSelected}")
+    asset-selector(
+        ref="texturePicker"
+        if="{pickingBackground}"
+        assettype="textures"
+        oncancelled="{onTextureCancel}"
+        onselected="{onTextureSelected}"
+    )
     context-menu(menu="{roomBgMenu}" ref="roomBgMenu")
     script.
         const glob = require('./data/node_requires/glob');
@@ -72,7 +78,7 @@ room-backgrounds-editor.room-editor-Backgrounds.tabbed.tall
         this.getTexturePreview = getTexturePreview;
 
         this.pickingBackground = false;
-        this.namespace = 'roombackgrounds';
+        this.namespace = 'roomBackgrounds';
         this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
         this.on('update', () => {
@@ -80,8 +86,8 @@ room-backgrounds-editor.room-editor-Backgrounds.tabbed.tall
                 this.parent.refreshRoomCanvas();
             }
         });
-        this.onTextureSelected = texture => () => {
-            this.editingBackground.texture = texture.uid;
+        this.onTextureSelected = textureId => {
+            this.editingBackground.texture = textureId;
             this.pickingBackground = false;
             this.creatingBackground = false;
             this.update();

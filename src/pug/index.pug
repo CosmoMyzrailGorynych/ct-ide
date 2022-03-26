@@ -2,6 +2,7 @@ doctype html
 html
     include includes/head.pug
     body.maximized(data-manage-window)
+        include ../../app/data/icons.svg
         root-tag
         div#loading Loading…
         script.
@@ -27,6 +28,7 @@ html
             }
         script.
             process.versions.ctjs = require('./package.json').version;
+        // Use the legacy version to support low-spec and dated devices running ct.IDE
         script(src="node_modules/pixi.js-legacy/dist/pixi-legacy.min.js")
         script(src="data/ct.release/DragonBones.min.js")
         script(src="node_modules/pixi-particles/dist/pixi-particles.min.js")

@@ -1,0 +1,14 @@
+{
+    "main": {
+        "name": "ct.sound (basic)",
+        "tagline": "A simple and lightweight audio system. It doesn't like tons of concurrent sounds, but otherwise works.",
+        "version": "1.0.0",
+        "authors": [{
+            "name": "Cosmo Myzrail Gorynych",
+            "mail": "admin@nersta.ru"
+        }],
+        "categories": [
+            "media"
+        ]
+    }
+}

@@ -2,44 +2,44 @@
 debugger-toolbar
     .debugger-toolbar-aDragger.feather
         svg.feather
-            use(xlink:href="data/icons.svg#dragger-vertical")
+            use(xlink:href="#dragger-vertical")
 
     .debugger-toolbar-aButton(onclick="{togglePause}" title="{gamePaused? voc.resume : voc.pause}")
         svg.feather
-            use(xlink:href="data/icons.svg#{gamePaused? 'play' : 'pause'}")
+            use(xlink:href="#{gamePaused? 'play' : 'pause'}")
     .debugger-toolbar-aButton(onclick="{restartGame}" title="{voc.restartGame}")
         svg.feather
-            use(xlink:href="data/icons.svg#rotate-cw")
+            use(xlink:href="#rotate-cw")
     .debugger-toolbar-aButton(onclick="{restartRoom}" title="{voc.restartRoom}")
         svg.feather
-            use(xlink:href="data/icons.svg#room-reload")
+            use(xlink:href="#room-reload")
     .debugger-toolbar-aButton(onclick="{displayRoomSelector}" title="{voc.switchRoom}")
         svg.feather
-            use(xlink:href="data/icons.svg#room-switch")
+            use(xlink:href="#room-switch")
 
     .debugger-toolbar-aDivider
 
     .debugger-toolbar-aButton(onclick="{toggleDevTools}" title="{voc.toggleDevTools}")
         svg.feather
-            use(xlink:href="data/icons.svg#terminal")
+            use(xlink:href="#terminal")
     .debugger-toolbar-aButton(onclick="{makeScreenshot}" title="{voc.screenshot}")
         svg.feather
-            use(xlink:href="data/icons.svg#camera")
+            use(xlink:href="#camera")
     .debugger-toolbar-aButton(onclick="{toggleFullscreen}" title="{gameFullscreen? voc.exitFullscreen : voc.enterFullscreen}")
         svg.feather
-            use(xlink:href="data/icons.svg#{gameFullscreen? 'minimize' : 'maximize'}-2")
+            use(xlink:href="#{gameFullscreen? 'minimize' : 'maximize'}-2")
     .debugger-toolbar-aButton(onclick="{openQrCodes}" title="{voc.links}")
         svg.feather
-            use(xlink:href="data/icons.svg#smartphone")
+            use(xlink:href="#smartphone")
     .debugger-toolbar-aButton(onclick="{openExternal}" title="{voc.openExternal}")
         svg.feather
-            use(xlink:href="data/icons.svg#external-link")
+            use(xlink:href="#external-link")
 
     .debugger-toolbar-aDivider
 
     .debugger-toolbar-aButton(onclick="{closeItself}" title="{voc.close}")
         svg.feather
-            use(xlink:href="data/icons.svg#x")
+            use(xlink:href="#x")
     script.
         this.namespace = 'debuggerToolbar';
         this.mixin(window.riotVoc);

@@ -1,5 +1,10 @@
 /*! Made with ct.js http://ctjs.rocks/ */
 
+if (location.protocol === 'file:') {
+    // eslint-disable-next-line no-alert
+    alert('Your game won\'t work like this because\nWeb 👏 builds 👏 require 👏 a web 👏 server!\n\nConsider using a desktop build, or upload your web build to itch.io, GameJolt or your own website.\n\nIf you haven\'t created this game, please contact the developer about this issue.\n\n Also note that ct.js games do not work inside the itch app; you will need to open the game with your browser of choice.');
+}
+
 const deadPool = []; // a pool of `kill`-ed copies for delaying frequent garbage collection
 const copyTypeSymbol = Symbol('I am a ct.js copy');
 setInterval(function cleanDeadPool() {
@@ -16,7 +21,7 @@ const ct = {
      * @type {number}
      */
     speed: [/*@maxfps@*/][0] || 60,
-    types: {},
+    templates: {},
     snd: {},
     stack: [],
     fps: [/*@maxfps@*/][0] || 60,
@@ -36,7 +41,7 @@ const ct = {
      * this.x += this.windSpeed * ct.delta;
      * ```
      *
-     * @type {number}
+     * @template {number}
      */
     delta: 1,
     /**
@@ -47,24 +52,20 @@ const ct = {
      * This is a version for UI elements, as it is not affected by time scaling, and thus works well
      * both with slow-mo effects and game pause.
      *
-     * @type {number}
+     * @template {number}
      */
     deltaUi: 1,
     /**
      * The camera that outputs its view to the renderer.
-     * @type {Camera}
+     * @template {Camera}
      */
     camera: null,
     /**
      * ct.js version in form of a string `X.X.X`.
-     * @type {string}
+     * @template {string}
      */
     version: '/*@ctversion@*/',
     meta: [/*@projectmeta@*/][0],
-    main: {
-        fpstick: 0,
-        pi: 0
-    },
     get width() {
         return ct.pixiApp.renderer.view.width;
     },
@@ -72,7 +73,7 @@ const ct = {
      * Resizes the drawing canvas and viewport to the given value in pixels.
      * When used with ct.fittoscreen, can be used to enlarge/shrink the viewport.
      * @param {number} value New width in pixels
-     * @type {number}
+     * @template {number}
      */
     set width(value) {
         ct.camera.width = ct.roomWidth = value;
@@ -91,7 +92,7 @@ const ct = {
      * Resizes the drawing canvas and viewport to the given value in pixels.
      * When used with ct.fittoscreen, can be used to enlarge/shrink the viewport.
      * @param {number} value New height in pixels
-     * @type {number}
+     * @template {number}
      */
     set height(value) {
         ct.camera.height = ct.roomHeight = value;
@@ -102,22 +103,6 @@ const ct = {
             ct.fittoscreen();
         }
         return value;
-    },
-    /**
-     * The width of the current view, in UI units
-     * @type {number}
-     * @deprecated Since v1.3.0. See `ct.camera.width`.
-     */
-    get viewWidth() {
-        return ct.camera.width;
-    },
-    /**
-     * The height of the current view, in UI units
-     * @type {number}
-     * @deprecated Since v1.3.0. See `ct.camera.height`.
-     */
-    get viewHeight() {
-        return ct.camera.height;
     }
 };
 
@@ -136,13 +121,13 @@ const pixiAppSettings = {
     height: [/*@startheight@*/][0],
     antialias: ![/*@pixelatedrender@*/][0],
     powerPreference: 'high-performance',
-    sharedTicker: true,
+    sharedTicker: false,
     sharedLoader: true
 };
 try {
     /**
      * The PIXI.Application that runs ct.js game
-     * @type {PIXI.Application}
+     * @template {PIXI.Application}
      */
     ct.pixiApp = new PIXI.Application(pixiAppSettings);
 } catch (e) {
@@ -154,12 +139,12 @@ try {
 }
 
 PIXI.settings.ROUND_PIXELS = [/*@pixelatedrender@*/][0];
-PIXI.Ticker.shared.maxFPS = [/*@maxfps@*/][0] || 0;
+ct.pixiApp.ticker.maxFPS = [/*@maxfps@*/][0] || 0;
 if (!ct.pixiApp.renderer.options.antialias) {
     PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 }
 /**
- * @type PIXI.Container
+ * @template PIXI.Container
  */
 ct.stage = ct.pixiApp.stage;
 ct.pixiApp.renderer.autoDensity = ct.highDensity;
@@ -171,13 +156,53 @@ document.getElementById('ct').appendChild(ct.pixiApp.view);
  */
 ct.u = {
     /**
+     * Get the environment the game runs on.
+     * @returns {string} Either 'ct.ide', or 'nw', or 'electron', or 'browser'.
+     */
+    getEnvironment() {
+        if (window.name === 'ct.js debugger') {
+            return 'ct.ide';
+        }
+        try {
+            if (nw.require) {
+                return 'nw';
+            }
+        } catch (oO) {
+            void 0;
+        }
+        try {
+            require('electron');
+            return 'electron';
+        } catch (Oo) {
+            void 0;
+        }
+        return 'browser';
+    },
+    /**
+     * Get the current operating system the game runs on.
+     * @returns {string} One of 'windows', 'darwin' (which is MacOS), 'linux', or 'unknown'.
+     */
+    getOS() {
+        const ua = window.navigator.userAgent;
+        if (ua.indexOf('Windows') !== -1) {
+            return 'windows';
+        }
+        if (ua.indexOf('Linux') !== -1) {
+            return 'linux';
+        }
+        if (ua.indexOf('Mac') !== -1) {
+            return 'darwin';
+        }
+        return 'unknown';
+    },
+    /**
      * Returns the length of a vector projection onto an X axis.
      * @param {number} l The length of the vector
      * @param {number} d The direction of the vector
      * @returns {number} The length of the projection
      */
     ldx(l, d) {
-        return l * Math.cos(d * Math.PI / -180);
+        return l * Math.cos(d * Math.PI / 180);
     },
     /**
      * Returns the length of a vector projection onto an Y axis.
@@ -186,7 +211,7 @@ ct.u = {
      * @returns {number} The length of the projection
      */
     ldy(l, d) {
-        return l * Math.sin(d * Math.PI / -180);
+        return l * Math.sin(d * Math.PI / 180);
     },
     /**
      * Returns the direction of a vector that points from the first point to the second one.
@@ -197,7 +222,7 @@ ct.u = {
      * @returns {number} The angle of the resulting vector, in degrees
      */
     pdn(x1, y1, x2, y2) {
-        return (Math.atan2(y2 - y1, x2 - x1) * -180 / Math.PI + 360) % 360;
+        return (Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI + 360) % 360;
     },
     // Point-point DistanCe
     /**
@@ -217,7 +242,7 @@ ct.u = {
      * @returns {number} The resulting radian value
      */
     degToRad(deg) {
-        return deg * Math.PI / -180;
+        return deg * Math.PI / 180;
     },
     /**
      * Convers radians to degrees
@@ -225,14 +250,14 @@ ct.u = {
      * @returns {number} The resulting degree
      */
     radToDeg(rad) {
-        return rad / Math.PI * -180;
+        return rad / Math.PI * 180;
     },
     /**
      * Rotates a vector (x; y) by `deg` around (0; 0)
      * @param {number} x The x component
      * @param {number} y The y component
      * @param {number} deg The degree to rotate by
-     * @returns {Array<number>} A pair of new `x` and `y` parameters.
+     * @returns {PIXI.Point} A pair of new `x` and `y` parameters.
      */
     rotate(x, y, deg) {
         return ct.u.rotateRad(x, y, ct.u.degToRad(deg));
@@ -242,15 +267,15 @@ ct.u = {
      * @param {number} x The x component
      * @param {number} y The y component
      * @param {number} rad The radian value to rotate around
-     * @returns {Array<number>} A pair of new `x` and `y` parameters.
+     * @returns {PIXI.Point} A pair of new `x` and `y` parameters.
      */
     rotateRad(x, y, rad) {
         const sin = Math.sin(rad),
               cos = Math.cos(rad);
-        return [
+        return new PIXI.Point(
             cos * x - sin * y,
             cos * y + sin * x
-        ];
+        );
     },
     /**
      * Gets the most narrow angle between two vectors of given directions
@@ -320,7 +345,7 @@ ct.u = {
      * Translates a point from UI space to game space.
      * @param {number} x The x coordinate in UI space.
      * @param {number} y The y coordinate in UI space.
-     * @returns {Array<number>} A pair of new `x` and `y` coordinates.
+     * @returns {PIXI.Point} A pair of new `x` and `y` coordinates.
      */
     uiToGameCoord(x, y) {
         return ct.camera.uiToGameCoord(x, y);
@@ -329,7 +354,7 @@ ct.u = {
      * Translates a point from fame space to UI space.
      * @param {number} x The x coordinate in game space.
      * @param {number} y The y coordinate in game space.
-     * @returns {Array<number>} A pair of new `x` and `y` coordinates.
+     * @returns {PIXI.Point} A pair of new `x` and `y` coordinates.
      */
     gameToUiCoord(x, y) {
         return ct.camera.gameToUiCoord(x, y);
@@ -405,21 +430,6 @@ ct.u = {
         return o1;
     },
     /**
-     * Loads and executes a script by its URL, optionally with a callback
-     * @param {string} url The URL of the script file, with its extension.
-     * Can be relative or absolute.
-     * @param {Function} callback An optional callback that fires when the script is loaded
-     * @returns {void}
-     */
-    load(url, callback) {
-        var script = document.createElement('script');
-        script.src = url;
-        if (callback) {
-            script.onload = callback;
-        }
-        document.getElementsByTagName('head')[0].appendChild(script);
-    },
-    /**
      * Returns a Promise that resolves after the given time.
      * This timer is run in gameplay time scale, meaning that it is affected by time stretching.
      * @param {number} time Time to wait, in milliseconds
@@ -436,9 +446,49 @@ ct.u = {
      */
     waitUi(time) {
         return ct.timer.addUi(time);
+    },
+    /**
+     * Creates a new function that returns a promise, based
+     * on a function with a regular (err, result) => {...} callback.
+     * @param {Function} f The function that needs to be promisified
+     * @see https://javascript.info/promisify
+     */
+    promisify(f) {
+        // eslint-disable-next-line func-names
+        return function (...args) {
+            return new Promise((resolve, reject) => {
+                const callback = function callback(err, result) {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(result);
+                    }
+                };
+                args.push(callback);
+                f.call(this, ...args);
+            });
+        };
+    },
+    required(paramName, method) {
+        let str = 'The parameter ';
+        if (paramName) {
+            str += `${paramName} `;
+        }
+        if (method) {
+            str += `of ${method} `;
+        }
+        str += 'is required.';
+        throw new Error(str);
+    },
+    numberedString(prefix, input) {
+        return prefix + '_' + input.toString().padStart(2, '0');
+    },
+    getStringNumber(str) {
+        return Number(str.split('_').pop());
     }
 };
 ct.u.ext(ct.u, {// make aliases
+    getOs: ct.u.getOS,
     lengthDirX: ct.u.ldx,
     lengthDirY: ct.u.ldy,
     pointDirection: ct.u.pdn,
@@ -453,7 +503,7 @@ ct.u.ext(ct.u, {// make aliases
     const killRecursive = copy => {
         copy.kill = true;
         if (copy.onDestroy) {
-            ct.types.onDestroy.apply(copy);
+            ct.templates.onDestroy.apply(copy);
             copy.onDestroy.apply(copy);
         }
         for (const child of copy.children) {
@@ -465,10 +515,10 @@ ct.u.ext(ct.u, {// make aliases
         if (stackIndex !== -1) {
             ct.stack.splice(stackIndex, 1);
         }
-        if (copy.type) {
-            const typelistIndex = ct.types.list[copy.type].indexOf(copy);
-            if (typelistIndex !== -1) {
-                ct.types.list[copy.type].splice(typelistIndex, 1);
+        if (copy.template) {
+            const templatelistIndex = ct.templates.list[copy.template].indexOf(copy);
+            if (templatelistIndex !== -1) {
+                ct.templates.list[copy.template].splice(templatelistIndex, 1);
             }
         }
         deadPool.push(copy);
@@ -482,14 +532,14 @@ ct.u.ext(ct.u, {// make aliases
 
     ct.loop = function loop(delta) {
         ct.delta = delta;
-        ct.deltaUi = PIXI.Ticker.shared.elapsedMS / (1000 / (PIXI.Ticker.shared.maxFPS || 60));
+        ct.deltaUi = ct.pixiApp.ticker.elapsedMS / (1000 / (ct.pixiApp.ticker.maxFPS || 60));
         ct.inputs.updateActions();
         ct.timer.updateTimers();
         /*%beforeframe%*/
         for (let i = 0, li = ct.stack.length; i < li; i++) {
-            ct.types.beforeStep.apply(ct.stack[i]);
+            ct.templates.beforeStep.apply(ct.stack[i]);
             ct.stack[i].onStep.apply(ct.stack[i]);
-            ct.types.afterStep.apply(ct.stack[i]);
+            ct.templates.afterStep.apply(ct.stack[i]);
         }
         // There may be a number of rooms stacked on top of each other.
         // Loop through them and filter out everything that is not a room.
@@ -521,9 +571,9 @@ ct.u.ext(ct.u, {// make aliases
         manageCamera();
 
         for (let i = 0, li = ct.stack.length; i < li; i++) {
-            ct.types.beforeDraw.apply(ct.stack[i]);
+            ct.templates.beforeDraw.apply(ct.stack[i]);
             ct.stack[i].onDraw.apply(ct.stack[i]);
-            ct.types.afterDraw.apply(ct.stack[i]);
+            ct.templates.afterDraw.apply(ct.stack[i]);
             ct.stack[i].xprev = ct.stack[i].x;
             ct.stack[i].yprev = ct.stack[i].y;
         }
@@ -537,7 +587,6 @@ ct.u.ext(ct.u, {// make aliases
             ct.rooms.afterDraw.apply(item);
         }
         /*%afterframe%*/
-        ct.main.fpstick++;
         if (ct.rooms.switching) {
             ct.rooms.forceSwitch();
         }

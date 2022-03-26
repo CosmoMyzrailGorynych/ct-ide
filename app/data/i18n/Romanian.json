@@ -6,40 +6,27 @@
     },
     "common": {
         "add": "Adaugă",
-        "addtonotes": "Adaugă la notițe",
         "apply": "Aplică",
         "cancel": "Anulează",
         "cannotBeEmpty": "Nu poate fi gol.",
         "confirmDelete": "Ești sigur că vrei să ștergi {0}? Această operație este ireversibilă.",
         "copy": "Copiază",
         "copyName": "Copiază numele",
-        "ctsite": "Pagina principală ct.js",
         "cut": "Taie",
         "delete": "Șterge",
         "donate": "Donează",
         "done": "Finalizat!",
         "duplicate": "Dublează",
         "exit": "Ieși",
-        "exitconfirm": "Ești sigur că vrei să ieși?<br/>Toate modificările nesalvate se vor pierde!",
-        "fastimport": "Import Rapid",
         "name": "Nume:",
-        "nametaken": "Acest nume este deja în uz",
-        "newname": "Nume nou:",
         "no": "Nu",
         "none": "Nimic",
-        "norooms": "Ai nevoie de cel puțin o cameră pentru a compila aplicația.",
-        "notfoundorunknown": "Fișier necunoscut. Asigură-te că fișierul chiar există",
         "ok": "Ok",
         "open": "Deschide",
-        "openproject": "Deschide proiect...",
         "paste": "Lipire",
-        "reallyexit": "Ești sigur că vrei să ieși? Toate modificările nesalvate se vor pierde!",
         "rename": "Redenumește",
         "save": "Salvează",
-        "savedcomm": "Proiectul a fost salvat cu succes.",
-        "saveproject": "Salvează proiectul",
         "sort": "Sortează:",
-        "tilelayer": "tile layer",
         "wrongFormat": "Format de fișier greșit",
         "yes": "Da",
         "contribute": "",
@@ -54,7 +41,91 @@
         "search": "",
         "close": "",
         "couldNotLoadFromClipboard": "",
-        "pastedFromClipboard": ""
+        "pastedFromClipboard": "",
+        "edit": "",
+        "nothingToShowFiller": "",
+        "required": "",
+        "settings": "",
+        "fieldTypes": {
+            "checkbox": "",
+            "code": "",
+            "color": "",
+            "group": "",
+            "h1": "",
+            "h2": "",
+            "h3": "",
+            "h4": "",
+            "number": "",
+            "point2D": "",
+            "radio": "",
+            "slider": "",
+            "sliderAndNumber": "",
+            "table": "",
+            "text": "",
+            "textfield": "",
+            "texture": "",
+            "template": "",
+            "room": "",
+            "sound": "",
+            "tandem": ""
+        },
+        "newName": "Nume nou:",
+        "saveProject": "Salvează proiectul",
+        "openProject": "Deschide proiect...",
+        "savedMessage": "Proiectul a fost salvat cu succes.",
+        "reallyExitConfirm": "Ești sigur că vrei să ieși? Toate modificările nesalvate se vor pierde!",
+        "notFoundOrUnknown": "Fișier necunoscut. Asigură-te că fișierul chiar există",
+        "nameTaken": "Acest nume este deja în uz",
+        "fastImport": "Import Rapid",
+        "addToNotes": "Adaugă la notițe",
+        "noRooms": "Ai nevoie de cel puțin o cameră pentru a compila aplicația.",
+        "tileLayer": "tile layer",
+        "ctSite": "Pagina principală ct.js",
+        "docsShort": "",
+        "docsLong": "",
+        "openAssetGallery": "",
+        "assetTypes": {
+            "textures": [
+                "",
+                "",
+                ""
+            ],
+            "templates": [
+                "",
+                "",
+                ""
+            ],
+            "emitterTandems": [
+                "",
+                "",
+                ""
+            ],
+            "rooms": [
+                "",
+                "",
+                ""
+            ],
+            "fonts": [
+                "",
+                "",
+                ""
+            ],
+            "styles": [
+                "",
+                "",
+                ""
+            ],
+            "sounds": [
+                "",
+                "",
+                ""
+            ],
+            "skeletons": [
+                "",
+                "",
+                ""
+            ]
+        }
     },
     "colorPicker": {
         "current": "Nou",
@@ -71,10 +142,18 @@
         "debug": "Versiune de depanare",
         "export": "Exportă",
         "exportPanel": "Exportă proiectul",
-        "firstrunnotice": "Prima rulare pentru fiecare platformă va fi lentă deoarece ct.js va descărca și salva bibliotecile necesare pentru împachetare. Va dura ceva timp, dar data viitoare va fi aproape instant.",
         "log": "Jurnal de mesaje",
         "windowsCrossBuildWarning": "",
-        "cannotBuildForMacOnWin": ""
+        "cannotBuildForMacOnWin": "",
+        "firstRunNotice": "Prima rulare pentru fiecare platformă va fi lentă deoarece ct.js va descărca și salva bibliotecile necesare pentru împachetare. Va dura ceva timp, dar data viitoare va fi aproape instant.",
+        "projectTitleRequired": "",
+        "appIdRequired": "",
+        "noAndroidSdkFound": "",
+        "envVarNotice": "",
+        "downloadAndroidStudio": "",
+        "requiresInternetNotice": "",
+        "noJdkFound": "",
+        "downloadJDK": ""
     },
     "intro": {
         "loading": "Vă rugăm așteptați: pisicuțele accelerează la viteza luminii!",
@@ -82,9 +161,9 @@
             "button": "Crează",
             "input": "Numele proiectului (litere și cifre)",
             "text": "Crează un nou proiect",
-            "nameerr": "Numele proiectului este greșit",
             "saveProjectHere": "",
-            "selectProjectFolder": ""
+            "selectProjectFolder": "",
+            "nameError": "Numele proiectului este greșit"
         },
         "recovery": {
             "message": "<h2 class=\"nmt\">Recuperare</h2><p>ct.js a găsit un fișier de recuperare. Probabil că proiectul tău nu a fost salvat corect sau ct.js a fost oprit forțat. Iată când au fost modificate ultima dată aceste fișiere:</p><p>Fișiere alese: {0} {1}<br/>Fișiere de recuperare: {2} {3}</p><p>Ce fișier ar trebui să deschida ct.js?</p>",
@@ -104,10 +183,14 @@
         "loadingProjectError": "",
         "unableToWriteToFolders": "",
         "examples": "",
-        "createOrBrowseJunction": ""
-    },
-    "licensepanel": {
-        "ctjslicense": ""
+        "createOrBrowseJunction": "",
+        "cloneProject": "",
+        "github": "",
+        "itch": "",
+        "vkontakte": "",
+        "patreon": "",
+        "templates": "",
+        "templatesInfo": ""
     },
     "settings": {
         "actions": {
@@ -121,7 +204,15 @@
             "methodModuleMissing": "Modulul necesar pentru această metodă lipsește",
             "methods": "Metode de introducere",
             "multiplier": "Coeficient",
-            "noActionsYet": "Acțiunile le permit dezvoltatorilor să captureze numeroase metode de introducere în același timp și să le schimbe dinamic, totul cu un singur API uniform. Citește mai mult făcând click pe iconița pentru documentație de mai sus."
+            "noActionsYet": "Acțiunile le permit dezvoltatorilor să captureze numeroase metode de introducere în același timp și să le schimbe dinamic, totul cu un singur API uniform. Citește mai mult făcând click pe iconița pentru documentație de mai sus.",
+            "makeFromScratch": "",
+            "presets": "",
+            "presetXYMovement": "",
+            "presetTouchAndMouse": "",
+            "presetCustom": "",
+            "exportActionPreset": "",
+            "importErrorMissingModules": "",
+            "importErrorNotCtJsPreset": ""
         },
         "authoring": {
             "heading": "Informații despre autor",
@@ -129,15 +220,15 @@
             "site": "Pagină principală:",
             "title": "Nume:",
             "version": "Versiune:",
-            "versionpostfix": "Postfix:"
+            "versionPostfix": "Postfix:",
+            "appId": "",
+            "appIdExplanation": ""
         },
         "rendering": {
             "heading": "Opțiuni de randare",
             "framerate": "Framerate:",
-            "pixelatedrender": "Dezactivează netezirea imaginii aici și în proiectul exportat (conservă pixelii clari)",
             "highDensity": "",
             "maxFPS": "",
-            "usePixiLegacy": "",
             "desktopBuilds": "",
             "launchMode": "",
             "launchModes": {
@@ -145,7 +236,16 @@
                 "fullscreen": "",
                 "windowed": ""
             },
-            "hideCursor": ""
+            "hideCursor": "",
+            "pixelatedRender": "Dezactivează netezirea imaginii aici și în proiectul exportat (conservă pixelii clari)",
+            "usePixiLegacy": "",
+            "mobileBuilds": "",
+            "screenOrientation": "",
+            "screenOrientations": {
+                "unspecified": "",
+                "landscape": "",
+                "portrait": ""
+            }
         },
         "scripts": {
             "heading": "Script-uri",
@@ -161,7 +261,12 @@
             "accentNotice": "",
             "icon": "",
             "iconNotice": "",
-            "invertPreloaderScheme": ""
+            "invertPreloaderScheme": "",
+            "hideLoadingLogo": "",
+            "splashScreen": "",
+            "splashScreenNotice": "",
+            "forceSmoothIcons": "",
+            "forceSmoothSplashScreen": ""
         },
         "modules": {
             "heading": ""
@@ -178,7 +283,30 @@
                 "minify": "",
                 "obfuscate": ""
             }
-        }
+        },
+        "content": {
+            "heading": "",
+            "addContentType": "",
+            "missingTypeName": "",
+            "unnamedContentTypeHint": "",
+            "typeName": "",
+            "typeNameHint": "",
+            "typeReadableName": "",
+            "typeReadableNameHint": "",
+            "icon": "",
+            "typeSpecification": "",
+            "fieldName": "",
+            "fieldNameHint": "",
+            "fieldReadableName": "",
+            "fieldReadableNameHint": "",
+            "fieldType": "",
+            "deleteContentType": "",
+            "confirmDeletionMessage": "",
+            "gotoEntries": "",
+            "entries": "",
+            "array": ""
+        },
+        "contentTypes": ""
     },
     "modules": {
         "author": "Autorul acestui catmod",
@@ -218,213 +346,34 @@
         "create": "Crează",
         "import": "Importă",
         "skeletons": "Animație scheletică",
-        "createType": "",
+        "createTemplate": "",
         "importFromClipboard": "",
-        "generatePlaceholder": ""
-    },
-    "textureview": {
-        "bgcolor": "Schimbă culoarea fundalului",
-        "center": "Axă:",
-        "cols": "Coloane:",
-        "done": "Aplică",
-        "fill": "Umplere",
-        "form": "Formă de coliziune:",
-        "frames": "Număr de cadre:",
-        "isometrify": "Isometrizează: Mută axa în punctul din mijloc-jos, umple tot sprite-ul cu o mască de coliziune",
-        "name": "Nume:",
-        "radius": "Rază:",
-        "rectangle": "Dreptunghi",
-        "reimport": "Re-importă",
-        "round": "Cerc",
-        "rows": "Rânduri:",
-        "setcenter": "Centrul imaginii",
-        "speed": "Framerate:",
-        "tiled": "Este tiled?",
-        "replacetexture": "Înlocuiți…",
-        "corrupted": "Fișierul este corupt sau dispărut! Se închide acum.",
-        "showmask": "Arată masca",
-        "width": "Lățime:",
-        "height": "înălțime:",
-        "marginx": "Margine X:",
-        "marginy": "Margine Y:",
-        "offx": "Offset X:",
-        "offy": "Offset Y:",
-        "strip": "Bandă / Poligon",
-        "removePoint": "Elimină punctul",
-        "closeShape": "Închide forma",
-        "addPoint": "Adaugă un punct",
-        "moveCenter": "Mută axa",
-        "movePoint": "Mută punctul",
-        "symmetryTool": "Instrument de simetrie",
-        "padding": "",
-        "paddingNotice": "",
-        "updateFromClipboard": "",
-        "previewAnimationNotice": ""
+        "generatePlaceholder": "",
+        "textures": ""
     },
     "sounds": {
-        "create": "Crează"
-    },
-    "soundview": {
-        "import": "Importă",
-        "name": "Nume:",
-        "save": "Salvează",
-        "isMusicFile": "Este o piesă muzicală",
-        "poolSize": "Dimensiune pool:"
+        "create": "Crează",
+        "record": ""
     },
     "styles": {
         "create": "Crează",
         "styles": "Stiluri pentru text"
-    },
-    "styleview": {
-        "active": "Activ",
-        "alignment": "Aliniere:",
-        "apply": "Aplică",
-        "fill": "Umplere",
-        "fillcolor": "Culoare:",
-        "fillcolor1": "Culoare 1:",
-        "fillcolor2": "Culoare 2:",
-        "fillgrad": "Gradient",
-        "fillgradtype": "Tipul gradientului:",
-        "fillhorisontal": "Orizontal",
-        "fillsolid": "Difuz",
-        "filltype": "Tipul de umplere:",
-        "fillvertical": "Vertical",
-        "font": "Font",
-        "fontweight": "Greutate:",
-        "fontsize": "Mărimea font-ului:",
-        "fontfamily": "Familia font-ului:",
-        "italic": "Italic",
-        "lineHeight": "Înălțimea liniei:",
-        "shadow": "Umbră",
-        "shadowblur": "Blur:",
-        "shadowcolor": "Culoarea umbrei:",
-        "shadowshift": "Deplasare:",
-        "stroke": "Contur",
-        "strokecolor": "Culoarea conturului:",
-        "strokeweight": "Greutatea liniei:",
-        "testtext": "Test text 0123 +",
-        "textWrap": "Word wrap",
-        "textWrapWidth": "Lățime maximă:",
-        "useCustomFont": ""
     },
     "fonts": {
         "fonts": "Font-uri",
         "import": "Importă TTF",
         "italic": "Italic"
     },
-    "fontview": {
-        "typefacename": "Numele tipului de caractere:",
-        "fontweight": "Greutatea font-ului:",
-        "italic": "Este italic?",
-        "reimport": "Re-importă",
-        "generateBitmapFont": "",
-        "bitmapFont": "",
-        "bitmapFontSize": "",
-        "bitmapFontLineHeight": "",
-        "resultingBitmapFontName": "",
-        "charset": "",
-        "charsets": {
-            "punctuation": "",
-            "basicLatin": "",
-            "latinExtended": "",
-            "cyrillic": "",
-            "greekCoptic": "",
-            "custom": "",
-            "allInFont": ""
-        },
-        "customCharsetHint": ""
-    },
-    "types": {
-        "create": "Crează"
-    },
-    "typeview": {
-        "change": "Schimbă sprite-ul",
-        "create": "La Creare",
-        "depth": "Adâncime:",
-        "destroy": "La Distrugere",
-        "done": "Gata",
-        "draw": "Desenare",
-        "learnAboutTypes": "Învață despre programarea tipurilor",
-        "name": "Nume:",
-        "step": "La Fiecare Pas",
-        "visible": ""
-    },
     "rooms": {
         "create": "Adaugă o nouă cameră",
-        "makestarting": "Setază ca și cameră de pornire"
-    },
-    "roombackgrounds": {
-        "add": "Adaugă un fundal",
-        "depth": "Adâncime:",
-        "movement": "Viteză de mișcare (X, Y):",
-        "parallax": "Paralaxă (X, Y):",
-        "repeat": "Repetare:",
-        "scale": "Scalare (X, Y):",
-        "shift": "Deplasare (X, Y):",
-        "notBackgroundTextureWarning": "",
-        "fixBackground": "",
-        "dismissWarning": ""
-    },
-    "roomtiles": {
-        "moveTileLayer": "Mută la o nouă adâncime",
-        "show": "Arată layer-ul",
-        "hide": "Ascunde layer-ul",
-        "findTileset": "Găsește un Tileset"
-    },
-    "roomview": {
-        "name": "Nume:",
-        "width": "Lățimea vizualizării:",
-        "height": "Înălțimea vizualizării:",
-        "events": "Evenimente ale camerei",
-        "copies": "Copii",
-        "backgrounds": "Fundaluri",
-        "tiles": "Tile-uri",
-        "add": "Adaugă",
-        "none": "Nimic",
-        "done": "Gata",
-        "grid": "Setează grilă",
-        "gridoff": "Dezactivează grilă",
-        "gridsize": "Mărimea grilei:",
-        "hotkeysNotice": "Ctrl = Șterge, Alt = Fără grilă, Shift = Multiplu",
-        "hotkeysNoticeMovement": "Ctrl = Șterge, Shift = Selectare",
-        "tocenter": "La centru",
-        "selectbg": "Selectează tileset",
-        "shift": "Deplasează vizualizarea",
-        "shifttext": "Deplasează cu:",
-        "step": "La Fiecare Pas",
-        "create": "La Creare",
-        "leave": "La Părăsire",
-        "draw": "Desenare",
-        "newdepth": "Noua adâncime:",
-        "deletecopy": "Șterge copia {0}",
-        "deleteCopies": "Șterge copiile",
-        "shiftCopies": "Deplasează copiile",
-        "selectAndMove": "Selectează și Mută",
-        "changecopyscale": "Schimbă mărimea",
-        "shiftcopy": "Setează coordonatele",
-        "deletetile": "Șterge un tile",
-        "deletetiles": "Șterge tile-urile",
-        "movetilestolayer": "Mută în layer",
-        "shifttiles": "Deplasează tile-urile",
-        "findTileset": "",
-        "changecopyrotation": "",
-        "properties": "",
-        "isUi": "",
-        "backgroundColor": "",
-        "sortHorizontally": "",
-        "sortVertically": "",
-        "copyProperties": {
-            "position": "",
-            "rotation": "",
-            "scale": ""
-        }
+        "makeStarting": "Setază ca și cameră de pornire"
     },
     "notepad": {
         "local": "Carnețelul Proiectului",
         "global": "Carnețel Global",
-        "helppages": "Ajutor",
         "backToHome": "Înapoi la pagina principală a documentației",
-        "modulespages": ""
+        "modulesPages": "",
+        "helpPages": "Ajutor"
     },
     "curveEditor": {
         "curveLineHint": "",
@@ -565,7 +514,12 @@
     },
     "extensionsEditor": {
         "noEntries": "",
-        "addRow": ""
+        "addRow": "",
+        "actions": "",
+        "values": "",
+        "moveDown": "",
+        "moveUp": "",
+        "deleteRow": ""
     },
     "textureGenerator": {
         "name": "",
@@ -581,7 +535,12 @@
         "filler": "",
         "fillerNone": "",
         "fillerCross": "",
-        "fillerLabel": ""
+        "fillerLabel": "",
+        "form": "",
+        "formRectangular": "",
+        "formRound": "",
+        "formDiamond": "",
+        "fillerArrow": ""
     },
     "textureInput": {
         "jumpToTexture": "",
@@ -613,7 +572,9 @@
         "deploy": {
             "exportDesktop": "Exportă pentru desktop",
             "successZipExport": "Exportat cu succes în {0}.",
-            "zipExport": "Exportă .zip"
+            "zipExport": "Exportă .zip",
+            "heading": "",
+            "exportAndroid": ""
         },
         "latestProjects": {
             "recentProjects": "Proiecte recente"
@@ -650,12 +611,18 @@
             "openExample": "",
             "startScreen": "Întoarce-te la ecranul de pornire",
             "successZipProject": "Proiectul a fost arhivat (zip) cu succes în {0}.",
-            "zipProject": "Împachetază proiectul în .zip"
+            "zipProject": "Împachetază proiectul în .zip",
+            "heading": ""
         },
         "meta": {
             "license": "Licență",
             "visitDiscordForGamedevSupport": "",
-            "openIconList": ""
+            "openIconList": "",
+            "heading": "",
+            "twitter": "",
+            "vkontakte": "",
+            "ctjsForum": "",
+            "openStylebook": ""
         }
     },
     "appView": {
@@ -666,11 +633,261 @@
         "rooms": "Camere",
         "sounds": "Sunete",
         "ui": "Interfață",
-        "types": "Tipuri",
         "launchHotkeys": "",
         "patrons": "",
         "fx": "",
         "restart": "",
-        "project": ""
+        "project": "",
+        "templates": "Tipuri"
+    },
+    "copyCustomProperties": {
+        "customProperties": "",
+        "addProperty": "",
+        "property": "",
+        "value": "",
+        "delete": ""
+    },
+    "assetViewer": {
+        "addNewGroup": "",
+        "ungrouped": "",
+        "newGroupName": "",
+        "groupDeletionConfirmation": ""
+    },
+    "groupEditor": {
+        "groupEditor": "",
+        "icon": "",
+        "color": ""
+    },
+    "soundRecorder": {
+        "recorderHeading": "",
+        "record": "",
+        "stopRecording": "",
+        "discardRecording": "",
+        "finishRecording": "",
+        "cannotRecordSound": "",
+        "troubleshootingWindows": ""
+    },
+    "roomBackgrounds": {
+        "add": "Adaugă un fundal",
+        "depth": "Adâncime:",
+        "movement": "Viteză de mișcare (X, Y):",
+        "parallax": "Paralaxă (X, Y):",
+        "repeat": "Repetare:",
+        "scale": "Scalare (X, Y):",
+        "shift": "Deplasare (X, Y):",
+        "notBackgroundTextureWarning": "",
+        "fixBackground": "",
+        "dismissWarning": ""
+    },
+    "roomTiles": {
+        "moveTileLayer": "Mută la o nouă adâncime",
+        "show": "Arată layer-ul",
+        "hide": "Ascunde layer-ul",
+        "findTileset": "Găsește un Tileset"
+    },
+    "roomView": {
+        "name": "Nume:",
+        "width": "Lățimea vizualizării:",
+        "height": "Înălțimea vizualizării:",
+        "events": "Evenimente ale camerei",
+        "copies": "Copii",
+        "backgrounds": "Fundaluri",
+        "tiles": "Tile-uri",
+        "add": "Adaugă",
+        "none": "Nimic",
+        "done": "Gata",
+        "grid": "Setează grilă",
+        "hotkeysNotice": "Ctrl = Șterge, Alt = Fără grilă, Shift = Multiplu",
+        "hotkeysNoticeMovement": "Ctrl = Șterge, Shift = Selectare",
+        "shift": "Deplasează vizualizarea",
+        "step": "La Fiecare Pas",
+        "create": "La Creare",
+        "leave": "La Părăsire",
+        "draw": "Desenare",
+        "deleteCopies": "Șterge copiile",
+        "shiftCopies": "Deplasează copiile",
+        "selectAndMove": "Selectează și Mută",
+        "findTileset": "",
+        "properties": "",
+        "isUi": "",
+        "backgroundColor": "",
+        "sortHorizontally": "",
+        "sortVertically": "",
+        "copyProperties": {
+            "position": "",
+            "rotation": "",
+            "scale": ""
+        },
+        "customProperties": "",
+        "restrictCamera": "",
+        "minimumX": "",
+        "minimumY": "",
+        "maximumX": "",
+        "maximumY": "",
+        "gridOff": "Dezactivează grilă",
+        "gridSize": "Mărimea grilei:",
+        "toCenter": "La centru",
+        "shiftLabel": "Deplasează cu:",
+        "newDepth": "Noua adâncime:",
+        "deleteCopy": "Șterge copia {0}",
+        "changeCopyScale": "Schimbă mărimea",
+        "shiftCopy": "Setează coordonatele",
+        "deleteTile": "Șterge un tile",
+        "deleteTiles": "Șterge tile-urile",
+        "moveTilesToLayer": "Mută în layer",
+        "shiftTiles": "Deplasează tile-urile",
+        "changeCopyRotation": ""
+    },
+    "styleView": {
+        "active": "Activ",
+        "alignment": "Aliniere:",
+        "apply": "Aplică",
+        "fill": "Umplere",
+        "font": "Font",
+        "italic": "Italic",
+        "lineHeight": "Înălțimea liniei:",
+        "shadow": "Umbră",
+        "stroke": "Contur",
+        "textWrap": "Word wrap",
+        "textWrapWidth": "Lățime maximă:",
+        "useCustomFont": "",
+        "code": "",
+        "copyCode": "",
+        "fillColor": "Culoare:",
+        "fillColor1": "Culoare 1:",
+        "fillColor2": "Culoare 2:",
+        "fillGrad": "Gradient",
+        "fillGradType": "Tipul gradientului:",
+        "fillHorizontal": "Orizontal",
+        "fillSolid": "Difuz",
+        "fillType": "Tipul de umplere:",
+        "fillVertical": "Vertical",
+        "fontWeight": "Greutate:",
+        "shadowBlur": "Blur:",
+        "shadowColor": "Culoarea umbrei:",
+        "shadowShift": "Deplasare:",
+        "strokeColor": "Culoarea conturului:",
+        "strokeWeight": "Greutatea liniei:",
+        "testText": "Test text 0123 +",
+        "fontFamily": "Familia font-ului:",
+        "fontSize": "Mărimea font-ului:"
+    },
+    "textureView": {
+        "center": "Axă:",
+        "cols": "Coloane:",
+        "done": "Aplică",
+        "fill": "Umplere",
+        "form": "Formă de coliziune:",
+        "frames": "Număr de cadre:",
+        "isometrify": "Isometrizează: Mută axa în punctul din mijloc-jos, umple tot sprite-ul cu o mască de coliziune",
+        "name": "Nume:",
+        "radius": "Rază:",
+        "rectangle": "Dreptunghi",
+        "reimport": "Re-importă",
+        "round": "Cerc",
+        "rows": "Rânduri:",
+        "speed": "Framerate:",
+        "tiled": "Este tiled?",
+        "corrupted": "Fișierul este corupt sau dispărut! Se închide acum.",
+        "width": "Lățime:",
+        "height": "înălțime:",
+        "strip": "Bandă / Poligon",
+        "removePoint": "Elimină punctul",
+        "closeShape": "Închide forma",
+        "addPoint": "Adaugă un punct",
+        "moveCenter": "Mută axa",
+        "movePoint": "Mută punctul",
+        "symmetryTool": "Instrument de simetrie",
+        "padding": "",
+        "paddingNotice": "",
+        "updateFromClipboard": "",
+        "previewAnimationNotice": "",
+        "showFrameIndices": "",
+        "pasteCollisionMask": "",
+        "copyCollisionMask": "",
+        "bgColor": "Schimbă culoarea fundalului",
+        "setCenter": "Centrul imaginii",
+        "replaceTexture": "Înlocuiți…",
+        "showMask": "Arată masca",
+        "marginX": "Margine X:",
+        "marginY": "Margine Y:",
+        "offX": "Offset X:",
+        "offY": "Offset Y:"
+    },
+    "soundView": {
+        "import": "Importă",
+        "name": "Nume:",
+        "save": "Salvează",
+        "isMusicFile": "Este o piesă muzicală",
+        "poolSize": "Dimensiune pool:"
+    },
+    "fontView": {
+        "italic": "Este italic?",
+        "reimport": "Re-importă",
+        "generateBitmapFont": "",
+        "bitmapFont": "",
+        "bitmapFontSize": "",
+        "bitmapFontLineHeight": "",
+        "resultingBitmapFontName": "",
+        "charset": "",
+        "charsets": {
+            "punctuation": "",
+            "basicLatin": "",
+            "latinExtended": "",
+            "cyrillic": "",
+            "greekCoptic": "",
+            "custom": "",
+            "allInFont": ""
+        },
+        "customCharsetHint": "",
+        "fontWeight": "Greutatea font-ului:",
+        "typefaceName": "Numele tipului de caractere:"
+    },
+    "licensePanel": {
+        "ctjsLicense": ""
+    },
+    "templates": {
+        "create": "Crează"
+    },
+    "templateView": {
+        "change": "Schimbă sprite-ul",
+        "create": "La Creare",
+        "depth": "Adâncime:",
+        "destroy": "La Distrugere",
+        "done": "Gata",
+        "draw": "Desenare",
+        "learnAboutTypes": "Învață despre programarea tipurilor",
+        "name": "Nume:",
+        "step": "La Fiecare Pas",
+        "visible": "",
+        "appearance": "",
+        "opacity": "",
+        "blendMode": "",
+        "playAnimationOnStart": "",
+        "blendModes": {
+            "normal": "",
+            "add": "",
+            "multiply": "",
+            "screen": ""
+        }
+    },
+    "assetInput": {
+        "changeAsset": "",
+        "jumpToAsset": "",
+        "selectAssetHeader": ""
+    },
+    "builtinAssetGallery": {
+        "galleryTip": "",
+        "assetGalleryHeader": "",
+        "importIntoProject": "",
+        "importAll": "",
+        "byAuthorPrefix": "",
+        "cannotImportExplanation": "",
+        "nameOccupied": "",
+        "cannotImportNameOccupied": "",
+        "visitSource": "",
+        "visitAuthorsItch": "",
+        "visitAuthorsTwitter": "",
+        "tipAuthor": ""
     }
 }

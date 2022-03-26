@@ -84,6 +84,10 @@ const generateXML = function generateXML(fontData, ctFont, typefaceName) {
     return XMLTemplate;
 };
 
+/**
+ * @returns {Promise<object<string,string>>} A promise that resolves into a map
+ * from font names to their XML file paths.
+ */
 const bakeBitmapFonts = function bakeBitmapFonts(proj, projdir, writeDir) {
     const generator = require('./../resources/fonts/bitmapFontGenerator');
     const path = require('path');
@@ -123,11 +127,11 @@ const bakeBitmapFonts = function bakeBitmapFonts(proj, projdir, writeDir) {
             };
         }))
         .then(fontsMetadata => {
-            const loaderScript = fontsMetadata.reduce((acc, fontMeta) =>
-                acc + `\n.add('${fontMeta.typefaceName}', '${fontMeta.xmlPath}')`, 'PIXI.Loader.shared');
-            return {
-                loaderScript
-            };
+            const bitmapFonts = {};
+            for (const font of fontsMetadata) {
+                bitmapFonts[font.typefaceName] = font.xmlPath;
+            }
+            return bitmapFonts;
         });
 };
 

@@ -3,25 +3,25 @@ main-menu-project
     ul.aMenu
         li(onclick="{saveProject}")
             svg.feather
-                use(xlink:href="data/icons.svg#save")
+                use(xlink:href="#save")
             span {vocGlob.save}
         li(onclick="{zipProject}")
             svg.feather
-                use(xlink:href="data/icons.svg#package")
+                use(xlink:href="#package")
             span {voc.zipProject}
         li(onclick="{openIncludeFolder}")
-            .spacer
+            .aSpacer
             span {voc.openIncludeFolder}
     ul.aMenu
         li(onclick="{openProject}")
             svg.feather
-                use(xlink:href="data/icons.svg#folder")
+                use(xlink:href="#folder")
             span {voc.openProject}
         li(onclick="{openExample}")
-            .spacer
+            .aSpacer
             span {voc.openExample}
         li(onclick="{toStartScreen}")
-            .spacer
+            .aSpacer
             span {voc.startScreen}
     script.
         this.namespace = 'mainMenu.project';
@@ -76,34 +76,59 @@ main-menu-project
         };
 
         this.openProjectSelector = path => {
-            alertify.confirm(window.languageJSON.common.reallyexit, () => {
-                window.showOpenDialog({
-                    defaultPath: path,
-                    title: window.languageJSON.mainMenu.project.openProject,
-                    filter: '.ict'
-                })
-                .then(projFile => {
-                    if (!projFile) {
-                        return;
-                    }
-                    window.signals.trigger('resetAll');
-                    window.loadProject(projFile);
-                });
+            window.showOpenDialog({
+                defaultPath: path,
+                title: window.languageJSON.mainMenu.project.openProject,
+                filter: '.ict'
+            })
+            .then(projFile => {
+                if (!projFile) {
+                    return;
+                }
+                window.signals.trigger('resetAll');
+                window.loadProject(projFile);
             });
         };
 
         this.openProject = async () => {
-            this.openProjectSelector(await require('./data/node_requires/resources/projects').getDefaultProjectDir());
+            const glob = require('./data/node_requires/glob');
+            const projects = require('./data/node_requires/resources/projects');
+            if (!glob.modified) {
+                this.openProjectSelector(await projects.getDefaultProjectDir());
+            } else {
+                alertify.confirm(this.vocGlob.reallyExitConfirm)
+                .then(async e => {
+                    if (e.buttonClicked === 'ok') {
+                        this.openProjectSelector(await projects.getDefaultProjectDir());
+                    }
+                });
+            }
         };
 
         this.openExample = async () => {
-            this.openProjectSelector(await require('./data/node_requires/resources/projects').getExamplesDir());
+            const glob = require('./data/node_requires/glob');
+            const projects = require('./data/node_requires/resources/projects');
+            if (!glob.modified) {
+                this.openProjectSelector(await projects.getExamplesDir());
+            } else {
+                alertify.confirm(this.vocGlob.reallyExitConfirm)
+                .then(async e => {
+                    if (e.buttonClicked === 'ok') {
+                        this.openProjectSelector(await projects.getExamplesDir());
+                    }
+                });
+            }
         };
 
         this.toStartScreen = () => {
-            alertify.confirm(window.languageJSON.common.reallyexit, e => {
-                if (e) {
-                    window.signals.trigger('resetAll');
-                }
-            });
+            const glob = require('./data/node_requires/glob');
+            if (!glob.modified) {
+                window.signals.trigger('resetAll');
+            } else {
+                alertify.confirm(this.vocGlob.reallyExitConfirm, e => {
+                    if (e) {
+                        window.signals.trigger('resetAll');
+                    }
+                });
+            }
         };

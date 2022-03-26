@@ -11,22 +11,22 @@ There is also a `ct.assert.summary();` call, that shows counted amount of passed
 ```js
 ct.assert(
     ct.inherit.isParent('AbstractMonster', 'Monster_Red_Squished'),
-    'ct.inherit.isParent works with two types (two strings)'
+    'ct.inherit.isParent works with two templates (two strings)'
 );
 ct.assert(
     ct.inherit.isChild('Monster_Green', 'AbstractMonster'),
-    'ct.inherit.isChild works with two types (two strings)'
+    'ct.inherit.isChild works with two templates (two strings)'
 );
 ct.assert(
     ct.inherit.list('AbstractMonster').length === 2,
     'ct.inherit.list gets all the monsters'
 );
 ct.assert(
-    ct.inherit.isChild(ct.types.list['Monster_Green'][0], 'AbstractMonster'),
-    'ct.inherit.isChild works against a copy and a type'
+    ct.inherit.isChild(ct.templates.list['Monster_Green'][0], 'AbstractMonster'),
+    'ct.inherit.isChild works against a copy and a template'
 );
 ct.assert(
-    ct.inherit.isChild(ct.types.list['Monster_Red_Squished'][0], ct.types.list['Monster_Red'][0]),
+    ct.inherit.isChild(ct.templates.list['Monster_Red_Squished'][0], ct.templates.list['Monster_Red'][0]),
     'ct.inherit.isChild works against two copies'
 );
 ct.assert.summary();

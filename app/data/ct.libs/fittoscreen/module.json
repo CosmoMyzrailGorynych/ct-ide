@@ -2,6 +2,8 @@
     "main": {
         "name": "Fit to Screen",
         "tagline": "Do nothing and watch your game adapt to any resolution :)",
+        "name_Ru": "Вместить в экран",
+        "tagline_Ru": "Смотрите, как ваша игра сама подстраивается под любое разрешение!",
         "version": "4.1.0",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",
@@ -14,26 +16,37 @@
     },
     "fields": [{
         "name": "Mode",
+        "name_Ru": "Режим",
         "options": [{
             "value": "fastScale",
             "name": "Fast scaling with letterboxing",
-            "help": "This will not change variables `ct.width` and `ct.height` and will try to fit the drawing canvas to the screen. This may result in a blurry image, but you can disable image smoothing in your project's settigs."
+            "name_Ru": "Быстрое изменение размера с рамками",
+            "help": "This will not change variables `ct.width` and `ct.height` and will try to fit the drawing canvas to the screen. This may result in a blurry image, but you can disable image smoothing in your project's settigs.",
+            "help_Ru": "Не меняет свойства `ct.width` и `ct.height` и пропорционально растягивает канвас на весь экран. Изображение может размазываться, но ты можешь отключить сглаживание в настройках графики своего проекта."
         }, {
             "value": "fastScaleInteger",
             "name": "Fast integer scaling with letterboxing",
-            "help": "Similar to fast scaling, but it will try to scale by whole numbers: x1, x2, x3 and so on. It will often leave gaps around the game, but will show the best of your pixelart skills."
+            "name_Ru": "Быстрое целочисленное изменение размера с рамками",
+            "help": "Similar to fast scaling, but it will try to scale by whole numbers: x1, x2, x3 and so on. It will often leave gaps around the game, but will show the best of your pixelart skills.",
+            "help_Ru": "Похоже на быстрое изменение размера, но будет стараться умножать размер холста на целое число: x1, x2, x3 и т.д. Чаще всего рамки будут со всех сторон, но зато все увидят твои навыки пиксельарта во всей красе."
         }, {
             "value": "expand",
             "name": "Expand",
-            "help": "Expands the viewport, remaining the scale of the copies untouched"
+            "name_Ru": "Расширение вида",
+            "help": "Expands the viewport, remaining the scale of the copies untouched",
+            "help_Ru": "Расширяет размер камеры, оставляя размер копий неизменным"
         }, {
             "value": "scaleFit",
             "name": "Scaling with letterboxing",
-            "help": "Changes `ct.width` and `ct.height`, but also scales the room proportionally, ensuring maximum quality with the same look."
+            "name_Ru": "Изменение размера с рамками",
+            "help": "Changes `ct.width` and `ct.height`, but also scales the room proportionally, ensuring maximum quality with the same look.",
+            "help_Ru": "Меняет `ct.width` и `ct.height`, но также увеличивает саму комнату, обеспечивая максимальное качество с сохранением внешнего вида и расположения."
         }, {
             "value": "scaleFill",
             "name": "Scaling without letterboxing",
-            "help": "The viewport will be fit into the resulting resolution and will take all the available space, but otherwise this mode mostly repeats the previous one."
+            "name_Ru": "Изменение размера без рамок",
+            "help": "The viewport will be fit into the resulting resolution and will take all the available space, but otherwise this mode mostly repeats the previous one.",
+            "help_Ru": "Размер камеры будет немного изменён, чтобы покрыть всё доступное пространство и не оставить пробелов вокруг. В остальном этот режим работает так же, как и предыдущий."
         }],
         "key": "mode",
         "id": "mode",

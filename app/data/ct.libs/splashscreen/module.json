@@ -1,7 +1,9 @@
 {
     "main": {
         "name": "Splash screen",
+        "name_Ru": "Вступительный экран-обложка",
         "tagline": "Create splash screens at project settings.",
+        "tagline_Ru": "Создай вступительное интро с помощью настроек проекта.",
         "version": "0.0.0",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",
@@ -14,63 +16,77 @@
     "dependencies": ["tween", "transition"],
     "fields": [{
         "name": "Slide duration, ms",
+        "name_Ru": "Длительность слайда, в мс",
         "key": "slideDuration",
         "default": 4000,
         "type": "number",
         "help": "Includes transitions, so it should be at least twice as much as \"Transition duration\" value.",
+        "help_Ru": "Включает длительность переходов, поэтому должно быть минимум в 2 раза длиннее, чем \"Длительность перехода\".",
         "min": 0
     }, {
         "name": "Transition duration, ms",
+        "name_Ru": "Длительность перехода, мс",
         "key": "transitionDuration",
         "default": 1000,
         "type": "number",
         "min": 0
     }, {
         "name": "Background color",
+        "name_Ru": "Цвет фона",
         "key": "backgroundColor",
         "default": "#000000",
         "type": "color"
     }, {
         "name": "Transition color",
+        "name_Ru": "Цвет перехода",
         "key": "transitionColor",
         "default": "#000000",
         "type": "color"
     }, {
         "name": "Skip slides on mouse click / touch / key press / gamepad input. (Requires at least one of the modules that provide inputs for these.)",
+        "name_Ru": "Пропускать слайд по нажатию клавиш. (Требует как минимум один модуль ввода для отлова таких событий.)",
         "key": "skippable",
         "default": true,
         "type": "checkbox"
     }, {
         "name": "Slides",
+        "name_Ru": "Слайды",
         "key": "slides",
         "default": [],
         "type": "table",
         "fields": [{
             "name": "Logo texture",
+            "name_Ru": "Текстура",
             "key": "texture@@texture",
             "default": -1,
             "type": "texture"
         }, {
             "name": "Effect",
+            "name_Ru": "Эффект",
             "key": "effect",
             "type": "select",
             "default": "none",
             "options": [{
                 "value": "none",
-                "name": "None"
+                "name": "None",
+                "name_Ru": "Нет"
             }, {
                 "value": "zoomIn",
-                "name": "Zoom in"
+                "name": "Zoom in",
+                "name_Ru": "Расширять"
             }, {
                 "value": "zoomOut",
-                "name": "Zoom out"
+                "name": "Zoom out",
+                "name_Ru": "Сжимать"
             }]
         }, {
             "name": "Fill",
+            "name_Ru": "Заполнить",
             "key": "fill",
             "type": "checkbox",
             "default": false,
-            "help": "If enabled, the logo will occupy the whole screen stretching proportionally; otherwise, it will be twice as small and placed at the center of the screen."
+            "help": "If enabled, the logo will occupy the whole screen stretching proportionally; otherwise, it will be twice as small and placed at the center of the screen.",
+            "help_Ru": "Когда включено, текстура заполнит весь экран, сохраняя пропорции; в противном случае текстура будет в два раза меньше и будет размещена по центру."
         }]
     }]
 }

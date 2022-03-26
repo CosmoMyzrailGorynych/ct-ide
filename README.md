@@ -1,6 +1,6 @@
 ![](https://raw.githubusercontent.com/ct-js/ct-js/develop/branding/GithubHeader.png)
 
-[![](https://img.shields.io/badge/license-MIT-informational?style=flat-square)](https://github.com/ct-js/ct-js/blob/develop/LICENSE) [![GitHub tag (latest by date)](https://img.shields.io/github/tag-date/ct-js/ct-js?label=version&style=flat-square)](https://github.com/ct-js/ct-js/releases) [![Travis (.org) master branch](https://img.shields.io/travis/ct-js/ct-js/master?style=flat-square)](https://travis-ci.org/ct-js/ct-js/branches) [![Travis (.org) develop branch](https://img.shields.io/travis/ct-js/ct-js/develop?label=dev%20build&style=flat-square)](https://travis-ci.org/ct-js/ct-js)
+[![](https://img.shields.io/badge/license-MIT-informational?style=flat-square)](https://github.com/ct-js/ct-js/blob/develop/LICENSE) [![GitHub tag (latest by date)](https://img.shields.io/github/tag-date/ct-js/ct-js?label=version&style=flat-square)](https://github.com/ct-js/ct-js/releases) [![Travis (.org) master branch](https://img.shields.io/travis/ct-js/ct-js/master?style=flat-square)](https://travis-ci.org/ct-js/ct-js/branches) [![Gitlab CI develop branch](https://img.shields.io/gitlab/pipeline-status/CoMiGo/ct-js?branch=develop&label=dev%20build&style=flat-square)](https://travis-ci.org/ct-js/ct-js)
 
 [![](https://img.shields.io/discord/490052958310891520?style=flat-square&logo=discord&logoColor=white)](https://discord.gg/CggbPkb) [![GitHub issues by-label](https://img.shields.io/github/issues/ct-js/ct-js/state:to%20do?style=flat-square&label=todo%20issues)](https://github.com/ct-js/ct-js/issues?q=is%3Aissue+is%3Aopen+label%3A%22state%3Ato+do%22) [![GitHub issues by-label](https://img.shields.io/github/issues/ct-js/ct-js/state:current%20release?style=flat-square&label=current%20release%20issues)](https://github.com/ct-js/ct-js/issues?q=is%3Aissue+is%3Aopen+label%3A%22state%3Acurrent+release%22)
  [![GitHub issues by-label](https://img.shields.io/github/issues/ct-js/ct-js/help%20wanted?style=flat-square&label=help%20wanted)](https://github.com/ct-js/ct-js/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22)
@@ -76,7 +76,9 @@ gulp -f devSetup.gulpfile.js
 gulp
 ```
 
-VSCode can use [this extension](https://marketplace.visualstudio.com/items?itemName=ruakr.vsc-nwjs) to run ct.js with an attached debugger. Use `gulp dev` instead of just `gulp` to run a dev service with live-reloading without opening ct.js in its default manner.
+Use `gulp dev` instead of just `gulp` to run a dev service with live-reloading without opening ct.js in its default manner. In either case, you can stop this service in the usual manner for your terminal, e.g. `Ctrl+C`. If you are encountering unexplained issues, especially when switching to a new branch, run `gulp -f devSetup.gulpfile.js` again.
+
+VSCode can use [this extension](https://marketplace.visualstudio.com/items?itemName=ruakr.vsc-nwjs) to run ct.js with an attached debugger. Before running the debugger, to allow live-reloading, run `gulp dev`.
 
 ## Releasing ct.js
 
@@ -99,6 +101,10 @@ gulp deploy
 
 The first run will be slow as it will download nw.js binaries. Next runs will use cached files.
 
-## Naming conventions for commits
+## Naming conventions and references
 
 Use [Gitmoji-flavored Comigoji](https://comigo.gitlab.io/comigoji/#gitmoji) for naming your commits.
+
+Use [Comigo's CSS naming guide](https://cosmomyzrailgorynych.github.io/css-naming-guide/) for styling
+
+We have some references for ct.js' internals on [our wiki](https://github.com/ct-js/ct-js/wiki).

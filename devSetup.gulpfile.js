@@ -1,9 +1,13 @@
 'use strict';
 
+const versions = require('./versions');
+
 /* eslint no-console: 0 */
 const spawnise = require('./node_requires/spawnise'),
       gulp = require('gulp'),
       minimist = require('minimist');
+
+const fs = require('fs-extra');
 
 const argv = minimist(process.argv.slice(2));
 
@@ -31,7 +35,6 @@ const npmInstall = path => done => {
 
 const bakeDocs = async () => {
     const npm = (/^win/).test(process.platform) ? 'npm.cmd' : 'npm';
-    const fs = require('fs-extra');
     await fs.remove('./app/data/docs/');
     await spawnise.spawn(npm, ['run', 'build'], {
         cwd: './docs'
@@ -42,6 +45,14 @@ const bakeDocs = async () => {
 const updateGitSubmodules = () =>
     spawnise.spawn('git', ['submodule', 'update', '--init', '--recursive']);
 
+const makeVSCodeLaunchJson = () => {
+    const template = require('./.vscode/launch-template.json');
+    template.configurations.find(c => c.type === 'nwjs').nwjsVersion = versions.nwjs;
+    return fs.outputJson('./.vscode/launch.json', template, {
+        spaces: 4
+    });
+};
+
 const defaultTask = gulp.series([
     updateGitSubmodules,
     gulp.parallel([
@@ -50,7 +61,10 @@ const defaultTask = gulp.series([
         npmInstall('./docs')
     ]),
     cleanup,
-    bakeDocs
+    gulp.parallel([
+        bakeDocs,
+        makeVSCodeLaunchJson
+    ])
 ]);
 
 gulp.task('default', defaultTask);

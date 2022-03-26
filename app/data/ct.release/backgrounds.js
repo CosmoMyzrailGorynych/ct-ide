@@ -42,7 +42,7 @@ class Background extends PIXI.TilingSprite {
             ct.backgrounds.list[texName] = [];
         }
         ct.backgrounds.list[texName].push(this);
-        ct.types.list.BACKGROUND.push(this);
+        ct.templates.list.BACKGROUND.push(this);
         ct.stack.push(this);
         this.anchor.x = this.anchor.y = 0;
         this.depth = depth;
@@ -118,4 +118,4 @@ ct.backgrounds = {
         return bg;
     }
 };
-ct.types.Background = Background;
+ct.templates.Background = Background;

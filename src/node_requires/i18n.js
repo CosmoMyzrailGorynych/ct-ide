@@ -1,8 +1,31 @@
 const fs = require('fs-extra');
+const path = require('path');
 const {extendValid} = require('./objectUtils');
 
+var languageJSON;
+
 const vocDefault = fs.readJSONSync('./data/i18n/English.json');
-var i18n;
+
+const getI18nDir = function () {
+    return './data/i18n/';
+};
+
+const getLanguages = async () => {
+    const languageFiles = await fs.readdir(getI18nDir())
+    .then(files => files
+            .filter(filename => path.extname(filename) === '.json')
+            .filter(filename => filename !== 'Comments.json'));
+    const languageMetadata = await Promise.all(languageFiles.map(filename =>
+        fs.readJSON(path.join(getI18nDir(), filename))));
+    const results = [];
+    for (let i = 0; i < languageMetadata.length; i++) {
+        results.push({
+            filename: languageFiles[i],
+            meta: languageMetadata[i].me
+        });
+    }
+    return results;
+};
 
 const loadLanguage = lang => {
     var voc;
@@ -14,12 +37,17 @@ const loadLanguage = lang => {
     }
     // eslint-disable-next-line no-console
     console.debug(`Loaded a language file ${lang}.json`);
-    i18n.languageJSON = extendValid(vocDefault, voc);
-    return i18n.languageJSON;
+    languageJSON = extendValid(vocDefault, voc);
+    return languageJSON;
 };
 
-i18n = {
-    loadLanguage
+const i18n = {
+    loadLanguage,
+    getLanguages,
+    get languageJSON() {
+        return languageJSON;
+    },
+    getI18nDir
 };
 
 

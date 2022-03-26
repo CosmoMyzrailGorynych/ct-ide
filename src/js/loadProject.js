@@ -25,6 +25,9 @@
         ];
     };
 
+    /**
+     * Applies migration scripts to older projects.
+     */
     var adapter = async project => {
         var version = semverToArray(project.ctjsVersion || '0.2.0');
 

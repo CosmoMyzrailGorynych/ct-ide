@@ -1,59 +1,69 @@
-textures-panel.panel.view
+textures-panel.aPanel.aView
     .flexfix.tall
         div
             asset-viewer(
                 collection="{global.currentProject.textures}"
                 contextmenu="{showTexturePopup}"
-                vocspace="texture"
+                assettype="textures"
                 namespace="textures"
                 click="{openTexture}"
                 thumbnails="{textureThumbnails}"
+                icons="{textureIcons}"
                 ref="textures"
             )
+                h1.inlineblock
+                    span {parent.voc.textures}
+                .aSpacer.inlineblock
                 label.file.inlineblock
                     input(type="file" multiple
                         accept=".png,.jpg,.jpeg,.bmp,.gif,.json"
                         onchange="{parent.textureImport}")
                     .button
                         svg.feather
-                            use(xlink:href="data/icons.svg#download")
-                        span {voc.import}
+                            use(xlink:href="#download")
+                        span {parent.voc.import}
+                button(onclick="{parent.openGallery}")
+                    svg.feather
+                        use(xlink:href="#folder")
+                    span {parent.vocGlob.openAssetGallery}
                 button(
                     onclick="{parent.pasteTexture}"
-                    title="{voc.importFromClipboard}"
+                    title="{parent.voc.importFromClipboard}"
                     data-hotkey="Control+v"
                     data-hotkey-require-scope="texture"
                 )
                     svg.feather
-                        use(xlink:href="data/icons.svg#clipboard")
+                        use(xlink:href="#clipboard")
                 button(
                     onclick="{parent.openGenerator}"
-                    title="{voc.generatePlaceholder}"
+                    title="{parent.voc.generatePlaceholder}"
                 )
                     svg.feather
-                        use(xlink:href="data/icons.svg#loader")
+                        use(xlink:href="#loader")
             asset-viewer(
                 collection="{global.currentProject.skeletons}"
                 contextmenu="{showSkeletonPopup}"
-                vocspace="texture"
+                assettype="skeletons"
                 namespace="skeletons"
                 thumbnails="{skelThumbnails}"
                 ref="skeletons"
             )
-                h2
-                    span {voc.skeletons}
-                    docs-shortcut(path="/skeletal-animation.html")
-                label.file.flexfix-header
+                h1.inlineblock
+                    span {parent.voc.skeletons}
+                .aSpacer.inlineblock
+                label.file.inlineblock
                     input(type="file" multiple
                         accept=".json"
                         onchange="{parent.textureImport}")
                     .button
                         svg.feather
-                            use(xlink:href="data/icons.svg#download")
-                        span {voc.import}
+                            use(xlink:href="#download")
+                        span {parent.voc.import}
+                docs-shortcut(hidelabel="yes" path="/skeletal-animation.html" button="yes" title="{vocGlob.docsShort}")
     texture-editor(if="{editing}" texture="{currentTexture}")
     texture-generator(if="{generating}" onclose="{closeGenerator}")
     context-menu(menu="{textureMenu}" ref="textureMenu")
+    builtin-asset-gallery(if="{showingGallery}" type="textures" onclose="{closeGallery}")
     script.
         const glob = require('./data/node_requires/glob');
         this.namespace = 'texture';
@@ -62,6 +72,12 @@ textures-panel.panel.view
         this.dropping = false;
 
         this.textureThumbnails = require('./data/node_requires/resources/textures').getTexturePreview;
+        const iconMap = {
+            rect: 'square',
+            circle: 'circle',
+            strip: 'polyline'
+        };
+        this.textureIcons = texture => [iconMap[texture.shape]];
         this.skelThumbnails = require('./data/node_requires/resources/skeletons').getSkeletonPreview;
 
         this.fillTextureMap = () => {
@@ -146,10 +162,10 @@ textures-panel.panel.view
             const files = [...e.target.files].map(file => file.path);
             for (let i = 0; i < files.length; i++) {
                 if (/\.(jpg|gif|png|jpeg)/gi.test(files[i])) {
-                    importImageToTexture(files[i]);
+                    importImageToTexture(files[i], void 0, this.refs.textures.currentGroup.uid);
                 } else if (/_ske\.json/i.test(files[i])) {
                     const {importSkeleton} = require('./data/node_requires/resources/skeletons');
-                    importSkeleton(files[i]);
+                    importSkeleton(files[i], this.refs.skeletons.currentGroup.uid);
                 }
             }
             e.srcElement.value = '';
@@ -165,7 +181,7 @@ textures-panel.panel.view
             const imageBase64 = png.replace(/^data:image\/\w+;base64,/, '');
             const imageBuffer = new Buffer(imageBase64, 'base64');
             const {importImageToTexture} = require('./data/node_requires/resources/textures');
-            importImageToTexture(imageBuffer);
+            importImageToTexture(imageBuffer, void 0, this.refs.textures.currentGroup.uid);
             alertify.success(this.vocGlob.pastedFromClipboard);
         };
 
@@ -218,12 +234,12 @@ textures-panel.panel.view
             opened: false,
             items: [{
                 icon: 'loader',
-                label: this.voc.createType,
+                label: this.voc.createTemplate,
                 click: () => {
-                    const typesAPI = require('./data/node_requires/resources/types/');
-                    const type = typesAPI.createNewType(this.currentTexture.name);
-                    type.texture = this.currentTexture.uid;
-                    window.orders.trigger('openAsset', `types/${type.uid}`);
+                    const templatesAPI = require('./data/node_requires/resources/templates/');
+                    const template = templatesAPI.createNewTemplate(this.currentTexture.name);
+                    template.texture = this.currentTexture.uid;
+                    window.orders.trigger('openAsset', `templates/${template.uid}`);
                 }
             }, {
                 label: window.languageJSON.common.open,
@@ -243,7 +259,7 @@ textures-panel.panel.view
                 click: () => {
                     alertify
                     .defaultValue(this.currentTexture.name)
-                    .prompt(window.languageJSON.common.newname)
+                    .prompt(window.languageJSON.common.newName)
                     .then(e => {
                         if (e.inputValue && e.inputValue !== '' && e.buttonClicked !== 'cancel') {
                             this.currentTexture.name = e.inputValue;
@@ -303,4 +319,12 @@ textures-panel.panel.view
             this.currentTexture = texture;
             this.currentTextureId = global.currentProject.textures.indexOf(texture);
             this.editing = true;
+        };
+
+        this.openGallery = () => {
+            this.showingGallery = true;
+        };
+        this.closeGallery = () => {
+            this.showingGallery = false;
+            this.update();
         };

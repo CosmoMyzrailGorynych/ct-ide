@@ -17,8 +17,8 @@ ct.matter.on('collisionStart', e => {
         var bodies = [pair.bodyA, pair.bodyB];
         for (var body of bodies) {
             // Here, body.copy is the ct.js copy that owns this physical body.
-            // Does a body belong to a copy of type "Alien"?
-            if (body.copy.type === 'Alien') {
+            // Does a body belong to a copy of template "Alien"?
+            if (body.copy.template === 'Alien') {
                 // If the impact was too strong, destroy the alien.
                 if (impact > 75) {
                     body.copy.kill = true;

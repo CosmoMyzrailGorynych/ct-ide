@@ -40,7 +40,7 @@ If `type` equals `copies`, then you must provide additional parameters:
 
 Parameter | Explanation | Default
 --        | -           | -
-`copyType`| A type's name from which copies to take coordinates | —
+`copyTemplate`| A template's name from which copies to take coordinates | —
 `limit`   | *Optional.* The maximum radius from the center of your query at which your copies are included. | —
 
 
@@ -120,13 +120,13 @@ Returns a new query combined from two other queries.
 
 ## Built-in querying functions
 
-### `ct.eqs.scoreFree(ctype, multiplier)`
+### `ct.eqs.scoreFree(cgroup, multiplier)`
 
-Creates a scoring function that tests whether a point collides with a `ctype` group. `multiplier` is multiplied with a point's `score` value if a point does not collide with a given collision group (default one is `0`).
+Creates a scoring function that tests whether a point collides with a `cgroup` group. `multiplier` is multiplied with a point's `score` value if a point does not collide with a given collision group (default one is `0`).
 
-### `ct.eqs.scoreOccupied(ctype, multiplier)`
+### `ct.eqs.scoreOccupied(cgroup, multiplier)`
 
-Creates a scoring function that tests whether a point collides with a `ctype` group. `multiplier` is multiplied with a point's `score` value if a point collides with a given collision group (default one is `0`).
+Creates a scoring function that tests whether a point collides with a `cgroup` group. `multiplier` is multiplied with a point's `score` value if a point collides with a given collision group (default one is `0`).
 
 ### `ct.eqs.scoreTile(layer, multiplier)`
 

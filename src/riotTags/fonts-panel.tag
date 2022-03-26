@@ -2,15 +2,15 @@ fonts-panel.flexfix.tall.fifty
     asset-viewer(
         collection="{global.currentProject.fonts}"
         contextmenu="{onFontContextMenu}"
-        vocspace="fonts"
         namespace="fonts"
+        assettype="fonts"
         click="{openFont}"
         thumbnails="{thumbnails}"
         names="{names}"
         ref="fonts"
         class="tall"
     )
-        h1 {voc.fonts}
+        h1 {parent.voc.fonts}
         .toleft
             label.file.flexfix-header
                 input(type="file" multiple
@@ -18,8 +18,8 @@ fonts-panel.flexfix.tall.fifty
                     onchange="{parent.fontImport}")
                 .button
                     svg.feather
-                        use(xlink:href="data/icons.svg#download")
-                    span {voc.import}
+                        use(xlink:href="#download")
+                    span {parent.voc.import}
     context-menu(menu="{fontMenu}" ref="fontMenu")
     font-editor(if="{editingFont}" fontobj="{editedFont}")
     script.
@@ -69,7 +69,7 @@ fonts-panel.flexfix.tall.fifty
                 click: () => {
                     alertify
                     .defaultValue(this.editedFont.typefaceName)
-                    .prompt(window.languageJSON.common.newname)
+                    .prompt(window.languageJSON.common.newName)
                     .then(e => {
                         if (e.inputValue !== '' && e.buttonClicked !== 'cancel') {
                             this.editedFont.typefaceName = e.inputValue;
@@ -116,7 +116,7 @@ fonts-panel.flexfix.tall.fifty
             const {importTtfToFont} = require('./data/node_requires/resources/fonts');
             for (let i = 0; i < files.length; i++) {
                 if (/\.ttf/gi.test(files[i])) {
-                    importTtfToFont(files[i])
+                    importTtfToFont(files[i], this.refs.fonts.currentGroup.uid)
                     .then(() => {
                         this.refs.fonts.updateList();
                         this.update();

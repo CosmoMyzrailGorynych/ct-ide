@@ -11,7 +11,7 @@
             "fx"
         ]
     },
-    "typeExtends": [{
+    "templateExtends": [{
         "name": "3D enabled",
         "type": "checkbox",
         "default": false,

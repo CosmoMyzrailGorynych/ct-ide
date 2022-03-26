@@ -1,0 +1,16 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "nwjs",
+            "request": "launch",
+            "name": "Launch ct.js",
+            "nwjsVersion": "(this should be filled by devSetup.gulpfile.js)",
+            "runtimeArgs": [
+                "--nwapp=${workspaceFolder}/app"
+            ],
+            "webRoot": "${workspaceFolder}",
+            "reloadAfterAttached": false
+        }
+    ]
+}

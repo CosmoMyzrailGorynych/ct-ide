@@ -30,12 +30,18 @@ body
         bottom 0
         position absolute
 
-.error
+.act.act
+    color act
+.accent1.accent1
+    color accent1
+.error.error
     color error
-.success
+.success.success
     color success
-.warning
+.warning.warning
     color warning
+.text.text
+    color text
 
 .borderall
     border 1px solid borderBright
@@ -63,31 +69,6 @@ body
 
 .short
     width 4em
-
-// прогрессбары
-.progressbar
-    min-width 10em
-    position relative
-    border-radius br
-    border 1px solid borderBright
-    height 1.5em
-    vertical-align middle
-    display inline-block
-    div
-        border-radius br
-        background act
-        position absolute
-        top 0
-        left 0
-        bottom 0
-        width 50%
-    &.warning div
-        background warning
-    &.success div
-        background success
-    &.error
-        background error
-
 
 // оверлей загрузки
 div#loading
@@ -172,3 +153,38 @@ icon(icon = 'slash', color = act)
     stroke-linecap round
     stroke-linejoin round
     fill none
+
+.stripedbg.stripedbg
+    background linear-gradient(-45deg, background 25%, foreground 25%, foreground 50%, background 50%, background 75%, foreground 75%, foreground)
+    background-size 2rem 2rem
+
+/* Color swatches */
+[css-swatch="act"]
+    color act
+[css-swatch="act-contrast"]
+    if dark(act)
+        color white
+    else
+        color black
+[css-swatch="acttext"]
+    color acttext
+[css-swatch="acttext-contrast"]
+    if dark(acttext)
+        color white
+    else
+        color black
+[css-swatch="accent1"]
+    color accent1
+[css-swatch="accent1-contrast"]
+    if dark(accent1)
+        color white
+    else
+        color black
+[css-swatch="borderPale"]
+    color borderPale
+[css-swatch="borderBright"]
+    color borderBright
+[css-swatch="text"]
+    color text
+[css-swatch="backgroundDeeper"]
+    color backgroundDeeper

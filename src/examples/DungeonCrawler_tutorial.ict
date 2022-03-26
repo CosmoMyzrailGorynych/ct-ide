@@ -1,4 +1,4 @@
-ctjsVersion: 1.5.0
+ctjsVersion: 2.0.0
 notes: /* empty */
 libs:
   fittoscreen:
@@ -7,15 +7,15 @@ libs:
   keyboard: {}
   keyboard.polyfill: {}
   sound.howler: {}
+  random: {}
+  tween: {}
+  transition: {}
   place:
     undefined: ''
     gridX: 128
     gridY: 128
     debugMode: false
-    debugText: 16
-  random: {}
-  tween: {}
-  transition: {}
+    debugText: 8
 textures:
   - name: Bullet
     untill: 0
@@ -691,9 +691,9 @@ textures:
     uid: 8a6a1aa5-60f6-4f9a-9c54-7e5e7641bda1
     padding: 1
     source: /home/comigo/UNWORK/Tileset/Cat_Death.png
-    lastmod: 1599531850969
+    lastmod: 1641332719583
 skeletons: []
-types:
+templates:
   - name: Elevator
     depth: 0
     oncreate: this.transitionStarted = false;
@@ -712,7 +712,7 @@ types:
     texture: 2637e46e-06b2-4ca0-b17d-4bbf6eca44b7
     extends: {}
     uid: 7fea051e-83e5-4e54-848b-ab3ca861e5cb
-    lastmod: 1599528051175
+    lastmod: 1641334138294
   - name: Cat
     depth: 5
     oncreate: |-
@@ -726,16 +726,16 @@ types:
     onstep: |-
       this.vspeed = ct.actions.MoveY.value * this.maxSpeed;
       this.hspeed = ct.actions.MoveX.value * this.maxSpeed;
-      this.moveContinuousByAxes('Solid');
+      console.log(this.moveContinuousByAxes('Solid'));
 
       if (ct.actions.Shoot.pressed) {
-          const bullet = ct.types.copy('Bullet', this.x, this.y - 5);
+          const bullet = ct.templates.copy('Bullet', this.x, this.y - 5);
           bullet.direction = ct.u.pdn(this.x, this.y - 5, ct.mouse.x, ct.mouse.y);
       }
 
       if (ct.place.meet(this, 'Gap')) {
           this.kill = true;
-          ct.types.copy('Cat_Falling', this.x, this.y - 8);
+          ct.templates.copy('Cat_Falling', this.x, this.y - 8);
       }
 
       const checkpoint = ct.place.meet(this, 'Checkpoint');
@@ -761,7 +761,7 @@ types:
               ct.room.lives --;
               if (ct.room.lives <= 0) {
                   this.kill = true;
-                  ct.types.copy('Cat_Death', this.x, this.y);
+                  ct.templates.copy('Cat_Death', this.x, this.y);
               }
               return;
           }
@@ -787,9 +787,9 @@ types:
     ondestroy: ''
     texture: 4822a271-cc3c-4d88-b7a0-b2aa4cab0a96
     extends:
-      ctype: ''
+      cgroup: ''
     uid: c40336ea-2846-45d5-97ba-d51852d3f6c5
-    lastmod: 1604821276344
+    lastmod: 1641334773965
   - name: Crate
     depth: 0
     oncreate: this.depth = this.y;
@@ -800,12 +800,12 @@ types:
     ondraw: ''
     ondestroy: |-
       ct.sound.spawn('Hit');
-      ct.types.copy('Crate_Debris', this.x, this.y);
+      ct.templates.copy('Crate_Debris', this.x, this.y);
     texture: 31948760-8965-4768-ab1d-2b87d0b7fc3a
     extends:
-      ctype: Solid
+      cgroup: Solid
     uid: 4e473462-8009-438e-9f53-1032e3a335cf
-    lastmod: 1599528085727
+    lastmod: 1641332423671
   - name: HazardousTube
     depth: 0
     oncreate: ''
@@ -816,11 +816,11 @@ types:
     ondraw: ''
     ondestroy: |-
       ct.sound.spawn('Hit');
-      ct.types.copy('HazardousTube_Debris', this.x, this.y - 4);
+      ct.templates.copy('HazardousTube_Debris', this.x, this.y - 4);
       ct.emitters.fire('BlueSparks', this.x, this.y - 4);
     texture: 1f0fbe96-38aa-4db4-a011-c0cf34b91d00
     extends:
-      ctype: Solid
+      cgroup: Solid
     uid: 3b6057ca-f175-4449-ac24-1c5630e0af7c
     lastmod: 1597811713144
   - name: Bullet
@@ -830,9 +830,7 @@ types:
       this.speed = 4;
     onstep: |-
       this.move();
-      if (ct.place.occupied(this, 'Solid') ||
-          ct.place.tile(this, 'Solid')
-      ) {
+      if (ct.place.occupied(this, 'Solid')) {
           this.kill = true;
       }
     ondraw: this.depth = this.y;
@@ -841,13 +839,13 @@ types:
       ct.emitters.fire('RedSparks', this.x, this.y);
     texture: 29cd8366-37bd-4a4d-96a1-a2da4d674972
     extends:
-      ctype: Bullet
+      cgroup: Bullet
     uid: 57f03679-dc98-4ebc-87ef-a4ca7b275731
-    lastmod: 1599528114513
+    lastmod: 1641332445982
   - name: Crosshair
     depth: 100000
     oncreate: ''
-    onstep: this.move();
+    onstep: ''
     ondraw: |-
       this.x = ct.mouse.xui;
       this.y = ct.mouse.yui;
@@ -855,7 +853,7 @@ types:
     texture: bdf46b11-ef42-4c45-af01-a0b918ee9587
     extends: {}
     uid: ff0f561c-a96c-4205-a083-01d2a60ebb67
-    lastmod: 1599528916282
+    lastmod: 1641334780836
   - name: Crate_Debris
     depth: -6500
     oncreate: ''
@@ -880,11 +878,11 @@ types:
     depth: 1
     oncreate: this.opened = false;
     onstep: |-
-      const cat = ct.types.list['Cat'][0]
-      if (!this.opened && ct.types.exists(cat)) {
+      const cat = ct.templates.list['Cat'][0]
+      if (!this.opened && ct.templates.isCopy(cat)) {
           if (ct.u.pdc(this.x, this.y, cat.x, cat.y) < 48) {
               this.opened = true;
-              this.ctype = '';
+              this.cgroup = '';
               this.loop = false;
               this.animationSpeed = 15 / ct.speed;
               ct.sound.spawn('Door');
@@ -895,17 +893,17 @@ types:
     ondestroy: ''
     texture: 3a7c7928-a731-4940-9854-17936b3c9a46
     extends:
-      ctype: Solid
+      cgroup: Solid
     uid: c701a029-af09-4fcf-9712-0fcdaa3581be
-    lastmod: 1604819851791
+    lastmod: 1618035793594
   - name: Slime
     depth: 0
     oncreate: |-
       this.aggroRange = 120;
       this.aggroed = false;
     onstep: |-
-      const cat = ct.types.list['Cat'][0];
-      if (ct.types.exists(cat)) {
+      const cat = ct.templates.list['Cat'][0];
+      if (ct.templates.isCopy(cat)) {
           if (this.aggroed) {
               if (ct.u.pdc(this.x, this.y, cat.x, cat.y) > 7) {
                   this.speed = 1.5;
@@ -932,9 +930,9 @@ types:
       ct.sound.spawn('SlimeExplosion');
     texture: 4733fb53-5e41-4cf8-b9a8-91ad700f2246
     extends:
-      ctype: Solid
+      cgroup: Solid
     uid: 173dfb94-5133-4bbc-9e7d-6ed8c9fef330
-    lastmod: 1604821390654
+    lastmod: 1618035849551
   - name: Gap
     depth: 0
     oncreate: this.visible = false;
@@ -943,7 +941,7 @@ types:
     ondestroy: ''
     texture: 14d3f53f-a868-4820-84cd-63234ab6e6b9
     extends:
-      ctype: Gap
+      cgroup: Gap
     uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
     lastmod: 1598572535583
   - name: Checkpoint
@@ -954,7 +952,7 @@ types:
     ondestroy: ''
     texture: a42e0dff-69c9-46c3-8996-745aaa769698
     extends:
-      ctype: Checkpoint
+      cgroup: Checkpoint
     uid: 469b9eef-6117-43a5-87d3-7151da7eba06
     lastmod: 1598575103989
   - name: Cat_Falling
@@ -962,7 +960,7 @@ types:
     oncreate: ct.sound.spawn('Fall');
     onstep: this.move();
     ondraw: |-
-      this.rotation += 10 * ct.delta;
+      this.angle -= 10 * ct.delta;
       this.scale.x -= 0.015 * ct.delta;
       this.scale.y = this.scale.x;
 
@@ -972,7 +970,7 @@ types:
     ondestroy: |
       if (ct.room.lives > 0) {
           ct.room.lives --;
-          ct.types.copy('Cat', ct.room.checkpointX, ct.room.checkpointY);
+          ct.templates.copy('Cat', ct.room.checkpointX, ct.room.checkpointY);
       } else {
           ct.rooms.switch(ct.room.name);
       }
@@ -1042,7 +1040,7 @@ types:
     texture: 8a6a1aa5-60f6-4f9a-9c54-7e5e7641bda1
     extends: {}
     uid: f11d4e26-8450-4187-8163-b70facceca7e
-    lastmod: 1604820801526
+    lastmod: 1641332285054
   - name: Medkit
     depth: 0
     oncreate: ''
@@ -1084,6 +1082,7 @@ sounds:
     uid: d470f423-a1ed-4189-b117-8ebf7b4eac62
     origname: sd470f423-a1ed-4189-b117-8ebf7b4eac62.ogg
     lastmod: 1597803503502
+    isMusic: true
   - name: Door
     uid: fbe42ee3-6fe6-43ac-a99c-09da748ddc46
     origname: sfbe42ee3-6fe6-43ac-a99c-09da748ddc46.wav
@@ -2036,7 +2035,7 @@ rooms:
               - 1
               - 1
         extends:
-          ctype: Solid
+          cgroup: Solid
         hidden: false
       - depth: -7000
         tiles:
@@ -2801,7 +2800,7 @@ rooms:
               - 1
               - 1
         extends:
-          ctype: Decor
+          cgroup: Decor
         hidden: false
     uid: 326893eb-b9c2-4616-aaee-bb4641e0423e
     thumbnail: bb4641e0423e
@@ -2809,7 +2808,12 @@ rooms:
     gridX: 16
     gridY: 16
     backgroundColor: '#000337'
-    lastmod: 1604820670562
+    lastmod: 1641402653400
+    restrictCamera: true
+    restrictMinX: -48
+    restrictMaxX: 384
+    restrictMinY: -16
+    restrictMaxY: 320
   - name: Level_02
     oncreate: |-
       this.nextLevel = 'Level_03';
@@ -4575,7 +4579,7 @@ rooms:
               - 1
               - 1
         extends:
-          ctype: Solid
+          cgroup: Solid
         hidden: false
       - depth: -7000
         tiles:
@@ -6172,14 +6176,14 @@ rooms:
               - 1
               - 1
         extends:
-          ctype: Decor
+          cgroup: Decor
         hidden: false
     uid: 1cd7a8ef-febb-4174-ad90-42846504b06f
     thumbnail: 42846504b06f
     extends: {}
     gridX: 8
     gridY: 8
-    lastmod: 1604818796350
+    lastmod: 1641402692176
     backgroundColor: '#000337'
   - name: MainMenu
     oncreate: ''
@@ -7499,7 +7503,7 @@ rooms:
               - 1
               - 1
         extends:
-          ctype: Solid
+          cgroup: Solid
       - depth: -7000
         tiles:
           - x: 208
@@ -8583,7 +8587,7 @@ rooms:
               - 1
               - 1
         extends:
-          ctype: Decor
+          cgroup: Decor
     uid: ae6bb30c-9ad9-4390-b632-127493eb58cf
     thumbnail: 127493eb58cf
     extends: {}
@@ -8986,14 +8990,15 @@ scripts: []
 starting: 0
 settings:
   authoring:
-    author: ''
-    site: ''
-    title: ''
+    author: Cosmo Myzrail Gorynych
+    site: 'https://ctjs.rocks/'
+    title: Dungeon Crawler demo
     version:
-      - 0
+      - 1
       - 0
       - 0
     versionPostfix: ''
+    appId: rocks.ctjs.labraid
   rendering:
     usePixiLegacy: true
     maxFPS: 60
@@ -9001,6 +9006,7 @@ settings:
     highDensity: true
     desktopMode: maximized
     hideCursor: true
+    mobileScreenOrientation: unspecified
   export:
     windows: true
     linux: true
@@ -9008,12 +9014,24 @@ settings:
     functionWrap: true
     codeModifier: obfuscate
   branding:
-    icon: -1
+    icon: 4822a271-cc3c-4d88-b7a0-b2aa4cab0a96
     accent: '#446adb'
     invertPreloaderScheme: true
+    splashScreen: dc7b9662-c746-403c-9f3e-67425fd480a3
+    forceSmoothIcons: false
+    forceSmoothSplashScreen: false
   fps: 30
 fonts: []
 palette:
   - '#000337'
   - '#4FE77F'
 startroom: eed8a427-1c70-425d-b633-7b6ea00c7b7c
+contentTypes: []
+groups:
+  fonts: []
+  textures: []
+  styles: []
+  rooms: []
+  sounds: []
+  emitterTandems: []
+  templates: []

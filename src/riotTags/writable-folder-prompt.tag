@@ -1,6 +1,6 @@
 writable-folder-prompt
-    .dimmer
-        .panel(ref="widget")
+    .aDimmer
+        .aPanel(ref="widget")
             h1 {voc.headerSelectFolderForData}
             .flexrow
                 .sixty.npt.npl
@@ -8,7 +8,7 @@ writable-folder-prompt
                     p {voc.paragraphDirectoryDirections}
                     button(onclick="{openDirectoryPicker}")
                         svg.feather
-                            use(xlink:href="data/icons.svg#search")
+                            use(xlink:href="#search")
                         span {voc.selectFolder}
                 .fourty.npt.npr
                     svg.anIllustration.wide.tall

@@ -1,8 +1,8 @@
-.spacer, .aSpacer
+.aSpacer
     width 1rem
     height @width
 
-.dimmer
+.aDimmer
     position fixed
     background-color rgba(0, 0, 0, 0.3)
     left 0
@@ -12,26 +12,33 @@
     width 100%
     height 100%
     z-index 20
+    display flex
+    flex-flow column nowrap
+    align-items center
+    justify-content center
 
-.modal, .panel
+.aModal, .aPanel
     box-sizing border-box
     background background
     border 1px solid borderBright
     border-radius br
     position relative
+    &.success
+        border-color success
+        background mix(background, success, 90%)
+    &.warning
+        border-color warning
+        background mix(background, warning, 90%)
+    &.error
+        border-color error
+        background mix(background, error, 90%)
 
-.modal
-    position fixed
-    left 50%
-    top 50%
-    transform translate(-50%, -50%) translateZ(0)
-    filter blur(0px)
-    backface-visibility hidden
+.aModal
     max-height 90%
     overflow auto
     box-shadow 0 2px 5px rgba(0, 0, 0, 0.35)
 
-.view
+.aView
     overflow auto
     background backgroundDeeper
     position absolute
@@ -40,7 +47,7 @@
     top 0
     bottom 0
     border-top 0
-    .view
+    .aView
         border 0
 
 .inset
@@ -79,11 +86,17 @@
             border-bottom-color borderBright
             color acttext
             padding 0.2em 0.5em 0.2em 1.1em
-        & > svg:first-child, & > .spacer:first-child
+        &.checkbox
+            padding 0.2em 0.5em 0.2em 1.5em
+            input[type="checkbox"], input[type="radio"]
+                top 0.65rem
+            &:hover, &.hover
+                padding 0.2em 0.5em 0.2em 1.5em
+        & > svg:first-child, & > .aSpacer:first-child
             color act
             margin-right 0.5rem
             {trans}
-        & > .spacer:first-child
+        & > .aSpacer:first-child
             width 1.5rem
             height 1.5rem
             display inline-block
@@ -91,18 +104,23 @@
             background act
             border-bottom-color transparent
             color background
-            & > svg:first-child, & > .spacer:first-child
+            & > svg:first-child, & > .aSpacer:first-child
                 color background
 
 // панели управления
-.nav
+.aNav
     background background
     border-radius br
     border-top 1px solid borderBright
     border-left 1px solid borderBright
     &.vertical
-        border 0
-        border-radius 0
+        border 1px solid borderBright
+        &.nbr
+            border-top-right-radius 0
+            border-bottom-right-radius 0
+        &.nbl
+            border-top-left-radius 0
+            border-bottom-left-radius 0
     padding 0
     margin 0
     display flex
@@ -139,11 +157,13 @@
         &:last-child
             border-top-right-radius inherit
             border-bottom-right-radius inherit
+            // The last item visually forms the right border of the container
+            border-right-color borderBright
     &.vertical li
         text-align initial
         border-right 0
         border-bottom 1px solid borderPale
-        padding 0.25rem 1rem
+        padding 0.35rem 1rem
         overflow hidden
         text-overflow ellipsis
         white-space nowrap
@@ -156,54 +176,16 @@
 
 
 // resource cards
-.cards, .Cards
+.Cards
     list-style none
     padding 0
     display grid
     grid-template-columns repeat(auto-fill, minmax(17em, 1fr))
     grid-gap 0.3em
     flex-grow 0
-    li, .aCard
-        background background
-        padding 0.8em
-        margin 0
-        box-sizing border-box
-        border 1px solid borderPale
-        border-radius 3px
-        display inline-block
-        vertical-align top
-        cursor pointer
-        transition 0.35s ease all
-        &:hover
-            border-color acttext
-        &:active
-            border-color accent1
-            background act
-            color background
-        span
-            font-family consolas, monospace
-            width calc(14.5em - 64px)
-            display inline-block
-            text-overflow ellipsis
-            white-space nowrap
-            overflow hidden
-        > .date
-            display none
-        & > img, & > svg:not(.aStartingRoomIcon)
-            float left
-            height 64px
-            width 64px
-            margin -0.5em 1em -0.5em -0.5em
-            border-radius br
-            &:hover
-                background rgba(act, 0.35)
-        & > svg:not(.aStartingRoomIcon)
-            stroke-width 1
-            width 48px
-            height 3.5rem
     &.list
         display block
-    &.list li
+    &.list .aCard
         display flex
         flex-flow row nowrap
         margin 0
@@ -213,12 +195,16 @@
         &:hover
             background act
             color background
-        span
+        .aCard-Properties
             flex 1 1 auto
             order 4
             line-height 1.5rem
             text-align left
-        > .date
+            display flex
+            flex-flow row nowrap
+        .asset-viewer-Icons
+            flex 0 0 auto
+        .date
             display block
             flex 0 0 auto
             width 6rem
@@ -226,15 +212,20 @@
             text-align center
             font-family fonts
             order 10
-        & + li
+        & + .aCard
             border-top 0
-        & > img
-            float none
-            height 1.5rem
+        .aCard-aThumbnail
             width 1.5rem
-            margin 0 1rem 0 0
-            flex 0 0 auto
-            order 2
+            img, svg
+                height 1.5rem
+                width 1.5rem
+                margin 0
+                flex 0 0 auto
+                order 2
+            img
+                height 2rem
+                width 2rem
+                margin -0.25rem
         &:first-child
             border-top-left-radius br
             border-top-right-radius br
@@ -246,19 +237,90 @@
         li
             text-align center
             position relative
-        img
-            float none
-            max-width 13.5em
-            max-height 10em
-            margin 0
-            width auto
-            height auto
+            flex-flow column nowrap
+        .aCard-aThumbnail
+            max-width 100%
+            width unset
+            margin-right 0
+            svg
+                width 6rem
+                height 6rem
+                stroke-width 0.5
+            img
+                width unset
+                height unset
+                max-width 100%
+                max-height 10rem
+                margin 0
+        .aCard-Properties
+            flex 0 0 auto
+            margin 0.5rem 0
+            line-height 1.5
         span
             font-family consolas, monospace
             width 12.5em
             text-overflow ellipsis
             white-space nowrap
             overflow hidden
+.aCard
+    background background
+    padding 0.8em
+    margin 0
+    box-sizing border-box
+    border 1px solid borderPale
+    border-radius 3px
+    display inline-block
+    vertical-align top
+    cursor pointer
+    transition 0.35s ease all
+    display flex
+    flex-flow row nowrap
+    align-items center
+    justify-content center
+    &:hover, &.active
+        border-color acttext
+        .Cards.list &
+            position relative
+            border-top 1px solid acttext
+            margin-top -1px
+    &:active
+        border-color accent1
+        background act
+        color background
+.aCard-Properties
+    flex 1 1 auto
+    > .date
+        display none
+    span
+        font-family consolas, monospace
+        width 100%
+        display inline-block
+        vertical-align middle
+        text-overflow ellipsis
+        white-space nowrap
+        overflow hidden
+.aCard-aThumbnail
+    width 3rem
+    flex 0 0 auto
+    margin-right 1rem
+    line-height 0
+    svg
+        width 3rem
+        height 3rem
+        stroke-width 1
+        color act
+    // Images cheat a bit with negative margins
+    // to occupy a 4rem x 4rem box
+    img
+        width 4rem
+        height 4rem
+        max-width 4rem
+        object-fit contain
+        margin -0.5rem 0 -0.5rem -0.5rem
+        border-radius br
+        pointer-events none
+    &:hover img
+        background rgba(act, 0.35)
 .aCard-Actions
     position absolute
     top 0.5rem
@@ -268,7 +330,7 @@
     .aCard:hover &, .aCard:focus &
         opacity 1
 sounds-panel, rooms-panel
-    .cards li img:hover
+    .Cards li img:hover
         background none
 
 .anErrorNotice
@@ -294,11 +356,12 @@ sounds-panel, rooms-panel
         border-top 1px solid error
         transform translate(-0.25rem, 0) rotate(45deg)
 
-.nicetable, .aNiceTable, .aPaddedTable
+.aNiceTable, .aPaddedTable
     border-spacing 0
     td, th
         padding 0.5rem 0.75rem
         margin 0
+        vertical-align text-top
         &:first-child
             padding-left 0
         &:last-child
@@ -306,7 +369,7 @@ sounds-panel, rooms-panel
     th
         border-bottom 1px solid borderBright
         text-align left
-.nicetable, .aNiceTable
+.aNiceTable
     margin 1rem 0
     border 1px solid borderBright
     border-radius br
@@ -318,8 +381,33 @@ sounds-panel, rooms-panel
             padding-right 1.5rem
 .aTableWrap
     overflow-y auto
-    .nicetable, .aNiceTable
+    .aNiceTable
         width max-content
+
+.aProgressbar
+    min-width 10rem
+    max-width 100%
+    position relative
+    border-radius br
+    border 1px solid borderBright
+    height 1rem
+    vertical-align middle
+    display inline-block
+    div
+        border-radius br
+        background act
+        position absolute
+        top 0
+        left 0
+        bottom 0
+        width 50%
+        {trans}
+    &.warning div
+        background warning
+    &.success div
+        background success
+    &.error div
+        background error
 
 .anIllustration
     color act

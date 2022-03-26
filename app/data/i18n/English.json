@@ -6,7 +6,6 @@
     },
     "common": {
         "add": "Add",
-        "addtonotes": "Add to notes",
         "apply": "Apply",
         "cancel": "Cancel",
         "cannotBeEmpty": "This cannot be empty",
@@ -17,44 +16,147 @@
         "copy": "Copy",
         "copyName": "Copy the name",
         "couldNotLoadFromClipboard": "Could not load data from clipboard",
-        "ctsite": "ct.js homepage",
         "cut": "Cut",
         "delete": "Delete",
+        "docsShort": "Docs",
+        "docsLong": "Documentation",
         "donate": "Donate",
         "done": "Done!",
         "duplicate": "Duplicate",
         "exit": "Exit",
-        "exitconfirm": "Are you sure you want to exit?<br/>All the unsaved changes will be lost!",
-        "fastimport": "Fast Import",
+        "edit": "Edit",
         "filter": "Filter:",
         "loading": "Loading…",
         "name": "Name:",
-        "nametaken": "This name is already taken",
-        "newname": "New name:",
         "no": "No",
         "none": "None",
-        "norooms": "You need at least one room to compile your app.",
-        "notfoundorunknown": "Unknown file. Make sure the file really exists",
+        "nothingToShowFiller": "There is nothing to show here!",
         "ok": "Ok",
         "open": "Open",
-        "openproject": "Open project…",
         "paste": "Paste",
         "pastedFromClipboard": "Pasted from clipboard",
-        "reallyexit": "Are you sure you want to exit? All unsaved changes will be lost.",
         "rename": "Rename",
+        "required": "Required",
         "save": "Save",
-        "savedcomm": "Your project was succesfully saved.",
-        "saveproject": "Save project",
         "selectDialogue": "Select…",
         "select": "Select",
         "search": "Search:",
+        "settings": "Settings",
         "sort": "Sort:",
-        "tilelayer": "tile layer",
         "wrongFormat": "Wrong file format",
         "yes": "Yes",
         "zoom": "Zoom",
         "zoomIn": "Zoom in",
-        "zoomOut": "Zoom out"
+        "zoomOut": "Zoom out",
+        "fieldTypes": {
+            "checkbox": "Checkbox",
+            "code": "Codebox",
+            "color": "Color",
+            "group": "Group of fields",
+            "h1": "Header of 1st level",
+            "h2": "Header of 2nd level",
+            "h3": "Header of 3rd level",
+            "h4": "Header of 4th level",
+            "number": "Number",
+            "point2D": "2D point",
+            "radio": "Radio buttons",
+            "slider": "Slider",
+            "sliderAndNumber": "Slider with a number input",
+            "table": "Table",
+            "text": "Short text",
+            "textfield": "Textbox",
+            "texture": "Texture",
+            "template": "Template",
+            "room": "Room",
+            "sound": "Sound",
+            "tandem": "Particle emitter"
+        },
+        "newName": "New name:",
+        "saveProject": "Save project",
+        "openProject": "Open project…",
+        "savedMessage": "Your project was succesfully saved.",
+        "reallyExitConfirm": "Are you sure you want to exit? All unsaved changes will be lost.",
+        "notFoundOrUnknown": "Unknown file. Make sure the file really exists",
+        "nameTaken": "This name is already taken",
+        "fastImport": "Fast Import",
+        "addToNotes": "Add to notes",
+        "noRooms": "You need at least one room to compile your app.",
+        "tileLayer": "tile layer",
+        "ctSite": "ct.js homepage",
+        "openAssetGallery": "Gallery",
+        "assetTypes": {
+            "textures": [
+                "texture",
+                "textures",
+                "textures"
+            ],
+            "templates": [
+                "template",
+                "templates",
+                "templates"
+            ],
+            "emitterTandems": [
+                "emitter tandem",
+                "emitter tandems",
+                "emitter tandems"
+            ],
+            "rooms": [
+                "room",
+                "rooms",
+                "rooms"
+            ],
+            "fonts": [
+                "font",
+                "fonts",
+                "fonts"
+            ],
+            "styles": [
+                "style",
+                "styles",
+                "styles"
+            ],
+            "sounds": [
+                "sound",
+                "sounds",
+                "sounds"
+            ],
+            "skeletons": [
+                "skeletal sprite",
+                "skeletal sprites",
+                "skeletal sprites"
+            ]
+        }
+    },
+    "assetInput": {
+        "changeAsset": "Press to change the asset",
+        "jumpToAsset": "Jump to this asset",
+        "selectAssetHeader": "Select an asset"
+    },
+    "assetViewer": {
+        "addNewGroup": "New Group",
+        "ungrouped": "Show ungrouped",
+        "newGroupName": "New group",
+        "groupDeletionConfirmation": "Are you sure you want to delete this group? All its assets will be ungrouped."
+    },
+    "builtinAssetGallery": {
+        "galleryTip": "This is a free, built-in gallery of various textures and sounds. All the assets are CC0 or WTFPL, or are released under special terms for use in ct.js. In any way, you can use these assets however you like, in commercial and other projects.",
+        "assetGalleryHeader": "Assets",
+        "importIntoProject": "Import into the current project",
+        "importAll": "Import all",
+        "byAuthorPrefix": "by",
+        "cannotImportExplanation": "The name that this asset would take is taken by some other asset. You may need to rename existing assets; or maybe you've already imported this asset?",
+        "nameOccupied": "Name occupied",
+        "cannotImportNameOccupied": "Cannot import $1 as such name is already occupied.",
+        "visitSource": "Open the store page of this asset pack",
+        "visitAuthorsItch": "Visit author's itch.io page",
+        "visitAuthorsTwitter": "Visit author's Twitter page",
+        "tipAuthor": "Tip the author for their hard work :D"
+    },
+    "colorPicker": {
+        "current": "New",
+        "globalPalette": "Global Palette",
+        "old": "Old",
+        "projectPalette": "Project's Palette"
     },
     "copyCustomProperties": {
         "customProperties": "Custom Properties",
@@ -62,12 +164,6 @@
         "property": "Property",
         "value": "Value",
         "delete": "Delete"
-    },
-    "colorPicker": {
-        "current": "New",
-        "globalPalette": "Global Palette",
-        "old": "Old",
-        "projectPalette": "Project's Palette"
     },
     "curveEditor": {
         "curveLineHint": "Click the curve to add a point",
@@ -102,14 +198,32 @@
         "debug": "Debug version",
         "export": "Export",
         "exportPanel": "Export the Project",
-        "firstrunnotice": "The first run for each platform will be slow as ct.js will download and save additional libraries needed for packing. It will take some time, but next times will be almost instant.",
         "log": "Message Log",
         "windowsCrossBuildWarning": "To build for Windows from Linux/MacOS, you need Wine installed in your system. Install instructions are all different for various platforms, so you better google it yourself :)",
-        "cannotBuildForMacOnWin": "Unfortunately, Windows can only produce broken Mac packages. Try using a Linux machine; for example, in a virtual one. It is 100% free!"
+        "cannotBuildForMacOnWin": "Unfortunately, Windows can only produce broken Mac packages. Try using a Linux machine; for example, in a virtual one. It is 100% free!",
+        "projectTitleRequired": "You must add a title to your project in the Project tab → Authoring → Name.",
+        "appIdRequired": "You must set a unique appId in the Project tab → Authoring → App ID to distribute this app.",
+        "noAndroidSdkFound": "No Android SDK was found (ANDROID_SDK_ROOT environment variable is not set). You can get Android SDK by installing Android Studio:",
+        "envVarNotice": "You may still need to set this environment variable manually and restart your device.",
+        "downloadAndroidStudio": "Download Android Studio",
+        "requiresInternetNotice": "This operation requires Internet connection to setup each project.",
+        "noJdkFound": "No JDK 11 was found (JAVA_HOME environment variable is not set or doesn't point to JDK 11). You can get JDK 11 here:",
+        "downloadJDK": "Download JDK 11",
+        "firstRunNotice": "The first run for each platform will be slow as ct.js will download and save additional libraries needed for packing. It will take some time, but next times will be almost instant."
     },
     "extensionsEditor": {
         "noEntries": "No entries yet.",
-        "addRow": "Add a row"
+        "addRow": "Add a row",
+        "actions": "Actions",
+        "values": "Values",
+        "moveDown": "Move down",
+        "moveUp": "Move up",
+        "deleteRow": "Delete row"
+    },
+    "groupEditor": {
+        "groupEditor": "Group Editor",
+        "icon": "Icon:",
+        "color": "Color:"
     },
     "intro": {
         "loading": "Please wait: kittens are gathering speed of light!",
@@ -117,9 +231,9 @@
             "button": "Select folder and create",
             "input": "Project's name (letters and digits)",
             "text": "Create new",
-            "nameerr": "Wrong project name",
             "saveProjectHere": "Save the project here",
-            "selectProjectFolder": "Select a folder in which to store your project"
+            "selectProjectFolder": "Select a folder in which to store your project",
+            "nameError": "Wrong project name"
         },
         "recovery": {
             "message": "<h2 class=\"nmt\">Recovery</h2><p>ct.js has found a recovery file. Possibly, your project was not saved correctly or ct.js was shut down in case of some emergency. Here is when these files were lastly modified:</p><p>Your chosen file: {0} {1}<br/>Recovery file: {2} {3}</p><p>What file should ct.js open?</p>",
@@ -137,6 +251,8 @@
         "browse": "Browse",
         "latest": "Latest projects",
         "examples": "Examples",
+        "templates": "Templates",
+        "templatesInfo": "You can kickstart your game development by using one of these templates. They contain placeholder graphics only but have working mechanics. Selecting a project will open a save directory selector for your new project.",
         "unableToWriteToFolders": "Ct.js could not find an appropriate place for projects! Make sure you store ct.js app inside a folder you have access to write to.",
         "twitter": "Twitter channel",
         "discord": "Discord community",
@@ -145,9 +261,6 @@
         "vkontakte": "Vkontakte public community",
         "patreon": "Support ct.js on Patreon!",
         "createOrBrowseJunction": "or"
-    },
-    "licensepanel": {
-        "ctjslicense": "Ct.js License (MIT)"
     },
     "onboarding": {
         "hoorayHeader": "Wow! You've just created a project!",
@@ -170,7 +283,15 @@
             "methodModuleMissing": "The required module for this method is missing",
             "methods": "Input methods",
             "multiplier": "Multiplier",
-            "noActionsYet": "Actions allow developers to listen to numerous input methods at once and dynamically change them, all with one uniform API. Read more by clicking on the docs icon above."
+            "noActionsYet": "Actions allow developers to listen to numerous input methods at once and dynamically change them, all with one uniform API. Read more by clicking on the docs icon above.",
+            "makeFromScratch": "Make from scratch",
+            "presets": "Presets",
+            "presetXYMovement": "Generic XY movement",
+            "presetTouchAndMouse": "Mouse & Touch",
+            "presetCustom": "Import your own",
+            "exportActionPreset": "Export as a preset",
+            "importErrorMissingModules": "Cannot import action preset as your ct.js installation lacks following modules: $1.",
+            "importErrorNotCtJsPreset": "This file doesn't look like ct.js' actions preset."
         },
         "authoring": {
             "heading": "Authoring",
@@ -178,7 +299,9 @@
             "site": "Homepage:",
             "title": "Name:",
             "version": "Version:",
-            "versionpostfix": "Postfix:"
+            "versionPostfix": "Postfix:",
+            "appId": "App ID",
+            "appIdExplanation": "This is mainly used in mobile builds. It is a unique string that identifies your game. It usually follows the format zone.developer.projectName, and, say, rocks.ctjs.catsteroids is a good example for that."
         },
         "branding": {
             "heading": "Branding",
@@ -186,8 +309,34 @@
             "accentNotice": "Sets the color of the preloader, as well as of some other places if used as a mobile app.",
             "icon": "Game's icon:",
             "iconNotice": "It should be a square, one-frame texture that is at least 256x256px large.",
+            "splashScreen": "Splash screen:",
+            "splashScreenNotice": "This image will be used in mobile builds. It should be at least 1920x1920px large, and will be resized and cropped for portrait and landscape screen orientation, so make sure everything important is in the center square.",
+            "forceSmoothIcons": "Use smooth icons regardless of rendering settings",
+            "forceSmoothSplashScreen": "Use smooth splash screen images regardless of rendering settings",
             "invertPreloaderScheme": "Invert preloader's color scheme",
             "hideLoadingLogo": "Hide \"Made with ct.js\" graphics on the loading screen"
+        },
+        "content": {
+            "heading": "Content type editor",
+            "addContentType": "Add a type",
+            "missingTypeName": "Unnamed content type",
+            "unnamedContentTypeHint": "This content type is unnamed. It will not be usable in-game unless you add the name.",
+            "typeName": "Content type name",
+            "typeNameHint": "The name of your content type as it will be used in code. Examples: GearItems, EnemySkills, Cities.",
+            "typeReadableName": "Readable name",
+            "typeReadableNameHint": "The readable name of your content type, which is shown here and in content editors.",
+            "icon": "Icon",
+            "typeSpecification": "Content schema",
+            "fieldName": "Name",
+            "fieldNameHint": "The name of the field as it will be used in code. For example: power, hp, spawnType.",
+            "fieldReadableName": "Readable name",
+            "fieldReadableNameHint": "The readable version of the name, which is used in the content editor.",
+            "fieldType": "Type",
+            "array": "Array",
+            "deleteContentType": "Delete this content type",
+            "confirmDeletionMessage": "Are you sure you want to delete this content type? It is irreversible and will also delete all the entries of this content type.",
+            "gotoEntries": "Go to entries",
+            "entries": "Entries"
         },
         "modules": {
             "heading": "Catmods"
@@ -197,7 +346,6 @@
             "framerate": "Framerate:",
             "highDensity": "Support high pixel density (e.g. on retina screens)",
             "maxFPS": "Max framerate:",
-            "pixelatedrender": "Disable image smoothing here and in exported project (preserve crisp pixels)",
             "hideCursor": "Hide system cursor",
             "usePixiLegacy": "Add a legacy, canvas-based renderer to support older browsers and graphics cards (adds ~20kb up to your game)",
             "desktopBuilds": "Desktop builds",
@@ -206,7 +354,15 @@
                 "maximized": "Maximized",
                 "fullscreen": "Fullscreen",
                 "windowed": "Windowed"
-            }
+            },
+            "mobileBuilds": "Mobile builds",
+            "screenOrientation": "Screen orientation:",
+            "screenOrientations": {
+                "unspecified": "Any",
+                "landscape": "Landscape",
+                "portrait": "Portrait"
+            },
+            "pixelatedRender": "Disable image smoothing here and in exported project (preserve crisp pixels)"
         },
         "scripts": {
             "heading": "Custom scripts",
@@ -228,7 +384,8 @@
                 "obfuscate": "Obfuscate"
             }
         },
-        "catmodsSettings": "Catmods' settings"
+        "catmodsSettings": "Catmods' settings",
+        "contentTypes": "Content Types"
     },
     "modules": {
         "author": "Author of this catmod",
@@ -268,7 +425,8 @@
         "create": "Create",
         "import": "Import",
         "skeletons": "Skeletal Animation",
-        "createType": "Create a type from it",
+        "textures": "Textures",
+        "createTemplate": "Create a template from it",
         "importFromClipboard": "Import from clipboard",
         "generatePlaceholder": "Generate a placeholder"
     },
@@ -283,122 +441,37 @@
         "createAndContinue": "Create and add another",
         "scalingAtX4": "Scaling by x4 for a small texture",
         "generationSuccessMessage": "Successfully added $1 texture to your project.",
+        "form": "Form",
+        "formRectangular": "Rectangular",
+        "formRound": "Round",
+        "formDiamond": "Diamond",
         "filler": "Filler:",
         "fillerNone": "None",
         "fillerCross": "Cross",
+        "fillerArrow": "Arrow",
         "fillerLabel": "Text label"
     },
-    "textureview": {
-        "bgcolor": "Change bg color",
-        "center": "Axis:",
-        "cols": "Columns:",
-        "done": "Apply",
-        "fill": "Fill",
-        "form": "Collision shape:",
-        "frames": "Frame count:",
-        "isometrify": "Isometrify: Move the axis to the middle bottom point, fill the whole sprite with a collision mask",
-        "name": "Name:",
-        "radius": "Radius:",
-        "rectangle": "Rectangle",
-        "reimport": "Reimport",
-        "round": "Circle",
-        "rows": "Rows:",
-        "setcenter": "Image's center",
-        "speed": "Framerate:",
-        "tiled": "Use as a background?",
-        "replacetexture": "Replace…",
-        "updateFromClipboard": "Update from clipboard",
-        "corrupted": "File is corrupted or missing! Closing now.",
-        "showmask": "Show mask",
-        "width": "Width:",
-        "height": "Height:",
-        "marginx": "Margin X:",
-        "marginy": "Margin Y:",
-        "offx": "Offset X:",
-        "offy": "Offset Y:",
-        "strip": "Line Strip / Polygon",
-        "removePoint": "Remove the point",
-        "closeShape": "Close the shape",
-        "addPoint": "Add a point",
-        "moveCenter": "Move axis",
-        "movePoint": "Move this point",
-        "symmetryTool": "Symmetry tool",
-        "padding": "Padding:",
-        "paddingNotice": "This affects how a texture is exported: it adds duplicate pixels on edges and prevents bleeding artifacts on tiled and scaled textures. The default value is usually enough, but, if you shrink textures strongly, the bleeding may re-appear. Increment this value if this texture has artifacts while in-game.",
-        "previewAnimationNotice": "This is a preview. Use this.animationSpeed property to change it for real copies."
-    },
     "sounds": {
-        "create": "Create"
+        "create": "Create",
+        "record": "Record"
     },
-    "soundview": {
-        "import": "Import",
-        "name": "Name:",
-        "save": "Save",
-        "isMusicFile": "This is a musical track",
-        "poolSize": "Pool size:"
+    "soundRecorder": {
+        "recorderHeading": "Recorder",
+        "record": "Start recording",
+        "stopRecording": "Stop recorder",
+        "discardRecording": "Discard the recording",
+        "finishRecording": "Finish recording",
+        "cannotRecordSound": "Cannot start recorder: check your audio configuration and the recording device.",
+        "troubleshootingWindows": "On Windows, also go to Settings -> Privacy -> Microphone and check that apps are allowed to access your microphone."
     },
     "styles": {
         "create": "Create",
         "styles": "Text Styles"
     },
-    "styleview": {
-        "active": "Active",
-        "alignment": "Alignment:",
-        "apply": "Apply",
-        "fill": "Fill",
-        "fillcolor": "Color:",
-        "fillcolor1": "Color 1:",
-        "fillcolor2": "Color 2:",
-        "fillgrad": "Gradient",
-        "fillgradtype": "Gradient type:",
-        "fillhorisontal": "Horizontal",
-        "fillsolid": "Diffuse",
-        "filltype": "Fill type:",
-        "fillvertical": "Vertical",
-        "font": "Font",
-        "fontweight": "Weight:",
-        "fontsize": "Font size:",
-        "fontfamily": "Font family:",
-        "italic": "Italic",
-        "lineHeight": "Line height:",
-        "shadow": "Shadow",
-        "shadowblur": "Blur:",
-        "shadowcolor": "Shadow color:",
-        "shadowshift": "Shift:",
-        "stroke": "Stroke",
-        "strokecolor": "Stroke color:",
-        "strokeweight": "Line weight:",
-        "testtext": "Test text 0123 +",
-        "textWrap": "Word wrap",
-        "textWrapWidth": "Max width:",
-        "useCustomFont": "Use custom font…"
-    },
     "fonts": {
         "fonts": "Fonts",
         "import": "Import TTF",
         "italic": "Italic"
-    },
-    "fontview": {
-        "typefacename": "Typeface name:",
-        "fontweight": "Font weight:",
-        "italic": "Is italic?",
-        "reimport": "Reimport",
-        "generateBitmapFont": "Also generate a bitmap font",
-        "bitmapFont": "Bitmap font",
-        "bitmapFontSize": "Font size:",
-        "bitmapFontLineHeight": "Line height:",
-        "resultingBitmapFontName": "Resource name",
-        "charset": "Charset:",
-        "charsets": {
-            "punctuation": "Digits and punctuation (you usually do need this)",
-            "basicLatin": "Basic Latin",
-            "latinExtended": "Latin extended",
-            "cyrillic": "Cyrillic",
-            "greekCoptic": "Greek and Coptic",
-            "custom": "Custom",
-            "allInFont": "Draw everything the font supports"
-        },
-        "customCharsetHint": "Type all the letters you want to include, both in upper and lower case."
     },
     "particleEmitters": {
         "emittersHeading": "Particle emitters",
@@ -468,103 +541,16 @@
         "newGridSize": "New grid size:",
         "setPreviewTexture": "Set preview texture"
     },
-    "types": {
-        "create": "Create"
-    },
-    "typeview": {
-        "change": "Change sprite",
-        "create": "On Create",
-        "depth": "Depth:",
-        "destroy": "On Destroy",
-        "done": "Done",
-        "draw": "Draw",
-        "learnAboutTypes": "Learn about coding types",
-        "name": "Name:",
-        "step": "On Step",
-        "visible": "Visible"
-    },
     "rooms": {
         "create": "Add new",
-        "makestarting": "Set as the starting room"
-    },
-    "roombackgrounds": {
-        "add": "Add a Background",
-        "depth": "Depth:",
-        "movement": "Movement speed (X, Y):",
-        "parallax": "Parallax (X, Y):",
-        "repeat": "Repeat:",
-        "scale": "Scaling (X, Y):",
-        "shift": "Shift (X, Y):",
-        "notBackgroundTextureWarning": "This texture is not marked as a background. It will have gaps when exported.",
-        "fixBackground": "Fix it.",
-        "dismissWarning": "Dismiss."
-    },
-    "roomtiles": {
-        "moveTileLayer": "Move to a new depth",
-        "show": "Show the layer",
-        "hide": "Hide the layer",
-        "findTileset": "Find a Tileset"
-    },
-    "roomview": {
-        "name": "Name:",
-        "width": "View width:",
-        "height": "View height:",
-        "isUi": "Is a UI layer?",
-        "events": "Room events",
-        "copies": "Copies",
-        "backgrounds": "Backgrounds",
-        "backgroundColor": "Background color:",
-        "tiles": "Tiles",
-        "properties": "Properties",
-        "add": "Add",
-        "none": "Nothing",
-        "done": "Done",
-        "grid": "Set grid",
-        "gridoff": "Disable grid",
-        "gridsize": "Grid size:",
-        "hotkeysNotice": "Ctrl = Delete, Alt = No grid, Shift = Multiple",
-        "hotkeysNoticeMovement": "Ctrl = Delete, Shift = Select",
-        "tocenter": "To center",
-        "selectbg": "Select tileset",
-        "shift": "Shift the view",
-        "shifttext": "Shift by:",
-        "step": "On Step",
-        "create": "On Create",
-        "leave": "On Leave",
-        "draw": "Draw",
-        "newdepth": "New depth:",
-        "deletecopy": "Delete copy {0}",
-        "deleteCopies": "Delete copies",
-        "shiftCopies": "Shift copies",
-        "sortHorizontally": "Sort horizontally",
-        "sortVertically": "Sort vertically",
-        "selectAndMove": "Select and Move",
-        "changecopyscale": "Change scale",
-        "changecopyrotation": "Rotate",
-        "shiftcopy": "Set coordinates",
-        "customProperties": "Custom Properties",
-        "deletetile": "Delete a tile",
-        "deletetiles": "Delete tiles",
-        "movetilestolayer": "Move to layer",
-        "shifttiles": "Shift tiles",
-        "findTileset": "Find a tileset",
-        "copyProperties": {
-            "position": "Position",
-            "rotation": "Rotation",
-            "scale": "Scale"
-        },
-        "restrictCamera": "Keep camera in a rectangle",
-        "minimumX": "Min X",
-        "minimumY": "Min Y",
-        "maximumX": "Max X",
-        "maximumY": "Max Y"
+        "makeStarting": "Set as the starting room"
     },
     "notepad": {
         "local": "Project's notepad",
         "global": "Global notepad",
-        "helppages": "Learn",
         "backToHome": "Back to docs' homepage",
-        "modulespages": "Modules' docs"
+        "modulesPages": "Modules' docs",
+        "helpPages": "Learn"
     },
     "patreon": {
         "aboutPatrons": "Patrons are people who show their support to ComigoGames at Patreon, in form of recurring donations. Not everyone there comes from ct.js; some are using other apps from ComigoGames. Tip: if you are a creator and donate to ComigoGames via Patreon, you will get a link to your page here — that's my little help to your creations :)",
@@ -633,7 +619,8 @@
             "heading": "Deploy",
             "exportDesktop": "Export for desktop…",
             "successZipExport": "Successfully exported to {0}.",
-            "zipExport": "Export for web"
+            "zipExport": "Export for web",
+            "exportAndroid": "Export for Android…"
         },
         "latestProjects": {
             "recentProjects": "Recent projects"
@@ -678,6 +665,7 @@
             "license": "License",
             "visitDiscordForGamedevSupport": "Discord server",
             "openIconList": "Open the list of icons",
+            "openStylebook": "Open CSS stylebook",
             "twitter": "Twitter channel",
             "vkontakte": "Vkontakte public community",
             "ctjsForum": "Join ct.js forum"
@@ -696,6 +684,210 @@
         "sounds": "Sounds",
         "ui": "UI",
         "fx": "FX",
-        "types": "Types"
+        "templates": "Templates"
+    },
+    "roomBackgrounds": {
+        "add": "Add a Background",
+        "depth": "Depth:",
+        "movement": "Movement speed (X, Y):",
+        "parallax": "Parallax (X, Y):",
+        "repeat": "Repeat:",
+        "scale": "Scaling (X, Y):",
+        "shift": "Shift (X, Y):",
+        "notBackgroundTextureWarning": "This texture is not marked as a background. It will have gaps when exported.",
+        "fixBackground": "Fix it.",
+        "dismissWarning": "Dismiss."
+    },
+    "roomTiles": {
+        "moveTileLayer": "Move to a new depth",
+        "show": "Show the layer",
+        "hide": "Hide the layer",
+        "findTileset": "Find a Tileset"
+    },
+    "roomView": {
+        "name": "Name:",
+        "width": "View width:",
+        "height": "View height:",
+        "isUi": "Is a UI layer?",
+        "events": "Room events",
+        "copies": "Copies",
+        "backgrounds": "Backgrounds",
+        "backgroundColor": "Background color:",
+        "tiles": "Tiles",
+        "properties": "Properties",
+        "add": "Add",
+        "none": "Nothing",
+        "done": "Done",
+        "grid": "Set grid",
+        "hotkeysNotice": "Ctrl = Delete, Alt = No grid, Shift = Multiple",
+        "hotkeysNoticeMovement": "Ctrl = Delete, Shift = Select",
+        "shift": "Shift everything",
+        "step": "On Step",
+        "create": "On Create",
+        "leave": "On Leave",
+        "draw": "Draw",
+        "deleteCopies": "Delete copies",
+        "shiftCopies": "Shift copies",
+        "sortHorizontally": "Sort horizontally",
+        "sortVertically": "Sort vertically",
+        "selectAndMove": "Select and Move",
+        "customProperties": "Custom Properties",
+        "findTileset": "Find a tileset",
+        "copyProperties": {
+            "position": "Position",
+            "rotation": "Rotation",
+            "scale": "Scale"
+        },
+        "restrictCamera": "Keep camera in a rectangle",
+        "minimumX": "Min X",
+        "minimumY": "Min Y",
+        "maximumX": "Max X",
+        "maximumY": "Max Y",
+        "gridOff": "Disable grid",
+        "gridSize": "Grid size:",
+        "toCenter": "To center",
+        "shiftLabel": "Shift by:",
+        "newDepth": "New depth:",
+        "deleteCopy": "Delete copy {0}",
+        "changeCopyScale": "Change scale",
+        "shiftCopy": "Set coordinates",
+        "deleteTile": "Delete a tile",
+        "deleteTiles": "Delete tiles",
+        "moveTilesToLayer": "Move to layer",
+        "shiftTiles": "Shift tiles",
+        "changeCopyRotation": "Rotate"
+    },
+    "styleView": {
+        "active": "Active",
+        "alignment": "Alignment:",
+        "apply": "Apply",
+        "fill": "Fill",
+        "font": "Font",
+        "italic": "Italic",
+        "lineHeight": "Line height:",
+        "shadow": "Shadow",
+        "stroke": "Stroke",
+        "textWrap": "Word wrap",
+        "textWrapWidth": "Max width:",
+        "useCustomFont": "Use custom font…",
+        "code": "Code",
+        "copyCode": "Copy",
+        "fillColor": "Color:",
+        "fillColor1": "Color 1:",
+        "fillColor2": "Color 2:",
+        "fillGrad": "Gradient",
+        "fillGradType": "Gradient type:",
+        "fillHorizontal": "Horizontal",
+        "fillSolid": "Diffuse",
+        "fillType": "Fill type:",
+        "fillVertical": "Vertical",
+        "fontWeight": "Weight:",
+        "shadowBlur": "Blur:",
+        "shadowColor": "Shadow color:",
+        "shadowShift": "Shift:",
+        "strokeColor": "Stroke color:",
+        "strokeWeight": "Line weight:",
+        "testText": "Test text 0123 +",
+        "fontFamily": "Font family:",
+        "fontSize": "Font size:"
+    },
+    "textureView": {
+        "center": "Axis:",
+        "cols": "Columns:",
+        "done": "Apply",
+        "fill": "Fill",
+        "form": "Collision shape",
+        "frames": "Frame count:",
+        "isometrify": "Isometrify: Move the axis to the middle bottom point, fill the whole sprite with a collision mask",
+        "name": "Name:",
+        "radius": "Radius:",
+        "rectangle": "Rectangle",
+        "reimport": "Reimport",
+        "round": "Circle",
+        "rows": "Rows:",
+        "speed": "Framerate:",
+        "tiled": "Use as a background?",
+        "updateFromClipboard": "Update from clipboard",
+        "corrupted": "File is corrupted or missing! Closing now.",
+        "showFrameIndices": "Show frame indices",
+        "width": "Width:",
+        "height": "Height:",
+        "strip": "Line Strip / Polygon",
+        "removePoint": "Remove the point",
+        "closeShape": "Close the shape",
+        "addPoint": "Add a point",
+        "moveCenter": "Move axis",
+        "movePoint": "Move this point",
+        "symmetryTool": "Symmetry tool",
+        "padding": "Padding:",
+        "paddingNotice": "This affects how a texture is exported: it adds duplicate pixels on edges and prevents bleeding artifacts on tiled and scaled textures. The default value is usually enough, but, if you shrink textures strongly, the bleeding may re-appear. Increment this value if this texture has artifacts while in-game.",
+        "previewAnimationNotice": "This is a preview. Use this.animationSpeed property to change it for real copies.",
+        "pasteCollisionMask": "Paste a collision mask",
+        "copyCollisionMask": "Copy the collision mask",
+        "bgColor": "Change bg color",
+        "setCenter": "Image's center",
+        "replaceTexture": "Replace…",
+        "showMask": "Show mask",
+        "marginX": "Margin X:",
+        "marginY": "Margin Y:",
+        "offX": "Offset X:",
+        "offY": "Offset Y:"
+    },
+    "soundView": {
+        "import": "Import",
+        "name": "Name:",
+        "save": "Save",
+        "isMusicFile": "This is a musical track",
+        "poolSize": "Pool size:"
+    },
+    "fontView": {
+        "italic": "Is italic?",
+        "reimport": "Reimport",
+        "generateBitmapFont": "Also generate a bitmap font",
+        "bitmapFont": "Bitmap font",
+        "bitmapFontSize": "Font size:",
+        "bitmapFontLineHeight": "Line height:",
+        "resultingBitmapFontName": "Resource name",
+        "charset": "Charset:",
+        "charsets": {
+            "punctuation": "Digits and punctuation (you usually do need this)",
+            "basicLatin": "Basic Latin",
+            "latinExtended": "Latin extended",
+            "cyrillic": "Cyrillic",
+            "greekCoptic": "Greek and Coptic",
+            "custom": "Custom",
+            "allInFont": "Draw everything the font supports"
+        },
+        "customCharsetHint": "Type all the letters you want to include, both in upper and lower case.",
+        "fontWeight": "Font weight:",
+        "typefaceName": "Typeface name:"
+    },
+    "licensePanel": {
+        "ctjsLicense": "Ct.js License (MIT)"
+    },
+    "templates": {
+        "create": "Create"
+    },
+    "templateView": {
+        "change": "Change sprite",
+        "create": "On Create",
+        "destroy": "On Destroy",
+        "done": "Done",
+        "draw": "Draw",
+        "learnAboutTypes": "Learn about coding templates",
+        "name": "Name:",
+        "step": "On Step",
+        "appearance": "Appearance",
+        "visible": "Visible",
+        "depth": "Depth:",
+        "opacity": "Opacity:",
+        "blendMode": "Blend mode:",
+        "playAnimationOnStart": "Play animation on start",
+        "blendModes": {
+            "normal": "Normal",
+            "add": "Add (burn)",
+            "multiply": "Multiply (darken)",
+            "screen": "Screen (lighten)"
+        }
     }
 }

@@ -61,7 +61,29 @@ body {
     display: none;
 }
 
-/*@pixelatedrender@*/
-/*@hidecursor@*/
-/*@hidemadewithctjs@*/
+/*if @pixelatedrender@*/
+canvas, img{
+    ms-interpolation-mode: nearest-neighbor;
+    image-rendering: optimizeSpeed;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: optimize-contrast;
+    image-rendering: pixelated;
+}
+/*endif @pixelatedrender@*/
+
+/*if @hidecursor@*/
+#ct {
+    cursor: none;
+}
+/*endif @hidecursor@*/
+
+/*if @hidemadewithctjs@*/
+.ct-aMadeWithImage {
+    display: none;
+}
+/*endif @hidemadewithctjs@*/
+
+/*@fonts@*/
+
 /*%css%*/

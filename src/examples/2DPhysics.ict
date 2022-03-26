@@ -1,4 +1,4 @@
-ctjsVersion: 1.6.1
+ctjsVersion: 2.0.0
 notes: /* empty */
 libs:
   fittoscreen:
@@ -427,7 +427,7 @@ textures:
     source: 'D:\Downloads\physicspack\PNG\Wood elements\elementWood047.png'
     lastmod: 1616891232841
 skeletons: []
-types:
+templates:
   - name: Alien_Launched
     depth: 0
     oncreate: |-
@@ -568,7 +568,7 @@ types:
     oncreate: ''
     onstep: |-
       if (ct.actions.Pointer.pressed && ct.mouse.hovers(this)) {
-          ct.types.copy('Alien_Dragging', this.x, this.y);
+          ct.templates.copy('Alien_Dragging', this.x, this.y);
       }
     ondraw: ''
     ondestroy: ''
@@ -584,8 +584,8 @@ types:
           const speedModifier = 0.3,
                 maxSpeed = 50;
           this.kill = true;
-          const missile = ct.types.copy('Alien_Launched', this.x, this.y);
-          const slingshot = ct.types.list['Slingshot'][0];
+          const missile = ct.templates.copy('Alien_Launched', this.x, this.y);
+          const slingshot = ct.templates.list['Slingshot'][0];
           var hspeed = (slingshot.x - this.x) * speedModifier,
               vspeed = (slingshot.y - this.y) * speedModifier,
               l = ct.u.pdc(0, 0, hspeed, vspeed);
@@ -596,7 +596,7 @@ types:
           ct.matter.launch(missile, hspeed, vspeed);
       }
     ondraw: |
-      const slingshot = ct.types.list['Slingshot'][0],
+      const slingshot = ct.templates.list['Slingshot'][0],
             maxLength = 150;
       let dx = ct.mouse.x - slingshot.x,
           dy = ct.mouse.y - slingshot.y,
@@ -692,8 +692,8 @@ rooms:
               // This little loop applies checks for both bodies
               const bodies = [pair.bodyA, pair.bodyB];
               for (const body of bodies) {
-                  // Does a body belong to a copy of type "AlienTarget"?
-                  if (body.copy.type === 'AlienTarget') {
+                  // Does a body belong to a copy of template "AlienTarget"?
+                  if (body.copy.template === 'AlienTarget') {
                       // If it was too strong, destroy the alien.
                       if (impact > 75) {
                           body.copy.kill = true;
@@ -701,14 +701,14 @@ rooms:
                   }
 
                   // Apply cumulative damage for wooden blocks
-                  // Tags are set in types' On Create code
+                  // Tags are set in templates' On Create code
                   if (body.copy.tag === 'Wooden') {
                       // Ignore weak strikes
                       if (impact >= 25) {
                           // I apply a damage multiplier 0.35 bc initial values turned out to be too destructive,
                           // and I'm too lazy to walk over three blocks and change damage thresholds there.
                           body.copy.damage += impact * 0.35;
-                          // Texture change and destruction are coded in types' On Step and Draw events.
+                          // Texture change and destruction are coded in templates' On Step and Draw events.
                       }
                   }
 
@@ -1077,6 +1077,7 @@ settings:
     pixelatedrender: false
     highDensity: true
     desktopMode: maximized
+    mobileScreenOrientation: unspecified
   export:
     windows: true
     linux: true
@@ -1094,3 +1095,12 @@ palette:
   - '#6EBA9D'
   - '#9E703F'
 startroom: 125036f1-3a14-4fc3-ae95-2d29a5c56244
+contentTypes: []
+groups:
+  fonts: []
+  textures: []
+  styles: []
+  rooms: []
+  sounds: []
+  emitterTandems: []
+  templates: []

@@ -1,0 +1,1 @@
+ct.pointer.setupListeners();

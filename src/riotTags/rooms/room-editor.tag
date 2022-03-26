@@ -1,39 +1,39 @@
-room-editor.panel.view
+room-editor.aPanel.aView
     .toolbar.tall(style="width: {sidebarWidth}px")
         copy-custom-properties-modal(if="{showCopyPropertiesModal}" closestcopy="{closestCopy}" showme="{toggleCopyProperties}")
         .settings.nogrow.noshrink
             b {voc.name}
             br
             input.wide(type="text" value="{room.name}" onchange="{wire('this.room.name')}")
-            .anErrorNotice(if="{nameTaken}" ref="errorNotice") {vocGlob.nametaken}
+            .anErrorNotice(if="{nameTaken}" ref="errorNotice") {vocGlob.nameTaken}
             button.wide(onclick="{openRoomEvents}")
                 svg.feather(if="{room.oncreate || room.onstep || room.ondestroy || room.ondraw}")
-                    use(xlink:href="data/icons.svg#check")
+                    use(xlink:href="#check")
                 span {voc.events}
         .palette
-            .tabwrap
-                ul.tabs.nav.noshrink.nogrow
+            .tabwrap.flexfix
+                ul.tabs.aNav.noshrink.nogrow.flexfix-header
                     li(onclick="{changeTab('roomcopies')}" title="{voc.copies}" class="{active: tab === 'roomcopies'}")
                         svg.feather
-                            use(xlink:href="data/icons.svg#type")
+                            use(xlink:href="#template")
                         span(if="{sidebarWidth > 500}") {voc.copies}
                     li(onclick="{changeTab('roombackgrounds')}" title="{voc.backgrounds}" class="{active: tab === 'roombackgrounds'}")
                         svg.feather
-                            use(xlink:href="data/icons.svg#image")
+                            use(xlink:href="#image")
                         span(if="{sidebarWidth > 500}") {voc.backgrounds}
                     li(onclick="{changeTab('roomtiles')}" title="{voc.tiles}" class="{active: tab === 'roomtiles'}")
                         svg.feather
-                            use(xlink:href="data/icons.svg#texture")
+                            use(xlink:href="#texture")
                         span(if="{sidebarWidth > 500}") {voc.tiles}
                     li(onclick="{changeTab('properties')}" title="{voc.properties}" class="{active: tab === 'properties'}")
                         svg.feather
-                            use(xlink:href="data/icons.svg#settings")
+                            use(xlink:href="#settings")
                         span(if="{sidebarWidth > 500}") {voc.properties}
-                .relative
-                    room-type-picker(show="{tab === 'roomcopies'}" current="{currentType}")
+                .relative.flexfix-body
+                    room-template-picker(show="{tab === 'roomcopies'}" current="{currentTemplate}")
                     room-backgrounds-editor(show="{tab === 'roombackgrounds'}" room="{room}")
                     room-tile-editor(show="{tab === 'roomtiles'}" room="{room}")
-                    .pad.panel(show="{tab === 'properties'}")
+                    .pad.aPanel(show="{tab === 'properties'}")
                         fieldset
                             .fifty.npt.npb.npl
                                 b {voc.width}
@@ -57,7 +57,7 @@ room-editor.panel.view
                                         oninput="{wireAndRedraw('this.room.restrictMinX')}"
                                         value="{room.restrictMinX === void 0 ? 0 : room.restrictMinX}"
                                     )
-                                .spacer
+                                .aSpacer
                                 label
                                     span.nogrow {voc.minimumY}:
                                     |
@@ -75,7 +75,7 @@ room-editor.panel.view
                                         oninput="{wireAndRedraw('this.room.restrictMaxX')}"
                                         value="{room.restrictMaxX === void 0 ? room.width : room.restrictMaxX}"
                                     )
-                                .spacer
+                                .aSpacer
                                 label
                                     span.nogrow {voc.maximumY}:
                                     |
@@ -101,7 +101,7 @@ room-editor.panel.view
         .done.nogrow
             button.wide#roomviewdone(onclick="{roomSave}")
                 svg.feather
-                    use(xlink:href="data/icons.svg#check")
+                    use(xlink:href="#check")
                 span {voc.done}
     .aResizer.vertical(ref="gutter" onmousedown="{gutterMouseDown}")
     .editor(ref="canvaswrap")
@@ -115,37 +115,40 @@ room-editor.panel.view
             onmousewheel="{onCanvasWheel}"
             oncontextmenu="{onCanvasContextMenu}"
         )
-        .shift
-            button.inline.square(title="{voc.shift}" onclick="{roomShift}")
+        .shift.flexrow
+            button.inline.square.forcebackground(title="{voc.shift}" onclick="{roomShift}")
                 svg.feather
-                    use(xlink:href="data/icons.svg#move")
-            button.inline.square(
-                title="{voc.sortHorizontally}"
-                onclick="{sortHorizontally}"
-                if="{tab === 'roomcopies' || tab === 'roomtiles'}"
-            )
-                svg.feather
-                    use(xlink:href="data/icons.svg#sort-horizontal")
-            button.inline.square(
-                title="{voc.sortVertically}"
-                onclick="{sortVertically}"
-                if="{tab === 'roomcopies' || tab === 'roomtiles'}"
-            )
-                svg.feather
-                    use(xlink:href="data/icons.svg#sort-vertical")
-            span(if="{window.innerWidth - sidebarWidth > 940}") {voc.hotkeysNotice}
+                    use(xlink:href="#move")
+            .aButtonGroup
+                button.inline.square.forcebackground(
+                    title="{voc.sortHorizontally}"
+                    onclick="{sortHorizontally}"
+                    if="{tab === 'roomcopies' || tab === 'roomtiles'}"
+                )
+                    svg.feather
+                        use(xlink:href="#sort-horizontal")
+                button.inline.square.forcebackground(
+                    title="{voc.sortVertically}"
+                    onclick="{sortVertically}"
+                    if="{tab === 'roomcopies' || tab === 'roomtiles'}"
+                )
+                    svg.feather
+                        use(xlink:href="#sort-vertical")
+            span.aContrastingPlaque(if="{window.innerWidth - sidebarWidth > 940}") {voc.hotkeysNotice}
         .zoom.flexrow
-            b(if="{window.innerWidth - sidebarWidth > 980}") {vocGlob.zoom}:
-            .spacer
-            b {Math.round(zoomFactor * 100)}%
-            .spacer
+            b.aContrastingPlaque
+                span(if="{window.innerWidth - sidebarWidth > 980}") {vocGlob.zoom}:
+                |
+                |
+                span {Math.round(zoomFactor * 100)}%
+            .aSpacer
             zoom-slider(onchanged="{setZoom}" ref="zoomslider" value="{zoomFactor}")
         .grid
-            button#roomgrid(onclick="{roomToggleGrid}" class="{active: room.gridX > 0}")
-                span {voc[room.gridX > 0? 'gridoff' : 'grid']}
+            button#roomgrid.forcebackground(onclick="{roomToggleGrid}" class="{active: room.gridX > 0}")
+                span {voc[room.gridX > 0? 'gridOff' : 'grid']}
         .center
-            button#roomcenter(onclick="{roomToCenter}") {voc.tocenter}
-            span.aMouseCoord(show="{window.innerWidth - sidebarWidth > 470}" ref="mousecoords") ({mouseX}:{mouseY})
+            button#roomcenter.forcebackground(onclick="{roomToCenter}") {voc.toCenter}
+            b.aMouseCoord.aContrastingPlaque(show="{window.innerWidth - sidebarWidth > 470}" ref="mousecoords") ({mouseX}:{mouseY})
         room-copy-properties(
             if="{this.selectedCopies && this.selectedCopies.length === 1}"
             copy="{this.selectedCopies[0]}"
@@ -200,7 +203,7 @@ room-editor.panel.view
         this.forbidDrawing = false;
         const fs = require('fs-extra');
         const glob = require('./data/node_requires/glob');
-        this.namespace = 'roomview';
+        this.namespace = 'roomView';
         this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
         this.mixin(window.roomCopyTools);
@@ -301,7 +304,7 @@ room-editor.panel.view
         this.roomToggleGrid = () => {
             if (this.room.gridX === 0) {
                 window.alertify
-                .confirm(this.voc.gridsize + '<br/><input type="number" value="64" style="width: 6rem;" min=2 id="theGridSizeX"> x <input type="number" value="64" style="width: 6rem;" min=2 id="theGridSizeY">')
+                .confirm(this.voc.gridSize + '<br/><input type="number" value="64" style="width: 6rem;" min=2 id="theGridSizeX"> x <input type="number" value="64" style="width: 6rem;" min=2 id="theGridSizeY">')
                 .then(e => {
                     if (e.buttonClicked === 'ok') {
                         this.room.gridX = Number(document.getElementById('theGridSizeX').value);
@@ -324,14 +327,14 @@ room-editor.panel.view
             this.tab = tab;
             this.selectedCopies = this.selectedTiles = false;
             if (tab === 'roombackgrounds' || tab === 'properties') {
-                this.roomUnpickType();
+                this.roomUnpickTemplate();
             }
             if (tab !== 'roomcopies') {
                 this.toggleCopyProperties(false);
             }
         };
-        this.roomUnpickType = () => {
-            this.currentType = -1;
+        this.roomUnpickTemplate = () => {
+            this.currentTemplate = -1;
         };
 
         /** Преобразовать x на канвасе в x на комнате */
@@ -359,7 +362,7 @@ room-editor.panel.view
             if (this.tab === 'roomcopies' && this.onCanvasPressCopies(e)) {
                 return;
             }
-            if ((this.currentType === -1 && !e.shiftKey && this.tab !== 'roomtiles' && e.button === 0 && !e.ctrlKey) ||
+            if ((this.currentTemplate === -1 && !e.shiftKey && this.tab !== 'roomtiles' && e.button === 0 && !e.ctrlKey) ||
                 e.button === 1) {
                 this.dragging = true;
             }
@@ -426,7 +429,7 @@ room-editor.panel.view
             } else if ( // Make more tiles or copies if Shift key is down
                 e.shiftKey && this.mouseDown &&
                 (
-                    (this.tab === 'roomcopies' && this.currentType !== -1) ||
+                    (this.tab === 'roomcopies' && this.currentTemplate !== -1) ||
                     this.tab === 'roomtiles'
                 )
             ) {
@@ -477,7 +480,7 @@ room-editor.panel.view
         // Shifts all the copies in a room at once.
         this.roomShift = () => {
             window.alertify.confirm(`
-                ${window.languageJSON.roomview.shifttext}
+                ${window.languageJSON.roomView.shiftLabel}
                 <label class="block">X:
                     <input id="roomshiftx" type="number" value="${this.room.gridX}" />
                 </label>
@@ -554,21 +557,21 @@ room-editor.panel.view
         this.resortRoom = () => {
             // Make an array of all the backgrounds, tile layers and copies, and then sort it.
             this.stack = this.room.copies.concat(this.room.backgrounds).concat(this.room.tiles);
-            const projTypes = global.currentProject.types;
+            const projTemplates = global.currentProject.templates;
             this.stack.sort((a, b) => {
-                const depthA = a.depth !== void 0 ? a.depth : projTypes[glob.typemap[a.uid]].depth,
-                      depthB = b.depth !== void 0 ? b.depth : projTypes[glob.typemap[b.uid]].depth;
+                const depthA = a.depth !== void 0 ? a.depth : projTemplates[glob.templatemap[a.uid]].depth,
+                      depthB = b.depth !== void 0 ? b.depth : projTemplates[glob.templatemap[b.uid]].depth;
                 return depthA - depthB;
             });
         };
         this.resortRoom();
-        var typesChanged = () => {
-            this.currentType = -1;
+        var templatesChanged = () => {
+            this.currentTemplate = -1;
             this.resortRoom();
         };
-        window.signals.on('typesChanged', typesChanged);
+        window.signals.on('templatesChanged', templatesChanged);
         this.on('unmount', () => {
-            window.signals.off('typesChanged', typesChanged);
+            window.signals.off('templatesChanged', templatesChanged);
         });
         /** Canvas redrawing, with all the backgrounds, tiles and copies */
         // eslint-disable-next-line max-lines-per-function, complexity
@@ -641,12 +644,12 @@ room-editor.panel.view
                     }
                 } else { // A copy
                     const copy = this.stack[i],
-                          type = global.currentProject.types[glob.typemap[copy.uid]];
+                          template = global.currentProject.templates[glob.templatemap[copy.uid]];
                     let texture, gra, w, h, ox, oy,
                         grax, gray; // texture's drawing center
-                    if (type.texture !== -1) {
-                        texture = glob.texturemap[type.texture];
-                        gra = glob.texturemap[type.texture].g;
+                    if (template.texture !== -1) {
+                        texture = glob.texturemap[template.texture];
+                        gra = glob.texturemap[template.texture].g;
                         w = gra.width;
                         h = gra.height;
                         ox = gra.offx;
@@ -658,11 +661,13 @@ room-editor.panel.view
                         grax = gray = 16;
                         ox = oy = 0;
                     }
-                    if (copy.tx || copy.ty || copy.tr) {
+                    if ((copy.tx || copy.tx === 0) ||
+                        (copy.ty || copy.ty === 0) ||
+                        (copy.tr && copy.tr !== 0)) {
                         canvas.x.save();
                         canvas.x.translate(copy.x, copy.y);
                         canvas.x.rotate((copy.tr || 0) * Math.PI / -180);
-                        canvas.x.scale(copy.tx || 1, copy.ty || 1);
+                        canvas.x.scale(copy.tx ?? 1, copy.ty ?? 1);
                         canvas.x.drawImage(
                             texture,
                             ox, oy, w, h,
@@ -670,7 +675,7 @@ room-editor.panel.view
                         );
                         canvas.x.restore();
                     } else {
-                        const tex = glob.texturemap[type.texture].g;
+                        const tex = glob.texturemap[template.texture].g;
                         canvas.x.drawImage(
                             texture,
                             tex.offx, tex.offy, w, h,
@@ -730,8 +735,8 @@ room-editor.panel.view
             cx.lineCap = 'round';
             if (typeof x1 !== 'number') {
                 const copy = x1,
-                      type = global.currentProject.types[glob.typemap[copy.uid]],
-                      texture = glob.texturemap[type.texture].g;
+                      template = global.currentProject.templates[glob.templatemap[copy.uid]],
+                      texture = glob.texturemap[template.texture].g;
                 var left, top, height, width;
                 if (copy.tr) {
                     cx.strokeStyle = localStorage.UItheme === 'Night' ? '#44dbb5' : '#446adb';
@@ -751,11 +756,11 @@ room-editor.panel.view
                     cx.stroke();
                     return;
                 }
-                if (type.texture !== -1) {
-                    left = copy.x - texture.axis[0] * (copy.tx || 1) - 1.5;
-                    top = copy.y - texture.axis[1] * (copy.ty || 1) - 1.5;
-                    width = texture.width * (copy.tx || 1) + 3;
-                    height = texture.height * (copy.ty || 1) + 3;
+                if (template.texture !== -1) {
+                    left = copy.x - texture.axis[0] * (copy.tx ?? 1) - 1.5;
+                    top = copy.y - texture.axis[1] * (copy.ty ?? 1) - 1.5;
+                    width = texture.width * (copy.tx ?? 1) + 3;
+                    height = texture.height * (copy.ty ?? 1) + 3;
                 } else {
                     left = copy.x - 16 - 1.5;
                     top = copy.y - 16 - 1.5;

@@ -1,0 +1,35 @@
+asset-input
+    &.wide
+        .aButtonGroup
+            @extends .aButtonGroup.wide
+            button
+                flex 0 0 auto
+                &:first-child
+                    flex 1 1 auto
+    & > .aButtonGroup img
+        width 2rem
+        margin-right 1rem
+        vertical-align bottom
+    &[compact] > .aButtonGroup img
+        margin-right 0.5rem
+    .asset-input-aBigInput
+        @extends .aPanel
+        margin 0 auto
+        padding 0.5rem
+        text-align center
+        position relative
+        cursor pointer
+        line-height 1.5
+        {trans}
+        background backgroundDeeper
+        .asset-input-TinyTools
+            position absolute
+            right 0.5rem
+            top 0.5rem
+        &:hover
+            border-color act
+            div
+                opacity 1
+        img
+            max-width 128px
+            max-height 128px

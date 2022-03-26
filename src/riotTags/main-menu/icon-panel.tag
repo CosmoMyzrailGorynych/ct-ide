@@ -1,16 +1,18 @@
-icon-panel.view.pad
+icon-panel.aView.pad
     .toright
         button(onclick="{opts.onclose}") {vocGlob.close}
     .clear
-    ul.cards
-        li(
+    ul.Cards
+        li.aCard(
             each="{icon in iconList}"
             onclick="{copy(icon)}"
             no-reorder
         )
-            span {icon}
-            svg.feather
-                use(xlink:href="data/icons.svg#{icon}")
+            .aCard-aThumbnail
+                svg.feather
+                    use(xlink:href="#{icon}")
+            .aCard-Properties
+                span {icon}
     script.
         this.namespace = 'common';
         this.mixin(window.riotVoc);

@@ -1,12 +1,12 @@
 # Utilities
 
-## `ct.place.nearest(x, y, type)`
+## `ct.place.nearest(x, y, template)`
 
-Gets the nearest Copy of a given `type`.
+Gets the nearest Copy of a given `template`.
 
-## `ct.place.furthest(x, y, type)`
+## `ct.place.furthest(x, y, template)`
 
-Gets the furthest Copy of a given `type`.
+Gets the furthest Copy of a given `template`.
 
 ## `ct.place.lastdist`
 

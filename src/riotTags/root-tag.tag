@@ -8,10 +8,12 @@ root-tag
         this.projectOpened = false;
         window.signals.on('resetAll', () => {
             global.currentProject = false;
+            require('./data/node_requires/glob').modified = false;
             this.projectOpened = false;
             riot.update();
         });
         window.signals.on('projectLoaded', () => {
+            require('./data/node_requires/glob').modified = false;
             this.projectOpened = true;
             this.update();
         });
@@ -37,7 +39,7 @@ root-tag
                     font-family: ${localStorage.fontFamily || 'Iosevka, monospace'};
                     font-variant-ligatures: ${localStorage.codeLigatures === 'off' ? 'none' : 'normal'};
                 }
-                .monaco-editor .view-lines.view-lines {
+                .monaco-editor .aView-lines.aView-lines {
                     line-height: ${localStorage.codeDense === 'on' ? 1.5 : 1.75};
                 }
             `;

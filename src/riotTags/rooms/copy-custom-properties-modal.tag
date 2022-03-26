@@ -8,7 +8,7 @@
         A function that changes whether this modal is shown
 
 copy-custom-properties-modal
-    .panel.flexfix(ref="widget" style='overflow: auto; max-height: 600px')
+    .aPanel.flexfix(ref="widget" style='overflow: auto; max-height: 600px')
         h2.flexfix-header {voc.customProperties}
         .flexfix-body
             table.wide.aPaddedTable
@@ -24,18 +24,18 @@ copy-custom-properties-modal
                     td
                         button.toright.square.inline(onclick="{deleteCustomProperty.bind(null, prop)}" title="{voc.delete}")
                             svg.feather
-                                use(xlink:href="data/icons.svg#trash")
+                                use(xlink:href="#trash")
                         .clear
             p
         .flexrow.flexfix-footer
             .filler
             button.nogrow(onclick="{addCustomProperty}")
                 svg.feather
-                    use(xlink:href="data/icons.svg#plus")
+                    use(xlink:href="#plus")
                 span {voc.addProperty}
             button.nogrow(onclick="{finished}")
                 svg.feather
-                    use(xlink:href="data/icons.svg#check")
+                    use(xlink:href="#check")
                 span {vocGlob.apply}
     script.
         this.namespace = 'copyCustomProperties';

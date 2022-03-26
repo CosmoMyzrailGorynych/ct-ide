@@ -78,10 +78,10 @@
                     }
                 }
             } else if (type === 'copies') {
-                if (!(validate(options, 'copyType', 'string') in ct.types.list)) {
-                    throw new Error(`[ct.eqs] The '${options.copyType}' type does not exist.`);
+                if (!(validate(options, 'copyTemplate', 'string') in ct.templates.list)) {
+                    throw new Error(`[ct.eqs] The '${options.copyTemplate}' template does not exist.`);
                 }
-                for (const copy of ct.types.list[options.copyType]) {
+                for (const copy of ct.templates.list[options.copyTemplate]) {
                     if (options.limit && ct.u.pdc(copy.x, copy.y, options.x, options.y) > options.limit) {
                         continue;
                     }
@@ -184,18 +184,18 @@
         query(params) {
             return new EQSQuery(params);
         },
-        scoreFree(ctype, multiplier) {
+        scoreFree(cgroup, multiplier) {
             multiplier = multiplier || 0;
             return function (point) {
-                if (ct.place.free({shape: {type: 'point'}}, point.x, point.y, ctype)) {
+                if (ct.place.free({shape: {type: 'point'}}, point.x, point.y, cgroup)) {
                     point.score *= multiplier;
                 }
             };
         },
-        scoreOccupied(ctype, multiplier) {
+        scoreOccupied(cgroup, multiplier) {
             multiplier = multiplier || 0;
             return function (point) {
-                if (ct.place.occupied({shape: {type: 'point'}}, point.x, point.y, ctype)) {
+                if (ct.place.occupied({shape: {type: 'point'}}, point.x, point.y, cgroup)) {
                     point.score *= multiplier;
                 }
             };

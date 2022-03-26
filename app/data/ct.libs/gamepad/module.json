@@ -2,6 +2,8 @@
   "main": {
     "name": "Gamepad",
     "tagline": "Connect your gamepad to the Actions system.",
+    "name_Ru": "Геймпад",
+    "tagline_Ru": "Подключает джойстики к системе Действий.",
     "version": "1.0.0",
     "packageName": "gamepad",
     "authors": [

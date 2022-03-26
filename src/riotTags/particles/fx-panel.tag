@@ -1,17 +1,19 @@
-fx-panel.panel.view
+fx-panel.aPanel.aView
     asset-viewer.tall(
         collection="{global.currentProject.emitterTandems}"
         contextmenu="{showTandemPopup}"
-        vocspace="particleEmitters"
         namespace="emitterTandems"
+        assettype="emitterTandems"
         click="{openTandem}"
+        useicons="yup"
         thumbnails="{thumbnails}"
         ref="emitterTandems"
     )
-        h1.nmt {voc.emittersHeading}
+        h1.inlineblock {parent.voc.emittersHeading}
+        .aSpacer.inlineblock
         button(onclick="{parent.emitterTandemCreate}" title="Control+N" data-hotkey="Control+n")
             svg.feather
-                use(xlink:href="data/icons.svg#plus")
+                use(xlink:href="#plus")
             span {vocGlob.add}
     emitter-tandem-editor(if="{editingTandem}" tandem="{editedTandem}")
     context-menu(menu="{tandemMenu}" ref="tandemMenu")
@@ -19,7 +21,7 @@ fx-panel.panel.view
         this.namespace = 'particleEmitters';
         this.mixin(window.riotVoc);
 
-        this.thumbnails = () => 'data/img/particles.png';
+        this.thumbnails = () => 'sparkles';
 
         // Technically we edit a number of emitters at once — a "tandem",
         // but to not overcomplicate it all, let's call them "emitters" in UI anyways.
@@ -39,12 +41,13 @@ fx-panel.panel.view
             const defaultEmitter = require('./data/node_requires/resources/particles/defaultEmitter').get();
             const generateGUID = require('./data/node_requires/generateGUID');
             const id = generateGUID(),
-                  slice = id.split('-').pop();
+                  slice = id.slice(-6);
 
             const tandem = {
                 name: 'Tandem_' + slice,
                 origname: 'pt' + slice,
-                emitters: [defaultEmitter]
+                emitters: [defaultEmitter],
+                group: this.refs.emitterTandems.currentGroup.uid
             };
 
             global.currentProject.emitterTandems.push(tandem);
@@ -90,12 +93,12 @@ fx-panel.panel.view
                 click: () => {
                     window.alertify
                     .defaultValue(this.editedTandem.name + '_dup')
-                    .prompt(window.languageJSON.common.newname)
+                    .prompt(window.languageJSON.common.newName)
                     .then(e => {
                         if (e.inputValue !== '' && e.buttonClicked !== 'cancel') {
                             const generateGUID = require('./data/node_requires/generateGUID');
                             const id = generateGUID(),
-                                  slice = id.split('-').pop();
+                                  slice = id.slice(-6);
                             const newTandem = JSON.parse(JSON.stringify(this.editedTandem));
                             newTandem.name = e.inputValue;
                             newTandem.origname = 'pt' + slice;
@@ -114,7 +117,7 @@ fx-panel.panel.view
                 click: () => {
                     window.alertify
                     .defaultValue(this.editedTandem.name)
-                    .prompt(window.languageJSON.common.newname)
+                    .prompt(window.languageJSON.common.newName)
                     .then(e => {
                         if (e.inputValue !== '' && e.buttonClicked !== 'cancel') {
                             this.editedTandem.name = e.inputValue;

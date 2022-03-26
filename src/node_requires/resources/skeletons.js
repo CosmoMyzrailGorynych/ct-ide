@@ -73,7 +73,7 @@ const skeletonGenPreview = function (skeleton) {
     });
 };
 
-const importSkeleton = async function importSkeleton(source) {
+const importSkeleton = async function importSkeleton(source, group) {
     const generateGUID = require('./../generateGUID');
     const fs = require('fs-extra');
 
@@ -89,6 +89,7 @@ const importSkeleton = async function importSkeleton(source) {
         name: path.basename(source).replace('_ske.json', ''),
         origname: path.basename(partialDest + '_ske.json'),
         from: 'dragonbones',
+        group,
         uid
     };
     await skeletonGenPreview(skel);

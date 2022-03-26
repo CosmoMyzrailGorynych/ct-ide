@@ -1,4 +1,4 @@
-ctjsVersion: 1.4.2
+ctjsVersion: 2.0.0
 notes: /* empty */
 libs:
   place:
@@ -578,7 +578,7 @@ textures:
     padding: 1
     lastmod: 1585717811993
 skeletons: []
-types:
+templates:
   - name: Logo
     depth: 0
     oncreate: ''
@@ -631,7 +631,7 @@ types:
 
       if (ct.actions.Poof.down) {
           this.gravity = this.gravityAcceleration;
-          this.addSpeed(ct.delta * this.gravityAcceleration * 2, 90);
+          this.addSpeed(ct.delta * this.gravityAcceleration * 2, -90);
           this.jet.resume();
       }
 
@@ -658,7 +658,7 @@ types:
           this.gameover = true;
           // Jump to the left
           this.speed = 25;
-          this.direction = 135;
+          this.direction = -135;
           // Stop camera movement
           ct.camera.follow = false;
 
@@ -676,12 +676,12 @@ types:
 
 
       this.move();
-    ondraw: this.rotation = this.vspeed * 0.3;
+    ondraw: this.angle = -this.vspeed * 0.3;
     ondestroy: ''
     uid: 8f93611e-6e95-49c4-8e2b-4cc067be2924
     texture: eb24c2bc-a36c-4118-b33e-a7348c00e5bb
     extends: {}
-    lastmod: 1585703857293
+    lastmod: 1641411061516
   - name: Tube
     depth: 0
     oncreate: |-
@@ -698,7 +698,7 @@ types:
     uid: 455b4c7c-2249-4b12-999e-27db667688b5
     texture: 2b5a51ae-c05b-4a94-b9bd-e088bf2e4b1a
     extends:
-      ctype: Obstacle
+      cgroup: Obstacle
     lastmod: 1584315308762
   - name: Star
     depth: 0
@@ -710,12 +710,12 @@ types:
       }
     ondraw: |-
       this.wiggleTime += ct.delta * 0.2;
-      this.rotation = Math.sin(this.wiggleTime) * 5;
+      this.angle = Math.sin(this.wiggleTime) * 5;
     ondestroy: 'ct.emitters.fire(''Stars'', this.x, this.y);'
     uid: b7362b5c-811d-438c-b164-f53213eaefa7
     texture: 4e0a0e06-81ea-4cd2-8f3d-569a8ad3e947
     extends:
-      ctype: Collectible
+      cgroup: Collectible
     lastmod: 1585717224654
   - name: StarCounter
     depth: 0
@@ -883,7 +883,7 @@ rooms:
       ct.transition.circleIn(500, 0x446ADB);
     onstep: |-
       // If there is no cat in the room…
-      if (!ct.types.list['PotatoCat'].length) {
+      if (!ct.templates.list['PotatoCat'].length) {
           // stop further execution
           return;
       }
@@ -896,8 +896,8 @@ rooms:
           this.obstacleTimer += ct.speed * 2;
 
           // Create two tubes
-          var tube1 = ct.types.copy('Tube', ct.camera.right + 250, ct.camera.bottom - 130); // At the bottom of the camera
-          var tube2 = ct.types.copy('Tube', ct.camera.right + 250, ct.camera.top - 70); // At the top
+          var tube1 = ct.templates.copy('Tube', ct.camera.right + 250, ct.camera.bottom - 130); // At the bottom of the camera
+          var tube2 = ct.templates.copy('Tube', ct.camera.right + 250, ct.camera.top - 70); // At the top
 
           // Change second tube's texture depending on which texture is used in the first tube
           if (tube1.tex === 'Tube_01') { // Shortest tube will result in the longest tube
@@ -916,7 +916,7 @@ rooms:
 
           // Create a star bonus with 30% chance somewhere in between top and bottom edge, with 300px padding.
           if (ct.random.chance(30)) {
-              ct.types.copy('Star', ct.camera.right + 250 + 500, ct.random.range(ct.camera.top + 300, ct.camera.bottom - 300));
+              ct.templates.copy('Star', ct.camera.right + 250 + 500, ct.random.range(ct.camera.top + 300, ct.camera.bottom - 300));
           }
       }
     ondraw: ''
@@ -1277,16 +1277,20 @@ settings:
     linux32: true
     mac64: true
     debug: false
+    functionWrap: false
+    codeModifier: none
   branding:
     icon: eb24c2bc-a36c-4118-b33e-a7348c00e5bb
     accent: '#446adb'
     invertPreloaderScheme: true
+    splashScreen: 5c680919-3827-4ea7-9e72-a8fc81ddfb45
   rendering:
     maxFPS: 60
     pixelatedrender: false
     highDensity: true
     usePixiLegacy: true
     desktopMode: maximized
+    mobileScreenOrientation: portrait
   authoring:
     title: JettyCat
     author: ComigoGames
@@ -1296,9 +1300,19 @@ settings:
       - 0
       - 0
     versionPostfix: ''
+    appId: rocks.ctjs.jettycat
   fps: 30
 scripts: []
 fonts: []
 startroom: 8677472b-4549-48b5-a5a8-a891fb029f6b
 palette: []
 styletick: .nan
+contentTypes: []
+groups:
+  fonts: []
+  textures: []
+  styles: []
+  rooms: []
+  sounds: []
+  emitterTandems: []
+  templates: []

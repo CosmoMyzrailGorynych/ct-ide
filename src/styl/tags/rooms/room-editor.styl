@@ -1,7 +1,7 @@
 room-editor
     display flex
     flex-direction row
-    .room-editor-TypeSwatches .aSearchWrap
+    .room-editor-TemplateSwatches .aSearchWrap
         display block
         flex 1 1 100%
         margin 0 0 3px
@@ -24,7 +24,7 @@ room-editor
             flex 1 1 auto
         .settings button
             margin 0.5em 0
-        .nav
+        .aNav
             border-bottom-right-radius 0
             border-bottom-left-radius 0
     .palette
@@ -43,15 +43,10 @@ room-editor
             position absolute
             top 0.5rem
             left 0.5rem
-        .shift, .center
-            span
-                text-shadow 0 1px 0 background
         .zoom
             position absolute
             top 0.5rem
             right 0.5rem
-            b
-                text-shadow 0 1px 0 background
             zoom-slider
                 width 20rem
         .grid
@@ -66,17 +61,17 @@ room-editor
             width 100%
             height 100%
 
-.room-editor-TypeSwatches, .room-editor-Backgrounds, .room-editor-Tiles
+.room-editor-TemplateSwatches, .room-editor-Backgrounds, .room-editor-Tiles
     overflow-y scroll
     position absolute
     width 100%
-.room-editor-TypeSwatches
+.room-editor-TemplateSwatches
     padding 0 0 0 1px !important
     display flex
     flex-flow row wrap
     align-content start
     align-items flex-start
-.room-editor-aTypeSwatch
+.room-editor-aTemplateSwatch
     list-style none
     border 1px solid borderPale
     flex 1 0 5rem

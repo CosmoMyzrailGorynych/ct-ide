@@ -39,7 +39,7 @@ You can generalize mouse and touch events by enabling a corresponding option at 
 
 `ct.touch.collide(copy, id)`, **which is dependant on `ct.place` catmod**, checks whether there is a collision between a copy and a touch event of a particular id. You can also omit `id` to check against all possible touch events. `ct.touch.collideUi` does the same, but in UI coordinates.
 
-There are ariants of this method that also check for mouse, `ct.touch.hovers(copy, id)` and `ct.touch.hoversUi(copy, id)`.
+There are variants of this method that also check for mouse, `ct.touch.hovers(copy, id)` and `ct.touch.hoversUi(copy, id)`.
 
 `ct.touch.hovers(copy)` and `ct.touch.collide(copy, id)` don't work well with just released touches (because they become inactive), and a special version of `ct.touch.hovers` exists for handling such events: `ct.touch.hovers(copy, id, true)`. You can set `id` to `false` if you don't need it. The same goes for `ct.touch.hoversUi`.
 
@@ -69,14 +69,14 @@ this.scale.y = this.scale.x;
 `touch.DeltaRotation` returns a value between `-1` and `1`, describing the rotation amount in the last frame in radians. A proper way of using this can look like this:
 
 ```js
-this.rotation += ct.actions.Rotate.value;
+this.angle += ct.u.radToDeg(ct.actions.Rotate.value);
 ```
 
 `touch.DeltaRotation` uses the first two touch events for its calculations, ignoring third and next fingers.
 
 ### Panning
 
-`touch.PanX` and `touch.PanY` describe the movement of fingers on screen in the last frame. They return a value between `-1` and `1`. These are relative to the view's size: for example, if a value of an action returns 0.1 for an X axis, then it means that fingers moved to `0.1 * ct.viewWidth` pixels in the last frame.
+`touch.PanX` and `touch.PanY` describe the movement of fingers on screen in the last frame. They return a value between `-1` and `1`. These are relative to the view's size: for example, if a value of an action returns 0.1 for an X axis, then it means that fingers moved to `0.1 * ct.camera.width` pixels in the last frame.
 
 ## Any touch, double touch and triple touch inputs
 

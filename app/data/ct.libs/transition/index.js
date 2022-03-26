@@ -5,11 +5,11 @@
         const room = ct.rooms.append('CTTRANSITIONEMPTYROOM', {
             isUi: true
         });
-        const transition = ct.types.copy(
-            name, 0, 0,
+        const transition = ct.templates.copyIntoRoom(
+            name, 0, 0, room,
             Object.assign({
                 room
-            }, exts), room
+            }, exts)
         );
         return transition.promise;
     };

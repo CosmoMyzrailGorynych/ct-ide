@@ -1,7 +1,9 @@
 {
     "main": {
         "name": "Matter.js physics library",
+        "name_Ru": "Matter.js — библиотека физики",
         "tagline": "Add realtime 2D physics engine to your project.",
+        "tagline_Ru": "Добавляет движок 2D физики в твой проект.",
         "version": "1.0.0",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",
@@ -14,41 +16,51 @@
 
     "fields": [{
         "name": "Use static delta time",
+        "name_Ru": "Использовать статичную длину кадра",
         "type": "checkbox",
         "default": true,
         "help": "Uses a constant frame time instead of ct.delta to make world updates more deterministic and stable. Disabling this option may result in an unstable, jiggly physics behavior.",
+        "help_Ru": "Использует константу вместо ct.delta, чтобы сделать симуляцию более стабильную и предсказуемую. Отключение этой опции может привести к нестабильному, дёрганому поведению физических тел.",
         "key": "matterUseStaticDeltaTime"
     }],
 
-    "typeExtends": [{
+    "templateExtends": [{
         "type": "group",
         "name": "Physics",
+        "name_Ru": "Физика",
         "openedByDefault": false,
         "lsKey": "physics.general",
         "items": [{
             "name": "Enable",
+            "name_Ru": "Включить",
             "type": "checkbox",
             "default": false,
             "key": "matterEnable"
         }, {
             "name": "Is static",
+            "name_Ru": "Сделать неподвижной",
             "type": "checkbox",
             "key": "matterStatic",
             "default": false
         }, {
             "name": "Is a sensor",
+            "name_Ru": "Сделать сенсором",
             "type": "checkbox",
             "key": "matterSensor",
             "default": false,
-            "help": "When turned on, the copy won't prevent others' movement but will be able to trigger collisions"
+            "help": "When turned on, the copy won't prevent others' movement but will be able to trigger collisions",
+            "help_Ru": "Копия не будет препятствовать передвижению других копий, но будет вызывать события столкновения"
         }, {
             "name": "Density",
+            "name_Ru": "Плотность",
             "type": "number",
             "key": "matterDensity",
-            "hint": "How each pixel of this object contributes to its mass. The larger and more dense an object, the more heavy it is.",
+            "help": "How each pixel of this object contributes to its mass. The larger and more dense an object, the more heavy it is.",
+            "help_Ru": "Показывает, как каждый пиксель копии влияет на её массу. Чем выше, тем тяжелее получается копия.",
             "default": 0.001
         }, {
             "name": "Bounciness",
+            "name_Ru": "Упругость",
             "type": "number",
             "key": "matterRestitution",
             "default": 0.1,
@@ -57,61 +69,76 @@
             "step": 0.1
         }, {
             "name": "Friction",
+            "name_Ru": "Трение",
             "type": "number",
             "key": "matterFriction",
             "default": 1
         }, {
             "name": "Static friction",
+            "name_Ru": "Статичное трение",
             "type": "number",
             "key": "matterFrictionStatic",
             "default": 0.1
         }, {
             "name": "Air friction",
+            "name_Ru": "Трение воздуха",
             "type": "number",
             "key": "matterFrictionAir",
             "default": 0.01
         }, {
             "name": "Fix pivot",
+            "name_Ru": "Исправить ось вращения",
             "type": "point2D",
             "key": "matterFixPivot",
             "help": "Shifts the texture. Helps with polygonal shapes where the module cannot align center of mass and texture automatically.",
+            "help_Ru": "Смещает текстуру. Помогает с многоугольниками, которым не получается расчитать центр масс автоматически.",
             "step": 1,
             "default": [0, 0]
         }]
     }, {
         "type": "group",
         "name": "Physics constraints",
+        "name_Ru": "Ограничители (физика)",
         "openedByDefault": false,
         "lsKey": "physics.constraints",
         "items": [{
             "name": "Type",
+            "name_Ru": "Тип",
             "type": "radio",
             "options": [{
                 "value": "none",
-                "name": "None"
+                "name": "None",
+                "name_Ru": "Нет ограничения"
             }, {
                 "value": "pinpoint",
                 "name": "Pin in place",
-                "help": "Keeps position but allows rotation"
+                "name_Ru": "Пригвоздить",
+                "help": "Keeps position but allows rotation",
+                "help_Ru": "Сохраняет расположение, но допускает вращение"
             }, {
                 "value": "rope",
                 "name": "Rope",
-                "help": "Creates a rope with a defined length"
+                "name_Ru": "Верёвка",
+                "help": "Creates a rope with a defined length",
+                "help_Ru": "Создаёт верёвку определённой длины"
             }],
             "default": "none",
             "key": "matterConstraint"
         }, {
             "name": "Rope length",
+            "name_Ru": "Длина верёвки",
             "type": "number",
             "default": 64,
             "key": "matterRopeLength"
         }, {
             "name": "Rope stiffness",
+            "name_Ru": "Жёсткость верёвки",
             "type": "number",
             "default": 0.05,
             "key": "matterRopeStiffness"
         }, {
             "name": "Rope damping",
+            "name_Ru": "Упругость верёвки",
             "type": "number",
             "default": 0.05,
             "key": "matterRopeDamping"
@@ -119,6 +146,7 @@
     }],
     "roomExtends": [{
         "name": "Gravity",
+        "name_Ru": "Гравитация",
         "type": "point2D",
         "key": "matterGravity",
         "step": 0.1,

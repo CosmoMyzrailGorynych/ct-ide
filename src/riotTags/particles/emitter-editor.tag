@@ -1,9 +1,9 @@
-emitter-editor.panel.pad.nb
+emitter-editor.aPanel.pad.nb
     .emitter-editor-aHeader
         img.emitter-editor-aTexture(src="{getPreview()}")
         h3 {voc.emitterHeading} {opts.emitter.uid.split('-').pop()}
         svg.feather.act(title="{vocGlob.delete}" onclick="{deleteEmitter}")
-            use(xlink:href="data/icons.svg#trash")
+            use(xlink:href="#trash")
 
     collapsible-section(
         heading="{voc.textureHeading}"
@@ -11,14 +11,13 @@ emitter-editor.panel.pad.nb
         key="texture"
         defaultstate="{opts.emitter.openedTabs.includes('texture')? 'opened' : 'closed'}"
     )
-        button.wide(onclick="{parent.showTexturesSelector}")
-            svg.feather
-                use(xlink:href="data/icons.svg#coin")
-            span {parent.voc.selectTexture}
-        button.wide(onclick="{parent.showTextureImport}")
-            svg.feather
-                use(xlink:href="data/icons.svg#download")
-            span {parent.voc.importBuiltin}
+        asset-input.wide(
+            assettype="textures"
+            onchanged="{parent.onTexturePicked}"
+            allowclear="yes"
+            assetid="{parent.opts.emitter.texture || -1}"
+            selecttext="{parent.voc.selectTexture}"
+        )
 
     collapsible-section(
         heading="{voc.colorAndOpacityHeading}"
@@ -302,7 +301,7 @@ emitter-editor.panel.pad.nb
                     value="{parent.opts.emitter.settings.delay}"
                     oninput="{parent.wireAndReset('this.opts.emitter.settings.delay')}"
                 )
-            .spacer
+            .aSpacer
 
     collapsible-section(
         heading="{voc.shapeAndPositioningHeading}"
@@ -392,7 +391,7 @@ emitter-editor.panel.pad.nb
                         value="{parent.opts.emitter.settings.angleStart}"
                         oninput="{parent.wireAndUpdate('this.opts.emitter.settings.angleStart', 'angleStart', true)}"
                     )
-                    .spacer
+                    .aSpacer
                     input.wide(
                         type="range" min="0" max="360" step="1"
                         data-wired-force-minmax="yes"
@@ -417,15 +416,12 @@ emitter-editor.panel.pad.nb
                     oninput="{parent.wireAndReset('this.opts.emitter.settings.pos.y')}"
                 )
             .clear
-
-    texture-selector(if="{pickingTexture}" onselected="{onTexturePicked}" oncancelled="{onTextureCancel}")
-    particle-importer(if="{importingTexture}" onselected="{onTextureImport}" oncancelled="{onTextureImportCancel}")
     script.
         this.namespace = 'particleEmitters';
         this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
 
-        const {getTexturePreview, getTextureFromName, importImageToTexture} = require('./data/node_requires/resources/textures');
+        const {getTexturePreview} = require('./data/node_requires/resources/textures');
         this.getPreview = () => getTexturePreview(this.opts.emitter.texture);
 
         this.wireAndReset = path => e => {
@@ -562,49 +558,12 @@ emitter-editor.panel.pad.nb
             }
         };
 
-        this.showTexturesSelector = () => {
-            this.pickingTexture = true;
-            this.update();
-        };
-        this.onTexturePicked = texture => () => {
+        this.onTexturePicked = textureId => {
             const emt = this.opts.emitter;
-            emt.texture = texture.uid;
-            this.pickingTexture = false;
+            emt.texture = textureId === -1 ? -1 : textureId;
             this.update();
             window.signals.trigger('emitterResetRequest');
         };
-        this.onTextureCancel = () => {
-            this.pickingTexture = false;
-            this.update();
-        };
-
-        this.showTextureImport = () => {
-            this.importingTexture = true;
-            this.update();
-        };
-        this.onTextureImport = texture => () => {
-            try {
-                getTextureFromName(texture.name);
-                // a texture with the same name already exists; show an error
-                window.alertify.error(this.voc.alreadyHasAnImportingTexture.replace('$1', texture.name));
-                return false;
-            } catch (e) {
-                // No such texture; add it.
-                importImageToTexture(texture.path)
-                .then(texture => {
-                    this.opts.emitter.texture = texture.uid;
-                    this.importingTexture = false;
-                    this.update();
-                    window.signals.trigger('emitterResetRequest');
-                });
-                return true;
-            }
-        };
-        this.onTextureImportCancel = () => {
-            this.importingTexture = false;
-            this.update();
-        };
-
 
         this.deleteEmitter = () => {
             this.parent.deleteEmitter(this.opts.emitter);

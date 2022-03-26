@@ -16,7 +16,7 @@
         Disables alpha input.
 
 color-picker
-    .panel(ref="widget")
+    .aPanel(ref="widget")
         .color-picker-aBackgroundToggler
         .color-picker-aBackgoundWell.flexrow
             .c6.swatch(style="background-color: {oldColor.toString()};")
@@ -65,11 +65,11 @@ color-picker
         .flexrow.color-picker-Buttons
             button.nml(onclick="{cancelColor}")
                 svg.feather
-                    use(xlink:href="data/icons.svg#x")
+                    use(xlink:href="#x")
                 span  {vocGlob.cancel}
             button.nmr(onclick="{applyColor}")
                 svg.feather
-                    use(xlink:href="data/icons.svg#apply")
+                    use(xlink:href="#apply")
                 span  {vocGlob.apply}
     script.
         /* global net */

@@ -1,12 +1,23 @@
 h1, h2, h3, h4, h5, h6
     margin-bottom 0
     color accent1
+    .docs-panel-Docs &
+        margin-top 1.5em
+        &:first-child
+            margin-top 1rem
 h2, h3
     font-weight 400
 h4, h5, h6
     font-weight 700
 h1
     font-weight 300
+
+p
+    margin 1em 0
+    .docs-panel-Docs &
+        margin 0.75em 0
+        line-heigth 1.5
+
 a, .a
     color act
     cursor pointer
@@ -28,6 +39,7 @@ dd
 dt
     font-weight 500
 
+/* Codeblocks */
 pre
     background backgroundDeeper
     border 1px solid borderBright
@@ -39,10 +51,12 @@ pre
 textarea.monospace
     font-family font-mono
     width 100%
+
+/* Inline code */
 code
     font-family font-mono
     &.inline, p > &, li > &
-        padding 1.5px 0.5rem
+        padding 0 0.5rem
         margin 0 0.25rem
         border-radius br
         background borderPale
@@ -50,9 +64,12 @@ code
         text-shadow 0 1px 0 rgba(background, 0.65)
         .active &
             color act
+.monospace
+    font-family font-mono
 
 .aNotice
     line-height 1.5
+    font-style italic
     opacity 0.8
     margin 0
 
@@ -64,3 +81,12 @@ blockquote
         margin-top 0
     p:last-child
         margin-bottom 0
+
+/* Contrasting background for small labels, designed for strings
+   placed on top of colorful/hard-to-read backgrounds */
+.aContrastingPlaque
+    border-radius br
+    background rgba(background, 0.5)
+    padding 0.15em 0.5em
+    box-sizing border-box
+    color mix(foreground, text, 50%)

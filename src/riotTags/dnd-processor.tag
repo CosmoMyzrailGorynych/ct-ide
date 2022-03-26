@@ -2,8 +2,8 @@ dnd-processor
     .aDropzone(if="{dropping}")
         .middleinner
             svg.feather
-                use(xlink:href="data/icons.svg#download")
-            h2 {languageJSON.common.fastimport}
+                use(xlink:href="#download")
+            h2 {languageJSON.common.fastImport}
             input(
                 type="file" multiple
                 accept=".png,.jpg,.jpeg,.bmp,.gif,.json,.ttf"
@@ -46,6 +46,8 @@ dnd-processor
             e.stopPropagation();
         };
         this.onDrop = e => {
+            this.dropping = false;
+            this.update();
             e.stopPropagation();
         };
         this.onDragLeave = e => {

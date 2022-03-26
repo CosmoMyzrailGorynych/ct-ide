@@ -1,10 +1,10 @@
-ctjsVersion: 1.4.2
+ctjsVersion: 2.0.0
 notes: |-
   /*
       Things to note here:
 
-      — Most of the logic is described at the AbstractTile type.
-      — Other types inherit this logic thanks to the `ct.inherit` module.
+      — Most of the logic is described at the AbstractTile template.
+      — Other templates inherit this logic thanks to the `ct.inherit` module.
       — The "win" state is triggered by KeySpot's OnStep event.
 
   */
@@ -15,14 +15,12 @@ libs:
     debugMode: false
   fittoscreen:
     mode: scaleFit
-  keyboard: {}
-  keyboard.polyfill: {}
   sound.howler: {}
   inherit: {}
-  touch:
-    mousetouch: true
-    preventdefault: false
   tween: {}
+  pointer:
+    preventdefault: false
+    startlocked: false
 textures:
   - name: Pipe_H2
     untill: 0
@@ -147,13 +145,13 @@ textures:
     origname: i028aa481-64ef-4b75-85b8-2f9c88eecf4b.png
     shape: rect
     left: 0
-    right: 1280
+    right: 64
     top: 0
-    bottom: 384
+    bottom: 64
     uid: 028aa481-64ef-4b75-85b8-2f9c88eecf4b
     padding: 1
     source: /home/comigo/Downloads/Tileset.png
-    lastmod: 1602197348085
+    lastmod: 1641403458361
   - name: Pipe_V3
     untill: 0
     grid:
@@ -259,7 +257,7 @@ textures:
     source: /home/comigo/Downloads/KeySpot.png
     lastmod: 1602197160973
 skeletons: []
-types:
+templates:
   - name: KeySpot
     depth: -10
     oncreate: ''
@@ -291,7 +289,7 @@ types:
     texture: 04dbb554-54cd-439a-8d17-4d06366151dc
     extends: {}
     uid: 933bd8f5-8e3f-44d4-9060-eabf1bc4ce93
-    lastmod: 1602213799510
+    lastmod: 1641403394663
   - name: AbstractTile
     depth: 0
     oncreate: |-
@@ -319,12 +317,12 @@ types:
       }
       // Start dragging when a user presses this tile
       if (ct.actions.Press.pressed) {
-          if (ct.touch.hovers(this)) {
+          if (ct.pointer.hovers(this)) {
               this.dragging = true;
               ct.sound.spawn('Wood_Start');
               // Record relative position to the mouse to avoid jittery snapping to tile's center
-              this.relativeX = ct.touch.x - this.x;
-              this.relativeY = ct.touch.y - this.y;
+              this.relativeX = ct.pointer.x - this.x;
+              this.relativeY = ct.pointer.y - this.y;
           }
       }
 
@@ -336,14 +334,14 @@ types:
 
           // For vertical tiles…
           if (this.vertical) {
-              var targetY = ct.touch.y - this.relativeY;
+              var targetY = ct.pointer.y - this.relativeY;
               // We need ct.place.moveByAxes to prevent tiles from teleporting over other objects,
               // and also to provide pixel-perfect collisions.
               collisionResult = ct.place.moveByAxes(this, 0, targetY - this.y, 'Solid');
           }
           // For horizontal tiles…
           if (!this.vertical) {
-              var targetX = ct.touch.x - this.relativeX;
+              var targetX = ct.pointer.x - this.relativeX;
               collisionResult = ct.place.moveByAxes(this, targetX - this.x, 0, 'Solid');
           }
           // Check whether we collided with something
@@ -373,9 +371,9 @@ types:
     ondestroy: ''
     texture: -1
     extends:
-      ctype: Solid
+      cgroup: Solid
     uid: 411a7b98-9916-4e4b-8466-abe66eb75e2e
-    lastmod: 1602213776083
+    lastmod: 1641403301665
   - name: Pipe_H2
     depth: 0
     oncreate: this.inherit.onCreate();
@@ -384,8 +382,8 @@ types:
     ondestroy: ''
     texture: 5084d2e9-a66e-4e22-9828-ee936473cbfc
     extends:
-      inheritedType@@type: 411a7b98-9916-4e4b-8466-abe66eb75e2e
-      ctype: Solid
+      inheritedTemplate@@template: 411a7b98-9916-4e4b-8466-abe66eb75e2e
+      cgroup: Solid
     uid: b96007c1-e46d-4ae9-b809-3d49ef2f22b4
     lastmod: 1602213425483
   - name: Pipe_H3
@@ -396,8 +394,8 @@ types:
     ondestroy: ''
     texture: 614ef931-af6d-4da3-8147-6fb3c0457dac
     extends:
-      inheritedType@@type: 411a7b98-9916-4e4b-8466-abe66eb75e2e
-      ctype: Solid
+      inheritedTemplate@@template: 411a7b98-9916-4e4b-8466-abe66eb75e2e
+      cgroup: Solid
     uid: d5a61d71-f85f-4287-9269-ce2fbc7206e1
     lastmod: 1602199753219
   - name: Pipe_H4
@@ -408,8 +406,8 @@ types:
     ondestroy: ''
     texture: fe8ec368-af9d-4351-917e-b0527c7470c4
     extends:
-      inheritedType@@type: 411a7b98-9916-4e4b-8466-abe66eb75e2e
-      ctype: Solid
+      inheritedTemplate@@template: 411a7b98-9916-4e4b-8466-abe66eb75e2e
+      cgroup: Solid
     uid: 245b4e21-93e1-41dd-839e-546810d68a23
     lastmod: 1602199754611
   - name: Pipe_V2
@@ -422,8 +420,8 @@ types:
     ondestroy: ''
     texture: 84deaf6c-1e30-46ab-9770-ad7f20c54158
     extends:
-      inheritedType@@type: 411a7b98-9916-4e4b-8466-abe66eb75e2e
-      ctype: Solid
+      inheritedTemplate@@template: 411a7b98-9916-4e4b-8466-abe66eb75e2e
+      cgroup: Solid
     uid: d8b121c6-2f4f-4427-ac7d-7f2b7e7e625d
     lastmod: 1602199756147
   - name: Pipe_V3
@@ -436,8 +434,8 @@ types:
     ondestroy: ''
     texture: 7e9843af-2842-414b-9063-14c08f547c6b
     extends:
-      inheritedType@@type: 411a7b98-9916-4e4b-8466-abe66eb75e2e
-      ctype: Solid
+      inheritedTemplate@@template: 411a7b98-9916-4e4b-8466-abe66eb75e2e
+      cgroup: Solid
     uid: da879283-739b-4a62-850d-760d00789463
     lastmod: 1602199765123
   - name: Pipe_V4
@@ -450,8 +448,8 @@ types:
     ondestroy: ''
     texture: 2f19f39b-25bb-43cd-ab03-108bd9418695
     extends:
-      inheritedType@@type: 411a7b98-9916-4e4b-8466-abe66eb75e2e
-      ctype: Solid
+      inheritedTemplate@@template: 411a7b98-9916-4e4b-8466-abe66eb75e2e
+      cgroup: Solid
     uid: 6ac451bc-3183-44c7-9872-ac72cc5d4e79
     lastmod: 1602199759771
   - name: KeyTile
@@ -468,10 +466,10 @@ types:
     ondestroy: ''
     texture: 25177c05-61f8-491f-be4f-c82bc90ed58c
     extends:
-      ctype: Solid
-      inheritedType@@type: 411a7b98-9916-4e4b-8466-abe66eb75e2e
+      cgroup: Solid
+      inheritedTemplate@@template: 411a7b98-9916-4e4b-8466-abe66eb75e2e
     uid: bf3a489b-333c-4171-b5ca-5a8699dfc176
-    lastmod: 1602213431467
+    lastmod: 1648092462572
 sounds:
   - name: Wood_Start
     uid: 42e768ce-6c19-4c34-9f14-11e257ecff18
@@ -918,7 +916,7 @@ rooms:
               - 1
               - 2
         extends:
-          ctype: Solid
+          cgroup: Solid
         hidden: false
       - depth: -11
         tiles:
@@ -1383,7 +1381,7 @@ rooms:
               - 1
               - 2
         extends:
-          ctype: Solid
+          cgroup: Solid
         hidden: false
       - depth: -11
         tiles:
@@ -1447,7 +1445,7 @@ rooms:
 actions:
   - name: Press
     methods:
-      - code: touch.Any
+      - code: pointer.Any
 emitterTandems: []
 scripts:
   - name: New Script
@@ -1469,10 +1467,13 @@ settings:
     pixelatedrender: false
     highDensity: true
     desktopMode: maximized
+    mobileScreenOrientation: unspecified
   export:
     windows: true
     linux: true
     mac: true
+    functionWrap: false
+    codeModifier: none
   branding:
     icon: 25177c05-61f8-491f-be4f-c82bc90ed58c
     accent: '#446adb'
@@ -1481,3 +1482,12 @@ settings:
 fonts: []
 palette: []
 startroom: db143552-7289-41b0-af65-62f14320e2c3
+contentTypes: []
+groups:
+  fonts: []
+  textures: []
+  styles: []
+  rooms: []
+  sounds: []
+  emitterTandems: []
+  templates: []

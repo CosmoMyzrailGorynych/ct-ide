@@ -19,7 +19,7 @@ main-menu-latest-projects
         this.refreshLatestProjects();
 
         this.loadLatestProject = projPath => {
-            alertify.confirm(window.languageJSON.common.reallyexit, e => {
+            alertify.confirm(window.languageJSON.common.reallyExitConfirm, e => {
                 if (e) {
                     window.signals.trigger('resetAll');
                     window.loadProject(projPath);

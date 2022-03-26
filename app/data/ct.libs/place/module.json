@@ -2,7 +2,8 @@
     "main": {
         "name": "ct.place",
         "tagline": "Check for collisions, move copies continuously, and add basic collision avoidance to your copies.",
-        "version": "3.2.0",
+        "tagline_Ru": "Проверяет столкновения, последовательно передвигает копии и предоставляет простые методы обхода препятствий вашим копиям.",
+        "version": "4.0.0",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",
             "mail": "admin@nersta.ru"
@@ -13,46 +14,58 @@
     },
     "fields": [{
         "name": "Partitioning",
+        "name_Ru": "Подразделение",
         "type": "h2"
     }, {
         "name": "Grid size X",
+        "name_Ru": "Размер сетки по X",
         "help": "Tells ct.place how to spacially group copies. This should be at least as large as the horizontal side of the biggest colliding sprite of your game.",
+        "help_Ru": "Указывает, как ct.place должен делить копии по группам. Значение должно быть как минимум равно ширине самой большой копии с коллизией.",
         "key": "gridX",
         "default": 512,
         "type": "number"
     }, {
         "name": "Grid size Y",
+        "name_Ru": "Размер сетки по Y",
         "help": "Tells ct.place how to spacially group copies. This should be at least as large as the vertical size of the biggest colliding sprite of your game.",
+        "help_Ru": "Указывает, как ct.place должен делить копии по группам. Значение должно быть как минимум равно высоте самой большой копии с коллизией.",
         "key": "gridY",
         "default": 512,
         "type": "number"
     }, {
         "name": "Debug mode",
+        "name_Ru": "Режим отладки",
         "type": "h2"
     }, {
         "name": "Enable",
+        "name_Ru": "Включить",
         "help": "Displays collision shapes, collision groups and partitions. It will also write additional keys to most colliding objects. Doesn't work on hidden objects.",
+        "help_Ru": "Показывает маски столкновений, группы коллизии и подразделение по сетке. Будет также добавлять дополнительные свойства большинству объектам с коллизией. Не работает на спрятанных объектах",
         "key": "debugMode",
         "default": false,
         "type": "checkbox"
     }, {
         "name": "Debug text size",
+        "name_Ru": "Размер текста в режиме отладки",
         "key": "debugText",
         "default": 16,
-        "type": "number"
+        "type": "number",
+        "if": "debugMode"
     }],
-    "typeExtends": [{
+    "templateExtends": [{
         "name": "Collision group",
+        "name_Ru": "Группа столкновений",
         "type": "text",
         "collect": true,
-        "collectScope": "place::ctype",
-        "key": "ctype"
+        "collectScope": "place::cgroup",
+        "key": "cgroup"
     }],
     "tileLayerExtends": [{
         "name": "Collision group",
+        "name_Ru": "Группа столкновений",
         "type": "text",
         "collect": true,
-        "collectScope": "place::ctype",
-        "key": "ctype"
+        "collectScope": "place::cgroup",
+        "key": "cgroup"
     }]
 }

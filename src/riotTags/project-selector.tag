@@ -1,57 +1,98 @@
 project-selector
     #bg.stretch.flexcol
-        .spacer
-        #intro.panel.flexfix.nogrow
-            ul.nav.tabs.flexfix-header.nb
+        .pad.left.nogrow
+            button.inline(onclick="{toggleLanguageSelector}")
+                svg.feather
+                    use(xlink:href="#translate")
+                span {window.languageJSON.mainMenu.settings.language}
+        .aSpacer
+        #intro.aPanel.flexfix.nogrow
+            ul.aNav.tabs.flexfix-header.nb
                 li(class="{active: tab === 'projects'}" onclick="{changeTab('projects')}")
+                    svg.feather
+                        use(xlink:href="#folder")
                     span {voc.latest}
                 li(class="{active: tab === 'examples'}" onclick="{changeTab('examples')}")
+                    svg.feather
+                        use(xlink:href="#book-open")
                     span {voc.examples}
+                li(class="{active: tab === 'templates'}" onclick="{changeTab('templates')}")
+                    svg.feather
+                        use(xlink:href="#platformer")
+                    span {voc.templates}
             .flexfix-body.pad(show="{tab === 'projects'}")
                 .flexrow
                     h2.nmt {voc.latest}
                     label.file.nm.nogrow
                         button.inline.nml.nmr(onclick="{openProjectFind}")
                             svg.feather
-                                use(xlink:href="data/icons.svg#folder")
+                                use(xlink:href="#folder")
                             span {voc.browse}
                 .clear
                 ul.Cards.largeicons.nmb
                     li.aCard(
                         each="{project in latestProjects}"
-                        onclick="{loadRecentProject}"
+                        onclick="{loadProjectByPath}"
                         title="{project}"
                     )
-                        img(src="{getProjectThumbnail(project)}")
-                        span {getProjectName(project)}
+                        .aCard-aThumbnail
+                            img(src="{getProjectThumbnail(project)}")
+                        .aCard-Properties
+                            span {getProjectName(project)}
                         .aCard-Actions
-                            button.tiny(onclick="{cloneProject}" title="{voc.cloneProject}")
+                            button.tiny.forcebackground(onclick="{cloneProject}" title="{voc.cloneProject}")
                                 svg.feather
-                                    use(xlink:href="data/icons.svg#copy")
-                            button.tiny(onclick="{forgetProject}" title="{voc.forgetProject}")
+                                    use(xlink:href="#copy")
+                            button.tiny.forcebackground(onclick="{forgetProject}" title="{voc.forgetProject}")
                                 svg.feather
-                                    use(xlink:href="data/icons.svg#x")
+                                    use(xlink:href="#x")
             .flexfix-body.pad(show="{tab === 'examples'}")
                 .flexrow
                     h2.nmt {voc.examples}
                     label.file.nm.nogrow
                         button.inline.nml.nmr(onclick="{openProjectFind}")
                             svg.feather
-                                use(xlink:href="data/icons.svg#folder")
+                                use(xlink:href="#folder")
                             span {voc.browse}
                 .clear
                 ul.Cards.largeicons.nmb
                     li.aCard(
                         each="{project in exampleProjects}"
-                        onclick="{loadRecentProject}"
+                        onclick="{loadProjectByPath}"
                         title="{project}"
                     )
-                        img(src="{getProjectThumbnail(project)}")
-                        span {getProjectName(project)}
+                        .aCard-aThumbnail
+                            img(src="{getProjectThumbnail(project)}")
+                        .aCard-Properties
+                            span {getProjectName(project)}
                         .aCard-Actions
                             button.tiny(onclick="{cloneProject}" title="{voc.cloneProject}")
                                 svg.feather
-                                    use(xlink:href="data/icons.svg#copy")
+                                    use(xlink:href="#copy")
+            .flexfix-body.pad(show="{tab === 'templates'}")
+                .flexrow
+                    h2.nmt {voc.templates}
+                    label.file.nm.nogrow
+                        button.inline.nml.nmr(onclick="{openProjectFind}")
+                            svg.feather
+                                use(xlink:href="#folder")
+                            span {voc.browse}
+                p.nmt {voc.templatesInfo}
+                .clear
+                ul.Cards.largeicons.nmb
+                    li.aCard(
+                        each="{project in templateProjects}"
+                        onclick="{cloneProject}"
+                        title="{project}"
+                    )
+                        .aCard-aThumbnail
+                            img(src="{getProjectThumbnail(project)}")
+                        .aCard-Properties
+                            span {getProjectName(project)}
+                        .aCard-Actions
+                            button.tiny(onclick="{cloneProject}" title="{voc.cloneProject}")
+                                svg.feather
+                                    use(xlink:href="#copy")
             #newProject.inset.flexfix-footer.flexrow
                 h3.nm.inline {voc.newProject.text}
                 input(
@@ -61,26 +102,26 @@ project-selector
                     ref="projectname"
                 )
                 button.nm.inline(onclick="{openProjectFolder}") {voc.newProject.button}
-        .spacer
+        .aSpacer
         .aVersionNumber.nogrow
             a(href="https://github.com/orgs/ct-js/" title="{voc.github}" onclick="{openExternal('https://github.com/orgs/ct-js/')}")
                 svg.icon
-                    use(xlink:href="data/icons.svg#github")
+                    use(xlink:href="#github")
             a(href="https://comigo.itch.io/ct" title="{voc.itch}" onclick="{openExternal('https://comigo.itch.io/ct')}")
                 svg.icon
-                    use(xlink:href="data/icons.svg#itch-dot-io")
+                    use(xlink:href="#itch-dot-io")
             a(href="https://discord.gg/CggbPkb" title="{voc.discord}" onclick="{openExternal('https://discord.gg/CggbPkb')}")
                 svg.icon
-                    use(xlink:href="data/icons.svg#discord")
+                    use(xlink:href="#discord")
             a(href="https://twitter.com/ctjsrocks" title="{voc.twitter}" onclick="{openExternal('https://twitter.com/ctjsrocks')}")
                 svg.icon
-                    use(xlink:href="data/icons.svg#twitter")
+                    use(xlink:href="#twitter")
             a(href="https://vk.com/ctjsrocks" title="{voc.vkontakte}" onclick="{openExternal('https://vk.com/ctjsrocks')}")
                 svg.icon
-                    use(xlink:href="data/icons.svg#vk")
+                    use(xlink:href="#vk")
             a(href="https:/patreon.com/comigo" title="{voc.patreon}" onclick="{openExternal('https:/patreon.com/comigo')}")
                 svg.icon
-                    use(xlink:href="data/icons.svg#patreon")
+                    use(xlink:href="#patreon")
             .inlineblock v{ctjsVersion}.
             |
             |
@@ -88,6 +129,7 @@ project-selector
             a.inlineblock(if="{newVersion}" href="https://comigo.itch.io/ct#download" onclick="{openExternal}")
                 | {newVersion}
                 img(src="data/img/partycarrot.gif" if="{newVersion}").aPartyCarrot
+    context-menu(menu="{languagesSubmenu}" ref="languageslist")
     script.
         const fs = require('fs-extra'),
               path = require('path');
@@ -141,8 +183,12 @@ project-selector
         } else {
             this.latestProjects = [];
         }
+
         const projects = require('./data/node_requires/resources/projects');
+        this.getProjectThumbnail = projects.getProjectThumbnail;
+
         this.exampleProjects = [];
+        this.templateProjects = [];
         // Loads examples
         fs.readdir(projects.getExamplesDir(), {
             withFileTypes: true
@@ -153,8 +199,16 @@ project-selector
             this.exampleProjects = projects;
             this.update();
         });
+        fs.readdir(projects.getTemplatesDir(), {
+            withFileTypes: true
+        })
+        .then(entries => entries.filter(entry => entry.isFile() && (/\.ict$/i).test(entry.name)))
+        .then(entries => entries.map(entry => path.join(projects.getTemplatesDir(), entry.name)))
+        .then(projects => {
+            this.templateProjects = projects;
+            this.update();
+        });
 
-        this.getProjectThumbnail = projects.getProjectThumbnail;
         /**
          * Update a splash image of a selected project
          */
@@ -195,7 +249,7 @@ project-selector
         /**
          * Opens a recent project when an item in the Recent Project list is double-clicked
          */
-        this.loadRecentProject = e => {
+        this.loadProjectByPath = e => {
             const projectPath = e.item.project;
             window.loadProject(projectPath);
         };
@@ -209,7 +263,6 @@ project-selector
                 const {getProjectsDir} = require('./data/node_requires/platformUtils');
                 const defaultProjectDir = await getProjectsDir() + '/';
                 const {project} = e.item;
-                console.log(project);
                 let newIctLocation = await window.showSaveDialog({
                     defaultPath: defaultProjectDir,
                     buttonLabel: this.voc.newProject.saveProjectHere,
@@ -253,7 +306,7 @@ project-selector
         this.openProjectFolder = () => {
             const codename = this.refs.projectname.value.trim();
             if (codename.length === 0) {
-                alertify.error(this.voc.newProject.nameerr);
+                alertify.error(this.voc.newProject.nameError);
                 return;
             }
             this.chooseProjectFolder();
@@ -308,4 +361,41 @@ project-selector
             nw.Shell.openExternal(link);
             e.stopPropagation();
             e.preventDefault();
+        };
+
+        this.languagesSubmenu = {
+            items: []
+        };
+        const i18nAPI = require('./data/node_requires/i18n');
+        i18nAPI.getLanguages().then(languages => {
+            for (const language of languages) {
+                if (language.filename === 'Debug.json') {
+                    continue;
+                }
+                this.languagesSubmenu.items.push({
+                    label: `${language.meta.native} (${language.meta.eng})`,
+                    icon: () => localStorage.appLanguage === language.filename.slice(0, -5) && 'check',
+                    click: () => {
+                        this.switchLanguage(language.filename.slice(0, -5));
+                    }
+                });
+            }
+        })
+        .catch(e => {
+            console.error(e);
+            alertify.error(`Error while finding i18n files: ${e}`);
+        });
+        this.switchLanguage = name => {
+            const i18n = require('./data/node_requires/i18n.js');
+            try {
+                window.languageJSON = i18n.loadLanguage(name);
+                localStorage.appLanguage = name;
+                window.signals.trigger('updateLocales');
+                window.riot.update();
+            } catch (e) {
+                alertify.alert('Could not open a language file: ' + e);
+            }
+        };
+        this.toggleLanguageSelector = e => {
+            this.refs.languageslist.popup(e.clientX, e.clientY);
         };

@@ -3,6 +3,7 @@
         "target": "es2020",
         "module": "umd",
         "noImplicitAny": true,
-        "moduleResolution": "node"
+        "moduleResolution": "node",
+        "baseUrl": "./"
     }
 }

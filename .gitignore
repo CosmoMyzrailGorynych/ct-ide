@@ -43,12 +43,16 @@ app/examples
 app/data/bundle.js
 app/data/riotTags.js
 app/data/bundle.css
+app/data/icons.svg
+app/data/icons.json
 app/data/node_requires/**/*
 app/data/hotLoadTags
 app/data/fonts/style/.css
 app/data/theme*.css
 app/data/typedefs/global.d.ts
 app/data/typedefs/pixi.js.d.ts
+app/data/icons.svg
+app/data/icons.json
 /app/data/docs
 app/index.html
 app/preview.html
@@ -81,12 +85,13 @@ app/export
 
 # editor-specific
 .vscode/settings.json
+.vscode/launch.json
 
 # docs
 docs/db.json
 docs/node_modules
 docs/public
-app/data/icons.svg
+
 export.zip
 app/pleaseCtJSLoadWithoutGPUAccelerationMmkay
 app/debugger.html

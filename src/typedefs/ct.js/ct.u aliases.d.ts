@@ -56,5 +56,10 @@ declare namespace ct {
          * @returns {object} The modified destination object
          */
         function extend(o1: any, o2: any, arr?: any): any;
+        /**
+         * Get the current operating system the game runs on.
+         * @returns {string} One of 'windows', 'darwin' (which is MacOS), 'linux', or 'unknown'.
+         */
+        function getOs(): string;
     }
 }

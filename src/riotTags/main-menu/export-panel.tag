@@ -1,48 +1,47 @@
-export-panel
-    .dim
-    .modal.pad.flexfix
+export-panel.aDimmer
+    .aModal.pad.flexfix
         .flexfix-header
             h2.nmt {voc.exportPanel}
         .flexfix-body
-            p {voc.firstrunnotice}
+            p {voc.firstRunNotice}
             fieldset
                 label.checkbox
                     input(type="checkbox" checked="{projSettings.export.linux}" onchange="{wire('this.projSettings.export.linux')}")
                     svg.icon
-                        use(xlink:href="data/icons.svg#linux")
+                        use(xlink:href="#linux")
                     |   Linux
                 label.checkbox(disabled="{process.platform === 'win32'}" title="{process.platform === 'win32' && voc.cannotBuildForMacOnWin}")
                     input(type="checkbox" checked="{projSettings.export.mac}" onchange="{wire('this.projSettings.export.mac')}")
                     svg.icon
-                        use(xlink:href="data/icons.svg#apple")
+                        use(xlink:href="#apple")
                     |   MacOS
                 label.checkbox
                     input(type="checkbox" checked="{projSettings.export.windows}" onchange="{wire('this.projSettings.export.windows')}")
                     svg.icon
-                        use(xlink:href="data/icons.svg#windows")
+                        use(xlink:href="#windows")
                     |   Windows
             p.warning(if="{projSettings.export.windows && process.platform !== 'win32'}")
                 svg.feather
-                    use(xlink:href="data/icons.svg#alert-triangle")
+                    use(xlink:href="#alert-triangle")
                 |
                 |
                 span {voc.windowsCrossBuildWarning}
                 span(if="{process.platform === 'darwin'}") {voc.windowsCrossBuildMacOs}
-            .spacer
+            .aSpacer
             h3(if="{log.length}")
                 | {voc.log}
                 .rem.a(onclick="{copyLog}").toright {vocGlob.copy}
-            pre(if="{log.length}")
+            pre.selectable(if="{log.length}")
                 div(each="{text in log}") {text.toString()}
         .flexfix-footer
             .flexrow
                 button(onclick="{opts.onclose}") {voc.hide}
-                button(onclick="{export}")
+                button(onclick="{export}").nmr
                     span.inlineblock.rotateccw(if="{working}")
                         svg.feather
-                            use(xlink:href="data/icons.svg#refresh-ccw")
+                            use(xlink:href="#refresh-ccw")
                     svg.feather(if="{!working}")
-                        use(xlink:href="data/icons.svg#upload")
+                        use(xlink:href="#upload")
                     span(if="{working}")   {voc.working}
                     span(if="{!working}")   {voc.export}
     script.

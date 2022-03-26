@@ -13,7 +13,7 @@ this.shape = {
 
 It is important to create a new `shape` object and not to change existing one, because, e.g., changing `this.shape.r = 10;` will affect the graphic asset a Copy is currently using, which will change the behaviour of all other Copies.
 
-Besides the `shape` parameter, each Copy can have a `ctype` parameter. It is used for grouping Copies into different collision groups, like 'Enemies', 'HeroBullets', 'Obstacles' etc.
+Besides the `shape` parameter, each Copy can have a `cgroup` parameter. It is used for grouping Copies into different collision groups, like 'Enemies', 'HeroBullets', 'Obstacles' etc.
 
 
 ## Collision shapes

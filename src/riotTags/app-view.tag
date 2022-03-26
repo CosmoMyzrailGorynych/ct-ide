@@ -1,51 +1,51 @@
 app-view.flexcol
     nav.nogrow.flexrow(if="{global.currentProject}")
-        ul#app.nav.tabs
+        ul#app.aNav.tabs
             li.it30#ctlogo(onclick="{changeTab('menu')}" title="{voc.ctIDE}" class="{active: tab === 'menu'}")
                 svg.feather.nmr
-                    use(xlink:href="data/icons.svg#menu")
+                    use(xlink:href="#menu")
             li.it30(onclick="{changeTab('patrons')}" title="{voc.patrons}" class="{active: tab === 'patrons'}")
                 svg.feather
-                    use(xlink:href="data/icons.svg#heart")
+                    use(xlink:href="#heart")
             li.it30.nbr(onclick="{saveProject}" title="{vocGlob.save} (Control+S)" data-hotkey="Control+s")
                 svg.feather
-                    use(xlink:href="data/icons.svg#save")
+                    use(xlink:href="#save")
 
-        ul#mainnav.nav.tabs
+        ul#mainnav.aNav.tabs
             li.nbl.it30(onclick="{runProject}" class="{active: tab === 'debug'}" title="{voc.launch} {voc.launchHotkeys}" data-hotkey="F5")
                 svg.feather.rotateccw(show="{exportingProject}")
-                    use(xlink:href="data/icons.svg#refresh-ccw")
+                    use(xlink:href="#refresh-ccw")
                 svg.feather(hide="{exportingProject}")
-                    use(xlink:href="data/icons.svg#play")
+                    use(xlink:href="#play")
                 span(if="{tab !== 'debug'}") {voc.launch}
                 span(if="{tab === 'debug'}") {voc.restart}
             li(onclick="{changeTab('project')}" class="{active: tab === 'project'}" data-hotkey="Control+1" title="Control+1")
                 svg.feather
-                    use(xlink:href="data/icons.svg#sliders")
+                    use(xlink:href="#sliders")
                 span {voc.project}
             li(onclick="{changeTab('textures')}" class="{active: tab === 'textures'}" data-hotkey="Control+2" title="Control+2")
                 svg.feather
-                    use(xlink:href="data/icons.svg#texture")
+                    use(xlink:href="#texture")
                 span {voc.texture}
             li(onclick="{changeTab('ui')}" class="{active: tab === 'ui'}" data-hotkey="Control+3" title="Control+3")
                 svg.feather
-                    use(xlink:href="data/icons.svg#ui")
+                    use(xlink:href="#ui")
                 span {voc.ui}
             li(onclick="{changeTab('fx')}" class="{active: tab === 'fx'}" data-hotkey="Control+4" title="Control+4")
                 svg.feather
-                    use(xlink:href="data/icons.svg#sparkles")
+                    use(xlink:href="#sparkles")
                 span {voc.fx}
             li(onclick="{changeTab('sounds')}" class="{active: tab === 'sounds'}" data-hotkey="Control+5" title="Control+5")
                 svg.feather
-                    use(xlink:href="data/icons.svg#headphones")
+                    use(xlink:href="#headphones")
                 span {voc.sounds}
-            li(onclick="{changeTab('types')}" class="{active: tab === 'types'}" data-hotkey="Control+6" title="Control+6")
+            li(onclick="{changeTab('templates')}" class="{active: tab === 'templates'}" data-hotkey="Control+6" title="Control+6")
                 svg.feather
-                    use(xlink:href="data/icons.svg#type")
-                span {voc.types}
+                    use(xlink:href="#template")
+                span {voc.templates}
             li(onclick="{changeTab('rooms')}" class="{active: tab === 'rooms'}" data-hotkey="Control+7" title="Control+7")
                 svg.feather
-                    use(xlink:href="data/icons.svg#room")
+                    use(xlink:href="#room")
                 span {voc.rooms}
     div.flexitem.relative(if="{global.currentProject}")
         main-menu(show="{tab === 'menu'}")
@@ -55,7 +55,7 @@ app-view.flexcol
         ui-panel(show="{tab === 'ui'}" data-hotkey-scope="ui")
         fx-panel(show="{tab === 'fx'}" data-hotkey-scope="fx")
         sounds-panel(show="{tab === 'sounds'}" data-hotkey-scope="sounds")
-        types-panel(show="{tab === 'types'}" data-hotkey-scope="types")
+        templates-panel(show="{tab === 'templates'}" data-hotkey-scope="templates")
         rooms-panel(show="{tab === 'rooms'}" data-hotkey-scope="rooms")
         patreon-screen(if="{tab === 'patrons'}" data-hotkey-scope="patrons")
     new-project-onboarding(if="{sessionStorage.showOnboarding && localStorage.showOnboarding !== 'off'}")
@@ -89,13 +89,14 @@ app-view.flexcol
             try {
                 const fs = require('fs-extra');
                 const YAML = require('js-yaml');
+                const glob = require('./data/node_requires/glob');
                 const projectYAML = YAML.dump(global.currentProject);
                 await fs.outputFile(global.projdir + '.ict', projectYAML);
                 this.saveRecoveryDebounce();
                 fs.remove(global.projdir + '.ict.recovery')
                 .catch(console.error);
-                // TODO: glob.modified = false;
-                alertify.success(window.languageJSON.common.savedcomm, 'success', 3000);
+                glob.modified = false;
+                alertify.success(window.languageJSON.common.savedMessage, 'success', 3000);
             } catch (e) {
                 alertify.error(e);
             }

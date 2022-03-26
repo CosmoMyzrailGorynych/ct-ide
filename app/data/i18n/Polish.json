@@ -6,7 +6,6 @@
     },
     "common": {
         "add": "Dodaj",
-        "addtonotes": "Dodaj do notatek",
         "apply": "Zatwierdź",
         "cancel": "Anuluj",
         "cannotBeEmpty": "Pole nie może być puste",
@@ -14,34 +13,22 @@
         "contribute": "Współpracuj",
         "copy": "Kopiuj",
         "copyName": "Kopiuj nazwę",
-        "ctsite": "strona domowa ct.js",
         "cut": "Wytnij",
         "delete": "Usuń",
         "donate": "Wsparcie",
         "done": "Gotowe!",
         "duplicate": "Powiel",
         "exit": "Wyjście",
-        "exitconfirm": "Na pewno chcesz wyjść?<br/>Wszystkie niezapisane zmiany zostaną utracone!",
-        "fastimport": "Szybki import",
         "loading": "Ładowanie…",
         "name": "Nazwa:",
-        "nametaken": "Ta nazwa jest już zajęta",
-        "newname": "Nowa nazwa:",
         "no": "Nie",
         "none": "Brak",
-        "norooms": "Potrzebujesz przynajmniej jednego pokoju żeby skompilować swoją aplikację.",
-        "notfoundorunknown": "Nieznany plik. Upewnij się, że plik rzeczywiście istnieje",
         "ok": "Ok",
         "open": "Otwórz",
-        "openproject": "Otwórz projekt...",
         "paste": "Wklej",
-        "reallyexit": "Na pewno chcesz wyjść? Wszystkie niezapisane zmiany zostaną utracone.",
         "rename": "Zmień nazwę",
         "save": "Zapisz",
-        "savedcomm": "Twój projekt został zapisany.",
-        "saveproject": "Zapisz projekt",
         "sort": "Sortuj:",
-        "tilelayer": "warstwa kafelków",
         "wrongFormat": "Zły format pliku",
         "yes": "Tak",
         "zoom": "Powiększenie",
@@ -54,7 +41,91 @@
         "search": "",
         "close": "",
         "couldNotLoadFromClipboard": "",
-        "pastedFromClipboard": ""
+        "pastedFromClipboard": "",
+        "edit": "",
+        "nothingToShowFiller": "",
+        "required": "",
+        "settings": "",
+        "fieldTypes": {
+            "checkbox": "",
+            "code": "",
+            "color": "",
+            "group": "",
+            "h1": "",
+            "h2": "",
+            "h3": "",
+            "h4": "",
+            "number": "",
+            "point2D": "",
+            "radio": "",
+            "slider": "",
+            "sliderAndNumber": "",
+            "table": "",
+            "text": "",
+            "textfield": "",
+            "texture": "",
+            "template": "",
+            "room": "",
+            "sound": "",
+            "tandem": ""
+        },
+        "newName": "Nowa nazwa:",
+        "saveProject": "Zapisz projekt",
+        "openProject": "Otwórz projekt...",
+        "savedMessage": "Twój projekt został zapisany.",
+        "reallyExitConfirm": "Na pewno chcesz wyjść? Wszystkie niezapisane zmiany zostaną utracone.",
+        "notFoundOrUnknown": "Nieznany plik. Upewnij się, że plik rzeczywiście istnieje",
+        "nameTaken": "Ta nazwa jest już zajęta",
+        "fastImport": "Szybki import",
+        "addToNotes": "Dodaj do notatek",
+        "noRooms": "Potrzebujesz przynajmniej jednego pokoju żeby skompilować swoją aplikację.",
+        "tileLayer": "warstwa kafelków",
+        "ctSite": "strona domowa ct.js",
+        "docsShort": "",
+        "docsLong": "",
+        "openAssetGallery": "",
+        "assetTypes": {
+            "textures": [
+                "",
+                "",
+                ""
+            ],
+            "templates": [
+                "",
+                "",
+                ""
+            ],
+            "emitterTandems": [
+                "",
+                "",
+                ""
+            ],
+            "rooms": [
+                "",
+                "",
+                ""
+            ],
+            "fonts": [
+                "",
+                "",
+                ""
+            ],
+            "styles": [
+                "",
+                "",
+                ""
+            ],
+            "sounds": [
+                "",
+                "",
+                ""
+            ],
+            "skeletons": [
+                "",
+                "",
+                ""
+            ]
+        }
     },
     "colorPicker": {
         "current": "Nowy",
@@ -71,10 +142,18 @@
         "debug": "Wersja debug",
         "export": "Eksport",
         "exportPanel": "Eksportuj Projekt",
-        "firstrunnotice": "Pierwsze uruchomienie dla każdej platformy będzie wolne, ponieważ ct.js będzie pobierać i zapisywać dodatkowe biblioteki wymagane do spakowania gry. Może to zająć trochę czasu, ale następne razy będą nimal natychmiastowe.",
         "log": "Log Wiadomości",
         "windowsCrossBuildWarning": "",
-        "cannotBuildForMacOnWin": ""
+        "cannotBuildForMacOnWin": "",
+        "firstRunNotice": "Pierwsze uruchomienie dla każdej platformy będzie wolne, ponieważ ct.js będzie pobierać i zapisywać dodatkowe biblioteki wymagane do spakowania gry. Może to zająć trochę czasu, ale następne razy będą nimal natychmiastowe.",
+        "projectTitleRequired": "",
+        "appIdRequired": "",
+        "noAndroidSdkFound": "",
+        "envVarNotice": "",
+        "downloadAndroidStudio": "",
+        "requiresInternetNotice": "",
+        "noJdkFound": "",
+        "downloadJDK": ""
     },
     "intro": {
         "loading": "Please wait: kittens are gathering speed of light!",
@@ -82,9 +161,9 @@
             "button": "Stwórz",
             "input": "Nazwa projektu (litery i cyfry)",
             "text": "Stwórz nowy",
-            "nameerr": "Zła nazwa projektu",
             "saveProjectHere": "Zapisz projekt tutaj",
-            "selectProjectFolder": "Wybierz folder, w którym chcesz przechowywać swój projekt"
+            "selectProjectFolder": "Wybierz folder, w którym chcesz przechowywać swój projekt",
+            "nameError": "Zła nazwa projektu"
         },
         "recovery": {
             "message": "<h2 class=\"nmt\">Odzyskiwanie</h2><p>ct.js znalazł plik odzyskiwania. Możliwe, że twój projekt nie został zapisany prawidłowo lub ct.js został zamknięty awaryjnie. Oto kiedy te pliki były ostatnio modyfikowane:</p><p>Twój wybrany plik: {0} {1}<br/>Plik odzyskiwania: {2} {3}</p><p>Który plik powinien otworzyć ct.js?</p>",
@@ -104,10 +183,14 @@
         "twitter": "Kanał na Twitterze",
         "discord": "Społeczność na Discordzie",
         "examples": "",
-        "createOrBrowseJunction": ""
-    },
-    "licensepanel": {
-        "ctjslicense": "Licencja Ct.js (MIT)"
+        "createOrBrowseJunction": "",
+        "cloneProject": "",
+        "github": "",
+        "itch": "",
+        "vkontakte": "",
+        "patreon": "",
+        "templates": "",
+        "templatesInfo": ""
     },
     "onboarding": {
         "hoorayHeader": "Wow! Właśnie utworzyłeś projekt!",
@@ -130,7 +213,15 @@
             "methodModuleMissing": "Brak modułu potrzebnego tej metodzie",
             "methods": "Metody wejścia",
             "multiplier": "Mnożnik",
-            "noActionsYet": "Akcje pozwalają deweloperom na nasłuchiwanie licznych metod wejścia jednocześnie i na dynamiczną ich zmianę, wszystko za pomocą jednolitego API. Przeczytaj więcej klikając ikonę dokumentu na górze."
+            "noActionsYet": "Akcje pozwalają deweloperom na nasłuchiwanie licznych metod wejścia jednocześnie i na dynamiczną ich zmianę, wszystko za pomocą jednolitego API. Przeczytaj więcej klikając ikonę dokumentu na górze.",
+            "makeFromScratch": "",
+            "presets": "",
+            "presetXYMovement": "",
+            "presetTouchAndMouse": "",
+            "presetCustom": "",
+            "exportActionPreset": "",
+            "importErrorMissingModules": "",
+            "importErrorNotCtJsPreset": ""
         },
         "authoring": {
             "heading": "Authoring",
@@ -138,15 +229,15 @@
             "site": "Strona domowa:",
             "title": "Nazwa:",
             "version": "Wersja:",
-            "versionpostfix": "Postfiks:"
+            "versionPostfix": "Postfiks:",
+            "appId": "",
+            "appIdExplanation": ""
         },
         "rendering": {
             "heading": "Opcje renderowania",
             "framerate": "Klatki na sekundę:",
             "highDensity": "Wspieraj dużą gęstość pikseli (np. na wyświetlaczach retina)",
             "maxFPS": "Maksymalna ilość klatek na sekundę:",
-            "usePixiLegacy": "Dodaj szeroko wspierany, bazujący na canvasie renderer żeby wspierać stare przeglądarki i karty graficzne (dodaje ~20kb do twojej gry)",
-            "pixelatedrender": "Zablokuj wygładzanie obrazu tu i w eksportowanym projekcie (zachowaj ostre piksele)",
             "desktopBuilds": "",
             "launchMode": "",
             "launchModes": {
@@ -154,7 +245,16 @@
                 "fullscreen": "",
                 "windowed": ""
             },
-            "hideCursor": ""
+            "hideCursor": "",
+            "pixelatedRender": "Zablokuj wygładzanie obrazu tu i w eksportowanym projekcie (zachowaj ostre piksele)",
+            "usePixiLegacy": "",
+            "mobileBuilds": "",
+            "screenOrientation": "",
+            "screenOrientations": {
+                "unspecified": "",
+                "landscape": "",
+                "portrait": ""
+            }
         },
         "scripts": {
             "addNew": "Dodaj nowy skrypt",
@@ -170,7 +270,12 @@
             "accentNotice": "",
             "icon": "",
             "iconNotice": "",
-            "invertPreloaderScheme": ""
+            "invertPreloaderScheme": "",
+            "hideLoadingLogo": "",
+            "splashScreen": "",
+            "splashScreenNotice": "",
+            "forceSmoothIcons": "",
+            "forceSmoothSplashScreen": ""
         },
         "modules": {
             "heading": ""
@@ -187,7 +292,30 @@
                 "minify": "",
                 "obfuscate": ""
             }
-        }
+        },
+        "content": {
+            "heading": "",
+            "addContentType": "",
+            "missingTypeName": "",
+            "unnamedContentTypeHint": "",
+            "typeName": "",
+            "typeNameHint": "",
+            "typeReadableName": "",
+            "typeReadableNameHint": "",
+            "icon": "",
+            "typeSpecification": "",
+            "fieldName": "",
+            "fieldNameHint": "",
+            "fieldReadableName": "",
+            "fieldReadableNameHint": "",
+            "fieldType": "",
+            "deleteContentType": "",
+            "confirmDeletionMessage": "",
+            "gotoEntries": "",
+            "entries": "",
+            "array": ""
+        },
+        "contentTypes": ""
     },
     "modules": {
         "author": "Autor tego catmodu",
@@ -227,213 +355,34 @@
         "create": "Stwórz",
         "import": "Importuj",
         "skeletons": "Animacja szkieletowa",
-        "createType": "",
+        "createTemplate": "",
         "importFromClipboard": "",
-        "generatePlaceholder": ""
-    },
-    "textureview": {
-        "bgcolor": "Zmień kolor tła",
-        "center": "Oś:",
-        "cols": "Kolumny:",
-        "done": "Zastosuj",
-        "fill": "Wypełnij",
-        "form": "Kształt kolizji:",
-        "frames": "Liczba klatek:",
-        "isometrify": "Izometryfikuj: przenieś oś na dół i na środek, wypełnij cały sprite maską kolizji",
-        "name": "Nazwa:",
-        "radius": "Promień:",
-        "rectangle": "Prostokąt",
-        "reimport": "Importuj ponownie",
-        "round": "Koło",
-        "rows": "Rzędy:",
-        "setcenter": "Środek obrazu",
-        "speed": "Klatki na sekundę:",
-        "tiled": "Użyć jako tło?",
-        "replacetexture": "Zamień…",
-        "corrupted": "Nie można otworzyć pliku! Zamykanie.",
-        "showmask": "Pokaż maskę",
-        "width": "Szerokość:",
-        "height": "Wysokość:",
-        "marginx": "Margines X:",
-        "marginy": "Margines Y:",
-        "offx": "Odstęp X:",
-        "offy": "Odstęp Y:",
-        "strip": "Łamana / Wielokąt",
-        "removePoint": "Usuń punkt",
-        "closeShape": "Zamknij kształt",
-        "addPoint": "Dodaj punkt",
-        "moveCenter": "Przesuń oś",
-        "movePoint": "Przesuń ten punkt",
-        "symmetryTool": "Narzędzie symetrii",
-        "padding": "",
-        "paddingNotice": "",
-        "updateFromClipboard": "",
-        "previewAnimationNotice": ""
+        "generatePlaceholder": "",
+        "textures": ""
     },
     "sounds": {
-        "create": "Stwórz"
-    },
-    "soundview": {
-        "import": "Importuj",
-        "name": "Nazwa:",
-        "save": "Zapisz",
-        "isMusicFile": "To jest ścieżka dźwiękowa",
-        "poolSize": "Rozmiar puli:"
+        "create": "Stwórz",
+        "record": ""
     },
     "styles": {
         "create": "Stwórz",
         "styles": "Style tekstu"
-    },
-    "styleview": {
-        "active": "Aktywny",
-        "alignment": "Dopasowanie:",
-        "apply": "Zastosuj",
-        "fill": "Wypełnij",
-        "fillcolor": "Kolor:",
-        "fillcolor1": "Kolor 1:",
-        "fillcolor2": "Kolor 2:",
-        "fillgrad": "Gradient",
-        "fillgradtype": "Typ gradientu:",
-        "fillhorisontal": "Poziomy",
-        "fillsolid": "Rozmycie",
-        "filltype": "Typ wypełnienia:",
-        "fillvertical": "Pionowy",
-        "font": "Czcionka",
-        "fontweight": "Grubość:",
-        "fontsize": "Rozmiar czcionki:",
-        "fontfamily": "Rodzina czcionek:",
-        "italic": "Pochyła",
-        "lineHeight": "Wysokość linii:",
-        "shadow": "Cień",
-        "shadowblur": "Blur:",
-        "shadowcolor": "Kolor cienia:",
-        "shadowshift": "Przesunięcie:",
-        "stroke": "Przekreślenie",
-        "strokecolor": "Kolor przekreślenia:",
-        "strokeweight": "Grubość linii:",
-        "testtext": "Testowy tekst 0123 +",
-        "textWrap": "Zawijanie tekstu",
-        "textWrapWidth": "Maksymalna szerokość:",
-        "useCustomFont": ""
     },
     "fonts": {
         "fonts": "Czcionki",
         "import": "Importuj TTF",
         "italic": "Pochyła"
     },
-    "fontview": {
-        "typefacename": "Nazwa typeface:",
-        "fontweight": "Grubość czcionki:",
-        "italic": "Czy jest pochyła?",
-        "reimport": "Importuj ponownie",
-        "generateBitmapFont": "",
-        "bitmapFont": "",
-        "bitmapFontSize": "",
-        "bitmapFontLineHeight": "",
-        "resultingBitmapFontName": "",
-        "charset": "",
-        "charsets": {
-            "punctuation": "",
-            "basicLatin": "",
-            "latinExtended": "",
-            "cyrillic": "",
-            "greekCoptic": "",
-            "custom": "",
-            "allInFont": ""
-        },
-        "customCharsetHint": ""
-    },
-    "types": {
-        "create": "Stwórz"
-    },
-    "typeview": {
-        "change": "Zmień sprite",
-        "create": "Przy utworzeniu",
-        "depth": "Głębia:",
-        "destroy": "Przy zniszczeniu",
-        "done": "Gotowe",
-        "draw": "Rysuj",
-        "learnAboutTypes": "Dowiedz się więcej o typach kodowania",
-        "name": "Nazwa:",
-        "step": "Przy kroku",
-        "visible": ""
-    },
     "rooms": {
         "create": "Dodaj nowy",
-        "makestarting": "Ustaw jako pokój startowy"
-    },
-    "roombackgrounds": {
-        "add": "Dodaj tło",
-        "depth": "Głębia:",
-        "movement": "Szybkość poruszania się (X, Y):",
-        "parallax": "Paralaksa (X, Y):",
-        "repeat": "Powtarzanie:",
-        "scale": "Skalowanie (X, Y):",
-        "shift": "Przesunięcie (X, Y):",
-        "notBackgroundTextureWarning": "",
-        "fixBackground": "",
-        "dismissWarning": ""
-    },
-    "roomtiles": {
-        "moveTileLayer": "Przenieś na nową głębię",
-        "show": "Pokaż warstwę",
-        "hide": "Schowaj warstwę",
-        "findTileset": "Znajdź tileset"
-    },
-    "roomview": {
-        "name": "Nazwa:",
-        "width": "Pokaż szerokość:",
-        "height": "Wysokość widoku:",
-        "events": "Zdarzenia pokoju",
-        "copies": "Kopie",
-        "backgrounds": "Tła",
-        "tiles": "Kafelki",
-        "add": "Dodaj",
-        "none": "Nic",
-        "done": "Gotowe",
-        "grid": "Ustaw siatkę",
-        "gridoff": "Zablokuj siatkę",
-        "gridsize": "Rozmiar siatki:",
-        "hotkeysNotice": "Ctrl = Usuń, Alt = Brak siatki, Shift = Wielokrotnie",
-        "hotkeysNoticeMovement": "Ctrl = Usuń, Shift = Wybierz",
-        "tocenter": "Na środek",
-        "selectbg": "Wybierz tileset",
-        "shift": "Przesuń widok",
-        "shifttext": "Przesuń o:",
-        "step": "Przy kroku",
-        "create": "Prze utworzeniu",
-        "leave": "Przy opuszczeniu",
-        "draw": "Rysuj",
-        "newdepth": "Nowa głębia:",
-        "deletecopy": "Usuń kopię {0}",
-        "deleteCopies": "Usuń kopie",
-        "shiftCopies": "Przesuń kopie",
-        "selectAndMove": "Wybierz i przemieść",
-        "changecopyscale": "Zmień skalę",
-        "shiftcopy": "Ustaw współrzędne",
-        "deletetile": "Usuń kafelek",
-        "deletetiles": "Usuń kafelki",
-        "movetilestolayer": "Przenieś do warstwy",
-        "shifttiles": "Przesuń kafelki",
-        "findTileset": "Znajdź tileset",
-        "changecopyrotation": "",
-        "properties": "",
-        "isUi": "",
-        "backgroundColor": "",
-        "sortHorizontally": "",
-        "sortVertically": "",
-        "copyProperties": {
-            "position": "",
-            "rotation": "",
-            "scale": ""
-        }
+        "makeStarting": "Ustaw jako pokój startowy"
     },
     "notepad": {
         "local": "Notatnik projektu",
         "global": "Globalny notatnik",
-        "helppages": "Pomoc",
         "backToHome": "Wróć na stronę domową dokumentacji",
-        "modulespages": ""
+        "modulesPages": "",
+        "helpPages": "Pomoc"
     },
     "patreon": {
         "aboutPatrons": "Patroni to ludzie, którzy okazują swoje wsparcie dla ComigoGames na Patreonie w formie powtarzających się wpłat. Nie każdy tam pochodzi z ct.js; niektórzy używają innych aplikacji od ComigoGames. Porada: jeśli jesteś twórcą i wesprzesz ComigoGames na Patreonie, dostaniesz link na swoją stonę tutaj - to moja mała pomoc dla twoich dzieł :)",
@@ -565,7 +514,12 @@
     },
     "extensionsEditor": {
         "noEntries": "",
-        "addRow": ""
+        "addRow": "",
+        "actions": "",
+        "values": "",
+        "moveDown": "",
+        "moveUp": "",
+        "deleteRow": ""
     },
     "textureGenerator": {
         "name": "",
@@ -581,7 +535,12 @@
         "filler": "",
         "fillerNone": "",
         "fillerCross": "",
-        "fillerLabel": ""
+        "fillerLabel": "",
+        "form": "",
+        "formRectangular": "",
+        "formRound": "",
+        "formDiamond": "",
+        "fillerArrow": ""
     },
     "textureInput": {
         "jumpToTexture": "",
@@ -613,7 +572,9 @@
         "deploy": {
             "exportDesktop": "Eksportuj na komputer",
             "successZipExport": "Pomyślnie eksportowano do {0}.",
-            "zipExport": "Eksportuj na przeglądarkę"
+            "zipExport": "Eksportuj na przeglądarkę",
+            "heading": "",
+            "exportAndroid": ""
         },
         "latestProjects": {
             "recentProjects": "Ostatnie projekty"
@@ -650,12 +611,18 @@
             "openExample": "",
             "startScreen": "Powróć do ekranu początkowego",
             "successZipProject": "Pomyślnie spakowano projekt do {0}.",
-            "zipProject": "Spakuj projekt do .zip"
+            "zipProject": "Spakuj projekt do .zip",
+            "heading": ""
         },
         "meta": {
             "license": "Licencja",
             "visitDiscordForGamedevSupport": "",
-            "openIconList": ""
+            "openIconList": "",
+            "heading": "",
+            "twitter": "",
+            "vkontakte": "",
+            "ctjsForum": "",
+            "openStylebook": ""
         }
     },
     "appView": {
@@ -668,9 +635,259 @@
         "rooms": "Pokoje",
         "sounds": "Dźwięki",
         "ui": "UI",
-        "types": "Typy",
         "fx": "",
         "restart": "",
-        "project": ""
+        "project": "",
+        "templates": "Typy"
+    },
+    "copyCustomProperties": {
+        "customProperties": "",
+        "addProperty": "",
+        "property": "",
+        "value": "",
+        "delete": ""
+    },
+    "assetViewer": {
+        "addNewGroup": "",
+        "ungrouped": "",
+        "newGroupName": "",
+        "groupDeletionConfirmation": ""
+    },
+    "groupEditor": {
+        "groupEditor": "",
+        "icon": "",
+        "color": ""
+    },
+    "soundRecorder": {
+        "recorderHeading": "",
+        "record": "",
+        "stopRecording": "",
+        "discardRecording": "",
+        "finishRecording": "",
+        "cannotRecordSound": "",
+        "troubleshootingWindows": ""
+    },
+    "roomBackgrounds": {
+        "add": "Dodaj tło",
+        "depth": "Głębia:",
+        "movement": "Szybkość poruszania się (X, Y):",
+        "parallax": "Paralaksa (X, Y):",
+        "repeat": "Powtarzanie:",
+        "scale": "Skalowanie (X, Y):",
+        "shift": "Przesunięcie (X, Y):",
+        "notBackgroundTextureWarning": "",
+        "fixBackground": "",
+        "dismissWarning": ""
+    },
+    "roomTiles": {
+        "moveTileLayer": "Przenieś na nową głębię",
+        "show": "Pokaż warstwę",
+        "hide": "Schowaj warstwę",
+        "findTileset": "Znajdź tileset"
+    },
+    "roomView": {
+        "name": "Nazwa:",
+        "width": "Pokaż szerokość:",
+        "height": "Wysokość widoku:",
+        "events": "Zdarzenia pokoju",
+        "copies": "Kopie",
+        "backgrounds": "Tła",
+        "tiles": "Kafelki",
+        "add": "Dodaj",
+        "none": "Nic",
+        "done": "Gotowe",
+        "grid": "Ustaw siatkę",
+        "hotkeysNotice": "Ctrl = Usuń, Alt = Brak siatki, Shift = Wielokrotnie",
+        "hotkeysNoticeMovement": "Ctrl = Usuń, Shift = Wybierz",
+        "shift": "Przesuń widok",
+        "step": "Przy kroku",
+        "create": "Prze utworzeniu",
+        "leave": "Przy opuszczeniu",
+        "draw": "Rysuj",
+        "deleteCopies": "Usuń kopie",
+        "shiftCopies": "Przesuń kopie",
+        "selectAndMove": "Wybierz i przemieść",
+        "findTileset": "Znajdź tileset",
+        "properties": "",
+        "isUi": "",
+        "backgroundColor": "",
+        "sortHorizontally": "",
+        "sortVertically": "",
+        "copyProperties": {
+            "position": "",
+            "rotation": "",
+            "scale": ""
+        },
+        "customProperties": "",
+        "restrictCamera": "",
+        "minimumX": "",
+        "minimumY": "",
+        "maximumX": "",
+        "maximumY": "",
+        "gridOff": "Zablokuj siatkę",
+        "gridSize": "Rozmiar siatki:",
+        "toCenter": "Na środek",
+        "shiftLabel": "Przesuń o:",
+        "newDepth": "Nowa głębia:",
+        "deleteCopy": "Usuń kopię {0}",
+        "changeCopyScale": "Zmień skalę",
+        "shiftCopy": "Ustaw współrzędne",
+        "deleteTile": "Usuń kafelek",
+        "deleteTiles": "Usuń kafelki",
+        "moveTilesToLayer": "Przenieś do warstwy",
+        "shiftTiles": "Przesuń kafelki",
+        "changeCopyRotation": ""
+    },
+    "styleView": {
+        "active": "Aktywny",
+        "alignment": "Dopasowanie:",
+        "apply": "Zastosuj",
+        "fill": "Wypełnij",
+        "font": "Czcionka",
+        "italic": "Pochyła",
+        "lineHeight": "Wysokość linii:",
+        "shadow": "Cień",
+        "stroke": "Przekreślenie",
+        "textWrap": "Zawijanie tekstu",
+        "textWrapWidth": "Maksymalna szerokość:",
+        "useCustomFont": "",
+        "code": "",
+        "copyCode": "",
+        "fillColor": "Kolor:",
+        "fillColor1": "Kolor 1:",
+        "fillColor2": "Kolor 2:",
+        "fillGrad": "Gradient",
+        "fillGradType": "Typ gradientu:",
+        "fillHorizontal": "Poziomy",
+        "fillSolid": "Rozmycie",
+        "fillType": "Typ wypełnienia:",
+        "fillVertical": "Pionowy",
+        "fontWeight": "Grubość:",
+        "shadowBlur": "Blur:",
+        "shadowColor": "Kolor cienia:",
+        "shadowShift": "Przesunięcie:",
+        "strokeColor": "Kolor przekreślenia:",
+        "strokeWeight": "Grubość linii:",
+        "testText": "Testowy tekst 0123 +",
+        "fontFamily": "Rodzina czcionek:",
+        "fontSize": "Rozmiar czcionki:"
+    },
+    "textureView": {
+        "center": "Oś:",
+        "cols": "Kolumny:",
+        "done": "Zastosuj",
+        "fill": "Wypełnij",
+        "form": "Kształt kolizji:",
+        "frames": "Liczba klatek:",
+        "isometrify": "Izometryfikuj: przenieś oś na dół i na środek, wypełnij cały sprite maską kolizji",
+        "name": "Nazwa:",
+        "radius": "Promień:",
+        "rectangle": "Prostokąt",
+        "reimport": "Importuj ponownie",
+        "round": "Koło",
+        "rows": "Rzędy:",
+        "speed": "Klatki na sekundę:",
+        "tiled": "Użyć jako tło?",
+        "corrupted": "Nie można otworzyć pliku! Zamykanie.",
+        "width": "Szerokość:",
+        "height": "Wysokość:",
+        "strip": "Łamana / Wielokąt",
+        "removePoint": "Usuń punkt",
+        "closeShape": "Zamknij kształt",
+        "addPoint": "Dodaj punkt",
+        "moveCenter": "Przesuń oś",
+        "movePoint": "Przesuń ten punkt",
+        "symmetryTool": "Narzędzie symetrii",
+        "padding": "",
+        "paddingNotice": "",
+        "updateFromClipboard": "",
+        "previewAnimationNotice": "",
+        "showFrameIndices": "",
+        "pasteCollisionMask": "",
+        "copyCollisionMask": "",
+        "bgColor": "Zmień kolor tła",
+        "setCenter": "Środek obrazu",
+        "replaceTexture": "Zamień…",
+        "showMask": "Pokaż maskę",
+        "marginX": "Margines X:",
+        "marginY": "Margines Y:",
+        "offX": "Odstęp X:",
+        "offY": "Odstęp Y:"
+    },
+    "soundView": {
+        "import": "Importuj",
+        "name": "Nazwa:",
+        "save": "Zapisz",
+        "isMusicFile": "To jest ścieżka dźwiękowa",
+        "poolSize": "Rozmiar puli:"
+    },
+    "fontView": {
+        "italic": "Czy jest pochyła?",
+        "reimport": "Importuj ponownie",
+        "generateBitmapFont": "",
+        "bitmapFont": "",
+        "bitmapFontSize": "",
+        "bitmapFontLineHeight": "",
+        "resultingBitmapFontName": "",
+        "charset": "",
+        "charsets": {
+            "punctuation": "",
+            "basicLatin": "",
+            "latinExtended": "",
+            "cyrillic": "",
+            "greekCoptic": "",
+            "custom": "",
+            "allInFont": ""
+        },
+        "customCharsetHint": "",
+        "fontWeight": "Grubość czcionki:",
+        "typefaceName": "Nazwa typeface:"
+    },
+    "licensePanel": {
+        "ctjsLicense": "Licencja Ct.js (MIT)"
+    },
+    "templates": {
+        "create": "Stwórz"
+    },
+    "templateView": {
+        "change": "Zmień sprite",
+        "create": "Przy utworzeniu",
+        "depth": "Głębia:",
+        "destroy": "Przy zniszczeniu",
+        "done": "Gotowe",
+        "draw": "Rysuj",
+        "learnAboutTypes": "Dowiedz się więcej o typach kodowania",
+        "name": "Nazwa:",
+        "step": "Przy kroku",
+        "visible": "",
+        "appearance": "",
+        "opacity": "",
+        "blendMode": "",
+        "playAnimationOnStart": "",
+        "blendModes": {
+            "normal": "",
+            "add": "",
+            "multiply": "",
+            "screen": ""
+        }
+    },
+    "assetInput": {
+        "changeAsset": "",
+        "jumpToAsset": "",
+        "selectAssetHeader": ""
+    },
+    "builtinAssetGallery": {
+        "galleryTip": "",
+        "assetGalleryHeader": "",
+        "importIntoProject": "",
+        "importAll": "",
+        "byAuthorPrefix": "",
+        "cannotImportExplanation": "",
+        "nameOccupied": "",
+        "cannotImportNameOccupied": "",
+        "visitSource": "",
+        "visitAuthorsItch": "",
+        "visitAuthorsTwitter": "",
+        "tipAuthor": ""
     }
 }

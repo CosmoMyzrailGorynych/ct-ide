@@ -1,11 +1,12 @@
 {
   "name": "ctjsbuildenvironment",
-  "version": "1.7.0",
+  "version": "2.0.0",
   "description": "",
   "directories": {
     "doc": "docs"
   },
   "scripts": {
+    "start": "gulp",
     "lint": "gulp lint",
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",
@@ -19,6 +20,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@types/css-font-loading-module": "0.0.7",
     "@types/node": "^14.11.8",
     "@types/nw.js": "^0.13.10",
     "@typescript-eslint/eslint-plugin": "^4.4.1",
@@ -33,7 +35,7 @@
     "gulp-concat": "^2.6.1",
     "gulp-eslint": "^6.0.0",
     "gulp-if": "^2.0.2",
-    "gulp-pug": "^3.3.0",
+    "gulp-pug": "^5.0.0",
     "gulp-replace": "^1.0.0",
     "gulp-riot": "^1.1.5",
     "gulp-sourcemaps": "^2.6.5",
@@ -43,10 +45,10 @@
     "gulp-typescript": "^6.0.0-alpha.1",
     "gulp-zip": "^5.0.1",
     "jsdoc-x": "^4.1.0",
-    "minimist": "^1.2.5",
-    "node-notifier": "^5.4.3",
+    "minimist": "^1.2.6",
+    "node-notifier": "^10.0.0",
     "nw-builder": "^3.5.7",
-    "pug": "^2.0.4",
+    "pug": "^3.0.2",
     "pug-lint-config-clock": "^2.0.0",
     "riot": "^3.13.2",
     "streamqueue": "^1.1.2",
@@ -58,5 +60,6 @@
   "devDependencies": {
     "eslint-plugin-pug": "^1.2.2",
     "gulp-ext-replace": "^0.3.0"
-  }
+  },
+  "main": "index.html"
 }

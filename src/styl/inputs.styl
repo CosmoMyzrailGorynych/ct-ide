@@ -38,6 +38,17 @@ textarea
     .compact
         padding 0.2em 0.3em
         line-height 1
+    &.invalid
+        border-color error
+
+input[type="text"],
+input[type="number"],
+input[type="url"],
+input[type="password"]
+    &.compact
+        max-width 8em
+        &.wide
+            max-width 100%
 
 input[type="number"]
     padding-right 0
@@ -48,8 +59,7 @@ button,
 input[type="button"],
 input[type="submit"],
 input[type="reset"],
-.button,
-.selectbox
+.button
     padding 0.5em 1em
     margin 0 0.3em 0 0
     border 1px solid act
@@ -60,6 +70,8 @@ input[type="reset"],
     background background
     if (themeDark)
         background transparent
+        &.forcebackground
+            background rgba(background, 0.65)
     display inline-block
     cursor pointer
     text-align center
@@ -203,13 +215,19 @@ input[type="reset"],
             border-top-right-radius br
             border-bottom-right-radius br
             border-right-width 1px
-
+            if themeThickBorders
+                border-right-width 2px
+    &.wide
+        display flex
+        margin 0
+        button, .button
+            flex 1 1 auto
 button,
 input[type="button"],
 input[type="submit"],
 input[type="reset"],
 .button,
-.nav
+.aNav
     svg
         {trans}
         color act
@@ -223,36 +241,6 @@ select, label, .label
 select
     line-height 2
     height calc(2.2rem + 2px)
-.selectbox
-    width 10em
-    position relative
-    li
-        list-style none
-    & > ul
-        position absolute
-        left -1px // why?
-        right -1px
-        top 100%
-        background background
-        color text
-        border 1px solid borderBright
-        border-radius 0 0 br br
-        border-bottom 0
-        border-top 1px solid act
-    ul
-        display none
-        margin 0
-        padding 0
-    &.focus
-        border-bottom-left-radius 0
-        border-bottom-right-radius 0
-        ul
-            display block
-    svg
-        transform rotate(90deg) translate(-50%, 0)
-        position absolute
-        right 0.5em
-        top 50%
 
 [type=range]
     min-height 1.5em
@@ -312,7 +300,7 @@ thumbWidth = 1.5em
     position absolute
 
 label, .label
-    & + &
+    & + label, & + .label
         margin-top 0.5rem
     &.file
         display block
@@ -339,6 +327,8 @@ fieldset
         left 0
         top 0.5rem
         border 1px solid act
+        &.invalid
+            border-color error
         box-sizing border-box
         position absolute
         border-radius br
@@ -529,7 +519,7 @@ fieldset
         width 100%
     span
         margin-right 0.5rem
-    .spacer
+    .aSpacer
         flex 0 0 auto
 
 .anActionableIcon

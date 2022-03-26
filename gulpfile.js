@@ -1,5 +1,7 @@
 'use strict';
 
+const versions = require('./versions');
+
 /* eslint no-console: 0 */
 const path = require('path'),
       gulp = require('gulp'),
@@ -45,7 +47,7 @@ const path = require('path'),
  */
 const nwSource = void 0;
 const nwManifest = void 0;
-const nwVersion = '0.51.2',
+const nwVersion = versions.nwjs,
       platforms = ['osx64', 'win32', 'win64', 'linux32', 'linux64'],
       nwFiles = ['./app/**', '!./app/export/**', '!./app/projects/**', '!./app/exportDesktop/**', '!./app/cache/**', '!./app/.vscode/**', '!./app/JamGames/**'];
 
@@ -91,7 +93,7 @@ const makeErrorObj = (title, err) => {
         message: err.toString(),
         icon: path.join(__dirname, 'error.png'),
         sound: true,
-        wait: true
+        wait: false
     };
 };
 
@@ -199,12 +201,19 @@ const copyInEditorDocs = () =>
 
 const compileScripts = gulp.series(compileRiot, concatScripts);
 
-const icons = () =>
+const makeIconAtlas = () =>
     gulp.src('./src/icons/**/*.svg', {
         base: './src/icons'
     })
     .pipe(sprite())
     .pipe(gulp.dest('./app/data'));
+
+const writeIconList = () => fs.readdir('./src/icons')
+    .then(files => files.filter(file => path.extname(file) === '.svg'))
+    .then(files => files.map(file => path.basename(file, '.svg')))
+    .then(files => fs.outputJSON('./app/data/icons.json', files));
+
+const icons = gulp.series(makeIconAtlas, writeIconList);
 
 const watchScripts = () => {
     gulp.watch('./src/js/**/*', gulp.series(compileScripts))
@@ -442,12 +451,11 @@ const bakeTypedefs = gulp.series([bakeCtTypedefs, concatTypedefs, copyPixiTypede
 
 
 const build = gulp.parallel([
-    compilePug,
+    gulp.series(icons, compilePug),
     compileStylus,
     compileScripts,
     processRequires,
     copyInEditorDocs,
-    icons,
     bakeTypedefs
 ]);
 
@@ -581,6 +589,9 @@ if ((/^win/).test(process.platform)) {
 const examples = () => gulp.src('./src/examples/**/*')
     .pipe(gulp.dest('./app/examples'));
 
+const templates = () => gulp.src('./src/projectTemplates/**/*')
+    .pipe(gulp.dest('./app/templates'));
+
 // eslint-disable-next-line valid-jsdoc
 /**
  * @see https://stackoverflow.com/a/22907134
@@ -606,10 +617,13 @@ const patronsCache = done => {
 const packages = gulp.series([
     lint,
     abortOnWindows,
-    build,
-    docs,
-    patronsCache,
-    examples,
+    gulp.parallel([
+        build,
+        docs,
+        patronsCache,
+        examples,
+        templates
+    ]),
     bakePackages,
 //    fixSymlinks,
 //    fixPermissions,

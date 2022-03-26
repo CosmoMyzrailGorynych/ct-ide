@@ -6,7 +6,6 @@
     },
     "common": {
         "add": "添加",
-        "addtonotes": "添加到记事本",
         "apply": "应用",
         "cancel": "取消",
         "cannotBeEmpty": "这个不能为空",
@@ -14,36 +13,24 @@
         "contribute": "贡献",
         "copy": "复制",
         "copyName": "复制名字",
-        "ctsite": "ct.js 网站首页",
         "cut": "剪切",
         "delete": "删除",
         "donate": "捐献",
         "done": "完成!",
         "duplicate": "复制",
         "exit": "退出",
-        "exitconfirm": "确定要退出吗？<br/>所有未保存的更改都将丢失！",
-        "fastimport": "快速导入",
         "name": "名称",
-        "nametaken": "这个名称已经被使用了",
-        "newname": "新名称",
         "no": "否",
         "none": "无",
-        "norooms": "您需要至少一个房间来编译您的应用.",
-        "notfoundorunknown": "未知的文件. 请确认文件是否真实存在",
         "ok": "好",
         "open": "打开",
-        "openproject": "打开项目...",
         "paste": "粘贴",
-        "reallyexit": "您确定要退出吗? 所有未保存的更改都将丢失.",
         "rename": "重命名",
         "save": "保存",
-        "savedcomm": "您的项目已成功保存.",
-        "saveproject": "保存项目",
         "selectDialogue": "选择…",
         "select": "选择",
         "search": "搜索:",
         "sort": "分类",
-        "tilelayer": "平铺层",
         "wrongFormat": "错误的文件格式",
         "yes": "是",
         "loading": "加载中...",
@@ -54,7 +41,91 @@
         "close": "关闭",
         "couldNotLoadFromClipboard": "无法从剪贴板加载数据",
         "filter": "过滤:",
-        "pastedFromClipboard": "从剪贴板粘贴"
+        "pastedFromClipboard": "从剪贴板粘贴",
+        "edit": "",
+        "nothingToShowFiller": "",
+        "required": "",
+        "settings": "",
+        "fieldTypes": {
+            "checkbox": "",
+            "code": "",
+            "color": "",
+            "group": "",
+            "h1": "",
+            "h2": "",
+            "h3": "",
+            "h4": "",
+            "number": "",
+            "point2D": "",
+            "radio": "",
+            "slider": "",
+            "sliderAndNumber": "",
+            "table": "",
+            "text": "",
+            "textfield": "",
+            "texture": "",
+            "template": "",
+            "room": "",
+            "sound": "",
+            "tandem": ""
+        },
+        "newName": "新名称",
+        "saveProject": "保存项目",
+        "openProject": "打开项目...",
+        "savedMessage": "您的项目已成功保存.",
+        "reallyExitConfirm": "您确定要退出吗? 所有未保存的更改都将丢失.",
+        "notFoundOrUnknown": "未知的文件. 请确认文件是否真实存在",
+        "nameTaken": "这个名称已经被使用了",
+        "fastImport": "快速导入",
+        "addToNotes": "添加到记事本",
+        "noRooms": "您需要至少一个房间来编译您的应用.",
+        "tileLayer": "平铺层",
+        "ctSite": "ct.js 网站首页",
+        "docsShort": "",
+        "docsLong": "",
+        "openAssetGallery": "",
+        "assetTypes": {
+            "textures": [
+                "",
+                "",
+                ""
+            ],
+            "templates": [
+                "",
+                "",
+                ""
+            ],
+            "emitterTandems": [
+                "",
+                "",
+                ""
+            ],
+            "rooms": [
+                "",
+                "",
+                ""
+            ],
+            "fonts": [
+                "",
+                "",
+                ""
+            ],
+            "styles": [
+                "",
+                "",
+                ""
+            ],
+            "sounds": [
+                "",
+                "",
+                ""
+            ],
+            "skeletons": [
+                "",
+                "",
+                ""
+            ]
+        }
     },
     "colorPicker": {
         "current": "新建",
@@ -91,10 +162,18 @@
         "debug": "调试版本",
         "export": "导出",
         "exportPanel": "导出项目",
-        "firstrunnotice": "每个平台的第一次运行会比较慢, 因为ct.js会下载并保存打包所需的额外库. 这需要一些时间, 但下一次几乎是瞬间的.",
         "log": "消息日志",
         "windowsCrossBuildWarning": "要从Linux/MacOS为Windows构建, 需要在系统中安装Wine. 安装说明对于不同的平台都是不一样的，所以你最好自己搜索一下:)",
-        "cannotBuildForMacOnWin": "糟糕, Windows只会生成坏掉的Mac包. 尝试使用Linux机器;例如, 在虚拟机里, 它是100%免费的!"
+        "cannotBuildForMacOnWin": "糟糕, Windows只会生成坏掉的Mac包. 尝试使用Linux机器;例如, 在虚拟机里, 它是100%免费的!",
+        "firstRunNotice": "每个平台的第一次运行会比较慢, 因为ct.js会下载并保存打包所需的额外库. 这需要一些时间, 但下一次几乎是瞬间的.",
+        "projectTitleRequired": "",
+        "appIdRequired": "",
+        "noAndroidSdkFound": "",
+        "envVarNotice": "",
+        "downloadAndroidStudio": "",
+        "requiresInternetNotice": "",
+        "noJdkFound": "",
+        "downloadJDK": ""
     },
     "intro": {
         "loading": "请稍等: 小猫正在聚集光速!",
@@ -102,9 +181,9 @@
             "button": "创建",
             "input": "项目名称 (字母和数字)",
             "text": "新的项目",
-            "nameerr": "项目名称错误",
             "saveProjectHere": "在这里保存项目",
-            "selectProjectFolder": "选择存储项目的文件夹"
+            "selectProjectFolder": "选择存储项目的文件夹",
+            "nameError": "项目名称错误"
         },
         "recovery": {
             "message": "<h2 class =\"nmt\">恢复</h2><p>ct.js已找到恢复文件. 可能是您的项目未正确保存或在紧急情况下ct.js已关闭. 这是这些文件的最后修改时间:</p><p>您选择的文件：{0} {1} <br/>恢复文件: {2} {3} </p><p>ct.js应该打开什么文件?</p>",
@@ -124,10 +203,14 @@
         "unableToWriteToFolders": "Ct.js找不到合适的项目位置! 确保将ct.js应用存储在您有权写入的文件夹中.",
         "twitter": "Twitter 频道",
         "discord": "Discord 社区",
-        "createOrBrowseJunction": "或"
-    },
-    "licensepanel": {
-        "ctjslicense": "Ct.js 许可证 (MIT)"
+        "createOrBrowseJunction": "或",
+        "cloneProject": "",
+        "github": "",
+        "itch": "",
+        "vkontakte": "",
+        "patreon": "",
+        "templates": "",
+        "templatesInfo": ""
     },
     "onboarding": {
         "hoorayHeader": "赞! 您成功创建了一个项目!",
@@ -150,7 +233,15 @@
             "methodModuleMissing": "缺少此方法所需的模块",
             "methods": "输入方法",
             "multiplier": "乘数",
-            "noActionsYet": "动作允许开发人员一次监听多个输入方法并动态地更改它们, 所有这些操作都使用一个统一的API. 点击上面的文档图标来阅读更多内容"
+            "noActionsYet": "动作允许开发人员一次监听多个输入方法并动态地更改它们, 所有这些操作都使用一个统一的API. 点击上面的文档图标来阅读更多内容",
+            "makeFromScratch": "",
+            "presets": "",
+            "presetXYMovement": "",
+            "presetTouchAndMouse": "",
+            "presetCustom": "",
+            "exportActionPreset": "",
+            "importErrorMissingModules": "",
+            "importErrorNotCtJsPreset": ""
         },
         "authoring": {
             "author": "作者姓名",
@@ -158,7 +249,9 @@
             "site": "主页:",
             "title": "名称:",
             "version": "版本:",
-            "versionpostfix": "后缀:"
+            "versionPostfix": "后缀:",
+            "appId": "",
+            "appIdExplanation": ""
         },
         "branding": {
             "heading": "图标",
@@ -166,7 +259,12 @@
             "accentNotice": "设置预加载器的颜色，如果作为移动应用程序使用，也可用于设置其他位置的颜色.",
             "icon": "游戏图标:",
             "iconNotice": "图标应为一个正方形，单帧纹理，至少256x256像素大的图片.",
-            "invertPreloaderScheme": "反转预加载器的配色方案"
+            "invertPreloaderScheme": "反转预加载器的配色方案",
+            "hideLoadingLogo": "",
+            "splashScreen": "",
+            "splashScreenNotice": "",
+            "forceSmoothIcons": "",
+            "forceSmoothSplashScreen": ""
         },
         "modules": {
             "heading": "Cat模组"
@@ -176,15 +274,22 @@
             "framerate": "帧率:",
             "highDensity": "支持高像素密度(例如在视网膜屏幕上)",
             "maxFPS": "最大帧率:",
-            "pixelatedrender": "在此处和导出的项目中禁用图像平滑 (保留清晰像素)",
             "hideCursor": "隐藏系统光标指针",
-            "usePixiLegacy": "添加基于画布的旧版渲染器以支持较旧的浏览器和图形卡 (在您的游戏中最多增加20kb)",
             "desktopBuilds": "桌面构建",
             "launchMode": "启动模式:",
             "launchModes": {
                 "maximized": "最大化",
                 "fullscreen": "全屏",
                 "windowed": "窗口"
+            },
+            "pixelatedRender": "在此处和导出的项目中禁用图像平滑 (保留清晰像素)",
+            "usePixiLegacy": "",
+            "mobileBuilds": "",
+            "screenOrientation": "",
+            "screenOrientations": {
+                "unspecified": "",
+                "landscape": "",
+                "portrait": ""
             }
         },
         "scripts": {
@@ -207,7 +312,30 @@
                 "obfuscate": "模糊混淆"
             }
         },
-        "catmodsSettings": "Cat模组设置"
+        "catmodsSettings": "Cat模组设置",
+        "content": {
+            "heading": "",
+            "addContentType": "",
+            "missingTypeName": "",
+            "unnamedContentTypeHint": "",
+            "typeName": "",
+            "typeNameHint": "",
+            "typeReadableName": "",
+            "typeReadableNameHint": "",
+            "icon": "",
+            "typeSpecification": "",
+            "fieldName": "",
+            "fieldNameHint": "",
+            "fieldReadableName": "",
+            "fieldReadableNameHint": "",
+            "fieldType": "",
+            "deleteContentType": "",
+            "confirmDeletionMessage": "",
+            "gotoEntries": "",
+            "entries": "",
+            "array": ""
+        },
+        "contentTypes": ""
     },
     "modules": {
         "author": "这个cat模组的作者",
@@ -247,121 +375,23 @@
         "create": "创建",
         "import": "导入",
         "skeletons": "骨骼动画",
-        "createType": "从中创建一个类型",
+        "createTemplate": "从中创建一个类型",
         "importFromClipboard": "从剪贴板导入",
-        "generatePlaceholder": "生成一个占位符"
-    },
-    "textureview": {
-        "bgcolor": "改变背景颜色",
-        "center": "轴线",
-        "cols": "列",
-        "done": "应用",
-        "fill": "填充",
-        "form": "碰撞形状:",
-        "frames": "帧数:",
-        "isometrify": "等距: 将轴移动到中间的底部点, 用碰撞遮罩填充整个精灵",
-        "name": "名称:",
-        "radius": "半径:",
-        "rectangle": "矩形",
-        "reimport": "重新导入",
-        "round": "圆",
-        "rows": "行",
-        "setcenter": "图片中心点",
-        "speed": "帧率:",
-        "tiled": "用作背景吗?",
-        "replacetexture": "替换...",
-        "corrupted": "文件已损坏或丢失! 现在关闭.",
-        "showmask": "显示遮罩",
-        "width": "宽度:",
-        "height": "高度:",
-        "marginx": "边距 X:",
-        "marginy": "边距 Y:",
-        "offx": "位移 X:",
-        "offy": "位移 Y:",
-        "strip": "线条 / 多边形",
-        "removePoint": "删除点",
-        "closeShape": "关闭形状",
-        "addPoint": "添加点",
-        "moveCenter": "移动轴",
-        "movePoint": "移动这个点",
-        "symmetryTool": "对称工具",
-        "padding": "内边距:",
-        "paddingNotice": "这将影响纹理的导出方式:它在边缘上添加重复的像素, 并防止平铺和缩放纹理上的失真. 默认值通常是足够的, 但是, 如果你强烈地收缩纹理，流血可能会再次出现. 如果这个纹理在游戏中有工件, 就增加这个值.",
-        "updateFromClipboard": "从剪贴板更新",
-        "previewAnimationNotice": "这是一个预览. 用this.animationSpeed属性改变它的真实拷贝."
+        "generatePlaceholder": "生成一个占位符",
+        "textures": ""
     },
     "sounds": {
-        "create": "创建"
-    },
-    "soundview": {
-        "import": "导入",
-        "name": "名称:",
-        "save": "保存",
-        "isMusicFile": "这是一个音乐曲目",
-        "poolSize": "缓冲池大小"
+        "create": "创建",
+        "record": ""
     },
     "styles": {
         "create": "创建",
         "styles": "文本样式"
     },
-    "styleview": {
-        "active": "激活",
-        "alignment": "对齐",
-        "apply": "应用",
-        "fill": "填充",
-        "fillcolor": "颜色:",
-        "fillcolor1": "颜色 1:",
-        "fillcolor2": "颜色 2:",
-        "fillgrad": "渐变色",
-        "fillgradtype": "渐变类型",
-        "fillhorisontal": "水平方向",
-        "fillsolid": "漫反射",
-        "filltype": "填充类型:",
-        "fillvertical": "垂直方向",
-        "font": "字体",
-        "fontweight": "粗细:",
-        "fontsize": "字体大小:",
-        "fontfamily": "字体家族",
-        "italic": "斜体",
-        "lineHeight": "行高",
-        "shadow": "阴影",
-        "shadowblur": "模糊:",
-        "shadowcolor": "阴影颜色:",
-        "shadowshift": "移位:",
-        "stroke": "描边",
-        "strokecolor": "描边颜色:",
-        "strokeweight": "线宽:",
-        "testtext": "测试文本 0123 +",
-        "textWrap": "自动换行",
-        "textWrapWidth": "最大宽度:",
-        "useCustomFont": "使用自定义字体…"
-    },
     "fonts": {
         "fonts": "字体",
         "import": "导入TTF",
         "italic": "斜体"
-    },
-    "fontview": {
-        "typefacename": "字体名称:",
-        "fontweight": "字体粗细:",
-        "italic": "是否斜体?",
-        "reimport": "重新导入",
-        "generateBitmapFont": "同时生成位图字体",
-        "bitmapFont": "位图字体",
-        "bitmapFontSize": "字体大小:",
-        "bitmapFontLineHeight": "字体行高:",
-        "resultingBitmapFontName": "资源名",
-        "charset": "字符集:",
-        "charsets": {
-            "punctuation": "数字和标点符号(你通常需要这些)",
-            "basicLatin": "基本拉丁文",
-            "latinExtended": "拉丁文扩展",
-            "cyrillic": "西里尔字母",
-            "greekCoptic": "希腊语和埃及语",
-            "custom": "自定义",
-            "allInFont": "绘制字体支持的所有内容"
-        },
-        "customCharsetHint": "输入所有你想包含的字母, 包括大写和小写."
     },
     "particleEmitters": {
         "emittersHeading": "粒子发射器",
@@ -431,97 +461,16 @@
         "newGridSize": "新的网格大小:",
         "setPreviewTexture": "设置预览纹理"
     },
-    "types": {
-        "create": "创建"
-    },
-    "typeview": {
-        "change": "改变精灵",
-        "create": "创建时",
-        "depth": "深度:",
-        "destroy": "销毁时",
-        "done": "完成",
-        "draw": "绘制",
-        "learnAboutTypes": "了解编码类型",
-        "name": "名称:",
-        "step": "同步",
-        "visible": "显示"
-    },
     "rooms": {
         "create": "添加新的",
-        "makestarting": "设置为起始的房间"
-    },
-    "roombackgrounds": {
-        "add": "添加一个背景",
-        "depth": "深度:",
-        "movement": "移动速度 (X, Y):",
-        "parallax": "视差 (X, Y):",
-        "repeat": "重复:",
-        "scale": "缩放比例 (X, Y):",
-        "shift": "移位 (X, Y):",
-        "notBackgroundTextureWarning": "这个纹理没有被标记为背景. 它在导出时会有缺口.",
-        "fixBackground": "修复.",
-        "dismissWarning": "忽略."
-    },
-    "roomtiles": {
-        "moveTileLayer": "移动到一个新的深度",
-        "show": "显示图层",
-        "hide": "隐藏图层",
-        "findTileset": "查找图块集"
-    },
-    "roomview": {
-        "name": "名称:",
-        "width": "视图宽度:",
-        "height": "视图高度:",
-        "events": "房间事件:",
-        "copies": "副本",
-        "backgrounds": "背景",
-        "tiles": "瓷砖",
-        "add": "添加",
-        "none": "无",
-        "done": "完成",
-        "grid": "设置网格",
-        "gridoff": "禁用网格",
-        "gridsize": "网格大小:",
-        "hotkeysNotice": "Ctrl = 删除, Alt = 无网格, Shift = 多选",
-        "hotkeysNoticeMovement": "Ctrl = 删除, Shift = 选择",
-        "tocenter": "居中",
-        "selectbg": "选择图集",
-        "shift": "转移视图",
-        "shifttext": "转移通过:",
-        "step": "同步",
-        "create": "创建时",
-        "leave": "离开时",
-        "draw": "绘制",
-        "newdepth": "新的深度:",
-        "deletecopy": "删除副本 {0}",
-        "deleteCopies": "删除副本",
-        "shiftCopies": "移位副本",
-        "selectAndMove": "选择并移动",
-        "changecopyscale": "改变比例",
-        "shiftcopy": "设置坐标",
-        "deletetile": "删除一个图块",
-        "deletetiles": "删除图块",
-        "movetilestolayer": "移至图层",
-        "shifttiles": "移动瓷砖",
-        "findTileset": "查找一个图集",
-        "changecopyrotation": "旋转",
-        "properties": "属性",
-        "isUi": "是否为UI层?",
-        "backgroundColor": "背景颜色:",
-        "sortHorizontally": "水平排序",
-        "sortVertically": "垂直排序",
-        "copyProperties": {
-            "position": "位置",
-            "rotation": "旋转",
-            "scale": "缩放"
-        }
+        "makeStarting": "设置为起始的房间"
     },
     "notepad": {
         "local": "项目记事本",
         "global": "全局记事本",
-        "helppages": "帮助",
         "backToHome": "回到文档主页",
-        "modulespages": "模组文档"
+        "modulesPages": "模组文档",
+        "helpPages": "帮助"
     },
     "patreon": {
         "aboutPatrons": "赞助人是以经常性捐赠的形式表示对Patreon的ComigoGames的支持. 并不是每个人都来自ct.js. 有些是正在使用ComigoGames的其他应用程序. 提示: 如果您是创作者, 并通过Patreon捐赠给ComigoGames, 您将在此处找到指向您页面的链接 — 这就是我对您的创作的小小帮助 :)",
@@ -574,7 +523,8 @@
             "exportDesktop": "导出到桌面",
             "successZipExport": "已成功导出到{0}.",
             "zipExport": "导出为web",
-            "heading": "部署"
+            "heading": "部署",
+            "exportAndroid": ""
         },
         "latestProjects": {
             "recentProjects": "最近的项目"
@@ -618,7 +568,11 @@
             "license": "许可证",
             "visitDiscordForGamedevSupport": "加入 Discord 服务器以获得游戏开发支持",
             "openIconList": "打开 icons 图标列表",
-            "heading": "元数据"
+            "heading": "元数据",
+            "twitter": "",
+            "vkontakte": "",
+            "ctjsForum": "",
+            "openStylebook": ""
         }
     },
     "appView": {
@@ -634,7 +588,7 @@
         "restart": "重新启动",
         "launch": "编译并运行",
         "launchHotkeys": "(F5; Alt+F5 在默认浏览器中运行)",
-        "types": "类型"
+        "templates": "类型"
     },
     "docsPanel": {
         "documentation": "文档",
@@ -642,7 +596,12 @@
     },
     "extensionsEditor": {
         "noEntries": "没有条目.",
-        "addRow": "添加一行"
+        "addRow": "添加一行",
+        "actions": "",
+        "values": "",
+        "moveDown": "",
+        "moveUp": "",
+        "deleteRow": ""
     },
     "textureGenerator": {
         "name": "纹理名称:",
@@ -658,7 +617,12 @@
         "filler": "过滤:",
         "fillerNone": "无",
         "fillerCross": "交叉",
-        "fillerLabel": "文本标签"
+        "fillerLabel": "文本标签",
+        "form": "",
+        "formRectangular": "",
+        "formRound": "",
+        "formDiamond": "",
+        "fillerArrow": ""
     },
     "textureInput": {
         "jumpToTexture": "跳转到纹理",
@@ -675,5 +639,255 @@
         "notADirectory": "这看上去不是一个目录! 你怎么做到的?",
         "folderNotWritable": "您没有权限写入这个文件夹. 选择其他试试",
         "complete": "文件夹已设置, 一切正常✅"
+    },
+    "copyCustomProperties": {
+        "customProperties": "",
+        "addProperty": "",
+        "property": "",
+        "value": "",
+        "delete": ""
+    },
+    "assetViewer": {
+        "addNewGroup": "",
+        "ungrouped": "",
+        "newGroupName": "",
+        "groupDeletionConfirmation": ""
+    },
+    "groupEditor": {
+        "groupEditor": "",
+        "icon": "",
+        "color": ""
+    },
+    "soundRecorder": {
+        "recorderHeading": "",
+        "record": "",
+        "stopRecording": "",
+        "discardRecording": "",
+        "finishRecording": "",
+        "cannotRecordSound": "",
+        "troubleshootingWindows": ""
+    },
+    "roomBackgrounds": {
+        "add": "添加一个背景",
+        "depth": "深度:",
+        "movement": "移动速度 (X, Y):",
+        "parallax": "视差 (X, Y):",
+        "repeat": "重复:",
+        "scale": "缩放比例 (X, Y):",
+        "shift": "移位 (X, Y):",
+        "notBackgroundTextureWarning": "这个纹理没有被标记为背景. 它在导出时会有缺口.",
+        "fixBackground": "修复.",
+        "dismissWarning": "忽略."
+    },
+    "roomTiles": {
+        "moveTileLayer": "移动到一个新的深度",
+        "show": "显示图层",
+        "hide": "隐藏图层",
+        "findTileset": "查找图块集"
+    },
+    "roomView": {
+        "name": "名称:",
+        "width": "视图宽度:",
+        "height": "视图高度:",
+        "events": "房间事件:",
+        "copies": "副本",
+        "backgrounds": "背景",
+        "tiles": "瓷砖",
+        "add": "添加",
+        "none": "无",
+        "done": "完成",
+        "grid": "设置网格",
+        "hotkeysNotice": "Ctrl = 删除, Alt = 无网格, Shift = 多选",
+        "hotkeysNoticeMovement": "Ctrl = 删除, Shift = 选择",
+        "shift": "转移视图",
+        "step": "同步",
+        "create": "创建时",
+        "leave": "离开时",
+        "draw": "绘制",
+        "deleteCopies": "删除副本",
+        "shiftCopies": "移位副本",
+        "selectAndMove": "选择并移动",
+        "findTileset": "查找一个图集",
+        "properties": "属性",
+        "isUi": "是否为UI层?",
+        "backgroundColor": "背景颜色:",
+        "sortHorizontally": "水平排序",
+        "sortVertically": "垂直排序",
+        "copyProperties": {
+            "position": "位置",
+            "rotation": "旋转",
+            "scale": "缩放"
+        },
+        "customProperties": "",
+        "restrictCamera": "",
+        "minimumX": "",
+        "minimumY": "",
+        "maximumX": "",
+        "maximumY": "",
+        "gridOff": "禁用网格",
+        "gridSize": "网格大小:",
+        "toCenter": "居中",
+        "shiftLabel": "转移通过:",
+        "newDepth": "新的深度:",
+        "deleteCopy": "删除副本 {0}",
+        "changeCopyScale": "改变比例",
+        "shiftCopy": "设置坐标",
+        "deleteTile": "删除一个图块",
+        "deleteTiles": "删除图块",
+        "moveTilesToLayer": "移至图层",
+        "shiftTiles": "移动瓷砖",
+        "changeCopyRotation": "旋转"
+    },
+    "styleView": {
+        "active": "激活",
+        "alignment": "对齐",
+        "apply": "应用",
+        "fill": "填充",
+        "font": "字体",
+        "italic": "斜体",
+        "lineHeight": "行高",
+        "shadow": "阴影",
+        "stroke": "描边",
+        "textWrap": "自动换行",
+        "textWrapWidth": "最大宽度:",
+        "useCustomFont": "使用自定义字体…",
+        "code": "",
+        "copyCode": "",
+        "fillColor": "颜色:",
+        "fillColor1": "颜色 1:",
+        "fillColor2": "颜色 2:",
+        "fillGrad": "渐变色",
+        "fillGradType": "渐变类型",
+        "fillHorizontal": "水平方向",
+        "fillSolid": "漫反射",
+        "fillType": "填充类型:",
+        "fillVertical": "垂直方向",
+        "fontWeight": "粗细:",
+        "shadowBlur": "模糊:",
+        "shadowColor": "阴影颜色:",
+        "shadowShift": "移位:",
+        "strokeColor": "描边颜色:",
+        "strokeWeight": "线宽:",
+        "testText": "测试文本 0123 +",
+        "fontFamily": "字体家族",
+        "fontSize": "字体大小:"
+    },
+    "textureView": {
+        "center": "轴线",
+        "cols": "列",
+        "done": "应用",
+        "fill": "填充",
+        "form": "碰撞形状:",
+        "frames": "帧数:",
+        "isometrify": "等距: 将轴移动到中间的底部点, 用碰撞遮罩填充整个精灵",
+        "name": "名称:",
+        "radius": "半径:",
+        "rectangle": "矩形",
+        "reimport": "重新导入",
+        "round": "圆",
+        "rows": "行",
+        "speed": "帧率:",
+        "tiled": "用作背景吗?",
+        "corrupted": "文件已损坏或丢失! 现在关闭.",
+        "width": "宽度:",
+        "height": "高度:",
+        "strip": "线条 / 多边形",
+        "removePoint": "删除点",
+        "closeShape": "关闭形状",
+        "addPoint": "添加点",
+        "moveCenter": "移动轴",
+        "movePoint": "移动这个点",
+        "symmetryTool": "对称工具",
+        "padding": "内边距:",
+        "paddingNotice": "这将影响纹理的导出方式:它在边缘上添加重复的像素, 并防止平铺和缩放纹理上的失真. 默认值通常是足够的, 但是, 如果你强烈地收缩纹理，流血可能会再次出现. 如果这个纹理在游戏中有工件, 就增加这个值.",
+        "updateFromClipboard": "从剪贴板更新",
+        "previewAnimationNotice": "这是一个预览. 用this.animationSpeed属性改变它的真实拷贝.",
+        "showFrameIndices": "",
+        "pasteCollisionMask": "",
+        "copyCollisionMask": "",
+        "bgColor": "改变背景颜色",
+        "setCenter": "图片中心点",
+        "replaceTexture": "替换...",
+        "showMask": "显示遮罩",
+        "marginX": "边距 X:",
+        "marginY": "边距 Y:",
+        "offX": "位移 X:",
+        "offY": "位移 Y:"
+    },
+    "soundView": {
+        "import": "导入",
+        "name": "名称:",
+        "save": "保存",
+        "isMusicFile": "这是一个音乐曲目",
+        "poolSize": "缓冲池大小"
+    },
+    "fontView": {
+        "italic": "是否斜体?",
+        "reimport": "重新导入",
+        "generateBitmapFont": "同时生成位图字体",
+        "bitmapFont": "位图字体",
+        "bitmapFontSize": "字体大小:",
+        "bitmapFontLineHeight": "字体行高:",
+        "resultingBitmapFontName": "资源名",
+        "charset": "字符集:",
+        "charsets": {
+            "punctuation": "数字和标点符号(你通常需要这些)",
+            "basicLatin": "基本拉丁文",
+            "latinExtended": "拉丁文扩展",
+            "cyrillic": "西里尔字母",
+            "greekCoptic": "希腊语和埃及语",
+            "custom": "自定义",
+            "allInFont": "绘制字体支持的所有内容"
+        },
+        "customCharsetHint": "输入所有你想包含的字母, 包括大写和小写.",
+        "fontWeight": "字体粗细:",
+        "typefaceName": "字体名称:"
+    },
+    "licensePanel": {
+        "ctjsLicense": "Ct.js 许可证 (MIT)"
+    },
+    "templates": {
+        "create": "创建"
+    },
+    "templateView": {
+        "change": "改变精灵",
+        "create": "创建时",
+        "depth": "深度:",
+        "destroy": "销毁时",
+        "done": "完成",
+        "draw": "绘制",
+        "learnAboutTypes": "了解编码类型",
+        "name": "名称:",
+        "step": "同步",
+        "visible": "显示",
+        "appearance": "",
+        "opacity": "",
+        "blendMode": "",
+        "playAnimationOnStart": "",
+        "blendModes": {
+            "normal": "",
+            "add": "",
+            "multiply": "",
+            "screen": ""
+        }
+    },
+    "assetInput": {
+        "changeAsset": "",
+        "jumpToAsset": "",
+        "selectAssetHeader": ""
+    },
+    "builtinAssetGallery": {
+        "galleryTip": "",
+        "assetGalleryHeader": "",
+        "importIntoProject": "",
+        "importAll": "",
+        "byAuthorPrefix": "",
+        "cannotImportExplanation": "",
+        "nameOccupied": "",
+        "cannotImportNameOccupied": "",
+        "visitSource": "",
+        "visitAuthorsItch": "",
+        "visitAuthorsTwitter": "",
+        "tipAuthor": ""
     }
 }

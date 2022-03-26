@@ -13,7 +13,7 @@ This can be used in different situations:
 Examples from the game [Stormcross](https://comigo.itch.io/stormcross):
 
 ```js
-var player = ct.types.list.PlayerShip[0];
+var player = ct.templates.list.PlayerShip[0];
 var spot = ct.place.nearest(pirate.x, pirate.y, 'PiratePatrolSpot') || {x: pirate.x, y: pirate.y};
 
 return ct.eqs.query({

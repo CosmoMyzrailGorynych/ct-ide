@@ -4,7 +4,21 @@ asset-viewer
         margin-bottom 1rem
     &.fonts
         if (themeDark)
-            .cards li img
+            .Cards li img
                 filter invert(1)
                 &:hover
                     background transparent
+    &.templates
+        .Cards.largeicons
+            .aCard-aThumbnail
+                img
+                    max-height 8rem
+    .Cards .&-Icons, .Cards .&-Icons
+        color act
+        line-height 1rem
+        svg
+            opacity 0.65
+            width 1rem
+            height @width
+            & + svg
+                margin-left 0.5rem

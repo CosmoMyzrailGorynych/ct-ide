@@ -12,14 +12,14 @@ patron-line
     span(if="{!opts.patron['18+'] && opts.patron.about}") {parent.getEmoji(opts.patron.name)}
     script.
 
-patreon-screen.view(style="z-index: 100;")
+patreon-screen.aView(style="z-index: 100;")
     .Confetti
         .aConfettiPiece(each="{confetti in (new Array(15))}" style="background: {getConfettiColor()}")
     h1 {voc.patronsHeader}
     p {voc.aboutPatrons}
     div(if="{loading}")
         svg.feather
-            use(xlink:href="data/icons.svg#loader")
+            use(xlink:href="#loader")
         | {vocGlob.loading}
     div(if="{!loading}")
         h2 {voc.businessShuttles}
@@ -62,7 +62,7 @@ patreon-screen.view(style="z-index: 100;")
 
     button(onclick="{openPatreon}").nml
         svg.feather
-            use(xlink:href="data/icons.svg#heart")
+            use(xlink:href="#heart")
         span  {voc.becomeAPatron}
     script.
         this.namespace = 'patreon';

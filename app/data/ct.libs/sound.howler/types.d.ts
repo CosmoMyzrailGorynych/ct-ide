@@ -1,18 +1,18 @@
 interface IHowlerSoundOptions {
     /**  Whether to repeat the sound or not */
-    loop: boolean;
+    loop?: boolean;
     /**  The volume of the sound, between 0 and 1 */
-    volume: number;
+    volume?: number;
     /**  The speed of playback, from 0.5 to 4 */
-    rate: number;
+    rate?: number;
     /**  If specified, the sound will be a 3D sound positioned at the specified copy */
-    position: Copy;
+    position?: Copy;
     /**  If specified, the sound will be a 3D sound positioned at the specified location */
-    x: number;
+    x?: number;
     /**  If specified, the sound will be a 3D sound positioned at the specified location */
-    y: number;
+    y?: number;
     /**  If specified, the sound will be a 3D sound positioned at the specified location */
-    z: number;
+    z?: number;
 }
 interface IHowlerPlayCallback { (): void }
 

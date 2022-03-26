@@ -1,0 +1,46 @@
+template-editor
+    .aNav
+        border-bottom-left-radius 0
+        border-bottom-right-radius 0
+        flex-grow 0
+        & + div
+            left 0
+            right 0
+            top 0
+            bottom 0
+            position relative
+        @media (max-width 800px)
+            li span
+                display none
+    .tabbed
+        height 100%
+        box-sizing border-box
+        position absolute
+        top 0
+        right 0
+        left 0
+        bottom 0
+        padding 0
+        overflow visible
+        border-top 0
+        .aCodeEditor
+            position absolute
+            left 0
+            top 0
+            right 0
+            bottom 0
+            if (theme == 'Horizon')
+                border 1px solid borderBright
+                border-top 0
+                box-sizing border-box
+                border-radius 0 0 br br
+    .tabwrap
+        height 100%
+    display flex
+    flex-flow row nowrap
+    padding 1rem
+    .template-editor-Properties
+        flex 0 0 19rem
+        margin-right 1rem
+    .template-editor-aCodeEditor
+        flex 1 1 auto

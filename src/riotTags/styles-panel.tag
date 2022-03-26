@@ -3,16 +3,17 @@ styles-panel.tall.fifty
         collection="{global.currentProject.styles}"
         contextmenu="{onStyleContextMenu}"
         namespace="styles"
+        assettype="styles"
         click="{openStyle}"
         thumbnails="{thumbnails}"
         ref="styles"
         class="tall"
     )
-        h1.nmt {voc.styles}
+        h1.nmt {parent.voc.styles}
         button#stylecreate(onclick="{parent.styleCreate}" title="Control+N" data-hotkey="Control+n")
             svg.feather
-                use(xlink:href="data/icons.svg#plus")
-            span {voc.create}
+                use(xlink:href="#plus")
+            span {parent.voc.create}
     style-editor(if="{editingStyle}" styleobj="{editedStyle}")
     context-menu(menu="{styleMenu}" ref="styleMenu")
     script.
@@ -30,13 +31,15 @@ styles-panel.tall.fifty
                 return;
             }
             const id = generateGUID(),
-                  slice = id.split('-').pop();
-            global.currentProject.styletick++;
+                  slice = id.slice(-6);
             const obj = {
                 name: 'Style_' + slice,
                 uid: id,
                 origname: 's' + slice
             };
+            if (!this.refs.styles.currentGroup.isUngroupedGroup) {
+                obj.group = this.refs.styles.currentGroup.uid;
+            }
             global.currentProject.styles.push(obj);
             this.editedStyle = obj;
             this.editingStyle = true;
@@ -85,11 +88,11 @@ styles-panel.tall.fifty
                 click: () => {
                     alertify
                     .defaultValue(this.editedStyle.name + '_dup')
-                    .prompt(window.languageJSON.common.newname)
+                    .prompt(window.languageJSON.common.newName)
                     .then(e => {
                         if (e.inputValue !== '' && e.buttonClicked !== 'cancel') {
                             var id = generateGUID(),
-                                slice = id.split('-').pop();
+                                slice = id.slice(-6);
                             var newStyle = JSON.parse(JSON.stringify(this.editedStyle));
                             newStyle.name = e.inputValue;
                             newStyle.origname = 's' + slice;
@@ -108,7 +111,7 @@ styles-panel.tall.fifty
                 click: () => {
                     alertify
                     .defaultValue(this.editedStyle.name)
-                    .prompt(window.languageJSON.common.newname)
+                    .prompt(window.languageJSON.common.newName)
                     .then(e => {
                         if (e.inputValue !== '' && e.buttonClicked !== 'cancel') {
                             this.editedStyle.name = e.inputValue;

@@ -6,7 +6,6 @@
     },
     "common": {
         "add": "common.add",
-        "addtonotes": "common.addtonotes",
         "apply": "common.apply",
         "cancel": "common.cancel",
         "cannotBeEmpty": "common.cannotBeEmpty",
@@ -14,35 +13,21 @@
         "contribute": "common.contribute",
         "copy": "common.copy",
         "copyName": "common.copyName",
-        "ctsite": "common.ctsite",
         "cut": "common.cut",
         "delete": "common.delete",
         "donate": "common.donate",
         "done": "common.done",
         "duplicate": "common.duplicate",
         "exit": "common.exit",
-        "exitconfirm": "common.exitconfirm",
-        "fastimport": "common.fastimport",
-        "language": "common.language",
-        "translateToYourLanguage": "common.translateToYourLanguage",
         "name": "common.name",
-        "nametaken": "common.nametaken",
-        "newname": "common.newname",
         "no": "common.no",
         "none": "common.none",
-        "norooms": "common.norooms",
-        "notfoundorunknown": "common.notfoundorunknown",
         "ok": "common.ok",
         "open": "common.open",
-        "openproject": "common.openproject",
         "paste": "common.paste",
-        "reallyexit": "common.reallyexit",
         "rename": "common.rename",
         "save": "common.save",
-        "savedcomm": "common.savedcomm",
-        "saveproject": "common.saveproject",
         "sort": "common.sort",
-        "tilelayer": "common.tilelayer",
         "wrongFormat": "common.wrongFormat",
         "yes": "common.yes",
         "loading": "common.loading",
@@ -56,7 +41,43 @@
         "search": "common.search",
         "close": "common.close",
         "couldNotLoadFromClipboard": "common.couldNotLoadFromClipboard",
-        "pastedFromClipboard": "common.pastedFromClipboard"
+        "pastedFromClipboard": "common.pastedFromClipboard",
+        "edit": "common.edit",
+        "nothingToShowFiller": "common.nothingToShowFiller",
+        "required": "common.required",
+        "settings": "common.settings",
+        "fieldTypes": {
+            "checkbox": "common.fieldTypes.checkbox",
+            "code": "common.fieldTypes.code",
+            "color": "common.fieldTypes.color",
+            "group": "common.fieldTypes.group",
+            "h1": "common.fieldTypes.h1",
+            "h2": "common.fieldTypes.h2",
+            "h3": "common.fieldTypes.h3",
+            "h4": "common.fieldTypes.h4",
+            "number": "common.fieldTypes.number",
+            "point2D": "common.fieldTypes.point2D",
+            "radio": "common.fieldTypes.radio",
+            "slider": "common.fieldTypes.slider",
+            "sliderAndNumber": "common.fieldTypes.sliderAndNumber",
+            "table": "common.fieldTypes.table",
+            "text": "common.fieldTypes.text",
+            "textfield": "common.fieldTypes.textfield",
+            "texture": "common.fieldTypes.texture",
+            "type": "common.fieldTypes.type"
+        },
+        "newName": "common.newName",
+        "saveProject": "common.saveProject",
+        "openProject": "common.openProject",
+        "savedMessage": "common.savedMessage",
+        "reallyExitConfirm": "common.reallyExitConfirm",
+        "notFoundOrUnknown": "common.notFoundOrUnknown",
+        "nameTaken": "common.nameTaken",
+        "fastImport": "common.fastImport",
+        "addToNotes": "common.addToNotes",
+        "noRooms": "common.noRooms",
+        "tileLayer": "common.tileLayer",
+        "ctSite": "common.ctSite"
     },
     "colorPicker": {
         "current": "colorPicker.current",
@@ -73,10 +94,10 @@
         "debug": "exportPanel.debug",
         "export": "exportPanel.export",
         "exportPanel": "exportPanel.exportPanel",
-        "firstrunnotice": "exportPanel.firstrunnotice",
         "log": "exportPanel.log",
         "windowsCrossBuildWarning": "exportPanel.windowsCrossBuildWarning",
-        "cannotBuildForMacOnWin": "exportPanel.cannotBuildForMacOnWin"
+        "cannotBuildForMacOnWin": "exportPanel.cannotBuildForMacOnWin",
+        "firstRunNotice": "exportPanel.firstRunNotice"
     },
     "intro": {
         "loading": "intro.loading",
@@ -84,9 +105,9 @@
             "button": "intro.newProject.button",
             "input": "intro.newProject.input",
             "text": "intro.newProject.text",
-            "nameerr": "intro.newProject.nameerr",
             "saveProjectHere": "intro.newProject.saveProjectHere",
-            "selectProjectFolder": "intro.newProject.selectProjectFolder"
+            "selectProjectFolder": "intro.newProject.selectProjectFolder",
+            "nameError": "intro.newProject.nameError"
         },
         "recovery": {
             "message": "intro.recovery.message",
@@ -106,10 +127,12 @@
         "twitter": "intro.twitter",
         "discord": "intro.discord",
         "examples": "intro.examples",
-        "createOrBrowseJunction": "intro.createOrBrowseJunction"
-    },
-    "licensepanel": {
-        "ctjslicense": "licensepanel.ctjslicense"
+        "createOrBrowseJunction": "intro.createOrBrowseJunction",
+        "cloneProject": "intro.cloneProject",
+        "github": "intro.github",
+        "itch": "intro.itch",
+        "vkontakte": "intro.vkontakte",
+        "patreon": "intro.patreon"
     },
     "modules": {
         "author": "modules.author",
@@ -149,213 +172,33 @@
         "create": "texture.create",
         "import": "texture.import",
         "skeletons": "texture.skeletons",
-        "createType": "texture.createType",
+        "createTemplate": "texture.createTemplate",
         "importFromClipboard": "texture.importFromClipboard",
         "generatePlaceholder": "texture.generatePlaceholder"
     },
-    "textureview": {
-        "bgcolor": "textureview.bgcolor",
-        "center": "textureview.center",
-        "cols": "textureview.cols",
-        "done": "textureview.done",
-        "fill": "textureview.fill",
-        "form": "textureview.form",
-        "frames": "textureview.frames",
-        "isometrify": "textureview.isometrify",
-        "name": "textureview.name",
-        "radius": "textureview.radius",
-        "rectangle": "textureview.rectangle",
-        "reimport": "textureview.reimport",
-        "round": "textureview.round",
-        "rows": "textureview.rows",
-        "setcenter": "textureview.setcenter",
-        "speed": "textureview.speed",
-        "tiled": "textureview.tiled",
-        "replacetexture": "textureview.replacetexture",
-        "corrupted": "textureview.corrupted",
-        "showmask": "textureview.showmask",
-        "width": "textureview.width",
-        "height": "textureview.height",
-        "marginx": "textureview.marginx",
-        "marginy": "textureview.marginy",
-        "offx": "textureview.offx",
-        "offy": "textureview.offy",
-        "strip": "textureview.strip",
-        "removePoint": "textureview.removePoint",
-        "closeShape": "textureview.closeShape",
-        "addPoint": "textureview.addPoint",
-        "moveCenter": "textureview.moveCenter",
-        "movePoint": "textureview.movePoint",
-        "symmetryTool": "textureview.symmetryTool",
-        "padding": "textureview.padding",
-        "paddingNotice": "textureview.paddingNotice",
-        "updateFromClipboard": "textureview.updateFromClipboard",
-        "previewAnimationNotice": "textureview.previewAnimationNotice"
-    },
     "sounds": {
-        "create": "sounds.create"
-    },
-    "soundview": {
-        "import": "soundview.import",
-        "name": "soundview.name",
-        "save": "soundview.save",
-        "isMusicFile": "soundview.isMusicFile",
-        "poolSize": "soundview.poolSize"
+        "create": "sounds.create",
+        "record": "sounds.record"
     },
     "styles": {
         "create": "styles.create",
         "styles": "styles.styles"
-    },
-    "styleview": {
-        "active": "styleview.active",
-        "alignment": "styleview.alignment",
-        "apply": "styleview.apply",
-        "fill": "styleview.fill",
-        "fillcolor": "styleview.fillcolor",
-        "fillcolor1": "styleview.fillcolor1",
-        "fillcolor2": "styleview.fillcolor2",
-        "fillgrad": "styleview.fillgrad",
-        "fillgradtype": "styleview.fillgradtype",
-        "fillhorisontal": "styleview.fillhorisontal",
-        "fillsolid": "styleview.fillsolid",
-        "filltype": "styleview.filltype",
-        "fillvertical": "styleview.fillvertical",
-        "font": "styleview.font",
-        "fontweight": "styleview.fontweight",
-        "fontsize": "styleview.fontsize",
-        "fontfamily": "styleview.fontfamily",
-        "italic": "styleview.italic",
-        "lineHeight": "styleview.lineHeight",
-        "shadow": "styleview.shadow",
-        "shadowblur": "styleview.shadowblur",
-        "shadowcolor": "styleview.shadowcolor",
-        "shadowshift": "styleview.shadowshift",
-        "stroke": "styleview.stroke",
-        "strokecolor": "styleview.strokecolor",
-        "strokeweight": "styleview.strokeweight",
-        "testtext": "styleview.testtext",
-        "textWrap": "styleview.textWrap",
-        "textWrapWidth": "styleview.textWrapWidth",
-        "useCustomFont": "styleview.useCustomFont"
     },
     "fonts": {
         "fonts": "fonts.fonts",
         "import": "fonts.import",
         "italic": "fonts.italic"
     },
-    "fontview": {
-        "typefacename": "fontview.typefacename",
-        "fontweight": "fontview.fontweight",
-        "italic": "fontview.italic",
-        "reimport": "fontview.reimport",
-        "generateBitmapFont": "fontview.generateBitmapFont",
-        "bitmapFont": "fontview.bitmapFont",
-        "bitmapFontSize": "fontview.bitmapFontSize",
-        "bitmapFontLineHeight": "fontview.bitmapFontLineHeight",
-        "resultingBitmapFontName": "fontview.resultingBitmapFontName",
-        "charset": "fontview.charset",
-        "charsets": {
-            "punctuation": "fontview.charsets.punctuation",
-            "basicLatin": "fontview.charsets.basicLatin",
-            "latinExtended": "fontview.charsets.latinExtended",
-            "cyrillic": "fontview.charsets.cyrillic",
-            "greekCoptic": "fontview.charsets.greekCoptic",
-            "custom": "fontview.charsets.custom",
-            "allInFont": "fontview.charsets.allInFont"
-        },
-        "customCharsetHint": "fontview.customCharsetHint"
-    },
-    "types": {
-        "create": "types.create"
-    },
-    "typeview": {
-        "change": "typeview.change",
-        "create": "typeview.create",
-        "depth": "typeview.depth",
-        "destroy": "typeview.destroy",
-        "done": "typeview.done",
-        "draw": "typeview.draw",
-        "learnAboutTypes": "typeview.learnAboutTypes",
-        "name": "typeview.name",
-        "step": "typeview.step",
-        "visible": "typeview.visible"
-    },
     "rooms": {
         "create": "rooms.create",
-        "makestarting": "rooms.makestarting"
-    },
-    "roombackgrounds": {
-        "add": "roombackgrounds.add",
-        "depth": "roombackgrounds.depth",
-        "movement": "roombackgrounds.movement",
-        "parallax": "roombackgrounds.parallax",
-        "repeat": "roombackgrounds.repeat",
-        "scale": "roombackgrounds.scale",
-        "shift": "roombackgrounds.shift",
-        "notBackgroundTextureWarning": "roombackgrounds.notBackgroundTextureWarning",
-        "fixBackground": "roombackgrounds.fixBackground",
-        "dismissWarning": "roombackgrounds.dismissWarning"
-    },
-    "roomtiles": {
-        "moveTileLayer": "roomtiles.moveTileLayer",
-        "show": "roomtiles.show",
-        "hide": "roomtiles.hide",
-        "findTileset": "roomtiles.findTileset"
-    },
-    "roomview": {
-        "name": "roomview.name",
-        "width": "roomview.width",
-        "height": "roomview.height",
-        "events": "roomview.events",
-        "copies": "roomview.copies",
-        "backgrounds": "roomview.backgrounds",
-        "tiles": "roomview.tiles",
-        "add": "roomview.add",
-        "none": "roomview.none",
-        "done": "roomview.done",
-        "grid": "roomview.grid",
-        "gridoff": "roomview.gridoff",
-        "gridsize": "roomview.gridsize",
-        "hotkeysNotice": "roomview.hotkeysNotice",
-        "hotkeysNoticeMovement": "roomview.hotkeysNoticeMovement",
-        "tocenter": "roomview.tocenter",
-        "selectbg": "roomview.selectbg",
-        "shift": "roomview.shift",
-        "shifttext": "roomview.shifttext",
-        "step": "roomview.step",
-        "create": "roomview.create",
-        "leave": "roomview.leave",
-        "draw": "roomview.draw",
-        "newdepth": "roomview.newdepth",
-        "deletecopy": "roomview.deletecopy",
-        "deleteCopies": "roomview.deleteCopies",
-        "shiftCopies": "roomview.shiftCopies",
-        "selectAndMove": "roomview.selectAndMove",
-        "changecopyscale": "roomview.changecopyscale",
-        "shiftcopy": "roomview.shiftcopy",
-        "deletetile": "roomview.deletetile",
-        "deletetiles": "roomview.deletetiles",
-        "movetilestolayer": "roomview.movetilestolayer",
-        "shifttiles": "roomview.shifttiles",
-        "findTileset": "roomview.findTileset",
-        "changecopyrotation": "roomview.changecopyrotation",
-        "properties": "roomview.properties",
-        "isUi": "roomview.isUi",
-        "backgroundColor": "roomview.backgroundColor",
-        "sortHorizontally": "roomview.sortHorizontally",
-        "sortVertically": "roomview.sortVertically",
-        "copyProperties": {
-            "position": "roomview.copyProperties.position",
-            "rotation": "roomview.copyProperties.rotation",
-            "scale": "roomview.copyProperties.scale"
-        }
+        "makeStarting": "rooms.makeStarting"
     },
     "notepad": {
         "local": "notepad.local",
         "global": "notepad.global",
-        "helppages": "notepad.helppages",
         "backToHome": "notepad.backToHome",
-        "modulespages": "notepad.modulespages"
+        "modulesPages": "notepad.modulesPages",
+        "helpPages": "notepad.helpPages"
     },
     "curveEditor": {
         "curveLineHint": "curveEditor.curveLineHint",
@@ -506,7 +349,15 @@
             "methodModuleMissing": "settings.actions.methodModuleMissing",
             "methods": "settings.actions.methods",
             "multiplier": "settings.actions.multiplier",
-            "noActionsYet": "settings.actions.noActionsYet"
+            "noActionsYet": "settings.actions.noActionsYet",
+            "makeFromScratch": "settings.actions.makeFromScratch",
+            "presets": "settings.actions.presets",
+            "presetXYMovement": "settings.actions.presetXYMovement",
+            "presetTouchAndMouse": "settings.actions.presetTouchAndMouse",
+            "presetCustom": "settings.actions.presetCustom",
+            "exportActionPreset": "settings.actions.exportActionPreset",
+            "importErrorMissingModules": "settings.actions.importErrorMissingModules",
+            "importErrorNotCtJsPreset": "settings.actions.importErrorNotCtJsPreset"
         },
         "authoring": {
             "heading": "settings.authoring.heading",
@@ -514,7 +365,7 @@
             "site": "settings.authoring.site",
             "title": "settings.authoring.title",
             "version": "settings.authoring.version",
-            "versionpostfix": "settings.authoring.versionpostfix"
+            "versionPostfix": "settings.authoring.versionPostfix"
         },
         "branding": {
             "heading": "settings.branding.heading",
@@ -522,7 +373,8 @@
             "accentNotice": "settings.branding.accentNotice",
             "icon": "settings.branding.icon",
             "iconNotice": "settings.branding.iconNotice",
-            "invertPreloaderScheme": "settings.branding.invertPreloaderScheme"
+            "invertPreloaderScheme": "settings.branding.invertPreloaderScheme",
+            "hideLoadingLogo": "settings.branding.hideLoadingLogo"
         },
         "modules": {
             "heading": "settings.modules.heading"
@@ -532,8 +384,6 @@
             "framerate": "settings.rendering.framerate",
             "highDensity": "settings.rendering.highDensity",
             "maxFPS": "settings.rendering.maxFPS",
-            "pixelatedrender": "settings.rendering.pixelatedrender",
-            "usePixiLegacy": "settings.rendering.usePixiLegacy",
             "desktopBuilds": "settings.rendering.desktopBuilds",
             "launchMode": "settings.rendering.launchMode",
             "launchModes": {
@@ -541,7 +391,8 @@
                 "fullscreen": "settings.rendering.launchModes.fullscreen",
                 "windowed": "settings.rendering.launchModes.windowed"
             },
-            "hideCursor": "settings.rendering.hideCursor"
+            "hideCursor": "settings.rendering.hideCursor",
+            "pixelatedRender": "settings.rendering.pixelatedRender"
         },
         "scripts": {
             "heading": "settings.scripts.heading",
@@ -563,7 +414,29 @@
                 "minify": "settings.export.codeModifiers.minify",
                 "obfuscate": "settings.export.codeModifiers.obfuscate"
             }
-        }
+        },
+        "content": {
+            "heading": "settings.content.heading",
+            "addContentType": "settings.content.addContentType",
+            "missingTypeName": "settings.content.missingTypeName",
+            "unnamedContentTypeHint": "settings.content.unnamedContentTypeHint",
+            "typeName": "settings.content.typeName",
+            "typeNameHint": "settings.content.typeNameHint",
+            "typeReadableName": "settings.content.typeReadableName",
+            "typeReadableNameHint": "settings.content.typeReadableNameHint",
+            "icon": "settings.content.icon",
+            "typeSpecification": "settings.content.typeSpecification",
+            "fieldName": "settings.content.fieldName",
+            "fieldNameHint": "settings.content.fieldNameHint",
+            "fieldReadableName": "settings.content.fieldReadableName",
+            "fieldReadableNameHint": "settings.content.fieldReadableNameHint",
+            "fieldType": "settings.content.fieldType",
+            "deleteContentType": "settings.content.deleteContentType",
+            "confirmDeletionMessage": "settings.content.confirmDeletionMessage",
+            "gotoEntries": "settings.content.gotoEntries",
+            "entries": "settings.content.entries"
+        },
+        "contentTypes": "settings.contentTypes"
     },
     "extensionsEditor": {
         "noEntries": "extensionsEditor.noEntries",
@@ -583,7 +456,12 @@
         "filler": "textureGenerator.filler",
         "fillerNone": "textureGenerator.fillerNone",
         "fillerCross": "textureGenerator.fillerCross",
-        "fillerLabel": "textureGenerator.fillerLabel"
+        "fillerLabel": "textureGenerator.fillerLabel",
+        "form": "textureGenerator.form",
+        "formRectangular": "textureGenerator.formRectangular",
+        "formRound": "textureGenerator.formRound",
+        "formDiamond": "textureGenerator.formDiamond",
+        "fillerArrow": "textureGenerator.fillerArrow"
     },
     "textureInput": {
         "jumpToTexture": "textureInput.jumpToTexture",
@@ -615,7 +493,8 @@
         "deploy": {
             "exportDesktop": "mainMenu.deploy.exportDesktop",
             "successZipExport": "mainMenu.deploy.successZipExport",
-            "zipExport": "mainMenu.deploy.zipExport"
+            "zipExport": "mainMenu.deploy.zipExport",
+            "heading": "mainMenu.deploy.heading"
         },
         "latestProjects": {
             "recentProjects": "mainMenu.latestProjects.recentProjects"
@@ -623,12 +502,12 @@
         "settings": {
             "theme": "mainMenu.settings.theme",
             "themes": {
-                "Day": "mainMenu.settings.themes.themeDay",
-                "Night": "mainMenu.settings.themes.themeNight",
-                "SpringStream": "mainMenu.settings.themes.themeSpringStream",
-                "LucasDracula": "mainMenu.settings.themes.themeLucasDracula",
-                "Horizon": "mainMenu.settings.themes.themeHorizon",
-                "HCBlack": "mainMenu.settings.themes.themeHCBlack"
+                "Day": "mainMenu.settings.themes.Day",
+                "Night": "mainMenu.settings.themes.Night",
+                "SpringStream": "mainMenu.settings.themes.SpringStream",
+                "LucasDracula": "mainMenu.settings.themes.LucasDracula",
+                "Horizon": "mainMenu.settings.themes.Horizon",
+                "HCBlack": "mainMenu.settings.themes.HCBlack"
             },
             "codeFontDefault": "mainMenu.settings.codeFontDefault",
             "codeFontOldSchool": "mainMenu.settings.codeFontOldSchool",
@@ -641,7 +520,10 @@
             "settings": "mainMenu.settings.settings",
             "disableSounds": "mainMenu.settings.disableSounds",
             "changeDataFolder": "mainMenu.settings.changeDataFolder",
-            "forceProductionForDebug": "mainMenu.settings.forceProductionForDebug"
+            "forceProductionForDebug": "mainMenu.settings.forceProductionForDebug",
+            "heading": "mainMenu.settings.heading",
+            "language": "mainMenu.settings.language",
+            "translateToYourLanguage": "mainMenu.settings.translateToYourLanguage"
         },
         "project": {
             "save": "mainMenu.project.save",
@@ -650,12 +532,17 @@
             "openExample": "mainMenu.project.openExample",
             "startScreen": "mainMenu.project.startScreen",
             "successZipProject": "mainMenu.project.successZipProject",
-            "zipProject": "mainMenu.project.zipProject"
+            "zipProject": "mainMenu.project.zipProject",
+            "heading": "mainMenu.project.heading"
         },
         "meta": {
             "license": "mainMenu.meta.license",
             "visitDiscordForGamedevSupport": "mainMenu.meta.visitDiscordForGamedevSupport",
-            "openIconList": "mainMenu.meta.openIconList"
+            "openIconList": "mainMenu.meta.openIconList",
+            "heading": "mainMenu.meta.heading",
+            "twitter": "mainMenu.meta.twitter",
+            "vkontakte": "mainMenu.meta.vkontakte",
+            "ctjsForum": "mainMenu.meta.ctjsForum"
         }
     },
     "appView": {
@@ -666,11 +553,232 @@
         "rooms": "appView.rooms",
         "sounds": "appView.sounds",
         "ui": "appView.ui",
-        "types": "appView.types",
         "launchHotkeys": "appView.launchHotkeys",
         "patrons": "appView.patrons",
         "fx": "appView.fx",
         "restart": "appView.restart",
-        "project": "appView.project"
+        "project": "appView.project",
+        "templates": "appView.templates"
+    },
+    "copyCustomProperties": {
+        "customProperties": "copyCustomProperties.customProperties",
+        "addProperty": "copyCustomProperties.addProperty",
+        "property": "copyCustomProperties.property",
+        "value": "copyCustomProperties.value",
+        "delete": "copyCustomProperties.delete"
+    },
+    "assetViewer": {
+        "addNewGroup": "assetViewer.addNewGroup",
+        "ungrouped": "assetViewer.ungrouped",
+        "newGroupName": "assetViewer.newGroupName",
+        "groupDeletionConfirmation": "assetViewer.groupDeletionConfirmation"
+    },
+    "groupEditor": {
+        "groupEditor": "groupEditor.groupEditor",
+        "icon": "groupEditor.icon",
+        "color": "groupEditor.color"
+    },
+    "soundRecorder": {
+        "recorderHeading": "soundRecorder.recorderHeading",
+        "record": "soundRecorder.record",
+        "stopRecording": "soundRecorder.stopRecording",
+        "discardRecording": "soundRecorder.discardRecording",
+        "finishRecording": "soundRecorder.finishRecording",
+        "cannotRecordSound": "soundRecorder.cannotRecordSound",
+        "troubleshootingWindows": "soundRecorder.troubleshootingWindows"
+    },
+    "roomBackgrounds": {
+        "add": "roomBackgrounds.add",
+        "depth": "roomBackgrounds.depth",
+        "movement": "roomBackgrounds.movement",
+        "parallax": "roomBackgrounds.parallax",
+        "repeat": "roomBackgrounds.repeat",
+        "scale": "roomBackgrounds.scale",
+        "shift": "roomBackgrounds.shift",
+        "notBackgroundTextureWarning": "roomBackgrounds.notBackgroundTextureWarning",
+        "fixBackground": "roomBackgrounds.fixBackground",
+        "dismissWarning": "roomBackgrounds.dismissWarning"
+    },
+    "roomTiles": {
+        "moveTileLayer": "roomTiles.moveTileLayer",
+        "show": "roomTiles.show",
+        "hide": "roomTiles.hide",
+        "findTileset": "roomTiles.findTileset"
+    },
+    "roomView": {
+        "name": "roomView.name",
+        "width": "roomView.width",
+        "height": "roomView.height",
+        "events": "roomView.events",
+        "copies": "roomView.copies",
+        "backgrounds": "roomView.backgrounds",
+        "tiles": "roomView.tiles",
+        "add": "roomView.add",
+        "none": "roomView.none",
+        "done": "roomView.done",
+        "grid": "roomView.grid",
+        "hotkeysNotice": "roomView.hotkeysNotice",
+        "hotkeysNoticeMovement": "roomView.hotkeysNoticeMovement",
+        "shift": "roomView.shift",
+        "step": "roomView.step",
+        "create": "roomView.create",
+        "leave": "roomView.leave",
+        "draw": "roomView.draw",
+        "deleteCopies": "roomView.deleteCopies",
+        "shiftCopies": "roomView.shiftCopies",
+        "selectAndMove": "roomView.selectAndMove",
+        "findTileset": "roomView.findTileset",
+        "properties": "roomView.properties",
+        "isUi": "roomView.isUi",
+        "backgroundColor": "roomView.backgroundColor",
+        "sortHorizontally": "roomView.sortHorizontally",
+        "sortVertically": "roomView.sortVertically",
+        "copyProperties": {
+            "position": "roomView.copyProperties.position",
+            "rotation": "roomView.copyProperties.rotation",
+            "scale": "roomView.copyProperties.scale"
+        },
+        "customProperties": "roomView.customProperties",
+        "restrictCamera": "roomView.restrictCamera",
+        "minimumX": "roomView.minimumX",
+        "minimumY": "roomView.minimumY",
+        "maximumX": "roomView.maximumX",
+        "maximumY": "roomView.maximumY",
+        "gridOff": "roomView.gridOff",
+        "gridSize": "roomView.gridSize",
+        "toCenter": "roomView.toCenter",
+        "shiftLabel": "roomView.shiftLabel",
+        "newDepth": "roomView.newDepth",
+        "deleteCopy": "roomView.deleteCopy",
+        "changeCopyScale": "roomView.changeCopyScale",
+        "shiftCopy": "roomView.shiftCopy",
+        "deleteTile": "roomView.deleteTile",
+        "deleteTiles": "roomView.deleteTiles",
+        "moveTilesToLayer": "roomView.moveTilesToLayer",
+        "shiftTiles": "roomView.shiftTiles",
+        "changeCopyRotation": "roomView.changeCopyRotation"
+    },
+    "styleView": {
+        "active": "styleView.active",
+        "alignment": "styleView.alignment",
+        "apply": "styleView.apply",
+        "fill": "styleView.fill",
+        "font": "styleView.font",
+        "italic": "styleView.italic",
+        "lineHeight": "styleView.lineHeight",
+        "shadow": "styleView.shadow",
+        "stroke": "styleView.stroke",
+        "textWrap": "styleView.textWrap",
+        "textWrapWidth": "styleView.textWrapWidth",
+        "useCustomFont": "styleView.useCustomFont",
+        "code": "styleView.code",
+        "copyCode": "styleView.copyCode",
+        "fillColor": "styleView.fillColor",
+        "fillColor1": "styleView.fillColor1",
+        "fillColor2": "styleView.fillColor2",
+        "fillGrad": "styleView.fillGrad",
+        "fillGradType": "styleView.fillGradType",
+        "fillHorizontal": "styleView.fillHorizontal",
+        "fillSolid": "styleView.fillSolid",
+        "fillType": "styleView.fillType",
+        "fillVertical": "styleView.fillVertical",
+        "fontWeight": "styleView.fontWeight",
+        "shadowBlur": "styleView.shadowBlur",
+        "shadowColor": "styleView.shadowColor",
+        "shadowShift": "styleView.shadowShift",
+        "strokeColor": "styleView.strokeColor",
+        "strokeWeight": "styleView.strokeWeight",
+        "testText": "styleView.testText",
+        "fontFamily": "styleView.fontFamily",
+        "fontSize": "styleView.fontSize"
+    },
+    "textureView": {
+        "center": "textureView.center",
+        "cols": "textureView.cols",
+        "done": "textureView.done",
+        "fill": "textureView.fill",
+        "form": "textureView.form",
+        "frames": "textureView.frames",
+        "isometrify": "textureView.isometrify",
+        "name": "textureView.name",
+        "radius": "textureView.radius",
+        "rectangle": "textureView.rectangle",
+        "reimport": "textureView.reimport",
+        "round": "textureView.round",
+        "rows": "textureView.rows",
+        "speed": "textureView.speed",
+        "tiled": "textureView.tiled",
+        "corrupted": "textureView.corrupted",
+        "width": "textureView.width",
+        "height": "textureView.height",
+        "strip": "textureView.strip",
+        "removePoint": "textureView.removePoint",
+        "closeShape": "textureView.closeShape",
+        "addPoint": "textureView.addPoint",
+        "moveCenter": "textureView.moveCenter",
+        "movePoint": "textureView.movePoint",
+        "symmetryTool": "textureView.symmetryTool",
+        "padding": "textureView.padding",
+        "paddingNotice": "textureView.paddingNotice",
+        "updateFromClipboard": "textureView.updateFromClipboard",
+        "previewAnimationNotice": "textureView.previewAnimationNotice",
+        "showFrameIndices": "textureView.showFrameIndices",
+        "pasteCollisionMask": "textureView.pasteCollisionMask",
+        "copyCollisionMask": "textureView.copyCollisionMask",
+        "bgColor": "textureView.bgColor",
+        "setCenter": "textureView.setCenter",
+        "replaceTexture": "textureView.replaceTexture",
+        "showMask": "textureView.showMask",
+        "marginX": "textureView.marginX",
+        "marginY": "textureView.marginY",
+        "offX": "textureView.offX",
+        "offY": "textureView.offY"
+    },
+    "soundView": {
+        "import": "soundView.import",
+        "name": "soundView.name",
+        "save": "soundView.save",
+        "isMusicFile": "soundView.isMusicFile",
+        "poolSize": "soundView.poolSize"
+    },
+    "fontView": {
+        "italic": "fontView.italic",
+        "reimport": "fontView.reimport",
+        "generateBitmapFont": "fontView.generateBitmapFont",
+        "bitmapFont": "fontView.bitmapFont",
+        "bitmapFontSize": "fontView.bitmapFontSize",
+        "bitmapFontLineHeight": "fontView.bitmapFontLineHeight",
+        "resultingBitmapFontName": "fontView.resultingBitmapFontName",
+        "charset": "fontView.charset",
+        "charsets": {
+            "punctuation": "fontView.charsets.punctuation",
+            "basicLatin": "fontView.charsets.basicLatin",
+            "latinExtended": "fontView.charsets.latinExtended",
+            "cyrillic": "fontView.charsets.cyrillic",
+            "greekCoptic": "fontView.charsets.greekCoptic",
+            "custom": "fontView.charsets.custom",
+            "allInFont": "fontView.charsets.allInFont"
+        },
+        "customCharsetHint": "fontView.customCharsetHint",
+        "fontWeight": "fontView.fontWeight",
+        "typefaceName": "fontView.typefaceName"
+    },
+    "licensePanel": {
+        "ctjsLicense": "licensePanel.ctjsLicense"
+    },
+    "templates": {
+        "create": "templates.create"
+    },
+    "templateView": {
+        "change": "templateView.change",
+        "create": "templateView.create",
+        "depth": "templateView.depth",
+        "destroy": "templateView.destroy",
+        "done": "templateView.done",
+        "draw": "templateView.draw",
+        "learnAboutTypes": "templateView.learnAboutTypes",
+        "name": "templateView.name",
+        "step": "templateView.step",
+        "visible": "templateView.visible"
     }
 }

@@ -1,6 +1,6 @@
 new-project-onboarding
-    .dimmer
-    .panel.flexfix
+    .aDimmer
+    .aPanel.flexfix
         .flexfix-body
             .center
                 svg.anIllustration
@@ -10,19 +10,19 @@ new-project-onboarding
             ul.aMenu
                 li(onclick="{openDocs('/tut-making-shooter.html')}")
                     svg.feather
-                        use(xlink:href="data/icons.svg#space-shooter")
+                        use(xlink:href="#space-shooter")
                     span {voc.openSpaceShooterTutorial}
                 li(onclick="{openDocs('/tut-making-platformer.html')}")
                     svg.feather
-                        use(xlink:href="data/icons.svg#platformer")
+                        use(xlink:href="#platformer")
                     span {voc.openPlatformerTutorial}
                 li(onclick="{openDocs('/tut-making-jettycat.html')}")
                     svg.feather
-                        use(xlink:href="data/icons.svg#jettycat")
+                        use(xlink:href="#jettycat")
                     span {voc.openJettyCatTutorial}
                 li(onclick="{close}")
                     svg.feather
-                        use(xlink:href="data/icons.svg#chevron-right")
+                        use(xlink:href="#chevron-right")
                     span {voc.doNothing}
         .inset.flexfix-footer
             label.checkbox

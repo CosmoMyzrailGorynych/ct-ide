@@ -48,6 +48,8 @@ const getTextureFrameCrops = tex => {
                     },
                     key
                 },
+                // eslint-disable-next-line id-blacklist
+                tag: tex.name,
                 width: tex.width + tex.padding * 2,
                 height: tex.height + tex.padding * 2
             });
@@ -91,6 +93,10 @@ const drawAtlasFromBin = (bin, binInd) => {
               {frame} = block.data,
               {key} = block.data,
               img = glob.texturemap[tex.uid];
+        if (!(tex.name in atlasJSON.animations)) {
+            atlasJSON.animations[tex.name] = [];
+        }
+        atlasJSON.animations[tex.name].push(key);
         const p = tex.padding;
         // draw the main crop rectangle
         atlas.x.drawImage(
@@ -123,8 +129,6 @@ const drawAtlasFromBin = (bin, binInd) => {
             block.x + p, block.y + frame.height + p, frame.width, p
         );
         // A multi-frame sprite
-        const keys = [];
-        keys.push(key);
         atlasJSON.frames[key] = {
             frame: {
                 x: block.x + p,
@@ -147,7 +151,8 @@ const drawAtlasFromBin = (bin, binInd) => {
             anchor: {
                 x: tex.axis[0] / tex.width,
                 y: tex.axis[1] / tex.height
-            }
+            },
+            shape: getTextureShape(tex)
         };
     }
 
@@ -157,93 +162,72 @@ const drawAtlasFromBin = (bin, binInd) => {
     };
 };
 
+const Packer = require('maxrects-packer').MaxRectsPacker;
+
+const atlasWidth = 2048,
+      atlasHeight = atlasWidth;
+const packerSettings = [atlasWidth, atlasHeight, 0, {
+    // allowRotation: true,
+    pot: true,
+    square: true,
+    // eslint-disable-next-line id-blacklist
+    tag: true,
+    exclusiveTag: false
+}];
+
 const packImages = async (proj, writeDir) => {
-    const blocks = [],
-          tiledImages = [],
-          keys = {}; // A collection of frame names for each texture name
-                     // It is then used for ct.res to create animation sequences
+    const spritedTextures = proj.textures.filter(texture => !texture.tiled),
+          tiledTextures = proj.textures.filter(texture => texture.tiled);
 
     // Write functions will be run in parallel,
     // and this array will block the finalization of the function
     const writePromises = [];
 
-    for (const tex of proj.textures) {
-        if (!tex.tiled) {
-            keys[tex.origname] = [];
-            const frames = getTextureFrameCrops(tex);
-            for (const frame of frames) {
-                blocks.push(frame);
-                keys[tex.origname].push(frame.data.key);
-            }
-        } else {
-            tiledImages.push({
-                origname: tex.origname,
-                tex
-            });
-        }
+    const packer = new Packer(...packerSettings);
+
+    const animationsByTextures = spritedTextures
+        .map(getTextureFrameCrops);
+    const animations = [].concat(...animationsByTextures);
+    if (animations.length) {
+        packer.addArray(animations);
     }
-    // eager sort
-    blocks.sort((a, b) => Math.max(b.height, b.width) > Math.max(a.height, a.width));
-    // this is the beginning of a resulting string that will be written to res.js
-    let res = 'PIXI.Loader.shared';
-    let registry = {};
-    const atlases = []; // names of atlases' json files
-    const Packer = require('maxrects-packer').MaxRectsPacker;
-    const atlasWidth = 2048,
-          atlasHeight = 2048;
-    const pack = new Packer(atlasWidth, atlasHeight, 0);
-    // pack all the frames
-    pack.addArray(blocks);
-    // get all atlases
-    pack.bins.map(drawAtlasFromBin).forEach((atlas, ind) => {
+
+    // Output all the atlases into JSON and PNG files
+    const atlases = [];
+    packer.bins.map(drawAtlasFromBin).forEach((atlas, ind) => {
         writePromises.push(fs.outputJSON(`${writeDir}/img/a${ind}.json`, atlas.json));
-        res += `\n.add('./img/a${ind}.json')`;
         var atlasBase64 = atlas.canvas.toDataURL().replace(/^data:image\/\w+;base64,/, '');
         var buf = Buffer.from(atlasBase64, 'base64');
         writePromises.push(fs.writeFile(`${writeDir}/img/a${ind}.png`, buf));
         atlases.push(`./img/a${ind}.json`);
     });
-    for (const tex of proj.textures) {
-        registry[tex.name] = {
-            frames: tex.untill > 0 ?
-                Math.min(tex.untill, tex.grid[0] * tex.grid[1]) :
-                tex.grid[0] * tex.grid[1],
+
+    const tiledImages = {};
+    let tiledCounter = 0;
+    for (const tex of tiledTextures) {
+        tiledImages[tex.name] = {
+            source: `./img/t${tiledCounter}.png`,
             shape: getTextureShape(tex),
             anchor: {
                 x: tex.axis[0] / tex.width,
                 y: tex.axis[1] / tex.height
             }
         };
-    }
-    for (let i = 0, l = tiledImages.length; i < l; i++) {
         const atlas = document.createElement('canvas'),
-              {tex} = tiledImages[i],
               img = glob.texturemap[tex.uid];
         atlas.x = atlas.getContext('2d');
         atlas.width = tex.width;
         atlas.height = tex.height;
         atlas.x.drawImage(img, 0, 0);
         var buf = new Buffer(atlas.toDataURL().replace(/^data:image\/\w+;base64,/, ''), 'base64');
-        writePromises.push(fs.writeFile(`${writeDir}/img/t${i}.png`, buf));
-        registry[tex.name] = {
-            atlas: `./img/t${i}.png`,
-            frames: 0,
-            shape: getTextureShape(tex),
-            anchor: {
-                x: tex.axis[0] / tex.width,
-                y: tex.axis[1] / tex.height
-            }
-        };
-        res += `\n.add('./img/t${i}.png')`;
+        writePromises.push(fs.writeFile(`${writeDir}/img/t${tiledCounter}.png`, buf));
+        tiledCounter++;
     }
-    res += ';';
-    registry = JSON.stringify(registry);
 
     await Promise.all(writePromises);
     return {
-        res,
-        registry,
-        atlases
+        atlases: JSON.stringify(atlases),
+        tiledImages: JSON.stringify(tiledImages)
     };
 };
 

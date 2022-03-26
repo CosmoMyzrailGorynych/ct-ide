@@ -3,13 +3,18 @@ main-menu-deploy
     ul.aMenu
         li(onclick="{exportForWeb}")
             svg.feather
-                use(xlink:href="data/icons.svg#globe-alt")
+                use(xlink:href="#globe-alt")
             span {voc.zipExport}
-        li(onclick="{toggleExporter}")
+        li(onclick="{toggleDesktopExporter}")
             svg.feather
-                use(xlink:href="data/icons.svg#package")
+                use(xlink:href="#package")
             span {voc.exportDesktop}
-    export-panel(show="{showExporter}" onclose="{hideExporter}")
+        li(onclick="{toggleMobileExporter}")
+            svg.feather
+                use(xlink:href="#smartphone")
+            span {voc.exportAndroid}
+    export-panel(show="{showDesktopExporter}" onclose="{hideDesktopExporter}")
+    export-mobile-panel(show="{showMobileExporter}" onclose="{hideMobileExporter}")
     script.
         this.namespace = 'mainMenu.deploy';
         this.mixin(window.riotVoc);
@@ -44,12 +49,22 @@ main-menu-deploy
             .catch(alertify.error);
         };
 
-        this.showExporter = false;
-        this.toggleExporter = () => {
-            this.showExporter = !this.showExporter;
+        this.showDesktopExporter = false;
+        this.toggleDesktopExporter = () => {
+            this.showDesktopExporter = !this.showDesktopExporter;
             this.update();
         };
-        this.hideExporter = () => {
-            this.showExporter = false;
+        this.hideDesktopExporter = () => {
+            this.showDesktopExporter = false;
+            this.update();
+        };
+
+        this.showMobileExporter = false;
+        this.toggleMobileExporter = () => {
+            this.showMobileExporter = !this.showMobileExporter;
+            this.update();
+        };
+        this.hideMobileExporter = () => {
+            this.showMobileExporter = false;
             this.update();
         };

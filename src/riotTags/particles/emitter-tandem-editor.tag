@@ -1,11 +1,11 @@
-emitter-tandem-editor.panel.view.flexrow
+emitter-tandem-editor.aPanel.aView.flexrow
     .flexfix(style="width: {panelWidth}px")
         .flexfix-header
-            .panel.pad.nbt.nbl.nbr
+            .aPanel.pad.nbt.nbl.nbr
                 b {vocGlob.name}
                 br
                 input.wide(type="text" value="{tandem.name}" onchange="{wire('this.tandem.name')}")
-                .anErrorNotice(if="{nameTaken}" ref="errorNotice") {vocGlob.nametaken}
+                .anErrorNotice(if="{nameTaken}" ref="errorNotice") {vocGlob.nameTaken}
         .flexfix-body.flexrow
             emitter-editor(
                 each="{emitter in tandem.emitters}"
@@ -14,12 +14,12 @@ emitter-tandem-editor.panel.view.flexrow
             )
             button.emitter-tandem-editor-anAddEmitterButton(onclick="{addEmitter}")
                 svg.feather
-                    use(xlink:href="data/icons.svg#plus")
+                    use(xlink:href="#plus")
                 span {voc.addEmitter}
         .flexfix-footer
             button.wide(onclick="{apply}")
                 svg.feather
-                    use(xlink:href="data/icons.svg#check")
+                    use(xlink:href="#check")
                 span {vocGlob.apply}
     .aResizer.vertical(onmousedown="{gutterMouseDown}")
     div(ref="preview")
@@ -30,33 +30,41 @@ emitter-tandem-editor.panel.view.flexrow
             onpointerout="{resetEmitterPositioning}"
         )
         .emitter-tandem-editor-Tools.flexrow
-            button.nogrow.emitter-tandem-editor-aResetEmittersButton(onclick="{resetEmitters}")
+            button.nogrow.forcebackground(onclick="{resetEmitters}")
                 span {voc.reset}
-            .spacer
-            button.nogrow.emitter-tandem-editor-aChangeGridButton(onclick="{openPreviewTexturePicker}")
+            .aSpacer
+            button.nogrow.forcebackground(onclick="{openPreviewTexturePicker}")
                 svg.feather
-                    use(xlink:href="data/icons.svg#coin")
+                    use(xlink:href="#texture")
                 span {voc.setPreviewTexture}
-            button.nogrow.emitter-tandem-editor-aChangeGridButton(onclick="{changeGrid}")
+            button.nogrow.forcebackground(onclick="{changeGrid}")
                 svg.feather
-                    use(xlink:href="data/icons.svg#grid")
+                    use(xlink:href="#grid")
                 span {voc.changeGrid}
-            button.nogrow.emitter-tandem-editor-aChangeBgButton(onclick="{changePreviewBg}")
+            button.nogrow.forcebackground(onclick="{changePreviewBg}")
                 svg.feather
-                    use(xlink:href="data/icons.svg#droplet")
+                    use(xlink:href="#droplet")
                 span {voc.changeBg}
         .zoom.flexrow
-            b(if="{window.innerWidth - panelWidth > 550}") {vocGlob.zoom}
-            .spacer
-            b {Math.round(zoom * 100)}%
-            .spacer
+            b.aContrastingPlaque
+                span(if="{window.innerWidth - panelWidth > 550}") {vocGlob.zoom}
+                |
+                |
+                b {Math.round(zoom * 100)}%
+            .aSpacer
             zoom-slider(onchanged="{setZoom}" ref="zoomslider" value="{zoom}")
     color-picker(
         ref="previewBackgroundColor" if="{changingPreviewColor}"
         hidealpha="true"
         color="{previewColor}" onapply="{updatePreviewColor}" onchanged="{updatePreviewColor}" oncancel="{cancelPreviewColor}"
     )
-    texture-selector(if="{pickingPreviewTexture}" showempty="yes" onselected="{onPreviewTexturePicked}" oncancelled="{onPreviewTextureCancel}")
+    asset-selector(
+        if="{pickingPreviewTexture}"
+        allownone="yes"
+        onselected="{onPreviewTexturePicked}"
+        oncancelled="{onPreviewTextureCancel}"
+        assettype="textures"
+    )
     script.
         /* global net */
         const brehautColor = net.brehaut.Color;
@@ -381,8 +389,8 @@ emitter-tandem-editor.panel.view.flexrow
         this.openPreviewTexturePicker = () => {
             this.pickingPreviewTexture = true;
         };
-        this.onPreviewTexturePicked = texture => () => {
-            this.tandem.previewTexture = texture.uid;
+        this.onPreviewTexturePicked = uid => {
+            this.tandem.previewTexture = uid;
             this.pickingPreviewTexture = false;
             this.updatePreviewLayout();
             this.update();
@@ -473,5 +481,6 @@ emitter-tandem-editor.panel.view.flexrow
         this.apply = () => {
             this.parent.editingTandem = false;
             this.parent.update();
+            require('./data/node_requires/glob').modified = true;
             window.signals.trigger('tandemUpdated', this.tandem);
         };

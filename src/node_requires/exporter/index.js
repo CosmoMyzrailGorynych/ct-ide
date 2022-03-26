@@ -6,14 +6,45 @@ let currentProject, writeDir;
 
 const {packImages} = require('./textures');
 const {packSkeletons} = require('./skeletons');
-const {stringifySounds} = require('./sounds');
+const {getSounds} = require('./sounds');
 const {stringifyRooms, getStartingRoom} = require('./rooms');
 const {stringifyStyles} = require('./styles');
 const {stringifyTandems} = require('./emitterTandems');
-const {stringifyTypes} = require('./types');
+const {stringifyTemplates} = require('./templates');
+const {stringifyContent} = require('./content');
 const {bundleFonts, bakeBitmapFonts} = require('./fonts');
 const {bakeFavicons} = require('./icons');
 const {getUnwrappedExtends, getCleanKey} = require('./utils');
+
+const ifMatcher = (varName, symbol = '@') => new RegExp(`/\\* ?if +${symbol}${varName}${symbol} ?\\*/([\\s\\S]*)(?:/\\* ?else +${symbol}${varName}${symbol} ?\\*/([\\s\\S]*?))?/\\* ?endif +${symbol}${varName}${symbol} ?\\*/`, 'g');
+const varMatcher = (varName, symbol = '@') => new RegExp(`/\\* ?${symbol}${varName}${symbol} ?\\*/`, 'g');
+
+/**
+ * A little home-brewn string templating function for JS and CSS.
+ * Can't really add an example of its usage, as it is based on js comments
+ * and they won't fit in the JSDoc comments ¯\_(ツ)_/¯
+ * See ct.release files for examples.
+ *
+ * Supports if/else blocks. Empty arrays are treated as `false`.
+ *
+ * @param {string} input The source string with template tags
+ * @param {object<string,string|Array|object>} vars The variables to substitute
+ * @param {object<string,string|Array|object>} injections Module-provided injections to substitute
+ */
+const template = (input, vars, injections = {}) => {
+    let output = input;
+    for (const i in vars) {
+        // .replace(stuff, () => string) prevents pattern substitution, notably
+        // it doesn't break syntax around this.text = '$'
+        // @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace#Specifying_a_string_as_a_parameter
+        output = output.replace(varMatcher(i), () => (typeof vars[i] === 'object' ? JSON.stringify(vars[i]) : vars[i]));
+        output = output.replace(ifMatcher(i), (Array.isArray(vars[i]) ? vars[i].length : vars[i]) ? '$1' : '$2');
+    }
+    for (const i in injections) {
+        output = output.replace(varMatcher(i, '%'), () => (typeof injections[i] === 'object' ? JSON.stringify(injections[i]) : injections[i]));
+    }
+    return output;
+};
 
 const getSubstitution = value => {
     if (!value) {
@@ -47,9 +78,23 @@ const parseKeys = function (catmod, str, lib) {
     return str2;
 };
 
+const removeBrokenModules = async function removeBrokenModules(project) {
+    await Promise.all(Object.keys(project.libs).map(async key => {
+        const moduleJSONPath = path.join(basePath + 'ct.libs/', key, 'module.json');
+        if (!(await fs.pathExists(moduleJSONPath))) {
+            const message = `Removing an absent catmod ${key} from the project.`;
+            window.alertify.log(message);
+            // eslint-disable-next-line no-console
+            console.warn(message);
+            delete project.libs[key];
+        }
+    }));
+};
+
 const addModules = async () => { // async
     const pieces = await Promise.all(Object.keys(currentProject.libs).map(async lib => {
-        const moduleJSON = await fs.readJSON(path.join(basePath + 'ct.libs/', lib, 'module.json'), {
+        const moduleJSONPath = path.join(basePath + 'ct.libs/', lib, 'module.json');
+        const moduleJSON = await fs.readJSON(moduleJSONPath, {
             encoding: 'utf8'
         });
         if (await fs.pathExists(path.join(basePath + 'ct.libs/', lib, 'index.js'))) {
@@ -57,22 +102,54 @@ const addModules = async () => { // async
                 encoding: 'utf8'
             }), lib);
         }
-        return '';
+        return false;
     }));
-    return pieces.join('\n');
+    return pieces.filter(t => t).join('\n');
 };
 
-const injectModules = injections => // async
-    Promise.all(Object.keys(currentProject.libs).map(async lib => {
+const getInjections = async () => {
+    const injections = {
+        load: '',
+        start: '',
+        switch: '',
+
+        onbeforecreate: '',
+        oncreate: '',
+        ondestroy: '',
+
+        beforedraw: '',
+        beforestep: '',
+        afterdraw: '',
+        afterstep: '',
+
+        beforeframe: '',
+        beforeroomoncreate: '',
+        roomoncreate: '',
+        roomonleave: '',
+        afterroomdraw: '',
+        beforeroomdraw: '',
+        beforeroomstep: '',
+        afterroomstep: '',
+
+        css: '',
+        res: '',
+        resload: '',
+        templates: '',
+        rooms: '',
+        styles: '',
+        htmltop: '',
+        htmlbottom: ''
+    };
+    await Promise.all(Object.keys(currentProject.libs).map(async lib => {
         const libData = await fs.readJSON(path.join(basePath + 'ct.libs/', lib, 'module.json'), {
             encoding: 'utf8'
         });
-        if (await fs.pathExists(path.join(basePath + 'ct.libs/', lib, 'injects'))) {
-            const injectFiles = await fs.readdir(path.join(basePath + 'ct.libs/', lib, 'injects')),
+        if (await fs.pathExists(path.join(basePath + 'ct.libs/', lib, 'injections'))) {
+            const injectFiles = await fs.readdir(path.join(basePath + 'ct.libs/', lib, 'injections')),
                   injectKeys = injectFiles.map(fname => path.basename(fname, path.extname(fname)));
             await Promise.all(injectKeys.map(async (key, ind) => {
                 if (key in injections) {
-                    const injection = await fs.readFile(path.join(basePath + 'ct.libs/', lib, 'injects', injectFiles[ind]), {
+                    const injection = await fs.readFile(path.join(basePath + 'ct.libs/', lib, 'injections', injectFiles[ind]), {
                         encoding: 'utf8'
                     });
                     // false positive??
@@ -82,10 +159,13 @@ const injectModules = injections => // async
             }));
         }
     }));
+    return injections;
+};
 
 // eslint-disable-next-line max-lines-per-function
 const exportCtProject = async (project, projdir, production) => {
     currentProject = project;
+    await removeBrokenModules(project);
 
     const {languageJSON} = require('./../i18n');
     const {settings} = project;
@@ -93,7 +173,7 @@ const exportCtProject = async (project, projdir, production) => {
     writeDir = await getExportDir();
 
     if (project.rooms.length < 1) {
-        throw new Error(languageJSON.common.norooms);
+        throw new Error(languageJSON.common.noRooms);
     }
 
     if (localStorage.forceProductionForDebug === 'yes') {
@@ -106,53 +186,19 @@ const exportCtProject = async (project, projdir, production) => {
         fs.ensureDir(path.join(writeDir, '/snd/'))
     ]);
 
-    const injections = {
-        load: '',
-        start: '',
-        switch: '',
-
-        onbeforecreate: '',
-        oncreate: '',
-        ondestroy: '',
-
-        beforeframe: '',
-        afterframe: '',
-
-        beforedraw: '',
-        beforestep: '',
-        afterdraw: '',
-        afterstep: '',
-
-        beforeroomoncreate: '',
-        roomoncreate: '',
-        roomonleave: '',
-        afterroomdraw: '',
-        beforeroomdraw: '',
-        beforeroomstep: '',
-        afterroomstep: '',
-
-        css: '',
-        res: '',
-        resload: '',
-        types: '',
-        rooms: '',
-        styles: '',
-        htmltop: '',
-        htmlbottom: ''
-    };
-
-    await injectModules(injections);
+    const injections = await getInjections();
 
     /* Pixi.js */
     if (settings.rendering.usePixiLegacy) {
-        await fs.copyFile(basePath + 'ct.release/pixi-legacy.min.js', path.join(writeDir, '/pixi.min.js'));
-        await fs.copyFile(basePath + 'ct.release/pixi-legacy.min.js.map', path.join(writeDir, '/pixi-legacy.min.js.map'));
+        await fs.copyFile('./node_modules/pixi.js-legacy/dist/pixi-legacy.min.js', path.join(writeDir, '/pixi.min.js'));
+        await fs.copyFile('./node_modules/pixi.js-legacy/dist/pixi-legacy.min.js.map', path.join(writeDir, '/pixi-legacy.min.js.map'));
     } else {
-        await fs.copyFile(basePath + 'ct.release/pixi.min.js', path.join(writeDir, '/pixi.min.js'));
-        await fs.copyFile(basePath + 'ct.release/pixi.min.js.map', path.join(writeDir, '/pixi.min.js.map'));
+        await fs.copyFile('./node_modules/pixi.js/dist/pixi.min.js', path.join(writeDir, '/pixi.min.js'));
+        await fs.copyFile('./node_modules/pixi.js/dist/pixi.min.js.map', path.join(writeDir, '/pixi.min.js.map'));
     }
     if (project.emitterTandems && project.emitterTandems.length) {
-        await fs.copyFile(basePath + 'ct.release/pixi-particles.min.js', path.join(writeDir, '/pixi-particles.min.js'));
+        await fs.copyFile('./node_modules/pixi-particles/dist/pixi-particles.min.js', path.join(writeDir, '/pixi-particles.min.js'));
+        await fs.copyFile('./node_modules/pixi-particles/dist/pixi-particles.min.js.map', path.join(writeDir, '/pixi-particles.min.js.map'));
     }
 
     const startroom = getStartingRoom(project);
@@ -162,6 +208,7 @@ const exportCtProject = async (project, projdir, production) => {
     const sourcesList = [
         'backgrounds.js',
         'camera.js',
+        'content.js',
         'ct.css',
         'emitters.js',
         'index.html',
@@ -169,9 +216,8 @@ const exportCtProject = async (project, projdir, production) => {
         'main.js',
         'res.js',
         'rooms.js',
-        'sound.js',
         'styles.js',
-        'types.js',
+        'templates.js',
         'tilemaps.js',
         'timer.js'
     ];
@@ -180,113 +226,99 @@ const exportCtProject = async (project, projdir, production) => {
             encoding: 'utf8'
         });
     }
+    /* assets — run in parallel */
+    const texturesTask = packImages(project, writeDir);
+    const skeletonsTask = packSkeletons(project, projdir, writeDir);
+    const bitmapFontsTask = bakeBitmapFonts(project, projdir, writeDir);
+    const favicons = bakeFavicons(project, writeDir);
 
-    // .replace(stuff, () => string) prevents pattern substitution, notably
-    // it doesn't break syntax around this.text = '$'
-    // @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace#Specifying_a_string_as_a_parameter
-    let buffer = (await sources['main.js'])
-        .replace(/\/\*@startwidth@\*\//g, startroom.width)
-        .replace(/\/\*@startheight@\*\//g, startroom.height)
-        .replace(/\/\*@pixelatedrender@\*\//g, Boolean(settings.rendering.pixelatedrender))
-        .replace(/\/\*@highDensity@\*\//g, Boolean(settings.rendering.highDensity))
-        .replace(/\/\*@maxfps@\*\//g, Number(settings.rendering.maxFPS))
-        .replace(/\/\*@ctversion@\*\//g, () => process.versions.ctjs)
-        .replace(/\/\*@projectmeta@\*\//g, () => JSON.stringify({
+    let buffer = template(await sources['main.js'], {
+        startwidth: startroom.width,
+        startheight: startroom.height,
+        pixelatedrender: Boolean(settings.rendering.pixelatedrender),
+        highDensity: Boolean(settings.rendering.highDensity),
+        maxfps: Number(settings.rendering.maxFPS),
+        ctversion: process.versions.ctjs,
+        projectmeta: {
             name: settings.authoring.title,
             author: settings.authoring.author,
             site: settings.authoring.site,
             version: settings.authoring.version.join('.') + settings.authoring.versionPostfix
-        }))
-        .replace('/*%beforeframe%*/', () => injections.beforeframe)
-        .replace('/*%afterframe%*/', () => injections.afterframe);
-
+        }
+    }, injections);
     buffer += '\n';
 
     let actionsSetup = '';
     for (const action of project.actions) {
         actionsSetup += `ct.inputs.addAction('${action.name}', ${JSON.stringify(action.methods)});\n`;
     }
-
     // This section is synchronous to the possible extent, no race conditions possible here
     /* eslint-disable require-atomic-updates */
-    buffer += (await sources['inputs.js']).replace('/*@actions@*/', actionsSetup);
+    buffer += template(await sources['inputs.js'], {
+        actions: actionsSetup
+    }, injections);
     buffer += '\n';
-    buffer += await addModules(buffer);
+
+    const roomsCode = stringifyRooms(project);
+    buffer += template(await sources['rooms.js'], {
+        startroom: startroom.name,
+        rooms: roomsCode
+    }, injections);
+    buffer += '\n';
+
+    const styles = stringifyStyles(project);
+    buffer += template(await sources['styles.js'], {
+        styles
+    }, injections);
+    buffer += '\n';
+
+    if (project.emitterTandems && project.emitterTandems.length) {
+        const tandems = stringifyTandems(project);
+        buffer += template(await sources['emitters.js'], {
+            tandemTemplates: tandems
+        }, injections);
+    }
+
+    const templates = stringifyTemplates(project);
+    buffer += template(await sources['templates.js'], {
+        templates
+    }, injections);
+
+    // Add four files in a sequence, without additional transforms
+    buffer += (
+        await Promise.all(['backgrounds.js', 'tilemaps.js', 'camera.js', 'timer.js']
+            .map(source => sources[source]))
+    ).join('\n');
+
+    const fonts = await bundleFonts(project, projdir, writeDir);
+    buffer += fonts.js;
+    /* eslint-enable require-atomic-updates */
+
+    /* Add catmods */
+    buffer += await addModules();
+
+    /* ct.res goes after all the code, but before user-defined scripts */
+    const {atlases, tiledImages} = await texturesTask;
+    const skeletons = await skeletonsTask;
+    const bitmapFonts = await bitmapFontsTask;
+    const sounds = getSounds(project);
+    buffer += template(await sources['res.js'], {
+        atlases,
+        tiledImages,
+        bitmapFonts,
+        dbSkeletons: skeletons.skeletonsDB,
+        sounds
+    }, injections);
+    buffer += '\n';
+
+    const content = stringifyContent(project);
+    buffer += (await sources['content.js']).replace('/*@contentTypes@*/', `"${content}"`);
+    buffer += '\n';
 
     /* User-defined scripts */
     for (const script of project.scripts) {
         buffer += script.code + ';\n';
     }
-
-    const roomsCode = stringifyRooms(project);
-
-    buffer += (await sources['rooms.js'])
-        .replace('@startroom@', () => startroom.name)
-        .replace('/*@rooms@*/', () => roomsCode)
-        .replace('/*%switch%*/', () => injections.switch)
-        .replace('/*%beforeroomoncreate%*/', () => injections.beforeroomoncreate)
-        .replace('/*%roomoncreate%*/', () => injections.roomoncreate)
-        .replace('/*%roomonleave%*/', () => injections.roomonleave);
-    buffer += '\n';
-
-    const styles = stringifyStyles(project);
-    buffer += (await sources['styles.js'])
-        .replace('/*@styles@*/', () => styles)
-        .replace('/*%styles%*/', () => injections.styles);
-    buffer += '\n';
-
-    if (project.emitterTandems && project.emitterTandems.length) {
-        const templates = stringifyTandems(project);
-        buffer += (await sources['emitters.js'])
-            .replace('/*@tandemTemplates@*/', templates);
-    }
-
-    /* assets — run in parallel */
-    const texturesTask = packImages(project, writeDir);
-    const skeletonsTask = packSkeletons(project, projdir, writeDir);
-    const bitmapFontsTask = bakeBitmapFonts(project, projdir, writeDir);
-    const favicons = bakeFavicons(project, writeDir);
-    const textures = await texturesTask;
-    const skeletons = await skeletonsTask;
-    const bitmapFonts = await bitmapFontsTask;
-    await favicons;
-
-    buffer += (await sources['res.js'])
-        .replace('/*@sndtotal@*/', () => project.sounds.length)
-        .replace('/*@res@*/', () => textures.res + '\n' + skeletons.loaderScript + '\n' + bitmapFonts.loaderScript)
-        .replace('/*@textureregistry@*/', () => textures.registry)
-        .replace('/*@textureatlases@*/', () => JSON.stringify(textures.atlases))
-        .replace('/*@skeletonregistry@*/', () => skeletons.registry)
-        .replace('/*%resload%*/', () => injections.resload + '\n' + skeletons.startScript)
-        .replace('/*%res%*/', () => injections.res);
-    buffer += '\n';
-
-    const types = stringifyTypes(project);
-
-    buffer += (await sources['types.js'])
-        .replace('/*%oncreate%*/', () => injections.oncreate)
-        .replace('/*%types%*/', () => injections.types)
-        .replace('/*@types@*/', () => types);
-
-    buffer += (await sources['backgrounds.js']);
-    buffer += '\n';
-    buffer += (await sources['tilemaps.js']);
-    buffer += '\n';
-
-    buffer += (await sources['camera.js']);
-    buffer += '\n';
-
-    buffer += '\n';
-    var sounds = stringifySounds(project);
-    buffer += (await sources['sound.js'])
-        .replace('/*@sound@*/', () => sounds);
-
-    buffer += (await sources['timer.js']);
-    buffer += '\n';
-
-    const fonts = await bundleFonts(project, projdir, writeDir);
-    buffer += fonts.js;
-    /* eslint-enable require-atomic-updates */
 
     /* passthrough copy of files in the `include` folder */
     if (await fs.pathExists(projdir + '/include/')) {
@@ -298,19 +330,23 @@ const exportCtProject = async (project, projdir, production) => {
         }
     }));
 
-    /* Global injections, provided by modules */
-    for (const i in injections) {
-        buffer = buffer.replace(`/*%${i}%*/`, () => injections[i]);
-    }
-
-
     /* HTML & CSS */
     const {substituteHtmlVars} = require('./html');
-    const {substituteCssVars} = require('./css');
     const html = substituteHtmlVars(await sources['index.html'], project, injections);
-    let css = substituteCssVars(await sources['ct.css'], project, injections);
 
-    css += fonts.css;
+    let preloaderColor1 = project.settings.branding.accent,
+        preloaderColor2 = (global.brehautColor(preloaderColor1).getLuminance() < 0.5) ? '#ffffff' : '#000000';
+    if (project.settings.branding.invertPreloaderScheme) {
+        [preloaderColor1, preloaderColor2] = [preloaderColor2, preloaderColor1];
+    }
+    const css = template(await sources['ct.css'], {
+        pixelatedrender: project.settings.rendering.pixelatedrender,
+        hidecursor: project.settings.rendering.hideCursor,
+        hidemadewithctjs: project.settings.branding.hideLoadingLogo,
+        preloaderforeground: preloaderColor1,
+        preloaderbackground: preloaderColor2,
+        fonts: fonts.css
+    }, injections);
 
     // JS minify
     if (production && currentProject.settings.export.codeModifier === 'minify') {
@@ -355,6 +391,8 @@ const exportCtProject = async (project, projdir, production) => {
         const ext = sound.origname.slice(-4);
         await fs.copy(path.join(projdir, '/snd/', sound.origname), path.join(writeDir, '/snd/', sound.uid + ext));
     }));
+
+    await favicons;
 
     return path.join(writeDir, '/index.html');
 };

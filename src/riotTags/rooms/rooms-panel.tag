@@ -1,40 +1,20 @@
-rooms-panel.panel.view
-    .flexfix.tall
-        .flexfix-header
-            div
-                .toright
-                    b {vocGlob.sort}
-                    button.inline.square(onclick="{switchSort('date')}" class="{selected: sort === 'date' && !searchResults}")
-                        svg.feather
-                            use(xlink:href="data/icons.svg#clock")
-                    button.inline.square(onclick="{switchSort('name')}" class="{selected: sort === 'name' && !searchResults}")
-                        svg.feather
-                            use(xlink:href="data/icons.svg#sort-alphabetically")
-                    .aSearchWrap
-                        input.inline(type="text" onkeyup="{fuseSearch}")
-                        svg.feather
-                            use(xlink:href="data/icons.svg#search")
-                    button.inline.square(onclick="{switchLayout}")
-                        svg.feather
-                            use(xlink:href="data/icons.svg#{localStorage.roomsLayout === 'list'? 'grid' : 'list'}")
-                .toleft
-                    button#roomcreate(onclick="{roomCreate}" data-hotkey="Control+n" title="Control+N")
-                        svg.feather
-                            use(xlink:href="data/icons.svg#plus")
-                        span {voc.create}
-        ul.pad.cards.largeicons.flexfix-body(class="{list: localStorage.roomsLayout === 'list'}")
-            li(
-                each="{room in (searchResults? searchResults : rooms)}"
-                class="{starting: global.currentProject.startroom === room.uid}"
-                onclick="{openRoom(room)}"
-                oncontextmenu="{menuPopup(room)}"
-                onlong-press="{menuPopup(room)}"
-            )
-                img(src="file://{global.projdir + '/img/r' + room.thumbnail + '.png?' + room.lastmod}")
-                span {room.name}
-                span.date(if="{room.lastmod}") {niceTime(room.lastmod)}
-                svg.feather.aStartingRoomIcon(if="{global.currentProject.startroom === room.uid}")
-                    use(xlink:href="data/icons.svg#play")
+rooms-panel.aPanel.aView
+    asset-viewer(
+        collection="{global.currentProject.rooms}"
+        contextmenu="{menuPopup}"
+        namespace="rooms"
+        assettype="rooms"
+        defaultlayout="largeCards"
+        click="{openRoom}"
+        thumbnails="{thumbnails}"
+        icons="{icons}"
+        ref="rooms"
+        class="tall"
+    )
+        button#roomcreate(onclick="{parent.roomCreate}" data-hotkey="Control+n" title="Control+N")
+            svg.feather
+                use(xlink:href="#plus")
+            span {parent.voc.create}
     room-editor(if="{editing}" room="{editingRoom}")
     context-menu(menu="{roomMenu}" ref="roomMenu")
     script.
@@ -44,92 +24,20 @@ rooms-panel.panel.view
         this.mixin(window.riotVoc);
         this.mixin(window.riotNiceTime);
         this.editing = false;
-        this.sort = 'name';
-        this.sortReverse = false;
 
-        this.updateList = () => {
-            this.rooms = [...global.currentProject.rooms];
-            if (this.sort === 'name') {
-                this.rooms.sort((a, b) => a.name.localeCompare(b.name));
-            } else {
-                this.rooms.sort((a, b) => b.lastmod - a.lastmod);
-            }
-            if (this.sortReverse) {
-                this.rooms.reverse();
-            }
-        };
-        this.switchSort = sort => () => {
-            if (this.sort === sort) {
-                this.sortReverse = !this.sortReverse;
-            } else {
-                this.sort = sort;
-                this.sortReverse = false;
-            }
-            this.updateList();
-        };
-        this.switchLayout = () => {
-            localStorage.roomsLayout = localStorage.roomsLayout === 'list' ? 'grid' : 'list';
-        };
-        const fuseOptions = {
-            shouldSort: true,
-            tokenize: true,
-            threshold: 0.5,
-            location: 0,
-            distance: 100,
-            maxPatternLength: 32,
-            minMatchCharLength: 1,
-            keys: ['name']
-        };
-        const Fuse = require('fuse.js');
-        this.fuseSearch = e => {
-            if (e.target.value.trim()) {
-                var fuse = new Fuse(this.rooms, fuseOptions);
-                this.searchResults = fuse.search(e.target.value.trim());
-            } else {
-                this.searchResults = null;
-            }
-        };
-        this.setUpPanel = () => {
-            this.updateList();
-            this.searchResults = null;
-            this.editing = false;
-            this.editingRoom = null;
-            this.update();
-        };
-        window.signals.on('projectLoaded', this.setUpPanel);
-        this.on('mount', this.setUpPanel);
-        this.on('unmount', () => {
-            window.signals.off('projectLoaded', this.setUpPanel);
-        });
-
-        const fs = require('fs-extra'),
-              path = require('path');
-        this.roomCreate = function roomCreate() {
+        const fs = require('fs-extra');
+        const {createNewRoom} = require('./data/node_requires/resources/rooms');
+        this.roomCreate = async () => {
             if (this.editing) {
                 return false;
             }
-            var guid = generateGUID(),
-                thumbnail = guid.split('-').pop();
-            fs.copy('./data/img/notexture.png', path.join(global.projdir, '/img/r' + thumbnail + '.png'), () => {
-                var newRoom = {
-                    name: 'Room_' + thumbnail,
-                    oncreate: '',
-                    onstep: '',
-                    ondraw: '',
-                    onleave: '',
-                    width: 800,
-                    height: 600,
-                    backgrounds: [],
-                    copies: [],
-                    tiles: [],
-                    uid: guid,
-                    thumbnail
-                };
-                global.currentProject.rooms.push(newRoom);
-                this.openRoom(newRoom)();
-                this.updateList();
-                this.update();
-            });
+            const newRoom = await createNewRoom();
+            if (!this.refs.rooms.currentGroup.isUngroupedGroup) {
+                newRoom.group = this.refs.rooms.currentGroup.uid;
+            }
+            this.openRoom(newRoom)();
+            this.refs.rooms.updateList();
+            this.update();
             return true;
         };
         this.openRoom = room => () => {
@@ -139,7 +47,8 @@ rooms-panel.panel.view
 
         this.roomMenu = {
             items: [{
-                label: this.voc.makestarting,
+                icon: 'play',
+                label: this.voc.makeStarting,
                 click: () => {
                     global.currentProject.startroom = this.editingRoom.uid;
                     this.update();
@@ -160,7 +69,7 @@ rooms-panel.panel.view
                 click: () => {
                     window.alertify
                     .defaultValue(this.editingRoom.name + '_dup')
-                    .prompt(window.languageJSON.common.newname)
+                    .prompt(window.languageJSON.common.newName)
                     .then(e => {
                         if (e.inputValue !== '' && e.buttonClicked !== 'cancel') {
                             var guid = generateGUID(),
@@ -171,7 +80,7 @@ rooms-panel.panel.view
                             newRoom.uid = guid;
                             newRoom.thumbnail = thumbnail;
                             fs.linkSync(global.projdir + '/img/r' + this.editingRoom.thumbnail + '.png', global.projdir + '/img/r' + thumbnail + '.png');
-                            this.updateList();
+                            this.refs.rooms.updateList();
                             this.update();
                         }
                     });
@@ -181,7 +90,7 @@ rooms-panel.panel.view
                 click: () => {
                     window.alertify
                     .defaultValue(this.editingRoom.name)
-                    .prompt(window.languageJSON.common.newname)
+                    .prompt(window.languageJSON.common.newName)
                     .then(e => {
                         if (e.inputValue !== '' && e.buttonClicked !== 'cancel') {
                             var nam = e.inputValue;
@@ -201,7 +110,7 @@ rooms-panel.panel.view
                         if (e.buttonClicked === 'ok') {
                             var ind = global.currentProject.rooms.indexOf(this.editingRoom);
                             global.currentProject.rooms.splice(ind, 1);
-                            this.updateList();
+                            this.refs.rooms.updateList();
                             this.update();
                             window.alertify
                             .okBtn(window.languageJSON.common.ok)
@@ -216,4 +125,24 @@ rooms-panel.panel.view
             this.editingRoom = room;
             this.refs.roomMenu.popup(e.clientX, e.clientY);
             e.preventDefault();
+        };
+        this.thumbnails = require('./data/node_requires/resources/rooms').getRoomPreview;
+        this.icons = room => {
+            const icons = [];
+            if (room.uid === window.currentProject.startroom) {
+                icons.push('play');
+            }
+            if (room.oncreate.trim()) {
+                icons.push('sun');
+            }
+            if (room.onstep.trim()) {
+                icons.push('skip-forward');
+            }
+            if (room.ondraw.trim()) {
+                icons.push('edit-2');
+            }
+            if (room.onleave.trim()) {
+                icons.push('trash');
+            }
+            return icons;
         };

@@ -1,6 +1,6 @@
 texture-editor
     .column
-        width 16em
+        width 18em
     .column, #atlas
         padding 1em
     .column2
@@ -18,25 +18,44 @@ texture-editor
         margin 0 -1rem -1rem
     .aDragger
         margin 1rem
-.texture-editor-aCanvasWrap
-    width 100%
-    height 100%
-    overflow scroll
-    position relative
+    .aDashedMaskMarker
+        border 2px dashed borderPale
+        padding 0.5rem
+        input
+            margin 0.25rem 0
+    .aPivotSymbol
+        @extends .aDragger
+        border-radius 0
+        cursor default
+        position static
+        display inline-block
+        vertical-align middle
+        margin 0 0.5rem
+        transform initial
+    .&-anAnimationPreview
+        height 10em
+        overflow hidden
+        margin -0.5rem -1rem 0.5rem
+        padding 0.5rem
+        border-bottom 1px solid borderPale
+        box-sizing border-box
+        @media (max-height 680px)
+            height 6em
+        canvas
+            object-fit contain
+            height 100%
+            width 100%
+    .&-aCanvasWrap
+        width 100%
+        height 100%
+        overflow scroll
+        position relative
 
 #textureviewdone
     bottom 0.5em
     left 1em
     width 13em
     position absolute
-#preview
-    height 10em
-    overflow auto
-    margin -0.5rem -1rem 0.5rem
-    padding 0.5rem
-    border-bottom 1px solid borderPale
-    @media (max-height 680px)
-        height 6em
 
 #grahpspeed
     margin-top 0.25rem
@@ -50,7 +69,7 @@ texture-editor
     top 11em
     padding 0
 
-.textureview-tools
+.texture-editor-Tools
     position absolute
     top 0.5em
     right 0.5em
