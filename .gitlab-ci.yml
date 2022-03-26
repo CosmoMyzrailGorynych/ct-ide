@@ -63,9 +63,7 @@ pack-deploy-release:
     - gulp deployOnly --buildNum=$CI_COMMIT_TAG
   only:
     - tags
-  rules:
-    # Build for tags on master only
-    - if: $CI_COMMIT_BRANCH == "master"
+    - master
 
 pack-deploy-nightly:
   stage: pack
