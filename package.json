@@ -50,6 +50,7 @@
     "nw-builder": "^3.5.7",
     "pug": "^3.0.2",
     "pug-lint-config-clock": "^2.0.0",
+    "readysteady": "^1.1.4",
     "riot": "^3.13.2",
     "streamqueue": "^1.1.2",
     "stylint-stylish": "^2.0.0",
