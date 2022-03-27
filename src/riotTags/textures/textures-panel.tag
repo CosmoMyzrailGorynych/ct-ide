@@ -194,9 +194,9 @@ textures-panel.aPanel.aView
         };
 
         const deleteCurrentTexture = () => {
-            for (const type of global.currentProject.types) {
-                if (type.texture === this.currentTexture.uid) {
-                    type.texture = -1;
+            for (const template of global.currentProject.templates) {
+                if (template.texture === this.currentTexture.uid) {
+                    template.texture = -1;
                 }
             }
             for (const room of global.currentProject.rooms) {
