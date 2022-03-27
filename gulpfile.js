@@ -592,6 +592,9 @@ const examples = () => gulp.src('./src/examples/**/*')
 const templates = () => gulp.src('./src/projectTemplates/**/*')
     .pipe(gulp.dest('./app/templates'));
 
+const gallery = () => gulp.src('./bundledAssets/**/*')
+    .pipe(gulp.dest('./app/bundledAssets'));
+
 // eslint-disable-next-line valid-jsdoc
 /**
  * @see https://stackoverflow.com/a/22907134
@@ -622,7 +625,8 @@ const packages = gulp.series([
         docs,
         patronsCache,
         examples,
-        templates
+        templates,
+        gallery
     ]),
     bakePackages,
 //    fixSymlinks,
