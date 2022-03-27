@@ -1,6 +1,6 @@
 ![](https://raw.githubusercontent.com/ct-js/ct-js/develop/branding/GithubHeader.png)
 
-[![](https://img.shields.io/badge/license-MIT-informational?style=flat-square)](https://github.com/ct-js/ct-js/blob/develop/LICENSE) [![GitHub tag (latest by date)](https://img.shields.io/github/tag-date/ct-js/ct-js?label=version&style=flat-square)](https://github.com/ct-js/ct-js/releases) [![Travis (.org) master branch](https://img.shields.io/travis/ct-js/ct-js/master?style=flat-square)](https://travis-ci.org/ct-js/ct-js/branches) [![Gitlab CI develop branch](https://img.shields.io/gitlab/pipeline-status/CoMiGo/ct-js?branch=develop&label=dev%20build&style=flat-square)](https://travis-ci.org/ct-js/ct-js)
+[![](https://img.shields.io/badge/license-MIT-informational?style=flat-square)](https://github.com/ct-js/ct-js/blob/develop/LICENSE) [![GitHub tag (latest by date)](https://img.shields.io/github/tag-date/ct-js/ct-js?label=version&style=flat-square)](https://github.com/ct-js/ct-js/releases) [![Gitlab CI master branch](https://img.shields.io/gitlab/pipeline-status/CoMiGo/ct-js?branch=master&label=ct.js%20builds&style=flat-square)](https://gitlab.com/CoMiGo/ct-js/-/commits/master) [![Gitlab CI develop branch](https://img.shields.io/gitlab/pipeline-status/CoMiGo/ct-js?branch=develop&label=nightly%20builds&style=flat-square)](https://gitlab.com/CoMiGo/ct-js/-/commits/develop)
 
 [![](https://img.shields.io/discord/490052958310891520?style=flat-square&logo=discord&logoColor=white)](https://discord.gg/CggbPkb) [![GitHub issues by-label](https://img.shields.io/github/issues/ct-js/ct-js/state:to%20do?style=flat-square&label=todo%20issues)](https://github.com/ct-js/ct-js/issues?q=is%3Aissue+is%3Aopen+label%3A%22state%3Ato+do%22) [![GitHub issues by-label](https://img.shields.io/github/issues/ct-js/ct-js/state:current%20release?style=flat-square&label=current%20release%20issues)](https://github.com/ct-js/ct-js/issues?q=is%3Aissue+is%3Aopen+label%3A%22state%3Acurrent+release%22)
  [![GitHub issues by-label](https://img.shields.io/github/issues/ct-js/ct-js/help%20wanted?style=flat-square&label=help%20wanted)](https://github.com/ct-js/ct-js/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22)
@@ -80,9 +80,35 @@ Use `gulp dev` instead of just `gulp` to run a dev service with live-reloading w
 
 VSCode can use [this extension](https://marketplace.visualstudio.com/items?itemName=ruakr.vsc-nwjs) to run ct.js with an attached debugger. Before running the debugger, to allow live-reloading, run `gulp dev`.
 
-## Releasing ct.js
+## Linting
 
-This is left for emergencies only, as Travis should prepare binaries for github and send them to itch.io as well
+Linting checks for code formatting issues, runs ESLint, and also checks i18n files for extra keys.
+
+```sh
+gulp lint
+```
+
+There are also separate commands for running specific tests only:
+
+```sh
+gulp lintJS
+gulp lintTags
+gulp lintStylus
+gulp lintI18n
+```
+
+## Getting your changes into production
+
+It's actually easy and robust. We have [regular ct.js](https://comigo.itch.io/ct) for core releases and [ct.js Nightly](https://comigo.itch.io/ct-nightly) as a canary/preview build.
+
+* Once your PR was approved and merged, it gets into the `develop` branch.
+* Every change to `develop` triggers a CI build, and a new version of [ct.js Nightly](https://comigo.itch.io/ct-nightly) is released publicly.
+  * To automatically update ct.js Nightly, we recommend using [the official itch.io app](https://itch.io/app).
+* Every now and then maintainers decide to release a public version of ct.js — it involves version bumping, creating and cleaning changelog, updating screenshot, website, presskit data and such. Some stuff is automated, but it still involves manual work and public announcements on different channels. But if your change got into `develop`, it means it will reach the `master` branch as well.
+
+### Releasing ct.js
+
+This is left for emergencies only, as Gitlab CI should prepare binaries for github and send them to itch.io as well
 
 ```sh
 # Builds docs and adds them to ct.js app
@@ -92,10 +118,15 @@ gulp packages
 
 # Publishes prebuilt binaries to itch.io
 # This assumes that you have an access to ct.js at itch.io :)
-gulp deployOnly
-gulp deployOnly --channel next # deploy to a specific itch.io channel
+gulp deployItchOnly
+gulp deployItchOnly --channel next # deploy to a specific itch.io channel
 
-# Combines `gulp packages` and `gulp deployOnly`
+# Creates a draft release on GitHub
+# Needs a GITHUB_TOKEN in your environment variables.
+# Does nothing on nightly releases
+gulp sendGithubDraft
+
+# Combines `gulp packages`, `gulp sendGithubDraft`, and `gulp deployItchOnly`
 gulp deploy
 ```
 
@@ -108,3 +139,5 @@ Use [Gitmoji-flavored Comigoji](https://comigo.gitlab.io/comigoji/#gitmoji) for 
 Use [Comigo's CSS naming guide](https://cosmomyzrailgorynych.github.io/css-naming-guide/) for styling
 
 We have some references for ct.js' internals on [our wiki](https://github.com/ct-js/ct-js/wiki).
+
+The ct.js app has a built-in CSS stylebook in the Meta section of the main menu.
