@@ -1,3 +1,15 @@
+## v2.0.1
+
+*Sat Mar 26 2022*
+
+### ⚡️ General Improvements
+
+* Internal: automate publishing to Github assets with Gulp and Gitlab CI
+
+### 🐛 Bug Fixes
+
+* Fix the missing asset gallery's assets
+
 ## v2.0.0
 
 *Sat Mar 26 2022*

@@ -592,6 +592,9 @@ const examples = () => gulp.src('./src/examples/**/*')
 const templates = () => gulp.src('./src/projectTemplates/**/*')
     .pipe(gulp.dest('./app/templates'));
 
+const gallery = () => gulp.src('./bundledAssets/**/*')
+    .pipe(gulp.dest('./app/bundledAssets'));
+
 // eslint-disable-next-line valid-jsdoc
 /**
  * @see https://stackoverflow.com/a/22907134
@@ -622,7 +625,8 @@ const packages = gulp.series([
         docs,
         patronsCache,
         examples,
-        templates
+        templates,
+        gallery
     ]),
     bakePackages,
 //    fixSymlinks,
@@ -630,7 +634,7 @@ const packages = gulp.series([
     zipPackages
 ]);
 
-const deployOnly = () => {
+const deployItchOnly = () => {
     console.log(`For channel ${channelPostfix}`);
     if (nightly) {
         return spawnise.spawn('./butler', ['push', `./build/ctjs - v${pack.version}/linux32`, `comigo/ct-nightly:linux32${channelPostfix ? '-' + channelPostfix : ''}`, '--userversion', buildNumber])
@@ -645,8 +649,29 @@ const deployOnly = () => {
     .then(() => spawnise.spawn('./butler', ['push', `./build/ctjs - v${pack.version}/win32`, `comigo/ct:win32${channelPostfix ? '-' + channelPostfix : ''}`, '--userversion', pack.version]))
     .then(() => spawnise.spawn('./butler', ['push', `./build/ctjs - v${pack.version}/win64`, `comigo/ct:win64${channelPostfix ? '-' + channelPostfix : ''}`, '--userversion', pack.version]));
 };
+const sendGithubDraft = async () => {
+    if (nightly) {
+        return; // Do not create github releases for nightlies
+    }
+    const readySteady = (await import('readysteady')).default;
+    const draftData = await readySteady({
+        owner: 'ct-js',
+        repo: 'ct-js',
+        // eslint-disable-next-line id-blacklist
+        tag: `v${pack.version}`,
+        force: true,
+        files: [
+            `./build/ctjs - v${pack.version}/ct.js v${pack.version} for linux32.zip`,
+            `./build/ctjs - v${pack.version}/ct.js v${pack.version} for linux64.zip`,
+            `./build/ctjs - v${pack.version}/ct.js v${pack.version} for osx64.zip`,
+            `./build/ctjs - v${pack.version}/ct.js v${pack.version} for win32.zip`,
+            `./build/ctjs - v${pack.version}/ct.js v${pack.version} for win64.zip`
+        ]
+    });
+    console.log(draftData);
+};
 
-const deploy = gulp.series([packages, deployOnly]);
+const deploy = gulp.series([packages, gulp.parallel([sendGithubDraft, deployItchOnly])]);
 
 const launchDevMode = done => {
     watch();
@@ -670,7 +695,8 @@ exports.patronsCache = patronsCache;
 exports.docs = docs;
 exports.build = build;
 exports.deploy = deploy;
-exports.deployOnly = deployOnly;
+exports.deployItchOnly = deployItchOnly;
+exports.sendGithubDraft = sendGithubDraft;
 exports.default = defaultTask;
 exports.dev = devNoNW;
 exports.bakeCompletions = bakeCompletions;

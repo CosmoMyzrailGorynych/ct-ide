@@ -60,7 +60,8 @@ pack-deploy-release:
     - npm i -g gulp-cli
     - gulp -f devSetup.gulpfile.js
     - gulp packages --buildNum=$CI_COMMIT_TAG
-    - gulp deployOnly --buildNum=$CI_COMMIT_TAG
+    - gulp deployItchOnly --buildNum=$CI_COMMIT_TAG
+    - gulp sendGithubDraft --buildNum=$CI_COMMIT_TAG
   only:
     - tags
     - master
@@ -76,5 +77,5 @@ pack-deploy-nightly:
     - npm i -g gulp-cli
     - gulp -f devSetup.gulpfile.js
     - gulp packages --nightly --buildNum=$CI_COMMIT_SHORT_SHA
-    - gulp deployOnly --nightly --buildNum=$CI_COMMIT_SHORT_SHA
+    - gulp deployItchOnly --nightly --buildNum=$CI_COMMIT_SHORT_SHA
 

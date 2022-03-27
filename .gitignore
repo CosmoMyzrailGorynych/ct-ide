@@ -40,6 +40,8 @@ desktop\.ini
 # Generated files
 src/typedefs/ct.js/types.d.ts
 app/examples
+app/templates
+app/bundledAssets
 app/data/bundle.js
 app/data/riotTags.js
 app/data/bundle.css
