@@ -25,6 +25,9 @@
         in the project.
 asset-selector.aDimmer.pointer.pad.fadein(onclick="{closeOnDimmer}" ref="dimmer")
 
+    button.aDimmer-aCloseButton.forcebackground(if="{opts.oncancelled}" title="{vocGlob.close}" onclick="{opts.oncancelled}")
+        svg.feather
+            use(xlink:href="#x")
 
     .aModal.pad.cursordefault.appear
         asset-viewer(

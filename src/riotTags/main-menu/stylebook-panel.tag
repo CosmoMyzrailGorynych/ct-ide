@@ -484,11 +484,26 @@ stylebook-panel.aPanel.aView.pad.flexrow
                 p Here the #[code.inline .relative.pad] classes on the dimmer are added only to prevent the modal from overlaying the whole screen, and to add some borders around the modal. You won't usually use these two classes.
             yield(to="example")
                 .aDimmer.relative.pad
+                    button.aDimmer-aCloseButton
+                        svg.feather
+                            use(xlink:href="#x")
                     .aModal.pad.npb
                         h2 A heading
                         p Some interesting (or not) content
                         .inset
                             button A button
+        stylebook-section(heading="A dimmer with a close button")
+            yield(to="description")
+            yield(to="example")
+                .aDimmer.relative
+                    button.aDimmer-aCloseButton
+                        svg.feather
+                            use(xlink:href="#x")
+                    .aSpacer
+                    .aSpacer
+                    .aSpacer
+                    .aSpacer
+                    .aSpacer
         stylebook-section(heading="Striped lists")
             yield(to="example")
                 ul.aStripedList
