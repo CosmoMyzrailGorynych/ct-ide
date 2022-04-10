@@ -180,7 +180,7 @@
             if (specificPointer && pointer.id !== specificPointer.id) {
                 continue;
             }
-            if (ct.place[uiSpace ? 'collideUi' : 'collide'](copy, {
+            if (ct.place.collide(copy, {
                 x: uiSpace ? pointer.xui : pointer.x,
                 y: uiSpace ? pointer.yui : pointer.y,
                 scale: {
