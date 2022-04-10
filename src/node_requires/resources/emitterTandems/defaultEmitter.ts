@@ -86,10 +86,10 @@ const emitter = {
         },
         delay: 0
     }
-};
+} as ITandemEmitter;
 
 module.exports = {
-    get() {
+    get(): ITandemEmitter {
         const generateGUID = require('./../../generateGUID');
         const newEmitter = JSON.parse(JSON.stringify(emitter));
         newEmitter.uid = generateGUID();

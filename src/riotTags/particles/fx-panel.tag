@@ -37,19 +37,9 @@ fx-panel.aPanel.aView
             e.preventDefault();
         };
 
+        const {createNewTandem} = require('./data/node_requires/resources/emitterTandems');
         this.emitterTandemCreate = () => {
-            const defaultEmitter = require('./data/node_requires/resources/particles/defaultEmitter').get();
-            const generateGUID = require('./data/node_requires/generateGUID');
-            const id = generateGUID(),
-                  slice = id.slice(-6);
-
-            const tandem = {
-                name: 'Tandem_' + slice,
-                origname: 'pt' + slice,
-                emitters: [defaultEmitter],
-                group: this.refs.emitterTandems.currentGroup.uid
-            };
-
+            const tandem = createNewTandem(this.refs.emitterTandems.currentGroup.uid);
             global.currentProject.emitterTandems.push(tandem);
             this.editingTandem = true;
             this.editedTandem = tandem;

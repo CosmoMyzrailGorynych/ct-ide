@@ -348,7 +348,7 @@ emitter-tandem-editor.aPanel.aView.flexrow
             UI events
         */
         this.addEmitter = () => {
-            const defaultEmitter = require('./data/node_requires/resources/particles/defaultEmitter').get();
+            const defaultEmitter = require('./data/node_requires/resources/emitterTandems/defaultEmitter').get();
             this.tandem.emitters.push(defaultEmitter);
             this.resetEmitters();
         };
