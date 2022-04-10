@@ -23,8 +23,8 @@
         The value passed in the function is the uid of the selected asset.
         It is also called with -1 when the asset input cannot find the current asset
         in the project.
-asset-selector.aDimmer(onclick="{closeSelector}" ref="dimmer")
-    .aModal.pad
+asset-selector.aDimmer.pointer(onclick="{closeSelector}" ref="dimmer")
+    .aModal.pad.cursordefault
         asset-viewer(
             assettype="{opts.assettype}"
             collection="{currentProject[opts.assettype]}"
@@ -48,7 +48,7 @@ asset-selector.aDimmer(onclick="{closeSelector}" ref="dimmer")
         updateResourceAPIs();
 
         this.closeSelector = e => {
-            if (e.target === this.refs.dimmer) {
+            if (e.target === this.root) {
                 if (this.opts.oncancelled) {
                     this.opts.oncancelled();
                 }
