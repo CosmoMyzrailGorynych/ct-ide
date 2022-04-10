@@ -72,18 +72,60 @@
             "table": "Masa",
             "text": "Kısa Yazı",
             "textfield": "Metin Kutusu",
-            "texture": "Doku"
+            "texture": "Doku",
+            "template": "Şablon",
+            "room": "Oda",
+            "sound": "Ses",
+            "tandem": "Partikül dağıtıcısı"
         },
         "assetTypes": {
-            "textures": ["doku", "dokular", "dokular"],
-            "templates": ["şablon", "şablonlar", "şablonlar"],
-            "emitterTandems": ["emitter tandem", "emitter tandems", "emitter tandems"],
-            "rooms": ["oda", "odalar", "odalar"],
-            "fonts": ["font", "fontlar", "fontlar"],
-            "styles": ["tarz", "tarzlar", "tarzlar"],
-            "sounds": ["ses", "sesler", "sesler"],
-            "skeletons": ["skeletal sprite", "skeletal sprites", "skeletal sprites"]
-        }
+            "textures": [
+                "doku",
+                "dokular",
+                "dokular"
+            ],
+            "templates": [
+                "şablon",
+                "şablonlar",
+                "şablonlar"
+            ],
+            "emitterTandems": [
+                "dağıtıcı partikül dağıtıcı",
+                "dağıtıcı partikül dağıtıcılar",
+                "dağıtıcı partikül dağıtıcılar"
+            ],
+            "rooms": [
+                "oda",
+                "odalar",
+                "odalar"
+            ],
+            "fonts": [
+                "font",
+                "fontlar",
+                "fontlar"
+            ],
+            "styles": [
+                "tarz",
+                "tarzlar",
+                "tarzlar"
+            ],
+            "sounds": [
+                "ses",
+                "sesler",
+                "sesler"
+            ],
+            "skeletons": [
+                "Çatı görüntü",
+                "Çatı görüntüler",
+                "çatı görüntü"
+            ]
+        },
+        "docsShort": "Dök",
+        "docsLong": "Dökümentasyon",
+        "edit": "Değiştir",
+        "nothingToShowFiller": "Burada gösterilecek hiçbir şey yok!",
+        "required": "Gerekli",
+        "settings": "Ayarlar"
     },
     "assetInput": {
         "changeAsset": "Görseli değiştirmek için tıkla",
@@ -259,7 +301,7 @@
             "version": "Versiyon:",
             "versionPostfix": "Son ek:",
             "appId": "Uygulama ID'si",
-              "appIdExplanation": "Bu genellikle mobil derlemeler için kullanılır. Bu oyununu belirten eşsiz bir dizidir. Genellikle format bölgesini takip eder.developer.projectName, ve, de, rocks.ctjs.catsteroids bunun için iyi bir örnek."
+            "appIdExplanation": "Bu genellikle mobil derlemeler için kullanılır. Bu oyununu belirten eşsiz bir dizidir. Genellikle format bölgesini takip eder.developer.projectName, ve, de, rocks.ctjs.catsteroids bunun için iyi bir örnek."
         },
         "branding": {
             "heading": "Markalaştırma",
@@ -269,8 +311,8 @@
             "iconNotice": "Kare olmalı, 1 çerçeveli en az 256x256 çözünürlüğünde görsel olmalı.",
             "splashScreen": "Açılış Ekranı:",
             "splashScreenNotice": "Bu görsel mobil derlemelerde kullanılacak. En az 1920x1920 çözünürlüğünde olmalı, ayrıca görsel portre ve yatay mod için kırpılacak, yani önemli herşeyin tam ortadaki bir karede olduğundan emin ol.",
-            "forceSmoothIcons": "Use smooth icons regardless of rendering settings",
-            "forceSmoothSplashScreen": "Use smooth splash screen images regardless of rendering settings",
+            "forceSmoothIcons": "Render ayarlarına aldırmadan pürüzsüz ikonlar kullan",
+            "forceSmoothSplashScreen": "Render ayarlarına aldırmadan pürüzsüz açılış ekranı görselleri kullan",
             "invertPreloaderScheme": "Ön-yükleyici'nin renklerini tersine çevir",
             "hideLoadingLogo": "\"Made with ct.js\" yazısını yükleme ekranında sakla"
         },
@@ -406,7 +448,7 @@
         "filler": "Filler:",
         "fillerNone": "Hiç",
         "fillerCross": "Çarpı",
-        "fillerArrow": "Ok",
+        "fillerArrow": "Tamam",
         "fillerLabel": "Yazı etiketi"
     },
     "soundRecorder": {
@@ -541,7 +583,7 @@
         "headerSelectFolderForData": "ct.js verisi için bir klasör seç",
         "paragraphCouldNotPickDirectory": "Olamaz! Ct.js projelerin, paket derlemelerin, ve hata ayıklama için bir klasör bulamadı. Ct.js genelde otomatik olarak bir tane bulur, ama bu sefer baktığı tüm dosyalar salt-okunurdu!",
         "paragraphDirectoryDirections": "Yine de bu düzeltilebilir. Aşağıdaki butona bas ve verinin depolanacağı klasörü seç Click the button below and select a folder at which to store data. If you are unsure, create a \"ct.js\" directory in your Documents folder.",
-        "selectFolder": "Select folder…"
+        "selectFolder": "Klasör seç..."
     },
     "writableFolderSelector": {
         "folderDoesNotExist": "Bu klasör gerçekten varmış gibi durmuyor... Bunu nasl yaptın?",
@@ -670,11 +712,11 @@
         "hotkeysNoticeMovement": "Ctrl = Sil, Shift = Seç",
         "toCenter": "Ortala",
         "shiftLabel": "Tarafından değiştir:",
-        "shift": "Taşınmak",
+        "shift": "Herşeyi taşı",
         "step": "Adımda",
         "create": "Oluşturulduğunda",
         "leave": "Ayrıldığında",
-        "draw": "Çiz",
+        "draw": "Çizildiğinde",
         "newDepth": "Yeni derinlik:",
         "deleteCopy": "{0}. kopyayı sil",
         "deleteCopies": "Kopyaları sil",
@@ -743,7 +785,7 @@
         "fill": "Doldur",
         "form": "Çarpışma şekli",
         "frames": "Kare sayısı:",
-        "isometrify": "İzometrikleştirmek: Ekseni orta alt noktasına götür, tüm görüntüyü bir çarpışma maskesi ile doldur",
+        "isometrify": "İzometrikleştirme: Ekseni orta alt noktasına götür, tüm görüntüyü bir çarpışma maskesi ile doldur",
         "name": "İsim:",
         "radius": "Yarıçap:",
         "rectangle": "Dikdörtgen",
@@ -769,7 +811,7 @@
         "previewAnimationNotice": "Bu bir önizleme. Onu gerçek kopyalar için değiştirmek için this.animationSpeed özelliğini kullan.",
         "pasteCollisionMask": "Bir çarpışma maskesini yapıştır",
         "copyCollisionMask": "Çarpışma maskesini kopyala",
-        "bgColor": "ap rengini değiştir",
+        "bgColor": "Ap rengini değiştir",
         "setCenter": "Görselin merkezi",
         "replaceTexture": "Değiştir…",
         "showMask": "Maskeyi göster",
@@ -779,7 +821,8 @@
         "offY": "Öteleme Y:"
     },
     "sounds": {
-        "create": "Oluştur"
+        "create": "Oluştur",
+        "record": "Kaydet"
     },
     "soundView": {
         "import": "İçe Aktar",
