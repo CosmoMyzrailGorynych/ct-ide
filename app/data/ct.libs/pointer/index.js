@@ -88,10 +88,6 @@
             tiltY: pointer.tiltY,
             twist: pointer.twist
         });
-        for (const button in buttonMappings) {
-            // eslint-disable-next-line no-bitwise
-            setKey(button, (pointer.buttons & buttonMappings[button]) === button ? 1 : 0);
-        }
     };
 
     var handleHoverStart = function (e) {
@@ -356,6 +352,16 @@
             lastPanY = y;
             lastAngle = angle;
             lastScaleDistance = distance;
+
+            for (const button in buttonMappings) {
+                setKey(button, 0);
+                for (const pointer of ct.pointer.down) {
+                    // eslint-disable-next-line no-bitwise
+                    if ((pointer.buttons & buttonMappings[button]) === buttonMappings[button]) {
+                        setKey(button, 1);
+                    }
+                }
+            }
         },
         lock() {
             if (locking) {
