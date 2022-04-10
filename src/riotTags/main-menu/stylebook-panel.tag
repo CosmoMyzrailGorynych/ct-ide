@@ -21,6 +21,10 @@ stylebook-panel.aPanel.aView.pad.flexrow
                 svg.feather
                     use(xlink:href="#table-sidebar")
                 span Tables
+            li(onclick="{openTab('cursor')}" class="{active: tab === 'cursor'}")
+                svg.feather
+                    use(xlink:href="#ui")
+                span Cursor
 
 
     main.aPanel.pad.tall(if="{tab === 'common'}")
@@ -846,7 +850,22 @@ stylebook-panel.aPanel.aView.pad.flexrow
                                 td Cell 2.7
                                 td Cell 2.8
                                 td Cell 2.9
-
+    main.aPanel.pad.tall(if="{tab === 'cursor'}")
+        h1 Cursor styles
+        .aSpacer
+        stylebook-section()
+            yield(to="description")
+                p There are several styles that change the cursor hovering over the element.
+            yield(to="example")
+                p.pointer A paragraph that changes a cursor to a pointer.
+                button A regular button
+                p
+                button.cursordefault A button that shows a default cursor instead of a pointer.
+                p
+                button.loading
+                    svg.feather.rotate
+                        use(xlink:href="#refresh-cw")
+                    span A button with a "wait" cursor
     .aSpacer.nogrow
     .nogrow
         button.inline.square(onclick="{opts.onclose}" title="{vocGlob.close}")
