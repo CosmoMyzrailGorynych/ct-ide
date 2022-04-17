@@ -22,7 +22,7 @@
         "name": "名称",
         "no": "否",
         "none": "无",
-        "ok": "好",
+        "ok": "确认",
         "open": "打开",
         "paste": "粘贴",
         "rename": "重命名",
@@ -42,32 +42,33 @@
         "couldNotLoadFromClipboard": "无法从剪贴板加载数据",
         "filter": "过滤:",
         "pastedFromClipboard": "从剪贴板粘贴",
-        "edit": "",
-        "nothingToShowFiller": "",
-        "required": "",
-        "settings": "",
+        "edit": "编辑",
+        "nothingToShowFiller": "这里没有什么可以展示的",
+        "required": "必需",
+        "settings": "设置",
         "fieldTypes": {
-            "checkbox": "",
-            "code": "",
-            "color": "",
-            "group": "",
-            "h1": "",
-            "h2": "",
-            "h3": "",
-            "h4": "",
-            "number": "",
-            "point2D": "",
-            "radio": "",
-            "slider": "",
-            "sliderAndNumber": "",
-            "table": "",
-            "text": "",
-            "textfield": "",
-            "texture": "",
-            "template": "",
-            "room": "",
-            "sound": "",
-            "tandem": ""
+            "checkbox": "复选",
+            "code": "程序代码",
+            "color": "颜色",
+            "group": "字段组",
+            "h1": "一级主标题",
+            "h2": "二级主标题",
+            "h3": "三级主标题",
+            "h4": "四级主标题",
+            "number": "数字",
+            "point2D": "二维点",
+            "radio": "单选按钮",
+            "slider": "滑块",
+            "sliderAndNumber": "带有数字输入的滑块",
+            "table": "表格",
+            "text": "短文本",
+            "textfield": "文本框",
+            "texture": "纹理",
+            "template": "模板",
+            "room": "房间",
+            "sound": "声音",
+            "tandem": "粒子发射器",
+            "type": ""
         },
         "newName": "新名称",
         "saveProject": "保存项目",
@@ -81,49 +82,49 @@
         "noRooms": "您需要至少一个房间来编译您的应用.",
         "tileLayer": "平铺层",
         "ctSite": "ct.js 网站首页",
-        "docsShort": "",
-        "docsLong": "",
-        "openAssetGallery": "",
+        "docsShort": "文档",
+        "docsLong": "文档",
+        "openAssetGallery": "图库",
         "assetTypes": {
             "textures": [
-                "",
-                "",
-                ""
+                "纹理",
+                "纹理",
+                "纹理"
             ],
             "templates": [
-                "",
-                "",
-                ""
+                "模板",
+                "模板",
+                "模板"
             ],
             "emitterTandems": [
-                "",
-                "",
-                ""
+                "发射器串联",
+                "发射器串联",
+                "发射器串联"
             ],
             "rooms": [
-                "",
-                "",
-                ""
+                "房间",
+                "房间",
+                "房间"
             ],
             "fonts": [
-                "",
-                "",
-                ""
+                "字体",
+                "字体",
+                "字体"
             ],
             "styles": [
-                "",
-                "",
-                ""
+                "样式",
+                "样式",
+                "样式"
             ],
             "sounds": [
-                "",
-                "",
-                ""
+                "声音",
+                "声音",
+                "声音"
             ],
             "skeletons": [
-                "",
-                "",
-                ""
+                "骨骼精灵图形",
+                "骨骼精灵图形",
+                "骨骼精灵图形"
             ]
         }
     },
@@ -166,14 +167,14 @@
         "windowsCrossBuildWarning": "要从Linux/MacOS为Windows构建, 需要在系统中安装Wine. 安装说明对于不同的平台都是不一样的，所以你最好自己搜索一下:)",
         "cannotBuildForMacOnWin": "糟糕, Windows只会生成坏掉的Mac包. 尝试使用Linux机器;例如, 在虚拟机里, 它是100%免费的!",
         "firstRunNotice": "每个平台的第一次运行会比较慢, 因为ct.js会下载并保存打包所需的额外库. 这需要一些时间, 但下一次几乎是瞬间的.",
-        "projectTitleRequired": "",
-        "appIdRequired": "",
-        "noAndroidSdkFound": "",
-        "envVarNotice": "",
-        "downloadAndroidStudio": "",
-        "requiresInternetNotice": "",
-        "noJdkFound": "",
-        "downloadJDK": ""
+        "projectTitleRequired": "你需要在项目选项卡 → 创作 → 名称 中添加标题",
+        "appIdRequired": "你需要在项目选项卡 → 创作 → 应用 ID 中设置唯一的 appId 来发布应用",
+        "noAndroidSdkFound": "没有找到Android SDK (Android SDK ROOT环境变量没有设置). 你可以通过安装Android Studio获得Android SDK",
+        "envVarNotice": "你可能仍然需要手动设置此环境变量并重新启动设备",
+        "downloadAndroidStudio": "下载 Android Studio",
+        "requiresInternetNotice": "此操作需要Internet连接来设置每个项目",
+        "noJdkFound": "没有找到JDK 11 (JAVA HOME环境变量没有设置或没有指向JDK 11). 你可以在这里获得JDK 11:",
+        "downloadJDK": "下载 JDK 11"
     },
     "intro": {
         "loading": "请稍等: 小猫正在聚集光速!",
@@ -204,13 +205,13 @@
         "twitter": "Twitter 频道",
         "discord": "Discord 社区",
         "createOrBrowseJunction": "或",
-        "cloneProject": "",
-        "github": "",
-        "itch": "",
-        "vkontakte": "",
-        "patreon": "",
-        "templates": "",
-        "templatesInfo": ""
+        "cloneProject": "克隆这个项目到一个新的位置",
+        "github": "Ct.js 在 Github",
+        "itch": "Ct.js 在 itch.io 上的商店页面",
+        "vkontakte": "Vkontakte 公共社区",
+        "patreon": "在 Patreon 支持 ct.js!",
+        "templates": "模板",
+        "templatesInfo": "你可以通过使用这些模板之一来启动游戏开发.它们只包含占位符图像，但具有有效的机制. 选择项目将为新项目打开一个保存目录选择器"
     },
     "onboarding": {
         "hoorayHeader": "赞! 您成功创建了一个项目!",
@@ -234,14 +235,14 @@
             "methods": "输入方法",
             "multiplier": "乘数",
             "noActionsYet": "动作允许开发人员一次监听多个输入方法并动态地更改它们, 所有这些操作都使用一个统一的API. 点击上面的文档图标来阅读更多内容",
-            "makeFromScratch": "",
-            "presets": "",
-            "presetXYMovement": "",
-            "presetTouchAndMouse": "",
-            "presetCustom": "",
-            "exportActionPreset": "",
-            "importErrorMissingModules": "",
-            "importErrorNotCtJsPreset": ""
+            "makeFromScratch": "从头做起",
+            "presets": "预设",
+            "presetXYMovement": "通用XY移动",
+            "presetTouchAndMouse": "鼠标和触控",
+            "presetCustom": "导入自己的",
+            "exportActionPreset": "导出为预设",
+            "importErrorMissingModules": "不能导入预设动作 因为你的ct.js安装缺乏以下模块: $1.",
+            "importErrorNotCtJsPreset": "这个文件看起来不像ct.js的预设动作."
         },
         "authoring": {
             "author": "作者姓名",
@@ -250,8 +251,8 @@
             "title": "名称:",
             "version": "版本:",
             "versionPostfix": "后缀:",
-            "appId": "",
-            "appIdExplanation": ""
+            "appId": "应用 ID",
+            "appIdExplanation": "这主要用于移动端构建. 它是用来唯一标识你的游戏的字符串. 它通常遵循zone.developer.projectName格式, 比如rocks.ctjs.catsteroids就是一个很好的例子"
         },
         "branding": {
             "heading": "图标",
@@ -260,11 +261,11 @@
             "icon": "游戏图标:",
             "iconNotice": "图标应为一个正方形，单帧纹理，至少256x256像素大的图片.",
             "invertPreloaderScheme": "反转预加载器的配色方案",
-            "hideLoadingLogo": "",
-            "splashScreen": "",
-            "splashScreenNotice": "",
-            "forceSmoothIcons": "",
-            "forceSmoothSplashScreen": ""
+            "hideLoadingLogo": "在加载屏幕中隐藏 \"Made with ct.js\" 图形",
+            "splashScreen": "启动画面:",
+            "splashScreenNotice": "该图像将用于移动端构建. 它应该至少是1920x1920像素大小, 并将调整大小和裁剪图像和横向屏幕方向, 所以确保所有重要的东西都在画面中心",
+            "forceSmoothIcons": "不论渲染设置如何使用平滑的图标",
+            "forceSmoothSplashScreen": "不管渲染设置如何使用平滑的启动画面图像"
         },
         "modules": {
             "heading": "Cat模组"
@@ -283,13 +284,13 @@
                 "windowed": "窗口"
             },
             "pixelatedRender": "在此处和导出的项目中禁用图像平滑 (保留清晰像素)",
-            "usePixiLegacy": "",
-            "mobileBuilds": "",
-            "screenOrientation": "",
+            "usePixiLegacy": "添加一个传统的, 基于画布的渲染器来支持旧的浏览器和显卡(你的游戏增加~20kb)",
+            "mobileBuilds": "移动端构建",
+            "screenOrientation": "屏幕方向:",
             "screenOrientations": {
-                "unspecified": "",
-                "landscape": "",
-                "portrait": ""
+                "unspecified": "任何",
+                "landscape": "横向",
+                "portrait": "纵向"
             }
         },
         "scripts": {
@@ -314,28 +315,28 @@
         },
         "catmodsSettings": "Cat模组设置",
         "content": {
-            "heading": "",
-            "addContentType": "",
-            "missingTypeName": "",
-            "unnamedContentTypeHint": "",
-            "typeName": "",
-            "typeNameHint": "",
-            "typeReadableName": "",
-            "typeReadableNameHint": "",
-            "icon": "",
-            "typeSpecification": "",
-            "fieldName": "",
-            "fieldNameHint": "",
-            "fieldReadableName": "",
-            "fieldReadableNameHint": "",
-            "fieldType": "",
-            "deleteContentType": "",
-            "confirmDeletionMessage": "",
-            "gotoEntries": "",
-            "entries": "",
-            "array": ""
+            "heading": "内容类型编辑器",
+            "addContentType": "添加类型",
+            "missingTypeName": "未命名内容类型",
+            "unnamedContentTypeHint": "这个内容类型未命名. 除非添加名称, 否则它在游戏中是不可用的.",
+            "typeName": "内容类型名称",
+            "typeNameHint": "将在代码中使用的内容类型名称. 例如: GearItems, EnemySkills, Cities.",
+            "typeReadableName": "可读名称",
+            "typeReadableNameHint": "内容类型的可读名称, 在这里和内容编辑器中显示.",
+            "icon": "图标",
+            "typeSpecification": "内容图式",
+            "fieldName": "名称",
+            "fieldNameHint": "将在代码中使用的字段名. 比如: power, hp, spawnType.",
+            "fieldReadableName": "可读名称",
+            "fieldReadableNameHint": "名称的可读版本, 在内容编辑器中使用.",
+            "fieldType": "类型",
+            "deleteContentType": "删除这个内容类型",
+            "confirmDeletionMessage": "您确定要删除此内容类型吗? 它是不可逆的, 并且也将删除该内容类型的所有条目.",
+            "gotoEntries": "进入条目",
+            "entries": "条目",
+            "array": "数组"
         },
-        "contentTypes": ""
+        "contentTypes": "内容类型"
     },
     "modules": {
         "author": "这个cat模组的作者",
@@ -378,11 +379,11 @@
         "createTemplate": "从中创建一个类型",
         "importFromClipboard": "从剪贴板导入",
         "generatePlaceholder": "生成一个占位符",
-        "textures": ""
+        "textures": "纹理"
     },
     "sounds": {
         "create": "创建",
-        "record": ""
+        "record": "记录"
     },
     "styles": {
         "create": "创建",
@@ -524,7 +525,7 @@
             "successZipExport": "已成功导出到{0}.",
             "zipExport": "导出为web",
             "heading": "部署",
-            "exportAndroid": ""
+            "exportAndroid": "导出为Android..."
         },
         "latestProjects": {
             "recentProjects": "最近的项目"
@@ -537,22 +538,23 @@
             "codeFontCustom": "自定义...",
             "theme": "主题",
             "themes": {
-                "Day": "亮色",
-                "Night": "暗色",
-                "Horizon": "地平线",
-                "HCBlack": "高对比度黑",
-                "SpringStream": "春涧流泉",
-                "LucasDracula": "卢卡斯德古拉"
+                "Day": "Day",
+                "Night": "Night",
+                "SpringStream": "Spring Stream",
+                "LucasDracula": "Lucas Dracula",
+                "Horizon": "Horizon",
+                "HCBlack": "High-contrast Black"
             },
             "newFont": "新字体:",
             "language": "语言",
-            "translateToYourLanguage": "将ct.js翻译成您的语言",
+            "translateToYourLanguage": "将 ct.js 翻译成你的语言",
             "codeFont": "代码字体",
             "codeLigatures": "连字",
             "codeDense": "密集布局",
             "disableSounds": "关闭 UI 音效",
             "changeDataFolder": "设置数据文件夹位置",
-            "forceProductionForDebug": "强制生产任务用于调试导出"
+            "forceProductionForDebug": "强制生产任务用于调试导出",
+            "settings": ""
         },
         "project": {
             "heading": "项目",
@@ -566,13 +568,13 @@
         },
         "meta": {
             "license": "许可证",
-            "visitDiscordForGamedevSupport": "加入 Discord 服务器以获得游戏开发支持",
+            "visitDiscordForGamedevSupport": "Discord 服务",
             "openIconList": "打开 icons 图标列表",
             "heading": "元数据",
-            "twitter": "",
-            "vkontakte": "",
-            "ctjsForum": "",
-            "openStylebook": ""
+            "twitter": "Twitter 频道",
+            "vkontakte": "Vkontakte 公共社区",
+            "ctjsForum": "加入 ct.js 社区",
+            "openStylebook": "打开 CSS 样式书"
         }
     },
     "appView": {
@@ -597,11 +599,11 @@
     "extensionsEditor": {
         "noEntries": "没有条目.",
         "addRow": "添加一行",
-        "actions": "",
-        "values": "",
-        "moveDown": "",
-        "moveUp": "",
-        "deleteRow": ""
+        "actions": "操作",
+        "values": "值",
+        "moveDown": "下移",
+        "moveUp": "上移",
+        "deleteRow": "删除行"
     },
     "textureGenerator": {
         "name": "纹理名称:",
@@ -618,11 +620,11 @@
         "fillerNone": "无",
         "fillerCross": "交叉",
         "fillerLabel": "文本标签",
-        "form": "",
-        "formRectangular": "",
-        "formRound": "",
-        "formDiamond": "",
-        "fillerArrow": ""
+        "form": "表单",
+        "formRectangular": "矩形",
+        "formRound": "圆形",
+        "formDiamond": "菱形",
+        "fillerArrow": "箭头"
     },
     "textureInput": {
         "jumpToTexture": "跳转到纹理",
@@ -641,31 +643,31 @@
         "complete": "文件夹已设置, 一切正常✅"
     },
     "copyCustomProperties": {
-        "customProperties": "",
-        "addProperty": "",
-        "property": "",
-        "value": "",
-        "delete": ""
+        "customProperties": "自定义属性",
+        "addProperty": "添加属性",
+        "property": "属性",
+        "value": "值",
+        "delete": "删除"
     },
     "assetViewer": {
-        "addNewGroup": "",
-        "ungrouped": "",
-        "newGroupName": "",
-        "groupDeletionConfirmation": ""
+        "addNewGroup": "新分组",
+        "ungrouped": "显示未分组",
+        "newGroupName": "新分组",
+        "groupDeletionConfirmation": "是否确定删除该分组? 所有资产将成为未分组"
     },
     "groupEditor": {
-        "groupEditor": "",
-        "icon": "",
-        "color": ""
+        "groupEditor": "分组编辑器",
+        "icon": "图标",
+        "color": "颜色"
     },
     "soundRecorder": {
-        "recorderHeading": "",
-        "record": "",
-        "stopRecording": "",
-        "discardRecording": "",
-        "finishRecording": "",
-        "cannotRecordSound": "",
-        "troubleshootingWindows": ""
+        "recorderHeading": "录音机",
+        "record": "开始录音",
+        "stopRecording": "停止录音",
+        "discardRecording": "删除录音",
+        "finishRecording": "完成录音",
+        "cannotRecordSound": "无法开始录音: 检查音频设置重启录音设备",
+        "troubleshootingWindows": "Windows系统依次打开设置 -> 隐私 -> 麦克风 检查应用是否有权限访问麦克风设备"
     },
     "roomBackgrounds": {
         "add": "添加一个背景",
@@ -718,12 +720,12 @@
             "rotation": "旋转",
             "scale": "缩放"
         },
-        "customProperties": "",
-        "restrictCamera": "",
-        "minimumX": "",
-        "minimumY": "",
-        "maximumX": "",
-        "maximumY": "",
+        "customProperties": "自定义属性",
+        "restrictCamera": "保持相机在一个矩形中",
+        "minimumX": "X 最小值",
+        "minimumY": "Y 最小值",
+        "maximumX": "X 最大值",
+        "maximumY": "Y 最大值",
         "gridOff": "禁用网格",
         "gridSize": "网格大小:",
         "toCenter": "居中",
@@ -751,8 +753,8 @@
         "textWrap": "自动换行",
         "textWrapWidth": "最大宽度:",
         "useCustomFont": "使用自定义字体…",
-        "code": "",
-        "copyCode": "",
+        "code": "代码",
+        "copyCode": "复制",
         "fillColor": "颜色:",
         "fillColor1": "颜色 1:",
         "fillColor2": "颜色 2:",
@@ -802,9 +804,9 @@
         "paddingNotice": "这将影响纹理的导出方式:它在边缘上添加重复的像素, 并防止平铺和缩放纹理上的失真. 默认值通常是足够的, 但是, 如果你强烈地收缩纹理，流血可能会再次出现. 如果这个纹理在游戏中有工件, 就增加这个值.",
         "updateFromClipboard": "从剪贴板更新",
         "previewAnimationNotice": "这是一个预览. 用this.animationSpeed属性改变它的真实拷贝.",
-        "showFrameIndices": "",
-        "pasteCollisionMask": "",
-        "copyCollisionMask": "",
+        "showFrameIndices": "显示帧索引",
+        "pasteCollisionMask": "粘贴碰撞遮罩",
+        "copyCollisionMask": "拷贝碰撞遮罩",
         "bgColor": "改变背景颜色",
         "setCenter": "图片中心点",
         "replaceTexture": "替换...",
@@ -860,34 +862,34 @@
         "name": "名称:",
         "step": "同步",
         "visible": "显示",
-        "appearance": "",
-        "opacity": "",
-        "blendMode": "",
-        "playAnimationOnStart": "",
+        "appearance": "外观",
+        "opacity": "不透明度:",
+        "blendMode": "混合模式:",
+        "playAnimationOnStart": "开始时播放动画",
         "blendModes": {
-            "normal": "",
-            "add": "",
-            "multiply": "",
-            "screen": ""
+            "normal": "正常",
+            "add": "掺入 (溶解)",
+            "multiply": "倍增 (变暗)",
+            "screen": "遮蔽 (变亮)"
         }
     },
     "assetInput": {
-        "changeAsset": "",
-        "jumpToAsset": "",
-        "selectAssetHeader": ""
+        "changeAsset": "切换资产",
+        "jumpToAsset": "跳转到该资产",
+        "selectAssetHeader": "选择资产"
     },
     "builtinAssetGallery": {
-        "galleryTip": "",
-        "assetGalleryHeader": "",
-        "importIntoProject": "",
-        "importAll": "",
-        "byAuthorPrefix": "",
-        "cannotImportExplanation": "",
-        "nameOccupied": "",
-        "cannotImportNameOccupied": "",
-        "visitSource": "",
-        "visitAuthorsItch": "",
-        "visitAuthorsTwitter": "",
-        "tipAuthor": ""
+        "galleryTip": "这是一个免费的, 内置的各种纹理和声音的资产库. 所有的资产都是CC0或WTFPL或者在特殊条款下发布, 以便在ct.js中使用. 在商业和其他项目中, 你可以以任何方式使用这些资源",
+        "assetGalleryHeader": "资产",
+        "importIntoProject": "导入到当前项目",
+        "importAll": "导入所有",
+        "byAuthorPrefix": "通过",
+        "cannotImportExplanation": "这个资产的名称会被其他资产使用. 你可能需要重命名现有资产; 或者你已经导入了这个资产",
+        "nameOccupied": "名称被占用",
+        "cannotImportNameOccupied": "无法导入 $1 该名称已被占用",
+        "visitSource": "打开这个资产包的商店页面",
+        "visitAuthorsItch": "访问作者的 itch.io 页面",
+        "visitAuthorsTwitter": "访问作者的 Twitter 页面",
+        "tipAuthor": "奖励作者的辛勤工作 :D"
     }
 }
