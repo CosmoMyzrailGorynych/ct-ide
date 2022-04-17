@@ -1,5 +1,5 @@
-sound-recorder.aDimmer
-    .aModal.pad
+sound-recorder.aDimmer.fadein
+    .aModal.pad.appear
         .toright
             button.square.inline(onclick="{opts.onclose}" title="{vocGlob.close}")
                 svg.feather

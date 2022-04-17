@@ -602,9 +602,13 @@
                 length *= -1;
                 dir += 180;
             }
-            var dx = Math.cos(dir * Math.PI / -180) * precision,
-                dy = Math.sin(dir * Math.PI / -180) * precision;
-            for (let i = 0; i < length; i += precision) {
+            var dx = Math.cos(dir * Math.PI / 180) * precision,
+                dy = Math.sin(dir * Math.PI / 180) * precision;
+            while (length > 0) {
+                if (length < 1) {
+                    dx *= length;
+                    dy *= length;
+                }
                 const occupied = ct.place.occupied(me, me.x + dx, me.y + dy, cgroup);
                 if (!occupied) {
                     me.x += dx;
@@ -613,6 +617,7 @@
                 } else {
                     return occupied;
                 }
+                length--;
             }
             return false;
         },

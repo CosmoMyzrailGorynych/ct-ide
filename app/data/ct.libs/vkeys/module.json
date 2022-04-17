@@ -4,7 +4,7 @@
         "name_Ru": "Виртуальные клавиши",
         "tagline": "Create on-screen buttons and joysticks and listen to them in Actions system.",
         "tagline_Ru": "Создай экранные кнопки и джойстики и слушай за их событиями в системе Действий.",
-        "version": "2.0.0",
+        "version": "3.0.0",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",
             "mail": "admin@nersta.ru"
@@ -35,5 +35,6 @@
         "Vjoy3Y": "3rd virtual joystick, Y axis",
         "Vjoy4X": "4th virtual joystick, X axis",
         "Vjoy4Y": "4th virtual joystick, Y axis"
-    }
+    },
+    "optionalDependencies": ["mouse", "touch", "pointer"]
 }

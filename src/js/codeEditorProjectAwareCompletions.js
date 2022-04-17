@@ -66,7 +66,7 @@
     };
 
     const provideTemplateNames = function provideTemplateNames(model, position) {
-        if (!checkMatch(model, position, /ct\.templates\.((make|copy)\(|list\[|templates\[)$/)) {
+        if (!checkMatch(model, position, /ct\.templates\.((make|copy|exists)\(|list\[|templates\[)$/)) {
             return {
                 suggestions: []
             };
@@ -127,19 +127,19 @@
 
     window.signals = window.signals || riot.observable({});
     window.signals.on('monacoBooted', () => {
-        monaco.languages.registerCompletionItemProvider('templatescript', {
+        monaco.languages.registerCompletionItemProvider('typescript', {
             provideCompletionItems: provideTemplateNames,
             triggerCharacters: ['(', '[']
         });
-        monaco.languages.registerCompletionItemProvider('templatescript', {
+        monaco.languages.registerCompletionItemProvider('typescript', {
             provideCompletionItems: provideSoundNames,
             triggerCharacters: ['(']
         });
-        monaco.languages.registerCompletionItemProvider('templatescript', {
+        monaco.languages.registerCompletionItemProvider('typescript', {
             provideCompletionItems: provideActionNames,
             triggerCharacters: ['.']
         });
-        monaco.languages.registerCompletionItemProvider('templatescript', {
+        monaco.languages.registerCompletionItemProvider('typescript', {
             provideCompletionItems: provideRoomNames,
             triggerCharacters: ['(', '[']
         });

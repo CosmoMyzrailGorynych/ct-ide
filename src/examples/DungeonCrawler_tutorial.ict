@@ -1,4 +1,4 @@
-ctjsVersion: 2.0.0
+ctjsVersion: 2.0.1
 notes: /* empty */
 libs:
   fittoscreen:
@@ -726,7 +726,7 @@ templates:
     onstep: |-
       this.vspeed = ct.actions.MoveY.value * this.maxSpeed;
       this.hspeed = ct.actions.MoveX.value * this.maxSpeed;
-      console.log(this.moveContinuousByAxes('Solid'));
+      this.moveContinuousByAxes('Solid');
 
       if (ct.actions.Shoot.pressed) {
           const bullet = ct.templates.copy('Bullet', this.x, this.y - 5);
@@ -789,7 +789,7 @@ templates:
     extends:
       cgroup: ''
     uid: c40336ea-2846-45d5-97ba-d51852d3f6c5
-    lastmod: 1641334773965
+    lastmod: 1650173622519
   - name: Crate
     depth: 0
     oncreate: this.depth = this.y;
@@ -6238,12 +6238,13 @@ rooms:
       });
     onstep: ''
     ondraw: ''
-    onleave: >-
-      ct.sound.stop('InGameTheme');
-
-
-      console.log('This demo is a work in progress, stay tuned for more levels
-      :)');
+    onleave: |-
+      // If there is no cat in the room,
+      // it means that we are restarting the room because the cat died.
+      if (ct.templates.exists('Cat')) {
+          ct.sound.stop('InGameTheme');
+          console.log('This demo is a work in progress, stay tuned for more levels :)');
+      }
     width: 240
     height: 160
     backgrounds: []
@@ -8734,6 +8735,7 @@ emitterTandems:
           particleSpacing: 360
         uid: 4f1c4b6a-d8a7-428b-a7f2-c7ce01c0f162
     previewTexture: 8bef1226-7fb8-4bf5-8120-ac6e53d81ea5
+    uid: pt1f52a07073af
   - name: BlueSparks
     origname: ptedde43ecfba6
     emitters:
@@ -8900,6 +8902,7 @@ emitterTandems:
         uid: 0e491f30-ae29-4653-8750-6cfc60976637
         showShapeVisualizer: false
     previewTexture: 4733fb53-5e41-4cf8-b9a8-91ad700f2246
+    uid: ptb58af8b29aed
   - name: Cat_Damage
     origname: pta8f6693e58be
     emitters:

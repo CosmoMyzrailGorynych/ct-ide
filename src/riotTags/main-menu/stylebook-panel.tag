@@ -21,6 +21,10 @@ stylebook-panel.aPanel.aView.pad.flexrow
                 svg.feather
                     use(xlink:href="#table-sidebar")
                 span Tables
+            li(onclick="{openTab('cursor')}" class="{active: tab === 'cursor'}")
+                svg.feather
+                    use(xlink:href="#ui")
+                span Cursor
 
 
     main.aPanel.pad.tall(if="{tab === 'common'}")
@@ -480,11 +484,26 @@ stylebook-panel.aPanel.aView.pad.flexrow
                 p Here the #[code.inline .relative.pad] classes on the dimmer are added only to prevent the modal from overlaying the whole screen, and to add some borders around the modal. You won't usually use these two classes.
             yield(to="example")
                 .aDimmer.relative.pad
+                    button.aDimmer-aCloseButton
+                        svg.feather
+                            use(xlink:href="#x")
                     .aModal.pad.npb
                         h2 A heading
                         p Some interesting (or not) content
                         .inset
                             button A button
+        stylebook-section(heading="A dimmer with a close button")
+            yield(to="description")
+            yield(to="example")
+                .aDimmer.relative
+                    button.aDimmer-aCloseButton
+                        svg.feather
+                            use(xlink:href="#x")
+                    .aSpacer
+                    .aSpacer
+                    .aSpacer
+                    .aSpacer
+                    .aSpacer
         stylebook-section(heading="Striped lists")
             yield(to="example")
                 ul.aStripedList
@@ -846,7 +865,22 @@ stylebook-panel.aPanel.aView.pad.flexrow
                                 td Cell 2.7
                                 td Cell 2.8
                                 td Cell 2.9
-
+    main.aPanel.pad.tall(if="{tab === 'cursor'}")
+        h1 Cursor styles
+        .aSpacer
+        stylebook-section()
+            yield(to="description")
+                p There are several styles that change the cursor hovering over the element.
+            yield(to="example")
+                p.pointer A paragraph that changes a cursor to a pointer.
+                button A regular button
+                p
+                button.cursordefault A button that shows a default cursor instead of a pointer.
+                p
+                button.loading
+                    svg.feather.rotate
+                        use(xlink:href="#refresh-cw")
+                    span A button with a "wait" cursor
     .aSpacer.nogrow
     .nogrow
         button.inline.square(onclick="{opts.onclose}" title="{vocGlob.close}")

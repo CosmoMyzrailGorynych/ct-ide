@@ -1,4 +1,4 @@
-(function () {
+(function ctVkeys() {
     ct.vkeys = {
         button(options) {
             var opts = ct.u.ext({

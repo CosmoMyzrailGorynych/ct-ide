@@ -17,7 +17,7 @@
 color-input
     .color-input-aPicker(style="background-color: {value};" onclick="{openPicker}")
         span(style="color: {dark? '#fff' : '#000'};") {value}
-    color-picker(
+    color-picker.appear(
         ref="colorPicker" if="{opened}"
         color="{value}" hidealpha="{opts.hidealpha}"
         onapply="{applyColor}" onchanged="{changeColor}" oncancel="{cancelColor}"

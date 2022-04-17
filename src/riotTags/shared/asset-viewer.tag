@@ -111,7 +111,7 @@ asset-viewer.flexfix(class="{opts.namespace} {opts.class}")
                         use(xlink:href="#{group.icon}")
                 .aCard-Properties
                     span {group.name}
-        .center(if="{!(searchResults? searchResults : getGrouped(collection)).length}")
+        .center(if="{!opts.shownone && !(searchResults? searchResults : getGrouped(collection)).length}")
             svg.anIllustration
                 use(xlink:href="data/img/weirdFoldersIllustration.svg#illustration")
             br

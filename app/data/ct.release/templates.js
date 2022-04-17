@@ -155,7 +155,9 @@ const Copy = (function Copy() {
                 return;
             }
             if (this.speed === 0) {
-                this.hspeed = value;
+                const restoredDir = this[zeroDirectionAccessor];
+                this[hspeedAccessor] = value * Math.cos(restoredDir * Math.PI / 180);
+                this[vspeedAccessor] = value * Math.sin(restoredDir * Math.PI / 180);
                 return;
             }
             var multiplier = value / this.speed;

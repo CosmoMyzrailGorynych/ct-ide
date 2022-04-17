@@ -9,7 +9,30 @@ const getById = function getById(id: string): ITandem {
     return tandem;
 };
 
+const defaultEmitter = require('./defaultEmitter');
+
+const createNewTandem = function createNewTandem(group?: assetRef): ITandem {
+    const emitter = defaultEmitter.get();
+    const generateGUID = require('./../../generateGUID');
+    const id = generateGUID(),
+          slice = id.slice(-6);
+
+    const tandem = {
+        name: 'Tandem_' + slice,
+        uid: id,
+        origname: 'pt' + slice,
+        emitters: [emitter],
+        group,
+        lastmod: Number(new Date()),
+        type: 'tandem'
+    } as ITandem;
+
+    return tandem;
+};
+
 export {
     getThumbnail,
-    getById
+    getById,
+    defaultEmitter,
+    createNewTandem
 };

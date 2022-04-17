@@ -8,8 +8,8 @@
     @attribute group (object)
         The group that should be edited.
 
-group-editor.aDimmer
-    .aModal.pad.npb(ref="widget")
+group-editor.aDimmer.fadein
+    .aModal.pad.npb.appear(ref="widget")
         .toright
             svg.feather.anActionableIcon(onclick="{opts.onclose}")
                 use(xlink:href="#x")

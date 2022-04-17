@@ -1,3 +1,38 @@
+## v2.0.2
+
+*Sun Apr 17 2022*
+
+### ✨ New Features
+
+* Internal: Add two utility classes to change cursor on specific elements
+
+### ⚡️ General Improvements
+
+* Add an explicit close button to the asset-selector, if there is a cancel action defined to it. Also adds an example of a "close" button pattern inside a dimmer to the CSS stylebook
+* Add basic typings to Window object and to the global scope (setTimeout and co, atob, btoa and such)
+* Add support for ct.pointer to ct.vkeys
+* Do not show "there is nothing here" filler if an asset viewer has to display a "none" option
+* Move particles' node modules to the same folder as tandems'; enforce type checks on default emitters and tandems; add the missing uid property to emitter tandems.
+* Tweak UI animations' duration; add subtle animations to most modal dialogues
+* Update Chinese Simplified translations (#335 by @emaoshushu)
+* Update Turkish translation. 100% coverage thanks to Sarpmanon.js!
+
+### 🐛 Bug Fixes
+
+* 🍱 Fix music stopping on the third level of the Lab Raid demo. Thanks mugeen for finding the issue and its source.
+* Changing speed of a copy from zero should reuse its saved direction (zeroDirectionAccessor). Closes #334
+* Fix asset inputs' styles affecting button groups deeper into its tree
+* Fix broken project-aware code completions
+* Fix ct.place.moveAlong (which is also this.moveContinuous for copies) using v1 directions values and not handling the latest bit of the path properly
+* Fix ct.pointer not writing pointer.PrimaryKey, pointer.SecondaryKey to the Actions system
+* Fix the asset selector applying styles to more than it should have. Fixes the group editor inside asset selection models being large as heck.
+* Fix the asset-selector incorrectly capturing clicks on its modal's background
+* Fix the usage of non-existent ct.place methods in ct.pointer
+
+### 🌐 Website
+
+* :zap: Update list of features in the presskit
+
 ## v2.0.1
 
 *Sat Mar 26 2022*

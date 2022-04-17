@@ -1,4 +1,4 @@
-(function () {
+(function vkeysTemplates() {
     ct.templates.templates.VKEY = {
         onStep: function () {
             var down = false,
@@ -19,6 +19,14 @@
                     }
                 }
             }
+            if (ct.pointer) {
+                if (ct.pointer.hoversUi(this)) {
+                    hover = true;
+                    if (ct.pointer.collidesUi(this)) {
+                        down = true;
+                    }
+                }
+            }
 
             if (down) {
                 this.tex = this.opts.texActive || this.opts.texNormal;
@@ -33,10 +41,12 @@
             }
         },
         onDraw: function () {
-            this.x = (typeof this.opts.x === 'function')? this.opts.x() : this.opts.x;
-            this.y = (typeof this.opts.y === 'function')? this.opts.y() : this.opts.y;
+            this.x = (typeof this.opts.x === 'function') ? this.opts.x() : this.opts.x;
+            this.y = (typeof this.opts.y === 'function') ? this.opts.y() : this.opts.y;
         },
-        onDestroy: function () {void 0;},
+        onDestroy: function () {
+            void 0;
+        },
         onCreate: function () {
             this.tex = this.opts.texNormal;
             this.depth = this.opts.depth;
@@ -51,6 +61,7 @@
             this.trackball = new PIXI.Sprite(ct.res.getTexture(this.opts.trackballTex, 0));
             this.addChild(this.trackball);
         },
+        // eslint-disable-next-line complexity
         onStep: function () {
             var dx = 0,
                 dy = 0;
@@ -87,6 +98,25 @@
                     this.down = false;
                 }
             }
+            if (ct.pointer) {
+                if (this.trackedPointer && !ct.pointer.down.includes(this.trackedPointer)) {
+                    this.trackedPointer = void 0;
+                }
+                if (!this.trackedPointer) {
+                    const pointer = ct.pointer.collidesUi(this);
+                    if (pointer) {
+                        this.down = true;
+                        this.trackedPointer = pointer;
+                    }
+                }
+                if (this.trackedPointer) {
+                    dx = this.trackedPointer.xui - this.x;
+                    dy = this.trackedPointer.yui - this.y;
+                } else {
+                    this.touchId = false;
+                    this.down = false;
+                }
+            }
             var r = this.shape.r || this.shape.right || 64;
             if (this.down) {
                 dx /= r;
@@ -106,9 +136,11 @@
             this.trackball.y = dy * r;
         },
         onDraw: function () {
-            this.x = (typeof this.opts.x === 'function')? this.opts.x() : this.opts.x;
-            this.y = (typeof this.opts.y === 'function')? this.opts.y() : this.opts.y;
+            this.x = (typeof this.opts.x === 'function') ? this.opts.x() : this.opts.x;
+            this.y = (typeof this.opts.y === 'function') ? this.opts.y() : this.opts.y;
         },
-        onDestroy: function () {void 0;}
+        onDestroy: function () {
+            void 0;
+        }
     };
 })();
