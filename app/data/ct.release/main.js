@@ -1,8 +1,12 @@
 /*! Made with ct.js http://ctjs.rocks/ */
 
-if (location.protocol === 'file:') {
-    // eslint-disable-next-line no-alert
-    alert('Your game won\'t work like this because\nWeb 👏 builds 👏 require 👏 a web 👏 server!\n\nConsider using a desktop build, or upload your web build to itch.io, GameJolt or your own website.\n\nIf you haven\'t created this game, please contact the developer about this issue.\n\n Also note that ct.js games do not work inside the itch app; you will need to open the game with your browser of choice.');
+try {
+    require('electron');
+} catch {
+    if (location.protocol === 'file:') {
+        // eslint-disable-next-line no-alert
+        alert('Your game won\'t work like this because\nWeb 👏 builds 👏 require 👏 a web 👏 server!\n\nConsider using a desktop build, or upload your web build to itch.io, GameJolt or your own website.\n\nIf you haven\'t created this game, please contact the developer about this issue.\n\n Also note that ct.js games do not work inside the itch app; you will need to open the game with your browser of choice.');
+    }
 }
 
 const deadPool = []; // a pool of `kill`-ed copies for delaying frequent garbage collection
