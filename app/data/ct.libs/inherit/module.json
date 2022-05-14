@@ -2,7 +2,7 @@
     "main": {
         "name": "Template inheritance",
         "tagline": "Avoid repeating code by adding parent-child relationships between your templates.",
-        "version": "1.0.0",
+        "version": "2.0.0",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",
             "mail": "admin@nersta.ru"
@@ -14,6 +14,6 @@
     "templateExtends": [{
         "name": "Parent",
         "type": "template",
-        "key": "inheritedType@@template"
+        "key": "inheritedTemplate@@template"
     }]
 }

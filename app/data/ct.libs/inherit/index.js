@@ -14,7 +14,8 @@ ct.inherit = {
         if (!(assertedTemplate in ct.templates.templates)) {
             throw new Error(`[ct.inherit] The template ${assertedTemplate} does not exist. A typo?`);
         }
-        // Well, technically a template is not a child of itself, but I suppose you expect to get `true`
+        // Well, technically a template is not a child of itself,
+        // but I suppose you expect to get `true`
         // while checking whether a copy belongs to a particular class.
         if (template === assertedTemplate) {
             return true;
@@ -40,7 +41,7 @@ ct.inherit = {
         // Get a list of all child templates to concat their ct.templates.lists in one go
         const templates = [];
         for (const i in ct.templates.list) {
-            if (i !== 'BACKGROUND' && i !== 'TILELAYER' && ct.inherit.isParent(template, i)) {
+            if (i !== 'BACKGROUND' && i !== 'TILEMAP' && ct.inherit.isParent(template, i)) {
                 templates.push(i);
             }
         }
