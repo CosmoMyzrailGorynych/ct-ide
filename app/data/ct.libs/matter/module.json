@@ -4,7 +4,7 @@
         "name_Ru": "Matter.js — библиотека физики",
         "tagline": "Add realtime 2D physics engine to your project.",
         "tagline_Ru": "Добавляет движок 2D физики в твой проект.",
-        "version": "1.0.0",
+        "version": "1.1.0",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",
             "mail": "admin@nersta.ru"
@@ -41,12 +41,14 @@
             "name_Ru": "Сделать неподвижной",
             "type": "checkbox",
             "key": "matterStatic",
-            "default": false
+            "default": false,
+            "if": "matterEnable"
         }, {
             "name": "Is a sensor",
             "name_Ru": "Сделать сенсором",
             "type": "checkbox",
             "key": "matterSensor",
+            "if": "matterEnable",
             "default": false,
             "help": "When turned on, the copy won't prevent others' movement but will be able to trigger collisions",
             "help_Ru": "Копия не будет препятствовать передвижению других копий, но будет вызывать события столкновения"
@@ -57,7 +59,8 @@
             "key": "matterDensity",
             "help": "How each pixel of this object contributes to its mass. The larger and more dense an object, the more heavy it is.",
             "help_Ru": "Показывает, как каждый пиксель копии влияет на её массу. Чем выше, тем тяжелее получается копия.",
-            "default": 0.001
+            "default": 0.001,
+            "if": "matterEnable"
         }, {
             "name": "Bounciness",
             "name_Ru": "Упругость",
@@ -66,25 +69,29 @@
             "default": 0.1,
             "min": 0,
             "max": 1,
-            "step": 0.1
+            "step": 0.1,
+            "if": "matterEnable"
         }, {
             "name": "Friction",
             "name_Ru": "Трение",
             "type": "number",
             "key": "matterFriction",
-            "default": 1
+            "default": 1,
+            "if": "matterEnable"
         }, {
             "name": "Static friction",
             "name_Ru": "Статичное трение",
             "type": "number",
             "key": "matterFrictionStatic",
-            "default": 0.1
+            "default": 0.1,
+            "if": "matterEnable"
         }, {
             "name": "Air friction",
             "name_Ru": "Трение воздуха",
             "type": "number",
             "key": "matterFrictionAir",
-            "default": 0.01
+            "default": 0.01,
+            "if": "matterEnable"
         }, {
             "name": "Fix pivot",
             "name_Ru": "Исправить ось вращения",
@@ -93,7 +100,8 @@
             "help": "Shifts the texture. Helps with polygonal shapes where the module cannot align center of mass and texture automatically.",
             "help_Ru": "Смещает текстуру. Помогает с многоугольниками, которым не получается расчитать центр масс автоматически.",
             "step": 1,
-            "default": [0, 0]
+            "default": [0, 0],
+            "if": "matterEnable"
         }]
     }, {
         "type": "group",
