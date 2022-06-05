@@ -1,12 +1,21 @@
-ctjsVersion: 2.0.0
+ctjsVersion: 2.0.2
 notes: /* empty */
 libs:
   fittoscreen:
     mode: scaleFit
-  mouse: {}
   sound.howler: {}
   matter:
     matterUseStaticDeltaTime: true
+  pointer:
+    preventdefault: false
+    startlocked: false
+  filters: {}
+  place:
+    undefined: ''
+    gridX: 512
+    gridY: 512
+    debugMode: false
+    debugText: 16
 textures:
   - name: WoodenPlank
     untill: 0
@@ -31,9 +40,9 @@ textures:
     top: 35
     bottom: 35
     uid: 9afd54d7-1265-4ba0-b5de-5226b3c7e2fb
-    padding: 1
+    padding: 2
     source: 'D:\Downloads\physicspack\PNG\Wood elements\elementWood012.png'
-    lastmod: 1616891166294
+    lastmod: 1654408163741
   - name: WoodenSquare
     untill: 0
     grid:
@@ -190,7 +199,7 @@ textures:
     top: 35
     bottom: 35
     uid: 0f0e39f3-05bd-47e1-88d2-7dbf7bc3596b
-    padding: 1
+    padding: 2
     source: 'D:\Downloads\physicspack\PNG\Wood elements\elementWood054.png'
     stripPoints:
       - x: -0.0
@@ -200,7 +209,7 @@ textures:
       - x: -70
         'y': 26
     closedStrip: true
-    lastmod: 1616891300000
+    lastmod: 1654408191765
   - name: elementMetal013
     untill: 0
     grid:
@@ -276,10 +285,10 @@ textures:
     top: 35
     bottom: 35
     uid: c4d4030a-b640-44be-bded-26a5c030f542
-    padding: 1
+    padding: 2
     source: 'D:\Downloads\physicspack\PNG\Metal elements\elementMetal001.png'
     r: 35
-    lastmod: 1615704333828
+    lastmod: 1654408158982
   - name: elementMetal000
     untill: 0
     grid:
@@ -426,6 +435,34 @@ textures:
     padding: 1
     source: 'D:\Downloads\physicspack\PNG\Wood elements\elementWood047.png'
     lastmod: 1616891232841
+  - lastmod: 1654404771715
+    type: texture
+    name: Restart_icon_2
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 32
+      - 32
+    marginx: 0
+    marginy: 0
+    imgWidth: 64
+    imgHeight: 64
+    width: 64
+    height: 64
+    offx: 0
+    offy: 0
+    origname: im4gCbzCRD2DmNc.png
+    shape: rect
+    left: 32
+    right: 32
+    top: 32
+    bottom: 32
+    uid: m4gCbzCRD2DmNc
+    padding: 1
+    group: !<tag:yaml.org,2002:js/undefined> ''
+    source: 'C:\Users\Master\Desktop\Restart icon 2.png'
 skeletons: []
 templates:
   - name: Alien_Launched
@@ -450,8 +487,9 @@ templates:
       matterRestitution: 0.7
       matterMass: 5
       matterDensity: 0.003
+      matterConstraint: none
     uid: 556178d8-6886-4718-a5dd-b7dbf74e4547
-    lastmod: 1616894158784
+    lastmod: 1654408223996
   - name: AlienTarget
     depth: 0
     oncreate: this.tag = 'Alien';
@@ -567,7 +605,7 @@ templates:
     depth: 0
     oncreate: ''
     onstep: |-
-      if (ct.actions.Pointer.pressed && ct.mouse.hovers(this)) {
+      if (ct.actions.Pointer.pressed && ct.pointer.hovers(this)) {
           ct.templates.copy('Alien_Dragging', this.x, this.y);
       }
     ondraw: ''
@@ -575,7 +613,7 @@ templates:
     texture: 37dfad62-8372-4804-8416-765039343b61
     extends: {}
     uid: 070d18cf-978a-4874-ba4d-1aadd0d4f58a
-    lastmod: 1616892056278
+    lastmod: 1654408218293
   - name: Alien_Dragging
     depth: 0
     oncreate: ''
@@ -598,8 +636,8 @@ templates:
     ondraw: |
       const slingshot = ct.templates.list['Slingshot'][0],
             maxLength = 150;
-      let dx = ct.mouse.x - slingshot.x,
-          dy = ct.mouse.y - slingshot.y,
+      let dx = ct.pointer.x - slingshot.x,
+          dy = ct.pointer.y - slingshot.y,
           l = ct.u.pdc(0, 0, dx, dy);
 
       if (l > maxLength) {
@@ -615,7 +653,7 @@ templates:
       matterEnable: false
       matterRestitution: 0.7
     uid: 5b9b41e7-52db-44a2-b5d2-016407e259dc
-    lastmod: 1616891549758
+    lastmod: 1654405792950
   - name: elementMetal013
     depth: 0
     oncreate: this.tag = 'Metal';
@@ -663,6 +701,22 @@ templates:
         - 4
     uid: 82c03796-7419-4f22-944c-78c1209c6874
     lastmod: 1616892936227
+  - type: template
+    name: Restart
+    depth: 0
+    oncreate: ''
+    onstep: |-
+      if (ct.pointer.collidesUi(this)) {
+          ct.rooms.restart();
+      }
+    ondraw: ''
+    ondestroy: ''
+    texture: m4gCbzCRD2DmNc
+    visible: true
+    extends:
+      matterEnable: false
+    lastmod: 1654409652371
+    uid: BRwkF4JP8WdfKd
 sounds:
   - name: Impact_Wooden
     uid: ccfe7f50-d4d3-4570-95e9-75d5d73bef0a
@@ -680,6 +734,8 @@ styles: []
 rooms:
   - name: HolericAliens
     oncreate: |
+      ct.rooms.append('UI_Restart');
+
       // Listen for collisions in the world
       ct.matter.on('collisionStart', e => {
           // Loop over every collision in a frame
@@ -969,11 +1025,36 @@ rooms:
         - 1
     gridX: 70
     gridY: 70
-    lastmod: 1616896076747
+    lastmod: 1654408340514
+  - type: room
+    oncreate: ''
+    onstep: ''
+    ondraw: ''
+    onleave: ''
+    gridX: 64
+    gridY: 64
+    width: 1640
+    height: 900
+    name: UI_Restart
+    backgrounds: []
+    copies:
+      - x: 64
+        'y': 64
+        uid: BRwkF4JP8WdfKd
+        exts: {}
+    tiles:
+      - depth: -10
+        tiles: []
+        extends: {}
+    extends:
+      isUi: true
+    lastmod: 1654405717648
+    thumbnail: HHMmHTwkf2B7K6
+    uid: HHMmHTwkf2B7K6
 actions:
   - name: Pointer
     methods:
-      - code: mouse.Left
+      - code: pointer.Any
 emitterTandems:
   - name: FX_Burst
     origname: pta85a19f1cde1
@@ -1059,6 +1140,7 @@ emitterTandems:
         uid: 02de95c8-e4d6-41a2-aced-793d64657985
         showShapeVisualizer: false
     previewTexture: 6c8a3edf-d5fe-4916-b63c-2201c099d28f
+    uid: pta85a19f1cde1
 scripts: []
 starting: 0
 settings:
