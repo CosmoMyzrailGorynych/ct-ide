@@ -186,6 +186,13 @@ Room.roomId = 0;
         },
         switching: false,
         /**
+         * Restarts the current room.
+         * @returns {void}
+         */
+        restart() {
+            ct.rooms.switch(ct.room.name);
+        },
+        /**
          * Creates a new room and adds it to the stage, separating its draw stack
          * from existing ones.
          * This room is added to `ct.stage` after all the other rooms.
