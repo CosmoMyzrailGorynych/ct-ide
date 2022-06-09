@@ -238,7 +238,16 @@ textures-panel.aPanel.aView
                 click: () => {
                     const templatesAPI = require('./data/node_requires/resources/templates/');
                     const template = templatesAPI.createNewTemplate(this.currentTexture.name);
-                    template.texture = this.currentTexture.uid;
+                    if (this.currentTextureType === 'skeleton') {
+                        template.oncreate = '// You can set a regular texture to make a collision mask;\n' +
+                            '// ct.js doesn\'t support collisions and in-editor display of skeletal animations yet!\n' +
+                            `this.skel = ct.res.makeSkeleton('${this.currentTexture.name}');\n` +
+                            'this.skel.animation.play(\'DefaultAnimation\');\n' +
+                            'this.addChild(this.skel);\n' +
+                            'this.tex = -1; // This will hide the copy\'s own sprite';
+                    } else {
+                        template.texture = this.currentTexture.uid;
+                    }
                     window.orders.trigger('openAsset', `templates/${template.uid}`);
                 }
             }, {
