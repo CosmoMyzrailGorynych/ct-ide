@@ -198,7 +198,7 @@
                 loadingPromises.push(ct.res.loadBitmapFont(bitmapFonts[font], font));
             }
             for (const skel of dbSkeletons) {
-                ct.res.loadDragonBonesSkeleton(...skel);
+                loadingPromises.push(ct.res.loadDragonBonesSkeleton(...skel));
             }
 
             for (const sound of sounds) {
