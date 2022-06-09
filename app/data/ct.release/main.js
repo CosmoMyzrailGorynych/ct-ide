@@ -534,8 +534,8 @@ ct.u.ext(ct.u, {// make aliases
         }
     };
 
-    ct.loop = function loop(delta) {
-        ct.delta = delta;
+    ct.loop = function loop() {
+        ct.delta = ct.pixiApp.ticker.deltaMS / (1000 / (ct.pixiApp.ticker.maxFPS || 60));
         ct.deltaUi = ct.pixiApp.ticker.elapsedMS / (1000 / (ct.pixiApp.ticker.maxFPS || 60));
         ct.inputs.updateActions();
         ct.timer.updateTimers();
