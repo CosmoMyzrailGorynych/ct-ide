@@ -636,6 +636,7 @@
                 "Horizon": "Horizon",
                 "HCBlack": "High-contrast Black"
             },
+            "prideMode": "Pride mode",
             "language": "Language",
             "translateToYourLanguage": "Translate ct.js!",
             "codeFontDefault": "Default (Iosevka Light)",

@@ -589,6 +589,7 @@
                 "Horizon": "Горизонт",
                 "HCBlack": "Высококонтрастная чёрная"
             },
+            "prideMode": "Прайд-режим",
             "codeFontDefault": "По умолчанию (Iosevka Light)",
             "codeFontOldSchool": "Старый-добрый",
             "codeFontSystem": "Системный",

@@ -18,3 +18,35 @@
     display flex
     & > *
         flex 1 1 auto
+
+root-tag.pride
+    app-view > nav ul
+        span
+            font-weight bolder
+        li:nth-child(6n + 4), &:first-child li:nth-child(6n + 1) // r
+            span, svg
+                color mix(act, #E40203, 10%)
+        li:nth-child(6n + 5), &:first-child li:nth-child(6n + 2) // o
+            span, svg
+                if (themeDark)
+                    color mix(act, #FF8B00, 10%)
+                else
+                    color shade(mix(act, #FF8B00, 10%), 10%)
+        li:nth-child(6n), &:first-child li:nth-child(6n + 3) // y
+            span, svg
+                if (themeDark)
+                    color mix(act, #FEED00, 10%)
+                else
+                    color shade(mix(act, #FEED00, 15%), 35%)
+        li:nth-child(6n + 1) // g
+            span, svg
+                color mix(act, #00AE25, 10%)
+        li:nth-child(6n + 2) // b
+            span, svg
+                if (themeDark)
+                    color tint(mix(act, #0078FF, 10%), 20%)
+                else
+                    color mix(act, #0078FF, 10%)
+        li:nth-child(6n + 3) // p
+            span, svg
+                color mix(act, #AE2FC6, 10%)
