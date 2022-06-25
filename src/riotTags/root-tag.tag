@@ -34,7 +34,7 @@ root-tag(class="{pride: localStorage.prideMode === 'on'}")
         const stylesheet = document.createElement('style');
         document.head.appendChild(stylesheet);
         const updateStylesheet = () => {
-            let css = `
+            const css = `
                 code, pre {
                     font-family: ${localStorage.fontFamily || 'Iosevka, monospace'};
                     font-variant-ligatures: ${localStorage.codeLigatures === 'off' ? 'none' : 'normal'};
