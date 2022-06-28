@@ -36,7 +36,8 @@ const substituteHtmlVars = (str, project, injections) =>
         gametitle: project.settings.title || 'ct.js game',
         accent: project.settings.accent || 'ct.js game',
         particleEmitters: project.emitterTandems && project.emitterTandems.length,
-        includeDragonBones: project.skeletons.some(s => s.from === 'dragonbones')
+        includeDragonBones: project.skeletons.some(s => s.from === 'dragonbones'),
+        includePixiSound: project.sounds && project.sounds.length
     }, injections);
 
 module.exports = {
