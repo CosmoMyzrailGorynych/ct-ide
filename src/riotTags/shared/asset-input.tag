@@ -7,6 +7,8 @@
         Not all the asset types are supported (e.g. projects are not).
     @attribute allowclear (atomic)
         Whether the tag should also show a button to clear input's value.
+    @attribute disallowjump (atomic)
+        If set, hides a button to jump to the selected asset.
     @attribute assetid (string)
         The asset id of the currently picked asset. It is used to get asset's
         thumbnail, as well as to prefill the current input's value.
@@ -34,7 +36,7 @@ asset-input
             img(src="{thumbnails(currentAsset || -1, false, false)}")
             span(if="{opts.assetid == -1 || opts.assetid === void 0}") {vocGlob.select}
             span(if="{opts.assetid != -1 && opts.assetid !== void 0}") {names(currentAsset)}
-        button.square(if="{opts.assetid != -1 && opts.assetid !== void 0}" title="{voc.jumpToAsset}" onclick="{openAsset}" class="{inline: opts.compact}")
+        button.square(if="{opts.assetid != -1 && opts.assetid !== void 0 && !opts.disallowjump}" title="{voc.jumpToAsset}" onclick="{openAsset}" class="{inline: opts.compact}")
             svg.feather
                 use(xlink:href="#external-link")
         button.square(if="{(opts.assetid != -1 && opts.assetid !== void 0) && opts.allowclear}" title="{vocGlob.clear}" onclick="{clearAsset}" class="{inline: opts.compact}")
@@ -50,7 +52,7 @@ asset-input
                     use(xlink:href="#x")
         img(src="{thumbnails(currentAsset || -1, true, false)}")
         .aNotice(if="{opts.assetid == -1 || opts.assetid === void 0}") {vocGlob.select}
-        div(if="{opts.assetid != -1 && opts.assetid !== void 0}") {names(currentAsset)}
+        .dim(if="{opts.assetid != -1 && opts.assetid !== void 0}") {names(currentAsset)}
     asset-selector(
         if="{showingSelector}"
         assettype="{opts.assettype}"
@@ -111,7 +113,7 @@ asset-input
             }
             setTimeout(() => {
                 // eslint-disable-next-line eqeqeq
-                if (this.opts.assetid == -1) {
+                if (this.opts.assetid == -1 || this.opts.assetid === void 0) {
                     if (this.currentAsset) {
                         this.currentAsset = void 0;
                         this.update();

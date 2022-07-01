@@ -132,17 +132,8 @@ rooms-panel.aPanel.aView
             if (room.uid === window.currentProject.startroom) {
                 icons.push('play');
             }
-            if (room.oncreate.trim()) {
-                icons.push('sun');
-            }
-            if (room.onstep.trim()) {
-                icons.push('skip-forward');
-            }
-            if (room.ondraw.trim()) {
-                icons.push('edit-2');
-            }
-            if (room.onleave.trim()) {
-                icons.push('trash');
+            if (room.extends && room.extends.isUi) {
+                icons.push('ui');
             }
             return icons;
         };

@@ -288,6 +288,7 @@ Room.roomId = 0;
                 roomName = nextRoom;
             }
             if (ct.room) {
+                ct.rooms.rootRoomOnLeave.apply(ct.room);
                 ct.room.onLeave();
                 ct.rooms.onLeave.apply(ct.room);
                 ct.room = void 0;
@@ -312,6 +313,7 @@ Room.roomId = 0;
             ct.pixiApp.renderer.resize(template.width, template.height);
             ct.rooms.current = ct.room = new Room(template);
             ct.stage.addChild(ct.room);
+            ct.rooms.rootRoomOnCreate.apply(ct.room);
             ct.room.onCreate();
             ct.rooms.onCreate.apply(ct.room);
             ct.rooms.list[roomName].push(ct.room);
@@ -350,6 +352,18 @@ ct.rooms.beforeDraw = function beforeDraw() {
 };
 ct.rooms.afterDraw = function afterDraw() {
     /*%afterroomdraw%*/
+};
+ct.rooms.rootRoomOnCreate = function rootRoomOnCreate() {
+    /*@rootRoomOnCreate@*/
+};
+ct.rooms.rootRoomOnStep = function rootRoomOnStep() {
+    /*@rootRoomOnStep@*/
+};
+ct.rooms.rootRoomOnDraw = function rootRoomOnDraw() {
+    /*@rootRoomOnDraw@*/
+};
+ct.rooms.rootRoomOnLeave = function rootRoomOnLeave() {
+    /*@rootRoomOnLeave@*/
 };
 
 /*@rooms@*/

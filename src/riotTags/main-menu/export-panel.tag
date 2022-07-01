@@ -87,7 +87,7 @@ export-panel.aDimmer
                 this.update();
 
                 const {getBuildDir, getExportDir} = require('./data/node_requires/platformUtils');
-                const runCtExport = require('./data/node_requires/exporter');
+                const runCtExport = require('./data/node_requires/exporter').exportCtProject;
                 const projectDir = global.projdir,
                       exportDir = await getExportDir(),
                       buildDir = await getBuildDir();

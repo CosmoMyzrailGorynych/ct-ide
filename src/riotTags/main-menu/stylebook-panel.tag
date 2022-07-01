@@ -183,12 +183,15 @@ stylebook-panel.aPanel.aView.pad.flexrow
                 | This is an
                 code.inline inline
                 | code.
+        stylebook-section(heading="Dimmed elements")
+            yield(to="example")
+                .dim Simply drops the opacity of an element to 50%
         stylebook-section(heading="Notices")
             yield(to="example")
                 .aNotice Notices are more bleak and are written in italic.
         stylebook-section(heading="Cropped text with ellipsis")
             yield(to="example")
-                .crop Yada yada yada yada yada yada yada yada
+                .crop Yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada
         stylebook-section(heading="Contrasting plaques" stripedbg="yes")
             yield(to="example")
                 .aContrastingPlaque Use these on colored or contrasting backgrounds.
@@ -881,6 +884,9 @@ stylebook-panel.aPanel.aView.pad.flexrow
                     svg.feather.rotate
                         use(xlink:href="#refresh-cw")
                     span A button with a "wait" cursor
+                p
+                button.cursorhelp
+                    span A button with a "help" cursor
     .aSpacer.nogrow
     .nogrow
         button.inline.square(onclick="{opts.onclose}" title="{vocGlob.close}")

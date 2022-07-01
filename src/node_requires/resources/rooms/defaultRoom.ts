@@ -14,14 +14,17 @@ const room = {
 
 const get = function (): IRoom {
     const uid = generateGUID();
-    const newRoom = Object.assign({}, room, {
+    const newRoom: IRoom = Object.assign({}, room, {
         name: 'Room_' + uid.slice(-6),
+        backgroundColor: '#000000',
+        restrictCamera: false,
         backgrounds: [],
         copies: [],
         tiles: [],
         extends: {},
         lastmod: Number(new Date()),
         thumbnail: uid,
+        events: [],
         uid
     });
     return newRoom;

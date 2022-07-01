@@ -140,7 +140,7 @@ app-view.flexcol
             document.body.style.cursor = 'progress';
             this.exportingProject = true;
             this.update();
-            const runCtExport = require('./data/node_requires/exporter');
+            const runCtExport = require('./data/node_requires/exporter').exportCtProject;
             runCtExport(global.currentProject, global.projdir)
             .then(() => {
                 if (localStorage.disableBuiltInDebugger === 'yes') {
@@ -169,7 +169,7 @@ app-view.flexcol
             });
         };
         this.runProjectAlt = () => {
-            const runCtExport = require('./data/node_requires/exporter');
+            const runCtExport = require('./data/node_requires/exporter').exportCtProject;
             runCtExport(global.currentProject, global.projdir)
             .then(() => {
                 nw.Shell.openExternal(`http://localhost:${fileServer.address().port}/`);

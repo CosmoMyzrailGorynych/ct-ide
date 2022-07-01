@@ -72,7 +72,9 @@ declare interface ICatmodManifest {
     tileLayerExtends?: ICatmodField<unknown>[],
     copyExtends?: ICatmodField<unknown>[],
     roomExtends?: ICatmodField<unknown>[],
-    inputMethods?: Record<string, string>
+    inputMethods?: Record<string, string>,
+    eventCategories?: Record<string, IEventCategory>,
+    events?: Record<string, IEventDeclaration>
 }
 
 declare interface ICatmod {

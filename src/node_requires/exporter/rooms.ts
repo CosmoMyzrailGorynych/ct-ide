@@ -1,7 +1,8 @@
 const glob = require('./../glob');
 const {getUnwrappedExtends} = require('./utils');
+import {getBaseScripts} from './scriptableProcessor';
 
-const getStartingRoom = proj => {
+const getStartingRoom = (proj: IProject): IRoom => {
     let [startroom] = proj.rooms; // picks the first room by default
     for (let i = 0; i < proj.rooms.length; i++) {
         if (proj.rooms[i].uid === proj.startroom) {
@@ -11,12 +12,12 @@ const getStartingRoom = proj => {
     }
     return startroom;
 };
-const getConstraints = r => {
+const getConstraints = (r: IRoom) => {
     if (r.restrictCamera) {
         let x1 = r.restrictMinX || 0,
             y1 = r.restrictMinY || 0,
             x2 = r.restrictMaxX === void 0 ? r.width : r.restrictMaxX,
-            y2 = r.restrictMaxX === void 0 ? r.height : r.restrictMaxY;
+            y2 = r.restrictMaxY === void 0 ? r.height : r.restrictMaxY;
         if (x1 > x2) {
             [x1, x2] = [x2, x1];
         }
@@ -33,11 +34,24 @@ const getConstraints = r => {
     return false;
 };
 
-const stringifyRooms = proj => {
-    let roomsCode = '';
-    for (const k in proj.rooms) {
-        const r = proj.rooms[k];
+interface IExportedTile {
+    texture: string,
+    frame: number,
+    x: number,
+    y: number,
+    width: number,
+    height: number
+}
 
+// eslint-disable-next-line max-lines-per-function
+const stringifyRooms = (proj: IProject): IScriptablesFragment => {
+    let roomsCode = '';
+    let rootRoomOnCreate = '';
+    let rootRoomOnStep = '';
+    let rootRoomOnDraw = '';
+    let rootRoomOnLeave = '';
+
+    for (const r of proj.rooms) {
         const roomCopy = JSON.parse(JSON.stringify(r.copies));
         const objs = [];
         for (const copy of roomCopy) {
@@ -57,7 +71,7 @@ const stringifyRooms = proj => {
             for (const tileLayer of r.tiles) {
                 const layer = {
                     depth: tileLayer.depth,
-                    tiles: [],
+                    tiles: [] as IExportedTile[],
                     extends: tileLayer.extends ? getUnwrappedExtends(tileLayer.extends) : {}
                 };
                 for (const tile of tileLayer.tiles) {
@@ -80,37 +94,49 @@ const stringifyRooms = proj => {
         }
 
         const constraints = getConstraints(r);
+        const scriptableCode = getBaseScripts(r);
 
         roomsCode += `
 ct.rooms.templates['${r.name}'] = {
     name: '${r.name}',
     width: ${r.width},
-    height: ${r.height},
-    /* JSON.parse allows for a much faster loading of big objects */
+    height: ${r.height},` +
+    /* JSON.parse is faster at loading big objects */`
     objects: JSON.parse('${JSON.stringify(objs).replace(/\\/g, '\\\\')}'),
     bgs: JSON.parse('${JSON.stringify(bgsCopy).replace(/\\/g, '\\\\')}'),
     tiles: JSON.parse('${JSON.stringify(tileLayers).replace(/\\/g, '\\\\')}'),
     backgroundColor: '${r.backgroundColor || '#000000'}',
     ${constraints ? 'cameraConstraints: ' + JSON.stringify(constraints) + ',' : ''}
     onStep() {
-        ${proj.rooms[k].onstep}
+        ${scriptableCode.thisOnStep}
     },
     onDraw() {
-        ${proj.rooms[k].ondraw}
+        ${scriptableCode.thisOnDraw}
     },
     onLeave() {
-        ${proj.rooms[k].onleave}
+        ${scriptableCode.thisOnDestroy}
     },
     onCreate() {
-        ${proj.rooms[k].oncreate}
+        ${scriptableCode.thisOnCreate}
     },
-    extends: ${proj.rooms[k].extends ? JSON.stringify(getUnwrappedExtends(proj.rooms[k].extends), null, 4) : '{}'}
-}`;
+    extends: ${r.extends ? JSON.stringify(getUnwrappedExtends(r.extends), null, 4) : '{}'}
+}
+        `;
+        rootRoomOnCreate += scriptableCode.rootRoomOnCreate;
+        rootRoomOnStep += scriptableCode.rootRoomOnStep;
+        rootRoomOnDraw += scriptableCode.rootRoomOnDraw;
+        rootRoomOnLeave += scriptableCode.rootRoomOnLeave;
     }
-    return roomsCode;
+    return {
+        libCode: roomsCode,
+        rootRoomOnCreate,
+        rootRoomOnStep,
+        rootRoomOnDraw,
+        rootRoomOnLeave
+    };
 };
 
-module.exports = {
+export {
     stringifyRooms,
     getStartingRoom
 };

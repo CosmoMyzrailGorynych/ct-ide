@@ -650,6 +650,7 @@
             "codeFont": "Font for code",
             "codeLigatures": "Ligatures",
             "codeDense": "Dense layout",
+            "altTemplateLayout": "Alternative layout for template editor",
             "disableSounds": "Disable UI sounds",
             "changeDataFolder": "Set data folder location",
             "forceProductionForDebug": "Force production tasks for debug exports"
@@ -869,6 +870,68 @@
     "licensePanel": {
         "ctjsLicense": "Ct.js License (MIT)"
     },
+    "scriptables": {
+        "addEvent": "Add an event",
+        "removeEvent": "Remove the event",
+        "removeEventConfirm": "Are you sure you want to remove this event? This can't be undone!",
+        "changeArguments": "Change arguments",
+        "eventAlreadyExists": "The same event already exists!",
+        "localEventVars": "Local variables",
+        "createEventHint": "Create your first event in the left column, and define your logic here",
+        "coreEventsCategories": {
+            "lifecycle": "Lifecycle",
+            "actions": "Actions",
+            "pointer": "Pointer events",
+            "misc": "Miscellaneous",
+            "animation": "Animation"
+        },
+        "coreEvents": {
+            "OnCreate": "Creation",
+            "OnRoomStart": "Room start",
+            "OnStep": "Frame start",
+            "OnDraw": "Frame end",
+            "OnDestroy": "Destruction",
+            "OnRoomEnd": "Room end",
+            "OnPointerClick": "Click",
+            "OnPointerSecondaryClick": "Secondary click",
+            "OnPointerEnter": "Pointer enter",
+            "OnPointerLeave": "Pointer leave",
+            "OnPointerDown": "Pointer down",
+            "OnPointerUp": "Pointer up",
+            "OnPointerUpOutside": "Pointer up (outside)",
+            "OnPointerWheel": "Wheel scroll",
+            "OnActionPress": "Action press",
+            "OnActionRelease": "Action release",
+            "OnActionDown": "Action down",
+            "OnFrameChange": "Frame change",
+            "OnAnimationLoop": "Animation loop",
+            "OnAnimationComplete": "Animation completed"
+        },
+        "coreParameterizedNames": {
+            "OnActionPress": "On %%action%% press",
+            "OnActionRelease": "On %%action%% release",
+            "OnActionDown": "On %%action%% down"
+        },
+        "coreEventsArguments": {
+            "action": "Action"
+        },
+        "coreEventsLocals": {
+            "OnActionDown_value": "Current action's value"
+        },
+        "coreEventsDescriptions": {
+            "OnCreate": "Triggers when your copy is created.",
+            "OnRoomStart": "Triggers when this room is created, either by switching to it or by adding it as a layer.",
+            "OnStep": "Happens at the beginning of every frame.",
+            "OnDraw": "Happens at the end of every frame. Good for animation updates.",
+            "OnDestroy": "Happens between \"frame start\" and \"frame end\" when this copy gets destroyed.",
+            "OnRoomEnd": "Triggers when you switch to another room, or when this room is removed after it was added as a layer.",
+            "OnActionPress": "Happens when an action's input becomes active — by pressing, clicking, flicking a joystick, etc.",
+            "OnActionRelease": "Happens when an action's input becomes inactive — by releasing buttons, resting joysticks, etc.",
+            "OnActionDown": "Runs every frame if an action's input is active.",
+            "OnAnimationLoop": "Fires every time an animation restarts.",
+            "OnAnimationComplete": "Fires once a non-looping animation finishes."
+        }
+    },
     "templates": {
         "create": "Create"
     },
@@ -887,6 +950,7 @@
         "opacity": "Opacity:",
         "blendMode": "Blend mode:",
         "playAnimationOnStart": "Play animation on start",
+        "loopAnimation": "Loop animation",
         "blendModes": {
             "normal": "Normal",
             "add": "Add (burn)",

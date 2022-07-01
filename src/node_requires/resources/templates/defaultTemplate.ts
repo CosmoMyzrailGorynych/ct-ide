@@ -4,13 +4,12 @@ const defaultTemplate = {
     type: 'template' as resourceType,
     name: 'NewTemplate',
     depth: 0,
-    oncreate: '',
-    onstep: 'this.move();',
-    ondraw: '',
-    ondestroy: '',
     texture: -1 as assetRef,
+    playAnimationOnStart: false,
+    loopAnimation: true,
     visible: true,
-    extends: {}
+    extends: {},
+    events: [] as IScriptableEvent[]
 };
 
 module.exports = {

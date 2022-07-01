@@ -27,27 +27,32 @@ interface IRoomCopy {
 interface ITileTemplate {
     x: number;
     y: number;
+    grid: number[];
+    texture: string;
 }
 
 interface ITileLayerTemplate {
     depth: number;
-    tiles: Array<ITileTemplate>
+    tiles: Array<ITileTemplate>,
+    extends?: Record<string, unknown>
 }
 
-interface IRoom extends IAsset {
-    // Currently just stick to the old structure
+interface IRoom extends IScriptable {
     width: number,
     height: number,
+    /** A CSS color */
+    backgroundColor: string,
     backgrounds: Array<IRoomBackground>,
     copies: Array<IRoomCopy>,
     tiles: Array<ITileLayerTemplate>
     gridX: number,
     gridY: number,
-    oncreate: string,
-    onstep: string,
-    ondraw: string,
-    onleave: string,
     thumbnail: string,
+    restrictCamera?: boolean,
+    restrictMinX?: number,
+    restrictMinY?: number,
+    restrictMaxX?: number,
+    restrictMaxY?: number,
     extends: {
         [key: string]: unknown
     }

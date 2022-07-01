@@ -10,7 +10,15 @@ declare namespace ct {
          * @param {Copy|PIXI.DisplayObject|any} obj The copy which existence needs to be checked.
          * @returns {boolean} Returns `true` if a copy exists; `false` otherwise.
          */
-        function valid(obj: Copy): asserts obj is LivingCopy;
-        function valid(obj: PIXI.DisplayObject | any): obj is PIXI.DisplayObject;
+        function valid(obj: Copy): obj is LivingCopy;
+        function valid(obj: PIXI.DisplayObject): obj is PIXI.DisplayObject;
+        function valid(obj: any): obj is LivingCopy;
+
+        /**
+         * Checks whether a given object is a ct.js copy.
+         * @param {any} obj The object which needs to be checked.
+         * @returns {boolean} Returns `true` if the passed object is a copy; `false` otherwise.
+         */
+        function isCopy(obj: unknown): obj is Copy;
     }
 }

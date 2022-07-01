@@ -2,22 +2,25 @@ const fs = require('fs-extra'),
       path = require('path');
 const basePath = './data/';
 
-let currentProject, writeDir;
+let currentProject: IProject;
+let writeDir: string;
+
+import {resetEventsCache, populateEventCache} from './scriptableProcessor';
 
 const {packImages} = require('./textures');
 const {packSkeletons} = require('./skeletons');
 const {getSounds} = require('./sounds');
-const {stringifyRooms, getStartingRoom} = require('./rooms');
+import {stringifyRooms, getStartingRoom} from './rooms';
 const {stringifyStyles} = require('./styles');
 const {stringifyTandems} = require('./emitterTandems');
-const {stringifyTemplates} = require('./templates');
+import {stringifyTemplates} from './templates';
 const {stringifyContent} = require('./content');
 const {bundleFonts, bakeBitmapFonts} = require('./fonts');
 const {bakeFavicons} = require('./icons');
 const {getUnwrappedExtends, getCleanKey} = require('./utils');
 
-const ifMatcher = (varName, symbol = '@') => new RegExp(`/\\* ?if +${symbol}${varName}${symbol} ?\\*/([\\s\\S]*)(?:/\\* ?else +${symbol}${varName}${symbol} ?\\*/([\\s\\S]*?))?/\\* ?endif +${symbol}${varName}${symbol} ?\\*/`, 'g');
-const varMatcher = (varName, symbol = '@') => new RegExp(`/\\* ?${symbol}${varName}${symbol} ?\\*/`, 'g');
+const ifMatcher = (varName: string, symbol = '@') => new RegExp(`/\\* ?if +${symbol}${varName}${symbol} ?\\*/([\\s\\S]*)(?:/\\* ?else +${symbol}${varName}${symbol} ?\\*/([\\s\\S]*?))?/\\* ?endif +${symbol}${varName}${symbol} ?\\*/`, 'g');
+const varMatcher = (varName: string, symbol = '@') => new RegExp(`/\\* ?${symbol}${varName}${symbol} ?\\*/`, 'g');
 
 /**
  * A little home-brewn string templating function for JS and CSS.
@@ -27,18 +30,22 @@ const varMatcher = (varName, symbol = '@') => new RegExp(`/\\* ?${symbol}${varNa
  *
  * Supports if/else blocks. Empty arrays are treated as `false`.
  *
- * @param {string} input The source string with template tags
- * @param {object<string,string|Array|object>} vars The variables to substitute
- * @param {object<string,string|Array|object>} injections Module-provided injections to substitute
+ * @param input The source string with template tags
+ * @param vars The variables to substitute
+ * @param injections Module-provided injections to substitute
  */
-const template = (input, vars, injections = {}) => {
+const template = (
+    input: string,
+    vars: Record<string, unknown>,
+    injections: Record<string, string> = {}
+) => {
     let output = input;
     for (const i in vars) {
         // .replace(stuff, () => string) prevents pattern substitution, notably
         // it doesn't break syntax around this.text = '$'
         // @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace#Specifying_a_string_as_a_parameter
-        output = output.replace(varMatcher(i), () => (typeof vars[i] === 'object' ? JSON.stringify(vars[i]) : vars[i]));
-        output = output.replace(ifMatcher(i), (Array.isArray(vars[i]) ? vars[i].length : vars[i]) ? '$1' : '$2');
+        output = output.replace(varMatcher(i), () => (typeof vars[i] === 'object' ? JSON.stringify(vars[i]) : String(vars[i])));
+        output = output.replace(ifMatcher(i), (Array.isArray(vars[i]) ? (vars[i] as unknown[]).length : vars[i]) ? '$1' : '$2');
     }
     for (const i in injections) {
         output = output.replace(varMatcher(i, '%'), () => (typeof injections[i] === 'object' ? JSON.stringify(injections[i]) : injections[i]));
@@ -46,7 +53,7 @@ const template = (input, vars, injections = {}) => {
     return output;
 };
 
-const getSubstitution = value => {
+const getSubstitution = (value: unknown): unknown => {
     if (!value) {
         return '';
     }
@@ -55,7 +62,7 @@ const getSubstitution = value => {
     }
     return value;
 };
-const parseKeys = function (catmod, str, lib) {
+const parseKeys = function (catmod: ICatmodManifest, str: string, lib: string) {
     var str2 = str;
     if (catmod.fields) {
         const {fields} = catmod,
@@ -71,14 +78,14 @@ const parseKeys = function (catmod, str, lib) {
             if (field.type === 'checkbox' && !val) {
                 str2 = str2.replace(RegExp('(/\\*)?%' + cleanKey + '%(\\*/)?', 'g'), 'false');
             } else {
-                str2 = str2.replace(RegExp('(/\\*)?%' + cleanKey + '%(\\*/)?', 'g'), () => getSubstitution(val));
+                str2 = str2.replace(RegExp('(/\\*)?%' + cleanKey + '%(\\*/)?', 'g'), () => String(getSubstitution(val)));
             }
         }
     }
     return str2;
 };
 
-const removeBrokenModules = async function removeBrokenModules(project) {
+const removeBrokenModules = async function removeBrokenModules(project: IProject) {
     await Promise.all(Object.keys(project.libs).map(async key => {
         const moduleJSONPath = path.join(basePath + 'ct.libs/', key, 'module.json');
         if (!(await fs.pathExists(moduleJSONPath))) {
@@ -107,8 +114,38 @@ const addModules = async () => { // async
     return pieces.filter(t => t).join('\n');
 };
 
+const enum Injections {
+    load,
+    start,
+    switch,
+    onbeforecreate,
+    oncreate,
+    ondestroy,
+    beforedraw,
+    beforestep,
+    afterdraw,
+    afterstep,
+    beforeframe,
+    beforeroomoncreate,
+    roomoncreate,
+    roomonleave,
+    afterroomdraw,
+    beforeroomdraw,
+    beforeroomstep,
+    afterroomstep,
+    css,
+    res,
+    resload,
+    templates,
+    rooms,
+    styles,
+    htmltop,
+    htmlbottom
+}
+type InjectionName = keyof typeof Injections;
+
 const getInjections = async () => {
-    const injections = {
+    const injections: Record<InjectionName, string> = {
         load: '',
         start: '',
         switch: '',
@@ -145,9 +182,9 @@ const getInjections = async () => {
             encoding: 'utf8'
         });
         if (await fs.pathExists(path.join(basePath + 'ct.libs/', lib, 'injections'))) {
-            const injectFiles = await fs.readdir(path.join(basePath + 'ct.libs/', lib, 'injections')),
+            const injectFiles: string[] = await fs.readdir(path.join(basePath + 'ct.libs/', lib, 'injections')),
                   injectKeys = injectFiles.map(fname => path.basename(fname, path.extname(fname)));
-            await Promise.all(injectKeys.map(async (key, ind) => {
+            await Promise.all(injectKeys.map(async (key: InjectionName, ind) => {
                 if (key in injections) {
                     const injection = await fs.readFile(path.join(basePath + 'ct.libs/', lib, 'injections', injectFiles[ind]), {
                         encoding: 'utf8'
@@ -163,9 +200,14 @@ const getInjections = async () => {
 };
 
 // eslint-disable-next-line max-lines-per-function
-const exportCtProject = async (project, projdir, production) => {
+const exportCtProject = async (
+    project: IProject,
+    projdir: string,
+    production: boolean
+): Promise<string> => {
     currentProject = project;
     await removeBrokenModules(project);
+    resetEventsCache();
 
     const {languageJSON} = require('./../i18n');
     const {settings} = project;
@@ -204,7 +246,7 @@ const exportCtProject = async (project, projdir, production) => {
     const startroom = getStartingRoom(project);
 
     /* Load source files in parallel */
-    const sources = {};
+    const sources: Record<string, Promise<string>> = {};
     const sourcesList = [
         'backgrounds.js',
         'camera.js',
@@ -231,6 +273,8 @@ const exportCtProject = async (project, projdir, production) => {
     const skeletonsTask = packSkeletons(project, projdir, writeDir);
     const bitmapFontsTask = bakeBitmapFonts(project, projdir, writeDir);
     const favicons = bakeFavicons(project, writeDir);
+    /* Run event cache population in parallel as well */
+    const cacheHandle = populateEventCache(project);
 
     let buffer = template(await sources['main.js'], {
         startwidth: startroom.width,
@@ -259,10 +303,22 @@ const exportCtProject = async (project, projdir, production) => {
     }, injections);
     buffer += '\n';
 
-    const roomsCode = stringifyRooms(project);
+    // Process all the scriptables to get combined code for root rooms
+    await cacheHandle;
+
+    const rooms = stringifyRooms(project);
+    const templates = stringifyTemplates(project);
+    const rootRoomOnCreate = rooms.rootRoomOnCreate + '\n' + templates.rootRoomOnCreate;
+    const rootRoomOnStep = rooms.rootRoomOnStep + '\n' + templates.rootRoomOnStep;
+    const rootRoomOnDraw = rooms.rootRoomOnDraw + '\n' + templates.rootRoomOnDraw;
+    const rootRoomOnLeave = rooms.rootRoomOnLeave + '\n' + templates.rootRoomOnLeave;
     buffer += template(await sources['rooms.js'], {
         startroom: startroom.name,
-        rooms: roomsCode
+        rooms: rooms.libCode,
+        rootRoomOnCreate,
+        rootRoomOnStep,
+        rootRoomOnDraw,
+        rootRoomOnLeave
     }, injections);
     buffer += '\n';
 
@@ -279,9 +335,8 @@ const exportCtProject = async (project, projdir, production) => {
         }, injections);
     }
 
-    const templates = stringifyTemplates(project);
     buffer += template(await sources['templates.js'], {
-        templates
+        templates: templates.libCode
     }, injections);
 
     // Add four files in a sequence, without additional transforms
@@ -387,7 +442,7 @@ const exportCtProject = async (project, projdir, production) => {
         fs.writeFile(path.join(writeDir, '/ct.js'), buffer)
     ]);
 
-    await Promise.all(project.sounds.map(async sound => {
+    await Promise.all(project.sounds.map(async (sound: ISound) => {
         const ext = sound.origname.slice(-4);
         await fs.copy(path.join(projdir, '/snd/', sound.origname), path.join(writeDir, '/snd/', sound.uid + ext));
     }));
@@ -397,4 +452,4 @@ const exportCtProject = async (project, projdir, production) => {
     return path.join(writeDir, '/index.html');
 };
 
-module.exports = exportCtProject;
+export {exportCtProject};

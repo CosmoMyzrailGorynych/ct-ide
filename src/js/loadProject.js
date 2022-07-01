@@ -139,6 +139,10 @@
             resetTypedefs();
             loadAllTypedefs();
 
+            const {unloadAllEvents, loadAllModulesEvents} = require('./data/node_requires/events');
+            unloadAllEvents();
+            await loadAllModulesEvents();
+
             window.signals.trigger('projectLoaded');
             setTimeout(() => {
                 window.riot.update();

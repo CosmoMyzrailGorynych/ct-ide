@@ -59,6 +59,7 @@
     "typescript": "^4.0.3"
   },
   "devDependencies": {
+    "@types/fs-extra": "^9.0.13",
     "eslint-plugin-pug": "^1.2.2",
     "gulp-ext-replace": "^0.3.0"
   },

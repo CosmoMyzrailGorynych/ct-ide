@@ -6,6 +6,7 @@ declare global {
     var signals: any;
     var orders: any;
     var alertify: any;
+    var brehautColor: any;
     var languageJSON: any;
     var monaco: any;
     var currentProject: IProject;

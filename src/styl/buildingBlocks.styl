@@ -89,6 +89,8 @@
         text-overflow ellipsis
         white-space nowrap
         {trans}
+        &.flexrow
+            align-items center
         &:hover, &.hover
             {transshort}
             border-bottom-color borderBright
@@ -100,7 +102,7 @@
                 top 0.65rem
             &:hover, &.hover
                 padding 0.2em 0.5em 0.2em 1.5em
-        & > svg:first-child, & > .aSpacer:first-child
+        & > svg:first-child, & > .aSpacer:first-child, & > img.icon:first-child
             color act
             margin-right 0.5rem
             {trans}
@@ -112,7 +114,7 @@
             background act
             border-bottom-color transparent
             color background
-            & > svg:first-child, & > .aSpacer:first-child
+            & > svg:first-child, & > .aSpacer:first-child, & > .anActionableIcon
                 color background
 
 // панели управления

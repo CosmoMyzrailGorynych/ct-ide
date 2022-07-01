@@ -7,7 +7,7 @@ room-editor.aPanel.aView
             input.wide(type="text" value="{room.name}" onchange="{wire('this.room.name')}")
             .anErrorNotice(if="{nameTaken}" ref="errorNotice") {vocGlob.nameTaken}
             button.wide(onclick="{openRoomEvents}")
-                svg.feather(if="{room.oncreate || room.onstep || room.ondestroy || room.ondraw}")
+                svg.feather(if="{room.events && room.events.length}")
                     use(xlink:href="#check")
                 span {voc.events}
         .palette

@@ -5,5 +5,6 @@ declare interface IProject {
     rooms: IRoom[];
     tandems: ITandem[];
     fonts: IFont[];
+    styles: IStyle[];
     [key: string]: any;
 }

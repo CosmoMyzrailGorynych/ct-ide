@@ -540,6 +540,7 @@ ct.u.ext(ct.u, {// make aliases
         ct.inputs.updateActions();
         ct.timer.updateTimers();
         /*%beforeframe%*/
+        ct.rooms.rootRoomOnStep.apply(ct.room);
         for (let i = 0, li = ct.stack.length; i < li; i++) {
             ct.templates.beforeStep.apply(ct.stack[i]);
             ct.stack[i].onStep.apply(ct.stack[i]);
@@ -590,6 +591,7 @@ ct.u.ext(ct.u, {// make aliases
             item.onDraw.apply(item);
             ct.rooms.afterDraw.apply(item);
         }
+        ct.rooms.rootRoomOnDraw.apply(ct.room);
         /*%afterframe%*/
         if (ct.rooms.switching) {
             ct.rooms.forceSwitch();

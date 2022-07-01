@@ -29,20 +29,58 @@ template-editor
             top 0
             right 0
             bottom 0
-            if (theme == 'Horizon')
-                border 1px solid borderBright
-                border-top 0
-                box-sizing border-box
-                border-radius 0 0 br br
     .tabwrap
         height 100%
     display flex
     flex-flow row nowrap
     padding 1rem
-    .template-editor-Properties
+    .&-Properties
         flex 0 0 19rem
         margin-right 1rem
-    .template-editor-aCodeEditor
+        overflow hidden
+        &:first-child
+            flex 0 0 23rem
+        &.alt
+            flex 0 0 19rem
+    .&-aCodeEditor
         flex 1 1 auto
-.template-editor-Properties extensions-editor > collapsible-section:first-child
-    margin-top 1rem
+    .&-aSlidingEventListIcon
+        position absolute
+        left 0.87rem
+        bottom @left
+        z-index 2
+        opacity 0.5
+        {transshort}
+    .&-aSlidingEventList
+        width 3.25rem
+        flex 0 0 auto
+        position relative
+        overflow visible
+        & > .aPanel
+            width 3.25rem
+            z-index 2
+            overflow-x hidden
+            {trans}
+            .flexfix-footer button, .event-list-scriptable-LocalVars
+                opacity 0
+                {trans}
+        &:hover .template-editor-aSlidingEventListIcon
+            opacity 0
+        &:hover > .aPanel
+            position absolute
+            left 0
+            top 0
+            bottom 0
+            width 22rem
+            {shadamb}
+            .flexfix-footer button, .event-list-scriptable-LocalVars
+                opacity 1
+    .&-aSlidingEventListWrap
+        width 22rem
+        & > event-list-scriptable
+            .aMenu > li
+                & > svg, & > img
+                    &:first-child
+                        margin-right 0.8rem
+            & > .flexfix-footer
+                padding 1rem

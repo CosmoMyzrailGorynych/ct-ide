@@ -1,9 +1,8 @@
-ctjsVersion: 2.0.1
+ctjsVersion: 2.0.2
 notes: /* empty */
 libs:
   fittoscreen:
     mode: scaleFit
-  mouse: {}
   keyboard: {}
   keyboard.polyfill: {}
   sound.howler: {}
@@ -16,6 +15,9 @@ libs:
     gridY: 128
     debugMode: false
     debugText: 8
+  pointer:
+    preventdefault: false
+    startlocked: false
 textures:
   - name: Bullet
     untill: 0
@@ -174,7 +176,7 @@ textures:
     bottom: 0
     uid: 4733fb53-5e41-4cf8-b9a8-91ad700f2246
     padding: 1
-    lastmod: 1599530639304
+    lastmod: 1656663031400
   - name: HazardousTube
     untill: 0
     grid:
@@ -382,7 +384,7 @@ textures:
     bottom: 0
     uid: 8bef1226-7fb8-4bf5-8120-ac6e53d81ea5
     padding: 1
-    lastmod: 1597803955163
+    lastmod: 1656663036558
   - name: Cat_Right
     untill: 0
     grid:
@@ -696,367 +698,523 @@ skeletons: []
 templates:
   - name: Elevator
     depth: 0
-    oncreate: this.transitionStarted = false;
-    onstep: |-
-      if (!this.transitionStarted) {
-          if (ct.place.meet(this, 'Cat')) {
+    texture: 2637e46e-06b2-4ca0-b17d-4bbf6eca44b7
+    extends: {}
+    uid: 7fea051e-83e5-4e54-848b-ab3ca861e5cb
+    lastmod: 1656663070101
+    events:
+      - lib: core
+        arguments: {}
+        code: |-
+          this.transitionStarted = false;
+          this.depth = this.y;
+        eventKey: OnCreate
+      - eventKey: collisionTemplate
+        code: |-
+          if (!this.transitionStarted) {
               this.transitionStarted = true;
               ct.transition.slideOut(750)
               .then(() => {
                   ct.rooms.switch(ct.room.nextLevel);
               });
           }
-      }
-    ondraw: this.depth = this.y;
-    ondestroy: ''
-    texture: 2637e46e-06b2-4ca0-b17d-4bbf6eca44b7
-    extends: {}
-    uid: 7fea051e-83e5-4e54-848b-ab3ca861e5cb
-    lastmod: 1641334138294
+        arguments:
+          template: c40336ea-2846-45d5-97ba-d51852d3f6c5
+        lib: place
+    type: template
+    loopAnimation: true
   - name: Cat
     depth: 5
-    oncreate: |-
-      ct.camera.follow = this;
-      ct.camera.shiftY = -16;
-      this.maxSpeed = 2;
-
-      this.animationSpeed = 5 / ct.speed;
-      this.invincibleTimer = 0;
-      this.play();
-    onstep: |-
-      this.vspeed = ct.actions.MoveY.value * this.maxSpeed;
-      this.hspeed = ct.actions.MoveX.value * this.maxSpeed;
-      this.moveContinuousByAxes('Solid');
-
-      if (ct.actions.Shoot.pressed) {
-          const bullet = ct.templates.copy('Bullet', this.x, this.y - 5);
-          bullet.direction = ct.u.pdn(this.x, this.y - 5, ct.mouse.x, ct.mouse.y);
-      }
-
-      if (ct.place.meet(this, 'Gap')) {
-          this.kill = true;
-          ct.templates.copy('Cat_Falling', this.x, this.y - 8);
-      }
-
-      const checkpoint = ct.place.meet(this, 'Checkpoint');
-      if (checkpoint) {
-          ct.room.checkpointX = checkpoint.x;
-          ct.room.checkpointY = checkpoint.y;
-      }
-
-      if (this.invincibleTimer <= 0) {
-          const trap = ct.place.meet(this, 'Trap'),
-                enemy = ct.place.meet(this, 'Slime');
-          var damaged = false;
-          if (trap && trap.active) {
-              damaged = true;
-          }
-          if (enemy) {
-              damaged = true;
-          }
-          if (damaged) {
-              ct.emitters.fire('Cat_Damage', this.x, this.y);
-              ct.sound.spawn('CatDamage');
-              this.invincibleTimer = ct.speed;
-              ct.room.lives --;
-              if (ct.room.lives <= 0) {
-                  this.kill = true;
-                  ct.templates.copy('Cat_Death', this.x, this.y);
-              }
-              return;
-          }
-      } else {
-          this.invincibleTimer -= ct.delta;
-      }
-    ondraw: |-
-      if (this.x < ct.mouse.x && this.tex !== 'Cat_Right') {
-          this.tex = 'Cat_Right';
-          this.play();
-      }
-      if (this.x > ct.mouse.x && this.tex !== 'Cat_Left') {
-          this.tex = 'Cat_Left';
-          this.play();
-      }
-      this.depth = this.y;
-
-      if (this.invincibleTimer > 0 && this.invincibleTimer % 20 > 10) {
-          this.opacity = 0.5;
-      } else {
-          this.opacity = 1;
-      }
-    ondestroy: ''
     texture: 4822a271-cc3c-4d88-b7a0-b2aa4cab0a96
     extends:
       cgroup: ''
     uid: c40336ea-2846-45d5-97ba-d51852d3f6c5
-    lastmod: 1650173622519
+    lastmod: 1656663050756
+    events:
+      - lib: core
+        arguments: {}
+        code: |-
+          ct.camera.follow = this;
+          ct.camera.shiftY = -16;
+          this.maxSpeed = 2;
+
+          this.animationSpeed = 5 / ct.speed;
+          this.invincibleTimer = 0;
+        eventKey: OnCreate
+      - lib: core
+        arguments: {}
+        code: |-
+          this.vspeed = ct.actions.MoveY.value * this.maxSpeed;
+          this.hspeed = ct.actions.MoveX.value * this.maxSpeed;
+          this.moveContinuousByAxes('Solid');
+
+          if (this.invincibleTimer <= 0) {
+              const trap = ct.place.meet(this, 'Trap'),
+                    enemy = ct.place.meet(this, 'Slime');
+              var damaged = false;
+              if (trap && trap.active) {
+                  damaged = true;
+              }
+              if (enemy) {
+                  damaged = true;
+              }
+              if (damaged) {
+                  ct.emitters.fire('Cat_Damage', this.x, this.y);
+                  ct.sound.spawn('CatDamage');
+                  this.invincibleTimer = ct.speed;
+                  ct.room.lives --;
+                  if (ct.room.lives <= 0) {
+                      this.kill = true;
+                      ct.templates.copy('Cat_Death', this.x, this.y);
+                  }
+                  return;
+              }
+          } else {
+              this.invincibleTimer -= ct.delta;
+          }
+        eventKey: OnStep
+      - lib: core
+        arguments: {}
+        code: |-
+          if (this.x < ct.pointer.x && this.tex !== 'Cat_Right') {
+              this.tex = 'Cat_Right';
+              this.play();
+          }
+          if (this.x > ct.pointer.x && this.tex !== 'Cat_Left') {
+              this.tex = 'Cat_Left';
+              this.play();
+          }
+          this.depth = this.y;
+
+          if (this.invincibleTimer > 0 && this.invincibleTimer % 20 > 10) {
+              this.opacity = 0.5;
+          } else {
+              this.opacity = 1;
+          }
+        eventKey: OnDraw
+      - eventKey: OnActionPress
+        code: >-
+          const bullet = ct.templates.copy('Bullet', this.x, this.y - 5);
+
+          bullet.direction = ct.u.pdn(this.x, this.y - 5, ct.pointer.x,
+          ct.pointer.y);
+        arguments:
+          action: Shoot
+        lib: core
+      - eventKey: collisionTemplate
+        code: |-
+          ct.room.checkpointX = other.x;
+          ct.room.checkpointY = other.y;
+        arguments:
+          template: 469b9eef-6117-43a5-87d3-7151da7eba06
+        lib: place
+      - eventKey: collisionTemplate
+        code: |-
+          this.kill = true;
+          ct.templates.copy('Cat_Falling', this.x, this.y - 8);
+        arguments:
+          template: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
+        lib: place
+    type: template
+    loopAnimation: true
+    playAnimationOnStart: true
   - name: Crate
     depth: 0
-    oncreate: this.depth = this.y;
-    onstep: |-
-      if (ct.place.occupied(this, 'Bullet')) {
-          this.kill = true;
-      }
-    ondraw: ''
-    ondestroy: |-
-      ct.sound.spawn('Hit');
-      ct.templates.copy('Crate_Debris', this.x, this.y);
     texture: 31948760-8965-4768-ab1d-2b87d0b7fc3a
     extends:
       cgroup: Solid
     uid: 4e473462-8009-438e-9f53-1032e3a335cf
-    lastmod: 1641332423671
+    lastmod: 1656663007036
+    events:
+      - lib: core
+        arguments: {}
+        code: this.depth = this.y;
+        eventKey: OnCreate
+      - lib: core
+        arguments: {}
+        code: |-
+          ct.sound.spawn('Hit');
+          ct.templates.copy('Crate_Debris', this.x, this.y);
+        eventKey: OnDestroy
+      - eventKey: collisionCGroup
+        code: |-
+          this.kill = true;
+          if (ct.templates.isCopy(other)) {
+              other.kill = true;
+          }
+        arguments:
+          group: Bullet
+        lib: place
+    type: template
+    loopAnimation: true
   - name: HazardousTube
     depth: 0
-    oncreate: ''
-    onstep: |-
-      if (ct.place.occupied(this, 'Bullet')) {
-          this.kill = true;
-      }
-    ondraw: ''
-    ondestroy: |-
-      ct.sound.spawn('Hit');
-      ct.templates.copy('HazardousTube_Debris', this.x, this.y - 4);
-      ct.emitters.fire('BlueSparks', this.x, this.y - 4);
     texture: 1f0fbe96-38aa-4db4-a011-c0cf34b91d00
     extends:
       cgroup: Solid
     uid: 3b6057ca-f175-4449-ac24-1c5630e0af7c
-    lastmod: 1597811713144
+    lastmod: 1656663016676
+    events:
+      - lib: core
+        arguments: {}
+        code: |-
+          ct.sound.spawn('Hit');
+          ct.templates.copy('HazardousTube_Debris', this.x, this.y - 4);
+          ct.emitters.fire('BlueSparks', this.x, this.y - 4);
+        eventKey: OnDestroy
+      - eventKey: collisionCGroup
+        code: |-
+          this.kill = true;
+          if (ct.templates.isCopy(other)) {
+              other.kill = true;
+          }
+        arguments:
+          group: Bullet
+        lib: place
+    type: template
+    loopAnimation: true
   - name: Bullet
     depth: 0
-    oncreate: |-
-      ct.sound.spawn('Shoot');
-      this.speed = 4;
-    onstep: |-
-      this.move();
-      if (ct.place.occupied(this, 'Solid')) {
-          this.kill = true;
-      }
-    ondraw: this.depth = this.y;
-    ondestroy: |-
-      ct.sound.spawn('SmallHit');
-      ct.emitters.fire('RedSparks', this.x, this.y);
     texture: 29cd8366-37bd-4a4d-96a1-a2da4d674972
     extends:
       cgroup: Bullet
     uid: 57f03679-dc98-4ebc-87ef-a4ca7b275731
-    lastmod: 1641332445982
+    lastmod: 1656577394349
+    events:
+      - lib: core
+        arguments: {}
+        code: |-
+          ct.sound.spawn('Shoot');
+          this.speed = 4;
+        eventKey: OnCreate
+      - lib: core
+        arguments: {}
+        code: this.move();
+        eventKey: OnStep
+      - lib: core
+        arguments: {}
+        code: |-
+          ct.sound.spawn('SmallHit');
+          ct.emitters.fire('RedSparks', this.x, this.y);
+        eventKey: OnDestroy
+      - lib: core
+        arguments: {}
+        code: this.depth = this.y;
+        eventKey: OnDraw
+      - eventKey: collisionCGroup
+        code: this.kill = true;
+        arguments:
+          group: Solid
+        lib: place
+    type: template
+    loopAnimation: true
   - name: Crosshair
     depth: 100000
-    oncreate: ''
-    onstep: ''
-    ondraw: |-
-      this.x = ct.mouse.xui;
-      this.y = ct.mouse.yui;
-    ondestroy: ''
     texture: bdf46b11-ef42-4c45-af01-a0b918ee9587
     extends: {}
     uid: ff0f561c-a96c-4205-a083-01d2a60ebb67
-    lastmod: 1641334780836
+    lastmod: 1656575572155
+    events:
+      - lib: core
+        arguments: {}
+        code: |-
+          this.x = ct.pointer.xui;
+          this.y = ct.pointer.yui;
+        eventKey: OnDraw
+    type: template
+    loopAnimation: true
   - name: Crate_Debris
     depth: -6500
-    oncreate: ''
-    onstep: this.move();
-    ondraw: ''
-    ondestroy: ''
     texture: d25aebb8-d135-4b9c-b2b5-844298c35a62
     extends: {}
     uid: 9fc1fec8-50bb-49e6-8fb4-c10ad589bf0b
     lastmod: 1599528375450
+    events:
+      - lib: core
+        arguments: {}
+        code: this.move();
+        eventKey: OnStep
+    type: template
+    loopAnimation: true
   - name: HazardousTube_Debris
     depth: -6500
-    oncreate: 'this.rotation = ct.random.dice(-90, 0, 90);'
-    onstep: this.move();
-    ondraw: ''
-    ondestroy: ''
     texture: 80bab2bc-c12d-4ce6-8d6f-033e0d5d3bdc
     extends: {}
     uid: 5e40076f-8a61-4dfd-a517-a6c943ab9991
     lastmod: 1599528345681
+    events:
+      - lib: core
+        arguments: {}
+        code: 'this.rotation = ct.random.dice(-90, 0, 90);'
+        eventKey: OnCreate
+      - lib: core
+        arguments: {}
+        code: this.move();
+        eventKey: OnStep
+    type: template
+    loopAnimation: true
   - name: Door
     depth: 1
-    oncreate: this.opened = false;
-    onstep: |-
-      const cat = ct.templates.list['Cat'][0]
-      if (!this.opened && ct.templates.isCopy(cat)) {
-          if (ct.u.pdc(this.x, this.y, cat.x, cat.y) < 48) {
-              this.opened = true;
-              this.cgroup = '';
-              this.loop = false;
-              this.animationSpeed = 15 / ct.speed;
-              ct.sound.spawn('Door');
-              this.play();
-          }
-      }
-    ondraw: this.depth = this.y;
-    ondestroy: ''
     texture: 3a7c7928-a731-4940-9854-17936b3c9a46
     extends:
       cgroup: Solid
     uid: c701a029-af09-4fcf-9712-0fcdaa3581be
-    lastmod: 1618035793594
+    lastmod: 1656662934118
+    events:
+      - lib: core
+        arguments: {}
+        code: this.opened = false;
+        eventKey: OnCreate
+      - lib: core
+        arguments: {}
+        code: |-
+          const cat = ct.templates.list['Cat'][0]
+          if (!this.opened && ct.templates.isCopy(cat)) {
+              if (ct.u.pdc(this.x, this.y, cat.x, cat.y) < 48) {
+                  this.opened = true;
+                  this.cgroup = '';
+                  this.loop = false;
+                  this.animationSpeed = 15 / ct.speed;
+                  ct.sound.spawn('Door');
+                  this.play();
+              }
+          }
+        eventKey: OnStep
+      - lib: core
+        arguments: {}
+        code: this.depth = this.y;
+        eventKey: OnDraw
+    type: template
+    loopAnimation: true
   - name: Slime
     depth: 0
-    oncreate: |-
-      this.aggroRange = 120;
-      this.aggroed = false;
-    onstep: |-
-      const cat = ct.templates.list['Cat'][0];
-      if (ct.templates.isCopy(cat)) {
-          if (this.aggroed) {
-              if (ct.u.pdc(this.x, this.y, cat.x, cat.y) > 7) {
-                  this.speed = 1.5;
-                  this.direction = ct.u.pdn(this.x, this.y, cat.x, cat.y);
-              } else {
-                  this.speed = 0;
-              }
-          } else if (ct.u.pdc(this.x, this.y, cat.x, cat.y) < this.aggroRange) {
-              this.aggroed = true;
-          }
-      }
-
-      this.moveContinuousByAxes('Solid', 0.5);
-
-      if (ct.place.occupied(this, 'Bullet')) {
-          this.kill = true;
-      }
-      if (ct.place.meet(this, 'Gap')) {
-          this.kill = true;
-      }
-    ondraw: this.depth = this.y;
-    ondestroy: |-
-      ct.emitters.fire('Slime_Dead', this.x, this.y);
-      ct.sound.spawn('SlimeExplosion');
     texture: 4733fb53-5e41-4cf8-b9a8-91ad700f2246
     extends:
       cgroup: Solid
     uid: 173dfb94-5133-4bbc-9e7d-6ed8c9fef330
-    lastmod: 1618035849551
+    lastmod: 1656663039597
+    events:
+      - lib: core
+        arguments: {}
+        code: |-
+          this.aggroRange = 120;
+          this.aggroed = false;
+        eventKey: OnCreate
+      - lib: core
+        arguments: {}
+        code: |-
+          const cat = ct.templates.list['Cat'][0];
+          if (ct.templates.valid(cat)) {
+              if (this.aggroed) {
+                  if (ct.u.pdc(this.x, this.y, cat.x, cat.y) > 7) {
+                      this.speed = 1.5;
+                      this.direction = ct.u.pdn(this.x, this.y, cat.x, cat.y);
+                  } else {
+                      this.speed = 0;
+                  }
+              } else if (ct.u.pdc(this.x, this.y, cat.x, cat.y) < this.aggroRange) {
+                  this.aggroed = true;
+              }
+          }
+
+          this.moveContinuousByAxes('Solid', 0.5);
+        eventKey: OnStep
+      - lib: core
+        arguments: {}
+        code: |-
+          ct.emitters.fire('Slime_Dead', this.x, this.y);
+          ct.sound.spawn('SlimeExplosion');
+        eventKey: OnDestroy
+      - lib: core
+        arguments: {}
+        code: this.depth = this.y;
+        eventKey: OnDraw
+      - eventKey: collisionTemplate
+        code: this.kill = true;
+        arguments:
+          template: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
+        lib: place
+      - eventKey: collisionCGroup
+        code: |-
+          this.kill = true;
+          if (ct.templates.isCopy(other)) {
+              other.kill = true;
+          }
+        arguments:
+          group: Bullet
+        lib: place
+    type: template
+    loopAnimation: true
   - name: Gap
     depth: 0
-    oncreate: this.visible = false;
-    onstep: this.move();
-    ondraw: ''
-    ondestroy: ''
     texture: 14d3f53f-a868-4820-84cd-63234ab6e6b9
     extends:
       cgroup: Gap
+      visible: false
     uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
-    lastmod: 1598572535583
+    lastmod: 1656645123809
+    events: []
+    type: template
+    loopAnimation: false
   - name: Checkpoint
     depth: 0
-    oncreate: this.visible = false;
-    onstep: this.move();
-    ondraw: ''
-    ondestroy: ''
     texture: a42e0dff-69c9-46c3-8996-745aaa769698
     extends:
       cgroup: Checkpoint
     uid: 469b9eef-6117-43a5-87d3-7151da7eba06
     lastmod: 1598575103989
+    events:
+      - lib: core
+        arguments: {}
+        code: this.visible = false;
+        eventKey: OnCreate
+      - lib: core
+        arguments: {}
+        code: this.move();
+        eventKey: OnStep
+    type: template
+    loopAnimation: true
   - name: Cat_Falling
     depth: 0
-    oncreate: ct.sound.spawn('Fall');
-    onstep: this.move();
-    ondraw: |-
-      this.angle -= 10 * ct.delta;
-      this.scale.x -= 0.015 * ct.delta;
-      this.scale.y = this.scale.x;
-
-      if (this.scale.x <= 0) {
-          this.kill = true;
-      }
-    ondestroy: |
-      if (ct.room.lives > 0) {
-          ct.room.lives --;
-          ct.templates.copy('Cat', ct.room.checkpointX, ct.room.checkpointY);
-      } else {
-          ct.rooms.switch(ct.room.name);
-      }
     texture: 96121d6f-6483-48f8-841b-b307befc7d42
     extends: {}
     uid: c480ea86-1545-4048-8f2e-1ded726cfa92
     lastmod: 1604820858604
+    events:
+      - lib: core
+        arguments: {}
+        code: ct.sound.spawn('Fall');
+        eventKey: OnCreate
+      - lib: core
+        arguments: {}
+        code: this.move();
+        eventKey: OnStep
+      - lib: core
+        arguments: {}
+        code: |
+          if (ct.room.lives > 0) {
+              ct.room.lives --;
+              ct.templates.copy('Cat', ct.room.checkpointX, ct.room.checkpointY);
+          } else {
+              ct.rooms.switch(ct.room.name);
+          }
+        eventKey: OnDestroy
+      - lib: core
+        arguments: {}
+        code: |-
+          this.angle -= 10 * ct.delta;
+          this.scale.x -= 0.015 * ct.delta;
+          this.scale.y = this.scale.x;
+
+          if (this.scale.x <= 0) {
+              this.kill = true;
+          }
+        eventKey: OnDraw
+    type: template
+    loopAnimation: true
   - name: StartButton
     depth: 0
-    oncreate: this.blinkTimer = 0;
-    onstep: |-
-      if (ct.mouse.hovers(this) && ct.mouse.pressed) {
+    texture: a5745819-e057-4d67-a114-b64249a0f701
+    extends: {}
+    uid: 38f86691-8fcc-44e4-a201-8479ca64935f
+    lastmod: 1656575321697
+    events:
+      - lib: core
+        arguments: {}
+        code: this.blinkTimer = 0;
+        eventKey: OnCreate
+      - lib: core
+        arguments: {}
+        code: |-
+          this.blinkTimer += ct.delta;
+          if (this.blinkTimer > ct.speed / 2) {
+              this.alpha = 0;
+          } else {
+              this.alpha = 1;
+          }
+          if (this.blinkTimer > ct.speed) {
+              this.blinkTimer = 0;
+          }
+        eventKey: OnDraw
+      - eventKey: OnPointerClick
+        code: |-
           ct.transition.slideOut(750)
           .then(() => {
               ct.rooms.switch('Level_01');
           });
-      }
-    ondraw: |-
-      this.blinkTimer += ct.delta;
-      if (this.blinkTimer > ct.speed / 2) {
-          this.alpha = 0;
-      } else {
-          this.alpha = 1;
-      }
-      if (this.blinkTimer > ct.speed) {
-          this.blinkTimer = 0;
-      }
-    ondestroy: ''
-    texture: a5745819-e057-4d67-a114-b64249a0f701
-    extends: {}
-    uid: 38f86691-8fcc-44e4-a201-8479ca64935f
-    lastmod: 1599529122735
+        arguments: {}
+        lib: core
+    type: template
+    loopAnimation: true
   - name: Trap
     depth: -5000
-    oncreate: this.spikeTimer = 0;
-    onstep: |-
-      this.spikeTimer += ct.delta;
-
-      if (this.spikeTimer > ct.speed * 3) {
-          this.gotoAndStop(0);
-          this.spikeTimer = 0;
-          this.active = false;
-      } else if (this.spikeTimer > ct.speed * 2) {
-          this.gotoAndStop(1);
-          this.active = true;
-      }
-    ondraw: ''
-    ondestroy: ''
     texture: 6c23e805-94b6-4e3a-8606-682c36960233
     extends: {}
     uid: 36c82b3e-f5c1-4fff-b24a-417fa9509c96
-    lastmod: 1599531331432
+    lastmod: 1656663024572
+    events:
+      - lib: core
+        arguments: {}
+        code: this.spikeTimer = 0;
+        eventKey: OnCreate
+      - lib: core
+        arguments: {}
+        code: |-
+          this.spikeTimer += ct.delta;
+
+          if (this.spikeTimer > ct.speed * 3) {
+              this.gotoAndStop(0);
+              this.spikeTimer = 0;
+              this.active = false;
+          } else if (this.spikeTimer > ct.speed * 2) {
+              this.gotoAndStop(1);
+              this.active = true;
+          }
+        eventKey: OnStep
+    type: template
+    loopAnimation: true
   - name: Cat_Death
     depth: 0
-    oncreate: |-
-      this.depth = this.y;
-      this.animationSpeed = 0.7 / ct.speed;
-      this.loop = false;
-      this.onComplete = () => {
-          this.kill = true;
-          ct.rooms.switch(ct.room.name);
-      };
-      this.play();
-    onstep: this.move();
-    ondraw: ''
-    ondestroy: ''
     texture: 8a6a1aa5-60f6-4f9a-9c54-7e5e7641bda1
     extends: {}
     uid: f11d4e26-8450-4187-8163-b70facceca7e
-    lastmod: 1641332285054
+    lastmod: 1656645102145
+    events:
+      - lib: core
+        arguments: {}
+        code: |-
+          this.depth = this.y;
+          this.animationSpeed = 0.7 / ct.speed;
+        eventKey: OnCreate
+      - eventKey: OnAnimationComplete
+        code: ct.rooms.switch(ct.room.name);
+        arguments: {}
+        lib: core
+    type: template
+    loopAnimation: false
+    playAnimationOnStart: true
   - name: Medkit
     depth: 0
-    oncreate: ''
-    onstep: |-
-      if (ct.place.meet(this, 'Cat')) {
+    texture: c61a44b6-1f4d-43c2-9356-7288658947a9
+    extends: {}
+    uid: b336d91c-2876-4686-b8b4-901045a86ac7
+    lastmod: 1656663060956
+    events:
+      - lib: core
+        arguments: {}
+        code: ct.sound.spawn('Powerup');
+        eventKey: OnDestroy
+      - eventKey: collisionTemplate
+        code: |-
           if (ct.room.lives < 3) {
               ct.room.lives++;
               this.kill = true;
           }
-      }
-    ondraw: ''
-    ondestroy: ct.sound.spawn('Powerup');
-    texture: c61a44b6-1f4d-43c2-9356-7288658947a9
-    extends: {}
-    uid: b336d91c-2876-4686-b8b4-901045a86ac7
-    lastmod: 1604820879663
+        arguments:
+          template: c40336ea-2846-45d5-97ba-d51852d3f6c5
+        lib: place
+    type: template
+    loopAnimation: true
 sounds:
   - name: Shoot
     uid: 97baf84a-32d3-450c-a52e-25a770565520
@@ -1102,16 +1260,6 @@ sounds:
 styles: []
 rooms:
   - name: Level_01
-    oncreate: |-
-      ct.sound.spawn('InGameTheme', {
-          loop: true,
-          volume: 0.3
-      });
-      this.nextLevel = 'Level_02';
-
-      ct.rooms.append('UI_InGame', {
-          isUi: true
-      });
     onstep: ''
     ondraw: ''
     onleave: ''
@@ -2808,19 +2956,28 @@ rooms:
     gridX: 16
     gridY: 16
     backgroundColor: '#000337'
-    lastmod: 1641402653400
+    lastmod: 1656637825068
     restrictCamera: true
     restrictMinX: -48
     restrictMaxX: 384
     restrictMinY: -16
     restrictMaxY: 320
-  - name: Level_02
-    oncreate: |-
-      this.nextLevel = 'Level_03';
+    events:
+      - lib: core
+        arguments: {}
+        code: |-
+          ct.sound.spawn('InGameTheme', {
+              loop: true,
+              volume: 0.3
+          });
+          this.nextLevel = 'Level_02';
 
-      ct.rooms.append('UI_InGame', {
-          isUi: true
-      });
+          ct.rooms.append('UI_InGame', {
+              isUi: true
+          });
+        eventKey: OnRoomStart
+    type: room
+  - name: Level_02
     onstep: ''
     ondraw: ''
     onleave: ''
@@ -6183,8 +6340,19 @@ rooms:
     extends: {}
     gridX: 8
     gridY: 8
-    lastmod: 1641402692176
+    lastmod: 1656662875164
     backgroundColor: '#000337'
+    events:
+      - lib: core
+        arguments: {}
+        code: |-
+          this.nextLevel = 'Level_03';
+
+          ct.rooms.append('UI_InGame', {
+              isUi: true
+          });
+        eventKey: OnRoomStart
+    type: room
   - name: MainMenu
     oncreate: ''
     onstep: ''
@@ -6228,23 +6396,12 @@ rooms:
     gridX: 16
     gridY: 16
     backgroundColor: '#000337'
-    lastmod: 1604820946644
+    lastmod: 1656663135237
+    events: []
+    type: room
   - name: Level_03
-    oncreate: |-
-      this.nextLevel = 'MainMenu';
-
-      ct.rooms.append('UI_InGame', {
-          isUi: true
-      });
     onstep: ''
     ondraw: ''
-    onleave: |-
-      // If there is no cat in the room,
-      // it means that we are restarting the room because the cat died.
-      if (ct.templates.exists('Cat')) {
-          ct.sound.stop('InGameTheme');
-          console.log('This demo is a work in progress, stay tuned for more levels :)');
-      }
     width: 240
     height: 160
     backgrounds: []
@@ -8595,24 +8752,30 @@ rooms:
     gridX: 8
     gridY: 8
     backgroundColor: '#000337'
-    lastmod: 1604822242023
+    lastmod: 1656637834135
+    events:
+      - lib: core
+        arguments: {}
+        code: |-
+          this.nextLevel = 'MainMenu';
+
+          ct.rooms.append('UI_InGame', {
+              isUi: true
+          });
+        eventKey: OnRoomStart
+      - lib: core
+        arguments: {}
+        code: |-
+          // If there is no cat in the room,
+          // it means that we are restarting the room because the cat died.
+          if (ct.templates.exists('Cat')) {
+              ct.sound.stop('InGameTheme');
+              console.log('This demo is a work in progress, stay tuned for more levels :)');
+          }
+        eventKey: OnRoomEnd
+    type: room
   - name: UI_InGame
-    oncreate: >-
-      ct.room.lives = 3;
-
-      this.hearts = new PIXI.TilingSprite(ct.res.getTexture('Heart', 0), 48,
-      16);
-
-      this.hearts.anchor.x = this.hearts.anchor.y = 0;
-
-      this.hearts.x = this.hearts.y = 4;
-
-      this.addChild(this.hearts);
-
-
-      ct.transition.slideIn(750);
     onstep: ''
-    ondraw: this.hearts.width = 16 * ct.room.lives;
     onleave: ''
     width: 240
     height: 160
@@ -8627,11 +8790,35 @@ rooms:
         extends: {}
     uid: ee8b4583-614a-44d6-aacc-6569f49f6b80
     thumbnail: 6569f49f6b80
-    extends: {}
+    extends:
+      isUi: true
     gridX: 8
     gridY: 8
     backgroundColor: '#000337'
-    lastmod: 1604818771543
+    lastmod: 1656662852540
+    events:
+      - lib: core
+        arguments: {}
+        code: >-
+          ct.room.lives = 3;
+
+          this.hearts = new PIXI.TilingSprite(ct.res.getTexture('Heart', 0), 48,
+          16);
+
+          this.hearts.anchor.x = this.hearts.anchor.y = 0;
+
+          this.hearts.x = this.hearts.y = 4;
+
+          this.addChild(this.hearts);
+
+
+          ct.transition.slideIn(750);
+        eventKey: OnRoomStart
+      - lib: core
+        arguments: {}
+        code: this.hearts.width = 16 * ct.room.lives;
+        eventKey: OnDraw
+    type: room
 actions:
   - name: MoveX
     methods:
@@ -8652,7 +8839,7 @@ actions:
   - name: Shoot
     methods:
       - code: keyboard.Space
-      - code: mouse.Left
+      - code: pointer.Any
   - name: Interact
     methods:
       - code: keyboard.KeyE
