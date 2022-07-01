@@ -1,13 +1,14 @@
 @charset "utf-8"
 
-foreground = #ECEFF4
-text = #D8DEE9
-background = #3B4252
-backgroundDeeper = #2E3440
-shadows = #292e39
+foreground = #575279 // text
+text = #575279 // text
+background = #fffaf3 // surface
+backgroundDeeper = #faf4ed // base
+shadows = #f2e9e1 // overlay
 
-borderPale = #434C5E
-borderBright = #4C566A
+borderLight = #cecacd // highlight high
+borderPale = #f2e9e1 // overlay
+borderBright = #f2e9e1 // overlay
 
 trans =
     transition 0.35s ease all
@@ -24,24 +25,24 @@ font-mono = mono = Iosevka, monospace
 br = 0.2rem
 iconsize = 1.5rem
 
-act = #88C0D0
+act = #907aa9 // iris
 acttext = act
-accent1 = #88C0D0
-error = #BF616A
+accent1 = #d7827e // rose
+error = #b4637a // love
 red = error
-success = #A3BE8C
+success = #286983 // pine
 green = success
-warning = #D08770
+warning = #ea9d34 // gold
 orange = warning
 
-theme = 'Nord'
-themeDark = true
+theme = 'RosePineDawn'
+themeDark = false
 themeThickBorders = false
 
 @require 'hvost.styl'
 
 @require '3rdParty/*.styl'
-@require './../../app/node_modules/highlight.js/styles/nord.css'
+@require './../../app/node_modules/highlight.js/styles/tomorrow.css'
 
 @require 'common.styl'
 @require 'inputs.styl'
@@ -59,7 +60,7 @@ input[type="password"],
 select,
 textarea,
 .aResizer::before
-    background-color rgba(backgroundDeeper, 0.5)
+    border-color borderLight
 
 #bg
-    background backgroundDeeper
+    background borderPale

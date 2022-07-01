@@ -634,7 +634,10 @@
                 "SpringStream": "Spring Stream",
                 "LucasDracula": "Lucas Dracula",
                 "Horizon": "Horizon",
-                "HCBlack": "High-contrast Black"
+                "HCBlack": "High-contrast Black",
+                "RosePine": "Rosé Pine",
+                "RosePineMoon": "Rosé Pine Moon",
+                "RosePineDawn": "Rosé Pine Dawn"
             },
             "prideMode": "Pride mode",
             "language": "Language",
