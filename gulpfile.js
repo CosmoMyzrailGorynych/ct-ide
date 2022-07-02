@@ -60,6 +60,7 @@ var channelPostfix = argv.channel || false,
     fixEnabled = argv.fix || false,
     nightly = argv.nightly || false,
     buildNumber = argv.buildNum || false;
+var verbose = argv.verbose || false;
 
 if (nightly) {
     channelPostfix = 'nightly';
@@ -311,7 +312,7 @@ const lintTags = () => {
     .pipe(eslint.failAfterError());
 };
 
-const lintI18n = () => require('./node_requires/i18n')().then(console.log);
+const lintI18n = () => require('./node_requires/i18n')(verbose).then(console.log);
 
 const lint = gulp.series(lintJS, lintTags, lintStylus, lintI18n);
 
