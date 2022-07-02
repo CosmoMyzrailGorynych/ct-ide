@@ -1,5 +1,5 @@
 style-editor.aPanel.aView
-    #styleleft.tall.flexfix
+    .style-editor-Properties.tall.flexfix
         .flexfix-header
             .aPanel.pad
                 b {vocGlob.name}
@@ -142,7 +142,7 @@ style-editor.aPanel.aView
                 svg.feather
                     use(xlink:href="#check")
                 span {voc.apply}
-    #stylepreview.tall(ref="canvasSlot")
+    .style-editor-aPreview.tall(ref="canvasSlot")
     asset-selector(
         if="{selectingFont}"
         assettype="fonts"

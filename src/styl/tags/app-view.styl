@@ -11,28 +11,26 @@ app-view
 #theCatMenu
     top 100%
     left 0
-#fullscreen
-    flex 0 0 3rem
-#app
+#theAppControls
     flex 0.35 1 12rem
-#mainnav
+#theMainNav
     flex 1 1 60rem
 
-body.maximized #mainnav
+body.maximized #theMainNav
     @media (max-width 1000px)
         flex-wrap wrap
 
 body.restored
-    #mainnav
+    #theMainNav
         right 0
-    #app
+    #theAppControls
         display none
 
-#mainnav, #app, #fullscreen
+#theMainNav, #theAppControls
     border-radius 0
 
 @media (max-width 1000px)
-    #mainnav span
+    #theMainNav span
         display none
-    #mainnav svg:first-child
+    #theMainNav svg:first-child
         margin-right 0

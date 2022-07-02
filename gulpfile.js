@@ -269,13 +269,20 @@ const watch = () => {
 };
 
 const lintStylus = () => {
-    const stylint = require('gulp-stylint');
-    return gulp.src(['./src/styl/**/*.styl', '!./src/styl/3rdParty/**/*.styl'])
-    .pipe(stylint())
-    .pipe(stylint.reporter())
-    .pipe(stylint.reporter('fail', {
-        failOnWarning: true
-    }));
+    const stylelint = require('stylelint');
+    return stylelint.lint({
+        files: [
+            './src/styl/**/*.styl',
+            '!./src/styl/3rdParty/**/*.styl'
+        ],
+        formatter: 'string'
+    }).then(lintResults => {
+        if (lintResults.errored) {
+            console.log(lintResults.output);
+        } else {
+            console.log('✔ Cheff\'s kiss! 😙👌');
+        }
+    });
 };
 
 const lintJS = () => {

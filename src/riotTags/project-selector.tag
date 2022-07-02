@@ -1,5 +1,5 @@
 project-selector
-    #bg.stretch.flexcol
+    #theIntroBg.stretch.flexcol
         .pad.left.nogrow
             button.inline(onclick="{toggleLanguageSelector}")
                 svg.feather
@@ -93,7 +93,7 @@ project-selector
                             button.tiny(onclick="{cloneProject}" title="{voc.cloneProject}")
                                 svg.feather
                                     use(xlink:href="#copy")
-            #newProject.inset.flexfix-footer.flexrow
+            #theNewProjectField.inset.flexfix-footer.flexrow
                 h3.nm.inline {voc.newProject.text}
                 input(
                     type='text'

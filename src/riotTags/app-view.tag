@@ -1,6 +1,6 @@
 app-view.flexcol
     nav.nogrow.flexrow(if="{global.currentProject}")
-        ul#app.aNav.tabs
+        ul#theAppControls.aNav.tabs
             li.it30#ctlogo(onclick="{changeTab('menu')}" title="{voc.ctIDE}" class="{active: tab === 'menu'}")
                 svg.feather.nmr
                     use(xlink:href="#menu")
@@ -11,7 +11,7 @@ app-view.flexcol
                 svg.feather
                     use(xlink:href="#save")
 
-        ul#mainnav.aNav.tabs
+        ul#theMainNav.aNav.tabs
             li.nbl.it30(onclick="{runProject}" class="{active: tab === 'debug'}" title="{voc.launch} {voc.launchHotkeys}" data-hotkey="F5")
                 svg.feather.rotateccw(show="{exportingProject}")
                     use(xlink:href="#refresh-ccw")

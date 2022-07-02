@@ -1,0 +1,37 @@
+plugins:
+    - stylelint-stylus
+overrides:
+    -   files:
+        -   '*.stylus'
+        -   '*.styl'
+        -   '**/*.stylus'
+        -   '**/*.styl'
+        customSyntax: 'postcss-styl'
+rules:
+    color-no-invalid-hex: true
+    font-family-no-duplicate-names: true
+    named-grid-areas-no-invalid: true
+    function-calc-no-unspaced-operator: true
+    function-linear-gradient-no-nonstandard-direction: true
+    string-no-newline: true
+    unit-no-unknown: true
+    keyframe-declaration-no-important: true
+    keyframe-block-no-duplicate-selectors: true
+    declaration-block-no-duplicate-properties: true
+    declaration-block-no-shorthand-property-overrides: true
+    declaration-block-no-duplicate-custom-properties: true
+    block-no-empty: true
+    media-feature-name-no-unknown: true
+    comment-no-empty: true
+    no-duplicate-at-import-rules: true
+    no-empty-source: true
+    alpha-value-notation: 'number'
+    length-zero-no-unit: true
+    declaration-block-single-line-max-declarations: 1
+    selector-attribute-quotes: always
+    selector-id-pattern: 'the[A-Z][a-zA-Z]*'
+    no-irregular-whitespace: true
+
+    stylus/pythonic: 'always'
+    stylus/semicolon: 'never'
+    stylus/property-no-unknown: true

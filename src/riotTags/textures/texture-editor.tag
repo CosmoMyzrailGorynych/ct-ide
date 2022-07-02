@@ -237,7 +237,7 @@ texture-editor.aPanel.aView
                 .flexrow
                     b.alignmiddle {voc.speed}
                     .filler
-                    input#grahpspeed.short(type="number" min="1" value="{prevSpeed}" onchange="{wire('this.prevSpeed')}" oninput="{wire('this.prevSpeed')}")
+                    input.texture-editor-anAnimSpeedField.short(type="number" min="1" value="{prevSpeed}" onchange="{wire('this.prevSpeed')}" oninput="{wire('this.prevSpeed')}")
                 p
                 .aNotice {voc.previewAnimationNotice}
 
