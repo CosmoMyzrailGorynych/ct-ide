@@ -28,7 +28,7 @@ action-input
         }
         if (this.opts.actionName) {
             if (!window.currentProject.actions.find(action => action.name === this.opts.actionName)) {
-                // @eslint-disable-next-line no-console
+                // eslint-disable-next-line no-console
                 console.warn(`An action-input was passed an invalid action ${this.opts.actionName} and will request to empty its value.`);
                 if (this.opts.onchanged) {
                     this.opts.onchanged();

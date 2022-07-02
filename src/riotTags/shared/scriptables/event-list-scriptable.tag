@@ -136,12 +136,12 @@ event-list-scriptable.flexfix(class="{opts.class}")
 
         if (!this.opts.events) {
             console.error('event-list-scriptable was not provided with an `events` attribute.');
-            // @eslint-disable-next-line no-console
+            // eslint-disable-next-line no-console
             console.warn(this);
         }
         if (!this.opts.entitytype) {
             console.error('event-list-scriptable was not provided with an `entitytype` attribute.');
-            // @eslint-disable-next-line no-console
+            // eslint-disable-next-line no-console
             console.warn(this);
         }
 
