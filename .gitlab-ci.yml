@@ -1,5 +1,5 @@
 default:
-  image: cettoana/node-wine
+  image: cettoana/docker-node-wine
   # Caching settigns for NPM, according to https://docs.gitlab.com/ee/ci/caching/index.html#cache-nodejs-dependencies
   before_script:
     - npm ci --cache .npm --prefer-offline
