@@ -194,7 +194,7 @@
     },
     "onboarding": {
         "hoorayHeader": "Ух-ти! Ми зробили новий проект!",
-        "НовоWhatParagraph": "Але що ж далі?",
+        "nowWhatParagraph": "Але що ж далі?",
         "openSpaceShooterTutorial": "Навчитися робити космічну стрілялку",
         "openPlatformerTutorial": "Навчитися робити платформери",
         "openJettyCatTutorial": "Навчитися робити Флеппі Кіт",
@@ -204,7 +204,7 @@
     "settings": {
         "actions": {
             "heading": "Дії та методи введення",
-            "діяння": "Дії",
+            "actions": "Дії",
             "addAction": "Додати дію",
             "addMethod": "Додати метод введення",
             "deleteAction": "Видалити цю дію",
@@ -366,7 +366,7 @@
     },
     "styles": {
         "create": "Створити",
-        "Styles": "Стилі написів"
+        "styles": "Стилі написів"
     },
     "fonts": {
         "fonts": "Шрифти",
@@ -374,7 +374,7 @@
         "italic": "Похилий"
     },
     "particleEmitters": {
-        "EmittersHeading": "Системи частинок",
+        "emittersHeading": "Системи частинок",
         "emitterHeading": "Емітер",
         "from": "Від:",
         "to": "До:",
@@ -387,22 +387,22 @@
         "steppedAlpha": "Різкий перехід прозорості",
         "blendMode": "Режим змішування:",
         "regular": "Звичайний",
-        "Darken": "Затемнення",
+        "darken": "Затемнення",
         "lighten": "Освітлення",
         "burn": "Горіння",
-        "ScalingHeading": "Розмір",
+        "scalingHeading": "Розмір",
         "scale": "Розмір:",
         "minimumSize": "Мінімальний розмір:",
         "velocityHeading": "Швидкість",
         "velocity": "Швидкість:",
         "minimumSpeed": "Мінімальна швидкість:",
         "maxSpeed": "Максимальна швидкість:",
-        "GravityHeading": "Гравітація",
+        "gravityHeading": "Гравітація",
         "gravityNotice": "Якщо гравітація відрізняється від (0;0), то інтерполяція швидкості буде відключена, тобто працюватиме тільки перший вузол у графіку швидкості.",
         "directionHeading": "Напрям",
         "startingDirection": "Початковий напрямок",
         "preserveTextureDirection": "Не обертати текстуру",
-        "RotationHeading": "Поворот",
+        "rotationHeading": "Поворот",
         "rotationSpeed": "Швидкість повороту speed",
         "rotationAcceleration": "Прискорення повороту:",
         "spawningHeading": "Створення частинок",
@@ -419,7 +419,7 @@
         "spawnShapes": {
             "point": "Точка",
             "rectangle": "Прямокутник",
-            "Circle": "Коло",
+            "circle": "Коло",
             "ring": "Кільце",
             "star": "Зірка"
         },
@@ -432,11 +432,11 @@
         "addEmitter": "Додати ще емітер",
         "reset": "Скинути прев'ю",
         "changeBg": "Змінити фон",
-        "InspectorComplete": "Готово!",
+        "inspectorComplete": "Готово!",
         "alreadyHasAnImportingTexture": "У проекті вже є текстура $1. Або змініть її, або видаліть, але, швидше за все, ви намагаєтеся заново імпортувати ту саму текстуру :)",
         "minimumSizeHint": "При малих значеннях випадково змінює розмір частинки. Чим менше значення, тим сильніший ефект.",
         "minimumSpeedHint": "При малих значеннях випадковим чином знижує швидкість частинки; чим менше значення, тим повільніше частка.",
-        "ShowShapeVisualizer": "Показати форму емітера",
+        "showShapeVisualizer": "Показати форму емітера",
         "changeGrid": "Розмір сітки",
         "newGridSize": "Новий розмір сітки:",
         "setPreviewTexture": "Підкласти текстуру"
@@ -515,7 +515,7 @@
     "extensionsEditor": {
         "noEntries": "Ще немає записів.",
         "addRow": "Додати рядок",
-        "діяння": "Дії",
+        "actions": "Дії",
         "values": "Значення",
         "moveDown": "Вниз",
         "moveUp": "Вгору",
@@ -536,7 +536,7 @@
         "fillerNone": "Нічого",
         "fillerCross": "Перехрестя",
         "fillerLabel": "Текст",
-        "Форм": "Форма",
+        "form": "Форма",
         "formRectangular": "Прямокутна",
         "formRound": "Кругла",
         "formDiamond": "Ромб",
@@ -664,7 +664,7 @@
         "color": "Колір:"
     },
     "soundRecorder": {
-        "RecorderHeading": "Диктофон",
+        "recorderHeading": "Диктофон",
         "record": "Почати запис",
         "stopRecording": "Зупинити запис",
         "discardRecording": "Видалити запис",
@@ -720,7 +720,7 @@
         "sortVertically": "Відсортувати по вертикалі",
         "copyProperties": {
             "position": "Позиція",
-            "Rotation": "Поворот",
+            "rotation": "Поворот",
             "scale": "Розмір"
         },
         "customProperties": "Користувацькі поля",
@@ -757,7 +757,7 @@
         "textWrapWidth": "Позиція для перенесення:",
         "useCustomFont": "Вибрати шрифт із проекту…",
         "code": "Код",
-        "CopyCode": "Скопіювати",
+        "copyCode": "Скопіювати",
         "fillColor": "Колір:",
         "fillColor1": "Колір 1:",
         "fillColor2": "Колір 2:",
@@ -805,11 +805,11 @@
         "movePoint": "Перемістити точку",
         "reimport": "Оновити",
         "symmetryTool": "Симетрія",
-        "Padding": "Відбивка:",
+        "padding": "Відбивка:",
         "paddingNotice": "Впливає на те, як експортується текстура: дублює пікселі по краях, щоб уникнути артефактів брудних країв на повторюваних і зменшених зображеннях. Зазвичай значення за замовчуванням достатньо, але якщо сильно зменшити текстуру в грі, ефект може повернутися. Збільште значення цього поля, якщо помічаєте брудні краї цієї текстури в грі.",
         "previewAnimationNotice": "Це перегляд. Щоб змінити швидкість анімації у цих копій, використовуйте this.animationSpeed.",
         "pasteCollisionMask": "Вставити форму зіткнень",
-        "CopyCollisionMask": "Скопіювати форму зіткнень",
+        "copyCollisionMask": "Скопіювати форму зіткнень",
         "bgColor": "Змінити колір фону",
         "setCenter": "По центру",
         "replaceTexture": "Замінити…",
@@ -833,13 +833,13 @@
         "bitmapFont": "Bitmap-шрифт",
         "bitmapFontSize": "Розмір шрифту:",
         "bitmapFontLineHeight": "Висота лінії:",
-        "resultBitmapFontName": "Назва ресурсу",
+        "resultingBitmapFontName": "Назва ресурсу",
         "charset": "Кодіювання:",
         "charsets": {
             "punctuation": "Цифри та пунктуація (зазвичай вам це потрібно)",
             "basicLatin": "Латиниця",
             "latinExtended": "Розширена латиниця",
-            "Cyrillic": "Кирилиця",
+            "cyrillic": "Кирилиця",
             "greekCoptic": "Грецька та Коптська",
             "custom": "Свій набір",
             "allInFont": "Все, що підтримує шрифт"
@@ -906,7 +906,7 @@
         "createEventHint": "Створи першу подію в колонці зліва, а потім напиши тут код",
         "coreEventsCategories": {
             "lifecycle": "Життєвий цикл",
-            "діяння": "Дії",
+            "actions": "Дії",
             "pointer": "Події покажчика",
             "misc": "Різне",
             "animation": "Анімація"
