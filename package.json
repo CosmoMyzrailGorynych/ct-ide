@@ -43,7 +43,7 @@
     "jsdoc-x": "^4.1.0",
     "minimist": "^1.2.6",
     "node-notifier": "^10.0.1",
-    "nw-builder": "^3.7.4",
+    "nw-builder": "3.5.7",
     "pug": "^3.0.2",
     "readysteady": "^1.1.4",
     "riot": "^3.13.2",
