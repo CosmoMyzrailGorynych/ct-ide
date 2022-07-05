@@ -6,6 +6,14 @@
  * @property {Array<Background>} backgrounds
  */
 
+/**
+ * @property {number} timer1 Time for the next run of the 1st timer, in seconds.
+ * @property {number} timer2 Time for the next run of the 2nd timer, in seconds.
+ * @property {number} timer3 Time for the next run of the 3rd timer, in seconds.
+ * @property {number} timer4 Time for the next run of the 4th timer, in seconds.
+ * @property {number} timer5 Time for the next run of the 5th timer, in seconds.
+ * @property {number} timer6 Time for the next run of the 6th timer, in seconds.
+ */
 class Room extends PIXI.Container {
     static getNewId() {
         this.roomId++;

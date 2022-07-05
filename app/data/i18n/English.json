@@ -883,7 +883,8 @@
             "actions": "Actions",
             "pointer": "Pointer events",
             "misc": "Miscellaneous",
-            "animation": "Animation"
+            "animation": "Animation",
+            "timers": "Timers"
         },
         "coreEvents": {
             "OnCreate": "Creation",
@@ -905,7 +906,8 @@
             "OnActionDown": "Action down",
             "OnFrameChange": "Frame change",
             "OnAnimationLoop": "Animation loop",
-            "OnAnimationComplete": "Animation completed"
+            "OnAnimationComplete": "Animation completed",
+            "Timer": "Timer $1"
         },
         "coreParameterizedNames": {
             "OnActionPress": "On %%action%% press",
@@ -929,7 +931,8 @@
             "OnActionRelease": "Happens when an action's input becomes inactive — by releasing buttons, resting joysticks, etc.",
             "OnActionDown": "Runs every frame if an action's input is active.",
             "OnAnimationLoop": "Fires every time an animation restarts.",
-            "OnAnimationComplete": "Fires once a non-looping animation finishes."
+            "OnAnimationComplete": "Fires once a non-looping animation finishes.",
+            "Timer": "Set the duration for this timer in seconds with this.timer$1 = 3;"
         }
     },
     "templates": {

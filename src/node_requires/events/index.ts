@@ -17,6 +17,10 @@ const categories: Record<string, IEventCategory> = {
         name: 'AnimatedSpriteEvents',
         icon: 'template'
     },
+    timers: {
+        name: 'Timers',
+        icon: 'clock'
+    },
     misc: {
         name: 'Miscellaneous',
         icon: 'grid'
@@ -27,13 +31,15 @@ import * as coreEventsLifecycle from './coreEventsLifecycle';
 import * as coreEventsActions from './coreEventsActions';
 import * as coreEventsAnimation from './coreEventsAnimation';
 import * as coreEventsPointer from './coreEventsPointer';
+import * as coreEventsTimers from './coreEventsTimers';
 
 const events: Record<string, IEventDeclaration> = {
     // Basic, primitive events, aka lifecycle events
     ...coreEventsLifecycle,
     ...coreEventsActions,
     ...coreEventsPointer,
-    ...coreEventsAnimation
+    ...coreEventsAnimation,
+    ...coreEventsTimers
 };
 
 const eventNameRegex = /^(\S+?)_(\S+)$/;
@@ -67,7 +73,6 @@ type EventMenu = {
     items: IEventMenuSubmenu[];
 };
 
-
 const localizeCategoryName = (categoryKey: string): string => {
     const i18nScriptables = i18n.languageJSON.scriptables;
     const category = categories[categoryKey];
@@ -76,6 +81,7 @@ const localizeCategoryName = (categoryKey: string): string => {
     }
     return i18n.localizeField(category, 'name');
 };
+const timerPattern = /^Timer(\d)$/;
 const propToCoreDictionary = {
     category: 'coreEventsCategories',
     name: 'coreEvents',
@@ -85,6 +91,9 @@ const localizeProp = (eventFullCode: string, prop: string): string => {
     const [lib, eventCode] = splitEventName(eventFullCode);
     const event = events[eventFullCode];
     if (lib === 'core') {
+        if (timerPattern.test(eventCode)) {
+            return i18n.languageJSON.scriptables[propToCoreDictionary[prop]].Timer.replace('$1', timerPattern.exec(eventCode)[1]);
+        }
         return i18n.languageJSON.scriptables[propToCoreDictionary[prop]][eventCode];
     }
     return i18n.localizeField(event, prop);
