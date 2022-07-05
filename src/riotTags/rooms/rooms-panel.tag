@@ -78,9 +78,9 @@ rooms-panel.aPanel.aView
                             global.currentProject.rooms.push(newRoom);
                             newRoom.uid = guid;
                             try {
-                                fs.linkSync(`${global.projdir}/img/r${this.editingRoom.uid}.png`, `${global.projdir}/img/r${uid}.png`);
+                                fs.linkSync(`${global.projdir}/img/r${this.editingRoom.uid}.png`, `${global.projdir}/img/r${guid}.png`);
                             } catch (e) {
-                                fs.linkSync('./data/img/notexture.png', `${global.projdir}/img/r${uid}.png`);
+                                fs.linkSync('./data/img/notexture.png', `${global.projdir}/img/r${guid}.png`);
                             }
                             this.refs.rooms.updateList();
                             this.update();
