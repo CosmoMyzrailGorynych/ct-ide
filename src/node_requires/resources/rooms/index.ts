@@ -44,9 +44,9 @@ const getRoomPreview = (room: assetRef | IRoom, x2: boolean, fs: boolean): strin
         room = getRoomFromId(room);
     }
     if (fs) {
-        return `${(global as any).projdir}/img/r${room.thumbnail}.png`;
+        return `${(global as any).projdir}/img/r${room.uid}.png`;
     }
-    return `file://${(global as any).projdir}/img/r${room.thumbnail}.png?${room.lastmod}`;
+    return `file://${(global as any).projdir}/img/r${room.uid}.png?${room.lastmod}`;
 };
 const getThumbnail = getRoomPreview;
 

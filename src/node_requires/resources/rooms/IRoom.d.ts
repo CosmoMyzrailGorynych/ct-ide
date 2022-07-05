@@ -47,7 +47,6 @@ interface IRoom extends IScriptable {
     tiles: Array<ITileLayerTemplate>
     gridX: number,
     gridY: number,
-    thumbnail: string,
     restrictCamera?: boolean,
     restrictMinX?: number,
     restrictMinY?: number,

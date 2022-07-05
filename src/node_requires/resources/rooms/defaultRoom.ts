@@ -23,7 +23,6 @@ const get = function (): IRoom {
         tiles: [],
         extends: {},
         lastmod: Number(new Date()),
-        thumbnail: uid,
         events: [],
         uid
     });

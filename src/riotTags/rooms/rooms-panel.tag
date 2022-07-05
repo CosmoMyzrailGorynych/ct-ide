@@ -72,14 +72,16 @@ rooms-panel.aPanel.aView
                     .prompt(window.languageJSON.common.newName)
                     .then(e => {
                         if (e.inputValue !== '' && e.buttonClicked !== 'cancel') {
-                            var guid = generateGUID(),
-                                thumbnail = guid.split('-').pop();
+                            var guid = generateGUID();
                             var newRoom = JSON.parse(JSON.stringify(this.editingRoom));
                             newRoom.name = e.inputValue;
                             global.currentProject.rooms.push(newRoom);
                             newRoom.uid = guid;
-                            newRoom.thumbnail = thumbnail;
-                            fs.linkSync(global.projdir + '/img/r' + this.editingRoom.thumbnail + '.png', global.projdir + '/img/r' + thumbnail + '.png');
+                            try {
+                                fs.linkSync(`${global.projdir}/img/r${this.editingRoom.uid}.png`, `${global.projdir}/img/r${uid}.png`);
+                            } catch (e) {
+                                fs.linkSync('./data/img/notexture.png', `${global.projdir}/img/r${uid}.png`);
+                            }
                             this.refs.rooms.updateList();
                             this.update();
                         }

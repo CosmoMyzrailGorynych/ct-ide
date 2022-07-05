@@ -477,7 +477,7 @@ room-editor.aPanel.aView
             return true;
         };
 
-        // Shifts all the copies in a room at once.
+        // Prompts a modal window then and shifts all the copies in a room at once.
         this.roomShift = () => {
             window.alertify.confirm(`
                 ${window.languageJSON.roomView.shiftLabel}
@@ -507,7 +507,6 @@ room-editor.aPanel.aView
             });
         };
 
-        /** Saves a room (in fact, just marks a project as an unsaved, and closes the room editor) */
         this.roomSave = () => {
             if (this.nameTaken) {
                 // animate the error notice
@@ -788,7 +787,7 @@ room-editor.aPanel.aView
             return new Promise((accept, decline) => {
                 const c = imageCover(this.refs.canvas, 340, 256);
                 const buf = toBuffer(c);
-                const roomSplashName = global.projdir + '/img/r' + this.room.thumbnail + '.png';
+                const roomSplashName = global.projdir + '/img/r' + this.room.uid + '.png';
                 fs.writeFile(roomSplashName, buf, err => {
                     if (err) {
                         decline(err);
