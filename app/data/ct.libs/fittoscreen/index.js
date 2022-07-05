@@ -101,20 +101,9 @@
             exit.call(document);
         }
     };
-    var queuedFullscreen = function queuedFullscreen() {
-        toggleFullscreen();
-        document.removeEventListener('mouseup', queuedFullscreen);
-        document.removeEventListener('keyup', queuedFullscreen);
-        document.removeEventListener('click', queuedFullscreen);
-    };
-    var queueFullscreen = function queueFullscreen() {
-        document.addEventListener('mouseup', queuedFullscreen);
-        document.addEventListener('keyup', queuedFullscreen);
-        document.addEventListener('click', queuedFullscreen);
-    };
     window.addEventListener('resize', resize);
     ct.fittoscreen = resize;
-    ct.fittoscreen.toggleFullscreen = queueFullscreen;
+    ct.fittoscreen.toggleFullscreen = toggleFullscreen;
     var $mode = '/*%mode%*/';
     Object.defineProperty(ct.fittoscreen, 'mode', {
         configurable: false,
