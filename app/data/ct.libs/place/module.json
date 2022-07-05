@@ -97,7 +97,7 @@
                 "other": {
                     "type": "Copy",
                     "description": "What collides with your copy",
-                    "description_ru": "То, что столкнулось с копией"
+                    "description_Ru": "То, что столкнулось с копией"
                 }
             }
         },
@@ -121,7 +121,7 @@
                 "other": {
                     "type": "Copy | PIXI.Sprite",
                     "description": "What collides with your copy. PIXI.Sprite is a ct.js tile",
-                    "description_ru": "То, что столкнулось с копией. PIXI.Sprite — это плитка тайлсета"
+                    "description_Ru": "То, что столкнулось с копией. PIXI.Sprite — это плитка тайлсета"
                 }
             }
         }
