@@ -9,7 +9,11 @@ const defaultTemplate = {
     loopAnimation: true,
     visible: true,
     extends: {},
-    events: [] as IScriptableEvent[]
+    events: [{
+        eventKey: 'OnStep',
+        lib: 'core',
+        code: 'this.move();'
+    }] as IScriptableEvent[]
 };
 
 module.exports = {
