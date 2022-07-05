@@ -1,5 +1,7 @@
 # Listening to collision events
 
+> This is a topic of an advanced usage! You will most likely use regular events in the template editor.
+
 You can listen to collision events with `ct.matter.on(eventName, callback)`. The callback is passed an object that has `pairs` property, which has all the collisions that happened in one frame. Long story short, see this example:
 
 ```js
@@ -29,7 +31,7 @@ ct.matter.on('collisionStart', e => {
 });
 ```
 
-> **Warning**: DO NOT write `ct.matter.on` inside copies' code. This will apply large amounts of listeners that do the same thing, which will degrade performance and break your gameplay logic. Instead, write `ct.matter.on` once in room's On Create code.
+> **Warning**: DO NOT write `ct.matter.on` inside Frame start / Frame end events. This will apply large amounts of listeners that do the same thing, which will degrade performance and break your gameplay logic. Instead, write `ct.matter.on` once in Room Start code.
 
 There are three collision events you can listen to:
 

@@ -159,5 +159,179 @@
         "key": "matterGravity",
         "step": 0.1,
         "default": [0, 9.8]
-    }]
+    }],
+    "tileLayerExtends": [{
+        "name": "Convert to static bodies",
+        "name_Ru": "Сконвертировать в статичные тела",
+        "type": "checkbox",
+        "key": "matterMakeStatic"
+    }, {
+        "name": "Bounciness",
+        "name_Ru": "Упругость",
+        "type": "number",
+        "key": "matterRestitution",
+        "default": 0.1,
+        "min": 0,
+        "max": 1,
+        "step": 0.1,
+        "if": "matterMakeStatic"
+    }, {
+        "name": "Friction",
+        "name_Ru": "Трение",
+        "type": "number",
+        "key": "matterFriction",
+        "default": 1,
+        "if": "matterMakeStatic"
+    }],
+    "eventCategories": {
+        "physics": {
+            "name": "Physics",
+            "name_Ru": "Физика",
+            "icon": "physics"
+        }
+    },
+    "events": {
+        "matterImpactTemplate": {
+            "name": "Contact with a template",
+            "name_Ru": "Контакт с шаблоном",
+            "hint": "Fires when two bodies come into contact.",
+            "hint_Ru": "Срабатывает, когда два тела входят в контакт.",
+            "parameterizedName": "Contacts %%template%% template",
+            "parameterizedName_Ru": "Контакт с шаблоном %%template%%",
+            "icon": "physics",
+            "useAssetThumbnail": true,
+            "applicable": ["template"],
+            "category": "physics",
+            "arguments": {
+                "template": {
+                    "name": "Template",
+                    "name_Ru": "Шаблон",
+                    "type": "template"
+                }
+            },
+            "codeTargets": ["rootRoomOnCreate"],
+            "locals": {
+                "other": {
+                    "type": "Copy",
+                    "description": "What contacts with your copy",
+                    "description_Ru": "То, что коснулось копии"
+                },
+                "impact": {
+                    "type": "number",
+                    "description": "Approximate transferred impact",
+                    "description_Ru": "Примерный импульс"
+                }
+            }
+        },
+        "matterImpactAny": {
+            "name": "Contact with anything",
+            "name_Ru": "Контакт с чем-либо",
+            "hint": "Fires when two bodies come into contact.",
+            "hint_Ru": "Срабатывает, когда два тела входят в контакт.",
+            "icon": "physics",
+            "applicable": ["template"],
+            "category": "physics",
+            "codeTargets": ["rootRoomOnCreate"],
+            "locals": {
+                "other": {
+                    "type": "Copy | PIXI.Sprite",
+                    "description": "What touches with your copy. Can be a tile (PIXI.Sprite)",
+                    "description_Ru": "То, что коснулось копии. Может быть плиткой тайлсета (PIXI.Sprite)"
+                },
+                "impact": {
+                    "type": "number",
+                    "description": "Approximate transferred impact",
+                    "description_Ru": "Примерный импульс"
+                }
+            }
+        },
+        "matterActiveTemplate": {
+            "name": "Collision with a template",
+            "name_Ru": "Столкновение с шаблоном",
+            "hint": "Fires every frame during a collision. Useful for sensors.",
+            "hint_Ru": "Срабатывает каждый кадр во время столкновения. Полезно для сенсоров.",
+            "parameterizedName": "Collides %%template%% template",
+            "parameterizedName_Ru": "Столкновение с шаблоном %%template%%",
+            "icon": "physics",
+            "useAssetThumbnail": true,
+            "applicable": ["template"],
+            "category": "physics",
+            "arguments": {
+                "template": {
+                    "name": "Template",
+                    "name_Ru": "Шаблон",
+                    "type": "template"
+                }
+            },
+            "codeTargets": ["rootRoomOnCreate"],
+            "locals": {
+                "other": {
+                    "type": "Copy",
+                    "description": "What collides with your copy",
+                    "description_Ru": "То, что касается копии"
+                }
+            }
+        },
+        "matterActiveAny": {
+            "name": "Collision with anything",
+            "name_Ru": "Столкновение с чем-либо",
+            "hint": "Fires every frame during a collision. Useful for sensors.",
+            "hint_Ru": "Срабатывает каждый кадр во время столкновения. Полезно для сенсоров.",
+            "icon": "physics",
+            "applicable": ["template"],
+            "category": "physics",
+            "codeTargets": ["rootRoomOnCreate"],
+            "locals": {
+                "other": {
+                    "type": "Copy | PIXI.Sprite",
+                    "description": "What is touching your copy. Can be a tile (PIXI.Sprite)",
+                    "description_Ru": "То, что касается копии. Может быть плиткой тайлсета (PIXI.Sprite)"
+                }
+            }
+        },
+        "matterLeaveTemplate": {
+            "name": "Collision end with a template",
+            "name_Ru": "Конец столкновения с шаблоном",
+            "hint": "Fires when bodies stop colliding with each other, or when something leaves a sensor.",
+            "hint_Ru": "Срабатывает тогда, когда тела заканчивают касаться друг друга, или когда что-то покидает сенсор.",
+            "parameterizedName": "Collision end with %%template%% template",
+            "parameterizedName_Ru": "Конец столкновения с шаблоном %%template%%",
+            "icon": "physics",
+            "useAssetThumbnail": true,
+            "applicable": ["template"],
+            "category": "physics",
+            "arguments": {
+                "template": {
+                    "name": "Template",
+                    "name_Ru": "Шаблон",
+                    "type": "template"
+                }
+            },
+            "codeTargets": ["rootRoomOnCreate"],
+            "locals": {
+                "other": {
+                    "type": "Copy",
+                    "description": "What collided with your copy",
+                    "description_Ru": "То, что касалось копии"
+                }
+            }
+        },
+        "matterLeaveAny": {
+            "name": "Collision end with anything",
+            "name_Ru": "Конец столкновения с чем-либо",
+            "hint": "Fires when bodies stop colliding with each other, or when something leaves a sensor.",
+            "hint_Ru": "Срабатывает тогда, когда тела заканчивают касаться друг друга, или когда что-то покидает сенсор.",
+            "icon": "physics",
+            "applicable": ["template"],
+            "category": "physics",
+            "codeTargets": ["rootRoomOnCreate"],
+            "locals": {
+                "other": {
+                    "type": "Copy | PIXI.Sprite",
+                    "description": "What touched your copy. Can be a tile (PIXI.Sprite)",
+                    "description_Ru": "То, что касалось копии. Может быть плиткой тайлсета (PIXI.Sprite)"
+                }
+            }
+        }
+    }
 }

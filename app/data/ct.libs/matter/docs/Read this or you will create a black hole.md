@@ -27,6 +27,8 @@ This affects how a copy rotates when in contact with other copies. The axis must
 
 ## Collision logic is defined differently
 
-Instead of testing for collisions from behalf of a particular copy like it happens in `ct.place`, you will define a rulebook that will listen to all the collisions in a room, and you will filter out these collisions according to your gameplay logic. Due to that, **never** listen to these events in copies, as each your copy will have to loop over all the collision events, hindering performance badly. Instead, set up a listener once in your room's OnCreate code.
+Use special events in templates' editor under the Physics category.
+
+If it for some reason doesn't fit you, define a rulebook that will listen to all the collisions in a room, and you will filter out these collisions according to your gameplay logic. **Never** listen to these events in events like Frame Start / Frame End, as each your copy will have to loop over all the collision events, hindering performance badly. Instead, set up a listener once in your Room Start event.
 
 See "Listening to collision events" for more information.
