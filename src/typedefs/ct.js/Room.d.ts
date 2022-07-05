@@ -49,5 +49,18 @@ declare class Room extends PIXI.Container {
     /** The unique identifier of a room. Can be used to differentiate rooms without capturing them in a closure. */
     uid: number;
 
+    /** Time for the next run of the 1st timer, in seconds. */
+    timer1: number;
+    /** Time for the next run of the 2nd timer, in seconds. */
+    timer2: number;
+    /** Time for the next run of the 3rd timer, in seconds. */
+    timer3: number;
+    /** Time for the next run of the 4th timer, in seconds. */
+    timer4: number;
+    /** Time for the next run of the 5th timer, in seconds. */
+    timer5: number;
+    /** Time for the next run of the 6th timer, in seconds. */
+    timer6: number;
+
     [key: string]: any
 }
