@@ -9,125 +9,139 @@ libs:
 templates:
   - name: Card
     depth: 0
-    oncreate: >-
-      // Make a smooth scale-in animation
-
-      this.scale.x = this.scale.y = 0;
-
-      ct.tween.add({
-          obj: this.scale,
-          fields: {
-              x: 0.5,
-              y: 0.5
-          },
-          duration: 350
-      });
-
-
-      this.drop = false;
-
-      this.block = false;
-
-      this.flipped = false;
-
-
-      // These variables will be used only when a card is dropped. See OnStep
-      for that
-
-      // A card will jump above and then fall down
-
-      // 90° = move to top, but we will create a 30° spread around it.
-
-      this.rotationSpeed = ct.random.range(-12, 12);
-
-      this.speed = 25;
-
-      this.direction = ct.random.range(-60, -120);
-
-      this.gravity = 1.5;
-
-      this.gravityDir = 90;
-    onstep: |-
-      /*
-          Scenario:
-              Select a card;
-              Select another card.
-                  If the cards match, block them and drop after 0.5 seconds
-                  If they don't, block them, but unblock and flip after 0.5 seconds.
-
-          Blocked cards may not be selected.
-          If we select the same card twice, it flips back.
-      */
-
-      // If mouse was clicked and the card isn't blocked…
-      if (ct.mouse.pressed && !this.block) {
-          // …if player clicked exactly this card…
-          if (ct.u.pointRectangle(ct.mouse.x, ct.mouse.y, this)) {
-              // Flip a card
-              this.flipped = !this.flipped;
-              ct.sound.spawn('Paper');
-              if (this.flipped) { // Is a picture visible now?
-                  if (ct.room.card) { // Is another card was already selected?
-                      // remember our cards
-                      var card1 = this,
-                          card2 = ct.room.card;
-                      // Block them
-                      card1.block = true;
-                      card2.block = true;
-                      // Allow new cards to be selected
-                      ct.room.card = false;
-
-                      // Do the cards match?
-                      if (card1.backFrame === card2.backFrame) {
-                          if (ct.templates.list['Card'].length > 2) {
-                              ct.sound.spawn('Match');
-                          } else {
-                              ct.sound.spawn('Victory');
-                          }
-                          ct.u.wait(500)
-                          .then(() => {
-                              ct.sound.spawn('Swoosh');
-                              card1.drop = true;
-                              card2.drop = true;
-                          });
-                      } else {
-                          ct.u.wait(500)
-                          .then(() => {
-                              ct.sound.spawn('Rollback');
-                              card1.block = false;
-                              card2.block = false;
-
-                              card1.flipped = false;
-                              card2.flipped = false;
-                          });
-                      }
-                  } else {
-                      ct.room.card = this;
-                  }
-              } else {
-                  ct.room.card = false;
-              }
-          }
-      }
-
-      if (this.drop) {
-          this.move();
-          this.angle += this.rotationSpeed * ct.delta;
-          if (this.y > ct.height + 160) {
-              this.kill = true;
-          }
-      }
-    ondraw: |-
-      if (this.flipped) {
-          this.gotoAndStop(this.backFrame);
-      } else {
-          this.gotoAndStop(0);
-      }
-    ondestroy: ''
     uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
-    lastmod: 1566575039596
+    lastmod: 1657023774750
     extends: {}
     texture: 366c01b5-4ed5-4ca5-bf01-8731a04be2c4
+    events:
+      - lib: core
+        arguments: {}
+        code: >-
+          // Make a smooth scale-in animation
+
+          this.scale.x = this.scale.y = 0;
+
+          ct.tween.add({
+              obj: this.scale,
+              fields: {
+                  x: 1,
+                  y: 1
+              },
+              duration: 350,
+              silent: true
+          });
+
+
+          this.drop = false;
+
+          this.block = false;
+
+          this.flipped = false;
+
+
+          // These variables will be used only when a card is dropped. See
+          OnStep for that
+
+          // A card will jump above and then fall down
+
+          // 90° = move to top, but we will create a 30° spread around it.
+
+          this.rotationSpeed = ct.random.range(-12, 12);
+
+          this.speed = 50;
+
+          this.direction = ct.random.range(-60, -120);
+
+          this.gravity = 3;
+
+          this.gravityDir = 90;
+        eventKey: OnCreate
+      - lib: core
+        arguments: {}
+        code: |-
+          /*
+              Scenario:
+                  Select a card;
+                  Select another card.
+                      If the cards match, block them and drop after 0.5 seconds
+                      If they don't, block them, but unblock and flip after 0.5 seconds.
+
+              Blocked cards may not be selected.
+              If we select the same card twice, it flips back.
+          */
+
+          // If mouse was clicked and the card isn't blocked…
+          if (ct.mouse.pressed && !this.block) {
+              // …if player clicked exactly this card…
+              if (ct.u.pointRectangle(ct.mouse.x, ct.mouse.y, this)) {
+                  // Flip a card
+                  this.flipped = !this.flipped;
+                  ct.sound.spawn('Paper');
+                  if (this.flipped) { // Is a picture visible now?
+                      if (ct.room.card) { // Is another card was already selected?
+                          // remember our cards
+                          var card1 = this,
+                              card2 = ct.room.card;
+                          // Block them
+                          card1.block = true;
+                          card2.block = true;
+                          // Allow new cards to be selected
+                          ct.room.card = false;
+
+                          // Do the cards match?
+                          if (card1.backFrame === card2.backFrame) {
+                              if (ct.templates.list['Card'].length > 2) {
+                                  ct.sound.spawn('Match');
+                              } else {
+                                  ct.sound.spawn('Victory');
+                              }
+                              ct.u.wait(500)
+                              .then(() => {
+                                  ct.sound.spawn('Swoosh');
+                                  card1.drop = true;
+                                  card2.drop = true;
+                              });
+                          } else {
+                              ct.u.wait(500)
+                              .then(() => {
+                                  ct.sound.spawn('Rollback');
+                                  card1.block = false;
+                                  card2.block = false;
+
+                                  card1.flipped = false;
+                                  card2.flipped = false;
+                              });
+                          }
+                      } else {
+                          ct.room.card = this;
+                      }
+                  } else {
+                      ct.room.card = false;
+                  }
+              }
+          }
+
+          // Make a drop animation
+          if (this.drop) {
+              this.move();
+              this.angle += this.rotationSpeed * ct.delta;
+              // Remove the card only if it is considerably below the camera
+              if (this.y > ct.camera.height + 300) {
+                  this.kill = true;
+              }
+          }
+        eventKey: OnStep
+      - lib: core
+        arguments: {}
+        code: |-
+          if (this.flipped) {
+              this.gotoAndStop(this.backFrame);
+          } else {
+              this.gotoAndStop(0);
+          }
+        eventKey: OnDraw
+    type: template
+    loopAnimation: false
 sounds:
   - name: Match
     uid: 96dbce18-a291-41b6-9707-ff2dc2bb5b77
@@ -156,327 +170,410 @@ sounds:
 styles: []
 rooms:
   - name: Room1
-    oncreate: |-
-      // Grabbed from this: https://stackoverflow.com/a/6274381 (community wiki)
-      var shuffle = function(a) {
-          var j, x, i;
-          for (i = a.length - 1; i > 0; i--) {
-              j = Math.floor(Math.random() * (i + 1));
-              x = a[i];
-              a[i] = a[j];
-              a[j] = x;
-          }
-      };
-
-      // This will be an array of all the possible pictures from Memocats asset
-      this.pictures = [];
-      for (var i = 1; i < 21; i++) {
-          this.pictures.push(i);
-      }
-      shuffle(this.pictures);
-
-      // Get a list of all the Cards in the room and make a copy of that
-      this.cards = ct.templates.list['Card'].slice(0);
-      shuffle(this.cards);
-
-      // Now, select cards by pairs and set them a unique picture.
-      for (var i = 0; i < this.cards.length; i += 2) {
-          this.cards[i].backFrame = this.pictures[0];
-          this.cards[i+1].backFrame = this.pictures[0];
-          // Remove a picture at this.pictures[0]
-          this.pictures.shift();
-      }
-    onstep: |-
-      if (ct.templates.list['Card'].length === 0) {
-          ct.rooms.switch('Room2');
-      }
     ondraw: ''
     onleave: ''
-    width: 980
-    height: 700
+    width: 1920
+    height: 1280
     backgrounds:
       - depth: '-10'
         texture: c1b1284b-8dba-4886-9bf7-52b66cc08911
-        extends: {}
+        extends:
+          scaleX: 1.97
+          scaleY: 1.84
     uid: 3827e721-5331-49b2-a37a-f868e15cae0d
     grid: 70
-    lastmod: 1522741617797
+    lastmod: 1657023494933
     thumbnail: 1
-    gridX: 70
-    gridY: 70
+    gridX: 96
+    gridY: 96
     tiles:
       - depth: -10
         tiles: []
         extends: {}
     copies:
-      - x: 490
-        'y': 210
+      - x: 1536
+        'y': 384
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
-      - x: 350
-        'y': 210
+      - x: 1248
+        'y': 384
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
-      - x: 210
-        'y': 210
+      - x: 960
+        'y': 384
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
-      - x: 630
-        'y': 210
+      - x: 672
+        'y': 384
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
-      - x: 770
-        'y': 210
+      - x: 384
+        'y': 384
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
-      - x: 210
-        'y': 420
+      - x: 384
+        'y': 864
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
-      - x: 350
-        'y': 420
+      - x: 672
+        'y': 864
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
-      - x: 490
-        'y': 420
+      - x: 960
+        'y': 864
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
-      - x: 630
-        'y': 420
+      - x: 1248
+        'y': 864
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
-      - x: 770
-        'y': 420
+      - x: 1536
+        'y': 864
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
-  - name: Room2
-    oncreate: |-
-      ct.sound.spawn('NewLevel');
+    events:
+      - lib: core
+        arguments: {}
+        code: >-
+          // Grabbed from this: https://stackoverflow.com/a/6274381 (community
+          wiki)
 
-      // Grabbed from this: https://stackoverflow.com/a/6274381 (community wiki)
-      var shuffle = function(a) {
-          var j, x, i;
-          for (i = a.length - 1; i > 0; i--) {
-              j = Math.floor(Math.random() * (i + 1));
-              x = a[i];
-              a[i] = a[j];
-              a[j] = x;
+          var shuffle = function(a) {
+              var j, x, i;
+              for (i = a.length - 1; i > 0; i--) {
+                  j = Math.floor(Math.random() * (i + 1));
+                  x = a[i];
+                  a[i] = a[j];
+                  a[j] = x;
+              }
+          };
+
+
+          // This will be an array of all the possible pictures from Memocats
+          asset
+
+          this.pictures = [];
+
+          for (var i = 1; i < 21; i++) {
+              this.pictures.push(i);
           }
-      };
 
-      // This will be an array of all the possible pictures from Memocats asset
-      this.pictures = [];
-      for (var i = 1; i < 21; i++) {
-          this.pictures.push(i);
-      }
-      shuffle(this.pictures);
+          shuffle(this.pictures);
 
-      // Get a list of all the Cards in the room and make a copy of that
-      this.cards = ct.templates.list['Card'].slice(0);
-      shuffle(this.cards);
 
-      // Now, select cards by pairs and set them a unique picture.
-      for (var i = 0; i < this.cards.length; i += 2) {
-          this.cards[i].backFrame = this.pictures[0];
-          this.cards[i+1].backFrame = this.pictures[0];
-          // Remove a picture at this.pictures[0]
-          this.pictures.shift();
-      }
-    onstep: |-
-      if (ct.templates.list['Card'].length === 0) {
-          ct.rooms.switch('Room3');
-      }
+          // Get a list of all the Cards in the room and make a copy of that
+
+          this.cards = ct.templates.list['Card'].slice(0);
+
+          shuffle(this.cards);
+
+
+          // Now, select cards by pairs and set them a unique picture.
+
+          for (var i = 0; i < this.cards.length; i += 2) {
+              this.cards[i].backFrame = this.pictures[0];
+              this.cards[i+1].backFrame = this.pictures[0];
+              // Remove a picture at this.pictures[0]
+              this.pictures.shift();
+          }
+        eventKey: OnRoomStart
+      - lib: core
+        arguments: {}
+        code: |-
+          if (ct.templates.list['Card'].length === 0) {
+              ct.rooms.switch('Room2');
+          }
+        eventKey: OnStep
+    type: room
+    extends: {}
+  - name: Room2
     ondraw: ''
     onleave: ''
-    width: 980
-    height: 700
+    width: 1920
+    height: 1280
     backgrounds:
       - depth: '-10'
         texture: c1b1284b-8dba-4886-9bf7-52b66cc08911
+        extends:
+          scaleX: 1.97
+          scaleY: 1.84
     uid: a751fef2-0632-4105-b90b-51ffba3f38f5
     grid: 70
-    lastmod: 1522741609956
+    lastmod: 1657023607269
     thumbnail: 2
     copies:
-      - x: 560
-        'y': 140
+      - x: 240
+        'y': 240
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
-      - x: 420
-        'y': 140
+      - x: 528
+        'y': 240
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
-      - x: 280
-        'y': 140
+      - x: 816
+        'y': 240
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
-      - x: 700
-        'y': 140
+      - x: 1104
+        'y': 240
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
-      - x: 840
-        'y': 140
+      - x: 1392
+        'y': 240
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
-      - x: 140
-        'y': 140
+      - x: 1680
+        'y': 240
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
-      - x: 140
-        'y': 350
+      - x: 240
+        'y': 648
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
-      - x: 280
-        'y': 350
+      - x: 528
+        'y': 648
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
-      - x: 420
-        'y': 350
+      - x: 816
+        'y': 648
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
-      - x: 560
-        'y': 350
+      - x: 1104
+        'y': 648
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
-      - x: 700
-        'y': 350
+      - x: 1392
+        'y': 648
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
-      - x: 840
-        'y': 350
+      - x: 1680
+        'y': 648
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
-      - x: 420
-        'y': 560
+      - x: 816
+        'y': 1056
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
-      - x: 560
-        'y': 560
+      - x: 1104
+        'y': 1056
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
-    tiles: []
-  - name: Room3
-    oncreate: |-
-      ct.sound.spawn('NewLevel');
+    tiles:
+      - depth: -10
+        tiles: []
+        extends: {}
+    events:
+      - lib: core
+        arguments: {}
+        code: >-
+          ct.sound.spawn('NewLevel');
 
-      // Grabbed from this: https://stackoverflow.com/a/6274381 (community wiki)
-      var shuffle = function(a) {
-          var j, x, i;
-          for (i = a.length - 1; i > 0; i--) {
-              j = Math.floor(Math.random() * (i + 1));
-              x = a[i];
-              a[i] = a[j];
-              a[j] = x;
+
+          // Grabbed from this: https://stackoverflow.com/a/6274381 (community
+          wiki)
+
+          var shuffle = function(a) {
+              var j, x, i;
+              for (i = a.length - 1; i > 0; i--) {
+                  j = Math.floor(Math.random() * (i + 1));
+                  x = a[i];
+                  a[i] = a[j];
+                  a[j] = x;
+              }
+          };
+
+
+          // This will be an array of all the possible pictures from Memocats
+          asset
+
+          this.pictures = [];
+
+          for (var i = 1; i < 21; i++) {
+              this.pictures.push(i);
           }
-      };
 
-      // This will be an array of all the possible pictures from Memocats asset
-      this.pictures = [];
-      for (var i = 1; i < 21; i++) {
-          this.pictures.push(i);
-      }
-      shuffle(this.pictures);
+          shuffle(this.pictures);
 
-      // Get a list of all the Cards in the room and make a copy of that
-      this.cards = ct.templates.list['Card'].slice(0);
-      shuffle(this.cards);
 
-      // Now, select cards by pairs and set them a unique picture.
-      for (var i = 0; i < this.cards.length; i += 2) {
-          this.cards[i].backFrame = this.pictures[0];
-          this.cards[i+1].backFrame = this.pictures[0];
-          // Remove a picture at this.pictures[0]
-          this.pictures.shift();
-      }
-    onstep: |-
-      if (ct.templates.list['Card'].length === 0) {
-          ct.rooms.switch('Room3');
-      }
+          // Get a list of all the Cards in the room and make a copy of that
+
+          this.cards = ct.templates.list['Card'].slice(0);
+
+          shuffle(this.cards);
+
+
+          // Now, select cards by pairs and set them a unique picture.
+
+          for (var i = 0; i < this.cards.length; i += 2) {
+              this.cards[i].backFrame = this.pictures[0];
+              this.cards[i+1].backFrame = this.pictures[0];
+              // Remove a picture at this.pictures[0]
+              this.pictures.shift();
+          }
+        eventKey: OnRoomStart
+      - lib: core
+        arguments: {}
+        code: |-
+          if (ct.templates.list['Card'].length === 0) {
+              ct.rooms.switch('Room3');
+          }
+        eventKey: OnStep
+    type: room
+    extends: {}
+    gridX: 48
+    gridY: 24
+  - name: Room3
     ondraw: ''
     onleave: ''
-    width: 980
-    height: 700
+    width: 1920
+    height: 1280
     backgrounds:
       - depth: '-10'
         texture: c1b1284b-8dba-4886-9bf7-52b66cc08911
+        extends:
+          scaleX: 1.97
+          scaleY: 1.87
     uid: 4cd06702-30ed-4d80-8609-c1128f14f6a8
     grid: 70
-    lastmod: 1522741558307
+    lastmod: 1657023680669
     thumbnail: 3
     copies:
-      - x: 420
-        'y': 140
+      - x: 240
+        'y': 240
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
-      - x: 560
-        'y': 140
+      - x: 528
+        'y': 240
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
-      - x: 700
-        'y': 140
+      - x: 816
+        'y': 240
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
-      - x: 840
-        'y': 140
+      - x: 1104
+        'y': 240
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
-      - x: 280
-        'y': 140
+      - x: 1392
+        'y': 240
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
-      - x: 140
-        'y': 140
+      - x: 1680
+        'y': 240
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
-      - x: 140
-        'y': 350
+      - x: 240
+        'y': 648
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
-      - x: 280
-        'y': 350
+      - x: 528
+        'y': 648
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
-      - x: 420
-        'y': 350
+      - x: 816
+        'y': 648
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
-      - x: 560
-        'y': 350
+      - x: 1104
+        'y': 648
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
-      - x: 700
-        'y': 350
+      - x: 1392
+        'y': 648
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
-      - x: 840
-        'y': 350
+      - x: 1680
+        'y': 648
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
-      - x: 840
-        'y': 560
+      - x: 240
+        'y': 1056
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
-      - x: 700
-        'y': 560
+      - x: 528
+        'y': 1056
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
-      - x: 560
-        'y': 560
+      - x: 816
+        'y': 1056
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
-      - x: 420
-        'y': 560
+      - x: 1104
+        'y': 1056
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
-      - x: 280
-        'y': 560
+      - x: 1392
+        'y': 1056
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
-      - x: 140
-        'y': 560
+      - x: 1680
+        'y': 1056
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
-    tiles: []
+    tiles:
+      - depth: -10
+        tiles: []
+        extends: {}
+    events:
+      - lib: core
+        arguments: {}
+        code: >-
+          ct.sound.spawn('NewLevel');
+
+
+          // Grabbed from this: https://stackoverflow.com/a/6274381 (community
+          wiki)
+
+          var shuffle = function(a) {
+              var j, x, i;
+              for (i = a.length - 1; i > 0; i--) {
+                  j = Math.floor(Math.random() * (i + 1));
+                  x = a[i];
+                  a[i] = a[j];
+                  a[j] = x;
+              }
+          };
+
+
+          // This will be an array of all the possible pictures from Memocats
+          asset
+
+          this.pictures = [];
+
+          for (var i = 1; i < 21; i++) {
+              this.pictures.push(i);
+          }
+
+          shuffle(this.pictures);
+
+
+          // Get a list of all the Cards in the room and make a copy of that
+
+          this.cards = ct.templates.list['Card'].slice(0);
+
+          shuffle(this.cards);
+
+
+          // Now, select cards by pairs and set them a unique picture.
+
+          for (var i = 0; i < this.cards.length; i += 2) {
+              this.cards[i].backFrame = this.pictures[0];
+              this.cards[i+1].backFrame = this.pictures[0];
+              // Remove a picture at this.pictures[0]
+              this.pictures.shift();
+          }
+        eventKey: OnRoomStart
+      - lib: core
+        arguments: {}
+        code: |-
+          if (ct.templates.list['Card'].length === 0) {
+              ct.rooms.switch('Room3');
+          }
+        eventKey: OnStep
+    type: room
+    extends: {}
+    gridX: 24
+    gridY: 24
 soundtick: 6
 roomtick: 3
 templatetick: 1
@@ -511,7 +608,7 @@ settings:
     versionPostfix: ''
   fps: 30
 startroom: 3827e721-5331-49b2-a37a-f868e15cae0d
-ctjsVersion: 2.0.0
+ctjsVersion: 2.0.2
 scripts: []
 fonts: []
 skeletons: []
@@ -539,7 +636,7 @@ textures:
     right: 128
     top: 196
     bottom: 196
-    lastmod: 1587612594276
+    lastmod: 1657023386910
     uid: 366c01b5-4ed5-4ca5-bf01-8731a04be2c4
     padding: 1
     source: /home/comigo/Desktop/Memocats.png
@@ -568,6 +665,7 @@ textures:
     lastmod: 1522741667520
     uid: c1b1284b-8dba-4886-9bf7-52b66cc08911
     padding: 1
+    tiled: true
 texturetick: 2
 emitterTandems: []
 contentTypes: []
