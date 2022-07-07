@@ -8,18 +8,18 @@ const defaultTemplate = {
     playAnimationOnStart: false,
     loopAnimation: true,
     visible: true,
-    extends: {},
-    events: [{
-        eventKey: 'OnStep',
-        lib: 'core',
-        code: 'this.move();'
-    }] as IScriptableEvent[]
+    extends: {}
 };
 
 module.exports = {
     get(): ITemplate {
         return ({
             ...defaultTemplate,
+            events: [{
+                eventKey: 'OnStep',
+                lib: 'core',
+                code: 'this.move();'
+            }] as IScriptableEvent[],
             extends: {},
             lastmod: Number(new Date()),
             uid: generateGUID()
