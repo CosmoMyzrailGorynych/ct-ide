@@ -7,8 +7,7 @@ const defaultTemplate = {
     texture: -1 as assetRef,
     playAnimationOnStart: false,
     loopAnimation: true,
-    visible: true,
-    extends: {}
+    visible: true
 };
 
 module.exports = {
@@ -18,8 +17,9 @@ module.exports = {
             events: [{
                 eventKey: 'OnStep',
                 lib: 'core',
-                code: 'this.move();'
-            }] as IScriptableEvent[],
+                code: 'this.move();',
+                arguments: {}
+            }],
             extends: {},
             lastmod: Number(new Date()),
             uid: generateGUID()
