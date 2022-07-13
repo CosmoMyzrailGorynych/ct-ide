@@ -14,7 +14,7 @@ textures-panel.aPanel.aView
                 h1.inlineblock
                     span {parent.voc.textures}
                 .aSpacer.inlineblock
-                label.file.inlineblock
+                label.file.inlineblock(ref="importBlock")
                     input(type="file" multiple
                         accept=".png,.jpg,.jpeg,.bmp,.gif,.json"
                         onchange="{parent.textureImport}")
@@ -22,7 +22,7 @@ textures-panel.aPanel.aView
                         svg.feather
                             use(xlink:href="#download")
                         span {parent.voc.import}
-                button(onclick="{parent.openGallery}")
+                button(onclick="{parent.openGallery}" ref="galleryButton")
                     svg.feather
                         use(xlink:href="#folder")
                     span {parent.vocGlob.openAssetGallery}
@@ -31,12 +31,14 @@ textures-panel.aPanel.aView
                     title="{parent.voc.importFromClipboard}"
                     data-hotkey="Control+v"
                     data-hotkey-require-scope="texture"
+                    ref="clipboardPaste"
                 )
                     svg.feather
                         use(xlink:href="#clipboard")
                 button(
                     onclick="{parent.openGenerator}"
                     title="{parent.voc.generatePlaceholder}"
+                    ref="placeholderGenButton"
                 )
                     svg.feather
                         use(xlink:href="#loader")

@@ -6,31 +6,19 @@ app-view
     bottom 0
     & > .flexrow > nav
         flex-flow row wrap
-    li
+    & > nav > .tabs li
         position relative
-#theCatMenu
-    top 100%
-    left 0
-#theAppControls
-    flex 0.35 1 12rem
-#theMainNav
-    flex 1 1 60rem
+        &:last-child
+            width 2rem
+    .limitwidth
+        max-width 5rem
+    & > nav > .tabs
+        border-radius 0
+        width 100%
 
-body.maximized #theMainNav
-    @media (max-width 1000px)
-        flex-wrap wrap
-
-body.restored
-    #theMainNav
-        right 0
-    #theAppControls
-        display none
-
-#theMainNav, #theAppControls
-    border-radius 0
-
-@media (max-width 1000px)
-    #theMainNav span
-        display none
-    #theMainNav svg:first-child
-        margin-right 0
+@media (max-width 1100px)
+    app-view > nav > .tabs
+        span
+            display none
+        svg:first-child
+            margin-right 0

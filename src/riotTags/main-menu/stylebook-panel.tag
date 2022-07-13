@@ -739,6 +739,11 @@ stylebook-panel.aPanel.aView.pad.flexrow
                 p These have absolute positioning and are to be positioned with CSS.
             yield(to="example")
                 .anErrorNotice There is an error that you should fix immediately!
+        stylebook-section(heading="A pulser")
+            yield(to="description")
+                p A pulsating animation that positions itself in the center of the current layer.
+            yield(to="example")
+                .aPulser
         stylebook-section(heading="16:9 container")
             yield(to="description")
                 p Takes an iframe, embed, or video tag and positions it so that it occupies all the available width while preserving perfect 16:9 proportions.
