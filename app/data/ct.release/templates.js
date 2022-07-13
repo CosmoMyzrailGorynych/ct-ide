@@ -86,6 +86,7 @@ const Copy = (function Copy() {
             this.speed = this.direction = this.gravity = 0;
             this.gravityDir = 90;
             this.depth = 0;
+            this.timer1 = this.timer2 = this.timer3 = this.timer4 = this.timer5 = this.timer6 = 0;
             if (exts) {
                 ct.u.ext(this, exts);
                 if (exts.tx) {

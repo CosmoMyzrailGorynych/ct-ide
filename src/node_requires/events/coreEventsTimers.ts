@@ -6,12 +6,11 @@ for (let i = 1; i < 7; i++) {
         applicable: ['template', 'room'],
         icon: 'clock',
         category: 'timers',
-        codeTargets: ['thisOnCreate', 'thisOnStep'],
+        codeTargets: ['thisOnStep'],
         inlineCodeTemplates: {
-            thisOnCreate: `this.timer${i} = 0;`,
             thisOnStep: `
 if (this.timer${i} > 0 && this.timer${i} <= (ct.delta / ct.speed)) {
-    this.timer = 0;
+    this.timer${i} = 0;
     \n/*%%USER_CODE%%*/\n
 } else {
     this.timer${i} -= ct.delta / ct.speed;
