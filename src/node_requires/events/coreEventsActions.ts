@@ -37,8 +37,19 @@ coreEvents.core_OnActionDown.locals = {
         description: 'Current action\'s value'
     }
 };
+coreEvents.core_OnActionPress.locals = {
+    value: {
+        type: 'number',
+        description: 'Current action\'s value'
+    }
+};
 coreEvents.core_OnActionDown.inlineCodeTemplates.thisOnStep = `
 if (ct.actions[/*%%action%%*/].down) {
+    let value = ct.actions[/*%%action%%*/].value;
+    \n/*%%USER_CODE%%*/\n
+}`;
+coreEvents.core_OnActionPress.inlineCodeTemplates.thisOnStep = `
+if (ct.actions[/*%%action%%*/].pressed) {
     let value = ct.actions[/*%%action%%*/].value;
     \n/*%%USER_CODE%%*/\n
 }`;

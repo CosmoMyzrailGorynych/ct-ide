@@ -949,7 +949,8 @@
             "action": "Action"
         },
         "coreEventsLocals": {
-            "OnActionDown_value": "Current action's value"
+            "OnActionDown_value": "Current action's value",
+            "OnActionPress_value": "Current action's value"
         },
         "coreEventsDescriptions": {
             "OnCreate": "Triggers when your copy is created.",
