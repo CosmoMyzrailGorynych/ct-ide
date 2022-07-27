@@ -38,7 +38,7 @@
     "gulp-sourcemaps": "^3.0.0",
     "gulp-stylus": "^2.7.1",
     "gulp-svgstore": "^8.0.0",
-    "gulp-typescript": "^6.0.0-alpha.1",
+    "@ct.js/gulp-typescript": "^6.0.0",
     "gulp-zip": "^5.1.0",
     "jsdoc-x": "^4.1.0",
     "minimist": "^1.2.6",
