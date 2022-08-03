@@ -20,7 +20,8 @@ const getExamplesDir = function (): string {
         if (isMac) {
             return path.join(process.cwd(), 'examples');
         }
-        return path.join((nw.App as any).startPath, 'examples');
+        // return path.join((nw.App as any).startPath, 'examples');
+        return path.join(path.dirname(process.execPath), "examples");
     }
 };
 
@@ -35,7 +36,8 @@ const getTemplatesDir = function (): string {
         if (isMac) {
             return path.join(process.cwd(), 'templates');
         }
-        return path.join((nw.App as any).startPath, 'templates');
+        // return path.join((nw.App as any).startPath, "templates");
+        return path.join(path.dirname(process.execPath), "templates");
     }
 };
 
