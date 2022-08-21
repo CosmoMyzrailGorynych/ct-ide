@@ -7,7 +7,8 @@ window.migrationProcess.push({
         // Break up tile chunks into individual tiles
         for (const room of project.rooms) {
             room.simulate = true;
-            room.isUi = Boolean(room.extends?.isUi);
+            room.extends = room.extends ?? {};
+            room.isUi = Boolean(room.extends.isUi);
             delete room.extends.isUi;
             for (const layer of room.tiles) {
                 layer.tiles = layer.tiles.reduce((tiles, tile) => {
