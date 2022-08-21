@@ -69,8 +69,7 @@
             "template": "",
             "room": "",
             "sound": "",
-            "tandem": "",
-            "type": ""
+            "tandem": ""
         },
         "newName": "新しい名前:",
         "saveProject": "プロジェクトを保存",
@@ -634,7 +633,6 @@
             "disableSounds": "UIサウンドを無効化",
             "changeDataFolder": "データフォルダの場所を設定",
             "forceProductionForDebug": "デバッグエクスポートのためのプロダクションタスクの強制",
-            "settings": "",
             "prideMode": "",
             "altTemplateLayout": ""
         },

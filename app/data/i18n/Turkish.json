@@ -76,8 +76,7 @@
             "template": "Şablon",
             "room": "Oda",
             "sound": "Ses",
-            "tandem": "Partikül dağıtıcısı",
-            "type": ""
+            "tandem": "Partikül dağıtıcısı"
         },
         "assetTypes": {
             "textures": [
@@ -635,7 +634,6 @@
             "disableSounds": "Arayüz seslerini kapat",
             "changeDataFolder": "Veri klasörü yolunu ayarla",
             "forceProductionForDebug": "Hata ayıklamaları dışarı aktarmak için üretim işlemlerini zorla",
-            "settings": "",
             "prideMode": "",
             "altTemplateLayout": ""
         },

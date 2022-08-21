@@ -263,7 +263,7 @@ room-backgrounds-editor
             if (!this.opts.history) {
                 return;
             }
-            let value = e.target.value;
+            let {value} = e.target;
             if (e.target.type === 'number') {
                 value = Number(value);
             }

@@ -67,8 +67,7 @@
             "template": "",
             "room": "",
             "sound": "",
-            "tandem": "",
-            "type": ""
+            "tandem": ""
         },
         "newName": "Nume nou:",
         "saveProject": "Salvează proiectul",
@@ -609,7 +608,6 @@
             "disableSounds": "",
             "changeDataFolder": "",
             "forceProductionForDebug": "",
-            "settings": "",
             "prideMode": "",
             "altTemplateLayout": ""
         },

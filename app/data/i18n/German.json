@@ -67,8 +67,7 @@
             "template": "",
             "room": "",
             "sound": "",
-            "tandem": "",
-            "type": ""
+            "tandem": ""
         },
         "newName": "Neuer Name:",
         "saveProject": "Project speichern",
@@ -609,7 +608,6 @@
             "disableSounds": "",
             "changeDataFolder": "",
             "forceProductionForDebug": "",
-            "settings": "",
             "prideMode": "",
             "altTemplateLayout": ""
         },

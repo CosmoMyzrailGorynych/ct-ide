@@ -124,7 +124,7 @@ room-properties
             if (!this.opts.history) {
                 return;
             }
-            let value = e.target.value;
+            let {value} = e.target;
             if (e.target.type === 'number') {
                 value = Number(value);
             }
@@ -148,7 +148,7 @@ room-properties
                 after: this.opts.room.backgroundColor
             });
         };
-        this.handleToggle = (entity, key) => e => {
+        this.handleToggle = (entity, key) => () => {
             const prevValue = entity[key];
             entity[key] = !entity[key];
             this.opts.history.pushChange({

@@ -44,5 +44,5 @@ rendering-settings
         this.wireAndUpdatePixelated = path => e => {
             this.wire(path)(e);
             const {setPixelart} = require('./data/node_requires/resources/textures');
-            setPixelart(currentProject.settings.rendering.pixelatedrender);
-        }
+            setPixelart(window.currentProject.settings.rendering.pixelatedrender);
+        };

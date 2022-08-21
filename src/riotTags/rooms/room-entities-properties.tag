@@ -156,7 +156,7 @@ room-entities-properties
 
         // Utilities for writing basic properties
         const typeWrap = (prop, entity) => {
-            if (prop.type == 'xy') {
+            if (prop.type === 'xy') {
                 return {
                     x: entity[prop.key].x,
                     y: entity[prop.key].y
@@ -206,15 +206,15 @@ room-entities-properties
                     if (!(property.key in basic)) {
                         basic[property.key] = typeWrap(property, entity);
                     } else if (property.type === 'xy') {
-                        if (basic[property.key].x !== this.multipleType) {
-                            if (basic[property.key].x !== entity[property.key].x) {
-                                basic[property.key].x = this.multipleType;
-                            }
+                        if (basic[property.key].x !== this.multipleType &&
+                            basic[property.key].x !== entity[property.key].x
+                        ) {
+                            basic[property.key].x = this.multipleType;
                         }
-                        if (basic[property.key].y !== this.multipleType) {
-                            if (basic[property.key].y !== entity[property.key].y) {
-                                basic[property.key].y = this.multipleType;
-                            }
+                        if (basic[property.key].y !== this.multipleType &&
+                            basic[property.key].y !== entity[property.key].y
+                        ) {
+                            basic[property.key].y = this.multipleType;
                         }
                         if (basic[property.key].x === this.multipleType &&
                             basic[property.key].y === this.multipleType
@@ -243,9 +243,9 @@ room-entities-properties
                         propCount[property] = 1;
                     } else if (this.changes.customProps[property] !== entity.copyCustomProps[property]) {
                         this.changes.customProps[property] = this.multipleType;
-                        propCount[property] ++;
+                        propCount[property]++;
                     } else {
-                        propCount[property] ++;
+                        propCount[property]++;
                     }
                 }
             }
@@ -253,7 +253,6 @@ room-entities-properties
             for (const property in propCount) {
                 if (propCount[property] !== copyCount) {
                     this.changes.customProps[property] = this.multipleType;
-                    console.log(`Marked property '${property}' as multiple, got ${propCount[property]} properties for ${copyCount} copies`);
                 }
             }
             this.update();
@@ -283,7 +282,7 @@ room-entities-properties
             this.changes.customProps['newProperty' + this.currentId] = '';
             this.currentId++;
         };
-        this.deleteCustomProperty = (prop) => e => {
+        this.deleteCustomProperty = (prop) => () => {
             delete this.changes.customProps[prop];
             this.applyChanges();
         };
@@ -422,7 +421,7 @@ room-entities-properties
                     if (value === this.multipleType) {
                         continue;
                     }
-                    const type = this.basicProps.find(prop => prop.key === property).type;
+                    const {type} = this.basicProps.find(prop => prop.key === property);
                     switch (type) {
                     case 'xy':
                         if (value.x !== this.multipleType) {
@@ -431,14 +430,15 @@ room-entities-properties
                         if (value.y !== this.multipleType) {
                             entity[property].y = value.y;
                         }
-                    break;
+                        break;
                     case 'color':
                     case 'slider':
                         entity[property] = value;
-                    break;
+                        break;
                     default:
+                        // eslint-disable-next-line no-console
                         console.error(`Ignoring unknown property type: ${type}`);
-                    break;
+                        break;
                     }
                 }
                 // Extensions and custom properties are supported for copies only
@@ -479,4 +479,4 @@ room-entities-properties
         this.writeColorAndMemorize = key => (e, value) => {
             this.writeColor(key)(e, value);
             this.opts.pixieditor.history.snapshotTransforms();
-        }
+        };

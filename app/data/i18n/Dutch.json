@@ -67,8 +67,7 @@
             "template": "Sjabloon",
             "room": "Kamer",
             "sound": "Geluid",
-            "tandem": "Deeltjesverspreider",
-            "type": ""
+            "tandem": "Deeltjesverspreider"
         },
         "newName": "Nieuwe naam:",
         "saveProject": "Project opslaan",
@@ -609,7 +608,6 @@
             "disableSounds": "Schakel UI geluiden uit",
             "changeDataFolder": "Stel maplocatie voor data in",
             "forceProductionForDebug": "Forceer productietaken voor debug exports",
-            "settings": "",
             "prideMode": "",
             "altTemplateLayout": ""
         },

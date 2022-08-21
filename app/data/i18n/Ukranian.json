@@ -67,8 +67,7 @@
             "template": "Шаблон",
             "room": "Кімната",
             "sound": "Звук",
-            "tandem": "Система частинок",
-            "type": ""
+            "tandem": "Система частинок"
         },
         "newName": "Нове ім'я:",
         "saveProject": "Зберегти проект",
@@ -610,8 +609,7 @@
             "disableSounds": "Вимкнути звуки інтерфейсу",
             "changeDataFolder": "Змінити папку даних ct.js",
             "forceProductionForDebug": " Включити релізні функції для дебаг-експортів",
-            "altTemplateLayout": "Альт. верстка редактора шаблонів",
-            "settings": ""
+            "altTemplateLayout": "Альт. верстка редактора шаблонів"
         },
         "project": {
             "save": "Зберегти проект",

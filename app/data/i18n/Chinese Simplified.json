@@ -67,8 +67,7 @@
             "template": "模板",
             "room": "房间",
             "sound": "声音",
-            "tandem": "粒子发射器",
-            "type": ""
+            "tandem": "粒子发射器"
         },
         "newName": "新名称",
         "saveProject": "保存项目",
@@ -559,7 +558,6 @@
             "disableSounds": "关闭 UI 音效",
             "changeDataFolder": "设置数据文件夹位置",
             "forceProductionForDebug": "强制生产任务用于调试导出",
-            "settings": "",
             "prideMode": "",
             "altTemplateLayout": ""
         },

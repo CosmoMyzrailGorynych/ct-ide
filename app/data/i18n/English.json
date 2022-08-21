@@ -73,8 +73,7 @@
             "template": "Template",
             "room": "Room",
             "sound": "Sound",
-            "tandem": "Particle emitter",
-            "type": ""
+            "tandem": "Particle emitter"
         },
         "newName": "New name:",
         "saveProject": "Save project",
@@ -651,8 +650,7 @@
             "altTemplateLayout": "Alternative layout for template editor",
             "disableSounds": "Disable UI sounds",
             "changeDataFolder": "Set data folder location",
-            "forceProductionForDebug": "Force production tasks for debug exports",
-            "settings": ""
+            "forceProductionForDebug": "Force production tasks for debug exports"
         },
         "project": {
             "heading": "Project",

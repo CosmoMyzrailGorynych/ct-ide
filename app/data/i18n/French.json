@@ -93,8 +93,7 @@
             "template": "",
             "room": "",
             "sound": "",
-            "tandem": "",
-            "type": ""
+            "tandem": ""
         },
         "newName": "Nouveau nom:",
         "saveProject": "Sauvegarder le projet",
@@ -609,7 +608,6 @@
             "disableSounds": "",
             "changeDataFolder": "",
             "forceProductionForDebug": "",
-            "settings": "",
             "prideMode": "",
             "altTemplateLayout": ""
         },

@@ -67,8 +67,7 @@
             "template": "",
             "room": "",
             "sound": "",
-            "tandem": "",
-            "type": ""
+            "tandem": ""
         },
         "newName": "",
         "saveProject": "",
@@ -204,7 +203,6 @@
         "methods": "",
         "parameters": "",
         "logs2": "A title for a changelog of a module.",
-        "settings": "",
         "dependencies": "",
         "optionalDependencies": "",
         "importModules": "",

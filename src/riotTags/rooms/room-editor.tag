@@ -213,7 +213,7 @@ room-editor.aPanel.aView
             this.pixiEditor.transformer.setup();
         };
 
-        const setup = require('./data/node_requires/roomEditor').setup;
+        const {setup} = require('./data/node_requires/roomEditor');
         this.on('mount', () => {
             setup(this.refs.canvas, this);
             // adds this.pixiEditor
@@ -228,10 +228,12 @@ room-editor.aPanel.aView
         this.triggerWheelEvent = e => {
             e.preventUpdate = true;
             // pixi v5 doesn't have a wheel event! we will have to fabricate one.
+            // eslint-disable-next-line no-underscore-dangle
             this.pixiEditor.stage._events.wheel.fn({
                 type: 'wheel',
                 target: this.pixiEditor.stage,
                 currentTarget: this.pixiEditor.stage,
+                // eslint-disable-next-line id-blacklist
                 data: {
                     global: {
                         x: e.offsetX,
@@ -243,14 +245,17 @@ room-editor.aPanel.aView
         };
         // Keyboard events
         const phabricateEvent = (name, e) => {
+            // eslint-disable-next-line no-underscore-dangle
             if (!(name in this.pixiEditor.stage._events)) {
                 console.error(`An event ${name} was triggered on the room editor, but it is not allowed.`);
                 return;
             }
+            // eslint-disable-next-line no-underscore-dangle
             this.pixiEditor.stage._events[name].fn({
                 type: name,
                 target: this.pixiEditor.stage,
                 currentTarget: this.pixiEditor.stage,
+                // eslint-disable-next-line id-blacklist
                 data: {
                     originalEvent: e
                 }
@@ -258,7 +263,7 @@ room-editor.aPanel.aView
         };
         const triggerKeyboardEvent = e => {
             if (['input', 'textarea', 'select'].includes(e.target.nodeName.toLowerCase())) {
-                return;
+                return false;
             }
             if (e.key === 'Delete') {
                 return phabricateEvent('delete', e);
@@ -281,6 +286,7 @@ room-editor.aPanel.aView
             } else if (e.key === 'ArrowDown') {
                 return phabricateEvent('nudgedown', e);
             }
+            return false;
         };
         this.on('mount', () => {
             window.addEventListener('keydown', triggerKeyboardEvent);
@@ -304,7 +310,7 @@ room-editor.aPanel.aView
                 this.pixiEditor.transformer.clear();
             }
             if (tool === 'addTiles' && !this.pixiEditor.tileLayers.includes(this.currentTileLayer)) {
-                this.currentTileLayer = this.pixiEditor.tileLayers[0];
+                [this.currentTileLayer] = this.pixiEditor.tileLayers;
             }
         };
 
@@ -398,7 +404,6 @@ room-editor.aPanel.aView
         };
         const entityVisibilityItems = [];
         for (const entityType in entityToIconMap) {
-            const icon = entityToIconMap[entityType];
             entityVisibilityItems.push({
                 label: this.voc[entityType],
                 click: () => {
@@ -406,22 +411,24 @@ room-editor.aPanel.aView
                 },
                 type: 'checkbox',
                 checked: () => this.pixiEditor[entityType + 'Visible']
-            })
-        };
+            });
+        }
         this.visibilityMenu = {
             opened: false,
             items: [
                 ...entityVisibilityItems,
                 {
                     type: 'separator'
-                }, {
+                },
+                {
                     label: this.voc.xrayMode,
                     click: () => {
                         this.pixiEditor.xrayMode = !this.pixiEditor.xrayMode;
                     },
                     type: 'checkbox',
                     checked: () => this.pixiEditor.xrayMode
-                }, {
+                },
+                {
                     label: this.voc.colorizeTileLayers,
                     click: () => {
                         this.pixiEditor.colorizeTileLayers = !this.pixiEditor.colorizeTileLayers;
