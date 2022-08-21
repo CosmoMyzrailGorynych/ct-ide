@@ -166,7 +166,7 @@ templates:
     uid: 9e7aec96-1ad3-4679-a248-01180284e78e
     texture: ec75835b-2afd-4f96-9373-804b4f80a84d
     extends: {}
-    lastmod: 1648093577260
+    lastmod: 1661094209998
     events: []
     type: template
     loopAnimation: true
@@ -175,7 +175,7 @@ templates:
     uid: cf5c44b2-f55a-4e18-a941-f7cdf5aecd0f
     texture: e0cbccef-93ee-4c8a-ab19-4fcef639963c
     extends: {}
-    lastmod: 1648093202395
+    lastmod: 1661094187046
     events:
       - lib: core
         arguments: {}
@@ -203,15 +203,10 @@ templates:
           });
               
         eventKey: OnCreate
-      - lib: core
+      - eventKey: OnPointerClick
+        code: ct.room.story.say(this.option);
         arguments: {}
-        code: |-
-          if (ct.pointer.hovers(this)) {
-              if (ct.actions.Press.pressed) {
-                  ct.room.story.say(this.option);
-              }
-          }
-        eventKey: OnStep
+        lib: core
     type: template
     loopAnimation: true
   - name: NextButton
@@ -219,7 +214,7 @@ templates:
     uid: 4340a6a4-65fa-4bcf-b950-38716097f29e
     texture: e0cbccef-93ee-4c8a-ab19-4fcef639963c
     extends: {}
-    lastmod: 1648093554744
+    lastmod: 1661094168112
     events:
       - lib: core
         arguments: {}
@@ -247,16 +242,12 @@ templates:
           });
               
         eventKey: OnCreate
-      - lib: core
-        arguments: {}
+      - eventKey: OnPointerClick
         code: |-
-          if (ct.pointer.hovers(this)) {
-              if (ct.actions.Press.pressed) {
-                  ct.room.story.next();
-                  this.kill = true;
-              }
-          }
-        eventKey: OnStep
+          ct.room.story.next();
+          this.kill = true;
+        arguments: {}
+        lib: core
     type: template
     loopAnimation: true
   - name: Blurb
@@ -264,7 +255,7 @@ templates:
     uid: 04a0aea0-f448-4920-97ad-f98906ac0d7c
     texture: -1
     extends: {}
-    lastmod: 1648093197419
+    lastmod: 1661094216534
     events:
       - lib: core
         arguments: {}
@@ -299,7 +290,7 @@ templates:
     uid: 9a5d6ecd-82b4-4b26-827b-08904fbaf962
     texture: e0cbccef-93ee-4c8a-ab19-4fcef639963c
     extends: {}
-    lastmod: 1648093204512
+    lastmod: 1661094207455
     events:
       - lib: core
         arguments: {}
@@ -327,16 +318,12 @@ templates:
           });
               
         eventKey: OnCreate
-      - lib: core
-        arguments: {}
+      - eventKey: OnPointerClick
         code: |-
-          if (ct.pointer.hovers(this)) {
-              if (ct.actions.Press.pressed) {
-                  ct.rooms.switch(ct.room.name);
-                  this.kill = true;
-              }
-          }
-        eventKey: OnStep
+          ct.rooms.switch(ct.room.name);
+          this.kill = true;
+        arguments: {}
+        lib: core
     type: template
     loopAnimation: true
   - name: TheGirl
@@ -344,7 +331,7 @@ templates:
     uid: 3c91a07b-0497-4623-a244-071a4e1951d8
     texture: bc65f552-4e0c-407e-aee0-9dedd834b727
     extends: {}
-    lastmod: 1648093574649
+    lastmod: 1661094213542
     events:
       - lib: core
         arguments: {}

@@ -320,7 +320,7 @@ templates:
     visible: true
     extends:
       cgroup: Hero
-    lastmod: 1644653580976
+    lastmod: 1661093854880
     uid: N5RBGbB6K894HC
     events:
       - lib: core
@@ -462,49 +462,6 @@ templates:
                   this.vspeed = 0;
               }
           }
-
-
-          // Check for deadly stuff
-
-          if (ct.place.occupied(this, 'Deadly')) {
-              this.dying = true;
-              ct.camera.follow = null;
-              // Make a dying animation
-              ct.tween.add({
-                  obj: this,
-                  fields: {
-                      y: this.y + 400,
-                      angle: 360,
-                      alpha: 0
-                  },
-                  curve: ct.tween.easeInBack,
-                  duration: 1000
-              })
-              .then(() => {
-                  // Schedule a jump to the last checkpoint once animation finishes
-                  this.x = this.checkpointX;
-                  this.y = this.checkpointY;
-                  // Reset dying state and movement speed
-                  this.vspeed = this.hspeed = 0;
-                  this.dying = false;
-                  // Reset drawing settings
-                  this.angle = 0;
-                  this.alpha = 1;
-                  ct.camera.follow = this;
-              });
-              return; // Stop further code
-          }
-
-
-          // Check for checkpoints
-
-          const checkpoint = ct.place.meet(this, 'Checkpoint')
-
-          if (ct.templates.valid(checkpoint)) {
-              // Remember safe place to respawn
-              this.checkpointX = checkpoint.x;
-              this.checkpointY = checkpoint.y;
-          }
         eventKey: OnStep
       - lib: core
         arguments: {}
@@ -515,6 +472,44 @@ templates:
               this.scale.x = -1;
           }
         eventKey: OnDraw
+      - eventKey: collisionCGroup
+        code: |-
+          this.dying = true;
+          ct.camera.follow = null;
+          // Make a dying animation
+          ct.tween.add({
+              obj: this,
+              fields: {
+                  y: this.y + 400,
+                  angle: 360,
+                  alpha: 0
+              },
+              curve: ct.tween.easeInBack,
+              duration: 1000
+          })
+          .then(() => {
+              // Schedule a jump to the last checkpoint once animation finishes
+              this.x = this.checkpointX;
+              this.y = this.checkpointY;
+              // Reset dying state and movement speed
+              this.vspeed = this.hspeed = 0;
+              this.dying = false;
+              // Reset drawing settings
+              this.angle = 0;
+              this.alpha = 1;
+              ct.camera.follow = this;
+          });
+        arguments:
+          group: Deadly
+        lib: place
+      - eventKey: collisionTemplate
+        code: |-
+          // Remember safe place to respawn
+          this.checkpointX = other.x;
+          this.checkpointY = other.y;
+        arguments:
+          template: Qrm2MjP8kzdJcF
+        lib: place
     loopAnimation: true
   - type: template
     name: Enemy
@@ -578,7 +573,7 @@ templates:
     visible: true
     extends:
       cgroup: Finish
-    lastmod: 1644652079492
+    lastmod: 1661093964695
     uid: 5KCCmK7GQQFPQF
     events:
       - lib: core
@@ -588,15 +583,14 @@ templates:
               console.error(`A copy of Finish template doesn't have a next room set. Please set the "nextRoom" property with custom properties by right-clicking this copy in the room editor.`);
           }
         eventKey: OnCreate
-      - lib: core
-        arguments: {}
+      - eventKey: collisionTemplate
         code: |-
           if (this.nextRoom) {
-              if (ct.place.meet(this, 'Character')) {
-                  ct.rooms.switch(this.nextRoom);
-              }
+              ct.rooms.switch(this.nextRoom);
           }
-        eventKey: OnStep
+        arguments:
+          template: N5RBGbB6K894HC
+        lib: place
     loopAnimation: true
   - type: template
     name: IceBlock
@@ -605,7 +599,7 @@ templates:
     visible: true
     extends:
       cgroup: Solid
-    lastmod: 1644654827736
+    lastmod: 1661093888247
     uid: R8m1cPL7jKN9n4
     events: []
     loopAnimation: true
@@ -627,7 +621,7 @@ templates:
     visible: true
     extends:
       cgroup: Solid
-    lastmod: 1644654336432
+    lastmod: 1661093898647
     uid: QMBQLBPfmd6wHL
     events:
       - lib: core
@@ -655,7 +649,7 @@ templates:
     visible: true
     extends:
       visible: false
-    lastmod: 1644654823976
+    lastmod: 1661093892398
     uid: Qrm2MjP8kzdJcF
     events: []
     loopAnimation: true
@@ -665,17 +659,14 @@ templates:
     texture: jNjzLGdJJPtwmh
     visible: true
     extends: {}
-    lastmod: 1644654344623
+    lastmod: 1661093884599
     uid: 2KgFRd6NM7CwRT
     events:
-      - lib: core
-        arguments: {}
-        code: |-
-          const character = ct.place.meet(this, 'Character');
-          if (ct.templates.valid(character)) {
-              character.vspeed = -40; // YEET
-          }
-        eventKey: OnStep
+      - eventKey: collisionTemplate
+        code: other.vspeed = -40; // YEET
+        arguments:
+          template: N5RBGbB6K894HC
+        lib: place
     loopAnimation: true
   - type: template
     name: Key
@@ -683,20 +674,19 @@ templates:
     texture: JbrHPd9T9dKfnk
     visible: true
     extends: {}
-    lastmod: 1644654854615
+    lastmod: 1661093921927
     uid: hLJwHbmjjRj3Jh
     events:
-      - lib: core
-        arguments: {}
+      - eventKey: collisionTemplate
         code: |-
-          if (ct.place.meet(this, 'Character')) {
-              this.kill = true;
-              // Remove all the locked blocks
-              for (const block of ct.templates.list['LockedBlock']) {
-                  block.kill = true;
-              }
+          this.kill = true;
+          // Remove all the locked blocks
+          for (const block of ct.templates.list['LockedBlock']) {
+              block.kill = true;
           }
-        eventKey: OnStep
+        arguments:
+          template: N5RBGbB6K894HC
+        lib: place
     loopAnimation: true
   - type: template
     name: LockedBlock
@@ -705,7 +695,7 @@ templates:
     visible: true
     extends:
       cgroup: Solid
-    lastmod: 1644654818000
+    lastmod: 1661093927127
     uid: G17q6cMFtpcQDG
     events: []
     loopAnimation: true
@@ -10271,4 +10261,4 @@ settings:
   fps: 30
 fonts: []
 palette: []
-startroom: 32n4rJpF9qKMBg
+startroom: LKTkBnc4BQMcDm

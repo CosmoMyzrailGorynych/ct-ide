@@ -263,18 +263,16 @@ templates:
     texture: 04dbb554-54cd-439a-8d17-4d06366151dc
     extends: {}
     uid: 933bd8f5-8e3f-44d4-9060-eabf1bc4ce93
-    lastmod: 1641403394663
+    lastmod: 1661094100423
     events:
-      - lib: core
-        arguments: {}
+      - eventKey: collisionTemplate
         code: |-
-          var tile = ct.place.meet(this, 'KeyTile');
-          if (tile && !this.victory) {
+          if (!this.victory) {
               this.victory = true;
-              tile.dragging = false;
-              tile.locked = true;
+              other.dragging = false;
+              other.locked = true;
               ct.tween.add({
-                  obj: tile,
+                  obj: other,
                   fields: {
                       x: this.x,
                       y: this.y
@@ -290,7 +288,9 @@ templates:
                   ct.rooms.switch('PuzzleBlocks');
               });
           }
-        eventKey: OnStep
+        arguments:
+          template: bf3a489b-333c-4171-b5ca-5a8699dfc176
+        lib: place
     type: template
     loopAnimation: true
   - name: AbstractTile
@@ -299,7 +299,7 @@ templates:
     extends:
       cgroup: Solid
     uid: 411a7b98-9916-4e4b-8466-abe66eb75e2e
-    lastmod: 1641403301665
+    lastmod: 1661094123639
     events:
       - lib: core
         arguments: {}
@@ -397,7 +397,7 @@ templates:
       inheritedTemplate@@template: 411a7b98-9916-4e4b-8466-abe66eb75e2e
       cgroup: Solid
     uid: b96007c1-e46d-4ae9-b809-3d49ef2f22b4
-    lastmod: 1602213425483
+    lastmod: 1661094109302
     events:
       - lib: core
         arguments: {}
@@ -475,7 +475,7 @@ templates:
       inheritedTemplate@@template: 411a7b98-9916-4e4b-8466-abe66eb75e2e
       cgroup: Solid
     uid: da879283-739b-4a62-850d-760d00789463
-    lastmod: 1602199765123
+    lastmod: 1661094116365
     events:
       - lib: core
         arguments: {}
@@ -517,7 +517,7 @@ templates:
       cgroup: Solid
       inheritedTemplate@@template: 411a7b98-9916-4e4b-8466-abe66eb75e2e
     uid: bf3a489b-333c-4171-b5ca-5a8699dfc176
-    lastmod: 1648092462572
+    lastmod: 1661094132967
     events:
       - lib: core
         arguments: {}

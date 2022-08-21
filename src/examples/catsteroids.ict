@@ -26,7 +26,7 @@ templates:
   - name: Player_Blue
     depth: 5
     uid: 1fab434d-0976-4b65-8390-d013695aba8c
-    lastmod: 1603949003131
+    lastmod: 1661093315313
     extends: {}
     texture: e1452137-8cfa-4eec-b54a-0f2660326b48
     events:
@@ -108,49 +108,7 @@ templates:
 
           /* Shooting */
 
-
           this.shootTimer += ct.deltaUi;
-
-
-          // If the spacebar is pressed and at least a quarter of second has
-          passed,
-
-          // create a new laser bullet depending on a weapon template
-
-          if (ct.actions.Shoot.down) {
-              if (this.weapon === 'simple' && this.shootTimer > 10) {
-                  ct.templates.copy('Laser_Simple_Blue', this.x + 75*this.shootSwitch, this.y);
-                  this.shootSwitch *= -1;
-                  ct.sound.spawn('Laser_Small');
-                  // Reset shooting delay
-                  this.shootTimer = 0;
-              }
-              if (this.weapon === 'spread' && this.shootTimer > 15) {
-                  // create three laser bolts
-                  ct.templates.copy('Laser_Simple_Blue', this.x-75, this.y);
-                  ct.templates.copy('Laser_Simple_Blue', this.x, this.y - 20);
-                  ct.templates.copy('Laser_Simple_Blue', this.x+75, this.y);
-                  ct.sound.spawn('Laser_Small');
-                  // Reset shooting delay
-                  this.shootTimer = 0;
-              }
-              if (this.weapon === 'bolt' && this.shootTimer > 40) {
-                  // slow, but powerful
-                  ct.templates.copy('Laser_Bolt_Blue', this.x, this.y);
-                  ct.sound.spawn('Laser_Medium');
-                  // Reset shooting delay
-                  this.shootTimer = 0;
-              }
-              if (this.weapon === 'cross' && this.shootTimer > 10) {
-                  // this one shoots much faster
-                  var bullet = ct.templates.copy('Laser_Cross_Blue', this.x, this.y);
-                  bullet.scale.x = this.shootSwitch;
-                  this.shootSwitch *= -1;
-                  ct.sound.spawn('Laser_Medium');
-                  // Reset shooting delay
-                  this.shootTimer = 0;
-              }
-          }
 
 
           /* Damage on collision */
@@ -207,6 +165,54 @@ templates:
               this.alpha = 1;
           }
         eventKey: OnDraw
+      - eventKey: OnActionDown
+        code: >-
+          /* Shooting */
+
+
+          // If the spacebar is pressed and at least a quarter of second has
+          passed,
+
+          // create a new laser bullet depending on a weapon template
+
+          if (this.weapon === 'simple' && this.shootTimer > 10) {
+              ct.templates.copy('Laser_Simple_Blue', this.x + 75*this.shootSwitch, this.y);
+              this.shootSwitch *= -1;
+              ct.sound.spawn('Laser_Small');
+              // Reset shooting delay
+              this.shootTimer = 0;
+          }
+
+          if (this.weapon === 'spread' && this.shootTimer > 15) {
+              // create three laser bolts
+              ct.templates.copy('Laser_Simple_Blue', this.x-75, this.y);
+              ct.templates.copy('Laser_Simple_Blue', this.x, this.y - 20);
+              ct.templates.copy('Laser_Simple_Blue', this.x+75, this.y);
+              ct.sound.spawn('Laser_Small');
+              // Reset shooting delay
+              this.shootTimer = 0;
+          }
+
+          if (this.weapon === 'bolt' && this.shootTimer > 40) {
+              // slow, but powerful
+              ct.templates.copy('Laser_Bolt_Blue', this.x, this.y);
+              ct.sound.spawn('Laser_Medium');
+              // Reset shooting delay
+              this.shootTimer = 0;
+          }
+
+          if (this.weapon === 'cross' && this.shootTimer > 10) {
+              // this one shoots much faster
+              var bullet = ct.templates.copy('Laser_Cross_Blue', this.x, this.y);
+              bullet.scale.x = this.shootSwitch;
+              this.shootSwitch *= -1;
+              ct.sound.spawn('Laser_Medium');
+              // Reset shooting delay
+              this.shootTimer = 0;
+          }
+        arguments:
+          action: Shoot
+        lib: core
     type: template
     loopAnimation: true
   - name: Laser_Simple_Blue
@@ -240,7 +246,7 @@ templates:
   - name: Asteroid
     depth: 1
     uid: 1fa16a0f-e9a0-4117-9c28-87fa72b33d2b
-    lastmod: 1603949085987
+    lastmod: 1661093107272
     extends: {}
     texture: 1a904383-2edd-4435-a37b-17148f44e0e0
     events:
@@ -307,7 +313,7 @@ templates:
   - name: Laser_Cross_Blue
     depth: -1
     uid: 140f8bde-bd06-4b2d-a5f2-87427848252e
-    lastmod: 1603949097147
+    lastmod: 1661093079642
     extends: {}
     texture: 4b86d5c4-ae3c-4edf-90d7-79a6778e9a29
     events:
@@ -426,37 +432,24 @@ templates:
   - name: StartButton
     depth: 0
     uid: 972bb4d9-7cfc-4dbe-bc30-883562271057
-    lastmod: 1603949128699
+    lastmod: 1661093185304
     extends: {}
     texture: 2a454e11-3441-4f57-bfb6-ce837acd7881
     events:
-      - lib: core
-        arguments: {}
+      - eventKey: OnPointerClick
         code: |-
-          if (ct.actions.Touch.pressed) {
-              if (ct.mouse.hovers(this) || ct.touch.collide(this)) {
-                  ct.transition.fadeOut()
-                  .then(() => {
-                      ct.rooms.switch('InGame');
-                  });
-              }
-          }
-
-          if (ct.touch.enabled) {
-              if (ct.touch.hovers(this)) {
-                  ct.transition.fadeOut()
-                  .then(() => {
-                      ct.rooms.switch('InGame');
-                  });
-              }
-          }
-        eventKey: OnStep
+          ct.transition.fadeOut()
+          .then(() => {
+              ct.rooms.switch('InGame');
+          });
+        arguments: {}
+        lib: core
     type: template
     loopAnimation: true
   - name: AbstractBonus
     depth: 3
     uid: bc01cee1-1b8b-4418-aeb9-a7c5eac2cd51
-    lastmod: 1603949079971
+    lastmod: 1661093465128
     extends: {}
     texture: 25fb712b-0aca-4b18-8e10-7c545d4bca8d
     events:
@@ -481,51 +474,54 @@ templates:
         code: |-
           this.move();
 
-          var player = ct.place.meet(this, this.x, this.y, 'Player_Blue');
-          if (player) {
-              ct.sound.spawn('Bonus');
-              if (this.tex === 'Bonus_Lives') {
-                  player.lives += 25;
-                  // Don't allow the health to overflow
-                  if (player.lives > 100) {
-                      player.lives = 100;
-                  }
-              } else if (this.tex === 'Bonus_Slowmo') {
-                  ct.sound.spawn('SlowmoEffect');
-                  ct.tween.add({
-                      obj: ct.pixiApp.ticker,
-                      fields: {
-                          speed: 0.2
-                      },
-                      duration: 1000,
-                      useUiDelta: true
-                  })
-                  .then(() => ct.u.waitUi(5000))
-                  .then(() => ct.tween.add({
-                      obj: ct.pixiApp.ticker,
-                      fields: {
-                          speed: 1
-                      },
-                      duration: 1000,
-                      useUiDelta: true
-                  }));
-              } else {
-                  var graphToWeaponMap = {
-                      'Bonus_Spread': 'spread',
-                      'Bonus_Bolt': 'bolt',
-                      'Bonus_Cross': 'cross'
-                  };
-                  player.weapon = graphToWeaponMap[this.tex];
-              }
-              // Consume bonus
-              this.kill = true;
-          }
-
           // Destroy bonus if it fell off the screen
           if (this.y > ct.camera.height + 48) {
               this.kill = true;
           }
         eventKey: OnStep
+      - eventKey: collisionTemplate
+        code: |-
+          ct.sound.spawn('Bonus');
+          if (this.tex === 'Bonus_Lives') {
+              other.lives += 25;
+              // Don't allow the health to overflow
+              if (other.lives > 100) {
+                  other.lives = 100;
+              }
+          } else if (this.tex === 'Bonus_Slowmo') {
+              ct.sound.spawn('SlowmoEffect');
+              // Dark sorcery; see "Tips & Tricks > Pausing a game" in the built-in docs.
+              ct.tween.add({
+                  obj: ct.pixiApp.ticker,
+                  fields: {
+                      speed: 0.2
+                  },
+                  duration: 1000,
+                  useUiDelta: true
+              })
+              .then(() => ct.u.waitUi(5000))
+              .then(() => ct.tween.add({
+                  obj: ct.pixiApp.ticker,
+                  fields: {
+                      speed: 1
+                  },
+                  duration: 1000,
+                  useUiDelta: true
+              }));
+          } else {
+              // Depenging on a texture name, set player's weapon to a specific type
+              var graphToWeaponMap = {
+                  'Bonus_Spread': 'spread',
+                  'Bonus_Bolt': 'bolt',
+                  'Bonus_Cross': 'cross'
+              };
+              other.weapon = graphToWeaponMap[this.tex];
+          }
+          // Consume bonus
+          this.kill = true;
+        arguments:
+          template: 1fab434d-0976-4b65-8390-d013695aba8c
+        lib: place
     type: template
     loopAnimation: true
   - name: Enemy_Shooter
@@ -620,7 +616,7 @@ templates:
   - name: EnemyBullet
     depth: -1
     uid: 65a71d76-039a-4e20-8433-d20277dd2402
-    lastmod: 1603949111947
+    lastmod: 1661093488384
     extends:
       cgroup: EnemyBullet
     texture: fc3e2f9b-61af-4ae4-9375-dcfae65f6a34
@@ -841,7 +837,7 @@ templates:
   - name: Laser_Cross_Red
     depth: 0
     uid: 45f606db-1ce3-4b21-bc14-b84e35543509
-    lastmod: 1603949122763
+    lastmod: 1661093478784
     extends:
       cgroup: EnemyBullet
     texture: dc0d71ec-6da8-40e8-afe8-90c81f7f269a
@@ -888,21 +884,17 @@ templates:
   - name: RetryButton
     depth: 0
     uid: 73759c16-fba4-4134-b048-e53aa4d2f34b
-    lastmod: 1603949126108
+    lastmod: 1661093204465
     extends: {}
     texture: 071162b9-d836-4145-9515-586ce289ef14
     events:
-      - lib: core
-        arguments: {}
+      - eventKey: OnPointerClick
         code: |-
-          if (ct.actions.Touch.pressed) {
-              if (ct.mouse.hovers(this) || ct.touch.collide(this)) {
-                  ct.sound.stop('Music_BossTheme');
-                  ct.sound.stop('Music_MainTheme');
-                  ct.rooms.switch('InGame');
-              }
-          }
-        eventKey: OnStep
+          ct.sound.stop('Music_BossTheme');
+          ct.sound.stop('Music_MainTheme');
+          ct.rooms.switch('InGame');
+        arguments: {}
+        lib: core
     type: template
     loopAnimation: true
   - name: Joystick
@@ -910,7 +902,7 @@ templates:
     uid: c78818a4-c20e-46b9-8a39-9fbb5a83eabe
     texture: 847c402c-dbd5-4971-ba6d-f2fca6d156bd
     extends: {}
-    lastmod: 1586163798708
+    lastmod: 1661093502047
     events:
       - lib: core
         arguments: {}
@@ -927,10 +919,6 @@ templates:
         eventKey: OnCreate
       - lib: core
         arguments: {}
-        code: this.move();
-        eventKey: OnStep
-      - lib: core
-        arguments: {}
         code: |-
           this.button.x = this.x;
           this.button.y = this.y;
@@ -942,7 +930,7 @@ templates:
     uid: b334b5ec-69b4-4c0d-bd50-709cf9bfa60d
     texture: 13433dd6-9fec-4244-8188-d6ec14a51974
     extends: {}
-    lastmod: 1588678468799
+    lastmod: 1661093494575
     events:
       - lib: core
         arguments: {}
@@ -960,10 +948,6 @@ templates:
         eventKey: OnCreate
       - lib: core
         arguments: {}
-        code: this.move();
-        eventKey: OnStep
-      - lib: core
-        arguments: {}
         code: |-
           this.button.x = this.x;
           this.button.y = this.y;
@@ -975,7 +959,7 @@ templates:
     uid: 1ef4f56c-b0cc-497b-bd3f-e06eb1c2308d
     texture: afba4114-e7bc-4b35-8386-d9ca108ca777
     extends: {}
-    lastmod: 1588679303757
+    lastmod: 1661093161129
     events:
       - lib: core
         arguments: {}
@@ -1178,7 +1162,7 @@ templates:
         eventKey: OnCreate
       - lib: core
         arguments: {}
-        code: >-
+        code: |-
           if (this.shootRandom || this.shootAtPlayer || this.shootStar) {
               this.shootTimer -= ct.delta;
               if (this.shootTimer <= 0) {
@@ -1204,15 +1188,6 @@ templates:
               }
           }
 
-
-          var obstacle = ct.place.occupied(this, this.x, this.y,
-          'BulletsHeroes');
-
-          if (obstacle) {
-              calculateDamage(this, obstacle);
-          }
-
-
           if (ct.room.pullPlayerIn && ct.templates.list['Player_Blue'].length) {
               const player = ct.templates.list['Player_Blue'][0];
               player.addSpeed(ct.delta * 0.9, ct.u.pdn(player.x, player.y, this.x, this.y));
@@ -1231,6 +1206,11 @@ templates:
               ct.rooms.switch('VictoryScreen');
           });
         eventKey: OnDestroy
+      - eventKey: collisionCGroup
+        code: 'calculateDamage(this, other);'
+        arguments:
+          group: BulletsHeroes
+        lib: place
     type: template
     loopAnimation: true
   - name: Healthbar_Base_Player
