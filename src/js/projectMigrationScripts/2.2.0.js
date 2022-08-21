@@ -23,8 +23,8 @@ window.migrationProcess.push({
                         // eslint-disable-next-line prefer-destructuring
                         for (let y = tile.grid[1]; y < tile.grid[1] + tile.grid[3]; y++) {
                             tiles.push({
-                                x: tile.x + tex.axis[0],
-                                y: tile.y + tex.axis[1],
+                                x: tile.x + tex.axis[0] + (x - tile.grid[0]) * tex.width,
+                                y: tile.y + tex.axis[1] + (y - tile.grid[1]) * tex.height,
                                 opacity: tile.opacity ?? 1,
                                 tint: tile.tint ?? 0xffffff,
                                 scale: {
