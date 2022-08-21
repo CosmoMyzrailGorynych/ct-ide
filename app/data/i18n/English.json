@@ -916,7 +916,20 @@
         "typefaceName": "Typeface name:"
     },
     "licensePanel": {
-        "ctjsLicense": "Ct.js License (MIT)"
+        "ctjsLicense": "Ct.js License (MIT)",
+        "faq": "Frequently asked questions (non-normative section)",
+        "whoOwnsGamesQ": "Who owns games created in ct.js?",
+        "whoOwnsGamesA": "You and only you. Unless you sell your intellectual rights to another company; but that's another topic :D Ct.js does not own anything you create in any way.",
+        "sellingGamesQ": "Can I sell games made in ct.js?",
+        "sellingGamesA": "Yes, you can sell your games and other projects, gather donations, and use your games in any other commercial applications.",
+        "possibleFeesQ": "Do I need to pay for ct.js? Will ct.js become paid someday?",
+        "possibleFeesA": "No, ct.js is free and will always be so. It doesn't have any hidden fees like Unity or Unreal Engine that require you paying after you earn a specific amount of money. Ct.js is open-source, and even if there will be any paid versions, the product you have now will always be accessible free of charge. You can send a donation or become a patron, though! It will help us pay bills and make ct.js better!",
+        "useInStudioQ": "Can I use ct.js in a studio or schools?",
+        "useInStudioA": "Sure, why not? Ct.js is open for personal, commercial, educational use, and whatnot. Just don't break the law, ok?",
+        "attributionQ": "Do I need to attribute ct.js or its developers? Can I disable its logo on the loading screen?",
+        "attributionA": "You can disable ct.js logo — even if you do so, the code of your game already has the necessary attribution of the engine.",
+        "attributionAAssets": "Some examples and demos may contain licensed material that will require attribution — such projects will already have the needed credits.",
+        "theLicense": "The license (legal document)"
     },
     "scriptables": {
         "addEvent": "Add an event",

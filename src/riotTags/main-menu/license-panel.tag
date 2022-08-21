@@ -5,6 +5,32 @@ license-panel
                 use(href="#x")
         .aModal.pad.appear
             h1 {voc.ctjsLicense}
+            p
+                b {voc.faq}
+            ul
+                li
+                    b {voc.whoOwnsGamesQ}
+                    br
+                    span {voc.whoOwnsGamesA}
+                li
+                    b {voc.sellingGamesQ}
+                    br
+                    span {voc.sellingGamesA}
+                li
+                    b {voc.possibleFeesQ}
+                    br
+                    span {voc.possibleFeesA}
+                li
+                    b {voc.useInStudioQ}
+                    br
+                    span {voc.useInStudioA}
+                li
+                    b {voc.attributionQ}
+                    br
+                    span {voc.attributionA}
+                    br
+                    span {voc.attributionAAssets}
+            b {voc.theLicense}
             pre
                 code.
                     Permission is hereby granted, free of charge, to any person obtaining a copy
