@@ -5,6 +5,8 @@
         Calls the funtion when a user changes the zoom value.
         Passes the new zoom value as the one argument.
 
+    @method setZoom
+        Call this with a new zoom value in percents to manually update this zoom slider.
     @method zoomIn
         Call this property to advance the zoom value. This will call opts.onchage callback.
     @method zoomOut
@@ -64,6 +66,11 @@ zoom-slider
             if (this.opts.onchanged) {
                 this.opts.onchanged(this.rawToZoom(e.target.value));
             }
+        };
+        this.setZoom = newZoom => {
+            const rawValue = this.zoomToRaw(newZoom);
+            this.refs.zoomslider.value = rawValue;
+            this.update();
         };
 
         this.zoomIn = () => {

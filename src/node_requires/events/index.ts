@@ -278,7 +278,7 @@ const unloadAllEvents = (): void => {
     }
 };
 
-export = {
+export {
     categories,
     events,
     bakeCategories,

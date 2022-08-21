@@ -3,33 +3,36 @@ collapsible-section
     display block
     &:first-child
         margin-top 0
-    & > .flexrow
+    .&-aHeader
         padding 0.5rem 0
-        align-items  center
-        cursor pointer
+        align-items center
         border-bottom 1px solid borderBright
-        h1, h2, h3, h4, h5, h6
-            padding 0
-            margin 0
-            flex 1 1 auto
+        display grid
+        grid-template-columns 1fr auto
+        grid-gap 0.5rem
+        & > :first-child
+            display contents
+            & > h1, & > h2, & > h3, & > h4, & > h5, & > h6
+                padding 0
+                margin 0
+                overflow hidden
+                text-overflow ellipsis
+                white-space nowrap
+        asset-input
             overflow hidden
-            text-overflow ellipsis
-            white-space nowrap
-        svg
+        & > svg
             {trans}
-            margin-left 0.5rem
             flex 0 0 auto
-            align-self flex-end
+            cursor pointer
             &.rotated
                 transform rotate(180deg)
     .&-aWrapper
         padding 1rem 0 0.5rem
     &.aPanel
-        & > .flexrow
-            h1, h2, h3, h4, h5, h6
+        .collapsible-section-aHeader
+            padding 0.5rem 1rem
+            & > h1, & > h2, & > h3, & > h4, & > h5, & > h6
                 margin 0 1rem
-            svg
-                margin-right 0.5rem
         &.closed > .flexrow
             border-bottom 0
         .collapsible-section-aWrapper

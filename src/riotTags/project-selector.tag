@@ -133,6 +133,7 @@ project-selector
     script.
         const fs = require('fs-extra'),
               path = require('path');
+        const {openProject} = require('./data/node_requires/resources/projects');
         this.ctjsVersion = process.versions.ctjs;
         this.requirePath = path;
         this.namespace = 'intro';
@@ -243,7 +244,7 @@ project-selector
                     }
                 });
             }, 0);
-            window.loadProject(path.join(way, codename + '.ict'));
+            openProject(path.join(way, codename + '.ict'));
         };
 
         /**
@@ -251,7 +252,7 @@ project-selector
          */
         this.loadProjectByPath = e => {
             const projectPath = e.item.project;
-            window.loadProject(projectPath);
+            openProject(projectPath);
         };
         /**
          * Prompts user to clone a project into a different folder/under a different name.
@@ -273,7 +274,7 @@ project-selector
                 }
                 await fs.copy(project, newIctLocation);
                 await fs.copy(project.slice(0, -4), newIctLocation.slice(0, -4));
-                window.loadProject(newIctLocation);
+                openProject(newIctLocation);
             })();
         };
         /**
@@ -330,7 +331,7 @@ project-selector
                 return;
             }
             if (path.extname(proj).toLowerCase() === '.ict') {
-                window.loadProject(proj);
+                openProject(proj);
                 sessionStorage.projname = path.basename(proj);
                 global.projdir = path.dirname(proj) + path.sep + path.basename(proj, '.ict');
             } else {

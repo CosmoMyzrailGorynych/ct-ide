@@ -27,6 +27,10 @@ mixin templateProperties
                     option(value="multiply" selected="{parent.template.blendMode === 'multiply'}") {parent.voc.blendModes.multiply}
                     option(value="screen" selected="{parent.template.blendMode === 'screen'}") {parent.voc.blendModes.screen}
         fieldset
+            label.flexrow
+                b.nogrow.alignmiddle {parent.voc.animationFPS}
+                .aSpacer.nogrow
+                input.alignmiddle(type="number" max="60" min="1" step="1" value="{parent.template.animationFPS ?? 60}" onchange="{parent.wire('this.template.animationFPS')}")
             label.block.checkbox
                 input(type="checkbox" checked="{parent.template.playAnimationOnStart}" onchange="{parent.wire('this.template.playAnimationOnStart')}")
                 span {parent.voc.playAnimationOnStart}
@@ -160,9 +164,8 @@ template-editor.aPanel.aView.flexrow
                 this.update();
                 // animate the error notice
                 require('./data/node_requires/jellify')(this.refs.errorNotice);
-                if (localStorage.disableSounds !== 'on') {
-                    soundbox.play('Failure');
-                }
+                const {soundbox} = require('./data/node_requires/3rdparty/soundbox');
+                soundbox.play('Failure');
                 return false;
             }
             glob.modified = true;
@@ -171,6 +174,7 @@ template-editor.aPanel.aView.flexrow
             this.parent.fillTemplateMap();
             this.parent.update();
             window.signals.trigger('templatesChanged');
+            window.signals.trigger('templateChanged', this.template.uid);
             return true;
         };
         this.changeCodeTab = scriptableEvent => {

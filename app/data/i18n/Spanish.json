@@ -67,7 +67,8 @@
             "template": "",
             "room": "",
             "sound": "",
-            "tandem": ""
+            "tandem": "",
+            "type": ""
         },
         "newName": "Nombre Nuevo:",
         "saveProject": "Guardar proyecto",
@@ -125,7 +126,9 @@
                 "",
                 ""
             ]
-        }
+        },
+        "next": "",
+        "previous": ""
     },
     "colorPicker": {
         "current": "Nuevo",
@@ -590,7 +593,10 @@
                 "SpringStream": "Corriente de Primavera",
                 "LucasDracula": "Lucas Dracula",
                 "Horizon": "",
-                "HCBlack": ""
+                "HCBlack": "",
+                "RosePine": "",
+                "RosePineMoon": "",
+                "RosePineDawn": ""
             },
             "codeFontDefault": "Predeterminado (Iosevka Light)",
             "codeFontOldSchool": "Vieja Escuela",
@@ -602,7 +608,10 @@
             "codeDense": "Diseño Denso",
             "disableSounds": "",
             "changeDataFolder": "",
-            "forceProductionForDebug": ""
+            "forceProductionForDebug": "",
+            "settings": "",
+            "prideMode": "",
+            "altTemplateLayout": ""
         },
         "project": {
             "save": "Guardar proyecto",
@@ -638,14 +647,36 @@
         "restart": "Reiniciar",
         "project": "Proyecto",
         "fx": "Effectos",
-        "templates": "Tipos"
-    },
-    "copyCustomProperties": {
-        "customProperties": "",
-        "addProperty": "",
-        "property": "",
-        "value": "",
-        "delete": ""
+        "templates": "Tipos",
+        "tour": {
+            "header": "",
+            "aboutTour": "",
+            "helpPanel": "",
+            "helpPanelTabs": "",
+            "projectResources": "",
+            "tabTextures": "",
+            "tabTexturesImport": "",
+            "tabTexturesGallery": "",
+            "tabTexturesClipboard": "",
+            "tabTexturesPlaceholders": "",
+            "tabTemplates": "",
+            "tabRooms": "",
+            "tabSounds": "",
+            "tabSoundsImport": "",
+            "tabSoundsGallery": "",
+            "tabSoundsRecord": "",
+            "tabInterlude": "",
+            "tabUI": "",
+            "tabFX": "",
+            "tabProject": "",
+            "tabProjectModules": "",
+            "tabProjectModuleDocs": "",
+            "tabMainMenu": "",
+            "tabMainMenuSettings": "",
+            "tabMainMenuMeta": "",
+            "helpPanelReminder": "",
+            "buttonStartTutorial": ""
+        }
     },
     "assetViewer": {
         "addNewGroup": "",
@@ -716,7 +747,13 @@
         "copyProperties": {
             "position": "",
             "rotation": "",
-            "scale": ""
+            "scale": "",
+            "multipleValues": ""
+        },
+        "copyCustomProperties": {
+            "addProperty": "",
+            "property": "",
+            "value": ""
         },
         "customProperties": "",
         "restrictCamera": "",
@@ -736,7 +773,19 @@
         "deleteTiles": "Eliminar tiles",
         "moveTilesToLayer": "Mover a capa",
         "shiftTiles": "Cambiar tiles",
-        "changeCopyRotation": "Rotar"
+        "changeCopyRotation": "Rotar",
+        "simulate": "",
+        "toggleDiagonalGrid": "",
+        "changeGridSize": "",
+        "xrayMode": "",
+        "colorizeTileLayers": "",
+        "tools": {
+            "select": "",
+            "addCopies": "",
+            "addTiles": "",
+            "manageBackgrounds": "",
+            "roomProperties": ""
+        }
     },
     "styleView": {
         "active": "Activar",
@@ -869,7 +918,9 @@
             "add": "",
             "multiply": "",
             "screen": ""
-        }
+        },
+        "animationFPS": "",
+        "loopAnimation": ""
     },
     "assetInput": {
         "changeAsset": "",
@@ -889,5 +940,71 @@
         "visitAuthorsItch": "",
         "visitAuthorsTwitter": "",
         "tipAuthor": ""
+    },
+    "scriptables": {
+        "addEvent": "",
+        "removeEvent": "",
+        "removeEventConfirm": "",
+        "changeArguments": "",
+        "eventAlreadyExists": "",
+        "localEventVars": "",
+        "createEventHint": "",
+        "coreEventsCategories": {
+            "lifecycle": "",
+            "actions": "",
+            "pointer": "",
+            "misc": "",
+            "animation": "",
+            "timers": ""
+        },
+        "coreEvents": {
+            "OnCreate": "",
+            "OnRoomStart": "",
+            "OnStep": "",
+            "OnDraw": "",
+            "OnDestroy": "",
+            "OnRoomEnd": "",
+            "OnPointerClick": "",
+            "OnPointerSecondaryClick": "",
+            "OnPointerEnter": "",
+            "OnPointerLeave": "",
+            "OnPointerDown": "",
+            "OnPointerUp": "",
+            "OnPointerUpOutside": "",
+            "OnPointerWheel": "",
+            "OnActionPress": "",
+            "OnActionRelease": "",
+            "OnActionDown": "",
+            "OnFrameChange": "",
+            "OnAnimationLoop": "",
+            "OnAnimationComplete": "",
+            "Timer": ""
+        },
+        "coreParameterizedNames": {
+            "OnActionPress": "",
+            "OnActionRelease": "",
+            "OnActionDown": ""
+        },
+        "coreEventsArguments": {
+            "action": ""
+        },
+        "coreEventsLocals": {
+            "OnActionDown_value": "",
+            "OnActionPress_value": ""
+        },
+        "coreEventsDescriptions": {
+            "OnCreate": "",
+            "OnRoomStart": "",
+            "OnStep": "",
+            "OnDraw": "",
+            "OnDestroy": "",
+            "OnRoomEnd": "",
+            "OnActionPress": "",
+            "OnActionRelease": "",
+            "OnActionDown": "",
+            "OnAnimationLoop": "",
+            "OnAnimationComplete": "",
+            "Timer": ""
+        }
     }
 }

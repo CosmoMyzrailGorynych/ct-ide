@@ -2,7 +2,7 @@
   "main": "index.html",
   "name": "ctjs",
   "description": "ct.js — a free 2D game engine",
-  "version": "2.0.2",
+  "version": "2.2.0",
   "homepage": "https://ctjs.rocks/",
   "author": {
     "name": "Cosmo Myzrail Gorynych",
@@ -78,6 +78,7 @@
     "nanoid": "^3.1.31",
     "npm": "^8.11.0",
     "opentype.js": "^1.3.3",
+    "pixi-ease": "^3.0.7",
     "pixi-particles": "4.3.1",
     "pixi.js": "5.3.11",
     "pixi.js-legacy": "5.3.11",

@@ -50,6 +50,8 @@
         "zoom": "Zoom",
         "zoomIn": "Zoom in",
         "zoomOut": "Zoom out",
+        "undo": "Undo",
+        "redo": "Redo",
         "fieldTypes": {
             "checkbox": "Checkbox",
             "code": "Codebox",
@@ -71,7 +73,8 @@
             "template": "Template",
             "room": "Room",
             "sound": "Sound",
-            "tandem": "Particle emitter"
+            "tandem": "Particle emitter",
+            "type": ""
         },
         "newName": "New name:",
         "saveProject": "Save project",
@@ -159,13 +162,6 @@
         "globalPalette": "Global Palette",
         "old": "Old",
         "projectPalette": "Project's Palette"
-    },
-    "copyCustomProperties": {
-        "customProperties": "Custom Properties",
-        "addProperty": "Add Property",
-        "property": "Property",
-        "value": "Value",
-        "delete": "Delete"
     },
     "curveEditor": {
         "curveLineHint": "Click the curve to add a point",
@@ -655,7 +651,8 @@
             "altTemplateLayout": "Alternative layout for template editor",
             "disableSounds": "Disable UI sounds",
             "changeDataFolder": "Set data folder location",
-            "forceProductionForDebug": "Force production tasks for debug exports"
+            "forceProductionForDebug": "Force production tasks for debug exports",
+            "settings": ""
         },
         "project": {
             "heading": "Project",
@@ -725,11 +722,11 @@
     "roomBackgrounds": {
         "add": "Add a Background",
         "depth": "Depth:",
-        "movement": "Movement speed (X, Y):",
-        "parallax": "Parallax (X, Y):",
+        "movement": "Movement speed:",
+        "parallax": "Parallax:",
         "repeat": "Repeat:",
-        "scale": "Scaling (X, Y):",
-        "shift": "Shift (X, Y):",
+        "scale": "Scaling:",
+        "shift": "Shift:",
         "notBackgroundTextureWarning": "This texture is not marked as a background. It will have gaps when exported.",
         "fixBackground": "Fix it.",
         "dismissWarning": "Dismiss."
@@ -745,7 +742,14 @@
         "width": "View width:",
         "height": "View height:",
         "isUi": "Is a UI layer?",
-        "events": "Room events",
+        "simulate": "Simulate",
+        "grid": "Grid",
+        "toggleDiagonalGrid": "Diagonal grid",
+        "changeGridSize": "Change cell size",
+        "events": "Events",
+        "gridOff": "Disable grid",
+        "xrayMode": "X-ray mode",
+        "colorizeTileLayers": "Colorize tile layers",
         "copies": "Copies",
         "backgrounds": "Backgrounds",
         "backgroundColor": "Background color:",
@@ -754,7 +758,6 @@
         "add": "Add",
         "none": "Nothing",
         "done": "Done",
-        "grid": "Set grid",
         "hotkeysNotice": "Ctrl = Delete, Alt = No grid, Shift = Multiple",
         "hotkeysNoticeMovement": "Ctrl = Delete, Shift = Select",
         "shift": "Shift everything",
@@ -769,17 +772,26 @@
         "selectAndMove": "Select and Move",
         "customProperties": "Custom Properties",
         "findTileset": "Find a tileset",
+        "resetView": "Reset view",
         "copyProperties": {
             "position": "Position",
             "rotation": "Rotation",
-            "scale": "Scale"
+            "scale": "Scale",
+            "opacity": "Opacity",
+            "tint": "Tint",
+            "multipleValues": "(Multiple)"
+        },
+        "copyCustomProperties": {
+            "addProperty": "Add Property",
+            "property": "Property",
+            "value": "Value",
+            "nameOccupied": "This property is used by ct.js! You should come up with a different name."
         },
         "restrictCamera": "Keep camera in a rectangle",
         "minimumX": "Min X",
         "minimumY": "Min Y",
         "maximumX": "Max X",
         "maximumY": "Max Y",
-        "gridOff": "Disable grid",
         "gridSize": "Grid size:",
         "toCenter": "To center",
         "shiftLabel": "Shift by:",
@@ -791,7 +803,14 @@
         "deleteTiles": "Delete tiles",
         "moveTilesToLayer": "Move to layer",
         "shiftTiles": "Shift tiles",
-        "changeCopyRotation": "Rotate"
+        "changeCopyRotation": "Rotate",
+        "tools": {
+            "select": "Select tool",
+            "addCopies": "Add copies",
+            "addTiles": "Add tiles",
+            "manageBackgrounds": "Manage backgrounds",
+            "roomProperties": "Room properties"
+        }
     },
     "styleView": {
         "active": "Active",
@@ -984,6 +1003,7 @@
         "depth": "Depth:",
         "opacity": "Opacity:",
         "blendMode": "Blend mode:",
+        "animationFPS": "Animation FPS:",
         "playAnimationOnStart": "Play animation on start",
         "loopAnimation": "Loop animation",
         "blendModes": {

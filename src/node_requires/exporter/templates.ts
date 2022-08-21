@@ -17,6 +17,7 @@ const stringifyTemplates = function (proj: IProject): IScriptablesFragment {
 ct.templates.templates["${template.name}"] = {
     depth: ${template.depth},
     blendMode: PIXI.BLEND_MODES.${template.blendMode?.toUpperCase() ?? 'NORMAL'},
+    animationFPS: ${template.animationFPS ?? 60},
     playAnimationOnStart: ${Boolean(template.playAnimationOnStart)},
     loopAnimation: ${Boolean(template.loopAnimation)},
     ${template.texture !== -1 ? 'texture: "' + getTextureFromId(template.texture).name + '",' : ''}

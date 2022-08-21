@@ -65,6 +65,7 @@ const Copy = (function Copy() {
                 this.parent = container;
                 this.blendMode = t.blendMode || PIXI.BLEND_MODES.NORMAL;
                 this.loop = t.loopAnimation;
+                this.animationSpeed = t.animationFPS / 60;
                 if (t.playAnimationOnStart) {
                     this.play();
                 }
@@ -89,14 +90,11 @@ const Copy = (function Copy() {
             this.timer1 = this.timer2 = this.timer3 = this.timer4 = this.timer5 = this.timer6 = 0;
             if (exts) {
                 ct.u.ext(this, exts);
-                if (exts.tx) {
-                    this.scale.x = exts.tx;
+                if (exts.scaleX) {
+                    this.scale.x = exts.scaleX;
                 }
-                if (exts.ty) {
-                    this.scale.y = exts.ty;
-                }
-                if (exts.tr) {
-                    this.angle = exts.tr;
+                if (exts.scaleY) {
+                    this.scale.y = exts.scaleY;
                 }
             }
             this.uid = ++uid;

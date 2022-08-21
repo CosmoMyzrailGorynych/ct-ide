@@ -67,7 +67,8 @@
             "template": "Sjabloon",
             "room": "Kamer",
             "sound": "Geluid",
-            "tandem": "Deeltjesverspreider"
+            "tandem": "Deeltjesverspreider",
+            "type": ""
         },
         "newName": "Nieuwe naam:",
         "saveProject": "Project opslaan",
@@ -80,7 +81,7 @@
         "addToNotes": "Notitie toevoegen",
         "noRooms": "Je hebt ten minste één kamer nodig om de app te compileren.",
         "tileLayer": "tegellaag",
-        "ctSite": "ct.js thuispagina", 
+        "ctSite": "ct.js thuispagina",
         "docsShort": "Docs",
         "docsLong": "Documentatie",
         "openAssetGallery": "Galerij",
@@ -125,7 +126,9 @@
                 "skeletten",
                 "skeletten"
             ]
-        }
+        },
+        "next": "",
+        "previous": ""
     },
     "colorPicker": {
         "current": "New",
@@ -589,7 +592,10 @@
                 "SpringStream": "Lente Stroom",
                 "LucasDracula": "Lucas Dracula",
                 "Horizon": "Horizon",
-                "HCBlack": "Hoog-contrast Zwart"
+                "HCBlack": "Hoog-contrast Zwart",
+                "RosePine": "",
+                "RosePineMoon": "",
+                "RosePineDawn": ""
             },
             "codeFontDefault": "Standaard (Iosevka Licht)",
             "codeFontOldSchool": "Ouderwets",
@@ -602,7 +608,10 @@
             "heading": "Instellingen",
             "disableSounds": "Schakel UI geluiden uit",
             "changeDataFolder": "Stel maplocatie voor data in",
-            "forceProductionForDebug": "Forceer productietaken voor debug exports"
+            "forceProductionForDebug": "Forceer productietaken voor debug exports",
+            "settings": "",
+            "prideMode": "",
+            "altTemplateLayout": ""
         },
         "project": {
             "save": "Sla project op",
@@ -638,14 +647,36 @@
         "fx": "FX",
         "restart": "Herstart",
         "project": "Project",
-        "templates": "Sjablonen"
-    },
-    "copyCustomProperties": {
-        "customProperties": "Aangepaste eigenschappen",
-        "addProperty": "Voeg eigenschap toe",
-        "property": "Eigenschap",
-        "value": "Waarde",
-        "delete": "Verwijder"
+        "templates": "Sjablonen",
+        "tour": {
+            "header": "",
+            "aboutTour": "",
+            "helpPanel": "",
+            "helpPanelTabs": "",
+            "projectResources": "",
+            "tabTextures": "",
+            "tabTexturesImport": "",
+            "tabTexturesGallery": "",
+            "tabTexturesClipboard": "",
+            "tabTexturesPlaceholders": "",
+            "tabTemplates": "",
+            "tabRooms": "",
+            "tabSounds": "",
+            "tabSoundsImport": "",
+            "tabSoundsGallery": "",
+            "tabSoundsRecord": "",
+            "tabInterlude": "",
+            "tabUI": "",
+            "tabFX": "",
+            "tabProject": "",
+            "tabProjectModules": "",
+            "tabProjectModuleDocs": "",
+            "tabMainMenu": "",
+            "tabMainMenuSettings": "",
+            "tabMainMenuMeta": "",
+            "helpPanelReminder": "",
+            "buttonStartTutorial": ""
+        }
     },
     "assetViewer": {
         "addNewGroup": "Nieuwe groep",
@@ -716,7 +747,13 @@
         "copyProperties": {
             "position": "Positie",
             "rotation": "Rotatie",
-            "scale": "Schaal"
+            "scale": "Schaal",
+            "multipleValues": ""
+        },
+        "copyCustomProperties": {
+            "addProperty": "Voeg eigenschap toe",
+            "property": "Eigenschap",
+            "value": "Waarde"
         },
         "customProperties": "Aangepaste eigenschappen",
         "restrictCamera": "Houd camera in een rechthoek",
@@ -736,7 +773,19 @@
         "deleteTiles": "Verwijder tegels",
         "moveTilesToLayer": "Beweeg naar laag",
         "shiftTiles": "Verschuif tegels",
-        "changeCopyRotation": "Draai"
+        "changeCopyRotation": "Draai",
+        "simulate": "",
+        "toggleDiagonalGrid": "",
+        "changeGridSize": "",
+        "xrayMode": "",
+        "colorizeTileLayers": "",
+        "tools": {
+            "select": "",
+            "addCopies": "",
+            "addTiles": "",
+            "manageBackgrounds": "",
+            "roomProperties": ""
+        }
     },
     "styleView": {
         "active": "Activeer",
@@ -869,7 +918,9 @@
             "add": "Voeg toe (brand)",
             "multiply": "Vermenigvuldig (donkerder maken)",
             "screen": "Scherm (lichter maken)"
-        }
+        },
+        "animationFPS": "",
+        "loopAnimation": ""
     },
     "assetInput": {
         "changeAsset": "Druk om het onderdeel te veranderen",
@@ -889,5 +940,71 @@
         "visitAuthorsItch": "De auteurs itch.io pagina bezoeken",
         "visitAuthorsTwitter": "De Twitterpagina van de auteur bezoeken",
         "tipAuthor": "De auteur een fooi geven voor hun harde werk :D"
+    },
+    "scriptables": {
+        "addEvent": "",
+        "removeEvent": "",
+        "removeEventConfirm": "",
+        "changeArguments": "",
+        "eventAlreadyExists": "",
+        "localEventVars": "",
+        "createEventHint": "",
+        "coreEventsCategories": {
+            "lifecycle": "",
+            "actions": "",
+            "pointer": "",
+            "misc": "",
+            "animation": "",
+            "timers": ""
+        },
+        "coreEvents": {
+            "OnCreate": "",
+            "OnRoomStart": "",
+            "OnStep": "",
+            "OnDraw": "",
+            "OnDestroy": "",
+            "OnRoomEnd": "",
+            "OnPointerClick": "",
+            "OnPointerSecondaryClick": "",
+            "OnPointerEnter": "",
+            "OnPointerLeave": "",
+            "OnPointerDown": "",
+            "OnPointerUp": "",
+            "OnPointerUpOutside": "",
+            "OnPointerWheel": "",
+            "OnActionPress": "",
+            "OnActionRelease": "",
+            "OnActionDown": "",
+            "OnFrameChange": "",
+            "OnAnimationLoop": "",
+            "OnAnimationComplete": "",
+            "Timer": ""
+        },
+        "coreParameterizedNames": {
+            "OnActionPress": "",
+            "OnActionRelease": "",
+            "OnActionDown": ""
+        },
+        "coreEventsArguments": {
+            "action": ""
+        },
+        "coreEventsLocals": {
+            "OnActionDown_value": "",
+            "OnActionPress_value": ""
+        },
+        "coreEventsDescriptions": {
+            "OnCreate": "",
+            "OnRoomStart": "",
+            "OnStep": "",
+            "OnDraw": "",
+            "OnDestroy": "",
+            "OnRoomEnd": "",
+            "OnActionPress": "",
+            "OnActionRelease": "",
+            "OnActionDown": "",
+            "OnAnimationLoop": "",
+            "OnAnimationComplete": "",
+            "Timer": ""
+        }
     }
 }

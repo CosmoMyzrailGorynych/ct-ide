@@ -30,6 +30,15 @@ html
             process.versions.ctjs = require('./package.json').version;
         // Use the legacy version to support low-spec and dated devices running ct.IDE
         script(src="node_modules/pixi.js-legacy/dist/pixi-legacy.min.js")
+        script.
+            // PIXI-mousewheel plugin from https://github.com/Mwni/pixi-mousewheel
+            /* example usage:
+                displayObject.interactiveMousewheel = true
+                displayObject.on('mousewheel', (delta, event) => {
+                    myOtherDisplayObject.y += delta * 100
+                })
+            */
+            "use strict";!function(){var e=function(){function e(e){var t=this;this.app=e,this.eventHandler=function(e){return t.onMouseWheel(e)},this.app.view.addEventListener("mousewheel",this.eventHandler,{passive:!1}),this.app.view.addEventListener("DOMMouseScroll",this.eventHandler,{passive:!1})}var t=e.prototype;return t.onMouseWheel=function(e){var t=this.findScrollTarget({x:e.offsetX,y:e.offsetY});t&&(e.preventDefault(),t.emit("mousewheel",this.deriveNormalizedWheelDelta(e),e))},t.findScrollTarget=function(e){var t=this.app.renderer.plugins.interaction.hitTest(e);if(t&&t.interactiveMousewheel)return t},t.deriveNormalizedWheelDelta=function(e){return e.detail?e.wheelDelta?e.wheelDelta/e.detail/40*(e.detail>0?1:-1):-e.detail/3:e.wheelDelta/120},t.destroy=function(){this.app.view.removeEventListener("mousewheel",this.eventHandler),this.app.view.removeEventListener("DOMMouseScroll",this.eventHandler)},e}();Object.defineProperty(PIXI.DisplayObject.prototype,"interactiveMousewheel",{get:function(){return this._interactiveMousewheel},set:function(e){this._interactiveMousewheel=e,e&&!this.interactive&&(this.interactive=!0)}}),PIXI.Application.registerPlugin({init:function(t){this._mousewheelPlugin=new e(this)},destroy:function(){this._mousewheelPlugin.destroy()}})}();
         script(src="data/ct.release/DragonBones.min.js")
         script(src="node_modules/pixi-particles/dist/pixi-particles.min.js")
         script.

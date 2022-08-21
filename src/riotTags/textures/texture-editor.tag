@@ -856,15 +856,18 @@ texture-editor.aPanel.aView
             if (this.nameTaken) {
                 // animate the error notice
                 require('./data/node_requires/jellify')(this.refs.errorNotice);
-                if (localStorage.disableSounds !== 'on') {
-                    soundbox.play('Failure');
-                }
+                const {soundbox} = require('./data/node_requires/3rdparty/soundbox');
+                soundbox.play('Failure');
                 return false;
             }
             this.parent.fillTextureMap();
             glob.modified = true;
             this.texture.lastmod = Number(new Date());
-            const {textureGenPreview} = require('./data/node_requires/resources/textures');
+            const {textureGenPreview, updatePixiTexture} = require('./data/node_requires/resources/textures');
+            updatePixiTexture(this.texture)
+            .then(() => {
+                window.signals.trigger('pixiTextureChanged', this.texture.uid);
+            });
             textureGenPreview(this.texture, global.projdir + '/img/' + this.texture.origname + '_prev@2.png', 128);
             textureGenPreview(this.texture, global.projdir + '/img/' + this.texture.origname + '_prev.png', 64)
             .then(() => {

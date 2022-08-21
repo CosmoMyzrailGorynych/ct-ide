@@ -8,8 +8,11 @@ const room = {
     onleave: '',
     gridX: 64,
     gridY: 64,
+    diagonalGrid: false,
+    simulate: true,
     width: 1280,
-    height: 720
+    height: 720,
+    isUi: false
 };
 
 const get = function (): IRoom {

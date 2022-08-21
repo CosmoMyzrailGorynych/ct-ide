@@ -7,6 +7,7 @@ interface ITemplate extends IScriptable {
     blendMode?: PixiBlendMode,
     playAnimationOnStart: boolean,
     loopAnimation: boolean,
+    animationFPS: number,
     extends: {
         [key: string]: unknown
     }

@@ -76,7 +76,8 @@
             "template": "Şablon",
             "room": "Oda",
             "sound": "Ses",
-            "tandem": "Partikül dağıtıcısı"
+            "tandem": "Partikül dağıtıcısı",
+            "type": ""
         },
         "assetTypes": {
             "textures": [
@@ -125,7 +126,9 @@
         "edit": "Değiştir",
         "nothingToShowFiller": "Burada gösterilecek hiçbir şey yok!",
         "required": "Gerekli",
-        "settings": "Ayarlar"
+        "settings": "Ayarlar",
+        "next": "",
+        "previous": ""
     },
     "assetInput": {
         "changeAsset": "Görseli değiştirmek için tıkla",
@@ -157,13 +160,6 @@
         "globalPalette": "Küresel Palet",
         "old": "Eski",
         "projectPalette": "Proje'nin paleti"
-    },
-    "copyCustomProperties": {
-        "customProperties": "Özel Özellikler",
-        "addProperty": "Özellik Ekle",
-        "property": "Özellik",
-        "value": "Değer",
-        "delete": "Sil"
     },
     "curveEditor": {
         "curveLineHint": "Nokta eklemek için kavise tıkla",
@@ -621,7 +617,10 @@
                 "SpringStream": "İlkbahar Yayını",
                 "LucasDracula": "Lucas Drakula",
                 "Horizon": "Ufuk",
-                "HCBlack": "Yüksek-kontrast siyah"
+                "HCBlack": "Yüksek-kontrast siyah",
+                "RosePine": "",
+                "RosePineMoon": "",
+                "RosePineDawn": ""
             },
             "language": "Dil",
             "translateToYourLanguage": "ct.js'i çevir!",
@@ -635,7 +634,10 @@
             "codeDense": "Düzeni yoğunlaştır",
             "disableSounds": "Arayüz seslerini kapat",
             "changeDataFolder": "Veri klasörü yolunu ayarla",
-            "forceProductionForDebug": "Hata ayıklamaları dışarı aktarmak için üretim işlemlerini zorla"
+            "forceProductionForDebug": "Hata ayıklamaları dışarı aktarmak için üretim işlemlerini zorla",
+            "settings": "",
+            "prideMode": "",
+            "altTemplateLayout": ""
         },
         "project": {
             "heading": "Proje",
@@ -671,7 +673,36 @@
         "sounds": "Sesler",
         "ui": "Arayüz",
         "fx": "Efektler",
-        "templates": "Şablonlar"
+        "templates": "Şablonlar",
+        "tour": {
+            "header": "",
+            "aboutTour": "",
+            "helpPanel": "",
+            "helpPanelTabs": "",
+            "projectResources": "",
+            "tabTextures": "",
+            "tabTexturesImport": "",
+            "tabTexturesGallery": "",
+            "tabTexturesClipboard": "",
+            "tabTexturesPlaceholders": "",
+            "tabTemplates": "",
+            "tabRooms": "",
+            "tabSounds": "",
+            "tabSoundsImport": "",
+            "tabSoundsGallery": "",
+            "tabSoundsRecord": "",
+            "tabInterlude": "",
+            "tabUI": "",
+            "tabFX": "",
+            "tabProject": "",
+            "tabProjectModules": "",
+            "tabProjectModuleDocs": "",
+            "tabMainMenu": "",
+            "tabMainMenuSettings": "",
+            "tabMainMenuMeta": "",
+            "helpPanelReminder": "",
+            "buttonStartTutorial": ""
+        }
     },
     "roomBackgrounds": {
         "add": "Arkaplan ekle",
@@ -736,13 +767,31 @@
         "copyProperties": {
             "position": "Pozisyon",
             "rotation": "Rotasyon",
-            "scale": "Boyut"
+            "scale": "Boyut",
+            "multipleValues": ""
+        },
+        "copyCustomProperties": {
+            "addProperty": "Özellik Ekle",
+            "property": "Özellik",
+            "value": "Değer"
         },
         "restrictCamera": "Kamerayı dörtgende tut",
         "minimumX": "Minimum X",
         "minimumY": "Minimum Y",
         "maximumX": "Maksimum X",
-        "maximumY": "Maksimum Y"
+        "maximumY": "Maksimum Y",
+        "simulate": "",
+        "toggleDiagonalGrid": "",
+        "changeGridSize": "",
+        "xrayMode": "",
+        "colorizeTileLayers": "",
+        "tools": {
+            "select": "",
+            "addCopies": "",
+            "addTiles": "",
+            "manageBackgrounds": "",
+            "roomProperties": ""
+        }
     },
     "styleView": {
         "active": "Aktif",
@@ -888,6 +937,74 @@
             "add": "Ekle (yanık)",
             "multiply": "Çoğalt (karanlık)",
             "screen": "Ekran (aydınlık)"
+        },
+        "animationFPS": "",
+        "loopAnimation": ""
+    },
+    "scriptables": {
+        "addEvent": "",
+        "removeEvent": "",
+        "removeEventConfirm": "",
+        "changeArguments": "",
+        "eventAlreadyExists": "",
+        "localEventVars": "",
+        "createEventHint": "",
+        "coreEventsCategories": {
+            "lifecycle": "",
+            "actions": "",
+            "pointer": "",
+            "misc": "",
+            "animation": "",
+            "timers": ""
+        },
+        "coreEvents": {
+            "OnCreate": "",
+            "OnRoomStart": "",
+            "OnStep": "",
+            "OnDraw": "",
+            "OnDestroy": "",
+            "OnRoomEnd": "",
+            "OnPointerClick": "",
+            "OnPointerSecondaryClick": "",
+            "OnPointerEnter": "",
+            "OnPointerLeave": "",
+            "OnPointerDown": "",
+            "OnPointerUp": "",
+            "OnPointerUpOutside": "",
+            "OnPointerWheel": "",
+            "OnActionPress": "",
+            "OnActionRelease": "",
+            "OnActionDown": "",
+            "OnFrameChange": "",
+            "OnAnimationLoop": "",
+            "OnAnimationComplete": "",
+            "Timer": ""
+        },
+        "coreParameterizedNames": {
+            "OnActionPress": "",
+            "OnActionRelease": "",
+            "OnActionDown": ""
+        },
+        "coreEventsArguments": {
+            "action": ""
+        },
+        "coreEventsLocals": {
+            "OnActionDown_value": "",
+            "OnActionPress_value": ""
+        },
+        "coreEventsDescriptions": {
+            "OnCreate": "",
+            "OnRoomStart": "",
+            "OnStep": "",
+            "OnDraw": "",
+            "OnDestroy": "",
+            "OnRoomEnd": "",
+            "OnActionPress": "",
+            "OnActionRelease": "",
+            "OnActionDown": "",
+            "OnAnimationLoop": "",
+            "OnAnimationComplete": "",
+            "Timer": ""
         }
     }
 }

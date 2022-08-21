@@ -211,7 +211,7 @@ export-mobile-panel.aDimmer
                 const {getDOMImage} = require('./data/node_requires/resources/textures');
                 const iconsSplashesPromises = [];
                 const {imageCover, imageContain, imagePlaceInRect, imageRound, outputCanvasToFile} =
-                    require('./data/node_requires/imageUtils');
+                    require('./data/node_requires/utils/imageUtils');
                 const projIconImage = await getDOMImage(projSettings.branding.icon || -1, 'ct_ide.png');
                 for (const name in androidIcons) {
                     const icon = imageContain(

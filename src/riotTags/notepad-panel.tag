@@ -59,7 +59,9 @@ notepad-panel#notepad.aPanel.dockright(class="{opened: opened}")
             setTimeout(() => {
                 if (this.tab && this.refs[this.tab] && this.refs[this.tab].codeEditor) {
                     this.refs[this.tab].codeEditor.layout();
-                    this.refs[this.tab].codeEditor.focus();
+                    if (this.opened) {
+                        this.refs[this.tab].codeEditor.focus();
+                    }
                 }
             }, 0);
         });

@@ -15,7 +15,7 @@ rooms-panel.aPanel.aView
             svg.feather
                 use(xlink:href="#plus")
             span {parent.voc.create}
-    room-editor(if="{editing}" room="{editingRoom}")
+    room-editor(if="{editing}" room="{editingRoom}" onclose="{closeRoomEditor}")
     context-menu(menu="{roomMenu}" ref="roomMenu")
     script.
         const generateGUID = require('./data/node_requires/generateGUID');
@@ -43,6 +43,11 @@ rooms-panel.aPanel.aView
         this.openRoom = room => () => {
             this.editingRoom = room;
             this.editing = true;
+        };
+        this.closeRoomEditor = () => {
+            this.editingRoom = void 0;
+            this.editing = false;
+            this.update();
         };
 
         this.roomMenu = {

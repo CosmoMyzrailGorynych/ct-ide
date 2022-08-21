@@ -253,7 +253,6 @@ const watchRequires = () => {
     .on('change', fileChangeNotifier)
     .on('error', err => {
         notifier.notify(makeErrorObj('Failure of node_requires', err));
-        console.error('[node_requires error]', err);
     });
 };
 const watchIcons = () => {

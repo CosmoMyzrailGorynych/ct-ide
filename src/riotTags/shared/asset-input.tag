@@ -78,11 +78,12 @@ asset-input
         }
 
         this.openAsset = e => {
-            e.stopPropagation();
             window.orders.trigger('openAsset', `${this.opts.assettype}/${this.currentAsset.uid}`);
+            e.stopPropagation();
         };
-        this.openSelector = () => {
+        this.openSelector = e => {
             this.showingSelector = true;
+            e.stopPropagation();
         };
         this.closeSelector = () => {
             this.showingSelector = false;

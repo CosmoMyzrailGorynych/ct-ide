@@ -7,7 +7,7 @@ rendering-settings
             input.short(type="number" min="1" value="{renderSettings.maxFPS || 60}" onchange="{wire('this.renderSettings.maxFPS')}")
     fieldset
         label.block.checkbox
-            input(type="checkbox" value="{renderSettings.pixelatedrender}" checked="{renderSettings.pixelatedrender}" onchange="{wire('this.renderSettings.pixelatedrender')}")
+            input(type="checkbox" value="{renderSettings.pixelatedrender}" checked="{renderSettings.pixelatedrender}" onchange="{wireAndUpdatePixelated('this.renderSettings.pixelatedrender')}")
             span {voc.pixelatedRender}
         label.block.checkbox
             input(type="checkbox" value="{renderSettings.highDensity}" checked="{renderSettings.highDensity}" onchange="{wire('this.renderSettings.highDensity')}")
@@ -40,3 +40,9 @@ rendering-settings
         this.mixin(window.riotWired);
         this.currentProject = global.currentProject;
         this.renderSettings = this.currentProject.settings.rendering;
+
+        this.wireAndUpdatePixelated = path => e => {
+            this.wire(path)(e);
+            const {setPixelart} = require('./data/node_requires/resources/textures');
+            setPixelart(currentProject.settings.rendering.pixelatedrender);
+        }

@@ -7,6 +7,7 @@ const defaultTemplate = {
     texture: -1 as assetRef,
     playAnimationOnStart: false,
     loopAnimation: true,
+    animationFPS: 30,
     visible: true
 };
 

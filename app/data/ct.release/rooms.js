@@ -22,26 +22,28 @@ class Room extends PIXI.Container {
             ct.room = ct.rooms.current = this;
         }
         if (template) {
-            if (template.extends) {
-                ct.u.ext(this, template.extends);
-            }
             this.onCreate = template.onCreate;
             this.onStep = template.onStep;
             this.onDraw = template.onDraw;
             this.onLeave = template.onLeave;
             this.template = template;
             this.name = template.name;
+            this.isUi = template.isUi;
+            if (template.extends) {
+                ct.u.ext(this, template.extends);
+            }
             if (this === ct.room) {
                 ct.pixiApp.renderer.backgroundColor = ct.u.hexToPixi(this.template.backgroundColor);
             }
             /*%beforeroomoncreate%*/
             for (let i = 0, li = template.bgs.length; i < li; i++) {
-                // Need to put extensions here, so we don't use ct.backgrounds.add
+                // Need to put additional properties like parallax here,
+                // so we don't use ct.backgrounds.add
                 const bg = new ct.templates.Background(
                     template.bgs[i].texture,
                     null,
                     template.bgs[i].depth,
-                    template.bgs[i].extends
+                    template.bgs[i]
                 );
                 this.addChild(bg);
             }
@@ -52,17 +54,22 @@ class Room extends PIXI.Container {
                 this.addChild(tl);
             }
             for (let i = 0, li = template.objects.length; i < li; i++) {
-                const exts = template.objects[i].exts || {};
+                const copy = template.objects[i];
+                const exts = copy.exts || {};
+                const customProperties = copy.customProperties || {};
                 ct.templates.copyIntoRoom(
-                    template.objects[i].template,
-                    template.objects[i].x,
-                    template.objects[i].y,
+                    copy.template,
+                    copy.x,
+                    copy.y,
                     this,
                     {
-                        tx: template.objects[i].tx,
-                        ty: template.objects[i].ty,
-                        tr: template.objects[i].tr,
-                        ...exts
+                        ...exts,
+                        ...customProperties,
+                        scaleX: copy.scale.x,
+                        scaleY: copy.scale.y,
+                        rotation: copy.rotation,
+                        alpha: copy.opacity,
+                        tint: copy.tint
                     }
                 );
             }

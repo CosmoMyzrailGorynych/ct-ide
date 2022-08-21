@@ -205,6 +205,7 @@ const exportCtProject = async (
     projdir: string,
     production: boolean
 ): Promise<string> => {
+    window.signals.trigger('exportProject');
     currentProject = project;
     await removeBrokenModules(project);
     resetEventsCache();

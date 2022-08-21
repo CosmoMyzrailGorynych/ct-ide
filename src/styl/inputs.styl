@@ -222,6 +222,25 @@ input[type="reset"],
         margin 0
         button, .button
             flex 1 1 auto
+    &.vertical
+        flex-flow column nowrap
+        button, .button
+            margin 0
+            border-radius 0
+            border-bottom-width 0
+            border-right-width 1px
+            if themeThickBorders
+                border-right-width 2px
+            @extend button.square
+            &:first-child
+                border-top-left-radius br
+                border-top-right-radius br
+            &:last-child
+                border-bottom-left-radius br
+                border-bottom-right-radius br
+                border-bottom-width 1px
+                if themeThickBorders
+                    border-bottom-width 2px
 button,
 input[type="button"],
 input[type="submit"],
@@ -336,6 +355,8 @@ fieldset
         &::after
             content ''
             icon(check, background)
+            // a hack to fix pixelization of icons in certain context menus
+            transform scale(1)
             width 0.85rem
             height 1rem
             position absolute

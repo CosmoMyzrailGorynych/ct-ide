@@ -58,8 +58,9 @@ asset-selector.aDimmer.pointer.pad.fadein(onclick="{closeOnDimmer}" ref="dimmer"
                     this.opts.oncancelled();
                 }
             }
+            e.stopPropagation();
         };
-        this.onAssetPicked = asset => () => {
+        this.onAssetPicked = asset => e => {
             if (this.opts.onselected) {
                 if (asset === -1) {
                     this.opts.onselected(-1);
@@ -67,4 +68,5 @@ asset-selector.aDimmer.pointer.pad.fadein(onclick="{closeOnDimmer}" ref="dimmer"
                     this.opts.onselected(asset.uid);
                 }
             }
+            e.stopPropagation();
         };

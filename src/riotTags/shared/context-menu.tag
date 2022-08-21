@@ -31,7 +31,7 @@ context-menu(class="{opened: opts.menu.opened}" ref="root" style="{opts.menu.col
             use(xlink:href="#{item.icon instanceof Function? item.icon() : item.icon}")
         input(type="checkbox" checked="{item.checked instanceof Function? item.checked() : item.checked}" if="{item.type === 'checkbox'}")
         span(if="{!item.type !== 'separator'}") {item.label}
-        span.hotkey(if="{!item.type !== 'separator' && item.hotkey}") ({item.hotkeyLabel || item.hotkey})
+        span.hotkey(if="{!item.type !== 'separator' && (item.hotkey || item.hotkeyLabel)}") ({item.hotkeyLabel || item.hotkey})
         svg.feather.context-menu-aChevron(if="{item.submenu && item.type !== 'separator'}")
             use(xlink:href="#chevron-right")
         context-menu(if="{item.submenu && item.type !== 'separator'}" menu="{item.submenu}")

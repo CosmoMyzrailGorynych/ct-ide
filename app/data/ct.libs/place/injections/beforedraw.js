@@ -1,7 +1,9 @@
 if ([/*%debugMode%*/][0] && this instanceof ct.templates.Copy) {
-    this.$cDebugText.scale.x = this.$cDebugCollision.scale.x = 1 / this.scale.x;
-    this.$cDebugText.scale.y = this.$cDebugCollision.scale.y = 1 / this.scale.y;
-    this.$cDebugText.angle = this.$cDebugCollision.angle = -this.angle;
+    const inverse = this.transform.localTransform.clone().invert();
+    this.$cDebugCollision.transform.setFromMatrix(inverse);
+    this.$cDebugCollision.position.set(0, 0);
+    this.$cDebugText.transform.setFromMatrix(inverse);
+    this.$cDebugText.position.set(0, 0);
 
     const newtext = `Partitions: ${this.$chashes.join(', ')}
 CGroup: ${this.cgroup || 'unset'}

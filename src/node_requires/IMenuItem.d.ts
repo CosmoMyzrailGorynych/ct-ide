@@ -46,11 +46,14 @@ declare interface IMenuItem {
     submenu?: IMenu,
 
     /**
-     * E.g. 'Control+c'
+     * E.g. 'Control+c'. Binds the element to hotkey.js library.
      */
     hotkey?: string,
     /**
      * A human-readable variant, e.g. 'Ctrl+C'. Fallbacks to `hotkey`.
+     * If set without `hotkey`, still shows the label but does not
+     * bind the element to the hotkey.js library.
+     * The label is wrapped into (parentheses) automatically.
      */
     hotkeyLabel?: string
 }

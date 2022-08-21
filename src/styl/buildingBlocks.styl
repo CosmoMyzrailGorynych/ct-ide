@@ -1,6 +1,9 @@
 .aSpacer
     width 1rem
     height @width
+    &.small
+        width 0.5rem
+        height @width
 
 .aDimmer
     position fixed
@@ -277,6 +280,8 @@
 .aCard
     background background
     padding 0.8em
+    &.compact
+        padding 0.4em 0.8em
     margin 0
     box-sizing border-box
     border 1px solid borderPale
@@ -332,6 +337,16 @@
         pointer-events none
     &:hover img
         background rgba(act, 0.35)
+    .aCard.compact &
+        width 1.5rem
+        svg
+            width 1.5rem
+            height 1.5rem
+            stroke-width 2
+        img
+            width 2rem
+            height 2rem
+            margin -0.25rem 0 -0.25rem -0.25rem
 .aCard-Actions
     position absolute
     top 0.5rem
@@ -380,6 +395,9 @@ sounds-panel, rooms-panel
     th
         border-bottom 1px solid borderBright
         text-align left
+    &.cellsmiddle
+        td, th
+            vertical-align middle
 .aNiceTable
     margin 1rem 0
     border 1px solid borderBright

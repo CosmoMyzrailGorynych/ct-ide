@@ -7,38 +7,45 @@
     @attribute class (string)
         This tag has its own CSS classes, but allows arbitrary ones added as an attribute.
 
-    @attribute namespace (string)
+    @attribute [namespace] (string)
         A unique namespace used to store settings. Fallbacks to 'default'.
-    @attribute defaultlayout (string)
+    @attribute [defaultlayout] (string)
         The default listing layout used if the user has not selected one yet.
         Can be "cards", "list", "largeCards".
+    @attribute [forcelayout] (string)
+        Similar to [defaultlayout]
+    @attribute [compact] (atomic)
+        If set, the viewer hides several elements to fit in a more tight layout.
 
     @attribute assettype (string)
         The type of assets shown. The attribute is needed for groups to function.
     @attribute collection (riot function)
         A collection of items to iterate over while generating markup, sorting and firing events.
-    @attribute names (riot function)
+    @attribute [shownone] (atomic)
+        If set, shows a "none" asset that returns -1 in opts.click event.
+    @attribute [selected] (IAsset | -1)
+        Currently selected asset. If set, it will be highlighted in UI.
+
+    @attribute [names] (riot function)
         A mapping funtion that takes a collection object and returns its human-readable name.
         Fallbacks to `item.name` if not defined.
-    @attribute thumbnails (riot function)
+    @attribute [thumbnails] (riot function)
         A mapping funtion that takes a collection object and returns a url for its thumbnail.
         The function is passed with the collection object, `true` or `false` depending on whether
         the large-card view is active, and `false`, which match the arguments used to get
         a URL for the thumbnail of the proper size in many get{X}Preview methods.
-    @attribute useicons (atomic)
+    @attribute [useicons] (atomic)
         Tells the asset viewer to use SVG icons instead of img tag.
         The `thumbnails` function should then return the name of the SVG icon.
-    @attribute shownone (atomic)
-        If set, shows a "none" asset that returns -1 in opts.click event.
-
-    @attribute icons (riot function)
+    @attribute [icons] (riot function)
         A mapping funtion that takes a collection object and returns an array of icon names.
         The icons are shown near the asset's name and are used to convey some metadata.
+
     @attribute click (riot function)
         A two-fold callback (item => e => {…}) fired when a user clicks on an item,
         passing the associated collection object as its only argument in the first function,
         and a MouseEvent in a second function
-    @attribute contextmenu (riot function)
+    @attribute [contextmenu] (riot function)
         A two-fold callback (item => e => {…}) that is given a collection object
         as its only argument in the first function, and a MouseEvent in a second function,
         when a user tries to call a context menu on an item.
@@ -51,11 +58,11 @@
         category is selected. Otherwise, groups are meant to be distinguished by their
         `uid` property.
 
-asset-viewer.flexfix(class="{opts.namespace} {opts.class}")
+asset-viewer.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compact}")
     .flexfix-header
-        .toright
-            b {vocGlob.sort}
-            .aButtonGroup
+        .toright(class="{flexrow: opts.compact}")
+            b(if="{!opts.compact}") {vocGlob.sort}
+            .aButtonGroup.nml
                 button.inline.square(
                     onclick="{switchSort('date')}"
                     class="{selected: sort === 'date' && !searchResults}"
@@ -68,17 +75,17 @@ asset-viewer.flexfix(class="{opts.namespace} {opts.class}")
                 )
                     svg.feather
                         use(xlink:href="#sort-alphabetically")
-            .aSearchWrap
+            .aSearchWrap(style="{opts.compact ? 'width: auto;' : ''}")
                 input.inline(type="text" onkeyup="{fuseSearch}")
                 svg.feather
                     use(xlink:href="#search")
-            button.inline.square(onclick="{switchLayout}")
+            button.inline.square(if="{!opts.forcelayout}" onclick="{switchLayout}")
                 svg.feather
                     use(xlink:href="#{layoutToIconMap[currentLayout]}")
-            button.inline.square.nogrow(onclick="{addNewGroup}")
+            button.inline.square.nogrow.nmr(onclick="{addNewGroup}")
                 svg.feather
                     use(xlink:href="#folder-plus")
-                span {voc.addNewGroup}
+                span(if="{!opts.compact}") {voc.addNewGroup}
         .toleft
             <yield/>
         .clear
@@ -86,6 +93,7 @@ asset-viewer.flexfix(class="{opts.namespace} {opts.class}")
         .aSpacer
         ul.Cards.nmt(
             if="{opts.assettype}"
+            class="{list: opts.compact}"
         )
             li.aCard(
                 onclick="{openGroup({isUngroupedGroup: true})}"
@@ -116,14 +124,15 @@ asset-viewer.flexfix(class="{opts.namespace} {opts.class}")
                 use(xlink:href="data/img/weirdFoldersIllustration.svg#illustration")
             br
             span {vocGlob.nothingToShowFiller}
-        ul.Cards(class="{layoutToClassListMap[currentLayout]}")
-            li.aCard(if="{opts.shownone}" onclick="{opts.click && opts.click(-1)}")
+        ul.Cards(class="{layoutToClassListMap[opts.forcelayout || currentLayout]}")
+            li.aCard(if="{opts.shownone}" onclick="{opts.click && opts.click(-1)}" class="{active: opts.selected === -1}")
                 .aCard-aThumbnail
                     img(src="data/img/notexture.png")
                 .aCard-Properties
                     span {vocGlob.none}
             li.aCard(
                 each="{asset in (searchResults? searchResults : getGrouped(collection))}"
+                class="{active: opts.selected === asset}"
                 oncontextmenu="{parent.opts.contextmenu && parent.opts.contextmenu(asset)}"
                 onlong-press="{parent.opts.contextmenu && parent.opts.contextmenu(asset)}"
                 onclick="{parent.opts.click && parent.opts.click(asset)}"
@@ -143,7 +152,7 @@ asset-viewer.flexfix(class="{opts.namespace} {opts.class}")
                     .asset-viewer-Icons(if="{parent.opts.icons}")
                         svg.feather(each="{icon in parent.opts.icons(asset)}" class="feather-{icon}")
                             use(xlink:href="#{icon}")
-                    span.date(if="{asset.lastmod}") {niceTime(asset.lastmod)}
+                    span.date(if="{asset.lastmod && !parent.opts.compact}") {niceTime(asset.lastmod)}
     group-editor(
         if="{showingGroupEditor}"
         onapply="{closeGroupEditor}"

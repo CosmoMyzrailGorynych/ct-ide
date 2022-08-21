@@ -1,3 +1,6 @@
+//
+    @attribute room (IRoom)
+    @attribute onsave (riot function)
 room-events-editor.aView.flexrow.pad
     .tall.flexfix.aPanel.pad.room-events-editor-Properties.nogrow
         .flexfix-body
@@ -53,6 +56,5 @@ room-events-editor.aView.flexrow.pad
         };
 
         this.roomSaveEvents = () => {
-            this.parent.editingCode = false;
-            this.parent.update();
+            this.opts.onsave();
         };

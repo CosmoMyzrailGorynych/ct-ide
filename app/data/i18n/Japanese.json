@@ -69,7 +69,8 @@
             "template": "",
             "room": "",
             "sound": "",
-            "tandem": ""
+            "tandem": "",
+            "type": ""
         },
         "newName": "新しい名前:",
         "saveProject": "プロジェクトを保存",
@@ -125,7 +126,9 @@
                 "",
                 ""
             ]
-        }
+        },
+        "next": "",
+        "previous": ""
     },
     "assetInput": {
         "changeAsset": "アセットを変更する",
@@ -143,13 +146,6 @@
         "globalPalette": "グローバルのパレット",
         "old": "古い",
         "projectPalette": "プロジェクトのパレット"
-    },
-    "copyCustomProperties": {
-        "customProperties": "カスタムプロパティ",
-        "addProperty": "プロパティを追加",
-        "property": "プロパティ",
-        "value": "数字",
-        "delete": "削除"
     },
     "curveEditor": {
         "curveLineHint": "カーブをクリックしてポイントを追加",
@@ -620,7 +616,10 @@
                 "SpringStream": "春の小川",
                 "LucasDracula": "ルーカス・ドラキュラ",
                 "Horizon": "地平線",
-                "HCBlack": "高コントラストの黒"
+                "HCBlack": "高コントラストの黒",
+                "RosePine": "",
+                "RosePineMoon": "",
+                "RosePineDawn": ""
             },
             "language": "言語",
             "translateToYourLanguage": "ct.jsを翻訳する！",
@@ -634,7 +633,10 @@
             "codeDense": "高密度なレイアウト",
             "disableSounds": "UIサウンドを無効化",
             "changeDataFolder": "データフォルダの場所を設定",
-            "forceProductionForDebug": "デバッグエクスポートのためのプロダクションタスクの強制"
+            "forceProductionForDebug": "デバッグエクスポートのためのプロダクションタスクの強制",
+            "settings": "",
+            "prideMode": "",
+            "altTemplateLayout": ""
         },
         "project": {
             "heading": "プロジェクト",
@@ -670,7 +672,36 @@
         "sounds": "音",
         "ui": "UI",
         "fx": "FX",
-        "templates": "テンプレート"
+        "templates": "テンプレート",
+        "tour": {
+            "header": "",
+            "aboutTour": "",
+            "helpPanel": "",
+            "helpPanelTabs": "",
+            "projectResources": "",
+            "tabTextures": "",
+            "tabTexturesImport": "",
+            "tabTexturesGallery": "",
+            "tabTexturesClipboard": "",
+            "tabTexturesPlaceholders": "",
+            "tabTemplates": "",
+            "tabRooms": "",
+            "tabSounds": "",
+            "tabSoundsImport": "",
+            "tabSoundsGallery": "",
+            "tabSoundsRecord": "",
+            "tabInterlude": "",
+            "tabUI": "",
+            "tabFX": "",
+            "tabProject": "",
+            "tabProjectModules": "",
+            "tabProjectModuleDocs": "",
+            "tabMainMenu": "",
+            "tabMainMenuSettings": "",
+            "tabMainMenuMeta": "",
+            "helpPanelReminder": "",
+            "buttonStartTutorial": ""
+        }
     },
     "roomBackgrounds": {
         "add": "背景を追加",
@@ -722,7 +753,13 @@
         "copyProperties": {
             "position": "位置",
             "rotation": "回転",
-            "scale": "大きさ"
+            "scale": "大きさ",
+            "multipleValues": ""
+        },
+        "copyCustomProperties": {
+            "addProperty": "プロパティを追加",
+            "property": "プロパティ",
+            "value": "数字"
         },
         "restrictCamera": "カメラを四角に収める",
         "minimumX": "最小 X",
@@ -741,7 +778,19 @@
         "deleteTiles": "複数のタイルを削除",
         "moveTilesToLayer": "レイヤーに移動",
         "shiftTiles": "タイルに移動",
-        "changeCopyRotation": "回転"
+        "changeCopyRotation": "回転",
+        "simulate": "",
+        "toggleDiagonalGrid": "",
+        "changeGridSize": "",
+        "xrayMode": "",
+        "colorizeTileLayers": "",
+        "tools": {
+            "select": "",
+            "addCopies": "",
+            "addTiles": "",
+            "manageBackgrounds": "",
+            "roomProperties": ""
+        }
     },
     "styleView": {
         "active": "有効",
@@ -874,7 +923,9 @@
             "add": "",
             "multiply": "",
             "screen": ""
-        }
+        },
+        "animationFPS": "",
+        "loopAnimation": ""
     },
     "builtinAssetGallery": {
         "galleryTip": "",
@@ -889,5 +940,71 @@
         "visitAuthorsItch": "",
         "visitAuthorsTwitter": "",
         "tipAuthor": ""
+    },
+    "scriptables": {
+        "addEvent": "",
+        "removeEvent": "",
+        "removeEventConfirm": "",
+        "changeArguments": "",
+        "eventAlreadyExists": "",
+        "localEventVars": "",
+        "createEventHint": "",
+        "coreEventsCategories": {
+            "lifecycle": "",
+            "actions": "",
+            "pointer": "",
+            "misc": "",
+            "animation": "",
+            "timers": ""
+        },
+        "coreEvents": {
+            "OnCreate": "",
+            "OnRoomStart": "",
+            "OnStep": "",
+            "OnDraw": "",
+            "OnDestroy": "",
+            "OnRoomEnd": "",
+            "OnPointerClick": "",
+            "OnPointerSecondaryClick": "",
+            "OnPointerEnter": "",
+            "OnPointerLeave": "",
+            "OnPointerDown": "",
+            "OnPointerUp": "",
+            "OnPointerUpOutside": "",
+            "OnPointerWheel": "",
+            "OnActionPress": "",
+            "OnActionRelease": "",
+            "OnActionDown": "",
+            "OnFrameChange": "",
+            "OnAnimationLoop": "",
+            "OnAnimationComplete": "",
+            "Timer": ""
+        },
+        "coreParameterizedNames": {
+            "OnActionPress": "",
+            "OnActionRelease": "",
+            "OnActionDown": ""
+        },
+        "coreEventsArguments": {
+            "action": ""
+        },
+        "coreEventsLocals": {
+            "OnActionDown_value": "",
+            "OnActionPress_value": ""
+        },
+        "coreEventsDescriptions": {
+            "OnCreate": "",
+            "OnRoomStart": "",
+            "OnStep": "",
+            "OnDraw": "",
+            "OnDestroy": "",
+            "OnRoomEnd": "",
+            "OnActionPress": "",
+            "OnActionRelease": "",
+            "OnActionDown": "",
+            "OnAnimationLoop": "",
+            "OnAnimationComplete": "",
+            "Timer": ""
+        }
     }
 }

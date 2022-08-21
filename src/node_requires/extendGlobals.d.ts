@@ -11,6 +11,8 @@ declare global {
     var monaco: any;
     var currentProject: IProject;
     var projdir: string;
+    var migrationProcess: any[];
+    var riot: any;
     function showOpenDialog(options: any): Promise<string | false>;
     function showSaveDialog(options: any): Promise<string | false>;
     interface Window {
