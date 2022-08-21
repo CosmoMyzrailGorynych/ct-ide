@@ -25,7 +25,7 @@ class Background extends PIXI.TilingSprite {
         const ind = this.editor.backgrounds.indexOf(this);
         if (ind !== -1) {
             this.editor.backgrounds.splice(ind, 1);
-            this.editor.riotEditor.refs.backgroundsEditor.update();
+            this.editor.riotEditor.refs.backgroundsEditor?.update();
         }
         super.destroy();
     }
