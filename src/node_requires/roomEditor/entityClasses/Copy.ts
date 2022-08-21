@@ -82,7 +82,7 @@ class Copy extends PIXI.AnimatedSprite {
         this.copyExts = copy.exts ?? {};
         this.copyCustomProps = copy.customProperties ?? {};
         const t = getTemplateFromId(this.templateId as string);
-        this.animationSpeed = t.animationFPS / 60;
+        this.animationSpeed = (t.animationFPS ?? 60) / 60;
         this.loop = t.loopAnimation ?? true;
         if (t.texture !== -1) {
             [this.anchor.x, this.anchor.y] = getTexturePivot(t.texture);
