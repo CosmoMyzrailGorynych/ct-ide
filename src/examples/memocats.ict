@@ -175,14 +175,20 @@ rooms:
     width: 1920
     height: 1280
     backgrounds:
-      - depth: '-10'
+      - depth: -10
         texture: c1b1284b-8dba-4886-9bf7-52b66cc08911
-        extends:
-          scaleX: 1.97
-          scaleY: 1.84
+        shiftX: 0
+        shiftY: 0
+        parallaxX: 1
+        parallaxY: 1
+        movementX: 0
+        movementY: 0
+        scaleX: 1.97
+        scaleY: 1.84
+        repeat: repeat
     uid: 3827e721-5331-49b2-a37a-f868e15cae0d
     grid: 70
-    lastmod: 1657023494933
+    lastmod: 1661071563995
     thumbnail: 1
     gridX: 96
     gridY: 96
@@ -190,47 +196,118 @@ rooms:
       - depth: -10
         tiles: []
         extends: {}
+        hidden: false
     copies:
       - x: 1536
         'y': 384
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
+        customProperties: {}
       - x: 1248
         'y': 384
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
+        customProperties: {}
       - x: 960
         'y': 384
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
+        customProperties: {}
       - x: 672
         'y': 384
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
+        customProperties: {}
       - x: 384
         'y': 384
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
+        customProperties: {}
       - x: 384
         'y': 864
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
+        customProperties: {}
       - x: 672
         'y': 864
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
+        customProperties: {}
       - x: 960
         'y': 864
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
+        customProperties: {}
       - x: 1248
         'y': 864
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
+        customProperties: {}
       - x: 1536
         'y': 864
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
+        customProperties: {}
     events:
       - lib: core
         arguments: {}
@@ -286,82 +363,189 @@ rooms:
         eventKey: OnStep
     type: room
     extends: {}
+    simulate: true
+    isUi: false
   - name: Room2
     ondraw: ''
     onleave: ''
     width: 1920
     height: 1280
     backgrounds:
-      - depth: '-10'
+      - depth: -10
         texture: c1b1284b-8dba-4886-9bf7-52b66cc08911
-        extends:
-          scaleX: 1.97
-          scaleY: 1.84
+        shiftX: 0
+        shiftY: 0
+        parallaxX: 1
+        parallaxY: 1
+        movementX: 0
+        movementY: 0
+        scaleX: 1.97
+        scaleY: 1.84
+        repeat: repeat
     uid: a751fef2-0632-4105-b90b-51ffba3f38f5
     grid: 70
-    lastmod: 1657023607269
+    lastmod: 1661071568755
     thumbnail: 2
     copies:
       - x: 240
         'y': 240
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
+        customProperties: {}
       - x: 528
         'y': 240
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
+        customProperties: {}
       - x: 816
         'y': 240
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
+        customProperties: {}
       - x: 1104
         'y': 240
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
+        customProperties: {}
       - x: 1392
         'y': 240
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
+        customProperties: {}
       - x: 1680
         'y': 240
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
+        customProperties: {}
       - x: 240
         'y': 648
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
+        customProperties: {}
       - x: 528
         'y': 648
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
+        customProperties: {}
       - x: 816
         'y': 648
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
+        customProperties: {}
       - x: 1104
         'y': 648
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
+        customProperties: {}
       - x: 1392
         'y': 648
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
+        customProperties: {}
       - x: 1680
         'y': 648
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
+        customProperties: {}
       - x: 816
         'y': 1056
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
+        customProperties: {}
       - x: 1104
         'y': 1056
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
+        customProperties: {}
     tiles:
       - depth: -10
         tiles: []
         extends: {}
+        hidden: false
     events:
       - lib: core
         arguments: {}
@@ -422,98 +606,233 @@ rooms:
     extends: {}
     gridX: 48
     gridY: 24
+    simulate: true
+    isUi: false
   - name: Room3
     ondraw: ''
     onleave: ''
     width: 1920
     height: 1280
     backgrounds:
-      - depth: '-10'
+      - depth: -10
         texture: c1b1284b-8dba-4886-9bf7-52b66cc08911
-        extends:
-          scaleX: 1.97
-          scaleY: 1.87
+        shiftX: 0
+        shiftY: 0
+        parallaxX: 1
+        parallaxY: 1
+        movementX: 0
+        movementY: 0
+        scaleX: 1.97
+        scaleY: 1.87
+        repeat: repeat
     uid: 4cd06702-30ed-4d80-8609-c1128f14f6a8
     grid: 70
-    lastmod: 1657023680669
+    lastmod: 1661071571235
     thumbnail: 3
     copies:
       - x: 240
         'y': 240
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
+        customProperties: {}
       - x: 528
         'y': 240
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
+        customProperties: {}
       - x: 816
         'y': 240
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
+        customProperties: {}
       - x: 1104
         'y': 240
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
+        customProperties: {}
       - x: 1392
         'y': 240
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
+        customProperties: {}
       - x: 1680
         'y': 240
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
+        customProperties: {}
       - x: 240
         'y': 648
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
+        customProperties: {}
       - x: 528
         'y': 648
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
+        customProperties: {}
       - x: 816
         'y': 648
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
+        customProperties: {}
       - x: 1104
         'y': 648
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
+        customProperties: {}
       - x: 1392
         'y': 648
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
+        customProperties: {}
       - x: 1680
         'y': 648
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
+        customProperties: {}
       - x: 240
         'y': 1056
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
+        customProperties: {}
       - x: 528
         'y': 1056
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
+        customProperties: {}
       - x: 816
         'y': 1056
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
+        customProperties: {}
       - x: 1104
         'y': 1056
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
+        customProperties: {}
       - x: 1392
         'y': 1056
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
+        customProperties: {}
       - x: 1680
         'y': 1056
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
         exts: {}
+        customProperties: {}
     tiles:
       - depth: -10
         tiles: []
         extends: {}
+        hidden: false
     events:
       - lib: core
         arguments: {}
@@ -574,6 +893,8 @@ rooms:
     extends: {}
     gridX: 24
     gridY: 24
+    simulate: true
+    isUi: false
 soundtick: 6
 roomtick: 3
 templatetick: 1
@@ -608,7 +929,7 @@ settings:
     versionPostfix: ''
   fps: 30
 startroom: 3827e721-5331-49b2-a37a-f868e15cae0d
-ctjsVersion: 2.0.2
+ctjsVersion: 2.2.0
 scripts: []
 fonts: []
 skeletons: []

@@ -1,4 +1,4 @@
-ctjsVersion: 2.0.2
+ctjsVersion: 2.2.0
 notes: /* empty */
 libs:
   place:
@@ -945,16 +945,26 @@ rooms:
     backgrounds:
       - depth: -1000
         texture: 5c680919-3827-4ea7-9e72-a8fc81ddfb45
-        extends:
-          parallaxX: 0.5
-          parallaxY: 0
-          repeat: repeat
+        movementX: 0
+        movementY: 0
+        parallaxX: 0.5
+        parallaxY: 0
+        repeat: repeat
+        scaleX: 1
+        scaleY: 1
+        shiftX: 0
+        shiftY: 0
       - depth: -100
         texture: 53da7582-ae6c-4843-976e-c84d6d74a489
-        extends:
-          repeat: repeat-x
-          shiftX: 0
-          shiftY: 1736
+        movementX: 0
+        movementY: 0
+        parallaxX: 1
+        parallaxY: 1
+        repeat: repeat-x
+        scaleX: 1
+        scaleY: 1
+        shiftX: 0
+        shiftY: 1736
     copies:
       - x: 320
         'y': 832
@@ -962,6 +972,13 @@ rooms:
         tx: 0.65
         ty: 0.65
         exts: {}
+        customProperties: {}
+        opacity: 1
+        tint: 16777215
+        rotation: 0
+        scale:
+          x: 1
+          'y': 1
     tiles:
       - depth: -10
         tiles: []
@@ -1032,6 +1049,8 @@ rooms:
           }
         eventKey: OnStep
     type: room
+    simulate: true
+    isUi: false
   - name: MainMenu
     oncreate: ''
     onstep: ''
@@ -1042,34 +1061,64 @@ rooms:
     backgrounds:
       - depth: -1000
         texture: 5c680919-3827-4ea7-9e72-a8fc81ddfb45
-        extends:
-          movementX: -0.5
+        shiftX: 0
+        shiftY: 0
+        parallaxX: 1
+        parallaxY: 1
+        movementX: -0.5
+        movementY: 0
+        scaleX: 1
+        scaleY: 1
+        repeat: repeat
       - depth: -100
         texture: 53da7582-ae6c-4843-976e-c84d6d74a489
-        extends:
-          repeat: repeat-x
-          shiftY: 1736
+        shiftX: 0
+        shiftY: 1736
+        parallaxX: 1
+        parallaxY: 1
+        movementX: 0
+        movementY: 0
+        scaleX: 1
+        scaleY: 1
+        repeat: repeat-x
     copies:
       - x: 540
         'y': 384
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 6cd7876a-4918-47a7-8100-75f0375986ef
         exts: {}
+        customProperties: {}
       - x: 540
         'y': 960
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 25ac0f9b-57ff-461d-8eb7-a9ce800b9c71
         exts: {}
+        customProperties: {}
     tiles:
       - depth: -10
         tiles: []
         extends: {}
+        hidden: false
     uid: 8677472b-4549-48b5-a5a8-a891fb029f6b
     thumbnail: a891fb029f6b
     gridX: 108
     gridY: 64
-    lastmod: 1657025960473
+    lastmod: 1661071540211
     extends: {}
     events: []
     type: room
+    simulate: true
+    isUi: false
   - name: UI_InGame
     oncreate: ''
     onstep: ''
@@ -1085,14 +1134,35 @@ rooms:
         tx: 0.75
         ty: 0.75
         exts: {}
+        customProperties: {}
+        opacity: 1
+        tint: 16777215
+        rotation: 0
+        scale:
+          x: 1
+          'y': 1
       - x: 960
         'y': 128
         uid: 6a532c9b-7e32-4070-b72b-86012306c7fb
         exts: {}
+        customProperties: {}
+        opacity: 1
+        tint: 16777215
+        rotation: 0
+        scale:
+          x: 1
+          'y': 1
       - x: 512
         'y': 960
         uid: ba73f80b-0995-40b6-94d5-3e82712b5ecf
         exts: {}
+        customProperties: {}
+        opacity: 1
+        tint: 16777215
+        rotation: 0
+        scale:
+          x: 1
+          'y': 1
     tiles:
       - depth: -10
         tiles: []
@@ -1105,6 +1175,8 @@ rooms:
     events: []
     type: room
     extends: {}
+    simulate: true
+    isUi: false
   - name: UI_Paused
     onstep: ''
     ondraw: ''
@@ -1115,21 +1187,36 @@ rooms:
     copies:
       - x: 540
         'y': 1088
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 43938432-cf0b-416d-91e9-8bc9a1f8abcf
         exts: {}
+        customProperties: {}
       - x: 540
         'y': 576
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: ee7454ca-ba35-4d79-9b78-83e763fd81f5
         exts: {}
+        customProperties: {}
     tiles:
       - depth: -10
         tiles: []
         extends: {}
+        hidden: false
     uid: 78d3dac5-253d-4792-a85d-7d775aefe864
     thumbnail: 7d775aefe864
     gridX: 540
     gridY: 64
-    lastmod: 1657026619497
+    lastmod: 1661071531476
     events:
       - lib: core
         arguments: {}
@@ -1148,6 +1235,8 @@ rooms:
         eventKey: OnRoomStart
     type: room
     extends: {}
+    simulate: true
+    isUi: false
   - name: UI_OhNo
     onstep: ''
     ondraw: ''
@@ -1158,25 +1247,47 @@ rooms:
     copies:
       - x: 540
         'y': 384
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 92049024-c0ef-41ae-8512-851ce20cad3a
         exts: {}
+        customProperties: {}
       - x: 540
         'y': 1344
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 25ac0f9b-57ff-461d-8eb7-a9ce800b9c71
         exts: {}
+        customProperties: {}
       - x: 540
         'y': 832
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 8748598b-4494-433f-9f18-fbe985c2a583
         exts: {}
+        customProperties: {}
     tiles:
       - depth: -10
         tiles: []
         extends: {}
+        hidden: false
     uid: 158a085c-c48c-4b57-8e64-e38a4cd0cc21
     thumbnail: e38a4cd0cc21
     gridX: 540
     gridY: 64
-    lastmod: 1657026622514
+    lastmod: 1661071527520
     events:
       - lib: core
         arguments: {}
@@ -1195,6 +1306,8 @@ rooms:
         eventKey: OnRoomStart
     type: room
     extends: {}
+    simulate: true
+    isUi: false
 actions:
   - name: Poof
     methods:
