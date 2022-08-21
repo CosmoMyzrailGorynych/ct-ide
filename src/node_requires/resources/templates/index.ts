@@ -55,7 +55,7 @@ const getPixiTexture = (template: ITemplate | assetRef): PIXI.Texture[] => {
     if (template === -1) {
         throw new Error('Cannot work with -1 assetRefs');
     }
-    return getTexturePixiTexture(template.texture, void 0, false);
+    return getTexturePixiTexture(template.texture, void 0, true);
 };
 
 export {
