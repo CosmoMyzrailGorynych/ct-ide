@@ -13,7 +13,7 @@ templates:
   - name: PlayerShip
     depth: 0
     uid: f5832845-7841-408b-bae7-a72aaffcae6c
-    lastmod: 1551276537484
+    lastmod: 1661086536506
     extends: {}
     texture: a82335b3-69b6-4de0-bec1-da2dea358142
     events:
@@ -54,34 +54,36 @@ templates:
           }
 
 
-          if (ct.actions.Shoot.pressed) {
-              ct.templates.copy('Laser_Blue', this.x, this.y);
-          }
-
-
-          var hostile = ct.place.occupied(this, this.x, this.y, 'Hostile');
-
-          if (hostile) {
-              hostile.kill = true;
-              ct.room.lives --;
-              if (ct.room.lives <= 0) {
-                  this.kill = true;
-                  setTimeout(function() {
-                      ct.rooms.switch('Main');
-                  }, 1000);
-              }
-          }
-
-
           this.move();
         eventKey: OnStep
+      - eventKey: OnActionPress
+        code: 'ct.templates.copy(''Laser_Blue'', this.x, this.y);'
+        arguments:
+          action: Shoot
+        lib: core
+      - eventKey: collisionCGroup
+        code: |-
+          if (ct.templates.isCopy(other)) {
+              other.kill = true;    
+          }
+          ct.room.lives --;
+          if (ct.room.lives <= 0) {
+              this.kill = true;
+              setTimeout(function() {
+                  ct.rooms.switch('Main');
+              }, 1000);
+          }
+        arguments:
+          group: Hostile
+        lib: place
     type: template
     loopAnimation: true
   - name: Laser_Red
     depth: 0
     uid: ebe33c0f-6f27-4123-ac8a-3029404dbc7a
-    lastmod: 1543239422636
-    extends: {}
+    lastmod: 1661087422106
+    extends:
+      cgroup: Hostile
     texture: 083c3d39-1a4a-44f2-9fae-e4043e45f28e
     events:
       - lib: core
@@ -91,8 +93,6 @@ templates:
           this.direction = 90;
 
           this.angle = ct.random.deg();
-
-          this.cgroup = 'Hostile';
         eventKey: OnCreate
       - lib: core
         arguments: {}
@@ -103,14 +103,14 @@ templates:
 
           this.move();
 
-          this.angle -= 10 * ct.delta;
+          this.angle -= 4 * ct.delta;
         eventKey: OnStep
     type: template
     loopAnimation: true
   - name: Laser_Blue
     depth: 0
     uid: cd732ad2-d2ae-4745-b6d8-07a57a9d3a2e
-    lastmod: 1543238733913
+    lastmod: 1661086545235
     extends: {}
     texture: 3dde237d-ec51-4153-8b31-58279ece7c55
     events:
@@ -134,8 +134,9 @@ templates:
   - name: EnemyShip
     depth: 0
     uid: 5d3e8a47-30e6-45b1-8b36-d445fdcb8e14
-    lastmod: 1551001690335
-    extends: {}
+    lastmod: 1661087398650
+    extends:
+      cgroup: Hostile
     texture: feb33556-81c7-4794-a806-da5ddea5be81
     events:
       - lib: core
@@ -144,8 +145,7 @@ templates:
           this.speed = 3;
           this.direction = 90;
 
-          this.bulletTimer = 60;
-          this.cgroup = 'Hostile';
+          this.timer1 = 1;
         eventKey: OnCreate
       - lib: core
         arguments: {}
@@ -155,27 +155,29 @@ templates:
           if (this.y > ct.height + 80) {
               this.kill = true;
           }
-
-          var collided = ct.place.meet(this, this.x, this.y, 'Laser_Blue');
-          if (collided) {
-              collided.kill = true;
-              this.kill = true;
-              ct.room.score += 100;
-          }
-
-          this.bulletTimer -= ct.delta;
-          if (this.bulletTimer <= 0) {
-              this.bulletTimer = 180;
-              ct.templates.copy('Laser_Red', this.x, this.y + 32);
-          }
         eventKey: OnStep
+      - eventKey: collisionTemplate
+        code: |-
+          other.kill = true;
+          this.kill = true;
+          ct.room.score += 100;
+        arguments:
+          template: cd732ad2-d2ae-4745-b6d8-07a57a9d3a2e
+        lib: place
+      - eventKey: Timer1
+        code: |-
+          this.timer1 = 3;
+          ct.templates.copy('Laser_Red', this.x, this.y + 32);
+        arguments: {}
+        lib: core
     type: template
     loopAnimation: true
   - name: Asteroid_Medium
     depth: 0
     uid: f829b135-ac68-4193-9980-d367e90448a1
-    lastmod: 1551001692415
-    extends: {}
+    lastmod: 1661087393026
+    extends:
+      cgroup: Hostile
     texture: aa5664f9-a2c3-47b2-8f0f-2dfead9c67c9
     events:
       - lib: core
@@ -183,7 +185,6 @@ templates:
         code: |-
           this.speed = ct.random.range(1, 3);
           this.direction = ct.random.range(90 - 30, 90 + 30);
-          this.cgroup = 'Hostile';
         eventKey: OnCreate
       - lib: core
         arguments: {}
@@ -193,21 +194,23 @@ templates:
           if (this.y > ct.height + 80) {
               this.kill = true;
           }
-
-          var collided = ct.place.meet(this, this.x, this.y, 'Laser_Blue');
-          if (collided) {
-              collided.kill = true;
-              this.kill = true;
-              ct.room.score += 10;
-          }
         eventKey: OnStep
+      - eventKey: collisionTemplate
+        code: |-
+          other.kill = true;
+          this.kill = true;
+          ct.room.score += 10;
+        arguments:
+          template: cd732ad2-d2ae-4745-b6d8-07a57a9d3a2e
+        lib: place
     type: template
     loopAnimation: true
   - name: Asteroid_Big
     depth: 0
     uid: 41fbc5fe-0f41-4151-b7bf-26acefce80ae
-    lastmod: 1551001837218
-    extends: {}
+    lastmod: 1661087395922
+    extends:
+      cgroup: Hostile
     texture: 4e5cb233-48f8-4f20-abaf-384f4551e1e9
     events:
       - lib: core
@@ -215,7 +218,6 @@ templates:
         code: |-
           this.speed = ct.random.range(1, 3);
           this.direction = ct.random.range(90 - 30, 90 + 30);
-          this.cgroup = 'Hostile';
         eventKey: OnCreate
       - lib: core
         arguments: {}
@@ -225,16 +227,17 @@ templates:
           if (this.y > ct.height + 80) {
               this.kill = true;
           }
-
-          var collided = ct.place.meet(this, this.x, this.y, 'Laser_Blue');
-          if (collided) {
-              collided.kill = true;
-              this.kill = true;
-              ct.templates.copy('Asteroid_Medium', this.x, this.y);
-              ct.templates.copy('Asteroid_Medium', this.x, this.y);
-              ct.room.score += 25;
-          }
         eventKey: OnStep
+      - eventKey: collisionTemplate
+        code: |-
+          other.kill = true;
+          this.kill = true;
+          ct.templates.copy('Asteroid_Medium', this.x, this.y);
+          ct.templates.copy('Asteroid_Medium', this.x, this.y);
+          ct.room.score += 25;
+        arguments:
+          template: cd732ad2-d2ae-4745-b6d8-07a57a9d3a2e
+        lib: place
     type: template
     loopAnimation: true
 sounds: []
@@ -297,7 +300,7 @@ rooms:
         repeat: repeat
     uid: 8eced6ed-b52a-4344-8266-3fa909005671
     grid: 80
-    lastmod: 1661072089906
+    lastmod: 1661087539370
     thumbnail: 1
     gridX: 80
     gridY: 80
@@ -322,9 +325,9 @@ rooms:
       - lib: core
         arguments: {}
         code: >-
-          this.asteroidTimer = 20;
+          this.timer1 = 0.3; // asteroid timer
 
-          this.enemyTimer = 180;
+          this.timer2 = 3; // enemy timer
 
 
           this.score = 0;
@@ -353,25 +356,27 @@ rooms:
       - lib: core
         arguments: {}
         code: |-
-          this.asteroidTimer -= ct.delta;
-          if (this.asteroidTimer <= 0) {
-              this.asteroidTimer = ct.random.range(20, 200);
-              ct.templates.copy(ct.random.dice('Asteroid_Big', 'Asteroid_Medium'), ct.random(ct.camera.width), -100);
-          }
-
-          this.enemyTimer -= ct.delta;
-          if (this.enemyTimer <= 0) {
-              this.enemyTimer = ct.random.range(180, 400);
-              ct.templates.copy('EnemyShip', ct.random(ct.camera.width), -100);
-          }
-        eventKey: OnStep
-      - lib: core
-        arguments: {}
-        code: |-
           this.scoreLabel.text = 'Score: ' + this.score;
 
           this.livesLabel.text = 'Lives: ' + this.lives;
         eventKey: OnDraw
+      - eventKey: Timer1
+        code: >-
+          // asteroid timer
+
+          this.timer1 = ct.random.range(0.3, 3);
+
+          ct.templates.copy(ct.random.dice('Asteroid_Big', 'Asteroid_Medium'),
+          ct.random(ct.camera.width), -100);
+        arguments: {}
+        lib: core
+      - eventKey: Timer2
+        code: |-
+          // enemy timer
+          this.timer2 = ct.random.range(3, 6);
+          ct.templates.copy('EnemyShip', ct.random(ct.camera.width), -100);
+        arguments: {}
+        lib: core
     type: room
     simulate: true
     extends: {}
