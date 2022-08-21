@@ -43,7 +43,7 @@ class Room extends PIXI.Container {
                     template.bgs[i].texture,
                     null,
                     template.bgs[i].depth,
-                    template.bgs[i]
+                    template.bgs[i].exts
                 );
                 this.addChild(bg);
             }

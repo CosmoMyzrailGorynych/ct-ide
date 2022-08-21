@@ -1,6 +1,7 @@
 const glob = require('./../glob');
 const {getUnwrappedExtends} = require('./utils');
 import {getBaseScripts} from './scriptableProcessor';
+import {getTextureFromId} from '../resources/textures';
 
 const getStartingRoom = (proj: IProject): IRoom => {
     let [startroom] = proj.rooms; // picks the first room by default
@@ -51,6 +52,22 @@ interface IExportedTile {
 }
 type ExportedCopy = Omit<IRoomCopy, 'uid'> & {template: string};
 
+type ExportedBg = {
+    texture: string,
+    depth: number,
+    exts: {
+        movementX: number,
+        movementY: number,
+        parallaxX: number,
+        parallaxY: number,
+        repeat: 'repeat' | 'no-repeat' | 'repeat-x' | 'repeat-y',
+        scaleX: number,
+        scaleY: number,
+        shiftX: number,
+        shiftY: number
+    }
+};
+
 // eslint-disable-next-line max-lines-per-function
 const stringifyRooms = (proj: IProject): IScriptablesFragment => {
     let roomsCode = '';
@@ -69,10 +86,23 @@ const stringifyRooms = (proj: IProject): IScriptablesFragment => {
             delete exportableCopy.uid;
             objs.push(exportableCopy);
         }
-        const bgsCopy = JSON.parse(JSON.stringify(r.backgrounds));
-        for (const bg in bgsCopy) {
-            bgsCopy[bg].texture = glob.texturemap[bgsCopy[bg].texture].g.name;
-            bgsCopy[bg].depth = Number(bgsCopy[bg].depth);
+        const bgs: ExportedBg[] = [];
+        for (const bg of r.backgrounds) {
+            bgs.push({
+                texture: getTextureFromId(bg.texture as string).name,
+                depth: Number(bg.depth),
+                exts: {
+                    movementX: bg.movementX,
+                    movementY: bg.movementY,
+                    parallaxX: bg.parallaxX,
+                    parallaxY: bg.parallaxY,
+                    repeat: bg.repeat,
+                    scaleX: bg.scaleX,
+                    scaleY: bg.scaleY,
+                    shiftX: bg.shiftX,
+                    shiftY: bg.shiftY
+                }
+            });
         }
 
         const tileLayers = [];
@@ -116,7 +146,7 @@ ct.rooms.templates['${r.name}'] = {
     height: ${r.height},` +
     /* JSON.parse is faster at loading big objects */`
     objects: JSON.parse('${JSON.stringify(objs).replace(/\\/g, '\\\\')}'),
-    bgs: JSON.parse('${JSON.stringify(bgsCopy).replace(/\\/g, '\\\\')}'),
+    bgs: JSON.parse('${JSON.stringify(bgs).replace(/\\/g, '\\\\')}'),
     tiles: JSON.parse('${JSON.stringify(tileLayers).replace(/\\/g, '\\\\')}'),
     backgroundColor: '${r.backgroundColor || '#000000'}',
     ${constraints ? 'cameraConstraints: ' + JSON.stringify(constraints) + ',' : ''}

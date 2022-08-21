@@ -2,7 +2,7 @@ window.migrationProcess = window.migrationProcess || [];
 
 window.migrationProcess.push({
     version: '2.2.0',
-    // eslint-disable-next-line max-lines-per-function
+    // eslint-disable-next-line max-lines-per-function, complexity
     process: project => new Promise(resolve => {
         // Break up tile chunks into individual tiles
         for (const room of project.rooms) {
@@ -51,6 +51,19 @@ window.migrationProcess.push({
                     x: 1,
                     y: 1
                 };
+            }
+            for (const bg of room.backgrounds) {
+                bg.depth = Number(bg.depth) || 0;
+                bg.movementX = bg.movementX ?? bg.extends?.movementX ?? 0;
+                bg.movementY = bg.movementY ?? bg.extends?.movementY ?? 0;
+                bg.parallaxX = bg.parallaxX ?? bg.extends?.parallaxX ?? 1;
+                bg.parallaxY = bg.parallaxY ?? bg.extends?.parallaxY ?? 1;
+                bg.repeat = bg.repeat ?? bg.extends?.repeat ?? 'repeat';
+                bg.scaleX = bg.scaleX ?? bg.extends?.scaleX ?? 1;
+                bg.scaleY = bg.scaleY ?? bg.extends?.scaleY ?? 1;
+                bg.shiftX = bg.shiftX ?? bg.extends?.shiftX ?? 0;
+                bg.shiftY = bg.shiftY ?? bg.extends?.shiftY ?? 0;
+                delete bg.extends;
             }
         }
         resolve();
