@@ -1,3 +1,5 @@
+import {imageContain, toBuffer, crop} from '../../utils/imageUtils';
+
 /**
  * Gets the ct.js texture object by its id.
  * @param {string} id The id of the texture
@@ -211,7 +213,6 @@ const textureGenPreview = async function textureGenPreview(
     if (typeof texture === 'string') {
         texture = getTextureFromId(texture);
     }
-    const {imageContain, toBuffer, crop} = require('../../imageUtils');
 
     const source = await getDOMImage(texture);
     const frame = crop(
