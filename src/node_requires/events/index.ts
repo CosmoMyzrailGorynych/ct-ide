@@ -127,7 +127,7 @@ const localizeParametrized = (eventFullCode: string, scriptedEvent: IScriptableE
             value = getAssetName(value, event.arguments[argName].type as resourceType);
         }
         const regex = new RegExp(`%%${argName}%%`);
-        name = name.replace(regex, value);
+        name = name.replace(regex, value ?? '???');
     }
     return name;
 };

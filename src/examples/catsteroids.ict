@@ -26,7 +26,7 @@ templates:
   - name: Player_Blue
     depth: 5
     uid: 1fab434d-0976-4b65-8390-d013695aba8c
-    lastmod: 1661093315313
+    lastmod: 1661143924623
     extends: {}
     texture: e1452137-8cfa-4eec-b54a-0f2660326b48
     events:
@@ -246,7 +246,7 @@ templates:
   - name: Asteroid
     depth: 1
     uid: 1fa16a0f-e9a0-4117-9c28-87fa72b33d2b
-    lastmod: 1661093107272
+    lastmod: 1661144159335
     extends: {}
     texture: 1a904383-2edd-4435-a37b-17148f44e0e0
     events:
@@ -313,7 +313,7 @@ templates:
   - name: Laser_Cross_Blue
     depth: -1
     uid: 140f8bde-bd06-4b2d-a5f2-87427848252e
-    lastmod: 1661093079642
+    lastmod: 1661144163686
     extends: {}
     texture: 4b86d5c4-ae3c-4edf-90d7-79a6778e9a29
     events:
@@ -959,7 +959,7 @@ templates:
     uid: 1ef4f56c-b0cc-497b-bd3f-e06eb1c2308d
     texture: afba4114-e7bc-4b35-8386-d9ca108ca777
     extends: {}
-    lastmod: 1661093161129
+    lastmod: 1661144349721
     events:
       - lib: core
         arguments: {}
@@ -969,7 +969,7 @@ templates:
 
           this.health = 1500;
 
-          ct.templates.copy('Healthbar_Base_Boss', 0, 0, {},
+          ct.templates.copyIntoRoom('Healthbar_Base_Boss', 0, 0,
           ct.rooms.list['UI_Layer'][0]);
 
 
@@ -1028,7 +1028,8 @@ templates:
                           x : ct.camera.width / 2,
                           y: ct.camera.height * 0.15
                       },
-                      duration: 3000
+                      duration: 3000,
+                      silent: true
                   }).then(() => {
                       this.stage = ct.random.dice(1, 2, 3, 4);
                   }).then(() => this.stageSelector());
@@ -1044,7 +1045,8 @@ templates:
                       fields: {
                           x: startLocationX
                       },
-                      duration: 1000
+                      duration: 1000,
+                      silent: true
                   })
                   .then(() => {
                       this.shootStar = true;
@@ -1054,7 +1056,8 @@ templates:
                       fields: {
                           x: endLocationX
                       },
-                      duration: 8000
+                      duration: 8000,
+                      silent: true
                   })).then(() => {
                       this.shootStar = false;
                       this.stage = 0;
@@ -1071,27 +1074,31 @@ templates:
                       fields: {
                           x: ct.camera.width * 0.4
                       },
-                      duration: 2000
+                      duration: 2000,
+                      silent: true
                   }).then(() => ct.tween.add({
                       obj: this,
                       fields: {
                           x: ct.camera.width * 0.6
                       },
-                      duration: 2000
+                      duration: 2000,
+                      silent: true
                   }))
                   .then(() => ct.tween.add({
                       obj: this,
                       fields: {
                           x: ct.camera.width * 0.4
                       },
-                      duration: 2000
+                      duration: 2000,
+                      silent: true
                   }))
                   .then(() => ct.tween.add({
                       obj: this,
                       fields: {
                           x: ct.camera.width * 0.5
                       },
-                      duration: 1500
+                      duration: 1500,
+                      silent: true
                   }))
                   .then(() => {
                       this.stage = ct.random.dice(1, 3, 4);
@@ -1111,7 +1118,8 @@ templates:
                       this.shootRandom = false;
                       this.stage = ct.random.dice(1, 2, 4);
                       return this.stageSelector();
-                  });
+                  })
+                  .catch(_ => void 0);
               }
 
               // stage 4: float a bit to left and right and pew pew continuously at the player's ship
@@ -1124,14 +1132,16 @@ templates:
                           x: ct.camera.width * 0.25,
                           y: ct.camera.height * 0.2
                       },
-                      duration: 3000
+                      duration: 3000,
+                      silent: true
                   }).then(() => ct.tween.add({
                       obj: this,
                       fields: {
                           x: ct.camera.width * 0.75,
                           y: ct.camera.height * 0.25
                       },
-                      duration: 3000
+                      duration: 3000,
+                      silent: true
                   }))
                   .then(() => ct.tween.add({
                       obj: this,
@@ -1139,7 +1149,8 @@ templates:
                           x: ct.camera.width * 0.25,
                           y: ct.camera.height * 0.3
                       },
-                      duration: 3000
+                      duration: 3000,
+                      silent: true
                   }))
                   .then(() => ct.tween.add({
                       obj: this,
@@ -1147,7 +1158,8 @@ templates:
                           x: ct.camera.width * 0.75,
                           y: ct.camera.height * 0.35
                       },
-                      duration: 3000
+                      duration: 3000,
+                      silent: true
                   }))
                   .then(() => {
                       this.stage = 0;
@@ -1508,7 +1520,7 @@ rooms:
         scaleY: 1
         repeat: repeat
     uid: 2e5bf702-9eac-4fef-8282-07d2dd0a9bac
-    lastmod: 1661070020031
+    lastmod: 1661143892928
     grid: 50
     thumbnail: 1
     gridX: 50
@@ -1561,58 +1573,19 @@ rooms:
           this.addChild(this.scoreLabel);
 
 
-          this.asteroidTimer = ct.speed * 3;
+          this.timer1 = 3; // Asteroids
 
-          this.encounterTimer = ct.speed * 5;
+          this.timer2 = 5; // Shooters
 
-          this.waveTimer = ct.speed * 20;
+          this.timer3 = 20; // Wave attack
 
-          this.bomberTimer = ct.speed * 20;
+          this.timer4 = 20; // Bombers
 
-          this.bossTimer = ct.speed * 60 * 1.5;
+          this.timer6 = 90; // Boss
 
 
           ct.transition.fadeIn();
         eventKey: OnRoomStart
-      - lib: core
-        arguments: {}
-        code: |-
-          this.asteroidTimer -= ct.delta;
-          if (this.asteroidTimer <= 0) {
-              this.asteroidTimer = ct.random.range(ct.speed * 0.5, ct.speed * 3);
-              ct.templates.copy('Asteroid', ct.random(ct.camera.width), -100);
-          }
-
-          if (this.bossEncountered) {
-              // Stop spawning new entities if a boss has arrived
-              return;
-          }
-          this.encounterTimer -= ct.delta;
-          if (this.encounterTimer <= 0) {
-              this.encounterTimer = ct.random.range(ct.speed * 2, ct.speed * 7);
-              ct.templates.copy('Enemy_Shooter', ct.random(ct.camera.width), -100);
-          }
-
-          this.waveTimer -= ct.delta;
-          if (this.waveTimer <= 0) {
-              this.waveTimer = ct.random.range(ct.speed * 15, ct.speed * 20);
-              const startingPhase = ct.random.dice(0, Math.PI / 2);
-              // See it in the "Settings" tab > Scripts
-              spawnWigglers(startingPhase);
-          }
-
-          this.bomberTimer -= ct.delta;
-          if (this.bomberTimer <= 0) {
-              this.bomberTimer = ct.random.range(ct.speed * 30, ct.speed * 45);
-              ct.templates.copy('Enemy_Bomber', ct.random(ct.camera.width), -100);
-          }
-
-          this.bossTimer -= ct.delta;
-          if (this.bossTimer <= 0) {
-              this.bossEncountered = true;
-              ct.templates.copy('DatBoss', ct.camera.width / 2, -300);
-          }
-        eventKey: OnStep
       - lib: core
         arguments: {}
         code: 'this.scoreLabel.text = ''Score: '' + this.score;'
@@ -1621,6 +1594,52 @@ rooms:
         arguments: {}
         code: localStorage.score = this.score;
         eventKey: OnRoomEnd
+      - eventKey: Timer1
+        code: |-
+          this.timer1 = ct.random.range(0.5, 3);
+          ct.templates.copy('Asteroid', ct.random(ct.camera.width), -100);
+        arguments:
+          name: Asteroids
+        lib: core
+      - eventKey: Timer2
+        code: |-
+          // Stop spawning new entities if a boss has arrived
+          if (!this.bossEncountered) {
+              this.timer2 = ct.random.range(2, 7);
+              ct.templates.copy('Enemy_Shooter', ct.random(ct.camera.width), -100);
+          }
+        arguments:
+          name: Shooters
+        lib: core
+      - eventKey: Timer3
+        code: |-
+          // Stop spawning new entities if a boss has arrived
+          if (!this.bossEncountered) {
+              this.timer3 = ct.random.range(15, 20);
+              const startingPhase = ct.random.dice(0, Math.PI / 2);
+              // See it in the "Settings" tab > Scripts
+              spawnWigglers(startingPhase);
+          }
+        arguments:
+          name: Wave attack
+        lib: core
+      - eventKey: Timer4
+        code: |-
+          // Stop spawning new entities if a boss has arrived
+          if (!this.bossEncountered) {
+              this.timer4 = ct.random.range(30, 45);
+              ct.templates.copy('Enemy_Bomber', ct.random(ct.camera.width), -100);
+          }
+        arguments:
+          name: Bomber
+        lib: core
+      - eventKey: Timer6
+        code: |-
+          this.bossEncountered = true;
+          ct.templates.copy('DatBoss', ct.camera.width / 2, -300);
+        arguments:
+          name: BOSS
+        lib: core
     type: room
     simulate: true
     isUi: false

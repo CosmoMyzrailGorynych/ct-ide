@@ -92,6 +92,7 @@
                     "type": "template"
                 }
             },
+            "repeatable": true,
             "codeTargets": ["thisOnStep"],
             "locals": {
                 "other": {
@@ -116,6 +117,7 @@
                     "type": "string"
                 }
             },
+            "repeatable": true,
             "codeTargets": ["thisOnStep"],
             "locals": {
                 "other": {

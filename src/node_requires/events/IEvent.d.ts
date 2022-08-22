@@ -49,11 +49,15 @@ declare interface IEventDeclaration extends Record<string, unknown> {
     /**
      * Arguments editable through ct.IDE UI to further narrow the event by a game developer,
      * or to provide additional settings to them.
-     * Creates parameterized events that can repeat.
      */
     arguments?: {
         [key: string]: IEventArgumentDeclaration;
     };
+    /**
+     * If set to true, the same event can be added several times.
+     * It is usually used with parametrized events.
+     */
+    repeatable?: boolean;
     /**
      * Local variables introduced into context by the surrounding function's code.
      * Usually used by modules to pass additional info about the current event.

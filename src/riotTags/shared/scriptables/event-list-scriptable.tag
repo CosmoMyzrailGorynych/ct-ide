@@ -28,7 +28,7 @@ event-list-scriptable.flexfix(class="{opts.class}")
                 onclick="{pickEvent}"
                 title="{localizeField(getEventByLib(event.eventKey, event.lib), 'hint')}"
             )
-                svg.feather.act.nogrow(if="{!getIsParametrized(event) || !getIcon(event)}")
+                svg.feather.act.nogrow.noshrink(if="{!getIsParametrized(event) || !getIcon(event)}")
                     use(xlink:href="#{getEventByLib(event.eventKey, event.lib).icon}")
                 img.icon.nogrow.noshrink(if="{getIsParametrized(event) && getIcon(event)}" src="{getIcon(event)}")
                 span.nogrow.crop(title="{localizeName(event)}") {localizeName(event)}
@@ -106,8 +106,9 @@ event-list-scriptable.flexfix(class="{opts.class}")
         this.addEvent = (affixedData) => {
             const parametrized = affixedData.event.arguments &&
                 Object.keys(affixedData.event.arguments).length;
+            const {repeatable} = affixedData.event;
             const newEventPath = eventsAPI.splitEventName(affixedData.eventKey);
-            if (!parametrized &&
+            if (!repeatable &&
                 this.opts.events.find(event => event.eventKey === newEventPath[1] &&
                     event.lib === newEventPath[0])
             ) {

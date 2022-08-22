@@ -209,6 +209,7 @@
                     "type": "template"
                 }
             },
+            "repeatable": true,
             "codeTargets": ["rootRoomOnCreate"],
             "locals": {
                 "other": {
@@ -263,6 +264,7 @@
                     "type": "template"
                 }
             },
+            "repeatable": true,
             "codeTargets": ["rootRoomOnCreate"],
             "locals": {
                 "other": {
@@ -307,6 +309,7 @@
                     "type": "template"
                 }
             },
+            "repeatable": true,
             "codeTargets": ["rootRoomOnCreate"],
             "locals": {
                 "other": {

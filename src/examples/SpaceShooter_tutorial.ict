@@ -13,7 +13,7 @@ templates:
   - name: PlayerShip
     depth: 0
     uid: f5832845-7841-408b-bae7-a72aaffcae6c
-    lastmod: 1661086536506
+    lastmod: 1661144793029
     extends: {}
     texture: a82335b3-69b6-4de0-bec1-da2dea358142
     events:
@@ -134,7 +134,7 @@ templates:
   - name: EnemyShip
     depth: 0
     uid: 5d3e8a47-30e6-45b1-8b36-d445fdcb8e14
-    lastmod: 1661087398650
+    lastmod: 1661144790128
     extends:
       cgroup: Hostile
     texture: feb33556-81c7-4794-a806-da5ddea5be81
@@ -168,7 +168,9 @@ templates:
         code: |-
           this.timer1 = 3;
           ct.templates.copy('Laser_Red', this.x, this.y + 32);
-        arguments: {}
+        arguments:
+          isUi: false
+          name: Shoot
         lib: core
     type: template
     loopAnimation: true
@@ -300,7 +302,7 @@ rooms:
         repeat: repeat
     uid: 8eced6ed-b52a-4344-8266-3fa909005671
     grid: 80
-    lastmod: 1661087539370
+    lastmod: 1661144837164
     thumbnail: 1
     gridX: 80
     gridY: 80
@@ -368,14 +370,18 @@ rooms:
 
           ct.templates.copy(ct.random.dice('Asteroid_Big', 'Asteroid_Medium'),
           ct.random(ct.camera.width), -100);
-        arguments: {}
+        arguments:
+          name: Asteroids
+          isUi: false
         lib: core
       - eventKey: Timer2
         code: |-
           // enemy timer
           this.timer2 = ct.random.range(3, 6);
           ct.templates.copy('EnemyShip', ct.random(ct.camera.width), -100);
-        arguments: {}
+        arguments:
+          isUi: false
+          name: Ships
         lib: core
     type: room
     simulate: true

@@ -974,10 +974,18 @@
         "coreParameterizedNames": {
             "OnActionPress": "On %%action%% press",
             "OnActionRelease": "On %%action%% release",
-            "OnActionDown": "On %%action%% down"
+            "OnActionDown": "On %%action%% down",
+            "Timer1": "1 • %%name%% (Timer)",
+            "Timer2": "2 • %%name%% (Timer)",
+            "Timer3": "3 • %%name%% (Timer)",
+            "Timer4": "4 • %%name%% (Timer)",
+            "Timer5": "5 • %%name%% (Timer)",
+            "Timer6": "6 • %%name%% (Timer)"
         },
         "coreEventsArguments": {
-            "action": "Action"
+            "action": "Action",
+            "name": "Name",
+            "isUi": "UI event"
         },
         "coreEventsLocals": {
             "OnActionDown_value": "Current action's value",

@@ -21,6 +21,7 @@ for (const key in keyToActionProp) {
                 type: 'action'
             }
         },
+        repeatable: true,
         codeTargets: ['thisOnStep'],
         inlineCodeTemplates: {
             thisOnStep: `
