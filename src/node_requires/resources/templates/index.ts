@@ -1,4 +1,5 @@
 const getDefaultTemplate = require('./defaultTemplate').get;
+import {getPixiTexture as getTexturePixiTexture} from '../textures';
 
 const createNewTemplate = function createNewTemplate(name: string): ITemplate {
     const template = getDefaultTemplate();
@@ -47,11 +48,22 @@ const getTemplatePreview = function getTemplatePreview(
 };
 const getThumbnail = getTemplatePreview;
 
+const getPixiTexture = (template: ITemplate | assetRef): PIXI.Texture[] => {
+    if (typeof template === 'string') {
+        template = getTemplateFromId(template);
+    }
+    if (template === -1) {
+        throw new Error('Cannot work with -1 assetRefs');
+    }
+    return getTexturePixiTexture(template.texture, void 0, true);
+};
+
 export {
     getDefaultTemplate,
     getTemplateFromId,
     getById,
     getTemplatePreview,
     getThumbnail,
-    createNewTemplate
+    createNewTemplate,
+    getPixiTexture
 };

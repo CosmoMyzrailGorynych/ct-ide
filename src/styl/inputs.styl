@@ -222,6 +222,25 @@ input[type="reset"],
         margin 0
         button, .button
             flex 1 1 auto
+    &.vertical
+        flex-flow column nowrap
+        button, .button
+            margin 0
+            border-radius 0
+            border-bottom-width 0
+            border-right-width 1px
+            if themeThickBorders
+                border-right-width 2px
+            @extend button.square
+            &:first-child
+                border-top-left-radius br
+                border-top-right-radius br
+            &:last-child
+                border-bottom-left-radius br
+                border-bottom-right-radius br
+                border-bottom-width 1px
+                if themeThickBorders
+                    border-bottom-width 2px
 button,
 input[type="button"],
 input[type="submit"],
@@ -242,15 +261,15 @@ select
     line-height 2
     height calc(2.2rem + 2px)
 
-[type=range]
+[type="range"]
     min-height 1.5em
     background transparent
     font inherit
     width 100%
-[type=range], [type=range]::-webkit-slider-thumb
+[type="range"], [type="range"]::-webkit-slider-thumb
     -webkit-appearance none
 
-[type=range]::-webkit-slider-runnable-track
+[type="range"]::-webkit-slider-runnable-track
     box-sizing border-box
     border 1px solid borderBright
     border-radius br
@@ -259,7 +278,7 @@ select
     background backgroundDeeper
 
 thumbWidth = 1.5em
-[type=range]::-webkit-slider-thumb
+[type="range"]::-webkit-slider-thumb
     margin-top -0.425em
     box-sizing border-box
     border 0
@@ -280,7 +299,7 @@ thumbWidth = 1.5em
     height 2em
     font 1em/1 sans-seri
 
-.aSliderWrap [type=range]
+.aSliderWrap [type="range"]
     flex 1
     margin 0
     padding 0
@@ -336,6 +355,8 @@ fieldset
         &::after
             content ''
             icon(check, background)
+            // a hack to fix pixelization of icons in certain context menus
+            transform scale(1)
             width 0.85rem
             height 1rem
             position absolute

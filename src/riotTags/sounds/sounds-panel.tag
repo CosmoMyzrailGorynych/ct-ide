@@ -10,15 +10,15 @@ sounds-panel.aPanel.aView
         ref="sounds"
         class="tall"
     )
-        button#soundcreate(onclick="{parent.soundNew}" title="Control+N" data-hotkey="Control+n")
+        button#soundcreate(onclick="{parent.soundNew}" title="Control+N" data-hotkey="Control+n" ref="createButton")
             svg.feather
                 use(xlink:href="#plus")
             span {parent.voc.create}
-        button(onclick="{parent.openGallery}")
+        button(onclick="{parent.openGallery}" ref="galleryButton")
             svg.feather
                 use(xlink:href="#folder")
             span {parent.vocGlob.openAssetGallery}
-        button#soundcreate(onclick="{parent.openRecorder}" title="Control+R" data-hotkey="Control+r")
+        button#soundcreate(onclick="{parent.openRecorder}" title="Control+R" data-hotkey="Control+r" ref="recordButton")
             svg.feather
                 use(xlink:href="#mic")
             span {parent.voc.record}

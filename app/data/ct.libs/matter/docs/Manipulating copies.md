@@ -17,6 +17,8 @@ Moves a copy to a new position without changing its velocity.
 Applies a force onto a copy. The resulting velocity depends on object's mass and friction.
 You can optionally define a point from which the force is applied to make the copy spin.
 
+> **Note:** This method does not work during collision events.
+
 | Argument           | Type     | Description                                             |
 | ------------------ | -------- | ------------------------------------------------------- |
 | `copy`             | `Copy`   | The copy that should be pushed.                         |

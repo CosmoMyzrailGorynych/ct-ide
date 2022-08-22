@@ -64,7 +64,11 @@
             "text": "common.fieldTypes.text",
             "textfield": "common.fieldTypes.textfield",
             "texture": "common.fieldTypes.texture",
-            "type": "common.fieldTypes.type"
+            "type": "common.fieldTypes.type",
+            "template": "",
+            "room": "",
+            "sound": "",
+            "tandem": ""
         },
         "newName": "common.newName",
         "saveProject": "common.saveProject",
@@ -77,7 +81,54 @@
         "addToNotes": "common.addToNotes",
         "noRooms": "common.noRooms",
         "tileLayer": "common.tileLayer",
-        "ctSite": "common.ctSite"
+        "ctSite": "common.ctSite",
+        "docsShort": "",
+        "docsLong": "",
+        "openAssetGallery": "",
+        "assetTypes": {
+            "textures": [
+                "",
+                "",
+                ""
+            ],
+            "templates": [
+                "",
+                "",
+                ""
+            ],
+            "emitterTandems": [
+                "",
+                "",
+                ""
+            ],
+            "rooms": [
+                "",
+                "",
+                ""
+            ],
+            "fonts": [
+                "",
+                "",
+                ""
+            ],
+            "styles": [
+                "",
+                "",
+                ""
+            ],
+            "sounds": [
+                "",
+                "",
+                ""
+            ],
+            "skeletons": [
+                "",
+                "",
+                ""
+            ]
+        },
+        "next": "",
+        "previous": ""
     },
     "colorPicker": {
         "current": "colorPicker.current",
@@ -97,7 +148,15 @@
         "log": "exportPanel.log",
         "windowsCrossBuildWarning": "exportPanel.windowsCrossBuildWarning",
         "cannotBuildForMacOnWin": "exportPanel.cannotBuildForMacOnWin",
-        "firstRunNotice": "exportPanel.firstRunNotice"
+        "firstRunNotice": "exportPanel.firstRunNotice",
+        "projectTitleRequired": "",
+        "appIdRequired": "",
+        "noAndroidSdkFound": "",
+        "envVarNotice": "",
+        "downloadAndroidStudio": "",
+        "requiresInternetNotice": "",
+        "noJdkFound": "",
+        "downloadJDK": ""
     },
     "intro": {
         "loading": "intro.loading",
@@ -132,7 +191,9 @@
         "github": "intro.github",
         "itch": "intro.itch",
         "vkontakte": "intro.vkontakte",
-        "patreon": "intro.patreon"
+        "patreon": "intro.patreon",
+        "templates": "",
+        "templatesInfo": ""
     },
     "modules": {
         "author": "modules.author",
@@ -174,7 +235,8 @@
         "skeletons": "texture.skeletons",
         "createTemplate": "texture.createTemplate",
         "importFromClipboard": "texture.importFromClipboard",
-        "generatePlaceholder": "texture.generatePlaceholder"
+        "generatePlaceholder": "texture.generatePlaceholder",
+        "textures": ""
     },
     "sounds": {
         "create": "sounds.create",
@@ -365,7 +427,9 @@
             "site": "settings.authoring.site",
             "title": "settings.authoring.title",
             "version": "settings.authoring.version",
-            "versionPostfix": "settings.authoring.versionPostfix"
+            "versionPostfix": "settings.authoring.versionPostfix",
+            "appId": "",
+            "appIdExplanation": ""
         },
         "branding": {
             "heading": "settings.branding.heading",
@@ -374,7 +438,11 @@
             "icon": "settings.branding.icon",
             "iconNotice": "settings.branding.iconNotice",
             "invertPreloaderScheme": "settings.branding.invertPreloaderScheme",
-            "hideLoadingLogo": "settings.branding.hideLoadingLogo"
+            "hideLoadingLogo": "settings.branding.hideLoadingLogo",
+            "splashScreen": "",
+            "splashScreenNotice": "",
+            "forceSmoothIcons": "",
+            "forceSmoothSplashScreen": ""
         },
         "modules": {
             "heading": "settings.modules.heading"
@@ -392,7 +460,15 @@
                 "windowed": "settings.rendering.launchModes.windowed"
             },
             "hideCursor": "settings.rendering.hideCursor",
-            "pixelatedRender": "settings.rendering.pixelatedRender"
+            "pixelatedRender": "settings.rendering.pixelatedRender",
+            "usePixiLegacy": "",
+            "mobileBuilds": "",
+            "screenOrientation": "",
+            "screenOrientations": {
+                "unspecified": "",
+                "landscape": "",
+                "portrait": ""
+            }
         },
         "scripts": {
             "heading": "settings.scripts.heading",
@@ -434,13 +510,19 @@
             "deleteContentType": "settings.content.deleteContentType",
             "confirmDeletionMessage": "settings.content.confirmDeletionMessage",
             "gotoEntries": "settings.content.gotoEntries",
-            "entries": "settings.content.entries"
+            "entries": "settings.content.entries",
+            "array": ""
         },
         "contentTypes": "settings.contentTypes"
     },
     "extensionsEditor": {
         "noEntries": "extensionsEditor.noEntries",
-        "addRow": "extensionsEditor.addRow"
+        "addRow": "extensionsEditor.addRow",
+        "actions": "",
+        "values": "",
+        "moveDown": "",
+        "moveUp": "",
+        "deleteRow": ""
     },
     "textureGenerator": {
         "name": "textureGenerator.name",
@@ -494,7 +576,8 @@
             "exportDesktop": "mainMenu.deploy.exportDesktop",
             "successZipExport": "mainMenu.deploy.successZipExport",
             "zipExport": "mainMenu.deploy.zipExport",
-            "heading": "mainMenu.deploy.heading"
+            "heading": "mainMenu.deploy.heading",
+            "exportAndroid": ""
         },
         "latestProjects": {
             "recentProjects": "mainMenu.latestProjects.recentProjects"
@@ -507,7 +590,10 @@
                 "SpringStream": "mainMenu.settings.themes.SpringStream",
                 "LucasDracula": "mainMenu.settings.themes.LucasDracula",
                 "Horizon": "mainMenu.settings.themes.Horizon",
-                "HCBlack": "mainMenu.settings.themes.HCBlack"
+                "HCBlack": "mainMenu.settings.themes.HCBlack",
+                "RosePine": "",
+                "RosePineMoon": "",
+                "RosePineDawn": ""
             },
             "codeFontDefault": "mainMenu.settings.codeFontDefault",
             "codeFontOldSchool": "mainMenu.settings.codeFontOldSchool",
@@ -523,7 +609,9 @@
             "forceProductionForDebug": "mainMenu.settings.forceProductionForDebug",
             "heading": "mainMenu.settings.heading",
             "language": "mainMenu.settings.language",
-            "translateToYourLanguage": "mainMenu.settings.translateToYourLanguage"
+            "translateToYourLanguage": "mainMenu.settings.translateToYourLanguage",
+            "prideMode": "",
+            "altTemplateLayout": ""
         },
         "project": {
             "save": "mainMenu.project.save",
@@ -542,7 +630,8 @@
             "heading": "mainMenu.meta.heading",
             "twitter": "mainMenu.meta.twitter",
             "vkontakte": "mainMenu.meta.vkontakte",
-            "ctjsForum": "mainMenu.meta.ctjsForum"
+            "ctjsForum": "mainMenu.meta.ctjsForum",
+            "openStylebook": ""
         }
     },
     "appView": {
@@ -558,14 +647,36 @@
         "fx": "appView.fx",
         "restart": "appView.restart",
         "project": "appView.project",
-        "templates": "appView.templates"
-    },
-    "copyCustomProperties": {
-        "customProperties": "copyCustomProperties.customProperties",
-        "addProperty": "copyCustomProperties.addProperty",
-        "property": "copyCustomProperties.property",
-        "value": "copyCustomProperties.value",
-        "delete": "copyCustomProperties.delete"
+        "templates": "appView.templates",
+        "tour": {
+            "header": "",
+            "aboutTour": "",
+            "helpPanel": "",
+            "helpPanelTabs": "",
+            "projectResources": "",
+            "tabTextures": "",
+            "tabTexturesImport": "",
+            "tabTexturesGallery": "",
+            "tabTexturesClipboard": "",
+            "tabTexturesPlaceholders": "",
+            "tabTemplates": "",
+            "tabRooms": "",
+            "tabSounds": "",
+            "tabSoundsImport": "",
+            "tabSoundsGallery": "",
+            "tabSoundsRecord": "",
+            "tabInterlude": "",
+            "tabUI": "",
+            "tabFX": "",
+            "tabProject": "",
+            "tabProjectModules": "",
+            "tabProjectModuleDocs": "",
+            "tabMainMenu": "",
+            "tabMainMenuSettings": "",
+            "tabMainMenuMeta": "",
+            "helpPanelReminder": "",
+            "buttonStartTutorial": ""
+        }
     },
     "assetViewer": {
         "addNewGroup": "assetViewer.addNewGroup",
@@ -636,7 +747,13 @@
         "copyProperties": {
             "position": "roomView.copyProperties.position",
             "rotation": "roomView.copyProperties.rotation",
-            "scale": "roomView.copyProperties.scale"
+            "scale": "roomView.copyProperties.scale",
+            "multipleValues": ""
+        },
+        "copyCustomProperties": {
+            "addProperty": "copyCustomProperties.addProperty",
+            "property": "copyCustomProperties.property",
+            "value": "copyCustomProperties.value"
         },
         "customProperties": "roomView.customProperties",
         "restrictCamera": "roomView.restrictCamera",
@@ -656,7 +773,19 @@
         "deleteTiles": "roomView.deleteTiles",
         "moveTilesToLayer": "roomView.moveTilesToLayer",
         "shiftTiles": "roomView.shiftTiles",
-        "changeCopyRotation": "roomView.changeCopyRotation"
+        "changeCopyRotation": "roomView.changeCopyRotation",
+        "simulate": "",
+        "toggleDiagonalGrid": "",
+        "changeGridSize": "",
+        "xrayMode": "",
+        "colorizeTileLayers": "",
+        "tools": {
+            "select": "",
+            "addCopies": "",
+            "addTiles": "",
+            "manageBackgrounds": "",
+            "roomProperties": ""
+        }
     },
     "styleView": {
         "active": "styleView.active",
@@ -779,6 +908,103 @@
         "learnAboutTypes": "templateView.learnAboutTypes",
         "name": "templateView.name",
         "step": "templateView.step",
-        "visible": "templateView.visible"
+        "visible": "templateView.visible",
+        "appearance": "",
+        "opacity": "",
+        "blendMode": "",
+        "playAnimationOnStart": "",
+        "blendModes": {
+            "normal": "",
+            "add": "",
+            "multiply": "",
+            "screen": ""
+        },
+        "animationFPS": "",
+        "loopAnimation": ""
+    },
+    "assetInput": {
+        "changeAsset": "",
+        "jumpToAsset": "",
+        "selectAssetHeader": ""
+    },
+    "builtinAssetGallery": {
+        "galleryTip": "",
+        "assetGalleryHeader": "",
+        "importIntoProject": "",
+        "importAll": "",
+        "byAuthorPrefix": "",
+        "cannotImportExplanation": "",
+        "nameOccupied": "",
+        "cannotImportNameOccupied": "",
+        "visitSource": "",
+        "visitAuthorsItch": "",
+        "visitAuthorsTwitter": "",
+        "tipAuthor": ""
+    },
+    "scriptables": {
+        "addEvent": "",
+        "removeEvent": "",
+        "removeEventConfirm": "",
+        "changeArguments": "",
+        "eventAlreadyExists": "",
+        "localEventVars": "",
+        "createEventHint": "",
+        "coreEventsCategories": {
+            "lifecycle": "",
+            "actions": "",
+            "pointer": "",
+            "misc": "",
+            "animation": "",
+            "timers": ""
+        },
+        "coreEvents": {
+            "OnCreate": "",
+            "OnRoomStart": "",
+            "OnStep": "",
+            "OnDraw": "",
+            "OnDestroy": "",
+            "OnRoomEnd": "",
+            "OnPointerClick": "",
+            "OnPointerSecondaryClick": "",
+            "OnPointerEnter": "",
+            "OnPointerLeave": "",
+            "OnPointerDown": "",
+            "OnPointerUp": "",
+            "OnPointerUpOutside": "",
+            "OnPointerWheel": "",
+            "OnActionPress": "",
+            "OnActionRelease": "",
+            "OnActionDown": "",
+            "OnFrameChange": "",
+            "OnAnimationLoop": "",
+            "OnAnimationComplete": "",
+            "Timer": ""
+        },
+        "coreParameterizedNames": {
+            "OnActionPress": "",
+            "OnActionRelease": "",
+            "OnActionDown": ""
+        },
+        "coreEventsArguments": {
+            "action": ""
+        },
+        "coreEventsLocals": {
+            "OnActionDown_value": "",
+            "OnActionPress_value": ""
+        },
+        "coreEventsDescriptions": {
+            "OnCreate": "",
+            "OnRoomStart": "",
+            "OnStep": "",
+            "OnDraw": "",
+            "OnDestroy": "",
+            "OnRoomEnd": "",
+            "OnActionPress": "",
+            "OnActionRelease": "",
+            "OnActionDown": "",
+            "OnAnimationLoop": "",
+            "OnAnimationComplete": "",
+            "Timer": ""
+        }
     }
 }

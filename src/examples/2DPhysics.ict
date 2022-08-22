@@ -1,4 +1,4 @@
-ctjsVersion: 2.0.2
+ctjsVersion: 2.2.0
 notes: /* empty */
 libs:
   fittoscreen:
@@ -10,12 +10,6 @@ libs:
     preventdefault: false
     startlocked: false
   filters: {}
-  place:
-    undefined: ''
-    gridX: 512
-    gridY: 512
-    debugMode: false
-    debugText: 16
 textures:
   - name: WoodenPlank
     untill: 0
@@ -156,8 +150,8 @@ textures:
       - 1
       - 1
     axis:
-      - 35
-      - 35
+      - 0
+      - 0
     marginx: 0
     marginy: 0
     imgWidth: 70
@@ -168,14 +162,14 @@ textures:
     offy: 0
     origname: i375a4a5e-64e5-410f-aa6f-3bcfc9804519.png
     shape: rect
-    left: 35
-    right: 35
-    top: 35
-    bottom: 35
+    left: 0
+    right: 70
+    top: 0
+    bottom: 70
     uid: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
     padding: 1
     source: 'D:\Downloads\physicspack\PNG\Other\grass.png'
-    lastmod: 1615556407594
+    lastmod: 1656931281688
   - name: WoodenTriangle
     untill: 0
     grid:
@@ -314,7 +308,7 @@ textures:
     uid: 3a4eba8d-8b33-478e-95e5-3833099c1a03
     padding: 3
     source: 'D:\Downloads\physicspack\PNG\Metal elements\elementMetal002.png'
-    lastmod: 1616892926979
+    lastmod: 1656998944187
     stripPoints:
       - x: -35
         'y': -35
@@ -463,24 +457,64 @@ textures:
     padding: 1
     group: !<tag:yaml.org,2002:js/undefined> ''
     source: 'C:\Users\Master\Desktop\Restart icon 2.png'
+  - lastmod: 1656998696796
+    type: texture
+    name: GravityZone
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 35
+      - 35
+    marginx: 0
+    marginy: 0
+    imgWidth: 70
+    imgHeight: 70
+    width: 70
+    height: 70
+    offx: 0
+    offy: 0
+    origname: iWJ554pph1tft1W.png
+    shape: rect
+    left: 35
+    right: 35
+    top: 35
+    bottom: 35
+    uid: WJ554pph1tft1W
+    padding: 1
+    group: !<tag:yaml.org,2002:js/undefined> ''
+  - lastmod: 1656998544556
+    type: texture
+    name: Particle
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 0
+      - 0
+    marginx: 0
+    marginy: 0
+    imgWidth: 32
+    imgHeight: 32
+    width: 32
+    height: 32
+    offx: 0
+    offy: 0
+    origname: iwHD1gw8Jfdzk2k.png
+    shape: rect
+    left: 0
+    right: 32
+    top: 0
+    bottom: 32
+    uid: wHD1gw8Jfdzk2k
+    padding: 1
+    group: !<tag:yaml.org,2002:js/undefined> ''
 skeletons: []
 templates:
   - name: Alien_Launched
     depth: 0
-    oncreate: |-
-      this.tag = 'Alien';
-
-      this.timeout = ct.speed * 5;
-    onstep: |-
-      this.timeout--;
-      if (this.timeout <= 0) {
-          this.kill = true;
-      }
-    ondraw: ''
-    ondestroy: |-
-      ct.emitters.fire('FX_Burst', this.xprev, this.yprev, {
-          tint: 0x6EBA9D
-      });
     texture: 8a5f385a-d547-4d2d-9641-b1856738c62a
     extends:
       matterEnable: true
@@ -489,38 +523,68 @@ templates:
       matterDensity: 0.003
       matterConstraint: none
     uid: 556178d8-6886-4718-a5dd-b7dbf74e4547
-    lastmod: 1654408223996
+    lastmod: 1656911425186
+    events:
+      - lib: core
+        arguments: {}
+        code: this.timeout = ct.speed * 5;
+        eventKey: OnCreate
+      - lib: core
+        arguments: {}
+        code: |-
+          this.timeout--;
+          if (this.timeout <= 0) {
+              this.kill = true;
+          }
+        eventKey: OnStep
+      - lib: core
+        arguments: {}
+        code: |-
+          ct.emitters.fire('FX_Burst', this.xprev, this.yprev, {
+              tint: 0x6EBA9D
+          });
+        eventKey: OnDestroy
+      - eventKey: matterImpactAny
+        code: |-
+          if (impact > 25) {
+              ct.sound.spawn('Impact_Alien');
+          }
+        arguments: {}
+        lib: matter
+    type: template
+    loopAnimation: true
   - name: AlienTarget
     depth: 0
-    oncreate: this.tag = 'Alien';
-    onstep: this.move();
-    ondraw: ''
-    ondestroy: |-
-      ct.emitters.fire('FX_Burst', this.xprev, this.yprev, {
-          tint: 0xFF85DA
-      });
     texture: 6c8a3edf-d5fe-4916-b63c-2201c099d28f
     extends:
       matterEnable: true
     uid: beb36708-4cce-4b50-a3c3-f7e2edc1d994
-    lastmod: 1616890301062
+    lastmod: 1656912321656
+    events:
+      - lib: core
+        arguments: {}
+        code: |-
+          ct.emitters.fire('FX_Burst', this.xprev, this.yprev, {
+              tint: 0xFF85DA
+          });
+        eventKey: OnDestroy
+      - eventKey: matterImpactAny
+        code: |-
+          if (impact > 25) {
+              if (impact > 25) {
+                  ct.sound.spawn('Impact_Alien');
+              }
+          }
+          // If it was too strong, destroy the alien.
+          if (impact > 75) {
+              this.kill = true;
+          }
+        arguments: {}
+        lib: matter
+    type: template
+    loopAnimation: true
   - name: WoodenSquare
     depth: 0
-    oncreate: |-
-      this.tag = 'Wooden';
-      this.damage = 0;
-    onstep: |-
-      if (this.damage > 150) {
-          this.kill = true;
-      }
-    ondraw: |-
-      if (this.damage > 75 && this.tex !== 'WoodenSquare_damaged') {
-          this.tex = 'WoodenSquare_Damaged';
-      }
-    ondestroy: |-
-      ct.emitters.fire('FX_Burst', this.xprev, this.yprev, {
-          tint: 0xAB763E
-      });
     texture: 41f7c3b3-abc8-4940-8919-9114a884d7f2
     extends:
       matterEnable: true
@@ -530,24 +594,39 @@ templates:
       matterFrictionAir: 0.05
       matterMass: 1
     uid: 6fd118b6-633f-4beb-93ec-2dd5c965fdd5
-    lastmod: 1616891394690
+    lastmod: 1656910965258
+    events:
+      - lib: core
+        arguments: {}
+        code: this.damage = 0;
+        eventKey: OnCreate
+      - lib: core
+        arguments: {}
+        code: |-
+          ct.emitters.fire('FX_Burst', this.xprev, this.yprev, {
+              tint: 0xAB763E
+          });
+        eventKey: OnDestroy
+      - eventKey: matterImpactAny
+        code: |-
+          if (impact >= 25) {
+              // I apply a damage multiplier 0.35 bc initial values turned out to be too destructive,
+              // and I'm too lazy to walk over three blocks and change damage thresholds there.
+              this.damage += impact * 0.35;
+              // Texture change and destruction
+              if (this.damage > 150) {
+                  this.kill = true;
+              } else if (this.damage > 75 && this.tex !== 'WoodenSquare_damaged') {
+                  this.tex = 'WoodenSquare_Damaged';
+              }
+              ct.sound.spawn('Impact_Wooden');
+          }
+        arguments: {}
+        lib: matter
+    type: template
+    loopAnimation: true
   - name: WoodenPlank
     depth: 0
-    oncreate: |-
-      this.tag = 'Wooden';
-      this.damage = 0;
-    onstep: |-
-      if (this.damage > 300) {
-          this.kill = true;
-      }
-    ondraw: |-
-      if (this.damage > 100 && this.tex !== 'WoodenPlank_damaged') {
-          this.tex = 'WoodenPlank_Damaged';
-      }
-    ondestroy: |-
-      ct.emitters.fire('FX_Burst', this.xprev, this.yprev, {
-          tint: 0xAB763E
-      });
     texture: 9afd54d7-1265-4ba0-b5de-5226b3c7e2fb
     extends:
       matterEnable: true
@@ -557,38 +636,39 @@ templates:
       matterFrictionStatic: 3.1
       matterFrictionAir: 0.05
     uid: 256006c5-c853-40a5-a277-3bc1df64d226
-    lastmod: 1616895635325
-  - name: grass
-    depth: 0
-    oncreate: ''
-    onstep: this.move();
-    ondraw: ''
-    ondestroy: ''
-    texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
-    extends:
-      matterEnable: true
-      matterStatic: true
-      matterMass: 10000
-      matterFriction: 15
-    uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
-    lastmod: 1615557554543
+    lastmod: 1656912446992
+    events:
+      - lib: core
+        arguments: {}
+        code: this.damage = 0;
+        eventKey: OnCreate
+      - lib: core
+        arguments: {}
+        code: |-
+          ct.emitters.fire('FX_Burst', this.xprev, this.yprev, {
+              tint: 0xAB763E
+          });
+        eventKey: OnDestroy
+      - eventKey: matterImpactAny
+        code: |-
+          if (impact >= 25) {
+              // I apply a damage multiplier 0.35 bc initial values turned out to be too destructive,
+              // and I'm too lazy to walk over three blocks and change damage thresholds there.
+              this.damage += impact * 0.35;
+              // Texture change and destruction
+              if (this.damage > 300) {
+                  this.kill = true;
+              } else if (this.damage > 100 && this.tex !== 'WoodenPlank_damaged') {
+                  this.tex = 'WoodenPlank_Damaged';
+              }
+              ct.sound.spawn('Impact_Wooden');
+          }
+        arguments: {}
+        lib: matter
+    type: template
+    loopAnimation: true
   - name: WoodenTriangle
     depth: 0
-    oncreate: |-
-      this.tag = 'Wooden';
-      this.damage = 0;
-    onstep: |-
-      if (this.damage > 250) {
-          this.kill = true;
-      }
-    ondraw: |-
-      if (this.damage > 100 && this.tex !== 'WoodenTriangle_damaged') {
-          this.tex = 'WoodenTriangle_Damaged';
-      }
-    ondestroy: |-
-      ct.emitters.fire('FX_Burst', this.xprev, this.yprev, {
-          tint: 0xAB763E
-      });
     texture: 0f0e39f3-05bd-47e1-88d2-7dbf7bc3596b
     extends:
       matterEnable: true
@@ -600,66 +680,99 @@ templates:
         - 0
         - 11
     uid: 7f79638a-a14f-4ec8-8826-981ff954c738
-    lastmod: 1616895639247
+    lastmod: 1656911415729
+    events:
+      - lib: core
+        arguments: {}
+        code: this.damage = 0;
+        eventKey: OnCreate
+      - lib: core
+        arguments: {}
+        code: |-
+          ct.emitters.fire('FX_Burst', this.xprev, this.yprev, {
+              tint: 0xAB763E
+          });
+        eventKey: OnDestroy
+      - eventKey: matterImpactAny
+        code: |-
+          if (impact >= 25) {
+              // I apply a damage multiplier 0.35 bc initial values turned out to be too destructive,
+              // and I'm too lazy to walk over three blocks and change damage thresholds there.
+              this.damage += impact * 0.35;
+              // Texture change and destruction
+              if (this.damage > 250) {
+                  this.kill = true;
+              } else if (this.damage > 100 && this.tex !== 'WoodenTriangle_damaged') {
+                  this.tex = 'WoodenTriangle_Damaged';
+              }
+              ct.sound.spawn('Impact_Wooden');
+          }
+        arguments: {}
+        lib: matter
+    type: template
+    loopAnimation: true
   - name: Slingshot
     depth: 0
-    oncreate: ''
-    onstep: |-
-      if (ct.actions.Pointer.pressed && ct.pointer.hovers(this)) {
-          ct.templates.copy('Alien_Dragging', this.x, this.y);
-      }
-    ondraw: ''
-    ondestroy: ''
     texture: 37dfad62-8372-4804-8416-765039343b61
     extends: {}
     uid: 070d18cf-978a-4874-ba4d-1aadd0d4f58a
-    lastmod: 1654408218293
+    lastmod: 1656912444393
+    events:
+      - eventKey: OnPointerDown
+        code: 'ct.templates.copy(''Alien_Dragging'', this.x, this.y);'
+        arguments: {}
+        lib: core
+    type: template
+    loopAnimation: true
   - name: Alien_Dragging
     depth: 0
-    oncreate: ''
-    onstep: |-
-      if (ct.actions.Pointer.released) {
-          const speedModifier = 0.3,
-                maxSpeed = 50;
-          this.kill = true;
-          const missile = ct.templates.copy('Alien_Launched', this.x, this.y);
-          const slingshot = ct.templates.list['Slingshot'][0];
-          var hspeed = (slingshot.x - this.x) * speedModifier,
-              vspeed = (slingshot.y - this.y) * speedModifier,
-              l = ct.u.pdc(0, 0, hspeed, vspeed);
-          if (l > maxSpeed) {
-              hspeed /= l / maxSpeed;
-              vspeed /= l / maxSpeed;
-          }
-          ct.matter.launch(missile, hspeed, vspeed);
-      }
-    ondraw: |
-      const slingshot = ct.templates.list['Slingshot'][0],
-            maxLength = 150;
-      let dx = ct.pointer.x - slingshot.x,
-          dy = ct.pointer.y - slingshot.y,
-          l = ct.u.pdc(0, 0, dx, dy);
-
-      if (l > maxLength) {
-          dx /= l / maxLength,
-          dy /= l / maxLength;
-      }
-
-      this.x = slingshot.x + dx;
-      this.y = slingshot.y + dy;
-    ondestroy: ''
     texture: 8a5f385a-d547-4d2d-9641-b1856738c62a
     extends:
       matterEnable: false
       matterRestitution: 0.7
     uid: 5b9b41e7-52db-44a2-b5d2-016407e259dc
-    lastmod: 1654405792950
+    lastmod: 1656912346056
+    events:
+      - lib: core
+        arguments: {}
+        code: |-
+          if (ct.actions.Pointer.released) {
+              const speedModifier = 0.3,
+                    maxSpeed = 50;
+              this.kill = true;
+              const missile = ct.templates.copy('Alien_Launched', this.x, this.y);
+              const slingshot = ct.templates.list['Slingshot'][0];
+              var hspeed = (slingshot.x - this.x) * speedModifier,
+                  vspeed = (slingshot.y - this.y) * speedModifier,
+                  l = ct.u.pdc(0, 0, hspeed, vspeed);
+              if (l > maxSpeed) {
+                  hspeed /= l / maxSpeed;
+                  vspeed /= l / maxSpeed;
+              }
+              ct.matter.launch(missile, hspeed, vspeed);
+          }
+        eventKey: OnStep
+      - lib: core
+        arguments: {}
+        code: |
+          const slingshot = ct.templates.list['Slingshot'][0],
+                maxLength = 150;
+          let dx = ct.pointer.x - slingshot.x,
+              dy = ct.pointer.y - slingshot.y,
+              l = ct.u.pdc(0, 0, dx, dy);
+
+          if (l > maxLength) {
+              dx /= l / maxLength,
+              dy /= l / maxLength;
+          }
+
+          this.x = slingshot.x + dx;
+          this.y = slingshot.y + dy;
+        eventKey: OnDraw
+    type: template
+    loopAnimation: true
   - name: elementMetal013
     depth: 0
-    oncreate: this.tag = 'Metal';
-    onstep: this.move();
-    ondraw: ''
-    ondestroy: ''
     texture: 56ab43ae-1b27-4b5e-9e49-fbbe74d42597
     extends:
       matterEnable: true
@@ -669,13 +782,19 @@ templates:
       matterDensity: 0.01
       matterRestitution: 0.6
     uid: 8e4e1fe0-54f6-4c9f-a468-99a94b05803f
-    lastmod: 1616892744865
+    lastmod: 1656911074442
+    events:
+      - eventKey: matterImpactAny
+        code: |-
+          if (impact > 25) {
+              ct.sound.spawn('Impact_Metal');
+          }
+        arguments: {}
+        lib: matter
+    type: template
+    loopAnimation: true
   - name: elementMetal011
     depth: 0
-    oncreate: this.tag = 'Metal';
-    onstep: this.move();
-    ondraw: ''
-    ondestroy: ''
     texture: c4d4030a-b640-44be-bded-26a5c030f542
     extends:
       matterMass: 10
@@ -683,13 +802,19 @@ templates:
       matterDensity: 0.005
       matterRestitution: 0.6
     uid: 54e149bb-f36a-48c0-98f5-181451bac20c
-    lastmod: 1616892752365
+    lastmod: 1656911055002
+    events:
+      - eventKey: matterImpactAny
+        code: |-
+          if (impact > 25) {
+              ct.sound.spawn('Impact_Metal');
+          }
+        arguments: {}
+        lib: matter
+    type: template
+    loopAnimation: true
   - name: elementMetal000
     depth: 0
-    oncreate: this.tag = 'Metal';
-    onstep: this.move();
-    ondraw: ''
-    ondestroy: ''
     texture: 3a4eba8d-8b33-478e-95e5-3833099c1a03
     extends:
       matterStatic: true
@@ -697,26 +822,96 @@ templates:
       matterDensity: 0.005
       matterRestitution: 0.5
       matterFixPivot:
-        - 4
-        - 4
+        - 0
+        - 0
     uid: 82c03796-7419-4f22-944c-78c1209c6874
-    lastmod: 1616892936227
+    lastmod: 1656998884560
+    events:
+      - eventKey: matterImpactAny
+        code: |-
+          if (impact > 25) {
+              ct.sound.spawn('Impact_Metal');
+          }
+        arguments: {}
+        lib: matter
+    type: template
+    loopAnimation: true
   - type: template
     name: Restart
     depth: 0
-    oncreate: ''
-    onstep: |-
-      if (ct.pointer.collidesUi(this)) {
-          ct.rooms.restart();
-      }
-    ondraw: ''
-    ondestroy: ''
     texture: m4gCbzCRD2DmNc
     visible: true
     extends:
       matterEnable: false
-    lastmod: 1654409652371
+    lastmod: 1656912361490
     uid: BRwkF4JP8WdfKd
+    events:
+      - eventKey: OnPointerClick
+        code: ct.rooms.restart();
+        arguments: {}
+        lib: core
+    loopAnimation: true
+  - type: template
+    name: GravityZone
+    depth: 5
+    texture: WJ554pph1tft1W
+    playAnimationOnStart: false
+    loopAnimation: true
+    visible: true
+    extends:
+      matterEnable: true
+      matterStatic: true
+      matterSensor: true
+    events:
+      - eventKey: OnCreate
+        code: 'ct.emitters.append(this, ''FX_GravityZone'');'
+        arguments: {}
+        lib: core
+      - eventKey: matterActiveAny
+        code: |-
+          if (ct.templates.isCopy(other)) {
+              // can't push during collisions, so change velocity instead
+              ct.matter.launch(other, other.hspeed, other.vspeed - 2 * ct.delta);
+          }
+        arguments: {}
+        lib: matter
+    lastmod: 1657008600683
+    uid: HFFzDDfwj688N3
+  - type: template
+    name: AlienCounter
+    depth: 0
+    texture: 6c8a3edf-d5fe-4916-b63c-2201c099d28f
+    playAnimationOnStart: false
+    loopAnimation: true
+    visible: true
+    extends: {}
+    events:
+      - eventKey: OnCreate
+        code: >-
+          this.aliensTotal = ct.templates.list['AlienTarget'].length;
+
+
+          this.textLabel = new PIXI.Text('0/' + this.aliensTotal,
+          ct.styles.get('Style_Aliens')); 
+
+          this.addChild(this.textLabel);
+
+          this.textLabel.x = 50;
+
+          this.textLabel.y = -25;
+        arguments: {}
+        lib: core
+      - eventKey: OnDraw
+        code: >-
+          var aliensCurrent = ct.templates.list['AlienTarget'].length;
+
+
+          this.textLabel.text = (this.aliensTotal - aliensCurrent) + '/' +
+          this.aliensTotal;
+        arguments: {}
+        lib: core
+    lastmod: 1657008650456
+    uid: 7rHCR4GtcDPrTn
 sounds:
   - name: Impact_Wooden
     uid: ccfe7f50-d4d3-4570-95e9-75d5d73bef0a
@@ -730,53 +925,24 @@ sounds:
     uid: 3142b705-6de5-4f57-9b70-c9bc3fb4cdad
     origname: s3142b705-6de5-4f57-9b70-c9bc3fb4cdad.ogg
     lastmod: 1616407549522
-styles: []
+styles:
+  - name: Style_Aliens
+    uid: g3TB8dbChgMRjP
+    origname: shgMRjP
+    font:
+      family: sans-serif
+      size: 40
+      weight: '600'
+      italic: false
+    fill:
+      type: '0'
+      color: '#FF85C4'
+    stroke:
+      color: '#5C304E'
+      weight: 4
+    lastmod: 1657008646209
 rooms:
-  - name: HolericAliens
-    oncreate: |
-      ct.rooms.append('UI_Restart');
-
-      // Listen for collisions in the world
-      ct.matter.on('collisionStart', e => {
-          // Loop over every collision in a frame
-          for (const pair of e.pairs) {
-              // Get how strong the impact was
-              // We will use it for damage calculation to aliens and wooden blocks
-              const impact = ct.matter.getImpact(pair);
-
-              // Each pair has bodyA and bodyB — two objects that has collided.
-              // This little loop applies checks for both bodies
-              const bodies = [pair.bodyA, pair.bodyB];
-              for (const body of bodies) {
-                  // Does a body belong to a copy of template "AlienTarget"?
-                  if (body.copy.template === 'AlienTarget') {
-                      // If it was too strong, destroy the alien.
-                      if (impact > 75) {
-                          body.copy.kill = true;
-                      }
-                  }
-
-                  // Apply cumulative damage for wooden blocks
-                  // Tags are set in templates' On Create code
-                  if (body.copy.tag === 'Wooden') {
-                      // Ignore weak strikes
-                      if (impact >= 25) {
-                          // I apply a damage multiplier 0.35 bc initial values turned out to be too destructive,
-                          // and I'm too lazy to walk over three blocks and change damage thresholds there.
-                          body.copy.damage += impact * 0.35;
-                          // Texture change and destruction are coded in templates' On Step and Draw events.
-                      }
-                  }
-
-                  // Play sounds on considerable collisions
-                  if (impact >= 25) {
-                      if (body.copy.tag) {
-                          ct.sound.spawn('Impact_' + body.copy.tag);
-                      }
-                  }
-              }
-          }
-      });
+  - name: Level_01
     onstep: ''
     ondraw: ''
     onleave: ''
@@ -785,247 +951,644 @@ rooms:
     backgrounds:
       - depth: -10
         texture: f6a40cf4-e9c0-47ff-afa8-6cdc259ef17e
-        extends: {}
+        shiftX: !<tag:yaml.org,2002:js/undefined> ''
+        shiftY: !<tag:yaml.org,2002:js/undefined> ''
+        parallaxX: !<tag:yaml.org,2002:js/undefined> ''
+        parallaxY: !<tag:yaml.org,2002:js/undefined> ''
+        movementX: !<tag:yaml.org,2002:js/undefined> ''
+        movementY: !<tag:yaml.org,2002:js/undefined> ''
+        scaleX: 0
+        scaleY: 0
+        repeat: !<tag:yaml.org,2002:js/undefined> ''
     copies:
       - x: 905
-        'y': 770
+        'y': 798
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 6fd118b6-633f-4beb-93ec-2dd5c965fdd5
         exts: {}
+        customProperties: {}
       - x: 905
-        'y': 700
+        'y': 728
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 6fd118b6-633f-4beb-93ec-2dd5c965fdd5
         exts: {}
+        customProperties: {}
       - x: 905
-        'y': 630
+        'y': 658
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 6fd118b6-633f-4beb-93ec-2dd5c965fdd5
         exts: {}
+        customProperties: {}
       - x: 980
-        'y': 560
+        'y': 588
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 256006c5-c853-40a5-a277-3bc1df64d226
         exts: {}
+        customProperties: {}
       - x: 1054
-        'y': 770
+        'y': 798
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 6fd118b6-633f-4beb-93ec-2dd5c965fdd5
         exts: {}
+        customProperties: {}
       - x: 1054
-        'y': 700
+        'y': 728
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 6fd118b6-633f-4beb-93ec-2dd5c965fdd5
         exts: {}
+        customProperties: {}
       - x: 1054
-        'y': 630
+        'y': 658
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 6fd118b6-633f-4beb-93ec-2dd5c965fdd5
         exts: {}
+        customProperties: {}
       - x: 980
-        'y': 766
+        'y': 794
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: beb36708-4cce-4b50-a3c3-f7e2edc1d994
         exts: {}
+        customProperties: {}
       - x: 1050
-        'y': 490
+        'y': 518
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 6fd118b6-633f-4beb-93ec-2dd5c965fdd5
         exts: {}
+        customProperties: {}
       - x: 980
-        'y': 490
+        'y': 518
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: beb36708-4cce-4b50-a3c3-f7e2edc1d994
         exts: {}
+        customProperties: {}
       - x: 1120
-        'y': 350
+        'y': 378
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 256006c5-c853-40a5-a277-3bc1df64d226
         exts: {}
+        customProperties: {}
       - x: 1190
-        'y': 420
+        'y': 448
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 6fd118b6-633f-4beb-93ec-2dd5c965fdd5
         exts: {}
+        customProperties: {}
       - x: 1190
-        'y': 490
+        'y': 518
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 6fd118b6-633f-4beb-93ec-2dd5c965fdd5
         exts: {}
+        customProperties: {}
       - x: 1190
-        'y': 700
+        'y': 728
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 6fd118b6-633f-4beb-93ec-2dd5c965fdd5
         exts: {}
+        customProperties: {}
       - x: 1190
-        'y': 770
+        'y': 798
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 6fd118b6-633f-4beb-93ec-2dd5c965fdd5
         exts: {}
+        customProperties: {}
       - x: 1260
-        'y': 630
+        'y': 658
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 256006c5-c853-40a5-a277-3bc1df64d226
         exts: {}
+        customProperties: {}
       - x: 1330
-        'y': 700
+        'y': 728
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 6fd118b6-633f-4beb-93ec-2dd5c965fdd5
         exts: {}
+        customProperties: {}
       - x: 1330
-        'y': 770
+        'y': 798
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 6fd118b6-633f-4beb-93ec-2dd5c965fdd5
         exts: {}
+        customProperties: {}
       - x: 1120
-        'y': 280
+        'y': 308
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 6fd118b6-633f-4beb-93ec-2dd5c965fdd5
         exts: {}
+        customProperties: {}
       - x: 1190
-        'y': 560
+        'y': 588
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 6fd118b6-633f-4beb-93ec-2dd5c965fdd5
         exts: {}
-      - x: 1288
-        'y': 559
-        uid: beb36708-4cce-4b50-a3c3-f7e2edc1d994
-        exts: {}
-      - x: 910
-        'y': 840
-        uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
-        exts: {}
-      - x: 980
-        'y': 840
-        uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
-        exts: {}
-      - x: 1050
-        'y': 840
-        uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
-        exts: {}
+        customProperties: {}
       - x: 1120
-        'y': 840
-        uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
-        exts: {}
-      - x: 1190
-        'y': 840
-        uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
-        exts: {}
-      - x: 1260
-        'y': 840
-        uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
-        exts: {}
-      - x: 1330
-        'y': 840
-        uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
-        exts: {}
-      - x: 1400
-        'y': 840
-        uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
-        exts: {}
-      - x: 1470
-        'y': 840
-        uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
-        exts: {}
-      - x: 1540
-        'y': 840
-        uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
-        exts: {}
-      - x: 1610
-        'y': 840
-        uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
-        exts: {}
-      - x: 840
-        'y': 840
-        uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
-        exts: {}
-      - x: 770
-        'y': 840
-        uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
-        exts: {}
-      - x: 700
-        'y': 840
-        uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
-        exts: {}
-      - x: 560
-        'y': 840
-        uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
-        exts: {}
-      - x: 630
-        'y': 840
-        uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
-        exts: {}
-      - x: 490
-        'y': 840
-        uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
-        exts: {}
-      - x: 420
-        'y': 840
-        uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
-        exts: {}
-      - x: 350
-        'y': 840
-        uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
-        exts: {}
-      - x: 280
-        'y': 840
-        uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
-        exts: {}
-      - x: 210
-        'y': 840
-        uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
-        exts: {}
-      - x: 140
-        'y': 840
-        uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
-        exts: {}
-      - x: 70
-        'y': 840
-        uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
-        exts: {}
-      - x: 0
-        'y': 840
-        uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
-        exts: {}
-      - x: 1680
-        'y': 840
-        uid: 9150bbba-a1a8-4fc8-837d-68589f3d5074
-        exts: {}
-      - x: 1120
-        'y': 210
+        'y': 238
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 7f79638a-a14f-4ec8-8826-981ff954c738
         exts: {}
+        customProperties: {}
       - x: 1024
-        'y': 278
+        'y': 306
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: beb36708-4cce-4b50-a3c3-f7e2edc1d994
         exts: {}
-      - x: 700
-        'y': 140
-        uid: 8e4e1fe0-54f6-4c9f-a468-99a94b05803f
-        exts: {}
-      - x: 630
-        'y': 70
-        uid: 54e149bb-f36a-48c0-98f5-181451bac20c
-        exts: {}
-      - x: 770
-        'y': 70
-        uid: 54e149bb-f36a-48c0-98f5-181451bac20c
-        exts: {}
+        customProperties: {}
       - x: 225
-        'y': 646
+        'y': 674
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 070d18cf-978a-4874-ba4d-1aadd0d4f58a
         exts: {}
-      - x: 568
-        'y': 770
-        uid: 7f79638a-a14f-4ec8-8826-981ff954c738
-        exts: {}
-      - x: 700
-        'y': 770
-        uid: 7f79638a-a14f-4ec8-8826-981ff954c738
-        exts: {}
+        customProperties: {}
       - x: 1050
-        'y': 420
+        'y': 448
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 6fd118b6-633f-4beb-93ec-2dd5c965fdd5
         exts: {}
-      - x: 630
-        'y': 700
-        uid: 54e149bb-f36a-48c0-98f5-181451bac20c
-        exts: {}
-        tx: 2.2
-        ty: 1
+        customProperties: {}
     tiles:
       - depth: -10
-        tiles: []
-        extends: {}
+        tiles:
+          - x: 192
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 128
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 64
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 0
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 256
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 320
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 384
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 448
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 512
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 576
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 640
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 704
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 768
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 832
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 896
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 960
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1024
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1088
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1152
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1216
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1280
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1344
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1408
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1472
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1536
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1600
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: -64
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1664
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1664
+            'y': 768
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1664
+            'y': 704
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1664
+            'y': 640
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1664
+            'y': 576
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1664
+            'y': 512
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+        extends:
+          matterMakeStatic: true
+        hidden: false
     uid: 125036f1-3a14-4fc3-ae95-2d29a5c56244
     thumbnail: 2d29a5c56244
     extends:
       matterGravity:
         - 0
         - 1
-    gridX: 70
-    gridY: 70
-    lastmod: 1654408340514
+    gridX: 32
+    gridY: 32
+    lastmod: 1661067612657
+    events:
+      - lib: core
+        arguments: {}
+        code: ct.rooms.append('UI_Restart');
+        eventKey: OnRoomStart
+      - eventKey: Timer1
+        code: ct.rooms.switch('Level_02');
+        arguments: {}
+        lib: core
+      - eventKey: OnDraw
+        code: |-
+          if (!ct.templates.exists('AlienTarget') && this.timer1 <= 0) {
+              this.timer1 = 2;
+          }
+        arguments: {}
+        lib: core
+    type: room
+    simulate: true
+    isUi: !<tag:yaml.org,2002:js/undefined> ''
   - type: room
     oncreate: ''
     onstep: ''
@@ -1040,17 +1603,1715 @@ rooms:
     copies:
       - x: 64
         'y': 64
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: BRwkF4JP8WdfKd
         exts: {}
+        customProperties: {}
+      - x: 1472
+        'y': 64
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: 7rHCR4GtcDPrTn
+        exts: {}
+        customProperties: {}
     tiles:
       - depth: -10
         tiles: []
         extends: {}
-    extends:
-      isUi: true
-    lastmod: 1654405717648
+        hidden: false
+    extends: {}
+    lastmod: 1661067609081
     thumbnail: HHMmHTwkf2B7K6
     uid: HHMmHTwkf2B7K6
+    events: []
+    simulate: true
+    isUi: true
+  - name: Level_02
+    onstep: ''
+    ondraw: ''
+    onleave: ''
+    width: 1640
+    height: 900
+    backgrounds:
+      - depth: -10
+        texture: f6a40cf4-e9c0-47ff-afa8-6cdc259ef17e
+        shiftX: !<tag:yaml.org,2002:js/undefined> ''
+        shiftY: !<tag:yaml.org,2002:js/undefined> ''
+        parallaxX: !<tag:yaml.org,2002:js/undefined> ''
+        parallaxY: !<tag:yaml.org,2002:js/undefined> ''
+        movementX: !<tag:yaml.org,2002:js/undefined> ''
+        movementY: !<tag:yaml.org,2002:js/undefined> ''
+        scaleX: 0
+        scaleY: 0
+        repeat: !<tag:yaml.org,2002:js/undefined> ''
+    copies:
+      - x: 330
+        'y': 674
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: 070d18cf-978a-4874-ba4d-1aadd0d4f58a
+        exts: {}
+        customProperties: {}
+      - x: 490
+        'y': 175
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: 8e4e1fe0-54f6-4c9f-a468-99a94b05803f
+        exts: {}
+        customProperties: {}
+      - x: 490
+        'y': 105
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: 54e149bb-f36a-48c0-98f5-181451bac20c
+        exts: {}
+        customProperties: {}
+      - x: 560
+        'y': 105
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: 54e149bb-f36a-48c0-98f5-181451bac20c
+        exts: {}
+        customProperties: {}
+      - x: 420
+        'y': 105
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: 54e149bb-f36a-48c0-98f5-181451bac20c
+        exts: {}
+        customProperties: {}
+      - x: 805
+        'y': 455
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: 82c03796-7419-4f22-944c-78c1209c6874
+        exts: {}
+        customProperties: {}
+      - x: 1050
+        'y': 805
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: beb36708-4cce-4b50-a3c3-f7e2edc1d994
+        exts: {}
+        customProperties: {}
+      - x: 910
+        'y': 805
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: 6fd118b6-633f-4beb-93ec-2dd5c965fdd5
+        exts: {}
+        customProperties: {}
+      - x: 1190
+        'y': 805
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: 6fd118b6-633f-4beb-93ec-2dd5c965fdd5
+        exts: {}
+        customProperties: {}
+      - x: 1155
+        'y': 735
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: 6fd118b6-633f-4beb-93ec-2dd5c965fdd5
+        exts: {}
+        customProperties: {}
+      - x: 945
+        'y': 735
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: 6fd118b6-633f-4beb-93ec-2dd5c965fdd5
+        exts: {}
+        customProperties: {}
+      - x: 1050
+        'y': 665
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: 256006c5-c853-40a5-a277-3bc1df64d226
+        exts: {}
+        customProperties: {}
+      - x: 665
+        'y': 315
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: 82c03796-7419-4f22-944c-78c1209c6874
+        exts: {}
+        customProperties: {}
+      - x: 735
+        'y': 385
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: 82c03796-7419-4f22-944c-78c1209c6874
+        exts: {}
+        customProperties: {}
+    tiles:
+      - depth: -10
+        tiles:
+          - x: 192
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 128
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 64
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 256
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 320
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 384
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 448
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 512
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 576
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 640
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 704
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 768
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 832
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 896
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 960
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1024
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1088
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1152
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1216
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1280
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1344
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1408
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1472
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1536
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1600
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: -64
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1664
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 770
+            'y': 770
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 770
+            'y': 700
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 770
+            'y': 490
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 700
+            'y': 420
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 630
+            'y': 350
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 700
+            'y': 700
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 700
+            'y': 770
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 630
+            'y': 770
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 630
+            'y': 700
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 630
+            'y': 630
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 630
+            'y': 560
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 770
+            'y': 700
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 630
+            'y': 490
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 700
+            'y': 490
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 700
+            'y': 560
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 770
+            'y': 630
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 700
+            'y': 630
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 630
+            'y': 420
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 0
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 770
+            'y': 560
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+        extends:
+          matterMakeStatic: true
+        hidden: false
+    uid: LPk4T2t9D3zBdR
+    thumbnail: LPk4T2t9D3zBdR
+    extends:
+      matterGravity:
+        - 0
+        - 1
+    gridX: 35
+    gridY: 35
+    lastmod: 1661067600353
+    events:
+      - lib: core
+        arguments: {}
+        code: ct.rooms.append('UI_Restart');
+        eventKey: OnRoomStart
+      - eventKey: OnDraw
+        code: |-
+          if (!ct.templates.exists('AlienTarget') && this.timer1 <= 0) {
+              this.timer1 = 2;
+          }
+        arguments: {}
+        lib: core
+      - eventKey: Timer1
+        code: ct.rooms.switch('Level_03');
+        arguments: {}
+        lib: core
+    type: room
+    simulate: true
+    isUi: !<tag:yaml.org,2002:js/undefined> ''
+  - name: Level_Empty
+    onstep: ''
+    ondraw: ''
+    onleave: ''
+    width: 1640
+    height: 900
+    backgrounds:
+      - depth: -10
+        texture: f6a40cf4-e9c0-47ff-afa8-6cdc259ef17e
+        shiftX: !<tag:yaml.org,2002:js/undefined> ''
+        shiftY: !<tag:yaml.org,2002:js/undefined> ''
+        parallaxX: !<tag:yaml.org,2002:js/undefined> ''
+        parallaxY: !<tag:yaml.org,2002:js/undefined> ''
+        movementX: !<tag:yaml.org,2002:js/undefined> ''
+        movementY: !<tag:yaml.org,2002:js/undefined> ''
+        scaleX: 0
+        scaleY: 0
+        repeat: !<tag:yaml.org,2002:js/undefined> ''
+    copies:
+      - x: 225
+        'y': 674
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: 070d18cf-978a-4874-ba4d-1aadd0d4f58a
+        exts: {}
+        customProperties: {}
+    tiles:
+      - depth: -10
+        tiles:
+          - x: 192
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 128
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 64
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 0
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 256
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 320
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 384
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 448
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 512
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 576
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 640
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 704
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 768
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 832
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 896
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 960
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1024
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1088
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1152
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1216
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1280
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1344
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1408
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1472
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1536
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1600
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: -64
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1664
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+        extends:
+          matterMakeStatic: true
+        hidden: false
+    uid: PjK4CJrtbn5PW5
+    thumbnail: PjK4CJrtbn5PW5
+    extends:
+      matterGravity:
+        - 0
+        - 1
+    gridX: 32
+    gridY: 32
+    lastmod: 1661067606650
+    events:
+      - lib: core
+        arguments: {}
+        code: ct.rooms.append('UI_Restart');
+        eventKey: OnRoomStart
+    type: room
+    simulate: true
+    isUi: !<tag:yaml.org,2002:js/undefined> ''
+  - name: Level_03
+    onstep: ''
+    ondraw: ''
+    onleave: ''
+    width: 1640
+    height: 900
+    backgrounds:
+      - depth: -10
+        texture: f6a40cf4-e9c0-47ff-afa8-6cdc259ef17e
+        shiftX: !<tag:yaml.org,2002:js/undefined> ''
+        shiftY: !<tag:yaml.org,2002:js/undefined> ''
+        parallaxX: !<tag:yaml.org,2002:js/undefined> ''
+        parallaxY: !<tag:yaml.org,2002:js/undefined> ''
+        movementX: !<tag:yaml.org,2002:js/undefined> ''
+        movementY: !<tag:yaml.org,2002:js/undefined> ''
+        scaleX: 0
+        scaleY: 0
+        repeat: !<tag:yaml.org,2002:js/undefined> ''
+    copies:
+      - x: 225
+        'y': 674
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: 070d18cf-978a-4874-ba4d-1aadd0d4f58a
+        exts: {}
+        customProperties: {}
+      - x: 945
+        'y': 805
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: 82c03796-7419-4f22-944c-78c1209c6874
+        exts: {}
+        customProperties: {}
+      - x: 1015
+        'y': 735
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: 82c03796-7419-4f22-944c-78c1209c6874
+        exts: {}
+        customProperties: {}
+      - x: 1015
+        'y': 490
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: HFFzDDfwj688N3
+        exts: {}
+        customProperties: {}
+      - x: 945
+        'y': 490
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: HFFzDDfwj688N3
+        exts: {}
+        customProperties: {}
+      - x: 875
+        'y': 490
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: HFFzDDfwj688N3
+        exts: {}
+        customProperties: {}
+      - x: 875
+        'y': 420
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: HFFzDDfwj688N3
+        exts: {}
+        customProperties: {}
+      - x: 945
+        'y': 420
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: HFFzDDfwj688N3
+        exts: {}
+        customProperties: {}
+      - x: 1015
+        'y': 420
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: HFFzDDfwj688N3
+        exts: {}
+        customProperties: {}
+      - x: 945
+        'y': 210
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: 256006c5-c853-40a5-a277-3bc1df64d226
+        exts: {}
+        customProperties: {}
+      - x: 1033
+        'y': 262
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: 82c03796-7419-4f22-944c-78c1209c6874
+        exts: {}
+        customProperties: {}
+      - x: 859
+        'y': 261.5
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: 82c03796-7419-4f22-944c-78c1209c6874
+        exts: {}
+        customProperties: {}
+      - x: 910
+        'y': 140
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: beb36708-4cce-4b50-a3c3-f7e2edc1d994
+        exts: {}
+        customProperties: {}
+      - x: 980
+        'y': 140
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
+        uid: beb36708-4cce-4b50-a3c3-f7e2edc1d994
+        exts: {}
+        customProperties: {}
+    tiles:
+      - depth: -10
+        tiles:
+          - x: 192
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 128
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 64
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 0
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 256
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 320
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 384
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 448
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 512
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 576
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 640
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 704
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 768
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 832
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 896
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 960
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1024
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1088
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1152
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1216
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1280
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1344
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1408
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1472
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1536
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1600
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: -64
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1664
+            'y': 832
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 980
+            'y': 770
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 770
+            'y': 175
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1050
+            'y': 175
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 770
+            'y': 245
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1050
+            'y': 245
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 770
+            'y': 315
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1050
+            'y': 315
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 770
+            'y': 385
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1050
+            'y': 385
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 770
+            'y': 455
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1050
+            'y': 455
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 770
+            'y': 105
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1050
+            'y': 105
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 770
+            'y': 35
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 840
+            'y': 35
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 910
+            'y': 35
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 980
+            'y': 35
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+          - x: 1050
+            'y': 35
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+        extends:
+          matterMakeStatic: true
+        hidden: false
+    uid: 6W5HrFWP7zkR93
+    thumbnail: 6W5HrFWP7zkR93
+    extends:
+      matterGravity:
+        - 0
+        - 1
+    gridX: 35
+    gridY: 35
+    lastmod: 1661067605072
+    events:
+      - lib: core
+        arguments: {}
+        code: ct.rooms.append('UI_Restart');
+        eventKey: OnRoomStart
+      - eventKey: OnDraw
+        code: |-
+          if (!ct.templates.exists('AlienTarget') && this.timer1 <= 0) {
+              this.timer1 = 2;
+          }
+        arguments: {}
+        lib: core
+      - eventKey: Timer1
+        code: ct.rooms.switch('Level_01');
+        arguments: {}
+        lib: core
+    type: room
+    simulate: true
+    isUi: !<tag:yaml.org,2002:js/undefined> ''
 actions:
   - name: Pointer
     methods:
@@ -1141,6 +3402,95 @@ emitterTandems:
         showShapeVisualizer: false
     previewTexture: 6c8a3edf-d5fe-4916-b63c-2201c099d28f
     uid: pta85a19f1cde1
+  - name: FX_GravityZone
+    uid: GTqfPcq297CFK2
+    origname: pt97CFK2
+    emitters:
+      - texture: wHD1gw8Jfdzk2k
+        openedTabs:
+          - texture
+          - spawning
+          - shape
+          - velocity
+        settings:
+          alpha:
+            list:
+              - value: 0
+                time: 0
+              - time: 0.14682539682539686
+                value: 0.995
+              - value: 1
+                time: 0.8134920634920635
+              - value: 0
+                time: 1
+            isStepped: false
+          scale:
+            list:
+              - value: 0.5700000000000001
+                time: 0
+              - value: 0.94
+                time: 1
+            isStepped: false
+          color:
+            list:
+              - value: ffffff
+                time: 0
+              - time: 0.14682539682539686
+                value: FFFFFF
+              - value: ffffff
+                time: 0.8134920634920635
+              - value: ffffff
+                time: 1
+            isStepped: false
+          blendMode: normal
+          speed:
+            list:
+              - value: 37.5
+                time: 0
+              - value: 175
+                time: 1
+            isStepped: false
+          startRotation:
+            min: 270
+            max: 270
+          rotationSpeed:
+            min: 0
+            max: 0
+          rotationAcceleration: 0
+          lifetime:
+            min: 0.5
+            max: 1
+          frequency: 0.2
+          spawnChance: 1
+          particlesPerWave: 1
+          angleStart: 270
+          emitterLifetime: 0
+          maxParticles: 10
+          maxSpeed: 0
+          pos:
+            x: 0
+            'y': 35
+          acceleration:
+            x: 0
+            'y': 0
+          addAtBack: false
+          spawnType: rect
+          spawnCircle:
+            x: 0
+            'y': 0
+            r: 32
+          delay: -1
+          spawnRect:
+            x: -35
+            'y': -17.5
+            w: 70
+            h: 35
+        uid: gJ694CdcTHd6rN
+        showShapeVisualizer: true
+    group: !<tag:yaml.org,2002:js/undefined> ''
+    lastmod: 1656998549297
+    type: tandem
+    previewTexture: WJ554pph1tft1W
 scripts: []
 starting: 0
 settings:

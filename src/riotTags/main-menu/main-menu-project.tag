@@ -86,7 +86,8 @@ main-menu-project
                     return;
                 }
                 window.signals.trigger('resetAll');
-                window.loadProject(projFile);
+                const {openProject} = require('./data/node_requires/resources/projects');
+                openProject(projFile);
             });
         };
 

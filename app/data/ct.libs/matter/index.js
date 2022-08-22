@@ -16,7 +16,7 @@ ct.matter = {
     },
     push(copy, forceX, forceY, fromX, fromY) {
         if (fromX === void 0) {
-            Matter.Body.applyForce(copy.matterBody, copy.position, {
+            Matter.Body.applyForce(copy.matterBody, copy.matterBody.position, {
                 x: forceX,
                 y: forceY
             });
@@ -159,8 +159,50 @@ ct.matter = {
             );
         }
     },
+    createStaticTilemap(tilemap) {
+        const options = {
+            isStatic: true,
+            isSensor: false,
+            restitution: tilemap.matterRestitution || 0.1,
+            friction: tilemap.matterFriction === void 0 ? 1 : tilemap.matterFriction
+        };
+        for (const tile of tilemap.tiles) {
+            ct.matter.createStaticTile(tile, options);
+        }
+    },
+    createStaticTile(tile, options) {
+        const {shape} = tile.sprite;
+        if (shape.type === 'rect') {
+            tile.matterBody = Matter.Bodies.rectangle(
+                tile.x - shape.left,
+                tile.y - shape.top,
+                shape.left + shape.right,
+                shape.top + shape.bottom,
+                options
+            );
+        } else if (shape.type === 'circle') {
+            tile.matterBody = Matter.Bodies.circle(
+                tile.x,
+                tile.y,
+                shape.r,
+                options
+            );
+        } else if (shape.type === 'strip') {
+            const vertices = Matter.Vertices.create(shape.points);
+            tile.matterBody = Matter.Bodies.fromVertices(tile.x, tile.y, vertices, options);
+        }
+        Matter.Body.setCentre(tile.matterBody, {
+            x: (tile.sprite.texture.defaultAnchor.x - 0.5) * tile.sprite.texture.width,
+            y: (tile.sprite.texture.defaultAnchor.y - 0.5) * tile.sprite.texture.height
+        }, true);
+        Matter.Body.setPosition(tile.matterBody, tile.sprite.position);
+        Matter.World.add(ct.room.matterWorld, tile.matterBody);
+    },
     getImpact(pair) {
         const {bodyA, bodyB} = pair;
+        if (bodyA.isSensor || bodyB.isSensor) {
+            return 0;
+        }
         // Because static objects are Infinity-ly heavy, and Infinity * 0 returns NaN,
         // We should compute mass for static objects manually.
         const massA = bodyA.mass === Infinity ? 0 : bodyA.mass,
@@ -173,5 +215,32 @@ ct.matter = {
             bodyB.velocity.y * massB
         );
         return impact;
-    }
+    },
+    walkOverWithRulebook(rulebook, pairs) {
+        if (!pairs.length || !rulebook.length) {
+            return;
+        }
+        for (const pair of pairs) {
+            const impact = ct.matter.getImpact(pair);
+            const bodies = [pair.bodyA, pair.bodyB];
+            for (const body of bodies) {
+                if (!body.copy) {
+                    continue;
+                }
+                for (const rule of rulebook) {
+                    if (body.copy.template === rule.mainTemplate) {
+                        const otherBody = pair.bodyA === body ? pair.bodyB : pair.bodyA;
+                        // eslint-disable-next-line max-depth
+                        if (rule.any ||
+                            (otherBody.copy && rule.otherTemplate === otherBody.copy.template)) {
+                            rule.func.apply(body.copy, [otherBody.copy || otherBody.tile, impact]);
+                        }
+                    }
+                }
+            }
+        }
+    },
+    rulebookStart: [],
+    rulebookActive: [],
+    rulebookEnd: []
 };

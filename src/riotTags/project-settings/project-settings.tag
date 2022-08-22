@@ -17,7 +17,7 @@ project-settings.aPanel.aView.pad.flexrow
             // A bit of Pug sorcery, destroyed by Riot.js syntax
             // Iterate over an array of sections. Template out Riot syntax inside `these` backticks.
             each name in tabs
-                li(onclick=`{openTab('${name}')}` class=`{active: tab === '${name}'}` title=`{voc.${name}.heading}`)
+                li(onclick=`{openTab('${name}')}` class=`{active: tab === '${name}'}` title=`{voc.${name}.heading}` ref=`${name}Tab`)
                     svg.feather
                         use(xlink:href=`#${(name in iconMap)? iconMap[name] : iconMap.default}`)
                     span='{voc.' + name + '.heading}'

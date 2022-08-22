@@ -1,10 +1,15 @@
 .aSpacer
     width 1rem
     height @width
+    &.small
+        width 0.5rem
+        height @width
 
 .aDimmer
     position fixed
     background-color rgba(0, 0, 0, 0.3)
+    if (themeDark)
+        background-color rgba(0, 0, 0, 0.65)
     left 0
     right 0
     top 0
@@ -89,6 +94,8 @@
         text-overflow ellipsis
         white-space nowrap
         {trans}
+        &.flexrow
+            align-items center
         &:hover, &.hover
             {transshort}
             border-bottom-color borderBright
@@ -100,7 +107,7 @@
                 top 0.65rem
             &:hover, &.hover
                 padding 0.2em 0.5em 0.2em 1.5em
-        & > svg:first-child, & > .aSpacer:first-child
+        & > svg:first-child, & > .aSpacer:first-child, & > img.icon:first-child
             color act
             margin-right 0.5rem
             {trans}
@@ -112,7 +119,7 @@
             background act
             border-bottom-color transparent
             color background
-            & > svg:first-child, & > .aSpacer:first-child
+            & > svg:first-child, & > .aSpacer:first-child, & > .anActionableIcon
                 color background
 
 // панели управления
@@ -273,11 +280,12 @@
 .aCard
     background background
     padding 0.8em
+    &.compact
+        padding 0.4em 0.8em
     margin 0
     box-sizing border-box
     border 1px solid borderPale
     border-radius 3px
-    display inline-block
     vertical-align top
     cursor pointer
     transition 0.35s ease all
@@ -297,6 +305,7 @@
         color background
 .aCard-Properties
     flex 1 1 auto
+    overflow hidden
     > .date
         display none
     span
@@ -329,6 +338,16 @@
         pointer-events none
     &:hover img
         background rgba(act, 0.35)
+    .aCard.compact &
+        width 1.5rem
+        svg
+            width 1.5rem
+            height 1.5rem
+            stroke-width 2
+        img
+            width 2rem
+            height 2rem
+            margin -0.25rem 0 -0.25rem -0.25rem
 .aCard-Actions
     position absolute
     top 0.5rem
@@ -377,6 +396,9 @@ sounds-panel, rooms-panel
     th
         border-bottom 1px solid borderBright
         text-align left
+    &.cellsmiddle
+        td, th
+            vertical-align middle
 .aNiceTable
     margin 1rem 0
     border 1px solid borderBright
@@ -398,7 +420,7 @@ sounds-panel, rooms-panel
     position relative
     border-radius br
     border 1px solid borderBright
-    height 1rem
+    height 0.5rem
     vertical-align middle
     display inline-block
     div
@@ -419,3 +441,38 @@ sounds-panel, rooms-panel
 
 .anIllustration
     color act
+
+@keyframes pulse
+    0%
+        transform translate(-50%, -50%) scale(0)
+        opacity 0
+    25%
+        transform translate(-50%, -50%) scale(1)
+        opacity 1
+    50%, 100%
+        transform translate(-50%, -50%) scale(2)
+        opacity 0
+
+.aPulser
+    position absolute
+    left 50%
+    top 50%
+    user-select none
+    pointer-events none
+    &::before, &::after
+        content ''
+        display block
+        width 2.5rem
+        height 2.5rem
+        position absolute
+        left 50%
+        top 50%
+        transform translate(-50%, -50%)
+        border-radius 100%
+        border 3px solid accent1
+        z-index 100
+        animation pulse 2s infinite linear
+    &::after
+        animation-delay -0.2s
+        width 3rem
+        height 3rem

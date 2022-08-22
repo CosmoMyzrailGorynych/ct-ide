@@ -9,7 +9,7 @@ const path = require('path'),
       replace = require('gulp-replace'),
       sourcemaps = require('gulp-sourcemaps'),
       minimist = require('minimist'),
-      ts = require('gulp-typescript'),
+      ts = require('@ct.js/gulp-typescript'),
       stylus = require('gulp-stylus'),
       riot = require('gulp-riot'),
       pug = require('gulp-pug'),
@@ -60,6 +60,7 @@ var channelPostfix = argv.channel || false,
     fixEnabled = argv.fix || false,
     nightly = argv.nightly || false,
     buildNumber = argv.buildNum || false;
+var verbose = argv.verbose || false;
 
 if (nightly) {
     channelPostfix = 'nightly';
@@ -252,7 +253,6 @@ const watchRequires = () => {
     .on('change', fileChangeNotifier)
     .on('error', err => {
         notifier.notify(makeErrorObj('Failure of node_requires', err));
-        console.error('[node_requires error]', err);
     });
 };
 const watchIcons = () => {
@@ -269,13 +269,20 @@ const watch = () => {
 };
 
 const lintStylus = () => {
-    const stylint = require('gulp-stylint');
-    return gulp.src(['./src/styl/**/*.styl', '!./src/styl/3rdParty/**/*.styl'])
-    .pipe(stylint())
-    .pipe(stylint.reporter())
-    .pipe(stylint.reporter('fail', {
-        failOnWarning: true
-    }));
+    const stylelint = require('stylelint');
+    return stylelint.lint({
+        files: [
+            './src/styl/**/*.styl',
+            '!./src/styl/3rdParty/**/*.styl'
+        ],
+        formatter: 'string'
+    }).then(lintResults => {
+        if (lintResults.errored) {
+            console.log(lintResults.output);
+        } else {
+            console.log('✔ Cheff\'s kiss! 😙👌');
+        }
+    });
 };
 
 const lintJS = () => {
@@ -304,7 +311,7 @@ const lintTags = () => {
     .pipe(eslint.failAfterError());
 };
 
-const lintI18n = () => require('./node_requires/i18n')().then(console.log);
+const lintI18n = () => require('./node_requires/i18n')(verbose).then(console.log);
 
 const lint = gulp.series(lintJS, lintTags, lintStylus, lintI18n);
 

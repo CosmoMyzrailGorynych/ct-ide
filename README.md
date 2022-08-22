@@ -17,7 +17,7 @@ For bugs, feature requests, developing questions, please use [GitHub issues](htt
 
 Ct.js is a project maintained by CoMiGo, and programmed mainly by them as well, with little support from [dear contributors](https://github.com/ct-js/ct-js/graphs/contributors) and translators. And *it sucks!* Ct.js is a good game editor, but can be the best one, and one developer is not enough to transition it from a dream to a reality.
 
-If you are willing to participate in ct.js' future, contact me at Discord (CoMiGo#7821) or Telegram (@CoMiGo). Or jump straightly to the [main dev board](https://github.com/orgs/ct-js/projects/1) for current issues.
+If you are willing to participate in ct.js' future, contact me at Discord (CoMiGo#1234) or Telegram (@CoMiGo). Or jump straightly to the [main dev board](https://github.com/orgs/ct-js/projects/1) for current issues.
 
 ## Support ct.js on product-hunting sites:
 

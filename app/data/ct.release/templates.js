@@ -19,6 +19,12 @@
  * @property {number} gravityDir The direction of acceleration that pulls a copy at each frame
  * @property {number} depth The position of a copy in draw calls
  * @property {boolean} kill If set to `true`, the copy will be destroyed by the end of a frame.
+ * @property {number} timer1 Time for the next run of the 1st timer, in seconds.
+ * @property {number} timer2 Time for the next run of the 2nd timer, in seconds.
+ * @property {number} timer3 Time for the next run of the 3rd timer, in seconds.
+ * @property {number} timer4 Time for the next run of the 4th timer, in seconds.
+ * @property {number} timer5 Time for the next run of the 5th timer, in seconds.
+ * @property {number} timer6 Time for the next run of the 6th timer, in seconds.
  */
 const Copy = (function Copy() {
     const textureAccessor = Symbol('texture');
@@ -58,6 +64,8 @@ const Copy = (function Copy() {
                 this.template = template;
                 this.parent = container;
                 this.blendMode = t.blendMode || PIXI.BLEND_MODES.NORMAL;
+                this.loop = t.loopAnimation;
+                this.animationSpeed = t.animationFPS / 60;
                 if (t.playAnimationOnStart) {
                     this.play();
                 }
@@ -79,16 +87,14 @@ const Copy = (function Copy() {
             this.speed = this.direction = this.gravity = 0;
             this.gravityDir = 90;
             this.depth = 0;
+            this.timer1 = this.timer2 = this.timer3 = this.timer4 = this.timer5 = this.timer6 = 0;
             if (exts) {
                 ct.u.ext(this, exts);
-                if (exts.tx) {
-                    this.scale.x = exts.tx;
+                if (exts.scaleX) {
+                    this.scale.x = exts.scaleX;
                 }
-                if (exts.ty) {
-                    this.scale.y = exts.ty;
-                }
-                if (exts.tr) {
-                    this.angle = exts.tr;
+                if (exts.scaleY) {
+                    this.scale.y = exts.scaleY;
                 }
             }
             this.uid = ++uid;
@@ -357,6 +363,7 @@ const Copy = (function Copy() {
             return ct.templates.list[template].length > 0;
         },
         /*
+         * ⚠ Actual typings for this is in src\typedefs\ct.js\ct.templates.d.ts ⚠
          * Checks whether a given object exists in game's world.
          * Intended to be applied to copies, but may be used with other PIXI entities.
          * @param {Copy|PIXI.DisplayObject|any} obj The copy which existence needs to be checked.
@@ -371,7 +378,8 @@ const Copy = (function Copy() {
             }
             return Boolean(obj);
         },
-        /**
+        /*
+         * ⚠ Actual typings for this is in src\typedefs\ct.js\ct.templates.d.ts ⚠
          * Checks whether a given object is a ct.js copy.
          * @param {any} obj The object which needs to be checked.
          * @returns {boolean} Returns `true` if the passed object is a copy; `false` otherwise.

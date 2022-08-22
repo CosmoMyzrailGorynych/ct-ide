@@ -22,26 +22,28 @@ class Room extends PIXI.Container {
             ct.room = ct.rooms.current = this;
         }
         if (template) {
-            if (template.extends) {
-                ct.u.ext(this, template.extends);
-            }
             this.onCreate = template.onCreate;
             this.onStep = template.onStep;
             this.onDraw = template.onDraw;
             this.onLeave = template.onLeave;
             this.template = template;
             this.name = template.name;
+            this.isUi = template.isUi;
+            if (template.extends) {
+                ct.u.ext(this, template.extends);
+            }
             if (this === ct.room) {
                 ct.pixiApp.renderer.backgroundColor = ct.u.hexToPixi(this.template.backgroundColor);
             }
             /*%beforeroomoncreate%*/
             for (let i = 0, li = template.bgs.length; i < li; i++) {
-                // Need to put extensions here, so we don't use ct.backgrounds.add
+                // Need to put additional properties like parallax here,
+                // so we don't use ct.backgrounds.add
                 const bg = new ct.templates.Background(
                     template.bgs[i].texture,
                     null,
                     template.bgs[i].depth,
-                    template.bgs[i].extends
+                    template.bgs[i].exts
                 );
                 this.addChild(bg);
             }
@@ -52,17 +54,22 @@ class Room extends PIXI.Container {
                 this.addChild(tl);
             }
             for (let i = 0, li = template.objects.length; i < li; i++) {
-                const exts = template.objects[i].exts || {};
+                const copy = template.objects[i];
+                const exts = copy.exts || {};
+                const customProperties = copy.customProperties || {};
                 ct.templates.copyIntoRoom(
-                    template.objects[i].template,
-                    template.objects[i].x,
-                    template.objects[i].y,
+                    copy.template,
+                    copy.x,
+                    copy.y,
                     this,
                     {
-                        tx: template.objects[i].tx,
-                        ty: template.objects[i].ty,
-                        tr: template.objects[i].tr,
-                        ...exts
+                        ...exts,
+                        ...customProperties,
+                        scaleX: copy.scale.x,
+                        scaleY: copy.scale.y,
+                        rotation: copy.rotation,
+                        alpha: copy.opacity,
+                        tint: copy.tint
                     }
                 );
             }
@@ -288,6 +295,7 @@ Room.roomId = 0;
                 roomName = nextRoom;
             }
             if (ct.room) {
+                ct.rooms.rootRoomOnLeave.apply(ct.room);
                 ct.room.onLeave();
                 ct.rooms.onLeave.apply(ct.room);
                 ct.room = void 0;
@@ -312,6 +320,7 @@ Room.roomId = 0;
             ct.pixiApp.renderer.resize(template.width, template.height);
             ct.rooms.current = ct.room = new Room(template);
             ct.stage.addChild(ct.room);
+            ct.rooms.rootRoomOnCreate.apply(ct.room);
             ct.room.onCreate();
             ct.rooms.onCreate.apply(ct.room);
             ct.rooms.list[roomName].push(ct.room);
@@ -350,6 +359,18 @@ ct.rooms.beforeDraw = function beforeDraw() {
 };
 ct.rooms.afterDraw = function afterDraw() {
     /*%afterroomdraw%*/
+};
+ct.rooms.rootRoomOnCreate = function rootRoomOnCreate() {
+    /*@rootRoomOnCreate@*/
+};
+ct.rooms.rootRoomOnStep = function rootRoomOnStep() {
+    /*@rootRoomOnStep@*/
+};
+ct.rooms.rootRoomOnDraw = function rootRoomOnDraw() {
+    /*@rootRoomOnDraw@*/
+};
+ct.rooms.rootRoomOnLeave = function rootRoomOnLeave() {
+    /*@rootRoomOnLeave@*/
 };
 
 /*@rooms@*/

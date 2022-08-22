@@ -3,52 +3,74 @@ type canvasPatternRepeat = 'repeat' | 'repeat-x' | 'repeat-y' | 'no-repeat';
 interface IRoomBackground {
     depth: number,
     texture: assetRef,
-    extends: {
-        parallaxX?: number,
-        parallaxY?: number,
-        shiftX?: number,
-        shiftY?: number,
-        repeat: canvasPatternRepeat
-        [key: string]: unknown
-    }
+    parallaxX: number,
+    parallaxY: number,
+    shiftX: number,
+    shiftY: number,
+    movementX: number,
+    movementY: number,
+    scaleX: number,
+    scaleY: number,
+    repeat: canvasPatternRepeat
 }
 
 interface IRoomCopy {
     x: number,
     y: number,
-    uid: assetRef,
-    tx?: number,
-    ty?: number,
+    uid: string,
+    scale: {
+        x: number,
+        y: number
+    },
+    rotation?: number,
+    tint?: number,
+    opacity?: number,
     exts: {
         [key: string]: unknown
-    }
+    },
+    customProperties: Record<string, unknown>
 }
 
 interface ITileTemplate {
     x: number;
     y: number;
+    opacity: number;
+    tint: number;
+    frame: number;
+    scale: {
+        x: number,
+        y: number
+    };
+    rotation: number;
+    texture: string;
 }
 
 interface ITileLayerTemplate {
     depth: number;
-    tiles: Array<ITileTemplate>
+    tiles: Array<ITileTemplate>,
+    extends?: Record<string, unknown>
+    hidden?: boolean;
 }
 
-interface IRoom extends IAsset {
-    // Currently just stick to the old structure
-    width: number,
-    height: number,
-    backgrounds: Array<IRoomBackground>,
-    copies: Array<IRoomCopy>,
-    tiles: Array<ITileLayerTemplate>
-    gridX: number,
-    gridY: number,
-    oncreate: string,
-    onstep: string,
-    ondraw: string,
-    onleave: string,
-    thumbnail: string,
+interface IRoom extends IScriptable {
+    width: number;
+    height: number;
+    /** A CSS color */
+    backgroundColor: string;
+    backgrounds: Array<IRoomBackground>;
+    copies: Array<IRoomCopy>;
+    tiles: Array<ITileLayerTemplate>;
+    gridX: number;
+    gridY: number;
+    diagonalGrid: boolean;
+    simulate: boolean;
+    restrictCamera?: boolean;
+    restrictMinX?: number;
+    restrictMinY?: number;
+    restrictMaxX?: number;
+    restrictMaxY?: number;
+    isUi: boolean;
     extends: {
         [key: string]: unknown
-    }
+    };
 }

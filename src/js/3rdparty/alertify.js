@@ -395,6 +395,7 @@
 
         _alertify.injectCSS();
 
+        const {soundbox} = require('./data/node_requires/3rdparty/soundbox');
         return {
             _$$alertify: _alertify,
             parent(elem) {

@@ -55,7 +55,7 @@ const resetTypedefs = function resetTypedefs(): void {
     }
 };
 
-export = {
+export {
     addTypedefs,
     removeTypedefs,
     loadAllTypedefs,

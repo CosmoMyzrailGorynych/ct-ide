@@ -3,6 +3,7 @@ interface ITexture extends IAsset {
     uid: string;
     name: string;
     origname: string;
+    /* Number of columns and rows, accordigly */
     grid: [number, number];
     axis: [number, number];
     width: number;
@@ -23,4 +24,5 @@ interface ITexture extends IAsset {
     top?: number;
     bottom?: number;
     tiled?: boolean;
+    ignoreTiledUse?: boolean;
 }

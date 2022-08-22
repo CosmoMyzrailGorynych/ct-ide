@@ -4,6 +4,16 @@
         "module": "umd",
         "noImplicitAny": true,
         "moduleResolution": "node",
-        "baseUrl": "./"
+        "baseUrl": "./",
+        "typeRoots": [
+            "./node_modules/@types/",
+            "./app/node_modules/@types/"
+        ],
+        "paths": {
+            "node_modules/*": [
+                "./app/node_modules/*",
+                "./node_modules/*"
+            ],
+        }
     }
 }

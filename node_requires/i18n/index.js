@@ -90,7 +90,7 @@ const getSuitableBreakpoint = (percent, short) => {
     return 'WTF?';
 };
 
-module.exports = async () => {
+module.exports = async (verbose) => {
     const fileNames = (await fs.readdir('./app/data/i18n')).filter(file =>
         path.extname(file) === '.json' &&
         file !== 'Comments.json' &&
@@ -117,9 +117,13 @@ module.exports = async () => {
 // eslint-disable-next-line no-nested-ternary
 `Coverage: ${report.stats[lang]}% ${getSuitableBreakpoint(report.stats[lang])}
 Not translated: ${report.untranslated[lang].length}` +
-(report.untranslated[lang].length > 0 ? '\n' + report.untranslated[lang].map(key => `  ${key}`).join('\n') : '') +
+((verbose && report.untranslated[lang].length > 0) ? '\n' + report.untranslated[lang].map(key => `  ${key}`).join('\n') : '') +
 `\nExcess: ${report.excess[lang].length} ${report.excess[lang].length ? '⚠️ '.repeat(Math.min(10, report.excess[lang].length)) : '✅'}\n` +
 (report.excess[lang].length > 0 ? report.excess[lang].map(key => `  ${key}`).join('\n') : '')).join('\n\n');
+
+    if (!verbose) {
+        reportText += '\n👉 Use --verbose flag to log all the untranslated keys.';
+    }
 
     reportText += '\n\nStats:\n';
     for (const lang in report.stats) {

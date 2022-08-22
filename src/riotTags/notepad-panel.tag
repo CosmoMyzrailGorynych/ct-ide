@@ -1,5 +1,5 @@
 notepad-panel#notepad.aPanel.dockright(class="{opened: opened}")
-    ul.aNav.tabs.nogrow.nb
+    ul.aNav.tabs.nogrow.nb(ref="tabs")
         li(onclick="{changeTab('notepadlocal')}" class="{active: tab === 'notepadlocal'}")
             svg.feather
                 use(xlink:href="#edit")
@@ -12,7 +12,7 @@ notepad-panel#notepad.aPanel.dockright(class="{opened: opened}")
             svg.feather
                 use(xlink:href="#life-buoy")
             span {voc.helpPages}
-        li(onclick="{changeTab('modulespages')}" class="{active: tab === 'modulespages'}")
+        li(onclick="{changeTab('modulespages')}" class="{active: tab === 'modulespages'}" ref="modulesTab")
             svg.feather
                 use(xlink:href="#ctmod")
             span {voc.modulesPages}
@@ -29,7 +29,7 @@ notepad-panel#notepad.aPanel.dockright(class="{opened: opened}")
         div(show="{tab === 'modulespages'}")
             docs-panel
 
-    button.vertical.dockleft(onclick="{notepadToggle}")
+    button.vertical.dockleft(onclick="{notepadToggle}" ref="toggleButton")
         svg.feather
             use(xlink:href="#{opened? 'chevron-right' : 'chevron-left'}")
     script.
@@ -59,7 +59,9 @@ notepad-panel#notepad.aPanel.dockright(class="{opened: opened}")
             setTimeout(() => {
                 if (this.tab && this.refs[this.tab] && this.refs[this.tab].codeEditor) {
                     this.refs[this.tab].codeEditor.layout();
-                    this.refs[this.tab].codeEditor.focus();
+                    if (this.opened) {
+                        this.refs[this.tab].codeEditor.focus();
+                    }
                 }
             }, 0);
         });

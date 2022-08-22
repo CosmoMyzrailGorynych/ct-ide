@@ -286,6 +286,9 @@
         drawDebugGraphic(absolute) {
             const shape = this._shape || getSSCDShape(this);
             const g = this.$cDebugCollision;
+            const inverse = this.transform.localTransform.clone().invert();
+            this.$cDebugCollision.transform.setFromMatrix(inverse);
+            this.$cDebugCollision.position.set(0, 0);
             let color = 0x00ffff;
             if (this instanceof Copy) {
                 color = 0x0066ff;

@@ -1,13 +1,4 @@
 declare namespace ct {
-    namespace types {
-        /**
-         * Works like ct.types.each, but only for the specified Copy: it applies a given function to a copy (executes against it).
-         * @param {Copy} copy The Copy to apply a function to
-         * @param {function} func The function that needs to be applied
-         */
-        var _with: function(Copy, function): void;
-        export {_with as with};
-    }
     namespace rooms {
         /**
          * Switches to a room with a given name.

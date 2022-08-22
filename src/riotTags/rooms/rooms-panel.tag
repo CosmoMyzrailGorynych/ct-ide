@@ -15,7 +15,7 @@ rooms-panel.aPanel.aView
             svg.feather
                 use(xlink:href="#plus")
             span {parent.voc.create}
-    room-editor(if="{editing}" room="{editingRoom}")
+    room-editor(if="{editing}" room="{editingRoom}" onclose="{closeRoomEditor}")
     context-menu(menu="{roomMenu}" ref="roomMenu")
     script.
         const generateGUID = require('./data/node_requires/generateGUID');
@@ -43,6 +43,11 @@ rooms-panel.aPanel.aView
         this.openRoom = room => () => {
             this.editingRoom = room;
             this.editing = true;
+        };
+        this.closeRoomEditor = () => {
+            this.editingRoom = void 0;
+            this.editing = false;
+            this.update();
         };
 
         this.roomMenu = {
@@ -72,14 +77,16 @@ rooms-panel.aPanel.aView
                     .prompt(window.languageJSON.common.newName)
                     .then(e => {
                         if (e.inputValue !== '' && e.buttonClicked !== 'cancel') {
-                            var guid = generateGUID(),
-                                thumbnail = guid.split('-').pop();
+                            var guid = generateGUID();
                             var newRoom = JSON.parse(JSON.stringify(this.editingRoom));
                             newRoom.name = e.inputValue;
                             global.currentProject.rooms.push(newRoom);
                             newRoom.uid = guid;
-                            newRoom.thumbnail = thumbnail;
-                            fs.linkSync(global.projdir + '/img/r' + this.editingRoom.thumbnail + '.png', global.projdir + '/img/r' + thumbnail + '.png');
+                            try {
+                                fs.linkSync(`${global.projdir}/img/r${this.editingRoom.uid}.png`, `${global.projdir}/img/r${guid}.png`);
+                            } catch (e) {
+                                fs.linkSync('./data/img/notexture.png', `${global.projdir}/img/r${guid}.png`);
+                            }
                             this.refs.rooms.updateList();
                             this.update();
                         }
@@ -132,17 +139,8 @@ rooms-panel.aPanel.aView
             if (room.uid === window.currentProject.startroom) {
                 icons.push('play');
             }
-            if (room.oncreate.trim()) {
-                icons.push('sun');
-            }
-            if (room.onstep.trim()) {
-                icons.push('skip-forward');
-            }
-            if (room.ondraw.trim()) {
-                icons.push('edit-2');
-            }
-            if (room.onleave.trim()) {
-                icons.push('trash');
+            if (room.extends && room.extends.isUi) {
+                icons.push('ui');
             }
             return icons;
         };

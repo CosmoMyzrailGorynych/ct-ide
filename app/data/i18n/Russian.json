@@ -125,7 +125,9 @@
                 "скелетных спрайта",
                 "скелетных спрайтов"
             ]
-        }
+        },
+        "next": "",
+        "previous": ""
     },
     "colorPicker": {
         "old": "Старый",
@@ -587,7 +589,10 @@
                 "SpringStream": "Весенний ручей",
                 "LucasDracula": "Люкас Дракула",
                 "Horizon": "Горизонт",
-                "HCBlack": "Высококонтрастная чёрная"
+                "HCBlack": "Высококонтрастная чёрная",
+                "RosePine": "Rosé Pine",
+                "RosePineMoon": "Rosé Pine Лунная",
+                "RosePineDawn": "Rosé Pine Рассветная"
             },
             "prideMode": "Прайд-режим",
             "codeFontDefault": "По умолчанию (Iosevka Light)",
@@ -603,7 +608,8 @@
             "translateToYourLanguage": "Переведите ct.js на свой язык!",
             "disableSounds": "Отключить звуки интерфейса",
             "changeDataFolder": "Изменить папку данных ct.js",
-            "forceProductionForDebug": "  Включить релизные функции для дебаг-экспортов"
+            "forceProductionForDebug": "  Включить релизные функции для дебаг-экспортов",
+            "altTemplateLayout": "Альт. вёрстка редактора шаблонов"
         },
         "project": {
             "save": "Сохранить проект",
@@ -639,14 +645,36 @@
         "ui": "Интерфейс",
         "fx": "Эффекты",
         "restart": "Перезапустить",
-        "templates": "Шаблоны"
-    },
-    "copyCustomProperties": {
-        "customProperties": "Пользовательские поля",
-        "addProperty": "Добавить поле",
-        "property": "Имя поля",
-        "value": "Значение",
-        "delete": "Удалить"
+        "templates": "Шаблоны",
+        "tour": {
+            "header": "",
+            "aboutTour": "",
+            "helpPanel": "",
+            "helpPanelTabs": "",
+            "projectResources": "",
+            "tabTextures": "",
+            "tabTexturesImport": "",
+            "tabTexturesGallery": "",
+            "tabTexturesClipboard": "",
+            "tabTexturesPlaceholders": "",
+            "tabTemplates": "",
+            "tabRooms": "",
+            "tabSounds": "",
+            "tabSoundsImport": "",
+            "tabSoundsGallery": "",
+            "tabSoundsRecord": "",
+            "tabInterlude": "",
+            "tabUI": "",
+            "tabFX": "",
+            "tabProject": "",
+            "tabProjectModules": "",
+            "tabProjectModuleDocs": "",
+            "tabMainMenu": "",
+            "tabMainMenuSettings": "",
+            "tabMainMenuMeta": "",
+            "helpPanelReminder": "",
+            "buttonStartTutorial": ""
+        }
     },
     "assetViewer": {
         "addNewGroup": "Новая группа",
@@ -717,7 +745,13 @@
         "copyProperties": {
             "position": "Позиция",
             "rotation": "Поворот",
-            "scale": "Размер"
+            "scale": "Размер",
+            "multipleValues": ""
+        },
+        "copyCustomProperties": {
+            "addProperty": "Добавить поле",
+            "property": "Имя поля",
+            "value": "Значение"
         },
         "customProperties": "Пользовательские поля",
         "restrictCamera": "Ограничить камеру в прямоугольнике",
@@ -737,7 +771,19 @@
         "deleteTiles": "Удалить плитки",
         "moveTilesToLayer": "Переместить в другой слой",
         "shiftTiles": "Сместить плитки",
-        "changeCopyRotation": "Повернуть"
+        "changeCopyRotation": "Повернуть",
+        "simulate": "",
+        "toggleDiagonalGrid": "",
+        "changeGridSize": "",
+        "xrayMode": "",
+        "colorizeTileLayers": "",
+        "tools": {
+            "select": "",
+            "addCopies": "",
+            "addTiles": "",
+            "manageBackgrounds": "",
+            "roomProperties": ""
+        }
     },
     "styleView": {
         "active": "Активно?",
@@ -870,7 +916,9 @@
             "add": "Добавить (выгорание)",
             "multiply": "Умножить (затемнение)",
             "screen": "Экран (осветление)"
-        }
+        },
+        "loopAnimation": "Цикличная анимация",
+        "animationFPS": ""
     },
     "assetInput": {
         "changeAsset": "Нажмите, чтобы заменить ассет",
@@ -890,5 +938,71 @@
         "visitAuthorsItch": "Посетить itch.io автора",
         "visitAuthorsTwitter": "Посетить Twitter автора",
         "tipAuthor": "Подарите денюжку автору за их труд :D"
+    },
+    "scriptables": {
+        "addEvent": "Добавить событие",
+        "removeEvent": "Удалить событие",
+        "removeEventConfirm": "Ты точно хочешь удалить это событие? Это нельзя будет отменить!",
+        "changeArguments": "Изменить аргументы",
+        "eventAlreadyExists": "Уже есть точно такое же событие!",
+        "localEventVars": "Локальные переменные",
+        "createEventHint": "Создай первое событие в колонке слева, а затем напиши здесь код",
+        "coreEventsCategories": {
+            "lifecycle": "Жизненный цикл",
+            "actions": "Действия",
+            "pointer": "События указателя",
+            "misc": "Разное",
+            "animation": "Анимация",
+            "timers": ""
+        },
+        "coreEvents": {
+            "OnCreate": "Создание",
+            "OnRoomStart": "Старт комнаты",
+            "OnStep": "Начало кадра",
+            "OnDraw": "Конец кадра",
+            "OnDestroy": "Уничтожение",
+            "OnRoomEnd": "Конец комнаты",
+            "OnPointerClick": "Клик",
+            "OnPointerSecondaryClick": "Альт. клик",
+            "OnPointerEnter": "Наведение указателем",
+            "OnPointerLeave": "Выход указателя",
+            "OnPointerDown": "Нажатие указателем",
+            "OnPointerUp": "Конец нажатия указателем",
+            "OnPointerUpOutside": "Конец нажатия снаружи",
+            "OnPointerWheel": "Колёсико",
+            "OnActionPress": "Нажатие действия",
+            "OnActionRelease": "Конец нажатия действия",
+            "OnActionDown": "Действие нажато",
+            "OnFrameChange": "Смена кадра",
+            "OnAnimationLoop": "Перезапуск анимации",
+            "OnAnimationComplete": "Конец анимации",
+            "Timer": ""
+        },
+        "coreParameterizedNames": {
+            "OnActionPress": "При нажатии %%action%%",
+            "OnActionRelease": "Конец нажатия %%action%%",
+            "OnActionDown": "%%action%% зажато"
+        },
+        "coreEventsArguments": {
+            "action": "Действие"
+        },
+        "coreEventsLocals": {
+            "OnActionDown_value": "Текущее значение действия",
+            "OnActionPress_value": ""
+        },
+        "coreEventsDescriptions": {
+            "OnCreate": "Срабатывает при создании копии.",
+            "OnRoomStart": "Срабатывает при создании комнаты — во время перехода или при её добавления как слоя.",
+            "OnStep": "Срабатывает вначале каждого кадра.",
+            "OnDraw": "Срабатывает в конце каждого кадра. Хороше место для апдейта анимации.",
+            "OnDestroy": "Срабатывает в середине кадра при удалении копии.",
+            "OnRoomEnd": "Срабатывает перед переходом в другую комнату, или когда эта комната была удалена как слой.",
+            "OnActionPress": "Срабатывает, когда действие становится активно — нажатиями, кликом, движением джойстиков и т.п.",
+            "OnActionRelease": "Срабатывает, когда действие перестаёт быть активно — когда отпускают клавиши, джойстики и т.п.",
+            "OnActionDown": "Срабатывает каждый кадр, пока методы ввода этого действия активны.",
+            "OnAnimationLoop": "Срабатывает каждый раз, когда цикличная анимация подходит к концу.",
+            "OnAnimationComplete": "Срабатывает один раз, когда нецикличная анимация заканчивается.",
+            "Timer": ""
+        }
     }
 }

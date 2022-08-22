@@ -1,4 +1,4 @@
-ctjsVersion: 2.0.0
+ctjsVersion: 2.2.0
 notes: >-
   There is a number of interesting places to start learning the demo:
 
@@ -163,179 +163,192 @@ skeletons: []
 templates:
   - name: TheCat
     depth: 0
-    oncreate: ''
-    onstep: ''
-    ondraw: ''
-    ondestroy: ''
     uid: 9e7aec96-1ad3-4679-a248-01180284e78e
     texture: ec75835b-2afd-4f96-9373-804b4f80a84d
     extends: {}
-    lastmod: 1648093577260
+    lastmod: 1661094209998
+    events: []
+    type: template
+    loopAnimation: true
   - name: OptionButton
     depth: 0
-    oncreate: |-
-      this.text = new PIXI.Text(this.option, {
-          fill: 0x446ADB,
-          fontWeight: 600,
-          fontSize: 32,
-          wordWrap: true,
-          wordWrapWidth: 900,
-          align: 'center'
-      });
-      this.text.anchor.x = this.text.anchor.y = 0.5;
-      this.addChild(this.text);
-
-      this.scale.x = this.scale.y = 0;
-      ct.tween.add({
-          obj: this.scale,
-          fields: {
-              x: 1,
-              y: 1
-          },
-          duration: 350,
-          curve: ct.tween.easeOutQuad
-      });
-          
-    onstep: |-
-      if (ct.pointer.hovers(this)) {
-          if (ct.actions.Press.pressed) {
-              ct.room.story.say(this.option);
-          }
-      }
-    ondraw: ''
-    ondestroy: ''
     uid: cf5c44b2-f55a-4e18-a941-f7cdf5aecd0f
     texture: e0cbccef-93ee-4c8a-ab19-4fcef639963c
     extends: {}
-    lastmod: 1648093202395
+    lastmod: 1661094187046
+    events:
+      - lib: core
+        arguments: {}
+        code: |-
+          this.text = new PIXI.Text(this.option, {
+              fill: 0x446ADB,
+              fontWeight: 600,
+              fontSize: 32,
+              wordWrap: true,
+              wordWrapWidth: 900,
+              align: 'center'
+          });
+          this.text.anchor.x = this.text.anchor.y = 0.5;
+          this.addChild(this.text);
+
+          this.scale.x = this.scale.y = 0;
+          ct.tween.add({
+              obj: this.scale,
+              fields: {
+                  x: 1,
+                  y: 1
+              },
+              duration: 350,
+              curve: ct.tween.easeOutQuad
+          });
+              
+        eventKey: OnCreate
+      - eventKey: OnPointerClick
+        code: ct.room.story.say(this.option);
+        arguments: {}
+        lib: core
+    type: template
+    loopAnimation: true
   - name: NextButton
     depth: 0
-    oncreate: |-
-      this.text = new PIXI.Text(this.option, {
-          fill: 0x446ADB,
-          fontWeight: 600,
-          fontSize: 32,
-          wordWrap: true,
-          wordWrapWidth: 900,
-          align: 'center'
-      });
-      this.text.anchor.x = this.text.anchor.y = 0.5;
-      this.addChild(this.text);
-
-      this.scale.x = this.scale.y = 0;
-      ct.tween.add({
-          obj: this.scale,
-          fields: {
-              x: 1,
-              y: 1
-          },
-          duration: 350,
-          curve: ct.tween.easeOutQuad
-      });
-          
-    onstep: |-
-      if (ct.pointer.hovers(this)) {
-          if (ct.actions.Press.pressed) {
-              ct.room.story.next();
-              this.kill = true;
-          }
-      }
-    ondraw: ''
-    ondestroy: ''
     uid: 4340a6a4-65fa-4bcf-b950-38716097f29e
     texture: e0cbccef-93ee-4c8a-ab19-4fcef639963c
     extends: {}
-    lastmod: 1648093554744
+    lastmod: 1661094168112
+    events:
+      - lib: core
+        arguments: {}
+        code: |-
+          this.text = new PIXI.Text(this.option, {
+              fill: 0x446ADB,
+              fontWeight: 600,
+              fontSize: 32,
+              wordWrap: true,
+              wordWrapWidth: 900,
+              align: 'center'
+          });
+          this.text.anchor.x = this.text.anchor.y = 0.5;
+          this.addChild(this.text);
+
+          this.scale.x = this.scale.y = 0;
+          ct.tween.add({
+              obj: this.scale,
+              fields: {
+                  x: 1,
+                  y: 1
+              },
+              duration: 350,
+              curve: ct.tween.easeOutQuad
+          });
+              
+        eventKey: OnCreate
+      - eventKey: OnPointerClick
+        code: |-
+          ct.room.story.next();
+          this.kill = true;
+        arguments: {}
+        lib: core
+    type: template
+    loopAnimation: true
   - name: Blurb
     depth: 0
-    oncreate: |-
-      this.text = new PIXI.Text(this.blurb, {
-          fill: this.blurbColor || 0x446ADB,
-          fontSize: 32,
-          wordWrap: true,
-          wordWrapWidth: this.blurbWidth || 1024
-      });
-      this.addChild(this.text);
-      this.alpha = 0;
-      this.y += 50;
-
-      ct.tween.add({
-          obj: this,
-          fields: {
-              y: this.y - 50,
-              alpha: 1
-          },
-          duration: 500,
-          curve: ct.tween.easeOutQuad
-      })
-      .then(() => {
-          ct.room.story.next();
-      });
-    onstep: ''
-    ondraw: ''
-    ondestroy: ''
     uid: 04a0aea0-f448-4920-97ad-f98906ac0d7c
     texture: -1
     extends: {}
-    lastmod: 1648093197419
+    lastmod: 1661094216534
+    events:
+      - lib: core
+        arguments: {}
+        code: |-
+          this.text = new PIXI.Text(this.blurb, {
+              fill: this.blurbColor || 0x446ADB,
+              fontSize: 32,
+              wordWrap: true,
+              wordWrapWidth: this.blurbWidth || 1024
+          });
+          this.addChild(this.text);
+          this.alpha = 0;
+          this.y += 50;
+
+          ct.tween.add({
+              obj: this,
+              fields: {
+                  y: this.y - 50,
+                  alpha: 1
+              },
+              duration: 500,
+              curve: ct.tween.easeOutQuad
+          })
+          .then(() => {
+              ct.room.story.next();
+          });
+        eventKey: OnCreate
+    type: template
+    loopAnimation: true
   - name: RestartButton
     depth: 0
-    oncreate: |-
-      this.text = new PIXI.Text('Restart', {
-          fill: 0x446ADB,
-          fontWeight: 600,
-          fontSize: 32,
-          wordWrap: true,
-          wordWrapWidth: 900,
-          align: 'center'
-      });
-      this.text.anchor.x = this.text.anchor.y = 0.5;
-      this.addChild(this.text);
-
-      this.scale.x = this.scale.y = 0;
-      ct.tween.add({
-          obj: this.scale,
-          fields: {
-              x: 1,
-              y: 1
-          },
-          duration: 350,
-          curve: ct.tween.easeOutQuad
-      });
-          
-    onstep: |-
-      if (ct.pointer.hovers(this)) {
-          if (ct.actions.Press.pressed) {
-              ct.rooms.switch(ct.room.name);
-              this.kill = true;
-          }
-      }
-    ondraw: ''
-    ondestroy: ''
     uid: 9a5d6ecd-82b4-4b26-827b-08904fbaf962
     texture: e0cbccef-93ee-4c8a-ab19-4fcef639963c
     extends: {}
-    lastmod: 1648093204512
+    lastmod: 1661094207455
+    events:
+      - lib: core
+        arguments: {}
+        code: |-
+          this.text = new PIXI.Text('Restart', {
+              fill: 0x446ADB,
+              fontWeight: 600,
+              fontSize: 32,
+              wordWrap: true,
+              wordWrapWidth: 900,
+              align: 'center'
+          });
+          this.text.anchor.x = this.text.anchor.y = 0.5;
+          this.addChild(this.text);
+
+          this.scale.x = this.scale.y = 0;
+          ct.tween.add({
+              obj: this.scale,
+              fields: {
+                  x: 1,
+                  y: 1
+              },
+              duration: 350,
+              curve: ct.tween.easeOutQuad
+          });
+              
+        eventKey: OnCreate
+      - eventKey: OnPointerClick
+        code: |-
+          ct.rooms.switch(ct.room.name);
+          this.kill = true;
+        arguments: {}
+        lib: core
+    type: template
+    loopAnimation: true
   - name: TheGirl
     depth: 0
-    oncreate: |-
-      ct.tween.add({
-          obj: this,
-          fields: {
-              x: ct.camera.width * 0.15
-          },
-          duration: 500,
-          curve: ct.tween.easeOutQuad
-      });
-
-      this.scale.x = this.scale.y = 1.2;
-    onstep: ''
-    ondraw: ''
-    ondestroy: ''
     uid: 3c91a07b-0497-4623-a244-071a4e1951d8
     texture: bc65f552-4e0c-407e-aee0-9dedd834b727
     extends: {}
-    lastmod: 1648093574649
+    lastmod: 1661094213542
+    events:
+      - lib: core
+        arguments: {}
+        code: |-
+          ct.tween.add({
+              obj: this,
+              fields: {
+                  x: ct.camera.width * 0.15
+              },
+              duration: 500,
+              curve: ct.tween.easeOutQuad
+          });
+
+          this.scale.x = this.scale.y = 1.2;
+        eventKey: OnCreate
+    type: template
+    loopAnimation: true
 sounds:
   - name: Hehe
     uid: 0bd4a1eb-b5f1-4047-a8dd-56feca282803
@@ -344,25 +357,6 @@ sounds:
 styles: []
 rooms:
   - name: Main
-    oncreate: |-
-      var latestBlurb; // we will need it to accurately position text lines
-
-      ct.yarn.openFromFile('theStory.json?q=' + Math.random())
-      .then(story => {
-          this.story = story;
-          storyEngine(story); // see it in the Settings tab -> Scripts
-      });
-
-
-      this.nodeTitle = new PIXI.Text('Loading the awesomeness…', {
-          fill: 0x446ADB,
-          fontSize: 24,
-          wordWrap: true,
-          wordWrapWidth: 1024
-      });
-      this.nodeTitle.x = 100;
-      this.nodeTitle.y = 50;
-      this.addChild(this.nodeTitle);
     onstep: ''
     ondraw: ''
     onleave: ''
@@ -372,41 +366,54 @@ rooms:
     copies:
       - x: 1536
         'y': 576
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 9e7aec96-1ad3-4679-a248-01180284e78e
-        tx: 0.75
-        ty: 0.75
         exts: {}
+        customProperties: {}
     tiles:
       - depth: -10
         tiles: []
         extends: {}
+        hidden: false
     uid: d21d2804-d690-4c65-9657-7a1486b7f1d9
     thumbnail: 7a1486b7f1d9
     gridX: 64
     gridY: 64
-    lastmod: 1602729464201
+    lastmod: 1661072102178
     extends: {}
     backgroundColor: '#FFFFFF'
+    events:
+      - lib: core
+        arguments: {}
+        code: |-
+          var latestBlurb; // we will need it to accurately position text lines
+
+          ct.yarn.openFromFile('theStory.json?q=' + Math.random())
+          .then(story => {
+              this.story = story;
+              storyEngine(story); // see it in the Settings tab -> Scripts
+          });
+
+
+          this.nodeTitle = new PIXI.Text('Loading the awesomeness…', {
+              fill: 0x446ADB,
+              fontSize: 24,
+              wordWrap: true,
+              wordWrapWidth: 1024
+          });
+          this.nodeTitle.x = 100;
+          this.nodeTitle.y = 50;
+          this.addChild(this.nodeTitle);
+        eventKey: OnRoomStart
+    type: room
+    simulate: true
+    isUi: false
   - name: Micro
-    oncreate: |-
-      var latestBlurb; // we will need it to accurately position text lines
-
-      ct.yarn.openFromFile('micro.json?q=' + Math.random())
-      .then(story => {
-          this.story = story;
-          storyEngine(story); // see it in the Settings tab -> Scripts
-      });
-
-
-      this.nodeTitle = new PIXI.Text('Loading the awesomeness…', {
-          fill: 0x446ADB,
-          fontSize: 24,
-          wordWrap: true,
-          wordWrapWidth: 1024
-      });
-      this.nodeTitle.x = 100;
-      this.nodeTitle.y = 50;
-      this.addChild(this.nodeTitle);
     onstep: ''
     ondraw: ''
     onleave: ''
@@ -416,41 +423,54 @@ rooms:
     copies:
       - x: 1536
         'y': 448
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 9e7aec96-1ad3-4679-a248-01180284e78e
-        tx: 0.75
-        ty: 0.75
         exts: {}
+        customProperties: {}
     tiles:
       - depth: -10
         tiles: []
         extends: {}
+        hidden: false
     uid: cb9565fc-6666-4f0c-bc6c-b49f813ea9ce
     thumbnail: b49f813ea9ce
     gridX: 64
     gridY: 64
-    lastmod: 1602729449081
+    lastmod: 1661072103899
     extends: {}
     backgroundColor: '#FFFFFF'
+    events:
+      - lib: core
+        arguments: {}
+        code: |-
+          var latestBlurb; // we will need it to accurately position text lines
+
+          ct.yarn.openFromFile('micro.json?q=' + Math.random())
+          .then(story => {
+              this.story = story;
+              storyEngine(story); // see it in the Settings tab -> Scripts
+          });
+
+
+          this.nodeTitle = new PIXI.Text('Loading the awesomeness…', {
+              fill: 0x446ADB,
+              fontSize: 24,
+              wordWrap: true,
+              wordWrapWidth: 1024
+          });
+          this.nodeTitle.x = 100;
+          this.nodeTitle.y = 50;
+          this.addChild(this.nodeTitle);
+        eventKey: OnRoomStart
+    type: room
+    simulate: true
+    isUi: false
   - name: Stop
-    oncreate: |-
-      var latestBlurb; // we will need it to accurately position text lines
-
-      ct.yarn.openFromFile('stop.json?q=' + Math.random())
-      .then(story => {
-          this.story = story;
-          storyEngine(story); // see it in the Settings tab -> Scripts
-      });
-
-
-      this.nodeTitle = new PIXI.Text('Loading the awesomeness…', {
-          fill: 0x446ADB,
-          fontSize: 24,
-          wordWrap: true,
-          wordWrapWidth: 1024
-      });
-      this.nodeTitle.x = 100;
-      this.nodeTitle.y = 50;
-      this.addChild(this.nodeTitle);
     onstep: ''
     ondraw: ''
     onleave: ''
@@ -460,41 +480,54 @@ rooms:
     copies:
       - x: 1536
         'y': 448
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 9e7aec96-1ad3-4679-a248-01180284e78e
-        tx: 0.75
-        ty: 0.75
         exts: {}
+        customProperties: {}
     tiles:
       - depth: -10
         tiles: []
         extends: {}
+        hidden: false
     uid: 95f73a99-6402-4848-81a7-d96488130d15
     thumbnail: d96488130d15
     gridX: 64
     gridY: 64
-    lastmod: 1602729455043
+    lastmod: 1661072105674
     extends: {}
     backgroundColor: '#FFFFFF'
+    events:
+      - lib: core
+        arguments: {}
+        code: |-
+          var latestBlurb; // we will need it to accurately position text lines
+
+          ct.yarn.openFromFile('stop.json?q=' + Math.random())
+          .then(story => {
+              this.story = story;
+              storyEngine(story); // see it in the Settings tab -> Scripts
+          });
+
+
+          this.nodeTitle = new PIXI.Text('Loading the awesomeness…', {
+              fill: 0x446ADB,
+              fontSize: 24,
+              wordWrap: true,
+              wordWrapWidth: 1024
+          });
+          this.nodeTitle.x = 100;
+          this.nodeTitle.y = 50;
+          this.addChild(this.nodeTitle);
+        eventKey: OnRoomStart
+    type: room
+    simulate: true
+    isUi: false
   - name: Wait
-    oncreate: |-
-      var latestBlurb; // we will need it to accurately position text lines
-
-      ct.yarn.openFromFile('wait.json?q=' + Math.random())
-      .then(story => {
-          this.story = story;
-          storyEngine(story); // see it in the Settings tab -> Scripts
-      });
-
-
-      this.nodeTitle = new PIXI.Text('Loading the awesomeness…', {
-          fill: 0x446ADB,
-          fontSize: 24,
-          wordWrap: true,
-          wordWrapWidth: 1024
-      });
-      this.nodeTitle.x = 100;
-      this.nodeTitle.y = 50;
-      this.addChild(this.nodeTitle);
     onstep: ''
     ondraw: ''
     onleave: ''
@@ -504,21 +537,53 @@ rooms:
     copies:
       - x: 1536
         'y': 448
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 9e7aec96-1ad3-4679-a248-01180284e78e
-        tx: 0.75
-        ty: 0.75
         exts: {}
+        customProperties: {}
     tiles:
       - depth: -10
         tiles: []
         extends: {}
+        hidden: false
     uid: 48b25b49-58b8-44ee-b4c5-cc6b9ea24c38
     thumbnail: cc6b9ea24c38
     gridX: 64
     gridY: 64
-    lastmod: 1602729461377
+    lastmod: 1661072107514
     extends: {}
     backgroundColor: '#FFFFFF'
+    events:
+      - lib: core
+        arguments: {}
+        code: |-
+          var latestBlurb; // we will need it to accurately position text lines
+
+          ct.yarn.openFromFile('wait.json?q=' + Math.random())
+          .then(story => {
+              this.story = story;
+              storyEngine(story); // see it in the Settings tab -> Scripts
+          });
+
+
+          this.nodeTitle = new PIXI.Text('Loading the awesomeness…', {
+              fill: 0x446ADB,
+              fontSize: 24,
+              wordWrap: true,
+              wordWrapWidth: 1024
+          });
+          this.nodeTitle.x = 100;
+          this.nodeTitle.y = 50;
+          this.addChild(this.nodeTitle);
+        eventKey: OnRoomStart
+    type: room
+    simulate: true
+    isUi: false
 actions:
   - name: Press
     methods:

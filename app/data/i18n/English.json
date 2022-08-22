@@ -28,6 +28,7 @@
         "filter": "Filter:",
         "loading": "Loading…",
         "name": "Name:",
+        "next": "Next",
         "no": "No",
         "none": "None",
         "nothingToShowFiller": "There is nothing to show here!",
@@ -35,6 +36,7 @@
         "open": "Open",
         "paste": "Paste",
         "pastedFromClipboard": "Pasted from clipboard",
+        "previous": "Previous",
         "rename": "Rename",
         "required": "Required",
         "save": "Save",
@@ -48,6 +50,8 @@
         "zoom": "Zoom",
         "zoomIn": "Zoom in",
         "zoomOut": "Zoom out",
+        "undo": "Undo",
+        "redo": "Redo",
         "fieldTypes": {
             "checkbox": "Checkbox",
             "code": "Codebox",
@@ -158,13 +162,6 @@
         "old": "Old",
         "projectPalette": "Project's Palette"
     },
-    "copyCustomProperties": {
-        "customProperties": "Custom Properties",
-        "addProperty": "Add Property",
-        "property": "Property",
-        "value": "Value",
-        "delete": "Delete"
-    },
     "curveEditor": {
         "curveLineHint": "Click the curve to add a point",
         "dragPointHint": "Drag to move the point, right-click to delete it",
@@ -260,6 +257,7 @@
         "itch": "Ct.js' store page on itch.io",
         "vkontakte": "Vkontakte public community",
         "patreon": "Support ct.js on Patreon!",
+        "boosty": "Support ct.js on Boosty!",
         "createOrBrowseJunction": "or"
     },
     "onboarding": {
@@ -634,7 +632,10 @@
                 "SpringStream": "Spring Stream",
                 "LucasDracula": "Lucas Dracula",
                 "Horizon": "Horizon",
-                "HCBlack": "High-contrast Black"
+                "HCBlack": "High-contrast Black",
+                "RosePine": "Rosé Pine",
+                "RosePineMoon": "Rosé Pine Moon",
+                "RosePineDawn": "Rosé Pine Dawn"
             },
             "prideMode": "Pride mode",
             "language": "Language",
@@ -647,6 +648,7 @@
             "codeFont": "Font for code",
             "codeLigatures": "Ligatures",
             "codeDense": "Dense layout",
+            "altTemplateLayout": "Alternative layout for template editor",
             "disableSounds": "Disable UI sounds",
             "changeDataFolder": "Set data folder location",
             "forceProductionForDebug": "Force production tasks for debug exports"
@@ -685,16 +687,45 @@
         "sounds": "Sounds",
         "ui": "UI",
         "fx": "FX",
-        "templates": "Templates"
+        "templates": "Templates",
+        "tour": {
+            "header": "Ct.js overview",
+            "aboutTour": "Welcome to ct.js! This little tour will show you the main controls in this editor, so you know how to configure ct.js and create new assets.",
+            "helpPanel": "First of all, note this sneaky button. It is very important for learning ct.js!",
+            "helpPanelTabs": "This panel stores all the official docs and tutorials for ct.js and its modules, and also has two notepads for your records.<p>Global notepad is shared between projects and is saved on your device. Project's notepad is stored inside your project.",
+            "projectResources": "Now, every project has assets of several types. Every asset type belongs to its own tab. Let's check out the most important tabs.",
+            "tabTextures": "Textures are images that can be used for your interactive objects (which are called Copies), backgrounds, and special effects. Textures don't do anything on their own but are definitely a needed asset type.",
+            "tabTexturesImport": "You can import textures from your file system…",
+            "tabTexturesGallery": "…or import ready-made textures from the built-in library.",
+            "tabTexturesClipboard": "This button pastes copied images from clipboard. It is quite handy while working with image editors!",
+            "tabTexturesPlaceholders": "You can also generate simple placeholder graphics with this tool.",
+            "tabTemplates": "Templates are used to create copies — interactive objects that you place in your levels. Any interactive object in ct.js is created from one of your templates. They use your textures, and you define gameplay logic by creating events in them. Once you've created a template, you can run its own in-deep tour in the template editor.",
+            "tabRooms": "Another most important tab is for rooms. Rooms can also be called as levels or scenes in which you place your copies. Rooms can also have their own events and backgrounds.",
+            "tabSounds": "Sounds, I guess, is the most obvious tab.",
+            "tabSoundsImport": "You can create new sounds with this button…",
+            "tabSoundsGallery": "…import them from the built-in sound library…",
+            "tabSoundsRecord": "…or even record them with your microphone!",
+            "tabInterlude": "There are also two tabs for more advanced assets.",
+            "tabUI": "UI tab manages fonts and text styles. Bundling your fonts with the game is important for it to look consistently across devices. Text styles have a visual editor for making style presets. They also produce code for creation of such labels in-game.",
+            "tabFX": "The FX tab has an editor for particle systems — special graphical effects for explosions, magic, smoke, rain, all this kind of stuff.",
+            "tabProject": "That's it for the assets! But besides these, your project also has a bunch of settings for rendering, branding, packaging and whatnot.",
+            "tabProjectModules": "Ct.js is modular, and your projects may need additional modules that can be installed here.",
+            "tabProjectModuleDocs": "All the docs for enabled modules can be found here.",
+            "tabMainMenu": "Ct.js itself has plenty of options, which are stored in its main menu.",
+            "tabMainMenuSettings": "You can change the language and how ct.js looks in the Settings section.",
+            "tabMainMenuMeta": "If you'll need help later, you will be able to find all the official hubs in the Meta panel.",
+            "helpPanelReminder": "Also don't forget about the built-in docs! We do recommend completing official tutorials before starting your own projects.",
+            "buttonStartTutorial": "Open tutorials"
+        }
     },
     "roomBackgrounds": {
         "add": "Add a Background",
         "depth": "Depth:",
-        "movement": "Movement speed (X, Y):",
-        "parallax": "Parallax (X, Y):",
+        "movement": "Movement speed:",
+        "parallax": "Parallax:",
         "repeat": "Repeat:",
-        "scale": "Scaling (X, Y):",
-        "shift": "Shift (X, Y):",
+        "scale": "Scaling:",
+        "shift": "Shift:",
         "notBackgroundTextureWarning": "This texture is not marked as a background. It will have gaps when exported.",
         "fixBackground": "Fix it.",
         "dismissWarning": "Dismiss."
@@ -710,7 +741,14 @@
         "width": "View width:",
         "height": "View height:",
         "isUi": "Is a UI layer?",
-        "events": "Room events",
+        "simulate": "Simulate",
+        "grid": "Grid",
+        "toggleDiagonalGrid": "Diagonal grid",
+        "changeGridSize": "Change cell size",
+        "events": "Events",
+        "gridOff": "Disable grid",
+        "xrayMode": "X-ray mode",
+        "colorizeTileLayers": "Colorize tile layers",
         "copies": "Copies",
         "backgrounds": "Backgrounds",
         "backgroundColor": "Background color:",
@@ -719,7 +757,6 @@
         "add": "Add",
         "none": "Nothing",
         "done": "Done",
-        "grid": "Set grid",
         "hotkeysNotice": "Ctrl = Delete, Alt = No grid, Shift = Multiple",
         "hotkeysNoticeMovement": "Ctrl = Delete, Shift = Select",
         "shift": "Shift everything",
@@ -734,17 +771,26 @@
         "selectAndMove": "Select and Move",
         "customProperties": "Custom Properties",
         "findTileset": "Find a tileset",
+        "resetView": "Reset view",
         "copyProperties": {
             "position": "Position",
             "rotation": "Rotation",
-            "scale": "Scale"
+            "scale": "Scale",
+            "opacity": "Opacity",
+            "tint": "Tint",
+            "multipleValues": "(Multiple)"
+        },
+        "copyCustomProperties": {
+            "addProperty": "Add Property",
+            "property": "Property",
+            "value": "Value",
+            "nameOccupied": "This property is used by ct.js! You should come up with a different name."
         },
         "restrictCamera": "Keep camera in a rectangle",
         "minimumX": "Min X",
         "minimumY": "Min Y",
         "maximumX": "Max X",
         "maximumY": "Max Y",
-        "gridOff": "Disable grid",
         "gridSize": "Grid size:",
         "toCenter": "To center",
         "shiftLabel": "Shift by:",
@@ -756,7 +802,14 @@
         "deleteTiles": "Delete tiles",
         "moveTilesToLayer": "Move to layer",
         "shiftTiles": "Shift tiles",
-        "changeCopyRotation": "Rotate"
+        "changeCopyRotation": "Rotate",
+        "tools": {
+            "select": "Select tool",
+            "addCopies": "Add copies",
+            "addTiles": "Add tiles",
+            "manageBackgrounds": "Manage backgrounds",
+            "roomProperties": "Room properties"
+        }
     },
     "styleView": {
         "active": "Active",
@@ -864,7 +917,94 @@
         "typefaceName": "Typeface name:"
     },
     "licensePanel": {
-        "ctjsLicense": "Ct.js License (MIT)"
+        "ctjsLicense": "Ct.js License (MIT)",
+        "faq": "Frequently asked questions (non-normative section)",
+        "whoOwnsGamesQ": "Who owns games created in ct.js?",
+        "whoOwnsGamesA": "You and only you. Ct.js does not own anything you create in any way.",
+        "sellingGamesQ": "Can I sell games made in ct.js?",
+        "sellingGamesA": "Yes, you can sell your games and other projects, gather donations, and use your games in any other commercial applications.",
+        "possibleFeesQ": "Do I need to pay for ct.js? Will ct.js become paid someday?",
+        "possibleFeesA": "No, ct.js is free and will always be so. It doesn't have any hidden fees like Unity or Unreal Engine that require you paying after you earn a specific amount of money. Ct.js is open-source, and even if there will be any paid versions, the product you have now will always be accessible free of charge. You can send a donation or become a patron, though! It will help us pay bills and make ct.js better!",
+        "useInStudioQ": "Can I use ct.js in a studio or schools?",
+        "useInStudioA": "Sure, why not? Ct.js is open for personal, commercial, educational use, and whatnot. Just don't break the law, ok?",
+        "attributionQ": "Do I need to attribute ct.js or its developers? Can I disable its logo on the loading screen?",
+        "attributionA": "You can disable the ct.js logo, as the code of your game already has the necessary attributions.",
+        "attributionAAssets": "Some of the examples and demos may contain material that needs attribution, but that is already included in them.",
+        "theLicense": "The license (legal document)"
+    },
+    "scriptables": {
+        "addEvent": "Add an event",
+        "removeEvent": "Remove the event",
+        "removeEventConfirm": "Are you sure you want to remove this event? This can't be undone!",
+        "changeArguments": "Change arguments",
+        "eventAlreadyExists": "The same event already exists!",
+        "localEventVars": "Local variables",
+        "createEventHint": "Create your first event in the left column, and define your logic here",
+        "coreEventsCategories": {
+            "lifecycle": "Lifecycle",
+            "actions": "Actions",
+            "pointer": "Pointer events",
+            "misc": "Miscellaneous",
+            "animation": "Animation",
+            "timers": "Timers"
+        },
+        "coreEvents": {
+            "OnCreate": "Creation",
+            "OnRoomStart": "Room start",
+            "OnStep": "Frame start",
+            "OnDraw": "Frame end",
+            "OnDestroy": "Destruction",
+            "OnRoomEnd": "Room end",
+            "OnPointerClick": "Click",
+            "OnPointerSecondaryClick": "Secondary click",
+            "OnPointerEnter": "Pointer enter",
+            "OnPointerLeave": "Pointer leave",
+            "OnPointerDown": "Pointer down",
+            "OnPointerUp": "Pointer up",
+            "OnPointerUpOutside": "Pointer up (outside)",
+            "OnPointerWheel": "Wheel scroll",
+            "OnActionPress": "Action press",
+            "OnActionRelease": "Action release",
+            "OnActionDown": "Action down",
+            "OnFrameChange": "Frame change",
+            "OnAnimationLoop": "Animation loop",
+            "OnAnimationComplete": "Animation completed",
+            "Timer": "Timer $1"
+        },
+        "coreParameterizedNames": {
+            "OnActionPress": "On %%action%% press",
+            "OnActionRelease": "On %%action%% release",
+            "OnActionDown": "On %%action%% down",
+            "Timer1": "1 • %%name%% (Timer)",
+            "Timer2": "2 • %%name%% (Timer)",
+            "Timer3": "3 • %%name%% (Timer)",
+            "Timer4": "4 • %%name%% (Timer)",
+            "Timer5": "5 • %%name%% (Timer)",
+            "Timer6": "6 • %%name%% (Timer)"
+        },
+        "coreEventsArguments": {
+            "action": "Action",
+            "name": "Name",
+            "isUi": "UI event"
+        },
+        "coreEventsLocals": {
+            "OnActionDown_value": "Current action's value",
+            "OnActionPress_value": "Current action's value"
+        },
+        "coreEventsDescriptions": {
+            "OnCreate": "Triggers when your copy is created.",
+            "OnRoomStart": "Triggers when this room is created, either by switching to it or by adding it as a layer.",
+            "OnStep": "Happens at the beginning of every frame.",
+            "OnDraw": "Happens at the end of every frame. Good for animation updates.",
+            "OnDestroy": "Happens between \"frame start\" and \"frame end\" when this copy gets destroyed.",
+            "OnRoomEnd": "Triggers when you switch to another room, or when this room is removed after it was added as a layer.",
+            "OnActionPress": "Happens when an action's input becomes active — by pressing, clicking, flicking a joystick, etc.",
+            "OnActionRelease": "Happens when an action's input becomes inactive — by releasing buttons, resting joysticks, etc.",
+            "OnActionDown": "Runs every frame if an action's input is active.",
+            "OnAnimationLoop": "Fires every time an animation restarts.",
+            "OnAnimationComplete": "Fires once a non-looping animation finishes.",
+            "Timer": "Set the duration for this timer in seconds with this.timer$1 = 3;"
+        }
     },
     "templates": {
         "create": "Create"
@@ -883,7 +1023,9 @@
         "depth": "Depth:",
         "opacity": "Opacity:",
         "blendMode": "Blend mode:",
+        "animationFPS": "Animation FPS:",
         "playAnimationOnStart": "Play animation on start",
+        "loopAnimation": "Loop animation",
         "blendModes": {
             "normal": "Normal",
             "add": "Add (burn)",

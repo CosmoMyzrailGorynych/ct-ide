@@ -1,0 +1,66 @@
+@charset "utf-8"
+
+foreground = #575279 // text
+text = #575279 // text
+background = #fffaf3 // surface
+backgroundDeeper = #faf4ed // base
+shadows = #f2e9e1 // overlay
+
+borderLight = #cecacd // highlight high
+borderPale = #f2e9e1 // overlay
+borderBright = #f2e9e1 // overlay
+
+trans =
+    transition 0.35s ease all
+transshort =
+    transition 0.15s ease all
+shad =
+    box-shadow 0 0.1rem 0.2rem rgba(shadows, 0.5)
+shadamb =
+    box-shadow 0 0 0.35rem rgba(shadows, 0.5)
+
+fonts = font = 'Open Sans', sans-serif, serif
+font-mono = mono = Iosevka, monospace
+
+br = 0.2rem
+iconsize = 1.5rem
+
+act = #907aa9 // iris
+acttext = act
+accent1 = #d7827e // rose
+error = #b4637a // love
+red = error
+success = #286983 // pine
+green = success
+warning = #ea9d34 // gold
+orange = warning
+
+theme = 'RosePineDawn'
+themeDark = false
+themeThickBorders = false
+
+@require 'hvost.styl'
+
+@require '3rdParty/*.styl'
+@require './../../app/node_modules/highlight.js/styles/tomorrow.css'
+
+@require 'common.styl'
+@require 'inputs.styl'
+@require 'typography.styl'
+@require 'confetti.styl'
+@require 'buildingBlocks.styl'
+@require 'tabs.styl'
+
+@require 'tags/**/*.styl'
+
+input[type="text"],
+input[type="number"],
+input[type="url"],
+input[type="password"],
+select,
+textarea,
+.aResizer::before
+    border-color borderLight
+
+#theIntroBg
+    background borderPale

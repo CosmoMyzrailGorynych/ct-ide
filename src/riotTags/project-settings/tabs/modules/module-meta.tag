@@ -1,4 +1,4 @@
-module-meta(onclick="{toggleModule(opts.module.name)}")
+module-meta(onclick="{toggleModule(opts.module.name)}" class="{opts.class} {dim: opts.module.manifest.main.deprecated}")
     .flexrow
         div
             h1.nmt {localizeField(opts.module.manifest.main, 'name')}

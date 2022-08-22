@@ -9,6 +9,8 @@
  * (makes no sense with `openDirectory` enabled)
  * @param {boolean} [options.filter] A file filter.
  * See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept
+ * @param {string} [options.saveAs] Used in response to nwjs bug 7849.
+ * See https://github.com/nwjs/nw.js/issues/7849
  * @returns {Promise<Array<string>|string|false>}A promise that resolves
  * into a path to the selected file, or to an array of paths of files
  * (if options.multiple.)
@@ -21,6 +23,9 @@ window.showOpenDialog = function showOpenDialog(options = {}) {
     input.style.right = '100%';
     input.style.bottom = '100%';
     document.body.appendChild(input);
+    if (options.saveAs) {
+        input.setAttribute('nwsaveas', options.saveAs);
+    }
     if (options.openDirectory) {
         input.setAttribute('nwdirectory', 'nwdirectory');
     }

@@ -29,18 +29,7 @@ templates-panel.aPanel.aView
         this.thumbnails = require('./data/node_requires/resources/templates').getTemplatePreview;
         this.icons = function icons(template) {
             const icons = [];
-            if (template.oncreate.trim()) {
-                icons.push('sun');
-            }
-            if (template.onstep.trim()) {
-                icons.push('skip-forward');
-            }
-            if (template.ondraw.trim()) {
-                icons.push('edit-2');
-            }
-            if (template.ondestroy.trim()) {
-                icons.push('trash');
-            }
+            // TODO:
             return icons;
         };
 

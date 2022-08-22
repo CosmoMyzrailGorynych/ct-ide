@@ -8,20 +8,25 @@ const room = {
     onleave: '',
     gridX: 64,
     gridY: 64,
+    diagonalGrid: false,
+    simulate: true,
     width: 1280,
-    height: 720
+    height: 720,
+    isUi: false
 };
 
 const get = function (): IRoom {
     const uid = generateGUID();
-    const newRoom = Object.assign({}, room, {
+    const newRoom: IRoom = Object.assign({}, room, {
         name: 'Room_' + uid.slice(-6),
+        backgroundColor: '#000000',
+        restrictCamera: false,
         backgrounds: [],
         copies: [],
         tiles: [],
         extends: {},
         lastmod: Number(new Date()),
-        thumbnail: uid,
+        events: [],
         uid
     });
     return newRoom;

@@ -58,9 +58,8 @@ sound-editor.aDimmer.appear
             if (this.nameTaken) {
                 // animate the error notice
                 require('./data/node_requires/jellify')(this.refs.errorNotice);
-                if (localStorage.disableSounds !== 'on') {
-                    soundbox.play('Failure');
-                }
+                const {soundbox} = require('./data/node_requires/3rdparty/soundbox');
+                soundbox.play('Failure');
                 return false;
             }
 
