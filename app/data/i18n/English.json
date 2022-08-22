@@ -920,7 +920,7 @@
         "ctjsLicense": "Ct.js License (MIT)",
         "faq": "Frequently asked questions (non-normative section)",
         "whoOwnsGamesQ": "Who owns games created in ct.js?",
-        "whoOwnsGamesA": "You and only you. Unless you sell your intellectual rights to another company; but that's another topic :D Ct.js does not own anything you create in any way.",
+        "whoOwnsGamesA": "You and only you. Ct.js does not own anything you create in any way.",
         "sellingGamesQ": "Can I sell games made in ct.js?",
         "sellingGamesA": "Yes, you can sell your games and other projects, gather donations, and use your games in any other commercial applications.",
         "possibleFeesQ": "Do I need to pay for ct.js? Will ct.js become paid someday?",
@@ -928,8 +928,8 @@
         "useInStudioQ": "Can I use ct.js in a studio or schools?",
         "useInStudioA": "Sure, why not? Ct.js is open for personal, commercial, educational use, and whatnot. Just don't break the law, ok?",
         "attributionQ": "Do I need to attribute ct.js or its developers? Can I disable its logo on the loading screen?",
-        "attributionA": "You can disable ct.js logo — even if you do so, the code of your game already has the necessary attribution of the engine.",
-        "attributionAAssets": "Some examples and demos may contain licensed material that will require attribution — such projects will already have the needed credits.",
+        "attributionA": "You can disable the ct.js logo, as the code of your game already has the necessary attributions.",
+        "attributionAAssets": "Some of the examples and demos may contain material that needs attribution, but that is already included in them.",
         "theLicense": "The license (legal document)"
     },
     "scriptables": {
