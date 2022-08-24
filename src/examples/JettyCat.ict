@@ -945,49 +945,48 @@ rooms:
     backgrounds:
       - depth: -1000
         texture: 5c680919-3827-4ea7-9e72-a8fc81ddfb45
-        movementX: 0
-        movementY: 0
-        parallaxX: 0.5
-        parallaxY: 0
-        repeat: repeat
-        scaleX: 1
-        scaleY: 1
         shiftX: 0
         shiftY: 0
-      - depth: -100
-        texture: 53da7582-ae6c-4843-976e-c84d6d74a489
+        parallaxX: 0.5
+        parallaxY: 1
         movementX: 0
         movementY: 0
-        parallaxX: 1
-        parallaxY: 1
-        repeat: repeat-x
         scaleX: 1
         scaleY: 1
+        repeat: repeat
+      - depth: -100
+        texture: 53da7582-ae6c-4843-976e-c84d6d74a489
         shiftX: 0
         shiftY: 1736
+        parallaxX: 1
+        parallaxY: 1
+        movementX: 0
+        movementY: 0
+        scaleX: 1
+        scaleY: 1
+        repeat: repeat-x
     copies:
       - x: 320
         'y': 832
-        uid: 8f93611e-6e95-49c4-8e2b-4cc067be2924
-        tx: 0.65
-        ty: 0.65
-        exts: {}
-        customProperties: {}
         opacity: 1
         tint: 16777215
-        rotation: 0
         scale:
           x: 1
           'y': 1
+        rotation: 0
+        uid: 8f93611e-6e95-49c4-8e2b-4cc067be2924
+        exts: {}
+        customProperties: {}
     tiles:
       - depth: -10
         tiles: []
         extends: {}
+        hidden: false
     uid: c51bc37f-69c9-4eec-8c2b-332dab64a25a
     thumbnail: 332dab64a25a
     gridX: 64
     gridY: 64
-    lastmod: 1657026587024
+    lastmod: 1661348046418
     extends: {}
     events:
       - lib: core

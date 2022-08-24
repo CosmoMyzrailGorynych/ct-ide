@@ -101,21 +101,25 @@ class Background extends PIXI.TilingSprite {
             this.simulatedMovedX += deltaTime * this.movementX;
             this.simulatedMovedY += deltaTime * this.movementY;
         }
+        const dx = this.editor.camera.x - this.editor.primaryViewport.width / 2,
+              dy = this.editor.camera.y - this.editor.primaryViewport.height / 2;
+        const sumShiftX = this.shiftX + this.simulatedMovedX,
+              sumShiftY = this.shiftY + this.simulatedMovedY;
         if (this.repeat !== 'repeat-x' && this.repeat !== 'no-repeat') {
             this.y = cameraBounds.y;
-            this.tilePosition.y = -this.y * this.parallaxY + this.shiftY + this.simulatedMovedY;
+            this.tilePosition.y = -this.y - dy * (this.parallaxY - 1) + sumShiftY;
             this.height = cameraBounds.height + 1;
         } else {
-            this.y = this.shiftY + this.simulatedMovedY + cameraBounds.y * (this.parallaxY - 1);
+            this.y = cameraBounds.y * (this.parallaxY - 1) + sumShiftY;
             this.height = this.texture.height * this.tileScale.y;
             this.tilePosition.y = 0;
         }
         if (this.repeat !== 'repeat-y' && this.repeat !== 'no-repeat') {
             this.x = cameraBounds.x;
-            this.tilePosition.x = -this.x * this.parallaxX + this.shiftX + this.simulatedMovedX;
+            this.tilePosition.x = -this.x - dx * (this.parallaxX - 1) + sumShiftX;
             this.width = cameraBounds.width + 1;
         } else {
-            this.x = this.shiftX + this.simulatedMovedX + cameraBounds.x * (this.parallaxX - 1);
+            this.x = cameraBounds.x * (this.parallaxX - 1) + sumShiftX;
             this.width = this.texture.width * this.tileScale.x;
             this.tilePosition.x = 0;
         }
