@@ -186,9 +186,7 @@ emitter-tandem-editor.aPanel.aView.flexrow
                 const textures = require('./data/node_requires/resources/textures');
                 const pivot = textures.getTexturePivot(this.tandem.previewTexture);
                 [this.previewTexture.anchor.x, this.previewTexture.anchor.y] = pivot;
-                textures.getPixiTexture(this.tandem.previewTexture, 0).then(tex => {
-                    this.previewTexture.texture = tex;
-                });
+                this.previewTexture.texture = textures.getPixiTexture(this.tandem.previewTexture, 0);
             } else {
                 this.previewTexture.texture = PIXI.Texture.EMPTY;
             }
