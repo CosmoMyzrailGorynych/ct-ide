@@ -77,6 +77,9 @@ tour-guide
         const pad = 24;
         const modalHWidth = 240;
         const updatePositions = () => {
+            if (!this.currentStep) {
+                return;
+            }
             this.messagePos = {};
             if (this.currentStep.highlight) {
                 this.highlightRect = this.currentStep.highlight.getBoundingClientRect();
