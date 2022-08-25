@@ -275,6 +275,8 @@ textures-panel.aPanel.aView
                         if (e.inputValue && e.inputValue !== '' && e.buttonClicked !== 'cancel') {
                             this.currentTexture.name = e.inputValue;
                             this.update();
+                            const {updatePixiTexture} = require('./data/node_requires/resources/textures');
+                            updatePixiTexture(this.currentTexture);
                         }
                     });
                 }
