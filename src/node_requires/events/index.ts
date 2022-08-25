@@ -100,15 +100,18 @@ const localizeProp = (eventFullCode: string, prop: string): string => {
 };
 
 const resourcesAPI = require('./../resources');
-const getAssetName = (assetId: string, assetType: resourceType) => {
+const getAssetName = (assetId: string, assetType: resourceType): string => {
     if (resourcesAPI[assetType + 's'].getName) {
         return resourcesAPI[assetType + 's'].getName(assetId);
     }
     return resourcesAPI[assetType + 's'].getById(assetId).name;
 };
-const getAssetThumbnail = (assetId: string, assetType: resourceType): string | false => {
+const getAssetThumbnail = (assetId: string | -1, assetType: resourceType): string | false => {
     if (resourcesAPI[assetType + 's'].getThumbnail) {
-        return resourcesAPI[assetType + 's'].getThumbnail(assetId, false, false);
+        if (assetId && assetId !== -1) {
+            return resourcesAPI[assetType + 's'].getThumbnail(assetId, false, false);
+        }
+        return 'data/img/notexture.png';
     }
     return false;
 };
@@ -122,12 +125,16 @@ const localizeParametrized = (eventFullCode: string, scriptedEvent: IScriptableE
         name = i18n.localizeField(event, 'parameterizedName');
     }
     for (const argName in event.arguments) {
-        let value = String(scriptedEvent.arguments[argName]);
+        let value = scriptedEvent.arguments[argName];
         if (['template', 'room', 'sound', 'tandem', 'font', 'style', 'texture'].indexOf(event.arguments[argName].type) !== -1) {
-            value = getAssetName(value, event.arguments[argName].type as resourceType);
+            if (typeof value === 'string') {
+                value = getAssetName(value, event.arguments[argName].type as resourceType);
+            } else {
+                value = '(Unset)';
+            }
         }
         const regex = new RegExp(`%%${argName}%%`);
-        name = name.replace(regex, value ?? '???');
+        name = name.replace(regex, String(value));
     }
     return name;
 };
@@ -154,7 +161,7 @@ const tryGetIcon = (eventFullCode: string, scriptedEvent: IScriptableEvent): str
     }
     for (const argName in event.arguments) {
         if (['template', 'room', 'texture'].indexOf(event.arguments[argName].type) !== -1) {
-            const value = String(scriptedEvent.arguments[argName]);
+            const value = scriptedEvent.arguments[argName] as string | -1 | undefined;
             return getAssetThumbnail(value, event.arguments[argName].type as resourceType);
         }
     }
