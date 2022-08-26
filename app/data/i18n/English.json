@@ -734,7 +734,8 @@
         "moveTileLayer": "Move to a new depth",
         "show": "Show the layer",
         "hide": "Hide the layer",
-        "findTileset": "Find a Tileset"
+        "findTileset": "Find a Tileset",
+        "addTileLayer": "Add a tile layer"
     },
     "roomView": {
         "name": "Name:",
