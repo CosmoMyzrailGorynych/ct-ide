@@ -3,6 +3,10 @@ import {RoomEditor} from '..';
 
 let idCounter = 0;
 
+export const resetCounter = (): void => {
+    idCounter = 0;
+};
+
 export class TileLayer extends PIXI.Container {
     extends: Record<string, unknown>;
     children: Tile[];
