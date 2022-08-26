@@ -152,7 +152,7 @@ room-editor.aPanel.aView
             if (e.key === 'Alt') {
                 this.freePlacementMode = true;
                 e.preventDefault();
-            } else if (e.key === 'Control') {
+            } else if (e.key === 'Control' || e.key === 'Meta') {
                 this.controlMode = true;
                 e.preventDefault();
             }
@@ -167,7 +167,7 @@ room-editor.aPanel.aView
             if (e.key === 'Alt') {
                 this.freePlacementMode = false;
                 e.preventDefault();
-            } else if (e.key === 'Control') {
+            } else if (e.key === 'Control' || e.key.Meta) {
                 this.controlMode = false;
                 e.preventDefault();
             }
