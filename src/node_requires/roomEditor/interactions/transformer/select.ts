@@ -109,13 +109,13 @@ const select: IRoomEditorInteraction<IAffixedData> = {
                     currentSelection;
                 // Pick a suitable entity under the cursor (try both from pointerdown and pointerup)
                 if ((s instanceof Copy && this.selectCopies) ||
-                    (s instanceof Tile && this.selectTiles)
+                    (s instanceof Tile && this.selectTiles && !s.parent.isHidden)
                 ) {
                     currentSelection = s;
                 } else {
                     s = e.target;
                     if ((s instanceof Copy && this.selectCopies) ||
-                        (s instanceof Tile && this.selectTiles)
+                        (s instanceof Tile && this.selectTiles && !s.parent.isHidden)
                     ) {
                         currentSelection = s;
                     }
@@ -140,6 +140,9 @@ const select: IRoomEditorInteraction<IAffixedData> = {
                 for (const selectType of selectMap) {
                     if (selectType[0]) {
                         for (const object of selectType[1]) {
+                            if (object instanceof Tile && object.parent.isHidden) {
+                                continue;
+                            }
                             const {x, y} = getCenter(object, this.room);
                             if (rect.contains(x, y)) {
                                 delta.push(object);
