@@ -160,60 +160,119 @@ texture-editor.aPanel.aView
                     svg.feather
                         use(xlink:href="#droplet")
                     span {voc.bgColor}
-        .column.column2.borderleft.tall.flexfix.nogrow.noshrink(show="{!opts.texture.tiled}")
+        .column.column2.borderleft.tall.flexfix.nogrow.noshrink(show="{!texture.tiled}")
             .flexfix-body
                 fieldset
                     .flexrow
                         div
                             b {voc.cols}
                             br
-                            input.wide(type="number" value="{opts.texture.grid[0]}" onchange="{wire('this.texture.grid.0')}" oninput="{wire('this.texture.grid.0')}")
+                            input.wide(
+                                type="number"
+                                value="{texture.grid[0]}"
+                                onchange="{wire('this.texture.grid.0')}"
+                                oninput="{wire('this.texture.grid.0')}"
+                                min="1"
+                            )
                         span &nbsp;
                         div
                             b {voc.rows}
                             br
-                            input.wide(type="number" value="{opts.texture.grid[1]}" onchange="{wire('this.texture.grid.1')}" oninput="{wire('this.texture.grid.1')}")
+                            input.wide(
+                                type="number"
+                                value="{texture.grid[1]}"
+                                onchange="{wire('this.texture.grid.1')}"
+                                oninput="{wire('this.texture.grid.1')}"
+                                min="1"
+                            )
                     .flexrow
                         div
                             b {voc.width}
                             br
-                            input.wide(type="number" value="{opts.texture.width}" onchange="{wire('this.texture.width')}" oninput="{wire('this.texture.width')}")
+                            input.wide(
+                                type="number"
+                                value="{texture.width}"
+                                onchange="{wire('this.texture.width')}"
+                                oninput="{wire('this.texture.width')}"
+                                min="1"
+                            )
                         span &nbsp;
                         div
                             b {voc.height}
                             br
-                            input.wide(type="number" value="{opts.texture.height}" onchange="{wire('this.texture.height')}" oninput="{wire('this.texture.height')}")
+                            input.wide(
+                                type="number"
+                                value="{texture.height}"
+                                onchange="{wire('this.texture.height')}"
+                                oninput="{wire('this.texture.height')}"
+                                min="1"
+                            )
                 fieldset
                     .flexrow
                         div
                             b {voc.marginX}
                             br
-                            input.wide(type="number" value="{opts.texture.marginx}" onchange="{wire('this.texture.marginx')}" oninput="{wire('this.texture.marginx')}")
+                            input.wide(
+                                type="number"
+                                value="{texture.marginx}"
+                                onchange="{wire('this.texture.marginx')}"
+                                oninput="{wire('this.texture.marginx')}"
+                                min="0"
+                            )
                         span &nbsp;
                         div
                             b {voc.marginY}
                             br
-                            input.wide(type="number" value="{opts.texture.marginy}" onchange="{wire('this.texture.marginy')}" oninput="{wire('this.texture.marginy')}")
+                            input.wide(
+                                type="number"
+                                value="{texture.marginy}"
+                                onchange="{wire('this.texture.marginy')}"
+                                oninput="{wire('this.texture.marginy')}"
+                                min="0"
+                            )
                     .flexrow
                         div
                             b {voc.offX}
                             br
-                            input.wide(type="number" value="{opts.texture.offx}" onchange="{wire('this.texture.offx')}" oninput="{wire('this.texture.offx')}")
+                            input.wide(
+                                type="number"
+                                value="{texture.offx}"
+                                onchange="{wire('this.texture.offx')}"
+                                oninput="{wire('this.texture.offx')}"
+                                min="0"
+                            )
                         span &nbsp;
                         div
                             b {voc.offY}
                             br
-                            input.wide(type="number" value="{opts.texture.offy}" onchange="{wire('this.texture.offy')}" oninput="{wire('this.texture.offy')}")
+                            input.wide(
+                                type="number"
+                                value="{texture.offy}"
+                                onchange="{wire('this.texture.offy')}"
+                                oninput="{wire('this.texture.offy')}"
+                                min="0"
+                            )
                 fieldset
                     b {voc.frames}
                     br
-                    input#textureframes.wide(type="number" value="{opts.texture.untill}" onchange="{wire('this.texture.untill')}" oninput="{wire('this.texture.untill')}")
+                    input#textureframes.wide(
+                        type="number"
+                        value="{texture.untill}"
+                        onchange="{wire('this.texture.untill')}"
+                        oninput="{wire('this.texture.untill')}"
+                        min="0"
+                    )
                 fieldset
                     b
                         span {voc.padding}
                         hover-hint(text="{voc.paddingNotice}")
                     br
-                    input.wide(type="number" min="0" max="128" step="1" value="{opts.texture.padding}" onchange="{wire('this.texture.padding')}")
+                    input.wide(
+                        type="number"
+                        min="0" max="128" step="1"
+                        value="{texture.padding}"
+                        onchange="{wire('this.texture.padding')}"
+                    )
             .preview.bordertop.flexfix-footer
                 .texture-editor-anAnimationPreview(
                     ref="preview"
@@ -268,8 +327,8 @@ texture-editor.aPanel.aView
             ({textureCanvas, grprCanvas} = this.refs);
             textureCanvas.x = textureCanvas.getContext('2d');
             grprCanvas.x = grprCanvas.getContext('2d');
-            var texture = this.texture = this.opts.texture;
-            var img = document.createElement('img');
+            const texture = this.texture = this.opts.texture;
+            const img = document.createElement('img');
             img.onload = () => {
                 textureCanvas.img = img;
                 this.update();
@@ -286,10 +345,41 @@ texture-editor.aPanel.aView
         });
         this.on('update', () => {
             const {textures} = global.currentProject;
-            if (textures.find(texture => this.texture.name === texture.name && this.texture !== texture)) {
+            const t = this.texture;
+            if (textures.find(texture => t.name === texture.name && t !== texture)) {
                 this.nameTaken = true;
             } else {
                 this.nameTaken = false;
+            }
+            const {textureCanvas} = this.refs;
+            const {img} = textureCanvas;
+            // Enforce positive/zero values
+            for (const prop of ['marginx', 'marginy', 'offx', 'offy', 'untill', 'padding']) {
+                if (t[prop] < 0) {
+                    t[prop] = 0;
+                }
+            }
+            for (const prop of ['width', 'height']) {
+                if (t[prop] < 1) {
+                    t[prop] = 1;
+                }
+            }
+            if (t.grid[0] < 1) {
+                t.grid[0] = 1;
+            }
+            if (t.grid[1] < 1) {
+                t.grid[1] = 1;
+            }
+            // Calculate frame width for the user if it exceeds image size
+            if (t.grid[0] * (t.width + t.marginx) - t.marginx > img.width - t.offx) {
+                t.width = Math.floor((img.width - t.offx) / t.grid[0] - t.marginx);
+            }
+            if (t.grid[1] * (t.height + t.marginy) - t.marginy > img.height - t.offy) {
+                t.height = Math.floor((img.height - t.offy) / t.grid[1] - t.marginy);
+            }
+            // Preset frame count can't be larger than the grid table size
+            if (t.untill > t.grid[0] * t.grid[1]) {
+                t.untill = t.grid[0] * t.grid[1];
             }
             this.updateSymmetricalPoints();
         });
@@ -297,7 +387,7 @@ texture-editor.aPanel.aView
             this.refreshTextureCanvas();
         });
         this.on('unmount', () => {
-            if (this.prevPlaying) { // вырубаем анимацию превью, если редактор был закрыт
+            if (this.prevPlaying) { // Need to clear a setTimeout handle to prevent memory leaks
                 this.stopTexturePreview();
             }
         });
