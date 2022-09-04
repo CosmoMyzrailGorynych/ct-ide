@@ -316,7 +316,7 @@ const lintI18n = () => require('./node_requires/i18n')(verbose).then(console.log
 const lint = gulp.series(lintJS, lintTags, lintStylus, lintI18n);
 
 const processToPlatformMap = {
-    'darwin-x64': 'darwin',
+    'darwin-x64': 'osx64',
     'win32-x32': 'win32',
     'win32-x64': 'win64',
     'linux-x32': 'linux32',

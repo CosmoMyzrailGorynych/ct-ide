@@ -71,7 +71,7 @@
     "javascript-obfuscator": "^2.6.0",
     "js-yaml": "^3.14.0",
     "markdown-it": "12.3.2",
-    "maxrects-packer": "^2.7.1",
+    "maxrects-packer": "^2.7.3",
     "microm": "^0.2.4",
     "monaco-editor": "^0.20.0",
     "monaco-themes": "^0.3.3",
