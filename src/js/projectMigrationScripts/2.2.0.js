@@ -48,8 +48,8 @@ window.migrationProcess.push({
                 copy.tint = copy.tint ?? 0xffffff;
                 copy.rotation = copy.rotation ?? 0;
                 copy.scale = copy.scale ?? {
-                    x: 1,
-                    y: 1
+                    x: copy.tx || 1,
+                    y: copy.ty || 1
                 };
             }
             for (const bg of room.backgrounds) {
