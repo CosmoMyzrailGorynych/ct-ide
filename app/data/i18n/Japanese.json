@@ -843,6 +843,7 @@
         "updateFromClipboard": "クリップボードからの更新",
         "corrupted": "ファイルが壊れているか、見つかりません。今すぐ閉じる。",
         "showFrameIndices": "フレームインデックスを表示",
+        "blankTexture": "",
         "width": "横幅:",
         "height": "高さ:",
         "strip": "ラインストリップ/ポリゴン",

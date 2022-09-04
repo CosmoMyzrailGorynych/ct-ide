@@ -865,6 +865,8 @@
         "updateFromClipboard": "Update from clipboard",
         "corrupted": "File is corrupted or missing! Closing now.",
         "showFrameIndices": "Show frame indices",
+        "blankTexture": "Export as blank texture",
+        "blankTextureNotice": "Exports the image as a transparent rectangle, thus being invisible in-game. Useful for making placeholders for ct.js editor while keeping bundle size slim.",
         "width": "Width:",
         "height": "Height:",
         "strip": "Line Strip / Polygon",

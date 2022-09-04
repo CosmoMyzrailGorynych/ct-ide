@@ -850,6 +850,7 @@
         "updateFromClipboard": "Update van klembord",
         "previewAnimationNotice": "Dit is een preview. Gebruik this.animationSpeed waarde om het te veranderen voor echte kopieën.",
         "showFrameIndices": "Toon frame-indexen",
+        "blankTexture": "",
         "pasteCollisionMask": "Plak een botsingsmasker",
         "copyCollisionMask": "Kopieer het botsingsmasker",
         "bgColor": "Verander achtergrondkleur",

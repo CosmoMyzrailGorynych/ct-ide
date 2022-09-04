@@ -302,6 +302,7 @@ const importImageToTexture = async (
         bottom: image.height,
         uid: id,
         padding: 1,
+        isBlank: false,
         group
     };
     if (!(src instanceof Buffer)) {

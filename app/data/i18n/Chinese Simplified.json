@@ -850,6 +850,7 @@
         "updateFromClipboard": "从剪贴板更新",
         "previewAnimationNotice": "这是一个预览. 用this.animationSpeed属性改变它的真实拷贝.",
         "showFrameIndices": "显示帧索引",
+        "blankTexture": "",
         "pasteCollisionMask": "粘贴碰撞遮罩",
         "copyCollisionMask": "拷贝碰撞遮罩",
         "bgColor": "改变背景颜色",
