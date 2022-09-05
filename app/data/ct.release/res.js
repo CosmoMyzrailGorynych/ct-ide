@@ -154,20 +154,6 @@
                 });
             });
         },
-        /**
-         * Loads a sound with options.
-         * @param {object} sound An object that contains the path to the sound file and options
-         *                       for its playback and loading.
-         * @param {string} name The name of the new sound.
-         * @returns {Promise<string>} A promise that resolves into the sound's name
-         * (the one you've passed with `name`).
-         */
-        loadSound(sound = ct.u.required('sound', 'ct.res.loadSound'), name = ct.u.required('name', 'ct.res.loadSound')) {
-            return ct.sound.init(sound).then(pixiSound => {
-                ct.res.sounds[sound.name] = pixiSound;
-                return name;
-            });
-        },
         loadGame() {
             // !! This method is intended to be filled by ct.IDE and be executed
             // exactly once at game startup. Don't put your code here.
@@ -181,6 +167,10 @@
             const sounds = [/*@sounds@*/][0];
             const bitmapFonts = [/*@bitmapFonts@*/][0];
             const dbSkeletons = [/*@dbSkeletons@*/][0]; // DB means DragonBones
+
+            if (sounds.length && !ct.sound) {
+                throw new Error('[ct.res] No sound system found. Make sure you enable one of the `sound` catmods. If you don\'t need sounds, remove them from your ct.js project.');
+            }
 
             const totalAssets = atlases.length;
             let assetsLoaded = 0;
@@ -210,8 +200,16 @@
             for (const skel of dbSkeletons) {
                 loadingPromises.push(ct.res.loadDragonBonesSkeleton(...skel));
             }
+
             for (const sound of sounds) {
-                loadingPromises.push(ct.res.loadSound(sound, sound.name));
+                ct.sound.init(sound.name, {
+                    wav: sound.wav || false,
+                    mp3: sound.mp3 || false,
+                    ogg: sound.ogg || false
+                }, {
+                    poolSize: sound.poolSize,
+                    music: sound.isMusic
+                });
             }
 
             /*@res@*/

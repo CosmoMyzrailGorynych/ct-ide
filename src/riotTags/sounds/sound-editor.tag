@@ -1,5 +1,5 @@
-sound-editor.aDimmer.appear
-    .aModal.fadein
+sound-editor.aDimmer
+    .aModal
         b {voc.name}
         br
         input.wide(type="text" value="{sound.name}" onchange="{wire('this.sound.name')}")
@@ -9,11 +9,6 @@ sound-editor.aDimmer.appear
             label
                 b {voc.poolSize}
                 input(type="number" min="1" max="32" value="{sound.poolSize || 5}" onchange="{wire('this.sound.poolSize')}")
-        canvas(
-            ref="canvas"
-            height="64"
-            width="300"
-        )
         audio(
             if="{sound && sound.origname}"
             ref="audio" controls loop
@@ -22,8 +17,8 @@ sound-editor.aDimmer.appear
         )
         p
             label.checkbox
-                input(type="checkbox" checked="{sound.preload}" onchange="{wire('this.sound.preload')}")
-                span   {voc.preloadFile}
+                input(type="checkbox" checked="{sound.isMusic}" onchange="{wire('this.sound.isMusic')}")
+                span   {voc.isMusicFile}
         label.file
             .button.wide.nml
                 svg.feather

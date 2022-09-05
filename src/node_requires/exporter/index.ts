@@ -199,7 +199,7 @@ const getInjections = async () => {
     return injections;
 };
 
-// eslint-disable-next-line max-lines-per-function, complexity
+// eslint-disable-next-line max-lines-per-function
 const exportCtProject = async (
     project: IProject,
     projdir: string,
@@ -239,10 +239,6 @@ const exportCtProject = async (
         await fs.copyFile('./node_modules/pixi.js/dist/pixi.min.js', path.join(writeDir, '/pixi.min.js'));
         await fs.copyFile('./node_modules/pixi.js/dist/pixi.min.js.map', path.join(writeDir, '/pixi.min.js.map'));
     }
-    if (project.sounds && project.sounds.length) {
-        await fs.copyFile('./data/ct.release/pixi-sound.js', path.join(writeDir, '/pixi-sound.js'));
-        await fs.copyFile('./data/ct.release/pixi-sound.js.map', path.join(writeDir, '/pixi-sound.js.map'));
-    }
     if (project.emitterTandems && project.emitterTandems.length) {
         await fs.copyFile('./node_modules/pixi-particles/dist/pixi-particles.min.js', path.join(writeDir, '/pixi-particles.min.js'));
         await fs.copyFile('./node_modules/pixi-particles/dist/pixi-particles.min.js.map', path.join(writeDir, '/pixi-particles.min.js.map'));
@@ -263,7 +259,6 @@ const exportCtProject = async (
         'main.js',
         'res.js',
         'rooms.js',
-        'sound.js',
         'styles.js',
         'templates.js',
         'tilemaps.js',
@@ -345,9 +340,9 @@ const exportCtProject = async (
         templates: templates.libCode
     }, injections);
 
-    // Add five files in a sequence, without additional transforms
+    // Add four files in a sequence, without additional transforms
     buffer += (
-        await Promise.all(['backgrounds.js', 'tilemaps.js', 'camera.js', 'timer.js', 'sound.js']
+        await Promise.all(['backgrounds.js', 'tilemaps.js', 'camera.js', 'timer.js']
             .map(source => sources[source]))
     ).join('\n');
 

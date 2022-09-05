@@ -11,7 +11,8 @@ const defaultProjectTemplate: IProject = {
         },
         pointer: {},
         keyboard: {},
-        'keyboard.polyfill': {}
+        'keyboard.polyfill': {},
+        'sound.howler': {}
     },
     textures: [],
     skeletons: [],
