@@ -2,7 +2,7 @@ import {History} from './history';
 
 import {Copy} from './entityClasses/Copy';
 import {Tile} from './entityClasses/Tile';
-import {TileLayer} from './entityClasses/TileLayer';
+import {resetCounter as resetTileLayerCounter, TileLayer} from './entityClasses/TileLayer';
 import {Background} from './entityClasses/Background';
 import {Viewport} from './entityClasses/Viewport';
 
@@ -544,8 +544,8 @@ class RoomEditor extends PIXI.Application {
     }
 }
 
-
 const setup = (canvas: HTMLCanvasElement, editorTag: IRoomEditorRiotTag): RoomEditor => {
+    resetTileLayerCounter();
     const pixelart = Boolean(currentProject.settings.rendering.pixelatedrender);
     editorTag.pixiEditor = new RoomEditor({
         view: canvas

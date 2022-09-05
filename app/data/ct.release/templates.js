@@ -44,6 +44,7 @@ const Copy = (function Copy() {
          * before its OnCreate event. Defaults to ct.room.
          * @memberof Copy
          */
+        // eslint-disable-next-line complexity
         constructor(template, x, y, exts, container) {
             container = container || ct.room;
             var t;
@@ -59,7 +60,10 @@ const Copy = (function Copy() {
                     this.anchor.x = textures[0].defaultAnchor.x;
                     this.anchor.y = textures[0].defaultAnchor.y;
                 } else {
-                    super([PIXI.Texture.EMPTY]);
+                    const emptyRect = new PIXI.Rectangle(0, 0, t.width || 1, t.height || 1);
+                    super([new PIXI.Texture(PIXI.Texture.EMPTY, emptyRect)]);
+                    this.anchor.x = t.anchorX || 0;
+                    this.anchor.y = t.anchorY || 0;
                 }
                 this.template = template;
                 this.parent = container;

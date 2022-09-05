@@ -302,6 +302,7 @@ const importImageToTexture = async (
         bottom: image.height,
         uid: id,
         padding: 1,
+        isBlank: false,
         group
     };
     if (!(src instanceof Buffer)) {
@@ -328,7 +329,8 @@ const importImageToTexture = async (
 
     await Promise.all([
         textureGenPreview(obj, dest + '_prev.png', 64),
-        textureGenPreview(obj, dest + '_prev@2.png', 128)
+        textureGenPreview(obj, dest + '_prev@2.png', 128),
+        texturesFromCtTexture(obj)
     ]);
 
     global.currentProject.textures.push(obj);

@@ -88,6 +88,11 @@ texture-editor.aPanel.aView
                     label.checkbox(if="{opts.texture.width > 10 && opts.texture.height > 10}")
                         input(checked="{prevShowFrameIndices}" onchange="{wire('this.prevShowFrameIndices')}" type="checkbox")
                         span   {voc.showFrameIndices}
+                fieldset
+                    label.checkbox
+                        input(checked="{texture.isBlank}" onchange="{wire('this.texture.isBlank')}" type="checkbox")
+                        span   {voc.blankTexture}
+                        hover-hint(text="{voc.blankTextureNotice}")
             .flexfix-footer
                 button.wide(onclick="{textureSave}" title="Shift+Control+S" data-hotkey="Control+S")
                     svg.feather
@@ -160,60 +165,119 @@ texture-editor.aPanel.aView
                     svg.feather
                         use(xlink:href="#droplet")
                     span {voc.bgColor}
-        .column.column2.borderleft.tall.flexfix.nogrow.noshrink(show="{!opts.texture.tiled}")
+        .column.column2.borderleft.tall.flexfix.nogrow.noshrink(show="{!texture.tiled}")
             .flexfix-body
                 fieldset
                     .flexrow
                         div
                             b {voc.cols}
                             br
-                            input.wide(type="number" value="{opts.texture.grid[0]}" onchange="{wire('this.texture.grid.0')}" oninput="{wire('this.texture.grid.0')}")
+                            input.wide(
+                                type="number"
+                                value="{texture.grid[0]}"
+                                onchange="{wire('this.texture.grid.0')}"
+                                oninput="{wire('this.texture.grid.0')}"
+                                min="1"
+                            )
                         span &nbsp;
                         div
                             b {voc.rows}
                             br
-                            input.wide(type="number" value="{opts.texture.grid[1]}" onchange="{wire('this.texture.grid.1')}" oninput="{wire('this.texture.grid.1')}")
+                            input.wide(
+                                type="number"
+                                value="{texture.grid[1]}"
+                                onchange="{wire('this.texture.grid.1')}"
+                                oninput="{wire('this.texture.grid.1')}"
+                                min="1"
+                            )
                     .flexrow
                         div
                             b {voc.width}
                             br
-                            input.wide(type="number" value="{opts.texture.width}" onchange="{wire('this.texture.width')}" oninput="{wire('this.texture.width')}")
+                            input.wide(
+                                type="number"
+                                value="{texture.width}"
+                                onchange="{wire('this.texture.width')}"
+                                oninput="{wire('this.texture.width')}"
+                                min="1"
+                            )
                         span &nbsp;
                         div
                             b {voc.height}
                             br
-                            input.wide(type="number" value="{opts.texture.height}" onchange="{wire('this.texture.height')}" oninput="{wire('this.texture.height')}")
+                            input.wide(
+                                type="number"
+                                value="{texture.height}"
+                                onchange="{wire('this.texture.height')}"
+                                oninput="{wire('this.texture.height')}"
+                                min="1"
+                            )
                 fieldset
                     .flexrow
                         div
                             b {voc.marginX}
                             br
-                            input.wide(type="number" value="{opts.texture.marginx}" onchange="{wire('this.texture.marginx')}" oninput="{wire('this.texture.marginx')}")
+                            input.wide(
+                                type="number"
+                                value="{texture.marginx}"
+                                onchange="{wire('this.texture.marginx')}"
+                                oninput="{wire('this.texture.marginx')}"
+                                min="0"
+                            )
                         span &nbsp;
                         div
                             b {voc.marginY}
                             br
-                            input.wide(type="number" value="{opts.texture.marginy}" onchange="{wire('this.texture.marginy')}" oninput="{wire('this.texture.marginy')}")
+                            input.wide(
+                                type="number"
+                                value="{texture.marginy}"
+                                onchange="{wire('this.texture.marginy')}"
+                                oninput="{wire('this.texture.marginy')}"
+                                min="0"
+                            )
                     .flexrow
                         div
                             b {voc.offX}
                             br
-                            input.wide(type="number" value="{opts.texture.offx}" onchange="{wire('this.texture.offx')}" oninput="{wire('this.texture.offx')}")
+                            input.wide(
+                                type="number"
+                                value="{texture.offx}"
+                                onchange="{wire('this.texture.offx')}"
+                                oninput="{wire('this.texture.offx')}"
+                                min="0"
+                            )
                         span &nbsp;
                         div
                             b {voc.offY}
                             br
-                            input.wide(type="number" value="{opts.texture.offy}" onchange="{wire('this.texture.offy')}" oninput="{wire('this.texture.offy')}")
+                            input.wide(
+                                type="number"
+                                value="{texture.offy}"
+                                onchange="{wire('this.texture.offy')}"
+                                oninput="{wire('this.texture.offy')}"
+                                min="0"
+                            )
                 fieldset
                     b {voc.frames}
                     br
-                    input#textureframes.wide(type="number" value="{opts.texture.untill}" onchange="{wire('this.texture.untill')}" oninput="{wire('this.texture.untill')}")
+                    input#textureframes.wide(
+                        type="number"
+                        value="{texture.untill}"
+                        onchange="{wire('this.texture.untill')}"
+                        oninput="{wire('this.texture.untill')}"
+                        min="0"
+                    )
                 fieldset
                     b
                         span {voc.padding}
                         hover-hint(text="{voc.paddingNotice}")
                     br
-                    input.wide(type="number" min="0" max="128" step="1" value="{opts.texture.padding}" onchange="{wire('this.texture.padding')}")
+                    input.wide(
+                        type="number"
+                        min="0" max="128" step="1"
+                        value="{texture.padding}"
+                        onchange="{wire('this.texture.padding')}"
+                    )
             .preview.bordertop.flexfix-footer
                 .texture-editor-anAnimationPreview(
                     ref="preview"
@@ -250,6 +314,8 @@ texture-editor.aPanel.aView
         const path = require('path'),
               fs = require('fs-extra');
         const glob = require('./data/node_requires/glob');
+        const {getSwatch} = require('./data/node_requires/themes');
+
         this.namespace = 'textureView';
         this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
@@ -268,8 +334,8 @@ texture-editor.aPanel.aView
             ({textureCanvas, grprCanvas} = this.refs);
             textureCanvas.x = textureCanvas.getContext('2d');
             grprCanvas.x = grprCanvas.getContext('2d');
-            var texture = this.texture = this.opts.texture;
-            var img = document.createElement('img');
+            const texture = this.texture = this.opts.texture;
+            const img = document.createElement('img');
             img.onload = () => {
                 textureCanvas.img = img;
                 this.update();
@@ -286,10 +352,41 @@ texture-editor.aPanel.aView
         });
         this.on('update', () => {
             const {textures} = global.currentProject;
-            if (textures.find(texture => this.texture.name === texture.name && this.texture !== texture)) {
+            const t = this.texture;
+            if (textures.find(texture => t.name === texture.name && t !== texture)) {
                 this.nameTaken = true;
             } else {
                 this.nameTaken = false;
+            }
+            const {textureCanvas} = this.refs;
+            const {img} = textureCanvas;
+            // Enforce positive/zero values
+            for (const prop of ['marginx', 'marginy', 'offx', 'offy', 'untill', 'padding']) {
+                if (t[prop] < 0) {
+                    t[prop] = 0;
+                }
+            }
+            for (const prop of ['width', 'height']) {
+                if (t[prop] < 1) {
+                    t[prop] = 1;
+                }
+            }
+            if (t.grid[0] < 1) {
+                t.grid[0] = 1;
+            }
+            if (t.grid[1] < 1) {
+                t.grid[1] = 1;
+            }
+            // Calculate frame width for the user if it exceeds image size
+            if (t.grid[0] * (t.width + t.marginx) - t.marginx > img.width - t.offx) {
+                t.width = Math.floor((img.width - t.offx) / t.grid[0] - t.marginx);
+            }
+            if (t.grid[1] * (t.height + t.marginy) - t.marginy > img.height - t.offy) {
+                t.height = Math.floor((img.height - t.offy) / t.grid[1] - t.marginy);
+            }
+            // Preset frame count can't be larger than the grid table size
+            if (t.untill > t.grid[0] * t.grid[1]) {
+                t.untill = t.grid[0] * t.grid[1];
             }
             this.updateSymmetricalPoints();
         });
@@ -297,7 +394,7 @@ texture-editor.aPanel.aView
             this.refreshTextureCanvas();
         });
         this.on('unmount', () => {
-            if (this.prevPlaying) { // вырубаем анимацию превью, если редактор был закрыт
+            if (this.prevPlaying) { // Need to clear a setTimeout handle to prevent memory leaks
                 this.stopTexturePreview();
             }
         });
@@ -513,47 +610,7 @@ texture-editor.aPanel.aView
             );
             // shape
             if (this.prevShowMask) {
-                grprCanvas.x.globalAlpha = 0.5;
-                grprCanvas.x.fillStyle = '#ff0';
-                if (this.texture.shape === 'rect') {
-                    grprCanvas.x.fillRect(
-                        this.texture.axis[0] - this.texture.left,
-                        this.texture.axis[1] - this.texture.top,
-                        this.texture.right + this.texture.left,
-                        this.texture.bottom + this.texture.top
-                    );
-                } else if (this.texture.shape === 'circle') {
-                    grprCanvas.x.beginPath();
-                    grprCanvas.x.arc(
-                        this.texture.axis[0], this.texture.axis[1],
-                        this.texture.r,
-                        0, 2 * Math.PI
-                    );
-                    grprCanvas.x.fill();
-                } else if (this.texture.shape === 'strip' && this.texture.stripPoints.length) {
-                    grprCanvas.x.strokeStyle = '#ff0';
-                    grprCanvas.x.lineWidth = 3;
-                    grprCanvas.x.beginPath();
-                    grprCanvas.x.moveTo(
-                        this.texture.stripPoints[0].x + this.texture.axis[0],
-                        this.texture.stripPoints[0].y + this.texture.axis[1]
-                    );
-                    for (let i = 1, l = this.texture.stripPoints.length; i < l; i++) {
-                        grprCanvas.x.lineTo(
-                            this.texture.stripPoints[i].x + this.texture.axis[0],
-                            this.texture.stripPoints[i].y + this.texture.axis[1]
-                        );
-                    }
-                    if (this.texture.closedStrip) {
-                        grprCanvas.x.closePath();
-                    }
-                    grprCanvas.x.stroke();
-                }
-                grprCanvas.x.globalAlpha = 1;
-                grprCanvas.x.fillStyle = '#f33';
-                grprCanvas.x.beginPath();
-                grprCanvas.x.arc(this.texture.axis[0], this.texture.axis[1], 3, 0, 2 * Math.PI);
-                grprCanvas.x.fill();
+                this.drawMask(grprCanvas, grprCanvas.x);
             }
         };
         /**
@@ -740,44 +797,43 @@ texture-editor.aPanel.aView
             }
         };
 
-        this.drawMask = () => {
-            const tc = textureCanvas;
-            tc.x.fillStyle = '#ff0';
-            tc.x.globalAlpha = 0.5;
+        this.drawMask = (tc, context) => {
+            context.fillStyle = getSwatch('accent1');
+            context.globalAlpha = 0.5;
             if (this.texture.shape === 'rect') {
-                tc.x.fillRect(
+                context.fillRect(
                     this.texture.axis[0] - this.texture.left,
                     this.texture.axis[1] - this.texture.top,
                     this.texture.right + this.texture.left,
                     this.texture.bottom + this.texture.top
                 );
             } else if (this.texture.shape === 'circle') {
-                tc.x.beginPath();
-                tc.x.arc(
+                context.beginPath();
+                context.arc(
                     this.texture.axis[0],
                     this.texture.axis[1],
                     this.texture.r,
                     0, 2 * Math.PI
                 );
-                tc.x.fill();
+                context.fill();
             } else if (this.texture.shape === 'strip' && this.texture.stripPoints.length) {
-                tc.x.strokeStyle = '#ff0';
-                tc.x.lineWidth = 3;
-                tc.x.beginPath();
-                tc.x.moveTo(
+                context.strokeStyle = getSwatch('accent1');
+                context.lineWidth = 3;
+                context.beginPath();
+                context.moveTo(
                     this.texture.stripPoints[0].x + this.texture.axis[0],
                     this.texture.stripPoints[0].y + this.texture.axis[1]
                 );
                 for (let i = 1, l = this.texture.stripPoints.length; i < l; i++) {
-                    tc.x.lineTo(
+                    context.lineTo(
                         this.texture.stripPoints[i].x + this.texture.axis[0],
                         this.texture.stripPoints[i].y + this.texture.axis[1]
                     );
                 }
                 if (this.texture.closedStrip) {
-                    tc.x.closePath();
+                    context.closePath();
                 }
-                tc.x.stroke();
+                context.stroke();
 
                 if (this.texture.symmetryStrip) {
                     const movablePoints = this.getMovableStripPoints();
@@ -785,21 +841,22 @@ texture-editor.aPanel.aView
                     const axisPoint2 = movablePoints[movablePoints.length - 1];
 
                     // Draw symmetry axis
-                    tc.x.strokeStyle = '#f00';
-                    tc.x.lineWidth = 3;
-                    tc.x.beginPath();
-                    tc.x.moveTo(
+                    context.strokeStyle = getSwatch('act');
+                    context.lineWidth = 3;
+                    context.beginPath();
+                    context.moveTo(
                         axisPoint1.x + this.texture.axis[0],
                         axisPoint1.y + this.texture.axis[1]
                     );
-                    tc.x.lineTo(
+                    context.lineTo(
                         axisPoint2.x + this.texture.axis[0],
                         axisPoint2.y + this.texture.axis[1]
                     );
-                    tc.x.stroke();
+                    context.stroke();
                 }
             }
         };
+
         /**
          * Redraws the canvas with the full image, its collision mask, and its slicing grid
          */
@@ -807,9 +864,10 @@ texture-editor.aPanel.aView
             const tc = textureCanvas;
             tc.width = tc.img.width;
             tc.height = tc.img.height;
-            tc.x.strokeStyle = '#0ff';
+            const minSide = Math.min(this.texture.width, this.texture.height);
+            tc.x.strokeStyle = getSwatch('act');
             tc.x.lineWidth = 1;
-            tc.x.font = '10px sans-serif';
+            tc.x.font = `${Math.min(24, minSide)}px sans-serif`;
             tc.x.textAlign = 'left';
             tc.x.textBaseline = 'top';
             tc.x.globalCompositeOperation = 'source-over';
@@ -828,16 +886,16 @@ texture-editor.aPanel.aView
                           w = this.texture.width,
                           h = this.texture.height;
                     tc.x.globalAlpha = 0.5;
-                    tc.x.strokeStyle = '#0ff';
+                    tc.x.strokeStyle = getSwatch('act');
                     tc.x.lineWidth = 1;
                     tc.x.strokeRect(x, y, w, h);
                     if (this.prevShowFrameIndices &&
-                        this.opts.texture.width > 10 &&
-                        this.opts.texture.height > 10
+                        this.opts.texture.width > 8 &&
+                        this.opts.texture.height > 8
                     ) {
                         tc.x.lineWidth = 2;
                         tc.x.globalAlpha = 1;
-                        tc.x.strokeStyle = '#000';
+                        tc.x.strokeStyle = getSwatch('act');
                         tc.x.fillStyle = '#fff';
                         tc.x.strokeText(i, x + 2, y + 2);
                         tc.x.fillText(i, x + 2, y + 2);
@@ -845,7 +903,7 @@ texture-editor.aPanel.aView
                 }
             }
             if (this.prevShowMask) {
-                this.drawMask();
+                this.drawMask(tc, tc.x);
             }
         };
 

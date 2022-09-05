@@ -3,6 +3,27 @@ const {getUnwrappedExtends} = require('./utils');
 
 import {getBaseScripts} from './scriptableProcessor';
 
+interface IBlankTexture {
+    uid: string;
+    anchorX: number;
+    anchorY: number;
+    height: number;
+    width: number;
+}
+
+const getTextureInfo = (blankTextures: IBlankTexture[], template: ITemplate) => {
+    const blankTexture = blankTextures.find(tex => tex.uid === template.texture);
+    if (blankTexture) {
+        return `anchorX: ${blankTexture.anchorX},
+        anchorY: ${blankTexture.anchorY},
+        height: ${blankTexture.height},
+        width: ${blankTexture.width},`;
+    } else if (template.texture !== -1) {
+        return `texture: "${getTextureFromId(template.texture).name}",`;
+    }
+    return '';
+};
+
 const stringifyTemplates = function (proj: IProject): IScriptablesFragment {
     /* Stringify templates */
     let templates = '';
@@ -10,9 +31,20 @@ const stringifyTemplates = function (proj: IProject): IScriptablesFragment {
     let rootRoomOnStep = '';
     let rootRoomOnDraw = '';
     let rootRoomOnLeave = '';
+    const blankTextures = proj.textures
+        .filter(tex => tex.isBlank)
+        .map(tex => ({
+            uid: tex.uid,
+            anchorX: tex.axis[0] / tex.width,
+            anchorY: tex.axis[1] / tex.height,
+            height: tex.height,
+            width: tex.width
+        }));
+
     for (const k in proj.templates) {
         var template = proj.templates[k];
         const scripts = getBaseScripts(template);
+        const textureInfo = getTextureInfo(blankTextures, template);
         templates += `
 ct.templates.templates["${template.name}"] = {
     depth: ${template.depth},
@@ -20,7 +52,7 @@ ct.templates.templates["${template.name}"] = {
     animationFPS: ${template.animationFPS ?? 60},
     playAnimationOnStart: ${Boolean(template.playAnimationOnStart)},
     loopAnimation: ${Boolean(template.loopAnimation)},
-    ${template.texture !== -1 ? 'texture: "' + getTextureFromId(template.texture).name + '",' : ''}
+    ${textureInfo}
     onStep: function () {
         ${scripts.thisOnStep}
     },

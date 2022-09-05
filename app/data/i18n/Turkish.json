@@ -844,6 +844,7 @@
         "updateFromClipboard": "Panodan güncelle",
         "corrupted": "Dosya bozulmuş veya yok! Şimdi kapatılıyor.",
         "showFrameIndices": "Kare indekslerini göster",
+        "blankTexture": "",
         "width": "Genişlik:",
         "height": "Yükseklik:",
         "strip": "Çizgi şeridi / Poligon",

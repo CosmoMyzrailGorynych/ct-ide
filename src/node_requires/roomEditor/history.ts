@@ -154,7 +154,7 @@ export class History {
         }
         const prevChangeType = change.type;
         this.currentChange = this.stack[this.stack.indexOf(change) - 1];
-        if (prevChangeType === 'transformation' && !change) {
+        if (prevChangeType === 'transformation' && !this.currentChange) {
             // If we reached history's end with transformation reversal, leave
             // this last change as current one, as the transformer selects the same set
             // of entities and initial transforms are totally correct.

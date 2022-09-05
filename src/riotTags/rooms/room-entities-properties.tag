@@ -12,9 +12,9 @@
         Call this on selection change to re-scan the selection for values
 
 room-entities-properties
-    div(if="{opts.pixieditor?.currentSelection.size}")
+    div(if="{opts.pixieditor?.currentSelection.size && changes}")
         // Basic properties
-        virtual(each="{prop in basicProps}")
+        virtual(if="{opts.pixieditor?.currentSelection.size && changes}" each="{prop in basicProps}")
             b {voc.copyProperties[prop.vocKey]}:
             // Point2D
             .aPoint2DInput.compact.wide(if="{prop.type === 'xy'}")
@@ -114,11 +114,7 @@ room-entities-properties
 
         const {Copy} = require('./data/node_requires/roomEditor/entityClasses/Copy');
 
-        this.changes = {
-            exts: {},
-            basic: {},
-            customProps: {}
-        };
+        this.changes = false;
 
         this.basicProps = [{
             // An i18n key to look for in roomView.copyProperties, for a label

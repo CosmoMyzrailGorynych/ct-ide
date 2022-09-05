@@ -850,6 +850,7 @@
         "updateFromClipboard": "",
         "previewAnimationNotice": "",
         "showFrameIndices": "",
+        "blankTexture": "",
         "pasteCollisionMask": "",
         "copyCollisionMask": "",
         "bgColor": "",

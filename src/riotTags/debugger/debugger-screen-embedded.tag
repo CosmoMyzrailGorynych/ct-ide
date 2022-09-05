@@ -15,6 +15,7 @@ debugger-screen-embedded(class="{opts.class} {flexrow: verticalLayout, flexcol: 
             src="empty.html"
             partition="persist:trusted"
             style="overflow: hidden;"
+            allownw
         )
         //allownw nwfaketop
         .flexfix-footer.aDebuggerToolbar.noshrink(

@@ -1,3 +1,3 @@
-Currently just has a method `ct.desktop.quit()`, which exits the game when packaged into executables.
+# Desktop features
 
-Also has variables `ct.desktop.isNw` and `ct.desktop.isElectron` to differentiate between these two platforms.
+A module that provides useful desktop-specific features, such as manipulating the window, toggling the debugger/devtools, and more!

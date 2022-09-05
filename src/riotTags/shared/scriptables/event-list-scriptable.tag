@@ -125,6 +125,18 @@ event-list-scriptable.flexfix(class="{opts.class}")
             this.currentEvent = newEvent;
             this.opts.onchanged(this.currentEvent);
             if (parametrized) {
+                const args = affixedData.event.arguments;
+                for (const key in args) {
+                    if (['integer', 'float'].includes(args[key].type)) {
+                        newEvent.arguments[key] = 0;
+                    } else if (['template', 'room', 'sound', 'tandem', 'font', 'style', 'texture'].includes(args[key].type)) {
+                        newEvent.arguments[key] = -1;
+                    } else if (args[key].type === 'boolean') {
+                        newEvent.arguments[key] = false;
+                    } else {
+                        newEvent.arguments[key] = '';
+                    }
+                }
                 this.update();
                 this.refs.argumentsMenu.open();
             }

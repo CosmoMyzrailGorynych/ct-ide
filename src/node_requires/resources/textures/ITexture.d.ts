@@ -24,5 +24,6 @@ interface ITexture extends IAsset {
     top?: number;
     bottom?: number;
     tiled?: boolean;
+    isBlank?: boolean;
     ignoreTiledUse?: boolean;
 }

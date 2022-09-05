@@ -1,7 +1,6 @@
 notes: /* empty */
 libs:
   random: {}
-  mouse: {}
   fittoscreen:
     mode: scaleFit
   sound.howler: {}
@@ -10,7 +9,7 @@ templates:
   - name: Card
     depth: 0
     uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
-    lastmod: 1657023774750
+    lastmod: 1662299297726
     extends: {}
     texture: 366c01b5-4ed5-4ca5-bf01-8731a04be2c4
     events:
@@ -59,68 +58,6 @@ templates:
       - lib: core
         arguments: {}
         code: |-
-          /*
-              Scenario:
-                  Select a card;
-                  Select another card.
-                      If the cards match, block them and drop after 0.5 seconds
-                      If they don't, block them, but unblock and flip after 0.5 seconds.
-
-              Blocked cards may not be selected.
-              If we select the same card twice, it flips back.
-          */
-
-          // If mouse was clicked and the card isn't blocked…
-          if (ct.mouse.pressed && !this.block) {
-              // …if player clicked exactly this card…
-              if (ct.u.pointRectangle(ct.mouse.x, ct.mouse.y, this)) {
-                  // Flip a card
-                  this.flipped = !this.flipped;
-                  ct.sound.spawn('Paper');
-                  if (this.flipped) { // Is a picture visible now?
-                      if (ct.room.card) { // Is another card was already selected?
-                          // remember our cards
-                          var card1 = this,
-                              card2 = ct.room.card;
-                          // Block them
-                          card1.block = true;
-                          card2.block = true;
-                          // Allow new cards to be selected
-                          ct.room.card = false;
-
-                          // Do the cards match?
-                          if (card1.backFrame === card2.backFrame) {
-                              if (ct.templates.list['Card'].length > 2) {
-                                  ct.sound.spawn('Match');
-                              } else {
-                                  ct.sound.spawn('Victory');
-                              }
-                              ct.u.wait(500)
-                              .then(() => {
-                                  ct.sound.spawn('Swoosh');
-                                  card1.drop = true;
-                                  card2.drop = true;
-                              });
-                          } else {
-                              ct.u.wait(500)
-                              .then(() => {
-                                  ct.sound.spawn('Rollback');
-                                  card1.block = false;
-                                  card2.block = false;
-
-                                  card1.flipped = false;
-                                  card2.flipped = false;
-                              });
-                          }
-                      } else {
-                          ct.room.card = this;
-                      }
-                  } else {
-                      ct.room.card = false;
-                  }
-              }
-          }
-
           // Make a drop animation
           if (this.drop) {
               this.move();
@@ -134,12 +71,76 @@ templates:
       - lib: core
         arguments: {}
         code: |-
+          // Update cover
+
           if (this.flipped) {
               this.gotoAndStop(this.backFrame);
           } else {
               this.gotoAndStop(0);
           }
         eventKey: OnDraw
+      - eventKey: OnPointerClick
+        code: |-
+          /*
+              Scenario:
+                  Select a card;
+                  Select another card.
+                      If the cards match, block them and drop after 0.5 seconds
+                      If they don't, block them, but unblock and flip after 0.5 seconds.
+
+              Blocked cards may not be selected.
+              If we select the same card twice, it flips back.
+          */
+
+          // If a card was clicked and it isn't blocked…
+          if (!this.block) {
+              // Flip a card
+              this.flipped = !this.flipped;
+              ct.sound.spawn('Paper');
+              if (this.flipped) { // Is a picture visible now?
+                  if (ct.room.card) { // Is another card was already selected?
+                      // remember our cards
+                      var card1 = this,
+                          card2 = ct.room.card;
+                      // Block them
+                      card1.block = true;
+                      card2.block = true;
+                      // Allow new cards to be selected
+                      ct.room.card = false;
+
+                      // Do the cards match?
+                      if (card1.backFrame === card2.backFrame) {
+                          if (ct.templates.list['Card'].length > 2) {
+                              ct.sound.spawn('Match');
+                          } else {
+                              ct.sound.spawn('Victory');
+                          }
+                          ct.u.wait(500)
+                          .then(() => {
+                              ct.sound.spawn('Swoosh');
+                              card1.drop = true;
+                              card2.drop = true;
+                          });
+                      } else {
+                          ct.u.wait(500)
+                          .then(() => {
+                              ct.sound.spawn('Rollback');
+                              card1.block = false;
+                              card2.block = false;
+
+                              card1.flipped = false;
+                              card2.flipped = false;
+                          });
+                      }
+                  } else {
+                      ct.room.card = this;
+                  }
+              } else {
+                  ct.room.card = false;
+              }
+          }
+        arguments: {}
+        lib: core
     type: template
     loopAnimation: false
 sounds:

@@ -1,11 +1,14 @@
 {
     "main": {
         "name": "Desktop features",
-        "tagline": "Currently provides just ct.desktop.quit() method to close a game on desktop.",
-        "version": "0.0.0",
+        "tagline": "A module that provides useful desktop-specific features, such as manipulating the window, toggling the debugger/devtools, and more!",
+        "version": "0.1.0",
         "authors": [{
             "name": "Cosmo Myzrail Gorynych",
             "mail": "admin@nersta.ru"
+        }, {
+            "name": "Ehan Ahamed",
+            "mail": "ehanahamed@ehan.dev"
         }],
         "categories": [
             "desktop"

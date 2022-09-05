@@ -3,6 +3,10 @@ import {RoomEditor} from '..';
 
 let idCounter = 0;
 
+export const resetCounter = (): void => {
+    idCounter = 0;
+};
+
 export class TileLayer extends PIXI.Container {
     extends: Record<string, unknown>;
     children: Tile[];
@@ -48,6 +52,23 @@ export class TileLayer extends PIXI.Container {
     restore(): this {
         this.editor.addTileLayer(this);
         return this;
+    }
+    get isHidden(): boolean {
+        return this.alpha === 0;
+    }
+    hide(): void {
+        this.alpha = 0;
+    }
+    show(): void {
+        this.alpha = 1;
+    }
+    showToggle(): boolean {
+        if (this.alpha === 0) {
+            this.alpha = 1;
+        } else {
+            this.alpha = 0;
+        }
+        return this.isHidden;
     }
     serialize(): ITileLayerTemplate {
         return {

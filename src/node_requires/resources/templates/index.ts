@@ -1,5 +1,5 @@
 const getDefaultTemplate = require('./defaultTemplate').get;
-import {getPixiTexture as getTexturePixiTexture} from '../textures';
+import {getTexturePreview, getPixiTexture as getTexturePixiTexture} from '../textures';
 
 const createNewTemplate = function createNewTemplate(name: string): ITemplate {
     const template = getDefaultTemplate();
@@ -37,7 +37,6 @@ const getTemplatePreview = function getTemplatePreview(
     x2: boolean,
     fs: boolean
 ): string {
-    const {getTexturePreview} = require('./../textures');
     if (typeof template === 'string') {
         template = getTemplateFromId(template);
     }

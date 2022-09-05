@@ -152,7 +152,7 @@ room-editor.aPanel.aView
             if (e.key === 'Alt') {
                 this.freePlacementMode = true;
                 e.preventDefault();
-            } else if (e.key === 'Control') {
+            } else if (e.key === 'Control' || e.key === 'Meta') {
                 this.controlMode = true;
                 e.preventDefault();
             }
@@ -167,7 +167,7 @@ room-editor.aPanel.aView
             if (e.key === 'Alt') {
                 this.freePlacementMode = false;
                 e.preventDefault();
-            } else if (e.key === 'Control') {
+            } else if (e.key === 'Control' || e.key.Meta) {
                 this.controlMode = false;
                 e.preventDefault();
             }
@@ -176,7 +176,7 @@ room-editor.aPanel.aView
             // Specifically designed to catch Alt+Tab
             this.freePlacementMode = false;
         };
-        const tabListener = e => {
+        const gridToggleListener = e => {
             if (!window.hotkeys.inScope('rooms') || window.hotkeys.isFormField(e.target)) {
                 return;
             }
@@ -184,14 +184,14 @@ room-editor.aPanel.aView
         };
         this.on('mount', () => {
             window.hotkeys.push('roomEditor');
-            window.hotkeys.on('Control+g', tabListener);
+            window.hotkeys.on('Control+g', gridToggleListener);
             document.addEventListener('keydown', modifiersDownListener);
             document.addEventListener('keyup', modifiersUpListener);
             window.addEventListener('blur', blurListener);
         });
         this.on('unmount', () => {
             window.hotkeys.exit('roomEditor');
-            window.hotkeys.off('Control+g', tabListener);
+            window.hotkeys.off('Control+g', gridToggleListener);
             document.removeEventListener('keydown', modifiersDownListener);
             document.removeEventListener('keyup', modifiersUpListener);
             window.addEventListener('blur', blurListener);

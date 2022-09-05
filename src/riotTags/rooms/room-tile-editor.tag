@@ -31,7 +31,7 @@ room-tile-editor.room-editor-Tiles.flexfix(class="{opts.class}")
     .flexfix-footer
         ul.aMenu.room-tile-editor-aLayerList
             li.checkbox(each="{layer in opts.layers}" onclick="{changeTileLayer}" class="{active: layer === parent.opts.layer}")
-                input(type="checkbox" name="tileLayers" checked="{layer.alpha === 1}" onchange="{toggleTileLayer}")
+                input(type="checkbox" name="tileLayers" checked="{!layer.isHidden}" onchange="{toggleTileLayer}")
                 b {layer.zIndex}
                 span.a(title="{parent.voc.moveTileLayer}")
                     svg.feather(onclick="{moveTileLayer}")
@@ -136,7 +136,7 @@ room-tile-editor.room-editor-Tiles.flexfix(class="{opts.class}")
             });
         };
         this.toggleTileLayer = () => {
-            this.opts.layer.visible = !this.opts.layer.visible;
+            this.opts.layer.showToggle();
         };
         this.changeTileLayer = e => {
             this.opts.onchangelayer(e.item.layer);

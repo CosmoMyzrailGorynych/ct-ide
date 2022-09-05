@@ -113,8 +113,8 @@ class Hotkeys {
     trigger(code, event) {
         const offDom = this[offDomEventsRef].get(code);
         if (offDom) {
-            for (const event of offDom) {
-                event();
+            for (const offDomEvent of offDom) {
+                offDomEvent(event);
             }
             event.preventDefault();
         }

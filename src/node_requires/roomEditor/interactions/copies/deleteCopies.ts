@@ -11,7 +11,8 @@ export const deleteCopies: IRoomEditorInteraction<affixedData> = {
         if (this.riotEditor.currentTool !== 'addCopies') {
             return false;
         }
-        return e.data.button === 0 && e.data.originalEvent.ctrlKey;
+        const event = e.data.originalEvent;
+        return e.data.button === 0 && (event.ctrlKey || event.metaKey);
     },
     listeners: {
         pointerdown(e, riotTag, affixedData) {

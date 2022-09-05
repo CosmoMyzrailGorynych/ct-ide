@@ -852,6 +852,7 @@
         "updateFromClipboard": "textureView.updateFromClipboard",
         "previewAnimationNotice": "textureView.previewAnimationNotice",
         "showFrameIndices": "textureView.showFrameIndices",
+        "blankTexture": "textureView.blankTexture",
         "pasteCollisionMask": "textureView.pasteCollisionMask",
         "copyCollisionMask": "textureView.copyCollisionMask",
         "bgColor": "textureView.bgColor",
