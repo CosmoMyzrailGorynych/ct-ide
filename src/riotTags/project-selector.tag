@@ -119,9 +119,10 @@ project-selector
             a(href="https://vk.com/ctjsrocks" title="{voc.vkontakte}" onclick="{openExternal('https://vk.com/ctjsrocks')}")
                 svg.icon
                     use(xlink:href="#vk")
-            a(href="https:/patreon.com/comigo" title="{voc.patreon}" onclick="{openExternal('https:/patreon.com/comigo')}")
-                svg.icon
-                    use(xlink:href="#patreon")
+            //
+                a(href="https:/patreon.com/comigo" title="{voc.patreon}" onclick="{openExternal('https:/patreon.com/comigo')}")
+                    svg.icon
+                        use(xlink:href="#patreon")
             a(href="https://boosty.to/comigo" title="{voc.boosty}" onclick="{openExternal('https://boosty.to/comigo')}")
                 svg.icon
                     use(xlink:href="#boosty")
