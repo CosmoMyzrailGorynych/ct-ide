@@ -1,4 +1,4 @@
-import {populatePixiTextureCache, setPixelart} from '../textures';
+import {populatePixiTextureCache, resetPixiTextureCache, setPixelart} from '../textures';
 import {loadAllTypedefs, resetTypedefs} from '../modules/typedefs';
 import {unloadAllEvents, loadAllModulesEvents} from '../../events';
 import * as path from 'path';
@@ -138,6 +138,7 @@ const loadProject = async (projectData: IProject): Promise<void> => {
         loadAllTypedefs();
 
         unloadAllEvents();
+        resetPixiTextureCache();
         setPixelart(projectData.settings.rendering.pixelatedrender);
         await Promise.all([
             loadAllModulesEvents(),
@@ -268,7 +269,7 @@ const getExamplesDir = function (): string {
             return path.join(process.cwd(), 'examples');
         }
         // return path.join((nw.App as any).startPath, 'examples');
-        return path.join(path.dirname(process.execPath), "examples");
+        return path.join(path.dirname(process.execPath), 'examples');
     }
 };
 
@@ -284,7 +285,7 @@ const getTemplatesDir = function (): string {
             return path.join(process.cwd(), 'templates');
         }
         // return path.join((nw.App as any).startPath, "templates");
-        return path.join(path.dirname(process.execPath), "templates");
+        return path.join(path.dirname(process.execPath), 'templates');
     }
 };
 

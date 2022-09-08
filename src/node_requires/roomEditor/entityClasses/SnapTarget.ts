@@ -4,18 +4,20 @@ import {snapToRectangularGrid, snapToDiagonalGrid} from '../common';
 import {getPixiTexture, getTextureFromId, getTexturePivot} from '../../resources/textures';
 import {createTilePatch} from '../interactions/tiles/placeTile';
 
-const unknownTextures = getPixiTexture(-1, void 0, true);
+let unknownTextures = getPixiTexture(-1, void 0, true);
 
 export class SnapTarget extends PIXI.Container {
     editor: RoomEditor;
     circle = new PIXI.Graphics();
-    ghost = new PIXI.AnimatedSprite(unknownTextures);
+    ghost: PIXI.AnimatedSprite;
     ghostCompound = new PIXI.Container();
     prevGhostTex: ITexture;
     prevTilePatch: string;
     constructor(editor: RoomEditor) {
         super();
+        unknownTextures = getPixiTexture(-1, void 0, true);
         this.editor = editor;
+        this.ghost = new PIXI.AnimatedSprite(unknownTextures);
         this.ghost.visible = false;
         this.ghost.alpha = 0.5;
         [this.ghost.anchor.x, this.ghost.anchor.y] = [0.5, 0.5];

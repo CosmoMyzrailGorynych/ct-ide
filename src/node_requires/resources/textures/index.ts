@@ -73,7 +73,7 @@ const baseTextureFromTexture = (texture: ITexture): Promise<PIXI.BaseTexture> =>
         });
     });
 
-const unknownTexture = PIXI.Texture.from('data/img/unknown.png');
+let unknownTexture = PIXI.Texture.from('data/img/unknown.png');
 const pixiTextureCache: Record<string, {
     lastmod: number;
     texture: PIXI.Texture[]
@@ -118,6 +118,10 @@ const texturesFromCtTexture = async function (tex: ITexture) {
         texture: frames
     };
     return frames;
+};
+const resetPixiTextureCache = (): void => {
+    PIXI.utils.destroyTextureCache();
+    unknownTexture = PIXI.Texture.from('data/img/unknown.png');
 };
 const populatePixiTextureCache = async (project: IProject): Promise<void> => {
     clearPixiTextureCache();
@@ -372,6 +376,7 @@ const setPixelart = (pixelart: boolean): void => {
 export {
     clearPixiTextureCache,
     populatePixiTextureCache,
+    resetPixiTextureCache,
     getTextureFromId,
     getById,
     getTextureFromName,
