@@ -127,7 +127,9 @@
             ]
         },
         "next": "",
-        "previous": ""
+        "previous": "",
+        "undo": "About Undo/Redo operations",
+        "redo": "About Undo/Redo operations"
     },
     "colorPicker": {
         "current": "",
@@ -192,7 +194,8 @@
         "vkontakte": "",
         "patreon": "",
         "templates": "",
-        "templatesInfo": ""
+        "templatesInfo": "",
+        "boosty": "Boosty is a service, similar to Patreon."
     },
     "modules": {
         "author": "",
@@ -225,7 +228,8 @@
         },
         "preview": "",
         "previewTooltip": "",
-        "deprecatedTooltip": ""
+        "deprecatedTooltip": "",
+        "settings": ""
     },
     "texture": {
         "create": "",
@@ -607,7 +611,6 @@
             "heading": "",
             "language": "",
             "translateToYourLanguage": "",
-            "settings": "",
             "prideMode": "",
             "altTemplateLayout": ""
         },
@@ -712,7 +715,8 @@
         "moveTileLayer": "",
         "show": "",
         "hide": "",
-        "findTileset": ""
+        "findTileset": "",
+        "addTileLayer": ""
     },
     "roomView": {
         "name": "",
@@ -746,12 +750,15 @@
             "position": "",
             "rotation": "",
             "scale": "",
-            "multipleValues": ""
+            "multipleValues": "Describes multiple values of one property",
+            "opacity": "",
+            "tint": ""
         },
         "copyCustomProperties": {
             "addProperty": "",
             "property": "",
-            "value": ""
+            "value": "",
+            "nameOccupied": ""
         },
         "customProperties": "",
         "restrictCamera": "",
@@ -772,18 +779,19 @@
         "moveTilesToLayer": "",
         "shiftTiles": "",
         "changeCopyRotation": "",
-        "simulate": "",
+        "simulate": "Can also be called \"Simulation\". Describes a mode during which sprites and backgrounds animate.",
         "toggleDiagonalGrid": "",
-        "changeGridSize": "",
-        "xrayMode": "",
+        "changeGridSize": "A command that changes grid's size",
+        "xrayMode": "A mode that makes everything see-through",
         "colorizeTileLayers": "",
         "tools": {
-            "select": "",
+            "select": "As a tool for selecting stuff",
             "addCopies": "",
             "addTiles": "",
             "manageBackgrounds": "",
             "roomProperties": ""
-        }
+        },
+        "resetView": "Running this command brings camera back to the center of the room, and resets zoom"
     },
     "styleView": {
         "active": "",
@@ -860,7 +868,8 @@
         "marginX": "",
         "marginY": "",
         "offX": "",
-        "offY": ""
+        "offY": "",
+        "blankTextureNotice": ""
     },
     "soundView": {
         "import": "",
@@ -892,7 +901,20 @@
         "typefaceName": ""
     },
     "licensePanel": {
-        "ctjsLicense": ""
+        "ctjsLicense": "",
+        "faq": "",
+        "whoOwnsGamesQ": "",
+        "whoOwnsGamesA": "",
+        "sellingGamesQ": "",
+        "sellingGamesA": "",
+        "possibleFeesQ": "",
+        "possibleFeesA": "",
+        "useInStudioQ": "",
+        "useInStudioA": "",
+        "attributionQ": "",
+        "attributionA": "",
+        "attributionAAssets": "",
+        "theLicense": ""
     },
     "templates": {
         "create": ""
@@ -982,10 +1004,18 @@
         "coreParameterizedNames": {
             "OnActionPress": "",
             "OnActionRelease": "",
-            "OnActionDown": ""
+            "OnActionDown": "",
+            "Timer1": "%%name%% must not be translated.",
+            "Timer2": "%%name%% must not be translated.",
+            "Timer3": "%%name%% must not be translated.",
+            "Timer4": "%%name%% must not be translated.",
+            "Timer5": "%%name%% must not be translated.",
+            "Timer6": "%%name%% must not be translated."
         },
         "coreEventsArguments": {
-            "action": ""
+            "action": "",
+            "name": "",
+            "isUi": ""
         },
         "coreEventsLocals": {
             "OnActionDown_value": "",
