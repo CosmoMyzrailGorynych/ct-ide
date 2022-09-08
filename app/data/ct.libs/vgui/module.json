@@ -1,0 +1,16 @@
+{
+    "main": {
+        "name": "ct.vgui",
+        "tagline": "Vector Graphics User Interface library",
+        "version": "1.0.0",
+        "authors": [{
+            "name": "Firecakes"
+        }],
+        "categories": [
+            "customization",
+            "utilities"
+        ]
+    },
+    "fields": [],
+    "dependencies": ["pointer"]
+}
