@@ -577,7 +577,7 @@
         "deploy": {
             "exportDesktop": "Экспортировать для ПК",
             "successZipExport": "Успешно экспортировано в {0}.",
-            "zipExport": "Экспорт в .zip",
+            "zipExport": "Экспорт для веб",
             "heading": "Экспорт",
             "exportAndroid": "Экспорт на Android…"
         },
