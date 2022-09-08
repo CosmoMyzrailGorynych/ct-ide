@@ -64,11 +64,10 @@
             "text": "common.fieldTypes.text",
             "textfield": "common.fieldTypes.textfield",
             "texture": "common.fieldTypes.texture",
-            "type": "common.fieldTypes.type",
-            "template": "",
-            "room": "",
-            "sound": "",
-            "tandem": ""
+            "template": "common.fieldTypes.template",
+            "room": "common.fieldTypes.room",
+            "sound": "common.fieldTypes.sound",
+            "tandem": "common.fieldTypes.tandem"
         },
         "newName": "common.newName",
         "saveProject": "common.saveProject",
@@ -82,53 +81,55 @@
         "noRooms": "common.noRooms",
         "tileLayer": "common.tileLayer",
         "ctSite": "common.ctSite",
-        "docsShort": "",
-        "docsLong": "",
-        "openAssetGallery": "",
+        "docsShort": "common.docsShort",
+        "docsLong": "common.docsLong",
+        "openAssetGallery": "common.openAssetGallery",
         "assetTypes": {
             "textures": [
-                "",
-                "",
-                ""
+                "common.assetTypes.textures.0",
+                "common.assetTypes.textures.1",
+                "common.assetTypes.textures.2"
             ],
             "templates": [
-                "",
-                "",
-                ""
+                "common.assetTypes.templates.0",
+                "common.assetTypes.templates.1",
+                "common.assetTypes.templates.2"
             ],
             "emitterTandems": [
-                "",
-                "",
-                ""
+                "common.assetTypes.emitterTandems.0",
+                "common.assetTypes.emitterTandems.1",
+                "common.assetTypes.emitterTandems.2"
             ],
             "rooms": [
-                "",
-                "",
-                ""
+                "common.assetTypes.rooms.0",
+                "common.assetTypes.rooms.1",
+                "common.assetTypes.rooms.2"
             ],
             "fonts": [
-                "",
-                "",
-                ""
+                "common.assetTypes.fonts.0",
+                "common.assetTypes.fonts.1",
+                "common.assetTypes.fonts.2"
             ],
             "styles": [
-                "",
-                "",
-                ""
+                "common.assetTypes.styles.0",
+                "common.assetTypes.styles.1",
+                "common.assetTypes.styles.2"
             ],
             "sounds": [
-                "",
-                "",
-                ""
+                "common.assetTypes.sounds.0",
+                "common.assetTypes.sounds.1",
+                "common.assetTypes.sounds.2"
             ],
             "skeletons": [
-                "",
-                "",
-                ""
+                "common.assetTypes.skeletons.0",
+                "common.assetTypes.skeletons.1",
+                "common.assetTypes.skeletons.2"
             ]
         },
-        "next": "",
-        "previous": ""
+        "next": "common.next",
+        "previous": "common.previous",
+        "undo": "common.undo",
+        "redo": "common.redo"
     },
     "colorPicker": {
         "current": "colorPicker.current",
@@ -149,14 +150,14 @@
         "windowsCrossBuildWarning": "exportPanel.windowsCrossBuildWarning",
         "cannotBuildForMacOnWin": "exportPanel.cannotBuildForMacOnWin",
         "firstRunNotice": "exportPanel.firstRunNotice",
-        "projectTitleRequired": "",
-        "appIdRequired": "",
-        "noAndroidSdkFound": "",
-        "envVarNotice": "",
-        "downloadAndroidStudio": "",
-        "requiresInternetNotice": "",
-        "noJdkFound": "",
-        "downloadJDK": ""
+        "projectTitleRequired": "exportPanel.projectTitleRequired",
+        "appIdRequired": "exportPanel.appIdRequired",
+        "noAndroidSdkFound": "exportPanel.noAndroidSdkFound",
+        "envVarNotice": "exportPanel.envVarNotice",
+        "downloadAndroidStudio": "exportPanel.downloadAndroidStudio",
+        "requiresInternetNotice": "exportPanel.requiresInternetNotice",
+        "noJdkFound": "exportPanel.noJdkFound",
+        "downloadJDK": "exportPanel.downloadJDK"
     },
     "intro": {
         "loading": "intro.loading",
@@ -192,8 +193,9 @@
         "itch": "intro.itch",
         "vkontakte": "intro.vkontakte",
         "patreon": "intro.patreon",
-        "templates": "",
-        "templatesInfo": ""
+        "templates": "intro.templates",
+        "templatesInfo": "intro.templatesInfo",
+        "boosty": "intro.boosty"
     },
     "modules": {
         "author": "modules.author",
@@ -204,7 +206,6 @@
         "methods": "modules.methods",
         "parameters": "modules.parameters",
         "logs2": "modules.logs2",
-        "settings": "modules.settings",
         "dependencies": "modules.dependencies",
         "optionalDependencies": "modules.optionalDependencies",
         "importModules": "modules.importModules",
@@ -227,7 +228,8 @@
         },
         "preview": "modules.preview",
         "previewTooltip": "modules.previewTooltip",
-        "deprecatedTooltip": "modules.deprecatedTooltip"
+        "deprecatedTooltip": "modules.deprecatedTooltip",
+        "settings": "modules.settings"
     },
     "texture": {
         "create": "texture.create",
@@ -236,7 +238,7 @@
         "createTemplate": "texture.createTemplate",
         "importFromClipboard": "texture.importFromClipboard",
         "generatePlaceholder": "texture.generatePlaceholder",
-        "textures": ""
+        "textures": "texture.textures"
     },
     "sounds": {
         "create": "sounds.create",
@@ -428,8 +430,8 @@
             "title": "settings.authoring.title",
             "version": "settings.authoring.version",
             "versionPostfix": "settings.authoring.versionPostfix",
-            "appId": "",
-            "appIdExplanation": ""
+            "appId": "settings.authoring.appId",
+            "appIdExplanation": "settings.authoring.appIdExplanation"
         },
         "branding": {
             "heading": "settings.branding.heading",
@@ -439,10 +441,10 @@
             "iconNotice": "settings.branding.iconNotice",
             "invertPreloaderScheme": "settings.branding.invertPreloaderScheme",
             "hideLoadingLogo": "settings.branding.hideLoadingLogo",
-            "splashScreen": "",
-            "splashScreenNotice": "",
-            "forceSmoothIcons": "",
-            "forceSmoothSplashScreen": ""
+            "splashScreen": "settings.branding.splashScreen",
+            "splashScreenNotice": "settings.branding.splashScreenNotice",
+            "forceSmoothIcons": "settings.branding.forceSmoothIcons",
+            "forceSmoothSplashScreen": "settings.branding.forceSmoothSplashScreen"
         },
         "modules": {
             "heading": "settings.modules.heading"
@@ -461,13 +463,13 @@
             },
             "hideCursor": "settings.rendering.hideCursor",
             "pixelatedRender": "settings.rendering.pixelatedRender",
-            "usePixiLegacy": "",
-            "mobileBuilds": "",
-            "screenOrientation": "",
+            "usePixiLegacy": "settings.rendering.usePixiLegacy",
+            "mobileBuilds": "settings.rendering.mobileBuilds",
+            "screenOrientation": "settings.rendering.screenOrientation",
             "screenOrientations": {
-                "unspecified": "",
-                "landscape": "",
-                "portrait": ""
+                "unspecified": "settings.rendering.screenOrientations.unspecified",
+                "landscape": "settings.rendering.screenOrientations.landscape",
+                "portrait": "settings.rendering.screenOrientations.portrait"
             }
         },
         "scripts": {
@@ -511,18 +513,18 @@
             "confirmDeletionMessage": "settings.content.confirmDeletionMessage",
             "gotoEntries": "settings.content.gotoEntries",
             "entries": "settings.content.entries",
-            "array": ""
+            "array": "settings.content.array"
         },
         "contentTypes": "settings.contentTypes"
     },
     "extensionsEditor": {
         "noEntries": "extensionsEditor.noEntries",
         "addRow": "extensionsEditor.addRow",
-        "actions": "",
-        "values": "",
-        "moveDown": "",
-        "moveUp": "",
-        "deleteRow": ""
+        "actions": "extensionsEditor.actions",
+        "values": "extensionsEditor.values",
+        "moveDown": "extensionsEditor.moveDown",
+        "moveUp": "extensionsEditor.moveUp",
+        "deleteRow": "extensionsEditor.deleteRow"
     },
     "textureGenerator": {
         "name": "textureGenerator.name",
@@ -577,7 +579,7 @@
             "successZipExport": "mainMenu.deploy.successZipExport",
             "zipExport": "mainMenu.deploy.zipExport",
             "heading": "mainMenu.deploy.heading",
-            "exportAndroid": ""
+            "exportAndroid": "mainMenu.deploy.exportAndroid"
         },
         "latestProjects": {
             "recentProjects": "mainMenu.latestProjects.recentProjects"
@@ -591,9 +593,9 @@
                 "LucasDracula": "mainMenu.settings.themes.LucasDracula",
                 "Horizon": "mainMenu.settings.themes.Horizon",
                 "HCBlack": "mainMenu.settings.themes.HCBlack",
-                "RosePine": "",
-                "RosePineMoon": "",
-                "RosePineDawn": ""
+                "RosePine": "mainMenu.settings.themes.RosePine",
+                "RosePineMoon": "mainMenu.settings.themes.RosePineMoon",
+                "RosePineDawn": "mainMenu.settings.themes.RosePineDawn"
             },
             "codeFontDefault": "mainMenu.settings.codeFontDefault",
             "codeFontOldSchool": "mainMenu.settings.codeFontOldSchool",
@@ -603,15 +605,14 @@
             "codeFont": "mainMenu.settings.codeFont",
             "codeLigatures": "mainMenu.settings.codeLigatures",
             "codeDense": "mainMenu.settings.codeDense",
-            "settings": "mainMenu.settings.settings",
             "disableSounds": "mainMenu.settings.disableSounds",
             "changeDataFolder": "mainMenu.settings.changeDataFolder",
             "forceProductionForDebug": "mainMenu.settings.forceProductionForDebug",
             "heading": "mainMenu.settings.heading",
             "language": "mainMenu.settings.language",
             "translateToYourLanguage": "mainMenu.settings.translateToYourLanguage",
-            "prideMode": "",
-            "altTemplateLayout": ""
+            "prideMode": "mainMenu.settings.prideMode",
+            "altTemplateLayout": "mainMenu.settings.altTemplateLayout"
         },
         "project": {
             "save": "mainMenu.project.save",
@@ -631,7 +632,7 @@
             "twitter": "mainMenu.meta.twitter",
             "vkontakte": "mainMenu.meta.vkontakte",
             "ctjsForum": "mainMenu.meta.ctjsForum",
-            "openStylebook": ""
+            "openStylebook": "mainMenu.meta.openStylebook"
         }
     },
     "appView": {
@@ -649,33 +650,33 @@
         "project": "appView.project",
         "templates": "appView.templates",
         "tour": {
-            "header": "",
-            "aboutTour": "",
-            "helpPanel": "",
-            "helpPanelTabs": "",
-            "projectResources": "",
-            "tabTextures": "",
-            "tabTexturesImport": "",
-            "tabTexturesGallery": "",
-            "tabTexturesClipboard": "",
-            "tabTexturesPlaceholders": "",
-            "tabTemplates": "",
-            "tabRooms": "",
-            "tabSounds": "",
-            "tabSoundsImport": "",
-            "tabSoundsGallery": "",
-            "tabSoundsRecord": "",
-            "tabInterlude": "",
-            "tabUI": "",
-            "tabFX": "",
-            "tabProject": "",
-            "tabProjectModules": "",
-            "tabProjectModuleDocs": "",
-            "tabMainMenu": "",
-            "tabMainMenuSettings": "",
-            "tabMainMenuMeta": "",
-            "helpPanelReminder": "",
-            "buttonStartTutorial": ""
+            "header": "appView.tour.header",
+            "aboutTour": "appView.tour.aboutTour",
+            "helpPanel": "appView.tour.helpPanel",
+            "helpPanelTabs": "appView.tour.helpPanelTabs",
+            "projectResources": "appView.tour.projectResources",
+            "tabTextures": "appView.tour.tabTextures",
+            "tabTexturesImport": "appView.tour.tabTexturesImport",
+            "tabTexturesGallery": "appView.tour.tabTexturesGallery",
+            "tabTexturesClipboard": "appView.tour.tabTexturesClipboard",
+            "tabTexturesPlaceholders": "appView.tour.tabTexturesPlaceholders",
+            "tabTemplates": "appView.tour.tabTemplates",
+            "tabRooms": "appView.tour.tabRooms",
+            "tabSounds": "appView.tour.tabSounds",
+            "tabSoundsImport": "appView.tour.tabSoundsImport",
+            "tabSoundsGallery": "appView.tour.tabSoundsGallery",
+            "tabSoundsRecord": "appView.tour.tabSoundsRecord",
+            "tabInterlude": "appView.tour.tabInterlude",
+            "tabUI": "appView.tour.tabUI",
+            "tabFX": "appView.tour.tabFX",
+            "tabProject": "appView.tour.tabProject",
+            "tabProjectModules": "appView.tour.tabProjectModules",
+            "tabProjectModuleDocs": "appView.tour.tabProjectModuleDocs",
+            "tabMainMenu": "appView.tour.tabMainMenu",
+            "tabMainMenuSettings": "appView.tour.tabMainMenuSettings",
+            "tabMainMenuMeta": "appView.tour.tabMainMenuMeta",
+            "helpPanelReminder": "appView.tour.helpPanelReminder",
+            "buttonStartTutorial": "appView.tour.buttonStartTutorial"
         }
     },
     "assetViewer": {
@@ -714,7 +715,8 @@
         "moveTileLayer": "roomTiles.moveTileLayer",
         "show": "roomTiles.show",
         "hide": "roomTiles.hide",
-        "findTileset": "roomTiles.findTileset"
+        "findTileset": "roomTiles.findTileset",
+        "addTileLayer": "roomTiles.addTileLayer"
     },
     "roomView": {
         "name": "roomView.name",
@@ -748,12 +750,15 @@
             "position": "roomView.copyProperties.position",
             "rotation": "roomView.copyProperties.rotation",
             "scale": "roomView.copyProperties.scale",
-            "multipleValues": ""
+            "multipleValues": "roomView.copyProperties.multipleValues",
+            "opacity": "roomView.copyProperties.opacity",
+            "tint": "roomView.copyProperties.tint"
         },
         "copyCustomProperties": {
-            "addProperty": "copyCustomProperties.addProperty",
-            "property": "copyCustomProperties.property",
-            "value": "copyCustomProperties.value"
+            "addProperty": "roomView.copyCustomProperties.addProperty",
+            "property": "roomView.copyCustomProperties.property",
+            "value": "roomView.copyCustomProperties.value",
+            "nameOccupied": "roomView.copyCustomProperties.nameOccupied"
         },
         "customProperties": "roomView.customProperties",
         "restrictCamera": "roomView.restrictCamera",
@@ -774,18 +779,19 @@
         "moveTilesToLayer": "roomView.moveTilesToLayer",
         "shiftTiles": "roomView.shiftTiles",
         "changeCopyRotation": "roomView.changeCopyRotation",
-        "simulate": "",
-        "toggleDiagonalGrid": "",
-        "changeGridSize": "",
-        "xrayMode": "",
-        "colorizeTileLayers": "",
+        "simulate": "roomView.simulate",
+        "toggleDiagonalGrid": "roomView.toggleDiagonalGrid",
+        "changeGridSize": "roomView.changeGridSize",
+        "xrayMode": "roomView.xrayMode",
+        "colorizeTileLayers": "roomView.colorizeTileLayers",
         "tools": {
-            "select": "",
-            "addCopies": "",
-            "addTiles": "",
-            "manageBackgrounds": "",
-            "roomProperties": ""
-        }
+            "select": "roomView.tools.select",
+            "addCopies": "roomView.tools.addCopies",
+            "addTiles": "roomView.tools.addTiles",
+            "manageBackgrounds": "roomView.tools.manageBackgrounds",
+            "roomProperties": "roomView.tools.roomProperties"
+        },
+        "resetView": "roomView.resetView"
     },
     "styleView": {
         "active": "styleView.active",
@@ -862,7 +868,8 @@
         "marginX": "textureView.marginX",
         "marginY": "textureView.marginY",
         "offX": "textureView.offX",
-        "offY": "textureView.offY"
+        "offY": "textureView.offY",
+        "blankTextureNotice": "textureView.blankTextureNotice"
     },
     "soundView": {
         "import": "soundView.import",
@@ -894,7 +901,20 @@
         "typefaceName": "fontView.typefaceName"
     },
     "licensePanel": {
-        "ctjsLicense": "licensePanel.ctjsLicense"
+        "ctjsLicense": "licensePanel.ctjsLicense",
+        "faq": "licensePanel.faq",
+        "whoOwnsGamesQ": "licensePanel.whoOwnsGamesQ",
+        "whoOwnsGamesA": "licensePanel.whoOwnsGamesA",
+        "sellingGamesQ": "licensePanel.sellingGamesQ",
+        "sellingGamesA": "licensePanel.sellingGamesA",
+        "possibleFeesQ": "licensePanel.possibleFeesQ",
+        "possibleFeesA": "licensePanel.possibleFeesA",
+        "useInStudioQ": "licensePanel.useInStudioQ",
+        "useInStudioA": "licensePanel.useInStudioA",
+        "attributionQ": "licensePanel.attributionQ",
+        "attributionA": "licensePanel.attributionA",
+        "attributionAAssets": "licensePanel.attributionAAssets",
+        "theLicense": "licensePanel.theLicense"
     },
     "templates": {
         "create": "templates.create"
@@ -910,102 +930,110 @@
         "name": "templateView.name",
         "step": "templateView.step",
         "visible": "templateView.visible",
-        "appearance": "",
-        "opacity": "",
-        "blendMode": "",
-        "playAnimationOnStart": "",
+        "appearance": "templateView.appearance",
+        "opacity": "templateView.opacity",
+        "blendMode": "templateView.blendMode",
+        "playAnimationOnStart": "templateView.playAnimationOnStart",
         "blendModes": {
-            "normal": "",
-            "add": "",
-            "multiply": "",
-            "screen": ""
+            "normal": "templateView.blendModes.normal",
+            "add": "templateView.blendModes.add",
+            "multiply": "templateView.blendModes.multiply",
+            "screen": "templateView.blendModes.screen"
         },
-        "animationFPS": "",
-        "loopAnimation": ""
+        "animationFPS": "templateView.animationFPS",
+        "loopAnimation": "templateView.loopAnimation"
     },
     "assetInput": {
-        "changeAsset": "",
-        "jumpToAsset": "",
-        "selectAssetHeader": ""
+        "changeAsset": "assetInput.changeAsset",
+        "jumpToAsset": "assetInput.jumpToAsset",
+        "selectAssetHeader": "assetInput.selectAssetHeader"
     },
     "builtinAssetGallery": {
-        "galleryTip": "",
-        "assetGalleryHeader": "",
-        "importIntoProject": "",
-        "importAll": "",
-        "byAuthorPrefix": "",
-        "cannotImportExplanation": "",
-        "nameOccupied": "",
-        "cannotImportNameOccupied": "",
-        "visitSource": "",
-        "visitAuthorsItch": "",
-        "visitAuthorsTwitter": "",
-        "tipAuthor": ""
+        "galleryTip": "builtinAssetGallery.galleryTip",
+        "assetGalleryHeader": "builtinAssetGallery.assetGalleryHeader",
+        "importIntoProject": "builtinAssetGallery.importIntoProject",
+        "importAll": "builtinAssetGallery.importAll",
+        "byAuthorPrefix": "builtinAssetGallery.byAuthorPrefix",
+        "cannotImportExplanation": "builtinAssetGallery.cannotImportExplanation",
+        "nameOccupied": "builtinAssetGallery.nameOccupied",
+        "cannotImportNameOccupied": "builtinAssetGallery.cannotImportNameOccupied",
+        "visitSource": "builtinAssetGallery.visitSource",
+        "visitAuthorsItch": "builtinAssetGallery.visitAuthorsItch",
+        "visitAuthorsTwitter": "builtinAssetGallery.visitAuthorsTwitter",
+        "tipAuthor": "builtinAssetGallery.tipAuthor"
     },
     "scriptables": {
-        "addEvent": "",
-        "removeEvent": "",
-        "removeEventConfirm": "",
-        "changeArguments": "",
-        "eventAlreadyExists": "",
-        "localEventVars": "",
-        "createEventHint": "",
+        "addEvent": "scriptables.addEvent",
+        "removeEvent": "scriptables.removeEvent",
+        "removeEventConfirm": "scriptables.removeEventConfirm",
+        "changeArguments": "scriptables.changeArguments",
+        "eventAlreadyExists": "scriptables.eventAlreadyExists",
+        "localEventVars": "scriptables.localEventVars",
+        "createEventHint": "scriptables.createEventHint",
         "coreEventsCategories": {
-            "lifecycle": "",
-            "actions": "",
-            "pointer": "",
-            "misc": "",
-            "animation": "",
-            "timers": ""
+            "lifecycle": "scriptables.coreEventsCategories.lifecycle",
+            "actions": "scriptables.coreEventsCategories.actions",
+            "pointer": "scriptables.coreEventsCategories.pointer",
+            "misc": "scriptables.coreEventsCategories.misc",
+            "animation": "scriptables.coreEventsCategories.animation",
+            "timers": "scriptables.coreEventsCategories.timers"
         },
         "coreEvents": {
-            "OnCreate": "",
-            "OnRoomStart": "",
-            "OnStep": "",
-            "OnDraw": "",
-            "OnDestroy": "",
-            "OnRoomEnd": "",
-            "OnPointerClick": "",
-            "OnPointerSecondaryClick": "",
-            "OnPointerEnter": "",
-            "OnPointerLeave": "",
-            "OnPointerDown": "",
-            "OnPointerUp": "",
-            "OnPointerUpOutside": "",
-            "OnPointerWheel": "",
-            "OnActionPress": "",
-            "OnActionRelease": "",
-            "OnActionDown": "",
-            "OnFrameChange": "",
-            "OnAnimationLoop": "",
-            "OnAnimationComplete": "",
-            "Timer": ""
+            "OnCreate": "scriptables.coreEvents.OnCreate",
+            "OnRoomStart": "scriptables.coreEvents.OnRoomStart",
+            "OnStep": "scriptables.coreEvents.OnStep",
+            "OnDraw": "scriptables.coreEvents.OnDraw",
+            "OnDestroy": "scriptables.coreEvents.OnDestroy",
+            "OnRoomEnd": "scriptables.coreEvents.OnRoomEnd",
+            "OnPointerClick": "scriptables.coreEvents.OnPointerClick",
+            "OnPointerSecondaryClick": "scriptables.coreEvents.OnPointerSecondaryClick",
+            "OnPointerEnter": "scriptables.coreEvents.OnPointerEnter",
+            "OnPointerLeave": "scriptables.coreEvents.OnPointerLeave",
+            "OnPointerDown": "scriptables.coreEvents.OnPointerDown",
+            "OnPointerUp": "scriptables.coreEvents.OnPointerUp",
+            "OnPointerUpOutside": "scriptables.coreEvents.OnPointerUpOutside",
+            "OnPointerWheel": "scriptables.coreEvents.OnPointerWheel",
+            "OnActionPress": "scriptables.coreEvents.OnActionPress",
+            "OnActionRelease": "scriptables.coreEvents.OnActionRelease",
+            "OnActionDown": "scriptables.coreEvents.OnActionDown",
+            "OnFrameChange": "scriptables.coreEvents.OnFrameChange",
+            "OnAnimationLoop": "scriptables.coreEvents.OnAnimationLoop",
+            "OnAnimationComplete": "scriptables.coreEvents.OnAnimationComplete",
+            "Timer": "scriptables.coreEvents.Timer"
         },
         "coreParameterizedNames": {
-            "OnActionPress": "",
-            "OnActionRelease": "",
-            "OnActionDown": ""
+            "OnActionPress": "scriptables.coreParameterizedNames.OnActionPress",
+            "OnActionRelease": "scriptables.coreParameterizedNames.OnActionRelease",
+            "OnActionDown": "scriptables.coreParameterizedNames.OnActionDown",
+            "Timer1": "scriptables.coreParameterizedNames.Timer1",
+            "Timer2": "scriptables.coreParameterizedNames.Timer2",
+            "Timer3": "scriptables.coreParameterizedNames.Timer3",
+            "Timer4": "scriptables.coreParameterizedNames.Timer4",
+            "Timer5": "scriptables.coreParameterizedNames.Timer5",
+            "Timer6": "scriptables.coreParameterizedNames.Timer6"
         },
         "coreEventsArguments": {
-            "action": ""
+            "action": "scriptables.coreEventsArguments.action",
+            "name": "scriptables.coreEventsArguments.name",
+            "isUi": "scriptables.coreEventsArguments.isUi"
         },
         "coreEventsLocals": {
-            "OnActionDown_value": "",
-            "OnActionPress_value": ""
+            "OnActionDown_value": "scriptables.coreEventsLocals.OnActionDown_value",
+            "OnActionPress_value": "scriptables.coreEventsLocals.OnActionPress_value"
         },
         "coreEventsDescriptions": {
-            "OnCreate": "",
-            "OnRoomStart": "",
-            "OnStep": "",
-            "OnDraw": "",
-            "OnDestroy": "",
-            "OnRoomEnd": "",
-            "OnActionPress": "",
-            "OnActionRelease": "",
-            "OnActionDown": "",
-            "OnAnimationLoop": "",
-            "OnAnimationComplete": "",
-            "Timer": ""
+            "OnCreate": "scriptables.coreEventsDescriptions.OnCreate",
+            "OnRoomStart": "scriptables.coreEventsDescriptions.OnRoomStart",
+            "OnStep": "scriptables.coreEventsDescriptions.OnStep",
+            "OnDraw": "scriptables.coreEventsDescriptions.OnDraw",
+            "OnDestroy": "scriptables.coreEventsDescriptions.OnDestroy",
+            "OnRoomEnd": "scriptables.coreEventsDescriptions.OnRoomEnd",
+            "OnActionPress": "scriptables.coreEventsDescriptions.OnActionPress",
+            "OnActionRelease": "scriptables.coreEventsDescriptions.OnActionRelease",
+            "OnActionDown": "scriptables.coreEventsDescriptions.OnActionDown",
+            "OnAnimationLoop": "scriptables.coreEventsDescriptions.OnAnimationLoop",
+            "OnAnimationComplete": "scriptables.coreEventsDescriptions.OnAnimationComplete",
+            "Timer": "scriptables.coreEventsDescriptions.Timer"
         }
     }
 }
