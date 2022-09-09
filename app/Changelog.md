@@ -1,3 +1,102 @@
+## v3.0.0
+
+*Fri Sep 09 2022*
+
+### ✨ New Features
+
+* Add a tour-guide tag for making tours in ct.IDE. Add an overview guide to the app-menu. Also simplifies the code of app-menu navigation a bit.
+* Add `ct.rooms.restart()` method
+* Events framework — more vanilla events and ability to add modded ones! Closes #215
+* New rooms editor! Closes #39, #76, #269
+* New & Updated Themes (Nord & Rosé Pine) (#344 by @EhanAhamed)
+* Pride mode with a colorful navigation
+* Support for blank textures (#362 by @markmehere)
+* :bento: Add a vgui catmod by Firecakes (Textbox component)
+* :bento: Desktop features Catmod: New Features & Rewrite of Previous Features (#354 by @EhanAhamed)
+
+### ⚡️ General Improvements
+
+* :globe_with_meridians: Update Russian translation
+* :globe_with_meridians: Update Dutch translation, translated by GambleBranch from Discord server!
+* :globe_with_meridians: Update Debug translation
+* :globe_with_meridians: Ukrainian translation by @progzone122
+* :bento: Update `ct.matter`; you can now design gameplay logic with events in the template editor. Also brings an update to the 2DPhysics example
+* Add Boosty link to the starting screen; change "Donate" url to boosty page
+* Add explanations to ct.js license in the license panel (with suggestions by Shiba). Closes #345
+* Add sanity checks for the texture editor. Closes #361
+* Backgrounds' parallax effect now behaves more natural when zooming in/out
+* Re-capture window focus on game's mouseover in ct.pointer
+* Remove event listeners on ct.fittoscreen.toggleFullscreen. It is now supposed to be run in new pointer events
+* Replace gulp-typescript with @ct.js/gulp-typescript. Allows building ct.js on Node.js v18+
+* Simplify memocats by using built-in pointer event (#360 with @omartek)
+* Support for Meta key for Mac as an alternative to Control key during room editor's deleteX interactions
+* Visually dim deprecated catmods
+
+### 🐛 Bug Fixes
+
+* :globe_with_meridians: Fix Russian "export for web" translation
+* Big texture support, above 2k by 2k (#358 by @markmehere)
+* Change the "Create a template from it" for skeletal animations so it actually works
+* `ct.res` must wait for skeletal animations to finish loading before starting the game
+* Fix array editors writing nothing when working with assets
+* Fix broken license panel
+* Fix `ct.delta` behaving incorrectly if `ct.speed` is changed (It is actually a band-aid over pixi.js' issue, buuut oh well)
+* Fix `ct.emitter.follow` rotating around a copy at a wrong angle
+* Fix `ct.inherit`'s regression from v1. Closes #337
+* Fix `ct.light` using changed `ct.templates.exists` inappropriately
+* Fix event list being shared on newly created templates
+* Fix examples and templates not showing when ctjs is run outside of your home directory (#357 by @leedigital)
+* Fix freshly-created textures crashing the room editor
+* Fix inability to select a preview texture in emitter tandem editor
+* Fix node context missing in ct.js debugger. Makes Node.js and ct.fs work again.
+* Fix unusable modal window on Linux systems during project creation (#351 by @leedigital)
+* Fix the alert about improper web build usage that was popping up in Electron builds
+* Remove a reference to a non-existent sourcemap from ct.filters denendency
+* Tiny visual fix for collapsible input groups in the template editor
+* Truncate long names in resource cards. Closes #353
+* Update Comigo (what?)
+* Update coordinates of primary pointer in gameplay coordinates if a user doesn't move the pointer
+* `ct.matter`: fix physics breaking when additional rooms are appended to the current one
+
+### 🍱 Demos, Dependencies and Stuff
+
+* Update Space Shooter example project
+* Pull the latest docs
+* Update 2DPhysics example with a restart button and ct.pointer in place of ct.mouse
+* Update asset gallery contents
+* Update Catformer example
+* Update various demos and templates
+* Update JettyCat example
+* Update memocats example
+* Update Platformer example
+
+### 📝 Docs
+
+* :clap: Pt-BR documentation translation (100% translated!) (#75 by @leedigital)
+* :bug: Fix "Propose edits" link
+* :bug: Fix pre-v1 direction value at the JettyCat tutorial
+* :bug: JettyCat fixes (#81 by @omartek)
+* :zap: Minor edits and fixes for localStorage page. Add a missing comma and a couple of comments
+* Content Subsystem Docs: Fixed Grammar Errors
+* Corrected Grammar in Basic Concepts Docs
+* Fixed Incorrect Grammar ct.inputs Documentation
+* Room Class Docs: Fixed Minor Grammar Errors
+* Updated ct.styles Documentation
+
+### 🌐 Website
+
+* :clap: Italian site translation (#27 by @omartek)
+* :zap: Add a link to ct.js cheat-sheet to the "what's next" section, put a little heart in place of the list counter to the patreon section
+* :zap: Add a link to web installer for Linux
+* :zap: Replace patreon links with boosty ._.
+* :zap: Update Downloads page. Add a Windows web installer
+
+### 🌻 Misc
+
+* :fire: Remove property `thumbnail` from the rooms objects in project data
+* :hankey: Fix `npm ci` problems
+
+
 ## v2.0.2
 
 *Sun Apr 17 2022*
