@@ -4,12 +4,10 @@ libs:
   fittoscreen:
     manageViewport: true
     mode: scaleFill
-  mouse: {}
   keyboard.polyfill: {}
   keyboard: {}
   vkeys: {}
   sound.howler: {}
-  touch: {}
   sprite:
     spritedef: |-
       ct.sprite(
@@ -34,405 +32,456 @@ libs:
     gridY: 512
     debugMode: false
     debugText: 16
+  pointer:
+    preventdefault: false
+    startlocked: false
 templates:
   - name: Box
     depth: 0
-    oncreate: ''
-    onstep: >-
-      // Move the box to the left if there is a player on the right and no
-      obstacles on the left
-
-      if (ct.place.meet(this, this.x + 5, this.y, 'Player') &&
-          ct.place.free(this, this.x - 10, this.y, 'Solid')) {
-          this.x -= 10;
-      }
-
-      // Same but in reverse
-
-      if (ct.place.meet(this, this.x - 5, this.y, 'Player') &&
-          ct.place.free(this, this.x + 10, this.y, 'Solid')) {
-          this.x += 10;
-      }
-
-      // If there is no obstacles underneath, fall down.
-
-      if (ct.place.free(this, this.x, this.y + 10, 'Solid')
-
-      ) {
-          this.y += 10;
-      }
-    ondraw: ''
-    ondestroy: ''
     uid: b7a528f8-655c-4920-900f-f191533f411d
-    lastmod: 1632021063633
+    lastmod: 1657021879526
     extends:
       cgroup: Solid
     texture: d8dd2bfd-0f9d-495a-bbfd-0e65b80153b9
+    events:
+      - lib: core
+        arguments: {}
+        code: >-
+          // Move the box to the left if there is a player on the right and no
+          obstacles on the left
+
+          if (ct.place.meet(this, this.x + 5, this.y, 'Player') &&
+              ct.place.free(this, this.x - 10, this.y, 'Solid')) {
+              this.x -= 10;
+          }
+
+          // Same but in reverse
+
+          if (ct.place.meet(this, this.x - 5, this.y, 'Player') &&
+              ct.place.free(this, this.x + 10, this.y, 'Solid')) {
+              this.x += 10;
+          }
+
+          // If there is no obstacles underneath, fall down.
+
+          if (ct.place.free(this, this.x, this.y + 10, 'Solid')) {
+              this.y += 10;
+          }
+        eventKey: OnStep
+    type: template
+    loopAnimation: true
   - name: Logs
     depth: 0
-    oncreate: ''
-    onstep: ''
-    ondraw: ''
-    ondestroy: ''
     uid: 1026c1c8-90e4-4b93-bb6a-568f53918097
-    lastmod: 1599533998391
+    lastmod: 1657021912350
     extends:
       cgroup: Solid
     texture: f3de5077-0e66-43de-93f2-d3a75184aa2e
+    events: []
+    type: template
+    loopAnimation: true
   - name: Grass
     depth: 0
-    oncreate: ''
-    onstep: ''
-    ondraw: ''
-    ondestroy: ''
     uid: 5ff42cc3-0b4a-47e9-b6f1-06d3b3b91bb0
     lastmod: 1599533992399
     extends:
       cgroup: Solid
     texture: 9968de05-f39d-4455-aaed-175c03728bb1
+    events: []
+    type: template
+    loopAnimation: true
   - name: Spikes
     depth: 0
-    oncreate: ''
-    onstep: ''
-    ondraw: ''
-    ondestroy: ''
     uid: 036a2de1-89b0-48e3-b26f-d608ce2079fd
-    lastmod: 1641403084624
+    lastmod: 1657021896662
     extends:
       cgroup: Enemy
     texture: eed6bb2f-301f-460a-8d91-93396d103b4e
+    events: []
+    type: template
+    loopAnimation: true
   - name: Player
     depth: 0
-    oncreate: |
-      // Set up animation
-
-      this.animationSpeed = 15 / 60;
-      this.tex = 'Player_Idle';
-      this.play();
-
-      // Traditional speed/dir movement system works badly with platformers.
-      // We will set up our own variables and write own movement code.
-
-      this.maxspeed = 5; // this will be our max horizontal speed
-      this.acceleration = 1; // this is walking acceleration
-      this.jumpPower = 12.5; // this is our jumping velocity
-      this.gravity = 0.5;
-
-
-      // Camera should follow the character
-
-      ct.camera.follow = this;
-      ct.camera.borderX = 400;
-      ct.camera.borderY = 200;
-      ct.camera.drift = 0.95;
-    onstep: >-
-      // here and below we check for both collisions with tiles and copies.
-
-      // -10 is the depth of the colliding tile layer. We ignore the decorative
-
-      // layer at -20.
-
-      var onGround = ct.place.occupied(this, this.x, this.y + 1, 'Solid');
-
-
-      // Move right or left
-
-      if (ct.actions.Move.value > 0) {
-          if (this.hspeed < this.maxspeed) {
-              this.hspeed += this.acceleration;
-          }
-      } else if (ct.actions.Move.value < 0) {
-          if (this.hspeed > -this.maxspeed) {
-              this.hspeed -= this.acceleration;
-          }
-      } else { // Slow down if we are on the ground and we don't move.
-          if (onGround) {
-              this.speed = Math.max(0, this.speed - this.maxspeed);
-          } else if (!ct.actions.Move.pressed) {
-              // Don't move if we are not pressing the move button
-              this.hspeed = 0;
-          }
-      }
-
-
-      // Jumping
-
-      if (ct.actions.Jump.down) {
-          // Jump only if we stay on the ground
-          if (onGround) {
-              this.vspeed = -this.jumpPower;
-          }
-      }
-
-
-      // this.moveContinuousByAxes moves the copy by two axes separately, so you
-      can slide
-
-      // along surfaces. It also returns its collision results on x and y, if
-      any have occured.
-
-      var collisions = this.moveContinuousByAxes('Solid');
-
-      // Were there any collisions?
-
-      if (collisions) {
-          // Were we colliding horizontally?
-          if (collisions.x) {
-              // Stop horizontal movement
-              this.hspeed = 0;
-          }
-          // Were we colliding vertically?
-          if (collisions.y) {
-              // Stop vertical movement
-              this.vspeed = 0;
-          }
-      }
-
-      // Check if we collide with spikes or slimes
-
-      if (ct.place.copies(this, this.x, this.y, 'Enemy')) {
-          ct.sound.spawn('BodyFall');
-          // move to a 'death' screen
-          ct.rooms.switch('DeadScreen');
-      }
-    ondraw: >-
-      // Here and below we use the result of the motion by comparing new
-      coordinates
-
-      // with the ones from the previous frame. This is to prevent walking
-      animation
-
-      // when the charecter tries to walk into a wall.
-
-
-      // Flip the sprite so it follows the movement
-
-      if (this.x < this.xprev) {
-          this.scale.x = -1;
-      } else if (this.x > this.xprev) {
-          this.scale.x = 1;
-      }
-
-
-      // Animation logic
-
-      // All the textures are defined with the catmod "Sprite composer",
-
-      // in Project tab -> Sprite Composer -> Sprite definitions.
-
-      // See its docs in the sliding panel on the right for examples and
-      explanations.
-
-      if (ct.place.occupied(this, this.x, this.y + 1, 'Solid')) {
-          if (this.x !== this.xprev) {
-              this.tex = 'Player_Walking';
-          } else {
-              this.tex = 'Player_Idle';
-          }
-      } else if (this.vspeed > 0) {
-          this.tex = 'Player_Falling';
-      } else {
-          this.tex = 'Player_Jumping';
-      }
-
-
-      // Shift camera to the side where the character looks
-
-      ct.camera.shiftX = this.scale.x * 150;
-    ondestroy: ''
     uid: 00664f77-21c6-4b06-b310-88640b1beaf9
-    lastmod: 1648092352063
+    lastmod: 1661067945889
     extends:
       cgroup: Player
     texture: ad390b6e-4c2c-412f-8143-1c70b9c16fc0
+    events:
+      - lib: core
+        arguments: {}
+        code: |
+          // Set up animation
+
+          this.tex = 'Player_Idle';
+
+          // Traditional speed/dir movement system works badly with platformers.
+          // We will set up our own variables and write own movement code.
+
+          this.maxspeed = 5; // this will be our max horizontal speed
+          this.acceleration = 1; // this is walking acceleration
+          this.jumpPower = 12.5; // this is our jumping velocity
+          this.gravity = 0.5;
+
+
+          // Camera should follow the character
+
+          ct.camera.follow = this;
+          ct.camera.borderX = 400;
+          ct.camera.borderY = 200;
+          ct.camera.drift = 0.95;
+        eventKey: OnCreate
+      - lib: core
+        arguments: {}
+        code: >-
+          // here and below we check for both collisions with tiles and copies.
+
+          // -10 is the depth of the colliding tile layer. We ignore the
+          decorative
+
+          // layer at -20.
+
+          var onGround = ct.place.occupied(this, this.x, this.y + 1, 'Solid');
+
+
+          // Move right or left
+
+          if (ct.actions.Move.value > 0) {
+              if (this.hspeed < this.maxspeed) {
+                  this.hspeed += this.acceleration;
+              }
+          } else if (ct.actions.Move.value < 0) {
+              if (this.hspeed > -this.maxspeed) {
+                  this.hspeed -= this.acceleration;
+              }
+          } else { // Slow down if we are on the ground and we don't move.
+              if (onGround) {
+                  this.speed = Math.max(0, this.speed - this.maxspeed);
+              } else if (!ct.actions.Move.pressed) {
+                  // Don't move if we are not pressing the move button
+                  this.hspeed = 0;
+              }
+          }
+
+
+          // Jumping
+
+          if (ct.actions.Jump.down) {
+              // Jump only if we stay on the ground
+              if (onGround) {
+                  this.vspeed = -this.jumpPower;
+              }
+          }
+
+
+          // this.moveContinuousByAxes moves the copy by two axes separately, so
+          you can slide
+
+          // along surfaces. It also returns its collision results on x and y,
+          if any have occured.
+
+          var collisions = this.moveContinuousByAxes('Solid');
+
+          // Were there any collisions?
+
+          if (collisions) {
+              // Were we colliding horizontally?
+              if (collisions.x) {
+                  // Stop horizontal movement
+                  this.hspeed = 0;
+              }
+              // Were we colliding vertically?
+              if (collisions.y) {
+                  // Stop vertical movement
+                  this.vspeed = 0;
+              }
+          }
+        eventKey: OnStep
+      - lib: core
+        arguments: {}
+        code: >-
+          // Here and below we use the result of the motion by comparing new
+          coordinates
+
+          // with the ones from the previous frame. This is to prevent walking
+          animation
+
+          // when the charecter tries to walk into a wall.
+
+
+          // Flip the sprite so it follows the movement
+
+          if (this.x < this.xprev) {
+              this.scale.x = -1;
+          } else if (this.x > this.xprev) {
+              this.scale.x = 1;
+          }
+
+
+          // Animation logic
+
+          // All the textures are defined with the catmod "Sprite composer",
+
+          // in Project tab -> Sprite Composer -> Sprite definitions.
+
+          // See its docs in the sliding panel on the right for examples and
+          explanations.
+
+          if (ct.place.occupied(this, this.x, this.y + 1, 'Solid')) {
+              if (this.x !== this.xprev) {
+                  this.tex = 'Player_Walking';
+              } else {
+                  this.tex = 'Player_Idle';
+              }
+          } else if (this.vspeed > 0) {
+              this.tex = 'Player_Falling';
+          } else {
+              this.tex = 'Player_Jumping';
+          }
+
+
+          // Shift camera to the side where the character looks
+
+          ct.camera.shiftX = this.scale.x * 150;
+        eventKey: OnDraw
+      - eventKey: collisionCGroup
+        code: |-
+          // Check if we collide with spikes or slimes
+          ct.sound.spawn('BodyFall');
+          // move to a 'death' screen
+          ct.rooms.switch('DeadScreen');
+        arguments:
+          group: Enemy
+        lib: place
+    type: template
+    loopAnimation: true
+    playAnimationOnStart: false
+    animationFPS: 15
   - name: Coin
     depth: 0
-    oncreate: ''
-    onstep: |-
-      if (ct.place.meet(this, this.x, this.y, 'Player')) {
+    uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
+    lastmod: 1657021882549
+    extends: {}
+    texture: 62be2903-9782-49fc-b551-ef2e641091c9
+    events:
+      - eventKey: collisionTemplate
+        code: |-
           this.kill = true;
           ct.sound.spawn(ct.random.dice('Coin_01', 'Coin_02', 'Coin_03'));
           ct.room.coins ++;
-      }
-    ondraw: ''
-    ondestroy: ''
-    uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
-    lastmod: 1641402964112
-    extends: {}
-    texture: 62be2903-9782-49fc-b551-ef2e641091c9
+        arguments:
+          template: 00664f77-21c6-4b06-b310-88640b1beaf9
+        lib: place
+    type: template
+    loopAnimation: true
   - name: Greed
     depth: 0
-    oncreate: ''
-    onstep: ''
-    ondraw: ''
-    ondestroy: ''
     uid: 2d29a0d5-d88d-493d-bece-8d52ed476273
-    lastmod: 1599533995511
+    lastmod: 1657023054592
     extends: {}
     texture: e90eb23b-547a-4d96-a203-ffe63c00cf9b
+    events: []
+    type: template
+    loopAnimation: true
   - name: Slime
     depth: 0
-    oncreate: |-
-      this.speed = 1;
-      this.direction = -180;
-
-      this.animationSpeed = 4 / 60;
-      this.play();
-    onstep: >-
-      var freeBelow = ct.place.free(this, this.x + ct.u.ldx(70, this.direction),
-      this.y + 35, 'Solid');
-
-
-      var occupiedInFront = ct.place.occupied(this, this.x + ct.u.ldx(10,
-      this.direction), this.y, 'Solid');
-
-
-      if (freeBelow || occupiedInFront) {
-          if (this.direction === 180) {
-              this.direction = 0;
-              this.scale.x = -1;
-          } else {
-              this.direction = 180;
-              this.scale.x = 1;
-          }
-      }
-
-
-      this.move();
-    ondraw: ''
-    ondestroy: ''
     uid: 1f91fd7d-2d6c-4542-aead-78b8010b835b
-    lastmod: 1641402957729
+    lastmod: 1661067952905
     extends:
       cgroup: Enemy
     texture: 703fb5d5-cf20-4450-b760-0b1cd037a5ad
+    events:
+      - lib: core
+        arguments: {}
+        code: |
+          this.speed = 1;
+          this.direction = -180;
+        eventKey: OnCreate
+      - lib: core
+        arguments: {}
+        code: >-
+          var freeBelow = ct.place.free(this, this.x + ct.u.ldx(70,
+          this.direction), this.y + 35, 'Solid');
+
+
+          var occupiedInFront = ct.place.occupied(this, this.x + ct.u.ldx(10,
+          this.direction), this.y, 'Solid');
+
+
+          if (freeBelow || occupiedInFront) {
+              if (this.direction === 180) {
+                  this.direction = 0;
+                  this.scale.x = -1;
+              } else {
+                  this.direction = 180;
+                  this.scale.x = 1;
+              }
+          }
+
+
+          this.move();
+        eventKey: OnStep
+    type: template
+    loopAnimation: true
+    animationFPS: 4
+    playAnimationOnStart: true
   - name: Rich
     depth: 0
-    oncreate: ''
-    onstep: ''
-    ondraw: ''
-    ondestroy: ''
     uid: b658efa2-360e-4a62-8640-3e3281156f4e
     lastmod: 1599534002727
     extends: {}
     texture: 1da28af4-53f1-4958-82b2-a696778f910f
+    events: []
+    type: template
+    loopAnimation: true
   - name: ToggleFullscreen
     depth: 100
-    oncreate: ''
-    onstep: |-
-      if (ct.mouse.pressed && ct.mouse.hoversUi(this)) {
-          ct.fittoscreen.toggleFullscreen();
-      }
-
-      if (ct.touch.enabled && ct.touch.hoversUi(this)) {
-          ct.fittoscreen.toggleFullscreen();
-      }
-    ondraw: 'this.gotoAndStop(ct.fittoscreen.getIsFullscreen()? 1 : 0);'
-    ondestroy: ''
     uid: 8a4b8de4-7729-4936-bc7b-bc277a512975
-    lastmod: 1599534011351
+    lastmod: 1657022432389
     extends: {}
     texture: d161a39a-203e-4099-99e2-41385d94f975
+    events:
+      - lib: core
+        arguments: {}
+        code: 'this.gotoAndStop(ct.fittoscreen.getIsFullscreen()? 1 : 0);'
+        eventKey: OnDraw
+      - eventKey: OnPointerClick
+        code: ct.fittoscreen.toggleFullscreen();
+        arguments: {}
+        lib: core
+    type: template
+    loopAnimation: true
   - name: CoinWidget
     depth: 0
-    oncreate: |-
-      this.coinsCounter = new PIXI.Text(this.coins, ct.styles.get('CoinText'));
-      this.coinsCounter.x = 40;
-      this.coinsCounter.anchor.y = 0.5;
-      this.addChild(this.coinsCounter);
-    onstep: ''
-    ondraw: |-
-      if (this.coinsCounter.text != ct.room.coins + ' / 33') {
-          this.coinsCounter.text = ct.room.coins + ' / 33';
-      }
-    ondestroy: ''
     uid: 1f73eb4f-8795-4234-af61-2c44c3fba073
     texture: 62be2903-9782-49fc-b551-ef2e641091c9
     extends: {}
-    lastmod: 1599533989223
+    lastmod: 1657021887581
+    events:
+      - lib: core
+        arguments: {}
+        code: >-
+          this.coinsCounter = new PIXI.Text(this.coins,
+          ct.styles.get('CoinText'));
+
+          this.coinsCounter.x = 40;
+
+          this.coinsCounter.anchor.y = 0.5;
+
+          this.addChild(this.coinsCounter);
+        eventKey: OnCreate
+      - lib: core
+        arguments: {}
+        code: |-
+          if (this.coinsCounter.text != ct.room.coins + ' / 33') {
+              this.coinsCounter.text = ct.room.coins + ' / 33';
+          }
+        eventKey: OnDraw
+    type: template
+    loopAnimation: true
   - name: ButtonLeft
     depth: 0
-    oncreate: |-
-      this.button = ct.vkeys.button({
-          key: "Vk2",
-          texNormal: "buttonLeft",
-          texActive: "buttonLeft",
-          texHover: "buttonLeft",
-          x: () => this.x,
-          y: () => this.y,
-          depth: 1000
-      });
-      this.alpha = 0.5;
-      this.button.visible = false;
-    onstep: ''
-    ondraw: |-
-      this.button.x = this.x;
-      this.button.y = this.y;
-    ondestroy: ''
     uid: 45a6ee81-34af-494e-914e-51ec9d414314
     texture: e706498a-bfef-4366-9481-687b01ff7bf1
     extends: {}
     lastmod: 1599533982687
+    events:
+      - lib: core
+        arguments: {}
+        code: |-
+          this.button = ct.vkeys.button({
+              key: "Vk2",
+              texNormal: "buttonLeft",
+              texActive: "buttonLeft",
+              texHover: "buttonLeft",
+              x: () => this.x,
+              y: () => this.y,
+              depth: 1000
+          });
+          this.alpha = 0.5;
+          this.button.visible = false;
+        eventKey: OnCreate
+      - lib: core
+        arguments: {}
+        code: |-
+          this.button.x = this.x;
+          this.button.y = this.y;
+        eventKey: OnDraw
+    type: template
+    loopAnimation: true
   - name: ButtonRight
     depth: 0
-    oncreate: |-
-      this.button = ct.vkeys.button({
-          key: "Vk1",
-          texNormal: "buttonRight",
-          texActive: "buttonRight",
-          texHover: "buttonRight",
-          x: () => this.x,
-          y: () => this.y,
-          depth: 1000
-      });
-      this.alpha = 0.5;
-      this.button.visible = false;
-    onstep: ''
-    ondraw: |-
-      this.button.x = this.x;
-      this.button.y = this.y;
-    ondestroy: ''
     uid: 03773b4b-e444-4a2d-9891-3ddf9575cc87
     texture: 8f3b23d8-3aed-429a-a66e-9572cad7919a
     extends: {}
     lastmod: 1599533980063
+    events:
+      - lib: core
+        arguments: {}
+        code: |-
+          this.button = ct.vkeys.button({
+              key: "Vk1",
+              texNormal: "buttonRight",
+              texActive: "buttonRight",
+              texHover: "buttonRight",
+              x: () => this.x,
+              y: () => this.y,
+              depth: 1000
+          });
+          this.alpha = 0.5;
+          this.button.visible = false;
+        eventKey: OnCreate
+      - lib: core
+        arguments: {}
+        code: |-
+          this.button.x = this.x;
+          this.button.y = this.y;
+        eventKey: OnDraw
+    type: template
+    loopAnimation: true
   - name: ButtonJump
     depth: 0
-    oncreate: |-
-      this.button = ct.vkeys.button({
-          key: "Vk3",
-          texNormal: "buttonJump",
-          texActive: "buttonJump",
-          texHover: "buttonJump",
-          x: () => this.x,
-          y: () => this.y,
-          depth: 1000
-      });
-      this.alpha = 0.5;
-      this.button.visible = false;
-    onstep: ''
-    ondraw: |-
-      this.button.x = this.x;
-      this.button.y = this.y;
-    ondestroy: ''
     uid: 86f037f0-9a1c-4306-9d67-00be01bbd793
     texture: b5121b5f-8109-45c0-9fa4-44f9f10ce88c
     extends: {}
-    lastmod: 1599533976511
+    lastmod: 1657021803175
+    events:
+      - lib: core
+        arguments: {}
+        code: |-
+          this.button = ct.vkeys.button({
+              key: "Vk3",
+              texNormal: "buttonJump",
+              texActive: "buttonJump",
+              texHover: "buttonJump",
+              x: () => this.x,
+              y: () => this.y,
+              depth: 1000
+          });
+          this.alpha = 0.5;
+          this.button.visible = false;
+        eventKey: OnCreate
+      - lib: core
+        arguments: {}
+        code: |-
+          this.button.x = this.x;
+          this.button.y = this.y;
+        eventKey: OnDraw
+    type: template
+    loopAnimation: true
   - name: TryAgain
     depth: 0
-    oncreate: ''
-    onstep: >-
-      if (ct.touch.collide(this) || (ct.mouse.hovers(this) && ct.mouse.pressed))
-      {
-          ct.rooms.switch('InGame');
-      }
-    ondraw: ''
-    ondestroy: ''
     uid: 64fac189-737e-4e56-a8fc-15eccae6bf2a
     texture: 0298d848-efe7-48e5-8d68-9128ba8b4e02
     extends: {}
-    lastmod: 1599534015095
+    lastmod: 1657022172926
+    events:
+      - eventKey: OnPointerClick
+        code: ct.rooms.switch('InGame');
+        arguments: {}
+        lib: core
+    type: template
+    loopAnimation: true
 sounds:
   - name: BodyFall
     uid: 64f57367-eae3-40e1-8769-e11bd3c90f62
@@ -508,1243 +557,1852 @@ styles:
     lastmod: 1543636696741
 rooms:
   - name: InGame
-    oncreate: |-
-      this.coins = 0;
-
-      ct.rooms.append('UI_Layer', {isUi: true});
-    onstep: |-
-      if (this.coins >= 33) {
-          ct.rooms.switch('RichScreen');
-      }
     ondraw: ''
     onleave: ''
     width: 1024
     height: 700
     backgrounds:
       - depth: '-50'
-        extends: {}
         texture: fd9d7012-6826-4368-8fe5-0385b72bc902
+        shiftX: !<tag:yaml.org,2002:js/undefined> ''
+        shiftY: !<tag:yaml.org,2002:js/undefined> ''
+        parallaxX: !<tag:yaml.org,2002:js/undefined> ''
+        parallaxY: !<tag:yaml.org,2002:js/undefined> ''
+        movementX: !<tag:yaml.org,2002:js/undefined> ''
+        movementY: !<tag:yaml.org,2002:js/undefined> ''
+        scaleX: 0
+        scaleY: 0
+        repeat: !<tag:yaml.org,2002:js/undefined> ''
     uid: b0f0ff4d-a155-4d68-a86e-5bb7ed8973ab
     grid: 35
-    lastmod: 1632021081256
+    lastmod: 1661067970649
     thumbnail: 1
     tiles:
       - depth: -10
         tiles:
           - x: -140
             'y': -70
-            grid:
-              - 0
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 4
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: -70
             'y': -70
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 0
             'y': -70
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 70
             'y': -70
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 140
             'y': -70
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 210
             'y': -70
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 280
             'y': -70
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: -140
             'y': 0
-            grid:
-              - 1
-              - 2
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 9
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: -140
             'y': 70
-            grid:
-              - 1
-              - 2
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 9
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: -140
             'y': 140
-            grid:
-              - 1
-              - 2
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 9
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: -140
             'y': 210
-            grid:
-              - 1
-              - 2
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 9
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: -140
             'y': 280
-            grid:
-              - 1
-              - 2
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 9
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: -140
             'y': 350
-            grid:
-              - 1
-              - 2
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 9
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: -140
             'y': 420
-            grid:
-              - 1
-              - 2
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 9
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: -140
             'y': 490
-            grid:
-              - 0
-              - 2
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 8
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 1680
             'y': 280
-            grid:
-              - 1
-              - 2
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 9
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 1680
             'y': 210
-            grid:
-              - 1
-              - 2
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 9
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 1680
             'y': 140
-            grid:
-              - 1
-              - 2
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 9
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 1680
             'y': 70
-            grid:
-              - 1
-              - 2
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 9
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 1680
             'y': 0
-            grid:
-              - 1
-              - 2
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 9
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 350
             'y': -70
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 420
             'y': -70
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 490
             'y': -70
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 560
             'y': -70
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 630
             'y': -70
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 700
             'y': -70
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 770
             'y': -70
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 840
             'y': -70
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 910
             'y': -70
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 980
             'y': -70
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 1050
             'y': -70
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 1120
             'y': -70
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 1190
             'y': -70
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 1260
             'y': -70
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 1330
             'y': -70
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 1400
             'y': -70
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 1470
             'y': -70
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 1540
             'y': -70
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 1610
             'y': -70
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 1680
             'y': -70
-            grid:
-              - 2
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 6
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 210
             'y': 210
-            grid:
-              - 0
-              - 0
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 350
             'y': 210
-            grid:
-              - 2
-              - 0
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 2
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 280
             'y': 210
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: -70
             'y': 490
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 0
             'y': 490
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 70
             'y': 490
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 140
             'y': 490
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 210
             'y': 490
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 280
             'y': 490
-            grid:
-              - 2
-              - 0
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 2
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 560
             'y': 490
-            grid:
-              - 0
-              - 0
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 840
             'y': 490
-            grid:
-              - 2
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 6
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 630
             'y': 490
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 700
             'y': 490
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 770
             'y': 490
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 840
             'y': 560
-            grid:
-              - 0
-              - 2
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 8
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 910
             'y': 560
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 980
             'y': 560
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 1050
             'y': 560
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 1120
             'y': 560
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 1190
             'y': 560
-            grid:
-              - 2
-              - 2
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 10
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 0
             'y': 560
-            grid:
-              - 1
-              - 2
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 9
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 0
             'y': 630
-            grid:
-              - 1
-              - 2
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 9
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 0
             'y': 700
-            grid:
-              - 1
-              - 2
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 9
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 0
             'y': 770
-            grid:
-              - 1
-              - 2
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 9
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 0
             'y': 840
-            grid:
-              - 0
-              - 2
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 8
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 70
             'y': 840
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 140
             'y': 840
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 210
             'y': 840
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 280
             'y': 840
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 350
             'y': 840
-            grid:
-              - 2
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 6
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 350
             'y': 910
-            grid:
-              - 0
-              - 2
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 8
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 420
             'y': 910
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 490
             'y': 910
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 560
             'y': 910
-            grid:
-              - 2
-              - 2
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 10
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 560
             'y': 840
-            grid:
-              - 0
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 4
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 630
             'y': 840
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 700
             'y': 840
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 770
             'y': 840
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 840
             'y': 840
-            grid:
-              - 2
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 6
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 840
             'y': 910
-            grid:
-              - 0
-              - 2
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 8
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 1050
             'y': 910
-            grid:
-              - 2
-              - 2
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 10
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 910
             'y': 910
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 980
             'y': 910
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 1190
             'y': 350
-            grid:
-              - 3
-              - 0
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 3
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 1190
             'y': 420
-            grid:
-              - 1
-              - 2
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 9
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 1190
             'y': 490
-            grid:
-              - 1
-              - 2
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 9
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 1330
             'y': 350
-            grid:
-              - 0
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 4
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 1330
             'y': 420
-            grid:
-              - 1
-              - 2
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 9
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 1330
             'y': 490
-            grid:
-              - 1
-              - 2
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 9
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 1330
             'y': 560
-            grid:
-              - 0
-              - 2
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 8
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 1400
             'y': 560
-            grid:
-              - 2
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 6
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 1400
             'y': 630
-            grid:
-              - 1
-              - 2
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 9
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 1400
             'y': 700
-            grid:
-              - 1
-              - 2
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 9
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 1400
             'y': 770
-            grid:
-              - 1
-              - 2
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 9
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 1400
             'y': 840
-            grid:
-              - 2
-              - 2
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 10
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 1400
             'y': 350
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 1470
             'y': 350
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 1540
             'y': 350
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 1610
             'y': 350
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 1680
             'y': 350
-            grid:
-              - 2
-              - 2
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 10
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 1120
             'y': 840
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 1190
             'y': 840
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 1260
             'y': 840
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 1330
             'y': 840
-            grid:
-              - 1
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 5
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 1050
             'y': 840
-            grid:
-              - 0
-              - 1
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 4
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
         extends:
           cgroup: Solid
+        hidden: false
       - depth: -20
         tiles:
           - x: 70
             'y': 420
-            grid:
-              - 3
-              - 2
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 11
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 140
             'y': 420
-            grid:
-              - 3
-              - 2
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 11
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 210
             'y': 420
-            grid:
-              - 3
-              - 2
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 11
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 945
             'y': 490
-            grid:
-              - 1
-              - 3
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 13
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 770
             'y': 420
-            grid:
-              - 2
-              - 3
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 14
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 735
             'y': 420
-            grid:
-              - 0
-              - 3
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 12
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 1575
             'y': 280
-            grid:
-              - 0
-              - 3
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 12
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 1435
             'y': 280
-            grid:
-              - 1
-              - 3
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 13
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 1190
             'y': 280
-            grid:
-              - 3
-              - 3
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 15
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 280
             'y': 770
-            grid:
-              - 1
-              - 3
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 13
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 245
             'y': 770
-            grid:
-              - 2
-              - 3
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 14
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 245
             'y': 140
-            grid:
-              - 1
-              - 3
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 13
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: -70
             'y': 420
-            grid:
-              - 0
-              - 3
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 12
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 1120
             'y': 490
-            grid:
-              - 0
-              - 3
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 12
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 1400
             'y': 490
-            grid:
-              - 3
-              - 3
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 15
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
           - x: 770
             'y': 770
-            grid:
-              - 0
-              - 3
-              - 1
-              - 1
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 12
+            rotation: 0
             texture: 9968de05-f39d-4455-aaed-175c03728bb1
         extends: {}
+        hidden: false
     gridX: 35
     gridY: 35
     copies:
       - x: 980
         'y': 280
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: b7a528f8-655c-4920-900f-f191533f411d
         exts: {}
+        customProperties: {}
       - x: 1225
         'y': 770
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 036a2de1-89b0-48e3-b26f-d608ce2079fd
         exts: {}
+        customProperties: {}
       - x: 1295
         'y': 770
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 036a2de1-89b0-48e3-b26f-d608ce2079fd
         exts: {}
+        customProperties: {}
       - x: 1470
         'y': 280
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: b7a528f8-655c-4920-900f-f191533f411d
         exts: {}
+        customProperties: {}
       - x: 350
         'y': 490
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 1026c1c8-90e4-4b93-bb6a-568f53918097
         exts: {}
+        customProperties: {}
       - x: 420
         'y': 490
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 1026c1c8-90e4-4b93-bb6a-568f53918097
         exts: {}
+        customProperties: {}
       - x: 490
         'y': 490
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 1026c1c8-90e4-4b93-bb6a-568f53918097
         exts: {}
+        customProperties: {}
       - x: 420
         'y': 840
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 036a2de1-89b0-48e3-b26f-d608ce2079fd
         exts: {}
+        customProperties: {}
       - x: 490
         'y': 840
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 036a2de1-89b0-48e3-b26f-d608ce2079fd
         exts: {}
+        customProperties: {}
       - x: 910
         'y': 840
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 036a2de1-89b0-48e3-b26f-d608ce2079fd
         exts: {}
+        customProperties: {}
       - x: 980
         'y': 840
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 036a2de1-89b0-48e3-b26f-d608ce2079fd
         exts: {}
+        customProperties: {}
       - x: 70
-        'y': 350
+        'y': 490
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 00664f77-21c6-4b06-b310-88640b1beaf9
         exts: {}
+        customProperties: {}
       - x: 385
         'y': 140
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
+        customProperties: {}
       - x: 420
         'y': 420
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
+        customProperties: {}
       - x: 490
         'y': 420
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
+        customProperties: {}
       - x: 1645
         'y': 245
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
+        customProperties: {}
       - x: 1645
         'y': 175
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
+        customProperties: {}
       - x: 1645
         'y': 105
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
+        customProperties: {}
       - x: 1295
         'y': 385
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
+        customProperties: {}
       - x: 1295
         'y': 490
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
+        customProperties: {}
       - x: 1295
         'y': 595
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
+        customProperties: {}
       - x: 1295
         'y': 700
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
+        customProperties: {}
       - x: 1120
         'y': 770
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
+        customProperties: {}
       - x: 980
         'y': 700
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
+        customProperties: {}
       - x: 840
         'y': 770
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
+        customProperties: {}
       - x: 595
         'y': 770
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
+        customProperties: {}
       - x: 490
         'y': 700
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
+        customProperties: {}
       - x: 385
         'y': 770
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
+        customProperties: {}
       - x: 175
         'y': 770
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
+        customProperties: {}
       - x: 140
         'y': 735
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
+        customProperties: {}
       - x: 175
         'y': 700
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
+        customProperties: {}
       - x: 210
         'y': 735
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
+        customProperties: {}
       - x: 385
         'y': 560
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
+        customProperties: {}
       - x: 455
         'y': 560
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
+        customProperties: {}
       - x: 525
         'y': 560
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
+        customProperties: {}
       - x: 1645
         'y': 35
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
+        customProperties: {}
       - x: 315
         'y': 140
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
+        customProperties: {}
       - x: 350
         'y': 105
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
+        customProperties: {}
       - x: 700
         'y': 840
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 1f91fd7d-2d6c-4542-aead-78b8010b835b
         exts: {}
+        customProperties: {}
       - x: 1015
         'y': 490
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
+        customProperties: {}
       - x: 1015
         'y': 455
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
+        customProperties: {}
       - x: 1050
         'y': 455
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
+        customProperties: {}
       - x: 1050
         'y': 490
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
+        customProperties: {}
       - x: 840
         'y': 350
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 1026c1c8-90e4-4b93-bb6a-568f53918097
         exts: {}
+        customProperties: {}
       - x: 910
         'y': 350
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 1026c1c8-90e4-4b93-bb6a-568f53918097
         exts: {}
+        customProperties: {}
       - x: 980
         'y': 350
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 1026c1c8-90e4-4b93-bb6a-568f53918097
         exts: {}
+        customProperties: {}
       - x: 1050
         'y': 350
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 1026c1c8-90e4-4b93-bb6a-568f53918097
         exts: {}
+        customProperties: {}
       - x: 280
         'y': 105
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
+        customProperties: {}
       - x: 245
         'y': 140
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
         exts: {}
+        customProperties: {}
       - x: 315
         'y': 210
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 1f91fd7d-2d6c-4542-aead-78b8010b835b
         exts: {}
+        customProperties: {}
       - x: 1120
         'y': 560
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 1f91fd7d-2d6c-4542-aead-78b8010b835b
         exts: {}
+        customProperties: {}
       - x: -70
         'y': 280
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 1026c1c8-90e4-4b93-bb6a-568f53918097
         exts: {}
+        customProperties: {}
       - x: 245
         'y': 770
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: b7a528f8-655c-4920-900f-f191533f411d
         exts: {}
+        customProperties: {}
+    events:
+      - lib: core
+        arguments: {}
+        code: |-
+          this.coins = 0;
+
+          ct.rooms.append('UI_Layer', {isUi: true});
+        eventKey: OnRoomStart
+      - lib: core
+        arguments: {}
+        code: |-
+          if (this.coins >= 33) {
+              ct.rooms.switch('RichScreen');
+          }
+        eventKey: OnStep
+    type: room
+    extends: {}
+    simulate: true
+    isUi: !<tag:yaml.org,2002:js/undefined> ''
   - name: DeadScreen
-    oncreate: >-
-      ct.sound.spawn('Failure');
-
-
-      this.ohNoLabel = new PIXI.Text('Oh no!', ct.styles.get('OhNo'));
-
-      this.ohNoLabel.x = ct.camera.width / 2;
-
-      this.ohNoLabel.y = 520;
-
-      this.ohNoLabel.anchor.x = this.ohNoLabel.anchor.y = 0.5;
-
-      this.addChild(this.ohNoLabel);
-
-
-      this.greedyLabel = new PIXI.Text('You were too greeedy for that game!',
-      ct.styles.get('OhNo_Small'));
-
-      this.greedyLabel.x = ct.camera.width / 2;
-
-      this.greedyLabel.y = 560;
-
-      this.greedyLabel.anchor.x = this.greedyLabel.anchor.y = 0.5;
-
-      this.addChild(this.greedyLabel);
     onstep: ''
     ondraw: ''
     onleave: ''
@@ -1756,7 +2414,7 @@ rooms:
         texture: fd9d7012-6826-4368-8fe5-0385b72bc902
     uid: 1ee751d0-24cc-43af-b91d-1a91a9aa48f5
     grid: 64
-    lastmod: 1586656324350
+    lastmod: 1657023071766
     thumbnail: 2
     gridX: 64
     gridY: 64
@@ -1769,45 +2427,69 @@ rooms:
         'y': 256
         uid: 2d29a0d5-d88d-493d-bece-8d52ed476273
         exts: {}
+        customProperties: {}
+        opacity: 1
+        tint: 16777215
+        rotation: 0
+        scale:
+          x: 1
+          'y': 1
       - x: 992
         'y': 669
         uid: 8a4b8de4-7729-4936-bc7b-bc277a512975
         exts: {}
+        customProperties: {}
+        opacity: 1
+        tint: 16777215
+        rotation: 0
+        scale:
+          x: 1
+          'y': 1
       - x: 512
         'y': 640
         uid: 64fac189-737e-4e56-a8fc-15eccae6bf2a
         exts: {}
+        customProperties: {}
+        opacity: 1
+        tint: 16777215
+        rotation: 0
+        scale:
+          x: 1
+          'y': 1
+    events:
+      - lib: core
+        arguments: {}
+        code: >-
+          ct.sound.spawn('Failure');
+
+
+          this.ohNoLabel = new PIXI.Text('Oh no!', ct.styles.get('OhNo'));
+
+          this.ohNoLabel.x = ct.camera.width / 2;
+
+          this.ohNoLabel.y = 520;
+
+          this.ohNoLabel.anchor.x = this.ohNoLabel.anchor.y = 0.5;
+
+          this.addChild(this.ohNoLabel);
+
+
+          this.greedyLabel = new PIXI.Text('You were too greeedy for that
+          game!', ct.styles.get('OhNo_Small'));
+
+          this.greedyLabel.x = ct.camera.width / 2;
+
+          this.greedyLabel.y = 560;
+
+          this.greedyLabel.anchor.x = this.greedyLabel.anchor.y = 0.5;
+
+          this.addChild(this.greedyLabel);
+        eventKey: OnRoomStart
+    type: room
+    extends: {}
+    simulate: true
+    isUi: !<tag:yaml.org,2002:js/undefined> ''
   - name: RichScreen
-    oncreate: >-
-      ct.sound.spawn('Victory');
-
-
-      ct.keyboard.clear();
-
-
-      this.ohNoLabel = new PIXI.Text('You got them all!',
-      ct.styles.get('OhNo'));
-
-      this.ohNoLabel.x = ct.camera.width / 2;
-
-      this.ohNoLabel.y = 540;
-
-      this.ohNoLabel.anchor.x = this.ohNoLabel.anchor.y = 0.5;
-
-      this.addChild(this.ohNoLabel);
-
-
-      this.subLabel = new PIXI.Text('You\'ve found all the 33 coins.
-      Congrats!\nThis was a stupid demo of ct.js game engine. Thank you for
-      playing!', ct.styles.get('OhNo_Small'));
-
-      this.subLabel.x = ct.camera.width / 2;
-
-      this.subLabel.y = 600;
-
-      this.subLabel.anchor.x = this.subLabel.anchor.y = 0.5;
-
-      this.addChild(this.subLabel);
     onstep: ''
     ondraw: ''
     onleave: ''
@@ -1819,7 +2501,7 @@ rooms:
         texture: fd9d7012-6826-4368-8fe5-0385b72bc902
     uid: 1a5a64c6-5a4b-4f57-aa99-371ae3c158a3
     grid: 64
-    lastmod: 1586656333089
+    lastmod: 1657023065750
     thumbnail: 2
     gridX: 64
     gridY: 64
@@ -1832,44 +2514,64 @@ rooms:
         'y': 256
         uid: b658efa2-360e-4a62-8640-3e3281156f4e
         exts: {}
+        customProperties: {}
+        opacity: 1
+        tint: 16777215
+        rotation: 0
+        scale:
+          x: 1
+          'y': 1
       - x: 992
         'y': 670
         uid: 8a4b8de4-7729-4936-bc7b-bc277a512975
         exts: {}
+        customProperties: {}
+        opacity: 1
+        tint: 16777215
+        rotation: 0
+        scale:
+          x: 1
+          'y': 1
+    events:
+      - lib: core
+        arguments: {}
+        code: >-
+          ct.sound.spawn('Victory');
+
+
+          ct.keyboard.clear();
+
+
+          this.ohNoLabel = new PIXI.Text('You got them all!',
+          ct.styles.get('OhNo'));
+
+          this.ohNoLabel.x = ct.camera.width / 2;
+
+          this.ohNoLabel.y = 540;
+
+          this.ohNoLabel.anchor.x = this.ohNoLabel.anchor.y = 0.5;
+
+          this.addChild(this.ohNoLabel);
+
+
+          this.subLabel = new PIXI.Text('You\'ve found all the 33 coins.
+          Congrats!\nThis was a stupid demo of ct.js game engine. Thank you for
+          playing!', ct.styles.get('OhNo_Small'));
+
+          this.subLabel.x = ct.camera.width / 2;
+
+          this.subLabel.y = 600;
+
+          this.subLabel.anchor.x = this.subLabel.anchor.y = 0.5;
+
+          this.addChild(this.subLabel);
+        eventKey: OnRoomStart
+    type: room
+    extends: {}
+    simulate: true
+    isUi: !<tag:yaml.org,2002:js/undefined> ''
   - name: UI_Layer
-    oncreate: |2-
-          /*this.touchControl = {};
-          var aboveBottom = 80;
-          var rightOfBorder = 80;
-          this.touchControl.left = ct.vkeys.button({
-              key: "Vk2",
-              texNormal: "buttonLeft",
-              texActive: "buttonLeft",
-              texHover: "buttonLeft",
-              x: () => rightOfBorder,
-              y: () => ct.camera.height - aboveBottom,
-              depth: 1000
-          });
-          this.touchControl.right = ct.vkeys.button({
-              key: "Vk1",
-              texNormal: "buttonRight",
-              texActive: "buttonRight",
-              texHover: "buttonRight",
-              x: () => rightOfBorder + 100,
-              y: () => ct.camera.height - aboveBottom,
-              depth: 1000
-          });
-          this.touchControl.jump = ct.vkeys.button({
-              key: "Vk3",
-              texNormal: "buttonJump",
-              texActive: "buttonJump",
-              texHover: "buttonJump",
-              x: () => ct.camera.width - rightOfBorder,
-              y: () => ct.camera.height - aboveBottom,
-              depth: 1000
-          });*/
     onstep: ''
-    ondraw: ct.camera.realign(this);
     onleave: ''
     width: 1024
     height: 720
@@ -1879,22 +2581,57 @@ rooms:
         'y': 689
         uid: 8a4b8de4-7729-4936-bc7b-bc277a512975
         exts: {}
+        customProperties: {}
+        opacity: 1
+        tint: 16777215
+        rotation: 0
+        scale:
+          x: 1
+          'y': 1
       - x: 44
         'y': 46
         uid: 1f73eb4f-8795-4234-af61-2c44c3fba073
         exts: {}
+        customProperties: {}
+        opacity: 1
+        tint: 16777215
+        rotation: 0
+        scale:
+          x: 1
+          'y': 1
       - x: 96
         'y': 640
         uid: 45a6ee81-34af-494e-914e-51ec9d414314
         exts: {}
+        customProperties: {}
+        opacity: 1
+        tint: 16777215
+        rotation: 0
+        scale:
+          x: 1
+          'y': 1
       - x: 224
         'y': 640
         uid: 03773b4b-e444-4a2d-9891-3ddf9575cc87
         exts: {}
+        customProperties: {}
+        opacity: 1
+        tint: 16777215
+        rotation: 0
+        scale:
+          x: 1
+          'y': 1
       - x: 832
         'y': 640
         uid: 86f037f0-9a1c-4306-9d67-00be01bbd793
         exts: {}
+        customProperties: {}
+        opacity: 1
+        tint: 16777215
+        rotation: 0
+        scale:
+          x: 1
+          'y': 1
     tiles:
       - depth: -10
         tiles: []
@@ -1903,7 +2640,50 @@ rooms:
     thumbnail: 5768eedfd438
     gridX: 32
     gridY: 64
-    lastmod: 1596761311993
+    lastmod: 1657023068774
+    events:
+      - lib: core
+        arguments: {}
+        code: |2-
+              /*this.touchControl = {};
+              var aboveBottom = 80;
+              var rightOfBorder = 80;
+              this.touchControl.left = ct.vkeys.button({
+                  key: "Vk2",
+                  texNormal: "buttonLeft",
+                  texActive: "buttonLeft",
+                  texHover: "buttonLeft",
+                  x: () => rightOfBorder,
+                  y: () => ct.camera.height - aboveBottom,
+                  depth: 1000
+              });
+              this.touchControl.right = ct.vkeys.button({
+                  key: "Vk1",
+                  texNormal: "buttonRight",
+                  texActive: "buttonRight",
+                  texHover: "buttonRight",
+                  x: () => rightOfBorder + 100,
+                  y: () => ct.camera.height - aboveBottom,
+                  depth: 1000
+              });
+              this.touchControl.jump = ct.vkeys.button({
+                  key: "Vk3",
+                  texNormal: "buttonJump",
+                  texActive: "buttonJump",
+                  texHover: "buttonJump",
+                  x: () => ct.camera.width - rightOfBorder,
+                  y: () => ct.camera.height - aboveBottom,
+                  depth: 1000
+              });*/
+        eventKey: OnRoomStart
+      - lib: core
+        arguments: {}
+        code: ct.camera.realign(this);
+        eventKey: OnDraw
+    type: room
+    extends: {}
+    simulate: true
+    isUi: !<tag:yaml.org,2002:js/undefined> ''
 soundtick: 6
 roomtick: 3
 templatetick: 12
@@ -1975,7 +2755,7 @@ scripts:
               depth: 1000
           });
       }
-ctjsVersion: 2.0.0
+ctjsVersion: 2.2.0
 fonts: []
 skeletons: []
 actions:

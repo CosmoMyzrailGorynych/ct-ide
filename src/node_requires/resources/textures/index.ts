@@ -1,3 +1,5 @@
+import {imageContain, toBuffer, crop} from '../../utils/imageUtils';
+
 /**
  * Gets the ct.js texture object by its id.
  * @param {string} id The id of the texture
@@ -71,6 +73,7 @@ const baseTextureFromTexture = (texture: ITexture): Promise<PIXI.BaseTexture> =>
         });
     });
 
+let unknownTexture = PIXI.Texture.from('data/img/unknown.png');
 const pixiTextureCache: Record<string, {
     lastmod: number;
     texture: PIXI.Texture[]
@@ -81,6 +84,8 @@ const clearPixiTextureCache = function (): void {
     }
 };
 /**
+ * Returns an array of frames that matches a PIXI.AnimatedSprite animation of a ct.js texture.
+ * Can also be used to update cache value for this specific texture.
  * @param {ITexture} tex A ct.js texture object
  * @returns {Array<PIXI.Texture>} An array of PIXI.Textures
  */
@@ -108,11 +113,24 @@ const texturesFromCtTexture = async function (tex: ITexture) {
             }
         }
     }
+    pixiTextureCache[tex.name] = {
+        lastmod: tex.lastmod,
+        texture: frames
+    };
     return frames;
 };
-
-let defaultTexture: PIXI.Texture;
-
+const resetPixiTextureCache = (): void => {
+    PIXI.utils.destroyTextureCache();
+    unknownTexture = PIXI.Texture.from('data/img/unknown.png');
+};
+const populatePixiTextureCache = async (project: IProject): Promise<void> => {
+    clearPixiTextureCache();
+    const promises = [];
+    for (const texture of project.textures) {
+        promises.push(texturesFromCtTexture(texture));
+    }
+    await Promise.all(promises);
+};
 // async
 const getDOMImage = function (
     texture: assetRef | ITexture,
@@ -136,24 +154,36 @@ const getDOMImage = function (
 };
 
 /**
- * @param {string|-1|any} texture Either a uid of a texture, or a ct.js texture object
+ * @param {assetRef | ITexture} texture Either a uid of a texture, or a ct.js texture object
  * @param {number} [frame] The frame to extract. If not defined, will return an array of all frames
  * @param {boolean} [allowMinusOne] Allows the use of `-1` as a texture uid
  * @returns {Array<PIXI.Texture>|PIXI.Texture} An array of textures, or an individual one.
  */
-const getPixiTexture = async function (
+function getPixiTexture(texture: assetRef | ITexture): PIXI.Texture[];
+function getPixiTexture(
+    texture: -1
+): never;
+function getPixiTexture(
     texture: assetRef | ITexture,
-    frame?: number,
+    frame: void | null,
     allowMinusOne?: boolean
-): Promise<PIXI.Texture | PIXI.Texture[]> {
+): PIXI.Texture[];
+function getPixiTexture(
+    texture: assetRef | ITexture,
+    frame: number,
+    allowMinusOne?: boolean
+): PIXI.Texture;
+// eslint-disable-next-line func-style
+function getPixiTexture(
+    texture: assetRef | ITexture,
+    frame?: number | void | null,
+    allowMinusOne?: boolean
+): PIXI.Texture | PIXI.Texture[] {
     if (allowMinusOne && texture === -1) {
-        if (!defaultTexture) {
-            defaultTexture = PIXI.Texture.from('data/img/unknown.png');
-        }
         if (frame || frame === 0) {
-            return defaultTexture;
+            return unknownTexture;
         }
-        return [defaultTexture];
+        return [unknownTexture];
     }
     if (texture === -1) {
         throw new Error('Cannot turn -1 into a pixi texture in getPixiTexture method unless it is explicitly allowed.');
@@ -161,24 +191,11 @@ const getPixiTexture = async function (
     if (typeof texture === 'string') {
         texture = getTextureFromId(texture);
     }
-    const {uid} = texture;
-    if (!pixiTextureCache[uid] ||
-        pixiTextureCache[uid].lastmod !== texture.lastmod
-    ) {
-        const tex = await texturesFromCtTexture(texture);
-        // Everything is constant, and the key gets overridden.
-        // Where's the race condition? False positive??
-        // eslint-disable-next-line require-atomic-updates
-        pixiTextureCache[uid] = {
-            lastmod: texture.lastmod,
-            texture: tex
-        };
-    }
     if (frame || frame === 0) {
-        return pixiTextureCache[uid].texture[frame];
+        return pixiTextureCache[texture.name].texture[frame];
     }
-    return pixiTextureCache[uid].texture;
-};
+    return pixiTextureCache[texture.name].texture;
+}
 
 /**
  * Returns a texture object by its name.
@@ -200,7 +217,6 @@ const textureGenPreview = async function textureGenPreview(
     if (typeof texture === 'string') {
         texture = getTextureFromId(texture);
     }
-    const {imageContain, toBuffer, crop} = require('../../imageUtils');
 
     const source = await getDOMImage(texture);
     const frame = crop(
@@ -290,6 +306,7 @@ const importImageToTexture = async (
         bottom: image.height,
         uid: id,
         padding: 1,
+        isBlank: false,
         group
     };
     if (!(src instanceof Buffer)) {
@@ -316,7 +333,8 @@ const importImageToTexture = async (
 
     await Promise.all([
         textureGenPreview(obj, dest + '_prev.png', 64),
-        textureGenPreview(obj, dest + '_prev@2.png', 128)
+        textureGenPreview(obj, dest + '_prev@2.png', 128),
+        texturesFromCtTexture(obj)
     ]);
 
     global.currentProject.textures.push(obj);
@@ -330,7 +348,13 @@ const importImageToTexture = async (
 const getCleanTextureName = (name: string): string =>
     name.replace(isBgPostfixTester, '').replace(texturePostfixParser, '');
 
-const getTexturePivot = (texture: string | ITexture, inPixels?: boolean): [number, number] => {
+const getTexturePivot = (texture: assetRef | ITexture, inPixels?: boolean): [number, number] => {
+    if (texture === -1) {
+        if (inPixels) {
+            return [16, 16];
+        }
+        return [0.5, 0.5];
+    }
     if (typeof texture === 'string') {
         texture = getTextureFromId(texture);
     }
@@ -340,8 +364,19 @@ const getTexturePivot = (texture: string | ITexture, inPixels?: boolean): [numbe
     return [texture.axis[0] / texture.width, texture.axis[1] / texture.height];
 };
 
+const setPixelart = (pixelart: boolean): void => {
+    PIXI.settings.SCALE_MODE = pixelart ?
+        PIXI.SCALE_MODES.NEAREST :
+        PIXI.SCALE_MODES.LINEAR;
+    for (const tex in pixiTextureCache) {
+        pixiTextureCache[tex].texture[0].baseTexture.scaleMode = PIXI.settings.SCALE_MODE;
+    }
+};
+
 export {
     clearPixiTextureCache,
+    populatePixiTextureCache,
+    resetPixiTextureCache,
     getTextureFromId,
     getById,
     getTextureFromName,
@@ -350,6 +385,8 @@ export {
     getThumbnail,
     getTexturePivot,
     getTextureOrig,
+    texturesFromCtTexture as updatePixiTexture,
+    setPixelart,
     getPixiTexture,
     getDOMImage,
     importImageToTexture,

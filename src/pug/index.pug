@@ -4,7 +4,7 @@ html
     body.maximized(data-manage-window)
         include ../../app/data/icons.svg
         root-tag
-        div#loading Loading…
+        div#theLoadingScreen Loading…
         script.
             try {
                 require('gulp');
@@ -88,5 +88,5 @@ html
             window.hotkeys = require('./data/node_requires/hotkeys')(document);
             riot.mount('*');
             setTimeout(() => {
-                document.getElementById('loading').classList.add('fadeout');
+                document.getElementById('theLoadingScreen').classList.add('fadeout');
             }, 0);

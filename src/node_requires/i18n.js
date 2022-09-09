@@ -41,13 +41,16 @@ const loadLanguage = lang => {
     return languageJSON;
 };
 
+const localizeField = (obj, field) => obj[`${field}_${languageJSON.me.id}`] || obj[field];
+
 const i18n = {
     loadLanguage,
     getLanguages,
     get languageJSON() {
         return languageJSON;
     },
-    getI18nDir
+    getI18nDir,
+    localizeField
 };
 
 

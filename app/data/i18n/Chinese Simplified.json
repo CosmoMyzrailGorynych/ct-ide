@@ -125,7 +125,9 @@
                 "骨骼精灵图形",
                 "骨骼精灵图形"
             ]
-        }
+        },
+        "next": "",
+        "previous": ""
     },
     "colorPicker": {
         "current": "新建",
@@ -542,7 +544,10 @@
                 "SpringStream": "Spring Stream",
                 "LucasDracula": "Lucas Dracula",
                 "Horizon": "Horizon",
-                "HCBlack": "High-contrast Black"
+                "HCBlack": "High-contrast Black",
+                "RosePine": "",
+                "RosePineMoon": "",
+                "RosePineDawn": ""
             },
             "newFont": "新字体:",
             "language": "语言",
@@ -552,7 +557,9 @@
             "codeDense": "密集布局",
             "disableSounds": "关闭 UI 音效",
             "changeDataFolder": "设置数据文件夹位置",
-            "forceProductionForDebug": "强制生产任务用于调试导出"
+            "forceProductionForDebug": "强制生产任务用于调试导出",
+            "prideMode": "",
+            "altTemplateLayout": ""
         },
         "project": {
             "heading": "项目",
@@ -588,7 +595,36 @@
         "restart": "重新启动",
         "launch": "编译并运行",
         "launchHotkeys": "(F5; Alt+F5 在默认浏览器中运行)",
-        "templates": "类型"
+        "templates": "类型",
+        "tour": {
+            "header": "",
+            "aboutTour": "",
+            "helpPanel": "",
+            "helpPanelTabs": "",
+            "projectResources": "",
+            "tabTextures": "",
+            "tabTexturesImport": "",
+            "tabTexturesGallery": "",
+            "tabTexturesClipboard": "",
+            "tabTexturesPlaceholders": "",
+            "tabTemplates": "",
+            "tabRooms": "",
+            "tabSounds": "",
+            "tabSoundsImport": "",
+            "tabSoundsGallery": "",
+            "tabSoundsRecord": "",
+            "tabInterlude": "",
+            "tabUI": "",
+            "tabFX": "",
+            "tabProject": "",
+            "tabProjectModules": "",
+            "tabProjectModuleDocs": "",
+            "tabMainMenu": "",
+            "tabMainMenuSettings": "",
+            "tabMainMenuMeta": "",
+            "helpPanelReminder": "",
+            "buttonStartTutorial": ""
+        }
     },
     "docsPanel": {
         "documentation": "文档",
@@ -639,13 +675,6 @@
         "notADirectory": "这看上去不是一个目录! 你怎么做到的?",
         "folderNotWritable": "您没有权限写入这个文件夹. 选择其他试试",
         "complete": "文件夹已设置, 一切正常✅"
-    },
-    "copyCustomProperties": {
-        "customProperties": "自定义属性",
-        "addProperty": "添加属性",
-        "property": "属性",
-        "value": "值",
-        "delete": "删除"
     },
     "assetViewer": {
         "addNewGroup": "新分组",
@@ -716,7 +745,13 @@
         "copyProperties": {
             "position": "位置",
             "rotation": "旋转",
-            "scale": "缩放"
+            "scale": "缩放",
+            "multipleValues": ""
+        },
+        "copyCustomProperties": {
+            "addProperty": "添加属性",
+            "property": "属性",
+            "value": "值"
         },
         "customProperties": "自定义属性",
         "restrictCamera": "保持相机在一个矩形中",
@@ -736,7 +771,19 @@
         "deleteTiles": "删除图块",
         "moveTilesToLayer": "移至图层",
         "shiftTiles": "移动瓷砖",
-        "changeCopyRotation": "旋转"
+        "changeCopyRotation": "旋转",
+        "simulate": "",
+        "toggleDiagonalGrid": "",
+        "changeGridSize": "",
+        "xrayMode": "",
+        "colorizeTileLayers": "",
+        "tools": {
+            "select": "",
+            "addCopies": "",
+            "addTiles": "",
+            "manageBackgrounds": "",
+            "roomProperties": ""
+        }
     },
     "styleView": {
         "active": "激活",
@@ -803,6 +850,7 @@
         "updateFromClipboard": "从剪贴板更新",
         "previewAnimationNotice": "这是一个预览. 用this.animationSpeed属性改变它的真实拷贝.",
         "showFrameIndices": "显示帧索引",
+        "blankTexture": "",
         "pasteCollisionMask": "粘贴碰撞遮罩",
         "copyCollisionMask": "拷贝碰撞遮罩",
         "bgColor": "改变背景颜色",
@@ -869,7 +917,9 @@
             "add": "掺入 (溶解)",
             "multiply": "倍增 (变暗)",
             "screen": "遮蔽 (变亮)"
-        }
+        },
+        "animationFPS": "",
+        "loopAnimation": ""
     },
     "assetInput": {
         "changeAsset": "切换资产",
@@ -889,5 +939,71 @@
         "visitAuthorsItch": "访问作者的 itch.io 页面",
         "visitAuthorsTwitter": "访问作者的 Twitter 页面",
         "tipAuthor": "奖励作者的辛勤工作 :D"
+    },
+    "scriptables": {
+        "addEvent": "",
+        "removeEvent": "",
+        "removeEventConfirm": "",
+        "changeArguments": "",
+        "eventAlreadyExists": "",
+        "localEventVars": "",
+        "createEventHint": "",
+        "coreEventsCategories": {
+            "lifecycle": "",
+            "actions": "",
+            "pointer": "",
+            "misc": "",
+            "animation": "",
+            "timers": ""
+        },
+        "coreEvents": {
+            "OnCreate": "",
+            "OnRoomStart": "",
+            "OnStep": "",
+            "OnDraw": "",
+            "OnDestroy": "",
+            "OnRoomEnd": "",
+            "OnPointerClick": "",
+            "OnPointerSecondaryClick": "",
+            "OnPointerEnter": "",
+            "OnPointerLeave": "",
+            "OnPointerDown": "",
+            "OnPointerUp": "",
+            "OnPointerUpOutside": "",
+            "OnPointerWheel": "",
+            "OnActionPress": "",
+            "OnActionRelease": "",
+            "OnActionDown": "",
+            "OnFrameChange": "",
+            "OnAnimationLoop": "",
+            "OnAnimationComplete": "",
+            "Timer": ""
+        },
+        "coreParameterizedNames": {
+            "OnActionPress": "",
+            "OnActionRelease": "",
+            "OnActionDown": ""
+        },
+        "coreEventsArguments": {
+            "action": ""
+        },
+        "coreEventsLocals": {
+            "OnActionDown_value": "",
+            "OnActionPress_value": ""
+        },
+        "coreEventsDescriptions": {
+            "OnCreate": "",
+            "OnRoomStart": "",
+            "OnStep": "",
+            "OnDraw": "",
+            "OnDestroy": "",
+            "OnRoomEnd": "",
+            "OnActionPress": "",
+            "OnActionRelease": "",
+            "OnActionDown": "",
+            "OnAnimationLoop": "",
+            "OnAnimationComplete": "",
+            "Timer": ""
+        }
     }
 }

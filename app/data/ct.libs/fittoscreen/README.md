@@ -6,21 +6,13 @@ It also gives you functions to enter a real fullscreen mode programmatically (se
 
 ## `ct.fittoscreen();`
 
-Resizes the canvas immediately.
+Resizes the canvas immediately. You usually don't need to call this method as it gets called automatically.
 
 ## `ct.fittoscreen.toggleFullscreen();`
 
-Tries to toggle the fullscreen mode. Errors, if any, will be logged to console. Also, this won't work in the internal ct.js debugger. Instead, test it in your browser.
+**This method works only in pointer events, like Click, Pointer down and other.**
 
-This should be called on mouse / keyboard press event, not the "release" event, or the actual transition will happen on the next mouse/keyboard interaction. For example, this will work:
-
-```js
-if (ct.mouse.pressed) {
-    if (ct.u.prect(ct.mouse.x, ct.mouse.y, this)) {
-        ct.fittoscreen.toggleFullscreen();
-    }
-}
-```
+Tries to toggle the fullscreen mode. The success of it depends on player's browser settings or the environment your project runs in. Errors, if any, will be logged to console.
 
 ## `ct.fittoscreen.getIsFullscreen();`
 

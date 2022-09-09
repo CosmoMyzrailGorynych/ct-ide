@@ -1,74 +1,157 @@
-room-backgrounds-editor.room-editor-Backgrounds.tabbed.tall
-    ul
-        li.bg(each="{background, ind in opts.room.backgrounds}" oncontextmenu="{onContextMenu}")
-            img(src="{getTexturePreview(background.texture)}" onclick="{onChangeBgTexture}")
-            span
-                span(class="{active: detailedBackground === background}" onclick="{editBackground}")
-                    svg.feather
-                        use(xlink:href="#settings")
-                | {getTextureFromId(background.texture).name} ({background.depth})
-            .clear
-            .anErrorNotice(if="{background.texture && background.texture !== -1 && !getTextureFromId(background.texture).tiled && !getTextureFromId(background.texture).ignoreTiledUse}")
-                | {voc.notBackgroundTextureWarning}
+//
+    @attribute backgrounds (Background[])
+    @attribute addbackground (riot function)
+    @attribute room (IRoom)
+    @attribute history (History)
+
+room-backgrounds-editor
+    collapsible-section(
+        each="{background, ind in opts.backgrounds}"
+        icon="settings"
+    ).aPanel
+        yield(to="header")
+            asset-input(
+                assettype="textures"
+                assetid="{background.bgTexture}"
+                compact="true"
+                onchanged="{parent.changeBgTexture(background)}"
+                ref="assetInput"
+            )
+            error-notice(
+                if="{background.bgTexture && background.bgTexture !== -1 && !parent.getTextureFromId(background.bgTexture).tiled && !parent.getTextureFromId(background.bgTexture).ignoreTiledUse}"
+                target="{refs.assetInput}"
+            )
+                | {parent.parent.voc.notBackgroundTextureWarning}
                 |
-                span.a(onclick="{fixTexture(background)}") {voc.fixBackground}
+                span.a(onclick="{parent.parent.fixTexture}") {parent.parent.voc.fixBackground}
                 |
                 |
-                span.a(onclick="{dismissWarning(background)}") {voc.dismissWarning}
-            div(if="{detailedBackground === background}")
-                .clear
-                label
-                    b {voc.depth}
-                    input.wide(type="number" value="{background.depth || 0}" step="0" oninput="{onChangeBgDepth}")
-
-                b {voc.shift}
-                .clear
-                label.fifty.npl.npt
-                    input.wide(type="number" value="{background.extends.shiftX || 0}" step="8" oninput="{wire('this.detailedBackground.extends.shiftX')}")
-                label.fifty.npr.npt
-                    input.wide(type="number" value="{background.extends.shiftY || 0}" step="8" oninput="{wire('this.detailedBackground.extends.shiftY')}")
-
-                b {voc.scale}
-                .clear
-                label.fifty.npl.npt
-                    input.wide(type="number" value="{background.extends.scaleX || 1}" step="0.01" oninput="{wire('this.detailedBackground.extends.scaleX')}")
-                label.fifty.npr.npt
-                    input.wide(type="number" value="{background.extends.scaleY || 1}" step="0.01" oninput="{wire('this.detailedBackground.extends.scaleY')}")
-
-                b {voc.movement}
-                .clear
-                label.fifty.npl.npt
-                    input.wide(type="number" value="{background.extends.movementX || 0}" step="0.1" oninput="{wire('this.detailedBackground.extends.movementX')}")
-                label.fifty.npr.npt
-                    input.wide(type="number" value="{background.extends.movementY || 0}" step="0.1" oninput="{wire('this.detailedBackground.extends.movementY')}")
-
-                b {voc.parallax}
-                .clear
-                label.fifty.npl.npt
-                    input.wide(type="number" value="{background.extends.parallaxX !== void 0 ? background.extends.parallaxX : 1}" step="0.01" oninput="{wire('this.detailedBackground.extends.parallaxX')}")
-                label.fifty.npr.npt
-                    input.wide(type="number" value="{background.extends.parallaxY !== void 0 ? background.extends.parallaxY : 1}" step="0.01" oninput="{wire('this.detailedBackground.extends.parallaxY')}")
-                .clear
-
-                b {voc.repeat}
-                select(onchange="{wire('this.detailedBackground.extends.repeat')}")
-                    option(value="repeat" selected="{detailedBackground.extends.repeat === 'repeat'}") repeat
-                    option(value="repeat-x" selected="{detailedBackground.extends.repeat === 'repeat-x'}") repeat-x
-                    option(value="repeat-y" selected="{detailedBackground.extends.repeat === 'repeat-y'}") repeat-y
-                    option(value="no-repeat" selected="{detailedBackground.extends.repeat === 'no-repeat'}") no-repeat
-
+                span.a(onclick="{parent.parent.dismissWarning}") {parent.parent.voc.dismissWarning}
+        fieldset
+            label
+                b {parent.voc.depth}
+                input.wide(
+                    type="number" step="1"
+                    onfocus="{parent.rememberValue}"
+                    value="{background.zIndex}"
+                    oninput="{parent.tweak(background, 'zIndex')}"
+                    onchange="{parent.recordChange(background, 'zIndex')}"
+                )
+        fieldset
+            b {parent.voc.shift}
+            .aPoint2DInput.compact.wide
+                label.flexrow
+                    span.nogrow X:
+                    input.nmr(
+                        type="number" step="8" placeholder="0"
+                        onfocus="{parent.rememberValue}"
+                        oninput="{parent.tweak(background, 'shiftX')}"
+                        onchange="{parent.recordChange(background, 'shiftX')}"
+                        value="{background.shiftX}"
+                    )
+                .aSpacer.noshrink.nogrow
+                label.flexrow
+                    span.nogrow Y:
+                    input.nmr(
+                        type="number" step="8" placeholder="0"
+                        onfocus="{parent.rememberValue}"
+                        oninput="{parent.tweak(background, 'shiftY')}"
+                        onchange="{parent.recordChange(background, 'shiftY')}"
+                        value="{background.shiftY}"
+                    )
+            b {parent.voc.scale}
+            .aPoint2DInput.compact.wide
+                label.flexrow
+                    span.nogrow X:
+                    input.nmr(
+                        type="number" step="0.1" placeholder="1"
+                        onfocus="{parent.rememberValue}"
+                        oninput="{parent.tweak(background.tileScale, 'x')}"
+                        onchange="{parent.recordChange(background.tileScale, 'x')}"
+                        value="{background.tileScale.x}"
+                    )
+                .aSpacer.noshrink.nogrow
+                label.flexrow
+                    span.nogrow Y:
+                    input.nmr(
+                        type="number" step="0.1" placeholder="1"
+                        onfocus="{parent.rememberValue}"
+                        oninput="{parent.tweak(background.tileScale, 'y')}"
+                        onchange="{parent.recordChange(background.tileScale, 'y')}"
+                        value="{background.tileScale.y}"
+                    )
+        fieldset
+            b {parent.voc.movement}
+            .aPoint2DInput.compact.wide
+                label.flexrow
+                    span.nogrow X:
+                    input.nmr(
+                        type="number" step="1" placeholder="0"
+                        onfocus="{parent.rememberValue}"
+                        oninput="{parent.tweak(background, 'movementX')}"
+                        onchange="{parent.recordChange(background, 'movementX')}"
+                        value="{background.movementX}"
+                    )
+                .aSpacer.noshrink.nogrow
+                label.flexrow
+                    span.nogrow Y:
+                    input.nmr(
+                        type="number" step="1" placeholder="0"
+                        onfocus="{parent.rememberValue}"
+                        oninput="{parent.tweak(background, 'movementY')}"
+                        onchange="{parent.recordChange(background, 'movementY')}"
+                        value="{background.movementY}"
+                    )
+            b {parent.voc.parallax}
+            .aPoint2DInput.compact.wide
+                label.flexrow
+                    span.nogrow X:
+                    input.nmr(
+                        type="number" step="0.1" placeholder="1"
+                        onfocus="{parent.rememberValue}"
+                        oninput="{parent.tweak(background, 'parallaxX')}"
+                        onchange="{parent.recordChange(background, 'parallaxX')}"
+                        value="{background.parallaxX}"
+                    )
+                .aSpacer.noshrink.nogrow
+                label.flexrow
+                    span.nogrow Y:
+                    input.nmr(
+                        type="number" step="0.1" placeholder="1"
+                        onfocus="{parent.rememberValue}"
+                        oninput="{parent.tweak(background, 'parallaxY')}"
+                        onchange="{parent.recordChange(background, 'parallaxY')}"
+                        value="{background.parallaxY}"
+                    )
+        fieldset
+            b {parent.voc.repeat}
+            |
+            select(
+                onfocus="{parent.rememberValue}"
+                onchange="{parent.recordAndTweak(background, 'repeat')}"
+            )
+                option(value="repeat" selected="{background.repeat === 'repeat'}") repeat
+                option(value="repeat-x" selected="{background.repeat === 'repeat-x'}") repeat-x
+                option(value="repeat-y" selected="{background.repeat === 'repeat-y'}") repeat-y
+                option(value="no-repeat" selected="{background.repeat === 'no-repeat'}") no-repeat
+        .aSpacer
+        button.wide(onclick="{parent.removeBg}")
+            svg.feather
+                use(xlink:href="#trash")
+            span {parent.vocGlob.delete}
+    .aSpacer(if="{opts.backgrounds.length}")
     button.inline.wide(onclick="{addBg}")
         svg.feather
             use(xlink:href="#plus")
         span {voc.add}
+    // Used for selecting a texture for newly created backgrounds
     asset-selector(
         ref="texturePicker"
-        if="{pickingBackground}"
+        if="{newBg}"
         assettype="textures"
         oncancelled="{onTextureCancel}"
         onselected="{onTextureSelected}"
     )
-    context-menu(menu="{roomBgMenu}" ref="roomBgMenu")
     script.
         const glob = require('./data/node_requires/glob');
         this.glob = glob;
@@ -80,85 +163,119 @@ room-backgrounds-editor.room-editor-Backgrounds.tabbed.tall
         this.pickingBackground = false;
         this.namespace = 'roomBackgrounds';
         this.mixin(window.riotVoc);
-        this.mixin(window.riotWired);
-        this.on('update', () => {
-            if (this.parent.tab === 'roombackgrounds') {
-                this.parent.refreshRoomCanvas();
+
+        this.tweak = (obj, field) => e => {
+            const input = e.target;
+            if (input.type === 'radio' || input.type === 'checkbox') {
+                obj[field] = input.checked;
+            } else if (input.type === 'number') {
+                obj[field] = Number(input.value);
+            } else {
+                obj[field] = input.value;
             }
-        });
+        };
+
+        // These two are only for newly created backgrounds, for which an asset selection modal
+        // is automatically created
         this.onTextureSelected = textureId => {
-            this.editingBackground.texture = textureId;
-            this.pickingBackground = false;
-            this.creatingBackground = false;
+            this.newBg.changeTexture(textureId);
+            this.opts.history.pushChange({
+                type: 'backgroundCreation',
+                created: this.newBg
+            });
+            this.newBg = void 0;
             this.update();
         };
         this.onTextureCancel = () => {
             this.pickingBackground = false;
-            if (this.creatingBackground) {
-                const bgs = this.opts.room.backgrounds;
-                bgs.splice(bgs.indexOf(this.editingBackground), 1);
-                this.parent.resortRoom();
-                this.creatingBackground = false;
+            if (this.newBg) {
+                this.newBg.destroy();
             }
+            this.newBg = false;
             this.update();
         };
+
         this.addBg = () => {
-            var newBg = {
+            const bgTemplate = {
                 depth: 0,
                 texture: -1,
-                extends: {}
+                parallaxX: 1,
+                parallaxY: 1,
+                shiftX: 0,
+                shiftY: 0,
+                scaleX: 1,
+                scaleY: 1,
+                movementX: 0,
+                movementY: 0,
+                repeat: 'repeat'
             };
-            this.opts.room.backgrounds.push(newBg);
-            this.editingBackground = newBg;
+            const bg = this.opts.addbackground(bgTemplate);
+            this.newBg = bg;
             this.pickingBackground = true;
-            this.creatingBackground = true;
-            this.opts.room.backgrounds.sort((a, b) => a.depth - b.depth);
-            this.parent.resortRoom();
-            this.update();
-        };
-        this.onContextMenu = e => {
-            this.editedBg = Number(e.item.ind);
-            this.refs.roomBgMenu.popup(e.clientX, e.clientY);
-            e.preventDefault();
-        };
-        this.roomBgMenu = {
-            opened: false,
-            items: [{
-                label: window.languageJSON.common.delete,
-                click: () => {
-                    this.opts.room.backgrounds.splice(this.editedBg, 1);
-                    this.parent.resortRoom();
-                    this.update();
-                }
-            }]
-        };
-        this.onChangeBgTexture = e => {
-            this.pickingBackground = true;
-            this.editingBackground = e.item.background;
-            this.update();
-        };
-        this.onChangeBgDepth = e => {
-            e.item.background.depth = Number(e.target.value);
-            this.opts.room.backgrounds.sort((a, b) => a.depth - b.depth);
-            this.parent.resortRoom();
         };
 
-        this.editBackground = e => {
-            if (this.detailedBackground === e.item.background) {
-                this.detailedBackground = void 0;
+        this.changeBgTexture = background => textureId => {
+            const prevId = background.bgTexture;
+            background.changeTexture(textureId);
+            this.opts.history.pushChange({
+                type: 'propChange',
+                key: 'bgTexture',
+                target: background,
+                before: prevId,
+                after: textureId
+            });
+            this.update();
+        };
+
+        this.removeBg = e => {
+            const {background} = e.item;
+            background.detach();
+            this.opts.history.pushChange({
+                type: 'backgroundDeletion',
+                deleted: background
+            });
+        };
+
+        this.fixTexture = e => {
+            const {background} = e.item;
+            const tex = getTextureFromId(background.bgTexture);
+            tex.tiled = true;
+            e.stopPropagation();
+            this.update();
+        };
+        this.dismissWarning = e => {
+            const {background} = e.item;
+            const tex = getTextureFromId(background.bgTexture);
+            tex.ignoreTiledUse = true;
+            e.stopPropagation();
+            this.update();
+        };
+
+        var prevValue;
+        this.rememberValue = e => {
+            if (e.target.type === 'number') {
+                prevValue = Number(e.target.value);
             } else {
-                this.detailedBackground = e.item.background;
-                if (!('extends' in this.detailedBackground)) {
-                    this.detailedBackground.extends = {};
-                }
+                prevValue = e.target.value;
             }
         };
-
-        this.fixTexture = background => () => {
-            const tex = getTextureFromId(background.texture);
-            tex.tiled = true;
+        this.recordChange = (entity, key) => e => {
+            if (!this.opts.history) {
+                return;
+            }
+            let {value} = e.target;
+            if (e.target.type === 'number') {
+                value = Number(value);
+            }
+            this.opts.history.pushChange({
+                type: 'propChange',
+                key,
+                target: entity,
+                before: prevValue,
+                after: value
+            });
         };
-        this.dismissWarning = background => () => {
-            const tex = getTextureFromId(background.texture);
-            tex.ignoreTiledUse = true;
+        this.recordAndTweak = (entity, key) => e => {
+            this.tweak(entity, key)(e);
+            this.recordChange(entity, key)(e);
         };

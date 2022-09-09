@@ -139,9 +139,9 @@ array-editor
             }
         });
 
-        this.writeUid = index => obj => {
-            if (obj) {
-                this.opts.entity[index] = obj.uid;
+        this.writeUid = index => uid => {
+            if (uid) {
+                this.opts.entity[index] = uid;
             } else {
                 this.opts.entity[index] = -1;
             }

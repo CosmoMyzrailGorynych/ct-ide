@@ -1,0 +1,31 @@
+modal-menu
+    & > .aDimmer
+        position fixed
+        & > .aModal
+            height 35rem
+            width 55rem
+            max-height 80vh
+            max-width 80vw
+    .&-aGrid
+        display grid
+        grid-template-columns repeat(auto-fill, minmax(20em, 1fr))
+        grid-gap 0.25rem
+        margin-top 1rem
+        padding-bottom 1rem
+        align-items stretch
+        justify-items stretch
+        align-content stretch
+    .&-aGridItem
+        border 1px solid transparent
+        border-radius br
+        {transshort}
+        padding 0.5rem 1rem
+        cursor pointer
+        &:hover
+            border-color act
+        &:active
+            background-color act
+            color background
+            svg, h1, h2, h3, h4, h5, h6, .act
+                color background
+            border-color accent1

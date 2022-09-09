@@ -1,4 +1,4 @@
-const path = require('path');
+import {join} from 'path';
 
 const defaultTheme = 'Day';
 const defaultMonacoTheme = defaultTheme;
@@ -7,13 +7,16 @@ const builtInThemes = [
     'SpringStream',
     'Ghost',
     'Forest',
+    'Nord',
     'Horizon',
     'PooxelGreen',
     'PooxelBlue',
+    'RosePineDawn',
+    'RosePineMoon',
+    'RosePine',
     'LucasDracula',
     'Night',
-    'HCBlack',
-    'Nord'
+    'HCBlack'
 ];
 interface ITheme {
     name: string;
@@ -21,6 +24,21 @@ interface ITheme {
     monacoTheme: Record<string, unknown>;
     css: string;
 }
+
+// @see https://mmazzarolo.com/blog/2021-10-10-on-toggling-stylesheets/
+const waitForStylesheet = (): Promise<void> => {
+    const stylesheet = [...document.styleSheets].find(s => s.ownerNode === document.getElementById('themeCSS'));
+    const oldHref = stylesheet?.href;
+    return new Promise<void>((resolve) => {
+        const interval = setInterval(() => {
+            const stylesheet2 = [...document.styleSheets].find(s => s.ownerNode === document.getElementById('themeCSS'));
+            if (stylesheet2 && (!oldHref || (stylesheet2.href && oldHref !== stylesheet2.href))) {
+                clearInterval(interval);
+                resolve();
+            }
+        }, 20);
+    });
+};
 
 var currentSwatches: Record<string, string>;
 
@@ -34,7 +52,7 @@ const updateSwatches = (): void => {
     swatchTester.style.display = 'none';
     document.body.appendChild(swatchTester);
     swatchTester.innerText = 'sausage';
-    for (const swatch of ['act', 'acttext', 'accent1', 'borderPale', 'borderBright', 'text', 'backgroundDeeper', 'act-contrast', 'acttext-contrast', 'accent1-contrast']) {
+    for (const swatch of ['act', 'acttext', 'accent1', 'borderPale', 'borderBright', 'text', 'background', 'backgroundDeeper', 'act-contrast', 'acttext-contrast', 'accent1-contrast', 'red', 'green', 'orange']) {
         swatchTester.setAttribute('css-swatch', swatch);
         const style = window.getComputedStyle(swatchTester);
         currentSwatches[swatch] = style.getPropertyValue('color');
@@ -49,12 +67,12 @@ const mod = {
         }
         let monacoTheme;
         try {
-            monacoTheme = require(path.join('./data/node_requires/monaco-themes', `${name}.json`));
+            monacoTheme = require(join('./data/node_requires/monaco-themes', `${name}.json`));
             (window as Window).monaco.editor.defineTheme(name, monacoTheme);
         } catch (e) {
             // eslint-disable-next-line no-console
             console.warn('Could not load a monaco theme due to an error:', e, '\nFalling back to the default theme.');
-            monacoTheme = require(path.join('./data/node_requires/monaco-themes', `${defaultMonacoTheme}.json`));
+            monacoTheme = require(join('./data/node_requires/monaco-themes', `${defaultMonacoTheme}.json`));
             (window as Window).monaco.editor.defineTheme(name, monacoTheme);
         }
         const css = `./data/theme${name}.css`;
@@ -89,20 +107,19 @@ const mod = {
             }
             await fs.lstat(theme.css);
             const link = (document.getElementById('themeCSS') as HTMLLinkElement);
-            link.addEventListener('load', () => {
-                updateSwatches();
-            }, {
-                once: true
-            });
             // Avoid flickering on startup theme reloading
             if (link.href !== theme.css) {
+                const theWait = waitForStylesheet();
                 link.href = theme.css;
+                await theWait;
+                updateSwatches();
             }
             (window as Window).monaco.editor.setTheme(theme.name);
             (window as Window).signals.trigger('UIThemeChanged', name);
             localStorage.UItheme = name;
         } catch (oO) {
             (window as Window).alertify.error(`Could not load theme ${name}. Rolling back to the default ${defaultTheme}.`);
+            console.error(oO);
             await mod.switchToTheme(defaultTheme);
         }
     },
@@ -122,6 +139,18 @@ const mod = {
         return {
             ...currentSwatches
         };
+    },
+    getPixiSwatch(color: string): number {
+        if (!currentSwatches) {
+            updateSwatches();
+        }
+        return PIXI.utils.rgb2hex(currentSwatches[color].split(', ').map(i => parseInt(i.replace(/[^0-9]/g, ''), 10) / 255));
+    },
+    getSwatch(color: string): string {
+        if (!currentSwatches) {
+            updateSwatches();
+        }
+        return currentSwatches[color];
     },
     updateSwatches
 };

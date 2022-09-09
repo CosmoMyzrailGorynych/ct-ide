@@ -125,7 +125,11 @@
                 "",
                 ""
             ]
-        }
+        },
+        "next": "",
+        "previous": "",
+        "undo": "About Undo/Redo operations",
+        "redo": "About Undo/Redo operations"
     },
     "colorPicker": {
         "current": "",
@@ -190,7 +194,8 @@
         "vkontakte": "",
         "patreon": "",
         "templates": "",
-        "templatesInfo": ""
+        "templatesInfo": "",
+        "boosty": "Boosty is a service, similar to Patreon."
     },
     "modules": {
         "author": "",
@@ -201,7 +206,6 @@
         "methods": "",
         "parameters": "",
         "logs2": "A title for a changelog of a module.",
-        "settings": "",
         "dependencies": "",
         "optionalDependencies": "",
         "importModules": "",
@@ -224,7 +228,8 @@
         },
         "preview": "",
         "previewTooltip": "",
-        "deprecatedTooltip": ""
+        "deprecatedTooltip": "",
+        "settings": ""
     },
     "texture": {
         "create": "",
@@ -587,7 +592,10 @@
                 "SpringStream": "",
                 "LucasDracula": "",
                 "Horizon": "",
-                "HCBlack": ""
+                "HCBlack": "",
+                "RosePine": "",
+                "RosePineMoon": "",
+                "RosePineDawn": ""
             },
             "codeFontDefault": "",
             "codeFontOldSchool": "",
@@ -602,7 +610,9 @@
             "forceProductionForDebug": "",
             "heading": "",
             "language": "",
-            "translateToYourLanguage": ""
+            "translateToYourLanguage": "",
+            "prideMode": "",
+            "altTemplateLayout": ""
         },
         "project": {
             "save": "",
@@ -638,14 +648,36 @@
         "fx": "",
         "restart": "",
         "project": "",
-        "templates": ""
-    },
-    "copyCustomProperties": {
-        "customProperties": "",
-        "addProperty": "",
-        "property": "",
-        "value": "",
-        "delete": ""
+        "templates": "",
+        "tour": {
+            "header": "",
+            "aboutTour": "",
+            "helpPanel": "",
+            "helpPanelTabs": "",
+            "projectResources": "",
+            "tabTextures": "",
+            "tabTexturesImport": "",
+            "tabTexturesGallery": "",
+            "tabTexturesClipboard": "",
+            "tabTexturesPlaceholders": "",
+            "tabTemplates": "",
+            "tabRooms": "",
+            "tabSounds": "",
+            "tabSoundsImport": "",
+            "tabSoundsGallery": "",
+            "tabSoundsRecord": "",
+            "tabInterlude": "",
+            "tabUI": "",
+            "tabFX": "",
+            "tabProject": "",
+            "tabProjectModules": "",
+            "tabProjectModuleDocs": "",
+            "tabMainMenu": "",
+            "tabMainMenuSettings": "",
+            "tabMainMenuMeta": "",
+            "helpPanelReminder": "",
+            "buttonStartTutorial": ""
+        }
     },
     "assetViewer": {
         "addNewGroup": "",
@@ -683,7 +715,8 @@
         "moveTileLayer": "",
         "show": "",
         "hide": "",
-        "findTileset": ""
+        "findTileset": "",
+        "addTileLayer": ""
     },
     "roomView": {
         "name": "",
@@ -716,7 +749,16 @@
         "copyProperties": {
             "position": "",
             "rotation": "",
-            "scale": ""
+            "scale": "",
+            "multipleValues": "Describes multiple values of one property",
+            "opacity": "",
+            "tint": ""
+        },
+        "copyCustomProperties": {
+            "addProperty": "",
+            "property": "",
+            "value": "",
+            "nameOccupied": ""
         },
         "customProperties": "",
         "restrictCamera": "",
@@ -736,7 +778,20 @@
         "deleteTiles": "",
         "moveTilesToLayer": "",
         "shiftTiles": "",
-        "changeCopyRotation": ""
+        "changeCopyRotation": "",
+        "simulate": "Can also be called \"Simulation\". Describes a mode during which sprites and backgrounds animate.",
+        "toggleDiagonalGrid": "",
+        "changeGridSize": "A command that changes grid's size",
+        "xrayMode": "A mode that makes everything see-through",
+        "colorizeTileLayers": "",
+        "tools": {
+            "select": "As a tool for selecting stuff",
+            "addCopies": "",
+            "addTiles": "",
+            "manageBackgrounds": "",
+            "roomProperties": ""
+        },
+        "resetView": "Running this command brings camera back to the center of the room, and resets zoom"
     },
     "styleView": {
         "active": "",
@@ -803,6 +858,7 @@
         "updateFromClipboard": "",
         "previewAnimationNotice": "",
         "showFrameIndices": "",
+        "blankTexture": "",
         "pasteCollisionMask": "",
         "copyCollisionMask": "",
         "bgColor": "",
@@ -812,7 +868,8 @@
         "marginX": "",
         "marginY": "",
         "offX": "",
-        "offY": ""
+        "offY": "",
+        "blankTextureNotice": ""
     },
     "soundView": {
         "import": "",
@@ -844,7 +901,20 @@
         "typefaceName": ""
     },
     "licensePanel": {
-        "ctjsLicense": ""
+        "ctjsLicense": "",
+        "faq": "",
+        "whoOwnsGamesQ": "",
+        "whoOwnsGamesA": "",
+        "sellingGamesQ": "",
+        "sellingGamesA": "",
+        "possibleFeesQ": "",
+        "possibleFeesA": "",
+        "useInStudioQ": "",
+        "useInStudioA": "",
+        "attributionQ": "",
+        "attributionA": "",
+        "attributionAAssets": "",
+        "theLicense": ""
     },
     "templates": {
         "create": ""
@@ -869,7 +939,9 @@
             "add": "",
             "multiply": "",
             "screen": ""
-        }
+        },
+        "animationFPS": "",
+        "loopAnimation": ""
     },
     "assetInput": {
         "changeAsset": "",
@@ -889,5 +961,79 @@
         "visitAuthorsItch": "",
         "visitAuthorsTwitter": "",
         "tipAuthor": ""
+    },
+    "scriptables": {
+        "addEvent": "",
+        "removeEvent": "",
+        "removeEventConfirm": "",
+        "changeArguments": "",
+        "eventAlreadyExists": "",
+        "localEventVars": "",
+        "createEventHint": "",
+        "coreEventsCategories": {
+            "lifecycle": "",
+            "actions": "",
+            "pointer": "",
+            "misc": "",
+            "animation": "",
+            "timers": ""
+        },
+        "coreEvents": {
+            "OnCreate": "",
+            "OnRoomStart": "",
+            "OnStep": "",
+            "OnDraw": "",
+            "OnDestroy": "",
+            "OnRoomEnd": "",
+            "OnPointerClick": "",
+            "OnPointerSecondaryClick": "",
+            "OnPointerEnter": "",
+            "OnPointerLeave": "",
+            "OnPointerDown": "",
+            "OnPointerUp": "",
+            "OnPointerUpOutside": "",
+            "OnPointerWheel": "",
+            "OnActionPress": "",
+            "OnActionRelease": "",
+            "OnActionDown": "",
+            "OnFrameChange": "",
+            "OnAnimationLoop": "",
+            "OnAnimationComplete": "",
+            "Timer": ""
+        },
+        "coreParameterizedNames": {
+            "OnActionPress": "",
+            "OnActionRelease": "",
+            "OnActionDown": "",
+            "Timer1": "%%name%% must not be translated.",
+            "Timer2": "%%name%% must not be translated.",
+            "Timer3": "%%name%% must not be translated.",
+            "Timer4": "%%name%% must not be translated.",
+            "Timer5": "%%name%% must not be translated.",
+            "Timer6": "%%name%% must not be translated."
+        },
+        "coreEventsArguments": {
+            "action": "",
+            "name": "",
+            "isUi": ""
+        },
+        "coreEventsLocals": {
+            "OnActionDown_value": "",
+            "OnActionPress_value": ""
+        },
+        "coreEventsDescriptions": {
+            "OnCreate": "",
+            "OnRoomStart": "",
+            "OnStep": "",
+            "OnDraw": "",
+            "OnDestroy": "",
+            "OnRoomEnd": "",
+            "OnActionPress": "",
+            "OnActionRelease": "",
+            "OnActionDown": "",
+            "OnAnimationLoop": "",
+            "OnAnimationComplete": "",
+            "Timer": ""
+        }
     }
 }

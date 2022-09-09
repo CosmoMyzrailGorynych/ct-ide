@@ -1,0 +1,39 @@
+tour-guide
+    position fixed
+    z-index 40
+    & > div
+        position fixed
+        display block
+        left 0
+        right 0
+        top 0
+        bottom 0
+        z-index 40
+    .aModal
+        position absolute
+        z-index 50
+        {transshort}
+        overflow visible
+    .&-aMask
+        background-color rgba(0, 0, 0, 0.3)
+        if (themeDark)
+            background-color rgba(0, 0, 0, 0.65)
+        position fixed
+        left 0
+        right 0
+        top 0
+        bottom 0
+        z-index 40
+        {transshort}
+    .&-aHighlight
+        position fixed
+        z-index 45
+        box-shadow act 0 0 0.5rem, act 0 0 0.25rem inset
+        animation shadowPulse 2.5s ease infinite
+        {transshort}
+
+@keyframes shadowPulse
+    0%, 100%
+        box-shadow act 0 0 0.5rem, act 0 0 0.25rem inset
+    50%
+        box-shadow act 0 0 1rem, act 0 0 0.5rem inset

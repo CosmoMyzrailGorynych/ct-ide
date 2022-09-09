@@ -1,7 +1,21 @@
-const textures = require('./textures');
-const particles = require('./particles');
+import * as textures from './textures';
+import * as emitterTandems from './emitterTandems';
+import * as fonts from './fonts';
+import * as modules from './modules';
+import * as projects from './projects';
+import * as sounds from './sounds';
+import * as rooms from './rooms';
+import * as templates from './templates';
+import * as styles from './styles';
 
-module.exports = {
+export {
     textures,
-    particles
+    emitterTandems as tandems,
+    fonts,
+    modules,
+    projects,
+    sounds,
+    rooms,
+    templates,
+    styles
 };

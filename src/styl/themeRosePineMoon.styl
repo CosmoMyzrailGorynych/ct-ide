@@ -1,0 +1,66 @@
+@charset "utf-8"
+
+foreground = #e0def4 // text
+text = #e0def4 // text
+background = #2a273f // surface
+backgroundDeeper = #232136 // base
+shadows = #393552 // overlay
+
+borderLight = #56526e // highlight high
+borderPale = #393552 // overlay
+borderBright = #393552 // overlay
+
+trans =
+    transition 0.35s ease all
+transshort =
+    transition 0.15s ease all
+shad =
+    box-shadow 0 0.1rem 0.2rem rgba(shadows, 0.5)
+shadamb =
+    box-shadow 0 0 0.35rem rgba(shadows, 0.5)
+
+fonts = font = 'Open Sans', sans-serif, serif
+font-mono = mono = Iosevka, monospace
+
+br = 0.2rem
+iconsize = 1.5rem
+
+act = #c4a7e7 // iris
+acttext = act
+accent1 = #ea9a97 // rose
+error = #eb6f92 // love
+red = error
+success = #3e8fb0 // pine
+green = success
+warning = #f6c177 // gold
+orange = warning
+
+theme = 'RosePineMoon'
+themeDark = true
+themeThickBorders = false
+
+@require 'hvost.styl'
+
+@require '3rdParty/*.styl'
+@require './../node_requires/themes/3rdParty/highlight.js/RosePine.css'
+
+@require 'common.styl'
+@require 'inputs.styl'
+@require 'typography.styl'
+@require 'confetti.styl'
+@require 'buildingBlocks.styl'
+@require 'tabs.styl'
+
+@require 'tags/**/*.styl'
+
+input[type="text"],
+input[type="number"],
+input[type="url"],
+input[type="password"],
+select,
+textarea,
+.aResizer::before
+    border-color borderLight
+
+#theIntroBg
+    background borderPale

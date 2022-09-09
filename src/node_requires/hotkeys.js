@@ -12,6 +12,13 @@ on key presses in a declarative way, based on HTML markup plus a couple of scopi
 On each key press, the lib queries the document for the resulting key combination.
 The selector is `[data-hotkey="Your-Code"]`
 
+Your-Code is in form `Ctrl+Alt+Meta+X`, where X is a pressed letter.
+If you need the Shift key modifier, the letter will be an uppercase one.
+If not, use the lowercase letter.
+The code for Shift+S is just `S`, the code for just S key is `s`.
+Every modifier is optional. Examples: `l`, `5`, `Ctrl+1`, `Ctrl+C`.
+Do follow the order of modifiers: `Ctrl+Alt+c` is valid, but `Alt+Ctrl+c` is not.
+
 You can narrow the scope of the query by calling `hotkey.push(scope)`. (See more methods below.)
 The scope is nested, forming a stack. If a scope is specified, it is read from the most recently
 added part to the outer scope, trying to call the elements that are inside a scoped parent.
@@ -67,6 +74,7 @@ const hotkeyRef = Symbol('hotkey');
 
 class Hotkeys {
     constructor(doc) {
+        this.isFormField = isFormField;
         this.document = doc;
         this.document[hotkeyRef] = this;
         this.scopeStack = [];
@@ -74,8 +82,12 @@ class Hotkeys {
         this[offDomEventsRef] = new Map();
 
         this[listenerRef] = e => {
+            // Ignore key events when typing into form fields
+            if (isFormField(e.target)) {
+                return;
+            }
             const code = getCode(e);
-            this.trigger(code);
+            this.trigger(code, e);
         };
         this.document.body.addEventListener('keydown', this[listenerRef]);
     }
@@ -98,12 +110,13 @@ class Hotkeys {
             this[offDomEventsRef].set(code, []);
         }
     }
-    trigger(code) {
+    trigger(code, event) {
         const offDom = this[offDomEventsRef].get(code);
         if (offDom) {
-            for (const event of offDom) {
-                event();
+            for (const offDomEvent of offDom) {
+                offDomEvent(event);
             }
+            event.preventDefault();
         }
 
         // querySelectorAll returns a NodeList, which is not a sortable array. Convert by spreading.
@@ -128,6 +141,7 @@ class Hotkeys {
                     } else {
                         elt.click();
                     }
+                    event.preventDefault();
                     return;
                 }
             }
@@ -143,6 +157,7 @@ class Hotkeys {
             } else {
                 elt.click();
             }
+            event.preventDefault();
             return;
         }
     }

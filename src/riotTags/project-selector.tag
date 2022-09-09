@@ -1,5 +1,5 @@
 project-selector
-    #bg.stretch.flexcol
+    #theIntroBg.stretch.flexcol
         .pad.left.nogrow
             button.inline(onclick="{toggleLanguageSelector}")
                 svg.feather
@@ -93,7 +93,7 @@ project-selector
                             button.tiny(onclick="{cloneProject}" title="{voc.cloneProject}")
                                 svg.feather
                                     use(xlink:href="#copy")
-            #newProject.inset.flexfix-footer.flexrow
+            #theNewProjectField.inset.flexfix-footer.flexrow
                 h3.nm.inline {voc.newProject.text}
                 input(
                     type='text'
@@ -119,9 +119,13 @@ project-selector
             a(href="https://vk.com/ctjsrocks" title="{voc.vkontakte}" onclick="{openExternal('https://vk.com/ctjsrocks')}")
                 svg.icon
                     use(xlink:href="#vk")
-            a(href="https:/patreon.com/comigo" title="{voc.patreon}" onclick="{openExternal('https:/patreon.com/comigo')}")
+            //
+                a(href="https:/patreon.com/comigo" title="{voc.patreon}" onclick="{openExternal('https:/patreon.com/comigo')}")
+                    svg.icon
+                        use(xlink:href="#patreon")
+            a(href="https://boosty.to/comigo" title="{voc.boosty}" onclick="{openExternal('https://boosty.to/comigo')}")
                 svg.icon
-                    use(xlink:href="#patreon")
+                    use(xlink:href="#boosty")
             .inlineblock v{ctjsVersion}.
             |
             |
@@ -133,6 +137,7 @@ project-selector
     script.
         const fs = require('fs-extra'),
               path = require('path');
+        const {openProject} = require('./data/node_requires/resources/projects');
         this.ctjsVersion = process.versions.ctjs;
         this.requirePath = path;
         this.namespace = 'intro';
@@ -243,7 +248,7 @@ project-selector
                     }
                 });
             }, 0);
-            window.loadProject(path.join(way, codename + '.ict'));
+            openProject(path.join(way, codename + '.ict'));
         };
 
         /**
@@ -251,7 +256,7 @@ project-selector
          */
         this.loadProjectByPath = e => {
             const projectPath = e.item.project;
-            window.loadProject(projectPath);
+            openProject(projectPath);
         };
         /**
          * Prompts user to clone a project into a different folder/under a different name.
@@ -273,7 +278,7 @@ project-selector
                 }
                 await fs.copy(project, newIctLocation);
                 await fs.copy(project.slice(0, -4), newIctLocation.slice(0, -4));
-                window.loadProject(newIctLocation);
+                openProject(newIctLocation);
             })();
         };
         /**
@@ -296,10 +301,15 @@ project-selector
                 title: this.voc.newProject.selectProjectFolder,
                 defaultPath: defaultProjectDir,
                 buttonLabel: this.voc.newProject.saveProjectHere,
-                openDirectory: true
+               // openDirectory: true,
+                saveAs: this.refs.projectname.value.trim()
             });
             if (projPath) {
-                this.newProject(projPath, this.refs.projectname.value.trim());
+                const tmpProjPath = projPath.trim();
+                const directory = path.dirname(tmpProjPath);
+                const file = path.basename(tmpProjPath);
+                this.newProject(directory, file);
+                // this.newProject(projPath, this.refs.projectname.value.trim());
             }
         };
 
@@ -325,7 +335,7 @@ project-selector
                 return;
             }
             if (path.extname(proj).toLowerCase() === '.ict') {
-                window.loadProject(proj);
+                openProject(proj);
                 sessionStorage.projname = path.basename(proj);
                 global.projdir = path.dirname(proj) + path.sep + path.basename(proj, '.ict');
             } else {

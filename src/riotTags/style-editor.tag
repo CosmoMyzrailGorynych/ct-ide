@@ -1,5 +1,5 @@
 style-editor.aPanel.aView
-    #styleleft.tall.flexfix
+    .style-editor-Properties.tall.flexfix
         .flexfix-header
             .aPanel.pad
                 b {vocGlob.name}
@@ -142,7 +142,7 @@ style-editor.aPanel.aView
                 svg.feather
                     use(xlink:href="#check")
                 span {voc.apply}
-    #stylepreview.tall(ref="canvasSlot")
+    .style-editor-aPreview.tall(ref="canvasSlot")
     asset-selector(
         if="{selectingFont}"
         assettype="fonts"
@@ -284,9 +284,8 @@ style-editor.aPanel.aView
             if (this.nameTaken) {
                 // animate the error notice
                 require('./data/node_requires/jellify')(this.refs.errorNotice);
-                if (localStorage.disableSounds !== 'on') {
-                    soundbox.play('Failure');
-                }
+                const {soundbox} = require('./data/node_requires/3rdparty/soundbox');
+                soundbox.play('Failure');
                 return false;
             }
             this.styleobj.lastmod = Number(new Date());

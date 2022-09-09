@@ -21,8 +21,9 @@ main-menu-latest-projects
         this.loadLatestProject = projPath => {
             alertify.confirm(window.languageJSON.common.reallyExitConfirm, e => {
                 if (e) {
+                    const {openProject} = require('./data/node_requires/resources/projects');
                     window.signals.trigger('resetAll');
-                    window.loadProject(projPath);
+                    openProject(projPath);
                 }
             });
         };

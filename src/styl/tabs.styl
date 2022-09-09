@@ -18,3 +18,42 @@
     display flex
     & > *
         flex 1 1 auto
+
+prideR = #E40203
+prideO = #FF8B00
+prideY = #FEED00
+prideG = #00AE25
+prideB = #0078FF
+prideP = #AE2FC6
+
+root-tag.pride
+    app-view > nav ul
+        span
+            font-weight bolder
+        li:nth-child(6n + 1)
+            span, svg
+                color mix(act, prideR, 10%)
+        li:nth-child(6n + 2)
+            span, svg
+                if (themeDark)
+                    color mix(act, prideO, 10%)
+                else
+                    color shade(mix(act, prideO, 10%), 10%)
+        li:nth-child(6n + 3)
+            span, svg
+                if (themeDark)
+                    color mix(act, prideY, 10%)
+                else
+                    color shade(mix(act, prideY, 15%), 35%)
+        li:nth-child(6n + 4)
+            span, svg
+                color mix(act, prideG, 10%)
+        li:nth-child(6n + 5)
+            span, svg
+                if (themeDark)
+                    color tint(mix(act, prideB, 10%), 20%)
+                else
+                    color mix(act, prideB, 10%)
+        li:nth-child(6n)
+            span, svg
+                color mix(act, prideP, 10%)

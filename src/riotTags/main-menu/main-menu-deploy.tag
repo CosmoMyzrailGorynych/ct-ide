@@ -24,7 +24,7 @@ main-menu-deploy
                   path = require('path');
             const {getBuildDir, getExportDir} = require('./data/node_requires/platformUtils');
             const buildFolder = await getBuildDir();
-            const runCtExport = require('./data/node_requires/exporter');
+            const runCtExport = require('./data/node_requires/exporter').exportCtProject;
             const exportFile = path.join(
                 buildFolder,
                 `${global.currentProject.settings.authoring.title || 'ct.js game'}.zip`

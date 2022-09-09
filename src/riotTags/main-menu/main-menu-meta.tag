@@ -1,7 +1,7 @@
 main-menu-meta
     h1 {voc.heading}
     ul.aMenu
-        li(onclick="{() => nw.Shell.openExternal('https://www.patreon.com/comigo')}")
+        li(onclick="{() => nw.Shell.openExternal('https://boosty.to/comigo')}")
             svg.feather
                 use(xlink:href="#heart")
             span {vocGlob.donate}

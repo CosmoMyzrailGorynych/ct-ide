@@ -19,15 +19,21 @@ class Tilemap extends PIXI.Container {
                 Object.assign(this, template.extends);
             }
             for (let i = 0, l = template.tiles.length; i < l; i++) {
-                const textures = ct.res.getTexture(template.tiles[i].texture);
-                const sprite = new PIXI.Sprite(textures[template.tiles[i].frame]);
-                sprite.anchor.x = sprite.anchor.y = 0;
+                const tile = template.tiles[i];
+                const textures = ct.res.getTexture(tile.texture);
+                const sprite = new PIXI.Sprite(textures[tile.frame]);
+                sprite.anchor.x = textures[0].defaultAnchor.x;
+                sprite.anchor.y = textures[0].defaultAnchor.y;
                 sprite.shape = textures.shape;
+                sprite.scale.set(tile.scale.x, tile.scale.y);
+                sprite.rotation = tile.rotation;
+                sprite.alpha = tile.opacity;
+                sprite.tint = tile.tint;
+                sprite.x = tile.x;
+                sprite.y = tile.y;
                 this.addChild(sprite);
                 this.pixiTiles.push(sprite);
                 this.tiles[i].sprite = sprite;
-                sprite.x = template.tiles[i].x;
-                sprite.y = template.tiles[i].y;
             }
         } else {
             this.tiles = [];

@@ -39,6 +39,7 @@ html
     font-size 125%
 .small
     font-size 87.5% // 14px от 16-и
+    line-height 1.714
 .tiny
     font-size 75% // 12px
 .rem
@@ -63,8 +64,8 @@ html
     text-overflow ellipsis
     white-space nowrap
     display inline-block
-    max-width 15em
     vertical-align text-bottom
+    max-width 100%
 
 .toright
     float right !important
@@ -129,10 +130,13 @@ textarea
 .grey, .gray
     color grey
 .ctext
-    color ctext
+    color text
 
 .bold
     font-weight 600
+
+.dim
+    opacity 0.5
 
 .selectable
     user-select unquote('text')
@@ -224,6 +228,8 @@ for i in 1 2 3 4 5 6 7 8
     cursor pointer
 .cursordefault
     cursor default
+.cursorhelp
+    cursor help
 
 
 .aContainer16x9
@@ -285,7 +291,7 @@ for i in 1 2 3 4 5 6 7 8
     from
         opacity 0
     to
-        opacity 100%
+        opacity 1
 @keyframes pop-in
     from
         transform scale(0, 0)

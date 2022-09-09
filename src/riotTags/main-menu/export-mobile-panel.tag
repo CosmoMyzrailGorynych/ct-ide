@@ -118,7 +118,7 @@ export-mobile-panel.aDimmer
                       fs = require('fs-extra');
                 const execa = require('execa');
                 const {getBuildDir, getExportDir} = require('./data/node_requires/platformUtils');
-                const runCtExport = require('./data/node_requires/exporter');
+                const runCtExport = require('./data/node_requires/exporter').exportCtProject;
 
                 const appId = projSettings.authoring.appId || 'rocks.ctjs.defaultpackageid';
                 const version = projSettings.authoring.version.join('.') + projSettings.authoring.versionPostfix;
@@ -211,7 +211,7 @@ export-mobile-panel.aDimmer
                 const {getDOMImage} = require('./data/node_requires/resources/textures');
                 const iconsSplashesPromises = [];
                 const {imageCover, imageContain, imagePlaceInRect, imageRound, outputCanvasToFile} =
-                    require('./data/node_requires/imageUtils');
+                    require('./data/node_requires/utils/imageUtils');
                 const projIconImage = await getDOMImage(projSettings.branding.icon || -1, 'ct_ide.png');
                 for (const name in androidIcons) {
                     const icon = imageContain(

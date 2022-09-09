@@ -14,28 +14,28 @@ builtin-asset-gallery.aPanel.aView.pad
                 .aButtonGroup
                     button(
                         title="{voc.visitSource}"
-                        onclick="{openExternal(currentSet.meta.source)}"
+                        onclick="{() => nw.Shell.openExternal(currentSet.meta.source)}"
                         if="{currentSet && currentSet.meta.source}"
                     )
                         svg.feather
                             use(xlink:href="#external-link")
                     button(
                         title="{voc.visitAuthorsItch}"
-                        onclick="{openExternal(currentSet.meta.itch)}"
+                        onclick="{() => nw.Shell.openExternal(currentSet.meta.itch)}"
                         if="{currentSet && currentSet.meta.itch}"
                     )
                         svg.icon
                             use(xlink:href="#itch-dot-io")
                     button(
                         title="{voc.visitAuthorsTwitter}"
-                        onclick="{openExternal(currentSet.meta.twitter)}"
+                        onclick="{() => nw.Shell.openExternal(currentSet.meta.twitter)}"
                         if="{currentSet && currentSet.meta.twitter}"
                     )
                         svg.icon
                             use(xlink:href="#twitter")
                     button(
                         title="{voc.tipAuthor}"
-                        onclick="{openExternal(currentSet.meta.donate)}"
+                        onclick="{() => nw.Shell.openExternal(currentSet.meta.donate)}"
                         if="{currentSet && currentSet.meta.donate}"
                     )
                         svg.feather

@@ -13,7 +13,15 @@ main-menu-settings
             svg.feather
                 use(xlink:href="#font")
             span {voc.codeFont}
+        li(onclick="{togglePrideMode}")
+            svg.feather
+                use(xlink:href="#{localStorage.prideMode === 'on' ? 'check-square' : 'square'}")
+            span {voc.prideMode}
     ul.aMenu
+        li(onclick="{toggleTemplatesLayout}")
+            svg.feather
+                use(xlink:href="#{localStorage.altTemplateLayout === 'on' ? 'check-square' : 'square'}")
+            span {voc.altTemplateLayout}
         li(onclick="{toggleSounds}")
             svg.feather
                 use(xlink:href="#{localStorage.disableSounds === 'on' ? 'check-square' : 'square'}")
@@ -47,8 +55,16 @@ main-menu-settings
             this.showLanguageSelector = true;
         };
 
+        this.toggleTemplatesLayout = () => {
+            localStorage.altTemplateLayout = localStorage.altTemplateLayout === 'on' ? 'off' : 'on';
+        };
         this.toggleSounds = () => {
             localStorage.disableSounds = (localStorage.disableSounds || 'off') === 'off' ? 'on' : 'off';
+        };
+
+        this.togglePrideMode = () => {
+            localStorage.prideMode = (localStorage.prideMode || 'off') === 'off' ? 'on' : 'off';
+            window.signals.trigger('prideModeUpdated');
         };
 
         this.toggleLigatures = () => {

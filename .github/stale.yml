@@ -1,0 +1,25 @@
+# Number of days of inactivity before an issue becomes stale
+daysUntilStale: 60
+# Number of days of inactivity before a stale issue is closed
+daysUntilClose: 90
+# Issues with these labels will never be considered stale
+exemptLabels: []
+# Label to use when marking an issue as stale
+staleLabel: 'state:stale'
+# Comment to post when marking an issue as stale. Set to `false` to disable
+markComment: >
+  Hey there 👋 I marked this issue as stale as it hadn't brought much attention for quite a while.
+  
+  I do understand that stale issues are still issues, yet here stale issues receive the least attention from maintainers so they can focus on more relevant tasks.
+  You can help with this issue by checking whether it affects latest versions of ct.js and writing about it if it does,
+  providing an example project and steps to reproduce.  
+  Or maybe you can close it with a PR!
+  
+  Note that some platform-dependent issues can't be resolved by developers due to the absense of such devices :c
+  We will need help from you for such tasks.
+  
+  If this issue won't get attention in three months, it will be closed.
+  
+# Comment to post when closing a stale issue. Set to `false` to disable
+closeComment: >
+  This issue is now closed! Please create a new one with a proper template if this issue still affects ct.js.

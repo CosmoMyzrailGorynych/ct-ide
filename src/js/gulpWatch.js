@@ -22,9 +22,12 @@
         themeWatcher.on('change', src => {
             const incoming = src.split(/[/\\]/).pop();
             if (incoming === `theme${localStorage.UItheme}.css`) {
-                const link = document.getElementById('themeCSS');
-                link.href = link.href.replace(/\?.*|$/, '?' + Date.now());
-                window.alertify.success('Updated theme ✅');
+                 // For some reason Windows returns empty files from time to time w/o a delay
+                setTimeout(() => {
+                    const link = document.getElementById('themeCSS');
+                    link.href = link.href.replace(/\?.*|$/, '?' + Date.now());
+                    window.alertify.success('Updated theme ✅');
+                }, 100);
             }
         });
 

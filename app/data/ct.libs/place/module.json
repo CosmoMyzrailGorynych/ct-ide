@@ -67,5 +67,65 @@
         "collect": true,
         "collectScope": "place::cgroup",
         "key": "cgroup"
-    }]
+    }],
+    "eventCategories": {
+        "collisions": {
+            "name": "Collisions",
+            "name_Ru": "Столкновения",
+            "icon": "copy"
+        }
+    },
+    "events": {
+        "collisionTemplate": {
+            "name": "Collision with a template",
+            "name_Ru": "Столкновение с шаблоном",
+            "parameterizedName": "Collides %%template%% template",
+            "parameterizedName_Ru": "Столкновение с шаблоном %%template%%",
+            "icon": "copy",
+            "useAssetThumbnail": true,
+            "applicable": ["template"],
+            "category": "collisions",
+            "arguments": {
+                "template": {
+                    "name": "Template",
+                    "name_Ru": "Шаблон",
+                    "type": "template"
+                }
+            },
+            "repeatable": true,
+            "codeTargets": ["thisOnStep"],
+            "locals": {
+                "other": {
+                    "type": "Copy",
+                    "description": "What collides with your copy",
+                    "description_Ru": "То, что столкнулось с копией"
+                }
+            }
+        },
+        "collisionCGroup": {
+            "name": "Collision with a group",
+            "name_Ru": "Столкновение с группой",
+            "parameterizedName": "Collides %%group%% group",
+            "parameterizedName_Ru": "Столкновение с группой %%group%%",
+            "icon": "copy",
+            "applicable": ["template"],
+            "category": "collisions",
+            "arguments": {
+                "group": {
+                    "name": "Group",
+                    "name_Ru": "Группа",
+                    "type": "string"
+                }
+            },
+            "repeatable": true,
+            "codeTargets": ["thisOnStep"],
+            "locals": {
+                "other": {
+                    "type": "Copy | PIXI.Sprite",
+                    "description": "What collides with your copy. PIXI.Sprite is a ct.js tile",
+                    "description_Ru": "То, что столкнулось с копией. PIXI.Sprite — это плитка тайлсета"
+                }
+            }
+        }
+    }
 }

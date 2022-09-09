@@ -198,14 +198,14 @@ class EmitterTandem extends PIXI.Container {
         const delta = ct.u.rotate(
             this.deltaPosition.x * this.follow.scale.x,
             this.deltaPosition.y * this.follow.scale.y,
-            -this.follow.angle
+            this.follow.angle
         );
         for (const emitter of this.emitters) {
             emitter.updateOwnerPos(this.follow.x + delta.x, this.follow.y + delta.y);
             const ownDelta = ct.u.rotate(
                 emitter.initialDeltaPos.x * this.follow.scale.x,
                 emitter.initialDeltaPos.y * this.follow.scale.y,
-                -this.follow.angle
+                this.follow.angle
             );
             emitter.updateSpawnPos(ownDelta.x, ownDelta.y);
         }

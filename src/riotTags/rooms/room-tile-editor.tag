@@ -1,34 +1,56 @@
-room-tile-editor.room-editor-Tiles.tabbed.tall.flexfix
-    .flexfix-body
-        canvas(
-            ref="tiledImage"
-            onmousedown="{startTileSelection}"
-            onmouseup="{stopTileSelection}"
-            onmousemove="{moveTileSelection}"
-        )
-    .flexfix-footer
-        button.inline.wide(onclick="{switchTiledImage}")
+//
+    @attribute layer (TileLayer)
+        A pixi.js container with all its tiles.
+    @attribute layers (Iterable<TileLayer>)
+        All exising tile layers in the current room.
+    @attribute pixieditor (RoomEditor)
+        When other attributes are not enough
+
+    @attribute onchangetile (riot function)
+        Called with ITileSelection instance as its only argument
+    @attribute onchangelayer (riot function)
+        Called with TileLayer as its only argument.
+
+    @attribute addlayer (riot function)
+        Called when a user wants to add a layer.
+        The only argument is an ITileLayerTemplate instance.
+
+room-tile-editor.room-editor-Tiles.flexfix(class="{opts.class}")
+    .flexfix-header
+        button.inline.wide(onclick="{openTextureSelector}")
             svg.feather
                 use(xlink:href="#search")
             span {voc.findTileset}
-        .flexrow
-            select.wide(onchange="{changeTileLayer}" value="{parent.currentTileLayerId}")
-                option(each="{layer, ind in opts.room.tiles}" selected="{parent.currentTileLayerId === ind}" value="{ind}") {layer.hidden? '❌' : '✅'} {layer.depth}
-
-            span.act(title="{vocGlob.delete}" onclick="{deleteTileLayer}")
-                svg.feather
-                    use(xlink:href="#trash")
-            span.act(title="{parent.currentTileLayer.hidden? voc.show: voc.hide}" onclick="{toggleTileLayer}")
-                svg.feather
-                    use(xlink:href="#{parent.currentTileLayer.hidden? 'eye' : 'eye-off'}")
-            span.act(title="{voc.moveTileLayer}" onclick="{moveTileLayer}")
-                svg.feather
-                    use(xlink:href="#shuffle")
-            span.act(title="{vocGlob.add}" onclick="{addTileLayer}")
-                svg.feather
-                    use(xlink:href="#plus")
+    .flexfix-body
+        canvas.room-tile-editor-aCanvas(
+            ref="tiledImage"
+            onpointerdown="{startTileSelection}"
+            onpointerup="{stopTileSelection}"
+            onpointermove="{moveTileSelection}"
+        )
+    .flexfix-footer
+        ul.aMenu.room-tile-editor-aLayerList
+            li.checkbox(each="{layer in opts.layers}" onclick="{changeTileLayer}" class="{active: layer === parent.opts.layer}")
+                input(type="checkbox" name="tileLayers" checked="{!layer.isHidden}" onchange="{toggleTileLayer}")
+                b {layer.zIndex}
+                span.a(title="{parent.voc.moveTileLayer}")
+                    svg.feather(onclick="{moveTileLayer}")
+                        use(xlink:href="#shuffle")
+                span.a(title="{parent.vocGlob.delete}")
+                    svg.feather(onclick="{deleteTileLayer}")
+                        use(xlink:href="#trash")
+        button.inline.wide(onclick="{addTileLayer}")
+            svg.feather
+                use(xlink:href="#plus")
+            span {voc.addTileLayer || vocGlob.add}
         .block
-            extensions-editor(type="tileLayer" entity="{parent.currentTileLayer.extends}" compact="yep" wide="sure")
+            extensions-editor(
+                if="{opts.layer}"
+                type="tileLayer"
+                entity="{opts.layer.extends}"
+                compact="true"
+                wide="true"
+            )
     asset-selector(
         ref="tilesetPicker"
         if="{pickingTileset}"
@@ -37,43 +59,35 @@ room-tile-editor.room-editor-Tiles.tabbed.tall.flexfix
         onselected="{onTilesetSelected}"
     )
     script.
-        this.parent.tileX = 0;
-        this.parent.tileY = 0;
-        this.parent.tileSpanX = 1;
-        this.parent.tileSpanY = 1;
-        if (!('tiles' in this.opts.room) || !this.opts.room.tiles.length) {
-            this.opts.room.tiles = [{
-                depth: -10,
-                tiles: [],
-                extends: {}
-            }];
-            this.parent.resortRoom();
-        }
-        [this.parent.currentTileLayer] = this.opts.room.tiles;
-        this.parent.currentTileLayerId = 0;
+        this.tileX = 0;
+        this.tileY = 0;
+        this.tileSpanX = 1;
+        this.tileSpanY = 1;
 
         this.namespace = 'roomTiles';
         this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
 
-        this.deleteTileLayer = () => {
+        this.on('update', () => {
+            if (!this.opts.layer && this.opts.layers.length) {
+                this.opts.onchangelayer(this.opts.layers[0]);
+                this.update();
+            } else if (this.opts.layer && !this.opts.layers.length) {
+                this.opts.onchangelayer(void 0);
+                this.update();
+            }
+        });
+
+        this.deleteTileLayer = e => {
+            const {layer} = e.item;
             window.alertify
             .okBtn(window.languageJSON.common.delete)
             .cancelBtn(window.languageJSON.common.cancel)
             .confirm(window.languageJSON.common.confirmDelete.replace('{0}', window.languageJSON.common.tileLayer))
             .then(e => {
                 if (e.buttonClicked === 'ok') {
-                    var tiles = this.opts.room;
-                    var index = tiles.tiles.indexOf(this.parent.currentTileLayer);
-                    tiles.tiles.splice(index, 1);
-                    if (tiles.tiles.length) {
-                        [this.parent.currentTileLayer] = tiles.tiles;
-                        this.parent.currentTileLayerId = 0;
-                    } else {
-                        this.parent.currentTileLayer = false;
-                    }
-                    this.parent.resortRoom();
-                    this.parent.refreshRoomCanvas();
+                    layer.detach(true);
+                    this.opts.onchangelayer(this.opts.layers[0]);
                     this.update();
                     window.alertify
                     .okBtn(window.languageJSON.common.ok)
@@ -81,15 +95,25 @@ room-tile-editor.room-editor-Tiles.tabbed.tall.flexfix
                 }
             });
         };
-        this.moveTileLayer = () => {
+        this.moveTileLayer = e => {
+            const {layer} = e.item;
             window.alertify
-            .defaultValue(this.parent.currentTileLayer.depth)
+            .defaultValue(layer.zIndex)
+            .okBtn(window.languageJSON.common.ok)
+            .cancelBtn(window.languageJSON.common.cancel)
             .prompt(window.languageJSON.roomView.newDepth)
             .then(e => {
                 if (e.inputValue && Number(e.inputValue)) {
-                    this.parent.currentTileLayer.depth = Number(e.inputValue);
-                    this.parent.resortRoom();
-                    this.parent.refreshRoomCanvas();
+                    const before = layer.zIndex;
+                    layer.zIndex = Number(e.inputValue);
+                    this.opts.layers.sort((a, b) => b.zIndex - a.zIndex);
+                    this.opts.pixieditor.history.pushChange({
+                        type: 'propChange',
+                        key: 'zIndex',
+                        target: layer,
+                        before,
+                        after: layer.zIndex
+                    });
                     this.update();
                 }
             });
@@ -100,71 +124,68 @@ room-tile-editor.room-editor-Tiles.tabbed.tall.flexfix
             .prompt(window.languageJSON.roomView.newDepth)
             .then(e => {
                 if (e.inputValue && Number(e.inputValue)) {
-                    var layer = {
+                    const layer = {
                         depth: Number(e.inputValue),
                         tiles: [],
                         extends: {}
                     };
-                    this.opts.room.tiles.push(layer);
-                    this.parent.currentTileLayer = layer;
-                    this.parent.currentTileLayerId = this.opts.room.tiles.length - 1;
-                    this.parent.resortRoom();
+                    const pixiTileLayer = this.opts.addlayer(layer, true);
+                    this.opts.onchangelayer(pixiTileLayer);
                     this.update();
                 }
             });
         };
         this.toggleTileLayer = () => {
-            this.parent.currentTileLayer.hidden = !this.parent.currentTileLayer.hidden;
-            this.parent.refreshRoomCanvas();
+            this.opts.layer.showToggle();
         };
         this.changeTileLayer = e => {
-            this.parent.currentTileLayer = this.opts.room.tiles[Number(e.target.value)];
-            if (!this.parent.currentTileLayer.extends) {
-                this.parent.currentTileLayer.extends = {};
-            }
-            this.parent.currentTileLayerId = Number(e.target.value);
+            this.opts.onchangelayer(e.item.layer);
         };
-        this.switchTiledImage = () => {
+        this.openTextureSelector = () => {
             this.pickingTileset = true;
         };
         this.onTilesetCancel = () => {
             this.pickingTileset = false;
             this.update();
         };
-        this.onTilesetSelected = textureId => {
-            const textures = require('./data/node_requires/resources/textures');
-            this.parent.currentTileset = textures.getById(textureId);
+        this.onTilesetSelected = async textureId => {
+            const {getById, getDOMImage} = require('./data/node_requires/resources/textures');
+            this.currentTexture = getById(textureId);
             this.pickingTileset = false;
+            this.update();
+            this.currentTextureImg = await getDOMImage(this.currentTexture);
             this.redrawTileset();
+            this.tileX = this.tileY = 0;
+            this.tileSpanX = this.tileSpanY = 1;
+            this.sendTileSelection();
             this.update();
         };
 
         this.redrawTileset = () => {
-            const glob = require('./data/node_requires/glob');
             var c = this.refs.tiledImage,
                 cx = c.getContext('2d'),
-                g = this.parent.currentTileset,
-                i = glob.texturemap[g.uid];
-            c.width = i.width;
-            c.height = i.height;
+                tex = this.currentTexture,
+                img = this.currentTextureImg;
+            c.width = img.width;
+            c.height = img.height;
             if (global.currentProject.settings.rendering.pixelatedrender) {
                 c.style.imageRendering = 'pixelated';
             } else {
                 c.style.imageRendering = 'unset';
             }
             cx.globalAlpha = 1;
-            cx.drawImage(i, 0, 0);
+            cx.drawImage(img, 0, 0);
             cx.strokeStyle = '#0ff';
             cx.lineWidth = 1;
             cx.globalAlpha = 0.5;
             cx.globalCompositeOperation = 'exclusion';
-            for (let i = 0, l = Math.min(g.grid[0] * g.grid[1], g.untill || Infinity); i < l; i++) {
-                const xx = i % g.grid[0],
-                      yy = Math.floor(i / g.grid[0]),
-                      x = g.offx + xx * (g.marginx + g.width),
-                      y = g.offy + yy * (g.marginy + g.height),
-                      w = g.width,
-                      h = g.height;
+            for (let i = 0, l = Math.min(tex.grid[0] * tex.grid[1], tex.untill || Infinity); i < l; i++) {
+                const xx = i % tex.grid[0],
+                      yy = Math.floor(i / tex.grid[0]),
+                      x = tex.offx + xx * (tex.marginx + tex.width),
+                      y = tex.offy + yy * (tex.marginy + tex.height),
+                      w = tex.width,
+                      h = tex.height;
                 cx.strokeRect(x, y, w, h);
             }
             cx.globalCompositeOperation = 'source-over';
@@ -172,33 +193,33 @@ room-tile-editor.room-editor-Tiles.tabbed.tall.flexfix
             cx.lineJoin = 'round';
             cx.strokeStyle = localStorage.UItheme === 'Night' ? '#44dbb5' : '#446adb';
             cx.lineWidth = 3;
-            const selX = g.offx + this.parent.tileX * (g.width + g.marginx),
-                  selY = g.offy + this.parent.tileY * (g.height + g.marginy),
-                  selW = g.width * this.parent.tileSpanX + g.marginx * (this.parent.tileSpanX - 1),
-                  selH = g.height * this.parent.tileSpanY + g.marginy * (this.parent.tileSpanY - 1);
+            const selX = tex.offx + this.tileX * (tex.width + tex.marginx),
+                  selY = tex.offy + this.tileY * (tex.height + tex.marginy),
+                  selW = tex.width * this.tileSpanX + tex.marginx * (this.tileSpanX - 1),
+                  selH = tex.height * this.tileSpanY + tex.marginy * (this.tileSpanY - 1);
             cx.strokeRect(-0.5 + selX, -0.5 + selY, selW + 1, selH + 1);
             cx.strokeStyle = localStorage.UItheme === 'Night' ? '#1C2B42' : '#fff';
             cx.lineWidth = 1;
             cx.strokeRect(-0.5 + selX, -0.5 + selY, selW + 1, selH + 1);
         };
         this.startTileSelection = e => {
-            if (!this.parent.currentTileset) {
+            if (!this.currentTexture) {
                 return;
             }
             // Adjust the pointer coordinates to account for potential scaling
             const bbox = e.target.getBoundingClientRect();
             const px = e.layerX / bbox.width * e.target.width,
                   py = e.layerY / bbox.height * e.target.height;
-            var g = this.parent.currentTileset;
-            this.parent.tileSpanX = 1;
-            this.parent.tileSpanY = 1;
+            const tex = this.currentTexture;
+            this.tileSpanX = 1;
+            this.tileSpanY = 1;
             this.selectingTile = true;
-            this.tileStartX = Math.round((px - g.offx - g.width * 0.5) / (g.width + g.marginx));
-            this.tileStartX = Math.max(0, Math.min(g.grid[0], this.tileStartX));
-            this.tileStartY = Math.round((py - g.offy - g.height * 0.5) / (g.height + g.marginy));
-            this.tileStartY = Math.max(0, Math.min(g.grid[1], this.tileStartY));
-            this.parent.tileX = this.tileStartX;
-            this.parent.tileY = this.tileStartY;
+            this.tileStartX = Math.round((px - tex.offx - tex.width * 0.5) / (tex.width + tex.marginx));
+            this.tileStartX = Math.max(0, Math.min(tex.grid[0], this.tileStartX));
+            this.tileStartY = Math.round((py - tex.offy - tex.height * 0.5) / (tex.height + tex.marginy));
+            this.tileStartY = Math.max(0, Math.min(tex.grid[1], this.tileStartY));
+            this.tileX = this.tileStartX;
+            this.tileY = this.tileStartY;
             this.redrawTileset();
         };
         this.moveTileSelection = e => {
@@ -209,21 +230,32 @@ room-tile-editor.room-editor-Tiles.tabbed.tall.flexfix
             const bbox = e.target.getBoundingClientRect();
             const px = e.layerX / bbox.width * e.target.width,
                   py = e.layerY / bbox.height * e.target.height;
-            var g = this.parent.currentTileset;
-            this.tileEndX = Math.round((px - g.offx - g.width * 0.5) / (g.width + g.marginx));
-            this.tileEndX = Math.max(0, Math.min(g.grid[0], this.tileEndX));
-            this.tileEndY = Math.round((py - g.offy - g.height * 0.5) / (g.height + g.marginy));
-            this.tileEndY = Math.max(0, Math.min(g.grid[1], this.tileEndY));
-            this.parent.tileSpanX = 1 + Math.abs(this.tileStartX - this.tileEndX);
-            this.parent.tileSpanY = 1 + Math.abs(this.tileStartY - this.tileEndY);
-            this.parent.tileX = Math.min(this.tileStartX, this.tileEndX);
-            this.parent.tileY = Math.min(this.tileStartY, this.tileEndY);
+            const tex = this.currentTexture;
+            this.tileEndX = Math.round((px - tex.offx - tex.width * 0.5) / (tex.width + tex.marginx));
+            this.tileEndX = Math.max(0, Math.min(tex.grid[0], this.tileEndX));
+            this.tileEndY = Math.round((py - tex.offy - tex.height * 0.5) / (tex.height + tex.marginy));
+            this.tileEndY = Math.max(0, Math.min(tex.grid[1], this.tileEndY));
+            this.tileSpanX = 1 + Math.abs(this.tileStartX - this.tileEndX);
+            this.tileSpanY = 1 + Math.abs(this.tileStartY - this.tileEndY);
+            this.tileX = Math.min(this.tileStartX, this.tileEndX);
+            this.tileY = Math.min(this.tileStartY, this.tileEndY);
             this.redrawTileset();
         };
+
         this.stopTileSelection = e => {
             if (!this.selectingTile) {
                 return;
             }
             this.moveTileSelection(e);
+            this.sendTileSelection();
             this.selectingTile = false;
+        };
+        this.sendTileSelection = () => {
+            this.opts.onchangetile({
+                startX: this.tileX,
+                startY: this.tileY,
+                spanX: this.tileSpanX,
+                spanY: this.tileSpanY,
+                texture: this.currentTexture
+            });
         };

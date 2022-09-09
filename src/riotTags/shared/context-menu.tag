@@ -2,25 +2,13 @@
     Shows a generic context menu.
 
     @attribute menu (riot object)
-        Expects a following structure:
+        Expects a following structure (IMenu):
         {
             opened: boolean, // mutable by a context-menu instance
             items: Array<IMenuItem>,
             columns: number
         }
-        IMenuItem is:
-        {
-            label: string,
-            icon?: string, // a name of an svg icon, e.g. 'check'
-
-            type?: 'checkbox'|'separator'|any,
-            click?: function,
-            checked?: boolean|Function<boolean>, // valid for 'checkbox' type
-            submenu?: Array<IMenuItem>,
-
-            hotkey?: string, // E.g. 'Control+c'
-            hotkeyLabel?: string // A human-readable variant, e.g. 'Ctrl+C'. Fallbacks to `hotkey`.
-        }
+        IMenuItem is https://github.com/ct-js/ct-js/blob/develop/src/node_requires/IMenuItem.d.ts
 
     @method popup(x, y)
         Works with absolute coordinates (in CSS terms)
@@ -37,12 +25,13 @@ context-menu(class="{opened: opts.menu.opened}" ref="root" style="{opts.menu.col
         onclick="{onItemClick}"
         tabindex="{'-1': item.type === 'separator'}"
         data-hotkey="{item.hotkey}"
+        title="{item.hint}"
     )
         svg.context-menu-anIcon(if="{item.icon && item.type !== 'separator' && item.type !== 'checkbox'}" class="{item.iconClass || 'feather'}")
             use(xlink:href="#{item.icon instanceof Function? item.icon() : item.icon}")
         input(type="checkbox" checked="{item.checked instanceof Function? item.checked() : item.checked}" if="{item.type === 'checkbox'}")
         span(if="{!item.type !== 'separator'}") {item.label}
-        span.hotkey(if="{!item.type !== 'separator' && item.hotkey}") ({item.hotkeyLabel || item.hotkey})
+        span.hotkey(if="{!item.type !== 'separator' && (item.hotkey || item.hotkeyLabel)}") ({item.hotkeyLabel || item.hotkey})
         svg.feather.context-menu-aChevron(if="{item.submenu && item.type !== 'separator'}")
             use(xlink:href="#chevron-right")
         context-menu(if="{item.submenu && item.type !== 'separator'}" menu="{item.submenu}")
@@ -56,7 +45,7 @@ context-menu(class="{opened: opts.menu.opened}" ref="root" style="{opts.menu.col
             // first `item` is a riot's reference to all looped vars,
             // second is var's name in markup
             if (e.item.item.click) {
-                e.item.item.click();
+                e.item.item.click(e.item.item.affixedData);
                 e.stopPropagation();
             }
             if (!e.item.item.submenu) { // autoclose on regular items

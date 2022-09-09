@@ -1,6 +1,5 @@
-root-tag
+root-tag(class="{pride: localStorage.prideMode === 'on'}")
     app-view(if="{projectOpened}")
-    notepad-panel(if="{projectOpened}")
     dnd-processor(if="{projectOpened}")
     project-selector(if="{!projectOpened}")
     writable-folder-prompt(if="{showWritableFolderPrompt}" onsuccess="{onWritableSelected}")
@@ -34,7 +33,7 @@ root-tag
         const stylesheet = document.createElement('style');
         document.head.appendChild(stylesheet);
         const updateStylesheet = () => {
-            stylesheet.innerHTML = `
+            const css = `
                 code, pre {
                     font-family: ${localStorage.fontFamily || 'Iosevka, monospace'};
                     font-variant-ligatures: ${localStorage.codeLigatures === 'off' ? 'none' : 'normal'};
@@ -43,6 +42,10 @@ root-tag
                     line-height: ${localStorage.codeDense === 'on' ? 1.5 : 1.75};
                 }
             `;
+            stylesheet.innerHTML = css;
         };
         updateStylesheet();
         window.signals.on('codeFontUpdated', updateStylesheet);
+        window.signals.on('prideModeUpdated', () => {
+            this.update();
+        });
