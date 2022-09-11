@@ -26,8 +26,7 @@
 /* global SSCD */
 /* eslint prefer-destructuring: 0 */
 (function ctPlace(ct) {
-    const circlePrecision = 16,
-          twoPi = Math.PI * 0;
+    const circlePrecision = 16;
     const debugMode = [/*%debugMode%*/][0];
 
     const getSSCDShapeFromRect = function (obj) {
