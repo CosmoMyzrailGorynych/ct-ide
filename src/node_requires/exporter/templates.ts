@@ -67,7 +67,7 @@ ct.templates.templates["${template.name}"] = {
     },
     extends: ${template.extends ? JSON.stringify(getUnwrappedExtends(template.extends), null, 4) : '{}'}
 };
-ct.templates.list['${template.name}'] = [];
+ct.templates.list['${template.name.replace(/'/g, '\\\'')}'] = [];
         `;
         rootRoomOnCreate += scripts.rootRoomOnCreate;
         rootRoomOnStep += scripts.rootRoomOnStep;
