@@ -262,6 +262,9 @@ room-editor.aPanel.aView
             });
         };
         const triggerKeyboardEvent = e => {
+            if (!window.hotkeys.inScope('rooms')) {
+                return false;
+            }
             if (['input', 'textarea', 'select'].includes(e.target.nodeName.toLowerCase())) {
                 return false;
             }

@@ -50,6 +50,8 @@ export const moveSelection: IRoomEditorInteraction<IAffixedData> = {
             this.riotEditor.refs.propertiesPanel.updatePropList();
         },
         pointerup(e, roomTag, affixedData, callback) {
+            this.dropPrecision();
+            this.riotEditor.refs.propertiesPanel.updatePropList();
             this.history.snapshotTransforms();
             callback();
         }

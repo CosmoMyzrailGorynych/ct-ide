@@ -14,7 +14,7 @@ import {ViewportRestriction} from './entityClasses/ViewportRestriction';
 import {IRoomEditorRiotTag} from './IRoomEditorRiotTag';
 import {IRoomEditorInteraction, AllowedListener, allowedListeners, interactions} from './interactions';
 import {getPixiSwatch} from './../themes';
-import {defaultTextStyle, recolorFilters, eraseCursor} from './common';
+import {defaultTextStyle, recolorFilters, eraseCursor, toPrecision} from './common';
 import {ease} from 'node_modules/pixi-ease';
 
 const roomEditorDefaults = {
@@ -357,6 +357,19 @@ class RoomEditor extends PIXI.Application {
         }
         for (const copy of this.copies) {
             copy.update(this.ticker.deltaTime);
+        }
+    }
+    /**
+     * Rounds up the values of current selection to fix rounding errors
+     * that appear due to global-to-local transformations
+     * coming from the Transformer class.
+     */
+    dropPrecision(): void {
+        for (const elt of this.currentSelection) {
+            elt.x = toPrecision(elt.x, 8);
+            elt.y = toPrecision(elt.y, 8);
+            elt.scale.x = toPrecision(elt.scale.x, 8);
+            elt.scale.y = toPrecision(elt.scale.y, 8);
         }
     }
     repositionCoordLabel(): void {

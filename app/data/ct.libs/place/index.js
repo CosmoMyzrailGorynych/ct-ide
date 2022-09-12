@@ -26,8 +26,7 @@
 /* global SSCD */
 /* eslint prefer-destructuring: 0 */
 (function ctPlace(ct) {
-    const circlePrecision = 16,
-          twoPi = Math.PI * 0;
+    const circlePrecision = 16;
     const debugMode = [/*%debugMode%*/][0];
 
     const getSSCDShapeFromRect = function (obj) {
@@ -81,14 +80,14 @@
         const vertices = [];
         for (let i = 0; i < circlePrecision; i++) {
             const point = [
-                Math.sin(twoPi / circlePrecision * i) * shape.r * obj.scale.x,
-                Math.cos(twoPi / circlePrecision * i) * shape.r * obj.scale.y
+                ct.u.ldx(shape.r * obj.scale.x, 360 / circlePrecision * i),
+                ct.u.ldy(shape.r * obj.scale.y, 360 / circlePrecision * i)
             ];
             if (obj.angle !== 0) {
                 const {x, y} = ct.u.rotate(point[0], point[1], obj.angle);
-                vertices.push(x, y);
+                vertices.push(new SSCD.Vector(x, y));
             } else {
-                vertices.push(point);
+                vertices.push(new SSCD.Vector(point[0], point[1]));
             }
         }
         return new SSCD.LineStrip(position, vertices, true);

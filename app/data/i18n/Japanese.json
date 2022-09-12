@@ -66,10 +66,10 @@
             "text": "テキスト",
             "textfield": "テキストボックス",
             "texture": "テクスチャー",
-            "template": "",
-            "room": "",
-            "sound": "",
-            "tandem": ""
+            "template": "テンプレート",
+            "room": "ルーム",
+            "sound": "音",
+            "tandem": "パーティクル　エミッター"
         },
         "newName": "新しい名前:",
         "saveProject": "プロジェクトを保存",
@@ -86,48 +86,46 @@
         "openAssetGallery": "",
         "assetTypes": {
             "textures": [
-                "",
-                "",
-                ""
+                "テクスチャ",
+                "テクスチャ",
+                "テクスチャ"
             ],
             "templates": [
-                "",
-                "",
-                ""
+                "テンプレート",
+                "テンプレート",
+                "テンプレート"
             ],
             "emitterTandems": [
-                "",
-                "",
-                ""
+                "エミッタータンデム",
+                "エミッタータンデム",
+                "エミッタータンデム"
             ],
             "rooms": [
-                "",
-                "",
-                ""
+                "ルーム",
+                "ルーム",
+                "ルーム"
             ],
             "fonts": [
-                "",
-                "",
-                ""
+                "フォント",
+                "フォント",
+                "フォント"
             ],
             "styles": [
-                "",
-                "",
-                ""
+                "スタイル",
+                "スタイル",
+                "スタイル"
             ],
             "sounds": [
-                "",
-                "",
-                ""
+                "音",
+                "音",
+                "音"
             ],
             "skeletons": [
-                "",
-                "",
-                ""
+                "透過スプライト",
+                "透過スプライト",
+                "透過スプライト"
             ]
-        },
-        "next": "",
-        "previous": ""
+        }
     },
     "assetInput": {
         "changeAsset": "アセットを変更する",
@@ -139,6 +137,20 @@
         "ungrouped": "グループ化されていないものを表示",
         "newGroupName": "新しいグループ",
         "groupDeletionConfirmation": "本当にこのグループを削除しますか？そのアセットがすべてグループから外れることになります。"
+    },
+    "builtinAssetGallery": {
+        "galleryTip": "これは、さまざまなテクスチャとサウンドの無料のビルトイン ギャラリーです。すべてのアセットは CC0 または WTFPL であるか、ct.js で使用するための特別な条件の下でリリースされています。これらのアセットは、商用目的のプロジェクトやその他のプロジェクトで使用することができます。",
+        "assetGalleryHeader": "アセット",
+        "importIntoProject": "現在のプロジェクトにインポート",
+        "importAll": "全てインポート",
+        "byAuthorPrefix": "by",
+        "cannotImportExplanation": "このアセットに使用されている名前は、既存のアセットの名前と被っています。既存のアセットの名前を変更する必要があります。それとも、すでにこのアセットをインポートしていますか？",
+        "nameOccupied": "すでに使用されている名前です",
+        "cannotImportNameOccupied": "その名前は既に使用されているため、$1 をインポートできません。",
+        "visitSource": "このアセットパックのストアページを開く",
+        "visitAuthorsItch": "作者の itch.io ページにアクセス",
+        "visitAuthorsTwitter": "作者のTwitterを開く",
+        "tipAuthor": "作者の労をねぎらう"
     },
     "colorPicker": {
         "current": "新しい",
@@ -195,11 +207,11 @@
     "extensionsEditor": {
         "noEntries": "まだエントリーがありません",
         "addRow": "行を追加",
-        "actions": "",
-        "values": "",
-        "moveDown": "",
-        "moveUp": "",
-        "deleteRow": ""
+        "actions": "アクション",
+        "values": "値",
+        "moveDown": "下",
+        "moveUp": "上",
+        "deleteRow": "行を削除"
     },
     "groupEditor": {
         "groupEditor": "グループエディタ",
@@ -210,7 +222,7 @@
         "loading": "しばらくお待ち下さい…光の速さで子猫を集めています！",
         "newProject": {
             "button": "フォルダを選択してプロジェクトを作成",
-            "input": "プロジェクト名（アルファベットと数字）",
+            "input": "プロジェクト名（英字と数字）",
             "text": "新規作成",
             "saveProjectHere": "プロジェクトの保存はこちら",
             "selectProjectFolder": "プロジェクトを保存するフォルダを選択",
@@ -240,8 +252,8 @@
         "vkontakte": "Vkontakte公開コミュニティ",
         "patreon": "ct.jsをPatreonで応援しよう!",
         "createOrBrowseJunction": "or",
-        "templates": "",
-        "templatesInfo": ""
+        "templates": "テンプレート",
+        "templatesInfo": "これらのテンプレートを使って、ゲーム開発を始めることができます。これらのテンプレートには、プレースホルダーのグラフィックのみが含まれていますが、動作する仕組みは備わっています。プロジェクトを選択すると、新規プロジェクト用のセーブディレクトリ選択画面が表示されます。"
     },
     "onboarding": {
         "hoorayHeader": "やったぁ！プロジェクトが出来上がりましたよ！",
@@ -317,10 +329,10 @@
             "confirmDeletionMessage": "このコンテンツタイプを本当に削除してよろしいですか？この操作は元に戻せません。",
             "gotoEntries": "エントリに移動",
             "entries": "エントリ",
-            "array": ""
+            "array": "配列"
         },
         "modules": {
-            "heading": "Catmods(追加機能)"
+            "heading": "Catmods"
         },
         "rendering": {
             "heading": "レンダリング設定",
@@ -564,7 +576,7 @@
             "は未解決のミステリー？",
             "は壮大!?",
             "はロボット？",
-            "は燃え盛る炎のようだ！",
+            "は燃え盛る炎のよう！",
             "は、光と希望をもたらす？",
             "は、エレガントで美しい？"
         ]
@@ -575,7 +587,7 @@
     },
     "writableFolderPrompt": {
         "headerSelectFolderForData": "ct.jsのデータを保存するフォルダを選択。",
-        "paragraphCouldNotPickDirectory": "おおっと。Ct.jsは、プロジェクト、パッケージビルド、デバッグ用のフォルダを見つけることができませんでした。通常、Ct.jsは自動的にフォルダを見つけますが、すべてのフォルダが読み取り専用になっていました。",
+        "paragraphCouldNotPickDirectory": "おっと。Ct.jsは、プロジェクト、パッケージビルド、デバッグ用のフォルダを見つけることができませんでした。通常、Ct.jsは自動的にフォルダを見つけますが、すべてのフォルダが読み取り専用になっていました。",
         "paragraphDirectoryDirections": "これは修正できます。下のボタンをクリックして、データを保存するフォルダを選択してください。よくわからない場合は、Documentsフォルダにct.jsというディレクトリを作成してください。",
         "selectFolder": "フォルダーを選択"
     },
@@ -616,9 +628,9 @@
                 "LucasDracula": "ルーカス・ドラキュラ",
                 "Horizon": "地平線",
                 "HCBlack": "高コントラストの黒",
-                "RosePine": "",
-                "RosePineMoon": "",
-                "RosePineDawn": ""
+                "RosePine": "ローズパイン",
+                "RosePineMoon": "ローズパインムーン",
+                "RosePineDawn": "ローズパインダウン"
             },
             "language": "言語",
             "translateToYourLanguage": "ct.jsを翻訳する！",
@@ -633,8 +645,8 @@
             "disableSounds": "UIサウンドを無効化",
             "changeDataFolder": "データフォルダの場所を設定",
             "forceProductionForDebug": "デバッグエクスポートのためのプロダクションタスクの強制",
-            "prideMode": "",
-            "altTemplateLayout": ""
+            "prideMode": "プライドモード",
+            "altTemplateLayout": "テンプレートエディターの代わりのレイアウト"
         },
         "project": {
             "heading": "プロジェクト",
@@ -672,35 +684,35 @@
         "fx": "FX",
         "templates": "テンプレート",
         "tour": {
-            "header": "",
-            "aboutTour": "",
-            "helpPanel": "",
-            "helpPanelTabs": "",
-            "projectResources": "",
-            "tabTextures": "",
-            "tabTexturesImport": "",
-            "tabTexturesGallery": "",
-            "tabTexturesClipboard": "",
-            "tabTexturesPlaceholders": "",
-            "tabTemplates": "",
-            "tabRooms": "",
-            "tabSounds": "",
-            "tabSoundsImport": "",
-            "tabSoundsGallery": "",
-            "tabSoundsRecord": "",
-            "tabInterlude": "",
-            "tabUI": "",
-            "tabFX": "",
-            "tabProject": "",
-            "tabProjectModules": "",
-            "tabProjectModuleDocs": "",
-            "tabMainMenu": "",
-            "tabMainMenuSettings": "",
-            "tabMainMenuMeta": "",
-            "helpPanelReminder": "",
-            "buttonStartTutorial": ""
+            "header": "Ct.js の概要",
+            "aboutTour": "ct.js へようこそ!この小さなツアーでは、このエディターの主なコントロールを紹介するので、ct.js を構成して新しいアセットを作成する方法を理解できます。",
+            "helpPanel": "まずは、このコッソリしたボタンにご注目ください。ct.jsを学ぶ上でとても大切なものです。",
+            "helpPanelTabs": "このパネルには、ct.js とそのモジュールのすべての公式ドキュメントとチュートリアルが保存され、また、記録用に 2 つのメモがあります。<p>グローバル メモはプロジェクト間で共有され、あなたのデバイスに保存されます。プロジェクトのメモは、あなたのプロジェクト内に保存されます。",
+            "projectResources": "さて、どのプロジェクトにも、いくつかのタイプのアセットがあります。それぞれのアセットタイプは、それぞれのタブに属します。最も重要なタブをチェックしてみましょう。",
+            "tabTextures": "テクスチャは、インタラクティブオブジェクト（コピーと呼ばれます）、背景、特殊効果に使用できる画像です。テクスチャは、それ自体では何もできませんが、必ず必要とされるアセットタイプです。",
+            "tabTexturesImport": "ファイル システムからテクスチャをインポートするか…",
+            "tabTexturesGallery": "…またはビルトインライブラリから既製のテクスチャをインポートします。",
+            "tabTexturesClipboard": "クリップボードからコピーした画像を貼り付けるボタンです。画像編集ソフトで作業しているときに、かなり便利です！",
+            "tabTexturesPlaceholders": "このツールを使用して、簡単なプレースホルダー グラフィックを生成することもできます。",
+            "tabTemplates": "テンプレートは、レベル内に配置するインタラクティブ・オブジェクトのコピーを作成するために使用されます。ct.jsのインタラクティブ・オブジェクトは、テンプレートの1つから作成されます。テンプレートは、テクスチャを使用し、イベントを作成することでゲームプレイのロジックを定義します。テンプレートを作成したら、テンプレート・エディターでin-deepツアーを実行することができます。",
+            "tabRooms": "もう 1 つの最も重要なタブはルームです。ルームは、コピーを配置するレベルまたはシーンとして呼び出すこともできます。ルームには、独自のイベントや背景を設定することもできます。",
+            "tabSounds": "サウンドは、おそらく一番わかりやすいタブです。",
+            "tabSoundsImport": "このボタンで新しいサウンドを作成したり…",
+            "tabSoundsGallery": "…ビルトイン サウンド ライブラリからインポートしたり…",
+            "tabSoundsRecord": "…マイクで録音することもできます！",
+            "tabInterlude": "より高度なアセット用の 2 つのタブもあります。",
+            "tabUI": "UIタブは、フォントとテキストスタイルを管理します。ゲームにフォントを同梱することは、どんなデバイスでも同じように表示させるために重要です。テキストスタイルには、スタイルプリセットを作成するためのビジュアルエディタがあります。また、ゲーム内でこのようなラベルを作成するためのコードも生成されます。",
+            "tabFX": "FXタブには、爆発、魔法、煙、雨など、あらゆる種類のものに対する特殊なグラフィック効果など、パーティクル システム用のエディターがあります。",
+            "tabProject": "アセットについては以上です。しかし、これら以外にも、プロジェクトにはレンダリング、ブランディング、パッケージングなど、さまざまな設定があります。",
+            "tabProjectModules": "Ct.js はモジュール式であり、プロジェクトには追加のモジュールを追加することもできます。",
+            "tabProjectModuleDocs": "有効なモジュールのすべてのドキュメントは、ここにあります。",
+            "tabMainMenu": "Ct.js 自体にも多くのオプションがあり、メイン メニューに格納されています。",
+            "tabMainMenuSettings": "[設定]セクションで言語と ct.js の外観を変更できます。",
+            "tabMainMenuMeta": "後で助けが必要な場合は、メタパネルで公式ハブ情報を見つけることができます。",
+            "helpPanelReminder": "また、ビルトイン ドキュメントも忘れないでください。独自のプロジェクトを開始する前に、公式のチュートリアルを完了することをお勧めします。",
+            "buttonStartTutorial": "チュートリアルを開く"
         }
-    },
+        },
     "roomBackgrounds": {
         "add": "背景を追加",
         "depth": "階層:",
@@ -724,7 +736,14 @@
         "width": "幅を表示:",
         "height": "高さを表示:",
         "isUi": "UIレイヤーですか？",
-        "events": "ルームイベント",
+        "simulate": "シミュレート",
+        "grid": "グリッド",
+        "toggleDiagonalGrid": "斜めグリッド",
+        "changeGridSize": "セルサイズを変更",
+        "events": "イベント",
+        "gridOff": "グリッドを無効にする",
+        "xrayMode": "X-ray モード",
+        "colorizeTileLayers": "タイル レイヤーの色付け",
         "copies": "コピー",
         "backgrounds": "背景",
         "backgroundColor": "背景色:",
@@ -733,10 +752,9 @@
         "add": "追加",
         "none": "何もなし",
         "done": "完了",
-        "grid": "グリッドを設定",
         "hotkeysNotice": "Ctrl = 削除、Alt = グリッドなし、Shift = 複数選択",
         "hotkeysNoticeMovement": "Ctrl＝削除、Shift＝選択",
-        "shift": "ビューを移動する",
+        "shift": "全てをシフト",
         "step": "ステップ",
         "create": "作成",
         "leave": "やめる",
@@ -748,23 +766,26 @@
         "selectAndMove": "選択して移動",
         "customProperties": "カスタムプロパティ",
         "findTileset": "タイルセットの検索",
+        "resetView": "ビューをリセット",
         "copyProperties": {
             "position": "位置",
             "rotation": "回転",
             "scale": "大きさ",
-            "multipleValues": ""
+            "opacity": "不透明度",
+            "tint": "色合い",
+            "multipleValues": "（多数）"
         },
         "copyCustomProperties": {
             "addProperty": "プロパティを追加",
             "property": "プロパティ",
-            "value": "数字"
+            "value": "数字",
+            "nameOccupied": "このプロパティは ct.js で使用されます！別の名前にしてください。"
         },
         "restrictCamera": "カメラを四角に収める",
         "minimumX": "最小 X",
         "minimumY": "最小 Y",
         "maximumX": "最大 X",
         "maximumY": "最大 Y",
-        "gridOff": "グリッドを無効化",
         "gridSize": "グリッドのサイズ:",
         "toCenter": "中央へ",
         "shiftLabel": "移動:",
@@ -777,17 +798,12 @@
         "moveTilesToLayer": "レイヤーに移動",
         "shiftTiles": "タイルに移動",
         "changeCopyRotation": "回転",
-        "simulate": "",
-        "toggleDiagonalGrid": "",
-        "changeGridSize": "",
-        "xrayMode": "",
-        "colorizeTileLayers": "",
         "tools": {
-            "select": "",
-            "addCopies": "",
-            "addTiles": "",
-            "manageBackgrounds": "",
-            "roomProperties": ""
+            "select": "選択ツール",
+            "addCopies": "コピーを追加",
+            "addTiles": "タイルを追加",
+            "manageBackgrounds": "背景を管理する",
+            "roomProperties": "ルームのプロパティ"
         }
     },
     "styleView": {
@@ -841,9 +857,10 @@
         "speed": "フレームレート:",
         "tiled": "背景として使用しますか？",
         "updateFromClipboard": "クリップボードからの更新",
-        "corrupted": "ファイルが壊れているか、見つかりません。今すぐ閉じる。",
+        "corrupted": "ファイルが壊れているか、見つかりません。今すぐ閉じます。",
         "showFrameIndices": "フレームインデックスを表示",
-        "blankTexture": "",
+        "blankTexture": "空白のテクスチャとしてエクスポート",
+        "blankTextureNotice": "画像を透明な長方形としてエクスポートするため、ゲーム内では見えません。バンドル サイズをスリムに保ちながら、ct.js エディターのプレースホルダーを作成するのに役立ちます。",
         "width": "横幅:",
         "height": "高さ:",
         "strip": "ラインストリップ/ポリゴン",
@@ -897,113 +914,120 @@
         "typefaceName": "書体名:"
     },
     "licensePanel": {
-        "ctjsLicense": "Ct.js ライセンス (MIT)"
-    },
-    "templates": {
-        "create": "作成"
-    },
-    "templateView": {
-        "change": "スプライトを変更",
-        "create": "作成",
-        "depth": "階層:",
-        "destroy": "削除",
-        "done": "完了",
-        "draw": "描く",
-        "learnAboutTypes": "コーディングテンプレートについて",
-        "name": "名前:",
-        "step": "ステップ",
-        "visible": "可視",
-        "appearance": "",
-        "opacity": "",
-        "blendMode": "",
-        "playAnimationOnStart": "",
-        "blendModes": {
-            "normal": "",
-            "add": "",
-            "multiply": "",
-            "screen": ""
-        },
-        "animationFPS": "",
-        "loopAnimation": ""
-    },
-    "builtinAssetGallery": {
-        "galleryTip": "",
-        "assetGalleryHeader": "",
-        "importIntoProject": "",
-        "importAll": "",
-        "byAuthorPrefix": "",
-        "cannotImportExplanation": "",
-        "nameOccupied": "",
-        "cannotImportNameOccupied": "",
-        "visitSource": "",
-        "visitAuthorsItch": "",
-        "visitAuthorsTwitter": "",
-        "tipAuthor": ""
+        "ctjsLicense": "Ct.js ライセンス (MIT)",
+        "faq": "よくある質問 (非規範的なセクション)",
+        "whoOwnsGamesQ": "ct.js で作成されたゲームは誰のものになりますか？",
+        "whoOwnsGamesA": "あなたです。 Ct.js は、あなたが作成したものをいかなる方法でも所有しません。",
+        "sellingGamesQ": "ct.js で作成したゲームを販売できますか？",
+        "sellingGamesA": "はい、ゲームやその他のプロジェクトを販売したり、寄付を集めたり、他の商用アプリケーションでゲームを使用したりできます。",
+        "possibleFeesQ": "ct.js に料金を支払う必要がありますか? ct.js はいつか有料になるのでしょうか?",
+        "possibleFeesA": "いいえ、ct.js は無料であり、今後も無料です。 Unity や Unreal Engine のように、特定の金額を稼いだ後に支払う必要のある隠れた料金はありません。 Ct.jsはオープンソースであり、有償版が出たとしても、今お持ちの製品はいつでも無料でご利用いただけます。ただし、寄付を送ったり、パトロンになることはできます。請求書の支払いと ct.js の改善に役立ちます。",
+        "useInStudioQ": "スタジオや学校で ct.js を使用できますか？",
+        "useInStudioA": "もちろん！ Ct.js は、個人的、商業的、教育的使用などに使用できます。法律を破らないでくださいね。",
+        "attributionQ": "ct.js またはその開発者に帰属する必要がありますか？ロード画面でロゴを無効にすることはできますか？",
+        "attributionA": "ゲームのコードにはすでに必要な属性が含まれているため、ct.js ロゴを無効にすることができます。",
+        "attributionAAssets": "一部の例とデモには、帰属が必要な資料が含まれている場合がありますが、それらは既に含まれています。",
+        "theLicense": "ライセンス（法的文書）"
     },
     "scriptables": {
-        "addEvent": "",
-        "removeEvent": "",
-        "removeEventConfirm": "",
-        "changeArguments": "",
-        "eventAlreadyExists": "",
-        "localEventVars": "",
-        "createEventHint": "",
+        "addEvent": "イベントを追加",
+        "removeEvent": "イベントを削除",
+        "removeEventConfirm": "このイベントを削除してもよろしいですか?この操作は元に戻せません！",
+        "changeArguments": "引数の変更",
+        "eventAlreadyExists": "同じイベントが既に存在します！",
+        "localEventVars": "ローカル変数",
+        "createEventHint": "左の列で最初のイベントを作成し、ここでロジックを定義します",
         "coreEventsCategories": {
-            "lifecycle": "",
-            "actions": "",
-            "pointer": "",
-            "misc": "",
-            "animation": "",
-            "timers": ""
+            "lifecycle": "ライフサイクル",
+            "actions": "アクション",
+            "pointer": "ポインタのイベント",
+            "misc": "その他",
+            "animation": "アニメーション",
+            "timers": "タイマー"
         },
         "coreEvents": {
-            "OnCreate": "",
-            "OnRoomStart": "",
-            "OnStep": "",
-            "OnDraw": "",
-            "OnDestroy": "",
-            "OnRoomEnd": "",
-            "OnPointerClick": "",
-            "OnPointerSecondaryClick": "",
-            "OnPointerEnter": "",
-            "OnPointerLeave": "",
-            "OnPointerDown": "",
-            "OnPointerUp": "",
-            "OnPointerUpOutside": "",
-            "OnPointerWheel": "",
-            "OnActionPress": "",
-            "OnActionRelease": "",
-            "OnActionDown": "",
-            "OnFrameChange": "",
-            "OnAnimationLoop": "",
-            "OnAnimationComplete": "",
-            "Timer": ""
+            "OnCreate": "Creation",
+            "OnRoomStart": "ルーム開始",
+            "OnStep": "フレーム開始",
+            "OnDraw": "フレーム終了",
+            "OnDestroy": "破壊",
+            "OnRoomEnd": "ルーム終了",
+            "OnPointerClick": "クリック",
+            "OnPointerSecondaryClick": "ダブルクリック",
+            "OnPointerEnter": "ポインタ入力",
+            "OnPointerLeave": "ポインタ離脱",
+            "OnPointerDown": "ポインターが下がる",
+            "OnPointerUp": "ポインターが上がる",
+            "OnPointerUpOutside": "ポインターが上がる(外側)",
+            "OnPointerWheel": "ホイールスクロール",
+            "OnActionPress": "アクションが押される",
+            "OnActionRelease": "アクションが押されなくなる",
+            "OnActionDown": "アクションがダウンする",
+            "OnFrameChange": "フレームチェンジ",
+            "OnAnimationLoop": "アニメーションループ",
+            "OnAnimationComplete": "アニメーション完了",
+            "Timer": "Timer $1"
         },
         "coreParameterizedNames": {
-            "OnActionPress": "",
-            "OnActionRelease": "",
-            "OnActionDown": ""
+            "OnActionPress": " %%アクション%% が押される",
+            "OnActionRelease": " %%アクション%% が押されなくなる",
+            "OnActionDown": " %%アクション%% がダウンする",
+            "Timer1": "1 • %%name%% (Timer)",
+            "Timer2": "2 • %%name%% (Timer)",
+            "Timer3": "3 • %%name%% (Timer)",
+            "Timer4": "4 • %%name%% (Timer)",
+            "Timer5": "5 • %%name%% (Timer)",
+            "Timer6": "6 • %%name%% (Timer)"
         },
         "coreEventsArguments": {
-            "action": ""
+            "action": "アクション",
+            "name": "名前",
+            "isUi": "UI イベント"
         },
         "coreEventsLocals": {
-            "OnActionDown_value": "",
-            "OnActionPress_value": ""
+            "OnActionDown_value": "現在のアクションの値",
+            "OnActionPress_value": "現在のアクションの値"
         },
         "coreEventsDescriptions": {
-            "OnCreate": "",
-            "OnRoomStart": "",
-            "OnStep": "",
-            "OnDraw": "",
-            "OnDestroy": "",
-            "OnRoomEnd": "",
-            "OnActionPress": "",
-            "OnActionRelease": "",
-            "OnActionDown": "",
-            "OnAnimationLoop": "",
-            "OnAnimationComplete": "",
-            "Timer": ""
+            "OnCreate": "コピーが作成されたときにトリガーされます。",
+            "OnRoomStart": "このルームに切り替えるか、レイヤーとして追加することによって、このルームが作成されたときにトリガーされます。",
+            "OnStep": "すべてのフレームの開始時に発生します。",
+            "OnDraw": "各フレームの最後に発生します。 アニメーションの更新に適しています。",
+            "OnDestroy": "このコピーが破棄されると、\"frame start\" と \"frame end\" の間で発生します。",
+            "OnRoomEnd": "別のルームに切り替えたとき、またはレイヤーとして追加された後にこのルームが削除されたときにトリガーされます。",
+            "OnActionPress": "ジョイスティックを押す、クリックする、フリックするなどして、アクションの入力がアクティブになったときに発生します。",
+            "OnActionRelease": "ボタンを離したり、ジョイスティックを倒さないなどして、アクションの入力が非アクティブになったときに発生します。",
+            "OnActionDown": "アクションの入力がアクティブな場合、すべてのフレームで実行されます。",
+            "OnAnimationLoop": "アニメーションが再開するたびに発生します。",
+            "OnAnimationComplete": "ループしないアニメーションが終了すると発生します。",
+            "Timer": "this.timer$1 = 3; を使用して、このタイマーの期間を秒単位で設定します。"
+        }
+},
+        "templates": {
+            "create": "作成"
+        },
+        "templateView": {
+            "change": "スプライトを変更",
+            "create": "作成",
+            "depth": "階層:",
+            "destroy": "削除",
+            "done": "完了",
+            "draw": "描く",
+            "learnAboutTypes": "コーディングテンプレートについて",
+            "name": "名前:",
+            "step": "ステップ",
+            "visible": "可視",
+            "appearance": "外観",
+            "opacity": "不透明度",
+            "blendMode": "ブレンド モード:",
+            "animationFPS": "アニメーション FPS:",
+            "playAnimationOnStart": "開始時にアニメーションを再生します",
+            "loopAnimation": "ループアニメーション",
+            "blendModes": {
+                "normal": "標準",
+                "add": "追加 (burn)",
+                "multiply": "Multiply (darken)",
+                "screen": "画面 (lighten)"
+            }
         }
     }
-}

@@ -39,6 +39,8 @@ export const rotateSelection: IRoomEditorInteraction<void> = {
             this.riotEditor.refs.propertiesPanel.updatePropList();
         },
         pointerup(e, roomTag, affixedData, callback) {
+            this.dropPrecision();
+            this.riotEditor.refs.propertiesPanel.updatePropList();
             this.history.snapshotTransforms();
             callback();
         }

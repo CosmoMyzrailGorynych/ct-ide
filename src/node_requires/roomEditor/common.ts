@@ -114,3 +114,8 @@ recolorFilters[5]._loadMatrix([
 ], false);
 /* eslint-enable array-element-newline, no-underscore-dangle, no-multi-spaces*/
 
+export const toPrecision = (input: number, precision: number): number => {
+    const mantissa = input % 1;
+    const whole = input > 0 ? Math.floor(input) : Math.ceil(input);
+    return whole + Math.round(mantissa * (10 ** precision)) / (10 ** precision);
+};
