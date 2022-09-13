@@ -126,19 +126,21 @@
         "nothingToShowFiller": "Burada gösterilecek hiçbir şey yok!",
         "required": "Gerekli",
         "settings": "Ayarlar",
-        "next": "",
-        "previous": ""
+        "next": "Sonraki",
+        "previous": "Önceki",
+        "undo": "Geri Al",
+        "redo": "İleri Al"
     },
     "assetInput": {
-        "changeAsset": "Görseli değiştirmek için tıkla",
-        "jumpToAsset": "Görsele git",
-        "selectAssetHeader": "Bir görsel seç"
+        "changeAsset": "Varlığı değiştirmek için tıkla",
+        "jumpToAsset": "Varlığa git",
+        "selectAssetHeader": "Bir varlık seç"
     },
     "assetViewer": {
         "addNewGroup": "Yeni grup",
         "ungrouped": "Grupta olmayanları göster",
         "newGroupName": "Yeni grup",
-        "groupDeletionConfirmation": "Bu grubu silmek istediğine emin misin? Tüm görseller gruptan çıkarılacak."
+        "groupDeletionConfirmation": "Bu grubu silmek istediğine emin misin? Tüm varlıklar gruptan çıkarılacak."
     },
     "builtinAssetGallery": {
         "galleryTip": "Bu, bedava birsürü doku ve sesin galerisi. Tüm görseller CC0 veya WTFPL, veya ct.js'in özel şartları içinde yayınlanmıştır. Ama bunları diğer projelerinizde istediğiniz gibi kullanabilirsiniz.",
@@ -255,7 +257,8 @@
         "itch": "itch.io ct.js market sayfası",
         "vkontakte": "Vkontakte topluluğu",
         "patreon": "ct.js'i Patreon'da destekle!",
-        "createOrBrowseJunction": "veya"
+        "createOrBrowseJunction": "veya",
+        "boosty": "Boosty'de ct.js'i destekle!"
     },
     "onboarding": {
         "hoorayHeader": "Vay canına! Bir proje oluşturdun!",
@@ -617,9 +620,9 @@
                 "LucasDracula": "Lucas Drakula",
                 "Horizon": "Ufuk",
                 "HCBlack": "Yüksek-kontrast siyah",
-                "RosePine": "",
-                "RosePineMoon": "",
-                "RosePineDawn": ""
+                "RosePine": "Gül Çamı",
+                "RosePineMoon": "Gül Çamı Ayı(?)",
+                "RosePineDawn": "Gül Çamı Şafağı"
             },
             "language": "Dil",
             "translateToYourLanguage": "ct.js'i çevir!",
@@ -634,8 +637,8 @@
             "disableSounds": "Arayüz seslerini kapat",
             "changeDataFolder": "Veri klasörü yolunu ayarla",
             "forceProductionForDebug": "Hata ayıklamaları dışarı aktarmak için üretim işlemlerini zorla",
-            "prideMode": "",
-            "altTemplateLayout": ""
+            "prideMode": "Pride modu",
+            "altTemplateLayout": "Şablon düzenleyicisi için alternatif düzen"
         },
         "project": {
             "heading": "Proje",
@@ -673,33 +676,33 @@
         "fx": "Efektler",
         "templates": "Şablonlar",
         "tour": {
-            "header": "",
-            "aboutTour": "",
-            "helpPanel": "",
-            "helpPanelTabs": "",
-            "projectResources": "",
-            "tabTextures": "",
-            "tabTexturesImport": "",
-            "tabTexturesGallery": "",
-            "tabTexturesClipboard": "",
-            "tabTexturesPlaceholders": "",
-            "tabTemplates": "",
-            "tabRooms": "",
-            "tabSounds": "",
-            "tabSoundsImport": "",
-            "tabSoundsGallery": "",
-            "tabSoundsRecord": "",
-            "tabInterlude": "",
-            "tabUI": "",
-            "tabFX": "",
-            "tabProject": "",
-            "tabProjectModules": "",
-            "tabProjectModuleDocs": "",
-            "tabMainMenu": "",
-            "tabMainMenuSettings": "",
-            "tabMainMenuMeta": "",
-            "helpPanelReminder": "",
-            "buttonStartTutorial": ""
+            "header": "Ct.js genel bakış",
+            "aboutTour": "Ct.js'e hoş geldin! Bu küçük tur sana bu düzenleyicinin ana kontrollerini gösterecek, böylece ct.js'i nasıl yapılandıracağını ve yeni varlıklar oluşturacağını öğrenmiş olacaksın.",
+            "helpPanel": "Öncelikle, bu sinsi tuşu not al. O ct.js'i öğrenmek için çok önemli!",
+            "helpPanelTabs": "Bu panel tüm resmi dökümantasyonları, öğreticileri ve modüllerini barındırır. Ayrıca notların için 2 tane not defterine de sahip.<p>Evrensel not defteri her projeyle paylaşılır ve cihazına kaydedilir. Proje'nin not defteri ise projenin içinde kaydedilir.",
+            "projectResources": "Şimdi, her projenin çeşitli tiplerin varlıkları vardır. Her varlık tipi kendi sekmesine aittir. Hadi en önemli sekmelere bakalım.",
+            "tabTextures": "Dokular interaktif objelerin(kopya olarak anılırlar), arkaplanların ve özel efektlerin için kullanılabilecek görsellerdir. Dokular kendi başlarına birşey yapmazlar ama kesinlikle bir varlık türüne ihtiyaç duyarlar.",
+            "tabTexturesImport": "Kendi dosya sisteminden dokuları içeri aktarabilirsin...",
+            "tabTexturesGallery": "...veya ct.js'in içindeki kütüphaneden hazır dokuları.",
+            "tabTexturesClipboard": "Bu tuş panondaki kopyalanmış görselleri yapıştırır. Özellikle resim düzenleyicilerle çalışırken gayet kullanışlıdır!",
+            "tabTexturesPlaceholders": "Ayrıca bu araç ile basit vekil grafikler de oluşturabilirsin.",
+            "tabTemplates": "Şablonlar kopyalar oluşturmak için kullanılır — kendileri seviyene koyduğun interaktif objelerdir. Ct.js'in içindeki herhangi bir interaktif obje şablonlarının birinden oluşturulur. Onlar dokularını kullanırlar ve oynanış mantığını onlarda olay ekleyerek belirlersin. Bir şablon oluşturduğun zaman, şablon düzenleyicisinde derinlemesine turunu çalıştırabilirsin.",
+            "tabRooms": "Başka bir önemli sekme ise odalar içindir. Odalara, kopyalarınızı yerleştirdiğiniz seviyeler veya sahneler de denir. Odalar ayrıca kendi olaylarına ve arka planlarına sahiptir.",
+            "tabSounds": "Sesler, sanırım ne yaptığı en açık olan sekme.",
+            "tabSoundsImport": "Bu tuşla yeni sesler oluşturabilirsin...",
+            "tabSoundsGallery": "...ct.js'in içindeki ses kütüphanesinden ses de aktarabilirsin...",
+            "tabSoundsRecord": "...veya onları kendi mikrofonunla bile kaydedebilirsin!",
+            "tabInterlude": "Ayrıca daha gelişmiş varlıklar için iki sekme daha var.",
+            "tabUI": "UI (arayüz) sekmesi fontları ve yazı stillerini de yönetir. Yazı tiplerinizi oyunla birleştirmek, oyunun cihazlar arasında düzgün bir şekilde görünmesi için önemlidir.\n\n Yazı stillerinin stil önayarı yapmak için görsel bir düzenleyicisi vardır. Ayrıca bu tür etiketlerin oluşturulması için kod da üretirler.",
+            "tabFX": "FX sekmesi partikül sistemleri için görsel bir düzenleyiciye sahiptir. — patlamalar, sihir, duman, yağmur ve gibi gibi şeyler için grafiksel efektler.",
+            "tabProject": "Varlıklar için bu kadar! Ama bunların yanında projen renderlama, markalama, paketleme ve diğer ıvır zıvırlar için bir sürü ayara da sahip.",
+            "tabProjectModules": "Ct.js modülerdir ve projelerin buraya kurulabilen ek modüllere de ihtiyaç duyabilir.",
+            "tabProjectModuleDocs": "Etkin modüller için tüm dökümantasyonlar burada bulunabilir.",
+            "tabMainMenu": "Ct.js'in kendisi ana menüsünde tutulan bol bol ayara sahip.",
+            "tabMainMenuSettings": "Ayarlar bölümünde dili ve ct.js'in nasıl durduğunu değiştirebilirsin.",
+            "tabMainMenuMeta": "Eğer daha sonra yardıma ihtiyacın olursa, Meta panelinde tüm resmi merkezleri bulabileceksin.",
+            "helpPanelReminder": "Ayrıca ct.js ile birlikte gelen dökümantasyonları da unutma! Kendi projene başlamadan önce resmi öğreticileri tamamlamanı tavsiye ederiz.",
+            "buttonStartTutorial": "Öğreticileri aç"
         }
     },
     "roomBackgrounds": {
@@ -718,7 +721,8 @@
         "moveTileLayer": "Yeni bir derinliğe taşı",
         "show": "Katmanı göster",
         "hide": "Katmanı gizle",
-        "findTileset": "Bir Döşeme Bul"
+        "findTileset": "Bir Döşeme Bul",
+        "addTileLayer": "Bir döşeme katmanı ekle"
     },
     "roomView": {
         "name": "İsim:",
@@ -766,30 +770,34 @@
             "position": "Pozisyon",
             "rotation": "Rotasyon",
             "scale": "Boyut",
-            "multipleValues": ""
+            "multipleValues": "(Çoklu)",
+            "opacity": "Saydamlık",
+            "tint": "Renk"
         },
         "copyCustomProperties": {
             "addProperty": "Özellik Ekle",
             "property": "Özellik",
-            "value": "Değer"
+            "value": "Değer",
+            "nameOccupied": "Bu özellik ct.js tarafından kullanılıyor! Farklı bir isim bulmalısın."
         },
         "restrictCamera": "Kamerayı dörtgende tut",
         "minimumX": "Minimum X",
         "minimumY": "Minimum Y",
         "maximumX": "Maksimum X",
         "maximumY": "Maksimum Y",
-        "simulate": "",
-        "toggleDiagonalGrid": "",
-        "changeGridSize": "",
-        "xrayMode": "",
-        "colorizeTileLayers": "",
+        "simulate": "Simüle et",
+        "toggleDiagonalGrid": "Çapraz ızgara",
+        "changeGridSize": "Hücre boyutunu değiştir",
+        "xrayMode": "X-ışını modu",
+        "colorizeTileLayers": "Döşeme katmanlarını renklendir",
         "tools": {
-            "select": "",
-            "addCopies": "",
-            "addTiles": "",
-            "manageBackgrounds": "",
-            "roomProperties": ""
-        }
+            "select": "Eşya seç",
+            "addCopies": "Kopyalar ekle",
+            "addTiles": "Döşemeler ekle",
+            "manageBackgrounds": "Arkaplanları yönet",
+            "roomProperties": "Oda özellikleri"
+        },
+        "resetView": "Görüşü sıfırla"
     },
     "styleView": {
         "active": "Aktif",
@@ -844,7 +852,7 @@
         "updateFromClipboard": "Panodan güncelle",
         "corrupted": "Dosya bozulmuş veya yok! Şimdi kapatılıyor.",
         "showFrameIndices": "Kare indekslerini göster",
-        "blankTexture": "",
+        "blankTexture": "Boş bir kaplama olarak aktar",
         "width": "Genişlik:",
         "height": "Yükseklik:",
         "strip": "Çizgi şeridi / Poligon",
@@ -860,13 +868,14 @@
         "pasteCollisionMask": "Bir çarpışma maskesini yapıştır",
         "copyCollisionMask": "Çarpışma maskesini kopyala",
         "bgColor": "Ap rengini değiştir",
-        "setCenter": "Görselin merkezi",
+        "setCenter": "Varlığın merkezi",
         "replaceTexture": "Değiştir…",
         "showMask": "Maskeyi göster",
         "marginX": "Kenar X:",
         "marginY": "Kenar Y:",
         "offX": "Öteleme X:",
-        "offY": "Öteleme Y:"
+        "offY": "Öteleme Y:",
+        "blankTextureNotice": "Görseli transparan dikdörtgen olarak dışa aktarır, böylece oyunun içinde görünmez olur. Paket boyutunu küçük tutarken ct.js düzenleyicisi için vekil oluşturmak için kullanışlıdır."
     },
     "sounds": {
         "create": "Oluştur",
@@ -911,7 +920,20 @@
         "typefaceName": "Yazı biçimi ismi:"
     },
     "licensePanel": {
-        "ctjsLicense": "Ct.js Lisansı (MIT)"
+        "ctjsLicense": "Ct.js Lisansı (MIT)",
+        "faq": "Sıklıkla sorulan sorular (objektif bölüm)",
+        "whoOwnsGamesQ": "Ct.js'de oluşturulan oyunların kime aittir?",
+        "whoOwnsGamesA": "Sen ve sadece sen. Herhangi bir şekilde oluşturduğun hiçbir şey ct.js'e ait değil.",
+        "sellingGamesQ": "Ct.js'de yapılan oyunları satabiliyor muyum?",
+        "sellingGamesA": "Evet, oyunlarını ve projelerini satabilir, bağış toplayabilir ve oyunlarını herhangi ticari bir şeyde kullanabilirsin.",
+        "possibleFeesQ": "Ct.js için para ödemem mi lazım? Ct.js gelecek bir günde paralı olacak mı?",
+        "possibleFeesA": "Hayır, ct.js bedava ve her zaman öyle kalacak. Unity veya Unreal Engine gibi belirli bir miktar kazandıktan sonra para ödemeni isteyen herhangi gizli bir gizli ücrete de sahip değil. Ct.js açık kaynaktır, ve ücretli sürümleri olsa bile, şu anda sahip olduğun ürün her zaman ücretsiz olarak erişilebilir olacaktır.\n\n",
+        "useInStudioQ": "Ct.js'i okulda veya bir stüdyoda kullanabilir miyim?",
+        "useInStudioA": "Tabi, neden olmasın ki? Ct.js kişisel, ticari, eğitici ve diğer ıvır zıvırlara açıktır. Sadece, yasalara aykırı birşey yapma, tamam mı?",
+        "attributionQ": "Ct.js'i veya geliştiricilerini atıfta bulunmam gerekli mi? Yüklenitoe ekranındaki logosunu kaldırabilir miyim?",
+        "attributionA": "Oyunun zaten gerekli atıflara sahip olduğu için ct.js logosunu kapatabilirsin.",
+        "attributionAAssets": "Örneklerden ve demolardan bazıları, atıfta bulunulması gereken materyaller içerebilir, ama zaten atıfı içerirler.",
+        "theLicense": "Lisans (yasal belge)"
     },
     "templates": {
         "create": "Oluştur"
@@ -937,73 +959,81 @@
             "multiply": "Çoğalt (karanlık)",
             "screen": "Ekran (aydınlık)"
         },
-        "animationFPS": "",
-        "loopAnimation": ""
+        "animationFPS": "Animasyon FPS'i:",
+        "loopAnimation": "Animasyonu döngüye al"
     },
     "scriptables": {
-        "addEvent": "",
-        "removeEvent": "",
-        "removeEventConfirm": "",
-        "changeArguments": "",
-        "eventAlreadyExists": "",
-        "localEventVars": "",
-        "createEventHint": "",
+        "addEvent": "Bir olay ekle",
+        "removeEvent": "Olayı sil",
+        "removeEventConfirm": "Bu olayı silmek istediğinden emin misin? Bunu yaptıktan sonra geri alamazsın!",
+        "changeArguments": "Argümanları değiştir",
+        "eventAlreadyExists": "Bu olay zaten var!",
+        "localEventVars": "Yerel değişkenler",
+        "createEventHint": "Sol sütunda ilk olayını oluştur ve mantığını oarada belirle",
         "coreEventsCategories": {
-            "lifecycle": "",
-            "actions": "",
-            "pointer": "",
-            "misc": "",
-            "animation": "",
-            "timers": ""
+            "lifecycle": "Yaşam döngüsü",
+            "actions": "Eylemler",
+            "pointer": "İmleç olayları",
+            "misc": "Diğer",
+            "animation": "Animasyon",
+            "timers": "Zamanlayıcılar"
         },
         "coreEvents": {
-            "OnCreate": "",
-            "OnRoomStart": "",
-            "OnStep": "",
-            "OnDraw": "",
-            "OnDestroy": "",
-            "OnRoomEnd": "",
-            "OnPointerClick": "",
-            "OnPointerSecondaryClick": "",
-            "OnPointerEnter": "",
-            "OnPointerLeave": "",
-            "OnPointerDown": "",
-            "OnPointerUp": "",
-            "OnPointerUpOutside": "",
-            "OnPointerWheel": "",
-            "OnActionPress": "",
-            "OnActionRelease": "",
-            "OnActionDown": "",
-            "OnFrameChange": "",
-            "OnAnimationLoop": "",
-            "OnAnimationComplete": "",
-            "Timer": ""
+            "OnCreate": "Oluşturulduğuna",
+            "OnRoomStart": "Oda başlangıcında",
+            "OnStep": "Kare başlangıcında",
+            "OnDraw": "Kare sonunda",
+            "OnDestroy": "Yok edilince",
+            "OnRoomEnd": "Oda sonunda",
+            "OnPointerClick": "Tıklandığında",
+            "OnPointerSecondaryClick": "İkincil tıklanışta",
+            "OnPointerEnter": "İmleç üstüne geldiğinde",
+            "OnPointerLeave": "İmleç üstünden ayrıldığında",
+            "OnPointerDown": "Fare tuşuna basılıyken",
+            "OnPointerUp": "Fare tuşuna basılı değilken",
+            "OnPointerUpOutside": "Fare tuşuna basılı değilken (dışarıda)",
+            "OnPointerWheel": "Tekerlek kaydırıldığında",
+            "OnActionPress": "Eylem tıklanışında(?)",
+            "OnActionRelease": "Eylem serbest bırakılışında(?)",
+            "OnActionDown": "Eylem basılışında(?)",
+            "OnFrameChange": "Kare değişikliğinde",
+            "OnAnimationLoop": "Animasyon döngüsünde",
+            "OnAnimationComplete": "Animasyon tamamlandığında",
+            "Timer": "Zamanlayıcı $1"
         },
         "coreParameterizedNames": {
-            "OnActionPress": "",
-            "OnActionRelease": "",
-            "OnActionDown": ""
+            "OnActionPress": "%%action%%a tıklandığında",
+            "OnActionRelease": "%%action%%a serbest bırakıldığında",
+            "OnActionDown": "%%action%%a basıldığında",
+            "Timer1": "1 • %%name%% (Zamanlayıcı)",
+            "Timer2": "2 • %%name%% (Zamanlayıcı)",
+            "Timer3": "3 • %%name%% (Zamanlayıcı)",
+            "Timer4": "4 • %%name%% (Zamanlayıcı)",
+            "Timer5": "5 • %%name%% (Zamanlayıcı)",
+            "Timer6": "6 • %%name%% (Zamanlayıcı)"
         },
         "coreEventsArguments": {
-            "action": ""
+            "action": "Eylem",
+            "name": "İsim",
+            "isUi": "UI (arayüz) olayı"
         },
         "coreEventsLocals": {
-            "OnActionDown_value": "",
-            "OnActionPress_value": ""
+            "OnActionDown_value": "Şu anki eylem'in değeri",
+            "OnActionPress_value": "Şu anki eylem'in değeri"
         },
         "coreEventsDescriptions": {
-            "OnCreate": "",
-            "OnRoomStart": "",
-            "OnStep": "",
-            "OnDraw": "",
-            "OnDestroy": "",
-            "OnRoomEnd": "",
-            "OnActionPress": "",
-            "OnActionRelease": "",
-            "OnActionDown": "",
-            "OnAnimationLoop": "",
-            "OnAnimationComplete": "",
-            "Timer": ""
+            "OnCreate": "Kopyan oluşturulduğu zaman tetiklenir.",
+            "OnRoomStart": "Bu oda oluşturulduğu zaman ya da onu bir katman olarak ekleyerek ona geçince tetiklenir.",
+            "OnStep": "Her karenin başlangıcında meydana gelir.",
+            "OnDraw": "Her karenin sonunda meydana gelir. Animasyon güncellemeleri için gayet iyi.",
+            "OnDestroy": "Bu kopya yok edildiğinde kare başlangıcı ve sonunda meydana gelir.",
+            "OnRoomEnd": "Başka bir odaya geçtiğinde veya bu kopya bir katman olarak eklenip silindikten sonra tetiklenir.",
+            "OnActionPress": "Bir eylemin girişi aktif olduğunda meydana gelir — basmak, tıklamak, bir joystick'e basmak, vb.",
+            "OnActionRelease": "Bir eylemin girişi inaktif olduğunda meydana gelir — basmayı kesmek, tıklamayı bırakmak, bir joystick'e basmayı bırakmak, vb.",
+            "OnActionDown": "Eğer bir eylemin girişi aktifse her karede çalışır.",
+            "OnAnimationLoop": "Bir animasyon yeniden başladığı anda ateşlenir.",
+            "OnAnimationComplete": "Döngüde olmayan bir animasyon bittiği zaman sadece 1 defa ateşlenir.",
+            "Timer": "this.timer$1 = 3"
         }
     }
 }
