@@ -25,8 +25,8 @@ script-editor.aView
         });
         this.on('mount', () => {
             setTimeout(() => {
-                var editorOptions = {
-                    language: 'javascript'
+                const editorOptions = {
+                    language: 'typescript'
                 };
                 this.editor = window.setupCodeEditor(this.refs.editor, editorOptions);
                 this.editor.onDidChangeModelContent(() => {
@@ -36,7 +36,13 @@ script-editor.aView
                 window.addEventListener('resize', updateEditorSize);
                 window.signals.on('settingsFocus', updateEditorSizeDeferred);
             }, 0);
-            this.oldName = this.script.name;
+            const glob = require('./data/node_requires/glob');
+            if (glob.scriptTypings[this.script.name]) {
+                for (const lib of glob.scriptTypings[this.script.name]) {
+                    lib.dispose();
+                }
+                delete glob.scriptTypings[this.script.name];
+            }
         });
         this.on('unmount', () => {
             // Manually destroy the editor to free up the memory
@@ -45,12 +51,6 @@ script-editor.aView
 
         this.saveScript = () => {
             const glob = require('./data/node_requires/glob');
-            if (glob.scriptTypings[this.oldName]) {
-                for (const lib of glob.scriptTypings[this.oldName]) {
-                    lib.dispose();
-                }
-                delete glob.scriptTypings[this.oldName];
-            }
             glob.scriptTypings[this.script.name] = [
                 monaco.languages.typescript.javascriptDefaults.addExtraLib(this.script.code),
                 monaco.languages.typescript.typescriptDefaults.addExtraLib(this.script.code)
