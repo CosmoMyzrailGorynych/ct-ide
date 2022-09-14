@@ -49,7 +49,7 @@ const nwSource = void 0;
 const nwManifest = void 0;
 const nwVersion = versions.nwjs,
       platforms = ['osx64', 'win32', 'win64', 'linux32', 'linux64'],
-      nwFiles = ['./app/**', '!./app/export/**', '!./app/projects/**', '!./app/exportDesktop/**', '!./app/cache/**', '!./app/.vscode/**', '!./app/JamGames/**'];
+      nwFiles = ['./app/package.json', './app/**', '!./app/export/**', '!./app/projects/**', '!./app/exportDesktop/**', '!./app/cache/**', '!./app/.vscode/**', '!./app/JamGames/**'];
 
 const argv = minimist(process.argv.slice(2));
 const npm = (/^win/).test(process.platform) ? 'npm.cmd' : 'npm';
@@ -331,8 +331,8 @@ const launchApp = () => {
     const nw = new NwBuilder({
         files: nwFiles,
         version: nwVersion,
-        downloadUrl: nwSource,
-        manifestUrl: nwManifest,
+       /* downloadUrl: nwSource,
+        manifestUrl: nwManifest,*/
         platforms: [processToPlatformMap[platformKey]],
         flavor: 'sdk'
     });
@@ -479,8 +479,8 @@ const bakePackages = async () => {
         files: nwFiles,
         platforms,
         version: nwVersion,
-        downloadUrl: nwSource,
-        manifestUrl: nwManifest,
+     /*   downloadUrl: nwSource,
+        manifestUrl: nwManifest,*/
         flavor: 'sdk',
         buildType: 'versioned',
         // forceDownload: true,
@@ -698,6 +698,7 @@ exports.lintStylus = lintStylus;
 exports.lintI18n = lintI18n;
 exports.lint = lint;
 exports.packages = packages;
+exports.nwbuild = bakePackages;
 exports.patronsCache = patronsCache;
 exports.docs = docs;
 exports.build = build;
