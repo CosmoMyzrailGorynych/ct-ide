@@ -1,3 +1,43 @@
+## v3.0.1
+
+*Mon Sep 12 2022*
+
+### ⚡️ General Improvements
+
+* :globe_with_meridians: Update French translation (#366 by @rtauziac)
+* :globe_with_meridians: Update Japanese translation (#367 by @taxi13245)
+* Drop precision on position and scale of objects in the room editor. Reasonably rounds their values to more logical numbers.
+
+### 🐛 Bug Fixes
+
+* Add support for template and texture arrays to the Context subsystem
+* Escape single quotes while stringifying certain properties. This allows, among other things, use of ' in custom properties (room editor) and template names
+* Fix `ct.place` crashing game if a collision check is made on a disproportionately squished circle
+* Room editor shortcuts must work only if the Rooms tab is active
+
+### 🍱 Demos, Dependencies and Stuff
+
+* Update nw.js to v0.67.1
+
+### 📝 Docs
+
+* :zap: Fix old terminology in skeletal-animation.md (by @omartek)
+* Italian translation for the working-with-editor section (by @omartek)
+
+### 🌐 Website
+
+* :bug: Fix img tag appearing in games' descriptions on the Made With page
+* :bug: Remove .DS_Store
+* :pencil: Update changelog
+* :zap: Add a working version of web installer for windows
+* :zap: Italian documentation translation is now public; add a proper link in the header!
+* :zap: Temporarily replace web installer for windows with zip archives
+* :zap: Update italian translation (@omartek)
+
+### 🤖 Misc
+
+* :fire: Remove now useless twoPi var in ct.place
+
 ## v3.0.0
 
 *Fri Sep 09 2022*
