@@ -69,7 +69,7 @@
         "couldNotLoadFromClipboard": "Impossible de charger les données du presse-papier",
         "pastedFromClipboard": "Copié depuis le presse-papier",
         "edit": "Modifier",
-        "nothingToShowFiller": "Rien à voir ici !",
+        "nothingToShowFiller": "Il n’y a rien ici !",
         "required": "Requis",
         "settings": "Réglages",
         "fieldTypes": {
@@ -99,7 +99,7 @@
         "saveProject": "Sauvegarder le projet",
         "openProject": "Ouvrir un projet…",
         "savedMessage": "Votre projet a été enregistré.",
-        "reallyExitConfirm": "Êtes-vous sur de vouloir quitter ? Tout les changements non sauvegardés seront perdu !",
+        "reallyExitConfirm": "Êtes-vous sur de vouloir quitter ? Tous les changements non sauvegardés seront perdu !",
         "notFoundOrUnknown": "Fichier inconnu. Vérifiez que le fichier existe.",
         "nameTaken": "Ce nom est déjà pris",
         "fastImport": "Import Rapide",
@@ -109,7 +109,7 @@
         "ctSite": "Page d'accueil de ct.js",
         "docsShort": "Doc",
         "docsLong": "Documentation",
-        "openAssetGallery": "Gallerie",
+        "openAssetGallery": "Galerie",
         "assetTypes": {
             "textures": [
                 "texture",
@@ -122,9 +122,9 @@
                 "modèles"
             ],
             "emitterTandems": [
-                "Tandem émetteur",
-                "Tandems émetteurs",
-                "Tandems émetteurs"
+                "Émetteur de particules",
+                "Émetteurs de particules",
+                "Émetteurs de particules"
             ],
             "rooms": [
                 "salle",
@@ -159,7 +159,7 @@
     },
     "exportPanel": {
         "hide": "Cacher",
-        "working": "En train de travailler...",
+        "working": "Exportation en cours…",
         "debug": "Version de débogage",
         "export": "Exporter",
         "exportPanel": "Exporter le Projet",
@@ -169,15 +169,15 @@
         "firstRunNotice": "La première compilation pour chaque plateforme sera lente car ct.js va télécharger et sauvegarder les librairies additionnelles nécessaires à la compilation. Cela prend un certain temps, mais les suivantes seront presque instantanées.",
         "projectTitleRequired": "Vous devez ajouter un titre à votre projet dans la section Projet → Création → Nom",
         "appIdRequired": "Vous devez spécifier un appId unique dans l’onglet Projet → Création → App ID pour publier cette app.",
-        "noAndroidSdkFound": "Le SDK Android n’a pas été trouvé (la variable d’environnement ANDROID_SDK_ROOT n’est pas définie). Vous pouvez obtenir le SDK Android en installant Android Studio :",
+        "noAndroidSdkFound": "Le SDK Android est introuvable (la variable d’environnement ANDROID_SDK_ROOT n’est pas définie). Vous pouvez obtenir le SDK Android en installant Android Studio :",
         "envVarNotice": "Vous aurez toujours besoin de définir la variable d’environnement à la main et de redémarrer votre appareil.",
         "downloadAndroidStudio": "Télécharger Android Studio",
         "requiresInternetNotice": "Cette opération nécessite une connexion internet pour mettre en place les projet.",
-        "noJdkFound": "Le JDK 11 n’a pas été trouvé (la variable d’environnement JAVA_HOME n’est pas définie ou ne pointe pas vers le JDK 11). Vous pouvez l’obtenir ici :",
+        "noJdkFound": "Le JDK 11 est introuvable (la variable d’environnement JAVA_HOME n’est pas définie ou ne pointe pas vers le JDK 11). Vous pouvez l’obtenir ici :",
         "downloadJDK": "Télécharger le JDK 11"
     },
     "intro": {
-        "loading": "Veuillez patientez : nos chatons accélèrent à la vitesse de la lumière !",
+        "loading": "Veuillez patientez : nos chatons se préparent à la vitesse de la lumière !",
         "newProject": {
             "button": "Choisir le dossier puis créer",
             "input": "Nom du projet (lettres et chiffres)",
@@ -216,12 +216,12 @@
     },
     "onboarding": {
         "hoorayHeader": "Incroyable ! Vous venez de créer un projet !",
-        "nowWhatParagraph": "Que devrions nous faire ?",
+        "nowWhatParagraph": "Que devrions-nous faire ?",
         "openSpaceShooterTutorial": "Apprendre à créer un Space-Shooter",
         "openPlatformerTutorial": "Apprendre à créer un jeu de plate-forme",
         "doNothing": "Passer cet écran et créer un super jeu !",
         "showOnboardingCheckbox": "Afficher cet écran lors de la création d'un nouveau projet",
-        "openJettyCatTutorial": "Apprendre à créér Jetty Cat (clone de Flappy Bird)"
+        "openJettyCatTutorial": "Apprendre à créer Jetty Cat (clone de Flappy Bird)"
     },
     "settings": {
         "actions": {
@@ -234,7 +234,7 @@
             "inputActionNamePlaceholder": "Nom de l'action",
             "methodModuleMissing": "Le module requis pour cette méthode est manquant",
             "methods": "Méthodes d'entrée",
-            "multiplier": "Facteur",
+            "multiplier": "Multiplicateur",
             "noActionsYet": "Les actions permettent aux développeurs d'écouter de nombreuses méthodes d'entrée à la fois et de les modifier dynamiquement, le tout avec une API uniforme. En savoir plus en cliquant sur l'icône de documentation ci-dessus.",
             "makeFromScratch": "Créer à partir de zéro",
             "presets": "Préréglages",
@@ -257,7 +257,7 @@
         },
         "rendering": {
             "heading": "Options de rendu",
-            "highDensity": "Prend en charge une densité de pixels élevée (par exemple sur les écrans rétina)",
+            "highDensity": "Prend en charge une densité de pixels élevée (par exemple sur les écrans Retina)",
             "framerate": "Taux d'images :",
             "maxFPS": "Taux de rafraichissement maximal :",
             "launchMode": "Mode de lancement :",
@@ -288,8 +288,8 @@
             "hideLoadingLogo": "Masquer \"Fait avec ct.js\" lors du chargement",
             "splashScreen": "Écran de démarrage :",
             "splashScreenNotice": "Cette image est utilisée pour les applications mobiles. Elle doit faire au minimum 1920×1920px et sera mise à l’échelle et rognée pour s’adapter aux formats portrait et paysage. Assurez-vous de centrer les éléments importants sur l’image.",
-            "forceSmoothIcons": "Lisser les icônes quelque soit le réglage du rendu",
-            "forceSmoothSplashScreen": "Lisser l’image de l’écran de démarrage quelque soit le réglage du rendu"
+            "forceSmoothIcons": "Lisser les icônes quel que soit le réglage du rendu",
+            "forceSmoothSplashScreen": "Lisser l’image de l’écran de démarrage quel que soit le réglage du rendu"
         },
         "scripts": {
             "heading": "Vos Scripts",
@@ -308,7 +308,7 @@
             "functionWrap": "Enrober tout le code dans une fonction (rend le débogage plus compliqué mais isole le code du jeu dans un contexte externe. Il est préférable de ne pas l’activer pendant le développement du jeu).",
             "codeModifier": "Transformations du code",
             "obfuscateWarning": "Cette option ralentira l’exécution de 15 à 80%, mais rendra votre code extrêmement difficile à extraire et à déchiffrer.",
-            "codeModifierAndWrapNote": "À noter que ces réglages ne fonctionnent que sur les exports web et PC, car ils rallongent considérablement le temps de compilation et rendent le débogage difficile. Vous pouvez forcer le comportement dans Menu Principal  → Réglages → Forcer les réglages de production pour les exports de débogage.",
+            "codeModifierAndWrapNote": "À noter que ces réglages ne fonctionnent que sur les exports web et PC, car ils rallongent considérablement le temps de compilation et rendent le débogage difficile. Vous pouvez forcer le comportement dans Menu Principal  → Réglages → Réglages de production pour le débogage.",
             "codeModifiers": {
                 "none": "Aucun",
                 "minify": "Minimiser",
@@ -406,7 +406,7 @@
         "colorAndOpacityHeading": "Couleur et Opacité",
         "stepped": "Palette",
         "steppedColor": "Couleur",
-        "steppedAlpha": "Opacitée",
+        "steppedAlpha": "Opacité",
         "blendMode": "Mode de combinaison:",
         "regular": "Normal",
         "darken": "Assombrir",
@@ -416,8 +416,8 @@
         "scale": "Échelle :",
         "minimumSize": "Taille minimale :",
         "minimumSizeHint": "Si vous le réglez sur des valeurs inférieures, la taille de chaque particule sera aléatoire. Plus les valeurs sont faibles, plus l'effet est fort.",
-        "velocityHeading": "Velocité",
-        "velocity": "Velocité :",
+        "velocityHeading": "Vélocité",
+        "velocity": "Vélocité :",
         "minimumSpeed": "Vitesse minimale :",
         "minimumSpeedHint": "Si vous le réglez sur des valeurs inférieures, la vitesse de chaque particule sera aléatoire. Plus les valeurs sont faibles, plus l'effet est fort.",
         "maxSpeed": "Vitesse maximale :",
@@ -452,10 +452,10 @@
         "radius": "Rayon :",
         "starPoints": "Points :",
         "startAngle": "Rotation, en degrés:",
-        "relativeEmitterPosition": "Position relative à d’autres émétteurs",
+        "relativeEmitterPosition": "Position relative à d’autres émetteurs",
         "addEmitter": "Ajouter un nouveau émetteur",
         "reset": "Réinitialiser l’aperçu",
-        "changeBg": "Changer l’arrière plan",
+        "changeBg": "Changer l’arrière-plan",
         "inspectorComplete": "Terminé !",
         "alreadyHasAnImportingTexture": "Vous avez déjà une texture nommée $1. Supprimez-la ou renommez-la; vous avez probablement importé la même texture que précédemment  :)",
         "showShapeVisualizer": "Afficher la forme d’apparition",
@@ -478,7 +478,7 @@
         "openDocs": "Ouvrir la documentation"
     },
     "patreon": {
-        "aboutPatrons": "Les Patrons sont des personnes qui manifestent leur soutien à CamigoGames, sous forme de dons récurrents. Tout les donateurs ne viennent pas forcément de Ct.js : certain(e)s utilisent d'autres support crée par ComigoGames. Conseil : si vous êtes créateur et faites un don à ComigoGames via Patreon, vous obtiendrez un lien vers votre projet ici - c'est ma petite aide pour vos créations :)",
+        "aboutPatrons": "Les Patrons sont des personnes qui manifestent leur soutien à CamigoGames, sous forme de dons récurrents. Tous les donateurs ne viennent pas forcément de Ct.js : certain(e)s utilisent d'autres support crée par ComigoGames. Conseil : si vous êtes créateur et faites un don à ComigoGames via Patreon, vous obtiendrez un lien vers votre projet ici - c'est ma petite aide pour vos créations :)",
         "patronsHeader": "Nos Patrons",
         "businessShuttles": "Navette d’Affaires",
         "noShuttlesYet": "Aucune Navette d’Affaires pour le moment :c Votre entreprise est peut-être la première, qui sait !",
@@ -491,7 +491,7 @@
         "aspiringAstronauts": "Astronaute en herbe",
         "noAstronautsYet": "Il n'y a pas encore d'Astronaute en herbe :c",
         "astronautsDescription": "Les Astronautes en herbe on un rôle spécial sur le discord et sont listés ici !",
-        "thankAllPatrons": "Merci à tout les  patrons de ComigoGames, présents et passés, car votre soutien permet à Comigo d'avancer et de créer de meilleures applications ! 😊",
+        "thankAllPatrons": "Merci à tous les  patrons de ComigoGames, présents et passés, car votre soutien permet à Comigo d'avancer et de créer de meilleures applications ! 😊",
         "becomeAPatron": "Devenir un patron",
         "aboutFillers": [
             "est toujours cool 😎",
@@ -503,7 +503,7 @@
             "a un cœur en or 🧡",
             "est un magicien 🔮",
             "est là pour aider ! 💪",
-            "est un super héro 🦸‍",
+            "est un superhéros 🦸‍",
             "a du potentiel 🦹‍",
             "est un mystère encore non résolu 🔍",
             "est épique ! ✨",
@@ -530,7 +530,7 @@
         "name": "Nom de la texture :",
         "width": "Largeur :",
         "height": "Hauteur :",
-        "color": "Couleur d’arrière plan :",
+        "color": "Couleur d’arrière-plan :",
         "label": "Nom :",
         "optional": "(optionnel)",
         "createAndClose": "Créer et fermer",
@@ -599,7 +599,7 @@
                 "RosePineMoon": "Pin rosé nocturne",
                 "RosePineDawn": "Pin rosé crépuscule"
             },
-            "codeFontDefault": "Police par défault (Iosevka Light)",
+            "codeFontDefault": "Police par défaut (Iosevka Light)",
             "codeFontOldSchool": "Vintage",
             "codeFontSystem": "Système",
             "codeFontCustom": "Personnaliser…",
@@ -610,7 +610,7 @@
             "heading": "Réglages",
             "disableSounds": "Désactiver les sons de l’interface",
             "changeDataFolder": "Définir l’emplacement des données de l’éditeur",
-            "forceProductionForDebug": "Forcer les réglages de production pour les exports de débogage",
+            "forceProductionForDebug": "Réglages de production pour le débogage",
             "prideMode": "Mode #pride",
             "altTemplateLayout": "Mise en page alternative pour l’éditeur de modèle"
         },
@@ -620,7 +620,7 @@
             "openProject": "Ouvrir un projet…",
             "openExample": "Ouvrir un projet d’exemple…",
             "startScreen": "Retourner à l'écran de démarrage",
-            "successZipProject": "Le projet à été compressé avec succès vers {0}.",
+            "successZipProject": "Le projet a été compressé avec succès vers {0}.",
             "zipProject": "Compresser le projet en .zip",
             "heading": "Projet"
         },
@@ -639,7 +639,7 @@
         "ctIDE": "ct.IDE",
         "texture": "Textures",
         "launch": "Lancer",
-        "launchHotkeys": "(F5/ Alt+F5 pour lancer dans votre navigateur par défaut",
+        "launchHotkeys": "F5/ Alt+F5 pour lancer dans votre navigateur par défaut",
         "min": "Fenêtré",
         "patrons": "Patrons",
         "rooms": "Salles",
@@ -653,15 +653,15 @@
             "header": "Aperçu de ct.js",
             "aboutTour": "Bienvenue dans ct.js ! Cette petite visite va vous présenter les outils principaux de l’éditeur, pour que vous puissiez configurer ct.js et créer de nouvelles ressources.",
             "helpPanel": "Avant tout, observez ce subtil bouton. Il est très important pour apprendre ct.js !",
-            "helpPanelTabs": "Ce panneau comporte toute la documentation officielle et des tutoriels pour ct.js et ses modules, et également deux bloc notes pour conserver vos idées. Les notes globales sont partagées entre tous les projets et sont enregistrées sur votre machine. Les notes du projet sont enregistrées dans votre projet.",
+            "helpPanelTabs": "Ce panneau comporte toute la documentation officielle et des tutoriels pour ct.js et ses modules, et également deux bloc-notes pour conserver vos idées. Les notes globales sont partagées entre tous les projets et sont enregistrées sur votre machine. Les notes du projet sont enregistrées dans votre projet.",
             "projectResources": "Maintenant, chaque projet comporte différent type de ressources. Chaque type de ressource possède son propre onglet. Jetons un œil aux plus importants.",
-            "tabTextures": "Les textures sons des images utilisées sur les objets intéractifs (que l’on appelle « copies »), les arrières plans et les effets spéciaux. Les textures ne font rient en soit mais sont nécessaires pour créer un jeu.",
+            "tabTextures": "Les textures sons des images utilisées sur les objets interactifs (que l’on appelle « copies »), les arrières plans et les effets spéciaux. Les textures ne font rien en soit mais sont nécessaires pour créer un jeu.",
             "tabTexturesImport": "Vous pouvez importer des textures depuis votre appareil…",
             "tabTexturesGallery": "…ou depuis la bibliothèque intégrée de texture prêtes à l’emploi.",
             "tabTexturesClipboard": "Ce bouton insère les images copiées depuis le presse-papier. Plutôt pratique quand on travaille sur un éditeur d’image !",
             "tabTexturesPlaceholders": "Vous pouvez aussi générer des images de substitut avec cet outil.",
             "tabTemplates": "Les modèles servent à crées des copies — des objets interactifs que vous placez dans vos niveaux. Tous les objets interactifs de ct.js sont créés grâce à l’un de nos modèles. Ils utilisent vos textures et vous en définissez la logique de jeu en associant des évènements. Une fois que vous aurez créé un modèle, vous pouvez lancer son tutoriel dédié dans l’éditeur de modèles.",
-            "tabRooms": "Un autre onglet important est celui des salles. Les salles peuvent aussi être appelées niveaux ou scènes, à l’intérieur desquelles vous placez vos copies. Les salles peuvent également avoir leur propres évènements et arrière plans.",
+            "tabRooms": "Un autre onglet important est celui des salles. Les salles peuvent aussi être appelées niveaux ou scènes, à l’intérieur desquelles vous placez vos copies. Les salles peuvent également avoir leurs propres évènements et arrière plans.",
             "tabSounds": "Sons est, très probablement, l’onglet le plus explicite.",
             "tabSoundsImport": "Vous pouvez créer de nouveaux sons avec ce bouton…",
             "tabSoundsGallery": "…les importer depuis la bibliothèque intégrée de sons…",
@@ -670,7 +670,7 @@
             "tabUI": "L’onglet IU (interface utilisateur) gère la police et les styles de texte. Embarquer vos polices dans votre jeu est important pour qu’il s’affiche de manière consistant sur tous les appareils. Les styles de texte ont un éditeur visuel pour créer des modèles de style. Ils produisent également du code pour la création de label.",
             "tabFX": "L’onglet Effets Spéciaux a un éditeur pour les systèmes de particules — des effets visuels pour les explosions, la magie, la fumée, la pluie et tous ces genres d’effets.",
             "tabProject": "C’est tout pour les ressources ! Mais en plus de ça, votre projet comporte tout un tas de réglages pour le rendu visuel, la publication, l’export et plus encore.",
-            "tabProjectModules": "Ct.js est modulaire, et vos projets auront probablement besoins de modules additionnels qui peuvent êtres installés ici.",
+            "tabProjectModules": "Ct.js est modulaire, et vos projets auront probablement besoins de modules additionnels qui peuvent être installés ici.",
             "tabProjectModuleDocs": "Toute la documentation des modules activés peut être consultée ici.",
             "tabMainMenu": "Ct.js possède lui aussi un paquet  d’autres options, qui sont disponibles dans le menu principal.",
             "tabMainMenuSettings": "Vous pouvez changer la langue et l’apparence de ct.js dans la section Réglages.",
@@ -680,10 +680,10 @@
         }
     },
     "assetViewer": {
-        "addNewGroup": "Nouveau groupe",
-        "ungrouped": "Afficher ceux dans aucun groupe",
+        "addNewGroup": "Créer groupe",
+        "ungrouped": "Sans groupe",
         "newGroupName": "Nouveau groupe",
-        "groupDeletionConfirmation": "Êtes-vous sûr de vouloir supprimer ce groupe ? Toutes les ressources associées seront retiré de ce groupe."
+        "groupDeletionConfirmation": "Êtes-vous sûr de vouloir supprimer ce groupe ? Toutes les ressources associées seront retirées de ce groupe."
     },
     "groupEditor": {
         "groupEditor": "Éditeur de groupe",
@@ -739,7 +739,7 @@
         "draw": "À l’affichage",
         "deleteCopies": "Supprimer les copies",
         "shiftCopies": "Décaler les copies",
-        "selectAndMove": "Séléctionner et déplacer",
+        "selectAndMove": "Sélectionner et déplacer",
         "findTileset": "Trouver un set de tuiles",
         "properties": "Propriétés",
         "isUi": "Est un calque IU ?",
@@ -788,7 +788,7 @@
             "select": "Outil de sélection",
             "addCopies": "Ajouter des copies",
             "addTiles": "Ajouter des tuiles",
-            "manageBackgrounds": "Gérer les arrières-plans",
+            "manageBackgrounds": "Gérer les arrière-plans",
             "roomProperties": "Propriétés de la salle"
         },
         "resetView": "Réinitialiser la vue"
@@ -838,7 +838,7 @@
         "name": "Nom :",
         "radius": "Rayon :",
         "rectangle": "Rectangle",
-        "reimport": "Ré-importer",
+        "reimport": "Réimporter",
         "round": "Cercle",
         "rows": "Lignes :",
         "speed": "Taux de rafraichissement :",
@@ -880,7 +880,7 @@
     },
     "fontView": {
         "italic": "Format italique ?",
-        "reimport": "Ré-importer",
+        "reimport": "Réimporter",
         "generateBitmapFont": "Générer également une police Bitmap",
         "bitmapFont": "Police Bitmap",
         "bitmapFontSize": "Taille de la police :",
@@ -894,14 +894,14 @@
             "cyrillic": "Cyrillique",
             "greekCoptic": "Grec et Copte",
             "custom": "Personnalisé",
-            "allInFont": "Utiliser tout ce que prends en charge la police"
+            "allInFont": "Utiliser tout ce que prend en charge la police"
         },
         "customCharsetHint": "Saisir toutes les lettres et les chiffres à utiliser, en minuscule et majuscule.",
         "fontWeight": "Épaisseur de la police :",
         "typefaceName": "Nom de la police :"
     },
     "licensePanel": {
-        "ctjsLicense": "License Ct.js (MIT)",
+        "ctjsLicense": "Licence Ct.js (MIT)",
         "faq": "Foire aux questions (section non-normative)",
         "whoOwnsGamesQ": "Qui possède les jeux créés dans ct.js ?",
         "whoOwnsGamesA": "Vous et vous seul. Ct.js ne possède en aucun cas ce que vous avez créé.",
@@ -914,7 +914,7 @@
         "attributionQ": "Dois-je mentionner ct.js ou ses créateurs ? Puis-je retirer le logo sur l’écran de démarrage ?",
         "attributionA": "Vous pouvez désactiver le logo ct.js, le code comportant déjà les mentions nécessaires.",
         "attributionAAssets": "Quelques exemples et démos peuvent posséder du contenu nécessitant leur citation, mais cela est déjà intégré.",
-        "theLicense": "La license (document légal)"
+        "theLicense": "La licence (document légal)"
     },
     "templates": {
         "create": "Créer"
@@ -932,7 +932,7 @@
         "visible": "Visible",
         "appearance": "Apparence",
         "opacity": "Opacité :",
-        "blendMode": "Mode de \ncombinaison :",
+        "blendMode": "Mode de combinaison :",
         "playAnimationOnStart": "Lancer l’animation au démarrage",
         "blendModes": {
             "normal": "Normal",
@@ -941,7 +941,7 @@
             "screen": "Écran (éclaircir)"
         },
         "animationFPS": "Nombre d’images par secondes :",
-        "loopAnimation": "Boucler l’annimation"
+        "loopAnimation": "Boucler l’animation"
     },
     "assetInput": {
         "changeAsset": "Cliquez pour changer de ressource",
@@ -949,7 +949,7 @@
         "selectAssetHeader": "Sélectionner une ressource"
     },
     "builtinAssetGallery": {
-        "galleryTip": "Ceci est une galerie gratuite et intégrée comportant des textures et des sons. Toutes ces ressources sont sous license CC0 ou WTFPL, ou sont publiées sous conditions spéciales pour utilisation dans ct.js. Vous pouvez utiliser ces ressources comme vous le souhaitez, dans des projets commerciaux ou autres.",
+        "galleryTip": "Ceci est une galerie gratuite et intégrée comportant des textures et des sons. Toutes ces ressources sont sous licence CC0 ou WTFPL, ou sont publiées sous conditions spéciales pour utilisation dans ct.js. Vous pouvez utiliser ces ressources comme vous le souhaitez, dans des projets commerciaux ou autres.",
         "assetGalleryHeader": "Ressources",
         "importIntoProject": "Importer dans le projet actuel",
         "importAll": "Tout importer",
@@ -987,9 +987,9 @@
             "OnRoomEnd": "À la sortie",
             "OnPointerClick": "Au clic",
             "OnPointerSecondaryClick": "Au clic secondaire",
-            "OnPointerEnter": "À l’entée du curseur",
+            "OnPointerEnter": "À l’entrée du curseur",
             "OnPointerLeave": "À la sortie du curseur",
-            "OnPointerDown": "Au début du \nclic",
+            "OnPointerDown": "Au début du clic",
             "OnPointerUp": "À la fin du clic",
             "OnPointerUpOutside": "À la fin du clic en dehors de la zone",
             "OnPointerWheel": "Au défilement",
