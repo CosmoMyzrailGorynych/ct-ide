@@ -58,7 +58,7 @@ project-selector
                 ul.Cards.largeicons.nmb
                     li.aCard(
                         each="{project in exampleProjects}"
-                        onclick="{loadProjectByPath}"
+                        onclick="{isMac ? cloneProject : loadProjectByPath}"
                         title="{project}"
                     )
                         .aCard-aThumbnail
@@ -137,6 +137,7 @@ project-selector
     script.
         const fs = require('fs-extra'),
               path = require('path');
+        const {isMac} = require('./data/node_requires/platformUtils');
         const {openProject} = require('./data/node_requires/resources/projects');
         this.ctjsVersion = process.versions.ctjs;
         this.requirePath = path;
