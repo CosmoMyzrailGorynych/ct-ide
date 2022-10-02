@@ -159,6 +159,7 @@
     "colorPicker": {
         "current": "New",
         "globalPalette": "Global Palette",
+        "altClick": "Alt-click to delete",
         "old": "Old",
         "projectPalette": "Project's Palette"
     },

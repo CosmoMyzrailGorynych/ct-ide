@@ -155,6 +155,7 @@
     "colorPicker": {
         "current": "新しい",
         "globalPalette": "グローバルのパレット",
+        "altClick": "",
         "old": "古い",
         "projectPalette": "プロジェクトのパレット"
     },

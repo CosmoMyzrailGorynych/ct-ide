@@ -133,6 +133,7 @@
         "old": "Старий",
         "current": "Новий",
         "globalPalette": "Глобальна палітра",
+        "altClick": "",
         "projectPalette": "Палітра проекту"
     },
     "docsShortcut": {
