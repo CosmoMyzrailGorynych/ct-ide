@@ -14,8 +14,6 @@ const path = require('path'),
       riot = require('gulp-riot'),
       pug = require('gulp-pug'),
       sprite = require('gulp-svgstore'),
-      globby = require('globby'),
-      filemode = require('filemode'),
       zip = require('gulp-zip'),
 
       jsdocx = require('jsdoc-x'),
@@ -489,7 +487,7 @@ const bakePackages = async () => {
             const NwBuilderArm = require('nw-builder-arm');
             const nwarm = new NwBuilderArm({
                 files: nwFiles,
-                platforms: [ 'osxarm' ],
+                platforms: ['osxarm'],
                 version: nwVersion,
                 flavor: 'sdk',
                 buildType: 'versioned',
@@ -498,8 +496,7 @@ const bakePackages = async () => {
                 macIcns: nightly ? './buildAssets/nightly.icns' : './buildAssets/icon.icns'
             });
             await nwarm.build();
-        }
-        catch (err) {
+        } catch (err) {
             console.error(`
     ╭──────────────────────────────────────────╮
     │                                          ├──╮
@@ -554,14 +551,16 @@ if ((/^win/).test(process.platform)) {
     zipPackages = gulp.parallel(zipsForAllPlatforms);
 } else {
     const execute = require('./node_requires/execute');
-    zipPackages = () => Promise.all(platforms.map(platform =>
-        // `r` for dirs,
-        // `q` for preventing spamming to stdout,
-        // and `y` for preserving symlinks
-        execute(({exec}) => exec(`
-            cd "./build/ctjs - v${pack.version}/"
-            zip -rqy "ct.js v${pack.version} for ${platform}.zip" "./${platform}"
-        `))));
+    zipPackages = async () => {
+        for (const platform of platforms) {
+            // eslint-disable-next-line no-await-in-loop
+            await execute(({exec}) => exec(`
+                cd "./build/ctjs - v${pack.version}/"
+                zip -rqy "ct.js v${pack.version} for ${platform}.zip" "./${platform}"
+                rm -rf "./${platform}"
+            `));
+        }
+    };
 }
 
 
@@ -607,22 +606,22 @@ const packages = gulp.series([
         templates,
         gallery
     ]),
-    bakePackages,
-    zipPackages
+    bakePackages
 ]);
 
+/* eslint-disable no-await-in-loop */
 const deployItchOnly = async () => {
     console.log(`For channel ${channelPostfix}`);
     for (let i = 0; i < platforms.length; i++) {
         const platform = platforms[i];
         if (nightly) {
-            await spawnise.spawn('./butler', ['push', `./build/ctjs - v${pack.version}/${platform}`, `comigo/ct-nightly:${platform}${channelPostfix ? '-' + channelPostfix : ''}`, '--userversion', buildNumber])
-        }
-        else {
-            await spawnise.spawn('./butler', ['push', `./build/ctjs - v${pack.version}/${platform}`, `comigo/ct:${platform}${channelPostfix ? '-' + channelPostfix : ''}`, '--userversion', pack.version])
+            await spawnise.spawn('./butler', ['push', `./build/ctjs - v${pack.version}/${platform}`, `comigo/ct-nightly:${platform}${channelPostfix ? '-' + channelPostfix : ''}`, '--userversion', buildNumber]);
+        } else {
+            await spawnise.spawn('./butler', ['push', `./build/ctjs - v${pack.version}/${platform}`, `comigo/ct:${platform}${channelPostfix ? '-' + channelPostfix : ''}`, '--userversion', pack.version]);
         }
     }
 };
+/* eslint-enable no-await-in-loop */
 const sendGithubDraft = async () => {
     if (nightly) {
         return; // Do not create github releases for nightlies
@@ -634,14 +633,12 @@ const sendGithubDraft = async () => {
         // eslint-disable-next-line id-blacklist
         tag: `v${pack.version}`,
         force: true,
-        files: platforms.map(platform => {
-            return `./build/ctjs - v${pack.version}/ct.js v${pack.version} for ${platform}.zip`
-        })
+        files: platforms.map(platform => `./build/ctjs - v${pack.version}/ct.js v${pack.version} for ${platform}.zip`)
     });
     console.log(draftData);
 };
 
-const deploy = gulp.series([packages, gulp.parallel([sendGithubDraft, deployItchOnly])]);
+const deploy = gulp.series([packages, deployItchOnly, zipPackages, sendGithubDraft]);
 
 const launchDevMode = done => {
     watch();
