@@ -135,6 +135,7 @@
         "old": "Старый",
         "current": "Новый",
         "globalPalette": "Глобальная палитра",
+        "altClick": "",
         "projectPalette": "Палитра проекта"
     },
     "docsShortcut": {

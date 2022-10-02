@@ -159,6 +159,7 @@
     "colorPicker": {
         "current": "Yeni",
         "globalPalette": "Küresel Palet",
+        "altClick": "",
         "old": "Eski",
         "projectPalette": "Proje'nin paleti"
     },

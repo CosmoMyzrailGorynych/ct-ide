@@ -134,6 +134,7 @@
     "colorPicker": {
         "current": "",
         "globalPalette": "",
+        "altClick": "",
         "old": "",
         "projectPalette": ""
     },

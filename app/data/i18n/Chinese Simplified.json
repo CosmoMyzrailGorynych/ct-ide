@@ -132,6 +132,7 @@
     "colorPicker": {
         "current": "新建",
         "globalPalette": "全局调色盘",
+        "altClick": "",
         "old": "旧的",
         "projectPalette": "项目的调色盘"
     },

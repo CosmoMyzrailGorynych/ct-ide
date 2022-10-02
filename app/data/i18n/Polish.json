@@ -132,6 +132,7 @@
     "colorPicker": {
         "current": "Nowy",
         "globalPalette": "Paleta Globalna",
+        "altClick": "",
         "old": "Stary",
         "projectPalette": "Paleta Projektu"
     },

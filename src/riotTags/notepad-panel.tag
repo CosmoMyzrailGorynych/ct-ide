@@ -78,14 +78,24 @@ notepad-panel#notepad.aPanel.dockright(class="{opened: opened}")
         this.getIfDarkTheme = () =>
             localStorage.UItheme === 'Night' || localStorage.UItheme === 'Horizon';
 
+        const notepadProps = {
+            language: 'javascript',
+            quickSuggestions: false,
+            hover: {
+                enabled: false
+            },
+            lightbulb: {
+                enabled: false
+            },
+            // eslint-disable-next-line id-length
+            renderValidationDecorations: 'off',
+            fixedOverflowWidgets: false
+        };
+
         this.on('mount', () => {
             setTimeout(() => {
-                this.notepadlocal = window.setupCodeEditor(this.refs.notepadlocal, {
-                    language: 'typescript'
-                });
-                this.notepadglobal = window.setupCodeEditor(this.refs.notepadglobal, {
-                    language: 'typescript'
-                });
+                this.notepadlocal = window.setupCodeEditor(this.refs.notepadlocal, notepadProps);
+                this.notepadglobal = window.setupCodeEditor(this.refs.notepadglobal, notepadProps);
 
                 this.notepadglobal.setValue(localStorage.notes);
                 this.notepadlocal.setValue(global.currentProject.notes || '');
