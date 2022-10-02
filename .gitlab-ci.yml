@@ -68,5 +68,4 @@ pack-deploy-nightly:
     - gulp -f devSetup.gulpfile.js
     - gulp packages --nightly --buildNum=$CI_COMMIT_SHORT_SHA
     - gulp deployItchOnly --nightly --buildNum=$CI_COMMIT_SHORT_SHA
-    - gulp zipPackages --nightly --buildNum=$CI_COMMIT_SHORT_SHA
 
