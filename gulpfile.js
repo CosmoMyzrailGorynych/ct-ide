@@ -663,6 +663,7 @@ exports.patronsCache = patronsCache;
 exports.docs = docs;
 exports.build = build;
 exports.deploy = deploy;
+exports.zipPackages = zipPackages;
 exports.deployItchOnly = deployItchOnly;
 exports.sendGithubDraft = sendGithubDraft;
 exports.default = defaultTask;
