@@ -45,11 +45,9 @@ const path = require('path'),
  *
  * Also note that you may need to clear the `ct-js/cache` folder.
  */
-const nwSource = void 0;
-const nwManifest = void 0;
 const nwVersion = versions.nwjs,
-      platforms = ['osx64', 'win32', 'win64', 'linux32', 'linux64'],
-      nwFiles = ['./app/package.json', './app/**', '!./app/export/**', '!./app/projects/**', '!./app/exportDesktop/**', '!./app/cache/**', '!./app/.vscode/**', '!./app/JamGames/**'];
+      platforms = ['linux32', 'linux64', 'osx64', 'osxarm', 'win32', 'win64'],
+      nwFiles = ['./app/**', '!./app/export/**', '!./app/projects/**', '!./app/exportDesktop/**', '!./app/cache/**', '!./app/.vscode/**', '!./app/JamGames/**'];
 
 const argv = minimist(process.argv.slice(2));
 const npm = (/^win/).test(process.platform) ? 'npm.cmd' : 'npm';
@@ -317,22 +315,21 @@ const lint = gulp.series(lintJS, lintTags, lintStylus, lintI18n);
 
 const processToPlatformMap = {
     'darwin-x64': 'osx64',
+    'darwin-arm64': 'osxarm',
     'win32-x32': 'win32',
     'win32-x64': 'win64',
     'linux-x32': 'linux32',
     'linux-x64': 'linux64'
 };
 const launchApp = () => {
-    const NwBuilder = require('nw-builder');
     const platformKey = `${process.platform}-${process.arch}`;
+    const NwBuilder = (platformKey === 'darwin-arm64') ? require('nw-builder-arm') : require('nw-builder');
     if (!(platformKey in processToPlatformMap)) {
         throw new Error(`Combination of OS and architecture ${process.platform}-${process.arch} is not supported by NW.js.`);
     }
     const nw = new NwBuilder({
         files: nwFiles,
         version: nwVersion,
-       /* downloadUrl: nwSource,
-        manifestUrl: nwManifest,*/
         platforms: [processToPlatformMap[platformKey]],
         flavor: 'sdk'
     });
@@ -475,12 +472,10 @@ const bakePackages = async () => {
         await fs.copy('./buildAssets/icon.png', './app/ct_ide.png');
     }
     await fs.remove(path.join('./build', `ctjs - v${pack.version}`));
-    var nw = new NwBuilder({
+    const nw = new NwBuilder({
         files: nwFiles,
-        platforms,
+        platforms: platforms.filter(x => x !== 'osxarm'),
         version: nwVersion,
-     /*   downloadUrl: nwSource,
-        manifestUrl: nwManifest,*/
         flavor: 'sdk',
         buildType: 'versioned',
         // forceDownload: true,
@@ -488,6 +483,39 @@ const bakePackages = async () => {
         macIcns: nightly ? './buildAssets/nightly.icns' : './buildAssets/icon.icns'
     });
     await nw.build();
+
+    if (platforms.indexOf('osxarm') > -1) {
+        try {
+            const NwBuilderArm = require('nw-builder-arm');
+            const nwarm = new NwBuilderArm({
+                files: nwFiles,
+                platforms: [ 'osxarm' ],
+                version: nwVersion,
+                flavor: 'sdk',
+                buildType: 'versioned',
+                // forceDownload: true,
+                zip: false,
+                macIcns: nightly ? './buildAssets/nightly.icns' : './buildAssets/icon.icns'
+            });
+            await nwarm.build();
+        }
+        catch (err) {
+            console.error(`
+    ╭──────────────────────────────────────────╮
+    │                                          ├──╮
+    │    Mac OS X (arm64) build failed! D:     │  │
+    │                                          │  │
+    │  The arm64 architecture on Mac OS X      │  │
+    │  relies upon unofficial builds. Thus it  │  │
+    │  may not always succeed. Other builds    │  │
+    │  will proceed.                           │  │
+    │                                          │  │
+    ╰─┬────────────────────────────────────────╯  │
+    ╰───────────────────────────────────────────╯
+    `);
+            platforms.splice(platforms.indexOf('osxarm'), 1);
+        }
+    }
 
     // Copy .itch.toml files for each target platform
     await Promise.all(platforms.map(platform => {
@@ -497,7 +525,7 @@ const bakePackages = async () => {
                 path.join(`./build/ctjs - v${pack.version}`, platform, '.itch.toml')
             );
         }
-        if (platform === 'osx64') {
+        if (platform === 'osx64' || platform === 'osxarm') {
             return fs.copy(
                 './buildAssets/mac.itch.toml',
                 path.join(`./build/ctjs - v${pack.version}`, platform, '.itch.toml')
@@ -511,68 +539,12 @@ const bakePackages = async () => {
     console.log('Built to this location:', path.join('./build', `ctjs - v${pack.version}`));
 };
 
-// a workaround for https://github.com/nwjs-community/nw-builder/issues/289
-const fixPermissions = () => {
-    if (platforms.indexOf('osx64') === -1) {
-        return Promise.resolve(); // skip the fix if not building for macos
-    }
-    const baseDir = path.posix.join('./build', `ctjs - v${pack.version}`, 'osx64', 'ctjs.app/Contents');
-
-    const globs = [
-        baseDir + '/MacOS/nwjs',
-        baseDir + '/Versions/*/nwjs Framework.framework/Versions/A/nwjs Framework',
-        baseDir + '/Versions/*/nwjs Helper.app/Contents/MacOS/nwjs Helper'
-    ];
-    return globby(globs)
-    .then(files => {
-        console.log('overriding permissions for', files);
-        return Promise.all(files.map(file => filemode(file, '777')));
-    });
-};
-
-const oldSymlink = fs.symlink;
-fs.symlink = (target, destination) => {
-    console.log('link', target, '<==', destination);
-    return oldSymlink(target, destination);
-};
-
 const abortOnWindows = done => {
     if ((/^win/).test(process.platform) && platforms.indexOf('osx64') !== -1) {
         throw new Error('Sorry, but building ct.js for mac is not possible on Windows due to Windows\' specifics. You can edit `platforms` at gulpfile.js if you don\'t need a package for mac.');
     }
     done();
 };
-// Based on solution at https://github.com/strawbees/desktop-packager/blob/master/commands/darwin/bundle.js
-const fixSymlinks = async () => {
-    if (platforms.indexOf('osx64') === -1) {
-        return; // skip the fix if not building for macos
-    }
-    const baseDir = path.posix.join('./build', `ctjs - v${pack.version}`, 'osx64', 'ctjs.app/Contents');
-
-    // the actual directory depends on nw version, so let's find the needed dir with a glob
-    const glob = baseDir + '/Versions/*/nwjs Framework.framework/*';
-    const execute = require('./node_requires/execute');
-    const frameworkDir = path.dirname((await globby([glob]))[0]);
-
-    console.log('fixing symlinks at', frameworkDir);
-
-    execute(async ({exec}) => {
-        await exec(`
-            cd "${frameworkDir}"
-            rm "Versions/Current" && ln -s "./A" "./Versions/Current"
-            rm "Helpers" && ln -s "./Versions/Current/Helpers"
-            rm "Internet Plug-Ins" && ln -s "./Versions/Current/Internet Plug-Ins"
-            rm "Libraries" && ln -s "./Versions/Current/Libraries"
-            rm "nwjs Framework" && ln -s "./Versions/Current/nwjs Framework"
-            rm "Resources" && ln -s "./Versions/Current/Resources"
-            rm "XPCServices" && ln -s "./Versions/Current/XPCServices"
-        `);
-    });
-};
-exports.fixPermissions = fixPermissions;
-exports.fixSymlinks = fixSymlinks;
-
-
 let zipPackages;
 if ((/^win/).test(process.platform)) {
     const zipsForAllPlatforms = platforms.map(platform => () =>
@@ -636,25 +608,20 @@ const packages = gulp.series([
         gallery
     ]),
     bakePackages,
-//    fixSymlinks,
-//    fixPermissions,
     zipPackages
 ]);
 
-const deployItchOnly = () => {
+const deployItchOnly = async () => {
     console.log(`For channel ${channelPostfix}`);
-    if (nightly) {
-        return spawnise.spawn('./butler', ['push', `./build/ctjs - v${pack.version}/linux32`, `comigo/ct-nightly:linux32${channelPostfix ? '-' + channelPostfix : ''}`, '--userversion', buildNumber])
-        .then(() => spawnise.spawn('./butler', ['push', `./build/ctjs - v${pack.version}/linux64`, `comigo/ct-nightly:linux64${channelPostfix ? '-' + channelPostfix : ''}`, '--userversion', buildNumber]))
-        .then(() => spawnise.spawn('./butler', ['push', `./build/ctjs - v${pack.version}/osx64`, `comigo/ct-nightly:osx64${channelPostfix ? '-' + channelPostfix : ''}`, '--userversion', buildNumber]))
-        .then(() => spawnise.spawn('./butler', ['push', `./build/ctjs - v${pack.version}/win32`, `comigo/ct-nightly:win32${channelPostfix ? '-' + channelPostfix : ''}`, '--userversion', buildNumber]))
-        .then(() => spawnise.spawn('./butler', ['push', `./build/ctjs - v${pack.version}/win64`, `comigo/ct-nightly:win64${channelPostfix ? '-' + channelPostfix : ''}`, '--userversion', buildNumber]));
+    for (let i = 0; i < platforms.length; i++) {
+        const platform = platforms[i];
+        if (nightly) {
+            await spawnise.spawn('./butler', ['push', `./build/ctjs - v${pack.version}/${platform}`, `comigo/ct-nightly:${platform}${channelPostfix ? '-' + channelPostfix : ''}`, '--userversion', buildNumber])
+        }
+        else {
+            await spawnise.spawn('./butler', ['push', `./build/ctjs - v${pack.version}/${platform}`, `comigo/ct:${platform}${channelPostfix ? '-' + channelPostfix : ''}`, '--userversion', pack.version])
+        }
     }
-    return spawnise.spawn('./butler', ['push', `./build/ctjs - v${pack.version}/linux32`, `comigo/ct:linux32${channelPostfix ? '-' + channelPostfix : ''}`, '--userversion', pack.version])
-    .then(() => spawnise.spawn('./butler', ['push', `./build/ctjs - v${pack.version}/linux64`, `comigo/ct:linux64${channelPostfix ? '-' + channelPostfix : ''}`, '--userversion', pack.version]))
-    .then(() => spawnise.spawn('./butler', ['push', `./build/ctjs - v${pack.version}/osx64`, `comigo/ct:osx64${channelPostfix ? '-' + channelPostfix : ''}`, '--userversion', pack.version]))
-    .then(() => spawnise.spawn('./butler', ['push', `./build/ctjs - v${pack.version}/win32`, `comigo/ct:win32${channelPostfix ? '-' + channelPostfix : ''}`, '--userversion', pack.version]))
-    .then(() => spawnise.spawn('./butler', ['push', `./build/ctjs - v${pack.version}/win64`, `comigo/ct:win64${channelPostfix ? '-' + channelPostfix : ''}`, '--userversion', pack.version]));
 };
 const sendGithubDraft = async () => {
     if (nightly) {
@@ -667,13 +634,9 @@ const sendGithubDraft = async () => {
         // eslint-disable-next-line id-blacklist
         tag: `v${pack.version}`,
         force: true,
-        files: [
-            `./build/ctjs - v${pack.version}/ct.js v${pack.version} for linux32.zip`,
-            `./build/ctjs - v${pack.version}/ct.js v${pack.version} for linux64.zip`,
-            `./build/ctjs - v${pack.version}/ct.js v${pack.version} for osx64.zip`,
-            `./build/ctjs - v${pack.version}/ct.js v${pack.version} for win32.zip`,
-            `./build/ctjs - v${pack.version}/ct.js v${pack.version} for win64.zip`
-        ]
+        files: platforms.map(platform => {
+            return `./build/ctjs - v${pack.version}/ct.js v${pack.version} for ${platform}.zip`
+        })
     });
     console.log(draftData);
 };
