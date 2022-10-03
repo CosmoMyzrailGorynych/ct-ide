@@ -11,7 +11,7 @@ const {packImages} = require('./textures');
 import {packSkeletons} from './skeletons';
 import {getSounds} from './sounds';
 import {stringifyRooms, getStartingRoom} from './rooms';
-const {stringifyStyles} = require('./styles');
+import {stringifyStyles} from './styles';
 const {stringifyTandems} = require('./emitterTandems');
 import {stringifyTemplates} from './templates';
 const {stringifyContent} = require('./content');
