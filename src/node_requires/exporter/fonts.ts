@@ -1,6 +1,6 @@
 const fs = require('fs-extra');
 
-const stringifyFont = font => `
+export const stringifyFont = (font: IFont): string => `
 @font-face {
     font-family: '${font.typefaceName}';
     src: url('fonts/${font.origname}.woff') format('woff'),
@@ -8,10 +8,19 @@ const stringifyFont = font => `
     font-weight: ${font.weight};
     font-style: ${font.italic ? 'italic' : 'normal'};
 }`;
-const bundleFonts = async function (proj, projdir, writeDir) {
+
+type fontsBundleResult = {
+    css: string;
+    js: string;
+};
+export const bundleFonts = async function (
+    proj: IProject,
+    projdir: string,
+    writeDir: string
+): Promise<fontsBundleResult> {
     let css = '',
         js = '';
-    const writePromises = [];
+    const writePromises: Promise<void>[] = [];
     if (proj.fonts) {
         js += 'if (document.fonts) { for (const font of document.fonts) { font.load(); }}';
         await fs.ensureDir(writeDir + '/fonts');
@@ -39,7 +48,7 @@ const bundleFonts = async function (proj, projdir, writeDir) {
     };
 };
 
-const charSets = {
+const charSets: Record<Exclude<builtinCharsets, 'allInFont'>, string> = {
     punctuation: ' !"#$%&\'()*+,-./0123456789:;<=>?@[\\]^_`{|}~',
     basicLatin: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz',
     latinExtended: 'ĀāĂăĄąĆćĈĉĊċČčĎďĐđĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħĨĩĪīĬĭĮįİıĲĳĴĵĶķĸĹĺĻļĽľĿŀŁłŃńŅņŇňŉŊŋŌōŎŏŐőŒœŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŦŧŨũŪūŬŭŮůŰűŲųŴŵŶŷŸŹźŻżŽžſƀƁƂƃƄƅƆƇƈƉƊƋƌƍƎƏƐƑƒƓƔƕƖƗƘƙƚƛƜƝƞƟƠơƢƣƤƥƦƧƨƩƪƫƬƭƮƯưƱƲƳƴƵƶƷƸƹƺƻƼƽƾƿǀǁǂǃǄǅǆǇǈǉǊǋǌǍǎǏǐǑǒǓǔǕǖǗǘǙǚǛǜǝǞǟǠǡǢǣǤǥǦǧǨǩǪǫǬǭǮǯǰǱǲǳǴǵǶǷǸǹǺǻǼǽǾǿȀȁȂȃȄȅȆȇȈȉȊȋȌȍȎȏȐȑȒȓȔȕȖȗȘșȚțȜȝȞȟȠȡȢȣȤȥȦȧȨȩȪȫȬȭȮȯȰȱȲȳȴȵȶȷȸȹȺȻȼȽȾȿɀɁɂɃɄɅɆɇɈɉɊɋɌɍɎɏ',
@@ -48,21 +57,25 @@ const charSets = {
     custom: ''
 };
 
-const specialCharMap = {
+const specialCharMap: Record<number, string> = {
     38: '&amp;',
     60: '&lt;',
     32: 'space',
     62: '&gt;',
     34: '&quot;'
 };
-const charCodeToXMLChar = code => {
+const charCodeToXMLChar = (code: number): string => {
     if (code in specialCharMap) {
         return specialCharMap[code];
     }
     return String.fromCharCode(code);
 };
 
-const generateXML = function generateXML(fontData, ctFont, typefaceName) {
+export const generateXML = function generateXML(
+    fontData: any,
+    ctFont: IFont,
+    typefaceName: string
+): string {
     let XMLTemplate = `<font>
     <info face="${typefaceName}" size="${ctFont.bitmapFontSize}" bold="0" italic="0" chasrset="" unicode="0" stretchH="100" smooth="1" aa="1" padding="0,0,0,0" spacing="1,1"/>
     <common lineHeight="${ctFont.bitmapFontLineHeight}" base="${ctFont.bitmapFontSize}" scaleW="${fontData.canvas.width}" scaleH="${fontData.canvas.height}" pages="1" packed="0"/>
@@ -73,7 +86,7 @@ const generateXML = function generateXML(fontData, ctFont, typefaceName) {
 
     for (const key in fontData.map) {
         const c = fontData.map[key];
-        XMLTemplate += `\n        <char id="${key}" x="${c.x}" y="${c.y}" width="${c.width}" height="${c.height}" xoffset="0" yoffset="0" xadvance="${c.width}" page="0" chnl="0" letter="${charCodeToXMLChar(key)}"/>`;
+        XMLTemplate += `\n        <char id="${key}" x="${c.x}" y="${c.y}" width="${c.width}" height="${c.height}" xoffset="0" yoffset="0" xadvance="${c.width}" page="0" chnl="0" letter="${charCodeToXMLChar(Number(key))}"/>`;
     }
 
     XMLTemplate += `
@@ -88,17 +101,24 @@ const generateXML = function generateXML(fontData, ctFont, typefaceName) {
  * @returns {Promise<object<string,string>>} A promise that resolves into a map
  * from font names to their XML file paths.
  */
-const bakeBitmapFonts = function bakeBitmapFonts(proj, projdir, writeDir) {
+export const bakeBitmapFonts = function bakeBitmapFonts(
+    proj: IProject,
+    projdir: string,
+    writeDir: string
+): Promise<Record<string, string>> {
     const generator = require('./../resources/fonts/bitmapFontGenerator');
     const path = require('path');
     return Promise.all(proj.fonts.filter(font => font.bitmapFont)
         .map(async font => {
             const fCharsets = font.charsets || ['basicLatin'];
             let letterList;
-            if (fCharsets.length === '1' && fCharsets[0] === 'allInFont') {
+            if (fCharsets.length === 1 && fCharsets[0] === 'allInFont') {
                 letterList = false;
             } else {
-                letterList = fCharsets.reduce((acc, charset) => acc + (charSets[charset] || ''), '');
+                letterList = fCharsets.reduce((
+                    acc: string,
+                    charset: Exclude<builtinCharsets, 'allInFont'>
+                ) => acc + (charSets[charset] || ''), '');
             }
             if (fCharsets.indexOf('custom') !== -1) {
                 letterList += font.customCharset;
@@ -127,17 +147,10 @@ const bakeBitmapFonts = function bakeBitmapFonts(proj, projdir, writeDir) {
             };
         }))
         .then(fontsMetadata => {
-            const bitmapFonts = {};
+            const bitmapFonts: Record<string, string> = {};
             for (const font of fontsMetadata) {
                 bitmapFonts[font.typefaceName] = font.xmlPath;
             }
             return bitmapFonts;
         });
-};
-
-module.exports = {
-    stringifyFont,
-    bundleFonts,
-    bakeBitmapFonts,
-    generateXML
 };

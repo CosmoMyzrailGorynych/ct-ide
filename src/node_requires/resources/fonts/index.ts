@@ -99,7 +99,7 @@ const importTtfToFont = async function importTtfToFont(
         bitmapFont: false,
         bitmapFontSize: 16,
         bitmapFontLineHeight: 18,
-        charsets: ['allInFont'],
+        charsets: ['allInFont' as builtinCharsets],
         customCharset: '',
         group,
         uid
