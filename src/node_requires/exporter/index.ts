@@ -7,7 +7,7 @@ let writeDir: string;
 
 import {resetEventsCache, populateEventCache} from './scriptableProcessor';
 
-const {packImages} = require('./textures');
+import {packImages} from './textures';
 import {packSkeletons} from './skeletons';
 import {getSounds} from './sounds';
 import {stringifyRooms, getStartingRoom} from './rooms';

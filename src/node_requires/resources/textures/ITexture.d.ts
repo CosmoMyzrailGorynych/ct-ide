@@ -23,7 +23,36 @@ interface ITexture extends IAsset {
     right?: number;
     top?: number;
     bottom?: number;
+    r?: number;
+    stripPoints?: {x: number, y: number}[];
+    closedStrip?: boolean;
     tiled?: boolean;
     isBlank?: boolean;
     ignoreTiledUse?: boolean;
 }
+
+type textureShapeRect = {
+    type: 'rect';
+    top: number;
+    bottom: number;
+    left: number;
+    right: number;
+};
+type textureShapeCircle = {
+    type: 'circle';
+    r: number;
+};
+type textureShapePolyline = {
+    type: 'strip',
+    points: {x: number, y: number}[],
+    closedStrip: boolean
+}
+type textureShapePoint = {
+    type: 'point';
+}
+
+declare type textureShape =
+    textureShapeRect |
+    textureShapeCircle |
+    textureShapePolyline |
+    textureShapePoint;
