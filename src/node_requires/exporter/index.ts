@@ -15,7 +15,7 @@ const {stringifyStyles} = require('./styles');
 const {stringifyTandems} = require('./emitterTandems');
 import {stringifyTemplates} from './templates';
 const {stringifyContent} = require('./content');
-const {bundleFonts, bakeBitmapFonts} = require('./fonts');
+import {bundleFonts, bakeBitmapFonts} from './fonts';
 const {bakeFavicons} = require('./icons');
 const {getUnwrappedExtends, getCleanKey} = require('./utils');
 
