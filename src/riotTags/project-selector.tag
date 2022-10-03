@@ -137,7 +137,7 @@ project-selector
     script.
         const fs = require('fs-extra'),
               path = require('path');
-        const {isMac} = require('./data/node_requires/platformUtils');
+        this.isMac = require('./data/node_requires/platformUtils').isMac;
         const {openProject} = require('./data/node_requires/resources/projects');
         this.ctjsVersion = process.versions.ctjs;
         this.requirePath = path;
