@@ -1,6 +1,7 @@
 declare interface ISkeleton extends IAsset {
     origname: string;
     from: 'dragonbones' | string;
+    name: string;
 }
 
 const path = require('path');

@@ -1,11 +1,21 @@
 const fs = require('fs-extra');
 const basePath = './data/';
 
-const packSkeletons = async (proj, projdir, writeDir) => {
+type skeletonData = [string, string, string, string];
+type skeletonExportData = {
+    skeletonsDB: skeletonData[];
+    requiresDB: boolean;
+}
+
+export const packSkeletons = async (
+    proj: IProject,
+    projdir: string,
+    writeDir: string
+): Promise<skeletonExportData> => {
     const writePromises = [];
 
-    const exporterData = {
-        skeletonsDB: [],
+    const exporterData: skeletonExportData = {
+        skeletonsDB: [] as skeletonData[],
         requiresDB: false
     };
     for (const skeleton of proj.skeletons) {
@@ -32,6 +42,3 @@ const packSkeletons = async (proj, projdir, writeDir) => {
     return exporterData;
 };
 
-module.exports = {
-    packSkeletons
-};
