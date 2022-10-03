@@ -24,7 +24,7 @@ const defaultProjectTemplate: IProject = {
     actions: [],
     emitterTandems: [],
     scripts: [],
-    starting: 0,
+    startroom: -1,
     contentTypes: [],
     groups: {
         fonts: [],

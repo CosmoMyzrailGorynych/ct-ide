@@ -1,11 +1,55 @@
+declare interface IResourceGroup {
+    colorClass: string;
+    icon: string;
+    name: string;
+    uid: string;
+}
+declare interface ICtActionInputMethod {
+    code: string;
+    multiplier?: number;
+}
+declare interface ICtAction {
+    name: string;
+    methods: ICtActionInputMethod[]
+}
+
+declare interface IScript {
+    name: string;
+    code: string;
+}
+
+declare interface IContentType {
+    entries: Record<string, unknown>[];
+    icon: string;
+    name: string;
+    readableName: string;
+    specification: {
+        name: string;
+        readableName: string;
+        required?: boolean;
+        array?: boolean;
+        type: 'text' | 'textfield' | 'code' | 'number' | 'sliderAndNumber' | 'point2D' |
+              'texture' | 'template' | 'sound' | 'room' | 'tandem' |
+              'checkbox' | 'color';
+    }[];
+}
+
 declare interface IProject {
+    ctjsVersion: string;
+    notes: string;
+    libs: Record<string, Record<string, unknown>>;
+    actions: ICtAction[];
+    scripts: IScript[];
     textures: ITexture[];
+    skeletons: ISkeleton[];
     templates: ITemplate[];
     sounds: ISound[];
     rooms: IRoom[];
+    startroom: assetRef;
     emitterTandems: ITandem[];
     fonts: IFont[];
     styles: IStyle[];
+    contentTypes: IContentType[];
     settings: {
         authoring: {
             author: string,
@@ -42,5 +86,13 @@ declare interface IProject {
             hideLoadingLogo: boolean
         }
     };
-    [key: string]: any;
+    groups: {
+        emitterTandems: IResourceGroup[]
+        fonts: IResourceGroup[]
+        rooms: IResourceGroup[]
+        sounds: IResourceGroup[]
+        styles: IResourceGroup[]
+        templates: IResourceGroup[]
+        textures: IResourceGroup[]
+    }
 }
