@@ -9,7 +9,7 @@ import {resetEventsCache, populateEventCache} from './scriptableProcessor';
 
 const {packImages} = require('./textures');
 import {packSkeletons} from './skeletons';
-const {getSounds} = require('./sounds');
+import {getSounds} from './sounds';
 import {stringifyRooms, getStartingRoom} from './rooms';
 const {stringifyStyles} = require('./styles');
 const {stringifyTandems} = require('./emitterTandems');
