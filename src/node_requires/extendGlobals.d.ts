@@ -9,6 +9,7 @@ declare global {
     var brehautColor: any;
     var languageJSON: any;
     var monaco: any;
+    var dragonBones: any;
     var currentProject: IProject;
     var projdir: string;
     var migrationProcess: any[];
