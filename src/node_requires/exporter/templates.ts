@@ -1,6 +1,8 @@
 const {getTextureFromId} = require('../resources/textures');
 const {getUnwrappedExtends} = require('./utils');
 
+import {flattenGroups} from './groups';
+
 import {getBaseScripts} from './scriptableProcessor';
 
 interface IBlankTexture {
@@ -25,7 +27,7 @@ const getTextureInfo = (blankTextures: IBlankTexture[], template: ITemplate) => 
 };
 
 const stringifyTemplates = function (proj: IProject): IScriptablesFragment {
-    /* Stringify templates */
+    const groups = flattenGroups(proj).templates;
     let templates = '';
     let rootRoomOnCreate = '';
     let rootRoomOnStep = '';
@@ -52,6 +54,7 @@ ct.templates.templates["${template.name}"] = {
     animationFPS: ${template.animationFPS ?? 60},
     playAnimationOnStart: ${Boolean(template.playAnimationOnStart)},
     loopAnimation: ${Boolean(template.loopAnimation)},
+    group: "${groups[template.group ? template.group.replace(/'/g, '\\\'') : -1]}",
     ${textureInfo}
     onStep: function () {
         ${scripts.thisOnStep}

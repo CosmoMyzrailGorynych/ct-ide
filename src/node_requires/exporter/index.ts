@@ -18,6 +18,7 @@ const {stringifyContent} = require('./content');
 import {bundleFonts, bakeBitmapFonts} from './fonts';
 const {bakeFavicons} = require('./icons');
 const {getUnwrappedExtends, getCleanKey} = require('./utils');
+import {getGroups} from './groups';
 
 const ifMatcher = (varName: string, symbol = '@') => new RegExp(`/\\* ?if +${symbol}${varName}${symbol} ?\\*/([\\s\\S]*)(?:/\\* ?else +${symbol}${varName}${symbol} ?\\*/([\\s\\S]*?))?/\\* ?endif +${symbol}${varName}${symbol} ?\\*/`, 'g');
 const varMatcher = (varName: string, symbol = '@') => new RegExp(`/\\* ?${symbol}${varName}${symbol} ?\\*/`, 'g');
@@ -363,7 +364,8 @@ const exportCtProject = async (
         tiledImages,
         bitmapFonts,
         dbSkeletons: skeletons.skeletonsDB,
-        sounds
+        sounds,
+        groups: JSON.stringify(getGroups(project))
     }, injections);
     buffer += '\n';
 
