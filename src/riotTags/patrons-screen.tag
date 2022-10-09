@@ -5,7 +5,7 @@ patron-line
     |
     span {parent.getFiller(opts.patron)}
 
-patreon-screen.aView(style="z-index: 100;")
+patrons-screen.aView(style="z-index: 100;")
     .Confetti
         .aConfettiPiece(each="{confetti in (new Array(15))}" style="background: {getConfettiColor()}")
     aside
@@ -118,5 +118,5 @@ patreon-screen.aView(style="z-index: 100;")
         this.importPatronData();
 
         this.openBoosty = () => {
-            nw.Shell.openExternal('https://www.patreon.com/comigo');
+            nw.Shell.openExternal('https://boosty.to/comigo');
         };

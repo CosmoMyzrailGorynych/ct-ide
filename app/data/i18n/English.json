@@ -259,6 +259,8 @@
         "vkontakte": "Vkontakte public community",
         "patreon": "Support ct.js on Patreon!",
         "boosty": "Support ct.js on Boosty!",
+        "sponsoredBy": "Proudly sponsored by $1!",
+        "supportedBy": "Supported by $1",
         "createOrBrowseJunction": "or"
     },
     "onboarding": {
