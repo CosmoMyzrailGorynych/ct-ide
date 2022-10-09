@@ -127,7 +127,9 @@
             ]
         },
         "next": "",
-        "previous": ""
+        "previous": "",
+        "undo": "",
+        "redo": ""
     },
     "colorPicker": {
         "current": "Novo",
@@ -217,7 +219,10 @@
         "vkontakte": "",
         "patreon": "",
         "templates": "",
-        "templatesInfo": ""
+        "templatesInfo": "",
+        "boosty": "",
+        "sponsoredBy": "",
+        "supportedBy": ""
     },
     "onboarding": {
         "hoorayHeader": "Wow! Você acabou de criar um projeto!",
@@ -482,17 +487,6 @@
     "patreon": {
         "aboutPatrons": "Patrons são pessoas que mostram seu apoio à ComigoGames no Patreon, na forma de doações recorrentes. Nem todo mundo vem de ct.js; alguns estão usando outros aplicativos da ComigoGames. Dica: se você é um criador e doa para ComigoGames via Patreon, você receberá um link para sua página aqui - essa é minha pequena ajuda para suas criações :)",
         "patronsHeader": "Nossos patrões",
-        "businessShuttles": "Ônibus de negócios",
-        "noShuttlesYet": "Ainda não há ônibus de negócios: c Sua empresa pode ser a primeira!",
-        "shuttlesDescription": "Os ônibus de negócios são considerados parceiros da ct.js. Eles estão listados na página inicial do ct.js e nas páginas da loja.",
-        "spacePirates": "Piratas espaciais",
-        "noPiratesYet": "Não temos piratas espaciais ainda :c",
-        "piratesDescription": "Os Piratas do Espaço recebem suporte prioritário no servidor Discord com uma função legal e são listados aqui.",
-        "spaceProgrammers": "Programadores espaciais",
-        "programmersDescription": "\" Space Programmer \"é uma camada de legado que estava disponível antes de ct.js se tornar o código-fonte aberto e trazer fontes de jam games aos usuários.",
-        "aspiringAstronauts": "Aspirantes a astronautas",
-        "noAstronautsYet": "Ainda não há Aspirantes a Astronautas: c",
-        "astronautsDescription": "Os astronautas ganham um papel especial no Discord e são listados aqui!",
         "thankAllPatrons": "Obrigado a todos os usuários da ComigoGames, atuais e antigos, pois seu apoio mantém a Comigo avançando e fazendo aplicativos ainda melhores! :)",
         "becomeAPatron": "Torne-se um patrão",
         "aboutFillers": [
@@ -513,7 +507,14 @@
             "é como um fogo ardente! 🔥",
             "traz luz e esperança 🌞",
             "é elegante e bonito 🎩"
-        ]
+        ],
+        "sponsors": "",
+        "noSponsorsYet": "",
+        "sponsorsDescription": "",
+        "businessCats": "",
+        "businessCatsDescription": "",
+        "cats": "",
+        "catsDescription": ""
     },
     "extensionsEditor": {
         "noEntries": "",
@@ -713,7 +714,8 @@
         "moveTileLayer": "Mover para uma nova profundidade:",
         "show": "Mostrar a camada",
         "hide": "Ocultar a camada",
-        "findTileset": "Encontrar um conjunto de tiles"
+        "findTileset": "Encontrar um conjunto de tiles",
+        "addTileLayer": ""
     },
     "roomView": {
         "name": "Nome:",
@@ -747,12 +749,15 @@
             "position": "",
             "rotation": "",
             "scale": "",
-            "multipleValues": ""
+            "multipleValues": "",
+            "opacity": "",
+            "tint": ""
         },
         "copyCustomProperties": {
             "addProperty": "",
             "property": "",
-            "value": ""
+            "value": "",
+            "nameOccupied": ""
         },
         "customProperties": "",
         "restrictCamera": "",
@@ -784,7 +789,8 @@
             "addTiles": "",
             "manageBackgrounds": "",
             "roomProperties": ""
-        }
+        },
+        "resetView": ""
     },
     "styleView": {
         "active": "Ativo",
@@ -861,7 +867,8 @@
         "marginX": "Margem X:",
         "marginY": "Margem Y:",
         "offX": "Offset X:",
-        "offY": "Offset Y:"
+        "offY": "Offset Y:",
+        "blankTextureNotice": ""
     },
     "soundView": {
         "import": "Importar",
@@ -893,7 +900,20 @@
         "typefaceName": "Nome do typeface:"
     },
     "licensePanel": {
-        "ctjsLicense": "Licença do Ct.js (MIT)"
+        "ctjsLicense": "Licença do Ct.js (MIT)",
+        "faq": "",
+        "whoOwnsGamesQ": "",
+        "whoOwnsGamesA": "",
+        "sellingGamesQ": "",
+        "sellingGamesA": "",
+        "possibleFeesQ": "",
+        "possibleFeesA": "",
+        "useInStudioQ": "",
+        "useInStudioA": "",
+        "attributionQ": "",
+        "attributionA": "",
+        "attributionAAssets": "",
+        "theLicense": ""
     },
     "templates": {
         "create": ""
@@ -983,10 +1003,18 @@
         "coreParameterizedNames": {
             "OnActionPress": "",
             "OnActionRelease": "",
-            "OnActionDown": ""
+            "OnActionDown": "",
+            "Timer1": "",
+            "Timer2": "",
+            "Timer3": "",
+            "Timer4": "",
+            "Timer5": "",
+            "Timer6": ""
         },
         "coreEventsArguments": {
-            "action": ""
+            "action": "",
+            "name": "",
+            "isUi": ""
         },
         "coreEventsLocals": {
             "OnActionDown_value": "",

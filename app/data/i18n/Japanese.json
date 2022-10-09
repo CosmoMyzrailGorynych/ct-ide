@@ -125,7 +125,11 @@
                 "透過スプライト",
                 "透過スプライト"
             ]
-        }
+        },
+        "next": "",
+        "previous": "",
+        "undo": "",
+        "redo": ""
     },
     "assetInput": {
         "changeAsset": "アセットを変更する",
@@ -254,7 +258,10 @@
         "patreon": "ct.jsをPatreonで応援しよう!",
         "createOrBrowseJunction": "or",
         "templates": "テンプレート",
-        "templatesInfo": "これらのテンプレートを使って、ゲーム開発を始めることができます。これらのテンプレートには、プレースホルダーのグラフィックのみが含まれていますが、動作する仕組みは備わっています。プロジェクトを選択すると、新規プロジェクト用のセーブディレクトリ選択画面が表示されます。"
+        "templatesInfo": "これらのテンプレートを使って、ゲーム開発を始めることができます。これらのテンプレートには、プレースホルダーのグラフィックのみが含まれていますが、動作する仕組みは備わっています。プロジェクトを選択すると、新規プロジェクト用のセーブディレクトリ選択画面が表示されます。",
+        "boosty": "",
+        "sponsoredBy": "",
+        "supportedBy": ""
     },
     "onboarding": {
         "hoorayHeader": "やったぁ！プロジェクトが出来上がりましたよ！",
@@ -549,17 +556,6 @@
     "patreon": {
         "aboutPatrons": "パトロンとは、PatreonでComigoGamesに定期的な寄付という形で支援をしている人たちのことです。ct.jsのユーザーばかりではなく、ComigoGamesの他のアプリを利用しているユーザーも支援してくれています。もしあなたがクリエイターで、Patreonを通じてComigoGamesに寄付をすると、あなたのページへのリンクがここに表示されます！これは、あなたの作品の助けになるはずです。^_^",
         "patronsHeader": "ご愛顧いただいている皆様へ",
-        "businessShuttles": "ビジネスシャトル",
-        "noShuttlesYet": "ビジネスシャトルはまだありません( ;∀;) 御社が第一号になるかもしれません",
-        "shuttlesDescription": "ビジネスシャトルは、ct.jsのパートナーとして考えられています。ct.jsのホームページや店舗ページで紹介されます。",
-        "spacePirates": "スペースパイレーツ(宇宙海賊)",
-        "noPiratesYet": "スペースパイレーツはまだいません。",
-        "piratesDescription": "スペースパイレーツはDiscordサーバーで優先的にサポートされます。また、ここにリストアップされます。",
-        "spaceProgrammers": "スペースプログラマー(宇宙プログラマー)",
-        "programmersDescription": "\"スペースプログラマー\" は、ct.js がオープンソース化され、パトロンにジャムゲームのソースがもたらされる前に利用可能だったレガシー層です。",
-        "aspiringAstronauts": "宇宙飛行士を目指す人",
-        "noAstronautsYet": "まだ、宇宙飛行士を目指す人はいません。",
-        "astronautsDescription": "宇宙飛行士はDiscordで特別な役割を与えられ、ここにリストアップされます。",
         "thankAllPatrons": "ComigoGamesのパトロンの皆様、現在および過去のパトロンの皆様、皆様のご支援のおかげで、Comigoは前進し、より良いアプリを作ることができます。(*‘∀‘)",
         "becomeAPatron": "パトロンになる",
         "aboutFillers": [
@@ -580,7 +576,14 @@
             "は燃え盛る炎のよう！",
             "は、光と希望をもたらす？",
             "は、エレガントで美しい？"
-        ]
+        ],
+        "sponsors": "",
+        "noSponsorsYet": "",
+        "sponsorsDescription": "",
+        "businessCats": "",
+        "businessCatsDescription": "",
+        "cats": "",
+        "catsDescription": ""
     },
     "textureInput": {
         "jumpToTexture": "テクスチャーに移動",
@@ -713,7 +716,7 @@
             "helpPanelReminder": "また、ビルトイン ドキュメントも忘れないでください。独自のプロジェクトを開始する前に、公式のチュートリアルを完了することをお勧めします。",
             "buttonStartTutorial": "チュートリアルを開く"
         }
-        },
+    },
     "roomBackgrounds": {
         "add": "背景を追加",
         "depth": "階層:",
@@ -730,7 +733,8 @@
         "moveTileLayer": "別の階層へ移動",
         "show": "レイヤーを表示",
         "hide": "レイヤーを非表示",
-        "findTileset": "タイルセットの検索"
+        "findTileset": "タイルセットの検索",
+        "addTileLayer": ""
     },
     "roomView": {
         "name": "名前:",
@@ -1003,32 +1007,32 @@
             "OnAnimationComplete": "ループしないアニメーションが終了すると発生します。",
             "Timer": "this.timer$1 = 3; を使用して、このタイマーの期間を秒単位で設定します。"
         }
-},
-        "templates": {
-            "create": "作成"
-        },
-        "templateView": {
-            "change": "スプライトを変更",
-            "create": "作成",
-            "depth": "階層:",
-            "destroy": "削除",
-            "done": "完了",
-            "draw": "描く",
-            "learnAboutTypes": "コーディングテンプレートについて",
-            "name": "名前:",
-            "step": "ステップ",
-            "visible": "可視",
-            "appearance": "外観",
-            "opacity": "不透明度",
-            "blendMode": "ブレンド モード:",
-            "animationFPS": "アニメーション FPS:",
-            "playAnimationOnStart": "開始時にアニメーションを再生します",
-            "loopAnimation": "ループアニメーション",
-            "blendModes": {
-                "normal": "標準",
-                "add": "追加 (burn)",
-                "multiply": "Multiply (darken)",
-                "screen": "画面 (lighten)"
-            }
+    },
+    "templates": {
+        "create": "作成"
+    },
+    "templateView": {
+        "change": "スプライトを変更",
+        "create": "作成",
+        "depth": "階層:",
+        "destroy": "削除",
+        "done": "完了",
+        "draw": "描く",
+        "learnAboutTypes": "コーディングテンプレートについて",
+        "name": "名前:",
+        "step": "ステップ",
+        "visible": "可視",
+        "appearance": "外観",
+        "opacity": "不透明度",
+        "blendMode": "ブレンド モード:",
+        "animationFPS": "アニメーション FPS:",
+        "playAnimationOnStart": "開始時にアニメーションを再生します",
+        "loopAnimation": "ループアニメーション",
+        "blendModes": {
+            "normal": "標準",
+            "add": "追加 (burn)",
+            "multiply": "Multiply (darken)",
+            "screen": "画面 (lighten)"
         }
     }
+}

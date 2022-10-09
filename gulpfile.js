@@ -572,36 +572,12 @@ const templates = () => gulp.src('./src/projectTemplates/**/*')
 
 const gallery = () => gulp.src('./bundledAssets/**/*')
     .pipe(gulp.dest('./app/bundledAssets'));
-
-// eslint-disable-next-line valid-jsdoc
-/**
- * @see https://stackoverflow.com/a/22907134
- */
-const patronsCache = done => {
-    const http = require('https');
-
-    const dest = './app/data/patronsCache.csv',
-          src = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTUMd6nvY0if8MuVDm5-zMfAxWCSWpUzOc81SehmBVZ6mytFkoB3y9i9WlUufhIMteMDc00O9EqifI3/pub?output=csv';
-    const file = fs.createWriteStream(dest);
-    http.get(src, response => {
-        response.pipe(file);
-        file.on('finish', () => {
-            file.close(() => done()); // close() is async, call cb after close completes.
-        });
-    })
-    .on('error', err => { // Handle errors
-        fs.unlink(dest); // Delete the file async. (But we don't check the result)
-        done(err);
-    });
-};
-
 const packages = gulp.series([
     lint,
     abortOnWindows,
     gulp.parallel([
         build,
         docs,
-        patronsCache,
         examples,
         templates,
         gallery
@@ -659,7 +635,6 @@ exports.lintI18n = lintI18n;
 exports.lint = lint;
 exports.packages = packages;
 exports.nwbuild = bakePackages;
-exports.patronsCache = patronsCache;
 exports.docs = docs;
 exports.build = build;
 exports.deploy = deploy;

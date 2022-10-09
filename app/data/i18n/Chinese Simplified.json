@@ -127,7 +127,9 @@
             ]
         },
         "next": "",
-        "previous": ""
+        "previous": "",
+        "undo": "",
+        "redo": ""
     },
     "colorPicker": {
         "current": "新建",
@@ -213,7 +215,10 @@
         "vkontakte": "Vkontakte 公共社区",
         "patreon": "在 Patreon 支持 ct.js!",
         "templates": "模板",
-        "templatesInfo": "你可以通过使用这些模板之一来启动游戏开发.它们只包含占位符图像，但具有有效的机制. 选择项目将为新项目打开一个保存目录选择器"
+        "templatesInfo": "你可以通过使用这些模板之一来启动游戏开发.它们只包含占位符图像，但具有有效的机制. 选择项目将为新项目打开一个保存目录选择器",
+        "boosty": "",
+        "sponsoredBy": "",
+        "supportedBy": ""
     },
     "onboarding": {
         "hoorayHeader": "赞! 您成功创建了一个项目!",
@@ -478,17 +483,6 @@
     "patreon": {
         "aboutPatrons": "赞助人是以经常性捐赠的形式表示对Patreon的ComigoGames的支持. 并不是每个人都来自ct.js. 有些是正在使用ComigoGames的其他应用程序. 提示: 如果您是创作者, 并通过Patreon捐赠给ComigoGames, 您将在此处找到指向您页面的链接 — 这就是我对您的创作的小小帮助 :)",
         "patronsHeader": "我们的赞助人",
-        "businessShuttles": "商务班车",
-        "noShuttlesYet": "还没有商务班车 :c 不过您的公司可能是第一家!",
-        "shuttlesDescription": "商务班车被视为ct.js的合作伙伴. 它们列在ct.js的主页及其商店页面上.",
-        "spacePirates": "太空海盗",
-        "noPiratesYet": "还没有太空海盗 :c",
-        "piratesDescription": "Space Pirates具有出色的角色, 可以在Discord服务器上获得优先支持, 并在此处列出.",
-        "spaceProgrammers": "太空程序员",
-        "programmersDescription": "\"空间程序员\"是在ct.js开放源代码并将jam游戏的资源提供给用户之前就存在的一种处理层.",
-        "aspiringAstronauts": "有抱负的宇航员",
-        "noAstronautsYet": "目前还没有有抱负的宇航员 :c",
-        "astronautsDescription": "宇航员在Discord中扮演一个特殊的角色, 并在此列出!",
         "thankAllPatrons": "感谢所有现有和以前的ComigoGames支持者, 因为您的支持将使Comigo不断前进并开发出更好的应用! :)",
         "becomeAPatron": "成为赞助人",
         "aboutFillers": [
@@ -509,7 +503,14 @@
             "就像烈火一样! 🔥",
             "带来光明和希望 🌞",
             "优雅而美丽 🎩"
-        ]
+        ],
+        "sponsors": "",
+        "noSponsorsYet": "",
+        "sponsorsDescription": "",
+        "businessCats": "",
+        "businessCatsDescription": "",
+        "cats": "",
+        "catsDescription": ""
     },
     "mainMenu": {
         "troubleshooting": {
@@ -713,7 +714,8 @@
         "moveTileLayer": "移动到一个新的深度",
         "show": "显示图层",
         "hide": "隐藏图层",
-        "findTileset": "查找图块集"
+        "findTileset": "查找图块集",
+        "addTileLayer": ""
     },
     "roomView": {
         "name": "名称:",
@@ -747,12 +749,15 @@
             "position": "位置",
             "rotation": "旋转",
             "scale": "缩放",
-            "multipleValues": ""
+            "multipleValues": "",
+            "opacity": "",
+            "tint": ""
         },
         "copyCustomProperties": {
             "addProperty": "添加属性",
             "property": "属性",
-            "value": "值"
+            "value": "值",
+            "nameOccupied": ""
         },
         "customProperties": "自定义属性",
         "restrictCamera": "保持相机在一个矩形中",
@@ -784,7 +789,8 @@
             "addTiles": "",
             "manageBackgrounds": "",
             "roomProperties": ""
-        }
+        },
+        "resetView": ""
     },
     "styleView": {
         "active": "激活",
@@ -861,7 +867,8 @@
         "marginX": "边距 X:",
         "marginY": "边距 Y:",
         "offX": "位移 X:",
-        "offY": "位移 Y:"
+        "offY": "位移 Y:",
+        "blankTextureNotice": ""
     },
     "soundView": {
         "import": "导入",
@@ -893,7 +900,20 @@
         "typefaceName": "字体名称:"
     },
     "licensePanel": {
-        "ctjsLicense": "Ct.js 许可证 (MIT)"
+        "ctjsLicense": "Ct.js 许可证 (MIT)",
+        "faq": "",
+        "whoOwnsGamesQ": "",
+        "whoOwnsGamesA": "",
+        "sellingGamesQ": "",
+        "sellingGamesA": "",
+        "possibleFeesQ": "",
+        "possibleFeesA": "",
+        "useInStudioQ": "",
+        "useInStudioA": "",
+        "attributionQ": "",
+        "attributionA": "",
+        "attributionAAssets": "",
+        "theLicense": ""
     },
     "templates": {
         "create": "创建"
@@ -983,10 +1003,18 @@
         "coreParameterizedNames": {
             "OnActionPress": "",
             "OnActionRelease": "",
-            "OnActionDown": ""
+            "OnActionDown": "",
+            "Timer1": "",
+            "Timer2": "",
+            "Timer3": "",
+            "Timer4": "",
+            "Timer5": "",
+            "Timer6": ""
         },
         "coreEventsArguments": {
-            "action": ""
+            "action": "",
+            "name": "",
+            "isUi": ""
         },
         "coreEventsLocals": {
             "OnActionDown_value": "",
