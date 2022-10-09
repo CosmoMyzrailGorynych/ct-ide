@@ -1,69 +1,63 @@
 patron-line
-    img(src="{patron.avatar}")
-    b {opts.patron.name}
+    .aPatronEmoji {parent.getEmoji(opts.patron)}
+    b {opts.patron}
     |
     |
-    span(if="{!opts.patron.about}") {parent.getFiller(opts.patron.name)}
-    a(href="{opts.patron.link}" if="{opts.patron.about}")
-        | {opts.patron.about}
-        |
-        |
-        span(if="{opts.patron['18+']}") 🔞
-    span(if="{!opts.patron['18+'] && opts.patron.about}") {parent.getEmoji(opts.patron.name)}
-    script.
+    span {parent.getFiller(opts.patron)}
 
 patreon-screen.aView(style="z-index: 100;")
     .Confetti
         .aConfettiPiece(each="{confetti in (new Array(15))}" style="background: {getConfettiColor()}")
+    aside
+        p {voc.aboutPatrons}
+        p.aPatronThanks {voc.thankAllPatrons}
+        h3
+            img(src="/data/img/boostyTiers_sponsor.png")
+            |
+            | {voc.sponsors}
+        p {voc.sponsorsDescription}
+
+        h3
+            img(src="/data/img/boostyTiers_businessCat.png")
+            |
+            | {voc.businessCats}
+        p {voc.businessCatsDescription}
+
+        h3
+            img(src="/data/img/boostyTiers_ct.png")
+            |
+            | {voc.cats}
+        p {voc.catsDescription}
+
+        button(onclick="{openBoosty}").nml
+            svg.feather
+                use(xlink:href="#heart")
+            span  {voc.becomeAPatron}
     h1 {voc.patronsHeader}
-    p {voc.aboutPatrons}
     div(if="{loading}")
         svg.feather
             use(xlink:href="#loader")
         | {vocGlob.loading}
     div(if="{!loading}")
-        h2 {voc.businessShuttles}
-
-        patron-line(each="{patron in patrons.shuttles}" patron="{patron}")
-
-        p
-            span(if="{!patrons.shuttles.length}") {voc.noShuttlesYet}
+        h2
+            img(src="/data/img/boostyTiers_sponsor.png")
             |
+            | {voc.sponsors}
+        patron-line(each="{patron in patrons.sponsors}" patron="{patron}")
+        p(if="{!patrons.sponsors.length}") {voc.noSponsorsYet}
+
+        h2
+            img(src="/data/img/boostyTiers_businessCat.png")
             |
-            | {voc.shuttlesDescription}
+            | {voc.businessCats}
+        patron-line(each="{patron in patrons.businessCats}" patron="{patron}")
 
-        h2 {voc.spacePirates}
-
-        patron-line(each="{patron in patrons.pirates}" patron="{patron}")
-
-        p
-            span(if="{!patrons.pirates.length}") {noPiratesYet}
+        h2
+            img(src="/data/img/boostyTiers_ct.png")
             |
-            |
-            | {voc.piratesDescription}
+            | {voc.cats}
+        patron-line(each="{patron in patrons.cats}" patron="{patron}")
 
-        h2 {voc.spaceProgrammers}
-
-        patron-line(each="{patron in patrons.programmers}" patron="{patron}")
-
-        p {voc.programmersDescription}
-
-        h2 {voc.aspiringAstronauts}
-
-        patron-line(each="{patron in patrons.astronauts}" patron="{patron}")
-
-        p
-            span(if="{!patrons.astronauts.length}") {noAstronautsYet}
-            |
-            |
-            | {voc.astronautsDescription}
-
-        p.aPatronThanks {voc.thankAllPatrons}
-
-    button(onclick="{openPatreon}").nml
-        svg.feather
-            use(xlink:href="#heart")
-        span  {voc.becomeAPatron}
     script.
         this.namespace = 'patreon';
         this.mixin(window.riotVoc);
@@ -111,56 +105,18 @@ patreon-screen.aView(style="z-index: 100;")
         this.getConfettiColor = () =>
             this.confettiColors[Math.floor(Math.random() * this.confettiColors.length)];
 
-        this.importPatronData = text => {
-            const patrons = [];
-            var table = text.split('\r\n').map(row => row.split(','));
-            for (let i = 1, l = table.length; i < l; i++) {
-                const obj = {},
-                      row = table[i];
-                for (let j = 0; j < row.length; j++) {
-                    obj[table[0][j].trim()] = row[j];
-                }
-                const prev = patrons.find(patron => patron.name === obj.name);
-                if (prev) {
-                    patrons.splice(patrons.indexOf(prev), 1);
-                }
-                patrons.push(obj);
-            }
-            patrons.filter(patron => patron.tier);
-            patrons.forEach(patron => {
-                patron.former = Boolean(patron.former);
-                if (patron.tier === 'An Aspiring Astronaut') {
-                    this.patrons.astronauts.push(patron);
-                } else if (patron.tier === 'A Space Pirate') {
-                    this.patrons.pirates.push(patron);
-                } else if (patron.tier === 'A Business Shuttle') {
-                    this.patrons.shuttles.push(patron);
-                } else if (patron.tier === 'A Space Programmer') {
-                    this.patrons.programmers.push(patron);
-                }
-            });
+        this.importPatronData = async () => {
+            const fs = require('fs-extra');
+            const YAML = require('js-yaml');
+            const raw = await fs.readFile('./data/boosters.yaml', 'utf8');
+            const patronsYaml = YAML.load(raw);
+
+            this.patrons = patronsYaml;
             this.loading = false;
             this.update();
         };
-        this.loadPatrons = () => {
-            this.loading = true;
-            window.fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vTUMd6nvY0if8MuVDm5-zMfAxWCSWpUzOc81SehmBVZ6mytFkoB3y9i9WlUufhIMteMDc00O9EqifI3/pub?output=csv')
-            .then(response => response.text())
-            .then(this.importPatronData)
-            .catch(e => {
-                console.error(e);
-                const fs = require('fs-extra');
-                fs.readFile('./data/patronsCache.csv', {
-                    encoding: 'utf8'
-                })
-                .then(this.importPatronData)
-                .catch(e => {
-                    console.error(e);
-                });
-            });
-        };
-        this.loadPatrons();
+        this.importPatronData();
 
-        this.openPatreon = () => {
+        this.openBoosty = () => {
             nw.Shell.openExternal('https://www.patreon.com/comigo');
         };
