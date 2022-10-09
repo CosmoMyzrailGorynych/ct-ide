@@ -428,12 +428,10 @@ project-selector
             if (sponsors.length && Math.random() < 0.5) { // sponsors get priority over other tiers
                 this.featuredPatron = sponsors[Math.floor(Math.random() * sponsors.length)];
                 this.featuredSponsor = true;
+            } else if (businessCats.length && Math.random() < 0.5) {
+                this.featuredPatron = businessCats[Math.floor(Math.random() * businessCats.length)];
             } else {
-                if (businessCats.length && Math.random() < 0.5) {
-                    this.featuredPatron = businessCats[Math.floor(Math.random() * businessCats.length)];
-                } else {
-                    this.featuredPatron = cats[Math.floor(Math.random() * cats.length)];
-                }
+                this.featuredPatron = cats[Math.floor(Math.random() * cats.length)];
             }
             this.update();
         };
