@@ -100,7 +100,7 @@
         "saveProject": "Sauvegarder le projet",
         "openProject": "Ouvrir un projet…",
         "savedMessage": "Votre projet a été enregistré.",
-        "reallyExitConfirm": "Êtes-vous sur de vouloir quitter ? Tous les changements non sauvegardés seront perdu !",
+        "reallyExitConfirm": "Êtes-vous sur de vouloir quitter ? Tous les changements non sauvegardés seront perdus !",
         "notFoundOrUnknown": "Fichier inconnu. Vérifiez que le fichier existe.",
         "nameTaken": "Ce nom est déjà pris",
         "fastImport": "Import Rapide",
@@ -880,7 +880,7 @@
         "poolSize": "Taille de la piste :"
     },
     "fontView": {
-        "italic": "Format italique ?",
+        "italic": "Format italique ?",
         "reimport": "Réimporter",
         "generateBitmapFont": "Générer également une police Bitmap",
         "bitmapFont": "Police Bitmap",

@@ -32,6 +32,10 @@ build/Release
 node_modules
 bower_components
 
+# To use Yarn for instance.
+.lock
+package-lock.json
+
 temp/
 desktop\.ini
 *.png~
