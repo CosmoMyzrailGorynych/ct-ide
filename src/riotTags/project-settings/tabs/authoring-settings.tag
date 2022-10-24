@@ -36,7 +36,4 @@ authoring-settings
 
         this.changeTitle = e => {
             this.authoring.title = e.target.value.trim();
-            if (this.authoring.title) {
-                document.title = this.authoring.title + ' — ct.js';
-            }
         };

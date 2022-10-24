@@ -619,6 +619,7 @@
             "openProject": "",
             "openExample": "",
             "startScreen": "Powróć do ekranu początkowego",
+            "startNewWindow": "",
             "successZipProject": "Pomyślnie spakowano projekt do {0}.",
             "zipProject": "Spakuj projekt do .zip",
             "heading": ""

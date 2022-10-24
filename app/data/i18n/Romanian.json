@@ -619,6 +619,7 @@
             "openProject": "",
             "openExample": "",
             "startScreen": "Întoarce-te la ecranul de pornire",
+            "startNewWindow": "",
             "successZipProject": "Proiectul a fost arhivat (zip) cu succes în {0}.",
             "zipProject": "Împachetază proiectul în .zip",
             "heading": ""

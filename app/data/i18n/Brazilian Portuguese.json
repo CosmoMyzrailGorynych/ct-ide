@@ -658,6 +658,7 @@
             "openIncludeFolder": "Abrir a pasta \"include\"",
             "openProject": "Abrir um projeto…",
             "openExample": "Abrir um projeto de exemplo…",
+            "startNewWindow": "",
             "startScreen": "Retornar para a tela inicial",
             "successZipProject": "Projeto zipado com sucesso para {0}.",
             "zipProject": "Compactar o projeto para .zip"

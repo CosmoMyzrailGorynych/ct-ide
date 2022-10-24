@@ -659,6 +659,7 @@
             "openProject": "プロジェクトを開く",
             "openExample": "サンプルプロジェクトを開く",
             "startScreen": "起動画面に戻る",
+            "startNewWindow": "",
             "successZipProject": "プロジェクトのZip圧縮に成功。 {0} に保存されました。",
             "zipProject": "プロジェクトを.zipに圧縮"
         },

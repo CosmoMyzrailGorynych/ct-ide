@@ -566,6 +566,7 @@
         "project": {
             "heading": "项目",
             "startScreen": "返回启动画面",
+            "startNewWindow": "",
             "successZipProject": "已成功将项目压缩到{0}.",
             "save": "保存项目",
             "zipProject": "将项目打包到.zip",

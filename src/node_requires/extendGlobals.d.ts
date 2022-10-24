@@ -26,6 +26,7 @@ declare global {
         projdir: string;
         showOpenDialog(options: any): Promise<string | false>;
         showSaveDialog(options: any): Promise<string | false>;
+        updateWindowMenu?(): Promise<void>;
     }
 }
 declare namespace PIXI {

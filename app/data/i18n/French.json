@@ -619,6 +619,7 @@
             "openProject": "Ouvrir un projet…",
             "openExample": "Ouvrir un projet d’exemple…",
             "startScreen": "Retourner à l'écran de démarrage",
+            "startNewWindow": "",
             "successZipProject": "Le projet a été compressé avec succès vers {0}.",
             "zipProject": "Compresser le projet en .zip",
             "heading": "Projet"
