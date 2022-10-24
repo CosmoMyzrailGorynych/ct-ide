@@ -45,7 +45,7 @@
     "nw-builder-arm": "https://github.com/markmehere/nw-builder-arm#v3.8.3",
     "nw-builder": "3.8.3-beta.1",
     "pug": "^3.0.2",
-    "readysteady": "^1.1.4",
+    "readysteady": "^2.0.1",
     "riot": "^3.13.2",
     "streamqueue": "^1.1.2",
     "stylelint": "^14.9.1",
