@@ -19,7 +19,7 @@ export const copy: IRoomEditorInteraction<void> = {
                 if (stuff instanceof Copy) {
                     this.clipboard.add([
                         'copy',
-                        stuff.serialize()
+                        stuff.serialize(true)
                     ]);
                 } else if (stuff instanceof Tile) {
                     this.clipboard.add([
