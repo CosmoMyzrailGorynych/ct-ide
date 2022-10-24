@@ -135,7 +135,8 @@
         "current": "New",
         "globalPalette": "Globaal Palet",
         "old": "Oud",
-        "projectPalette": "Palet van Project"
+        "projectPalette": "Palet van Project",
+        "altClick": ""
     },
     "curveEditor": {
         "curveLineHint": "Klik op de kromming om een punt toe te voegen",
@@ -215,7 +216,9 @@
         "patreon": "Steun ct.js op Patreon!",
         "templates": "Sjablonen",
         "templatesInfo": "Je kan je game ontwikkeling een snelle start geven door een van deze sjablonen te gebruiken. Ze bevatten enkel tijdelijke afbeeldingen, maar hebben werkende mechanics. Als je een project hebt geselecteerd kan je een opslagmap kiezen.",
-        "boosty": "Steun ct.js op Boosty!"
+        "boosty": "Steun ct.js op Boosty!",
+        "sponsoredBy": "",
+        "supportedBy": ""
     },
     "onboarding": {
         "hoorayHeader": "Wow! Je hebt zojuist een project gecreëerd!",
@@ -480,17 +483,6 @@
     "patreon": {
         "aboutPatrons": "Patrons zijn mensen die hun steun betuigen aan ComigoGames op Patreon, in de vorm van terugkerende donaties. Niet iedereen daar komt voor ct.js; sommigen gebruiken andere apps van ComigoGames. Tip: als je een maker bent en via Patreon aan ComigoGames doneert, krijg je hier een link naar je pagina - dat is mijn kleine hulp voor je creaties :)",
         "patronsHeader": "Onze patrons",
-        "businessShuttles": "Zakelijke shuttles",
-        "noShuttlesYet": "Nog geen zakelijke shuttles :c Jouw bedrijf is misschien wel de eerste!",
-        "shuttlesDescription": "Zakelijke shuttles worden beschouwd als partners van ct.js. Ze staan ​​vermeld op de thuispagina van ct.js en de winkelpagina's.",
-        "spacePirates": "Ruimte Piraten",
-        "noPiratesYet": "Er zijn nog geen Ruimte Piraten :c",
-        "piratesDescription": "Ruimte Piraten krijgen prioriteitsondersteuning op Discord-server met een coole rol en worden hier vermeld.",
-        "spaceProgrammers": "Ruimte Programmeurs",
-        "programmersDescription": "\"Ruimte Programmeurs\" is een legacy-tier die beschikbaar was voordat ct.js open-source ging en bronnen van jamgames naar klanten bracht.",
-        "aspiringAstronauts": "Aspirant-astronauten",
-        "noAstronautsYet": "Er zijn nog geen Aspirant-astronauten",
-        "astronautsDescription": "Astronauten krijgen een speciale rol in Discord en worden hier vermeld!",
         "thankAllPatrons": "Dank aan alle vaste en voormalige klanten van ComigoGames, want jouw steun houdt Comigo vooruit en maakt nog betere apps! :)",
         "becomeAPatron": "Wordt een patron",
         "aboutFillers": [
@@ -511,7 +503,14 @@
             "is als een laaiend vuur! 🔥",
             "brengt licht en hoop 🌞",
             "is elegant en mooi 🎩"
-        ]
+        ],
+        "sponsors": "",
+        "noSponsorsYet": "",
+        "sponsorsDescription": "",
+        "businessCats": "",
+        "businessCatsDescription": "",
+        "cats": "",
+        "catsDescription": ""
     },
     "docsPanel": {
         "documentation": "Documentatie",
@@ -620,6 +619,7 @@
             "openProject": "Open een project...",
             "openExample": "Open een voorbeeld project...",
             "startScreen": "Keer terug naar het startscherm",
+            "startNewWindow": "",
             "successZipProject": "Het project is succesvol naar {0} ingepakt.",
             "zipProject": "Project inpakken naar .zip",
             "heading": "Project"

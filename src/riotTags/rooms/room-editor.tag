@@ -261,6 +261,7 @@ room-editor.aPanel.aView
                 }
             });
         };
+        // eslint-disable-next-line complexity
         const triggerKeyboardEvent = e => {
             if (!window.hotkeys.inScope('rooms')) {
                 return false;
@@ -268,15 +269,18 @@ room-editor.aPanel.aView
             if (['input', 'textarea', 'select'].includes(e.target.nodeName.toLowerCase())) {
                 return false;
             }
-            if (e.key === 'Delete') {
+            const ctrlKey = navigator.platform.indexOf('Mac') > -1 ?
+                e.metaKey :
+                e.ctrlKey;
+            if (e.key === 'Delete' || e.key === 'Backspace') {
                 return phabricateEvent('delete', e);
-            } else if (e.code === 'KeyC' && e.ctrlKey) {
+            } else if (e.code === 'KeyC' && ctrlKey) {
                 return phabricateEvent('copy', e);
-            } else if (e.code === 'KeyV' && e.ctrlKey) {
+            } else if (e.code === 'KeyV' && ctrlKey) {
                 return phabricateEvent('paste', e);
-            } else if (e.code === 'KeyZ' && e.ctrlKey && e.shiftKey) {
+            } else if (e.code === 'KeyZ' && ctrlKey && e.shiftKey) {
                 return phabricateEvent('redo', e);
-            } else if (e.code === 'KeyZ' && e.ctrlKey) {
+            } else if (e.code === 'KeyZ' && ctrlKey) {
                 return phabricateEvent('undo', e);
             } else if (e.code === 'KeyH') {
                 return phabricateEvent('home', e);
@@ -288,6 +292,9 @@ room-editor.aPanel.aView
                 return phabricateEvent('nudgeup', e);
             } else if (e.key === 'ArrowDown') {
                 return phabricateEvent('nudgedown', e);
+            } else if (e.key === 'Tab') {
+                phabricateEvent('tab', e);
+                return e.preventDefault();
             }
             return false;
         };

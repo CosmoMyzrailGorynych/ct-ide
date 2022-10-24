@@ -127,7 +127,9 @@
             ]
         },
         "next": "",
-        "previous": ""
+        "previous": "",
+        "undo": "",
+        "redo": ""
     },
     "colorPicker": {
         "current": "Nou",
@@ -193,7 +195,10 @@
         "vkontakte": "",
         "patreon": "",
         "templates": "",
-        "templatesInfo": ""
+        "templatesInfo": "",
+        "boosty": "",
+        "sponsoredBy": "",
+        "supportedBy": ""
     },
     "settings": {
         "actions": {
@@ -478,17 +483,6 @@
     "patreon": {
         "aboutPatrons": "",
         "patronsHeader": "",
-        "businessShuttles": "",
-        "noShuttlesYet": "",
-        "shuttlesDescription": "",
-        "spacePirates": "",
-        "noPiratesYet": "",
-        "piratesDescription": "",
-        "spaceProgrammers": "",
-        "programmersDescription": "",
-        "aspiringAstronauts": "",
-        "noAstronautsYet": "",
-        "astronautsDescription": "",
         "thankAllPatrons": "",
         "becomeAPatron": "",
         "aboutFillers": [
@@ -509,7 +503,14 @@
             "",
             "",
             ""
-        ]
+        ],
+        "sponsors": "",
+        "noSponsorsYet": "",
+        "sponsorsDescription": "",
+        "businessCats": "",
+        "businessCatsDescription": "",
+        "cats": "",
+        "catsDescription": ""
     },
     "docsPanel": {
         "documentation": "",
@@ -618,6 +619,7 @@
             "openProject": "",
             "openExample": "",
             "startScreen": "Întoarce-te la ecranul de pornire",
+            "startNewWindow": "",
             "successZipProject": "Proiectul a fost arhivat (zip) cu succes în {0}.",
             "zipProject": "Împachetază proiectul în .zip",
             "heading": ""
@@ -713,7 +715,8 @@
         "moveTileLayer": "Mută la o nouă adâncime",
         "show": "Arată layer-ul",
         "hide": "Ascunde layer-ul",
-        "findTileset": "Găsește un Tileset"
+        "findTileset": "Găsește un Tileset",
+        "addTileLayer": ""
     },
     "roomView": {
         "name": "Nume:",
@@ -747,12 +750,15 @@
             "position": "",
             "rotation": "",
             "scale": "",
-            "multipleValues": ""
+            "multipleValues": "",
+            "opacity": "",
+            "tint": ""
         },
         "copyCustomProperties": {
             "addProperty": "",
             "property": "",
-            "value": ""
+            "value": "",
+            "nameOccupied": ""
         },
         "customProperties": "",
         "restrictCamera": "",
@@ -784,7 +790,8 @@
             "addTiles": "",
             "manageBackgrounds": "",
             "roomProperties": ""
-        }
+        },
+        "resetView": ""
     },
     "styleView": {
         "active": "Activ",
@@ -861,7 +868,8 @@
         "marginX": "Margine X:",
         "marginY": "Margine Y:",
         "offX": "Offset X:",
-        "offY": "Offset Y:"
+        "offY": "Offset Y:",
+        "blankTextureNotice": ""
     },
     "soundView": {
         "import": "Importă",
@@ -893,7 +901,20 @@
         "typefaceName": "Numele tipului de caractere:"
     },
     "licensePanel": {
-        "ctjsLicense": ""
+        "ctjsLicense": "",
+        "faq": "",
+        "whoOwnsGamesQ": "",
+        "whoOwnsGamesA": "",
+        "sellingGamesQ": "",
+        "sellingGamesA": "",
+        "possibleFeesQ": "",
+        "possibleFeesA": "",
+        "useInStudioQ": "",
+        "useInStudioA": "",
+        "attributionQ": "",
+        "attributionA": "",
+        "attributionAAssets": "",
+        "theLicense": ""
     },
     "templates": {
         "create": "Crează"
@@ -983,10 +1004,18 @@
         "coreParameterizedNames": {
             "OnActionPress": "",
             "OnActionRelease": "",
-            "OnActionDown": ""
+            "OnActionDown": "",
+            "Timer1": "",
+            "Timer2": "",
+            "Timer3": "",
+            "Timer4": "",
+            "Timer5": "",
+            "Timer6": ""
         },
         "coreEventsArguments": {
-            "action": ""
+            "action": "",
+            "name": "",
+            "isUi": ""
         },
         "coreEventsLocals": {
             "OnActionDown_value": "",

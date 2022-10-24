@@ -9,6 +9,7 @@ declare global {
     var brehautColor: any;
     var languageJSON: any;
     var monaco: any;
+    var dragonBones: any;
     var currentProject: IProject;
     var projdir: string;
     var migrationProcess: any[];
@@ -25,6 +26,7 @@ declare global {
         projdir: string;
         showOpenDialog(options: any): Promise<string | false>;
         showSaveDialog(options: any): Promise<string | false>;
+        updateWindowMenu?(): Promise<void>;
     }
 }
 declare namespace PIXI {

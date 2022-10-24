@@ -1,10 +1,16 @@
 project-selector
     #theIntroBg.stretch.flexcol
-        .pad.left.nogrow
-            button.inline(onclick="{toggleLanguageSelector}")
+        .pad.left.nogrow.flexrow
+            button.inline.nogrow(onclick="{toggleLanguageSelector}")
                 svg.feather
                     use(xlink:href="#translate")
                 span {window.languageJSON.mainMenu.settings.language}
+            .aSpacer
+            .nogrow.project-selector-aPatronsLine(if="{featuredPatron}")
+                svg.feather
+                    use(xlink:href="#heart")
+                span(if="{featuredSponsor}") {voc.sponsoredBy.replace('$1', featuredPatron)}
+                span(if="{!featuredSponsor}") {voc.supportedBy.replace('$1', featuredPatron)}
         .aSpacer
         #intro.aPanel.flexfix.nogrow
             ul.aNav.tabs.flexfix-header.nb
@@ -137,7 +143,7 @@ project-selector
     script.
         const fs = require('fs-extra'),
               path = require('path');
-        const {isMac} = require('./data/node_requires/platformUtils');
+        this.isMac = require('./data/node_requires/platformUtils').isMac;
         const {openProject} = require('./data/node_requires/resources/projects');
         this.ctjsVersion = process.versions.ctjs;
         this.requirePath = path;
@@ -410,3 +416,23 @@ project-selector
         this.toggleLanguageSelector = e => {
             this.refs.languageslist.popup(e.clientX, e.clientY);
         };
+
+
+        this.importPatronData = async () => {
+            const fs = require('fs-extra');
+            const YAML = require('js-yaml');
+            const raw = await fs.readFile('./data/boosters.yaml', 'utf8');
+            const patronsYaml = YAML.load(raw);
+            this.patrons = patronsYaml;
+            const {sponsors, businessCats, cats} = this.patrons;
+            if (sponsors.length && Math.random() < 0.5) { // sponsors get priority over other tiers
+                this.featuredPatron = sponsors[Math.floor(Math.random() * sponsors.length)];
+                this.featuredSponsor = true;
+            } else if (businessCats.length && Math.random() < 0.5) {
+                this.featuredPatron = businessCats[Math.floor(Math.random() * businessCats.length)];
+            } else {
+                this.featuredPatron = cats[Math.floor(Math.random() * cats.length)];
+            }
+            this.update();
+        };
+        this.importPatronData();

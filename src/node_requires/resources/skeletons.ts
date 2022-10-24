@@ -1,19 +1,28 @@
+declare interface ISkeleton extends IAsset {
+    origname: string;
+    from: 'dragonbones' | string;
+    name: string;
+}
+
 const path = require('path');
 
-const getSkeletonData = function getSkeletonData(skeleton, fs) {
+const getSkeletonData = function getSkeletonData(skeleton: ISkeleton, fs?: boolean): string {
     if (fs) {
         return path.join(global.projdir, 'img', skeleton.origname);
     }
     return `file://${global.projdir}/img/${skeleton.origname}`;
 };
-const getSkeletonTextureData = function getSkeletonTextureData(skeleton, fs) {
+const getSkeletonTextureData = function getSkeletonTextureData(
+    skeleton: ISkeleton,
+    fs?: boolean
+): string {
     const slice = skeleton.origname.replace('_ske.json', '');
     if (fs) {
         return path.join(global.projdir, 'img', `${slice}_tex.json`);
     }
     return `file://${global.projdir}/img/${slice}_tex.json`;
 };
-const getSkeletonTexture = function getSkeletonTexture(skeleton, fs) {
+const getSkeletonTexture = function getSkeletonTexture(skeleton: ISkeleton, fs?: boolean): string {
     const slice = skeleton.origname.replace('_ske.json', '');
     if (fs) {
         return path.join(global.projdir, 'img', `${slice}_tex.png`);
@@ -21,7 +30,7 @@ const getSkeletonTexture = function getSkeletonTexture(skeleton, fs) {
     return `file://${global.projdir}/img/${slice}_tex.png`;
 };
 
-const getSkeletonPreview = function getSkeletonPreview(skeleton, fs) {
+const getSkeletonPreview = function getSkeletonPreview(skeleton: ISkeleton, fs: boolean): string {
     if (fs) {
         return path.join(global.projdir, 'img', `${skeleton.origname}_prev.png`);
     }
@@ -33,8 +42,8 @@ const getSkeletonPreview = function getSkeletonPreview(skeleton, fs) {
  * @param {String} skeleton The skeleton object to generate a preview for.
  * @returns {Promise<void>} Resolves after creating a thumbnail.
  */
-const skeletonGenPreview = function (skeleton) {
-    const loader = new PIXI.loaders.Loader(),
+const skeletonGenPreview = function (skeleton: ISkeleton): Promise<void> {
+    const loader = new PIXI.Loader(),
           dbf = dragonBones.PixiFactory.factory;
     const fs = require('fs-extra');
     return new Promise((resolve, reject) => {
@@ -63,9 +72,9 @@ const skeletonGenPreview = function (skeleton) {
             .then(() => {
                 // Clean memory from DragonBones' armatures
                 // eslint-disable-next-line no-underscore-dangle
-                delete dbf._dragonBonesDataMap[loader.resources[skelData].data.name];
+                delete (dbf as any)._dragonBonesDataMap[loader.resources[skelData].data.name];
                 // eslint-disable-next-line no-underscore-dangle
-                delete dbf._textureAtlasDataMap[loader.resources[skelData].data.name];
+                delete (dbf as any)._textureAtlasDataMap[loader.resources[skelData].data.name];
             })
             .then(resolve)
             .catch(reject);
@@ -73,7 +82,7 @@ const skeletonGenPreview = function (skeleton) {
     });
 };
 
-const importSkeleton = async function importSkeleton(source, group) {
+const importSkeleton = async function importSkeleton(source: string, group?: string) {
     const generateGUID = require('./../generateGUID');
     const fs = require('fs-extra');
 
@@ -89,6 +98,8 @@ const importSkeleton = async function importSkeleton(source, group) {
         name: path.basename(source).replace('_ske.json', ''),
         origname: path.basename(partialDest + '_ske.json'),
         from: 'dragonbones',
+        type: 'skeleton' as resourceType,
+        lastmod: Number(Date.now()),
         group,
         uid
     };

@@ -126,13 +126,15 @@
                 "骨骼精灵图形"
             ]
         },
-        "next": "",
-        "previous": ""
+        "next": "下一个",
+        "previous": "上一个",
+        "undo": "撤销",
+        "redo": "恢复"
     },
     "colorPicker": {
         "current": "新建",
         "globalPalette": "全局调色盘",
-        "altClick": "",
+        "altClick": "Alt-click 删除",
         "old": "旧的",
         "projectPalette": "项目的调色盘"
     },
@@ -213,7 +215,10 @@
         "vkontakte": "Vkontakte 公共社区",
         "patreon": "在 Patreon 支持 ct.js!",
         "templates": "模板",
-        "templatesInfo": "你可以通过使用这些模板之一来启动游戏开发.它们只包含占位符图像，但具有有效的机制. 选择项目将为新项目打开一个保存目录选择器"
+        "templatesInfo": "你可以通过使用这些模板之一来启动游戏开发.它们只包含占位符图像，但具有有效的机制. 选择项目将为新项目打开一个保存目录选择器",
+        "boosty": "在 Boosty 上支持 ct.js!",
+        "sponsoredBy": "自豪地赞助 $1!",
+        "supportedBy": "支持了 $1!"
     },
     "onboarding": {
         "hoorayHeader": "赞! 您成功创建了一个项目!",
@@ -478,17 +483,6 @@
     "patreon": {
         "aboutPatrons": "赞助人是以经常性捐赠的形式表示对Patreon的ComigoGames的支持. 并不是每个人都来自ct.js. 有些是正在使用ComigoGames的其他应用程序. 提示: 如果您是创作者, 并通过Patreon捐赠给ComigoGames, 您将在此处找到指向您页面的链接 — 这就是我对您的创作的小小帮助 :)",
         "patronsHeader": "我们的赞助人",
-        "businessShuttles": "商务班车",
-        "noShuttlesYet": "还没有商务班车 :c 不过您的公司可能是第一家!",
-        "shuttlesDescription": "商务班车被视为ct.js的合作伙伴. 它们列在ct.js的主页及其商店页面上.",
-        "spacePirates": "太空海盗",
-        "noPiratesYet": "还没有太空海盗 :c",
-        "piratesDescription": "Space Pirates具有出色的角色, 可以在Discord服务器上获得优先支持, 并在此处列出.",
-        "spaceProgrammers": "太空程序员",
-        "programmersDescription": "\"空间程序员\"是在ct.js开放源代码并将jam游戏的资源提供给用户之前就存在的一种处理层.",
-        "aspiringAstronauts": "有抱负的宇航员",
-        "noAstronautsYet": "目前还没有有抱负的宇航员 :c",
-        "astronautsDescription": "宇航员在Discord中扮演一个特殊的角色, 并在此列出!",
         "thankAllPatrons": "感谢所有现有和以前的ComigoGames支持者, 因为您的支持将使Comigo不断前进并开发出更好的应用! :)",
         "becomeAPatron": "成为赞助人",
         "aboutFillers": [
@@ -509,7 +503,14 @@
             "就像烈火一样! 🔥",
             "带来光明和希望 🌞",
             "优雅而美丽 🎩"
-        ]
+        ],
+        "sponsors": "赞助商",
+        "noSponsorsYet": "还没有赞助商, 您可以成为第一位!",
+        "sponsorsDescription": "赞助商会在ct.js的网站和其他页面上显示出来, 就像在ct.js的游戏jam中一样.",
+        "businessCats": "商务Cats",
+        "businessCatsDescription": "商务Cats可以访问Discord服务器上的一个特殊支持频道, 并获得对ct.js和游戏开发的支持.",
+        "cats": "Cats",
+        "catsDescription": "Cats是想要支持ct.js的人, 而不仅仅是\"谢谢\". 它们被列在ct.js中(这里!)和CoMiGo记得添加它们的任何地方."
     },
     "mainMenu": {
         "troubleshooting": {
@@ -546,9 +547,9 @@
                 "LucasDracula": "Lucas Dracula",
                 "Horizon": "Horizon",
                 "HCBlack": "High-contrast Black",
-                "RosePine": "",
-                "RosePineMoon": "",
-                "RosePineDawn": ""
+                "RosePine": "Rosé Pine",
+                "RosePineMoon": "Rosé Pine Moon",
+                "RosePineDawn": "Rosé Pine Dawn"
             },
             "newFont": "新字体:",
             "language": "语言",
@@ -559,12 +560,13 @@
             "disableSounds": "关闭 UI 音效",
             "changeDataFolder": "设置数据文件夹位置",
             "forceProductionForDebug": "强制生产任务用于调试导出",
-            "prideMode": "",
-            "altTemplateLayout": ""
+            "prideMode": "傲娇模式",
+            "altTemplateLayout": "模板编辑器的可选布局"
         },
         "project": {
             "heading": "项目",
             "startScreen": "返回启动画面",
+            "startNewWindow": "",
             "successZipProject": "已成功将项目压缩到{0}.",
             "save": "保存项目",
             "zipProject": "将项目打包到.zip",
@@ -598,33 +600,33 @@
         "launchHotkeys": "(F5; Alt+F5 在默认浏览器中运行)",
         "templates": "类型",
         "tour": {
-            "header": "",
-            "aboutTour": "",
-            "helpPanel": "",
-            "helpPanelTabs": "",
-            "projectResources": "",
-            "tabTextures": "",
-            "tabTexturesImport": "",
-            "tabTexturesGallery": "",
-            "tabTexturesClipboard": "",
-            "tabTexturesPlaceholders": "",
-            "tabTemplates": "",
-            "tabRooms": "",
-            "tabSounds": "",
-            "tabSoundsImport": "",
-            "tabSoundsGallery": "",
-            "tabSoundsRecord": "",
-            "tabInterlude": "",
-            "tabUI": "",
-            "tabFX": "",
-            "tabProject": "",
-            "tabProjectModules": "",
-            "tabProjectModuleDocs": "",
-            "tabMainMenu": "",
-            "tabMainMenuSettings": "",
-            "tabMainMenuMeta": "",
-            "helpPanelReminder": "",
-            "buttonStartTutorial": ""
+            "header": "Ct.js 概述",
+            "aboutTour": "欢迎来到 ct.js! 这个小指南将向您展示这个编辑器中的主要控件, 以便您了解如何配置 ct.js 和创建新资产.",
+            "helpPanel": "首先, 注意这个狡猾的按钮. 这对学习ct.js非常重要!",
+            "helpPanelTabs": "这个面板存储了ct.js及其模块的所有官方文档和教程, 还有两个记事本供您记录. <p>全局记事本在项目之间共享. 并保存在您的设备上. 项目的记事本存储在项目内部.",
+            "projectResources": "现在, 每个项目都有几种类型的资产. 每个资产类型都属于它自己的选项卡. 让我们来看看最重要的选项卡.",
+            "tabTextures": "纹理是可以用于交互对象(称为副本),背景和特效的图像. 纹理本身不会做任何事情, 但绝对是一种必要的资产类型.",
+            "tabTexturesImport": "您可以从您的文件系统中导入纹理...",
+            "tabTexturesGallery": "…或者从内置库中导入现有的纹理.",
+            "tabTexturesClipboard": "此按钮从剪贴板粘贴复制的图像. 当与图像编辑器工作时这是非常方便的!",
+            "tabTexturesPlaceholders": "您还可以使用此工具生成简单的占位符图形.",
+            "tabTemplates": "模板用于创建副本 — 您放在关卡中的互动对象. ct.js中的任何交互对象都是从一个模板创建的. 它们使用您的纹理, 您通过在其中创建事件来定义玩法逻辑. 一旦创建了模板, 就可以在模板编辑器中运行它自己的深度之旅.",
+            "tabRooms": "另一个最重要的标签是房间. 房间也可以被称为关卡或场景, 您可以在其中放置副本. 每个房间也可以有自己的事件和背景.",
+            "tabSounds": "我想, 声音是最明显的标签.",
+            "tabSoundsImport": "您可以用这个按钮创建新的声音...",
+            "tabSoundsGallery": "...从内置的音效库导入它们...",
+            "tabSoundsRecord": "...甚至可以用您的麦克风录下来!",
+            "tabInterlude": "还有两个选项卡用于更高级的资产.",
+            "tabUI": "UI选项卡管理字体和文本样式. 将您的字体与游戏捆绑在一起对于确保游戏在不同设备上的一致性非常重要. 文本样式有一个可视化编辑器, 用于设置样式预设. 它们还为游戏内的标签生成代码.",
+            "tabFX": "FX选项卡有一个粒子系统的编辑器 — 特殊的图形效果的爆炸, 魔法, 烟雾, 雨, 所有这类东西.",
+            "tabProject": "资产就这么多了! 除了这些, 您的项目还有一些渲染, 品牌, 包装等等的设置.",
+            "tabProjectModules": "Ct.js 是模块化的, 您的项目可能需要额外的模块, 可以在这里安装.",
+            "tabProjectModuleDocs": "所有启用模块的文档都可以在这里找到.",
+            "tabMainMenu": "Ct.js 本身有很多选项, 它们都存储在主菜单中.",
+            "tabMainMenuSettings": "您可以在设置部分更改语言和ct.js的外观.",
+            "tabMainMenuMeta": "如果以后需要帮助, 您可以在元数据面板中找到所有的官方hub.",
+            "helpPanelReminder": "还有别忘了内置的文档! 我们建议开始您自己的项目前先完成官方教程.",
+            "buttonStartTutorial": "打开教程"
         }
     },
     "docsPanel": {
@@ -713,13 +715,14 @@
         "moveTileLayer": "移动到一个新的深度",
         "show": "显示图层",
         "hide": "隐藏图层",
-        "findTileset": "查找图块集"
+        "findTileset": "查找图块集",
+        "addTileLayer": "添加一个平铺层"
     },
     "roomView": {
         "name": "名称:",
         "width": "视图宽度:",
         "height": "视图高度:",
-        "events": "房间事件:",
+        "events": "房间事件",
         "copies": "副本",
         "backgrounds": "背景",
         "tiles": "瓷砖",
@@ -747,12 +750,15 @@
             "position": "位置",
             "rotation": "旋转",
             "scale": "缩放",
-            "multipleValues": ""
+            "multipleValues": "(多重)",
+            "opacity": "不透明度",
+            "tint": "色调"
         },
         "copyCustomProperties": {
             "addProperty": "添加属性",
             "property": "属性",
-            "value": "值"
+            "value": "值",
+            "nameOccupied": "这个属性被ct.js保留使用! 您应该想一个不同的名字."
         },
         "customProperties": "自定义属性",
         "restrictCamera": "保持相机在一个矩形中",
@@ -773,18 +779,19 @@
         "moveTilesToLayer": "移至图层",
         "shiftTiles": "移动瓷砖",
         "changeCopyRotation": "旋转",
-        "simulate": "",
-        "toggleDiagonalGrid": "",
-        "changeGridSize": "",
-        "xrayMode": "",
-        "colorizeTileLayers": "",
+        "simulate": "模拟",
+        "toggleDiagonalGrid": "对角网格",
+        "changeGridSize": "改变网格大小",
+        "xrayMode": "X射线模式",
+        "colorizeTileLayers": "着色平铺层",
         "tools": {
-            "select": "",
-            "addCopies": "",
-            "addTiles": "",
-            "manageBackgrounds": "",
-            "roomProperties": ""
-        }
+            "select": "选择工具",
+            "addCopies": "添加副本",
+            "addTiles": "添加图块集",
+            "manageBackgrounds": "管理背景",
+            "roomProperties": "房间属性"
+        },
+        "resetView": "重置视角"
     },
     "styleView": {
         "active": "激活",
@@ -851,7 +858,7 @@
         "updateFromClipboard": "从剪贴板更新",
         "previewAnimationNotice": "这是一个预览. 用this.animationSpeed属性改变它的真实拷贝.",
         "showFrameIndices": "显示帧索引",
-        "blankTexture": "",
+        "blankTexture": "导出为空白纹理",
         "pasteCollisionMask": "粘贴碰撞遮罩",
         "copyCollisionMask": "拷贝碰撞遮罩",
         "bgColor": "改变背景颜色",
@@ -861,7 +868,8 @@
         "marginX": "边距 X:",
         "marginY": "边距 Y:",
         "offX": "位移 X:",
-        "offY": "位移 Y:"
+        "offY": "位移 Y:",
+        "blankTextureNotice": "将图像导出为透明矩形, 因此在游戏中不可见. 用于为ct.js编辑器设置占位符, 同时保持包的大小较轻."
     },
     "soundView": {
         "import": "导入",
@@ -893,7 +901,20 @@
         "typefaceName": "字体名称:"
     },
     "licensePanel": {
-        "ctjsLicense": "Ct.js 许可证 (MIT)"
+        "ctjsLicense": "Ct.js 许可证 (MIT)",
+        "faq": "常见问题(非规范性部分)",
+        "whoOwnsGamesQ": "谁拥有用ct.js创建的游戏?",
+        "whoOwnsGamesA": "您, 而且只有您. Ct.js不拥有您以任何方式创建的任何东西.",
+        "sellingGamesQ": "我可以出售用ct.js制作的游戏吗?",
+        "sellingGamesA": "是的, 您可以出售您的游戏和其他项目, 收集捐赠, 并在任何其他商业应用中使用您的游戏.",
+        "possibleFeesQ": "我需要为ct.js付费吗?有一天ct.js会变成付费的吗?",
+        "possibleFeesA": "不, ct.js是免费的, 而且永远都是免费的. 它不像Unity或虚幻引擎那样需要你在赚到一定数量的钱后支付任何隐藏费用. Ct.js是开源的, 即使有任何付费版本, 您现在拥有的产品也永远是免费的. 不过, 您可以捐款或成为赞助人! 它将帮助我们支付账单，并使ct.js更好!",
+        "useInStudioQ": "我可以在工作室或学校使用ct.js吗?",
+        "useInStudioA": "当然, 为什么不呢? Ct.js可以供个人, 商业, 教育等使用. 别犯法, 好吗?",
+        "attributionQ": "我需要归因ct.js或它的开发人员吗? 我可以在加载屏幕上禁用它的logo吗?",
+        "attributionA": "您可以禁用ct.js的logo, 因为您的游戏代码已经有了必要的归因.",
+        "attributionAAssets": "一些示例和演示可能包含需要归因的材料, 但这些材料已经包含在其中.",
+        "theLicense": "许可证(法律文件)"
     },
     "templates": {
         "create": "创建"
@@ -919,8 +940,8 @@
             "multiply": "倍增 (变暗)",
             "screen": "遮蔽 (变亮)"
         },
-        "animationFPS": "",
-        "loopAnimation": ""
+        "animationFPS": "动画 FPS:",
+        "loopAnimation": "循环动画"
     },
     "assetInput": {
         "changeAsset": "切换资产",
@@ -942,69 +963,77 @@
         "tipAuthor": "奖励作者的辛勤工作 :D"
     },
     "scriptables": {
-        "addEvent": "",
-        "removeEvent": "",
-        "removeEventConfirm": "",
-        "changeArguments": "",
-        "eventAlreadyExists": "",
-        "localEventVars": "",
-        "createEventHint": "",
+        "addEvent": "添加事件",
+        "removeEvent": "删除事件",
+        "removeEventConfirm": "您确定要删除此事件吗? 这是无法挽回的!",
+        "changeArguments": "修改参数",
+        "eventAlreadyExists": "相同事件已存在!",
+        "localEventVars": "局部变量",
+        "createEventHint": "在左列中创建第一个事件, 并在这里定义逻辑",
         "coreEventsCategories": {
-            "lifecycle": "",
-            "actions": "",
-            "pointer": "",
-            "misc": "",
-            "animation": "",
-            "timers": ""
+            "lifecycle": "生命周期",
+            "actions": "动作",
+            "pointer": "指针事件",
+            "misc": "杂项",
+            "animation": "动画",
+            "timers": "计时器"
         },
         "coreEvents": {
-            "OnCreate": "",
-            "OnRoomStart": "",
-            "OnStep": "",
-            "OnDraw": "",
-            "OnDestroy": "",
-            "OnRoomEnd": "",
-            "OnPointerClick": "",
-            "OnPointerSecondaryClick": "",
-            "OnPointerEnter": "",
-            "OnPointerLeave": "",
-            "OnPointerDown": "",
-            "OnPointerUp": "",
-            "OnPointerUpOutside": "",
-            "OnPointerWheel": "",
-            "OnActionPress": "",
-            "OnActionRelease": "",
-            "OnActionDown": "",
-            "OnFrameChange": "",
-            "OnAnimationLoop": "",
-            "OnAnimationComplete": "",
-            "Timer": ""
+            "OnCreate": "创建时",
+            "OnRoomStart": "房间开始",
+            "OnStep": "帧开始",
+            "OnDraw": "帧结束",
+            "OnDestroy": "销毁时",
+            "OnRoomEnd": "房间结束",
+            "OnPointerClick": "点击",
+            "OnPointerSecondaryClick": "二次点击",
+            "OnPointerEnter": "指针进入",
+            "OnPointerLeave": "指针离开",
+            "OnPointerDown": "指针按下",
+            "OnPointerUp": "指针松开",
+            "OnPointerUpOutside": "指针松开(外部)",
+            "OnPointerWheel": "鼠标滚轮",
+            "OnActionPress": "按下动作",
+            "OnActionRelease": "释放动作",
+            "OnActionDown": "激活动作",
+            "OnFrameChange": "帧改变",
+            "OnAnimationLoop": "动画循环",
+            "OnAnimationComplete": "动画完成",
+            "Timer": "计时器 $1"
         },
         "coreParameterizedNames": {
-            "OnActionPress": "",
-            "OnActionRelease": "",
-            "OnActionDown": ""
+            "OnActionPress": "当 %%action%% 按下",
+            "OnActionRelease": "当 %%action%% 释放",
+            "OnActionDown": "当 %%action%% 活动",
+            "Timer1": "1 • %%name%% (定时器)",
+            "Timer2": "2 • %%name%% (定时器)",
+            "Timer3": "3 • %%name%% (定时器)",
+            "Timer4": "4 • %%name%% (定时器)",
+            "Timer5": "5 • %%name%% (定时器)",
+            "Timer6": "6 • %%name%% (定时器)"
         },
         "coreEventsArguments": {
-            "action": ""
+            "action": "动作",
+            "name": "名称",
+            "isUi": "UI 事件"
         },
         "coreEventsLocals": {
-            "OnActionDown_value": "",
-            "OnActionPress_value": ""
+            "OnActionDown_value": "当前动作的值",
+            "OnActionPress_value": "当前动作的值"
         },
         "coreEventsDescriptions": {
-            "OnCreate": "",
-            "OnRoomStart": "",
-            "OnStep": "",
-            "OnDraw": "",
-            "OnDestroy": "",
-            "OnRoomEnd": "",
-            "OnActionPress": "",
-            "OnActionRelease": "",
-            "OnActionDown": "",
-            "OnAnimationLoop": "",
-            "OnAnimationComplete": "",
-            "Timer": ""
+            "OnCreate": "在创建副本时触发.",
+            "OnRoomStart": "当创建这个房间时触发, 可以通过切换到它或将其添加为一个层.",
+            "OnStep": "发生在每一帧的开始.",
+            "OnDraw": "每一帧的结尾都触发. 适合动画更新。",
+            "OnDestroy": "当副本被销毁时, 发生在\"帧开始\"和\"帧结束\"之间.",
+            "OnRoomEnd": "当您切换到另一个房间, 或者当这个房间被添加为一个图层后被删除时触发.",
+            "OnActionPress": "当动作的输入变为活跃状态时发生 — 通过按压, 点击, 轻弹操纵杆等.",
+            "OnActionRelease": "当动作的输入变为非活动状态时发生 — 通过释放按钮, 静止操纵杆等.",
+            "OnActionDown": "如果动作的输入是活动的, 则运行每一帧.",
+            "OnAnimationLoop": "每次动画重新启动时触发.",
+            "OnAnimationComplete": "非循环动画结束时触发.",
+            "Timer": "用这个设置定时器的持续时间, 单位为秒. 定时器$1 = 3;"
         }
     }
 }

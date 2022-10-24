@@ -259,7 +259,9 @@
         "vkontakte": "Vkontakte topluluğu",
         "patreon": "ct.js'i Patreon'da destekle!",
         "createOrBrowseJunction": "veya",
-        "boosty": "Boosty'de ct.js'i destekle!"
+        "boosty": "Boosty'de ct.js'i destekle!",
+        "sponsoredBy": "",
+        "supportedBy": ""
     },
     "onboarding": {
         "hoorayHeader": "Vay canına! Bir proje oluşturdun!",
@@ -541,17 +543,6 @@
     "patreon": {
         "aboutPatrons": "Patronlar yenilenen bağışlar şeklinde ComigoGames'e desteklerini gösteren insanlardır. Tabi herkes ct.js'ten gelmiyor; bazıları ComigoGames'in başka uygulamalarını kullanıyor. İpucu: Eğer ComigoGames'e bağış yapan bir üreticiysen, you will get a link to your page here — that's my little help to your creations :)",
         "patronsHeader": "Patronlarımız",
-        "businessShuttles": "İş shuttleları",
-        "noShuttlesYet": "Şimdilik hiçbir business shutle yok :c Gerçi senin şirketin ilki olabilir!",
-        "shuttlesDescription": "İş shuttları ct.js'in partnerleri olarak düşünülürler. ct.js'in ana sayfasında ve mağazasında gözükürler.",
-        "spacePirates": "Uzay Korsanları",
-        "noPiratesYet": "Şimdilik hiç Uzay Korsanı yok :c",
-        "piratesDescription": "Uzay korsanları Discord sunucusunda havalı bir rolle beraber öncelikli destek alırlar, ve burada listelenirler.",
-        "spaceProgrammers": "Uzay Programcısı",
-        "programmersDescription": "\"Uzay Programcısı\" ct.js açık-kaynak olmadan önce ve patronlara jam oyunlarının kaynaklarını almadan önce elde edilebilirdi.",
-        "aspiringAstronauts": "Can Atan Astronotlar",
-        "noAstronautsYet": "Şimdilik hiç Can Atan Astronot yok :c",
-        "astronautsDescription": "Astronotlar Discord'da özel bir rol alırlar ve burada listelenirler!",
         "thankAllPatrons": "Şu anki ve önceki tüm ComigoGames patronlarına teşekkürler, desteğiniz Comigo'yu ileriye taşır ve daha iyi uygulamalar yapmasına olanak tanır! :)",
         "becomeAPatron": "Patron ol",
         "aboutFillers": [
@@ -572,7 +563,14 @@
             "yanan bir ateş gibi! 🔥",
             "ışık ve umut getiriyor 🌞",
             "şık ve çok güzel 🎩"
-        ]
+        ],
+        "sponsors": "",
+        "noSponsorsYet": "",
+        "sponsorsDescription": "",
+        "businessCats": "",
+        "businessCatsDescription": "",
+        "cats": "",
+        "catsDescription": ""
     },
     "textureInput": {
         "jumpToTexture": "Dokuya atla",
@@ -648,6 +646,7 @@
             "openProject": "Bir proje aç…",
             "openExample": "Bir örnek proje aç…",
             "startScreen": "Başlangıç ekranına geri dön",
+            "startNewWindow": "",
             "successZipProject": "Proje başarılı bir şekilde şuraya ziplendi: {0}.",
             "zipProject": "Projeyi zip ile paketle"
         },

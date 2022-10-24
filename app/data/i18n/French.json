@@ -213,7 +213,9 @@
         "patreon": "Soutenez ct.js sur Patreon !",
         "templates": "Modèles",
         "templatesInfo": "Vous pouvez démarrer rapidement un projet grâce à un de ces modèles. Ils comportent seulement des graphismes temporaires mais les mécaniques de jeu sont fonctionnelles. Sélectionner un projet vous demandera de choisir où enregistrer votre projet dans le sélecteur de dossier.",
-        "boosty": "Soutenir ct.js sur Boosty !"
+        "boosty": "Soutenir ct.js sur Boosty !",
+        "sponsoredBy": "",
+        "supportedBy": ""
     },
     "onboarding": {
         "hoorayHeader": "Incroyable ! Vous venez de créer un projet !",
@@ -481,17 +483,6 @@
     "patreon": {
         "aboutPatrons": "Les Patrons sont des personnes qui manifestent leur soutien à CamigoGames, sous forme de dons récurrents. Tous les donateurs ne viennent pas forcément de Ct.js : certain(e)s utilisent d'autres support crée par ComigoGames. Conseil : si vous êtes créateur et faites un don à ComigoGames via Patreon, vous obtiendrez un lien vers votre projet ici - c'est ma petite aide pour vos créations :)",
         "patronsHeader": "Nos Patrons",
-        "businessShuttles": "Navette d’Affaires",
-        "noShuttlesYet": "Aucune Navette d’Affaires pour le moment :c Votre entreprise est peut-être la première, qui sait !",
-        "shuttlesDescription": "Les Navettes d’Affaires sont considérées comme des partenaires de ct.js. Ils sont répertoriés sur la page d'accueil de ct.js et ses pages de magasin.",
-        "spacePirates": "Pirates de l’espace",
-        "noPiratesYet": "Il n'y a pas encore de Pirate de l’Espace :c",
-        "piratesDescription": "Les Pirates de l’Espace bénéficient d'un support prioritaire sur le serveur Discord avec un rôle sympa, et sont listés ici.",
-        "spaceProgrammers": "Programmeurs de l’Espace",
-        "programmersDescription": "\"Programmeur de l’Espace\" est un titre hérité qui était disponible avant que ct.js ne devienne open-source et apportait les codes sources des jeux de jam aux patrons.",
-        "aspiringAstronauts": "Astronaute en herbe",
-        "noAstronautsYet": "Il n'y a pas encore d'Astronaute en herbe :c",
-        "astronautsDescription": "Les Astronautes en herbe on un rôle spécial sur le discord et sont listés ici !",
         "thankAllPatrons": "Merci à tous les  patrons de ComigoGames, présents et passés, car votre soutien permet à Comigo d'avancer et de créer de meilleures applications ! 😊",
         "becomeAPatron": "Devenir un patron",
         "aboutFillers": [
@@ -512,7 +503,14 @@
             "est un brasier ardant ! 🔥",
             "apporte clarté et espoir 🌞",
             "est élégant est superbe 🎩"
-        ]
+        ],
+        "sponsors": "",
+        "noSponsorsYet": "",
+        "sponsorsDescription": "",
+        "businessCats": "",
+        "businessCatsDescription": "",
+        "cats": "",
+        "catsDescription": ""
     },
     "docsPanel": {
         "documentation": "Documentation",
@@ -621,6 +619,7 @@
             "openProject": "Ouvrir un projet…",
             "openExample": "Ouvrir un projet d’exemple…",
             "startScreen": "Retourner à l'écran de démarrage",
+            "startNewWindow": "",
             "successZipProject": "Le projet a été compressé avec succès vers {0}.",
             "zipProject": "Compresser le projet en .zip",
             "heading": "Projet"

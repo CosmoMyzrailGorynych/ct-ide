@@ -1,6 +1,10 @@
 const textures = require('../resources/textures');
-const stringifyTandems = project => {
-    const tandems = {};
+
+export const stringifyTandems = (project: IProject): string => {
+    const tandems: Record<string, {
+        texture: string;
+        settings: ITandem['emitters'][0]['settings'];
+    }[]> = {};
     for (const tandem of project.emitterTandems) {
         tandems[tandem.name] = tandem.emitters.map(emitter => {
             if (emitter.texture === -1) {
@@ -13,8 +17,4 @@ const stringifyTandems = project => {
         });
     }
     return JSON.stringify(tandems, null, '    ');
-};
-
-module.exports = {
-    stringifyTandems
 };

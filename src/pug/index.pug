@@ -88,5 +88,5 @@ html
             window.hotkeys = require('./data/node_requires/hotkeys')(document);
             riot.mount('*');
             setTimeout(() => {
-                document.getElementById('theLoadingScreen').classList.add('fadeout');
+                document.getElementById('theLoadingScreen').remove();
             }, 0);
