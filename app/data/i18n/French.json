@@ -36,7 +36,7 @@
         "apply": "Appliquer",
         "cancel": "Annuler",
         "cannotBeEmpty": "Ceci ne peux pas rester vide",
-        "confirmDelete": "Êtes-vous certain de vouloir supprimer {0} ? Ceci est irréversible.",
+        "confirmDelete": "Êtes-vous certain de vouloir supprimer {0} ? Ceci est irréversible.",
         "contribute": "Contribuer",
         "copy": "Copier",
         "copyName": "Copier le nom",
@@ -214,7 +214,7 @@
         "templates": "Modèles",
         "templatesInfo": "Vous pouvez démarrer rapidement un projet grâce à un de ces modèles. Ils comportent seulement des graphismes temporaires mais les mécaniques de jeu sont fonctionnelles. Sélectionner un projet vous demandera de choisir où enregistrer votre projet dans le sélecteur de dossier.",
         "boosty": "Soutenir ct.js sur Boosty !",
-        "sponsoredBy": "Sponsorisé par $1!",
+        "sponsoredBy": "Sponsorisé par $1 !",
         "supportedBy": "Soutenu par $1"
     },
     "onboarding": {
@@ -505,7 +505,7 @@
             "est élégant est superbe 🎩"
         ],
         "sponsors": "Sponsors",
-        "noSponsorsYet": "Pas encore de sponsors. Vouz pouvez être le premier!",
+        "noSponsorsYet": "Pas encore de sponsors. Vouz pouvez être le premier !",
         "sponsorsDescription": "",
         "businessCats": "",
         "businessCatsDescription": "",
