@@ -436,17 +436,18 @@ const exportCtProject = async (
     }
 
     // Output minified HTML & CSS
-    const csswring = require('csswring');
-    const htmlMinify = require('html-minifier').minify;
+    const noMinify = currentProject.settings.export.codeModifier === 'none';
+    const csswring = noMinify ? undefined : require('csswring');
+    const htmlMinify = noMinify ? undefined : require('html-minifier').minify;
     await Promise.all([
         fs.writeFile(
             path.join(writeDir, '/index.html'),
-            htmlMinify(html, {
+            noMinify ? html : htmlMinify(html, {
                 removeComments: true,
                 collapseWhitespace: true
             })
         ),
-        fs.writeFile(path.join(writeDir, '/ct.css'), csswring.wring(css).css),
+        fs.writeFile(path.join(writeDir, '/ct.css'), noMinify ? css : csswring.wring(css).css),
         fs.writeFile(path.join(writeDir, '/ct.js'), buffer)
     ]);
 
