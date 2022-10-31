@@ -275,6 +275,9 @@
      */
     window.setupCodeEditor = (textarea, options) => {
         const opts = extend(extend({}, defaultOptions), options);
+
+        monaco.editor.remeasureFonts();
+
         opts.value = opts.value || textarea.value || '';
         opts.value = opts.value.replace(/\r\n/g, '\n');
         let wrapStart, wrapEnd;

@@ -219,8 +219,8 @@ class RoomEditor extends PIXI.Application {
             this.addTileLayer(tileLayer);
         }
     }
-    serialize(): void {
-        this.ctRoom.copies = [...this.copies].map(c => c.serialize());
+    serialize(deepCopy: boolean=false): void {
+        this.ctRoom.copies = [...this.copies].map(c => c.serialize(deepCopy));
         this.ctRoom.tiles = this.tileLayers.map(tl => tl.serialize());
         this.ctRoom.backgrounds = this.backgrounds.map(bg => bg.serialize());
         this.ctRoom.lastmod = Number(new Date());

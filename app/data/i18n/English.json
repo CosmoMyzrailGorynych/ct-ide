@@ -659,6 +659,7 @@
             "openProject": "Open a project…",
             "openExample": "Open an example project…",
             "startScreen": "Return to the starting screen",
+            "startNewWindow": "Open new project window",
             "successZipProject": "Successfully zipped the project to {0}.",
             "zipProject": "Pack project to .zip"
         },

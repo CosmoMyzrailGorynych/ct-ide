@@ -619,6 +619,7 @@
             "openProject": "Open een project...",
             "openExample": "Open een voorbeeld project...",
             "startScreen": "Keer terug naar het startscherm",
+            "startNewWindow": "",
             "successZipProject": "Het project is succesvol naar {0} ingepakt.",
             "zipProject": "Project inpakken naar .zip",
             "heading": "Project"

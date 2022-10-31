@@ -646,6 +646,7 @@
             "openProject": "Bir proje aç…",
             "openExample": "Bir örnek proje aç…",
             "startScreen": "Başlangıç ekranına geri dön",
+            "startNewWindow": "",
             "successZipProject": "Proje başarılı bir şekilde şuraya ziplendi: {0}.",
             "zipProject": "Projeyi zip ile paketle"
         },

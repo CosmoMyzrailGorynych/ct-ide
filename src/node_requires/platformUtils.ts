@@ -1,3 +1,5 @@
+import {dirname} from "path";
+
 const fs = require('fs-extra');
 const os = require('os');
 const path = require('path');
@@ -117,10 +119,19 @@ const mod = {
     },
     getGalleryDir(createHref?: boolean): string {
         const path = require('path');
-        if (createHref) {
-            return ('file://' + path.posix.normalize(path.join((nw.App as any).startPath, 'bundledAssets')));
+        try {
+            // Okay, we are in a dev mode
+            require('gulp');
+            if (createHref) {
+                return ('file://' + path.posix.normalize(path.join((nw.App as any).startPath, 'bundledAssets')));
+            }
+            return path.join((nw.App as any).startPath, 'bundledAssets');
+        } catch {
+            if (createHref) {
+                return ('file://' + path.posix.normalize(path.join(path.dirname(process.execPath), 'bundledAssets')));
+            }
+            return path.join(path.dirname(process.execPath), 'bundledAssets');
         }
-        return path.join((nw.App as any).startPath, 'bundledAssets');
     },
     getProjectsDir(): Promise<string> {
         if (projectsDir) {

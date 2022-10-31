@@ -619,6 +619,7 @@
             "openProject": "Открыть проект…",
             "openExample": "Открыть пример…",
             "startScreen": "К стартовому экрану",
+            "startNewWindow": "",
             "successZipProject": "Проект успешно упакован в {0}.",
             "zipProject": "Упаковать проект в .zip",
             "heading": "Проект"

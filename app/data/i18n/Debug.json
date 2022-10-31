@@ -619,6 +619,7 @@
             "openProject": "mainMenu.project.openProject",
             "openExample": "mainMenu.project.openExample",
             "startScreen": "mainMenu.project.startScreen",
+            "startNewWindow": "mainMenu.project.startNewWindow",
             "successZipProject": "mainMenu.project.successZipProject",
             "zipProject": "mainMenu.project.zipProject",
             "heading": "mainMenu.project.heading"
