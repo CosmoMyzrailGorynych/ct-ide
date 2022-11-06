@@ -2,8 +2,8 @@
 const keyToEventMap = {
     OnPointerClick: 'pointertap',
     OnPointerSecondaryClick: 'rightclick',
-    OnPointerEnter: 'pointerenter',
-    OnPointerLeave: 'pointerleave',
+    OnPointerEnter: 'pointerover',
+    OnPointerLeave: 'pointerout',
     OnPointerDown: 'pointerdown',
     OnPointerUp: 'pointerup',
     OnPointerUpOutside: 'pointerupoutside'
