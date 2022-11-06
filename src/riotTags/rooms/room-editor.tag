@@ -501,6 +501,9 @@ room-editor.aPanel.aView
         };
 
         this.saveRoom = async () => {
+            if (this.pixiEditor.currentSelection.size && this.refs.propertiesPanel) {
+                this.refs.propertiesPanel.applyChanges();
+            }
             const {writeRoomPreview} = require('./data/node_requires/resources/rooms');
             this.pixiEditor.serialize();
             await Promise.all([
