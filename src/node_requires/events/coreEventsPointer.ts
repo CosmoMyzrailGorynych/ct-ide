@@ -6,8 +6,7 @@ const keyToEventMap = {
     OnPointerLeave: 'pointerleave',
     OnPointerDown: 'pointerdown',
     OnPointerUp: 'pointerup',
-    OnPointerUpOutside: 'pointerupoutside',
-    OnPointerWheel: 'wheel'
+    OnPointerUpOutside: 'pointerupoutside'
 } as Record<string, string>;
 
 const coreEvents = {} as Record<string, IEventDeclaration>;
