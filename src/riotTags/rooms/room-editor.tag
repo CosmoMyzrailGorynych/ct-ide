@@ -4,7 +4,7 @@
     @attribute onclose (riot function)
 
 room-editor.aPanel.aView
-    canvas(ref="canvas" onwheel="{triggerWheelEvent}")
+    canvas(ref="canvas" onwheel="{triggerWheelEvent}" oncontextmenu="{openMenus}")
     // Toolbar
     .room-editor-aToolsetHolder
         .room-editor-aToolbar.aButtonGroup.vertical
@@ -137,6 +137,7 @@ room-editor.aPanel.aView
     context-menu(menu="{gridMenu}" ref="gridMenu")
     context-menu(menu="{zoomMenu}" ref="zoomMenu")
     context-menu(menu="{visibilityMenu}" ref="visibilityMenu" if="{pixiEditor}")
+    context-menu(menu="{entitiesMenu}" ref="entitiesMenu" if="{pixiEditor}")
     script.
         this.namespace = 'roomView';
         this.mixin(window.riotVoc);
@@ -450,6 +451,44 @@ room-editor.aPanel.aView
         };
         this.openVisibilityMenu = e => {
             this.refs.visibilityMenu.popup(e.clientX, e.clientY);
+        };
+
+        this.entitiesMenu = {
+            opened: false,
+            items: [{
+                label: this.vocGlob.copy,
+                click: () => {
+                    this.pixiEditor.copySelection();
+                },
+                icon: 'copy',
+                hotkeyLabel: 'Ctrl+C',
+                if: () => this.pixiEditor.currentSelection.size
+            }, {
+                label: this.vocGlob.paste,
+                click: () => {
+                    this.pixiEditor.pasteSelection();
+                },
+                icon: 'clipboard',
+                hotkeyLabel: 'Ctrl+V',
+                if: () => this.pixiEditor.clipboard.size
+            }, {
+                type: 'separator',
+                if: () => this.pixiEditor.currentSelection.size
+            }, {
+                label: this.vocGlob.delete,
+                click: () => {
+                    this.pixiEditor.deleteSelected();
+                },
+                icon: 'trash',
+                hotkeyLabel: 'Delete',
+                if: () => this.pixiEditor.currentSelection.size
+            }]
+        };
+        this.openMenus = e => {
+            e.preventDefault();
+            if (this.currentTool === 'select' || this.pixiEditor.clipboard.size) {
+                this.refs.entitiesMenu.popup(e.clientX, e.clientY);
+            }
         };
 
         this.editingEvents = false;

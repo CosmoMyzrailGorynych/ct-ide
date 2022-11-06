@@ -14,8 +14,10 @@ import {ViewportRestriction} from './entityClasses/ViewportRestriction';
 import {IRoomEditorRiotTag} from './IRoomEditorRiotTag';
 import {IRoomEditorInteraction, AllowedListener, allowedListeners, interactions} from './interactions';
 import {getPixiSwatch} from './../themes';
-import {defaultTextStyle, recolorFilters, eraseCursor, toPrecision} from './common';
+import {defaultTextStyle, recolorFilters, eraseCursor, toPrecision, snapToDiagonalGrid, snapToRectangularGrid} from './common';
+import {getTemplateFromId} from '../resources/templates';
 import {ease} from 'node_modules/pixi-ease';
+
 
 const roomEditorDefaults = {
     width: 10,
@@ -219,7 +221,7 @@ class RoomEditor extends PIXI.Application {
             this.addTileLayer(tileLayer);
         }
     }
-    serialize(deepCopy: boolean=false): void {
+    serialize(deepCopy = false): void {
         this.ctRoom.copies = [...this.copies].map(c => c.serialize(deepCopy));
         this.ctRoom.tiles = this.tileLayers.map(tl => tl.serialize());
         this.ctRoom.backgrounds = this.backgrounds.map(bg => bg.serialize());
@@ -358,6 +360,127 @@ class RoomEditor extends PIXI.Application {
         for (const copy of this.copies) {
             copy.update(this.ticker.deltaTime);
         }
+    }
+    deleteSelected(): void {
+        if (this.riotEditor.currentTool !== 'select') {
+            return;
+        }
+        const changes = new Set<[Copy | Tile, TileLayer?]>();
+        for (const stuff of this.currentSelection) {
+            if (stuff instanceof Tile) {
+                const {parent} = stuff;
+                changes.add([stuff.detach(), parent]);
+            } else if (stuff instanceof Copy) {
+                changes.add([stuff.detach()]);
+            }
+        }
+        this.history.pushChange({
+            type: 'deletion',
+            deleted: changes
+        });
+        this.transformer.clear();
+        this.riotEditor.refs.propertiesPanel.updatePropList();
+    }
+    copySelection(): void {
+        if (this.riotEditor.currentTool !== 'select' || !this.currentSelection.size) {
+            return;
+        }
+        this.clipboard.clear();
+        for (const stuff of this.currentSelection) {
+            if (stuff instanceof Copy) {
+                this.clipboard.add([
+                    'copy',
+                    stuff.serialize(true)
+                ]);
+            } else if (stuff instanceof Tile) {
+                this.clipboard.add([
+                    'tile',
+                    stuff.serialize(),
+                    stuff.parent
+                ]);
+            }
+        }
+        this.transformer.blink();
+    }
+    pasteSelection(): void {
+        const createdSet = new Set<[Copy | Tile, TileLayer?]>();
+        if (this.riotEditor.currentTool === 'select' &&
+            this.currentSelection.size &&
+            this.history.currentChange?.type === 'transformation'
+        ) {
+            this.history.snapshotTransforms();
+        }
+        this.transformer.clear();
+        const extraTileLayer = this.tileLayers.find(tl => tl.zIndex === 0) || new TileLayer({
+            depth: 0,
+            tiles: []
+        }, this);
+        for (const copied of this.clipboard) {
+            let created;
+            if (copied[0] === 'tile') {
+                const [, template, layer] = copied;
+                const target = this.tileLayers.includes(layer) ? layer : extraTileLayer;
+                created = new Tile(template, this, false);
+                target.addChild(created);
+                createdSet.add([created, target]);
+            } else if (copied[0] === 'copy') {
+                const [, template] = copied;
+                // Skip copies that no longer exist in the project
+                try {
+                    getTemplateFromId(template.uid);
+                    created = new Copy(template, this, false);
+                    this.room.addChild(created);
+                    createdSet.add([created]);
+                } catch (_) {
+                    continue;
+                }
+            } else {
+                // Unsupported selectable entity
+                continue;
+            }
+            this.currentSelection.add(created);
+        }
+        if (extraTileLayer.children.length && !this.tileLayers.includes(extraTileLayer)) {
+            this.addTileLayer(extraTileLayer);
+            this.history.pushChange({
+                type: 'tileLayerCreation',
+                created: extraTileLayer
+            });
+        } else {
+            extraTileLayer.destroy();
+        }
+        this.history.pushChange({
+            type: 'creation',
+            created: createdSet
+        });
+        if (this.riotEditor.currentTool !== 'select') {
+            this.riotEditor.setTool('select')();
+            this.riotEditor.update();
+        }
+        this.transformer.setup(true);
+
+        // place the stuff under mouse cursor but do take the grid into account
+        const {mouse} = this.renderer.plugins.interaction;
+        const mousePos = mouse.getLocalPosition(this.room);
+        let dx = mousePos.x - this.transformer.transformPivotX,
+            dy = mousePos.y - this.transformer.transformPivotY;
+        if (this.riotEditor.gridOn) {
+            const snap = this.ctRoom.diagonalGrid ? snapToDiagonalGrid : snapToRectangularGrid;
+            const snapped = snap({
+                x: dx,
+                y: dy
+            }, this.ctRoom.gridX, this.ctRoom.gridY);
+            dx = snapped.x;
+            dy = snapped.y;
+        }
+        this.transformer.transformPivotX += dx;
+        this.transformer.transformPivotY += dy;
+        this.transformer.applyTranslateX += dx;
+        this.transformer.applyTranslateY += dy;
+        this.transformer.applyTransforms();
+        this.transformer.setup();
+        this.riotEditor.refs.propertiesPanel.updatePropList();
+        this.transformer.blink();
     }
     /**
      * Rounds up the values of current selection to fix rounding errors

@@ -64,7 +64,7 @@ import {rotateSelection} from './transformer/rotate';
 import {moveSelection} from './transformer/move';
 import {scaleSelection} from './transformer/scale';
 import {deleteSelected} from './transformer/delete';
-import {copy, paste} from './copyPaste';
+import {copy, paste} from './transformer/copyPaste';
 import {undo, redo} from './history';
 import {tab} from './tab';
 

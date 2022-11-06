@@ -10,22 +10,7 @@ export const deleteSelected: IRoomEditorInteraction<void> = {
     },
     listeners: {
         delete(e, riotEditor, affixedData, callback) {
-            const changes = new Set<[Copy | Tile, TileLayer?]>();
-            for (const stuff of this.currentSelection) {
-                if (stuff instanceof Tile) {
-                    const {parent} = stuff;
-                    changes.add([stuff.detach(), parent]);
-                } else if (stuff instanceof Copy) {
-                    changes.add([stuff.detach()]);
-                }
-            }
-            this.history.pushChange({
-                type: 'deletion',
-                deleted: changes
-            });
-            this.transformer.clear();
-            riotEditor.refs.propertiesPanel.updatePropList();
-
+            this.deleteSelected();
             callback();
         }
     }
