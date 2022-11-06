@@ -36,7 +36,7 @@
         "apply": "Appliquer",
         "cancel": "Annuler",
         "cannotBeEmpty": "Ceci ne peux pas rester vide",
-        "confirmDelete": "Êtes-vous certain de vouloir supprimer {0} ? Ceci est irréversible.",
+        "confirmDelete": "Êtes-vous certain de vouloir supprimer {0} ? Ceci est irréversible.",
         "contribute": "Contribuer",
         "copy": "Copier",
         "copyName": "Copier le nom",
@@ -100,7 +100,7 @@
         "saveProject": "Sauvegarder le projet",
         "openProject": "Ouvrir un projet…",
         "savedMessage": "Votre projet a été enregistré.",
-        "reallyExitConfirm": "Êtes-vous sur de vouloir quitter ? Tous les changements non sauvegardés seront perdu !",
+        "reallyExitConfirm": "Êtes-vous sur de vouloir quitter ? Tous les changements non sauvegardés seront perdus !",
         "notFoundOrUnknown": "Fichier inconnu. Vérifiez que le fichier existe.",
         "nameTaken": "Ce nom est déjà pris",
         "fastImport": "Import Rapide",
@@ -214,8 +214,8 @@
         "templates": "Modèles",
         "templatesInfo": "Vous pouvez démarrer rapidement un projet grâce à un de ces modèles. Ils comportent seulement des graphismes temporaires mais les mécaniques de jeu sont fonctionnelles. Sélectionner un projet vous demandera de choisir où enregistrer votre projet dans le sélecteur de dossier.",
         "boosty": "Soutenir ct.js sur Boosty !",
-        "sponsoredBy": "",
-        "supportedBy": ""
+        "sponsoredBy": "Sponsorisé par $1 !",
+        "supportedBy": "Soutenu par $1"
     },
     "onboarding": {
         "hoorayHeader": "Incroyable ! Vous venez de créer un projet !",
@@ -504,8 +504,8 @@
             "apporte clarté et espoir 🌞",
             "est élégant est superbe 🎩"
         ],
-        "sponsors": "",
-        "noSponsorsYet": "",
+        "sponsors": "Sponsors",
+        "noSponsorsYet": "Pas encore de sponsors. Vouz pouvez être le premier !",
         "sponsorsDescription": "",
         "businessCats": "",
         "businessCatsDescription": "",
@@ -619,7 +619,7 @@
             "openProject": "Ouvrir un projet…",
             "openExample": "Ouvrir un projet d’exemple…",
             "startScreen": "Retourner à l'écran de démarrage",
-            "startNewWindow": "",
+            "startNewWindow": "Ouvrir un autre projet",
             "successZipProject": "Le projet a été compressé avec succès vers {0}.",
             "zipProject": "Compresser le projet en .zip",
             "heading": "Projet"
@@ -879,7 +879,7 @@
         "poolSize": "Taille de la piste :"
     },
     "fontView": {
-        "italic": "Format italique ?",
+        "italic": "Format italique ?",
         "reimport": "Réimporter",
         "generateBitmapFont": "Générer également une police Bitmap",
         "bitmapFont": "Police Bitmap",
