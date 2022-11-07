@@ -135,7 +135,7 @@
         "old": "Старый",
         "current": "Новый",
         "globalPalette": "Глобальная палитра",
-        "altClick": "",
+        "altClick": "Кликни с зажатым Alt, чтобы удалить цвет",
         "projectPalette": "Палитра проекта"
     },
     "docsShortcut": {
@@ -619,7 +619,7 @@
             "openProject": "Открыть проект…",
             "openExample": "Открыть пример…",
             "startScreen": "К стартовому экрану",
-            "startNewWindow": "",
+            "startNewWindow": "Открыть новое окно",
             "successZipProject": "Проект успешно упакован в {0}.",
             "zipProject": "Упаковать проект в .zip",
             "heading": "Проект"
