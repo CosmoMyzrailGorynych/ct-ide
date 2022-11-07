@@ -43,6 +43,10 @@ declare interface IMenuItem {
      * For dynamic checkboxes, you need a function returning a boolean.
      */
     checked?: boolean | (() => boolean),
+    /**
+     * If this method returns false, the item won't be shown
+     */
+    if?: (() => boolean),
     submenu?: IMenu,
 
     /**

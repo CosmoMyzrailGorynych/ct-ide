@@ -134,6 +134,7 @@
     "colorPicker": {
         "current": "colorPicker.current",
         "globalPalette": "colorPicker.globalPalette",
+        "altClick": "color.altClick",
         "old": "colorPicker.old",
         "projectPalette": "colorPicker.projectPalette"
     },
@@ -195,7 +196,9 @@
         "patreon": "intro.patreon",
         "templates": "intro.templates",
         "templatesInfo": "intro.templatesInfo",
-        "boosty": "intro.boosty"
+        "boosty": "intro.boosty",
+        "sponsoredBy": "",
+        "supportedBy": ""
     },
     "modules": {
         "author": "modules.author",
@@ -364,17 +367,6 @@
     "patreon": {
         "aboutPatrons": "patreon.aboutPatrons",
         "patronsHeader": "patreon.patronsHeader",
-        "businessShuttles": "patreon.businessShuttles",
-        "noShuttlesYet": "patreon.noShuttlesYet",
-        "shuttlesDescription": "patreon.shuttlesDescription",
-        "spacePirates": "patreon.spacePirates",
-        "noPiratesYet": "patreon.noPiratesYet",
-        "piratesDescription": "patreon.piratesDescription",
-        "spaceProgrammers": "patreon.spaceProgrammers",
-        "programmersDescription": "patreon.programmersDescription",
-        "aspiringAstronauts": "patreon.aspiringAstronauts",
-        "noAstronautsYet": "patreon.noAstronautsYet",
-        "astronautsDescription": "patreon.astronautsDescription",
         "thankAllPatrons": "patreon.thankAllPatrons",
         "becomeAPatron": "patreon.becomeAPatron",
         "aboutFillers": [
@@ -395,7 +387,14 @@
             "patreon.aboutFillers.14",
             "patreon.aboutFillers.15",
             "patreon.aboutFillers.16"
-        ]
+        ],
+        "sponsors": "",
+        "noSponsorsYet": "",
+        "sponsorsDescription": "",
+        "businessCats": "",
+        "businessCatsDescription": "",
+        "cats": "",
+        "catsDescription": ""
     },
     "docsPanel": {
         "documentation": "docsPanel.documentation",
@@ -620,6 +619,7 @@
             "openProject": "mainMenu.project.openProject",
             "openExample": "mainMenu.project.openExample",
             "startScreen": "mainMenu.project.startScreen",
+            "startNewWindow": "mainMenu.project.startNewWindow",
             "successZipProject": "mainMenu.project.successZipProject",
             "zipProject": "mainMenu.project.zipProject",
             "heading": "mainMenu.project.heading"

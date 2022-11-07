@@ -8,5 +8,9 @@
     }, {
         "fontStyle": "bold",
         "token": "keyword"
-    }]
+    }],
+    "colors": {
+        "editor.foreground": "#FFFFFF",
+        "editor.background": "#000000"
+    }
 }

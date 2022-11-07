@@ -1,3 +1,4 @@
 declare interface IStyle extends IAsset {
-    //TODO:
+    name: string;
+    // TODO:
 }

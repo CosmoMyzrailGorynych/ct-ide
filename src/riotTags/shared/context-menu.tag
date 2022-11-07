@@ -19,6 +19,7 @@
 context-menu(class="{opened: opts.menu.opened}" ref="root" style="{opts.menu.columns? 'columns: '+opts.menu.columns+';' : ''}")
     a(
         each="{item in opts.menu.items}"
+        if="{!item.if || item.if()}"
         href="javascript: void 0;"
         class="{item.type || 'item'} {checkbox: item.type === 'checkbox'} {submenu: item.submenu}"
         disabled="{item.disabled}"

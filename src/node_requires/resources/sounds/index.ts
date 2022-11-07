@@ -20,7 +20,8 @@ const createNewSound = function (name?: string): ISound {
         uid: id,
         isMusic: false,
         type: 'sound' as resourceType,
-        lastmod: Number(new Date())
+        lastmod: Number(new Date()),
+        poolSize: 5
     };
     global.currentProject.sounds.push(newSound);
     return newSound;

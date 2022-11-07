@@ -11,6 +11,7 @@ interface ITimeSeries<type> {
 }
 
 interface ITandemEmitter {
+    uid: string;
     texture: -1,
     openedTabs: Array<EmitterTabsNames>,
     settings: {
@@ -76,5 +77,6 @@ interface ITandemEmitter {
 }
 
 interface ITandem extends IAsset {
-    emitters: Array<ITandemEmitter>
+    name: string;
+    emitters: Array<ITandemEmitter>;
 }

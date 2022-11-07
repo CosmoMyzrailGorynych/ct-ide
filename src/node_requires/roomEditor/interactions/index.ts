@@ -24,7 +24,9 @@ export enum EAllowedListeners {
     nudgeright,
     nudgeleft,
     nudgeup,
-    nudgedown
+    nudgedown,
+
+    tab,
 }
 export type AllowedListener = keyof typeof EAllowedListeners;
 export const allowedListeners: AllowedListener[] =
@@ -62,8 +64,9 @@ import {rotateSelection} from './transformer/rotate';
 import {moveSelection} from './transformer/move';
 import {scaleSelection} from './transformer/scale';
 import {deleteSelected} from './transformer/delete';
-import {copy, paste} from './copyPaste';
+import {copy, paste} from './transformer/copyPaste';
 import {undo, redo} from './history';
+import {tab} from './tab';
 
 export const interactions = [
     updateMousePosition, // Ambient interaction — never blocks the queue
@@ -78,6 +81,8 @@ export const interactions = [
     undo,
     redo,
 
+    moveCameraOnWheelPress,
+
     rotateSelection,
     moveSelection,
     scaleSelection,
@@ -91,6 +96,7 @@ export const interactions = [
     placeTile,
 
     zoomInteraction,
-    moveCameraOnWheelPress,
-    goHome
+    goHome,
+
+    tab
 ];

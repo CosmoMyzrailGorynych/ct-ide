@@ -53,9 +53,7 @@ pack-deploy-release:
   needs: ["lint", "build"]
   script:
     - gulp -f devSetup.gulpfile.js
-    - gulp packages --buildNum=$CI_COMMIT_TAG
-    - gulp deployItchOnly --buildNum=$CI_COMMIT_TAG
-    - gulp sendGithubDraft --buildNum=$CI_COMMIT_TAG
+    - gulp deploy --buildNum=$CI_COMMIT_TAG
   only:
     - tags
     - master

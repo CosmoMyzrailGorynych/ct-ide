@@ -1,7 +1,15 @@
-const getSounds = proj => {
+type exportedSoundData = {
+    name: string;
+    wav: string | false;
+    mp3: string | false;
+    ogg: string | false;
+    poolSize: number;
+    isMusic: boolean;
+};
+
+export const getSounds = (proj: IProject): exportedSoundData[] => {
     const sounds = [];
-    for (const k in proj.sounds) {
-        const s = proj.sounds[k];
+    for (const s of proj.sounds) {
         if (!s.origname) {
             throw new Error(`The sound asset "${s.name}" does not have an actual sound file attached.`);
         }
@@ -15,11 +23,7 @@ const getSounds = proj => {
             ogg: ogg ? `./snd/${s.uid}.ogg` : false,
             poolSize: s.poolSize || 5,
             isMusic: Boolean(s.isMusic)
-        });
+        } as exportedSoundData);
     }
     return sounds;
-};
-
-module.exports = {
-    getSounds
 };

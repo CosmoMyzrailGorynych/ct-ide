@@ -28,8 +28,13 @@ scripts-settings
         const glob = require('./data/node_requires/glob');
 
         this.addNewScript = () => {
-            var script = {
-                name: 'New Script',
+            const oldScriptNames = this.currentProject.scripts.map(script => script.name);
+            let newName = 'New Script';
+            for (let i = 1; oldScriptNames.indexOf(newName) !== -1; i++) {
+                newName = `New Script ${i}`;
+            }
+            const script = {
+                name: newName,
                 code: `/* ${this.voc.newScriptComment} */`
             };
             this.currentProject.scripts.push(script);

@@ -134,6 +134,7 @@
     "colorPicker": {
         "current": "",
         "globalPalette": "",
+        "altClick": "",
         "old": "",
         "projectPalette": ""
     },
@@ -195,7 +196,9 @@
         "patreon": "",
         "templates": "",
         "templatesInfo": "",
-        "boosty": "Boosty is a service, similar to Patreon."
+        "boosty": "Boosty is a service, similar to Patreon.",
+        "sponsoredBy": "",
+        "supportedBy": ""
     },
     "modules": {
         "author": "",
@@ -364,17 +367,6 @@
     "patreon": {
         "aboutPatrons": "",
         "patronsHeader": "",
-        "businessShuttles": "",
-        "noShuttlesYet": "",
-        "shuttlesDescription": "",
-        "spacePirates": "",
-        "noPiratesYet": "",
-        "piratesDescription": "",
-        "spaceProgrammers": "",
-        "programmersDescription": "",
-        "aspiringAstronauts": "",
-        "noAstronautsYet": "",
-        "astronautsDescription": "",
         "thankAllPatrons": "",
         "becomeAPatron": "",
         "aboutFillers": [
@@ -395,7 +387,14 @@
             "",
             "",
             ""
-        ]
+        ],
+        "sponsors": "",
+        "noSponsorsYet": "",
+        "sponsorsDescription": "",
+        "businessCats": "",
+        "businessCatsDescription": "",
+        "cats": "",
+        "catsDescription": ""
     },
     "docsPanel": {
         "documentation": "",
@@ -620,6 +619,7 @@
             "openProject": "",
             "openExample": "",
             "startScreen": "",
+            "startNewWindow": "",
             "successZipProject": "",
             "zipProject": "",
             "heading": ""

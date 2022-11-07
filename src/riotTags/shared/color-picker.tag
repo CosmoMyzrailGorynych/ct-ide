@@ -27,12 +27,12 @@ color-picker
         .c6.npt.npl.npb
             h4.nmt {voc.globalPalette}
             .Swatches(ref="globalSwatches")
-                .aSwatch(each="{colr in globalPalette}" style="background-color: {colr};" onclick="{onSwatchClick}")
+                .aSwatch(each="{colr in globalPalette}" style="background-color: {colr};" onclick="{onSwatchClick}" title="{voc.altClick}")
                 button.anAddSwatchButton(onclick="{addAsGlobal}")
                     | +
             h4 {voc.projectPalette}
             .Swatches(ref="localSwatches")
-                .aSwatch(each="{colr in global.currentProject.palette}" style="background-color: {colr};" onclick="{onSwatchClick}")
+                .aSwatch(each="{colr in global.currentProject.palette}" style="background-color: {colr};" onclick="{onSwatchClick}"  title="{voc.altClick}")
                 button.anAddSwatchButton(onclick="{addAsLocal}")
                     | +
         .c6.np
@@ -123,7 +123,7 @@ color-picker
         };
 
         this.onSwatchClick = e => {
-            if (e.ctrlKey) { // deletes a swatch
+            if (e.ctrlKey || e.altKey) { // deletes a swatch
                 if (e.target.parentNode === this.refs.localSwatches) {
                     const ind = global.currentProject.palette.indexOf(e.item.colr);
                     global.currentProject.palette.splice(ind, 1);

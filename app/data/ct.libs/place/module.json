@@ -15,38 +15,46 @@
     "fields": [{
         "name": "Partitioning",
         "name_Ru": "Подразделение",
+        "name_Br": "Particionamento",
         "type": "h2"
     }, {
         "name": "Grid size X",
         "name_Ru": "Размер сетки по X",
+        "name_Br": "Tamanho da grade em X",
         "help": "Tells ct.place how to spacially group copies. This should be at least as large as the horizontal side of the biggest colliding sprite of your game.",
         "help_Ru": "Указывает, как ct.place должен делить копии по группам. Значение должно быть как минимум равно ширине самой большой копии с коллизией.",
+        "help_Br": "Define como o ct.place deve dividir as copies em grupos. O valor deve ser pelo menos igual à largura do maior sprite em colisão do seu jogo",
         "key": "gridX",
         "default": 512,
         "type": "number"
     }, {
         "name": "Grid size Y",
         "name_Ru": "Размер сетки по Y",
+        "name_Br": "Tamanho da grade em Y",
         "help": "Tells ct.place how to spacially group copies. This should be at least as large as the vertical size of the biggest colliding sprite of your game.",
         "help_Ru": "Указывает, как ct.place должен делить копии по группам. Значение должно быть как минимум равно высоте самой большой копии с коллизией.",
+        "help_Br": "Define como o ct.place deve dividir as copies em grupos. O valor deve ser pelo menos igual à altura do maior sprite em colisão do seu jogo",
         "key": "gridY",
         "default": 512,
         "type": "number"
     }, {
         "name": "Debug mode",
         "name_Ru": "Режим отладки",
+        "name_Br": "Modo de depuração",
         "type": "h2"
     }, {
         "name": "Enable",
         "name_Ru": "Включить",
         "help": "Displays collision shapes, collision groups and partitions. It will also write additional keys to most colliding objects. Doesn't work on hidden objects.",
         "help_Ru": "Показывает маски столкновений, группы коллизии и подразделение по сетке. Будет также добавлять дополнительные свойства большинству объектам с коллизией. Не работает на спрятанных объектах",
+        "help_Br": "Mostra as máscaras de colisão, grupos de colisão e partições. Ele também escreverá propriedades adicionais para muitos dos objetos colidindo. Não funciona em objetos ocultos",
         "key": "debugMode",
         "default": false,
         "type": "checkbox"
     }, {
         "name": "Debug text size",
         "name_Ru": "Размер текста в режиме отладки",
+        "name_Br": "Tamanho do texto de depuração",
         "key": "debugText",
         "default": 16,
         "type": "number",
@@ -55,6 +63,7 @@
     "templateExtends": [{
         "name": "Collision group",
         "name_Ru": "Группа столкновений",
+        "name_Br": "Grupo de colisão",
         "type": "text",
         "collect": true,
         "collectScope": "place::cgroup",
@@ -63,6 +72,7 @@
     "tileLayerExtends": [{
         "name": "Collision group",
         "name_Ru": "Группа столкновений",
+        "name_Br": "Grupo de colisão",
         "type": "text",
         "collect": true,
         "collectScope": "place::cgroup",
@@ -72,6 +82,7 @@
         "collisions": {
             "name": "Collisions",
             "name_Ru": "Столкновения",
+            "name_Br": "Colisões",
             "icon": "copy"
         }
     },
@@ -79,8 +90,10 @@
         "collisionTemplate": {
             "name": "Collision with a template",
             "name_Ru": "Столкновение с шаблоном",
+            "name_Br": "Colisão com um template",
             "parameterizedName": "Collides %%template%% template",
             "parameterizedName_Ru": "Столкновение с шаблоном %%template%%",
+            "parameterizedName_Br": "Quando colidir com %%template%%",
             "icon": "copy",
             "useAssetThumbnail": true,
             "applicable": ["template"],
@@ -89,6 +102,7 @@
                 "template": {
                     "name": "Template",
                     "name_Ru": "Шаблон",
+                    "name_Br": "Template",
                     "type": "template"
                 }
             },
@@ -98,15 +112,18 @@
                 "other": {
                     "type": "Copy",
                     "description": "What collides with your copy",
-                    "description_Ru": "То, что столкнулось с копией"
+                    "description_Ru": "То, что столкнулось с копией",
+                    "description_Br": "O que colide com sua copy"
                 }
             }
         },
         "collisionCGroup": {
             "name": "Collision with a group",
             "name_Ru": "Столкновение с группой",
+            "name_Br": "Colisão com um grupo",
             "parameterizedName": "Collides %%group%% group",
             "parameterizedName_Ru": "Столкновение с группой %%group%%",
+            "parameterizedName_Br": "Quando colidir com %%group%%",
             "icon": "copy",
             "applicable": ["template"],
             "category": "collisions",
@@ -114,6 +131,7 @@
                 "group": {
                     "name": "Group",
                     "name_Ru": "Группа",
+                    "name_Br": "Grupo",
                     "type": "string"
                 }
             },
@@ -123,7 +141,8 @@
                 "other": {
                     "type": "Copy | PIXI.Sprite",
                     "description": "What collides with your copy. PIXI.Sprite is a ct.js tile",
-                    "description_Ru": "То, что столкнулось с копией. PIXI.Sprite — это плитка тайлсета"
+                    "description_Ru": "То, что столкнулось с копией. PIXI.Sprite — это плитка тайлсета",
+                    "description_Br": "O que colide com a sua copy. PIXI.Sprite é um tile do ct.js"
                 }
             }
         }

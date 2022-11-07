@@ -1,3 +1,63 @@
+## v3.1.0
+
+*Mon Nov 07 2022*
+
+### ✨ New Features
+
+* Adds TypeScript support (#369 by @markmehere)
+* Allow multiple projects open at once (#378 by @markmehere)
+* `ct.res.groups` and `group` field in rooms and templates.
+* Support for Apple Silicon builds (#368 by @markmehere)
+
+### ⚡️ General Improvements
+
+* Add context menu to the room editor to delete, copy, and paste items
+* Better French translations (#371 by @rtauziac aka Crazyrems)
+* Clean up gulpfile from unneeded packages and remove builds after zipping them
+* Complete patrons tab, add a little shoutout to the starting screen
+* `ct.capture`: add `portion` method (by Tho_mas), fix `object` method
+* Define types for all the keys of IProject
+* Do not minify HTML/CSS if not minifying JavaScript (#364 by @markmehere)
+* Lossless image optimization for ct.js assets (#374 by @FlipFloop)
+* Notepad now accepts free text (#376 by @markmehere)
+* Tabbable copies and improved keyboard support in the room editor (#372 by @markmehere)
+* Tooltip and alt-click for palette color removal (#375 by @markmehere)
+* :globe_with_meridians: Add Turkish translation by Sarpmanon from our Discord server!
+* :globe_with_meridians: Update Dutch translation, by GambleBranch
+* :globe_with_meridians: Update Brazilian Portuguese translation (#384 by @leedigital)
+* :globe_with_meridians: Update Chinese Simplified translations (#385 by @emaoshushu)
+* :globe_with_meridians: Better French translation (#393 by @FlipFloop)
+* :globe_with_meridians: Update Russian translation
+
+### 🐛 Bug Fixes
+
+* Add a missing name field to IStyle interface
+* Apply changes in the properties panel when saving a room
+* Delete typings on reset all (#373 by @markmehere)
+* Examples on Mac should be clonable only (can't save inside the app itself)
+* Fix a dumb typo in project-selector tag
+* Fix a tiny typo at russian description of Frame End event
+* Fix broken Pointer Enter, Pointer Leave events
+* Fix custom property cloning link issue (#388 by @firecakes)
+* Fix issues with timer events in the Catsteroids example
+* Fixed bug of not showing texture and sound gallery when ctjs is run outside of your home directory (#386 by @leedigital)
+* Names of content types should be marked as required
+* Remove Wheel Scroll event — it was never supported by pixi.js v5.3.9. Use Actions and ct.pointer inputs instead.
+
+### 📝 Docs
+
+* :bento: Update vuepress to v2-beta-51
+* :bug: Fix English headers in informative blocks on Russian locale
+* :zap: Update several Russian pages
+
+### 🌐 Website
+
+* :pencil: Update changelog for v3.0.1
+
+### 🌻 Misc
+
+* :arrow_up: Upgrade to Monaco 0.34 (#377 by @markmehere)
+
 ## v3.0.1
 
 *Mon Sep 12 2022*

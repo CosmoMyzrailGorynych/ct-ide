@@ -15,7 +15,8 @@ const moveCameraOnWheelPress: IRoomEditorInteraction<IMoveCameraAffixedData> = {
     ifListener: 'pointerdown',
     if(e) {
         // Checks for a pressed mouse wheel
-        return e.data.button === 1;
+        return e.data.button === 1 ||
+            (e.data.originalEvent.altKey && e.data.originalEvent.shiftKey);
     },
     listeners: {
         pointerdown(e, roomTag, affixedData) {

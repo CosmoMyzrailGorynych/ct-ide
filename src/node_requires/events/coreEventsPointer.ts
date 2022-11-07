@@ -2,12 +2,11 @@
 const keyToEventMap = {
     OnPointerClick: 'pointertap',
     OnPointerSecondaryClick: 'rightclick',
-    OnPointerEnter: 'pointerenter',
-    OnPointerLeave: 'pointerleave',
+    OnPointerEnter: 'pointerover',
+    OnPointerLeave: 'pointerout',
     OnPointerDown: 'pointerdown',
     OnPointerUp: 'pointerup',
-    OnPointerUpOutside: 'pointerupoutside',
-    OnPointerWheel: 'wheel'
+    OnPointerUpOutside: 'pointerupoutside'
 } as Record<string, string>;
 
 const coreEvents = {} as Record<string, IEventDeclaration>;

@@ -4,7 +4,7 @@
     @attribute onclose (riot function)
 
 room-editor.aPanel.aView
-    canvas(ref="canvas" onwheel="{triggerWheelEvent}")
+    canvas(ref="canvas" onwheel="{triggerWheelEvent}" oncontextmenu="{openMenus}")
     // Toolbar
     .room-editor-aToolsetHolder
         .room-editor-aToolbar.aButtonGroup.vertical
@@ -137,6 +137,7 @@ room-editor.aPanel.aView
     context-menu(menu="{gridMenu}" ref="gridMenu")
     context-menu(menu="{zoomMenu}" ref="zoomMenu")
     context-menu(menu="{visibilityMenu}" ref="visibilityMenu" if="{pixiEditor}")
+    context-menu(menu="{entitiesMenu}" ref="entitiesMenu" if="{pixiEditor}")
     script.
         this.namespace = 'roomView';
         this.mixin(window.riotVoc);
@@ -261,6 +262,7 @@ room-editor.aPanel.aView
                 }
             });
         };
+        // eslint-disable-next-line complexity
         const triggerKeyboardEvent = e => {
             if (!window.hotkeys.inScope('rooms')) {
                 return false;
@@ -268,15 +270,18 @@ room-editor.aPanel.aView
             if (['input', 'textarea', 'select'].includes(e.target.nodeName.toLowerCase())) {
                 return false;
             }
-            if (e.key === 'Delete') {
+            const ctrlKey = navigator.platform.indexOf('Mac') > -1 ?
+                e.metaKey :
+                e.ctrlKey;
+            if (e.key === 'Delete' || e.key === 'Backspace') {
                 return phabricateEvent('delete', e);
-            } else if (e.code === 'KeyC' && e.ctrlKey) {
+            } else if (e.code === 'KeyC' && ctrlKey) {
                 return phabricateEvent('copy', e);
-            } else if (e.code === 'KeyV' && e.ctrlKey) {
+            } else if (e.code === 'KeyV' && ctrlKey) {
                 return phabricateEvent('paste', e);
-            } else if (e.code === 'KeyZ' && e.ctrlKey && e.shiftKey) {
+            } else if (e.code === 'KeyZ' && ctrlKey && e.shiftKey) {
                 return phabricateEvent('redo', e);
-            } else if (e.code === 'KeyZ' && e.ctrlKey) {
+            } else if (e.code === 'KeyZ' && ctrlKey) {
                 return phabricateEvent('undo', e);
             } else if (e.code === 'KeyH') {
                 return phabricateEvent('home', e);
@@ -288,6 +293,9 @@ room-editor.aPanel.aView
                 return phabricateEvent('nudgeup', e);
             } else if (e.key === 'ArrowDown') {
                 return phabricateEvent('nudgedown', e);
+            } else if (e.key === 'Tab') {
+                phabricateEvent('tab', e);
+                return e.preventDefault();
             }
             return false;
         };
@@ -445,6 +453,44 @@ room-editor.aPanel.aView
             this.refs.visibilityMenu.popup(e.clientX, e.clientY);
         };
 
+        this.entitiesMenu = {
+            opened: false,
+            items: [{
+                label: this.vocGlob.copy,
+                click: () => {
+                    this.pixiEditor.copySelection();
+                },
+                icon: 'copy',
+                hotkeyLabel: 'Ctrl+C',
+                if: () => this.pixiEditor.currentSelection.size
+            }, {
+                label: this.vocGlob.paste,
+                click: () => {
+                    this.pixiEditor.pasteSelection();
+                },
+                icon: 'clipboard',
+                hotkeyLabel: 'Ctrl+V',
+                if: () => this.pixiEditor.clipboard.size
+            }, {
+                type: 'separator',
+                if: () => this.pixiEditor.currentSelection.size
+            }, {
+                label: this.vocGlob.delete,
+                click: () => {
+                    this.pixiEditor.deleteSelected();
+                },
+                icon: 'trash',
+                hotkeyLabel: 'Delete',
+                if: () => this.pixiEditor.currentSelection.size
+            }]
+        };
+        this.openMenus = e => {
+            e.preventDefault();
+            if (this.currentTool === 'select' || this.pixiEditor.clipboard.size) {
+                this.refs.entitiesMenu.popup(e.clientX, e.clientY);
+            }
+        };
+
         this.editingEvents = false;
         this.openEventsList = () => {
             this.editingEvents = true;
@@ -455,6 +501,9 @@ room-editor.aPanel.aView
         };
 
         this.saveRoom = async () => {
+            if (this.pixiEditor.currentSelection.size && this.refs.propertiesPanel) {
+                this.refs.propertiesPanel.applyChanges();
+            }
             const {writeRoomPreview} = require('./data/node_requires/resources/rooms');
             this.pixiEditor.serialize();
             await Promise.all([

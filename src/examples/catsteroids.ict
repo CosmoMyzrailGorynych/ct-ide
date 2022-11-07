@@ -1600,6 +1600,7 @@ rooms:
           ct.templates.copy('Asteroid', ct.random(ct.camera.width), -100);
         arguments:
           name: Asteroids
+          isUi: false
         lib: core
       - eventKey: Timer2
         code: |-
@@ -1610,6 +1611,7 @@ rooms:
           }
         arguments:
           name: Shooters
+          isUi: false
         lib: core
       - eventKey: Timer3
         code: |-
@@ -1622,6 +1624,7 @@ rooms:
           }
         arguments:
           name: Wave attack
+          isUi: false
         lib: core
       - eventKey: Timer4
         code: |-
@@ -1632,6 +1635,7 @@ rooms:
           }
         arguments:
           name: Bomber
+          isUi: false
         lib: core
       - eventKey: Timer6
         code: |-
@@ -1639,6 +1643,7 @@ rooms:
           ct.templates.copy('DatBoss', ct.camera.width / 2, -300);
         arguments:
           name: BOSS
+          isUi: false
         lib: core
     type: room
     simulate: true

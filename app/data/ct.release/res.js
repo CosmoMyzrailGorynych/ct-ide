@@ -15,6 +15,7 @@
         sounds: {},
         textures: {},
         skeletons: {},
+        groups: [/*@groups@*/][0],
         /**
          * Loads and executes a script by its URL
          * @param {string} url The URL of the script file, with its extension.
