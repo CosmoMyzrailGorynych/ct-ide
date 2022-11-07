@@ -5,6 +5,7 @@ root-tag(class="{pride: localStorage.prideMode === 'on'}")
     writable-folder-prompt(if="{showWritableFolderPrompt}" onsuccess="{onWritableSelected}")
     script.
         this.projectOpened = false;
+        window.id = Math.random();
         window.signals.on('resetAll', () => {
             const glob = require('./data/node_requires/glob');
             for (const script of window.currentProject.scripts) {

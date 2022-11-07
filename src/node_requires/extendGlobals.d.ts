@@ -17,6 +17,8 @@ declare global {
     function showOpenDialog(options: any): Promise<string | false>;
     function showSaveDialog(options: any): Promise<string | false>;
     interface Window {
+        path: string;
+        id: number;
         signals: any;
         orders: any;
         alertify: any;

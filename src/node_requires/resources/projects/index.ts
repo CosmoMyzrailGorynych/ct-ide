@@ -197,7 +197,7 @@ const readProjectFile = async (proj: string) => {
  * This is the method that should be used for opening ct.js projects
  * from within UI.
  */
-const openProject = async (proj: string): Promise<void> => {
+const openProject = async (proj: string): Promise<void | false | Promise<void>> => {
     if (!proj) {
         const baseMessage = 'An attempt to open a project with an empty path.';
         alertify.error(baseMessage + ' See the console for the call stack.');
@@ -205,9 +205,12 @@ const openProject = async (proj: string): Promise<void> => {
         throw err;
     }
     const proceed = await (new Promise((resolve) => {
-        (nw.Window as any).getAll((windows: { window: { path: string } }[]) => {
+        // eslint-disable-next-line camelcase
+        (nw.Window as any).getAll((windows: NWJS_Helpers.win[]) => {
             windows.forEach(win => {
-                if (win.window.path === proj) {
+                if ((win.window as Window).path === proj &&
+                    (win.window as Window).id !== window.id
+                ) {
                     const baseMessage = 'You cannot open the same project multiple times.';
                     alertify.error(baseMessage);
                     const err = new Error(baseMessage);
@@ -218,7 +221,9 @@ const openProject = async (proj: string): Promise<void> => {
             resolve(true);
         });
     }));
-    if (!proceed) return;
+    if (!proceed) {
+        return false;
+    }
     sessionStorage.projname = path.basename(proj);
     global.projdir = path.dirname(proj) + path.sep + path.basename(proj, '.ict');
 
@@ -234,21 +239,21 @@ const openProject = async (proj: string): Promise<void> => {
         const targetStat = await fs.stat(proj);
         const voc = window.languageJSON.intro.recovery;
         const userResponse = await window.alertify
-      .okBtn(voc.loadRecovery)
-      .cancelBtn(voc.loadTarget)
-      /* {0} — target file date
-          {1} — target file state (newer/older)
-          {2} — recovery file date
-          {3} — recovery file state (newer/older)
-      */
-      .confirm(voc.message
-          .replace('{0}', targetStat.mtime.toLocaleString())
-          .replace('{1}', targetStat.mtime < recoveryStat.mtime ? voc.older : voc.newer)
-          .replace('{2}', recoveryStat.mtime.toLocaleString())
-          .replace('{3}', recoveryStat.mtime < targetStat.mtime ? voc.older : voc.newer));
+            .okBtn(voc.loadRecovery)
+            .cancelBtn(voc.loadTarget)
+            /* {0} — target file date
+               {1} — target file state (newer/older)
+               {2} — recovery file date
+               {3} — recovery file state (newer/older)
+            */
+            .confirm(voc.message
+                .replace('{0}', targetStat.mtime.toLocaleString())
+                .replace('{1}', targetStat.mtime < recoveryStat.mtime ? voc.older : voc.newer)
+                .replace('{2}', recoveryStat.mtime.toLocaleString())
+                .replace('{3}', recoveryStat.mtime < targetStat.mtime ? voc.older : voc.newer));
         window.alertify
-      .okBtn(window.languageJSON.common.ok)
-      .cancelBtn(window.languageJSON.common.cancel);
+            .okBtn(window.languageJSON.common.ok)
+            .cancelBtn(window.languageJSON.common.cancel);
         if (userResponse.buttonClicked === 'ok') {
             return readProjectFile(proj + '.recovery');
         }
