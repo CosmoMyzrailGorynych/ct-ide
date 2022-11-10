@@ -2,13 +2,18 @@
 
 Make some text boxes! This text box will only have its text modified when the user clicks on the text box, and it will disable editing the text box when the user clicks away from it. It handles keyboard input for you, and even supports backspace and delete inputs. You can also use the arrow keys to seek the cursor left and right in the text! It also supports hidden text and text cutoff when the text goes outside the boundaries of the text box. It's smart!
 
-Simple example:
+Simple example (Add in the Creation event):
 ```js
 this.textbox = new ct.vgui.TextBox(this, {
     trueText: "Placeholder",
     width: 350,
     height: 200,
 })
+```
+
+In the Frame start event, add this so that the TextBox can update its state on every frame of the game:
+```js
+this.textbox.step()
 ```
 
 Example using all "public" properties
@@ -71,14 +76,15 @@ this.textbox.props.font = ct.styles.get('Testing')
 this.textbox.reload()
 ```
 
-If you want to change the cursor, that requires a redraw on every step so code should be added in the Step event. Be aware that you will also need to handle the case of whether the text box is in focus by the user.
+If you want to change the cursor, that requires a redraw on every frame so code should be added in the Frame start event. Be aware that you will also need to handle the case of whether the text box is in focus by the user.
 ```js
+this.textbox.step()
 // change the cursor
 this.textbox.cursor.clear()
 if (this.textbox.isFocused) { // check if the user is focused on this text box
     this.textbox.cursor.beginFill(0xFF3366)
-    this.textbox.cursor.drawRect(this.textbox.hiddenInput.width + 5, 2, 2, this.textbox.hiddenInput.height);
-    this.textbox.cursor.endFill();
+    this.textbox.cursor.drawRect(this.textbox.hiddenInput.width + 5, 2, 2, this.textbox.hiddenInput.height)
+    this.textbox.cursor.endFill()
 }
 ```
 
@@ -88,29 +94,29 @@ Don't want to use vector graphics at all for the text box? Not a problem. Simply
 
 Let's say you created your TextBox template and now want to retrieve the textbox input. This is an example you can use if you attached your TextBox to the copy via `this.textbox` and you only have one TextBox copy in the room:
 
-```
-const onetextbox = ct.templates.list['TextBox'][0];
-const textValue = onetextbox.textbox.props.trueText;
+```js
+const onetextbox = ct.templates.list['TextBox'][0]
+const textValue = onetextbox.textbox.props.trueText
 ```
 
 What if you made a template to create multiple TextBoxes and wanted to configure each of them? Pass in some arguments using the `ct.templates.copy` method like this:
 
-```
+```js
 this.text1 = ct.templates.copy('TextBox', this.x, this.y, {
     trueText: "Hi"
-});
+})
 this.text2 = ct.templates.copy('TextBox', this.x, this.y + 200, {
     trueText: "Hello"
-});
+})
 ```
 
 Then in your TextBox template's Creation event you can pull that information in:
 
-```
+```js
 this.textbox = new ct.vgui.TextBox(this, {
     trueText: this.trueText ? this.trueText : "",
     width: 350,
     height: 200
-});
+})
 ```
 
