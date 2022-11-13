@@ -17,6 +17,7 @@ room-events-editor.aView.flexrow.pad
                     use(xlink:href="#check")
                 span {voc.done}
     .tabwrap.tall(style="position: relative")
+        code-editor-scriptable(event="{currentSheet}" entitytype="room" ref="codeeditor")
         //ul.tabs.aNav.nogrow.noshrink
         //    li(onclick="{changeTab('javascript')}" class="{active: tab === 'javascript'}" title="JavaScript (Control+Q)" data-hotkey="Control+q")
         //        svg.feather
@@ -26,11 +27,6 @@ room-events-editor.aView.flexrow.pad
         //        svg.feather
         //            use(xlink:href="#grid")
         //        span {voc.step}
-        div
-            .tabbed.noborder(show="{tab === 'javascript'}")
-                code-editor-scriptable(event="{currentSheet}" entitytype="room" ref="codeeditor")
-            // .tabbed(show="{tab === 'blocks'}")
-            //     .aBlocksEditor(ref="blocks")
     script.
         this.namespace = 'roomView';
         this.mixin(window.riotVoc);

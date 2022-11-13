@@ -107,7 +107,7 @@ project-selector
                     pattern='[a-zA-Z_0-9]\\{1,\\}'
                     ref="projectname"
                 )
-                button.nm.inline(onclick="{openProjectFolder}") {voc.newProject.button}
+                button.nm.inline(onclick="{showCodeLanguageSelector}") {voc.newProject.button}
         .aSpacer
         .aVersionNumber.nogrow
             a(href="https://github.com/orgs/ct-js/" title="{voc.github}" onclick="{openExternal('https://github.com/orgs/ct-js/')}")
@@ -140,6 +140,11 @@ project-selector
                 | {newVersion}
                 img(src="data/img/partycarrot.gif" if="{newVersion}").aPartyCarrot
     context-menu(menu="{languagesSubmenu}" ref="languageslist")
+    coding-language-selector(
+        if="{codeLanguageSelector}"
+        oncancelled="{hideCodeLanguageSelector}"
+        onselected="{applyCodeLanguage}"
+    )
     script.
         const fs = require('fs-extra'),
               path = require('path');
@@ -235,6 +240,7 @@ project-selector
         this.newProject = async (way, codename) => {
             sessionStorage.showOnboarding = true;
             const defaultProject = require('./data/node_requires/resources/projects/defaultProject').get();
+            defaultProject.language = this.projectLanguage;
             const YAML = require('js-yaml');
             const projectYAML = YAML.safeDump(defaultProject);
             fs.outputFile(path.join(way, codename + '.ict'), projectYAML)
@@ -320,12 +326,23 @@ project-selector
             }
         };
 
-        this.openProjectFolder = () => {
+        this.codeLanguageSelector = false;
+        this.showCodeLanguageSelector = () => {
             const codename = this.refs.projectname.value.trim();
             if (codename.length === 0) {
                 alertify.error(this.voc.newProject.nameError);
                 return;
             }
+            this.codeLanguageSelector = true;
+        };
+        this.hideCodeLanguageSelector = () => {
+            this.codeLanguageSelector = false;
+            this.update();
+        };
+        this.applyCodeLanguage = selection => {
+            this.projectLanguage = selection;
+            this.codeLanguageSelector = false;
+            this.update();
             this.chooseProjectFolder();
         };
 

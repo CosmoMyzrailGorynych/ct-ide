@@ -37,6 +37,7 @@ declare interface IContentType {
 declare interface IProject {
     ctjsVersion: string;
     notes: string;
+    language: 'typescript' | 'coffeescript';
     libs: Record<string, Record<string, unknown>>;
     actions: ICtAction[];
     scripts: IScript[];
@@ -87,12 +88,12 @@ declare interface IProject {
         }
     };
     groups: {
-        emitterTandems: IResourceGroup[]
-        fonts: IResourceGroup[]
-        rooms: IResourceGroup[]
-        sounds: IResourceGroup[]
-        styles: IResourceGroup[]
-        templates: IResourceGroup[]
+        emitterTandems: IResourceGroup[],
+        fonts: IResourceGroup[],
+        rooms: IResourceGroup[],
+        sounds: IResourceGroup[],
+        styles: IResourceGroup[],
+        templates: IResourceGroup[],
         textures: IResourceGroup[]
     }
 }

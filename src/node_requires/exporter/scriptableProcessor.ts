@@ -4,6 +4,13 @@ const {getEventByLib} = require('../events');
 import {readFile} from 'fs-extra';
 import {getModulePathByName, loadModuleByName} from './../resources/modules';
 import {join} from 'path';
+const coffeeScript = require('coffeescript');
+
+const coffeeScriptOptions = {
+    sourceMap: false,
+    bare: true,
+    header: false
+};
 
 const eventsCache: Record<string, string> = {};
 const resetEventsCache = (): void => {
@@ -67,7 +74,7 @@ const getAssetName = (assetId: string, assetType: resourceType) => {
     return resourcesAPI[assetType + 's'].getById(assetId).name;
 };
 
-const getBaseScripts = function (entity: IScriptable): ScriptableCode {
+const getBaseScripts = function (entity: IScriptable, project: IProject): ScriptableCode {
     const domains = {
         thisOnStep: '',
         thisOnCreate: '',
@@ -79,7 +86,18 @@ const getBaseScripts = function (entity: IScriptable): ScriptableCode {
         rootRoomOnLeave: ''
     };
     for (const event of entity.events) {
-        const {lib, eventKey, code} = event;
+        const {lib, eventKey} = event;
+        let {code} = event;
+        if (project.language === 'coffeescript') {
+            try {
+                code = coffeeScript.compile(code, coffeeScriptOptions);
+            } catch (e) {
+                const errorMessage = `An error occured while compiling ${eventKey} (${lib}) event of ${entity.name} ${entity.type}`;
+                window.alertify.error(errorMessage, e.message);
+                console.error(errorMessage);
+                throw e;
+            }
+        }
         const eventArgs = event.arguments;
         const eventSpec = getEventByLib(eventKey, lib) as IEventDeclaration;
         const requiredArgs = eventSpec.arguments || {};

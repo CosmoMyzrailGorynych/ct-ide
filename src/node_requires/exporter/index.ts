@@ -200,7 +200,7 @@ const getInjections = async () => {
     return injections;
 };
 
-// eslint-disable-next-line max-lines-per-function
+// eslint-disable-next-line max-lines-per-function, complexity
 const exportCtProject = async (
     project: IProject,
     projdir: string,
@@ -389,9 +389,11 @@ const exportCtProject = async (
     }));
 
     /* TypeScript */
-    buffer = require('sucrase').transform(buffer, {
-        transforms: ['typescript']
-    }).code;
+    if (project.language === 'typescript') {
+        buffer = require('sucrase').transform(buffer, {
+            transforms: ['typescript']
+        }).code;
+    }
 
     /* HTML & CSS */
     const {substituteHtmlVars} = require('./html');
@@ -437,15 +439,17 @@ const exportCtProject = async (
 
     // Output minified HTML & CSS
     const noMinify = currentProject.settings.export.codeModifier === 'none';
-    const csswring = noMinify ? undefined : require('csswring');
-    const htmlMinify = noMinify ? undefined : require('html-minifier').minify;
+    const csswring = noMinify ? (void 0) : require('csswring');
+    const htmlMinify = noMinify ? (void 0) : require('html-minifier').minify;
     await Promise.all([
         fs.writeFile(
             path.join(writeDir, '/index.html'),
-            noMinify ? html : htmlMinify(html, {
-                removeComments: true,
-                collapseWhitespace: true
-            })
+            noMinify ?
+                html :
+                htmlMinify(html, {
+                    removeComments: true,
+                    collapseWhitespace: true
+                })
         ),
         fs.writeFile(path.join(writeDir, '/ct.css'), noMinify ? css : csswring.wring(css).css),
         fs.writeFile(path.join(writeDir, '/ct.js'), buffer)

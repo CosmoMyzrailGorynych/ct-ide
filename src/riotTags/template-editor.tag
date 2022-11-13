@@ -52,7 +52,7 @@ mixin eventsList
     ).tall
 
 template-editor.aPanel.aView.flexrow
-    .template-editor-Properties(class="{alt: localStorage.altTemplateLayout === 'on'}")
+    .template-editor-Properties.nml(class="{alt: localStorage.altTemplateLayout === 'on'}")
         .tall.flexfix.aPanel.pad
             .flexfix-header
                 asset-input.wide(

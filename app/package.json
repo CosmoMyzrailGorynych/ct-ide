@@ -2,7 +2,7 @@
   "main": "index.html",
   "name": "ctjs",
   "description": "ct.js — a free 2D game engine",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "homepage": "https://ctjs.rocks/",
   "author": {
     "name": "Cosmo Myzrail Gorynych",
@@ -56,6 +56,7 @@
     "@capacitor/core": "^3.4.0",
     "@capacitor/project": "^1.0.28",
     "archiver": "^3.1.1",
+    "coffeescript": "^2.7.0",
     "csswring": "7.0.0",
     "discord-rpc": "^3.1.4",
     "electron-packager": "^16.0.0",

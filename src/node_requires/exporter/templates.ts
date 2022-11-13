@@ -45,7 +45,7 @@ const stringifyTemplates = function (proj: IProject): IScriptablesFragment {
 
     for (const k in proj.templates) {
         var template = proj.templates[k];
-        const scripts = getBaseScripts(template);
+        const scripts = getBaseScripts(template, proj);
         const textureInfo = getTextureInfo(blankTextures, template);
         templates += `
 ct.templates.templates["${template.name}"] = {

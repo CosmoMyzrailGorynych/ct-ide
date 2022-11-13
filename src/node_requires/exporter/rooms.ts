@@ -139,7 +139,7 @@ const stringifyRooms = (proj: IProject): IScriptablesFragment => {
         }
 
         const constraints = getConstraints(r);
-        const scriptableCode = getBaseScripts(r);
+        const scriptableCode = getBaseScripts(r, proj);
 
         roomsCode += `
 ct.rooms.templates['${r.name}'] = {
