@@ -14,7 +14,7 @@ coding-language-selector
                         pre
                             code.
                                 if health <= 0 and not invulnerable
-                                    this.kill = yes
+                                    @kill = yes
                         button(class="{active: selection === 'coffeescript'}" onclick="{selectLanguage('coffeescript')}")
                             svg.icon
                                 use(xlink:href="#coffeescript")
