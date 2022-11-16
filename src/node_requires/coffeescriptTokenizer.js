@@ -11,9 +11,6 @@
 
 'use strict';
 
-// Allow for running under nodejs/requirejs in tests
-const _monaco = global.monaco;
-
 module.exports.conf = {
     wordPattern: /(-?\d*\.\d\w*)|([^\`\~\!\@\#%\^\&\*\(\)\=\$\-\+\[\{\]\}\\\|\;\:\'\"\,\.\<\>\/\?\s]+)/g,
     comments: {
