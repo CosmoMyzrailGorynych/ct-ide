@@ -727,25 +727,26 @@ templates:
     extends:
       cgroup: ''
     uid: c40336ea-2846-45d5-97ba-d51852d3f6c5
-    lastmod: 1668342846976
+    lastmod: 1668600189331
     events:
       - lib: core
         arguments: {}
         code: |-
           ct.camera.follow = this
           ct.camera.shiftY = -16
-          this.maxSpeed = 2
 
-          this.invincibleTimer = 0
+          @maxSpeed = 2
+
+          @invincibleTimer = 0
         eventKey: OnCreate
       - lib: core
         arguments: {}
         code: |-
-          this.vspeed = ct.actions.MoveY.value * this.maxSpeed
-          this.hspeed = ct.actions.MoveX.value * this.maxSpeed
-          this.moveContinuousByAxes 'Solid'
+          @vspeed = ct.actions.MoveY.value * @maxSpeed
+          @hspeed = ct.actions.MoveX.value * @maxSpeed
+          @moveSmart 'Solid'
 
-          if this.invincibleTimer <= 0
+          if @invincibleTimer <= 0
               trap = ct.place.meet this, 'Trap'
               enemy = ct.place.meet this, 'Slime'
               damaged = no
@@ -754,41 +755,39 @@ templates:
               if enemy
                   damaged = yes
               if damaged
-                  ct.emitters.fire 'Cat_Damage', this.x, this.y
+                  ct.emitters.fire 'Cat_Damage', @x, @y
                   ct.sound.spawn 'CatDamage'
-                  this.invincibleTimer = ct.speed
+                  @invincibleTimer = ct.speed
                   ct.room.lives--
                   if ct.room.lives <= 0
-                      this.kill = yes
-                      ct.templates.copy 'Cat_Death', this.x, this.y
+                      @kill = yes
+                      ct.templates.copy 'Cat_Death', @x, @y
                   return
           else
-              this.invincibleTimer -= ct.delta
+              @invincibleTimer -= ct.delta
         eventKey: OnStep
       - lib: core
         arguments: {}
         code: |-
-          if this.x < ct.pointer.x and this.tex != 'Cat_Right'
-              this.tex = 'Cat_Right'
-              this.play()
+          if @x < ct.pointer.x and @tex != 'Cat_Right'
+              @tex = 'Cat_Right'
+              @play()
 
-          if this.x > ct.pointer.x and this.tex != 'Cat_Left'
-              this.tex = 'Cat_Left'
-              this.play()
+          if @x > ct.pointer.x and @tex != 'Cat_Left'
+              @tex = 'Cat_Left'
+              @play()
 
-          this.depth = this.y
+          @depth = @y
 
-          if this.invincibleTimer > 0 and this.invincibleTimer % 20 > 10
-              this.opacity = 0.5
+          if @invincibleTimer > 0 and @invincibleTimer % 20 > 10
+              @alpha = 0.5
           else
-              this.opacity = 1
+              @alpha = 1
         eventKey: OnDraw
       - eventKey: OnActionPress
-        code: >-
-          bullet = ct.templates.copy 'Bullet', this.x, this.y - 5
-
-          bullet.direction = ct.u.pdn this.x, this.y - 5, ct.pointer.x,
-          ct.pointer.y
+        code: |-
+          bullet = ct.templates.copy 'Bullet', @x, @y - 5
+          bullet.direction = ct.u.pdn @x, @y - 5, ct.pointer.x, ct.pointer.y
         arguments:
           action: Shoot
         lib: core
@@ -801,8 +800,8 @@ templates:
         lib: place
       - eventKey: collisionTemplate
         code: |-
-          this.kill = yes
-          ct.templates.copy 'Cat_Falling', this.x, this.y - 8
+          @kill = yes
+          ct.templates.copy 'Cat_Falling', @x, @y - 8
         arguments:
           template: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
         lib: place
@@ -1054,7 +1053,7 @@ templates:
     texture: 96121d6f-6483-48f8-841b-b307befc7d42
     extends: {}
     uid: c480ea86-1545-4048-8f2e-1ded726cfa92
-    lastmod: 1668342901613
+    lastmod: 1668600209477
     events:
       - lib: core
         arguments: {}
@@ -1062,7 +1061,7 @@ templates:
         eventKey: OnCreate
       - lib: core
         arguments: {}
-        code: this.move()
+        code: '@move()'
         eventKey: OnStep
       - lib: core
         arguments: {}
@@ -1076,12 +1075,12 @@ templates:
       - lib: core
         arguments: {}
         code: |-
-          this.angle -= 10 * ct.delta
-          this.scale.x -= 0.015 * ct.delta
-          this.scale.y = this.scale.x
+          @angle -= 10 * ct.delta
+          @scale.x -= 0.015 * ct.delta
+          @scale.y = @scale.x
 
-          if this.scale.x <= 0
-              this.kill = yes
+          if @scale.x <= 0
+              @kill = yes
         eventKey: OnDraw
     type: template
     loopAnimation: true
@@ -1148,13 +1147,13 @@ templates:
     texture: 8a6a1aa5-60f6-4f9a-9c54-7e5e7641bda1
     extends: {}
     uid: f11d4e26-8450-4187-8163-b70facceca7e
-    lastmod: 1668342857334
+    lastmod: 1668600196009
     events:
       - lib: core
         arguments: {}
         code: |-
-          this.depth = this.y
-          this.animationSpeed = 0.7 / ct.speed
+          @depth = @y
+          @animationSpeed = 0.7 / ct.speed
         eventKey: OnCreate
       - eventKey: OnAnimationComplete
         code: ct.rooms.switch ct.room.name

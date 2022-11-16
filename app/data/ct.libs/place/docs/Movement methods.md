@@ -17,13 +17,13 @@ and set precision with `stepSize` (default is `1`, which means pixel-by-pixel mo
 This movement suits characters in top-down and side-view worlds.
 
 
-## `this.moveContinuous(cgroup, [precision]);`
+## `this.moveContinuous(cgroup, [precision])`, or `this.moveBullet(cgroup, [precision])`
 
-You can call `this.moveContinuous('CollisionGroup');` at any copy to perform precise movement with collision checks. It takes gravity and `ct.delta` into account, too, and uses the `ct.place.moveAlong` method.
+You can call `this.moveBullet('CollisionGroup')` at any copy to perform precise movement with collision checks. It takes gravity and `ct.delta` into account, too, and uses the `ct.place.moveAlong` method.
 
-## `this.moveContinuousByAxes(cgroup, [precision]);`
+## `this.moveContinuousByAxes(cgroup, [precision])`, or `this.moveSmart(cgroup, [precision])`
 
-You can call `this.moveContinuousByAxes('CollisionGroup');` at any copy to perform precise movement with collision checks. It takes gravity and `ct.delta` into account, too, and uses the `ct.place.moveByAxes` method.
+You can call `this.moveSmart('CollisionGroup')` at any copy to perform precise movement with collision checks. It takes gravity and `ct.delta` into account, too, and uses the `ct.place.moveByAxes` method.
 
 
 ## `ct.place.go(me, x, y, length, [cgroup])`

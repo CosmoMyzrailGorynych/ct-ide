@@ -92,7 +92,9 @@
         'addChildAt',
         'move()',
         'moveContinuous',
-        'moveContinuousByAxes'
+        'moveContinuousByAxes',
+        'moveSmart',
+        'moveBullet'
     ];
 
     const fs = require('fs-extra');
