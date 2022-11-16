@@ -67,14 +67,23 @@ html
 
                     // Extended typescript tokenizer
                     const typescript = require('./data/node_requires/typescriptTokenizer.js').language;
+                    // Extended coffeescript tokenizer & suggestions provider
+                    const coffeescript = require('./data/node_requires/coffeescriptTokenizer.js').language;
+                    const coffeescriptSuggestions = require('./data/node_requires/coffeescriptSuggestionProvider.js');
                     // I have no guilt of this solution
                     // @see https://github.com/microsoft/monaco-editor/issues/884
                     monaco.editor.create(document.createElement('textarea'), {
                         language: 'typescript',
                         value: '(:'
                     });
+                    monaco.editor.create(document.createElement('textarea'), {
+                        language: 'coffeescript',
+                        value: ':)'
+                    });
                     setTimeout(() => {
                         monaco.languages.setMonarchTokensProvider('typescript', typescript);
+                        monaco.languages.setMonarchTokensProvider('coffeescript', coffeescript);
+                        monaco.languages.registerCompletionItemProvider('coffeescript', coffeescriptSuggestions.atCompletions);
                     }, 1000);
 
                     window.signals = window.signals || riot.observable({});

@@ -11,7 +11,8 @@
     "lint:fix": "gulp lint --fix",
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",
-    "ctTypedefs": "jsdoc -t ./node_modules/tsd-jsdoc/dist -r ./app/data/ct.release -d ./src/typedefs/ct.js"
+    "ctTypedefs": "jsdoc -t ./node_modules/tsd-jsdoc/dist -r ./app/data/ct.release -d ./src/typedefs/ct.js",
+    "ctJSDocJson": "jsdoc -X -r ./app/data/ct.release > ./app/data/ctLibJSDocAst.json"
   },
   "author": "Cosmo Myzrail Gorynych",
   "homepage": "https://ctjs.rocks/",
