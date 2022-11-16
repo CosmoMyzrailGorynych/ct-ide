@@ -112,10 +112,17 @@ code-editor-scriptable.relative.wide.tall.flexcol
                 window.addEventListener('resize', refreshLayout);
             }, 0);
         });
+        const layout = () => {
+            setTimeout(() => {
+                this.codeEditor.layout();
+            }, 150);
+        };
+        window.orders.on('forceCodeEditorLayout', layout);
         this.on('unmount', () => {
             // Manually destroy code editors, to free memory
             this.codeEditor.dispose();
             window.removeEventListener('resize', refreshLayout);
+            window.orders.off('forceCodeEditorLayout', layout);
         });
 
         this.currentEvent = this.opts.event;

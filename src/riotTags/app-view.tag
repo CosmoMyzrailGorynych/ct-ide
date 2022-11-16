@@ -76,6 +76,9 @@ app-view.flexcol
             window.hotkeys.push(tab);
             window.signals.trigger('globalTabChanged', tab);
             window.signals.trigger(`${tab}Focus`);
+            if (tab === 'rooms' || tab === 'templates') {
+                window.orders.trigger('forceCodeEditorLayout');
+            }
         };
         this.changeTab(this.tab)();
 

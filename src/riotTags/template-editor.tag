@@ -181,3 +181,9 @@ template-editor.aPanel.aView.flexrow
             this.currentSheet = scriptableEvent;
             this.update();
         };
+
+        const update = () => this.update();
+        window.orders.on('forceCodeEditorLayout', update);
+        this.on('unmount', () => {
+            window.orders.off('forceCodeEditorLayout', update);
+        });
