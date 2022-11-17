@@ -102,10 +102,16 @@ template-editor.aPanel.aView.flexrow
                     code-editor-scriptable(event="{currentSheet}" entitytype="template")
                 // .tabbed(show="{tab === 'blocks'}")
                 //     .aBlocksEditor(ref="blocks")
-    .template-editor-Properties.nmr(if="{localStorage.altTemplateLayout !== 'on'}")
+    .template-editor-Properties.nmr(if="{localStorage.altTemplateLayout !== 'on' && !minimizeProps}")
         .tall.flexfix.aPanel.pad
             .flexfix-body
                 +templateProperties()
+    button.toright.template-editor-aPresentationButton.square.tiny(
+        onclick="{toggleProps}"
+        if="{localStorage.altTemplateLayout !== 'on'}"
+    )
+        svg.feather
+            use(xlink:href="#{minimizeProps ? 'minimize-2' : 'maximize-2'}")
     script.
         const glob = require('./data/node_requires/glob');
         this.glob = glob;
@@ -187,3 +193,10 @@ template-editor.aPanel.aView.flexrow
         this.on('unmount', () => {
             window.orders.off('forceCodeEditorLayout', update);
         });
+
+        this.minimizeProps = localStorage.minimizeTemplatesProps === 'yes';
+        this.toggleProps = () => {
+            this.minimizeProps = !this.minimizeProps;
+            localStorage.minimizeTemplatesProps = this.minimizeProps ? 'yes' : 'no';
+            window.orders.trigger('forceCodeEditorLayout');
+        };
