@@ -144,6 +144,9 @@ app-view.flexcol
         }
 
         this.runProject = () => {
+            if (this.exportingProject) {
+                return;
+            }
             document.body.style.cursor = 'progress';
             this.exportingProject = true;
             this.update();
