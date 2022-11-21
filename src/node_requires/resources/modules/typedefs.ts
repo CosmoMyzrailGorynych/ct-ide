@@ -11,7 +11,7 @@ const addTypedefs = async function addTypedefs(module: ICatmodMeta): Promise<voi
     const ts = (window as any).monaco.languages.typescript;
     if (await fs.pathExists(typedefPath)) {
         fs.readFile(typedefPath, 'utf8')
-        .then((catmodTypedefs: IDisposable) => {
+        .then((catmodTypedefs: string) => {
             loadedTypings[module.name] = [
                 ts.javascriptDefaults.addExtraLib(catmodTypedefs),
                 ts.typescriptDefaults.addExtraLib(catmodTypedefs)

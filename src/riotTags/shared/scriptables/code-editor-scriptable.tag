@@ -60,16 +60,17 @@ code-editor-scriptable.relative.wide.tall.flexcol
                     readOnly: false
                 });
                 this.codeEditor.setValue(this.currentEvent.code);
+                const eventDeclaration = eventsAPI.getEventByLib(
+                    this.currentEvent.eventKey,
+                    this.currentEvent.lib
+                );
+                const varsDeclaration = eventsAPI.getArgumentsTypeScript(eventDeclaration);
+                const ctEntity = this.opts.entitytype === 'template' ? 'Copy' : 'Room';
+                const codePrefix = `function ctJsEvent(this: ${ctEntity}) {${varsDeclaration}`;
                 if (this.language === 'typescript') {
-                    const eventDeclaration = eventsAPI.getEventByLib(
-                        this.currentEvent.eventKey,
-                        this.currentEvent.lib
-                    );
-                    const varsDeclaration = eventsAPI.getArgumentsTypeScript(eventDeclaration);
-                    const ctEntity = this.opts.entitytype === 'template' ? 'Copy' : 'Room';
-                    const codePrefix = `function ctJsEvent(this: ${ctEntity}) {${varsDeclaration}`;
                     this.codeEditor.setWrapperCode(codePrefix, '}');
                 }
+                this.codeEditor.getModel().ctCodePrefix = codePrefix;
             } else {
                 this.codeEditor.updateOptions({
                     readOnly: true

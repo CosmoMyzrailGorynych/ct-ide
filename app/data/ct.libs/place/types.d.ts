@@ -76,9 +76,19 @@ interface Copy {
     moveContinuous(cgroup: string, precision?: number): false|Copy;
     /**
      * Call to perform precise movement with collision checks. It takes gravity
+     * and `ct.delta` into account, too, and uses the `ct.place.moveAlong` method.
+     */
+    moveBullet(cgroup: string, precision?: number): false|Copy;
+    /**
+     * Call to perform precise movement with collision checks. It takes gravity
      * and `ct.delta` into account, too, and uses the `ct.place.moveByAxes` method.
      */
     moveContinuousByAxes(cgroup: string, precision?: number): false|ISeparateMovementResult;
+    /**
+     * Call to perform precise movement with collision checks. It takes gravity
+     * and `ct.delta` into account, too, and uses the `ct.place.moveByAxes` method.
+     */
+    moveSmart(cgroup: string, precision?: number): false|ISeparateMovementResult;
 }
 interface Tilemap {
     /**
