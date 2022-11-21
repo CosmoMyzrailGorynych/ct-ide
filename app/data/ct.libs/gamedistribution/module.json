@@ -1,0 +1,111 @@
+{
+    "main": {
+        "name": "Game Distribution",
+        "tagline": "Setup GameDistribution Ads in your game",
+        "version": "1.0.0",
+        "authors": [{
+            "name": "Ulises Freitas",
+            "mail": "ulises.freitas@gmail.com"
+        }],
+        "categories": [
+            "customization"
+        ]
+    },
+    "fields": [
+		
+        {
+            "name": "Game Distribution SDK",
+            "type": "h2"
+        },
+        {
+			"name": "Game ID",
+			"key": "gameID",
+			"default": "45f47fe7bf964915afd6b7d87c7637fd",
+			"type": "code",
+			"help": "Includes the \"Game ID\" value, from GameDistribution."
+		},
+		{
+            "name": "Auto init Game Distribution SDK",
+            "help": "Auto initialize the game distribution SDK, Tip: is disabled create a `custom script` and add `ct.gamedistribution.init()`",
+            "key": "autoInit",
+            "default": true,
+            "type": "checkbox"
+        },
+        {
+			"name": "Localization of the messages E.g. en or es (In lowercase)",
+			"key": "gdsdkLocale",
+			"default": "en",
+			"type": "text"
+		},
+        {
+            "name": "Enable GDPR",
+            "type": "h2"
+        },
+        {
+            "name": "Enable gdpr tracking",
+            "help": "Enable to track cookies",
+            "key": "gdpr",
+            "default": false,
+            "type": "checkbox"
+        },
+        {
+            "name": "Debug mode",
+            "type": "h2"
+        },
+        {
+            "name": "Enable debug",
+            "help": "Logs useful information to the console",
+            "key": "debugMode",
+            "default": false,
+            "type": "checkbox"
+        }
+	],
+    "eventCategories": {
+        "advertise": {
+            "name": "Ads",
+            "icon": "eye"
+        }
+    },
+    "events": {
+        "adfinished": {
+            "name": "Check if an Ad has finished",
+            "hint": "Happens right after an ad has finished and closed. Use this to reward the user, maybe with coins, gold or crystals.",
+            "icon": "eye",
+            "applicable": ["room"],
+            "category": "advertise",
+            "arguments": {},
+            "codeTargets": ["thisOnStep"],
+            "locals": {}
+        },
+        "sdkready": {
+            "name": "Is Game Distribution SDK is ready?",
+            "hint": "Use this check if Game Distribution SDK is ready.",
+            "icon": "eye",
+            "applicable": ["room"],
+            "category": "advertise",
+            "arguments": {},
+            "codeTargets": ["thisOnCreate"],
+            "locals": {}
+        },
+        "pausegame": {
+            "name": "Pause Game",
+            "hint": "You must pause the game during the Ad display, and mute sfx and music.",
+            "icon": "eye",
+            "applicable": ["room"],
+            "category": "advertise",
+            "arguments": {},
+            "codeTargets": ["thisOnStep"],
+            "locals": {}
+        },
+        "resumegame": {
+            "name": "Resume Game",
+            "hint": "You unpause the game and enable sfx and music.",
+            "icon": "eye",
+            "applicable": ["room"],
+            "category": "advertise",
+            "arguments": {},
+            "codeTargets": ["thisOnStep"],
+            "locals": {}
+        }
+    }
+}

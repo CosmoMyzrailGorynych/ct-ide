@@ -100,3 +100,4 @@ app/pleaseCtJSLoadWithoutGPUAccelerationMmkay
 app/debugger.html
 
 **/**/*.orig
+app/data/ct.libs/gamedistribution/.vscode/settings.json

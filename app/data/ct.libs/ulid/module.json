@@ -1,0 +1,77 @@
+{
+  "main": {
+    "name": "ct.ulid",
+    "tagline": "Create unique ids",
+    "version": "1.0.0",
+    "packageName": "ulid",
+    "authors": [{
+      "name": "Ulises Freitas",
+	    "mail": "ulises.freitas@gmail.com"
+    }],
+    "categories": [
+      "utilities"
+    ]
+  },
+  "fields": [
+    {
+        "name": "Ulid IDs generator",
+        "type": "h2"
+    },
+    {
+      "name": "Use the fields below to create your own uuid regex. Tip: By default it will be a 8-4-4-4-12 pattern. And the result is like this:f2eda03a-dd0d-d723-6ff3-765480b5d3ba",
+      "type": "div"
+    },
+    {
+      "name": "Custom regex 1",
+      "key": "cregex1",
+      "default": 8,
+      "max":16,
+      "min":1,
+      "type": "number",
+      "help": "Choose how many characters you want."
+    },
+    {
+      "name": "Custom regex 2",
+      "key": "cregex2",
+      "default": 4,
+      "max":16,
+      "min":1,
+      "type": "number",
+      "help": "Choose how many characters you want."
+    },
+    {
+      "name": "Custom regex 3",
+      "key": "cregex3",
+      "default": 4,
+      "max":16,
+      "min":1,
+      "type": "number",
+      "help": "Choose how many characters you want."
+    },
+    {
+      "name": "Custom regex 4",
+      "key": "cregex4",
+      "default": 4,
+      "max":16,
+      "min":1,
+      "type": "number",
+      "help": "Choose how many characters you want."
+    },
+    {
+      "name": "Custom regex 5",
+      "key": "cregex5",
+      "default": 12,
+      "max":16,
+      "min":1,
+      "type": "number",
+      "help": "Choose how many characters you want."
+    },
+    {
+      "name": "Use my custom regex for UUIDs",
+      "help": "Check this to use your custom regex, for use it in code just type ct.ulid.custom()",
+      "key": "usecustom",
+      "default": false,
+      "type": "checkbox"
+    }
+  ]
+}
