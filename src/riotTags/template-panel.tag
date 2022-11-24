@@ -163,11 +163,13 @@ templates-panel.aPanel.aView
                             }
 
                             const ind = global.currentProject.templates.indexOf(this.currentTemplate);
-                            global.currentProject.templates.splice(ind, 1);
+                            const template = global.currentProject.templates.splice(ind, 1);
+                            const {uid} = template[0];
                             this.refs.templates.updateList();
                             this.fillTemplateMap();
                             this.update();
                             window.signals.trigger('templatesChanged');
+                            window.signals.trigger('templateRemoved', uid);
                             alertify
                             .okBtn(window.languageJSON.common.ok)
                             .cancelBtn(window.languageJSON.common.cancel);
