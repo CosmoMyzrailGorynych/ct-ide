@@ -75,7 +75,10 @@ context-menu(class="{opened: opts.menu.opened}" ref="root" style="{opts.menu.col
             }
             this.opts.menu.opened = true;
             this.update();
-            this.root.querySelector('a').focus();
+            const firstA = this.root.querySelector('a')
+            if (firstA) {
+                firstA.focus();
+            }
         };
 
         this.toggle = () => {
