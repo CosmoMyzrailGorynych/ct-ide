@@ -164,7 +164,7 @@ templates-panel.aPanel.aView
 
                             const ind = global.currentProject.templates.indexOf(this.currentTemplate);
                             const template = global.currentProject.templates.splice(ind, 1);
-                            const {uid} = template[0];
+                            const [{uid}] = template;
                             this.refs.templates.updateList();
                             this.fillTemplateMap();
                             this.update();

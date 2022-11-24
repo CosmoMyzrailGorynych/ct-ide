@@ -75,7 +75,7 @@ context-menu(class="{opened: opts.menu.opened}" ref="root" style="{opts.menu.col
             }
             this.opts.menu.opened = true;
             this.update();
-            const firstA = this.root.querySelector('a')
+            const firstA = this.root.querySelector('a');
             if (firstA) {
                 firstA.focus();
             }
