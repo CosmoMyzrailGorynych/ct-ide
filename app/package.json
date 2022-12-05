@@ -83,7 +83,7 @@
     "pixi.js": "5.3.11",
     "pixi.js-legacy": "5.3.11",
     "png2icons": "^2.0.1",
-    "serve-handler": "^6.1.3",
+    "serve-handler": "^6.1.5",
     "sucrase": "^3.25.0",
     "terser": "^5.14.2",
     "ttf2woff": "^2.0.2"
