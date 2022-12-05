@@ -1,4 +1,4 @@
-ctjsVersion: 2.2.0
+ctjsVersion: 3.2.0
 notes: /* empty */
 libs:
   fittoscreen:
@@ -951,15 +951,15 @@ rooms:
     backgrounds:
       - depth: -10
         texture: f6a40cf4-e9c0-47ff-afa8-6cdc259ef17e
-        shiftX: !<tag:yaml.org,2002:js/undefined> ''
-        shiftY: !<tag:yaml.org,2002:js/undefined> ''
-        parallaxX: !<tag:yaml.org,2002:js/undefined> ''
-        parallaxY: !<tag:yaml.org,2002:js/undefined> ''
-        movementX: !<tag:yaml.org,2002:js/undefined> ''
-        movementY: !<tag:yaml.org,2002:js/undefined> ''
-        scaleX: 0
-        scaleY: 0
-        repeat: !<tag:yaml.org,2002:js/undefined> ''
+        shiftX: 0
+        shiftY: 0
+        parallaxX: 1
+        parallaxY: 1
+        movementX: 0
+        movementY: 0
+        scaleX: 1
+        scaleY: 1
+        repeat: repeat-x
     copies:
       - x: 905
         'y': 798
@@ -1569,7 +1569,7 @@ rooms:
         - 1
     gridX: 32
     gridY: 32
-    lastmod: 1661067612657
+    lastmod: 1670278088373
     events:
       - lib: core
         arguments: {}
@@ -1577,7 +1577,9 @@ rooms:
         eventKey: OnRoomStart
       - eventKey: Timer1
         code: ct.rooms.switch('Level_02');
-        arguments: {}
+        arguments:
+          name: Switch room
+          isUi: true
         lib: core
       - eventKey: OnDraw
         code: |-
@@ -1589,6 +1591,7 @@ rooms:
     type: room
     simulate: true
     isUi: !<tag:yaml.org,2002:js/undefined> ''
+    backgroundColor: '#CFF5FA'
   - type: room
     oncreate: ''
     onstep: ''
@@ -1644,15 +1647,15 @@ rooms:
     backgrounds:
       - depth: -10
         texture: f6a40cf4-e9c0-47ff-afa8-6cdc259ef17e
-        shiftX: !<tag:yaml.org,2002:js/undefined> ''
-        shiftY: !<tag:yaml.org,2002:js/undefined> ''
-        parallaxX: !<tag:yaml.org,2002:js/undefined> ''
-        parallaxY: !<tag:yaml.org,2002:js/undefined> ''
-        movementX: !<tag:yaml.org,2002:js/undefined> ''
-        movementY: !<tag:yaml.org,2002:js/undefined> ''
-        scaleX: 0
-        scaleY: 0
-        repeat: !<tag:yaml.org,2002:js/undefined> ''
+        shiftX: 0
+        shiftY: 0
+        parallaxX: 1
+        parallaxY: 1
+        movementX: 0
+        movementY: 0
+        scaleX: 1
+        scaleY: 1
+        repeat: repeat-x
     copies:
       - x: 330
         'y': 674
@@ -2292,7 +2295,7 @@ rooms:
         - 1
     gridX: 35
     gridY: 35
-    lastmod: 1661067600353
+    lastmod: 1670278079268
     events:
       - lib: core
         arguments: {}
@@ -2307,11 +2310,14 @@ rooms:
         lib: core
       - eventKey: Timer1
         code: ct.rooms.switch('Level_03');
-        arguments: {}
+        arguments:
+          name: Switch room
+          isUi: true
         lib: core
     type: room
     simulate: true
     isUi: !<tag:yaml.org,2002:js/undefined> ''
+    backgroundColor: '#CFF5FA'
   - name: Level_Empty
     onstep: ''
     ondraw: ''
@@ -2321,15 +2327,15 @@ rooms:
     backgrounds:
       - depth: -10
         texture: f6a40cf4-e9c0-47ff-afa8-6cdc259ef17e
-        shiftX: !<tag:yaml.org,2002:js/undefined> ''
-        shiftY: !<tag:yaml.org,2002:js/undefined> ''
-        parallaxX: !<tag:yaml.org,2002:js/undefined> ''
-        parallaxY: !<tag:yaml.org,2002:js/undefined> ''
-        movementX: !<tag:yaml.org,2002:js/undefined> ''
-        movementY: !<tag:yaml.org,2002:js/undefined> ''
-        scaleX: 0
-        scaleY: 0
-        repeat: !<tag:yaml.org,2002:js/undefined> ''
+        shiftX: 0
+        shiftY: 0
+        parallaxX: 1
+        parallaxY: 1
+        movementX: 0
+        movementY: 0
+        scaleX: 1
+        scaleY: 1
+        repeat: repeat-x
     copies:
       - x: 225
         'y': 674
@@ -2636,7 +2642,7 @@ rooms:
         - 1
     gridX: 32
     gridY: 32
-    lastmod: 1661067606650
+    lastmod: 1670278068227
     events:
       - lib: core
         arguments: {}
@@ -2645,6 +2651,7 @@ rooms:
     type: room
     simulate: true
     isUi: !<tag:yaml.org,2002:js/undefined> ''
+    backgroundColor: '#CFF5FA'
   - name: Level_03
     onstep: ''
     ondraw: ''
@@ -2654,15 +2661,15 @@ rooms:
     backgrounds:
       - depth: -10
         texture: f6a40cf4-e9c0-47ff-afa8-6cdc259ef17e
-        shiftX: !<tag:yaml.org,2002:js/undefined> ''
-        shiftY: !<tag:yaml.org,2002:js/undefined> ''
-        parallaxX: !<tag:yaml.org,2002:js/undefined> ''
-        parallaxY: !<tag:yaml.org,2002:js/undefined> ''
-        movementX: !<tag:yaml.org,2002:js/undefined> ''
-        movementY: !<tag:yaml.org,2002:js/undefined> ''
-        scaleX: 0
-        scaleY: 0
-        repeat: !<tag:yaml.org,2002:js/undefined> ''
+        shiftX: 0
+        shiftY: 0
+        parallaxX: 1
+        parallaxY: 1
+        movementX: 0
+        movementY: 0
+        scaleX: 1
+        scaleY: 1
+        repeat: repeat-x
     copies:
       - x: 225
         'y': 674
@@ -2680,7 +2687,7 @@ rooms:
         opacity: 1
         tint: 16777215
         scale:
-          x: 1
+          x: -1
           'y': 1
         rotation: 0
         uid: 82c03796-7419-4f22-944c-78c1209c6874
@@ -2691,7 +2698,7 @@ rooms:
         opacity: 1
         tint: 16777215
         scale:
-          x: 1
+          x: -1
           'y': 1
         rotation: 0
         uid: 82c03796-7419-4f22-944c-78c1209c6874
@@ -2779,8 +2786,8 @@ rooms:
         opacity: 1
         tint: 16777215
         scale:
-          x: 1
-          'y': 1
+          x: -0.5
+          'y': -0.5
         rotation: 0
         uid: 82c03796-7419-4f22-944c-78c1209c6874
         exts: {}
@@ -2790,8 +2797,8 @@ rooms:
         opacity: 1
         tint: 16777215
         scale:
-          x: 1
-          'y': 1
+          x: 0.5
+          'y': -0.5
         rotation: 0
         uid: 82c03796-7419-4f22-944c-78c1209c6874
         exts: {}
@@ -3292,7 +3299,7 @@ rooms:
         - 1
     gridX: 35
     gridY: 35
-    lastmod: 1661067605072
+    lastmod: 1670278056475
     events:
       - lib: core
         arguments: {}
@@ -3307,11 +3314,14 @@ rooms:
         lib: core
       - eventKey: Timer1
         code: ct.rooms.switch('Level_01');
-        arguments: {}
+        arguments:
+          name: Switch room
+          isUi: true
         lib: core
     type: room
     simulate: true
     isUi: !<tag:yaml.org,2002:js/undefined> ''
+    backgroundColor: '#CFF5FA'
 actions:
   - name: Pointer
     methods:
@@ -3526,6 +3536,7 @@ palette:
   - '#FF85DA'
   - '#6EBA9D'
   - '#9E703F'
+  - '#CFF5FA'
 startroom: 125036f1-3a14-4fc3-ae95-2d29a5c56244
 contentTypes: []
 groups:
@@ -3536,3 +3547,4 @@ groups:
   sounds: []
   emitterTandems: []
   templates: []
+language: typescript
