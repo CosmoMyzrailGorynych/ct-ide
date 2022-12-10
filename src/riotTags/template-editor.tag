@@ -111,7 +111,7 @@ template-editor.aPanel.aView.flexrow
         if="{localStorage.altTemplateLayout !== 'on'}"
     )
         svg.feather
-            use(xlink:href="#{minimizeProps ? 'minimize-2' : 'maximize-2'}")
+            use(xlink:href="#{minimizeProps ? 'maximize-2' : 'minimize-2'}")
     script.
         const glob = require('./data/node_requires/glob');
         this.glob = glob;
