@@ -747,7 +747,8 @@
         "show": "Show the layer",
         "hide": "Hide the layer",
         "findTileset": "Find a Tileset",
-        "addTileLayer": "Add a tile layer"
+        "addTileLayer": "Add a tile layer",
+        "addTileLayerFirst": "Firstly add a tile layer in the left panel!"
     },
     "roomView": {
         "name": "Name:",

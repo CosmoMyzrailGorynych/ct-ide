@@ -69,10 +69,14 @@ export const createTilePatch = (
 export const placeTile: IRoomEditorInteraction<IAffixedData> = {
     ifListener: 'pointerdown',
     if(e, riotTag) {
-        if (this.riotEditor.currentTool !== 'addTiles' || !this.riotEditor.currentTileLayer) {
+        if (this.riotEditor.currentTool !== 'addTiles') {
             return false;
         }
         if (e.data.button !== 0) {
+            return false;
+        }
+        if (!this.riotEditor.currentTileLayer) {
+            window.alertify.error(window.languageJSON.roomTiles.addTileLayerFirst);
             return false;
         }
         return Boolean(riotTag.tilePatch?.texture);
