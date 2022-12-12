@@ -29,7 +29,7 @@ notepad-panel#notepad.aPanel.dockright(class="{opened: opened}")
         div(show="{tab === 'modulespages'}")
             docs-panel
 
-    button.vertical.dockleft(onclick="{notepadToggle}" ref="toggleButton")
+    button.vertical.dockleft.forcebackground(onclick="{notepadToggle}" ref="toggleButton")
         svg.feather
             use(xlink:href="#{opened? 'chevron-right' : 'chevron-left'}")
     script.
