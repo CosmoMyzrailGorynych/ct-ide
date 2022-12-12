@@ -4,7 +4,7 @@ debugger-modal.aView
             div.center(ref="qr" data-address="{address}")
             b {name}
             br
-            code {address}
+            code.selectable {address}
     script.
         let port = 0;
         if (!this.opts.params) {
