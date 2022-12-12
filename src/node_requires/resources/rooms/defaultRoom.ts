@@ -12,6 +12,11 @@ const room = {
     simulate: true,
     width: 1280,
     height: 720,
+    restrictCamera: false,
+    restrictMaxX: 1280,
+    restrictMinX: 1280,
+    restrictMaxY: 720,
+    restrictMinY: 720,
     isUi: false
 };
 
