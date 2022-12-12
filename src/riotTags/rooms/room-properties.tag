@@ -94,7 +94,11 @@ room-properties
     fieldset
         b {voc.backgroundColor}
         br
-        color-input.wide(onchange="{changeBgColor}" color="{opts.room.backgroundColor || '#000000'}")
+        color-input.wide(
+            onchange="{changeBgColor}"
+            color="{opts.room.backgroundColor || '#000000'}"
+            hidealpha="hidealpha"
+        )
 
     fieldset
         label.block.checkbox
