@@ -2,6 +2,7 @@ const glob = require('./../glob');
 const {getUnwrappedExtends} = require('./utils');
 import {getBaseScripts} from './scriptableProcessor';
 import {getTextureFromId} from '../resources/textures';
+import {getTemplateFromId} from '../resources/templates';
 import {flattenGroups} from './groups';
 
 const getStartingRoom = (proj: IProject): IRoom => {
@@ -172,6 +173,7 @@ ct.rooms.templates['${r.name}'] = {
         ${scriptableCode.thisOnCreate}
     },
     isUi: ${r.isUi},
+    follow: ${(r.follow && r.follow !== -1) ? ('\'' + getTemplateFromId(r.follow).name + '\'') : -1},
     extends: ${r.extends ? JSON.stringify(getUnwrappedExtends(r.extends), null, 4) : '{}'}
 }
         `;

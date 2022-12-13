@@ -69,6 +69,7 @@ interface IRoom extends IScriptable {
     restrictMinY?: number;
     restrictMaxX?: number;
     restrictMaxY?: number;
+    follow: assetRef;
     isUi: boolean;
     extends: {
         [key: string]: unknown

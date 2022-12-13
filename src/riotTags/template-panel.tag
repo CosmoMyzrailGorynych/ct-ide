@@ -160,6 +160,9 @@ templates-panel.aPanel.aView
                                         i++;
                                     }
                                 }
+                                if (room.follow === this.currentTemplate.uid) {
+                                    room.follow = -1;
+                                }
                             }
 
                             const ind = global.currentProject.templates.indexOf(this.currentTemplate);

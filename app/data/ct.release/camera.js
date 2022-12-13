@@ -193,6 +193,10 @@ const Camera = (function Camera() {
             if (this.follow && this.follow.kill) {
                 this.follow = false;
             }
+            // Autofollow the first copy of the followed template, set in the room's settings
+            if (!this.follow && ct.room.follow) {
+                this.follow = ct.templates.list[ct.room.follow][0];
+            }
             // Follow copies around
             if (this.follow && ('x' in this.follow) && ('y' in this.follow)) {
                 followCamera(this);

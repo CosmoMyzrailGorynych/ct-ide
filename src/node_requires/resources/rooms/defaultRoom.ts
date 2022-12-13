@@ -26,6 +26,7 @@ const get = function (): IRoom {
         name: 'Room_' + uid.slice(-6),
         backgroundColor: '#000000',
         restrictCamera: false,
+        follow: -1 as assetRef,
         backgrounds: [],
         copies: [],
         tiles: [],

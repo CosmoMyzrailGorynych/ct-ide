@@ -723,8 +723,11 @@
     },
     "roomView": {
         "name": "Имя:",
+        "viewportHeading": "Камера",
         "width": "Ширина вида:",
         "height": "Высота вида:",
+        "followTemplate": "Следовать за шаблоном:",
+        "followCodeHint": "Узнай, как ещё настроить эту функцию через код",
         "events": "События",
         "copies": "Копии",
         "backgrounds": "Фоны",

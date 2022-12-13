@@ -30,6 +30,7 @@ class Room extends PIXI.Container {
             this.template = template;
             this.name = template.name;
             this.isUi = template.isUi;
+            this.follow = template.follow;
             if (template.extends) {
                 ct.u.ext(this, template.extends);
             }
