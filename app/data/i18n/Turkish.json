@@ -836,7 +836,7 @@
         "fontSize": "Font boyutu:"
     },
     "textureView": {
-        "center": "Eksen:",
+        "center": "Eksen",
         "cols": "Sütun:",
         "done": "Uygula",
         "fill": "Doldur",

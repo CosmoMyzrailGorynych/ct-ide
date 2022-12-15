@@ -828,7 +828,7 @@
         "fontSize": "Taille de la police :"
     },
     "textureView": {
-        "center": "Axe :",
+        "center": "Axe",
         "cols": "Colonnes :",
         "done": "Appliquer",
         "fill": "Remplir",

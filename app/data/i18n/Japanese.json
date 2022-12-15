@@ -847,7 +847,7 @@
         "fontSize": "フォントサイズ:"
     },
     "textureView": {
-        "center": "軸:",
+        "center": "軸",
         "cols": "コラム:",
         "done": "適用",
         "fill": "塗りつぶし",

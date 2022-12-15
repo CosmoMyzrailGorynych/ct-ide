@@ -828,7 +828,7 @@
         "fontSize": "Schriftgröße:"
     },
     "textureView": {
-        "center": "Achse:",
+        "center": "Achse",
         "cols": "Spalten:",
         "done": "Anwenden",
         "fill": "Füllung",

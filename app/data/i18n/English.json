@@ -863,7 +863,11 @@
         "fontSize": "Font size:"
     },
     "textureView": {
-        "center": "Axis:",
+        "slicing": "Slicing",
+        "viewSettings": "View settings",
+        "exportSettings": "Export settings",
+        "center": "Rotation axis",
+        "axisExplanation": "Defines which place is counted as (0;0) position of a copy and affects how it positions itself relative to a grid, and around which point it rotates.",
         "cols": "Columns:",
         "done": "Apply",
         "fill": "Fill",
@@ -877,7 +881,7 @@
         "round": "Circle",
         "rows": "Rows:",
         "speed": "Framerate:",
-        "tiled": "Use as a background?",
+        "tiled": "This is a tiled background",
         "updateFromClipboard": "Update from clipboard",
         "corrupted": "File is corrupted or missing! Closing now.",
         "showFrameIndices": "Show frame indices",

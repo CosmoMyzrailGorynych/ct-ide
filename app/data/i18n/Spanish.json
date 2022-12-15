@@ -828,7 +828,7 @@
         "fontSize": "Tamaño de fuente:"
     },
     "textureView": {
-        "center": "Axis:",
+        "center": "Axis",
         "cols": "Columnas:",
         "done": "Aplicar",
         "fill": "Llenar",
