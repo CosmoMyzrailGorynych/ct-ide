@@ -768,7 +768,7 @@ texture-editor.aDimmer.pointer.pad.fadein(onclick="{tryClose}")
             const {top, left} = textureCanvas.getBoundingClientRect();
             const point = {
                 x: (e.pageX - left) / this.zoomFactor - this.texture.axis[0] - this.texture.offx,
-                y: (e.pageY - top) / this.zoomFactor - this.texture.axis[1] - this.texture.offy,
+                y: (e.pageY - top) / this.zoomFactor - this.texture.axis[1] - this.texture.offy
             };
             this.texture.stripPoints.splice(e.item.ind + 1, 0, point);
             if (this.texture.symmetryStrip) {
