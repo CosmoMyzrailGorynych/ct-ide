@@ -1,4 +1,5 @@
 content-editor
+    docs-shortcut.toright(path="/content-subsystem.html")
     h1 {contentType.readableName || contentType.name || voc.missingTypeName}
     extensions-editor(customextends="{extends}" entity="{contentType}")
     script.
