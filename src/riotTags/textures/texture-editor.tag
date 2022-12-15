@@ -673,7 +673,7 @@ texture-editor.aDimmer.pointer.pad.fadein(onclick="{tryClose}")
             );
             // shape
             if (this.prevShowMask) {
-                this.drawMask(grprCanvas, grprCanvas.x);
+                this.drawMask(grprCanvas, grprCanvas.x, true);
             }
         };
         /**
@@ -859,21 +859,25 @@ texture-editor.aDimmer.pointer.pad.fadein(onclick="{tryClose}")
             }
         };
 
-        this.drawMask = (tc, context) => {
+        this.drawMask = (tc, context, noOffset) => {
+            let {offx, offy} = this.texture;
+            if (noOffset) {
+                offx = offy = 0;
+            }
             context.fillStyle = getSwatch('accent1');
             context.globalAlpha = 0.5;
             if (this.texture.shape === 'rect') {
                 context.fillRect(
-                    this.texture.axis[0] - this.texture.left + this.texture.offx,
-                    this.texture.axis[1] - this.texture.top + this.texture.offy,
+                    this.texture.axis[0] - this.texture.left + offx,
+                    this.texture.axis[1] - this.texture.top + offy,
                     this.texture.right + this.texture.left,
                     this.texture.bottom + this.texture.top
                 );
             } else if (this.texture.shape === 'circle') {
                 context.beginPath();
                 context.arc(
-                    this.texture.axis[0] + this.texture.offx,
-                    this.texture.axis[1] + this.texture.offy,
+                    this.texture.axis[0] + offx,
+                    this.texture.axis[1] + offy,
                     this.texture.r,
                     0, 2 * Math.PI
                 );
@@ -883,13 +887,13 @@ texture-editor.aDimmer.pointer.pad.fadein(onclick="{tryClose}")
                 context.lineWidth = 3;
                 context.beginPath();
                 context.moveTo(
-                    this.texture.stripPoints[0].x + this.texture.axis[0] + this.texture.offx,
-                    this.texture.stripPoints[0].y + this.texture.axis[1] + this.texture.offy
+                    this.texture.stripPoints[0].x + this.texture.axis[0] + offx,
+                    this.texture.stripPoints[0].y + this.texture.axis[1] + offy
                 );
                 for (let i = 1, l = this.texture.stripPoints.length; i < l; i++) {
                     context.lineTo(
-                        this.texture.stripPoints[i].x + this.texture.axis[0] + this.texture.offx,
-                        this.texture.stripPoints[i].y + this.texture.axis[1] + this.texture.offy
+                        this.texture.stripPoints[i].x + this.texture.axis[0] + offx,
+                        this.texture.stripPoints[i].y + this.texture.axis[1] + offy
                     );
                 }
                 if (this.texture.closedStrip) {
@@ -907,12 +911,12 @@ texture-editor.aDimmer.pointer.pad.fadein(onclick="{tryClose}")
                     context.lineWidth = 3;
                     context.beginPath();
                     context.moveTo(
-                        axisPoint1.x + this.texture.axis[0] + this.texture.offx,
-                        axisPoint1.y + this.texture.axis[1] + this.texture.offy
+                        axisPoint1.x + this.texture.axis[0] + offx,
+                        axisPoint1.y + this.texture.axis[1] + offy
                     );
                     context.lineTo(
-                        axisPoint2.x + this.texture.axis[0] + this.texture.offx,
-                        axisPoint2.y + this.texture.axis[1] + this.texture.offy
+                        axisPoint2.x + this.texture.axis[0] + offx,
+                        axisPoint2.y + this.texture.axis[1] + offy
                     );
                     context.stroke();
                 }
