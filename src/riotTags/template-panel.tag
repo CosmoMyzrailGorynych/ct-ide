@@ -122,6 +122,8 @@ templates-panel.aPanel.aView
                             tp.uid = generateGUID();
                             global.currentProject.templates.push(tp);
                             this.fillTemplateMap();
+                            window.signals.trigger('templatesChanged');
+                            window.signals.trigger('templateCreated');
                             this.refs.templates.updateList();
                             this.update();
                         }

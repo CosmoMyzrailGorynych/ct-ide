@@ -248,11 +248,13 @@ asset-viewer.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compact
                 if (this.opts.assettype) {
                     rememberedAssetType = this.opts.assettype;
                     window.signals.on(`${rememberedAssetType.slice(0, -1)}Created`, this.updateList);
+                    window.signals.on(`${rememberedAssetType}Changed`, this.updateList);
                 }
             });
             this.on('unmount', () => {
                 if (rememberedAssetType) {
                     window.signals.off(`${rememberedAssetType.slice(0, -1)}Created`, this.updateList);
+                    window.signals.off(`${rememberedAssetType}Changed`, this.updateList);
                 }
             });
         }

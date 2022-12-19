@@ -12,6 +12,7 @@ const createNewTemplate = function createNewTemplate(name: string): ITemplate {
     }
     window.currentProject.templates.push(template);
     window.signals.trigger('templatesChanged');
+    window.signals.trigger('templateCreated');
     return template;
 };
 
