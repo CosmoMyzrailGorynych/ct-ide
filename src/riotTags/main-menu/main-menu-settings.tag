@@ -118,6 +118,7 @@ main-menu-settings
             items: themeManager.getThemeList().map(theme => ({
                 label: theme.translated,
                 icon: () => localStorage.UItheme === theme.name && 'check',
+                swatches: theme.swatches || [],
                 click: async () => {
                     await themeManager.switchToTheme(theme.name);
                     this.update();
