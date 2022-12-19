@@ -2,7 +2,7 @@
     @attribute onselect (riot function)
         This function is called when a template is selected.
         The only argument passed to this function is the selected template.
-    @attribute selected (ITemplate | -1)
+    @attribute selectedtemplate (ITemplate | -1)
         Currently selected template, piped back from the room editor
 room-template-picker
     asset-viewer(
@@ -14,7 +14,7 @@ room-template-picker
         thumbnails="{thumbnails}"
         compact="true"
         shownone="true"
-        selected="{opts.selected}"
+        selectedasset="{opts.selectedtemplate}"
     )
     script.
         this.thumbnails = require('./data/node_requires/resources/templates').getTemplatePreview;
