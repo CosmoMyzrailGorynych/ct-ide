@@ -12,6 +12,11 @@ const room = {
     simulate: true,
     width: 1280,
     height: 720,
+    restrictCamera: false,
+    restrictMaxX: 1280,
+    restrictMinX: 1280,
+    restrictMaxY: 720,
+    restrictMinY: 720,
     isUi: false
 };
 
@@ -21,6 +26,7 @@ const get = function (): IRoom {
         name: 'Room_' + uid.slice(-6),
         backgroundColor: '#000000',
         restrictCamera: false,
+        follow: -1 as assetRef,
         backgrounds: [],
         copies: [],
         tiles: [],

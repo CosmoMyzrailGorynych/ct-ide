@@ -70,6 +70,10 @@ templates:
         eventKey: OnStep
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Logs
     depth: 0
     uid: 1026c1c8-90e4-4b93-bb6a-568f53918097
@@ -80,6 +84,10 @@ templates:
     events: []
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Grass
     depth: 0
     uid: 5ff42cc3-0b4a-47e9-b6f1-06d3b3b91bb0
@@ -90,6 +98,10 @@ templates:
     events: []
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Spikes
     depth: 0
     uid: 036a2de1-89b0-48e3-b26f-d608ce2079fd
@@ -100,10 +112,14 @@ templates:
     events: []
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Player
     depth: 0
     uid: 00664f77-21c6-4b06-b310-88640b1beaf9
-    lastmod: 1661067945889
+    lastmod: 1671978252662
     extends:
       cgroup: Player
     texture: ad390b6e-4c2c-412f-8143-1c70b9c16fc0
@@ -255,8 +271,10 @@ templates:
         lib: place
     type: template
     loopAnimation: true
-    playAnimationOnStart: false
+    playAnimationOnStart: true
     animationFPS: 15
+    visible: true
+    blendMode: normal
   - name: Coin
     depth: 0
     uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
@@ -274,6 +292,10 @@ templates:
         lib: place
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Greed
     depth: 0
     uid: 2d29a0d5-d88d-493d-bece-8d52ed476273
@@ -283,6 +305,10 @@ templates:
     events: []
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Slime
     depth: 0
     uid: 1f91fd7d-2d6c-4542-aead-78b8010b835b
@@ -325,6 +351,8 @@ templates:
     loopAnimation: true
     animationFPS: 4
     playAnimationOnStart: true
+    visible: true
+    blendMode: normal
   - name: Rich
     depth: 0
     uid: b658efa2-360e-4a62-8640-3e3281156f4e
@@ -334,6 +362,10 @@ templates:
     events: []
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: ToggleFullscreen
     depth: 100
     uid: 8a4b8de4-7729-4936-bc7b-bc277a512975
@@ -351,6 +383,10 @@ templates:
         lib: core
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: CoinWidget
     depth: 0
     uid: 1f73eb4f-8795-4234-af61-2c44c3fba073
@@ -379,6 +415,10 @@ templates:
         eventKey: OnDraw
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: ButtonLeft
     depth: 0
     uid: 45a6ee81-34af-494e-914e-51ec9d414314
@@ -409,6 +449,10 @@ templates:
         eventKey: OnDraw
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: ButtonRight
     depth: 0
     uid: 03773b4b-e444-4a2d-9891-3ddf9575cc87
@@ -439,6 +483,10 @@ templates:
         eventKey: OnDraw
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: ButtonJump
     depth: 0
     uid: 86f037f0-9a1c-4306-9d67-00be01bbd793
@@ -469,6 +517,10 @@ templates:
         eventKey: OnDraw
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: TryAgain
     depth: 0
     uid: 64fac189-737e-4e56-a8fc-15eccae6bf2a
@@ -482,6 +534,10 @@ templates:
         lib: core
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
 sounds:
   - name: BodyFall
     uid: 64f57367-eae3-40e1-8769-e11bd3c90f62
@@ -2402,6 +2458,7 @@ rooms:
     extends: {}
     simulate: true
     isUi: !<tag:yaml.org,2002:js/undefined> ''
+    follow: -1
   - name: DeadScreen
     onstep: ''
     ondraw: ''
@@ -2489,6 +2546,7 @@ rooms:
     extends: {}
     simulate: true
     isUi: !<tag:yaml.org,2002:js/undefined> ''
+    follow: -1
   - name: RichScreen
     onstep: ''
     ondraw: ''
@@ -2570,6 +2628,7 @@ rooms:
     extends: {}
     simulate: true
     isUi: !<tag:yaml.org,2002:js/undefined> ''
+    follow: -1
   - name: UI_Layer
     onstep: ''
     onleave: ''
@@ -2684,6 +2743,7 @@ rooms:
     extends: {}
     simulate: true
     isUi: !<tag:yaml.org,2002:js/undefined> ''
+    follow: -1
 soundtick: 6
 roomtick: 3
 templatetick: 12
@@ -2755,7 +2815,7 @@ scripts:
               depth: 1000
           });
       }
-ctjsVersion: 2.2.0
+ctjsVersion: 3.2.0
 fonts: []
 skeletons: []
 actions:
@@ -3208,3 +3268,4 @@ groups:
   sounds: []
   emitterTandems: []
   templates: []
+language: typescript

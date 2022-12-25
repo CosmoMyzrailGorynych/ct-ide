@@ -1,3 +1,5 @@
+//
+    @method openAsset
 fx-panel.aPanel.aView
     asset-viewer.tall(
         collection="{global.currentProject.emitterTandems}"
@@ -29,6 +31,13 @@ fx-panel.aPanel.aView
             this.editingTandem = true;
             this.editedTandem = tandem;
             this.update();
+        };
+        this.openAsset = (assetType, uid) => {
+            if (assetType !== 'emitters' && assetType !== 'emitterTandems' && assetType !== 'tandems') {
+                return;
+            }
+            const {getById} = require('./data/node_requires/resources/emitterTandems');
+            this.openTandem(getById(uid))();
         };
 
         this.showTandemPopup = tandem => e => {

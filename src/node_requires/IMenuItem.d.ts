@@ -21,6 +21,8 @@ declare interface IMenuItem {
     icon?: string,
     /** Defaults to 'feather' */
     iconClass?: string,
+    /** Alternative to an icon, mainly used to display colors in a theme selector */
+    swatches?: string[],
     /**
      * The type of the item.
      * 'checkbox' replaces an icon with a checkbox input.

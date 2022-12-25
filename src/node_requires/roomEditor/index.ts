@@ -160,8 +160,11 @@ class RoomEditor extends PIXI.Application {
         // Riot's observable objects lose function's context, so pass an anonymous function instead
         this.updateTexturesHandle = (textureId: string) => this.updateTextures(textureId);
         this.updateCopiesHandle = (templateId: string) => this.updateCopies(templateId);
+        this.cleanupTemplatesHandle = (templateId: string) => this.cleanupTemplates(templateId);
         window.signals.on('pixiTextureChanged', this.updateTexturesHandle);
         window.signals.on('templateChanged', this.updateCopiesHandle);
+        window.signals.on('templatesChanged', this.updateCopiesHandle);
+        window.signals.on('templateRemoved', this.cleanupTemplatesHandle);
     }
     destroy(removeView: boolean, stageOptions: {
         children?: boolean;
@@ -170,6 +173,8 @@ class RoomEditor extends PIXI.Application {
     }): void {
         window.signals.off('pixiTextureChanged', this.updateTexturesHandle);
         window.signals.off('templateChanged', this.updateCopiesHandle);
+        window.signals.off('templatesChanged', this.updateCopiesHandle);
+        window.signals.off('templateRemoved', this.cleanupTemplates);
         super.destroy(removeView, stageOptions);
     }
 
@@ -214,8 +219,13 @@ class RoomEditor extends PIXI.Application {
             this.addBackground(bg);
         }
         for (const copy of room.copies) {
-            const pixiCopy = new Copy(copy, this);
-            this.room.addChild(pixiCopy);
+            try {
+                const pixiCopy = new Copy(copy, this);
+                this.room.addChild(pixiCopy);
+            } catch (e) {
+                console.error(e);
+                window.alertify.error(e.message);
+            }
         }
         for (const tileLayer of room.tiles) {
             this.addTileLayer(tileLayer);
@@ -525,8 +535,26 @@ class RoomEditor extends PIXI.Application {
             }
         }
     }
+    cleanupTemplates(templateId: string): void {
+        console.log('cleanup for', templateId);
+        let cleaned = false;
+        for (const child of this.room.children) {
+            if (child instanceof Copy) {
+                if (child.templateId === templateId) {
+                    cleaned = true;
+                    child.destroy();
+                }
+            }
+        }
+        if (cleaned) {
+            this.history.stack.length = 0; // invalidate history
+            this.currentSelection.clear();
+            this.riotEditor.update();
+        }
+    }
     updateTexturesHandle: (textureId: string) => void;
     updateCopiesHandle: (templateId: string) => void;
+    cleanupTemplatesHandle: (templateId: string) => void;
 
     #simulate: boolean;
     get simulate(): boolean {

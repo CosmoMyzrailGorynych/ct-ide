@@ -72,7 +72,7 @@ room-entities-properties
         // Custom properties for copies
         div(if="{hasCopies}")
             h3 {voc.customProperties}
-            table.wide.aPaddedTable.cellsmiddle
+            table.wide.aPaddedTable.cellsmiddle(if="{changes.customProps?.length}")
                 tr
                     th {voc.copyCustomProperties.property}
                     th {voc.copyCustomProperties.value}

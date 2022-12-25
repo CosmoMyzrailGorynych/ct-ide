@@ -53,13 +53,14 @@ app-view.flexcol
         main-menu(show="{tab === 'menu'}" ref="mainMenu")
         debugger-screen-embedded(if="{tab === 'debug'}" params="{debugParams}" data-hotkey-scope="play" ref="debugger")
         project-settings(show="{tab === 'project'}" data-hotkey-scope="project" ref="projectsSettings")
-        textures-panel(show="{tab === 'textures'}" data-hotkey-scope="textures" ref="texturesPanel")
-        ui-panel(show="{tab === 'ui'}" data-hotkey-scope="ui")
-        fx-panel(show="{tab === 'fx'}" data-hotkey-scope="fx")
-        sounds-panel(show="{tab === 'sounds'}" data-hotkey-scope="sounds" ref="soundsPanel")
-        templates-panel(show="{tab === 'templates'}" data-hotkey-scope="templates")
-        rooms-panel(show="{tab === 'rooms'}" data-hotkey-scope="rooms")
-        patrons-screen(if="{tab === 'patrons'}" data-hotkey-scope="patrons")
+        textures-panel(show="{tab === 'textures'}" ref="textures" data-hotkey-scope="textures")
+        ui-panel(show="{tab === 'ui'}" ref="ui" data-hotkey-scope="ui")
+        fx-panel(show="{tab === 'fx'}" ref="fx" data-hotkey-scope="fx")
+        sounds-panel(show="{tab === 'sounds'}" ref="sounds" data-hotkey-scope="sounds")
+        templates-panel(show="{tab === 'templates'}" ref="templates" data-hotkey-scope="templates")
+        rooms-panel(show="{tab === 'rooms'}" ref="rooms" data-hotkey-scope="rooms")
+        patrons-screen(if="{tab === 'patrons'}" ref="patrons" data-hotkey-scope="patrons")
+    exporter-error(if="{exporterError}" error="{exporterError}" onclose="{closeExportError}")
     new-project-onboarding(if="{sessionStorage.showOnboarding && localStorage.showOnboarding !== 'off'}")
     notepad-panel(ref="notepadPanel")
     tour-guide(tour="{appTour}" onfinish="{onAppTourFinish}" ref="tour" header="{voc.tour.header}")
@@ -76,13 +77,27 @@ app-view.flexcol
             window.hotkeys.push(tab);
             window.signals.trigger('globalTabChanged', tab);
             window.signals.trigger(`${tab}Focus`);
+            if (tab === 'rooms' || tab === 'templates') {
+                window.orders.trigger('forceCodeEditorLayout');
+            }
         };
         this.changeTab(this.tab)();
 
         const assetListener = asset => {
-            const [assetType] = asset.split('/');
-            this.changeTab(assetType)();
+            const [assetType, uid] = asset.split('/');
+            if (['emitters', 'emitterTandems', 'tandems'].includes(assetType)) {
+                this.changeTab('fx')();
+            } else if (['fonts', 'styles'].includes(assetType)) {
+                this.changeTab('ui')();
+            } else if (assetType === 'skeletons') {
+                this.changeTab('textures')();
+            } else {
+                this.changeTab(assetType)();
+            }
             this.update();
+            if (this.refs[this.tab].openAsset) {
+                this.refs[this.tab].openAsset(assetType, uid);
+            }
         };
         window.orders.on('openAsset', assetListener);
         this.on('unmount', () => {
@@ -90,16 +105,10 @@ app-view.flexcol
         });
 
         this.saveProject = async () => {
+            const {saveProject} = require('./data/node_requires/resources/projects');
             try {
-                const fs = require('fs-extra');
-                const YAML = require('js-yaml');
-                const glob = require('./data/node_requires/glob');
-                const projectYAML = YAML.dump(global.currentProject);
-                await fs.outputFile(global.projdir + '.ict', projectYAML);
+                await saveProject();
                 this.saveRecoveryDebounce();
-                fs.remove(global.projdir + '.ict.recovery')
-                .catch(console.error);
-                glob.modified = false;
                 alertify.success(window.languageJSON.common.savedMessage, 'success', 3000);
             } catch (e) {
                 alertify.error(e);
@@ -141,10 +150,14 @@ app-view.flexcol
         }
 
         this.runProject = () => {
+            if (this.exportingProject) {
+                return;
+            }
             document.body.style.cursor = 'progress';
             this.exportingProject = true;
             this.update();
             const runCtExport = require('./data/node_requires/exporter').exportCtProject;
+            this.exporterError = void 0;
             runCtExport(global.currentProject, global.projdir)
             .then(() => {
                 if (localStorage.disableBuiltInDebugger === 'yes') {
@@ -163,7 +176,7 @@ app-view.flexcol
                 }
             })
             .catch(e => {
-                window.alertify.error(e);
+                this.exporterError = e;
                 console.error(e);
             })
             .finally(() => {
@@ -173,16 +186,35 @@ app-view.flexcol
             });
         };
         this.runProjectAlt = () => {
+            if (this.exportingProject) {
+                return;
+            }
+            document.body.style.cursor = 'progress';
+            this.exportingProject = true;
+            this.exporterError = void 0;
             const runCtExport = require('./data/node_requires/exporter').exportCtProject;
             runCtExport(global.currentProject, global.projdir)
             .then(() => {
                 nw.Shell.openExternal(`http://localhost:${fileServer.address().port}/`);
+            })
+            .catch(e => {
+                this.exporterError = e;
+                console.error(e);
+            })
+            .finally(() => {
+                document.body.style.cursor = '';
+                this.exportingProject = false;
+                this.update();
             });
         };
         window.hotkeys.on('Alt+F5', this.runProjectAlt);
         this.on('unmount', () => {
             window.hotkeys.off('Alt+F5', this.runProjectAlt);
         });
+        this.closeExportError = () => {
+            this.exporterError = void 0;
+            this.update();
+        };
 
         // eslint-disable-next-line max-lines-per-function
         this.callTour = () => {
@@ -224,16 +256,16 @@ app-view.flexcol
                 }
             }, {
                 message: this.voc.tour.tabTexturesImport,
-                highlight: this.refs.texturesPanel.refs.textures.refs.importBlock
+                highlight: this.refs.textures.refs.textures.refs.importBlock
             }, {
                 message: this.voc.tour.tabTexturesGallery,
-                highlight: this.refs.texturesPanel.refs.textures.refs.galleryButton
+                highlight: this.refs.textures.refs.textures.refs.galleryButton
             }, {
                 message: this.voc.tour.tabTexturesClipboard,
-                highlight: this.refs.texturesPanel.refs.textures.refs.clipboardPaste
+                highlight: this.refs.textures.refs.textures.refs.clipboardPaste
             }, {
                 message: this.voc.tour.tabTexturesPlaceholders,
-                highlight: this.refs.texturesPanel.refs.textures.refs.placeholderGenButton
+                highlight: this.refs.textures.refs.textures.refs.placeholderGenButton
             }, {
                 message: this.voc.tour.tabTemplates,
                 highlight: this.refs.templatesTab,
@@ -269,13 +301,13 @@ app-view.flexcol
                 }
             }, {
                 message: this.voc.tour.tabSoundsImport,
-                highlight: this.refs.soundsPanel.refs.sounds.refs.createButton
+                highlight: this.refs.sounds.refs.sounds.refs.createButton
             }, {
                 message: this.voc.tour.tabSoundsGallery,
-                highlight: this.refs.soundsPanel.refs.sounds.refs.galleryButton
+                highlight: this.refs.sounds.refs.sounds.refs.galleryButton
             }, {
                 message: this.voc.tour.tabSoundsRecord,
-                highlight: this.refs.soundsPanel.refs.sounds.refs.recordButton
+                highlight: this.refs.sounds.refs.sounds.refs.recordButton
             }, {
                 message: this.voc.tour.tabInterlude,
                 highlight: this.refs.mainNav

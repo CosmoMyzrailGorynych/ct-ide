@@ -159,7 +159,7 @@
     "colorPicker": {
         "current": "Yeni",
         "globalPalette": "Küresel Palet",
-        "altClick": "",
+        "altClick": "Silmek için alt-click",
         "old": "Eski",
         "projectPalette": "Proje'nin paleti"
     },
@@ -260,8 +260,8 @@
         "patreon": "ct.js'i Patreon'da destekle!",
         "createOrBrowseJunction": "veya",
         "boosty": "Boosty'de ct.js'i destekle!",
-        "sponsoredBy": "",
-        "supportedBy": ""
+        "sponsoredBy": "$1 tarafından gururlu bir şekilde desteklendi!",
+        "supportedBy": "$1 tarafından desteklendi"
     },
     "onboarding": {
         "hoorayHeader": "Vay canına! Bir proje oluşturdun!",
@@ -544,7 +544,7 @@
         "aboutPatrons": "Patronlar yenilenen bağışlar şeklinde ComigoGames'e desteklerini gösteren insanlardır. Tabi herkes ct.js'ten gelmiyor; bazıları ComigoGames'in başka uygulamalarını kullanıyor. İpucu: Eğer ComigoGames'e bağış yapan bir üreticiysen, you will get a link to your page here — that's my little help to your creations :)",
         "patronsHeader": "Patronlarımız",
         "thankAllPatrons": "Şu anki ve önceki tüm ComigoGames patronlarına teşekkürler, desteğiniz Comigo'yu ileriye taşır ve daha iyi uygulamalar yapmasına olanak tanır! :)",
-        "becomeAPatron": "Patron ol",
+        "becomeAPatron": "Bir patron ol",
         "aboutFillers": [
             "her yerde havalı 😎",
             "ile sohbet etmesi güzeş 🤗",
@@ -564,13 +564,13 @@
             "ışık ve umut getiriyor 🌞",
             "şık ve çok güzel 🎩"
         ],
-        "sponsors": "",
-        "noSponsorsYet": "",
-        "sponsorsDescription": "",
-        "businessCats": "",
-        "businessCatsDescription": "",
-        "cats": "",
-        "catsDescription": ""
+        "sponsors": "Sponsorlar",
+        "noSponsorsYet": "Şimdilik hiçbir sponsor yok. Ama ilk sen olabilirsin!",
+        "sponsorsDescription": "Sponsorlar ct.js'in sitesinde ve ct.js game jam'leri gibi diğer sayfalarda gösterilir.",
+        "businessCats": "İş kedileri",
+        "businessCatsDescription": "İş kedileri Discord sunucusunda özel bir destek kanalına erişim sahibi olur ve bir bütün olarak ct.js ve oyun geliştiriciliği için de destek alır.",
+        "cats": "Kediler",
+        "catsDescription": "Kediler, ct.js'i bir \"teşekkür\"den fazla desteklemek isteyenlerdir. Ayrıca Kediler ct.js'de (burada!) ve CoMiGo'nun onları eklemeyi unutmadığı her yerde gösterilirler."
     },
     "textureInput": {
         "jumpToTexture": "Dokuya atla",
@@ -646,9 +646,11 @@
             "openProject": "Bir proje aç…",
             "openExample": "Bir örnek proje aç…",
             "startScreen": "Başlangıç ekranına geri dön",
-            "startNewWindow": "",
+            "startNewWindow": "Yeni bir proje penceresi aç",
             "successZipProject": "Proje başarılı bir şekilde şuraya ziplendi: {0}.",
-            "zipProject": "Projeyi zip ile paketle"
+            "zipProject": "Projeyi zip ile paketle",
+            "convertToJs": "Projeyi Javascript'e dönüştür",
+            "confirmationConvertToJs": "Bu projendeki TÜM olayları Javascript'e dönüştürecek. Bu işlem (Kodunda bir hata bulunmadıysa) geri alınamaz. Bu CoffeeScript projesini Javascript'e dönüştürmek istediğine emin misin?"
         },
         "meta": {
             "heading": "Meta",
@@ -683,7 +685,7 @@
             "projectResources": "Şimdi, her projenin çeşitli tiplerin varlıkları vardır. Her varlık tipi kendi sekmesine aittir. Hadi en önemli sekmelere bakalım.",
             "tabTextures": "Dokular interaktif objelerin(kopya olarak anılırlar), arkaplanların ve özel efektlerin için kullanılabilecek görsellerdir. Dokular kendi başlarına birşey yapmazlar ama kesinlikle bir varlık türüne ihtiyaç duyarlar.",
             "tabTexturesImport": "Kendi dosya sisteminden dokuları içeri aktarabilirsin...",
-            "tabTexturesGallery": "...veya ct.js'in içindeki kütüphaneden hazır dokuları.",
+            "tabTexturesGallery": "...veya ct.js'in içindeki kütüphaneden hazır dokuları da kullanabilirsin.",
             "tabTexturesClipboard": "Bu tuş panondaki kopyalanmış görselleri yapıştırır. Özellikle resim düzenleyicilerle çalışırken gayet kullanışlıdır!",
             "tabTexturesPlaceholders": "Ayrıca bu araç ile basit vekil grafikler de oluşturabilirsin.",
             "tabTemplates": "Şablonlar kopyalar oluşturmak için kullanılır — kendileri seviyene koyduğun interaktif objelerdir. Ct.js'in içindeki herhangi bir interaktif obje şablonlarının birinden oluşturulur. Onlar dokularını kullanırlar ve oynanış mantığını onlarda olay ekleyerek belirlersin. Bir şablon oluşturduğun zaman, şablon düzenleyicisinde derinlemesine turunu çalıştırabilirsin.",
@@ -695,12 +697,12 @@
             "tabInterlude": "Ayrıca daha gelişmiş varlıklar için iki sekme daha var.",
             "tabUI": "UI (arayüz) sekmesi fontları ve yazı stillerini de yönetir. Yazı tiplerinizi oyunla birleştirmek, oyunun cihazlar arasında düzgün bir şekilde görünmesi için önemlidir.\n\n Yazı stillerinin stil önayarı yapmak için görsel bir düzenleyicisi vardır. Ayrıca bu tür etiketlerin oluşturulması için kod da üretirler.",
             "tabFX": "FX sekmesi partikül sistemleri için görsel bir düzenleyiciye sahiptir. — patlamalar, sihir, duman, yağmur ve gibi gibi şeyler için grafiksel efektler.",
-            "tabProject": "Varlıklar için bu kadar! Ama bunların yanında projen renderlama, markalama, paketleme ve diğer ıvır zıvırlar için bir sürü ayara da sahip.",
+            "tabProject": "Varlıklar bu kadar! Ama bunların yanında projen renderlama, markalama, paketleme ve diğer ıvır zıvırlar için bir sürü ayara da sahip.",
             "tabProjectModules": "Ct.js modülerdir ve projelerin buraya kurulabilen ek modüllere de ihtiyaç duyabilir.",
             "tabProjectModuleDocs": "Etkin modüller için tüm dökümantasyonlar burada bulunabilir.",
             "tabMainMenu": "Ct.js'in kendisi ana menüsünde tutulan bol bol ayara sahip.",
             "tabMainMenuSettings": "Ayarlar bölümünde dili ve ct.js'in nasıl durduğunu değiştirebilirsin.",
-            "tabMainMenuMeta": "Eğer daha sonra yardıma ihtiyacın olursa, Meta panelinde tüm resmi merkezleri bulabileceksin.",
+            "tabMainMenuMeta": "Eğer daha sonra yardıma ihtiyacın olursa, Meta panelinde tüm resmi merkezleri bulabilirsin.",
             "helpPanelReminder": "Ayrıca ct.js ile birlikte gelen dökümantasyonları da unutma! Kendi projene başlamadan önce resmi öğreticileri tamamlamanı tavsiye ederiz.",
             "buttonStartTutorial": "Öğreticileri aç"
         }
@@ -834,7 +836,7 @@
         "fontSize": "Font boyutu:"
     },
     "textureView": {
-        "center": "Eksen:",
+        "center": "Eksen",
         "cols": "Sütun:",
         "done": "Uygula",
         "fill": "Doldur",
@@ -1034,6 +1036,17 @@
             "OnAnimationLoop": "Bir animasyon yeniden başladığı anda ateşlenir.",
             "OnAnimationComplete": "Döngüde olmayan bir animasyon bittiği zaman sadece 1 defa ateşlenir.",
             "Timer": "this.timer$1 = 3"
-        }
+        },
+        "jumpToProblem": "Sorunun olduğu yere git"
+    },
+    "languageSelector": {
+        "chooseLanguageHeader": "Yazılım dilini seç",
+        "chooseLanguageExplanation": "Bu oyun mantığını açıklamak için kullanacağın olayları yazacağın yazılım dili. Önceden, tüm projeler JavaScript+TypeScript kullanıyordu. Ayrıca sadece CoffeeScript projelerini JavaScript'e dönüştürebilirsin, fakat tam tersini yapamazsın. O yüzden, seçimini dikkatli yap!",
+        "coffeeScriptDescription": "Oyun geliştirmeye yeni başlayanlar için basit bir sözdizimi ile güzel bir dil. Eğer önceden yazılım ile ilgili bir tecrüben olmadıysa, ya da Python'u seviyorsan, bu dili seç.",
+        "pickCoffeeScript": "CoffeeScript'i seçiyorum!",
+        "jsAndTs": "JavaScript",
+        "jsTsDescription": "Web'in dili. Sözdizimi daha karmaşık ama kendi içinde editör-içi hata vurgulama ve kod önerileri var. Eğer önceden Java, C# ve JavaScript ile çalıştıysan JS'i seç.",
+        "pickJsTs": "Javascript'i seçiyorum!",
+        "acceptAndSpecifyDirectory": "Kabul et ve proje klasörünü seç"
     }
 }

@@ -14,87 +14,110 @@ room-properties
                 onchange="{recordChange(opts.room, 'name')}"
                 value="{opts.room.name}"
             )
-    fieldset
-        .aPoint2DInput.compact.wide
-            label
-                b {voc.width}
-                br
-                input.wide(
-                    type="number" min="1" step="8"
-                    onfocus="{rememberValue}"
-                    oninput="{wire('this.opts.room.width')}"
-                    onchange="{recordChange(opts.room, 'width')}"
-                    value="{opts.room.width}"
-                )
-            .aSpacer
-            label
-                b {voc.height}
-                br
-                input.wide(
-                    type="number" min="1" step="8"
-                    onfocus="{rememberValue}"
-                    oninput="{wire('this.opts.room.height')}"
-                    onchange="{recordChange(opts.room, 'height')}"
-                    value="{opts.room.height}"
-                )
-    fieldset
-        label.checkbox
-            input(
-                type="checkbox"
-                checked="{opts.room.restrictCamera}"
-                onchange="{handleToggle(opts.room, 'restrictCamera')}"
+    collapsible-section(
+        heading="{voc.viewportHeading}"
+        defaultstate="opened"
+        storestatekey="roomEditorViewport"
+        hlevel="4"
+    )
+        fieldset
+            .aPoint2DInput.compact.wide
+                label
+                    b {parent.voc.width}
+                    br
+                    input.wide(
+                        type="number" min="1" step="8"
+                        onfocus="{parent.rememberValue}"
+                        oninput="{parent.wire('this.opts.room.width')}"
+                        onchange="{parent.recordChange(parent.opts.room, 'width')}"
+                        value="{parent.opts.room.width}"
+                    )
+                .aSpacer
+                label
+                    b {parent.voc.height}
+                    br
+                    input.wide(
+                        type="number" min="1" step="8"
+                        onfocus="{parent.rememberValue}"
+                        oninput="{parent.wire('this.opts.room.height')}"
+                        onchange="{parent.recordChange(parent.opts.room, 'height')}"
+                        value="{parent.opts.room.height}"
+                    )
+        fieldset
+            b {parent.voc.followTemplate}
+            docs-shortcut.toright(
+                title="{voc.followCodeHint}"
+                path="/tips-n-tricks/viewport-management.html#following-a-copy"
             )
-            span {voc.restrictCamera}
-    fieldset
-        .aPoint2DInput.compact.wide(if="{opts.room.restrictCamera}")
-            label
-                b {voc.minimumX}:
-                |
-                input.compact(
-                    step="{opts.room.gridX}" type="number"
-                    onfocus="{rememberValue}"
-                    oninput="{wire('this.opts.room.restrictMinX')}"
-                    onchange="{recordChange(opts.room, 'restrictMinX')}"
-                    value="{opts.room.restrictMinX === void 0 ? 0 : opts.room.restrictMinX}"
+            asset-input.wide(
+                assettype="templates"
+                allowclear="allowclear"
+                compact="compact"
+                assetid="{parent.opts.room.follow}"
+                onchanged="{parent.setFollow}"
+            )
+        fieldset
+            label.checkbox
+                input(
+                    type="checkbox"
+                    checked="{parent.opts.room.restrictCamera}"
+                    onchange="{parent.handleToggle(parent.opts.room, 'restrictCamera')}"
                 )
-            .aSpacer
-            label
-                b.nogrow {voc.minimumY}:
-                |
-                input.compact(
-                    step="{opts.room.gridY}" type="number"
-                    onfocus="{rememberValue}"
-                    oninput="{wire('this.opts.room.restrictMinY')}"
-                    onchange="{recordChange(opts.room, 'restrictMinY')}"
-                    value="{opts.room.restrictMinY === void 0 ? 0 : opts.room.restrictMinY}"
-                )
-        .aPoint2DInput.compact.wide(if="{opts.room.restrictCamera}")
-            label
-                b {voc.maximumX}:
-                |
-                input.compact(
-                    step="{opts.room.gridX}" type="number"
-                    onfocus="{rememberValue}"
-                    oninput="{wire('this.opts.room.restrictMaxX')}"
-                    onchange="{recordChange(opts.room, 'restrictMaxX')}"
-                    value="{opts.room.restrictMaxX === void 0 ? opts.room.width : opts.room.restrictMaxX}"
-                )
-            .aSpacer
-            label
-                b.nogrow {voc.maximumY}:
-                |
-                input.compact(
-                    step="{opts.room.gridY}" type="number"
-                    onfocus="{rememberValue}"
-                    oninput="{wire('this.opts.room.restrictMaxY')}"
-                    onchange="{recordChange(opts.room, 'restrictMaxY')}"
-                    value="{opts.room.restrictMaxY === void 0 ? opts.room.height : opts.room.restrictMaxY}"
-                )
-
+                span {parent.voc.restrictCamera}
+        fieldset
+            .aPoint2DInput.compact.wide(if="{parent.opts.room.restrictCamera}")
+                label
+                    b {parent.voc.minimumX}:
+                    |
+                    input.compact.wide(
+                        step="{parent.opts.room.gridX}" type="number"
+                        onfocus="{parent.rememberValue}"
+                        oninput="{parent.wire('this.opts.room.restrictMinX')}"
+                        onchange="{parent.recordChange(parent.opts.room, 'restrictMinX')}"
+                        value="{parent.opts.room.restrictMinX === void 0 ? 0 : parent.opts.room.restrictMinX}"
+                    )
+                .aSpacer
+                label
+                    b.nogrow {parent.voc.minimumY}:
+                    |
+                    input.compact.wide(
+                        step="{parent.opts.room.gridY}" type="number"
+                        onfocus="{parent.rememberValue}"
+                        oninput="{parent.wire('this.opts.room.restrictMinY')}"
+                        onchange="{parent.recordChange(opts.room, 'restrictMinY')}"
+                        value="{parent.opts.room.restrictMinY === void 0 ? 0 : parent.opts.room.restrictMinY}"
+                    )
+            .aPoint2DInput.compact.wide(if="{parent.opts.room.restrictCamera}")
+                label
+                    b {parent.voc.maximumX}:
+                    |
+                    input.compact.wide(
+                        step="{parent.opts.room.gridX}" type="number"
+                        onfocus="{parent.rememberValue}"
+                        oninput="{parent.wire('this.opts.room.restrictMaxX')}"
+                        onchange="{parent.recordChange(parent.opts.room, 'restrictMaxX')}"
+                        value="{parent.opts.room.restrictMaxX === void 0 ? parent.opts.room.width : parent.opts.room.restrictMaxX}"
+                    )
+                .aSpacer
+                label
+                    b.nogrow {parent.voc.maximumY}:
+                    |
+                    input.compact.wide(
+                        step="{parent.opts.room.gridY}" type="number"
+                        onfocus="{parent.rememberValue}"
+                        oninput="{parent.wire('this.opts.room.restrictMaxY')}"
+                        onchange="{parent.recordChange(parent.opts.room, 'restrictMaxY')}"
+                        value="{parent.opts.room.restrictMaxY === void 0 ? parent.opts.room.height : parent.opts.room.restrictMaxY}"
+                    )
+    .aSpacer
     fieldset
         b {voc.backgroundColor}
         br
-        color-input.wide(onchange="{changeBgColor}" color="{opts.room.backgroundColor || '#000000'}")
+        color-input.wide(
+            onchange="{changeBgColor}"
+            color="{opts.room.backgroundColor || '#000000'}"
+            hidealpha="hidealpha"
+        )
 
     fieldset
         label.block.checkbox
@@ -135,6 +158,19 @@ room-properties
                 before: prevValue,
                 after: value
             });
+        };
+
+        this.setFollow = uid => {
+            const prevValue = this.opts.room.follow;
+            this.opts.room.follow = uid;
+            this.opts.history.pushChange({
+                type: 'propChange',
+                key: 'follow',
+                target: this.opts.room,
+                before: prevValue,
+                after: uid
+            });
+            this.update();
         };
 
         this.changeBgColor = (e, color) => {

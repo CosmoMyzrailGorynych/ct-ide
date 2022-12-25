@@ -1,3 +1,5 @@
+//
+    @method openAsset
 textures-panel.aPanel.aView
     .flexfix.tall
         div
@@ -14,34 +16,32 @@ textures-panel.aPanel.aView
                 h1.inlineblock
                     span {parent.voc.textures}
                 .aSpacer.inlineblock
-                label.file.inlineblock(ref="importBlock")
-                    input(type="file" multiple
-                        accept=".png,.jpg,.jpeg,.bmp,.gif,.json"
-                        onchange="{parent.textureImport}")
-                    .button
+                .aButtonGroup
+                    button(onclick="{parent.openFileSelector}")
                         svg.feather
                             use(xlink:href="#download")
                         span {parent.voc.import}
-                button(onclick="{parent.openGallery}" ref="galleryButton")
-                    svg.feather
-                        use(xlink:href="#folder")
-                    span {parent.vocGlob.openAssetGallery}
-                button(
-                    onclick="{parent.pasteTexture}"
-                    title="{parent.voc.importFromClipboard}"
-                    data-hotkey="Control+v"
-                    data-hotkey-require-scope="texture"
-                    ref="clipboardPaste"
-                )
-                    svg.feather
-                        use(xlink:href="#clipboard")
-                button(
-                    onclick="{parent.openGenerator}"
-                    title="{parent.voc.generatePlaceholder}"
-                    ref="placeholderGenButton"
-                )
-                    svg.feather
-                        use(xlink:href="#loader")
+                    button(
+                        onclick="{parent.pasteTexture}"
+                        title="{parent.voc.importFromClipboard}"
+                        data-hotkey="Control+v"
+                        data-hotkey-require-scope="texture"
+                        ref="clipboardPaste"
+                    ).square
+                        svg.feather
+                            use(xlink:href="#clipboard")
+                .aButtonGroup.nml
+                    button(onclick="{parent.openGallery}" ref="galleryButton")
+                        svg.feather
+                            use(xlink:href="#folder")
+                        span {parent.vocGlob.openAssetGallery}
+                    button(
+                        onclick="{parent.openGenerator}"
+                        title="{parent.voc.generatePlaceholder}"
+                        ref="placeholderGenButton"
+                    ).square
+                        svg.feather
+                            use(xlink:href="#loader")
             asset-viewer(
                 collection="{global.currentProject.skeletons}"
                 contextmenu="{showSkeletonPopup}"
@@ -62,7 +62,12 @@ textures-panel.aPanel.aView
                             use(xlink:href="#download")
                         span {parent.voc.import}
                 docs-shortcut(hidelabel="yes" path="/skeletal-animation.html" button="yes" title="{vocGlob.docsShort}")
-    texture-editor(if="{editing}" texture="{currentTexture}")
+    input(
+        style="display: none;"
+        type="file" multiple accept=".webp,.png,.jpg,.jpeg,.bmp,.gif,.json"
+        ref="inputFile" onchange="{textureImport}"
+    )
+    texture-editor(if="{editing}" texture="{currentTexture}" onclose="{closeTexture}")
     texture-generator(if="{generating}" onclose="{closeGenerator}")
     context-menu(menu="{textureMenu}" ref="textureMenu")
     builtin-asset-gallery(if="{showingGallery}" type="textures" onclose="{closeGallery}")
@@ -135,26 +140,24 @@ textures-panel.aPanel.aView
             window.signals.off('skeletonImported', this.updateTextureData);
         });
 
-        const assetListener = asset => {
-            const [assetType, assetId] = asset.split('/');
-            if (assetType !== 'textures') {
-                return;
-            }
+        this.openAsset = (assetType, uid) => {
             if (this.editing) {
                 // Reset texture editor
                 this.editing = this.currentTexture = this.currentTextureId = false;
                 this.update();
             }
+            if (assetType !== 'textures') {
+                return; // cannot open skeletons
+            }
             this.editing = true;
-            this.currentTexture = window.currentProject.textures.find(t => t.uid === assetId);
-            this.currentTextureId = assetId;
+            this.currentTexture = window.currentProject.textures.find(t => t.uid === uid);
+            this.currentTextureId = uid;
             this.update();
         };
-        window.orders.on('openAsset', assetListener);
-        this.on('unmount', () => {
-            window.orders.off('openAsset', assetListener);
-        });
 
+        this.openFileSelector = () => {
+            this.refs.inputFile.click();
+        };
         /**
          * An event fired when user attempts to add files from a file manager
          * (by clicking an "Import" button)
@@ -185,6 +188,19 @@ textures-panel.aPanel.aView
             const {importImageToTexture} = require('./data/node_requires/resources/textures');
             importImageToTexture(imageBuffer, void 0, this.refs.textures.currentGroup.uid);
             alertify.success(this.vocGlob.pastedFromClipboard);
+        };
+
+        /**
+         * Opens an editor for the given texture
+         */
+        this.openTexture = texture => () => {
+            this.currentTexture = texture;
+            this.currentTextureId = global.currentProject.textures.indexOf(texture);
+            this.editing = true;
+        };
+        this.closeTexture = () => {
+            this.editing = false;
+            this.update();
         };
 
         this.openGenerator = () => {
@@ -323,15 +339,6 @@ textures-panel.aPanel.aView
         };
         this.showSkeletonPopup = skel => e => {
             this.showTexturePopup(skel, true)(e);
-        };
-
-        /**
-         * Opens an editor for the given texture
-         */
-        this.openTexture = texture => () => {
-            this.currentTexture = texture;
-            this.currentTextureId = global.currentProject.textures.indexOf(texture);
-            this.editing = true;
         };
 
         this.openGallery = () => {

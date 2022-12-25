@@ -1,3 +1,5 @@
+//
+    @method openAsset
 fonts-panel.flexfix.tall.fifty
     asset-viewer(
         collection="{global.currentProject.fonts}"
@@ -49,6 +51,11 @@ fonts-panel.flexfix.tall.fifty
         this.openFont = font => () => {
             this.editingFont = true;
             this.editedFont = font;
+            this.update();
+        };
+        this.openAsset = (assetType, uid) => {
+            const {getById} = require('./data/node_requires/resources/fonts');
+            this.openFont(getById(uid))();
         };
 
         // Context menu for manipulating fonts with RMB

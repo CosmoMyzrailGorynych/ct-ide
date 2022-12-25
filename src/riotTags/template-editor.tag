@@ -38,7 +38,7 @@ mixin templateProperties
                 input(type="checkbox" checked="{parent.template.loopAnimation}" onchange="{parent.wire('this.template.loopAnimation')}")
                 span {parent.voc.loopAnimation}
             label.block.checkbox
-                input(type="checkbox" checked="{parent.template.extends.visible ?? true}" onchange="{parent.wire('this.template.extends.visible')}")
+                input(type="checkbox" checked="{parent.template.visible ?? true}" onchange="{parent.wire('this.template.visible')}")
                 span {parent.voc.visible}
     .aSpacer
     extensions-editor(type="template" entity="{template.extends}" wide="yep" compact="probably")
@@ -52,7 +52,7 @@ mixin eventsList
     ).tall
 
 template-editor.aPanel.aView.flexrow
-    .template-editor-Properties(class="{alt: localStorage.altTemplateLayout === 'on'}")
+    .template-editor-Properties.nml(class="{alt: localStorage.altTemplateLayout === 'on'}")
         .tall.flexfix.aPanel.pad
             .flexfix-header
                 asset-input.wide(
@@ -102,10 +102,16 @@ template-editor.aPanel.aView.flexrow
                     code-editor-scriptable(event="{currentSheet}" entitytype="template")
                 // .tabbed(show="{tab === 'blocks'}")
                 //     .aBlocksEditor(ref="blocks")
-    .template-editor-Properties.nmr(if="{localStorage.altTemplateLayout !== 'on'}")
+    .template-editor-Properties.nmr(if="{localStorage.altTemplateLayout !== 'on' && !minimizeProps}")
         .tall.flexfix.aPanel.pad
             .flexfix-body
                 +templateProperties()
+    button.toright.template-editor-aPresentationButton.square.tiny(
+        onclick="{toggleProps}"
+        if="{localStorage.altTemplateLayout !== 'on'}"
+    )
+        svg.feather
+            use(xlink:href="#{minimizeProps ? 'maximize-2' : 'minimize-2'}")
     script.
         const glob = require('./data/node_requires/glob');
         this.glob = glob;
@@ -180,4 +186,17 @@ template-editor.aPanel.aView.flexrow
         this.changeCodeTab = scriptableEvent => {
             this.currentSheet = scriptableEvent;
             this.update();
+        };
+
+        const update = () => this.update();
+        window.orders.on('forceCodeEditorLayout', update);
+        this.on('unmount', () => {
+            window.orders.off('forceCodeEditorLayout', update);
+        });
+
+        this.minimizeProps = localStorage.minimizeTemplatesProps === 'yes';
+        this.toggleProps = () => {
+            this.minimizeProps = !this.minimizeProps;
+            localStorage.minimizeTemplatesProps = this.minimizeProps ? 'yes' : 'no';
+            window.orders.trigger('forceCodeEditorLayout');
         };

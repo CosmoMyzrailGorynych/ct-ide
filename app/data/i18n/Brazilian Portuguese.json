@@ -847,7 +847,7 @@
         "fontSize": "Tamanho da fonte:"
     },
     "textureView": {
-        "center": "Eixo:",
+        "center": "Eixo",
         "cols": "Colunas:",
         "done": "Aplicar",
         "fill": "Preencher",

@@ -80,7 +80,7 @@ room-editor.aPanel.aView
         room-template-picker.room-editor-aContextPanel(
             if="{currentTool === 'addCopies'}"
             onselect="{changeSelectedTemplate}"
-            selected="{currentTemplate}"
+            selectedtemplate="{currentTemplate}"
         )
         room-tile-editor.room-editor-aContextPanel(
             if="{currentTool === 'addTiles'}"
@@ -104,10 +104,10 @@ room-editor.aPanel.aView
 
         // Global controls placed at the top-center
         .room-editor-aTopPanel
-            button.slim(onclick="{pixiEditor?.history.undo.bind(pixiEditor.history)}" title="{vocGlob.undo}" class="{dim: !pixiEditor?.history.canUndo}")
+            button.slim(onclick="{pixiEditor?.history.undo.bind(pixiEditor.history)}" title="{vocGlob.undo} (Ctrl+Z)" class="{dim: !pixiEditor?.history.canUndo}")
                 svg.feather
                     use(xlink:href="#undo")
-            button.slim(onclick="{pixiEditor?.history.redo.bind(pixiEditor.history)}" title="{vocGlob.redo}" class="{dim: !pixiEditor?.history.canRedo}")
+            button.slim(onclick="{pixiEditor?.history.redo.bind(pixiEditor.history)}" title="{vocGlob.redo} (Ctrl+Shift+Z)" class="{dim: !pixiEditor?.history.canRedo}")
                 svg.feather
                     use(xlink:href="#redo")
             label.checkbox(title="Shift+S")
@@ -328,6 +328,7 @@ room-editor.aPanel.aView
         this.currentTemplate = -1;
         this.changeSelectedTemplate = template => {
             this.currentTemplate = template;
+            this.update();
         };
 
         this.tilePatch = void 0;

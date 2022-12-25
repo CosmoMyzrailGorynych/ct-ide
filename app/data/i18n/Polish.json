@@ -828,7 +828,7 @@
         "fontSize": "Rozmiar czcionki:"
     },
     "textureView": {
-        "center": "Oś:",
+        "center": "Oś",
         "cols": "Kolumny:",
         "done": "Zastosuj",
         "fill": "Wypełnij",

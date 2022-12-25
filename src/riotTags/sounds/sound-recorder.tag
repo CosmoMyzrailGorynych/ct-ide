@@ -148,7 +148,7 @@ sound-recorder.aDimmer.fadein
             const buffer = Buffer.from(base64, 'base64');
             const temp = await require('./data/node_requires/platformUtils').getTempDir();
             await fs.writeFile(path.join(temp.dir, 'recording.mp3'), buffer);
-            newSound.name = `Recording_${newSound.slice(-6)}`;
+            newSound.name = `Recording_${newSound.uid.slice(-6)}`;
             await sounds.addSoundFile(newSound, path.join(temp.dir, 'recording.mp3'));
             temp.remove();
             this.state = 'ready';

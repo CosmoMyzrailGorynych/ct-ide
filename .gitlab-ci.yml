@@ -49,6 +49,7 @@ build:
     - gulp build
 
 pack-deploy-release:
+  tags: [ "saas-linux-medium-amd64" ]
   stage: pack
   needs: ["lint", "build"]
   script:

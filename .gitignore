@@ -39,6 +39,7 @@ desktop\.ini
 
 # Generated files
 src/typedefs/ct.js/types.d.ts
+app/data/ctLibJSDocAst.json
 app/examples
 app/templates
 app/bundledAssets
@@ -99,3 +100,4 @@ app/pleaseCtJSLoadWithoutGPUAccelerationMmkay
 app/debugger.html
 
 **/**/*.orig
+app/data/ct.libs/gamedistribution/.vscode/settings.json

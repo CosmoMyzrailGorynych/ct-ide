@@ -45,7 +45,7 @@ const stringifyTemplates = function (proj: IProject): IScriptablesFragment {
 
     for (const k in proj.templates) {
         var template = proj.templates[k];
-        const scripts = getBaseScripts(template);
+        const scripts = getBaseScripts(template, proj);
         const textureInfo = getTextureInfo(blankTextures, template);
         templates += `
 ct.templates.templates["${template.name}"] = {
@@ -54,6 +54,7 @@ ct.templates.templates["${template.name}"] = {
     animationFPS: ${template.animationFPS ?? 60},
     playAnimationOnStart: ${Boolean(template.playAnimationOnStart)},
     loopAnimation: ${Boolean(template.loopAnimation)},
+    visible: ${Boolean(template.visible ?? true)},
     group: "${groups[template.group ? template.group.replace(/'/g, '\\\'') : -1]}",
     ${textureInfo}
     onStep: function () {

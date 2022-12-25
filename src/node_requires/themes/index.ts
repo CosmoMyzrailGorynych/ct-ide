@@ -2,24 +2,25 @@ import {join} from 'path';
 
 const defaultTheme = 'Day';
 const defaultMonacoTheme = defaultTheme;
-const builtInThemes = [
-    'Day',
-    'SpringStream',
-    'Ghost',
-    'Forest',
-    'Nord',
-    'Horizon',
-    'PooxelGreen',
-    'PooxelBlue',
-    'RosePineDawn',
-    'RosePineMoon',
-    'RosePine',
-    'LucasDracula',
-    'Night',
-    'HCBlack'
+const builtInThemes: [string, string[]][] = [
+    ['Day', ['#ffffff', '#5144db', '#446adb']],
+    ['SpringStream', ['#ffffff', '#00c09e']],
+    ['Ghost', ['#fff1eb', '#70579c']],
+    ['Forest', ['#3c474d', '#a7c080']],
+    ['Nord', ['#3B4252', '#88C0D0']],
+    ['Horizon', ['#1C1E26', '#E95378']],
+    ['PooxelGreen', ['#292929', '#00d059']],
+    ['PooxelBlue', ['#292932', '#5db9ff']],
+    ['RosePineDawn', ['#fffaf3', '#907aa9', '#d7827e']],
+    ['RosePineMoon', ['#2a273f', '#c4a7e7', '#ea9a97']],
+    ['RosePine', ['#1f1d2e', '#c4a7e7', '#ebbcba']],
+    ['LucasDracula', ['#161427', '#FFCFD4', '#FF70B1']],
+    ['Night', ['#0c0d17', '#44dbb5']],
+    ['HCBlack', ['#080808', '#ffff00', '#00ffff']]
 ];
 interface ITheme {
     name: string;
+    swathes?: string[];
     translated: string;
     monacoTheme: Record<string, unknown>;
     css: string;
@@ -61,7 +62,7 @@ const updateSwatches = (): void => {
 };
 
 const mod = {
-    registerTheme(name: string): ITheme {
+    registerTheme(name: string, swatches?: string[]): ITheme {
         if (mod.getTheme(name)) {
             throw new Error(`A theme called ${name} is already registered.`);
         }
@@ -81,6 +82,7 @@ const mod = {
             get translated() {
                 return (window as Window).languageJSON.mainMenu.settings.themes[name] || name;
             },
+            swatches,
             monacoTheme,
             css
         };
@@ -91,11 +93,11 @@ const mod = {
         return registeredThemes.find(t => t.name === name);
     },
     loadBuiltInThemes(): void {
-        for (const themeName of builtInThemes) {
-            if (mod.getTheme(themeName)) {
+        for (const theme of builtInThemes) {
+            if (mod.getTheme(theme[0])) {
                 continue;
             }
-            mod.registerTheme(themeName);
+            mod.registerTheme(theme[0], theme[1]);
         }
     },
     async switchToTheme(name: string): Promise<void> {

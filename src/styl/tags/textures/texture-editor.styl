@@ -1,9 +1,15 @@
 texture-editor
+    &.aDimmer
+        padding 1rem 4rem
+        & > .aModal
+            width 100%
+            height 100%
+            max-width unset
+            max-height unset
     .column
         width 18em
-    .column
         padding 1em
-    .column2
+    .column1, .column2
         .flexfix-body
             margin -1rem -1rem 0
             padding 1rem
@@ -19,15 +25,58 @@ texture-editor
     .aDragger
         margin 1rem
     .aDashedMaskMarker
-        border 2px dashed borderPale
-        padding 0.5rem
+        border 2px dashed borderBright
+        padding 1rem
+        position relative
+        background backgroundDeeper
+        &::before, &::after
+            display block
+            content ''
+            position absolute
+            background borderPale
+            border-radius 2px
+            width 2px
+            height 2px
+        &::before
+            left 50%
+            top 0.1rem
+            bottom 0.1rem
+            height auto
+            transform translate(-50%, 0)
+        &::after
+            top 50%
+            left 0.1rem
+            right 0.1rem
+            width auto
+            transform translate(0, -50%)
         input
             margin 0.25rem 0
+            position relative
+            z-index 2
+        &-anArrow
+            position absolute
+            color borderPale
+            transform translate(-50%, -50%)
+            &.left
+                top 50%
+                left 0.2rem
+            &.right
+                top 50%
+                right 0.2rem
+                transform translate(50%, -50%)
+            &.up
+                top 0.2rem
+                left 50%
+            &.down
+                bottom 0.2rem
+                left 50%
+                transform translate(-50%, 50%)
     .aPivotSymbol
         @extends .aDragger
         border-radius 0
         cursor default
-        position static
+        position relative
+        z-index 2   
         display inline-block
         vertical-align middle
         margin 0 0.5rem

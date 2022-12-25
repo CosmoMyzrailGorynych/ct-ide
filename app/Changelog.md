@@ -1,3 +1,66 @@
+## v3.2.0
+
+*Mon Dec 26 2022*
+
+### ✨ New Features
+
+* Add a small button to collapse template's properties panel. Useful for presentations.
+* Add an option to room settings to automatically follow a copy of a given template
+* Catmod for integration with Game Distribution, an ad service (#394 by @UlisesFreitas)
+* Support for CoffeeScript! Choose your preferred language when creating a new project 💪
+
+### ⚡️ General Improvements
+
+* 🌐 Update Turkish translation, made by Sarpmanon from our Discord server!
+* Add aliases `this.moveSmart` and `this.moveBullet` for `this.moveContinuousByAxes` and `this.moveContinuous` correspondingly (these come from the ct.place module)
+* Add documentation links to the content editor's panels
+* Add hotkey hints to undo/redo buttons in the room editor
+* Do not show table headers for copies' custom properties when no properties exist
+* Force background on the notepad panel's "expand" button; useful on dark themes with which it can blend with backgrounds
+* Make addresses in the QR code panel selectable (debugger's toolbar)
+* Prevent nw.js SDK menu from popping up when ct.js is packaged
+* Relayout code editors when switching tabs. Prevents code editors from disappearing after zooming or switching template coding layouts
+* Rework texture editor's layout
+* Show theme colors in the app settings -> theme menu
+* Update textbox tutorial for v3 and add the missing step (#396 by @firecakes)
+* Warn users that they need to add a tile layer when they try to add tiles into a room that doesn't have any layers
+
+### 🐛 Bug Fixes
+
+* 🍱 Update 2DPhysics example
+* Don't attempt to focus items in a context menus if there are no such
+* Fix an ugly splash screen for the DungeonCrawler demo project
+* Fix broken sound recorder
+* Fix scrollbars sometimes appearing in the room editor
+* Fix templates not being properly cleaned up if they are in a currently opened room
+* Fix texture offset being applied to the texture preview window
+* Fix wrong click location on a tile picker
+* Ignore clicks on the "Run" button if a project is already being compiled.
+  Should remove most of the headache with Window's EPERM issues
+* Initialize timers for rooms
+* Outline currently selected template in the room editor's template browser
+* Room's background color input must not have an alpha input
+* Set default values for room's camera restrictions
+* Update respective asset viewers when they are changed or created. Fixes outdated template list in the room editor when you've created or modified a template while a room editor is open.
+
+### 🍱 Demos, Dependencies and Stuff
+
+* Update bundled assets
+* Pull the latest gallery assets
+
+### 📝 Docs
+
+* 🐛 Multiply horizontal x-change with delta when robot travels on platform (#102 by @godmar)
+* ✨ Translate jsintro_pt1.md to Russian (#100 by @progzone122)
+* ⚡️ Create ru/jsintro_pt2.md and fix ru/readme.md (#101 by @progzone122)
+
+### 🌐 Website
+
+* 📝 Update changelog
+* ⚡️ Add a big Discord badge to the downloads page
+* ⚡️ Add a button for ARM builds for mac
+
+
 ## v3.1.0
 
 *Mon Nov 07 2022*

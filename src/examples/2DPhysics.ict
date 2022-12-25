@@ -1,4 +1,4 @@
-ctjsVersion: 2.2.0
+ctjsVersion: 3.2.0
 notes: /* empty */
 libs:
   fittoscreen:
@@ -553,6 +553,10 @@ templates:
         lib: matter
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: AlienTarget
     depth: 0
     texture: 6c8a3edf-d5fe-4916-b63c-2201c099d28f
@@ -583,6 +587,10 @@ templates:
         lib: matter
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: WoodenSquare
     depth: 0
     texture: 41f7c3b3-abc8-4940-8919-9114a884d7f2
@@ -625,6 +633,10 @@ templates:
         lib: matter
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: WoodenPlank
     depth: 0
     texture: 9afd54d7-1265-4ba0-b5de-5226b3c7e2fb
@@ -667,6 +679,10 @@ templates:
         lib: matter
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: WoodenTriangle
     depth: 0
     texture: 0f0e39f3-05bd-47e1-88d2-7dbf7bc3596b
@@ -711,6 +727,10 @@ templates:
         lib: matter
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Slingshot
     depth: 0
     texture: 37dfad62-8372-4804-8416-765039343b61
@@ -724,6 +744,10 @@ templates:
         lib: core
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Alien_Dragging
     depth: 0
     texture: 8a5f385a-d547-4d2d-9641-b1856738c62a
@@ -771,6 +795,10 @@ templates:
         eventKey: OnDraw
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: elementMetal013
     depth: 0
     texture: 56ab43ae-1b27-4b5e-9e49-fbbe74d42597
@@ -793,6 +821,10 @@ templates:
         lib: matter
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: elementMetal011
     depth: 0
     texture: c4d4030a-b640-44be-bded-26a5c030f542
@@ -813,6 +845,10 @@ templates:
         lib: matter
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: elementMetal000
     depth: 0
     texture: 3a4eba8d-8b33-478e-95e5-3833099c1a03
@@ -836,6 +872,10 @@ templates:
         lib: matter
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - type: template
     name: Restart
     depth: 0
@@ -851,6 +891,9 @@ templates:
         arguments: {}
         lib: core
     loopAnimation: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - type: template
     name: GravityZone
     depth: 5
@@ -877,6 +920,8 @@ templates:
         lib: matter
     lastmod: 1657008600683
     uid: HFFzDDfwj688N3
+    blendMode: normal
+    animationFPS: 30
   - type: template
     name: AlienCounter
     depth: 0
@@ -912,6 +957,8 @@ templates:
         lib: core
     lastmod: 1657008650456
     uid: 7rHCR4GtcDPrTn
+    blendMode: normal
+    animationFPS: 30
 sounds:
   - name: Impact_Wooden
     uid: ccfe7f50-d4d3-4570-95e9-75d5d73bef0a
@@ -951,15 +998,15 @@ rooms:
     backgrounds:
       - depth: -10
         texture: f6a40cf4-e9c0-47ff-afa8-6cdc259ef17e
-        shiftX: !<tag:yaml.org,2002:js/undefined> ''
-        shiftY: !<tag:yaml.org,2002:js/undefined> ''
-        parallaxX: !<tag:yaml.org,2002:js/undefined> ''
-        parallaxY: !<tag:yaml.org,2002:js/undefined> ''
-        movementX: !<tag:yaml.org,2002:js/undefined> ''
-        movementY: !<tag:yaml.org,2002:js/undefined> ''
-        scaleX: 0
-        scaleY: 0
-        repeat: !<tag:yaml.org,2002:js/undefined> ''
+        shiftX: 0
+        shiftY: 0
+        parallaxX: 1
+        parallaxY: 1
+        movementX: 0
+        movementY: 0
+        scaleX: 1
+        scaleY: 1
+        repeat: repeat-x
     copies:
       - x: 905
         'y': 798
@@ -1569,7 +1616,7 @@ rooms:
         - 1
     gridX: 32
     gridY: 32
-    lastmod: 1661067612657
+    lastmod: 1670278088373
     events:
       - lib: core
         arguments: {}
@@ -1577,7 +1624,9 @@ rooms:
         eventKey: OnRoomStart
       - eventKey: Timer1
         code: ct.rooms.switch('Level_02');
-        arguments: {}
+        arguments:
+          name: Switch room
+          isUi: true
         lib: core
       - eventKey: OnDraw
         code: |-
@@ -1589,6 +1638,8 @@ rooms:
     type: room
     simulate: true
     isUi: !<tag:yaml.org,2002:js/undefined> ''
+    backgroundColor: '#CFF5FA'
+    follow: -1
   - type: room
     oncreate: ''
     onstep: ''
@@ -1635,6 +1686,7 @@ rooms:
     events: []
     simulate: true
     isUi: true
+    follow: -1
   - name: Level_02
     onstep: ''
     ondraw: ''
@@ -1644,15 +1696,15 @@ rooms:
     backgrounds:
       - depth: -10
         texture: f6a40cf4-e9c0-47ff-afa8-6cdc259ef17e
-        shiftX: !<tag:yaml.org,2002:js/undefined> ''
-        shiftY: !<tag:yaml.org,2002:js/undefined> ''
-        parallaxX: !<tag:yaml.org,2002:js/undefined> ''
-        parallaxY: !<tag:yaml.org,2002:js/undefined> ''
-        movementX: !<tag:yaml.org,2002:js/undefined> ''
-        movementY: !<tag:yaml.org,2002:js/undefined> ''
-        scaleX: 0
-        scaleY: 0
-        repeat: !<tag:yaml.org,2002:js/undefined> ''
+        shiftX: 0
+        shiftY: 0
+        parallaxX: 1
+        parallaxY: 1
+        movementX: 0
+        movementY: 0
+        scaleX: 1
+        scaleY: 1
+        repeat: repeat-x
     copies:
       - x: 330
         'y': 674
@@ -2292,7 +2344,7 @@ rooms:
         - 1
     gridX: 35
     gridY: 35
-    lastmod: 1661067600353
+    lastmod: 1670278079268
     events:
       - lib: core
         arguments: {}
@@ -2307,11 +2359,15 @@ rooms:
         lib: core
       - eventKey: Timer1
         code: ct.rooms.switch('Level_03');
-        arguments: {}
+        arguments:
+          name: Switch room
+          isUi: true
         lib: core
     type: room
     simulate: true
     isUi: !<tag:yaml.org,2002:js/undefined> ''
+    backgroundColor: '#CFF5FA'
+    follow: -1
   - name: Level_Empty
     onstep: ''
     ondraw: ''
@@ -2321,15 +2377,15 @@ rooms:
     backgrounds:
       - depth: -10
         texture: f6a40cf4-e9c0-47ff-afa8-6cdc259ef17e
-        shiftX: !<tag:yaml.org,2002:js/undefined> ''
-        shiftY: !<tag:yaml.org,2002:js/undefined> ''
-        parallaxX: !<tag:yaml.org,2002:js/undefined> ''
-        parallaxY: !<tag:yaml.org,2002:js/undefined> ''
-        movementX: !<tag:yaml.org,2002:js/undefined> ''
-        movementY: !<tag:yaml.org,2002:js/undefined> ''
-        scaleX: 0
-        scaleY: 0
-        repeat: !<tag:yaml.org,2002:js/undefined> ''
+        shiftX: 0
+        shiftY: 0
+        parallaxX: 1
+        parallaxY: 1
+        movementX: 0
+        movementY: 0
+        scaleX: 1
+        scaleY: 1
+        repeat: repeat-x
     copies:
       - x: 225
         'y': 674
@@ -2636,7 +2692,7 @@ rooms:
         - 1
     gridX: 32
     gridY: 32
-    lastmod: 1661067606650
+    lastmod: 1670278068227
     events:
       - lib: core
         arguments: {}
@@ -2645,6 +2701,8 @@ rooms:
     type: room
     simulate: true
     isUi: !<tag:yaml.org,2002:js/undefined> ''
+    backgroundColor: '#CFF5FA'
+    follow: -1
   - name: Level_03
     onstep: ''
     ondraw: ''
@@ -2654,15 +2712,15 @@ rooms:
     backgrounds:
       - depth: -10
         texture: f6a40cf4-e9c0-47ff-afa8-6cdc259ef17e
-        shiftX: !<tag:yaml.org,2002:js/undefined> ''
-        shiftY: !<tag:yaml.org,2002:js/undefined> ''
-        parallaxX: !<tag:yaml.org,2002:js/undefined> ''
-        parallaxY: !<tag:yaml.org,2002:js/undefined> ''
-        movementX: !<tag:yaml.org,2002:js/undefined> ''
-        movementY: !<tag:yaml.org,2002:js/undefined> ''
-        scaleX: 0
-        scaleY: 0
-        repeat: !<tag:yaml.org,2002:js/undefined> ''
+        shiftX: 0
+        shiftY: 0
+        parallaxX: 1
+        parallaxY: 1
+        movementX: 0
+        movementY: 0
+        scaleX: 1
+        scaleY: 1
+        repeat: repeat-x
     copies:
       - x: 225
         'y': 674
@@ -2680,7 +2738,7 @@ rooms:
         opacity: 1
         tint: 16777215
         scale:
-          x: 1
+          x: -1
           'y': 1
         rotation: 0
         uid: 82c03796-7419-4f22-944c-78c1209c6874
@@ -2691,7 +2749,7 @@ rooms:
         opacity: 1
         tint: 16777215
         scale:
-          x: 1
+          x: -1
           'y': 1
         rotation: 0
         uid: 82c03796-7419-4f22-944c-78c1209c6874
@@ -2779,8 +2837,8 @@ rooms:
         opacity: 1
         tint: 16777215
         scale:
-          x: 1
-          'y': 1
+          x: -0.5
+          'y': -0.5
         rotation: 0
         uid: 82c03796-7419-4f22-944c-78c1209c6874
         exts: {}
@@ -2790,8 +2848,8 @@ rooms:
         opacity: 1
         tint: 16777215
         scale:
-          x: 1
-          'y': 1
+          x: 0.5
+          'y': -0.5
         rotation: 0
         uid: 82c03796-7419-4f22-944c-78c1209c6874
         exts: {}
@@ -3292,7 +3350,7 @@ rooms:
         - 1
     gridX: 35
     gridY: 35
-    lastmod: 1661067605072
+    lastmod: 1670278056475
     events:
       - lib: core
         arguments: {}
@@ -3307,11 +3365,15 @@ rooms:
         lib: core
       - eventKey: Timer1
         code: ct.rooms.switch('Level_01');
-        arguments: {}
+        arguments:
+          name: Switch room
+          isUi: true
         lib: core
     type: room
     simulate: true
     isUi: !<tag:yaml.org,2002:js/undefined> ''
+    backgroundColor: '#CFF5FA'
+    follow: -1
 actions:
   - name: Pointer
     methods:
@@ -3526,6 +3588,7 @@ palette:
   - '#FF85DA'
   - '#6EBA9D'
   - '#9E703F'
+  - '#CFF5FA'
 startroom: 125036f1-3a14-4fc3-ae95-2d29a5c56244
 contentTypes: []
 groups:
@@ -3536,3 +3599,4 @@ groups:
   sounds: []
   emitterTandems: []
   templates: []
+language: typescript

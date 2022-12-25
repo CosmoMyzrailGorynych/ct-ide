@@ -143,6 +143,10 @@ templates:
         lib: core
     type: template
     loopAnimation: false
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
 sounds:
   - name: Match
     uid: 96dbce18-a291-41b6-9707-ff2dc2bb5b77
@@ -366,6 +370,7 @@ rooms:
     extends: {}
     simulate: true
     isUi: false
+    follow: -1
   - name: Room2
     ondraw: ''
     onleave: ''
@@ -609,6 +614,7 @@ rooms:
     gridY: 24
     simulate: true
     isUi: false
+    follow: -1
   - name: Room3
     ondraw: ''
     onleave: ''
@@ -896,6 +902,7 @@ rooms:
     gridY: 24
     simulate: true
     isUi: false
+    follow: -1
 soundtick: 6
 roomtick: 3
 templatetick: 1
@@ -930,7 +937,7 @@ settings:
     versionPostfix: ''
   fps: 30
 startroom: 3827e721-5331-49b2-a37a-f868e15cae0d
-ctjsVersion: 2.2.0
+ctjsVersion: 3.2.0
 scripts: []
 fonts: []
 skeletons: []
@@ -999,3 +1006,4 @@ groups:
   sounds: []
   emitterTandems: []
   templates: []
+language: typescript

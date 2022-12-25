@@ -1,0 +1,275 @@
+ctjsVersion: 3.2.0
+notes: /* empty */
+libs:
+  place:
+    gridX: 1024
+    gridY: 1024
+  keyboard.polyfill: {}
+  sound.howler: {}
+  keyboard: {}
+  tween: {}
+  transition: {}
+  pointer:
+    preventdefault: false
+    startlocked: false
+  fittoscreen:
+    mode: scaleFit
+  gamedistribution:
+    undefined: ''
+    gameID: 45f47fe7bf964915afd6b7d87c7637fd
+    autoInit: true
+    gdsdkLocale: en
+    gdpr: false
+    debugMode: false
+textures:
+  - lastmod: 1667511690381
+    type: texture
+    name: ShowAds
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 64
+      - 16
+    marginx: 0
+    marginy: 0
+    imgWidth: 128
+    imgHeight: 32
+    width: 128
+    height: 32
+    offx: 0
+    offy: 0
+    origname: ifLhp5CzQk9TrHp.png
+    shape: rect
+    left: 64
+    right: 64
+    top: 16
+    bottom: 16
+    uid: fLhp5CzQk9TrHp
+    padding: 1
+    isBlank: false
+    group: !<tag:yaml.org,2002:js/undefined> ''
+    source: >-
+      C:\Users\ulise\Documents\GDevelop
+      projects\Gamedistribution-1.2.8-rewarded-latest-working\StartButton3.png
+skeletons: []
+templates:
+  - type: template
+    name: ShowAds
+    depth: 0
+    texture: fLhp5CzQk9TrHp
+    playAnimationOnStart: false
+    loopAnimation: true
+    animationFPS: 30
+    visible: true
+    events:
+      - eventKey: OnDraw
+        code: |-
+          this.x = ct.camera.width/2;
+          this.y = ct.camera.height/2 + this.height;
+        arguments: {}
+        lib: core
+      - eventKey: OnPointerClick
+        code: |-
+          if (!ct.gamedistribution.adPlaying) {
+              ct.gamedistribution.showAd();
+          }
+        arguments: {}
+        lib: core
+    extends: {}
+    lastmod: 1667734402988
+    uid: h8mt85WFkKJ9wk
+    blendMode: normal
+sounds:
+  - name: MainMusic
+    uid: hKcLMCHcwrgPDQ
+    isMusic: true
+    type: sound
+    lastmod: 1667578626642
+    origname: shKcLMCHcwrgPDQ.mp3
+styles:
+  - name: Coins
+    uid: CnCTQm7fgCgtP6
+    origname: sgCgtP6
+    font:
+      family: sans-serif
+      size: 64
+      weight: 400
+      italic: false
+    fill:
+      type: '0'
+      color: '#FFD400'
+    lastmod: 1667641158420
+    stroke:
+      color: '#FFFFFF'
+      weight: 8
+    shadow:
+      color: '#000000'
+      x: 2
+      'y': 5
+      blur: 5
+fonts: []
+rooms:
+  - type: room
+    oncreate: ''
+    onstep: ''
+    ondraw: ''
+    onleave: ''
+    gridX: 64
+    gridY: 64
+    diagonalGrid: false
+    simulate: true
+    width: 1280
+    height: 720
+    isUi: true
+    name: UI_Layer
+    backgroundColor: '#000000'
+    restrictCamera: true
+    backgrounds: []
+    copies:
+      - x: 608
+        'y': 536
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 3.5
+          'y': 2.5
+        rotation: 0
+        uid: h8mt85WFkKJ9wk
+        exts: {}
+        customProperties: {}
+    tiles: []
+    extends: {}
+    lastmod: 1668100981512
+    events:
+      - eventKey: OnRoomStart
+        code: >+
+          ct.room.coins = 0;
+
+
+          this.coinsCounter = new PIXI.Text("Coins x:" + ct.room.coins,
+          ct.styles.get('Coins'));
+
+          this.coinsCounter.x = ct.camera.width/2 - this.coinsCounter.width/2;
+
+          this.coinsCounter.y = ct.camera.height/2 - this.coinsCounter.height;
+
+          this.coinsCounter.anchor.y = 0.5;
+
+          this.addChild(this.coinsCounter);
+
+
+          ct.sound.spawn("MainMusic", {loop: true});
+
+        arguments: {}
+        lib: core
+      - eventKey: OnDraw
+        code: |-
+          this.coinsCounter.text = "Coins x:" + ct.room.coins
+          this.coinsCounter.x = ct.camera.width/2 - this.coinsCounter.width/2;
+          this.coinsCounter.y = ct.camera.height/2 - this.coinsCounter.height;
+        arguments: {}
+        lib: core
+      - eventKey: pausegame
+        code: |-
+          if(ct.sound.playing('MainMusic')){
+              console.log("Ad is playing so pause the game");
+              ct.sound.pause("MainMusic");
+          }
+        arguments: {}
+        lib: gamedistribution
+      - eventKey: resumegame
+        code: |-
+          if(!ct.sound.playing('MainMusic')){
+              console.log("Resume music");
+              ct.sound.resume("MainMusic");
+          }
+        arguments: {}
+        lib: gamedistribution
+      - eventKey: adfinished
+        code: ct.room.coins += 1;
+        arguments: {}
+        lib: gamedistribution
+    uid: GbBCHk9k5L862K
+    follow: -1
+  - type: room
+    oncreate: ''
+    onstep: ''
+    ondraw: ''
+    onleave: ''
+    gridX: 64
+    gridY: 64
+    diagonalGrid: false
+    simulate: true
+    width: 1280
+    height: 720
+    isUi: false
+    name: Room_Mb7r2Q
+    backgroundColor: '#8C0000'
+    restrictCamera: false
+    backgrounds: []
+    copies: []
+    tiles: []
+    extends: {}
+    lastmod: 1668100936730
+    events:
+      - eventKey: OnRoomStart
+        code: 'ct.rooms.append(''UI_Layer'', {isUi: true});'
+        arguments: {}
+        lib: core
+    uid: wK4KjJgBMb7r2Q
+    follow: -1
+actions:
+  - name: ShowAd
+    methods:
+      - code: pointer.Primary
+emitterTandems: []
+scripts: []
+starting: 0
+contentTypes: []
+groups:
+  fonts: []
+  textures: []
+  styles: []
+  rooms: []
+  templates: []
+  sounds: []
+  emitterTandems: []
+settings:
+  authoring:
+    author: Ulises Freitas
+    site: 'https://www.ulisesfreitas.com'
+    title: Game Distribution Example
+    version:
+      - 1
+      - 0
+      - 0
+    versionPostfix: ''
+    appId: com.ulisesfreitas.ctjsgamedistribution
+  rendering:
+    usePixiLegacy: true
+    maxFPS: 60
+    pixelatedrender: false
+    highDensity: true
+    desktopMode: maximized
+    hideCursor: false
+    mobileScreenOrientation: unspecified
+  export:
+    windows: true
+    linux: true
+    mac: true
+    functionWrap: false
+    codeModifier: none
+  branding:
+    accent: '#DB4444'
+    invertPreloaderScheme: true
+    icon: -1
+    splashScreen: -1
+    forceSmoothIcons: false
+    forceSmoothSplashScreen: false
+    hideLoadingLogo: false
+  fps: 30
+palette: []
+startroom: wK4KjJgBMb7r2Q
+language: typescript

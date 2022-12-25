@@ -449,8 +449,11 @@ declare namespace`))
 const copyPixiTypedefs = () => gulp.src('./app/node_modules/pixi.js/pixi.js.d.ts')
     .pipe(gulp.dest('./app/data/typedefs'));
 
-const bakeTypedefs = gulp.series([bakeCtTypedefs, concatTypedefs, copyPixiTypedefs]);
+const bakeJSDocJson = cb =>
+    spawnise.spawn(npm, ['run', 'ctJSDocJson'])
+    .then(cb);
 
+const bakeTypedefs = gulp.series([bakeCtTypedefs, concatTypedefs, copyPixiTypedefs, bakeJSDocJson]);
 
 const build = gulp.parallel([
     gulp.series(icons, compilePug),
@@ -645,3 +648,4 @@ exports.default = defaultTask;
 exports.dev = devNoNW;
 exports.bakeCompletions = bakeCompletions;
 exports.bakeTypedefs = bakeTypedefs;
+exports.bakeJSDocJson = bakeJSDocJson;

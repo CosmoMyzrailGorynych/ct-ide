@@ -23,7 +23,7 @@
         A collection of items to iterate over while generating markup, sorting and firing events.
     @attribute [shownone] (atomic)
         If set, shows a "none" asset that returns -1 in opts.click event.
-    @attribute [selected] (IAsset | -1)
+    @attribute [selectedasset] (IAsset | -1)
         Currently selected asset. If set, it will be highlighted in UI.
 
     @attribute [names] (riot function)
@@ -125,14 +125,14 @@ asset-viewer.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compact
             br
             span {vocGlob.nothingToShowFiller}
         ul.Cards(class="{layoutToClassListMap[opts.forcelayout || currentLayout]}")
-            li.aCard(if="{opts.shownone}" onclick="{opts.click && opts.click(-1)}" class="{active: opts.selected === -1}")
+            li.aCard(if="{opts.shownone}" onclick="{opts.click && opts.click(-1)}" class="{active: opts.selectedasset === -1}")
                 .aCard-aThumbnail
                     img(src="data/img/notexture.png")
                 .aCard-Properties
                     span {vocGlob.none}
             li.aCard(
                 each="{asset in (searchResults? searchResults : getGrouped(collection))}"
-                class="{active: opts.selected === asset}"
+                class="{active: parent.opts.selectedasset === asset}"
                 oncontextmenu="{parent.opts.contextmenu && parent.opts.contextmenu(asset)}"
                 onlong-press="{parent.opts.contextmenu && parent.opts.contextmenu(asset)}"
                 onclick="{parent.opts.click && parent.opts.click(asset)}"
@@ -248,11 +248,13 @@ asset-viewer.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compact
                 if (this.opts.assettype) {
                     rememberedAssetType = this.opts.assettype;
                     window.signals.on(`${rememberedAssetType.slice(0, -1)}Created`, this.updateList);
+                    window.signals.on(`${rememberedAssetType}Changed`, this.updateList);
                 }
             });
             this.on('unmount', () => {
                 if (rememberedAssetType) {
                     window.signals.off(`${rememberedAssetType.slice(0, -1)}Created`, this.updateList);
+                    window.signals.off(`${rememberedAssetType}Changed`, this.updateList);
                 }
             });
         }

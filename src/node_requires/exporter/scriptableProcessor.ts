@@ -1,9 +1,18 @@
 type ScriptableCode = Record<EventCodeTargets, string>;
 
+import {ExporterError, highlightProblem} from './ExporterError';
 const {getEventByLib} = require('../events');
 import {readFile} from 'fs-extra';
 import {getModulePathByName, loadModuleByName} from './../resources/modules';
 import {join} from 'path';
+const coffeeScript = require('coffeescript');
+const typeScript = require('sucrase').transform;
+
+const coffeeScriptOptions = {
+    sourceMap: false,
+    bare: true,
+    header: false
+};
 
 const eventsCache: Record<string, string> = {};
 const resetEventsCache = (): void => {
@@ -67,7 +76,8 @@ const getAssetName = (assetId: string, assetType: resourceType) => {
     return resourcesAPI[assetType + 's'].getById(assetId).name;
 };
 
-const getBaseScripts = function (entity: IScriptable): ScriptableCode {
+// eslint-disable-next-line max-lines-per-function
+const getBaseScripts = function (entity: IScriptable, project: IProject): ScriptableCode {
     const domains = {
         thisOnStep: '',
         thisOnCreate: '',
@@ -79,7 +89,32 @@ const getBaseScripts = function (entity: IScriptable): ScriptableCode {
         rootRoomOnLeave: ''
     };
     for (const event of entity.events) {
-        const {lib, eventKey, code} = event;
+        const {lib, eventKey} = event;
+        let {code} = event;
+        try { // Apply converters to the user's code first
+            if (project.language === 'coffeescript') {
+                code = coffeeScript.compile(code, coffeeScriptOptions);
+            } else if (project.language === 'typescript') {
+                if (code.trim()) {
+                    ({code} = typeScript(code, {
+                        transforms: ['typescript']
+                    }));
+                } else {
+                    code = '';
+                }
+            }
+        } catch (e) {
+            const errorMessage = `${e.name || 'An error'} occured while compiling ${eventKey} (${lib}) event of ${entity.name} ${entity.type}`;
+            const exporterError = new ExporterError(errorMessage, {
+                resourceId: entity.uid,
+                resourceName: entity.name,
+                resourceType: entity.type,
+                eventKey,
+                problematicCode: highlightProblem(e.code || code, e.location || e.loc),
+                clue: 'syntax'
+            }, e);
+            throw exporterError;
+        }
         const eventArgs = event.arguments;
         const eventSpec = getEventByLib(eventKey, lib) as IEventDeclaration;
         const requiredArgs = eventSpec.arguments || {};
@@ -94,7 +129,14 @@ const getBaseScripts = function (entity: IScriptable): ScriptableCode {
             }
             for (const argCode in requiredArgs) {
                 if (!(argCode in eventArgs)) {
-                    throw new Error(`Argument ${argCode} is missing in the event ${eventSpec.name}, of a ${entity.type} ${entity.uid}`);
+                    const errorMessage = `Argument ${argCode} is missing in the event ${eventSpec.name}, of a ${entity.type} ${entity.uid}.`;
+                    const exporterError = new ExporterError(errorMessage, {
+                        resourceId: entity.uid,
+                        resourceName: entity.name,
+                        resourceType: entity.type,
+                        clue: 'eventConfiguration'
+                    });
+                    throw exporterError;
                 }
                 const exp = new RegExp(`/\\*%%${argCode}%%\\*/`, 'g');
                 const argType = eventSpec.arguments[argCode].type;

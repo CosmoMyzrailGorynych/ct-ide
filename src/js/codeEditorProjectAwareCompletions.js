@@ -76,9 +76,31 @@
             suggestions: createTemplateProposals(range)
         };
     };
+    const provideTemplateNamesCS = function provideTemplateNamesCS(model, position) {
+        if (!checkMatch(model, position, /ct\.templates\.((make|copy|exists)( |\()|list\[|templates\[)$/)) {
+            return {
+                suggestions: []
+            };
+        }
+        const range = getInsertRange(model, position);
+        return {
+            suggestions: createTemplateProposals(range)
+        };
+    };
 
     const provideRoomNames = function provideRoomNames(model, position) {
         if (!checkMatch(model, position, /ct\.rooms\.((switch|append|prepend|merge)\(|templates\[|list\[)$/)) {
+            return {
+                suggestions: []
+            };
+        }
+        const range = getInsertRange(model, position);
+        return {
+            suggestions: createRoomProposals(range)
+        };
+    };
+    const provideRoomNamesCS = function provideRoomNamesCS(model, position) {
+        if (!checkMatch(model, position, /ct\.rooms\.((switch|append|prepend|merge)( |\()|templates\[|list\[)$/)) {
             return {
                 suggestions: []
             };
@@ -100,7 +122,19 @@
             suggestions: createSoundProposals(range)
         };
     };
+    const provideSoundNamesCS = function provideSoundNamesCS(model, position) {
+        if (!checkMatch(model, position, /ct\.sound\.(spawn|volume|fade|stop|pause|resume|position|load|playing)( |\()$/)) {
+            return {
+                suggestions: []
+            };
+        }
+        const range = getInsertRange(model, position);
+        return {
+            suggestions: createSoundProposals(range)
+        };
+    };
 
+    // Suits both coffeescript and typescript
     const provideActionNames = function provideActionNames(model, position) {
         if (!checkMatch(model, position, /ct\.actions\.$/)) {
             return {
@@ -124,6 +158,17 @@
             suggestions: createPSProposals(range)
         };
     };
+    const providePSNamesCS = function providePSNamesCS(model, position) {
+        if (!checkMatch(model, position, /ct\.emitters\.(fire|append|follow)(\(| )$/)) {
+            return {
+                suggestions: []
+            };
+        }
+        const range = getInsertRange(model, position);
+        return {
+            suggestions: createPSProposals(range)
+        };
+    };
 
     window.signals = window.signals || riot.observable({});
     window.signals.on('monacoBooted', () => {
@@ -131,11 +176,23 @@
             provideCompletionItems: provideTemplateNames,
             triggerCharacters: ['(', '[']
         });
+        monaco.languages.registerCompletionItemProvider('coffeescript', {
+            provideCompletionItems: provideTemplateNamesCS,
+            triggerCharacters: [' ', '(', '[']
+        });
         monaco.languages.registerCompletionItemProvider('typescript', {
             provideCompletionItems: provideSoundNames,
             triggerCharacters: ['(']
         });
+        monaco.languages.registerCompletionItemProvider('coffeescript', {
+            provideCompletionItems: provideSoundNamesCS,
+            triggerCharacters: ['(', ' ']
+        });
         monaco.languages.registerCompletionItemProvider('typescript', {
+            provideCompletionItems: provideActionNames,
+            triggerCharacters: ['.']
+        });
+        monaco.languages.registerCompletionItemProvider('coffeescript', {
             provideCompletionItems: provideActionNames,
             triggerCharacters: ['.']
         });
@@ -143,9 +200,17 @@
             provideCompletionItems: provideRoomNames,
             triggerCharacters: ['(', '[']
         });
+        monaco.languages.registerCompletionItemProvider('coffeescript', {
+            provideCompletionItems: provideRoomNamesCS,
+            triggerCharacters: ['(', '[', ' ']
+        });
         monaco.languages.registerCompletionItemProvider('typescript', {
             provideCompletionItems: providePSNames,
             triggerCharacters: ['(']
+        });
+        monaco.languages.registerCompletionItemProvider('coffeescript', {
+            provideCompletionItems: providePSNamesCS,
+            triggerCharacters: ['(', ' ']
         });
     });
 })();

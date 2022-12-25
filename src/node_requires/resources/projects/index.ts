@@ -150,6 +150,16 @@ const loadProject = async (projectData: IProject): Promise<void> => {
     }
 };
 
+export const saveProject = async (): Promise<void> => {
+    const YAML = require('js-yaml');
+    const glob = require('../../glob');
+    const projectYAML = YAML.dump(global.currentProject);
+    await fs.outputFile(global.projdir + '.ict', projectYAML);
+    fs.remove(global.projdir + '.ict.recovery')
+    .catch(console.error);
+    glob.modified = false;
+};
+
 /**
 * Checks file format and loads it
 *

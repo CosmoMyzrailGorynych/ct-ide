@@ -8,7 +8,7 @@
     @attribute hidelabel (atomic)
         Doesn't show a label inside a button if set
     @attribute path (string)
-        A relative path to a needed doc page.
+        An absolute path to a needed doc page; starts with a `/`.
 
 docs-shortcut
     span(title="{opts.title || voc.openDocs}" onclick="{navigateToDocs}" if="{!opts.button}")

@@ -15,6 +15,11 @@ Object.defineProperty(ct.templates.Copy.prototype, 'moveContinuous', {
         return ct.place.moveAlong(this, this.direction, this.speed * ct.delta, cgroup, precision);
     }
 });
+Object.defineProperty(ct.templates.Copy.prototype, 'moveBullet', {
+    value: function (cgroup, precision) {
+        return this.moveContinuous(cgroup, precision);
+    }
+});
 
 Object.defineProperty(ct.templates.Copy.prototype, 'moveContinuousByAxes', {
     value: function (cgroup, precision) {
@@ -29,6 +34,11 @@ Object.defineProperty(ct.templates.Copy.prototype, 'moveContinuousByAxes', {
             cgroup,
             precision
         );
+    }
+});
+Object.defineProperty(ct.templates.Copy.prototype, 'moveSmart', {
+    value: function (cgroup, precision) {
+        return this.moveContinuousByAxes(cgroup, precision);
     }
 });
 

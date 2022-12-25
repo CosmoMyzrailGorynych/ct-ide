@@ -1,3 +1,5 @@
+//
+    @method openAsset
 templates-panel.aPanel.aView
     asset-viewer(
         collection="{global.currentProject.templates}"
@@ -29,7 +31,15 @@ templates-panel.aPanel.aView
         this.thumbnails = require('./data/node_requires/resources/templates').getTemplatePreview;
         this.icons = function icons(template) {
             const icons = [];
-            // TODO:
+            if (template.playAnimationOnStart) {
+                icons.push('play');
+            }
+            if (!template.visible) {
+                icons.push('eye-off');
+            }
+            if (('blendMode' in template) && template.blendMode !== 'normal') {
+                icons.push('droplet');
+            }
             return icons;
         };
 
@@ -79,8 +89,7 @@ templates-panel.aPanel.aView
             this.editedTemplate = template;
         };
 
-        const assetListener = asset => {
-            const [assetType, uid] = asset.split('/');
+        this.openAsset = (assetType, uid) => {
             if (assetType !== 'templates') {
                 return;
             }
@@ -91,10 +100,6 @@ templates-panel.aPanel.aView
                 this.parent.update();
             }
         };
-        window.orders.on('openAsset', assetListener);
-        this.on('unmount', () => {
-            window.orders.off('openAsset', assetListener);
-        });
 
         this.templateMenu = {
             items: [{
@@ -122,6 +127,8 @@ templates-panel.aPanel.aView
                             tp.uid = generateGUID();
                             global.currentProject.templates.push(tp);
                             this.fillTemplateMap();
+                            window.signals.trigger('templatesChanged');
+                            window.signals.trigger('templateCreated');
                             this.refs.templates.updateList();
                             this.update();
                         }
@@ -160,14 +167,19 @@ templates-panel.aPanel.aView
                                         i++;
                                     }
                                 }
+                                if (room.follow === this.currentTemplate.uid) {
+                                    room.follow = -1;
+                                }
                             }
 
                             const ind = global.currentProject.templates.indexOf(this.currentTemplate);
-                            global.currentProject.templates.splice(ind, 1);
+                            const template = global.currentProject.templates.splice(ind, 1);
+                            const [{uid}] = template;
                             this.refs.templates.updateList();
                             this.fillTemplateMap();
                             this.update();
                             window.signals.trigger('templatesChanged');
+                            window.signals.trigger('templateRemoved', uid);
                             alertify
                             .okBtn(window.languageJSON.common.ok)
                             .cancelBtn(window.languageJSON.common.cancel);

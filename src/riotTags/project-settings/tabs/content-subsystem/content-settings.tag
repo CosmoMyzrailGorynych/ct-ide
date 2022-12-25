@@ -1,4 +1,5 @@
 content-settings
+    docs-shortcut.toright(path="/content-subsystem.html")
     h1 {voc.heading}
     button(onclick="{addContentType}" if="{contentTypes.length}")
         svg.feather

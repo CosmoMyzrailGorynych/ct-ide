@@ -18,6 +18,7 @@ class Room extends PIXI.Container {
         this.uid = Room.getNewId();
         this.tileLayers = [];
         this.backgrounds = [];
+        this.timer1 = this.timer2 = this.timer3 = this.timer4 = this.timer5 = this.timer6 = 0;
         if (!ct.room) {
             ct.room = ct.rooms.current = this;
         }
@@ -29,6 +30,7 @@ class Room extends PIXI.Container {
             this.template = template;
             this.name = template.name;
             this.isUi = template.isUi;
+            this.follow = template.follow;
             if (template.extends) {
                 ct.u.ext(this, template.extends);
             }

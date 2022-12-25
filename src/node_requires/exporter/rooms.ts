@@ -2,6 +2,7 @@ const glob = require('./../glob');
 const {getUnwrappedExtends} = require('./utils');
 import {getBaseScripts} from './scriptableProcessor';
 import {getTextureFromId} from '../resources/textures';
+import {getTemplateFromId} from '../resources/templates';
 import {flattenGroups} from './groups';
 
 const getStartingRoom = (proj: IProject): IRoom => {
@@ -139,7 +140,7 @@ const stringifyRooms = (proj: IProject): IScriptablesFragment => {
         }
 
         const constraints = getConstraints(r);
-        const scriptableCode = getBaseScripts(r);
+        const scriptableCode = getBaseScripts(r, proj);
 
         roomsCode += `
 ct.rooms.templates['${r.name}'] = {
@@ -171,7 +172,8 @@ ct.rooms.templates['${r.name}'] = {
     onCreate() {
         ${scriptableCode.thisOnCreate}
     },
-    isUi: ${r.isUi},
+    isUi: ${Boolean(r.isUi)},
+    follow: ${(r.follow && r.follow !== -1) ? ('\'' + getTemplateFromId(r.follow).name + '\'') : 'false'},
     extends: ${r.extends ? JSON.stringify(getUnwrappedExtends(r.extends), null, 4) : '{}'}
 }
         `;

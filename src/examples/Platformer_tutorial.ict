@@ -1,4 +1,4 @@
-ctjsVersion: 2.2.0
+ctjsVersion: 3.2.0
 notes: /* empty */
 libs:
   place:
@@ -96,6 +96,10 @@ templates:
         lib: place
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Rocks
     depth: 0
     uid: 07e424c6-78c2-42c9-b720-df0af00ab44d
@@ -106,6 +110,10 @@ templates:
     events: []
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Rocks_Top
     depth: 0
     uid: f1f632f7-ecd9-4724-8a7a-c5136d48520e
@@ -116,6 +124,10 @@ templates:
     events: []
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Rocks_Platform
     depth: 0
     uid: bf44c3c8-a683-43cd-8925-c5b7e771e152
@@ -126,6 +138,10 @@ templates:
     events: []
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Spikes
     depth: 0
     uid: cfa730fa-a010-44af-8e02-d5ad0c86f224
@@ -136,6 +152,10 @@ templates:
     events: []
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Water
     depth: 0
     uid: c1aaae5f-3e4c-4e41-8e24-4c2dfe4d43b6
@@ -146,6 +166,10 @@ templates:
     events: []
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Water_Top
     depth: 0
     uid: 807691ae-10c5-4cf6-ba0f-6f53d83367ff
@@ -156,12 +180,15 @@ templates:
     events: []
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Checkpoint
     depth: 0
     uid: 53848ac8-d852-45c1-a0e2-c38e76094e4b
     lastmod: 1661092572506
-    extends:
-      visible: false
+    extends: {}
     texture: e15a4451-c77c-4347-a99f-436731aff19d
     events:
       - eventKey: collisionTemplate
@@ -173,6 +200,10 @@ templates:
         lib: place
     type: template
     loopAnimation: true
+    visible: false
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Exit
     depth: 0
     uid: 0fd7f61f-2f06-47e2-b9e3-2782fcd02415
@@ -192,6 +223,10 @@ templates:
         lib: place
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: GreenCrystal
     depth: 0
     uid: 54f82143-5c80-4566-8bc9-8c240c1d97a1
@@ -212,6 +247,10 @@ templates:
         lib: place
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Heart
     depth: 0
     uid: 3fe668cd-30ee-49ba-8a45-e772bf8832a9
@@ -236,6 +275,10 @@ templates:
         lib: place
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Platform
     depth: 0
     uid: 1ae52dda-689d-4780-97ce-c87886fb581a
@@ -274,6 +317,10 @@ templates:
         eventKey: OnStep
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: CrystalsWidget
     depth: 0
     uid: d582eca9-7676-4764-8aa6-9b10895a9b73
@@ -300,6 +347,10 @@ templates:
         eventKey: OnDraw
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: HeartsWidget
     depth: 0
     uid: 3dc14b8e-592f-45a3-9785-52da1b6dbeb8
@@ -328,6 +379,10 @@ templates:
         eventKey: OnDraw
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
 sounds: []
 styles:
   - name: CrystalCounter
@@ -3455,6 +3510,7 @@ rooms:
     simulate: true
     extends: {}
     isUi: false
+    follow: -1
   - name: Level_02
     onstep: ''
     ondraw: ''
@@ -8258,6 +8314,7 @@ rooms:
     type: room
     simulate: true
     isUi: false
+    follow: -1
   - name: Level_03
     onstep: ''
     ondraw: ''
@@ -13444,6 +13501,7 @@ rooms:
     simulate: true
     extends: {}
     isUi: false
+    follow: -1
   - name: LayerUI
     oncreate: ''
     onstep: ''
@@ -13490,6 +13548,7 @@ rooms:
     type: room
     simulate: true
     isUi: false
+    follow: -1
   - name: TestLevel
     oncreate: ''
     onstep: ''
@@ -13833,6 +13892,7 @@ rooms:
     simulate: true
     extends: {}
     isUi: false
+    follow: -1
 starting: 0
 settings:
   export:
@@ -14441,3 +14501,4 @@ groups:
   sounds: []
   emitterTandems: []
   templates: []
+language: typescript

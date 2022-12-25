@@ -1,4 +1,4 @@
-const getDefaultTemplate = require('./defaultTemplate').get;
+import {get as getDefaultTemplate} from './defaultTemplate';
 import {getTexturePreview, getPixiTexture as getTexturePixiTexture} from '../textures';
 
 const createNewTemplate = function createNewTemplate(name: string): ITemplate {
@@ -6,8 +6,13 @@ const createNewTemplate = function createNewTemplate(name: string): ITemplate {
     if (name) {
         template.name = String(name);
     }
+    // Fix default OnStep event for coffeescript projects
+    if (window.currentProject.language === 'coffeescript') {
+        template.events[0].code = 'this.move()';
+    }
     window.currentProject.templates.push(template);
     window.signals.trigger('templatesChanged');
+    window.signals.trigger('templateCreated');
     return template;
 };
 

@@ -11,19 +11,17 @@ const defaultTemplate = {
     visible: true
 };
 
-module.exports = {
-    get(): ITemplate {
-        return ({
-            ...defaultTemplate,
-            events: [{
-                eventKey: 'OnStep',
-                lib: 'core',
-                code: 'this.move();',
-                arguments: {}
-            }],
-            extends: {},
-            lastmod: Number(new Date()),
-            uid: generateGUID()
-        });
-    }
+export const get = function get(): ITemplate {
+    return ({
+        ...defaultTemplate,
+        events: [{
+            eventKey: 'OnStep',
+            lib: 'core',
+            code: 'this.move();',
+            arguments: {}
+        }],
+        extends: {},
+        lastmod: Number(new Date()),
+        uid: generateGUID()
+    });
 };
