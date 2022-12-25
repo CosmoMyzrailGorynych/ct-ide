@@ -1,4 +1,4 @@
-ctjsVersion: 3.0.1
+ctjsVersion: 3.2.0
 notes: /* empty */
 libs:
   place:
@@ -80,6 +80,7 @@ templates:
     extends: {}
     lastmod: 1667734402988
     uid: h8mt85WFkKJ9wk
+    blendMode: normal
 sounds:
   - name: MainMusic
     uid: hKcLMCHcwrgPDQ
@@ -191,6 +192,7 @@ rooms:
         arguments: {}
         lib: gamedistribution
     uid: GbBCHk9k5L862K
+    follow: -1
   - type: room
     oncreate: ''
     onstep: ''
@@ -217,6 +219,7 @@ rooms:
         arguments: {}
         lib: core
     uid: wK4KjJgBMb7r2Q
+    follow: -1
 actions:
   - name: ShowAd
     methods:
@@ -269,3 +272,4 @@ settings:
   fps: 30
 palette: []
 startroom: wK4KjJgBMb7r2Q
+language: typescript

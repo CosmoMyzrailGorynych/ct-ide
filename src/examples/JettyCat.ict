@@ -1,4 +1,4 @@
-ctjsVersion: 2.2.0
+ctjsVersion: 3.2.0
 notes: /* empty */
 libs:
   place:
@@ -588,6 +588,10 @@ templates:
     events: []
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Button_Play
     depth: 0
     uid: 25ac0f9b-57ff-461d-8eb7-a9ce800b9c71
@@ -608,6 +612,10 @@ templates:
         lib: core
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: PotatoCat
     depth: 0
     uid: 8f93611e-6e95-49c4-8e2b-4cc067be2924
@@ -693,6 +701,10 @@ templates:
         lib: core
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Tube
     depth: 0
     uid: 455b4c7c-2249-4b12-999e-27db667688b5
@@ -714,6 +726,10 @@ templates:
         eventKey: OnCreate
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Star
     depth: 0
     uid: b7362b5c-811d-438c-b164-f53213eaefa7
@@ -745,6 +761,10 @@ templates:
         lib: place
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: StarCounter
     depth: 0
     uid: d4c02f18-93d0-4ad4-8e5b-62fb9a0f0af9
@@ -767,6 +787,10 @@ templates:
         eventKey: OnDraw
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Button_Pause
     depth: 0
     uid: 6a532c9b-7e32-4070-b72b-86012306c7fb
@@ -789,6 +813,10 @@ templates:
         lib: core
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Paused_Heading
     depth: 0
     uid: ee7454ca-ba35-4d79-9b78-83e763fd81f5
@@ -798,6 +826,10 @@ templates:
     events: []
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Button_Continue
     depth: 0
     uid: 43938432-cf0b-416d-91e9-8bc9a1f8abcf
@@ -833,6 +865,10 @@ templates:
         lib: core
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: OhNo_Heading
     depth: 0
     uid: 92049024-c0ef-41ae-8512-851ce20cad3a
@@ -842,6 +878,10 @@ templates:
     events: []
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: PressHint
     depth: 50
     uid: ba73f80b-0995-40b6-94d5-3e82712b5ecf
@@ -866,6 +906,10 @@ templates:
         eventKey: OnStep
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: EndGame_Star_Counter
     depth: 0
     uid: 8748598b-4494-433f-9f18-fbe985c2a583
@@ -891,6 +935,10 @@ templates:
         eventKey: OnCreate
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - type: template
     name: PotatoCat_Stunned
     depth: 0
@@ -915,6 +963,8 @@ templates:
         lib: core
     lastmod: 1657025714482
     uid: T9G6GkQ7GJj3fB
+    blendMode: normal
+    animationFPS: 30
 sounds: []
 styles:
   - name: Orange
@@ -971,8 +1021,8 @@ rooms:
         opacity: 1
         tint: 16777215
         scale:
-          x: 1
-          'y': 1
+          x: 0.65
+          'y': 0.65
         rotation: 0
         uid: 8f93611e-6e95-49c4-8e2b-4cc067be2924
         exts: {}
@@ -986,7 +1036,7 @@ rooms:
     thumbnail: 332dab64a25a
     gridX: 64
     gridY: 64
-    lastmod: 1661348046418
+    lastmod: 1671978730193
     extends: {}
     events:
       - lib: core
@@ -1050,6 +1100,7 @@ rooms:
     type: room
     simulate: true
     isUi: false
+    follow: -1
   - name: MainMenu
     oncreate: ''
     onstep: ''
@@ -1118,6 +1169,7 @@ rooms:
     type: room
     simulate: true
     isUi: false
+    follow: -1
   - name: UI_InGame
     oncreate: ''
     onstep: ''
@@ -1176,6 +1228,7 @@ rooms:
     extends: {}
     simulate: true
     isUi: false
+    follow: -1
   - name: UI_Paused
     onstep: ''
     ondraw: ''
@@ -1236,6 +1289,7 @@ rooms:
     extends: {}
     simulate: true
     isUi: false
+    follow: -1
   - name: UI_OhNo
     onstep: ''
     ondraw: ''
@@ -1307,6 +1361,7 @@ rooms:
     extends: {}
     simulate: true
     isUi: false
+    follow: -1
 actions:
   - name: Poof
     methods:
@@ -1530,3 +1585,4 @@ groups:
   sounds: []
   emitterTandems: []
   templates: []
+language: typescript
