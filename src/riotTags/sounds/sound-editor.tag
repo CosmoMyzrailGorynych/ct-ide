@@ -1,5 +1,5 @@
-sound-editor.aDimmer
-    .aModal
+sound-editor.aDimmer.fadein(onclick="{tryClose}")
+    .aModal.appear
         b {voc.name}
         br
         input.wide(type="text" value="{sound.name}" onchange="{wire('this.sound.name')}")
@@ -66,6 +66,12 @@ sound-editor.aDimmer
             require('./data/node_requires/glob').modified = true;
 
             return true;
+        };
+        this.tryClose = e => {
+            if (e.target !== this.root) {
+                return;
+            }
+            this.soundSave();
         };
         this.togglePlay = function togglePlay() {
             if (this.playing) {

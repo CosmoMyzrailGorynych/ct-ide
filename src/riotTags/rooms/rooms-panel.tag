@@ -1,3 +1,5 @@
+//
+    @method openAsset
 rooms-panel.aPanel.aView
     asset-viewer(
         collection="{global.currentProject.rooms}"
@@ -143,4 +145,16 @@ rooms-panel.aPanel.aView
                 icons.push('ui');
             }
             return icons;
+        };
+
+        this.openAsset = (assetType, uid) => {
+            if (assetType !== 'rooms') {
+                return;
+            }
+            const room = global.currentProject.rooms.find(room => room.uid === uid);
+            this.openRoom(room)();
+            this.refs.rooms.updateList();
+            if (this.parent) {
+                this.parent.update();
+            }
         };

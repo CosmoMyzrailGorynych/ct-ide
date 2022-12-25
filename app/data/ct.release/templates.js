@@ -44,7 +44,7 @@ const Copy = (function Copy() {
          * before its OnCreate event. Defaults to ct.room.
          * @memberof Copy
          */
-        // eslint-disable-next-line complexity
+        // eslint-disable-next-line complexity, max-lines-per-function
         constructor(template, x, y, exts, container) {
             container = container || ct.room;
             var t;
@@ -70,6 +70,9 @@ const Copy = (function Copy() {
                 this.blendMode = t.blendMode || PIXI.BLEND_MODES.NORMAL;
                 this.loop = t.loopAnimation;
                 this.animationSpeed = t.animationFPS / 60;
+                if (t.visible === false) { // ignore nullish values
+                    this.visible = false;
+                }
                 if (t.playAnimationOnStart) {
                     this.play();
                 }

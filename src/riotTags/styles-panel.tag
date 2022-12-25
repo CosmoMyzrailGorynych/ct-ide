@@ -1,3 +1,5 @@
+//
+    @method openAsset
 styles-panel.tall.fifty
     asset-viewer(
         collection="{global.currentProject.styles}"
@@ -52,6 +54,11 @@ styles-panel.tall.fifty
         this.openStyle = style => () => {
             this.editingStyle = true;
             this.editedStyle = style;
+            this.update();
+        };
+        this.openAsset = (assetType, uid) => {
+            const {getById} = require('./data/node_requires/resources/styles');
+            this.openStyle(getById(uid))();
         };
         this.setUpPanel = () => {
             this.refs.styles.updateList();

@@ -1,4 +1,4 @@
-type PixiBlendMode = 'NORMAL' | 'ADD' | 'MULTIPLY' | 'SCREEN';
+type PixiBlendMode = 'normal' | 'add' | 'multiply' | 'screen';
 
 interface ITemplate extends IScriptable {
     depth: number,

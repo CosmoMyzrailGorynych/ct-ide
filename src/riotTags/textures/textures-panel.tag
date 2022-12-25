@@ -1,3 +1,5 @@
+//
+    @method openAsset
 textures-panel.aPanel.aView
     .flexfix.tall
         div
@@ -138,25 +140,20 @@ textures-panel.aPanel.aView
             window.signals.off('skeletonImported', this.updateTextureData);
         });
 
-        const assetListener = asset => {
-            const [assetType, assetId] = asset.split('/');
-            if (assetType !== 'textures') {
-                return;
-            }
+        this.openAsset = (assetType, uid) => {
             if (this.editing) {
                 // Reset texture editor
                 this.editing = this.currentTexture = this.currentTextureId = false;
                 this.update();
             }
+            if (assetType !== 'textures') {
+                return; // cannot open skeletons
+            }
             this.editing = true;
-            this.currentTexture = window.currentProject.textures.find(t => t.uid === assetId);
-            this.currentTextureId = assetId;
+            this.currentTexture = window.currentProject.textures.find(t => t.uid === uid);
+            this.currentTextureId = uid;
             this.update();
         };
-        window.orders.on('openAsset', assetListener);
-        this.on('unmount', () => {
-            window.orders.off('openAsset', assetListener);
-        });
 
         this.openFileSelector = () => {
             this.refs.inputFile.click();

@@ -172,7 +172,7 @@ ct.rooms.templates['${r.name}'] = {
     onCreate() {
         ${scriptableCode.thisOnCreate}
     },
-    isUi: ${r.isUi},
+    isUi: ${Boolean(r.isUi)},
     follow: ${(r.follow && r.follow !== -1) ? ('\'' + getTemplateFromId(r.follow).name + '\'') : 'false'},
     extends: ${r.extends ? JSON.stringify(getUnwrappedExtends(r.extends), null, 4) : '{}'}
 }

@@ -209,6 +209,20 @@
         "downloadJDK": "Download JDK 11",
         "firstRunNotice": "The first run for each platform will be slow as ct.js will download and save additional libraries needed for packing. It will take some time, but next times will be almost instant."
     },
+    "exporterError": {
+        "exporterErrorHeader": "An error occured while exporting your project",
+        "errorSource": "In a $1 called $2",
+        "clueSolutions": {
+            "syntax": "This is a syntax error in your code. Go to the asset and fix it — the code editor will highlight the problematic place.",
+            "eventConfiguration": "One of the events is misconfigured, having empty fields. Go to the asset and edit its event's parameters.",
+            "emptySound": "One of your sounds does not have any sound files attached. Import a sound file to it or remove this empty sound.",
+            "emptyEmitter": "One of your particle systems is missing a texture in its emitter. You will need to either set a texture to it or remove the emitter.",
+            "windowsFileLock": "This is a Windows-specific problem with a locked file. Make sure you've closed all external browsers that launched the game, then try exporting again. If it doesn't help, restart ct.js."
+        },
+        "stacktrace": "Call stack",
+        "jumpToProblem": "Jump to the problem",
+        "saveAndQuit": "Save and quit"
+    },
     "extensionsEditor": {
         "noEntries": "No entries yet.",
         "addRow": "Add a row",

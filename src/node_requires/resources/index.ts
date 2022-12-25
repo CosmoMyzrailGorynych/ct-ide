@@ -8,6 +8,17 @@ import * as rooms from './rooms';
 import * as templates from './templates';
 import * as styles from './styles';
 
+export const resourceToIconMap = {
+    texture: 'texture',
+    tandem: 'sparkles',
+    font: 'ui',
+    sound: 'headphones',
+    room: 'room',
+    template: 'template',
+    style: 'ui',
+    project: 'sliders'
+};
+
 export {
     textures,
     emitterTandems as tandems,

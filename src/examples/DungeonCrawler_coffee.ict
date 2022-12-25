@@ -721,13 +721,17 @@ templates:
         lib: place
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Cat
     depth: 5
     texture: 4822a271-cc3c-4d88-b7a0-b2aa4cab0a96
     extends:
       cgroup: ''
     uid: c40336ea-2846-45d5-97ba-d51852d3f6c5
-    lastmod: 1668600189331
+    lastmod: 1671955340204
     events:
       - lib: core
         arguments: {}
@@ -809,6 +813,8 @@ templates:
     loopAnimation: true
     playAnimationOnStart: true
     animationFPS: 5
+    visible: true
+    blendMode: normal
   - name: Crate
     depth: 0
     texture: 31948760-8965-4768-ab1d-2b87d0b7fc3a
@@ -837,6 +843,10 @@ templates:
         lib: place
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: HazardousTube
     depth: 0
     texture: 1f0fbe96-38aa-4db4-a011-c0cf34b91d00
@@ -862,6 +872,10 @@ templates:
         lib: place
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Bullet
     depth: 0
     texture: 29cd8366-37bd-4a4d-96a1-a2da4d674972
@@ -897,6 +911,10 @@ templates:
         lib: place
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Crosshair
     depth: 100000
     texture: bdf46b11-ef42-4c45-af01-a0b918ee9587
@@ -912,6 +930,10 @@ templates:
         eventKey: OnDraw
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Crate_Debris
     depth: -6500
     texture: d25aebb8-d135-4b9c-b2b5-844298c35a62
@@ -921,6 +943,10 @@ templates:
     events: []
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: HazardousTube_Debris
     depth: -6500
     texture: 80bab2bc-c12d-4ce6-8d6f-033e0d5d3bdc
@@ -938,6 +964,10 @@ templates:
         eventKey: OnStep
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Door
     depth: 1
     texture: 3a7c7928-a731-4940-9854-17936b3c9a46
@@ -970,6 +1000,10 @@ templates:
         eventKey: OnDraw
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Slime
     depth: 0
     texture: 4733fb53-5e41-4cf8-b9a8-91ad700f2246
@@ -1026,28 +1060,38 @@ templates:
         lib: place
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Gap
     depth: 0
     texture: 14d3f53f-a868-4820-84cd-63234ab6e6b9
     extends:
       cgroup: Gap
-      visible: false
     uid: 0bc3c56b-3bf9-4912-9e3f-c27654c1b910
-    lastmod: 1668343081170
+    lastmod: 1671955011686
     events: []
     type: template
     loopAnimation: false
+    visible: false
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Checkpoint
     depth: 0
     texture: a42e0dff-69c9-46c3-8996-745aaa769698
     extends:
       cgroup: Checkpoint
-      visible: false
     uid: 469b9eef-6117-43a5-87d3-7151da7eba06
     lastmod: 1668342920220
     events: []
     type: template
     loopAnimation: true
+    visible: false
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Cat_Falling
     depth: 0
     texture: 96121d6f-6483-48f8-841b-b307befc7d42
@@ -1084,6 +1128,10 @@ templates:
         eventKey: OnDraw
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: StartButton
     depth: 0
     texture: a5745819-e057-4d67-a114-b64249a0f701
@@ -1116,6 +1164,10 @@ templates:
         lib: core
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Trap
     depth: -5000
     texture: 6c23e805-94b6-4e3a-8606-682c36960233
@@ -1142,6 +1194,10 @@ templates:
         eventKey: OnStep
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Cat_Death
     depth: 0
     texture: 8a6a1aa5-60f6-4f9a-9c54-7e5e7641bda1
@@ -1162,6 +1218,9 @@ templates:
     type: template
     loopAnimation: false
     playAnimationOnStart: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
   - name: Medkit
     depth: 0
     texture: c61a44b6-1f4d-43c2-9356-7288658947a9
@@ -1183,6 +1242,10 @@ templates:
         lib: place
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
 sounds:
   - name: Shoot
     uid: 97baf84a-32d3-450c-a52e-25a770565520
@@ -3390,7 +3453,7 @@ rooms:
     gridX: 16
     gridY: 16
     backgroundColor: '#000337'
-    lastmod: 1668343557168
+    lastmod: 1671955348316
     restrictCamera: true
     restrictMinX: -48
     restrictMaxX: 384
@@ -3412,6 +3475,7 @@ rooms:
     type: room
     simulate: true
     isUi: !<tag:yaml.org,2002:js/undefined> ''
+    follow: -1
   - name: Level_02
     onstep: ''
     ondraw: ''
@@ -7858,6 +7922,7 @@ rooms:
     type: room
     simulate: true
     isUi: !<tag:yaml.org,2002:js/undefined> ''
+    follow: -1
   - name: MainMenu
     oncreate: ''
     onstep: ''
@@ -7925,6 +7990,7 @@ rooms:
     type: room
     simulate: true
     isUi: !<tag:yaml.org,2002:js/undefined> ''
+    follow: -1
   - name: Level_03
     onstep: ''
     ondraw: ''
@@ -11299,6 +11365,7 @@ rooms:
     type: room
     simulate: true
     isUi: !<tag:yaml.org,2002:js/undefined> ''
+    follow: -1
   - name: UI_InGame
     onstep: ''
     onleave: ''
@@ -11349,6 +11416,7 @@ rooms:
     type: room
     simulate: true
     isUi: true
+    follow: -1
 actions:
   - name: MoveX
     methods:

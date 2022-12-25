@@ -388,13 +388,6 @@ const exportCtProject = async (
         }
     }));
 
-    /* TypeScript */
-    if (project.language === 'typescript') {
-        buffer = require('sucrase').transform(buffer, {
-            transforms: ['typescript']
-        }).code;
-    }
-
     /* HTML & CSS */
     const {substituteHtmlVars} = require('./html');
     const html = substituteHtmlVars(await sources['index.html'], project, injections);

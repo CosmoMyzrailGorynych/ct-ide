@@ -54,6 +54,7 @@ ct.templates.templates["${template.name}"] = {
     animationFPS: ${template.animationFPS ?? 60},
     playAnimationOnStart: ${Boolean(template.playAnimationOnStart)},
     loopAnimation: ${Boolean(template.loopAnimation)},
+    visible: ${Boolean(template.visible ?? true)},
     group: "${groups[template.group ? template.group.replace(/'/g, '\\\'') : -1]}",
     ${textureInfo}
     onStep: function () {

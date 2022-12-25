@@ -38,6 +38,7 @@ const loadLanguage = lang => {
     // eslint-disable-next-line no-console
     console.debug(`Loaded a language file ${lang}.json`);
     languageJSON = extendValid(vocDefault, voc);
+    languageJSON.common.assetTypes.tandems = languageJSON.common.assetTypes.emitterTandems;
     return languageJSON;
 };
 

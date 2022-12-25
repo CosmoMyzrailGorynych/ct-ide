@@ -38,7 +38,7 @@ mixin templateProperties
                 input(type="checkbox" checked="{parent.template.loopAnimation}" onchange="{parent.wire('this.template.loopAnimation')}")
                 span {parent.voc.loopAnimation}
             label.block.checkbox
-                input(type="checkbox" checked="{parent.template.extends.visible ?? true}" onchange="{parent.wire('this.template.extends.visible')}")
+                input(type="checkbox" checked="{parent.template.visible ?? true}" onchange="{parent.wire('this.template.visible')}")
                 span {parent.voc.visible}
     .aSpacer
     extensions-editor(type="template" entity="{template.extends}" wide="yep" compact="probably")

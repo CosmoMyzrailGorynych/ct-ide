@@ -1,3 +1,5 @@
+//
+    @method openAsset
 sounds-panel.aPanel.aView
     asset-viewer(
         collection="{global.currentProject.sounds}"
@@ -66,6 +68,11 @@ sounds-panel.aPanel.aView
             this.editedSound = sound;
             this.editing = true;
             this.update();
+        };
+        this.openAsset = (assetType, uid) => {
+            const sounds = require('./data/node_requires/resources/sounds');
+            const sound = sounds.getById(uid);
+            this.openSound(sound)();
         };
 
         this.openRecorder = () => {
