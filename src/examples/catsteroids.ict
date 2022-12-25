@@ -215,6 +215,10 @@ templates:
         lib: core
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Laser_Simple_Blue
     depth: -1
     uid: 92e6ec14-1de0-483a-84b8-a8669ac65937
@@ -243,6 +247,10 @@ templates:
         eventKey: OnStep
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Asteroid
     depth: 1
     uid: 1fa16a0f-e9a0-4117-9c28-87fa72b33d2b
@@ -310,6 +318,10 @@ templates:
         eventKey: OnDestroy
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Laser_Cross_Blue
     depth: -1
     uid: 140f8bde-bd06-4b2d-a5f2-87427848252e
@@ -340,6 +352,10 @@ templates:
         eventKey: OnStep
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: GameController
     depth: 0
     uid: ca579f27-f97b-4ca2-98f6-c1c3e13acad5
@@ -402,6 +418,10 @@ templates:
         eventKey: OnStep
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Logo
     depth: 0
     uid: 319c6995-59f3-4267-a1de-cf58f77614d3
@@ -429,6 +449,10 @@ templates:
         eventKey: OnDraw
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: StartButton
     depth: 0
     uid: 972bb4d9-7cfc-4dbe-bc30-883562271057
@@ -446,6 +470,10 @@ templates:
         lib: core
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: AbstractBonus
     depth: 3
     uid: bc01cee1-1b8b-4418-aeb9-a7c5eac2cd51
@@ -524,6 +552,10 @@ templates:
         lib: place
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Enemy_Shooter
     depth: 2
     uid: 500fd472-19aa-41a0-9504-123c37540702
@@ -613,6 +645,10 @@ templates:
         eventKey: OnDestroy
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: EnemyBullet
     depth: -1
     uid: 65a71d76-039a-4e20-8433-d20277dd2402
@@ -642,6 +678,10 @@ templates:
         eventKey: OnStep
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Enemy_Wiggler
     depth: 2
     uid: 9d0992a4-d0ef-4c5e-9d17-2e5167f26598
@@ -729,6 +769,10 @@ templates:
         eventKey: OnDraw
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Laser_Bolt_Blue
     depth: 0
     uid: 912af24f-1569-46a3-9194-fbf0384f3b0e
@@ -757,6 +801,10 @@ templates:
         eventKey: OnStep
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Enemy_Bomber
     depth: 3
     uid: ebfeaaab-f16a-48fa-b97c-687945f99668
@@ -834,6 +882,10 @@ templates:
         eventKey: OnDestroy
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Laser_Cross_Red
     depth: 0
     uid: 45f606db-1ce3-4b21-bc14-b84e35543509
@@ -868,6 +920,10 @@ templates:
         eventKey: OnStep
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: OhNo
     depth: 0
     uid: a6d37145-b35c-42d2-95c6-765069857ada
@@ -881,6 +937,10 @@ templates:
         eventKey: OnStep
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: RetryButton
     depth: 0
     uid: 73759c16-fba4-4134-b048-e53aa4d2f34b
@@ -897,6 +957,10 @@ templates:
         lib: core
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Joystick
     depth: 0
     uid: c78818a4-c20e-46b9-8a39-9fbb5a83eabe
@@ -925,6 +989,10 @@ templates:
         eventKey: OnDraw
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Button_Shoot
     depth: 0
     uid: b334b5ec-69b4-4c0d-bd50-709cf9bfa60d
@@ -954,6 +1022,10 @@ templates:
         eventKey: OnDraw
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: DatBoss
     depth: 3
     uid: 1ef4f56c-b0cc-497b-bd3f-e06eb1c2308d
@@ -1225,6 +1297,10 @@ templates:
         lib: place
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Healthbar_Base_Player
     depth: 0
     uid: 1011221c-4f7b-45e7-b45a-ce886851d32c
@@ -1284,6 +1360,10 @@ templates:
         eventKey: OnDraw
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Healthbar_Base_Boss
     depth: 0
     uid: c465904b-7b03-4f27-8f28-f378e7bdd9cf
@@ -1356,6 +1436,10 @@ templates:
         eventKey: OnDraw
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Victory
     depth: 0
     uid: ffbec9fc-299c-4aea-a4f1-1c4b27859fb6
@@ -1387,6 +1471,10 @@ templates:
         eventKey: OnDraw
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
 sounds:
   - name: Laser_Small
     uid: 684d983f-9827-4ac8-9915-bd498154c5f4
@@ -1648,6 +1736,7 @@ rooms:
     type: room
     simulate: true
     isUi: false
+    follow: -1
   - name: MainMenu
     onstep: ''
     ondraw: ''
@@ -1752,6 +1841,7 @@ rooms:
     type: room
     simulate: true
     isUi: false
+    follow: -1
   - name: RetryScreen
     onstep: ''
     ondraw: ''
@@ -1847,6 +1937,7 @@ rooms:
     simulate: true
     extends: {}
     isUi: false
+    follow: -1
   - name: Controls_Layer
     oncreate: ''
     onstep: ''
@@ -1893,6 +1984,7 @@ rooms:
     type: room
     simulate: true
     isUi: false
+    follow: -1
   - name: BossTestingRoom
     onstep: ''
     onleave: ''
@@ -2100,6 +2192,7 @@ rooms:
     type: room
     simulate: true
     isUi: false
+    follow: -1
   - name: UI_Layer
     oncreate: ''
     onstep: ''
@@ -2135,6 +2228,7 @@ rooms:
     simulate: true
     extends: {}
     isUi: false
+    follow: -1
   - name: VictoryScreen
     onstep: ''
     ondraw: ''
@@ -2251,6 +2345,7 @@ rooms:
     simulate: true
     extends: {}
     isUi: false
+    follow: -1
 soundtick: 9
 roomtick: 3
 templatetick: 19
@@ -2349,7 +2444,7 @@ scripts:
               });
           });
       };
-ctjsVersion: 2.2.0
+ctjsVersion: 3.2.0
 fonts: []
 skeletons: []
 actions:
@@ -5296,3 +5391,4 @@ groups:
   sounds: []
   emitterTandems: []
   templates: []
+language: typescript

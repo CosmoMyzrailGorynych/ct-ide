@@ -1,5 +1,10 @@
 scripts-settings
-    h1 {voc.heading}
+    h1
+        svg.icon
+            use(xlink:href="#javascript")
+        |
+        |
+        span {voc.heading}
     ul.aMenu
         li(each="{script, index in global.currentProject.scripts}" onclick="{selectScript}")
             code {script.name}

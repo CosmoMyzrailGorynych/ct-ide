@@ -1,4 +1,4 @@
-ctjsVersion: 2.2.0
+ctjsVersion: 3.2.0
 notes: >-
   There is a number of interesting places to start learning the demo:
 
@@ -170,6 +170,10 @@ templates:
     events: []
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: OptionButton
     depth: 0
     uid: cf5c44b2-f55a-4e18-a941-f7cdf5aecd0f
@@ -209,6 +213,10 @@ templates:
         lib: core
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: NextButton
     depth: 0
     uid: 4340a6a4-65fa-4bcf-b950-38716097f29e
@@ -250,6 +258,10 @@ templates:
         lib: core
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Blurb
     depth: 0
     uid: 04a0aea0-f448-4920-97ad-f98906ac0d7c
@@ -285,6 +297,10 @@ templates:
         eventKey: OnCreate
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: RestartButton
     depth: 0
     uid: 9a5d6ecd-82b4-4b26-827b-08904fbaf962
@@ -326,6 +342,10 @@ templates:
         lib: core
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: TheGirl
     depth: 0
     uid: 3c91a07b-0497-4623-a244-071a4e1951d8
@@ -349,6 +369,10 @@ templates:
         eventKey: OnCreate
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
 sounds:
   - name: Hehe
     uid: 0bd4a1eb-b5f1-4047-a8dd-56feca282803
@@ -413,6 +437,7 @@ rooms:
     type: room
     simulate: true
     isUi: false
+    follow: -1
   - name: Micro
     onstep: ''
     ondraw: ''
@@ -470,6 +495,7 @@ rooms:
     type: room
     simulate: true
     isUi: false
+    follow: -1
   - name: Stop
     onstep: ''
     ondraw: ''
@@ -527,6 +553,7 @@ rooms:
     type: room
     simulate: true
     isUi: false
+    follow: -1
   - name: Wait
     onstep: ''
     ondraw: ''
@@ -584,6 +611,7 @@ rooms:
     type: room
     simulate: true
     isUi: false
+    follow: -1
 actions:
   - name: Press
     methods:
@@ -755,3 +783,4 @@ groups:
   sounds: []
   emitterTandems: []
   templates: []
+language: typescript

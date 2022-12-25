@@ -553,6 +553,10 @@ templates:
         lib: matter
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: AlienTarget
     depth: 0
     texture: 6c8a3edf-d5fe-4916-b63c-2201c099d28f
@@ -583,6 +587,10 @@ templates:
         lib: matter
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: WoodenSquare
     depth: 0
     texture: 41f7c3b3-abc8-4940-8919-9114a884d7f2
@@ -625,6 +633,10 @@ templates:
         lib: matter
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: WoodenPlank
     depth: 0
     texture: 9afd54d7-1265-4ba0-b5de-5226b3c7e2fb
@@ -667,6 +679,10 @@ templates:
         lib: matter
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: WoodenTriangle
     depth: 0
     texture: 0f0e39f3-05bd-47e1-88d2-7dbf7bc3596b
@@ -711,6 +727,10 @@ templates:
         lib: matter
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Slingshot
     depth: 0
     texture: 37dfad62-8372-4804-8416-765039343b61
@@ -724,6 +744,10 @@ templates:
         lib: core
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: Alien_Dragging
     depth: 0
     texture: 8a5f385a-d547-4d2d-9641-b1856738c62a
@@ -771,6 +795,10 @@ templates:
         eventKey: OnDraw
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: elementMetal013
     depth: 0
     texture: 56ab43ae-1b27-4b5e-9e49-fbbe74d42597
@@ -793,6 +821,10 @@ templates:
         lib: matter
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: elementMetal011
     depth: 0
     texture: c4d4030a-b640-44be-bded-26a5c030f542
@@ -813,6 +845,10 @@ templates:
         lib: matter
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - name: elementMetal000
     depth: 0
     texture: 3a4eba8d-8b33-478e-95e5-3833099c1a03
@@ -836,6 +872,10 @@ templates:
         lib: matter
     type: template
     loopAnimation: true
+    visible: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - type: template
     name: Restart
     depth: 0
@@ -851,6 +891,9 @@ templates:
         arguments: {}
         lib: core
     loopAnimation: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - type: template
     name: GravityZone
     depth: 5
@@ -877,6 +920,8 @@ templates:
         lib: matter
     lastmod: 1657008600683
     uid: HFFzDDfwj688N3
+    blendMode: normal
+    animationFPS: 30
   - type: template
     name: AlienCounter
     depth: 0
@@ -912,6 +957,8 @@ templates:
         lib: core
     lastmod: 1657008650456
     uid: 7rHCR4GtcDPrTn
+    blendMode: normal
+    animationFPS: 30
 sounds:
   - name: Impact_Wooden
     uid: ccfe7f50-d4d3-4570-95e9-75d5d73bef0a
@@ -1592,6 +1639,7 @@ rooms:
     simulate: true
     isUi: !<tag:yaml.org,2002:js/undefined> ''
     backgroundColor: '#CFF5FA'
+    follow: -1
   - type: room
     oncreate: ''
     onstep: ''
@@ -1638,6 +1686,7 @@ rooms:
     events: []
     simulate: true
     isUi: true
+    follow: -1
   - name: Level_02
     onstep: ''
     ondraw: ''
@@ -2318,6 +2367,7 @@ rooms:
     simulate: true
     isUi: !<tag:yaml.org,2002:js/undefined> ''
     backgroundColor: '#CFF5FA'
+    follow: -1
   - name: Level_Empty
     onstep: ''
     ondraw: ''
@@ -2652,6 +2702,7 @@ rooms:
     simulate: true
     isUi: !<tag:yaml.org,2002:js/undefined> ''
     backgroundColor: '#CFF5FA'
+    follow: -1
   - name: Level_03
     onstep: ''
     ondraw: ''
@@ -3322,6 +3373,7 @@ rooms:
     simulate: true
     isUi: !<tag:yaml.org,2002:js/undefined> ''
     backgroundColor: '#CFF5FA'
+    follow: -1
 actions:
   - name: Pointer
     methods:

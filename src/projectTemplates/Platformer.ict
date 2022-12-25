@@ -1,4 +1,4 @@
-ctjsVersion: 2.2.0
+ctjsVersion: 3.2.0
 notes: /* empty */
 libs:
   place:
@@ -511,6 +511,9 @@ templates:
           template: Qrm2MjP8kzdJcF
         lib: place
     loopAnimation: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - type: template
     name: Enemy
     depth: 0
@@ -555,6 +558,9 @@ templates:
         code: 'this.scale.x = this.hspeed > 0? 1 : -1;'
         eventKey: OnDraw
     loopAnimation: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - type: template
     name: Lava
     depth: 5
@@ -566,6 +572,9 @@ templates:
     uid: mGhrHH5bHNTqMD
     events: []
     loopAnimation: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - type: template
     name: Finish
     depth: -5
@@ -592,6 +601,9 @@ templates:
           template: N5RBGbB6K894HC
         lib: place
     loopAnimation: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - type: template
     name: IceBlock
     depth: 0
@@ -603,6 +615,9 @@ templates:
     uid: R8m1cPL7jKN9n4
     events: []
     loopAnimation: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - type: template
     name: Block
     depth: 0
@@ -614,6 +629,9 @@ templates:
     uid: bqLWK4D3tLLDT1
     events: []
     loopAnimation: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - type: template
     name: OneWayPlatform
     depth: 0
@@ -642,17 +660,22 @@ templates:
           }
         eventKey: OnStep
     loopAnimation: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - type: template
     name: Checkpoint
     depth: 0
     texture: NNdC85zDP4F3Dz
-    visible: true
-    extends:
-      visible: false
+    visible: false
+    extends: {}
     lastmod: 1661093892398
     uid: Qrm2MjP8kzdJcF
     events: []
     loopAnimation: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - type: template
     name: SpringBlock
     depth: 0
@@ -668,6 +691,9 @@ templates:
           template: N5RBGbB6K894HC
         lib: place
     loopAnimation: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - type: template
     name: Key
     depth: 0
@@ -688,6 +714,9 @@ templates:
           template: N5RBGbB6K894HC
         lib: place
     loopAnimation: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
   - type: template
     name: LockedBlock
     depth: 0
@@ -699,6 +728,9 @@ templates:
     uid: G17q6cMFtpcQDG
     events: []
     loopAnimation: true
+    blendMode: normal
+    animationFPS: 30
+    playAnimationOnStart: false
 sounds: []
 styles: []
 rooms:
@@ -2289,6 +2321,7 @@ rooms:
     events: []
     simulate: true
     isUi: false
+    follow: -1
   - type: room
     oncreate: ''
     onstep: ''
@@ -5031,6 +5064,7 @@ rooms:
     events: []
     simulate: true
     isUi: false
+    follow: -1
   - type: room
     oncreate: ''
     onstep: ''
@@ -9786,6 +9820,7 @@ rooms:
     events: []
     simulate: true
     isUi: false
+    follow: -1
   - type: room
     oncreate: ''
     onstep: ''
@@ -10184,6 +10219,7 @@ rooms:
     events: []
     simulate: true
     isUi: false
+    follow: -1
 actions:
   - name: MoveX
     methods:
@@ -10262,3 +10298,4 @@ settings:
 fonts: []
 palette: []
 startroom: LKTkBnc4BQMcDm
+language: typescript
