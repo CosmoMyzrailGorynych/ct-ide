@@ -136,7 +136,7 @@
         "globalPalette": "Globaal Palet",
         "old": "Oud",
         "projectPalette": "Palet van Project",
-        "altClick": ""
+        "altClick": "Alt-klik om te verwijderen"
     },
     "curveEditor": {
         "curveLineHint": "Klik op de kromming om een punt toe te voegen",
@@ -217,8 +217,8 @@
         "templates": "Sjablonen",
         "templatesInfo": "Je kan je game ontwikkeling een snelle start geven door een van deze sjablonen te gebruiken. Ze bevatten enkel tijdelijke afbeeldingen, maar hebben werkende mechanics. Als je een project hebt geselecteerd kan je een opslagmap kiezen.",
         "boosty": "Steun ct.js op Boosty!",
-        "sponsoredBy": "",
-        "supportedBy": ""
+        "sponsoredBy": "Trots gesponsord door $1!",
+        "supportedBy": "Gesteund door $1"
     },
     "onboarding": {
         "hoorayHeader": "Wow! Je hebt zojuist een project gecreëerd!",
@@ -481,9 +481,9 @@
         "helpPages": "Help"
     },
     "patreon": {
-        "aboutPatrons": "Patrons zijn mensen die hun steun betuigen aan ComigoGames op Patreon, in de vorm van terugkerende donaties. Niet iedereen daar komt voor ct.js; sommigen gebruiken andere apps van ComigoGames. Tip: als je een maker bent en via Patreon aan ComigoGames doneert, krijg je hier een link naar je pagina - dat is mijn kleine hulp voor je creaties :)",
+        "aboutPatrons": "Patrons zijn mensen die hun steun betuigen aan ComigoGames via Boosty, in de vorm van terugkerende donaties, gelijkaardig aan de abonnementen op Patreon.",
         "patronsHeader": "Onze patrons",
-        "thankAllPatrons": "Dank aan alle vaste en voormalige klanten van ComigoGames, want jouw steun houdt Comigo vooruit en maakt nog betere apps! :)",
+        "thankAllPatrons": "Dank aan alle patrons van ComigoGames, huidige en vroegere, want jouw steun helpt Comigo vooruit en nog betere apps maken! :)",
         "becomeAPatron": "Wordt een patron",
         "aboutFillers": [
             "is hartstikke cool 😎",
@@ -504,13 +504,13 @@
             "brengt licht en hoop 🌞",
             "is elegant en mooi 🎩"
         ],
-        "sponsors": "",
-        "noSponsorsYet": "",
-        "sponsorsDescription": "",
-        "businessCats": "",
-        "businessCatsDescription": "",
-        "cats": "",
-        "catsDescription": ""
+        "sponsors": "Sponsors",
+        "noSponsorsYet": "Er zijn nog geen sponsors. Je kunt de eerste zijn!",
+        "sponsorsDescription": "Sponsors worden als volgt weergegeven op de site van ct.js en andere pagina's, zoals op ct.js game jams.",
+        "businessCats": "Businesskatten",
+        "businessCatsDescription": "Businesskatten krijgen toegang tot een speciaal hulpkanaal op de Discord server en ontvangen steun voor ct.js en gamedev in het algemeen.",
+        "cats": "Katten",
+        "catsDescription": "Katten zijn mensen die ct.js willen steunen met meer dan een simpel \"dank je\". Ze worden opgesomd in ct.js (hier!) en overal waar CoMiGo eraan denkt ze toe te voegen."
     },
     "docsPanel": {
         "documentation": "Documentatie",
@@ -614,15 +614,17 @@
             "altTemplateLayout": "Alternatieve layout voor sjabloonbewerker"
         },
         "project": {
-            "save": "Sla project op",
-            "openIncludeFolder": "Open de map \"include\"",
-            "openProject": "Open een project...",
+            "save": "Project opslaan",
+            "openIncludeFolder": "De map \"include\" openen",
+            "openProject": "Een project openen...",
             "openExample": "Open een voorbeeld project...",
-            "startScreen": "Keer terug naar het startscherm",
-            "startNewWindow": "",
+            "startScreen": "Terugkeren naar het startscherm",
+            "startNewWindow": "Nieuw venster voor je project openen",
             "successZipProject": "Het project is succesvol naar {0} ingepakt.",
             "zipProject": "Project inpakken naar .zip",
-            "heading": "Project"
+            "heading": "Project",
+            "convertToJs": "Omzetten naar JavaScript",
+            "confirmationConvertToJs": "Dit zal automatisch ALLE events in het project omzetten naar JavaScript. Deze actie is onomkeerbaar. (Het zal wel alles terugzetten als het een fout in je scripts vindt.) Ben je zeker dat je dit project in CoffeeScript wil omzetten naar JavaScript?"
         },
         "meta": {
             "license": "Licentie",
@@ -712,17 +714,18 @@
         "dismissWarning": "Negeer."
     },
     "roomTiles": {
-        "moveTileLayer": "Beweeg naar een nieuwe diepte",
-        "show": "Laat de laag zien",
-        "hide": "Verberg de laag",
-        "findTileset": "Zoek een tegelset",
-        "addTileLayer": "Een tegellaag toevoegen"
+        "moveTileLayer": "Naar een nieuwe diepte bewegen",
+        "show": "De laag laten zien",
+        "hide": "De laag verbergen",
+        "findTileset": "Een tegelset zoeken",
+        "addTileLayer": "Een tegellaag toevoegen",
+        "addTileLayerFirst": "Voeg eerst een tegellaag toe in het linkerpaneel!"
     },
     "roomView": {
         "name": "Naam:",
         "width": "Venster breedte:",
         "height": "Venster hoogte:",
-        "events": "Kamer events",
+        "events": "Kamerevents",
         "copies": "Kopieën",
         "backgrounds": "Achtergronden",
         "tiles": "Tegels",
@@ -771,10 +774,10 @@
         "toCenter": "Centreren",
         "shiftLabel": "Verschuiven met:",
         "newDepth": "Nieuwe diepte:",
-        "deleteCopy": "Verwijder kopie {0}",
-        "changeCopyScale": "Verander schaal",
-        "shiftCopy": "Stel coördinaten in",
-        "deleteTile": "Verwijder een tegel",
+        "deleteCopy": "Kopie {0} verwijderen",
+        "changeCopyScale": "Schaal veranderen",
+        "shiftCopy": "Coördinaten instellen",
+        "deleteTile": "Een tegel verwijderen",
         "deleteTiles": "Tegels verwijderen",
         "moveTilesToLayer": "Bewegen naar laag",
         "shiftTiles": "Tegels verschuiven",
@@ -791,7 +794,10 @@
             "manageBackgrounds": "Achtergronden beheren",
             "roomProperties": "Kamereigenschappen"
         },
-        "resetView": "View resetten"
+        "resetView": "View resetten",
+        "viewportHeading": "Viewport",
+        "followTemplate": "Een sjabloon volgen:",
+        "followCodeHint": "Leer hoe je verder aan deze functie kunt sleutelen met code"
     },
     "styleView": {
         "active": "Activeer",
@@ -842,7 +848,7 @@
         "round": "Cirkel",
         "rows": "Rijen:",
         "speed": "Framerate:",
-        "tiled": "Gebruiken als achtergrond?",
+        "tiled": "Dit is een getegelde achtergrond",
         "corrupted": "Bestand is corrupt of zoek! Nu afsluiten.",
         "width": "Lengte:",
         "height": "Hoogte:",
@@ -855,11 +861,11 @@
         "symmetryTool": "Symmetrie tool",
         "padding": "Opvulling:",
         "paddingNotice": "Dit heeft invloed op de manier waarop een textuur wordt geëxporteerd: het voegt dubbele pixels toe aan de randen en voorkomt uitvloeiende artefacten op betegelde en geschaalde texturen. De standaardwaarde is meestal voldoende, maar als je texturen sterk verkleint, kan de uitvloeiing opnieuw optreden. Verhoog deze waarde als je textuur artefacten heeft tijdens het spelen.",
-        "updateFromClipboard": "Update vanuit klembord",
+        "updateFromClipboard": "Updaten vanuit klembord",
         "previewAnimationNotice": "Dit is een preview. Gebruik de this.animationSpeed waarde om het te veranderen voor echte kopieën.",
         "showFrameIndices": "Frame-indexen tonen",
         "blankTexture": "Als een lege textuur exporteren",
-        "pasteCollisionMask": "Plak een botsingsmasker",
+        "pasteCollisionMask": "Een botsingsmasker plakken",
         "copyCollisionMask": "Het botsingsmasker kopiëren",
         "bgColor": "Verander achtergrondkleur",
         "setCenter": "Centreer afbeeldingen",
@@ -869,7 +875,11 @@
         "marginY": "Marge Y:",
         "offX": "Offset X:",
         "offY": "Offset Y:",
-        "blankTextureNotice": "Exporteert de afbeelding als een doorzichtige rechthoek. Deze is dan onzichtbaar tijdens de game. Dit is nuttig voor het maken van placeholders voor de ct.js editor, terwijl de bundelgrootte klein blijft. "
+        "blankTextureNotice": "Exporteert de afbeelding als een doorzichtige rechthoek. Deze is dan onzichtbaar tijdens de game. Dit is nuttig voor het maken van placeholders voor de ct.js editor, terwijl de bundelgrootte klein blijft. ",
+        "slicing": "Opsplitsing",
+        "viewSettings": "Weergave-instellingen",
+        "exportSettings": "Exportinstellingen ",
+        "axisExplanation": "Definiëert welke plaats wordt beschouwd als de (0;0) positie van een kopie en beïnvloedt hoe het zich tenopzichte van een raster opstelt, en rond welk punt het roteert. "
     },
     "soundView": {
         "import": "Importeer",
@@ -965,15 +975,15 @@
     "scriptables": {
         "addEvent": "Een event toevoegen",
         "removeEvent": "Event verwijderen",
-        "removeEventConfirm": "Ben je zeker dat je deze event wil verwijderen? Dit kan niet ongedaan gemaakt worden!",
+        "removeEventConfirm": "Ben je zeker dat je dit event wil verwijderen? Dit kan niet ongedaan gemaakt worden!",
         "changeArguments": "Argumenten veranderen",
-        "eventAlreadyExists": "Dezelfde event bestaat al!",
+        "eventAlreadyExists": "Hetzelfde event bestaat al!",
         "localEventVars": "Locale variabelen",
         "createEventHint": "Maak je eerste event in de linkerkolom en definieer je logica hier",
         "coreEventsCategories": {
             "lifecycle": "Levenscyclus",
             "actions": "Acties",
-            "pointer": "Aanwijzer events",
+            "pointer": "Aanwijzerevents",
             "misc": "Overige",
             "animation": "Animatie",
             "timers": "Timers"
@@ -1034,6 +1044,31 @@
             "OnAnimationLoop": "Activeert telkens een animatie herstart.",
             "OnAnimationComplete": "Activeert wanneer een niet-herhalende animatie is afgelopen.",
             "Timer": "Stel de duur in seconden voor deze timer in met this.timer$1 = 3;"
-        }
+        },
+        "jumpToProblem": "Naar het probleem"
+    },
+    "exporterError": {
+        "exporterErrorHeader": "Er deed zich een fout voor tijdens het exporteren van jouw project",
+        "errorSource": "In een $1 genaamd $2",
+        "clueSolutions": {
+            "syntax": "Dit is een syntax fout in je code. Ga naar het onderdeel en los het op — de code-editor zal de problematische plek aanduiden.",
+            "eventConfiguration": "Een van de events is verkeerd ingesteld, met lege velden. Ga naar het onderdeel en pas zijn parameters aan.",
+            "emptySound": "Een van je geluiden heeft bevat geen geluidsbestanden. Importeer er een geluidsbestand naar of verwijder dit lege geluid.",
+            "emptyEmitter": "Een van je deeltjessystemen mist een textuur in zijn verspreider. Je zal een textuur moeten instellen of de verspreider verwijderen.",
+            "windowsFileLock": "Dit probleem is specifiek voor Windows met een afgesloten bestand. Zorg ervoor dat je alle externe browsers sluit die de game opstarten en probeer dan nog eens te exporteren. Als dat niet helpt, herstart dan ct.js."
+        },
+        "stacktrace": "Stack oproepen",
+        "jumpToProblem": "Nnaar het probleem",
+        "saveAndQuit": "Opslaan en afsluiten"
+    },
+    "languageSelector": {
+        "chooseLanguageHeader": "Je programmeertaal kiezen.",
+        "chooseLanguageExplanation": "Dit is de taal waarmee je events zal schrijven om je gameplay logic te beschrijven. Eerder gebruikten alle projecten JavaScript+TypeScript. Merk op dat je enkel CoffeeScript projecten naar JavaScript kunt omzetten, maar niet omgekeerd, dus kies zorgvuldig!",
+        "coffeeScriptDescription": "Een goede taal voor beginners met een simpele syntax. Ga voor deze taal als je geen eerdere ervaring hebt met programmeren in code, of als je houdt van Python.",
+        "pickCoffeeScript": "Ik kies CoffeeScript!",
+        "jsAndTs": "JavaScript (en Typescript)",
+        "jsTsDescription": "De taal van het web. De syntax is complexer maar fouten worden in de editor aangeduid en er zijn codesuggesties. Kies hiervoor als je al met JS, C# of Java code hebt gewerkt.",
+        "pickJsTs": "Ik kies JavaScript!",
+        "acceptAndSpecifyDirectory": "Accepteren en projectenmap selecteren"
     }
 }
