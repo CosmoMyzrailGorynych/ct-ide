@@ -8,15 +8,15 @@ new-project-onboarding
                 h1 {voc.hoorayHeader}
                 p {voc.nowWhatParagraph}
             ul.aMenu
-                li(onclick="{openDocs('/tut-making-shooter.html')}")
+                li(onclick="{openDocs('/tutorials/making-games-shooter.html')}")
                     svg.feather
                         use(xlink:href="#space-shooter")
                     span {voc.openSpaceShooterTutorial}
-                li(onclick="{openDocs('/tut-making-platformer.html')}")
+                li(onclick="{openDocs('/tutorials/making-games-platformer.html')}")
                     svg.feather
                         use(xlink:href="#platformer")
                     span {voc.openPlatformerTutorial}
-                li(onclick="{openDocs('/tut-making-jettycat.html')}")
+                li(onclick="{openDocs('/tutorials/making-games-jettycat.html')}")
                     svg.feather
                         use(xlink:href="#jettycat")
                     span {voc.openJettyCatTutorial}
