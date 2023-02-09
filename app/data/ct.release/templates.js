@@ -112,9 +112,13 @@ const Copy = (function Copy() {
                     onStep: t.onStep,
                     onDraw: t.onDraw,
                     onCreate: t.onCreate,
-                    onDestroy: t.onDestroy,
-                    shape: ct.res.getTextureShape(t.texture || -1)
+                    onDestroy: t.onDestroy
                 });
+                if (exts && exts.tex !== void 0) {
+                    this.shape = ct.res.getTextureShape(exts.tex || -1);
+                } else {
+                    this.shape = ct.res.getTextureShape(t.texture || -1);
+                }
                 if (exts && exts.depth !== void 0) {
                     this.depth = exts.depth;
                 }
