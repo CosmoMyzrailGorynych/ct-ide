@@ -68,7 +68,7 @@
     "highlight.js": "^10.4.1",
     "html-minifier": "^3.5.21",
     "html2pug": "^4.0.0",
-    "javascript-obfuscator": "^2.6.0",
+    "javascript-obfuscator": "^4.0.2",
     "js-yaml": "^3.14.0",
     "markdown-it": "12.3.2",
     "maxrects-packer": "^2.7.3",
