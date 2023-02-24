@@ -16,7 +16,7 @@ import {IRoomEditorInteraction, AllowedListener, allowedListeners, interactions}
 import {getPixiSwatch} from './../themes';
 import {defaultTextStyle, recolorFilters, eraseCursor, toPrecision, snapToDiagonalGrid, snapToRectangularGrid} from './common';
 import {getTemplateFromId} from '../resources/templates';
-import {ease} from 'node_modules/pixi-ease';
+import {ease, Easing} from 'node_modules/pixi-ease';
 
 
 const roomEditorDefaults = {
@@ -536,7 +536,7 @@ class RoomEditor extends PIXI.Application {
         }
     }
     cleanupTemplates(templateId: string): void {
-        console.log('cleanup for', templateId);
+        console.warn('cleanup for', templateId);
         let cleaned = false;
         for (const child of this.room.children) {
             if (child instanceof Copy) {
@@ -665,9 +665,14 @@ class RoomEditor extends PIXI.Application {
             this.riotEditor.refs.zoomLabel.innerHTML = `${Math.round(this.getZoom())}%`;
         });
     }
-    zoomTo(zoom: number): void {
+    /**
+     * @param {Number} zoom Zoom value, in percents
+     */
+    zoomTo(zoom: number): Easing {
+        // @see https://github.com/ct-js/ct-js/issues/407
+        zoom = Math.min(8_000, Math.max(zoom, 1)); // Clamp zoom to avoid flickering
         const scale = 1 / zoom * 100;
-        ease.add(this.camera, {
+        return ease.add(this.camera, {
             scale
         }, {
             duration: 500

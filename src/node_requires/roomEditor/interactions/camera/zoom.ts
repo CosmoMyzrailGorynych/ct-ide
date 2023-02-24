@@ -21,9 +21,11 @@ const zoomInteraction: IRoomEditorInteraction<IZoomData> = {
             } else {
                 newZoom = oldZoom * 1.25;
             }
-            if (Math.abs(newZoom - 1) < 0.1) {
+            if (Math.abs(newZoom - 1) < 0.1) { // Snap to 100%
                 newZoom = 1;
             }
+            // @see https://github.com/ct-js/ct-js/issues/407
+            newZoom = Math.min(100, Math.max(1 / 80, newZoom)); // Clamp at 8 000% and 1%
             roomTag.zoom = newZoom;
             if (affixedData.ease) {
                 affixedData.ease.remove();
