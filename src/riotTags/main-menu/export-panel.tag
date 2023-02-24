@@ -159,6 +159,9 @@ export-panel.aDimmer
                     if (!projSettings.export[settingKey]) {
                         continue;
                     }
+                    if (settingKey === 'mac' && process.platform === 'win32') {
+                        continue;
+                    }
                     const platform = platformMap[settingKey];
                     this.log.push(`Building for ${settingKey}…`);
                     // eslint-disable-next-line no-await-in-loop
