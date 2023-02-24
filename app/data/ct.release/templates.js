@@ -82,6 +82,13 @@ const Copy = (function Copy() {
             } else {
                 super([PIXI.Texture.EMPTY]);
             }
+            const oldScale = this.scale;
+            Object.defineProperty(this, 'scale', {
+                get: () => oldScale,
+                set: value => {
+                    this.scale.x = this.scale.y = Number(value);
+                }
+            });
             // it is defined in main.js
             // eslint-disable-next-line no-undef
             this[copyTypeSymbol] = true;
