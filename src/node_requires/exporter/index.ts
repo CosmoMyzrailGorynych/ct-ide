@@ -6,6 +6,7 @@ let currentProject: IProject;
 let writeDir: string;
 
 import {resetEventsCache, populateEventCache} from './scriptableProcessor';
+import {ExporterError, highlightProblem} from './ExporterError';
 
 import {packImages} from './textures';
 import {packSkeletons} from './skeletons';
@@ -21,6 +22,7 @@ const {getUnwrappedExtends, getCleanKey} = require('./utils');
 import {revHash} from './../utils/revHash';
 import {getGroups} from './groups';
 import {substituteHtmlVars} from './html';
+const typeScript = require('sucrase').transform;
 
 const ifMatcher = (varName: string, symbol = '@') => new RegExp(`/\\* ?if +${symbol}${varName}${symbol} ?\\*/([\\s\\S]*)(?:/\\* ?else +${symbol}${varName}${symbol} ?\\*/([\\s\\S]*?))?/\\* ?endif +${symbol}${varName}${symbol} ?\\*/`, 'g');
 const varMatcher = (varName: string, symbol = '@') => new RegExp(`/\\* ?${symbol}${varName}${symbol} ?\\*/`, 'g');
@@ -380,9 +382,19 @@ const exportCtProject = async (
 
     /* User-defined scripts */
     for (const script of project.scripts) {
-        buffer += script.code + ';\n';
+        try {
+            buffer += typeScript(script.code, {
+                transforms: ['typescript']
+            }).code + ';\n';
+        } catch (e) {
+            const errorMessage = `${e.name || 'An error'} occured while compiling a custom script ${script.name}`;
+            const exporterError = new ExporterError(errorMessage, {
+                problematicCode: highlightProblem(script.code, e.location || e.loc),
+                clue: 'syntax'
+            }, e);
+            throw exporterError;
+        }
     }
-
     /* passthrough copy of files in the `include` folder */
     if (await fs.pathExists(projdir + '/include/')) {
         await fs.copy(projdir + '/include/', writeDir);
