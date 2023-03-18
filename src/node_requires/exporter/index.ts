@@ -8,6 +8,8 @@ let writeDir: string;
 import {resetEventsCache, populateEventCache} from './scriptableProcessor';
 import {ExporterError, highlightProblem} from './ExporterError';
 
+import {ExportedMeta} from './_exporterContracts';
+
 import {packImages} from './textures';
 import {packSkeletons} from './skeletons';
 import {getSounds} from './sounds';
@@ -284,7 +286,12 @@ const exportCtProject = async (
     const favicons = bakeFavicons(project, writeDir, production);
     /* Run event cache population in parallel as well */
     const cacheHandle = populateEventCache(project);
-
+    const projectmeta: ExportedMeta = {
+        name: settings.authoring.title,
+        author: settings.authoring.author,
+        site: settings.authoring.site,
+        version: settings.authoring.version.join('.') + settings.authoring.versionPostfix
+    };
     let buffer = template(await sources['main.js'], {
         startwidth: startroom.width,
         startheight: startroom.height,
@@ -292,12 +299,7 @@ const exportCtProject = async (
         highDensity: Boolean(settings.rendering.highDensity),
         maxfps: Number(settings.rendering.maxFPS),
         ctversion: process.versions.ctjs,
-        projectmeta: {
-            name: settings.authoring.title,
-            author: settings.authoring.author,
-            site: settings.authoring.site,
-            version: settings.authoring.version.join('.') + settings.authoring.versionPostfix
-        }
+        projectmeta
     }, injections);
     buffer += '\n';
 

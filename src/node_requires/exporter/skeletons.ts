@@ -1,9 +1,10 @@
+import {ExportedSkeleton} from './_exporterContracts';
+
 const fs = require('fs-extra');
 const basePath = './data/';
 
-type skeletonData = [string, string, string, string];
 type skeletonExportData = {
-    skeletonsDB: skeletonData[];
+    skeletonsDB: ExportedSkeleton[];
     requiresDB: boolean;
 }
 
@@ -15,7 +16,7 @@ export const packSkeletons = async (
     const writePromises = [];
 
     const exporterData: skeletonExportData = {
-        skeletonsDB: [] as skeletonData[],
+        skeletonsDB: [] as ExportedSkeleton[],
         requiresDB: false
     };
     for (const skeleton of proj.skeletons) {

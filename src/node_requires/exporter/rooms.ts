@@ -5,6 +5,8 @@ import {getTextureFromId} from '../resources/textures';
 import {getTemplateFromId} from '../resources/templates';
 import {flattenGroups} from './groups';
 
+import {ExportedTile, ExportedTilemap, ExportedCopy, ExportedBg} from './_exporterContracts';
+
 const getStartingRoom = (proj: IProject): IRoom => {
     let [startroom] = proj.rooms; // picks the first room by default
     for (let i = 0; i < proj.rooms.length; i++) {
@@ -35,39 +37,6 @@ const getConstraints = (r: IRoom) => {
         };
     }
     return false;
-};
-
-interface IExportedTile {
-    texture: string,
-    frame: number,
-    x: number,
-    y: number,
-    width: number,
-    height: number,
-    opacity: number,
-    rotation: number,
-    scale: {
-        x: number,
-        y: number
-    },
-    tint: number
-}
-type ExportedCopy = Omit<IRoomCopy, 'uid'> & {template: string};
-
-type ExportedBg = {
-    texture: string,
-    depth: number,
-    exts: {
-        movementX: number,
-        movementY: number,
-        parallaxX: number,
-        parallaxY: number,
-        repeat: 'repeat' | 'no-repeat' | 'repeat-x' | 'repeat-y',
-        scaleX: number,
-        scaleY: number,
-        shiftX: number,
-        shiftY: number
-    }
 };
 
 // eslint-disable-next-line max-lines-per-function
@@ -112,9 +81,9 @@ const stringifyRooms = (proj: IProject): IScriptablesFragment => {
         /* eslint {max-depth: off} */
         if (r.tiles) {
             for (const tileLayer of r.tiles) {
-                const layer = {
+                const layer: ExportedTilemap = {
                     depth: tileLayer.depth,
-                    tiles: [] as IExportedTile[],
+                    tiles: [] as ExportedTile[],
                     extends: tileLayer.extends ? getUnwrappedExtends(tileLayer.extends) : {}
                 };
                 for (const tile of tileLayer.tiles) {

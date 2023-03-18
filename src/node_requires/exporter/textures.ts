@@ -2,6 +2,8 @@ const fs = require('fs-extra');
 const glob = require('./../glob');
 import {revHash} from './../utils/revHash';
 
+import {ExportedTiledTexture, TextureShape} from './_exporterContracts';
+
 const Packer = require('maxrects-packer').MaxRectsPacker;
 type packerBin = {
     width: number;
@@ -29,7 +31,7 @@ type packerBin = {
 
 /* eslint-disable id-blacklist */
 
-const getTextureShape = (texture: ITexture): textureShape => {
+const getTextureShape = (texture: ITexture): TextureShape => {
     if (texture.shape === 'rect') {
         return {
             type: 'rect',
@@ -115,14 +117,6 @@ type exportedTextureFrame = {
         y: number;
     },
     shape: textureShape
-};
-type exportedTiledTexture = {
-    source: string;
-    shape: textureShape;
-    anchor: {
-        x: number;
-        y: number;
-    };
 };
 
 type exportedTextureAtlasJson = {
@@ -406,7 +400,7 @@ export const packImages = async (
         }
     });
 
-    const tiledImages: Record<string, exportedTiledTexture> = {};
+    const tiledImages: Record<string, ExportedTiledTexture> = {};
     let tiledCounter = 0;
     for (const tex of tiledTextures) {
         const atlas = document.createElement('canvas'),

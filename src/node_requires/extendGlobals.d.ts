@@ -1,5 +1,4 @@
 // eslint-disable-next-line spaced-comment
-/// <reference types="../../app/node_modules/pixi.js/" />
 
 export {};
 declare global {
@@ -30,7 +29,4 @@ declare global {
         showSaveDialog(options: any): Promise<string | false>;
         updateWindowMenu?(): Promise<void>;
     }
-}
-declare namespace PIXI {
-    var Texture: any;
 }

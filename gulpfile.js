@@ -6,7 +6,6 @@ const versions = require('./versions');
 const path = require('path'),
       gulp = require('gulp'),
       concat = require('gulp-concat'),
-      replace = require('gulp-replace'),
       sourcemaps = require('gulp-sourcemaps'),
       minimist = require('minimist'),
       ts = require('@ct.js/gulp-typescript'),
@@ -414,54 +413,13 @@ const bakeCompletions = () =>
             spaces: 2
         });
     });
-const bakeCtTypedefs = cb => {
-    spawnise.spawn(npm, ['run', 'ctTypedefs'])
-    .then(cb);
-};
-const concatTypedefs = () =>
-    gulp.src(['./src/typedefs/ct.js/types.d.ts', './src/typedefs/ct.js/**/*.ts', './src/typedefs/default/**/*.ts'])
-    .pipe(concat('global.d.ts'))
-    // patch the generated output so ct classes allow custom properties
-    .pipe(replace('declare class Copy extends PIXI.AnimatedSprite {', `
-        declare class Copy extends PIXI.AnimatedSprite {
-            [key: string]: any
-        `))
-    .pipe(replace('declare class Room extends PIXI.Container {', `
-        declare class Room extends PIXI.Container {
-            [key: string]: any
-        `))
-    // also, remove JSDOC's @namespace flags so the popups in ct.js become more clear
-    .pipe(replace(`
- * @namespace
- */
-declare namespace`, `
- */
-declare namespace`))
-    .pipe(replace(`
-     * @namespace
-     */
-    namespace`, `
-     */
-    namespace`))
-    .pipe(gulp.dest('./app/data/typedefs/'));
-
-// electron-builder ignores .d.ts files no matter how you describe your app's contents.
-const copyPixiTypedefs = () => gulp.src('./app/node_modules/pixi.js/pixi.js.d.ts')
-    .pipe(gulp.dest('./app/data/typedefs'));
-
-const bakeJSDocJson = cb =>
-    spawnise.spawn(npm, ['run', 'ctJSDocJson'])
-    .then(cb);
-
-const bakeTypedefs = gulp.series([bakeCtTypedefs, concatTypedefs, copyPixiTypedefs, bakeJSDocJson]);
 
 const build = gulp.parallel([
     gulp.series(icons, compilePug),
     compileStylus,
     compileScripts,
     processRequires,
-    copyInEditorDocs,
-    bakeTypedefs
+    copyInEditorDocs
 ]);
 
 const bakePackages = async () => {
@@ -647,5 +605,3 @@ exports.sendGithubDraft = sendGithubDraft;
 exports.default = defaultTask;
 exports.dev = devNoNW;
 exports.bakeCompletions = bakeCompletions;
-exports.bakeTypedefs = bakeTypedefs;
-exports.bakeJSDocJson = bakeJSDocJson;

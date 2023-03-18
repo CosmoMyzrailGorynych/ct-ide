@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "target": "es2020",
+        "module": "umd",
+        "noImplicitAny": true,
+        "moduleResolution": "nodenext",
+        "baseUrl": "./",
+        "typeRoots": [
+            "../../app/node_modules/@types/"
+        ],
+        "paths": {
+            "node_modules/*": [
+                "../../app/node_modules/*"
+            ],
+        }
+    }
+}

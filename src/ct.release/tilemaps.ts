@@ -1,27 +1,52 @@
+import {ctjsGame} from '.';
+import {res} from './res';
+import {u} from './u';
+import {templates} from './templates';
+import * as PIXI from 'node_modules/pixi.js';
+
+import {ExportedTilemap, ExportedTile, TextureShape} from './../node_requires/exporter/_exporterContracts';
+
+/**
+ * @extends {PIXI.Sprite}
+ */
+export class Tile extends PIXI.Sprite {
+    shape: TextureShape;
+}
+
+class TileChunk extends PIXI.Container {
+    chunkX: number;
+    chunkY: number;
+    cacheAsBitmap: boolean; // pixi.js' Container is a jerk
+}
+
 /**
  * @extends {PIXI.Container}
- * @class
  */
-class Tilemap extends PIXI.Container {
+export class Tilemap extends PIXI.Container {
+    pixiTiles: Tile[];
+    tiles: (ExportedTile & {sprite: Tile})[];
+    cells: TileChunk[];
+    diamondCellMap: Record<string, TileChunk>;
+    cached: boolean;
     /**
-     * @param {object} template A template object that contains data about depth
+     * @param template A template object that contains data about depth
      * and tile placement. It is usually used by ct.IDE.
      */
-    constructor(template) {
+    constructor(template?: ExportedTilemap) {
         super();
         this.pixiTiles = [];
         if (template) {
-            this.depth = template.depth;
-            this.tiles = template.tiles.map(tile => ({
+            this.zIndex = template.depth;
+            this.tiles = template.tiles.map((tile: ExportedTile) => ({
                 ...tile
-            }));
+            })) as (ExportedTile & {sprite: Tile})[];
             if (template.extends) {
                 Object.assign(this, template.extends);
             }
             for (let i = 0, l = template.tiles.length; i < l; i++) {
                 const tile = template.tiles[i];
-                const textures = ct.res.getTexture(tile.texture);
-                const sprite = new PIXI.Sprite(textures[tile.frame]);
+                const textures = res.getTexture(tile.texture);
+                const sprite = new Tile(textures[tile.frame]);
                 sprite.anchor.x = textures[0].defaultAnchor.x;
                 sprite.anchor.y = textures[0].defaultAnchor.y;
                 sprite.shape = textures.shape;
@@ -36,24 +61,29 @@ class Tilemap extends PIXI.Container {
                 this.tiles[i].sprite = sprite;
             }
         } else {
-            this.tiles = [];
+            this.tiles = [] as (ExportedTile & {sprite: Tile})[];
         }
-        ct.templates.list.TILEMAP.push(this);
+        templates.list.TILEMAP.push(this);
     }
     /**
      * Adds a tile to the tilemap. Will throw an error if a tilemap is cached.
-     * @param {string} textureName The name of the texture to use
-     * @param {number} x The horizontal location of the tile
-     * @param {number} y The vertical location of the tile
-     * @param {number} [frame] The frame to pick from the source texture. Defaults to 0.
-     * @returns {PIXI.Sprite} The created tile
+     * @param textureName The name of the texture to use
+     * @param x The horizontal location of the tile
+     * @param y The vertical location of the tile
+     * @param [frame] The frame to pick from the source texture. Defaults to 0.
+     * @returns The created tile
      */
-    addTile(textureName, x, y, frame = 0) {
+    addTile(
+        textureName: string,
+        x: number,
+        y: number,
+        frame = 0
+    ): Tile {
         if (this.cached) {
             throw new Error('[ct.tiles] Adding tiles to cached tilemaps is forbidden. Create a new tilemap, or add tiles before caching the tilemap.');
         }
-        const texture = ct.res.getTexture(textureName, frame);
-        const sprite = new PIXI.Sprite(texture);
+        const texture = res.getTexture(textureName, frame);
+        const sprite = new Tile(texture);
         sprite.x = x;
         sprite.y = y;
         sprite.shape = texture.shape;
@@ -64,7 +94,14 @@ class Tilemap extends PIXI.Container {
             y,
             width: sprite.width,
             height: sprite.height,
-            sprite
+            sprite,
+            opacity: 1,
+            rotation: 1,
+            scale: {
+                x: 1,
+                y: 1
+            },
+            tint: 0xffffff
         });
         this.addChild(sprite);
         this.pixiTiles.push(sprite);
@@ -75,7 +112,7 @@ class Tilemap extends PIXI.Container {
      * into a series of bitmap textures. This proides great speed boost,
      * but prevents further editing.
      */
-    cache(chunkSize = 1024) {
+    cache(chunkSize = 1024): void {
         if (this.cached) {
             throw new Error('[ct.tiles] Attempt to cache an already cached tilemap.');
         }
@@ -87,12 +124,12 @@ class Tilemap extends PIXI.Container {
         this.cells = [];
         for (let y = 0; y < rows; y++) {
             for (let x = 0; x < cols; x++) {
-                const cell = new PIXI.Container();
+                const cell = new TileChunk();
                 this.cells.push(cell);
             }
         }
         for (let i = 0, l = this.tiles.length; i < l; i++) {
-            const tile = this.children[0],
+            const [tile] = this.children as Tile[],
                   x = Math.floor((tile.x - bounds.x) / chunkSize),
                   y = Math.floor((tile.y - bounds.y) / chunkSize);
             this.cells[y * cols + x].addChild(tile);
@@ -121,7 +158,7 @@ class Tilemap extends PIXI.Container {
      * This version packs tiles into rhombus-shaped chunks, and sorts them
      * from top to bottom. This fixes seam issues for isometric games.
      */
-    cacheDiamond(chunkSize = 1024) {
+    cacheDiamond(chunkSize = 1024): void {
         if (this.cached) {
             throw new Error('[ct.tiles] Attempt to cache an already cached tilemap.');
         }
@@ -129,13 +166,13 @@ class Tilemap extends PIXI.Container {
         this.cells = [];
         this.diamondCellMap = {};
         for (let i = 0, l = this.tiles.length; i < l; i++) {
-            const tile = this.children[0];
-            const [xNormalized, yNormalized] = ct.u.rotate(tile.x, tile.y * 2, -45);
+            const [tile] = this.children as Tile[];
+            const {x: xNormalized, y: yNormalized} = u.rotate(tile.x, tile.y * 2, -45);
             const x = Math.floor(xNormalized / chunkSize),
                   y = Math.floor(yNormalized / chunkSize),
                   key = `${x}:${y}`;
             if (!(key in this.diamondCellMap)) {
-                const chunk = new PIXI.Container();
+                const chunk = new TileChunk();
                 chunk.chunkX = x;
                 chunk.chunkY = y;
                 this.diamondCellMap[key] = chunk;
@@ -162,34 +199,36 @@ class Tilemap extends PIXI.Container {
         this.cached = true;
     }
 }
-ct.templates.Tilemap = Tilemap;
 
-/**
- * @namespace
- */
-ct.tilemaps = {
+export const tilemaps = {
     /**
      * Creates a new tilemap at a specified depth, and adds it to the main room (ct.room).
      * @param {number} [depth] The depth of a newly created tilemap. Defaults to 0.
      * @returns {Tilemap} The created tilemap.
      */
-    create(depth = 0) {
+    create(depth = 0): Tilemap {
         const tilemap = new Tilemap();
-        tilemap.depth = depth;
-        ct.room.addChild(tilemap);
+        tilemap.zIndex = depth;
+        ctjsGame.room.addChild(tilemap);
         return tilemap;
     },
     /**
      * Adds a tile to the specified tilemap. It is the same as
      * calling `tilemap.addTile(textureName, x, y, frame).
-     * @param {Tilemap} tilemap The tilemap to modify.
-     * @param {string} textureName The name of the texture to use.
-     * @param {number} x The horizontal location of the tile.
-     * @param {number} y The vertical location of the tile.
-     * @param {number} [frame] The frame to pick from the source texture. Defaults to 0.
+     * @param tilemap The tilemap to modify.
+     * @param textureName The name of the texture to use.
+     * @param x The horizontal location of the tile.
+     * @param y The vertical location of the tile.
+     * @param frame The frame to pick from the source texture. Defaults to 0.
      * @returns {PIXI.Sprite} The created tile
      */
-    addTile(tilemap, textureName, x, y, frame = 0) {
+    addTile(
+        tilemap: Tilemap,
+        textureName: string,
+        x: number,
+        y: number,
+        frame = 0
+    ): PIXI.Sprite {
         return tilemap.addTile(textureName, x, y, frame);
     },
     /**
@@ -199,10 +238,10 @@ ct.tilemaps = {
      *
      * This is the same as calling `tilemap.cache();`
      *
-     * @param {Tilemap} tilemap The tilemap which needs to be cached.
-     * @param {number} chunkSize The size of one chunk.
+     * @param tilemap The tilemap which needs to be cached.
+     * @param chunkSize The size of one chunk.
      */
-    cache(tilemap, chunkSize) {
+    cache(tilemap: Tilemap, chunkSize: number): void {
         tilemap.cache(chunkSize);
     },
     /**
@@ -218,10 +257,10 @@ ct.tilemaps = {
      *
      * This is the same as calling `tilemap.cacheDiamond();`
      *
-     * @param {Tilemap} tilemap The tilemap which needs to be cached.
-     * @param {number} chunkSize The size of one chunk.
+     * @param tilemap The tilemap which needs to be cached.
+     * @param chunkSize The size of one chunk.
      */
-    cacheDiamond(tilemap, chunkSize) {
+    cacheDiamond(tilemap: Tilemap, chunkSize: number): void {
         tilemap.cacheDiamond(chunkSize);
     }
 };

@@ -1,12 +1,12 @@
 import {ExporterError} from './ExporterError';
 
+import {ExportedTandems} from './_exporterContracts';
+
 const textures = require('../resources/textures');
 
+
 export const stringifyTandems = (project: IProject): string => {
-    const tandems: Record<string, {
-        texture: string;
-        settings: ITandem['emitters'][0]['settings'];
-    }[]> = {};
+    const tandems: ExportedTandems = {};
     for (const tandem of project.emitterTandems) {
         tandems[tandem.name] = tandem.emitters.map(emitter => {
             if (emitter.texture === -1) {

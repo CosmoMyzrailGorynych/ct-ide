@@ -1,4 +1,4 @@
-const {styleToTextStyle} = require('./../styleUtils');
+import {styleToTextStyle} from './../styleUtils';
 export const stringifyStyles = (proj: IProject): string => {
     var styles = '';
     for (const styl in proj.styles) {
@@ -12,4 +12,3 @@ ct.styles.new(
     }
     return styles;
 };
-
