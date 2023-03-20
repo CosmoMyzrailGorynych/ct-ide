@@ -1,5 +1,5 @@
-const {getTemplateFromId} = require('./../resources/templates');
-const {getTextureFromId} = require('./../resources/textures');
+import {getTemplateFromId} from './../resources/templates';
+import {getTextureFromId} from './../resources/textures';
 
 const typeToGetter = {
     template: getTemplateFromId,
@@ -10,20 +10,19 @@ const typeToGetter = {
  * Creates a copy of an extends object, turning UIDs of resources into the names of these resources.
  * Understands notations of `name@@template` and `name@@texture`.
  *
- * @param {object} exts A flat map of extends.
- *
- * @returns {object} An object with unwrapped extends.
+ * @param exts A flat map of extends.
+ * @returns An object with unwrapped extends.
  */
-const getUnwrappedExtends = function getUnwrappedExtends(exts) {
+export const getUnwrappedExtends = (exts: Record<string, unknown>): Record<string, unknown> => {
     if (typeof exts !== 'object') {
         // This is a primitive value
         return exts;
     }
-    const out = {};
+    const out = {} as Record<string, unknown>;
     for (const i in exts) {
         if (Array.isArray(exts[i])) {
             // Recursively unwrap complex objects
-            out[i] = exts[i].map(getUnwrappedExtends);
+            out[i] = (exts[i] as unknown[]).map(getUnwrappedExtends);
             continue;
         }
         const split = i.split('@@');
@@ -40,7 +39,7 @@ const getUnwrappedExtends = function getUnwrappedExtends(exts) {
         }
         if (postfix === 'template' || postfix === 'texture') {
             try {
-                out[key] = typeToGetter[postfix](exts[i]).name;
+                out[key] = typeToGetter[postfix](String(exts[i])).name;
             } catch (e) {
                 alertify.error(`Could not resolve UID ${exts[i]} for field ${key} as a ${postfix}. Returning -1.`);
                 console.error(e);
@@ -61,17 +60,19 @@ const getUnwrappedExtends = function getUnwrappedExtends(exts) {
  * A helper for a content function; unwraps IDs for assets
  * according to the provided specification for this content type.
  *
- * @param {object} exts The object which fields should be unwrapped.
- * @param {object} spec The field schema for this particular content type.
- *
- * @returns {object} The unwrapped object.
+ * @param exts The object which fields should be unwrapped.
+ * @param spec The field schema for this particular content type.
+ * @returns The unwrapped object.
  */
-const getUnwrappedBySpec = function getUnwrappedBySpec(exts, spec) {
-    const fieldMap = {};
+export const getUnwrappedBySpec = (
+    exts: Record<string, unknown>,
+    spec: IContentType['specification']
+): Record<string, unknown> => {
+    const fieldMap = {} as Record<string, IContentType['specification'][0]>;
     for (const field of spec) {
         fieldMap[field.name || field.readableName] = field;
     }
-    const out = {};
+    const out = {} as Record<string, unknown>;
     for (const i in exts) {
         if ((fieldMap[i].type === 'template' || fieldMap[i].type === 'texture') &&
             (exts[i] === void 0 || exts[i] === -1)) {
@@ -80,9 +81,9 @@ const getUnwrappedBySpec = function getUnwrappedBySpec(exts, spec) {
         }
         if (fieldMap[i].type === 'template' || fieldMap[i].type === 'texture') {
             if (fieldMap[i].array) {
-                out[i] = exts[i].map(elt => {
+                out[i] = (exts[i] as string[]).map(elt => {
                     try {
-                        return typeToGetter[fieldMap[i].type](elt).name;
+                        return typeToGetter[fieldMap[i].type as 'template' | 'texture'](elt).name;
                     } catch (e) {
                         alertify.error(`Could not resolve UID ${elt} for field ${i} as a ${fieldMap[i].type}. Returning -1. Full object: ${JSON.stringify(exts)}`);
                         console.error(e);
@@ -94,7 +95,7 @@ const getUnwrappedBySpec = function getUnwrappedBySpec(exts, spec) {
                 continue;
             }
             try {
-                out[i] = typeToGetter[fieldMap[i].type](exts[i]).name;
+                out[i] = typeToGetter[fieldMap[i].type as 'template' | 'texture'](String(exts[i])).name;
             } catch (e) {
                 alertify.error(`Could not resolve UID ${exts[i]} for field ${i} as a ${fieldMap[i].type}. Returning -1. Full object: ${JSON.stringify(exts)}`);
                 console.error(e);
@@ -110,16 +111,10 @@ const getUnwrappedBySpec = function getUnwrappedBySpec(exts, spec) {
     return out;
 };
 
-const getCleanKey = i => {
+export const getCleanKey = (i: string): string => {
     const split = i.split('@@');
     if (split.length > 1) {
         split.pop();
     }
     return split.join('@@');
-};
-
-module.exports = {
-    getUnwrappedExtends,
-    getUnwrappedBySpec,
-    getCleanKey
 };

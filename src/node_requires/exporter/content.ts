@@ -1,6 +1,7 @@
-const {getUnwrappedBySpec} = require('./utils');
-const stringifyContent = function stringifyContent(project) {
-    const contentDb = {};
+import {getUnwrappedBySpec} from './utils';
+
+export const stringifyContent = (project: IProject): string => {
+    const contentDb = {} as Record<string, Record<string, unknown>[]>;
     for (const contentType of project.contentTypes) {
         contentDb[contentType.name || contentType.readableName] = contentType.entries.map(entry =>
             getUnwrappedBySpec(entry, contentType.specification));
@@ -8,7 +9,4 @@ const stringifyContent = function stringifyContent(project) {
     return JSON.stringify(contentDb)
         .replace(/\\/g, '\\\\')
         .replace(/"/g, '\\"');
-};
-module.exports = {
-    stringifyContent
 };
