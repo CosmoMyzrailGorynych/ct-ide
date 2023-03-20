@@ -1,5 +1,3 @@
-/// <reference path="./../../DragonBonesJS/Pixi/5.x/out/dragonBones.d.ts">
-
 import {u} from './u';
 import {ctjsGame} from '.';
 import {sounds} from './sounds';
@@ -226,9 +224,11 @@ const resLib = {
         for (const font in bitmapFonts) {
             loadingPromises.push(resLib.loadBitmapFont(bitmapFonts[font]));
         }
+        /*
         for (const skel of dbSkeletons) {
             loadingPromises.push(resLib.loadDragonBonesSkeleton(...skel));
         }
+        */
         /*
         for (const sound of sounds) {
             // TODO:
@@ -306,12 +306,12 @@ const resLib = {
         }
         return resLib.textures[name].shape;
     },
-    /**
+    /*
      * Creates a DragonBones skeleton, ready to be added to your copies.
      * @param {string} name The name of the skeleton asset
      * @param {string} [skin] Optional; allows you to specify the used skin
      * @returns {object} The created skeleton
-     */
+     *
     makeSkeleton(name: string, skin?: string): any { // TODO:
         const r = resLib.skeletons[name],
               skel = dbFactory.buildArmatureDisplay('Armature', r.name, skin);
@@ -326,6 +326,7 @@ const resLib = {
         });
         return skel;
     }
+    */
 };
 
 

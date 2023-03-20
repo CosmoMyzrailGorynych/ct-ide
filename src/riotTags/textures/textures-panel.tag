@@ -42,26 +42,27 @@ textures-panel.aPanel.aView
                     ).square
                         svg.feather
                             use(xlink:href="#loader")
-            asset-viewer(
-                collection="{global.currentProject.skeletons}"
-                contextmenu="{showSkeletonPopup}"
-                assettype="skeletons"
-                namespace="skeletons"
-                thumbnails="{skelThumbnails}"
-                ref="skeletons"
-            )
-                h1.inlineblock
-                    span {parent.voc.skeletons}
-                .aSpacer.inlineblock
-                label.file.inlineblock
-                    input(type="file" multiple
-                        accept=".json"
-                        onchange="{parent.textureImport}")
-                    .button
-                        svg.feather
-                            use(xlink:href="#download")
-                        span {parent.voc.import}
-                docs-shortcut(hidelabel="yes" path="/skeletal-animation.html" button="yes" title="{vocGlob.docsShort}")
+            //-
+                asset-viewer(
+                    collection="{global.currentProject.skeletons}"
+                    contextmenu="{showSkeletonPopup}"
+                    assettype="skeletons"
+                    namespace="skeletons"
+                    thumbnails="{skelThumbnails}"
+                    ref="skeletons"
+                )
+                    h1.inlineblock
+                        span {parent.voc.skeletons}
+                    .aSpacer.inlineblock
+                    label.file.inlineblock
+                        input(type="file" multiple
+                            accept=".json"
+                            onchange="{parent.textureImport}")
+                        .button
+                            svg.feather
+                                use(xlink:href="#download")
+                            span {parent.voc.import}
+                    docs-shortcut(hidelabel="yes" path="/skeletal-animation.html" button="yes" title="{vocGlob.docsShort}")
     input(
         style="display: none;"
         type="file" multiple accept=".webp,.png,.jpg,.jpeg,.bmp,.gif,.json"

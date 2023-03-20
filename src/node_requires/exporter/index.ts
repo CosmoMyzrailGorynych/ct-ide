@@ -11,7 +11,7 @@ import {ExporterError, highlightProblem} from './ExporterError';
 import {ExportedMeta} from './_exporterContracts';
 
 import {packImages} from './textures';
-import {packSkeletons} from './skeletons';
+// import {packSkeletons} from './skeletons';
 import {getSounds} from './sounds';
 import {stringifyRooms, getStartingRoom} from './rooms';
 import {stringifyStyles} from './styles';
@@ -281,7 +281,7 @@ const exportCtProject = async (
     }
     /* assets — run in parallel */
     const texturesTask = packImages(project, writeDir, production);
-    const skeletonsTask = packSkeletons(project, projdir, writeDir);
+    // const skeletonsTask = packSkeletons(project, projdir, writeDir);
     const bitmapFontsTask = bakeBitmapFonts(project, projdir, writeDir);
     const favicons = bakeFavicons(project, writeDir, production);
     /* Run event cache population in parallel as well */
@@ -365,14 +365,14 @@ const exportCtProject = async (
 
     /* ct.res goes after all the code, but before user-defined scripts */
     const {atlases, tiledImages} = await texturesTask;
-    const skeletons = await skeletonsTask;
+    // const skeletons = await skeletonsTask;
     const bitmapFonts = await bitmapFontsTask;
     const sounds = getSounds(project);
     buffer += template(await sources['res.js'], {
         atlases,
         tiledImages,
         bitmapFonts,
-        dbSkeletons: skeletons.skeletonsDB,
+        dbSkeletons: false,
         sounds,
         groups: JSON.stringify(getGroups(project))
     }, injections);
