@@ -31,8 +31,8 @@ app.on('ready', createMainWindow);
 
 ipcMain.on('ct.desktop', (event, feature) => {
     const namespace = feature.electron.namespace.split('.');
-    const method = feature.electron.method;
-    const parameter = feature.electron.parameter;
+    const {method} = feature.electron;
+    const {parameter} = feature.electron;
     if (namespace.length === 1) {
         if (namespace[0] === 'app') {
             event.returnValue = app[method](parameter);

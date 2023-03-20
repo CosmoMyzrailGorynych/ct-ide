@@ -272,4 +272,7 @@ document.getElementById('ct').appendChild(ct.pixiApp.view);
 })();
 export const ctjsGame = ct;
 
+(window as any).ct = ctjsGame;
+(window as any).PIXI = PIXI;
+
 /*%load%*/

@@ -9,13 +9,13 @@ const path = require('path'),
       sourcemaps = require('gulp-sourcemaps'),
       minimist = require('minimist'),
       ts = require('@ct.js/gulp-typescript'),
+      esbuild = require('esbuild').build,
+      DtsGenerator = require('npm-dts').Generator,
       stylus = require('gulp-stylus'),
       riot = require('gulp-riot'),
       pug = require('gulp-pug'),
       sprite = require('gulp-svgstore'),
       zip = require('gulp-zip'),
-
-      jsdocx = require('jsdoc-x'),
 
       streamQueue = require('streamqueue'),
       notifier = require('node-notifier'),
@@ -191,6 +191,43 @@ const processRequiresTS = () =>
 
 const processRequires = gulp.series(copyRequires, processRequiresTS);
 
+const baseEsbuildConfig = {
+    entryPoints: ['./src/ct.release/index.ts'],
+    bundle: true,
+    minify: false
+};
+const buildCtJsLib = () => {
+    const processes = [];
+    // Ct.js library for exporter's consumption
+    processes.push(esbuild({
+        ...baseEsbuildConfig,
+        outfile: './app/data/ct.release/ct.js',
+        platform: 'browser',
+        external: ['node_modules/pixi.js', 'node_modules/pixi-particles']
+    }));
+    // Pixi.js dependencies
+    processes.push(esbuild({
+        ...baseEsbuildConfig,
+        entryPoints: ['./src/ct.release/index.pixi.ts'],
+        tsconfig: './src/ct.release/tsconfig.json',
+        minify: true,
+        outfile: './app/data/ct.release/pixi.js'
+    }));
+    // Whole package to be used as a lib by ct.IDE
+    processes.push(esbuild({
+        ...baseEsbuildConfig,
+        outfile: './app/data/ct.release/ct.ts',
+        minify: false
+    }));
+    processes.push(gulp.src([
+        './src/ct.release/**',
+        '!./src/ct.release/*.ts',
+        '!./src/ct.release/changes.txt',
+        '!./src/ct.release/tsconfig.json'
+    ]).pipe(gulp.dest('./app/data/ct.release')));
+    return Promise.all(processes);
+};
+
 const copyInEditorDocs = () =>
     gulp.src('./docs/docs/ct.*.md')
     .pipe(gulp.dest('./app/data/node_requires'));
@@ -350,69 +387,6 @@ const docs = async () => {
         throw e;
     }
 };
-
-// @see https://microsoft.github.io/monaco-editor/api/enums/monaco.languages.completionitemkind.html
-const kindMap = {
-    function: 'Function',
-    class: 'Class'
-};
-const getAutocompletion = doc => {
-    if (doc.kind === 'function') {
-        if (!doc.params || doc.params.length === 0) {
-            return doc.longname + '()';
-        }
-        return doc.longname + `(${doc.params.map(param => param.name).join(', ')})`;
-    }
-    if (doc.kind === 'class') {
-        return doc.name;
-    }
-    return doc.longname;
-};
-const getDocumentation = doc => {
-    if (!doc.description) {
-        return void 0;
-    }
-    if (doc.kind === 'function') {
-        return {
-            value: `${doc.description}
-${(doc.params || []).map(param => `* \`${param.name}\` (${param.type.names.join('|')}) ${param.description} ${param.optional ? '(optional)' : ''}`).join('\n')}
-
-Returns ${doc.returns[0].type.names.join('|')}, ${doc.returns[0].description}`
-        };
-    }
-    return {
-        value: doc.description
-    };
-};
-
-const bakeCompletions = () =>
-    jsdocx.parse({
-        files: './app/data/ct.release/**/*.js',
-        excludePattern: '(DragonBones|pixi)',
-        undocumented: false,
-        allowUnknownTags: true
-    })
-    .then(docs => {
-        const registry = [];
-        for (const doc of docs) {
-            console.log(doc);
-            if (doc.params) {
-                for (const param of doc.params) {
-                    console.log(param);
-                }
-            }
-            const item = {
-                label: doc.name,
-                insertText: doc.autocomplete || getAutocompletion(doc),
-                documentation: getDocumentation(doc),
-                kind: kindMap[doc.kind] || 'Property'
-            };
-            registry.push(item);
-        }
-        fs.outputJSON('./app/data/node_requires/codeEditor/autocompletions.json', registry, {
-            spaces: 2
-        });
-    });
 
 const build = gulp.parallel([
     gulp.series(icons, compilePug),
@@ -594,14 +568,19 @@ exports.lintTags = lintTags;
 exports.lintStylus = lintStylus;
 exports.lintI18n = lintI18n;
 exports.lint = lint;
+
+exports.buildCtJsLib = buildCtJsLib;
+
 exports.packages = packages;
 exports.nwbuild = bakePackages;
+exports.zipPackages = zipPackages;
+
 exports.docs = docs;
 exports.build = build;
+
 exports.deploy = deploy;
-exports.zipPackages = zipPackages;
 exports.deployItchOnly = deployItchOnly;
 exports.sendGithubDraft = sendGithubDraft;
+
 exports.default = defaultTask;
 exports.dev = devNoNW;
-exports.bakeCompletions = bakeCompletions;
