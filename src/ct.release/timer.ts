@@ -70,10 +70,10 @@ export class CtTimer {
      * @type {number}
      */
     get time(): number {
-        return this[ctTimerTime] * 1000 / ctjsGame.speed;
+        return this[ctTimerTime] * 1000 / ctjsGame.render.speed;
     }
     set time(newTime: number) {
-        this[ctTimerTime] = newTime / 1000 * ctjsGame.speed;
+        this[ctTimerTime] = newTime / 1000 * ctjsGame.render.speed;
     }
 
     /**

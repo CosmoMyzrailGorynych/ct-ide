@@ -7,11 +7,11 @@ import {ctjsGame, deadPool} from '.';
 import {ExportedRoom} from './../node_requires/exporter/_exporterContracts';
 import * as PIXI from 'node_modules/pixi.js';
 
-interface IRoomMergeResult {
+type RoomMergeResult = {
     copies: Copy[];
     tileLayers: Tilemap[];
     backgrounds: Background[];
-}
+};
 
 export class Room extends PIXI.Container<PIXI.DisplayObject> {
     static roomId = 0;
@@ -89,7 +89,7 @@ export class Room extends PIXI.Container<PIXI.DisplayObject> {
                 Object.assign(this, template.extends);
             }
             if (this === ctjsGame.room) {
-                ctjsGame.pixiApp.renderer.backgroundColor =
+                (ctjsGame.pixiApp.renderer as PIXI.Renderer).background.color =
                     u.hexToPixi(this.template.backgroundColor);
             }
             /*%beforeroomoncreate%*/
@@ -156,7 +156,7 @@ export const rooms = {
      */
     templates: {} as Record<string, ExportedRoom>,
     /** The current top-level room in the game. */
-    current: Room,
+    current: null as Room,
     /**
      * An object that contains arrays of currently present rooms.
      * These include the current room (`ctjsGame.room`), as well as any rooms
@@ -189,7 +189,7 @@ export const rooms = {
      * @returns {void}
      */
     clear(): void {
-        ctjsGame.stage.children = [];
+        ctjsGame.stage.children.length = 0;
         ctjsGame.stack = [];
         for (const i in templates.list) {
             templates.list[i] = [];
@@ -306,17 +306,17 @@ export const rooms = {
     /**
      * Merges a given room into the current one. Skips room's OnCreate event.
      *
-     * @param {string} roomName The name of the room that needs to be merged
-     * @returns {IRoomMergeResult} Arrays of created copies, backgrounds, tile layers,
+     * @param roomName The name of the room that needs to be merged
+     * @returns Arrays of created copies, backgrounds, tile layers,
      * added to the current room (`ctjsGame.room`). Note: it does not get updated,
      * so beware of memory leaks if you keep a reference to this array for a long time!
      */
-    merge(roomName: string): IRoomMergeResult | false {
+    merge(roomName: string): RoomMergeResult | false {
         if (!(roomName in rooms.templates)) {
             console.error(`[rooms] merge failed: the room ${roomName} does not exist!`);
             return false;
         }
-        const generated: IRoomMergeResult = {
+        const generated: RoomMergeResult = {
             copies: [],
             tileLayers: [],
             backgrounds: []

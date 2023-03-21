@@ -6,9 +6,8 @@
     const path = require('path');
 
     const lib = [
-        './data/typedefs/pixi.js.d.ts',
         './data/typedefs/global.d.ts',
-        './data/typedefs/keywordWorkarounds.d.ts'
+        './data/ct.release/ct.ts'
     ];
 
     window.signals = window.signals || riot.observable({});

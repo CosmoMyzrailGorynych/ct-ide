@@ -15,12 +15,12 @@ import {packImages} from './textures';
 import {getSounds} from './sounds';
 import {stringifyRooms, getStartingRoom} from './rooms';
 import {stringifyStyles} from './styles';
-const {stringifyTandems} = require('./emitterTandems');
+import {stringifyTandems} from './emitterTandems';
 import {stringifyTemplates} from './templates';
-const {stringifyContent} = require('./content');
+import {stringifyContent} from './content';
 import {bundleFonts, bakeBitmapFonts} from './fonts';
 import {bakeFavicons} from './icons';
-const {getUnwrappedExtends, getCleanKey} = require('./utils');
+import {getUnwrappedExtends, getCleanKey} from './utils';
 import {revHash} from './../utils/revHash';
 import {getGroups} from './groups';
 import {substituteHtmlVars} from './html';
@@ -241,38 +241,15 @@ const exportCtProject = async (
     let cssBundleFilename = 'ct.css',
         jsBundleFilename = 'ct.js';
 
-    /* Pixi.js */
-    if (settings.rendering.usePixiLegacy) {
-        await fs.copyFile('./node_modules/pixi.js-legacy/dist/pixi-legacy.min.js', path.join(writeDir, '/pixi.min.js'));
-        await fs.copyFile('./node_modules/pixi.js-legacy/dist/pixi-legacy.min.js.map', path.join(writeDir, '/pixi-legacy.min.js.map'));
-    } else {
-        await fs.copyFile('./node_modules/pixi.js/dist/pixi.min.js', path.join(writeDir, '/pixi.min.js'));
-        await fs.copyFile('./node_modules/pixi.js/dist/pixi.min.js.map', path.join(writeDir, '/pixi.min.js.map'));
-    }
-    if (project.emitterTandems && project.emitterTandems.length) {
-        await fs.copyFile('./node_modules/pixi-particles/dist/pixi-particles.min.js', path.join(writeDir, '/pixi-particles.min.js'));
-        await fs.copyFile('./node_modules/pixi-particles/dist/pixi-particles.min.js.map', path.join(writeDir, '/pixi-particles.min.js.map'));
-    }
-
     const startroom = getStartingRoom(project);
 
     /* Load source files in parallel */
     const sources: Record<string, Promise<string>> = {};
     const sourcesList = [
-        'backgrounds.js',
-        'camera.js',
-        'content.js',
+        'pixi.js',
+        'ct.js',
         'ct.css',
-        'emitters.js',
-        'index.html',
-        'inputs.js',
-        'main.js',
-        'res.js',
-        'rooms.js',
-        'styles.js',
-        'templates.js',
-        'tilemaps.js',
-        'timer.js'
+        'index.html'
     ];
     for (const file of sourcesList) {
         sources[file] = fs.readFile(path.join(basePath, 'ct.release', file), {
@@ -286,106 +263,34 @@ const exportCtProject = async (
     const favicons = bakeFavicons(project, writeDir, production);
     /* Run event cache population in parallel as well */
     const cacheHandle = populateEventCache(project);
+
+    let actionsSetup = '';
+    for (const action of project.actions) {
+        actionsSetup += `ct.inputs.addAction('${action.name}', ${JSON.stringify(action.methods)});\n`;
+    }
     const projectmeta: ExportedMeta = {
         name: settings.authoring.title,
         author: settings.authoring.author,
         site: settings.authoring.site,
         version: settings.authoring.version.join('.') + settings.authoring.versionPostfix
     };
-    let buffer = template(await sources['main.js'], {
-        startwidth: startroom.width,
-        startheight: startroom.height,
-        pixelatedrender: Boolean(settings.rendering.pixelatedrender),
-        highDensity: Boolean(settings.rendering.highDensity),
-        maxfps: Number(settings.rendering.maxFPS),
-        ctversion: process.versions.ctjs,
-        projectmeta
-    }, injections);
-    buffer += '\n';
+    let buffer = await sources['pixi.js'];
 
-    let actionsSetup = '';
-    for (const action of project.actions) {
-        actionsSetup += `ct.inputs.addAction('${action.name}', ${JSON.stringify(action.methods)});\n`;
-    }
-    // This section is synchronous to the possible extent, no race conditions possible here
-    /* eslint-disable require-atomic-updates */
-    buffer += template(await sources['inputs.js'], {
-        actions: actionsSetup
-    }, injections);
-    buffer += '\n';
-
-    // Process all the scriptables to get combined code for root rooms
+    // Process all the scriptables to get combined code for the root rooms
     await cacheHandle;
-
+    const fonts = await bundleFonts(project, projdir, writeDir);
     const rooms = stringifyRooms(project);
     const templates = stringifyTemplates(project);
     const rootRoomOnCreate = rooms.rootRoomOnCreate + '\n' + templates.rootRoomOnCreate;
     const rootRoomOnStep = rooms.rootRoomOnStep + '\n' + templates.rootRoomOnStep;
     const rootRoomOnDraw = rooms.rootRoomOnDraw + '\n' + templates.rootRoomOnDraw;
     const rootRoomOnLeave = rooms.rootRoomOnLeave + '\n' + templates.rootRoomOnLeave;
-    buffer += template(await sources['rooms.js'], {
-        startroom: startroom.name,
-        rooms: rooms.libCode,
-        rootRoomOnCreate,
-        rootRoomOnStep,
-        rootRoomOnDraw,
-        rootRoomOnLeave
-    }, injections);
-    buffer += '\n';
-
-    const styles = stringifyStyles(project);
-    buffer += template(await sources['styles.js'], {
-        styles
-    }, injections);
-    buffer += '\n';
-
-    if (project.emitterTandems && project.emitterTandems.length) {
-        const tandems = stringifyTandems(project);
-        buffer += template(await sources['emitters.js'], {
-            tandemTemplates: tandems
-        }, injections);
-    }
-
-    buffer += template(await sources['templates.js'], {
-        templates: templates.libCode
-    }, injections);
-
-    // Add four files in a sequence, without additional transforms
-    buffer += (
-        await Promise.all(['backgrounds.js', 'tilemaps.js', 'camera.js', 'timer.js']
-            .map(source => sources[source]))
-    ).join('\n');
-
-    const fonts = await bundleFonts(project, projdir, writeDir);
-    buffer += fonts.js;
-    /* eslint-enable require-atomic-updates */
-
-    /* Add catmods */
-    buffer += await addModules();
-
-    /* ct.res goes after all the code, but before user-defined scripts */
-    const {atlases, tiledImages} = await texturesTask;
-    // const skeletons = await skeletonsTask;
-    const bitmapFonts = await bitmapFontsTask;
-    const sounds = getSounds(project);
-    buffer += template(await sources['res.js'], {
-        atlases,
-        tiledImages,
-        bitmapFonts,
-        dbSkeletons: false,
-        sounds,
-        groups: JSON.stringify(getGroups(project))
-    }, injections);
-    buffer += '\n';
-
-    const content = stringifyContent(project);
-    buffer += (await sources['content.js']).replace('/*@contentTypes@*/', `"${content}"`);
-    buffer += '\n';
 
     /* User-defined scripts */
+    let userScripts = '';
     for (const script of project.scripts) {
         try {
-            buffer += typeScript(script.code, {
+            userScripts += typeScript(script.code, {
                 transforms: ['typescript']
             }).code + ';\n';
         } catch (e) {
@@ -397,6 +302,41 @@ const exportCtProject = async (
             throw exporterError;
         }
     }
+
+    buffer += template(await sources['ct.js'], {
+        pixelatedrender: Boolean(settings.rendering.pixelatedrender),
+        highDensity: Boolean(settings.rendering.highDensity),
+        maxfps: Number(settings.rendering.maxFPS),
+        ctversion: process.versions.ctjs,
+        projectmeta,
+        startwidth: startroom.width,
+        startheight: startroom.height,
+
+        actions: actionsSetup,
+        startroom: startroom.name,
+        rooms: rooms.libCode,
+        rootRoomOnCreate,
+        rootRoomOnStep,
+        rootRoomOnDraw,
+        rootRoomOnLeave,
+        styles: stringifyStyles(project),
+        tandemTemplates: stringifyTandems(project),
+        templates: templates.libCode,
+        fonts: fonts.js,
+        atlases: (await texturesTask).atlases,
+        tiledImages: (await texturesTask).tiledImages,
+        bitmapFonts: await bitmapFontsTask,
+        dbSkeletons: false,
+        sounds: getSounds(project),
+        resourceGroups: JSON.stringify(getGroups(project)),
+        contentTypes: stringifyContent(project),
+        // skeletons: await skeletonsTask
+        userScripts
+    }, injections);
+
+    /* Add catmods */
+    buffer += await addModules();
+
     /* passthrough copy of files in the `include` folder */
     if (await fs.pathExists(projdir + '/include/')) {
         await fs.copy(projdir + '/include/', writeDir);

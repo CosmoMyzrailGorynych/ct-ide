@@ -10,7 +10,6 @@ const path = require('path'),
       minimist = require('minimist'),
       ts = require('@ct.js/gulp-typescript'),
       esbuild = require('esbuild').build,
-      DtsGenerator = require('npm-dts').Generator,
       stylus = require('gulp-stylus'),
       riot = require('gulp-riot'),
       pug = require('gulp-pug'),
@@ -190,6 +189,11 @@ const processRequiresTS = () =>
     .pipe(gulp.dest('./app/data/node_requires'));
 
 const processRequires = gulp.series(copyRequires, processRequiresTS);
+
+const bakeTypedefs = () =>
+    gulp.src('./src/typedefs/default/**/*.ts')
+    .pipe(concat('global.d.ts'))
+    .pipe(gulp.dest('./app/data/typedefs/'));
 
 const baseEsbuildConfig = {
     entryPoints: ['./src/ct.release/index.ts'],
@@ -393,7 +397,8 @@ const build = gulp.parallel([
     compileStylus,
     compileScripts,
     processRequires,
-    copyInEditorDocs
+    copyInEditorDocs,
+    bakeTypedefs
 ]);
 
 const bakePackages = async () => {

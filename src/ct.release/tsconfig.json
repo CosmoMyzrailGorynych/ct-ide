@@ -12,8 +12,6 @@
             "node_modules/*": [
                 "../../app/node_modules/*"
             ],
-        },
-        "declaration": true,
-        "declarationDir": "../../app/data/ct.release/"
+        }
     }
 }

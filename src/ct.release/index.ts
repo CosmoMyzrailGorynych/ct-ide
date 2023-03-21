@@ -5,10 +5,12 @@ import {actions, inputs, CtAction} from './inputs';
 import {backgrounds, Background} from './backgrounds';
 import {Camera} from './camera';
 import {content} from './content';
-import {Copy} from './templates';
 import {emitters, EmitterTandem} from './emitters';
 import {res} from './res';
 import {rooms, Room} from './rooms';
+import {sounds} from 'sounds';
+import {styles} from 'styles';
+import {Copy, templates} from './templates';
 import {tilemaps, Tilemap} from './tilemaps';
 import {timer} from './timer';
 import {u} from './u';
@@ -33,6 +35,10 @@ setInterval(function cleanDeadPool() {
     deadPool.length = 0;
 }, 1000 * 60);
 
+type ctFittoscreen = (() => void) & {
+    mode: string;
+};
+
 /**
  * The ct.js library
  */
@@ -45,7 +51,11 @@ const ct = {
         /** The actual number of frames per second the machine achieves. */
         fps: [/*@maxfps@*/][0] || 60
     },
-    stack: [] as Copy[],
+    stack: [] as (Copy | Background)[],
+    /**
+     * Current root room.
+     */
+    room: null as Room,
     /**
      * A measure of how long a frame took time to draw, usually equal to 1 and larger on lags.
      * For example, if it is equal to 2, it means that the previous frame took twice as much time
@@ -90,12 +100,16 @@ const ct = {
      * @param {number} value New width in pixels
      */
     set width(value: number) {
-        ct.camera.width = ct.roomWidth = value;
-        if (!ct.fittoscreen || ct.fittoscreen.mode === 'fastScale') {
+        ct.camera.width = value;
+        if (!('fittoscreen' in ct)) {
+            return;
+        }
+        const fittoscreen = ct.fittoscreen as ctFittoscreen;
+        if (fittoscreen.mode === 'fastScale') {
             ct.pixiApp.renderer.resize(value, ct.height);
         }
-        if (ct.fittoscreen) {
-            ct.fittoscreen();
+        if (fittoscreen) {
+            fittoscreen();
         }
     },
     get height(): number {
@@ -107,25 +121,37 @@ const ct = {
      * @param {number} value New height in pixels
      */
     set height(value: number) {
-        ct.camera.height = ct.roomHeight = value;
-        if (!ct.fittoscreen || ct.fittoscreen.mode === 'fastScale') {
+        ct.camera.height = value;
+        if (!('fittoscreen' in ct)) {
+            return;
+        }
+        const fittoscreen = ct.fittoscreen as ctFittoscreen;
+        if (fittoscreen.mode === 'fastScale') {
             ct.pixiApp.renderer.resize(ct.width, value);
         }
-        if (ct.fittoscreen) {
-            ct.fittoscreen();
+        if (fittoscreen) {
+            fittoscreen();
         }
     },
+    /** The width of the current room's initial viewport, as it was set in ct.IDE */
+    roomWidth: [/*@startwidth@*/][0] as number,
+    /** The height of the current room's initial viewport, as it was set in ct.IDE */
+    roomHeight: [/*@startheight@*/][0] as number,
 
     // Core libraries
-    u,
     actions,
     inputs,
     emitters,
     content,
     backgrounds,
-    tilemaps,
     res,
+    rooms,
+    sounds,
+    styles,
+    templates,
+    tilemaps,
     timer,
+    u,
 
     // Base classes
     Action: CtAction,
@@ -175,30 +201,31 @@ if (!ct.pixiApp.renderer.options.antialias) {
     PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 }
 ct.stage = ct.pixiApp.stage;
-ct.pixiApp.renderer.autoDensity = ct.render.highDensity;
-document.getElementById('ct').appendChild(ct.pixiApp.view);
+// Incorrect pixi.js typings? autoDensity is writable
+(ct.pixiApp.renderer as any).autoDensity = ct.render.highDensity;
+document.getElementById('ct').appendChild(ct.pixiApp.view as HTMLCanvasElement);
 
 // eslint-disable-next-line max-lines-per-function
 (() => {
-    const killRecursive = (copy: Copy) => {
+    const killRecursive = (copy: Copy | Background) => {
         copy.kill = true;
-        if (copy.onDestroy) {
-            ct.templates.onDestroy.apply(copy);
+        if (copy instanceof Copy && copy.onDestroy) {
+            templates.onDestroy.apply(copy);
             copy.onDestroy.apply(copy);
         }
         for (const child of copy.children) {
-            if (ct.templates.isCopy(child)) {
-                killRecursive(child);
+            if (templates.isCopy(child)) {
+                killRecursive(child as Copy); // bruh
             }
         }
         const stackIndex = ct.stack.indexOf(copy);
         if (stackIndex !== -1) {
             ct.stack.splice(stackIndex, 1);
         }
-        if (copy.template) {
-            const templatelistIndex = ct.templates.list[copy.template].indexOf(copy);
+        if (copy instanceof Copy && copy.template) {
+            const templatelistIndex = templates.list[copy.template].indexOf(copy);
             if (templatelistIndex !== -1) {
-                ct.templates.list[copy.template].splice(templatelistIndex, 1);
+                templates.list[copy.template].splice(templatelistIndex, 1);
             }
         }
         deadPool.push(copy);
@@ -218,9 +245,9 @@ document.getElementById('ct').appendChild(ct.pixiApp.view);
         /*%beforeframe%*/
         rooms.rootRoomOnStep.apply(ct.room);
         for (let i = 0, li = ct.stack.length; i < li; i++) {
-            ct.templates.beforeStep.apply(ct.stack[i]);
+            templates.beforeStep.apply(ct.stack[i]);
             ct.stack[i].onStep.apply(ct.stack[i]);
-            ct.templates.afterStep.apply(ct.stack[i]);
+            templates.afterStep.apply(ct.stack[i]);
         }
         // There may be a number of rooms stacked on top of each other.
         // Loop through them and filter out everything that is not a room.
@@ -247,9 +274,9 @@ document.getElementById('ct').appendChild(ct.pixiApp.view);
         manageCamera();
 
         for (let i = 0, li = ct.stack.length; i < li; i++) {
-            ct.templates.beforeDraw.apply(ct.stack[i]);
+            templates.beforeDraw.apply(ct.stack[i]);
             ct.stack[i].onDraw.apply(ct.stack[i]);
-            ct.templates.afterDraw.apply(ct.stack[i]);
+            templates.afterDraw.apply(ct.stack[i]);
             ct.stack[i].xprev = ct.stack[i].x;
             ct.stack[i].yprev = ct.stack[i].y;
         }
@@ -276,3 +303,5 @@ export const ctjsGame = ct;
 (window as any).PIXI = PIXI;
 
 /*%load%*/
+
+/*@userScripts@*/

@@ -1,12 +1,12 @@
 import {ExportedStyle} from './../node_requires/exporter/_exporterContracts';
 
-const styles = {
+export const styles = {
     types: {} as Record<string, ExportedStyle>,
     /**
      * Creates a new style with a given name.
      * Technically, it just writes `data` to `styles.types`
      */
-    new(name: string, styleTemplate: ExportedStyle) {
+    new(name: string, styleTemplate: ExportedStyle): ExportedStyle {
         styles.types[name] = styleTemplate;
         return styleTemplate;
     },

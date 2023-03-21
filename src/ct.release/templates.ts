@@ -7,10 +7,6 @@ import {ctjsGame, copyTypeSymbol} from '.';
 
 import {ExportedTemplate, TextureShape} from '../node_requires/exporter/_exporterContracts';
 
-const textureAccessor = Symbol('texture');
-const zeroDirectionAccessor = Symbol('zeroDirection');
-const hspeedAccessor = Symbol('hspeed');
-const vspeedAccessor = Symbol('vspeed');
 let uid = 0;
 
 export class Copy extends PIXI.AnimatedSprite {
@@ -56,16 +52,21 @@ export class Copy extends PIXI.AnimatedSprite {
     skipRealign?: boolean;
 
     // Private-ish values
-    [textureAccessor]: string;
-    [zeroDirectionAccessor]: number;
-    [hspeedAccessor]: number;
-    [vspeedAccessor]: number;
+    /** Current texture.
+     * @readonly
+    */
+    #tex: string;
+    #zeroDirection: number;
+    #hspeed: number;
+    #vspeed: number;
     [copyTypeSymbol]: true = true;
 
     onStep: () => void;
     onDraw: () => void;
     onCreate: () => void;
     onDestroy: () => void;
+
+    _destroyed: boolean;
 
     /**
      * Creates an instance of Copy.
@@ -105,7 +106,7 @@ export class Copy extends PIXI.AnimatedSprite {
         }
         super(textures);
         if (template) {
-            this[textureAccessor] = t.texture;
+            this.#tex = t.texture;
             this.anchor.x = textures[0].defaultAnchor.x;
             this.anchor.y = textures[0].defaultAnchor.y;
             this.anchor.x = t.anchorX || 0;
@@ -138,9 +139,9 @@ export class Copy extends PIXI.AnimatedSprite {
         this.position.set(x || 0, y || 0);
         this.xprev = this.xstart = this.x;
         this.yprev = this.ystart = this.y;
-        this[hspeedAccessor] = 0;
-        this[vspeedAccessor] = 0;
-        this[zeroDirectionAccessor] = 0;
+        this.#hspeed = 0;
+        this.#vspeed = 0;
+        this.#zeroDirection = 0;
         this.speed = this.direction = this.gravity = 0;
         this.gravityDir = 90;
         this.depth = 0;
@@ -189,12 +190,12 @@ export class Copy extends PIXI.AnimatedSprite {
      * @type {(string|number)}
      */
     set tex(value: string) {
-        if (this[textureAccessor] === value) {
+        if (this.#tex === value) {
             return;
         }
         var {playing} = this;
         this.textures = res.getTexture(value);
-        this[textureAccessor] = value;
+        this.#tex = value;
         this.shape = res.getTextureShape(value);
         this.anchor.x = (this.textures[0] as CtjsTexture).defaultAnchor.x;
         this.anchor.y = (this.textures[0] as CtjsTexture).defaultAnchor.y;
@@ -203,7 +204,7 @@ export class Copy extends PIXI.AnimatedSprite {
         }
     }
     get tex(): string {
-        return this[textureAccessor];
+        return this.#tex;
     }
     /**
      * The speed of a copy that is used in `this.move()` calls and similar function
@@ -213,14 +214,14 @@ export class Copy extends PIXI.AnimatedSprite {
     }
     set speed(value: number) {
         if (value === 0) {
-            this[zeroDirectionAccessor] = this.direction;
+            this.#zeroDirection = this.direction;
             this.hspeed = this.vspeed = 0;
             return;
         }
         if (this.speed === 0) {
-            const restoredDir = this[zeroDirectionAccessor];
-            this[hspeedAccessor] = value * Math.cos(restoredDir * Math.PI / 180);
-            this[vspeedAccessor] = value * Math.sin(restoredDir * Math.PI / 180);
+            const restoredDir = this.#zeroDirection;
+            this.#hspeed = value * Math.cos(restoredDir * Math.PI / 180);
+            this.#vspeed = value * Math.sin(restoredDir * Math.PI / 180);
             return;
         }
         var multiplier = value / this.speed;
@@ -229,27 +230,27 @@ export class Copy extends PIXI.AnimatedSprite {
     }
     /** The horizontal speed of a copy */
     get hspeed(): number {
-        return this[hspeedAccessor];
+        return this.#hspeed;
     }
     set hspeed(value: number) {
         if (this.vspeed === 0 && value === 0) {
-            this[zeroDirectionAccessor] = this.direction;
+            this.#zeroDirection = this.direction;
         }
-        this[hspeedAccessor] = value;
+        this.#hspeed = value;
     }
     /** The vertical speed of a copy */
     get vspeed(): number {
-        return this[vspeedAccessor];
+        return this.#vspeed;
     }
     set vspeed(value: number) {
         if (this.hspeed === 0 && value === 0) {
-            this[zeroDirectionAccessor] = this.direction;
+            this.#zeroDirection = this.direction;
         }
-        this[vspeedAccessor] = value;
+        this.#vspeed = value;
     }
     get direction(): number {
         if (this.speed === 0) {
-            return this[zeroDirectionAccessor];
+            return this.#zeroDirection;
         }
         return (Math.atan2(this.vspeed, this.hspeed) * 180 / Math.PI + 360) % 360;
     }
@@ -257,11 +258,11 @@ export class Copy extends PIXI.AnimatedSprite {
      * The moving direction of the copy, in degrees, starting with 0 at the right side
      * and going with 90 facing upwards, 180 facing left, 270 facing down.
      * This parameter is used by `this.move()` call.
-     * @param {number} value New direction
-     * @type {number}
+     * @param value New direction
+     * @type
      */
     set direction(value: number) {
-        this[zeroDirectionAccessor] = value;
+        this.#zeroDirection = value;
         if (this.speed > 0) {
             var {speed} = this;
             this.hspeed = speed * Math.cos(value * Math.PI / 180);
@@ -287,7 +288,6 @@ export class Copy extends PIXI.AnimatedSprite {
     /**
      * Performs a movement step, reading such parameters as `gravity`, `speed`,
      * `direction`.
-     * @returns {void}
      */
     move(): void {
         if (this.gravity) {
@@ -302,9 +302,8 @@ export class Copy extends PIXI.AnimatedSprite {
     /**
      * Adds a speed vector to the copy, accelerating it by a given delta speed
      * in a given direction.
-     * @param {number} spd Additive speed
-     * @param {number} dir The direction in which to apply additional speed
-     * @returns {void}
+     * @param spd Additive speed
+     * @param dir The direction in which to apply additional speed
      */
     addSpeed(spd: number, dir: number): void {
         this.hspeed += spd * Math.cos(dir * Math.PI / 180);
@@ -313,7 +312,7 @@ export class Copy extends PIXI.AnimatedSprite {
 
     /**
      * Returns the room that owns the current copy
-     * @returns {Room} The room that owns the current copy
+     * @returns The room that owns the current copy
      */
     getRoom(): Room {
         let {parent} = this;
@@ -345,7 +344,6 @@ export const templates = {
     Copy,
     /**
      * An object that contains arrays of copies of all templates.
-     * @type {Object.<string,Array<Copy>>}
      */
     list: {
         BACKGROUND: [],
@@ -356,7 +354,6 @@ export const templates = {
     } & Record<string, Copy[]>,
     /**
      * A map of all the templates of templates exported from ct.IDE.
-     * @type {object}
      */
     templates: {} as Record<string, ExportedTemplate>,
     /**

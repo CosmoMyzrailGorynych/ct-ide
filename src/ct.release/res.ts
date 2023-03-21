@@ -30,7 +30,7 @@ export interface ITextureOptions {
 
 const loadingScreen = document.querySelector('.ct-aLoadingScreen') as HTMLDivElement,
       loadingBar = loadingScreen.querySelector('.ct-aLoadingBar') as HTMLDivElement;
-const dbFactory = window.dragonBones ? dragonBones.PixiFactory.factory : null;
+//const dbFactory = window.dragonBones ? dragonBones.PixiFactory.factory : null;
 
 
 /**
@@ -41,7 +41,7 @@ const resLib = {
     sounds: {},
     textures: {} as Record<string, CtjsAnimation>,
     skeletons: {} as Record<string, ExportedSkeleton>,
-    groups: [/*@groups@*/][0] as Record<string, string[]>,
+    groups: [/*@resourceGroups@*/][0] as Record<string, string[]>,
     /**
      * Loads and executes a script by its URL
      * @param {string} url The URL of the script file, with its extension.
@@ -92,7 +92,7 @@ const resLib = {
         resLib.textures[name] = texture;
         return texture;
     },
-    /**
+    /*
      * Loads a skeleton made in DragonBones into the game
      * @param {string} ske Path to the _ske.json file that contains
      * the armature and animations.
@@ -102,7 +102,7 @@ const resLib = {
      * all the textures of the skeleton.
      * @param {string} name The name of the skeleton as it will be used in ct.js game
      */
-    loadDragonBonesSkeleton(
+    /*loadDragonBonesSkeleton(
         ske: string,
         tex: string,
         png: string,
@@ -119,7 +119,8 @@ const resLib = {
                 resolve(name);
             });
             loader.onError.add(() => {
-                reject(new Error(`[ct.res] Could not load skeleton with _ske.json: ${ske}, _tex.json: ${tex}, _tex.png: ${png}.`));
+                reject(new Error(`[ct.res] Could not load skeleton with _ske.json:
+                ${ske}, _tex.json: ${tex}, _tex.png: ${png}.`));
             });
         }).then(() => {
             dbf.parseDragonBonesData(loader.resources[ske].data);
@@ -131,7 +132,7 @@ const resLib = {
             resLib.skeletons[name] = loader.resources[ske].data;
             return name;
         });
-    },
+    },*/
     /**
      * Loads a Texture Packer compatible .json file with its source image,
      * adding ct.js textures to the game.
@@ -147,7 +148,9 @@ const resLib = {
             for (let i = 0, l = animData[animation].length; i < l; i++) {
                 const a = animData[animation],
                       f = a[i];
-                (tex[i] as CtjsTexture).shape = sheet.data.frames[f].shape;
+                (tex[i] as CtjsTexture).shape = (
+                    sheet.data.frames[f] as PIXI.ISpritesheetFrameData & {shape: TextureShape}
+                ).shape;
             }
             (tex as CtjsAnimation).shape = (tex[0] as CtjsTexture).shape || ({} as TextureShape);
             resLib.textures[animation] = tex as CtjsAnimation;
@@ -196,7 +199,7 @@ const resLib = {
         const sounds: string[] = [/*@sounds@*/][0];
         const bitmapFonts: string[] = [/*@bitmapFonts@*/][0];
         // DB means DragonBones
-        const dbSkeletons: [string, string, string][] = [/*@dbSkeletons@*/][0];
+        //const dbSkeletons: [string, string, string][] = [/*@dbSkeletons@*/][0];
         /* eslint-enable prefer-destructuring */
 
         const totalAssets = atlases.length;
@@ -305,7 +308,7 @@ const resLib = {
             throw new Error(`Attempt to get a shape of a non-existent texture ${name}`);
         }
         return resLib.textures[name].shape;
-    },
+    }
     /*
      * Creates a DragonBones skeleton, ready to be added to your copies.
      * @param {string} name The name of the skeleton asset
@@ -321,7 +324,9 @@ const resLib = {
                 sounds.play(event.name);
             } else {
                 // eslint-disable-next-line no-console
-                console.warn(`Skeleton ${skel.ctName} tries to play a non-existing sound ${event.name} at animation ${skel.animation.lastAnimationName}`);
+                console.warn(`Skeleton ${skel.ctName} tries to play
+                a non-existing sound ${event.name}
+                at animation ${skel.animation.lastAnimationName}`);
             }
         });
         return skel;
@@ -329,5 +334,6 @@ const resLib = {
     */
 };
 
+/*@fonts@*/
 
 export const res = resLib;

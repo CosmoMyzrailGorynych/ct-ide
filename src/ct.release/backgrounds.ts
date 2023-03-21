@@ -64,6 +64,10 @@ export class Background extends PIXI.TilingSprite {
      * The stretch to apply to the repeated texture.
      */
     scaleY: number;
+    xprev: number;
+    yprev: number;
+    kill: boolean;
+    _destroyed: boolean;
     parent: Room;
     constructor(
         texName: string | PIXI.Texture,
@@ -167,7 +171,10 @@ const backgroundsLib = {
     /**
      * @returns The created background
      */
-    add(texName: string, frame = 0, depth = 0, container = ctjsGame.room): Background {
+    add(texName: string, frame = 0, depth = 0, container: PIXI.Container): Background {
+        if (!container) {
+            container = ctjsGame.room;
+        }
         if (!texName) {
             throw new Error('[backgrounds] The texName argument is required.');
         }

@@ -7,7 +7,7 @@ import {res} from './res';
 import {u} from './u';
 import {ctjsGame} from '.';
 
-interface ITandemSettings {
+export interface ITandemSettings {
     /** Optional scaling object with `x` and `y` parameters. */
     scale?: {
         x: number,
