@@ -16,7 +16,7 @@ const defaultProjectTemplate: IProject = {
         'sound.howler': {}
     },
     textures: [],
-    skeletons: [],
+    // skeletons: [],
     templates: [],
     sounds: [],
     styles: [],

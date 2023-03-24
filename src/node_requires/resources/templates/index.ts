@@ -1,6 +1,8 @@
 import {get as getDefaultTemplate} from './defaultTemplate';
 import {getTexturePreview, getPixiTexture as getTexturePixiTexture} from '../textures';
 
+import * as PIXI from 'node_modules/pixi.js';
+
 const createNewTemplate = function createNewTemplate(name: string): ITemplate {
     const template = getDefaultTemplate();
     if (name) {
@@ -52,7 +54,7 @@ const getTemplatePreview = function getTemplatePreview(
 };
 const getThumbnail = getTemplatePreview;
 
-const getPixiTexture = (template: ITemplate | assetRef): PIXI.Texture[] => {
+const getPixiTexture = (template: ITemplate | assetRef): PIXI.Texture<PIXI.ImageResource>[] => {
     if (typeof template === 'string') {
         template = getTemplateFromId(template);
     }

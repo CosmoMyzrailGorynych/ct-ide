@@ -86,7 +86,7 @@ textures-panel.aPanel.aView
             strip: 'polyline'
         };
         this.textureIcons = texture => [iconMap[texture.shape]];
-        this.skelThumbnails = require('./data/node_requires/resources/skeletons').getSkeletonPreview;
+        // this.skelThumbnails = require('./data/node_requires/resources/skeletons').getSkeletonPreview;
 
         this.fillTextureMap = () => {
             glob.texturemap = {};
@@ -117,7 +117,7 @@ textures-panel.aPanel.aView
         this.setUpPanel = () => {
             this.fillTextureMap();
             this.refs.textures.updateList();
-            this.refs.skeletons.updateList();
+            // this.refs.skeletons.updateList();
             this.searchResults = null;
             this.editing = false;
             this.dropping = false;
@@ -169,10 +169,10 @@ textures-panel.aPanel.aView
             for (let i = 0; i < files.length; i++) {
                 if (/\.(jpg|gif|png|jpeg)/gi.test(files[i])) {
                     importImageToTexture(files[i], void 0, this.refs.textures.currentGroup.uid);
-                } else if (/_ske\.json/i.test(files[i])) {
+                } /* else if (/_ske\.json/i.test(files[i])) {
                     const {importSkeleton} = require('./data/node_requires/resources/skeletons');
                     importSkeleton(files[i], this.refs.skeletons.currentGroup.uid);
-                }
+                } */
             }
             e.srcElement.value = '';
             e.preventDefault();
@@ -314,7 +314,7 @@ textures-panel.aPanel.aView
                                 deleteCurrentTexture();
                             }
                             this.refs.textures.updateList();
-                            this.refs.skeletons.updateList();
+                            // this.refs.skeletons.updateList();
                             this.update();
                             alertify
                                 .okBtn(window.languageJSON.common.ok)

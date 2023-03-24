@@ -11,7 +11,6 @@
     "lint:fix": "gulp lint --fix",
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",
-    "ctTypedefs": "jsdoc -t ./node_modules/tsd-jsdoc/dist -r ./app/data/ct.release -d ./src/typedefs/ct.js",
     "ctJSDocJson": "jsdoc -X -r ./app/data/ct.release > ./app/data/ctLibJSDocAst.json"
   },
   "author": "Cosmo Myzrail Gorynych",
@@ -28,6 +27,7 @@
     "@types/nw.js": "^0.13.10",
     "@typescript-eslint/eslint-plugin": "^4.32.0",
     "@typescript-eslint/parser": "^4.32.0",
+    "@types/fs-extra": "^9.0.13",
     "esbuild": "0.17.12",
     "eslint-plugin-pug": "^1.2.2",
     "fs-extra": "^10.1.0",
@@ -55,9 +55,6 @@
     "stylus": "^0.58.1",
     "tsd-jsdoc": "^2.5.0",
     "typescript": "~4.4.0"
-  },
-  "devDependencies": {
-    "@types/fs-extra": "^9.0.13"
   },
   "main": "gulpfile.js"
 }

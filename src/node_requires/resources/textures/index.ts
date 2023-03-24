@@ -1,5 +1,7 @@
 import {imageContain, toBuffer, crop} from '../../utils/imageUtils';
 
+import * as PIXI from 'node_modules/pixi.js';
+
 /**
  * Gets the ct.js texture object by its id.
  * @param {string} id The id of the texture
@@ -58,25 +60,15 @@ const getTextureOrig = function (texture: assetRef | ITexture, fs?: boolean): st
     return `file://${global.projdir.replace(/\\/g, '/')}/img/${texture.origname}?cache=${texture.lastmod}`;
 };
 
-const baseTextureFromTexture = (texture: ITexture): Promise<PIXI.BaseTexture> =>
-    new Promise((resolve, reject) => {
-        const textureLoader = new PIXI.Loader();
-        const {resources} = textureLoader;
+const baseTextureFromTexture = async (texture: ITexture): Promise<PIXI.BaseTexture> => {
+    const path = 'file://' + global.projdir.replace(/\\/g, '/') + '/img/' + texture.origname + '?' + texture.lastmod;
+    return (await PIXI.Assets.load<PIXI.Texture>(path)).baseTexture;
+};
 
-        const path = 'file://' + global.projdir.replace(/\\/g, '/') + '/img/' + texture.origname + '?' + texture.lastmod;
-
-        textureLoader.add(texture.uid, path);
-        // Seems that PIXI.Loader typings ain't complete
-        (textureLoader as any).onError.add(reject);
-        textureLoader.load(() => {
-            resolve(resources[texture.uid].texture.baseTexture);
-        });
-    });
-
-let unknownTexture = PIXI.Texture.from('data/img/unknown.png');
+let unknownTexture = PIXI.Texture.from<PIXI.ImageResource>('data/img/unknown.png');
 const pixiTextureCache: Record<string, {
     lastmod: number;
-    texture: PIXI.Texture[]
+    texture: PIXI.Texture<PIXI.ImageResource>[]
 }> = {};
 const clearPixiTextureCache = function (): void {
     for (const i in pixiTextureCache) {
@@ -89,36 +81,37 @@ const clearPixiTextureCache = function (): void {
  * @param {ITexture} tex A ct.js texture object
  * @returns {Array<PIXI.Texture>} An array of PIXI.Textures
  */
-const texturesFromCtTexture = async function (tex: ITexture) {
-    const frames = [];
-    const baseTexture = await baseTextureFromTexture(tex);
-    for (let col = 0; col < tex.grid[1]; col++) {
-        for (let row = 0; row < tex.grid[0]; row++) {
-            const texture = new PIXI.Texture(
-                baseTexture,
-                new PIXI.Rectangle(
-                    tex.offx + row * (tex.width + tex.marginx),
-                    tex.offy + col * (tex.height + tex.marginy),
-                    tex.width,
-                    tex.height
-                )
-            );
-            texture.defaultAnchor = new PIXI.Point(
-                tex.axis[0] / tex.width,
-                tex.axis[1] / tex.height
-            );
-            frames.push(texture);
-            if (col * tex.grid[0] + row >= tex.untill && tex.untill > 0) {
-                break;
+const texturesFromCtTexture =
+    async function (tex: ITexture): Promise<PIXI.Texture<PIXI.ImageResource>[]> {
+        const frames = [] as PIXI.Texture<PIXI.ImageResource>[];
+        const baseTexture = await baseTextureFromTexture(tex);
+        for (let col = 0; col < tex.grid[1]; col++) {
+            for (let row = 0; row < tex.grid[0]; row++) {
+                const texture = new PIXI.Texture(
+                    baseTexture,
+                    new PIXI.Rectangle(
+                        tex.offx + row * (tex.width + tex.marginx),
+                        tex.offy + col * (tex.height + tex.marginy),
+                        tex.width,
+                        tex.height
+                    )
+                ) as PIXI.Texture<PIXI.ImageResource>;
+                texture.defaultAnchor = new PIXI.Point(
+                    tex.axis[0] / tex.width,
+                    tex.axis[1] / tex.height
+                );
+                frames.push(texture);
+                if (col * tex.grid[0] + row >= tex.untill && tex.untill > 0) {
+                    break;
+                }
             }
         }
-    }
-    pixiTextureCache[tex.name] = {
-        lastmod: tex.lastmod,
-        texture: frames
+        pixiTextureCache[tex.name] = {
+            lastmod: tex.lastmod,
+            texture: frames
+        };
+        return frames;
     };
-    return frames;
-};
 const resetPixiTextureCache = (): void => {
     PIXI.utils.destroyTextureCache();
     unknownTexture = PIXI.Texture.from('data/img/unknown.png');
@@ -159,7 +152,7 @@ const getDOMImage = function (
  * @param {boolean} [allowMinusOne] Allows the use of `-1` as a texture uid
  * @returns {Array<PIXI.Texture>|PIXI.Texture} An array of textures, or an individual one.
  */
-function getPixiTexture(texture: assetRef | ITexture): PIXI.Texture[];
+function getPixiTexture(texture: assetRef | ITexture): PIXI.Texture<PIXI.ImageResource>[];
 function getPixiTexture(
     texture: -1
 ): never;
@@ -167,18 +160,18 @@ function getPixiTexture(
     texture: assetRef | ITexture,
     frame: void | null,
     allowMinusOne?: boolean
-): PIXI.Texture[];
+): PIXI.Texture<PIXI.ImageResource>[];
 function getPixiTexture(
     texture: assetRef | ITexture,
     frame: number,
     allowMinusOne?: boolean
-): PIXI.Texture;
+): PIXI.Texture<PIXI.ImageResource>;
 // eslint-disable-next-line func-style
 function getPixiTexture(
     texture: assetRef | ITexture,
     frame?: number | void | null,
     allowMinusOne?: boolean
-): PIXI.Texture | PIXI.Texture[] {
+): PIXI.Texture<PIXI.ImageResource> | PIXI.Texture<PIXI.ImageResource>[] {
     if (allowMinusOne && texture === -1) {
         if (frame || frame === 0) {
             return unknownTexture;

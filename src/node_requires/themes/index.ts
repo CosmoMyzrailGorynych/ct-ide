@@ -1,3 +1,5 @@
+import * as PIXI from 'node_modules/pixi.js';
+
 import {join} from 'path';
 
 const defaultTheme = 'Day';

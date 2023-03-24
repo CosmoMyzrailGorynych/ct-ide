@@ -1,4 +1,4 @@
-import {ExportedSkeleton} from './_exporterContracts';
+/* import {ExportedSkeleton} from './_exporterContracts';
 
 const fs = require('fs-extra');
 const basePath = './data/';
@@ -22,9 +22,18 @@ export const packSkeletons = async (
     for (const skeleton of proj.skeletons) {
         if (skeleton.from === 'dragonbones') {
             const slice = skeleton.origname.replace('_ske.json', '');
-            writePromises.push(fs.copy(`${projdir}/img/${slice}_ske.json`, `${writeDir}/img/${slice}_ske.json`));
-            writePromises.push(fs.copy(`${projdir}/img/${slice}_tex.json`, `${writeDir}/img/${slice}_tex.json`));
-            writePromises.push(fs.copy(`${projdir}/img/${slice}_tex.png`, `${writeDir}/img/${slice}_tex.png`));
+            writePromises.push(
+                fs.copy(`${projdir}/img/${slice}_ske.json`,
+                `${writeDir}/img/${slice}_ske.json`)
+            );
+            writePromises.push(
+                fs.copy(`${projdir}/img/${slice}_tex.json`,
+                `${writeDir}/img/${slice}_tex.json`)
+            );
+            writePromises.push(
+                fs.copy(`${projdir}/img/${slice}_tex.png`,
+                `${writeDir}/img/${slice}_tex.png`)
+            );
             exporterData.skeletonsDB.push([
                 `./img/${slice}_ske.json`,
                 `./img/${slice}_tex.json`,
@@ -37,9 +46,12 @@ export const packSkeletons = async (
         }
     }
     if (exporterData.requiresDB) {
-        writePromises.push(fs.copyFile(basePath + 'ct.release/DragonBones.min.js', writeDir + '/DragonBones.min.js'));
+        writePromises.push(fs.copyFile(
+            basePath + 'ct.release/DragonBones.min.js',
+            writeDir + '/DragonBones.min.js'
+        ));
     }
     await Promise.all(writePromises);
     return exporterData;
 };
-
+*/

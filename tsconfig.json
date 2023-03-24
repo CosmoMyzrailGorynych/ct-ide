@@ -4,6 +4,7 @@
         "module": "umd",
         "noImplicitAny": true,
         "moduleResolution": "node",
+        "esModuleInterop": true,
         "baseUrl": "./",
         "typeRoots": [
             "./node_modules/@types/",
@@ -15,5 +16,8 @@
                 "./node_modules/*"
             ],
         }
-    }
+    },
+    "exclude": [
+        "DragonBonesJS/Pixi/5.x/libs/pixi.js-legacy.d.ts"
+    ]
 }

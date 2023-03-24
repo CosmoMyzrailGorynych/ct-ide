@@ -1,3 +1,5 @@
+import * as PIXI from 'node_modules/pixi.js';
+
 /**
  * @module
  * These type definitions are used both by ct.IDE's exporter and by ct.js library,

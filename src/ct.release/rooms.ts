@@ -421,12 +421,6 @@ export const rooms = {
      */
     starting: '/*@startroom@*/'
 };
-/**
- * The current room
- * @type {Room}
- */
-ctjsGame.room = null;
-
 
 /*@rooms@*/
 /*%rooms%*/

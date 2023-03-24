@@ -1,3 +1,5 @@
+// import * as PIXI from 'node_modules/pixi.js';
+/*
 declare interface ISkeleton extends IAsset {
     origname: string;
     from: 'dragonbones' | string;
@@ -37,11 +39,11 @@ const getSkeletonPreview = function getSkeletonPreview(skeleton: ISkeleton, fs: 
     return `file://${global.projdir.replace(/\\/g, '/')}/img/${skeleton.origname}_prev.png`;
 };
 
-/**
+/*
  * Generates a square thumbnail of a given skeleton
  * @param {String} skeleton The skeleton object to generate a preview for.
  * @returns {Promise<void>} Resolves after creating a thumbnail.
- */
+ *//*
 const skeletonGenPreview = function (skeleton: ISkeleton): Promise<void> {
     const loader = new PIXI.Loader(),
           dbf = dragonBones.PixiFactory.factory;
@@ -80,8 +82,8 @@ const skeletonGenPreview = function (skeleton: ISkeleton): Promise<void> {
             .catch(reject);
         });
     });
-};
-
+};*/
+/*
 const importSkeleton = async function importSkeleton(source: string, group?: string) {
     const generateGUID = require('./../generateGUID');
     const fs = require('fs-extra');
@@ -107,7 +109,8 @@ const importSkeleton = async function importSkeleton(source: string, group?: str
     global.currentProject.skeletons.push(skel);
     window.signals.trigger('skeletonImported', skel);
 };
-
+*/
+/*
 module.exports = {
     getSkeletonData,
     getSkeletonTextureData,
@@ -116,3 +119,4 @@ module.exports = {
     skeletonGenPreview,
     importSkeleton
 };
+*/

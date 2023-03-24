@@ -28,16 +28,6 @@ html
             }
         script.
             process.versions.ctjs = require('./package.json').version;
-        // Use the legacy version to support low-spec and dated devices running ct.IDE
-        script(src="node_modules/pixi.js-legacy/dist/pixi-legacy.min.js")
-        script(src="data/ct.release/DragonBones.min.js")
-        script(src="node_modules/pixi-particles/dist/pixi-particles.min.js")
-        script.
-            /* So that WebGL contexts are taken from one page,
-               even if PIXI was called from the background page,
-               which is used for node modules
-            */
-            global.PIXI = PIXI;
         script.
             // A polyfill for different nw.js versions
             if (!window.__dirname) {

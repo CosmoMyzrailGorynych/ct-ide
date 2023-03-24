@@ -51,7 +51,8 @@ export const substituteHtmlVars = (
         gametitle: project.settings.authoring.title || 'ct.js game',
         accent: project.settings.branding.accent || 'ct.js game',
         particleEmitters: project.emitterTandems && project.emitterTandems.length,
-        includeDragonBones: project.skeletons.some(s => s.from === 'dragonbones'),
+        // includeDragonBones: project.skeletons.some(s => s.from === 'dragonbones'),
+        includeDragonBones: false,
         jsbundle: filenames.jsBundle,
         cssbundle: filenames.cssBundle,
         iconrev: filenames.iconRevision
