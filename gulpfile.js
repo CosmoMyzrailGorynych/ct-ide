@@ -223,6 +223,7 @@ const buildCtJsLib = () => {
         outfile: './app/data/ct.release/ct.ts',
         minify: false
     }));
+    // Copy other game library's files
     processes.push(gulp.src([
         './src/ct.release/**',
         '!./src/ct.release/*.ts',
@@ -230,6 +231,17 @@ const buildCtJsLib = () => {
         '!./src/ct.release/tsconfig.json'
     ]).pipe(gulp.dest('./app/data/ct.release')));
     return Promise.all(processes);
+};
+const watchCtJsLib = () => {
+    gulp.watch([
+        './src/ct.release/**/*',
+        '!./src/ct.release/changes.txt'
+    ], buildCtJsLib)
+    .on('change', fileChangeNotifier)
+    .on('error', err => {
+        notifier.notify(makeErrorObj('Ct.js game library failure', err));
+        console.error('[Ct.js game library error]', err);
+    });
 };
 
 const copyInEditorDocs = () =>
@@ -301,6 +313,7 @@ const watch = () => {
     watchPug();
     watchRiot();
     watchRequires();
+    watchCtJsLib();
     watchIcons();
 };
 
@@ -398,6 +411,7 @@ const build = gulp.parallel([
     compileScripts,
     processRequires,
     copyInEditorDocs,
+    buildCtJsLib,
     bakeTypedefs
 ]);
 
