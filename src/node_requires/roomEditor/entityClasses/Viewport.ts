@@ -1,6 +1,8 @@
 import {getPixiSwatch} from '../../themes';
 import {RoomEditor} from '..';
 
+import * as PIXI from 'node_modules/pixi.js';
+
 interface ICtViewport {
     width: number;
     height: number;

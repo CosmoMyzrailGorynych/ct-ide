@@ -1,6 +1,8 @@
 import {Tile} from './Tile';
 import {RoomEditor} from '..';
 
+import * as PIXI from 'node_modules/pixi.js';
+
 let idCounter = 0;
 
 export const resetCounter = (): void => {

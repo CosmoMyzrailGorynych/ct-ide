@@ -2,6 +2,8 @@ import {getPixiTexture, getTexturePivot} from '../../resources/textures';
 import {RoomEditor} from '..';
 import {TileLayer} from './TileLayer';
 
+import * as PIXI from 'node_modules/pixi.js';
+
 /**
  * @notice This class automatically adds and removes itself from editor's tile list
  */
@@ -11,6 +13,7 @@ class Tile extends PIXI.Sprite {
     parent: TileLayer | null;
     editor: RoomEditor;
     isGhost: boolean;
+    interactive: boolean;
 
     constructor(tileInfo: ITileTemplate, editor: RoomEditor, isGhost?: boolean) {
         super(getPixiTexture(tileInfo.texture, tileInfo.frame, false));
@@ -46,7 +49,7 @@ class Tile extends PIXI.Sprite {
             x: this.x,
             y: this.y,
             opacity: this.alpha,
-            tint: this.tint,
+            tint: this.tint as number,
             scale: {
                 x: this.scale.x,
                 y: this.scale.y

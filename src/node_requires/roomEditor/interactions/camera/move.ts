@@ -1,3 +1,5 @@
+import * as PIXI from 'node_modules/pixi.js';
+
 import {IRoomEditorInteraction} from '..';
 
 interface IMoveCameraAffixedData {
@@ -13,28 +15,29 @@ interface IMoveCameraAffixedData {
 
 const moveCameraOnWheelPress: IRoomEditorInteraction<IMoveCameraAffixedData> = {
     ifListener: 'pointerdown',
-    if(e) {
+    if(e: PIXI.FederatedPointerEvent) {
         // Checks for a pressed mouse wheel
-        return e.data.button === 1 ||
-            (e.data.originalEvent.altKey && e.data.originalEvent.shiftKey);
+        return e.button === 1 ||
+            (e.altKey && e.shiftKey);
     },
     listeners: {
-        pointerdown(e, roomTag, affixedData) {
+        pointerdown(e: PIXI.FederatedPointerEvent, roomTag, affixedData) {
             affixedData.cameraFromPos = {
                 x: this.camera.x,
                 y: this.camera.y
             };
             affixedData.fromOffsetPos = {
-                x: e.data.global.x,
-                y: e.data.global.y
+                x: e.global.x,
+                y: e.global.y
             };
         },
-        pointermove(e, roomTag, affixedData) {
+        globalpointermove(e: PIXI.FederatedPointerEvent, roomTag, affixedData) {
             const cfp = affixedData.cameraFromPos,
                   op = affixedData.fromOffsetPos;
-            this.camera.x = cfp.x + (op.x - e.data.global.x) * this.camera.scale.x;
-            this.camera.y = cfp.y + (op.y - e.data.global.y) * this.camera.scale.y;
+            this.camera.x = cfp.x + (op.x - e.global.x) * this.camera.scale.x;
+            this.camera.y = cfp.y + (op.y - e.global.y) * this.camera.scale.y;
             this.camera.updateTransform();
+            this.cursor.update(e);
             this.tickBackgrounds();
         },
         pointerup: (e, roomTag, affixedData, callback) => {

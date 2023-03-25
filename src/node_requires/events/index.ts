@@ -27,11 +27,11 @@ const categories: Record<string, IEventCategory> = {
     }
 };
 
-import * as coreEventsLifecycle from './coreEventsLifecycle';
-import * as coreEventsActions from './coreEventsActions';
-import * as coreEventsAnimation from './coreEventsAnimation';
-import * as coreEventsPointer from './coreEventsPointer';
-import * as coreEventsTimers from './coreEventsTimers';
+import coreEventsLifecycle from './coreEventsLifecycle';
+import coreEventsActions from './coreEventsActions';
+import coreEventsAnimation from './coreEventsAnimation';
+import coreEventsPointer from './coreEventsPointer';
+import coreEventsTimers from './coreEventsTimers';
 
 const events: Record<string, IEventDeclaration> = {
     // Basic, primitive events, aka lifecycle events

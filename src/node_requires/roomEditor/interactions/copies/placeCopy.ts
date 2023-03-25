@@ -5,6 +5,8 @@ import {calcPlacement} from '../placementCalculator';
 
 import {soundbox} from '../../../3rdparty/soundbox';
 
+import * as PIXI from 'node_modules/pixi.js';
+
 interface IAffixedData {
     mode: 'free' | 'straight';
     startPos: PIXI.IPoint;
@@ -41,24 +43,24 @@ const createCopy = (
 
 export const placeCopy: IRoomEditorInteraction<IAffixedData> = {
     ifListener: 'pointerdown',
-    if(e, riotTag) {
+    if(e: PIXI.FederatedPointerEvent, riotTag) {
         if (this.riotEditor.currentTool !== 'addCopies') {
             return false;
         }
-        if (e.data.button !== 0) {
+        if (e.button !== 0) {
             return false;
         }
         return riotTag.currentTemplate && riotTag.currentTemplate !== -1;
     },
     listeners: {
-        pointerdown(e, roomTag, affixedData) {
+        pointerdown(e: PIXI.FederatedPointerEvent, roomTag, affixedData) {
             this.compoundGhost.removeChildren();
             affixedData.created = new Set();
             // Two possible modes: placing in straight vertical/horizontal/diagonal lines
             // and in a free form, like drawing with a brush.
             // Straight method creates a ghost preview before actually creating all the copies,
             // while the free form places copies as a user moves their cursor.
-            if (e.data.originalEvent.shiftKey) {
+            if (e.shiftKey) {
                 affixedData.mode = 'straight';
                 affixedData.prevLength = 1;
             } else {
@@ -79,7 +81,8 @@ export const placeCopy: IRoomEditorInteraction<IAffixedData> = {
             affixedData.stepX = affixedData.stepY = 1;
             soundbox.play('Wood_Start');
         },
-        pointermove(e, roomTag, affixedData) {
+        pointermove(e: PIXI.FederatedPointerEvent, roomTag, affixedData) {
+            this.cursor.update(e);
             affixedData.noGrid = !roomTag.gridOn || roomTag.freePlacementMode;
             const newPos = this.snapTarget.position.clone();
             const ghosts = calcPlacement(

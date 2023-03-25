@@ -4,7 +4,7 @@
     @attribute onclose (riot function)
 
 room-editor.aPanel.aView
-    canvas(ref="canvas" onwheel="{triggerWheelEvent}" oncontextmenu="{openMenus}")
+    canvas(ref="canvas" oncontextmenu="{openMenus}")
     // Toolbar
     .room-editor-aToolsetHolder
         .room-editor-aToolbar.aButtonGroup.vertical
@@ -139,6 +139,7 @@ room-editor.aPanel.aView
     context-menu(menu="{visibilityMenu}" ref="visibilityMenu" if="{pixiEditor}")
     context-menu(menu="{entitiesMenu}" ref="entitiesMenu" if="{pixiEditor}")
     script.
+        const PIXI = require('pixi.js');
         this.namespace = 'roomView';
         this.mixin(window.riotVoc);
 
@@ -226,27 +227,9 @@ room-editor.aPanel.aView
                 children: true
             });
         });
-        this.triggerWheelEvent = e => {
-            e.preventUpdate = true;
-            // pixi v5 doesn't have a wheel event! we will have to fabricate one.
-            // eslint-disable-next-line no-underscore-dangle
-            this.pixiEditor.stage._events.wheel.fn({
-                type: 'wheel',
-                target: this.pixiEditor.stage,
-                currentTarget: this.pixiEditor.stage,
-                // eslint-disable-next-line id-blacklist
-                data: {
-                    global: {
-                        x: e.offsetX,
-                        y: e.offsetY
-                    },
-                    originalEvent: e
-                }
-            });
-        };
         // Keyboard events
         const phabricateEvent = (name, e) => {
-            this.pixiEditor.observable.trigger(e);
+            this.pixiEditor.observable.trigger(name, e);
         };
         // eslint-disable-next-line complexity
         const triggerKeyboardEvent = e => {

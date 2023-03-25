@@ -1,3 +1,5 @@
+import * as PIXI from 'node_modules/pixi.js';
+
 import {Copy} from './entityClasses/Copy';
 import {Tile} from './entityClasses/Tile';
 import {TileLayer} from './entityClasses/TileLayer';
@@ -76,7 +78,7 @@ const snapshotTransform = (entity: PIXI.Sprite): transformationSnapshot => ({
         x: entity.scale.x,
         y: entity.scale.y
     },
-    tint: entity.tint,
+    tint: entity.tint as number,
     alpha: entity.alpha
 });
 
@@ -270,7 +272,7 @@ export class History {
         } else if (target === editor.ctRoom) {
             riot.refs.propertiesPanel?.update();
             if (key === 'backgroundColor') {
-                editor.renderer.backgroundColor =
+                (editor.renderer as PIXI.Renderer).background.color =
                     PIXI.utils.string2hex(editor.ctRoom.backgroundColor);
             }
         } else if (target instanceof Background) {

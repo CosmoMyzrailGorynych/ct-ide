@@ -1,3 +1,5 @@
+import * as PIXI from 'node_modules/pixi.js';
+
 import {Tile} from '../../entityClasses/Tile';
 import {TileLayer} from '../../entityClasses/TileLayer';
 import {IRoomEditorInteraction, RoomEditor} from '../..';
@@ -72,7 +74,7 @@ export const placeTile: IRoomEditorInteraction<IAffixedData> = {
         if (this.riotEditor.currentTool !== 'addTiles') {
             return false;
         }
-        if (e.data.button !== 0) {
+        if ((e as PIXI.FederatedPointerEvent).button !== 0) {
             return false;
         }
         if (!this.riotEditor.currentTileLayer) {
@@ -89,7 +91,7 @@ export const placeTile: IRoomEditorInteraction<IAffixedData> = {
             // and in a free form, like drawing with a brush.
             // Straight method creates a ghost preview before actually creating all the copies,
             // while the free form places copies as a user moves their cursor.
-            if (e.data.originalEvent.shiftKey) {
+            if ((e as PIXI.FederatedPointerEvent).shiftKey) {
                 affixedData.mode = 'straight';
                 affixedData.prevLength = 1;
             } else {
@@ -119,7 +121,8 @@ export const placeTile: IRoomEditorInteraction<IAffixedData> = {
             }
             soundbox.play('Wood_Start');
         },
-        pointermove(e, riotTag, affixedData) {
+        pointermove(e: PIXI.FederatedPointerEvent, riotTag, affixedData) {
+            this.cursor.update(e);
             affixedData.noGrid = !riotTag.gridOn || riotTag.freePlacementMode;
             const newPos = this.snapTarget.position.clone();
             const ghosts = calcPlacement(

@@ -1,6 +1,8 @@
 import {getPixiSwatch} from '../../themes';
 import {RoomEditor} from '..';
 
+import * as PIXI from 'node_modules/pixi.js';
+
 export class ViewportRestriction extends PIXI.Graphics {
     icon: PIXI.Graphics;
     editor: RoomEditor;

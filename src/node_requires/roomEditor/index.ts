@@ -12,12 +12,34 @@ import {Transformer} from './entityClasses/Transformer';
 import {ViewportRestriction} from './entityClasses/ViewportRestriction';
 
 import {IRoomEditorRiotTag} from './IRoomEditorRiotTag';
-import {IRoomEditorInteraction, AllowedListener, allowedListeners, interactions} from './interactions';
+import {IRoomEditorInteraction, PixiListener, pixiListeners, interactions, customListeners, CustomListener} from './interactions';
 import {getPixiSwatch} from './../themes';
 import {defaultTextStyle, recolorFilters, eraseCursor, toPrecision, snapToDiagonalGrid, snapToRectangularGrid} from './common';
 import {getTemplateFromId} from '../resources/templates';
 import {ease, Easing} from 'node_modules/pixi-ease';
 
+import * as PIXI from 'node_modules/pixi.js';
+import 'node_modules/@pixi/events';
+
+class Cursor {
+    x: number;
+    y: number;
+    snapTarget: SnapTarget;
+    getLocalPosition(
+        displayObject: PIXI.DisplayObject,
+        point: PIXI.IPointData,
+        globalPos?: PIXI.IPointData
+    ): PIXI.IPointData {
+        return displayObject.worldTransform.applyInverse(globalPos || this, point);
+    }
+    update(e: PIXI.FederatedPointerEvent) {
+        this.x = e.global.x;
+        this.y = e.global.y;
+        if (this.snapTarget) {
+            this.snapTarget.update();
+        }
+    }
+}
 
 const roomEditorDefaults = {
     width: 10,
@@ -51,6 +73,7 @@ class RoomEditor extends PIXI.Application {
      * The camera provides inverted transforms for proper view placement.
      */
     camera = new PIXI.Container();
+    cursor = new Cursor();
     /** An overlay showing current rectangular selection */
     marqueeBox = new MarqueeBox(this, 0, 0, 10, 10);
     /** A container for all the room's entities */
@@ -82,6 +105,12 @@ class RoomEditor extends PIXI.Application {
     viewports = new Set<Viewport>();
     tileLayers: TileLayer[] = [];
 
+    observable: {
+        on<T>(eventName: CustomListener, fn: ((eventData: T) => void)): void;
+        off(eventName: CustomListener, fn: ((eventData: any) => void)): void;
+        trigger(eventName: CustomListener, eventData: any): void;
+    };
+
     /**
      * Creates a pixi.js app — a room editor
      * Its `stage` manipulates the camera, managing panning and zooming.
@@ -91,12 +120,14 @@ class RoomEditor extends PIXI.Application {
      * include a mounting point (`view`)
      * @param {RiotTag} editor a tag instance of a `room-editor`
      */
+    // eslint-disable-next-line max-lines-per-function
     constructor(opts: unknown, editor: IRoomEditorRiotTag, pixelart: boolean) {
         super(Object.assign({}, roomEditorDefaults, opts, {
             resizeTo: editor.root,
             roundPixels: pixelart
         }));
         this.ticker.maxFPS = 60;
+        this.observable = riot.observable({});
 
         const {room} = editor.opts;
         this.ctRoom = room;
@@ -151,8 +182,13 @@ class RoomEditor extends PIXI.Application {
 
         this.stage.interactive = true;
         this.interactions = interactions;
-        for (const event of allowedListeners) {
-            this.stage.on(event, (e: PIXI.InteractionEvent) => {
+        for (const event of pixiListeners) {
+            this.stage.on(event, (e: PIXI.FederatedEvent) => {
+                this.listen(e, event);
+            });
+        }
+        for (const event of customListeners) {
+            this.observable.on(event, (e: ((eventData: KeyboardEvent | any) => void)) => {
                 this.listen(e, event);
             });
         }
@@ -178,7 +214,10 @@ class RoomEditor extends PIXI.Application {
         super.destroy(removeView, stageOptions);
     }
 
-    listen(event: PIXI.InteractionEvent, listener: AllowedListener): void {
+    listen(
+        event: PIXI.FederatedEvent | KeyboardEvent | unknown,
+        listener: PixiListener | CustomListener
+    ): void {
         var callback = () => {
             this.interacting = false;
             this.currentInteraction = this.affixedInteractionData = void 0;
@@ -207,7 +246,8 @@ class RoomEditor extends PIXI.Application {
 
     deserialize(room: IRoom): void {
         this.simulate = room.simulate ?? true;
-        this.renderer.backgroundColor = PIXI.utils.string2hex(room.backgroundColor);
+        (this.renderer as PIXI.Renderer).background.color =
+            PIXI.utils.string2hex(room.backgroundColor);
         // Add primary viewport
         this.primaryViewport = new Viewport(room, true, this);
         this.restrictViewport = new ViewportRestriction(this);
@@ -470,10 +510,9 @@ class RoomEditor extends PIXI.Application {
         this.transformer.setup(true);
 
         // place the stuff under mouse cursor but do take the grid into account
-        const {mouse} = this.renderer.plugins.interaction;
-        const mousePos = mouse.getLocalPosition(this.room);
-        let dx = mousePos.x - this.transformer.transformPivotX,
-            dy = mousePos.y - this.transformer.transformPivotY;
+        const {x, y} = this.snapTarget.position;
+        let dx = x - this.transformer.transformPivotX,
+            dy = y - this.transformer.transformPivotY;
         if (this.riotEditor.gridOn) {
             const snap = this.ctRoom.diagonalGrid ? snapToDiagonalGrid : snapToRectangularGrid;
             const snapped = snap({
@@ -704,12 +743,14 @@ class RoomEditor extends PIXI.Application {
         this.clicktrap.width = w;
         this.clicktrap.height = h;
         this.clicktrap.alpha = 1;
-        this.clicktrap.tint = this.renderer.backgroundColor;
+        this.clicktrap.tint = (this.renderer as PIXI.Renderer).background.color;
         this.room.scale.set(Math.min(w / this.ctRoom.width, h / this.ctRoom.height));
         this.room.x = (w - this.ctRoom.width * this.room.scale.x) / 2;
         this.room.y = (h - this.ctRoom.height * this.room.scale.y) / 2;
-        this.renderer.render(this.stage, renderTexture);
-        return this.renderer.extract.canvas(renderTexture);
+        this.renderer.render(this.stage, {
+            renderTexture
+        });
+        return (this.renderer as PIXI.Renderer).extract.canvas(renderTexture) as HTMLCanvasElement;
     }
 }
 

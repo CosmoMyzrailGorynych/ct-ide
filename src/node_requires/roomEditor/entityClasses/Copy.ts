@@ -2,6 +2,9 @@ import {RoomEditor} from '..';
 import {getPixiTexture, getTemplateFromId} from '../../resources/templates';
 import {getTexturePivot} from '../../resources/textures';
 
+import * as PIXI from 'node_modules/pixi.js';
+import 'node_modules/@pixi/events';
+
 /**
  * @notice This class automatically adds and removes itself from editor's copy list
  */
@@ -12,7 +15,6 @@ class Copy extends PIXI.AnimatedSprite {
     cachedTemplate: ITemplate;
     isGhost: boolean;
     editor: RoomEditor;
-    autoUpdate: boolean;
     update: (deltaTime: number) => void;
 
     constructor(copyInfo: IRoomCopy, editor: RoomEditor, isGhost?: boolean) {
@@ -58,7 +60,7 @@ class Copy extends PIXI.AnimatedSprite {
             x: this.x,
             y: this.y,
             opacity: this.alpha,
-            tint: this.tint,
+            tint: this.tint as number,
             scale: {
                 x: this.scale.x,
                 y: this.scale.y

@@ -1,3 +1,5 @@
+import * as PIXI from 'node_modules/pixi.js';
+
 import {IRoomEditorInteraction} from '../..';
 import {ease, Easing} from 'node_modules/pixi-ease';
 
@@ -11,12 +13,12 @@ const zoomInteraction: IRoomEditorInteraction<IZoomData> = {
         return true;
     },
     listeners: {
-        wheel(e, roomTag, affixedData, finishCallback) {
+        wheel(e: PIXI.FederatedWheelEvent, roomTag, affixedData, finishCallback) {
             const oldZoom = roomTag.zoom;
             const dx = this.screen.width / 2 - e.data.global.x,
                   dy = this.screen.height / 2 - e.data.global.y;
             let newZoom;
-            if ((e.data.originalEvent as WheelEvent).deltaY < 0) {
+            if (e.deltaY < 0) {
                 newZoom = oldZoom * 0.75;
             } else {
                 newZoom = oldZoom * 1.25;
@@ -40,6 +42,7 @@ const zoomInteraction: IRoomEditorInteraction<IZoomData> = {
             .on('each', () => {
                 this.camera.updateTransform();
                 this.realignCamera();
+                this.snapTarget.update();
                 roomTag.refs.zoomLabel.innerHTML = `${Math.round(this.getZoom())}%`;
             })
             .once('complete', finishCallback);

@@ -4,6 +4,8 @@ import {snapToRectangularGrid, snapToDiagonalGrid} from '../common';
 import {getPixiTexture, getTextureFromId, getTexturePivot} from '../../resources/textures';
 import {createTilePatch} from '../interactions/tiles/placeTile';
 
+import * as PIXI from 'node_modules/pixi.js';
+
 let unknownTextures = getPixiTexture(-1, void 0, true);
 
 export class SnapTarget extends PIXI.Container {
@@ -69,9 +71,9 @@ export class SnapTarget extends PIXI.Container {
                 this.ghostCompound.removeChildren();
             }
         }
+        const {cursor} = this.editor;
+        cursor.getLocalPosition(this.editor.overlays, this.position);
 
-        const {mouse} = this.editor.renderer.plugins.interaction;
-        mouse.getLocalPosition(this.editor.overlays, this.position);
         if (!riotEditor.gridOn || riotEditor.freePlacementMode) {
             return;
         }

@@ -9,7 +9,7 @@ export const deleteSelected: IRoomEditorInteraction<void> = {
         return this.riotEditor.currentTool === 'select' && this.currentSelection.size > 0;
     },
     listeners: {
-        delete(e, riotEditor, affixedData, callback) {
+        delete(e: KeyboardEvent, riotEditor, affixedData, callback) {
             this.deleteSelected();
             callback();
         }

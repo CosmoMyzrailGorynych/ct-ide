@@ -6,7 +6,11 @@ import {ease} from 'node_modules/pixi-ease';
 
 import {rotateRad, pdc} from '../../utils/trigo';
 
+import * as PIXI from 'node_modules/pixi.js';
+
 export class Handle extends PIXI.Graphics {
+    interactive: boolean;
+    cursor: string;
     constructor() {
         super();
         this.beginFill(getPixiSwatch('act'));

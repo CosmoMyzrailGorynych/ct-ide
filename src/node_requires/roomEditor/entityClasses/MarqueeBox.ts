@@ -1,6 +1,8 @@
 import {RoomEditor} from '..';
 import {getPixiSwatch} from '../../themes';
 
+import * as PIXI from 'node_modules/pixi.js';
+
 export class MarqueeBox extends PIXI.Graphics {
     editor: RoomEditor;
     constructor(editor: RoomEditor, x: number, y: number, width: number, height: number) {

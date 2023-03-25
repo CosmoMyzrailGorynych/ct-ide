@@ -6,7 +6,7 @@ export const tab: IRoomEditorInteraction<void> = {
         return true;
     },
     listeners: {
-        tab(e, roomTag, affixedData, callback) {
+        tab(e: KeyboardEvent, roomTag, affixedData, callback) {
             if (this.copiesVisible) {
               // Apply any possible property changes to the previous selectio set
                 this.riotEditor.refs.propertiesPanel.applyChanges();
@@ -16,10 +16,10 @@ export const tab: IRoomEditorInteraction<void> = {
                 const index = (this.currentSelection.size === 1) ?
                     copies.indexOf(this.currentSelection.values().next().value) :
                     -1;
-                if (index > -1 && !e.data.originalEvent.shiftKey) {
+                if (index > -1 && !e.shiftKey) {
                     this.currentSelection.clear();
                     this.currentSelection.add(copies[(index + 1) % copies.length]);
-                } else if (index > -1 && e.data.originalEvent.shiftKey) {
+                } else if (index > -1 && e.shiftKey) {
                     this.currentSelection.clear();
                     this.currentSelection.add(copies[(copies.length + index - 1) % copies.length]);
                 } else {
