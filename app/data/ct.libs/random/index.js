@@ -3,7 +3,7 @@
 ct.random = function random(x) {
     return Math.random() * x;
 };
-ct.u.ext(ct.random, {
+Object.assign(ct.random, {
     dice(...variants) {
         return variants[Math.floor(Math.random() * variants.length)];
     },

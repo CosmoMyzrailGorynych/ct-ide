@@ -78,7 +78,7 @@ if (!ct.sound) {
                 var a = document.createElement('audio');
                 a.src = s.src;
                 if (opts) {
-                    ct.u.ext(a, opts);
+                    Object.assign(a, opts);
                 }
                 s.pool.push(a);
                 a.addEventListener('ended', function soundEnded(e) {

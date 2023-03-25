@@ -1,7 +1,7 @@
 (function ctVkeys() {
     ct.vkeys = {
         button(options) {
-            var opts = ct.u.ext({
+            var opts = Object.assign({
                 key: 'Vk1',
                 depth: 100,
                 texNormal: -1,
@@ -18,7 +18,7 @@
             return copy;
         },
         joystick(options) {
-            var opts = ct.u.ext({
+            var opts = Object.assign({
                 key: 'Vjoy1',
                 depth: 100,
                 tex: -1,
