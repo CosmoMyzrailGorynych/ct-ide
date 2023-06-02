@@ -1,4 +1,7 @@
-const generateCanvasGrid = function (size, color) {
+export const generateCanvasGrid = function (
+    size?: number | [number, number],
+    color?: string
+): HTMLCanvasElement {
     color = color || '#666';
     if (typeof size === 'number') {
         size = [size, size];
@@ -23,12 +26,12 @@ const generateCanvasGrid = function (size, color) {
     return canvas;
 };
 
-const generatePixiTextureGrid = function (size, color) {
+import * as PIXI from 'node_modules/pixi.js';
+
+export const generatePixiTextureGrid = function (
+    size: number | [number, number],
+    color: string
+): PIXI.Texture {
     const canvas = generateCanvasGrid(size, color);
     return PIXI.Texture.from(canvas);
-};
-
-module.exports = {
-    generateCanvasGrid,
-    generatePixiTextureGrid
 };

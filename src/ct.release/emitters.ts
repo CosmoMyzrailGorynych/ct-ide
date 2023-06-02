@@ -1,5 +1,5 @@
 import * as PIXI from 'node_modules/pixi.js';
-import {Emitter} from 'node_modules/pixi-particles';
+import {Emitter} from 'node_modules/@pixi/particle-emitter';
 import {ExportedTandems, ExportedTandem} from './../node_requires/exporter/_exporterContracts';
 import {Copy} from './templates';
 import {Room} from './rooms';

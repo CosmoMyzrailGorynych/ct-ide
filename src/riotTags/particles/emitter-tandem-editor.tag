@@ -68,6 +68,8 @@ emitter-tandem-editor.aPanel.aView.flexrow
     script.
         /* global net */
         const brehautColor = net.brehaut.Color;
+        const PIXI = require('pixi.js');
+        const particles = require('pixi-particles');
 
         this.tandem = this.opts.tandem;
 
@@ -91,7 +93,6 @@ emitter-tandem-editor.aPanel.aView.flexrow
         this.awaitCompletion = [];
         // Creates a new emitter
         this.spawnEmitter = async (emitterData, container) => {
-            const {particles} = PIXI;
             const {getPixiTexture} = require('./data/node_requires/resources/textures');
             const textures = await getPixiTexture(emitterData.texture, null, true);
             const emitter = new particles.Emitter(

@@ -6,7 +6,7 @@ export const stringifyContent = (project: IProject): string => {
         contentDb[contentType.name || contentType.readableName] = contentType.entries.map(entry =>
             getUnwrappedBySpec(entry, contentType.specification));
     }
-    return JSON.stringify(contentDb)
+    return `"${JSON.stringify(contentDb)
         .replace(/\\/g, '\\\\')
-        .replace(/"/g, '\\"');
+        .replace(/"/g, '\\"')}"`;
 };

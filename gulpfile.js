@@ -207,7 +207,7 @@ const buildCtJsLib = () => {
         ...baseEsbuildConfig,
         outfile: './app/data/ct.release/ct.js',
         platform: 'browser',
-        external: ['node_modules/pixi.js', 'node_modules/pixi-particles']
+        external: ['node_modules/pixi.js', 'node_modules/@pixi/particle-emitter']
     }));
     // Pixi.js dependencies
     processes.push(esbuild({
