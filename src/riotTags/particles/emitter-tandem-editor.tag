@@ -25,7 +25,6 @@ emitter-tandem-editor.aPanel.aView.flexrow
     div(ref="preview")
         canvas(
             ref="canvas"
-            onmousewheel="{onCanvasWheel}"
             onpointermove="{onCanvasMove}"
             onpointerout="{resetEmitterPositioning}"
         )
@@ -69,7 +68,7 @@ emitter-tandem-editor.aPanel.aView.flexrow
         /* global net */
         const brehautColor = net.brehaut.Color;
         const PIXI = require('pixi.js');
-        const particles = require('pixi-particles');
+        const particles = require('@pixi/particle-emitter');
 
         this.tandem = this.opts.tandem;
 
@@ -91,15 +90,21 @@ emitter-tandem-editor.aPanel.aView.flexrow
         this.uidToEmitterMap = {};
 
         this.awaitCompletion = [];
+
+        const {upgradeConfig} = require('@pixi/particle-emitter');
+
         // Creates a new emitter
         this.spawnEmitter = async (emitterData, container) => {
             const {getPixiTexture} = require('./data/node_requires/resources/textures');
             const textures = await getPixiTexture(emitterData.texture, null, true);
-            const emitter = new particles.Emitter(
+            const v3config = upgradeConfig(emitterData.settings, textures);
+            console.log(v3config);
+            const emitter = new particles.Emitter(container, v3config);
+            /*const emitter = new particles.Emitter(
                 container,
                 textures,
                 emitterData.settings
-            );
+            );*/
             emitter.emit = true;
             if (emitterData.settings.delay < 0) { // this needs to be prewarmed
                 emitter.update(-emitterData.settings.delay);
@@ -125,6 +130,7 @@ emitter-tandem-editor.aPanel.aView.flexrow
             });
             return emitter;
         };
+
         // Recreates all the emitters
         this.resetEmitters = async () => {
             this.visualizersContainer.removeChildren();
@@ -164,20 +170,17 @@ emitter-tandem-editor.aPanel.aView.flexrow
 
         // Fits the canvas to the available space
         this.updatePreviewLayout = () => {
-            if (this.renderer && this.refs.canvas) {
+            if (this.pixiApp && this.refs.canvas) {
                 const box = this.refs.preview.getBoundingClientRect();
                 const {canvas} = this.refs;
-                canvas.width = Math.round(box.width);
-                canvas.height = Math.round(box.height);
-                this.renderer.resize(canvas.width, canvas.height);
+                this.pixiApp.renderer.resize(box.width, box.height);
+                this.pixiApp.render(); // Avoid flicker during continuous panel resize
                 this.emitterContainer.x = canvas.width / 2;
                 this.emitterContainer.y = canvas.height / 2;
                 this.visualizersContainer.x = this.previewTexture.x = this.emitterContainer.x;
                 this.visualizersContainer.y = this.previewTexture.y = this.emitterContainer.y;
                 this.emitterContainer.scale.x =
                     this.emitterContainer.scale.y =
-                    this.visualizersContainer.scale.x =
-                    this.visualizersContainer.scale.y =
                     this.visualizersContainer.scale.x =
                     this.visualizersContainer.scale.y =
                         this.zoom;
@@ -281,7 +284,7 @@ emitter-tandem-editor.aPanel.aView.flexrow
             this.gridGen = require('./data/node_requires/generators/gridTexture').generatePixiTextureGrid;
             this.grid = new PIXI.TilingSprite(this.gridGen());
 
-            this.renderer = new PIXI.Application({
+            this.pixiApp = new PIXI.Application({
                 width: Math.round(box.width),
                 height: Math.round(box.height),
                 sharedTicker: false,
@@ -293,7 +296,7 @@ emitter-tandem-editor.aPanel.aView.flexrow
                 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
             }
 
-            this.renderer.renderer.backgroundColor = Number('0x' + this.previewColor.slice(1));
+            this.pixiApp.renderer.backgroundColor = Number('0x' + this.previewColor.slice(1));
             this.visualizersContainer = new PIXI.Container();
             this.previewTexture = new PIXI.Sprite(PIXI.Texture.EMPTY);
             this.previewTexture.alpha = 0.5;
@@ -306,26 +309,29 @@ emitter-tandem-editor.aPanel.aView.flexrow
                 fontSize: 16
             });
             this.inspector.x = this.inspector.y = 12;
-            this.renderer.ticker.add((delta) => {
-                this.updateEmitters(delta / (this.renderer.ticker.maxFPS || 60));
-                this.inspector.text = `FPS: ${Math.round(1 / this.renderer.ticker.deltaMS * 1000)} / ${this.renderer.ticker.maxFPS || 60}\n` +
+            this.pixiApp.ticker.add((delta) => {
+                this.updateEmitters(delta / (this.pixiApp.ticker.maxFPS || 60));
+                this.inspector.text = `FPS: ${Math.round(1 / this.pixiApp.ticker.deltaMS * 1000)} / ${this.pixiApp.ticker.maxFPS || 60}\n` +
                     this.emitterInstances.map(e => `${e.particleCount} / ${e.maxParticles}`).join('\n') +
                     (this.complete ? '\n' + this.voc.inspectorComplete : '');
             });
-            this.renderer.stage.addChild(this.previewTexture);
-            this.renderer.stage.addChild(this.grid);
-            this.renderer.stage.addChild(this.emitterContainer);
-            this.renderer.stage.addChild(this.inspector);
-            this.renderer.stage.addChild(this.visualizersContainer);
+            this.pixiApp.stage.addChild(this.previewTexture);
+            this.pixiApp.stage.addChild(this.grid);
+            this.pixiApp.stage.addChild(this.emitterContainer);
+            this.pixiApp.stage.addChild(this.inspector);
+            this.pixiApp.stage.addChild(this.visualizersContainer);
+
+            this.pixiApp.stage.interactive = true;
+            this.pixiApp.stage.on('wheel', this.onCanvasWheel);
 
             this.resetEmitters();
             this.updatePreviewLayout();
         });
         this.on('unmount', () => {
             this.emitterContainer = void 0;
-            if (this.renderer) {
-                this.renderer.ticker.stop();
-                this.renderer.destroy();
+            if (this.pixiApp) {
+                this.pixiApp.ticker.stop();
+                this.pixiApp.destroy();
             }
             if (this.resetOnCompletionTimeout) {
                 clearTimeout(this.resetOnCompletionTimeout);
@@ -359,7 +365,7 @@ emitter-tandem-editor.aPanel.aView.flexrow
         };
         this.updatePreviewColor = (color, evtype) => {
             this.previewColor = localStorage.tandemEditorPreviewBg = color;
-            this.renderer.renderer.backgroundColor = Number('0x' + color.slice(1));
+            this.pixiApp.renderer.backgroundColor = Number('0x' + color.slice(1));
             if (evtype === 'onapply') {
                 this.changingPreviewColor = false;
             }
@@ -369,7 +375,7 @@ emitter-tandem-editor.aPanel.aView.flexrow
         this.cancelPreviewColor = () => {
             this.changingPreviewColor = false;
             this.previewColor = localStorage.tandemEditorPreviewBg = this.oldPreviewColor;
-            this.renderer.renderer.backgroundColor = Number('0x' + this.previewColor.slice(1));
+            this.pixiApp.renderer.backgroundColor = Number('0x' + this.previewColor.slice(1));
             this.update();
         };
         this.changeGrid = () => {
@@ -418,7 +424,7 @@ emitter-tandem-editor.aPanel.aView.flexrow
             this.update();
         };
         this.onCanvasWheel = e => {
-            if (e.wheelDelta > 0) {
+            if (e.deltaY < 0) {
                 this.refs.zoomslider.zoomIn();
             } else {
                 this.refs.zoomslider.zoomOut();
@@ -426,6 +432,8 @@ emitter-tandem-editor.aPanel.aView.flexrow
         };
 
         this.onCanvasMove = e => {
+            // When hovering a preview pane, emitters follow the mouse.
+            // Can be used by game developers to see how their effects look in motion.
             e.preventUpdate = true;
             const box = this.refs.canvas.getBoundingClientRect();
             const dx = (e.offsetX - box.width / 2) / this.zoom,
