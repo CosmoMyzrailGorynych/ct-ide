@@ -81,6 +81,7 @@ class Tilemap extends PIXI.Container {
         }
 
         // Divide tiles into a grid of larger cells so that we can cache these cells as
+        // separate bitmaps
         const bounds = this.getLocalBounds();
         const cols = Math.ceil(bounds.width / chunkSize),
               rows = Math.ceil(bounds.height / chunkSize);
@@ -93,13 +94,15 @@ class Tilemap extends PIXI.Container {
         }
         for (let i = 0, l = this.tiles.length; i < l; i++) {
             const tile = this.children[0],
-                  x = Math.floor((tile.x - bounds.x) / chunkSize),
-                  y = Math.floor((tile.y - bounds.y) / chunkSize);
+                  // Sometimes indices exceed the range due to JS rounding errors
+                  //  on map's boundaries, thus the clamping.
+                  x = ct.u.clamp(0, Math.floor(tile.x - bounds.x / chunkSize), cols - 1),
+                  y = ct.u.clamp(0, Math.floor(tile.y - bounds.y / chunkSize), rows - 1);
             this.cells[y * cols + x].addChild(tile);
         }
         this.removeChildren();
 
-        // Filter out empty cells, cache filled ones
+        // Filter out empty cells, cache the filled ones
         for (let i = 0, l = this.cells.length; i < l; i++) {
             if (this.cells[i].children.length === 0) {
                 this.cells.splice(i, 1);
