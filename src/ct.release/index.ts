@@ -45,11 +45,11 @@ type ctFittoscreen = (() => void) & {
 const ct = {
     render: {
         /** If set to true, enables retina (high-pixel density) rendering. */
-        highDensity: [/*@highDensity@*/][0] as boolean,
+        highDensity: [/*!@highDensity@*/][0] as boolean,
         /** A target number of frames per second. It can be interpreted as a second in timers. */
-        speed: [/*@maxfps@*/][0] || 60,
+        speed: [/*!@maxfps@*/][0] || 60,
         /** The actual number of frames per second the machine achieves. */
-        fps: [/*@maxfps@*/][0] || 60
+        fps: [/*!@maxfps@*/][0] || 60
     },
     stack: [] as (Copy | Background)[],
     /**
@@ -89,8 +89,8 @@ const ct = {
     /**
      * ct.js version in form of a string `X.X.X`.
      */
-    version: '/*@ctversion@*/',
-    meta: [/*@projectmeta@*/][0] as ExportedMeta,
+    version: '/*!@ctversion@*/',
+    meta: [/*!@projectmeta@*/][0] as ExportedMeta,
     get width(): number {
         return ct.pixiApp.renderer.view.width;
     },
@@ -134,9 +134,9 @@ const ct = {
         }
     },
     /** The width of the current room's initial viewport, as it was set in ct.IDE */
-    roomWidth: [/*@startwidth@*/][0] as number,
+    roomWidth: [/*!@startwidth@*/][0] as number,
     /** The height of the current room's initial viewport, as it was set in ct.IDE */
-    roomHeight: [/*@startheight@*/][0] as number,
+    roomHeight: [/*!@startheight@*/][0] as number,
 
     // Core libraries
     actions,
@@ -178,9 +178,9 @@ console.log(
     'background: #5144db; color: #fff; padding: 0.5em 0;'
 );
 const pixiAppSettings = {
-    width: [/*@startwidth@*/][0] as number,
-    height: [/*@startheight@*/][0] as number,
-    antialias: ![/*@pixelatedrender@*/][0],
+    width: [/*!@startwidth@*/][0] as number,
+    height: [/*!@startheight@*/][0] as number,
+    antialias: ![/*!@pixelatedrender@*/][0],
     powerPreference: 'high-performance' as WebGLPowerPreference,
     sharedTicker: false
 };
@@ -195,8 +195,8 @@ try {
 }
 
 // eslint-disable-next-line prefer-destructuring
-PIXI.settings.ROUND_PIXELS = [/*@pixelatedrender@*/][0];
-ct.pixiApp.ticker.maxFPS = [/*@maxfps@*/][0] || 0;
+PIXI.settings.ROUND_PIXELS = [/*!@pixelatedrender@*/][0];
+ct.pixiApp.ticker.maxFPS = [/*!@maxfps@*/][0] || 0;
 if (!ct.pixiApp.renderer.options.antialias) {
     PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 }
@@ -242,7 +242,7 @@ document.getElementById('ct').appendChild(ct.pixiApp.view as HTMLCanvasElement);
         ct.deltaUi = ct.pixiApp.ticker.elapsedMS / (1000 / (ct.pixiApp.ticker.maxFPS || 60));
         ct.inputs.updateActions();
         ct.timer.updateTimers();
-        /*%beforeframe%*/
+        /*!%beforeframe%*/
         rooms.rootRoomOnStep.apply(ct.room);
         for (let i = 0, li = ct.stack.length; i < li; i++) {
             templates.beforeStep.apply(ct.stack[i]);
@@ -290,7 +290,7 @@ document.getElementById('ct').appendChild(ct.pixiApp.view as HTMLCanvasElement);
             rooms.afterDraw.apply(item);
         }
         rooms.rootRoomOnDraw.apply(ct.room);
-        /*%afterframe%*/
+        /*!%afterframe%*/
         if (rooms.switching) {
             rooms.forceSwitch();
         }
@@ -302,6 +302,6 @@ export const ctjsGame = ct;
 (window as any).ct = ctjsGame;
 (window as any).PIXI = PIXI;
 
-/*%load%*/
+/*!%load%*/
 
-/*@userScripts@*/
+/*!@userScripts@*/

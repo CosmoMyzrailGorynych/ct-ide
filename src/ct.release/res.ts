@@ -2,7 +2,9 @@ import {u} from './u';
 import {ctjsGame} from '.';
 import {sounds} from './sounds';
 import * as PIXI from 'node_modules/pixi.js';
-
+import * as spineLib from 'node_modules/pixi-spine';
+const Spine = spineLib.Spine;
+console.log(spineLib);
 import {TextureShape, ExportedTiledTexture, ExportedSkeleton} from '../node_requires/exporter/_exporterContracts';
 
 export type CtjsTexture = PIXI.Texture & {
@@ -40,8 +42,8 @@ const loadingScreen = document.querySelector('.ct-aLoadingScreen') as HTMLDivEle
 const resLib = {
     sounds: {},
     textures: {} as Record<string, CtjsAnimation>,
-    skeletons: {} as Record<string, ExportedSkeleton>,
-    groups: [/*@resourceGroups@*/][0] as Record<string, string[]>,
+    skeletons: {} as Record<string, ISkeletonData>,
+    groups: [/*!@resourceGroups@*/][0] as Record<string, string[]>,
     /**
      * Loads and executes a script by its URL
      * @param {string} url The URL of the script file, with its extension.
@@ -92,47 +94,28 @@ const resLib = {
         resLib.textures[name] = texture;
         return texture;
     },
-    /*
-     * Loads a skeleton made in DragonBones into the game
-     * @param {string} ske Path to the _ske.json file that contains
+    /**
+     * Loads a skeleton animation into the game.
+     * @param {string} skel Path to the .json file that contains
      * the armature and animations.
-     * @param {string} tex Path to the _tex.json file that describes the atlas
-     * with a skeleton's textures.
-     * @param {string} png Path to the _tex.png atlas that contains
-     * all the textures of the skeleton.
-     * @param {string} name The name of the skeleton as it will be used in ct.js game
+     * @param {string} name The name of the skeleton as it will be used in ct.js game.
+     * @param {boolean} txt Whether to look for a .txt extension instead of .atlas.
+     * @returns The name of the imported animation.
      */
-    /*loadDragonBonesSkeleton(
-        ske: string,
-        tex: string,
-        png: string,
-        name: string = u.required('name', 'ct.res.loadDragonBonesSkeleton')
+    async loadSkeleton(
+        skel: string = u.required('skel', 'ct.res.loadSkeleton'),
+        name: string = u.required('name', 'ct.res.loadSkeleton'),
+        txt = true
     ): Promise<string> {
-        const dbf = dragonBones.PixiFactory.factory;
-        const loader = new PIXI.Loader();
-        loader
-            .add(ske, ske)
-            .add(tex, tex)
-            .add(png, png);
-        return new Promise<string>((resolve, reject) => {
-            loader.load(() => {
-                resolve(name);
-            });
-            loader.onError.add(() => {
-                reject(new Error(`[ct.res] Could not load skeleton with _ske.json:
-                ${ske}, _tex.json: ${tex}, _tex.png: ${png}.`));
-            });
-        }).then(() => {
-            dbf.parseDragonBonesData(loader.resources[ske].data);
-            dbf.parseTextureAtlasData(
-                loader.resources[tex].data,
-                loader.resources[png].texture
-            );
-            // eslint-disable-next-line id-blacklist
-            resLib.skeletons[name] = loader.resources[ske].data;
-            return name;
+        PIXI.Assets.add(skel, skel, {
+            metadata: {
+                spineAtlasSuffix: txt ? '.txt' : '.atlas'
+            }
         });
-    },*/
+        const asset = await PIXI.Assets.load(skel);
+        resLib.skeletons[name] = asset.spineData;
+        return name;
+    },
     /**
      * Loads a Texture Packer compatible .json file with its source image,
      * adding ct.js textures to the game.
@@ -194,12 +177,11 @@ const resLib = {
         };
 
         /* eslint-disable prefer-destructuring */
-        const atlases: string[] = [/*@atlases@*/][0];
-        const tiledImages: ExportedTiledTexture[] = [/*@tiledImages@*/][0];
-        const sounds: string[] = [/*@sounds@*/][0];
-        const bitmapFonts: string[] = [/*@bitmapFonts@*/][0];
-        // DB means DragonBones
-        //const dbSkeletons: [string, string, string][] = [/*@dbSkeletons@*/][0];
+        const atlases: string[] = [/*!@atlases@*/][0];
+        const tiledImages: ExportedTiledTexture[] = [/*!@tiledImages@*/][0];
+        const sounds: string[] = [/*!@sounds@*/][0];
+        const bitmapFonts: string[] = [/*!@bitmapFonts@*/][0];
+        const skeletons: ExportedSkeleton[] = [/*!@skeletons@*/][0];
         /* eslint-enable prefer-destructuring */
 
         const totalAssets = atlases.length;
@@ -227,11 +209,9 @@ const resLib = {
         for (const font in bitmapFonts) {
             loadingPromises.push(resLib.loadBitmapFont(bitmapFonts[font]));
         }
-        /*
-        for (const skel of dbSkeletons) {
-            loadingPromises.push(resLib.loadDragonBonesSkeleton(...skel));
+        for (const skel of skeletons) {
+            loadingPromises.push(resLib.loadSkeleton(skel.dataPath, skel.name));
         }
-        */
         /*
         for (const sound of sounds) {
             // TODO:
@@ -245,12 +225,13 @@ const resLib = {
             });
         }*/
 
-        /*@res@*/
-        /*%res%*/
+        /*!@res@*/
+        /*!%res%*/
 
         Promise.all(loadingPromises)
         .then(() => {
-            /*%start%*/
+            const ct = ctjsGame;
+            /*!%start%*/
             loadingScreen.classList.add('hidden');
             ctjsGame.pixiApp.ticker.add(ctjsGame.loop);
             ctjsGame.rooms.forceSwitch(ctjsGame.rooms.starting);
@@ -308,18 +289,17 @@ const resLib = {
             throw new Error(`Attempt to get a shape of a non-existent texture ${name}`);
         }
         return resLib.textures[name].shape;
-    }
-    /*
-     * Creates a DragonBones skeleton, ready to be added to your copies.
-     * @param {string} name The name of the skeleton asset
-     * @param {string} [skin] Optional; allows you to specify the used skin
-     * @returns {object} The created skeleton
-     *
-    makeSkeleton(name: string, skin?: string): any { // TODO:
-        const r = resLib.skeletons[name],
-              skel = dbFactory.buildArmatureDisplay('Armature', r.name, skin);
-        skel.ctName = name;
-        skel.on(dragonBones.EventObject.SOUND_EVENT, function skeletonSound(event) {
+    },
+    /**
+     * Creates a skeletal animated sprite, ready to be added to your copies.
+     * @param {string} name The name of the skeleton asset.
+     * @returns The created skeleton
+     */
+    makeSkeleton(name: string): Spine {
+        const asset = resLib.skeletons[name];
+        return new Spine(asset);
+        // TODO:
+        /* skel.on(dragonBones.EventObject.SOUND_EVENT, function skeletonSound(event) {
             if (sounds.exists(event.name)) {
                 sounds.play(event.name);
             } else {
@@ -328,12 +308,10 @@ const resLib = {
                 a non-existing sound ${event.name}
                 at animation ${skel.animation.lastAnimationName}`);
             }
-        });
-        return skel;
+        });*/
     }
-    */
 };
 
-/*@fonts@*/
+/*!@fonts@*/
 
 export const res = resLib;

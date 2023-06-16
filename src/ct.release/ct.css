@@ -23,9 +23,9 @@ body {
     top: 0;
     bottom: 0;
     background: #446adb;
-    background: /*@preloaderbackground@*/;
+    background: /*!@preloaderbackground@*/;
     color: #ffffff;
-    color: /*@preloaderforeground@*/;
+    color: /*!@preloaderforeground@*/;
     z-index: 2;
 }
 .ct-aLoadingProgress {
@@ -44,7 +44,7 @@ body {
     border-radius: 1rem;
     position: absolute;
     background: #446adb;
-    background: /*@preloaderforeground@*/;
+    background: /*!@preloaderforeground@*/;
     left: 0;
     bottom: 0;
     transition: 1s cubic-bezier(0.31, 0.59, 0.29, 1) width;
@@ -84,6 +84,6 @@ canvas, img{
 }
 /*endif @hidemadewithctjs@*/
 
-/*@fonts@*/
+/*!@fonts@*/
 
-/*%css%*/
+/*!%css%*/

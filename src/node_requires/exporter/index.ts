@@ -11,7 +11,7 @@ import {ExporterError, highlightProblem} from './ExporterError';
 import {ExportedMeta} from './_exporterContracts';
 
 import {packImages} from './textures';
-// import {packSkeletons} from './skeletons';
+import {packSkeletons} from './skeletons';
 import {getSounds} from './sounds';
 import {stringifyRooms, getStartingRoom} from './rooms';
 import {stringifyStyles} from './styles';
@@ -26,8 +26,8 @@ import {getGroups} from './groups';
 import {substituteHtmlVars} from './html';
 const typeScript = require('sucrase').transform;
 
-const ifMatcher = (varName: string, symbol = '@') => new RegExp(`/\\* ?if +${symbol}${varName}${symbol} ?\\*/([\\s\\S]*)(?:/\\* ?else +${symbol}${varName}${symbol} ?\\*/([\\s\\S]*?))?/\\* ?endif +${symbol}${varName}${symbol} ?\\*/`, 'g');
-const varMatcher = (varName: string, symbol = '@') => new RegExp(`/\\* ?${symbol}${varName}${symbol} ?\\*/`, 'g');
+const ifMatcher = (varName: string, symbol = '@') => new RegExp(`/\\*\\!? ?if +${symbol}${varName}${symbol} ?\\*/([\\s\\S]*)(?:/\\*\\!? ?else +${symbol}${varName}${symbol} ?\\*/([\\s\\S]*?))?/\\*\\!? ?endif +${symbol}${varName}${symbol} ?\\*/`, 'g');
+const varMatcher = (varName: string, symbol = '@') => new RegExp(`/\\*\\!? ?${symbol}${varName}${symbol} ?\\*/`, 'g');
 
 /**
  * A little home-brewn string templating function for JS and CSS.
@@ -258,7 +258,7 @@ const exportCtProject = async (
     }
     /* assets — run in parallel */
     const texturesTask = packImages(project, writeDir, production);
-    // const skeletonsTask = packSkeletons(project, projdir, writeDir);
+    const skeletonsTask = packSkeletons(project, projdir, writeDir);
     const bitmapFontsTask = bakeBitmapFonts(project, projdir, writeDir);
     const favicons = bakeFavicons(project, writeDir, production);
     /* Run event cache population in parallel as well */
@@ -330,7 +330,8 @@ const exportCtProject = async (
         sounds: getSounds(project),
         resourceGroups: JSON.stringify(getGroups(project)),
         contentTypes: stringifyContent(project),
-        // skeletons: await skeletonsTask
+        skeletons: (await skeletonsTask).skeletons,
+        includeSpine: (await skeletonsTask).skeletons.length > 0,
         userScripts
     }, injections);
 
@@ -346,6 +347,7 @@ const exportCtProject = async (
             await fs.copy(path.join(basePath, `./ct.libs/${lib}/includes/`), writeDir);
         }
     }));
+    await fs.copy(path.join(basePath, 'ct.release', 'ct.js.map'), path.join(writeDir, 'ct.js.map'));
 
     /* CSS styles for rendering settings and branding */
     let preloaderColor1 = project.settings.branding.accent,

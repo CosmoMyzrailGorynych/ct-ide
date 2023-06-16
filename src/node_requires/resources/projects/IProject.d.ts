@@ -42,7 +42,7 @@ declare interface IProject {
     actions: ICtAction[];
     scripts: IScript[];
     textures: ITexture[];
-    // skeletons: ISkeleton[];
+    skeletons: ISkeleton[];
     templates: ITemplate[];
     sounds: ISound[];
     rooms: IRoom[];

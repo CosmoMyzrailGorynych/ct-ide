@@ -185,4 +185,4 @@ export const inputs = {
     }
 };
 
-/*@actions@*/
+/*!@actions@*/

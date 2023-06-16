@@ -1,11 +1,12 @@
-/* import {ExportedSkeleton} from './_exporterContracts';
+import {ExportedSkeleton} from './_exporterContracts';
+import * as skels from '../resources/skeletons';
 
-const fs = require('fs-extra');
+import * as path from 'path';
+import * as fs from 'fs-extra';
 const basePath = './data/';
 
 type skeletonExportData = {
-    skeletonsDB: ExportedSkeleton[];
-    requiresDB: boolean;
+    skeletons: ExportedSkeleton[];
 }
 
 export const packSkeletons = async (
@@ -16,42 +17,23 @@ export const packSkeletons = async (
     const writePromises = [];
 
     const exporterData: skeletonExportData = {
-        skeletonsDB: [] as ExportedSkeleton[],
-        requiresDB: false
+        skeletons: [] as ExportedSkeleton[]
     };
     for (const skeleton of proj.skeletons) {
-        if (skeleton.from === 'dragonbones') {
-            const slice = skeleton.origname.replace('_ske.json', '');
-            writePromises.push(
-                fs.copy(`${projdir}/img/${slice}_ske.json`,
-                `${writeDir}/img/${slice}_ske.json`)
-            );
-            writePromises.push(
-                fs.copy(`${projdir}/img/${slice}_tex.json`,
-                `${writeDir}/img/${slice}_tex.json`)
-            );
-            writePromises.push(
-                fs.copy(`${projdir}/img/${slice}_tex.png`,
-                `${writeDir}/img/${slice}_tex.png`)
-            );
-            exporterData.skeletonsDB.push([
-                `./img/${slice}_ske.json`,
-                `./img/${slice}_tex.json`,
-                `./img/${slice}_tex.png`,
-                skeleton.name
-            ]);
-            exporterData.requiresDB = true;
-        } else {
-            throw new Error(`Unsupported skeleton source of ${skeleton.name}: ${skeleton.from}.`);
+        if (skeleton.from !== 'spine') {
+            throw new Error(`Skeleton ${skeleton.name} is from unsupported source "${skeleton.from}". You should probably contact support.`);
         }
-    }
-    if (exporterData.requiresDB) {
-        writePromises.push(fs.copyFile(
-            basePath + 'ct.release/DragonBones.min.js',
-            writeDir + '/DragonBones.min.js'
-        ));
+        const dataPath = skels.getSkeletonData(skeleton, true),
+              atlasPath = skels.getSkeletonAtlas(skeleton, true),
+              atlasMetaPath = skels.getSkeletonAtlasMeta(skeleton, true);
+        writePromises.push(fs.copy(dataPath, `${writeDir}/skel/${path.basename(dataPath)}`));
+        writePromises.push(fs.copy(atlasPath, `${writeDir}/skel/${path.basename(atlasPath)}`));
+        writePromises.push(fs.copy(atlasMetaPath, `${writeDir}/skel/${path.basename(atlasMetaPath)}`));
+        exporterData.skeletons.push({
+            name: skeleton.name,
+            dataPath: `skel/${path.basename(dataPath)}`
+        });
     }
     await Promise.all(writePromises);
     return exporterData;
 };
-*/

@@ -18,7 +18,15 @@ export type ExportedTiledTexture = {
 };
 
 
-export type ExportedSkeleton = [string, string, string, string];
+export type ExportedSkeleton = {
+    /** The name of the skeleton and how it is used in the code */
+    name: string;
+    /**
+     * The path to the JSON data file of the skeleton.
+     * PNG atlas and its metadata must reside next to it.
+     */
+    dataPath: string;
+};
 
 export type ExportedTandem = {
     texture: string;

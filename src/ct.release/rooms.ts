@@ -92,7 +92,7 @@ export class Room extends PIXI.Container<PIXI.DisplayObject> {
                 (ctjsGame.pixiApp.renderer as PIXI.Renderer).background.color =
                     u.hexToPixi(this.template.backgroundColor);
             }
-            /*%beforeroomoncreate%*/
+            /*!%beforeroomoncreate%*/
             for (let i = 0, li = template.bgs.length; i < li; i++) {
                 // Need to put additional properties like parallax here,
                 // so we don't use ct.backgrounds.add
@@ -380,47 +380,47 @@ export const rooms = {
         ctjsGame.room.onCreate();
         rooms.onCreate.apply(ctjsGame.room);
         rooms.list[roomName].push(ctjsGame.room);
-        /*%switch%*/
+        /*!%switch%*/
         ctjsGame.camera.manageStage();
         rooms.switching = false;
         nextRoom = void 0;
     },
     onCreate(): void {
-        /*%roomoncreate%*/
+        /*!%roomoncreate%*/
     },
     onLeave(): void {
-        /*%roomonleave%*/
+        /*!%roomonleave%*/
     },
     beforeStep(): void {
-        /*%beforeroomstep%*/
+        /*!%beforeroomstep%*/
     },
     afterStep(): void {
-        /*%afterroomstep%*/
+        /*!%afterroomstep%*/
     },
     beforeDraw(): void {
-        /*%beforeroomdraw%*/
+        /*!%beforeroomdraw%*/
     },
     afterDraw(): void {
-        /*%afterroomdraw%*/
+        /*!%afterroomdraw%*/
     },
     rootRoomOnCreate(): void {
-        /*@rootRoomOnCreate@*/
+        /*!@rootRoomOnCreate@*/
     },
     rootRoomOnStep(): void {
-        /*@rootRoomOnStep@*/
+        /*!@rootRoomOnStep@*/
     },
     rootRoomOnDraw(): void {
-        /*@rootRoomOnDraw@*/
+        /*!@rootRoomOnDraw@*/
     },
     rootRoomOnLeave(): void {
-        /*@rootRoomOnLeave@*/
+        /*!@rootRoomOnLeave@*/
     },
     /**
      * The name of the starting room, as it was set in ct.IDE.
      * @type {string}
      */
-    starting: '/*@startroom@*/'
+    starting: '/*!@startroom@*/'
 };
 
-/*@rooms@*/
-/*%rooms%*/
+/*!@rooms@*/
+/*!%rooms%*/

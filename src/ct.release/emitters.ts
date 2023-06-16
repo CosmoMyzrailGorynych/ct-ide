@@ -277,7 +277,7 @@ export const emitters = {
     /**
      * A map of existing emitter templates.
      */
-    templates: [/*@tandemTemplates@*/][0] || {} as ExportedTandems,
+    templates: [/*!@tandemTemplates@*/][0] || {} as ExportedTandems,
     /**
      * A list of all the emitters that are simulated in UI time scale.
      */

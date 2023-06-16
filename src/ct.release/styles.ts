@@ -31,5 +31,5 @@ export const styles = {
         return styles.types[name];
     }
 };
-/*@styles@*/
-/*%styles%*/
+/*!@styles@*/
+/*!%styles%*/

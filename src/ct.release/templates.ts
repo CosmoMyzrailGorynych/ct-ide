@@ -325,7 +325,7 @@ export class Copy extends PIXI.AnimatedSprite {
     // eslint-disable-next-line class-methods-use-this
     onBeforeCreateModifier(): void {
         // Filled by ct.IDE and catmods
-        /*%onbeforecreate%*/
+        /*!%onbeforecreate%*/
     }
 }
 declare class LivingCopy extends Copy {
@@ -333,7 +333,7 @@ declare class LivingCopy extends Copy {
 }
 
 const onCreateModifier = function () {
-    /*%oncreate%*/
+    /*!%oncreate%*/
 };
 
 /**
@@ -342,6 +342,8 @@ const onCreateModifier = function () {
  */
 export const templates = {
     Copy,
+    Background,
+    Tilemap,
     /**
      * An object that contains arrays of copies of all templates.
      */
@@ -468,21 +470,21 @@ export const templates = {
     },
 
     beforeStep(): void {
-        /*%beforestep%*/
+        /*!%beforestep%*/
     },
     afterStep(): void {
-        /*%afterstep%*/
+        /*!%afterstep%*/
     },
     beforeDraw(): void {
-        /*%beforedraw%*/
+        /*!%beforedraw%*/
     },
     afterDraw(): void {
-        /*%afterdraw%*/
+        /*!%afterdraw%*/
     },
     onDestroy(): void {
-        /*%ondestroy%*/
+        /*!%ondestroy%*/
     }
 };
 
-/*@templates@*/
-/*%templates%*/
+/*!@templates@*/
+/*!%templates%*/

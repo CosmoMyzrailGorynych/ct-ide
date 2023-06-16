@@ -42,27 +42,26 @@ textures-panel.aPanel.aView
                     ).square
                         svg.feather
                             use(xlink:href="#loader")
-            //-
-                asset-viewer(
-                    collection="{global.currentProject.skeletons}"
-                    contextmenu="{showSkeletonPopup}"
-                    assettype="skeletons"
-                    namespace="skeletons"
-                    thumbnails="{skelThumbnails}"
-                    ref="skeletons"
-                )
-                    h1.inlineblock
-                        span {parent.voc.skeletons}
-                    .aSpacer.inlineblock
-                    label.file.inlineblock
-                        input(type="file" multiple
-                            accept=".json"
-                            onchange="{parent.textureImport}")
-                        .button
-                            svg.feather
-                                use(xlink:href="#download")
-                            span {parent.voc.import}
-                    docs-shortcut(hidelabel="yes" path="/skeletal-animation.html" button="yes" title="{vocGlob.docsShort}")
+            asset-viewer(
+                collection="{global.currentProject.skeletons}"
+                contextmenu="{showSkeletonPopup}"
+                assettype="skeletons"
+                namespace="skeletons"
+                thumbnails="{skelThumbnails}"
+                ref="skeletons"
+            )
+                h1.inlineblock
+                    span {parent.voc.skeletons}
+                .aSpacer.inlineblock
+                label.file.inlineblock
+                    input(type="file" multiple
+                        accept=".json"
+                        onchange="{parent.textureImport}")
+                    .button
+                        svg.feather
+                            use(xlink:href="#download")
+                        span {parent.voc.import}
+                docs-shortcut(hidelabel="yes" path="/skeletal-animation.html" button="yes" title="{vocGlob.docsShort}")
     input(
         style="display: none;"
         type="file" multiple accept=".webp,.png,.jpg,.jpeg,.bmp,.gif,.json"
@@ -86,7 +85,7 @@ textures-panel.aPanel.aView
             strip: 'polyline'
         };
         this.textureIcons = texture => [iconMap[texture.shape]];
-        // this.skelThumbnails = require('./data/node_requires/resources/skeletons').getSkeletonPreview;
+        this.skelThumbnails = require('./data/node_requires/resources/skeletons').getSkeletonPreview;
 
         this.fillTextureMap = () => {
             glob.texturemap = {};
@@ -163,16 +162,16 @@ textures-panel.aPanel.aView
          * An event fired when user attempts to add files from a file manager
          * (by clicking an "Import" button)
          */
-        this.textureImport = e => { // input[type="file"]
+        this.textureImport = e => { // target is input[type="file"]
             const {importImageToTexture} = require('./data/node_requires/resources/textures');
             const files = [...e.target.files].map(file => file.path);
             for (let i = 0; i < files.length; i++) {
                 if (/\.(jpg|gif|png|jpeg)/gi.test(files[i])) {
                     importImageToTexture(files[i], void 0, this.refs.textures.currentGroup.uid);
-                } /* else if (/_ske\.json/i.test(files[i])) {
+                } else if (/\.json/i.test(files[i])) {
                     const {importSkeleton} = require('./data/node_requires/resources/skeletons');
                     importSkeleton(files[i], this.refs.skeletons.currentGroup.uid);
-                } */
+                }
             }
             e.srcElement.value = '';
             e.preventDefault();
@@ -314,7 +313,7 @@ textures-panel.aPanel.aView
                                 deleteCurrentTexture();
                             }
                             this.refs.textures.updateList();
-                            // this.refs.skeletons.updateList();
+                            this.refs.skeletons.updateList();
                             this.update();
                             alertify
                                 .okBtn(window.languageJSON.common.ok)

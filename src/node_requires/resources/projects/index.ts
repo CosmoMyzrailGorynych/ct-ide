@@ -110,6 +110,7 @@ const loadProject = async (projectData: IProject): Promise<void> => {
         await adapter(projectData);
         fs.ensureDir(global.projdir);
         fs.ensureDir(global.projdir + '/img');
+        fs.ensureDir(global.projdir + '/skel');
         fs.ensureDir(global.projdir + '/snd');
 
         const lastProjects = localStorage.lastProjects ? localStorage.lastProjects.split(';') : [];

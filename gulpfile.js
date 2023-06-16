@@ -198,7 +198,8 @@ const bakeTypedefs = () =>
 const baseEsbuildConfig = {
     entryPoints: ['./src/ct.release/index.ts'],
     bundle: true,
-    minify: false
+    minify: false,
+    legalComments: 'inline'
 };
 const buildCtJsLib = () => {
     const processes = [];
@@ -207,13 +208,14 @@ const buildCtJsLib = () => {
         ...baseEsbuildConfig,
         outfile: './app/data/ct.release/ct.js',
         platform: 'browser',
-        external: ['node_modules/pixi.js', 'node_modules/@pixi/particle-emitter']
+        external: ['node_modules/pixi.js', 'node_modules/pixi-spine', 'node_modules/@pixi/particle-emitter']
     }));
     // Pixi.js dependencies
     processes.push(esbuild({
         ...baseEsbuildConfig,
         entryPoints: ['./src/ct.release/index.pixi.ts'],
         tsconfig: './src/ct.release/tsconfig.json',
+        sourcemap: 'linked',
         minify: true,
         outfile: './app/data/ct.release/pixi.js'
     }));

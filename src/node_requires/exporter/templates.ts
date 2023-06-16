@@ -48,7 +48,7 @@ const stringifyTemplates = function (proj: IProject): IScriptablesFragment {
         const scripts = getBaseScripts(template, proj);
         const textureInfo = getTextureInfo(blankTextures, template);
         templates += `
-ct.templates.templates["${template.name}"] = {
+templates.templates["${template.name}"] = {
     depth: ${template.depth},
     blendMode: PIXI.BLEND_MODES.${template.blendMode?.toUpperCase() ?? 'NORMAL'},
     animationFPS: ${template.animationFPS ?? 60},
@@ -71,7 +71,7 @@ ct.templates.templates["${template.name}"] = {
     },
     extends: ${template.extends ? JSON.stringify(getUnwrappedExtends(template.extends), null, 4) : '{}'}
 };
-ct.templates.list['${template.name.replace(/'/g, '\\\'')}'] = [];
+templates.list['${template.name.replace(/'/g, '\\\'')}'] = [];
         `;
         rootRoomOnCreate += scripts.rootRoomOnCreate;
         rootRoomOnStep += scripts.rootRoomOnStep;
