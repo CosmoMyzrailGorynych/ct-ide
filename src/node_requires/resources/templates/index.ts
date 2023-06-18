@@ -1,5 +1,9 @@
 import {get as getDefaultTemplate} from './defaultTemplate';
-import {getTexturePreview, getPixiTexture as getTexturePixiTexture} from '../textures';
+import {getTexturePreview,
+    getTextureOrig,
+    getDOMTexture as getTextureDOMImage,
+    getPixiTexture as getTexturePixiTexture} from '../textures';
+import {getDOMSkeleton, getPixiTexture as getSkeletonPixiTexture} from '../skeletons';
 
 import * as PIXI from 'node_modules/pixi.js';
 
@@ -54,6 +58,19 @@ const getTemplatePreview = function getTemplatePreview(
 };
 const getThumbnail = getTemplatePreview;
 
+/**
+ * Returns the path to the source image of the template's used texture.
+ */
+const getTemplateTextureOrig = (template: ITemplate | assetRef, fs: boolean): string => {
+    if (typeof template === 'string') {
+        template = getTemplateFromId(template);
+    }
+    if (template === -1) {
+        throw new Error('Cannot work with -1 assetRefs');
+    }
+    return getTextureOrig(template.texture, fs);
+};
+
 const getPixiTexture = (template: ITemplate | assetRef): PIXI.Texture<PIXI.ImageResource>[] => {
     if (typeof template === 'string') {
         template = getTemplateFromId(template);
@@ -61,7 +78,23 @@ const getPixiTexture = (template: ITemplate | assetRef): PIXI.Texture<PIXI.Image
     if (template === -1) {
         throw new Error('Cannot work with -1 assetRefs');
     }
+    if (template.skeleton && template.skeleton !== -1) {
+        return [getSkeletonPixiTexture(template.skeleton)];
+    }
     return getTexturePixiTexture(template.texture, void 0, true);
+};
+
+const getDOMTexture = (template: ITemplate | assetRef): HTMLImageElement => {
+    if (template === -1) {
+        throw new Error('templates.getDOMTexture: Cannot work with -1 references to templates.');
+    }
+    if (typeof template === 'string') {
+        template = getTemplateFromId(template);
+    }
+    if (template.skeleton && template.skeleton !== -1) {
+        return getDOMSkeleton(template.skeleton);
+    }
+    return getTextureDOMImage(template.texture);
 };
 
 export {
@@ -71,5 +104,7 @@ export {
     getTemplatePreview,
     getThumbnail,
     createNewTemplate,
-    getPixiTexture
+    getPixiTexture,
+    getDOMTexture,
+    getTemplateTextureOrig
 };

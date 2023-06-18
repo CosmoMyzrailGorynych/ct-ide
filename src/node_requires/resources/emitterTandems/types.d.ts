@@ -12,7 +12,7 @@ interface ITimeSeries<type> {
 
 interface ITandemEmitter {
     uid: string;
-    texture: -1,
+    texture: assetRef,
     openedTabs: Array<EmitterTabsNames>,
     settings: {
         alpha: {

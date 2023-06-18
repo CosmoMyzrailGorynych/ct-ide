@@ -7,6 +7,21 @@ import * as sounds from './sounds';
 import * as rooms from './rooms';
 import * as templates from './templates';
 import * as styles from './styles';
+import * as skeletons from './skeletons';
+
+/**
+ * A method that returns an up-to-date DOM image of a texture for the specified asset.
+ * Relies on caches in the textures and skeletons submodules.
+ * @async
+ */
+export const getDOMImage = (asset: ISkeleton | ITemplate | ITexture): HTMLImageElement => {
+    if (asset.type === 'texture') {
+        return textures.getDOMTexture(asset);
+    } else if (asset.type === 'template') {
+        return templates.getDOMTexture(asset);
+    }
+    return skeletons.getDOMSkeleton(asset);
+};
 
 export const resourceToIconMap = {
     texture: 'texture',

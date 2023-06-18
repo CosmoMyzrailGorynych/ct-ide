@@ -2,9 +2,7 @@ import {u} from './u';
 import {ctjsGame} from '.';
 import {sounds} from './sounds';
 import * as PIXI from 'node_modules/pixi.js';
-import * as spineLib from 'node_modules/pixi-spine';
-const Spine = spineLib.Spine;
-console.log(spineLib);
+import {Spine, ISkeletonData} from 'node_modules/pixi-spine';
 import {TextureShape, ExportedTiledTexture, ExportedSkeleton} from '../node_requires/exporter/_exporterContracts';
 
 export type CtjsTexture = PIXI.Texture & {
@@ -293,11 +291,15 @@ const resLib = {
     /**
      * Creates a skeletal animated sprite, ready to be added to your copies.
      * @param {string} name The name of the skeleton asset.
+     * @param {string} [skin] The name of the skin; optional.
      * @returns The created skeleton
      */
-    makeSkeleton(name: string): Spine {
+    makeSkeleton(name: string, skin?: string): Spine {
         const asset = resLib.skeletons[name];
-        return new Spine(asset);
+        const skeleton = new Spine(asset);
+        if (skin) {
+            skeleton.skeleton.setSkinByName(skin);
+        }
         // TODO:
         /* skel.on(dragonBones.EventObject.SOUND_EVENT, function skeletonSound(event) {
             if (sounds.exists(event.name)) {
@@ -309,6 +311,7 @@ const resLib = {
                 at animation ${skel.animation.lastAnimationName}`);
             }
         });*/
+        return skeleton;
     }
 };
 

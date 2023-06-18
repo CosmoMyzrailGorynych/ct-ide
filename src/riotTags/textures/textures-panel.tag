@@ -44,10 +44,12 @@ textures-panel.aPanel.aView
                             use(xlink:href="#loader")
             asset-viewer(
                 collection="{global.currentProject.skeletons}"
+                click="{openSkeleton}"
                 contextmenu="{showSkeletonPopup}"
                 assettype="skeletons"
                 namespace="skeletons"
                 thumbnails="{skelThumbnails}"
+                icons="{textureIcons}"
                 ref="skeletons"
             )
                 h1.inlineblock
@@ -67,54 +69,32 @@ textures-panel.aPanel.aView
         type="file" multiple accept=".webp,.png,.jpg,.jpeg,.bmp,.gif,.json"
         ref="inputFile" onchange="{textureImport}"
     )
-    texture-editor(if="{editing}" texture="{currentTexture}" onclose="{closeTexture}")
+    texture-editor(if="{editing && currentTexture}" texture="{currentTexture}" onclose="{closeTexture}")
+    texture-editor(if="{editing && currentSkeleton}" skeletonmode="yep" skeleton="{currentSkeleton}" onclose="{closeSkeleton}")
     texture-generator(if="{generating}" onclose="{closeGenerator}")
     context-menu(menu="{textureMenu}" ref="textureMenu")
     builtin-asset-gallery(if="{showingGallery}" type="textures" onclose="{closeGallery}")
     script.
         const glob = require('./data/node_requires/glob');
+
+        const {getTextureOrig, getTextureFromId, getTexturePreview} = require('./data/node_requires/resources/textures');
+        const {getSkeletonFromId, getSkeletonThumbnail} = require('./data/node_requires/resources/skeletons');
+        this.textureThumbnails = getTexturePreview;
+        this.skelThumbnails = getSkeletonThumbnail;
+
         this.namespace = 'texture';
         this.mixin(window.riotVoc);
         this.editing = false;
         this.dropping = false;
 
-        this.textureThumbnails = require('./data/node_requires/resources/textures').getTexturePreview;
         const iconMap = {
             rect: 'square',
             circle: 'circle',
             strip: 'polyline'
         };
         this.textureIcons = texture => [iconMap[texture.shape]];
-        this.skelThumbnails = require('./data/node_requires/resources/skeletons').getSkeletonPreview;
-
-        this.fillTextureMap = () => {
-            glob.texturemap = {};
-            global.currentProject.textures.forEach(texture => {
-                var img = document.createElement('img');
-                glob.texturemap[texture.uid] = img;
-                img.g = texture;
-                img.src = 'file://' + global.projdir + '/img/' + texture.origname + '?' + texture.lastmod;
-            });
-            var img = document.createElement('img');
-            glob.texturemap[-1] = img;
-            img.g = {
-                width: 32,
-                height: 32,
-                offx: 0,
-                offy: 0,
-                grid: [1, 1],
-                axis: [16, 16],
-                marginx: 0,
-                marginy: 0,
-                imgWidth: 32,
-                imgHeight: 32,
-                closedStrip: true
-            };
-            img.src = 'data/img/unknown.png';
-        };
 
         this.setUpPanel = () => {
-            this.fillTextureMap();
             this.refs.textures.updateList();
             // this.refs.skeletons.updateList();
             this.searchResults = null;
@@ -127,7 +107,6 @@ textures-panel.aPanel.aView
             this.refs.textures.updateList();
             this.refs.skeletons.updateList();
             this.update();
-            this.fillTextureMap();
         };
 
         window.signals.on('projectLoaded', this.setUpPanel);
@@ -143,15 +122,18 @@ textures-panel.aPanel.aView
         this.openAsset = (assetType, uid) => {
             if (this.editing) {
                 // Reset texture editor
-                this.editing = this.currentTexture = this.currentTextureId = false;
+                this.editing = this.currentTexture = this.currentTexturePos =
+                    this.currentSkeleton = this.currentSkeletonPos = false;
                 this.update();
             }
-            if (assetType !== 'textures') {
-                return; // cannot open skeletons
-            }
             this.editing = true;
-            this.currentTexture = window.currentProject.textures.find(t => t.uid === uid);
-            this.currentTextureId = uid;
+            if (assetType === 'textures') {
+                this.currentTexture = getTextureFromId(uid);
+                this.currentTexturePos = uid;
+            } else {
+                this.currentSkeleton = getSkeletonFromId(uid);
+                this.currentSkeletonPos = uid;
+            }
             this.update();
         };
 
@@ -195,56 +177,32 @@ textures-panel.aPanel.aView
          */
         this.openTexture = texture => () => {
             this.currentTexture = texture;
-            this.currentTextureId = global.currentProject.textures.indexOf(texture);
+            this.currentTexturePos = global.currentProject.textures.indexOf(texture);
             this.editing = true;
         };
         this.closeTexture = () => {
             this.editing = false;
+            this.currentTexture = void 0;
+            this.currentTexturePos = null;
             this.update();
         };
-
+        this.openSkeleton = skeleton => () => {
+            this.currentSkeleton = skeleton;
+            this.currentSkeletonPos = global.currentProject.skeletons.indexOf(skeleton);
+            this.editing = true;
+        };
+        this.closeSkeleton = () => {
+            this.editing = false;
+            this.currentSkeleton = void 0;
+            this.currentSkeletonPos = null;
+            this.update();
+        };
         this.openGenerator = () => {
             this.generating = true;
         };
         this.closeGenerator = () => {
             this.generating = false;
             this.update();
-        };
-
-        const deleteCurrentTexture = () => {
-            for (const template of global.currentProject.templates) {
-                if (template.texture === this.currentTexture.uid) {
-                    template.texture = -1;
-                }
-            }
-            for (const room of global.currentProject.rooms) {
-                if ('tiles' in room) {
-                    for (const layer of room.tiles) {
-                        layer.tiles = layer.tiles.filter(tile => tile.texture !== this.currentTexture.uid);
-                    }
-                }
-                if ('backgrounds' in room) {
-                    let i = 0;
-                    while (i < room.backgrounds.length) {
-                        if (room.backgrounds[i].texture === this.currentTexture.uid) {
-                            room.backgrounds.splice(i, 1);
-                        } else {
-                            i++;
-                        }
-                    }
-                }
-            }
-            for (const tandem of global.currentProject.emitterTandems) {
-                for (const emitter of tandem.emitters) {
-                    if (emitter.texture === this.currentTexture.uid) {
-                        emitter.texture = -1;
-                    }
-                }
-            }
-            if (global.currentProject.settings.branding.icon === this.currentTexture.uid) {
-                delete global.currentProject.settings.branding.icon;
-            }
-            global.currentProject.textures.splice(this.currentTextureId, 1);
         };
 
         // Creates a context menu that will appear on RMB click on texture cards
@@ -256,7 +214,7 @@ textures-panel.aPanel.aView
                 click: () => {
                     const templatesAPI = require('./data/node_requires/resources/templates/');
                     const template = templatesAPI.createNewTemplate(this.currentTexture.name);
-                    if (this.currentTextureType === 'skeleton') {
+                    if (this.currentAssetType === 'skeleton') {
                         template.oncreate = '// You can set a regular texture to make a collision mask;\n' +
                             '// ct.js doesn\'t support collisions and in-editor display of skeletal animations yet!\n' +
                             `this.skel = ct.res.makeSkeleton('${this.currentTexture.name}');\n` +
@@ -271,7 +229,7 @@ textures-panel.aPanel.aView
             }, {
                 label: window.languageJSON.common.open,
                 click: () => {
-                    if (this.currentTextureType !== 'skeleton') {
+                    if (this.currentAssetType !== 'skeleton') {
                         this.openTexture(this.currentTexture)();
                     }
                     this.update();
@@ -291,8 +249,10 @@ textures-panel.aPanel.aView
                         if (e.inputValue && e.inputValue !== '' && e.buttonClicked !== 'cancel') {
                             this.currentTexture.name = e.inputValue;
                             this.update();
-                            const {updatePixiTexture} = require('./data/node_requires/resources/textures');
-                            updatePixiTexture(this.currentTexture);
+                            if (this.currentAssetType !== 'skeleton') {
+                                const {updatePixiTexture} = require('./data/node_requires/resources/textures');
+                                updatePixiTexture(this.currentTexture);
+                            }
                         }
                     });
                 }
@@ -307,10 +267,10 @@ textures-panel.aPanel.aView
                     .confirm(window.languageJSON.common.confirmDelete.replace('{0}', this.currentTexture.name))
                     .then(e => {
                         if (e.buttonClicked === 'ok') {
-                            if (this.currentTextureType === 'skeleton') {
-                                global.currentProject.skeletons.splice(this.currentTextureId, 1);
+                            if (this.currentAssetType === 'skeleton') {
+                                global.currentProject.skeletons.splice(this.currentSkeletonPos, 1);
                             } else {
-                                deleteCurrentTexture();
+                                require('./data/node_requires/resources/textures').removeTexture(this.currentTexture);
                             }
                             this.refs.textures.updateList();
                             this.refs.skeletons.updateList();
@@ -327,11 +287,11 @@ textures-panel.aPanel.aView
          * Shows the context menu created above
          */
         this.showTexturePopup = (texture, isSkeleton) => e => {
-            this.currentTextureType = isSkeleton ? 'skeleton' : 'texture';
+            this.currentAssetType = isSkeleton ? 'skeleton' : 'texture';
             if (isSkeleton) {
-                this.currentTextureId = global.currentProject.skeletons.indexOf(texture);
+                this.currentTexturePos = global.currentProject.skeletons.indexOf(texture);
             } else {
-                this.currentTextureId = global.currentProject.textures.indexOf(texture);
+                this.currentTexturePos = global.currentProject.textures.indexOf(texture);
             }
             this.currentTexture = texture;
             this.refs.textureMenu.popup(e.clientX, e.clientY);

@@ -79,39 +79,46 @@ const clearPixiTextureCache = function (): void {
  * Returns an array of frames that matches a PIXI.AnimatedSprite animation of a ct.js texture.
  * Can also be used to update cache value for this specific texture.
  * @param {ITexture} tex A ct.js texture object
+ * @param {boolean} silent By default, this function triggers window.signals'
+ * `pixiTextureChanged` event. You can disable it with this flag if you want to call it manually.
  * @returns {Array<PIXI.Texture>} An array of PIXI.Textures
  */
-const texturesFromCtTexture =
-    async function (tex: ITexture): Promise<PIXI.Texture<PIXI.ImageResource>[]> {
-        const frames = [] as PIXI.Texture<PIXI.ImageResource>[];
-        const baseTexture = await baseTextureFromTexture(tex);
-        for (let col = 0; col < tex.grid[1]; col++) {
-            for (let row = 0; row < tex.grid[0]; row++) {
-                const texture = new PIXI.Texture(
-                    baseTexture,
-                    new PIXI.Rectangle(
-                        tex.offx + row * (tex.width + tex.marginx),
-                        tex.offy + col * (tex.height + tex.marginy),
-                        tex.width,
-                        tex.height
-                    )
-                ) as PIXI.Texture<PIXI.ImageResource>;
-                texture.defaultAnchor = new PIXI.Point(
-                    tex.axis[0] / tex.width,
-                    tex.axis[1] / tex.height
-                );
-                frames.push(texture);
-                if (col * tex.grid[0] + row >= tex.untill && tex.untill > 0) {
-                    break;
-                }
+const texturesFromCtTexture = async (
+    tex: ITexture,
+    silent?: boolean
+): Promise<PIXI.Texture<PIXI.ImageResource>[]> => {
+    const frames = [] as PIXI.Texture<PIXI.ImageResource>[];
+    const baseTexture = await baseTextureFromTexture(tex);
+    for (let col = 0; col < tex.grid[1]; col++) {
+        for (let row = 0; row < tex.grid[0]; row++) {
+            const texture = new PIXI.Texture(
+                baseTexture,
+                new PIXI.Rectangle(
+                    tex.offx + row * (tex.width + tex.marginx),
+                    tex.offy + col * (tex.height + tex.marginy),
+                    tex.width,
+                    tex.height
+                )
+            ) as PIXI.Texture<PIXI.ImageResource>;
+            texture.defaultAnchor = new PIXI.Point(
+                tex.axis[0] / tex.width,
+                tex.axis[1] / tex.height
+            );
+            frames.push(texture);
+            if (col * tex.grid[0] + row >= tex.untill && tex.untill > 0) {
+                break;
             }
         }
-        pixiTextureCache[tex.name] = {
-            lastmod: tex.lastmod,
-            texture: frames
-        };
-        return frames;
+    }
+    pixiTextureCache[tex.name] = {
+        lastmod: tex.lastmod,
+        texture: frames
     };
+    if (!silent) {
+        window.signals.trigger('pixiTextureChanged', tex.uid);
+    }
+    return frames;
+};
 const resetPixiTextureCache = (): void => {
     PIXI.utils.destroyTextureCache();
     unknownTexture = PIXI.Texture.from('data/img/unknown.png');
@@ -120,24 +127,30 @@ const populatePixiTextureCache = async (project: IProject): Promise<void> => {
     clearPixiTextureCache();
     const promises = [];
     for (const texture of project.textures) {
-        promises.push(texturesFromCtTexture(texture));
+        promises.push(texturesFromCtTexture(texture), true);
     }
     await Promise.all(promises);
 };
-// async
-const getDOMImage = function (
+
+const domTextureCache = {} as Record<assetRef, HTMLImageElement>;
+
+/**
+ * @param texture Accepts texture IDs or whole texture objects.
+ * Passing -1 will force to use a `deflt` texture.
+ * @param deflt The default texture to use when requesting an empty texture.
+ * Defaults to data/img/notexture.png (a ghostly cat)
+ * @returns An offsreen `img` tag for the given texture/skeleton.
+ */
+const getDOMImageFromTexture = function (
     texture: assetRef | ITexture,
     deflt?: string
 ): Promise<HTMLImageElement> {
     let path;
     const img = document.createElement('img');
-    if (texture === -1 || !texture) {
+    if (texture === -1) {
         path = deflt || 'data/img/notexture.png';
     } else {
-        if (typeof texture === 'string') {
-            texture = getTextureFromId(texture);
-        }
-        path = 'file://' + global.projdir.replace(/\\/g, '/') + '/img/' + texture.origname + '?' + texture.lastmod;
+        path = getTextureOrig(texture, false);
     }
     img.src = path;
     return new Promise((resolve, reject) => {
@@ -145,8 +158,47 @@ const getDOMImage = function (
         img.addEventListener('error', (err) => reject(err));
     });
 };
+const updateDOMImage = async (texture: ITexture | assetRef): Promise<HTMLImageElement> => {
+    if (typeof texture === 'string') {
+        texture = getTextureFromId(texture);
+    } else if (texture === -1) {
+        domTextureCache[-1] = await getDOMImageFromTexture(-1, 'data/img/unknown.png');
+        return domTextureCache[-1];
+    }
+    domTextureCache[texture.uid] = await getDOMImageFromTexture(texture);
+    return domTextureCache[texture.uid];
+};
+const populateDOMTextureCache = async (project: IProject): Promise<void> => {
+    const promises = project.textures.map(updateDOMImage);
+    promises.push(updateDOMImage(-1));
+    await Promise.all(promises); // drop returned values
+};
+const resetDOMTextureCache = (project: IProject): Promise<void> => {
+    for (const key of Object.keys(domTextureCache)) {
+        delete domTextureCache[key];
+    }
+    return populateDOMTextureCache(project);
+};
+/**
+ * A synchronous method that returns a preloaded DOM img tag for a given texture.
+ * This relies on the texture cache; you must prepopulate the cache with updateDOMImage
+ * or populateDOMTextureCache methods from the same module.
+ */
+const getDOMTexture = (texture: assetRef | ITexture): HTMLImageElement => {
+    if (typeof texture !== 'string' && texture !== -1) {
+        texture = texture.uid;
+    }
+    if (!(texture in domTextureCache)) {
+        throw new Error(`Texture ${texture} does not exist in the DOM image cache. See if the texture actually exists.`);
+    }
+    return domTextureCache[texture];
+};
 
 /**
+ * A synchronous method to get a pixi.js texture, or an array of pixi textures
+ * for framed animations.
+ * This is a synchronous method and thus requires the pixi.js texture
+ * to be preloaded with `populatePixiTextureCache` method.
  * @param {assetRef | ITexture} texture Either a uid of a texture, or a ct.js texture object
  * @param {number} [frame] The frame to extract. If not defined, will return an array of all frames
  * @param {boolean} [allowMinusOne] Allows the use of `-1` as a texture uid
@@ -211,7 +263,7 @@ const textureGenPreview = async function textureGenPreview(
         texture = getTextureFromId(texture);
     }
 
-    const source = await getDOMImage(texture);
+    const source = await getDOMImageFromTexture(texture);
     const frame = crop(
         source,
         texture.offx,
@@ -337,6 +389,45 @@ const importImageToTexture = async (
     }
     return obj;
 };
+const removeTexture = (tex: string | ITexture) => {
+    if (typeof tex === 'string') {
+        tex = getById(tex);
+    }
+    const {uid} = tex;
+    for (const template of global.currentProject.templates) {
+        if (template.texture === uid) {
+            template.texture = -1;
+        }
+    }
+    for (const room of global.currentProject.rooms) {
+        if ('tiles' in room) {
+            for (const layer of room.tiles) {
+                layer.tiles = layer.tiles.filter(tile => tile.texture !== uid);
+            }
+        }
+        if ('backgrounds' in room) {
+            let i = 0;
+            while (i < room.backgrounds.length) {
+                if (room.backgrounds[i].texture === uid) {
+                    room.backgrounds.splice(i, 1);
+                } else {
+                    i++;
+                }
+            }
+        }
+    }
+    for (const tandem of global.currentProject.emitterTandems) {
+        for (const emitter of tandem.emitters) {
+            if (emitter.texture === uid) {
+                emitter.texture = -1;
+            }
+        }
+    }
+    if (global.currentProject.settings.branding.icon === uid) {
+        delete global.currentProject.settings.branding.icon;
+    }
+    global.currentProject.textures.splice(global.currentProject.textures.indexOf(tex), 1);
+};
 
 const getCleanTextureName = (name: string): string =>
     name.replace(isBgPostfixTester, '').replace(texturePostfixParser, '');
@@ -381,7 +472,11 @@ export {
     texturesFromCtTexture as updatePixiTexture,
     setPixelart,
     getPixiTexture,
-    getDOMImage,
+    updateDOMImage,
+    populateDOMTextureCache,
+    resetDOMTextureCache,
+    getDOMTexture,
     importImageToTexture,
+    removeTexture,
     textureGenPreview
 };

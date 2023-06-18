@@ -57,8 +57,6 @@ templates-panel.aPanel.aView
             window.signals.off('projectLoaded', this.setUpPanel);
         });
 
-        this.getTextureRevision = template => glob.texturemap[template.texture].g.lastmod;
-
         this.fillTemplateMap = () => {
             delete glob.templatemap;
             glob.templatemap = {};

@@ -2,6 +2,8 @@ const fs = require('fs-extra');
 const glob = require('./../glob');
 import {revHash} from './../utils/revHash';
 
+import {getDOMTexture} from './../resources/textures';
+
 import {ExportedTiledTexture, TextureShape} from './_exporterContracts';
 
 const Packer = require('maxrects-packer').MaxRectsPacker;
@@ -168,7 +170,7 @@ const drawAtlasFromBin = (bin: packerBin, binInd: number) => {
         const {tex} = block.data,
               {frame} = block.data,
               {key} = block.data,
-              img = glob.texturemap[tex.uid];
+              img = getDOMTexture(tex);
         if (!(tex.name in atlasJSON.animations)) {
             atlasJSON.animations[tex.name] = [];
         }
@@ -404,7 +406,7 @@ export const packImages = async (
     let tiledCounter = 0;
     for (const tex of tiledTextures) {
         const atlas = document.createElement('canvas'),
-              img = glob.texturemap[tex.uid];
+              img = getDOMTexture(tex);
         const cx = atlas.getContext('2d');
         atlas.width = tex.width;
         atlas.height = tex.height;

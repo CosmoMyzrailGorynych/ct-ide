@@ -87,7 +87,7 @@ const stringifyRooms = (proj: IProject): IScriptablesFragment => {
                     extends: tileLayer.extends ? getUnwrappedExtends(tileLayer.extends) : {}
                 };
                 for (const tile of tileLayer.tiles) {
-                    const texture = glob.texturemap[tile.texture].g;
+                    const texture = getTextureFromId(tile.texture);
                     layer.tiles.push({
                         texture: texture.name,
                         frame: tile.frame,
