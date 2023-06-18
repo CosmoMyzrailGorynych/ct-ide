@@ -81,6 +81,7 @@
         "savedMessage": "Your project was succesfully saved.",
         "reallyExitConfirm": "Are you sure you want to exit? All unsaved changes will be lost.",
         "notFoundOrUnknown": "Unknown file. Make sure the file really exists",
+        "reimportSourceMissing": "Can't reimport: the source file is now missing.",
         "nameTaken": "This name is already taken",
         "fastImport": "Fast Import",
         "addToNotes": "Add to notes",

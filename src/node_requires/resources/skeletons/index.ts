@@ -13,7 +13,7 @@ import * as path from 'path';
  * @param {string} id The id of the skeleton
  * @returns {ISkeleton} The ct.js skeleton object
  */
-const getSkeletonFromId = (id: string): ISkeleton => {
+export const getSkeletonFromId = (id: string): ISkeleton => {
     const skeleton = (global.currentProject as IProject).skeletons
         .find((skel: ISkeleton) => skel.uid === id);
     if (!skeleton) {
@@ -21,6 +21,7 @@ const getSkeletonFromId = (id: string): ISkeleton => {
     }
     return skeleton;
 };
+export const getById = getSkeletonFromId;
 
 /**
  * Receives the contents of the skeleton's main JSON file.
@@ -39,21 +40,21 @@ const getSkeletonAppAndVersion = (json: Record<string, any>): [skeletonApp, stri
 };
 
 /** Returns the path to the stored .json file of the skeleton. */
-const getSkeletonData = (skeleton: ISkeleton, fs: boolean): string => {
+export const getSkeletonData = (skeleton: ISkeleton, fs: boolean): string => {
     if (fs) {
         return path.join(global.projdir, 'skel', skeleton.origname);
     }
     return `file://${global.projdir.replace(/\\/g, '/')}/skel/${skeleton.origname}`;
 };
 /** Returns the path to the stored .png atlas of the skeleton. */
-const getSkeletonAtlas = (skeleton: ISkeleton, fs: boolean): string => {
+export const getSkeletonAtlas = (skeleton: ISkeleton, fs: boolean): string => {
     if (fs) {
         return path.join(global.projdir, 'skel', skeleton.origname.replace('.json', '.png'));
     }
     return `file://${global.projdir.replace(/\\/g, '/')}/skel/${skeleton.origname.replace('.json', '.png')}`;
 };
 /** Returns the path to the stored .atlas file of the skeleton. */
-const getSkeletonAtlasMeta = (skeleton: ISkeleton, fs: boolean): string => {
+export const getSkeletonAtlasMeta = (skeleton: ISkeleton, fs: boolean): string => {
     if (fs) {
         return path.join(global.projdir, 'skel', skeleton.origname.replace('.json', '.atlas'));
     }
@@ -63,7 +64,7 @@ const getSkeletonAtlasMeta = (skeleton: ISkeleton, fs: boolean): string => {
 /**
  * Returns a path to the skeleton's thumbnail.
  */
-const getSkeletonThumbnail = function getSkeletonThumbnail(
+export const getSkeletonThumbnail = function getSkeletonThumbnail(
     skeleton: ISkeleton,
     x2?: boolean,
     fs?: boolean
@@ -73,11 +74,12 @@ const getSkeletonThumbnail = function getSkeletonThumbnail(
     }
     return `file://${global.projdir.replace(/\\/g, '/')}/skel/${skeleton.origname}_prev${x2 ? '@2' : ''}.png`;
 };
+export const getSkeletonPreview = getSkeletonThumbnail;
 
 /**
  * Returns a path to the skeleton's fully rendered image.
  */
-const getSkeletonRender = function getSkeletonRender(
+export const getSkeletonRender = function getSkeletonRender(
     skeleton: ISkeleton,
     fs?: boolean
 ): string {
@@ -94,7 +96,7 @@ const getSkeletonRender = function getSkeletonRender(
  * @returns {Promise<void>} Resolves after creating a thumbnail.
  * Get links to the rendered previews with getSkeletonThumbnail and getSkeletonRender methods.
  */
-const skeletonGenPreview = async function (skeleton: ISkeleton): Promise<PIXI.Rectangle> {
+export const skeletonGenPreview = async function (skeleton: ISkeleton): Promise<PIXI.Rectangle> {
     const {spineData} = await PIXI.Assets.load(getSkeletonData(skeleton, false));
     const spine = new Spine(spineData);
 
@@ -119,7 +121,7 @@ const skeletonGenPreview = async function (skeleton: ISkeleton): Promise<PIXI.Re
 /**
  * Opens a Spine JSON export data and gets the list of the animations in the specified skeleton.
  */
-const getSpineAnimationList = (json: ISkeletonData): {
+export const getSpineAnimationList = (json: ISkeletonData): {
     animations: string[],
     skins: string[]
 } => ({
@@ -130,21 +132,23 @@ const getSpineAnimationList = (json: ISkeletonData): {
 /**
  * @see https://github.com/DragonBones/Tools
  */
-const convertDragonBones = async (skeFile: string): Promise<string> => {
+export const convertDragonBones = async (skeFile: string): Promise<string> => {
     const {dir, name, base} = path.parse(skeFile);
     const convertDir = path.join(dir, 'ctjsConvert');
     await fs.ensureDir(convertDir);
-    const log = await execa('db2', ['-t', 'spine', '-i', dir, '-f', base, '-o', path.join(dir, 'ctjsConvert')], {
+    await execa('db2', ['-t', 'spine', '-i', dir, '-f', base, '-o', path.join(dir, 'ctjsConvert')], {
         preferLocal: true
     });
     // Remove the _ske postfix in the filename, as DragonBones tools do that, too
     return path.join(convertDir, `${name.slice(0, -4)}.json`);
 };
 
-const importSkeleton = async (source: string, group?: string): Promise<ISkeleton> => {
-    const uid = generateGUID();
-    const savePath = path.join(global.projdir + '/skel', uid.slice(0, 6));
-
+/**
+ * Checks whether there are all the required files for the skeleton import,
+ * also running convertation procedure for DragonBones skeletons beforehand.
+ * @returns The content of the skeleton's data file.
+ */
+const skeletonPreimport = async (source: string): Promise<ISkeletonData> => {
     let initialJSON: ISkeletonData = await fs.readJSON(source);
     const [app] = getSkeletonAppAndVersion(initialJSON);
     if (app === 'unknown') {
@@ -159,7 +163,6 @@ const importSkeleton = async (source: string, group?: string): Promise<ISkeleton
 
     const basename = path.basename(source, path.extname(source));
     const dirname = path.dirname(source);
-    const origname = `${uid.slice(0, 6)}/${basename}.json`;
 
     const atlasPath = path.join(dirname, `${basename}.atlas`);
     const texturePath = path.join(dirname, `${basename}.png`);
@@ -170,16 +173,40 @@ const importSkeleton = async (source: string, group?: string): Promise<ISkeleton
     if (!(await fs.pathExists(texturePath))) {
         throw new Error(`Could not find an atlas at ${texturePath}`);
     }
+    return initialJSON;
+};
+/**
+ * Copies three files of the Spine skeletons into a project.
+ */
+const importSkeletonFiles = async (source: string, savePath: string): Promise<void> => {
+    const basename = path.basename(source, path.extname(source));
+    const dirname = path.dirname(source);
+    const atlasPath = path.join(dirname, `${basename}.atlas`);
+    const texturePath = path.join(dirname, `${basename}.png`);
 
     await Promise.all([
         fs.copy(source, path.join(savePath, `${basename}.json`)),
         fs.copy(atlasPath, path.join(savePath, `${basename}.atlas`)),
         fs.copy(texturePath, path.join(savePath, `${basename}.png`))
     ]);
+};
+/**
+ * Imports a Spine or DragonBones skeleton by a filesystem path.
+ */
+export const importSkeleton = async (source: string, group?: string): Promise<ISkeleton> => {
+    const uid = generateGUID();
+    const savePath = path.join(global.projdir + '/skel', uid.slice(0, 6));
+
+    const initialJSON = await skeletonPreimport(source);
+    const basename = path.basename(source, path.extname(source));
+    await importSkeletonFiles(source, savePath);
+    const origname = `${uid.slice(0, 6)}/${basename}.json`;
+
     const skel = {
         name: basename,
         origname,
         from: 'spine' as skeletonApp,
+        source,
         ...getSpineAnimationList(initialJSON),
         type: 'skeleton' as const,
         lastmod: Number(Date.now()),
@@ -203,7 +230,47 @@ const importSkeleton = async (source: string, group?: string): Promise<ISkeleton
 
     return skel;
 };
-
+/**
+ * Properly removes a skeleton from the project, cleaning all the references to it
+ * in other relevant assets.
+ */
+export const removeSkeleton = (skel: ISkeleton | string): void => {
+    if (typeof skel === 'string') {
+        skel = getSkeletonFromId(skel);
+    }
+    const {uid} = skel;
+    for (const template of global.currentProject.templates) {
+        if (template.skeleton === uid) {
+            template.skeleton = -1;
+        }
+    }
+    global.currentProject.skeletons.splice(global.currentProject.skeletons.indexOf(skel), 1);
+};
+/**
+ * Replaces the old skeleton with a new one.
+ * Updates the source field of the ct.js skeleton.
+ */
+export const reimportSkeleton = async (
+    skel: ISkeleton | string,
+    source: string
+): Promise<void> => {
+    if (typeof skel === 'string') {
+        skel = getSkeletonFromId(skel);
+    }
+    const savePath = path.join(global.projdir + '/skel', skel.uid.slice(0, 6));
+    const dataJSON = await skeletonPreimport(source);
+    const meta = getSpineAnimationList(dataJSON);
+    await importSkeletonFiles(source, savePath);
+    const bounds = await skeletonGenPreview(skel);
+    // ESLint warns that `skel` may be overwritten inside skeletonGenPreview.
+    // skeletonGenPreview is a pure function, thus the error muting here.
+    /* eslint-disable require-atomic-updates */
+    skel.animations = meta.animations;
+    skel.skins = meta.skins;
+    skel.axis = [Math.round(-bounds.x), Math.round(-bounds.y)];
+    skel.source = source;
+    /* eslint-enable require-atomic-updates */
+};
 
 // Caching DOM images of the full renders
 
@@ -232,7 +299,8 @@ const getDOMImageFromSkeleton = function (skeleton: assetRef | ISkeleton)
         img.addEventListener('error', (err) => reject(err));
     });
 };
-const updateDOMSkeleton = async (skeleton: ISkeleton | assetRef): Promise<HTMLImageElement> => {
+export const updateDOMSkeleton = async (skeleton: ISkeleton | assetRef)
+: Promise<HTMLImageElement> => {
     if (skeleton === -1) {
         throw new Error('-1 skeleton reference is not supported.');
     }
@@ -242,11 +310,11 @@ const updateDOMSkeleton = async (skeleton: ISkeleton | assetRef): Promise<HTMLIm
     domSkeletonCache[skeleton.uid] = await getDOMImageFromSkeleton(skeleton);
     return domSkeletonCache[skeleton.uid];
 };
-const populateDOMSkeletonCache = async (project: IProject): Promise<void> => {
+export const populateDOMSkeletonCache = async (project: IProject): Promise<void> => {
     const promises = project.skeletons.map(updateDOMSkeleton);
     await Promise.all(promises); // drop returned values
 };
-const resetDOMTextureCache = (project: IProject): Promise<void> => {
+export const resetDOMTextureCache = (project: IProject): Promise<void> => {
     for (const key of Object.keys(domSkeletonCache)) {
         delete domSkeletonCache[key];
     }
@@ -257,7 +325,7 @@ const resetDOMTextureCache = (project: IProject): Promise<void> => {
  * This relies on the skeletons' texture cache; you must prepopulate the cache
  * with updateDOMSkeleton or populateDOMSkeletonCache methods from the same module.
  */
-const getDOMSkeleton = (skel: assetRef | ISkeleton): HTMLImageElement => {
+export const getDOMSkeleton = (skel: assetRef | ISkeleton): HTMLImageElement => {
     if (typeof skel !== 'string' && skel !== -1) {
         skel = skel.uid;
     }
@@ -283,7 +351,7 @@ const clearPixiTextureCache = function (): void {
 const getPixiTextureFromSkel = (skel: ISkeleton): Promise<PIXI.Texture<PIXI.ImageResource>> =>
     PIXI.Assets.load(getSkeletonRender(skel, false));
 
-const updatePixiTextureForSkel = async (skel: ISkeleton | assetRef)
+export const updatePixiTextureForSkel = async (skel: ISkeleton | assetRef)
 : Promise<PIXI.Texture<PIXI.ImageResource>> => {
     if (skel === -1) {
         throw new Error('-1 skeleton reference is not supported.');
@@ -295,7 +363,7 @@ const updatePixiTextureForSkel = async (skel: ISkeleton | assetRef)
     pixiTextureCache[skel.uid] = tex;
     return tex;
 };
-const populatePixiTextureCache = async (project: IProject): Promise<void> => {
+export const populatePixiTextureCache = async (project: IProject): Promise<void> => {
     clearPixiTextureCache();
     const promises = [];
     for (const skel of project.skeletons) {
@@ -308,7 +376,7 @@ const populatePixiTextureCache = async (project: IProject): Promise<void> => {
  * This relies on the skeletons' pixi.js texture cache; you must prepopulate the cache
  * with updatePixiTextureForSkel or populatePixiTextureCache methods from the same module.
  */
-const getPixiTexture = (skel: assetRef | ISkeleton): PIXI.Texture<PIXI.ImageResource> => {
+export const getPixiTexture = (skel: assetRef | ISkeleton): PIXI.Texture<PIXI.ImageResource> => {
     if (skel === -1) {
         throw new Error('-1 skeleton reference is not supported.');
     }
@@ -319,26 +387,4 @@ const getPixiTexture = (skel: assetRef | ISkeleton): PIXI.Texture<PIXI.ImageReso
         throw new Error(`Skeleton of ID ${skel} does not exist in the PIXI image cache. See if the skeleton actually exists.`);
     }
     return pixiTextureCache[skel];
-};
-
-export {
-    getSkeletonFromId,
-    getSkeletonFromId as getById,
-    getSkeletonData,
-    getSkeletonAtlas,
-    getSkeletonAtlasMeta,
-    getSkeletonRender,
-    getSkeletonThumbnail,
-    getSkeletonThumbnail as getSkeletonPreview,
-    skeletonGenPreview,
-    convertDragonBones,
-    getSpineAnimationList,
-    updateDOMSkeleton,
-    populateDOMSkeletonCache,
-    resetDOMTextureCache,
-    getDOMSkeleton,
-    populatePixiTextureCache,
-    updatePixiTextureForSkel,
-    getPixiTexture,
-    importSkeleton
 };

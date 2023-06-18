@@ -1,5 +1,7 @@
 import {imageContain, toBuffer, crop} from '../../utils/imageUtils';
 
+const fs = require('node_modules/fs-extra');
+import path from 'path';
 import * as PIXI from 'node_modules/pixi.js';
 
 /**
@@ -15,6 +17,16 @@ const getTextureFromId = (id: string): ITexture => {
     return texture;
 };
 const getById = getTextureFromId;
+/**
+ * Accepts a texture ID or a texture's object itself;
+ * always returns a texture object.
+ */
+const ensureTex = (tex: string | ITexture): ITexture => {
+    if (typeof tex === 'string') {
+        return getById(tex);
+    }
+    return tex;
+};
 
 /**
  * Retrieves the full path to a thumbnail of a given texture.
@@ -389,10 +401,65 @@ const importImageToTexture = async (
     }
     return obj;
 };
-const removeTexture = (tex: string | ITexture) => {
-    if (typeof tex === 'string') {
-        tex = getById(tex);
+/**
+ * Loads an image into the project, generating thumbnails and updating the preview.
+ * @param {string|Buffer} source A source image. It can be either a full path in a file system,
+ * or a buffer.
+ */
+const reimportTexture = async (
+    texture: ITexture | assetRef,
+    source: string | Buffer
+): Promise<HTMLImageElement> => {
+    if (texture === -1) {
+        throw new Error('Invalid texture: got -1 while trying to reimport one.');
     }
+    const tex = ensureTex(texture);
+    const dest = getTextureOrig(texture, true);
+    if (source instanceof Buffer) {
+        await fs.writeFile(dest, source);
+    } else {
+        await fs.copy(source, dest);
+    }
+    const image = document.createElement('img');
+    image.src = 'file://' + dest + '?' + Math.random();
+    await new Promise((resolve, reject) => {
+        image.onload = () => resolve(image);
+        image.onerror = reject;
+    });
+    tex.imgWidth = image.width;
+    tex.imgHeight = image.height;
+    // Update frame size for single-frame textures
+    if (tex.tiled || (
+        tex.grid[0] === 1 &&
+        tex.grid[1] === 1 &&
+        tex.offx === 0 &&
+        tex.offy === 0
+    )) {
+        tex.width = tex.imgWidth;
+        tex.height = tex.imgHeight;
+    }
+    tex.origname = path.basename(dest);
+    if (typeof source === 'string') {
+        tex.source = source;
+    }
+    tex.lastmod = Number(new Date());
+
+    await Promise.all([
+        textureGenPreview(tex, dest + '_prev.png', 64),
+        textureGenPreview(tex, dest + '_prev@2.png', 128),
+        updateDOMImage(tex),
+        texturesFromCtTexture(tex)
+    ]);
+    return image;
+};
+
+/**
+ * Properly removes a texture from the project, cleansing it from all the associated assets.
+ *
+ * @note It does not remove the actual image assets to not break projects after a project recovery.
+ */
+const removeTexture = (tex: string | ITexture): void => {
+    tex = ensureTex(tex);
     const {uid} = tex;
     for (const template of global.currentProject.templates) {
         if (template.texture === uid) {
@@ -477,6 +544,7 @@ export {
     resetDOMTextureCache,
     getDOMTexture,
     importImageToTexture,
+    reimportTexture,
     removeTexture,
     textureGenPreview
 };

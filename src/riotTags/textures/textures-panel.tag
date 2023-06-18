@@ -214,7 +214,7 @@ textures-panel.aPanel.aView
                 click: () => {
                     const templatesAPI = require('./data/node_requires/resources/templates/');
                     const template = templatesAPI.createNewTemplate(this.currentTexture.name);
-                    if (this.currentAssetType === 'skeleton') {
+                    if (this.currentAssetType === 'skeleton') { // TODO:
                         template.oncreate = '// You can set a regular texture to make a collision mask;\n' +
                             '// ct.js doesn\'t support collisions and in-editor display of skeletal animations yet!\n' +
                             `this.skel = ct.res.makeSkeleton('${this.currentTexture.name}');\n` +
@@ -269,11 +269,11 @@ textures-panel.aPanel.aView
                         if (e.buttonClicked === 'ok') {
                             if (this.currentAssetType === 'skeleton') {
                                 global.currentProject.skeletons.splice(this.currentSkeletonPos, 1);
+                                this.refs.skeletons.updateList();
                             } else {
                                 require('./data/node_requires/resources/textures').removeTexture(this.currentTexture);
+                                this.refs.textures.updateList();
                             }
-                            this.refs.textures.updateList();
-                            this.refs.skeletons.updateList();
                             this.update();
                             alertify
                                 .okBtn(window.languageJSON.common.ok)

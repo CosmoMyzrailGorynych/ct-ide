@@ -78,7 +78,7 @@ mixin collisionSettings
 mixin textureSource
     .flexrow
         label.file(title="{voc.replaceTexture}")
-            input(type="file" ref="textureReplacer" accept=".png,.jpg,.jpeg,.bmp,.gif" onchange="{textureReplace}")
+            input(type="file" ref="textureReplacer" accept=".png,.jpg,.jpeg,.bmp,.gif,.webp" onchange="{textureReplace}")
             .button.inline.wide
                 svg.feather
                     use(xlink:href="#folder")
@@ -470,22 +470,20 @@ texture-editor.aDimmer.pointer.pad.fadein(onclick="{tryClose}")
 
         this.assetReplace = () => {
             const val = this.refs.textureReplacer.files[0].path;
-            if (/\.(jpg|gif|png|jpeg)/gi.test(val)) {
-                this.loadImg(
-                    val,
-                    global.projdir + '/img/i' + this.asset.uid + path.extname(val)
-                );
-                this.asset.source = val;
+            if (/\.(jpg|gif|png|jpeg|webp)/gi.test(val)) {
+                this.loadImg(val);
             } else {
                 alertify.error(window.languageJSON.common.wrongFormat);
             }
             this.refs.textureReplacer.value = '';
         };
-        this.reimport = () => {
-            this.loadImg(
-                this.asset.source,
-                global.projdir + '/img/i' + this.asset.uid + path.extname(this.asset.source)
-            );
+        this.reimport = async() => {
+            const exists = await fs.pathExists(this.asset.source);
+            if (!exists) {
+                alertify.error(window.languageJSON.common.reimportSourceMissing);
+                return;
+            }
+            this.loadImg(this.asset.source);
         };
         this.paste = async () => {
             const png = nw.Clipboard.get().get('png');
@@ -495,59 +493,21 @@ texture-editor.aDimmer.pointer.pad.fadein(onclick="{tryClose}")
             }
             const imageBase64 = png.replace(/^data:image\/\w+;base64,/, '');
             const imageBuffer = new Buffer(imageBase64, 'base64');
-            await this.loadImg(
-                imageBuffer,
-                global.projdir + '/img/i' + this.asset.uid + '.png'
-            );
+            await this.loadImg(imageBuffer);
             alertify.success(this.vocGlob.pastedFromClipboard);
         };
 
         /**
-         * Loads an image into the project, generating thumbnails and updating the preview.
-         * @param {String|Buffer} filename A source image. It can be either a full path in a file system,
-         * or a buffer.
-         * @param {Sting} dest The path to write to.
+         * Reimports the current texture from a buffer or from a file system path.
          */
-        this.loadImg = async (filename, dest) => {
+        this.loadImg = async (source) => {
             try {
-                if (filename instanceof Buffer) {
-                    await fs.writeFile(dest, filename);
-                } else {
-                    await fs.copy(filename, dest);
-                }
-                const image = document.createElement('img');
-                image.onload = () => {
-                    this.asset.imgWidth = image.width;
-                    this.asset.imgHeight = image.height;
-                    if (this.asset.tiled || (
-                        this.asset.grid[0] === 1 &&
-                        this.asset.grid[1] === 1 &&
-                        this.asset.offx === 0 &&
-                        this.asset.offy === 0
-                    )) {
-                        this.asset.width = this.asset.imgWidth;
-                        this.asset.height = this.asset.imgHeight;
-                    }
-                    this.asset.origname = path.basename(dest);
-                    textureCanvas.img = image;
-                    this.asset.lastmod = Number(new Date());
-
-                    const {textureGenPreview, updateDOMImage, updatePixiTexture} = require('./data/node_requires/resources/textures');
-                    textureGenPreview(this.asset, dest + '_prev.png', 64, () => {
-                        this.update();
-                    });
-                    textureGenPreview(this.asset, dest + '_prev@2.png', 128);
-                    setTimeout(() => {
-                        this.refreshTextureCanvas();
-                        updateDOMImage(this.asset);
-                        updatePixiTexture(this.asset);
-                        this.launchTexturePreview();
-                    }, 0);
-                };
-                image.onerror = e => {
-                    alertify.error(e);
-                };
-                image.src = 'file://' + dest + '?' + Math.random();
+                const {reimportTexture} = require('./data/node_requires/resources/textures');
+                const newImage = await reimportTexture(this.asset, source);
+                textureCanvas.img = newImage;
+                this.refreshTextureCanvas();
+                this.launchTexturePreview();
+                this.update();
             } catch (e) {
                 alertify.error(e);
                 throw e;
