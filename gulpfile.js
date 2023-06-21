@@ -223,6 +223,7 @@ const buildCtJsLib = () => {
     processes.push(esbuild({
         ...baseEsbuildConfig,
         outfile: './app/data/ct.release/ct.ts',
+        sourcemap: 'inline',
         minify: false
     }));
     // Copy other game library's files

@@ -9,4 +9,6 @@ declare interface ISkeleton extends IAsset, IHasCollision {
     skins: string[];
     animations: string[];
     axis: [number, number];
+    width: number;
+    height: number;
 }

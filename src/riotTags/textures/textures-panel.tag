@@ -69,8 +69,8 @@ textures-panel.aPanel.aView
         type="file" multiple accept=".webp,.png,.jpg,.jpeg,.bmp,.gif,.json"
         ref="inputFile" onchange="{textureImport}"
     )
-    texture-editor(if="{editing && currentTexture}" texture="{currentTexture}" onclose="{closeTexture}")
-    texture-editor(if="{editing && currentSkeleton}" skeletonmode="yep" skeleton="{currentSkeleton}" onclose="{closeSkeleton}")
+    texture-editor(if="{editing && currentTexture}" asset="{currentTexture}" onclose="{closeTexture}")
+    texture-editor(if="{editing && currentSkeleton}" skeletonmode="yep" asset="{currentSkeleton}" onclose="{closeSkeleton}")
     texture-generator(if="{generating}" onclose="{closeGenerator}")
     context-menu(menu="{textureMenu}" ref="textureMenu")
     builtin-asset-gallery(if="{showingGallery}" type="textures" onclose="{closeGallery}")
@@ -122,14 +122,12 @@ textures-panel.aPanel.aView
         this.openAsset = (assetType, uid) => {
             if (this.editing) {
                 // Reset texture editor
-                this.editing = this.currentTexture = this.currentTexturePos =
-                    this.currentSkeleton = this.currentSkeletonPos = false;
+                this.editing = this.currentTexture = this.currentSkeleton = false;
                 this.update();
             }
             this.editing = true;
             if (assetType === 'textures') {
                 this.currentTexture = getTextureFromId(uid);
-                this.currentTexturePos = uid;
             } else {
                 this.currentSkeleton = getSkeletonFromId(uid);
                 this.currentSkeletonPos = uid;
@@ -177,13 +175,11 @@ textures-panel.aPanel.aView
          */
         this.openTexture = texture => () => {
             this.currentTexture = texture;
-            this.currentTexturePos = global.currentProject.textures.indexOf(texture);
             this.editing = true;
         };
         this.closeTexture = () => {
             this.editing = false;
             this.currentTexture = void 0;
-            this.currentTexturePos = null;
             this.update();
         };
         this.openSkeleton = skeleton => () => {
@@ -231,6 +227,20 @@ textures-panel.aPanel.aView
                 click: () => {
                     if (this.currentAssetType !== 'skeleton') {
                         this.openTexture(this.currentTexture)();
+                    }
+                    this.update();
+                }
+            }, {
+                label: window.languageJSON.common.reimport,
+                icon: 'refresh-ccw',
+                if: () => this.currentTexture?.source,
+                click: async () => {
+                    if (this.currentAssetType === 'skeleton') {
+                        const {reimportSkeleton} = require('./data/node_requires/resources/skeletons');
+                        await reimportSkeleton(this.currentTexture, this.currentTexture.source);
+                    } else {
+                        const {reimportTexture} = require('./data/node_requires/resources/textures');
+                        await reimportTexture(this.currentTexture, this.currentTexture.source);
                     }
                     this.update();
                 }
@@ -288,11 +298,6 @@ textures-panel.aPanel.aView
          */
         this.showTexturePopup = (texture, isSkeleton) => e => {
             this.currentAssetType = isSkeleton ? 'skeleton' : 'texture';
-            if (isSkeleton) {
-                this.currentTexturePos = global.currentProject.skeletons.indexOf(texture);
-            } else {
-                this.currentTexturePos = global.currentProject.textures.indexOf(texture);
-            }
             this.currentTexture = texture;
             this.refs.textureMenu.popup(e.clientX, e.clientY);
             e.preventDefault();

@@ -1,4 +1,4 @@
-import {getDOMImage, getTextureOrig} from './../resources/textures';
+import {getDOMImageFromTexture, getTextureOrig} from './../resources/textures';
 import {revHash} from './../utils/revHash';
 const png2icons = require('png2icons');
 const path = require('path'),
@@ -53,7 +53,7 @@ export const bakeFavicons = async function (
             iconRevision = revHash(buff);
         }
     }
-    const img = await getDOMImage(proj.settings.branding.icon, 'ct_ide.png'),
+    const img = await getDOMImageFromTexture(proj.settings.branding.icon, 'ct_ide.png'),
           fsPath = proj.settings.branding.icon ? getTextureOrig(proj.settings.branding.icon, true) : path.resolve('ct_ide.png');
     const promises = [];
     const soft = !proj.settings.rendering.pixelatedrender;

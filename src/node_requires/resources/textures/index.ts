@@ -139,7 +139,7 @@ const populatePixiTextureCache = async (project: IProject): Promise<void> => {
     clearPixiTextureCache();
     const promises = [];
     for (const texture of project.textures) {
-        promises.push(texturesFromCtTexture(texture), true);
+        promises.push(texturesFromCtTexture(texture, true));
     }
     await Promise.all(promises);
 };
@@ -542,6 +542,7 @@ export {
     updateDOMImage,
     populateDOMTextureCache,
     resetDOMTextureCache,
+    getDOMImageFromTexture,
     getDOMTexture,
     importImageToTexture,
     reimportTexture,

@@ -130,6 +130,7 @@ export const getSpineAnimationList = (json: ISkeletonData): {
 });
 
 /**
+ * @returns The path to a new skeleton file.
  * @see https://github.com/DragonBones/Tools
  */
 export const convertDragonBones = async (skeFile: string): Promise<string> => {
@@ -146,9 +147,10 @@ export const convertDragonBones = async (skeFile: string): Promise<string> => {
 /**
  * Checks whether there are all the required files for the skeleton import,
  * also running convertation procedure for DragonBones skeletons beforehand.
- * @returns The content of the skeleton's data file.
+ * @returns A tuple: The path to the skeleton's .json file (which can change after the conversion
+ * process) and the content of the skeleton's data file.
  */
-const skeletonPreimport = async (source: string): Promise<ISkeletonData> => {
+const skeletonPreimport = async (source: string): Promise<[string, ISkeletonData]> => {
     let initialJSON: ISkeletonData = await fs.readJSON(source);
     const [app] = getSkeletonAppAndVersion(initialJSON);
     if (app === 'unknown') {
@@ -173,7 +175,7 @@ const skeletonPreimport = async (source: string): Promise<ISkeletonData> => {
     if (!(await fs.pathExists(texturePath))) {
         throw new Error(`Could not find an atlas at ${texturePath}`);
     }
-    return initialJSON;
+    return [source, initialJSON];
 };
 /**
  * Copies three files of the Spine skeletons into a project.
@@ -197,15 +199,16 @@ export const importSkeleton = async (source: string, group?: string): Promise<IS
     const uid = generateGUID();
     const savePath = path.join(global.projdir + '/skel', uid.slice(0, 6));
 
-    const initialJSON = await skeletonPreimport(source);
-    const basename = path.basename(source, path.extname(source));
-    await importSkeletonFiles(source, savePath);
+    const [newSource, initialJSON] = await skeletonPreimport(source);
+    const basename = path.basename(newSource, path.extname(newSource));
+    await importSkeletonFiles(newSource, savePath);
     const origname = `${uid.slice(0, 6)}/${basename}.json`;
 
     const skel = {
         name: basename,
         origname,
         from: 'spine' as skeletonApp,
+        // Preserve the old path to the skeleton
         source,
         ...getSpineAnimationList(initialJSON),
         type: 'skeleton' as const,
@@ -213,6 +216,8 @@ export const importSkeleton = async (source: string, group?: string): Promise<IS
         group,
         uid,
         axis: [0, 0] as [number, number],
+        width: NaN,
+        height: NaN,
         shape: 'rect' as IHasCollision['shape'],
         left: 0,
         right: 0,
@@ -220,6 +225,8 @@ export const importSkeleton = async (source: string, group?: string): Promise<IS
         bottom: 0
     };
     const bounds = await skeletonGenPreview(skel);
+    skel.width = Math.ceil(bounds.width);
+    skel.height = Math.ceil(bounds.height);
     skel.axis = [Math.round(-bounds.x), Math.round(-bounds.y)];
     skel.left = Math.round(-bounds.x);
     skel.right = Math.round(bounds.x + bounds.width);
@@ -258,9 +265,9 @@ export const reimportSkeleton = async (
         skel = getSkeletonFromId(skel);
     }
     const savePath = path.join(global.projdir + '/skel', skel.uid.slice(0, 6));
-    const dataJSON = await skeletonPreimport(source);
+    const [newSource, dataJSON] = await skeletonPreimport(source);
     const meta = getSpineAnimationList(dataJSON);
-    await importSkeletonFiles(source, savePath);
+    await importSkeletonFiles(newSource, savePath);
     const bounds = await skeletonGenPreview(skel);
     // ESLint warns that `skel` may be overwritten inside skeletonGenPreview.
     // skeletonGenPreview is a pure function, thus the error muting here.

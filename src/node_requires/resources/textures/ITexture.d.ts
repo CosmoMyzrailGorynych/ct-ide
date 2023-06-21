@@ -7,6 +7,7 @@ interface IHasCollision {
     r?: number;
     stripPoints?: {x: number, y: number}[];
     closedStrip?: boolean;
+    symmetryStrip?: boolean;
 }
 
 interface ITexture extends IAsset, IHasCollision {

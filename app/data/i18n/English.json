@@ -84,6 +84,7 @@
         "reimportSourceMissing": "Can't reimport: the source file is now missing.",
         "nameTaken": "This name is already taken",
         "fastImport": "Fast Import",
+        "reimport": "Reimport",
         "addToNotes": "Add to notes",
         "noRooms": "You need at least one room to compile your app.",
         "tileLayer": "tile layer",
@@ -892,7 +893,6 @@
         "name": "Name:",
         "radius": "Radius:",
         "rectangle": "Rectangle",
-        "reimport": "Reimport",
         "round": "Circle",
         "rows": "Rows:",
         "speed": "Framerate:",
@@ -934,7 +934,6 @@
     },
     "fontView": {
         "italic": "Is italic?",
-        "reimport": "Reimport",
         "generateBitmapFont": "Also generate a bitmap font",
         "bitmapFont": "Bitmap font",
         "bitmapFontSize": "Font size:",
