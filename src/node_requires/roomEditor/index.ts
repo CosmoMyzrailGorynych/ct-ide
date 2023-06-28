@@ -263,7 +263,7 @@ class RoomEditor extends PIXI.Application {
     deserialize(room: IRoom): void {
         this.simulate = room.simulate ?? true;
         (this.renderer as PIXI.Renderer).background.color =
-            PIXI.utils.string2hex(room.backgroundColor);
+            PIXI.utils.string2hex(room.backgroundColor ?? '#000000');
         // Add primary viewport
         this.primaryViewport = new Viewport(room, true, this);
         this.restrictViewport = new ViewportRestriction(this);
@@ -567,9 +567,9 @@ class RoomEditor extends PIXI.Application {
         if (!this.mouseoverHint.visible) {
             return;
         }
-        const {mouse} = this.renderer.plugins.interaction;
-        this.mouseoverHint.x = mouse.global.x + 8;
-        this.mouseoverHint.y = mouse.global.y;
+        const {pointer} = this.renderer.plugins.interaction;
+        this.mouseoverHint.x = pointer.global.x + 8;
+        this.mouseoverHint.y = pointer.global.y;
     }
 
     updateMouseoverHint(text: string, newRef: unknown): void {
