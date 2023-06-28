@@ -758,7 +758,7 @@ texture-editor.aDimmer.pointer.pad.fadein(onclick="{tryClose}")
             }
         };
 
-        this.removeStripPoint = function removeStripPoint(e) {
+        this.removeStripPoint = e => {
             if (this.opts.asset.symmetryStrip) {
                 // Remove an extra point
                 this.opts.asset.stripPoints.pop();
@@ -766,7 +766,7 @@ texture-editor.aDimmer.pointer.pad.fadein(onclick="{tryClose}")
             this.opts.asset.stripPoints.splice(e.item.ind, 1);
             e.preventDefault();
         };
-        this.addStripPoint = function addStripPoint() {
+        this.addStripPoint = () => {
             this.opts.asset.stripPoints.push({
                 x: 0,
                 y: 16
@@ -1056,7 +1056,7 @@ texture-editor.aDimmer.pointer.pad.fadein(onclick="{tryClose}")
             return points.slice(0, 2 + Math.round((points.length - 2) / 2));
         };
         this.getStripSegments = () => {
-            if (!this.asset) {
+            if (!this.opts.asset) {
                 return false;
             }
             const {asset} = this.opts;
