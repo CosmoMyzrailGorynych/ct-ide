@@ -231,6 +231,9 @@ room-editor.aPanel.aView
         const phabricateEvent = (name, e) => {
             this.pixiEditor.observable.trigger(name, e);
         };
+        /**
+         * Routes DOM keyboard events into the RoomEditor to trigger hotkey events there.
+         */
         // eslint-disable-next-line complexity
         const triggerKeyboardEvent = e => {
             if (!window.hotkeys.inScope('rooms')) {
@@ -276,6 +279,12 @@ room-editor.aPanel.aView
         });
 
         this.currentTool = 'select';
+        /**
+         * Describes which tools must have specific entity types visible.
+         * When a tool is selected and the entity type is hidden, its visibility
+         * is automatically turned on.
+         * The dictionary maps tools' names to boolean flags in the RoomEditor class.
+         */
         const mandatoryVisibilityMap = {
             addCopies: 'copiesVisible',
             addTiles: 'tilesVisible',
@@ -294,6 +303,7 @@ room-editor.aPanel.aView
             }
         };
 
+        /* These are used to describe current template selection when the addCopy tool is on */
         this.currentTemplate = -1;
         this.changeSelectedTemplate = template => {
             this.currentTemplate = template;

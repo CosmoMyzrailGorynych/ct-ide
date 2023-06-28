@@ -91,6 +91,16 @@ class RoomEditor extends PIXI.Application {
      */
     pointerCoords = new PIXI.Text('(0;0)', defaultTextStyle);
     /**
+     * A label that will follow mouse cursor and display entities' relevant names
+     * like template name, used sound asset, etc.
+     */
+    mouseoverHint = new PIXI.Text('Unknown', defaultTextStyle);
+    /**
+     * A reference to the latest moused over entity.
+     * Entities on the map hide the hint only if they were the latest one hovered.
+     */
+    mouseoverHintPrev: unknown;
+    /**
      * Whether the room editor currently processes a user interaction.
      * While this is true, no new interactions can be started.
      */
@@ -158,11 +168,17 @@ class RoomEditor extends PIXI.Application {
         this.pointerCoords.x = 8;
         this.stage.addChild(this.pointerCoords);
 
+        this.mouseoverHint.zIndex = Infinity;
+        this.mouseoverHint.visible = false;
+        this.mouseoverHint.anchor.set(0, 1);
+        this.stage.addChild(this.mouseoverHint);
+
         this.ticker.add(() => {
             this.resizeClicktrap();
             this.realignCamera();
             this.snapTarget.update();
             this.repositionCoordLabel();
+            this.repositionMouseoverHint();
             this.tickBackgrounds();
             this.tickCopies();
             if (this.transformer.visible) {
@@ -546,6 +562,25 @@ class RoomEditor extends PIXI.Application {
     }
     repositionCoordLabel(): void {
         this.pointerCoords.y = this.screen.height - 30;
+    }
+    repositionMouseoverHint(): void {
+        if (!this.mouseoverHint.visible) {
+            return;
+        }
+        const {mouse} = this.renderer.plugins.interaction;
+        this.mouseoverHint.x = mouse.global.x + 8;
+        this.mouseoverHint.y = mouse.global.y;
+    }
+
+    updateMouseoverHint(text: string, newRef: unknown): void {
+        this.mouseoverHint.text = text;
+        this.mouseoverHintPrev = newRef;
+        this.mouseoverHint.visible = true;
+    }
+    mouseoverOut(ref: unknown): void {
+        if (this.mouseoverHintPrev === ref) {
+            this.mouseoverHint.visible = false;
+        }
     }
 
     updateTextures(textureId: string): void {
