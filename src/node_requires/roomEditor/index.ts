@@ -13,9 +13,9 @@ import {ViewportRestriction} from './entityClasses/ViewportRestriction';
 
 import {IRoomEditorRiotTag} from './IRoomEditorRiotTag';
 import {IRoomEditorInteraction, PixiListener, pixiListeners, interactions, customListeners, CustomListener} from './interactions';
+import {getById} from '../resources';
 import {getPixiSwatch} from './../themes';
 import {defaultTextStyle, recolorFilters, eraseCursor, toPrecision, snapToDiagonalGrid, snapToRectangularGrid} from './common';
-import {getTemplateFromId} from '../resources/templates';
 import {ease, Easing} from 'node_modules/pixi-ease';
 
 import * as PIXI from 'node_modules/pixi.js';
@@ -493,7 +493,7 @@ class RoomEditor extends PIXI.Application {
                 const [, template] = copied;
                 // Skip copies that no longer exist in the project
                 try {
-                    getTemplateFromId(template.uid);
+                    getById('template', template.uid);
                     created = new Copy(template, this, false);
                     this.room.addChild(created);
                     createdSet.add([created]);

@@ -1,3 +1,4 @@
+import {getById} from '..';
 import {outputCanvasToFile} from '../../utils/imageUtils';
 
 const getDefaultRoom = require('./defaultRoom').get;
@@ -10,24 +11,9 @@ const createNewRoom = async function createNewRoom(name: string): Promise<IRoom>
     if (name) {
         room.name = String(name);
     }
-    window.currentProject.rooms.push(room);
     window.signals.trigger('roomsChanged');
     return room;
 };
-
-/**
- * Gets the ct.js room object by its id.
- * @param {string} id The id of the ct.js room
- * @returns {IRoom} The ct.js room object
- */
-const getRoomFromId = function getRoomFromId(id: string): IRoom {
-    const room = global.currentProject.rooms.find((r: IRoom) => r.uid === id);
-    if (!room) {
-        throw new Error(`Attempt to get a non-existent room with ID ${id}`);
-    }
-    return room;
-};
-const getById = getRoomFromId;
 
 /**
  * Retrieves the full path to a thumbnail of a given room.
@@ -42,7 +28,7 @@ const getRoomPreview = (room: assetRef | IRoom, x2: boolean, fs: boolean): strin
         return 'data/img/notexture.png';
     }
     if (typeof room === 'string') {
-        room = getRoomFromId(room);
+        room = getById('room', room);
     }
     if (fs) {
         return `${(global as any).projdir}/img/r${room.uid}${x2 ? '@r' : ''}.png`;
@@ -50,6 +36,7 @@ const getRoomPreview = (room: assetRef | IRoom, x2: boolean, fs: boolean): strin
     return `file://${(global as any).projdir}/img/r${room.uid}${x2 ? '@r' : ''}.png?${room.lastmod}`;
 };
 const getThumbnail = getRoomPreview;
+export const areThumbnailsIcons = false;
 
 const writeRoomPreview = (
     room: assetRef | IRoom,
@@ -60,7 +47,7 @@ const writeRoomPreview = (
         throw new Error('Cannot write a room preview for a room -1');
     }
     if (typeof room === 'string') {
-        room = getRoomFromId(room);
+        room = getById('room', room);
     }
     const path = `${(global as any).projdir}/img/r${room.uid}${x2 ? '@r' : ''}.png`;
     if (x2) {
@@ -73,10 +60,15 @@ const writeRoomPreview = (
     return outputCanvasToFile(canvas, path);
 };
 
+export const removeAsset = (room: IRoom): void => {
+    if (global.currentProject.startroom === room.uid) {
+        global.currentProject.startroom = -1;
+    }
+};
+
 export {
     createNewRoom,
-    getRoomFromId,
-    getById,
+    createNewRoom as createAsset,
     getRoomPreview,
     getThumbnail,
     writeRoomPreview

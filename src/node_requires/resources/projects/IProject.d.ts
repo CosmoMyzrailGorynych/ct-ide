@@ -1,8 +1,13 @@
-declare interface IResourceGroup {
+// eslint-disable-next-line no-use-before-define
+declare type folderEntries = Array<IAsset | IAssetFolder>;
+declare interface IAssetFolder {
+    readonly type: 'folder';
+    readonly uid: string;
     colorClass: string;
     icon: string;
     name: string;
-    uid: string;
+    lastmod: number;
+    entries: folderEntries;
 }
 declare interface ICtActionInputMethod {
     code: string;
@@ -41,16 +46,9 @@ declare interface IProject {
     libs: Record<string, Record<string, unknown>>;
     actions: ICtAction[];
     scripts: IScript[];
-    textures: ITexture[];
-    skeletons: ISkeleton[];
-    templates: ITemplate[];
-    sounds: ISound[];
-    rooms: IRoom[];
-    startroom: assetRef;
-    emitterTandems: ITandem[];
-    fonts: IFont[];
-    styles: IStyle[];
     contentTypes: IContentType[];
+    assets: folderEntries;
+    startroom: assetRef;
     settings: {
         authoring: {
             author: string,
@@ -87,13 +85,4 @@ declare interface IProject {
             hideLoadingLogo: boolean
         }
     };
-    groups: {
-        emitterTandems: IResourceGroup[],
-        fonts: IResourceGroup[],
-        rooms: IResourceGroup[],
-        sounds: IResourceGroup[],
-        styles: IResourceGroup[],
-        templates: IResourceGroup[],
-        textures: IResourceGroup[]
-    }
 }

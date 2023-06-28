@@ -1,10 +1,11 @@
 import {getPixiSwatch} from '../../themes';
 import {RoomEditor} from '..';
 import {snapToRectangularGrid, snapToDiagonalGrid} from '../common';
-import {getPixiTexture, getTextureFromId, getTexturePivot} from '../../resources/textures';
+import {getPixiTexture, getTexturePivot} from '../../resources/textures';
 import {createTilePatch} from '../interactions/tiles/placeTile';
 
 import * as PIXI from 'node_modules/pixi.js';
+import {getById} from '../../resources';
 
 let unknownTextures = getPixiTexture(-1, void 0, true);
 
@@ -47,10 +48,10 @@ export class SnapTarget extends PIXI.Container {
                 this.ghost.textures = unknownTextures;
             }
             if (currentTemplate.texture !== -1 &&
-                this.prevGhostTex !== getTextureFromId(currentTemplate.texture)
+                this.prevGhostTex !== getById('texture', currentTemplate.texture)
             ) {
                 this.updateGhost(currentTemplate.texture);
-                this.prevGhostTex = getTextureFromId(currentTemplate.texture);
+                this.prevGhostTex = getById('texture', currentTemplate.texture);
             }
         } else {
             this.ghost.visible = false;

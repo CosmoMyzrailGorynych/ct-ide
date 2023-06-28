@@ -1,10 +1,4 @@
-import {getTemplateFromId} from './../resources/templates';
-import {getTextureFromId} from './../resources/textures';
-
-const typeToGetter = {
-    template: getTemplateFromId,
-    texture: getTextureFromId
-};
+import {getById} from '../resources';
 
 /**
  * Creates a copy of an extends object, turning UIDs of resources into the names of these resources.
@@ -39,7 +33,7 @@ export const getUnwrappedExtends = (exts: Record<string, unknown>): Record<strin
         }
         if (postfix === 'template' || postfix === 'texture') {
             try {
-                out[key] = typeToGetter[postfix](String(exts[i])).name;
+                out[key] = getById(postfix, String(exts[i])).name;
             } catch (e) {
                 alertify.error(`Could not resolve UID ${exts[i]} for field ${key} as a ${postfix}. Returning -1.`);
                 console.error(e);
@@ -83,7 +77,7 @@ export const getUnwrappedBySpec = (
             if (fieldMap[i].array) {
                 out[i] = (exts[i] as string[]).map(elt => {
                     try {
-                        return typeToGetter[fieldMap[i].type as 'template' | 'texture'](elt).name;
+                        return getById(fieldMap[i].type as 'template' | 'texture', elt).name;
                     } catch (e) {
                         alertify.error(`Could not resolve UID ${elt} for field ${i} as a ${fieldMap[i].type}. Returning -1. Full object: ${JSON.stringify(exts)}`);
                         console.error(e);
@@ -95,7 +89,7 @@ export const getUnwrappedBySpec = (
                 continue;
             }
             try {
-                out[i] = typeToGetter[fieldMap[i].type as 'template' | 'texture'](String(exts[i])).name;
+                out[i] = getById(fieldMap[i].type as 'template' | 'texture', String(exts[i])).name;
             } catch (e) {
                 alertify.error(`Could not resolve UID ${exts[i]} for field ${i} as a ${fieldMap[i].type}. Returning -1. Full object: ${JSON.stringify(exts)}`);
                 console.error(e);

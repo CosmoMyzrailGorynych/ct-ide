@@ -14,18 +14,18 @@ type fontsBundleResult = {
     js: string;
 };
 export const bundleFonts = async function (
-    proj: IProject,
+    input: IFont[],
     projdir: string,
     writeDir: string
 ): Promise<fontsBundleResult> {
     let css = '',
         js = '';
     const writePromises: Promise<void>[] = [];
-    if (proj.fonts) {
+    if (input) {
         js += 'if (document.fonts) { for (const font of document.fonts) { font.load(); }}';
         await fs.ensureDir(writeDir + '/fonts');
         const ttf2woff = require('ttf2woff');
-        await Promise.all(proj.fonts.map(async font => {
+        await Promise.all(input.map(async font => {
             const fontData = await fs.readFile(`${projdir}/fonts/${font.origname}`);
             var ttf = new Uint8Array(fontData);
             let woff;
@@ -102,13 +102,13 @@ export const generateXML = function generateXML(
  * from font names to their XML file paths.
  */
 export const bakeBitmapFonts = function bakeBitmapFonts(
-    proj: IProject,
+    input: IFont[],
     projdir: string,
     writeDir: string
 ): Promise<Record<string, string>> {
     const generator = require('./../resources/fonts/bitmapFontGenerator');
     const path = require('path');
-    return Promise.all(proj.fonts.filter(font => font.bitmapFont)
+    return Promise.all(input.filter(font => font.bitmapFont)
         .map(async font => {
             const fCharsets = font.charsets || ['basicLatin'];
             let letterList;

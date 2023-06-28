@@ -1,18 +1,18 @@
 const glob = require('./../glob');
 const {getUnwrappedExtends} = require('./utils');
 import {getBaseScripts} from './scriptableProcessor';
-import {getTextureFromId} from '../resources/textures';
-import {getTemplateFromId} from '../resources/templates';
-import {flattenGroups} from './groups';
 
 import {ExportedTile, ExportedTilemap, ExportedCopy, ExportedBg} from './_exporterContracts';
+import {getOfType, getById} from '../resources';
 
 const getStartingRoom = (proj: IProject): IRoom => {
-    let [startroom] = proj.rooms; // picks the first room by default
-    for (let i = 0; i < proj.rooms.length; i++) {
-        if (proj.rooms[i].uid === proj.startroom) {
-            startroom = proj.rooms[i];
-            break;
+    const rooms = getOfType('room');
+    let [startroom] = rooms; // picks the first room by default
+    if (proj.startroom && proj.startroom !== -1) {
+        try {
+            startroom = getById('room', proj.startroom);
+        } catch (Oo) {
+            void Oo;
         }
     }
     return startroom;
@@ -40,20 +40,22 @@ const getConstraints = (r: IRoom) => {
 };
 
 // eslint-disable-next-line max-lines-per-function
-const stringifyRooms = (proj: IProject): IScriptablesFragment => {
-    const groups = flattenGroups(proj).rooms;
+const stringifyRooms = (
+    assets: {room: IRoom[], template: ITemplate[]},
+    proj: IProject
+): IScriptablesFragment => {
     let roomsCode = '';
     let rootRoomOnCreate = '';
     let rootRoomOnStep = '';
     let rootRoomOnDraw = '';
     let rootRoomOnLeave = '';
 
-    for (const r of proj.rooms) {
+    for (const r of assets.room) {
         const objs: ExportedCopy[] = [];
         for (const copy of r.copies) {
             const exportableCopy = {
                 ...copy,
-                template: proj.templates[glob.templatemap[copy.uid]].name
+                template: assets.template[glob.templatemap[copy.uid]].name
             };
             delete exportableCopy.uid;
             objs.push(exportableCopy);
@@ -61,7 +63,7 @@ const stringifyRooms = (proj: IProject): IScriptablesFragment => {
         const bgs: ExportedBg[] = [];
         for (const bg of r.backgrounds) {
             bgs.push({
-                texture: getTextureFromId(bg.texture as string).name,
+                texture: getById('texture', bg.texture as string).name,
                 depth: Number(bg.depth),
                 exts: {
                     movementX: bg.movementX,
@@ -87,7 +89,7 @@ const stringifyRooms = (proj: IProject): IScriptablesFragment => {
                     extends: tileLayer.extends ? getUnwrappedExtends(tileLayer.extends) : {}
                 };
                 for (const tile of tileLayer.tiles) {
-                    const texture = getTextureFromId(tile.texture);
+                    const texture = getById('texture', tile.texture);
                     layer.tiles.push({
                         texture: texture.name,
                         frame: tile.frame,
@@ -114,7 +116,6 @@ const stringifyRooms = (proj: IProject): IScriptablesFragment => {
         roomsCode += `
 rooms.templates['${r.name}'] = {
     name: '${r.name}',
-    group: '${groups[r.group ? r.group.replace(/'/g, '\\\'') : -1]}',
     width: ${r.width},
     height: ${r.height},` +
     /* JSON.parse is faster at loading big objects */`
@@ -142,7 +143,7 @@ rooms.templates['${r.name}'] = {
         ${scriptableCode.thisOnCreate}
     },
     isUi: ${Boolean(r.isUi)},
-    follow: ${(r.follow && r.follow !== -1) ? ('\'' + getTemplateFromId(r.follow).name + '\'') : 'false'},
+    follow: ${(r.follow && r.follow !== -1) ? ('\'' + getById('template', r.follow).name + '\'') : 'false'},
     extends: ${r.extends ? JSON.stringify(getUnwrappedExtends(r.extends), null, 4) : '{}'}
 }
         `;

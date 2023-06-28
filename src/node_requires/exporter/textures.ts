@@ -339,11 +339,10 @@ type exportedTextureData = {
 
 // eslint-disable-next-line max-lines-per-function
 export const packImages = async (
-    proj: IProject,
+    textures: ITexture[],
     writeDir: string,
     production: boolean
 ): Promise<exportedTextureData> => {
-    const {textures} = proj;
     const bigTextures = textures.filter(isBigTexture);
     const spritedTextures = textures.filter(tex => !tex.tiled && bigTextures.indexOf(tex) < 0);
     const tiledTextures = textures.filter(tex => tex.tiled && bigTextures.indexOf(tex) < 0);

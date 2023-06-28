@@ -15,27 +15,11 @@ const defaultProjectTemplate: IProject = {
         'keyboard.polyfill': {},
         'sound.howler': {}
     },
-    textures: [],
-    skeletons: [],
-    templates: [],
-    sounds: [],
-    styles: [],
-    fonts: [],
-    rooms: [],
-    actions: [],
-    emitterTandems: [],
-    scripts: [],
     startroom: -1,
     contentTypes: [],
-    groups: {
-        fonts: [],
-        textures: [],
-        styles: [],
-        rooms: [],
-        templates: [],
-        sounds: [],
-        emitterTandems: []
-    },
+    actions: [],
+    scripts: [],
+    assets: [],
     settings: {
         authoring: {
             author: '',

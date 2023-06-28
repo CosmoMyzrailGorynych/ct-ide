@@ -234,7 +234,7 @@ builtin-asset-gallery.aPanel.aView.pad
                 .map(entry => {
                     if (entry.type === 'image') {
                         texturesPresent = true;
-                        return importImageToTexture(entry.path, false, false, true);
+                        return importImageToTexture(entry.path, false, true);
                     }
                     if (entry.type === 'sound') {
                         soundsPresent = true;

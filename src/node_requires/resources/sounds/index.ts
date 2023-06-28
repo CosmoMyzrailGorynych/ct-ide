@@ -3,27 +3,18 @@ const path = require('path'),
 
 const getThumbnail = (sound: ISound): string => (sound.isMusic ? 'music' : 'volume-2');
 
-const getById = function getById(id: string): ISound {
-    const sound = global.currentProject.sounds.find((s: ISound) => s.uid === id);
-    if (!sound) {
-        throw new Error(`Attempt to get a non-existent sound with ID ${id}`);
-    }
-    return sound;
-};
-
 const createNewSound = function (name?: string): ISound {
     const generateGUID = require('./../../generateGUID');
     var id = generateGUID(),
         slice = id.slice(-6);
-    var newSound = {
+    var newSound: ISound = {
+        type: 'sound',
         name: name || ('Sound_' + slice),
         uid: id,
         isMusic: false,
-        type: 'sound' as resourceType,
         lastmod: Number(new Date()),
         poolSize: 5
     };
-    global.currentProject.sounds.push(newSound);
     return newSound;
 };
 
@@ -42,9 +33,11 @@ const addSoundFile = async function addSoundFile(sound: ISound, file: string): P
     }
 };
 
+export const areThumbnailsIcons = true;
+
 export {
     getThumbnail,
-    getById,
     createNewSound,
+    createNewSound as createAsset,
     addSoundFile
 };

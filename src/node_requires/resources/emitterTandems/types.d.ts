@@ -77,6 +77,7 @@ interface ITandemEmitter {
 }
 
 interface ITandem extends IAsset {
+    type: 'tandem';
     name: string;
     emitters: Array<ITandemEmitter>;
 }

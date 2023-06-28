@@ -1,6 +1,7 @@
 import {populatePixiTextureCache, resetPixiTextureCache, setPixelart} from '../textures';
 import {loadAllTypedefs, resetTypedefs} from '../modules/typedefs';
 import {unloadAllEvents, loadAllModulesEvents} from '../../events';
+import {buildAssetMap} from '..';
 import * as path from 'path';
 
 const fs = require('fs-extra');
@@ -103,6 +104,7 @@ const adapter = async (project: Partial<IProject>) => {
 const loadProject = async (projectData: IProject): Promise<void> => {
     const glob = require('../../glob');
     window.currentProject = projectData;
+    buildAssetMap(projectData);
     window.alertify.log(window.languageJSON.intro.loadingProject);
     glob.modified = false;
 
@@ -139,7 +141,7 @@ const loadProject = async (projectData: IProject): Promise<void> => {
         setPixelart(projectData.settings.rendering.pixelatedrender);
         await Promise.all([
             loadAllModulesEvents(),
-            populatePixiTextureCache(projectData)
+            populatePixiTextureCache()
         ]);
 
         window.signals.trigger('projectLoaded');

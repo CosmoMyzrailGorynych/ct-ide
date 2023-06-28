@@ -1,3 +1,5 @@
+import {getOfType} from '../resources';
+
 const ifHTMLMatcher = (varName: string, symbol = '@') => new RegExp(`<!-- ?if +${symbol}${varName}${symbol} ?-->([\\s\\S]*)(?:<!-- ?else +${symbol}${varName}${symbol} ?-->([\\s\\S]*?))?<!-- ?endif +${symbol}${varName}${symbol} ?-->`, 'g');
 const varHTMLMatcher = (varName: string, symbol = '@') => new RegExp(`<!-- ?${symbol}${varName}${symbol} ?-->`, 'g');
 
@@ -16,8 +18,8 @@ const varHTMLMatcher = (varName: string, symbol = '@') => new RegExp(`<!-- ?${sy
  * In if/else blocks, empty arrays are treated as `false`.
  *
  * @param {string} input The source string with template tags
- * @param {object<string,string|Array|object>} vars The variables to substitute
- * @param {object<string,string|Array|object>} injections Module-provided injections to substitute
+ * @param {Record<string,string|Array|object>} vars The variables to substitute
+ * @param {Record<string,string|Array|object>} injections Module-provided injections to substitute
  */
 const templateHTML = (
     input: string,
@@ -50,7 +52,7 @@ export const substituteHtmlVars = (
     templateHTML(str, {
         gametitle: project.settings.authoring.title || 'ct.js game',
         accent: project.settings.branding.accent || 'ct.js game',
-        particleEmitters: project.emitterTandems && project.emitterTandems.length,
+        particleEmitters: getOfType('tandem').length,
         // includeDragonBones: project.skeletons.some(s => s.from === 'dragonbones'),
         includeDragonBones: false,
         jsbundle: filenames.jsBundle,

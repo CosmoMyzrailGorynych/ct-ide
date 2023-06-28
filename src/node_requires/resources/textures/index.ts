@@ -1,29 +1,17 @@
 import {imageContain, toBuffer, crop} from '../../utils/imageUtils';
+import {uidMap, getOfType, getById} from '..';
 
 const fs = require('node_modules/fs-extra');
 import path from 'path';
 import * as PIXI from 'node_modules/pixi.js';
 
 /**
- * Gets the ct.js texture object by its id.
- * @param {string} id The id of the texture
- * @returns {ITexture} The ct.js texture object
- */
-const getTextureFromId = (id: string): ITexture => {
-    const texture = global.currentProject.textures.find((tex: ITexture) => tex.uid === id);
-    if (!texture) {
-        throw new Error(`Attempt to get a non-existent texture with ID ${id}`);
-    }
-    return texture;
-};
-const getById = getTextureFromId;
-/**
  * Accepts a texture ID or a texture's object itself;
  * always returns a texture object.
  */
 const ensureTex = (tex: string | ITexture): ITexture => {
     if (typeof tex === 'string') {
-        return getById(tex);
+        return getById('texture', tex);
     }
     return tex;
 };
@@ -44,7 +32,7 @@ const getTexturePreview = function (
         return 'data/img/notexture.png';
     }
     if (typeof texture === 'string') {
-        texture = getTextureFromId(texture);
+        texture = getById('texture', texture);
     }
     if (fs) {
         return `${global.projdir}/img/${texture.origname}_prev${x2 ? '@2' : ''}.png`;
@@ -52,6 +40,7 @@ const getTexturePreview = function (
     return `file://${global.projdir.replace(/\\/g, '/')}/img/${texture.origname}_prev${x2 ? '@2' : ''}.png?cache=${texture.lastmod}`;
 };
 const getThumbnail = getTexturePreview;
+export const areThumbnailsIcons = false;
 
 /**
  * Retrieves a full path to the source image of a given texture
@@ -64,7 +53,7 @@ const getTextureOrig = function (texture: assetRef | ITexture, fs?: boolean): st
         return 'data/img/notexture.png';
     }
     if (typeof texture === 'string') {
-        texture = getTextureFromId(texture);
+        texture = getById('texture', texture);
     }
     if (fs) {
         return `${global.projdir}/img/${texture.origname}`;
@@ -135,10 +124,10 @@ const resetPixiTextureCache = (): void => {
     PIXI.utils.destroyTextureCache();
     unknownTexture = PIXI.Texture.from('data/img/unknown.png');
 };
-const populatePixiTextureCache = async (project: IProject): Promise<void> => {
+const populatePixiTextureCache = async (): Promise<void> => {
     clearPixiTextureCache();
     const promises = [];
-    for (const texture of project.textures) {
+    for (const texture of getOfType('texture')) {
         promises.push(texturesFromCtTexture(texture, true));
     }
     await Promise.all(promises);
@@ -172,7 +161,7 @@ const getDOMImageFromTexture = function (
 };
 const updateDOMImage = async (texture: ITexture | assetRef): Promise<HTMLImageElement> => {
     if (typeof texture === 'string') {
-        texture = getTextureFromId(texture);
+        texture = getById('texture', texture);
     } else if (texture === -1) {
         domTextureCache[-1] = await getDOMImageFromTexture(-1, 'data/img/unknown.png');
         return domTextureCache[-1];
@@ -180,16 +169,16 @@ const updateDOMImage = async (texture: ITexture | assetRef): Promise<HTMLImageEl
     domTextureCache[texture.uid] = await getDOMImageFromTexture(texture);
     return domTextureCache[texture.uid];
 };
-const populateDOMTextureCache = async (project: IProject): Promise<void> => {
-    const promises = project.textures.map(updateDOMImage);
+const populateDOMTextureCache = async (): Promise<void> => {
+    const promises = getOfType('texture').map(updateDOMImage);
     promises.push(updateDOMImage(-1));
     await Promise.all(promises); // drop returned values
 };
-const resetDOMTextureCache = (project: IProject): Promise<void> => {
+const resetDOMTextureCache = (): Promise<void> => {
     for (const key of Object.keys(domTextureCache)) {
         delete domTextureCache[key];
     }
-    return populateDOMTextureCache(project);
+    return populateDOMTextureCache();
 };
 /**
  * A synchronous method that returns a preloaded DOM img tag for a given texture.
@@ -246,7 +235,7 @@ function getPixiTexture(
         throw new Error('Cannot turn -1 into a pixi texture in getPixiTexture method unless it is explicitly allowed.');
     }
     if (typeof texture === 'string') {
-        texture = getTextureFromId(texture);
+        texture = getById('texture', texture);
     }
     if (frame || frame === 0) {
         return pixiTextureCache[texture.name].texture[frame];
@@ -260,7 +249,7 @@ function getPixiTexture(
  * @return {ITexture} The texture's object
  */
 const getTextureFromName = function (name: string): ITexture {
-    const texture = window.currentProject.textures.find(tex => tex.name === name);
+    const texture = getOfType('texture').find(tex => tex.name === name);
     if (!texture) {
         throw new Error(`Attempt to get a non-existent texture with name ${name}`);
     }
@@ -272,7 +261,7 @@ const textureGenPreview = async function textureGenPreview(
     size: number
 ): Promise<string> {
     if (typeof texture === 'string') {
-        texture = getTextureFromId(texture);
+        texture = getById('texture', texture);
     }
 
     const source = await getDOMImageFromTexture(texture);
@@ -300,23 +289,22 @@ const isBgPostfixTester = /@bg$/;
  * @returns {Promise<ITexture>} A promise that resolves into the resulting texture object.
  */
 // eslint-disable-next-line max-lines-per-function
-const importImageToTexture = async (
+const importImageToTexture = async (opts: {
     src: string | Buffer,
     name?: string,
-    group?: string,
     skipSignals?: boolean
-): Promise<ITexture> => {
+}): Promise<ITexture> => {
     const fs = require('fs-extra'),
           path = require('path'),
           generateGUID = require('./../../generateGUID');
     const id = generateGUID();
     let dest: string;
-    if (src instanceof Buffer) {
+    if (opts.src instanceof Buffer) {
         dest = path.join(global.projdir, 'img', `i${id}.png`);
-        await fs.writeFile(dest, src);
+        await fs.writeFile(dest, opts.src);
     } else {
-        dest = path.join(global.projdir, 'img', `i${id}${path.extname(src)}`);
-        await fs.copy(src, dest);
+        dest = path.join(global.projdir, 'img', `i${id}${path.extname(opts.src)}`);
+        await fs.copy(opts.src, dest);
     }
     const image = document.createElement('img');
     // Wait while the image is loading
@@ -331,12 +319,12 @@ const importImageToTexture = async (
         image.src = 'file://' + dest + '?' + Math.random();
     });
     let texName;
-    if (name) {
-        texName = name;
-    } else if (src instanceof Buffer) {
+    if (opts.name) {
+        texName = opts.name;
+    } else if (opts.src instanceof Buffer) {
         texName = 'NewTexture';
     } else {
-        texName = path.basename(src)
+        texName = path.basename(opts.src)
             .replace(/\.(jpg|gif|png|jpeg)/gi, '')
             .replace(/\s/g, '_');
     }
@@ -363,11 +351,10 @@ const importImageToTexture = async (
         bottom: image.height,
         uid: id,
         padding: 1,
-        isBlank: false,
-        group
+        isBlank: false
     };
-    if (!(src instanceof Buffer)) {
-        obj.source = src;
+    if (!(opts.src instanceof Buffer)) {
+        obj.source = opts.src;
     }
 
     // Test if this has a postfix _NxM@K or _NxM
@@ -394,9 +381,7 @@ const importImageToTexture = async (
         texturesFromCtTexture(obj)
     ]);
 
-    global.currentProject.textures.push(obj);
-
-    if (!skipSignals) {
+    if (!opts.skipSignals) {
         window.signals.trigger('textureImported');
     }
     return obj;
@@ -455,45 +440,48 @@ const reimportTexture = async (
 
 /**
  * Properly removes a texture from the project, cleansing it from all the associated assets.
+ * Must not be called directly from UI, use resources -> deleteAsset instead.
  *
  * @note It does not remove the actual image assets to not break projects after a project recovery.
  */
 const removeTexture = (tex: string | ITexture): void => {
     tex = ensureTex(tex);
     const {uid} = tex;
-    for (const template of global.currentProject.templates) {
-        if (template.texture === uid) {
-            template.texture = -1;
-        }
-    }
-    for (const room of global.currentProject.rooms) {
-        if ('tiles' in room) {
-            for (const layer of room.tiles) {
-                layer.tiles = layer.tiles.filter(tile => tile.texture !== uid);
+    for (const [uid, asset] of uidMap) {
+        if (asset.type === 'template') {
+            if ((asset as ITemplate).texture === uid) {
+                (asset as ITemplate).texture = -1;
             }
-        }
-        if ('backgrounds' in room) {
-            let i = 0;
-            while (i < room.backgrounds.length) {
-                if (room.backgrounds[i].texture === uid) {
-                    room.backgrounds.splice(i, 1);
-                } else {
-                    i++;
+        } else if (asset.type === 'room') {
+            const room = asset as IRoom;
+            if ('tiles' in room) {
+                for (const layer of room.tiles) {
+                    layer.tiles = layer.tiles.filter(tile => tile.texture !== uid);
                 }
             }
-        }
-    }
-    for (const tandem of global.currentProject.emitterTandems) {
-        for (const emitter of tandem.emitters) {
-            if (emitter.texture === uid) {
-                emitter.texture = -1;
+            if ('backgrounds' in room) {
+                let i = 0;
+                while (i < room.backgrounds.length) {
+                    // eslint-disable-next-line max-depth
+                    if (room.backgrounds[i].texture === uid) {
+                        room.backgrounds.splice(i, 1);
+                    } else {
+                        i++;
+                    }
+                }
+            }
+        } else if (asset.type === 'tandem') {
+            const tandem = asset as ITandem;
+            for (const emitter of tandem.emitters) {
+                if (emitter.texture === uid) {
+                    emitter.texture = -1;
+                }
             }
         }
     }
     if (global.currentProject.settings.branding.icon === uid) {
         delete global.currentProject.settings.branding.icon;
     }
-    global.currentProject.textures.splice(global.currentProject.textures.indexOf(tex), 1);
 };
 
 const getCleanTextureName = (name: string): string =>
@@ -507,7 +495,7 @@ const getTexturePivot = (texture: assetRef | ITexture, inPixels?: boolean): [num
         return [0.5, 0.5];
     }
     if (typeof texture === 'string') {
-        texture = getTextureFromId(texture);
+        texture = getById('texture', texture);
     }
     if (inPixels) {
         return [texture.axis[0], texture.axis[1]];
@@ -528,8 +516,6 @@ export {
     clearPixiTextureCache,
     populatePixiTextureCache,
     resetPixiTextureCache,
-    getTextureFromId,
-    getById,
     getTextureFromName,
     getTexturePreview,
     getCleanTextureName,
@@ -545,7 +531,9 @@ export {
     getDOMImageFromTexture,
     getDOMTexture,
     importImageToTexture,
+    importImageToTexture as createAsset,
     reimportTexture,
     removeTexture,
+    removeTexture as removeAsset,
     textureGenPreview
 };
