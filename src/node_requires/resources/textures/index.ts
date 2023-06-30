@@ -391,7 +391,8 @@ const importImageToTexture = async (
     await Promise.all([
         textureGenPreview(obj, dest + '_prev.png', 64),
         textureGenPreview(obj, dest + '_prev@2.png', 128),
-        texturesFromCtTexture(obj)
+        texturesFromCtTexture(obj),
+        updateDOMImage(obj)
     ]);
 
     global.currentProject.textures.push(obj);

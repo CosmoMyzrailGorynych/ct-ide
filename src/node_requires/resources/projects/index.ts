@@ -1,4 +1,4 @@
-import {populatePixiTextureCache, resetPixiTextureCache, setPixelart} from '../textures';
+import {populatePixiTextureCache, resetDOMTextureCache, resetPixiTextureCache, setPixelart} from '../textures';
 import {loadAllTypedefs, resetTypedefs} from '../modules/typedefs';
 import {unloadAllEvents, loadAllModulesEvents} from '../../events';
 import * as path from 'path';
@@ -139,7 +139,8 @@ const loadProject = async (projectData: IProject): Promise<void> => {
         setPixelart(projectData.settings.rendering.pixelatedrender);
         await Promise.all([
             loadAllModulesEvents(),
-            populatePixiTextureCache(projectData)
+            populatePixiTextureCache(projectData),
+            resetDOMTextureCache(projectData)
         ]);
 
         window.signals.trigger('projectLoaded');
