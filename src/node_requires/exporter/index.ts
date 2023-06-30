@@ -266,7 +266,7 @@ const exportCtProject = async (
 
     let actionsSetup = '';
     for (const action of project.actions) {
-        actionsSetup += `ct.inputs.addAction('${action.name}', ${JSON.stringify(action.methods)});\n`;
+        actionsSetup += `inputs.addAction('${action.name}', ${JSON.stringify(action.methods)});\n`;
     }
     const projectmeta: ExportedMeta = {
         name: settings.authoring.title,
@@ -347,7 +347,6 @@ const exportCtProject = async (
             await fs.copy(path.join(basePath, `./ct.libs/${lib}/includes/`), writeDir);
         }
     }));
-    await fs.copy(path.join(basePath, 'ct.release', 'ct.js.map'), path.join(writeDir, 'ct.js.map'));
 
     /* CSS styles for rendering settings and branding */
     let preloaderColor1 = project.settings.branding.accent,
