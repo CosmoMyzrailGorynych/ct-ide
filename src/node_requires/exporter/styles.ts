@@ -5,7 +5,7 @@ export const stringifyStyles = (proj: IProject): string => {
         var s = proj.styles[styl],
             o = styleToTextStyle(s);
         styles += `
-ct.styles.new(
+styles.new(
     "${s.name}",
     ${JSON.stringify(o, null, '    ')});
 `;
