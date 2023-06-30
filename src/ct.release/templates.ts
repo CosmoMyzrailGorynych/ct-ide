@@ -486,5 +486,11 @@ export const templates = {
     }
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const ct = {
+    ...ctjsGame,
+    templates
+};
+
 /*!@templates@*/
 /*!%templates%*/
