@@ -112,7 +112,7 @@ const stringifyRooms = (proj: IProject): IScriptablesFragment => {
         const scriptableCode = getBaseScripts(r, proj);
 
         roomsCode += `
-rooms.templates['${r.name}'] = {
+ct.rooms.templates['${r.name}'] = {
     name: '${r.name}',
     group: '${groups[r.group ? r.group.replace(/'/g, '\\\'') : -1]}',
     width: ${r.width},

@@ -48,7 +48,7 @@ const stringifyTemplates = function (proj: IProject): IScriptablesFragment {
         const scripts = getBaseScripts(template, proj);
         const textureInfo = getTextureInfo(blankTextures, template);
         templates += `
-templates.templates["${template.name}"] = {
+ct.templates.templates["${template.name}"] = {
     depth: ${template.depth},
     blendMode: PIXI.BLEND_MODES.${template.blendMode?.toUpperCase() ?? 'NORMAL'},
     animationFPS: ${template.animationFPS ?? 60},

@@ -261,6 +261,7 @@ const exportCtProject = async (
     const skeletonsTask = packSkeletons(project, projdir, writeDir);
     const bitmapFontsTask = bakeBitmapFonts(project, projdir, writeDir);
     const favicons = bakeFavicons(project, writeDir, production);
+    const modulesTask = addModules();
     /* Run event cache population in parallel as well */
     const cacheHandle = populateEventCache(project);
 
@@ -304,39 +305,41 @@ const exportCtProject = async (
     }
 
     buffer += template(await sources['ct.js'], {
+        projectmeta,
+        ctversion: process.versions.ctjs,
+        resourceGroups: JSON.stringify(getGroups(project)),
+        contentTypes: stringifyContent(project),
+
         pixelatedrender: Boolean(settings.rendering.pixelatedrender),
         highDensity: Boolean(settings.rendering.highDensity),
         maxfps: Number(settings.rendering.maxFPS),
-        ctversion: process.versions.ctjs,
-        projectmeta,
+
+        startroom: startroom.name,
         startwidth: startroom.width,
         startheight: startroom.height,
 
+        atlases: (await texturesTask).atlases,
+        tiledImages: (await texturesTask).tiledImages,
+        sounds: getSounds(project),
+
         actions: actionsSetup,
-        startroom: startroom.name,
         rooms: rooms.libCode,
         rootRoomOnCreate,
         rootRoomOnStep,
         rootRoomOnDraw,
         rootRoomOnLeave,
+        templates: templates.libCode,
         styles: stringifyStyles(project),
         tandemTemplates: stringifyTandems(project),
-        templates: templates.libCode,
         fonts: fonts.js,
-        atlases: (await texturesTask).atlases,
-        tiledImages: (await texturesTask).tiledImages,
         bitmapFonts: await bitmapFontsTask,
-        dbSkeletons: false,
-        sounds: getSounds(project),
-        resourceGroups: JSON.stringify(getGroups(project)),
-        contentTypes: stringifyContent(project),
         skeletons: (await skeletonsTask).skeletons,
         includeSpine: (await skeletonsTask).skeletons.length > 0,
-        userScripts
+
+        userScripts,
+        catmods: await modulesTask
     }, injections);
 
-    /* Add catmods */
-    buffer += await addModules();
 
     /* passthrough copy of files in the `include` folder */
     if (await fs.pathExists(projdir + '/include/')) {

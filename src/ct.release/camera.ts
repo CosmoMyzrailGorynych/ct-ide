@@ -481,7 +481,7 @@ export class Camera extends PIXI.DisplayObject {
               sx = 1 / (isNaN(this.scale.x) ? 1 : this.scale.x),
               sy = 1 / (isNaN(this.scale.y) ? 1 : this.scale.y);
         for (const item of ctjsGame.stage.children) {
-            if (!('isUi' in item && item) && item.pivot) {
+            if (!('isUi' in item && item.isUi) && item.pivot) {
                 item.x = -this.width / 2;
                 item.y = -this.height / 2;
                 item.pivot.x = px;

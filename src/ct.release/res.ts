@@ -30,8 +30,6 @@ export interface ITextureOptions {
 
 const loadingScreen = document.querySelector('.ct-aLoadingScreen') as HTMLDivElement,
       loadingBar = loadingScreen.querySelector('.ct-aLoadingBar') as HTMLDivElement;
-//const dbFactory = window.dragonBones ? dragonBones.PixiFactory.factory : null;
-
 
 /**
  * An object that manages and stores textures and other assets,
@@ -229,8 +227,10 @@ const resLib = {
 
         Promise.all(loadingPromises)
         .then(() => {
-            const ct = ctjsGame;
-            /*!%start%*/
+            {
+                const ct = ctjsGame;
+                /*!%start%*/
+            }
             loadingScreen.classList.add('hidden');
             ctjsGame.pixiApp.ticker.add(ctjsGame.loop);
             ctjsGame.rooms.forceSwitch(ctjsGame.rooms.starting);

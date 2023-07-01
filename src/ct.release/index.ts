@@ -42,7 +42,7 @@ type ctFittoscreen = (() => void) & {
 /**
  * The ct.js library
  */
-const ct = {
+export const ctjsGame = {
     render: {
         /** If set to true, enables retina (high-pixel density) rendering. */
         highDensity: [/*!@highDensity@*/][0] as boolean,
@@ -92,7 +92,7 @@ const ct = {
     version: '/*!@ctversion@*/',
     meta: [/*!@projectmeta@*/][0] as ExportedMeta,
     get width(): number {
-        return ct.pixiApp.renderer.view.width;
+        return ctjsGame.pixiApp.renderer.view.width;
     },
     /**
      * Resizes the drawing canvas and viewport to the given value in pixels.
@@ -100,20 +100,20 @@ const ct = {
      * @param {number} value New width in pixels
      */
     set width(value: number) {
-        ct.camera.width = value;
-        if (!('fittoscreen' in ct)) {
+        ctjsGame.camera.width = value;
+        if (!('fittoscreen' in ctjsGame)) {
             return;
         }
-        const fittoscreen = ct.fittoscreen as ctFittoscreen;
+        const fittoscreen = ctjsGame.fittoscreen as ctFittoscreen;
         if (fittoscreen.mode === 'fastScale') {
-            ct.pixiApp.renderer.resize(value, ct.height);
+            ctjsGame.pixiApp.renderer.resize(value, ctjsGame.height);
         }
         if (fittoscreen) {
             fittoscreen();
         }
     },
     get height(): number {
-        return ct.pixiApp.renderer.view.height;
+        return ctjsGame.pixiApp.renderer.view.height;
     },
     /**
      * Resizes the drawing canvas and viewport to the given value in pixels.
@@ -121,13 +121,13 @@ const ct = {
      * @param {number} value New height in pixels
      */
     set height(value: number) {
-        ct.camera.height = value;
-        if (!('fittoscreen' in ct)) {
+        ctjsGame.camera.height = value;
+        if (!('fittoscreen' in ctjsGame)) {
             return;
         }
-        const fittoscreen = ct.fittoscreen as ctFittoscreen;
+        const fittoscreen = ctjsGame.fittoscreen as ctFittoscreen;
         if (fittoscreen.mode === 'fastScale') {
-            ct.pixiApp.renderer.resize(ct.width, value);
+            ctjsGame.pixiApp.renderer.resize(ctjsGame.width, value);
         }
         if (fittoscreen) {
             fittoscreen();
@@ -171,7 +171,7 @@ const ct = {
 
 // eslint-disable-next-line no-console
 console.log(
-    `%c 😺 %c ct.js game editor %c v${ct.version} %c https://ctjs.rocks/ `,
+    `%c 😺 %c ct.js game editor %c v${ctjsGame.version} %c https://ctjs.rocks/ `,
     'background: #446adb; color: #fff; padding: 0.5em 0;',
     'background: #5144db; color: #fff; padding: 0.5em 0;',
     'background: #446adb; color: #fff; padding: 0.5em 0;',
@@ -185,25 +185,25 @@ const pixiAppSettings = {
     sharedTicker: false
 };
 try {
-    ct.pixiApp = new PIXI.Application(pixiAppSettings);
+    ctjsGame.pixiApp = new PIXI.Application(pixiAppSettings);
 } catch (e) {
     console.error(e);
     // eslint-disable-next-line no-console
     console.warn('[ct.js] Something bad has just happened. This is usually due to hardware problems. I\'ll try to fix them now, but if the game still doesn\'t run, try including a legacy renderer in the project\'s settings.');
     PIXI.settings.SPRITE_MAX_TEXTURES = Math.min(PIXI.settings.SPRITE_MAX_TEXTURES, 16);
-    ct.pixiApp = new PIXI.Application(pixiAppSettings);
+    ctjsGame.pixiApp = new PIXI.Application(pixiAppSettings);
 }
 
 // eslint-disable-next-line prefer-destructuring
 PIXI.settings.ROUND_PIXELS = [/*!@pixelatedrender@*/][0];
-ct.pixiApp.ticker.maxFPS = [/*!@maxfps@*/][0] || 0;
-if (!ct.pixiApp.renderer.options.antialias) {
+ctjsGame.pixiApp.ticker.maxFPS = [/*!@maxfps@*/][0] || 0;
+if (!ctjsGame.pixiApp.renderer.options.antialias) {
     PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 }
-ct.stage = ct.pixiApp.stage;
+ctjsGame.stage = ctjsGame.pixiApp.stage;
 // Incorrect pixi.js typings? autoDensity is writable
-(ct.pixiApp.renderer as any).autoDensity = ct.render.highDensity;
-document.getElementById('ct').appendChild(ct.pixiApp.view as HTMLCanvasElement);
+(ctjsGame.pixiApp.renderer as any).autoDensity = ctjsGame.render.highDensity;
+document.getElementById('ct').appendChild(ctjsGame.pixiApp.view as HTMLCanvasElement);
 
 // eslint-disable-next-line max-lines-per-function
 (() => {
@@ -218,9 +218,9 @@ document.getElementById('ct').appendChild(ct.pixiApp.view as HTMLCanvasElement);
                 killRecursive(child as Copy); // bruh
             }
         }
-        const stackIndex = ct.stack.indexOf(copy);
+        const stackIndex = ctjsGame.stack.indexOf(copy);
         if (stackIndex !== -1) {
-            ct.stack.splice(stackIndex, 1);
+            ctjsGame.stack.splice(stackIndex, 1);
         }
         if (copy instanceof Copy && copy.template) {
             const templatelistIndex = templates.list[copy.template].indexOf(copy);
@@ -231,27 +231,28 @@ document.getElementById('ct').appendChild(ct.pixiApp.view as HTMLCanvasElement);
         deadPool.push(copy);
     };
     const manageCamera = () => {
-        if (ct.camera) {
-            ct.camera.update(ct.delta);
-            ct.camera.manageStage();
+        if (ctjsGame.camera) {
+            ctjsGame.camera.update(ctjsGame.deltaUi);
+            ctjsGame.camera.manageStage();
         }
     };
 
-    ct.loop = function loop() {
-        ct.delta = ct.pixiApp.ticker.deltaMS / (1000 / (ct.pixiApp.ticker.maxFPS || 60));
-        ct.deltaUi = ct.pixiApp.ticker.elapsedMS / (1000 / (ct.pixiApp.ticker.maxFPS || 60));
-        ct.inputs.updateActions();
-        ct.timer.updateTimers();
+    ctjsGame.loop = function loop() {
+        const {ticker} = ctjsGame.pixiApp;
+        ctjsGame.delta = ticker.deltaMS / (1000 / (ticker.maxFPS || 60));
+        ctjsGame.deltaUi = ticker.elapsedMS / (1000 / (ticker.maxFPS || 60));
+        ctjsGame.inputs.updateActions();
+        ctjsGame.timer.updateTimers();
         /*!%beforeframe%*/
-        rooms.rootRoomOnStep.apply(ct.room);
-        for (let i = 0, li = ct.stack.length; i < li; i++) {
-            templates.beforeStep.apply(ct.stack[i]);
-            ct.stack[i].onStep.apply(ct.stack[i]);
-            templates.afterStep.apply(ct.stack[i]);
+        rooms.rootRoomOnStep.apply(ctjsGame.room);
+        for (let i = 0, li = ctjsGame.stack.length; i < li; i++) {
+            templates.beforeStep.apply(ctjsGame.stack[i]);
+            ctjsGame.stack[i].onStep.apply(ctjsGame.stack[i]);
+            templates.afterStep.apply(ctjsGame.stack[i]);
         }
         // There may be a number of rooms stacked on top of each other.
         // Loop through them and filter out everything that is not a room.
-        for (const item of ct.stage.children) {
+        for (const item of ctjsGame.stage.children) {
             if (!(item instanceof Room)) {
                 continue;
             }
@@ -260,7 +261,7 @@ document.getElementById('ct').appendChild(ct.pixiApp.view as HTMLCanvasElement);
             rooms.afterStep.apply(item);
         }
         // copies
-        for (const copy of ct.stack) {
+        for (const copy of ctjsGame.stack) {
             // eslint-disable-next-line no-underscore-dangle
             if (copy.kill && !copy._destroyed) {
                 killRecursive(copy); // This will also allow a parent to eject children
@@ -273,15 +274,15 @@ document.getElementById('ct').appendChild(ct.pixiApp.view as HTMLCanvasElement);
 
         manageCamera();
 
-        for (let i = 0, li = ct.stack.length; i < li; i++) {
-            templates.beforeDraw.apply(ct.stack[i]);
-            ct.stack[i].onDraw.apply(ct.stack[i]);
-            templates.afterDraw.apply(ct.stack[i]);
-            ct.stack[i].xprev = ct.stack[i].x;
-            ct.stack[i].yprev = ct.stack[i].y;
+        for (let i = 0, li = ctjsGame.stack.length; i < li; i++) {
+            templates.beforeDraw.apply(ctjsGame.stack[i]);
+            ctjsGame.stack[i].onDraw.apply(ctjsGame.stack[i]);
+            templates.afterDraw.apply(ctjsGame.stack[i]);
+            ctjsGame.stack[i].xprev = ctjsGame.stack[i].x;
+            ctjsGame.stack[i].yprev = ctjsGame.stack[i].y;
         }
 
-        for (const item of ct.stage.children) {
+        for (const item of ctjsGame.stage.children) {
             if (!(item instanceof Room)) {
                 continue;
             }
@@ -289,19 +290,33 @@ document.getElementById('ct').appendChild(ct.pixiApp.view as HTMLCanvasElement);
             item.onDraw.apply(item);
             rooms.afterDraw.apply(item);
         }
-        rooms.rootRoomOnDraw.apply(ct.room);
+        rooms.rootRoomOnDraw.apply(ctjsGame.room);
         /*!%afterframe%*/
         if (rooms.switching) {
             rooms.forceSwitch();
         }
     };
-    ct.res.loadGame();
+    ctjsGame.res.loadGame();
 })();
-export const ctjsGame = ct;
 
 (window as any).ct = ctjsGame;
 (window as any).PIXI = PIXI;
 
-/*!%load%*/
+export default ctjsGame;
 
-/*!@userScripts@*/
+{
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const ct = ctjsGame;
+
+    /*!@catmods@*/
+
+    /*!@templates@*/
+    /*!%templates%*/
+
+    /*!@rooms@*/
+    /*!%rooms%*/
+
+    /*!%load%*/
+
+    /*!@userScripts@*/
+}

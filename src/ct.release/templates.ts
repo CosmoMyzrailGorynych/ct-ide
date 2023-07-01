@@ -485,12 +485,3 @@ export const templates = {
         /*!%ondestroy%*/
     }
 };
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const ct = {
-    ...ctjsGame,
-    templates
-};
-
-/*!@templates@*/
-/*!%templates%*/
