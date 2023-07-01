@@ -4,7 +4,7 @@ export const stringifyStyles = (input: IStyle[]): string => {
     for (const s of input) {
         const o = styleToTextStyle(s);
         styles += `
-ct.styles.new(
+styles.new(
     "${s.name}",
     ${JSON.stringify(o, null, '    ')});
 `;

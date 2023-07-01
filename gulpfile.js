@@ -203,12 +203,18 @@ const baseEsbuildConfig = {
 };
 const buildCtJsLib = () => {
     const processes = [];
-    // Ct.js library for exporter's consumption
+    // Ct.js client library for exporter's consumption
     processes.push(esbuild({
         ...baseEsbuildConfig,
         outfile: './app/data/ct.release/ct.js',
         platform: 'browser',
-        external: ['node_modules/pixi.js', 'node_modules/pixi-spine', 'node_modules/@pixi/particle-emitter']
+        format: 'iife'
+        /* external: [
+            'node_modules/pixi.js',
+            'node_modules/pixi-spine',
+            'node_modules/@pixi/particle-emitter',
+            'node_modules/@pixi/sound'
+        ] */ // TODO: Actually make them external
     }));
     // Pixi.js dependencies
     processes.push(esbuild({

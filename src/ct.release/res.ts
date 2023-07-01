@@ -30,8 +30,6 @@ export interface ITextureOptions {
 
 const loadingScreen = document.querySelector('.ct-aLoadingScreen') as HTMLDivElement,
       loadingBar = loadingScreen.querySelector('.ct-aLoadingBar') as HTMLDivElement;
-//const dbFactory = window.dragonBones ? dragonBones.PixiFactory.factory : null;
-
 
 /**
  * An object that manages and stores textures and other assets,
@@ -77,20 +75,21 @@ const resLib = {
         name: string = u.required('name', 'ct.res.loadTexture'),
         textureOptions: ITextureOptions = {}
     ): Promise<CtjsAnimation> {
-        let texture: CtjsAnimation;
+        let texture: CtjsTexture;
         try {
             texture = await PIXI.Assets.load(url);
         } catch (e) {
             console.error(`[ct.res] Could not load image ${url}`);
             throw e;
         }
-        texture.shape = texture[0].shape = textureOptions.shape || ({} as TextureShape);
-        texture[0].defaultAnchor = new PIXI.Point(
+        const ctTexture = [texture] as CtjsAnimation;
+        ctTexture.shape = texture.shape = textureOptions.shape || ({} as TextureShape);
+        texture.defaultAnchor = ctTexture.defaultAnchor = new PIXI.Point(
             textureOptions.anchor.x || 0,
             textureOptions.anchor.x || 0
         );
-        resLib.textures[name] = texture;
-        return texture;
+        resLib.textures[name] = ctTexture;
+        return ctTexture;
     },
     /**
      * Loads a skeleton animation into the game.
@@ -228,8 +227,10 @@ const resLib = {
 
         Promise.all(loadingPromises)
         .then(() => {
-            const ct = ctjsGame;
-            /*!%start%*/
+            {
+                const ct = ctjsGame;
+                /*!%start%*/
+            }
             loadingScreen.classList.add('hidden');
             ctjsGame.pixiApp.ticker.add(ctjsGame.loop);
             ctjsGame.rooms.forceSwitch(ctjsGame.rooms.starting);

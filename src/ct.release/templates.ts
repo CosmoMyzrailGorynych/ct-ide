@@ -485,6 +485,3 @@ export const templates = {
         /*!%ondestroy%*/
     }
 };
-
-/*!@templates@*/
-/*!%templates%*/

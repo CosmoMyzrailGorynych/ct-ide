@@ -114,7 +114,7 @@ const stringifyRooms = (
         const scriptableCode = getBaseScripts(r, proj);
 
         roomsCode += `
-rooms.templates['${r.name}'] = {
+ct.rooms.templates['${r.name}'] = {
     name: '${r.name}',
     width: ${r.width},
     height: ${r.height},` +

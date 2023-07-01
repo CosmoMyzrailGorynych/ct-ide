@@ -421,6 +421,3 @@ export const rooms = {
      */
     starting: '/*!@startroom@*/'
 };
-
-/*!@rooms@*/
-/*!%rooms%*/

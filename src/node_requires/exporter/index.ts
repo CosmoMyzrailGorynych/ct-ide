@@ -263,12 +263,13 @@ const exportCtProject = async (
     const skeletonsTask = packSkeletons(assets.skeleton, writeDir);
     const bitmapFontsTask = bakeBitmapFonts(assets.font, projdir, writeDir);
     const favicons = bakeFavicons(project, writeDir, production);
+    const modulesTask = addModules();
     /* Run event cache population in parallel as well */
     const cacheHandle = populateEventCache(project);
 
     let actionsSetup = '';
     for (const action of project.actions) {
-        actionsSetup += `ct.inputs.addAction('${action.name}', ${JSON.stringify(action.methods)});\n`;
+        actionsSetup += `inputs.addAction('${action.name}', ${JSON.stringify(action.methods)});\n`;
     }
     const projectmeta: ExportedMeta = {
         name: settings.authoring.title,
@@ -306,38 +307,40 @@ const exportCtProject = async (
     }
 
     buffer += template(await sources['ct.js'], {
+        projectmeta,
+        ctversion: process.versions.ctjs,
+        contentTypes: stringifyContent(project),
+
         pixelatedrender: Boolean(settings.rendering.pixelatedrender),
         highDensity: Boolean(settings.rendering.highDensity),
         maxfps: Number(settings.rendering.maxFPS),
-        ctversion: process.versions.ctjs,
-        projectmeta,
+
+        startroom: startroom.name,
         startwidth: startroom.width,
         startheight: startroom.height,
 
+        atlases: (await texturesTask).atlases,
+        tiledImages: (await texturesTask).tiledImages,
+        sounds: getSounds(assets.sound),
+
         actions: actionsSetup,
-        startroom: startroom.name,
         rooms: rooms.libCode,
         rootRoomOnCreate,
         rootRoomOnStep,
         rootRoomOnDraw,
         rootRoomOnLeave,
+        templates: templates.libCode,
         styles: stringifyStyles(assets.style),
         tandemTemplates: stringifyTandems(assets.tandem),
-        templates: templates.libCode,
         fonts: fonts.js,
-        atlases: (await texturesTask).atlases,
-        tiledImages: (await texturesTask).tiledImages,
         bitmapFonts: await bitmapFontsTask,
-        dbSkeletons: false,
-        sounds: getSounds(assets.sound),
-        contentTypes: stringifyContent(project),
         skeletons: (await skeletonsTask).skeletons,
         includeSpine: (await skeletonsTask).skeletons.length > 0,
-        userScripts
+
+        userScripts,
+        catmods: await modulesTask
     }, injections);
 
-    /* Add catmods */
-    buffer += await addModules();
 
     /* passthrough copy of files in the `include` folder */
     if (await fs.pathExists(projdir + '/include/')) {
@@ -348,7 +351,6 @@ const exportCtProject = async (
             await fs.copy(path.join(basePath, `./ct.libs/${lib}/includes/`), writeDir);
         }
     }));
-    await fs.copy(path.join(basePath, 'ct.release', 'ct.js.map'), path.join(writeDir, 'ct.js.map'));
 
     /* CSS styles for rendering settings and branding */
     let preloaderColor1 = project.settings.branding.accent,
