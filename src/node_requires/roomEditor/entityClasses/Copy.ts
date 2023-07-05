@@ -27,8 +27,8 @@ class Copy extends PIXI.AnimatedSprite {
         this.cachedTemplate = t;
         this.deserialize(copyInfo);
         this.isGhost = Boolean(isGhost);
-        this.interactive = !this.isGhost;
-        if (this.interactive) {
+        this.eventMode = this.isGhost ? 'none' : 'static';
+        if (this.eventMode === 'static') {
             this.on('pointerover', () => {
                 this.editor.updateMouseoverHint(t.name, this);
             });

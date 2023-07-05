@@ -184,7 +184,7 @@ export const placeTile: IRoomEditorInteraction<IAffixedData> = {
             }
             soundbox.play('Wood_End');
             this.compoundGhost.removeChildren();
-            this.stage.interactive = true; // Causes to rediscover nested elements
+            this.stage.eventMode = 'static'; // Causes to rediscover nested elements (is it relevant for v7?)
             if (affixedData.created.size) {
                 this.history.pushChange({
                     type: 'creation',

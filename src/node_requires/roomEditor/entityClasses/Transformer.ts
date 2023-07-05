@@ -9,13 +9,12 @@ import {rotateRad, pdc} from '../../utils/trigo';
 import * as PIXI from 'node_modules/pixi.js';
 
 export class Handle extends PIXI.Graphics {
-    interactive: boolean;
     cursor: string;
     constructor() {
         super();
         this.beginFill(getPixiSwatch('act'));
         this.drawCircle(0, 0, 6);
-        this.interactive = true;
+        this.eventMode = 'static';
         this.cursor = 'pointer';
     }
 }

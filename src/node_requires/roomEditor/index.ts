@@ -196,7 +196,7 @@ class RoomEditor extends PIXI.Application {
             }
         });
 
-        this.stage.interactive = true;
+        this.stage.eventMode = 'static';
         this.interactions = interactions;
         for (const event of pixiListeners) {
             this.stage.on(event, (e: PIXI.FederatedEvent) => {
