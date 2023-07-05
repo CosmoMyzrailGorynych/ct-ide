@@ -282,7 +282,7 @@ const watchScripts = () => {
     .on('change', fileChangeNotifier);
 };
 const watchRiot = () => {
-    const watcher = gulp.watch('./src/riotTags/**/*', compileRiot);
+    const watcher = gulp.watch('./src/riotTags/**/*.tag', compileRiot);
     watcher.on('error', err => {
         notifier.notify(makeErrorObj('Riot failure', err));
         console.error('[pug error]', err);

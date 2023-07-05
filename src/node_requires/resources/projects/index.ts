@@ -104,7 +104,6 @@ const adapter = async (project: Partial<IProject>) => {
 const loadProject = async (projectData: IProject): Promise<void> => {
     const glob = require('../../glob');
     window.currentProject = projectData;
-    buildAssetMap(projectData);
     window.alertify.log(window.languageJSON.intro.loadingProject);
     glob.modified = false;
 
@@ -132,11 +131,11 @@ const loadProject = async (projectData: IProject): Promise<void> => {
                 monaco.languages.typescript.typescriptDefaults.addExtraLib(script.code)
             ];
         }
-
         resetTypedefs();
         loadAllTypedefs();
 
         unloadAllEvents();
+        buildAssetMap(projectData);
         resetPixiTextureCache();
         setPixelart(projectData.settings.rendering.pixelatedrender);
         await Promise.all([

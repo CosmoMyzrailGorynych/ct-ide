@@ -1,5 +1,5 @@
 import {imageContain, toBuffer, crop} from '../../utils/imageUtils';
-import {uidMap, getOfType, getById} from '..';
+import {uidMap, getOfType, getById, createAsset, IAssetContextItem} from '..';
 
 const fs = require('node_modules/fs-extra');
 import path from 'path';
@@ -394,8 +394,8 @@ const importImageToTexture = async (opts: {
  */
 const reimportTexture = async (
     texture: ITexture | assetRef,
-    source: string | Buffer
-): Promise<HTMLImageElement> => {
+    source?: string | Buffer
+): Promise<void> => {
     if (texture === -1) {
         throw new Error('Invalid texture: got -1 while trying to reimport one.');
     }
@@ -404,7 +404,11 @@ const reimportTexture = async (
     if (source instanceof Buffer) {
         await fs.writeFile(dest, source);
     } else {
-        await fs.copy(source, dest);
+        const newSource = source || tex.source;
+        if (!newSource) {
+            throw new Error('Cannot reimport a texture without a source file.');
+        }
+        await fs.copy(newSource, dest);
     }
     const image = document.createElement('img');
     image.src = 'file://' + dest + '?' + Math.random();
@@ -436,7 +440,6 @@ const reimportTexture = async (
         updateDOMImage(tex),
         texturesFromCtTexture(tex)
     ]);
-    return image;
 };
 
 /**
@@ -513,6 +516,19 @@ const setPixelart = (pixelart: boolean): void => {
     }
 };
 
+export const assetContextMenuItems: IAssetContextItem[] = [{
+    vocPath: 'texture.createTemplate',
+    icon: 'loader',
+    action: async (
+        asset: ITexture,
+        collection: folderEntries,
+        folder: IAssetFolder
+    ): Promise<void> => {
+        const template = await createAsset('template', collection, folder, asset.name);
+        template.texture = asset.uid;
+    }
+}];
+
 export {
     clearPixiTextureCache,
     populatePixiTextureCache,
@@ -534,6 +550,7 @@ export {
     importImageToTexture,
     importImageToTexture as createAsset,
     reimportTexture,
+    reimportTexture as reimportAsset,
     removeTexture,
     removeTexture as removeAsset,
     textureGenPreview

@@ -10,42 +10,34 @@ app-view.flexcol
             li.limitwidth(onclick="{saveProject}" title="{vocGlob.save} (Control+S)" data-hotkey="Control+s")
                 svg.feather
                     use(xlink:href="#save")
-            li.nbl(onclick="{runProject}" class="{active: tab === 'debug'}" title="{voc.launch} {voc.launchHotkeys}" data-hotkey="F5")
+            li.nbl.nogrow(onclick="{runProject}" class="{active: tab === 'debug'}" title="{voc.launch} {voc.launchHotkeys}" data-hotkey="F5")
                 svg.feather.rotateccw(show="{exportingProject}")
                     use(xlink:href="#refresh-ccw")
                 svg.feather(hide="{exportingProject}")
                     use(xlink:href="#play")
                 span(if="{tab !== 'debug'}") {voc.launch}
                 span(if="{tab === 'debug'}") {voc.restart}
-            li(onclick="{changeTab('project')}" class="{active: tab === 'project'}" data-hotkey="Control+1" title="Control+1" ref="projectTab")
+            li.nogrow(onclick="{changeTab('project')}" class="{active: tab === 'project'}" data-hotkey="Control+1" title="Control+1" ref="projectTab")
                 svg.feather
                     use(xlink:href="#sliders")
                 span {voc.project}
-            li(onclick="{changeTab('textures')}" class="{active: tab === 'textures'}" data-hotkey="Control+2" title="Control+2" ref="textureTab")
+            li.nogrow(onclick="{changeTab('assets')}" class="{active: tab === 'assets'}" data-hotkey="Control+2" title="Control+2" ref="projectTab")
                 svg.feather
-                    use(xlink:href="#texture")
-                span {voc.texture}
-            li(onclick="{changeTab('ui')}" class="{active: tab === 'ui'}" data-hotkey="Control+3" title="Control+3" ref="uiTab")
-                svg.feather
-                    use(xlink:href="#ui")
-                span {voc.ui}
-            li(onclick="{changeTab('fx')}" class="{active: tab === 'fx'}" data-hotkey="Control+4" title="Control+4" ref="fxTab")
-                svg.feather
-                    use(xlink:href="#sparkles")
-                span {voc.fx}
-            li(onclick="{changeTab('sounds')}" class="{active: tab === 'sounds'}" data-hotkey="Control+5" title="Control+5" ref="soundsTab")
-                svg.feather
-                    use(xlink:href="#headphones")
-                span {voc.sounds}
-            li(onclick="{changeTab('templates')}" class="{active: tab === 'templates'}" data-hotkey="Control+6" title="Control+6" ref="templatesTab")
-                svg.feather
-                    use(xlink:href="#template")
-                span {voc.templates}
-            li(onclick="{changeTab('rooms')}" class="{active: tab === 'rooms'}" data-hotkey="Control+7" title="Control+7" ref="roomsTab")
-                svg.feather
-                    use(xlink:href="#room")
-                span {voc.rooms}
-            li(onclick="{callTour}" data-hotkey="F1" title="{voc.tour.header}").relative.nogrow
+                    use(xlink:href="#folder")
+                span {voc.assets}
+            ul.aNav.flexrow.xscroll.grow(onwheeel="{scrollHorizontally}" ref="tabswrap")
+                li.nogrow(
+                    each="{asset, ind in openedAssets}"
+                    class="{active: asset === tab}"
+                    onclick="{changeTab(asset)}"
+                    data-hotkey="{ind < 8 ? 'Control+' + (ind + 3) : ''}"
+                )
+                    svg.feather
+                        use(xlink:href="#{iconMap[asset.type]}")
+                    span {getName(asset)}
+                    svg.feather.anActionableIcon(onclick="{closeAsset}")
+                        use(xlink:href="#x")
+            li.nogrow.bl(onclick="{callTour}" data-hotkey="F1" title="{voc.tour.header}").relative.nogrow
                 .aPulser(if="{!localStorage.wizardUsed}")
                 svg.feather
                     use(xlink:href="#help-circle")
@@ -53,13 +45,21 @@ app-view.flexcol
         main-menu(show="{tab === 'menu'}" ref="mainMenu")
         debugger-screen-embedded(if="{tab === 'debug'}" params="{debugParams}" data-hotkey-scope="play" ref="debugger")
         project-settings(show="{tab === 'project'}" data-hotkey-scope="project" ref="projectsSettings")
-        textures-panel(show="{tab === 'textures'}" ref="textures" data-hotkey-scope="textures")
-        ui-panel(show="{tab === 'ui'}" ref="ui" data-hotkey-scope="ui")
-        fx-panel(show="{tab === 'fx'}" ref="fx" data-hotkey-scope="fx")
-        sounds-panel(show="{tab === 'sounds'}" ref="sounds" data-hotkey-scope="sounds")
-        templates-panel(show="{tab === 'templates'}" ref="templates" data-hotkey-scope="templates")
-        rooms-panel(show="{tab === 'rooms'}" ref="rooms" data-hotkey-scope="rooms")
         patrons-screen(if="{tab === 'patrons'}" ref="patrons" data-hotkey-scope="patrons")
+        asset-browser.pad.aView(
+            if="{tab === 'assets'}"
+            ref="assets"
+            data-hotkey-scope="assets"
+            namespace="projectBrowser"
+            click="{openAsset}"
+        )
+        .aView(
+            each="{asset in openedAssets}"
+            data-is="{editorMap[asset.type]}"
+            show="{asset === tab}"
+            asset="{asset}"
+            ref="openedEditors"
+        )
     exporter-error(if="{exporterError}" error="{exporterError}" onclose="{closeExportError}")
     new-project-onboarding(if="{sessionStorage.showOnboarding && localStorage.showOnboarding !== 'off'}")
     notepad-panel(ref="notepadPanel")
@@ -70,19 +70,53 @@ app-view.flexcol
         this.namespace = 'appView';
         this.mixin(window.riotVoc);
 
-        this.tab = 'project';
+        this.tab = 'project'; // A tab can be either a string ('project', 'assets', etc.) or an asset object
+        this.openedAssets = [];
         this.changeTab = tab => () => {
             this.tab = tab;
             window.hotkeys.cleanScope();
             window.hotkeys.push(tab);
             window.signals.trigger('globalTabChanged', tab);
-            window.signals.trigger(`${tab}Focus`);
-            if (tab === 'rooms' || tab === 'templates') {
-                window.orders.trigger('forceCodeEditorLayout');
+            if (typeof tab === 'string') {
+                window.signals.trigger(`${tab}Focus`);
+            } else {
+                if (tab.type === 'room' || tab.type === 'template') {
+                    window.orders.trigger('forceCodeEditorLayout');
+                }
             }
         };
-        this.changeTab(this.tab)();
+        const resources = require('./data/node_requires/resources');
+        this.editorMap = resources.editorMap;
+        this.getName = resources.getName;
+        this.iconMap = resources.resourceToIconMap;
+        this.openAsset = (asset, noOpen) => () => {
+            // Check whether the asset is not yet opened
+            if (!this.openedAssets.includes(asset)) {
+                // Try putting the asset next to the already opened one
+                const pos = this.openedAssets.indexOf(this.tab);
+                if (pos !== -1) {
+                    this.openedAssets.splice(pos + 1, 0, asset);
+                } else {
+                    this.openedAssets.push(asset);
+                }
+            } else if (noOpen) {
+                console.warn('[app-view] An already opened asset was called with noOpen. This is probably a bug as you either do open assets or create them elsewhere without opening.')
+            }
+            if (!noOpen) {
+                this.changeTab(asset)();
+            }
+        };
+        this.closeAsset = e => {
+            const {asset, ind} = e.item;
+            const editor = this.refs.openedEditors[ind];
+            // TODO: Check if the asset editor is in dirty state
+            this.openedAssets.splice(ind, 1);
+            if (this.tab === asset) {
+                this.changeTab('assets')();;
+            }
+        };
 
+        /* TODO:
         const assetListener = asset => {
             const [assetType, uid] = asset.split('/');
             if (['emitters', 'emitterTandems', 'tandems'].includes(assetType)) {
@@ -102,7 +136,8 @@ app-view.flexcol
         window.orders.on('openAsset', assetListener);
         this.on('unmount', () => {
             window.orders.off('openAsset', assetListener);
-        });
+        }); */
+
 
         this.saveProject = async () => {
             const {saveProject} = require('./data/node_requires/resources/projects');
@@ -216,6 +251,7 @@ app-view.flexcol
             this.update();
         };
 
+        // TODO: Remake the app tour
         // eslint-disable-next-line max-lines-per-function
         this.callTour = () => {
             this.appTour = [{
@@ -409,6 +445,11 @@ app-view.flexcol
         };
         this.onAppTourFinish = () => {
             this.update();
+        };
+
+        this.scrollHorizontally = e => {
+            e.preventDefault();
+            this.refs.tabswrap += e.deltaY;
         };
 
         this.toggleFullscreen = function toggleFullscreen() {

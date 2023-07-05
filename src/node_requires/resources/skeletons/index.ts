@@ -1,10 +1,10 @@
 import * as PIXI from 'node_modules/pixi.js';
 import {Spine, ISkeletonData} from 'node_modules/pixi-spine';
 import execa from 'node_modules/execa';
+import {getById, getOfType, IAssetContextItem, createAsset as createAssetOfType} from '..';
 
 import generateGUID from './../../generateGUID';
 import {imageContain, outputCanvasToFile} from './../../utils/imageUtils';
-import {getById, getByTypes, getOfType} from '..';
 
 import * as fs from 'fs-extra';
 import * as path from 'path';
@@ -51,10 +51,13 @@ export const getSkeletonAtlasMeta = (skeleton: ISkeleton, fs: boolean): string =
  * Returns a path to the skeleton's thumbnail.
  */
 export const getSkeletonThumbnail = function getSkeletonThumbnail(
-    skeleton: ISkeleton,
+    skeleton: ISkeleton | string,
     x2?: boolean,
     fs?: boolean
 ): string {
+    if (typeof skeleton === 'string') {
+        skeleton = getById('skeleton', skeleton);
+    }
     if (fs) {
         return path.join(global.projdir, 'skel', `${skeleton.origname}_prev${x2 ? '@2' : ''}.png`);
     }
@@ -245,13 +248,16 @@ export const removeAsset = (skel: ISkeleton | string): void => {
  */
 export const reimportSkeleton = async (
     skel: ISkeleton | string,
-    source: string
+    source?: string
 ): Promise<void> => {
     if (typeof skel === 'string') {
         skel = getById('skeleton', skel);
     }
+    if (!source && !skel.source) {
+        throw new Error('No skeleton source provided.');
+    }
     const savePath = path.join(global.projdir + '/skel', skel.uid.slice(0, 6));
-    const [newSource, dataJSON] = await skeletonPreimport(source);
+    const [newSource, dataJSON] = await skeletonPreimport(source || skel.source);
     const meta = getSpineAnimationList(dataJSON);
     await importSkeletonFiles(newSource, savePath);
     const bounds = await skeletonGenPreview(skel);
@@ -264,6 +270,7 @@ export const reimportSkeleton = async (
     skel.source = source;
     /* eslint-enable require-atomic-updates */
 };
+export const reimportAsset = reimportSkeleton;
 
 // Caching DOM images of the full renders
 
@@ -356,7 +363,7 @@ export const updatePixiTextureForSkel = async (skel: ISkeleton | assetRef)
     pixiTextureCache[skel.uid] = tex;
     return tex;
 };
-export const populatePixiTextureCache = async (project: IProject): Promise<void> => {
+export const populatePixiTextureCache = async (): Promise<void> => {
     clearPixiTextureCache();
     const promises = [];
     for (const skel of getOfType('skeleton')) {
@@ -381,3 +388,16 @@ export const getPixiTexture = (skel: assetRef | ISkeleton): PIXI.Texture<PIXI.Im
     }
     return pixiTextureCache[skel];
 };
+
+export const assetContextMenuItems: IAssetContextItem[] = [{
+    vocPath: 'texture.createTemplate',
+    icon: 'loader',
+    action: async (
+        asset: ISkeleton,
+        collection: folderEntries,
+        folder: IAssetFolder
+    ): Promise<void> => {
+        const template = await createAssetOfType('template', collection, folder, asset.name);
+        template.skeleton = asset.uid;
+    }
+}];

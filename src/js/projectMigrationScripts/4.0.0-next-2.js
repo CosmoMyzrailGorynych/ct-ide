@@ -3,7 +3,6 @@ window.migrationProcess = window.migrationProcess || [];
 window.migrationProcess.push({
     version: '4.0.0-next-2',
     process: project => new Promise(resolve => {
-        const assets = [];
         const oldGroups = {};
         // Flatten old groups into one group map
         for (const key in project.groups) {
@@ -40,9 +39,9 @@ window.migrationProcess.push({
                 if (asset.group) {
                     const groupName = project.groups[collectionName]
                         .find(g => g.uid === asset.group.uid).name;
-                    oldGroups[groupName].assets.entries.push(asset);
+                    oldGroups[groupName].entries.push(asset);
                 } else {
-                    assets.push(asset);
+                    project.assets.push(asset);
                 }
             }
             delete project[collectionName];

@@ -6,12 +6,31 @@ app-view
     bottom 0
     & > .flexrow > nav
         flex-flow row wrap
-    & > nav > .tabs li
+    & > nav > .tabs > li
         position relative
         &:last-child
-            width 2rem
+            width 2.5rem
+            box-sizing border-box
+            padding-left 0
+            padding-right 0
+    & > nav > .tabs > .xscroll
+        background backgroundDeeper
+        border-bottom 1px solid borderBright
+        border-right @border-bottom
+        li
+            border-radius 0
+            border-bottom 0
+            padding-right 0.5rem
+        .anActionableIcon
+            width 1.25rem
+            height @width
+            vertical-align -4px
+            margin-left 0.25rem
+            margin-right 0
     .limitwidth
         max-width 5rem
+        min-width 3rem
+        box-sizing border-box
     & > nav > .tabs
         border-radius 0
         width 100%

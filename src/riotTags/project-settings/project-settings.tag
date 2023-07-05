@@ -43,7 +43,7 @@ project-settings.aPanel.aView.pad.flexrow
                 svg.feather
                     use(xlink:href=`#{contentType.icon || 'copy'}`)
                 span {contentType.readableName || contentType.name || voc.content.missingTypeName}
-    main
+    main.aPanel
         each name in tabs
             div(if=`{tab === '${name}'}`)
                 // This outputs a templated tag name. Magic!

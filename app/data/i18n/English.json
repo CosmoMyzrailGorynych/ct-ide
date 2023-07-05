@@ -91,42 +91,42 @@
         "ctSite": "ct.js homepage",
         "openAssetGallery": "Gallery",
         "assetTypes": {
-            "textures": [
+            "texture": [
                 "texture",
                 "textures",
                 "textures"
             ],
-            "templates": [
+            "template": [
                 "template",
                 "templates",
                 "templates"
             ],
-            "emitterTandems": [
+            "tandem": [
                 "emitter tandem",
                 "emitter tandems",
                 "emitter tandems"
             ],
-            "rooms": [
+            "room": [
                 "room",
                 "rooms",
                 "rooms"
             ],
-            "fonts": [
+            "font": [
                 "font",
                 "fonts",
                 "fonts"
             ],
-            "styles": [
+            "style": [
                 "style",
                 "styles",
                 "styles"
             ],
-            "sounds": [
+            "sound": [
                 "sound",
                 "sounds",
                 "sounds"
             ],
-            "skeletons": [
+            "skeleton": [
                 "skeletal sprite",
                 "skeletal sprites",
                 "skeletal sprites"
@@ -139,10 +139,9 @@
         "selectAssetHeader": "Select an asset"
     },
     "assetViewer": {
-        "addNewGroup": "New Group",
-        "ungrouped": "Show ungrouped",
-        "newGroupName": "New group",
-        "groupDeletionConfirmation": "Are you sure you want to delete this group? All its assets will be ungrouped."
+        "root": "Root",
+        "addNewFolder": "New Folder",
+        "newFolderName": "New folder"
     },
     "builtinAssetGallery": {
         "galleryTip": "This is a free, built-in gallery of various textures and sounds. All the assets are CC0 or WTFPL, or are released under special terms for use in ct.js. In any way, you can use these assets however you like, in commercial and other projects.",
@@ -704,18 +703,13 @@
     },
     "appView": {
         "ctIDE": "ct.IDE",
-        "texture": "Textures",
         "launch": "Launch",
         "launchHotkeys": "(F5; Alt+F5 to run in your default browser)",
         "min": "Windowed",
         "patrons": "Patrons",
         "restart": "Restart",
-        "rooms": "Rooms",
         "project": "Project",
-        "sounds": "Sounds",
-        "ui": "UI",
-        "fx": "FX",
-        "templates": "Templates",
+        "assets": "Assets",
         "tour": {
             "header": "Ct.js overview",
             "aboutTour": "Welcome to ct.js! This little tour will show you the main controls in this editor, so you know how to configure ct.js and create new assets.",

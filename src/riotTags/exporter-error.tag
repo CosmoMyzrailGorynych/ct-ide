@@ -14,7 +14,7 @@ exporter-error.aDimmer.pointer.pad.fadein(onclick="{tryClose}")
                     use(xlink:href="#{resourceToIconMap[error.richInfo.resourceType]}")
                 |
                 |
-                b(if="{error.richInfo?.resourceType}") {voc.errorSource.replace('$1', vocGlob.assetTypes[error.richInfo.resourceType + 's'][0]).replace('$2', error.richInfo.resourceName)}:
+                b(if="{error.richInfo?.resourceType}") {voc.errorSource.replace('$1', vocGlob.assetTypes[error.richInfo.resourceType][0]).replace('$2', error.richInfo.resourceName)}:
                 |
                 |
                 span.monospace {error.message}

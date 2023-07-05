@@ -3,7 +3,7 @@ import {getTexturePreview,
     getTextureOrig,
     getDOMTexture as getTextureDOMImage,
     getPixiTexture as getTexturePixiTexture} from '../textures';
-import {getDOMSkeleton, getPixiTexture as getSkeletonPixiTexture} from '../skeletons';
+import {getDOMSkeleton, getSkeletonThumbnail, getPixiTexture as getSkeletonPixiTexture} from '../skeletons';
 
 import * as PIXI from 'node_modules/pixi.js';
 import {getById} from '..';
@@ -39,6 +39,9 @@ const getTemplatePreview = function getTemplatePreview(
     }
     if (template === -1) {
         return getTexturePreview(-1, x2, fs);
+    }
+    if (template.skeleton && template.skeleton !== -1) {
+        return getSkeletonThumbnail(template.skeleton, x2, fs);
     }
     return getTexturePreview(template.texture, x2, fs);
 };

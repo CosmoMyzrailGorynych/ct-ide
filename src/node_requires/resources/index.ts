@@ -9,6 +9,36 @@ import * as templates from './templates';
 import * as styles from './styles';
 import * as skeletons from './skeletons';
 
+/**
+ * The interface that describe additional asset actions callable through a context menu.
+ * Items must be exported in an array from the resource API they belong to.
+ */
+export interface IAssetContextItem {
+    /**
+     * Used to determine whether the context menu item is applicable for this asset.
+     * If the method is set and it returns false, the menu item is not shown.
+     */
+    if?: (asset: IAsset) => boolean;
+    /** A path in the language file that is used for this menu item's label */
+    vocPath: string;
+    icon?: string;
+    // TODO: Implement; can be used with rooms to mark a starting one
+    /**
+     * If set, turns the menu item's type to checkbox,
+     * and the method determines whether the checkbox is ticked.
+     */
+    checked?: (asset: IAsset) => boolean;
+    /**
+     * The action that must happen when the menu item is clicked.
+     * `collection` and `folder` define the folder the asset is residing in.
+     */
+    action: (
+        asset: IAsset,
+        collection: folderEntries,
+        folder: IAssetFolder
+    ) => void | Promise<void>;
+}
+
 /** Typing-enforcing shenanigans */
 interface IResourceAPI {
     areThumbnailsIcons: boolean;
@@ -18,6 +48,8 @@ interface IResourceAPI {
         Promise<IAsset> | IAsset;
     /** Optional as there can be no cleanup needed for specific asset types */
     removeAsset?: (asset: assetRef | IAsset) => Promise<void> | void;
+    reimportAsset?: (asset: assetRef | IAsset) => Promise<void>;
+    assetContextMenuItems?: IAssetContextItem[];
 }
 const typeToApiMap: Record<resourceType, IResourceAPI> = {
     font: fonts,
@@ -106,7 +138,7 @@ export const getById = <T extends resourceType>(type: T, id: string): typeToTsTy
     if (!asset) {
         throw new Error(`Attempt to get a non-existent ${type} with ID ${id}`);
     }
-    if (asset.type !== 'skeleton') {
+    if (asset.type !== type) {
         throw new Error(`Asset with a ${id} uid is not a ${type}. Asset's actual type is ${asset.type}`);
     }
     return asset as typeToTsTypeMap[T];
@@ -115,13 +147,13 @@ export const getById = <T extends resourceType>(type: T, id: string): typeToTsTy
 /**
  * Creates a new asset of the specified type. This is the method that must be used in the UI.
  */
-export const createAsset = async <T>(
-    type: resourceType,
+export const createAsset = async <T extends resourceType, P>(
+    type: T,
     collection: folderEntries,
     folder: IAssetFolder | null,
-    payload: T
-): Promise<IAsset> => {
-    const asset = await typeToApiMap[type].createAsset(payload);
+    payload: P
+): Promise<typeToTsTypeMap[T]> => {
+    const asset = (await typeToApiMap[type].createAsset(payload)) as typeToTsTypeMap[T];
     collection.push(asset);
     uidMap.set(asset.uid, asset);
     folderMap.set(asset, folder);
@@ -156,7 +188,35 @@ export const getDOMImage = (asset: ISkeleton | ITemplate | ITexture): HTMLImageE
     return skeletons.getDOMSkeleton(asset);
 };
 
-export const resourceToIconMap = {
+export const areThumbnailsIcons = (asset: IAsset | IAssetFolder): boolean => {
+    if (asset.type === 'folder') {
+        return true;
+    }
+    return typeToApiMap[asset.type].areThumbnailsIcons;
+};
+export const getThumbnail = (asset: IAsset | IAssetFolder, x2?: boolean, fs?: boolean): string => {
+    if (asset.type === 'folder') {
+        return asset.icon;
+    }
+    return typeToApiMap[asset.type].getThumbnail(asset, x2, fs);
+};
+export const getName = (asset: IAsset | IAssetFolder): string => {
+    if (asset.type === 'folder') {
+        return asset.name;
+    }
+    return typeToApiMap[asset.type].getName ?
+        typeToApiMap[asset.type].getName(asset) :
+        (asset as IAsset & {name: string}).name;
+};
+export const getContextActions = (asset: IAsset): IAssetContextItem[] => {
+    const api = typeToApiMap[asset.type];
+    if (!api.assetContextMenuItems) {
+        return [];
+    }
+    return api.assetContextMenuItems.filter(item => !item.if || item.if(asset));
+};
+
+export const resourceToIconMap: Record<resourceType, string> = {
     texture: 'texture',
     tandem: 'sparkles',
     font: 'ui',
@@ -164,7 +224,17 @@ export const resourceToIconMap = {
     room: 'room',
     template: 'template',
     style: 'ui',
-    project: 'sliders'
+    skeleton: 'template' // TODO: Design a unique icon
+};
+export const editorMap: Record<resourceType, string> = {
+    font: 'font-editor',
+    room: 'room-editor',
+    skeleton: 'texture-editor',
+    sound: 'sound-editor',
+    style: 'style-editor',
+    tandem: 'emitter-tandem-editor',
+    template: 'template-editor',
+    texture: 'texture-editor'
 };
 
 export {

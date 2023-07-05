@@ -35,7 +35,103 @@ libs:
   pointer:
     preventdefault: false
     startlocked: false
-templates:
+soundtick: 6
+roomtick: 3
+templatetick: 12
+styletick: 4
+starting: 0
+settings:
+  export:
+    linux: true
+    windows: false
+    mac: false
+    functionWrap: false
+    codeModifier: none
+  branding:
+    icon: 1da28af4-53f1-4958-82b2-a696778f910f
+    accent: '#446adb'
+    invertPreloaderScheme: true
+  rendering:
+    maxFPS: 60
+    pixelatedrender: false
+    highDensity: true
+    usePixiLegacy: true
+    desktopMode: maximized
+    mobileScreenOrientation: unspecified
+  authoring:
+    title: Catformer
+    author: Cosmo Myzrail Gorynych
+    site: 'https://ctjs.rocks'
+    version:
+      - 0
+      - 0
+      - 0
+    versionPostfix: ''
+  fps: 30
+palette:
+  - '#257073'
+startroom: b0f0ff4d-a155-4d68-a86e-5bb7ed8973ab
+scripts:
+  - name: createUi
+    code: |-
+      var createUi = function (room) {
+          room.touchControl = {};
+          var aboveBottom = 80;
+          var rightOfBorder = 80;
+          room.touchControl.left = ct.vkeys.button({
+              key: "Vk2",
+              texNormal: "buttonLeft",
+              texActive: "buttonLeft",
+              texHover: "buttonLeft",
+              x: () => room.x + rightOfBorder,
+              y: () => room.y + ct.viewHeight - aboveBottom,
+              depth: 1000
+          });
+          room.touchControl.right = ct.vkeys.button({
+              key: "Vk1",
+              texNormal: "buttonRight",
+              texActive: "buttonRight",
+              texHover: "buttonRight",
+              x: () => room.x + rightOfBorder + 100,
+              y: () => room.y + ct.viewHeight - aboveBottom,
+              depth: 1000
+          });
+          room.touchControl.jump = ct.vkeys.button({
+              key: "Vk3",
+              texNormal: "buttonJump",
+              texActive: "buttonJump",
+              texHover: "buttonJump",
+              x: () => room.x + ct.viewWidth - rightOfBorder,
+              y: () => room.y + ct.viewHeight - aboveBottom,
+              depth: 1000
+          });
+      }
+ctjsVersion: 4.0.0-next-2
+actions:
+  - name: Jump
+    methods:
+      - code: keyboard.Space
+      - code: keyboard.KeyW
+      - code: keyboard.ArrowUp
+      - code: vkeys.Vk3
+  - name: Move
+    methods:
+      - code: keyboard.ArrowLeft
+        multiplier: -1
+      - code: keyboard.ArrowRight
+      - code: keyboard.KeyA
+        multiplier: -1
+      - code: keyboard.KeyD
+      - code: vkeys.Vk2
+        multiplier: -1
+      - code: vkeys.Vk1
+  - name: Touch
+    methods:
+      - code: mouse.Left
+texturetick: 15
+contentTypes: []
+language: typescript
+assets:
   - name: Box
     depth: 0
     uid: b7a528f8-655c-4920-900f-f191533f411d
@@ -538,80 +634,6 @@ templates:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
-sounds:
-  - name: BodyFall
-    uid: 64f57367-eae3-40e1-8769-e11bd3c90f62
-    origname: s0.wav
-    lastmod: 1522761534690
-  - name: Failure
-    uid: 0f16063e-c954-4e7e-8b09-32b844511c9e
-    origname: s1.wav
-    lastmod: 1522761553815
-  - name: Victory
-    uid: 1d5b2c13-0324-41be-bbd5-e69abfd5bd49
-    origname: s2.wav
-    lastmod: 1522761569514
-  - name: Coin_01
-    uid: 7ed9f9ad-d9fc-436d-b97f-59aa81348543
-    origname: s3.wav
-    lastmod: 1522761582110
-  - name: Coin_02
-    uid: d5d0b307-685d-4ecc-8ffe-e24a063d9f15
-    origname: s4.wav
-    lastmod: 1522761594384
-  - name: Coin_03
-    uid: b614ec30-9837-466e-94a5-dda36bdf9daf
-    origname: s5.wav
-    lastmod: 1522761606687
-styles:
-  - name: CoinText
-    shadow: false
-    uid: 7879b9dc-6868-4c97-b71e-129d03c77ee1
-    origname: s1
-    font:
-      family: sans-serif
-      size: 24
-      weight: '900'
-      italic: false
-      valign: middle
-      halign: left
-      lineHeight: 24
-    fill:
-      type: '0'
-      color: '#FFCC40'
-    stroke:
-      color: '#CF7500'
-      weight: 2
-    lastmod: 1543637142188
-  - name: OhNo
-    uid: 0db56e97-cb4d-43bf-a067-7a7ab9f32099
-    origname: s2
-    font:
-      family: sans-serif
-      size: 48
-      weight: '800'
-      italic: true
-      valign: middle
-      halign: center
-    fill:
-      type: '0'
-      color: '#257073'
-    lastmod: 1586656196733
-  - name: OhNo_Small
-    uid: ad511489-1f25-4d45-bbe8-7f33d08257e4
-    origname: s4
-    font:
-      family: sans-serif
-      size: 24
-      weight: '800'
-      italic: true
-      valign: middle
-      halign: center
-    fill:
-      type: '0'
-      color: '#257073'
-    lastmod: 1543636696741
-rooms:
   - name: InGame
     ondraw: ''
     onleave: ''
@@ -2744,102 +2766,86 @@ rooms:
     simulate: true
     isUi: !<tag:yaml.org,2002:js/undefined> ''
     follow: -1
-soundtick: 6
-roomtick: 3
-templatetick: 12
-styletick: 4
-starting: 0
-settings:
-  export:
-    linux: true
-    windows: false
-    mac: false
-    functionWrap: false
-    codeModifier: none
-  branding:
-    icon: 1da28af4-53f1-4958-82b2-a696778f910f
-    accent: '#446adb'
-    invertPreloaderScheme: true
-  rendering:
-    maxFPS: 60
-    pixelatedrender: false
-    highDensity: true
-    usePixiLegacy: true
-    desktopMode: maximized
-    mobileScreenOrientation: unspecified
-  authoring:
-    title: Catformer
-    author: Cosmo Myzrail Gorynych
-    site: 'https://ctjs.rocks'
-    version:
-      - 0
-      - 0
-      - 0
-    versionPostfix: ''
-  fps: 30
-palette:
-  - '#257073'
-startroom: b0f0ff4d-a155-4d68-a86e-5bb7ed8973ab
-scripts:
-  - name: createUi
-    code: |-
-      var createUi = function (room) {
-          room.touchControl = {};
-          var aboveBottom = 80;
-          var rightOfBorder = 80;
-          room.touchControl.left = ct.vkeys.button({
-              key: "Vk2",
-              texNormal: "buttonLeft",
-              texActive: "buttonLeft",
-              texHover: "buttonLeft",
-              x: () => room.x + rightOfBorder,
-              y: () => room.y + ct.viewHeight - aboveBottom,
-              depth: 1000
-          });
-          room.touchControl.right = ct.vkeys.button({
-              key: "Vk1",
-              texNormal: "buttonRight",
-              texActive: "buttonRight",
-              texHover: "buttonRight",
-              x: () => room.x + rightOfBorder + 100,
-              y: () => room.y + ct.viewHeight - aboveBottom,
-              depth: 1000
-          });
-          room.touchControl.jump = ct.vkeys.button({
-              key: "Vk3",
-              texNormal: "buttonJump",
-              texActive: "buttonJump",
-              texHover: "buttonJump",
-              x: () => room.x + ct.viewWidth - rightOfBorder,
-              y: () => room.y + ct.viewHeight - aboveBottom,
-              depth: 1000
-          });
-      }
-ctjsVersion: 3.2.0
-fonts: []
-skeletons: []
-actions:
-  - name: Jump
-    methods:
-      - code: keyboard.Space
-      - code: keyboard.KeyW
-      - code: keyboard.ArrowUp
-      - code: vkeys.Vk3
-  - name: Move
-    methods:
-      - code: keyboard.ArrowLeft
-        multiplier: -1
-      - code: keyboard.ArrowRight
-      - code: keyboard.KeyA
-        multiplier: -1
-      - code: keyboard.KeyD
-      - code: vkeys.Vk2
-        multiplier: -1
-      - code: vkeys.Vk1
-  - name: Touch
-    methods:
-      - code: mouse.Left
-textures:
+  - name: BodyFall
+    uid: 64f57367-eae3-40e1-8769-e11bd3c90f62
+    origname: s0.wav
+    lastmod: 1522761534690
+    type: sound
+  - name: Failure
+    uid: 0f16063e-c954-4e7e-8b09-32b844511c9e
+    origname: s1.wav
+    lastmod: 1522761553815
+    type: sound
+  - name: Victory
+    uid: 1d5b2c13-0324-41be-bbd5-e69abfd5bd49
+    origname: s2.wav
+    lastmod: 1522761569514
+    type: sound
+  - name: Coin_01
+    uid: 7ed9f9ad-d9fc-436d-b97f-59aa81348543
+    origname: s3.wav
+    lastmod: 1522761582110
+    type: sound
+  - name: Coin_02
+    uid: d5d0b307-685d-4ecc-8ffe-e24a063d9f15
+    origname: s4.wav
+    lastmod: 1522761594384
+    type: sound
+  - name: Coin_03
+    uid: b614ec30-9837-466e-94a5-dda36bdf9daf
+    origname: s5.wav
+    lastmod: 1522761606687
+    type: sound
+  - name: CoinText
+    shadow: false
+    uid: 7879b9dc-6868-4c97-b71e-129d03c77ee1
+    origname: s1
+    font:
+      family: sans-serif
+      size: 24
+      weight: '900'
+      italic: false
+      valign: middle
+      halign: left
+      lineHeight: 24
+    fill:
+      type: '0'
+      color: '#FFCC40'
+    stroke:
+      color: '#CF7500'
+      weight: 2
+    lastmod: 1543637142188
+    type: style
+  - name: OhNo
+    uid: 0db56e97-cb4d-43bf-a067-7a7ab9f32099
+    origname: s2
+    font:
+      family: sans-serif
+      size: 48
+      weight: '800'
+      italic: true
+      valign: middle
+      halign: center
+    fill:
+      type: '0'
+      color: '#257073'
+    lastmod: 1586656196733
+    type: style
+  - name: OhNo_Small
+    uid: ad511489-1f25-4d45-bbe8-7f33d08257e4
+    origname: s4
+    font:
+      family: sans-serif
+      size: 24
+      weight: '800'
+      italic: true
+      valign: middle
+      halign: center
+    fill:
+      type: '0'
+      color: '#257073'
+    lastmod: 1543636696741
+    type: style
   - name: boxAlt
     untill: 0
     grid:
@@ -2866,6 +2872,7 @@ textures:
     imgHeight: 70
     uid: d8dd2bfd-0f9d-495a-bbfd-0e65b80153b9
     padding: 1
+    type: texture
   - name: bridgeLogs
     untill: 0
     grid:
@@ -2892,6 +2899,7 @@ textures:
     lastmod: 1543409370189
     uid: f3de5077-0e66-43de-93f2-d3a75184aa2e
     padding: 1
+    type: texture
   - name: fence
     untill: 0
     grid:
@@ -2918,6 +2926,7 @@ textures:
     lastmod: 1543409082603
     uid: 21a0f13c-5806-43d4-929b-c1bcb5213d9b
     padding: 1
+    type: texture
   - name: grass
     untill: 0
     grid:
@@ -2944,6 +2953,7 @@ textures:
     lastmod: 1536295084180
     uid: 9968de05-f39d-4455-aaed-175c03728bb1
     padding: 1
+    type: texture
   - name: Spikes
     untill: 0
     grid:
@@ -2970,6 +2980,7 @@ textures:
     lastmod: 1522391498568
     uid: eed6bb2f-301f-460a-8d91-93396d103b4e
     padding: 1
+    type: texture
   - name: coinGold
     untill: 0
     grid:
@@ -2996,6 +3007,7 @@ textures:
     lastmod: 1522422329142
     uid: 62be2903-9782-49fc-b551-ef2e641091c9
     padding: 1
+    type: texture
   - name: bg
     untill: 0
     grid:
@@ -3024,6 +3036,7 @@ textures:
     tiled: true
     source: /home/comigo/Загрузки/platformer-art-complete-pack-0/Base pack/bg.png
     padding: 0
+    type: texture
   - name: Player
     untill: 14
     grid:
@@ -3050,6 +3063,7 @@ textures:
     lastmod: 1547481548132
     uid: ad390b6e-4c2c-412f-8143-1c70b9c16fc0
     padding: 1
+    type: texture
   - name: greedyDeath
     untill: 0
     grid:
@@ -3075,6 +3089,7 @@ textures:
     lastmod: 1543409206474
     uid: e90eb23b-547a-4d96-a203-ffe63c00cf9b
     padding: 1
+    type: texture
   - name: Slime
     untill: 0
     grid:
@@ -3100,6 +3115,7 @@ textures:
     lastmod: 1547481652579
     uid: 703fb5d5-cf20-4450-b760-0b1cd037a5ad
     padding: 1
+    type: texture
   - name: Rich
     untill: 0
     grid:
@@ -3125,6 +3141,7 @@ textures:
     lastmod: 1522476036664
     uid: 1da28af4-53f1-4958-82b2-a696778f910f
     padding: 1
+    type: texture
   - name: MaximiseMinimise
     untill: 0
     grid:
@@ -3150,6 +3167,7 @@ textures:
     lastmod: 1533291065468
     uid: d161a39a-203e-4099-99e2-41385d94f975
     padding: 1
+    type: texture
   - name: buttonJump
     untill: 0
     grid:
@@ -3177,6 +3195,7 @@ textures:
     padding: 1
     lastmod: 1586161221876
     r: 40
+    type: texture
   - name: buttonRight
     untill: 0
     grid:
@@ -3204,6 +3223,7 @@ textures:
     padding: 1
     lastmod: 1586161215286
     r: 40
+    type: texture
   - name: buttonLeft
     untill: 0
     grid:
@@ -3231,6 +3251,7 @@ textures:
     padding: 1
     lastmod: 1586161218807
     r: 40
+    type: texture
   - name: TryAgain
     untill: 0
     grid:
@@ -3257,15 +3278,4 @@ textures:
     uid: 0298d848-efe7-48e5-8d68-9128ba8b4e02
     padding: 1
     lastmod: 1586655898140
-texturetick: 15
-emitterTandems: []
-contentTypes: []
-groups:
-  fonts: []
-  textures: []
-  styles: []
-  rooms: []
-  sounds: []
-  emitterTandems: []
-  templates: []
-language: typescript
+    type: texture
