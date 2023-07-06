@@ -1,15 +1,19 @@
+/// <reference types="../../app/node_modules/pixi.js/lib" />
+
 /*! Made with ct.js http://ctjs.rocks/ */
+
+import 'node_modules/pixi.js';
 
 import * as PIXI from 'node_modules/pixi.js';
 import {actions, inputs, CtAction} from './inputs';
 import {backgrounds, Background} from './backgrounds';
 import {Camera} from './camera';
 import {content} from './content';
-import {emitters, EmitterTandem} from './emitters';
+// import {emitters, EmitterTandem} from './emitters';
 import {res} from './res';
 import {rooms, Room} from './rooms';
-import {sounds} from 'sounds';
-import {styles} from 'styles';
+// import {sounds} from 'sounds';
+// import {styles} from 'styles';
 import {Copy, templates} from './templates';
 import {tilemaps, Tilemap} from './tilemaps';
 import {timer} from './timer';
@@ -104,7 +108,7 @@ export const ctjsGame = {
         if (!('fittoscreen' in ctjsGame)) {
             return;
         }
-        const fittoscreen = ctjsGame.fittoscreen as ctFittoscreen;
+        const fittoscreen = (ctjsGame as any).fittoscreen as ctFittoscreen;
         if (fittoscreen.mode === 'fastScale') {
             ctjsGame.pixiApp.renderer.resize(value, ctjsGame.height);
         }
@@ -125,7 +129,7 @@ export const ctjsGame = {
         if (!('fittoscreen' in ctjsGame)) {
             return;
         }
-        const fittoscreen = ctjsGame.fittoscreen as ctFittoscreen;
+        const fittoscreen = (ctjsGame as (typeof ctjsGame) & {fittoscreen: ctFittoscreen}).fittoscreen;
         if (fittoscreen.mode === 'fastScale') {
             ctjsGame.pixiApp.renderer.resize(ctjsGame.width, value);
         }
@@ -139,15 +143,15 @@ export const ctjsGame = {
     roomHeight: [/*!@startheight@*/][0] as number,
 
     // Core libraries
+    PIXI,
     actions,
     inputs,
-    emitters,
     content,
     backgrounds,
     res,
     rooms,
-    sounds,
-    styles,
+    // sounds,
+    // styles,
     templates,
     tilemaps,
     timer,
@@ -155,7 +159,7 @@ export const ctjsGame = {
 
     // Base classes
     Action: CtAction,
-    EmitterTandem,
+    // EmitterTandem,
     Background,
     Tilemap,
 
@@ -302,7 +306,7 @@ document.getElementById('ct').appendChild(ctjsGame.pixiApp.view as HTMLCanvasEle
 (window as any).ct = ctjsGame;
 (window as any).PIXI = PIXI;
 
-export default ctjsGame;
+export const pixi = PIXI;
 
 {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

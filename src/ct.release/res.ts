@@ -1,6 +1,8 @@
+/// <reference types="../../app/node_modules/pixi-spine" />
+
 import {u} from './u';
 import {ctjsGame} from '.';
-import {sounds} from './sounds';
+// import {sounds} from './sounds';
 import * as PIXI from 'node_modules/pixi.js';
 import {Spine, ISkeletonData} from 'node_modules/pixi-spine';
 import {TextureShape, ExportedTiledTexture, ExportedSkeleton} from '../node_requires/exporter/_exporterContracts';
@@ -38,7 +40,7 @@ const loadingScreen = document.querySelector('.ct-aLoadingScreen') as HTMLDivEle
 const resLib = {
     sounds: {},
     textures: {} as Record<string, CtjsAnimation>,
-    skeletons: {} as Record<string, ISkeletonData>,
+    skeletons: {} as Record<string, any>,
     groups: [/*!@resourceGroups@*/][0] as Record<string, string[]>,
     /**
      * Loads and executes a script by its URL
@@ -183,7 +185,7 @@ const resLib = {
 
         const totalAssets = atlases.length;
         let assetsLoaded = 0;
-        const loadingPromises = [];
+        const loadingPromises: Promise<any>[] = [];
 
         loadingPromises.push(...atlases.map(atlas =>
             resLib.loadAtlas(atlas)
@@ -295,9 +297,9 @@ const resLib = {
      * @param {string} [skin] The name of the skin; optional.
      * @returns The created skeleton
      */
-    makeSkeleton(name: string, skin?: string): Spine {
+    makeSkeleton(name: string, skin?: string): any {
         const asset = resLib.skeletons[name];
-        const skeleton = new Spine(asset);
+        const skeleton: Spine = new Spine(asset);
         if (skin) {
             skeleton.skeleton.setSkinByName(skin);
         }

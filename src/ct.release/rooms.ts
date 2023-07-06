@@ -338,9 +338,9 @@ export const rooms = {
         }
         for (const t of template.objects) {
             const c = templates.copyIntoRoom(t.template, t.x, t.y, target, {
-                tx: t.tx || 1,
-                ty: t.ty || 1,
-                tr: t.tr || 0
+                tx: t.scale.x || 1,
+                ty: t.scale.y || 1,
+                tr: t.rotation || 0
             });
             generated.copies.push(c);
         }

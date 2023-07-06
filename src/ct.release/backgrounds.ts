@@ -21,7 +21,7 @@ export class Background extends PIXI.TilingSprite {
      * appear closer than the rest of the object.
      * This property is for horizontal movement.
      */
-    parallaxX = 1;
+    parallaxX: number;
     /**
      * A value that makes background move faster
      * or slower relative to other objects. It is often used to create an effect of depth.
@@ -31,27 +31,27 @@ export class Background extends PIXI.TilingSprite {
      * appear closer than the rest of the object.
      * This property is for vertical movement.
      */
-    parallaxY = 1;
+    parallaxY: number;
     /**
      * How much to shift the texture horizontally, in pixels.
      */
-    shiftX = 0;
+    shiftX: number;
     /**
      * How much to shift the texture vertically, in pixels.
      */
-    shiftY = 0;
+    shiftY: number;
     /**
      * The speed at which the background's texture moves by X axis,
      * wrapping around its area. The value is measured in pixels per frame, and takes
      * `ct.delta` into account.
      */
-    movementX = 0;
+    movementX: number;
     /**
      * The speed at which the background's texture moves by Y axis,
      * wrapping around its area. The value is measured in pixels per frame, and takes
      * `ct.delta` into account.
      */
-    movementY = 0;
+    movementY: number;
     /**
      * Sets in which directions the background should repeat (if at all).
      */
@@ -96,6 +96,12 @@ export class Background extends PIXI.TilingSprite {
             width = texture.width * (exts.scaleX || 1);
         }
         super(texture, width, height);
+        this.parallaxX = 1;
+        this.parallaxY = 1;
+        this.shiftX = 0;
+        this.shiftY = 0;
+        this.movementX = 0;
+        this.movementY = 0;
         if (typeof texName === 'string') {
             if (!bgList[texName]) {
                 bgList[texName] = [];

@@ -59,7 +59,7 @@ export class Copy extends PIXI.AnimatedSprite {
     #zeroDirection: number;
     #hspeed: number;
     #vspeed: number;
-    [copyTypeSymbol]: true = true;
+    [copyTypeSymbol]: true;
 
     onStep: () => void;
     onDraw: () => void;
@@ -80,6 +80,7 @@ export class Copy extends PIXI.AnimatedSprite {
      * @memberof Copy
      */
     // eslint-disable-next-line complexity, max-lines-per-function
+    // @ts-ignore
     constructor(
         template: string,
         x: number,
@@ -104,7 +105,9 @@ export class Copy extends PIXI.AnimatedSprite {
                 textures = res.getTexture(t.texture);
             }
         }
+        // @ts-ignore
         super(textures);
+        this[copyTypeSymbol] = true;
         if (template) {
             this.#tex = t.texture;
             this.anchor.x = textures[0].defaultAnchor.x;
@@ -328,7 +331,7 @@ export class Copy extends PIXI.AnimatedSprite {
         /*!%onbeforecreate%*/
     }
 }
-declare class LivingCopy extends Copy {
+export class LivingCopy extends Copy {
     kill: true
 }
 
@@ -369,7 +372,7 @@ export const templates = {
      * to the copy prior to its OnCreate event.
      * @returns The created copy.
      */
-    copyIntoRoom(template: string, x = 0, y = 0, room: Room, exts: Record<string, unknown>): Copy {
+    copyIntoRoom(template: string, x = 0, y = 0, room: Room, exts?: Record<string, unknown>): Copy {
         // An advanced constructor. Returns a Copy
         if (!room || !(room instanceof Room)) {
             throw new Error(`Attempt to spawn a copy of template ${template} inside an invalid room. Room's value provided: ${room}`);
@@ -390,7 +393,7 @@ export const templates = {
      * to the copy prior to its OnCreate event.
      * @returns The created copy.
      */
-    copy(template: string, x = 0, y = 0, exts: Record<string, unknown>): Copy {
+    copy(template: string, x = 0, y = 0, exts?: Record<string, unknown>): Copy {
         return templates.copyIntoRoom(template, x, y, ctjsGame.room, exts);
     },
     /**
