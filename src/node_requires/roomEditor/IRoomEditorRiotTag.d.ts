@@ -9,9 +9,7 @@ export interface IRoomEditorRiotTag {
     update(): void;
     tilePatch: ITilePatch;
     currentTileLayer: TileLayer;
-    opts: {
-        room: IRoom;
-    };
+    room: IRoom;
     refs: {
         propertiesPanel?: {
             updatePropList(): void;

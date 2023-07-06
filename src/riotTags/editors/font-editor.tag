@@ -1,4 +1,4 @@
-font-editor.aPanel.aView
+font-editor.aPanel.aView(class="{opts.class}")
     .aPanel.pad.left.tall.flexfix
         .flexfix-body
             fieldset

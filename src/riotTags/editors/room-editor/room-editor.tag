@@ -72,7 +72,7 @@ room-editor.aPanel.aView
             room-entities-properties(ref="propertiesPanel" pixieditor="{pixiEditor}" ontransformchange="{updateSelectFrame}")
         room-properties.room-editor-aContextPanel(
             if="{currentTool === 'roomProperties'}"
-            room="{opts.asset}"
+            room="{room}"
             history="{pixiEditor?.history}"
             updatebg="{changeBgColor}"
             ref="propertiesPanel"
@@ -97,7 +97,7 @@ room-editor.aPanel.aView
             if="{currentTool === 'manageBackgrounds'}"
             backgrounds="{pixiEditor?.backgrounds}"
             addbackground="{pixiEditor?.addBackground?.bind(pixiEditor)}"
-            room="{opts.asset}"
+            room="{room}"
             history="{pixiEditor?.history}"
             ref="backgroundsEditor"
         )
@@ -133,7 +133,7 @@ room-editor.aPanel.aView
                     use(xlink:href="#check")
                 span {vocGlob.save}
 
-    room-events-editor(if="{editingEvents}" room="{opts.asset}" onsave="{closeRoomEvents}")
+    room-events-editor(if="{editingEvents}" room="{room}" onsave="{closeRoomEvents}")
     context-menu(menu="{gridMenu}" ref="gridMenu")
     context-menu(menu="{zoomMenu}" ref="zoomMenu")
     context-menu(menu="{visibilityMenu}" ref="visibilityMenu" if="{pixiEditor}")
@@ -142,6 +142,8 @@ room-editor.aPanel.aView
         const PIXI = require('pixi.js');
         this.namespace = 'roomView';
         this.mixin(window.riotVoc);
+
+        this.room = this.opts.asset;
 
         this.freePlacementMode = false;
         const modifiersDownListener = e => {
@@ -321,7 +323,7 @@ room-editor.aPanel.aView
         this.zoom = 1;
 
         this.changeBgColor = (e, color) => {
-            this.opts.asset.backgroundColor = color;
+            this.room.backgroundColor = color;
             this.pixiEditor.renderer.backgroundColor = PIXI.utils.string2hex(color);
         };
 
@@ -343,19 +345,19 @@ room-editor.aPanel.aView
             }, {
                 label: this.voc.toggleDiagonalGrid,
                 click: () => {
-                    this.opts.asset.diagonalGrid = !this.opts.asset.diagonalGrid;
+                    this.room.diagonalGrid = !this.room.diagonalGrid;
                 },
                 type: 'checkbox',
-                checked: () => this.opts.asset.diagonalGrid
+                checked: () => this.room.diagonalGrid
             }, {
                 label: this.voc.changeGridSize,
                 click: () => {
                     window.alertify
-                    .confirm(this.voc.gridSize + `<br/><input type="number" value="${this.opts.asset.gridX}" style="width: 6rem;" min=2 id="theGridSizeX"> x <input type="number" value="${this.opts.asset.gridY}" style="width: 6rem;" min=2 id="theGridSizeY">`)
+                    .confirm(this.voc.gridSize + `<br/><input type="number" value="${this.room.gridX}" style="width: 6rem;" min=2 id="theGridSizeX"> x <input type="number" value="${this.room.gridY}" style="width: 6rem;" min=2 id="theGridSizeY">`)
                     .then(e => {
                         if (e.buttonClicked === 'ok') {
-                            this.opts.asset.gridX = Number(document.getElementById('theGridSizeX').value);
-                            this.opts.asset.gridY = Number(document.getElementById('theGridSizeY').value);
+                            this.room.gridX = Number(document.getElementById('theGridSizeX').value);
+                            this.room.gridY = Number(document.getElementById('theGridSizeY').value);
                         }
                         this.update();
                     });
@@ -487,8 +489,8 @@ room-editor.aPanel.aView
             const {writeRoomPreview} = require('./data/node_requires/resources/rooms');
             this.pixiEditor.serialize();
             await Promise.all([
-                writeRoomPreview(this.opts.asset, this.pixiEditor.getSplashScreen(true), true),
-                writeRoomPreview(this.opts.asset, this.pixiEditor.getSplashScreen(false), false)
+                writeRoomPreview(this.room, this.pixiEditor.getSplashScreen(true), true),
+                writeRoomPreview(this.room, this.pixiEditor.getSplashScreen(false), false)
             ]);
             this.opts.onclose();
         };

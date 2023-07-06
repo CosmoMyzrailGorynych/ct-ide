@@ -10,34 +10,39 @@ app-view.flexcol
             li.limitwidth(onclick="{saveProject}" title="{vocGlob.save} (Control+S)" data-hotkey="Control+s")
                 svg.feather
                     use(xlink:href="#save")
-            li.nbl.nogrow(onclick="{runProject}" class="{active: tab === 'debug'}" title="{voc.launch} {voc.launchHotkeys}" data-hotkey="F5")
+            li.nbl.nogrow.noshrink(onclick="{runProject}" class="{active: tab === 'debug'}" title="{voc.launch} {voc.launchHotkeys}" data-hotkey="F5")
                 svg.feather.rotateccw(show="{exportingProject}")
                     use(xlink:href="#refresh-ccw")
                 svg.feather(hide="{exportingProject}")
                     use(xlink:href="#play")
                 span(if="{tab !== 'debug'}") {voc.launch}
                 span(if="{tab === 'debug'}") {voc.restart}
-            li.nogrow(onclick="{changeTab('project')}" class="{active: tab === 'project'}" data-hotkey="Control+1" title="Control+1" ref="projectTab")
+            li.nogrow.noshrink(onclick="{changeTab('project')}" class="{active: tab === 'project'}" data-hotkey="Control+1" title="Control+1" ref="projectTab")
                 svg.feather
                     use(xlink:href="#sliders")
                 span {voc.project}
-            li.nogrow(onclick="{changeTab('assets')}" class="{active: tab === 'assets'}" data-hotkey="Control+2" title="Control+2" ref="projectTab")
+            li.nogrow.noshrink(onclick="{changeTab('assets')}" class="{active: tab === 'assets'}" data-hotkey="Control+2" title="Control+2" ref="projectTab")
                 svg.feather
                     use(xlink:href="#folder")
                 span {voc.assets}
-            ul.aNav.flexrow.xscroll.grow(onwheeel="{scrollHorizontally}" ref="tabswrap")
-                li.nogrow(
-                    each="{asset, ind in openedAssets}"
-                    class="{active: asset === tab}"
-                    onclick="{changeTab(asset)}"
-                    data-hotkey="{ind < 8 ? 'Control+' + (ind + 3) : ''}"
-                )
-                    svg.feather
-                        use(xlink:href="#{iconMap[asset.type]}")
-                    span {getName(asset)}
-                    svg.feather.anActionableIcon(onclick="{closeAsset}")
-                        use(xlink:href="#x")
-            li.nogrow.bl(onclick="{callTour}" data-hotkey="F1" title="{voc.tour.header}").relative.nogrow
+            .aTabsWrapper(
+                onwheel="{scrollHorizontally}"
+                class="{shadowleft: scrollableLeft, shadowright: scrollableRight}"
+            )
+                ul.aNav.flexrow.xscroll(ref="tabswrap")
+                    li.nogrow(
+                        each="{asset, ind in openedAssets}"
+                        class="{active: asset === tab}"
+                        onclick="{changeTab(asset)}"
+                        data-hotkey="{ind < 8 ? 'Control+' + (ind + 3) : ''}"
+                        ref="openedTabs"
+                    )
+                        svg.feather
+                            use(xlink:href="#{iconMap[asset.type]}")
+                        span {getName(asset)}
+                        svg.feather.anActionableIcon(onclick="{closeAsset}")
+                            use(xlink:href="#x")
+            li.nogrow.noshrink.relative.bl(onclick="{callTour}" data-hotkey="F1" title="{voc.tour.header}")
                 .aPulser(if="{!localStorage.wizardUsed}")
                 svg.feather
                     use(xlink:href="#help-circle")
@@ -75,13 +80,16 @@ app-view.flexcol
         this.changeTab = tab => () => {
             this.tab = tab;
             window.hotkeys.cleanScope();
-            window.hotkeys.push(tab);
             window.signals.trigger('globalTabChanged', tab);
             if (typeof tab === 'string') {
+                // The current tab is a predefined panel
                 window.signals.trigger(`${tab}Focus`);
+                window.hotkeys.push(tab);
             } else {
+                // The current tab is an asset
                 if (tab.type === 'room' || tab.type === 'template') {
                     window.orders.trigger('forceCodeEditorLayout');
+                    window.hotkeys.push(tab.type);
                 }
             }
         };
@@ -99,6 +107,10 @@ app-view.flexcol
                 } else {
                     this.openedAssets.push(asset);
                 }
+                const newPos = this.openedAssets.indexOf(this.tab);
+                setTimeout(() => {
+                    this.refs.openedTabs[newPos].scrollIntoView();
+                }, 0);
             } else if (noOpen) {
                 console.warn('[app-view] An already opened asset was called with noOpen. This is probably a bug as you either do open assets or create them elsewhere without opening.')
             }
@@ -112,11 +124,11 @@ app-view.flexcol
             // TODO: Check if the asset editor is in dirty state
             this.openedAssets.splice(ind, 1);
             if (this.tab === asset) {
-                this.changeTab('assets')();;
+                this.changeTab('assets')();
             }
+            e.stopPropagation();
         };
 
-        /* TODO:
         const assetListener = asset => {
             const [assetType, uid] = asset.split('/');
             if (['emitters', 'emitterTandems', 'tandems'].includes(assetType)) {
@@ -136,7 +148,7 @@ app-view.flexcol
         window.orders.on('openAsset', assetListener);
         this.on('unmount', () => {
             window.orders.off('openAsset', assetListener);
-        }); */
+        });
 
 
         this.saveProject = async () => {
@@ -448,8 +460,17 @@ app-view.flexcol
         };
 
         this.scrollHorizontally = e => {
-            e.preventDefault();
-            this.refs.tabswrap += e.deltaY;
+            const {tabswrap} = this.refs;
+            // Have to cache scrollLeft as smooth scrolling creates a lag in read operations
+            const newScrollLeft = tabswrap.scrollLeft + e.deltaY;
+            tabswrap.scrollLeft = newScrollLeft;
+            this.updateScrollShadows(newScrollLeft);
+        };
+        this.updateScrollShadows = val => {
+            const {tabswrap} = this.refs;
+            val = val ?? tabswrap.scrollLeft;
+            this.scrollableLeft = val > 0;
+            this.scrollableRight = val < tabswrap.scrollWidth - tabswrap.clientWidth;
         };
 
         this.toggleFullscreen = function toggleFullscreen() {

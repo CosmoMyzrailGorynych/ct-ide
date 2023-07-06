@@ -24,7 +24,7 @@ array-editor
             )
             asset-input(
                 if="{['texture', 'template', 'room', 'sound'].includes(parent.opts.inputtype)}"
-                assettype="{parent.opts.inputtype}s"
+                assettypes="{parent.opts.inputtype}"
                 allowclear="yep"
                 compact="compact"
                 assetid="{item}"

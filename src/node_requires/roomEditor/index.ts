@@ -139,7 +139,7 @@ class RoomEditor extends PIXI.Application {
         this.ticker.maxFPS = 60;
         this.observable = riot.observable({});
 
-        const {room} = editor.opts;
+        const {room} = editor;
         this.ctRoom = room;
         this.riotEditor = editor;
 
@@ -161,7 +161,7 @@ class RoomEditor extends PIXI.Application {
         this.marqueeBox.visible = false;
         this.overlays.addChild(this.marqueeBox);
         this.overlays.addChild(this.snapTarget);
-        this.deserialize(editor.opts.room);
+        this.deserialize(editor.room);
         this.stage.addChild(this.transformer);
 
         this.pointerCoords.zIndex = Infinity;

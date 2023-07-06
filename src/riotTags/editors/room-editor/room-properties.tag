@@ -50,7 +50,7 @@ room-properties
                 path="/tips-n-tricks/viewport-management.html#following-a-copy"
             )
             asset-input.wide(
-                assettype="templates"
+                assettypes="template"
                 allowclear="allowclear"
                 compact="compact"
                 assetid="{parent.opts.room.follow}"

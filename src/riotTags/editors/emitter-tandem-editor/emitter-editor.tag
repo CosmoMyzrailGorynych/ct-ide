@@ -12,7 +12,7 @@ emitter-editor.aPanel.pad.nb
         defaultstate="{opts.emitter.openedTabs.includes('texture')? 'opened' : 'closed'}"
     )
         asset-input.wide(
-            assettype="textures"
+            assettypes="texture"
             onchanged="{parent.onTexturePicked}"
             allowclear="yes"
             assetid="{parent.opts.emitter.texture || -1}"

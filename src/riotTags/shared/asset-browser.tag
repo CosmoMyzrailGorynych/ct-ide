@@ -110,12 +110,11 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
                             use(xlink:href="#{asset.icon}")
                 .aCard-Properties
                     span {parent.getName(asset)}
-                    span.secondary(if="{asset.type !== 'folder'}")
+                    span.secondary(if="{asset.type !== 'folder' && (parent.assetTypes.length > 1 || parent.assetTypes[0] === 'all')}")
                         svg.feather
                             use(xlink:href="#{iconMap[asset.type]}")
-                        |
-                        | {vocGlob.assetTypes[asset.type][0].slice(0, 1).toUpperCase()}{vocGlob.assetTypes[asset.type][0].slice(1)}
-                    .asset-browser-Icons(if="{parent.opts.icons}")
+                        span(if="{!parent.opts.compact}")   {vocGlob.assetTypes[asset.type][0].slice(0, 1).toUpperCase()}{vocGlob.assetTypes[asset.type][0].slice(1)}
+                    .asset-browser-Icons(if="{parent.opts.icons}") // TODO: add support to resources API
                         svg.feather(each="{icon in parent.opts.icons(asset)}" class="feather-{icon}")
                             use(xlink:href="#{icon}")
                     span.date(if="{asset.lastmod && !parent.opts.compact}") {niceTime(asset.lastmod)}
@@ -233,7 +232,11 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
         };
         this.sortTypewise = (a, b) => a.type < b.type ? -1 : (a.type > b.type ? 1 : 0);
         this.updateList = () => {
-            this.entries = [...this.currentCollection];
+            if (this.assetTypes[0] !== 'all') {
+                this.entries = this.currentCollection.filter(a => this.assetTypes.includes(a.type));
+            } else {
+                this.entries = [...this.currentCollection];
+            }
             if (this.sort === 'name') {
                 if (this.opts.names) {
                     const accessor = this.opts.names;
@@ -336,8 +339,6 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
             items: []
         };
         const assetContextMenuTemplate = [{
-            type: 'separator'
-        }, {
             label: window.languageJSON.common.open,
             click: () => {
                 // TODO:
@@ -387,8 +388,14 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
         }];
         this.openContextMenu = item => e => {
             this.contextMenuAsset = item;
+            const contextActions = resources.getContextActions(item);
+            if (contextActions.length > 0) {
+                contextActions.push({
+                    type: 'separator'
+                });
+            }
             this.assetContextMenu.items = [
-                ...resources.getContextActions(item),
+                ...contextActions,
                 ...assetContextMenuTemplate
             ];
             this.refs.assetMenu.popup(e.clientX, e.clientY);

@@ -11,7 +11,7 @@ room-backgrounds-editor
     ).aPanel
         yield(to="header")
             asset-input(
-                assettype="textures"
+                assettypes="texture"
                 assetid="{background.bgTexture}"
                 compact="true"
                 onchanged="{parent.changeBgTexture(background)}"

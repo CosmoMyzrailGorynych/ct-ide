@@ -56,7 +56,7 @@ template-editor.aPanel.aView.flexrow
         .tall.flexfix.aPanel.pad
             .flexfix-header
                 asset-input.wide(
-                    assettype="textures"
+                    assettypes="texture"
                     assetid="{template.texture || -1}"
                     large="large"
                     allowclear="allowclear"
@@ -132,12 +132,13 @@ template-editor.aPanel.aView.flexrow
         };
 
         this.checkNames = () => {
+            /* TODO: unified name check
             if (global.currentProject.templates.find(template =>
                 this.template.name === template.name && this.template !== template)) {
                 this.nameTaken = true;
             } else {
                 this.nameTaken = false;
-            }
+            }*/
         };
         this.on('update', () => {
             this.checkNames();

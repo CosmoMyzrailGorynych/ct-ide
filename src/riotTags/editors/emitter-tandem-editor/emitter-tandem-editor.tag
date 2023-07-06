@@ -1,4 +1,4 @@
-emitter-tandem-editor.aPanel.aView.flexrow
+emitter-tandem-editor.aPanel.aView.flexrow(class="{opts.class}")
     .flexfix(style="width: {panelWidth}px")
         .flexfix-header
             .aPanel.pad.nbt.nbl.nbr

@@ -2,10 +2,10 @@
     An asset selector shown in a modal that allows selecting a single asset.
     Technically it is a pre-filled wrapper of the asset-browser.
 
-    @attribute assettype (string)
-        The asset type to be pickable. Should match the name of a folder inside
-        ./data/node_requires/resources
-        Not all the asset types are supported (e.g. projects are not).
+    @attribute assettypes (string)
+        Comma-separated asset types that will be allowed to be picked, e.g. "type,texture,room".
+        You can set to "all" to allow all asset types.
+        Note: unlike in asset-browser, this attribute is mandatory and will throw an error if empty.
     @attribute selectorheader (string)
         The header shown inside the asset selector.
     @attribute allownone (atomic)
@@ -31,26 +31,18 @@ asset-selector.aDimmer.pointer.pad.fadein(onclick="{closeOnDimmer}" ref="dimmer"
 
     .aModal.pad.cursordefault.appear
         asset-browser(
-            assettype="{opts.assettype}"
-            collection="{currentProject[opts.assettype]}"
-            names="{names}"
-            thumbnails="{thumbnails}"
-            useicons="{['sounds', 'emitterTandems'].includes(opts.assettype)}"
+            assettypes="{opts.assettypes}"
             shownone="{opts.allownone}"
             click="{onAssetPicked}"
         )
             h2 {parent.opts.selectorheader || parent.voc.selectAssetHeader}
     script.
+        if (!this.opts.assettypes) {
+            throw new Error('[asset-input] The assettypes attribute is mandatory and was not set.');
+        }
+
         this.namespace = 'assetInput';
         this.mixin(window.riotVoc);
-
-        const updateResourceAPIs = () => {
-            this.currentAssetType = this.opts.assettype;
-            this.resourceAPI = require(`./data/node_requires/resources/${this.currentAssetType}`);
-            this.names = asset => (this.resourceAPI.getName ? this.resourceAPI.getName(asset) : asset.name);
-            this.thumbnails = (asset, x2, fs) => this.resourceAPI.getThumbnail(asset, x2, fs);
-        };
-        updateResourceAPIs();
 
         this.closeOnDimmer = e => {
             if (e.target === this.root) {

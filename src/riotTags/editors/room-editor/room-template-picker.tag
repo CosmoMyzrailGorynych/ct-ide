@@ -7,8 +7,8 @@
 room-template-picker
     asset-browser(
         collection="{currentProject.templates}"
-        namespace="templates"
-        assettype="templates"
+        namespace="roomTemplates"
+        assettypes="template"
         forcelayout="list"
         click="{selectTemplate}"
         thumbnails="{thumbnails}"

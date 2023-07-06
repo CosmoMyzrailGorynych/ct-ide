@@ -5,7 +5,7 @@ branding-settings
         hover-hint(text="{voc.iconNotice}")
     br
     asset-input(
-        assettype="textures"
+        assettypes="texture"
         assetid="{global.currentProject.settings.branding.icon || -1}"
         allowclear="yep"
         onchanged="{updateGameIcon}"
@@ -17,7 +17,7 @@ branding-settings
         hover-hint(text="{voc.splashScreenNotice}")
     br
     asset-input(
-        assettype="textures"
+        assettypes="texture"
         assetid="{global.currentProject.settings.branding.splashScreen || -1}"
         allowclear="yep"
         onchanged="{updateGameSplashScreen}"

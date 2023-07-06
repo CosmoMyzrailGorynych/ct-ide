@@ -1,4 +1,4 @@
-style-editor.aPanel.aView
+style-editor.aPanel.aView(class="{opts.class}")
     .style-editor-Properties.tall.flexfix
         .flexfix-header
             .aPanel.pad

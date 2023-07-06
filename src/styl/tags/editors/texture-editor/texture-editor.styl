@@ -74,6 +74,7 @@ texture-editor, [data-is="texture-editor"]
         vertical-align middle
         margin 0 0.5rem
         transform initial
+texture-editor
     .&-anAnimationPreview
         height 10em
         overflow hidden
@@ -92,16 +93,22 @@ texture-editor, [data-is="texture-editor"]
         height 100%
         overflow scroll
         position relative
-
-.texture-editor-anAnimSpeedField
-    margin-top 0.25rem
-
-.texture-editor-Tools
-    position absolute
-    top 0.5em
-    right 0.5em
-    .file
-        display inline-block
+    .&-anAnimSpeedField
+        width 3em
+        margin-left 0.5em
+    .&-anAtlas
+        position relative
+        overflow auto
+        canvas
+            margin 1rem
+    .&-anAnimSpeedField
+        margin-top 0.25rem
+    .&-Tools
+        position absolute
+        top 0.5em
+        right 0.5em
+        .file
+            display inline-block
 .textureview-zoom
     position absolute
     bottom 0.5em
@@ -113,14 +120,6 @@ texture-editor, [data-is="texture-editor"]
     position absolute
     left 0.5em
     bottom 0.5em
-.texture-editor-anAnimSpeedField
-    width 3em
-    margin-left 0.5em
-.texture-editor-anAtlas
-    position relative
-    overflow auto
-    canvas
-        margin 1rem
 
 .aStripPointRow
     *
