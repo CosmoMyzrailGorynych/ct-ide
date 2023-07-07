@@ -330,6 +330,8 @@ export class Copy extends PIXI.AnimatedSprite {
         // Filled by ct.IDE and catmods
         /*!%onbeforecreate%*/
     }
+
+    [key: string]: any;
 }
 export class LivingCopy extends Copy {
     kill: true

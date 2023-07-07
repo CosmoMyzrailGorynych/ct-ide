@@ -145,6 +145,7 @@ export class Room extends PIXI.Container<PIXI.DisplayObject> {
     set y(value: number) {
         this.position.y = -value;
     }
+    [key: string]: any;
 }
 Room.roomId = 0;
 
@@ -155,6 +156,7 @@ export const rooms = {
      * It is usually prefilled by ct.IDE.
      */
     templates: {} as Record<string, ExportedRoom>,
+    Room,
     /** The current top-level room in the game. */
     current: null as Room,
     /**
