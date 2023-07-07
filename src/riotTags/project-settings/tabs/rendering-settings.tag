@@ -4,34 +4,34 @@ rendering-settings
         label.block
             b {voc.maxFPS}
             br
-            input.short(type="number" min="1" value="{renderSettings.maxFPS || 60}" onchange="{wire('this.renderSettings.maxFPS')}")
+            input.short(type="number" min="1" value="{renderSettings.maxFPS || 60}" onchange="{wire('renderSettings.maxFPS')}")
     fieldset
         label.block.checkbox
             input(type="checkbox" value="{renderSettings.pixelatedrender}" checked="{renderSettings.pixelatedrender}" onchange="{wireAndUpdatePixelated('this.renderSettings.pixelatedrender')}")
             span {voc.pixelatedRender}
         label.block.checkbox
-            input(type="checkbox" value="{renderSettings.highDensity}" checked="{renderSettings.highDensity}" onchange="{wire('this.renderSettings.highDensity')}")
+            input(type="checkbox" value="{renderSettings.highDensity}" checked="{renderSettings.highDensity}" onchange="{wire('renderSettings.highDensity')}")
             span {voc.highDensity}
         label.block.checkbox
-            input(type="checkbox" value="{renderSettings.usePixiLegacy}" checked="{renderSettings.usePixiLegacy}" onchange="{wire('this.renderSettings.usePixiLegacy')}")
+            input(type="checkbox" value="{renderSettings.usePixiLegacy}" checked="{renderSettings.usePixiLegacy}" onchange="{wire('renderSettings.usePixiLegacy')}")
             span {voc.usePixiLegacy}
     fieldset
         label.block.checkbox
-            input(type="checkbox" checked="{renderSettings.hideCursor}" onchange="{wire('this.renderSettings.hideCursor')}")
+            input(type="checkbox" checked="{renderSettings.hideCursor}" onchange="{wire('renderSettings.hideCursor')}")
             span {voc.hideCursor}
     h2 {voc.desktopBuilds}
     fieldset
         b {voc.launchMode}
         each key in ['maximized', 'fullscreen', 'windowed']
             label.checkbox
-                input(type="radio" value=key checked=`{renderSettings.desktopMode === '${key}'}` onchange="{wire('this.renderSettings.desktopMode')}")
+                input(type="radio" value=key checked=`{renderSettings.desktopMode === '${key}'}` onchange="{wire('renderSettings.desktopMode')}")
                 span=`{voc.launchModes.${key}}`
     h2 {voc.mobileBuilds}
     fieldset
         b {voc.screenOrientation}
         each key in ['unspecified', 'landscape', 'portrait']
             label.checkbox
-                input(type="radio" value=key checked=`{renderSettings.mobileScreenOrientation === '${key}'}` onchange="{wire('this.renderSettings.mobileScreenOrientation')}")
+                input(type="radio" value=key checked=`{renderSettings.mobileScreenOrientation === '${key}'}` onchange="{wire('renderSettings.mobileScreenOrientation')}")
                 span=`{voc.screenOrientations.${key}}`
 
     script.

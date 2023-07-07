@@ -5,30 +5,30 @@ font-editor.aPanel.aView(class="{opts.class}")
                 label.block
                     b {voc.typefaceName}
                     br
-                    input.wide(type="text" onchange="{wire('this.fontobj.typefaceName')}" value="{fontobj.typefaceName}")
+                    input.wide(type="text" onchange="{wire('fontobj.typefaceName')}" value="{fontobj.typefaceName}")
                 label.block
                     b {voc.fontWeight}
                     br
-                    select(value="{fontobj.weight}" onchange="{wire('this.fontobj.weight')}")
+                    select(value="{fontobj.weight}" onchange="{wire('fontobj.weight')}")
                         each val in [100, 200, 300, 400, 500, 600, 700, 800, 900]
                             option(value=val)= val
                 label.checkbox
-                    input(type="checkbox" checked="{fontobj.italic}" onchange="{wire('this.fontobj.italic')}")
+                    input(type="checkbox" checked="{fontobj.italic}" onchange="{wire('fontobj.italic')}")
                     b {voc.italic}
             fieldset
                 label.checkbox
-                    input(type="checkbox" checked="{fontobj.bitmapFont}" onchange="{wire('this.fontobj.bitmapFont')}")
+                    input(type="checkbox" checked="{fontobj.bitmapFont}" onchange="{wire('fontobj.bitmapFont')}")
                     b {voc.generateBitmapFont}
                 h3(if="{fontobj.bitmapFont}") {voc.bitmapFont}
                 fieldset(if="{fontobj.bitmapFont}")
                     label.block
                         b {voc.bitmapFontSize}
                         br
-                        input.wide(value="{fontobj.bitmapFontSize || 16}" onchange="{wire('this.fontobj.bitmapFontSize')}" type="number" min="1" max="144")
+                        input.wide(value="{fontobj.bitmapFontSize || 16}" onchange="{wire('fontobj.bitmapFontSize')}" type="number" min="1" max="144")
                     label.block
                         b {voc.bitmapFontLineHeight}
                         br
-                        input.wide(value="{fontobj.bitmapFontLineHeight || 18}" onchange="{wire('this.fontobj.bitmapFontLineHeight')}" type="number" min="1" max="300")
+                        input.wide(value="{fontobj.bitmapFontLineHeight || 18}" onchange="{wire('fontobj.bitmapFontLineHeight')}" type="number" min="1" max="300")
                     .block
                         b {voc.charset}
                         label.checkbox(each="{val in charsetOptions}")
@@ -42,7 +42,7 @@ font-editor.aPanel.aView(class="{opts.class}")
                     label.block(if="{fontobj.charsets.indexOf('custom') !== -1}")
                         textarea.wide(
                             value="{fontobj.customCharset}"
-                            onchange="{wire('this.fontobj.customCharset')}"
+                            onchange="{wire('fontobj.customCharset')}"
                         )
                     h3 {voc.resultingBitmapFontName}
                     copy-icon.toright(text="{fontobj.typefaceName}_{fontobj.weight}{fontobj.italic? '_Italic' : ''}")

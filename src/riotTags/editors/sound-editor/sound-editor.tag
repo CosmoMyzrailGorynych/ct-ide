@@ -1,13 +1,13 @@
 sound-editor.aView.aPanel.pad(class="{opts.class}")
     b {voc.name}
     br
-    input.wide(type="text" value="{sound.name}" onchange="{wire('this.sound.name')}")
+    input.wide(type="text" value="{sound.name}" onchange="{wire('sound.name')}")
     .anErrorNotice(if="{nameTaken}" ref="errorNotice") {vocGlob.nameTaken}
     br
     p
         label
             b {voc.poolSize}
-            input(type="number" min="1" max="32" value="{sound.poolSize || 5}" onchange="{wire('this.sound.poolSize')}")
+            input(type="number" min="1" max="32" value="{sound.poolSize || 5}" onchange="{wire('sound.poolSize')}")
     audio(
         if="{sound && sound.origname}"
         ref="audio" controls loop
@@ -16,7 +16,7 @@ sound-editor.aView.aPanel.pad(class="{opts.class}")
     )
     p
         label.checkbox
-            input(type="checkbox" checked="{sound.isMusic}" onchange="{wire('this.sound.isMusic')}")
+            input(type="checkbox" checked="{sound.isMusic}" onchange="{wire('sound.isMusic')}")
             span   {voc.isMusicFile}
     label.file
         .button.wide.nml

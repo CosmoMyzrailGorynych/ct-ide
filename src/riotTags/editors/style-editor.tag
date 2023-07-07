@@ -4,7 +4,7 @@ style-editor.aPanel.aView(class="{opts.class}")
             .aPanel.pad
                 b {vocGlob.name}
                 br
-                input.wide(type="text" value="{styleobj.name}" onchange="{wire('this.styleobj.name')}")
+                input.wide(type="text" value="{styleobj.name}" onchange="{wire('styleobj.name')}")
                 .anErrorNotice(if="{nameTaken}" ref="errorNotice") {vocGlob.nameTaken}
         .tabwrap.flexfix-body
             ul.aNav.tabs.nogrow.noshrink
@@ -17,7 +17,7 @@ style-editor.aPanel.aView(class="{opts.class}")
                     fieldset
                         label
                             b {voc.fontFamily}
-                            input#fontfamily.wide(type="text" value="{styleobj.font.family || 'sans-serif'}" onchange="{wire('this.styleobj.font.family')}")
+                            input#fontfamily.wide(type="text" value="{styleobj.font.family || 'sans-serif'}" onchange="{wire('styleobj.font.family')}")
                         button(onclick="{openCustomFontSelector}")
                             svg.feather
                                 use(xlink:href="#font")
@@ -26,16 +26,16 @@ style-editor.aPanel.aView(class="{opts.class}")
                         label.fifty.npl.nmt
                             b {voc.fontSize}
                             br
-                            input#fontsize.wide(type="number" value="{styleobj.font.size || '12'}" onchange="{wire('this.styleobj.font.size')}" oninput="{wire('this.styleobj.font.size')}" step="1")
+                            input#fontsize.wide(type="number" value="{styleobj.font.size || '12'}" onchange="{wire('styleobj.font.size')}" oninput="{wire('styleobj.font.size')}" step="1")
                         label.fifty.npr.nmt
                             b {voc.fontWeight}
                             br
-                            select.wide(value="{styleobj.font.weight}" onchange="{wire('this.styleobj.font.weight')}")
+                            select.wide(value="{styleobj.font.weight}" onchange="{wire('styleobj.font.weight')}")
                                 each val in [100, 200, 300, 400, 500, 600, 700, 800, 900]
                                     option(value=val)= val
                         .clear
                         label.checkbox
-                            input(type="checkbox" checked="{styleobj.font.italic}" onchange="{wire('this.styleobj.font.italic')}")
+                            input(type="checkbox" checked="{styleobj.font.italic}" onchange="{wire('styleobj.font.italic')}")
                             span {voc.italic}
                     fieldset
                         b {voc.alignment}
@@ -52,14 +52,14 @@ style-editor.aPanel.aView(class="{opts.class}")
                         label
                             b {voc.lineHeight}
                             br
-                            input(type="number" step="1" min="0" value="{styleobj.font.lineHeight || 0}" oninput="{wire('this.styleobj.font.lineHeight')}")
+                            input(type="number" step="1" min="0" value="{styleobj.font.lineHeight || 0}" oninput="{wire('styleobj.font.lineHeight')}")
                     fieldset
                         label.checkbox
-                            input(type="checkbox" checked="{styleobj.font.wrap}" onchange="{wire('this.styleobj.font.wrap')}")
+                            input(type="checkbox" checked="{styleobj.font.wrap}" onchange="{wire('styleobj.font.wrap')}")
                             b {voc.textWrap}
                         label(if="{styleobj.font.wrap}").block.nmt
                             b {voc.textWrapWidth}
-                            input.wide(type="number" step="8" min="1" value="{styleobj.font.wrapPosition || 100}" oninput="{wire('this.styleobj.font.wrapPosition')}")
+                            input.wide(type="number" step="8" min="1" value="{styleobj.font.wrapPosition || 100}" oninput="{wire('styleobj.font.wrapPosition')}")
 
             #stylefill.tabbed(show="{tab === 'stylefill'}")
                 label.checkbox
@@ -69,30 +69,30 @@ style-editor.aPanel.aView(class="{opts.class}")
                     fieldset
                         b {voc.fillType}
                         label.checkbox
-                            input(type="radio" value="0" name="filltype" checked="{styleobj.fill.type == 0}" onchange="{wire('this.styleobj.fill.type')}")
+                            input(type="radio" value="0" name="filltype" checked="{styleobj.fill.type == 0}" onchange="{wire('styleobj.fill.type')}")
                             span {voc.fillSolid}
                         label.checkbox
-                            input(type="radio" value="1" name="filltype" checked="{styleobj.fill.type == 1}" onchange="{wire('this.styleobj.fill.type')}")
+                            input(type="radio" value="1" name="filltype" checked="{styleobj.fill.type == 1}" onchange="{wire('styleobj.fill.type')}")
                             span {voc.fillGrad}
                     fieldset
                         .solidfill(if="{styleobj.fill.type == 0}")
                             b {voc.fillColor}
                             br
-                            color-input(onchange="{wire('this.styleobj.fill.color', true)}" color="{styleobj.fill.color}")
+                            color-input(onchange="{wire('styleobj.fill.color', true)}" color="{styleobj.fill.color}")
                         .gradientfill(if="{styleobj.fill.type == 1}")
                             .fifty.npl.npt
                                 b {voc.fillColor1}
-                                color-input(onchange="{wire('this.styleobj.fill.color1', true)}" color="{styleobj.fill.color1}")
+                                color-input(onchange="{wire('styleobj.fill.color1', true)}" color="{styleobj.fill.color1}")
                             .fifty.npr.npt
                                 b {voc.fillColor2}
-                                color-input(onchange="{wire('this.styleobj.fill.color2', true)}" color="{styleobj.fill.color2}")
+                                color-input(onchange="{wire('styleobj.fill.color2', true)}" color="{styleobj.fill.color2}")
                             .clear
                             b {voc.fillGradType}
                             label.checkbox
-                                input(type="radio" value="2" name="fillgradtype" onchange="{wire('this.styleobj.fill.gradtype')}")
+                                input(type="radio" value="2" name="fillgradtype" onchange="{wire('styleobj.fill.gradtype')}")
                                 span {voc.fillHorizontal}
                             label.checkbox
-                                input(type="radio" value="1" name="fillgradtype" onchange="{wire('this.styleobj.fill.gradtype')}")
+                                input(type="radio" value="1" name="fillgradtype" onchange="{wire('styleobj.fill.gradtype')}")
                                 span {voc.fillVertical}
             #stylestroke.tabbed(show="{tab === 'stylestroke'}")
                 label.checkbox
@@ -101,11 +101,11 @@ style-editor.aPanel.aView(class="{opts.class}")
                 #stylestrokeinner(if="{styleobj.stroke}")
                     fieldset
                         b {voc.strokeColor}
-                        color-input(onchange="{wire('this.styleobj.stroke.color', true)}" color="{styleobj.stroke.color}")
+                        color-input(onchange="{wire('styleobj.stroke.color', true)}" color="{styleobj.stroke.color}")
                     fieldset
                         b {voc.strokeWeight}
                         br
-                        input#strokeweight(type="number" value="{styleobj.stroke.weight}" onchange="{wire('this.styleobj.stroke.weight')}" oninput="{wire('this.styleobj.stroke.weight')}")
+                        input#strokeweight(type="number" value="{styleobj.stroke.weight}" onchange="{wire('styleobj.stroke.weight')}" oninput="{wire('styleobj.stroke.weight')}")
                     #strokeweightslider
             #styleshadow.tabbed(show="{tab === 'styleshadow'}")
                 label.checkbox
@@ -114,17 +114,17 @@ style-editor.aPanel.aView(class="{opts.class}")
                 #styleshadowinner(if="{styleobj.shadow}")
                     fieldset
                         b {voc.shadowColor}
-                        color-input(onchange="{wire('this.styleobj.shadow.color', true)}" color="{styleobj.shadow.color}")
+                        color-input(onchange="{wire('styleobj.shadow.color', true)}" color="{styleobj.shadow.color}")
                     fieldset
                         b {voc.shadowShift}
                         br
-                        input#shadowx.short(type="number" value="{styleobj.shadow.x}" onchange="{wire('this.styleobj.shadow.x')}" oninput="{wire('this.styleobj.shadow.x')}")
+                        input#shadowx.short(type="number" value="{styleobj.shadow.x}" onchange="{wire('styleobj.shadow.x')}" oninput="{wire('styleobj.shadow.x')}")
                         | ×
-                        input#shadowy.short(type="number" value="{styleobj.shadow.y}" onchange="{wire('this.styleobj.shadow.y')}" oninput="{wire('this.styleobj.shadow.y')}")
+                        input#shadowy.short(type="number" value="{styleobj.shadow.y}" onchange="{wire('styleobj.shadow.y')}" oninput="{wire('styleobj.shadow.y')}")
                     fieldset
                         b {voc.shadowBlur}
                         br
-                        input#shadowblur(type="number" value="{styleobj.shadow.blur}" min="0" onchange="{wire('this.styleobj.shadow.blur')}" oninput="{wire('this.styleobj.shadow.blur')}")
+                        input#shadowblur(type="number" value="{styleobj.shadow.blur}" min="0" onchange="{wire('styleobj.shadow.blur')}" oninput="{wire('styleobj.shadow.blur')}")
         .flexfix-footer
             .aPanel.pad
                 .flexrow

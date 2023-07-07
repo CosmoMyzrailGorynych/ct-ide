@@ -8,49 +8,49 @@ texture-generator.aView
                 fieldset
                     label.block
                         b {voc.name}
-                        input.wide(type="text" oninput="{wire('this.textureName')}" value="{textureName}")
+                        input.wide(type="text" oninput="{wire('textureName')}" value="{textureName}")
                     .anErrorNotice(if="{nameTaken}" ref="errorNotice") {vocGlob.nameTaken}
                 fieldset
                     label.block
                         b {voc.width}
-                        input.wide(type="number" oninput="{wire('this.textureWidth')}" value="{textureWidth}" min="8" step="8")
+                        input.wide(type="number" oninput="{wire('textureWidth')}" value="{textureWidth}" min="8" step="8")
                     label.block
                         b {voc.height}
-                        input.wide(type="number" oninput="{wire('this.textureHeight')}" value="{textureHeight}" min="8" step="8")
+                        input.wide(type="number" oninput="{wire('textureHeight')}" value="{textureHeight}" min="8" step="8")
                     label.block
                         b {voc.color}
                     color-input(onchange="{changeColor}" color="{textureColor}")
                 fieldset
                     b {voc.form}
                     label.block.checkbox
-                        input(type="radio" value="rect" checked="{form === 'rect'}" onchange="{wire('this.form')}")
+                        input(type="radio" value="rect" checked="{form === 'rect'}" onchange="{wire('form')}")
                         span {voc.formRectangular}
                     label.block.checkbox
-                        input(type="radio" value="round" checked="{form === 'round'}" onchange="{wire('this.form')}")
+                        input(type="radio" value="round" checked="{form === 'round'}" onchange="{wire('form')}")
                         span {voc.formRound}
                     label.block.checkbox
-                        input(type="radio" value="diamond" checked="{form === 'diamond'}" onchange="{wire('this.form')}")
+                        input(type="radio" value="diamond" checked="{form === 'diamond'}" onchange="{wire('form')}")
                         span {voc.formDiamond}
                 fieldset
                     b {voc.filler}
                     label.block.checkbox
-                        input(type="radio" value="none" checked="{filler === 'none'}" onchange="{wire('this.filler')}")
+                        input(type="radio" value="none" checked="{filler === 'none'}" onchange="{wire('filler')}")
                         span {voc.fillerNone}
                     label.block.checkbox
-                        input(type="radio" value="cross" checked="{filler === 'cross'}" onchange="{wire('this.filler')}")
+                        input(type="radio" value="cross" checked="{filler === 'cross'}" onchange="{wire('filler')}")
                         span {voc.fillerCross}
                     label.block.checkbox
-                        input(type="radio" value="arrow" checked="{filler === 'arrow'}" onchange="{wire('this.filler')}")
+                        input(type="radio" value="arrow" checked="{filler === 'arrow'}" onchange="{wire('filler')}")
                         span {voc.fillerArrow}
                     label.block.checkbox
-                        input(type="radio" value="label" checked="{filler === 'label'}" onchange="{wire('this.filler')}")
+                        input(type="radio" value="label" checked="{filler === 'label'}" onchange="{wire('filler')}")
                         span {voc.fillerLabel}
                 fieldset(if="{filler === 'label'}")
                     label.block
                         b {voc.label}
                         |
                         | {voc.optional}
-                        input.wide(type="text" oninput="{wire('this.textureLabel')}" value="{textureLabel}")
+                        input.wide(type="text" oninput="{wire('textureLabel')}" value="{textureLabel}")
             .texture-generator-aPreview
                 canvas(ref="canvas" style="image-rendering: {small ? 'pixelated' : 'unset'}; transform: scale({small ? 4 : 1});")
                 .texture-generator-aScalingNotice(if="{textureWidth < 64 && textureHeight < 64}")
@@ -81,7 +81,7 @@ texture-generator.aView
         this.filler = 'label';
 
         this.changeColor = e => {
-            this.wire('this.textureColor')(e);
+            this.wire('textureColor')(e);
             this.update();
         };
 

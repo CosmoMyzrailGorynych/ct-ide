@@ -1,19 +1,40 @@
+/**
+ * @file Defines riot mixins for reusable logic between tags.
+ */
+
 (function riotMixins() {
     const glob = require('./data/node_requires/glob');
-    var wire = (that, field, update) => e => {
+    /**
+     * Usually used as listeners to input events, this method changes the tag's property based
+     * on the value of the input tag inside the input event.
+     *
+     * @param that The riot tag, automatically assigned by riot.
+     * You don't need to write it in `wire()`.
+     * @param {string} field The dot-notation path to a property inside the current tag.
+     * If starts with `global` or `window`, will change a property in the global scope
+     * (which is disencouraged).
+     * @param {boolean} update Calls the update() method on the tag after changing the value.
+     * It is usually not needed, but can be useful with input-like riot tags.
+     *
+     * @example
+     * ```js
+     * this.mixin(window.riotWire)
+     * ```
+     * ```pug
+     * input(type="text" oninput="{wire('field.subfield')}")
+     * ```
+     */
+    const wire = (that, field, update) => e => {
         var way = field.split(/(?<!\\)\./gi),
             root, val;
         for (let i = 0, l = way.length; i < l; i++) {
             way[i] = way[i].replace(/\\./g, '.');
         }
-        if (way[0] === 'this') {
-            root = that;
-        } else if (way[0] === 'global') {
+        root = that;
+        if (way[0] === 'global' || way[0] === 'window') {
             root = global;
-        } else {
-            root = window;
+            way.shift();
         }
-        way.shift();
         while (way.length > 1) {
             root = root[way[0]];
             way.shift();

@@ -10,7 +10,7 @@ room-properties
             input.wide(
                 type="text"
                 onfocus="{rememberValue}"
-                oninput="{wire('this.opts.room.name')}"
+                oninput="{wire('opts.room.name')}"
                 onchange="{recordChange(opts.room, 'name')}"
                 value="{opts.room.name}"
             )
@@ -28,7 +28,7 @@ room-properties
                     input.wide(
                         type="number" min="1" step="8"
                         onfocus="{parent.rememberValue}"
-                        oninput="{parent.wire('this.opts.room.width')}"
+                        oninput="{parent.wire('opts.room.width')}"
                         onchange="{parent.recordChange(parent.opts.room, 'width')}"
                         value="{parent.opts.room.width}"
                     )
@@ -39,7 +39,7 @@ room-properties
                     input.wide(
                         type="number" min="1" step="8"
                         onfocus="{parent.rememberValue}"
-                        oninput="{parent.wire('this.opts.room.height')}"
+                        oninput="{parent.wire('opts.room.height')}"
                         onchange="{parent.recordChange(parent.opts.room, 'height')}"
                         value="{parent.opts.room.height}"
                     )
@@ -72,7 +72,7 @@ room-properties
                     input.compact.wide(
                         step="{parent.opts.room.gridX}" type="number"
                         onfocus="{parent.rememberValue}"
-                        oninput="{parent.wire('this.opts.room.restrictMinX')}"
+                        oninput="{parent.wire('opts.room.restrictMinX')}"
                         onchange="{parent.recordChange(parent.opts.room, 'restrictMinX')}"
                         value="{parent.opts.room.restrictMinX === void 0 ? 0 : parent.opts.room.restrictMinX}"
                     )
@@ -83,7 +83,7 @@ room-properties
                     input.compact.wide(
                         step="{parent.opts.room.gridY}" type="number"
                         onfocus="{parent.rememberValue}"
-                        oninput="{parent.wire('this.opts.room.restrictMinY')}"
+                        oninput="{parent.wire('opts.room.restrictMinY')}"
                         onchange="{parent.recordChange(opts.room, 'restrictMinY')}"
                         value="{parent.opts.room.restrictMinY === void 0 ? 0 : parent.opts.room.restrictMinY}"
                     )
@@ -94,7 +94,7 @@ room-properties
                     input.compact.wide(
                         step="{parent.opts.room.gridX}" type="number"
                         onfocus="{parent.rememberValue}"
-                        oninput="{parent.wire('this.opts.room.restrictMaxX')}"
+                        oninput="{parent.wire('opts.room.restrictMaxX')}"
                         onchange="{parent.recordChange(parent.opts.room, 'restrictMaxX')}"
                         value="{parent.opts.room.restrictMaxX === void 0 ? parent.opts.room.width : parent.opts.room.restrictMaxX}"
                     )
@@ -105,7 +105,7 @@ room-properties
                     input.compact.wide(
                         step="{parent.opts.room.gridY}" type="number"
                         onfocus="{parent.rememberValue}"
-                        oninput="{parent.wire('this.opts.room.restrictMaxY')}"
+                        oninput="{parent.wire('opts.room.restrictMaxY')}"
                         onchange="{parent.recordChange(parent.opts.room, 'restrictMaxY')}"
                         value="{parent.opts.room.restrictMaxY === void 0 ? parent.opts.room.height : parent.opts.room.restrictMaxY}"
                     )

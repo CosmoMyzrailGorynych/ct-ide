@@ -4,7 +4,7 @@ emitter-tandem-editor.aPanel.aView.flexrow(class="{opts.class}")
             .aPanel.pad.nbt.nbl.nbr
                 b {vocGlob.name}
                 br
-                input.wide(type="text" value="{tandem.name}" onchange="{wire('this.tandem.name')}")
+                input.wide(type="text" value="{tandem.name}" onchange="{wire('tandem.name')}")
                 .anErrorNotice(if="{nameTaken}" ref="errorNotice") {vocGlob.nameTaken}
         .flexfix-body.flexrow
             emitter-editor(

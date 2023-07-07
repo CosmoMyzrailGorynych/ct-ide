@@ -2,13 +2,13 @@ export-settings
     h1 {voc.heading}
     fieldset
         label.block.checkbox
-            input(type="checkbox" value="{exportSettings.functionWrap}" checked="{exportSettings.functionWrap}" onchange="{wire('this.exportSettings.functionWrap')}")
+            input(type="checkbox" value="{exportSettings.functionWrap}" checked="{exportSettings.functionWrap}" onchange="{wire('exportSettings.functionWrap')}")
             span {voc.functionWrap}
     h2 {voc.codeModifier}
     fieldset
         each key in ['none', 'minify', 'obfuscate']
             label.checkbox
-                input(type="radio" value=key checked=`{exportSettings.codeModifier === '${key}'}` onchange="{wire('this.exportSettings.codeModifier')}")
+                input(type="radio" value=key checked=`{exportSettings.codeModifier === '${key}'}` onchange="{wire('exportSettings.codeModifier')}")
                 span=`{voc.codeModifiers.${key}}`
                 - if (key === 'obfuscate')
                     hover-hint(text="{voc.obfuscateWarning}" icon="alert-triangle")

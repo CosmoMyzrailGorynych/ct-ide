@@ -9,19 +9,19 @@ mixin templateProperties
                 b {parent.voc.depth}
                 input.wide(
                     type="number"
-                    onchange="{parent.wire('this.template.depth')}"
+                    onchange="{parent.wire('template.depth')}"
                     value="{parent.template.depth}"
                 )
             label.block
                 b {parent.voc.opacity}
                 input.wide(
                     type="number" min="0" max="1" step="0.1"
-                    onchange="{parent.wire('this.template.extends.alpha')}"
+                    onchange="{parent.wire('template.extends.alpha')}"
                     value="{parent.template.extends.alpha ?? 1}"
                 )
             label.block
                 b {parent.voc.blendMode}
-                select.wide(onchange="{parent.wire('this.template.blendMode')}")
+                select.wide(onchange="{parent.wire('template.blendMode')}")
                     option(value="normal" selected="{parent.template.blendMode === 'normal' || !parent.template.blendMode}") {parent.voc.blendModes.normal}
                     option(value="add" selected="{parent.template.blendMode === 'add'}") {parent.voc.blendModes.add}
                     option(value="multiply" selected="{parent.template.blendMode === 'multiply'}") {parent.voc.blendModes.multiply}
@@ -30,15 +30,15 @@ mixin templateProperties
             label.flexrow
                 b.nogrow.alignmiddle {parent.voc.animationFPS}
                 .aSpacer.nogrow
-                input.alignmiddle(type="number" max="60" min="1" step="1" value="{parent.template.animationFPS ?? 60}" onchange="{parent.wire('this.template.animationFPS')}")
+                input.alignmiddle(type="number" max="60" min="1" step="1" value="{parent.template.animationFPS ?? 60}" onchange="{parent.wire('template.animationFPS')}")
             label.block.checkbox
-                input(type="checkbox" checked="{parent.template.playAnimationOnStart}" onchange="{parent.wire('this.template.playAnimationOnStart')}")
+                input(type="checkbox" checked="{parent.template.playAnimationOnStart}" onchange="{parent.wire('template.playAnimationOnStart')}")
                 span {parent.voc.playAnimationOnStart}
             label.block.checkbox
-                input(type="checkbox" checked="{parent.template.loopAnimation}" onchange="{parent.wire('this.template.loopAnimation')}")
+                input(type="checkbox" checked="{parent.template.loopAnimation}" onchange="{parent.wire('template.loopAnimation')}")
                 span {parent.voc.loopAnimation}
             label.block.checkbox
-                input(type="checkbox" checked="{parent.template.visible ?? true}" onchange="{parent.wire('this.template.visible')}")
+                input(type="checkbox" checked="{parent.template.visible ?? true}" onchange="{parent.wire('template.visible')}")
                 span {parent.voc.visible}
     .aSpacer
     extensions-editor(type="template" entity="{template.extends}" wide="yep" compact="probably")
@@ -67,7 +67,7 @@ template-editor.aPanel.aView.flexrow
                     label.flexrow
                         b.nogrow.noshrink {voc.name}
                         .aSpacer.nogrow
-                        input.wide(type="text" onchange="{wire('this.template.name')}" value="{template.name}")
+                        input.wide(type="text" onchange="{wire('template.name')}" value="{template.name}")
                     .anErrorNotice(if="{nameTaken}" ref="errorNotice") {vocGlob.nameTaken}
                 .aSpacer
             .flexfix-body(if="{localStorage.altTemplateLayout !== 'on'}")

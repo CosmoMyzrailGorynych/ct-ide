@@ -29,7 +29,7 @@ branding-settings
             type="checkbox"
             value="{global.currentProject.settings.branding.forceSmoothIcons}"
             checked="{global.currentProject.settings.branding.forceSmoothIcons}"
-            onchange="{wire('this.currentProject.settings.branding.forceSmoothIcons')}"
+            onchange="{wire('currentProject.settings.branding.forceSmoothIcons')}"
         )
         span {voc.forceSmoothIcons}
     label.block.checkbox
@@ -37,21 +37,21 @@ branding-settings
             type="checkbox"
             value="{global.currentProject.settings.branding.forceSmoothSplashScreen}"
             checked="{global.currentProject.settings.branding.forceSmoothSplashScreen}"
-            onchange="{wire('this.currentProject.settings.branding.forceSmoothSplashScreen')}"
+            onchange="{wire('currentProject.settings.branding.forceSmoothSplashScreen')}"
         )
         span {voc.forceSmoothSplashScreen}
     .aSpacer
     b
         span {voc.accent}
         hover-hint(text="{voc.accentNotice}")
-    color-input(onchange="{wire('global.currentProject.settings.branding.accent', true)}" color="{global.currentProject.settings.branding.accent}")
+    color-input(onchange="{wire('currentProject.settings.branding.accent', true)}" color="{global.currentProject.settings.branding.accent}")
     .aSpacer
     label.block.checkbox
         input(
             type="checkbox"
             value="{global.currentProject.settings.branding.invertPreloaderScheme}"
             checked="{global.currentProject.settings.branding.invertPreloaderScheme}"
-            onchange="{wire('this.currentProject.settings.branding.invertPreloaderScheme')}"
+            onchange="{wire('currentProject.settings.branding.invertPreloaderScheme')}"
         )
         span {voc.invertPreloaderScheme}
     label.block.checkbox
@@ -59,7 +59,7 @@ branding-settings
             type="checkbox"
             value="{global.currentProject.settings.branding.hideLoadingLogo}"
             checked="{global.currentProject.settings.branding.hideLoadingLogo}"
-            onchange="{wire('this.currentProject.settings.branding.hideLoadingLogo')}"
+            onchange="{wire('currentProject.settings.branding.hideLoadingLogo')}"
         )
         span {voc.hideLoadingLogo}
     script.

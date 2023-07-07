@@ -17,7 +17,7 @@ folder-editor.aDimmer.fadein
         label.block
             b {vocGlob.name}
             br
-            input(type="text" value="{opts.folder.name}" onchange="{wire('this.opts.folder.name')}")
+            input(type="text" value="{opts.folder.name}" onchange="{wire('opts.folder.name')}")
         .label.block
             b {voc.icon}
             br

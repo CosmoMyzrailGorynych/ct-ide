@@ -27,7 +27,7 @@ mixin collisionSettings
     fieldset(if="{opts.asset.shape === 'circle'}")
         b {voc.radius}
         br
-        input.wide(type="number" value="{opts.asset.r}" onchange="{wire('this.opts.asset.r')}" oninput="{wire('this.opts.asset.r')}")
+        input.wide(type="number" value="{opts.asset.r}" onchange="{wire('opts.asset.r')}" oninput="{wire('opts.asset.r')}")
     fieldset(if="{opts.asset.shape === 'rect'}")
         .center.aDashedMaskMarker
             svg.feather.aDashedMaskMarker-anArrow.left
@@ -38,26 +38,26 @@ mixin collisionSettings
                 use(xlink:href="#chevron-up")
             svg.feather.aDashedMaskMarker-anArrow.down
                 use(xlink:href="#chevron-down")
-            input.center.short(type="number" value="{opts.asset.top}" onchange="{wire('this.opts.asset.top')}" oninput="{wire('this.opts.asset.top')}")
+            input.center.short(type="number" value="{opts.asset.top}" onchange="{wire('opts.asset.top')}" oninput="{wire('opts.asset.top')}")
             br
-            input.center.short(type="number" value="{opts.asset.left}" onchange="{wire('this.opts.asset.left')}" oninput="{wire('this.opts.asset.left')}")
+            input.center.short(type="number" value="{opts.asset.left}" onchange="{wire('opts.asset.left')}" oninput="{wire('opts.asset.left')}")
             |
             |
             span.aPivotSymbol
             |
             |
-            input.center.short(type="number" value="{opts.asset.right}" onchange="{wire('this.opts.asset.right')}" oninput="{wire('this.opts.asset.right')}")
+            input.center.short(type="number" value="{opts.asset.right}" onchange="{wire('opts.asset.right')}" oninput="{wire('opts.asset.right')}")
             br
-            input.center.short(type="number" value="{opts.asset.bottom}" onchange="{wire('this.opts.asset.bottom')}" oninput="{wire('this.opts.asset.bottom')}")
+            input.center.short(type="number" value="{opts.asset.bottom}" onchange="{wire('opts.asset.bottom')}" oninput="{wire('opts.asset.bottom')}")
         button.wide(onclick="{assetFillRect}")
             svg.feather
                 use(xlink:href="#maximize")
             span {voc.fill}
     fieldset(if="{opts.asset.shape === 'strip'}")
         .flexrow.aStripPointRow(each="{point, ind in getMovableStripPoints()}")
-            input.short(type="number" value="{point.x}" oninput="{wire('this.opts.asset.stripPoints.'+ ind + '.x')}")
+            input.short(type="number" value="{point.x}" oninput="{wire('opts.asset.stripPoints.'+ ind + '.x')}")
             span.center   ×
-            input.short(type="number" value="{point.y}" oninput="{wire('this.opts.asset.stripPoints.'+ ind + '.y')}")
+            input.short(type="number" value="{point.y}" oninput="{wire('opts.asset.stripPoints.'+ ind + '.y')}")
             button.square.inline.nogrow(title="{voc.removePoint}" onclick="{removeStripPoint}")
                 svg.feather
                     use(xlink:href="#minus")
@@ -110,7 +110,7 @@ mixin sliceSettings
     h3 {voc.slicing}
     fieldset
         label.checkbox
-            input#texturetiled(type="checkbox" checked="{opts.asset.tiled}" onchange="{wire('this.opts.asset.tiled')}")
+            input#texturetiled(type="checkbox" checked="{opts.asset.tiled}" onchange="{wire('opts.asset.tiled')}")
             span   {voc.tiled}
     fieldset(if="{!opts.asset.tiled}")
         .flexrow
@@ -120,8 +120,8 @@ mixin sliceSettings
                 input.wide(
                     type="number"
                     value="{opts.asset.grid[0]}"
-                    onchange="{wire('this.opts.asset.grid.0')}"
-                    oninput="{wire('this.opts.asset.grid.0')}"
+                    onchange="{wire('opts.asset.grid.0')}"
+                    oninput="{wire('opts.asset.grid.0')}"
                     min="1"
                 )
             span &nbsp;
@@ -131,8 +131,8 @@ mixin sliceSettings
                 input.wide(
                     type="number"
                     value="{opts.asset.grid[1]}"
-                    onchange="{wire('this.opts.asset.grid.1')}"
-                    oninput="{wire('this.opts.asset.grid.1')}"
+                    onchange="{wire('opts.asset.grid.1')}"
+                    oninput="{wire('opts.asset.grid.1')}"
                     min="1"
                 )
         .flexrow
@@ -142,8 +142,8 @@ mixin sliceSettings
                 input.wide(
                     type="number"
                     value="{opts.asset.width}"
-                    onchange="{wire('this.opts.asset.width')}"
-                    oninput="{wire('this.opts.asset.width')}"
+                    onchange="{wire('opts.asset.width')}"
+                    oninput="{wire('opts.asset.width')}"
                     min="1"
                 )
             span &nbsp;
@@ -153,8 +153,8 @@ mixin sliceSettings
                 input.wide(
                     type="number"
                     value="{opts.asset.height}"
-                    onchange="{wire('this.opts.asset.height')}"
-                    oninput="{wire('this.opts.asset.height')}"
+                    onchange="{wire('opts.asset.height')}"
+                    oninput="{wire('opts.asset.height')}"
                     min="1"
                 )
     fieldset(if="{!opts.asset.tiled}")
@@ -163,8 +163,8 @@ mixin sliceSettings
         input#textureframes.wide(
             type="number"
             value="{opts.asset.untill}"
-            onchange="{wire('this.opts.asset.untill')}"
-            oninput="{wire('this.opts.asset.untill')}"
+            onchange="{wire('opts.asset.untill')}"
+            oninput="{wire('opts.asset.untill')}"
             min="0"
         )
     fieldset(if="{!opts.asset.tiled}")
@@ -175,8 +175,8 @@ mixin sliceSettings
                 input.wide(
                     type="number"
                     value="{opts.asset.marginx}"
-                    onchange="{wire('this.opts.asset.marginx')}"
-                    oninput="{wire('this.opts.asset.marginx')}"
+                    onchange="{wire('opts.asset.marginx')}"
+                    oninput="{wire('opts.asset.marginx')}"
                     min="0"
                 )
             span &nbsp;
@@ -186,8 +186,8 @@ mixin sliceSettings
                 input.wide(
                     type="number"
                     value="{opts.asset.marginy}"
-                    onchange="{wire('this.opts.asset.marginy')}"
-                    oninput="{wire('this.opts.asset.marginy')}"
+                    onchange="{wire('opts.asset.marginy')}"
+                    oninput="{wire('opts.asset.marginy')}"
                     min="0"
                 )
         .flexrow
@@ -197,8 +197,8 @@ mixin sliceSettings
                 input.wide(
                     type="number"
                     value="{opts.asset.offx}"
-                    onchange="{wire('this.opts.asset.offx')}"
-                    oninput="{wire('this.opts.asset.offx')}"
+                    onchange="{wire('opts.asset.offx')}"
+                    oninput="{wire('opts.asset.offx')}"
                     min="0"
                 )
             span &nbsp;
@@ -208,8 +208,8 @@ mixin sliceSettings
                 input.wide(
                     type="number"
                     value="{opts.asset.offy}"
-                    onchange="{wire('this.opts.asset.offy')}"
-                    oninput="{wire('this.opts.asset.offy')}"
+                    onchange="{wire('opts.asset.offy')}"
+                    oninput="{wire('opts.asset.offy')}"
                     min="0"
                 )
 
@@ -220,9 +220,9 @@ mixin axisSettings
             | {voc.center}
         hover-hint.toright.alignmiddle.nogrow(text="{voc.axisExplanation}")
     fieldset.flexrow
-        input.short(type="number" value="{opts.asset.axis[0]}" onchange="{wire('this.opts.asset.axis.0')}" oninput="{wire('this.opts.asset.axis.0')}")
+        input.short(type="number" value="{opts.asset.axis[0]}" onchange="{wire('opts.asset.axis.0')}" oninput="{wire('opts.asset.axis.0')}")
         span.center ×
-        input.short(type="number" value="{opts.asset.axis[1]}" onchange="{wire('this.opts.asset.axis.1')}" oninput="{wire('this.opts.asset.axis.1')}")
+        input.short(type="number" value="{opts.asset.axis[1]}" onchange="{wire('opts.asset.axis.1')}" oninput="{wire('opts.asset.axis.1')}")
     fieldset
         .aButtonGroup.flexrow.wide
             button.wide(onclick="{assetCenter}")
@@ -237,10 +237,10 @@ mixin viewSettings
     h3 {voc.viewSettings}
     fieldset
         label.checkbox
-            input(checked="{prevShowMask}" onchange="{wire('this.prevShowMask')}" type="checkbox")
+            input(checked="{prevShowMask}" onchange="{wire('prevShowMask')}" type="checkbox")
             span   {voc.showMask}
         label.checkbox(if="{opts.asset.width > 10 && opts.asset.height > 10 && !opts.asset.tiled}")
-            input(checked="{prevShowFrameIndices}" onchange="{wire('this.prevShowFrameIndices')}" type="checkbox")
+            input(checked="{prevShowFrameIndices}" onchange="{wire('prevShowFrameIndices')}" type="checkbox")
             span   {voc.showFrameIndices}
 
 mixin exportSettings
@@ -253,14 +253,14 @@ mixin exportSettings
             type="number"
             min="0" max="128" step="1"
             value="{opts.asset.padding}"
-            onchange="{wire('this.opts.asset.padding')}"
+            onchange="{wire('opts.asset.padding')}"
         )
         .aSpacer.small.nogrow
         hover-hint.nogrow.alignmiddle(text="{voc.paddingNotice}")
     fieldset
         hover-hint.toright(text="{voc.blankTextureNotice}")
         label.checkbox
-            input.nogrow(checked="{opts.asset.isBlank}" onchange="{wire('this.opts.asset.isBlank')}" type="checkbox")
+            input.nogrow(checked="{opts.asset.isBlank}" onchange="{wire('opts.asset.isBlank')}" type="checkbox")
             span   {voc.blankTexture}
 
 mixin previewPanel
@@ -290,8 +290,8 @@ mixin previewPanel
                 type="number"
                 min="1"
                 value="{prevSpeed}"
-                onchange="{wire('this.prevSpeed')}"
-                oninput="{wire('this.prevSpeed')}"
+                onchange="{wire('prevSpeed')}"
+                oninput="{wire('prevSpeed')}"
             )
             hover-hint.alignmiddle.nogrow(text="{voc.previewAnimationNotice}")
 
@@ -351,7 +351,7 @@ texture-editor(onclick="{tryClose}")
                 h3 {vocGlob.assetTypes.texture[0].slice(0, 1).toUpperCase()}{vocGlob.assetTypes.texture[0].slice(1)}
                 label
                     b {voc.name}
-                    input.wide(type="text" value="{opts.asset.name}" onchange="{wire('this.opts.asset.name')}")
+                    input.wide(type="text" value="{opts.asset.name}" onchange="{wire('opts.asset.name')}")
                 .anErrorNotice(if="{nameTaken}" ref="errorNotice") {vocGlob.nameTaken}
                 .aSpacer
                 +textureSource()
