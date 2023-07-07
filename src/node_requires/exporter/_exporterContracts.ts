@@ -1,3 +1,7 @@
+/// <reference path="../resources/textures/ITexture.d.ts" />
+/// <reference path="../resources/emitterTandems/types.d.ts" />
+/// <reference path="../resources/rooms/IRoom.d.ts" />
+
 import * as PIXI from 'node_modules/pixi.js';
 
 /**
@@ -56,7 +60,6 @@ export type ExportedTilemap = {
     tiles: ExportedTile[];
     extends: {cgroup?: string} & Record<string, any>;
 }
-
 export type ExportedCopy = Omit<IRoomCopy, 'uid'> & {template: string};
 
 export type ExportedBg = {

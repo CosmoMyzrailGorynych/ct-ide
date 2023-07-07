@@ -54,7 +54,7 @@ app/data/hotLoadTags
 app/data/fonts/style/.css
 app/data/theme*.css
 app/data/typedefs/global.d.ts
-app/data/typedefs/pixi.js.d.ts
+app/data/typedefs/ct.d.ts
 app/data/icons.svg
 app/data/icons.json
 /app/data/docs

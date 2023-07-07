@@ -1,3 +1,5 @@
+import {loadModules} from '.';
+
 interface IDisposable {
     dispose(): void;
 }
@@ -37,7 +39,6 @@ const removeTypedefs = function removeTypedefs(module: ICatmodMeta): void {
 };
 
 const loadAllTypedefs = async function loadAllTypedefs(): Promise<void> {
-    const {loadModules} = require('.');
     for (const module of await loadModules()) {
         if (!(module.name in global.currentProject.libs)) {
             continue;

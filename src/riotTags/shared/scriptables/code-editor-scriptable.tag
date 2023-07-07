@@ -65,7 +65,9 @@ code-editor-scriptable.relative.wide.tall.flexcol
                     this.currentEvent.lib
                 );
                 const varsDeclaration = eventsAPI.getArgumentsTypeScript(eventDeclaration);
-                const ctEntity = this.opts.entitytype === 'template' ? 'Copy' : 'Room';
+                const ctEntity = this.opts.entitytype === 'template' ?
+                    '(typeof ct.templates.Copy)[\'prototype\']' :
+                    '(typeof ct.rooms.Room)[\'prototype\']';
                 const codePrefix = `function ctJsEvent(this: ${ctEntity}) {${varsDeclaration}`;
                 if (this.language === 'typescript') {
                     this.codeEditor.setWrapperCode(codePrefix, '}');

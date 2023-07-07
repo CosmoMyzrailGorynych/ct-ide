@@ -194,6 +194,13 @@ const bakeTypedefs = () =>
     gulp.src('./src/typedefs/default/**/*.ts')
     .pipe(concat('global.d.ts'))
     .pipe(gulp.dest('./app/data/typedefs/'));
+const bakeCtTypedefs = () => {
+    const tsProject = ts.createProject('./src/ct.release/tsconfig.json');
+    return gulp.src('./src/ct.release/index.ts')
+        .pipe(tsProject())
+        .pipe(gulp.dest('./app/data/typedefs'));
+};
+exports.bakeCtTypedefs = bakeCtTypedefs;
 
 const baseEsbuildConfig = {
     entryPoints: ['./src/ct.release/index.ts'],
@@ -208,13 +215,16 @@ const buildCtJsLib = () => {
         ...baseEsbuildConfig,
         outfile: './app/data/ct.release/ct.js',
         platform: 'browser',
-        format: 'iife'
+        format: 'iife',
+        external: [
+            'node_modules/pixi.js'
+        ]
+        // TODO: Make the rest external
         /* external: [
-            'node_modules/pixi.js',
             'node_modules/pixi-spine',
             'node_modules/@pixi/particle-emitter',
             'node_modules/@pixi/sound'
-        ] */ // TODO: Actually make them external
+        ] */
     }));
     // Pixi.js dependencies
     processes.push(esbuild({
@@ -224,13 +234,6 @@ const buildCtJsLib = () => {
         sourcemap: 'linked',
         minify: true,
         outfile: './app/data/ct.release/pixi.js'
-    }));
-    // Whole package to be used as a lib by ct.IDE
-    processes.push(esbuild({
-        ...baseEsbuildConfig,
-        outfile: './app/data/ct.release/ct.ts',
-        sourcemap: 'inline',
-        minify: false
     }));
     // Copy other game library's files
     processes.push(gulp.src([
@@ -421,7 +424,8 @@ const build = gulp.parallel([
     processRequires,
     copyInEditorDocs,
     buildCtJsLib,
-    bakeTypedefs
+    bakeTypedefs,
+    bakeCtTypedefs
 ]);
 
 const bakePackages = async () => {

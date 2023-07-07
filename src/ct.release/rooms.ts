@@ -145,6 +145,7 @@ export class Room extends PIXI.Container<PIXI.DisplayObject> {
     set y(value: number) {
         this.position.y = -value;
     }
+    [key: string]: any;
 }
 Room.roomId = 0;
 
@@ -155,6 +156,7 @@ export const rooms = {
      * It is usually prefilled by ct.IDE.
      */
     templates: {} as Record<string, ExportedRoom>,
+    Room,
     /** The current top-level room in the game. */
     current: null as Room,
     /**
@@ -338,9 +340,9 @@ export const rooms = {
         }
         for (const t of template.objects) {
             const c = templates.copyIntoRoom(t.template, t.x, t.y, target, {
-                tx: t.tx || 1,
-                ty: t.ty || 1,
-                tr: t.tr || 0
+                tx: t.scale.x || 1,
+                ty: t.scale.y || 1,
+                tr: t.rotation || 0
             });
             generated.copies.push(c);
         }
