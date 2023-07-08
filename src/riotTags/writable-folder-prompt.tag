@@ -15,7 +15,7 @@ writable-folder-prompt
                         use(xlink:href="data/img/weirdFoldersIllustration.svg#illustration")
     script.
         this.namespace = 'writableFolderPrompt';
-        this.mixin(window.riotVoc);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
 
         this.openDirectoryPicker = async () => {
             const {requestWritableDir} = require('./data/node_requires/platformUtils');

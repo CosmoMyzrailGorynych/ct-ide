@@ -87,7 +87,7 @@ argument-editor-scriptable
         this.getEventByLib = eventsAPI.getEventByLib;
 
         this.namespace = 'scriptables';
-        this.mixin(window.riotVoc);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
 
         this.opened = false;
 

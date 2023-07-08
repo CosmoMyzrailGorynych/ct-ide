@@ -141,7 +141,7 @@ room-editor.aPanel.aView
     script.
         const PIXI = require('pixi.js');
         this.namespace = 'roomView';
-        this.mixin(window.riotVoc);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
 
         this.room = this.opts.asset;
 

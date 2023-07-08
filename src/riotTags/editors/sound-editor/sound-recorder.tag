@@ -34,7 +34,7 @@ sound-recorder.aDimmer.fadein
                 use(xlink:href="#loader")
     script.
         this.namespace = 'soundRecorder';
-        this.mixin(window.riotVoc);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
 
         var previewWaveform, animationFrame;
 

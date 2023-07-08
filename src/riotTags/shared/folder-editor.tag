@@ -40,8 +40,8 @@ folder-editor.aDimmer.fadein
                 span {vocGlob.apply}
     script.
         this.namespace = 'folderEditor';
-        this.mixin(window.riotVoc);
-        this.mixin(window.riotWired);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('./data/node_requires/riotMixins/wire').default);
         this.setColorClass = colorClass => () => {
             this.opts.folder.colorClass = colorClass;
         };

@@ -898,7 +898,7 @@ stylebook-panel.aPanel.aView.pad.flexrow
             svg.feather
                 use(xlink:href="#x")
     script.
-        this.mixin(window.riotVoc);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
         this.tab = 'common';
         this.openTab = tab => () => {
             this.tab = tab;

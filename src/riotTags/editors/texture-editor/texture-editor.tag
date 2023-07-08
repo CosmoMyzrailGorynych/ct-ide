@@ -370,7 +370,7 @@ texture-editor(onclick="{tryClose}")
                 button.wide(onclick="{assetSave}" title="Shift+Control+S" data-hotkey="Control+S")
                     svg.feather
                         use(xlink:href="#save")
-                    span {window.languageJSON.common.save}
+                    span {this.vocGlob.save}
     color-picker(
         ref="previewBackgroundColor" if="{changingPreviewBg}"
         hidealpha="true"
@@ -387,8 +387,8 @@ texture-editor(onclick="{tryClose}")
         this.skeletonMode = this.opts.asset.type === 'skeleton';
 
         this.namespace = 'textureView';
-        this.mixin(window.riotVoc);
-        this.mixin(window.riotWired);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('./data/node_requires/riotMixins/wire').default);
 
         this.nameTaken = false;
         this.prevPlaying = !this.skeletonMode;
@@ -417,7 +417,7 @@ texture-editor(onclick="{tryClose}")
                 }
             };
             img.onerror = e => {
-                alertify.error(window.languageJSON.textureView.corrupted);
+                alertify.error(this.vocFull.textureView.corrupted);
                 console.error(e);
                 this.assetSave();
             };
@@ -491,14 +491,14 @@ texture-editor(onclick="{tryClose}")
             if (formatCheck.test(val)) {
                 this.loadImg(val);
             } else {
-                alertify.error(window.languageJSON.common.wrongFormat);
+                alertify.error(this.vocGlob.wrongFormat);
             }
             this.refs.sourceReplacer.value = '';
         };
         this.reimport = async() => {
             const exists = await fs.pathExists(this.opts.asset.source);
             if (!exists) {
-                alertify.error(window.languageJSON.common.reimportSourceMissing);
+                alertify.error(this.vocGlob.reimportSourceMissing);
                 return;
             }
             this.loadImg(this.opts.asset.source);

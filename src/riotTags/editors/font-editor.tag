@@ -58,8 +58,8 @@ font-editor.aPanel.aView(class="{opts.class}")
             p(style=`font-size: ${val}px; line-height: ${val}px; font-family: 'CTPROJFONT{fontobj.typefaceName}';` data-size=val) A quick blue cat jumps over the lazy frog. 0123456789
     script.
         this.namespace = 'fontView';
-        this.mixin(window.riotVoc);
-        this.mixin(window.riotWired);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('./data/node_requires/riotMixins/wire').default);
         this.fontobj = this.opts.asset;
 
         this.charsetOptions = ['punctuation', 'basicLatin', 'latinExtended', 'cyrillic', 'greekCoptic', 'custom', 'allInFont'];

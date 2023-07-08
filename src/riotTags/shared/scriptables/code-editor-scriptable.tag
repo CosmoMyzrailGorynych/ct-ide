@@ -22,7 +22,7 @@ code-editor-scriptable.relative.wide.tall.flexcol
                 | {voc.jumpToProblem}
     script.
         this.namespace = 'scriptables';
-        this.mixin(window.riotVoc);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
 
         const eventsAPI = require('./data/node_requires/events');
         this.language = window.currentProject.language || 'typescript';

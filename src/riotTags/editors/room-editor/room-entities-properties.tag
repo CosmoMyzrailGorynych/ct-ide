@@ -109,8 +109,8 @@ room-entities-properties
         option(value="180")
     script.
         this.namespace = 'roomView';
-        this.mixin(window.riotVoc);
-        this.mixin(window.riotWired);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('./data/node_requires/riotMixins/wire').default);
 
         const {Copy} = require('./data/node_requires/roomEditor/entityClasses/Copy');
 

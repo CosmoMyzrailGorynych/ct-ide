@@ -162,7 +162,7 @@ room-backgrounds-editor
 
         this.pickingBackground = false;
         this.namespace = 'roomBackgrounds';
-        this.mixin(window.riotVoc);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
 
         this.tweak = (obj, field) => e => {
             const input = e.target;

@@ -5,7 +5,7 @@ content-editor
     script.
         this.contentType = this.opts.contenttype;
         this.namespace = 'settings.content';
-        this.mixin(window.riotVoc);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
 
         this.makeExtends = () => {
             this.extends = [{

@@ -1,6 +1,7 @@
 import * as PIXI from 'node_modules/pixi.js';
 
 import {join} from 'path';
+import {getLanguageJSON} from '../i18n';
 
 const defaultTheme = 'Day';
 const defaultMonacoTheme = defaultTheme;
@@ -71,18 +72,18 @@ const mod = {
         let monacoTheme;
         try {
             monacoTheme = require(join('./data/node_requires/monaco-themes', `${name}.json`));
-            (window as Window).monaco.editor.defineTheme(name, monacoTheme);
+            window.monaco.editor.defineTheme(name, monacoTheme);
         } catch (e) {
             // eslint-disable-next-line no-console
             console.warn('Could not load a monaco theme due to an error:', e, '\nFalling back to the default theme.');
             monacoTheme = require(join('./data/node_requires/monaco-themes', `${defaultMonacoTheme}.json`));
-            (window as Window).monaco.editor.defineTheme(name, monacoTheme);
+            window.monaco.editor.defineTheme(name, monacoTheme);
         }
         const css = `./data/theme${name}.css`;
         const theme = {
             name,
             get translated() {
-                return (window as Window).languageJSON.mainMenu.settings.themes[name] || name;
+                return getLanguageJSON().mainMenu.settings.themes[name] || name;
             },
             swatches,
             monacoTheme,
@@ -118,11 +119,11 @@ const mod = {
                 await theWait;
                 updateSwatches();
             }
-            (window as Window).monaco.editor.setTheme(theme.name);
-            (window as Window).signals.trigger('UIThemeChanged', name);
+            window.monaco.editor.setTheme(theme.name);
+            window.signals.trigger('UIThemeChanged', name);
             localStorage.UItheme = name;
         } catch (oO) {
-            (window as Window).alertify.error(`Could not load theme ${name}. Rolling back to the default ${defaultTheme}.`);
+            window.alertify.error(`Could not load theme ${name}. Rolling back to the default ${defaultTheme}.`);
             console.error(oO);
             await mod.switchToTheme(defaultTheme);
         }

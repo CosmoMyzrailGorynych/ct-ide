@@ -2,9 +2,11 @@ import {populatePixiTextureCache, resetDOMTextureCache, resetPixiTextureCache, s
 import {loadAllTypedefs, resetTypedefs} from '../modules/typedefs';
 import {unloadAllEvents, loadAllModulesEvents} from '../../events';
 import {buildAssetMap} from '..';
-import * as path from 'path';
 
-const fs = require('fs-extra');
+import {getLanguageJSON} from '../../i18n';
+
+import * as path from 'path';
+import fs from 'fs-extra';
 
 // @see https://semver.org/
 const semverRegex = /(\d+)\.(\d+)\.(\d+)(-[A-Za-z.-]*(\d+)?[A-Za-z.-]*)?/;
@@ -104,7 +106,7 @@ const adapter = async (project: Partial<IProject>) => {
 const loadProject = async (projectData: IProject): Promise<void> => {
     const glob = require('../../glob');
     window.currentProject = projectData;
-    window.alertify.log(window.languageJSON.intro.loadingProject);
+    window.alertify.log(getLanguageJSON().intro.loadingProject);
     glob.modified = false;
 
     try {
@@ -149,7 +151,7 @@ const loadProject = async (projectData: IProject): Promise<void> => {
             window.riot.update();
         }, 0);
     } catch (err) {
-        window.alertify.alert(window.languageJSON.intro.loadingProjectError + err);
+        window.alertify.alert(getLanguageJSON().intro.loadingProjectError + err);
     }
 };
 
@@ -193,7 +195,7 @@ const readProjectFile = async (proj: string) => {
         throw e;
     }
     if (!projectData) {
-        window.alertify.error(window.languageJSON.common.wrongFormat);
+        window.alertify.error(getLanguageJSON().common.wrongFormat);
         return;
     }
     try {
@@ -250,7 +252,7 @@ const openProject = async (proj: string): Promise<void | false | Promise<void>> 
     }
     if (recoveryStat && recoveryStat.isFile()) {
         const targetStat = await fs.stat(proj);
-        const voc = window.languageJSON.intro.recovery;
+        const voc = getLanguageJSON().intro.recovery;
         const userResponse = await window.alertify
             .okBtn(voc.loadRecovery)
             .cancelBtn(voc.loadTarget)
@@ -265,8 +267,8 @@ const openProject = async (proj: string): Promise<void | false | Promise<void>> 
                 .replace('{2}', recoveryStat.mtime.toLocaleString())
                 .replace('{3}', recoveryStat.mtime < targetStat.mtime ? voc.older : voc.newer));
         window.alertify
-            .okBtn(window.languageJSON.common.ok)
-            .cancelBtn(window.languageJSON.common.cancel);
+            .okBtn(getLanguageJSON().common.ok)
+            .cancelBtn(getLanguageJSON().common.cancel);
         if (userResponse.buttonClicked === 'ok') {
             return readProjectFile(proj + '.recovery');
         }

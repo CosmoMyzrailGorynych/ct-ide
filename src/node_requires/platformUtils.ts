@@ -1,6 +1,7 @@
-const fs = require('fs-extra');
-const os = require('os');
-const path = require('path');
+import fs from 'fs-extra';
+import {getLanguageJSON} from './i18n';
+import os from 'os';
+import path from 'path';
 
 const isWin = (/win[0-9]+/).test(os.platform());
 const isLinux = os.platform() === 'linux';
@@ -90,7 +91,7 @@ const mod = {
         };
     },
     requestWritableDir: async (): Promise<boolean> => {
-        const voc = window.languageJSON.writableFolderSelector;
+        const voc = getLanguageJSON().writableFolderSelector;
         const folder = await window.showOpenDialog({
             openDirectory: true,
             title: voc.headerSelectFolderForData

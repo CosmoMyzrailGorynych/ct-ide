@@ -65,8 +65,8 @@ room-tile-editor.room-editor-Tiles.flexfix(class="{opts.class}")
         this.tileSpanY = 1;
 
         this.namespace = 'roomTiles';
-        this.mixin(window.riotVoc);
-        this.mixin(window.riotWired);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('./data/node_requires/riotMixins/wire').default);
 
         this.on('update', () => {
             if (!this.opts.layer && this.opts.layers.length) {
@@ -81,17 +81,17 @@ room-tile-editor.room-editor-Tiles.flexfix(class="{opts.class}")
         this.deleteTileLayer = e => {
             const {layer} = e.item;
             window.alertify
-            .okBtn(window.languageJSON.common.delete)
-            .cancelBtn(window.languageJSON.common.cancel)
-            .confirm(window.languageJSON.common.confirmDelete.replace('{0}', window.languageJSON.common.tileLayer))
+            .okBtn(this.vocGlob.delete)
+            .cancelBtn(this.vocGlob.cancel)
+            .confirm(this.vocGlob.confirmDelete.replace('{0}', this.vocGlob.tileLayer))
             .then(e => {
                 if (e.buttonClicked === 'ok') {
                     layer.detach(true);
                     this.opts.onchangelayer(this.opts.layers[0]);
                     this.update();
                     window.alertify
-                    .okBtn(window.languageJSON.common.ok)
-                    .cancelBtn(window.languageJSON.common.cancel);
+                    .okBtn(this.vocGlob.ok)
+                    .cancelBtn(this.vocGlob.cancel);
                 }
             });
         };
@@ -99,9 +99,9 @@ room-tile-editor.room-editor-Tiles.flexfix(class="{opts.class}")
             const {layer} = e.item;
             window.alertify
             .defaultValue(layer.zIndex)
-            .okBtn(window.languageJSON.common.ok)
-            .cancelBtn(window.languageJSON.common.cancel)
-            .prompt(window.languageJSON.roomView.newDepth)
+            .okBtn(this.vocGlob.ok)
+            .cancelBtn(this.vocGlob.cancel)
+            .prompt(this.vocFull.roomView.newDepth)
             .then(e => {
                 if (e.inputValue && Number(e.inputValue)) {
                     const before = layer.zIndex;
@@ -121,7 +121,7 @@ room-tile-editor.room-editor-Tiles.flexfix(class="{opts.class}")
         this.addTileLayer = () => {
             window.alertify
             .defaultValue(-10)
-            .prompt(window.languageJSON.roomView.newDepth)
+            .prompt(this.vocFull.roomView.newDepth)
             .then(e => {
                 if (e.inputValue && Number(e.inputValue)) {
                     const layer = {

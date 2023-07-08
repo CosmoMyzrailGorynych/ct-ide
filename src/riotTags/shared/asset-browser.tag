@@ -128,8 +128,8 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
     context-menu(menu="{assetContextMenu}" ref="assetMenu")
     script.
         this.namespace = 'assetViewer';
-        this.mixin(window.riotVoc);
-        this.mixin(window.riotNiceTime);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('./data/node_requires/riotMixins/niceTime').default);
         this.sort = 'name';
         this.sortReverse = false;
 
@@ -339,12 +339,12 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
             items: []
         };
         const assetContextMenuTemplate = [{
-            label: window.languageJSON.common.open,
+            label: this.vocGlob.open,
             click: () => {
                 // TODO:
             }
         }, {
-            label: window.languageJSON.common.reimport,
+            label: this.vocGlob.reimport,
             icon: 'refresh-ccw',
             if: () => this.currentTexture?.source,
             click: async () => {
@@ -352,17 +352,17 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
                 this.update();
             }
         }, {
-            label: window.languageJSON.common.copyName,
+            label: this.vocGlob.copyName,
             click: () => {
                 nw.Clipboard.get().set(this.currentTexture.name, 'text');
             }
         }, {
             if: () => this.contextMenuAsset.name,
-            label: window.languageJSON.common.rename,
+            label: this.vocGlob.rename,
             click: async () => {
                 const reply = await alertify
                     .defaultValue(this.contextMenuAsset.name)
-                    .prompt(window.languageJSON.common.newName)
+                    .prompt(this.vocGlob.newName)
                 if (reply.inputValue && reply.inputValue.trim() !== '' && reply.buttonClicked !== 'cancel') {
                     this.contextMenuAsset.name = e.inputValue.trim();
                     this.update();
@@ -371,16 +371,16 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
         }, {
             type: 'separator'
         }, {
-            label: window.languageJSON.common.delete,
+            label: this.vocGlob.delete,
             click: async () => {
                 const reply = await alertify
-                    .okBtn(window.languageJSON.common.delete)
-                    .cancelBtn(window.languageJSON.common.cancel)
-                    .confirm(window.languageJSON.common.confirmDelete.replace('{0}', this.currentTexture.name))
+                    .okBtn(this.vocGlob.delete)
+                    .cancelBtn(this.vocGlob.cancel)
+                    .confirm(this.vocGlob.confirmDelete.replace('{0}', this.currentTexture.name))
                 if (reply.buttonClicked === 'ok') {
                     alertify
-                        .okBtn(window.languageJSON.common.ok)
-                        .cancelBtn(window.languageJSON.common.cancel);
+                        .okBtn(this.vocGlob.ok)
+                        .cancelBtn(this.vocGlob.cancel);
                     await resources.deleteAsset(this.contextMenuAsset);
                     this.update();
                 }

@@ -29,7 +29,7 @@ room-events-editor.aView.flexrow.pad
         //        span {voc.step}
     script.
         this.namespace = 'roomView';
-        this.mixin(window.riotVoc);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
 
         this.room = this.opts.room;
         [this.currentSheet] = this.room.events; // can be undefined, this is ok

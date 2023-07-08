@@ -5,7 +5,8 @@
         if (!glob.modified) {
             win.close(true);
         } else {
-            window.alertify.confirm(window.languageJSON.common.reallyExitConfirm)
+            const {getLanguageJSON} = require('./data/node_requires/languageJSON');
+            window.alertify.confirm(getLanguageJSON().common.reallyExitConfirm)
             .then(e => {
                 if (e.buttonClicked === 'ok') {
                     win.close(true);

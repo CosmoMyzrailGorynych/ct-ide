@@ -20,7 +20,7 @@ docs-panel
                 raw(ref="raw" content="{docContent}")
     script.
         this.namespace = 'docsPanel';
-        this.mixin(window.riotVoc);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
 
         this.docs = [];
         this.docContent = '';

@@ -42,7 +42,7 @@ notepad-panel#notepad.aPanel.dockright(class="{opened: opened}")
 
         this.opened = false;
         this.namespace = 'notepad';
-        this.mixin(window.riotVoc);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
         this.notepadToggle = function notepadToggle() {
             this.opened = !this.opened;
             if (this.tab === 'notepadglobal') {

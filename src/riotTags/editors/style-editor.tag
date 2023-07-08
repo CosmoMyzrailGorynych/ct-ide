@@ -153,8 +153,8 @@ style-editor.aPanel.aView(class="{opts.class}")
         const fs = require('fs-extra');
 
         this.namespace = 'styleView';
-        this.mixin(window.riotVoc);
-        this.mixin(window.riotWired);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('./data/node_requires/riotMixins/wire').default);
         this.styleobj = this.opts.asset;
         this.styleobj.font = this.styleobj.font || {
             family: 'sans-serif',
@@ -178,8 +178,8 @@ style-editor.aPanel.aView(class="{opts.class}")
             });
             this.refs.canvasSlot.appendChild(this.pixiApp.view);
 
-            var labelShort = window.languageJSON.styleView.testText,
-                labelMultiline = window.languageJSON.styleView.testText.repeat(2) + '\n' + window.languageJSON.styleView.testText.repeat(3) + '\n' + window.languageJSON.styleView.testText,
+            var labelShort = this.vocFull.styleView.testText,
+                labelMultiline = this.vocFull.styleView.testText.repeat(2) + '\n' + this.vocFull.styleView.testText.repeat(3) + '\n' + this.vocFull.styleView.testText,
                 labelLong = 'A quick blue cat jumps over the lazy frog. 0123456789 '.repeat(3),
                 labelThumbnail = 'Aa';
             this.pixiStyle = new PIXI.TextStyle();

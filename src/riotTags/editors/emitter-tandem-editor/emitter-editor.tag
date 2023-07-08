@@ -418,8 +418,8 @@ emitter-editor.aPanel.pad.nb
             .clear
     script.
         this.namespace = 'particleEmitters';
-        this.mixin(window.riotVoc);
-        this.mixin(window.riotWired);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('./data/node_requires/riotMixins/wire').default);
 
         const {getTexturePreview} = require('./data/node_requires/resources/textures');
         this.getPreview = () => getTexturePreview(this.opts.emitter.texture);

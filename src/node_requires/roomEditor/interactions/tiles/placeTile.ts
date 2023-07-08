@@ -8,6 +8,8 @@ import {ITilePatch} from './ITilePatch';
 
 import {soundbox} from '../../../3rdparty/soundbox';
 
+import {getLanguageJSON} from '../../../i18n';
+
 interface IAffixedData {
     mode: 'free' | 'straight';
     startPos: PIXI.IPoint;
@@ -78,7 +80,7 @@ export const placeTile: IRoomEditorInteraction<IAffixedData> = {
             return false;
         }
         if (!this.riotEditor.currentTileLayer) {
-            window.alertify.error(window.languageJSON.roomTiles.addTileLayerFirst);
+            window.alertify.error(getLanguageJSON().roomTiles.addTileLayerFirst);
             return false;
         }
         return Boolean(riotTag.tilePatch?.texture);

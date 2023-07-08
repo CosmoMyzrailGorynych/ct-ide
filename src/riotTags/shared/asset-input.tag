@@ -66,7 +66,7 @@ asset-input
             throw new Error('[asset-input] The assettypes attribute is mandatory and was not set.');
         }
         this.namespace = 'assetInput';
-        this.mixin(window.riotVoc);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
 
         this.resourceAPIs = require('./data/node_requires/resources');
         this.getThumbnail = this.resourceAPIs.getThumbnail;

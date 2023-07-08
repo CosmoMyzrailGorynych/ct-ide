@@ -121,7 +121,7 @@ array-editor
             use(xlink:href="#plus")
         span {voc.addRow}
     script.
-        this.mixin(window.riotWired);
+        this.mixin(require('./data/node_requires/riotMixins/wire').default);
         this.wireAndNotify = (...args1) => (...args2) => {
             this.wire(...args1)(...args2);
             if (this.opts.onchanged) {
@@ -129,7 +129,7 @@ array-editor
             }
         };
         this.namespace = 'extensionsEditor';
-        this.mixin(window.riotVoc);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
 
         this.on('update', () => {
             if (!this.opts.entity) {

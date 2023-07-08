@@ -138,8 +138,8 @@ curve-editor(ref="root")
     script.
         /* global net */
         this.namespace = 'curveEditor';
-        this.mixin(window.riotVoc);
-        this.mixin(window.riotWired);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('./data/node_requires/riotMixins/wire').default);
         const brehautColor = net.brehaut.Color;
 
         this.uid = require('./data/node_requires/generateGUID')();

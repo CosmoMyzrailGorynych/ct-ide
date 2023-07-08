@@ -773,7 +773,7 @@ license-panel
 
     script.
         this.namespace = 'licensePanel';
-        this.mixin(window.riotVoc);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
         this.closeModal = () => {
             this.parent.showLicense = false;
             this.parent.update();

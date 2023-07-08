@@ -73,7 +73,7 @@ app-view.flexcol
         const fs = require('fs-extra');
 
         this.namespace = 'appView';
-        this.mixin(window.riotVoc);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
 
         this.tab = 'project'; // A tab can be either a string ('project', 'assets', etc.) or an asset object
         this.openedAssets = [];
@@ -156,7 +156,7 @@ app-view.flexcol
             try {
                 await saveProject();
                 this.saveRecoveryDebounce();
-                alertify.success(window.languageJSON.common.savedMessage, 'success', 3000);
+                alertify.success(this.vocGlob.savedMessage, 'success', 3000);
             } catch (e) {
                 alertify.error(e);
             }

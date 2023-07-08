@@ -84,7 +84,7 @@ event-list-scriptable.flexfix(class="{opts.class}")
         this.getIcon = scriptableEvt => eventsAPI.tryGetIcon(getFullKey(scriptableEvt), scriptableEvt);
 
         this.namespace = 'scriptables';
-        this.mixin(window.riotVoc);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
 
         this.getIsParametrized = scriptableEvt => {
             const event = this.getEventByLib(scriptableEvt.eventKey, scriptableEvt.lib);
@@ -176,13 +176,13 @@ event-list-scriptable.flexfix(class="{opts.class}")
         };
         this.promptRemoveEvent = event => () => {
             alertify
-            .okBtn(window.languageJSON.common.delete)
-            .cancelBtn(window.languageJSON.common.cancel)
+            .okBtn(this.vocGlob.delete)
+            .cancelBtn(this.vocGlob.cancel)
             .confirm(this.voc.removeEventConfirm)
             .then(e => {
                 alertify
-                .okBtn(window.languageJSON.common.ok)
-                .cancelBtn(window.languageJSON.common.cancel);
+                .okBtn(this.vocGlob.ok)
+                .cancelBtn(this.vocGlob.cancel);
                 if (e.buttonClicked !== 'ok') {
                     return;
                 }

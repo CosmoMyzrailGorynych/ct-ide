@@ -1,16 +1,16 @@
-const fs = require('fs-extra');
+import fs from 'fs-extra';
 const path = require('path');
 const {extendValid} = require('./objectUtils');
 
-var languageJSON;
+let languageJSON: Record<string, Record<string, any>>;
 
 const vocDefault = fs.readJSONSync('./data/i18n/English.json');
 
-const getI18nDir = function () {
+export const getI18nDir = function () {
     return './data/i18n/';
 };
 
-const getLanguages = async () => {
+export const getLanguages = async () => {
     const languageFiles = await fs.readdir(getI18nDir())
     .then(files => files
             .filter(filename => path.extname(filename) === '.json')
@@ -27,7 +27,7 @@ const getLanguages = async () => {
     return results;
 };
 
-const loadLanguage = lang => {
+export const loadLanguage = (lang: string) => {
     var voc;
     try {
         voc = fs.readJSONSync(`./data/i18n/${lang}.json`);
@@ -42,19 +42,7 @@ const loadLanguage = lang => {
     return languageJSON;
 };
 
-const localizeField = (obj, field) => obj[`${field}_${languageJSON.me.id}`] || obj[field];
-
-const i18n = {
-    loadLanguage,
-    getLanguages,
-    get languageJSON() {
-        return languageJSON;
-    },
-    getI18nDir,
-    localizeField
-};
-
+export const localizeField = (obj: any, field: string) => obj[`${field}_${languageJSON.me.id}`] || obj[field];
+export const getLanguageJSON = () => languageJSON;
 
 loadLanguage(localStorage.appLanguage || 'English');
-
-module.exports = i18n;

@@ -11,7 +11,7 @@ script-editor.aView
             span {voc.done}
     script.
         this.namespace = 'common';
-        this.mixin(window.riotVoc);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
         this.script = this.opts.script;
         const updateEditorSize = () => {
             this.editor.layout();

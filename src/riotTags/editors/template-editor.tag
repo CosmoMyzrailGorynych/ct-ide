@@ -116,8 +116,8 @@ template-editor.aPanel.aView.flexrow
         const glob = require('./data/node_requires/glob');
         this.glob = glob;
         this.namespace = 'templateView';
-        this.mixin(window.riotVoc);
-        this.mixin(window.riotWired);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('./data/node_requires/riotMixins/wire').default);
 
         const textures = require('./data/node_requires/resources/textures');
 

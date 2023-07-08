@@ -54,8 +54,8 @@ project-settings.aPanel.aView.pad.flexrow
         content-editor(if="{tab === 'contentEntriesEditor' && currentContentType}" contenttype="{currentContentType}")
     script.
         this.namespace = 'settings';
-        this.mixin(window.riotVoc);
-        this.mixin(window.riotWired);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('./data/node_requires/riotMixins/wire').default);
         this.currentProject = global.currentProject;
         this.currentProject.settings.fps = this.currentProject.settings.fps || 30;
 

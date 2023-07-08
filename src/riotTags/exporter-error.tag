@@ -58,7 +58,7 @@ exporter-error.aDimmer.pointer.pad.fadein(onclick="{tryClose}")
                     use(xlink:href="#arrow-right")
     script.
         this.namespace = 'exporterError';
-        this.mixin(window.riotVoc);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
 
         this.resourceToIconMap = require('./data/node_requires/resources').resourceToIconMap;
         this.error = this.opts.error;
@@ -83,7 +83,7 @@ exporter-error.aDimmer.pointer.pad.fadein(onclick="{tryClose}")
         this.saveAndQuit = async () => {
             const {saveProject} = require('./data/node_requires/resources/projects');
             await saveProject();
-            alertify.success(window.languageJSON.common.savedMessage, 'success', 3000);
+            alertify.success(this.vocGlob.savedMessage, 'success', 3000);
             // Close after a second so a user sees a "saved" message and doesn't shit themselves
             setTimeout(() => {
                 nw.App.quit();

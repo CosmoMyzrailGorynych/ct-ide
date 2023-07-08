@@ -111,7 +111,7 @@ builtin-asset-gallery.aPanel.aView.pad
     )
     script.
         this.namespace = 'builtinAssetGallery';
-        this.mixin(window.riotVoc);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
         const fs = require('fs-extra'),
               path = require('path');
         const {getGalleryDir} = require('./data/node_requires/platformUtils');

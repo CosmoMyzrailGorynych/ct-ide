@@ -34,7 +34,7 @@ content-settings
         span {voc.addContentType}
     script.
         this.namespace = 'settings.content';
-        this.mixin(window.riotVoc);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
         window.currentProject.contentTypes = window.currentProject.contentTypes || [];
         this.contentTypes = window.currentProject.contentTypes;
 

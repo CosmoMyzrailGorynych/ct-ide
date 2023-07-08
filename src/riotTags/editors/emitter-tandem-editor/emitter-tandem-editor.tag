@@ -70,11 +70,10 @@ emitter-tandem-editor.aPanel.aView.flexrow(class="{opts.class}")
         const PIXI = require('pixi.js');
         const particles = require('@pixi/particle-emitter');
 
-        this.tandem = this.opts.asset;
-
         this.namespace = 'particleEmitters';
-        this.mixin(window.riotVoc);
-        this.mixin(window.riotWired);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('./data/node_requires/riotMixins/wire').default);
+        this.mixin(require('./data/node_requires/riotMixins/discardio').default);
 
         this.previewColor = localStorage.tandemEditorPreviewBg || '#cccccc';
         this.complete = false;
@@ -147,7 +146,7 @@ emitter-tandem-editor.aPanel.aView.flexrow(class="{opts.class}")
             }
             this.emitterInstances = [];
             this.uidToEmitterMap = {};
-            const promisesSpawnEmitters = this.tandem.emitters
+            const promisesSpawnEmitters = this.asset.emitters
                   .map(emitterData => this.spawnEmitter(emitterData, this.emitterContainer));
             await Promise.all(promisesSpawnEmitters)
                   .then(emitters => this.emitterInstances.push(...emitters));
@@ -186,18 +185,18 @@ emitter-tandem-editor.aPanel.aView.flexrow(class="{opts.class}")
                         this.zoom;
                 this.updateGrid();
             }
-            if (this.tandem.previewTexture && this.tandem.previewTexture !== -1) {
+            if (this.asset.previewTexture && this.asset.previewTexture !== -1) {
                 const textures = require('./data/node_requires/resources/textures');
-                const pivot = textures.getTexturePivot(this.tandem.previewTexture);
+                const pivot = textures.getTexturePivot(this.asset.previewTexture);
                 [this.previewTexture.anchor.x, this.previewTexture.anchor.y] = pivot;
-                this.previewTexture.texture = textures.getPixiTexture(this.tandem.previewTexture, 0);
+                this.previewTexture.texture = textures.getPixiTexture(this.asset.previewTexture, 0);
             } else {
                 this.previewTexture.texture = PIXI.Texture.EMPTY;
             }
         };
 
         this.generateShapeVisualizers = () => {
-            for (const emitter of this.tandem.emitters) {
+            for (const emitter of this.asset.emitters) {
                 if (!emitter.showShapeVisualizer) {
                     continue;
                 }
@@ -340,9 +339,9 @@ emitter-tandem-editor.aPanel.aView.flexrow(class="{opts.class}")
         });
 
         this.deleteEmitter = emitter => {
-            const ind = this.tandem.emitters.indexOf(emitter);
+            const ind = this.asset.emitters.indexOf(emitter);
             if (ind !== -1) {
-                this.tandem.emitters.splice(ind, 1);
+                this.asset.emitters.splice(ind, 1);
             } else {
                 throw new Error('An attempt to delete a non-existing emitter ', emitter);
             }
@@ -354,7 +353,7 @@ emitter-tandem-editor.aPanel.aView.flexrow(class="{opts.class}")
         */
         this.addEmitter = () => {
             const defaultEmitter = require('./data/node_requires/resources/emitterTandems/defaultEmitter').get();
-            this.tandem.emitters.push(defaultEmitter);
+            this.asset.emitters.push(defaultEmitter);
             this.resetEmitters();
         };
         this.changePreviewBg = () => {
@@ -395,7 +394,7 @@ emitter-tandem-editor.aPanel.aView.flexrow(class="{opts.class}")
             this.pickingPreviewTexture = true;
         };
         this.onPreviewTexturePicked = uid => {
-            this.tandem.previewTexture = uid;
+            this.asset.previewTexture = uid;
             this.pickingPreviewTexture = false;
             this.updatePreviewLayout();
             this.update();
@@ -489,5 +488,5 @@ emitter-tandem-editor.aPanel.aView.flexrow(class="{opts.class}")
             this.parent.editingTandem = false;
             this.parent.update();
             require('./data/node_requires/glob').modified = true;
-            window.signals.trigger('tandemUpdated', this.tandem);
+            window.signals.trigger('tandemUpdated', this.asset);
         };

@@ -32,8 +32,8 @@ sound-editor.aView.aPanel.pad(class="{opts.class}")
     script.
         const path = require('path');
         this.namespace = 'soundView';
-        this.mixin(window.riotVoc);
-        this.mixin(window.riotWired);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('./data/node_requires/riotMixins/wire').default);
         this.playing = false;
         this.sound = this.opts.asset;
         this.on('update', () => {

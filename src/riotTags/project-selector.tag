@@ -4,7 +4,7 @@ project-selector
             button.inline.nogrow(onclick="{toggleLanguageSelector}")
                 svg.feather
                     use(xlink:href="#translate")
-                span {window.languageJSON.mainMenu.settings.language}
+                span {vocFull.mainMenu.settings.language}
             .aSpacer
             .nogrow.project-selector-aPatronsLine(if="{featuredPatron}")
                 svg.feather
@@ -153,7 +153,7 @@ project-selector
         this.ctjsVersion = process.versions.ctjs;
         this.requirePath = path;
         this.namespace = 'intro';
-        this.mixin(window.riotVoc);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
 
         this.tab = 'projects';
         this.changeTab = tab => () => {
@@ -363,7 +363,7 @@ project-selector
                 sessionStorage.projname = path.basename(proj);
                 global.projdir = path.dirname(proj) + path.sep + path.basename(proj, '.ict');
             } else {
-                alertify.error(window.languageJSON.common.wrongFormat);
+                alertify.error(this.vocGlob.wrongFormat);
             }
         };
 
@@ -400,8 +400,8 @@ project-selector
         this.languagesSubmenu = {
             items: []
         };
-        const i18nAPI = require('./data/node_requires/i18n');
-        i18nAPI.getLanguages().then(languages => {
+        const {getLanguages} = require('./data/node_requires/i18n');
+        getLanguages().then(languages => {
             for (const language of languages) {
                 if (language.filename === 'Debug.json') {
                     continue;
@@ -420,9 +420,9 @@ project-selector
             alertify.error(`Error while finding i18n files: ${e}`);
         });
         this.switchLanguage = name => {
-            const i18n = require('./data/node_requires/i18n.js');
+            const {loadLanguage} = require('./data/node_requires/i18n.js');
             try {
-                window.languageJSON = i18n.loadLanguage(name);
+                this.vocFull = loadLanguage(name);
                 localStorage.appLanguage = name;
                 window.signals.trigger('updateLocales');
                 window.riot.update();

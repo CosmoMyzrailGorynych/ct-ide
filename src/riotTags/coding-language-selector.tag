@@ -44,7 +44,7 @@ coding-language-selector
                     span {voc.acceptAndSpecifyDirectory}
     script.
         this.namespace = 'languageSelector';
-        this.mixin(window.riotVoc);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
 
         this.selection = false;
 
