@@ -1,12 +1,39 @@
-import * as PIXI from 'node_modules/pixi.js';
 import {Copy} from './templates';
-import {CtTimer, timer} from './timer';
-import {ctjsGame} from '.';
+import timerLib, {CtTimer} from './timer';
+
+import * as pixiMod from 'node_modules/pixi.js';
+declare var PIXI: typeof pixiMod;
 
 /**
  * A library of different utility functions, mainly Math-related, but not limited to them.
  */
-export const u = {
+const uLib = {
+    /**
+     * A measure of how long a frame took time to draw, usually equal to 1 and larger on lags.
+     * For example, if it is equal to 2, it means that the previous frame took twice as much time
+     * compared to expected FPS rate.
+     *
+     * Use ct.delta to balance your movement and other calculations on different framerates by
+     * multiplying it with your reference value.
+     *
+     * Note that `this.move()` already uses it, so there is no need to premultiply
+     * `this.speed` with it.
+     *
+     * **A minimal example:**
+     * ```js
+     * this.x += this.windSpeed * ct.delta,
+     * ```
+     */
+    delta: 1,
+    /**
+     * A measure of how long a frame took time to draw, usually equal to 1 and larger on lags.
+     * For example, if it is equal to 2, it means that the previous frame took twice as much time
+     * compared to expected FPS rate.
+     *
+     * This is a version for UI elements, as it is not affected by time scaling, and thus works well
+     * both with slow-mo effects and game pause.
+     */
+    deltaUi: 1,
     /**
      * Get the environment the game runs on.
      * @returns {string} Either 'ct.ide', or 'nw', or 'electron', or 'browser'.
@@ -111,8 +138,8 @@ export const u = {
      * @param {number} deg The degree to rotate by
      * @returns {PIXI.Point} A pair of new `x` and `y` parameters.
      */
-    rotate(x: number, y: number, deg: number): PIXI.Point {
-        return u.rotateRad(x, y, u.degToRad(deg));
+    rotate(x: number, y: number, deg: number): pixiMod.Point {
+        return uLib.rotateRad(x, y, uLib.degToRad(deg));
     },
     /**
      * Rotates a vector (x; y) by `rad` around (0; 0)
@@ -121,7 +148,7 @@ export const u = {
      * @param {number} rad The radian value to rotate around
      * @returns {PIXI.Point} A pair of new `x` and `y` parameters.
      */
-    rotateRad(x: number, y: number, rad: number): PIXI.Point {
+    rotateRad(x: number, y: number, rad: number): pixiMod.Point {
         const sin = Math.sin(rad),
               cos = Math.cos(rad);
         return new PIXI.Point(
@@ -193,24 +220,6 @@ export const u = {
     map(val: number, inMin: number, inMax: number, outMin: number, outMax: number): number {
         return (val - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
     },
-    /**
-     * Translates a point from UI space to game space.
-     * @param {number} x The x coordinate in UI space.
-     * @param {number} y The y coordinate in UI space.
-     * @returns {PIXI.Point} A pair of new `x` and `y` coordinates.
-     */
-    uiToGameCoord(x: number, y: number): PIXI.Point {
-        return ctjsGame.camera.uiToGameCoord(x, y);
-    },
-    /**
-     * Translates a point from fame space to UI space.
-     * @param {number} x The x coordinate in game space.
-     * @param {number} y The y coordinate in game space.
-     * @returns {PIXI.Point} A pair of new `x` and `y` coordinates.
-     */
-    gameToUiCoord(x: number, y: number): PIXI.Point {
-        return ctjsGame.camera.gameToUiCoord(x, y);
-    },
     hexToPixi(hex: string): number {
         return Number('0x' + hex.slice(1));
     },
@@ -256,12 +265,12 @@ export const u = {
      */
     pcircle(x: number, y: number, arg: (Copy | Array<number>)): boolean {
         if (arg instanceof Array) {
-            return u.pdc(x, y, arg[0], arg[1]) < arg[2];
+            return uLib.pdc(x, y, arg[0], arg[1]) < arg[2];
         }
         if (arg.shape.type !== 'circle') {
             throw new Error('[ct.u.pcircle] The specified copy doesn\'t have a circular shape');
         }
-        return u.pdc(0, 0, (arg.x - x) / arg.scale.x, (arg.y - y) / arg.scale.y) < arg.shape.r;
+        return uLib.pdc(0, 0, (arg.x - x) / arg.scale.x, (arg.y - y) / arg.scale.y) < arg.shape.r;
     },
     /**
      * Returns a Promise that resolves after the given time.
@@ -270,7 +279,7 @@ export const u = {
      * @returns {CtTimer} The timer, which you can call `.then()` to
      */
     wait(time: number): CtTimer {
-        return timer.add(time);
+        return timerLib.add(time);
     },
     /**
      * Returns a Promise that resolves after the given time.
@@ -279,7 +288,7 @@ export const u = {
      * @returns {CtTimer} The timer, which you can call `.then()` to
      */
     waitUi(time: number): CtTimer {
-        return timer.addUi(time);
+        return timerLib.addUi(time);
     },
     /**
      * Creates a new function that returns a promise, based
@@ -335,12 +344,22 @@ export const u = {
     }
 };
 
-Object.assign(u, {// make aliases
-    getOs: u.getOS,
-    lengthDirX: u.ldx,
-    lengthDirY: u.ldy,
-    pointDirection: u.pdn,
-    pointDistance: u.pdc,
-    pointRectangle: u.prect,
-    pointCircle: u.pcircle
+Object.assign(uLib, {// make aliases
+    getOs: uLib.getOS,
+    lengthDirX: uLib.ldx,
+    lengthDirY: uLib.ldy,
+    pointDirection: uLib.pdn,
+    pointDistance: uLib.pdc,
+    pointRectangle: uLib.prect,
+    pointCircle: uLib.pcircle
 });
+
+export default uLib as typeof uLib & {
+    getOs: typeof uLib.getOS,
+    lengthDirX: typeof uLib.ldx,
+    lengthDirY: typeof uLib.ldy,
+    pointDirection: typeof uLib.pdn,
+    pointDistance: typeof uLib.pdc,
+    pointRectangle: typeof uLib.prect,
+    pointCircle: typeof uLib.pcircle
+};

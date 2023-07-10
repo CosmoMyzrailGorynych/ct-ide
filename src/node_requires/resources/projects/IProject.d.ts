@@ -18,6 +18,8 @@ declare interface IScript {
     code: string;
 }
 
+type viewMode = 'asIs' | 'fastScale' | 'fastScaleInteger' | 'expand' | 'expandViewport' | 'scaleFit' | 'scaleFill';
+
 declare interface IContentType {
     entries: Record<string, unknown>[];
     icon: string;
@@ -67,7 +69,8 @@ declare interface IProject {
             highDensity: boolean,
             desktopMode: 'maximized' | 'fullscreen' | 'windowed',
             hideCursor: boolean,
-            mobileScreenOrientation: 'unspecified' | 'landscape' | 'portrait'
+            mobileScreenOrientation: 'unspecified' | 'landscape' | 'portrait',
+            viewMode: viewMode,
         },
         export: {
             windows: boolean,

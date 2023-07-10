@@ -1,12 +1,12 @@
 var i = 0;
-while (i < ct.tween.tweens.length) {
-    var tween = ct.tween.tweens[i];
+while (i < tween.tweens.length) {
+    var tween = tween.tweens[i];
     if (tween.obj.kill) {
         tween.reject({
             code: 2,
             info: 'Copy is killed'
         });
-        ct.tween.tweens.splice(i, 1);
+        tween.tweens.splice(i, 1);
         continue;
     }
     var a = tween.timer.time / tween.duration;
@@ -20,7 +20,7 @@ while (i < ct.tween.tweens.length) {
     }
     if (a === 1) {
         tween.resolve(tween.fields);
-        ct.tween.tweens.splice(i, 1);
+        tween.tweens.splice(i, 1);
         continue;
     }
     i++;

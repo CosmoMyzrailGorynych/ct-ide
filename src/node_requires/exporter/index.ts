@@ -317,6 +317,7 @@ const exportCtProject = async (
         startroom: startroom.name,
         startwidth: startroom.width,
         startheight: startroom.height,
+        viewMode: settings.rendering.viewMode,
 
         atlases: (await texturesTask).atlases,
         tiledImages: (await texturesTask).tiledImages,
@@ -350,6 +351,7 @@ const exportCtProject = async (
             await fs.copy(path.join(basePath, `./ct.libs/${lib}/includes/`), writeDir);
         }
     }));
+    await fs.copy(path.join(basePath, 'ct.release', 'pixi.js'), path.join(writeDir, 'pixi.js'));
 
     /* CSS styles for rendering settings and branding */
     let preloaderColor1 = project.settings.branding.accent,

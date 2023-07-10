@@ -1,28 +1,24 @@
 notes: /* empty */
 libs:
   random: {}
-  fittoscreen:
-    manageViewport: true
-    mode: scaleFill
   keyboard.polyfill: {}
   keyboard: {}
   vkeys: {}
-  sound.howler: {}
   sprite:
     spritedef: |-
-      ct.sprite(
+      sprite(
           'Player', 'Player_Idle',
           [7]
       );
-      ct.sprite(
+      sprite(
           'Player', 'Player_Walking',
           [0, 1, 2, 3, 4, 5, 6]
       );
-      ct.sprite(
+      sprite(
           'Player', 'Player_Jumping',
           [12]
       );
-      ct.sprite(
+      sprite(
           'Player', 'Player_Falling',
           [11]
       );
@@ -50,21 +46,21 @@ templates:
           // Move the box to the left if there is a player on the right and no
           obstacles on the left
 
-          if (ct.place.meet(this, this.x + 5, this.y, 'Player') &&
-              ct.place.free(this, this.x - 10, this.y, 'Solid')) {
+          if (place.meet(this, this.x + 5, this.y, 'Player') &&
+              place.free(this, this.x - 10, this.y, 'Solid')) {
               this.x -= 10;
           }
 
           // Same but in reverse
 
-          if (ct.place.meet(this, this.x - 5, this.y, 'Player') &&
-              ct.place.free(this, this.x + 10, this.y, 'Solid')) {
+          if (place.meet(this, this.x - 5, this.y, 'Player') &&
+              place.free(this, this.x + 10, this.y, 'Solid')) {
               this.x += 10;
           }
 
           // If there is no obstacles underneath, fall down.
 
-          if (ct.place.free(this, this.x, this.y + 10, 'Solid')) {
+          if (place.free(this, this.x, this.y + 10, 'Solid')) {
               this.y += 10;
           }
         eventKey: OnStep
@@ -119,7 +115,7 @@ templates:
   - name: Player
     depth: 0
     uid: 00664f77-21c6-4b06-b310-88640b1beaf9
-    lastmod: 1671978252662
+    lastmod: 1688949656694
     extends:
       cgroup: Player
     texture: ad390b6e-4c2c-412f-8143-1c70b9c16fc0
@@ -142,10 +138,10 @@ templates:
 
           // Camera should follow the character
 
-          ct.camera.follow = this;
-          ct.camera.borderX = 400;
-          ct.camera.borderY = 200;
-          ct.camera.drift = 0.95;
+          camera.follow = this;
+          camera.borderX = 400;
+          camera.borderY = 200;
+          camera.drift = 0.95;
         eventKey: OnCreate
       - lib: core
         arguments: {}
@@ -157,23 +153,23 @@ templates:
 
           // layer at -20.
 
-          var onGround = ct.place.occupied(this, this.x, this.y + 1, 'Solid');
+          var onGround = place.occupied(this, this.x, this.y + 1, 'Solid');
 
 
           // Move right or left
 
-          if (ct.actions.Move.value > 0) {
+          if (actions.Move.value > 0) {
               if (this.hspeed < this.maxspeed) {
                   this.hspeed += this.acceleration;
               }
-          } else if (ct.actions.Move.value < 0) {
+          } else if (actions.Move.value < 0) {
               if (this.hspeed > -this.maxspeed) {
                   this.hspeed -= this.acceleration;
               }
           } else { // Slow down if we are on the ground and we don't move.
               if (onGround) {
                   this.speed = Math.max(0, this.speed - this.maxspeed);
-              } else if (!ct.actions.Move.pressed) {
+              } else if (!actions.Move.pressed) {
                   // Don't move if we are not pressing the move button
                   this.hspeed = 0;
               }
@@ -182,7 +178,7 @@ templates:
 
           // Jumping
 
-          if (ct.actions.Jump.down) {
+          if (actions.Jump.down) {
               // Jump only if we stay on the ground
               if (onGround) {
                   this.vspeed = -this.jumpPower;
@@ -243,7 +239,7 @@ templates:
           // See its docs in the sliding panel on the right for examples and
           explanations.
 
-          if (ct.place.occupied(this, this.x, this.y + 1, 'Solid')) {
+          if (place.occupied(this, this.x, this.y + 1, 'Solid')) {
               if (this.x !== this.xprev) {
                   this.tex = 'Player_Walking';
               } else {
@@ -258,14 +254,14 @@ templates:
 
           // Shift camera to the side where the character looks
 
-          ct.camera.shiftX = this.scale.x * 150;
+          camera.shiftX = this.scale.x * 150;
         eventKey: OnDraw
       - eventKey: collisionCGroup
         code: |-
           // Check if we collide with spikes or slimes
-          ct.sound.spawn('BodyFall');
+          sounds.spawn('BodyFall');
           // move to a 'death' screen
-          ct.rooms.switch('DeadScreen');
+          rooms.switch('DeadScreen');
         arguments:
           group: Enemy
         lib: place
@@ -285,8 +281,8 @@ templates:
       - eventKey: collisionTemplate
         code: |-
           this.kill = true;
-          ct.sound.spawn(ct.random.dice('Coin_01', 'Coin_02', 'Coin_03'));
-          ct.room.coins ++;
+          sounds.spawn(random.dice('Coin_01', 'Coin_02', 'Coin_03'));
+          rooms.current.coins ++;
         arguments:
           template: 00664f77-21c6-4b06-b310-88640b1beaf9
         lib: place
@@ -326,11 +322,11 @@ templates:
       - lib: core
         arguments: {}
         code: >-
-          var freeBelow = ct.place.free(this, this.x + ct.u.ldx(70,
-          this.direction), this.y + 35, 'Solid');
+          var freeBelow = place.free(this, this.x + u.ldx(70, this.direction),
+          this.y + 35, 'Solid');
 
 
-          var occupiedInFront = ct.place.occupied(this, this.x + ct.u.ldx(10,
+          var occupiedInFront = place.occupied(this, this.x + u.ldx(10,
           this.direction), this.y, 'Solid');
 
 
@@ -375,10 +371,10 @@ templates:
     events:
       - lib: core
         arguments: {}
-        code: 'this.gotoAndStop(ct.fittoscreen.getIsFullscreen()? 1 : 0);'
+        code: 'this.gotoAndStop(settings.fullscreen? 1 : 0);'
         eventKey: OnDraw
       - eventKey: OnPointerClick
-        code: ct.fittoscreen.toggleFullscreen();
+        code: fittoscreen.toggleFullscreen();
         arguments: {}
         lib: core
     type: template
@@ -396,21 +392,17 @@ templates:
     events:
       - lib: core
         arguments: {}
-        code: >-
-          this.coinsCounter = new PIXI.Text(this.coins,
-          ct.styles.get('CoinText'));
-
+        code: |-
+          this.coinsCounter = new PIXI.Text(this.coins, styles.get('CoinText'));
           this.coinsCounter.x = 40;
-
           this.coinsCounter.anchor.y = 0.5;
-
           this.addChild(this.coinsCounter);
         eventKey: OnCreate
       - lib: core
         arguments: {}
         code: |-
-          if (this.coinsCounter.text != ct.room.coins + ' / 33') {
-              this.coinsCounter.text = ct.room.coins + ' / 33';
+          if (this.coinsCounter.text != rooms.current.coins + ' / 33') {
+              this.coinsCounter.text = rooms.current.coins + ' / 33';
           }
         eventKey: OnDraw
     type: template
@@ -429,7 +421,7 @@ templates:
       - lib: core
         arguments: {}
         code: |-
-          this.button = ct.vkeys.button({
+          this.button = vkeys.button({
               key: "Vk2",
               texNormal: "buttonLeft",
               texActive: "buttonLeft",
@@ -463,7 +455,7 @@ templates:
       - lib: core
         arguments: {}
         code: |-
-          this.button = ct.vkeys.button({
+          this.button = vkeys.button({
               key: "Vk1",
               texNormal: "buttonRight",
               texActive: "buttonRight",
@@ -497,7 +489,7 @@ templates:
       - lib: core
         arguments: {}
         code: |-
-          this.button = ct.vkeys.button({
+          this.button = vkeys.button({
               key: "Vk3",
               texNormal: "buttonJump",
               texActive: "buttonJump",
@@ -529,7 +521,7 @@ templates:
     lastmod: 1657022172926
     events:
       - eventKey: OnPointerClick
-        code: ct.rooms.switch('InGame');
+        code: rooms.switch('InGame');
         arguments: {}
         lib: core
     type: template
@@ -631,7 +623,7 @@ rooms:
         repeat: !<tag:yaml.org,2002:js/undefined> ''
     uid: b0f0ff4d-a155-4d68-a86e-5bb7ed8973ab
     grid: 35
-    lastmod: 1661067970649
+    lastmod: 1688957793948
     thumbnail: 1
     tiles:
       - depth: -10
@@ -2445,13 +2437,13 @@ rooms:
         code: |-
           this.coins = 0;
 
-          ct.rooms.append('UI_Layer', {isUi: true});
+          rooms.append('UI_Layer', {isUi: true});
         eventKey: OnRoomStart
       - lib: core
         arguments: {}
         code: |-
           if (this.coins >= 33) {
-              ct.rooms.switch('RichScreen');
+              rooms.switch('RichScreen');
           }
         eventKey: OnStep
     type: room
@@ -2517,12 +2509,12 @@ rooms:
       - lib: core
         arguments: {}
         code: >-
-          ct.sound.spawn('Failure');
+          sounds.spawn('Failure');
 
 
-          this.ohNoLabel = new PIXI.Text('Oh no!', ct.styles.get('OhNo'));
+          this.ohNoLabel = new PIXI.Text('Oh no!', styles.get('OhNo'));
 
-          this.ohNoLabel.x = ct.camera.width / 2;
+          this.ohNoLabel.x = camera.width / 2;
 
           this.ohNoLabel.y = 520;
 
@@ -2532,9 +2524,9 @@ rooms:
 
 
           this.greedyLabel = new PIXI.Text('You were too greeedy for that
-          game!', ct.styles.get('OhNo_Small'));
+          game!', styles.get('OhNo_Small'));
 
-          this.greedyLabel.x = ct.camera.width / 2;
+          this.greedyLabel.x = camera.width / 2;
 
           this.greedyLabel.y = 560;
 
@@ -2594,16 +2586,16 @@ rooms:
       - lib: core
         arguments: {}
         code: >-
-          ct.sound.spawn('Victory');
+          sounds.spawn('Victory');
 
 
-          ct.keyboard.clear();
+          keyboard.clear();
 
 
           this.ohNoLabel = new PIXI.Text('You got them all!',
-          ct.styles.get('OhNo'));
+          styles.get('OhNo'));
 
-          this.ohNoLabel.x = ct.camera.width / 2;
+          this.ohNoLabel.x = camera.width / 2;
 
           this.ohNoLabel.y = 540;
 
@@ -2614,9 +2606,9 @@ rooms:
 
           this.subLabel = new PIXI.Text('You\'ve found all the 33 coins.
           Congrats!\nThis was a stupid demo of ct.js game engine. Thank you for
-          playing!', ct.styles.get('OhNo_Small'));
+          playing!', styles.get('OhNo_Small'));
 
-          this.subLabel.x = ct.camera.width / 2;
+          this.subLabel.x = camera.width / 2;
 
           this.subLabel.y = 600;
 
@@ -2707,37 +2699,37 @@ rooms:
               /*this.touchControl = {};
               var aboveBottom = 80;
               var rightOfBorder = 80;
-              this.touchControl.left = ct.vkeys.button({
+              this.touchControl.left = vkeys.button({
                   key: "Vk2",
                   texNormal: "buttonLeft",
                   texActive: "buttonLeft",
                   texHover: "buttonLeft",
                   x: () => rightOfBorder,
-                  y: () => ct.camera.height - aboveBottom,
+                  y: () => camera.height - aboveBottom,
                   depth: 1000
               });
-              this.touchControl.right = ct.vkeys.button({
+              this.touchControl.right = vkeys.button({
                   key: "Vk1",
                   texNormal: "buttonRight",
                   texActive: "buttonRight",
                   texHover: "buttonRight",
                   x: () => rightOfBorder + 100,
-                  y: () => ct.camera.height - aboveBottom,
+                  y: () => camera.height - aboveBottom,
                   depth: 1000
               });
-              this.touchControl.jump = ct.vkeys.button({
+              this.touchControl.jump = vkeys.button({
                   key: "Vk3",
                   texNormal: "buttonJump",
                   texActive: "buttonJump",
                   texHover: "buttonJump",
-                  x: () => ct.camera.width - rightOfBorder,
-                  y: () => ct.camera.height - aboveBottom,
+                  x: () => camera.width - rightOfBorder,
+                  y: () => camera.height - aboveBottom,
                   depth: 1000
               });*/
         eventKey: OnRoomStart
       - lib: core
         arguments: {}
-        code: ct.camera.realign(this);
+        code: camera.realign(this);
         eventKey: OnDraw
     type: room
     extends: {}
@@ -2767,6 +2759,7 @@ settings:
     usePixiLegacy: true
     desktopMode: maximized
     mobileScreenOrientation: unspecified
+    viewMode: expand
   authoring:
     title: Catformer
     author: Cosmo Myzrail Gorynych
@@ -2787,35 +2780,35 @@ scripts:
           room.touchControl = {};
           var aboveBottom = 80;
           var rightOfBorder = 80;
-          room.touchControl.left = ct.vkeys.button({
+          room.touchControl.left = vkeys.button({
               key: "Vk2",
               texNormal: "buttonLeft",
               texActive: "buttonLeft",
               texHover: "buttonLeft",
               x: () => room.x + rightOfBorder,
-              y: () => room.y + ct.viewHeight - aboveBottom,
+              y: () => room.y + camera.height - aboveBottom,
               depth: 1000
           });
-          room.touchControl.right = ct.vkeys.button({
+          room.touchControl.right = vkeys.button({
               key: "Vk1",
               texNormal: "buttonRight",
               texActive: "buttonRight",
               texHover: "buttonRight",
               x: () => room.x + rightOfBorder + 100,
-              y: () => room.y + ct.viewHeight - aboveBottom,
+              y: () => room.y + camera.height - aboveBottom,
               depth: 1000
           });
-          room.touchControl.jump = ct.vkeys.button({
+          room.touchControl.jump = vkeys.button({
               key: "Vk3",
               texNormal: "buttonJump",
               texActive: "buttonJump",
               texHover: "buttonJump",
-              x: () => room.x + ct.viewWidth - rightOfBorder,
-              y: () => room.y + ct.viewHeight - aboveBottom,
+              x: () => room.x + camera.width - rightOfBorder,
+              y: () => room.y + camera.height - aboveBottom,
               depth: 1000
           });
       }
-ctjsVersion: 3.2.0
+ctjsVersion: 4.0.0-next-1
 fonts: []
 skeletons: []
 actions:

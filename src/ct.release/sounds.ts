@@ -1,4 +1,4 @@
-export const sounds = {
+const soundsLib = {
     exists(name: string): boolean {
         return false;
     },
@@ -7,3 +7,4 @@ export const sounds = {
     }
     // TODO:
 };
+export default soundsLib;

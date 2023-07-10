@@ -1,13 +1,13 @@
 import {ExportedStyle} from './../node_requires/exporter/_exporterContracts';
 
-export const styles = {
+const stylesLib = {
     types: {} as Record<string, ExportedStyle>,
     /**
      * Creates a new style with a given name.
      * Technically, it just writes `data` to `styles.types`
      */
     new(name: string, styleTemplate: ExportedStyle): ExportedStyle {
-        styles.types[name] = styleTemplate;
+        stylesLib.types[name] = styleTemplate;
         return styleTemplate;
     },
     /**
@@ -23,13 +23,12 @@ export const styles = {
      */
     get(name: string, copy?: boolean | Record<string, unknown>): ExportedStyle {
         if (copy === true) {
-            return Object.assign({}, styles.types[name]);
+            return Object.assign({}, stylesLib.types[name]);
         }
         if (copy) {
-            return Object.assign(Object.assign({}, styles.types[name]), copy);
+            return Object.assign(Object.assign({}, stylesLib.types[name]), copy);
         }
-        return styles.types[name];
+        return stylesLib.types[name];
     }
 };
-/*!@styles@*/
-/*!%styles%*/
+export default stylesLib;

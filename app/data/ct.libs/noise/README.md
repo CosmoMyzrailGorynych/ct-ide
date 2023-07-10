@@ -5,25 +5,25 @@ This is a simple library for 2d & 3d perlin noise and simplex noise in javascrip
 ## Example: Fill the area with tiles by using a perlin noise
 
 ```js
-this.tilemap = ct.tilemaps.create(-100);
-ct.noise.setSeed();
+this.tilemap = tilemaps.create(-100);
+noise.setSeed();
 
 // Assuming you have a texture called 'RockTile' which is 64x64px in size.
-for (var x = 0; x < ct.camera.width / 64; x++) {
-    for (var y = 0; y < ct.camera.height / 64; y++) {
-        var value = ct.noise.perlin2d(x / 7, y / 7); // Returns a value from -1 to 1.
+for (var x = 0; x < camera.width / 64; x++) {
+    for (var y = 0; y < camera.height / 64; y++) {
+        var value = noise.perlin2d(x / 7, y / 7); // Returns a value from -1 to 1.
         if (value > 0) {
-            const tile = ct.tilemaps.addTile(this.tilemap, 'RockTile', x*64, y*64);
+            const tile = tilemaps.addTile(this.tilemap, 'RockTile', x*64, y*64);
             tile.alpha = value * 0.5 + 0.5;
         }
     }
 }
 
 this.tilemap.cache();
-ct.place.enableTilemapCollisions(this.tilemap, 'Solid');
+place.enableTilemapCollisions(this.tilemap, 'Solid');
 ```
 
-The library exposes an object called `ct.noise` with the following properties:
+The library exposes an object called `noise` with the following properties:
 
 * `simplex2d(x, y)`: 2D Simplex noise function;
 * `simplex3d(x, y, z)`: 3D Simplex noise function;

@@ -1,3 +1,7 @@
+Version 4.0.0
+
+- Update for ct.js v4
+
 Version 3.0.0
 
 - Add support for `ct.actions` API;

@@ -19,6 +19,13 @@ rendering-settings
         label.block.checkbox
             input(type="checkbox" checked="{renderSettings.hideCursor}" onchange="{wire('this.renderSettings.hideCursor')}")
             span {voc.hideCursor}
+    h2 {voc.viewportMode}
+    fieldset
+        label.block.checkbox(each="{val in ['asIs', 'fastScale', 'fastScaleInteger', 'expand', 'expandViewport', 'scaleFit', 'scaleFill']}")
+            input(type="radio" value="{val}" checked="{renderSettings.viewMode === val}" onchange="{wire('this.renderSettings.viewMode')}")
+            span
+                b {voc.viewportModes[val]}
+                span  — {voc.viewportModesDescriptions[val]}
     h2 {voc.desktopBuilds}
     fieldset
         b {voc.launchMode}

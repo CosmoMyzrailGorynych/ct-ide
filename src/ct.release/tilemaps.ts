@@ -1,8 +1,10 @@
-import {ctjsGame} from '.';
-import {res} from './res';
-import {u} from './u';
-import {templates} from './templates';
-import * as PIXI from 'node_modules/pixi.js';
+import res from './res';
+import uLib from './u';
+import templatesLib from './templates';
+import roomsLib from 'rooms';
+
+import * as pixiMod from 'node_modules/pixi.js';
+declare var PIXI: typeof pixiMod;
 
 import {ExportedTilemap, ExportedTile, TextureShape} from './../node_requires/exporter/_exporterContracts';
 
@@ -63,7 +65,7 @@ export class Tilemap extends PIXI.Container {
         } else {
             this.tiles = [] as (ExportedTile & {sprite: Tile})[];
         }
-        templates.list.TILEMAP.push(this);
+        templatesLib.list.TILEMAP.push(this);
     }
     /**
      * Adds a tile to the tilemap. Will throw an error if a tilemap is cached.
@@ -167,7 +169,7 @@ export class Tilemap extends PIXI.Container {
         this.diamondCellMap = {};
         for (let i = 0, l = this.tiles.length; i < l; i++) {
             const [tile] = this.children as Tile[];
-            const {x: xNormalized, y: yNormalized} = u.rotate(tile.x, tile.y * 2, -45);
+            const {x: xNormalized, y: yNormalized} = uLib.rotate(tile.x, tile.y * 2, -45);
             const x = Math.floor(xNormalized / chunkSize),
                   y = Math.floor(yNormalized / chunkSize),
                   key = `${x}:${y}`;
@@ -200,7 +202,7 @@ export class Tilemap extends PIXI.Container {
     }
 }
 
-export const tilemaps = {
+const tilemapsLib = {
     /**
      * Creates a new tilemap at a specified depth, and adds it to the main room (ct.room).
      * @param {number} [depth] The depth of a newly created tilemap. Defaults to 0.
@@ -209,7 +211,7 @@ export const tilemaps = {
     create(depth = 0): Tilemap {
         const tilemap = new Tilemap();
         tilemap.zIndex = depth;
-        ctjsGame.room.addChild(tilemap);
+        roomsLib.current.addChild(tilemap);
         return tilemap;
     },
     /**
@@ -228,7 +230,7 @@ export const tilemaps = {
         x: number,
         y: number,
         frame = 0
-    ): PIXI.Sprite {
+    ): pixiMod.Sprite {
         return tilemap.addTile(textureName, x, y, frame);
     },
     /**
@@ -264,3 +266,4 @@ export const tilemaps = {
         tilemap.cacheDiamond(chunkSize);
     }
 };
+export default tilemapsLib;

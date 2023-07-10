@@ -1,9 +1,0 @@
-# v4.0.0
-
-- Support for retina mode
-
-# v3.0.0
-
-- Support for the new `ct.camera`.
-- Removed `ct.fittoscreen.manageViewport`.
-- Removed "Expand, manage viewport" mode, as "Expand" replaces it.

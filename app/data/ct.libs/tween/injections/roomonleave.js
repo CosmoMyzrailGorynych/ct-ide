@@ -1,12 +1,12 @@
 /* global ct */
 
 if (!this.kill) {
-    for (var tween of ct.tween.tweens) {
+    for (var tween of tween.tweens) {
         tween.reject({
             info: 'Room switch',
             code: 1,
-            from: 'ct.tween'
+            from: 'tween'
         });
     }
-    ct.tween.tweens = [];
+    tween.tweens = [];
 }

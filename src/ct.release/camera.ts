@@ -1,8 +1,12 @@
-import * as PIXI from 'node_modules/pixi.js';
-import {Copy, templates} from './templates';
-import {Room, rooms} from './rooms';
-import {ctjsGame} from '.';
-import {u} from './u';
+import templatesLib, {Copy} from './templates';
+import roomsLib, {Room} from './rooms';
+import uLib from './u';
+import {pixiApp} from 'index';
+
+import * as pixiMod from 'node_modules/pixi.js';
+declare var PIXI: typeof pixiMod;
+
+declare var PIXI: typeof import('node_modules/pixi.js');
 
 /**
  * This class represents a camera that is used by ct.js' cameras.
@@ -126,14 +130,13 @@ const restrictInRect = function restrictInRect(camera: Camera) {
     }
 };
 export class Camera extends PIXI.DisplayObject {
-    follow: PIXI.DisplayObject | Copy | undefined | false;
-    rotate = false;
-    followX = true;
-    followY = true;
+    follow: pixiMod.DisplayObject | Copy | undefined | false;
+    followX: boolean;
+    followY: boolean;
     targetX: number;
     targetY: number;
-    width: number;
-    height: number;
+    #width: number;
+    #height: number;
     z: number;
     shiftX: number;
     shiftY: number;
@@ -157,13 +160,17 @@ export class Camera extends PIXI.DisplayObject {
     shakeMax: number;
     constructor(x: number, y: number, w: number, h: number) {
         super();
-        this.rotate = false;
+        this.reset(x, y, w, h);
+        this.getBounds = this.getBoundingBox;
+    }
+    reset(x: number, y: number, w: number, h: number): void {
+        console.log('camera size', w, h);
         this.followX = this.followY = true;
         this.targetX = this.x = x;
         this.targetY = this.y = y;
         this.z = 500;
-        this.width = w || 1920;
-        this.height = h || 1080;
+        this.#width = w || 1920;
+        this.#height = h || 1080;
         this.shiftX = this.shiftY = this.interpolatedShiftX = this.interpolatedShiftY = 0;
         this.borderX = this.borderY = null;
         this.drift = 0;
@@ -174,14 +181,25 @@ export class Camera extends PIXI.DisplayObject {
         this.shakeFrequency = 50;
         this.shakePhase = this.shakePhaseX = this.shakePhaseY = 0;
         this.shakeMax = 10;
-
-        this.getBounds = this.getBoundingBox;
     }
 
-    get scale(): PIXI.ObservablePoint {
+    get width(): number {
+        return this.#width;
+    }
+    set width(value: number) {
+        this.#width = value;
+    }
+    get height(): number {
+        return this.#height;
+    }
+    set height(value: number) {
+        this.#height = value;
+    }
+
+    get scale(): pixiMod.ObservablePoint {
         return this.transform.scale;
     }
-    set scale(value: number | PIXI.Point) {
+    set scale(value: number | pixiMod.Point) {
         if (typeof value === 'number') {
             this.transform.scale.x = this.transform.scale.y = value;
         } else {
@@ -239,8 +257,8 @@ export class Camera extends PIXI.DisplayObject {
             this.follow = false;
         }
         // Autofollow the first copy of the followed template, set in the room's settings
-        if (!this.follow && ctjsGame.room.follow) {
-            [this.follow] = templates.list[ctjsGame.room.follow];
+        if (!this.follow && roomsLib.current.follow) {
+            [this.follow] = templatesLib.list[roomsLib.current.follow];
         }
         // Follow copies around
         if (this.follow && ('x' in this.follow) && ('y' in this.follow)) {
@@ -345,10 +363,10 @@ export class Camera extends PIXI.DisplayObject {
      * @param y The y coordinate in UI space.
      * @returns A pair of new `x` and `y` coordinates.
      */
-    uiToGameCoord(x: number, y: number): PIXI.Point {
+    uiToGameCoord(x: number, y: number): pixiMod.Point {
         const modx = (x - this.width / 2) * this.scale.x,
               mody = (y - this.height / 2) * this.scale.y;
-        const result = u.rotate(modx, mody, this.angle);
+        const result = uLib.rotate(modx, mody, this.angle);
         return new PIXI.Point(
             result.x + this.computedX,
             result.y + this.computedY
@@ -361,10 +379,10 @@ export class Camera extends PIXI.DisplayObject {
      * @param {number} y The y coordinate in game space.
      * @returns {PIXI.Point} A pair of new `x` and `y` coordinates.
      */
-    gameToUiCoord(x: number, y: number): PIXI.Point {
+    gameToUiCoord(x: number, y: number): pixiMod.Point {
         const relx = x - this.computedX,
               rely = y - this.computedY;
-        const unrotated = u.rotate(relx, rely, -this.angle);
+        const unrotated = uLib.rotate(relx, rely, -this.angle);
         return new PIXI.Point(
             unrotated.x / this.scale.x + this.width / 2,
             unrotated.y / this.scale.y + this.height / 2
@@ -376,7 +394,7 @@ export class Camera extends PIXI.DisplayObject {
      * especially with rotated viewports.
      * @returns {PIXI.Point} A pair of `x` and `y` coordinates.
      */
-    getTopLeftCorner(): PIXI.Point {
+    getTopLeftCorner(): pixiMod.Point {
         return this.uiToGameCoord(0, 0);
     }
 
@@ -386,7 +404,7 @@ export class Camera extends PIXI.DisplayObject {
      * especially with rotated viewports.
      * @returns {PIXI.Point} A pair of `x` and `y` coordinates.
      */
-    getTopRightCorner(): PIXI.Point {
+    getTopRightCorner(): pixiMod.Point {
         return this.uiToGameCoord(this.width, 0);
     }
 
@@ -396,7 +414,7 @@ export class Camera extends PIXI.DisplayObject {
      * especially with rotated viewports.
      * @returns {PIXI.Point} A pair of `x` and `y` coordinates.
      */
-    getBottomLeftCorner(): PIXI.Point {
+    getBottomLeftCorner(): pixiMod.Point {
         return this.uiToGameCoord(0, this.height);
     }
 
@@ -406,7 +424,7 @@ export class Camera extends PIXI.DisplayObject {
      * especially with rotated viewports.
      * @returns {PIXI.Point} A pair of `x` and `y` coordinates.
      */
-    getBottomRightCorner(): PIXI.Point {
+    getBottomRightCorner(): pixiMod.Point {
         return this.uiToGameCoord(this.width, this.height);
     }
 
@@ -415,7 +433,7 @@ export class Camera extends PIXI.DisplayObject {
      * Useful for rotated viewports when something needs to be reliably covered by a rectangle.
      * @returns {PIXI.Rectangle} The bounding box of the camera.
      */
-    getBoundingBox(): PIXI.Rectangle {
+    getBoundingBox(): pixiMod.Rectangle {
         const bb = new PIXI.Bounds();
         const tl = this.getTopLeftCorner(),
               tr = this.getTopRightCorner(),
@@ -435,7 +453,7 @@ export class Camera extends PIXI.DisplayObject {
      * @param {PIXI.DisplayObject} copy An object to check for.
      * @returns {boolean} `true` if an object is visible, `false` otherwise.
      */
-    contains(copy: PIXI.DisplayObject): boolean {
+    contains(copy: pixiMod.DisplayObject): boolean {
         // `true` skips transforms recalculations, boosting performance
         const bounds = copy.getBounds(true);
         return bounds.right > 0 &&
@@ -458,8 +476,8 @@ export class Camera extends PIXI.DisplayObject {
             console.error('[ct.camera] An attempt to realing a room that is not in UI space. The room in question is', room);
             throw new Error('[ct.camera] An attempt to realing a room that is not in UI space.');
         }
-        const w = (rooms.templates[room.name].width || 1),
-              h = (rooms.templates[room.name].height || 1);
+        const w = (roomsLib.templates[room.name].width || 1),
+              h = (roomsLib.templates[room.name].height || 1);
         for (const copy of room.children) {
             if (!(copy instanceof Copy)) {
                 continue;
@@ -480,9 +498,9 @@ export class Camera extends PIXI.DisplayObject {
               py = this.computedY,
               sx = 1 / (isNaN(this.scale.x) ? 1 : this.scale.x),
               sy = 1 / (isNaN(this.scale.y) ? 1 : this.scale.y);
-        for (const item of ctjsGame.stage.children) {
+        for (const item of pixiApp.stage.children) {
             if (!('isUi' in item &&
-                (item as PIXI.DisplayObject & {isUi: boolean}).isUi) &&
+                (item as pixiMod.DisplayObject & {isUi: boolean}).isUi) &&
                 item.pivot
             ) {
                 item.x = -this.width / 2;
@@ -496,3 +514,12 @@ export class Camera extends PIXI.DisplayObject {
         }
     }
 }
+
+const mainCamera = new Camera(
+    0,
+    0,
+    [/*!@startwidth@*/][0] as number,
+    [/*!@startheight@*/][0] as number
+);
+
+export default mainCamera;

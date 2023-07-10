@@ -1,7 +1,7 @@
 /* eslint-disable no-nested-ternary */
 /* global CtTimer */
 
-ct.tween = {
+const tween = {
     /**
      * Creates a new tween effect and adds it to the game loop
      *
@@ -10,9 +10,9 @@ ct.tween = {
      * @param {Object} options.fields A map with pairs `fieldName: newValue`.
      * Values must be of numerical type.
      * @param {Function} options.curve An interpolating function. You can write your own,
-     * or use default ones (see methods in `ct.tween`). The default one is `ct.tween.ease`.
+     * or use default ones (see methods in `tween`). The default one is `tween.ease`.
      * @param {Number} options.duration The duration of easing, in milliseconds.
-     * @param {Number} options.useUiDelta If true, use ct.deltaUi instead of ct.delta.
+     * @param {Number} options.useUiDelta If true, use u.deltaUi instead of u.delta.
      * The default is `false`.
      * @param {boolean} options.silent If true, will not throw errors if the animation
      * was interrupted.
@@ -25,7 +25,7 @@ ct.tween = {
         var tween = {
             obj: options.obj,
             fields: options.fields || {},
-            curve: options.curve || ct.tween.ease,
+            curve: options.curve || tween.ease,
             duration: options.duration || 1000,
             timer: new CtTimer(this.duration, false, options.useUiDelta || false)
         };
@@ -36,7 +36,7 @@ ct.tween = {
             for (var field in tween.fields) {
                 tween.starting[field] = tween.obj[field] || 0;
             }
-            ct.tween.tweens.push(tween);
+            tween.tweens.push(tween);
         });
         if (options.silent) {
             promise.catch(() => void 0);
@@ -46,7 +46,7 @@ ct.tween = {
             tween.reject({
                 code: 0,
                 info: 'Stopped by game logic',
-                from: 'ct.tween'
+                from: 'tween'
             });
         };
         return promise;
@@ -228,6 +228,7 @@ ct.tween = {
         return d * x + s;
     },
     tweens: [],
-    wait: ct.u.wait
+    wait: u.wait
 };
-ct.tween.easeInOutQuad = ct.tween.ease;
+tween.easeInOutQuad = tween.ease;
+window.tween = tween;

@@ -1,10 +1,14 @@
-import * as PIXI from 'node_modules/pixi.js';
-import {Room} from './rooms';
-import {ctjsGame} from '.';
-import {res} from './res';
-import {templates} from './templates';
+import roomsLib, {Room} from './rooms';
+import res from './res';
+import templatesLib from './templates';
 
 import {ExportedBg} from './../node_requires/exporter/_exporterContracts';
+import mainCamera from 'camera';
+import { stack } from 'index';
+import uLib from 'u';
+
+import * as pixiMod from 'node_modules/pixi.js';
+declare var PIXI: typeof pixiMod;
 
 const bgList: Record<string, Background[]> = {};
 
@@ -70,7 +74,7 @@ export class Background extends PIXI.TilingSprite {
     _destroyed: boolean;
     parent: Room;
     constructor(
-        texName: string | PIXI.Texture,
+        texName: string | pixiMod.Texture,
         frame = 0,
         depth = 0,
         exts: ExportedBg['exts'] = {
@@ -85,7 +89,7 @@ export class Background extends PIXI.TilingSprite {
             shiftY: 0
         }
     ) {
-        let {width, height} = ctjsGame.camera;
+        let {width, height} = mainCamera;
         const texture = texName instanceof PIXI.Texture ?
             texName :
             res.getTexture(texName, frame || 0);
@@ -113,8 +117,8 @@ export class Background extends PIXI.TilingSprite {
             }
             bgList.OTHER.push(this);
         }
-        templates.list.BACKGROUND.push(this);
-        ctjsGame.stack.push(this);
+        templatesLib.list.BACKGROUND.push(this);
+        stack.push(this);
         this.zIndex = depth;
         this.anchor.set(0, 0);
         if (exts) {
@@ -129,8 +133,8 @@ export class Background extends PIXI.TilingSprite {
         this.reposition();
     }
     onStep(): void {
-        this.shiftX += ctjsGame.delta * this.movementX;
-        this.shiftY += ctjsGame.delta * this.movementY;
+        this.shiftX += uLib.delta * this.movementX;
+        this.shiftY += uLib.delta * this.movementY;
     }
     /**
      * Updates the position of this background.
@@ -138,11 +142,11 @@ export class Background extends PIXI.TilingSprite {
     reposition(): void {
         const cameraBounds = this.isUi ?
             {
-                x: 0, y: 0, width: ctjsGame.camera.width, height: ctjsGame.camera.height
+                x: 0, y: 0, width: mainCamera.width, height: mainCamera.height
             } :
-            ctjsGame.camera.getBoundingBox();
-        const dx = ctjsGame.camera.x - ctjsGame.camera.width / 2,
-              dy = ctjsGame.camera.y - ctjsGame.camera.height / 2;
+            mainCamera.getBoundingBox();
+        const dx = mainCamera.x - mainCamera.width / 2,
+              dy = mainCamera.y - mainCamera.height / 2;
         if (this.repeat !== 'repeat-x' && this.repeat !== 'no-repeat') {
             this.y = cameraBounds.y;
             this.tilePosition.y = -this.y - dy * (this.parallaxY - 1) + this.shiftY;
@@ -177,9 +181,9 @@ const backgroundsLib = {
     /**
      * @returns The created background
      */
-    add(texName: string, frame = 0, depth = 0, container: PIXI.Container): Background {
+    add(texName: string, frame = 0, depth = 0, container: pixiMod.Container): Background {
         if (!container) {
-            container = ctjsGame.room;
+            container = roomsLib.current;
         }
         if (!texName) {
             throw new Error('[backgrounds] The texName argument is required.');
@@ -189,5 +193,4 @@ const backgroundsLib = {
         return bg;
     }
 };
-
-export const backgrounds = backgroundsLib;
+export default backgroundsLib;

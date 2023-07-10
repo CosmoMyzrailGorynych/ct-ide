@@ -217,14 +217,11 @@ const buildCtJsLib = () => {
         platform: 'browser',
         format: 'iife',
         external: [
-            'node_modules/pixi.js'
-        ]
-        // TODO: Make the rest external
-        /* external: [
+            'node_modules/pixi.js',
             'node_modules/pixi-spine',
             'node_modules/@pixi/particle-emitter',
             'node_modules/@pixi/sound'
-        ] */
+        ]
     }));
     // Pixi.js dependencies
     processes.push(esbuild({

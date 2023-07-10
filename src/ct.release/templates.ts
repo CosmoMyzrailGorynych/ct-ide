@@ -1,11 +1,14 @@
-import * as PIXI from 'node_modules/pixi.js';
-import {CtjsTexture, res} from './res';
+import res, {CtjsTexture} from './res';
 import {Background} from './backgrounds';
 import {Tilemap} from './tilemaps';
-import {Room} from './rooms';
-import {ctjsGame, copyTypeSymbol} from '.';
+import roomsLib, {Room} from './rooms';
+import {copyTypeSymbol, stack} from '.';
+
+import * as pixiMod from 'node_modules/pixi.js';
+declare var PIXI: typeof pixiMod;
 
 import {ExportedTemplate, TextureShape} from '../node_requires/exporter/_exporterContracts';
+import uLib from 'u';
 
 let uid = 0;
 
@@ -93,14 +96,14 @@ export class Copy extends PIXI.AnimatedSprite {
         },
         container?: Room
     ) {
-        container = container || ctjsGame.room;
-        let textures: PIXI.Texture[] = [PIXI.Texture.EMPTY];
+        container = container || roomsLib.current;
+        let textures: pixiMod.Texture[] = [PIXI.Texture.EMPTY];
         var t;
         if (template) {
-            if (!(template in templates.templates)) {
+            if (!(template in templatesLib.templates)) {
                 throw new Error(`[ct.templates] An attempt to create a copy of a non-existent template \`${template}\` detected. A typo?`);
             }
-            t = templates.templates[template];
+            t = templatesLib.templates[template];
             if (t.texture && t.texture !== '-1') {
                 textures = res.getTexture(t.texture);
             }
@@ -176,13 +179,13 @@ export class Copy extends PIXI.AnimatedSprite {
             if (exts && exts.depth !== void 0) {
                 this.depth = exts.depth;
             }
-            if (templates.list[template]) {
-                templates.list[template].push(this);
+            if (templatesLib.list[template]) {
+                templatesLib.list[template].push(this);
             } else {
-                templates.list[template] = [this];
+                templatesLib.list[template] = [this];
             }
             this.onBeforeCreateModifier();
-            templates.templates[template].onCreate.apply(this);
+            templatesLib.templates[template].onCreate.apply(this);
         }
         return this;
     }
@@ -294,13 +297,13 @@ export class Copy extends PIXI.AnimatedSprite {
      */
     move(): void {
         if (this.gravity) {
-            this.hspeed += this.gravity * ctjsGame.delta *
+            this.hspeed += this.gravity * uLib.delta *
                 Math.cos(this.gravityDir * Math.PI / 180);
-            this.vspeed += this.gravity * ctjsGame.delta *
+            this.vspeed += this.gravity * uLib.delta *
                 Math.sin(this.gravityDir * Math.PI / 180);
         }
-        this.x += this.hspeed * ctjsGame.delta;
-        this.y += this.vspeed * ctjsGame.delta;
+        this.x += this.hspeed * uLib.delta;
+        this.y += this.vspeed * uLib.delta;
     }
     /**
      * Adds a speed vector to the copy, accelerating it by a given delta speed
@@ -345,7 +348,7 @@ const onCreateModifier = function () {
  * An object with properties and methods for manipulating templates and copies,
  * mainly for finding particular copies and creating new ones.
  */
-export const templates = {
+const templatesLib = {
     Copy,
     Background,
     Tilemap,
@@ -381,7 +384,7 @@ export const templates = {
         }
         const obj = new Copy(template, x, y, exts);
         room.addChild(obj);
-        ctjsGame.stack.push(obj);
+        stack.push(obj);
         onCreateModifier.apply(obj);
         return obj;
     },
@@ -396,7 +399,7 @@ export const templates = {
      * @returns The created copy.
      */
     copy(template: string, x = 0, y = 0, exts?: Record<string, unknown>): Copy {
-        return templates.copyIntoRoom(template, x, y, ctjsGame.room, exts);
+        return templatesLib.copyIntoRoom(template, x, y, roomsLib.current, exts);
     },
     /**
      * Applies a function to each copy in the current room
@@ -404,7 +407,7 @@ export const templates = {
      * @returns {void}
      */
     each(func: (this: Copy) => void): void {
-        for (const copy of ctjsGame.stack) {
+        for (const copy of stack) {
             if (!(copy instanceof Copy)) {
                 continue; // Skip backgrounds and tile layers
             }
@@ -428,7 +431,7 @@ export const templates = {
         template: string,
         func: (this: Copy) => void
     ): void {
-        for (const copy of templates.list[template]) {
+        for (const copy of templatesLib.list[template]) {
             func.apply(copy, this);
         }
     },
@@ -440,10 +443,10 @@ export const templates = {
      * `false` otherwise.
      */
     exists(template: string): boolean {
-        if (!(template in templates.templates)) {
+        if (!(template in templatesLib.templates)) {
             throw new Error(`[ct.templates] templates.exists: There is no such template ${template}.`);
         }
-        return templates.list[template].length > 0;
+        return templatesLib.list[template].length > 0;
     },
 
     /**
@@ -469,7 +472,7 @@ export const templates = {
         return Boolean(obj);
     }) as {
         (obj: Copy): obj is LivingCopy;
-        (obj: PIXI.DisplayObject): obj is PIXI.DisplayObject;
+        (obj: pixiMod.DisplayObject): obj is pixiMod.DisplayObject;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (obj: unknown): boolean
     },
@@ -490,3 +493,4 @@ export const templates = {
         /*!%ondestroy%*/
     }
 };
+export default templatesLib;

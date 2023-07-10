@@ -142,8 +142,8 @@ export class CtAction {
 /**
  * A list of custom Actions. They are defined in the Settings tab → Edit actions section.
  */
-export const actions: Record<string, CtAction> = {};
-export const inputs = {
+export const actionsLib: Record<string, CtAction> = {};
+export const inputsLib = {
     registry: inputRegistry,
     /**
      * Adds a new action and puts it into `ct.actions`.
@@ -156,14 +156,14 @@ export const inputs = {
         code: string,
         multiplier?: number,
     }>): CtAction {
-        if (name in actions) {
+        if (name in actionsLib) {
             throw new Error(`[ct.inputs] An action "${name}" already exists, can't add a new one with the same name.`);
         }
         const action = new CtAction(name);
         for (const method of methods) {
             action.addMethod(method.code, method.multiplier);
         }
-        actions[name] = action;
+        actionsLib[name] = action;
         return action;
     },
     /**
@@ -172,17 +172,17 @@ export const inputs = {
      * @returns {void}
      */
     removeAction(name: string): void {
-        delete actions[name];
+        delete actionsLib[name];
     },
     /**
      * Recalculates values for every action in a game.
      * @returns {void}
      */
     updateActions(): void {
-        for (const i in actions) {
-            actions[i].update();
+        for (const i in actionsLib) {
+            actionsLib[i].update();
         }
     }
 };
 
-/*!@actions@*/
+export default inputsLib;

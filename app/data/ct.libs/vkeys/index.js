@@ -1,5 +1,5 @@
-(function ctVkeys() {
-    ct.vkeys = {
+const vkeys = (function ctVkeys() {
+    return {
         button(options) {
             var opts = Object.assign({
                 key: 'Vk1',
@@ -7,9 +7,9 @@
                 texNormal: -1,
                 x: 128,
                 y: 128,
-                container: ct.room
+                container: rooms.current
             }, options || {});
-            const copy = ct.templates.copy('VKEY', 0, 0, {
+            const copy = templates.copy('VKEY', 0, 0, {
                 opts: opts
             }, opts.container);
             if (typeof options.x === 'function' || typeof options.y === 'function') {
@@ -25,9 +25,9 @@
                 trackballTex: -1,
                 x: 128,
                 y: 128,
-                container: ct.room
+                container: rooms.current
             }, options || {});
-            const copy = ct.templates.copy('VJOYSTICK', 0, 0, {
+            const copy = templates.copy('VJOYSTICK', 0, 0, {
                 opts: opts
             }, opts.container);
             if (typeof options.x === 'function' || typeof options.y === 'function') {

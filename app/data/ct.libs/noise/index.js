@@ -20,8 +20,8 @@
  *
  */
 
-(function () {
-    var module = ct.noise = {};
+const noise = (function () {
+    var module = {};
 
     function Grad(x, y, z) {
         this.x = x;
@@ -359,4 +359,5 @@
             v
         );
     };
+    return module;
 })();

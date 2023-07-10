@@ -1,25 +1,33 @@
-/// <reference types="../../app/node_modules/pixi.js/lib" />
+import * as pixiMod from 'node_modules/pixi.js';
+declare var PIXI: typeof pixiMod;
 
 /*! Made with ct.js http://ctjs.rocks/ */
 
-import 'node_modules/pixi.js';
+import {updateViewport, toggleFullscreen, getIsFullscreen} from './fittoscreen';
+import {actionsLib as actionsM, inputsLib as inputsM, CtAction} from './inputs';
+import backgroundsM, {Background} from './backgrounds';
+import cameraM, {Camera} from './camera';
+import contentM from './content';
+// import emitters, {EmitterTandem} from './emitters';
+import resM from 'res';
+import roomsM, {Room} from './rooms';
+import soundsM from 'sounds';
+import stylesM from 'styles';
+import templatesM, {Copy} from './templates';
+import tilemapsM, {Tilemap} from './tilemaps';
+import timerM from './timer';
+import uM from './u';
 
-import * as PIXI from 'node_modules/pixi.js';
-import {actions, inputs, CtAction} from './inputs';
-import {backgrounds, Background} from './backgrounds';
-import {Camera} from './camera';
-import {content} from './content';
-// import {emitters, EmitterTandem} from './emitters';
-import {res} from './res';
-import {rooms, Room} from './rooms';
-// import {sounds} from 'sounds';
-// import {styles} from 'styles';
-import {Copy, templates} from './templates';
-import {tilemaps, Tilemap} from './tilemaps';
-import {timer} from './timer';
-import {u} from './u';
+import {ExportedMeta, viewMode} from '../node_requires/exporter/_exporterContracts';
 
-import {ExportedMeta} from '../node_requires/exporter/_exporterContracts';
+// eslint-disable-next-line no-console
+console.log(
+    `%c 😺 %c ct.js game editor %c v/*!@ctversion@*/ %c https://ctjs.rocks/ `,
+    'background: #446adb; color: #fff; padding: 0.5em 0;',
+    'background: #5144db; color: #fff; padding: 0.5em 0;',
+    'background: #446adb; color: #fff; padding: 0.5em 0;',
+    'background: #5144db; color: #fff; padding: 0.5em 0;'
+);
 
 try {
     require('electron');
@@ -33,70 +41,59 @@ try {
 /**
  * a pool of `kill`-ed copies for delaying frequent garbage collection
  */
-export const deadPool: PIXI.DisplayObject[] = [];
+export const deadPool: pixiMod.DisplayObject[] = [];
 export const copyTypeSymbol = Symbol('I am a ct.js copy');
 setInterval(function cleanDeadPool() {
     deadPool.length = 0;
 }, 1000 * 60);
 
-type ctFittoscreen = (() => void) & {
-    mode: string;
-};
+export const meta: ExportedMeta = [/*!@projectmeta@*/][0];
 
 /**
- * The ct.js library
+ * An object that houses render settings for the game.
  */
-export const ctjsGame = {
-    render: {
-        /** If set to true, enables retina (high-pixel density) rendering. */
-        highDensity: [/*!@highDensity@*/][0] as boolean,
-        /** A target number of frames per second. It can be interpreted as a second in timers. */
-        speed: [/*!@maxfps@*/][0] || 60,
-        /** The actual number of frames per second the machine achieves. */
-        fps: [/*!@maxfps@*/][0] || 60
+export const settings = {
+    /** If set to true, enables retina (high-pixel density) rendering. */
+    get highDensity(): boolean {
+        return (pixiApp.renderer as pixiMod.Renderer).autoDensity;
     },
-    stack: [] as (Copy | Background)[],
+    set highDensity(value: boolean) {
+        // Faulty pixi.js typings, you can change autoDensity
+        (pixiApp.renderer as any).autoDensity = value;
+        if (roomsM.current) {
+            updateViewport();
+        }
+    },
+    /** A target number of frames per second. It can be interpreted as a second in timers. */
+    get speed(): number {
+        return pixiApp.ticker.maxFPS;
+    },
+    set speed(value: number) {
+        pixiApp.ticker.maxFPS = value;
+    },
     /**
-     * Current root room.
-     */
-    room: null as Room,
-    /**
-     * A measure of how long a frame took time to draw, usually equal to 1 and larger on lags.
-     * For example, if it is equal to 2, it means that the previous frame took twice as much time
-     * compared to expected FPS rate.
+     * A string that indicates the current scaling approach (can be changed).
+     * Possible options:
      *
-     * Use ct.delta to balance your movement and other calculations on different framerates by
-     * multiplying it with your reference value.
-     *
-     * Note that `this.move()` already uses it, so there is no need to premultiply
-     * `this.speed` with it.
-     *
-     * **A minimal example:**
-     * ```js
-     * this.x += this.windSpeed * ct.delta,
-     * ```
+     * * `asIs` — disables any viewport management; the rendered canvas
+     * will be placed as is in the top-left corner.
+     * * `fastScale` — the viewport will proportionally fill the screen
+     * without changing the resolution.
+     * * `fastScaleInteger` — the viewport will be positioned at the middle
+     * of the screen, and will be scaled by whole numbers (x2, x3, x4 and so on).
+     * * `expand` — the viewport will fill the whole screen. The camera will
+     * expand to accommodate the new area.
+     * * `expandViewport` — same as `expand` plus simple camera management
+     * so new area spans around the old camera bounds.
+     * * `scaleFit` — the viewport will proportionally fill the screen, leaving letterboxes
+     * around the base viewport. The resolution is changed to match the screen.
+     * * `scaleFill` — the viewport fills the screen, expanding the camera to avoid letterboxing.
+     * The resolution is changed to match the screen.
      */
-    delta: 1,
-    /**
-     * A measure of how long a frame took time to draw, usually equal to 1 and larger on lags.
-     * For example, if it is equal to 2, it means that the previous frame took twice as much time
-     * compared to expected FPS rate.
-     *
-     * This is a version for UI elements, as it is not affected by time scaling, and thus works well
-     * both with slow-mo effects and game pause.
-     */
-    deltaUi: 1,
-    /**
-     * The camera that outputs its view to the renderer.
-     */
-    camera: null as Camera | null,
-    /**
-     * ct.js version in form of a string `X.X.X`.
-     */
-    version: '/*!@ctversion@*/',
-    meta: [/*!@projectmeta@*/][0] as ExportedMeta,
+    viewMode: '/*@viewMode@*/' as viewMode,
+
     get width(): number {
-        return ctjsGame.pixiApp.renderer.view.width;
+        return pixiApp.renderer.view.width;
     },
     /**
      * Resizes the drawing canvas and viewport to the given value in pixels.
@@ -104,20 +101,13 @@ export const ctjsGame = {
      * @param {number} value New width in pixels
      */
     set width(value: number) {
-        ctjsGame.camera.width = value;
-        if (!('fittoscreen' in ctjsGame)) {
-            return;
-        }
-        const fittoscreen = (ctjsGame as any).fittoscreen as ctFittoscreen;
-        if (fittoscreen.mode === 'fastScale') {
-            ctjsGame.pixiApp.renderer.resize(value, ctjsGame.height);
-        }
-        if (fittoscreen) {
-            fittoscreen();
+        cameraM.width = value;
+        if (roomsM.current) {
+            updateViewport();
         }
     },
     get height(): number {
-        return ctjsGame.pixiApp.renderer.view.height;
+        return pixiApp.renderer.view.height;
     },
     /**
      * Resizes the drawing canvas and viewport to the given value in pixels.
@@ -125,147 +115,107 @@ export const ctjsGame = {
      * @param {number} value New height in pixels
      */
     set height(value: number) {
-        ctjsGame.camera.height = value;
-        if (!('fittoscreen' in ctjsGame)) {
-            return;
-        }
-        const fittoscreen = (ctjsGame as (typeof ctjsGame) & {fittoscreen: ctFittoscreen}).fittoscreen;
-        if (fittoscreen.mode === 'fastScale') {
-            ctjsGame.pixiApp.renderer.resize(ctjsGame.width, value);
-        }
-        if (fittoscreen) {
-            fittoscreen();
+        cameraM.height = value;
+        if (roomsM.current) {
+            updateViewport();
         }
     },
-    /** The width of the current room's initial viewport, as it was set in ct.IDE */
-    roomWidth: [/*!@startwidth@*/][0] as number,
-    /** The height of the current room's initial viewport, as it was set in ct.IDE */
-    roomHeight: [/*!@startheight@*/][0] as number,
-
-    // Core libraries
-    PIXI,
-    actions,
-    inputs,
-    content,
-    backgrounds,
-    res,
-    rooms,
-    // sounds,
-    // styles,
-    templates,
-    tilemaps,
-    timer,
-    u,
-
-    // Base classes
-    Action: CtAction,
-    // EmitterTandem,
-    Background,
-    Tilemap,
-
-    // Uninicialized values that require additional startup logic in themselves
-    // or their dependencies
-    /** The PIXI.Application that runs ct.js game */
-    pixiApp: null as PIXI.Application,
-    /** The main ct.js/pixi.js container that holds all the rooms on stage and cameras. */
-    stage: null as PIXI.Container,
-    /** Main game loop function. Should not be used directly. */
-    loop: null as () => void
+    get fullscreen(): boolean {
+        return getIsFullscreen();
+    },
+    set fullscreen(value: boolean) {
+        if (getIsFullscreen() !== value) {
+            toggleFullscreen();
+        }
+    }
 };
 
-// eslint-disable-next-line no-console
-console.log(
-    `%c 😺 %c ct.js game editor %c v${ctjsGame.version} %c https://ctjs.rocks/ `,
-    'background: #446adb; color: #fff; padding: 0.5em 0;',
-    'background: #5144db; color: #fff; padding: 0.5em 0;',
-    'background: #446adb; color: #fff; padding: 0.5em 0;',
-    'background: #5144db; color: #fff; padding: 0.5em 0;'
-);
-const pixiAppSettings = {
-    width: [/*!@startwidth@*/][0] as number,
-    height: [/*!@startheight@*/][0] as number,
-    antialias: ![/*!@pixelatedrender@*/][0],
-    powerPreference: 'high-performance' as WebGLPowerPreference,
-    sharedTicker: false
-};
-try {
-    ctjsGame.pixiApp = new PIXI.Application(pixiAppSettings);
-} catch (e) {
-    console.error(e);
-    // eslint-disable-next-line no-console
-    console.warn('[ct.js] Something bad has just happened. This is usually due to hardware problems. I\'ll try to fix them now, but if the game still doesn\'t run, try including a legacy renderer in the project\'s settings.');
-    PIXI.settings.SPRITE_MAX_TEXTURES = Math.min(PIXI.settings.SPRITE_MAX_TEXTURES, 16);
-    ctjsGame.pixiApp = new PIXI.Application(pixiAppSettings);
+export const stack: (Copy | Background)[] = [];
+
+/** The PIXI.Application that runs ct.js game */
+export let pixiApp: pixiMod.Application;
+{
+    const pixiAppSettings: Partial<pixiMod.IApplicationOptions> = {
+        width: [/*!@startwidth@*/][0] as number,
+        height: [/*!@startheight@*/][0] as number,
+        antialias: ![/*!@pixelatedrender@*/][0],
+        powerPreference: 'high-performance' as WebGLPowerPreference,
+        sharedTicker: false
+    };
+    try {
+        pixiApp = new PIXI.Application(pixiAppSettings);
+    } catch (e) {
+        console.error(e);
+        // eslint-disable-next-line no-console
+        console.warn('[ct.js] Something bad has just happened. This is usually due to hardware problems. I\'ll try to fix them now, but if the game still doesn\'t run, try including a legacy renderer in the project\'s settings.');
+        PIXI.settings.SPRITE_MAX_TEXTURES = Math.min(PIXI.settings.SPRITE_MAX_TEXTURES, 16);
+        pixiApp = new PIXI.Application(pixiAppSettings);
+    }
+    // eslint-disable-next-line prefer-destructuring
+    PIXI.settings.ROUND_PIXELS = [/*!@pixelatedrender@*/][0];
+    if (!pixiApp.renderer.options.antialias) {
+        PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
+    }
+    settings.speed = [/*!@maxfps@*/][0] || 60;
+    settings.highDensity = [/*!@highDensity@*/][0];
+    document.getElementById('ct').appendChild(pixiApp.view as HTMLCanvasElement);
 }
 
-// eslint-disable-next-line prefer-destructuring
-PIXI.settings.ROUND_PIXELS = [/*!@pixelatedrender@*/][0];
-ctjsGame.pixiApp.ticker.maxFPS = [/*!@maxfps@*/][0] || 0;
-if (!ctjsGame.pixiApp.renderer.options.antialias) {
-    PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
-}
-ctjsGame.stage = ctjsGame.pixiApp.stage;
-// Incorrect pixi.js typings? autoDensity is writable
-(ctjsGame.pixiApp.renderer as any).autoDensity = ctjsGame.render.highDensity;
-document.getElementById('ct').appendChild(ctjsGame.pixiApp.view as HTMLCanvasElement);
-
-// eslint-disable-next-line max-lines-per-function
-(() => {
+let loading: Promise<void>;
+{
     const killRecursive = (copy: Copy | Background) => {
         copy.kill = true;
         if (copy instanceof Copy && copy.onDestroy) {
-            templates.onDestroy.apply(copy);
+            templatesM.onDestroy.apply(copy);
             copy.onDestroy.apply(copy);
         }
         for (const child of copy.children) {
-            if (templates.isCopy(child)) {
+            if (templatesM.isCopy(child)) {
                 killRecursive(child as Copy); // bruh
             }
         }
-        const stackIndex = ctjsGame.stack.indexOf(copy);
+        const stackIndex = stack.indexOf(copy);
         if (stackIndex !== -1) {
-            ctjsGame.stack.splice(stackIndex, 1);
+            stack.splice(stackIndex, 1);
         }
         if (copy instanceof Copy && copy.template) {
-            const templatelistIndex = templates.list[copy.template].indexOf(copy);
+            const templatelistIndex = templatesM.list[copy.template].indexOf(copy);
             if (templatelistIndex !== -1) {
-                templates.list[copy.template].splice(templatelistIndex, 1);
+                templatesM.list[copy.template].splice(templatelistIndex, 1);
             }
         }
         deadPool.push(copy);
     };
     const manageCamera = () => {
-        if (ctjsGame.camera) {
-            ctjsGame.camera.update(ctjsGame.deltaUi);
-            ctjsGame.camera.manageStage();
-        }
+        cameraM.update(uM.deltaUi);
+        cameraM.manageStage();
     };
 
-    ctjsGame.loop = function loop() {
-        const {ticker} = ctjsGame.pixiApp;
-        ctjsGame.delta = ticker.deltaMS / (1000 / (ticker.maxFPS || 60));
-        ctjsGame.deltaUi = ticker.elapsedMS / (1000 / (ticker.maxFPS || 60));
-        ctjsGame.inputs.updateActions();
-        ctjsGame.timer.updateTimers();
+    const loop = () => {
+        const {ticker} = pixiApp;
+        uM.delta = ticker.deltaMS / (1000 / (ticker.maxFPS || 60));
+        uM.deltaUi = ticker.elapsedMS / (1000 / (ticker.maxFPS || 60));
+        inputsM.updateActions();
+        timerM.updateTimers();
         /*!%beforeframe%*/
-        rooms.rootRoomOnStep.apply(ctjsGame.room);
-        for (let i = 0, li = ctjsGame.stack.length; i < li; i++) {
-            templates.beforeStep.apply(ctjsGame.stack[i]);
-            ctjsGame.stack[i].onStep.apply(ctjsGame.stack[i]);
-            templates.afterStep.apply(ctjsGame.stack[i]);
+        roomsM.rootRoomOnStep.apply(roomsM.current);
+        for (let i = 0, li = stack.length; i < li; i++) {
+            templatesM.beforeStep.apply(stack[i]);
+            stack[i].onStep.apply(stack[i]);
+            templatesM.afterStep.apply(stack[i]);
         }
         // There may be a number of rooms stacked on top of each other.
         // Loop through them and filter out everything that is not a room.
-        for (const item of ctjsGame.stage.children) {
+        for (const item of pixiApp.stage.children) {
             if (!(item instanceof Room)) {
                 continue;
             }
-            rooms.beforeStep.apply(item);
+            roomsM.beforeStep.apply(item);
             item.onStep.apply(item);
-            rooms.afterStep.apply(item);
+            roomsM.afterStep.apply(item);
         }
         // copies
-        for (const copy of ctjsGame.stack) {
+        for (const copy of stack) {
             // eslint-disable-next-line no-underscore-dangle
             if (copy.kill && !copy._destroyed) {
                 killRecursive(copy); // This will also allow a parent to eject children
@@ -278,41 +228,79 @@ document.getElementById('ct').appendChild(ctjsGame.pixiApp.view as HTMLCanvasEle
 
         manageCamera();
 
-        for (let i = 0, li = ctjsGame.stack.length; i < li; i++) {
-            templates.beforeDraw.apply(ctjsGame.stack[i]);
-            ctjsGame.stack[i].onDraw.apply(ctjsGame.stack[i]);
-            templates.afterDraw.apply(ctjsGame.stack[i]);
-            ctjsGame.stack[i].xprev = ctjsGame.stack[i].x;
-            ctjsGame.stack[i].yprev = ctjsGame.stack[i].y;
+        for (let i = 0, li = stack.length; i < li; i++) {
+            templatesM.beforeDraw.apply(stack[i]);
+            stack[i].onDraw.apply(stack[i]);
+            templatesM.afterDraw.apply(stack[i]);
+            stack[i].xprev = stack[i].x;
+            stack[i].yprev = stack[i].y;
         }
 
-        for (const item of ctjsGame.stage.children) {
+        for (const item of pixiApp.stage.children) {
             if (!(item instanceof Room)) {
                 continue;
             }
-            rooms.beforeDraw.apply(item);
+            roomsM.beforeDraw.apply(item);
             item.onDraw.apply(item);
-            rooms.afterDraw.apply(item);
+            roomsM.afterDraw.apply(item);
         }
-        rooms.rootRoomOnDraw.apply(ctjsGame.room);
+        roomsM.rootRoomOnDraw.apply(roomsM.current);
         /*!%afterframe%*/
-        if (rooms.switching) {
-            rooms.forceSwitch();
+        if (roomsM.switching) {
+            roomsM.forceSwitch();
         }
     };
-    ctjsGame.res.loadGame();
-})();
+    loading = resM.loadGame();
+    loading.then(() => {
+        setTimeout(() => {
+            pixiApp.ticker.add(loop);
+            roomsM.forceSwitch(roomsM.starting);
+        }, 0)
+    });
+}
 
-(window as any).ct = ctjsGame;
 (window as any).PIXI = PIXI;
 
-export const pixi = PIXI;
-
 {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const ct = ctjsGame;
-
+    const actions = actionsM;
+    const backgrounds = backgroundsM;
+    const camera = cameraM;
+    const content = contentM;
+    const inputs = inputsM;
+    const res = resM;
+    const rooms = roomsM;
+    const sounds = soundsM;
+    const styles = stylesM;
+    const templates = templatesM;
+    const tilemaps = tilemapsM;
+    const timer = timerM;
+    const u = uM;
+    Object.assign(window, {
+        actions,
+        backgrounds,
+        camera,
+        content,
+        inputs,
+        res,
+        rooms,
+        sounds,
+        styles,
+        templates,
+        tilemaps,
+        timer,
+        u,
+        meta,
+        settings,
+        pixiApp
+    });
+    loading.then(() => {
+        /*!%start%*/
+    });
     /*!@catmods@*/
+
+    /*!@actions@*/
+    /*!@styles@*/
+    /*!%styles%*/
 
     /*!@templates@*/
     /*!%templates%*/

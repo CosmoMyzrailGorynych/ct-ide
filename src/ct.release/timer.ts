@@ -1,4 +1,6 @@
-import {ctjsGame} from '.';
+import uLib from './u';
+import roomsLib from './rooms';
+import {settings} from '.';
 
 const ctTimerTime = Symbol('time');
 const ctTimerRoomUid = Symbol('roomUid');
@@ -32,7 +34,7 @@ export class CtTimer {
      * if `false`, it will use `ct.delta` for counting time.
      */
     constructor(timeMs: number, name?: string, uiDelta = false) {
-        this[ctTimerRoomUid] = ctjsGame.room.uid || null;
+        this[ctTimerRoomUid] = roomsLib.current.uid || null;
         this.name = name && name.toString();
         this.isUi = uiDelta;
         this[ctTimerTime] = 0;
@@ -42,7 +44,7 @@ export class CtTimer {
             this[promiseResolve] = resolve;
             this[promiseReject] = reject;
         });
-        timer.timers.add(this);
+        timerLib.timers.add(this);
     }
 
     /**
@@ -70,10 +72,10 @@ export class CtTimer {
      * @type {number}
      */
     get time(): number {
-        return this[ctTimerTime] * 1000 / ctjsGame.render.speed;
+        return this[ctTimerTime] * 1000 / settings.speed;
     }
     set time(newTime: number) {
-        this[ctTimerTime] = newTime / 1000 * ctjsGame.render.speed;
+        this[ctTimerTime] = newTime / 1000 * settings.speed;
     }
 
     /**
@@ -89,8 +91,8 @@ export class CtTimer {
             this.remove();
             return;
         }
-        this[ctTimerTime] += this.isUi ? ctjsGame.deltaUi : ctjsGame.delta;
-        if (ctjsGame.room.uid !== this[ctTimerRoomUid] && this[ctTimerRoomUid] !== null) {
+        this[ctTimerTime] += this.isUi ? uLib.deltaUi : uLib.delta;
+        if (roomsLib.current.uid !== this[ctTimerRoomUid] && this[ctTimerRoomUid] !== null) {
             this.reject({
                 info: 'Room switch',
                 from: 'ct.timer'
@@ -138,7 +140,7 @@ export class CtTimer {
      * @returns {void}
      */
     remove(): void {
-        timer.timers.delete(this);
+        timerLib.timers.delete(this);
     }
 }
 
@@ -146,7 +148,7 @@ export class CtTimer {
  * Timer utilities
  * @namespace
  */
-export const timer = {
+const timerLib = {
     /**
      * A set with all the active timers.
      * @type Set<CtTimer>
@@ -187,3 +189,4 @@ export const timer = {
         }
     }
 };
+export default timerLib;

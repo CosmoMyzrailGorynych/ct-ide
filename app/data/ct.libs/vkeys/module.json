@@ -36,5 +36,5 @@
         "Vjoy4X": "4th virtual joystick, X axis",
         "Vjoy4Y": "4th virtual joystick, Y axis"
     },
-    "optionalDependencies": ["mouse", "touch", "pointer"]
+    "optionalDependencies": ["pointer"]
 }

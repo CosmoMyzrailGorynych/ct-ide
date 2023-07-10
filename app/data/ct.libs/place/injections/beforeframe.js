@@ -1,1 +1,1 @@
-ct.place.debugTraceGraphics.clear();
+place.debugTraceGraphics.clear();

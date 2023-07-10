@@ -21,6 +21,7 @@ export type ExportedTiledTexture = {
     };
 };
 
+export type viewMode = IProject['settings']['rendering']['viewMode'];
 
 export type ExportedSkeleton = {
     /** The name of the skeleton and how it is used in the code */

@@ -1,11 +1,14 @@
-import {u} from './u';
-import {Background, backgrounds} from './backgrounds';
-import {Copy, templates} from './templates';
-import {Tilemap, tilemaps} from './tilemaps';
-import {Camera} from './camera';
-import {ctjsGame, deadPool} from '.';
+import uLib from './u';
+import backgrounds, {Background} from './backgrounds';
+import templatesLib, {Copy} from './templates';
+import tilemapsLib, {Tilemap} from './tilemaps';
+import mainCamera from './camera';
+import {deadPool, pixiApp, stack} from '.';
 import {ExportedRoom} from './../node_requires/exporter/_exporterContracts';
-import * as PIXI from 'node_modules/pixi.js';
+import { updateViewport } from 'fittoscreen';
+
+import * as pixiMod from 'node_modules/pixi.js';
+declare var PIXI: typeof pixiMod;
 
 type RoomMergeResult = {
     copies: Copy[];
@@ -13,7 +16,7 @@ type RoomMergeResult = {
     backgrounds: Background[];
 };
 
-export class Room extends PIXI.Container<PIXI.DisplayObject> {
+export class Room extends PIXI.Container<pixiMod.DisplayObject> {
     static roomId = 0;
     static getNewId(): number {
         this.roomId++;
@@ -38,6 +41,8 @@ export class Room extends PIXI.Container<PIXI.DisplayObject> {
     timer4 = 0;
     timer5 = 0;
     timer6 = 0;
+    viewWidth: number;
+    viewHeight: number;
     /** The name of this room. */
     name: string;
     /** A backlink to the template data that was used during the creation of this room. */
@@ -73,9 +78,6 @@ export class Room extends PIXI.Container<PIXI.DisplayObject> {
         this.x = this.y = 0;
         this.sortableChildren = true;
         this.uid = Room.getNewId();
-        if (!ctjsGame.room) {
-            ctjsGame.room = ctjsGame.rooms.current = this;
-        }
         if (template) {
             this.onCreate = template.onCreate;
             this.onStep = template.onStep;
@@ -85,12 +87,14 @@ export class Room extends PIXI.Container<PIXI.DisplayObject> {
             this.name = template.name;
             this.isUi = template.isUi;
             this.follow = template.follow;
+            this.viewWidth = template.width;
+            this.viewHeight = template.height;
             if (template.extends) {
                 Object.assign(this, template.extends);
             }
-            if (this === ctjsGame.room) {
-                (ctjsGame.pixiApp.renderer as PIXI.Renderer).background.color =
-                    u.hexToPixi(this.template.backgroundColor);
+            if (this === roomsLib.current) {
+                (pixiApp.renderer as pixiMod.Renderer).background.color =
+                    uLib.hexToPixi(this.template.backgroundColor);
             }
             /*!%beforeroomoncreate%*/
             for (let i = 0, li = template.bgs.length; i < li; i++) {
@@ -114,7 +118,7 @@ export class Room extends PIXI.Container<PIXI.DisplayObject> {
                 const copy = template.objects[i];
                 const exts = copy.exts || {};
                 const customProperties = copy.customProperties || {};
-                templates.copyIntoRoom(
+                templatesLib.copyIntoRoom(
                     copy.template,
                     copy.x,
                     copy.y,
@@ -150,7 +154,7 @@ export class Room extends PIXI.Container<PIXI.DisplayObject> {
 Room.roomId = 0;
 
 let nextRoom: string;
-export const rooms = {
+const roomsLib = {
     /**
      * All the existing room templates that can be used in the game.
      * It is usually prefilled by ct.IDE.
@@ -161,7 +165,7 @@ export const rooms = {
     current: null as Room,
     /**
      * An object that contains arrays of currently present rooms.
-     * These include the current room (`ctjsGame.room`), as well as any rooms
+     * These include the current room (`rooms.current`), as well as any rooms
      * appended or prepended through `rooms.append` and `rooms.prepend`.
      */
     list: {} as Record<string, Room[]>,
@@ -173,7 +177,7 @@ export const rooms = {
      */
     addBg(texture: string, depth: number): Background {
         const bg = new Background(texture, null, depth);
-        ctjsGame.room.addChild(bg);
+        roomsLib.current.addChild(bg);
         return bg;
     },
     /**
@@ -183,7 +187,7 @@ export const rooms = {
      * @deprecated Use ct.tilemaps.create instead.
      */
     addTileLayer(depth: number): Tilemap {
-        return tilemaps.create(depth);
+        return tilemapsLib.create(depth);
     },
     /**
      * Clears the current stage, removing all rooms with copies, tile layers, backgrounds,
@@ -191,17 +195,17 @@ export const rooms = {
      * @returns {void}
      */
     clear(): void {
-        ctjsGame.stage.children.length = 0;
-        ctjsGame.stack = [];
-        for (const i in templates.list) {
-            templates.list[i] = [];
+        pixiApp.stage.children.length = 0;
+        stack.length = 0;
+        for (const i in templatesLib.list) {
+            templatesLib.list[i] = [];
         }
         for (const i in backgrounds.list) {
             backgrounds.list[i] = [];
         }
-        rooms.list = {};
-        for (const name in rooms.templates) {
-            rooms.list[name] = [];
+        roomsLib.list = {};
+        for (const name in roomsLib.templates) {
+            roomsLib.list[name] = [];
         }
     },
     /**
@@ -209,7 +213,7 @@ export const rooms = {
      * It will trigger "On Leave" for a room and "On Destroy" event
      * for all the copies of the removed room.
      * The room will also have `this.kill` set to `true` in its event, if it comes in handy.
-     * This method cannot remove `ctjsGame.room`, the main room.
+     * This method cannot remove `rooms.current`, the main room.
      * @param {Room} room The `room` argument must be a reference
      * to the previously created room.
      * @returns {void}
@@ -217,36 +221,36 @@ export const rooms = {
     remove(room: Room): void {
         if (!(room instanceof Room)) {
             if (typeof room === 'string') {
-                console.error('[ct.rooms.remove] To remove a room, you should provide a reference to it (to an object), not its name. Provided value:', room);
-                throw new Error('[ct.rooms.remove] Invalid argument type');
+                console.error('[rooms.remove] To remove a room, you should provide a reference to it (to an object), not its name. Provided value:', room);
+                throw new Error('[rooms.remove] Invalid argument type');
             }
             throw new Error('[rooms] An attempt to remove a room that is not actually a room! Provided value:' + room);
         }
-        const ind = rooms.list[room.name].indexOf(room);
+        const ind = roomsLib.list[room.name].indexOf(room);
         if (ind !== -1) {
-            rooms.list[room.name].splice(ind, 1);
+            roomsLib.list[room.name].splice(ind, 1);
         } else {
             // eslint-disable-next-line no-console
             console.warn('[rooms] Removing a room that was not found in rooms.list. This is strange…');
         }
         room.kill = true;
-        ctjsGame.stage.removeChild(room);
+        pixiApp.stage.removeChild(room);
         for (const copy of room.children) {
             if (copy instanceof Copy) {
                 copy.kill = true;
             }
         }
         room.onLeave();
-        rooms.onLeave.apply(room);
+        roomsLib.onLeave.apply(room);
     },
     /**
      * Switches to the given room. Note that this transition happens at the end
      * of the frame, so the name of a new room may be overridden.
      */
     'switch'(roomName: string): void {
-        if (rooms.templates[roomName]) {
+        if (roomsLib.templates[roomName]) {
             nextRoom = roomName;
-            rooms.switching = true;
+            roomsLib.switching = true;
         } else {
             console.error('[rooms] The room "' + roomName + '" does not exist!');
         }
@@ -257,7 +261,7 @@ export const rooms = {
      * @returns {void}
      */
     restart(): void {
-        rooms.switch(ctjsGame.room.name);
+        roomsLib.switch(roomsLib.current.name);
     },
     /**
      * Creates a new room and adds it to the stage, separating its draw stack
@@ -269,17 +273,17 @@ export const rooms = {
      * @returns {Room} A newly created room
      */
     append(roomName: string, exts?: Record<string, unknown>): Room {
-        if (!(roomName in rooms.templates)) {
-            throw new Error(`[ct.rooms.append] append failed: the room ${roomName} does not exist!`);
+        if (!(roomName in roomsLib.templates)) {
+            throw new Error(`[rooms.append] append failed: the room ${roomName} does not exist!`);
         }
-        const room = new Room(rooms.templates[roomName]);
+        const room = new Room(roomsLib.templates[roomName]);
         if (exts) {
             Object.assign(room, exts);
         }
-        ctjsGame.stage.addChild(room);
-        room.onCreate();
-        rooms.onCreate.apply(room);
-        rooms.list[roomName].push(room);
+        pixiApp.stage.addChild(room);
+        room.onCreate.apply(room);
+        roomsLib.onCreate.apply(room);
+        roomsLib.list[roomName].push(room);
         return room;
     },
     /**
@@ -292,17 +296,17 @@ export const rooms = {
      * @returns {Room} A newly created room
      */
     prepend(roomName: string, exts?: Record<string, unknown>): Room {
-        if (!(roomName in rooms.templates)) {
+        if (!(roomName in roomsLib.templates)) {
             throw new Error(`[rooms] prepend failed: the room ${roomName} does not exist!`);
         }
-        const room = new Room(rooms.templates[roomName]);
+        const room = new Room(roomsLib.templates[roomName]);
         if (exts) {
             Object.assign(room, exts);
         }
-        ctjsGame.stage.addChildAt(room, 0);
-        room.onCreate();
-        rooms.onCreate.apply(room);
-        rooms.list[roomName].push(room);
+        pixiApp.stage.addChildAt(room, 0);
+        room.onCreate.apply(room);
+        roomsLib.onCreate.apply(room);
+        roomsLib.list[roomName].push(room);
         return room;
     },
     /**
@@ -310,11 +314,11 @@ export const rooms = {
      *
      * @param roomName The name of the room that needs to be merged
      * @returns Arrays of created copies, backgrounds, tile layers,
-     * added to the current room (`ctjsGame.room`). Note: it does not get updated,
+     * added to the current room (`rooms.current`). Note: it does not get updated,
      * so beware of memory leaks if you keep a reference to this array for a long time!
      */
     merge(roomName: string): RoomMergeResult | false {
-        if (!(roomName in rooms.templates)) {
+        if (!(roomName in roomsLib.templates)) {
             console.error(`[rooms] merge failed: the room ${roomName} does not exist!`);
             return false;
         }
@@ -323,8 +327,8 @@ export const rooms = {
             tileLayers: [],
             backgrounds: []
         };
-        const template = rooms.templates[roomName];
-        const target = ctjsGame.room;
+        const template = roomsLib.templates[roomName];
+        const target = roomsLib.current;
         for (const t of template.bgs) {
             const bg = new Background(t.texture, null, t.depth, t.exts);
             target.backgrounds.push(bg);
@@ -339,7 +343,7 @@ export const rooms = {
             tl.cache();
         }
         for (const t of template.objects) {
-            const c = templates.copyIntoRoom(t.template, t.x, t.y, target, {
+            const c = templatesLib.copyIntoRoom(t.template, t.x, t.y, target, {
                 tx: t.scale.x || 1,
                 ty: t.scale.y || 1,
                 tr: t.rotation || 0
@@ -352,39 +356,39 @@ export const rooms = {
         if (nextRoom) {
             roomName = nextRoom;
         }
-        if (ctjsGame.room) {
-            rooms.rootRoomOnLeave.apply(ctjsGame.room);
-            ctjsGame.room.onLeave();
-            rooms.onLeave.apply(ctjsGame.room);
-            ctjsGame.room = void 0;
+        if (roomsLib.current) {
+            roomsLib.rootRoomOnLeave.apply(roomsLib.current);
+            roomsLib.current.onLeave();
+            roomsLib.onLeave.apply(roomsLib.current);
+            roomsLib.current = void 0;
         }
-        rooms.clear();
+        roomsLib.clear();
         deadPool.length = 0;
-        var template = rooms.templates[roomName];
-        ctjsGame.roomWidth = template.width;
-        ctjsGame.roomHeight = template.height;
-        ctjsGame.camera = new Camera(
-            ctjsGame.roomWidth / 2,
-            ctjsGame.roomHeight / 2,
-            ctjsGame.roomWidth,
-            ctjsGame.roomHeight
+        var template = roomsLib.templates[roomName];
+        console.log(template);
+        mainCamera.reset(
+            template.width / 2,
+            template.height / 2,
+            template.width,
+            template.height
         );
+        console.log(mainCamera.width, mainCamera.height);
         if (template.cameraConstraints) {
-            ctjsGame.camera.minX = template.cameraConstraints.x1;
-            ctjsGame.camera.maxX = template.cameraConstraints.x2;
-            ctjsGame.camera.minY = template.cameraConstraints.y1;
-            ctjsGame.camera.maxY = template.cameraConstraints.y2;
+            mainCamera.minX = template.cameraConstraints.x1;
+            mainCamera.maxX = template.cameraConstraints.x2;
+            mainCamera.minY = template.cameraConstraints.y1;
+            mainCamera.maxY = template.cameraConstraints.y2;
         }
-        ctjsGame.pixiApp.renderer.resize(template.width, template.height);
-        ctjsGame.rooms.current = ctjsGame.room = new Room(template);
-        ctjsGame.stage.addChild(ctjsGame.room);
-        rooms.rootRoomOnCreate.apply(ctjsGame.room);
-        ctjsGame.room.onCreate();
-        rooms.onCreate.apply(ctjsGame.room);
-        rooms.list[roomName].push(ctjsGame.room);
+        roomsLib.current = new Room(template);
+        pixiApp.stage.addChild(roomsLib.current);
+        updateViewport();
+        roomsLib.rootRoomOnCreate.apply(roomsLib.current);
+        roomsLib.current.onCreate();
+        roomsLib.onCreate.apply(roomsLib.current);
+        roomsLib.list[roomName].push(roomsLib.current);
         /*!%switch%*/
-        ctjsGame.camera.manageStage();
-        rooms.switching = false;
+        mainCamera.manageStage();
+        roomsLib.switching = false;
         nextRoom = void 0;
     },
     onCreate(): void {
@@ -423,3 +427,4 @@ export const rooms = {
      */
     starting: '/*!@startroom@*/'
 };
+export default roomsLib;

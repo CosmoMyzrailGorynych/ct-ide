@@ -1,13 +1,14 @@
 /// <reference types="../../app/node_modules/pixi-spine" />
 
-import {u} from './u';
-import {ctjsGame} from '.';
+import uLib from './u';
 // import {sounds} from './sounds';
-import * as PIXI from 'node_modules/pixi.js';
-import {Spine, ISkeletonData} from 'node_modules/pixi-spine';
+// import {Spine, ISkeletonData} from 'node_modules/pixi-spine';
 import {TextureShape, ExportedTiledTexture, ExportedSkeleton} from '../node_requires/exporter/_exporterContracts';
 
-export type CtjsTexture = PIXI.Texture & {
+import * as pixiMod from 'node_modules/pixi.js';
+declare var PIXI: typeof pixiMod;
+
+export type CtjsTexture = pixiMod.Texture & {
     shape: TextureShape,
     defaultAnchor: {
         x: number,
@@ -49,7 +50,7 @@ const resLib = {
      * @returns {Promise<void>}
      * @async
      */
-    loadScript(url: string = u.required('url', 'ct.res.loadScript')): Promise<void> {
+    loadScript(url: string = uLib.required('url', 'ct.res.loadScript')): Promise<void> {
         var script = document.createElement('script');
         script.src = url;
         const promise = new Promise<void>((resolve, reject) => {
@@ -73,8 +74,8 @@ const resLib = {
      * @returns {Promise<CtjsAnimation>} The imported animation, ready to be used.
      */
     async loadTexture(
-        url: string = u.required('url', 'ct.res.loadTexture'),
-        name: string = u.required('name', 'ct.res.loadTexture'),
+        url: string = uLib.required('url', 'ct.res.loadTexture'),
+        name: string = uLib.required('name', 'ct.res.loadTexture'),
         textureOptions: ITextureOptions = {}
     ): Promise<CtjsAnimation> {
         let texture: CtjsTexture;
@@ -102,8 +103,8 @@ const resLib = {
      * @returns The name of the imported animation.
      */
     async loadSkeleton(
-        skel: string = u.required('skel', 'ct.res.loadSkeleton'),
-        name: string = u.required('name', 'ct.res.loadSkeleton'),
+        skel: string = uLib.required('skel', 'ct.res.loadSkeleton'),
+        name: string = uLib.required('name', 'ct.res.loadSkeleton'),
         txt = true
     ): Promise<string> {
         PIXI.Assets.add(skel, skel, {
@@ -122,8 +123,8 @@ const resLib = {
      * @returns A promise that resolves into an array
      * of all the loaded textures' names.
      */
-    async loadAtlas(url: string = u.required('url', 'ct.res.loadAtlas')): Promise<string[]> {
-        const sheet = await PIXI.Assets.load<PIXI.Spritesheet>(url);
+    async loadAtlas(url: string = uLib.required('url', 'ct.res.loadAtlas')): Promise<string[]> {
+        const sheet = await PIXI.Assets.load<pixiMod.Spritesheet>(url);
         for (const animation in sheet.animations) {
             const tex = sheet.animations[animation];
             const animData = sheet.data.animations;
@@ -131,7 +132,7 @@ const resLib = {
                 const a = animData[animation],
                       f = a[i];
                 (tex[i] as CtjsTexture).shape = (
-                    sheet.data.frames[f] as PIXI.ISpritesheetFrameData & {shape: TextureShape}
+                    sheet.data.frames[f] as pixiMod.ISpritesheetFrameData & {shape: TextureShape}
                 ).shape;
             }
             (tex as CtjsAnimation).shape = (tex[0] as CtjsTexture).shape || ({} as TextureShape);
@@ -144,7 +145,7 @@ const resLib = {
      * it has introduced to the game.
      * Will do nothing if the specified atlas was not loaded (or was already unloaded).
      */
-    async unloadAtlas(url: string = u.required('url', 'ct.res.unloadAtlas')): Promise<void> {
+    async unloadAtlas(url: string = uLib.required('url', 'ct.res.unloadAtlas')): Promise<void> {
         const {animations} = PIXI.Assets.get(url);
         if (!animations) {
             // eslint-disable-next-line no-console
@@ -161,15 +162,15 @@ const resLib = {
      * @param url The path to the XML file that describes the bitmap fonts.
      * @returns A promise that resolves into the font's name (the one you've passed with `name`).
      */
-    async loadBitmapFont(url: string = u.required('url', 'ct.res.loadBitmapFont')): Promise<void> {
+    async loadBitmapFont(url: string = uLib.required('url', 'ct.res.loadBitmapFont')): Promise<void> {
         await PIXI.Assets.load(url);
     },
-    async unloadBitmapFont(url: string = u.required('url', 'ct.res.unloadBitmapFont')): Promise<void> {
+    async unloadBitmapFont(url: string = uLib.required('url', 'ct.res.unloadBitmapFont')): Promise<void> {
         await PIXI.Assets.unload(url);
     },
-    loadGame(): void {
+    async loadGame(): Promise<void> {
         // !! This method is intended to be filled by ct.IDE and be executed
-        // exactly once at game startup. Don't put your code here.
+        // exactly once at game startup.
         const changeProgress = (percents: number) => {
             loadingScreen.setAttribute('data-progress', String(percents));
             loadingBar.style.width = percents + '%';
@@ -227,17 +228,8 @@ const resLib = {
         /*!@res@*/
         /*!%res%*/
 
-        Promise.all(loadingPromises)
-        .then(() => {
-            {
-                const ct = ctjsGame;
-                /*!%start%*/
-            }
-            loadingScreen.classList.add('hidden');
-            ctjsGame.pixiApp.ticker.add(ctjsGame.loop);
-            ctjsGame.rooms.forceSwitch(ctjsGame.rooms.starting);
-        })
-        .catch(console.error);
+        await Promise.all(loadingPromises);
+        loadingScreen.classList.add('hidden');
     },
     /**
      * Gets a pixi.js texture from a ct.js' texture name,
@@ -251,7 +243,7 @@ const resLib = {
     getTexture: ((
         name: string | -1,
         frame?: number
-    ): CtjsAnimation | CtjsTexture | PIXI.Texture | PIXI.Texture[] => {
+    ): CtjsAnimation | CtjsTexture | pixiMod.Texture | pixiMod.Texture[] => {
         if (frame === null) {
             frame = void 0;
         }
@@ -270,7 +262,7 @@ const resLib = {
         }
         return tex;
     }) as {
-        (name: -1): [PIXI.Texture];
+        (name: -1): [pixiMod.Texture];
         (name: -1, frame: 0): typeof PIXI.Texture.EMPTY;
         (name: -1, frame: number): never;
         (name: string): CtjsAnimation;
@@ -297,7 +289,7 @@ const resLib = {
      * @param {string} [skin] The name of the skin; optional.
      * @returns The created skeleton
      */
-    makeSkeleton(name: string, skin?: string): any {
+    /*makeSkeleton(name: string, skin?: string): any {
         const asset = resLib.skeletons[name];
         const skeleton: Spine = new Spine(asset);
         if (skin) {
@@ -313,11 +305,11 @@ const resLib = {
                 a non-existing sound ${event.name}
                 at animation ${skel.animation.lastAnimationName}`);
             }
-        });*/
+        }); //
         return skeleton;
-    }
+    }*/
 };
 
 /*!@fonts@*/
 
-export const res = resLib;
+export default resLib;
