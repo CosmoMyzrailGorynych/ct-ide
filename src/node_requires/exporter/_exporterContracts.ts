@@ -1,6 +1,7 @@
 /// <reference path="../resources/textures/ITexture.d.ts" />
 /// <reference path="../resources/emitterTandems/types.d.ts" />
 /// <reference path="../resources/rooms/IRoom.d.ts" />
+/// <reference path="../resources/projects/IProject.d.ts" />
 
 import * as PIXI from 'node_modules/pixi.js';
 

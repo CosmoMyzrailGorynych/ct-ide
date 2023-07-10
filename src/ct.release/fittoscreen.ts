@@ -1,5 +1,7 @@
+import { viewMode } from '../node_requires/exporter/_exporterContracts';
+
 import roomsLib from 'rooms';
-import {settings, viewMode, pixiApp} from 'index';
+import {settings, pixiApp} from 'index';
 import mainCamera from 'camera';
 
 document.body.style.overflow = 'hidden';
