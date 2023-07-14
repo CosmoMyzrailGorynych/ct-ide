@@ -1,4 +1,4 @@
-const i18n = require('../i18n');
+import {getLanguageJSON, localizeField} from '../i18n';
 import {getName, getById, getThumbnail} from './../resources';
 
 const categories: Record<string, IEventCategory> = {
@@ -75,12 +75,12 @@ type EventMenu = {
 };
 
 const localizeCategoryName = (categoryKey: string): string => {
-    const i18nScriptables = i18n.languageJSON.scriptables;
+    const i18nScriptables = getLanguageJSON().scriptables;
     const category = categories[categoryKey];
     if (i18nScriptables.coreEventsCategories[categoryKey]) {
         return i18nScriptables.coreEventsCategories[categoryKey];
     }
-    return i18n.localizeField(category, 'name');
+    return localizeField(category, 'name');
 };
 const timerPattern = /^Timer(\d)$/;
 const propToCoreDictionary = {
@@ -93,11 +93,11 @@ const localizeProp = (eventFullCode: string, prop: string): string => {
     const event = events[eventFullCode];
     if (lib === 'core') {
         if (timerPattern.test(eventCode)) {
-            return i18n.languageJSON.scriptables[propToCoreDictionary[prop]].Timer.replace('$1', timerPattern.exec(eventCode)[1]);
+            return getLanguageJSON().scriptables[propToCoreDictionary[prop]].Timer.replace('$1', timerPattern.exec(eventCode)[1]);
         }
-        return i18n.languageJSON.scriptables[propToCoreDictionary[prop]][eventCode];
+        return getLanguageJSON().scriptables[propToCoreDictionary[prop]][eventCode];
     }
-    return i18n.localizeField(event, prop);
+    return localizeField(event, prop);
 };
 
 const localizeParametrized = (eventFullCode: string, scriptedEvent: IScriptableEvent): string => {
@@ -105,9 +105,9 @@ const localizeParametrized = (eventFullCode: string, scriptedEvent: IScriptableE
     const event = events[eventFullCode];
     let {name} = event;
     if (lib === 'core') {
-        name = i18n.languageJSON.scriptables.coreParameterizedNames[eventCode];
+        name = getLanguageJSON().scriptables.coreParameterizedNames[eventCode];
     } else {
-        name = i18n.localizeField(event, 'parameterizedName');
+        name = localizeField(event, 'parameterizedName');
     }
     for (const argName in event.arguments) {
         let value = scriptedEvent.arguments[argName];
@@ -127,17 +127,17 @@ const localizeArgument = (eventFullCode: string, arg: string): string => {
     const [lib] = splitEventName(eventFullCode);
     const event = events[eventFullCode];
     if (lib === 'core') {
-        return i18n.languageJSON.scriptables.coreEventsArguments[arg];
+        return getLanguageJSON().scriptables.coreEventsArguments[arg];
     }
-    return i18n.localizeField(event.arguments[arg], 'name');
+    return localizeField(event.arguments[arg], 'name');
 };
 const localizeLocalVarDesc = (eventFullCode: string, local: string): string => {
     const [lib, eventCode] = splitEventName(eventFullCode);
     const event = events[eventFullCode];
     if (lib === 'core') {
-        return i18n.languageJSON.scriptables.coreEventsLocals[`${eventCode}_${local}`];
+        return getLanguageJSON().scriptables.coreEventsLocals[`${eventCode}_${local}`];
     }
-    return i18n.localizeField(event.locals[local], 'description');
+    return localizeField(event.locals[local], 'description');
 };
 const tryGetIcon = (eventFullCode: string, scriptedEvent: IScriptableEvent): string | false => {
     const event = events[eventFullCode];

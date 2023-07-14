@@ -2,9 +2,6 @@
     A texture editor with all its tools. Also supports skeletons.
 
     @attribute asset (ITexture | ISkeleton)
-
-    @attribute onclose (riot function)
-        A callback that is called when a user wants to close this window.
 mixin collisionSettings
     fieldset
         .toright
@@ -16,19 +13,19 @@ mixin collisionSettings
                     use(xlink:href="#copy")
         h3.nmt {voc.form}
         label.checkbox
-            input(type="radio" name="collisionform" checked="{opts.asset.shape === 'circle'}" onclick="{assetSelectCircle}")
+            input(type="radio" name="collisionform" checked="{asset.shape === 'circle'}" onclick="{assetSelectCircle}")
             span {voc.round}
         label.checkbox
-            input(type="radio" name="collisionform" checked="{opts.asset.shape === 'rect'}" onclick="{assetSelectRect}")
+            input(type="radio" name="collisionform" checked="{asset.shape === 'rect'}" onclick="{assetSelectRect}")
             span {voc.rectangle}
         label.checkbox
-            input(type="radio" name="collisionform" checked="{opts.asset.shape === 'strip'}" onclick="{assetSelectStrip}")
+            input(type="radio" name="collisionform" checked="{asset.shape === 'strip'}" onclick="{assetSelectStrip}")
             span {voc.strip}
-    fieldset(if="{opts.asset.shape === 'circle'}")
+    fieldset(if="{asset.shape === 'circle'}")
         b {voc.radius}
         br
-        input.wide(type="number" value="{opts.asset.r}" onchange="{wire('opts.asset.r')}" oninput="{wire('opts.asset.r')}")
-    fieldset(if="{opts.asset.shape === 'rect'}")
+        input.wide(type="number" value="{asset.r}" onchange="{wire('asset.r')}" oninput="{wire('asset.r')}")
+    fieldset(if="{asset.shape === 'rect'}")
         .center.aDashedMaskMarker
             svg.feather.aDashedMaskMarker-anArrow.left
                 use(xlink:href="#chevron-left")
@@ -38,26 +35,26 @@ mixin collisionSettings
                 use(xlink:href="#chevron-up")
             svg.feather.aDashedMaskMarker-anArrow.down
                 use(xlink:href="#chevron-down")
-            input.center.short(type="number" value="{opts.asset.top}" onchange="{wire('opts.asset.top')}" oninput="{wire('opts.asset.top')}")
+            input.center.short(type="number" value="{asset.top}" onchange="{wire('asset.top')}" oninput="{wire('asset.top')}")
             br
-            input.center.short(type="number" value="{opts.asset.left}" onchange="{wire('opts.asset.left')}" oninput="{wire('opts.asset.left')}")
+            input.center.short(type="number" value="{asset.left}" onchange="{wire('asset.left')}" oninput="{wire('asset.left')}")
             |
             |
             span.aPivotSymbol
             |
             |
-            input.center.short(type="number" value="{opts.asset.right}" onchange="{wire('opts.asset.right')}" oninput="{wire('opts.asset.right')}")
+            input.center.short(type="number" value="{asset.right}" onchange="{wire('asset.right')}" oninput="{wire('asset.right')}")
             br
-            input.center.short(type="number" value="{opts.asset.bottom}" onchange="{wire('opts.asset.bottom')}" oninput="{wire('opts.asset.bottom')}")
+            input.center.short(type="number" value="{asset.bottom}" onchange="{wire('asset.bottom')}" oninput="{wire('asset.bottom')}")
         button.wide(onclick="{assetFillRect}")
             svg.feather
                 use(xlink:href="#maximize")
             span {voc.fill}
-    fieldset(if="{opts.asset.shape === 'strip'}")
+    fieldset(if="{asset.shape === 'strip'}")
         .flexrow.aStripPointRow(each="{point, ind in getMovableStripPoints()}")
-            input.short(type="number" value="{point.x}" oninput="{wire('opts.asset.stripPoints.'+ ind + '.x')}")
+            input.short(type="number" value="{point.x}" oninput="{wire('asset.stripPoints.'+ ind + '.x')}")
             span.center   ×
-            input.short(type="number" value="{point.y}" oninput="{wire('opts.asset.stripPoints.'+ ind + '.y')}")
+            input.short(type="number" value="{point.y}" oninput="{wire('asset.stripPoints.'+ ind + '.y')}")
             button.square.inline.nogrow(title="{voc.removePoint}" onclick="{removeStripPoint}")
                 svg.feather
                     use(xlink:href="#minus")
@@ -65,12 +62,12 @@ mixin collisionSettings
             svg.feather
                 use(xlink:href="#plus")
             span   {voc.addPoint}
-    fieldset(if="{opts.asset.shape === 'strip'}")
+    fieldset(if="{asset.shape === 'strip'}")
         label.checkbox
-            input(type="checkbox" checked="{opts.asset.closedStrip}" onchange="{onClosedStripChange}" )
+            input(type="checkbox" checked="{asset.closedStrip}" onchange="{onClosedStripChange}" )
             span   {voc.closeShape}
         label.checkbox
-            input(type="checkbox" checked="{opts.asset.symmetryStrip}" onchange="{onSymmetryChange}")
+            input(type="checkbox" checked="{asset.symmetryStrip}" onchange="{onSymmetryChange}")
             span   {voc.symmetryTool}
 
 mixin textureSource
@@ -88,7 +85,7 @@ mixin textureSource
                 span {voc.replaceTexture}
         .aButtonGroup.nmr.nogrow
             button.inline.square(
-                if="{opts.asset.source}"
+                if="{asset.source}"
                 title="{vocGlob.reimport} (Control+R)"
                 onclick="{reimport}"
                 data-hotkey="Control+r"
@@ -110,18 +107,18 @@ mixin sliceSettings
     h3 {voc.slicing}
     fieldset
         label.checkbox
-            input#texturetiled(type="checkbox" checked="{opts.asset.tiled}" onchange="{wire('opts.asset.tiled')}")
+            input#texturetiled(type="checkbox" checked="{asset.tiled}" onchange="{wire('asset.tiled')}")
             span   {voc.tiled}
-    fieldset(if="{!opts.asset.tiled}")
+    fieldset(if="{!asset.tiled}")
         .flexrow
             div
                 b {voc.cols}
                 br
                 input.wide(
                     type="number"
-                    value="{opts.asset.grid[0]}"
-                    onchange="{wire('opts.asset.grid.0')}"
-                    oninput="{wire('opts.asset.grid.0')}"
+                    value="{asset.grid[0]}"
+                    onchange="{wire('asset.grid.0')}"
+                    oninput="{wire('asset.grid.0')}"
                     min="1"
                 )
             span &nbsp;
@@ -130,9 +127,9 @@ mixin sliceSettings
                 br
                 input.wide(
                     type="number"
-                    value="{opts.asset.grid[1]}"
-                    onchange="{wire('opts.asset.grid.1')}"
-                    oninput="{wire('opts.asset.grid.1')}"
+                    value="{asset.grid[1]}"
+                    onchange="{wire('asset.grid.1')}"
+                    oninput="{wire('asset.grid.1')}"
                     min="1"
                 )
         .flexrow
@@ -141,9 +138,9 @@ mixin sliceSettings
                 br
                 input.wide(
                     type="number"
-                    value="{opts.asset.width}"
-                    onchange="{wire('opts.asset.width')}"
-                    oninput="{wire('opts.asset.width')}"
+                    value="{asset.width}"
+                    onchange="{wire('asset.width')}"
+                    oninput="{wire('asset.width')}"
                     min="1"
                 )
             span &nbsp;
@@ -152,31 +149,31 @@ mixin sliceSettings
                 br
                 input.wide(
                     type="number"
-                    value="{opts.asset.height}"
-                    onchange="{wire('opts.asset.height')}"
-                    oninput="{wire('opts.asset.height')}"
+                    value="{asset.height}"
+                    onchange="{wire('asset.height')}"
+                    oninput="{wire('asset.height')}"
                     min="1"
                 )
-    fieldset(if="{!opts.asset.tiled}")
+    fieldset(if="{!asset.tiled}")
         b {voc.frames}
         br
         input#textureframes.wide(
             type="number"
-            value="{opts.asset.untill}"
-            onchange="{wire('opts.asset.untill')}"
-            oninput="{wire('opts.asset.untill')}"
+            value="{asset.untill}"
+            onchange="{wire('asset.untill')}"
+            oninput="{wire('asset.untill')}"
             min="0"
         )
-    fieldset(if="{!opts.asset.tiled}")
+    fieldset(if="{!asset.tiled}")
         .flexrow
             div
                 b {voc.marginX}
                 br
                 input.wide(
                     type="number"
-                    value="{opts.asset.marginx}"
-                    onchange="{wire('opts.asset.marginx')}"
-                    oninput="{wire('opts.asset.marginx')}"
+                    value="{asset.marginx}"
+                    onchange="{wire('asset.marginx')}"
+                    oninput="{wire('asset.marginx')}"
                     min="0"
                 )
             span &nbsp;
@@ -185,9 +182,9 @@ mixin sliceSettings
                 br
                 input.wide(
                     type="number"
-                    value="{opts.asset.marginy}"
-                    onchange="{wire('opts.asset.marginy')}"
-                    oninput="{wire('opts.asset.marginy')}"
+                    value="{asset.marginy}"
+                    onchange="{wire('asset.marginy')}"
+                    oninput="{wire('asset.marginy')}"
                     min="0"
                 )
         .flexrow
@@ -196,9 +193,9 @@ mixin sliceSettings
                 br
                 input.wide(
                     type="number"
-                    value="{opts.asset.offx}"
-                    onchange="{wire('opts.asset.offx')}"
-                    oninput="{wire('opts.asset.offx')}"
+                    value="{asset.offx}"
+                    onchange="{wire('asset.offx')}"
+                    oninput="{wire('asset.offx')}"
                     min="0"
                 )
             span &nbsp;
@@ -207,9 +204,9 @@ mixin sliceSettings
                 br
                 input.wide(
                     type="number"
-                    value="{opts.asset.offy}"
-                    onchange="{wire('opts.asset.offy')}"
-                    oninput="{wire('opts.asset.offy')}"
+                    value="{asset.offy}"
+                    onchange="{wire('asset.offy')}"
+                    oninput="{wire('asset.offy')}"
                     min="0"
                 )
 
@@ -220,9 +217,9 @@ mixin axisSettings
             | {voc.center}
         hover-hint.toright.alignmiddle.nogrow(text="{voc.axisExplanation}")
     fieldset.flexrow
-        input.short(type="number" value="{opts.asset.axis[0]}" onchange="{wire('opts.asset.axis.0')}" oninput="{wire('opts.asset.axis.0')}")
+        input.short(type="number" value="{asset.axis[0]}" onchange="{wire('asset.axis.0')}" oninput="{wire('asset.axis.0')}")
         span.center ×
-        input.short(type="number" value="{opts.asset.axis[1]}" onchange="{wire('opts.asset.axis.1')}" oninput="{wire('opts.asset.axis.1')}")
+        input.short(type="number" value="{asset.axis[1]}" onchange="{wire('asset.axis.1')}" oninput="{wire('asset.axis.1')}")
     fieldset
         .aButtonGroup.flexrow.wide
             button.wide(onclick="{assetCenter}")
@@ -239,7 +236,7 @@ mixin viewSettings
         label.checkbox
             input(checked="{prevShowMask}" onchange="{wire('prevShowMask')}" type="checkbox")
             span   {voc.showMask}
-        label.checkbox(if="{opts.asset.width > 10 && opts.asset.height > 10 && !opts.asset.tiled}")
+        label.checkbox(if="{asset.width > 10 && asset.height > 10 && !asset.tiled}")
             input(checked="{prevShowFrameIndices}" onchange="{wire('prevShowFrameIndices')}" type="checkbox")
             span   {voc.showFrameIndices}
 
@@ -252,19 +249,19 @@ mixin exportSettings
         input.inline.alignmiddle(
             type="number"
             min="0" max="128" step="1"
-            value="{opts.asset.padding}"
-            onchange="{wire('opts.asset.padding')}"
+            value="{asset.padding}"
+            onchange="{wire('asset.padding')}"
         )
         .aSpacer.small.nogrow
         hover-hint.nogrow.alignmiddle(text="{voc.paddingNotice}")
     fieldset
         hover-hint.toright(text="{voc.blankTextureNotice}")
         label.checkbox
-            input.nogrow(checked="{opts.asset.isBlank}" onchange="{wire('opts.asset.isBlank')}" type="checkbox")
+            input.nogrow(checked="{asset.isBlank}" onchange="{wire('asset.isBlank')}" type="checkbox")
             span   {voc.blankTexture}
 
 mixin previewPanel
-    .preview.bordertop.flexfix-footer(hide="{opts.asset.tiled}" if="{!skeletonMode}")
+    .preview.bordertop.flexfix-footer(hide="{asset.tiled}" if="{!skeletonMode}")
         .texture-editor-anAnimationPreview(
             ref="preview"
             style="background-color: {previewColor};"
@@ -310,7 +307,7 @@ mixin canvasTools
 
 mixin atlas
     .texture-editor-anAtlas.tall(
-        if="{opts.asset}"
+        if="{asset}"
         style="background-color: {previewColor};"
         onmousewheel="{onMouseWheel}"
     )
@@ -322,7 +319,7 @@ mixin atlas
             // This div is needed to cause elements' reflow so the scrollbars update on canvas' size change
             div(style="width: {zoomFactor}px; height: {zoomFactor}px;")
             .aClicker(
-                if="{prevShowMask && opts.asset.shape === 'strip' && getStripSegments()}"
+                if="{prevShowMask && asset.shape === 'strip' && getStripSegments()}"
                 each="{seg, ind in getStripSegments()}"
                 style="left: {seg.left}px; top: {seg.top}px; width: {seg.width}px; transform: translate(0, -50%) rotate({seg.angle}deg);"
                 title="{voc.addPoint}"
@@ -330,14 +327,14 @@ mixin atlas
             )
             .aDragger(
                 if="{prevShowMask}"
-                style="left: {(opts.asset.axis[0] + (opts.asset.offx || 0)) * zoomFactor}px; top: {(opts.asset.axis[1] + (opts.asset.offy || 0)) * zoomFactor}px; border-radius: 0;"
+                style="left: {(asset.axis[0] + (asset.offx || 0)) * zoomFactor}px; top: {(asset.axis[1] + (asset.offy || 0)) * zoomFactor}px; border-radius: 0;"
                 title="{voc.moveCenter}"
                 onmousedown="{!skeletonMode && startMoving('axis')}"
             )
             .aDragger(
-                if="{prevShowMask && opts.asset.shape === 'strip'}"
+                if="{prevShowMask && asset.shape === 'strip'}"
                 each="{point, ind in getMovableStripPoints()}"
-                style="left: {(point.x + parent.opts.asset.axis[0] + (parent.opts.asset.offx || 0)) * zoomFactor}px; top: {(point.y + parent.opts.asset.axis[1] + (parent.opts.asset.offy || 0)) * zoomFactor}px;"
+                style="left: {(point.x + parent.asset.axis[0] + (parent.asset.offx || 0)) * zoomFactor}px; top: {(point.y + parent.asset.axis[1] + (parent.asset.offy || 0)) * zoomFactor}px;"
                 title="{voc.movePoint}"
                 onmousedown="{startMoving('point')}"
                 oncontextmenu="{removeStripPoint}"
@@ -348,16 +345,11 @@ texture-editor(onclick="{tryClose}")
     .flexrow.tall
         .column.borderright.tall.column1.flexfix.nogrow.noshrink
             .flexfix-body
-                h3 {vocGlob.assetTypes.texture[0].slice(0, 1).toUpperCase()}{vocGlob.assetTypes.texture[0].slice(1)}
-                label
-                    b {voc.name}
-                    input.wide(type="text" value="{opts.asset.name}" onchange="{wire('opts.asset.name')}")
-                .anErrorNotice(if="{nameTaken}" ref="errorNotice") {vocGlob.nameTaken}
-                .aSpacer
-                +textureSource()
                 div(if="{!skeletonMode}")
                     +sliceSettings()
                     +exportSettings()
+                    .aSpacer
+                +textureSource()
             +previewPanel()
         +atlas()
         .column.column2.borderleft.tall.flexfix.nogrow.noshrink
@@ -367,7 +359,7 @@ texture-editor(onclick="{tryClose}")
                 +collisionSettings()
                 +viewSettings()
             .flexfix-footer
-                button.wide(onclick="{assetSave}" title="Shift+Control+S" data-hotkey="Control+S")
+                button.wide(onclick="{triggerSave}" title="Shift+Control+S" data-hotkey="Control+S")
                     svg.feather
                         use(xlink:href="#save")
                     span {this.vocGlob.save}
@@ -384,11 +376,12 @@ texture-editor(onclick="{tryClose}")
         const {getTextureOrig} = require('./data/node_requires/resources/textures');
         const {getSkeletonRender} = require('./data/node_requires/resources/skeletons');
 
-        this.skeletonMode = this.opts.asset.type === 'skeleton';
-
         this.namespace = 'textureView';
         this.mixin(require('./data/node_requires/riotMixins/voc').default);
         this.mixin(require('./data/node_requires/riotMixins/wire').default);
+        this.mixin(require('./data/node_requires/riotMixins/discardio').default);
+
+        this.skeletonMode = this.asset.type === 'skeleton';
 
         this.nameTaken = false;
         this.prevPlaying = !this.skeletonMode;
@@ -419,27 +412,15 @@ texture-editor(onclick="{tryClose}")
             img.onerror = e => {
                 alertify.error(this.vocFull.textureView.corrupted);
                 console.error(e);
-                this.assetSave();
             };
             if (this.skeletonMode) {
-                img.src = getSkeletonRender(this.opts.asset, false);
+                img.src = getSkeletonRender(this.asset, false);
             } else {
-                img.src = getTextureOrig(this.opts.asset, false);
+                img.src = getTextureOrig(this.asset, false);
             }
         });
         this.on('update', () => {
-            const {asset} = this.opts;
-            /*
-            // TODO: Unified name check
-            const {textures, skeletons} = global.currentProject;
-            const collection = this.skeletonMode ? skeletons : textures;
-            // Check if the name for a specified asset type was already taken
-            if (collection.find(other => other.name === asset.name && asset !== other)) {
-                this.nameTaken = true;
-            } else {
-                this.nameTaken = false;
-            }
-            */
+            const {asset} = this;
             if (this.skeletonMode) {
                 return;
             }
@@ -496,12 +477,12 @@ texture-editor(onclick="{tryClose}")
             this.refs.sourceReplacer.value = '';
         };
         this.reimport = async() => {
-            const exists = await fs.pathExists(this.opts.asset.source);
+            const exists = await fs.pathExists(this.asset.source);
             if (!exists) {
                 alertify.error(this.vocGlob.reimportSourceMissing);
                 return;
             }
-            this.loadImg(this.opts.asset.source);
+            this.loadImg(this.asset.source);
         };
         this.paste = async () => {
             if (this.skeletonMode) {
@@ -525,11 +506,11 @@ texture-editor(onclick="{tryClose}")
             try {
                 if (this.skeletonMode) {
                     const {reimportSkeleton} = require('./data/node_requires/resources/skeletons');
-                    await reimportSkeleton(this.opts.asset, source);
+                    await reimportSkeleton(this.asset, source);
                     this.refreshTextureCanvas();
                 } else {
                     const {reimportTexture} = require('./data/node_requires/resources/textures');
-                    const newImage = await reimportTexture(this.opts.asset, source);
+                    const newImage = await reimportTexture(this.asset, source);
                     textureCanvas.img = newImage;
                     this.refreshTextureCanvas();
                     this.launchTexturePreview();
@@ -560,7 +541,7 @@ texture-editor(onclick="{tryClose}")
          * Moves the texture's axis to the center of the frame.
          */
         this.assetCenter = () => {
-            const {asset} = this.opts;
+            const {asset} = this;
             let needsRefilling = false;
             if (asset.left === Math.floor(asset.axis[0]) &&
                 asset.top === Math.floor(asset.axis[1]) &&
@@ -579,7 +560,7 @@ texture-editor(onclick="{tryClose}")
          * Changes the rectangular collision mask to fill the frame.
          */
         this.assetFillRect = () => {
-            const {asset} = this.opts;
+            const {asset} = this;
             asset.left = Math.floor(asset.axis[0]);
             asset.top = Math.floor(asset.axis[1]);
             asset.right = Math.ceil(asset.width - asset.axis[0]);
@@ -590,7 +571,7 @@ texture-editor(onclick="{tryClose}")
          * and makes the rectangular collision mask fill the frame.
          */
         this.assetIsometrify = () => {
-            const {asset} = this.opts;
+            const {asset} = this;
             asset.axis[0] = Math.floor(asset.width / 2);
             asset.axis[1] = asset.height;
             this.assetFillRect();
@@ -599,10 +580,10 @@ texture-editor(onclick="{tryClose}")
             if (!sessionStorage.copiedCollisionMask) {
                 return;
             }
-            Object.assign(this.opts.asset, JSON.parse(sessionStorage.copiedCollisionMask));
+            Object.assign(this.asset, JSON.parse(sessionStorage.copiedCollisionMask));
         };
         this.copyCollisionMask = () => {
-            const {asset} = this.opts;
+            const {asset} = this;
             sessionStorage.copiedCollisionMask = JSON.stringify({
                 shape: asset.shape,
                 stripPoints: asset.stripPoints,
@@ -630,7 +611,7 @@ texture-editor(onclick="{tryClose}")
          */
         this.previewBack = () => {
             this.prevPos--;
-            const {asset} = this.opts;
+            const {asset} = this;
             const total = asset.untill === 0 ?
                 asset.grid[0] * asset.grid[1] :
                 Math.min(asset.grid[0] * asset.grid[1], asset.untill);
@@ -644,7 +625,7 @@ texture-editor(onclick="{tryClose}")
          */
         this.previewNext = () => {
             this.prevPos++;
-            const {asset} = this.opts;
+            const {asset} = this;
             const total = asset.untill === 0 ?
                 asset.grid[0] * asset.grid[1] :
                 Math.min(asset.grid[0] * asset.grid[1], asset.untill);
@@ -654,7 +635,7 @@ texture-editor(onclick="{tryClose}")
             this.refreshPreviewCanvas();
         };
         this.refreshPreviewCanvas = () => {
-            const {asset} = this.opts;
+            const {asset} = this;
             const xx = this.prevPos % asset.grid[0],
                   yy = Math.floor(this.prevPos / asset.grid[0]),
                   x = asset.offx + xx * (asset.marginx + asset.width),
@@ -695,7 +676,7 @@ texture-editor(onclick="{tryClose}")
          * Шаг анимации в предпросмотре. Выполняет рендер. Записывает таймер следующего шага в this.prevTime
          */
         this.stepTexturePreview = () => {
-            const {asset} = this.opts;
+            const {asset} = this;
             this.prevTime = window.setTimeout(() => {
                 const total = Math.min(
                     asset.untill === 0 ? Infinity : asset.untill,
@@ -718,7 +699,7 @@ texture-editor(onclick="{tryClose}")
          * if it wasn't set before, sets the radius.
          */
         this.assetSelectCircle = function textureSelectCircle() {
-            const {asset} = this.opts;
+            const {asset} = this;
             asset.shape = 'circle';
             if (!('r' in asset) || asset.r === 0) {
                 asset.r = Math.min(
@@ -731,7 +712,7 @@ texture-editor(onclick="{tryClose}")
          * Turns the collision mask shape to a rectangle.
          */
         this.assetSelectRect = function textureSelectRect() {
-            this.opts.asset.shape = 'rect';
+            this.asset.shape = 'rect';
             this.assetFillRect();
         };
         /**
@@ -739,7 +720,7 @@ texture-editor(onclick="{tryClose}")
          * starting points if none were set previously.
          */
         this.assetSelectStrip = function textureSelectStrip() {
-            const {asset} = this.opts;
+            const {asset} = this;
             asset.shape = 'strip';
             asset.stripPoints = asset.stripPoints || [];
             if (!asset.stripPoints.length) {
@@ -755,21 +736,21 @@ texture-editor(onclick="{tryClose}")
         };
 
         this.removeStripPoint = e => {
-            if (this.opts.asset.symmetryStrip) {
+            if (this.asset.symmetryStrip) {
                 // Remove an extra point
-                this.opts.asset.stripPoints.pop();
+                this.asset.stripPoints.pop();
             }
-            this.opts.asset.stripPoints.splice(e.item.ind, 1);
+            this.asset.stripPoints.splice(e.item.ind, 1);
             e.preventDefault();
         };
         this.addStripPoint = () => {
-            this.opts.asset.stripPoints.push({
+            this.asset.stripPoints.push({
                 x: 0,
                 y: 16
             });
         };
         this.addStripPointOnSegment = e => {
-            const {asset} = this.opts;
+            const {asset} = this;
             const offx = this.skeletonMode ? 0 : asset.offx,
                   offy = this.skeletonMode ? 0 : asset.offy;
             const {top, left} = textureCanvas.getBoundingClientRect();
@@ -803,14 +784,14 @@ texture-editor(onclick="{tryClose}")
             };
         };
         this.onClosedStripChange = () => {
-            const {asset} = this.opts;
+            const {asset} = this;
             asset.closedStrip = !asset.closedStrip;
             if (!asset.closedStrip && asset.symmetryStrip) {
                 this.onSymmetryChange();
             }
         };
         this.onSymmetryChange = () => {
-            const {asset} = this.opts;
+            const {asset} = this;
             if (asset.symmetryStrip) {
                 asset.stripPoints = this.getMovableStripPoints();
             } else {
@@ -835,7 +816,7 @@ texture-editor(onclick="{tryClose}")
                 if (this.skeletonMode) {
                     return;
                 }
-                const {asset} = this.opts;
+                const {asset} = this;
                 const [oldX, oldY] = asset.axis;
                 const func = e => {
                     asset.axis[0] = (e.screenX - startX) / this.zoomFactor + oldX;
@@ -874,7 +855,7 @@ texture-editor(onclick="{tryClose}")
         };
 
         this.drawMask = (tc, context, noOffset) => {
-            const {asset} = this.opts;
+            const {asset} = this;
             const offx = this.skeletonMode ? 0 : asset.offx,
                   offy = this.skeletonMode ? 0 : asset.offy;
             context.fillStyle = getSwatch('accent1');
@@ -940,7 +921,7 @@ texture-editor(onclick="{tryClose}")
          * Redraws the canvas with the full image, its collision mask, and its slicing grid
          */
         this.refreshTextureCanvas = () => {
-            const {asset} = this.opts;
+            const {asset} = this;
             const tc = textureCanvas;
             tc.width = tc.img.width;
             tc.height = tc.img.height;
@@ -970,8 +951,8 @@ texture-editor(onclick="{tryClose}")
                     tc.x.lineWidth = 1;
                     tc.x.strokeRect(x, y, w, h);
                     if (this.prevShowFrameIndices &&
-                        this.opts.asset.width > 8 &&
-                        this.opts.asset.height > 8
+                        this.asset.width > 8 &&
+                        this.asset.height > 8
                     ) {
                         tc.x.lineWidth = 2;
                         tc.x.globalAlpha = 1;
@@ -990,31 +971,24 @@ texture-editor(onclick="{tryClose}")
         /**
          * Saves the texture/skeleton and closes the opened window
          */
-        this.assetSave = () => {
-            if (this.nameTaken) {
-                // animate the error notice
-                require('./data/node_requires/jellify')(this.refs.errorNotice);
-                const {soundbox} = require('./data/node_requires/3rdparty/soundbox');
-                soundbox.play('Failure');
-                return false;
-            }
-            glob.modified = true;
-            const {asset} = this.opts;
-            asset.lastmod = Number(new Date());
+        this.saveAsset = () => {
+            this.writeChanges();
+            const {asset} = this;
             if (!this.skeletonMode) {
                 const {textureGenPreview, updatePixiTexture, updateDOMImage} = require('./data/node_requires/resources/textures');
                 updateDOMImage(asset);
                 updatePixiTexture(asset);
-                textureGenPreview(asset, global.projdir + '/img/' + asset.origname + '_prev@2.png', 128);
-                textureGenPreview(asset, global.projdir + '/img/' + asset.origname + '_prev.png', 64)
-                .then(() => {
-                    this.opts.onclose();
-                });
-            } else {
-                // No need to update textures for skeletons => just close the window.
-                this.opts.onclose();
+                return Promise.all([
+                    textureGenPreview(asset, global.projdir + '/img/' + asset.origname + '_prev@2.png', 128),
+                    textureGenPreview(asset, global.projdir + '/img/' + asset.origname + '_prev.png', 64)
+                ]);
             }
+            // No need to update textures for skeletons
             return true;
+        };
+        this.triggerSave = async () => {
+            await this.saveAsset();
+            this.opts.ondone(this.asset);
         };
 
         this.changePreviewBg = () => {
@@ -1036,20 +1010,20 @@ texture-editor(onclick="{tryClose}")
             this.update();
         };
         this.getMovableStripPoints = () => {
-            if (!this.opts.asset) {
+            if (!this.asset) {
                 return false;
             }
-            const points = this.opts.asset.stripPoints;
-            if (!this.opts.asset.symmetryStrip) {
+            const points = this.asset.stripPoints;
+            if (!this.asset.symmetryStrip) {
                 return points;
             }
             return points.slice(0, 2 + Math.round((points.length - 2) / 2));
         };
         this.getStripSegments = () => {
-            if (!this.opts.asset) {
+            if (!this.asset) {
                 return false;
             }
-            const {asset} = this.opts;
+            const {asset} = this;
             const offx = this.skeletonMode ? 0 : asset.offx,
                   offy = this.skeletonMode ? 0 : asset.offy;
             if (asset.shape !== 'strip') {
@@ -1084,7 +1058,7 @@ texture-editor(onclick="{tryClose}")
             return segs;
         };
         this.updateSymmetricalPoints = () => {
-            const {asset} = this.opts;
+            const {asset} = this;
             if (asset && asset.symmetryStrip) {
                 const movablePoints = this.getMovableStripPoints();
                 const [axisPoint1] = movablePoints;

@@ -42,7 +42,7 @@ sound-recorder.aDimmer.fadein
         this.stream = null;
         this.isWin = require('./data/node_requires/platformUtils').isWin;
 
-        const themeManager = require('./data/node_requires/themes');
+        const themeManager = require('./data/node_requires/themes').default;
 
         var audioCtx;
         const visualize = stream => {

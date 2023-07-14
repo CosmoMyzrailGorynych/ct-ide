@@ -58,17 +58,26 @@ app-view.flexcol
             namespace="projectBrowser"
             click="{openAsset}"
         )
+        // Asset editors
         .aView(
             each="{asset in openedAssets}"
             data-is="{editorMap[asset.type]}"
             show="{asset === tab}"
             asset="{asset}"
+            ondone="{closeAssetRequest}"
             ref="openedEditors"
         )
     exporter-error(if="{exporterError}" error="{exporterError}" onclose="{closeExportError}")
     new-project-onboarding(if="{sessionStorage.showOnboarding && localStorage.showOnboarding !== 'off'}")
     notepad-panel(ref="notepadPanel")
     tour-guide(tour="{appTour}" onfinish="{onAppTourFinish}" ref="tour" header="{voc.tour.header}")
+    asset-confirm(
+        discard="{assetDiscard}"
+        cancel="{assetCancel}"
+        apply="{assetApply}"
+        asset="{confirmationAsset}"
+        if="{showAssetConfirmation}"
+    )
     script.
         const fs = require('fs-extra');
 
@@ -109,7 +118,10 @@ app-view.flexcol
                 }
                 const newPos = this.openedAssets.indexOf(this.tab);
                 setTimeout(() => {
-                    this.refs.openedTabs[newPos].scrollIntoView();
+                    const tabs = Array.isArray(this.refs.openedTabs) ?
+                        this.refs.openedTabs :
+                        [this.refs.openedTabs];
+                    tabs[newPos].scrollIntoView();
                 }, 0);
             } else if (noOpen) {
                 console.warn('[app-view] An already opened asset was called with noOpen. This is probably a bug as you either do open assets or create them elsewhere without opening.')
@@ -118,15 +130,61 @@ app-view.flexcol
                 this.changeTab(asset)();
             }
         };
-        this.closeAsset = e => {
+        this.closeAsset = async e => {
+            e.stopPropagation();
             const {asset, ind} = e.item;
-            const editor = this.refs.openedEditors[ind];
-            // TODO: Check if the asset editor is in dirty state
+            const editors = Array.isArray(this.refs.openedEditors) ?
+                this.refs.openedEditors :
+                [this.refs.openedEditors];
+            const editor = editors[ind];
+            if (editor.isDirty()) {
+                this.showAssetConfirmation = true;
+                this.confirmationAsset = asset;
+            } else {
+                // TODO: Check if the asset editor is in dirty state
+                this.openedAssets.splice(ind, 1);
+                if (this.tab === asset) {
+                    this.changeTab('assets')();
+                }
+            }
+        };
+        this.closeAssetRequest = asset => {
+            const ind = this.openedAssets.findIndex(a => a.uid === asset.uid);
             this.openedAssets.splice(ind, 1);
-            if (this.tab === asset) {
+            if (typeof this.tab !== 'string' && this.tab.uid === asset.uid) {
                 this.changeTab('assets')();
             }
-            e.stopPropagation();
+            this.update();
+        };
+        this.assetDiscard = () => {
+            const ind = this.openedAssets.findIndex(a => a.uid === this.confirmationAsset.uid);
+            this.openedAssets.splice(ind, 1);
+            this.showAssetConfirmation = false;
+            if (typeof this.tab !== 'string' && this.tab.uid === this.confirmationAsset.uid) {
+                this.changeTab('assets')();
+            }
+            this.confirmationAsset = void 0;
+            this.update();
+        };
+        this.assetCancel = () => {
+            this.showAssetConfirmation = false;
+            this.confirmationAsset = void 0;
+            this.update();
+        };
+        this.assetApply = async () => {
+            const ind = this.openedAssets.findIndex(a => a.uid === this.confirmationAsset.uid);
+            const editors = Array.isArray(this.refs.openedEditors) ?
+                this.refs.openedEditors :
+                [this.refs.openedEditors];
+            const editor = editors[ind];
+            await editor.writeChanges();
+            this.openedAssets.splice(this.openedAssets.indexOf(this.confirmationAsset), 1);
+            if (typeof this.tab !== 'string' && this.tab.uid === this.confirmationAsset.uid) {
+                this.changeTab('assets')();
+            }
+            this.showAssetConfirmation = false;
+            this.confirmationAsset = void 0;
+            this.update();
         };
 
         const assetListener = asset => {

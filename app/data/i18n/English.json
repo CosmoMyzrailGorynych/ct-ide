@@ -18,6 +18,7 @@
         "couldNotLoadFromClipboard": "Could not load data from clipboard",
         "cut": "Cut",
         "delete": "Delete",
+        "discard": "Discard",
         "docsShort": "Docs",
         "docsLong": "Documentation",
         "donate": "Donate",
@@ -132,6 +133,10 @@
                 "skeletal sprites"
             ]
         }
+    },
+    "assetConfirm": {
+        "confirmHeading": "Select action",
+        "confirmParagraph": "The $1 asset has unapplied changes. What would you like to do with it?"
     },
     "assetInput": {
         "changeAsset": "Press to change the asset",
