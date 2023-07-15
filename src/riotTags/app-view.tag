@@ -52,7 +52,7 @@ app-view.flexcol
         project-settings(show="{tab === 'project'}" data-hotkey-scope="project" ref="projectsSettings")
         patrons-screen(if="{tab === 'patrons'}" ref="patrons" data-hotkey-scope="patrons")
         asset-browser.pad.aView(
-            if="{tab === 'assets'}"
+            show="{tab === 'assets'}"
             ref="assets"
             data-hotkey-scope="assets"
             namespace="projectBrowser"
