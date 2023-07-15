@@ -9,43 +9,43 @@ mixin templateProperties
                 b {parent.voc.depth}
                 input.wide(
                     type="number"
-                    onchange="{parent.wire('template.depth')}"
-                    value="{parent.template.depth}"
+                    onchange="{parent.wire('asset.depth')}"
+                    value="{parent.asset.depth}"
                 )
             label.block
                 b {parent.voc.opacity}
                 input.wide(
                     type="number" min="0" max="1" step="0.1"
-                    onchange="{parent.wire('template.extends.alpha')}"
-                    value="{parent.template.extends.alpha ?? 1}"
+                    onchange="{parent.wire('asset.extends.alpha')}"
+                    value="{parent.asset.extends.alpha ?? 1}"
                 )
             label.block
                 b {parent.voc.blendMode}
-                select.wide(onchange="{parent.wire('template.blendMode')}")
-                    option(value="normal" selected="{parent.template.blendMode === 'normal' || !parent.template.blendMode}") {parent.voc.blendModes.normal}
-                    option(value="add" selected="{parent.template.blendMode === 'add'}") {parent.voc.blendModes.add}
-                    option(value="multiply" selected="{parent.template.blendMode === 'multiply'}") {parent.voc.blendModes.multiply}
-                    option(value="screen" selected="{parent.template.blendMode === 'screen'}") {parent.voc.blendModes.screen}
+                select.wide(onchange="{parent.wire('asset.blendMode')}")
+                    option(value="normal" selected="{parent.asset.blendMode === 'normal' || !parent.asset.blendMode}") {parent.voc.blendModes.normal}
+                    option(value="add" selected="{parent.asset.blendMode === 'add'}") {parent.voc.blendModes.add}
+                    option(value="multiply" selected="{parent.asset.blendMode === 'multiply'}") {parent.voc.blendModes.multiply}
+                    option(value="screen" selected="{parent.asset.blendMode === 'screen'}") {parent.voc.blendModes.screen}
         fieldset
             label.flexrow
                 b.nogrow.alignmiddle {parent.voc.animationFPS}
                 .aSpacer.nogrow
-                input.alignmiddle(type="number" max="60" min="1" step="1" value="{parent.template.animationFPS ?? 60}" onchange="{parent.wire('template.animationFPS')}")
+                input.alignmiddle(type="number" max="60" min="1" step="1" value="{parent.asset.animationFPS ?? 60}" onchange="{parent.wire('asset.animationFPS')}")
             label.block.checkbox
-                input(type="checkbox" checked="{parent.template.playAnimationOnStart}" onchange="{parent.wire('template.playAnimationOnStart')}")
+                input(type="checkbox" checked="{parent.asset.playAnimationOnStart}" onchange="{parent.wire('asset.playAnimationOnStart')}")
                 span {parent.voc.playAnimationOnStart}
             label.block.checkbox
-                input(type="checkbox" checked="{parent.template.loopAnimation}" onchange="{parent.wire('template.loopAnimation')}")
+                input(type="checkbox" checked="{parent.asset.loopAnimation}" onchange="{parent.wire('asset.loopAnimation')}")
                 span {parent.voc.loopAnimation}
             label.block.checkbox
-                input(type="checkbox" checked="{parent.template.visible ?? true}" onchange="{parent.wire('template.visible')}")
+                input(type="checkbox" checked="{parent.asset.visible ?? true}" onchange="{parent.wire('asset.visible')}")
                 span {parent.voc.visible}
     .aSpacer
-    extensions-editor(type="template" entity="{template.extends}" wide="yep" compact="probably")
+    extensions-editor(type="template" entity="{asset.extends}" wide="yep" compact="probably")
 
 mixin eventsList
     event-list-scriptable(
-        events="{template.events}"
+        events="{asset.events}"
         entitytype="template"
         onchanged="{changeCodeTab}"
         currentevent="{currentSheet}"
@@ -57,18 +57,15 @@ template-editor.aPanel.aView.flexrow
             .flexfix-header
                 asset-input.wide(
                     assettypes="texture"
-                    assetid="{template.texture || -1}"
+                    assetid="{asset.texture || -1}"
                     large="large"
                     allowclear="allowclear"
                     onchanged="{applyTexture}"
                 )
                 .aSpacer
-                fieldset
-                    label.flexrow
-                        b.nogrow.noshrink {voc.name}
-                        .aSpacer.nogrow
-                        input.wide(type="text" onchange="{wire('template.name')}" value="{template.name}")
-                    .anErrorNotice(if="{nameTaken}" ref="errorNotice") {vocGlob.nameTaken}
+                .center
+                    b
+                        code {voc.name}
                 .aSpacer
             .flexfix-body(if="{localStorage.altTemplateLayout !== 'on'}")
                 +eventsList()
@@ -79,7 +76,7 @@ template-editor.aPanel.aView.flexrow
                 button.wide(onclick="{templateSave}" title="Shift+Control+S" data-hotkey="Shift+Control+S")
                     svg.feather
                         use(xlink:href="#check")
-                    span {voc.done}
+                    span {vocGlob.apply}
     .template-editor-aSlidingEventList(if="{localStorage.altTemplateLayout === 'on'}")
         .aPanel.tall
             .template-editor-aSlidingEventListWrap.tall
@@ -118,43 +115,29 @@ template-editor.aPanel.aView.flexrow
         this.namespace = 'templateView';
         this.mixin(require('./data/node_requires/riotMixins/voc').default);
         this.mixin(require('./data/node_requires/riotMixins/wire').default);
+        this.mixin(require('./data/node_requires/riotMixins/discardio').default);
 
         const textures = require('./data/node_requires/resources/textures');
 
         this.getTextureRevision = template => textures.getById(template.texture).lastmod;
 
-        this.template = this.opts.asset;
         this.tab = 'javascript';
-        [this.currentSheet] = this.template.events; // can be undefined, this is ok
+        [this.currentSheet] = this.asset.events; // can be undefined, this is ok
 
         this.changeTab = tab => () => {
             this.tab = tab;
         };
-
-        this.checkNames = () => {
-            /* TODO: unified name check
-            if (global.currentProject.templates.find(template =>
-                this.template.name === template.name && this.template !== template)) {
-                this.nameTaken = true;
-            } else {
-                this.nameTaken = false;
-            }*/
-        };
-        this.on('update', () => {
-            this.checkNames();
-        });
-
         this.changeSprite = () => {
             this.selectingTexture = true;
         };
         this.applyTexture = texture => {
             // eslint-disable-next-line eqeqeq
             if (texture == -1) {
-                this.template.texture = -1;
+                this.asset.texture = -1;
             } else {
-                this.template.texture = texture;
-                if (this.template.name === 'NewTemplate') {
-                    this.template.name = textures.getById(texture).name;
+                this.asset.texture = texture;
+                if (this.asset.name === 'NewTemplate') {
+                    this.asset.name = textures.getById(texture).name;
                 }
             }
             this.selectingTexture = false;
@@ -165,24 +148,15 @@ template-editor.aPanel.aView.flexrow
             this.selectingTexture = false;
             this.update();
         };
-        this.templateSave = () => {
-            this.checkNames();
-            if (this.nameTaken) {
-                this.update();
-                // animate the error notice
-                require('./data/node_requires/jellify')(this.refs.errorNotice);
-                const {soundbox} = require('./data/node_requires/3rdparty/soundbox');
-                soundbox.play('Failure');
-                return false;
-            }
-            glob.modified = true;
-            this.template.lastmod = Number(new Date());
-            this.parent.editingTemplate = false;
-            this.parent.fillTemplateMap();
-            this.parent.update();
+        this.saveAsset = () => {
+            this.writeChanges();
             window.signals.trigger('templatesChanged');
-            window.signals.trigger('templateChanged', this.template.uid);
+            window.signals.trigger('templateChanged', this.asset.uid);
             return true;
+        };
+        this.templateSave = () => {
+            this.saveAsset();
+            this.opts.ondone(this.asset);
         };
         this.changeCodeTab = scriptableEvent => {
             this.currentSheet = scriptableEvent;
