@@ -177,7 +177,11 @@ app-view.flexcol
                 this.refs.openedEditors :
                 [this.refs.openedEditors];
             const editor = editors[ind];
-            await editor.writeChanges();
+            const response = await editor.writeChanges();
+            if (response === false) {
+                return; // Editors can return `false` explicitly to tell that the editor
+                        // cannot be closed right now.
+            }
             this.openedAssets.splice(this.openedAssets.indexOf(this.confirmationAsset), 1);
             if (typeof this.tab !== 'string' && this.tab.uid === this.confirmationAsset.uid) {
                 this.changeTab('assets')();
