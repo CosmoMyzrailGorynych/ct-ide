@@ -177,7 +177,7 @@ app-view.flexcol
                 this.refs.openedEditors :
                 [this.refs.openedEditors];
             const editor = editors[ind];
-            const response = await editor.writeChanges();
+            const response = await editor.saveAsset();
             if (response === false) {
                 return; // Editors can return `false` explicitly to tell that the editor
                         // cannot be closed right now.
