@@ -4,7 +4,7 @@ declare interface IRiotTag<OptsTypes = Record<string, any>> {
     off: (this: IRiotTag, event: string, callback: (payload: any) => void) => void;
     once: <T>(this: IRiotTag, event: string, callback: (payload: T) => void) => void;
     opts: OptsTypes;
-    refs: Record<string, HTMLElement | HTMLElement[]>;
+    refs: Record<string, HTMLElement | HTMLElement[] | IRiotTag | IRiotTag[]>;
     root: HTMLElement;
 
     // Fields ct.js actively uses in its tags

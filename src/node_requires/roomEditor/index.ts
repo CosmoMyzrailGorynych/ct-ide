@@ -139,7 +139,7 @@ class RoomEditor extends PIXI.Application {
         this.ticker.maxFPS = 60;
         this.observable = riot.observable({});
 
-        const {room} = editor;
+        const room = editor.asset;
         this.ctRoom = room;
         this.riotEditor = editor;
 

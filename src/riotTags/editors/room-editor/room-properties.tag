@@ -3,17 +3,6 @@
     @attribute updatebg (riot function)
     @attribute history (History)
 room-properties
-    fieldset
-        label
-            b {voc.name}
-            br
-            input.wide(
-                type="text"
-                onfocus="{rememberValue}"
-                oninput="{wire('opts.room.name')}"
-                onchange="{recordChange(opts.room, 'name')}"
-                value="{opts.room.name}"
-            )
     collapsible-section(
         heading="{voc.viewportHeading}"
         defaultstate="opened"

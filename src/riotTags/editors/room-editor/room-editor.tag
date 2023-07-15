@@ -1,7 +1,7 @@
 //
     @attribute asset
         The room to edit
-    @attribute onclose (riot function)
+    @attribute ondone (riot function)
 
 room-editor.aPanel.aView
     canvas(ref="canvas" oncontextmenu="{openMenus}")
@@ -142,6 +142,10 @@ room-editor.aPanel.aView
         const PIXI = require('pixi.js');
         this.namespace = 'roomView';
         this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('./data/node_requires/riotMixins/discardio').default);
+        // The default discardio's handler won't work as the room editor
+        // writes most changes to this.asset only on save due to serialization/deserialization
+        this.isDirty = () => true; // TODO: make an actual handler in RoomEditor
 
         this.room = this.opts.asset;
 
@@ -482,17 +486,21 @@ room-editor.aPanel.aView
             this.update();
         };
 
-        this.saveRoom = async () => {
+        this.saveAsset = async () => {
             if (this.pixiEditor.currentSelection.size && this.refs.propertiesPanel) {
                 this.refs.propertiesPanel.applyChanges();
             }
             const {writeRoomPreview} = require('./data/node_requires/resources/rooms');
             this.pixiEditor.serialize();
+            this.writeChanges();
             await Promise.all([
                 writeRoomPreview(this.room, this.pixiEditor.getSplashScreen(true), true),
                 writeRoomPreview(this.room, this.pixiEditor.getSplashScreen(false), false)
             ]);
-            this.opts.onclose();
+        };
+        this.saveRoom = async () => {
+            await this.saveAsset();
+            this.opts.ondone(this.asset);
         };
 
         const resizeEditor = () => {
