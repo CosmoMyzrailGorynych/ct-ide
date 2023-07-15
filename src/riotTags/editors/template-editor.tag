@@ -64,8 +64,10 @@ template-editor.aPanel.aView.flexrow
                 )
                 .aSpacer
                 .center
+                    svg.feather
+                        use(xlink:href="#template")
                     b
-                        code {voc.name}
+                        code  {asset.name}
                 .aSpacer
             .flexfix-body(if="{localStorage.altTemplateLayout !== 'on'}")
                 +eventsList()
