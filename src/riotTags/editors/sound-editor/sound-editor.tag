@@ -1,9 +1,4 @@
 sound-editor.aView.aPanel.pad(class="{opts.class}")
-    b {voc.name}
-    br
-    input.wide(type="text" value="{sound.name}" onchange="{wire('sound.name')}")
-    .anErrorNotice(if="{nameTaken}" ref="errorNotice") {vocGlob.nameTaken}
-    br
     p
         label
             b {voc.poolSize}
@@ -25,47 +20,32 @@ sound-editor.aView.aPanel.pad(class="{opts.class}")
             span {voc.import}
         input(type="file" ref="inputsound" accept=".mp3,.ogg,.wav" onchange="{changeSoundFile}")
     p.nmb
-        button.wide(onclick="{soundSave}" title="Shift+Control+S" data-hotkey="Control+S")
+        button.wide(onclick="{applyChanges}" title="Shift+Control+S" data-hotkey="Control+S")
             svg.feather
                 use(xlink:href="#check")
-            span {voc.save}
+            span {vocGlob.apply}
     script.
         const path = require('path');
         this.namespace = 'soundView';
         this.mixin(require('./data/node_requires/riotMixins/voc').default);
         this.mixin(require('./data/node_requires/riotMixins/wire').default);
+        this.mixin(require('./data/node_requires/riotMixins/discardio').default);
+
         this.playing = false;
         this.sound = this.opts.asset;
-        this.on('update', () => {
-            /* TODO: centralized name checks
-            const sound = global.currentProject.sounds.find(sound =>
-                this.sound.name === sound.name && this.sound !== sound);
-            if (sound) {
-                this.nameTaken = true;
-            } else {
-                this.nameTaken = false;
-            }*/
-        });
         this.notifyPlayerPlays = () => {
             this.playing = true;
         };
-        this.soundSave = () => {
-            if (this.nameTaken) {
-                // animate the error notice
-                require('./data/node_requires/jellify')(this.refs.errorNotice);
-                const {soundbox} = require('./data/node_requires/3rdparty/soundbox');
-                soundbox.play('Failure');
-                return false;
-            }
-
+        this.saveAsset = () => {
+            this.writeChanges();
             if (this.playing) {
                 this.togglePlay();
             }
-            this.parent.editing = false;
-            this.parent.update();
-            require('./data/node_requires/glob').modified = true;
-
             return true;
+        };
+        this.applyChanges = () => {
+            this.saveAsset();
+            this.opts.ondone(this.asset);
         };
         this.togglePlay = function togglePlay() {
             if (this.playing) {

@@ -61,6 +61,8 @@ const typeToApiMap: Record<resourceType, IResourceAPI> = {
     template: templates,
     texture: textures
 };
+export const assetTypes = Object.keys(typeToApiMap) as resourceType[];
+
 type typeToTsTypeMap = {
     [T in resourceType]:
         T extends 'font' ? IFont :
@@ -229,7 +231,7 @@ export const resourceToIconMap: Record<resourceType, string> = {
 export const editorMap: Record<resourceType, string> = {
     font: 'font-editor',
     room: 'room-editor',
-    skeleton: 'texture-editor',
+    skeleton: 'skeletal-animation',
     sound: 'sound-editor',
     style: 'style-editor',
     tandem: 'emitter-tandem-editor',

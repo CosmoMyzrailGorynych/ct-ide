@@ -1,11 +1,5 @@
 emitter-tandem-editor.aPanel.aView.flexrow(class="{opts.class}")
     .flexfix(style="width: {panelWidth}px")
-        .flexfix-header
-            .aPanel.pad.nbt.nbl.nbr
-                b {vocGlob.name}
-                br
-                input.wide(type="text" value="{tandem.name}" onchange="{wire('tandem.name')}")
-                .anErrorNotice(if="{nameTaken}" ref="errorNotice") {vocGlob.nameTaken}
         .flexfix-body.flexrow
             emitter-editor(
                 each="{emitter in tandem.emitters}"
@@ -62,7 +56,7 @@ emitter-tandem-editor.aPanel.aView.flexrow(class="{opts.class}")
         allownone="yes"
         onselected="{onPreviewTexturePicked}"
         oncancelled="{onPreviewTextureCancel}"
-        assettype="textures"
+        assettypes="texture"
     )
     script.
         /* global net */
@@ -484,9 +478,11 @@ emitter-tandem-editor.aPanel.aView.flexrow(class="{opts.class}")
             document.removeEventListener('mouseup', gutterUp);
         });
 
-        this.apply = () => {
-            this.parent.editingTandem = false;
-            this.parent.update();
-            require('./data/node_requires/glob').modified = true;
+        this.saveAsset = () => {
+            this.writeChanges();
             window.signals.trigger('tandemUpdated', this.asset);
+        };
+        this.apply = () => {
+            this.saveAsset();
+            this.opts.ondone(this.asset);
         };

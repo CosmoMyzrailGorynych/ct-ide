@@ -58,6 +58,8 @@ app-view.flexcol
             namespace="projectBrowser"
             click="{openAsset}"
         )
+            yield(to="filterArea")
+                create-asset-menu
         // Asset editors
         .aView(
             each="{asset in openedAssets}"

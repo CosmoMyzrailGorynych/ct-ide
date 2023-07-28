@@ -74,6 +74,7 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
                 svg.feather
                     use(xlink:href="#folder-plus")
                 span(if="{!opts.compact}") {voc.addNewFolder}
+            <yield from="filterArea"/>
     .flexfix-body
         .center(if="{!opts.shownone && !(searchResults || entries).length}")
             svg.anIllustration
