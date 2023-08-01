@@ -2,14 +2,14 @@
 
 [![](https://img.shields.io/badge/license-MIT-informational?style=flat-square)](https://github.com/ct-js/ct-js/blob/develop/LICENSE) [![GitHub tag (latest by date)](https://img.shields.io/github/tag-date/ct-js/ct-js?label=version&style=flat-square)](https://github.com/ct-js/ct-js/releases) [![Gitlab CI master branch](https://img.shields.io/gitlab/pipeline-status/CoMiGo/ct-js?branch=master&label=ct.js%20builds&style=flat-square)](https://gitlab.com/CoMiGo/ct-js/-/commits/master) [![Gitlab CI develop branch](https://img.shields.io/gitlab/pipeline-status/CoMiGo/ct-js?branch=develop&label=nightly%20builds&style=flat-square)](https://gitlab.com/CoMiGo/ct-js/-/commits/develop)
 
-[![](https://img.shields.io/discord/490052958310891520?style=flat-square&logo=discord&logoColor=white)](https://discord.gg/CggbPkb) [![GitHub issues by-label](https://img.shields.io/github/issues/ct-js/ct-js/state:to%20do?style=flat-square&label=todo%20issues)](https://github.com/ct-js/ct-js/issues?q=is%3Aissue+is%3Aopen+label%3A%22state%3Ato+do%22) [![GitHub issues by-label](https://img.shields.io/github/issues/ct-js/ct-js/state:current%20release?style=flat-square&label=current%20release%20issues)](https://github.com/ct-js/ct-js/issues?q=is%3Aissue+is%3Aopen+label%3A%22state%3Acurrent+release%22)
+[![](https://img.shields.io/discord/490052958310891520?style=flat-square&logo=discord&logoColor=white)](https://discord.gg/yuvuDW5) [![GitHub issues by-label](https://img.shields.io/github/issues/ct-js/ct-js/state:to%20do?style=flat-square&label=todo%20issues)](https://github.com/ct-js/ct-js/issues?q=is%3Aissue+is%3Aopen+label%3A%22state%3Ato+do%22) [![GitHub issues by-label](https://img.shields.io/github/issues/ct-js/ct-js/state:current%20release?style=flat-square&label=current%20release%20issues)](https://github.com/ct-js/ct-js/issues?q=is%3Aissue+is%3Aopen+label%3A%22state%3Acurrent+release%22)
  [![GitHub issues by-label](https://img.shields.io/github/issues/ct-js/ct-js/help%20wanted?style=flat-square&label=help%20wanted)](https://github.com/ct-js/ct-js/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22)
 
 Ct.js is a 2D game editor that makes its bet on good documentation, visual tools and smooth workflow.
 
 ---
 
-For bugs, feature requests, developing questions, please use [GitHub issues](https://github.com/ct-js/ct-js/issues) so we can better track  them. For general support about making games, ask a question at our [discord server](https://discord.gg/CggbPkb).
+For bugs, feature requests, developing questions, please use [GitHub issues](https://github.com/ct-js/ct-js/issues) so we can better track  them. For general support about making games, ask a question at our [discord server](https://discord.gg/yuvuDW5).
 
 ---
 
