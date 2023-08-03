@@ -18,7 +18,7 @@ You can call a `stop()` method on this promise to interrupt it manually.
 
 ```js
 this.moving = true;
-this.depth = 1;
+this.zIndex = 1;
 
 tween.add({
     obj: this,
@@ -28,7 +28,7 @@ tween.add({
     },
     duration: 250
 }).then(() => {
-    this.depth = 0;
+    this.zIndex = 0;
     this.moving = false;
 });
 ```

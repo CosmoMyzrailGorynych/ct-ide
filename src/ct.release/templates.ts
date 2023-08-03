@@ -150,7 +150,7 @@ export class Copy extends PIXI.AnimatedSprite {
         this.#zeroDirection = 0;
         this.speed = this.direction = this.gravity = 0;
         this.gravityDir = 90;
-        this.depth = 0;
+        this.zIndex = 0;
         this.timer1 = this.timer2 = this.timer3 = this.timer4 = this.timer5 = this.timer6 = 0;
         if (exts) {
             Object.assign(this, exts);
@@ -177,7 +177,7 @@ export class Copy extends PIXI.AnimatedSprite {
                 this.shape = res.getTextureShape(t.texture || -1);
             }
             if (exts && exts.depth !== void 0) {
-                this.depth = exts.depth;
+                this.zIndex = exts.depth;
             }
             if (templatesLib.list[template]) {
                 templatesLib.list[template].push(this);

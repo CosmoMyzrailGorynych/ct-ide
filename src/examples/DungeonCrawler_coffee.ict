@@ -707,7 +707,7 @@ templates:
         arguments: {}
         code: |-
           this.transitionStarted = no
-          this.depth = this.y
+          this.zIndex = this.y
         eventKey: OnCreate
       - eventKey: collisionTemplate
         code: |-
@@ -825,7 +825,7 @@ templates:
     events:
       - lib: core
         arguments: {}
-        code: this.depth = this.y
+        code: this.zIndex = this.y
         eventKey: OnCreate
       - lib: core
         arguments: {}
@@ -902,7 +902,7 @@ templates:
         eventKey: OnDestroy
       - lib: core
         arguments: {}
-        code: this.depth = this.y
+        code: this.zIndex = this.y
         eventKey: OnDraw
       - eventKey: collisionCGroup
         code: this.kill = true
@@ -996,7 +996,7 @@ templates:
         eventKey: OnStep
       - lib: core
         arguments: {}
-        code: this.depth = this.y
+        code: this.zIndex = this.y
         eventKey: OnDraw
     type: template
     loopAnimation: true
@@ -1043,7 +1043,7 @@ templates:
         eventKey: OnDestroy
       - lib: core
         arguments: {}
-        code: this.depth = this.y
+        code: this.zIndex = this.y
         eventKey: OnDraw
       - eventKey: collisionTemplate
         code: this.kill = yes
