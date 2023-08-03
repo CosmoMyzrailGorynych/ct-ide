@@ -33,7 +33,9 @@
 asset-input
     .aButtonGroup.nml(if="{!opts.large}")
         button(onclick="{openSelector}" title="{voc.changeAsset}" class="{inline: opts.compact}")
-            img(src="{thumbnails(currentAsset || -1, false, false)}")
+            img(if="{['textures', 'templates', 'rooms'].includes(opts.assettype)}" src="{thumbnails(currentAsset || -1, false, false)}")
+            svg.feather(if="{['sounds', 'tandems'].includes(opts.assettype)}")
+                use(xlink:href="#{(opts.assetid == -1 || opts.assetid === void 0) ? 'help-circle' : thumbnails(currentAsset)}")
             span(if="{opts.assetid == -1 || opts.assetid === void 0}") {vocGlob.select}
             span(if="{opts.assetid != -1 && opts.assetid !== void 0}") {names(currentAsset)}
         button.square(if="{opts.assetid != -1 && opts.assetid !== void 0 && !opts.disallowjump}" title="{voc.jumpToAsset}" onclick="{openAsset}" class="{inline: opts.compact}")
@@ -50,12 +52,14 @@ asset-input
             button.tiny(if="{(opts.assetid != -1 && opts.assetid !== void 0) && opts.allowclear}" title="{vocGlob.clear}" onclick="{clearAsset}")
                 svg.feather
                     use(xlink:href="#x")
-        img(src="{thumbnails(currentAsset || -1, true, false)}")
+        img(if="{['textures', 'templates', 'rooms'].includes(opts.assettype)}" src="{thumbnails(currentAsset || -1, true, false)}")
+        svg.feather(if="{['sounds', 'tandems'].includes(opts.assettype)}")
+            use(xlink:href="#{currentAsset == -1 ? 'help-circle' : thumbnails(currentAsset)}")
         .aNotice(if="{opts.assetid == -1 || opts.assetid === void 0}") {vocGlob.select}
         .dim(if="{opts.assetid != -1 && opts.assetid !== void 0}") {names(currentAsset)}
     asset-selector(
         if="{showingSelector}"
-        assettype="{opts.assettype}"
+        assettype="{opts.assettype === 'tandems' ? 'emitterTandems' : opts.assettype}"
         selectorheader="{opts.selectorheader}"
         allownone="{opts.allowclear}"
         onselected="{onAssetPicked}"
@@ -67,9 +71,21 @@ asset-input
 
         const updateResourceAPIs = () => {
             this.currentAssetType = this.opts.assettype;
-            this.resourceAPI = require(`./data/node_requires/resources/${this.currentAssetType}`);
+            if (this.currentAssetType === 'tandems') {
+                this.resourceAPI = require('./data/node_requires/resources/emitterTandems');
+            } else {
+                this.resourceAPI = require(`./data/node_requires/resources/${this.currentAssetType}`);
+            }
             this.names = asset => (this.resourceAPI.getName ? this.resourceAPI.getName(asset) : asset.name);
-            this.thumbnails = (asset, x2, fs) => this.resourceAPI.getThumbnail(asset, x2, fs);
+            this.thumbnails = (asset, x2, fs) => {
+                if (this.currentAssetType === 'sounds') {
+                    return asset.isMusic ? 'music' : 'volume-2';
+                }
+                if (this.currentAssetType === 'tandems') {
+                    return 'sparkles';
+                }
+                return this.resourceAPI.getThumbnail(asset, x2, fs);
+            };
         };
         updateResourceAPIs();
         // eslint-disable-next-line eqeqeq
