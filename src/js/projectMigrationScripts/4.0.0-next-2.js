@@ -6,12 +6,17 @@ window.migrationProcess.push({
     process: project => new Promise(resolve => {
         // pixi-particles -> @pixi/particle-emitter migration
         for (const tandem of project.emitterTandems) {
-            const newEmitters = [];
+            if (!tandem.emitters[0].settings.acceleration) {
+                continue; // skip already converted or empty tandems
+            }
+            delete tandem.previewTexture;
+            delete tandem.origname;
+            tandem.lastmod = Number(new Date());
             for (let i = 0; i < tandem.emitters.length; i++) {
                 const v2Emitter = tandem.emitters[i],
                       v2Settings = v2Emitter.settings;
-                const usesAcceleration = v2Emitter.acceleration.x !== 0 ||
-                                         v2Emitter.acceleration.y !== 0;
+                const usesAcceleration = v2Settings.acceleration.x !== 0 ||
+                                         v2Settings.acceleration.y !== 0;
                 const v2Shape = v2Settings.spawnType;
                 let shapeConfig, shapeType;
                 switch (v2Shape) {
@@ -86,12 +91,20 @@ window.migrationProcess.push({
                         behaviors: [{ // 0
                             type: 'alpha',
                             config: {
-                                alpha: v2Settings.alpha.list
+                                alpha: {
+                                    list: v2Settings.alpha.list,
+                                    isStepped: v2Settings.alpha.isStepped
+                                }
                             }
                         },
                         { // 1
                             type: 'color',
-                            config: v2Settings.color.list
+                            config: {
+                                color: {
+                                    list: v2Settings.color.list,
+                                    isStepped: v2Settings.color.isStepped
+                                }
+                            }
                         },
                         { // 2
                             type: 'blendMode',
@@ -101,7 +114,13 @@ window.migrationProcess.push({
                         },
                         { // 3
                             type: 'scale',
-                            config: v2Settings.scale.list
+                            config: {
+                                scale: {
+                                    list: v2Settings.scale.list,
+                                    isStepped: v2Settings.scale.isStepped
+                                },
+                                minMult: v2Settings.minimumScaleMultiplier
+                            }
                         },
                         { // 4
                             type: usesAcceleration ? 'moveAcceleration' : 'moveSpeed',
@@ -118,7 +137,10 @@ window.migrationProcess.push({
                                     maxSpeed: v2Settings.maxSpeed
                                 } :
                                 {
-                                    speed: v2Settings.speed.list,
+                                    speed: {
+                                        list: v2Settings.speed.list,
+                                        isStepped: v2Settings.speed.isStepped
+                                    },
                                     minMult: v2Settings.minimumSpeedMultiplier ?? 1
                                 }
                         },

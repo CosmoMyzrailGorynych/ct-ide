@@ -1,3 +1,8 @@
+// References are needed for the client library to fetch only a subset
+// of the ct.IDE typeset.
+
+/* eslint-disable @typescript-eslint/triple-slash-reference */
+/* eslint-disable spaced-comment */
 /// <reference path="../resources/textures/ITexture.d.ts" />
 /// <reference path="../resources/emitterTandems/types.d.ts" />
 /// <reference path="../resources/rooms/IRoom.d.ts" />
