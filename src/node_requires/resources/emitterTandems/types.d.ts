@@ -63,6 +63,8 @@ interface IEmitterConfigTupled extends EmitterConfigV3 {
 declare interface ITandemEmitter {
     uid: string;
     texture: assetRef,
+    textureBehavior: 'textureRandom' | 'animatedSingle',
+    animatedSingleFramerate: number,
     openedTabs: Array<EmitterTabsNames>,
     settings: IEmitterConfigTupled
 }

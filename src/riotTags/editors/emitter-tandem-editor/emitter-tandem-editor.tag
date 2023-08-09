@@ -2,7 +2,7 @@ emitter-tandem-editor.aPanel.aView.flexrow(class="{opts.class}")
     .flexfix(style="width: {panelWidth}px")
         .flexfix-body.flexrow
             emitter-editor(
-                each="{emitter in tandem.emitters}"
+                each="{emitter in asset.emitters}"
                 emitter="{emitter}"
                 emittermap="{parent.uidToEmitterMap}"
             )
@@ -16,25 +16,25 @@ emitter-tandem-editor.aPanel.aView.flexrow(class="{opts.class}")
                     use(xlink:href="#check")
                 span {vocGlob.apply}
     .aResizer.vertical(onmousedown="{gutterMouseDown}")
-    div(ref="preview")
+    .relative(ref="preview")
         canvas(
             ref="canvas"
             onpointermove="{onCanvasMove}"
             onpointerout="{resetEmitterPositioning}"
         )
         .emitter-tandem-editor-Tools.flexrow
-            button.nogrow.forcebackground(onclick="{resetEmitters}")
+            button.small.nogrow.forcebackground(onclick="{resetEmitters}")
                 span {voc.reset}
             .aSpacer
-            button.nogrow.forcebackground(onclick="{openPreviewTexturePicker}")
+            button.small.nogrow.forcebackground(onclick="{openPreviewTexturePicker}")
                 svg.feather
                     use(xlink:href="#texture")
                 span {voc.setPreviewTexture}
-            button.nogrow.forcebackground(onclick="{changeGrid}")
+            button.small.nogrow.forcebackground(onclick="{changeGrid}")
                 svg.feather
                     use(xlink:href="#grid")
                 span {voc.changeGrid}
-            button.nogrow.forcebackground(onclick="{changePreviewBg}")
+            button.small.nogrow.forcebackground(onclick="{changePreviewBg}")
                 svg.feather
                     use(xlink:href="#droplet")
                 span {voc.changeBg}
@@ -89,15 +89,34 @@ emitter-tandem-editor.aPanel.aView.flexrow(class="{opts.class}")
         // Creates a new emitter
         this.spawnEmitter = async (emitterData, container) => {
             const {getPixiTexture} = require('./data/node_requires/resources/textures');
-            const textures = await getPixiTexture(emitterData.texture, null, true);
-            const v3config = upgradeConfig(emitterData.settings, textures);
-            console.log(v3config);
-            const emitter = new particles.Emitter(container, v3config);
-            /*const emitter = new particles.Emitter(
-                container,
-                textures,
-                emitterData.settings
-            );*/
+            const textures = getPixiTexture(emitterData.texture, null, true);
+            const settings = {
+                ...emitterData.settings,
+                behaviors: [
+                    ...emitterData.settings.behaviors
+                ]
+            };
+            // Add the texture behavior
+            if (emitterData.textureBehavior === 'textureRandom') {
+                settings.behaviors.push({
+                    type: 'textureRandom',
+                    config: {
+                        textures
+                    }
+                });
+            } else {
+                settings.behaviors.push({
+                    type: 'animatedSingle',
+                    config: {
+                        anim: {
+                            framerate: emitterData.animatedSingleFramerate,
+                            loop: true,
+                            textures
+                        }
+                    }
+                });
+            }
+            const emitter = new particles.Emitter(container, settings);
             emitter.emit = true;
             if (emitterData.settings.delay < 0) { // this needs to be prewarmed
                 emitter.update(-emitterData.settings.delay);
@@ -196,46 +215,38 @@ emitter-tandem-editor.aPanel.aView.flexrow(class="{opts.class}")
                 }
                 const emitterX = emitter.settings.pos.x,
                       emitterY = emitter.settings.pos.y;
-                if (emitter.settings.spawnType === 'point') {
-                    const crosshair = new PIXI.Graphics();
-                    crosshair.lineStyle(2, 0x446adb, 1);
-                    crosshair.moveTo(0, -64);
-                    crosshair.lineTo(0, 64);
-                    crosshair.moveTo(-64, 0);
-                    crosshair.lineTo(64, 0);
-                    crosshair.x = emitterX;
-                    crosshair.y = emitterY;
-                    this.visualizersContainer.addChild(crosshair);
-                } else if (emitter.settings.spawnType === 'circle' || emitter.settings.spawnType === 'ring') {
+                const bh = emitter.settings.behaviors[5];
+                const shapeType = bh.config?.type || bh.type;
+                if (shapeType === 'donut') {
                     const circle = new PIXI.Graphics();
                     circle.lineStyle(2, 0x446adb, 1);
                     circle.beginFill(0x446adb, 0.27);
-                    circle.drawCircle(emitterX, emitterY, emitter.settings.spawnCircle.r);
-                    if (emitter.settings.spawnType === 'ring') {
+                    circle.drawCircle(emitterX, emitterY, bh.config.data.radius);
+                    if (bh.config.data.innerRadius) {
                         circle.beginHole();
-                        circle.drawCircle(emitterX, emitterY, emitter.settings.spawnCircle.minR);
+                        circle.drawCircle(emitterX, emitterY, bh.config.data.innerRadius);
                         circle.endHole();
                     }
                     circle.endFill();
                     this.visualizersContainer.addChild(circle);
-                } else if (emitter.settings.spawnType === 'rect') {
+                } else if (shapeType === 'rect') {
                     const rect = new PIXI.Graphics();
                     rect.lineStyle(2, 0x446adb, 1);
                     rect.beginFill(0x446adb, 0.27);
                     rect.drawRect(
-                        emitterX + emitter.settings.spawnRect.x,
-                        emitterY + emitter.settings.spawnRect.y,
-                        emitter.settings.spawnRect.w,
-                        emitter.settings.spawnRect.h
+                        emitterX + bh.config.data.x,
+                        emitterY + bh.config.data.y,
+                        bh.config.data.w,
+                        bh.config.data.h
                     );
                     rect.endFill();
                     this.visualizersContainer.addChild(rect);
-                } else if (emitter.settings.spawnType === 'burst') {
+                } else if (shapeType === 'burst') {
                     const crosshair = new PIXI.Graphics();
                     crosshair.lineStyle(2, 0x446adb, 1);
                     crosshair.drawStar(
                         emitterX, emitterY,
-                        emitter.settings.particlesPerWave,
+                        360 / bh.config.spacing,
                         64, 16,
                         Math.PI * (0.5 + emitter.settings.angleStart / 180)
                     );
@@ -314,7 +325,7 @@ emitter-tandem-editor.aPanel.aView.flexrow(class="{opts.class}")
             this.pixiApp.stage.addChild(this.inspector);
             this.pixiApp.stage.addChild(this.visualizersContainer);
 
-            this.pixiApp.stage.interactive = true;
+            this.pixiApp.stage.eventMode = 'dynamic';
             this.pixiApp.stage.on('wheel', this.onCanvasWheel);
 
             this.resetEmitters();
@@ -358,7 +369,7 @@ emitter-tandem-editor.aPanel.aView.flexrow(class="{opts.class}")
         };
         this.updatePreviewColor = (color, evtype) => {
             this.previewColor = localStorage.tandemEditorPreviewBg = color;
-            this.pixiApp.renderer.backgroundColor = Number('0x' + color.slice(1));
+            this.pixiApp.renderer.background.color = Number('0x' + color.slice(1));
             if (evtype === 'onapply') {
                 this.changingPreviewColor = false;
             }

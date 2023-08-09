@@ -2,7 +2,8 @@ const emitter = {
     uid: 'default',
     texture: -1,
     openedTabs: ['texture'],
-    easing: 'smooth',
+    textureBehavior: 'textureRandom',
+    animatedSingleFramerate: 30,
     settings: {
         lifetime: {
             min: 0.5,

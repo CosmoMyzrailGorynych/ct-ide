@@ -43,7 +43,7 @@ window.migrationProcess.push({
                         // eslint-disable-next-line id-blacklist
                         data: {
                             innerRadius: v2Shape === 'circle' ? 0 : v2Settings.spawnCircle.minR,
-                            radius: v2Settings.spawnCircle.minR,
+                            radius: v2Settings.spawnCircle.r,
                             x: 0,
                             y: 0,
                             rotation: Boolean(!v2Settings.noRotation)
@@ -76,6 +76,8 @@ window.migrationProcess.push({
                     uid: v2Emitter.uid,
                     texture: v2Emitter.texture,
                     openedTabs: v2Emitter.openedTabs,
+                    textureBehavior: 'textureRandom',
+                    animatedSingleFramerate: 10,
                     settings: {
                         frequency: v2Settings.frequency,
                         lifetime: v2Settings.lifetime,

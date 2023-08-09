@@ -511,7 +511,19 @@
         "to": "To:",
         "textureHeading": "Texture",
         "selectTexture": "Select…",
+        "textureMethod": "Use multiple frames as:",
+        "textureMethods": {
+            "random": "Random",
+            "animated": "Animation"
+        },
+        "animatedFramerate": "Framerate:",
         "importBuiltin": "Import default…",
+        "easingHeader": "Easing",
+        "easing": {
+            "none": "Stepped",
+            "linear": "Linear",
+            "smooth": "Smooth"
+        },
         "colorAndOpacityHeading": "Color and Opacity",
         "stepped": "Stepped",
         "steppedColor": "Stepped color",
@@ -526,6 +538,11 @@
         "minimumSize": "Minimum size:",
         "minimumSizeHint": "Setting it to lower values will randomize the size of each particle. The lower the values, the stronger the effect.",
         "velocityHeading": "Velocity",
+        "movementType": "Movement type:",
+        "movementTypes": {
+            "linear": "Linear",
+            "accelerated": "With gravity"
+        },
         "velocity": "Velocity:",
         "minimumSpeed": "Minimum speed:",
         "minimumSpeedHint": "Setting it to lower values will randomize the speed of each particle; the lower the value, the slower the particle may be.",
@@ -534,8 +551,13 @@
         "gravityNotice": "Note that if it differs from (0;0), velocity interpolation will be disabled, meaning that only the first node of the velocity graph will have the effect.",
         "directionHeading": "Direction",
         "startingDirection": "Starting direction",
-        "preserveTextureDirection": "Preserve texture rotation",
+        "rotateTexture": "Rotate the texture along the movement direction",
         "rotationHeading": "Rotation",
+        "rotationMethod": "Texture rotation:",
+        "rotationMethods": {
+            "static": "Fixed",
+            "dynamic": "Dynamic"
+        },
         "rotationSpeed": "Rotation speed",
         "rotationAcceleration": "Rotation acceleration:",
         "spawningHeading": "Spawning",
@@ -550,10 +572,8 @@
         "shapeAndPositioningHeading": "Shape and Positioning",
         "spawnType": "Shape type:",
         "spawnShapes": {
-            "point": "Point",
             "rectangle": "Rectangle",
-            "circle": "Circle",
-            "ring": "Ring",
+            "torus": "Circular",
             "star": "Star"
         },
         "width": "Width:",
