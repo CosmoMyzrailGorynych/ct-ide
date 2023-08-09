@@ -608,6 +608,7 @@ emitter-editor.aPanel.pad.nb
                         }
                     }
                 };
+                break;
 
                 case 'spawnBurst':
                 newBh = {
