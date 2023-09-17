@@ -418,6 +418,7 @@
                 "scaleFit": "the viewport will proportionally fill the screen, leaving letterboxes around the base viewport. The resolution is changed to match the screen.",
                 "scaleFill": "the viewport fills the screen, expanding the camera to avoid letterboxing. The resolution is changed to match the screen."
             },
+            "useTransparent": "Use a transparent PIXI background",
             "desktopBuilds": "Desktop builds",
             "launchMode": "Launch mode:",
             "launchModes": {

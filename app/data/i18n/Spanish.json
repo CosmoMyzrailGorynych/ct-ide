@@ -247,6 +247,7 @@
             "hideCursor": "",
             "pixelatedRender": "Deshabilite el suavizado de imagen aquí y en el proyecto exportado (conserve píxeles nítidos)",
             "usePixiLegacy": "",
+            "useTransparent": "",
             "mobileBuilds": "",
             "screenOrientation": "",
             "screenOrientations": {

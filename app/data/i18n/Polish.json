@@ -256,6 +256,7 @@
             "hideCursor": "",
             "pixelatedRender": "Zablokuj wygładzanie obrazu tu i w eksportowanym projekcie (zachowaj ostre piksele)",
             "usePixiLegacy": "",
+            "useTransparent": "",
             "mobileBuilds": "",
             "screenOrientation": "",
             "screenOrientations": {

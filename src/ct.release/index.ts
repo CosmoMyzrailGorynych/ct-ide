@@ -22,7 +22,7 @@ import {ExportedMeta, viewMode} from '../node_requires/exporter/_exporterContrac
 
 // eslint-disable-next-line no-console
 console.log(
-    `%c 😺 %c ct.js game editor %c v/*!@ctversion@*/ %c https://ctjs.rocks/ `,
+    '%c 😺 %c ct.js game editor %c v/*!@ctversion@*/ %c https://ctjs.rocks/ ',
     'background: #446adb; color: #fff; padding: 0.5em 0;',
     'background: #5144db; color: #fff; padding: 0.5em 0;',
     'background: #446adb; color: #fff; padding: 0.5em 0;',
@@ -140,7 +140,8 @@ export let pixiApp: pixiMod.Application;
         height: [/*!@startheight@*/][0] as number,
         antialias: ![/*!@pixelatedrender@*/][0],
         powerPreference: 'high-performance' as WebGLPowerPreference,
-        sharedTicker: false
+        sharedTicker: false,
+        backgroundAlpha: [/*@transparent@*/][0] ? 0 : 1
     };
     try {
         pixiApp = new PIXI.Application(pixiAppSettings);

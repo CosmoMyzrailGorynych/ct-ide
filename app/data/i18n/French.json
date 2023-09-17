@@ -273,6 +273,7 @@
             "hideCursor": "Masquer le curseur du système",
             "pixelatedRender": "Désactive le lissage d'image ici et dans le projet exporté (conservez les pixels nets)",
             "usePixiLegacy": "Utiliser une méthode de rendu basé sur le canvas pour supporter les navigateurs plus anciens (ajoute ~20Ko au jeu)",
+            "useTransparent": "",
             "mobileBuilds": "Export mobile",
             "screenOrientation": "Orientation de l’écran :",
             "screenOrientations": {

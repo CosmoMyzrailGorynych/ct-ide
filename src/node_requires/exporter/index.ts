@@ -314,6 +314,7 @@ const exportCtProject = async (
         pixelatedrender: Boolean(settings.rendering.pixelatedrender),
         highDensity: Boolean(settings.rendering.highDensity),
         maxfps: Number(settings.rendering.maxFPS),
+        transparent: Boolean(settings.rendering.transparent),
 
         startroom: startroom.name,
         startwidth: startroom.width,

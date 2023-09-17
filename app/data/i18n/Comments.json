@@ -463,6 +463,7 @@
             "hideCursor": "",
             "pixelatedRender": "",
             "usePixiLegacy": "",
+            "useTransparent": "",
             "mobileBuilds": "",
             "screenOrientation": "",
             "screenOrientations": {
