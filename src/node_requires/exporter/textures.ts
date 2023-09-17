@@ -29,7 +29,7 @@ type packerBin = {
 
 /* eslint-disable id-blacklist */
 
-const getTextureShape = (texture: ITexture): textureShape => {
+export const getTextureShape = (texture: ITexture): textureShape => {
     if (texture.shape === 'rect') {
         return {
             type: 'rect',
@@ -347,7 +347,8 @@ export const packImages = async (
     writeDir: string,
     production: boolean
 ): Promise<exportedTextureData> => {
-    const {textures} = proj;
+    const {textures: allTextures} = proj;
+    const textures = allTextures.filter(tex => !tex.isBlank);
     const bigTextures = textures.filter(isBigTexture);
     const spritedTextures = textures.filter(tex => !tex.tiled && bigTextures.indexOf(tex) < 0);
     const tiledTextures = textures.filter(tex => tex.tiled && bigTextures.indexOf(tex) < 0);
