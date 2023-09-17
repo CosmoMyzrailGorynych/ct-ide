@@ -223,6 +223,11 @@ declare namespace ct {
             checkReleased?: boolean
         ): false | IPointer;
         /**
+         * Temporarily suspend e.preventDefault() calls. For example, to allow for a HTML text
+         * box to be used.
+         */
+        var permitDefault: boolean;
+        /**
          * Either returns the pointer that is currently hovering over the passed copy that exists
          * in gameplay coordinates, or returns `false` if there is no such pointers.
          */

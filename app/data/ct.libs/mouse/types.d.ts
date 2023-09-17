@@ -19,6 +19,11 @@ declare namespace ct {
          * a cursor inside the drawing canvas.
          */
         var inside: boolean;
+        /**
+         * Temporarily suspend e.preventDefault() calls. For example, to allow for a HTML text
+         * box to be used.
+         */
+        var permitDefault: boolean;
         /** Returns `true` if the mouse hovers over a given `copy`.
          * This does **not** take scaling and rotation into account,
          * as well as polygonal shapes (as they are hollow).

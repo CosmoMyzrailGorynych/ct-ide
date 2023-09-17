@@ -89,3 +89,7 @@ this.angle += ct.u.radToDeg(ct.actions.Rotate.value);
 You can read `ct.touch.enabled` to get whether touch events are supported on the current machine.
 
 **Beware:** because of tons of hybrid devices like laptops with touchscreens and some subsequent technical limitations, `ct.touch` can only determine this **after a user touches the screen**. That means that `ct.touch.enabled` will be `false` at startup till the first interaction, even on smartphones, so please design you UI and gameplay stuff around this limitation.
+
+## `ct.touch.permitDefault`
+
+When you call `ct.touch.permitDefault = true`, tells `ct.touch` not to execute `e.preventDefault()`. Useful if you have HTML controls that must respond to the standard browser events or wish to show the context menu. If the setting "Do not cancel standard browser events" is checked this value will be ignored.

@@ -11,6 +11,7 @@
         alt: false,
         shift: false,
         ctrl: false,
+        permitDefault: false,
         clear() {
             delete ct.keyboard.lastKey;
             delete ct.keyboard.lastCode;
@@ -40,7 +41,9 @@
                     ct.keyboard.string = '';
                 }
             }
-            e.preventDefault();
+            if (!ct.keyboard.permitDefault) {
+                e.preventDefault();
+            }
         },
         onUp(e) {
             ct.keyboard.shift = e.shiftKey;
@@ -51,7 +54,9 @@
             } else {
                 setKey('Unknown', 0);
             }
-            e.preventDefault();
+            if (!ct.keyboard.permitDefault) {
+                e.preventDefault();
+            }
         }
     };
 

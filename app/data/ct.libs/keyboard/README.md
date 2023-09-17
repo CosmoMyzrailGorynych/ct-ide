@@ -33,3 +33,7 @@ Tells if a `ctrl` button is held now.
 ## ct.keyboard.clear();
 
 Resets all the parameters listed above.
+
+## ct.keyboard.permitDefault
+
+When you call `ct.keyboard.permitDefault = true`, tells `ct.keyboard` not to execute `e.preventDefault()`. Useful if you have a HTML text box that must respond to the standard browser events.
