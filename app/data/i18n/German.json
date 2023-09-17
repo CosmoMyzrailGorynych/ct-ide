@@ -276,6 +276,7 @@
             "hideCursor": "",
             "pixelatedRender": "Image Smoothing hier und im exportierten Projekt deaktivieren (scharfe Pixel beibehalten)",
             "usePixiLegacy": "",
+            "useTransparent": "",
             "mobileBuilds": "",
             "screenOrientation": "",
             "screenOrientations": {

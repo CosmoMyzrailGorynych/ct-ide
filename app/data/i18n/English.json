@@ -373,6 +373,7 @@
             "maxFPS": "Max framerate:",
             "hideCursor": "Hide system cursor",
             "usePixiLegacy": "Add a legacy, canvas-based renderer to support older browsers and graphics cards (adds ~20kb up to your game)",
+            "useTransparent": "Use a transparent PIXI background",
             "desktopBuilds": "Desktop builds",
             "launchMode": "Launch mode:",
             "launchModes": {

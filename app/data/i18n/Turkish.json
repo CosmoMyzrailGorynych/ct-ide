@@ -349,6 +349,7 @@
             "maxFPS": "En fazla kare sayısı:",
             "hideCursor": "Sistem imlecini gizle",
             "usePixiLegacy": "Eski browserları ve ekran kartlarını desteklemesi için eski, canvas tabanlı bir renderer kullan. (oyunun boyutuna yaklaşık 20kb ekler)",
+            "useTransparent": "",
             "desktopBuilds": "Masaüstü derlemeleri",
             "launchMode": "Başlatma Modu:",
             "launchModes": {

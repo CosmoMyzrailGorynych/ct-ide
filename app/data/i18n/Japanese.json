@@ -373,6 +373,7 @@
             "maxFPS": "最大フレームレート:",
             "hideCursor": "カーソルを隠す",
             "usePixiLegacy": "古いブラウザやグラフィックカードに対応するため、レガシーなキャンバスベースのレンダラーを追加 (ゲームの容量が20kbほど増えます)",
+            "useTransparent": "",
             "desktopBuilds": "デスクトップ用ビルド",
             "launchMode": "起動モード:",
             "launchModes": {

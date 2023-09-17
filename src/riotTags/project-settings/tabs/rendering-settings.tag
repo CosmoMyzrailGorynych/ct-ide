@@ -15,6 +15,9 @@ rendering-settings
         label.block.checkbox
             input(type="checkbox" value="{renderSettings.usePixiLegacy}" checked="{renderSettings.usePixiLegacy}" onchange="{wire('this.renderSettings.usePixiLegacy')}")
             span {voc.usePixiLegacy}
+        label.block.checkbox
+            input(type="checkbox" value="{renderSettings.transparent}" checked="{renderSettings.transparent}" onchange="{wire('this.renderSettings.transparent')}")
+            span {voc.useTransparent}
     fieldset
         label.block.checkbox
             input(type="checkbox" checked="{renderSettings.hideCursor}" onchange="{wire('this.renderSettings.hideCursor')}")

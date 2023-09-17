@@ -292,6 +292,7 @@
             },
             "pixelatedRender": "在此处和导出的项目中禁用图像平滑 (保留清晰像素)",
             "usePixiLegacy": "添加一个传统的, 基于画布的渲染器来支持旧的浏览器和显卡(你的游戏增加~20kb)",
+            "useTransparent": "",
             "mobileBuilds": "移动端构建",
             "screenOrientation": "屏幕方向:",
             "screenOrientations": {

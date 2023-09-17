@@ -276,6 +276,7 @@
             "hideCursor": "Verberg systeem cursor",
             "pixelatedRender": "Schakel het vloeiend maken van afbeeldingen hier en in een geëxporteerd project uit (behoud scherpe pixels)",
             "usePixiLegacy": "Voeg een legacy, op canvas gebaseerde renderer toe om oudere browsers en grafische kaarten te ondersteunen (voegt ~20kb toe aan je game)",
+            "useTransparent": "",
             "mobileBuilds": "Mobile builds",
             "screenOrientation": "Scherm oriëntatie",
             "screenOrientations": {

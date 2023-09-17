@@ -62,6 +62,7 @@ declare interface IProject {
         },
         rendering: {
             usePixiLegacy: boolean,
+            transparent: boolean,
             maxFPS: 60,
             pixelatedrender: boolean,
             highDensity: boolean,

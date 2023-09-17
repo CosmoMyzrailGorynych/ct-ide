@@ -349,6 +349,7 @@
             "maxFPS": "Taxa de quadros máxima:",
             "hideCursor": "Ocultar o cursor do sistema",
             "usePixiLegacy": "Adiciona uma renderização baseada em canvas para suportar navegadores antigos e placas de vídeo (adiciona ~20kb à mais ao seu jogo)",
+            "useTransparent": "",
             "desktopBuilds": "Compilar para desktop",
             "launchMode": "Mode de execução:",
             "launchModes": {

@@ -288,6 +288,7 @@ const exportCtProject = async (
     let buffer = template(await sources['main.js'], {
         startwidth: startroom.width,
         startheight: startroom.height,
+        transparent: Boolean(settings.rendering.transparent),
         pixelatedrender: Boolean(settings.rendering.pixelatedrender),
         highDensity: Boolean(settings.rendering.highDensity),
         maxfps: Number(settings.rendering.maxFPS),
