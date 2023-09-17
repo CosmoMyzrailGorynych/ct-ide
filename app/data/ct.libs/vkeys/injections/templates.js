@@ -31,6 +31,7 @@
         onCreate: function () {
             this.tex = this.opts.texNormal;
             this.zIndex = this.opts.depth;
+            this.alpha = this.opts.alpha;
         }
     };
 
@@ -38,6 +39,7 @@
         onCreate: function () {
             this.tex = this.opts.tex;
             this.zIndex = this.opts.depth;
+            this.alpha = this.opts.alpha;
             this.down = false;
             this.trackball = new PIXI.Sprite(res.getTexture(this.opts.trackballTex, 0));
             this.addChild(this.trackball);

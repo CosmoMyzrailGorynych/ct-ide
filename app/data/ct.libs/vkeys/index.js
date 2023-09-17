@@ -4,6 +4,7 @@ const vkeys = (function ctVkeys() {
             var opts = Object.assign({
                 key: 'Vk1',
                 depth: 100,
+                alpha: 1,
                 texNormal: -1,
                 x: 128,
                 y: 128,
@@ -21,6 +22,7 @@ const vkeys = (function ctVkeys() {
             var opts = Object.assign({
                 key: 'Vjoy1',
                 depth: 100,
+                alpha: 1,
                 tex: -1,
                 trackballTex: -1,
                 x: 128,
