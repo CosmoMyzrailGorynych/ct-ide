@@ -235,6 +235,11 @@ declare namespace pointer {
     function lock(): void;
     function unlock(): void;
     /**
+     * Temporarily suspend e.preventDefault() calls. For example, to allow for a HTML text
+     * box to be used.
+     */
+    var permitDefault: boolean;
+    /**
      * Equals to `true` when the pointer is locked.
      * Note that the pointer can still be unlocked while the locking mode is on,
      * for example after a player pressed ESC key or switched to a different window.

@@ -36,3 +36,5 @@ For newcomers, you will probably start with the following:
   if (ct.pointer.collides(this, undefined, true)) {
       ct.sound.spawn('UI_Blep');
   }
+
+* `ct.pointer.permitDefault` can be set to `true` (e.g. `ct.pointer.permitDefault = true`) to tell `ct.pointer` not to execute `e.preventDefault()`. This is useful if you have HTML controls that must respond to the standard browser events or wish to show the context menu. If the setting "Do not cancel standard browser events" is checked this value will be ignored.
