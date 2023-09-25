@@ -266,7 +266,7 @@
          */
         getTextureShape(name, template) {
             if (name === -1) {
-                return template.shape || {};
+                return template ? template.shape || {} : {};
             }
             if (!(name in ct.res.textures)) {
                 throw new Error(`Attempt to get a shape of a non-existent texture ${name}`);
