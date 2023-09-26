@@ -268,6 +268,7 @@
         "cloneProject": "Clone this project into a new location",
         "browse": "Browse",
         "latest": "Latest projects",
+        "nothingToShowFiller": "There is nothing to show here! Try Examples or create your own project below.",
         "examples": "Examples",
         "templates": "Templates",
         "templatesInfo": "You can kickstart your game development by using one of these templates. They contain placeholder graphics only but have working mechanics. Selecting a project will open a save directory selector for your new project.",

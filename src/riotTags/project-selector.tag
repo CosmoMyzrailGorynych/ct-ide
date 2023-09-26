@@ -35,7 +35,7 @@ project-selector
                                 use(xlink:href="#folder")
                             span {voc.browse}
                 .clear
-                ul.Cards.largeicons.nmb
+                ul.Cards.largeicons.nmb(if="{latestProjects.length}")
                     li.aCard(
                         each="{project in latestProjects}"
                         onclick="{loadProjectByPath}"
@@ -52,6 +52,11 @@ project-selector
                             button.tiny.forcebackground(onclick="{forgetProject}" title="{voc.forgetProject}")
                                 svg.feather
                                     use(xlink:href="#x")
+                .center.pad(if="{!latestProjects.length}")
+                    svg.anIllustration
+                        use(xlink:href="data/img/weirdFoldersIllustration.svg#illustration")
+                    br
+                    span {voc.nothingToShowFiller}
             .flexfix-body.pad(show="{tab === 'examples'}")
                 .flexrow
                     h2.nmt {voc.examples}
