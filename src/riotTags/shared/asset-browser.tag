@@ -271,27 +271,31 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
             }
         };
         this.updateList();
+        const updateListAndUpdate = () => {
+            this.updateList();
+            this.update();
+        };
 
         // Listen to assets' changes and refresh the list when appropriate
         this.on('mount', () => {
             if (this.assetTypes[0] === 'all') {
-                window.signals.on(`assetCreated`, this.updateList);
-                window.signals.on(`assetChanged`, this.updateList);
+                window.signals.on('assetCreated', updateListAndUpdate);
+                window.signals.on('assetChanged', updateListAndUpdate);
             } else {
                 for (const assetType of this.assetTypes) {
-                    window.signals.on(`${assetType}Created`, this.updateList);
-                    window.signals.on(`${assetType}sChanged`, this.updateList);
+                    window.signals.on(`${assetType}Created`, updateListAndUpdate);
+                    window.signals.on(`${assetType}Changed`, updateListAndUpdate);
                 }
             }
         });
         this.on('unmount', () => {
             if (this.assetTypes === 'all') {
-                window.signals.off(`assetCreated`, this.updateList);
-                window.signals.off(`assetChanged`, this.updateList);
+                window.signals.off('assetCreated', updateListAndUpdate);
+                window.signals.off('assetChanged', updateListAndUpdate);
             } else {
                 for (const assetType of this.assetTypes) {
-                    window.signals.off(`${assetType}Created`, this.updateList);
-                    window.signals.off(`${assetType}sChanged`, this.updateList);
+                    window.signals.off(`${assetType}Created`, updateListAndUpdate);
+                    window.signals.off(`${assetType}Changed`, updateListAndUpdate);
                 }
             }
         });

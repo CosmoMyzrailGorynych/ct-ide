@@ -8,17 +8,15 @@ import {getDOMSkeleton, getSkeletonThumbnail, getPixiTexture as getSkeletonPixiT
 import * as PIXI from 'node_modules/pixi.js';
 import {getById} from '..';
 
-const createNewTemplate = function createNewTemplate(opts: {name: string}): ITemplate {
+const createNewTemplate = function createNewTemplate(opts?: {name: string}): ITemplate {
     const template = getDefaultTemplate();
-    if (opts.name) {
+    if (opts?.name) {
         template.name = opts.name;
     }
     // Fix default OnStep event for coffeescript projects
     if (window.currentProject.language === 'coffeescript') {
         template.events[0].code = '@move()';
     }
-    window.signals.trigger('templatesChanged');
-    window.signals.trigger('templateCreated');
     return template;
 };
 

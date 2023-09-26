@@ -170,6 +170,9 @@
         "old": "Old",
         "projectPalette": "Project's Palette"
     },
+    "createAsset": {
+        "newAsset": "New asset"
+    },
     "curveEditor": {
         "curveLineHint": "Click the curve to add a point",
         "dragPointHint": "Drag to move the point, right-click to delete it",

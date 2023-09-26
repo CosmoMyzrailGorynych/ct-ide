@@ -59,7 +59,13 @@ app-view.flexcol
             click="{openAsset}"
         )
             yield(to="filterArea")
-                create-asset-menu
+                // Riot sorcery: `this` points to the asset-browser, not app-view
+                create-asset-menu(
+                    inline="yup" square="ye"
+                    collection="{currentCollection}"
+                    folder="{currentFolder}"
+                    onimported="{parent.rerouteOpenAsset}"
+                )
         // Asset editors
         .aView(
             each="{asset in openedAssets}"
@@ -124,13 +130,17 @@ app-view.flexcol
                         this.refs.openedTabs :
                         [this.refs.openedTabs];
                     tabs[newPos].scrollIntoView();
-                }, 0);
+                }, 100);
             } else if (noOpen) {
                 console.warn('[app-view] An already opened asset was called with noOpen. This is probably a bug as you either do open assets or create them elsewhere without opening.')
             }
             if (!noOpen) {
                 this.changeTab(asset)();
             }
+        };
+        this.rerouteOpenAsset = asset => {
+            this.openAsset(asset)();
+            this.update();
         };
         this.closeAsset = async e => {
             e.stopPropagation();

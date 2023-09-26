@@ -529,6 +529,26 @@ export const assetContextMenuItems: IAssetContextItem[] = [{
     }
 }];
 
+/**
+ * A polyfill for general usage that prompts a user to specify a texture file
+ * if no payload was provided.
+ */
+const createTexture = async (payload?: Parameters<typeof importImageToTexture>[0]):
+Promise<ITexture> => {
+    if (payload) {
+        return importImageToTexture(payload as Parameters<typeof importImageToTexture>[0]);
+    }
+    const inputPath = await window.showOpenDialog({
+        filter: '.png,.jpg,.jpeg,.bmp,.tiff,.webp'
+    });
+    if (!inputPath) {
+        throw new Error('No image file selected.');
+    }
+    return importImageToTexture({
+        src: inputPath
+    });
+};
+
 export {
     clearPixiTextureCache,
     populatePixiTextureCache,
@@ -548,7 +568,7 @@ export {
     getDOMImageFromTexture,
     getDOMTexture,
     importImageToTexture,
-    importImageToTexture as createAsset,
+    createTexture as createAsset,
     reimportTexture,
     reimportTexture as reimportAsset,
     removeTexture,

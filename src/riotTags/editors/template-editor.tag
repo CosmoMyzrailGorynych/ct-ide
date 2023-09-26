@@ -119,9 +119,9 @@ template-editor.aPanel.aView.flexrow
         this.mixin(require('./data/node_requires/riotMixins/wire').default);
         this.mixin(require('./data/node_requires/riotMixins/discardio').default);
 
-        const textures = require('./data/node_requires/resources/textures');
+        const resources = require('./data/node_requires/resources');
 
-        this.getTextureRevision = template => textures.getById(template.texture).lastmod;
+        this.getTextureRevision = template => resources.getById(template.texture).lastmod;
 
         this.tab = 'javascript';
         [this.currentSheet] = this.asset.events; // can be undefined, this is ok
@@ -139,7 +139,7 @@ template-editor.aPanel.aView.flexrow
             } else {
                 this.asset.texture = texture;
                 if (this.asset.name === 'NewTemplate') {
-                    this.asset.name = textures.getById(texture).name;
+                    this.asset.name = resources.getById(texture).name;
                 }
             }
             this.selectingTexture = false;

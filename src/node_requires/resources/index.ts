@@ -22,6 +22,7 @@ export interface IAssetContextItem {
     /** A path in the language file that is used for this menu item's label */
     vocPath: string;
     icon?: string;
+
     // TODO: Implement; can be used with rooms to mark a starting one
     /**
      * If set, turns the menu item's type to checkbox,
@@ -44,7 +45,7 @@ interface IResourceAPI {
     areThumbnailsIcons: boolean;
     getThumbnail: (asset: assetRef | IAsset, x2?: boolean, fs?: boolean) => string;
     getName?: (asset: string | IAsset) => string;
-    createAsset: (payload: unknown) =>
+    createAsset: (payload?: unknown) =>
         Promise<IAsset> | IAsset;
     /** Optional as there can be no cleanup needed for specific asset types */
     removeAsset?: (asset: assetRef | IAsset) => Promise<void> | void;
@@ -61,6 +62,7 @@ const typeToApiMap: Record<resourceType, IResourceAPI> = {
     template: templates,
     texture: textures
 };
+/** Names of all possible asset types */
 export const assetTypes = Object.keys(typeToApiMap) as resourceType[];
 
 type typeToTsTypeMap = {
@@ -153,13 +155,15 @@ export const createAsset = async <T extends resourceType, P>(
     type: T,
     collection: folderEntries,
     folder: IAssetFolder | null,
-    payload: P
+    payload?: P
 ): Promise<typeToTsTypeMap[T]> => {
     const asset = (await typeToApiMap[type].createAsset(payload)) as typeToTsTypeMap[T];
     collection.push(asset);
     uidMap.set(asset.uid, asset);
     folderMap.set(asset, folder);
     collectionMap.set(asset, collection);
+    window.signals.trigger('assetCreated', asset);
+    window.signals.trigger(`${type}Created`, asset);
     return asset;
 };
 /**

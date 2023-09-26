@@ -247,12 +247,10 @@ export const removeAsset = (skel: ISkeleton | string): void => {
  * Updates the source field of the ct.js skeleton.
  */
 export const reimportSkeleton = async (
-    skel: ISkeleton | string,
+    asset: ISkeleton | string,
     source?: string
 ): Promise<void> => {
-    if (typeof skel === 'string') {
-        skel = getById('skeleton', skel);
-    }
+    const skel = (typeof asset === 'string') ? getById('skeleton', asset) : asset;
     if (!source && !skel.source) {
         throw new Error('No skeleton source provided.');
     }
