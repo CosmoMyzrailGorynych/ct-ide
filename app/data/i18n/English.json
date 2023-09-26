@@ -16,6 +16,7 @@
         "copy": "Copy",
         "copyName": "Copy the name",
         "couldNotLoadFromClipboard": "Could not load data from clipboard",
+        "create": "Create",
         "cut": "Cut",
         "delete": "Delete",
         "discard": "Discard",
@@ -246,12 +247,14 @@
     "intro": {
         "loading": "Please wait: kittens are gathering speed of light!",
         "newProject": {
-            "button": "Select folder and create",
-            "input": "Project's name (letters and digits)",
-            "text": "Create new",
-            "saveProjectHere": "Save the project here",
+            "header": "Create new",
+            "projectName": "Name:",
+            "language": "Coding language:",
+            "saveFolder": "Project's folder:",
+            "input": "(letters and digits only)",
             "selectProjectFolder": "Select a folder in which to store your project",
-            "nameError": "Wrong project name"
+            "nameError": "Wrong project name",
+            "languageError": "You must specify a programming language"
         },
         "recovery": {
             "message": "<h2 class=\"nmt\">Recovery</h2><p>ct.js has found a recovery file. Possibly, your project was not saved correctly or ct.js was shut down in case of some emergency. Here is when these files were lastly modified:</p><p>Your chosen file: {0} {1}<br/>Recovery file: {2} {3}</p><p>What file should ct.js open?</p>",

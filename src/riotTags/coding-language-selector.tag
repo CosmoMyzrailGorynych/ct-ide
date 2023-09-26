@@ -41,7 +41,7 @@ coding-language-selector
                 button.nogrow(disabled="{!selection}" onclick="{applySelection}")
                     svg.feather
                         use(xlink:href="#check")
-                    span {voc.acceptAndSpecifyDirectory}
+                    span {vocGlob.apply}
     script.
         this.namespace = 'languageSelector';
         this.mixin(require('./data/node_requires/riotMixins/voc').default);

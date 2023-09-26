@@ -18,6 +18,10 @@ project-selector
                     svg.feather
                         use(xlink:href="#folder")
                     span {voc.latest}
+                li(class="{active: tab === 'create'}" onclick="{changeTab('create')}")
+                    svg.feather
+                        use(xlink:href="#plus")
+                    span {voc.newProject.header}
                 li(class="{active: tab === 'examples'}" onclick="{changeTab('examples')}")
                     svg.feather
                         use(xlink:href="#book-open")
@@ -57,6 +61,46 @@ project-selector
                         use(xlink:href="data/img/weirdFoldersIllustration.svg#illustration")
                     br
                     span {voc.nothingToShowFiller}
+            #theNewProjectField.flexfix-body.pad(show="{tab === 'create'}")
+                h2.nmt {voc.newProject.header}
+                .theNewProjectField-aLabel
+                    b {voc.newProject.projectName}
+                .theNewProjectField-aValue
+                    input(
+                        type="text"
+                        placeholder="{voc.newProject.input}"
+                        pattern="[a-zA-Z_0-9]\\{1,\\}"
+                        oninput="{setProjectName}"
+                        width="20"
+                    )
+                .theNewProjectField-aLabel
+                    b {voc.newProject.language}
+                .theNewProjectField-aValue
+                    .aButtonGroup.nm
+                        button.inline(onclick="{() => this.projectLanguage = 'coffeescript'}" class="{active: projectLanguage === 'coffeescript'}")
+                            svg.icon
+                                use(xlink:href="#coffeescript")
+                            span CoffeeScript
+                        button.inline(onclick="{() => this.projectLanguage = 'typescript'}" class="{active: projectLanguage === 'typescript'}")
+                            svg.icon
+                                use(xlink:href="#javascript")
+                            span JavaScript
+                    .anActionableIcon(onclick="{showCodeLanguageSelector}")
+                        svg.feather
+                            use(xlink:href="#help-circle")
+                .theNewProjectField-aLabel
+                    b {voc.newProject.saveFolder}
+                .theNewProjectField-aValue.flexrow
+                    button.inline.nogrow(onclick="{chooseProjectFolder}")
+                        svg.feather
+                            use(xlink:href="#folder")
+                        span {vocGlob.selectDialogue}
+                    .aSpacer.nogrow
+                    span.crop.small {requirePath.join(savePath, projectName)}
+                button.big.theNewProjectField-aButton(onclick="{createProject}")
+                    svg.feather
+                        use(xlink:href="#sparkles")
+                    span {vocGlob.create}
             .flexfix-body.pad(show="{tab === 'examples'}")
                 .flexrow
                     h2.nmt {voc.examples}
@@ -81,13 +125,7 @@ project-selector
                                 svg.feather
                                     use(xlink:href="#copy")
             .flexfix-body.pad(show="{tab === 'templates'}")
-                .flexrow
-                    h2.nmt {voc.templates}
-                    label.file.nm.nogrow
-                        button.inline.nml.nmr(onclick="{openProjectFind}")
-                            svg.feather
-                                use(xlink:href="#folder")
-                            span {voc.browse}
+                h2.nmt {voc.templates}
                 p.nmt {voc.templatesInfo}
                 .clear
                 ul.Cards.largeicons.nmb
@@ -104,15 +142,6 @@ project-selector
                             button.tiny(onclick="{cloneProject}" title="{voc.cloneProject}")
                                 svg.feather
                                     use(xlink:href="#copy")
-            #theNewProjectField.inset.flexfix-footer.flexrow
-                h3.nm.inline {voc.newProject.text}
-                input(
-                    type='text'
-                    placeholder='{voc.newProject.input}'
-                    pattern='[a-zA-Z_0-9]\\{1,\\}'
-                    ref="projectname"
-                )
-                button.nm.inline(onclick="{showCodeLanguageSelector}") {voc.newProject.button}
         .aSpacer
         .aVersionNumber.nogrow
             a(href="https://github.com/orgs/ct-js/" title="{voc.github}" onclick="{openExternal('https://github.com/orgs/ct-js/')}")
@@ -159,6 +188,17 @@ project-selector
         this.requirePath = path;
         this.namespace = 'intro';
         this.mixin(require('./data/node_requires/riotMixins/voc').default);
+
+        this.savePath = '';
+        this.projectLanguage = void 0;
+        this.projectName = '';
+        const {getProjectsDir} = require('./data/node_requires/platformUtils');
+        let defaultProjectDir;
+        getProjectsDir().then(way => {
+            defaultProjectDir = way + '/';
+            this.savePath = defaultProjectDir;
+            this.update();
+        });
 
         this.tab = 'projects';
         this.changeTab = tab => () => {
@@ -232,12 +272,6 @@ project-selector
         });
 
         /**
-         * Update a splash image of a selected project
-         */
-        this.updatePreview = projectPath => () => {
-            this.projectSplash = 'file://' + path.dirname(projectPath) + '/' + path.basename(projectPath, '.ict') + '/img/splash.png';
-        };
-        /**
          * Creates a new project.
          * Technically it creates an empty project in-memory, then saves it to a directory.
          * Creates basic directories for sounds and textures.
@@ -283,8 +317,6 @@ project-selector
             e.stopPropagation();
             // Should create a separate async function; otherwise e.stopPropagation(); won't work
             (async () => {
-                const {getProjectsDir} = require('./data/node_requires/platformUtils');
-                const defaultProjectDir = await getProjectsDir() + '/';
                 const {project} = e.item;
                 let newIctLocation = await window.showSaveDialog({
                     defaultPath: defaultProjectDir,
@@ -314,30 +346,37 @@ project-selector
          */
         this.chooseProjectFolder = async () => {
             const {getProjectsDir} = require('./data/node_requires/platformUtils');
-            const defaultProjectDir = await getProjectsDir() + '/';
             const projPath = await window.showOpenDialog({
                 title: this.voc.newProject.selectProjectFolder,
                 defaultPath: defaultProjectDir,
                 buttonLabel: this.voc.newProject.saveProjectHere,
-               // openDirectory: true,
-                saveAs: this.refs.projectname.value.trim()
+                openDirectory: true
             });
             if (projPath) {
-                const tmpProjPath = projPath.trim();
-                const directory = path.dirname(tmpProjPath);
-                const file = path.basename(tmpProjPath);
-                this.newProject(directory, file);
-                // this.newProject(projPath, this.refs.projectname.value.trim());
+                this.savePath = projPath;
+                this.update();
             }
         };
-
-        this.codeLanguageSelector = false;
-        this.showCodeLanguageSelector = () => {
-            const codename = this.refs.projectname.value.trim();
+        this.setProjectName = e => {
+            this.projectName = e.target.value.trim();
+        };
+        /** A button listener for triggering a project creation process. */
+        this.createProject = async () => {
+            const codename = this.projectName;
             if (codename.length === 0) {
                 alertify.error(this.voc.newProject.nameError);
                 return;
             }
+            if (!this.projectLanguage) {
+                alertify.error(this.voc.newProject.languageError);
+                return;
+            }
+            console.log(this.savePath, codename);
+            this.newProject(path.join(this.savePath, codename), codename);
+        };
+
+        this.codeLanguageSelector = false;
+        this.showCodeLanguageSelector = () => {
             this.codeLanguageSelector = true;
         };
         this.hideCodeLanguageSelector = () => {
@@ -348,7 +387,6 @@ project-selector
             this.projectLanguage = selection;
             this.codeLanguageSelector = false;
             this.update();
-            this.chooseProjectFolder();
         };
 
         /**
