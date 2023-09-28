@@ -137,13 +137,30 @@ export const getByTypes = (): {[T in resourceType]: typeToTsTypeMap[T][]} => {
     return assets as unknown as {[T in resourceType]: typeToTsTypeMap[T][]};
 };
 
-export const getById = <T extends resourceType>(type: T | null, id: string): typeToTsTypeMap[T] => {
+/**
+ * Returns the asset of the specified uid.
+ * @param type This can be either the type of the asset,
+ * a comma-separated list of the allowed types, or `null` to allow any asset.
+ * If the type is not set to `null`, the method will throw an error if the asset
+ * is not of the specified type.
+ * @param uid The uid of the asset.
+ */
+export const getById = <T extends resourceType>(
+    type: T | string | null,
+    id: string
+): typeToTsTypeMap[T] => {
     const asset = uidMap.get(id);
     if (!asset) {
         throw new Error(`Attempt to get a non-existent ${type || 'asset'} with ID ${id}`);
     }
-    if (type && asset.type !== type) {
-        throw new Error(`Asset with a ${id} uid is not a ${type}. Asset's actual type is ${asset.type}`);
+    if (type === null) {
+        // No type restrictions
+        // TODO: make an overload
+        return asset as typeToTsTypeMap[T];
+    }
+    const types = type.split(',');
+    if (!types.some((t) => asset.type === t)) {
+        throw new Error(`Asset with a ${id} uid is none of ${types.join(', ')}. Asset's actual type is ${asset.type}`);
     }
     return asset as typeToTsTypeMap[T];
 };

@@ -56,7 +56,7 @@ template-editor.aPanel.aView.flexrow
         .tall.flexfix.aPanel.pad
             .flexfix-header
                 asset-input.wide(
-                    assettypes="texture"
+                    assettypes="texture,skeleton"
                     assetid="{asset.texture || -1}"
                     large="large"
                     allowclear="allowclear"
@@ -132,18 +132,25 @@ template-editor.aPanel.aView.flexrow
         this.changeSprite = () => {
             this.selectingTexture = true;
         };
-        this.applyTexture = texture => {
-            // eslint-disable-next-line eqeqeq
-            if (texture == -1) {
+        this.applyTexture = id => {
+            if (id === -1) {
                 this.asset.texture = -1;
             } else {
-                this.asset.texture = texture;
+                const asset = resources.getById('texture,skeleton', id);
+                // Set template's name to match the texture's one
+                // if user haven't specified their own yet.
                 if (this.asset.name === 'NewTemplate') {
-                    this.asset.name = resources.getById(texture).name;
+                    this.asset.name = asset.name;
+                }
+                if (asset.type === 'texture') {
+                    this.asset.texture = id;
+                    this.asset.skeleton = -1;
+                } else {
+                    this.asset.skeleton = id;
+                    this.asset.texture = -1;
                 }
             }
             this.selectingTexture = false;
-            this.parent.fillTemplateMap();
             this.update();
         };
         this.cancelTexture = () => {
