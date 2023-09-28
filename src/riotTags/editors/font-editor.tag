@@ -106,7 +106,6 @@ font-editor.aPanel.aView(class="{opts.class}")
         this.saveAsset = () => {
             this.writeChanges();
             this.loadFonts();
-            this.fontSave();
         };
         this.fontSave = () => {
             this.saveAsset();

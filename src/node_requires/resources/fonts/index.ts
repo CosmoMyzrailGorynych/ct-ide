@@ -99,9 +99,21 @@ const getThumbnail = function getThumbnail(font: IFont, x2?: boolean, fs?: boole
 
 export const areThumbnailsIcons = false;
 
+export const createAsset = async (payload?: {src: string}): Promise<IFont> => {
+    if (payload && payload.src) {
+        return importTtfToFont(payload.src);
+    }
+    const inputPath = await window.showOpenDialog({
+        filter: '.ttf'
+    });
+    if (!inputPath) {
+        throw new Error('You need to select a TTF file.');
+    }
+    return importTtfToFont(inputPath);
+};
+
 export {
     importTtfToFont,
-    importTtfToFont as createAsset,
     fontGenPreview,
     getFontPreview,
     getName,
