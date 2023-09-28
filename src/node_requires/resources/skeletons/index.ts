@@ -222,11 +222,21 @@ export const importSkeleton = async (source: string): Promise<ISkeleton> => {
     skel.right = Math.round(bounds.x + bounds.width);
     skel.top = Math.round(-bounds.y);
     skel.bottom = Math.round(bounds.y + bounds.height);
-    window.signals.trigger('skeletonImported', skel);
 
     return skel;
 };
-export const createAsset = importSkeleton;
+export const createAsset = async (payload?: {src: string}): Promise<ISkeleton> => {
+    if (payload && payload.src) {
+        return importSkeleton(payload.src);
+    }
+    const inputPath = await window.showOpenDialog({
+        filter: '.json'
+    });
+    if (!inputPath) {
+        throw new Error('You need to specify DragonBones or Spine2D animation file in JSON format.');
+    }
+    return importSkeleton(inputPath);
+};
 /**
  * Properly removes a skeleton from the project, cleaning all the references to it
  * in other relevant assets.
