@@ -28,6 +28,8 @@ const discardio = (riotTag: IRiotTag) => {
         riotTag.lastmod = Number(new Date());
         discardioSources.set(riotTag, Object.assign(discardioSources.get(riotTag), riotTag.asset));
         riotTag.asset = structuredClone(discardioSources.get(riotTag));
+        window.signals.trigger('assetChanged', riotTag.asset);
+        window.signals.trigger(`${riotTag.asset.type}Changed`, riotTag.asset);
     };
     riotTag.discardChanges = (): void => {
         riotTag.asset = structuredClone(discardioSources.get(riotTag));
