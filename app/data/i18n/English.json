@@ -242,8 +242,8 @@
         "moveUp": "Move up",
         "deleteRow": "Delete row"
     },
-    "groupEditor": {
-        "groupEditor": "Group Editor",
+    "folderEditor": {
+        "title": "Folder Settings",
         "icon": "Icon:",
         "color": "Color:"
     },

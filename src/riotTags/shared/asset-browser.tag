@@ -42,10 +42,11 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
             <yield/>
             .asset-browser-Breadcrumbs
                 h2.np.nm.pointer.inline(onclick="{moveUpTo(folderStack[0])}") {voc.root}
-                virtual(each="{item in folderStack.slice(1)}")
+                virtual(each="{item, i in folderStack.slice(1)}")
                     svg.feather
                         use(xlink:href="#chevron-right")
-                    h2.np.nm.pointer.inline(onclick="{parent.moveUpTo(item)}") {item.name}
+                    // -2 is because we slice the array first by one
+                    h2.np.nm.inline(class="{pointer: i < folderStack.length - 2}" onclick="{(i < folderStack.length - 1) && parent.moveUpTo(item)}") {item.name}
                 svg.feather.anActionableIcon(if="{folderStack.length > 1}" onclick="{goUp}")
                     use(xlink:href="#chevron-up")
         .nogrow(class="{flexrow: opts.compact}")
@@ -141,7 +142,10 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
         this.iconMap = resources.resourceToIconMap;
         this.getName = resources.getName;
 
-        /** A list of opened folders, from the project's root to the most deep folder */
+        /**
+         * A list of opened folders, from the project's root (as its asset collection)
+         * to the deepest folder.
+         */
         this.folderStack = [window.currentProject.assets];
         /** The array of assets that is currently shown */
         this.currentCollection = window.currentProject.assets;
@@ -164,7 +168,7 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
             this.updateList();
         };
         this.goUp = () => {
-            if (this.currentCollection.length < 2) {
+            if (this.folderStack.length < 2) {
                 throw new Error('[asset-browser] Cannot move beyond project root.');
             }
             this.folderStack.pop();
@@ -175,7 +179,7 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
             if (folderIndex === -1) {
                 throw new Error('[asset-browser] Cannot move outside of the current folder path.');
             }
-            this.folderStack = this.folderStack.slice(0, folderIndex);
+            this.folderStack = this.folderStack.slice(0, folderIndex + 1);
             this.updateFolders();
         };
         this.goDown = folder => {
@@ -311,27 +315,11 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
             }
         };
 
-        this.addNewFolder = () => { // TODO:
-            if (!window.currentProject.groups) {
-                window.alertify('No groups initialized in this project. Please run `applyMigrationCode(\'1.8.0\')` for this project.');
-                return false;
-            }
-            const at = this.opts.assettype;
-            if (!at) {
-                const errMessage = `Asset type not set for ${at} asset type.`;
-                window.alertify(errMessage);
-                throw new Error(errMessage);
-            }
-            const newFolder = {
-                name: this.voc.newFolderName,
-                icon: 'folder',
-                colorClass: 'act',
-                uid: require('./data/node_requires/generateGUID')()
-            };
-            window.currentProject.groups[at].push(newFolder);
+        this.addNewFolder = () => {
+            const newFolder = resources.createFolder(this.currentFolder);
+            this.updateList();
             this.editedFolder = newFolder;
             this.showingFolderEditor = true;
-            return true;
         };
         this.closeFolderEditor = () => {
             this.showingFolderEditor = false;
@@ -393,6 +381,10 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
         }];
         this.openContextMenu = item => e => {
             this.contextMenuAsset = item;
+            if (item.type === 'folder') {
+                // TODO:
+                return;
+            }
             const contextActions = resources.getContextActions(item);
             if (contextActions.length > 0) {
                 contextActions.push({

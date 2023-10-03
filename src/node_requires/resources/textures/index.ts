@@ -524,7 +524,7 @@ export const assetContextMenuItems: IAssetContextItem[] = [{
         collection: folderEntries,
         folder: IAssetFolder
     ): Promise<void> => {
-        const template = await createAsset('template', collection, folder, asset.name);
+        const template = await createAsset('template', folder, asset.name);
         template.texture = asset.uid;
     }
 }];

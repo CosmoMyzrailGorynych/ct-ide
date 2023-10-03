@@ -348,14 +348,35 @@
         object-fit contain
         border-radius br
         pointer-events none
+    .aCard-aFolderIcon
+        width 3rem
+        height 3rem
+        position relative
+        svg
+            position absolute
+            left 50%
+            top 50%
+            transform translate(-50%, -50%)
+        svg:nth-child(2)
+            width 40% !important
+            height 40% !important
+            top 55%
+            stroke-width 1.5
     &:hover img
         background rgba(act, 0.35)
-    .aCard.compact &
+    .Cards.largeicons &
+        .aCard-aFolderIcon, .aCard-aFolderIcon svg
+            width 4rem
+            height 4rem
+    .aCard.compact &, .Cards.list &
         width 1.5rem
         svg
             width 1.5rem
             height 1.5rem
             stroke-width 2
+        .aCard-aFolderIcon
+            width 1.5rem
+            height 1.5rem
         img
             width 2rem
             height 2rem

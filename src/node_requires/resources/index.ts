@@ -9,6 +9,9 @@ import * as templates from './templates';
 import * as styles from './styles';
 import * as skeletons from './skeletons';
 
+import getUid from '../generateGUID';
+import {getLanguageJSON} from '../i18n';
+
 /**
  * The interface that describe additional asset actions callable through a context menu.
  * Items must be exported in an array from the resource API they belong to.
@@ -170,11 +173,11 @@ export const getById = <T extends resourceType>(
  */
 export const createAsset = async <T extends resourceType, P>(
     type: T,
-    collection: folderEntries,
     folder: IAssetFolder | null,
     payload?: P
 ): Promise<typeToTsTypeMap[T]> => {
     const asset = (await typeToApiMap[type].createAsset(payload)) as typeToTsTypeMap[T];
+    const collection = folder === null ? window.currentProject.assets : folder.entries;
     collection.push(asset);
     uidMap.set(asset.uid, asset);
     folderMap.set(asset, folder);
@@ -183,6 +186,71 @@ export const createAsset = async <T extends resourceType, P>(
     window.signals.trigger(`${type}Created`, asset);
     return asset;
 };
+
+/**
+ * Creates a folder, puts it in a parent collection, and returns it.
+ *
+ * @param parentFolder The folder that will contain the new folder.
+ * If set to `null`, the folder is placed into the project's root.
+ */
+export const createFolder = (parentFolder: IAssetFolder | null): IAssetFolder => {
+    if (parentFolder === void 0) {
+        throw new Error('[resources.createFolder] You must specify a parent folder or null for project\'s root.');
+    }
+    const collection = parentFolder === null ? window.currentProject.assets : parentFolder.entries;
+    const newFolder = {
+        type: 'folder' as const,
+        uid: getUid(),
+        colorClass: 'act',
+        icon: 'help-circle',
+        name: getLanguageJSON().assetViewer.newFolderName,
+        lastmod: Number(new Date()),
+        entries: [] as folderEntries
+    };
+    collection.push(newFolder);
+    return newFolder;
+};
+
+/**
+ * Moves the asset to a new folder.
+ * @param newFolder The folder to move the asset to.
+ * If set to `null`, the asset is moved to the project's root.
+ */
+export const moveAsset = (asset: IAsset, newFolder: IAssetFolder | null): void => {
+    const oldCollection = collectionMap.get(asset);
+    const newCollection = newFolder === null ? window.currentProject.assets : newFolder.entries;
+    oldCollection.splice(oldCollection.indexOf(asset), 1);
+    collectionMap.delete(asset);
+    folderMap.delete(asset);
+    newCollection.push(asset);
+    collectionMap.set(asset, newCollection);
+    folderMap.set(asset, newFolder);
+};
+
+/**
+ * Moves a folder to a new parent folder, checking if it is possible to do
+ * 1withrout creating circular dependencies.
+ */
+export const moveFolder = (folder: IAssetFolder, newParentFolder: IAssetFolder | null): void => {
+    if (folder === newParentFolder) {
+        throw new Error('Cannot move a folder to itself.');
+    }
+    const recursiveFolderWalker = (entries: folderEntries): boolean => {
+        for (const entry of entries) {
+            if (entry.type === 'folder') {
+                if (entry === newParentFolder) {
+                    return false;
+                }
+                return recursiveFolderWalker(entry.entries);
+            }
+        }
+        return true;
+    };
+    if (!recursiveFolderWalker(folder.entries)) {
+        throw new Error('Cannot move a folder inside its child folder.');
+    }
+};
+
 /**
  * Deletes the asset from the project. This is the method that must be used in the UI.
  */

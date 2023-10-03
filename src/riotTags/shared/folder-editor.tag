@@ -13,7 +13,7 @@ folder-editor.aDimmer.fadein
         .toright
             svg.feather.anActionableIcon(onclick="{opts.onclose}")
                 use(xlink:href="#x")
-        h1.nmt.npt {voc.folderEditor}
+        h1.nmt.npt {voc.title}
         label.block
             b {vocGlob.name}
             br

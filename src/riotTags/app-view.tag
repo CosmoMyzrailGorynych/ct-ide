@@ -51,7 +51,7 @@ app-view.flexcol
         debugger-screen-embedded(if="{tab === 'debug'}" params="{debugParams}" data-hotkey-scope="play" ref="debugger")
         project-settings(show="{tab === 'project'}" data-hotkey-scope="project" ref="projectsSettings")
         patrons-screen(if="{tab === 'patrons'}" ref="patrons" data-hotkey-scope="patrons")
-        asset-browser.pad.aView(
+        asset-browser.pad.aView#theAssetBrowser(
             show="{tab === 'assets'}"
             ref="assets"
             data-hotkey-scope="assets"
