@@ -3,6 +3,7 @@
         var reloading = false;
         const gulp = require('gulp');
         const path = require('path');
+        nw.Window.get().showDevTools();
         const getTagName = src => path.basename(src, path.extname(src));
         const reload = () => {
             if (!reloading) {
