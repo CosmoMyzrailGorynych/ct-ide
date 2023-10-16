@@ -41,12 +41,19 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
         div
             <yield/>
             .asset-browser-Breadcrumbs
-                h2.np.nm.pointer.inline(onclick="{moveUpTo(folderStack[0])}") {voc.root}
+                h2.np.nm.pointer.inline(
+                    onclick="{moveUpTo(folderStack[0])}"
+                    ondrop="{onFolderDrop}"
+                ) {voc.root}
                 virtual(each="{item, i in folderStack.slice(1)}")
                     svg.feather
                         use(xlink:href="#chevron-right")
                     // -2 is because we slice the array first by one
-                    h2.np.nm.inline(class="{pointer: i < folderStack.length - 2}" onclick="{(i < folderStack.length - 1) && parent.moveUpTo(item)}") {item.name}
+                    h2.np.nm.inline(
+                        class="{pointer: i < folderStack.length - 2}"
+                        onclick="{(i < folderStack.length - 1) && parent.moveUpTo(item)}"
+                        ondrop="{onFolderDrop}"
+                    ) {item.name}
                 svg.feather.anActionableIcon(if="{folderStack.length > 1}" onclick="{goUp}")
                     use(xlink:href="#chevron-up")
         .nogrow(class="{flexrow: opts.compact}")
@@ -569,8 +576,8 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
             e.dataTransfer.dropEffect = 'move';
         };
         this.onFolderDrop = e => {
-            const {asset} = e.item;
-            if (asset.type !== 'folder') {
+            const folder = e.item ? (e.item.asset || e.item.item || null) : null;
+            if (folder !== null && folder.type !== 'folder') {
                 return false;
             }
             const dt = e.dataTransfer.getData('text/plain');
@@ -585,7 +592,7 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
                 const ids = transferData.items;
                 const {moveAsset, getById} = resources;
                 for (const id of ids) {
-                    moveAsset(getById(null, id), asset);
+                    moveAsset(getById(null, id), folder);
                 }
                 this.updateList();
             }
