@@ -93,7 +93,7 @@ app-view.flexcol
         this.namespace = 'appView';
         this.mixin(require('./data/node_requires/riotMixins/voc').default);
 
-        this.tab = 'project'; // A tab can be either a string ('project', 'assets', etc.) or an asset object
+        this.tab = 'assets'; // A tab can be either a string ('project', 'assets', etc.) or an asset object
         this.openedAssets = [];
         this.changeTab = tab => () => {
             this.tab = tab;
