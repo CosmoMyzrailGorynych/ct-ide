@@ -76,7 +76,7 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
                     use(xlink:href="#folder-plus")
                 span(if="{!opts.compact}") {voc.addNewFolder}
             <yield from="filterArea"/>
-    .flexfix-body
+    .flexfix-body(onclick="{deselectAll}")
         .center(if="{!opts.shownone && !(searchResults || entries).length}")
             svg.anIllustration
                 use(xlink:href="data/img/weirdFoldersIllustration.svg#illustration")
@@ -94,8 +94,10 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
                 oncontextmenu="{parent.openContextMenu(asset)}"
                 onlong-press="{parent.openContextMenu(asset)}"
                 onclick="{parent.assetClick(asset)}"
-                draggable="{!!parent.opts.assettype}"
                 ondragstart="{parent.onItemDrag}"
+                ondrop="{parent.onFolderDrop}"
+                draggable="{asset.type !== 'folder'}"
+                class="{active: selectedItems.has(asset)}"
                 no-reorder
             )
                 .aCard-aThumbnail
@@ -165,6 +167,8 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
             } else {
                 this.currentCollection = this.currentFolder.entries;
             }
+            this.selectedItems.clear();
+            this.prevShifSelectItem = null;
             this.updateList();
         };
         this.goUp = () => {
@@ -304,15 +308,56 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
             }
         });
 
+        this.selectedItems = new Set();
+        this.prevShifSelectItem = null;
         this.assetClick = item => e => {
+            e.stopPropagation();
             if (item.type === 'folder') {
+                // TODO: folder selection on shift and ctrl clicks
                 this.goDown(item);
             } else {
-                if (!this.opts.click) {
+                // Shift + click range selection
+                if (e.shiftKey) {
+                    if (this.prevShifSelectItem) {
+                        if (!e.ctrlKey) {
+                            this.selectedItems.clear();
+                        }
+                        const collection = this.searchResults || this.entries;
+                        const a = collection.indexOf(item),
+                              b = collection.indexOf(this.prevShifSelectItem);
+                        if (a === -1 || b === -1) {
+                            this.selectedItems.clear();
+                            return false;
+                        }
+                        const subset = collection.slice(Math.min(a, b), Math.max(a, b) + 1);
+                        for (const selectedItem of subset) {
+                            this.selectedItems.add(selectedItem);
+                        }
+                    } else {
+                        // If nothing was selected before, select the clicked item
+                        this.prevShifSelectItem = item;
+                        this.selectedItems.add(item);
+                    }
+                } else if (e.ctrlKey) {
+                    // Singular selection / deselection for Ctrl key
+                    if (this.selectedItems.has(item)) {
+                        this.selectedItems.delete(item);
+                    } else {
+                        this.prevShifSelectItem = item;
+                        this.selectedItems.add(item);
+                    }
+                } else if (!this.opts.click) {
                     throw new Error("[asset-browser] The [click] attribute was not set.");
+                } else {
+                    this.prevShifSelectItem = null;
+                    this.selectedItems.clear();
+                    this.opts.click(item)(e);
                 }
-                this.opts.click(item)(e);
             }
+        };
+        this.deselectAll = () => {
+            this.prevShifSelectItem = null;
+            this.selectedItems.clear();
         };
 
         this.addNewFolder = () => {
@@ -438,25 +483,45 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
             this.refs.folderMenu.popup(e.clientX, e.clientY);
         };
 
+        // Drag & Drop handling to allow moving the assets into folders en masse
         this.onItemDrag = e => {
-            if (!this.opts.assettype) {
+            const {asset} = e.item;
+            if (asset.type === 'folder') {
                 return;
             }
-            e.dataTransfer.setData('text/plain', `moveToGroup;${e.item.asset.uid}`);
+            // If no assets were not selected or a user drags another item,
+            // make a selection with this item
+            if (!this.selectedItems.has(asset)) {
+                this.selectedItems.clear();
+                this.selectedItems.add(asset);
+            }
+            const transferData = {
+                type: 'assetBrowserDrag',
+                items: [...this.selectedItems].map(item => item.uid)
+            };
+            e.dataTransfer.setData('text/plain', JSON.stringify(transferData));
             e.dataTransfer.dropEffect = 'move';
         };
-        this.onGroupDrop = e => {
-            const dt = e.dataTransfer.getData('text/plain');
-            if (dt.split(';')[0] !== 'moveToGroup') {
+        this.onFolderDrop = e => {
+            const {asset} = e.item;
+            if (asset.type !== 'folder') {
                 return false;
             }
-            const [, assetId] = dt.split(';');
-            const asset = this.opts.collection.find(a => a.uid === assetId);
-            if (!e.item) { // this is "Ungrouped" tag which is not in a loop
-                delete asset.group;
-            } else {
-                const groupId = e.item.group.uid;
-                asset.group = groupId;
+            const dt = e.dataTransfer.getData('text/plain');
+            console.log(dt);
+            let transferData;
+            try {
+                transferData = JSON.parse(dt);
+            } catch (oO) {
+                return false;
+            }
+            if (transferData.type === 'assetBrowserDrag') {
+                const ids = transferData.items;
+                const {moveAsset, getById} = resources;
+                for (const id of ids) {
+                    moveAsset(getById(null, id), asset);
+                }
+                this.updateList();
             }
             return true;
         };
