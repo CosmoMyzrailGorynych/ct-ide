@@ -130,6 +130,7 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
     )
     context-menu(menu="{folderContextMenu}" ref="folderMenu")
     context-menu(menu="{assetContextMenu}" ref="assetMenu")
+    context-menu(menu="{assetsContextMenu}" ref="assetsMenu")
     script.
         this.namespace = 'assetViewer';
         this.mixin(require('./data/node_requires/riotMixins/voc').default);
@@ -377,16 +378,19 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
             items: []
         };
         const assetContextMenuTemplate = [{
+            icon: 'external-link',
             label: this.vocGlob.open,
             click: () => {
-                // TODO:
+                window.orders.trigger('openAsset', this.contextMenuAsset.uid);
             }
         }, {
+            icon: 'copy',
             label: this.vocGlob.copyName,
             click: () => {
-                nw.Clipboard.get().set(this.currentTexture.name, 'text');
+                nw.Clipboard.get().set(this.contextMenuAsset.name, 'text');
             }
         }, {
+            icon: 'edit',
             if: () => this.contextMenuAsset.name,
             label: this.vocGlob.rename,
             click: async () => {
@@ -401,17 +405,19 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
         }, {
             type: 'separator'
         }, {
+            icon: 'trash',
             label: this.vocGlob.delete,
             click: async () => {
                 const reply = await alertify
                     .okBtn(this.vocGlob.delete)
                     .cancelBtn(this.vocGlob.cancel)
-                    .confirm(this.vocGlob.confirmDelete.replace('{0}', this.currentTexture.name))
+                    .confirm(this.vocGlob.confirmDelete.replace('{0}', this.contextMenuAsset.name))
                 if (reply.buttonClicked === 'ok') {
                     alertify
                         .okBtn(this.vocGlob.ok)
                         .cancelBtn(this.vocGlob.cancel);
                     await resources.deleteAsset(this.contextMenuAsset);
+                    this.updateList();
                     this.update();
                 }
             }
@@ -420,6 +426,12 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
             if (item.type === 'folder') {
                 this.contextMenuFolder = item;
                 this.refs.folderMenu.popup(e.clientX, e.clientY);
+                e.preventDefault();
+                return;
+            }
+            // Multiple selection
+            if (this.selectedItems.size > 0) {
+                this.refs.assetsMenu.popup(e.clientX, e.clientY);
                 e.preventDefault();
                 return;
             }
@@ -436,6 +448,60 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
             ];
             this.refs.assetMenu.popup(e.clientX, e.clientY);
             e.preventDefault();
+        };
+
+        // This one is for multiple selection
+        this.assetsContextMenu = {
+            items: [{
+                icon: 'external-link',
+                label: this.vocGlob.open,
+                click: () => {
+                    window.orders.trigger(
+                        'openAssets',
+                        [...this.selectedItems].map(asset => asset.uid)
+                    );
+                }
+            }, {
+                icon: 'copy',
+                label: this.vocGlob.copyNamesList,
+                click: () => {
+                    const names = [...this.selectedItems]
+                        .map(asset => asset.name).join('\n');
+                    nw.Clipboard.get().set(names, 'text');
+                }
+            }, {
+                icon: 'copy',
+                label: this.vocGlob.copyNamesArray,
+                click: () => {
+                    const names = [...this.selectedItems]
+                        .map(asset => `'${asset.name}'`).join(', ');
+                    nw.Clipboard.get().set(names, 'text');
+                }
+            }, {
+                type: 'separator'
+            }, {
+                icon: 'trash',
+                label: this.vocGlob.delete,
+                click: async () => {
+                    const names = [...this.selectedItems]
+                        .map(asset => asset.name).join(', ');
+                    const reply = await alertify
+                        .okBtn(this.vocGlob.delete)
+                        .cancelBtn(this.vocGlob.cancel)
+                        .confirm(this.vocGlob.confirmDelete.replace('{0}', names))
+                    if (reply.buttonClicked === 'ok') {
+                        alertify
+                            .okBtn(this.vocGlob.ok)
+                            .cancelBtn(this.vocGlob.cancel);
+                        // Do it synchronously to avoid race conditions
+                        for (const asset of this.selectedItems) {
+                            await resources.deleteAsset(asset);
+                        }
+                        this.updateList();
+                        this.update();
+                    }
+                }
+            }]
         };
 
         this.folderContextMenu = {
@@ -508,8 +574,8 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
                 return false;
             }
             const dt = e.dataTransfer.getData('text/plain');
-            console.log(dt);
             let transferData;
+            // Ensure that we can receive drag data
             try {
                 transferData = JSON.parse(dt);
             } catch (oO) {

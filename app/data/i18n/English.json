@@ -15,6 +15,8 @@
         "contribute": "Contribute",
         "copy": "Copy",
         "copyName": "Copy the name",
+        "copyNamesList": "Copy the names as a list",
+        "copyNamesArray": "Copy the names as array elements",
         "couldNotLoadFromClipboard": "Could not load data from clipboard",
         "create": "Create",
         "cut": "Cut",

@@ -34,6 +34,7 @@ app-view.flexcol
                         each="{asset, ind in openedAssets}"
                         class="{active: asset === tab}"
                         onclick="{changeTab(asset)}"
+                        onauxclick="{closeAsset}"
                         data-hotkey="{ind < 8 ? 'Control+' + (ind + 3) : ''}"
                         ref="openedTabs"
                     )
@@ -56,7 +57,7 @@ app-view.flexcol
             ref="assets"
             data-hotkey-scope="assets"
             namespace="projectBrowser"
-            click="{openAsset}"
+            click="{rerouteOpenAsset2}"
         )
             yield(to="filterArea")
                 // Riot sorcery: `this` points to the asset-browser, not app-view
@@ -111,6 +112,9 @@ app-view.flexcol
                 }
             }
         };
+        this.assetTabClick = asset => e => {
+            console.log(e);
+        };
         const resources = require('./data/node_requires/resources');
         this.editorMap = resources.editorMap;
         this.getName = resources.getName;
@@ -125,7 +129,7 @@ app-view.flexcol
                 } else {
                     this.openedAssets.push(asset);
                 }
-                const newPos = this.openedAssets.indexOf(this.tab);
+                const newPos = this.openedAssets.indexOf(asset);
                 setTimeout(() => {
                     const tabs = Array.isArray(this.refs.openedTabs) ?
                         this.refs.openedTabs :
@@ -143,8 +147,37 @@ app-view.flexcol
             this.openAsset(asset)();
             this.update();
         };
+        this.rerouteOpenAsset2 = asset => e => {
+            this.openAsset(asset)();
+            this.update();
+        };
+        const assetOpenOrder = asset => {
+            if (typeof asset === 'string') {
+                asset = resources.getById(null, asset);
+            }
+            this.openAsset(asset)();
+            this.update();
+        };
+        const assetsOpenOrder = assets => {
+            if (typeof assets[0] === 'string') {
+                assets = assets.map(asset => resources.getById(null, asset));
+            }
+            for (const asset of assets) {
+                this.openAsset(asset)();
+            }
+            this.update();
+        };
+        window.orders.on('openAsset', assetOpenOrder);
+        window.orders.on('openAssets', assetsOpenOrder);
+        this.on('unmount', () => {
+            window.orders.off('openAsset', assetOpenOrder);
+        });
+        this.on('unmount', () => {
+            window.orders.off('openAssets', assetsOpenOrder);
+        });
         this.closeAsset = async e => {
             e.stopPropagation();
+            e.preventDefault();
             const {asset, ind} = e.item;
             const editors = Array.isArray(this.refs.openedEditors) ?
                 this.refs.openedEditors :
@@ -203,28 +236,6 @@ app-view.flexcol
             this.confirmationAsset = void 0;
             this.update();
         };
-
-        const assetListener = asset => {
-            const [assetType, uid] = asset.split('/');
-            if (['emitters', 'emitterTandems', 'tandems'].includes(assetType)) {
-                this.changeTab('fx')();
-            } else if (['fonts', 'styles'].includes(assetType)) {
-                this.changeTab('ui')();
-            } else if (assetType === 'skeletons') {
-                this.changeTab('textures')();
-            } else {
-                this.changeTab(assetType)();
-            }
-            this.update();
-            if (this.refs[this.tab].openAsset) {
-                this.refs[this.tab].openAsset(assetType, uid);
-            }
-        };
-        window.orders.on('openAsset', assetListener);
-        this.on('unmount', () => {
-            window.orders.off('openAsset', assetListener);
-        });
-
 
         this.saveProject = async () => {
             const {saveProject} = require('./data/node_requires/resources/projects');
