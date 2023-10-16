@@ -168,6 +168,28 @@ export const getById = <T extends resourceType>(
     return asset as typeToTsTypeMap[T];
 };
 
+export const getParentFolder = (object: IAsset | IAssetFolder): IAssetFolder | null => {
+    if (object.type === 'folder') {
+        const recursiveFolderWalker = (
+            child: IAssetFolder,
+            entries: folderEntries,
+            current: IAssetFolder | null
+        ): IAssetFolder | null => {
+            for (const entry of entries) {
+                if (entry.type === 'folder') {
+                    if (entry === child) {
+                        return current;
+                    }
+                    return recursiveFolderWalker(child, entry.entries, entry);
+                }
+            }
+            return null;
+        };
+        return recursiveFolderWalker(object, window.currentProject.assets, null);
+    }
+    return folderMap.get(object);
+};
+
 /**
  * Creates a new asset of the specified type. This is the method that must be used in the UI.
  */
@@ -229,9 +251,12 @@ export const moveAsset = (asset: IAsset, newFolder: IAssetFolder | null): void =
 
 /**
  * Moves a folder to a new parent folder, checking if it is possible to do
- * 1withrout creating circular dependencies.
+ * withrout creating circular dependencies.
  */
-export const moveFolder = (folder: IAssetFolder, newParentFolder: IAssetFolder | null): void => {
+export const moveFolder = (
+    folder: IAssetFolder,
+    newParentFolder: IAssetFolder | null
+): void => {
     if (folder === newParentFolder) {
         throw new Error('Cannot move a folder to itself.');
     }
@@ -249,6 +274,15 @@ export const moveFolder = (folder: IAssetFolder, newParentFolder: IAssetFolder |
     if (!recursiveFolderWalker(folder.entries)) {
         throw new Error('Cannot move a folder inside its child folder.');
     }
+    const oldParentFolder: IAssetFolder | null = getParentFolder(folder);
+    const from: folderEntries = oldParentFolder === null ?
+        window.currentProject.assets :
+        oldParentFolder.entries;
+    const to: folderEntries = newParentFolder === null ?
+        window.currentProject.assets :
+        newParentFolder.entries;
+    from.splice(from.indexOf(folder), 1);
+    to.push(folder);
 };
 
 /**
@@ -265,6 +299,37 @@ export const deleteAsset = async (asset: IAsset): Promise<void> => {
     collectionMap.delete(asset);
 };
 
+/**
+ * Deletes the specified folder.
+ * @param folder The folder to delete.
+ * @param unwrapTo If set to another folder, the old contents will be put in this specified folder.
+ * If set to `null`, the folder's contents will be moved to the project's root.
+ */
+export const deleteFolder = (
+    folder: IAssetFolder,
+    unwrapTo: IAssetFolder | null | false
+): Promise<void> => {
+    if (unwrapTo || unwrapTo === null) {
+        for (const entry of folder.entries) {
+            if (entry.type === 'folder') {
+                moveFolder(entry, unwrapTo as IAssetFolder | null);
+            } else {
+                moveAsset(entry, unwrapTo as IAssetFolder | null);
+            }
+        }
+        return deleteFolder(folder, false);
+    }
+    return Promise.all(folder.entries.map((entry) => {
+        if (entry.type === 'folder') {
+            return deleteFolder(entry, false);
+        }
+        return deleteAsset(entry);
+    })).then(() => {
+        const parent = getParentFolder(folder);
+        const from = parent === null ? window.currentProject.assets : parent.entries;
+        from.splice(from.indexOf(folder), 1);
+    });
+};
 /**
  * A method that returns an up-to-date DOM image of a texture for the specified asset.
  * Relies on caches in the textures and skeletons submodules.
@@ -315,7 +380,7 @@ export const resourceToIconMap: Record<resourceType, string> = {
     room: 'room',
     template: 'template',
     style: 'ui',
-    skeleton: 'template' // TODO: Design a unique icon
+    skeleton: 'skeletal-animation'
 };
 export const editorMap: Record<resourceType, string> = {
     font: 'font-editor',

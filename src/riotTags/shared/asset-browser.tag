@@ -337,14 +337,6 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
                 // TODO:
             }
         }, {
-            label: this.vocGlob.reimport,
-            icon: 'refresh-ccw',
-            if: () => this.currentTexture?.source,
-            click: async () => {
-                await // TODO:
-                this.update();
-            }
-        }, {
             label: this.vocGlob.copyName,
             click: () => {
                 nw.Clipboard.get().set(this.currentTexture.name, 'text');
@@ -380,11 +372,13 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
             }
         }];
         this.openContextMenu = item => e => {
-            this.contextMenuAsset = item;
             if (item.type === 'folder') {
-                // TODO:
+                this.contextMenuFolder = item;
+                this.refs.folderMenu.popup(e.clientX, e.clientY);
+                e.preventDefault();
                 return;
             }
+            this.contextMenuAsset = item;
             const contextActions = resources.getContextActions(item);
             if (contextActions.length > 0) {
                 contextActions.push({
@@ -405,31 +399,36 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
                 icon: 'edit',
                 click: () => {
                     this.showingFolderEditor = true;
+                    this.editedFolder = this.contextMenuFolder;
                     this.update();
                 }
             }, {
                 type: 'separator'
             }, {
+                label: this.voc.unwrapFolder,
+                icon: 'unpackage',
+                click: async () => {
+                    const folder = this.contextMenuFolder;
+                    const reply = await window.alertify.confirm(this.voc.confirmUnwrapFolder);
+                    if (reply.buttonClicked !== 'ok') {
+                        return;
+                    }
+                    await resources.deleteFolder(folder, this.currentFolder);
+                    this.updateList();
+                    this.update();
+                }
+            }, {
                 label: this.vocGlob.delete,
                 icon: 'trash',
-                click: () => {
-                    // TODO:
-                    const group = this.editedFolder,
-                          oldId = this.editedFolder.uid;
-                    window.alertify.confirm(this.voc.groupDeletionConfirmation)
-                    .then(e => {
-                        if (e.buttonClicked !== 'ok') {
-                            return;
-                        }
-                        for (const asset of this.opts.collection) {
-                            if (asset.group === oldId) {
-                                delete asset.group;
-                            }
-                        }
-                        const groups = window.currentProject.groups[this.opts.assettype];
-                        groups.splice(groups.indexOf(group), 1);
-                        this.update();
-                    });
+                click: async () => {
+                    const folder = this.contextMenuFolder;
+                    const reply = window.alertify.confirm(this.voc.confirmDeleteFolder);
+                    if (reply.buttonClicked !== 'ok') {
+                        return;
+                    }
+                    await resources.deleteFolder(folder);
+                    this.updateList();
+                    this.update();
                 }
             }]
         };
