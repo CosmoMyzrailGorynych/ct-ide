@@ -3,25 +3,30 @@ dnd-processor
         .middleinner
             svg.feather
                 use(xlink:href="#download")
-            h2 {languageJSON.common.fastImport}
+            h2 {vocGlob.dropToImport}
             input(
                 type="file" multiple
                 accept=".png,.jpg,.jpeg,.bmp,.gif,.json,.ttf"
                 onchange="{dndImport}"
             )
     script.
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
         this.dndImport = e => {
+            const {createAsset} = require('./data/node_requires/resources');
             const files = [...e.target.files].map(file => file.path);
             for (let i = 0; i < files.length; i++) {
                 if (/\.(jpg|gif|png|jpeg)/gi.test(files[i])) {
-                    const {importImageToTexture} = require('./data/node_requires/resources/textures');
-                    importImageToTexture(files[i]);
+                    createAsset('texture', this.opts.currentfolder, {
+                        src: files[i]
+                    });
                 } else if (/_ske\.json/i.test(files[i])) {
-                    const {importSkeleton} = require('./data/node_requires/resources/skeletons');
-                    importSkeleton(files[i]);
+                    createAsset('skeleton', this.opts.currentfolder, {
+                        src: files[i]
+                    });
                 } else if (/\.ttf/gi.test(files[i])) {
-                    const {importTtfToFont} = require('./data/node_requires/resources/fonts');
-                    importTtfToFont(files[i]);
+                    createAsset('font', this.opts.currentfolder, {
+                        src: files[i]
+                    });
                 } else {
                     alertify.log(`Skipped ${files[i]} as it is not supported by drag-and-drop importer.`);
                 }

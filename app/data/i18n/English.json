@@ -85,7 +85,7 @@
         "notFoundOrUnknown": "Unknown file. Make sure the file really exists",
         "reimportSourceMissing": "Can't reimport: the source file is now missing.",
         "nameTaken": "This name is already taken",
-        "fastImport": "Fast Import",
+        "dropToImport": "Drop here to import",
         "reimport": "Reimport",
         "addToNotes": "Add to notes",
         "noRooms": "You need at least one room to compile your app.",

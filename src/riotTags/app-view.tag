@@ -86,6 +86,7 @@ app-view.flexcol
         asset="{confirmationAsset}"
         if="{showAssetConfirmation}"
     )
+    dnd-processor(if="{global.currentProject}" currentfolder="{refs.assets.currentFolder}")
     script.
         const fs = require('fs-extra');
 
