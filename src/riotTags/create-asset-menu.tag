@@ -35,8 +35,7 @@ create-asset-menu.relative.inlineblock
                     try {
                         const asset = await createAsset(
                             assetType,
-                            this.opts.collection,
-                            this.opts.folder
+                            this.opts.folder || null
                         );
                         if (this.opts.onimported) {
                             this.opts.onimported(asset);
