@@ -52,7 +52,9 @@ const defaultProjectTemplate: IProject = {
             splashScreen: -1,
             forceSmoothIcons: false,
             forceSmoothSplashScreen: false,
-            hideLoadingLogo: false
+            hideLoadingLogo: false,
+            alternativeLogo: false,
+            customLoadingText: ''
         }
     }
 };

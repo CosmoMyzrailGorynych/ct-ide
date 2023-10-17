@@ -27,7 +27,6 @@ branding-settings
     label.block.checkbox
         input(
             type="checkbox"
-            value="{global.currentProject.settings.branding.forceSmoothIcons}"
             checked="{global.currentProject.settings.branding.forceSmoothIcons}"
             onchange="{wire('currentProject.settings.branding.forceSmoothIcons')}"
         )
@@ -35,7 +34,6 @@ branding-settings
     label.block.checkbox
         input(
             type="checkbox"
-            value="{global.currentProject.settings.branding.forceSmoothSplashScreen}"
             checked="{global.currentProject.settings.branding.forceSmoothSplashScreen}"
             onchange="{wire('currentProject.settings.branding.forceSmoothSplashScreen')}"
         )
@@ -49,7 +47,6 @@ branding-settings
     label.block.checkbox
         input(
             type="checkbox"
-            value="{global.currentProject.settings.branding.invertPreloaderScheme}"
             checked="{global.currentProject.settings.branding.invertPreloaderScheme}"
             onchange="{wire('currentProject.settings.branding.invertPreloaderScheme')}"
         )
@@ -57,11 +54,28 @@ branding-settings
     label.block.checkbox
         input(
             type="checkbox"
-            value="{global.currentProject.settings.branding.hideLoadingLogo}"
             checked="{global.currentProject.settings.branding.hideLoadingLogo}"
             onchange="{wire('currentProject.settings.branding.hideLoadingLogo')}"
         )
         span {voc.hideLoadingLogo}
+    label.block.checkbox
+        input(
+            type="checkbox"
+            checked="{global.currentProject.settings.branding.alternativeLogo}"
+            onchange="{wire('currentProject.settings.branding.alternativeLogo')}"
+        )
+        span {voc.alternativeCtjsLogo}
+        hover-hint(text="{voc.alternativeCtjsNotice}")
+    label.block
+        span {voc.customLoadingText}
+        hover-hint(text="{voc.customLoadingTextHint}")
+        br
+        input(
+            type="text"
+            value="{global.currentProject.settings.branding.customLoadingText}"
+            onchange="{wire('currentProject.settings.branding.customLoadingText')}"
+        )
+
     script.
         this.namespace = 'settings.branding';
         this.mixin(require('./data/node_requires/riotMixins/voc').default);

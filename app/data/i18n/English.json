@@ -357,7 +357,11 @@
             "forceSmoothIcons": "Use smooth icons regardless of rendering settings",
             "forceSmoothSplashScreen": "Use smooth splash screen images regardless of rendering settings",
             "invertPreloaderScheme": "Invert preloader's color scheme",
-            "hideLoadingLogo": "Hide \"Made with ct.js\" graphics on the loading screen"
+            "alternativeCtjsLogo": "Use alternative ct.js logo",
+            "alternativeCtjsNotice": "Replaces \"Made with ct.js\" on the splash screen with a regular ct.js logo. Helpful when your distributor is a prick.",
+            "hideLoadingLogo": "Hide \"Made with ct.js\" graphics on the loading screen",
+            "customLoadingText": "Custom loading text",
+            "customLoadingTextHint": "You can put a whitespace (not an empty string) if you want to hide the loading text."
         },
         "content": {
             "heading": "Content type editor",

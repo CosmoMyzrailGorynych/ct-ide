@@ -82,7 +82,9 @@ declare interface IProject {
             splashScreen: assetRef,
             forceSmoothIcons: boolean,
             forceSmoothSplashScreen: boolean,
-            hideLoadingLogo: boolean
+            hideLoadingLogo: boolean,
+            alternativeLogo: boolean,
+            customLoadingText: string
         }
     };
 }

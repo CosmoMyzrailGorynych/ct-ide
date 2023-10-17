@@ -199,7 +199,7 @@ export const createAsset = async <T extends resourceType, P>(
     payload?: P
 ): Promise<typeToTsTypeMap[T]> => {
     const asset = (await typeToApiMap[type].createAsset(payload)) as typeToTsTypeMap[T];
-    const collection = folder === null ? window.currentProject.assets : folder.entries;
+    const collection = (folder === null) ? window.currentProject.assets : folder.entries;
     collection.push(asset);
     uidMap.set(asset.uid, asset);
     folderMap.set(asset, folder);
