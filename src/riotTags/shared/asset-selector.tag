@@ -3,7 +3,7 @@
     Technically it is a pre-filled wrapper of the asset-browser.
 
     @attribute assettypes (string)
-        Comma-separated asset types that will be allowed to be picked, e.g. "type,texture,room".
+        Comma-separated asset types that will be allowed to be picked, e.g. "template,texture,room".
         You can set to "all" to allow all asset types.
         Note: unlike in asset-browser, this attribute is mandatory and will throw an error if empty.
     @attribute selectorheader (string)

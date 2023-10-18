@@ -54,7 +54,7 @@ room-tile-editor.room-editor-Tiles.flexfix(class="{opts.class}")
     asset-selector(
         ref="tilesetPicker"
         if="{pickingTileset}"
-        assettype="textures"
+        assettypes="texture"
         oncancelled="{onTilesetCancel}"
         onselected="{onTilesetSelected}"
     )
@@ -149,11 +149,12 @@ room-tile-editor.room-editor-Tiles.flexfix(class="{opts.class}")
             this.update();
         };
         this.onTilesetSelected = async textureId => {
-            const {getById, getDOMImage} = require('./data/node_requires/resources/textures');
-            this.currentTexture = getById(textureId);
+            const {getById} = require('./data/node_requires/resources');
+            const {getDOMImageFromTexture} = require('./data/node_requires/resources/textures');
+            this.currentTexture = getById('texture', textureId);
             this.pickingTileset = false;
             this.update();
-            this.currentTextureImg = await getDOMImage(this.currentTexture);
+            this.currentTextureImg = await getDOMImageFromTexture(this.currentTexture);
             this.redrawTileset();
             this.tileX = this.tileY = 0;
             this.tileSpanX = this.tileSpanY = 1;
