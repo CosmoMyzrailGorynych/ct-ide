@@ -1,12 +1,13 @@
 import {getPixiTexture} from '../../resources/textures';
 import {RoomEditor} from '..';
+import {RoomEditorPreview} from '../previewer';
 
 import * as PIXI from 'node_modules/pixi.js';
 import 'node_modules/@pixi/events';
 
 class Background extends PIXI.TilingSprite {
     bgTexture: assetRef;
-    editor: RoomEditor;
+    editor: RoomEditor | RoomEditorPreview;
     shiftX = 0;
     shiftY = 0;
     parallaxX = 1;
@@ -17,7 +18,7 @@ class Background extends PIXI.TilingSprite {
     simulatedMovedY = 0;
     repeat: canvasPatternRepeat = 'repeat';
 
-    constructor(bgInfo: IRoomBackground, editor: RoomEditor) {
+    constructor(bgInfo: IRoomBackground, editor: RoomEditor | RoomEditorPreview) {
         super(getPixiTexture(bgInfo.texture, 0, true));
         this.anchor.x = this.anchor.y = 0;
         this.editor = editor;
@@ -28,7 +29,7 @@ class Background extends PIXI.TilingSprite {
         const ind = this.editor.backgrounds.indexOf(this);
         if (ind !== -1) {
             this.editor.backgrounds.splice(ind, 1);
-            this.editor.riotEditor.refs.backgroundsEditor?.update();
+            this.editor.riotEditor?.refs.backgroundsEditor?.update();
         }
         super.destroy();
     }
@@ -39,13 +40,13 @@ class Background extends PIXI.TilingSprite {
         }
         this.editor.backgrounds.splice(ind, 1);
         this.parent.removeChild(this);
-        this.editor.riotEditor.refs.backgroundsEditor.update();
+        this.editor.riotEditor?.refs.backgroundsEditor.update();
         return this;
     }
     restore(): this {
         this.editor.backgrounds.push(this);
         this.editor.room.addChild(this);
-        this.editor.riotEditor.refs.backgroundsEditor.update();
+        this.editor.riotEditor?.refs.backgroundsEditor.update();
         return this;
     }
 

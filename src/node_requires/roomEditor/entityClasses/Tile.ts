@@ -3,6 +3,7 @@ import {RoomEditor} from '..';
 import {TileLayer} from './TileLayer';
 
 import * as PIXI from 'node_modules/pixi.js';
+import {RoomEditorPreview} from '../previewer';
 
 /**
  * @notice This class automatically adds and removes itself from editor's tile list
@@ -11,10 +12,14 @@ class Tile extends PIXI.Sprite {
     tileTexture: assetRef;
     tileFrame: number;
     parent: TileLayer | null;
-    editor: RoomEditor;
+    editor: RoomEditor | RoomEditorPreview;
     isGhost: boolean;
 
-    constructor(tileInfo: ITileTemplate, editor: RoomEditor, isGhost?: boolean) {
+    constructor(
+        tileInfo: ITileTemplate,
+        editor: RoomEditor | RoomEditorPreview,
+        isGhost?: boolean
+    ) {
         super(getPixiTexture(tileInfo.texture, tileInfo.frame, false));
         this.editor = editor;
         this.deserialize(tileInfo);

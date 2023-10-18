@@ -1,4 +1,5 @@
 import {RoomEditor} from '..';
+import {RoomEditorPreview} from '../previewer';
 import {getById} from '../../resources';
 import {getPixiTexture} from '../../resources/templates';
 import {getTexturePivot} from '../../resources/textures';
@@ -15,10 +16,10 @@ class Copy extends PIXI.AnimatedSprite {
     copyCustomProps: Record<string, unknown>;
     cachedTemplate: ITemplate;
     isGhost: boolean;
-    editor: RoomEditor;
+    editor: RoomEditor | RoomEditorPreview;
     update: (deltaTime: number) => void;
 
-    constructor(copyInfo: IRoomCopy, editor: RoomEditor, isGhost?: boolean) {
+    constructor(copyInfo: IRoomCopy, editor: RoomEditor | RoomEditorPreview, isGhost?: boolean) {
         super(getPixiTexture(copyInfo.uid));
         this.editor = editor;
         this.templateId = copyInfo.uid;
@@ -27,14 +28,16 @@ class Copy extends PIXI.AnimatedSprite {
         this.cachedTemplate = t;
         this.deserialize(copyInfo);
         this.isGhost = Boolean(isGhost);
-        this.eventMode = this.isGhost ? 'none' : 'static';
-        if (this.eventMode === 'static') {
-            this.on('pointerover', () => {
-                this.editor.updateMouseoverHint(t.name, this);
-            });
-            this.on('pointerout', () => {
-                this.editor.mouseoverOut(this);
-            });
+        if (this.editor instanceof RoomEditor) {
+            this.eventMode = this.isGhost ? 'none' : 'static';
+            if (this.eventMode === 'static') {
+                this.on('pointerover', () => {
+                    (this.editor as RoomEditor).updateMouseoverHint(t.name, this);
+                });
+                this.on('pointerout', () => {
+                    (this.editor as RoomEditor).mouseoverOut(this);
+                });
+            }
         }
         if (t.playAnimationOnStart) {
             this.play();

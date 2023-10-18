@@ -1,4 +1,5 @@
 import {History} from './history';
+import {RoomEditorPreview} from './previewer';
 
 import {Copy} from './entityClasses/Copy';
 import {Tile} from './entityClasses/Tile';
@@ -766,26 +767,37 @@ class RoomEditor extends PIXI.Application {
      * as it repositions the room.
      */
     getSplashScreen(big: boolean): HTMLCanvasElement {
+        return RoomEditor.getRoomPreview(this.ctRoom, big);
+    }
+    static getRoomPreview(room: IRoom, big: boolean): HTMLCanvasElement {
         const w = big ? 340 : 64,
               h = big ? 256 : 64;
         const renderTexture = PIXI.RenderTexture.create({
             width: w,
             height: h
         });
-        this.overlays.visible = false;
-        this.transformer.visible = false;
-        this.pointerCoords.visible = false;
-        this.clicktrap.width = w;
-        this.clicktrap.height = h;
-        this.clicktrap.alpha = 1;
-        this.clicktrap.tint = (this.renderer as PIXI.Renderer).background.color;
-        this.room.scale.set(Math.min(w / this.ctRoom.width, h / this.ctRoom.height));
-        this.room.x = (w - this.ctRoom.width * this.room.scale.x) / 2;
-        this.room.y = (h - this.ctRoom.height * this.room.scale.y) / 2;
-        this.renderer.render(this.stage, {
+        const canvas = document.createElement('canvas');
+        canvas.width = w;
+        canvas.height = h;
+        const pixelart = Boolean(currentProject.settings.rendering.pixelatedrender);
+        const scale = Math.min(w / room.width, h / room.height);
+        const preview = new RoomEditorPreview({
+            view: canvas
+        }, room, pixelart, {
+            x: (w - room.width * scale) / 2,
+            y: (h - room.height * scale) / 2,
+            scale
+        });
+        preview.renderer.render(preview.stage, {
             renderTexture
         });
-        return (this.renderer as PIXI.Renderer).extract.canvas(renderTexture) as HTMLCanvasElement;
+        const out = preview.renderer.extract.canvas(renderTexture) as HTMLCanvasElement;
+        preview.destroy(false, {
+            children: true,
+            texture: false,
+            baseTexture: false
+        });
+        return out;
     }
 }
 

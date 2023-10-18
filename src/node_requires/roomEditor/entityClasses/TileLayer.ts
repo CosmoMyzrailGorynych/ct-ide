@@ -1,5 +1,6 @@
 import {Tile} from './Tile';
 import {RoomEditor} from '..';
+import {RoomEditorPreview} from '../previewer';
 
 import * as PIXI from 'node_modules/pixi.js';
 
@@ -12,9 +13,9 @@ export const resetCounter = (): void => {
 export class TileLayer extends PIXI.Container {
     extends: Record<string, unknown>;
     children: Tile[];
-    editor: RoomEditor;
+    editor: RoomEditor | RoomEditorPreview;
     id: number;
-    constructor(tileLayer: ITileLayerTemplate, editor: RoomEditor) {
+    constructor(tileLayer: ITileLayerTemplate, editor: RoomEditor | RoomEditorPreview) {
         super();
         this.editor = editor;
         this.id = idCounter++;
@@ -43,7 +44,7 @@ export class TileLayer extends PIXI.Container {
             this.editor.tiles.delete(tile);
         }
         this.parent.removeChild(this);
-        if (writeToHistory) {
+        if (writeToHistory && this.editor instanceof RoomEditor) {
             this.editor.history.pushChange({
                 type: 'tileLayerDeletion',
                 deleted: this
