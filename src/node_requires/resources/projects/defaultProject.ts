@@ -7,13 +7,9 @@ const defaultProjectTemplate: IProject = {
             gridX: 1024,
             gridY: 1024
         },
-        fittoscreen: {
-            mode: 'scaleFit'
-        },
         pointer: {},
         keyboard: {},
-        'keyboard.polyfill': {},
-        'sound.howler': {}
+        'keyboard.polyfill': {}
     },
     startroom: -1,
     contentTypes: [],
