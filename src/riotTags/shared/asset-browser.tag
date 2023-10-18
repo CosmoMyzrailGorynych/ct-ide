@@ -65,15 +65,24 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
                 button.inline.square(
                     onclick="{switchSort('date')}"
                     class="{selected: sort === 'date' && !searchResults}"
+                    title="{vocGlob.sortByDate}"
                 )
                     svg.feather
                         use(xlink:href="#clock")
                 button.inline.square(
                     onclick="{switchSort('name')}"
                     class="{selected: sort === 'name' && !searchResults}"
+                    title="{vocGlob.sortByName}"
                 )
                     svg.feather
                         use(xlink:href="#sort-alphabetically")
+                button.inline.square(
+                    onclick="{switchSort('type')}"
+                    class="{selected: sort === 'type' && !searchResults}"
+                    title="{vocGlob.sortByType}"
+                )
+                    svg.feather
+                        use(xlink:href="#grid-random")
             .aSearchWrap(style="{opts.compact ? 'width: auto;' : ''}")
                 input.inline(type="text" onkeyup="{fuseSearch}")
                 svg.feather
@@ -152,7 +161,7 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
         this.namespace = 'assetViewer';
         this.mixin(require('./data/node_requires/riotMixins/voc').default);
         this.mixin(require('./data/node_requires/riotMixins/niceTime').default);
-        this.sort = 'name';
+        this.sort = 'type';
         this.sortReverse = false;
 
         const resources = require('data/node_requires/resources');
@@ -310,6 +319,13 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
                     this.entries.sort((a, b) => this.sortFolderwise(a, b) || accessor(a).localeCompare(accessor(b)) || this.sortTypewise(a, b));
                 } else {
                     this.entries.sort((a, b) => this.sortFolderwise(a, b) || a.name.localeCompare(b.name) || this.sortTypewise(a, b));
+                }
+            } else if (this.sort === 'type') {
+                if (this.opts.names) {
+                    const accessor = this.opts.names;
+                    this.entries.sort((a, b) => this.sortFolderwise(a, b) || this.sortTypewise(a, b) || accessor(a).localeCompare(accessor(b)));
+                } else {
+                    this.entries.sort((a, b) => this.sortFolderwise(a, b) || this.sortTypewise(a, b) || a.name.localeCompare(b.name));
                 }
             } else {
                 this.entries.sort((a, b) => this.sortFolderwise(a, b) || (b.lastmod - a.lastmod));
