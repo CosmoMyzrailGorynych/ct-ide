@@ -92,6 +92,7 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
                 path="{[]}" /* this is intentional (top-most folder level) */
                 click="{onAsideFolderClick}"
                 drop="{onAsideFolderDrop}"
+                layoutchanged="{onFolderTreeChange}"
             )
         div
             .center(if="{!opts.shownone && !(searchResults || entries).length}")
@@ -211,6 +212,36 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
         this.goTo = folderPath => {
             this.folderStack = folderPath;
             this.updateFolders();
+        };
+        this.onFolderTreeChange = () => {
+            if (this.currentFolder === null) {
+                this.update();
+                return;
+            }
+            const recursiveFolderWalker = (
+                target, /* IAssetFolder */
+                path, /* IAssetFolder[] */
+                collection /* folderEntries */
+            ) => {
+                for (const entry of collection) {
+                    if (entry.type === 'folder') {
+                        const subpath = [...path, target];
+                        if (entry === target) {
+                            return subpath;
+                        }
+                        const result = recursiveFolderWalker(target, subpath, entry.entries);
+                        if (result) {
+                            return result;
+                        }
+                    }
+                }
+            };
+            this.goTo(recursiveFolderWalker(
+                this.currentFolder,
+                [window.currentProject.assets],
+                window.currentProject.assets
+            ));
+            this.update();
         };
 
         const layouts = ['cards', 'largeCards', 'list'];

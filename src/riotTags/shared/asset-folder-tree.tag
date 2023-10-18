@@ -17,6 +17,9 @@
         via a drag-n-drop interaction.
         The callback will be passed with the selected folder as its only argument
         in the first function and the DOM event in the second one.
+    @attribute [layoutchanged] (riot function)
+        A callback with no arguments that is called whenever folders were moved
+        by this tag.
 
 asset-folder-tree
     .flexrow
@@ -91,6 +94,7 @@ asset-folder-tree
                 const {moveFolder, getFolderById} = resources;
                 try {
                     moveFolder(getFolderById(uid), targetFolder);
+                    this.opts.layoutchanged && this.opts.layoutchanged();
                 } catch (err) {
                     window.alertify.error(err.message);
                 }
