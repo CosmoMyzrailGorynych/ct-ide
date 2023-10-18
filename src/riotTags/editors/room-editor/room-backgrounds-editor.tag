@@ -148,7 +148,7 @@ room-backgrounds-editor
     asset-selector(
         ref="texturePicker"
         if="{newBg}"
-        assettype="textures"
+        assettypes="texture"
         oncancelled="{onTextureCancel}"
         onselected="{onTextureSelected}"
     )
