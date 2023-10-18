@@ -180,7 +180,8 @@
         "projectPalette": "Project's Palette"
     },
     "createAsset": {
-        "newAsset": "New asset"
+        "newAsset": "New asset",
+        "placeholderTexture": "Placeholder texture"
     },
     "curveEditor": {
         "curveLineHint": "Click the curve to add a point",

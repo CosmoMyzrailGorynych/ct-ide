@@ -1,7 +1,8 @@
 //
     @attribute onclose (riot function)
         Called when a user presses the "Close" button. Passes no arguments.
-texture-generator.aView
+    @attribute [folder] (IAssetFolder)
+texture-generator
     .flexcol.tall
         .flexrow.tall
             .aPanel.texture-generator-Settings.nogrow
@@ -56,10 +57,6 @@ texture-generator.aView
                 .texture-generator-aScalingNotice(if="{textureWidth < 64 && textureHeight < 64}")
                     | {voc.scalingAtX4}
         .flexrow.nogrow
-            button(onclick="{close}")
-                svg.feather
-                    use(xlink:href="#x")
-                span {vocGlob.close}
             button(onclick="{createAndClose}")
                 svg.feather
                     use(xlink:href="#check")
@@ -72,6 +69,8 @@ texture-generator.aView
         this.namespace = 'textureGenerator';
         this.mixin(require('./data/node_requires/riotMixins/voc').default);
         this.mixin(require('./data/node_requires/riotMixins/wire').default);
+
+        const {getOfType, createAsset} = require('./data/node_requires/resources');
 
         this.textureName = 'Placeholder';
         this.textureWidth = this.textureHeight = 64;
@@ -189,8 +188,8 @@ texture-generator.aView
             }
         };
         this.create = async () => {
-            const {textures} = global.currentProject;
-            this.nameTaken = textures.find(texture => this.textureName === texture.name);
+            this.nameTaken = getOfType('texture')
+                .find(texture => this.textureName === texture.name);
 
             if (this.nameTaken) {
                 this.update();
@@ -202,11 +201,13 @@ texture-generator.aView
 
             this.refreshCanvas();
             const {canvas} = this.refs;
-            const {importImageToTexture} = require('./data/node_requires/resources/textures');
             const png = canvas.toDataURL();
             const imageBase64 = png.replace(/^data:image\/\w+;base64,/, '');
             const imageBuffer = new Buffer(imageBase64, 'base64');
-            await importImageToTexture(imageBuffer, this.textureName);
+            await createAsset('texture', this.opts.folder || null, {
+                src: imageBuffer,
+                name: this.textureName
+            });
             window.alertify.success(this.voc.generationSuccessMessage.replace('$1', this.textureName));
 
             return true;
