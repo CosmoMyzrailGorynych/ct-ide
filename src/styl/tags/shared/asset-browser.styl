@@ -1,11 +1,12 @@
+mappedColor = theme == 'LucasDracula' ? accent1 : act
 colorMap = {
-    texture: hue(act, 20deg),
-    template: hue(act, 230deg),
-    sound: hue(act, 260deg),
-    tandem: hue(act, 300deg),
-    room: hue(act, 40deg),
-    font: hue(act, 150deg),
-    style: hue(act, 110deg)
+    texture: hue(mappedColor, 20deg),
+    template: hue(mappedColor, 230deg),
+    sound: hue(mappedColor, 260deg),
+    tandem: hue(mappedColor, 300deg),
+    room: hue(mappedColor, 40deg),
+    font: hue(mappedColor, 150deg),
+    style: hue(mappedColor, 110deg)
 }
 
 for key, value in colorMap
