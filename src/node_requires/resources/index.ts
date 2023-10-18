@@ -168,6 +168,27 @@ export const getById = <T extends resourceType>(
     return asset as typeToTsTypeMap[T];
 };
 
+export const getFolderById = (uid: string | null): IAssetFolder => {
+    const recursiveFolderWalker = (
+        uid: string,
+        collection: folderEntries
+    ): IAssetFolder => {
+        for (const entry of collection) {
+            if (entry.type === 'folder') {
+                if (entry.uid === uid) {
+                    return entry;
+                }
+                const result = recursiveFolderWalker(uid, entry.entries);
+                if (result) {
+                    return result;
+                }
+            }
+        }
+        return null;
+    };
+    return recursiveFolderWalker(uid, window.currentProject.assets);
+};
+
 export const getParentFolder = (object: IAsset | IAssetFolder): IAssetFolder | null => {
     if (object.type === 'folder') {
         const recursiveFolderWalker = (
@@ -180,7 +201,10 @@ export const getParentFolder = (object: IAsset | IAssetFolder): IAssetFolder | n
                     if (entry === child) {
                         return current;
                     }
-                    return recursiveFolderWalker(child, entry.entries, entry);
+                    const result = recursiveFolderWalker(child, entry.entries, entry);
+                    if (result) {
+                        return result;
+                    }
                 }
             }
             return null;
@@ -266,7 +290,10 @@ export const moveFolder = (
                 if (entry === newParentFolder) {
                     return false;
                 }
-                return recursiveFolderWalker(entry.entries);
+                const result = recursiveFolderWalker(entry.entries);
+                if (!result) {
+                    return false;
+                }
             }
         }
         return true;

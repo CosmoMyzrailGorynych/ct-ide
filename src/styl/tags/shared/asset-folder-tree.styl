@@ -1,9 +1,12 @@
 asset-folder-tree
     .&-aToggler
-        {trans}
+        {transshort}
         transform translate(0.35rem, 0.1rem)
         &.opened
             transform translate(0.35rem, 0.1rem) rotate(90deg)
+        &.hidden
+            opacity 0
+            cursor default
     .&-aFolder
         {transshort}
         cursor pointer

@@ -623,7 +623,7 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
         };
 
         this.onAsideFolderClick = folderPath => e => {
-            this.goTo([null, ...folderPath]);
+            this.goTo([window.currentProject.assets, ...folderPath]);
         };
         this.onAsideFolderDrop = folder => e => {
             return this.moveByTransfer(folder, e);
