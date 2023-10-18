@@ -1,3 +1,17 @@
+colorMap = {
+    texture: hue(act, 20deg),
+    template: hue(act, 230deg),
+    sound: hue(act, 260deg),
+    tandem: hue(act, 300deg),
+    room: hue(act, 40deg),
+    font: hue(act, 150deg),
+    style: hue(act, 110deg)
+}
+
+for key, value in colorMap
+    .aCard.{key}
+        border-left 3px value solid
+
 asset-browser
     & > .flexfix-header
         align-items center

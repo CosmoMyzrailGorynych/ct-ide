@@ -108,14 +108,13 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
                         span {vocGlob.none}
                 li.aCard(
                     each="{asset in (searchResults || entries)}"
-                    class="{active: parent.opts.selectedasset === asset}"
                     oncontextmenu="{parent.openContextMenu(asset)}"
                     onlong-press="{parent.openContextMenu(asset)}"
                     onclick="{parent.assetClick(asset)}"
                     ondragstart="{parent.onItemDrag}"
                     ondrop="{parent.onFolderDrop}"
                     draggable="{asset.type !== 'folder'}"
-                    class="{active: selectedItems.has(asset)}"
+                    class="{active: selectedItems.has(asset)} {asset.type}"
                     no-reorder
                 )
                     .aCard-aThumbnail
