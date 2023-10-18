@@ -108,8 +108,8 @@ app-view.flexcol
                 // The current tab is an asset
                 if (tab.type === 'room' || tab.type === 'template') {
                     window.orders.trigger('forceCodeEditorLayout');
-                    window.hotkeys.push(tab.type);
                 }
+                window.hotkeys.push(tab.uid);
             }
         };
         this.assetTabClick = asset => e => {

@@ -137,7 +137,7 @@ class RoomEditor extends PIXI.Application {
             roundPixels: pixelart
         }));
         this.ticker.maxFPS = 60;
-        this.observable = riot.observable({});
+        this.observable = riot.observable();
 
         const room = editor.asset;
         this.ctRoom = room;

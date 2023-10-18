@@ -228,8 +228,8 @@ export const createAsset = async <T extends resourceType, P>(
     uidMap.set(asset.uid, asset);
     folderMap.set(asset, folder);
     collectionMap.set(asset, collection);
-    window.signals.trigger('assetCreated', asset);
-    window.signals.trigger(`${type}Created`, asset);
+    window.signals.trigger('assetCreated', asset.uid);
+    window.signals.trigger(`${type}Created`, asset.uid);
     return asset;
 };
 
@@ -324,6 +324,8 @@ export const deleteAsset = async (asset: IAsset): Promise<void> => {
     uidMap.delete(asset.uid);
     folderMap.delete(asset);
     collectionMap.delete(asset);
+    window.signals.trigger('assetRemoved', asset.uid);
+    window.signals.trigger(`${asset.type}Removed`, asset.uid);
 };
 
 /**

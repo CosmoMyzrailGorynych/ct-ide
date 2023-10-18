@@ -242,7 +242,7 @@ room-editor.aPanel.aView
          */
         // eslint-disable-next-line complexity
         const triggerKeyboardEvent = e => {
-            if (!window.hotkeys.inScope('rooms')) {
+            if (!window.hotkeys.inScope(this.asset.uid)) {
                 return false;
             }
             if (['input', 'textarea', 'select'].includes(e.target.nodeName.toLowerCase())) {

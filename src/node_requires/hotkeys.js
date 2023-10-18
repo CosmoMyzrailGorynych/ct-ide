@@ -188,7 +188,7 @@ class Hotkeys {
     exit(val) {
         const ind = this.scopeStack.indexOf(val);
         if (val !== -1) {
-            this.scopeStack.splice(ind);
+            this.scopeStack.splice(ind); // TODO: what?
         }
         return ind !== -1;
     }
