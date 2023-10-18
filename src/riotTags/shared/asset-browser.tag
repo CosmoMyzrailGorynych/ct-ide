@@ -122,6 +122,13 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
                     use(xlink:href="data/img/weirdFoldersIllustration.svg#illustration")
                 br
                 span {vocGlob.nothingToShowFiller}
+                .aSpacer(if="{assetTypes[0] === 'all'}")
+                create-asset-menu(
+                    if="{assetTypes[0] === 'all'}"
+                    collection="{currentCollection}"
+                    folder="{currentFolder}"
+                    onimported="{onAssetImported}"
+                )
             ul.Cards(class="{layoutToClassListMap[opts.forcelayout || currentLayout]}")
                 li.aCard(if="{opts.shownone}" onclick="{opts.click && opts.click(-1)}" class="{active: opts.selectedasset === -1}")
                     .aCard-aThumbnail
@@ -458,6 +465,10 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
             this.showingFolderEditor = false;
             this.editedFolder = void 0;
             this.update();
+        };
+
+        this.onAssetImported = asset => {
+            window.orders.trigger('openAsset', asset);
         };
 
         this.assetContextMenu = {
