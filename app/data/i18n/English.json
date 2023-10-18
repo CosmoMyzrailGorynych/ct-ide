@@ -617,7 +617,8 @@
         "global": "Global notepad",
         "backToHome": "Back to docs' homepage",
         "modulesPages": "Modules' docs",
-        "helpPages": "Learn"
+        "helpPages": "Learn",
+        "docsAndNotes": "Docs & Notes"
     },
     "patreon": {
         "aboutPatrons": "Patrons are people who show their support to ComigoGames at Boosty, in form of recurring donations, similarly to subscriptions on Patreon.",

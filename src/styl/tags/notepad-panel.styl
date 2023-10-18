@@ -7,6 +7,17 @@ notepad-panel
     {shadamb}
     position fixed !important
     {trans}
+    & > button.vertical
+        display flex
+        flex-flow column nowrap
+        align-items center
+        gap 0.5rem
+        svg
+            margin 0
+        span
+            writing-mode vertical-rl
+            text-orientation sideways
+            transform rotate(180deg)
     & > div
         flex 1 1 auto
         position relative
@@ -41,13 +52,12 @@ notepad-panel
 .dockleft
     position absolute
     right 100%
-    top 40%
-    height 20%
+    top 50%
+    transform translate(0, -50%)
     margin 0
     border-top-right-radius 0
     border-bottom-right-radius 0
     border-right 0 none
-
 .dockright
     position absolute
     left 100%
