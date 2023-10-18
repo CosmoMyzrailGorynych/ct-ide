@@ -1,5 +1,10 @@
 asset-browser
-    display block
+    & > .flexfix-header
+        line-height 1
+        align-items center
+        input
+            line-height 1.95
+            vertical-align 1px
     h1, h2
         margin-bottom 1rem
     &.fonts
@@ -28,3 +33,13 @@ asset-browser
             input
                 width 100%
                 box-sizing border-box
+    .&-Breadcrumbs
+        & > button
+            vertical-align 5px
+    .&-aFolderTree
+        width 17.5rem
+        overflow auto
+        padding 1rem 1rem 0 0
+        box-sizing border-box
+        border-right 1px solid borderPale
+        margin-right 1rem

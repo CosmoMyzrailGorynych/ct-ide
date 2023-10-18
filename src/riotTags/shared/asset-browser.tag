@@ -41,6 +41,9 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
         div
             <yield/>
             .asset-browser-Breadcrumbs
+                button.square.tiny(if="{!opts.compact}" title="{voc.toggleFolderTree}" onclick="{toggleFolderTree}")
+                    svg.feather
+                        use(xlink:href="#folder")
                 h2.np.nm.pointer.inline(
                     onclick="{moveUpTo(folderStack[0])}"
                     ondrop="{onFolderDrop}"
@@ -83,52 +86,59 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
                     use(xlink:href="#folder-plus")
                 span(if="{!opts.compact}") {voc.addNewFolder}
             <yield from="filterArea"/>
-    .flexfix-body(onclick="{deselectAll}")
-        .center(if="{!opts.shownone && !(searchResults || entries).length}")
-            svg.anIllustration
-                use(xlink:href="data/img/weirdFoldersIllustration.svg#illustration")
-            br
-            span {vocGlob.nothingToShowFiller}
-        ul.Cards(class="{layoutToClassListMap[opts.forcelayout || currentLayout]}")
-            li.aCard(if="{opts.shownone}" onclick="{opts.click && opts.click(-1)}" class="{active: opts.selectedasset === -1}")
-                .aCard-aThumbnail
-                    img(src="data/img/notexture.png")
-                .aCard-Properties
-                    span {vocGlob.none}
-            li.aCard(
-                each="{asset in (searchResults || entries)}"
-                class="{active: parent.opts.selectedasset === asset}"
-                oncontextmenu="{parent.openContextMenu(asset)}"
-                onlong-press="{parent.openContextMenu(asset)}"
-                onclick="{parent.assetClick(asset)}"
-                ondragstart="{parent.onItemDrag}"
-                ondrop="{parent.onFolderDrop}"
-                draggable="{asset.type !== 'folder'}"
-                class="{active: selectedItems.has(asset)}"
-                no-reorder
+    .flexfix-body.flexrow(onclick="{deselectAll}")
+        aside.asset-browser-aFolderTree.nogrow(if="{showingFolderTree}")
+            asset-folder-tree(
+                path="{[]}" /* this is intentional (top-most folder level) */
+                click="{onAsideFolderClick}"
+                drop="{onAsideFolderDrop}"
             )
-                .aCard-aThumbnail
-                    img(
-                        if="{asset.type !== 'folder' && !parent.usesIcons(asset)}"
-                        src="{parent.getThumbnail(asset, currentLayout === 'largeCards', false)}"
-                    )
-                    svg.feather.group-icon.act(if="{asset.type !== 'folder' && parent.usesIcons(asset)}")
-                        use(xlink:href="#{parent.getThumbnail(asset)}")
-                    .aCard-aFolderIcon(if="{asset.type === 'folder'}")
-                        svg.feather(class="{asset.colorClass || 'act'}")
-                            use(xlink:href="#folder")
-                        svg.feather(class="{asset.colorClass || 'act'}")
-                            use(xlink:href="#{asset.icon}")
-                .aCard-Properties
-                    span {parent.getName(asset)}
-                    span.secondary(if="{asset.type !== 'folder' && (parent.assetTypes.length > 1 || parent.assetTypes[0] === 'all')}")
-                        svg.feather
-                            use(xlink:href="#{iconMap[asset.type]}")
-                        span(if="{!parent.opts.compact}")   {vocGlob.assetTypes[asset.type][0].slice(0, 1).toUpperCase()}{vocGlob.assetTypes[asset.type][0].slice(1)}
-                    .asset-browser-Icons(if="{parent.opts.icons}") // TODO: add support to resources API
-                        svg.feather(each="{icon in parent.opts.icons(asset)}" class="feather-{icon}")
-                            use(xlink:href="#{icon}")
-                    span.date(if="{asset.lastmod && !parent.opts.compact}") {niceTime(asset.lastmod)}
+        div
+            .center(if="{!opts.shownone && !(searchResults || entries).length}")
+                svg.anIllustration
+                    use(xlink:href="data/img/weirdFoldersIllustration.svg#illustration")
+                br
+                span {vocGlob.nothingToShowFiller}
+            ul.Cards(class="{layoutToClassListMap[opts.forcelayout || currentLayout]}")
+                li.aCard(if="{opts.shownone}" onclick="{opts.click && opts.click(-1)}" class="{active: opts.selectedasset === -1}")
+                    .aCard-aThumbnail
+                        img(src="data/img/notexture.png")
+                    .aCard-Properties
+                        span {vocGlob.none}
+                li.aCard(
+                    each="{asset in (searchResults || entries)}"
+                    class="{active: parent.opts.selectedasset === asset}"
+                    oncontextmenu="{parent.openContextMenu(asset)}"
+                    onlong-press="{parent.openContextMenu(asset)}"
+                    onclick="{parent.assetClick(asset)}"
+                    ondragstart="{parent.onItemDrag}"
+                    ondrop="{parent.onFolderDrop}"
+                    draggable="{asset.type !== 'folder'}"
+                    class="{active: selectedItems.has(asset)}"
+                    no-reorder
+                )
+                    .aCard-aThumbnail
+                        img(
+                            if="{asset.type !== 'folder' && !parent.usesIcons(asset)}"
+                            src="{parent.getThumbnail(asset, currentLayout === 'largeCards', false)}"
+                        )
+                        svg.feather.group-icon.act(if="{asset.type !== 'folder' && parent.usesIcons(asset)}")
+                            use(xlink:href="#{parent.getThumbnail(asset)}")
+                        .aCard-aFolderIcon(if="{asset.type === 'folder'}")
+                            svg.feather(class="{asset.colorClass || 'act'}")
+                                use(xlink:href="#folder")
+                            svg.feather(class="{asset.colorClass || 'act'}")
+                                use(xlink:href="#{asset.icon}")
+                    .aCard-Properties
+                        span {parent.getName(asset)}
+                        span.secondary(if="{asset.type !== 'folder' && (parent.assetTypes.length > 1 || parent.assetTypes[0] === 'all')}")
+                            svg.feather
+                                use(xlink:href="#{iconMap[asset.type]}")
+                            span(if="{!parent.opts.compact}")   {vocGlob.assetTypes[asset.type][0].slice(0, 1).toUpperCase()}{vocGlob.assetTypes[asset.type][0].slice(1)}
+                        .asset-browser-Icons(if="{parent.opts.icons}") // TODO: add support to resources API
+                            svg.feather(each="{icon in parent.opts.icons(asset)}" class="feather-{icon}")
+                                use(xlink:href="#{icon}")
+                        span.date(if="{asset.lastmod && !parent.opts.compact}") {niceTime(asset.lastmod)}
     folder-editor(
         if="{showingFolderEditor}"
         onapply="{closeFolderEditor}"
@@ -198,6 +208,10 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
             this.folderStack.push(folder);
             this.updateFolders();
         };
+        this.goTo = folderPath => {
+            this.folderStack = folderPath;
+            this.updateFolders();
+        };
 
         const layouts = ['cards', 'largeCards', 'list'];
         this.layoutToIconMap = {
@@ -222,6 +236,12 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
             this.currentLayout = layouts[idx];
             const key = this.opts.namespace ? (this.opts.namespace + 'Layout') : 'defaultAssetLayout';
             localStorage[key] = this.currentLayout;
+        };
+
+        this.showingFolderTree = localStorage.preferFolderTree === 'yes';
+        this.toggleFolderTree = () => {
+            this.showingFolderTree = !this.showingFolderTree;
+            localStorage.preferFolderTree = this.showingFolderTree ? 'yes' : 'no';
         };
 
         /* Asset sorting & name search operations */
@@ -575,11 +595,7 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
             e.dataTransfer.setData('text/plain', JSON.stringify(transferData));
             e.dataTransfer.dropEffect = 'move';
         };
-        this.onFolderDrop = e => {
-            const folder = e.item ? (e.item.asset || e.item.item || null) : null;
-            if (folder !== null && folder.type !== 'folder') {
-                return false;
-            }
+        this.moveByTransfer = (folder, e) => {
             const dt = e.dataTransfer.getData('text/plain');
             let transferData;
             // Ensure that we can receive drag data
@@ -597,4 +613,18 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
                 this.updateList();
             }
             return true;
+        };
+        this.onFolderDrop = e => {
+            const folder = e.item ? (e.item.asset || e.item.item || null) : null;
+            if (folder !== null && folder.type !== 'folder') {
+                return false;
+            }
+            return this.moveByTransfer(folder, e);
+        };
+
+        this.onAsideFolderClick = folderPath => e => {
+            this.goTo([null, ...folderPath]);
+        };
+        this.onAsideFolderDrop = folder => e => {
+            return this.moveByTransfer(folder, e);
         };
