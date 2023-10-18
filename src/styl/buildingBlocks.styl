@@ -49,7 +49,7 @@
 .aModal
     max-height 90%
     overflow auto
-    box-shadow 0 2px 5px rgba(0, 0, 0, 0.35)
+    box-shadow 0 2px 5px rgba(shadows, 0.35)
 
 .aView
     overflow auto
@@ -149,7 +149,7 @@
         border-bottom 1px solid borderBright
         flex auto
         list-style none
-        padding 0.25em
+        padding 0.25rem 1rem
         margin 0
         {trans}
         box-shadow 0 0 background inset
@@ -217,7 +217,7 @@
             text-align left
             display flex
             flex-flow row nowrap
-        .asset-viewer-Icons
+        .asset-browser-Icons
             flex 0 0 auto
         .date
             display block
@@ -272,14 +272,15 @@
             margin 0.5rem 0
             line-height 1.5
         span
-            font-family consolas, monospace
+            font-family font-mono
             width 12.5em
             text-overflow ellipsis
             white-space nowrap
             overflow hidden
 .aCard
     background background
-    padding 0.8em
+    padding 0.5rem 1rem
+    gap 0.5rem 1rem
     &.compact
         padding 0.4em 0.8em
     margin 0
@@ -293,6 +294,7 @@
     flex-flow row nowrap
     align-items center
     justify-content center
+    line-height 1
     &:hover, &.active
         border-color acttext
         .Cards.list &
@@ -308,14 +310,24 @@
     overflow hidden
     > .date
         display none
-    span
-        font-family consolas, monospace
+    & > span
+        font-family font-mono
         width 100%
         display inline-block
         vertical-align middle
         text-overflow ellipsis
         white-space nowrap
         overflow hidden
+        line-height 1.5em
+        &.secondary
+            svg
+                width 1rem
+                height @width
+                vertical-align -3px
+                &.feather
+                    line-width 1px
+            font-family fonts
+            @extends .small, .dim
 .aCard-aThumbnail
     width 3rem
     flex 0 0 auto
@@ -326,6 +338,7 @@
         height 3rem
         stroke-width 1
         color act
+        padding 0.5rem
     // Images cheat a bit with negative margins
     // to occupy a 4rem x 4rem box
     img
@@ -333,17 +346,37 @@
         height 4rem
         max-width 4rem
         object-fit contain
-        margin -0.5rem 0 -0.5rem -0.5rem
         border-radius br
         pointer-events none
+    .aCard-aFolderIcon
+        width 3rem
+        height 3rem
+        position relative
+        svg
+            position absolute
+            left 50%
+            top 50%
+            transform translate(-50%, -50%)
+        svg:nth-child(2)
+            width 40% !important
+            height 40% !important
+            top 55%
+            stroke-width 1.5
     &:hover img
         background rgba(act, 0.35)
-    .aCard.compact &
+    .Cards.largeicons &
+        .aCard-aFolderIcon, .aCard-aFolderIcon svg
+            width 4rem
+            height 4rem
+    .aCard.compact &, .Cards.list &
         width 1.5rem
         svg
             width 1.5rem
             height 1.5rem
             stroke-width 2
+        .aCard-aFolderIcon
+            width 1.5rem
+            height 1.5rem
         img
             width 2rem
             height 2rem

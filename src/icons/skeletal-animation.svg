@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-skeletal-animation">
+    <path d="M2.12602 8L7.08909 19.1638"/>
+    <path d="M11.2531 20.2823L21.6181 9.5"/>
+    <path d="M9.5 16L19.5 7.38196"/>
+    <path d="M10 16.05V7"/>
+    <circle cx="6" cy="7" r="4"/>
+    <circle cx="20.5" cy="8.5" r="1.5"/>
+    <circle cx="9.5" cy="18.5" r="2.5"/></svg>

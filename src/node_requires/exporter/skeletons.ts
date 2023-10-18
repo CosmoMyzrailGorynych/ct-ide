@@ -10,8 +10,7 @@ type skeletonExportData = {
 }
 
 export const packSkeletons = async (
-    proj: IProject,
-    projdir: string,
+    input: ISkeleton[],
     writeDir: string
 ): Promise<skeletonExportData> => {
     const writePromises = [];
@@ -19,7 +18,7 @@ export const packSkeletons = async (
     const exporterData: skeletonExportData = {
         skeletons: [] as ExportedSkeleton[]
     };
-    for (const skeleton of proj.skeletons) {
+    for (const skeleton of input) {
         if (skeleton.from !== 'spine') {
             throw new Error(`Skeleton ${skeleton.name} is from unsupported source "${skeleton.from}". You should probably contact support.`);
         }

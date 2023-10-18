@@ -48,7 +48,7 @@ main-menu-meta
     license-panel(if="{licenseOpened}" onclose="{hideLicense}")
     script.
         this.namespace = 'mainMenu.meta';
-        this.mixin(window.riotVoc);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
 
         this.iconsOpened = false;
         this.showLicense = false;

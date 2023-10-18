@@ -6,19 +6,69 @@ app-view
     bottom 0
     & > .flexrow > nav
         flex-flow row wrap
-    & > nav > .tabs li
+    & > nav > .tabs > li
         position relative
         &:last-child
-            width 2rem
+            width 2.5rem
+            box-sizing border-box
+            padding-left 0
+            padding-right 0
+    & > nav > .tabs
+        .aTabsWrapper
+            background backgroundDeeper
+            border-bottom 1px solid borderBright
+            border-right @border-bottom
+            width 0
+            flex 1 1 1rem
+            position relative
+            &::before, &::after
+                position absolute
+                content ''
+                background radial-gradient(farthest-side at 50% 50%, rgba(shadows, 0.35), transparent)
+                background-repeat no-repeat
+                width 1rem
+                height 100%
+                top 0
+                background-size (@width * 2) 100%
+                pointer-events none
+                opacity 0
+                {trans}
+            &::before
+                left 0
+                background-position -1rem 0
+            &::after
+                right 0
+                background-position 0 0
+            &.shadowleft::before
+                opacity 1
+            &.shadowright::after
+                opacity 1
+        .xscroll
+            li
+                border-radius 0 !important
+                border-bottom 0
+                padding-right 0.5rem
+                background background
+                white-space nowrap
+            .anActionableIcon
+                width 1.25rem
+                height @width
+                vertical-align -4px
+                margin-left 0.25rem
+                margin-right 0
     .limitwidth
         max-width 5rem
+        min-width 3rem
+        box-sizing border-box
     & > nav > .tabs
         border-radius 0
         width 100%
 
 @media (max-width 1100px)
-    app-view > nav > .tabs
-        span
+    app-view > nav > .tabs > li
+        &.limitwidth
+            max-width 3.5rem
+        & > span
             display none
-        svg:first-child
+        & > svg:first-child
             margin-right 0

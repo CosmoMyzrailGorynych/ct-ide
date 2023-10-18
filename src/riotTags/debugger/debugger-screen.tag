@@ -55,7 +55,7 @@ debugger-screen(class="{opts.class} {flexrow: verticalLayout, flexcol: !vertical
     debugger-modal(if="{showNetworkingModal}")
     script.
         this.namespace = 'debuggerToolbar';
-        this.mixin(window.riotVoc);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
 
         this.showNetworkingModal = false;
 

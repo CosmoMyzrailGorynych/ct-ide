@@ -13,14 +13,13 @@ class Tile extends PIXI.Sprite {
     parent: TileLayer | null;
     editor: RoomEditor;
     isGhost: boolean;
-    interactive: boolean;
 
     constructor(tileInfo: ITileTemplate, editor: RoomEditor, isGhost?: boolean) {
         super(getPixiTexture(tileInfo.texture, tileInfo.frame, false));
         this.editor = editor;
         this.deserialize(tileInfo);
         this.isGhost = Boolean(isGhost);
-        this.interactive = !this.isGhost;
+        this.eventMode = this.isGhost ? 'none' : 'static';
         if (this.isGhost) {
             this.alpha *= 0.5;
         } else {

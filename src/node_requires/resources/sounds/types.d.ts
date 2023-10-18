@@ -1,4 +1,5 @@
 interface ISound extends IAsset {
+    type: 'sound';
     name: string,
     isMusic: boolean,
     origname?: string,

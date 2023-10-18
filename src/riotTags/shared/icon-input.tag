@@ -21,7 +21,7 @@ icon-input
     )
     script.
         this.namespace = 'common';
-        this.mixin(window.riotVoc);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
 
         this.val = this.opts.val || 'x';
         this.openSelector = () => {

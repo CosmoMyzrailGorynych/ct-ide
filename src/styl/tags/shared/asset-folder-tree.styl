@@ -1,0 +1,20 @@
+asset-folder-tree
+    .&-aToggler
+        {transshort}
+        transform translate(0.35rem, 0.1rem)
+        &.opened
+            transform translate(0.35rem, 0.1rem) rotate(90deg)
+        &.hidden
+            opacity 0
+            cursor default
+    .&-aFolder
+        {transshort}
+        cursor pointer
+        border-radius br
+        padding 0 0.5rem
+        &:hover
+            background borderPale
+        svg
+            width 1.25rem
+            height @width
+            vertical-align -3px

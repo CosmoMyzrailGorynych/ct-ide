@@ -6,7 +6,7 @@ actions-input-selector
                     type="text"
                     ref="searchField"
                     value="{searchString}"
-                    onkeyup="{wire('this.searchString')}"
+                    onkeyup="{wire('searchString')}"
                 )
                 svg.feather
                     use(xlink:href="#search")
@@ -33,8 +33,8 @@ actions-input-selector
                     span {voc.select} {selectedMethods.length || ''}
     script.
         this.namespace = 'common';
-        this.mixin(window.riotVoc);
-        this.mixin(window.riotWired);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('./data/node_requires/riotMixins/wire').default);
 
         const fs = require('fs-extra'),
               path = require('path');

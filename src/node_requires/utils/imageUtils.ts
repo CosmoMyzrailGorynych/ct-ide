@@ -15,7 +15,7 @@ const imageCover = function (
     const cx = canvas.getContext('2d');
     cx.clearRect(0, 0, w, h);
     const k = Math.max(w / image.width, h / image.height);
-    if (!forceSmooth && (global as any).currentProject.settings.rendering.pixelatedrender) {
+    if (!forceSmooth && window.currentProject.settings.rendering.pixelatedrender) {
         cx.imageSmoothingEnabled = false;
     }
     cx.drawImage(
@@ -50,7 +50,7 @@ const imageContain = function (
         k = h / image.height;
     }
     if (k > 1) {
-        if (!forceSmooth && (global as any).currentProject.settings.rendering.pixelatedrender) {
+        if (!forceSmooth && window.currentProject.settings.rendering.pixelatedrender) {
             k = Math.floor(k);
             cx.imageSmoothingEnabled = false;
         }
@@ -87,7 +87,7 @@ const imagePlaceInRect = function (
         k = hi / image.height;
     }
     if (k > 1) {
-        if (!forceSmooth && (global as any).currentProject.settings.rendering.pixelatedrender) {
+        if (!forceSmooth && window.currentProject.settings.rendering.pixelatedrender) {
             k = Math.floor(k);
             cx.imageSmoothingEnabled = false;
         }

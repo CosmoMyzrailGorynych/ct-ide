@@ -71,7 +71,7 @@ tour-guide
                     span {voc.done}
     script.
         this.namespace = 'common';
-        this.mixin(window.riotVoc);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
 
         const clamp = (min, val, max) => Math.min(max, Math.max(min, val));
         const pad = 24;

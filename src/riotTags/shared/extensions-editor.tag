@@ -134,7 +134,7 @@ extensions-editor
                 )
                 asset-input(
                     if="{['texture', 'template', 'room', 'sound'].includes(ext.type)}"
-                    assettype="{ext.type}s"
+                    assettypes="{ext.type}"
                     allowclear="yep"
                     compact="{parent.opts.compact}"
                     class="{wide: parent.opts.wide, invalid: ext.required && (parent.opts.entity[ext.key] || ext.default) === -1}"
@@ -261,7 +261,7 @@ extensions-editor
         const fs = require('fs-extra'),
               path = require('path');
 
-        this.mixin(window.riotWired);
+        this.mixin(require('./data/node_requires/riotMixins/wire').default);
         this.wireAndNotify = (...args1) => (...args2) => {
             this.wire(...args1)(...args2);
             if (this.opts.onchanged) {
@@ -269,7 +269,7 @@ extensions-editor
             }
         };
         this.namespace = 'extensionsEditor';
-        this.mixin(window.riotVoc);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
 
         this.fixBrokenArrays = () => {
             for (const field of this.extensions) {

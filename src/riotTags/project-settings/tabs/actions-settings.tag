@@ -73,8 +73,8 @@ actions-settings
     script.
         global.currentProject.actions = global.currentProject.actions || [];
         this.namespace = 'settings.actions';
-        this.mixin(window.riotVoc);
-        this.mixin(window.riotWired);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('./data/node_requires/riotMixins/wire').default);
         this.addNewAction = () => {
             global.currentProject.actions.push({
                 name: 'NewAction',

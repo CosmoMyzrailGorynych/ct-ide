@@ -122,6 +122,21 @@ input[type="reset"],
         margin-top 0.5rem
     .flexrow > &.wide + &.wide
         margin-top 0
+    helper = {
+        error: error,
+        success: success,
+        warning: warning
+    }
+    for i, j in helper
+        &.{i}
+            border-color j
+            svg
+                color j
+            &:hover, &:active, &:active, &.selected
+                background-color j
+                color background
+                svg
+                    color background
 
 .aSearchWrap
     position relative

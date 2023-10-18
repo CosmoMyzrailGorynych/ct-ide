@@ -1,0 +1,96 @@
+template-editor, [data-is="template-editor"]
+    .aNav
+        border-bottom-left-radius 0
+        border-bottom-right-radius 0
+        flex-grow 0
+        & + div
+            left 0
+            right 0
+            top 0
+            bottom 0
+            position relative
+        @media (max-width 800px)
+            li span
+                display none
+    .tabbed
+        height 100%
+        box-sizing border-box
+        position absolute
+        top 0
+        right 0
+        left 0
+        bottom 0
+        padding 0
+        overflow visible
+        border-top 0
+        .aCodeEditor
+            position absolute
+            left 0
+            top 0
+            right 0
+            bottom 0
+    .tabwrap
+        height 100%
+    display flex
+    flex-flow row nowrap
+    padding 1rem
+
+template-editor
+    .&-Properties
+        flex 0 0 19rem
+        margin 0 1rem
+        overflow hidden
+        &:first-child
+            flex 0 0 23rem
+        &.alt
+            flex 0 0 19rem
+    .&-aCodeEditor
+        flex 1 1 auto
+    .&-aSlidingEventListIcon
+        position absolute
+        left 0.87rem
+        bottom @left
+        z-index 2
+        opacity 0.5
+        {transshort}
+    .&-aSlidingEventList
+        width 3.25rem
+        flex 0 0 auto
+        position relative
+        overflow visible
+        & > .aPanel
+            width 3.25rem
+            z-index 2
+            overflow-x hidden
+            {trans}
+            .flexfix-footer button, .event-list-scriptable-LocalVars
+                opacity 0
+                {trans}
+        &:hover .template-editor-aSlidingEventListIcon
+            opacity 0
+        &:hover > .aPanel
+            position absolute
+            left 0
+            top 0
+            bottom 0
+            width 22rem
+            {shadamb}
+            .flexfix-footer button, .event-list-scriptable-LocalVars
+                opacity 1
+    .&-aSlidingEventListWrap
+        width 22rem
+        & > event-list-scriptable
+            .aMenu > li
+                & > svg, & > img
+                    &:first-child
+                        margin-right 0.8rem
+            & > .flexfix-footer
+                padding 1rem
+    .&-aPresentationButton
+        position absolute
+        right 0
+        top 0
+        border-top-right-radius 0
+        border-top-left-radius 0
+        border-bottom-right-radius 0
+        margin 0

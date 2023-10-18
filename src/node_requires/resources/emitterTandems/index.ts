@@ -1,18 +1,10 @@
 const getThumbnail = function getThumbnail(): string {
     return 'sparkles';
 };
-const getById = function getById(id: string): ITandem {
-    const tandem = (window as Window).currentProject.emitterTandems
-        .find((t: ITandem) => t.uid === id);
-    if (!tandem) {
-        throw new Error(`Attempt to get a non-existent tandem with ID ${id}`);
-    }
-    return tandem;
-};
 
 import * as defaultEmitter from './defaultEmitter';
 
-const createNewTandem = function createNewTandem(group?: assetRef): ITandem {
+const createNewTandem = (): ITandem => {
     const emitter = defaultEmitter.get();
     const generateGUID = require('./../../generateGUID');
     const id = generateGUID(),
@@ -23,7 +15,6 @@ const createNewTandem = function createNewTandem(group?: assetRef): ITandem {
         uid: id,
         origname: 'pt' + slice,
         emitters: [emitter],
-        group,
         lastmod: Number(new Date()),
         type: 'tandem'
     } as ITandem;
@@ -31,9 +22,10 @@ const createNewTandem = function createNewTandem(group?: assetRef): ITandem {
     return tandem;
 };
 
+export const areThumbnailsIcons = true;
+
 export {
     getThumbnail,
-    getById,
     defaultEmitter,
-    createNewTandem
+    createNewTandem as createAsset
 };

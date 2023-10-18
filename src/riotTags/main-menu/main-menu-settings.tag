@@ -49,7 +49,7 @@ main-menu-settings
     context-menu(menu="{codeFontSubmenu}" ref="codesettings")
     script.
         this.namespace = 'mainMenu.settings';
-        this.mixin(window.riotVoc);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
 
         this.openLanguageSelector = () => {
             this.showLanguageSelector = true;
@@ -127,9 +127,9 @@ main-menu-settings
         };
 
         this.switchLanguage = name => {
-            const i18n = require('./data/node_requires/i18n.js');
+            const {loadLanguage} = require('./data/node_requires/i18n.js');
             try {
-                window.languageJSON = i18n.loadLanguage(name);
+                this.vocFull = loadLanguage(name);
                 localStorage.appLanguage = name;
                 window.signals.trigger('updateLocales');
                 window.riot.update();
@@ -140,8 +140,8 @@ main-menu-settings
         this.languagesSubmenu = {
             items: []
         };
-        const i18nAPI = require('./data/node_requires/i18n');
-        i18nAPI.getLanguages().then(languages => {
+        const {getLanguages} = require('./data/node_requires/i18n');
+        getLanguages().then(languages => {
             for (const language of languages) {
                 this.languagesSubmenu.items.push({
                     label: language.filename === 'Debug.json' ? 'Debug' : `${language.meta.native} (${language.meta.eng})`,
@@ -171,7 +171,7 @@ main-menu-settings
 
         this.codeFontSubmenu = {
             items: [{
-                label: window.languageJSON.mainMenu.settings.codeFontDefault,
+                label: this.vocFull.mainMenu.settings.codeFontDefault,
                 icon: () => !localStorage.fontFamily && 'check',
                 click: () => {
                     localStorage.fontFamily = '';
@@ -185,25 +185,25 @@ main-menu-settings
                     window.signals.trigger('codeFontUpdated');
                 }
             }, {
-                label: window.languageJSON.mainMenu.settings.codeFontOldSchool,
+                label: this.vocFull.mainMenu.settings.codeFontOldSchool,
                 icon: () => localStorage.fontFamily === 'Monaco, Menlo, "Ubuntu Mono", Consolas, source-code-pro, monospace' && 'check',
                 click: () => {
                     localStorage.fontFamily = 'Monaco, Menlo, "Ubuntu Mono", Consolas, source-code-pro, monospace';
                     window.signals.trigger('codeFontUpdated');
                 }
             }, {
-                label: window.languageJSON.mainMenu.settings.codeFontSystem,
+                label: this.vocFull.mainMenu.settings.codeFontSystem,
                 icon: () => localStorage.fontFamily === 'monospace' && 'check',
                 click: () => {
                     localStorage.fontFamily = 'monospace';
                     window.signals.trigger('codeFontUpdated');
                 }
             }, {
-                label: window.languageJSON.mainMenu.settings.codeFontCustom,
+                label: this.vocFull.mainMenu.settings.codeFontCustom,
                 click: () => {
                     alertify
                     .defaultValue(localStorage.fontFamily || '')
-                    .prompt(window.languageJSON.mainMenu.settings.newFont)
+                    .prompt(this.vocFull.mainMenu.settings.newFont)
                     .then(e => {
                         if (e.inputValue && e.buttonClicked !== 'cancel') {
                             localStorage.fontFamily = `"${e.inputValue}", monospace`;
@@ -214,7 +214,7 @@ main-menu-settings
             }, {
                 type: 'separator'
             }, {
-                label: window.languageJSON.mainMenu.settings.codeLigatures,
+                label: this.vocFull.mainMenu.settings.codeLigatures,
                 type: 'checkbox',
                 checked: () => localStorage.codeLigatures !== 'off',
                 click: () => {
@@ -222,7 +222,7 @@ main-menu-settings
                     window.signals.trigger('codeFontUpdated');
                 }
             }, {
-                label: window.languageJSON.mainMenu.settings.codeDense,
+                label: this.vocFull.mainMenu.settings.codeDense,
                 type: 'checkbox',
                 checked: () => localStorage.codeDense === 'on',
                 click: () => {

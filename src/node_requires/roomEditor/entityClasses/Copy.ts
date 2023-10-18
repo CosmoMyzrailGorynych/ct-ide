@@ -1,5 +1,6 @@
 import {RoomEditor} from '..';
-import {getPixiTexture, getTemplateFromId} from '../../resources/templates';
+import {getById} from '../../resources';
+import {getPixiTexture} from '../../resources/templates';
 import {getTexturePivot} from '../../resources/textures';
 
 import * as PIXI from 'node_modules/pixi.js';
@@ -22,12 +23,12 @@ class Copy extends PIXI.AnimatedSprite {
         this.editor = editor;
         this.templateId = copyInfo.uid;
         this.autoUpdate = false;
-        const t = getTemplateFromId(this.templateId as string);
+        const t = getById('template', this.templateId as string);
         this.cachedTemplate = t;
         this.deserialize(copyInfo);
         this.isGhost = Boolean(isGhost);
-        this.interactive = !this.isGhost;
-        if (this.interactive) {
+        this.eventMode = this.isGhost ? 'none' : 'static';
+        if (this.eventMode === 'static') {
             this.on('pointerover', () => {
                 this.editor.updateMouseoverHint(t.name, this);
             });
@@ -60,7 +61,7 @@ class Copy extends PIXI.AnimatedSprite {
     }
 
     get animated(): boolean {
-        return getTemplateFromId(this.templateId as string).playAnimationOnStart;
+        return getById('template', this.templateId as string).playAnimationOnStart;
     }
 
     serialize(deepCopy = false): IRoomCopy {
@@ -93,7 +94,7 @@ class Copy extends PIXI.AnimatedSprite {
         this.templateId = copy.uid;
         this.copyExts = copy.exts ?? {};
         this.copyCustomProps = copy.customProperties ?? {};
-        const t = getTemplateFromId(this.templateId as string);
+        const t = getById('template', this.templateId as string);
         this.animationSpeed = (t.animationFPS ?? 60) / 60;
         this.loop = t.loopAnimation ?? true;
         if (t.texture !== -1) {

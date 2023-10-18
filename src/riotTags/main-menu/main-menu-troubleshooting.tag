@@ -20,7 +20,7 @@ main-menu-troubleshooting
             span {voc.postAnIssue}
     script.
         this.namespace = 'mainMenu.troubleshooting';
-        this.mixin(window.riotVoc);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
 
         this.toggleDevTools = () => {
             const win = nw.Window.get();

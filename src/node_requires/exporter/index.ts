@@ -22,9 +22,10 @@ import {bundleFonts, bakeBitmapFonts} from './fonts';
 import {bakeFavicons} from './icons';
 import {getUnwrappedExtends, getCleanKey} from './utils';
 import {revHash} from './../utils/revHash';
-import {getGroups} from './groups';
 import {substituteHtmlVars} from './html';
 const typeScript = require('sucrase').transform;
+
+import {getByTypes} from '../resources';
 
 const ifMatcher = (varName: string, symbol = '@') => new RegExp(`/\\*\\!? ?if +${symbol}${varName}${symbol} ?\\*/([\\s\\S]*)(?:/\\*\\!? ?else +${symbol}${varName}${symbol} ?\\*/([\\s\\S]*?))?/\\*\\!? ?endif +${symbol}${varName}${symbol} ?\\*/`, 'g');
 const varMatcher = (varName: string, symbol = '@') => new RegExp(`/\\*\\!? ?${symbol}${varName}${symbol} ?\\*/`, 'g');
@@ -214,6 +215,7 @@ const exportCtProject = async (
 ): Promise<string> => {
     window.signals.trigger('exportProject');
     currentProject = project;
+    const assets = getByTypes();
     await removeBrokenModules(project);
     resetEventsCache();
 
@@ -222,7 +224,7 @@ const exportCtProject = async (
     const {getExportDir} = require('./../platformUtils');
     writeDir = await getExportDir();
 
-    if (project.rooms.length < 1) {
+    if (assets.room.length < 1) {
         throw new Error(languageJSON.common.noRooms);
     }
 
@@ -257,9 +259,9 @@ const exportCtProject = async (
         });
     }
     /* assets — run in parallel */
-    const texturesTask = packImages(project, writeDir, production);
-    const skeletonsTask = packSkeletons(project, projdir, writeDir);
-    const bitmapFontsTask = bakeBitmapFonts(project, projdir, writeDir);
+    const texturesTask = packImages(assets.texture, writeDir, production);
+    const skeletonsTask = packSkeletons(assets.skeleton, writeDir);
+    const bitmapFontsTask = bakeBitmapFonts(assets.font, projdir, writeDir);
     const favicons = bakeFavicons(project, writeDir, production);
     const modulesTask = addModules();
     /* Run event cache population in parallel as well */
@@ -279,9 +281,9 @@ const exportCtProject = async (
 
     // Process all the scriptables to get combined code for the root rooms
     await cacheHandle;
-    const fonts = await bundleFonts(project, projdir, writeDir);
-    const rooms = stringifyRooms(project);
-    const templates = stringifyTemplates(project);
+    const fonts = await bundleFonts(assets.font, projdir, writeDir);
+    const rooms = stringifyRooms(assets, project);
+    const templates = stringifyTemplates(assets, project);
     const rootRoomOnCreate = rooms.rootRoomOnCreate + '\n' + templates.rootRoomOnCreate;
     const rootRoomOnStep = rooms.rootRoomOnStep + '\n' + templates.rootRoomOnStep;
     const rootRoomOnDraw = rooms.rootRoomOnDraw + '\n' + templates.rootRoomOnDraw;
@@ -307,7 +309,6 @@ const exportCtProject = async (
     buffer += template(await sources['ct.js'], {
         projectmeta,
         ctversion: process.versions.ctjs,
-        resourceGroups: JSON.stringify(getGroups(project)),
         contentTypes: stringifyContent(project),
 
         pixelatedrender: Boolean(settings.rendering.pixelatedrender),
@@ -321,7 +322,7 @@ const exportCtProject = async (
 
         atlases: (await texturesTask).atlases,
         tiledImages: (await texturesTask).tiledImages,
-        sounds: getSounds(project),
+        sounds: getSounds(assets.sound),
 
         actions: actionsSetup,
         rooms: rooms.libCode,
@@ -330,8 +331,8 @@ const exportCtProject = async (
         rootRoomOnDraw,
         rootRoomOnLeave,
         templates: templates.libCode,
-        styles: stringifyStyles(project),
-        tandemTemplates: stringifyTandems(project),
+        styles: stringifyStyles(assets.style),
+        tandemTemplates: stringifyTandems(assets.tandem),
         fonts: fonts.js,
         bitmapFonts: await bitmapFontsTask,
         skeletons: (await skeletonsTask).skeletons,
@@ -429,7 +430,7 @@ const exportCtProject = async (
         fs.writeFile(path.join(writeDir, jsBundleFilename), buffer)
     ]);
 
-    await Promise.all(project.sounds.map(async (sound: ISound) => {
+    await Promise.all(assets.sound.map(async (sound: ISound) => {
         const ext = sound.origname.slice(-4);
         await fs.copy(path.join(projdir, '/snd/', sound.origname), path.join(writeDir, '/snd/', sound.uid + ext));
     }));

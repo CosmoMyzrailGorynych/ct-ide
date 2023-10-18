@@ -1,3 +1,4 @@
 *.js        eol=lf
 *.ts        eol=lf
 *.tag       eol=lf
+*.pug       eol=lf

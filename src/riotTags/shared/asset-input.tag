@@ -1,10 +1,10 @@
 //
     A button that opens an asset selector for the specified type of resources.
 
-    @attribute assettype (string)
-        The asset type to be pickable. Should match the name of a folder inside
-        ./data/node_requires/resources
-        Not all the asset types are supported (e.g. projects are not).
+    @attribute assettypes (string)
+        Comma-separated asset types that will be allowed to be picked, e.g. "type,texture,room".
+        You can set to "all" to allow all asset types.
+        Note: unlike in asset-browser, this attribute is mandatory and will throw an error if empty.
     @attribute allowclear (atomic)
         Whether the tag should also show a button to clear input's value.
     @attribute disallowjump (atomic)
@@ -33,9 +33,10 @@
 asset-input
     .aButtonGroup.nml(if="{!opts.large}")
         button(onclick="{openSelector}" title="{voc.changeAsset}" class="{inline: opts.compact}")
-            img(src="{thumbnails(currentAsset || -1, false, false)}")
-            span(if="{opts.assetid == -1 || opts.assetid === void 0}") {vocGlob.select}
-            span(if="{opts.assetid != -1 && opts.assetid !== void 0}") {names(currentAsset)}
+            img(if="{opts.assetid != -1 && opts.assetid}" src="{this.getThumbnail(currentAsset, false, false)}")
+            img(if="{opts.assetid == -1 || !opts.assetid}" src="data/img/notexture.png")
+            span(if="{opts.assetid != -1 && opts.assetid !== void 0}") {getName(currentAsset)}
+            span(if="{opts.assetid == -1 || opts.assetid === void 0}") {vocGlob.selectDialogue}
         button.square(if="{opts.assetid != -1 && opts.assetid !== void 0 && !opts.disallowjump}" title="{voc.jumpToAsset}" onclick="{openAsset}" class="{inline: opts.compact}")
             svg.feather
                 use(xlink:href="#external-link")
@@ -50,31 +51,32 @@ asset-input
             button.tiny(if="{(opts.assetid != -1 && opts.assetid !== void 0) && opts.allowclear}" title="{vocGlob.clear}" onclick="{clearAsset}")
                 svg.feather
                     use(xlink:href="#x")
-        img(src="{thumbnails(currentAsset || -1, true, false)}")
-        .aNotice(if="{opts.assetid == -1 || opts.assetid === void 0}") {vocGlob.select}
-        .dim(if="{opts.assetid != -1 && opts.assetid !== void 0}") {names(currentAsset)}
+        img(if="{opts.assetid != -1 && opts.assetid}" src="{getThumbnail(currentAsset, true, false)}")
+        img(if="{opts.assetid == -1 || !opts.assetid}" src="data/img/notexture.png")
+        .dim(if="{opts.assetid != -1 && opts.assetid !== void 0}") {getName(currentAsset)}
+        .aNotice(if="{opts.assetid == -1 || opts.assetid === void 0}") {vocGlob.selectDialogue}
     asset-selector(
         if="{showingSelector}"
-        assettype="{opts.assettype}"
+        assettypes="{opts.assettypes}"
         selectorheader="{opts.selectorheader}"
         allownone="{opts.allowclear}"
         onselected="{onAssetPicked}"
         oncancelled="{closeSelector}"
     )
     script.
+        if (!this.opts.assettypes) {
+            throw new Error('[asset-input] The assettypes attribute is mandatory and was not set.');
+        }
         this.namespace = 'assetInput';
-        this.mixin(window.riotVoc);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
 
-        const updateResourceAPIs = () => {
-            this.currentAssetType = this.opts.assettype;
-            this.resourceAPI = require(`./data/node_requires/resources/${this.currentAssetType}`);
-            this.names = asset => (this.resourceAPI.getName ? this.resourceAPI.getName(asset) : asset.name);
-            this.thumbnails = (asset, x2, fs) => this.resourceAPI.getThumbnail(asset, x2, fs);
-        };
-        updateResourceAPIs();
+        this.resourceAPIs = require('./data/node_requires/resources');
+        this.getThumbnail = this.resourceAPIs.getThumbnail;
+        this.getName = this.resourceAPIs.getName;
+
         // eslint-disable-next-line eqeqeq
         if (this.opts.assetid && this.opts.assetid != -1) {
-            this.currentAsset = this.resourceAPI.getById(this.opts.assetid);
+            this.currentAsset = this.resourceAPIs.getById(null, this.opts.assetid);
         }
 
         this.openAsset = e => {
@@ -100,7 +102,7 @@ asset-input
             if (assetId === -1) {
                 this.currentAsset = void 0;
             } else {
-                this.currentAsset = this.resourceAPI.getById(assetId);
+                this.currentAsset = this.resourceAPIs.getById(null, assetId);
             }
             if (this.opts.onchanged) {
                 this.opts.onchanged(assetId);
@@ -120,7 +122,7 @@ asset-input
                         this.update();
                     }
                 } else if (!this.currentAsset || this.currentAsset.uid !== this.opts.assetid) {
-                    this.currentAsset = this.resourceAPI.getById(this.opts.assetid);
+                    this.currentAsset = this.resourceAPIs.getById(null, this.opts.assetid);
                     this.update();
                 }
             }, 0);

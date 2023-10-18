@@ -8,6 +8,8 @@ import {ITilePatch} from './ITilePatch';
 
 import {soundbox} from '../../../3rdparty/soundbox';
 
+import {getLanguageJSON} from '../../../i18n';
+
 interface IAffixedData {
     mode: 'free' | 'straight';
     startPos: PIXI.IPoint;
@@ -78,7 +80,7 @@ export const placeTile: IRoomEditorInteraction<IAffixedData> = {
             return false;
         }
         if (!this.riotEditor.currentTileLayer) {
-            window.alertify.error(window.languageJSON.roomTiles.addTileLayerFirst);
+            window.alertify.error(getLanguageJSON().roomTiles.addTileLayerFirst);
             return false;
         }
         return Boolean(riotTag.tilePatch?.texture);
@@ -184,7 +186,7 @@ export const placeTile: IRoomEditorInteraction<IAffixedData> = {
             }
             soundbox.play('Wood_End');
             this.compoundGhost.removeChildren();
-            this.stage.interactive = true; // Causes to rediscover nested elements
+            this.stage.eventMode = 'static'; // Causes to rediscover nested elements (is it relevant for v7?)
             if (affixedData.created.size) {
                 this.history.pushChange({
                     type: 'creation',

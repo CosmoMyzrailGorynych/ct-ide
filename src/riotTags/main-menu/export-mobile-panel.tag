@@ -56,8 +56,8 @@ export-mobile-panel.aDimmer
                     span(if="{!working}") {voc.export}
     script.
         this.namespace = 'exportPanel';
-        this.mixin(window.riotVoc);
-        this.mixin(window.riotWired);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('./data/node_requires/riotMixins/wire').default);
         this.working = false;
         this.log = [];
 

@@ -37,6 +37,8 @@ body {
     font-style: italic;
     padding: 1rem 2rem;
     text-align: center;
+    min-width: 15rem;
+    min-width: 15vw;
 }
 .ct-aLoadingBar {
     content: '';

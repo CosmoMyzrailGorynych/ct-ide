@@ -53,6 +53,7 @@ interface ITileLayerTemplate {
 }
 
 interface IRoom extends IScriptable {
+    type: 'room';
     width: number;
     height: number;
     /** A CSS color */

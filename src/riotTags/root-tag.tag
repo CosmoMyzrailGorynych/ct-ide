@@ -1,6 +1,5 @@
 root-tag(class="{pride: localStorage.prideMode === 'on'}")
     app-view(if="{projectOpened}")
-    dnd-processor(if="{projectOpened}")
     project-selector(if="{!projectOpened}")
     writable-folder-prompt(if="{showWritableFolderPrompt}" onsuccess="{onWritableSelected}")
     script.

@@ -42,7 +42,7 @@ debugger-toolbar
             use(xlink:href="#x")
     script.
         this.namespace = 'debuggerToolbar';
-        this.mixin(window.riotVoc);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
 
         var isDevToolsOpen = true;
 

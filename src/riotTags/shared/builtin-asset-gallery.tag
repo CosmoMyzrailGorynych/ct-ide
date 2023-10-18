@@ -57,7 +57,7 @@ builtin-asset-gallery.aPanel.aView.pad
                 svg.feather
                     use(xlink:href="#chevron-right")
                 |
-                .a.inline(onclick="{returnToGallery}") {vocGlob.assetTypes[opts.type][2]}
+                .a.inline(onclick="{returnToGallery}") {vocGlob.assetTypes[opts.type.slice(0, -1)][2]}
                 |
                 span(if="{currentSet}")
                     svg.feather
@@ -111,7 +111,7 @@ builtin-asset-gallery.aPanel.aView.pad
     )
     script.
         this.namespace = 'builtinAssetGallery';
-        this.mixin(window.riotVoc);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
         const fs = require('fs-extra'),
               path = require('path');
         const {getGalleryDir} = require('./data/node_requires/platformUtils');
@@ -234,7 +234,7 @@ builtin-asset-gallery.aPanel.aView.pad
                 .map(entry => {
                     if (entry.type === 'image') {
                         texturesPresent = true;
-                        return importImageToTexture(entry.path, false, false, true);
+                        return importImageToTexture(entry.path, false, true);
                     }
                     if (entry.type === 'sound') {
                         soundsPresent = true;

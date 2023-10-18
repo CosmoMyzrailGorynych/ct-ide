@@ -1,7 +1,7 @@
 const generateGUID = require('./../../generateGUID');
 
 const room = {
-    type: 'room' as resourceType,
+    type: 'room' as const,
     oncreate: '',
     onstep: '',
     ondraw: '',

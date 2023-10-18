@@ -62,7 +62,7 @@ modal-menu
                 button(onclick="{close}") {vocGlob.close}
     script.
         this.namespace = 'common';
-        this.mixin(window.riotVoc);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
 
         this.onItemClick = e => {
             const item = e.item.subitem;

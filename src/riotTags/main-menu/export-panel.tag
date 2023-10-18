@@ -6,17 +6,17 @@ export-panel.aDimmer
             p {voc.firstRunNotice}
             fieldset
                 label.checkbox
-                    input(type="checkbox" checked="{projSettings.export.linux}" onchange="{wire('this.projSettings.export.linux')}")
+                    input(type="checkbox" checked="{projSettings.export.linux}" onchange="{wire('projSettings.export.linux')}")
                     svg.icon
                         use(xlink:href="#linux")
                     |   Linux
                 label.checkbox(disabled="{process.platform === 'win32'}" title="{process.platform === 'win32' && voc.cannotBuildForMacOnWin}")
-                    input(type="checkbox" checked="{projSettings.export.mac}" onchange="{wire('this.projSettings.export.mac')}")
+                    input(type="checkbox" checked="{projSettings.export.mac}" onchange="{wire('projSettings.export.mac')}")
                     svg.icon
                         use(xlink:href="#apple")
                     |   MacOS
                 label.checkbox
-                    input(type="checkbox" checked="{projSettings.export.windows}" onchange="{wire('this.projSettings.export.windows')}")
+                    input(type="checkbox" checked="{projSettings.export.windows}" onchange="{wire('projSettings.export.windows')}")
                     svg.icon
                         use(xlink:href="#windows")
                     |   Windows
@@ -46,8 +46,8 @@ export-panel.aDimmer
                     span(if="{!working}")   {voc.export}
     script.
         this.namespace = 'exportPanel';
-        this.mixin(window.riotVoc);
-        this.mixin(window.riotWired);
+        this.mixin(require('./data/node_requires/riotMixins/voc').default);
+        this.mixin(require('./data/node_requires/riotMixins/wire').default);
         this.working = false;
         this.log = [];
 

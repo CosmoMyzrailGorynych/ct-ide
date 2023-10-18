@@ -13,9 +13,9 @@ import {ViewportRestriction} from './entityClasses/ViewportRestriction';
 
 import {IRoomEditorRiotTag} from './IRoomEditorRiotTag';
 import {IRoomEditorInteraction, PixiListener, pixiListeners, interactions, customListeners, CustomListener} from './interactions';
+import {getById} from '../resources';
 import {getPixiSwatch} from './../themes';
 import {defaultTextStyle, recolorFilters, eraseCursor, toPrecision, snapToDiagonalGrid, snapToRectangularGrid} from './common';
-import {getTemplateFromId} from '../resources/templates';
 import {ease, Easing} from 'node_modules/pixi-ease';
 
 import * as PIXI from 'node_modules/pixi.js';
@@ -139,7 +139,7 @@ class RoomEditor extends PIXI.Application {
         this.ticker.maxFPS = 60;
         this.observable = riot.observable({});
 
-        const {room} = editor.opts;
+        const room = editor.asset;
         this.ctRoom = room;
         this.riotEditor = editor;
 
@@ -161,7 +161,7 @@ class RoomEditor extends PIXI.Application {
         this.marqueeBox.visible = false;
         this.overlays.addChild(this.marqueeBox);
         this.overlays.addChild(this.snapTarget);
-        this.deserialize(editor.opts.room);
+        this.deserialize(editor.room);
         this.stage.addChild(this.transformer);
 
         this.pointerCoords.zIndex = Infinity;
@@ -196,7 +196,7 @@ class RoomEditor extends PIXI.Application {
             }
         });
 
-        this.stage.interactive = true;
+        this.stage.eventMode = 'static';
         this.interactions = interactions;
         for (const event of pixiListeners) {
             this.stage.on(event, (e: PIXI.FederatedEvent) => {
@@ -493,7 +493,7 @@ class RoomEditor extends PIXI.Application {
                 const [, template] = copied;
                 // Skip copies that no longer exist in the project
                 try {
-                    getTemplateFromId(template.uid);
+                    getById('template', template.uid);
                     created = new Copy(template, this, false);
                     this.room.addChild(created);
                     createdSet.add([created]);

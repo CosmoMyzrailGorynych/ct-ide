@@ -9,9 +9,9 @@ type exportedSoundData = {
     isMusic: boolean;
 };
 
-export const getSounds = (proj: IProject): exportedSoundData[] => {
+export const getSounds = (input: ISound[]): exportedSoundData[] => {
     const sounds = [];
-    for (const s of proj.sounds) {
+    for (const s of input) {
         if (!s.origname) {
             const errorMessage = `The sound asset "${s.name}" does not have an actual sound file attached.`;
             const exporterError = new ExporterError(errorMessage, {

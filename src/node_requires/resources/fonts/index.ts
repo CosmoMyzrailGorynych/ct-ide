@@ -1,15 +1,3 @@
-/**
- * Gets the ct.js texture object by its id.
- * @param {string} id The id of the texture
- * @returns {ITexture} The ct.js texture object
- */
-const getById = (id: string): IFont => {
-    const font = global.currentProject.fonts.find((f: IFont) => f.uid === id);
-    if (!font) {
-        throw new Error(`Attempt to get a non-existent font with ID ${id}`);
-    }
-    return font;
-};
 const getName = function getName(font: IFont): string {
     return `${font.typefaceName} ${font.weight} ${font.italic ? 'Italic' : ''}`;
 };
@@ -77,10 +65,7 @@ const fontGenPreview = async function fontGenPreview(font: IFont): Promise<void>
     await fs.writeFile(getFontPreview(font, true), buf);
 };
 
-const importTtfToFont = async function importTtfToFont(
-    src: string,
-    group: string
-): Promise<void> {
+const importTtfToFont = async function importTtfToFont(src: string): Promise<IFont> {
     const fs = require('fs-extra'),
           path = require('path');
     if (path.extname(src).toLowerCase() !== '.ttf') {
@@ -89,8 +74,8 @@ const importTtfToFont = async function importTtfToFont(
     const generateGUID = require('./../../generateGUID');
     const uid = generateGUID();
     await fs.copy(src, path.join((global as any).projdir, '/fonts/f' + uid + '.ttf'));
-    const obj = {
-        type: 'font' as resourceType,
+    const obj: IFont = {
+        type: 'font',
         typefaceName: path.basename(src).replace(/\.ttf$/i, ''),
         weight: '400' as fontWeight,
         italic: false,
@@ -101,23 +86,36 @@ const importTtfToFont = async function importTtfToFont(
         bitmapFontLineHeight: 18,
         charsets: ['allInFont' as builtinCharsets],
         customCharset: '',
-        group,
         uid
     };
-    global.currentProject.fonts.push(obj);
     await fontGenPreview(obj);
     window.signals.trigger('fontCreated');
+    return obj;
 };
 
 const getThumbnail = function getThumbnail(font: IFont, x2?: boolean, fs?: boolean): string {
     return getFontPreview(font, fs);
 };
 
+export const areThumbnailsIcons = false;
+
+export const createAsset = async (payload?: {src: string}): Promise<IFont> => {
+    if (payload && payload.src) {
+        return importTtfToFont(payload.src);
+    }
+    const inputPath = await window.showOpenDialog({
+        filter: '.ttf'
+    });
+    if (!inputPath) {
+        throw new Error('You need to select a TTF file.');
+    }
+    return importTtfToFont(inputPath);
+};
+
 export {
     importTtfToFont,
     fontGenPreview,
     getFontPreview,
-    getById,
     getName,
     getThumbnail,
     getPathToTtf

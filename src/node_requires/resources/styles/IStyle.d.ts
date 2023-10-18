@@ -1,4 +1,5 @@
 declare interface IStyle extends IAsset {
+    type: 'style';
     name: string;
     font: {
         family: string;

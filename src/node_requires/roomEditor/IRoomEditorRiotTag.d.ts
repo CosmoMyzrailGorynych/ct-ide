@@ -5,28 +5,20 @@ import {RoomEditor} from '.';
 
 type tool = 'select' | 'addCopies' | 'addTiles' | 'manageBackgrounds' | 'roomProperties';
 
-export interface IRoomEditorRiotTag {
-    update(): void;
+export interface IRoomEditorRiotTag extends IRiotTag {
     tilePatch: ITilePatch;
     currentTileLayer: TileLayer;
-    opts: {
-        room: IRoom;
-    };
+    asset: IRoom;
     refs: {
-        propertiesPanel?: {
+        propertiesPanel?: IRiotTag & {
             updatePropList(): void;
             applyChanges(): void;
             update(): void;
         },
-        tileEditor?: {
-            update(): void;
-        },
-        backgroundsEditor?: {
-            update(): void;
-        },
+        tileEditor?: IRiotTag,
+        backgroundsEditor?: IRiotTag,
         zoomLabel: HTMLSpanElement
     };
-    root: HTMLElement;
     pixiEditor: RoomEditor;
     zoom: number;
     gridOn: boolean;

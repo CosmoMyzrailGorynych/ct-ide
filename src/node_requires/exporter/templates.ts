@@ -1,8 +1,6 @@
 const {getTextureFromId} = require('../resources/textures');
 const {getUnwrappedExtends} = require('./utils');
 
-import {flattenGroups} from './groups';
-
 import {getBaseScripts} from './scriptableProcessor';
 
 interface IBlankTexture {
@@ -26,14 +24,16 @@ const getTextureInfo = (blankTextures: IBlankTexture[], template: ITemplate) => 
     return '';
 };
 
-const stringifyTemplates = function (proj: IProject): IScriptablesFragment {
-    const groups = flattenGroups(proj).templates;
+const stringifyTemplates = function (
+    assets: {texture: ITexture[], template: ITemplate[]},
+    proj: IProject
+): IScriptablesFragment {
     let templates = '';
     let rootRoomOnCreate = '';
     let rootRoomOnStep = '';
     let rootRoomOnDraw = '';
     let rootRoomOnLeave = '';
-    const blankTextures = proj.textures
+    const blankTextures = assets.texture
         .filter(tex => tex.isBlank)
         .map(tex => ({
             uid: tex.uid,
@@ -43,8 +43,8 @@ const stringifyTemplates = function (proj: IProject): IScriptablesFragment {
             width: tex.width
         }));
 
-    for (const k in proj.templates) {
-        var template = proj.templates[k];
+    for (const k in assets.template) {
+        var template = assets.template[k];
         const scripts = getBaseScripts(template, proj);
         const textureInfo = getTextureInfo(blankTextures, template);
         templates += `
@@ -55,7 +55,6 @@ templates.templates["${template.name}"] = {
     playAnimationOnStart: ${Boolean(template.playAnimationOnStart)},
     loopAnimation: ${Boolean(template.loopAnimation)},
     visible: ${Boolean(template.visible ?? true)},
-    group: "${groups[template.group ? template.group.replace(/'/g, '\\\'') : -1]}",
     ${textureInfo}
     onStep: function () {
         ${scripts.thisOnStep}

@@ -8,7 +8,7 @@ const path = require('path'),
       concat = require('gulp-concat'),
       sourcemaps = require('gulp-sourcemaps'),
       minimist = require('minimist'),
-      ts = require('@ct.js/gulp-typescript'),
+      gulpTs = require('@ct.js/gulp-typescript'),
       esbuild = require('esbuild').build,
       stylus = require('gulp-stylus'),
       riot = require('gulp-riot'),
@@ -179,7 +179,7 @@ const copyRequires = () =>
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('./app/data/node_requires'));
 
-const tsProject = ts.createProject('tsconfig.json');
+const tsProject = gulpTs.createProject('tsconfig.json');
 
 const processRequiresTS = () =>
     gulp.src('./src/node_requires/**/*.ts')
@@ -195,7 +195,7 @@ const bakeTypedefs = () =>
     .pipe(concat('global.d.ts'))
     .pipe(gulp.dest('./app/data/typedefs/'));
 const bakeCtTypedefs = () => {
-    const tsProject = ts.createProject('./src/ct.release/tsconfig.json');
+    const tsProject = gulpTs.createProject('./src/ct.release/tsconfig.json');
     return gulp.src('./src/ct.release/index.ts')
         .pipe(tsProject())
         .pipe(gulp.dest('./app/data/typedefs'));
@@ -282,7 +282,7 @@ const watchScripts = () => {
     .on('change', fileChangeNotifier);
 };
 const watchRiot = () => {
-    const watcher = gulp.watch('./src/riotTags/**/*', compileRiot);
+    const watcher = gulp.watch('./src/riotTags/**/*.tag', compileRiot);
     watcher.on('error', err => {
         notifier.notify(makeErrorObj('Riot failure', err));
         console.error('[pug error]', err);
