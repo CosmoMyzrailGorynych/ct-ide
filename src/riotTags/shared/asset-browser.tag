@@ -37,14 +37,20 @@
         Current folder's object. If it is project's root, null is returned.
 
 asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compact}")
-    .flexfix-header.flexrow
-        div
+    .flexfix-header(class="{flexrow: !opts.compact, flexcolrev: opts.compact}")
+        div(class="{wide: opts.compact}")
             <yield/>
             .asset-browser-Breadcrumbs
                 button.square.tiny(if="{!opts.compact}" title="{voc.toggleFolderTree}" onclick="{toggleFolderTree}")
                     svg.feather
                         use(xlink:href="#folder")
                 h2.np.nm.pointer.inline(
+                    if="{!opts.compact}"
+                    onclick="{moveUpTo(folderStack[0])}"
+                    ondrop="{onFolderDrop}"
+                ) {voc.root}
+                h3.np.nm.pointer.inline(
+                    if="{opts.compact}"
                     onclick="{moveUpTo(folderStack[0])}"
                     ondrop="{onFolderDrop}"
                 ) {voc.root}
@@ -53,6 +59,13 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
                         use(xlink:href="#chevron-right")
                     // -2 is because we slice the array first by one
                     h2.np.nm.inline(
+                        if="{!parent.opts.compact}"
+                        class="{pointer: i < folderStack.length - 2}"
+                        onclick="{(i < folderStack.length - 1) && parent.moveUpTo(item)}"
+                        ondrop="{onFolderDrop}"
+                    ) {item.name}
+                    h3.np.nm.inline(
+                        if="{parent.opts.compact}"
                         class="{pointer: i < folderStack.length - 2}"
                         onclick="{(i < folderStack.length - 1) && parent.moveUpTo(item)}"
                         ondrop="{onFolderDrop}"
@@ -96,7 +109,7 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
                 span(if="{!opts.compact}") {voc.addNewFolder}
             <yield from="filterArea"/>
     .flexfix-body.flexrow(onclick="{deselectAll}")
-        aside.asset-browser-aFolderTree.nogrow(if="{showingFolderTree}")
+        aside.asset-browser-aFolderTree.nogrow(if="{showingFolderTree && !opts.compact}")
             asset-folder-tree(
                 path="{[]}" /* this is intentional (top-most folder level) */
                 click="{onAsideFolderClick}"
