@@ -309,7 +309,8 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
         this.sortTypewise = (a, b) => a.type < b.type ? -1 : (a.type > b.type ? 1 : 0);
         this.updateList = () => {
             if (this.assetTypes[0] !== 'all') {
-                this.entries = this.currentCollection.filter(a => this.assetTypes.includes(a.type));
+                this.entries = this.currentCollection
+                    .filter(a => this.assetTypes.includes(a.type) || a.type === 'folder');
             } else {
                 this.entries = [...this.currentCollection];
             }
