@@ -24,6 +24,6 @@ ehthumbs_vista.db
 
 # Ct.js
 *.ict.recovery
-prev/
-trash/
+prev
+trash
 `;

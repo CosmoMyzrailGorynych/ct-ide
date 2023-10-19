@@ -282,7 +282,7 @@ project-selector
         this.newProject = async (way, codename) => {
             sessionStorage.showOnboarding = true;
             const defaultProject = require('./data/node_requires/resources/projects/defaultProject').get();
-            const {defaultGitignore} = require('./data/node_requires/resources/projects/defaultGitignore');
+            const {gitignore} = require('./data/node_requires/resources/projects/defaultGitignore');
             defaultProject.language = this.projectLanguage;
             const YAML = require('js-yaml');
             const projectYAML = YAML.safeDump(defaultProject);
@@ -296,7 +296,7 @@ project-selector
             await fs.ensureDir(path.join(global.projdir, '/img'));
             fs.ensureDir(path.join(global.projdir, '/snd'));
             fs.ensureDir(path.join(global.projdir, '/include'));
-            fs.outputFile(path.join(way, '.gitignore'), defaultGitignore);
+            fs.outputFile(path.join(way, '.gitignore'), gitignore);
             setTimeout(() => { // for some reason, it must be done through setTimeout; otherwise it fails
                 fs.copy('./data/img/notexture.png', path.join(global.projdir + '/img/splash.png'), e => {
                     if (e) {
