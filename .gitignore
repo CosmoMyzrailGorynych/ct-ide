@@ -72,6 +72,8 @@ builds
 build
 cache
 tempChangelog.md
+prev
+trash
 
 # tests
 error_screenshots/

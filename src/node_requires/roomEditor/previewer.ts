@@ -45,8 +45,7 @@ export class RoomEditorPreview extends PIXI.Application {
             roundPixels: pixelart,
             width: room.width,
             height: room.height,
-            backgroundColor: room.backgroundColor,
-            backgroundAlpha: 1,
+            backgroundAlpha: 0,
             clearBeforeRender: true
         }));
 
@@ -63,6 +62,15 @@ export class RoomEditorPreview extends PIXI.Application {
             height: room.height
         } as Viewport;
         this.stage.addChild(this.camera);
+
+        // Solid-fill background as set in room settings
+        if (!room.isUi) {
+            const background = new PIXI.Graphics();
+            background.beginFill(PIXI.utils.string2hex(room.backgroundColor || '#000000'));
+            background.drawRect(0, 0, room.width, room.height);
+            background.endFill();
+            this.stage.addChild(background);
+        }
 
         this.stage.addChild(this.room);
         this.deserialize(room);

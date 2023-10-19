@@ -147,7 +147,7 @@ room-editor.aPanel.aView
         // writes most changes to this.asset only on save due to serialization/deserialization
         this.isDirty = () => true; // TODO: make an actual handler in RoomEditor
 
-        this.room = this.opts.asset;
+        this.room = this.asset;
 
         this.freePlacementMode = false;
         const modifiersDownListener = e => {
@@ -490,13 +490,11 @@ room-editor.aPanel.aView
             if (this.pixiEditor.currentSelection.size && this.refs.propertiesPanel) {
                 this.refs.propertiesPanel.applyChanges();
             }
-            const {writeRoomPreview} = require('./data/node_requires/resources/rooms');
             this.pixiEditor.serialize();
             this.writeChanges();
-            await Promise.all([
-                writeRoomPreview(this.room, this.pixiEditor.getSplashScreen(true), true),
-                writeRoomPreview(this.room, this.pixiEditor.getSplashScreen(false), false)
-            ]);
+            const {getStartingRoom} = require('./data/node_requires/resources/rooms');
+            const {RoomPreviewer} = require('./data/node_requires/resources/preview/room');
+            await RoomPreviewer.save(this.asset, this.asset === getStartingRoom());
         };
         this.saveRoom = async () => {
             await this.saveAsset();

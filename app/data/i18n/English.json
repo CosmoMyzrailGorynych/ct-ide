@@ -834,7 +834,7 @@
         "height": "View height:",
         "followTemplate": "Follow a template:",
         "followCodeHint": "Learn how to further tweak this feature with code",
-        "isUi": "Is a UI layer?",
+        "isUi": "Is this room a UI layer?",
         "simulate": "Simulate",
         "grid": "Grid",
         "toggleDiagonalGrid": "Diagonal grid",

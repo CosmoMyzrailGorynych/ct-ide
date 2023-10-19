@@ -144,8 +144,6 @@ style-editor.aPanel.aView(class="{opts.class}")
         oncancelled="{cancelCustomFontSelector}"
     )
     script.
-        const fs = require('fs-extra');
-
         this.namespace = 'styleView';
         this.mixin(require('./data/node_requires/riotMixins/voc').default);
         this.mixin(require('./data/node_requires/riotMixins/wire').default);
@@ -202,10 +200,10 @@ style-editor.aPanel.aView(class="{opts.class}")
             this.selectingFont = false;
             this.update();
         };
-        const fonts = require('./data/node_requires/resources/fonts');
+        const {getById} = require('./data/node_requires/resources');
         this.applyFont = fontId => {
             this.selectingFont = false;
-            const font = fonts.getById(fontId);
+            const font = getById('font', fontId);
             this.asset.font.family = `"CTPROJFONT${font.typefaceName}", "${font.typefaceName}", sans-serif`;
             this.asset.font.weight = font.weight;
             this.asset.font.italic = font.italic;
@@ -264,26 +262,11 @@ style-editor.aPanel.aView(class="{opts.class}")
         };
         this.saveAsset = async () => {
             this.writeChanges();
-            const {getThumbnail} = require('./data/node_requires/resources/styles');
-            await Promise.all([
-                this.styleGenPreview(getThumbnail(this.asset, true, true), 128),
-                this.styleGenPreview(getThumbnail(this.asset, false, true), 64)
-            ]);
+            const {StylePreviewer} = require('./data/node_requires/resources/preview/style');
+            await StylePreviewer.save(this.asset);
             return true;
         };
         this.styleSave = async () => {
             await this.saveAsset();
             this.opts.ondone(this.asset);
-        };
-
-        /**
-         * Generates a thumbnail for the current style
-         * @returns {Promise}
-         */
-        this.styleGenPreview = async destination => {
-            const img = await this.pixiApp.renderer.extract.base64(this.labelThumbnail);
-            const thumbnailBase64 = img.replace(/^data:image\/\w+;base64,/, '');
-            const buf = Buffer.from(thumbnailBase64, 'base64');
-            await fs.writeFile(destination, buf);
-            return destination;
         };

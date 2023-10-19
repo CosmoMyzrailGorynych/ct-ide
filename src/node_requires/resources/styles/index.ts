@@ -1,6 +1,7 @@
 import generateGUID from '../../generateGUID';
 import {getById} from '..';
 import path from 'path';
+import {StylePreviewer} from '../preview/style';
 
 export const createAsset = (): IStyle => {
     const id = generateGUID(),
@@ -24,17 +25,6 @@ export const createAsset = (): IStyle => {
     return style;
 };
 
-export const getThumbnail = (style: assetRef | IStyle, x2?: boolean, fs?: boolean): string => {
-    if (style === -1) {
-        throw new Error('Cannot get a thumbnail for a -1 style.');
-    }
-    if (typeof style === 'string') {
-        style = getById('style', style);
-    }
-    if (fs) {
-        return path.join(window.global.projdir, 'img', `s${style.uid}_prev.png`);
-    }
-    return `file://${window.global.projdir}/img/s${style.uid}_prev.png?${style.lastmod}`;
-};
+export const getThumbnail = StylePreviewer.getClassic;
 
 export const areThumbnailsIcons = false;

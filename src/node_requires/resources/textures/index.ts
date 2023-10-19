@@ -1,5 +1,5 @@
-import {imageContain, toBuffer, crop} from '../../utils/imageUtils';
 import {uidMap, getOfType, getById, createAsset, IAssetContextItem} from '..';
+import {TexturePreviewer} from '../preview/texture';
 
 const fs = require('node_modules/fs-extra');
 import path from 'path';
@@ -16,30 +16,7 @@ const ensureTex = (tex: string | ITexture): ITexture => {
     return tex;
 };
 
-/**
- * Retrieves the full path to a thumbnail of a given texture.
- * @param {string|ITexture} texture Either the id of the texture, or its ct.js object
- * @param {boolean} [x2] If set to true, returns a 128x128 image instead of 64x64.
- * @param {boolean} [fs] If set to true, returns a file system path, not a URI.
- * @returns {string} The full path to the thumbnail.
- */
-const getTexturePreview = function (
-    texture: assetRef | ITexture,
-    x2?: boolean,
-    fs?: boolean
-): string {
-    if (texture === -1) {
-        return 'data/img/notexture.png';
-    }
-    if (typeof texture === 'string') {
-        texture = getById('texture', texture);
-    }
-    if (fs) {
-        return `${global.projdir}/img/${texture.origname}_prev${x2 ? '@2' : ''}.png`;
-    }
-    return `file://${global.projdir.replace(/\\/g, '/')}/img/${texture.origname}_prev${x2 ? '@2' : ''}.png?cache=${texture.lastmod}`;
-};
-const getThumbnail = getTexturePreview;
+const getThumbnail = TexturePreviewer.getClassic;
 export const areThumbnailsIcons = false;
 
 /**
@@ -255,29 +232,6 @@ const getTextureFromName = function (name: string): ITexture {
     }
     return texture;
 };
-const textureGenPreview = async function textureGenPreview(
-    texture: string | ITexture,
-    destination: string,
-    size: number
-): Promise<string> {
-    if (typeof texture === 'string') {
-        texture = getById('texture', texture);
-    }
-
-    const source = await getDOMImageFromTexture(texture);
-    const frame = crop(
-        source,
-        texture.offx,
-        texture.offy,
-        texture.width,
-        texture.height
-    );
-    const c = imageContain(frame, size, size);
-    const buf = toBuffer(c);
-    const fs = require('fs-extra');
-    await fs.writeFile(destination, buf);
-    return destination;
-};
 
 const texturePostfixParser = /_(?<cols>\d+)x(?<rows>\d+)(?:@(?<until>\d+))?$/;
 const isBgPostfixTester = /@bg$/;
@@ -376,8 +330,7 @@ const importImageToTexture = async (opts: {
     }
 
     await Promise.all([
-        textureGenPreview(obj, dest + '_prev.png', 64),
-        textureGenPreview(obj, dest + '_prev@2.png', 128),
+        TexturePreviewer.save(obj),
         texturesFromCtTexture(obj),
         updateDOMImage(obj)
     ]);
@@ -435,8 +388,7 @@ const reimportTexture = async (
     tex.lastmod = Number(new Date());
 
     await Promise.all([
-        textureGenPreview(tex, dest + '_prev.png', 64),
-        textureGenPreview(tex, dest + '_prev@2.png', 128),
+        TexturePreviewer.save(tex),
         updateDOMImage(tex),
         texturesFromCtTexture(tex)
     ]);
@@ -554,7 +506,6 @@ export {
     populatePixiTextureCache,
     resetPixiTextureCache,
     getTextureFromName,
-    getTexturePreview,
     getCleanTextureName,
     getThumbnail,
     getTexturePivot,
@@ -572,6 +523,5 @@ export {
     reimportTexture,
     reimportTexture as reimportAsset,
     removeTexture,
-    removeTexture as removeAsset,
-    textureGenPreview
+    removeTexture as removeAsset
 };

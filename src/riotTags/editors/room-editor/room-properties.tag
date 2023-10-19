@@ -35,7 +35,7 @@ room-properties
         fieldset
             b {parent.voc.followTemplate}
             docs-shortcut.toright(
-                title="{voc.followCodeHint}"
+                title="{parent.voc.followCodeHint}"
                 path="/tips-n-tricks/viewport-management.html#following-a-copy"
             )
             asset-input.wide(

@@ -1,9 +1,11 @@
 import {get as getDefaultTemplate} from './defaultTemplate';
-import {getTexturePreview,
-    getTextureOrig,
+import {getTextureOrig,
     getDOMTexture as getTextureDOMImage,
     getPixiTexture as getTexturePixiTexture} from '../textures';
-import {getDOMSkeleton, getSkeletonThumbnail, getPixiTexture as getSkeletonPixiTexture} from '../skeletons';
+import {getDOMSkeleton, getPixiTexture as getSkeletonPixiTexture} from '../skeletons';
+
+import {TexturePreviewer} from '../preview/texture';
+import {SkeletonPreviewer} from '../preview/skeleton';
 
 import * as PIXI from 'node_modules/pixi.js';
 import {getById} from '..';
@@ -36,12 +38,12 @@ const getTemplatePreview = function getTemplatePreview(
         template = getById('template', template);
     }
     if (template === -1) {
-        return getTexturePreview(-1, x2, fs);
+        return TexturePreviewer.get(-1, fs);
     }
     if (template.skeleton && template.skeleton !== -1) {
-        return getSkeletonThumbnail(template.skeleton, x2, fs);
+        return SkeletonPreviewer.get(getById('skeleton', template.skeleton), fs);
     }
-    return getTexturePreview(template.texture, x2, fs);
+    return TexturePreviewer.get(template.texture === -1 ? -1 : getById('texture', template.texture), fs);
 };
 const getThumbnail = getTemplatePreview;
 export const areThumbnailsIcons = false;

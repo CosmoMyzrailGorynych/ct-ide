@@ -975,12 +975,12 @@ texture-editor(onclick="{tryClose}")
             this.writeChanges();
             const {asset} = this;
             if (!this.skeletonMode) {
-                const {textureGenPreview, updatePixiTexture, updateDOMImage} = require('./data/node_requires/resources/textures');
-                updateDOMImage(asset);
-                updatePixiTexture(asset);
+                const {updatePixiTexture, updateDOMImage} = require('./data/node_requires/resources/textures');
+                const {TexturePreviewer} = require('./data/node_requires/resources/preview/texture');
                 return Promise.all([
-                    textureGenPreview(asset, global.projdir + '/img/' + asset.origname + '_prev@2.png', 128),
-                    textureGenPreview(asset, global.projdir + '/img/' + asset.origname + '_prev.png', 64)
+                    updateDOMImage(asset),
+                    updatePixiTexture(asset),
+                    TexturePreviewer.save(asset)
                 ]);
             }
             // No need to update textures for skeletons

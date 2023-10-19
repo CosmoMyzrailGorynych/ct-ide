@@ -1,10 +1,11 @@
+import type {ISkeletonData} from 'node_modules/pixi-spine';
+
 import * as PIXI from 'node_modules/pixi.js';
-import {Spine, ISkeletonData} from 'node_modules/pixi-spine';
 import execa from 'node_modules/execa';
 import {getById, getOfType, IAssetContextItem, createAsset as createAssetOfType} from '..';
 
 import generateGUID from './../../generateGUID';
-import {imageContain, outputCanvasToFile} from './../../utils/imageUtils';
+import {SkeletonPreviewer} from '../preview/skeleton';
 
 import * as fs from 'fs-extra';
 import * as path from 'path';
@@ -47,24 +48,8 @@ export const getSkeletonAtlasMeta = (skeleton: ISkeleton, fs: boolean): string =
     return `file://${global.projdir.replace(/\\/g, '/')}/skel/${skeleton.origname.replace('.json', '.atlas')}`;
 };
 
-/**
- * Returns a path to the skeleton's thumbnail.
- */
-export const getSkeletonThumbnail = function getSkeletonThumbnail(
-    skeleton: ISkeleton | string,
-    x2?: boolean,
-    fs?: boolean
-): string {
-    if (typeof skeleton === 'string') {
-        skeleton = getById('skeleton', skeleton);
-    }
-    if (fs) {
-        return path.join(global.projdir, 'skel', `${skeleton.origname}_prev${x2 ? '@2' : ''}.png`);
-    }
-    return `file://${global.projdir.replace(/\\/g, '/')}/skel/${skeleton.origname}_prev${x2 ? '@2' : ''}.png`;
-};
-export const getSkeletonPreview = getSkeletonThumbnail;
-export const getThumbnail = getSkeletonThumbnail;
+export const getSkeletonPreview = SkeletonPreviewer.getClassic;
+export const getThumbnail = getSkeletonPreview;
 export const areThumbnailsIcons = false;
 
 /**
@@ -78,35 +63,6 @@ export const getSkeletonRender = function getSkeletonRender(
         return path.join(global.projdir, 'skel', `${skeleton.origname}_full.png`);
     }
     return `file://${global.projdir.replace(/\\/g, '/')}/skel/${skeleton.origname}_full.png`;
-};
-
-/**
- * Generates square thumbnails and a full render of a given skeleton.
- * Returns the bounds of the resulting skeletal sprite as a byproduct.
- * @param {String} skeleton The skeleton object to generate a preview for.
- * @returns {Promise<void>} Resolves after creating a thumbnail.
- * Get links to the rendered previews with getSkeletonThumbnail and getSkeletonRender methods.
- */
-export const skeletonGenPreview = async function (skeleton: ISkeleton): Promise<PIXI.Rectangle> {
-    const {spineData} = await PIXI.Assets.load(getSkeletonData(skeleton, false));
-    const spine = new Spine(spineData);
-
-    const app = new PIXI.Application();
-    app.stage.addChild(spine);
-    spine.updateTransform();
-    const bounds = spine.getBounds();
-
-    const skelCanvas = await app.renderer.extract.canvas(spine) as HTMLCanvasElement;
-    const skelCanvas64 = imageContain(skelCanvas, 64, 64);
-    const skelCanvas128 = imageContain(skelCanvas, 128, 128);
-
-    await Promise.all([
-        outputCanvasToFile(skelCanvas, getSkeletonRender(skeleton, true)),
-        outputCanvasToFile(skelCanvas64, getSkeletonThumbnail(skeleton, false, true)),
-        outputCanvasToFile(skelCanvas128, getSkeletonThumbnail(skeleton, true, true))
-    ]);
-
-    return bounds;
 };
 
 /**
@@ -214,7 +170,7 @@ export const importSkeleton = async (source: string): Promise<ISkeleton> => {
         top: 0,
         bottom: 0
     };
-    const bounds = await skeletonGenPreview(skel);
+    const [, bounds] = await SkeletonPreviewer.saveWithBounds(skel);
     skel.width = Math.ceil(bounds.width);
     skel.height = Math.ceil(bounds.height);
     skel.axis = [Math.round(-bounds.x), Math.round(-bounds.y)];
@@ -268,15 +224,11 @@ export const reimportSkeleton = async (
     const [newSource, dataJSON] = await skeletonPreimport(source || skel.source);
     const meta = getSpineAnimationList(dataJSON);
     await importSkeletonFiles(newSource, savePath);
-    const bounds = await skeletonGenPreview(skel);
-    // ESLint warns that `skel` may be overwritten inside skeletonGenPreview.
-    // skeletonGenPreview is a pure function, thus the error muting here.
-    /* eslint-disable require-atomic-updates */
+    const [, bounds] = await SkeletonPreviewer.saveWithBounds(skel);
     skel.animations = meta.animations;
     skel.skins = meta.skins;
     skel.axis = [Math.round(-bounds.x), Math.round(-bounds.y)];
     skel.source = source;
-    /* eslint-enable require-atomic-updates */
 };
 export const reimportAsset = reimportSkeleton;
 

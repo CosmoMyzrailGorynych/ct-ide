@@ -2,6 +2,7 @@ import {populatePixiTextureCache, resetDOMTextureCache, resetPixiTextureCache, s
 import {loadAllTypedefs, resetTypedefs} from '../modules/typedefs';
 import {unloadAllEvents, loadAllModulesEvents} from '../../events';
 import {buildAssetMap} from '..';
+import {preparePreviews} from '../preview';
 
 import {getLanguageJSON} from '../../i18n';
 
@@ -140,11 +141,13 @@ const loadProject = async (projectData: IProject): Promise<void> => {
         buildAssetMap(projectData);
         resetPixiTextureCache();
         setPixelart(projectData.settings.rendering.pixelatedrender);
+        const recoveryExists = fs.existsSync(global.projdir + '.ict.recovery');
         await Promise.all([
             loadAllModulesEvents(),
             populatePixiTextureCache(),
             resetDOMTextureCache()
         ]);
+        await preparePreviews(projectData, !recoveryExists);
 
         window.signals.trigger('projectLoaded');
         setTimeout(() => {
