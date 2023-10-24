@@ -38,6 +38,8 @@ const wire = (that: IRiotTag, field: string, update: boolean) => (e: InputEvent)
     if (way[0] === 'global' || way[0] === 'window') {
         root = global;
         way.shift();
+    } else if (way[0] === 'this') {
+        way.shift();
     }
     while (way.length > 1) {
         root = root[way[0]];
