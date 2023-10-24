@@ -316,14 +316,30 @@ export const moveFolder = (
  * Deletes the asset from the project. This is the method that must be used in the UI.
  */
 export const deleteAsset = async (asset: IAsset): Promise<void> => {
+    // Execute additional cleanup steps for this asset type, if applicable
     if ('removeAsset' in typeToApiMap[asset.type]) {
         await typeToApiMap[asset.type].removeAsset(asset);
     }
+    // Clear asset references from content types' entries
+    for (const contentType of window.currentProject.contentTypes) {
+        for (const entry of contentType.entries) {
+            for (const key in entry) {
+                if (Array.isArray(entry[key])) {
+                    (entry[key] as []).filter(val => val !== asset.uid);
+                } else if (entry[key] === asset.uid) {
+                    entry[key] = -1;
+                }
+            }
+        }
+    }
+    // Remove from the parent folder
     const collection = collectionMap.get(asset);
     collection.splice(collection.indexOf(asset), 1);
+    // Clear references from converting maps and
     uidMap.delete(asset.uid);
     folderMap.delete(asset);
     collectionMap.delete(asset);
+    // Notify the UI about asset removal
     window.signals.trigger('assetRemoved', asset.uid);
     window.signals.trigger(`${asset.type}Removed`, asset.uid);
 };
