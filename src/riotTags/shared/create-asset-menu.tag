@@ -9,7 +9,9 @@
     @attribute [onimported]
         Called when a new asset is created by this component.
         The created asset is passed to the callback as its only argument.
-create-asset-menu.relative.inlineblock
+
+    @attribute [class]
+create-asset-menu.relative.inlineblock(class="{opts.class}")
     button.success(onclick="{showMenu}" class="{inline: opts.inline, square: opts.square}")
         svg.feather
             use(xlink:href="#plus")
