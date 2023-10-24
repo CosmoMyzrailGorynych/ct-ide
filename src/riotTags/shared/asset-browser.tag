@@ -123,12 +123,15 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
                 br
                 span {vocGlob.nothingToShowFiller}
                 .aSpacer(if="{assetTypes[0] === 'all'}")
-                create-asset-menu(
+            .flexrow(if="{!opts.shownone && !(searchResults || entries).length}")
+                .aSpacer
+                create-asset-menu.nogrow(
                     if="{assetTypes[0] === 'all'}"
                     collection="{currentCollection}"
                     folder="{currentFolder}"
                     onimported="{onAssetImported}"
                 )
+                .aSpacer
             ul.Cards(class="{layoutToClassListMap[opts.forcelayout || currentLayout]}")
                 li.aCard(if="{opts.shownone}" onclick="{opts.click && opts.click(-1)}" class="{active: opts.selectedasset === -1}")
                     .aCard-aThumbnail
