@@ -25,20 +25,22 @@ declare interface IScript {
 
 type viewMode = 'asIs' | 'fastScale' | 'fastScaleInteger' | 'expand' | 'expandViewport' | 'scaleFit' | 'scaleFill';
 
+declare type UserDefinedField = {
+    name: string;
+    readableName: string;
+    required?: boolean;
+    array?: boolean;
+    type: 'text' | 'textfield' | 'code' | 'number' | 'sliderAndNumber' | 'point2D' |
+          'texture' | 'template' | 'sound' | 'room' | 'tandem' |
+          'checkbox' | 'color';
+}
+
 declare interface IContentType {
     entries: Record<string, unknown>[];
     icon: string;
     name: string;
     readableName: string;
-    specification: {
-        name: string;
-        readableName: string;
-        required?: boolean;
-        array?: boolean;
-        type: 'text' | 'textfield' | 'code' | 'number' | 'sliderAndNumber' | 'point2D' |
-              'texture' | 'template' | 'sound' | 'room' | 'tandem' |
-              'checkbox' | 'color';
-    }[];
+    specification: UserDefinedField[];
 }
 
 declare interface IProject {

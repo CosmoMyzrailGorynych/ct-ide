@@ -38,57 +38,7 @@ content-settings
         window.currentProject.contentTypes = window.currentProject.contentTypes || [];
         this.contentTypes = window.currentProject.contentTypes;
 
-        this.extends = [{
-            name: this.voc.typeName,
-            type: 'text',
-            key: 'name',
-            help: this.voc.typeNameHint,
-            required: true
-        }, {
-            name: this.voc.typeReadableName,
-            type: 'text',
-            key: 'readableName',
-            help: this.voc.typeReadableNameHint
-        }, {
-            name: this.voc.icon,
-            type: 'icon',
-            key: 'icon',
-            default: 'copy'
-        }, {
-            name: this.voc.typeSpecification,
-            type: 'table',
-            key: 'specification',
-            fields: [{
-                name: this.voc.fieldName,
-                type: 'text',
-                key: 'name',
-                help: this.voc.fieldNameHint
-            }, {
-                name: this.voc.fieldReadableName,
-                type: 'text',
-                key: 'readableName',
-                help: this.voc.fieldReadableNameHint
-            }, {
-                name: this.voc.fieldType,
-                type: 'select',
-                key: 'type',
-                options: ['text', 'textfield', 'code', '', 'number', 'sliderAndNumber', 'point2D', '', 'texture', 'template', 'sound', 'room', 'tandem', '', 'checkbox', 'color'].map(type => ({
-                    name: this.vocGlob.fieldTypes[type] || '',
-                    value: type
-                })),
-                default: 'text'
-            }, {
-                name: this.vocGlob.required,
-                type: 'checkbox',
-                key: 'required',
-                default: false
-            }, {
-                name: this.voc.array,
-                type: 'checkbox',
-                key: 'array',
-                default: false
-            }]
-        }];
+        this.extends = require('./data/node_requires/resources/content').getExtends();
 
         this.addContentType = () => {
             this.contentTypes.push({
