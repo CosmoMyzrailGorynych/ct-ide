@@ -499,7 +499,7 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
                     .defaultValue(this.contextMenuAsset.name)
                     .prompt(this.vocGlob.newName)
                 if (reply.inputValue && reply.inputValue.trim() !== '' && reply.buttonClicked !== 'cancel') {
-                    this.contextMenuAsset.name = e.inputValue.trim();
+                    this.contextMenuAsset.name = reply.inputValue.trim();
                     this.update();
                 }
             }
