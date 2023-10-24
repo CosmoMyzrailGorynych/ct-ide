@@ -537,7 +537,10 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
                 return;
             }
             this.contextMenuAsset = item;
-            const contextActions = resources.getContextActions(item);
+            const contextActions = resources.getContextActions(item, () => {
+                this.updateList();
+                this.update();
+            });
             if (contextActions.length > 0) {
                 contextActions.push({
                     type: 'separator'

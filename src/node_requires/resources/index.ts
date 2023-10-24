@@ -10,7 +10,7 @@ import * as styles from './styles';
 import * as skeletons from './skeletons';
 
 import getUid from '../generateGUID';
-import {getLanguageJSON} from '../i18n';
+import {getLanguageJSON, getByPath} from '../i18n';
 
 /**
  * The interface that describe additional asset actions callable through a context menu.
@@ -393,12 +393,28 @@ export const getName = (asset: IAsset | IAssetFolder): string => {
         typeToApiMap[asset.type].getName(asset) :
         (asset as IAsset & {name: string}).name;
 };
-export const getContextActions = (asset: IAsset): IAssetContextItem[] => {
+export const getContextActions = (
+    asset: IAsset,
+    callback?: (asset: IAsset) => unknown
+): IMenuItem[] => {
     const api = typeToApiMap[asset.type];
     if (!api.assetContextMenuItems) {
         return [];
     }
-    return api.assetContextMenuItems.filter(item => !item.if || item.if(asset));
+    const actions: IMenuItem[] = api.assetContextMenuItems
+        .filter(item => !item.if || item.if(asset))
+        .map(item => ({
+            label: getByPath(item.vocPath) as string,
+            icon: item.icon,
+            click: async () => {
+                await item.action(asset, collectionMap.get(asset), folderMap.get(asset));
+                if (callback) {
+                    callback(asset);
+                }
+            },
+            checked: item.checked && (() => item.checked(asset))
+        }));
+    return actions;
 };
 
 export const resourceToIconMap: Record<resourceType, string> = {

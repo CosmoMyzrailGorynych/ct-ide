@@ -43,6 +43,23 @@ export const loadLanguage = (lang: string) => {
 };
 
 export const localizeField = (obj: any, field: string) => obj[`${field}_${languageJSON.me.id}`] || obj[field];
-export const getLanguageJSON = () => languageJSON;
+export const getLanguageJSON = (): Record<string, Record<string, any>> => languageJSON;
+
+/**
+ * Returns a translation for the given translation key written in a dot notation.
+ * For example, the path can be "intro.newProject.button" and it will return "Create New"
+ * in a current language.
+ */
+export const getByPath = (path: string): string | Record<string, any> => {
+    const way = path.split(/(?<!\\)\./gi);
+    for (let i = 0, l = way.length; i < l; i++) {
+        way[i] = way[i].replace(/\\./g, '.');
+    }
+    let space = languageJSON;
+    for (const partial of way) {
+        space = space[partial];
+    }
+    return space;
+};
 
 loadLanguage(localStorage.appLanguage || 'English');
