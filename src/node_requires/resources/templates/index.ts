@@ -8,7 +8,7 @@ import {TexturePreviewer} from '../preview/texture';
 import {SkeletonPreviewer} from '../preview/skeleton';
 
 import * as PIXI from 'node_modules/pixi.js';
-import {getById} from '..';
+import {getById, getOfType} from '..';
 
 const createNewTemplate = function createNewTemplate(opts?: {name: string}): ITemplate {
     const template = getDefaultTemplate();
@@ -85,6 +85,21 @@ const getDOMTexture = (template: ITemplate | assetRef): HTMLImageElement => {
         return getDOMSkeleton(template.skeleton);
     }
     return getTextureDOMImage(template.texture);
+};
+
+/**
+ * Properly removes a template from the project, cleansing it from all the associated rooms.
+ * Must not be called directly from UI, use resources -> deleteAsset instead.
+ */
+export const removeAsset = (template: string | ITemplate): void => {
+    const asset = typeof template === 'string' ? getById('template', template) : template;
+    const {uid} = asset;
+    for (const room of getOfType('room')) {
+        room.copies = room.copies.filter((copy) => copy.uid !== uid);
+        if (room.follow === uid) {
+            room.follow = -1;
+        }
+    }
 };
 
 export {
