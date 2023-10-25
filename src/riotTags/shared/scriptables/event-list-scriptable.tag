@@ -38,7 +38,7 @@ event-list-scriptable.flexfix(class="{opts.class}")
                 svg.feather.nogrow.anActionableIcon.noshrink.nogrow(onclick="{promptRemoveEvent(event)}")
                     use(xlink:href="#trash")
     .flexfix-footer
-        .event-list-scriptable-LocalVars(if="{getHasLocalVars(currentEvent)}")
+        .event-list-scriptable-LocalVars(if="{opts.events?.length && getHasLocalVars(currentEvent)}")
             h3 {voc.localEventVars}
             ul.aStripedList.nmt
                 li.npl.npr.cursorhelp(
