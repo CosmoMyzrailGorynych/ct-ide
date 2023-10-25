@@ -1,5 +1,5 @@
 import {RoomPreviewer} from '../preview/room';
-import {getOfType} from '..';
+import {getOfType, IAssetContextItem} from '..';
 
 const getDefaultRoom = require('./defaultRoom').get;
 const fs = require('fs-extra');
@@ -22,6 +22,14 @@ export const getStartingRoom = (): IRoom => {
     }
     return rooms[0];
 };
+
+export const assetContextMenuItems: IAssetContextItem[] = [{
+    icon: 'play',
+    vocPath: 'rooms.makeStarting',
+    action: (asset: ISkeleton): void => {
+        global.currentProject.startroom = asset.uid;
+    }
+}];
 
 const getThumbnail = RoomPreviewer.getClassic;
 export const areThumbnailsIcons = false;
