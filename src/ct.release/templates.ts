@@ -83,7 +83,6 @@ export class Copy extends PIXI.AnimatedSprite {
      * @memberof Copy
      */
     // eslint-disable-next-line complexity, max-lines-per-function
-    // @ts-ignore
     constructor(
         template: string,
         x: number,
@@ -98,7 +97,7 @@ export class Copy extends PIXI.AnimatedSprite {
     ) {
         container = container || roomsLib.current;
         let textures: pixiMod.Texture[] = [PIXI.Texture.EMPTY];
-        var t;
+        var t: ExportedTemplate;
         if (template) {
             if (!(template in templatesLib.templates)) {
                 throw new Error(`[ct.templates] An attempt to create a copy of a non-existent template \`${template}\` detected. A typo?`);
@@ -108,15 +107,12 @@ export class Copy extends PIXI.AnimatedSprite {
                 textures = res.getTexture(t.texture);
             }
         }
-        // @ts-ignore
         super(textures);
         this[copyTypeSymbol] = true;
         if (template) {
             this.#tex = t.texture;
-            this.anchor.x = textures[0].defaultAnchor.x;
-            this.anchor.y = textures[0].defaultAnchor.y;
-            this.anchor.x = t.anchorX || 0;
-            this.anchor.y = t.anchorY || 0;
+            this.anchor.x = t.anchorX ?? textures[0].defaultAnchor.x ?? 0;
+            this.anchor.y = t.anchorY ?? textures[0].defaultAnchor.y ?? 0;
             this.template = template;
             this.parent = container;
             this.blendMode = t.blendMode || PIXI.BLEND_MODES.NORMAL;
