@@ -1,5 +1,5 @@
-const {getTextureFromId} = require('../resources/textures');
-const {getUnwrappedExtends} = require('./utils');
+import {getById} from '../resources';
+import {getUnwrappedExtends} from './utils';
 
 import {getBaseScripts} from './scriptableProcessor';
 
@@ -19,7 +19,7 @@ const getTextureInfo = (blankTextures: IBlankTexture[], template: ITemplate) => 
         height: ${blankTexture.height},
         width: ${blankTexture.width},`;
     } else if (template.texture !== -1) {
-        return `texture: "${getTextureFromId(template.texture).name}",`;
+        return `texture: "${getById('texture', template.texture).name}",`;
     }
     return '';
 };

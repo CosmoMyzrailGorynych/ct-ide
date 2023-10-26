@@ -55,7 +55,7 @@ const stringifyRooms = (
         for (const copy of r.copies) {
             const exportableCopy = {
                 ...copy,
-                template: assets.template[glob.templatemap[copy.uid]].name
+                template: getById('template', copy.uid).name
             };
             delete exportableCopy.uid;
             objs.push(exportableCopy);
