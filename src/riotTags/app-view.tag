@@ -41,7 +41,12 @@ app-view.flexcol
                         svg.feather
                             use(xlink:href="#{iconMap[asset.type]}")
                         span {getName(asset)}
-                        svg.feather.anActionableIcon(onclick="{closeAsset}")
+                        .app-view-anUnsavedIcon(if="{tabsDirty[ind]}" onclick="{closeAsset}")
+                            svg.feather.anActionableIcon.warning
+                                use(xlink:href="#circle")
+                            svg.feather.anActionableIcon
+                                use(xlink:href="#x")
+                        svg.feather.anActionableIcon(if="{!tabsDirty[ind]}" onclick="{closeAsset}")
                             use(xlink:href="#x")
             li.nogrow.noshrink.relative.bl(onclick="{callTour}" data-hotkey="F1" title="{voc.tour.header}")
                 .aPulser(if="{!localStorage.wizardUsed}")
@@ -96,8 +101,15 @@ app-view.flexcol
 
         this.tab = 'assets'; // A tab can be either a string ('project', 'assets', etc.) or an asset object
         this.openedAssets = [];
+        this.tabsDirty = [];
+        this.refreshDirty = () => {
+            const tabs = this.refs.openedEditors || [];
+            this.tabsDirty = (Array.isArray(tabs) ? tabs : [tabs])
+                .map(riotTab => riotTab.isDirty());
+        };
         this.changeTab = tab => () => {
             this.tab = tab;
+            this.refreshDirty();
             window.hotkeys.cleanScope();
             window.signals.trigger('globalTabChanged', tab);
             if (typeof tab === 'string') {
@@ -115,6 +127,11 @@ app-view.flexcol
         this.assetTabClick = asset => e => {
             console.log(e);
         };
+        window.signals.on('assetChanged', this.refreshDirty);
+        this.on('unmount', () => {
+            window.signals.off('assetChanged', this.refreshDirty);
+        });
+
         const resources = require('./data/node_requires/resources');
         this.editorMap = resources.editorMap;
         this.getName = resources.getName;

@@ -63,6 +63,20 @@ app-view
     & > nav > .tabs
         border-radius 0
         width 100%
+    .&-anUnsavedIcon
+        display inline-block
+        svg:first-child
+            display inline-block
+            fill currentColor
+            transform scale(0.66, 0.66)
+        svg:last-child
+            display none
+    .aTabsWrapper li:hover
+        .app-view-anUnsavedIcon
+            svg:first-child
+                display none
+            svg:last-child
+                display inline-block
 
 @media (max-width 1100px)
     app-view > nav > .tabs > li
