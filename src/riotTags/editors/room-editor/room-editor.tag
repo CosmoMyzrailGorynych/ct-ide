@@ -152,7 +152,7 @@ room-editor.aPanel.aView
         this.freePlacementMode = false;
         const modifiersDownListener = e => {
             if (e.repeat ||
-                !window.hotkeys.inScope('rooms') ||
+                !window.hotkeys.inScope(this.asset.uid) ||
                 window.hotkeys.isFormField(e.target)
             ) {
                 return;
@@ -167,7 +167,7 @@ room-editor.aPanel.aView
         };
         const modifiersUpListener = e => {
             if (e.repeat ||
-                !window.hotkeys.inScope('rooms') ||
+                !window.hotkeys.inScope(this.asset.uid) ||
                 window.hotkeys.isFormField(e.target)
             ) {
                 return;
