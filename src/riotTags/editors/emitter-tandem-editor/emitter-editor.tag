@@ -268,7 +268,7 @@ emitter-editor.aPanel.pad.nb
                     type="number" step="1" min="-360" max="360"
                     data-wired-force-minmax="yes"
                     value="{parent.rotation.config.minStart}"
-                    oninput="{parent.wireAndReset('this.rotation.config.minStart')}"
+                    oninput="{parent.wireAndPatchRotation('this.rotation.config.minStart', 'minStart')}"
                 )
             label.fifty.npt.npr.nmt
                 span {parent.voc.to}
@@ -276,7 +276,7 @@ emitter-editor.aPanel.pad.nb
                     type="number" step="1" min="-360" max="360"
                     data-wired-force-minmax="yes"
                     value="{parent.rotation.config.maxStart}"
-                    oninput="{parent.wireAndReset('this.rotation.config.maxStart')}"
+                    oninput="{parent.wireAndPatchRotation('this.rotation.config.maxStart', 'maxStart')}"
                 )
         fieldset(if="{parent.rotation.type === 'rotation'}")
             b {parent.voc.rotationSpeed}
@@ -286,14 +286,14 @@ emitter-editor.aPanel.pad.nb
                 input.wide(
                     type="number" step="8" min="0" max="2500"
                     value="{parent.rotation.config.minSpeed}"
-                    oninput="{parent.wireAndReset('rotation.config.minSpeed')}"
+                    oninput="{parent.wireAndPatchRotation('rotation.config.minSpeed', 'minSpeed')}"
                 )
             label.fifty.npt.npr.npb.nmt
                 span {parent.voc.to}
                 input.wide(
                     type="number" step="8" min="0" max="2500"
                     value="{parent.rotation.config.maxSpeed}"
-                    oninput="{parent.wireAndReset('rotation.config.maxSpeed')}"
+                    oninput="{parent.wireAndPatchRotation('rotation.config.maxSpeed', 'maxSpeed')}"
                 )
             .clear
         fieldset(if="{parent.rotation.type === 'rotation'}")
@@ -302,7 +302,7 @@ emitter-editor.aPanel.pad.nb
                 input.wide(
                     type="number" step="30" min="-3000" max="3000"
                     value="{parent.rotation.config.accel}"
-                    oninput="{parent.wireAndReset('rotation.config.accel')}"
+                    oninput="{parent.wireAndPatchRotation('rotation.config.accel', 'accel')}"
                 )
 
     collapsible-section(
@@ -528,19 +528,24 @@ emitter-editor.aPanel.pad.nb
 
         this.pickingTexture = false;
 
-        /*
-            updateBehaviors: Array(5)
-            0: AlphaBehavior
-            1: ColorBehavior
-            2: ScaleBehavior
-            3: RotationBehavior
-            4: AccelerationBehavior/SpeedBehavior
-        */
+        this.wireAndPatchRotation = (path, field) => e => {
+            this.wire(path)(e);
+            if (this.opts.emittermap && (this.opts.emitter.uid in this.opts.emittermap)) {
+                const emtInst = this.opts.emittermap[this.opts.emitter.uid];
+                const bh = emtInst.initBehaviors
+                    .find(b => b instanceof particles.behaviors.RotationBehavior);
+                bh[field] = Number(e.target.value) * Math.PI / 180;
+            } else {
+                window.signals.trigger('emitterResetRequest', this.opts.emitter.uid);
+            }
+        };
         this.updateScaleCurve = () => {
             if (this.opts.emittermap && (this.opts.emitter.uid in this.opts.emittermap)) {
                 const emtInst = this.opts.emittermap[this.opts.emitter.uid];
                 const {PropertyNode} = particles;
-                emtInst.updateBehaviors[2].list.first = PropertyNode.createList(this.scale.scale);
+                const bh = emtInst.initBehaviors
+                    .find(b => b instanceof particles.behaviors.ScaleBehavior);
+                bh.list.first = PropertyNode.createList(this.scale.scale);
             } else {
                 window.signals.trigger('emitterResetRequest', this.opts.emitter.uid);
             }
@@ -549,7 +554,9 @@ emitter-editor.aPanel.pad.nb
             if (this.opts.emittermap && (this.opts.emitter.uid in this.opts.emittermap)) {
                 const emtInst = this.opts.emittermap[this.opts.emitter.uid];
                 const {PropertyNode} = particles;
-                emtInst.updateBehaviors[4].list.first =
+                const bh = emtInst.initBehaviors
+                    .find(b => b instanceof particles.behaviors.SpeedBehavior);
+                bh.list.first =
                     PropertyNode.createList(this.movement.config.speed);
             } else {
                 window.signals.trigger('emitterResetRequest', this.opts.emitter.uid);
@@ -559,8 +566,12 @@ emitter-editor.aPanel.pad.nb
             if (this.opts.emittermap && (this.opts.emitter.uid in this.opts.emittermap)) {
                 const emtInst = this.opts.emittermap[this.opts.emitter.uid];
                 const {PropertyNode} = particles;
-                emtInst.updateBehaviors[0].list.first = PropertyNode.createList(this.alpha);
-                emtInst.updateBehaviors[1].list.first = PropertyNode.createList(this.color);
+                const bha = emtInst.initBehaviors
+                    .find(b => b instanceof particles.behaviors.AlphaBehavior);
+                const bhc = emtInst.initBehaviors
+                    .find(b => b instanceof particles.behaviors.ColorBehavior);
+                bha.list.first = PropertyNode.createList(this.alpha);
+                bhc.list.first = PropertyNode.createList(this.color);
             } else {
                 window.signals.trigger('emitterResetRequest', this.opts.emitter.uid);
             }

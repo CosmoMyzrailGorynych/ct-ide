@@ -248,7 +248,7 @@ emitter-tandem-editor.aPanel.aView.flexrow(class="{opts.class}")
                     const crosshair = new PIXI.Graphics();
                     crosshair.lineStyle(2, 0x446adb, 1);
                     for (let i = bh.config.start; i < 360; i += bh.config.spacing) {
-                        const dir = i / -180 * Math.PI;
+                        const dir = i * Math.PI / 180;
                         crosshair.moveTo(emitterX, emitterY);
                         crosshair.lineTo(
                             emitterX + Math.cos(dir) * 64,
