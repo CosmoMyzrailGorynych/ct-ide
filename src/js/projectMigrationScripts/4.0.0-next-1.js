@@ -7,6 +7,7 @@ window.migrationProcess.push({
         const {rendering} = project.settings;
         rendering.viewMode ??= project.libs.fittoscreen.mode;
         delete project.libs.fittoscreen;
+        delete project.libs.touch;
         delete project.libs['sound.howler'];
         delete project.libs['sound.basic'];
 
