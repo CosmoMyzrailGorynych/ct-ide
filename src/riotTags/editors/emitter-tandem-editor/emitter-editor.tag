@@ -1,7 +1,7 @@
 emitter-editor.aPanel.pad.nb
     .emitter-editor-aHeader
         img.emitter-editor-aTexture(src="{getPreview()}")
-        h3 {voc.emitterHeading} {opts.emitter.uid.split('-').pop()}
+        h3 {voc.emitterHeading} {opts.emitter.uid.slice(-8)}
         svg.feather.act(title="{vocGlob.delete}" onclick="{deleteEmitter}")
             use(xlink:href="#trash")
     collapsible-section(
@@ -74,6 +74,7 @@ emitter-editor.aPanel.pad.nb
                     colorcurve="{parent.color.list}"
                     lockstarttime="true" lockendtime="true"
                     type="color"
+                    onchange="{parent.reset}"
                 ).safecolors
         fieldset
             label.checkbox
@@ -112,6 +113,7 @@ emitter-editor.aPanel.pad.nb
                     easing="{parent.scale.isStepped ? 'none' : 'linear'}"
                     curve="{parent.scale.scale.list}"
                     lockstarttime="true" lockendtime="true"
+                    onchange="{parent.reset}"
                 )
         fieldset
             label.checkbox
@@ -180,40 +182,40 @@ emitter-editor.aPanel.pad.nb
                 )
         // type: 'moveAcceleration'
         fieldset(if="{parent.movement.type === 'moveAcceleration'}")
-            label
-                b {parent.voc.velocity}
-                br
-                label.fifty.npt.npl.npb.nmt
+            b {parent.voc.velocity}
+            .flexrow
+                label
                     span {parent.voc.from}
                     input.wide(
                         type="number" step="8" min="0" max="2500"
                         value="{parent.movement.config.minStart}"
                         oninput="{parent.wireAndReset('movement.config.minStart')}"
                     )
-                label.fifty.npt.npr.npb.nmt
+                .aSpacer.noshrink
+                label
                     span {parent.voc.to}
                     input.wide(
                         type="number" step="8" min="0" max="2500"
                         value="{parent.movement.config.maxStart}"
                         oninput="{parent.wireAndReset('movement.config.maxStart')}"
                     )
-                .clear
             b {parent.voc.gravityHeading}
-            label.fifty.npt.npl.nmt
-                span X:
-                input.wide(
-                    type="number" step="32" min="-4096" max="4096"
-                    value="{parent.movement.config.accel.x}"
-                    oninput="{parent.wireAndReset('movement.config.accel.x')}"
-                )
-            label.fifty.npt.npr.nmt
-                span Y:
-                input.wide(
-                    type="number" step="32" min="-4096" max="4096"
-                    value="{parent.movement.config.accel.y}"
-                    oninput="{parent.wireAndReset('movement.config.accel.y')}"
-                )
-            .clear
+            .flexrow
+                label
+                    span X:
+                    input.wide(
+                        type="number" step="32" min="-4096" max="4096"
+                        value="{parent.movement.config.accel.x}"
+                        oninput="{parent.wireAndReset('movement.config.accel.x')}"
+                    )
+                .aSpacer.noshrink
+                label
+                    span Y:
+                    input.wide(
+                        type="number" step="32" min="-4096" max="4096"
+                        value="{parent.movement.config.accel.y}"
+                        oninput="{parent.wireAndReset('movement.config.accel.y')}"
+                    )
             label
                 b {parent.voc.maxSpeed}
                 input.wide(
@@ -423,17 +425,19 @@ emitter-editor.aPanel.pad.nb
             // Rectangles
             label.fifty.npt.npl.npb.nmt
                 b {parent.voc.width}
+                //- oninput="{parent.setRectWidth}"
                 input.wide(
                     type="number" step="8" min="-4096" max="4096"
-                    value="{parent.spawnBh.config.data.width}"
-                    oninput="{parent.setRectWidth}"
+                    value="{parent.spawnBh.config.data.w}"
+                    oninput="{parent.wireAndReset('spawnBh.config.data.w')}"
                 )
             label.fifty.npt.npr.npb.nmt
                 b {parent.voc.height}
+                //- oninput="{parent.setRectHeight}"
                 input.wide(
                     type="number" step="8" min="-4096" max="4096"
-                    value="{parent.spawnBh.config.data.height}"
-                    oninput="{parent.setRectHeight}"
+                    value="{parent.spawnBh.config.data.h}"
+                    oninput="{parent.wireAndReset('spawnBh.config.data.h')}"
                 )
             .clear
             label.checkbox
@@ -508,12 +512,15 @@ emitter-editor.aPanel.pad.nb
         });
         this.updateShortcuts();
 
-        const {getTexturePreview} = require('./data/node_requires/resources/textures');
-        this.getPreview = () => getTexturePreview(this.opts.emitter.texture);
+        const {getThumbnail, getById} = require('./data/node_requires/resources');
+        this.getPreview = () => getThumbnail(getById('texture', this.opts.emitter.texture));
 
         this.wireAndReset = path => e => {
             this.wire(path)(e);
-            // window.signals.trigger('emitterResetRequest');
+            window.signals.trigger('emitterResetRequest', this.opts.emitter.uid);
+        };
+        this.reset = () => {
+            window.signals.trigger('emitterResetRequest', this.opts.emitter.uid);
         };
 
         this.pickingTexture = false;
@@ -587,8 +594,8 @@ emitter-editor.aPanel.pad.nb
                         data: {
                             x: -100,
                             y: -100,
-                            width: 200,
-                            height: 200
+                            w: 200,
+                            h: 200
                         }
                     }
                 };

@@ -618,6 +618,8 @@
         "rotationSpeed": "Rotation speed",
         "rotationAcceleration": "Rotation acceleration:",
         "spawningHeading": "Spawning",
+        "burstSpacing": "Spacing between rays, in degrees:",
+        "burstStart": "Starting direction, in degrees:",
         "timeBetweenBursts": "Time between bursts:",
         "spawnAtOnce": "Spawn at once:",
         "chanceToSpawn": "Chance to spawn a particle:",
