@@ -74,7 +74,7 @@ emitter-editor.aPanel.pad.nb
                     colorcurve="{parent.color.list}"
                     lockstarttime="true" lockendtime="true"
                     type="color"
-                    onchange="{parent.reset}"
+                    onchange="{parent.updateColorCurve}"
                 ).safecolors
         fieldset
             label.checkbox
@@ -113,7 +113,7 @@ emitter-editor.aPanel.pad.nb
                     easing="{parent.scale.isStepped ? 'none' : 'linear'}"
                     curve="{parent.scale.scale.list}"
                     lockstarttime="true" lockendtime="true"
-                    onchange="{parent.reset}"
+                    onchange="{parent.updateScaleCurve}"
                 )
         fieldset
             label.checkbox
@@ -161,6 +161,7 @@ emitter-editor.aPanel.pad.nb
                     easing="{parent.movement.config.speed.isStepped ? 'none' : 'linear'}"
                     curve="{parent.movement.config.speed.list}"
                     lockstarttime="true" lockendtime="true"
+                    onchange="{parent.updateSpeedCurve}"
                 )
         fieldset(if="{parent.movement.type === 'moveSpeed'}")
             label.checkbox
@@ -492,6 +493,8 @@ emitter-editor.aPanel.pad.nb
         this.mixin(require('./data/node_requires/riotMixins/voc').default);
         this.mixin(require('./data/node_requires/riotMixins/wire').default);
 
+        const particles = require('@pixi/particle-emitter');
+
         // Ct.js' emitter asset's behaviors is ensured to be a tuple
         // @see src/node_requires/resources/emitterTandems/types.d.ts
         this.updateShortcuts = () => {
@@ -525,36 +528,43 @@ emitter-editor.aPanel.pad.nb
 
         this.pickingTexture = false;
 
-        /* TODO: check if such methods are needed, and if they are, update for v3 behaviors
+        /*
+            updateBehaviors: Array(5)
+            0: AlphaBehavior
+            1: ColorBehavior
+            2: ScaleBehavior
+            3: RotationBehavior
+            4: AccelerationBehavior/SpeedBehavior
+        */
         this.updateScaleCurve = () => {
             if (this.opts.emittermap && (this.opts.emitter.uid in this.opts.emittermap)) {
                 const emtInst = this.opts.emittermap[this.opts.emitter.uid];
-                const {PropertyNode} = PIXI.particles;
-                emtInst.startScale = PropertyNode.createList(this.opts.emitter.settings.scale);
+                const {PropertyNode} = particles;
+                emtInst.updateBehaviors[2].list.first = PropertyNode.createList(this.scale.scale);
             } else {
-                window.signals.trigger('emitterResetRequest');
+                window.signals.trigger('emitterResetRequest', this.opts.emitter.uid);
             }
         };
         this.updateSpeedCurve = () => {
             if (this.opts.emittermap && (this.opts.emitter.uid in this.opts.emittermap)) {
                 const emtInst = this.opts.emittermap[this.opts.emitter.uid];
-                const {PropertyNode} = PIXI.particles;
-                emtInst.startSpeed = PropertyNode.createList(this.opts.emitter.settings.speed);
+                const {PropertyNode} = particles;
+                emtInst.updateBehaviors[4].list.first =
+                    PropertyNode.createList(this.movement.config.speed);
             } else {
-                window.signals.trigger('emitterResetRequest');
+                window.signals.trigger('emitterResetRequest', this.opts.emitter.uid);
             }
         };
         this.updateColorCurve = () => {
             if (this.opts.emittermap && (this.opts.emitter.uid in this.opts.emittermap)) {
                 const emtInst = this.opts.emittermap[this.opts.emitter.uid];
-                const {PropertyNode} = PIXI.particles;
-
-                emtInst.startColor = PropertyNode.createList(this.opts.emitter.settings.color);
-                emtInst.startAlpha = PropertyNode.createList(this.opts.emitter.settings.alpha);
+                const {PropertyNode} = particles;
+                emtInst.updateBehaviors[0].list.first = PropertyNode.createList(this.alpha);
+                emtInst.updateBehaviors[1].list.first = PropertyNode.createList(this.color);
             } else {
-                window.signals.trigger('emitterResetRequest');
+                window.signals.trigger('emitterResetRequest', this.opts.emitter.uid);
             }
-        };*/
+        };
         /* Expects color and alpha to be the same length */
         this.combineAlphaAndColors = () => {
             /* global net */
