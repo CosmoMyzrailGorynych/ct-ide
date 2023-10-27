@@ -22,6 +22,7 @@ export const get = function get(): ITemplate {
         }],
         extends: {},
         lastmod: Number(new Date()),
-        uid: generateGUID()
+        uid: generateGUID(),
+        behaviors: []
     });
 };

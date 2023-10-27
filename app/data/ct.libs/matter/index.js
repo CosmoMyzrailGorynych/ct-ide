@@ -1,4 +1,4 @@
-ct.matter = {
+window.matter = {
     on(event, callback) {
         Matter.Events.on(ct.room.matterEngine, event, callback);
     },
@@ -149,9 +149,9 @@ ct.matter = {
         }
 
         if (copy.matterConstraint === 'pinpoint') {
-            copy.constraint = ct.matter.pin(copy);
+            copy.constraint = window.matter.pin(copy);
         } else if (copy.matterConstraint === 'rope') {
-            copy.constraint = ct.matter.rope(
+            copy.constraint = window.matter.rope(
                 copy,
                 copy.matterRopeLength === 0 ? 64 : copy.matterRopeLength,
                 copy.matterRopeStiffness === 0 ? 0.05 : copy.matterRopeStiffness,
@@ -167,7 +167,7 @@ ct.matter = {
             friction: tilemap.matterFriction === void 0 ? 1 : tilemap.matterFriction
         };
         for (const tile of tilemap.tiles) {
-            ct.matter.createStaticTile(tile, options);
+            window.matter.createStaticTile(tile, options);
         }
     },
     createStaticTile(tile, options) {
@@ -221,7 +221,7 @@ ct.matter = {
             return;
         }
         for (const pair of pairs) {
-            const impact = ct.matter.getImpact(pair);
+            const impact = window.matter.getImpact(pair);
             const bodies = [pair.bodyA, pair.bodyB];
             for (const body of bodies) {
                 if (!body.copy) {

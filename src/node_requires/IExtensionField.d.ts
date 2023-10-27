@@ -8,12 +8,12 @@ declare interface IExtensionField {
     type: 'h1' | 'h2' | 'h3' | 'h4' |
           'text' | 'textfield' | 'code' |
           'number' | 'slider' | 'sliderAndNumber' | 'point2D' | 'color' |
-          'checkbox' | 'radio' | 'select' |
+          'checkbox' | 'radio' | 'select' | 'icon' |
           'group' | 'table' | 'array' |
-          'texture' | 'template' | 'room' | 'sound' | 'behavior' | 'icon',
+          'texture' | 'template' | 'room' | 'sound' | 'behavior' | 'tandem',
     /**
      * The name of a JSON key to write into the `opts.entity`.
-     * Not needed for hN types, but is required otherwise.
+     * Not needed for hN types or 'group', but is required otherwise.
      * The key may have special suffixes that tell the exporter to unwrap foreign keys
      * (resources' UIDs) into asset names. These are supposed to always be used with
      * `'template'`, `'texture'`, and other asset input types.
@@ -41,6 +41,12 @@ declare interface IExtensionField {
         name: string,
         help?: string
     }>,
+    /** For type=number or type=slider only, added to the input field. */
+    min?: number,
+    /** For type=number or type=slider only, added to the input field. */
+    max?: number,
+    /** For type=number or type=slider only, added to the input field. */
+    step?: number,
     /**
      * The type of the fields used for the array editor (when `type` is 'array').
      * It supports a subset of fields supported by extensions-editor itself,

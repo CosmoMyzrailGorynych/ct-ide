@@ -6,6 +6,7 @@ declare var PIXI: typeof pixiMod;
 import {updateViewport, toggleFullscreen, getIsFullscreen} from './fittoscreen';
 import {actionsLib as actionsM, inputsLib as inputsM, CtAction} from './inputs';
 import backgroundsM, {Background} from './backgrounds';
+import behaviorsM from './behaviors';
 import cameraM, {Camera} from './camera';
 import contentM from './content';
 // import emitters, {EmitterTandem} from './emitters';
@@ -47,6 +48,7 @@ setInterval(function cleanDeadPool() {
     deadPool.length = 0;
 }, 1000 * 60);
 
+// eslint-disable-next-line prefer-destructuring
 export const meta: ExportedMeta = [/*!@projectmeta@*/][0];
 
 /**
@@ -158,6 +160,7 @@ export let pixiApp: pixiMod.Application;
         PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
     }
     settings.speed = [/*!@maxfps@*/][0] || 60;
+    // eslint-disable-next-line prefer-destructuring
     settings.highDensity = [/*!@highDensity@*/][0];
     document.getElementById('ct').appendChild(pixiApp.view as HTMLCanvasElement);
 }
@@ -256,7 +259,7 @@ let loading: Promise<void>;
         setTimeout(() => {
             pixiApp.ticker.add(loop);
             roomsM.forceSwitch(roomsM.starting);
-        }, 0)
+        }, 0);
     });
 }
 
@@ -265,6 +268,7 @@ let loading: Promise<void>;
 {
     const actions = actionsM;
     const backgrounds = backgroundsM;
+    const behaviors = behaviorsM;
     const camera = cameraM;
     const content = contentM;
     const inputs = inputsM;
@@ -279,6 +283,7 @@ let loading: Promise<void>;
     Object.assign(window, {
         actions,
         backgrounds,
+        behaviors,
         camera,
         content,
         inputs,
@@ -297,7 +302,6 @@ let loading: Promise<void>;
     loading.then(() => {
         /*!%start%*/
     });
-    /*!@catmods@*/
 
     /*!@actions@*/
     /*!@styles@*/
@@ -308,8 +312,10 @@ let loading: Promise<void>;
 
     /*!@rooms@*/
     /*!%rooms%*/
-
-    /*!%load%*/
-
-    /*!@userScripts@*/
 }
+
+/*!@catmods@*/
+
+/*!@userScripts@*/
+
+/*!%load%*/

@@ -40,6 +40,15 @@ export const removeAsset = (room: IRoom): void => {
     }
 };
 
+import {getIcons as getScriptableIcons} from '../scriptables';
+export const getIcons = (asset: IRoom): string[] => {
+    if (asset.uid === window.currentProject.startroom) {
+        return ['play', ...getScriptableIcons(asset)];
+    }
+    return getScriptableIcons(asset);
+};
+
+
 export {
     createNewRoom,
     createNewRoom as createAsset,

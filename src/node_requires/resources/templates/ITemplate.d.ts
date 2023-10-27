@@ -1,6 +1,6 @@
 type PixiBlendMode = 'normal' | 'add' | 'multiply' | 'screen';
 
-interface ITemplate extends IScriptable {
+interface ITemplate extends IScriptableBehaviors {
     type: 'template',
     texture: assetRef,
     /** Skeleton reference must have priority over the texture's value. */

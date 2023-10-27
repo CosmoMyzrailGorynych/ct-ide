@@ -12,6 +12,10 @@
         If set to some value, shows the "None" option that returns -1 in opts.onselected
         when chosen.
 
+    @attribute [customfilter] ((asset: IAsset) => boolean)
+        A custom filter function applied to hide separate assets if the function
+        returns `false`.
+
     @attribute onselected (riot function)
         This method is called when an asset is selected.
         The value passed in the function is the uid of the selected asset.
@@ -34,6 +38,7 @@ asset-selector.aDimmer.pointer.pad.fadein(onclick="{closeOnDimmer}" ref="dimmer"
             assettypes="{opts.assettypes}"
             shownone="{opts.allownone}"
             click="{onAssetPicked}"
+            customfilter="{opts.customfilter}"
         )
             h2 {parent.opts.selectorheader || parent.voc.selectAssetHeader}
     script.

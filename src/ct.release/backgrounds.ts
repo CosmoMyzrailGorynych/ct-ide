@@ -4,7 +4,7 @@ import templatesLib from './templates';
 
 import {ExportedBg} from './../node_requires/exporter/_exporterContracts';
 import mainCamera from 'camera';
-import { stack } from 'index';
+import {stack} from 'index';
 import uLib from 'u';
 
 import * as pixiMod from 'node_modules/pixi.js';

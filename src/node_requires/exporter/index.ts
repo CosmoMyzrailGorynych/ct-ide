@@ -17,6 +17,7 @@ import {stringifyRooms, getStartingRoom} from './rooms';
 import {stringifyStyles} from './styles';
 import {stringifyTandems} from './emitterTandems';
 import {stringifyTemplates} from './templates';
+import {stringifyBehaviors} from './behaviors';
 import {stringifyContent} from './content';
 import {bundleFonts, bakeBitmapFonts} from './fonts';
 import {bakeFavicons} from './icons';
@@ -284,6 +285,7 @@ const exportCtProject = async (
     const fonts = await bundleFonts(assets.font, projdir, writeDir);
     const rooms = stringifyRooms(assets, project);
     const templates = stringifyTemplates(assets, project);
+    const behaviors = stringifyBehaviors(assets.behavior, project);
     const rootRoomOnCreate = rooms.rootRoomOnCreate + '\n' + templates.rootRoomOnCreate;
     const rootRoomOnStep = rooms.rootRoomOnStep + '\n' + templates.rootRoomOnStep;
     const rootRoomOnDraw = rooms.rootRoomOnDraw + '\n' + templates.rootRoomOnDraw;
@@ -331,6 +333,8 @@ const exportCtProject = async (
         rootRoomOnStep,
         rootRoomOnDraw,
         rootRoomOnLeave,
+        behaviorsTemplates: behaviors.templates,
+        behaviorsRooms: behaviors.rooms,
         templates: templates.libCode,
         styles: stringifyStyles(assets.style),
         tandemTemplates: stringifyTandems(assets.tandem),

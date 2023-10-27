@@ -8,6 +8,7 @@ import * as rooms from './rooms';
 import * as templates from './templates';
 import * as styles from './styles';
 import * as skeletons from './skeletons';
+import * as behaviors from './behaviors';
 
 import getUid from '../generateGUID';
 import {getLanguageJSON, getByPath} from '../i18n';
@@ -47,10 +48,22 @@ export interface IAssetContextItem {
 interface IResourceAPI {
     areThumbnailsIcons: boolean;
     getThumbnail: (asset: assetRef | IAsset, x2?: boolean, fs?: boolean) => string;
+    /**
+     * An optional method that returns a list of icons used to graphically characterize
+     * an asset in an asset browser.
+     */
+    getIcons?: (asset: IAsset) => string[];
+    /**
+     * An optional method for retrieving the name of an asset.
+     * If not set, the asset's `name` property is used.
+     */
     getName?: (asset: string | IAsset) => string;
     createAsset: (payload?: unknown) =>
         Promise<IAsset> | IAsset;
-    /** Optional as there can be no cleanup needed for specific asset types */
+    /**
+     * Optional as there can be no cleanup needed for specific asset types.
+     * These methods should never be called directly from UI.
+     */
     removeAsset?: (asset: assetRef | IAsset) => Promise<void> | void;
     reimportAsset?: (asset: assetRef | IAsset) => Promise<void>;
     assetContextMenuItems?: IAssetContextItem[];
@@ -63,7 +76,8 @@ const typeToApiMap: Record<resourceType, IResourceAPI> = {
     style: styles,
     tandem: emitterTandems,
     template: templates,
-    texture: textures
+    texture: textures,
+    behavior: behaviors
 };
 /** Names of all possible asset types */
 export const assetTypes = Object.keys(typeToApiMap) as resourceType[];
@@ -77,7 +91,8 @@ type typeToTsTypeMap = {
         T extends 'skeleton' ? ISkeleton :
         T extends 'texture' ? ITexture :
         T extends 'tandem' ? ITandem :
-        T extends 'template'? ITemplate :
+        T extends 'template' ? ITemplate :
+        T extends 'behavior' ? IBehavior :
         never;
 }
 
@@ -332,6 +347,16 @@ export const deleteAsset = async (asset: IAsset): Promise<void> => {
             }
         }
     }
+    // Do the same for potential behaviors' keys
+    for (const other of [...getOfType('room'), ...getOfType('template')]) {
+        for (const key in other.extends) {
+            if (Array.isArray(other.extends[key])) {
+                (other.extends[key] as []).filter(val => val !== asset.uid);
+            } else if (other.extends[key] === asset.uid) {
+                other.extends[key] = -1;
+            }
+        }
+    }
     // Remove from the parent folder
     const collection = collectionMap.get(asset);
     collection.splice(collection.indexOf(asset), 1);
@@ -401,6 +426,8 @@ export const getThumbnail = (asset: IAsset | IAssetFolder, x2?: boolean, fs?: bo
     }
     return typeToApiMap[asset.type].getThumbnail(asset, x2, fs);
 };
+export const getIcons = (asset: IAsset): string[] =>
+    typeToApiMap[asset.type].getIcons?.(asset) ?? [];
 export const getName = (asset: IAsset | IAssetFolder): string => {
     if (asset.type === 'folder') {
         return asset.name;
@@ -441,7 +468,8 @@ export const resourceToIconMap: Record<resourceType, string> = {
     room: 'room',
     template: 'template',
     style: 'ui',
-    skeleton: 'skeletal-animation'
+    skeleton: 'skeletal-animation',
+    behavior: 'behavior'
 };
 export const editorMap: Record<resourceType, string> = {
     font: 'font-editor',
@@ -451,7 +479,8 @@ export const editorMap: Record<resourceType, string> = {
     style: 'style-editor',
     tandem: 'emitter-tandem-editor',
     template: 'template-editor',
-    texture: 'texture-editor'
+    texture: 'texture-editor',
+    behavior: 'behavior-editor'
 };
 
 export {

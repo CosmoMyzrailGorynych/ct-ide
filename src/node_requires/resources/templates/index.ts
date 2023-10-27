@@ -102,6 +102,8 @@ export const removeAsset = (template: string | ITemplate): void => {
     }
 };
 
+export {getIcons} from '../scriptables';
+
 export {
     getDefaultTemplate,
     getTemplatePreview,

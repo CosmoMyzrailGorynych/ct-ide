@@ -53,3 +53,35 @@ export const getExtends = () => [{
     key: 'icon',
     default: 'copy'
 }, ...getFieldsExtends()];
+
+interface IFieldSchema {
+    name: string,
+    readableName: string,
+    type: 'text' | 'textfield' | 'code' | '' | 'number' | 'sliderAndNumber' | 'point2D' | 'texture' | 'template' | 'sound' | 'room' | 'tandem' | '' | 'checkbox' | 'color',
+    required: boolean
+    array: boolean
+}
+
+export const schemaToExtensions = (schema: IFieldSchema[]): IExtensionField[] => schema
+    .map((spec: IFieldSchema) => {
+        const field: IExtensionField = {
+            key: spec.name || spec.readableName,
+            name: spec.readableName || spec.name,
+            type: spec.array ? 'array' : (spec.type || 'text'),
+            required: spec.required
+        };
+        if (field.type === 'array') {
+            field.arrayType = spec.type || 'text';
+            field.default = () => [] as any[];
+        } else if (field.type === 'sliderAndNumber') {
+            field.min = 0;
+            field.max = 100;
+            field.step = 1;
+            field.default = 0;
+        } else if (['texture', 'template', 'room', 'sound', 'tandem'].includes(field.type)) {
+            field.default = -1;
+        } else if (field.type === 'number') {
+            field.default = 0;
+        }
+        return field;
+    });

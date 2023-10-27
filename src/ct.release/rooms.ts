@@ -5,7 +5,8 @@ import tilemapsLib, {Tilemap} from './tilemaps';
 import mainCamera from './camera';
 import {deadPool, pixiApp, stack} from '.';
 import {ExportedRoom} from './../node_requires/exporter/_exporterContracts';
-import { updateViewport } from 'fittoscreen';
+import {updateViewport} from 'fittoscreen';
+import {runBehaviors} from './behaviors';
 
 import * as pixiMod from 'node_modules/pixi.js';
 declare var PIXI: typeof pixiMod;
@@ -35,12 +36,23 @@ export class Room extends PIXI.Container<pixiMod.DisplayObject> {
     kill = false;
     tileLayers: Tilemap[] = [];
     backgrounds: Background[] = [];
+    /** Time for the next run of the 1st timer, in seconds. */
     timer1 = 0;
+    /** Time for the next run of the 2nd timer, in seconds. */
     timer2 = 0;
+    /** Time for the next run of the 3rd timer, in seconds. */
     timer3 = 0;
+    /** Time for the next run of the 4th timer, in seconds. */
     timer4 = 0;
+    /** Time for the next run of the 5th timer, in seconds. */
     timer5 = 0;
+    /** Time for the next run of the 6th timer, in seconds. */
     timer6 = 0;
+    /**
+     * The list of currently active behaviors. For editing this list,
+     * use `behaviors.add` and `behaviors.remove`
+     */
+    readonly behaviors: string[];
     viewWidth: number;
     viewHeight: number;
     /** The name of this room. */
@@ -89,6 +101,7 @@ export class Room extends PIXI.Container<pixiMod.DisplayObject> {
             this.follow = template.follow;
             this.viewWidth = template.width;
             this.viewHeight = template.height;
+            this.behaviors = [...template.behaviors];
             if (template.extends) {
                 Object.assign(this, template.extends);
             }
@@ -134,6 +147,8 @@ export class Room extends PIXI.Container<pixiMod.DisplayObject> {
                     }
                 );
             }
+        } else {
+            this.behaviors = [];
         }
         return this;
     }
@@ -365,14 +380,12 @@ const roomsLib = {
         roomsLib.clear();
         deadPool.length = 0;
         var template = roomsLib.templates[roomName];
-        console.log(template);
         mainCamera.reset(
             template.width / 2,
             template.height / 2,
             template.width,
             template.height
         );
-        console.log(mainCamera.width, mainCamera.height);
         if (template.cameraConstraints) {
             mainCamera.minX = template.cameraConstraints.x1;
             mainCamera.maxX = template.cameraConstraints.x2;
@@ -391,34 +404,46 @@ const roomsLib = {
         roomsLib.switching = false;
         nextRoom = void 0;
     },
-    onCreate(): void {
+    onCreate(this: Room): void {
         /*!%roomoncreate%*/
+        if (this.behaviors.length) {
+            runBehaviors(this, 'rooms', 'thisOnCreate');
+        }
     },
-    onLeave(): void {
+    onLeave(this: Room): void {
         /*!%roomonleave%*/
+        if (this.behaviors.length) {
+            runBehaviors(this, 'rooms', 'thisOnDestroy');
+        }
     },
-    beforeStep(): void {
+    beforeStep(this: Room): void {
         /*!%beforeroomstep%*/
     },
-    afterStep(): void {
+    afterStep(this: Room): void {
         /*!%afterroomstep%*/
+        if (this.behaviors.length) {
+            runBehaviors(this, 'rooms', 'thisOnStep');
+        }
     },
-    beforeDraw(): void {
+    beforeDraw(this: Room): void {
         /*!%beforeroomdraw%*/
     },
-    afterDraw(): void {
+    afterDraw(this: Room): void {
         /*!%afterroomdraw%*/
+        if (this.behaviors.length) {
+            runBehaviors(this, 'rooms', 'thisOnDraw');
+        }
     },
-    rootRoomOnCreate(): void {
+    rootRoomOnCreate(this: Room): void {
         /*!@rootRoomOnCreate@*/
     },
-    rootRoomOnStep(): void {
+    rootRoomOnStep(this: Room): void {
         /*!@rootRoomOnStep@*/
     },
-    rootRoomOnDraw(): void {
+    rootRoomOnDraw(this: Room): void {
         /*!@rootRoomOnDraw@*/
     },
-    rootRoomOnLeave(): void {
+    rootRoomOnLeave(this: Room): void {
         /*!@rootRoomOnLeave@*/
     },
     /**

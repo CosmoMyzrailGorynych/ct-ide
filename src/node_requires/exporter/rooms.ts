@@ -1,6 +1,6 @@
-const glob = require('./../glob');
 const {getUnwrappedExtends} = require('./utils');
 import {getBaseScripts} from './scriptableProcessor';
+import {embedStaticBehaviors, getBehaviorsList} from './behaviors';
 
 import {ExportedTile, ExportedTilemap, ExportedCopy, ExportedBg} from './_exporterContracts';
 import {getOfType, getById} from '../resources';
@@ -50,7 +50,9 @@ const stringifyRooms = (
     let rootRoomOnDraw = '';
     let rootRoomOnLeave = '';
 
-    for (const r of assets.room) {
+    const rooms = assets.room.map(r => embedStaticBehaviors(r, proj));
+
+    for (const r of rooms) {
         const objs: ExportedCopy[] = [];
         for (const copy of r.copies) {
             const exportableCopy = {
@@ -119,6 +121,7 @@ rooms.templates['${r.name}'] = {
     width: ${r.width},
     height: ${r.height},` +
     /* JSON.parse is faster at loading big objects */`
+    behaviors: JSON.parse('${JSON.stringify(getBehaviorsList(r))}'),
     objects: JSON.parse('${JSON.stringify(objs)
         .replace(/\\/g, '\\\\')
         .replace(/'/g, '\\\'')}'),

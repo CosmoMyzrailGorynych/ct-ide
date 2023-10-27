@@ -17,6 +17,7 @@ interface IRoomBackground {
 interface IRoomCopy {
     x: number,
     y: number,
+    /** The UID of the template used */
     uid: string,
     scale: {
         x: number,
@@ -25,9 +26,11 @@ interface IRoomCopy {
     rotation?: number,
     tint?: number,
     opacity?: number,
+    /** @deprecated */
     exts: {
         [key: string]: unknown
     },
+    /** User-defined properties set to this specific copy */
     customProperties: Record<string, unknown>
 }
 
@@ -52,7 +55,7 @@ interface ITileLayerTemplate {
     hidden?: boolean;
 }
 
-interface IRoom extends IScriptable {
+interface IRoom extends IScriptableBehaviors {
     type: 'room';
     width: number;
     height: number;

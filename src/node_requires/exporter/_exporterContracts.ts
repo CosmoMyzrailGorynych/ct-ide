@@ -87,13 +87,13 @@ export type ExportedBg = {
 
 export type ExportedRoom = {
     name: string;
-    group: string;
     width: number;
     height: number;
     objects: ExportedCopy[];
     bgs: ExportedBg[];
     tiles: ExportedTilemap[];
     backgroundColor: string;
+    behaviors: string[];
     cameraConstraints?: {
         x1: number,
         y1: number,
@@ -121,7 +121,7 @@ export type ExportedTemplate = {
     playAnimationOnStart: boolean;
     loopAnimation: boolean;
     visible: boolean;
-    group?: string;
+    behaviors: string[];
     onStep: () => void;
     onDraw: () => void;
     onDestroy: () => void;
@@ -156,3 +156,11 @@ export type ExportedStyle = {
     dropShadowAngle?: number;
     dropShadowDistance?: number;
 }
+
+export type ExportedBehaviorDynamic = {
+    thisOnStep?: () => void,
+    thisOnCreate?: () => void,
+    thisOnDraw?: () => void,
+    thisOnDestroy?: () => void
+};
+export type ExportedBehavior = 'static' | ExportedBehaviorDynamic;

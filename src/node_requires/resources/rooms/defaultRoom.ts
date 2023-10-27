@@ -33,6 +33,7 @@ const get = function (): IRoom {
         extends: {},
         lastmod: Number(new Date()),
         events: [],
+        behaviors: [],
         uid
     });
     return newRoom;

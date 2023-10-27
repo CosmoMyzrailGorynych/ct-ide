@@ -273,6 +273,9 @@ const unloadAllEvents = (): void => {
     }
 };
 
+const canBeDynamicBehavior = (event: IEventDeclaration): boolean =>
+    !event.codeTargets.some(key => key.startsWith('rootRoom'));
+
 export {
     categories,
     events,
@@ -282,6 +285,7 @@ export {
     getArgumentsTypeScript,
     localizeCategoryName,
     localizeParametrized,
+    canBeDynamicBehavior,
     localizeProp,
     localizeArgument,
     localizeLocalVarDesc,

@@ -1,5 +1,14 @@
 mixin templateProperties
     collapsible-section.aPanel(
+        heading="{vocGlob.assetTypes.behavior[2].slice(0, 1).toUpperCase() + vocGlob.assetTypes.behavior[2].slice(1)}"
+        storestatekey="templateBehaviors"
+        hlevel="4"
+    )
+        behavior-list(
+            onchanged="{parent.updateBehaviorExtends}"
+            asset="{parent.asset}"
+        )
+    collapsible-section.aPanel(
         heading="{voc.appearance}"
         storestatekey="templateEditorAppearance"
         hlevel="4"
@@ -40,6 +49,12 @@ mixin templateProperties
             label.block.checkbox
                 input(type="checkbox" checked="{parent.asset.visible ?? true}" onchange="{parent.wire('asset.visible')}")
                 span {parent.voc.visible}
+    .aSpacer(if="{behaviorExtends.length}")
+    extensions-editor(
+        entity="{asset.extends}"
+        customextends="{behaviorExtends}"
+        compact="compact" wide="wide"
+    )
     .aSpacer
     extensions-editor(type="template" entity="{asset.extends}" wide="yep" compact="probably")
 
@@ -112,8 +127,6 @@ template-editor.aPanel.aView.flexrow
         svg.feather
             use(xlink:href="#{minimizeProps ? 'maximize-2' : 'minimize-2'}")
     script.
-        const glob = require('./data/node_requires/glob');
-        this.glob = glob;
         this.namespace = 'templateView';
         this.mixin(require('./data/node_requires/riotMixins/voc').default);
         this.mixin(require('./data/node_requires/riotMixins/wire').default);
@@ -125,6 +138,24 @@ template-editor.aPanel.aView.flexrow
 
         this.tab = 'javascript';
         [this.currentSheet] = this.asset.events; // can be undefined, this is ok
+
+        const {schemaToExtensions} = require('./data/node_requires/resources/content');
+        this.behaviorExtends = [];
+        this.updateBehaviorExtends = () => {
+            this.behaviorExtends = [];
+            for (const behaviorUid of this.asset.behaviors) {
+                const behavior = resources.getById('behavior', behaviorUid);
+                if (behavior.specification.length) {
+                    this.behaviorExtends.push({
+                        name: behavior.name,
+                        type: 'group',
+                        items: schemaToExtensions(behavior.specification)
+                    });
+                }
+            }
+            this.update();
+        };
+        this.updateBehaviorExtends();
 
         this.changeTab = tab => () => {
             this.tab = tab;
@@ -159,8 +190,6 @@ template-editor.aPanel.aView.flexrow
         };
         this.saveAsset = () => {
             this.writeChanges();
-            window.signals.trigger('templatesChanged');
-            window.signals.trigger('templateChanged', this.asset.uid);
             return true;
         };
         this.templateSave = () => {

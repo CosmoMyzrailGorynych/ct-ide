@@ -107,7 +107,6 @@ room-properties
             color="{opts.room.backgroundColor || '#000000'}"
             hidealpha="hidealpha"
         )
-
     fieldset
         label.block.checkbox
             input(
@@ -115,6 +114,22 @@ room-properties
                 onchange="{handleToggle(opts.room, 'isUi')}"
             )
             b {voc.isUi}
+
+    collapsible-section.aPanel(
+        heading="{vocGlob.assetTypes.behavior[2].slice(0, 1).toUpperCase() + vocGlob.assetTypes.behavior[2].slice(1)}"
+        storestatekey="roomBehaviors"
+        hlevel="4"
+    )
+        behavior-list(
+            onchanged="{parent.updateBehaviorExtends}"
+            asset="{parent.opts.room}"
+        )
+    .aSpacer(if="{behaviorExtends.length}")
+    extensions-editor(
+        entity="{opts.room.extends}"
+        customextends="{behaviorExtends}"
+        compact="compact" wide="wide"
+    )
 
     fieldset
         extensions-editor(entity="{opts.room.extends}" type="room" wide="true" compact="true")
@@ -184,3 +199,21 @@ room-properties
                 after: entity[key]
             });
         };
+
+        const {schemaToExtensions} = require('./data/node_requires/resources/content');
+        this.behaviorExtends = [];
+        this.updateBehaviorExtends = () => {
+            this.behaviorExtends = [];
+            for (const behaviorUid of this.opts.room.behaviors) {
+                const behavior = resources.getById('behavior', behaviorUid);
+                if (behavior.specification.length) {
+                    this.behaviorExtends.push({
+                        name: behavior.name,
+                        type: 'group',
+                        items: schemaToExtensions(behavior.specification)
+                    });
+                }
+            }
+            this.update();
+        };
+        this.updateBehaviorExtends();

@@ -14,13 +14,17 @@
         thumbnail, as well as to prefill the current input's value.
         Use -1 for an empty value.
 
-    @attribute large (atomic)
+    @attribute [customfilter] ((asset: IAsset) => boolean)
+        A custom filter function applied to hide separate assets if the function
+        returns `false`.
+
+    @attribute [large] (atomic)
         Shows a larger asset selector instead of a button stack.
-    @attribute compact (atomic)
+    @attribute [compact] (atomic)
         Makes buttons slimmer. Incompatible with the `large` attribute.
-    @attribute selectorheader (string)
+    @attribute [selectorheader] (string)
         The header shown inside the asset selector.
-    @attribute selecttext (string)
+    @attribute [selecttext] (string)
         The prompt text inside the button or large selector when no asset was picked.
         Defaults to "Select" in current locale.
 
@@ -62,6 +66,7 @@ asset-input
         allownone="{opts.allowclear}"
         onselected="{onAssetPicked}"
         oncancelled="{closeSelector}"
+        customfilter="{opts.customfilter}"
     )
     script.
         if (!this.opts.assettypes) {

@@ -12,6 +12,9 @@
         Currently selected event.
         Defaults to the first event in the `events` attributes.
 
+    @attribute [warnbehaviors] (atomic)
+        If set, will show warning icons for events that make behaviors static.
+
     @attribute onchanged (Riot function)
         A callback that is called whenever a new event was picked.
         It can happen as a direct response to a user input, or can happen,
@@ -32,10 +35,21 @@ event-list-scriptable.flexfix(class="{opts.class}")
                     use(xlink:href="#{getEventByLib(event.eventKey, event.lib).icon}")
                 img.icon.nogrow.noshrink(if="{getIsParametrized(event) && getIcon(event)}" src="{getIcon(event)}")
                 span.nogrow.crop(title="{localizeName(event)}") {localizeName(event)}
+                div.noshrink.nogrow(
+                    if="{parent.opts.warnbehaviors && isStatic(event)}"
+                    title="{voc.staticEventWarning}"
+                )
+                    svg.feather.warning.anActionableIcon
+                        use(xlink:href="#snowflake")
                 .aSpacer.noshrink
-                svg.feather.nogrow.anActionableIcon.noshrink.nogrow(onclick="{promptEditEvent(event)}" if="{getIsParametrized(event)}")
+                svg.feather.anActionableIcon.noshrink.nogrow(
+                    if="{getIsParametrized(event)}"
+                    onclick="{promptEditEvent(event)}"
+                )
                     use(xlink:href="#edit")
-                svg.feather.nogrow.anActionableIcon.noshrink.nogrow(onclick="{promptRemoveEvent(event)}")
+                svg.feather.anActionableIcon.noshrink.nogrow(
+                    onclick="{promptRemoveEvent(event)}"
+                )
                     use(xlink:href="#trash")
     .flexfix-footer
         .event-list-scriptable-LocalVars(if="{opts.events?.length && getHasLocalVars(currentEvent)}")
@@ -82,6 +96,8 @@ event-list-scriptable.flexfix(class="{opts.class}")
             return eventsAPI.localizeProp(getFullKey(scriptableEvt), 'name');
         };
         this.getIcon = scriptableEvt => eventsAPI.tryGetIcon(getFullKey(scriptableEvt), scriptableEvt);
+        this.isStatic = scriptableEvt => !eventsAPI
+            .canBeDynamicBehavior(eventsAPI.getEventByLib(scriptableEvt.eventKey, scriptableEvt.lib));
 
         this.namespace = 'scriptables';
         this.mixin(require('./data/node_requires/riotMixins/voc').default);

@@ -4,7 +4,7 @@
 
     @attribute entity (riot object)
         An object to which apply editing to.
-    @attribute type (string, 'template'|'tileLayer'|'room'|'copy')
+    @attribute [type] (string, 'template'|'tileLayer'|'room'|'copy')
         The type of the edited asset. Not needed if customextends is set.
 
     @attribute [compact] (atomic)
@@ -102,7 +102,7 @@ extensions-editor
                     class="{invalid: ext.required && !(parent.opts.entity[ext.key] || ext.default)}"
                 )
                 asset-input(
-                    if="{['texture', 'template', 'room', 'sound'].includes(ext.type)}"
+                    if="{['texture', 'template', 'room', 'sound', 'behavior'].includes(ext.type)}"
                     assettypes="{ext.type}"
                     allowclear="yep"
                     compact="{parent.opts.compact}"

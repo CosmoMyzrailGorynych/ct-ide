@@ -6,7 +6,8 @@ colorMap = {
     tandem: hue(mappedColor, 300deg),
     room: hue(mappedColor, 40deg),
     font: hue(mappedColor, 150deg),
-    style: hue(mappedColor, 110deg)
+    style: hue(mappedColor, 110deg),
+    behavior: hue(mappedColor, 200deg)
 }
 
 for key, value in colorMap
@@ -14,6 +15,8 @@ for key, value in colorMap
         border-left 3px value solid
 
 asset-browser
+    .aCard
+        position relative
     & > .flexfix-header
         align-items center
         input
@@ -34,7 +37,7 @@ asset-browser
             .aCard-aThumbnail
                 img
                     max-height 8rem
-    .Cards .&-Icons, .Cards .&-Icons
+    .Cards .&-Icons
         color act
         line-height 1rem
         svg
@@ -43,6 +46,11 @@ asset-browser
             height @width
             & + svg
                 margin-left 0.5rem
+    .Cards.cards .&-Icons
+        position absolute
+        top 0.35rem
+        right 0.65rem
+        pointer-events none
     &.compact
         .aSearchWrap
             flex 1 1 auto

@@ -2,6 +2,7 @@ import res, {CtjsTexture} from './res';
 import {Background} from './backgrounds';
 import {Tilemap} from './tilemaps';
 import roomsLib, {Room} from './rooms';
+import {runBehaviors} from './behaviors';
 import {copyTypeSymbol, stack} from '.';
 
 import * as pixiMod from 'node_modules/pixi.js';
@@ -50,6 +51,11 @@ export class Copy extends PIXI.AnimatedSprite {
     timer5: number;
     /** Time for the next run of the 6th timer, in seconds. */
     timer6: number;
+    /**
+     * The list of currently active behaviors. For editing this list,
+     * use `behaviors.add` and `behaviors.remove`
+     */
+    readonly behaviors: string[];
 
     /** Set to true to disable this copy from automatic realignment with Camera.realign */
     skipRealign?: boolean;
@@ -118,6 +124,7 @@ export class Copy extends PIXI.AnimatedSprite {
             this.blendMode = t.blendMode || PIXI.BLEND_MODES.NORMAL;
             this.loop = t.loopAnimation;
             this.animationSpeed = t.animationFPS / 60;
+            this.behaviors = [...t.behaviors];
             if (t.visible === false) { // ignore nullish values
                 this.visible = false;
             }
@@ -127,6 +134,8 @@ export class Copy extends PIXI.AnimatedSprite {
             if (t.extends) {
                 Object.assign(this, t.extends);
             }
+        } else {
+            this.behaviors = [];
         }
         const oldScale = this.scale;
         Object.defineProperty(this, 'scale', {
@@ -338,6 +347,9 @@ export class LivingCopy extends Copy {
 
 const onCreateModifier = function () {
     /*!%oncreate%*/
+    if (this.behaviors.length) {
+        runBehaviors(this, 'templates', 'thisOnCreate');
+    }
 };
 
 /**
@@ -473,20 +485,29 @@ const templatesLib = {
         (obj: unknown): boolean
     },
 
-    beforeStep(): void {
+    beforeStep(this: Copy): void {
         /*!%beforestep%*/
     },
-    afterStep(): void {
+    afterStep(this: Copy): void {
         /*!%afterstep%*/
+        if (this.behaviors.length) {
+            runBehaviors(this, 'templates', 'thisOnStep');
+        }
     },
-    beforeDraw(): void {
+    beforeDraw(this: Copy): void {
         /*!%beforedraw%*/
     },
-    afterDraw(): void {
+    afterDraw(this: Copy): void {
         /*!%afterdraw%*/
+        if (this.behaviors.length) {
+            runBehaviors(this, 'templates', 'thisOnDraw');
+        }
     },
-    onDestroy(): void {
+    onDestroy(this: Copy): void {
         /*!%ondestroy%*/
+        if (this.behaviors.length) {
+            runBehaviors(this, 'templates', 'thisOnDestroy');
+        }
     }
 };
 export default templatesLib;

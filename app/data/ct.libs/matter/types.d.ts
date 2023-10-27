@@ -3902,62 +3902,60 @@ declare namespace Matter {
 
 type MatterEventCallback = (event: Matter.IEventCollision<Matter.Engine>) => void;
 
-declare namespace ct {
-    namespace matter {
-        function on(event: string, callback: MatterEventCallback): void;
-        function off(event: string, callback: MatterEventCallback): void;
-        /**
-         * Moves a copy to a new position without changing its velocity.
-         */
-        function teleport(copy: Copy, x: number, y: number): void;
-        /**
-         * Applies a force onto a copy. The resulting velocity depends on object's mass and friction.
-         * You can optionally define a point from which the force is applied to make the copy spin.
-         */
-        function push(copy: Copy, forceX: number, forceY: number, fromX?: number, fromY?: number): void;
-        /**
-         * Sets copy's angular velocity.
-         */
-        function spin(copy: Copy, speed: number): void;
-        /**
-         * Rotates a copy to the defined angle.
-         */
-        function rotate(copy: Copy, angle: number): void;
-        /**
-         * Rotates a copy by the defined angle.
-         */
-        function rotateBy(copy: Copy, angle: number): void;
-        /**
-         * Scales the copy and its physical object.
-         */
-        function scale(copy: Copy, x: number, y: number): void;
-        /**
-         * Sets copy's velocity instantly.
-         */
-        function launch(copy: Copy, hspeed: number, vspeed: number): void;
+declare namespace matter {
+    function on(event: string, callback: MatterEventCallback): void;
+    function off(event: string, callback: MatterEventCallback): void;
+    /**
+     * Moves a copy to a new position without changing its velocity.
+     */
+    function teleport(copy: Copy, x: number, y: number): void;
+    /**
+     * Applies a force onto a copy. The resulting velocity depends on object's mass and friction.
+     * You can optionally define a point from which the force is applied to make the copy spin.
+     */
+    function push(copy: Copy, forceX: number, forceY: number, fromX?: number, fromY?: number): void;
+    /**
+     * Sets copy's angular velocity.
+     */
+    function spin(copy: Copy, speed: number): void;
+    /**
+     * Rotates a copy to the defined angle.
+     */
+    function rotate(copy: Copy, angle: number): void;
+    /**
+     * Rotates a copy by the defined angle.
+     */
+    function rotateBy(copy: Copy, angle: number): void;
+    /**
+     * Scales the copy and its physical object.
+     */
+    function scale(copy: Copy, x: number, y: number): void;
+    /**
+     * Sets copy's velocity instantly.
+     */
+    function launch(copy: Copy, hspeed: number, vspeed: number): void;
 
-        /**
-         * Pins a copy in place, making it spin around its center of mass
-         * but preventing any other movement.
-         */
-        function pin(copy: Copy): void;
-        /**
-         * Ties a copy to a specific position in space, making it swing around it.
-         */
-        function tie(copy: Copy, position: ISimplePoint, stiffness?: number, damping?: number): void;
-        /**
-         * Puts a copy on a rope. It is similar to `ct.matter.tie`, but the length of a rope is defined
-         * explicitly, and starts from the copy's current position.
-         */
-        function rope(copy: Copy, length: number, stiffness?: number, damping?: number): void;
-        /**
-         * Ties two copies together with a rope.
-         */
-        function tieTogether(copy1: Copy, copy2: Copy, stiffness?: number, damping?: number): void;
+    /**
+     * Pins a copy in place, making it spin around its center of mass
+     * but preventing any other movement.
+     */
+    function pin(copy: Copy): void;
+    /**
+     * Ties a copy to a specific position in space, making it swing around it.
+     */
+    function tie(copy: Copy, position: ISimplePoint, stiffness?: number, damping?: number): void;
+    /**
+     * Puts a copy on a rope. It is similar to `matter.tie`, but the length of a rope is defined
+     * explicitly, and starts from the copy's current position.
+     */
+    function rope(copy: Copy, length: number, stiffness?: number, damping?: number): void;
+    /**
+     * Ties two copies together with a rope.
+     */
+    function tieTogether(copy1: Copy, copy2: Copy, stiffness?: number, damping?: number): void;
 
-        /**
-         * Calculates a good approximation of an impact two colliding copies caused to each other.
-         */
-        function getImpact(pair: Matter.IPair): number;
-    }
+    /**
+     * Calculates a good approximation of an impact two colliding copies caused to each other.
+     */
+    function getImpact(pair: Matter.IPair): number;
 }

@@ -1,5 +1,6 @@
 import {getById} from '../resources';
 import {getUnwrappedExtends} from './utils';
+import {embedStaticBehaviors, getBehaviorsList} from './behaviors';
 
 import {getBaseScripts} from './scriptableProcessor';
 
@@ -42,9 +43,8 @@ const stringifyTemplates = function (
             height: tex.height,
             width: tex.width
         }));
-
-    for (const k in assets.template) {
-        var template = assets.template[k];
+    const templatesEmbedded = assets.template.map(t => embedStaticBehaviors(t, proj));
+    for (const template of templatesEmbedded) {
         const scripts = getBaseScripts(template, proj);
         const textureInfo = getTextureInfo(blankTextures, template);
         templates += `
@@ -56,6 +56,7 @@ templates.templates["${template.name}"] = {
     loopAnimation: ${Boolean(template.loopAnimation)},
     visible: ${Boolean(template.visible ?? true)},
     ${textureInfo}
+    behaviors: JSON.parse('${JSON.stringify(getBehaviorsList(template))}'),
     onStep: function () {
         ${scripts.thisOnStep}
     },
