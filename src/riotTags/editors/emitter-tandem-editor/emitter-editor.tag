@@ -528,7 +528,7 @@ emitter-editor.aPanel.pad.nb
 
         this.pickingTexture = false;
 
-        this.wireAndPatchRotation = (path, field) => e => {
+        this.wireAndPatchRotationNow = (path, field) => e => {
             this.wire(path)(e);
             if (this.opts.emittermap && (this.opts.emitter.uid in this.opts.emittermap)) {
                 const emtInst = this.opts.emittermap[this.opts.emitter.uid];
@@ -539,7 +539,9 @@ emitter-editor.aPanel.pad.nb
                 window.signals.trigger('emitterResetRequest', this.opts.emitter.uid);
             }
         };
-        this.updateScaleCurve = () => {
+        this.wireAndPatchRotation = (path, field) =>
+            window.throttle(this.wireAndPatchRotationNow(path, field), 100);
+        this.updateScaleCurveNow = () => {
             if (this.opts.emittermap && (this.opts.emitter.uid in this.opts.emittermap)) {
                 const emtInst = this.opts.emittermap[this.opts.emitter.uid];
                 const {PropertyNode} = particles;
@@ -550,7 +552,8 @@ emitter-editor.aPanel.pad.nb
                 window.signals.trigger('emitterResetRequest', this.opts.emitter.uid);
             }
         };
-        this.updateSpeedCurve = () => {
+        this.updateScaleCurve = window.throttle(this.updateScaleCurveNow, 100);
+        this.updateSpeedCurveNow = () => {
             if (this.opts.emittermap && (this.opts.emitter.uid in this.opts.emittermap)) {
                 const emtInst = this.opts.emittermap[this.opts.emitter.uid];
                 const {PropertyNode} = particles;
@@ -562,7 +565,8 @@ emitter-editor.aPanel.pad.nb
                 window.signals.trigger('emitterResetRequest', this.opts.emitter.uid);
             }
         };
-        this.updateColorCurve = () => {
+        this.updateSpeedCurve = window.throttle(this.updateSpeedCurveNow, 100);
+        this.updateColorCurveNow = () => {
             if (this.opts.emittermap && (this.opts.emitter.uid in this.opts.emittermap)) {
                 const emtInst = this.opts.emittermap[this.opts.emitter.uid];
                 const {PropertyNode} = particles;
@@ -576,6 +580,7 @@ emitter-editor.aPanel.pad.nb
                 window.signals.trigger('emitterResetRequest', this.opts.emitter.uid);
             }
         };
+        this.updateColorCurve = window.throttle(this.updateColorCurveNow, 100);
         /* Expects color and alpha to be the same length */
         this.combineAlphaAndColors = () => {
             /* global net */
