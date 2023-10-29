@@ -66,9 +66,15 @@ window.migrationProcess.push({
                 case 'burst':
                     shapeType = 'spawnBurst';
                     shapeConfig = {
-                        spacing: v2Settings.particleSpacing,
-                        start: v2Settings.angleStart,
-                        distance: 0
+                        type: 'torus',
+                        // eslint-disable-next-line id-blacklist
+                        data: {
+                            innerRadius: 0,
+                            radius: 0,
+                            x: 0,
+                            y: 0,
+                            rotation: Boolean(!v2Settings.noRotation)
+                        }
                     };
                     break;
                 }

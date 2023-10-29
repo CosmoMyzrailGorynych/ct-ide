@@ -237,27 +237,6 @@ emitter-editor.aPanel.pad.nb
         key="rotation"
         defaultstate="{opts.emitter.openedTabs.includes('rotation')? 'opened' : 'closed'}"
     )
-        fieldset
-            b {parent.voc.rotationMethod}
-            .aButtonGroup.wide
-                button.small(onclick="{parent.changeRotationMethod('noRotation')}" class="{active: parent.rotation.type === 'noRotation'}" )
-                    svg.feather
-                        use(xlink:href="#particles-no-rotate")
-                    span  {parent.voc.rotationMethods.static}
-                button.small(onclick="{parent.changeRotationMethod('rotation')}" class="{active: parent.rotation.type === 'rotation'}" )
-                    svg.feather
-                        use(xlink:href="#particles-rotate")
-                    span  {parent.voc.rotationMethods.dynamic}
-        // noRotation
-        fieldset(if="{parent.rotation.type === 'noRotation'}")
-            label
-                b {parent.voc.startingDirection}
-                input(
-                    type="range" min="0" max="360"
-                    data-wired-force-minmax="yes"
-                    value="{parent.rotation.config.rotation}"
-                    oninput="{parent.wireAndReset('rotation.config.rotation')}"
-                )
         // rotation
         fieldset(if="{parent.rotation.type === 'rotation'}")
             b {parent.voc.startingDirection}
@@ -268,7 +247,7 @@ emitter-editor.aPanel.pad.nb
                     type="number" step="1" min="-360" max="360"
                     data-wired-force-minmax="yes"
                     value="{parent.rotation.config.minStart}"
-                    oninput="{parent.wireAndPatchRotation('this.rotation.config.minStart', 'minStart')}"
+                    oninput="{parent.patchRotation('this.rotation.config.minStart', 'minStart')}"
                 )
             label.fifty.npt.npr.nmt
                 span {parent.voc.to}
@@ -276,7 +255,7 @@ emitter-editor.aPanel.pad.nb
                     type="number" step="1" min="-360" max="360"
                     data-wired-force-minmax="yes"
                     value="{parent.rotation.config.maxStart}"
-                    oninput="{parent.wireAndPatchRotation('this.rotation.config.maxStart', 'maxStart')}"
+                    oninput="{parent.patchRotation('this.rotation.config.maxStart', 'maxStart')}"
                 )
         fieldset(if="{parent.rotation.type === 'rotation'}")
             b {parent.voc.rotationSpeed}
@@ -286,14 +265,14 @@ emitter-editor.aPanel.pad.nb
                 input.wide(
                     type="number" step="8" min="0" max="2500"
                     value="{parent.rotation.config.minSpeed}"
-                    oninput="{parent.wireAndPatchRotation('rotation.config.minSpeed', 'minSpeed')}"
+                    oninput="{parent.patchRotation('rotation.config.minSpeed', 'minSpeed')}"
                 )
             label.fifty.npt.npr.npb.nmt
                 span {parent.voc.to}
                 input.wide(
                     type="number" step="8" min="0" max="2500"
                     value="{parent.rotation.config.maxSpeed}"
-                    oninput="{parent.wireAndPatchRotation('rotation.config.maxSpeed', 'maxSpeed')}"
+                    oninput="{parent.patchRotation('rotation.config.maxSpeed', 'maxSpeed')}"
                 )
             .clear
         fieldset(if="{parent.rotation.type === 'rotation'}")
@@ -302,7 +281,7 @@ emitter-editor.aPanel.pad.nb
                 input.wide(
                     type="number" step="30" min="-3000" max="3000"
                     value="{parent.rotation.config.accel}"
-                    oninput="{parent.wireAndPatchRotation('rotation.config.accel', 'accel')}"
+                    oninput="{parent.patchRotation('rotation.config.accel', 'accel')}"
                 )
 
     collapsible-section(
@@ -398,10 +377,13 @@ emitter-editor.aPanel.pad.nb
                     svg.feather
                         use(xlink:href="#square")
                     span {parent.voc.spawnShapes.rectangle}
-                button.small(onclick="{parent.changeSpawnType('spawnBurst')}" class="{active: parent.spawnBh.type === 'spawnBurst'}")
-                    svg.feather
-                        use(xlink:href="#loader")
-                    span {parent.voc.spawnShapes.star}
+                //- Exclusive with texture rotation. And I don't want to mess with behavior order
+                //- on which everything hangs.
+
+                //- button.small(onclick="{parent.changeSpawnType('spawnBurst')}" class="{active: parent.spawnBh.type === 'spawnBurst'}")
+                //-     svg.feather
+                //-         use(xlink:href="#loader")
+                //-     span {parent.voc.spawnShapes.star}
         fieldset(if="{parent.spawnBh.type === 'spawnShape' && parent.spawnBh.config.type === 'torus'}")
             // Circular shapes
             b {parent.voc.radius}
@@ -421,6 +403,23 @@ emitter-editor.aPanel.pad.nb
                     oninput="{parent.wireAndReset('spawnBh.config.data.radius')}"
                 )
             .clear
+        fieldset(if="{parent.spawnBh.type === 'spawnShape' && parent.spawnBh.config.type === 'torus'}")
+            b {parent.voc.rotationMethod}
+            .aButtonGroup.wide
+                button.small(
+                    onclick="{parent.changeTorusRotation(false)}"
+                    class="{active: !parent.spawnBh.config.data.affectRotation}"
+                )
+                    svg.feather
+                        use(xlink:href="#particles-no-rotate")
+                    span  {parent.voc.rotationMethods.static}
+                button.small(
+                    onclick="{parent.changeTorusRotation(true)}"
+                    class="{active: parent.spawnBh.config.data.affectRotation}"
+                )
+                    svg.feather
+                        use(xlink:href="#particles-rotate")
+                    span  {parent.voc.rotationMethods.dynamic}
 
         fieldset(if="{parent.spawnBh.type === 'spawnShape' && parent.spawnBh.config.type === 'rect'}")
             // Rectangles
@@ -441,28 +440,6 @@ emitter-editor.aPanel.pad.nb
                     oninput="{parent.wireAndReset('spawnBh.config.data.h')}"
                 )
             .clear
-            label.checkbox
-                input(
-                    type="checkbox" checked="{parent.spawnBh.config.data.rotation}"
-                    onchange="{parent.wireAndReset('spawnBh.config.data.rotation')}"
-                )
-                b {parent.voc.rotateTexture}
-        fieldset(if="{parent.spawnBh.type === 'spawnBurst'}")
-            // Spaced bursts
-            label
-                b {parent.voc.burstSpacing}
-                input.wide(
-                    type="number" min="1" max="360"
-                    value="{parent.spawnBh.config.spacing}"
-                    oninput="{parent.wire('spawnBh.config.spacing')}"
-                )
-            label
-                b {parent.voc.burstStart}
-                input.wide(
-                    type="number" min="1" max="360"
-                    value="{parent.spawnBh.config.spacing}"
-                    oninput="{parent.wire('spawnBh.config.spacing')}"
-                )
         fieldset
             label.checkbox
                 input(
@@ -528,7 +505,7 @@ emitter-editor.aPanel.pad.nb
 
         this.pickingTexture = false;
 
-        this.wireAndPatchRotationNow = (path, field) => e => {
+        this.patchRotationNow = (path, field) => e => {
             this.wire(path)(e);
             if (this.opts.emittermap && (this.opts.emitter.uid in this.opts.emittermap)) {
                 const emtInst = this.opts.emittermap[this.opts.emitter.uid];
@@ -539,8 +516,9 @@ emitter-editor.aPanel.pad.nb
                 window.signals.trigger('emitterResetRequest', this.opts.emitter.uid);
             }
         };
-        this.wireAndPatchRotation = (path, field) =>
-            window.throttle(this.wireAndPatchRotationNow(path, field), 100);
+        this.patchRotation = (path, field) =>
+            window.throttle(this.patchRotationNow(path, field), 100);
+
         this.updateScaleCurveNow = () => {
             if (this.opts.emittermap && (this.opts.emitter.uid in this.opts.emittermap)) {
                 const emtInst = this.opts.emittermap[this.opts.emitter.uid];
@@ -553,6 +531,7 @@ emitter-editor.aPanel.pad.nb
             }
         };
         this.updateScaleCurve = window.throttle(this.updateScaleCurveNow, 100);
+
         this.updateSpeedCurveNow = () => {
             if (this.opts.emittermap && (this.opts.emitter.uid in this.opts.emittermap)) {
                 const emtInst = this.opts.emittermap[this.opts.emitter.uid];
@@ -566,6 +545,7 @@ emitter-editor.aPanel.pad.nb
             }
         };
         this.updateSpeedCurve = window.throttle(this.updateSpeedCurveNow, 100);
+
         this.updateColorCurveNow = () => {
             if (this.opts.emittermap && (this.opts.emitter.uid in this.opts.emittermap)) {
                 const emtInst = this.opts.emittermap[this.opts.emitter.uid];
@@ -581,6 +561,7 @@ emitter-editor.aPanel.pad.nb
             }
         };
         this.updateColorCurve = window.throttle(this.updateColorCurveNow, 100);
+
         /* Expects color and alpha to be the same length */
         this.combineAlphaAndColors = () => {
             /* global net */
@@ -643,17 +624,6 @@ emitter-editor.aPanel.pad.nb
                 };
                 break;
 
-                case 'spawnBurst':
-                newBh = {
-                    type: 'spawnBurst',
-                    config: {
-                        spacing: 360 / 5,
-                        start: 0,
-                        distance: 0,
-                    }
-                };
-                break;
-
                 default:
                 throw new Error(`Unknown shape: ${type}`);
             }
@@ -661,39 +631,11 @@ emitter-editor.aPanel.pad.nb
             this.updateShortcuts();
             window.signals.trigger('emitterResetRequest');
         };
-        this.changeRotationMethod = type => e => {
-            const oldType = this.rotation.type;
-            if (oldType === type) {
-                return; // nothing to do if changing to the same rotation metho
-            }
-            const oldBehavior = this.rotation;
-            const {behaviors} = this.opts.emitter.settings;
-            let newBh;
-            if (type === 'noRotation') {
-                newBh = {
-                    type: 'noRotation',
-                    config: {
-                        rotation: 0
-                    }
-                };
-            } else {
-                newBh = {
-                    type: 'rotation',
-                    config: {
-                        minStart: 0,
-                        maxStart: 360,
-                        minSpeed: 0,
-                        maxSpeed: 0,
-                        accel: 0
-                    }
-                }
-            }
-            behaviors.splice(6, 1, newBh);
-            this.updateShortcuts();
+        this.changeTorusRotation = value => () => {
+            this.spawnBh.config.data.affectRotation = value;
             window.signals.trigger('emitterResetRequest');
         };
         this.changeMovementType = type => e => {
-            console.log(e);
             const oldType = this.movement.type;
             if (oldType === type) {
                 return; // nothing to do if changing to the same movement method
