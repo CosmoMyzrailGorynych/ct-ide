@@ -190,7 +190,7 @@ emitter-editor.aPanel.pad.nb
                     input.wide(
                         type="number" step="8" min="0" max="2500"
                         value="{parent.movement.config.minStart}"
-                        oninput="{parent.wireAndReset('movement.config.minStart')}"
+                        oninput="{parent.patchAcceleration('movement.config.minStart', 'minStart')}"
                     )
                 .aSpacer.noshrink
                 label
@@ -198,7 +198,7 @@ emitter-editor.aPanel.pad.nb
                     input.wide(
                         type="number" step="8" min="0" max="2500"
                         value="{parent.movement.config.maxStart}"
-                        oninput="{parent.wireAndReset('movement.config.maxStart')}"
+                        oninput="{parent.patchAcceleration('movement.config.maxStart', 'maxStart')}"
                     )
             b {parent.voc.gravityHeading}
             .flexrow
@@ -518,6 +518,20 @@ emitter-editor.aPanel.pad.nb
         };
         this.patchRotation = (path, field) =>
             window.throttle(this.patchRotationNow(path, field), 100);
+
+        this.patchAccelerationNow = (path, field) => e => {
+            this.wire(path)(e);
+            if (this.opts.emittermap && (this.opts.emitter.uid in this.opts.emittermap)) {
+                const emtInst = this.opts.emittermap[this.opts.emitter.uid];
+                const bh = emtInst.initBehaviors
+                    .find(b => b instanceof particles.behaviors.AccelerationBehavior);
+                bh[field] = Number(e.target.value);
+            } else {
+                window.signals.trigger('emitterResetRequest', this.opts.emitter.uid);
+            }
+        };
+        this.patchAcceleration = (path, field) =>
+            window.throttle(this.patchAccelerationNow(path, field), 100);
 
         this.updateScaleCurveNow = () => {
             if (this.opts.emittermap && (this.opts.emitter.uid in this.opts.emittermap)) {
