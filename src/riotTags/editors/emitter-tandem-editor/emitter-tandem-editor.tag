@@ -23,7 +23,7 @@ emitter-tandem-editor.aPanel.aView.flexrow(class="{opts.class}")
             onpointerout="{resetEmitterPositioning}"
         )
         .emitter-tandem-editor-Tools.flexrow
-            button.small.nogrow.forcebackground(onclick="{resetEmitters}")
+            button.small.nogrow.forcebackground(onclick="{resetSelf}")
                 span {voc.reset}
             .aSpacer
             button.small.nogrow.forcebackground(onclick="{openPreviewTexturePicker}")
@@ -176,6 +176,7 @@ emitter-tandem-editor.aPanel.aView.flexrow(class="{opts.class}")
             // so that editors get their link to emitter instances
             this.update();
         };
+        this.resetSelf = () => this.resetEmitters();
         // Advances emitter simulation by a given amount of seconds
         this.updateEmitters = seconds => {
             for (const emitter of this.emitterInstances) {
