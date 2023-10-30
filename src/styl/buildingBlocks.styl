@@ -444,13 +444,21 @@ sounds-panel, rooms-panel
     border 1px solid borderBright
     border-radius br
     {shadamb}
+    position relative
+    background background
     td, th
         &:first-child
             padding-left 1.5rem
         &:last-child
             padding-right 1.5rem
+    th
+        position sticky
+        z-index 2
+        background background
+        top 0
 .aTableWrap
-    overflow-y auto
+    max-height calc(100vh - 5rem)
+    overflow auto
     .aNiceTable
         width max-content
 
