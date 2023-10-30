@@ -111,14 +111,11 @@ array-editor
             .nogrow.noshrink
                 // Use opacity to keep nice layout
                 .anActionableIcon(onclick="{moveUp(index)}" title="{voc.moveUp}")
-                    svg.feather
-                        use(xlink:href="#arrow-up")
+                    span ⬆️
                 .anActionableIcon(onclick="{moveDown(index)}" title="{voc.moveDown}")
-                    svg.feather
-                        use(xlink:href="#arrow-down")
+                    span ⬇️
                 .anActionableIcon(onclick="{deleteRow(index)}" if="{!parent.opts.setlength}" title="{voc.deleteRow}")
-                    svg.feather.red
-                        use(xlink:href="#delete")
+                    span ❌
     button(onclick="{addRow}" class="{inline: opts.compact}" if="{!opts.setlength}")
         svg.feather
             use(xlink:href="#plus")
