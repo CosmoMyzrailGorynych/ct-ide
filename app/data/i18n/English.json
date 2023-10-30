@@ -399,6 +399,7 @@
             "fieldNameHint": "The name of the field as it will be used in code. For example: power, hp, spawnType.",
             "fieldReadableName": "Readable name",
             "fieldReadableNameHint": "The readable version of the name, which is used in the content editor.",
+            "fixedLength": "Fixed length",
             "fieldType": "Type",
             "array": "Array",
             "deleteContentType": "Delete this content type",

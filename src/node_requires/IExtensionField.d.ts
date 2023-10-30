@@ -31,13 +31,13 @@ declare interface IExtensionField {
     required?: boolean,
     /**
      * Shows the field only when the value for the specified key of the same object
-     * is truthy. */
-    if?: string,
+     * is truthy (if only a string was passed) or . */
+    if?: string | [string, unknown],
     /**
      * Used with type === 'radio' and type === 'select'.
      */
     options?: Array<{
-        value: any,
+        value: unknown,
         name: string,
         help?: string
     }>,
@@ -53,6 +53,11 @@ declare interface IExtensionField {
      * excluding headers, groups, tables, icons, radio, select, and arrays.
      */
     arrayType?: string,
+    /**
+     * If set and used with type=array, presets the amount of values in the created
+     * arrays. Values cannot be removed, and new ones can't be added.
+     */
+    arrayLength?: number,
     /** For type === 'group', the grouped items. */
     items?: IExtensionField[],
      /** For type === 'table' */

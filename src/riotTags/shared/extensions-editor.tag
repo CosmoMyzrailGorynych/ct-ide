@@ -223,7 +223,7 @@ extensions-editor
                         selected="{parent.parent.opts.entity[ext.key] === option.value}"
                         disabled="{option.value === ''}"
                     ) {parent.parent.localizeField(option, 'name')}
-                array-editor(if="{ext.type === 'array'}" inputtype="{ext.arrayType}" entity="{parent.opts.entity[ext.key]}" compact="{parent.opts.compact}")
+                array-editor(if="{ext.type === 'array'}" inputtype="{ext.arrayType}" setlength="{ext.arrayLength}" entity="{parent.opts.entity[ext.key]}" compact="{parent.opts.compact}")
                 .dim(if="{ext.help && !parent.opts.compact}") {localizeField(ext, 'help')}
     script.
         const libsDir = './data/ct.libs';

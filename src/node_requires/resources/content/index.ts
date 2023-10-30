@@ -33,7 +33,12 @@ export const getFieldsExtends = () => [{
         type: 'checkbox',
         key: 'array',
         default: false
-    }]
+    }, {
+        name: getByPath('settings.content.fixedLength'),
+        type: 'number',
+        key: 'fixedLength',
+        if: 'array'
+    }] as IExtensionField[]
 }];
 
 export const getExtends = () => [{
@@ -59,7 +64,8 @@ interface IFieldSchema {
     readableName: string,
     type: 'text' | 'textfield' | 'code' | '' | 'number' | 'sliderAndNumber' | 'point2D' | 'texture' | 'template' | 'sound' | 'room' | 'tandem' | '' | 'checkbox' | 'color',
     required: boolean
-    array: boolean
+    array: boolean,
+    fixedLength?: number
 }
 
 export const schemaToExtensions = (schema: IFieldSchema[]): IExtensionField[] => schema
@@ -72,6 +78,9 @@ export const schemaToExtensions = (schema: IFieldSchema[]): IExtensionField[] =>
         };
         if (field.type === 'array') {
             field.arrayType = spec.type || 'text';
+            if (spec.fixedLength) {
+                field.arrayLength = spec.fixedLength;
+            }
             field.default = () => [] as any[];
         } else if (field.type === 'sliderAndNumber') {
             field.min = 0;
