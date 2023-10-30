@@ -5,6 +5,7 @@ const emitter = {
     textureBehavior: 'textureRandom',
     animatedSingleFramerate: 30,
     settings: {
+        delay: 0,
         lifetime: {
             min: 0.5,
             max: 0.5

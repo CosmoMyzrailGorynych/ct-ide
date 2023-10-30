@@ -2,7 +2,7 @@ import {ExporterError} from './ExporterError';
 
 import {ExportedTandems} from './_exporterContracts';
 
-const textures = require('../resources/textures');
+import {getName, getById} from '../resources/';
 
 
 export const stringifyTandems = (input: ITandem[]): string => {
@@ -20,8 +20,8 @@ export const stringifyTandems = (input: ITandem[]): string => {
                 throw exporterError;
             }
             return {
-                texture: textures.getTextureFromId(emitter.texture).name,
-                settings: emitter.settings
+                ...emitter,
+                texture: getName(getById('texture', emitter.texture))
             };
         });
     }

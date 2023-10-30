@@ -41,7 +41,9 @@ export type ExportedSkeleton = {
 
 export type ExportedTandem = {
     texture: string;
-    settings: ITandem['emitters'][0]['settings'];
+    settings: ITandem['emitters'][0]['settings'] & {
+        delay: number;
+    };
 }[];
 
 export type ExportedTandems = Record<string, ExportedTandem>;

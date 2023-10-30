@@ -15,6 +15,7 @@ import roomsM, {Room} from './rooms';
 import soundsM from 'sounds';
 import stylesM from 'styles';
 import templatesM, {Copy} from './templates';
+import emittersM from './emitters';
 import tilemapsM, {Tilemap} from './tilemaps';
 import timerM from './timer';
 import uM from './u';
@@ -204,9 +205,11 @@ let loading: Promise<void>;
         /*!%beforeframe%*/
         roomsM.rootRoomOnStep.apply(roomsM.current);
         for (let i = 0, li = stack.length; i < li; i++) {
-            templatesM.beforeStep.apply(stack[i]);
+            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+            stack[i][copyTypeSymbol] && templatesM.beforeStep.apply(stack[i]);
             stack[i].onStep.apply(stack[i]);
-            templatesM.afterStep.apply(stack[i]);
+            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+            stack[i][copyTypeSymbol] && templatesM.afterStep.apply(stack[i]);
         }
         // There may be a number of rooms stacked on top of each other.
         // Loop through them and filter out everything that is not a room.
@@ -271,6 +274,7 @@ let loading: Promise<void>;
     const behaviors = behaviorsM;
     const camera = cameraM;
     const content = contentM;
+    const emitters = emittersM;
     const inputs = inputsM;
     const res = resM;
     const rooms = roomsM;
@@ -286,6 +290,7 @@ let loading: Promise<void>;
         behaviors,
         camera,
         content,
+        emitters,
         inputs,
         res,
         rooms,

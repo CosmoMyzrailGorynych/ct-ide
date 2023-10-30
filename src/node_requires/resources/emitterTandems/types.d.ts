@@ -21,6 +21,7 @@ interface ITimeSeries<type> {
 }
 
 interface IEmitterConfigTupled extends EmitterConfigV3 {
+    delay: number,
     behaviors: [{ // 0
         type: 'alpha',
         config: ConstructorParameters<AlphaBehavior>[0]
