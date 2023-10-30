@@ -3,6 +3,7 @@ type ScriptableCode = Record<EventCodeTargets, string>;
 import {ExporterError, highlightProblem} from './ExporterError';
 const {getEventByLib} = require('../events');
 import {readFile} from 'fs-extra';
+import {getName, getById} from '../resources';
 import {getModulePathByName, loadModuleByName} from './../resources/modules';
 import {join} from 'path';
 const coffeeScript = require('coffeescript');
@@ -66,14 +67,6 @@ const populateEventCache = async (project: IProject): Promise<Record<string, str
 const getFromCache = (event: IScriptableEvent, target: string): string => {
     const cacheName = getEventCacheName(event.lib, event.eventKey, target);
     return eventsCache[cacheName];
-};
-
-const resourcesAPI = require('./../resources');
-const getAssetName = (assetId: string, assetType: resourceType) => {
-    if (resourcesAPI[assetType + 's'].getName) {
-        return resourcesAPI[assetType + 's'].getName(assetId);
-    }
-    return resourcesAPI[assetType + 's'].getById(assetId).name;
 };
 
 // eslint-disable-next-line max-lines-per-function
@@ -141,7 +134,7 @@ const getBaseScripts = function (entity: IScriptable, project: IProject): Script
                 const exp = new RegExp(`/\\*%%${argCode}%%\\*/`, 'g');
                 const argType = eventSpec.arguments[argCode].type;
                 if (['template', 'room', 'sound', 'tandem', 'font', 'style', 'texture'].indexOf(argType) !== -1) {
-                    const value = getAssetName(String(eventArgs[argCode]), argType as resourceType);
+                    const value = getName(getById(argType, String(eventArgs[argCode])));
                     resultingCode = resultingCode.replace(exp, `'${value.replace(/'/g, '\\\'')}'`);
                 } else if (typeof eventArgs[argCode] === 'string') {
                     // Wrap the value into singular quotes, escape existing quotes
