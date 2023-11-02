@@ -52,9 +52,9 @@
   },
   "chromium-args": "--mixed-context --enable-features=nw2 --load-extensions --force-color-profile=srgb --disable-features=ColorCorrectRendering",
   "dependencies": {
-    "@capacitor/cli": "^3.4.0",
-    "@capacitor/core": "^3.4.0",
-    "@capacitor/project": "^1.0.28",
+    "@capacitor/cli": "^5.5.0",
+    "@capacitor/core": "^5.5.0",
+    "@trapezedev/project": "^7.0.10",
     "archiver": "^3.1.1",
     "coffeescript": "^2.7.0",
     "csswring": "7.0.0",
