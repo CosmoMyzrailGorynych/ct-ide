@@ -176,8 +176,8 @@
         "envVarNotice": "你可能仍然需要手动设置此环境变量并重新启动设备",
         "downloadAndroidStudio": "下载 Android Studio",
         "requiresInternetNotice": "此操作需要Internet连接来设置每个项目",
-        "noJdkFound": "没有找到JDK 11 (JAVA HOME环境变量没有设置或没有指向JDK 11). 你可以在这里获得JDK 11:",
-        "downloadJDK": "下载 JDK 11"
+        "noJdkFound": "没有找到JDK 17 (JAVA HOME环境变量没有设置或没有指向JDK 17). 你可以在这里获得JDK 17:",
+        "downloadJDK": "下载 JDK 17"
     },
     "intro": {
         "loading": "请稍等: 小猫正在聚集光速!",

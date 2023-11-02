@@ -176,8 +176,8 @@
         "envVarNotice": "Mogelijks moet je de omgevingsvariabele nog handmatig instellen en je apparaat heropstarten.",
         "downloadAndroidStudio": "Download Android Studio",
         "requiresInternetNotice": "Deze actie vereist Internetconnectie om ieder project op te starten.",
-        "noJdkFound": "JDK 11 werd niet gevonden (JAVA_HOME omgevingsvariabele is niet ingesteld of verwijst niet naar JDK 11). Je kunt JDK 11 hier verkrijgen:",
-        "downloadJDK": "Download JDK 11"
+        "noJdkFound": "JDK 17 werd niet gevonden (JAVA_HOME omgevingsvariabele is niet ingesteld of verwijst niet naar JDK 17). Je kunt JDK 17 hier verkrijgen:",
+        "downloadJDK": "Download JDK 17"
     },
     "intro": {
         "loading": "Even geduld: kittens naderen lichtsnelheid!",

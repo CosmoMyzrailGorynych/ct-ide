@@ -173,8 +173,8 @@
         "envVarNotice": "Vous aurez toujours besoin de définir la variable d’environnement à la main et de redémarrer votre appareil.",
         "downloadAndroidStudio": "Télécharger Android Studio",
         "requiresInternetNotice": "Cette opération nécessite une connexion internet pour mettre en place les projet.",
-        "noJdkFound": "Le JDK 11 est introuvable (la variable d’environnement JAVA_HOME n’est pas définie ou ne pointe pas vers le JDK 11). Vous pouvez l’obtenir ici :",
-        "downloadJDK": "Télécharger le JDK 11"
+        "noJdkFound": "Le JDK 17 est introuvable (la variable d’environnement JAVA_HOME n’est pas définie ou ne pointe pas vers le JDK 17). Vous pouvez l’obtenir ici :",
+        "downloadJDK": "Télécharger le JDK 17"
     },
     "intro": {
         "loading": "Veuillez patientez : nos chatons se préparent à la vitesse de la lumière !",

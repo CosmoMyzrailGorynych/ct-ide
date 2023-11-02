@@ -199,8 +199,8 @@
         "envVarNotice": "Você ainda pode precisar definir essa variável de ambiente manualmente e reiniciar o seu dispositivo",
         "downloadAndroidStudio": "Baixe o Studio",
         "requiresInternetNotice": "Essa operação requer uma conexão de internet para configurar cada projeto.",
-        "noJdkFound": "Nenhum JDK 11 foi encontrado (a variável de ambiente JAVA_HOME não foi definida ou não aponta para o JDK 11). Você pode obter o JDK 11 aqui:",
-        "downloadJDK": "Baixe o JDK 11",
+        "noJdkFound": "Nenhum JDK 17 foi encontrado (a variável de ambiente JAVA_HOME não foi definida ou não aponta para o JDK 17). Você pode obter o JDK 17 aqui:",
+        "downloadJDK": "Baixe o JDK 17",
         "firstRunNotice": "A primeira execução para cada plataforma será lenta, uma vez que o ct.js baixará e salvará bibliotecas adicionais necessárias para o empacotamento. Isso levará algum tempo, mas nas próximas vezes será quase que instantâneo."
     },
     "extensionsEditor": {

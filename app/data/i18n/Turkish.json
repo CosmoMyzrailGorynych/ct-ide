@@ -199,8 +199,8 @@
         "envVarNotice": "Bu küresel değeri kendin değiştirip cihazını yeniden başlatman gerekebilir.",
         "downloadAndroidStudio": "Android Studio'yu indir",
         "requiresInternetNotice": "Bu işlemde her projeyi kurmak için internet bağlantısı gereklidir.",
-        "noJdkFound": "JDK 11 bulunamadı (JAVA_HOME küresel değişkeni ayarlanmamış veya JDK 11'e yönelik değil). JDK 11'i buradan alabilirsin:",
-        "downloadJDK": "JDK 11'i indir",
+        "noJdkFound": "JDK 17 bulunamadı (JAVA_HOME küresel değişkeni ayarlanmamış veya JDK 17'e yönelik değil). JDK 17'i buradan alabilirsin:",
+        "downloadJDK": "JDK 17'i indir",
         "firstRunNotice": "ct.js paketleme için gerekli kütüphaneleri yükleyip kaydedeceğinden ilk çalıştırma uzun sürebilir. Fakat sonraki zamanlarda neredeyse anında olur."
     },
     "extensionsEditor": {

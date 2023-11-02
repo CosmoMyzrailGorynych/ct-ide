@@ -199,8 +199,8 @@
         "envVarNotice": "環境変数を手動で設定し、デバイスを再起動する必要がある場合があります。",
         "downloadAndroidStudio": "Android Studioをダウンロード",
         "requiresInternetNotice": "この操作には、インターネット接続が必要です。",
-        "noJdkFound": "JDK 11が見つからない（JAVA_HOME環境変数が設定されていないか、設定が間違っている）。JDK 11はこちらから入手できます。:",
-        "downloadJDK": "JDK 11をダウンロード",
+        "noJdkFound": "JDK 17が見つからない（JAVA_HOME環境変数が設定されていないか、設定が間違っている）。JDK 17はこちらから入手できます。:",
+        "downloadJDK": "JDK 17をダウンロード",
         "firstRunNotice": "各プラットフォームで初めて実行するとき、ct.jsがパッケージングに必要な追加ライブラリをダウンロードし保存するため、時間が掛かります。（次回以降はすぐに実行されます。）"
     },
     "exporterError": {
