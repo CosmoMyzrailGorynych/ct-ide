@@ -37,10 +37,11 @@ main-menu-troubleshooting
 
         this.copySystemInfo = () => {
             const os = require('os'),
-                  path = require('path');
+                  path = require('path'),
+                  PIXI = require('pixi.js');
             const packaged = path.basename(process.execPath, path.extname(process.execPath)) !== 'nw';
             const gl = document.createElement('canvas').getContext('webgl');
-            var debugInfo, vendor, renderer;
+            let debugInfo, vendor, renderer;
             if (gl) {
                 debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
                 vendor = gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL);
@@ -51,6 +52,7 @@ main-menu-troubleshooting
                   `Chromium v${process.versions.chromium}\n` +
                   `Node.js v${process.versions.node}\n` +
                   `Pixi.js v${PIXI.VERSION}\n\n` +
+                  `WebGPU ${navigator.gpu ? 'available' : 'UNAVAILABLE'}\n` +
                   `WebGL ${gl ? 'available' : 'UNAVAILABLE'}\n` +
                   `WebGL vendor ${(debugInfo && vendor) || 'UNKNOWN'}\n` +
                   `WebGL renderer ${(debugInfo && renderer) || 'UNKNOWN'}\n` +
