@@ -1,7 +1,7 @@
-if (this === ct.room) {
+if (this === rooms.current) {
     if ([/*%matterUseStaticDeltaTime%*/][0] === false) {
-        Matter.Engine.update(ct.room.matterEngine, 1000 / ct.speed * ct.delta);
+        Matter.Engine.update(rooms.current.matterEngine, 1000 / settings.speed * u.delta);
     } else {
-        Matter.Engine.update(ct.room.matterEngine, 1000 / ct.speed);
+        Matter.Engine.update(rooms.current.matterEngine, 1000 / settings.speed);
     }
 }

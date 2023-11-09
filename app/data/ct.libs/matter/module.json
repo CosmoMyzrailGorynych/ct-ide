@@ -19,8 +19,8 @@
         "name_Ru": "Использовать статичную длину кадра",
         "type": "checkbox",
         "default": true,
-        "help": "Uses a constant frame time instead of ct.delta to make world updates more deterministic and stable. Disabling this option may result in an unstable, jiggly physics behavior.",
-        "help_Ru": "Использует константу вместо ct.delta, чтобы сделать симуляцию более стабильную и предсказуемую. Отключение этой опции может привести к нестабильному, дёрганому поведению физических тел.",
+        "help": "Uses a constant frame time instead of u.delta to make world updates more deterministic and stable. Disabling this option may result in an unstable, jiggly physics behavior.",
+        "help_Ru": "Использует константу вместо u.delta, чтобы сделать симуляцию более стабильную и предсказуемую. Отключение этой опции может привести к нестабильному, дёрганому поведению физических тел.",
         "key": "matterUseStaticDeltaTime"
     }],
 

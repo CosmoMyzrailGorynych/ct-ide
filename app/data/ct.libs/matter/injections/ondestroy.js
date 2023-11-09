@@ -1,3 +1,3 @@
 if (this.matterEnable) {
-    Matter.World.remove(ct.room.matterWorld, this.matterBody);
+    Matter.World.remove(rooms.current.matterWorld, this.matterBody);
 }

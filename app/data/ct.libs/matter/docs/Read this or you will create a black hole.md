@@ -1,17 +1,17 @@
 # Read this or you will create a black hole
 
-Working with copies when `ct.matter` is enabled is drastically different from the regular workflow.
+Working with copies when `matter` is enabled is drastically different from the regular workflow.
 
 ## `vspeed`, `hspeed`, `scale`, `x`, `y` and many others are read-only
 
 Changing any of these values will have no effect as Matter.js provides properties a bit more complex than these. Instead of that, use these methods:
 
-* `ct.matter.teleport(copy, x, y)` to move a copy in an arbitrary place;
-* `ct.matter.push(copy, forceX, forceY)` to apply a force so that a copy gradually accelerates where you want;
-* `ct.matter.launch(copy, hspeed, vspeed)` to set copy's velocity. Use it for actions like jumpts, or for explosion impacts.
-* `ct.matter.spin(copy, speed)` to set angular velocity.
-* `ct.matter.rotate(copy, amgle)` to set copy's orientation.
-* `ct.matter.scale(copy, x, y)` to resize a copy.
+* `matter.teleport(copy, x, y)` to move a copy in an arbitrary place;
+* `matter.push(copy, forceX, forceY)` to apply a force so that a copy gradually accelerates where you want;
+* `matter.launch(copy, hspeed, vspeed)` to set copy's velocity. Use it for actions like jumpts, or for explosion impacts.
+* `matter.spin(copy, speed)` to set angular velocity.
+* `matter.rotate(copy, amgle)` to set copy's orientation.
+* `matter.scale(copy, x, y)` to resize a copy.
 
 You can still read `x`, `y`, `hspeed`, `vspeed`, `speed`, `direction`, but these are to be considered read-only.
 
