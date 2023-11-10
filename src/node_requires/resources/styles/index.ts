@@ -1,6 +1,4 @@
 import generateGUID from '../../generateGUID';
-import {getById} from '..';
-import path from 'path';
 import {StylePreviewer} from '../preview/style';
 
 export const createAsset = (): IStyle => {

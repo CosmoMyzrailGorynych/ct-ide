@@ -1,19 +1,21 @@
+/* eslint-disable no-underscore-dangle */
 import res, {CtjsTexture} from './res';
 import {Background} from './backgrounds';
 import {Tilemap} from './tilemaps';
 import roomsLib, {Room} from './rooms';
 import {runBehaviors} from './behaviors';
 import {copyTypeSymbol, stack} from '.';
+import stylesLib from 'styles';
 
-import * as pixiMod from 'node_modules/pixi.js';
+import type * as pixiMod from 'node_modules/pixi.js';
 declare var PIXI: typeof pixiMod;
 
-import {ExportedTemplate, TextureShape} from '../node_requires/exporter/_exporterContracts';
+import type {ExportedStyle, ExportedTemplate, TextureShape} from '../node_requires/exporter/_exporterContracts';
 import uLib from 'u';
 
 let uid = 0;
 
-export class Copy extends PIXI.AnimatedSprite {
+interface ICopy {
     uid: number;
     /** The name of the template from which the copy was created */
     template: string | null;
@@ -37,6 +39,18 @@ export class Copy extends PIXI.AnimatedSprite {
     gravity: number;
     /** The direction of acceleration that pulls a copy at each frame */
     gravityDir: number;
+    /**
+     * The speed of a copy that is used in `this.move()` calls and similar function.
+     * It is measured in pixels per frame.
+     */
+    speed: number;
+    /**
+     * The moving direction of the copy, in degrees, starting with 0 at the right side
+     * and going with 90 facing upwards, 180 facing left, 270 facing down.
+     * This parameter is used by `this.move()` call.
+     * This is **not** the texture's rotation — for that, use this.angle.
+     */
+    direction: number;
     /** If set to `true`, the copy will be destroyed by the end of a frame. */
     kill: boolean;
     /** Time for the next run of the 1st timer, in seconds. */
@@ -60,296 +74,397 @@ export class Copy extends PIXI.AnimatedSprite {
     /** Set to true to disable this copy from automatic realignment with Camera.realign */
     skipRealign?: boolean;
 
-    // Private-ish values
-    /** Current texture.
-     * @readonly
-    */
-    #tex: string;
-    #zeroDirection: number;
-    #hspeed: number;
-    #vspeed: number;
-    [copyTypeSymbol]: true;
-
-    onStep: () => void;
-    onDraw: () => void;
-    onCreate: () => void;
-    onDestroy: () => void;
-
-    _destroyed: boolean;
-
-    /**
-     * Creates an instance of Copy.
-     * @param {string} template The name of the template to copy
-     * @param {number} [x] The x coordinate of a new copy. Defaults to 0.
-     * @param {number} [y] The y coordinate of a new copy. Defaults to 0.
-     * @param {object} [exts] An optional object with additional properties
-     * that will exist prior to a copy's OnCreate event
-     * @param {PIXI.DisplayObject|Room} [container] A container to set as copy's parent
-     * before its OnCreate event. Defaults to ct.room.
-     * @memberof Copy
-     */
-    // eslint-disable-next-line complexity, max-lines-per-function
-    constructor(
-        template: string,
-        x: number,
-        y: number,
-        exts?: {
-            scaleX?: number;
-            scaleY?: number;
-            tex?: string;
-            depth?: number;
-        },
-        container?: Room
-    ) {
-        container = container || roomsLib.current;
-        let textures: pixiMod.Texture[] = [PIXI.Texture.EMPTY];
-        var t: ExportedTemplate;
-        if (template) {
-            if (!(template in templatesLib.templates)) {
-                throw new Error(`[ct.templates] An attempt to create a copy of a non-existent template \`${template}\` detected. A typo?`);
-            }
-            t = templatesLib.templates[template];
-            if (t.texture && t.texture !== '-1') {
-                textures = res.getTexture(t.texture);
-            }
-        }
-        super(textures);
-        this[copyTypeSymbol] = true;
-        if (template) {
-            this.#tex = t.texture;
-            this.anchor.x = t.anchorX ?? textures[0].defaultAnchor.x ?? 0;
-            this.anchor.y = t.anchorY ?? textures[0].defaultAnchor.y ?? 0;
-            this.template = template;
-            this.parent = container;
-            this.blendMode = t.blendMode || PIXI.BLEND_MODES.NORMAL;
-            this.loop = t.loopAnimation;
-            this.animationSpeed = t.animationFPS / 60;
-            this.behaviors = [...t.behaviors];
-            if (t.visible === false) { // ignore nullish values
-                this.visible = false;
-            }
-            if (t.playAnimationOnStart) {
-                this.play();
-            }
-            if (t.extends) {
-                Object.assign(this, t.extends);
-            }
-        } else {
-            this.behaviors = [];
-        }
-        const oldScale = this.scale;
-        Object.defineProperty(this, 'scale', {
-            get: () => oldScale,
-            set: value => {
-                this.scale.x = this.scale.y = Number(value);
-            }
-        });
-        // it is defined in main.js
-        // eslint-disable-next-line no-undef
-        this[copyTypeSymbol] = true;
-        this.position.set(x || 0, y || 0);
-        this.xprev = this.xstart = this.x;
-        this.yprev = this.ystart = this.y;
-        this.#hspeed = 0;
-        this.#vspeed = 0;
-        this.#zeroDirection = 0;
-        this.speed = this.direction = this.gravity = 0;
-        this.gravityDir = 90;
-        this.zIndex = 0;
-        this.timer1 = this.timer2 = this.timer3 = this.timer4 = this.timer5 = this.timer6 = 0;
-        if (exts) {
-            Object.assign(this, exts);
-            if (exts.scaleX) {
-                this.scale.x = exts.scaleX;
-            }
-            if (exts.scaleY) {
-                this.scale.y = exts.scaleY;
-            }
-        }
-        this.uid = ++uid;
-        if (template) {
-            Object.assign(this, {
-                template,
-                zIndex: t.depth,
-                onStep: t.onStep,
-                onDraw: t.onDraw,
-                onCreate: t.onCreate,
-                onDestroy: t.onDestroy
-            });
-            if (exts && exts.tex !== void 0) {
-                this.shape = res.getTextureShape(exts.tex || -1);
-            } else {
-                this.shape = res.getTextureShape(t.texture || -1);
-            }
-            if (exts && exts.depth !== void 0) {
-                this.zIndex = exts.depth;
-            }
-            if (templatesLib.list[template]) {
-                templatesLib.list[template].push(this);
-            } else {
-                templatesLib.list[template] = [this];
-            }
-            this.onBeforeCreateModifier();
-            templatesLib.templates[template].onCreate.apply(this);
-        }
-        return this;
-    }
-
     /**
      * The name of the current copy's texture, or -1 for an empty texture.
      * @param {string} value The name of the new texture
      * @type {(string|number)}
      */
-    set tex(value: string) {
-        if (this.#tex === value) {
-            return;
-        }
-        var {playing} = this;
-        this.textures = res.getTexture(value);
-        this.#tex = value;
-        this.shape = res.getTextureShape(value);
-        this.anchor.x = (this.textures[0] as CtjsTexture).defaultAnchor.x;
-        this.anchor.y = (this.textures[0] as CtjsTexture).defaultAnchor.y;
-        if (playing) {
-            this.play();
-        }
-    }
-    get tex(): string {
-        return this.#tex;
-    }
-    /**
-     * The speed of a copy that is used in `this.move()` calls and similar function
-     */
-    get speed(): number {
-        return Math.hypot(this.hspeed, this.vspeed);
-    }
-    set speed(value: number) {
-        if (value === 0) {
-            this.#zeroDirection = this.direction;
-            this.hspeed = this.vspeed = 0;
-            return;
-        }
-        if (this.speed === 0) {
-            const restoredDir = this.#zeroDirection;
-            this.#hspeed = value * Math.cos(restoredDir * Math.PI / 180);
-            this.#vspeed = value * Math.sin(restoredDir * Math.PI / 180);
-            return;
-        }
-        var multiplier = value / this.speed;
-        this.hspeed *= multiplier;
-        this.vspeed *= multiplier;
-    }
+    tex: string;
     /** The horizontal speed of a copy */
-    get hspeed(): number {
-        return this.#hspeed;
-    }
-    set hspeed(value: number) {
-        if (this.vspeed === 0 && value === 0) {
-            this.#zeroDirection = this.direction;
-        }
-        this.#hspeed = value;
-    }
+    hspeed: number;
     /** The vertical speed of a copy */
-    get vspeed(): number {
-        return this.#vspeed;
-    }
-    set vspeed(value: number) {
-        if (this.hspeed === 0 && value === 0) {
-            this.#zeroDirection = this.direction;
-        }
-        this.#vspeed = value;
-    }
-    get direction(): number {
-        if (this.speed === 0) {
-            return this.#zeroDirection;
-        }
-        return (Math.atan2(this.vspeed, this.hspeed) * 180 / Math.PI + 360) % 360;
-    }
-    /**
-     * The moving direction of the copy, in degrees, starting with 0 at the right side
-     * and going with 90 facing upwards, 180 facing left, 270 facing down.
-     * This parameter is used by `this.move()` call.
-     * @param value New direction
-     * @type
-     */
-    set direction(value: number) {
-        this.#zeroDirection = value;
-        if (this.speed > 0) {
-            var {speed} = this;
-            this.hspeed = speed * Math.cos(value * Math.PI / 180);
-            this.vspeed = speed * Math.sin(value * Math.PI / 180);
-        }
-    }
+    vspeed: number;
 
-    /**
-     * The relative position of a copy in a drawing stack.
-     * Higher values will draw the copy on top of those with lower ones
-     * @deprecated Use this.zIndex instead
-     */
-    get depth(): number {
-        return this.zIndex;
-    }
-    /**
-     * @deprecated Use this.zIndex instead
-     */
-    set depth(v: number) {
-        this.zIndex = v;
-    }
-
+    // Private-ish values
+    /** Current texture.
+     * @readonly
+    */
+    _tex: string;
+    _zeroDirection: number;
+    _hspeed: number;
+    _vspeed: number;
+    [copyTypeSymbol]: true;
+    onStep: () => void;
+    onDraw: () => void;
+    onBeforeCreateModifier: () => void;
+    onCreate: () => void;
+    onDestroy: () => void;
+    _destroyed: boolean;
     /**
      * Performs a movement step, reading such parameters as `gravity`, `speed`,
      * `direction`.
      */
-    move(): void {
-        if (this.gravity) {
-            this.hspeed += this.gravity * uLib.delta *
-                Math.cos(this.gravityDir * Math.PI / 180);
-            this.vspeed += this.gravity * uLib.delta *
-                Math.sin(this.gravityDir * Math.PI / 180);
-        }
-        this.x += this.hspeed * uLib.delta;
-        this.y += this.vspeed * uLib.delta;
-    }
+    move: (this: BasicCopy) => void;
     /**
      * Adds a speed vector to the copy, accelerating it by a given delta speed
      * in a given direction.
      * @param spd Additive speed
      * @param dir The direction in which to apply additional speed
      */
-    addSpeed(spd: number, dir: number): void {
-        this.hspeed += spd * Math.cos(dir * Math.PI / 180);
-        this.vspeed += spd * Math.sin(dir * Math.PI / 180);
-    }
-
+    addSpeed: (this: BasicCopy, spd: number, dir: number) => void;
     /**
      * Returns the room that owns the current copy
      * @returns The room that owns the current copy
      */
-    getRoom(): Room {
+    getRoom: (this: BasicCopy) => Room;
+}
+
+/**
+ * An instance of a ct.js template. Ct.js cannot predict the base class
+ * of a template here, so you may need to add `as Copy...` to further narrow down
+ * the class.
+ */
+export type BasicCopy = Record<string, any> & pixiMod.DisplayObject & ICopy;
+/**
+ * An instance of a ct.js template with Animated Sprite as its base class.
+ * It has functionality of both PIXI.AnimatedSprite and ct.js Copies.
+ */
+export type CopyAnimatedSprite = Record<string, any> & pixiMod.AnimatedSprite & ICopy;
+/**
+ * An instance of a ct.js template with Panel as its base class.
+ * It has functionality of both PIXI.NineSlicePlane and ct.js Copies.
+ */
+export type CopyPanel = Record<string, any> & pixiMod.NineSlicePlane & ICopy;
+/**
+ * An instance of a ct.js template with Text as its base class.
+ * It has functionality of both PIXI.Text and ct.js Copies.
+ */
+export type CopyText = Record<string, any> & pixiMod.Text & ICopy;
+/**
+ * An instance of a ct.js template with Container as its base class.
+ * It has functionality of both PIXI.Container and ct.js Copies, and though by itself it doesn't
+ * display anything, you can add other copies and pixi.js classes with `this.addChild(copy)`.
+ */
+export type CopyContainer = Record<string, any> & pixiMod.Container & ICopy;
+
+
+export const CopyProto: Partial<BasicCopy> = {
+    set tex(value: string) {
+        if (this._tex === value) {
+            return;
+        }
+        var {playing} = this;
+        this.textures = res.getTexture(value);
+        [this.texture] = this.textures;
+        this._tex = value;
+        this.shape = res.getTextureShape(value);
+        if (this.anchor) {
+            this.anchor.x = (this.textures[0] as CtjsTexture).defaultAnchor.x;
+            this.anchor.y = (this.textures[0] as CtjsTexture).defaultAnchor.y;
+            if (playing) {
+                this.play();
+            }
+        }
+        if ('_bottomHeight' in this) { // Duck typing for CopyPanel
+            uLib.reshapeNinePatch(this);
+        }
+    },
+    get tex(): string {
+        return this._tex;
+    },
+    get speed(): number {
+        return Math.hypot(this.hspeed, this.vspeed);
+    },
+    set speed(value: number) {
+        if (value === 0) {
+            this._zeroDirection = this.direction;
+            this.hspeed = this.vspeed = 0;
+            return;
+        }
+        if (this.speed === 0) {
+            const restoredDir = this._zeroDirection;
+            this._hspeed = value * Math.cos(restoredDir * Math.PI / 180);
+            this._vspeed = value * Math.sin(restoredDir * Math.PI / 180);
+            return;
+        }
+        var multiplier = value / this.speed;
+        this.hspeed *= multiplier;
+        this.vspeed *= multiplier;
+    },
+    get hspeed(): number {
+        return this._hspeed;
+    },
+    set hspeed(value: number) {
+        if (this.vspeed === 0 && value === 0) {
+            this._zeroDirection = this.direction;
+        }
+        this._hspeed = value;
+    },
+    get vspeed(): number {
+        return this._vspeed;
+    },
+    set vspeed(value: number) {
+        if (this.hspeed === 0 && value === 0) {
+            this._zeroDirection = this.direction;
+        }
+        this._vspeed = value;
+    },
+    get direction(): number {
+        if (this.speed === 0) {
+            return this._zeroDirection;
+        }
+        return (Math.atan2(this.vspeed, this.hspeed) * 180 / Math.PI + 360) % 360;
+    },
+    set direction(value: number) {
+        this._zeroDirection = value;
+        if (this.speed > 0) {
+            var {speed} = this;
+            this.hspeed = speed * Math.cos(value * Math.PI / 180);
+            this.vspeed = speed * Math.sin(value * Math.PI / 180);
+        }
+    },
+    move(this: BasicCopy): void {
+        if (this.gravity) {
+            this.hspeed += this.gravity * uLib.delta *
+                    Math.cos(this.gravityDir * Math.PI / 180);
+            this.vspeed += this.gravity * uLib.delta *
+                    Math.sin(this.gravityDir * Math.PI / 180);
+        }
+        this.x += this.hspeed * uLib.delta;
+        this.y += this.vspeed * uLib.delta;
+    },
+    addSpeed(this: BasicCopy, spd: number, dir: number): void {
+        this.hspeed += spd * Math.cos(dir * Math.PI / 180);
+        this.vspeed += spd * Math.sin(dir * Math.PI / 180);
+    },
+    getRoom(this: BasicCopy): Room {
         let {parent} = this;
         while (!(parent instanceof Room)) {
             ({parent} = parent);
         }
         return parent;
-    }
-
-    // eslint-disable-next-line class-methods-use-this
+    },
     onBeforeCreateModifier(): void {
         // Filled by ct.IDE and catmods
         /*!%onbeforecreate%*/
+        /*!@onbeforecreate@*/
     }
-
-    [key: string]: any;
-}
-export class LivingCopy extends Copy {
-    kill: true
-}
-
-const onCreateModifier = function () {
-    /*!%oncreate%*/
+};
+type Mutable<T> = {-readonly[P in keyof T]: T[P]};
+// eslint-disable-next-line complexity, max-lines-per-function
+/**
+ * A factory function that when applied to a PIXI.DisplayObject instance,
+ * augments it with ct.js Copy functionality.
+ * @param {string} template The name of the template to copy
+ * @param {PIXI.DisplayObject|Room} [container] A container to set as copy's parent
+ * before its OnCreate event. Defaults to ct.room.
+ */
+// eslint-disable-next-line max-lines-per-function, max-params
+const Copy = function (
+    this: BasicCopy,
+    x: number,
+    y: number,
+    template: ExportedTemplate,
+    container: pixiMod.Container,
+    exts: Record<string, unknown>
+): ICopy {
+    container = container || roomsLib.current;
+    this[copyTypeSymbol] = true;
+    if (template) {
+        // Early linking so that `this.parent` is available in OnCreate events
+        this.parent = container;
+        if (template.baseClass === 'AnimatedSprite') {
+            this._tex = template.texture;
+            const me = this as CopyAnimatedSprite;
+            me.blendMode = template.blendMode || PIXI.BLEND_MODES.NORMAL;
+            me.loop = template.loopAnimation;
+            me.animationSpeed = template.animationFPS / 60;
+            if (template.playAnimationOnStart) {
+                me.play();
+            }
+        } else if (template.baseClass === 'NineSlicePlane') {
+            const me = this as CopyPanel;
+            me.blendMode = template.blendMode || PIXI.BLEND_MODES.NORMAL;
+            this._tex = template.texture;
+        }
+        (this as Mutable<typeof this>).behaviors = [...template.behaviors];
+        if (template.visible === false) { // ignore nullish values
+            this.visible = false;
+        }
+    } else {
+        (this as Mutable<typeof this>).behaviors = [];
+    }
+    const oldScale = this.scale;
+    Object.defineProperty(this, 'scale', {
+        get: () => oldScale,
+        set: value => {
+            this.scale.x = this.scale.y = Number(value);
+        }
+    });
+    this[copyTypeSymbol] = true;
+    this.xprev = this.xstart = this.x = x;
+    this.yprev = this.ystart = this.y = y;
+    this._hspeed = 0;
+    this._vspeed = 0;
+    this._zeroDirection = 0;
+    this.speed = this.direction = this.gravity = 0;
+    this.gravityDir = 90;
+    this.zIndex = 0;
+    this.timer1 = this.timer2 = this.timer3 = this.timer4 = this.timer5 = this.timer6 = 0;
+    this.uid = ++uid;
+    if (template) {
+        Object.assign(this, {
+            template: template.name,
+            zIndex: template.depth,
+            onStep: template.onStep,
+            onDraw: template.onDraw,
+            onBeforeCreateModifier: CopyProto.onBeforeCreateModifier,
+            onCreate: template.onCreate,
+            onDestroy: template.onDestroy
+        });
+        this.zIndex = template.depth;
+        Object.assign(this, template.extends);
+        if (exts) {
+            Object.assign(this, exts);
+        }
+        if ('texture' in template) {
+            this.shape = res.getTextureShape(template.texture || -1);
+        }
+        if (templatesLib.list[template.name]) {
+            templatesLib.list[template.name].push(this);
+        } else {
+            templatesLib.list[template.name] = [this];
+        }
+        this.onBeforeCreateModifier.apply(this);
+        templatesLib.templates[template.name].onCreate.apply(this);
+        onCreateModifier.apply(this);
+    } else if (exts) {
+        Object.assign(this, exts);
+        this.onBeforeCreateModifier.apply(this);
+        onCreateModifier.apply(this);
+    }
     if (this.behaviors.length) {
         runBehaviors(this, 'templates', 'thisOnCreate');
     }
+    return this;
+};
+const mix = (
+    target: pixiMod.DisplayObject,
+    x: number,
+    y: number,
+    template: ExportedTemplate,
+    parent: pixiMod.Container,
+    exts: Record<string, any>
+// eslint-disable-next-line max-params
+) => {
+    Copy.apply(target, [x, y, template, parent, exts]);
+    const proto = CopyProto;
+    const properties = Object.getOwnPropertyNames(proto);
+    for (const y in properties) {
+        if (properties[y] !== 'constructor') {
+            Object.defineProperty(
+                target,
+                properties[y],
+                Object.getOwnPropertyDescriptor(proto, properties[y])
+            );
+        }
+    }
+};
+
+// eslint-disable-next-line complexity, max-lines-per-function
+export const makeCopy = (
+    template: string,
+    x: number,
+    y: number,
+    parent: pixiMod.Container,
+    exts: Record<string, unknown>
+): BasicCopy => {
+    if (!(template in templatesLib.templates)) {
+        throw new Error(`[ct.templates] An attempt to create a copy of a non-existent template \`${template}\` detected. A typo?`);
+    }
+    const t: ExportedTemplate = templatesLib.templates[template];
+    if (t.baseClass === 'Container') {
+        const copy = new PIXI.Container() as CopyContainer;
+        copy.shape = {
+            type: 'point'
+        };
+        mix(copy, x, y, t, parent, exts);
+        return copy;
+    }
+    if (t.baseClass === 'Text') {
+        let style: ExportedStyle;
+        if (t.textStyle && t.textStyle !== -1) {
+            style = stylesLib.get(t.textStyle, true);
+        }
+        if (exts.customWordWrap) {
+            style.wordWrap = true;
+            style.wordWrapWidth = Number(exts.customWordWrap);
+        }
+        if (exts.customSize) {
+            style.fontSize = Number(exts.customSize);
+        }
+        const copy = new PIXI.Text(
+            (exts.customText as string) || t.defaultText || '',
+            style as unknown as Partial<pixiMod.ITextStyle>
+        ) as CopyText;
+        if (exts.customAnchor) {
+            const anchor = exts.customAnchor as {
+                x?: number,
+                y?: number
+            };
+            copy.anchor.set(anchor?.x ?? 0, anchor?.y ?? 0);
+        }
+        mix(copy, x, y, t, parent, exts);
+        copy.shape = uLib.getRectShape(copy);
+        copy.scale.set(
+            (exts.scaleX as number) ?? 1,
+            (exts.scaleY as number) ?? 1
+        );
+        return copy;
+    }
+
+    let textures: pixiMod.Texture[] = [PIXI.Texture.EMPTY];
+    if (t.texture && t.texture !== '-1') {
+        textures = res.getTexture(t.texture);
+    }
+
+    if (t.baseClass === 'NineSlicePlane') {
+        const copy = new PIXI.NineSlicePlane(
+            textures[0],
+            t.nineSliceSettings?.left ?? 16,
+            t.nineSliceSettings?.top ?? 16,
+            t.nineSliceSettings?.right ?? 16,
+            t.nineSliceSettings?.bottom ?? 16
+        ) as CopyPanel;
+        copy.updateNineSliceShape = t.nineSliceSettings.autoUpdate;
+        mix(copy, x, y, t, parent, exts);
+        const baseWidth = copy.width,
+              baseHeight = copy.height;
+        if ('scaleX' in exts) {
+            copy.width = baseWidth * (exts.scaleX as number);
+        }
+        if ('scaleY' in exts) {
+            copy.height = baseHeight * (exts.scaleY as number);
+        }
+        uLib.reshapeNinePatch(copy);
+        return copy;
+    }
+    if (t.baseClass === 'AnimatedSprite') {
+        const copy = new PIXI.AnimatedSprite(textures) as CopyAnimatedSprite;
+        copy.anchor.x = t.anchorX ?? textures[0].defaultAnchor.x ?? 0;
+        copy.anchor.y = t.anchorY ?? textures[0].defaultAnchor.y ?? 0;
+        copy.scale.set(
+            (exts.scaleX as number) ?? 1,
+            (exts.scaleY as number) ?? 1
+        );
+        mix(copy, x, y, t, parent, exts);
+        return copy;
+    }
+    throw new Error(`[internal -> makeCopy] Unknown base class \`${(t as any).baseClass}\` for template \`${template}\`.`);
+};
+
+const onCreateModifier = function () {
+    /*!%oncreate%*/
 };
 
 /**
@@ -357,7 +472,7 @@ const onCreateModifier = function () {
  * mainly for finding particular copies and creating new ones.
  */
 const templatesLib = {
-    Copy,
+    CopyProto,
     Background,
     Tilemap,
     /**
@@ -369,7 +484,7 @@ const templatesLib = {
     } as {
         BACKGROUND: Background[],
         TILEMAP: Tilemap[]
-    } & Record<string, Copy[]>,
+    } & Record<string, pixiMod.DisplayObject[]>,
     /**
      * A map of all the templates of templates exported from ct.IDE.
      */
@@ -385,15 +500,15 @@ const templatesLib = {
      * to the copy prior to its OnCreate event.
      * @returns The created copy.
      */
-    copyIntoRoom(template: string, x = 0, y = 0, room: Room, exts?: Record<string, unknown>): Copy {
+    // eslint-disable-next-line max-len
+    copyIntoRoom(template: string, x = 0, y = 0, room: Room, exts: Record<string, unknown> = {}): BasicCopy {
         // An advanced constructor. Returns a Copy
         if (!room || !(room instanceof Room)) {
             throw new Error(`Attempt to spawn a copy of template ${template} inside an invalid room. Room's value provided: ${room}`);
         }
-        const obj = new Copy(template, x, y, exts);
-        room.addChild(obj);
+        const obj = makeCopy(template, x, y, room, exts);
+        room.addChild(obj as pixiMod.DisplayObject);
         stack.push(obj);
-        onCreateModifier.apply(obj);
         return obj;
     },
     /**
@@ -406,7 +521,7 @@ const templatesLib = {
      * to the copy prior to its OnCreate event.
      * @returns The created copy.
      */
-    copy(template: string, x = 0, y = 0, exts?: Record<string, unknown>): Copy {
+    copy(template: string, x = 0, y = 0, exts: Record<string, unknown> = {}): BasicCopy {
         return templatesLib.copyIntoRoom(template, x, y, roomsLib.current, exts);
     },
     /**
@@ -414,7 +529,7 @@ const templatesLib = {
      * @param {Function} func The function to apply
      * @returns {void}
      */
-    each(func: (this: Copy) => void): void {
+    each(func: (this: BasicCopy) => void): void {
         for (const copy of stack) {
             if (!(copy instanceof Copy)) {
                 continue; // Skip backgrounds and tile layers
@@ -437,7 +552,7 @@ const templatesLib = {
      */
     withTemplate(
         template: string,
-        func: (this: Copy) => void
+        func: (this: BasicCopy) => void
     ): void {
         for (const copy of templatesLib.list[template]) {
             func.apply(copy, this);
@@ -462,8 +577,8 @@ const templatesLib = {
      * @param {any} obj The object which needs to be checked.
      * @returns {boolean} Returns `true` if the passed object is a copy; `false` otherwise.
      */
-    isCopy: ((obj: unknown): boolean => obj instanceof Copy) as {
-        (obj: Copy): obj is Copy;
+    isCopy: ((obj: unknown): boolean => obj[copyTypeSymbol]) as {
+        (obj: BasicCopy): obj is BasicCopy;
         (obj: unknown): false;
     },
     /**
@@ -471,39 +586,49 @@ const templatesLib = {
      * Intended to be applied to copies, but may be used with other PIXI entities.
      */
     valid: ((obj: unknown): boolean => {
-        if (obj instanceof Copy) {
-            return !obj.kill;
+        if (typeof obj !== 'object') {
+            return false;
+        }
+        if (copyTypeSymbol in obj) {
+            return !(obj as BasicCopy).kill;
         }
         if (obj instanceof PIXI.DisplayObject) {
             return Boolean(obj.position);
         }
-        return Boolean(obj);
+        return false;
     }) as {
-        (obj: Copy): obj is LivingCopy;
+        (obj: BasicCopy): obj is BasicCopy;
         (obj: pixiMod.DisplayObject): obj is pixiMod.DisplayObject;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (obj: unknown): boolean
+        (obj: unknown): false
     },
 
-    beforeStep(this: Copy): void {
+    beforeStep(this: BasicCopy): void {
         /*!%beforestep%*/
     },
-    afterStep(this: Copy): void {
+    afterStep(this: BasicCopy): void {
         /*!%afterstep%*/
         if (this.behaviors.length) {
             runBehaviors(this, 'templates', 'thisOnStep');
         }
     },
-    beforeDraw(this: Copy): void {
+    beforeDraw(this: BasicCopy): void {
         /*!%beforedraw%*/
     },
-    afterDraw(this: Copy): void {
-        /*!%afterdraw%*/
+    afterDraw(this: BasicCopy): void {
         if (this.behaviors.length) {
             runBehaviors(this, 'templates', 'thisOnDraw');
         }
+        if (this.updateNineSliceShape) {
+            if (this.prevWidth !== this.width || this.prevHeight !== this.height) {
+                this.prevWidth = this.width;
+                this.prevHeight = this.height;
+                uLib.reshapeNinePatch(this as CopyPanel);
+            }
+        }
+        /*!%afterdraw%*/
     },
-    onDestroy(this: Copy): void {
+    onDestroy(this: BasicCopy): void {
         /*!%ondestroy%*/
         if (this.behaviors.length) {
             runBehaviors(this, 'templates', 'thisOnDestroy');

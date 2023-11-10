@@ -7,7 +7,7 @@ import mainCamera from 'camera';
 import {stack} from 'index';
 import uLib from 'u';
 
-import * as pixiMod from 'node_modules/pixi.js';
+import type * as pixiMod from 'node_modules/pixi.js';
 declare var PIXI: typeof pixiMod;
 
 const bgList: Record<string, Background[]> = {};
@@ -198,6 +198,9 @@ const backgroundsLib = {
             throw new Error('[backgrounds] The texName argument is required.');
         }
         const bg = new Background(texName, frame, depth);
+        if (container instanceof Room) {
+            container.backgrounds.push(bg);
+        }
         container.addChild(bg);
         return bg;
     }

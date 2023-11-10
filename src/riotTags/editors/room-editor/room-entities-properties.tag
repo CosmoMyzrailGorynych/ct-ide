@@ -14,7 +14,10 @@
 room-entities-properties
     div(if="{opts.pixieditor?.currentSelection.size && changes}")
         // Basic properties
-        virtual(if="{opts.pixieditor?.currentSelection.size && changes}" each="{prop in basicProps}")
+        virtual(
+            if="{opts.pixieditor?.currentSelection.size && changes}"
+            each="{prop in basicProps}"
+        )
             b {voc.copyProperties[prop.vocKey]}:
             // Point2D
             .aPoint2DInput.compact.wide(if="{prop.type === 'xy'}")
@@ -60,7 +63,7 @@ room-entities-properties
                 )
             color-input(
                 if="{prop.type === 'color'}"
-                color="{PIXI.utils.hex2string(changes.basic[prop.key])}"
+                color="{(new Color(changes.basic[prop.key])).toHex()}"
                 onchange="{writeColor(prop.key)}"
                 onapply="{writeColorAndMemorize(prop.key)}"
                 hidealpha="true"
@@ -97,7 +100,7 @@ room-entities-properties
                             svg.feather
                                 use(xlink:href="#trash")
                         .clear
-            button.nogrow(onclick="{addCustomProperty}")
+            button.wide(onclick="{addCustomProperty}")
                 svg.feather
                     use(xlink:href="#plus")
                 span {voc.copyCustomProperties.addProperty}
@@ -111,6 +114,8 @@ room-entities-properties
         this.namespace = 'roomView';
         this.mixin(require('./data/node_requires/riotMixins/voc').default);
         this.mixin(require('./data/node_requires/riotMixins/wire').default);
+
+        this.Color = require('node_modules/pixi.js').Color;
 
         const {Copy} = require('./data/node_requires/roomEditor/entityClasses/Copy');
 
@@ -161,7 +166,7 @@ room-entities-properties
             return entity[prop.key];
         };
         this.writeColor = key => (e, value) => {
-            this.changes.basic[key] = PIXI.utils.string2hex(value);
+            this.changes.basic[key] = (new this.Color(value)).toHex();
             this.applyChanges();
         };
         this.wireAndApply = path => e => {
@@ -171,6 +176,12 @@ room-entities-properties
             e.stopPropagation();
         };
 
+        /**
+         * White sorcery to substitute properties when they were not changed
+         * and differ from each other in the current selection.
+         * When used as values in HTML tags, the toString method is called,
+         * returning a localized string "Multiple values" instead of a numerical value.
+         */
         const Magic = function Magic() {
             void 'sparkles';
         };
@@ -436,6 +447,10 @@ room-entities-properties
                         console.error(`Ignoring unknown property type: ${type}`);
                         break;
                     }
+                }
+                // Copies with NineSlicePlanes should rescale their innards
+                if (entity.nineSlicePlane) {
+                    entity.updateNinePatch();
                 }
                 // Extensions and custom properties are supported for copies only
                 if (!(entity instanceof Copy)) {

@@ -32,36 +32,38 @@ const place = (function ctPlace() {
     const getSSCDShapeFromRect = function (obj) {
         const {shape} = obj,
               position = new SSCD.Vector(obj.x, obj.y);
+        const scaleX = obj instanceof PIXI.NineSlicePlane ? 1 : obj.scale.x,
+              scaleY = obj instanceof PIXI.NineSlicePlane ? 1 : obj.scale.y;
         if (obj.angle === 0) {
-            position.x -= obj.scale.x > 0 ?
-                (shape.left * obj.scale.x) :
-                (-obj.scale.x * shape.right);
-            position.y -= obj.scale.y > 0 ?
-                (shape.top * obj.scale.y) :
-                (-shape.bottom * obj.scale.y);
+            position.x -= scaleX > 0 ?
+                (shape.left * scaleX) :
+                (-scaleX * shape.right);
+            position.y -= scaleY > 0 ?
+                (shape.top * scaleY) :
+                (-shape.bottom * scaleY);
             return new SSCD.Rectangle(
                 position,
                 new SSCD.Vector(
-                    Math.abs((shape.left + shape.right) * obj.scale.x),
-                    Math.abs((shape.bottom + shape.top) * obj.scale.y)
+                    Math.abs((shape.left + shape.right) * scaleX),
+                    Math.abs((shape.bottom + shape.top) * scaleY)
                 )
             );
         }
         const upperLeft = u.rotate(
-            -shape.left * obj.scale.x,
-            -shape.top * obj.scale.y, obj.angle
+            -shape.left * scaleX,
+            -shape.top * scaleY, obj.angle
         );
         const bottomLeft = u.rotate(
-            -shape.left * obj.scale.x,
-            shape.bottom * obj.scale.y, obj.angle
+            -shape.left * scaleX,
+            shape.bottom * scaleY, obj.angle
         );
         const bottomRight = u.rotate(
-            shape.right * obj.scale.x,
-            shape.bottom * obj.scale.y, obj.angle
+            shape.right * scaleX,
+            shape.bottom * scaleY, obj.angle
         );
         const upperRight = u.rotate(
-            shape.right * obj.scale.x,
-            -shape.top * obj.scale.y, obj.angle
+            shape.right * scaleX,
+            -shape.top * scaleY, obj.angle
         );
         return new SSCD.LineStrip(position, [
             new SSCD.Vector(upperLeft.x, upperLeft.y),
@@ -96,18 +98,20 @@ const place = (function ctPlace() {
     const getSSCDShapeFromStrip = function (obj) {
         const {shape} = obj,
               position = new SSCD.Vector(obj.x, obj.y);
+        const scaleX = obj instanceof PIXI.NineSlicePlane ? 1 : obj.scale.x,
+              scaleY = obj instanceof PIXI.NineSlicePlane ? 1 : obj.scale.y;
         const vertices = [];
         if (obj.angle !== 0) {
             for (const point of shape.points) {
                 const {x, y} = u.rotate(
-                    point.x * obj.scale.x,
-                    point.y * obj.scale.y, obj.angle
+                    point.x * scaleX,
+                    point.y * scaleY, obj.angle
                 );
                 vertices.push(new SSCD.Vector(x, y));
             }
         } else {
             for (const point of shape.points) {
-                vertices.push(new SSCD.Vector(point.x * obj.scale.x, point.y * obj.scale.y));
+                vertices.push(new SSCD.Vector(point.x * scaleX, point.y * scaleY));
             }
         }
         return new SSCD.LineStrip(position, vertices, Boolean(shape.closedStrip));
@@ -955,15 +959,7 @@ const place = (function ctPlace() {
     setInterval(function switchCtPlaceGoDirection() {
         place.m *= -1;
     }, 789);
-    Object.defineProperty(templates.Copy.prototype, 'cgroup', {
-        set: function (value) {
-            this.$cgroup = value;
-        },
-        get: function () {
-            return this.$cgroup;
-        }
-    });
-    Object.defineProperty(templates.Copy.prototype, 'moveContinuous', {
+    Object.defineProperty(templates.CopyProto, 'moveContinuous', {
         value: function (cgroup, precision) {
             if (this.gravity) {
                 this.hspeed += this.gravity * u.delta * Math.cos(this.gravityDir * Math.PI / 180);
@@ -972,12 +968,12 @@ const place = (function ctPlace() {
             return place.moveAlong(this, this.direction, this.speed * u.delta, cgroup, precision);
         }
     });
-    Object.defineProperty(templates.Copy.prototype, 'moveBullet', {
+    Object.defineProperty(templates.CopyProto, 'moveBullet', {
         value: function (cgroup, precision) {
             return this.moveContinuous(cgroup, precision);
         }
     });
-    Object.defineProperty(templates.Copy.prototype, 'moveContinuousByAxes', {
+    Object.defineProperty(templates.CopyProto, 'moveContinuousByAxes', {
         value: function (cgroup, precision) {
             if (this.gravity) {
                 this.hspeed += this.gravity * u.delta * Math.cos(this.gravityDir * Math.PI / 180);
@@ -992,7 +988,7 @@ const place = (function ctPlace() {
             );
         }
     });
-    Object.defineProperty(templates.Copy.prototype, 'moveSmart', {
+    Object.defineProperty(templates.CopyProto, 'moveSmart', {
         value: function (cgroup, precision) {
             return this.moveContinuousByAxes(cgroup, precision);
         }

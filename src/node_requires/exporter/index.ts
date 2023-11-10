@@ -11,7 +11,6 @@ import {ExporterError, highlightProblem} from './ExporterError';
 import {ExportedMeta} from './_exporterContracts';
 
 import {packImages} from './textures';
-import {packSkeletons} from './skeletons';
 import {getSounds} from './sounds';
 import {stringifyRooms, getStartingRoom} from './rooms';
 import {stringifyStyles} from './styles';
@@ -261,7 +260,6 @@ const exportCtProject = async (
     }
     /* assets — run in parallel */
     const texturesTask = packImages(assets.texture, writeDir, production);
-    const skeletonsTask = packSkeletons(assets.skeleton, writeDir);
     const bitmapFontsTask = bakeBitmapFonts(assets.font, projdir, writeDir);
     const favicons = bakeFavicons(project, writeDir, production);
     const modulesTask = addModules();
@@ -340,8 +338,6 @@ const exportCtProject = async (
         tandemTemplates: stringifyTandems(assets.tandem),
         fonts: fonts.js,
         bitmapFonts: await bitmapFontsTask,
-        skeletons: (await skeletonsTask).skeletons,
-        includeSpine: (await skeletonsTask).skeletons.length > 0,
 
         userScripts,
         catmods: await modulesTask

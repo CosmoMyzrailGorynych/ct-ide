@@ -88,7 +88,7 @@ const texturesFromCtTexture = async (
             }
         }
     }
-    pixiTextureCache[tex.name] = {
+    pixiTextureCache[tex.uid] = {
         lastmod: tex.lastmod,
         texture: frames
     };
@@ -215,9 +215,9 @@ function getPixiTexture(
         texture = getById('texture', texture);
     }
     if (frame || frame === 0) {
-        return pixiTextureCache[texture.name].texture[frame];
+        return pixiTextureCache[texture.uid].texture[frame];
     }
-    return pixiTextureCache[texture.name].texture;
+    return pixiTextureCache[texture.uid].texture;
 }
 
 /**

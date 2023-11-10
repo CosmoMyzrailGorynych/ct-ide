@@ -1,5 +1,19 @@
 (function vkeysTemplates() {
+    const commonProps = {
+        depth: 0,
+        blendMode: PIXI.BLEND_MODES.NORMAL,
+        visible: true,
+        behaviors: [],
+        extends: {},
+        baseClass: 'AnimatedSprite',
+        animationFPS: 30,
+        playAnimationOnStart: false,
+        loopAnimation: true,
+        texture: -1
+    };
     templates.templates.VKEY = {
+        name: 'VKEY',
+        ...commonProps,
         onStep: function () {
             var down = false,
                 hover = false;
@@ -36,6 +50,8 @@
     };
 
     templates.templates.VJOYSTICK = {
+        name: 'VJOYSTICK',
+        ...commonProps,
         onCreate: function () {
             this.tex = this.opts.tex;
             this.zIndex = this.opts.depth;

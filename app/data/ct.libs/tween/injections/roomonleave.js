@@ -1,8 +1,6 @@
-/* global ct */
-
 if (!this.kill) {
-    for (var tween of tween.tweens) {
-        tween.reject({
+    for (const twoon of tween.tweens) {
+        twoon.reject({
             info: 'Room switch',
             code: 1,
             from: 'tween'

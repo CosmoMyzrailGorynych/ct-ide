@@ -26,7 +26,7 @@ libs:
     undefined: ''
     gridX: 512
     gridY: 512
-    debugMode: false
+    debugMode: true
     debugText: 16
   pointer:
     preventdefault: false
@@ -47,6 +47,7 @@ settings:
     icon: 1da28af4-53f1-4958-82b2-a696778f910f
     accent: '#446adb'
     invertPreloaderScheme: true
+    splashScreen: 1da28af4-53f1-4958-82b2-a696778f910f
   rendering:
     maxFPS: 60
     pixelatedrender: false
@@ -54,6 +55,7 @@ settings:
     usePixiLegacy: true
     desktopMode: maximized
     mobileScreenOrientation: unspecified
+    viewMode: scaleFill
   authoring:
     title: Catformer
     author: Cosmo Myzrail Gorynych
@@ -102,7 +104,7 @@ scripts:
               depth: 1000
           });
       }
-ctjsVersion: 4.0.0-next-2
+ctjsVersion: 4.0.0-next-3
 actions:
   - name: Jump
     methods:
@@ -166,6 +168,14 @@ assets:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: Logs
     depth: 0
     uid: 1026c1c8-90e4-4b93-bb6a-568f53918097
@@ -180,6 +190,14 @@ assets:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: Grass
     depth: 0
     uid: 5ff42cc3-0b4a-47e9-b6f1-06d3b3b91bb0
@@ -194,6 +212,14 @@ assets:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: Spikes
     depth: 0
     uid: 036a2de1-89b0-48e3-b26f-d608ce2079fd
@@ -208,6 +234,14 @@ assets:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: Player
     depth: 0
     uid: 00664f77-21c6-4b06-b310-88640b1beaf9
@@ -367,6 +401,14 @@ assets:
     animationFPS: 15
     visible: true
     blendMode: normal
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: Coin
     depth: 0
     uid: 9402709c-5d0d-4198-9dce-877a5b7c77a2
@@ -388,6 +430,14 @@ assets:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: Greed
     depth: 0
     uid: 2d29a0d5-d88d-493d-bece-8d52ed476273
@@ -401,6 +451,14 @@ assets:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: Slime
     depth: 0
     uid: 1f91fd7d-2d6c-4542-aead-78b8010b835b
@@ -445,6 +503,14 @@ assets:
     playAnimationOnStart: true
     visible: true
     blendMode: normal
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: Rich
     depth: 0
     uid: b658efa2-360e-4a62-8640-3e3281156f4e
@@ -458,6 +524,14 @@ assets:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: ToggleFullscreen
     depth: 100
     uid: 8a4b8de4-7729-4936-bc7b-bc277a512975
@@ -479,6 +553,14 @@ assets:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: CoinWidget
     depth: 0
     uid: 1f73eb4f-8795-4234-af61-2c44c3fba073
@@ -489,16 +571,8 @@ assets:
       - lib: core
         arguments: {}
         code: |-
-          this.coinsCounter = new PIXI.Text(this.coins, styles.get('CoinText'));
-          this.coinsCounter.x = 40;
-          this.coinsCounter.anchor.y = 0.5;
-          this.addChild(this.coinsCounter);
-        eventKey: OnCreate
-      - lib: core
-        arguments: {}
-        code: |-
-          if (this.coinsCounter.text != rooms.current.coins + ' / 33') {
-              this.coinsCounter.text = rooms.current.coins + ' / 33';
+          if (this.text != rooms.current.coins + ' / 33') {
+              this.text = rooms.current.coins + ' / 33';
           }
         eventKey: OnDraw
     type: template
@@ -507,6 +581,16 @@ assets:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
+    behaviors: []
+    baseClass: Text
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
+    defaultText: 0 / 33
+    textStyle: 7879b9dc-6868-4c97-b71e-129d03c77ee1
   - name: ButtonLeft
     depth: 0
     uid: 45a6ee81-34af-494e-914e-51ec9d414314
@@ -541,6 +625,14 @@ assets:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: ButtonRight
     depth: 0
     uid: 03773b4b-e444-4a2d-9891-3ddf9575cc87
@@ -575,6 +667,14 @@ assets:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: ButtonJump
     depth: 0
     uid: 86f037f0-9a1c-4306-9d67-00be01bbd793
@@ -609,6 +709,14 @@ assets:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: TryAgain
     depth: 0
     uid: 64fac189-737e-4e56-a8fc-15eccae6bf2a
@@ -626,6 +734,14 @@ assets:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: InGame
     ondraw: ''
     onleave: ''
@@ -645,7 +761,7 @@ assets:
         repeat: !<tag:yaml.org,2002:js/undefined> ''
     uid: b0f0ff4d-a155-4d68-a86e-5bb7ed8973ab
     grid: 35
-    lastmod: 1688957793948
+    lastmod: 1699523275097
     thumbnail: 1
     tiles:
       - depth: -10
@@ -2473,6 +2589,7 @@ assets:
     simulate: true
     isUi: !<tag:yaml.org,2002:js/undefined> ''
     follow: -1
+    behaviors: []
   - name: DeadScreen
     onstep: ''
     ondraw: ''
@@ -2481,11 +2598,19 @@ assets:
     height: 700
     backgrounds:
       - depth: '-10'
-        extends: {}
         texture: fd9d7012-6826-4368-8fe5-0385b72bc902
+        shiftX: !<tag:yaml.org,2002:js/undefined> ''
+        shiftY: !<tag:yaml.org,2002:js/undefined> ''
+        parallaxX: !<tag:yaml.org,2002:js/undefined> ''
+        parallaxY: !<tag:yaml.org,2002:js/undefined> ''
+        movementX: !<tag:yaml.org,2002:js/undefined> ''
+        movementY: !<tag:yaml.org,2002:js/undefined> ''
+        scaleX: 0
+        scaleY: 0
+        repeat: !<tag:yaml.org,2002:js/undefined> ''
     uid: 1ee751d0-24cc-43af-b91d-1a91a9aa48f5
     grid: 64
-    lastmod: 1657023071766
+    lastmod: 1699521007420
     thumbnail: 2
     gridX: 64
     gridY: 64
@@ -2493,40 +2618,41 @@ assets:
       - depth: -10
         tiles: []
         extends: {}
+        hidden: false
     copies:
       - x: 512
         'y': 256
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 2d29a0d5-d88d-493d-bece-8d52ed476273
         exts: {}
         customProperties: {}
+      - x: 992
+        'y': 669
         opacity: 1
         tint: 16777215
-        rotation: 0
         scale:
           x: 1
           'y': 1
-      - x: 992
-        'y': 669
+        rotation: 0
         uid: 8a4b8de4-7729-4936-bc7b-bc277a512975
         exts: {}
         customProperties: {}
+      - x: 512
+        'y': 640
         opacity: 1
         tint: 16777215
-        rotation: 0
         scale:
           x: 1
           'y': 1
-      - x: 512
-        'y': 640
+        rotation: 0
         uid: 64fac189-737e-4e56-a8fc-15eccae6bf2a
         exts: {}
         customProperties: {}
-        opacity: 1
-        tint: 16777215
-        rotation: 0
-        scale:
-          x: 1
-          'y': 1
     events:
       - lib: core
         arguments: {}
@@ -2561,6 +2687,7 @@ assets:
     simulate: true
     isUi: !<tag:yaml.org,2002:js/undefined> ''
     follow: -1
+    behaviors: []
   - name: RichScreen
     onstep: ''
     ondraw: ''
@@ -2643,6 +2770,7 @@ assets:
     simulate: true
     isUi: !<tag:yaml.org,2002:js/undefined> ''
     follow: -1
+    behaviors: []
   - name: UI_Layer
     onstep: ''
     onleave: ''
@@ -2652,103 +2780,83 @@ assets:
     copies:
       - x: 992
         'y': 689
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 8a4b8de4-7729-4936-bc7b-bc277a512975
         exts: {}
         customProperties: {}
+      - x: 108
+        'y': 64
         opacity: 1
         tint: 16777215
-        rotation: 0
         scale:
           x: 1
           'y': 1
-      - x: 44
-        'y': 46
+        rotation: 0
         uid: 1f73eb4f-8795-4234-af61-2c44c3fba073
         exts: {}
         customProperties: {}
+        customAnchor:
+          x: 0
+          'y': 0.5
+      - x: 96
+        'y': 640
         opacity: 1
         tint: 16777215
-        rotation: 0
         scale:
           x: 1
           'y': 1
-      - x: 96
-        'y': 640
+        rotation: 0
         uid: 45a6ee81-34af-494e-914e-51ec9d414314
         exts: {}
         customProperties: {}
+      - x: 224
+        'y': 640
         opacity: 1
         tint: 16777215
-        rotation: 0
         scale:
           x: 1
           'y': 1
-      - x: 224
-        'y': 640
+        rotation: 0
         uid: 03773b4b-e444-4a2d-9891-3ddf9575cc87
         exts: {}
         customProperties: {}
+      - x: 832
+        'y': 640
         opacity: 1
         tint: 16777215
-        rotation: 0
         scale:
           x: 1
           'y': 1
-      - x: 832
-        'y': 640
+        rotation: 0
         uid: 86f037f0-9a1c-4306-9d67-00be01bbd793
         exts: {}
         customProperties: {}
-        opacity: 1
-        tint: 16777215
-        rotation: 0
-        scale:
-          x: 1
-          'y': 1
     tiles:
       - depth: -10
-        tiles: []
+        tiles:
+          - x: 64
+            'y': 64
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 62be2903-9782-49fc-b551-ef2e641091c9
         extends: {}
+        hidden: false
     uid: cc861d50-35d6-4687-b789-5768eedfd438
     thumbnail: 5768eedfd438
     gridX: 32
     gridY: 64
-    lastmod: 1657023068774
+    lastmod: 1699525513205
     events:
-      - lib: core
-        arguments: {}
-        code: |2-
-              /*this.touchControl = {};
-              var aboveBottom = 80;
-              var rightOfBorder = 80;
-              this.touchControl.left = vkeys.button({
-                  key: "Vk2",
-                  texNormal: "buttonLeft",
-                  texActive: "buttonLeft",
-                  texHover: "buttonLeft",
-                  x: () => rightOfBorder,
-                  y: () => camera.height - aboveBottom,
-                  depth: 1000
-              });
-              this.touchControl.right = vkeys.button({
-                  key: "Vk1",
-                  texNormal: "buttonRight",
-                  texActive: "buttonRight",
-                  texHover: "buttonRight",
-                  x: () => rightOfBorder + 100,
-                  y: () => camera.height - aboveBottom,
-                  depth: 1000
-              });
-              this.touchControl.jump = vkeys.button({
-                  key: "Vk3",
-                  texNormal: "buttonJump",
-                  texActive: "buttonJump",
-                  texHover: "buttonJump",
-                  x: () => camera.width - rightOfBorder,
-                  y: () => camera.height - aboveBottom,
-                  depth: 1000
-              });*/
-        eventKey: OnRoomStart
       - lib: core
         arguments: {}
         code: camera.realign(this);
@@ -2758,6 +2866,7 @@ assets:
     simulate: true
     isUi: !<tag:yaml.org,2002:js/undefined> ''
     follow: -1
+    behaviors: []
   - name: BodyFall
     uid: 64f57367-eae3-40e1-8769-e11bd3c90f62
     origname: s0.wav

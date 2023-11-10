@@ -8,6 +8,9 @@
         This array is modified to add new events, edit existing ones.
     @attribute entitytype (EventApplicableEntities)
         The asset type that is being added
+    @attribute [baseclass] (string)
+        Can be used for entitytype="template". Orders the event list
+        to filter out events that do not support the specified base class.
     @attribute [currentevent] (IScriptableEvent)
         Currently selected event.
         Defaults to the first event in the `events` attributes.
@@ -41,6 +44,18 @@ event-list-scriptable.flexfix(class="{opts.class}")
                 )
                     svg.feather.warning.anActionableIcon
                         use(xlink:href="#snowflake")
+                div.noshrink.nogrow(
+                    if="{parent.opts.warnbehaviors && isRestricted(event)}"
+                    title="{getRestrictionsMessage(event)}"
+                )
+                    svg.feather.warning.anActionableIcon
+                        use(xlink:href="#alert-triangle")
+                div.noshrink.nogrow(
+                    if="{!parent.opts.warnbehaviors && isRestricted(event)}"
+                    title="{voc.baseClassWarning}"
+                )
+                    svg.feather.error.anActionableIcon
+                        use(xlink:href="#alert-circle")
                 .aSpacer.noshrink
                 svg.feather.anActionableIcon.noshrink.nogrow(
                     if="{getIsParametrized(event)}"
@@ -98,6 +113,16 @@ event-list-scriptable.flexfix(class="{opts.class}")
         this.getIcon = scriptableEvt => eventsAPI.tryGetIcon(getFullKey(scriptableEvt), scriptableEvt);
         this.isStatic = scriptableEvt => !eventsAPI
             .canBeDynamicBehavior(eventsAPI.getEventByLib(scriptableEvt.eventKey, scriptableEvt.lib));
+        this.isRestricted = scriptableEvt => !eventsAPI
+            .canUseBaseClass(eventsAPI.getEventByLib(
+                scriptableEvt.eventKey,
+                scriptableEvt.lib
+            ), this.opts.baseclass);
+        this.getRestrictionsMessage = scriptableEvt => {
+            const evt = eventsAPI.getEventByLib(scriptableEvt.eventKey, scriptableEvt.lib);
+            const names = evt.baseClasses.map(bc => this.vocFull.templateView.baseClass[bc]);
+            return this.voc.restrictedEventWarning.replace('$1', names.join(', '));
+        };
 
         this.namespace = 'scriptables';
         this.mixin(require('./data/node_requires/riotMixins/voc').default);
@@ -161,7 +186,21 @@ event-list-scriptable.flexfix(class="{opts.class}")
             this.update();
         };
 
-        this.eventsMenu = eventsAPI.bakeCategories(this.opts.entitytype, this.addEvent);
+        this.prevBaseClass = this.opts.baseclass;
+        this.refreshEventsMenu = () => {
+            this.eventsMenu = eventsAPI.bakeCategories(
+                this.opts.entitytype,
+                this.addEvent,
+                this.opts.baseclass
+            );
+        };
+        this.refreshEventsMenu();
+        this.on('update', () => {
+            if (this.prevBaseClass !== this.opts.baseclass) {
+                this.refreshEventsMenu();
+                this.prevBaseClass = this.opts.baseclass;
+            }
+        });
 
         if (!this.opts.events) {
             console.error('event-list-scriptable was not provided with an `events` attribute.');

@@ -4,6 +4,7 @@
 /* eslint-disable @typescript-eslint/triple-slash-reference */
 /* eslint-disable spaced-comment */
 /// <reference path="../resources/textures/ITexture.d.ts" />
+/// <reference path="../resources/templates/ITemplate.d.ts" />
 /// <reference path="../resources/emitterTandems/types.d.ts" />
 /// <reference path="../resources/rooms/IRoom.d.ts" />
 /// <reference path="../resources/projects/IProject.d.ts" />
@@ -112,16 +113,13 @@ export type ExportedRoom = {
 }
 
 export type ExportedTemplate = {
-    texture?: string;
+    name: string;
     anchorX?: number;
     anchorY?: number;
     height?: number;
     width?: number;
     depth: number;
     blendMode: PIXI.BLEND_MODES;
-    animationFPS: number;
-    playAnimationOnStart: boolean;
-    loopAnimation: boolean;
     visible: boolean;
     behaviors: string[];
     onStep: () => void;
@@ -129,7 +127,23 @@ export type ExportedTemplate = {
     onDestroy: () => void;
     onCreate: () => void;
     extends: Record<string, any>;
-}
+} & ({
+    baseClass: 'AnimatedSprite';
+    animationFPS: number;
+    playAnimationOnStart: boolean;
+    loopAnimation: boolean;
+    texture?: string;
+} | {
+    baseClass: 'Text';
+    textStyle: string | -1;
+    defaultText: string;
+} | {
+    baseClass: 'NineSlicePlane';
+    nineSliceSettings: ITemplate['nineSliceSettings'];
+    texture?: string;
+} | {
+    baseClass: 'Container'
+});
 
 export type ExportedMeta = {
     name: string;

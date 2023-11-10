@@ -7,7 +7,6 @@ import * as sounds from './sounds';
 import * as rooms from './rooms';
 import * as templates from './templates';
 import * as styles from './styles';
-import * as skeletons from './skeletons';
 import * as behaviors from './behaviors';
 
 import getUid from '../generateGUID';
@@ -71,7 +70,6 @@ interface IResourceAPI {
 const typeToApiMap: Record<resourceType, IResourceAPI> = {
     font: fonts,
     room: rooms,
-    skeleton: skeletons,
     sound: sounds,
     style: styles,
     tandem: emitterTandems,
@@ -88,7 +86,6 @@ type typeToTsTypeMap = {
         T extends 'room' ? IRoom :
         T extends 'sound' ? ISound :
         T extends 'style' ? IStyle :
-        T extends 'skeleton' ? ISkeleton :
         T extends 'texture' ? ITexture :
         T extends 'tandem' ? ITandem :
         T extends 'template' ? ITemplate :
@@ -405,13 +402,15 @@ export const deleteFolder = (
  * Relies on caches in the textures and skeletons submodules.
  * @async
  */
-export const getDOMImage = (asset: ISkeleton | ITemplate | ITexture): HTMLImageElement => {
+export const getDOMImage = (asset: ITemplate | ITexture): HTMLImageElement => {
     if (asset.type === 'texture') {
         return textures.getDOMTexture(asset);
-    } else if (asset.type === 'template') {
+    }
+    if (asset.type === 'template') {
         return templates.getDOMTexture(asset);
     }
-    return skeletons.getDOMSkeleton(asset);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    throw new Error('[resources.getDOMImage] Unknown asset type: ' + (asset as any).type + '.');
 };
 
 export const areThumbnailsIcons = (asset: IAsset | IAssetFolder): boolean => {
@@ -468,13 +467,13 @@ export const resourceToIconMap: Record<resourceType, string> = {
     room: 'room',
     template: 'template',
     style: 'ui',
-    skeleton: 'skeletal-animation',
+    // skeleton: 'skeletal-animation',
     behavior: 'behavior'
 };
 export const editorMap: Record<resourceType, string> = {
     font: 'font-editor',
     room: 'room-editor',
-    skeleton: 'skeletal-animation',
+    // skeleton: 'skeletal-animation',
     sound: 'sound-editor',
     style: 'style-editor',
     tandem: 'emitter-tandem-editor',

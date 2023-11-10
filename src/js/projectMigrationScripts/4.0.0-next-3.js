@@ -16,6 +16,18 @@ window.migrationProcess.push({
         walker(project.assets);
         for (const item of toPatch) {
             item.behaviors ??= [];
+            if (item.type === 'template') {
+                if (!item.baseClass) {
+                    item.baseClass = 'AnimatedSprite';
+                    item.nineSliceSettings = {
+                        left: 16,
+                        top: 16,
+                        right: 16,
+                        bottom: 16
+                    };
+                    item.style = -1;
+                }
+            }
         }
         resolve();
     })

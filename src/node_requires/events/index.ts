@@ -156,9 +156,17 @@ const tryGetIcon = (eventFullCode: string, scriptedEvent: IScriptableEvent): str
     return false;
 };
 
+const canUseBaseClass = (event: IEventDeclaration, baseClass?: TemplateBaseClass): boolean => {
+    if (!event.baseClasses || event.baseClasses.length === 0) {
+        return true;
+    }
+    return event.baseClasses.includes(baseClass);
+};
+
 const bakeCategories = function bakeCategories(
     entity: EventApplicableEntities,
-    callback: (affixedData: IEventDeclaration) => void
+    callback: (affixedData: IEventDeclaration) => void,
+    baseClass?: TemplateBaseClass
 ): EventMenu {
     const menu = {
         items: [] as IEventMenuSubmenu[]
@@ -183,6 +191,11 @@ const bakeCategories = function bakeCategories(
         const event = events[eventKey];
         // Filter out events for other entities
         if (!event.applicable.includes(entity)) {
+            continue;
+        }
+        // Filter out events that require a specific base class
+        // ⚠️ Does not filter out events for behaviors
+        if (baseClass && !canUseBaseClass(event, baseClass)) {
             continue;
         }
         // Find if there is already a category for this event.
@@ -286,6 +299,7 @@ export {
     localizeCategoryName,
     localizeParametrized,
     canBeDynamicBehavior,
+    canUseBaseClass,
     localizeProp,
     localizeArgument,
     localizeLocalVarDesc,

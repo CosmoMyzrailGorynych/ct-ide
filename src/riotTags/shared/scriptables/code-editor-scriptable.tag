@@ -3,6 +3,9 @@
         The asset type that is being added
     @attribute event (IScriptableEvent)
         The event to edit.
+    @attribute [baseclass] (string)
+        The base type of the edited copy, as it is named described in ct.release/templates.ts.
+        Required for templates for correct and full typings; defaults to BasicCopy otherwise.
 
     @attribute [onchanged] (Riot function)
         The function is called whenever there was a change in the code.
@@ -54,6 +57,9 @@ code-editor-scriptable.relative.wide.tall.flexcol
                 this.codeEditor.layout();
             }, 0);
         };
+
+        const baseTypes = 'import {BasicCopy, CopyAnimatedSprite, CopyPanel, CopyText, CopyContainer} from \'src/ct.release/templates\';';
+
         const updateEvent = () => {
             if (this.currentEvent) {
                 this.codeEditor.updateOptions({
@@ -65,10 +71,11 @@ code-editor-scriptable.relative.wide.tall.flexcol
                     this.currentEvent.lib
                 );
                 const varsDeclaration = eventsAPI.getArgumentsTypeScript(eventDeclaration);
+                console.log(this.opts);
                 const ctEntity = this.opts.entitytype === 'template' ?
-                    '(typeof Copy)[\'prototype\']' :
+                    (this.opts.baseclass ?? 'BasicCopy') :
                     '(typeof Room)[\'prototype\']';
-                const codePrefix = `function ctJsEvent(this: ${ctEntity}) {${varsDeclaration}`;
+                const codePrefix = `${baseTypes} function ctJsEvent(this: ${ctEntity}) {${varsDeclaration}`;
                 if (this.language === 'typescript') {
                     this.codeEditor.setWrapperCode(codePrefix, '}');
                 }

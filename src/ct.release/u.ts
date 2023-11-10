@@ -1,7 +1,9 @@
-import {Copy} from './templates';
+import type {CtjsTexture} from 'res';
+import type {TextureShape} from '../node_requires/exporter/_exporterContracts';
+import type {BasicCopy, CopyPanel} from './templates';
 import timerLib, {CtTimer} from './timer';
 
-import * as pixiMod from 'node_modules/pixi.js';
+import type * as pixiMod from 'node_modules/pixi.js';
 declare var PIXI: typeof pixiMod;
 
 /**
@@ -227,6 +229,88 @@ const uLib = {
         return '#' + (pixi).toString(16).padStart(6, '0');
     },
     /**
+     * Returns a shape object based on the dimensions of the given sprite.
+     */
+    getRectShape(sprite: pixiMod.Sprite): TextureShape {
+        return {
+            type: 'rect',
+            left: sprite.width * sprite.anchor.x,
+            top: sprite.height * sprite.anchor.y,
+            right: sprite.width * (1 - sprite.anchor.x),
+            bottom: sprite.height * (1 - sprite.anchor.y)
+        };
+    },
+    /**
+     * Takes a CopyPanel instance and changes its shape to accommodate its new dimensions.
+     * Doesn't work with circular collision shapes.
+     */
+    reshapeNinePatch(ninePatch: CopyPanel): void {
+        const origTex = (ninePatch.texture as CtjsTexture);
+        const origShape = origTex.shape;
+        const origWidth = origTex.width,
+              origHeight = origTex.height;
+        // how much the new box is larger than the original one
+        const dwx = ninePatch.width - origWidth,
+              dhy = ninePatch.height - origHeight;
+        // the size of the inner part of the original frame
+        const bw = origWidth - ninePatch.leftWidth - ninePatch.rightWidth,
+              bh = origHeight - ninePatch.topHeight - ninePatch.bottomHeight;
+        if (origShape.type === 'circle') {
+            throw new Error(`[u.reshapeNinePatch] Cannot reshape a circular collision mask for ${ninePatch.template}. Please use a different collision type for its texture.`);
+        }
+        if (origShape.type === 'rect') {
+            const shape: TextureShape = {
+                type: 'rect',
+                left: origShape.left,
+                top: origShape.top,
+                right: origShape.right + dwx,
+                bottom: origShape.bottom + dhy
+            };
+            if (origShape.left > ninePatch.leftWidth) {
+                shape.left = (origShape.left - ninePatch.leftWidth) * (1 + dwx) / bw;
+            }
+            if (origShape.right < ninePatch.rightWidth) {
+                shape.right = (origShape.right - ninePatch.rightWidth) * (1 + dwx) / bw;
+            }
+            if (origShape.top > ninePatch.topHeight) {
+                shape.top = (origShape.top - ninePatch.topHeight) * (1 + dhy) / bh;
+            }
+            if (origShape.bottom < ninePatch.bottomHeight) {
+                shape.bottom = (origShape.bottom - ninePatch.bottomHeight) * (1 + dhy) / bh;
+            }
+            ninePatch.shape = shape;
+            return;
+        }
+        if (origShape.type === 'strip') {
+            const shape: TextureShape = {
+                type: 'strip',
+                points: [] as {
+                    x: number,
+                    y: number
+                }[],
+                closedStrip: origShape.closedStrip
+            };
+            shape.points = origShape.points.map((point) => {
+                let {x, y} = point;
+                if (point.x >= origWidth - ninePatch.rightWidth) {
+                    x += dwx;
+                } else if (point.x > ninePatch.leftWidth) {
+                    x = ninePatch.leftWidth + (point.x - ninePatch.leftWidth) * (1 + dwx / bw);
+                }
+                if (point.y >= origHeight - ninePatch.bottomHeight) {
+                    y += dhy;
+                } else if (point.y > ninePatch.topHeight) {
+                    y = ninePatch.topHeight + (point.y - ninePatch.topHeight) * (1 + dhy / bh);
+                }
+                return {
+                    x,
+                    y
+                };
+            });
+            ninePatch.shape = shape;
+        }
+    },
+    /**
      * Tests whether a given point is inside the given rectangle
      * (it can be either a copy or an array).
      * @param {number} x The x coordinate of the point.
@@ -236,7 +320,7 @@ const uLib = {
      * the two opposite corners of the rectangle.
      * @returns {boolean} `true` if the point is inside the rectangle, `false` otherwise.
      */
-    prect(x: number, y: number, arg: (Copy | Array<number>)): boolean {
+    prect(x: number, y: number, arg: (BasicCopy | Array<number>)): boolean {
         var xmin, xmax, ymin, ymax;
         if (arg instanceof Array) {
             xmin = Math.min(arg[0], arg[2]);
@@ -263,7 +347,7 @@ const uLib = {
      * and `r` defines the radius of it.
      * @returns {boolean} `true` if the point is inside the circle, `false` otherwise
      */
-    pcircle(x: number, y: number, arg: (Copy | Array<number>)): boolean {
+    pcircle(x: number, y: number, arg: (BasicCopy | Array<number>)): boolean {
         if (arg instanceof Array) {
             return uLib.pdc(x, y, arg[0], arg[1]) < arg[2];
         }

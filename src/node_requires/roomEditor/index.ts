@@ -9,7 +9,7 @@ import {Viewport} from './entityClasses/Viewport';
 
 import {SnapTarget} from './entityClasses/SnapTarget';
 import {MarqueeBox} from './entityClasses/MarqueeBox';
-import {Transformer} from './entityClasses/Transformer';
+import {Transformer, getAnchor} from './entityClasses/Transformer';
 import {ViewportRestriction} from './entityClasses/ViewportRestriction';
 
 import {IRoomEditorRiotTag} from './IRoomEditorRiotTag';
@@ -18,6 +18,8 @@ import {getById} from '../resources';
 import {getPixiSwatch} from './../themes';
 import {defaultTextStyle, recolorFilters, eraseCursor, toPrecision, snapToDiagonalGrid, snapToRectangularGrid} from './common';
 import {ease, Easing} from 'node_modules/pixi-ease';
+
+import {rotateRad} from '../utils/trigo';
 
 import * as PIXI from 'node_modules/pixi.js';
 import 'node_modules/@pixi/events';
@@ -61,7 +63,8 @@ class RoomEditor extends PIXI.Application {
     history = new History(this);
     riotEditor: IRoomEditorRiotTag;
     ctRoom: IRoom;
-    currentSelection: Set<PIXI.Sprite> = new Set();
+    currentSelection: Set<Copy | Tile> = new Set();
+    currentUiSelection: Copy | void;
     clipboard: Set<tileClipboardData | copyClipboardData> = new Set();
     /** A sprite that catches any click events */
     clicktrap = new PIXI.Sprite(PIXI.Texture.WHITE);
@@ -81,6 +84,12 @@ class RoomEditor extends PIXI.Application {
     room = new PIXI.Container();
     /** A container for viewport boxes, grid, and other overlays */
     overlays = new PIXI.Container();
+    /**
+     * A Graphics instance used to draw selection frames on top of entities,
+     * used in several tools to highlight the current selection.
+     * See this.drawSelection method to actually draw it.
+     */
+    selectionOverlay = new PIXI.Graphics();
     /** A free transform widget that exists in **global** coordinates. */
     transformer = new Transformer(this);
     primaryViewport: Viewport;
@@ -163,6 +172,7 @@ class RoomEditor extends PIXI.Application {
         this.overlays.addChild(this.marqueeBox);
         this.overlays.addChild(this.snapTarget);
         this.deserialize(editor.room);
+        this.stage.addChild(this.selectionOverlay);
         this.stage.addChild(this.transformer);
 
         this.pointerCoords.zIndex = Infinity;
@@ -177,13 +187,19 @@ class RoomEditor extends PIXI.Application {
         this.ticker.add(() => {
             this.resizeClicktrap();
             this.realignCamera();
+            // Update positions of various on-screen elements to reflect camera changes
             this.snapTarget.update();
             this.repositionCoordLabel();
             this.repositionMouseoverHint();
             this.tickBackgrounds();
             this.tickCopies();
+            // Redraw selection frames & transformer
             if (this.transformer.visible) {
                 this.transformer.updateFrame();
+            }
+            // Redraw selection frame
+            if (this.riotEditor.currentTool === 'uiTools' && this.currentUiSelection) {
+                this.drawSelection([this.currentUiSelection]);
             }
             if (['addCopies', 'addTiles'].includes(this.riotEditor.currentTool)) {
                 if (this.riotEditor.controlMode && ['default', 'inherit'].includes(this.view.style.cursor)) {
@@ -259,6 +275,22 @@ class RoomEditor extends PIXI.Application {
                 }
             }
         }
+    }
+
+    /**
+     * Destroys all the PIXI instances of copies, tiles, and backgrounds,
+     * and recreates the room's entities again. Useful when a full state
+     * refresh is needed, e.g. when used templates changed base classes.
+     */
+    recreate(): void {
+        this.serialize(false);
+        this.room.removeChildren();
+        this.copies.clear();
+        this.tiles.clear();
+        this.backgrounds.length = 0;
+        this.currentSelection.clear();
+        this.clipboard.clear();
+        this.deserialize(this.ctRoom);
     }
 
     deserialize(room: IRoom): void {
@@ -425,7 +457,7 @@ class RoomEditor extends PIXI.Application {
             return;
         }
         for (const copy of this.copies) {
-            copy.update(this.ticker.deltaTime);
+            copy.sprite?.update(this.ticker.deltaTime);
         }
     }
     deleteSelected(): void {
@@ -548,6 +580,45 @@ class RoomEditor extends PIXI.Application {
         this.riotEditor.refs.propertiesPanel.updatePropList();
         this.transformer.blink();
     }
+    drawSelection(entities: Iterable<Copy | Tile>): void {
+        this.selectionOverlay.clear();
+        this.selectionOverlay.visible = true;
+        for (const entity of entities) {
+            const w = entity.width,
+                  h = entity.height,
+                  anchor = getAnchor(entity),
+                  // IDK why this works
+                  px = Math.sign(entity.scale.x) === -1 ? 1 - anchor.x : anchor.x,
+                  py = Math.sign(entity.scale.y) === -1 ? 1 - anchor.y : anchor.y,
+                  {x, y} = this.room.toGlobal(entity.position),
+                  sx = this.camera.scale.x,
+                  sy = this.camera.scale.y;
+            const tl = rotateRad(-w * px, -h * py, entity.rotation),
+                  tr = rotateRad(w * (1 - px), -h * py, entity.rotation),
+                  bl = rotateRad(-w * px, h * (1 - py), entity.rotation),
+                  br = rotateRad(w * (1 - px), h * (1 - py), entity.rotation);
+            // this.selectionOverlay.lineStyle(3, getPixiSwatch('act'));
+            this.selectionOverlay.lineStyle(1, getPixiSwatch('background'));
+            this.selectionOverlay.beginFill(getPixiSwatch('act'), 0.15);
+            this.selectionOverlay.moveTo(x + tl[0] / sx, y + tl[1] / sy);
+            this.selectionOverlay.lineTo(x + tr[0] / sx, y + tr[1] / sy);
+            this.selectionOverlay.lineTo(x + br[0] / sx, y + br[1] / sy);
+            this.selectionOverlay.lineTo(x + bl[0] / sx, y + bl[1] / sy);
+            this.selectionOverlay.lineTo(x + tl[0] / sx, y + tl[1] / sy);
+            this.selectionOverlay.endFill();
+            // this.selectionOverlay.lineStyle(1, getPixiSwatch('background'));
+            // this.selectionOverlay.moveTo(x + tl[0] / sx, y + tl[1] / sy);
+            // this.selectionOverlay.lineTo(x + tr[0] / sx, y + tr[1] / sy);
+            // this.selectionOverlay.lineTo(x + br[0] / sx, y + br[1] / sy);
+            // this.selectionOverlay.lineTo(x + bl[0] / sx, y + bl[1] / sy);
+            // this.selectionOverlay.lineTo(x + tl[0] / sx, y + tl[1] / sy);
+        }
+    }
+    /** Cleans the graphic overlay used to highlight selected copies. */
+    clearSelectionOverlay(): void {
+        this.selectionOverlay.clear();
+        this.selectionOverlay.visible = false;
+    }
     /**
      * Rounds up the values of current selection to fix rounding errors
      * that appear due to global-to-local transformations
@@ -605,7 +676,7 @@ class RoomEditor extends PIXI.Application {
         for (const child of this.room.children) {
             if (child instanceof Copy) {
                 if (child.templateId === templateId) {
-                    child.refreshTexture();
+                    child.recreate();
                 }
             }
         }

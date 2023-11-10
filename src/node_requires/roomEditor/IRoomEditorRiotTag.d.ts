@@ -3,7 +3,8 @@ import {TileLayer} from './entityClasses/TileLayer';
 import {ITilePatch} from './interactions/tiles/ITilePatch';
 import {RoomEditor} from '.';
 
-type tool = 'select' | 'addCopies' | 'addTiles' | 'manageBackgrounds' | 'roomProperties';
+type tool = 'select' | 'addCopies' | 'addTiles' |
+            'manageBackgrounds' | 'roomProperties' | 'uiTools';
 
 export interface IRoomEditorRiotTag extends IRiotTag {
     tilePatch: ITilePatch;
@@ -17,7 +18,8 @@ export interface IRoomEditorRiotTag extends IRiotTag {
         },
         tileEditor?: IRiotTag,
         backgroundsEditor?: IRiotTag,
-        zoomLabel: HTMLSpanElement
+        zoomLabel: HTMLSpanElement,
+        uiTools?: IRiotTag
     };
     pixiEditor: RoomEditor;
     zoom: number;

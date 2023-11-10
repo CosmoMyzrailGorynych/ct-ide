@@ -6,7 +6,7 @@ for (const hash of this.$chashes) {
         place.grid[hash].push(this);
     }
 }
-if ([/*%debugMode%*/][0] && this instanceof templates.Copy) {
+if ([/*%debugMode%*/][0] && templates.isCopy(this)) {
     this.$cDebugText = new PIXI.Text('Not initialized', {
         fill: 0xffffff,
         dropShadow: true,

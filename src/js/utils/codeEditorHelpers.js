@@ -6,6 +6,7 @@
     const path = require('path');
 
     window.signals = window.signals || riot.observable({});
+    // eslint-disable-next-line max-lines-per-function
     window.signals.on('monacoBooted', async () => {
         monaco.languages.typescript.javascriptDefaults.setEagerModelSync(true);
         monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
@@ -28,7 +29,11 @@
         const pixiDtsPromise = fs.readFile(path.join(__dirname, './data/typedefs/pixi.d.ts'), {
             encoding: 'utf-8'
         });
-        const [ctDts, pixiDts, globalsDts] = await Promise.all([ctDtsPromise, pixiDtsPromise, globalsPromise]);
+        const [ctDts, pixiDts, globalsDts] = await Promise.all([
+            ctDtsPromise,
+            pixiDtsPromise,
+            globalsPromise
+        ]);
         const exposer = `
         declare module 'node_modules/pixi.js' {
             export * from 'bundles/pixi.js/src/index';
@@ -39,35 +44,39 @@
         import backgroundsTemp from 'src/ct.release/backgrounds';
         import Camera from 'src/ct.release/camera';
         import contentTemp from 'src/ct.release/content';
+        import emittersTemp from 'src/ct.release/emitters';
         import resTemp from 'src/ct.release/res';
         import roomsTemp, {Room as roomClass} from 'src/ct.release/rooms';
         import soundsTemp from 'src/ct.release/sounds';
         import stylesTemp from 'src/ct.release/styles';
-        import templatesTemp, {Copy as copyClass} from 'src/ct.release/templates';
+        import templatesTemp from 'src/ct.release/templates';
         import tilemapsTemp from 'src/ct.release/tilemaps';
         import timerTemp from 'src/ct.release/timer';
         import uTemp from 'src/ct.release/u';
+        import behaviorsTemp from 'src/ct.release/behaviors';
         import {meta as metaTemp, settings as settingsTemp, pixiApp as pixiAppTemp} from 'src/ct.release/index';
         declare global {
             ${globalsDts}
             var PIXI: typeof pixiTemp;
             var Room: typeof roomClass;
-            var Copy: typeof copyClass;
             var actions: typeof actionsTemp;
-            var inputs: typeof inputsTemp;
             var backgrounds: typeof backgroundsTemp;
+            var behaviors: typeof behaviorsTemp;
             var camera: typeof Camera;
             var content: typeof contentTemp;
+            var emitters: typeof emittersTemp;
+            var inputs: typeof inputsTemp;
+            var meta: typeof metaTemp;
             var res: typeof resTemp;
             var rooms: typeof roomsTemp;
+            var settings: typeof settingsTemp;
             var sounds: typeof soundsTemp;
             var styles: typeof stylesTemp;
             var templates: typeof templatesTemp;
             var tilemaps: typeof tilemapsTemp;
             var timer: typeof timerTemp;
             var u: typeof uTemp;
-            var meta: typeof metaTemp;
-            var settings: typeof settingsTemp;
+
             var pixiApp: typeof pixiAppTemp;
         }`;
         ts.javascriptDefaults.addExtraLib(ctDts, monaco.Uri.parse('file:///ctjs.ts'));

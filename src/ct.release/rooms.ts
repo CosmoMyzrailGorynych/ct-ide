@@ -1,18 +1,18 @@
 import uLib from './u';
 import backgrounds, {Background} from './backgrounds';
-import templatesLib, {Copy} from './templates';
+import templatesLib, {BasicCopy} from './templates';
 import tilemapsLib, {Tilemap} from './tilemaps';
 import mainCamera from './camera';
-import {deadPool, pixiApp, stack} from '.';
+import {copyTypeSymbol, deadPool, pixiApp, stack} from '.';
 import {ExportedRoom} from './../node_requires/exporter/_exporterContracts';
 import {updateViewport} from 'fittoscreen';
 import {runBehaviors} from './behaviors';
 
-import * as pixiMod from 'node_modules/pixi.js';
+import type * as pixiMod from 'node_modules/pixi.js';
 declare var PIXI: typeof pixiMod;
 
 type RoomMergeResult = {
-    copies: Copy[];
+    copies: BasicCopy[];
     tileLayers: Tilemap[];
     backgrounds: Background[];
 };
@@ -85,7 +85,8 @@ export class Room extends PIXI.Container<pixiMod.DisplayObject> {
      * without knowing exactly what you're doing.
      */
     onLeave: () => void;
-    constructor(template: ExportedRoom) {
+
+    constructor(template: ExportedRoom, isRoot: boolean) {
         super();
         this.x = this.y = 0;
         this.sortableChildren = true;
@@ -105,7 +106,8 @@ export class Room extends PIXI.Container<pixiMod.DisplayObject> {
             if (template.extends) {
                 Object.assign(this, template.extends);
             }
-            if (this === roomsLib.current) {
+            if (isRoot) {
+                roomsLib.current = this;
                 (pixiApp.renderer as pixiMod.Renderer).background.color =
                     uLib.hexToPixi(this.template.backgroundColor);
             }
@@ -143,7 +145,11 @@ export class Room extends PIXI.Container<pixiMod.DisplayObject> {
                         scaleY: copy.scale.y,
                         rotation: copy.rotation,
                         alpha: copy.opacity,
-                        tint: copy.tint
+                        tint: copy.tint,
+                        customSize: copy.customSize,
+                        customWordWrap: copy.customWordWrap,
+                        customText: copy.customText,
+                        customAnchor: copy.customAnchor
                     }
                 );
             }
@@ -251,8 +257,8 @@ const roomsLib = {
         room.kill = true;
         pixiApp.stage.removeChild(room);
         for (const copy of room.children) {
-            if (copy instanceof Copy) {
-                copy.kill = true;
+            if (copyTypeSymbol in copy) {
+                (copy as BasicCopy).kill = true;
             }
         }
         room.onLeave();
@@ -291,7 +297,7 @@ const roomsLib = {
         if (!(roomName in roomsLib.templates)) {
             throw new Error(`[rooms.append] append failed: the room ${roomName} does not exist!`);
         }
-        const room = new Room(roomsLib.templates[roomName]);
+        const room = new Room(roomsLib.templates[roomName], false);
         if (exts) {
             Object.assign(room, exts);
         }
@@ -314,7 +320,7 @@ const roomsLib = {
         if (!(roomName in roomsLib.templates)) {
             throw new Error(`[rooms] prepend failed: the room ${roomName} does not exist!`);
         }
-        const room = new Room(roomsLib.templates[roomName]);
+        const room = new Room(roomsLib.templates[roomName], false);
         if (exts) {
             Object.assign(room, exts);
         }
@@ -392,7 +398,7 @@ const roomsLib = {
             mainCamera.minY = template.cameraConstraints.y1;
             mainCamera.maxY = template.cameraConstraints.y2;
         }
-        roomsLib.current = new Room(template);
+        roomsLib.current = new Room(template, true);
         pixiApp.stage.addChild(roomsLib.current);
         updateViewport();
         roomsLib.rootRoomOnCreate.apply(roomsLib.current);

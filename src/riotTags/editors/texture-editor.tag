@@ -374,7 +374,7 @@ texture-editor(onclick="{tryClose}")
         const glob = require('./data/node_requires/glob');
         const {getSwatch} = require('./data/node_requires/themes');
         const {getTextureOrig} = require('./data/node_requires/resources/textures');
-        const {getSkeletonRender} = require('./data/node_requires/resources/skeletons');
+        // const {getSkeletonRender} = require('./data/node_requires/resources/skeletons');
 
         this.namespace = 'textureView';
         this.mixin(require('./data/node_requires/riotMixins/voc').default);

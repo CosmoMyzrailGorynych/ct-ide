@@ -76,6 +76,7 @@ import {deleteSelected} from './transformer/delete';
 import {copy, paste} from './transformer/copyPaste';
 import {undo, redo} from './history';
 import {tab} from './tab';
+import {selectUi} from './selectUi';
 
 export const interactions = [
     updateMousePosition, // Ambient interaction — never blocks the queue
@@ -97,6 +98,8 @@ export const interactions = [
     scaleSelection,
     deleteSelected,
     select,
+
+    selectUi,
 
     deleteCopies,
     placeCopy,

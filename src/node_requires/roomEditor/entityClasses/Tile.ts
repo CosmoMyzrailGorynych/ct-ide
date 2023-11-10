@@ -6,6 +6,7 @@ import * as PIXI from 'node_modules/pixi.js';
 import {RoomEditorPreview} from '../previewer';
 
 /**
+ * @extends PIXI.Sprite
  * @notice This class automatically adds and removes itself from editor's tile list
  */
 class Tile extends PIXI.Sprite {

@@ -98,6 +98,21 @@
         "tileLayer": "tile layer",
         "ctSite": "ct.js homepage",
         "openAssetGallery": "Gallery",
+        "alignModes": {
+            "left": "Left",
+            "right": "Right",
+            "top": "Top",
+            "bottom": "Bottom",
+            "center": "Center",
+            "topLeft": "Top left",
+            "topCenter": "Top center",
+            "topRight": "Top right",
+            "bottomLeft": "Bottom left",
+            "bottomCenter": "Bottom center",
+            "bottomRight": "Bottom right",
+            "fill": "Fill",
+            "Scale": "Scale"
+        },
         "assetTypes": {
             "behavior": [
                 "behavior",
@@ -885,6 +900,7 @@
         "customProperties": "Custom Properties",
         "findTileset": "Find a tileset",
         "resetView": "Reset view",
+        "emptyTextFiller": "<Empty>",
         "copyProperties": {
             "position": "Position",
             "rotation": "Rotation",
@@ -898,6 +914,14 @@
             "property": "Property",
             "value": "Value",
             "nameOccupied": "This property is used by ct.js! You should come up with a different name."
+        },
+        "uiTools": {
+            "noSelectionNotice": "Select a text label to change its properties.",
+            "textSettings": "Text settings",
+            "customText": "Text",
+            "customTextSize": "Font size",
+            "wordWrapWidth": "Wrap at this width",
+            "textAlignment": "Align by"
         },
         "restrictCamera": "Keep camera in a rectangle",
         "minimumX": "Min X",
@@ -921,6 +945,7 @@
             "addCopies": "Add copies",
             "addTiles": "Add tiles",
             "manageBackgrounds": "Manage backgrounds",
+            "uiTools": "UI tools",
             "roomProperties": "Room properties"
         }
     },
@@ -1059,6 +1084,8 @@
         "createEventHint": "Create your first event in the left column, and define your logic here",
         "jumpToProblem": "Jump to the Problem",
         "staticEventWarning": "This event makes this behavior static. You will not be able to add or remove it dynamically in-game with the Behaviors API, but otherwise it will be perfectly usable.",
+        "restrictedEventWarning": "This event will work only on templates with the following base classes: $1. This event won't work when applied to templates of other base classes.",
+        "baseClassWarning": "This event doesn't work with the current base class.",
         "coreEventsCategories": {
             "lifecycle": "Lifecycle",
             "actions": "Actions",
@@ -1130,13 +1157,9 @@
     },
     "templateView": {
         "change": "Change sprite",
-        "create": "On Create",
-        "destroy": "On Destroy",
-        "done": "Done",
-        "draw": "Draw",
+        "defaultText": "Default text:",
         "learnAboutTypes": "Learn about coding templates",
         "name": "Name:",
-        "step": "On Step",
         "appearance": "Appearance",
         "visible": "Visible",
         "depth": "Depth:",
@@ -1150,6 +1173,19 @@
             "add": "Add (burn)",
             "multiply": "Multiply (darken)",
             "screen": "Screen (lighten)"
-        }
+        },
+        "baseClass": {
+            "AnimatedSprite": "Animated sprite",
+            "Text": "Text",
+            "NineSlicePlane": "Panel",
+            "Container": "Container"
+        },
+        "nineSliceTop": "Top slice, in pixels",
+        "nineSliceRight": "Right slice, in pixels",
+        "nineSliceBottom": "Bottom slice, in pixels",
+        "nineSliceLeft": "Left slice, in pixels",
+        "autoUpdateNineSlice": "Automatically update collision shape",
+        "autoUpdateNineSliceHint": "If a panel changes its size, it will automatically update its collision shape. You usually don't need that for purely cosmetic elements, or the ones that never change their size after creation. You can still update its collision shape at any time with u.reshapeNinePatch(this) call.",
+        "panelHeading": "Texture slicing settings"
     }
 }

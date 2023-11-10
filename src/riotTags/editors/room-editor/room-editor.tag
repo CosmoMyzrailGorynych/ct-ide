@@ -45,10 +45,19 @@ room-editor.aPanel.aView
                 svg.feather
                     use(xlink:href="#image")
             button.forcebackground(
+                onclick="{setTool('uiTools')}"
+                class="{active: currentTool === 'uiTools'}"
+                title="{voc.tools.uiTools} (T)"
+                data-hotkey="t"
+                data-hotkey-require-scope="rooms"
+            )
+                svg.feather
+                    use(xlink:href="#font")
+            button.forcebackground(
                 onclick="{setTool('roomProperties')}"
                 class="{active: currentTool === 'roomProperties'}"
-                title="{voc.tools.roomProperties} (T)"
-                data-hotkey="t"
+                title="{voc.tools.roomProperties} (Y)"
+                data-hotkey="y"
                 data-hotkey-require-scope="rooms"
             )
                 svg.feather
@@ -100,6 +109,12 @@ room-editor.aPanel.aView
             room="{room}"
             history="{pixiEditor?.history}"
             ref="backgroundsEditor"
+        )
+        room-ui-tools.room-editor-aContextPanel(
+            if="{currentTool === 'uiTools'}"
+            selection="{pixiEditor?.currentUiSelection}"
+            pixieditor="{pixiEditor}"
+            ref="uiTools"
         )
 
         // Global controls placed at the top-center
@@ -294,16 +309,32 @@ room-editor.aPanel.aView
         const mandatoryVisibilityMap = {
             addCopies: 'copiesVisible',
             addTiles: 'tilesVisible',
-            manageBackgrounds: 'backgroundsVisible'
+            manageBackgrounds: 'backgroundsVisible',
+            uiTools: 'copiesVisible',
         };
         this.setTool = tool => () => {
+            const prevTool = this.currentTool;
             this.currentTool = tool;
             if (tool in mandatoryVisibilityMap) {
                 this.pixiEditor[mandatoryVisibilityMap[tool]] = true;
             }
+            // Preselect a copy when switching from 'select' to 'uiTools'
+            if (prevTool === 'select' &&
+                tool === 'uiTools' &&
+                this.pixiEditor.currentSelection.size === 1
+            ) {
+                [this.pixiEditor.currentUiSelection] = this.pixiEditor.currentSelection;
+                this.pixiEditor.history.initiateUiChange();
+            }
+
             if (tool !== 'select') {
                 this.pixiEditor.transformer.clear();
             }
+            if (tool !== 'uiTools') {
+                this.pixiEditor.currentUiSelection = void 0;
+            }
+
+            // Preselect the first tile layer, if another one was not selected before
             if (tool === 'addTiles' && !this.pixiEditor.tileLayers.includes(this.currentTileLayer)) {
                 [this.currentTileLayer] = this.pixiEditor.tileLayers;
             }

@@ -5,6 +5,7 @@ rooms.templates.CTTRANSITIONEMPTYROOM = {
     objects: [],
     bgs: [],
     tiles: [],
+    behaviors: [],
     onStep() {
         void 0;
     },

@@ -1,11 +1,8 @@
-/// <reference types="../../app/node_modules/pixi-spine" />
-
 import uLib from './u';
 // import {sounds} from './sounds';
-// import {Spine, ISkeletonData} from 'node_modules/pixi-spine';
-import {TextureShape, ExportedTiledTexture, ExportedSkeleton} from '../node_requires/exporter/_exporterContracts';
+import type {TextureShape, ExportedTiledTexture} from '../node_requires/exporter/_exporterContracts';
 
-import * as pixiMod from 'node_modules/pixi.js';
+import type * as pixiMod from 'node_modules/pixi.js';
 declare var PIXI: typeof pixiMod;
 
 export type CtjsTexture = pixiMod.Texture & {
@@ -181,7 +178,6 @@ const resLib = {
         const tiledImages: ExportedTiledTexture[] = [/*!@tiledImages@*/][0];
         const sounds: string[] = [/*!@sounds@*/][0];
         const bitmapFonts: string[] = [/*!@bitmapFonts@*/][0];
-        const skeletons: ExportedSkeleton[] = [/*!@skeletons@*/][0];
         /* eslint-enable prefer-destructuring */
 
         const totalAssets = atlases.length;
@@ -208,9 +204,6 @@ const resLib = {
         }
         for (const font in bitmapFonts) {
             loadingPromises.push(resLib.loadBitmapFont(bitmapFonts[font]));
-        }
-        for (const skel of skeletons) {
-            loadingPromises.push(resLib.loadSkeleton(skel.dataPath, skel.name));
         }
         /*
         for (const sound of sounds) {
@@ -282,32 +275,7 @@ const resLib = {
             throw new Error(`Attempt to get a shape of a non-existent texture ${name}`);
         }
         return resLib.textures[name].shape;
-    },
-    /**
-     * Creates a skeletal animated sprite, ready to be added to your copies.
-     * @param {string} name The name of the skeleton asset.
-     * @param {string} [skin] The name of the skin; optional.
-     * @returns The created skeleton
-     */
-    /*makeSkeleton(name: string, skin?: string): any {
-        const asset = resLib.skeletons[name];
-        const skeleton: Spine = new Spine(asset);
-        if (skin) {
-            skeleton.skeleton.setSkinByName(skin);
-        }
-        // TODO:
-        /* skel.on(dragonBones.EventObject.SOUND_EVENT, function skeletonSound(event) {
-            if (sounds.exists(event.name)) {
-                sounds.play(event.name);
-            } else {
-                // eslint-disable-next-line no-console
-                console.warn(`Skeleton ${skel.ctName} tries to play
-                a non-existing sound ${event.name}
-                at animation ${skel.animation.lastAnimationName}`);
-            }
-        }); //
-        return skeleton;
-    }*/
+    }
 };
 
 /*!@fonts@*/

@@ -1,12 +1,10 @@
-import templatesLib, {Copy} from './templates';
+import templatesLib, {BasicCopy} from './templates';
 import roomsLib, {Room} from './rooms';
 import uLib from './u';
-import {pixiApp} from 'index';
+import {copyTypeSymbol, pixiApp} from 'index';
 
-import * as pixiMod from 'node_modules/pixi.js';
+import type * as pixiMod from 'node_modules/pixi.js';
 declare var PIXI: typeof pixiMod;
-
-declare var PIXI: typeof import('node_modules/pixi.js');
 
 /**
  * This class represents a camera that is used by ct.js' cameras.
@@ -33,7 +31,7 @@ declare var PIXI: typeof import('node_modules/pixi.js');
  * @property {number} targetY The y-coordinate of the target location.
  * Moving it instead of just using the `y` parameter will trigger the drift effect.
  *
- * @property {Copy|false} follow If set, the camera will follow the given copy.
+ * @property {BasicCopy|false} follow If set, the camera will follow the given copy.
  * @property {boolean} followX Works if `follow` is set to a copy.
  * Enables following in X axis. Set it to `false` and followY to `true`
  * to limit automatic camera movement to vertical axis.
@@ -130,7 +128,7 @@ const restrictInRect = function restrictInRect(camera: Camera) {
     }
 };
 export class Camera extends PIXI.DisplayObject {
-    follow: pixiMod.DisplayObject | Copy | undefined | false;
+    follow: pixiMod.DisplayObject | BasicCopy | undefined | false;
     followX: boolean;
     followY: boolean;
     targetX: number;
@@ -164,7 +162,6 @@ export class Camera extends PIXI.DisplayObject {
         this.getBounds = this.getBoundingBox;
     }
     reset(x: number, y: number, w: number, h: number): void {
-        console.log('camera size', w, h);
         this.followX = this.followY = true;
         this.targetX = this.x = x;
         this.targetY = this.y = y;
@@ -253,7 +250,7 @@ export class Camera extends PIXI.DisplayObject {
     update(delta: number): void {
         shakeCamera(this, delta);
         // Check if we've been following a copy that is now killed
-        if (this.follow && this.follow instanceof Copy && this.follow.kill) {
+        if (this.follow && (copyTypeSymbol in this.follow) && (this.follow as BasicCopy).kill) {
             this.follow = false;
         }
         // Autofollow the first copy of the followed template, set in the room's settings
@@ -479,14 +476,14 @@ export class Camera extends PIXI.DisplayObject {
         const w = (roomsLib.templates[room.name].width || 1),
               h = (roomsLib.templates[room.name].height || 1);
         for (const copy of room.children) {
-            if (!(copy instanceof Copy)) {
+            if (!(copyTypeSymbol in copy)) {
                 continue;
             }
-            if (copy.skipRealign) {
+            if ((copy as BasicCopy).skipRealign) {
                 continue;
             }
-            copy.x = copy.xstart / w * this.width;
-            copy.y = copy.ystart / h * this.height;
+            copy.x = (copy as BasicCopy).xstart / w * this.width;
+            copy.y = (copy as BasicCopy).ystart / h * this.height;
         }
     }
     /**

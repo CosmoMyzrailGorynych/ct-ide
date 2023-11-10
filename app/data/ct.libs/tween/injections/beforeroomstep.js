@@ -1,27 +1,29 @@
-var i = 0;
-while (i < tween.tweens.length) {
-    var tween = tween.tweens[i];
-    if (tween.obj.kill) {
-        tween.reject({
-            code: 2,
-            info: 'Copy is killed'
-        });
-        tween.tweens.splice(i, 1);
-        continue;
+{
+    let i = 0;
+    while (i < tween.tweens.length) {
+        const twoon = tween.tweens[i];
+        if (twoon.obj.kill) {
+            twoon.reject({
+                code: 2,
+                info: 'Copy is killed'
+            });
+            tween.tweens.splice(i, 1);
+            continue;
+        }
+        let a = twoon.timer.time / twoon.duration;
+        if (a > 1) {
+            a = 1;
+        }
+        for (const field in twoon.fields) {
+            const s = twoon.starting[field],
+                  d = twoon.fields[field] - twoon.starting[field];
+            twoon.obj[field] = twoon.curve(s, d, a);
+        }
+        if (a === 1) {
+            twoon.resolve(twoon.fields);
+            tween.tweens.splice(i, 1);
+            continue;
+        }
+        i++;
     }
-    var a = tween.timer.time / tween.duration;
-    if (a > 1) {
-        a = 1;
-    }
-    for (var field in tween.fields) {
-        var s = tween.starting[field],
-            d = tween.fields[field] - tween.starting[field];
-        tween.obj[field] = tween.curve(s, d, a);
-    }
-    if (a === 1) {
-        tween.resolve(tween.fields);
-        tween.tweens.splice(i, 1);
-        continue;
-    }
-    i++;
 }

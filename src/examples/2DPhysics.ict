@@ -1,518 +1,56 @@
-ctjsVersion: 3.2.0
+ctjsVersion: 4.0.0-next-3
 notes: /* empty */
 libs:
-  fittoscreen:
-    mode: scaleFit
-  sound.howler: {}
   matter:
     matterUseStaticDeltaTime: true
   pointer:
     preventdefault: false
     startlocked: false
   filters: {}
-textures:
-  - name: WoodenPlank
-    untill: 0
-    grid:
-      - 1
-      - 1
-    axis:
-      - 110
-      - 35
-    marginx: 0
-    marginy: 0
-    imgWidth: 220
-    imgHeight: 70
-    width: 220
-    height: 70
-    offx: 0
-    offy: 0
-    origname: i9afd54d7-1265-4ba0-b5de-5226b3c7e2fb.png
-    shape: rect
-    left: 110
-    right: 110
-    top: 35
-    bottom: 35
-    uid: 9afd54d7-1265-4ba0-b5de-5226b3c7e2fb
-    padding: 2
-    source: 'D:\Downloads\physicspack\PNG\Wood elements\elementWood012.png'
-    lastmod: 1654408163741
-  - name: WoodenSquare
-    untill: 0
-    grid:
-      - 1
-      - 1
-    axis:
-      - 35
-      - 35
-    marginx: 0
-    marginy: 0
-    imgWidth: 70
-    imgHeight: 70
-    width: 70
-    height: 70
-    offx: 0
-    offy: 0
-    origname: i41f7c3b3-abc8-4940-8919-9114a884d7f2.png
-    shape: rect
-    left: 35
-    right: 35
-    top: 35
-    bottom: 35
-    uid: 41f7c3b3-abc8-4940-8919-9114a884d7f2
-    padding: 1
-    source: 'D:\Downloads\physicspack\PNG\Wood elements\elementWood010.png'
-    lastmod: 1616891205921
-    tiled: false
-  - name: alienPink_square
-    untill: 0
-    grid:
-      - 1
-      - 1
-    axis:
-      - 35
-      - 35
-    marginx: 0
-    marginy: 0
-    imgWidth: 70
-    imgHeight: 70
-    width: 70
-    height: 70
-    offx: 0
-    offy: 0
-    origname: i6c8a3edf-d5fe-4916-b63c-2201c099d28f.png
-    shape: rect
-    left: 35
-    right: 35
-    top: 35
-    bottom: 35
-    uid: 6c8a3edf-d5fe-4916-b63c-2201c099d28f
-    padding: 1
-    source: 'D:\Downloads\physicspack\PNG\Aliens\alienPink_square.png'
-    lastmod: 1616890309571
-  - name: alienGreen_round
-    untill: 0
-    grid:
-      - 1
-      - 1
-    axis:
-      - 35
-      - 35
-    marginx: 0
-    marginy: 0
-    imgWidth: 70
-    imgHeight: 70
-    width: 70
-    height: 70
-    offx: 0
-    offy: 0
-    origname: i8a5f385a-d547-4d2d-9641-b1856738c62a.png
-    shape: circle
-    left: 35
-    right: 35
-    top: 35
-    bottom: 35
-    uid: 8a5f385a-d547-4d2d-9641-b1856738c62a
-    padding: 1
-    source: 'D:\Downloads\physicspack\PNG\Aliens\alienGreen_round.png'
-    r: 35
-    lastmod: 1616890345324
-  - name: colored_grass
-    untill: 0
-    grid:
-      - 1
-      - 1
-    axis:
+actions:
+  - name: Pointer
+    methods:
+      - code: pointer.Any
+scripts: []
+starting: 0
+settings:
+  authoring:
+    author: ''
+    site: ''
+    title: ''
+    version:
       - 0
       - 0
-    marginx: 0
-    marginy: 0
-    imgWidth: 1024
-    imgHeight: 1024
-    width: 1024
-    height: 1024
-    offx: 0
-    offy: 0
-    origname: if6a40cf4-e9c0-47ff-afa8-6cdc259ef17e.png
-    shape: rect
-    left: 0
-    right: 1024
-    top: 0
-    bottom: 1024
-    uid: f6a40cf4-e9c0-47ff-afa8-6cdc259ef17e
-    padding: 1
-    source: 'D:\Downloads\physicspack\PNG\Backgrounds\blue_grass.png'
-    tiled: true
-    lastmod: 1616891207354
-  - name: grass
-    untill: 0
-    grid:
-      - 1
-      - 1
-    axis:
       - 0
-      - 0
-    marginx: 0
-    marginy: 0
-    imgWidth: 70
-    imgHeight: 70
-    width: 70
-    height: 70
-    offx: 0
-    offy: 0
-    origname: i375a4a5e-64e5-410f-aa6f-3bcfc9804519.png
-    shape: rect
-    left: 0
-    right: 70
-    top: 0
-    bottom: 70
-    uid: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
-    padding: 1
-    source: 'D:\Downloads\physicspack\PNG\Other\grass.png'
-    lastmod: 1656931281688
-  - name: WoodenTriangle
-    untill: 0
-    grid:
-      - 1
-      - 1
-    axis:
-      - 70
-      - 43
-    marginx: 0
-    marginy: 0
-    imgWidth: 140
-    imgHeight: 70
-    width: 140
-    height: 70
-    offx: 0
-    offy: 0
-    origname: i0f0e39f3-05bd-47e1-88d2-7dbf7bc3596b.png
-    shape: strip
-    left: 70
-    right: 70
-    top: 35
-    bottom: 35
-    uid: 0f0e39f3-05bd-47e1-88d2-7dbf7bc3596b
-    padding: 2
-    source: 'D:\Downloads\physicspack\PNG\Wood elements\elementWood054.png'
-    stripPoints:
-      - x: -0.0
-        'y': -43
-      - x: 70
-        'y': 26
-      - x: -70
-        'y': 26
-    closedStrip: true
-    lastmod: 1654408191765
-  - name: elementMetal013
-    untill: 0
-    grid:
-      - 1
-      - 1
-    axis:
-      - 110
-      - 35
-    marginx: 0
-    marginy: 0
-    imgWidth: 220
-    imgHeight: 70
-    width: 220
-    height: 70
-    offx: 0
-    offy: 0
-    origname: i56ab43ae-1b27-4b5e-9e49-fbbe74d42597.png
-    shape: rect
-    left: 110
-    right: 110
-    top: 35
-    bottom: 35
-    uid: 56ab43ae-1b27-4b5e-9e49-fbbe74d42597
-    padding: 1
-    source: 'D:\Downloads\physicspack\PNG\Metal elements\elementMetal013.png'
-    lastmod: 1615557926300
-  - name: Slingshot
-    untill: 0
-    grid:
-      - 2
-      - 1
-    axis:
-      - 70
-      - 60
-    marginx: 0
-    marginy: 0
-    imgWidth: 304
-    imgHeight: 221
-    width: 152
-    height: 221
-    offx: 0
-    offy: 0
-    origname: i37dfad62-8372-4804-8416-765039343b61.png
-    shape: rect
-    left: 70
-    right: 82
-    top: 60
-    bottom: 161
-    uid: 37dfad62-8372-4804-8416-765039343b61
-    padding: 1
-    source: 'C:\Users\Master\Desktop\Slingshot.png'
-    lastmod: 1616892923665
-  - name: elementMetal001
-    untill: 0
-    grid:
-      - 1
-      - 1
-    axis:
-      - 35
-      - 35
-    marginx: 0
-    marginy: 0
-    imgWidth: 70
-    imgHeight: 70
-    width: 70
-    height: 70
-    offx: 0
-    offy: 0
-    origname: ic4d4030a-b640-44be-bded-26a5c030f542.png
-    shape: circle
-    left: 35
-    right: 35
-    top: 35
-    bottom: 35
-    uid: c4d4030a-b640-44be-bded-26a5c030f542
-    padding: 2
-    source: 'D:\Downloads\physicspack\PNG\Metal elements\elementMetal001.png'
-    r: 35
-    lastmod: 1654408158982
-  - name: elementMetal000
-    untill: 0
-    grid:
-      - 1
-      - 1
-    axis:
-      - 35
-      - 35
-    marginx: 0
-    marginy: 0
-    imgWidth: 70
-    imgHeight: 70
-    width: 70
-    height: 70
-    offx: 0
-    offy: 0
-    origname: i3a4eba8d-8b33-478e-95e5-3833099c1a03.png
-    shape: strip
-    left: 0
-    right: 140
-    top: 0
-    bottom: 70
-    uid: 3a4eba8d-8b33-478e-95e5-3833099c1a03
-    padding: 3
-    source: 'D:\Downloads\physicspack\PNG\Metal elements\elementMetal002.png'
-    lastmod: 1656998944187
-    stripPoints:
-      - x: -35
-        'y': -35
-      - x: 35
-        'y': 35
-      - x: -35
-        'y': 35
-    closedStrip: true
-  - name: Confetti
-    untill: 0
-    grid:
-      - 2
-      - 2
-    axis:
-      - 0
-      - 0
-    marginx: 0
-    marginy: 0
-    imgWidth: 1024
-    imgHeight: 1024
-    width: 512
-    height: 512
-    offx: 0
-    offy: 0
-    origname: if878c588-3c26-486b-a20f-b23ffab4d579.png
-    shape: rect
-    left: 0
-    right: 512
-    top: 0
-    bottom: 512
-    uid: f878c588-3c26-486b-a20f-b23ffab4d579
-    padding: 3
-    source: data\particles\Confetti_2x2.png
-    lastmod: 1616895609998
-  - name: WoodenSquare_Damaged
-    untill: 0
-    grid:
-      - 1
-      - 1
-    axis:
-      - 35
-      - 35
-    marginx: 0
-    marginy: 0
-    imgWidth: 70
-    imgHeight: 70
-    width: 70
-    height: 70
-    offx: 0
-    offy: 0
-    origname: iabdeba09-af47-4b39-a276-fa2e59b164aa.png
-    shape: rect
-    left: 35
-    right: 35
-    top: 35
-    bottom: 35
-    uid: abdeba09-af47-4b39-a276-fa2e59b164aa
-    padding: 1
-    source: 'D:\Downloads\physicspack\PNG\Wood elements\elementWood045.png'
-    lastmod: 1616891224599
-  - name: WoodenTriangle_Damaged
-    untill: 0
-    grid:
-      - 1
-      - 1
-    axis:
-      - 70
-      - 43
-    marginx: 0
-    marginy: 0
-    imgWidth: 140
-    imgHeight: 70
-    width: 140
-    height: 70
-    offx: 0
-    offy: 0
-    origname: ifc52b049-910a-4e96-adcf-378553c0818c.png
-    shape: strip
-    left: 70
-    right: 70
-    top: 43
-    bottom: 27
-    uid: fc52b049-910a-4e96-adcf-378553c0818c
-    padding: 1
-    source: 'D:\Downloads\physicspack\PNG\Wood elements\elementWood043.png'
-    lastmod: 1616891305648
-    stripPoints:
-      - x: 0
-        'y': -43
-      - x: 70
-        'y': 26
-      - x: -70
-        'y': 26
-    closedStrip: true
-  - name: WoodenPlank_Damaged
-    untill: 0
-    grid:
-      - 1
-      - 1
-    axis:
-      - 110
-      - 35
-    marginx: 0
-    marginy: 0
-    imgWidth: 220
-    imgHeight: 70
-    width: 220
-    height: 70
-    offx: 0
-    offy: 0
-    origname: i03040255-0c4f-4605-aa7f-8a146a75675f.png
-    shape: rect
-    left: 110
-    right: 110
-    top: 35
-    bottom: 35
-    uid: 03040255-0c4f-4605-aa7f-8a146a75675f
-    padding: 1
-    source: 'D:\Downloads\physicspack\PNG\Wood elements\elementWood047.png'
-    lastmod: 1616891232841
-  - lastmod: 1654404771715
-    type: texture
-    name: Restart_icon_2
-    untill: 0
-    grid:
-      - 1
-      - 1
-    axis:
-      - 32
-      - 32
-    marginx: 0
-    marginy: 0
-    imgWidth: 64
-    imgHeight: 64
-    width: 64
-    height: 64
-    offx: 0
-    offy: 0
-    origname: im4gCbzCRD2DmNc.png
-    shape: rect
-    left: 32
-    right: 32
-    top: 32
-    bottom: 32
-    uid: m4gCbzCRD2DmNc
-    padding: 1
-    group: !<tag:yaml.org,2002:js/undefined> ''
-    source: 'C:\Users\Master\Desktop\Restart icon 2.png'
-  - lastmod: 1656998696796
-    type: texture
-    name: GravityZone
-    untill: 0
-    grid:
-      - 1
-      - 1
-    axis:
-      - 35
-      - 35
-    marginx: 0
-    marginy: 0
-    imgWidth: 70
-    imgHeight: 70
-    width: 70
-    height: 70
-    offx: 0
-    offy: 0
-    origname: iWJ554pph1tft1W.png
-    shape: rect
-    left: 35
-    right: 35
-    top: 35
-    bottom: 35
-    uid: WJ554pph1tft1W
-    padding: 1
-    group: !<tag:yaml.org,2002:js/undefined> ''
-  - lastmod: 1656998544556
-    type: texture
-    name: Particle
-    untill: 0
-    grid:
-      - 1
-      - 1
-    axis:
-      - 0
-      - 0
-    marginx: 0
-    marginy: 0
-    imgWidth: 32
-    imgHeight: 32
-    width: 32
-    height: 32
-    offx: 0
-    offy: 0
-    origname: iwHD1gw8Jfdzk2k.png
-    shape: rect
-    left: 0
-    right: 32
-    top: 0
-    bottom: 32
-    uid: wHD1gw8Jfdzk2k
-    padding: 1
-    group: !<tag:yaml.org,2002:js/undefined> ''
-skeletons: []
-templates:
+    versionPostfix: ''
+  rendering:
+    usePixiLegacy: true
+    maxFPS: 60
+    pixelatedrender: false
+    highDensity: true
+    desktopMode: maximized
+    mobileScreenOrientation: unspecified
+    viewMode: scaleFit
+  export:
+    windows: true
+    linux: true
+    mac: true
+    functionWrap: false
+    codeModifier: none
+  branding:
+    icon: -1
+    accent: '#446adb'
+    invertPreloaderScheme: true
+  fps: 30
+palette:
+  - '#FF85DA'
+  - '#6EBA9D'
+  - '#9E703F'
+  - '#CFF5FA'
+startroom: 125036f1-3a14-4fc3-ae95-2d29a5c56244
+contentTypes: []
+language: typescript
+assets:
   - name: Alien_Launched
     depth: 0
     texture: 8a5f385a-d547-4d2d-9641-b1856738c62a
@@ -540,14 +78,14 @@ templates:
       - lib: core
         arguments: {}
         code: |-
-          ct.emitters.fire('FX_Burst', this.xprev, this.yprev, {
+          emitters.fire('FX_Burst', this.xprev, this.yprev, {
               tint: 0x6EBA9D
           });
         eventKey: OnDestroy
       - eventKey: matterImpactAny
         code: |-
           if (impact > 25) {
-              ct.sound.spawn('Impact_Alien');
+              sounds.spawn('Impact_Alien');
           }
         arguments: {}
         lib: matter
@@ -557,6 +95,14 @@ templates:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: AlienTarget
     depth: 0
     texture: 6c8a3edf-d5fe-4916-b63c-2201c099d28f
@@ -568,7 +114,7 @@ templates:
       - lib: core
         arguments: {}
         code: |-
-          ct.emitters.fire('FX_Burst', this.xprev, this.yprev, {
+          emitters.fire('FX_Burst', this.xprev, this.yprev, {
               tint: 0xFF85DA
           });
         eventKey: OnDestroy
@@ -576,7 +122,7 @@ templates:
         code: |-
           if (impact > 25) {
               if (impact > 25) {
-                  ct.sound.spawn('Impact_Alien');
+                  sounds.spawn('Impact_Alien');
               }
           }
           // If it was too strong, destroy the alien.
@@ -591,6 +137,14 @@ templates:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: WoodenSquare
     depth: 0
     texture: 41f7c3b3-abc8-4940-8919-9114a884d7f2
@@ -611,7 +165,7 @@ templates:
       - lib: core
         arguments: {}
         code: |-
-          ct.emitters.fire('FX_Burst', this.xprev, this.yprev, {
+          emitters.fire('FX_Burst', this.xprev, this.yprev, {
               tint: 0xAB763E
           });
         eventKey: OnDestroy
@@ -627,7 +181,7 @@ templates:
               } else if (this.damage > 75 && this.tex !== 'WoodenSquare_damaged') {
                   this.tex = 'WoodenSquare_Damaged';
               }
-              ct.sound.spawn('Impact_Wooden');
+              sounds.spawn('Impact_Wooden');
           }
         arguments: {}
         lib: matter
@@ -637,6 +191,14 @@ templates:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: WoodenPlank
     depth: 0
     texture: 9afd54d7-1265-4ba0-b5de-5226b3c7e2fb
@@ -657,7 +219,7 @@ templates:
       - lib: core
         arguments: {}
         code: |-
-          ct.emitters.fire('FX_Burst', this.xprev, this.yprev, {
+          emitters.fire('FX_Burst', this.xprev, this.yprev, {
               tint: 0xAB763E
           });
         eventKey: OnDestroy
@@ -673,7 +235,7 @@ templates:
               } else if (this.damage > 100 && this.tex !== 'WoodenPlank_damaged') {
                   this.tex = 'WoodenPlank_Damaged';
               }
-              ct.sound.spawn('Impact_Wooden');
+              sounds.spawn('Impact_Wooden');
           }
         arguments: {}
         lib: matter
@@ -683,6 +245,14 @@ templates:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: WoodenTriangle
     depth: 0
     texture: 0f0e39f3-05bd-47e1-88d2-7dbf7bc3596b
@@ -705,7 +275,7 @@ templates:
       - lib: core
         arguments: {}
         code: |-
-          ct.emitters.fire('FX_Burst', this.xprev, this.yprev, {
+          emitters.fire('FX_Burst', this.xprev, this.yprev, {
               tint: 0xAB763E
           });
         eventKey: OnDestroy
@@ -721,7 +291,7 @@ templates:
               } else if (this.damage > 100 && this.tex !== 'WoodenTriangle_damaged') {
                   this.tex = 'WoodenTriangle_Damaged';
               }
-              ct.sound.spawn('Impact_Wooden');
+              sounds.spawn('Impact_Wooden');
           }
         arguments: {}
         lib: matter
@@ -731,6 +301,14 @@ templates:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: Slingshot
     depth: 0
     texture: 37dfad62-8372-4804-8416-765039343b61
@@ -739,7 +317,7 @@ templates:
     lastmod: 1656912444393
     events:
       - eventKey: OnPointerDown
-        code: 'ct.templates.copy(''Alien_Dragging'', this.x, this.y);'
+        code: 'templates.copy(''Alien_Dragging'', this.x, this.y);'
         arguments: {}
         lib: core
     type: template
@@ -748,6 +326,14 @@ templates:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: Alien_Dragging
     depth: 0
     texture: 8a5f385a-d547-4d2d-9641-b1856738c62a
@@ -760,15 +346,15 @@ templates:
       - lib: core
         arguments: {}
         code: |-
-          if (ct.actions.Pointer.released) {
+          if (actions.Pointer.released) {
               const speedModifier = 0.3,
                     maxSpeed = 50;
               this.kill = true;
-              const missile = ct.templates.copy('Alien_Launched', this.x, this.y);
-              const slingshot = ct.templates.list['Slingshot'][0];
+              const missile = templates.copy('Alien_Launched', this.x, this.y);
+              const slingshot = templates.list['Slingshot'][0];
               var hspeed = (slingshot.x - this.x) * speedModifier,
                   vspeed = (slingshot.y - this.y) * speedModifier,
-                  l = ct.u.pdc(0, 0, hspeed, vspeed);
+                  l = u.pdc(0, 0, hspeed, vspeed);
               if (l > maxSpeed) {
                   hspeed /= l / maxSpeed;
                   vspeed /= l / maxSpeed;
@@ -779,11 +365,11 @@ templates:
       - lib: core
         arguments: {}
         code: |
-          const slingshot = ct.templates.list['Slingshot'][0],
+          const slingshot = templates.list['Slingshot'][0],
                 maxLength = 150;
-          let dx = ct.pointer.x - slingshot.x,
-              dy = ct.pointer.y - slingshot.y,
-              l = ct.u.pdc(0, 0, dx, dy);
+          let dx = pointer.x - slingshot.x,
+              dy = pointer.y - slingshot.y,
+              l = u.pdc(0, 0, dx, dy);
 
           if (l > maxLength) {
               dx /= l / maxLength,
@@ -799,6 +385,14 @@ templates:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: elementMetal013
     depth: 0
     texture: 56ab43ae-1b27-4b5e-9e49-fbbe74d42597
@@ -815,7 +409,7 @@ templates:
       - eventKey: matterImpactAny
         code: |-
           if (impact > 25) {
-              ct.sound.spawn('Impact_Metal');
+              sounds.spawn('Impact_Metal');
           }
         arguments: {}
         lib: matter
@@ -825,6 +419,14 @@ templates:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: elementMetal011
     depth: 0
     texture: c4d4030a-b640-44be-bded-26a5c030f542
@@ -839,7 +441,7 @@ templates:
       - eventKey: matterImpactAny
         code: |-
           if (impact > 25) {
-              ct.sound.spawn('Impact_Metal');
+              sounds.spawn('Impact_Metal');
           }
         arguments: {}
         lib: matter
@@ -849,6 +451,14 @@ templates:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: elementMetal000
     depth: 0
     texture: 3a4eba8d-8b33-478e-95e5-3833099c1a03
@@ -866,7 +476,7 @@ templates:
       - eventKey: matterImpactAny
         code: |-
           if (impact > 25) {
-              ct.sound.spawn('Impact_Metal');
+              sounds.spawn('Impact_Metal');
           }
         arguments: {}
         lib: matter
@@ -876,6 +486,14 @@ templates:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - type: template
     name: Restart
     depth: 0
@@ -887,13 +505,21 @@ templates:
     uid: BRwkF4JP8WdfKd
     events:
       - eventKey: OnPointerClick
-        code: ct.rooms.restart();
+        code: rooms.restart();
         arguments: {}
         lib: core
     loopAnimation: true
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - type: template
     name: GravityZone
     depth: 5
@@ -907,14 +533,14 @@ templates:
       matterSensor: true
     events:
       - eventKey: OnCreate
-        code: 'ct.emitters.append(this, ''FX_GravityZone'');'
+        code: 'emitters.append(this, ''FX_GravityZone'');'
         arguments: {}
         lib: core
       - eventKey: matterActiveAny
         code: |-
-          if (ct.templates.isCopy(other)) {
+          if (templates.isCopy(other)) {
               // can't push during collisions, so change velocity instead
-              ct.matter.launch(other, other.hspeed, other.vspeed - 2 * ct.delta);
+              ct.matter.launch(other, other.hspeed, other.vspeed - 2 * u.delta);
           }
         arguments: {}
         lib: matter
@@ -922,6 +548,14 @@ templates:
     uid: HFFzDDfwj688N3
     blendMode: normal
     animationFPS: 30
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - type: template
     name: AlienCounter
     depth: 0
@@ -932,26 +566,17 @@ templates:
     extends: {}
     events:
       - eventKey: OnCreate
-        code: >-
-          this.aliensTotal = ct.templates.list['AlienTarget'].length;
-
-
-          this.textLabel = new PIXI.Text('0/' + this.aliensTotal,
-          ct.styles.get('Style_Aliens')); 
-
-          this.addChild(this.textLabel);
-
-          this.textLabel.x = 50;
-
-          this.textLabel.y = -25;
+        code: |-
+          this.aliensTotal = templates.list['AlienTarget'].length;
+          this.text = '0/' + this.aliensTotal;
         arguments: {}
         lib: core
       - eventKey: OnDraw
         code: >-
-          var aliensCurrent = ct.templates.list['AlienTarget'].length;
+          var aliensCurrent = templates.list['AlienTarget'].length;
 
 
-          this.textLabel.text = (this.aliensTotal - aliensCurrent) + '/' +
+          this.text = (this.aliensTotal - aliensCurrent) + '/' +
           this.aliensTotal;
         arguments: {}
         lib: core
@@ -959,36 +584,16 @@ templates:
     uid: 7rHCR4GtcDPrTn
     blendMode: normal
     animationFPS: 30
-sounds:
-  - name: Impact_Wooden
-    uid: ccfe7f50-d4d3-4570-95e9-75d5d73bef0a
-    origname: sccfe7f50-d4d3-4570-95e9-75d5d73bef0a.ogg
-    lastmod: 1616407436515
-  - name: Impact_Metal
-    uid: cbca4dd5-7369-48d5-b3b7-e9b0055e2eda
-    origname: scbca4dd5-7369-48d5-b3b7-e9b0055e2eda.ogg
-    lastmod: 1616407498544
-  - name: Impact_Alien
-    uid: 3142b705-6de5-4f57-9b70-c9bc3fb4cdad
-    origname: s3142b705-6de5-4f57-9b70-c9bc3fb4cdad.ogg
-    lastmod: 1616407549522
-styles:
-  - name: Style_Aliens
-    uid: g3TB8dbChgMRjP
-    origname: shgMRjP
-    font:
-      family: sans-serif
-      size: 40
-      weight: '600'
-      italic: false
-    fill:
-      type: '0'
-      color: '#FF85C4'
-    stroke:
-      color: '#5C304E'
-      weight: 4
-    lastmod: 1657008646209
-rooms:
+    behaviors: []
+    baseClass: Text
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
+    textStyle: g3TB8dbChgMRjP
+    defaultText: 0/0
   - name: Level_01
     onstep: ''
     ondraw: ''
@@ -1620,17 +1225,17 @@ rooms:
     events:
       - lib: core
         arguments: {}
-        code: ct.rooms.append('UI_Restart');
+        code: rooms.append('UI_Restart');
         eventKey: OnRoomStart
       - eventKey: Timer1
-        code: ct.rooms.switch('Level_02');
+        code: rooms.switch('Level_02');
         arguments:
           name: Switch room
           isUi: true
         lib: core
       - eventKey: OnDraw
         code: |-
-          if (!ct.templates.exists('AlienTarget') && this.timer1 <= 0) {
+          if (!templates.exists('AlienTarget') && this.timer1 <= 0) {
               this.timer1 = 2;
           }
         arguments: {}
@@ -1640,6 +1245,7 @@ rooms:
     isUi: !<tag:yaml.org,2002:js/undefined> ''
     backgroundColor: '#CFF5FA'
     follow: -1
+    behaviors: []
   - type: room
     oncreate: ''
     onstep: ''
@@ -1663,7 +1269,7 @@ rooms:
         uid: BRwkF4JP8WdfKd
         exts: {}
         customProperties: {}
-      - x: 1472
+      - x: 1536
         'y': 64
         opacity: 1
         tint: 16777215
@@ -1674,19 +1280,33 @@ rooms:
         uid: 7rHCR4GtcDPrTn
         exts: {}
         customProperties: {}
+        customAnchor:
+          x: 0
+          'y': 0.5
     tiles:
       - depth: -10
-        tiles: []
+        tiles:
+          - x: 1472
+            'y': 64
+            opacity: 1
+            tint: 16777215
+            scale:
+              x: 1
+              'y': 1
+            frame: 0
+            rotation: 0
+            texture: 6c8a3edf-d5fe-4916-b63c-2201c099d28f
         extends: {}
         hidden: false
     extends: {}
-    lastmod: 1661067609081
+    lastmod: 1699515952799
     thumbnail: HHMmHTwkf2B7K6
     uid: HHMmHTwkf2B7K6
     events: []
     simulate: true
     isUi: true
     follow: -1
+    behaviors: []
   - name: Level_02
     onstep: ''
     ondraw: ''
@@ -2348,17 +1968,17 @@ rooms:
     events:
       - lib: core
         arguments: {}
-        code: ct.rooms.append('UI_Restart');
+        code: rooms.append('UI_Restart');
         eventKey: OnRoomStart
       - eventKey: OnDraw
         code: |-
-          if (!ct.templates.exists('AlienTarget') && this.timer1 <= 0) {
+          if (!templates.exists('AlienTarget') && this.timer1 <= 0) {
               this.timer1 = 2;
           }
         arguments: {}
         lib: core
       - eventKey: Timer1
-        code: ct.rooms.switch('Level_03');
+        code: rooms.switch('Level_03');
         arguments:
           name: Switch room
           isUi: true
@@ -2368,6 +1988,7 @@ rooms:
     isUi: !<tag:yaml.org,2002:js/undefined> ''
     backgroundColor: '#CFF5FA'
     follow: -1
+    behaviors: []
   - name: Level_Empty
     onstep: ''
     ondraw: ''
@@ -2696,13 +2317,14 @@ rooms:
     events:
       - lib: core
         arguments: {}
-        code: ct.rooms.append('UI_Restart');
+        code: rooms.append('UI_Restart');
         eventKey: OnRoomStart
     type: room
     simulate: true
     isUi: !<tag:yaml.org,2002:js/undefined> ''
     backgroundColor: '#CFF5FA'
     follow: -1
+    behaviors: []
   - name: Level_03
     onstep: ''
     ondraw: ''
@@ -3354,17 +2976,17 @@ rooms:
     events:
       - lib: core
         arguments: {}
-        code: ct.rooms.append('UI_Restart');
+        code: rooms.append('UI_Restart');
         eventKey: OnRoomStart
       - eventKey: OnDraw
         code: |-
-          if (!ct.templates.exists('AlienTarget') && this.timer1 <= 0) {
+          if (!templates.exists('AlienTarget') && this.timer1 <= 0) {
               this.timer1 = 2;
           }
         arguments: {}
         lib: core
       - eventKey: Timer1
-        code: ct.rooms.switch('Level_01');
+        code: rooms.switch('Level_01');
         arguments:
           name: Switch room
           isUi: true
@@ -3374,229 +2996,736 @@ rooms:
     isUi: !<tag:yaml.org,2002:js/undefined> ''
     backgroundColor: '#CFF5FA'
     follow: -1
-actions:
-  - name: Pointer
-    methods:
-      - code: pointer.Any
-emitterTandems:
+    behaviors: []
+  - name: Impact_Wooden
+    uid: ccfe7f50-d4d3-4570-95e9-75d5d73bef0a
+    origname: sccfe7f50-d4d3-4570-95e9-75d5d73bef0a.ogg
+    lastmod: 1616407436515
+    type: sound
+  - name: Impact_Metal
+    uid: cbca4dd5-7369-48d5-b3b7-e9b0055e2eda
+    origname: scbca4dd5-7369-48d5-b3b7-e9b0055e2eda.ogg
+    lastmod: 1616407498544
+    type: sound
+  - name: Impact_Alien
+    uid: 3142b705-6de5-4f57-9b70-c9bc3fb4cdad
+    origname: s3142b705-6de5-4f57-9b70-c9bc3fb4cdad.ogg
+    lastmod: 1616407549522
+    type: sound
+  - name: Style_Aliens
+    uid: g3TB8dbChgMRjP
+    origname: shgMRjP
+    font:
+      family: sans-serif
+      size: 40
+      weight: '600'
+      italic: false
+    fill:
+      type: '0'
+      color: '#FF85C4'
+    stroke:
+      color: '#5C304E'
+      weight: 4
+    lastmod: 1657008646209
+    type: style
+  - name: WoodenPlank
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 110
+      - 35
+    marginx: 0
+    marginy: 0
+    imgWidth: 220
+    imgHeight: 70
+    width: 220
+    height: 70
+    offx: 0
+    offy: 0
+    origname: i9afd54d7-1265-4ba0-b5de-5226b3c7e2fb.png
+    shape: rect
+    left: 110
+    right: 110
+    top: 35
+    bottom: 35
+    uid: 9afd54d7-1265-4ba0-b5de-5226b3c7e2fb
+    padding: 2
+    source: 'D:\Downloads\physicspack\PNG\Wood elements\elementWood012.png'
+    lastmod: 1654408163741
+    type: texture
+  - name: WoodenSquare
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 35
+      - 35
+    marginx: 0
+    marginy: 0
+    imgWidth: 70
+    imgHeight: 70
+    width: 70
+    height: 70
+    offx: 0
+    offy: 0
+    origname: i41f7c3b3-abc8-4940-8919-9114a884d7f2.png
+    shape: rect
+    left: 35
+    right: 35
+    top: 35
+    bottom: 35
+    uid: 41f7c3b3-abc8-4940-8919-9114a884d7f2
+    padding: 1
+    source: 'D:\Downloads\physicspack\PNG\Wood elements\elementWood010.png'
+    lastmod: 1616891205921
+    tiled: false
+    type: texture
+  - name: alienPink_square
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 35
+      - 35
+    marginx: 0
+    marginy: 0
+    imgWidth: 70
+    imgHeight: 70
+    width: 70
+    height: 70
+    offx: 0
+    offy: 0
+    origname: i6c8a3edf-d5fe-4916-b63c-2201c099d28f.png
+    shape: rect
+    left: 35
+    right: 35
+    top: 35
+    bottom: 35
+    uid: 6c8a3edf-d5fe-4916-b63c-2201c099d28f
+    padding: 1
+    source: 'D:\Downloads\physicspack\PNG\Aliens\alienPink_square.png'
+    lastmod: 1616890309571
+    type: texture
+  - name: alienGreen_round
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 35
+      - 35
+    marginx: 0
+    marginy: 0
+    imgWidth: 70
+    imgHeight: 70
+    width: 70
+    height: 70
+    offx: 0
+    offy: 0
+    origname: i8a5f385a-d547-4d2d-9641-b1856738c62a.png
+    shape: circle
+    left: 35
+    right: 35
+    top: 35
+    bottom: 35
+    uid: 8a5f385a-d547-4d2d-9641-b1856738c62a
+    padding: 1
+    source: 'D:\Downloads\physicspack\PNG\Aliens\alienGreen_round.png'
+    r: 35
+    lastmod: 1616890345324
+    type: texture
+  - name: colored_grass
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 0
+      - 0
+    marginx: 0
+    marginy: 0
+    imgWidth: 1024
+    imgHeight: 1024
+    width: 1024
+    height: 1024
+    offx: 0
+    offy: 0
+    origname: if6a40cf4-e9c0-47ff-afa8-6cdc259ef17e.png
+    shape: rect
+    left: 0
+    right: 1024
+    top: 0
+    bottom: 1024
+    uid: f6a40cf4-e9c0-47ff-afa8-6cdc259ef17e
+    padding: 1
+    source: 'D:\Downloads\physicspack\PNG\Backgrounds\blue_grass.png'
+    tiled: true
+    lastmod: 1616891207354
+    type: texture
+  - name: grass
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 0
+      - 0
+    marginx: 0
+    marginy: 0
+    imgWidth: 70
+    imgHeight: 70
+    width: 70
+    height: 70
+    offx: 0
+    offy: 0
+    origname: i375a4a5e-64e5-410f-aa6f-3bcfc9804519.png
+    shape: rect
+    left: 0
+    right: 70
+    top: 0
+    bottom: 70
+    uid: 375a4a5e-64e5-410f-aa6f-3bcfc9804519
+    padding: 1
+    source: 'D:\Downloads\physicspack\PNG\Other\grass.png'
+    lastmod: 1656931281688
+    type: texture
+  - name: WoodenTriangle
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 70
+      - 43
+    marginx: 0
+    marginy: 0
+    imgWidth: 140
+    imgHeight: 70
+    width: 140
+    height: 70
+    offx: 0
+    offy: 0
+    origname: i0f0e39f3-05bd-47e1-88d2-7dbf7bc3596b.png
+    shape: strip
+    left: 70
+    right: 70
+    top: 35
+    bottom: 35
+    uid: 0f0e39f3-05bd-47e1-88d2-7dbf7bc3596b
+    padding: 2
+    source: 'D:\Downloads\physicspack\PNG\Wood elements\elementWood054.png'
+    stripPoints:
+      - x: -0.0
+        'y': -43
+      - x: 70
+        'y': 26
+      - x: -70
+        'y': 26
+    closedStrip: true
+    lastmod: 1654408191765
+    type: texture
+  - name: elementMetal013
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 110
+      - 35
+    marginx: 0
+    marginy: 0
+    imgWidth: 220
+    imgHeight: 70
+    width: 220
+    height: 70
+    offx: 0
+    offy: 0
+    origname: i56ab43ae-1b27-4b5e-9e49-fbbe74d42597.png
+    shape: rect
+    left: 110
+    right: 110
+    top: 35
+    bottom: 35
+    uid: 56ab43ae-1b27-4b5e-9e49-fbbe74d42597
+    padding: 1
+    source: 'D:\Downloads\physicspack\PNG\Metal elements\elementMetal013.png'
+    lastmod: 1615557926300
+    type: texture
+  - name: Slingshot
+    untill: 0
+    grid:
+      - 2
+      - 1
+    axis:
+      - 70
+      - 60
+    marginx: 0
+    marginy: 0
+    imgWidth: 304
+    imgHeight: 221
+    width: 152
+    height: 221
+    offx: 0
+    offy: 0
+    origname: i37dfad62-8372-4804-8416-765039343b61.png
+    shape: rect
+    left: 70
+    right: 82
+    top: 60
+    bottom: 161
+    uid: 37dfad62-8372-4804-8416-765039343b61
+    padding: 1
+    source: 'C:\Users\Master\Desktop\Slingshot.png'
+    lastmod: 1616892923665
+    type: texture
+  - name: elementMetal001
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 35
+      - 35
+    marginx: 0
+    marginy: 0
+    imgWidth: 70
+    imgHeight: 70
+    width: 70
+    height: 70
+    offx: 0
+    offy: 0
+    origname: ic4d4030a-b640-44be-bded-26a5c030f542.png
+    shape: circle
+    left: 35
+    right: 35
+    top: 35
+    bottom: 35
+    uid: c4d4030a-b640-44be-bded-26a5c030f542
+    padding: 2
+    source: 'D:\Downloads\physicspack\PNG\Metal elements\elementMetal001.png'
+    r: 35
+    lastmod: 1654408158982
+    type: texture
+  - name: elementMetal000
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 35
+      - 35
+    marginx: 0
+    marginy: 0
+    imgWidth: 70
+    imgHeight: 70
+    width: 70
+    height: 70
+    offx: 0
+    offy: 0
+    origname: i3a4eba8d-8b33-478e-95e5-3833099c1a03.png
+    shape: strip
+    left: 0
+    right: 140
+    top: 0
+    bottom: 70
+    uid: 3a4eba8d-8b33-478e-95e5-3833099c1a03
+    padding: 3
+    source: 'D:\Downloads\physicspack\PNG\Metal elements\elementMetal002.png'
+    lastmod: 1656998944187
+    stripPoints:
+      - x: -35
+        'y': -35
+      - x: 35
+        'y': 35
+      - x: -35
+        'y': 35
+    closedStrip: true
+    type: texture
+  - name: Confetti
+    untill: 0
+    grid:
+      - 2
+      - 2
+    axis:
+      - 0
+      - 0
+    marginx: 0
+    marginy: 0
+    imgWidth: 1024
+    imgHeight: 1024
+    width: 512
+    height: 512
+    offx: 0
+    offy: 0
+    origname: if878c588-3c26-486b-a20f-b23ffab4d579.png
+    shape: rect
+    left: 0
+    right: 512
+    top: 0
+    bottom: 512
+    uid: f878c588-3c26-486b-a20f-b23ffab4d579
+    padding: 3
+    source: data\particles\Confetti_2x2.png
+    lastmod: 1616895609998
+    type: texture
+  - name: WoodenSquare_Damaged
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 35
+      - 35
+    marginx: 0
+    marginy: 0
+    imgWidth: 70
+    imgHeight: 70
+    width: 70
+    height: 70
+    offx: 0
+    offy: 0
+    origname: iabdeba09-af47-4b39-a276-fa2e59b164aa.png
+    shape: rect
+    left: 35
+    right: 35
+    top: 35
+    bottom: 35
+    uid: abdeba09-af47-4b39-a276-fa2e59b164aa
+    padding: 1
+    source: 'D:\Downloads\physicspack\PNG\Wood elements\elementWood045.png'
+    lastmod: 1616891224599
+    type: texture
+  - name: WoodenTriangle_Damaged
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 70
+      - 43
+    marginx: 0
+    marginy: 0
+    imgWidth: 140
+    imgHeight: 70
+    width: 140
+    height: 70
+    offx: 0
+    offy: 0
+    origname: ifc52b049-910a-4e96-adcf-378553c0818c.png
+    shape: strip
+    left: 70
+    right: 70
+    top: 43
+    bottom: 27
+    uid: fc52b049-910a-4e96-adcf-378553c0818c
+    padding: 1
+    source: 'D:\Downloads\physicspack\PNG\Wood elements\elementWood043.png'
+    lastmod: 1616891305648
+    stripPoints:
+      - x: 0
+        'y': -43
+      - x: 70
+        'y': 26
+      - x: -70
+        'y': 26
+    closedStrip: true
+    type: texture
+  - name: WoodenPlank_Damaged
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 110
+      - 35
+    marginx: 0
+    marginy: 0
+    imgWidth: 220
+    imgHeight: 70
+    width: 220
+    height: 70
+    offx: 0
+    offy: 0
+    origname: i03040255-0c4f-4605-aa7f-8a146a75675f.png
+    shape: rect
+    left: 110
+    right: 110
+    top: 35
+    bottom: 35
+    uid: 03040255-0c4f-4605-aa7f-8a146a75675f
+    padding: 1
+    source: 'D:\Downloads\physicspack\PNG\Wood elements\elementWood047.png'
+    lastmod: 1616891232841
+    type: texture
+  - lastmod: 1654404771715
+    type: texture
+    name: Restart_icon_2
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 32
+      - 32
+    marginx: 0
+    marginy: 0
+    imgWidth: 64
+    imgHeight: 64
+    width: 64
+    height: 64
+    offx: 0
+    offy: 0
+    origname: im4gCbzCRD2DmNc.png
+    shape: rect
+    left: 32
+    right: 32
+    top: 32
+    bottom: 32
+    uid: m4gCbzCRD2DmNc
+    padding: 1
+    group: !<tag:yaml.org,2002:js/undefined> ''
+    source: 'C:\Users\Master\Desktop\Restart icon 2.png'
+  - lastmod: 1656998696796
+    type: texture
+    name: GravityZone
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 35
+      - 35
+    marginx: 0
+    marginy: 0
+    imgWidth: 70
+    imgHeight: 70
+    width: 70
+    height: 70
+    offx: 0
+    offy: 0
+    origname: iWJ554pph1tft1W.png
+    shape: rect
+    left: 35
+    right: 35
+    top: 35
+    bottom: 35
+    uid: WJ554pph1tft1W
+    padding: 1
+    group: !<tag:yaml.org,2002:js/undefined> ''
+  - lastmod: 1656998544556
+    type: texture
+    name: Particle
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 0
+      - 0
+    marginx: 0
+    marginy: 0
+    imgWidth: 32
+    imgHeight: 32
+    width: 32
+    height: 32
+    offx: 0
+    offy: 0
+    origname: iwHD1gw8Jfdzk2k.png
+    shape: rect
+    left: 0
+    right: 32
+    top: 0
+    bottom: 32
+    uid: wHD1gw8Jfdzk2k
+    padding: 1
+    group: !<tag:yaml.org,2002:js/undefined> ''
   - name: FX_Burst
-    origname: pta85a19f1cde1
     emitters:
-      - texture: f878c588-3c26-486b-a20f-b23ffab4d579
+      - uid: 02de95c8-e4d6-41a2-aced-793d64657985
+        texture: f878c588-3c26-486b-a20f-b23ffab4d579
         openedTabs:
           - texture
           - spawning
           - gravity
           - scaling
           - colors
+        textureBehavior: textureRandom
+        animatedSingleFramerate: 10
         settings:
-          alpha:
-            list:
-              - value: 0
-                time: 0
-              - time: 0.15079365079365079
-                value: 0.75
-              - value: 1
-                time: 0.5
-              - value: 0
-                time: 1
-            isStepped: false
-          scale:
-            list:
-              - value: 0.18000000000000002
-                time: 0
-              - value: 0.039999999999999994
-                time: 1
-            isStepped: false
-          color:
-            list:
-              - value: FF85DA
-                time: 0
-              - time: 0.15079365079365079
-                value: FFFFFF
-              - value: FFFFFF
-                time: 0.5
-              - value: FFFFFF
-                time: 1
-            isStepped: false
-          blendMode: normal
-          speed:
-            list:
-              - value: 675
-                time: 0
-              - value: 100
-                time: 1
-            isStepped: false
-          startRotation:
-            min: 0
-            max: 360
-          rotationSpeed:
-            min: 0
-            max: 0
-          rotationAcceleration: 0
+          frequency: 0.008
           lifetime:
             min: 0.35
             max: 1
-          frequency: 0.008
           spawnChance: 1
-          particlesPerWave: 1
-          angleStart: 270
           emitterLifetime: 0.1
           maxParticles: 1000
-          maxSpeed: 0
+          addAtBack: false
+          particlesPerWave: 1
           pos:
             x: 0
             'y': 0
-          acceleration:
-            x: 0
-            'y': 1000
-          addAtBack: false
-          spawnType: circle
-          spawnCircle:
-            x: 0
-            'y': 0
-            r: 41
-          delay: 0
-          particleSpacing: 360
-          minimumScaleMultiplier: 0.26
-          minimumSpeedMultiplier: 0.15
-        uid: 02de95c8-e4d6-41a2-aced-793d64657985
-        showShapeVisualizer: false
-    previewTexture: 6c8a3edf-d5fe-4916-b63c-2201c099d28f
+          behaviors:
+            - type: alpha
+              config:
+                alpha:
+                  list:
+                    - value: 0
+                      time: 0
+                    - time: 0.15079365079365079
+                      value: 0.75
+                    - value: 1
+                      time: 0.5
+                    - value: 0
+                      time: 1
+                  isStepped: false
+            - type: color
+              config:
+                color:
+                  list:
+                    - value: FF85DA
+                      time: 0
+                    - time: 0.15079365079365079
+                      value: FFFFFF
+                    - value: FFFFFF
+                      time: 0.5
+                    - value: FFFFFF
+                      time: 1
+                  isStepped: false
+            - type: blendMode
+              config:
+                blendMode: normal
+            - type: scale
+              config:
+                scale:
+                  list:
+                    - value: 0.18000000000000002
+                      time: 0
+                    - value: 0.039999999999999994
+                      time: 1
+                  isStepped: false
+                minMult: 0.26
+            - type: moveAcceleration
+              config:
+                minStart: 101.25
+                maxStart: 675
+                accel:
+                  x: 0
+                  'y': 1000
+                rotate: true
+                maxSpeed: 0
+            - type: spawnShape
+              config:
+                type: torus
+                data:
+                  innerRadius: 0
+                  radius: 41
+                  x: 0
+                  'y': 0
+                  rotation: true
+            - type: rotation
+              config:
+                minStart: 0
+                maxStart: 360
+                minSpeed: 0
+                maxSpeed: 0
+                accel: 0
     uid: pta85a19f1cde1
+    lastmod: 1699515779394
+    type: tandem
   - name: FX_GravityZone
     uid: GTqfPcq297CFK2
-    origname: pt97CFK2
     emitters:
-      - texture: wHD1gw8Jfdzk2k
+      - uid: gJ694CdcTHd6rN
+        texture: wHD1gw8Jfdzk2k
         openedTabs:
           - texture
           - spawning
           - shape
           - velocity
+        textureBehavior: textureRandom
+        animatedSingleFramerate: 10
         settings:
-          alpha:
-            list:
-              - value: 0
-                time: 0
-              - time: 0.14682539682539686
-                value: 0.995
-              - value: 1
-                time: 0.8134920634920635
-              - value: 0
-                time: 1
-            isStepped: false
-          scale:
-            list:
-              - value: 0.5700000000000001
-                time: 0
-              - value: 0.94
-                time: 1
-            isStepped: false
-          color:
-            list:
-              - value: ffffff
-                time: 0
-              - time: 0.14682539682539686
-                value: FFFFFF
-              - value: ffffff
-                time: 0.8134920634920635
-              - value: ffffff
-                time: 1
-            isStepped: false
-          blendMode: normal
-          speed:
-            list:
-              - value: 37.5
-                time: 0
-              - value: 175
-                time: 1
-            isStepped: false
-          startRotation:
-            min: 270
-            max: 270
-          rotationSpeed:
-            min: 0
-            max: 0
-          rotationAcceleration: 0
+          frequency: 0.2
           lifetime:
             min: 0.5
             max: 1
-          frequency: 0.2
           spawnChance: 1
-          particlesPerWave: 1
-          angleStart: 270
           emitterLifetime: 0
           maxParticles: 10
-          maxSpeed: 0
+          addAtBack: false
+          particlesPerWave: 1
           pos:
             x: 0
             'y': 35
-          acceleration:
-            x: 0
-            'y': 0
-          addAtBack: false
-          spawnType: rect
-          spawnCircle:
-            x: 0
-            'y': 0
-            r: 32
-          delay: -1
-          spawnRect:
-            x: -35
-            'y': -17.5
-            w: 70
-            h: 35
-        uid: gJ694CdcTHd6rN
-        showShapeVisualizer: true
+          behaviors:
+            - type: alpha
+              config:
+                alpha:
+                  list:
+                    - value: 0
+                      time: 0
+                    - time: 0.14682539682539686
+                      value: 0.995
+                    - value: 1
+                      time: 0.8134920634920635
+                    - value: 0
+                      time: 1
+                  isStepped: false
+            - type: color
+              config:
+                color:
+                  list:
+                    - value: ffffff
+                      time: 0
+                    - time: 0.14682539682539686
+                      value: FFFFFF
+                    - value: ffffff
+                      time: 0.8134920634920635
+                    - value: ffffff
+                      time: 1
+                  isStepped: false
+            - type: blendMode
+              config:
+                blendMode: normal
+            - type: scale
+              config:
+                scale:
+                  list:
+                    - value: 0.5700000000000001
+                      time: 0
+                    - value: 0.94
+                      time: 1
+                  isStepped: false
+                minMult: !<tag:yaml.org,2002:js/undefined> ''
+            - type: moveSpeed
+              config:
+                speed:
+                  list:
+                    - value: 37.5
+                      time: 0
+                    - value: 175
+                      time: 1
+                  isStepped: false
+                minMult: 1
+            - type: spawnShape
+              config:
+                type: rect
+                data:
+                  x: 0
+                  'y': 0
+                  width: 70
+                  height: 35
+            - type: rotation
+              config:
+                minStart: 270
+                maxStart: 270
+                minSpeed: 0
+                maxSpeed: 0
+                accel: 0
     group: !<tag:yaml.org,2002:js/undefined> ''
-    lastmod: 1656998549297
+    lastmod: 1699515779394
     type: tandem
-    previewTexture: WJ554pph1tft1W
-scripts: []
-starting: 0
-settings:
-  authoring:
-    author: ''
-    site: ''
-    title: ''
-    version:
-      - 0
-      - 0
-      - 0
-    versionPostfix: ''
-  rendering:
-    usePixiLegacy: true
-    maxFPS: 60
-    pixelatedrender: false
-    highDensity: true
-    desktopMode: maximized
-    mobileScreenOrientation: unspecified
-  export:
-    windows: true
-    linux: true
-    mac: true
-    functionWrap: false
-    codeModifier: none
-  branding:
-    icon: -1
-    accent: '#446adb'
-    invertPreloaderScheme: true
-  fps: 30
-fonts: []
-palette:
-  - '#FF85DA'
-  - '#6EBA9D'
-  - '#9E703F'
-  - '#CFF5FA'
-startroom: 125036f1-3a14-4fc3-ae95-2d29a5c56244
-contentTypes: []
-groups:
-  fonts: []
-  textures: []
-  styles: []
-  rooms: []
-  sounds: []
-  emitterTandems: []
-  templates: []
-language: typescript

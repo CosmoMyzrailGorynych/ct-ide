@@ -3,16 +3,24 @@ import {RoomEditor} from '..';
 import {snapToRectangularGrid, snapToDiagonalGrid} from '../common';
 import {getPixiTexture, getTexturePivot} from '../../resources/textures';
 import {createTilePatch} from '../interactions/tiles/placeTile';
+import {styleToTextStyle} from '../../styleUtils';
 
 import * as PIXI from 'node_modules/pixi.js';
 import {getById} from '../../resources';
+import {getByPath} from '../../i18n';
 
 let unknownTextures = getPixiTexture(-1, void 0, true);
+
+const spriteLikeClasses: TemplateBaseClass[] = [
+    'AnimatedSprite',
+    'NineSlicePlane'
+];
 
 export class SnapTarget extends PIXI.Container {
     editor: RoomEditor;
     circle = new PIXI.Graphics();
     ghost: PIXI.AnimatedSprite;
+    ghostText: PIXI.Text;
     ghostCompound = new PIXI.Container();
     prevGhostTex: ITexture;
     prevTilePatch: string;
@@ -21,10 +29,11 @@ export class SnapTarget extends PIXI.Container {
         unknownTextures = getPixiTexture(-1, void 0, true);
         this.editor = editor;
         this.ghost = new PIXI.AnimatedSprite(unknownTextures);
-        this.ghost.visible = false;
-        this.ghost.alpha = 0.5;
+        this.ghostText = new PIXI.Text('');
+        this.ghost.visible = this.ghostText.visible = false;
+        this.ghost.alpha = this.ghostText.alpha = 0.5;
         [this.ghost.anchor.x, this.ghost.anchor.y] = [0.5, 0.5];
-        this.addChild(this.ghost, this.ghostCompound);
+        this.addChild(this.ghost, this.ghostText, this.ghostCompound);
         this.circle.beginFill(getPixiSwatch('act'));
         this.circle.drawCircle(0, 0, 4);
         this.addChild(this.circle);
@@ -40,21 +49,33 @@ export class SnapTarget extends PIXI.Container {
         const {riotEditor} = this.editor;
         const {currentTemplate} = riotEditor;
         if (riotEditor.currentTool === 'addCopies' && currentTemplate !== -1) {
-            this.ghost.visible = true;
-            if (currentTemplate.texture === -1 &&
-                this.ghost.textures !== unknownTextures
-            ) {
+            const spritelike = spriteLikeClasses.includes(currentTemplate.baseClass),
+                  textlike = currentTemplate.baseClass === 'Text';
+            this.ghost.visible = spritelike;
+            this.ghostText.visible = textlike;
+            if (spritelike) {
+                if (currentTemplate.texture === -1 &&
+                    this.ghost.textures !== unknownTextures
+                ) {
+                    this.updateGhost(-1);
+                    this.ghost.textures = unknownTextures;
+                }
+                if (currentTemplate.texture !== -1 &&
+                    this.prevGhostTex !== getById('texture', currentTemplate.texture)
+                ) {
+                    this.updateGhost(currentTemplate.texture);
+                    this.prevGhostTex = getById('texture', currentTemplate.texture);
+                }
+            } else if (textlike) {
+                this.updateTextGhost(currentTemplate);
+            } else {
                 this.updateGhost(-1);
                 this.ghost.textures = unknownTextures;
-            }
-            if (currentTemplate.texture !== -1 &&
-                this.prevGhostTex !== getById('texture', currentTemplate.texture)
-            ) {
-                this.updateGhost(currentTemplate.texture);
-                this.prevGhostTex = getById('texture', currentTemplate.texture);
+                this.ghost.visible = true;
             }
         } else {
             this.ghost.visible = false;
+            this.ghostText.visible = false;
         }
         if (riotEditor.currentTool === 'addTiles' && riotEditor.tilePatch?.texture) {
             if (this.prevTilePatch !== this.getPatchString()) {
@@ -96,5 +117,15 @@ export class SnapTarget extends PIXI.Container {
     updateGhost(texture: assetRef | ITexture): void {
         this.ghost.textures = getPixiTexture(texture, void 0, true);
         [this.ghost.anchor.x, this.ghost.anchor.y] = getTexturePivot(texture);
+    }
+    updateTextGhost(template: ITemplate): void {
+        this.ghostText.text = template.defaultText ||
+            (getByPath('roomView.emptyTextFiller') as string);
+        if (template.textStyle && template.textStyle !== -1) {
+            const style = getById('style', template.textStyle);
+            this.ghostText.style = styleToTextStyle(style) as unknown as Partial<PIXI.ITextStyle>;
+        } else {
+            this.ghostText.style = PIXI.TextStyle.defaultStyle;
+        }
     }
 }

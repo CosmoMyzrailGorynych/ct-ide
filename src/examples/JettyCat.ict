@@ -1,584 +1,59 @@
-ctjsVersion: 3.2.0
+ctjsVersion: 4.0.0-next-3
 notes: /* empty */
 libs:
   place:
     gridX: 1200
     gridY: 1200
     debugMode: false
-  fittoscreen:
-    mode: scaleFit
-  sound.howler: {}
-  touch:
-    mousetouch: true
   tween: {}
   transition: {}
   random: {}
-textures:
-  - name: BG_Ground
-    untill: 0
-    grid:
+actions:
+  - name: Poof
+    methods:
+      - code: touch.Any
+starting: 0
+settings:
+  export:
+    windows64: true
+    windows32: true
+    linux64: true
+    linux32: true
+    mac64: true
+    debug: false
+    functionWrap: false
+    codeModifier: none
+  branding:
+    icon: eb24c2bc-a36c-4118-b33e-a7348c00e5bb
+    accent: '#446adb'
+    invertPreloaderScheme: true
+    splashScreen: 5c680919-3827-4ea7-9e72-a8fc81ddfb45
+  rendering:
+    maxFPS: 60
+    pixelatedrender: false
+    highDensity: true
+    usePixiLegacy: true
+    desktopMode: maximized
+    mobileScreenOrientation: portrait
+    viewMode: scaleFit
+  authoring:
+    title: JettyCat
+    author: ComigoGames
+    site: 'https://ctjs.rocks/'
+    version:
       - 1
-      - 1
-    axis:
       - 0
       - 0
-    marginx: 0
-    marginy: 0
-    imgWidth: 1080
-    imgHeight: 191
-    width: 1080
-    height: 191
-    offx: 0
-    offy: 0
-    origname: i53da7582-ae6c-4843-976e-c84d6d74a489.png
-    source: /home/comigo/UNWORK/ctjs/src/examples/JettyCat_assets/BG_Ground.png
-    shape: rect
-    left: 0
-    right: 1080
-    top: 0
-    bottom: 191
-    uid: 53da7582-ae6c-4843-976e-c84d6d74a489
-    padding: 10
-    lastmod: 1584325814705
-    tiled: true
-  - name: Button_Play
-    untill: 0
-    grid:
-      - 1
-      - 1
-    axis:
-      - 160
-      - 166
-    marginx: 0
-    marginy: 0
-    imgWidth: 320
-    imgHeight: 332
-    width: 320
-    height: 332
-    offx: 0
-    offy: 0
-    origname: i775ba15c-b1aa-4707-bc1e-d0811846a893.png
-    source: /home/comigo/UNWORK/ctjs/src/examples/JettyCat_assets/Button_Play.png
-    shape: circle
-    left: 0
-    right: 320
-    top: 0
-    bottom: 332
-    uid: 775ba15c-b1aa-4707-bc1e-d0811846a893
-    padding: 1
-    r: 160
-    lastmod: 1583981916068
-  - name: Jetty_Cat
-    untill: 0
-    grid:
-      - 1
-      - 1
-    axis:
-      - 462
-      - 174
-    marginx: 0
-    marginy: 0
-    imgWidth: 925
-    imgHeight: 349
-    width: 925
-    height: 349
-    offx: 0
-    offy: 0
-    origname: i2c8009c9-ccbc-459e-8562-3146d7210e12.png
-    source: /home/comigo/UNWORK/ctjs/src/examples/JettyCat_assets/Jetty Cat.png
-    shape: rect
-    left: 462
-    right: 463
-    top: 174
-    bottom: 175
-    uid: 2c8009c9-ccbc-459e-8562-3146d7210e12
-    padding: 1
-    lastmod: 1583981925180
-  - name: Button_Pause
-    untill: 0
-    grid:
-      - 1
-      - 1
-    axis:
-      - 98
-      - 104
-    marginx: 0
-    marginy: 0
-    imgWidth: 196
-    imgHeight: 208
-    width: 196
-    height: 208
-    offx: 0
-    offy: 0
-    origname: i343c1f60-adad-4233-bfcf-c13b8aade974.png
-    source: /home/comigo/UNWORK/ctjs/src/examples/JettyCat_assets/Button_Pause.png
-    shape: rect
-    left: 98
-    right: 98
-    top: 104
-    bottom: 104
-    uid: 343c1f60-adad-4233-bfcf-c13b8aade974
-    padding: 1
-    lastmod: 1584326777252
-  - name: PotatoCat
-    untill: 0
-    grid:
-      - 1
-      - 1
-    axis:
-      - 285.5
-      - 241.5
-    marginx: 0
-    marginy: 0
-    imgWidth: 406
-    imgHeight: 481
-    width: 406
-    height: 481
-    offx: 0
-    offy: 0
-    origname: ieb24c2bc-a36c-4118-b33e-a7348c00e5bb.png
-    source: /home/comigo/UNWORK/ctjs/src/examples/JettyCat_assets/PotatoCat.png
-    shape: strip
-    left: 0
-    right: 406
-    top: 0
-    bottom: 481
-    uid: eb24c2bc-a36c-4118-b33e-a7348c00e5bb
-    padding: 1
-    stripPoints:
-      - x: 76
-        'y': -171.5
-      - x: 117
-        'y': -57.5
-      - x: 115
-        'y': 108.5
-      - x: 76
-        'y': 172.5
-      - x: -1.5
-        'y': 197.5
-      - x: -71.5
-        'y': 183.5
-      - x: -113
-        'y': 153.5
-      - x: -138
-        'y': 88.5
-      - x: -155
-        'y': 86
-      - x: -176
-        'y': 68.5
-      - x: -154
-        'y': -59
-      - x: -112
-        'y': -98.5
-      - x: -93
-        'y': -92.5
-      - x: -48.5
-        'y': -171
-      - x: -20
-        'y': -188
-      - x: 21.5
-        'y': -241.5
-      - x: 41.5
-        'y': -184.5
-    closedStrip: true
-    lastmod: 1584325831430
-  - name: PotatoCat_Stunned
-    untill: 0
-    grid:
-      - 1
-      - 1
-    axis:
-      - 284.5
-      - 248
-    marginx: 0
-    marginy: 0
-    imgWidth: 406
-    imgHeight: 481
-    width: 406
-    height: 481
-    offx: 0
-    offy: 0
-    origname: ieb3dadb5-49cf-4ba1-b562-421ab360842e.png
-    source: >-
-      /home/comigo/UNWORK/ctjs/src/examples/JettyCat_assets/PotatoCat_Stunned.png
-    shape: rect
-    left: 284
-    right: 121
-    top: 248
-    bottom: 233
-    uid: eb3dadb5-49cf-4ba1-b562-421ab360842e
-    padding: 1
-    lastmod: 1583982557780
-  - name: Star
-    untill: 0
-    grid:
-      - 1
-      - 1
-    axis:
-      - 95
-      - 91
-    marginx: 0
-    marginy: 0
-    imgWidth: 190
-    imgHeight: 183
-    width: 190
-    height: 183
-    offx: 0
-    offy: 0
-    origname: i4e0a0e06-81ea-4cd2-8f3d-569a8ad3e947.png
-    source: /home/comigo/UNWORK/ctjs/src/examples/JettyCat_assets/Star.png
-    shape: strip
-    left: 95
-    right: 95
-    top: 91
-    bottom: 92
-    uid: 4e0a0e06-81ea-4cd2-8f3d-569a8ad3e947
-    padding: 1
-    r: 76
-    lastmod: 1584326817788
-    stripPoints:
-      - x: 0
-        'y': -92
-      - x: 18
-        'y': -81.25
-      - x: 36.5
-        'y': -42
-      - x: 91.5
-        'y': -31.5
-      - x: 93.5
-        'y': -5.5
-      - x: 60.25
-        'y': 27.5
-      - x: 68.5
-        'y': 76.5
-      - x: 49
-        'y': 95.25
-      - x: 0.75
-        'y': 71.25
-      - x: -47.277447246598406
-        'y': 95.69231599041314
-      - x: -66.94890225084308
-        'y': 77.12227673315851
-      - x: -59.149470707146506
-        'y': 28.04854274444321
-      - x: -92.70127668156597
-        'y': -4.644557687527254
-      - x: -90.94025346021978
-        'y': -30.661836507839723
-      - x: -36.03905088434353
-        'y': -41.666742492108696
-      - x: -17.900467381770937
-        'y': -81.08506676547424
-    closedStrip: true
-    symmetryStrip: true
-  - name: BG_Sky
-    untill: 0
-    grid:
-      - 1
-      - 1
-    axis:
-      - 0
-      - 0
-    marginx: 0
-    marginy: 0
-    imgWidth: 1080
-    imgHeight: 1920
-    width: 1080
-    height: 1920
-    offx: 0
-    offy: 0
-    origname: i5c680919-3827-4ea7-9e72-a8fc81ddfb45.png
-    source: /home/comigo/UNWORK/ctjs/src/examples/JettyCat_assets/BG_Sky.png
-    shape: rect
-    left: 0
-    right: 1080
-    top: 0
-    bottom: 1920
-    uid: 5c680919-3827-4ea7-9e72-a8fc81ddfb45
-    padding: 1
-    tiled: true
-    lastmod: 1583982722055
-  - name: Pause
-    untill: 0
-    grid:
-      - 1
-      - 1
-    axis:
-      - 375
-      - 113
-    marginx: 0
-    marginy: 0
-    imgWidth: 750
-    imgHeight: 226
-    width: 750
-    height: 226
-    offx: 0
-    offy: 0
-    origname: i8229085f-e4d3-406a-9e95-bf13a8fec3cb.png
-    source: /home/comigo/UNWORK/ctjs/src/examples/JettyCat_assets/Pause.png
-    shape: rect
-    left: 375
-    right: 375
-    top: 113
-    bottom: 113
-    uid: 8229085f-e4d3-406a-9e95-bf13a8fec3cb
-    padding: 1
-    lastmod: 1584326128285
-  - name: Circle_08
-    untill: 0
-    grid:
-      - 1
-      - 1
-    axis:
-      - 0
-      - 0
-    marginx: 0
-    marginy: 0
-    imgWidth: 512
-    imgHeight: 512
-    width: 512
-    height: 512
-    offx: 0
-    offy: 0
-    origname: i74cac7dc-7259-4729-8494-53ed00563c2b.png
-    source: data/particles/Circle_08.png
-    shape: rect
-    left: 0
-    right: 512
-    top: 0
-    bottom: 512
-    uid: 74cac7dc-7259-4729-8494-53ed00563c2b
-    padding: 1
-  - name: Tube_01
-    untill: 0
-    grid:
-      - 1
-      - 1
-    axis:
-      - 90.5
-      - 281
-    marginx: 0
-    marginy: 0
-    imgWidth: 225
-    imgHeight: 289
-    width: 225
-    height: 289
-    offx: 0
-    offy: 0
-    origname: i2034d885-1648-4872-b64a-e5367f1cb997.png
-    source: /home/comigo/UNWORK/ctjs/src/examples/JettyCat_assets/Tube_01.png
-    shape: strip
-    left: 112
-    right: 113
-    top: 289
-    bottom: 0
-    uid: 2034d885-1648-4872-b64a-e5367f1cb997
-    padding: 1
-    stripPoints:
-      - x: 95
-        'y': -182.5
-      - x: 81
-        'y': -175
-      - x: 79
-        'y': 2
-      - x: -75
-        'y': 2
-      - x: -75.25
-        'y': -174.25
-      - x: -90.5
-        'y': -180.25
-      - x: -90.5
-        'y': -270
-      - x: 94.25
-        'y': -270.75
-    closedStrip: true
-    lastmod: 1584312755439
-  - name: Tube_03
-    untill: 0
-    grid:
-      - 1
-      - 1
-    axis:
-      - 90
-      - 774
-    marginx: 0
-    marginy: 0
-    imgWidth: 225
-    imgHeight: 780
-    width: 225
-    height: 780
-    offx: 0
-    offy: 0
-    origname: ia565bf91-c494-4aaf-8acb-8991cc7e3eda.png
-    source: /home/comigo/UNWORK/ctjs/src/examples/JettyCat_assets/Tube_03.png
-    shape: strip
-    left: 112
-    right: 113
-    top: 780
-    bottom: 0
-    uid: a565bf91-c494-4aaf-8acb-8991cc7e3eda
-    padding: 1
-    stripPoints:
-      - x: 96
-        'y': -763.25
-      - x: 96
-        'y': -674.5
-      - x: 81
-        'y': -667.5
-      - x: 78
-        'y': -2
-      - x: -77
-        'y': 1
-      - x: -75
-        'y': -668
-      - x: -89.75
-        'y': -674
-      - x: -90
-        'y': -763.5
-    closedStrip: true
-    lastmod: 1584326795513
-  - name: Tube_04
-    untill: 0
-    grid:
-      - 1
-      - 1
-    axis:
-      - 92
-      - 1059.25
-    marginx: 0
-    marginy: 0
-    imgWidth: 225
-    imgHeight: 1067
-    width: 225
-    height: 1067
-    offx: 0
-    offy: 0
-    origname: i2a5e9894-e02c-44d8-aa28-7decb485b8fd.png
-    source: /home/comigo/UNWORK/ctjs/src/examples/JettyCat_assets/Tube_04.png
-    shape: strip
-    left: 112
-    right: 113
-    top: 1067
-    bottom: 0
-    uid: 2a5e9894-e02c-44d8-aa28-7decb485b8fd
-    padding: 1
-    stripPoints:
-      - x: 92.75
-        'y': -1049.5
-      - x: 94
-        'y': -957
-      - x: 78
-        'y': -952.75
-      - x: 78.75
-        'y': -1.25
-      - x: -76.75
-        'y': 0.25
-      - x: -76.25
-        'y': -953
-      - x: -91.75
-        'y': -958.25
-      - x: -91.25
-        'y': -1048.75
-    closedStrip: true
-    lastmod: 1584326793258
-  - name: Tube_02
-    untill: 0
-    grid:
-      - 1
-      - 1
-    axis:
-      - 99
-      - 498
-    marginx: 0
-    marginy: 0
-    imgWidth: 225
-    imgHeight: 505
-    width: 225
-    height: 505
-    offx: 0
-    offy: 0
-    origname: i2b5a51ae-c05b-4a94-b9bd-e088bf2e4b1a.png
-    source: /home/comigo/UNWORK/ctjs/src/examples/JettyCat_assets/Tube_02.png
-    shape: strip
-    left: 112
-    right: 113
-    top: 505
-    bottom: 0
-    uid: 2b5a51ae-c05b-4a94-b9bd-e088bf2e4b1a
-    padding: 1
-    stripPoints:
-      - x: 87.5
-        'y': -397
-      - x: 70.5
-        'y': -393
-      - x: 72
-        'y': -3
-      - x: -85
-        'y': -4
-      - x: -84.5
-        'y': -392
-      - x: -99
-        'y': -399
-      - x: -98
-        'y': -488.5
-      - x: 85.5
-        'y': -490
-    closedStrip: true
-    lastmod: 1584326799465
-  - name: OhNo
-    untill: 0
-    grid:
-      - 1
-      - 1
-    axis:
-      - 353
-      - 175
-    marginx: 0
-    marginy: 0
-    imgWidth: 707
-    imgHeight: 351
-    width: 707
-    height: 351
-    offx: 0
-    offy: 0
-    origname: iee0876e4-eece-42c2-aa93-a468dab47099.png
-    source: /home/comigo/UNWORK/ctjs/src/examples/JettyCat_assets/OhNo.png
-    shape: rect
-    left: 353
-    right: 354
-    top: 175
-    bottom: 176
-    uid: ee0876e4-eece-42c2-aa93-a468dab47099
-    padding: 1
-    lastmod: 1584329597201
-  - name: PressHint
-    untill: 0
-    grid:
-      - 1
-      - 1
-    axis:
-      - 128
-      - 134
-    marginx: 0
-    marginy: 0
-    imgWidth: 256
-    imgHeight: 268
-    width: 256
-    height: 268
-    offx: 0
-    offy: 0
-    origname: idf915202-237f-498c-bec0-25116fc17008.png
-    source: /home/comigo/UNWORK/ctjs/src/examples/JettyCat_assets/PressHint.png
-    shape: rect
-    left: 128
-    right: 128
-    top: 134
-    bottom: 134
-    uid: df915202-237f-498c-bec0-25116fc17008
-    padding: 1
-    lastmod: 1585717811993
-skeletons: []
-templates:
+    versionPostfix: ''
+    appId: rocks.ctjs.jettycat
+  fps: 30
+scripts: []
+startroom: 8677472b-4549-48b5-a5a8-a891fb029f6b
+palette: []
+styletick: .nan
+contentTypes: []
+language: typescript
+assets:
   - name: Logo
     depth: 0
     uid: 6cd7876a-4918-47a7-8100-75f0375986ef
@@ -592,6 +67,14 @@ templates:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: Button_Play
     depth: 0
     uid: 25ac0f9b-57ff-461d-8eb7-a9ce800b9c71
@@ -603,9 +86,9 @@ templates:
         code: |-
           if (!this.pressed) {
               this.pressed = true;
-              ct.transition.circleOut(1000, 0x446ADB)
+              transition.circleOut(1000, 0x446ADB)
               .then(() => {
-                  ct.rooms.switch('InGame');
+                  rooms.switch('InGame');
               });
           }
         arguments: {}
@@ -616,6 +99,14 @@ templates:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: PotatoCat
     depth: 0
     uid: 8f93611e-6e95-49c4-8e2b-4cc067be2924
@@ -631,11 +122,11 @@ templates:
 
           this.gravityAcceleration = 2;
 
-          ct.camera.follow = this;
-          ct.camera.followY = false;
-          ct.camera.shiftX = 250;
+          camera.follow = this;
+          camera.followY = false;
+          camera.shiftX = 250;
 
-          this.jet = ct.emitters.follow(this, 'Jet');
+          this.jet = emitters.follow(this, 'Jet');
         eventKey: OnCreate
       - lib: core
         arguments: {}
@@ -659,7 +150,7 @@ templates:
       - eventKey: OnActionDown
         code: |-
           this.gravity = this.gravityAcceleration;
-          this.addSpeed(ct.delta * this.gravityAcceleration * 2, -90);
+          this.addSpeed(u.delta * this.gravityAcceleration * 2, -90);
         arguments:
           action: Poof
         lib: core
@@ -678,22 +169,22 @@ templates:
       - eventKey: OnDestroy
         code: |-
           // Stop camera movement
-          ct.camera.follow = false;
+          camera.follow = false;
 
           // Remove the layer with score and a pause button
-          ct.rooms.remove(ct.room.mainUi);
+          rooms.remove(rooms.current.mainUi);
 
           // Create an animated dummy
-          var dummy = ct.templates.copy('PotatoCat_Stunned', this.x, this.y);
+          var dummy = templates.copy('PotatoCat_Stunned', this.x, this.y);
           // Copy scale settings to the new copy
           dummy.scale.x = this.scale.x;
           dummy.scale.y = this.scale.y;
 
           // Schedule a menu appearance
-          ct.u.wait(1000)
+          u.wait(1000)
           .then(() => {
               // Add a layer with "Lose" UI
-              ct.rooms.append('UI_OhNo', {
+              rooms.append('UI_OhNo', {
                   isUi: true
               });
           });
@@ -705,6 +196,14 @@ templates:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: Tube
     depth: 0
     uid: 455b4c7c-2249-4b12-999e-27db667688b5
@@ -717,7 +216,7 @@ templates:
         arguments: {}
         code: |-
           // Randomize tube's height by changing its texture
-          this.tex = ct.random.dice(
+          this.tex = random.dice(
               'Tube_01',
               'Tube_02',
               'Tube_03',
@@ -730,6 +229,14 @@ templates:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: Star
     depth: 0
     uid: b7362b5c-811d-438c-b164-f53213eaefa7
@@ -744,18 +251,18 @@ templates:
         eventKey: OnCreate
       - lib: core
         arguments: {}
-        code: 'ct.emitters.fire(''Stars'', this.x, this.y);'
+        code: 'emitters.fire(''Stars'', this.x, this.y);'
         eventKey: OnDestroy
       - lib: core
         arguments: {}
         code: |-
-          this.wiggleTime += ct.delta * 0.2;
+          this.wiggleTime += u.delta * 0.2;
           this.angle = Math.sin(this.wiggleTime) * 5;
         eventKey: OnDraw
       - eventKey: collisionTemplate
         code: |-
           this.kill = true;
-          ct.room.stars ++;
+          rooms.current.stars ++;
         arguments:
           template: 8f93611e-6e95-49c4-8e2b-4cc067be2924
         lib: place
@@ -765,6 +272,14 @@ templates:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: StarCounter
     depth: 0
     uid: d4c02f18-93d0-4ad4-8e5b-62fb9a0f0af9
@@ -775,7 +290,7 @@ templates:
       - lib: core
         arguments: {}
         code: |-
-          this.label = new PIXI.Text('0', ct.styles.get('Orange'));
+          this.label = new PIXI.Text('0', styles.get('Orange'));
           this.label.x = 130;
           this.label.y = -60;
           this.label.scale.x = this.label.scale.y = 1 / 0.75;
@@ -783,7 +298,7 @@ templates:
         eventKey: OnCreate
       - lib: core
         arguments: {}
-        code: this.label.text = ct.room.stars;
+        code: this.label.text = rooms.current.stars;
         eventKey: OnDraw
     type: template
     loopAnimation: true
@@ -791,6 +306,14 @@ templates:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: Button_Pause
     depth: 0
     uid: 6a532c9b-7e32-4070-b72b-86012306c7fb
@@ -800,14 +323,14 @@ templates:
     events:
       - eventKey: OnPointerClick
         code: |-
-          if (ct.rooms.list['UI_Paused'].length === 0) {
+          if (rooms.list['UI_Paused'].length === 0) {
               // Create a room UI_Paused, put it above the current one (append it),
               // and specify that it is a UI layer (isUi: true)
-              ct.rooms.append('UI_Paused', {
+              rooms.append('UI_Paused', {
                   isUi: true
               });
-              // Turns ct.delta into 0, effectively stopping the game
-              ct.pixiApp.ticker.speed = 0;
+              // Turns u.delta into 0, effectively stopping the game
+              pixiApp.ticker.speed = 0;
           }
         arguments: {}
         lib: core
@@ -817,6 +340,14 @@ templates:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: Paused_Heading
     depth: 0
     uid: ee7454ca-ba35-4d79-9b78-83e763fd81f5
@@ -830,6 +361,14 @@ templates:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: Button_Continue
     depth: 0
     uid: 43938432-cf0b-416d-91e9-8bc9a1f8abcf
@@ -851,14 +390,14 @@ templates:
               })
               .then(() => {
                   ct.tween.add({
-                      obj: ct.pixiApp.ticker,
+                      obj: pixiApp.ticker,
                       fields: {
                           speed: 1
                       },
                       duration: 1000,
                       useUiDelta: true
                   });
-                  ct.rooms.remove(this.getRoom());
+                  rooms.remove(this.getRoom());
               });
           }
         arguments: {}
@@ -869,6 +408,14 @@ templates:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: OhNo_Heading
     depth: 0
     uid: 92049024-c0ef-41ae-8512-851ce20cad3a
@@ -882,6 +429,14 @@ templates:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: PressHint
     depth: 50
     uid: ba73f80b-0995-40b6-94d5-3e82712b5ecf
@@ -896,11 +451,11 @@ templates:
       - lib: core
         arguments: {}
         code: |-
-          this.pulsePhase += ct.delta * 0.2;
+          this.pulsePhase += u.delta * 0.2;
 
           this.scale.x = this.scale.y = 1 + Math.sin(this.pulsePhase) * 0.1;
 
-          if (ct.actions.Poof.pressed) {
+          if (actions.Poof.pressed) {
               this.kill = true;
           }
         eventKey: OnStep
@@ -910,6 +465,14 @@ templates:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: EndGame_Star_Counter
     depth: 0
     uid: 8748598b-4494-433f-9f18-fbe985c2a583
@@ -921,15 +484,15 @@ templates:
         arguments: {}
         code: |-
           if (!('JettyCat_HighScore' in localStorage)) {
-              localStorage['JettyCat_HighScore'] = ct.room.stars;
-          } else if (localStorage['JettyCat_HighScore'] < ct.room.stars) {
-              localStorage['JettyCat_HighScore'] = ct.room.stars;
+              localStorage['JettyCat_HighScore'] = rooms.current.stars;
+          } else if (localStorage['JettyCat_HighScore'] < rooms.current.stars) {
+              localStorage['JettyCat_HighScore'] = rooms.current.stars;
           }
 
-          var scoreText = `Your score: ${ct.room.stars}
+          var scoreText = `Your score: ${rooms.current.stars}
           Highscore: ${localStorage['JettyCat_HighScore']}`;
 
-          this.label = new PIXI.Text(scoreText, ct.styles.get('Orange'));
+          this.label = new PIXI.Text(scoreText, styles.get('Orange'));
           this.label.anchor.x = this.label.anchor.y = 0.5;
           this.addChild(this.label);
         eventKey: OnCreate
@@ -939,6 +502,14 @@ templates:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - type: template
     name: PotatoCat_Stunned
     depth: 0
@@ -965,28 +536,14 @@ templates:
     uid: T9G6GkQ7GJj3fB
     blendMode: normal
     animationFPS: 30
-sounds: []
-styles:
-  - name: Orange
-    uid: 316e5f08-494c-4570-ba65-8cd45d8b946f
-    origname: s8cd45d8b946f
-    font:
-      family: sans-serif
-      size: 80
-      weight: '900'
-      italic: false
-      halign: center
-    fill:
-      type: '1'
-      color: '#FF8B47'
-      color1: '#E7A66F'
-      gradtype: '1'
-      color2: '#D28753'
-    stroke:
-      color: '#914121'
-      weight: 10
-    lastmod: 1584330374714
-rooms:
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: InGame
     ondraw: ''
     onleave: ''
@@ -1046,7 +603,7 @@ rooms:
           this.stars = 0;
 
           // Adds a UI layer on top of the main one
-          this.mainUi = ct.rooms.append('UI_InGame', {
+          this.mainUi = rooms.append('UI_InGame', {
               isUi: true
           });
 
@@ -1054,27 +611,27 @@ rooms:
           this.obstacleTimer = ct.speed * 5;
 
           // Start a transition
-          ct.transition.circleIn(500, 0x446ADB);
+          transition.circleIn(500, 0x446ADB);
         eventKey: OnRoomStart
       - lib: core
         arguments: {}
         code: |-
           // If there is no cat in the room…
-          if (!ct.templates.list['PotatoCat'].length) {
+          if (!templates.list['PotatoCat'].length) {
               // stop further execution
               return;
           }
 
           // Substract elapsed time from the timer
-          this.obstacleTimer -= ct.delta;
+          this.obstacleTimer -= u.delta;
           // If the timer is up…
           if (this.obstacleTimer <= 0) {
               // Wind it again
               this.obstacleTimer += ct.speed * 2;
 
               // Create two tubes
-              var tube1 = ct.templates.copy('Tube', ct.camera.right + 250, ct.camera.bottom - 130); // At the bottom of the camera
-              var tube2 = ct.templates.copy('Tube', ct.camera.right + 250, ct.camera.top - 70); // At the top
+              var tube1 = templates.copy('Tube', camera.right + 250, camera.bottom - 130); // At the bottom of the camera
+              var tube2 = templates.copy('Tube', camera.right + 250, camera.top - 70); // At the top
 
               // Change second tube's texture depending on which texture is used in the first tube
               if (tube1.tex === 'Tube_01') { // Shortest tube will result in the longest tube
@@ -1092,8 +649,8 @@ rooms:
               tube2.scale.y = -1;
 
               // Create a star bonus with 30% chance somewhere in between top and bottom edge, with 300px padding.
-              if (ct.random.chance(30)) {
-                  ct.templates.copy('Star', ct.camera.right + 250 + 500, ct.random.range(ct.camera.top + 300, ct.camera.bottom - 300));
+              if (random.chance(30)) {
+                  templates.copy('Star', camera.right + 250 + 500, random.range(camera.top + 300, camera.bottom - 300));
               }
           }
         eventKey: OnStep
@@ -1101,6 +658,7 @@ rooms:
     simulate: true
     isUi: false
     follow: -1
+    behaviors: []
   - name: MainMenu
     oncreate: ''
     onstep: ''
@@ -1170,6 +728,7 @@ rooms:
     simulate: true
     isUi: false
     follow: -1
+    behaviors: []
   - name: UI_InGame
     oncreate: ''
     onstep: ''
@@ -1229,6 +788,7 @@ rooms:
     simulate: true
     isUi: false
     follow: -1
+    behaviors: []
   - name: UI_Paused
     onstep: ''
     ondraw: ''
@@ -1290,6 +850,7 @@ rooms:
     simulate: true
     isUi: false
     follow: -1
+    behaviors: []
   - name: UI_OhNo
     onstep: ''
     ondraw: ''
@@ -1362,92 +923,698 @@ rooms:
     simulate: true
     isUi: false
     follow: -1
-actions:
-  - name: Poof
-    methods:
-      - code: touch.Any
-emitterTandems:
+    behaviors: []
+  - name: Orange
+    uid: 316e5f08-494c-4570-ba65-8cd45d8b946f
+    origname: s8cd45d8b946f
+    font:
+      family: sans-serif
+      size: 80
+      weight: '900'
+      italic: false
+      halign: center
+    fill:
+      type: '1'
+      color: '#FF8B47'
+      color1: '#E7A66F'
+      gradtype: '1'
+      color2: '#D28753'
+    stroke:
+      color: '#914121'
+      weight: 10
+    lastmod: 1584330374714
+    type: style
+  - name: BG_Ground
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 0
+      - 0
+    marginx: 0
+    marginy: 0
+    imgWidth: 1080
+    imgHeight: 191
+    width: 1080
+    height: 191
+    offx: 0
+    offy: 0
+    origname: i53da7582-ae6c-4843-976e-c84d6d74a489.png
+    source: /home/comigo/UNWORK/ctjs/src/examples/JettyCat_assets/BG_Ground.png
+    shape: rect
+    left: 0
+    right: 1080
+    top: 0
+    bottom: 191
+    uid: 53da7582-ae6c-4843-976e-c84d6d74a489
+    padding: 10
+    lastmod: 1584325814705
+    tiled: true
+    type: texture
+  - name: Button_Play
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 160
+      - 166
+    marginx: 0
+    marginy: 0
+    imgWidth: 320
+    imgHeight: 332
+    width: 320
+    height: 332
+    offx: 0
+    offy: 0
+    origname: i775ba15c-b1aa-4707-bc1e-d0811846a893.png
+    source: /home/comigo/UNWORK/ctjs/src/examples/JettyCat_assets/Button_Play.png
+    shape: circle
+    left: 0
+    right: 320
+    top: 0
+    bottom: 332
+    uid: 775ba15c-b1aa-4707-bc1e-d0811846a893
+    padding: 1
+    r: 160
+    lastmod: 1583981916068
+    type: texture
+  - name: Jetty_Cat
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 462
+      - 174
+    marginx: 0
+    marginy: 0
+    imgWidth: 925
+    imgHeight: 349
+    width: 925
+    height: 349
+    offx: 0
+    offy: 0
+    origname: i2c8009c9-ccbc-459e-8562-3146d7210e12.png
+    source: /home/comigo/UNWORK/ctjs/src/examples/JettyCat_assets/Jetty Cat.png
+    shape: rect
+    left: 462
+    right: 463
+    top: 174
+    bottom: 175
+    uid: 2c8009c9-ccbc-459e-8562-3146d7210e12
+    padding: 1
+    lastmod: 1583981925180
+    type: texture
+  - name: Button_Pause
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 98
+      - 104
+    marginx: 0
+    marginy: 0
+    imgWidth: 196
+    imgHeight: 208
+    width: 196
+    height: 208
+    offx: 0
+    offy: 0
+    origname: i343c1f60-adad-4233-bfcf-c13b8aade974.png
+    source: /home/comigo/UNWORK/ctjs/src/examples/JettyCat_assets/Button_Pause.png
+    shape: rect
+    left: 98
+    right: 98
+    top: 104
+    bottom: 104
+    uid: 343c1f60-adad-4233-bfcf-c13b8aade974
+    padding: 1
+    lastmod: 1584326777252
+    type: texture
+  - name: PotatoCat
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 285.5
+      - 241.5
+    marginx: 0
+    marginy: 0
+    imgWidth: 406
+    imgHeight: 481
+    width: 406
+    height: 481
+    offx: 0
+    offy: 0
+    origname: ieb24c2bc-a36c-4118-b33e-a7348c00e5bb.png
+    source: /home/comigo/UNWORK/ctjs/src/examples/JettyCat_assets/PotatoCat.png
+    shape: strip
+    left: 0
+    right: 406
+    top: 0
+    bottom: 481
+    uid: eb24c2bc-a36c-4118-b33e-a7348c00e5bb
+    padding: 1
+    stripPoints:
+      - x: 76
+        'y': -171.5
+      - x: 117
+        'y': -57.5
+      - x: 115
+        'y': 108.5
+      - x: 76
+        'y': 172.5
+      - x: -1.5
+        'y': 197.5
+      - x: -71.5
+        'y': 183.5
+      - x: -113
+        'y': 153.5
+      - x: -138
+        'y': 88.5
+      - x: -155
+        'y': 86
+      - x: -176
+        'y': 68.5
+      - x: -154
+        'y': -59
+      - x: -112
+        'y': -98.5
+      - x: -93
+        'y': -92.5
+      - x: -48.5
+        'y': -171
+      - x: -20
+        'y': -188
+      - x: 21.5
+        'y': -241.5
+      - x: 41.5
+        'y': -184.5
+    closedStrip: true
+    lastmod: 1584325831430
+    type: texture
+  - name: PotatoCat_Stunned
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 284.5
+      - 248
+    marginx: 0
+    marginy: 0
+    imgWidth: 406
+    imgHeight: 481
+    width: 406
+    height: 481
+    offx: 0
+    offy: 0
+    origname: ieb3dadb5-49cf-4ba1-b562-421ab360842e.png
+    source: >-
+      /home/comigo/UNWORK/ctjs/src/examples/JettyCat_assets/PotatoCat_Stunned.png
+    shape: rect
+    left: 284
+    right: 121
+    top: 248
+    bottom: 233
+    uid: eb3dadb5-49cf-4ba1-b562-421ab360842e
+    padding: 1
+    lastmod: 1583982557780
+    type: texture
+  - name: Star
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 95
+      - 91
+    marginx: 0
+    marginy: 0
+    imgWidth: 190
+    imgHeight: 183
+    width: 190
+    height: 183
+    offx: 0
+    offy: 0
+    origname: i4e0a0e06-81ea-4cd2-8f3d-569a8ad3e947.png
+    source: /home/comigo/UNWORK/ctjs/src/examples/JettyCat_assets/Star.png
+    shape: strip
+    left: 95
+    right: 95
+    top: 91
+    bottom: 92
+    uid: 4e0a0e06-81ea-4cd2-8f3d-569a8ad3e947
+    padding: 1
+    r: 76
+    lastmod: 1584326817788
+    stripPoints:
+      - x: 0
+        'y': -92
+      - x: 18
+        'y': -81.25
+      - x: 36.5
+        'y': -42
+      - x: 91.5
+        'y': -31.5
+      - x: 93.5
+        'y': -5.5
+      - x: 60.25
+        'y': 27.5
+      - x: 68.5
+        'y': 76.5
+      - x: 49
+        'y': 95.25
+      - x: 0.75
+        'y': 71.25
+      - x: -47.277447246598406
+        'y': 95.69231599041314
+      - x: -66.94890225084308
+        'y': 77.12227673315851
+      - x: -59.149470707146506
+        'y': 28.04854274444321
+      - x: -92.70127668156597
+        'y': -4.644557687527254
+      - x: -90.94025346021978
+        'y': -30.661836507839723
+      - x: -36.03905088434353
+        'y': -41.666742492108696
+      - x: -17.900467381770937
+        'y': -81.08506676547424
+    closedStrip: true
+    symmetryStrip: true
+    type: texture
+  - name: BG_Sky
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 0
+      - 0
+    marginx: 0
+    marginy: 0
+    imgWidth: 1080
+    imgHeight: 1920
+    width: 1080
+    height: 1920
+    offx: 0
+    offy: 0
+    origname: i5c680919-3827-4ea7-9e72-a8fc81ddfb45.png
+    source: /home/comigo/UNWORK/ctjs/src/examples/JettyCat_assets/BG_Sky.png
+    shape: rect
+    left: 0
+    right: 1080
+    top: 0
+    bottom: 1920
+    uid: 5c680919-3827-4ea7-9e72-a8fc81ddfb45
+    padding: 1
+    tiled: true
+    lastmod: 1583982722055
+    type: texture
+  - name: Pause
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 375
+      - 113
+    marginx: 0
+    marginy: 0
+    imgWidth: 750
+    imgHeight: 226
+    width: 750
+    height: 226
+    offx: 0
+    offy: 0
+    origname: i8229085f-e4d3-406a-9e95-bf13a8fec3cb.png
+    source: /home/comigo/UNWORK/ctjs/src/examples/JettyCat_assets/Pause.png
+    shape: rect
+    left: 375
+    right: 375
+    top: 113
+    bottom: 113
+    uid: 8229085f-e4d3-406a-9e95-bf13a8fec3cb
+    padding: 1
+    lastmod: 1584326128285
+    type: texture
+  - name: Circle_08
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 0
+      - 0
+    marginx: 0
+    marginy: 0
+    imgWidth: 512
+    imgHeight: 512
+    width: 512
+    height: 512
+    offx: 0
+    offy: 0
+    origname: i74cac7dc-7259-4729-8494-53ed00563c2b.png
+    source: data/particles/Circle_08.png
+    shape: rect
+    left: 0
+    right: 512
+    top: 0
+    bottom: 512
+    uid: 74cac7dc-7259-4729-8494-53ed00563c2b
+    padding: 1
+    type: texture
+  - name: Tube_01
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 90.5
+      - 281
+    marginx: 0
+    marginy: 0
+    imgWidth: 225
+    imgHeight: 289
+    width: 225
+    height: 289
+    offx: 0
+    offy: 0
+    origname: i2034d885-1648-4872-b64a-e5367f1cb997.png
+    source: /home/comigo/UNWORK/ctjs/src/examples/JettyCat_assets/Tube_01.png
+    shape: strip
+    left: 112
+    right: 113
+    top: 289
+    bottom: 0
+    uid: 2034d885-1648-4872-b64a-e5367f1cb997
+    padding: 1
+    stripPoints:
+      - x: 95
+        'y': -182.5
+      - x: 81
+        'y': -175
+      - x: 79
+        'y': 2
+      - x: -75
+        'y': 2
+      - x: -75.25
+        'y': -174.25
+      - x: -90.5
+        'y': -180.25
+      - x: -90.5
+        'y': -270
+      - x: 94.25
+        'y': -270.75
+    closedStrip: true
+    lastmod: 1584312755439
+    type: texture
+  - name: Tube_03
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 90
+      - 774
+    marginx: 0
+    marginy: 0
+    imgWidth: 225
+    imgHeight: 780
+    width: 225
+    height: 780
+    offx: 0
+    offy: 0
+    origname: ia565bf91-c494-4aaf-8acb-8991cc7e3eda.png
+    source: /home/comigo/UNWORK/ctjs/src/examples/JettyCat_assets/Tube_03.png
+    shape: strip
+    left: 112
+    right: 113
+    top: 780
+    bottom: 0
+    uid: a565bf91-c494-4aaf-8acb-8991cc7e3eda
+    padding: 1
+    stripPoints:
+      - x: 96
+        'y': -763.25
+      - x: 96
+        'y': -674.5
+      - x: 81
+        'y': -667.5
+      - x: 78
+        'y': -2
+      - x: -77
+        'y': 1
+      - x: -75
+        'y': -668
+      - x: -89.75
+        'y': -674
+      - x: -90
+        'y': -763.5
+    closedStrip: true
+    lastmod: 1584326795513
+    type: texture
+  - name: Tube_04
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 92
+      - 1059.25
+    marginx: 0
+    marginy: 0
+    imgWidth: 225
+    imgHeight: 1067
+    width: 225
+    height: 1067
+    offx: 0
+    offy: 0
+    origname: i2a5e9894-e02c-44d8-aa28-7decb485b8fd.png
+    source: /home/comigo/UNWORK/ctjs/src/examples/JettyCat_assets/Tube_04.png
+    shape: strip
+    left: 112
+    right: 113
+    top: 1067
+    bottom: 0
+    uid: 2a5e9894-e02c-44d8-aa28-7decb485b8fd
+    padding: 1
+    stripPoints:
+      - x: 92.75
+        'y': -1049.5
+      - x: 94
+        'y': -957
+      - x: 78
+        'y': -952.75
+      - x: 78.75
+        'y': -1.25
+      - x: -76.75
+        'y': 0.25
+      - x: -76.25
+        'y': -953
+      - x: -91.75
+        'y': -958.25
+      - x: -91.25
+        'y': -1048.75
+    closedStrip: true
+    lastmod: 1584326793258
+    type: texture
+  - name: Tube_02
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 99
+      - 498
+    marginx: 0
+    marginy: 0
+    imgWidth: 225
+    imgHeight: 505
+    width: 225
+    height: 505
+    offx: 0
+    offy: 0
+    origname: i2b5a51ae-c05b-4a94-b9bd-e088bf2e4b1a.png
+    source: /home/comigo/UNWORK/ctjs/src/examples/JettyCat_assets/Tube_02.png
+    shape: strip
+    left: 112
+    right: 113
+    top: 505
+    bottom: 0
+    uid: 2b5a51ae-c05b-4a94-b9bd-e088bf2e4b1a
+    padding: 1
+    stripPoints:
+      - x: 87.5
+        'y': -397
+      - x: 70.5
+        'y': -393
+      - x: 72
+        'y': -3
+      - x: -85
+        'y': -4
+      - x: -84.5
+        'y': -392
+      - x: -99
+        'y': -399
+      - x: -98
+        'y': -488.5
+      - x: 85.5
+        'y': -490
+    closedStrip: true
+    lastmod: 1584326799465
+    type: texture
+  - name: OhNo
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 353
+      - 175
+    marginx: 0
+    marginy: 0
+    imgWidth: 707
+    imgHeight: 351
+    width: 707
+    height: 351
+    offx: 0
+    offy: 0
+    origname: iee0876e4-eece-42c2-aa93-a468dab47099.png
+    source: /home/comigo/UNWORK/ctjs/src/examples/JettyCat_assets/OhNo.png
+    shape: rect
+    left: 353
+    right: 354
+    top: 175
+    bottom: 176
+    uid: ee0876e4-eece-42c2-aa93-a468dab47099
+    padding: 1
+    lastmod: 1584329597201
+    type: texture
+  - name: PressHint
+    untill: 0
+    grid:
+      - 1
+      - 1
+    axis:
+      - 128
+      - 134
+    marginx: 0
+    marginy: 0
+    imgWidth: 256
+    imgHeight: 268
+    width: 256
+    height: 268
+    offx: 0
+    offy: 0
+    origname: idf915202-237f-498c-bec0-25116fc17008.png
+    source: /home/comigo/UNWORK/ctjs/src/examples/JettyCat_assets/PressHint.png
+    shape: rect
+    left: 128
+    right: 128
+    top: 134
+    bottom: 134
+    uid: df915202-237f-498c-bec0-25116fc17008
+    padding: 1
+    lastmod: 1585717811993
+    type: texture
   - name: Jet
-    origname: pt2acdfaefd987
     emitters:
-      - texture: 74cac7dc-7259-4729-8494-53ed00563c2b
+      - uid: d6a3c617-6986-40e6-b8de-116e91dd6bc2
+        texture: 74cac7dc-7259-4729-8494-53ed00563c2b
         openedTabs:
           - texture
           - spawning
           - shape
+        textureBehavior: textureRandom
+        animatedSingleFramerate: 10
         settings:
-          alpha:
-            list:
-              - value: 0
-                time: 0
-              - value: 0.835
-                time: 0.24000000000000002
-              - value: 0
-                time: 1
-            isStepped: false
-          scale:
-            list:
-              - value: 0.2
-                time: 0
-              - value: 0.4
-                time: 1
-            isStepped: false
-          color:
-            list:
-              - value: ffffff
-                time: 0
-              - value: ffffff
-                time: 0.24000000000000002
-              - value: ffffff
-                time: 1
-            isStepped: false
-          blendMode: normal
-          speed:
-            list:
-              - value: 787.5
-                time: 0
-              - value: 400
-                time: 1
-            isStepped: false
-          startRotation:
-            min: 92
-            max: 110
-          rotationSpeed:
-            min: 0
-            max: 0
-          rotationAcceleration: 0
+          frequency: 0.035
           lifetime:
             min: 0.5
             max: 0.5
-          frequency: 0.035
           spawnChance: 1
-          particlesPerWave: 1
-          angleStart: 270
           emitterLifetime: 0
           maxParticles: 1000
-          maxSpeed: 0
+          addAtBack: false
+          particlesPerWave: 1
           pos:
             x: -144
             'y': 88
-          acceleration:
-            x: 0
-            'y': 0
-          addAtBack: false
-          spawnType: circle
-          spawnCircle:
-            x: 0
-            'y': 0
-            r: 17
-          delay: 0
-          minimumScaleMultiplier: 0.16
-        uid: d6a3c617-6986-40e6-b8de-116e91dd6bc2
-        showShapeVisualizer: true
-    previewTexture: eb24c2bc-a36c-4118-b33e-a7348c00e5bb
+          behaviors:
+            - type: alpha
+              config:
+                alpha:
+                  list:
+                    - value: 0
+                      time: 0
+                    - value: 0.835
+                      time: 0.24000000000000002
+                    - value: 0
+                      time: 1
+                  isStepped: false
+            - type: color
+              config:
+                color:
+                  list:
+                    - value: ffffff
+                      time: 0
+                    - value: ffffff
+                      time: 0.24000000000000002
+                    - value: ffffff
+                      time: 1
+                  isStepped: false
+            - type: blendMode
+              config:
+                blendMode: normal
+            - type: scale
+              config:
+                scale:
+                  list:
+                    - value: 0.2
+                      time: 0
+                    - value: 0.4
+                      time: 1
+                  isStepped: false
+                minMult: 0.16
+            - type: moveSpeed
+              config:
+                speed:
+                  list:
+                    - value: 787.5
+                      time: 0
+                    - value: 400
+                      time: 1
+                  isStepped: false
+                minMult: 1
+            - type: spawnShape
+              config:
+                type: torus
+                data:
+                  innerRadius: 0
+                  radius: 17
+                  x: 0
+                  'y': 0
+                  rotation: true
+            - type: rotation
+              config:
+                minStart: 92
+                maxStart: 110
+                minSpeed: 0
+                maxSpeed: 0
+                accel: 0
     uid: pt2acdfaefd987
+    lastmod: 1699521109972
+    type: tandem
   - name: Stars
-    origname: pt550aaadb2b36
     emitters:
-      - texture: 4e0a0e06-81ea-4cd2-8f3d-569a8ad3e947
+      - uid: 9066d3fa-7519-4097-9023-e941e8835745
+        texture: 4e0a0e06-81ea-4cd2-8f3d-569a8ad3e947
         openedTabs:
           - texture
           - colors
@@ -1456,133 +1623,92 @@ emitterTandems:
           - gravity
           - shape
           - spawning
+        textureBehavior: textureRandom
+        animatedSingleFramerate: 10
         settings:
-          alpha:
-            list:
-              - value: 0
-                time: 0
-              - time: 0.11600000000000002
-                value: 0.6600000000000001
-              - value: 1
-                time: 0.5
-              - value: 0
-                time: 1
-            isStepped: false
-          scale:
-            list:
-              - value: 0.19
-                time: 0
-              - time: 0.21999999999999995
-                value: 0.4
-              - time: 0.448
-                value: 0.5
-              - time: 0.728
-                value: 0.3500000000000001
-              - value: 0.04999999999999999
-                time: 1
-            isStepped: false
-          color:
-            list:
-              - value: ffffff
-                time: 0
-              - time: 0.11600000000000002
-                value: FFFFFF
-              - value: ffffff
-                time: 0.5
-              - value: ffffff
-                time: 1
-            isStepped: false
-          blendMode: normal
-          speed:
-            list:
-              - value: 787.5
-                time: 0
-              - value: 450.00000000000006
-                time: 1
-            isStepped: false
-          startRotation:
-            min: 0
-            max: 360
-          rotationSpeed:
-            min: -180
-            max: 180
-          rotationAcceleration: 0
+          frequency: 0.008
           lifetime:
             min: 0.5
             max: 1
-          frequency: 0.008
           spawnChance: 1
-          particlesPerWave: 1
-          angleStart: 270
           emitterLifetime: 0.1
           maxParticles: 1000
-          maxSpeed: 0
+          addAtBack: false
+          particlesPerWave: 1
           pos:
             x: 0
             'y': 8
-          acceleration:
-            x: 0
-            'y': 1376
-          addAtBack: false
-          spawnType: circle
-          spawnCircle:
-            x: 0
-            'y': 0
-            r: 65
-            minR: 100
-          delay: 0
-          minimumSpeedMultiplier: 0.1
-          noRotation: true
-        uid: 9066d3fa-7519-4097-9023-e941e8835745
-        showShapeVisualizer: true
-    previewTexture: 4e0a0e06-81ea-4cd2-8f3d-569a8ad3e947
+          behaviors:
+            - type: alpha
+              config:
+                alpha:
+                  list:
+                    - value: 0
+                      time: 0
+                    - time: 0.11600000000000002
+                      value: 0.6600000000000001
+                    - value: 1
+                      time: 0.5
+                    - value: 0
+                      time: 1
+                  isStepped: false
+            - type: color
+              config:
+                color:
+                  list:
+                    - value: ffffff
+                      time: 0
+                    - time: 0.11600000000000002
+                      value: FFFFFF
+                    - value: ffffff
+                      time: 0.5
+                    - value: ffffff
+                      time: 1
+                  isStepped: false
+            - type: blendMode
+              config:
+                blendMode: normal
+            - type: scale
+              config:
+                scale:
+                  list:
+                    - value: 0.19
+                      time: 0
+                    - time: 0.21999999999999995
+                      value: 0.4
+                    - time: 0.448
+                      value: 0.5
+                    - time: 0.728
+                      value: 0.3500000000000001
+                    - value: 0.04999999999999999
+                      time: 1
+                  isStepped: false
+                minMult: !<tag:yaml.org,2002:js/undefined> ''
+            - type: moveAcceleration
+              config:
+                minStart: 78.75
+                maxStart: 787.5
+                accel:
+                  x: 0
+                  'y': 1376
+                rotate: false
+                maxSpeed: 0
+            - type: spawnShape
+              config:
+                type: torus
+                data:
+                  innerRadius: 0
+                  radius: 65
+                  x: 0
+                  'y': 0
+                  rotation: false
+            - type: rotation
+              config:
+                minStart: 0
+                maxStart: 360
+                minSpeed: -180
+                maxSpeed: 180
+                accel: 0
     uid: pt550aaadb2b36
-starting: 0
-settings:
-  export:
-    windows64: true
-    windows32: true
-    linux64: true
-    linux32: true
-    mac64: true
-    debug: false
-    functionWrap: false
-    codeModifier: none
-  branding:
-    icon: eb24c2bc-a36c-4118-b33e-a7348c00e5bb
-    accent: '#446adb'
-    invertPreloaderScheme: true
-    splashScreen: 5c680919-3827-4ea7-9e72-a8fc81ddfb45
-  rendering:
-    maxFPS: 60
-    pixelatedrender: false
-    highDensity: true
-    usePixiLegacy: true
-    desktopMode: maximized
-    mobileScreenOrientation: portrait
-  authoring:
-    title: JettyCat
-    author: ComigoGames
-    site: 'https://ctjs.rocks/'
-    version:
-      - 1
-      - 0
-      - 0
-    versionPostfix: ''
-    appId: rocks.ctjs.jettycat
-  fps: 30
-scripts: []
-fonts: []
-startroom: 8677472b-4549-48b5-a5a8-a891fb029f6b
-palette: []
-styletick: .nan
-contentTypes: []
-groups:
-  fonts: []
-  textures: []
-  styles: []
-  rooms: []
-  sounds: []
-  emitterTandems: []
-  templates: []
-language: typescript
+    lastmod: 1699521109972
+    type: tandem

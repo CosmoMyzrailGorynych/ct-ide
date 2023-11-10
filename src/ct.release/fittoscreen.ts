@@ -1,4 +1,4 @@
-import { viewMode } from '../node_requires/exporter/_exporterContracts';
+import type {viewMode} from '../node_requires/exporter/_exporterContracts';
 
 import roomsLib from 'rooms';
 import {settings, pixiApp} from 'index';
@@ -67,7 +67,6 @@ export const updateViewport = () => {
     }
 
     pixiApp.renderer.resize(canvasWidth, canvasHeight);
-    console.log(roomsLib.current.viewWidth, canvasWidth, canvasHeight);
     if (mode !== 'scaleFill' && mode !== 'scaleFit') {
         pixiApp.stage.scale.x = pixiApp.stage.scale.y = pixelScaleModifier;
     } else {
@@ -84,13 +83,18 @@ export const updateViewport = () => {
 window.addEventListener('resize', updateViewport);
 
 /**
- * Tries to toggle the fullscreen mode. Errors, if any, will be logged to console. Also, this won't work in the internal ct.js debugger. Instead, test it in your browser.
+ * Tries to toggle the fullscreen mode.
+ * Errors, if any, will be logged to console.
+ * Also, this won't work in the internal ct.js debugger.
+ * Instead, test it in your browser.
  *
- * This should be called on mouse / keyboard press event, not the "release" event, or the actual transition will happen on the next mouse/keyboard interaction. For example, this will work:
+ * This should be called on mouse / keyboard press event,
+ * not the "release" event, or the actual transition will happen
+ * on the next mouse/keyboard interaction. For example, this will work:
  *
  * ```js
- * if (ct.mouse.pressed) {
- *   if (ct.u.prect(ct.mouse.x, ct.mouse.y, this)) {
+ * if (pointer.pressed) {
+ *   if (ct.u.prect(pointer.x, pointer.y, this)) {
  *     ct.fittoscreen.toggleFullscreen();
  *   }
  * }

@@ -3,7 +3,21 @@
     const devourer = () => {
         void 0;
     };
+    const commonProps = {
+        depth: 0,
+        blendMode: PIXI.BLEND_MODES.NORMAL,
+        visible: true,
+        behaviors: [],
+        extends: {},
+        baseClass: 'AnimatedSprite',
+        animationFPS: 30,
+        playAnimationOnStart: false,
+        loopAnimation: true,
+        texture: -1
+    };
     templates.templates.CTTRANSITION_FADE = {
+        ...commonProps,
+        name: 'CTTRANSITION_FADE',
         onStep() {
             void 0;
         },
@@ -34,6 +48,8 @@
         }
     };
     templates.templates.CTTRANSITION_SCALE = {
+        ...commonProps,
+        name: 'CTTRANSITION_SCALE',
         onStep() {
             void 0;
         },
@@ -84,6 +100,8 @@
         }
     };
     templates.templates.CTTRANSITION_SLIDE = {
+        ...commonProps,
+        name: 'CTTRANSITION_SLIDE',
         onStep() {
             void 0;
         },
@@ -183,6 +201,8 @@
     };
 
     templates.templates.CTTRANSITION_CIRCLE = {
+        ...commonProps,
+        name: 'CTTRANSITION_CIRCLE',
         onStep() {
             void 0;
         },

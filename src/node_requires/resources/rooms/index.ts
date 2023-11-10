@@ -26,7 +26,7 @@ export const getStartingRoom = (): IRoom => {
 export const assetContextMenuItems: IAssetContextItem[] = [{
     icon: 'play',
     vocPath: 'rooms.makeStarting',
-    action: (asset: ISkeleton): void => {
+    action: (asset: IRoom): void => {
         global.currentProject.startroom = asset.uid;
     }
 }];

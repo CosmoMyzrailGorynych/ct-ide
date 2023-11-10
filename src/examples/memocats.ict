@@ -1,11 +1,49 @@
 notes: /* empty */
 libs:
   random: {}
-  fittoscreen:
-    mode: scaleFit
-  sound.howler: {}
   tween: {}
-templates:
+soundtick: 6
+roomtick: 3
+templatetick: 1
+styletick: 0
+starting: 0
+settings:
+  export:
+    linux: true
+    windows: true
+    mac: true
+    functionWrap: false
+    codeModifier: none
+  branding:
+    icon: -1
+    accent: '#446adb'
+    invertPreloaderScheme: true
+  rendering:
+    maxFPS: 60
+    pixelatedrender: false
+    highDensity: true
+    usePixiLegacy: true
+    desktopMode: maximized
+    mobileScreenOrientation: unspecified
+    viewMode: scaleFit
+  authoring:
+    title: Memocats
+    author: Cosmo Myzrail Gorynych
+    site: 'https://ctjs.rocks'
+    version:
+      - 0
+      - 0
+      - 0
+    versionPostfix: ''
+  fps: 30
+startroom: 3827e721-5331-49b2-a37a-f868e15cae0d
+ctjsVersion: 4.0.0-next-3
+scripts: []
+actions: []
+texturetick: 2
+contentTypes: []
+language: typescript
+assets:
   - name: Card
     depth: 0
     uid: 2120f62d-54b7-4ab1-8788-7f70b59d3c0c
@@ -20,7 +58,7 @@ templates:
 
           this.scale.x = this.scale.y = 0;
 
-          ct.tween.add({
+          tween.add({
               obj: this.scale,
               fields: {
                   x: 1,
@@ -45,11 +83,11 @@ templates:
 
           // 90° = move to top, but we will create a 30° spread around it.
 
-          this.rotationSpeed = ct.random.range(-12, 12);
+          this.rotationSpeed = random.range(-12, 12);
 
           this.speed = 50;
 
-          this.direction = ct.random.range(-60, -120);
+          this.direction = random.range(-60, -120);
 
           this.gravity = 3;
 
@@ -61,9 +99,9 @@ templates:
           // Make a drop animation
           if (this.drop) {
               this.move();
-              this.angle += this.rotationSpeed * ct.delta;
+              this.angle += this.rotationSpeed * u.delta;
               // Remove the card only if it is considerably below the camera
-              if (this.y > ct.camera.height + 300) {
+              if (this.y > camera.height + 300) {
                   this.kill = true;
               }
           }
@@ -96,35 +134,35 @@ templates:
           if (!this.block) {
               // Flip a card
               this.flipped = !this.flipped;
-              ct.sound.spawn('Paper');
+              sounds.spawn('Paper');
               if (this.flipped) { // Is a picture visible now?
-                  if (ct.room.card) { // Is another card was already selected?
+                  if (rooms.current.card) { // Is another card was already selected?
                       // remember our cards
                       var card1 = this,
-                          card2 = ct.room.card;
+                          card2 = rooms.current.card;
                       // Block them
                       card1.block = true;
                       card2.block = true;
                       // Allow new cards to be selected
-                      ct.room.card = false;
+                      rooms.current.card = false;
 
                       // Do the cards match?
                       if (card1.backFrame === card2.backFrame) {
-                          if (ct.templates.list['Card'].length > 2) {
-                              ct.sound.spawn('Match');
+                          if (templates.list['Card'].length > 2) {
+                              sounds.spawn('Match');
                           } else {
-                              ct.sound.spawn('Victory');
+                              sounds.spawn('Victory');
                           }
-                          ct.u.wait(500)
+                          u.wait(500)
                           .then(() => {
-                              ct.sound.spawn('Swoosh');
+                              sounds.spawn('Swoosh');
                               card1.drop = true;
                               card2.drop = true;
                           });
                       } else {
-                          ct.u.wait(500)
+                          u.wait(500)
                           .then(() => {
-                              ct.sound.spawn('Rollback');
+                              sounds.spawn('Rollback');
                               card1.block = false;
                               card2.block = false;
 
@@ -133,10 +171,10 @@ templates:
                           });
                       }
                   } else {
-                      ct.room.card = this;
+                      rooms.current.card = this;
                   }
               } else {
-                  ct.room.card = false;
+                  rooms.current.card = false;
               }
           }
         arguments: {}
@@ -147,33 +185,14 @@ templates:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
-sounds:
-  - name: Match
-    uid: 96dbce18-a291-41b6-9707-ff2dc2bb5b77
-    origname: s0.wav
-    lastmod: 1522740214929
-  - name: Swoosh
-    uid: 1385f5fc-28ce-4b52-b668-12e3c75ff3b8
-    origname: s1.wav
-    lastmod: 1522740231845
-  - name: Rollback
-    uid: af72e78c-ff23-4016-8179-ca7b5f66d11e
-    origname: s2.wav
-    lastmod: 1522740243655
-  - name: Paper
-    uid: efe16fbe-0baf-40af-be62-5138085a2682
-    origname: s3.wav
-    lastmod: 1522740287935
-  - name: Victory
-    uid: a1a8f820-66b3-4849-9a22-a81b31e32605
-    origname: s4.wav
-    lastmod: 1522740953176
-  - name: NewLevel
-    uid: 4adfa410-6689-4594-8c9e-d8cde988894d
-    origname: s5.wav
-    lastmod: 1522740963586
-styles: []
-rooms:
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: Room1
     ondraw: ''
     onleave: ''
@@ -345,7 +364,7 @@ rooms:
 
           // Get a list of all the Cards in the room and make a copy of that
 
-          this.cards = ct.templates.list['Card'].slice(0);
+          this.cards = templates.list['Card'].slice(0);
 
           shuffle(this.cards);
 
@@ -362,8 +381,8 @@ rooms:
       - lib: core
         arguments: {}
         code: |-
-          if (ct.templates.list['Card'].length === 0) {
-              ct.rooms.switch('Room2');
+          if (templates.list['Card'].length === 0) {
+              rooms.switch('Room2');
           }
         eventKey: OnStep
     type: room
@@ -371,6 +390,7 @@ rooms:
     simulate: true
     isUi: false
     follow: -1
+    behaviors: []
   - name: Room2
     ondraw: ''
     onleave: ''
@@ -556,7 +576,7 @@ rooms:
       - lib: core
         arguments: {}
         code: >-
-          ct.sound.spawn('NewLevel');
+          sounds.spawn('NewLevel');
 
 
           // Grabbed from this: https://stackoverflow.com/a/6274381 (community
@@ -587,7 +607,7 @@ rooms:
 
           // Get a list of all the Cards in the room and make a copy of that
 
-          this.cards = ct.templates.list['Card'].slice(0);
+          this.cards = templates.list['Card'].slice(0);
 
           shuffle(this.cards);
 
@@ -604,8 +624,8 @@ rooms:
       - lib: core
         arguments: {}
         code: |-
-          if (ct.templates.list['Card'].length === 0) {
-              ct.rooms.switch('Room3');
+          if (templates.list['Card'].length === 0) {
+              rooms.switch('Room3');
           }
         eventKey: OnStep
     type: room
@@ -615,6 +635,7 @@ rooms:
     simulate: true
     isUi: false
     follow: -1
+    behaviors: []
   - name: Room3
     ondraw: ''
     onleave: ''
@@ -844,7 +865,7 @@ rooms:
       - lib: core
         arguments: {}
         code: >-
-          ct.sound.spawn('NewLevel');
+          sounds.spawn('NewLevel');
 
 
           // Grabbed from this: https://stackoverflow.com/a/6274381 (community
@@ -875,7 +896,7 @@ rooms:
 
           // Get a list of all the Cards in the room and make a copy of that
 
-          this.cards = ct.templates.list['Card'].slice(0);
+          this.cards = templates.list['Card'].slice(0);
 
           shuffle(this.cards);
 
@@ -892,8 +913,8 @@ rooms:
       - lib: core
         arguments: {}
         code: |-
-          if (ct.templates.list['Card'].length === 0) {
-              ct.rooms.switch('Room3');
+          if (templates.list['Card'].length === 0) {
+              rooms.switch('Room3');
           }
         eventKey: OnStep
     type: room
@@ -903,46 +924,37 @@ rooms:
     simulate: true
     isUi: false
     follow: -1
-soundtick: 6
-roomtick: 3
-templatetick: 1
-styletick: 0
-starting: 0
-settings:
-  export:
-    linux: true
-    windows: true
-    mac: true
-    functionWrap: false
-    codeModifier: none
-  branding:
-    icon: -1
-    accent: '#446adb'
-    invertPreloaderScheme: true
-  rendering:
-    maxFPS: 60
-    pixelatedrender: false
-    highDensity: true
-    usePixiLegacy: true
-    desktopMode: maximized
-    mobileScreenOrientation: unspecified
-  authoring:
-    title: Memocats
-    author: Cosmo Myzrail Gorynych
-    site: 'https://ctjs.rocks'
-    version:
-      - 0
-      - 0
-      - 0
-    versionPostfix: ''
-  fps: 30
-startroom: 3827e721-5331-49b2-a37a-f868e15cae0d
-ctjsVersion: 3.2.0
-scripts: []
-fonts: []
-skeletons: []
-actions: []
-textures:
+    behaviors: []
+  - name: Match
+    uid: 96dbce18-a291-41b6-9707-ff2dc2bb5b77
+    origname: s0.wav
+    lastmod: 1522740214929
+    type: sound
+  - name: Swoosh
+    uid: 1385f5fc-28ce-4b52-b668-12e3c75ff3b8
+    origname: s1.wav
+    lastmod: 1522740231845
+    type: sound
+  - name: Rollback
+    uid: af72e78c-ff23-4016-8179-ca7b5f66d11e
+    origname: s2.wav
+    lastmod: 1522740243655
+    type: sound
+  - name: Paper
+    uid: efe16fbe-0baf-40af-be62-5138085a2682
+    origname: s3.wav
+    lastmod: 1522740287935
+    type: sound
+  - name: Victory
+    uid: a1a8f820-66b3-4849-9a22-a81b31e32605
+    origname: s4.wav
+    lastmod: 1522740953176
+    type: sound
+  - name: NewLevel
+    uid: 4adfa410-6689-4594-8c9e-d8cde988894d
+    origname: s5.wav
+    lastmod: 1522740963586
+    type: sound
   - name: Memocats
     untill: 0
     grid:
@@ -969,6 +981,7 @@ textures:
     uid: 366c01b5-4ed5-4ca5-bf01-8731a04be2c4
     padding: 1
     source: /home/comigo/Desktop/Memocats.png
+    type: texture
   - name: Bg
     untill: 0
     grid:
@@ -995,15 +1008,4 @@ textures:
     uid: c1b1284b-8dba-4886-9bf7-52b66cc08911
     padding: 1
     tiled: true
-texturetick: 2
-emitterTandems: []
-contentTypes: []
-groups:
-  fonts: []
-  textures: []
-  styles: []
-  rooms: []
-  sounds: []
-  emitterTandems: []
-  templates: []
-language: typescript
+    type: texture

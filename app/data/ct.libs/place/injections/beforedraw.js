@@ -1,4 +1,4 @@
-if ([/*%debugMode%*/][0] && this instanceof templates.Copy) {
+if ([/*%debugMode%*/][0] && templates.isCopy(this)) {
     const inverse = this.transform.localTransform.clone().invert();
     this.$cDebugCollision.transform.setFromMatrix(inverse);
     this.$cDebugCollision.position.set(0, 0);
