@@ -71,7 +71,6 @@ code-editor-scriptable.relative.wide.tall.flexcol
                     this.currentEvent.lib
                 );
                 const varsDeclaration = eventsAPI.getArgumentsTypeScript(eventDeclaration);
-                console.log(this.opts);
                 const ctEntity = this.opts.entitytype === 'template' ?
                     (this.opts.baseclass ?? 'BasicCopy') :
                     '(typeof Room)[\'prototype\']';
