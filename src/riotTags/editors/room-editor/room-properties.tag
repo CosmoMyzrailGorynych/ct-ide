@@ -201,11 +201,12 @@ room-properties
         };
 
         const {schemaToExtensions} = require('./data/node_requires/resources/content');
+        const {getById} = require('./data/node_requires/resources');
         this.behaviorExtends = [];
         this.updateBehaviorExtends = () => {
             this.behaviorExtends = [];
             for (const behaviorUid of this.opts.room.behaviors) {
-                const behavior = resources.getById('behavior', behaviorUid);
+                const behavior = getById('behavior', behaviorUid);
                 if (behavior.specification.length) {
                     this.behaviorExtends.push({
                         name: behavior.name,
