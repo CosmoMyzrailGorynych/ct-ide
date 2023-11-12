@@ -19,9 +19,9 @@ export const preparePreviews = async function (
 
     if (trashOrphans) {
         const imagesToKeep = [
-            ...FontPreviewer.retain(assets.font),
-            ...RoomPreviewer.retain(assets.room),
-            ...StylePreviewer.retain(assets.style),
+            ...FontPreviewer.retain(),
+            ...RoomPreviewer.retain(),
+            ...StylePreviewer.retain(),
             ...TexturePreviewer.retain(assets.texture)
         ];
 

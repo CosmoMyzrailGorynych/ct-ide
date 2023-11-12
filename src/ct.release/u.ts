@@ -45,7 +45,8 @@ const uLib = {
             return 'ct.ide';
         }
         try {
-            if (('nw' in window) && ('require' in (window.nw as Record<string, unknown>))) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            if (('nw' in window) && ('require' in ((window as any).nw as Record<string, unknown>))) {
                 return 'nw';
             }
         } catch (oO) {

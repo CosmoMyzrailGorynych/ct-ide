@@ -9,7 +9,7 @@ declare var PIXI: typeof pixiMod & {
     particles: typeof particlesMod;
 };
 
-import type {ExportedTandem, ExportedTandems} from '../node_requires/exporter/_exporterContracts';
+import type {ExportedEmitter, ExportedTandem, ExportedTandems} from '../node_requires/exporter/_exporterContracts';
 
 type EmitterPatched = Emitter & {
     oldMaxParticles: number;
@@ -98,6 +98,7 @@ class EmitterTandem extends PIXI.Container {
      * @param opts Additional settings applied to the tandem
      * @constructor
      */
+    // eslint-disable-next-line max-lines-per-function
     constructor(tandemData: ExportedTandem, opts: ITandemSettings) {
         super();
         this.emitters = [];
@@ -105,12 +106,12 @@ class EmitterTandem extends PIXI.Container {
 
         for (const emt of tandemData) {
             let {settings} = emt;
+            settings = {
+                ...settings,
+                behaviors: structuredClone(settings.behaviors)
+            };
             if (opts.tint) {
                 const tintColor = new PIXI.Color(opts.tint);
-                settings = {
-                    ...settings,
-                    behaviors: structuredClone(settings.behaviors)
-                };
                 const colorList = settings.behaviors[1].config.color.list;
                 colorList.forEach(item => {
                     item.value = new PIXI.Color(item.value)
@@ -119,11 +120,27 @@ class EmitterTandem extends PIXI.Container {
                         .slice(1);
                 });
             }
-            const inst = new PIXI.particles.Emitter(
-                this,
-                resLib.getTexture(emt.texture),
-                settings
-            ) as EmitterPatched;
+            const textures = resLib.getTexture(emt.texture);
+            if (emt.textureBehavior === 'textureRandom') {
+                settings.behaviors.push({
+                    type: 'textureRandom',
+                    config: {
+                        textures
+                    }
+                });
+            } else {
+                settings.behaviors.push({
+                    type: 'animatedSingle',
+                    config: {
+                        anim: {
+                            framerate: emt.animatedSingleFramerate,
+                            loop: true,
+                            textures
+                        }
+                    }
+                });
+            }
+            const inst = new PIXI.particles.Emitter(this, settings) as EmitterPatched;
             const d = emt.settings.delay + opts.prewarmDelay;
             if (d > 0) {
                 inst.emit = false;

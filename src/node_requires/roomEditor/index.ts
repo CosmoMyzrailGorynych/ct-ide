@@ -171,7 +171,7 @@ class RoomEditor extends PIXI.Application {
         this.marqueeBox.visible = false;
         this.overlays.addChild(this.marqueeBox);
         this.overlays.addChild(this.snapTarget);
-        this.deserialize(editor.room);
+        this.deserialize(editor.room as IRoom);
         this.stage.addChild(this.selectionOverlay);
         this.stage.addChild(this.transformer);
 

@@ -40,13 +40,19 @@ export type ExportedSkeleton = {
     dataPath: string;
 };
 
-export type ExportedTandem = {
+export type ExportedEmitter = {
     texture: string;
-    settings: ITandem['emitters'][0]['settings'] & {
+    textureBehavior: ITandemEmitter['textureBehavior'];
+    animatedSingleFramerate: number;
+    settings: Omit<ITandem['emitters'][0]['settings'], 'behaviors'> & {
         delay: number;
+        behaviors: {
+            type: string;
+            config: Record<string, any>;
+        }[]
     };
-}[];
-
+};
+export type ExportedTandem = ExportedEmitter[];
 export type ExportedTandems = Record<string, ExportedTandem>;
 
 export type ExportedTile = {
