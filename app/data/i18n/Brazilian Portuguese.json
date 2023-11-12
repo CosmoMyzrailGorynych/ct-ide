@@ -89,42 +89,42 @@
         "ctSite": "Página inicial do ct.js",
         "openAssetGallery": "Galeria",
         "assetTypes": {
-            "textures": [
+            "texture": [
                 "textura",
                 "texturas",
                 "texturas"
             ],
-            "templates": [
+            "template": [
                 "template",
                 "templates",
                 "templates"
             ],
-            "emitterTandems": [
+            "tandem": [
                 "Emissor de partículas ",
                 "Emissores de partículas ",
                 "Emissores de partículas "
             ],
-            "rooms": [
+            "room": [
                 "Sala",
                 "Salas",
                 "Salas"
             ],
-            "fonts": [
+            "font": [
                 "fonte",
                 "fontes",
                 "fontes"
             ],
-            "styles": [
+            "style": [
                 "estilo",
                 "estilos",
                 "estilos"
             ],
-            "sounds": [
+            "sound": [
                 "Som",
                 "Sons",
                 "Sons"
             ],
-            "skeletons": [
+            "skeleton": [
                 "sprite articulado",
                 "sprites articulados",
                 "sprites articulados"

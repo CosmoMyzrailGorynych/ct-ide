@@ -85,42 +85,42 @@
         "docsLong": "",
         "openAssetGallery": "",
         "assetTypes": {
-            "textures": [
+            "texture": [
                 "",
                 "",
                 ""
             ],
-            "templates": [
+            "template": [
                 "",
                 "",
                 ""
             ],
-            "emitterTandems": [
+            "tandem": [
                 "",
                 "",
                 ""
             ],
-            "rooms": [
+            "room": [
                 "",
                 "",
                 ""
             ],
-            "fonts": [
+            "font": [
                 "",
                 "",
                 ""
             ],
-            "styles": [
+            "style": [
                 "",
                 "",
                 ""
             ],
-            "sounds": [
+            "sound": [
                 "",
                 "",
                 ""
             ],
-            "skeletons": [
+            "skeleton": [
                 "",
                 "",
                 ""

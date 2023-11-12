@@ -85,42 +85,42 @@
         "docsLong": "文档",
         "openAssetGallery": "图库",
         "assetTypes": {
-            "textures": [
+            "texture": [
                 "纹理",
                 "纹理",
                 "纹理"
             ],
-            "templates": [
+            "template": [
                 "模板",
                 "模板",
                 "模板"
             ],
-            "emitterTandems": [
+            "tandem": [
                 "发射器串联",
                 "发射器串联",
                 "发射器串联"
             ],
-            "rooms": [
+            "room": [
                 "房间",
                 "房间",
                 "房间"
             ],
-            "fonts": [
+            "font": [
                 "字体",
                 "字体",
                 "字体"
             ],
-            "styles": [
+            "style": [
                 "样式",
                 "样式",
                 "样式"
             ],
-            "sounds": [
+            "sound": [
                 "声音",
                 "声音",
                 "声音"
             ],
-            "skeletons": [
+            "skeleton": [
                 "骨骼精灵图形",
                 "骨骼精灵图形",
                 "骨骼精灵图形"

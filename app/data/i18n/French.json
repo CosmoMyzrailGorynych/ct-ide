@@ -112,42 +112,42 @@
         "docsLong": "Documentation",
         "openAssetGallery": "Galerie",
         "assetTypes": {
-            "textures": [
+            "texture": [
                 "texture",
                 "textures",
                 "textures"
             ],
-            "templates": [
+            "template": [
                 "modèle",
                 "modèles",
                 "modèles"
             ],
-            "emitterTandems": [
+            "tandem": [
                 "Émetteur de particules",
                 "Émetteurs de particules",
                 "Émetteurs de particules"
             ],
-            "rooms": [
+            "room": [
                 "salle",
                 "salles",
                 "salles"
             ],
-            "fonts": [
+            "font": [
                 "police",
                 "polices",
                 "polices"
             ],
-            "styles": [
+            "style": [
                 "style",
                 "styles",
                 "styles"
             ],
-            "sounds": [
+            "sound": [
                 "son",
                 "sons",
                 "sons"
             ],
-            "skeletons": [
+            "skeleton": [
                 "sprite articulé",
                 "sprites articulés",
                 "sprites articulés"

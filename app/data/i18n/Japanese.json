@@ -89,42 +89,42 @@
         "ctSite": "ct.jsのホームページ",
         "openAssetGallery": "ギャラリー",
         "assetTypes": {
-            "textures": [
+            "texture": [
                 "テクスチャ",
                 "テクスチャ",
                 "テクスチャ"
             ],
-            "templates": [
+            "template": [
                 "テンプレート",
                 "テンプレート",
                 "テンプレート"
             ],
-            "emitterTandems": [
+            "tandem": [
                 "エミッタータンデム",
                 "エミッタータンデム",
                 "エミッタータンデム"
             ],
-            "rooms": [
+            "room": [
                 "ルーム",
                 "ルーム",
                 "ルーム"
             ],
-            "fonts": [
+            "font": [
                 "フォント",
                 "フォント",
                 "フォント"
             ],
-            "styles": [
+            "style": [
                 "スタイル",
                 "スタイル",
                 "スタイル"
             ],
-            "sounds": [
+            "sound": [
                 "音",
                 "音",
                 "音"
             ],
-            "skeletons": [
+            "skeleton": [
                 "透過スプライト",
                 "透過スプライト",
                 "透過スプライト"

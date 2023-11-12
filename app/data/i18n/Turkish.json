@@ -79,42 +79,42 @@
             "tandem": "Partikül dağıtıcısı"
         },
         "assetTypes": {
-            "textures": [
+            "texture": [
                 "doku",
                 "dokular",
                 "dokular"
             ],
-            "templates": [
+            "template": [
                 "şablon",
                 "şablonlar",
                 "şablonlar"
             ],
-            "emitterTandems": [
+            "tandem": [
                 "dağıtıcı partikül dağıtıcı",
                 "dağıtıcı partikül dağıtıcılar",
                 "dağıtıcı partikül dağıtıcılar"
             ],
-            "rooms": [
+            "room": [
                 "oda",
                 "odalar",
                 "odalar"
             ],
-            "fonts": [
+            "font": [
                 "font",
                 "fontlar",
                 "fontlar"
             ],
-            "styles": [
+            "style": [
                 "tarz",
                 "tarzlar",
                 "tarzlar"
             ],
-            "sounds": [
+            "sound": [
                 "ses",
                 "sesler",
                 "sesler"
             ],
-            "skeletons": [
+            "skeleton": [
                 "Çatı görüntü",
                 "Çatı görüntüler",
                 "çatı görüntü"

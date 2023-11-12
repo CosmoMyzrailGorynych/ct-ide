@@ -85,42 +85,42 @@
         "docsLong": "Documentatie",
         "openAssetGallery": "Galerij",
         "assetTypes": {
-            "textures": [
+            "texture": [
                 "textuur",
                 "texturen",
                 "texturen"
             ],
-            "templates": [
+            "template": [
                 "sjabloon",
                 "sjablonen",
                 "sjablonen"
             ],
-            "emitterTandems": [
+            "tandem": [
                 "verspreider tandem",
                 "verspreider tandems",
                 "verspreider tandems"
             ],
-            "rooms": [
+            "room": [
                 "kamer",
                 "kamers",
                 "kamers"
             ],
-            "fonts": [
+            "font": [
                 "lettertype",
                 "lettertypes",
                 "lettertypes"
             ],
-            "styles": [
+            "style": [
                 "stijl",
                 "stijlen",
                 "stijlen"
             ],
-            "sounds": [
+            "sound": [
                 "geluid",
                 "geluiden",
                 "geluiden"
             ],
-            "skeletons": [
+            "skeleton": [
                 "skelet",
                 "skeletten",
                 "skeletten"
