@@ -76,7 +76,6 @@
         "reallyExitConfirm": "Möchten Sie das Programm wirklich beenden? Alle ungespeicherten Änderungen gehen dabei verlohren!",
         "notFoundOrUnknown": "Unbekannte Datei. Stellen Sie sicher, dass die Datei wirklich existiert",
         "nameTaken": "Dieser Name wird bereits verwendet",
-        "fastImport": "Schneller Import",
         "addToNotes": "Zu Notizen hinzufügen",
         "noRooms": "Sie benötigen mindestens einen Raum um die App zu kompilieren.",
         "tileLayer": "Tile Ebene",
@@ -183,11 +182,8 @@
     "intro": {
         "loading": "Bitte warten: Kätzchen werden auf Lichtgeschwindigkeit beschleunigt!",
         "newProject": {
-            "button": "Erstellen",
             "input": "Projektname (Buchstaben und Zahlen)",
-            "text": "Neues Projekt erstellen",
             "selectProjectFolder": "Projekt hier speichern",
-            "saveProjectHere": "Projektverzeichnis auswählen",
             "nameError": "Falscher Projektname"
         },
         "recovery": {
@@ -432,7 +428,6 @@
         "gravityNotice": "Sollte der Wert von (0;0) abweichen, wird die Interpolation der Geschwindigkeit deaktiviert. In diesem Fall wirkt der Effekt nur auf den ersten Knoten des Geschwindigkeitsgraphen.",
         "directionHeading": "Richtung",
         "startingDirection": "Startrichtung",
-        "preserveTextureDirection": "Rotation der Textur beibehalten",
         "rotationHeading": "Rotation",
         "rotationSpeed": "Rotationsgeschwindigkeit",
         "rotationAcceleration": "Rotationsbeschleunigung:",
@@ -448,10 +443,7 @@
         "shapeAndPositioningHeading": "Form und Positionierung",
         "spawnType": "Form-Typ:",
         "spawnShapes": {
-            "point": "Punkt",
             "rectangle": "Rechteck",
-            "circle": "Kreis",
-            "ring": "Ring",
             "star": "Stern"
         },
         "width": "Breite:",
@@ -638,18 +630,12 @@
     },
     "appView": {
         "ctIDE": "ct.IDE",
-        "texture": "Texturen",
         "launch": "Kompilieren und starten",
         "launchHotkeys": "(F5; Alt+F5 zum Öffnen im Standardbrowser)",
         "min": "Fenster",
         "patrons": "Patrons",
-        "rooms": "Räume",
-        "sounds": "Sounds",
-        "ui": "UI",
-        "fx": "FX",
         "restart": "",
         "project": "",
-        "templates": "Types",
         "tour": {
             "header": "",
             "aboutTour": "",
@@ -680,17 +666,7 @@
             "buttonStartTutorial": ""
         }
     },
-    "assetViewer": {
-        "addNewGroup": "",
-        "ungrouped": "",
-        "newGroupName": "",
-        "groupDeletionConfirmation": ""
-    },
-    "groupEditor": {
-        "groupEditor": "",
-        "icon": "",
-        "color": ""
-    },
+    "assetViewer": {},
     "soundRecorder": {
         "recorderHeading": "",
         "record": "",
@@ -839,7 +815,6 @@
         "name": "Name:",
         "radius": "Radius:",
         "rectangle": "Rechteck",
-        "reimport": "Reimport",
         "round": "Kreis",
         "rows": "Reihen:",
         "speed": "Framerate:",
@@ -881,7 +856,6 @@
     },
     "fontView": {
         "italic": "Ist kursiv?",
-        "reimport": "Reimport",
         "generateBitmapFont": "",
         "bitmapFont": "",
         "bitmapFontSize": "",
@@ -922,14 +896,9 @@
     },
     "templateView": {
         "change": "Sprite tauschen",
-        "create": "On Create",
         "depth": "Ebene:",
-        "destroy": "On Destroy",
-        "done": "Fertig",
-        "draw": "Draw",
         "learnAboutTypes": "Lernen Sie Types zu programmieren",
         "name": "Name:",
-        "step": "On Step",
         "visible": "",
         "appearance": "",
         "opacity": "",

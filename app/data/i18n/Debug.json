@@ -76,7 +76,6 @@
         "reallyExitConfirm": "common.reallyExitConfirm",
         "notFoundOrUnknown": "common.notFoundOrUnknown",
         "nameTaken": "common.nameTaken",
-        "fastImport": "common.fastImport",
         "addToNotes": "common.addToNotes",
         "noRooms": "common.noRooms",
         "tileLayer": "common.tileLayer",
@@ -163,10 +162,7 @@
     "intro": {
         "loading": "intro.loading",
         "newProject": {
-            "button": "intro.newProject.button",
             "input": "intro.newProject.input",
-            "text": "intro.newProject.text",
-            "saveProjectHere": "intro.newProject.saveProjectHere",
             "selectProjectFolder": "intro.newProject.selectProjectFolder",
             "nameError": "intro.newProject.nameError"
         },
@@ -326,7 +322,6 @@
         "gravityNotice": "particleEmitters.gravityNotice",
         "directionHeading": "particleEmitters.directionHeading",
         "startingDirection": "particleEmitters.startingDirection",
-        "preserveTextureDirection": "particleEmitters.preserveTextureDirection",
         "rotationHeading": "particleEmitters.rotationHeading",
         "rotationSpeed": "particleEmitters.rotationSpeed",
         "rotationAcceleration": "particleEmitters.rotationAcceleration",
@@ -342,10 +337,7 @@
         "shapeAndPositioningHeading": "particleEmitters.shapeAndPositioningHeading",
         "spawnType": "particleEmitters.spawnType",
         "spawnShapes": {
-            "point": "particleEmitters.spawnShapes.point",
             "rectangle": "particleEmitters.spawnShapes.rectangle",
-            "circle": "particleEmitters.spawnShapes.circle",
-            "ring": "particleEmitters.spawnShapes.ring",
             "star": "particleEmitters.spawnShapes.star"
         },
         "width": "particleEmitters.width",
@@ -638,18 +630,12 @@
     },
     "appView": {
         "ctIDE": "appView.ctIDE",
-        "texture": "appView.texture",
         "launch": "appView.launch",
         "min": "appView.min",
-        "rooms": "appView.rooms",
-        "sounds": "appView.sounds",
-        "ui": "appView.ui",
         "launchHotkeys": "appView.launchHotkeys",
         "patrons": "appView.patrons",
-        "fx": "appView.fx",
         "restart": "appView.restart",
         "project": "appView.project",
-        "templates": "appView.templates",
         "tour": {
             "header": "appView.tour.header",
             "aboutTour": "appView.tour.aboutTour",
@@ -680,12 +666,7 @@
             "buttonStartTutorial": "appView.tour.buttonStartTutorial"
         }
     },
-    "assetViewer": {
-        "addNewGroup": "assetViewer.addNewGroup",
-        "ungrouped": "assetViewer.ungrouped",
-        "newGroupName": "assetViewer.newGroupName",
-        "groupDeletionConfirmation": "assetViewer.groupDeletionConfirmation"
-    },
+    "assetViewer": {},
     "groupEditor": {
         "groupEditor": "groupEditor.groupEditor",
         "icon": "groupEditor.icon",
@@ -839,7 +820,6 @@
         "name": "textureView.name",
         "radius": "textureView.radius",
         "rectangle": "textureView.rectangle",
-        "reimport": "textureView.reimport",
         "round": "textureView.round",
         "rows": "textureView.rows",
         "speed": "textureView.speed",
@@ -881,7 +861,6 @@
     },
     "fontView": {
         "italic": "fontView.italic",
-        "reimport": "fontView.reimport",
         "generateBitmapFont": "fontView.generateBitmapFont",
         "bitmapFont": "fontView.bitmapFont",
         "bitmapFontSize": "fontView.bitmapFontSize",
@@ -922,14 +901,9 @@
     },
     "templateView": {
         "change": "templateView.change",
-        "create": "templateView.create",
         "depth": "templateView.depth",
-        "destroy": "templateView.destroy",
-        "done": "templateView.done",
-        "draw": "templateView.draw",
         "learnAboutTypes": "templateView.learnAboutTypes",
         "name": "templateView.name",
-        "step": "templateView.step",
         "visible": "templateView.visible",
         "appearance": "templateView.appearance",
         "opacity": "templateView.opacity",

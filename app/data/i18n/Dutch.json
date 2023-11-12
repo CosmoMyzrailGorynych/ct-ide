@@ -76,7 +76,6 @@
         "reallyExitConfirm": "Weet je zeker dat je wilt afsluiten? Alle niet opgeslagen veranderingen raken verloren!",
         "notFoundOrUnknown": "Onbekend bestand. Zorg ervoor dat het bestand echt bestaat",
         "nameTaken": "Deze naam bestaat al",
-        "fastImport": "Snelle Import",
         "addToNotes": "Notitie toevoegen",
         "noRooms": "Je hebt ten minste één kamer nodig om de app te compileren.",
         "tileLayer": "tegellaag",
@@ -183,10 +182,7 @@
     "intro": {
         "loading": "Even geduld: kittens naderen lichtsnelheid!",
         "newProject": {
-            "button": "Creëren",
             "input": "Project's naam (letters en nummers)",
-            "text": "Nieuwe creëren",
-            "saveProjectHere": "Sla het project hier op",
             "selectProjectFolder": "Selecteer een map waar het project opgeslagen kan worden",
             "nameError": "Verkeerde project naam"
         },
@@ -432,7 +428,6 @@
         "gravityNotice": "Merk op dat als het verschilt van (0; 0), snelheidsinterpolatie wordt uitgeschakeld, wat betekent dat alleen het eerste knooppunt van de snelheidsgrafiek het effect heeft.",
         "directionHeading": "Richting",
         "startingDirection": "Startrichting",
-        "preserveTextureDirection": "Behoud textuurrotatie",
         "rotationHeading": "Rotatie",
         "rotationSpeed": "Rotatie snelheid",
         "rotationAcceleration": "Rotatie versnelling:",
@@ -448,10 +443,7 @@
         "shapeAndPositioningHeading": "Vorm en Positie",
         "spawnType": "Vorm type:",
         "spawnShapes": {
-            "point": "Punt",
             "rectangle": "Rechthoek",
-            "circle": "Cirkel",
-            "ring": "Ring",
             "star": "Ster"
         },
         "width": "Breedte:",
@@ -640,18 +632,12 @@
     },
     "appView": {
         "ctIDE": "ct.IDE",
-        "texture": "Texturen",
         "launch": "Compileer en voer uit",
         "launchHotkeys": "(F5; Alt+F5 om in je standaard browser te draaien)",
         "min": "In venster",
         "patrons": "Patrons",
-        "rooms": "Kamers",
-        "sounds": "Geluiden",
-        "ui": "UI",
-        "fx": "FX",
         "restart": "Herstart",
         "project": "Project",
-        "templates": "Sjablonen",
         "tour": {
             "header": "Overzicht ct.js",
             "aboutTour": "Welkom bij ct.js! Deze kleine rondleiding zal je de belangrijkste controls in deze editor tonen. Op die manier zal je te weten komen hoe je ct.js kan configuren en hoe je nieuwe onderdelen kan maken.",
@@ -682,17 +668,7 @@
             "buttonStartTutorial": "Tutorials openen"
         }
     },
-    "assetViewer": {
-        "addNewGroup": "Nieuwe groep",
-        "ungrouped": "Toon ongegroepeerd",
-        "newGroupName": "Nieuwe groep",
-        "groupDeletionConfirmation": "Ben je zeker dat je deze groep wil verwijderen? Alle onderdelen zullen ongegroepeerd zijn."
-    },
-    "groupEditor": {
-        "groupEditor": "Groepenbewerker",
-        "icon": "Icoon:",
-        "color": "Kleur:"
-    },
+    "assetViewer": {},
     "soundRecorder": {
         "recorderHeading": "Recorder",
         "record": "Start met opnemen",
@@ -845,7 +821,6 @@
         "name": "Naam:",
         "radius": "Straal:",
         "rectangle": "Rechthoek",
-        "reimport": "Opnieuw importeren",
         "round": "Cirkel",
         "rows": "Rijen:",
         "speed": "Framerate:",
@@ -891,7 +866,6 @@
     },
     "fontView": {
         "italic": "Is cursief?",
-        "reimport": "Herimporteer",
         "generateBitmapFont": "Genereer ook een bitmap lettertype",
         "bitmapFont": "Bitmap lettertype",
         "bitmapFontSize": "Lettergrootte:",
@@ -932,14 +906,9 @@
     },
     "templateView": {
         "change": "Verander de sprite",
-        "create": "Bij Creatie",
         "depth": "Diepte:",
-        "destroy": "Bij Vernietiging",
-        "done": "Klaar",
-        "draw": "Teken",
         "learnAboutTypes": "Leer over code types",
         "name": "Naam:",
-        "step": "Bij Stap",
         "visible": "Zichtbaar",
         "appearance": "Uiterlijk",
         "opacity": "Doorzichtigheid:",

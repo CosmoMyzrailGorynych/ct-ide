@@ -76,7 +76,6 @@
         "reallyExitConfirm": "¿Seguro que quieres salir? Todos los cambios no guardados se perderán.",
         "notFoundOrUnknown": "Archivo desconocido. Asegúrece de que el archivo exista.",
         "nameTaken": "Este nombre ya está tomado",
-        "fastImport": "Importar Rápido",
         "addToNotes": "Agregar a notas",
         "noRooms": "Se necesita por lo menos un cuarto para compilar la aplicación.",
         "tileLayer": "capa de tiles",
@@ -163,10 +162,7 @@
     "intro": {
         "loading": "Por favor espere: ¡los gatitos están ganando velocidad con la luz!",
         "newProject": {
-            "button": "Crear",
             "input": "Nombre del proyecto (letras y dígitos)",
-            "text": "Crear nuevo",
-            "saveProjectHere": "Guardar proyecto aquí",
             "selectProjectFolder": "Seleccionar folder donde guardar su proyecto",
             "nameError": "Nombre de proyecto incorrecto"
         },
@@ -443,7 +439,6 @@
         "gravityNotice": "Note que si difiere de (0,0), la interpolacion de velocidad será deshabilitada, esto quiere decir que solamente el primer nodo de la gráfica de velocidad tendrá el efecto.",
         "directionHeading": "Dirección",
         "startingDirection": "Dirección Inicial",
-        "preserveTextureDirection": "Conservar rotación de textura",
         "rotationHeading": "Rotación",
         "rotationSpeed": "Velocidad de rotación",
         "rotationAcceleration": "Aceleración de rotación",
@@ -459,10 +454,7 @@
         "shapeAndPositioningHeading": "Forma y Posicionamiento",
         "spawnType": "Tipo de forma:",
         "spawnShapes": {
-            "point": "Punto",
             "rectangle": "Rectangulo",
-            "circle": "Circulo",
-            "ring": "Anillo",
             "star": "Estrella"
         },
         "width": "Anchura:",
@@ -638,18 +630,12 @@
     },
     "appView": {
         "ctIDE": "ct.IDE",
-        "texture": "Texturas",
         "launch": "Compilar",
         "min": "Modo Ventana",
-        "rooms": "Cuartos",
-        "sounds": "Sonidos",
-        "ui": "UI",
         "launchHotkeys": "(F5; Alt+F5 para ejecutar en el navegador predeterminado)",
         "patrons": "Patrons",
         "restart": "Reiniciar",
         "project": "Proyecto",
-        "fx": "Effectos",
-        "templates": "Tipos",
         "tour": {
             "header": "",
             "aboutTour": "",
@@ -680,17 +666,7 @@
             "buttonStartTutorial": ""
         }
     },
-    "assetViewer": {
-        "addNewGroup": "",
-        "ungrouped": "",
-        "newGroupName": "",
-        "groupDeletionConfirmation": ""
-    },
-    "groupEditor": {
-        "groupEditor": "",
-        "icon": "",
-        "color": ""
-    },
+    "assetViewer": {},
     "soundRecorder": {
         "recorderHeading": "",
         "record": "",
@@ -839,7 +815,6 @@
         "name": "Nombre:",
         "radius": "Radio:",
         "rectangle": "Rectangulo",
-        "reimport": "Reimportar",
         "round": "Circulo",
         "rows": "Filas:",
         "speed": "Cuadros por segundo:",
@@ -881,7 +856,6 @@
     },
     "fontView": {
         "italic": "Es italica?",
-        "reimport": "Reimportar",
         "generateBitmapFont": "Tambien generar fuente bitmap",
         "bitmapFont": "Fuente bitmap",
         "bitmapFontSize": "Tamaño de fuente:",
@@ -922,14 +896,9 @@
     },
     "templateView": {
         "change": "Cambiar sprite",
-        "create": "Al Crearse",
         "depth": "Profundidad:",
-        "destroy": "Al destruirse",
-        "done": "Hécho",
-        "draw": "Dibujar",
         "learnAboutTypes": "Aprenda sobre los tipos de código",
         "name": "Nombre:",
-        "step": "En cada paso",
         "visible": "",
         "appearance": "",
         "opacity": "",

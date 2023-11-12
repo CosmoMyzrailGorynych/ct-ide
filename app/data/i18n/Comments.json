@@ -76,7 +76,6 @@
         "reallyExitConfirm": "",
         "notFoundOrUnknown": "",
         "nameTaken": "",
-        "fastImport": "",
         "addToNotes": "",
         "noRooms": "",
         "tileLayer": "",
@@ -163,10 +162,7 @@
     "intro": {
         "loading": "",
         "newProject": {
-            "button": "",
             "input": "",
-            "text": "",
-            "saveProjectHere": "",
             "selectProjectFolder": "",
             "nameError": ""
         },
@@ -326,7 +322,6 @@
         "gravityNotice": "",
         "directionHeading": "",
         "startingDirection": "",
-        "preserveTextureDirection": "",
         "rotationHeading": "",
         "rotationSpeed": "",
         "rotationAcceleration": "",
@@ -342,10 +337,7 @@
         "shapeAndPositioningHeading": "",
         "spawnType": "",
         "spawnShapes": {
-            "point": "",
             "rectangle": "",
-            "circle": "",
-            "ring": "",
             "star": ""
         },
         "width": "",
@@ -638,18 +630,12 @@
     },
     "appView": {
         "ctIDE": "",
-        "texture": "",
         "launch": "",
         "min": "",
-        "rooms": "",
-        "sounds": "",
-        "ui": "",
         "launchHotkeys": "",
         "patrons": "",
-        "fx": "",
         "restart": "",
         "project": "",
-        "templates": "",
         "tour": {
             "header": "",
             "aboutTour": "",
@@ -680,17 +666,7 @@
             "buttonStartTutorial": ""
         }
     },
-    "assetViewer": {
-        "addNewGroup": "",
-        "ungrouped": "",
-        "newGroupName": "",
-        "groupDeletionConfirmation": ""
-    },
-    "groupEditor": {
-        "groupEditor": "",
-        "icon": "",
-        "color": ""
-    },
+    "assetViewer": {},
     "soundRecorder": {
         "recorderHeading": "",
         "record": "",
@@ -839,7 +815,6 @@
         "name": "",
         "radius": "",
         "rectangle": "",
-        "reimport": "",
         "round": "",
         "rows": "",
         "speed": "",
@@ -881,7 +856,6 @@
     },
     "fontView": {
         "italic": "",
-        "reimport": "",
         "generateBitmapFont": "",
         "bitmapFont": "",
         "bitmapFontSize": "",
@@ -922,14 +896,9 @@
     },
     "templateView": {
         "change": "",
-        "create": "",
         "depth": "",
-        "destroy": "",
-        "done": "",
-        "draw": "",
         "learnAboutTypes": "",
         "name": "",
-        "step": "",
         "visible": "",
         "appearance": "",
         "opacity": "",
