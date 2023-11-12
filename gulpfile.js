@@ -349,8 +349,8 @@ const lintJS = () => {
         './src/js/**/*.js',
         '!./src/js/3rdparty/**/*.js',
         './src/node_requires/**/*.js',
-        './app/data/ct.release/**/*.js',
-        '!./app/data/ct.release/**/*.min.js',
+        './src/node_requires/**/*.ts',
+        './src/ct.release/**/*.ts',
         './src/pug/**/*.pug'
     ])
     .pipe(eslint({
