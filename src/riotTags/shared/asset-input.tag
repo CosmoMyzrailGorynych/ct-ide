@@ -116,9 +116,6 @@ asset-input
             this.update();
         };
         this.on('update', () => {
-            if (this.opts.assettype !== this.currentAssetType) {
-                updateResourceAPIs();
-            }
             setTimeout(() => {
                 // eslint-disable-next-line eqeqeq
                 if (this.opts.assetid == -1 || this.opts.assetid === void 0) {
