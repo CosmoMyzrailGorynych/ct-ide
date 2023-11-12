@@ -1,7 +1,8 @@
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare interface IRiotTag<OptsTypes = Record<string, any>> {
     update: () => void;
     on: <T>(this: IRiotTag, event: string, callback: (payload: T) => void) => void;
-    off: (this: IRiotTag, event: string, callback: (payload: any) => void) => void;
+    off: (this: IRiotTag, event: string, callback: (payload: never) => void) => void;
     once: <T>(this: IRiotTag, event: string, callback: (payload: T) => void) => void;
     opts: OptsTypes;
     refs: Record<string, HTMLElement | HTMLElement[] | IRiotTag | IRiotTag[]>;
@@ -11,8 +12,11 @@ declare interface IRiotTag<OptsTypes = Record<string, any>> {
 
     // `voc` mixin
     namespace?: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     vocGlob?: Record<string, Record<string, any>>;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     vocMeta?: Record<string, Record<string, any>>;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     localizeField?: (obj: Record<string, any>, field: string) => string;
 
     // `wire` mixin

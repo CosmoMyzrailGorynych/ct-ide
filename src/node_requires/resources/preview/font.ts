@@ -18,7 +18,7 @@ export class FontPreviewer {
         return FontPreviewer.get(font, fileSys);
     }
 
-    static retain(_fonts: IFont[]): string[] {
+    static retain(): string[] {
         return [];
     }
 

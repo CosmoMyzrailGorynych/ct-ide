@@ -54,11 +54,13 @@ asset-folder-tree
 
         const resources = require('data/node_requires/resources');
 
-        this.opened = opts.path.length < 1;
+        this.opened = this.opts.path.length < 1;
         this.entries = this.opts.path.length ?
             this.opts.path[this.opts.path.length - 1].entries :
             window.currentProject.assets;
-        this.toggle = () => this.opened = !this.opened;
+        this.toggle = () => {
+            this.opened = !this.opened;
+        };
 
         this.hasFolders = () => this.opts.path[this.opts.path.length - 1].entries
             .some(i => i.type === 'folder');
@@ -94,14 +96,16 @@ asset-folder-tree
                 const {moveFolder, getFolderById} = resources;
                 try {
                     moveFolder(getFolderById(uid), targetFolder);
-                    this.opts.layoutchanged && this.opts.layoutchanged();
+                    if (this.opts.layoutchanged) {
+                        this.opts.layoutchanged();
+                    }
                 } catch (err) {
                     window.alertify.error(err.message);
                 }
                 return true;
-            } else {
-                // Can't process the data transfer itself; pass the event to the parent
-                this.opts.drop(targetFolder)(e);
             }
+            // Can't process the data transfer itself; pass the event to the parent
+            this.opts.drop(targetFolder)(e);
             this.parent.update();
+            return false;
         };

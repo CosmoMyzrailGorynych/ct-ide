@@ -21,7 +21,7 @@ export class StylePreviewer {
         return StylePreviewer.get(style, fileSys);
     }
 
-    static retain(_styles: IStyle[]): string[] {
+    static retain(): string[] {
         return [];
     }
 

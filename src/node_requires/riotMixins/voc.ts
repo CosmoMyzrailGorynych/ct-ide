@@ -1,6 +1,6 @@
 import {getLanguageJSON, localizeField} from '../i18n';
 
-const voc = (riotTag: IRiotTag) => {
+const voc = (riotTag: IRiotTag): void => {
     const updateLocales = () => {
         const languageJSON = getLanguageJSON();
         if (riotTag.namespace) {
@@ -26,7 +26,7 @@ const voc = (riotTag: IRiotTag) => {
     });
 };
 export default {
-    init(this: IRiotTag) {
+    init(this: IRiotTag): void {
         voc(this);
     }
 };

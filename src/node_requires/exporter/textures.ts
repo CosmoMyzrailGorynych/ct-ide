@@ -1,5 +1,4 @@
 const fs = require('fs-extra');
-const glob = require('./../glob');
 import {revHash} from './../utils/revHash';
 
 import {getDOMTexture} from './../resources/textures';

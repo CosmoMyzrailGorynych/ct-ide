@@ -403,7 +403,7 @@ const reimportTexture = async (
 const removeTexture = (tex: string | ITexture): void => {
     tex = ensureTex(tex);
     const {uid} = tex;
-    for (const [assetUid, asset] of uidMap) {
+    for (const [, asset] of uidMap) {
         if (asset.type === 'template') {
             if ((asset as ITemplate).texture === uid) {
                 (asset as ITemplate).texture = -1;

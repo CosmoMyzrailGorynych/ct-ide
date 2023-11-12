@@ -45,7 +45,7 @@ const uLib = {
             return 'ct.ide';
         }
         try {
-            if (('nw' in window) && ('require' in ((window as any).nw as Record<string, unknown>))) {
+            if (('nw' in window) && ('require' in (window.nw as Record<string, unknown>))) {
                 return 'nw';
             }
         } catch (oO) {

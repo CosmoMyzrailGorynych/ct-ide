@@ -170,6 +170,7 @@ export class Room extends PIXI.Container<pixiMod.DisplayObject> {
     set y(value: number) {
         this.position.y = -value;
     }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [key: string]: any;
 }
 Room.roomId = 0;

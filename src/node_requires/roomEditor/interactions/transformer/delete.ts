@@ -1,7 +1,4 @@
 import {IRoomEditorInteraction} from '..';
-import {Copy} from '../../entityClasses/Copy';
-import {Tile} from '../../entityClasses/Tile';
-import {TileLayer} from '../../entityClasses/TileLayer';
 
 export const deleteSelected: IRoomEditorInteraction<void> = {
     ifListener: 'delete',

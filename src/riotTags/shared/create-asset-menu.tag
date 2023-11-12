@@ -43,7 +43,7 @@ create-asset-menu.relative.inlineblock(class="{opts.class}")
 
         const menuItems = [];
         const assetTypeIterator = assetType => {
-            const i18nName = this.vocGlob.assetTypes[assetType][0];
+            const [i18nName] = this.vocGlob.assetTypes[assetType];
             menuItems.push({
                 label: i18nName[0].toUpperCase() + i18nName.slice(1),
                 icon: resourceToIconMap[assetType],

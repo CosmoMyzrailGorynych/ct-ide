@@ -310,7 +310,7 @@ room-editor.aPanel.aView
             addCopies: 'copiesVisible',
             addTiles: 'tilesVisible',
             manageBackgrounds: 'backgroundsVisible',
-            uiTools: 'copiesVisible',
+            uiTools: 'copiesVisible'
         };
         this.setTool = tool => () => {
             const prevTool = this.currentTool;

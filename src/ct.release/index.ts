@@ -60,7 +60,8 @@ export const settings = {
         return (pixiApp.renderer as pixiMod.Renderer).autoDensity;
     },
     set highDensity(value: boolean) {
-        // Faulty pixi.js typings, you can change autoDensity
+        // Faulty pixi.js typings, you CAN change autoDensity
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (pixiApp.renderer as any).autoDensity = value;
         if (roomsM.current) {
             updateViewport();

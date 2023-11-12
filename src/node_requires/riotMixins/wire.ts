@@ -30,6 +30,7 @@ const glob = require('../glob');
  */
 const wire = (that: IRiotTag, field: string, update: boolean) => (e: InputEvent) => {
     var way = field.split(/(?<!\\)\./gi),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         root: Record<string, any>, val;
     for (let i = 0, l = way.length; i < l; i++) {
         way[i] = way[i].replace(/\\./g, '.');
@@ -64,7 +65,7 @@ const wire = (that: IRiotTag, field: string, update: boolean) => (e: InputEvent)
     return val;
 };
 export default {
-    init(this: IRiotTag) {
+    init(this: IRiotTag): void {
         this.wire = wire.bind(this, this);
     }
 };

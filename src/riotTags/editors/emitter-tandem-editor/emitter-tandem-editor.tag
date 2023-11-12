@@ -81,13 +81,10 @@ emitter-tandem-editor.aPanel.aView.flexrow(class="{opts.class}")
             Rendering and spawning emitters
         */
         this.uidToEmitterMap = {};
-
         this.awaitCompletion = [];
 
-        const {upgradeConfig} = require('@pixi/particle-emitter');
-
         // Creates a new emitter
-        this.spawnEmitter = async (emitterData, container) => {
+        this.spawnEmitter = (emitterData, container) => {
             const {getPixiTexture} = require('./data/node_requires/resources/textures');
             const textures = getPixiTexture(emitterData.texture, null, true);
             const settings = {
@@ -145,7 +142,7 @@ emitter-tandem-editor.aPanel.aView.flexrow(class="{opts.class}")
 
         // Recreates all the emitters
         this.resetEmitters = async (uid) => {
-            if (uid && !this.asset.emitters.find(e => e.uid == uid)) {
+            if (uid && !this.asset.emitters.find(e => e.uid === uid)) {
                 return;
             }
             this.visualizersContainer.removeChildren();
@@ -219,6 +216,7 @@ emitter-tandem-editor.aPanel.aView.flexrow(class="{opts.class}")
                 }
                 const emitterX = emitter.settings.pos.x,
                       emitterY = emitter.settings.pos.y;
+                // eslint-disable-next-line prefer-destructuring
                 const bh = emitter.settings.behaviors[5];
                 const shapeType = bh.config?.type || bh.type;
                 if (shapeType === 'torus') {

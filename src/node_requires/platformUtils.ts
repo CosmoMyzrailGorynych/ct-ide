@@ -56,6 +56,7 @@ const mod = {
 
         const exec = path.dirname(process.cwd()).replace(/\\/g, '/');
         // The `HOME` variable is not always available in ct.js on Windows
+        // eslint-disable-next-line no-process-env
         const home = process.env.HOME || ((process.env.HOMEDRIVE || '') + process.env.HOMEPATH);
 
         const execWritable = mod.checkWritable(exec);

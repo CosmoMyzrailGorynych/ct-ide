@@ -12,7 +12,7 @@ const niceTime = function (date: Date | string | number) {
     return date.toLocaleTimeString();
 };
 export default {
-    init(this: IRiotTag) {
+    init(this: IRiotTag): void {
         this.niceTime = niceTime;
     }
 };

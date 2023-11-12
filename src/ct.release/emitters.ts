@@ -4,9 +4,11 @@ import roomsLib, {Room} from './rooms';
 import type {BasicCopy} from './templates';
 
 import type * as pixiMod from 'node_modules/pixi.js';
-declare var PIXI: typeof pixiMod;
+import type {default as particlesMod, Emitter} from 'node_modules/@pixi/particle-emitter';
+declare var PIXI: typeof pixiMod & {
+    particles: typeof particlesMod;
+};
 
-import type {Emitter} from 'node_modules/@pixi/particle-emitter';
 import type {ExportedTandem, ExportedTandems} from '../node_requires/exporter/_exporterContracts';
 
 type EmitterPatched = Emitter & {
@@ -117,11 +119,11 @@ class EmitterTandem extends PIXI.Container {
                         .slice(1);
                 });
             }
-            const inst = new ((PIXI as any).particles.Emitter)(
+            const inst = new PIXI.particles.Emitter(
                 this,
                 resLib.getTexture(emt.texture),
                 settings
-            );
+            ) as EmitterPatched;
             const d = emt.settings.delay + opts.prewarmDelay;
             if (d > 0) {
                 inst.emit = false;

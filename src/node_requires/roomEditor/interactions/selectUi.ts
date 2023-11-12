@@ -3,7 +3,7 @@ import * as PIXI from 'node_modules/pixi.js';
 import {IRoomEditorInteraction} from '..';
 import {Copy} from '../entityClasses/Copy';
 
-const selectUi: IRoomEditorInteraction<any> = {
+const selectUi: IRoomEditorInteraction<never> = {
     ifListener: 'pointerdown',
     if(e: PIXI.FederatedPointerEvent) {
         if (e.button !== 0) {

@@ -119,6 +119,10 @@ interface ICopy {
     getRoom: (this: BasicCopy) => Room;
 }
 
+// Record<string, any> allows ct.js users to write any properties to their copies
+// without typescript complaining.
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 /**
  * An instance of a ct.js template. Ct.js cannot predict the base class
  * of a template here, so you may need to add `as Copy...` to further narrow down
@@ -147,6 +151,7 @@ export type CopyText = Record<string, any> & pixiMod.Text & ICopy;
  */
 export type CopyContainer = Record<string, any> & pixiMod.Container & ICopy;
 
+/* eslint-enable @typescript-eslint/no-explicit-any */
 
 export const CopyProto: Partial<BasicCopy> = {
     set tex(value: string) {

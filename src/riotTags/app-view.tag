@@ -124,9 +124,6 @@ app-view.flexcol
                 window.hotkeys.push(tab.uid);
             }
         };
-        this.assetTabClick = asset => e => {
-            console.log(e);
-        };
         window.signals.on('assetChanged', this.refreshDirty);
         this.on('unmount', () => {
             window.signals.off('assetChanged', this.refreshDirty);
@@ -154,7 +151,8 @@ app-view.flexcol
                     tabs[newPos].scrollIntoView();
                 }, 100);
             } else if (noOpen) {
-                console.warn('[app-view] An already opened asset was called with noOpen. This is probably a bug as you either do open assets or create them elsewhere without opening.')
+                // eslint-disable-next-line no-console
+                console.warn('[app-view] An already opened asset was called with noOpen. This is probably a bug as you either do open assets or create them elsewhere without opening.');
             }
             if (!noOpen) {
                 this.changeTab(asset)();
@@ -164,7 +162,7 @@ app-view.flexcol
             this.openAsset(asset)();
             this.update();
         };
-        this.rerouteOpenAsset2 = asset => e => {
+        this.rerouteOpenAsset2 = asset => () => {
             this.openAsset(asset)();
             this.update();
         };
@@ -192,7 +190,7 @@ app-view.flexcol
         this.on('unmount', () => {
             window.orders.off('openAssets', assetsOpenOrder);
         });
-        this.closeAsset = async e => {
+        this.closeAsset = e => {
             e.stopPropagation();
             e.preventDefault();
             const {asset, ind} = e.item;

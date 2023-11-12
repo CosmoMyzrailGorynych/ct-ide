@@ -23,16 +23,16 @@ const varHTMLMatcher = (varName: string, symbol = '@') => new RegExp(`<!-- ?${sy
  */
 const templateHTML = (
     input: string,
-    vars: Record<string, any>,
-    injections: Record<string, any> = {}
+    vars: Record<string, unknown>,
+    injections: Record<string, unknown> = {}
 ) => {
     let output = input;
     for (const i in vars) {
-        output = output.replace(varHTMLMatcher(i), () => (typeof vars[i] === 'object' ? JSON.stringify(vars[i]) : vars[i]));
-        output = output.replace(ifHTMLMatcher(i), (Array.isArray(vars[i]) ? vars[i].length : vars[i]) ? '$1' : '$2');
+        output = output.replace(varHTMLMatcher(i), () => (typeof vars[i] === 'object' ? JSON.stringify(vars[i]) : (vars[i] as string)));
+        output = output.replace(ifHTMLMatcher(i), (Array.isArray(vars[i]) ? (vars[i] as []).length : vars[i]) ? '$1' : '$2');
     }
     for (const i in injections) {
-        output = output.replace(varHTMLMatcher(i, '%'), () => (typeof injections[i] === 'object' ? JSON.stringify(injections[i]) : injections[i]));
+        output = output.replace(varHTMLMatcher(i, '%'), () => (typeof injections[i] === 'object' ? JSON.stringify(injections[i]) : (injections[i] as string)));
     }
     return output;
 };

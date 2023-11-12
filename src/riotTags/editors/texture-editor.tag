@@ -369,9 +369,7 @@ texture-editor(onclick="{tryClose}")
         color="{previewColor}" onapply="{updatePreviewColor}" onchanged="{updatePreviewColor}" oncancel="{cancelPreviewColor}"
     )
     script.
-        const path = require('path'),
-              fs = require('fs-extra');
-        const glob = require('./data/node_requires/glob');
+        const fs = require('fs-extra');
         const {getSwatch} = require('./data/node_requires/themes');
         const {getTextureOrig} = require('./data/node_requires/resources/textures');
         // const {getSkeletonRender} = require('./data/node_requires/resources/skeletons');
@@ -413,11 +411,12 @@ texture-editor(onclick="{tryClose}")
                 alertify.error(this.vocFull.textureView.corrupted);
                 console.error(e);
             };
-            if (this.skeletonMode) {
+            /* if (this.skeletonMode) {
                 img.src = getSkeletonRender(this.asset, false);
             } else {
                 img.src = getTextureOrig(this.asset, false);
-            }
+            } */
+            img.src = getTextureOrig(this.asset, false);
         });
         this.on('update', () => {
             const {asset} = this;
@@ -476,7 +475,7 @@ texture-editor(onclick="{tryClose}")
             }
             this.refs.sourceReplacer.value = '';
         };
-        this.reimport = async() => {
+        this.reimport = async () => {
             const exists = await fs.pathExists(this.asset.source);
             if (!exists) {
                 alertify.error(this.vocGlob.reimportSourceMissing);
@@ -653,7 +652,7 @@ texture-editor(onclick="{tryClose}")
             );
             // shape
             if (this.prevShowMask) {
-                this.drawMask(grprCanvas, grprCanvas.x, true);
+                this.drawMask(grprCanvas, grprCanvas.x);
             }
         };
         /**
@@ -698,7 +697,7 @@ texture-editor(onclick="{tryClose}")
          * Turns the collision mask shape to a circle and,
          * if it wasn't set before, sets the radius.
          */
-        this.assetSelectCircle = function textureSelectCircle() {
+        this.assetSelectCircle = function assetSelectCircle() {
             const {asset} = this;
             asset.shape = 'circle';
             if (!('r' in asset) || asset.r === 0) {
@@ -711,7 +710,7 @@ texture-editor(onclick="{tryClose}")
         /**
          * Turns the collision mask shape to a rectangle.
          */
-        this.assetSelectRect = function textureSelectRect() {
+        this.assetSelectRect = function assetSelectRect() {
             this.asset.shape = 'rect';
             this.assetFillRect();
         };
@@ -719,7 +718,7 @@ texture-editor(onclick="{tryClose}")
          * Changes collision mask's type to a polygon and defines
          * starting points if none were set previously.
          */
-        this.assetSelectStrip = function textureSelectStrip() {
+        this.assetSelectStrip = function assetSelectStrip() {
             const {asset} = this;
             asset.shape = 'strip';
             asset.stripPoints = asset.stripPoints || [];
@@ -854,7 +853,7 @@ texture-editor(onclick="{tryClose}")
             }
         };
 
-        this.drawMask = (tc, context, noOffset) => {
+        this.drawMask = (tc, context) => {
             const {asset} = this;
             const offx = this.skeletonMode ? 0 : asset.offx,
                   offy = this.skeletonMode ? 0 : asset.offy;

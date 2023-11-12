@@ -33,7 +33,7 @@ export class RoomPreviewer {
         return result;
     }
 
-    static retain(_rooms: IRoom[]): string[] {
+    static retain(): string[] {
         return ['splash.png'];
     }
 

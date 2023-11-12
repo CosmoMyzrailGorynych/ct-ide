@@ -477,6 +477,7 @@ emitter-editor.aPanel.pad.nb
         this.updateShortcuts = () => {
             const em = this.opts.emitter;
             this.emitter = em;
+            /* eslint-disable prefer-destructuring */
             this.alpha = em.settings.behaviors[0].config.alpha;
             this.color = em.settings.behaviors[1].config.color;
             this.blendMode = em.settings.behaviors[2].config;
@@ -484,6 +485,7 @@ emitter-editor.aPanel.pad.nb
             this.movement = em.settings.behaviors[4];
             this.spawnBh = em.settings.behaviors[5];
             this.rotation = em.settings.behaviors[6];
+            /* eslint-enable prefer-destructuring */
         };
         this.on('update', () => {
             if (this.emitter !== this.opts.emitter) {
@@ -594,24 +596,24 @@ emitter-editor.aPanel.pad.nb
             return combinedList;
         };
 
-        this.changeTextureMethod = type => e => {
+        this.changeTextureMethod = type => () => {
             this.opts.emitter.textureBehavior = type;
             window.signals.trigger('emitterResetRequest');
         };
-        this.changeSpawnType = type => e => {
+        this.changeSpawnType = type => () => {
             const oldType = this.spawnBh.config?.type || this.spawnBh.type;
             if (oldType === type) {
                 return; // nothing to do if changing to the same shape
             }
-            const oldBehavior = this.spawnBh;
             const {behaviors} = this.opts.emitter.settings;
             let newBh;
             switch (type) {
-                case 'rect':
+            case 'rect':
                 newBh = {
                     type: 'spawnShape',
                     config: {
                         type: 'rect',
+                        // eslint-disable-next-line id-blacklist
                         data: {
                             x: -100,
                             y: -100,
@@ -622,11 +624,12 @@ emitter-editor.aPanel.pad.nb
                 };
                 break;
 
-                case 'torus':
+            case 'torus':
                 newBh = {
                     type: 'spawnShape',
                     config: {
                         type: 'torus',
+                        // eslint-disable-next-line id-blacklist
                         data: {
                             x: 0,
                             y: 0,
@@ -638,7 +641,7 @@ emitter-editor.aPanel.pad.nb
                 };
                 break;
 
-                default:
+            default:
                 throw new Error(`Unknown shape: ${type}`);
             }
             behaviors.splice(5, 1, newBh);
@@ -649,12 +652,11 @@ emitter-editor.aPanel.pad.nb
             this.spawnBh.config.data.affectRotation = value;
             window.signals.trigger('emitterResetRequest');
         };
-        this.changeMovementType = type => e => {
+        this.changeMovementType = type => () => {
             const oldType = this.movement.type;
             if (oldType === type) {
                 return; // nothing to do if changing to the same movement method
             }
-            const oldBehavior = this.movement;
             const {behaviors} = this.opts.emitter.settings;
             let newBh;
             if (type === 'moveSpeed') {
@@ -676,7 +678,7 @@ emitter-editor.aPanel.pad.nb
             } else {
                 newBh = {
                     type: 'moveAcceleration',
-                    config:  {
+                    config: {
                         minStart: 0,
                         maxStart: 0,
                         accel: {

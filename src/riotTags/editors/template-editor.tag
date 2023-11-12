@@ -267,7 +267,7 @@ template-editor.aPanel.aView.flexrow
                 this.asset.textStyle = id;
             }
             this.update();
-        }
+        };
         this.saveAsset = () => {
             this.writeChanges();
             return true;

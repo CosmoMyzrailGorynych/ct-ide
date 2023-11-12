@@ -682,6 +682,7 @@ class RoomEditor extends PIXI.Application {
         }
     }
     cleanupTemplates(templateId: string): void {
+        // eslint-disable-next-line no-console
         console.warn('cleanup for', templateId);
         let cleaned = false;
         for (const child of this.room.children) {

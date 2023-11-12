@@ -1,5 +1,3 @@
-import * as PIXI from 'node_modules/pixi.js';
-
 import {IRoomEditorInteraction} from '..';
 
 export const nudgeDown: IRoomEditorInteraction<void> = {

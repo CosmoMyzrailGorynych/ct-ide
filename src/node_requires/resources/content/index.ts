@@ -1,7 +1,7 @@
 import {getByPath} from '../../i18n';
 
-export const getFieldsExtends = () => [{
-    name: getByPath('settings.content.typeSpecification'),
+export const getFieldsExtends = (): IExtensionField[] => [{
+    name: getByPath('settings.content.typeSpecification') as string,
     type: 'table',
     key: 'specification',
     fields: [{
@@ -41,19 +41,19 @@ export const getFieldsExtends = () => [{
     }] as IExtensionField[]
 }];
 
-export const getExtends = () => [{
-    name: getByPath('settings.content.typeName'),
+export const getExtends = (): IExtensionField[] => [{
+    name: getByPath('settings.content.typeName') as string,
     type: 'text',
     key: 'name',
-    help: getByPath('settings.content.typeNameHint'),
+    help: getByPath('settings.content.typeNameHint') as string,
     required: true
 }, {
-    name: getByPath('settings.content.typeReadableName'),
+    name: getByPath('settings.content.typeReadableName') as string,
     type: 'text',
     key: 'readableName',
-    help: getByPath('settings.content.typeReadableNameHint')
+    help: getByPath('settings.content.typeReadableNameHint') as string
 }, {
-    name: getByPath('settings.content.icon'),
+    name: getByPath('settings.content.icon') as string,
     type: 'icon',
     key: 'icon',
     default: 'copy'
@@ -81,7 +81,7 @@ export const schemaToExtensions = (schema: IFieldSchema[]): IExtensionField[] =>
             if (spec.fixedLength) {
                 field.arrayLength = spec.fixedLength;
             }
-            field.default = () => [] as any[];
+            field.default = () => [] as unknown[];
         } else if (field.type === 'sliderAndNumber') {
             field.min = 0;
             field.max = 100;

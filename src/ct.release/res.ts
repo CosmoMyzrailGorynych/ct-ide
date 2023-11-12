@@ -38,7 +38,6 @@ const loadingScreen = document.querySelector('.ct-aLoadingScreen') as HTMLDivEle
 const resLib = {
     sounds: {},
     textures: {} as Record<string, CtjsAnimation>,
-    skeletons: {} as Record<string, any>,
     groups: [/*!@resourceGroups@*/][0] as Record<string, string[]>,
     /**
      * Loads and executes a script by its URL
@@ -90,28 +89,6 @@ const resLib = {
         );
         resLib.textures[name] = ctTexture;
         return ctTexture;
-    },
-    /**
-     * Loads a skeleton animation into the game.
-     * @param {string} skel Path to the .json file that contains
-     * the armature and animations.
-     * @param {string} name The name of the skeleton as it will be used in ct.js game.
-     * @param {boolean} txt Whether to look for a .txt extension instead of .atlas.
-     * @returns The name of the imported animation.
-     */
-    async loadSkeleton(
-        skel: string = uLib.required('skel', 'ct.res.loadSkeleton'),
-        name: string = uLib.required('name', 'ct.res.loadSkeleton'),
-        txt = true
-    ): Promise<string> {
-        PIXI.Assets.add(skel, skel, {
-            metadata: {
-                spineAtlasSuffix: txt ? '.txt' : '.atlas'
-            }
-        });
-        const asset = await PIXI.Assets.load(skel);
-        resLib.skeletons[name] = asset.spineData;
-        return name;
     },
     /**
      * Loads a Texture Packer compatible .json file with its source image,
@@ -182,7 +159,7 @@ const resLib = {
 
         const totalAssets = atlases.length;
         let assetsLoaded = 0;
-        const loadingPromises: Promise<any>[] = [];
+        const loadingPromises: Promise<unknown>[] = [];
 
         loadingPromises.push(...atlases.map(atlas =>
             resLib.loadAtlas(atlas)

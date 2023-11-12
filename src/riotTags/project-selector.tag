@@ -350,7 +350,6 @@ project-selector
          * Handler for a manual search for a project folder, triggered by an input[type="file"]
          */
         this.chooseProjectFolder = async () => {
-            const {getProjectsDir} = require('./data/node_requires/platformUtils');
             const projPath = await window.showOpenDialog({
                 title: this.voc.newProject.selectProjectFolder,
                 defaultPath: defaultProjectDir,
@@ -366,7 +365,7 @@ project-selector
             this.projectName = e.target.value.trim();
         };
         /** A button listener for triggering a project creation process. */
-        this.createProject = async () => {
+        this.createProject = () => {
             const codename = this.projectName;
             if (codename.length === 0) {
                 alertify.error(this.voc.newProject.nameError);
@@ -376,7 +375,6 @@ project-selector
                 alertify.error(this.voc.newProject.languageError);
                 return;
             }
-            console.log(this.savePath, codename);
             this.newProject(path.join(this.savePath, codename), codename);
         };
 

@@ -26,7 +26,7 @@ const positionCanvas = function positionCanvas(mode: viewMode, scale: number): v
         canv.style.transform = canv.style.position = canv.style.top = canv.style.left = '';
     }
 };
-export const updateViewport = () => {
+export const updateViewport = (): void => {
     const mode = settings.viewMode;
     const pixelScaleModifier = settings.highDensity ? (window.devicePixelRatio || 1) : 1;
     const kw = window.innerWidth / roomsLib.current.viewWidth,
@@ -100,7 +100,7 @@ window.addEventListener('resize', updateViewport);
  * }
  * ```
  */
-export const toggleFullscreen = function () {
+export const toggleFullscreen = function (): void {
     try {
         // Are we in Electron?
         const win = require('electron').remote.BrowserWindow.getFocusedWindow();
@@ -124,7 +124,7 @@ export const toggleFullscreen = function () {
     }
 };
 
-export const getIsFullscreen = function getIsFullscreen() {
+export const getIsFullscreen = function getIsFullscreen(): boolean {
     try {
         // Are we in Electron?
         const win = require('electron').remote.BrowserWindow.getFocusedWindow;
