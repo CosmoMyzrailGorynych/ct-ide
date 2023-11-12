@@ -12,9 +12,9 @@ const getName = function getName(font: IFont): string {
 const getPathToTtf = function getPathToTtf(font: IFont, fs?: boolean): string {
     const path = require('path');
     if (fs) {
-        return path.join((global as any).projdir, 'fonts', font.origname);
+        return path.join(global.projdir, 'fonts', font.origname);
     }
-    return `file://${(global as any).projdir.replace(/\\/g, '/')}/fonts/${font.origname}`;
+    return `file://${global.projdir.replace(/\\/g, '/')}/fonts/${font.origname}`;
 };
 
 const importTtfToFont = async function importTtfToFont(src: string): Promise<IFont> {
@@ -25,7 +25,7 @@ const importTtfToFont = async function importTtfToFont(src: string): Promise<IFo
     }
     const generateGUID = require('./../../generateGUID');
     const uid = generateGUID();
-    await fs.copy(src, path.join((global as any).projdir, '/fonts/f' + uid + '.ttf'));
+    await fs.copy(src, path.join(global.projdir, '/fonts/f' + uid + '.ttf'));
     const obj: IFont = {
         type: 'font',
         typefaceName: path.basename(src).replace(/\.ttf$/i, ''),

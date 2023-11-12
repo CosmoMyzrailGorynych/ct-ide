@@ -21,7 +21,7 @@ declare interface IExtensionField {
      */
     key?: string,
     /** The default value; it is not written to the `opts.entity`, but is shown in inputs. */
-    default?: any,
+    default?: unknown,
     /** A text label describing the purpose of a field */
     help?: string,
     /**

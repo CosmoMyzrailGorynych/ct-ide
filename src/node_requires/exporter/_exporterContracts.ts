@@ -68,7 +68,7 @@ export type ExportedTile = {
 export type ExportedTilemap = {
     depth: number;
     tiles: ExportedTile[];
-    extends: {cgroup?: string} & Record<string, any>;
+    extends: {cgroup?: string} & Record<string, unknown>;
 }
 export type ExportedCopy = Omit<IRoomCopy, 'uid'> & {template: string};
 
@@ -109,7 +109,7 @@ export type ExportedRoom = {
     onCreate: () => void;
     isUi: boolean;
     follow: -1 | string;
-    extends: Record<string, any>;
+    extends: Record<string, unknown>;
 }
 
 export type ExportedTemplate = {
@@ -126,7 +126,7 @@ export type ExportedTemplate = {
     onDraw: () => void;
     onDestroy: () => void;
     onCreate: () => void;
-    extends: Record<string, any>;
+    extends: Record<string, unknown>;
 } & ({
     baseClass: 'AnimatedSprite';
     animationFPS: number;

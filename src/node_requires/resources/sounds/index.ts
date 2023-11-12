@@ -21,7 +21,7 @@ const createNewSound = function (name?: string): ISound {
 const addSoundFile = async function addSoundFile(sound: ISound, file: string): Promise<void> {
     try {
         const newOrigName = 's' + sound.uid + path.extname(file);
-        await fs.copy(file, (global as any).projdir + '/snd/s' + sound.uid + path.extname(file));
+        await fs.copy(file, global.projdir + '/snd/s' + sound.uid + path.extname(file));
         // eslint-disable-next-line require-atomic-updates
         sound.origname = newOrigName;
         // eslint-disable-next-line require-atomic-updates

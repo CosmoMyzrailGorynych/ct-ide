@@ -359,7 +359,7 @@ const mix = (
     y: number,
     template: ExportedTemplate,
     parent: pixiMod.Container,
-    exts: Record<string, any>
+    exts: Record<string, unknown>
 // eslint-disable-next-line max-params
 ) => {
     Copy.apply(target, [x, y, template, parent, exts]);
@@ -465,6 +465,7 @@ export const makeCopy = (
         mix(copy, x, y, t, parent, exts);
         return copy;
     }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     throw new Error(`[internal -> makeCopy] Unknown base class \`${(t as any).baseClass}\` for template \`${template}\`.`);
 };
 

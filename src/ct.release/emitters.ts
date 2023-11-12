@@ -179,6 +179,7 @@ class EmitterTandem extends PIXI.Container {
         }
         // eslint-disable-next-line no-underscore-dangle
         if ((this.appendant && this.appendant.destroyed) || this.kill || !this.emitters.length) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             (this.emit as any)('done');
             if (this.isUi) {
                 emittersLib.uiTandems.splice(emittersLib.uiTandems.indexOf(this), 1);

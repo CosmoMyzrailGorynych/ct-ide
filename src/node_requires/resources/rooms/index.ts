@@ -8,7 +8,7 @@ const path = require('path');
 const createNewRoom = async function createNewRoom(name: string): Promise<IRoom> {
     const room = getDefaultRoom();
     // TODO: Update to match the new previewing engine
-    await fs.copy('./data/img/notexture.png', path.join((global as any).projdir, '/img/r' + room.uid + '.png'));
+    await fs.copy('./data/img/notexture.png', path.join(global.projdir, '/img/r' + room.uid + '.png'));
     if (name) {
         room.name = String(name);
     }

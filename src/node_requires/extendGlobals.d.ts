@@ -14,6 +14,7 @@ declare global {
     var languageJSON: any;
     var monaco: any;
     var currentProject: IProject;
+    /** The directory of the currently opened project */
     var projdir: string;
     var migrationProcess: any[];
     var riot: any;
@@ -28,6 +29,7 @@ declare global {
         currentProject: IProject;
         languageJSON: any;
         monaco: any;
+        /** The directory of the currently opened project */
         projdir: string;
         showOpenDialog(options: any): Promise<string | false>;
         showSaveDialog(options: any): Promise<string | false>;

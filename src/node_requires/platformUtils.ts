@@ -123,8 +123,10 @@ const mod = {
             // Okay, we are in a dev mode
             require('gulp');
             if (createHref) {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 return ('file://' + path.posix.normalize(path.join((nw.App as any).startPath, 'bundledAssets')));
             }
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             return path.join((nw.App as any).startPath, 'bundledAssets');
         } catch {
             if (createHref) {

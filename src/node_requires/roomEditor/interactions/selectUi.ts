@@ -13,7 +13,6 @@ const selectUi: IRoomEditorInteraction<never> = {
     },
     listeners: {
         pointerdown(e: PIXI.FederatedPointerEvent, riotTag, affixedData, callback) {
-            // TODO: Maybe move the outliner logic from Transformer to RoomEditor
             if (e.target instanceof Copy) {
                 this.currentUiSelection = e.target;
                 this.drawSelection([this.currentUiSelection]);

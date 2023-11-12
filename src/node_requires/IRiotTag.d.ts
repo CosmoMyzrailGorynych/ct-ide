@@ -32,5 +32,5 @@ declare interface IRiotTag<OptsTypes = Record<string, any>> {
 
     asset?: IAsset;
 
-    [key: string]: any;
+    [key: string]: unknown;
 }

@@ -223,7 +223,7 @@ const openProject = async (proj: string): Promise<void | false | Promise<void>> 
         throw err;
     }
     const proceed = await (new Promise((resolve) => {
-        // eslint-disable-next-line camelcase
+        // eslint-disable-next-line camelcase, @typescript-eslint/no-explicit-any
         (nw.Window as any).getAll((windows: NWJS_Helpers.win[]) => {
             windows.forEach(win => {
                 if ((win.window as Window).path === proj &&
@@ -235,7 +235,7 @@ const openProject = async (proj: string): Promise<void | false | Promise<void>> 
                     throw err;
                 }
             });
-            (window as any).path = proj;
+            window.path = proj;
             resolve(true);
         });
     }));
@@ -296,6 +296,7 @@ const getExamplesDir = function (): string {
     try {
         require('gulp');
         // Most likely, we are in a dev environment
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         return path.join((nw.App as any).startPath, 'src/examples');
     } catch (e) {
         const {isMac} = require('./../../platformUtils');
@@ -312,6 +313,7 @@ const getTemplatesDir = function (): string {
     try {
         require('gulp');
         // Most likely, we are in a dev environment
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         return path.join((nw.App as any).startPath, 'src/projectTemplates');
     } catch (e) {
         const {isMac} = require('./../../platformUtils');

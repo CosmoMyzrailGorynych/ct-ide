@@ -127,8 +127,8 @@ class RoomEditor extends PIXI.Application {
 
     observable: {
         on<T>(eventName: CustomListener, fn: ((eventData: T) => void)): void;
-        off(eventName: CustomListener, fn: ((eventData: any) => void)): void;
-        trigger(eventName: CustomListener, eventData: any): void;
+        off(eventName: CustomListener, fn: ((eventData: unknown) => void)): void;
+        trigger(eventName: CustomListener, eventData: unknown): void;
     };
 
     /**
@@ -221,7 +221,7 @@ class RoomEditor extends PIXI.Application {
             });
         }
         for (const event of customListeners) {
-            this.observable.on(event, (e: ((eventData: KeyboardEvent | any) => void)) => {
+            this.observable.on(event, (e: ((eventData: KeyboardEvent | unknown) => void)) => {
                 this.listen(e, event);
             });
         }
