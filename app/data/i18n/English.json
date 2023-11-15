@@ -916,12 +916,28 @@
             "nameOccupied": "This property is used by ct.js! You should come up with a different name."
         },
         "uiTools": {
-            "noSelectionNotice": "Select a text label to change its properties.",
+            "noSelectionNotice": "Select a copy to align it or change its text label.",
             "textSettings": "Text settings",
             "customText": "Text",
             "customTextSize": "Font size",
             "wordWrapWidth": "Wrap at this width",
-            "textAlignment": "Align by"
+            "textAlignment": "Align by",
+            "alignmentSettings": "Auto-align",
+            "enableAutoAlignment": "Enable auto-alignment",
+            "autoAlignHint": "When turned on, this element will automatically align itself relative to the boundaries of the specified portion of a room, defined as a \"frame\". It is useful when using Expand and Quality Scaling without Letterboxing rendering modes, as the camera changes proportions in those viewport modes.",
+            "frame": "Frame position, in %:",
+            "framePadding" : "Frame padding, in pixels:",
+            "innerFrameMarker": "Inner frame",
+            "outerFrameMarker": "Outer frame",
+            "constrains": "Constrains:",
+            "constrainsTooltips": {
+                "left": "Lock the size of the gap to the left side of the frame",
+                "right": "Lock the size of the gap to the right side of the frame",
+                "top": "Lock the size of the gap to the top side of the frame",
+                "bottom": "Lock the size of the gap to the bottom side of the frame",
+                "centerVertical": "Place vertically relative to the center of the frame",
+                "centerHorizontal": "Place horizontally relative to the center of the frame"
+            }
         },
         "restrictCamera": "Keep camera in a rectangle",
         "minimumX": "Min X",

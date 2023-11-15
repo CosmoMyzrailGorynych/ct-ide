@@ -1,17 +1,13 @@
 import {getPixiSwatch} from '../../themes';
 import {RoomEditor} from '..';
+import {ViewportFrame} from './ViewportFrame';
 
-import * as PIXI from 'node_modules/pixi.js';
-
-export class ViewportRestriction extends PIXI.Graphics {
-    icon: PIXI.Graphics;
+export class ViewportRestriction extends ViewportFrame {
     editor: RoomEditor;
     constructor(editor: RoomEditor) {
-        super();
-        this.editor = editor;
+        super(editor);
         this.x = this.editor.ctRoom.restrictMinX;
         this.y = this.editor.ctRoom.restrictMinY;
-        this.icon = new PIXI.Graphics();
         this.icon
         .lineStyle(2, getPixiSwatch('orange'), 1, 0.5);
         this.icon.drawRect(0, 10, 20, 14);
@@ -23,7 +19,6 @@ export class ViewportRestriction extends PIXI.Graphics {
         this.icon.moveTo(4 + 12, 6);
         this.icon.lineTo(4 + 12, 10);
         this.icon.y = 16;
-        this.addChild(this.icon);
         this.redrawFrame();
     }
 
@@ -45,15 +40,8 @@ export class ViewportRestriction extends PIXI.Graphics {
             height = Math.abs(height);
             this.y = this.editor.ctRoom.restrictMaxY;
         }
-        this.icon.scale.set(this.editor.camera.scale.x);
         this.icon.visible = (height / this.editor.camera.scale.x > 48);
-        this.clear();
-        this.lineStyle(4 * this.editor.camera.scale.x, getPixiSwatch('act'))
-        .drawRoundedRect(0, 0, width, height, 0.1);
-        this.lineStyle(2 * this.editor.camera.scale.x, getPixiSwatch('background'))
-        .drawRoundedRect(0, 0, width, height, 0.1);
-        this.icon.x = width - (16 + 20) * this.editor.camera.scale.x;
-        this.icon.y = 16 * this.editor.camera.scale.y;
+        super.redrawFrame(width, height);
     }
 }
 

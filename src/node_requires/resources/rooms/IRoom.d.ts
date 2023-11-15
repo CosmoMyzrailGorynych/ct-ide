@@ -14,6 +14,8 @@ interface IRoomBackground {
     repeat: canvasPatternRepeat
 }
 
+type CopyAlignment = 'start' | 'center' | 'end' | 'scale' | 'both';
+
 interface IRoomCopy {
     x: number,
     y: number,
@@ -44,6 +46,22 @@ interface IRoomCopy {
      * an empty string counts as having no custom text size
      */
     customWordWrap?: string,
+    align?: {
+        frame: {
+            x1: number,
+            y1: number,
+            x2: number,
+            y2: number
+        },
+        alignX: CopyAlignment,
+        alignY: CopyAlignment,
+        padding: {
+            left: number,
+            top: number,
+            right: number,
+            bottom: number
+        }
+    },
     /** @deprecated */
     exts: {
         [key: string]: unknown

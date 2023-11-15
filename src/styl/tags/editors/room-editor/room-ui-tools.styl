@@ -1,0 +1,78 @@
+.anAlignmentMap
+    position relative
+    display grid
+    background backgroundDeeper
+    border 2px solid borderBright
+    align-items center
+    justify-items center
+    gap 0.5rem
+    padding 0.5rem
+    border-radius br
+    grid-template-rows auto 0.25fr 1fr 0.25fr auto
+    grid-template-columns auto 0 1fr 0 auto
+    background-image linear-gradient(to bottom, transparent 0% 25%, borderPale 25% 75%, transparent 75% 100%),
+        linear-gradient(to right, transparent 0% 25%, borderPale 25% 75%, transparent 75% 100%)
+    background-size 100% 4px, 4px 100%
+    background-position 50% 50%
+    background-repeat no-repeat
+    margin 0.25rem 0 1rem
+    & + &
+        margin-top 1rem
+    input[type="number"]
+        width 2.75rem
+    .pintopright
+        grid-column 1 / 6
+        grid-row 1
+        text-align right
+        align-self start
+        justify-self end
+    .left
+        grid-column 1
+        grid-row 3
+    .right
+        grid-column 5
+        grid-row 3
+    .top
+        grid-column 3
+        grid-row 1
+    .bottom
+        grid-column 3
+        grid-row 5
+    .center
+        grid-row 3
+        grid-column 3
+    .x1y1
+        grid-row 1
+        grid-column 1 / 6
+        justify-self start
+    .x2y2
+        grid-row 5
+        grid-column 1 / 6
+        justify-self end
+    .withdots
+        position relative
+        &::before, &::after
+            position absolute
+            content ''
+            display block
+            background-color act
+            width 0.75rem
+            height @width
+            border-radius 100%
+            margin -1px
+        &::before
+            left 0
+            top 0
+            transform translate(-50%, -50%)
+        &::after
+            right 0
+            bottom 0
+            transform translate(50%, 50%)
+.anAlignmentMap-aContainer
+    background background
+    grid-column 2/5
+    grid-row 2/5
+    border 2px solid borderBright
+    border-radius br
+    align-self stretch
+    justify-self stretch

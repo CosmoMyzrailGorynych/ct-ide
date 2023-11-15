@@ -52,7 +52,7 @@ room-editor.aPanel.aView
                 data-hotkey-require-scope="rooms"
             )
                 svg.feather
-                    use(xlink:href="#font")
+                    use(xlink:href="#ui")
             button.forcebackground(
                 onclick="{setTool('roomProperties')}"
                 class="{active: currentTool === 'roomProperties'}"
@@ -82,6 +82,7 @@ room-editor.aPanel.aView
         room-properties.room-editor-aContextPanel(
             if="{currentTool === 'roomProperties'}"
             room="{room}"
+            editor="{pixiEditor}"
             history="{pixiEditor?.history}"
             updatebg="{changeBgColor}"
             ref="propertiesPanel"
