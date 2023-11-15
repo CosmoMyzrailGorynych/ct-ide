@@ -1,6 +1,6 @@
 import type {viewMode} from '../node_requires/exporter/_exporterContracts';
 
-import roomsLib from 'rooms';
+import roomsLib, {Room} from 'rooms';
 import {settings, pixiApp} from 'index';
 import mainCamera from 'camera';
 
@@ -13,7 +13,7 @@ const positionCanvas = function positionCanvas(mode: viewMode, scale: number): v
         canv.style.position = 'absolute';
         canv.style.top = '50%';
         canv.style.left = '50%';
-    } else if (mode === 'expandViewport' || mode === 'expand' || mode === 'scaleFill') {
+    } else if (mode === 'expand' || mode === 'scaleFill') {
         canv.style.position = 'static';
         canv.style.top = 'unset';
         canv.style.left = 'unset';
@@ -39,7 +39,7 @@ export const updateViewport = (): void => {
         canvasHeight: number,
         cameraWidth: number,
         cameraHeight: number;
-    if (mode === 'expandViewport' || mode === 'expand') {
+    if (mode === 'expand') {
         canvasWidth = Math.ceil(window.innerWidth * pixelScaleModifier);
         canvasHeight = Math.ceil(window.innerHeight * pixelScaleModifier);
         cameraWidth = window.innerWidth;
@@ -74,9 +74,18 @@ export const updateViewport = (): void => {
     }
     pixiApp.view.style.width = Math.ceil(canvasWidth / pixelScaleModifier) + 'px';
     pixiApp.view.style.height = Math.ceil(canvasHeight / pixelScaleModifier) + 'px';
+
     if (mainCamera) {
+        const oldWidth = mainCamera.width,
+              oldHeight = mainCamera.height;
         mainCamera.width = cameraWidth;
         mainCamera.height = cameraHeight;
+        for (const item of pixiApp.stage.children) {
+            if (!(item instanceof Room)) {
+                continue;
+            }
+            item.realignElements(oldWidth, oldHeight, cameraWidth, cameraHeight);
+        }
     }
     positionCanvas(mode, k);
 };
@@ -94,8 +103,8 @@ window.addEventListener('resize', updateViewport);
  *
  * ```js
  * if (pointer.pressed) {
- *   if (ct.u.prect(pointer.x, pointer.y, this)) {
- *     ct.fittoscreen.toggleFullscreen();
+ *   if (u.prect(pointer.x, pointer.y, this)) {
+ *     fittoscreen.toggleFullscreen();
  *   }
  * }
  * ```
