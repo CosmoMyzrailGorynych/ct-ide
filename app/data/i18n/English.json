@@ -438,7 +438,6 @@
                 "fastScale": "Fast scaling",
                 "fastScaleInteger": "Fast scaling by integers",
                 "expand": "Expand",
-                "expandViewport": "Expand, managed",
                 "scaleFit": "Quality scaling with letterboxes",
                 "scaleFill": "Quality scaling without letterboxing"
             },
@@ -447,7 +446,6 @@
                 "fastScale": "the viewport will proportionally fill the screen without changing the resolution.",
                 "fastScaleInteger": "the viewport will be positioned at the middle of the screen, and will be scaled by whole numbers (x2, x3, x4 and so on).",
                 "expand": "the viewport will fill the whole screen. The camera will expand to accommodate the new area.",
-                "expandViewport": "same as `expand` plus simple camera management so new area spans around the old camera bounds.",
                 "scaleFit": "the viewport will proportionally fill the screen, leaving letterboxes around the base viewport. The resolution is changed to match the screen.",
                 "scaleFill": "the viewport fills the screen, expanding the camera to avoid letterboxing. The resolution is changed to match the screen."
             },
