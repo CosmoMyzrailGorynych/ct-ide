@@ -1,5 +1,6 @@
 //
     @attribute room
+    @attribute editor
     @attribute updatebg (riot function)
     @attribute history (History)
 room-properties
@@ -17,7 +18,7 @@ room-properties
                     input.wide(
                         type="number" min="1" step="8"
                         onfocus="{parent.rememberValue}"
-                        oninput="{parent.wire('opts.room.width')}"
+                        oninput="{parent.wireAndRealign('opts.room.width')}"
                         onchange="{parent.recordChange(parent.opts.room, 'width')}"
                         value="{parent.opts.room.width}"
                     )
@@ -28,7 +29,7 @@ room-properties
                     input.wide(
                         type="number" min="1" step="8"
                         onfocus="{parent.rememberValue}"
-                        oninput="{parent.wire('opts.room.height')}"
+                        oninput="{parent.wireAndRealign('opts.room.height')}"
                         onchange="{parent.recordChange(parent.opts.room, 'height')}"
                         value="{parent.opts.room.height}"
                     )
@@ -162,6 +163,15 @@ room-properties
                 before: prevValue,
                 after: value
             });
+        };
+        this.wireAndRealign = key => e => {
+            const val = Number(e.target.value);
+            if (key === 'opts.room.width') {
+                this.opts.editor.repositionUiCopies(val, this.opts.room.height);
+            } else {
+                this.opts.editor.repositionUiCopies(this.opts.room.width, val);
+            }
+            this.wire(key)(e);
         };
 
         this.setFollow = uid => {

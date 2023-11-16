@@ -24,7 +24,7 @@ rendering-settings
             span {voc.hideCursor}
     h2 {voc.viewportMode}
     fieldset
-        label.block.checkbox(each="{val in ['asIs', 'fastScale', 'fastScaleInteger', 'expand', 'expandViewport', 'scaleFit', 'scaleFill']}")
+        label.block.checkbox(each="{val in ['asIs', 'fastScale', 'fastScaleInteger', 'expand', 'scaleFit', 'scaleFill']}")
             input(type="radio" value="{val}" checked="{renderSettings.viewMode === val}" onchange="{wire('this.renderSettings.viewMode')}")
             span
                 b {voc.viewportModes[val]}

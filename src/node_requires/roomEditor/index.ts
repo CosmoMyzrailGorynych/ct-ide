@@ -1,16 +1,19 @@
 import {History} from './history';
 import {RoomEditorPreview} from './previewer';
 
+import {ViewportFrame} from './entityClasses/ViewportFrame';
+
 import {Copy} from './entityClasses/Copy';
 import {Tile} from './entityClasses/Tile';
 import {resetCounter as resetTileLayerCounter, TileLayer} from './entityClasses/TileLayer';
 import {Background} from './entityClasses/Background';
-import {Viewport} from './entityClasses/Viewport';
 
 import {SnapTarget} from './entityClasses/SnapTarget';
 import {MarqueeBox} from './entityClasses/MarqueeBox';
 import {Transformer, getAnchor} from './entityClasses/Transformer';
+import {Viewport} from './entityClasses/Viewport';
 import {ViewportRestriction} from './entityClasses/ViewportRestriction';
+import {AlignFrame} from './entityClasses/AlignFrame';
 
 import {IRoomEditorRiotTag} from './IRoomEditorRiotTag';
 import {IRoomEditorInteraction, PixiListener, pixiListeners, interactions, customListeners, CustomListener} from './interactions';
@@ -94,6 +97,7 @@ class RoomEditor extends PIXI.Application {
     transformer = new Transformer(this);
     primaryViewport: Viewport;
     restrictViewport: ViewportRestriction;
+    alignFrame: AlignFrame;
     grid = new PIXI.Graphics();
     /**
      * A label that will display current mouse coords relative to a room,
@@ -122,7 +126,7 @@ class RoomEditor extends PIXI.Application {
     copies = new Set<Copy>();
     tiles = new Set<Tile>();
     backgrounds: Background[] = [];
-    viewports = new Set<Viewport>();
+    viewports = new Set<ViewportFrame>();
     tileLayers: TileLayer[] = [];
 
     observable: {
@@ -300,7 +304,9 @@ class RoomEditor extends PIXI.Application {
         // Add primary viewport
         this.primaryViewport = new Viewport(room, true, this);
         this.restrictViewport = new ViewportRestriction(this);
+        this.alignFrame = new AlignFrame(this);
         this.overlays.addChild(this.restrictViewport);
+        this.overlays.addChild(this.alignFrame);
         this.overlays.addChild(this.primaryViewport);
         this.viewports.add(this.primaryViewport);
         // Add the remaining entities
@@ -427,9 +433,12 @@ class RoomEditor extends PIXI.Application {
     }
     redrawViewports(): void {
         for (const viewport of this.viewports) {
-            viewport.redrawFrame();
+            if (viewport instanceof Viewport) {
+                viewport.redrawFrame();
+            }
         }
         this.restrictViewport.redrawFrame();
+        this.alignFrame.redrawFrame();
     }
     /**
      * Updates room position based on the camera position.
@@ -797,6 +806,82 @@ class RoomEditor extends PIXI.Application {
     set selectTiles(value: boolean) {
         value = Boolean(value);
         this.#selectTiles = value;
+    }
+
+    repositionUiCopies(newWidth: number, newHeight: number): void {
+        // Skip reposisioning for non-UI rooms as gameplay rooms *probably* won't need it.
+        if (!this.ctRoom.isUi) {
+            return;
+        }
+        const oldWidth = this.ctRoom.width;
+        const oldHeight = this.ctRoom.height;
+
+        for (const copy of this.copies) {
+            if (!copy.align) {
+                continue;
+            }
+            // get the old reference frame
+            const {padding, frame} = copy.align;
+            const xref = oldWidth * frame.x1 / 100 + padding.left,
+                  yref = oldHeight * frame.y1 / 100 + padding.top;
+            const wref = oldWidth * (frame.x2 - frame.x1) / 100 - padding.left - padding.right,
+                  href = oldHeight * (frame.y2 - frame.y1) / 100 - padding.top - padding.bottom;
+            // get the new reference frame
+            const xnew = newWidth * frame.x1 / 100 + padding.left,
+                  ynew = newHeight * frame.y1 / 100 + padding.top;
+            const wnew = newWidth * (frame.x2 - frame.x1) / 100 - padding.left - padding.right,
+                  hnew = newHeight * (frame.y2 - frame.y1) / 100 - padding.top - padding.bottom;
+            if (oldWidth !== newWidth) {
+                switch (copy.align.alignX) {
+                case 'start':
+                    copy.x += xnew - xref;
+                    break;
+                case 'both':
+                    copy.x += xnew - xref;
+                    copy.width += wnew - wref;
+                    break;
+                case 'end':
+                    copy.x += wnew - wref + xnew - xref;
+                    break;
+                case 'center':
+                    copy.x += (wnew - wref) / 2 + xnew - xref;
+                    break;
+                case 'scale': {
+                    const k = wnew / wref || 1;
+                    copy.width *= k;
+                    copy.x = (copy.x - xref) * k + xnew;
+                } break;
+                default:
+                }
+            }
+
+            if (oldHeight !== newHeight) {
+                switch (copy.align.alignY) {
+                case 'start':
+                    copy.y += ynew - yref;
+                    break;
+                case 'both':
+                    copy.y += ynew - yref;
+                    copy.height += hnew - href;
+                    break;
+                case 'end':
+                    copy.y += hnew - href + ynew - yref;
+                    break;
+                case 'center':
+                    copy.y += (hnew - href) / 2 + ynew - yref;
+                    break;
+                case 'scale': {
+                    const k = hnew / href || 1;
+                    copy.height *= k;
+                    copy.y = (copy.y - yref) * k + ynew;
+                } break;
+                default:
+                }
+            }
+            if (copy.nineSlicePlane) {
+                copy.updateNinePatch();
+            }
+        }
     }
 
     goHome(): void {

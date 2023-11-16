@@ -33,6 +33,7 @@ export class Room extends PIXI.Container<pixiMod.DisplayObject> {
      * for more info on UI layers.
      */
     isUi: boolean;
+    alignElements: BasicCopy[] = [];
     kill = false;
     tileLayers: Tilemap[] = [];
     backgrounds: Background[] = [];
@@ -86,6 +87,78 @@ export class Room extends PIXI.Container<pixiMod.DisplayObject> {
      */
     onLeave: () => void;
 
+    realignElements(
+        oldWidth: number,
+        oldHeight: number,
+        newWidth: number,
+        newHeight: number
+    ): void {
+        for (const copy of this.alignElements) {
+            if (!copy.align) {
+                continue;
+            }
+            // get the old reference frame
+            const {padding, frame} = copy.align;
+            const xref = oldWidth * frame.x1 / 100 + padding.left,
+                  yref = oldHeight * frame.y1 / 100 + padding.top;
+            const wref = oldWidth * (frame.x2 - frame.x1) / 100 - padding.left - padding.right,
+                  href = oldHeight * (frame.y2 - frame.y1) / 100 - padding.top - padding.bottom;
+            // get the new reference frame
+            const xnew = newWidth * frame.x1 / 100 + padding.left,
+                  ynew = newHeight * frame.y1 / 100 + padding.top;
+            const wnew = newWidth * (frame.x2 - frame.x1) / 100 - padding.left - padding.right,
+                  hnew = newHeight * (frame.y2 - frame.y1) / 100 - padding.top - padding.bottom;
+            if (oldWidth !== newWidth) {
+                switch (copy.align.alignX) {
+                case 'start':
+                    copy.x += xnew - xref;
+                    break;
+                case 'both':
+                    copy.x += xnew - xref;
+                    copy.width += wnew - wref;
+                    break;
+                case 'end':
+                    copy.x += wnew - wref + xnew - xref;
+                    break;
+                case 'center':
+                    copy.x += (wnew - wref) / 2 + xnew - xref;
+                    break;
+                case 'scale': {
+                    const k = wnew / wref || 1;
+                    copy.width *= k;
+                    copy.x = (copy.x - xref) * k + xnew;
+                } break;
+                default:
+                }
+            }
+
+            if (oldHeight !== newHeight) {
+                switch (copy.align.alignY) {
+                case 'start':
+                    copy.y += ynew - yref;
+                    break;
+                case 'both':
+                    copy.y += ynew - yref;
+                    copy.height += hnew - href;
+                    break;
+                case 'end':
+                    copy.y += hnew - href + ynew - yref;
+                    break;
+                case 'center':
+                    copy.y += (hnew - href) / 2 + ynew - yref;
+                    break;
+                case 'scale': {
+                    const k = hnew / href || 1;
+                    copy.height *= k;
+                    copy.y = (copy.y - yref) * k + ynew;
+                } break;
+                default:
+                }
+            }
+        }
+    }
+
+    // eslint-disable-next-line max-lines-per-function
     constructor(template: ExportedRoom, isRoot: boolean) {
         super();
         this.x = this.y = 0;
@@ -133,7 +206,7 @@ export class Room extends PIXI.Container<pixiMod.DisplayObject> {
                 const copy = template.objects[i];
                 const exts = copy.exts || {};
                 const customProperties = copy.customProperties || {};
-                templatesLib.copyIntoRoom(
+                const ctCopy = templatesLib.copyIntoRoom(
                     copy.template,
                     copy.x,
                     copy.y,
@@ -149,8 +222,20 @@ export class Room extends PIXI.Container<pixiMod.DisplayObject> {
                         customSize: copy.customSize,
                         customWordWrap: copy.customWordWrap,
                         customText: copy.customText,
-                        customAnchor: copy.customAnchor
+                        customAnchor: copy.customAnchor,
+                        align: copy.align
                     }
+                );
+                if (copy.align) {
+                    this.alignElements.push(ctCopy);
+                }
+            }
+            if (this.alignElements.length) {
+                this.realignElements(
+                    template.width,
+                    template.height,
+                    mainCamera.width,
+                    mainCamera.height
                 );
             }
         } else {

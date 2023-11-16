@@ -49,6 +49,23 @@ export const getIcons = (asset: IRoom): string[] => {
     return getScriptableIcons(asset);
 };
 
+export const getDefaultAlign = (): IRoomCopy['align'] => ({
+    frame: {
+        x1: 0,
+        y1: 0,
+        x2: 100,
+        y2: 100
+    },
+    alignX: 'start' as CopyAlignment,
+    alignY: 'start' as CopyAlignment,
+    padding: {
+        left: 0,
+        top: 0,
+        right: 0,
+        bottom: 0
+    }
+});
+
 
 export {
     createNewRoom,

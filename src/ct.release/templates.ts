@@ -10,7 +10,7 @@ import stylesLib from 'styles';
 import type * as pixiMod from 'node_modules/pixi.js';
 declare var PIXI: typeof pixiMod;
 
-import type {ExportedStyle, ExportedTemplate, TextureShape} from '../node_requires/exporter/_exporterContracts';
+import type {ExportedRoom, ExportedStyle, ExportedTemplate, TextureShape} from '../node_requires/exporter/_exporterContracts';
 import uLib from 'u';
 
 let uid = 0;
@@ -19,6 +19,8 @@ interface ICopy {
     uid: number;
     /** The name of the template from which the copy was created */
     template: string | null;
+    /** UI alignment information */
+    align?: ExportedRoom['objects'][0]['align'];
     /** The collision shape of a copy */
     shape: TextureShape;
     /** The horizontal location of a copy in the previous frame */

@@ -38,6 +38,8 @@ class Copy extends PIXI.Container {
         }
     };
 
+    align?: IRoomCopy['align'];
+
     constructor(copyInfo: IRoomCopy, editor: RoomEditor | RoomEditorPreview, isGhost?: boolean) {
         super();
         this.editor = editor;
@@ -114,6 +116,9 @@ class Copy extends PIXI.Container {
                 JSON.parse(JSON.stringify(this.copyCustomProps)) :
                 this.copyCustomProps
         };
+        if (this.align) {
+            copy.align = this.align;
+        }
         if (this.text) {
             if (this.customTextSettings.anchor) {
                 copy.customAnchor = this.customTextSettings.anchor;
@@ -145,6 +150,7 @@ class Copy extends PIXI.Container {
         this.templateId = copy.uid;
         this.copyExts = copy.exts ?? {};
         this.copyCustomProps = copy.customProperties ?? {};
+        this.align = copy.align;
         switch (this.cachedTemplate.baseClass) {
         case 'AnimatedSprite':
             this.sprite = new PIXI.AnimatedSprite(getPixiTexture(copy.uid));
