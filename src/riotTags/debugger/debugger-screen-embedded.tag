@@ -151,7 +151,7 @@ debugger-screen-embedded(class="{opts.class} {flexrow: verticalLayout, flexcol: 
         /* Helper methods for buttons */
         this.switchRoom = room => {
             this.refs.gameView.executeScript({
-                code: `ct.rooms.switch('${room}')`,
+                code: `rooms.switch('${room}')`,
                 mainWorld: true
             });
         };
@@ -159,7 +159,7 @@ debugger-screen-embedded(class="{opts.class} {flexrow: verticalLayout, flexcol: 
             const menu = new nw.Menu();
             // Query for in-game rooms
             this.refs.gameView.executeScript({
-                code: 'JSON.stringify(Object.keys(ct.rooms.templates));',
+                code: 'JSON.stringify(Object.keys(rooms.templates));',
                 mainWorld: true
             }, rooms => {
                 JSON.parse(rooms).map(room => ({
@@ -199,7 +199,7 @@ debugger-screen-embedded(class="{opts.class} {flexrow: verticalLayout, flexcol: 
         };
         this.restartRoom = () => {
             this.refs.gameView.executeScript({
-                code: 'ct.rooms.switch(ct.room.name);',
+                code: 'rooms.switch(rooms.current.name);',
                 mainWorld: true
             });
         };
@@ -207,11 +207,11 @@ debugger-screen-embedded(class="{opts.class} {flexrow: verticalLayout, flexcol: 
             this.refs.gameView.executeScript({
                 code: `
                     var renderTexture = PIXI.RenderTexture.create({
-                        width: ct.pixiApp.renderer.width,
-                        height: ct.pixiApp.renderer.height
+                        width: pixiApp.renderer.width,
+                        height: pixiApp.renderer.height
                     });
-                    ct.pixiApp.renderer.render(ct.pixiApp.stage, renderTexture);
-                    var canvas = ct.pixiApp.renderer.extract.canvas(renderTexture);
+                    pixiApp.renderer.render(pixiApp.stage, renderTexture);
+                    var canvas = pixiApp.renderer.extract.canvas(renderTexture);
                     var dataURL = canvas.toDataURL('image/png');
                     dataURL;
                 `,
