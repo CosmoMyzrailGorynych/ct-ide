@@ -3,6 +3,7 @@ import {loadAllTypedefs, resetTypedefs} from '../modules/typedefs';
 import {unloadAllEvents, loadAllModulesEvents} from '../../events';
 import {buildAssetMap} from '..';
 import {preparePreviews} from '../preview';
+import {refreshFonts} from '../fonts';
 
 import {getLanguageJSON} from '../../i18n';
 
@@ -141,6 +142,7 @@ const loadProject = async (projectData: IProject): Promise<void> => {
         buildAssetMap(projectData);
         resetPixiTextureCache();
         setPixelart(projectData.settings.rendering.pixelatedrender);
+        refreshFonts();
         const recoveryExists = fs.existsSync(global.projdir + '.ict.recovery');
         await Promise.all([
             loadAllModulesEvents(),

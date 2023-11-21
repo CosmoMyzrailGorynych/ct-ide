@@ -78,34 +78,12 @@ font-editor.aPanel.aView(class="{opts.class}")
             }
         };
 
-        this.loadFonts = () => {
-            const fonts = require('./data/node_requires/resources').getOfType('font');
-            for (const font of document.fonts) {
-                if (font.external) {
-                    document.fonts.delete(font);
-                }
-            }
-            for (const font of fonts) {
-                const template = {
-                    weight: font.weight,
-                    style: font.italic ? 'italic' : 'normal'
-                };
-                const source = `${global.projdir}/fonts/${font.origname}`,
-                      cleanedSource = source.replace(/ /g, '%20').replace(/\\/g, '/');
-                const face = new FontFace('CTPROJFONT' + font.typefaceName, `url(file://${cleanedSource})`, template);
-                face.load()
-                .then(loaded => {
-                    loaded.external = true;
-                    loaded.ctId = face.ctId = font.uid;
-                    document.fonts.add(loaded);
-                });
-            }
-        };
+        this.refreshFonts = require('./data/node_requires/resources/fonts').refreshFonts;
 
         this.oldTypefaceName = this.asset.typefaceName;
         this.saveAsset = () => {
             this.writeChanges();
-            this.loadFonts();
+            this.refreshFonts();
         };
         this.fontSave = () => {
             this.saveAsset();
@@ -118,7 +96,7 @@ font-editor.aPanel.aView(class="{opts.class}")
                     font.family = this.asset.typefaceName;
                     font.style = this.asset.italic ? 'italic' : 'normal';
                     font.weight = this.asset.weight;
-                    this.loadFonts();
+                    this.refreshFonts();
                     break;
                 }
             }
