@@ -139,7 +139,7 @@ style-editor.aPanel.aView(class="{opts.class}")
     .style-editor-aPreview.tall(ref="canvasSlot")
     asset-selector(
         if="{selectingFont}"
-        assettype="fonts"
+        assettypes="font"
         onselected="{applyFont}"
         oncancelled="{cancelCustomFontSelector}"
     )
