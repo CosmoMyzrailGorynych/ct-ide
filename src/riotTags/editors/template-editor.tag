@@ -1,5 +1,5 @@
 mixin templateProperties
-    collapsible-section.aPanel(
+    collapsible-section.anInsetPanel(
         heading="{vocGlob.assetTypes.behavior[2].slice(0, 1).toUpperCase() + vocGlob.assetTypes.behavior[2].slice(1)}"
         storestatekey="templateBehaviors"
         hlevel="4"
@@ -8,8 +8,8 @@ mixin templateProperties
             onchanged="{parent.updateBehaviorExtends}"
             asset="{parent.asset}"
         )
-    collapsible-section.aPanel(
-        if="{asset.baseClass === 'NineSlicePlane'}"
+    collapsible-section.anInsetPanel(
+        if="{['NineSlicePlane', 'Button'].includes(asset.baseClass)}"
         heading="{voc.panelHeading}"
         storestatekey="templateNineSlice"
         hlevel="4"
@@ -48,11 +48,43 @@ mixin templateProperties
                 )
                 span {parent.voc.autoUpdateNineSlice}
                 hover-hint(text="{parent.voc.autoUpdateNineSliceHint}")
-    collapsible-section.aPanel(
+    collapsible-section.anInsetPanel(
         heading="{voc.appearance}"
         storestatekey="templateEditorAppearance"
         hlevel="4"
     )
+        // Button states' textures
+        fieldset(if="{parent.asset.baseClass === 'Button'}")
+            b {parent.voc.hoverTexture}:
+            asset-input.wide(
+                assettypes="texture"
+                assetid="{parent.asset.hoverTexture || -1}"
+                allowclear="allowclear"
+                onchanged="{parent.applyButtonTexture('hoverTexture')}"
+            )
+            b {parent.voc.pressedTexture}:
+            asset-input.wide(
+                assettypes="texture"
+                assetid="{parent.asset.pressedTexture || -1}"
+                allowclear="allowclear"
+                onchanged="{parent.applyButtonTexture('pressedTexture')}"
+            )
+            b {parent.voc.disabledTexture}:
+            asset-input.wide(
+                assettypes="texture"
+                assetid="{parent.asset.disabledTexture || -1}"
+                allowclear="allowclear"
+                onchanged="{parent.applyButtonTexture('disabledTexture')}"
+            )
+        // Text style selector for buttons and other UI elements more complex than a text label
+        fieldset(if="{parent.asset.baseClass === 'Button'}")
+            b {parent.voc.textStyle}:
+            asset-input.wide(
+                assettypes="style"
+                assetid="{parent.asset.textStyle || -1}"
+                allowclear="allowclear"
+                onchanged="{parent.applyStyle}"
+            )
         fieldset
             label.block
                 b {parent.voc.depth}
@@ -75,10 +107,14 @@ mixin templateProperties
                     option(value="add" selected="{parent.asset.blendMode === 'add'}") {parent.voc.blendModes.add}
                     option(value="multiply" selected="{parent.asset.blendMode === 'multiply'}") {parent.voc.blendModes.multiply}
                     option(value="screen" selected="{parent.asset.blendMode === 'screen'}") {parent.voc.blendModes.screen}
-        fieldset(if="{parent.asset.baseClass === 'Text'}")
+        fieldset(if="{['Text', 'Button'].includes(parent.asset.baseClass)}")
             label.block
                 b {parent.voc.defaultText}
-                input(type="text" value="{parent.asset.defaultText}" onchange="{parent.wire('asset.defaultText')}")
+                input(
+                    type="text"
+                    value="{parent.asset.defaultText}"
+                    onchange="{parent.wire('asset.defaultText')}"
+                )
         fieldset
             label.flexrow(if="{parent.asset.baseClass === 'AnimatedSprite'}")
                 b.nogrow.alignmiddle {parent.voc.animationFPS}
@@ -116,7 +152,7 @@ template-editor.aPanel.aView.flexrow
         .tall.flexfix.aPanel.pad
             .flexfix-header
                 asset-input.wide(
-                    if="{['AnimatedSprite', 'NineSlicePlane'].includes(asset.baseClass)}"
+                    if="{['AnimatedSprite', 'NineSlicePlane', 'Button'].includes(asset.baseClass)}"
                     assettypes="texture"
                     assetid="{asset.texture || -1}"
                     large="large"
@@ -179,9 +215,8 @@ template-editor.aPanel.aView.flexrow
                 // .tabbed(show="{tab === 'blocks'}")
                 //     .aBlocksEditor(ref="blocks")
     .template-editor-Properties.nmr(if="{localStorage.altTemplateLayout !== 'on' && !minimizeProps}")
-        .tall.flexfix.aPanel.pad
-            .flexfix-body
-                +templateProperties()
+        .tall.aPanel.pad.npt
+            +templateProperties()
     button.toright.template-editor-aPresentationButton.square.tiny(
         onclick="{toggleProps}"
         if="{localStorage.altTemplateLayout !== 'on'}"
@@ -252,6 +287,10 @@ template-editor.aPanel.aView.flexrow
                 }
                 this.asset.texture = id;
             }
+            this.update();
+        };
+        this.applyButtonTexture = key => id => {
+            this.asset[key] = id;
             this.update();
         };
         this.applyStyle = id => {

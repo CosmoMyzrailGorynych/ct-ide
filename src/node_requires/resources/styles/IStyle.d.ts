@@ -5,7 +5,8 @@ declare interface IStyle extends IAsset {
         family: string;
         size: number;
         italic: boolean;
-        weight: 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900;
+        weight: 'normal' | 'bold' | 'bolder' | 'lighter' | '100' | '200' | '300' |
+                '400' | '500' | '600' | '700' | '800' | '900';
         halign: 'left' | 'center' | 'right'
         lineHeight?: number;
         wrap: boolean;

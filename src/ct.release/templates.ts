@@ -1,17 +1,17 @@
 /* eslint-disable no-underscore-dangle */
-import res, {CtjsTexture} from './res';
+import resLib, {CtjsTexture} from './res';
 import {Background} from './backgrounds';
 import {Tilemap} from './tilemaps';
 import roomsLib, {Room} from './rooms';
 import {runBehaviors} from './behaviors';
 import {copyTypeSymbol, stack} from '.';
 import stylesLib from 'styles';
+import uLib from './u';
 
 import type * as pixiMod from 'node_modules/pixi.js';
 declare var PIXI: typeof pixiMod;
 
 import type {ExportedRoom, ExportedStyle, ExportedTemplate, TextureShape} from '../node_requires/exporter/_exporterContracts';
-import uLib from 'u';
 
 let uid = 0;
 
@@ -19,6 +19,7 @@ interface ICopy {
     uid: number;
     /** The name of the template from which the copy was created */
     template: string | null;
+    baseClass: ExportedTemplate['baseClass'];
     /** UI alignment information */
     align?: ExportedRoom['objects'][0]['align'];
     /** The collision shape of a copy */
@@ -121,6 +122,121 @@ interface ICopy {
     getRoom: (this: BasicCopy) => Room;
 }
 
+class PixiButton extends PIXI.Container {
+    panel: pixiMod.NineSlicePlane;
+    text: pixiMod.Text;
+    normalTexture: pixiMod.Texture;
+    hoverTexture: pixiMod.Texture;
+    pressedTexture: pixiMod.Texture;
+    disabledTexture: pixiMod.Texture;
+    updateNineSliceShape: boolean;
+
+    #disabled: boolean;
+    get disabled(): boolean {
+        return this.#disabled;
+    }
+    set disabled(val: boolean) {
+        this.#disabled = val;
+        if (val) {
+            this.panel.texture = this.disabledTexture;
+        } else {
+            this.panel.texture = this.normalTexture;
+        }
+    }
+
+    constructor(t: ExportedTemplate, exts: Record<string, unknown>) {
+        if (t?.baseClass !== 'Button') {
+            throw new Error('Don\'t call PixiButton class directly! Use templates.copy to create an instance instead.');
+        }
+        super();
+        this.normalTexture = resLib.getTexture(t.texture, 0);
+        this.hoverTexture = t.hoverTexture ?
+            resLib.getTexture(t.hoverTexture, 0) :
+            this.normalTexture;
+        this.pressedTexture = t.pressedTexture ?
+            resLib.getTexture(t.pressedTexture, 0) :
+            this.normalTexture;
+        this.disabledTexture = t.disabledTexture ?
+            resLib.getTexture(t.disabledTexture, 0) :
+            this.normalTexture;
+        this.panel = new PIXI.NineSlicePlane(
+            this.normalTexture,
+            t.nineSliceSettings?.left ?? 16,
+            t.nineSliceSettings?.top ?? 16,
+            t.nineSliceSettings?.right ?? 16,
+            t.nineSliceSettings?.bottom ?? 16
+        );
+        const style = t.textStyle === -1 ?
+            {} :
+            stylesLib.get(t.textStyle, true) as Partial<pixiMod.ITextStyle>;
+        if (exts.customSize) {
+            style.fontSize = Number(exts.customSize);
+        }
+        this.text = new PIXI.Text((exts.customText as string) || t.defaultText || '', style);
+        this.text.anchor.set(0.5);
+        this.addChild(this.panel, this.text);
+
+        this.eventMode = 'dynamic';
+        this.cursor = 'pointer';
+        this.on('pointerenter', this.hover);
+        this.on('pointerentercapture', this.hover);
+        this.on('pointerleave', this.blur);
+        this.on('pointerleavecapture', this.blur);
+        this.on('pointerdown', this.press);
+        this.on('pointerdowncapture', this.press);
+        this.on('pointerup', this.hover);
+        this.on('pointerupcapture', this.hover);
+        this.on('pointerupoutside', this.blur);
+        this.on('pointerupoutsidecapture', this.blur);
+
+        this.updateNineSliceShape = t.nineSliceSettings.autoUpdate;
+        let baseWidth = this.panel.width,
+            baseHeight = this.panel.height;
+        if ('scaleX' in exts) {
+            baseWidth *= (exts.scaleX as number);
+        }
+        if ('scaleY' in exts) {
+            baseHeight *= (exts.scaleY as number);
+        }
+        this.resize(baseWidth, baseHeight);
+        uLib.reshapeNinePatch(this as CopyButton);
+    }
+
+    unsize(): void {
+        const {x, y} = this.scale;
+        this.panel.scale.x *= x;
+        this.panel.scale.y *= y;
+        this.scale.set(1);
+        this.text.x = this.panel.width / 2;
+        this.text.y = this.panel.height / 2;
+    }
+    resize(newWidth: number, newHeight: number): void {
+        this.panel.width = newWidth;
+        this.panel.height = newHeight;
+        this.text.x = newWidth / 2;
+        this.text.y = newHeight / 2;
+    }
+
+    hover(): void {
+        if (this.disabled) {
+            return;
+        }
+        this.panel.texture = this.hoverTexture;
+    }
+    blur(): void {
+        if (this.disabled) {
+            return;
+        }
+        this.panel.texture = this.normalTexture;
+    }
+    press(): void {
+        if (this.disabled) {
+            return;
+        }
+        this.panel.texture = this.pressedTexture;
+    }
+}
+
 // Record<string, any> allows ct.js users to write any properties to their copies
 // without typescript complaining.
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -152,6 +268,11 @@ export type CopyText = Record<string, any> & pixiMod.Text & ICopy;
  * display anything, you can add other copies and pixi.js classes with `this.addChild(copy)`.
  */
 export type CopyContainer = Record<string, any> & pixiMod.Container & ICopy;
+/**
+ * An instance of a ct.js template with button logic.
+ * It has functionality of both PIXI.Container and ct.js Copies.
+ */
+export type CopyButton = Record<string, any> & PixiButton & ICopy;
 
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
@@ -161,10 +282,10 @@ export const CopyProto: Partial<BasicCopy> = {
             return;
         }
         var {playing} = this;
-        this.textures = res.getTexture(value);
+        this.textures = resLib.getTexture(value);
         [this.texture] = this.textures;
         this._tex = value;
-        this.shape = res.getTextureShape(value);
+        this.shape = resLib.getTextureShape(value);
         if (this.anchor) {
             this.anchor.x = (this.textures[0] as CtjsTexture).defaultAnchor.x;
             this.anchor.y = (this.textures[0] as CtjsTexture).defaultAnchor.y;
@@ -278,6 +399,7 @@ const Copy = function (
     container = container || roomsLib.current;
     this[copyTypeSymbol] = true;
     if (template) {
+        this.baseClass = template.baseClass;
         // Early linking so that `this.parent` is available in OnCreate events
         this.parent = container;
         if (template.baseClass === 'AnimatedSprite') {
@@ -335,7 +457,7 @@ const Copy = function (
             Object.assign(this, exts);
         }
         if ('texture' in template) {
-            this.shape = res.getTextureShape(template.texture || -1);
+            this.shape = resLib.getTextureShape(template.texture || -1);
         }
         if (templatesLib.list[template.name]) {
             templatesLib.list[template.name].push(this);
@@ -432,7 +554,7 @@ export const makeCopy = (
 
     let textures: pixiMod.Texture[] = [PIXI.Texture.EMPTY];
     if (t.texture && t.texture !== '-1') {
-        textures = res.getTexture(t.texture);
+        textures = resLib.getTexture(t.texture);
     }
 
     if (t.baseClass === 'NineSlicePlane') {
@@ -454,6 +576,11 @@ export const makeCopy = (
             copy.height = baseHeight * (exts.scaleY as number);
         }
         uLib.reshapeNinePatch(copy);
+        return copy;
+    }
+    if (t.baseClass === 'Button') {
+        const copy = new PixiButton(t, exts) as CopyButton;
+        mix(copy, x, y, t, parent, exts);
         return copy;
     }
     if (t.baseClass === 'AnimatedSprite') {
@@ -627,11 +754,14 @@ const templatesLib = {
         if (this.behaviors.length) {
             runBehaviors(this, 'templates', 'thisOnDraw');
         }
+        if (this.baseClass === 'Button' && (this.scale.x !== 1 || this.scale.y !== 1)) {
+            (this as CopyButton).unsize();
+        }
         if (this.updateNineSliceShape) {
             if (this.prevWidth !== this.width || this.prevHeight !== this.height) {
                 this.prevWidth = this.width;
                 this.prevHeight = this.height;
-                uLib.reshapeNinePatch(this as CopyPanel);
+                uLib.reshapeNinePatch(this as CopyPanel | CopyButton);
             }
         }
         /*!%afterdraw%*/

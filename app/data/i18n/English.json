@@ -1170,8 +1170,12 @@
         "create": "Create"
     },
     "templateView": {
-        "change": "Change sprite",
+        "change": "Change texture",
+        "hoverTexture": "Texture on hover",
+        "pressedTexture": "Texture when pressed",
+        "disabledTexture": "Texture when disabled",
         "defaultText": "Default text:",
+        "textStyle": "Text style",
         "learnAboutTypes": "Learn about coding templates",
         "name": "Name:",
         "appearance": "Appearance",
@@ -1192,7 +1196,8 @@
             "AnimatedSprite": "Animated sprite",
             "Text": "Text",
             "NineSlicePlane": "Panel",
-            "Container": "Container"
+            "Container": "Container",
+            "Button": "Button"
         },
         "nineSliceTop": "Top slice, in pixels",
         "nineSliceRight": "Right slice, in pixels",

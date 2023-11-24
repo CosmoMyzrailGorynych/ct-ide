@@ -1,9 +1,13 @@
 type PixiBlendMode = 'normal' | 'add' | 'multiply' | 'screen';
-type TemplateBaseClass = 'AnimatedSprite' | 'Text' | 'NineSlicePlane' | 'Container';
+type TemplateBaseClass = 'AnimatedSprite' | 'Text' | 'NineSlicePlane' | 'Container' |
+                         'Button';
 
 interface ITemplate extends IScriptableBehaviors {
     type: 'template',
     texture?: assetRef,
+    hoverTexture?: assetRef,
+    pressedTexture?: assetRef,
+    disabledTexture?: assetRef,
     textStyle?: assetRef,
     defaultText?: string,
     /** Skeleton reference must have priority over the texture's value. */

@@ -25,19 +25,22 @@ export const baseClasses: TemplateBaseClass[] = [
     'AnimatedSprite',
     'Text',
     'NineSlicePlane',
-    'Container'
+    'Container',
+    'Button'
 ];
 export const baseClassToIcon: Record<TemplateBaseClass, string> = {
     AnimatedSprite: 'template',
     Text: 'font',
     NineSlicePlane: 'ninepatch',
-    Container: 'maximize'
+    Container: 'maximize',
+    Button: 'button'
 };
 export const baseClassToTS: Record<TemplateBaseClass, string> = {
     AnimatedSprite: 'CopyAnimatedSprite',
     Text: 'CopyText',
     NineSlicePlane: 'CopyPanel',
-    Container: 'CopyContainer'
+    Container: 'CopyContainer',
+    Button: 'CopyButton'
 };
 
 /**
@@ -62,6 +65,9 @@ export const getTemplatePreview = function getTemplatePreview(
         if (template.textStyle !== -1 && template.textStyle) {
             return StylePreviewer.get(getById('style', template.textStyle), fs);
         }
+        return TexturePreviewer.get(-1, fs);
+    }
+    if (template.baseClass === 'Container') {
         return TexturePreviewer.get(-1, fs);
     }
     return TexturePreviewer.get(template.texture === -1 ? -1 : getById('texture', template.texture), fs);

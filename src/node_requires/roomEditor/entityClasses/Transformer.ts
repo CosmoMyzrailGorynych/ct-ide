@@ -16,6 +16,9 @@ const nullPoint = {
 };
 export const getAnchor = (obj: Copy | Tile): {x: number, y: number} => {
     if (obj instanceof Copy) {
+        if (['Button', 'NineSlicePlane'].includes(obj.cachedTemplate.baseClass)) {
+            return nullPoint;
+        }
         return obj.sprite?.anchor ?? obj.text?.anchor ?? nullPoint;
     }
     return obj.anchor;

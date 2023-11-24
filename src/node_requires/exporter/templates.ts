@@ -16,7 +16,7 @@ const getBaseClassInfo = (blankTextures: IBlankTexture[], template: ITemplate) =
     if (template.baseClass !== 'Text') {
         let classInfo = '';
         const blankTexture = blankTextures.find(tex => tex.uid === template.texture);
-        if (blankTexture) {
+        if (!['Text', 'Container'].includes(template.baseClass) && blankTexture) {
             classInfo = `anchorX: ${blankTexture.anchorX},
             anchorY: ${blankTexture.anchorY},
             height: ${blankTexture.height},
@@ -24,13 +24,24 @@ const getBaseClassInfo = (blankTextures: IBlankTexture[], template: ITemplate) =
         } else if (template.texture !== -1) {
             classInfo = `texture: "${getById('texture', template.texture).name}",`;
         }
-        if (template.baseClass === 'NineSlicePlane') {
+        if (template.baseClass === 'NineSlicePlane' || template.baseClass === 'Button') {
             classInfo += `
             nineSliceSettings: ${JSON.stringify(template.nineSliceSettings)},`;
         } else if (template.baseClass === 'AnimatedSprite') {
             classInfo += `animationFPS: ${template.animationFPS ?? 60},
             playAnimationOnStart: ${Boolean(template.playAnimationOnStart)},
             loopAnimation: ${Boolean(template.loopAnimation)},`;
+        }
+        if (template.baseClass === 'Button') {
+            for (const key of ['hoverTexture', 'pressedTexture', 'disabledTexture'] as const) {
+                if (template[key] && template[key] !== -1) {
+                    classInfo += `${key}: "${getById('texture', template[key] as string).name}",`;
+                }
+            }
+            if (template.textStyle !== -1) {
+                classInfo += `textStyle: "${getById('style', template.textStyle).name}",`;
+            }
+            classInfo += `defaultText: ${JSON.stringify(template.defaultText)},`;
         }
         return classInfo;
     }

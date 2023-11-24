@@ -15,6 +15,8 @@ asset-input
                 flex 1 1 auto
                 overflow hidden
                 text-overflow ellipsis
+                // Fixes weird horizontal overflow where a text doesn't shrink
+                width 0
     &.wide
         & > .aButtonGroup
             @extends .aButtonGroup.wide

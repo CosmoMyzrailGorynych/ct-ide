@@ -20,7 +20,7 @@ room-ui-tools
                 value="{opts.selection.customTextSettings.fontSize}"
                 oninput="{wireText('fontSize')}"
             )
-        label.block
+        label.block(if="{opts.selection.cachedTemplate.baseClass === 'Text'}")
             b {voc.wordWrapWidth}:
             br
             input(
@@ -28,72 +28,73 @@ room-ui-tools
                 value="{opts.selection.customTextSettings.wordWrapWidth}"
                 oninput="{wireText('wordWrapWidth')}"
             )
-        b {voc.textAlignment}:
-        br
-        .aButtonGroupNine
-            button(
-                onclick="{setAlign(0, 0)}"
-                title="{vocGlob.alignModes.topLeft}"
-                class="{active: opts.selection.text.anchor.x === 0 && opts.selection.text.anchor.y === 0}"
-            )
-                svg.feather
-                    use(xlink:href="#align-top-left")
-            button(
-                onclick="{setAlign(0.5, 0)}"
-                title="{vocGlob.alignModes.topCenter}"
-                class="{active: opts.selection.text.anchor.x === 0.5 && opts.selection.text.anchor.y === 0}"
-            )
-                svg.feather
-                    use(xlink:href="#align-top-center")
-            button(
-                onclick="{setAlign(1, 0)}"
-                title="{vocGlob.alignModes.topRight}"
-                class="{active: opts.selection.text.anchor.x === 1 && opts.selection.text.anchor.y === 0}"
-            )
-                svg.feather
-                    use(xlink:href="#align-top-right")
-            button(
-                onclick="{setAlign(0, 0.5)}"
-                title="{vocGlob.alignModes.left}"
-                class="{active: opts.selection.text.anchor.x === 0 && opts.selection.text.anchor.y === 0.5}"
-            )
-                svg.feather
-                    use(xlink:href="#align-center-left")
-            button(
-                onclick="{setAlign(0.5, 0.5)}"
-                title="{vocGlob.alignModes.center}"
-                class="{active: opts.selection.text.anchor.x === 0.5 && opts.selection.text.anchor.y === 0.5}"
-            )
-                svg.feather
-                    use(xlink:href="#align-center-center")
-            button(
-                onclick="{setAlign(1, 0.5)}"
-                title="{vocGlob.alignModes.right}"
-                class="{active: opts.selection.text.anchor.x === 1 && opts.selection.text.anchor.y === 0.5}"
-            )
-                svg.feather
-                    use(xlink:href="#align-center-right")
-            button(
-                onclick="{setAlign(0, 1)}"
-                title="{vocGlob.alignModes.bottomLeft}"
-                class="{active: opts.selection.text.anchor.x === 0 && opts.selection.text.anchor.y === 1}"
-            )
-                svg.feather
-                    use(xlink:href="#align-bottom-left")
-            button(
-                onclick="{setAlign(0.5, 1)}"
-                title="{vocGlob.alignModes.bottom}"
-                class="{active: opts.selection.text.anchor.x === 0.5 && opts.selection.text.anchor.y === 1}"
-            )
-                svg.feather
-                    use(xlink:href="#align-bottom-center")
-            button(
-                onclick="{setAlign(1, 1)}"
-                title="{vocGlob.alignModes.bottomRight}"
-                class="{active: opts.selection.text.anchor.x === 1 && opts.selection.text.anchor.y === 1}"
-            )
-                svg.feather
-                    use(xlink:href="#align-bottom-right")
+        div(if="{opts.selection.cachedTemplate.baseClass === 'Text'}")
+            b {voc.textAlignment}:
+            br
+            .aButtonGroupNine
+                button(
+                    onclick="{setAlign(0, 0)}"
+                    title="{vocGlob.alignModes.topLeft}"
+                    class="{active: opts.selection.text.anchor.x === 0 && opts.selection.text.anchor.y === 0}"
+                )
+                    svg.feather
+                        use(xlink:href="#align-top-left")
+                button(
+                    onclick="{setAlign(0.5, 0)}"
+                    title="{vocGlob.alignModes.topCenter}"
+                    class="{active: opts.selection.text.anchor.x === 0.5 && opts.selection.text.anchor.y === 0}"
+                )
+                    svg.feather
+                        use(xlink:href="#align-top-center")
+                button(
+                    onclick="{setAlign(1, 0)}"
+                    title="{vocGlob.alignModes.topRight}"
+                    class="{active: opts.selection.text.anchor.x === 1 && opts.selection.text.anchor.y === 0}"
+                )
+                    svg.feather
+                        use(xlink:href="#align-top-right")
+                button(
+                    onclick="{setAlign(0, 0.5)}"
+                    title="{vocGlob.alignModes.left}"
+                    class="{active: opts.selection.text.anchor.x === 0 && opts.selection.text.anchor.y === 0.5}"
+                )
+                    svg.feather
+                        use(xlink:href="#align-center-left")
+                button(
+                    onclick="{setAlign(0.5, 0.5)}"
+                    title="{vocGlob.alignModes.center}"
+                    class="{active: opts.selection.text.anchor.x === 0.5 && opts.selection.text.anchor.y === 0.5}"
+                )
+                    svg.feather
+                        use(xlink:href="#align-center-center")
+                button(
+                    onclick="{setAlign(1, 0.5)}"
+                    title="{vocGlob.alignModes.right}"
+                    class="{active: opts.selection.text.anchor.x === 1 && opts.selection.text.anchor.y === 0.5}"
+                )
+                    svg.feather
+                        use(xlink:href="#align-center-right")
+                button(
+                    onclick="{setAlign(0, 1)}"
+                    title="{vocGlob.alignModes.bottomLeft}"
+                    class="{active: opts.selection.text.anchor.x === 0 && opts.selection.text.anchor.y === 1}"
+                )
+                    svg.feather
+                        use(xlink:href="#align-bottom-left")
+                button(
+                    onclick="{setAlign(0.5, 1)}"
+                    title="{vocGlob.alignModes.bottom}"
+                    class="{active: opts.selection.text.anchor.x === 0.5 && opts.selection.text.anchor.y === 1}"
+                )
+                    svg.feather
+                        use(xlink:href="#align-bottom-center")
+                button(
+                    onclick="{setAlign(1, 1)}"
+                    title="{vocGlob.alignModes.bottomRight}"
+                    class="{active: opts.selection.text.anchor.x === 1 && opts.selection.text.anchor.y === 1}"
+                )
+                    svg.feather
+                        use(xlink:href="#align-bottom-right")
     fieldset(if="{opts.selection}")
         h3 {voc.alignmentSettings}
         label.checkbox

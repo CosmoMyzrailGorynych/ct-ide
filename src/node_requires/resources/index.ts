@@ -413,11 +413,21 @@ export const getDOMImage = (asset: ITemplate | ITexture): HTMLImageElement => {
     throw new Error('[resources.getDOMImage] Unknown asset type: ' + (asset as any).type + '.');
 };
 
-export const areThumbnailsIcons = (asset: IAsset | IAssetFolder): boolean => {
-    if (asset.type === 'folder') {
+/**
+ * Returns whether the given asset type uses built-in svg icons
+ * as its thumbnails instead of images. Accepts both IAsset and asset types as strings.
+ */
+export const areThumbnailsIcons = (assetType: IAsset | IAssetFolder | resourceType | 'folder'): boolean => {
+    if (typeof assetType !== 'string') {
+        if (assetType.type === 'folder') {
+            return true;
+        }
+        return typeToApiMap[assetType.type].areThumbnailsIcons;
+    }
+    if (assetType === 'folder') {
         return true;
     }
-    return typeToApiMap[asset.type].areThumbnailsIcons;
+    return typeToApiMap[assetType].areThumbnailsIcons;
 };
 export const getThumbnail = (asset: IAsset | IAssetFolder, x2?: boolean, fs?: boolean): string => {
     if (asset.type === 'folder') {

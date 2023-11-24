@@ -1,6 +1,6 @@
 import type {CtjsTexture} from 'res';
 import type {TextureShape} from '../node_requires/exporter/_exporterContracts';
-import type {BasicCopy, CopyPanel} from './templates';
+import type {BasicCopy, CopyButton, CopyPanel} from './templates';
 import timerLib, {CtTimer} from './timer';
 
 import type * as pixiMod from 'node_modules/pixi.js';
@@ -245,19 +245,23 @@ const uLib = {
      * Takes a CopyPanel instance and changes its shape to accommodate its new dimensions.
      * Doesn't work with circular collision shapes.
      */
-    reshapeNinePatch(ninePatch: CopyPanel): void {
-        const origTex = (ninePatch.texture as CtjsTexture);
+    reshapeNinePatch(copy: CopyPanel | CopyButton): void {
+        const target = (copy.baseClass === 'NineSlicePlane' ?
+            copy :
+            copy.panel
+        ) as pixiMod.NineSlicePlane;
+        const origTex = (target.texture as CtjsTexture);
         const origShape = origTex.shape;
         const origWidth = origTex.width,
               origHeight = origTex.height;
         // how much the new box is larger than the original one
-        const dwx = ninePatch.width - origWidth,
-              dhy = ninePatch.height - origHeight;
+        const dwx = target.width - origWidth,
+              dhy = target.height - origHeight;
         // the size of the inner part of the original frame
-        const bw = origWidth - ninePatch.leftWidth - ninePatch.rightWidth,
-              bh = origHeight - ninePatch.topHeight - ninePatch.bottomHeight;
+        const bw = origWidth - target.leftWidth - target.rightWidth,
+              bh = origHeight - target.topHeight - target.bottomHeight;
         if (origShape.type === 'circle') {
-            throw new Error(`[u.reshapeNinePatch] Cannot reshape a circular collision mask for ${ninePatch.template}. Please use a different collision type for its texture.`);
+            throw new Error(`[u.reshapeNinePatch] Cannot reshape a circular collision mask for ${copy.template}. Please use a different collision type for its texture.`);
         }
         if (origShape.type === 'rect') {
             const shape: TextureShape = {
@@ -267,19 +271,19 @@ const uLib = {
                 right: origShape.right + dwx,
                 bottom: origShape.bottom + dhy
             };
-            if (origShape.left > ninePatch.leftWidth) {
-                shape.left = (origShape.left - ninePatch.leftWidth) * (1 + dwx) / bw;
+            if (origShape.left > target.leftWidth) {
+                shape.left = (origShape.left - target.leftWidth) * (1 + dwx) / bw;
             }
-            if (origShape.right < ninePatch.rightWidth) {
-                shape.right = (origShape.right - ninePatch.rightWidth) * (1 + dwx) / bw;
+            if (origShape.right < target.rightWidth) {
+                shape.right = (origShape.right - target.rightWidth) * (1 + dwx) / bw;
             }
-            if (origShape.top > ninePatch.topHeight) {
-                shape.top = (origShape.top - ninePatch.topHeight) * (1 + dhy) / bh;
+            if (origShape.top > target.topHeight) {
+                shape.top = (origShape.top - target.topHeight) * (1 + dhy) / bh;
             }
-            if (origShape.bottom < ninePatch.bottomHeight) {
-                shape.bottom = (origShape.bottom - ninePatch.bottomHeight) * (1 + dhy) / bh;
+            if (origShape.bottom < target.bottomHeight) {
+                shape.bottom = (origShape.bottom - target.bottomHeight) * (1 + dhy) / bh;
             }
-            ninePatch.shape = shape;
+            copy.shape = shape;
             return;
         }
         if (origShape.type === 'strip') {
@@ -293,22 +297,22 @@ const uLib = {
             };
             shape.points = origShape.points.map((point) => {
                 let {x, y} = point;
-                if (point.x >= origWidth - ninePatch.rightWidth) {
+                if (point.x >= origWidth - target.rightWidth) {
                     x += dwx;
-                } else if (point.x > ninePatch.leftWidth) {
-                    x = ninePatch.leftWidth + (point.x - ninePatch.leftWidth) * (1 + dwx / bw);
+                } else if (point.x > target.leftWidth) {
+                    x = target.leftWidth + (point.x - target.leftWidth) * (1 + dwx / bw);
                 }
-                if (point.y >= origHeight - ninePatch.bottomHeight) {
+                if (point.y >= origHeight - target.bottomHeight) {
                     y += dhy;
-                } else if (point.y > ninePatch.topHeight) {
-                    y = ninePatch.topHeight + (point.y - ninePatch.topHeight) * (1 + dhy / bh);
+                } else if (point.y > target.topHeight) {
+                    y = target.topHeight + (point.y - target.topHeight) * (1 + dhy / bh);
                 }
                 return {
                     x,
                     y
                 };
             });
-            ninePatch.shape = shape;
+            copy.shape = shape;
         }
     },
     /**

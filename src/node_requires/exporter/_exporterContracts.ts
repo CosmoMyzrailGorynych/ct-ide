@@ -149,6 +149,15 @@ export type ExportedTemplate = {
     texture?: string;
 } | {
     baseClass: 'Container'
+} | {
+    baseClass: 'Button',
+    nineSliceSettings: ITemplate['nineSliceSettings'];
+    texture?: string;
+    hoverTexture?: string;
+    pressedTexture?: string;
+    disabledTexture?: string;
+    textStyle: string | -1;
+    defaultText: string;
 });
 
 export type ExportedMeta = {
@@ -163,7 +172,8 @@ export type ExportedStyle = {
     fontFamily: string;
     fontSize: number;
     fontStyle: 'normal' | 'italic';
-    fontWeight: number;
+    fontWeight: 'normal' | 'bold' | 'bolder' | 'lighter' | '100' | '200' | '300' |
+                '400' | '500' | '600' | '700' | '800' | '900';
     lineJoin: 'round';
     lineHeight: number;
     wordWrap?: boolean;

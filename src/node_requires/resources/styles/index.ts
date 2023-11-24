@@ -13,7 +13,7 @@ export const createAsset = (): IStyle => {
             halign: 'left',
             italic: false,
             size: 12,
-            weight: 400,
+            weight: '400',
             wrap: false,
             wrapPosition: 640,
             lineHeight: 16
