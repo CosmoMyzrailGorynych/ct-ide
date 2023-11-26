@@ -37,7 +37,9 @@
 asset-input
     .aButtonGroup.nml(if="{!opts.large}")
         button(onclick="{openSelector}" title="{voc.changeAsset}" class="{inline: opts.compact}")
-            img(if="{opts.assetid != -1 && opts.assetid}" src="{this.getThumbnail(currentAsset, false, false)}")
+            img(if="{opts.assetid != -1 && opts.assetid && !usesIcons(currentAsset)}" src="{this.getThumbnail(currentAsset, false, false)}")
+            svg.feather(if="{opts.assetid != -1 && opts.assetid && usesIcons(currentAsset)}")
+                use(xlink:href="#{getThumbnail(currentAsset)}")
             img(if="{opts.assetid == -1 || !opts.assetid}" src="data/img/notexture.png")
             span(if="{opts.assetid != -1 && opts.assetid !== void 0}") {getName(currentAsset)}
             span(if="{opts.assetid == -1 || opts.assetid === void 0}") {vocGlob.selectDialogue}
@@ -55,7 +57,9 @@ asset-input
             button.tiny(if="{(opts.assetid != -1 && opts.assetid !== void 0) && opts.allowclear}" title="{vocGlob.clear}" onclick="{clearAsset}")
                 svg.feather
                     use(xlink:href="#x")
-        img(if="{opts.assetid != -1 && opts.assetid}" src="{getThumbnail(currentAsset, true, false)}")
+        img(if="{opts.assetid != -1 && opts.assetid && !usesIcons(currentAsset)}" src="{getThumbnail(currentAsset, true, false)}")
+        svg.feather(if="{opts.assetid != -1 && opts.assetid && usesIcons(currentAsset)}")
+            use(xlink:href="#{getThumbnail(currentAsset)}")
         img(if="{opts.assetid == -1 || !opts.assetid}" src="data/img/notexture.png")
         .dim(if="{opts.assetid != -1 && opts.assetid !== void 0}") {getName(currentAsset)}
         .aNotice(if="{opts.assetid == -1 || opts.assetid === void 0}") {vocGlob.selectDialogue}
@@ -78,6 +82,7 @@ asset-input
         this.resourceAPIs = require('./data/node_requires/resources');
         this.getThumbnail = this.resourceAPIs.getThumbnail;
         this.getName = this.resourceAPIs.getName;
+        this.usesIcons = this.resourceAPIs.areThumbnailsIcons;
 
         // eslint-disable-next-line eqeqeq
         if (this.opts.assetid && this.opts.assetid != -1) {
