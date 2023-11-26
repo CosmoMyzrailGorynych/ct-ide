@@ -1,4 +1,4 @@
-ctjsVersion: 4.0.0-next-2
+ctjsVersion: 4.0.0-next-3
 notes: /* empty */
 libs:
   keyboard: {}
@@ -142,6 +142,14 @@ assets:
     blendMode: normal
     animationFPS: 30
     playAnimationOnStart: false
+    behaviors: []
+    baseClass: AnimatedSprite
+    nineSliceSettings:
+      left: 16
+      top: 16
+      right: 16
+      bottom: 16
+    style: -1
   - name: Shoot
     uid: 97baf84a-32d3-450c-a52e-25a770565520
     origname: s97baf84a-32d3-450c-a52e-25a770565520.wav
@@ -652,6 +660,14 @@ assets:
             animationFPS: 5
             visible: true
             blendMode: normal
+            behaviors: []
+            baseClass: AnimatedSprite
+            nineSliceSettings:
+              left: 16
+              top: 16
+              right: 16
+              bottom: 16
+            style: -1
           - name: Cat_Falling
             untill: 0
             grid:
@@ -757,6 +773,14 @@ assets:
             visible: true
             blendMode: normal
             animationFPS: 30
+            behaviors: []
+            baseClass: AnimatedSprite
+            nineSliceSettings:
+              left: 16
+              top: 16
+              right: 16
+              bottom: 16
+            style: -1
           - name: Cat_Death
             untill: 0
             grid:
@@ -824,6 +848,14 @@ assets:
             blendMode: normal
             animationFPS: 30
             playAnimationOnStart: false
+            behaviors: []
+            baseClass: AnimatedSprite
+            nineSliceSettings:
+              left: 16
+              top: 16
+              right: 16
+              bottom: 16
+            style: -1
           - name: CatDamage
             uid: 1cc5a5e0-765c-4bba-a006-8b597802ace6
             origname: s1cc5a5e0-765c-4bba-a006-8b597802ace6.wav
@@ -963,6 +995,14 @@ assets:
         blendMode: normal
         animationFPS: 30
         playAnimationOnStart: false
+        behaviors: []
+        baseClass: AnimatedSprite
+        nineSliceSettings:
+          left: 16
+          top: 16
+          right: 16
+          bottom: 16
+        style: -1
       - name: Bullet
         untill: 0
         grid:
@@ -1088,6 +1128,14 @@ assets:
         blendMode: normal
         animationFPS: 30
         playAnimationOnStart: false
+        behaviors: []
+        baseClass: AnimatedSprite
+        nineSliceSettings:
+          left: 16
+          top: 16
+          right: 16
+          bottom: 16
+        style: -1
       - name: Door_Base
         untill: 0
         grid:
@@ -1171,6 +1219,14 @@ assets:
         blendMode: normal
         animationFPS: 30
         playAnimationOnStart: false
+        behaviors: []
+        baseClass: AnimatedSprite
+        nineSliceSettings:
+          left: 16
+          top: 16
+          right: 16
+          bottom: 16
+        style: -1
       - name: SpikeTrap
         untill: 0
         grid:
@@ -1228,6 +1284,14 @@ assets:
         blendMode: normal
         animationFPS: 30
         playAnimationOnStart: false
+        behaviors: []
+        baseClass: AnimatedSprite
+        nineSliceSettings:
+          left: 16
+          top: 16
+          right: 16
+          bottom: 16
+        style: -1
       - name: Medkit
         depth: 0
         texture: c61a44b6-1f4d-43c2-9356-7288658947a9
@@ -1253,6 +1317,14 @@ assets:
         blendMode: normal
         animationFPS: 30
         playAnimationOnStart: false
+        behaviors: []
+        baseClass: AnimatedSprite
+        nineSliceSettings:
+          left: 16
+          top: 16
+          right: 16
+          bottom: 16
+        style: -1
       - name: Medkit
         untill: 0
         grid:
@@ -1293,6 +1365,14 @@ assets:
         blendMode: normal
         animationFPS: 30
         playAnimationOnStart: false
+        behaviors: []
+        baseClass: AnimatedSprite
+        nineSliceSettings:
+          left: 16
+          top: 16
+          right: 16
+          bottom: 16
+        style: -1
       - name: Checkpoint
         untill: 0
         grid:
@@ -1363,6 +1443,14 @@ assets:
             blendMode: normal
             animationFPS: 30
             playAnimationOnStart: false
+            behaviors: []
+            baseClass: AnimatedSprite
+            nineSliceSettings:
+              left: 16
+              top: 16
+              right: 16
+              bottom: 16
+            style: -1
           - name: Crate
             untill: 0
             grid:
@@ -1430,6 +1518,14 @@ assets:
             blendMode: normal
             animationFPS: 30
             playAnimationOnStart: false
+            behaviors: []
+            baseClass: AnimatedSprite
+            nineSliceSettings:
+              left: 16
+              top: 16
+              right: 16
+              bottom: 16
+            style: -1
           - name: HazardousTube_Debris
             untill: 0
             grid:
@@ -1478,6 +1574,14 @@ assets:
             blendMode: normal
             animationFPS: 30
             playAnimationOnStart: false
+            behaviors: []
+            baseClass: AnimatedSprite
+            nineSliceSettings:
+              left: 16
+              top: 16
+              right: 16
+              bottom: 16
+            style: -1
           - name: HazardousTube
             depth: 0
             texture: 1f0fbe96-38aa-4db4-a011-c0cf34b91d00
@@ -1507,6 +1611,14 @@ assets:
             blendMode: normal
             animationFPS: 30
             playAnimationOnStart: false
+            behaviors: []
+            baseClass: AnimatedSprite
+            nineSliceSettings:
+              left: 16
+              top: 16
+              right: 16
+              bottom: 16
+            style: -1
           - name: HazardousTube
             untill: 0
             grid:
@@ -1574,6 +1686,14 @@ assets:
         blendMode: normal
         animationFPS: 30
         playAnimationOnStart: false
+        behaviors: []
+        baseClass: AnimatedSprite
+        nineSliceSettings:
+          left: 16
+          top: 16
+          right: 16
+          bottom: 16
+        style: -1
       - name: Powerup
         uid: d06c5cd6-41eb-42c0-9caa-3306e2558b19
         origname: sd06c5cd6-41eb-42c0-9caa-3306e2558b19.wav
@@ -1595,19 +1715,19 @@ assets:
         events:
           - lib: core
             arguments: {}
-            code: this.blinkTimer = 0
+            code: '@blinkTimer = 0'
             eventKey: OnCreate
           - lib: core
             arguments: {}
             code: |-
-              this.blinkTimer += u.delta
-              if this.blinkTimer > ct.speed / 2
-                  this.alpha = 0
+              @blinkTimer += u.delta
+              if @blinkTimer > settings.targetFps / 2
+                  @alpha = 0
               else 
-                  this.alpha = 1
+                  @alpha = 1
 
-              if this.blinkTimer > ct.speed
-                  this.blinkTimer = 0
+              if @blinkTimer > settings.targetFps
+                  @blinkTimer = 0
             eventKey: OnDraw
           - eventKey: OnPointerClick
             code: |-
@@ -1622,6 +1742,14 @@ assets:
         blendMode: normal
         animationFPS: 30
         playAnimationOnStart: false
+        behaviors: []
+        baseClass: AnimatedSprite
+        nineSliceSettings:
+          left: 16
+          top: 16
+          right: 16
+          bottom: 16
+        style: -1
       - name: StartButton
         untill: 0
         grid:
@@ -1749,6 +1877,14 @@ assets:
         blendMode: normal
         animationFPS: 30
         playAnimationOnStart: false
+        behaviors: []
+        baseClass: AnimatedSprite
+        nineSliceSettings:
+          left: 16
+          top: 16
+          right: 16
+          bottom: 16
+        style: -1
       - name: UI_InGame
         onstep: ''
         onleave: ''
@@ -1800,6 +1936,7 @@ assets:
         simulate: true
         isUi: true
         follow: -1
+        behaviors: []
       - name: Heart
         untill: 0
         grid:
@@ -4021,6 +4158,7 @@ assets:
         simulate: true
         isUi: !<tag:yaml.org,2002:js/undefined> ''
         follow: -1
+        behaviors: []
       - name: Level_02
         onstep: ''
         ondraw: ''
@@ -8468,6 +8606,7 @@ assets:
         simulate: true
         isUi: !<tag:yaml.org,2002:js/undefined> ''
         follow: -1
+        behaviors: []
       - name: Level_03
         onstep: ''
         ondraw: ''
@@ -11843,6 +11982,7 @@ assets:
         simulate: true
         isUi: !<tag:yaml.org,2002:js/undefined> ''
         follow: -1
+        behaviors: []
   - name: MainMenu
     oncreate: ''
     onstep: ''
@@ -11911,3 +12051,4 @@ assets:
     simulate: true
     isUi: !<tag:yaml.org,2002:js/undefined> ''
     follow: -1
+    behaviors: []
