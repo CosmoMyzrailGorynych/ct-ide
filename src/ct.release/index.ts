@@ -73,7 +73,7 @@ export const settings = {
             updateViewport();
         }
     },
-    /** A target number of frames per second. It can be interpreted as a second in timers. */
+    /** A target number of frames per second. */
     get targetFps(): number {
         return pixiApp.ticker.maxFPS;
     },
@@ -105,6 +105,10 @@ export const settings = {
         updateViewport();
     },
 
+    /**
+     * A boolean property that can be changed to exit or enter fullscreen mode.
+     * In web builds, you can only change this value in pointer events of your templates.
+     */
     get fullscreen(): boolean {
         return getIsFullscreen();
     },
