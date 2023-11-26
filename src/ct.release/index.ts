@@ -51,6 +51,8 @@ setInterval(function cleanDeadPool() {
 // eslint-disable-next-line prefer-destructuring
 export const meta: ExportedMeta = [/*!@projectmeta@*/][0];
 
+let currentViewMode: viewMode = '/*@viewMode@*/' as viewMode;
+
 /**
  * An object that houses render settings for the game.
  */
@@ -86,14 +88,18 @@ export const settings = {
      * of the screen, and will be scaled by whole numbers (x2, x3, x4 and so on).
      * * `expand` — the viewport will fill the whole screen. The camera will
      * expand to accommodate the new area.
-     * * `expandViewport` — same as `expand` plus simple camera management
-     * so new area spans around the old camera bounds.
      * * `scaleFit` — the viewport will proportionally fill the screen, leaving letterboxes
      * around the base viewport. The resolution is changed to match the screen.
      * * `scaleFill` — the viewport fills the screen, expanding the camera to avoid letterboxing.
      * The resolution is changed to match the screen.
      */
-    viewMode: '/*@viewMode@*/' as viewMode,
+    get viewMode(): viewMode {
+        return currentViewMode;
+    },
+    set viewMode(value: viewMode) {
+        currentViewMode = value;
+        updateViewport();
+    },
 
     get width(): number {
         return pixiApp.renderer.view.width;

@@ -23,7 +23,7 @@ declare interface IScript {
     code: string;
 }
 
-type viewMode = 'asIs' | 'fastScale' | 'fastScaleInteger' | 'expand' | 'expandViewport' | 'scaleFit' | 'scaleFill';
+type viewMode = 'asIs' | 'fastScale' | 'fastScaleInteger' | 'expand' | 'scaleFit' | 'scaleFill';
 
 declare type UserDefinedField = {
     name: string;

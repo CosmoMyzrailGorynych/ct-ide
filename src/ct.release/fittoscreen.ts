@@ -14,6 +14,7 @@ const positionCanvas = function positionCanvas(mode: viewMode, scale: number): v
         canv.style.top = '50%';
         canv.style.left = '50%';
     } else if (mode === 'expand' || mode === 'scaleFill') {
+        canv.style.transform = '';
         canv.style.position = 'static';
         canv.style.top = 'unset';
         canv.style.left = 'unset';
@@ -64,6 +65,8 @@ export const updateViewport = (): void => {
     } else {
         canvasWidth = roomsLib.current.viewWidth;
         canvasHeight = roomsLib.current.viewHeight;
+        cameraWidth = canvasWidth;
+        cameraHeight = canvasHeight;
     }
 
     pixiApp.renderer.resize(canvasWidth, canvasHeight);
