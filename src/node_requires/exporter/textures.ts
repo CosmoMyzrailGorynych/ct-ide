@@ -154,7 +154,7 @@ const drawAtlasFromBin = (bin: packerBin, binInd: number) => {
         meta: {
             app: 'https://ctjs.rocks/',
             version: process.versions.ctjs,
-            image: `a${binInd}.png`,
+            image: `a${binInd}.webp`,
             format: 'RGBA8888',
             size: {
                 w: bin.width,
@@ -351,21 +351,21 @@ export const packImages = async (
     const writePromises = [];
     const packer = getPackerFor(textures, spritedTextures);
 
-    // Output all the atlases into JSON and PNG files
+    // Output all the atlases into JSON and WebP files
     const atlases: string[] = [];
     packer.bins.map(drawAtlasFromBin).forEach((atlas: exportedTextureAtlas, ind: number) => {
-        const atlasBase64 = atlas.canvas.toDataURL().replace(/^data:image\/\w+;base64,/, '');
+        const atlasBase64 = atlas.canvas.toDataURL('image/webp').replace(/^data:image\/\w+;base64,/, '');
         const buf = Buffer.from(atlasBase64, 'base64');
         if (production) {
-            const pngHash = revHash(buf);
-            atlas.json.meta.image = `a${ind}.${pngHash}.png`;
+            const imageHash = revHash(buf);
+            atlas.json.meta.image = `a${ind}.${imageHash}.webp`;
             const json = JSON.stringify(atlas.json),
                   jsonHash = revHash(json);
-            writePromises.push(fs.writeFile(`${writeDir}/img/a${ind}.${pngHash}.png`, buf));
+            writePromises.push(fs.writeFile(`${writeDir}/img/a${ind}.${imageHash}.webp`, buf));
             writePromises.push(fs.writeFile(`${writeDir}/img/a${ind}.${jsonHash}.json`, json));
             atlases.push(`./img/a${ind}.${jsonHash}.json`);
         } else {
-            writePromises.push(fs.writeFile(`${writeDir}/img/a${ind}.png`, buf));
+            writePromises.push(fs.writeFile(`${writeDir}/img/a${ind}.webp`, buf));
             writePromises.push(fs.outputJSON(`${writeDir}/img/a${ind}.json`, atlas.json));
             atlases.push(`./img/a${ind}.json`);
         }
@@ -383,19 +383,19 @@ export const packImages = async (
         }
         const ind = packer.bins.length + btInd;
         const atlas = drawAtlasFromBin(bigPacker.bins[0], ind);
-        const atlasBase64 = atlas.canvas.toDataURL().replace(/^data:image\/\w+;base64,/, '');
+        const atlasBase64 = atlas.canvas.toDataURL('image/webp').replace(/^data:image\/\w+;base64,/, '');
         const buf = Buffer.from(atlasBase64, 'base64');
         if (production) {
-            const pngHash = revHash(buf);
-            atlas.json.meta.image = `a${ind}.${pngHash}.png`;
+            const imageHash = revHash(buf);
+            atlas.json.meta.image = `a${ind}.${imageHash}.webp`;
             const json = JSON.stringify(atlas.json),
                   jsonHash = revHash(json);
             writePromises.push(fs.outputJSON(`${writeDir}/img/a${ind}.${jsonHash}.json`, atlas.json));
-            writePromises.push(fs.writeFile(`${writeDir}/img/a${ind}.${pngHash}.png`, buf));
+            writePromises.push(fs.writeFile(`${writeDir}/img/a${ind}.${imageHash}.webp`, buf));
             atlases.push(`./img/a${ind}.${jsonHash}.json`);
         } else {
             writePromises.push(fs.outputJSON(`${writeDir}/img/a${ind}.json`, atlas.json));
-            writePromises.push(fs.writeFile(`${writeDir}/img/a${ind}.png`, buf));
+            writePromises.push(fs.writeFile(`${writeDir}/img/a${ind}.webp`, buf));
             atlases.push(`./img/a${ind}.json`);
         }
     });
@@ -409,15 +409,15 @@ export const packImages = async (
         atlas.width = tex.width;
         atlas.height = tex.height;
         cx.drawImage(img, 0, 0);
-        const buf = Buffer.from(atlas.toDataURL().replace(/^data:image\/\w+;base64,/, ''), 'base64');
+        const buf = Buffer.from(atlas.toDataURL('image/webp').replace(/^data:image\/\w+;base64,/, ''), 'base64');
         let sourceFilename;
         if (production) {
-            const pngHash = revHash(buf);
-            sourceFilename = `./img/t${tiledCounter}.${pngHash}.png`;
-            writePromises.push(fs.writeFile(`${writeDir}/img/t${tiledCounter}.${pngHash}.png`, buf));
+            const imageHash = revHash(buf);
+            sourceFilename = `./img/t${tiledCounter}.${imageHash}.webp`;
+            writePromises.push(fs.writeFile(`${writeDir}/img/t${tiledCounter}.${imageHash}.webp`, buf));
         } else {
-            sourceFilename = `./img/t${tiledCounter}.png`;
-            writePromises.push(fs.writeFile(`${writeDir}/img/t${tiledCounter}.png`, buf));
+            sourceFilename = `./img/t${tiledCounter}.webp`;
+            writePromises.push(fs.writeFile(`${writeDir}/img/t${tiledCounter}.webp`, buf));
         }
         tiledImages[tex.name] = {
             source: sourceFilename,
