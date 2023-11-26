@@ -72,10 +72,10 @@ export class CtTimer {
      * @type {number}
      */
     get time(): number {
-        return this[ctTimerTime] * 1000 / settings.speed;
+        return this[ctTimerTime] * 1000 / settings.targetFps;
     }
     set time(newTime: number) {
-        this[ctTimerTime] = newTime / 1000 * settings.speed;
+        this[ctTimerTime] = newTime / 1000 * settings.targetFps;
     }
 
     /**

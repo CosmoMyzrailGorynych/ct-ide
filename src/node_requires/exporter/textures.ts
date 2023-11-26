@@ -354,7 +354,7 @@ export const packImages = async (
     // Output all the atlases into JSON and WebP files
     const atlases: string[] = [];
     packer.bins.map(drawAtlasFromBin).forEach((atlas: exportedTextureAtlas, ind: number) => {
-        const atlasBase64 = atlas.canvas.toDataURL('image/webp').replace(/^data:image\/\w+;base64,/, '');
+        const atlasBase64 = atlas.canvas.toDataURL('image/webp', 1).replace(/^data:image\/\w+;base64,/, '');
         const buf = Buffer.from(atlasBase64, 'base64');
         if (production) {
             const imageHash = revHash(buf);
@@ -383,7 +383,7 @@ export const packImages = async (
         }
         const ind = packer.bins.length + btInd;
         const atlas = drawAtlasFromBin(bigPacker.bins[0], ind);
-        const atlasBase64 = atlas.canvas.toDataURL('image/webp').replace(/^data:image\/\w+;base64,/, '');
+        const atlasBase64 = atlas.canvas.toDataURL('image/webp', 1).replace(/^data:image\/\w+;base64,/, '');
         const buf = Buffer.from(atlasBase64, 'base64');
         if (production) {
             const imageHash = revHash(buf);
@@ -409,7 +409,7 @@ export const packImages = async (
         atlas.width = tex.width;
         atlas.height = tex.height;
         cx.drawImage(img, 0, 0);
-        const buf = Buffer.from(atlas.toDataURL('image/webp').replace(/^data:image\/\w+;base64,/, ''), 'base64');
+        const buf = Buffer.from(atlas.toDataURL('image/webp', 1).replace(/^data:image\/\w+;base64,/, ''), 'base64');
         let sourceFilename;
         if (production) {
             const imageHash = revHash(buf);
