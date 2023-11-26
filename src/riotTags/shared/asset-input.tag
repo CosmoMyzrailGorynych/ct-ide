@@ -85,7 +85,7 @@ asset-input
         }
 
         this.openAsset = e => {
-            window.orders.trigger('openAsset', `${this.opts.assettype}/${this.currentAsset.uid}`);
+            window.orders.trigger('openAsset', this.currentAsset.uid);
             e.stopPropagation();
         };
         this.openSelector = e => {
