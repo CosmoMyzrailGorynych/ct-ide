@@ -105,34 +105,6 @@ export const settings = {
         updateViewport();
     },
 
-    get width(): number {
-        return pixiApp.renderer.view.width;
-    },
-    /**
-     * Resizes the drawing canvas and viewport to the given value in pixels.
-     * When used with ct.fittoscreen, can be used to enlarge/shrink the viewport.
-     * @param {number} value New width in pixels
-     */
-    set width(value: number) {
-        cameraM.width = value;
-        if (roomsM.current) {
-            updateViewport();
-        }
-    },
-    get height(): number {
-        return pixiApp.renderer.view.height;
-    },
-    /**
-     * Resizes the drawing canvas and viewport to the given value in pixels.
-     * When used with ct.fittoscreen, can be used to enlarge/shrink the viewport.
-     * @param {number} value New height in pixels
-     */
-    set height(value: number) {
-        cameraM.height = value;
-        if (roomsM.current) {
-            updateViewport();
-        }
-    },
     get fullscreen(): boolean {
         return getIsFullscreen();
     },
