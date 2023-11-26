@@ -68,10 +68,10 @@ export const settings = {
         }
     },
     /** A target number of frames per second. It can be interpreted as a second in timers. */
-    get speed(): number {
+    get targetFps(): number {
         return pixiApp.ticker.maxFPS;
     },
-    set speed(value: number) {
+    set targetFps(value: number) {
         pixiApp.ticker.maxFPS = value;
     },
     /**
@@ -160,7 +160,7 @@ export let pixiApp: pixiMod.Application;
     if (!pixiApp.renderer.options.antialias) {
         PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
     }
-    settings.speed = [/*!@maxfps@*/][0] || 60;
+    settings.targetFps = [/*!@maxfps@*/][0] || 60;
     // eslint-disable-next-line prefer-destructuring
     settings.highDensity = [/*!@highDensity@*/][0];
     document.getElementById('ct').appendChild(pixiApp.view as HTMLCanvasElement);
@@ -201,8 +201,8 @@ let loading: Promise<void>;
 
     const loop = () => {
         const {ticker} = pixiApp;
-        uM.delta = ticker.deltaMS / (1000 / (ticker.maxFPS || 60));
-        uM.deltaUi = ticker.elapsedMS / (1000 / (ticker.maxFPS || 60));
+        uM.delta = ticker.deltaMS / (1000 / (settings.targetFps || 60));
+        uM.deltaUi = ticker.elapsedMS / (1000 / (settings.targetFps || 60));
         inputsM.updateActions();
         timerM.updateTimers();
         /*!%beforeframe%*/
