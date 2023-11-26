@@ -52,6 +52,7 @@ setInterval(function cleanDeadPool() {
 export const meta: ExportedMeta = [/*!@projectmeta@*/][0];
 
 let currentViewMode: viewMode = '/*@viewMode@*/' as viewMode;
+let currentHighDPIMode = Boolean([/*!@highDensity@*/][0]);
 
 /**
  * An object that houses render settings for the game.
@@ -59,12 +60,15 @@ let currentViewMode: viewMode = '/*@viewMode@*/' as viewMode;
 export const settings = {
     /** If set to true, enables retina (high-pixel density) rendering. */
     get highDensity(): boolean {
-        return (pixiApp.renderer as pixiMod.Renderer).autoDensity;
+        return currentHighDPIMode;
     },
     set highDensity(value: boolean) {
-        // Faulty pixi.js typings, you CAN change autoDensity
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (pixiApp.renderer as any).autoDensity = value;
+        currentHighDPIMode = value;
+        if (currentHighDPIMode) {
+            PIXI.settings.RESOLUTION = window.devicePixelRatio;
+        } else {
+            PIXI.settings.RESOLUTION = 1;
+        }
         if (roomsM.current) {
             updateViewport();
         }
@@ -149,9 +153,11 @@ export let pixiApp: pixiMod.Application;
         height: [/*!@startheight@*/][0] as number,
         antialias: ![/*!@pixelatedrender@*/][0],
         powerPreference: 'high-performance' as WebGLPowerPreference,
+        autoDensity: true,
         sharedTicker: false,
         backgroundAlpha: [/*@transparent@*/][0] ? 0 : 1
     };
+    PIXI.settings.RESOLUTION = currentHighDPIMode ? window.devicePixelRatio : 1;
     try {
         pixiApp = new PIXI.Application(pixiAppSettings);
     } catch (e) {
@@ -168,7 +174,6 @@ export let pixiApp: pixiMod.Application;
     }
     settings.targetFps = [/*!@maxfps@*/][0] || 60;
     // eslint-disable-next-line prefer-destructuring
-    settings.highDensity = [/*!@highDensity@*/][0];
     document.getElementById('ct').appendChild(pixiApp.view as HTMLCanvasElement);
 }
 
