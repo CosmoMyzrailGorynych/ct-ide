@@ -8,10 +8,13 @@ libs:
   tween: {}
   transition: {}
   random: {}
+  pointer:
+    preventdefault: false
+    startlocked: false
 actions:
   - name: Poof
     methods:
-      - code: touch.Any
+      - code: pointer.Primary
 starting: 0
 settings:
   export:
@@ -380,7 +383,7 @@ assets:
         code: |-
           if (!this.pressed) {
               this.pressed = true;
-              ct.tween.add({
+              tween.add({
                   obj: this.getRoom(),
                   fields: {
                       alpha: 0
@@ -389,7 +392,7 @@ assets:
                   useUiDelta: true
               })
               .then(() => {
-                  ct.tween.add({
+                  tween.add({
                       obj: pixiApp.ticker,
                       fields: {
                           speed: 1
@@ -593,7 +596,7 @@ assets:
     thumbnail: 332dab64a25a
     gridX: 64
     gridY: 64
-    lastmod: 1671978730193
+    lastmod: 1701064335232
     extends: {}
     events:
       - lib: core
@@ -608,7 +611,7 @@ assets:
           });
 
           // Wind up the timer for tube creation
-          this.obstacleTimer = ct.speed * 5;
+          this.obstacleTimer = settings.targetFps * 5;
 
           // Start a transition
           transition.circleIn(500, 0x446ADB);
@@ -627,7 +630,7 @@ assets:
           // If the timer is up…
           if (this.obstacleTimer <= 0) {
               // Wind it again
-              this.obstacleTimer += ct.speed * 2;
+              this.obstacleTimer += settings.targetFps * 2;
 
               // Create two tubes
               var tube1 = templates.copy('Tube', camera.right + 250, camera.bottom - 130); // At the bottom of the camera
@@ -721,7 +724,7 @@ assets:
     thumbnail: a891fb029f6b
     gridX: 108
     gridY: 64
-    lastmod: 1661071540211
+    lastmod: 1701063892309
     extends: {}
     events: []
     type: room
@@ -740,48 +743,47 @@ assets:
     copies:
       - x: 128
         'y': 128
-        uid: d4c02f18-93d0-4ad4-8e5b-62fb9a0f0af9
-        tx: 0.75
-        ty: 0.75
-        exts: {}
-        customProperties: {}
         opacity: 1
         tint: 16777215
-        rotation: 0
         scale:
           x: 1
           'y': 1
+        rotation: 0
+        uid: d4c02f18-93d0-4ad4-8e5b-62fb9a0f0af9
+        exts: {}
+        customProperties: {}
       - x: 960
         'y': 128
+        opacity: 1
+        tint: 16777215
+        scale:
+          x: 1
+          'y': 1
+        rotation: 0
         uid: 6a532c9b-7e32-4070-b72b-86012306c7fb
         exts: {}
         customProperties: {}
+      - x: 512
+        'y': 960
         opacity: 1
         tint: 16777215
-        rotation: 0
         scale:
           x: 1
           'y': 1
-      - x: 512
-        'y': 960
+        rotation: 0
         uid: ba73f80b-0995-40b6-94d5-3e82712b5ecf
         exts: {}
         customProperties: {}
-        opacity: 1
-        tint: 16777215
-        rotation: 0
-        scale:
-          x: 1
-          'y': 1
     tiles:
       - depth: -10
         tiles: []
         extends: {}
+        hidden: false
     uid: dd0ac376-10c7-4619-9593-9c2c4e48f46a
     thumbnail: 9c2c4e48f46a
     gridX: 64
     gridY: 64
-    lastmod: 1657026628736
+    lastmod: 1701063888331
     events: []
     type: room
     extends: {}
@@ -828,14 +830,14 @@ assets:
     thumbnail: 7d775aefe864
     gridX: 540
     gridY: 64
-    lastmod: 1661071531476
+    lastmod: 1701063882563
     events:
       - lib: core
         arguments: {}
         code: |-
           this.alpha = 0;
 
-          ct.tween.add({
+          tween.add({
               obj: this,
               fields: {
                   alpha: 1
@@ -901,14 +903,14 @@ assets:
     thumbnail: e38a4cd0cc21
     gridX: 540
     gridY: 64
-    lastmod: 1661071527520
+    lastmod: 1701063875636
     events:
       - lib: core
         arguments: {}
         code: |-
           this.alpha = 0;
 
-          ct.tween.add({
+          tween.add({
               obj: this,
               fields: {
                   alpha: 1
