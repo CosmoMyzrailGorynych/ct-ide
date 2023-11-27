@@ -27,7 +27,7 @@
                 fields: options.fields || {},
                 curve: options.curve || tween.ease,
                 duration: options.duration || 1000,
-                timer: new CtTimer(this.duration, false, options.useUiDelta || false)
+                timer: new CtTimer(options.duration, false, options.useUiDelta || false)
             };
             const promise = new Promise((resolve, reject) => {
                 twoon.resolve = resolve;
