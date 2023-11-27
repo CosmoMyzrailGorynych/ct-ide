@@ -436,7 +436,8 @@ const Copy = function (
     this._hspeed = 0;
     this._vspeed = 0;
     this._zeroDirection = 0;
-    this.speed = this.direction = this.gravity = 0;
+    this.gravity = 0;
+    // this.speed = this.direction = 0
     this.gravityDir = 90;
     this.zIndex = 0;
     this.timer1 = this.timer2 = this.timer3 = this.timer4 = this.timer5 = this.timer6 = 0;
@@ -486,7 +487,6 @@ const mix = (
     exts: Record<string, unknown>
 // eslint-disable-next-line max-params
 ) => {
-    Copy.apply(target, [x, y, template, parent, exts]);
     const proto = CopyProto;
     const properties = Object.getOwnPropertyNames(proto);
     for (const y in properties) {
@@ -498,6 +498,7 @@ const mix = (
             );
         }
     }
+    Copy.apply(target, [x, y, template, parent, exts]);
 };
 
 // eslint-disable-next-line complexity, max-lines-per-function
