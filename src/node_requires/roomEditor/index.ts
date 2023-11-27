@@ -458,7 +458,7 @@ class RoomEditor extends PIXI.Application {
     }
     tickBackgrounds(): void {
         for (const background of this.backgrounds) {
-            background.tick(this.ticker.deltaTime);
+            background.tick(this.ticker.elapsedMS / 1000);
         }
     }
     tickCopies(): void {

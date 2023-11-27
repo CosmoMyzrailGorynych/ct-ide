@@ -1,6 +1,5 @@
 import uLib from './u';
 import roomsLib from './rooms';
-import {settings} from '.';
 
 const ctTimerTime = Symbol('time');
 const ctTimerRoomUid = Symbol('roomUid');
@@ -38,7 +37,7 @@ export class CtTimer {
         this.name = name && name.toString();
         this.isUi = uiDelta;
         this[ctTimerTime] = 0;
-        this[ctTimerTimeLeftOriginal] = timeMs;
+        this[ctTimerTimeLeftOriginal] = timeMs / 1000;
         this.timeLeft = this[ctTimerTimeLeftOriginal];
         this.promise = new Promise((resolve, reject) => {
             this[promiseResolve] = resolve;
@@ -68,14 +67,14 @@ export class CtTimer {
     }
 
     /**
-     * The time passed on this timer, in seconds
+     * The time passed on this timer, **in seconds**
      * @type {number}
      */
     get time(): number {
-        return this[ctTimerTime] * 1000 / settings.targetFps;
+        return this[ctTimerTime];
     }
     set time(newTime: number) {
-        this[ctTimerTime] = newTime / 1000 * settings.targetFps;
+        this[ctTimerTime] = newTime;
     }
 
     /**
@@ -91,11 +90,11 @@ export class CtTimer {
             this.remove();
             return;
         }
-        this[ctTimerTime] += this.isUi ? uLib.deltaUi : uLib.delta;
+        this[ctTimerTime] += this.isUi ? uLib.timeUi : uLib.time;
         if (roomsLib.current.uid !== this[ctTimerRoomUid] && this[ctTimerRoomUid] !== null) {
             this.reject({
-                info: 'Room switch',
-                from: 'ct.timer'
+                info: 'Room has been switched',
+                from: 'timer'
             }); // Reject if the room was switched
         }
 

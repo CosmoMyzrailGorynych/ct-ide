@@ -353,13 +353,13 @@ export const CopyProto: Partial<BasicCopy> = {
     },
     move(this: BasicCopy): void {
         if (this.gravity) {
-            this.hspeed += this.gravity * uLib.delta *
+            this.hspeed += this.gravity * uLib.time *
                     Math.cos(this.gravityDir * Math.PI / 180);
-            this.vspeed += this.gravity * uLib.delta *
+            this.vspeed += this.gravity * uLib.time *
                     Math.sin(this.gravityDir * Math.PI / 180);
         }
-        this.x += this.hspeed * uLib.delta;
-        this.y += this.vspeed * uLib.delta;
+        this.x += this.hspeed * uLib.time;
+        this.y += this.vspeed * uLib.time;
     },
     addSpeed(this: BasicCopy, spd: number, dir: number): void {
         this.hspeed += spd * Math.cos(dir * Math.PI / 180);

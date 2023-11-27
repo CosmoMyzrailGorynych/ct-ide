@@ -182,7 +182,7 @@ let loading: Promise<void>;
         deadPool.push(copy);
     };
     const manageCamera = () => {
-        cameraM.update(uM.deltaUi);
+        cameraM.update(uM.timeUi);
         cameraM.manageStage();
     };
 
@@ -190,6 +190,8 @@ let loading: Promise<void>;
         const {ticker} = pixiApp;
         uM.delta = ticker.deltaMS / (1000 / (settings.targetFps || 60));
         uM.deltaUi = ticker.elapsedMS / (1000 / (settings.targetFps || 60));
+        uM.time = ticker.deltaMS / 1000;
+        uM.timeUi = uM.timeUI = ticker.elapsedMS / 1000;
         inputsM.updateActions();
         timerM.updateTimers();
         /*!%beforeframe%*/

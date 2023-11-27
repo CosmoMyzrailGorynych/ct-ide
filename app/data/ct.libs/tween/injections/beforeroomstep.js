@@ -10,7 +10,7 @@
             tween.tweens.splice(i, 1);
             continue;
         }
-        let a = twoon.timer.time / twoon.duration;
+        let a = twoon.timer.time * 1000 / twoon.duration;
         if (a > 1) {
             a = 1;
         }

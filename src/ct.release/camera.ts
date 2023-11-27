@@ -66,14 +66,13 @@ declare var PIXI: typeof pixiMod;
  * @property {number} shakeMax The maximum possible value for the `shake` property
  * to protect players from losing their monitor, in `shake` units. Default is 10.
  */
-const shakeCamera = function shakeCamera(camera: Camera, delta: number) {
-    const sec = delta / (PIXI.Ticker.shared.maxFPS || 60);
-    camera.shake -= sec * camera.shakeDecay;
+const shakeCamera = function shakeCamera(camera: Camera, time: number) {
+    camera.shake -= time * camera.shakeDecay;
     camera.shake = Math.max(0, camera.shake);
     if (camera.shakeMax) {
         camera.shake = Math.min(camera.shake, camera.shakeMax);
     }
-    const phaseDelta = sec * camera.shakeFrequency;
+    const phaseDelta = time * camera.shakeFrequency;
     camera.shakePhase += phaseDelta;
     // no logic in these constants
     // They are used to desync fluctuations and remove repetitive circular movements
@@ -244,11 +243,11 @@ export class Camera extends PIXI.DisplayObject {
 
     /**
      * Updates the position of the camera
-     * @param delta A delta value between the last two frames.
-     * This is usually ct.delta.
+     * @param time Time between the last two frames, in seconds.
+     * This is usually `u.time`.
      */
-    update(delta: number): void {
-        shakeCamera(this, delta);
+    update(time: number): void {
+        shakeCamera(this, time);
         // Check if we've been following a copy that is now killed
         if (this.follow && (copyTypeSymbol in this.follow) && (this.follow as BasicCopy).kill) {
             this.follow = false;
@@ -262,8 +261,8 @@ export class Camera extends PIXI.DisplayObject {
             followCamera(this);
         }
 
-        // The speed of drift movement
-        const speed = this.drift ? Math.min(1, (1 - this.drift) * delta) : 1;
+        // The speed of drift movement. 60 is a constant by purpose.
+        const speed = this.drift ? Math.min(1, (1 - this.drift) * time / 60) : 1;
         // Perform drift motion
         this.x = this.targetX * speed + this.x * (1 - speed);
         this.y = this.targetY * speed + this.y * (1 - speed);

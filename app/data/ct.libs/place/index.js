@@ -962,10 +962,10 @@ const place = (function ctPlace() {
     Object.defineProperty(templates.CopyProto, 'moveContinuous', {
         value: function (cgroup, precision) {
             if (this.gravity) {
-                this.hspeed += this.gravity * u.delta * Math.cos(this.gravityDir * Math.PI / 180);
-                this.vspeed += this.gravity * u.delta * Math.sin(this.gravityDir * Math.PI / 180);
+                this.hspeed += this.gravity * u.time * Math.cos(this.gravityDir * Math.PI / 180);
+                this.vspeed += this.gravity * u.time * Math.sin(this.gravityDir * Math.PI / 180);
             }
-            return place.moveAlong(this, this.direction, this.speed * u.delta, cgroup, precision);
+            return place.moveAlong(this, this.direction, this.speed * u.time, cgroup, precision);
         }
     });
     Object.defineProperty(templates.CopyProto, 'moveBullet', {
@@ -976,13 +976,13 @@ const place = (function ctPlace() {
     Object.defineProperty(templates.CopyProto, 'moveContinuousByAxes', {
         value: function (cgroup, precision) {
             if (this.gravity) {
-                this.hspeed += this.gravity * u.delta * Math.cos(this.gravityDir * Math.PI / 180);
-                this.vspeed += this.gravity * u.delta * Math.sin(this.gravityDir * Math.PI / 180);
+                this.hspeed += this.gravity * u.time * Math.cos(this.gravityDir * Math.PI / 180);
+                this.vspeed += this.gravity * u.time * Math.sin(this.gravityDir * Math.PI / 180);
             }
             return place.moveByAxes(
                 this,
-                this.hspeed * u.delta,
-                this.vspeed * u.delta,
+                this.hspeed * u.time,
+                this.vspeed * u.time,
                 cgroup,
                 precision
             );

@@ -133,8 +133,8 @@ export class Background extends PIXI.TilingSprite {
         this.reposition();
     }
     onStep(): void {
-        this.shiftX += uLib.delta * this.movementX;
-        this.shiftY += uLib.delta * this.movementY;
+        this.shiftX += uLib.time * this.movementX;
+        this.shiftY += uLib.time * this.movementY;
     }
     /**
      * Updates the position of this background.

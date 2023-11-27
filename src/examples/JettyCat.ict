@@ -87,6 +87,8 @@ assets:
     events:
       - eventKey: OnPointerClick
         code: |-
+          console.log('press', this.pressed)
+
           if (!this.pressed) {
               this.pressed = true;
               transition.circleOut(1000, 0x446ADB)
@@ -119,15 +121,22 @@ assets:
     events:
       - lib: core
         arguments: {}
-        code: |-
-          this.speed = 10;
-          this.direction = 0;
+        code: >-
+          this.speed = 600;
 
-          this.gravityAcceleration = 2;
+          this.direction = 0; // The cat initially moves to the right, to
+          advance the level
+
+
+          this.gravityAcceleration = 120;
+
 
           camera.follow = this;
+
           camera.followY = false;
+
           camera.shiftX = 250;
+
 
           this.jet = emitters.follow(this, 'Jet');
         eventKey: OnCreate
@@ -136,7 +145,7 @@ assets:
         code: >-
           this.move();
 
-          this.angle = -this.vspeed * 0.3;
+          this.angle = -this.vspeed * 0.005;
 
 
           if (this.y > 1750 - 200 || // If the cat is below the ground minus its
@@ -151,9 +160,15 @@ assets:
           action: Poof
         lib: core
       - eventKey: OnActionDown
-        code: |-
+        code: >-
+          // Enable gravity if it is not yet active
+
           this.gravity = this.gravityAcceleration;
-          this.addSpeed(u.delta * this.gravityAcceleration * 2, -90);
+
+          // Add opposite directing force to thrust the cat up, twice as
+          powerful than gravity
+
+          this.addSpeed(u.time * this.gravityAcceleration * 2, -90);
         arguments:
           action: Poof
         lib: core
@@ -524,10 +539,10 @@ assets:
     events:
       - eventKey: OnCreate
         code: |-
-          this.gravity = 2;
+          this.gravity = 120;
 
           // Jump to the left
-          this.speed = 25;
+          this.speed = 25 * 60;
           this.direction = -135;
         arguments: {}
         lib: core
@@ -676,7 +691,7 @@ assets:
         shiftY: 0
         parallaxX: 1
         parallaxY: 1
-        movementX: -0.5
+        movementX: -30
         movementY: 0
         scaleX: 1
         scaleY: 1

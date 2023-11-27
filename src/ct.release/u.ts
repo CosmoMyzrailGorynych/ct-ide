@@ -11,31 +11,72 @@ declare var PIXI: typeof pixiMod;
  */
 const uLib = {
     /**
-     * A measure of how long a frame took time to draw, usually equal to 1 and larger on lags.
+     * A measure of how long the previous frame took time to draw,
+     * usually equal to 1 and larger on lags.
      * For example, if it is equal to 2, it means that the previous frame took twice as much time
      * compared to expected FPS rate.
-     *
-     * Use ct.delta to balance your movement and other calculations on different framerates by
-     * multiplying it with your reference value.
      *
      * Note that `this.move()` already uses it, so there is no need to premultiply
      * `this.speed` with it.
      *
      * **A minimal example:**
      * ```js
-     * this.x += this.windSpeed * ct.delta,
+     * this.x += this.windSpeed * u.delta;
      * ```
+     *
+     * @deprecated Use `u.time` instead.
      */
     delta: 1,
     /**
-     * A measure of how long a frame took time to draw, usually equal to 1 and larger on lags.
+     * A measure of how long the previous frame took time to draw, usually equal to 1
+     * and larger on lags.
      * For example, if it is equal to 2, it means that the previous frame took twice as much time
      * compared to expected FPS rate.
      *
      * This is a version for UI elements, as it is not affected by time scaling, and thus works well
      * both with slow-mo effects and game pause.
+     *
+     * @deprecated Use `u.timeUi` instead.
      */
     deltaUi: 1,
+    /**
+     * A measure of how long the previous frame took time to draw, in seconds.
+     * You can use it by multiplying it with your copies' speed and other values with velocity
+     * to get the same speed with different framerate, regardless of lags or max framerate cap.
+     *
+     * If you plan on changing your game's target framerate,
+     * you should use `u.time` instead of `u.delta`.
+     *
+     * **A minimal example:**
+     * ```js
+     * this.x += this.windSpeed * u.time;
+     * ```
+     */
+    time: 1 / 60,
+    /**
+     * A measure of how long the previous frame took time to draw, in seconds.
+     * You can use it by multiplying it with your copies' speed and other values with velocity
+     * to get the same speed with different framerate, regardless of lags or max framerate cap.
+     *
+     * This version ignores the effects of slow-mo effects and game pause,
+     * and thus is perfect for UI element.
+     *
+     * If you plan on changing your game's target framerate,
+     * you should use `u.timeUi` instead of `u.deltaUi`.
+     */
+    timeUi: 1 / 60,
+    /**
+     * A measure of how long the previous frame took time to draw, in seconds.
+     * You can use it by multiplying it with your copies' speed and other values with velocity
+     * to get the same speed with different framerate, regardless of lags or max framerate cap.
+     *
+     * This version ignores the effects of slow-mo effects and game pause,
+     * and thus is perfect for UI element.
+     *
+     * If you plan on changing your game's target framerate,
+     * you should use `u.timeUi` instead of `u.deltaUi`.
+     */
+    timeUI: 1 / 60,
     /**
      * Get the environment the game runs on.
      * @returns {string} Either 'ct.ide', or 'nw', or 'electron', or 'browser'.

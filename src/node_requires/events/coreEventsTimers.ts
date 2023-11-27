@@ -10,11 +10,11 @@ for (let i = 1; i < 7; i++) {
         codeTargets: ['thisOnStep'],
         inlineCodeTemplates: {
             thisOnStep: `
-if (this.timer${i} > 0 && this.timer${i} <= ((/*%%isUi%%*/ ? u.deltaUi : u.delta) / settings.targetFps)) {
+if (this.timer${i} > 0 && this.timer${i} <= (/*%%isUi%%*/ ? u.timeUi : u.time)) {
     this.timer${i} = 0;
     \n/*%%USER_CODE%%*/\n
 } else {
-    this.timer${i} -= (/*%%isUi%%*/ ? u.deltaUi : u.delta) / settings.targetFps;
+    this.timer${i} -= /*%%isUi%%*/ ? u.timeUi : u.time;
 }`
         },
         arguments: {
