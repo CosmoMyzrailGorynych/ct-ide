@@ -128,7 +128,7 @@ assets:
           advance the level
 
 
-          this.gravityAcceleration = 120;
+          this.gravityAcceleration = 2 * 60 * 60;
 
 
           camera.follow = this;
@@ -539,7 +539,7 @@ assets:
     events:
       - eventKey: OnCreate
         code: |-
-          this.gravity = 120;
+          this.gravity = 2 * 60 * 60;
 
           // Jump to the left
           this.speed = 25 * 60;

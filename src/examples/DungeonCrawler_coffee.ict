@@ -104,7 +104,7 @@ assets:
               distance = u.pdc this.x, this.y, cat.x, cat.y
               if this.aggroed
                   if distance > 7
-                      this.speed = 1.5
+                      this.speed = 90
                       this.direction = u.pdn this.x, this.y, cat.x, cat.y
                   else
                       this.speed = 0
@@ -584,7 +584,7 @@ assets:
                   camera.follow = this
                   camera.shiftY = -16
 
-                  @maxSpeed = 2
+                  @maxSpeed = 120
 
                   @invincibleTimer = 0
                 eventKey: OnCreate
@@ -968,24 +968,24 @@ assets:
             arguments: {}
             code: |-
               sounds.spawn('Shoot')
-              this.speed = 4
+              @speed = 240
             eventKey: OnCreate
           - lib: core
             arguments: {}
-            code: this.move()
+            code: '@move()'
             eventKey: OnStep
           - lib: core
             arguments: {}
             code: |-
               sounds.spawn 'SmallHit'
-              emitters.fire 'RedSparks', this.x, this.y
+              emitters.fire 'RedSparks', @x, @y
             eventKey: OnDestroy
           - lib: core
             arguments: {}
-            code: this.zIndex = this.y
+            code: '@zIndex = @y'
             eventKey: OnDraw
           - eventKey: collisionCGroup
-            code: this.kill = true
+            code: '@kill = true'
             arguments:
               group: Solid
             lib: place
