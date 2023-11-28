@@ -1,15 +1,24 @@
 const path = require('path'),
       fs = require('fs-extra');
 
+import {promptName} from '../promptName';
+
 const getThumbnail = (sound: ISound): string => (sound.isMusic ? 'music' : 'volume-2');
 
-const createNewSound = function (name?: string): ISound {
+const createNewSound = async (name?: string): Promise<ISound> => {
+    if (!name) {
+        const newName = await promptName('sound', 'New Sound');
+        if (!newName) {
+            // eslint-disable-next-line no-throw-literal
+            throw 'cancelled';
+        }
+        name = newName;
+    }
     const generateGUID = require('./../../generateGUID');
-    var id = generateGUID(),
-        slice = id.slice(-6);
+    var id = generateGUID();
     var newSound: ISound = {
         type: 'sound',
-        name: name || ('Sound_' + slice),
+        name,
         uid: id,
         isMusic: false,
         lastmod: Number(new Date()),

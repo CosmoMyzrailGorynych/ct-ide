@@ -1,12 +1,18 @@
 import generateGUID from '../../generateGUID';
 import {StylePreviewer} from '../preview/style';
+import {promptName} from '../promptName';
+import {outputCanvasToFile} from '../../utils/imageUtils';
 
-export const createAsset = (): IStyle => {
-    const id = generateGUID(),
-          slice = id.slice(-6);
+export const createAsset = async (): Promise<IStyle> => {
+    const name = await promptName('style', 'New Style');
+    if (!name) {
+        // eslint-disable-next-line no-throw-literal
+        throw 'cancelled';
+    }
+    const id = generateGUID();
     const style: IStyle = {
         type: 'style',
-        name: 'Style_' + slice,
+        name,
         uid: id,
         font: {
             family: 'sans-serif',
@@ -20,6 +26,11 @@ export const createAsset = (): IStyle => {
         },
         lastmod: Number(new Date())
     };
+    StylePreviewer.create(style)
+        .then(canvas => outputCanvasToFile(
+            canvas,
+            StylePreviewer.get(style, true)
+        ));
     return style;
 };
 
