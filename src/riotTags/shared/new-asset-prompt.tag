@@ -27,6 +27,7 @@ new-asset-prompt.aDimmer.pointer.pad.fadein(onclick="{closeOnDimmer}" ref="dimme
                 onkeydown="{catchSubmit}"
                 class="{error: invalidName}"
                 pattern="[^'\"]+"
+                ref="input"
             )
             .anErrorNotice(ref="error" if="{invalidName && currentName}") {vocGlob.nameTaken}
             .anErrorNotice(ref="error" if="{invalidName && !currentName}") {vocGlob.cannotBeEmpty}
@@ -45,6 +46,10 @@ new-asset-prompt.aDimmer.pointer.pad.fadein(onclick="{closeOnDimmer}" ref="dimme
     script.
         this.namespace = 'newAssetPrompt';
         this.mixin(require('./data/node_requires/riotMixins/voc').default);
+
+        this.on('mount', () => {
+            this.refs.input.focus();
+        });
 
         const resourcesAPI = require('./data/node_requires/resources');
 
