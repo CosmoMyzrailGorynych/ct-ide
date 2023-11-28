@@ -1,6 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare interface IRiotTag<OptsTypes = Record<string, any>> {
     update: () => void;
+    unmount: (saveParent?: boolean) => void;
     on: <T>(this: IRiotTag, event: string, callback: (payload: T) => void) => void;
     off: (this: IRiotTag, event: string, callback: (payload: never) => void) => void;
     once: <T>(this: IRiotTag, event: string, callback: (payload: T) => void) => void;

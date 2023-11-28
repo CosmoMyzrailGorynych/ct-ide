@@ -1,18 +1,24 @@
 import {RoomPreviewer} from '../preview/room';
 import {getOfType, IAssetContextItem} from '..';
+import {promptName} from '../promptName';
 
 const getDefaultRoom = require('./defaultRoom').get;
 const fs = require('fs-extra');
-const path = require('path');
 
-const createNewRoom = async function createNewRoom(name: string): Promise<IRoom> {
+const createNewRoom = async (name?: string): Promise<IRoom | null> => {
     const room = getDefaultRoom();
-    // TODO: Update to match the new previewing engine
-    await fs.copy('./data/img/notexture.png', path.join(global.projdir, '/img/r' + room.uid + '.png'));
     if (name) {
         room.name = String(name);
+    } else {
+        const name = await promptName('room', 'New Room');
+        if (name) {
+            room.name = name;
+        } else {
+            // eslint-disable-next-line no-throw-literal
+            throw 'cancelled';
+        }
     }
-    window.signals.trigger('roomsChanged');
+    await fs.copy('./data/img/notexture.png', RoomPreviewer.get(room, true));
     return room;
 };
 

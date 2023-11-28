@@ -1,5 +1,6 @@
 import {get as getDefaultBehavior} from './defaultBehavior';
 import {IAssetContextItem, getByTypes} from '..';
+import {promptName} from '../promptName';
 import {canBeDynamicBehavior, getEventByLib} from '../../events';
 
 import {getByPath} from '../../i18n';
@@ -16,6 +17,7 @@ export const createAsset = async (opts: {
 } | {
     src: string
 }): Promise<IBehavior> => {
+    // Importing from a file
     if ('src' in (opts)) {
         const source = YAML.safeLoad(await readFile(opts.src)) as Partial<IBehavior>;
         const keys: (keyof IBehavior)[] = [
@@ -47,8 +49,15 @@ export const createAsset = async (opts: {
     const behavior = getDefaultBehavior(opts.behaviorType);
     if (opts.name) {
         behavior.name = opts.name;
+        return behavior;
     }
-    return behavior;
+    const name = await promptName('behavior', 'New Behavior');
+    if (name) {
+        behavior.name = name;
+        return behavior;
+    }
+    // eslint-disable-next-line no-throw-literal
+    throw 'cancelled';
 };
 
 export const removeAsset = (asset: IBehavior): void => {

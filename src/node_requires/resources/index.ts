@@ -228,21 +228,29 @@ export const getParentFolder = (object: IAsset | IAssetFolder): IAssetFolder | n
 
 /**
  * Creates a new asset of the specified type. This is the method that must be used in the UI.
+ * @returns The created asset object, or `null` in case a user cancelled the operation.
  */
 export const createAsset = async <T extends resourceType, P>(
     type: T,
     folder: IAssetFolder | null,
     payload?: P
-): Promise<typeToTsTypeMap[T]> => {
-    const asset = (await typeToApiMap[type].createAsset(payload)) as typeToTsTypeMap[T];
-    const collection = (folder === null) ? window.currentProject.assets : folder.entries;
-    collection.push(asset);
-    uidMap.set(asset.uid, asset);
-    folderMap.set(asset, folder);
-    collectionMap.set(asset, collection);
-    window.signals.trigger('assetCreated', asset.uid);
-    window.signals.trigger(`${type}Created`, asset.uid);
-    return asset;
+): Promise<typeToTsTypeMap[T] | null> => {
+    try {
+        const asset = (await typeToApiMap[type].createAsset(payload)) as typeToTsTypeMap[T];
+        const collection = (folder === null) ? window.currentProject.assets : folder.entries;
+        collection.push(asset);
+        uidMap.set(asset.uid, asset);
+        folderMap.set(asset, folder);
+        collectionMap.set(asset, collection);
+        window.signals.trigger('assetCreated', asset.uid);
+        window.signals.trigger(`${type}Created`, asset.uid);
+        return asset;
+    } catch (e) {
+        if (e === 'cancelled') {
+            return null;
+        }
+        throw e;
+    }
 };
 
 /**

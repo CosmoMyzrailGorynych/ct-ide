@@ -53,6 +53,9 @@ create-asset-menu.relative.inlineblock(class="{opts.class}")
                             assetType,
                             this.opts.folder || null
                         );
+                        if (asset === null) {
+                            return; // Cancelled by a user
+                        }
                         if (this.opts.onimported) {
                             this.opts.onimported(asset);
                         }
@@ -85,6 +88,9 @@ create-asset-menu.relative.inlineblock(class="{opts.class}")
                         const asset = await createAsset('behavior', this.opts.folder || null, {
                             behaviorType: 'template'
                         });
+                        if (asset === null) {
+                            return; // Cancelled by a user
+                        }
                         if (this.opts.onimported) {
                             this.opts.onimported(asset);
                         }
@@ -96,6 +102,9 @@ create-asset-menu.relative.inlineblock(class="{opts.class}")
                         const asset = await createAsset('behavior', this.opts.folder || null, {
                             behaviorType: 'room'
                         });
+                        if (asset === null) {
+                            return; // Cancelled by a user
+                        }
                         if (this.opts.onimported) {
                             this.opts.onimported(asset);
                         }

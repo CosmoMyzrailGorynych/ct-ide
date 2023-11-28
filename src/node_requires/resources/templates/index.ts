@@ -8,15 +8,26 @@ import {StylePreviewer} from '../preview/style';
 
 import * as PIXI from 'node_modules/pixi.js';
 import {getById, getOfType} from '..';
+import {promptName} from '../promptName';
 
-const createNewTemplate = function createNewTemplate(opts?: {name: string}): ITemplate {
+const createNewTemplate = async (opts?: {name: string}): Promise<ITemplate> => {
     const template = getDefaultTemplate();
-    if (opts?.name) {
-        template.name = opts.name;
-    }
+
     // Fix default OnStep event for coffeescript projects
     if (window.currentProject.language === 'coffeescript') {
         template.events[0].code = '@move()';
+    }
+
+    if (opts?.name) {
+        template.name = opts.name;
+        return template;
+    }
+    const name = await promptName('template', 'New Template');
+    if (name) {
+        template.name = name;
+    } else {
+        // eslint-disable-next-line no-throw-literal
+        throw 'cancelled';
     }
     return template;
 };

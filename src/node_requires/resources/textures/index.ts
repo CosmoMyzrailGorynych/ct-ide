@@ -495,7 +495,8 @@ Promise<ITexture> => {
         filter: '.png,.jpg,.jpeg,.bmp,.tiff,.webp'
     });
     if (!inputPath) {
-        throw new Error('No image file selected.');
+        // eslint-disable-next-line no-throw-literal
+        throw 'cancelled';
     }
     return importImageToTexture({
         src: inputPath

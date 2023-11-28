@@ -523,6 +523,10 @@
             "networking": "Networking"
         }
     },
+    "newAssetPrompt": {
+        "heading": "Create new asset",
+        "selectNewName": "The name of the new asset:"
+    },
     "texture": {
         "create": "Create",
         "import": "Import",
