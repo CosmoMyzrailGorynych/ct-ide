@@ -24,7 +24,7 @@ new-asset-prompt.aDimmer.pointer.pad.fadein(onclick="{closeOnDimmer}" ref="dimme
                 type="text"
                 value="{currentName}"
                 oninput="{setName}"
-                onsubmit="{tryPickName}"
+                onkeydown="{catchSubmit}"
                 class="{error: invalidName}"
                 pattern="[^'\"]+"
             )
@@ -76,6 +76,12 @@ new-asset-prompt.aDimmer.pointer.pad.fadein(onclick="{closeOnDimmer}" ref="dimme
                 this.invalidName = true;
             } else {
                 this.invalidName = false;
+            }
+        };
+
+        this.catchSubmit = e => {
+            if (e.code === 'Enter') {
+                this.tryPickName();
             }
         };
 
