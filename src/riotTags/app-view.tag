@@ -10,7 +10,7 @@ app-view.flexcol
             li.limitwidth(onclick="{saveProject}" title="{vocGlob.save} (Control+S)" data-hotkey="Control+s")
                 svg.feather
                     use(xlink:href="#save")
-            li.nbl.nogrow.noshrink(onclick="{runProject}" class="{active: tab === 'debug'}" title="{voc.launch} {voc.launchHotkeys}" data-hotkey="F5")
+            li.nbl.nogrow.noshrink(onclick="{tryRunProject}" class="{active: tab === 'debug'}" title="{voc.launch} {voc.launchHotkeys}" data-hotkey="F5")
                 svg.feather.rotateccw(show="{exportingProject}")
                     use(xlink:href="#refresh-ccw")
                 svg.feather(hide="{exportingProject}")
@@ -93,6 +93,36 @@ app-view.flexcol
         if="{showAssetConfirmation}"
     )
     dnd-processor(if="{global.currentProject}" currentfolder="{refs.assets.currentFolder}")
+    .aDimmer.fixed.pad(if="{showPrelaunchSave}")
+        button.aDimmer-aCloseButton(onclick="{cancelLaunch}")
+            svg.feather
+                use(href="#x")
+        .aModal.pad.npb.flexfix.app-view-anAssetConfirmDialog
+            .flexfix-header
+                h2.nmt {voc.applyAssetsQuestion}
+                p {voc.applyAssetsExplanation}
+            .flexfix-body
+                p.nmt {voc.unsavedAssets}
+                ul.aStripedList
+                    li(each="{asset, ind in openedAssets}" if="{tabsDirty[ind]}")
+                        svg.feather
+                            use(xlink:href="#{iconMap[asset.type]}")
+                        span  {getName(asset)}
+            .inset.flexrow.flexfix-footer
+                button.nogrow(onclick="{cancelLaunch}")
+                    svg.feather
+                        use(href="#x")
+                    span {vocGlob.goBack}
+                .aSpacer
+                button.nogrow(onclick="{launchNoApply}")
+                    svg.feather
+                        use(href="#play")
+                    span {voc.runWithoutApplying}
+                .aSpacer
+                button.nogrow.success(ref="applyAndRun" onclick="{applyAndLaunch}")
+                    svg.feather
+                        use(href="#check")
+                    span {voc.applyAndRun}
     script.
         const fs = require('fs-extra');
 
@@ -296,6 +326,48 @@ app-view.flexcol
                 this.debugServerStarted = true;
             });
         }
+
+        // Options when there are unapplied assets but a user triggers a launch
+        this.showPrelaunchSave = false;
+        this.launchNoApply = () => {
+            this.showPrelaunchSave = false;
+            this.runProject();
+        };
+        this.cancelLaunch = () => {
+            this.showPrelaunchSave = false;
+        };
+        this.applyAndLaunch = async () => {
+            for (let i = 0; i < this.tabsDirty.length; i++) {
+                if (!this.tabsDirty[i]) {
+                    continue;
+                }
+                // A fallback for when there is only one [ref="openedEditors"] ⬇️
+                const editor = this.refs.openedEditors[i] ?? this.refs.openedEditors;
+                // eslint-disable-next-line no-await-in-loop
+                await editor.saveAsset();
+            }
+            this.showPrelaunchSave = false;
+            this.runProject();
+        };
+
+        /**
+         * Checks for any editors in dirty (unsaved) state;
+         * if something is, shows a save dialog, otherwise — runs the project immediately.
+         */
+        this.tryRunProject = () => {
+            if (this.exportingProject) {
+                // Do nothing if the exporter is already running
+                return;
+            }
+            this.refreshDirty();
+            if (this.tabsDirty.some(a => a)) {
+                this.showPrelaunchSave = true;
+                this.update();
+                this.refs.applyAndRun.focus();
+            } else {
+                this.runProject();
+            }
+        };
 
         this.runProject = () => {
             if (this.exportingProject) {
