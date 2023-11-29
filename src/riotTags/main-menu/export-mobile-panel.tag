@@ -193,10 +193,10 @@ export-mobile-panel.aDimmer
                 this.log.push('Configuring the Capacitor project…');
                 this.update();
                 const {MobileProject} = require('@trapezedev/project');
-                const project = new MobileProject(capacitorProjectPath,{
-                   android: {
-                       path: 'android'
-                   }
+                const project = new MobileProject(capacitorProjectPath, {
+                    android: {
+                        path: 'android'
+                    }
                 });
                 await project.load();
                 await project.android.setPackageName(appId);
