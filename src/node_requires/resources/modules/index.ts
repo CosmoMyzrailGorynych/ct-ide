@@ -1,6 +1,7 @@
 const path = require('path');
 const moduleDir = './data/ct.libs';
 const getModulePathByName = (moduleName: string): string => path.join(moduleDir, moduleName);
+import {importEventsFromModule, unloadEventsFromModule} from '../../events';
 
 /* async */
 const loadModule = (moduleDir: string): Promise<ICatmodManifest> => {
@@ -156,18 +157,23 @@ const isModuleEnabled = (moduleName: string): boolean =>
     (moduleName in global.currentProject.libs);
 const enableModule = async (moduleName: string): Promise<void> => {
     global.currentProject.libs[moduleName] = {};
-    await addDefaults(moduleName);
+    const catmod = await loadModuleByName(moduleName);
+    await addDefaults(moduleName, catmod);
+    importEventsFromModule(catmod, moduleName);
     addTypedefs({
         name: moduleName,
         path: getModulePathByName(moduleName)
     }); // Loaded asynchronously, but isn't awaited so it doesn't block UI much
+    window.signals.trigger('catmodAdded', moduleName);
 };
 const disableModule = (moduleName: string): void => {
     delete global.currentProject.libs[moduleName];
+    unloadEventsFromModule(moduleName);
     removeTypedefs({
         name: moduleName,
         path: getModulePathByName(moduleName)
     });
+    window.signals.trigger('catmodRemoved', moduleName);
 };
 
 export {

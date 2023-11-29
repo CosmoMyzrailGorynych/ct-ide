@@ -305,7 +305,9 @@ export {
     localizeLocalVarDesc,
     tryGetIcon,
     importEventsFromCatmod,
+    importEventsFromCatmod as importEventsFromModule,
     unloadEventsFromModule,
+    unloadEventsFromModule as unloadEventsFromCatmod,
     unloadAllEvents,
     loadAllModulesEvents
 };

@@ -202,6 +202,13 @@ event-list-scriptable.flexfix(class="{opts.class}")
             }
         });
 
+        window.signals.on('catmodAdded', this.refreshEventsMenu);
+        window.signals.on('catmodRemoved', this.refreshEventsMenu);
+        this.on('unmount', () => {
+            window.signals.off('catmodAdded', this.refreshEventsMenu);
+            window.signals.off('catmodRemoved', this.refreshEventsMenu);
+        })
+
         if (!this.opts.events) {
             console.error('event-list-scriptable was not provided with an `events` attribute.');
             // eslint-disable-next-line no-console
