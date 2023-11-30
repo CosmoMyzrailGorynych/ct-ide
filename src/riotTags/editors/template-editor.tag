@@ -320,11 +320,37 @@ template-editor.aPanel.aView.flexrow
             this.update();
         };
 
-        const update = () => this.update();
+        const update = () => this.update(); // remove any possible arguments passed from events
         window.orders.on('forceCodeEditorLayout', update);
         this.on('unmount', () => {
             window.orders.off('forceCodeEditorLayout', update);
         });
+
+        const checkRefs = deleted => {
+            let cleaned = false;
+            for (const key of [
+                'texture',
+                'skeleton',
+                'hoverTexture',
+                'pressedTexture',
+                'disabledTexture',
+                'textStyle'
+            ]) {
+                if (this.asset[key] === deleted) {
+                    this.asset[key] = -1;
+                    cleaned = true;
+                }
+            }
+            if (cleaned) {
+                this.update();
+            }
+        };
+        window.signals.on('textureRemoved', checkRefs);
+        window.signals.on('styleRemoved', checkRefs);
+        this.on('unmount', () => {
+            window.signals.off('textureRemoved', checkRefs);
+            window.signals.off('styleRemoved', checkRefs);
+        })
 
         this.minimizeProps = localStorage.minimizeTemplatesProps === 'yes';
         this.toggleProps = () => {
