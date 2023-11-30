@@ -405,8 +405,11 @@ const removeTexture = (tex: string | ITexture): void => {
     const {uid} = tex;
     for (const [, asset] of uidMap) {
         if (asset.type === 'template') {
-            if ((asset as ITemplate).texture === uid) {
-                (asset as ITemplate).texture = -1;
+            const template = asset as ITemplate;
+            for (const key of ['texture', 'hoverTexture', 'pressedTexture', 'disabledTexture'] as const) {
+                if (template[key] === uid) {
+                    template[key] = -1;
+                }
             }
         } else if (asset.type === 'room') {
             const room = asset as IRoom;

@@ -2,6 +2,7 @@ import generateGUID from '../../generateGUID';
 import {StylePreviewer} from '../preview/style';
 import {promptName} from '../promptName';
 import {outputCanvasToFile} from '../../utils/imageUtils';
+import {getOfType} from '..';
 
 export const createAsset = async (): Promise<IStyle> => {
     const name = await promptName('style', 'New Style');
@@ -32,6 +33,15 @@ export const createAsset = async (): Promise<IStyle> => {
             StylePreviewer.get(style, true)
         ));
     return style;
+};
+
+export const removeAsset = (style: IStyle): void => {
+    const templates = getOfType('template');
+    for (const template of templates) {
+        if (template.textStyle === style.uid) {
+            template.textStyle = -1;
+        }
+    }
 };
 
 export const getThumbnail = StylePreviewer.getClassic;
