@@ -139,8 +139,10 @@ class PixiButton extends PIXI.Container {
         this.#disabled = val;
         if (val) {
             this.panel.texture = this.disabledTexture;
+            this.eventMode = 'none';
         } else {
             this.panel.texture = this.normalTexture;
+            this.eventMode = 'auto';
         }
     }
 
