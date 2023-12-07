@@ -223,7 +223,7 @@ room-ui-tools
                 input(
                     type="text"
                     value="{parent.opts.selection.bindings[binding]}"
-                    onchange="{wireBinding}"
+                    oninput="{wireBinding}"
                 )
                 span.nogrow(title="{voc.bindingTypes[bindingTypes[binding]]}")
                     svg.feather

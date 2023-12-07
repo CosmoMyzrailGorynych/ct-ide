@@ -93,7 +93,7 @@ room-entities-properties
                             type="text"
                             value="{val === multipleType ? '' : JSON.stringify(val)}"
                             placeholder="{val === multipleType ? String(multipleType) : ''}"
-                            onchange="{changeValue}"
+                            oninput="{changeValue}"
                         )
                     td
                         button.toright.square.inline.nm(onclick="{deleteCustomProperty(prop)}" title="{vocGlob.delete}")
