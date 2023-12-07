@@ -37,6 +37,7 @@ export class Room extends PIXI.Container<pixiMod.DisplayObject> {
     kill = false;
     tileLayers: Tilemap[] = [];
     backgrounds: Background[] = [];
+    bindings: Set<() => void> = new Set();
     /** Time for the next run of the 1st timer, in seconds. */
     timer1 = 0;
     /** Time for the next run of the 2nd timer, in seconds. */
@@ -228,6 +229,9 @@ export class Room extends PIXI.Container<pixiMod.DisplayObject> {
                 );
                 if (copy.align) {
                     this.alignElements.push(ctCopy);
+                }
+                if (template.bindings[i]) {
+                    this.bindings.add(template.bindings[i].bind(ctCopy));
                 }
             }
             if (this.alignElements.length) {
@@ -524,6 +528,9 @@ const roomsLib = {
         /*!%afterroomdraw%*/
         if (this.behaviors.length) {
             runBehaviors(this, 'rooms', 'thisOnDraw');
+        }
+        for (const fn of this.bindings) {
+            fn();
         }
     },
     rootRoomOnCreate(this: Room): void {

@@ -208,6 +208,28 @@ room-ui-tools
                 )
                     svg.feather
                         use(xlink:href="#align-center-horizontal")
+    fieldset(if="{opts.selection}")
+        h3.nmt
+            svg.icon.toright
+                use(xlink:href="#javascript")
+            span {voc.bindings}
+            hover-hint(text="{voc.bindingsHelp}")
+        label.block(
+            each="{binding in bindingsMap[opts.selection.cachedTemplate.baseClass]}"
+        )
+            span {voc.bindingNames[binding]}
+            br
+            .flexrow.room-ui-tools-anExpression
+                input(
+                    type="text"
+                    value="{parent.opts.selection.bindings[binding]}"
+                    onchange="{wireBinding}"
+                )
+                span.nogrow(title="{voc.bindingTypes[bindingTypes[binding]]}")
+                    svg.feather
+                        use(xlink:href="#{jsTypeToIcon[bindingTypes[binding]]}")
+                svg.feather.error.nogrow(if="{parent.opts.selection.bindings[binding] && !isExpression(parent.opts.selection.bindings[binding])}")
+                    use(xlink:href="#alert-circle")
     script.
         this.namespace = 'roomView.uiTools';
         this.mixin(require('./data/node_requires/riotMixins/voc').default);
@@ -306,5 +328,25 @@ room-ui-tools
                 align.alignX = 'scale';
             } else {
                 align.alignX = 'center';
+            }
+        };
+
+        const {copyBindingTypes, bindingsMap} = require('./data/node_requires/roomEditor/common');
+        this.jsTypeToIcon = {
+            string: 'string',
+            boolean: 'bool',
+            number: 'sort-numerically'
+        };
+        const isExpression = require('is-expression');
+        this.isExpression = val => isExpression(val, {strict: true});
+        this.bindingTypes = copyBindingTypes;
+        this.bindingsMap = bindingsMap;
+        this.wireBinding = e => {
+            const {binding} = e.item;
+            const val = e.target.value.trim();
+            if (val) {
+                this.opts.selection.bindings[binding] = val;
+            } else {
+                delete this.opts.selection.bindings[binding];
             }
         };

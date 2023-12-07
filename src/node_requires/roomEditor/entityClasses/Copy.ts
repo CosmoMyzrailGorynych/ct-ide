@@ -38,6 +38,8 @@ class Copy extends PIXI.Container {
         }
     };
 
+    bindings: Partial<Record<CopyBinding, string>> = {};
+
     align?: IRoomCopy['align'];
 
     constructor(copyInfo: IRoomCopy, editor: RoomEditor | RoomEditorPreview, isGhost?: boolean) {
@@ -118,7 +120,10 @@ class Copy extends PIXI.Container {
             exts: deepCopy ? JSON.parse(JSON.stringify(this.copyExts)) : this.copyExts,
             customProperties: deepCopy ?
                 JSON.parse(JSON.stringify(this.copyCustomProps)) :
-                this.copyCustomProps
+                this.copyCustomProps,
+            bindings: {
+                ...this.bindings
+            }
         };
         if (this.align) {
             copy.align = this.align;
@@ -153,7 +158,16 @@ class Copy extends PIXI.Container {
         this.rotation = copy.rotation ?? 0;
         this.templateId = copy.uid;
         this.copyExts = copy.exts ?? {};
-        this.copyCustomProps = copy.customProperties ?? {};
+        this.copyCustomProps = copy.customProperties ?
+            {
+                ...copy.customProperties
+            } :
+            {};
+        this.bindings = copy.bindings ?
+            {
+                ...copy.bindings
+            } :
+            {};
         this.align = copy.align;
         if (this.cachedTemplate.baseClass === 'AnimatedSprite') {
             this.sprite = new PIXI.AnimatedSprite(getPixiTexture(copy.uid));

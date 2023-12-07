@@ -124,7 +124,7 @@ interface ICopy {
 
 class PixiButton extends PIXI.Container {
     panel: pixiMod.NineSlicePlane;
-    text: pixiMod.Text;
+    textLabel: pixiMod.Text;
     normalTexture: pixiMod.Texture;
     hoverTexture: pixiMod.Texture;
     pressedTexture: pixiMod.Texture;
@@ -142,6 +142,13 @@ class PixiButton extends PIXI.Container {
         } else {
             this.panel.texture = this.normalTexture;
         }
+    }
+
+    get text(): string {
+        return this.textLabel.text;
+    }
+    set text(val: string) {
+        this.textLabel.text = val;
     }
 
     constructor(t: ExportedTemplate, exts: Record<string, unknown>) {
@@ -172,9 +179,9 @@ class PixiButton extends PIXI.Container {
         if (exts.customSize) {
             style.fontSize = Number(exts.customSize);
         }
-        this.text = new PIXI.Text((exts.customText as string) || t.defaultText || '', style);
-        this.text.anchor.set(0.5);
-        this.addChild(this.panel, this.text);
+        this.textLabel = new PIXI.Text((exts.customText as string) || t.defaultText || '', style);
+        this.textLabel.anchor.set(0.5);
+        this.addChild(this.panel, this.textLabel);
 
         this.eventMode = 'dynamic';
         this.cursor = 'pointer';
@@ -207,14 +214,14 @@ class PixiButton extends PIXI.Container {
         this.panel.scale.x *= x;
         this.panel.scale.y *= y;
         this.scale.set(1);
-        this.text.x = this.panel.width / 2;
-        this.text.y = this.panel.height / 2;
+        this.textLabel.x = this.panel.width / 2;
+        this.textLabel.y = this.panel.height / 2;
     }
     resize(newWidth: number, newHeight: number): void {
         this.panel.width = newWidth;
         this.panel.height = newHeight;
-        this.text.x = newWidth / 2;
-        this.text.y = newHeight / 2;
+        this.textLabel.x = newWidth / 2;
+        this.textLabel.y = newHeight / 2;
     }
 
     hover(): void {

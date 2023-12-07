@@ -121,3 +121,18 @@ export const toPrecision = (input: number, precision: number): number => {
     const whole = input > 0 ? Math.floor(input) : Math.ceil(input);
     return whole + Math.round(mantissa * (10 ** precision)) / (10 ** precision);
 };
+
+export const copyBindingTypes: Record<CopyBinding, CopyBindingValType> = {
+    disabled: 'boolean',
+    tex: 'string',
+    text: 'string',
+    visible: 'boolean',
+    tint: 'number'
+};
+export const bindingsMap: Record<TemplateBaseClass, CopyBinding[]> = {
+    AnimatedSprite: ['tex', 'tint', 'visible'],
+    Button: ['text', 'disabled', 'tint', 'visible'],
+    Container: ['visible'],
+    NineSlicePlane: ['tex', 'tint', 'visible'],
+    Text: ['text', 'tint', 'visible']
+};

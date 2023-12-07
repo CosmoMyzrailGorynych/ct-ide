@@ -38,6 +38,45 @@ const getConstraints = (r: IRoom) => {
     }
     return false;
 };
+const getBindings = (copy: IRoomCopy): string | false => {
+    if (!copy.bindings) {
+        return false;
+    }
+    let bindings = '';
+    for (const key of Object.keys(copy.bindings) as CopyBinding[]) {
+        if (key === 'disabled') {
+            bindings += `
+                this.disabled = ${copy.bindings[key]};
+            `;
+        } else if (key === 'visible') {
+            bindings += `
+                this.visible = ${copy.bindings[key]};
+            `;
+        } else if (key === 'tex') {
+            bindings += `
+                let newTex = ${copy.bindings[key]};
+                if (this.tex !== newTex) {
+                    this.tex = newTex;
+                }
+            `;
+        } else if (key === 'tint') {
+            bindings += `
+                this.tint = ${copy.bindings[key]};
+            `;
+        } else if (key === 'text') {
+            bindings += `
+                let newText = ${copy.bindings[key]};
+                if (this.text !== newText) {
+                    this.text = newText;
+                }
+            `;
+        }
+    }
+    if (bindings) {
+        return bindings;
+    }
+    return false;
+};
 
 // eslint-disable-next-line max-lines-per-function
 const stringifyRooms = (
@@ -51,15 +90,22 @@ const stringifyRooms = (
     let rootRoomOnLeave = '';
 
     const rooms = assets.room.map(r => embedStaticBehaviors(r, proj));
+    const bindings: Record<number, string> = {};
 
     for (const r of rooms) {
         const objs: ExportedCopy[] = [];
-        for (const copy of r.copies) {
+        for (let i = 0, l = r.copies.length; i < l; i++) {
+            const copy = r.copies[i];
+            const binding = getBindings(copy);
+            if (binding) {
+                bindings[i] = binding;
+            }
             const exportableCopy = {
                 ...copy,
                 template: getById('template', copy.uid).name
             };
             delete exportableCopy.uid;
+            delete exportableCopy.bindings;
             objs.push(exportableCopy);
         }
         const bgs: ExportedBg[] = [];
@@ -147,7 +193,16 @@ rooms.templates['${r.name}'] = {
     },
     isUi: ${Boolean(r.isUi)},
     follow: ${(r.follow && r.follow !== -1) ? ('\'' + getById('template', r.follow).name + '\'') : 'false'},
-    extends: ${r.extends ? JSON.stringify(getUnwrappedExtends(r.extends), null, 4) : '{}'}
+    extends: ${r.extends ? JSON.stringify(getUnwrappedExtends(r.extends), null, 4) : '{}'},
+    bindings: {
+    ${Object.keys(bindings)
+        .map(k => `
+            /* Bindings at room ${r.name} for template ${r.copies[Number(k)].uid} */
+            ${k}: function () {
+                ${bindings[Number(k)]}
+            }`)
+        .join(',\n')}
+    }
 }
         `;
         rootRoomOnCreate += scriptableCode.rootRoomOnCreate;

@@ -15,6 +15,8 @@ interface IRoomBackground {
 }
 
 type CopyAlignment = 'start' | 'center' | 'end' | 'scale' | 'both';
+type CopyBinding = 'text' | 'disabled' | 'visible' | 'tex' | 'tint';
+type CopyBindingValType = 'string' | 'boolean' | 'number';
 
 interface IRoomCopy {
     x: number,
@@ -67,7 +69,9 @@ interface IRoomCopy {
         [key: string]: unknown
     },
     /** User-defined properties set to this specific copy */
-    customProperties: Record<string, unknown>
+    customProperties: Record<string, unknown>,
+    /** User-defined JS expressions for supported fields in the room editor's UI tools */
+    bindings: Partial<Record<CopyBinding, string>>
 }
 
 interface ITileTemplate {

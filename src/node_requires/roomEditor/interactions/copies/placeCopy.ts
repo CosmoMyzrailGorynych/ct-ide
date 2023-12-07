@@ -31,6 +31,7 @@ const createCopy = (
     y: pos.y,
     exts: {},
     customProperties: {},
+    bindings: {},
     scale: {
         x: 1,
         y: 1

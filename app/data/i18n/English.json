@@ -945,6 +945,20 @@
                 "bottom": "Lock the size of the gap to the bottom side of the frame",
                 "centerVertical": "Place vertically relative to the center of the frame",
                 "centerHorizontal": "Place horizontally relative to the center of the frame"
+            },
+            "bindings": "Bindings",
+            "bindingsHelp": "You can write JavaScript expressions here that will be evaluated each frame and will update the corresponding properties of the copy.",
+            "bindingNames": {
+                "text": "Text:",
+                "disabled": "Disable:",
+                "visible": "Visibility:",
+                "tex": "Texture:",
+                "tint": "Tint:"
+            },
+            "bindingTypes": {
+                "string": "String value",
+                "boolean": "Boolean value (true or false)",
+                "number": "Number"
             }
         },
         "restrictCamera": "Keep camera in a rectangle",

@@ -52,9 +52,9 @@
   },
   "chromium-args": "--mixed-context --enable-features=nw2 --load-extensions --force-color-profile=srgb --disable-features=ColorCorrectRendering",
   "dependencies": {
-    "@pixi/particle-emitter": "5.0.8",
     "@capacitor/cli": "^5.5.0",
     "@capacitor/core": "^5.5.0",
+    "@pixi/particle-emitter": "5.0.8",
     "@trapezedev/project": "^7.0.10",
     "archiver": "^3.1.1",
     "coffeescript": "^2.7.0",
@@ -68,6 +68,7 @@
     "highlight.js": "^10.4.1",
     "html-minifier": "^3.5.21",
     "html2pug": "^4.0.0",
+    "is-expression": "^4.0.0",
     "javascript-obfuscator": "^4.0.2",
     "js-yaml": "^3.14.0",
     "markdown-it": "12.3.2",

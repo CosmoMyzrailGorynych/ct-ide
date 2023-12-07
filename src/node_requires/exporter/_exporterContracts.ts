@@ -76,7 +76,9 @@ export type ExportedTilemap = {
     tiles: ExportedTile[];
     extends: {cgroup?: string} & Record<string, unknown>;
 }
-export type ExportedCopy = Omit<IRoomCopy, 'uid'> & {template: string};
+export type ExportedCopy = Omit<IRoomCopy, 'uid' | 'bindings'> & {
+    template: string;
+};
 
 export type ExportedBg = {
     texture: string,
@@ -116,6 +118,7 @@ export type ExportedRoom = {
     isUi: boolean;
     follow: -1 | string;
     extends: Record<string, unknown>;
+    bindings: Record<number, () => void>;
 }
 
 export type ExportedTemplate = {
