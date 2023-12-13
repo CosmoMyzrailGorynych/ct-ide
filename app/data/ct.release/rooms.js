@@ -286,7 +286,11 @@ Room.roomId = 0;
                 const c = ct.templates.copyIntoRoom(t.template, t.x, t.y, target, {
                     tx: t.tx || 1,
                     ty: t.ty || 1,
-                    tr: t.tr || 0
+                    tr: t.tr || 0,
+                    scaleX: t.scale?.x,
+                    scaleY: t.scale?.y,
+                    rotation: t.rotation,
+                    alpha: t.opacity
                 });
                 generated.copies.push(c);
             }
