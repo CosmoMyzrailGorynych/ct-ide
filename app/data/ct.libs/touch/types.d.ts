@@ -63,6 +63,12 @@ declare namespace ct {
 
         var events: ITouch[];
 
+        /**
+         * Temporarily suspend e.preventDefault() calls. For example, to allow for a HTML text
+         * box to be used.
+         */
+        var permitDefault: boolean;
+
         function getById(id: number): ITouch | false;
 
         /**

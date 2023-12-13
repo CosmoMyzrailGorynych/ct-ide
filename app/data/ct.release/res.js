@@ -264,9 +264,9 @@
          * @note Formatted as a non-jsdoc comment as it requires a better ts declaration
          * than the auto-generated one
          */
-        getTextureShape(name) {
+        getTextureShape(name, template) {
             if (name === -1) {
-                return {};
+                return template ? template.shape || {} : {};
             }
             if (!(name in ct.res.textures)) {
                 throw new Error(`Attempt to get a shape of a non-existent texture ${name}`);

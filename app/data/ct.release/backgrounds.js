@@ -107,8 +107,17 @@ class Background extends PIXI.TilingSprite {
  */
 ct.backgrounds = {
     Background,
+    /**
+     * An object that contains all the backgrounds of the current room.
+     * @type {Object.<string,Array<Background>>}
+     */
     list: {},
     /**
+     * @param texName - Name of a texture to use as a background
+     * @param [frame] - The index of a frame to use. Defaults to 0
+     * @param [depth] - The depth to place the background at. Defaults to 0
+     * @param [container] - Where to put the background. Defaults to current room,
+     * can be a room or other pixi container.
      * @returns {Background} The created background
      */
     add(texName, frame = 0, depth = 0, container = ct.room) {

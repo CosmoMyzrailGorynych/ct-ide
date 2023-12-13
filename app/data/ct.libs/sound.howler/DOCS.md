@@ -22,7 +22,7 @@ Spawns a new sound and plays it.
 # 3D sounds
 
 If neither `position` nor `x` options of `ct.sound.spawn` are specified, the created sound will be a regular 2D sound with no positioning.
-If they are set, a 3D sound will be creaated. It is configured by ct.sound.howler settings and by a set of [additional options from Howler.js](https://github.com/goldfire/howler.js#pannerattro-id). Location values are measured in pixels.
+If they are set, a 3D sound will be created. It is configured by ct.sound.howler settings and by a set of [additional options from Howler.js](https://github.com/goldfire/howler.js#pannerattro-id). Location values are measured in pixels.
 
 **Example:**
 

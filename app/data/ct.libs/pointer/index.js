@@ -112,7 +112,7 @@
         }
     };
     var handleMove = function (e) {
-        if (![/*%preventdefault%*/][0]) {
+        if (![/*%preventdefault%*/][0] && !ct.pointer.permitDefault) {
             e.preventDefault();
         }
         let pointerHover = ct.pointer.hover.find(p => p.id === e.pointerId);
@@ -136,7 +136,7 @@
         }
     };
     var handleDown = function (e) {
-        if (![/*%preventdefault%*/][0]) {
+        if (![/*%preventdefault%*/][0] && !ct.pointer.permitDefault) {
             e.preventDefault();
         }
         ct.pointer.type = e.pointerType;
@@ -148,7 +148,7 @@
         }
     };
     var handleUp = function (e) {
-        if (![/*%preventdefault%*/][0]) {
+        if (![/*%preventdefault%*/][0] && !ct.pointer.permitDefault) {
             e.preventDefault();
         }
         const pointer = ct.pointer.down.find(p => p.id === e.pointerId);
@@ -162,7 +162,7 @@
     };
     var handleWheel = function handleWheel(e) {
         setKey('Wheel', ((e.wheelDelta || -e.detail) < 0) ? -1 : 1);
-        if (![/*%preventdefault%*/][0]) {
+        if (![/*%preventdefault%*/][0] && !ct.pointer.permitDefault) {
             e.preventDefault();
         }
     };
@@ -236,7 +236,7 @@
                 passive: false
             });
             document.addEventListener('contextmenu', e => {
-                if (![/*%preventdefault%*/][0]) {
+                if (![/*%preventdefault%*/][0] && !ct.pointer.permitDefault) {
                     e.preventDefault();
                 }
             });
@@ -263,6 +263,7 @@
         twist: 0,
         width: 1,
         height: 1,
+        permitDefault: false,
         type: null,
         clear() {
             ct.pointer.down.length = 0;

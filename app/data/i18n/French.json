@@ -174,8 +174,8 @@
         "envVarNotice": "Vous aurez toujours besoin de définir la variable d’environnement à la main et de redémarrer votre appareil.",
         "downloadAndroidStudio": "Télécharger Android Studio",
         "requiresInternetNotice": "Cette opération nécessite une connexion internet pour mettre en place les projet.",
-        "noJdkFound": "Le JDK 11 est introuvable (la variable d’environnement JAVA_HOME n’est pas définie ou ne pointe pas vers le JDK 11). Vous pouvez l’obtenir ici :",
-        "downloadJDK": "Télécharger le JDK 11"
+        "noJdkFound": "Le JDK 17 est introuvable (la variable d’environnement JAVA_HOME n’est pas définie ou ne pointe pas vers le JDK 17). Vous pouvez l’obtenir ici :",
+        "downloadJDK": "Télécharger le JDK 17"
     },
     "intro": {
         "loading": "Veuillez patientez : nos chatons se préparent à la vitesse de la lumière !",
@@ -273,6 +273,7 @@
             "hideCursor": "Masquer le curseur du système",
             "pixelatedRender": "Désactive le lissage d'image ici et dans le projet exporté (conservez les pixels nets)",
             "usePixiLegacy": "Utiliser une méthode de rendu basé sur le canvas pour supporter les navigateurs plus anciens (ajoute ~20Ko au jeu)",
+            "useTransparent": "",
             "mobileBuilds": "Export mobile",
             "screenOrientation": "Orientation de l’écran :",
             "screenOrientations": {

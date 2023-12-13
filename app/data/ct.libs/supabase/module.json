@@ -1,0 +1,30 @@
+{
+  "main": {
+    "name": "ct.supabase",
+    "tagline": "A module/catmod for games using Supabase",
+    "version": "2.29.0",
+    "authors": [
+      {
+        "name": "Ehan Ahamed",
+        "mail": "ehanahamed@ehan.dev"
+      }
+    ],
+    "categories": ["integrations", "networking"]
+  },
+  "fields": [
+    {
+      "name": "Project URL",
+      "help": "This can be found in supabase under Project Settings > API > Project URL",
+      "key": "supabaseUrl",
+      "default": "https://abcdefghijklmnopqrstuvwxyz.supabase.co",
+      "type": "text"
+    },
+    {
+      "name": "Public anon key",
+      "help": "This can be found in Supabase under Project Settings > API > Project API keys",
+      "key": "supabaseKey",
+      "default": "abcdEFGhi.jkLMNOPqrs_tuvWXyz.123_4567890",
+      "type": "text"
+    }
+  ]
+}

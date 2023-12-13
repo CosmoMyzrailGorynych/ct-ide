@@ -1,5 +1,5 @@
-const ifHTMLMatcher = (varName, symbol = '@') => new RegExp(`<!-- ?if +${symbol}${varName}${symbol} ?-->([\\s\\S]*)(?:<!-- ?else +${symbol}${varName}${symbol} ?-->([\\s\\S]*?))?<!-- ?endif +${symbol}${varName}${symbol} ?-->`, 'g');
-const varHTMLMatcher = (varName, symbol = '@') => new RegExp(`<!-- ?${symbol}${varName}${symbol} ?-->`, 'g');
+const ifHTMLMatcher = (varName: string, symbol = '@') => new RegExp(`<!-- ?if +${symbol}${varName}${symbol} ?-->([\\s\\S]*)(?:<!-- ?else +${symbol}${varName}${symbol} ?-->([\\s\\S]*?))?<!-- ?endif +${symbol}${varName}${symbol} ?-->`, 'g');
+const varHTMLMatcher = (varName: string, symbol = '@') => new RegExp(`<!-- ?${symbol}${varName}${symbol} ?-->`, 'g');
 
 /**
  * A little home-brewn string templating function for HTML.
@@ -19,7 +19,11 @@ const varHTMLMatcher = (varName, symbol = '@') => new RegExp(`<!-- ?${symbol}${v
  * @param {object<string,string|Array|object>} vars The variables to substitute
  * @param {object<string,string|Array|object>} injections Module-provided injections to substitute
  */
-const templateHTML = (input, vars, injections = {}) => {
+const templateHTML = (
+    input: string,
+    vars: Record<string, any>,
+    injections: Record<string, any> = {}
+) => {
     let output = input;
     for (const i in vars) {
         output = output.replace(varHTMLMatcher(i), () => (typeof vars[i] === 'object' ? JSON.stringify(vars[i]) : vars[i]));
@@ -31,14 +35,24 @@ const templateHTML = (input, vars, injections = {}) => {
     return output;
 };
 
-const substituteHtmlVars = (str, project, injections) =>
-    templateHTML(str, {
-        gametitle: project.settings.title || 'ct.js game',
-        accent: project.settings.accent || 'ct.js game',
-        particleEmitters: project.emitterTandems && project.emitterTandems.length,
-        includeDragonBones: project.skeletons.some(s => s.from === 'dragonbones')
-    }, injections);
+type Filenames = {
+    cssBundle: string;
+    jsBundle: string;
+    iconRevision: string;
+}
 
-module.exports = {
-    substituteHtmlVars
-};
+export const substituteHtmlVars = (
+    str: string,
+    project: IProject,
+    injections: Record<string, string>,
+    filenames: Filenames
+): string =>
+    templateHTML(str, {
+        gametitle: project.settings.authoring.title || 'ct.js game',
+        accent: project.settings.branding.accent || 'ct.js game',
+        particleEmitters: project.emitterTandems && project.emitterTandems.length,
+        includeDragonBones: project.skeletons.some(s => s.from === 'dragonbones'),
+        jsbundle: filenames.jsBundle,
+        cssbundle: filenames.cssBundle,
+        iconrev: filenames.iconRevision
+    }, injections);

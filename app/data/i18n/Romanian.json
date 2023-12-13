@@ -247,6 +247,7 @@
             "hideCursor": "",
             "pixelatedRender": "Dezactivează netezirea imaginii aici și în proiectul exportat (conservă pixelii clari)",
             "usePixiLegacy": "",
+            "useTransparent": "",
             "mobileBuilds": "",
             "screenOrientation": "",
             "screenOrientations": {

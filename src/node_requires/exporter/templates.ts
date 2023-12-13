@@ -2,7 +2,7 @@ const {getTextureFromId} = require('../resources/textures');
 const {getUnwrappedExtends} = require('./utils');
 
 import {flattenGroups} from './groups';
-
+import {getTextureShape} from './textures';
 import {getBaseScripts} from './scriptableProcessor';
 
 interface IBlankTexture {
@@ -11,6 +11,7 @@ interface IBlankTexture {
     anchorY: number;
     height: number;
     width: number;
+    shape: any;
 }
 
 const getTextureInfo = (blankTextures: IBlankTexture[], template: ITemplate) => {
@@ -19,7 +20,8 @@ const getTextureInfo = (blankTextures: IBlankTexture[], template: ITemplate) => 
         return `anchorX: ${blankTexture.anchorX},
         anchorY: ${blankTexture.anchorY},
         height: ${blankTexture.height},
-        width: ${blankTexture.width},`;
+        width: ${blankTexture.width},
+        shape: ${JSON.stringify(blankTexture.shape)},`;
     } else if (template.texture !== -1) {
         return `texture: "${getTextureFromId(template.texture).name}",`;
     }
@@ -40,7 +42,8 @@ const stringifyTemplates = function (proj: IProject): IScriptablesFragment {
             anchorX: tex.axis[0] / tex.width,
             anchorY: tex.axis[1] / tex.height,
             height: tex.height,
-            width: tex.width
+            width: tex.width,
+            shape: getTextureShape(tex)
         }));
 
     for (const k in proj.templates) {

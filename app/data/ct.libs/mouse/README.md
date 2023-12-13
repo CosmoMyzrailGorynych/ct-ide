@@ -54,6 +54,10 @@ Returns `true` if the mouse hovers over a given `copy` in UI coordinates. This d
 ## `ct.mouse.hide()`, `ct.mouse.show()`
 Change the visibility of the mouse cursor.
 
+## `ct.mouse.permitDefault`
+
+When you call `ct.mouse.permitDefault = true`, tells `ct.mouse` not to execute `e.preventDefault()`. Useful if you have HTML controls that must respond to the standard browser events or wish to show the context menu.
+
 ## Codes for Actions
 
 * `Left`;

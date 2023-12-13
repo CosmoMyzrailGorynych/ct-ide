@@ -37,6 +37,12 @@ declare namespace ct {
         var ctrl: boolean;
 
         /**
+         * Temporarily suspend e.preventDefault() calls. For example, to allow for a HTML text
+         * box to be used.
+         */
+        var permitDefault: boolean;
+
+        /**
          * Resets all the `ct.keyboard` parameters.
          */
         function clear(): void;

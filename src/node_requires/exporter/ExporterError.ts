@@ -63,7 +63,7 @@ export const highlightProblem = (
         lastColumn = location.last_column;
     } else {
         firstColumn = lastColumn = location.column;
-        firstLine = lastLine = location.line;
+        firstLine = lastLine = location.line - 1;
     }
     // Take a couple of lines before the error
     output.push(...lines.slice(Math.max(0, firstLine - 2), firstLine + 1));

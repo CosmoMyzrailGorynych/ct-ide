@@ -27,6 +27,7 @@
         pressed: false,
         down: false,
         released: false,
+        permitDefault: false,
         button: 0,
         hovers(copy) {
             if (!copy.shape) {
@@ -93,7 +94,9 @@
         ct.mouse.down = true;
         ct.mouse.button = e.button;
         window.focus();
-        e.preventDefault();
+        if (!ct.mouse.permitDefault) {
+            e.preventDefault();
+        }
     };
     ct.mouse.listenerUp = function listenerUp(e) {
         setKey(buttonMap[e.button] || buttonMap.unknown, 0);
@@ -101,10 +104,14 @@
         ct.mouse.down = false;
         ct.mouse.button = e.button;
         window.focus();
-        e.preventDefault();
+        if (!ct.mouse.permitDefault) {
+            e.preventDefault();
+        }
     };
     ct.mouse.listenerContextMenu = function listenerContextMenu(e) {
-        e.preventDefault();
+        if (!ct.mouse.permitDefault) {
+            e.preventDefault();
+        }
     };
     ct.mouse.listenerWheel = function listenerWheel(e) {
         setKey('Wheel', ((e.wheelDelta || -e.detail) < 0) ? -1 : 1);

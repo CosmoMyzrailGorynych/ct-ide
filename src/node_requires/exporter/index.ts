@@ -6,6 +6,7 @@ let currentProject: IProject;
 let writeDir: string;
 
 import {resetEventsCache, populateEventCache} from './scriptableProcessor';
+import {ExporterError, highlightProblem} from './ExporterError';
 
 import {packImages} from './textures';
 import {packSkeletons} from './skeletons';
@@ -16,9 +17,12 @@ const {stringifyTandems} = require('./emitterTandems');
 import {stringifyTemplates} from './templates';
 const {stringifyContent} = require('./content');
 import {bundleFonts, bakeBitmapFonts} from './fonts';
-const {bakeFavicons} = require('./icons');
+import {bakeFavicons} from './icons';
 const {getUnwrappedExtends, getCleanKey} = require('./utils');
+import {revHash} from './../utils/revHash';
 import {getGroups} from './groups';
+import {substituteHtmlVars} from './html';
+const typeScript = require('sucrase').transform;
 
 const ifMatcher = (varName: string, symbol = '@') => new RegExp(`/\\* ?if +${symbol}${varName}${symbol} ?\\*/([\\s\\S]*)(?:/\\* ?else +${symbol}${varName}${symbol} ?\\*/([\\s\\S]*?))?/\\* ?endif +${symbol}${varName}${symbol} ?\\*/`, 'g');
 const varMatcher = (varName: string, symbol = '@') => new RegExp(`/\\* ?${symbol}${varName}${symbol} ?\\*/`, 'g');
@@ -223,6 +227,7 @@ const exportCtProject = async (
     if (localStorage.forceProductionForDebug === 'yes') {
         production = true;
     }
+    const noMinify = currentProject.settings.export.codeModifier === 'none';
 
     await fs.remove(writeDir);
     await Promise.all([
@@ -231,6 +236,8 @@ const exportCtProject = async (
     ]);
 
     const injections = await getInjections();
+    let cssBundleFilename = 'ct.css',
+        jsBundleFilename = 'ct.js';
 
     /* Pixi.js */
     if (settings.rendering.usePixiLegacy) {
@@ -271,16 +278,17 @@ const exportCtProject = async (
         });
     }
     /* assets — run in parallel */
-    const texturesTask = packImages(project, writeDir);
+    const texturesTask = packImages(project, writeDir, production);
     const skeletonsTask = packSkeletons(project, projdir, writeDir);
     const bitmapFontsTask = bakeBitmapFonts(project, projdir, writeDir);
-    const favicons = bakeFavicons(project, writeDir);
+    const favicons = bakeFavicons(project, writeDir, production);
     /* Run event cache population in parallel as well */
     const cacheHandle = populateEventCache(project);
 
     let buffer = template(await sources['main.js'], {
         startwidth: startroom.width,
         startheight: startroom.height,
+        transparent: Boolean(settings.rendering.transparent),
         pixelatedrender: Boolean(settings.rendering.pixelatedrender),
         highDensity: Boolean(settings.rendering.highDensity),
         maxfps: Number(settings.rendering.maxFPS),
@@ -375,9 +383,19 @@ const exportCtProject = async (
 
     /* User-defined scripts */
     for (const script of project.scripts) {
-        buffer += script.code + ';\n';
+        try {
+            buffer += typeScript(script.code, {
+                transforms: ['typescript']
+            }).code + ';\n';
+        } catch (e) {
+            const errorMessage = `${e.name || 'An error'} occured while compiling a custom script ${script.name}`;
+            const exporterError = new ExporterError(errorMessage, {
+                problematicCode: highlightProblem(script.code, e.location || e.loc),
+                clue: 'syntax'
+            }, e);
+            throw exporterError;
+        }
     }
-
     /* passthrough copy of files in the `include` folder */
     if (await fs.pathExists(projdir + '/include/')) {
         await fs.copy(projdir + '/include/', writeDir);
@@ -388,16 +406,13 @@ const exportCtProject = async (
         }
     }));
 
-    /* HTML & CSS */
-    const {substituteHtmlVars} = require('./html');
-    const html = substituteHtmlVars(await sources['index.html'], project, injections);
-
+    /* CSS styles for rendering settings and branding */
     let preloaderColor1 = project.settings.branding.accent,
         preloaderColor2 = (global.brehautColor(preloaderColor1).getLuminance() < 0.5) ? '#ffffff' : '#000000';
     if (project.settings.branding.invertPreloaderScheme) {
         [preloaderColor1, preloaderColor2] = [preloaderColor2, preloaderColor1];
     }
-    const css = template(await sources['ct.css'], {
+    let css = template(await sources['ct.css'], {
         pixelatedrender: project.settings.rendering.pixelatedrender,
         hidecursor: project.settings.rendering.hideCursor,
         hidemadewithctjs: project.settings.branding.hideLoadingLogo,
@@ -405,7 +420,12 @@ const exportCtProject = async (
         preloaderbackground: preloaderColor2,
         fonts: fonts.css
     }, injections);
+    if (!noMinify) {
+        const csswring = require('csswring');
+        ({css} = csswring.wring(css));
+    }
 
+    // Various JS protection measures
     // JS minify
     if (production && currentProject.settings.export.codeModifier === 'minify') {
         buffer = await (await require('terser').minify(buffer, {
@@ -417,22 +437,36 @@ const exportCtProject = async (
             }
         })).code;
     }
-
     // JS obfuscator
     if (production && currentProject.settings.export.codeModifier === 'obfuscate') {
         buffer = require('javascript-obfuscator')
             .obfuscate(buffer)
             .getObfuscatedCode();
     }
-
-    // Wrap in function
+    // Wrap in a self-calling function
     if (production && currentProject.settings.export.functionWrap) {
         buffer = `(function() {\n${buffer}\n})();`;
     }
 
-    // Output minified HTML & CSS
-    const noMinify = currentProject.settings.export.codeModifier === 'none';
-    const csswring = noMinify ? (void 0) : require('csswring');
+    // Calculate hashes to prevent caching for changed files
+    if (production) {
+        const jsHash = revHash(buffer);
+        const cssHash = revHash(css);
+        jsBundleFilename = `ct.${jsHash}.js`;
+        cssBundleFilename = `ct.${cssHash}.css`;
+    }
+
+    // Output HTML, JS and CSS files
+    const iconRevision = await favicons;
+    const html = substituteHtmlVars(
+        await sources['index.html'],
+        project,
+        injections, {
+            cssBundle: cssBundleFilename,
+            jsBundle: jsBundleFilename,
+            iconRevision
+        }
+    );
     const htmlMinify = noMinify ? (void 0) : require('html-minifier').minify;
     await Promise.all([
         fs.writeFile(
@@ -444,16 +478,14 @@ const exportCtProject = async (
                     collapseWhitespace: true
                 })
         ),
-        fs.writeFile(path.join(writeDir, '/ct.css'), noMinify ? css : csswring.wring(css).css),
-        fs.writeFile(path.join(writeDir, '/ct.js'), buffer)
+        fs.writeFile(path.join(writeDir, cssBundleFilename), css),
+        fs.writeFile(path.join(writeDir, jsBundleFilename), buffer)
     ]);
 
     await Promise.all(project.sounds.map(async (sound: ISound) => {
         const ext = sound.origname.slice(-4);
         await fs.copy(path.join(projdir, '/snd/', sound.origname), path.join(writeDir, '/snd/', sound.uid + ext));
     }));
-
-    await favicons;
 
     return path.join(writeDir, '/index.html');
 };

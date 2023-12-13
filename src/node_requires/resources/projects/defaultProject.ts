@@ -47,6 +47,7 @@ const defaultProjectTemplate: IProject = {
         },
         rendering: {
             usePixiLegacy: true,
+            transparent: false,
             maxFPS: 60,
             pixelatedrender: false,
             highDensity: true,

@@ -133,7 +133,7 @@ extensions-editor
                     class="{invalid: ext.required && !(parent.opts.entity[ext.key] || ext.default)}"
                 )
                 asset-input(
-                    if="{['texture', 'template', 'room', 'sound'].includes(ext.type)}"
+                    if="{['texture', 'template', 'room', 'sound', 'tandem'].includes(ext.type)}"
                     assettype="{ext.type}s"
                     allowclear="yep"
                     compact="{parent.opts.compact}"

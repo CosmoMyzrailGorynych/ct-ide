@@ -463,6 +463,7 @@
             "hideCursor": "settings.rendering.hideCursor",
             "pixelatedRender": "settings.rendering.pixelatedRender",
             "usePixiLegacy": "settings.rendering.usePixiLegacy",
+            "useTransparent": "settings.rendering.useTransparent",
             "mobileBuilds": "settings.rendering.mobileBuilds",
             "screenOrientation": "settings.rendering.screenOrientation",
             "screenOrientations": {

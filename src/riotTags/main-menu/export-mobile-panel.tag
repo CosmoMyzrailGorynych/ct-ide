@@ -68,7 +68,7 @@ export-mobile-panel.aDimmer
             this.noJdkFound = !process.env.JAVA_HOME;
             if (!this.noJdkFound) {
                 // eslint-disable-next-line no-process-env
-                if (process.env.JAVA_HOME.indexOf('jdk-11') === -1) {
+                if (process.env.JAVA_HOME.indexOf('jdk-17') === -1) {
                     this.noJdkFound = true;
                 }
             }
@@ -192,10 +192,10 @@ export-mobile-panel.aDimmer
 
                 this.log.push('Configuring the Capacitor project…');
                 this.update();
-                const {CapacitorProject} = require('@capacitor/project');
-                const project = new CapacitorProject({
+                const {MobileProject} = require('@trapezedev/project');
+                const project = new MobileProject(capacitorProjectPath, {
                     android: {
-                        path: path.join(capacitorProjectPath, 'android')
+                        path: 'android'
                     }
                 });
                 await project.load();

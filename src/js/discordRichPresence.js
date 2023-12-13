@@ -1,5 +1,17 @@
 /* eslint-disable no-console */
 (function discordRichPresence() {
+    // Disable IPC for windows 11 as it quacking crashes
+    if (process.platform === 'win32') {
+        const windows11 = require('child_process')
+            .execSync('ver')
+            .toString()
+            .trim()
+            .indexOf('Version 10.0.2') !== -1;
+        if (windows11) {
+            return;
+        }
+    }
+
     const appId = '749670101904785502';
     const startTimestamp = new Date();
     let failed = false;

@@ -1,3 +1,6 @@
+//-
+    This tag shows the list of latest projects, examples, and templates.
+    This is the tag you see after starting ct.js.
 project-selector
     #theIntroBg.stretch.flexcol
         .pad.left.nogrow.flexrow

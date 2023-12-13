@@ -82,6 +82,13 @@ const Copy = (function Copy() {
             } else {
                 super([PIXI.Texture.EMPTY]);
             }
+            const oldScale = this.scale;
+            Object.defineProperty(this, 'scale', {
+                get: () => oldScale,
+                set: value => {
+                    this.scale.x = this.scale.y = Number(value);
+                }
+            });
             // it is defined in main.js
             // eslint-disable-next-line no-undef
             this[copyTypeSymbol] = true;
@@ -112,9 +119,13 @@ const Copy = (function Copy() {
                     onStep: t.onStep,
                     onDraw: t.onDraw,
                     onCreate: t.onCreate,
-                    onDestroy: t.onDestroy,
-                    shape: ct.res.getTextureShape(t.texture || -1)
+                    onDestroy: t.onDestroy
                 });
+                if (exts && exts.tex !== void 0) {
+                    this.shape = ct.res.getTextureShape(exts.tex || -1, t);
+                } else {
+                    this.shape = ct.res.getTextureShape(t.texture || -1, t);
+                }
                 if (exts && exts.depth !== void 0) {
                     this.depth = exts.depth;
                 }

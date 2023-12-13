@@ -5,6 +5,8 @@ window.migrationProcess.push({
     process: project => new Promise(resolve => {
         // Mark all older projects as TypeScript projects
         project.language ??= 'typescript';
+        // No transparent PIXI.js canvas - it has a limited use-case
+        project.settings.rendering.transparent ??= false;
         // Add `follow` key for all the rooms (camera follow in room properties)
         for (const room of project.rooms) {
             room.follow = room.follow || -1;

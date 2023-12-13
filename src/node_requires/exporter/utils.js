@@ -1,9 +1,16 @@
 const {getTemplateFromId} = require('./../resources/templates');
 const {getTextureFromId} = require('./../resources/textures');
+const getRoomFromId = require('./../resources/rooms').getById;
+const getSoundFromId = require('./../resources/sounds').getById;
+const getTandemFromId = require('./../resources/emitterTandems').getById;
 
 const typeToGetter = {
     template: getTemplateFromId,
-    texture: getTextureFromId
+    texture: getTextureFromId,
+    room: getRoomFromId,
+    sound: getSoundFromId,
+    tandem: getTandemFromId,
+    emitterTandem: getTandemFromId
 };
 
 /**
@@ -56,6 +63,8 @@ const getUnwrappedExtends = function getUnwrappedExtends(exts) {
     return out;
 };
 
+// as in "can be unwrapped"
+const unwrappable = ['template', 'texture', 'sound', 'room', 'emitterTandem', 'tandem'];
 /**
  * Supports flat objects only.
  * A helper for a content function; unwraps IDs for assets
@@ -73,12 +82,12 @@ const getUnwrappedBySpec = function getUnwrappedBySpec(exts, spec) {
     }
     const out = {};
     for (const i in exts) {
-        if ((fieldMap[i].type === 'template' || fieldMap[i].type === 'texture') &&
+        if ((unwrappable.includes(fieldMap[i].type)) &&
             (exts[i] === void 0 || exts[i] === -1)) {
             // Skip unset values
             continue;
         }
-        if (fieldMap[i].type === 'template' || fieldMap[i].type === 'texture') {
+        if (unwrappable.includes(fieldMap[i].type)) {
             if (fieldMap[i].array) {
                 out[i] = exts[i].map(elt => {
                     try {

@@ -205,8 +205,8 @@
         "envVarNotice": "You may still need to set this environment variable manually and restart your device.",
         "downloadAndroidStudio": "Download Android Studio",
         "requiresInternetNotice": "This operation requires Internet connection to setup each project.",
-        "noJdkFound": "No JDK 11 was found (JAVA_HOME environment variable is not set or doesn't point to JDK 11). You can get JDK 11 here:",
-        "downloadJDK": "Download JDK 11",
+        "noJdkFound": "No JDK 17 was found (JAVA_HOME environment variable is not set or doesn't point to JDK 17). You can get JDK 17 here:",
+        "downloadJDK": "Download JDK 17",
         "firstRunNotice": "The first run for each platform will be slow as ct.js will download and save additional libraries needed for packing. It will take some time, but next times will be almost instant."
     },
     "exporterError": {
@@ -373,6 +373,7 @@
             "maxFPS": "Max framerate:",
             "hideCursor": "Hide system cursor",
             "usePixiLegacy": "Add a legacy, canvas-based renderer to support older browsers and graphics cards (adds ~20kb up to your game)",
+            "useTransparent": "Use a transparent PIXI background",
             "desktopBuilds": "Desktop builds",
             "launchMode": "Launch mode:",
             "launchModes": {
