@@ -25,13 +25,13 @@ module.exports = new Promise((resolve, reject) => {
                 branch: 'develop'
             }, {
                 since,
-                repo: './../ctjsDocs',
+                repo: './docs',
                 branch: 'master',
                 forceCategory: 'docs',
                 forceCategoryStrip: /^:(books|pencil|pencil2|memo):/
             }, {
                 since,
-                repo: './../ctjsSite',
+                repo: './../ct-js-site',
                 branch: 'master',
                 forceCategory: 'website'
             }],
