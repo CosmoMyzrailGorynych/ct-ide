@@ -1,3 +1,84 @@
+## v3.3.0
+
+*Thu Dec 14 2023*
+
+### ✨ New Features
+
+* Ct.js now adds hash sums of exported files' names to textures, icons, and your game's source code. It makes it easier to update your games on your own servers and prevents the usage of outdated assets for your players. Note that index.html file should never be cached — the other assets can now be cached. Sounds are currently left with the old behavior as I have bigger plans for them and hashing large sound files is probably not the best idea. If you need to cache-invalidate a sound asset (say, by replacing one sound file with another), you can recreate the sound asset under the same name.
+  Partially closes #409
+* In the room editor, copies now show their templates' names when you hover them.
+* Support for TypeScript in custom scripts
+* Catmods: New Supabase Module (#425 by @ehanahamed)
+
+### ⚡️ General Improvements
+
+* Adds a transparent PIXI.js canvas option (#437 by @markmehere)
+* Adds alpha setting for vkeys (#435 by @markmehere)
+* Clamp zoom value in the room editor
+  Closes #407
+* Exclude blank textures from export and retain shape (#433 by @markmehere)
+* Introduces ct.keyboard.permitDefault and ct.pointer.permitDefault (#434 by @markmehere)
+* Pug files must use LF
+* styleUtils to TypeScript and new IStyle interface (#440 by @markmehere)
+* Update Dutch translation (#405 by @GambleBranch)
+* Update Japanese translation (#404 by @taxi13245)
+* Updated lib.es5.d.ts (#432 by @markmehere)
+
+### 🐛 Bug Fixes
+
+* Allow setting scale value with plain numbers, like `this.scale = 5`.
+  Closes #403
+* Allow textures to be set to -1 (#438)
+* Fix "Cannot read properties of undefined" when caching tilemaps with funky posisions, which led to rounding errors and negative indices.
+* Fix copies' custom properties in the room editor
+* Fix shared asset pickers for sounds and emitter tandems
+* Fix sounds', tandems', and rooms' IDs not being unwrapped for the content system
+* Fixed Android export issue (#444 by @omkarpattanaik)
+* Ignore attempts to export mac builds on Windows
+* Update Discord invite links (#427 by @cemalgnlts)
+* Use collision shape from a texture set in the extensions parameter of ct.templates.copy method
+
+### 🍱 Demos, Dependencies and Stuff
+
+* Update docs. Fix links to tutorials on the onboarding screen
+
+### 📝 Docs
+
+*  📝Fix typo in example code (#108 by @GambleBranch)
+* 🐛 Bring back the adequate search plugin that doesn't ignore code in headers
+* 🐛 Change a single spelling error in docs/ct.md (#110 by @FlyingPig525)
+* 🐛 Fix a typo `created` in sound.howler's docs (#430 by @blueloveTH)
+* 🐛 Fix broken links on the homepage
+* 🐛 ru/README.md fix links (#106 by @progzone122)
+* ✨ Add Giscus commenting service
+* ⚡️ Fix dependencies' versions
+* ⚡️ Tweak search settings a bit
+* ⚡️ Update Vuepress and its theme, add search back
+* 🐛 Docs: Fix links in fields-declaration
+* 🐛 Docs: Fix links in input-methods
+* 🐛 Docs: Fix links in settings-and-extensions
+* 📝 Docs: Fix typo in docs/modding-ctjs/fields-declaration.md
+* 📝 Fix old injects folder name in other languages
+* 📝 Fix wrong injects folder name in events-and-injections.md
+* 📝 Fix wrong/outdated injects folder name in mod-structure.md
+* 📝 Add a comment to project-selector
+
+### 🌐 Website
+
+* 🐛 Fix links to Discord server
+* ⚡️ A little refactor
+* ⚡️ Add a line about "broken" files in MacOS to the download page
+* ⚡️ Add a line about CoffeeScript into the presskit
+* ⚡️ Replace AppImage installer with an .sh one (for Linux platform)
+* ⚡️ Update homepage and the changelog
+
+### 🌻 Misc
+
+* 📝 Fix type definitions for ct.backgrounds & gamepad module (#443 by @ehanahamed)
+  * Update ct.backgrounds typedef
+  * Update ct.backgrounds.list type
+  * Added d.ts for gamepad catmod
+
 ## v3.2.0
 
 *Mon Dec 26 2022*
