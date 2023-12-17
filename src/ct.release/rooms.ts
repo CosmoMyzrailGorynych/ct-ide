@@ -457,7 +457,12 @@ const roomsLib = {
             const c = templatesLib.copyIntoRoom(t.template, t.x, t.y, target, {
                 tx: t.scale.x || 1,
                 ty: t.scale.y || 1,
-                tr: t.rotation || 0
+                tr: t.rotation || 0,
+                scaleX: t.scale?.x,
+                scaleY: t.scale?.y,
+                rotation: t.rotation,
+                alpha: t.opacity,
+                ...t.customProperties
             });
             generated.copies.push(c);
         }
