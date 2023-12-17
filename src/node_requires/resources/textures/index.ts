@@ -1,5 +1,6 @@
 import {uidMap, getOfType, getById, createAsset, IAssetContextItem} from '..';
 import {TexturePreviewer} from '../preview/texture';
+import {convertToPng} from '../../utils/imageUtils';
 
 const fs = require('node_modules/fs-extra');
 import path from 'path';
@@ -252,13 +253,16 @@ const importImageToTexture = async (opts: {
           path = require('path'),
           generateGUID = require('./../../generateGUID');
     const id = generateGUID();
-    let dest: string;
+    const dest = path.join(global.projdir, 'img', `i${id}.png`);
     if (opts.src instanceof Buffer) {
-        dest = path.join(global.projdir, 'img', `i${id}.png`);
         await fs.writeFile(dest, opts.src);
     } else {
-        dest = path.join(global.projdir, 'img', `i${id}${path.extname(opts.src)}`);
-        await fs.copy(opts.src, dest);
+        const ext = path.extname(opts.src);
+        if (ext !== '.png') {
+            await convertToPng(opts.src, dest);
+        } else {
+            await fs.copy(opts.src, dest);
+        }
     }
     const image = document.createElement('img');
     // Wait while the image is loading

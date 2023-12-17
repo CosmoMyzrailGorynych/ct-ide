@@ -164,6 +164,23 @@ const outputCanvasToFile = function (canvas: HTMLCanvasElement, targetFile: stri
     return fs.outputFile(targetFile, buffer);
 };
 
+/**
+ * @returns The destination file path.
+ */
+const convertToPng = function (source: string, destination: string): Promise<string> {
+    const img = document.createElement('img');
+    return new Promise<string>((resolve, reject) => {
+        img.addEventListener('load', () => {
+            const canvas = toCanvas(img);
+            outputCanvasToFile(canvas, destination).then(() => resolve(destination));
+        });
+        img.addEventListener('error', e => {
+            reject(e);
+        });
+        img.src = source;
+    });
+};
+
 export {
     imageCover,
     imageContain,
@@ -172,5 +189,6 @@ export {
     toCanvas,
     toBuffer,
     outputCanvasToFile,
+    convertToPng,
     crop
 };
