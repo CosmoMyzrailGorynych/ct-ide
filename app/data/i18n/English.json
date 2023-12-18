@@ -183,7 +183,7 @@
     },
     "behaviorEditor": {
         "customFields": "Custom Fields",
-        "customFieldsDescription" : "Custom fields can be used to add additional inputs to assets' editors. These fields will be available in the properties panel, and be available as properties of the \"this\" object. For example, if you create a field with a name \"sausage\", you can read it in events as \"this.sausage\"."
+        "customFieldsDescription": "Custom fields can be used to add additional inputs to assets' editors. These fields will be available in the properties panel, and be available as properties of the \"this\" object. For example, if you create a field with a name \"sausage\", you can read it in events as \"this.sausage\"."
     },
     "builtinAssetGallery": {
         "galleryTip": "This is a free, built-in gallery of various textures and sounds. All the assets are CC0 or WTFPL, or are released under special terms for use in ct.js. In any way, you can use these assets however you like, in commercial and other projects.",
@@ -559,7 +559,6 @@
         "fillerLabel": "Text label"
     },
     "sounds": {
-        "create": "Create",
         "record": "Record"
     },
     "soundRecorder": {
@@ -934,7 +933,7 @@
             "enableAutoAlignment": "Enable auto-alignment",
             "autoAlignHint": "When turned on, this element will automatically align itself relative to the boundaries of the specified portion of a room, defined as a \"frame\". It is useful when using Expand and Quality Scaling without Letterboxing rendering modes, as the camera changes proportions in those viewport modes.",
             "frame": "Frame position, in %:",
-            "framePadding" : "Frame padding, in pixels:",
+            "framePadding": "Frame padding, in pixels:",
             "innerFrameMarker": "Inner frame",
             "outerFrameMarker": "Outer frame",
             "constrains": "Constrains:",
@@ -1069,11 +1068,19 @@
         "offY": "Offset Y:"
     },
     "soundView": {
-        "import": "Import",
-        "name": "Name:",
-        "save": "Save",
-        "isMusicFile": "This is a musical track",
-        "poolSize": "Pool size:"
+        "variants": "Variants",
+        "addVariant": "Add from file…",
+        "preload": "Load on game start",
+        "volume": "Volume",
+        "pitch": "Pitch",
+        "distortion": "Distortion",
+        "effects": "Effects",
+        "reverb": "Reverb",
+        "reverbDuration": "Duration",
+        "reverbDecay": "Decay",
+        "reverseReverb": "Reverse",
+        "equalizer": "Equalizer",
+        "hertz": "Hz"
     },
     "fontView": {
         "italic": "Is italic?",

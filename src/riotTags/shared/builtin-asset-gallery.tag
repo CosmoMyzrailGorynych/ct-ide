@@ -4,6 +4,9 @@
     @attribute type (string)
         The type of assets to show. Currently supports "textures" and "sounds"
 
+    @attribute [sound] (ISound)
+        The sound that will receive sound files as its variants.
+
     @attribute onclose (riot function)
         A callback that is triggered when a user makes an action to close the gallery
 
@@ -192,7 +195,7 @@ builtin-asset-gallery.aPanel.aView.pad
             if (fileType === 'image') {
                 return window.currentProject.textures.find(texture => texture.name === name);
             }
-            return window.currentProject.sounds.find(sound => sound.name === name);
+            return false;
         };
 
         this.playSound = sound => () => {
@@ -203,26 +206,21 @@ builtin-asset-gallery.aPanel.aView.pad
         };
 
         const {importImageToTexture} = require('./data/node_requires/resources/textures');
-        const {createNewSound, addSoundFile} = require('./data/node_requires/resources/sounds');
-        this.importIntoProject = entry => () => {
+        const {addSoundFile} = require('./data/node_requires/resources/sounds');
+        this.importIntoProject = entry => async () => {
             if (this.checkNameOccupied(entry.type, entry.name)) {
                 window.alertify.error(this.voc.cannotImportNameOccupied.replace('$1', entry.name));
             }
             if (entry.type === 'image') {
-                importImageToTexture(entry.path)
-                .then(() => {
-                    window.alertify.success(this.vocGlob.done);
-                    this.update();
-                });
+                await importImageToTexture(entry.path);
             } else if (entry.type === 'sound') {
-                const sound = createNewSound(entry.name);
-                addSoundFile(sound, entry.path)
-                .then(() => {
-                    window.signals.trigger('soundCreated');
-                    window.alertify.success(this.vocGlob.done);
-                    this.update();
-                });
+                await addSoundFile(this.opts.sound, entry.path);
+            } else {
+                window.alertify.error(this.vocGlob.wrongFormat);
+                return;
             }
+            window.alertify.success(this.vocGlob.done);
+            this.update();
         };
 
         this.importAllPossible = async () => {
@@ -238,7 +236,6 @@ builtin-asset-gallery.aPanel.aView.pad
                     }
                     if (entry.type === 'sound') {
                         soundsPresent = true;
-                        const sound = createNewSound(entry.name);
                         return addSoundFile(sound, entry.path);
                     }
                     // Unknown asset type

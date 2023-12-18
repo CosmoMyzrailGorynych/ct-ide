@@ -1,5 +1,5 @@
-const fs = require('fs-extra'),
-      path = require('path');
+const fs = require('fs-extra');
+import path from 'path';
 const basePath = './data/';
 
 let currentProject: IProject;
@@ -26,6 +26,7 @@ import {substituteHtmlVars} from './html';
 const typeScript = require('sucrase').transform;
 
 import {getByTypes} from '../resources';
+import {getVariantPath} from '../resources/sounds';
 
 const ifMatcher = (varName: string, symbol = '@') => new RegExp(`/\\*\\!? ?if +${symbol}${varName}${symbol} ?\\*/([\\s\\S]*)(?:/\\*\\!? ?else +${symbol}${varName}${symbol} ?\\*/([\\s\\S]*?))?/\\*\\!? ?endif +${symbol}${varName}${symbol} ?\\*/`, 'g');
 const varMatcher = (varName: string, symbol = '@') => new RegExp(`/\\*\\!? ?${symbol}${varName}${symbol} ?\\*/`, 'g');
@@ -431,10 +432,19 @@ const exportCtProject = async (
         fs.writeFile(path.join(writeDir, jsBundleFilename), buffer)
     ]);
 
-    await Promise.all(assets.sound.map(async (sound: ISound) => {
-        const ext = sound.origname.slice(-4);
-        await fs.copy(path.join(projdir, '/snd/', sound.origname), path.join(writeDir, '/snd/', sound.uid + ext));
-    }));
+    const soundCopyPromises = [];
+    for (const sound of assets.sound) {
+        for (const variant of sound.variants) {
+            const source = getVariantPath(sound, variant);
+            const ext = path.extname(source);
+            soundCopyPromises.push(fs.copy(source, path.join(writeDir, '/snd/', `${variant.uid}${ext}`)));
+        }
+    }
+    await Promise.all(soundCopyPromises);
+    // TODO: it would be better to start copying files earlier,
+    // You can place `await Promise.all(soundCopyPromises);` much later in code
+    // Meaning that you can start copying sounds before rendering the index.html or such
+    // Aaaaaand it is better to separate the copying code into a separate file
 
     return path.join(writeDir, '/index.html');
 };

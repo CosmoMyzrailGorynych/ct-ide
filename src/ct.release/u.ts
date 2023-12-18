@@ -7,6 +7,22 @@ import type * as pixiMod from 'node_modules/pixi.js';
 declare var PIXI: typeof pixiMod;
 
 /**
+ * An utility function to throw errors by using them
+ * as default values for mandatory arguments in public API.
+ */
+export const required = function required(paramName: string, method: string): never {
+    let str = 'The parameter ';
+    if (paramName) {
+        str += `${paramName} `;
+    }
+    if (method) {
+        str += `of ${method} `;
+    }
+    str += 'is required.';
+    throw new Error(str);
+};
+
+/**
  * A library of different utility functions, mainly Math-related, but not limited to them.
  */
 const uLib = {
@@ -443,21 +459,7 @@ const uLib = {
             });
         };
     },
-    /**
-     * An utility function to throw errors by using them
-     * as default values for mandatory arguments in public API.
-     */
-    required(paramName: string, method: string): never {
-        let str = 'The parameter ';
-        if (paramName) {
-            str += `${paramName} `;
-        }
-        if (method) {
-            str += `of ${method} `;
-        }
-        str += 'is required.';
-        throw new Error(str);
-    },
+    required,
     /**
      * Takes a prefix and a number to make a string in format Prefix_XX,
      * mainly used to get nice names for assets.

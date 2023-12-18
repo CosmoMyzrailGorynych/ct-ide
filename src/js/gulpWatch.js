@@ -40,6 +40,7 @@
             .then(script => {
                 // eslint-disable-next-line no-console
                 console.log(`[riot] Updating ${riotTag} tag…`);
+                nw.Window.get().showDevTools();
                 try {
                     // eslint-disable-next-line no-eval
                     eval(script);

@@ -41,6 +41,7 @@ desktop\.ini
 src/typedefs/ct.js/types.d.ts
 app/data/ctLibJSDocAst.json
 app/data/ct.release/**
+app/data/ct.shared/**
 app/examples
 app/templates
 app/bundledAssets

@@ -2,6 +2,7 @@ import {FontPreviewer} from './font';
 import {RoomPreviewer} from './room';
 import {StylePreviewer} from './style';
 import {TexturePreviewer} from './texture';
+import {SoundPreviewer} from './sound';
 import {getByTypes} from '..';
 import {getStartingRoom} from '../rooms';
 
@@ -22,6 +23,7 @@ export const preparePreviews = async function (
             ...FontPreviewer.retain(),
             ...RoomPreviewer.retain(),
             ...StylePreviewer.retain(),
+            ...SoundPreviewer.retain(assets.sound),
             ...TexturePreviewer.retain(assets.texture)
         ];
 
@@ -46,6 +48,7 @@ export const preparePreviews = async function (
                 ...FontPreviewer.retainPreview(assets.font),
                 ...RoomPreviewer.retainPreview(assets.room),
                 ...StylePreviewer.retainPreview(assets.style),
+                ...SoundPreviewer.retainPreview(assets.sound),
                 ...TexturePreviewer.retainPreview(assets.texture)
             ];
 
@@ -99,6 +102,12 @@ export const preparePreviews = async function (
     generationPromises.push(...assets.texture.map(async (texture: ITexture) => {
         if (!(await fileExists(TexturePreviewer.get(texture, true)))) {
             return TexturePreviewer.save(texture);
+        }
+        return Promise.resolve();
+    }));
+    generationPromises.push(...assets.sound.map(async (sound: ISound) => {
+        if (!(await fileExists(SoundPreviewer.get(sound, true)))) {
+            return SoundPreviewer.save(sound);
         }
         return Promise.resolve();
     }));

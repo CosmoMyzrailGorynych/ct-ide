@@ -156,6 +156,7 @@ asset-browser.flexfix(class="{opts.namespace} {opts.class} {compact: opts.compac
                         img(
                             if="{asset.type !== 'folder' && !parent.usesIcons(asset)}"
                             src="{parent.getThumbnail(asset, currentLayout === 'largeCards', false)}"
+                            class="{soundthumbnail: asset.type === 'sound' && asset.variants.length}"
                         )
                         svg.feather.group-icon.act(if="{asset.type !== 'folder' && parent.usesIcons(asset)}")
                             use(xlink:href="#{parent.getThumbnail(asset)}")

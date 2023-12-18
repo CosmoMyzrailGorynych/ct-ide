@@ -1,9 +1,12 @@
-import uLib from './u';
-// import {sounds} from './sounds';
-import type {TextureShape, ExportedTiledTexture} from '../node_requires/exporter/_exporterContracts';
+import {required} from './u';
+import type {TextureShape, ExportedTiledTexture, ExportedSound} from '../node_requires/exporter/_exporterContracts';
+import {sound as pixiSound, Sound} from 'node_modules/@pixi/sound';
+import {pixiSoundPrefix, exportedSounds, soundMap, pixiSoundInstances} from './sounds.js';
 
-import type * as pixiMod from 'node_modules/pixi.js';
-declare var PIXI: typeof pixiMod;
+import * as pixiMod from 'node_modules/pixi.js';
+declare var PIXI: typeof pixiMod & {
+    sound: typeof pixiSound
+};
 
 export type CtjsTexture = pixiMod.Texture & {
     shape: TextureShape,
@@ -31,12 +34,16 @@ export interface ITextureOptions {
 const loadingScreen = document.querySelector('.ct-aLoadingScreen') as HTMLDivElement,
       loadingBar = loadingScreen.querySelector('.ct-aLoadingBar') as HTMLDivElement;
 
+export const textures: Record<string, CtjsAnimation> = {};
+export const skeletons: Record<string, any> = {};
+
 /**
  * An object that manages and stores textures and other assets,
  * also exposing API for dynamic asset loading.
  */
 const resLib = {
-    sounds: {},
+    sounds: soundMap,
+    pixiSounds: pixiSoundInstances,
     textures: {} as Record<string, CtjsAnimation>,
     groups: [/*!@resourceGroups@*/][0] as Record<string, string[]>,
     /**
@@ -46,7 +53,7 @@ const resLib = {
      * @returns {Promise<void>}
      * @async
      */
-    loadScript(url: string = uLib.required('url', 'ct.res.loadScript')): Promise<void> {
+    loadScript(url: string = required('url', 'ct.res.loadScript')): Promise<void> {
         var script = document.createElement('script');
         script.src = url;
         const promise = new Promise<void>((resolve, reject) => {
@@ -62,7 +69,7 @@ const resLib = {
     },
     /**
      * Loads an individual image as a named ct.js texture.
-     * @param {string} url The path to the source image.
+     * @param {string|boolean} url The path to the source image.
      * @param {string} name The name of the resulting ct.js texture
      * as it will be used in your code.
      * @param {ITextureOptions} textureOptions Information about texture's axis
@@ -70,8 +77,8 @@ const resLib = {
      * @returns {Promise<CtjsAnimation>} The imported animation, ready to be used.
      */
     async loadTexture(
-        url: string = uLib.required('url', 'ct.res.loadTexture'),
-        name: string = uLib.required('name', 'ct.res.loadTexture'),
+        url: string = required('url', 'ct.res.loadTexture'),
+        name: string = required('name', 'ct.res.loadTexture'),
         textureOptions: ITextureOptions = {}
     ): Promise<CtjsAnimation> {
         let texture: CtjsTexture;
@@ -97,7 +104,7 @@ const resLib = {
      * @returns A promise that resolves into an array
      * of all the loaded textures' names.
      */
-    async loadAtlas(url: string = uLib.required('url', 'ct.res.loadAtlas')): Promise<string[]> {
+    async loadAtlas(url: string = required('url', 'ct.res.loadAtlas')): Promise<string[]> {
         const sheet = await PIXI.Assets.load<pixiMod.Spritesheet>(url);
         for (const animation in sheet.animations) {
             const tex = sheet.animations[animation];
@@ -119,7 +126,7 @@ const resLib = {
      * it has introduced to the game.
      * Will do nothing if the specified atlas was not loaded (or was already unloaded).
      */
-    async unloadAtlas(url: string = uLib.required('url', 'ct.res.unloadAtlas')): Promise<void> {
+    async unloadAtlas(url: string = required('url', 'ct.res.unloadAtlas')): Promise<void> {
         const {animations} = PIXI.Assets.get(url);
         if (!animations) {
             // eslint-disable-next-line no-console
@@ -136,12 +143,47 @@ const resLib = {
      * @param url The path to the XML file that describes the bitmap fonts.
      * @returns A promise that resolves into the font's name (the one you've passed with `name`).
      */
-    async loadBitmapFont(url: string = uLib.required('url', 'ct.res.loadBitmapFont')): Promise<void> {
+    async loadBitmapFont(url: string = required('url', 'ct.res.loadBitmapFont')): Promise<void> {
         await PIXI.Assets.load(url);
     },
-    async unloadBitmapFont(url: string = uLib.required('url', 'ct.res.unloadBitmapFont')): Promise<void> {
+    async unloadBitmapFont(url: string = required('url', 'ct.res.unloadBitmapFont')): Promise<void> {
         await PIXI.Assets.unload(url);
     },
+    /**
+     * Loads a sound.
+     * @param path Path to the sound
+     * @param name The name of the sound as it will be used in ct.js game.
+     * @param preload Whether to start loading now or postpone it.
+     * Postponed sounds will load when a game tries to play them, or when you manually
+     * trigger the download with `sounds.load(name)`.
+     * @returns A promise with the name of the imported sound.
+     */
+    loadSound(
+        path: string = required('path', 'ct.res.loadSound'),
+        name: string = required('name', 'ct.res.loadSound'),
+        preload = true
+    ): Promise<string> {
+        return new Promise<string>((resolve, reject) => {
+            const asset = PIXI.sound.add(name, {
+                url: path,
+                preload,
+                loaded: preload ?
+                    (err) => {
+                        if (err) {
+                            reject(err);
+                        } else {
+                            resLib.pixiSounds[name] = asset;
+                            resolve(name);
+                        }
+                    } :
+                    void 0
+            });
+            if (!preload) {
+                resolve(name);
+            }
+        });
+    },
+
     async loadGame(): Promise<void> {
         // !! This method is intended to be filled by ct.IDE and be executed
         // exactly once at game startup.
@@ -153,7 +195,6 @@ const resLib = {
         /* eslint-disable prefer-destructuring */
         const atlases: string[] = [/*!@atlases@*/][0];
         const tiledImages: ExportedTiledTexture[] = [/*!@tiledImages@*/][0];
-        const sounds: string[] = [/*!@sounds@*/][0];
         const bitmapFonts: string[] = [/*!@bitmapFonts@*/][0];
         /* eslint-enable prefer-destructuring */
 
@@ -182,18 +223,11 @@ const resLib = {
         for (const font in bitmapFonts) {
             loadingPromises.push(resLib.loadBitmapFont(bitmapFonts[font]));
         }
-        /*
-        for (const sound of sounds) {
-            // TODO:
-            sounds.init(sound.name, {
-                wav: sound.wav || false,
-                mp3: sound.mp3 || false,
-                ogg: sound.ogg || false
-            }, {
-                poolSize: sound.poolSize,
-                music: sound.isMusic
-            });
-        }*/
+        for (const sound of exportedSounds) {
+            for (const variant of sound.variants) {
+                loadingPromises.push(resLib.loadSound(variant.source, `${pixiSoundPrefix}${variant.uid}`));
+            }
+        }
 
         /*!@res@*/
         /*!%res%*/
@@ -254,6 +288,7 @@ const resLib = {
         return resLib.textures[name].shape;
     }
 };
+
 
 /*!@fonts@*/
 

@@ -7,6 +7,7 @@
 /// <reference path="../resources/templates/ITemplate.d.ts" />
 /// <reference path="../resources/emitterTandems/types.d.ts" />
 /// <reference path="../resources/rooms/IRoom.d.ts" />
+/// <reference path="../resources/sounds/types.d.ts" />
 /// <reference path="../resources/projects/IProject.d.ts" />
 
 import * as PIXI from 'node_modules/pixi.js';
@@ -191,6 +192,9 @@ export type ExportedStyle = {
     dropShadowAngle?: number;
     dropShadowDistance?: number;
 }
+
+export type ExportedSound = Omit<ISound, 'uid' | 'group' | 'lastmod' | 'type'> &
+    Partial<Pick<ISound, 'distortion' | 'eq' | 'pitch' | 'reverb' | 'volume'>>;
 
 export type ExportedBehaviorDynamic = {
     thisOnStep?: () => void,

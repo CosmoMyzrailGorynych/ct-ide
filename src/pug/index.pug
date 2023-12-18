@@ -85,6 +85,9 @@ html
             'use strict';
             window.signals = window.signals || riot.observable({});
             window.hotkeys = require('./data/node_requires/hotkeys')(document);
+            window.PIXI = require('pixi.js');
+            window.PIXI.sound = require('@pixi/sound').sound;
+            window.PIXI.sound.filters = require('@pixi/sound').filters;
             riot.mount('*');
             setTimeout(() => {
                 document.getElementById('theLoadingScreen').remove();

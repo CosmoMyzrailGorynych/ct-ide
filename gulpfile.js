@@ -241,6 +241,19 @@ const buildCtJsLib = () => {
     ]).pipe(gulp.dest('./app/data/ct.release')));
     return Promise.all(processes);
 };
+const buildCtIdeSoundLib = () => esbuild({
+    entryPoints: ['./src/ct.release/sounds.ts'],
+    outfile: './app/data/ct.shared/ctSound.js',
+    bundle: true,
+    platform: 'node',
+    format: 'cjs',
+    treeShaking: true,
+    external: [
+        'node_modules/pixi.js',
+        'node_modules/pixi-spine',
+        'node_modules/@pixi/sound'
+    ]
+});
 const watchCtJsLib = () => {
     gulp.watch([
         './src/ct.release/**/*',
@@ -251,6 +264,11 @@ const watchCtJsLib = () => {
         notifier.notify(makeErrorObj('Ct.js game library failure', err));
         console.error('[Ct.js game library error]', err);
     });
+
+    gulp.watch([
+        './src/ct.release/**/*',
+        '!./src/ct.release/changes.txt'
+    ], buildCtIdeSoundLib);
 };
 
 const copyInEditorDocs = () =>
@@ -421,6 +439,7 @@ const build = gulp.parallel([
     processRequires,
     copyInEditorDocs,
     buildCtJsLib,
+    buildCtIdeSoundLib,
     bakeTypedefs,
     bakeCtTypedefs
 ]);
@@ -599,6 +618,7 @@ exports.lintI18n = lintI18n;
 exports.lint = lint;
 
 exports.buildCtJsLib = buildCtJsLib;
+exports.buildCtIdeSoundLib = buildCtIdeSoundLib;
 
 exports.packages = packages;
 exports.nwbuild = bakePackages;

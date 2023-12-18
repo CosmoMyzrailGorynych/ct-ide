@@ -52,9 +52,10 @@
   },
   "chromium-args": "--mixed-context --enable-features=nw2 --load-extensions --force-color-profile=srgb --disable-features=ColorCorrectRendering",
   "dependencies": {
+    "@pixi/particle-emitter": "5.0.8",
+    "@pixi/sound": "^5.2.2",
     "@capacitor/cli": "^5.5.0",
     "@capacitor/core": "^5.5.0",
-    "@pixi/particle-emitter": "5.0.8",
     "@trapezedev/project": "^7.0.10",
     "archiver": "^3.1.1",
     "coffeescript": "^2.7.0",
