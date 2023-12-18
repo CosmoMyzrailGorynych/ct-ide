@@ -44,10 +44,11 @@ export const createAsset = function (): ISound {
         },
         eq: {
             enabled: false,
-            bands: Array(10).fill(({
-                min: 0,
-                max: 0
-            }) as randomized) as eqBands
+            bands: Array(10).fill(0)
+                .map(() => ({
+                    min: -1,
+                    max: 1
+                }) as randomized) as eqBands
         }
     };
     return newSound;
